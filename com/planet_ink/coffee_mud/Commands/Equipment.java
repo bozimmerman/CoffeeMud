@@ -40,13 +40,20 @@ public class Equipment extends StdCommand
 	    Item thisItem=null;
 	    String tat=null;
 	    int numWears=0;
+        boolean paragraphView=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)>1)
+                            ||((seer!=mob)&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)>0));
 		for(int l=0;l<Item.wornOrder.length;l++)
 		{
 		    found=0;
 			wornCode=Item.wornOrder[l];
 			wornName=Sense.wornLocation(wornCode);
-			header="^N(^H"+wornName+"^?)";
-			header+=Util.SPACES.substring(0,26-header.length())+": ^!";
+            if(paragraphView)
+    			header=" ^!";
+            else
+            {
+                header="^N(^H"+wornName+"^?)";
+                header+=Util.SPACES.substring(0,26-header.length())+": ^!";
+            }
 			for(int i=0;i<mob.inventorySize();i++)
 			{
 				thisItem=mob.fetchInventory(i);
@@ -55,12 +62,44 @@ public class Equipment extends StdCommand
 					found++;
 					if(Sense.canBeSeenBy(thisItem,seer))
 					{
-						String name=thisItem.name();
-						if(name.length()>53) name=name.substring(0,50)+"...";
-						if(mob==seer)
-							msg.append(header+"^<EItem^>"+name+"^</EItem^>"+Sense.colorCodes(thisItem,seer)+"^?\n\r");
-						else
-							msg.append(header+name+Sense.colorCodes(thisItem,seer)+"^?\n\r");
+                        if(paragraphView)
+                        {
+                            String name=thisItem.name();
+                            if(name.length()>75) name=name.substring(0,75)+"...";
+                            if(wornCode==Item.HELD)
+                            {
+                                if(mob==seer)
+                                    msg.append("\n\rHolding ^<EItem^>"+name+"^</EItem^>"+Sense.colorCodes(thisItem,seer)+"^N");
+                                else
+                                    msg.append("\n\r" + mob.charStats().HeShe() + " is holding " +
+                                             name + Sense.colorCodes(thisItem, seer) + "^N.");                  
+                            }
+                            else
+                            if(wornCode==Item.WIELD)
+                            {
+                                if(mob==seer)
+                                    msg.append("\n\rWielding ^<EItem^>"+name+"^</EItem^>"+Sense.colorCodes(thisItem,seer)+"^N.");
+                                else
+                                    msg.append("\n\r" + mob.charStats().HeShe() + " is wielding " +
+                                             name + Sense.colorCodes(thisItem, seer) + "^N.");
+                            }
+                            else
+                            {
+                                if(mob==seer)
+                                    msg.append(header+"^<EItem^>"+name+"^</EItem^>"+Sense.colorCodes(thisItem,seer)+"^N,");
+                                else
+                                    msg.append(header+name+Sense.colorCodes(thisItem,seer)+"^N,");
+                            }
+                        }
+                        else
+                        {
+                            String name=thisItem.name();
+                            if(name.length()>53) name=name.substring(0,50)+"...";
+    						if(mob==seer)
+    							msg.append(header+"^<EItem^>"+name+"^</EItem^>"+Sense.colorCodes(thisItem,seer)+"^?\n\r");
+    						else
+    							msg.append(header+name+Sense.colorCodes(thisItem,seer)+"^?\n\r");
+                        }
 					}
 					else
 					if(seer==mob)
@@ -78,13 +117,23 @@ public class Equipment extends StdCommand
 				    if((tat.startsWith(wornName+":"))
 				    &&((++numTattsDone)<=numWears))
 				    {
-				        tat=Util.capitalize(tat.substring(wornName.length()+1).toLowerCase());
-						if(tat.length()>53) tat=tat.substring(0,50)+"...";
-						msg.append(header+tat+"^?\n\r");
+                        if(paragraphView)
+                        {
+                            tat=tat.substring(wornName.length()+1).toLowerCase();
+                            if(tat.length()>75) tat=tat.substring(0,75)+"...";
+                            msg.append(header+tat+"^?,");
+                        }
+                        else
+                        {
+    				        tat=Util.capitalize(tat.substring(wornName.length()+1).toLowerCase());
+                            if(tat.length()>53) tat=tat.substring(0,50)+"...";
+                            msg.append(header+tat+"^?\n\r");
+                        }
 				    }
 				}
 			}
-			if((allPlaces)&&(wornCode!=Item.FLOATING_NEARBY))
+			if(((!paragraphView)&&(allPlaces)&&(wornCode!=Item.FLOATING_NEARBY))
+            ||((paragraphView)&&(allPlaces)&&(wornCode!=Item.WIELD)))
 			{
 				int total=mob.getWearPositions(wornCode)-found;
 				for(int i=0;i<total;i++)
@@ -93,7 +142,15 @@ public class Equipment extends StdCommand
 		}
 		if(msg.length()==0)
 			msg.append("^!(nothing)^?\n\r");
-		return msg;
+        else
+        if((paragraphView)&&(msg.lastIndexOf(",") > -1))
+        {
+            msg.insert(msg.lastIndexOf(",") + 1, ".");
+            msg.deleteCharAt(msg.lastIndexOf(","));
+            if(msg.lastIndexOf(",") > -1)
+                msg.insert(msg.lastIndexOf(",") + 1, " and");
+        }
+        return msg;
 	}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -106,10 +163,19 @@ public class Equipment extends StdCommand
 		}
 		if(!mob.isMonster())
 		{
-			if((commands.size()>1)&&(Util.combine(commands,1).equalsIgnoreCase("long")))
-				mob.session().wraplessPrintln("You are wearing:\n\r"+getEquipment(mob,mob,true));
-			else
-				mob.session().wraplessPrintln("You are wearing:\n\r"+getEquipment(mob,mob,false));
+            boolean paragraphView=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)==2);
+            if(paragraphView)
+            {
+    			if((commands.size()>1)&&(Util.combine(commands,1).equalsIgnoreCase("long")))
+    				mob.session().wraplessPrintln("You are wearing "+getEquipment(mob,mob,true));
+    			else
+    				mob.session().wraplessPrintln("You are wearing "+getEquipment(mob,mob,false));
+            }
+            else
+            if((commands.size()>1)&&(Util.combine(commands,1).equalsIgnoreCase("long")))
+                mob.session().wraplessPrintln("You are wearing:\n\r"+getEquipment(mob,mob,true));
+            else
+                mob.session().wraplessPrintln("You are wearing:\n\r"+getEquipment(mob,mob,false));
 		}
 		return false;
 	}

@@ -2155,7 +2155,13 @@ public class StdMOB implements MOB
 					myDescription.append(description()+"\n\r\n\r");
 					StringBuffer eq=CommonMsgs.getEquipment(msg.source(),this);
 					if(eq.length() > 0)
-					    myDescription.append(charStats().HeShe()+" is wearing:\n\r"+eq.toString());
+                    {
+                        if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)>1)
+                        ||((msg.source()!=this)&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)>0)))
+    					    myDescription.append(charStats().HeShe()+" is wearing "+eq.toString());
+                        else
+                            myDescription.append(charStats().HeShe()+" is wearing:\n\r"+eq.toString());
+                    }
 					tell(myDescription.toString());
 				}
 				break;
@@ -2354,7 +2360,13 @@ public class StdMOB implements MOB
 					myDescription.append(description()+"\n\r\n\r");
 					StringBuffer eq=CommonMsgs.getEquipment(msg.source(),this);
 					if(eq.length() > 0)
-					    myDescription.append(charStats().HeShe()+" is wearing:\n\r"+eq.toString());
+                    {
+                        if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)>1)
+                        ||((msg.source()!=this)&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)>0)))
+                            myDescription.append(charStats().HeShe()+" is wearing "+eq.toString());
+                        else
+                            myDescription.append(charStats().HeShe()+" is wearing:\n\r"+eq.toString());
+                    }
 					mob.tell(myDescription.toString());
 				}
 				else

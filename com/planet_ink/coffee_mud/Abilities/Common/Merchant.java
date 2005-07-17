@@ -578,6 +578,17 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		return price;
 	}
 
+    private boolean shownInInventory(Environmental E, MOB mob)
+    {
+        if(!(E instanceof Item)) return true;
+        if(((Item)E).container()!=null) return false;
+        if(CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) return true;
+        if(((Item)E).envStats().level()>mob.envStats().level()) return false;
+        if(!Sense.canBeSeenBy(E,mob)) return false;
+        return true;
+    }
+    
+    
 	private StringBuffer listInventory(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
@@ -595,7 +606,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		for(int i=0;i<inventory.size();i++)
 		{
 			E=(Environmental)inventory.elementAt(i);
-			if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
+            if(shownInInventory(E,mob))
 			{
 				price=BeanCounter.abbreviatedPrice(merchantM,yourValue(mob,E,true,true).absoluteGoldPrice);
 				if(price.length()>(4+csize))
@@ -610,7 +621,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		{
 			E=(Environmental)inventory.elementAt(i);
 
-			if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
+			if(shownInInventory(E,mob))
 			{
 				String col=null;
 				price=BeanCounter.abbreviatedPrice(merchantM,yourValue(mob,E,true,true).absoluteGoldPrice);

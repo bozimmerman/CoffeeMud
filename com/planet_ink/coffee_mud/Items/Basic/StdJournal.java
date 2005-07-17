@@ -196,6 +196,7 @@ public class StdJournal extends StdItem
                                         String realName=null;
                                         realName=(journal.equalsIgnoreCase("bugs")
                                                   ||journal.equalsIgnoreCase("typos")
+                                                  ||journal.equalsIgnoreCase("assist")
                                                   ||journal.equalsIgnoreCase("ideas"))?"SYSTEM_"+journal.toUpperCase():null;
                                         if(realName==null)
                                             realName=CMClass.DBEngine().DBGetRealJournalName(journal);

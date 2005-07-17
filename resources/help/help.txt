@@ -14,7 +14,7 @@ inventory equipment look compare
 get put drop give wear wield        ^HOTHER^?
 hold eat drink fill sniff           ! quit password train qualify
 lock unlock open close pick         ansi noansi prompt colorset
-list buy sell value                 bug commands help topics
+list buy sell value                 bug commands help topics assist
                                     
 ^HBASE CLASSES^?
 fighter bard druid mage thief

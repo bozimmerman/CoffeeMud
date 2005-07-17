@@ -62,6 +62,7 @@ public class Healer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_RemoveDeathMark",false);
 
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",false);
+            CMAble.addCharAbilityMapping(ID(),4,"Prayer_CureFatigue",false);
 
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_Fidelity",false);
@@ -84,6 +85,7 @@ public class Healer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_Benediction",false);
 
 			CMAble.addCharAbilityMapping(ID(),12,"Prayer_CureDisease",true);
+            CMAble.addCharAbilityMapping(ID(),12,"Prayer_CureExhaustion",false);
 
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_ProtectHealth",false);
 
@@ -97,6 +99,7 @@ public class Healer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),16,"Prayer_CureCannibalism",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",true);
+            CMAble.addCharAbilityMapping(ID(),17,"Prayer_Invigorate",false);
 
 			CMAble.addCharAbilityMapping(ID(),18,"Prayer_DispelUndead",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Prayer_BlessedHearth",false);

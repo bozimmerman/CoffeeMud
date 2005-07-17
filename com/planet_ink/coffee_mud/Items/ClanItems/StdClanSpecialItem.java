@@ -24,6 +24,7 @@ public class StdClanSpecialItem extends StdClanItem
 {
 	public String ID(){	return "StdClanSpecialItem";}
 	private Behavior B=null;
+    private String flag="";
 
 	public StdClanSpecialItem()
 	{
@@ -39,6 +40,15 @@ public class StdClanSpecialItem extends StdClanItem
 		material=EnvResource.RESOURCE_PINE;
 		recoverEnvStats();
 	}
+    
+    public void setReadableText(String text)
+    {
+        if((text.equalsIgnoreCase("GOOD"))
+        ||(text.equalsIgnoreCase("EVIL")))
+            flag=text;
+        else
+            super.setReadableText(text);
+    }
 
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
@@ -93,8 +103,15 @@ public class StdClanSpecialItem extends StdClanItem
 				}
 			case ClanItem.CI_SPECIALSCALES:
 				{
-					if((B==null)||(!B.ID().equals("GoodExecutioner")))
-						B=CMClass.getBehavior("GoodExecutioner");
+					if(((B==null))
+                    ||(!flag.equalsIgnoreCase("EVIL")&&(!B.ID().equals("GoodExecutioner")))
+                    ||(flag.equalsIgnoreCase("EVIL")&&(!B.ID().equals("EvilExecutioner"))))
+                    {
+                        if(flag.equalsIgnoreCase("EVIL"))
+    						B=CMClass.getBehavior("EvilExecutioner");
+                        else
+                            B=CMClass.getBehavior("GoodExecutioner");
+                    }
 					break;
 				}
 			case ClanItem.CI_SPECIALTAXER:

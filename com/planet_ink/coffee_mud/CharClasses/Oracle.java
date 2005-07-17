@@ -70,6 +70,7 @@ public class Oracle extends Cleric
 			CMAble.addCharAbilityMapping(ID(),6,"Prayer_SenseDisease",false);
 
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Bless",true);
+            CMAble.addCharAbilityMapping(ID(),7,"Prayer_CureFatigue",false);
 
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_IdentifyObject",false);
 
@@ -105,6 +106,7 @@ public class Oracle extends Cleric
 			CMAble.addCharAbilityMapping(ID(),18,"Spell_SeeAura",false);
 
 			CMAble.addCharAbilityMapping(ID(),19,"Prayer_Godstrike",true);
+            CMAble.addCharAbilityMapping(ID(),19,"Prayer_CureExhaustion",false);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassFreedom",true);
 

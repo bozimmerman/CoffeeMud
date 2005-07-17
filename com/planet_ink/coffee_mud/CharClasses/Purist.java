@@ -77,6 +77,7 @@ public class Purist extends Cleric
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",true);
 
 			CMAble.addCharAbilityMapping(ID(),9,"Prayer_Gills",false);
+            CMAble.addCharAbilityMapping(ID(),9,"Prayer_CureFatigue",false);
 
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",false);

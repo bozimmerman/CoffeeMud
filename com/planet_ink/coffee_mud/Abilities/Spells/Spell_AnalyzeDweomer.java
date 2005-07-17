@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -45,7 +46,21 @@ public class Spell_AnalyzeDweomer extends Spell
 				mob.location().send(mob,msg);
 				StringBuffer str=new StringBuffer("");
 				if(target instanceof Armor)
+                {
 					str.append("It is a kind of armor.  ");
+                    if(!target.rawLogicalAnd())
+                        str.append("It is worn on any one of the following: ");
+                    else
+                        str.append("It is worn on all of the following: ");
+                    for(int l=0;l<20;l++)
+                    {
+                        long wornCode=1<<l;
+                        if((Sense.wornLocation(wornCode).length()>0)
+                        &&(((target.rawProperLocationBitmap()&wornCode)==wornCode)))
+                            str.append(Sense.wornLocation(wornCode).toLowerCase()+" ");
+                    }
+                    str.append(".  ");
+                }
 				if((target instanceof Container)&&(((Container)target).capacity()>0))
 					str.append("It is a container.  ");
 				if(target instanceof Coins)

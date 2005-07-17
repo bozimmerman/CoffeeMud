@@ -31,6 +31,7 @@ Glassblowers Tools %	TIN/5	 	5	2	20	100	0	GenClanCommonItem	GlassBlowing					Gla
 Sculptors Chisel %	BRASS/20	 	5	2	20	100	0	GenClanCommonItem	Sculpting					Sculpting
 Shipwrights Tools %	LEAD/10	 	5	5	20	100	0	GenClanCommonItem	ShipWrighting					Shipwright
 Weavers Loom %	OAK/5	 	5	2	20	100	0	GenClanCommonItem	Weaving					Weaving
-Executioners Scales %	BRONZE/20		6	5	50	500	0	GenClanSpecialItem						
+Executioners Scales %	BRONZE/20		6	5	50	500	0	GenClanSpecialItem	GOOD					
+Assassins Eye %	BRONZE/20		6	5	50	500	0	GenClanSpecialItem	EVIL					
 Scavengers Sticker %	MAPLE/20	IRON/1 	7	1	20	100	0	GenClanSpecialItem						
 Tax Collectors Clipboard %	IRONWOOD/20	GOLD/1 	9	5	30	1000	0	GenClanSpecialItem						

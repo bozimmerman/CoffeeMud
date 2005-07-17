@@ -898,6 +898,17 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return V;
 	}
 
+    private boolean shownInInventory(Environmental E, MOB mob)
+    {
+        if(!(E instanceof Item)) return true;
+        if(((Item)E).container()!=null) return false;
+        if(CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) return true;
+        if(((Item)E).envStats().level()>mob.envStats().level()) return false;
+        if(!Sense.canBeSeenBy(E,mob)) return false;
+        return true;
+    }
+    
+    
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -1199,7 +1210,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						for(int i=0;i<inventory.size();i++)
 						{
 							E=(Environmental)inventory.elementAt(i);
-							if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
+							if(shownInInventory(E,mob))
 							{
 								price=yourValue(mob,E,true,true);
 								if((price.experiencePrice>0)&&(((""+price.experiencePrice).length()+2)>(4+csize)))
@@ -1225,7 +1236,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						{
 							E=(Environmental)inventory.elementAt(i);
 	
-							if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
+                            if(shownInInventory(E,mob))
 							{
 								price=yourValue(mob,E,true,true);
 								col=null;

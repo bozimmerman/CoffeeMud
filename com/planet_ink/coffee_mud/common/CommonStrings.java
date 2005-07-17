@@ -112,7 +112,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_STARTMANA=36;
 	public static final int SYSTEMI_STARTMOVE=37;
     public static final int SYSTEMI_TRIALDAYS=38;
-	public static final int NUMI_SYSTEM=39;
+    public static final int SYSTEMI_EQVIEW=39;
+	public static final int NUMI_SYSTEM=40;
 
 	public static final int SYSTEMB_MOBCOMPRESS=0;
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -272,6 +273,14 @@ public class CommonStrings extends Scriptable
 			setIntVar(SYSTEMI_COMBATSYSTEM,1);
 		else
 			setIntVar(SYSTEMI_COMBATSYSTEM,0);
+        s=page.getStr("EQVIEW");
+        if(s.equalsIgnoreCase("paragraph"))
+            setIntVar(SYSTEMI_EQVIEW,2);
+        else
+        if(s.equalsIgnoreCase("mixed"))
+            setIntVar(SYSTEMI_EQVIEW,1);
+        else
+            setIntVar(SYSTEMI_EQVIEW,0);
 
 		setIntVar(SYSTEMI_MANACONSUMETIME,page.getStr("MANACONSUMETIME"));
 		setIntVar(SYSTEMI_PAGEBREAK,page.getStr("PAGEBREAK"));

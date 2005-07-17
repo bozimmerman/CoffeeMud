@@ -26,10 +26,19 @@ public class Prop_Doppleganger extends Property
 	public String name(){ return "Doppleganger";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	private boolean lastLevelChangers=true;
-
+    private int maxLevel=Integer.MAX_VALUE;
+    private int minLevel=Integer.MIN_VALUE;
+    
 	public String accountForYourself()
 	{ return "Level Changer";	}
 	
+    public void setMiscText(String text)
+    {
+        super.setMiscText(text);
+        maxLevel=Util.getParmInt(text,"MAX",Integer.MAX_VALUE);
+        minLevel=Util.getParmInt(text,"MIN",Integer.MIN_VALUE);
+    }
+    
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected instanceof MOB)
@@ -67,7 +76,8 @@ public class Prop_Doppleganger extends Property
 				if(num>0)
 				{
 					int level=(total/num)+Util.s_int(text());
-					if(level<1) level=1;
+					if(level<minLevel) level=minLevel;
+                    if(level>maxLevel) level=maxLevel;
 					if(level!=mob.baseEnvStats().level())
 					{
 						CharClass C=mob.charStats().getCurrentClass();

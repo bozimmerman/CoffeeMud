@@ -823,6 +823,21 @@ public class Destroy extends BaseItemParser
 			}
 		}
 		else
+        if(commandType.equals("ASSIST"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"KILLASSIST")) return errorOut(mob);
+            int which=-1;
+            if(commands.size()>2)
+                which=Util.s_int((String)commands.elementAt(2));
+            if(which<=0)
+                mob.tell("Please enter a valid assist number to delete.  Use List assist for more information.");
+            else
+            {
+                CMClass.DBEngine().DBDeleteJournal("SYSTEM_ASSIST",which-1);
+                mob.tell("Assist deletion submitted.");
+            }
+        }
+        else
 		if(commandType.equals("MOB"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) return errorOut(mob);

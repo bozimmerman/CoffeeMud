@@ -29,14 +29,21 @@ public class FactionList extends StdCommand
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("\n\r^HFaction Standings:^?^N\n\r");
+        boolean none=true;
         for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) {
             String name=(String)e.nextElement();
             Faction F=Factions.getFaction(name);
             if((F!=null)&&(F.showinfactionscommand))
+            {
+                none=false;
                 msg.append(formatFactionLine(name,mob.fetchFaction(name)));
+            }
         }
 		if(!mob.isMonster())
-			mob.session().colorOnlyPrintln(msg.toString());
+            if(none)
+                mob.session().colorOnlyPrintln("\n\r^HNo factions apply.^?^N");
+            else
+    			mob.session().colorOnlyPrintln(msg.toString());
 		return false;
 	}
 

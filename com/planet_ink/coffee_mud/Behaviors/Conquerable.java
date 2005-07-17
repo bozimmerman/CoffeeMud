@@ -242,7 +242,12 @@ public class Conquerable extends Arrest
 
 		}
 		holdingClan="";
-		clanItems.clear();
+        synchronized(clanItems)
+        {
+            for(int c=clanItems.size();c>=0;c--)
+                if(((ClanItem)clanItems.elementAt(c)).ciType()!=ClanItem.CI_FLAG)
+                    clanItems.removeElementAt(c);
+        }
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

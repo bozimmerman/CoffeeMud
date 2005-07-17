@@ -25,13 +25,23 @@ public class GoodExecutioner  extends StdBehavior
 {
 	public String ID(){return "GoodExecutioner";}
 	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
+    private boolean doPlayers=false;
+    
+    public void setParms(String newParms)
+    {
+        super.setParms(newParms);
+        newParms=newParms.toUpperCase();
+        Vector V=Util.parse(newParms);
+        doPlayers=V.contains("PLAYERS")||V.contains("PLAYER");
+    }
 
-
+    
 	public boolean grantsAggressivenessTo(MOB M)
 	{
 		if(M==null) return false;
 		if(Sense.isBoundOrHeld(M)) return false;
-		if(!M.isMonster()) return false;
+		if((!M.isMonster())&&(!doPlayers)) 
+            return false;
 		for(int b=0;b<M.numBehaviors();b++)
 		{
 			Behavior B=M.fetchBehavior(b);
@@ -52,7 +62,7 @@ public class GoodExecutioner  extends StdBehavior
 		if(!canFreelyBehaveNormal(affecting)) return;
 		MOB observer=(MOB)affecting;
 		// base 90% chance not to be executed
-		if((source.isMonster())&&(source!=observer)&&(grantsAggressivenessTo(source)))
+		if((source.isMonster()||doPlayers)&&(source!=observer)&&(grantsAggressivenessTo(source)))
 		{
 			String reason="EVIL";
 			if(source.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief"))

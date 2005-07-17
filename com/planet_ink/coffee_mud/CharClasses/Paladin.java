@@ -128,6 +128,7 @@ public class Paladin extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_CureBlindness",true);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_BladeBarrier",false);
+            CMAble.addCharAbilityMapping(ID(),22,"Prayer_CureFatigue",false);
 
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_Godstrike",false);
 

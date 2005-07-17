@@ -98,21 +98,21 @@ public class CMMap
 		return A;
 	}
 
-    public static void addGlobalHandler(Environmental E, int minorCode)
+    public static void addGlobalHandler(Environmental E, int category)
     {
-        Vector V=(Vector)globalHandlers.get(new Integer(minorCode));
+        Vector V=(Vector)globalHandlers.get(new Integer(category));
         if(V==null)
         {
             V=new Vector();
-            globalHandlers.put(new Integer(minorCode),V);
+            globalHandlers.put(new Integer(category),V);
         }
         if(!V.contains(E))
             V.add(E);
     }
     
-    public static void delGlobalHandler(Environmental E, int minorCode)
+    public static void delGlobalHandler(Environmental E, int category)
     {
-        Vector V=(Vector)globalHandlers.get(new Integer(minorCode));
+        Vector V=(Vector)globalHandlers.get(new Integer(category));
         if(V==null) return;
         V.removeElement(E);
     }
@@ -260,9 +260,9 @@ public class CMMap
 	}
 
     
-    public static boolean sendGlobalMessage(MOB host, int minorCode, CMMsg msg)
+    public static boolean sendGlobalMessage(MOB host, int category, CMMsg msg)
     {
-        Vector V=(Vector)globalHandlers.get(new Integer(minorCode));
+        Vector V=(Vector)globalHandlers.get(new Integer(category));
         if(V==null) return true;
         try{
             Environmental E=null;
@@ -271,7 +271,7 @@ public class CMMap
             {
                 E=(Environmental)V.elementAt(v);
                 if(!Sense.isInTheGame(E,true))
-                    CMMap.delGlobalHandler(E,minorCode);
+                    CMMap.delGlobalHandler(E,category);
                 else
                 {
                     R=CoffeeUtensils.roomLocation(E);

@@ -49,6 +49,7 @@ public class StdClanItem extends StdItem implements ClanItem
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
+        super.executeMsg(myHost,msg);
 	    if((System.currentTimeMillis()-lastClanCheck)>IQCalendar.MILI_HOUR)
 	    {
 		    if((clanID().length()>0)&&(Clans.getClan(clanID())==null))
