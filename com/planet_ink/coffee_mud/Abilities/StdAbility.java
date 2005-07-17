@@ -709,7 +709,13 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
             {
                 if((System.currentTimeMillis()-lastCastHelp)<minCastWaitTime())
                 {
-                    mob.tell("You must wait a short while before doing that again.");
+                    if(minCastWaitTime()<=1000)
+                        mob.tell("You need a second to recover before doing that again.");
+                    else
+                    if(minCastWaitTime()<=5000)
+                        mob.tell("You need a few seconds to recover before doing that again.");
+                    else
+                        mob.tell("You need awhile to recover before doing that again.");
                     return false;
                 }
             }
