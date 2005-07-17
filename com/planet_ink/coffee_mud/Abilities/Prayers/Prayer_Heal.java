@@ -53,6 +53,7 @@ public class Prayer_Heal extends Prayer
 				int healing=Dice.roll(5,adjustedLevel(mob,asLevel),10);
 				MUDFight.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 				target.tell("You feel tons better!");
+                lastCastHelp=System.currentTimeMillis();
 			}
 		}
 		else

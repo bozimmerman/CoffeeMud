@@ -53,6 +53,7 @@ public class Prayer_CureLight extends Prayer
 				int healing=Dice.roll(2,adjustedLevel(mob,asLevel),4);
 				MUDFight.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 				target.tell("You feel a little better!");
+                lastCastHelp=System.currentTimeMillis();
 			}
 		}
 		else

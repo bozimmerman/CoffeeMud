@@ -52,6 +52,7 @@ public class Prayer_MinorQuickening extends Prayer
                 int healing=Dice.roll(2,adjustedLevel(mob,asLevel),10);
                 target.curState().adjMana(healing,target.maxState());
                 target.tell("You feel slightly restored!");
+                lastCastHelp=System.currentTimeMillis();
             }
         }
         else

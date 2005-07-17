@@ -53,6 +53,7 @@ public class Prayer_Invigorate extends Prayer
                 target.curState().setFatigue(0);
                 target.curState().adjMovement(healing,target.maxState());
                 target.tell("You feel really invigorated!");
+                lastCastHelp=System.currentTimeMillis();
             }
         }
         else

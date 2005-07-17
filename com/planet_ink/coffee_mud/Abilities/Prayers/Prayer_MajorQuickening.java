@@ -53,6 +53,7 @@ public class Prayer_MajorQuickening extends Prayer
                 int healing=Dice.roll(10,adjustedLevel(mob,asLevel),50);
                 target.curState().adjMana(healing,target.maxState());
                 target.tell("You feel restored!");
+                lastCastHelp=System.currentTimeMillis();
             }
         }
         else

@@ -53,6 +53,7 @@ public class Prayer_ModerateQuickening extends Prayer
                 int healing=Dice.roll(5,adjustedLevel(mob,asLevel),20);
                 target.curState().adjMana(healing,target.maxState());
                 target.tell("You feel moderately restored!");
+                lastCastHelp=System.currentTimeMillis();
             }
         }
         else
