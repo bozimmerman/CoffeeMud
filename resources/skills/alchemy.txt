@@ -81,7 +81,6 @@ Spell_Anchor	LEAD
 Spell_Disintegrate	COCOA
 Prayer_CureLight	WATER
 Prayer_CureFatigue	WATER
-Prayer_CauseFatigue	BLOOD
 Prayer_MinorQuickening	SALT WATER
 Prayer_RestoreSmell	WATER
 Prayer_SenseEvil	SALT WATER
@@ -95,7 +94,6 @@ Prayer_Deafness	BLOOD
 Prayer_CureSerious	WATER
 Prayer_CureExhaustion	WATER
 Prayer_CauseSerious	BLOOD
-Prayer_CauseExhaustion	BLOOD
 Prayer_ModerateQuickening	SALT WATER
 Prayer_Bless	WATER
 Prayer_Curse	BLOOD
@@ -126,5 +124,4 @@ Prayer_ProtectElements	WATER
 Prayer_Heal	WATER
 Prayer_Harm	BLOOD
 Prayer_Invigorate	WATER
-Prayer_Enervate	BLOOD
 Prayer_MajorQuickening	SALT WATER

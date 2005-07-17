@@ -58,6 +58,7 @@ public class Templar extends Cleric
 
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseGood",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseLife",false);
+            CMAble.addCharAbilityMapping(ID(),2,"Prayer_CauseFatigue",false);
 
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Desecrate",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Specialization_EdgedWeapon",false);
@@ -82,6 +83,7 @@ public class Templar extends Cleric
 
 			CMAble.addCharAbilityMapping(ID(),10,"Specialization_Ranged",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_DispelGood",false);
+            CMAble.addCharAbilityMapping(ID(),10,"Prayer_CauseExhaustion",false);
 
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_Poison",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",false);
@@ -106,6 +108,7 @@ public class Templar extends Cleric
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_BoneMoon",false);
 
 			CMAble.addCharAbilityMapping(ID(),18,"Prayer_Tithe",true);
+            CMAble.addCharAbilityMapping(ID(),18,"Prayer_Enervate",false);
 
 			CMAble.addCharAbilityMapping(ID(),19,"Prayer_Hellfire",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Prayer_Maladiction",false);
