@@ -60,7 +60,7 @@ public class Shaman extends Cleric
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseLife",true);
 
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Bury",false);
-            CMAble.addCharAbilityMapping(ID(),3,"Prayer_MinorSalubrity",false);
+            CMAble.addCharAbilityMapping(ID(),3,"Prayer_MinorInfusion",false);
 
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_FortifyFood",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",false);
@@ -80,7 +80,7 @@ public class Shaman extends Cleric
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",true);
 
 			CMAble.addCharAbilityMapping(ID(),9,"Prayer_Earthshield",false);
-            CMAble.addCharAbilityMapping(ID(),9,"Prayer_ModerateSalubrity",false);
+            CMAble.addCharAbilityMapping(ID(),9,"Prayer_ModerateInfusion",false);
 
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",false);
@@ -103,7 +103,7 @@ public class Shaman extends Cleric
 			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Tremor",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
-            CMAble.addCharAbilityMapping(ID(),17,"Prayer_MajorSalubrity",false);
+            CMAble.addCharAbilityMapping(ID(),17,"Prayer_MajorInfusion",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindsight",false);
