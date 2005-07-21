@@ -32,7 +32,6 @@ public class Prayer extends StdAbility
 	private static final String[] triggerStrings = {"PRAY","PR"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.PRAYER;}
-    public long minWaitPerNextCast(){return MudHost.TICK_TIME/2;}
 
 
 	protected int affectType(boolean auto){
