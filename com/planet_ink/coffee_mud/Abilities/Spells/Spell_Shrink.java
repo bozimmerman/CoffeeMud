@@ -91,9 +91,33 @@ public class Spell_Shrink extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,E,asLevel,0);
-				if(E instanceof MOB)
-					((MOB)E).confirmWearability();
+                boolean isJustUnInvoking=false;
+                if(E instanceof Item)
+                {
+                    Ability A=E.fetchEffect("Spell_Shrink");
+                    if((A!=null)&&(A.canBeUninvoked()))
+                    {
+                        A.unInvoke();
+                        isJustUnInvoking=true;
+                    }
+                }
+                else
+                if(E instanceof MOB)
+                {
+                    Ability A=E.fetchEffect("Spell_Grow");
+                    if((A!=null)&&(A.canBeUninvoked()))
+                    {
+                        A.unInvoke();
+                        isJustUnInvoking=true;
+                    }
+                }
+                
+                if(!isJustUnInvoking)
+                {
+    				beneficialAffect(mob,E,asLevel,0);
+    				if(E instanceof MOB)
+    					((MOB)E).confirmWearability();
+                }
 			}
 		}
 		else

@@ -68,6 +68,7 @@ public class Equipment extends StdCommand
                             if(name.length()>75) name=name.substring(0,75)+"...";
                             if(wornCode==Item.HELD)
                             {
+                                if(msg.length()==0) msg.append("nothing.");
                                 if(mob==seer)
                                     msg.append("\n\rHolding ^<EItem^>"+name+"^</EItem^>"+Sense.colorCodes(thisItem,seer)+"^N");
                                 else
@@ -77,6 +78,7 @@ public class Equipment extends StdCommand
                             else
                             if(wornCode==Item.WIELD)
                             {
+                                if(msg.length()==0) msg.append("nothing.");
                                 if(mob==seer)
                                     msg.append("\n\rWielding ^<EItem^>"+name+"^</EItem^>"+Sense.colorCodes(thisItem,seer)+"^N.");
                                 else

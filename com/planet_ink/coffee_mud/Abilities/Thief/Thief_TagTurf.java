@@ -122,9 +122,9 @@ public class Thief_TagTurf extends ThiefSkill
 		{
 			mob.location().send(mob,msg);
             if(mob.getClanID().length()>0)
-    			setMiscText(mob.Name());
+    			setMiscText(mob.getClanID());
             else
-                setMiscText(mob.getClanID());
+                setMiscText(mob.Name());
 			beneficialAffect(mob,target,asLevel,(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDMONTH)));
 		}
 		return success;

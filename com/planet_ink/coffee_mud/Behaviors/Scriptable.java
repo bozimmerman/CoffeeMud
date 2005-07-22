@@ -830,6 +830,7 @@ public class Scriptable extends StdBehavior
 		int t=varifyable.indexOf("$");
 		if((monster!=null)&&(monster.location()!=null))
 			lastKnownLocation=monster.location();
+        if(lastKnownLocation==null) lastKnownLocation=source.location();
 		MOB randMOB=null;
 		while((t>=0)&&(t<varifyable.length()-1))
 		{
@@ -2143,7 +2144,7 @@ public class Scriptable extends StdBehavior
 					if((R==null)||(R2==null))
 						returnable=false;
 					else
-						returnable=simpleEval(scripted,CMMap.getExtendedRoomID(R2),CMMap.getExtendedRoomID(R),comp,"INROOM");
+						returnable=simpleEvalStr(scripted,CMMap.getExtendedRoomID(R2),CMMap.getExtendedRoomID(R),comp,"INROOM");
 				}
 				break;
 			}
@@ -2523,7 +2524,10 @@ public class Scriptable extends StdBehavior
 						scriptableError(scripted,"CLANDATA","RunTime",arg2+" is not a valid clan variable.");
 				    	break;
 				    }
-				    returnable=simpleEval(scripted,whichVal,arg4,arg3,"CLANDATA");
+                    if(Util.isNumber(whichVal)&&Util.isNumber(arg4))
+    				    returnable=simpleEval(scripted,whichVal,arg4,arg3,"CLANDATA");
+                    else
+                        returnable=simpleEvalStr(scripted,whichVal,arg4,arg3,"CLANDATA");
 				}
 				break;
 			}
@@ -5308,7 +5312,7 @@ public class Scriptable extends StdBehavior
 				if((msg.targetMinor()==CMMsg.TYP_ENTER)
 				&&(msg.amITarget(lastKnownLocation))
 				&&(!msg.amISource(eventMob))
-				&&(canFreelyBehaveNormal(monster))
+				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
 				&&((!(affecting instanceof MOB))||Sense.canSenseMoving(msg.source(),(MOB)affecting)))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
@@ -5337,7 +5341,7 @@ public class Scriptable extends StdBehavior
 				if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 				&&(!msg.amISource(monster))
 				&&(msg.othersMessage()!=null)
-				&&(canFreelyBehaveNormal(monster)))
+				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					String str=msg.othersMessage().toUpperCase();
 					if(str.indexOf("\'")>=0)
@@ -5377,7 +5381,7 @@ public class Scriptable extends StdBehavior
 				&&((msg.amITarget(monster))||(msg.tool()==affecting)||(affecting instanceof Room)||(affecting instanceof Area))
 				&&(!msg.amISource(monster))
 				&&(msg.tool() instanceof Item)
-				&&(canFreelyBehaveNormal(monster)))
+				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					trigger=trigger.substring(9).trim();
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
@@ -5413,7 +5417,7 @@ public class Scriptable extends StdBehavior
 				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
 				&&(!msg.amISource(monster))
 				&&(msg.target() instanceof Item)
-				&&(canFreelyBehaveNormal(monster)))
+				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					trigger=trigger.substring(8).trim();
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
@@ -5449,7 +5453,7 @@ public class Scriptable extends StdBehavior
 				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
 				&&(!msg.amISource(monster))
 				&&(msg.target() instanceof Item)
-				&&(canFreelyBehaveNormal(monster)))
+				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					trigger=trigger.substring(9).trim();
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
@@ -5491,7 +5495,7 @@ public class Scriptable extends StdBehavior
 				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
 				&&(!msg.amISource(monster))
 				&&(msg.target() instanceof Item)
-				&&(canFreelyBehaveNormal(monster)))
+				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					trigger=trigger.substring(11).trim();
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
@@ -5527,7 +5531,7 @@ public class Scriptable extends StdBehavior
 				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
 				&&(!msg.amISource(monster))
 				&&(msg.target() instanceof Item)
-				&&(canFreelyBehaveNormal(monster)))
+				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					trigger=trigger.substring(12).trim();
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
@@ -5564,7 +5568,7 @@ public class Scriptable extends StdBehavior
 				&&(msg.tool() instanceof Item)
 				&&(!msg.amISource(monster))
 				&&(msg.target() instanceof Item)
-				&&(canFreelyBehaveNormal(monster)))
+				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					trigger=trigger.substring(8).trim();
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
@@ -5606,7 +5610,7 @@ public class Scriptable extends StdBehavior
 				&&((!(affecting instanceof ShopKeeper))
                     ||msg.amITarget(affecting))
 				&&(!msg.amISource(monster))
-				&&(canFreelyBehaveNormal(monster)))
+				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					trigger=trigger.substring(8).trim();
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
@@ -5649,9 +5653,9 @@ public class Scriptable extends StdBehavior
 				break;
 			case 28: // sell_prog
 				if((msg.targetMinor()==CMMsg.TYP_SELL)
-				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
+				&&((msg.amITarget(affecting))||(!(affecting instanceof ShopKeeper)))
 				&&(!msg.amISource(monster))
-				&&(canFreelyBehaveNormal(monster)))
+				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					trigger=trigger.substring(8).trim();
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
@@ -5699,7 +5703,7 @@ public class Scriptable extends StdBehavior
 				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
 				&&(!msg.amISource(monster))
 				&&(msg.target() instanceof Item)
-				&&(canFreelyBehaveNormal(monster)))
+				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					trigger=trigger.substring(9).trim();
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
@@ -5735,7 +5739,7 @@ public class Scriptable extends StdBehavior
 				&&(msg.amITarget(eventMob)||(!(affecting instanceof MOB)))
 				&&(!msg.amISource(monster))
 				&&(msg.tool() instanceof Coins)
-				&&(canFreelyBehaveNormal(monster)))
+				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					trigger=trigger.substring(10).trim();
 					double t=0.0;
@@ -5754,7 +5758,7 @@ public class Scriptable extends StdBehavior
 			case 8: // entry_prog
 				if((msg.targetMinor()==CMMsg.TYP_ENTER)
 				&&(msg.amISource(eventMob)||(!(affecting instanceof MOB)))
-				&&(canFreelyBehaveNormal(monster)))
+				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if(Dice.rollPercentage()<prcnt)
@@ -5768,7 +5772,7 @@ public class Scriptable extends StdBehavior
 				if((msg.targetMinor()==CMMsg.TYP_LEAVE)
 				&&(msg.amITarget(lastKnownLocation))
 				&&(!msg.amISource(eventMob))
-				&&(canFreelyBehaveNormal(monster)))
+				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if(Dice.rollPercentage()<prcnt)
@@ -5784,6 +5788,8 @@ public class Scriptable extends StdBehavior
 				{
 					MOB ded=msg.source();
 					MOB src=lastToHurtMe;
+                    if(msg.tool() instanceof MOB)
+                        src=(MOB)msg.tool();
 					if((src==null)||(src.location()!=monster.location()))
 					   src=ded;
 					execute(affecting,src,ded,ded,defaultItem,null,script,null);
@@ -5803,7 +5809,7 @@ public class Scriptable extends StdBehavior
 				break;
             case 29: // login_prog
                 if((msg.sourceMinor()==CMMsg.TYP_LOGIN)
-                &&(canFreelyBehaveNormal(monster))
+                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
                 &&(!Sense.isCloaked(msg.source())))
                 {
                     int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
@@ -5816,7 +5822,7 @@ public class Scriptable extends StdBehavior
                 break;
             case 30: // logoff_prog
                 if((msg.sourceMinor()==CMMsg.TYP_QUIT)
-                &&(canFreelyBehaveNormal(monster))
+                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
                 &&(!Sense.isCloaked(msg.source())))
                 {
                     int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
@@ -5904,9 +5910,8 @@ public class Scriptable extends StdBehavior
 		else
 		if(ticking instanceof Environmental)
 		{
-
-			if(CoffeeUtensils.roomLocation((Environmental)ticking)!=null)
-				lastKnownLocation=CoffeeUtensils.roomLocation((Environmental)ticking);
+            Room R=CoffeeUtensils.roomLocation((Environmental)ticking);
+            if(R!=null) lastKnownLocation=R;
 
 			if(backupMOB==null)
 			{

@@ -70,7 +70,18 @@ public class Thief_Embezzle extends ThiefSkill
 			return false;
 		}
 
-		Item myCoins=bank.findDepositInventory(mob.Name(),"1");
+		Item myCoins=null;
+        String myAcct=mob.Name();
+        if(bank.whatIsSold()==ShopKeeper.DEAL_CLANBANKER)
+        {
+            if(mob.getClanID().length()>0)
+            {
+                myAcct=mob.getClanID();
+                myCoins=bank.findDepositInventory(mob.getClanID(),"1");
+            }
+        }
+        else
+            myCoins=bank.findDepositInventory(mob.getClanID(),"1");
 		if((myCoins==null)||(!(myCoins instanceof Coins)))
 		{
 			mob.tell("You don't have your own account with "+target.name()+".");
@@ -117,10 +128,10 @@ public class Thief_Embezzle extends ThiefSkill
 				hisCoins=BeanCounter.makeBestCurrency(target,hisCoins.getTotalValue()-hisAmount);
 				if(hisCoins.getNumberOfCoins()>0)
 					bank.addDepositInventory(victim,hisCoins);
-				bank.delDepositInventory(mob.Name(),myCoins);
+				bank.delDepositInventory(myAcct,myCoins);
 				myCoins=BeanCounter.makeBestCurrency(mob,((Coins)myCoins).getTotalValue()+hisAmount);
 				if(((Coins)myCoins).getNumberOfCoins()>0)
-					bank.addDepositInventory(mob.Name(),myCoins);
+					bank.addDepositInventory(myAcct,myCoins);
 			}
 		}
 		else

@@ -81,8 +81,14 @@ public class Spell_Enlarge extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) to an enormous size!");
-				beneficialAffect(mob,target,asLevel,100);
+                Ability A=target.fetchEffect("Spell_Shrink");
+                if((A!=null)&&(A.canBeUninvoked()))
+                    A.unInvoke();
+                else
+                {
+    				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) to an enormous size!");
+    				beneficialAffect(mob,target,asLevel,100);
+                }
 			}
 
 		}

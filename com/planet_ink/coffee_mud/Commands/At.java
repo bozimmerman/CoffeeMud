@@ -44,12 +44,13 @@ public class At extends StdCommand
 			}
 			else
 			{
+                String srchStr=cmd.toString();
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session thisSession=Sessions.elementAt(s);
 					if((thisSession.mob()!=null) && (!thisSession.killFlag())
 					&&(thisSession.mob().location()!=null)
-					&&(thisSession.mob().name().equalsIgnoreCase(cmd.toString())))
+					&&(thisSession.mob().name().equalsIgnoreCase(srchStr)))
 					{
 						room = thisSession.mob().location();
 						break;
@@ -61,7 +62,7 @@ public class At extends StdCommand
 						Session thisSession=Sessions.elementAt(s);
 						if((thisSession.mob()!=null)&&(!thisSession.killFlag())
 						&&(thisSession.mob().location()!=null)
-						&&(EnglishParser.containsString(thisSession.mob().name(),cmd.toString())))
+						&&(EnglishParser.containsString(thisSession.mob().name(),srchStr)))
 						{
 							room = thisSession.mob().location();
 							break;
@@ -76,7 +77,7 @@ public class At extends StdCommand
 						for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 						{
 							Room R=(Room)r.nextElement();
-							target=R.fetchInhabitant(cmd.toString());
+							target=R.fetchInhabitant(srchStr);
 							if(target!=null)
 								candidates.addElement(target);
 						}
@@ -88,12 +89,27 @@ public class At extends StdCommand
 						room=target.location();
 					}
 				}
+                if(room==null)
+                {
+                    for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+                    {
+                        Area A=(Area)a.nextElement();
+                        if((A.Name().equalsIgnoreCase(srchStr))
+                        &&(A.properSize()>0))
+                        {
+                            int tries=0;
+                            while(((room==null)||(room.roomID().length()==0))&&((++tries)<200))
+                                room=A.getRandomProperRoom();
+                            break;
+                        }
+                    }
+                }
 				if(room==null)
 				{
 					for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 					{
 						Area A=(Area)a.nextElement();
-						if((EnglishParser.containsString(A.name(),cmd.toString()))
+						if((EnglishParser.containsString(A.name(),srchStr))
 						&&(A.properSize()>0))
 						{
 							int tries=0;
@@ -105,7 +121,7 @@ public class At extends StdCommand
 				}
 				if(room==null)
 				{
-					String areaName=cmd.toString().toUpperCase();
+					String areaName=srchStr.toUpperCase();
 					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
@@ -139,7 +155,7 @@ public class At extends StdCommand
 							for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 							{
 								Room R=(Room)r.nextElement();
-								target=R.fetchItem(null,cmd.toString());
+								target=R.fetchItem(null,srchStr);
 								if(target!=null)
 									candidates.addElement(target);
 							}
