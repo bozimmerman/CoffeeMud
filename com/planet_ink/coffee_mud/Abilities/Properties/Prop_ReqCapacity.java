@@ -27,12 +27,16 @@ public class Prop_ReqCapacity extends Property
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
 
 	public int peopleCap=Integer.MAX_VALUE;
+    public int playerCap=Integer.MAX_VALUE;
+    public int mobCap=Integer.MAX_VALUE;
 	public int itemCap=Integer.MAX_VALUE;
 	public int maxWeight=Integer.MAX_VALUE;
 
 	public String accountForYourself()
 	{
 		return "Person limit: "+((peopleCap==Integer.MAX_VALUE)?"None":(""+peopleCap))
+          +"\n\rPlayer limit: "+((playerCap==Integer.MAX_VALUE)?"None":(""+playerCap))
+          +"\n\rMOB limit   : "+((mobCap==Integer.MAX_VALUE)?"None":(""+mobCap))
 		  +"\n\rItem limit  : "+((itemCap==Integer.MAX_VALUE)?"None":(""+itemCap))
 		  +"\n\rWeight limit: "+((maxWeight==Integer.MAX_VALUE)?"None":(""+maxWeight));
 	}
@@ -41,6 +45,8 @@ public class Prop_ReqCapacity extends Property
 	{
 		super.setMiscText(txt);
 		peopleCap=Integer.MAX_VALUE;
+        playerCap=Integer.MAX_VALUE;
+        mobCap=Integer.MAX_VALUE;
 		itemCap=Integer.MAX_VALUE;
 		maxWeight=Integer.MAX_VALUE;
 		if(txt.length()==0)
@@ -51,6 +57,8 @@ public class Prop_ReqCapacity extends Property
 		else
 		{
 			peopleCap=Util.getParmInt(txt,"people",peopleCap);
+            playerCap=Util.getParmInt(txt,"players",playerCap);
+            mobCap=Util.getParmInt(txt,"mobs",mobCap);
 			itemCap=Util.getParmInt(txt,"items",itemCap);
 			maxWeight=Util.getParmInt(txt,"weight",maxWeight);
 		}
@@ -71,6 +79,16 @@ public class Prop_ReqCapacity extends Property
 					msg.source().tell("No more people can fit in there.");
 					return false;
 				}
+                if(((Room)msg.target()).numPCInhabitants()>=playerCap)
+                {
+                    msg.source().tell("No more players can fit in there.");
+                    return false;
+                }
+                if((((Room)msg.target()).numInhabitants()-((Room)msg.target()).numPCInhabitants())>=mobCap)
+                {
+                    msg.source().tell("No more MOBs can fit in there.");
+                    return false;
+                }
 			}
 			break;
 		case CMMsg.TYP_DROP:

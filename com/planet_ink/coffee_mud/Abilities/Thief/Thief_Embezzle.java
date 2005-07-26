@@ -81,7 +81,7 @@ public class Thief_Embezzle extends ThiefSkill
             }
         }
         else
-            myCoins=bank.findDepositInventory(mob.getClanID(),"1");
+            myCoins=bank.findDepositInventory(mob.Name(),"1");
 		if((myCoins==null)||(!(myCoins instanceof Coins)))
 		{
 			mob.tell("You don't have your own account with "+target.name()+".");

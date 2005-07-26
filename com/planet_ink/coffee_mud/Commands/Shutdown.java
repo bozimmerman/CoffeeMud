@@ -49,7 +49,7 @@ public class Shutdown extends StdCommand
 			return false;
 		
 		for(int s=0;s<Sessions.size();s++)
-			Sessions.elementAt(s).colorOnlyPrintln("^xShutting Down!^.^?");
+			Sessions.elementAt(s).colorOnlyPrintln("\n\r\n\r^x"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDNAME)+" is now shutting down!^.^?\n\r");
 
 		if(keepItDown)
 			Log.errOut("CommandProcessor",mob.Name()+" starts system shutdown...");

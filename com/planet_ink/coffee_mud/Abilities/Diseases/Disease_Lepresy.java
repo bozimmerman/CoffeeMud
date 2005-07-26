@@ -40,15 +40,6 @@ public class Disease_Lepresy extends Disease
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
 	public int difficultyLevel(){return 4;}
 
-	private static String replaceDamageTag(String str, int damage, int damageType)
-	{
-		if(str==null) return null;
-		int replace=str.indexOf("<DAMAGE>");
-		if(replace>=0)
-			return str.substring(0,replace)+CommonStrings.standardHitWord(damageType,damage)+str.substring(replace+8);
-		return str;
-	}
-
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -63,12 +54,13 @@ public class Disease_Lepresy extends Disease
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.targetMessage()!=null))
 		{
-			if(msg.targetMessage().indexOf("<DAMAGE>")>=0)
+			if((msg.targetMessage().indexOf("<DAMAGE>")>=0)
+            ||(msg.targetMessage().indexOf("<DAMAGES>")>=0))
 			msg.modify(msg.source(),
 						  msg.target(),
 						  msg.tool(),
 						  msg.sourceCode(),msg.sourceMessage(),
-						  msg.targetCode(),replaceDamageTag(msg.targetMessage(),1,0),
+						  msg.targetCode(),MUDFight.replaceDamageTag(msg.targetMessage(),1,0),
 						  msg.othersCode(),msg.othersMessage());
 			else
 			if((msg.tool()!=null)&&(msg.tool() instanceof Weapon))

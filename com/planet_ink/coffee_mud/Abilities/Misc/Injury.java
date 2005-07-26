@@ -153,6 +153,7 @@ public class Injury extends StdAbility
 	{
 	    if(message==null) return null;
 	    int x=message.indexOf("<DAMAGE>");
+        if(x<0) x=message.indexOf("<DAMAGES>");
 	    if(x<0) return message;
 	    int y=Integer.MAX_VALUE;
 	    int which=-1;

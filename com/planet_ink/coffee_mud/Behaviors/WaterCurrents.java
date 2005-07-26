@@ -62,6 +62,7 @@ public class WaterCurrents extends ActiveTicker
 				&&(!Sense.isInFlight(M))
 				&&((!(M instanceof Rideable))||(((Rideable)M).numRiders()==0))
 				&&(!M.isInCombat())
+                &&(!Sense.isMobile(M))
 				&&(!done.contains(M)))
                 {
                     todo.addElement(M);
@@ -81,6 +82,7 @@ public class WaterCurrents extends ActiveTicker
 				        ||(((Rideable)I).rideBasis()!=Rideable.RIDEABLE_WATER)
 				        ||(((Rideable)I).numRiders()==0))
 				&&(!Sense.isInFlight(I))
+                &&(!Sense.isMobile(I))
 				&&(!done.contains(I)))
                 {
                     todo.addElement(I);

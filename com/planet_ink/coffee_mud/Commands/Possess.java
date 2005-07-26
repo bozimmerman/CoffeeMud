@@ -107,7 +107,7 @@ public class Possess extends StdCommand
 				}
 		    }catch(NoSuchElementException e){}
 		}
-		if((target==null)||(!target.isMonster()))
+		if((target==null)||(!target.isMonster())||(!Sense.isInTheGame(target,true)))
 		{
 			mob.tell("You can't possess '"+MOBname+"' right now.");
 			return false;

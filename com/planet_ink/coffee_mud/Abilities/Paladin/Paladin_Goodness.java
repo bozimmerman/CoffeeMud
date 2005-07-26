@@ -51,7 +51,7 @@ public class Paladin_Goodness extends Paladin
 				{
 					int harming=Dice.roll(1,15,0);
 					if(Sense.isEvil(target))
-						MUDFight.postDamage(invoker,target,this,harming,CMMsg.MASK_EYES|CMMsg.MASK_MALICIOUS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"^SThe aura of goodness around <S-NAME> <DAMAGE> <T-NAME>!^?");
+						MUDFight.postDamage(invoker,target,this,harming,CMMsg.MASK_EYES|CMMsg.MASK_MALICIOUS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"^SThe aura of goodness around <S-NAME> <DAMAGES> <T-NAME>!^?");
 				}
 			}
 		}

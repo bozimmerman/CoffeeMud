@@ -809,6 +809,7 @@ public class List extends StdCommand
 		/*45*/{"EVILDEEDS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
         /*46*/{"FACTIONS","LISTADMIN","CMDFACTIONS"},
         /*47*/{"ASSIST","KILLASSIST"},
+        /*48*/{"TASKS","TASKS"},
 	};
 
 	public void archonlist(MOB mob, Vector commands)
@@ -914,6 +915,7 @@ public class List extends StdCommand
 		case 45: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.EVILDEED).toString()); break;
         case 46: s.wraplessPrintln(Factions.listFactions()); break;
         case 47: s.println(journalList("SYSTEM_ASSIST").toString()); break;
+        case 48: s.println(journalList("SYSTEM_TASKS").toString()); break;
         default:
 			s.println("List?!");
 			break;

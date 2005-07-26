@@ -760,6 +760,21 @@ public class Destroy extends BaseItemParser
 			}
 		}
         else
+        if(commandType.equals("TASK"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"TASKS")) return errorOut(mob);
+            int which=-1;
+            if(commands.size()>2)
+                which=Util.s_int((String)commands.elementAt(2));
+            if(which<=0)
+                mob.tell("Please enter a valid task number to delete.  Use List Tasks for more information.");
+            else
+            {
+                CMClass.DBEngine().DBDeleteJournal("SYSTEM_TASKS",which-1);
+                mob.tell("Task deletion submitted.");
+            }
+        }
+        else
         if(commandType.equals("FACTION"))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"CMDFACTIONS")) return errorOut(mob);

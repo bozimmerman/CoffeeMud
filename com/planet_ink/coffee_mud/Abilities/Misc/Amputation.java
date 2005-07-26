@@ -124,11 +124,21 @@ public class Amputation extends StdAbility
 	{
 		super.affectCharState(affected,affectableState);
 		missingLimbNameSet();
-		if((amputations[Race.BODY_LEG]<0)&&(affected.getWearPositions(Item.ON_LEGS)==0))
-			affectableState.setMovement(affectableState.getMovement()/8);
-		else
-		if((amputations[Race.BODY_FOOT]<0)&&(affected.getWearPositions(Item.ON_FEET)==0))
-			affectableState.setMovement(affectableState.getMovement()/4);
+		if(amputations[Race.BODY_LEG]<0)
+        {
+            if(affected.getWearPositions(Item.ON_LEGS)==0)
+    			affectableState.setMovement(affectableState.getMovement()/8);
+            else
+                affectableState.setMovement(affectableState.getMovement()/4);
+        }
+        else
+		if(amputations[Race.BODY_FOOT]<0)
+        {
+            if(affected.getWearPositions(Item.ON_FEET)==0)
+    			affectableState.setMovement(affectableState.getMovement()/4);
+            else
+                affectableState.setMovement(affectableState.getMovement()/2);
+        }
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

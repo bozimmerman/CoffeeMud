@@ -463,6 +463,8 @@ public class StdRace implements Race
 
 		Vector items=new Vector();
 		BeanCounter.getTotalAbsoluteNativeValue(mob); // converts mob.get-Money();
+        Hashtable containerMap=new Hashtable();
+        Hashtable itemMap=new Hashtable();
 		for(int i=0;i<mob.inventorySize();)
 		{
 			Item thisItem=mob.fetchInventory(i);
@@ -471,6 +473,9 @@ public class StdRace implements Race
 				if(mob.isMonster())
 				{
 					Item newItem=(Item)thisItem.copyOf();
+                    itemMap.put(thisItem,newItem);
+                    if(thisItem.container()!=null)
+                        containerMap.put(thisItem,thisItem.container());
 					newItem.setContainer(null);
 					newItem.setDispossessionTime(System.currentTimeMillis()+Math.round(Item.REFUSE_MONSTER_EQ*IQCalendar.MILI_HOUR));
 					newItem.recoverEnvStats();
@@ -492,6 +497,14 @@ public class StdRace implements Race
 			else
 				i++;
 		}
+        for(Enumeration e=itemMap.keys();e.hasMoreElements();)
+        {
+            Item oldItem=(Item)e.nextElement();
+            Item newItem=(Item)itemMap.get(oldItem);
+            Item oldContainer=(Item)containerMap.get(oldItem);
+            if((oldContainer!=null)&&(newItem!=null))
+                newItem.setContainer((Item)itemMap.get(oldContainer));
+        }
 		if(destroyBodyAfterUse())
 		{
 			for(int r=0;r<myResources().size();r++)
