@@ -133,7 +133,7 @@ used for in-zone quests, perhaps bribing guards to let a prisoner free or
 bribing a bartender to give you some information. It can also be used for 
 larger, special mob behavior, such as a ferryman who will move a player to 
 another spot in the world for a fee.&nbsp; The money value is always expressed 
-in absolute the absolute gold value of the default currency.&nbsp; See the 
+in absolute gold value of the default currency.&nbsp; See the 
 Archon's Guide under currency if you don't know what that means.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>bribe_prog 
@@ -995,8 +995,8 @@ useless. </P>
     <TD>Not implemented -- do not use.</TD></TR>
   <TR>
     <TD>GOLDAMT([code])</TD>
-    <TD>Returns the number of gold coins the given mob 
-      has.</TD></TR>
+    <TD>Returns the total value of the money the given mob 
+      has, expressed in base gold.</TD></TR>
   <TR>
     <TD>GSTAT([code] [stat variable])</TD>
     <TD>Value of the given stat variable for the given 
@@ -2322,9 +2322,10 @@ an orc) or eval('$&lt;$i VAR&gt;'&nbsp; !=&nbsp; 7)&nbsp;<BR></EM></P>
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">goldamt<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>goldamt(character &gt; amount)</EM></P>
 <P class=MsoNormal><o:p></O:P></P>
-<P class=MsoNormal>This&nbsp;evaluates the amount of gold 
+<P class=MsoNormal>This&nbsp;evaluates the total amount of money 
 that the character variable has on hand. Where '==' may be any other logical 
-operator from&nbsp;above.&nbsp;</P>
+operator from&nbsp;above.&nbsp;  The value is always expressed in base gold, 
+regardless of currency or denomination.</P>
 <P class=MsoNormal>EXAMPLE:</P>
 <P class=MsoNormal><EM>if goldamt($n 
 &lt; 10000)<BR>&nbsp; mpecho The actor has&nbsp;less 
