@@ -409,6 +409,43 @@ public class Clans implements Clan, Tickable
 			if(M.playerStats().getTitles().contains(title))
 			    M.playerStats().getTitles().remove(title);
 		}
+        if(M.getClanID().length()==0)
+        {
+            Item I=null;
+            Vector itemsToMove=new Vector();
+            for(int i=0;i<M.inventorySize();i++)
+            {
+                I=M.fetchInventory(i);
+                if(I instanceof ClanItem)
+                    itemsToMove.addElement(I);
+            }
+            for(int i=0;i<itemsToMove.size();i++)
+            {
+                I=(Item)itemsToMove.elementAt(i);
+                Room R=null;
+                if((getDonation()!=null)
+                &&(getDonation().length()>0))
+                    R=CMMap.getRoom(getDonation());
+                if((R==null)
+                &&(getRecall()!=null)
+                &&(getRecall().length()>0))
+                    R=CMMap.getRoom(getRecall());
+                if(I instanceof Container)
+                {
+                    Vector V=((Container)I).getContents();
+                    for(int v=0;v<V.size();v++)
+                        ((Item)V.elementAt(v)).setContainer(null);
+                }
+                I.setContainer(null);
+                I.wearAt(Item.INVENTORY);
+                if(R!=null)
+                    R.bringItemHere(I,0);
+                else
+                if(M.isMine(I))
+                    I.destroy();
+                did=true;
+            }
+        }
 		if((did)&&(!CMSecurity.isSaveFlag("NOPLAYERS")))
 			CMClass.DBEngine().DBUpdatePlayer(M);
 		return did;

@@ -25,6 +25,7 @@ public class ClanResign extends BaseClanner
 
 	private String[] access={"CLANRESIGN"};
 	public String[] getAccessWords(){return access;}
+    
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{

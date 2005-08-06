@@ -4785,7 +4785,7 @@ public class Scriptable extends StdBehavior
 							MOB follower=(MOB)V.elementAt(v);
 							Room thisRoom=follower.location();
 							FullMsg enterMsg=new FullMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke."+CommonStrings.msp("appear.wav",10));
-							FullMsg leaveMsg=new FullMsg(follower,thisRoom,null,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
+							FullMsg leaveMsg=new FullMsg(follower,thisRoom,null,CMMsg.MSG_LEAVE,"<S-NAME> disappear(s) in a puff of smoke.");
 							if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 							{
 								if(follower.isInCombat())

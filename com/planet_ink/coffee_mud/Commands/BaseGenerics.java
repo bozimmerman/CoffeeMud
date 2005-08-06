@@ -3389,7 +3389,7 @@ public class BaseGenerics extends StdCommand
 				buf.append("Wear on any one of: ");
 			else
 				buf.append("Worn on all of: ");
-			for(int l=0;l<20;l++)
+			for(int l=0;l<Item.wornCodes.length;l++)
 			{
 				long wornCode=1<<l;
 				if((Sense.wornLocation(wornCode).length()>0)
@@ -3407,7 +3407,7 @@ public class BaseGenerics extends StdCommand
 				mob.tell("1: Able to worn on any ONE of these locations:");
 			else
 				mob.tell("1: Must be worn on ALL of these locations:");
-			for(int l=0;l<20;l++)
+			for(int l=0;l<Item.wornCodes.length;l++)
 			{
 				long wornCode=1<<l;
 				if(Sense.wornLocation(wornCode).length()>0)

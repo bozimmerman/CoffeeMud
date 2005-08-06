@@ -179,6 +179,6 @@ public class MoneyChanger extends StdBehavior
         &&(((Coins)msg.tool()).amDestroyed())
         &&(!msg.source().isMine(msg.tool()))
         &&(!((MOB)msg.target()).isMine(msg.tool())))
-            BeanCounter.giveSomeoneMoney(msg.source(),(MOB)msg.target(),((Coins)msg.tool()).value());
+            BeanCounter.giveSomeoneMoney(msg.source(),(MOB)msg.target(),((Coins)msg.tool()).getTotalValue());
 	}
 }

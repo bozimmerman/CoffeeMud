@@ -72,7 +72,7 @@ public class Skill_Trip extends StdAbility
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet.");
-				if(mob.location().okMessage(mob,msg))
+				if(mob.location().okMessage(mob,msg)&&(!mob.amDead()))
 				{
 					mob.location().send(mob,msg);
 					CommonMsgs.stand(mob,true);

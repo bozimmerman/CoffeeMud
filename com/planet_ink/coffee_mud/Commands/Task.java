@@ -33,7 +33,7 @@ public class Task extends Bug
             {
                 if(!review(mob,"SYSTEM_TASKS","ideas",commands,"TASKS"))
                 {
-                    CMClass.DBEngine().DBWriteJournal("SYSTEM_IDEAS",mob.Name(),"ALL","TASK: "+Util.padRight(Util.combine(commands,1),10),Util.combine(commands,1),-1);
+                    CMClass.DBEngine().DBWriteJournal("SYSTEM_TASKS",mob.Name(),"ALL","TASK: "+Util.padRight(Util.combine(commands,1),10),Util.combine(commands,1),-1);
                     mob.tell("Thank you for your contribution!");
                 }
             }

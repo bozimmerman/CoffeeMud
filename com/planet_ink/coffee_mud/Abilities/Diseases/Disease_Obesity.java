@@ -59,6 +59,7 @@ public class Disease_Obesity extends Disease
 	{
 	    if((fatAmount<0)&&(Util.isNumber(text()))) 
 	        fatAmount=Util.s_int(text());
+        if(fatAmount<0) fatAmount=0;
 	    if(fatAmount>=0) return fatAmount;
 	    return 1;
 	}
@@ -71,16 +72,7 @@ public class Disease_Obesity extends Disease
 	
 	private void setFatAmountChange(int change)
 	{
-	    if((fatAmount<0)&&(Util.isNumber(text()))) 
-	        fatAmount=Util.s_int(text());
-	    if(fatAmount>=0) 
-	    {
-		    if(change>=0)
-		        setMiscText(""+(fatAmount+change));
-		    else
-	        if(fatAmount>=change)
-		        setMiscText(""+(fatAmount-change));
-	    }
+        setMiscText(""+(amountOfFat()+change));
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -116,7 +108,7 @@ public class Disease_Obesity extends Disease
 					    setFatAmountChange(-change);
 	            }
 	        }
-	        if(amountOfFat()==0)
+	        if(amountOfFat()<=0)
 	            unInvoke();
 	    }
 	    return super.tick(ticking,tickID);

@@ -206,7 +206,7 @@ public class Dragon extends StdMOB
 			case OLD:			returnVal = new StringBuffer("an old");break;
 			case VERYOLD:		returnVal = new StringBuffer("a very old");break;
 			case ANCIENT:		returnVal = new StringBuffer("an ancient");break;
-			default:			returnVal = new StringBuffer("");break;
+			default:			returnVal = new StringBuffer("a");break;
 		}
 
 		return returnVal;

@@ -75,7 +75,7 @@ public class Dress extends StdCommand
 						item.wearAt(item.rawProperLocationBitmap());
 					else
 					{
-						for(int i=0;i<20;i++)
+						for(int i=0;i<Item.wornCodes.length;i++)
 						{
 							long wornCode=1<<i;
 							if(item.fitsOn(wornCode)&&(wornCode!=Item.HELD))

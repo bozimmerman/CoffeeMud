@@ -51,16 +51,41 @@ public class LeatherWorking extends CraftingSkill
 
 	protected Vector loadRecipes()
 	{
-		Vector V=(Vector)Resources.getResource("LEATHERWORK RECIPES");
-		if(V==null)
+		Vector recipes=(Vector)Resources.getResource("LEATHERWORK RECIPES");
+		if(recipes==null)
 		{
 			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"leatherworking.txt");
-			V=loadList(str);
-			if(V.size()==0)
+            recipes=loadList(str);
+			if(recipes.size()==0)
 				Log.errOut("LeatherWorking","Recipes not found!");
-			Resources.submitResource("LEATHERWORK RECIPES",V);
+            else
+            {
+                Vector pleaseAdd1=new Vector();
+                Vector pleaseAdd2=new Vector();
+                for(int r=0;r<recipes.size();r++)
+                {
+                    Vector V=(Vector)recipes.elementAt(r);
+                    if(V.size()>0)
+                    {
+                        Vector V1=(Vector)V.clone();
+                        Vector V2=(Vector)V.clone();
+                        String name=(String)V.elementAt(RCP_FINALNAME);
+                        V1.setElementAt("Hard "+name,RCP_FINALNAME);
+                        V1.setElementAt(""+(Util.s_int((String)V.elementAt(RCP_LEVEL))+5),RCP_LEVEL);
+                        V2.setElementAt("Studded "+name,RCP_FINALNAME);
+                        V2.setElementAt(""+(Util.s_int((String)V.elementAt(RCP_LEVEL))+11),RCP_LEVEL);
+                        pleaseAdd1.addElement(V1);
+                        pleaseAdd2.addElement(V2);
+                    }
+                }
+                for(int i=0;i<pleaseAdd1.size();i++)
+                    recipes.addElement(pleaseAdd1.elementAt(i));
+                for(int i=0;i<pleaseAdd2.size();i++)
+                    recipes.addElement(pleaseAdd2.elementAt(i));
+            }
+			Resources.submitResource("LEATHERWORK RECIPES",recipes);
 		}
-		return V;
+		return recipes;
 	}
 
 	public void unInvoke()
@@ -144,7 +169,6 @@ public class LeatherWorking extends CraftingSkill
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
-		String prefix="";
         bundling=false;
         int multiplier=1;
 		int completion=4;
@@ -167,36 +191,6 @@ public class LeatherWorking extends CraftingSkill
 					if(level<=mob.envStats().level())
 					{
 						buf.append(Util.padRight(item,16)+" "+Util.padRight(""+level,3)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
-						if(++toggler>toggleTop) toggler=1;
-					}
-				}
-			}
-			for(int r=0;r<recipes.size();r++)
-			{
-				Vector V=(Vector)recipes.elementAt(r);
-				if(V.size()>0)
-				{
-					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
-					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
-					if((level+5)<=(mob.envStats().level()))
-					{
-						buf.append(Util.padRight("Hard "+item,16)+" "+Util.padRight(""+(level+5),3)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
-						if(++toggler>toggleTop) toggler=1;
-					}
-				}
-			}
-			for(int r=0;r<recipes.size();r++)
-			{
-				Vector V=(Vector)recipes.elementAt(r);
-				if(V.size()>0)
-				{
-					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
-					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
-					if((level+11)<=mob.envStats().level())
-					{
-						buf.append(Util.padRight("Studded "+item,16)+" "+Util.padRight(""+(level+11),3)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -275,27 +269,16 @@ public class LeatherWorking extends CraftingSkill
 				if(V.size()>0)
 				{
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-					if(((level+11)<=(mob.envStats().level()))
-					&&(recipeName.toUpperCase().indexOf("STUDDED ")>=0))
-					{
-						multiplier=3;
-						prefix="studded ";
-						foundRecipe=V;
-						break;
-					}
-					else
-					if(((level+5)<=(mob.envStats().level()))
-					&&(recipeName.toUpperCase().indexOf("HARD")>=0))
-					{
-						multiplier=2;
-						prefix="hard ";
-						foundRecipe=V;
-						break;
-					}
-					else
 					if(level<=(mob.envStats().level()))
 					{
-						multiplier=1;
+                        String name=(String)V.elementAt(RCP_FINALNAME);
+                        if(name.toUpperCase().startsWith("STUDDED "))
+    						multiplier=3;
+                        else
+                        if(name.toUpperCase().startsWith("HARD "))
+                            multiplier=2;
+                        else
+                            multiplier=1;
 						foundRecipe=V;
 						break;
 					}
@@ -331,7 +314,7 @@ public class LeatherWorking extends CraftingSkill
 				return false;
 			}
 			completion=(multiplier*Util.s_int((String)foundRecipe.elementAt(RCP_TICKS)))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-			String itemName=(prefix+replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)])).toLowerCase();
+			String itemName=(replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)])).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else

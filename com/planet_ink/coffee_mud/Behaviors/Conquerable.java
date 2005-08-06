@@ -244,9 +244,11 @@ public class Conquerable extends Arrest
 		holdingClan="";
         synchronized(clanItems)
         {
+            try{
             for(int c=clanItems.size();c>=0;c--)
                 if(((ClanItem)clanItems.elementAt(c)).ciType()!=ClanItem.CI_FLAG)
                     clanItems.removeElementAt(c);
+            }catch(ArrayIndexOutOfBoundsException x){}
         }
 	}
 
