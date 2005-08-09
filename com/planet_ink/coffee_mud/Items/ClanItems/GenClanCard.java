@@ -21,15 +21,18 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenClanDonationList extends StdClanDonationList
+public class GenClanCard extends StdClanCard
 {
-    public String ID(){ return "GenClanDonationList";}
+    public String ID(){ return "GenClanCard";}
     protected String readableText="";
-    public GenClanDonationList()
+    public GenClanCard()
     {
         super();
-        setName("a generic clan donation list");
-        setDisplayText("a generic clan donation list sits here.");
+        setName("a generic clan membership card");
+        setDisplayText("a generic clan membership card sits here.");
+        setDescription("");
+        baseEnvStats().setWeight(2);
+        setMaterial(EnvResource.RESOURCE_PAPER);
         recoverEnvStats();
     }
 
@@ -93,7 +96,7 @@ public class GenClanDonationList extends StdClanDonationList
     }
     public boolean sameAs(Environmental E)
     {
-        if(!(E instanceof GenClanDonationList)) return false;
+        if(!(E instanceof GenClanCard)) return false;
         String[] codes=getStatCodes();
         for(int i=0;i<codes.length;i++)
             if(!E.getStat(codes[i]).equals(getStat(codes[i])))

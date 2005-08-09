@@ -113,7 +113,7 @@ public class GenClanCommonContainer extends StdClanCommonContainer
 	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenClanContainer)) return false;
+		if(!(E instanceof GenClanCommonContainer)) return false;
 		String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))

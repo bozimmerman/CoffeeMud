@@ -5,6 +5,7 @@ GuardBanner %	COTTON/1	OAK/1	1	1	40	500	0	GenClanItem
 Judges Gavel %	MITHRIL/2	OAK/5	2	1	100	1000	0	GenClanItem						
 Book of the Laws %	OAK/100		0	10	100	2000	0	GenLawBook	AREA					
 Pamphlet %	PINE/5		3	5	20	500	0	GenClanPamphlet						
+% Membership Card	PINE/5		3	5	20	1000	0	GenClanCard						
 Donation List %	MAPLE/1	SILK/20	10	10	350	1000	0	GenClanDonationList						
 Miners Pick %	OAK/5	IRON/10	4	1	10	100	0	GenClanCommonItem	Mining					Mining
 Foragers Basket %	VINE/20		4	1	10	100	0	GenClanCommonContainer	Foraging	30		0		Foraging

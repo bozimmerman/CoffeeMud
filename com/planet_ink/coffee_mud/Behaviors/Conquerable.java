@@ -105,7 +105,13 @@ public class Conquerable extends Arrest
 					{
 						Clan C=Clans.getClan(holdingClan);
 						if(C!=null)
+                        {
 							str.append("This area is currently controlled by "+C.typeName()+" "+C.name()+".\n\r");
+                            int pts=calcItemControlPoints((Area)hostObj);
+                            int chance=calcRevoltChance((Area)hostObj);
+                            str.append(C.name()+" has distributed clan items to inhabitants for "+pts+" loyalty points.\n\r");
+                            str.append("There is currenly a "+chance+"% chance of revolt here.\n\r");
+                        }
 						else
 						{
 							endClanRule();

@@ -56,7 +56,7 @@ public class StdClanPamphlet extends StdClanItem
 		{
 			String rulingClan=null;
 			Room R=((MOB)owner()).location();
-			if((!((MOB)owner()).getClanID().equals(clanID()))
+            if((((MOB)owner()).getClanID().length()>0)
 			||(((--tradeTime)<=0)))
 			{
 				Behavior B=CoffeeUtensils.getLegalBehavior(R);
@@ -71,15 +71,15 @@ public class StdClanPamphlet extends StdClanItem
 						rulingClan=(String)V.firstElement();
 				}
 			}
-			if(((!((MOB)owner()).getClanID().equals(clanID()))
-			&&(rulingClan!=null))
-			&&(rulingClan.length()>0))
-				((MOB)owner()).setClanID(clanID());
+			if((rulingClan!=null)&&(rulingClan.length()>0)
+            &&(!rulingClan.equals(clanID()))
+            &&(((MOB)owner()).getClanID().equals(rulingClan)))
+				((MOB)owner()).setClanID("");
 			if(tradeTime<=0)
 			{
 				MOB mob=(MOB)owner();
 				tradeTime=CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
-				if((mob.getClanID().equals(clanID()))
+				if((mob.getClanID().length()==0)
 				&&(rulingClan!=null)
 				&&(rulingClan.length()>0)
                 &&(!rulingClan.equals(clanID()))
@@ -100,7 +100,7 @@ public class StdClanPamphlet extends StdClanItem
 						ClanItem I=(ClanItem)copyOf();
 						mob.addInventory((Item)I);
 						FullMsg newMsg=new FullMsg(mob,M,I,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
-						if(mob.location().okMessage(mob,newMsg))
+						if(mob.location().okMessage(mob,newMsg)&&(!((Item)I).amDestroyed()))
 							mob.location().send(mob,newMsg);
 						if(!M.isMine(I)) 
                             ((Item)I).destroy();
