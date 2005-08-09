@@ -53,7 +53,7 @@ public class Spell_StinkingCloud extends Spell
 					MUDFight.postDamage(invoker,M,this,M.envStats().level(),CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) all over the place!");
 					M.curState().adjHunger(-500,M.maxState().maxHunger(M.baseWeight()));
 				}
-                if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
+                if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
                     MUDFight.postAttack(M,invoker,M.fetchWieldedItem());
 			}
 			else

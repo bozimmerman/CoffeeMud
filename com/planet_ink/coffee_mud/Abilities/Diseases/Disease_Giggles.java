@@ -24,7 +24,7 @@ import java.util.*;
 public class Disease_Giggles extends Disease
 {
 	public String ID() { return "Disease_Giggles"; }
-	public String name(){ return "Contageous Giggles";}
+	public String name(){ return "Contagious Giggles";}
 	public String displayText(){ return "(The Giggles)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}

@@ -55,7 +55,11 @@ public class Disease_Anthrax extends Disease
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,DISEASE_AFFECT());
 			int damage=Dice.roll(1,6,0);
 			if(damage>1)
+            {
 				MUDFight.postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
+                if((!mob.isInCombat())&&(mob!=invoker)&&(mob.location()!=null)&&(mob.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,mob)))
+                    MUDFight.postAttack(mob,invoker,mob.fetchWieldedItem());
+            }
 			if((--conTickDown)<=0)
 			{
 				conTickDown=60;

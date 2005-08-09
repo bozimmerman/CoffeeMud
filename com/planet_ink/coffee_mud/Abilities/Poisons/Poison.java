@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -92,7 +93,11 @@ public class Poison extends StdAbility
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,POISON_AFFECT()+CommonStrings.msp("poisoned.wav",10));
 			if(invoker==null) invoker=mob;
 			if(POISON_DAMAGE()!=0)
+            {
 				MUDFight.postDamage(invoker,mob,this,POISON_DAMAGE(),CMMsg.MASK_GENERAL|CMMsg.TYP_POISON,-1,null);
+                if((!mob.isInCombat())&&(mob!=invoker)&&(mob.location()!=null)&&(mob.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,mob)))
+                    MUDFight.postAttack(mob,invoker,mob.fetchWieldedItem());
+            }
 		}
 		return true;
 	}

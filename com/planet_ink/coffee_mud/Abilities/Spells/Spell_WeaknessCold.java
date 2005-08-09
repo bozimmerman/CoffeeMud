@@ -91,7 +91,7 @@ public class Spell_WeaknessCold extends Spell
 				}
                 else
                     return true;
-                if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
+                if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
                     MUDFight.postAttack(M,invoker,M.fetchWieldedItem());
 			}
 		}

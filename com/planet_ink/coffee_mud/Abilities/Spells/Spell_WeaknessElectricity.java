@@ -82,7 +82,7 @@ public class Spell_WeaknessElectricity extends Spell
 			{
 				int damage=Dice.roll(1,3,0);
 				MUDFight.postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The electricity in the air <DAMAGE> <T-NAME>!");
-                if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
+                if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
                     MUDFight.postAttack(M,invoker,M.fetchWieldedItem());
 			}
 		}

@@ -47,7 +47,7 @@ public class Spell_AcidFog extends Spell
 			{
 				int damage=M.envStats().level();
 				MUDFight.postDamage(invoker,M,this,Dice.roll(1,damage,0),CMMsg.TYP_ACID,-1,"<T-NAME> sizzle(s) in the acid fog!");
-                if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
+                if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
                     MUDFight.postAttack(M,invoker,M.fetchWieldedItem());
 			}
 		}

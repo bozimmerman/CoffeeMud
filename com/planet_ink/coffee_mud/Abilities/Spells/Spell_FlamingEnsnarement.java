@@ -91,7 +91,7 @@ public class Spell_FlamingEnsnarement extends Spell
 			if((!M.amDead())&&(M.location()!=null))
             {
 				MUDFight.postDamage(invoker,M,this,Dice.roll(2,4,0),CMMsg.TYP_FIRE,-1,"<T-NAME> get(s) singed from <T-HIS-HER> flaming ensnarement!");
-                if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
+                if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
                     MUDFight.postAttack(M,invoker,M.fetchWieldedItem());
             }
 		}
