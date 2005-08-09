@@ -3525,6 +3525,12 @@ public class StdMOB implements MOB
             addFaction(fID,source.fetchFaction(fID));
         }
     }
+    public boolean hasFaction(String which)
+    {
+        Faction F=Factions.getFaction(which);
+        if(F==null) return false;
+        return factions.containsKey(F.ID.toUpperCase());
+    }
     public Vector fetchFactionRanges()
     {
         Faction F=null;

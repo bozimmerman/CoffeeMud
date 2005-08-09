@@ -118,6 +118,7 @@ public class Scriptable extends StdBehavior
 		"SELL_PROG", // 28
         "LOGIN_PROG", // 29
         "LOGOFF_PROG", // 30
+        "REGMASK_PROG", // 31
 	};
 	private static final String[] funcs={
 		"RAND", //1
@@ -191,6 +192,9 @@ public class Scriptable extends StdBehavior
 		"ISBEHAVE", // 69
         "IPADDRESS", // 70
         "RAND0NUM", // 71
+        "FACTION", //72
+        "ISSERVANT", // 73
+        "HASNUM", // 74
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -246,6 +250,7 @@ public class Scriptable extends StdBehavior
 		"MPSETCLANDATA", // 51
 		"MPPLAYERCLASS", // 52
 		"MPWALKTO", // 53
+        "MPFACTION", //54 
 	};
 
     private final static String[] clanVars={
@@ -1419,6 +1424,60 @@ public class Scriptable extends StdBehavior
 					returnable=false;
 				break;
 			}
+            case 74: // hasnum
+            {
+                String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+                String item=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),1));
+                String cmp=Util.getCleanBit(evaluable.substring(y+1,z),2);
+                String value=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),2));
+                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+                if((value.length()==0)||(item.length()==0)||(cmp.length()==0))
+                {
+                    scriptableError(scripted,"HASNUM","Syntax",evaluable);
+                    return returnable;
+                }
+                Item I=null;
+                int num=0;
+                if(E==null)
+                    returnable=false;
+                else
+                if(E instanceof MOB)
+                {
+                    MOB M=(MOB)E;
+                    for(int i=0;i<M.inventorySize();i++)
+                    {
+                        I=M.fetchInventory(i);
+                        if(I==null) break;
+                        if((item.equalsIgnoreCase("all"))
+                        ||(EnglishParser.containsString(I.Name(),item)))
+                            num++;
+                    }
+                    returnable=simpleEval(scripted,""+num,value,cmp,"HASNUM");
+                }
+                else
+                if(E instanceof Item)
+                {
+                    num=EnglishParser.containsString(E.name(),item)?1:0;
+                    returnable=simpleEval(scripted,""+num,value,cmp,"HASNUM");
+                }
+                else
+                if(E instanceof Room)
+                {
+                    Room R=(Room)E;
+                    for(int i=0;i<R.numItems();i++)
+                    {
+                        I=R.fetchItem(i);
+                        if(I==null) break;
+                        if((item.equalsIgnoreCase("all"))
+                        ||(EnglishParser.containsString(I.Name(),item)))
+                            num++;
+                    }
+                    returnable=simpleEval(scripted,""+num,value,cmp,"HASNUM");
+                }
+                else
+                    returnable=false;
+                break;
+            }
 			case 67: // hastitle
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
@@ -1621,6 +1680,22 @@ public class Scriptable extends StdBehavior
 					returnable=true;
 				break;
 			}
+            case 73: // isservant
+            {
+                String arg1=Util.cleanBit(evaluable.substring(y+1,z));
+                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+                if((E==null)||(!(E instanceof MOB))||(lastKnownLocation==null))
+                    returnable=false;
+                else
+                if((((MOB)E).getLiegeID()==null)||(((MOB)E).getLiegeID().length()==0))
+                    returnable=false;
+                else
+                if(lastKnownLocation.fetchInhabitant(((MOB)E).getLiegeID()+"$")==null)
+                    returnable=false;
+                else
+                    returnable=true;
+                break;
+            }
 			case 55: // ispkill
 			{
 				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
@@ -1992,6 +2067,46 @@ public class Scriptable extends StdBehavior
 					returnable=simpleEval(scripted,""+lastKnownLocation.numPCInhabitants(),arg2,arg1,"NUMPCSROOM");
 				break;
 			}
+            case 72: // faction
+            {
+                String whom=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+                String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),1));
+                String cmp=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2));
+                String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),3));
+                Environmental E=getArgumentItem(whom,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+                Faction F=Factions.getFaction(arg1);
+                if((E==null)||(!(E instanceof MOB)))
+                {
+                    scriptableError(scripted,"FACTION","Unknown Code",whom);
+                    return returnable;
+                }
+                if(F==null)
+                {
+                    scriptableError(scripted,"FACTION","Unknown Faction",arg1);
+                    return returnable;
+                }
+                MOB M=(MOB)E;
+                String value=null;
+                if(!M.hasFaction(F.ID))
+                    value="";
+                else
+                {
+                    int myfac=M.fetchFaction(F.ID);
+                    if(Util.isNumber(arg2))
+                        value=new Integer(myfac).toString();
+                    else
+                    {
+                        Faction.FactionRange FR=Factions.getRange(F.ID,myfac);
+                        if(FR==null) 
+                            value="";
+                        else 
+                            value=FR.Name;
+                    }
+                }
+                if(lastKnownLocation!=null)
+                    returnable=simpleEval(scripted,value,arg2,cmp,"FACTION");
+                break;
+            }
 			case 46: // numitemsroom
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
@@ -3002,6 +3117,53 @@ public class Scriptable extends StdBehavior
 					results.append(((Item)choices.elementAt(Dice.roll(1,choices.size(),-1))).name());
 				break;
 			}
+            case 74: // hasnum
+            {
+                String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+                String item=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),1));
+                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+                if((item.length()==0)||(E==null))
+                    scriptableError(scripted,"HASNUM","Syntax",evaluable);
+                else
+                {
+                    Item I=null;
+                    int num=0;
+                    if(E instanceof MOB)
+                    {
+                        MOB M=(MOB)E;
+                        for(int i=0;i<M.inventorySize();i++)
+                        {
+                            I=M.fetchInventory(i);
+                            if(I==null) break;
+                            if((item.equalsIgnoreCase("all"))
+                            ||(EnglishParser.containsString(I.Name(),item)))
+                                num++;
+                        }
+                        results.append(""+num);
+                    }
+                    else
+                    if(E instanceof Item)
+                    {
+                        num=EnglishParser.containsString(E.name(),item)?1:0;
+                        results.append(""+num);
+                    }
+                    else
+                    if(E instanceof Room)
+                    {
+                        Room R=(Room)E;
+                        for(int i=0;i<R.numItems();i++)
+                        {
+                            I=R.fetchItem(i);
+                            if(I==null) break;
+                            if((item.equalsIgnoreCase("all"))
+                            ||(EnglishParser.containsString(I.Name(),item)))
+                                num++;
+                        }
+                        results.append(""+num);
+                    }
+                }
+                break;
+            }
 			case 3: // worn
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.cleanBit(evaluable.substring(y+1,z)));
@@ -3222,6 +3384,14 @@ public class Scriptable extends StdBehavior
 					results.append(((MOB)E).amFollowing().name());
 				break;
 			}
+            case 73: // isservant
+            {
+                String arg1=Util.cleanBit(evaluable.substring(y+1,z));
+                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+                if((E!=null)&&(E instanceof MOB)&&(((MOB)E).getLiegeID()!=null)&&(((MOB)E).getLiegeID().length()>0))
+                    results.append(((MOB)E).getLiegeID());
+                break;
+            }
 			case 56: // name
 			case 7: // isname
 			{
@@ -3430,6 +3600,24 @@ public class Scriptable extends StdBehavior
 					results.append(""+lastKnownLocation.numPCInhabitants());
 				break;
 			}
+            case 72: // faction
+            {
+                String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+                String arg2=Util.getPastBit(evaluable.substring(y+1,z),0);
+                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+                Faction F=Factions.getFaction(arg2);
+                if(F==null)
+                    scriptableError(scripted,"FACTION","Unknown Faction",arg1);
+                else
+                if((E!=null)&&(E instanceof MOB)&&(((MOB)E).hasFaction(F.ID)))
+                {
+                    int value=((MOB)E).fetchFaction(F.ID);
+                    Faction.FactionRange FR=Factions.getRange(F.ID,value);
+                    if(FR!=null)
+                        results.append(FR.Name);
+                }
+                break;
+            }
 			case 46: // numitemsroom
 			{
 				int ct=0;
@@ -4544,35 +4732,64 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
-			case 49: // mptitle
+			case 54: // mpfaction
 			{
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg);
-				String tattooName=Util.getCleanBit(s,2);
-				if((newTarget!=null)&&(tattooName.length()>0)&&(newTarget instanceof MOB))
+                String faction=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
+                String range=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(s,2));
+                Faction F=Factions.getFaction(faction);
+				if((newTarget!=null)&&(F!=null)&&(newTarget instanceof MOB))
 				{
 					MOB themob=(MOB)newTarget;
-					boolean tattooMinus=tattooName.startsWith("-");
-					if(tattooMinus)	tattooName=tattooName.substring(1);
-					String tattoo=tattooName;
-					if((tattoo.length()>0)
-					&&(Character.isDigit(tattoo.charAt(0)))
-					&&(tattoo.indexOf(" ")>0)
-					&&(Util.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
-						tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
-					if(themob.playerStats()!=null)
-					{
-						if(themob.playerStats().getTitles().contains(tattoo))
-						{
-							if(tattooMinus)
-								themob.playerStats().getTitles().removeElement(tattooName);
-						}
-						else
-						if(!tattooMinus)
-							themob.playerStats().getTitles().insertElementAt(tattooName,0);
-					}
+                    if(Util.isInteger(range))
+                        themob.addFaction(F.ID,Util.s_int(range));
+                    else
+                    {
+                        Vector V=Factions.getRanges(F.ID);
+                        Faction.FactionRange FR=null;
+                        for(int v=0;v<V.size();v++)
+                        {
+                            Faction.FactionRange FR2=(Faction.FactionRange)V.elementAt(v);
+                            if(FR2.Name.equalsIgnoreCase(range))
+                            { FR=FR2; break;}
+                        }
+                        if(FR==null)
+                            scriptableError(scripted,"MPFACTION","RunTime",range+" is not a valid range for "+F.name+".");
+                        else
+                            themob.addFaction(F.ID,FR.low+((FR.high-FR.low)/2));
+                    }
 				}
 				break;
 			}
+            case 49: // mptitle
+            {
+                Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg);
+                String tattooName=Util.getCleanBit(s,2);
+                if((newTarget!=null)&&(tattooName.length()>0)&&(newTarget instanceof MOB))
+                {
+                    MOB themob=(MOB)newTarget;
+                    boolean tattooMinus=tattooName.startsWith("-");
+                    if(tattooMinus) tattooName=tattooName.substring(1);
+                    String tattoo=tattooName;
+                    if((tattoo.length()>0)
+                    &&(Character.isDigit(tattoo.charAt(0)))
+                    &&(tattoo.indexOf(" ")>0)
+                    &&(Util.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
+                        tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
+                    if(themob.playerStats()!=null)
+                    {
+                        if(themob.playerStats().getTitles().contains(tattoo))
+                        {
+                            if(tattooMinus)
+                                themob.playerStats().getTitles().removeElement(tattooName);
+                        }
+                        else
+                        if(!tattooMinus)
+                            themob.playerStats().getTitles().insertElementAt(tattooName,0);
+                    }
+                }
+                break;
+            }
 			case 10: // mpkill
 			{
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg);
@@ -5881,6 +6098,37 @@ public class Scriptable extends StdBehavior
 					}
 				}
 				break;
+            case 31: // regmask prog
+                if(!msg.amISource(monster))
+                {
+                    boolean doIt=false;
+                    String str=msg.othersMessage();
+                    if(str==null) str=msg.targetMessage();
+                    if(str==null) str=msg.sourceMessage();
+                    if(str==null) break;
+                    str=CoffeeFilter.fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false);
+                    trigger=Util.getPastBit(trigger.trim(),0);
+                    if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                        doIt=str.equals(trigger.substring(1).trim());
+                    else
+                        doIt=str.matches(trigger);
+                    if(doIt)
+                    {
+                        Item Tool=null;
+                        if(msg.tool() instanceof Item)
+                            Tool=(Item)msg.tool();
+                        if(Tool==null) Tool=defaultItem;
+                        if(msg.target() instanceof MOB)
+                            que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str));
+                        else
+                        if(msg.target() instanceof Item)
+                            que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,str));
+                        else
+                            que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,1,str));
+                        return;
+                    }
+                }
+                break;
 			}
 		}
 	}

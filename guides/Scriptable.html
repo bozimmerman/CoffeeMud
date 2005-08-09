@@ -602,7 +602,41 @@ extremely long rand_progs on many, many mobs is generally not a good idea. If
 possible, consider other options, and only use rand_progs that go off at a high 
 rate on mobs that will perform the rand_prog once and then never again, either 
 because they have some sort of internal check, or because they go and mppurge 
-themselves afterwards.</P>
+themselves afterwards.<SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">&nbsp;<O:P></O:P></SPAN></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">regmask_prog</SPAN></SPAN></P>
+<P class=MsoNormal>Usage:<BR><EM>regmask_prog [regular expression]<BR>regmask_prog p [exact, case 
+sensitive&nbsp;message]&nbsp;<O:P></O:P></EM></P>
+<P class=MsoNormal>This type of mobprog will trigger when 
+the mob sees a certain string of text. When the 'p' is inserted into the trigger 
+line, the string of text must be precisely the same, case included,&nbsp;as the 
+string generated.&nbsp; If 'p' is not the first character, then the trigger will 
+attempt to match against a java regular expression string. This type of mobprog 
+has many uses, one of which is communication between mobs. There are a few 
+socials which create a message only to the person performing them and to the one 
+receiving them.&nbsp; You can use these and act_progs to safely have mobs 
+trigger each other, without people seeing what is going on. Other uses include 
+triggering off of people fleeing, moving out of the room, etc. The possibilities 
+are endless.</P>
+<P class=MsoNormal>EXAMPLES:</P>
+<P class=MsoNormal>regmask<EM>_prog 
+</EM>a*b<EM>e</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger whenever the 
+mob sees a segment of text starting with the lowercase letter a, then containing 
+0 or more other letter as followed by the string "be".&nbsp; This would match 
+aaaaabe)</P>
+<P class=MsoNormal><EM>regmask_prog p 
+A wolf howls at the moon.</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger the prog when 
+it sees this precise message. Note that punctuation and case is important here 
+as well.)</P>
+<P class=MsoNormal>MULTIPLE PROGS: You can have more than 
+one regmask_prog on a mob, but you shouldn’t have multiple regmask_progs that 
+trigger off of the same message.</P>
+<P class=MsoNormal>SPECIAL NOTES: ANSI colors on objects 
+don’t seem to work well with regmask_progs, so avoid using ANSI colors in 
+anything that may be part of your regmask_prog trigger. Variables and Codes are 
+not used in regmask_progs, so do not try to use them; it won’t work..</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">remove_prog<O:P></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>remove_prog [keyword list]<BR>remove_prog p [keyword list]<BR>remove_prog all</EM></P>
@@ -994,9 +1028,13 @@ useless. </P>
     <TD>EVAL()</TD>
     <TD>Not implemented -- do not use.</TD></TR>
   <TR>
+    <TD>FACTION([mob code] [faction id])</TD>
+    <TD>Returns the range name for the given mob within 
+      the given faction.</TD></TR>
+  <TR>
     <TD>GOLDAMT([code])</TD>
-    <TD>Returns the total value of the money the given mob 
-      has, expressed in base gold.</TD></TR>
+    <TD>Returns the total value of the money the given 
+      mob has, expressed in base gold.</TD></TR>
   <TR>
     <TD>GSTAT([code] [stat variable])</TD>
     <TD>Value of the given stat variable for the given 
@@ -1007,6 +1045,10 @@ useless. </P>
     <TD>HAS([code])</TD>
     <TD>Returns the name of a random item in&nbsp;the 
       scripted monsters&nbsp;inventory.</TD></TR>
+  <TR>
+    <TD>HASNUM([code] [item name])</TD>
+    <TD>Returns the number of a given item in the given 
+      mob or rooms inventory.</TD></TR>
   <TR>
     <TD>HASTITLE([code])</TD>
     <TD>Returns the selected title of the given player 
@@ -1106,6 +1148,10 @@ useless. </P>
   <TR>
     <TD>ISSEASON()</TD>
     <TD>Returns the name of the season.</TD></TR>
+  <TR>
+    <TD>ISSERVANT([code])</TD>
+    <TD>Returns the name of the creature the given mob is 
+      serving, or nothing otherwise.</TD></TR>
   <TR>
     <TD>ISTIME()</TD>
     <TD>Returns the approximate time of day in 
@@ -1586,6 +1632,26 @@ this command. You don’t want to give out awards for every little thing
 characters do, nor do you want to give large awards for menial tasks. You also 
 will, of course, not want to make it so a mob can accidentally give the same 
 award over and over endlessly, or something equally abusable.</P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpfaction</SPAN></P>
+<P class=MsoNormal><O:P></O:P></P>
+<P class=MsoNormal>Usage: <BR><EM>mpfaction [target mob] [faction id] [new value&nbsp;or 
+range]</EM>&nbsp;</P>
+<P class=MsoNormal><O:P></O:P></P>
+<P class=MsoNormal>This command forces the victim to gain 
+the given faction, and the given value within it. The target can be a character 
+variable or a keyword of a mob.&nbsp; The faction id is the Faction to give to 
+the player or mob.&nbsp; The new value or range may be a numeric value, or it 
+may be the name of one of the faction ranges.&nbsp; This command can be used to 
+introduce a player to a faction they otherwise would not be able to gain, or it 
+can be used in combination with the FACTION function to modify the value of a 
+faction.</P>
+<P class=MsoNormal><O:P></O:P></P>
+<P class=MsoNormal>EXAMPLES:</P>
+<P class=MsoNormal><O:P></O:P></P>
+<P class=MsoNormal><EM>mpfaction $n 
+alignment.ini 1000<BR>mpfaction $i alignment.ini 'pure 
+goodness'</EM></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpforce<O:P></O:P></SPAN></P>
 <P class=MsoNormal><O:P></O:P></P>
@@ -2316,16 +2382,33 @@ that can, if used properly, take care of all of the evaluation needs which other
 functions do not provide.&nbsp; Examine carefully the section on codes above to 
 see all the different things you can evaluate.</P>
 <P class=MsoNormal>EXAMPLE:</P>
-<P class=MsoNormal><EM>if eval($n == 
-an orc) or eval('$&lt;$i VAR&gt;'&nbsp; !=&nbsp; 7)&nbsp;<BR></EM></P>
-<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+<P><EM>if eval($n == an orc) or eval('$&lt;$i VAR&gt;'&nbsp; !=&nbsp; 
+7)&nbsp;<BR>&nbsp; mpecho Evaluates to true.<BR>else<BR>&nbsp; mpecho Evaluates 
+to false.<BR>endif</EM></P>
+<P><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">faction</SPAN></B></P>
+<P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; 
+<BR></SPAN><EM>faction(character factionid == value)</EM></P>
+<P class=MsoNormal>This function checks to see if the player or mob given has 
+the given faction.&nbsp; If it does not, the value will always be empty 
+string.&nbsp; Otherwise, it compares the value of the players faction with the 
+value.&nbsp; If the value is numeric, it will compare the numeric value of the 
+players faction.&nbsp; If the value is non-numeric, it will compare the name of 
+the range into which the player falls in the given faction with the value 
+given.</P>
+<P class=MsoNormal><EM>EXAMPLE:</EM></P>
+<P><EM>if faction($n alignment.ini &gt;500 ) or faction($n alignment.ini == 
+'Pure Goodness')&nbsp;<BR>&nbsp; mpecho The actor is either just north of 
+neutral, or very very good.<BR>else<BR>&nbsp; mpecho The actor is some other 
+alignment.<BR>endif</EM></P>
+<P><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">goldamt<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>goldamt(character &gt; amount)</EM></P>
 <P class=MsoNormal><o:p></O:P></P>
-<P class=MsoNormal>This&nbsp;evaluates the total amount of money 
-that the character variable has on hand. Where '==' may be any other logical 
-operator from&nbsp;above.&nbsp;  The value is always expressed in base gold, 
-regardless of currency or denomination.</P>
+<P class=MsoNormal>This&nbsp;evaluates the total amount of 
+money that the character variable has on hand. Where '==' may be any other 
+logical operator from&nbsp;above.&nbsp; The value is always expressed in base 
+gold, regardless of currency or denomination.</P>
 <P class=MsoNormal>EXAMPLE:</P>
 <P class=MsoNormal><EM>if goldamt($n 
 &lt; 10000)<BR>&nbsp; mpecho The actor has&nbsp;less 
@@ -2358,6 +2441,19 @@ character&nbsp;has the given item in their inventory or on their person.&nbsp;
 long sword)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor has a long sword.<BR>else<BR><SPAN 
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
 does not have anything called 'a long sword'.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">hasnum</SPAN></B></P>
+<P class=MsoNormal><EM>Usage:</EM><EM><SPAN style="mso-spacerun: yes">&nbsp; 
+<BR></SPAN>hasnum(character item &gt; value)</EM></P>
+<P class=MsoNormal><EM>This checks 
+whether the character&nbsp;has some number of the given item in their inventory 
+or on their person.&nbsp;The character may also be the code for a room.</EM></P>
+<P class=MsoNormal><EM>EXAMPLE:</EM></P>
+<P class=MsoNormal><EM>if hasnum($n 'a 
+long sword' &gt; 1)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor has&nbsp;several long 
+swords.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
+does not have anything called 'a long sword', or only has 1.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">hastattoo</SPAN></B></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>hastattoo(character item)</EM></P>
@@ -2672,6 +2768,15 @@ season of the year.&nbsp; Valid seasonnames include "WINTER", "SPRING",
 isseason(summer)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Yea, its summertime!<BR>else<BR><SPAN 
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Boo! It's 
 not summer yet.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isservant</SPAN></B></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"></SPAN></B>Usage: <BR><EM>isservant(character)</EM></P>
+<P class=MsoNormal>This function is used to check whether 
+the given player or mob is serving anyone in the room.</P>
+<P class=MsoNormal>EXAMPLE:</P>
+<P class=MsoNormal><EM>if 
+isservant($i)<BR><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;</SPAN>say I greet&nbsp;my master.<BR></EM><EM>else<BR><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;</SPAN>say I await my master.<BR>endi</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">istime</SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>istime(integer)<BR>istime(todword)</EM></P>
