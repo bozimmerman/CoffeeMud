@@ -39,6 +39,8 @@ public class Conquerable extends Arrest
 	private boolean allowLaw=false;
 	private long waitToReload=0;
 
+    private int revoltDown=0;
+    private static final int REVOLTFREQ=(int)(IQCalendar.MILI_WEEK/MudHost.TICK_TIME);
 	private int checkDown=0;
 	private static final int CHECKFREQ=10;
 	private int pointDown=0;
@@ -252,6 +254,37 @@ public class Conquerable extends Arrest
         }
 	}
 
+    public int calcItemControlPoints(Area A)
+    {
+        int itemControlPoints=0;
+        synchronized(clanItems)
+        {
+            for(int i=clanItems.size()-1;i>=0;i--)
+            {
+                ClanItem I=(ClanItem)clanItems.elementAt(i);
+                if((I instanceof Item)
+                &&(!((Item)I).amDestroyed())
+                &&(((Item)I).owner() instanceof MOB)
+                &&(Sense.isInTheGame(I,true))
+                &&(A.inMetroArea(((MOB)((Item)I).owner()).location().getArea()))
+                &&(I.ciType()!=ClanItem.CI_PROPAGANDA))
+                    itemControlPoints+=((MOB)((Item)I).owner()).envStats().level();
+            }
+        }
+        return itemControlPoints;
+    }
+    
+    public int calcRevoltChance(Area A)
+    {
+        if(totalControlPoints<=0) return 0;
+        int itemControlPoints=calcItemControlPoints(A);
+        int totalNeeded=(int)Math.round(Util.mul(0.05,totalControlPoints));
+        int chance=(int)Math.round(50.0-(itemControlPoints/totalNeeded));
+        if(chance<=0) return 0;
+        return chance;
+        
+    }
+    
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
@@ -427,6 +460,22 @@ public class Conquerable extends Arrest
 					endClanRule();
 			}
 
+            if((--revoltDown)<=0)
+            {
+                revoltDown=Conquerable.REVOLTFREQ;
+                if(holdingClan.length()>0)
+                {
+                    int chance=calcRevoltChance(A);
+                    if(Dice.rollPercentage()<chance)
+                    {
+                        CommonMsgs.channel("CLANTALK","ALL","The inhabitants of "+myArea.name()+" have revoluted against "+holdingClan+".",false);
+                        if(journalName.length()>0)
+                            CMClass.DBEngine().DBWriteJournal(journalName,"Conquest","ALL","The inhabitants of "+myArea.name()+" have revoluted against "+holdingClan+".","See the subject line.",-1);
+                        endClanRule();
+                    }
+                }
+            }
+            
 			if((--pointDown)<=0)
 			{
 				pointDown=POINTFREQ;

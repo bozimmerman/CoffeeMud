@@ -82,6 +82,7 @@ public class StdClanPamphlet extends StdClanItem
 				if((mob.getClanID().equals(clanID()))
 				&&(rulingClan!=null)
 				&&(rulingClan.length()>0)
+                &&(!rulingClan.equals(clanID()))
 				&&(Sense.canSpeak(mob))
 				&&(Sense.aliveAwakeMobile(mob,true))
 				&&(R!=null))

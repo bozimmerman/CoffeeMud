@@ -40,7 +40,7 @@ public class StdTitle extends StdItem implements LandTitle
 	{
 		super();
 		setName("a standard title");
-		setDescription("Give or Sell this title to transfer ownership. **DON'T LOSE THIS!**");
+		setDescription("Give or Sell this title to transfer ownership. **DON`T LOSE THIS!**");
 		baseGoldValue=10000;
 		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
 		setMaterial(EnvResource.RESOURCE_PAPER);

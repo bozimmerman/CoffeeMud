@@ -489,7 +489,7 @@ public class WeatherAffects extends PuddleMaker
                         if((R2!=R)&&(R2.numInhabitants()>0))
                             if((A.getTimeObj().getTODCode()==TimeClock.TIME_DAY)
                             ||(C.weatherType(R2)!=Climate.WEATHER_THUNDERSTORM))
-                                R2.showHappens(CMMsg.MSG_OK_ACTION,"A thunderous rumble and crack of lightning can be heard.!");
+                                R2.showHappens(CMMsg.MSG_OK_ACTION,"A thunderous rumble and crack of lightning can be heard.");
                             else
                                 R2.showHappens(CMMsg.MSG_OK_ACTION,"You hear a thunderous rumble as a bolt of lightning streaks across the sky!");
                     }
@@ -537,7 +537,7 @@ public class WeatherAffects extends PuddleMaker
                         if((R2!=R)&&(R2.numInhabitants()>0))
                             if((A.getTimeObj().getTODCode()==TimeClock.TIME_DAY)
                             ||(C.weatherType(R2)!=Climate.WEATHER_THUNDERSTORM))
-                                R2.showHappens(CMMsg.MSG_OK_ACTION,"The terrible rumble of a tornado can be heard.!");
+                                R2.showHappens(CMMsg.MSG_OK_ACTION,"The terrible rumble of a tornado can be heard.");
                             else
                                 R2.showHappens(CMMsg.MSG_OK_ACTION,"A huge and terrible tornado touches down somewhere near by.");
                     }

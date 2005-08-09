@@ -1244,7 +1244,7 @@ public class StdMOB implements MOB
 		}
 
 		Ability A=null;
-		for(int i=0;i<numAllEffects();i++)
+		for(int i=numAllEffects()-1;i>=0;i--)
 		{
 			A=fetchEffect(i);
 			if((A!=null)&&(!A.okMessage(this,msg)))
@@ -1252,7 +1252,7 @@ public class StdMOB implements MOB
 		}
 
 		Item I=null;
-		for(int i=0;i<inventorySize();i++)
+		for(int i=inventorySize()-1;i>=0;i--)
 		{
 			I=fetchInventory(i);
 			if((I!=null)&&(!I.okMessage(this,msg)))
@@ -1260,7 +1260,7 @@ public class StdMOB implements MOB
 		}
 
 		Behavior B=null;
-		for(int b=0;b<numBehaviors();b++)
+		for(int b=numBehaviors()-1;b>=0;b--)
 		{
 			B=fetchBehavior(b);
 			if((B!=null)&&(!B.okMessage(this,msg)))
@@ -1955,7 +1955,7 @@ public class StdMOB implements MOB
 			charStats().getMyRace().executeMsg(this,msg);
 		}
 
-		for(int b=0;b<numBehaviors();b++)
+		for(int b=numBehaviors()-1;b>=0;b--)
 		{
 			Behavior B=fetchBehavior(b);
 			if(B!=null)	B.executeMsg(this,msg);
@@ -2491,7 +2491,7 @@ public class StdMOB implements MOB
 		}
 
 		Item I=null;
-		for(int i=0;i<inventorySize();i++)
+		for(int i=inventorySize()-1;i>=0;i--)
 		{
 			I=fetchInventory(i);
 			if(I!=null)
@@ -2499,7 +2499,7 @@ public class StdMOB implements MOB
 		}
 
 		Ability A=null;
-		for(int i=0;i<numAllEffects();i++)
+		for(int i=numAllEffects()-1;i>=0;i--)
 		{
 			A=fetchEffect(i);
 			if(A!=null)
