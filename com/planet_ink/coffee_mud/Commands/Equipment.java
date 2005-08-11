@@ -143,7 +143,12 @@ public class Equipment extends StdCommand
 			}
 		}
 		if(msg.length()==0)
-			msg.append("^!(nothing)^?\n\r");
+        {
+            if(mob.isMonster())
+                return null;
+            else
+    			msg.append("^!(nothing)^?\n\r");
+        }
         else
         if((paragraphView)&&(msg.lastIndexOf(",") > -1))
         {
