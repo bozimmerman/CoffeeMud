@@ -110,8 +110,8 @@ public class Give extends BaseItemParser
     			if(giveThis==null) break;
     			if(Sense.canBeSeenBy(giveThis,mob))
     				V.addElement(giveThis);
-    			addendumStr="."+(++addendum);
             }
+            addendumStr="."+(++addendum);
 		}
 		while((allFlag)&&(addendum<=maxToGive));
 
