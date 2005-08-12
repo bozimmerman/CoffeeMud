@@ -174,7 +174,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		{
 			MOB targetMOB=(MOB)msg.target();
 			if((!targetMOB.getClanID().equals(((ClanItem)myHost).clanID()))
-			&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
+            &&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
 			{
 				msg.source().tell("You cannot give this item to "+targetMOB.name()+".");
 				return false;
@@ -186,7 +186,9 @@ public class StdClanItem extends StdItem implements ClanItem
 				for(int i=0;i<targetMOB.inventorySize();i++)
 				{
 					Item I=targetMOB.fetchInventory(i);
-					if((I!=null)&&(I instanceof ClanItem))
+					if((I!=null)
+                    &&(I instanceof ClanItem)
+                    &&((((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA)||(((ClanItem)I).ciType()==ClanItem.CI_PROPAGANDA)))
 					{ alreadyHasOne=I; break;}
 				}
 				if(alreadyHasOne!=null)

@@ -278,7 +278,10 @@ public class ClanCrafting extends CraftingSkill
 		String itemName=null;
 		if(!misctype.equalsIgnoreCase("area"))
 		{
-			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),"of "+C.typeName()+" "+C.name());
+            if(((String)foundRecipe.elementAt(RCP_FINALNAME)).trim().startsWith("%"))
+    			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),C.typeName()+" "+C.name());
+            else
+                itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),"of "+C.typeName()+" "+C.name());
 			if(misctype.length()>0)
 				building.setReadableText(misctype);
 		}

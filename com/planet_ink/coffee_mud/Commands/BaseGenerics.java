@@ -427,7 +427,9 @@ public class BaseGenerics extends StdCommand
 				MOB M2=(MOB)M.copyOf();
 				M2.setStartRoom(R);
 				M2.setLocation(R);
-				M2.envStats().setRejuv(5000);
+                long rejuv=MudHost.TICKS_PER_RLMIN+MudHost.TICKS_PER_RLMIN+(MudHost.TICKS_PER_RLMIN/2);
+                if(rejuv>(MudHost.TICKS_PER_RLMIN*20)) rejuv=(MudHost.TICKS_PER_RLMIN*20);
+				M2.envStats().setRejuv((int)rejuv);
 				M2.recoverCharStats();
 				M2.recoverEnvStats();
 				M2.recoverMaxState();

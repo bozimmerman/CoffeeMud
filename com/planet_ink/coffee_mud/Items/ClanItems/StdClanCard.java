@@ -42,8 +42,6 @@ public class StdClanCard extends StdClanItem
 
     public boolean okMessage(Environmental host, CMMsg msg)
     {
-        if(!super.okMessage(host,msg))
-            return false;
         if((msg.target()==owner())
         &&(msg.tool() instanceof ClanItem)
         &&(owner() instanceof MOB)
@@ -52,12 +50,12 @@ public class StdClanCard extends StdClanItem
         &&(!((ClanItem)msg.tool()).clanID().equals(clanID()))
         &&(Sense.isInTheGame(owner(),true))
         &&(msg.source()!=owner())
-        &&(Sense.isInDark(msg.source())))
+        &&(Sense.isInTheGame(msg.source(),true)))
         {
             if(msg.source().location().show((MOB)msg.target(),msg.source(),msg.tool(),CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> reject(s) <O-NAME> from <T-NAME>."))
             {
                 CommonMsgs.say((MOB)msg.target(),msg.source(),"How dare you!  Give me those!",false,true);
-                if(msg.source().location().show((MOB)msg.target(),msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> takes(s) <O-NAME> away from <T-NAME> and destroys it!"))
+                if(msg.source().location().show((MOB)msg.target(),msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> takes(s) "+msg.tool().name()+" away from <T-NAME> and destroys it!"))
                 {
                     Item I=null;
                     for(int i=msg.source().inventorySize();i>=0;i--)
@@ -69,10 +67,11 @@ public class StdClanCard extends StdClanItem
                             I.destroy();
                     }
                 }
+                return false;
             }
             
         }
-        return true;
+        return super.okMessage(host,msg);
     }
     
     public boolean tick(Tickable ticking, int tickID)

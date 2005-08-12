@@ -39,8 +39,8 @@ public class Conquerable extends Arrest
 	private boolean allowLaw=false;
 	private long waitToReload=0;
 
-    private int revoltDown=0;
-    private static final int REVOLTFREQ=(int)(IQCalendar.MILI_WEEK/MudHost.TICK_TIME);
+    private int revoltDown=REVOLTFREQ;
+    private static final int REVOLTFREQ=(int)((IQCalendar.MILI_DAY*3)/MudHost.TICK_TIME);
 	private int checkDown=0;
 	private static final int CHECKFREQ=10;
 	private int pointDown=0;
@@ -109,8 +109,8 @@ public class Conquerable extends Arrest
 							str.append("This area is currently controlled by "+C.typeName()+" "+C.name()+".\n\r");
                             int pts=calcItemControlPoints((Area)hostObj);
                             int chance=calcRevoltChance((Area)hostObj);
-                            str.append(C.name()+" has distributed clan items to inhabitants for "+pts+" loyalty points.\n\r");
-                            str.append("There is currenly a "+chance+"% chance of revolt here.\n\r");
+                            str.append(C.name()+" has handed out clan items here for "+pts+" loyalty points.\n\r");
+                            str.append("There is currently a "+chance+"% chance of revolt here.\n\r");
                         }
 						else
 						{
@@ -255,7 +255,7 @@ public class Conquerable extends Arrest
             try{
             for(int c=clanItems.size();c>=0;c--)
                 if(((ClanItem)clanItems.elementAt(c)).ciType()!=ClanItem.CI_FLAG)
-                    clanItems.removeElementAt(c);
+                    deRegisterClanItem(c);
             }catch(ArrayIndexOutOfBoundsException x){}
         }
 	}
@@ -271,8 +271,9 @@ public class Conquerable extends Arrest
                 if((I instanceof Item)
                 &&(!((Item)I).amDestroyed())
                 &&(((Item)I).owner() instanceof MOB)
+                &&(((MOB)((Item)I).owner()).isMonster())
                 &&(Sense.isInTheGame(I,true))
-                &&(A.inMetroArea(((MOB)((Item)I).owner()).location().getArea()))
+                &&(A.inMetroArea(((MOB)((Item)I).owner()).getStartRoom().getArea()))
                 &&(I.ciType()!=ClanItem.CI_PROPAGANDA))
                     itemControlPoints+=((MOB)((Item)I).owner()).envStats().level();
             }
@@ -285,7 +286,8 @@ public class Conquerable extends Arrest
         if(totalControlPoints<=0) return 0;
         int itemControlPoints=calcItemControlPoints(A);
         int totalNeeded=(int)Math.round(Util.mul(0.05,totalControlPoints));
-        int chance=(int)Math.round(50.0-(itemControlPoints/totalNeeded));
+        if(totalNeeded<=0) totalNeeded=1;
+        int chance=(int)Math.round(50.0-(Util.mul(50.0,Util.div(itemControlPoints,totalNeeded))));
         if(chance<=0) return 0;
         return chance;
         
@@ -309,7 +311,7 @@ public class Conquerable extends Arrest
 		{
 			Item I=(Item)clanItems.elementAt(i);
 			if(!I.tick(this,MudHost.TICK_CLANITEM))
-				clanItems.remove(I);
+                deRegisterClanItem(i);
 			else
 				I.setDispossessionTime(0);
 		}
@@ -408,7 +410,7 @@ public class Conquerable extends Arrest
                                         }
 										R.addItem(newItem);
                                     }
-									clanItems.addElement(newItem);
+                                    registerClanItem((ClanItem)newItem);
 								}
 							}
 						}
@@ -448,11 +450,17 @@ public class Conquerable extends Arrest
 					{
 						ClanItem I=(ClanItem)clanItems.elementAt(i);
 						Room R=CoffeeUtensils.roomLocation(I);
-						if((R==null)
-						||(!A.inMetroArea(R.getArea()))
-						||((I instanceof Item)&&(((Item)I).amDestroyed()))
-						||((I.ciType()==ClanItem.CI_FLAG)&&(!R.isContent((Item)I))))
-							clanItems.removeElementAt(i);
+						if(R==null)
+                            deRegisterClanItem(i);
+                        else
+						if(!A.inMetroArea(R.getArea()))
+                            deRegisterClanItem(i);
+                        else
+						if((I instanceof Item)&&(((Item)I).amDestroyed()))
+                            deRegisterClanItem(i);
+                        else
+						if((I.ciType()==ClanItem.CI_FLAG)&&(!R.isContent((Item)I)))
+                            deRegisterClanItem(i);
 						else
 						if((I!=null)&&(I instanceof Item))
 							((Item)I).setDispossessionTime(0);
@@ -633,7 +641,7 @@ public class Conquerable extends Arrest
 		}
 	}
 
-	private void registerClanItem(ClanItem I)
+	private void registerClanItem(Environmental I)
 	{
 		synchronized(clanItems)
 		{
@@ -641,6 +649,20 @@ public class Conquerable extends Arrest
 				clanItems.addElement(I);
 		}
 	}
+    private void deRegisterClanItem(Environmental I)
+    { deRegisterClanItem(clanItems.indexOf(I));}
+    
+    private void deRegisterClanItem(int i)
+    {
+        synchronized(clanItems)
+        {
+            try
+            {
+                clanItems.removeElementAt(i);
+            }
+            catch(Exception e){e.printStackTrace();}
+        }
+    }
 
 
 	private boolean flagFound(Area A, String clanID)
@@ -728,6 +750,7 @@ public class Conquerable extends Arrest
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
+        
 		if((myHost instanceof Area)
 		&&(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED)
 		&&(!CMSecurity.isDisabled("CONQUEST")))
