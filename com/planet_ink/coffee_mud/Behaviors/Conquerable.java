@@ -410,7 +410,7 @@ public class Conquerable extends Arrest
                                         }
 										R.addItem(newItem);
                                     }
-                                    registerClanItem((ClanItem)newItem);
+                                    registerClanItem(newItem);
 								}
 							}
 						}
@@ -649,8 +649,6 @@ public class Conquerable extends Arrest
 				clanItems.addElement(I);
 		}
 	}
-    private void deRegisterClanItem(Environmental I)
-    { deRegisterClanItem(clanItems.indexOf(I));}
     
     private void deRegisterClanItem(int i)
     {
@@ -803,9 +801,9 @@ public class Conquerable extends Arrest
 			   msg.source().setClanID(holdingClan);
 
 			if(msg.tool() instanceof ClanItem)
-				registerClanItem((ClanItem)msg.tool());
+				registerClanItem(msg.tool());
 			if(msg.target() instanceof ClanItem)
-				registerClanItem((ClanItem)msg.target());
+				registerClanItem(msg.target());
 
 			if((msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
 			&&(msg.target() instanceof Room)
