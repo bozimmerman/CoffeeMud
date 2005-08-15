@@ -26,7 +26,7 @@ public class Baking extends Cooking
 	public String ID() { return "Baking"; }
 	public String name(){ return "Baking";}
 	private static final String[] triggerStrings = {"BAKING","BAKE"};
-    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_FIRE|Ability.CAN_BREW;}
+    public String supportedResourceString(){return "MISC";}
 	public String[] triggerStrings(){return triggerStrings;}
 	public String cookWordShort(){return "bake";};
 	public String cookWord(){return "baking";};

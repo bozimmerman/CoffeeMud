@@ -28,7 +28,7 @@ public class Mining extends GatheringSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return FLAG_GATHERING;}
 	protected boolean allowedWhileMounted(){return false;}
-	protected String supportedResourceString(){return "GLASS|PRECIOUS|SAND|ROCK|METAL|MITHRIL";}
+	public String supportedResourceString(){return "GLASS|PRECIOUS|SAND|ROCK|METAL|MITHRIL";}
 
 	private Item found=null;
 	private String foundShortName="";

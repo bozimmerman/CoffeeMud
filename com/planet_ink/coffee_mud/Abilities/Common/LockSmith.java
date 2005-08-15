@@ -29,7 +29,7 @@ public class LockSmith extends CraftingSkill
 	public String name(){ return "Locksmithing";}
 	private static final String[] triggerStrings = {"LOCKSMITH","LOCKSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
-    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_METALS;}
+    public String supportedResourceString(){return "METAL|MITHRIL";}
 
     private String keyCode="";
 	private Item building=null;

@@ -29,8 +29,7 @@ public class Pottery extends CraftingSkill
 	public String name(){ return "Pottery";}
 	private static final String[] triggerStrings = {"POT","POTTERY"};
 	public String[] triggerStrings(){return triggerStrings;}
-    protected String supportedResourceString(){return "CLAY|CHINA";}
-    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_CLAY|Ability.CAN_FIRE;}
+    public String supportedResourceString(){return "CLAY|CHINA";}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;

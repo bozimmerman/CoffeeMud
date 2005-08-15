@@ -29,8 +29,7 @@ public class Shipwright extends CraftingSkill
 	public String name(){ return "Shipwright";}
 	private static final String[] triggerStrings = {"SHIPWRIGHT"};
 	public String[] triggerStrings(){return triggerStrings;}
-    protected String supportedResourceString(){return "WOODEN";}
-    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_WOOD;}
+    public String supportedResourceString(){return "WOODEN";}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;

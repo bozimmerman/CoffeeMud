@@ -29,8 +29,7 @@ public class MasterTailoring extends CraftingSkill
 	public String name(){ return "Master Tailoring";}
 	private static final String[] triggerStrings = {"MASTERKNIT","MKNIT","MTAILOR","MTAILORING","MASTERTAILOR","MASTERTAILORING"};
 	public String[] triggerStrings(){return triggerStrings;}
-    protected String supportedResourceString(){return "CLOTH";}
-    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_CLOTH;}
+    public String supportedResourceString(){return "CLOTH";}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;

@@ -29,8 +29,7 @@ public class JewelMaking extends CraftingSkill
 	public String name(){ return "Jewel Making";}
 	private static final String[] triggerStrings = {"JEWEL","JEWELMAKING"};
 	public String[] triggerStrings(){return triggerStrings;}
-    protected String supportedResourceString(){return "GLASS|PRECIOUS|SAND";}
-    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_SAND|Ability.CAN_METALS|Ability.CAN_PRECIOUS;}
+    public String supportedResourceString(){return "GLASS|PRECIOUS|SAND";}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;

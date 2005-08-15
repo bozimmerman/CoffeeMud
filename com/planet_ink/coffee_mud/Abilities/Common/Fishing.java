@@ -27,7 +27,7 @@ public class Fishing extends GatheringSkill
 	private static final String[] triggerStrings = {"FISH"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return FLAG_GATHERING;}
-	protected String supportedResourceString(){return "FLESH";}
+	public String supportedResourceString(){return "FLESH";}
 
 	private Item found=null;
 	private String foundShortName="";

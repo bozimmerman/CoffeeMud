@@ -28,6 +28,7 @@ public class CommonSkill extends StdAbility
 	public String name(){ return "Common Skill";}
 	private static final String[] triggerStrings = empty;
 	public String[] triggerStrings(){return triggerStrings;}
+    public String supportedResourceString(){return "";}
 
 	public int quality(){return Ability.INDIFFERENT;}
 	protected String displayText="(Doing something productive)";

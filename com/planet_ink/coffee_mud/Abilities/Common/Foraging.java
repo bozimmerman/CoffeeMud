@@ -28,7 +28,7 @@ public class Foraging extends GatheringSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return FLAG_GATHERING;}
 	protected boolean allowedWhileMounted(){return false;}
-	protected String supportedResourceString(){return "VEGETATION|HEMP|SILK|COTTON";}
+	public String supportedResourceString(){return "VEGETATION|HEMP|SILK|COTTON";}
 
 	private Item found=null;
 	private String foundShortName="";

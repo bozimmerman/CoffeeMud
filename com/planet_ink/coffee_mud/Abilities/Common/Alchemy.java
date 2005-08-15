@@ -28,9 +28,9 @@ public class Alchemy extends CraftingSkill
 	public String name(){ return "Alchemy";}
 	private static final String[] triggerStrings = {"BREW","ALCHEMY"};
 	public String[] triggerStrings(){return triggerStrings;}
-    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_FIRE|Ability.CAN_BREW;}
 	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLTRAINCOST);}
 	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST);}
+    public String supportedResourceString(){return "MISC";}
 
 	private boolean requiresFire=false;
 	private Item building=null;

@@ -32,7 +32,7 @@ public class Cooking extends CraftingSkill
 	public boolean honorHerbs(){return true;}
 	public boolean requireFire(){return true;}
 	public boolean requireLid(){return false;}
-    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_BREW;}
+    public String supportedResourceString(){return "MISC";}
 
 	public static int RCP_FINALFOOD=0;
 	public static int RCP_FOODDRINK=1;

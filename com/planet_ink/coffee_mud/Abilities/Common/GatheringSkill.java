@@ -29,7 +29,7 @@ public class GatheringSkill extends CommonSkill
 	public String name(){ return "GatheringSkill";}
 	private static final String[] triggerStrings = {"FLETCH","FLETCHING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected String supportedResourceString(){return "";}
+	public String supportedResourceString(){return "";}
 	protected static final Hashtable supportedResources=new Hashtable();
 	
 	public Vector myresources()

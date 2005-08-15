@@ -29,7 +29,7 @@ public class Masonry extends CraftingSkill
 	public String name(){ return "Masonry";}
 	private static final String[] triggerStrings = {"MASONRY"};
 	public String[] triggerStrings(){return triggerStrings;}
-    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_STONE;}
+    public String supportedResourceString(){return "ROCK|STONE";}
 
 	private final static int BUILD_WALL=0;
 	private final static int BUILD_ROOF=1;

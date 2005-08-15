@@ -27,7 +27,7 @@ public class CageBuilding extends Wainwrighting
 	public String name(){ return "Cage Building";}
 	private static final String[] triggerStrings = {"BUILDCAGE","CAGEBUILDING"};
 	public String[] triggerStrings(){return triggerStrings;}
-    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_WOOD;}
+    public String supportedResourceString(){return "WOODEN";}
 
 	protected Vector loadRecipes()
 	{

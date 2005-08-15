@@ -28,7 +28,7 @@ public class Apothecary extends Cooking
 	public String name(){ return "Apothecary";}
 	private static final String[] triggerStrings = {"APOTHECARY","MIX"};
 	public String[] triggerStrings(){return triggerStrings;}
-    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_FIRE|Ability.CAN_BREW;}
+    public String supportedResourceString(){return "MISC";}
 	public String cookWordShort(){return "mix";};
 	public String cookWord(){return "mixing";};
 	public boolean honorHerbs(){return false;}

@@ -28,8 +28,7 @@ public class Weaving extends CraftingSkill
 	public String name(){ return "Weaving";}
 	private static final String[] triggerStrings = {"WEAVING","WEAVE"};
 	public String[] triggerStrings(){return triggerStrings;}
-    protected String supportedResourceString(){return "VEGETATION|HEMP|SILK|COTTON";}
-    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_CLOTH|Ability.CAN_VINE;}
+    public String supportedResourceString(){return "VEGETATION|HEMP|SILK|COTTON";}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;

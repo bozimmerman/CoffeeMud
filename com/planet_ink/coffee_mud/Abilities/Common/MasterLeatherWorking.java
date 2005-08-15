@@ -29,8 +29,7 @@ public class MasterLeatherWorking extends CraftingSkill
 	public String name(){ return "Master Leather Working";}
 	private static final String[] triggerStrings = {"MASTERLEATHERWORKING","MLEATHERWORK","MLEATHERWORKING"};
 	public String[] triggerStrings(){return triggerStrings;}
-    protected String supportedResourceString(){return "LEATHER";}
-    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_LEATHER;}
+    public String supportedResourceString(){return "LEATHER";}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
