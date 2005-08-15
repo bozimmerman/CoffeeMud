@@ -779,9 +779,14 @@ public class Conquerable extends Arrest
 					if(((Area)myHost).inMetroArea(msg.source().getStartRoom().getArea()))
 					{ // a native was killed
 						if((!killer.getClanID().equals(holdingClan))
-						&&(killer.getClanID().length()>0)
-						&&(flagFound((Area)myHost,killer.getClanID())))
-							changeControlPoints(killer.getClanID(),msg.source().envStats().level());
+                        &&(flagFound((Area)myHost,killer.getClanID())))
+                        {
+    						if(killer.getClanID().length()>0)
+                                changeControlPoints(killer.getClanID(),msg.source().envStats().level());
+                            else
+                            if((killer.amFollowing()!=null)&&(killer.amFollowing().getClanID().length()>0))
+                                changeControlPoints(killer.amFollowing().getClanID(),msg.source().envStats().level());
+                        }
 					}
 					else // a foreigner was killed
 					if((killer.getClanID().equals(holdingClan))
