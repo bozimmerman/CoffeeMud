@@ -43,10 +43,15 @@ public class TaxCollector extends StdBehavior
 		waitTime=Util.getParmInt(newParms,"WAIT",1000*60*2);
 		graceTime=Util.getParmInt(newParms,"GRACE",1000*60*60);
 	}
+    
+    public final static int OWE_TOTAL=0;
+    public final static int OWE_CITIZENTAX=1;
+    public final static int OWE_BACKTAXES=2;
+    public final static int OWE_FINES=3;
 	
 	public double[] totalMoneyOwed(MOB collector,MOB M)
 	{
-	    double[] owed=new double[3];
+	    double[] owed=new double[4];
 	    if((peopleWhoOwe.contains(M.Name()))
         ||((M.getClanID().length()>0)&&(peopleWhoOwe.contains(M.getClanID()))))
 	    {
@@ -56,13 +61,19 @@ public class TaxCollector extends StdBehavior
 			    if((T.landOwner().equals(M.Name())
 			            ||((M.getClanID().length()>0)&&T.landOwner().equals(M.getClanID())))
 	            &&(T.backTaxes()>0))
-	                owed[2]+=new Integer(T.backTaxes()).doubleValue();
+	                owed[OWE_BACKTAXES]+=new Integer(T.backTaxes()).doubleValue();
 	        }
 	    }
         Behavior B=CoffeeUtensils.getLegalBehavior(M.location());
         if(B!=null)
         {
             Area A2=CoffeeUtensils.getLegalObject(M.location());
+            if(A2!=null)
+            {
+                Vector V=Util.makeVector(new Integer(Law.MOD_FINESOWED));
+                if((B.modifyBehavior(A2,M,V))&&(V.firstElement() instanceof Double))
+                    owed[OWE_FINES]=((Double)V.firstElement()).doubleValue();
+            }
             if((A2!=null)
             &&(!B.modifyBehavior(A2,M,new Integer(Law.MOD_ISOFFICER)))
             &&(!B.modifyBehavior(A2,M,new Integer(Law.MOD_ISJUDGE))))
@@ -75,13 +86,13 @@ public class TaxCollector extends StdBehavior
                 {
                     double cittax=Util.s_double((String)theLaw.taxLaws().get("CITTAX"));
                     if(cittax>0.0)
-                        owed[1]=Util.mul(BeanCounter.getTotalAbsoluteShopKeepersValue(M,collector),Util.div(cittax,100.0));
+                        owed[OWE_CITIZENTAX]=Util.mul(BeanCounter.getTotalAbsoluteShopKeepersValue(M,collector),Util.div(cittax,100.0));
                 }
             }
         }
 		else
-			owed[1]=Util.div(BeanCounter.getTotalAbsoluteShopKeepersValue(M,collector),10.0);
-		owed[0]=owed[1]+owed[2];
+			owed[OWE_CITIZENTAX]=Util.div(BeanCounter.getTotalAbsoluteShopKeepersValue(M,collector),10.0);
+		owed[OWE_TOTAL]=owed[OWE_CITIZENTAX]+owed[OWE_BACKTAXES]+owed[OWE_FINES];
 		return owed;
 	}
 
@@ -109,13 +120,33 @@ public class TaxCollector extends StdBehavior
 					int demanDex=demanded.indexOf(msg.source());
 					if(demanDex>=0)
 					{
-					    paidAmount-=owed[1];
+					    paidAmount-=owed[OWE_CITIZENTAX];
 						demanded.removeElementAt(demanDex);
 					}
 				}
 				if(paid.contains(msg.source())) paid.removeElement(msg.source());
 				paid.addElement(msg.source(),new Long(System.currentTimeMillis()));
 				
+                if(owed[OWE_FINES]>0)
+                {
+                    Behavior B=CoffeeUtensils.getLegalBehavior(msg.source().location());
+                    Area A2=CoffeeUtensils.getLegalObject(msg.source().location());
+                    if((B!=null)&&(A2!=null))
+                    {
+                        if(paidAmount>=owed[OWE_FINES])
+                        {
+                            paidAmount-=owed[OWE_FINES];
+                            B.modifyBehavior(A2,msg.source(),Util.makeVector(new Integer(Law.MOD_FINESOWED),new Double(0.0)));
+                        }
+                        else
+                        {
+                            owed[OWE_FINES]-=paidAmount;
+                            paidAmount=0;
+                            B.modifyBehavior(A2,msg.source(),Util.makeVector(new Integer(Law.MOD_FINESOWED),new Double(owed[OWE_FINES])));
+                        }
+                    }
+                }
+                
 				int numProperties=0;
 				int numBackTaxesUnpaid=0;
 				boolean paidBackTaxes=false;
@@ -193,15 +224,15 @@ public class TaxCollector extends StdBehavior
 		    double[] owe=totalMoneyOwed(mob,msg.source());
 			double coins=((Coins)msg.tool()).getTotalValue();
 			if((paid!=null)&&(paid.contains(msg.source())))
-		        owe[0]-=owe[1];
-			String owed=BeanCounter.nameCurrencyShort(currency,owe[0]);
+		        owe[OWE_TOTAL]-=owe[OWE_CITIZENTAX];
+			String owed=BeanCounter.nameCurrencyShort(currency,owe[OWE_TOTAL]);
             if((!((Coins)msg.tool()).getCurrency().equals(BeanCounter.getCurrency(mob))))
             {
                 msg.source().tell(mob.name()+" refuses your money.");
                 CommonMsgs.say(mob,msg.source(),"I don't accept that kind of currency.",false,false);
                 return false;
             }
-			if(coins<owe[0])
+			if(coins<owe[OWE_TOTAL])
 			{
 			    msg.source().tell(mob.name()+" refuses your money.");
 				CommonMsgs.say(mob,msg.source(),"That's not enough.  You owe "+owed+".  Try again.",false,false);
@@ -304,10 +335,12 @@ public class TaxCollector extends StdBehavior
 				    StringBuffer say=new StringBuffer("");
 				    String currency=BeanCounter.getCurrency(mob);
 				    double denomination=BeanCounter.getLowestDenomination(currency);
-				    if(owe[1]>0)
-				    	say.append("You owe "+BeanCounter.getDenominationName(currency,denomination,Math.round(Util.div(owe[1],denomination)))+" in local taxes. ");
-				    if(owe[2]>0)
-				    	say.append("You owe "+BeanCounter.getDenominationName(currency,denomination,Math.round(Util.div(owe[2],denomination)))+" in back property taxes");
+				    if(owe[OWE_CITIZENTAX]>0)
+				    	say.append("You owe "+BeanCounter.getDenominationName(currency,denomination,Math.round(Util.div(owe[OWE_CITIZENTAX],denomination)))+" in local taxes. ");
+				    if(owe[OWE_BACKTAXES]>0)
+				    	say.append("You owe "+BeanCounter.getDenominationName(currency,denomination,Math.round(Util.div(owe[OWE_BACKTAXES],denomination)))+" in back property taxes");
+                    if(owe[OWE_FINES]>0)
+                        say.append("You owe "+BeanCounter.getDenominationName(currency,denomination,Math.round(Util.div(owe[OWE_FINES],denomination)))+" in fines");
 				    if(say.length()>0)
 				    {
 						CommonMsgs.say(mob,M,say.toString()+".  You must pay me immediately or face the consequences.",false,false);
@@ -316,7 +349,7 @@ public class TaxCollector extends StdBehavior
 						{
 							Vector V=new Vector();
 							V.addElement("GIVE");
-							V.addElement(""+owe[0]);
+							V.addElement(""+owe[OWE_TOTAL]);
 							V.addElement(mob.name());
 							M.doCommand(V);
 						}
