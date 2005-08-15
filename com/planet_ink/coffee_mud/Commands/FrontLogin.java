@@ -550,7 +550,7 @@ public class FrontLogin extends StdCommand
 							}
 						if(newRace!=null)
 						{
-							StringBuffer str=MUDHelp.getHelpText(newRace.ID().toUpperCase(),mob);
+							StringBuffer str=MUDHelp.getHelpText(newRace.ID().toUpperCase(),mob,false);
 							if(str!=null) mob.tell("\n\r^N"+str.toString()+"\n\r");
 							if(!mob.session().confirm("^!Is ^H"+newRace.name()+"^N^! correct (Y/n)?^N","Y"))
 								newRace=null;
@@ -674,7 +674,7 @@ public class FrontLogin extends StdCommand
 						}
 						if((newClass!=null)&&(classOkForMe(mob,newClass,theme)))
 						{
-							StringBuffer str=MUDHelp.getHelpText(newClass.ID().toUpperCase(),mob);
+							StringBuffer str=MUDHelp.getHelpText(newClass.ID().toUpperCase(),mob,false);
 							if(str!=null) mob.tell("\n\r^N"+str.toString()+"\n\r");
 							if(!mob.session().confirm("^NIs ^H"+newClass.name()+"^N correct (Y/n)?","Y"))
 								newClass=null;

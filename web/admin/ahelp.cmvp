@@ -7,7 +7,7 @@
 <BODY BGCOLOR=#000066 TEXT=#FFFFFF>
 <H3>@RequestParameter?HELPTOPIC@</H3>
 <PRE>
-@HelpTopics?data@
+@HelpTopics?data&ahelp@
 </PRE>
 </BODY>
 </HTML>
