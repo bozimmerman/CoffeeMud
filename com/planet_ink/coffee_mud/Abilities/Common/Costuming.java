@@ -30,6 +30,7 @@ public class Costuming extends CraftingSkill
 	private static final String[] triggerStrings = {"COSTUME","COSTUMING"};
 	public String[] triggerStrings(){return triggerStrings;}
     protected String supportedResourceString(){return "CLOTH";}
+    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_CLOTH;}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;

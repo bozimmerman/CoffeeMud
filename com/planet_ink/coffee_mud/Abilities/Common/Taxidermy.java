@@ -27,6 +27,7 @@ public class Taxidermy extends CraftingSkill
 	public String name(){ return "Taxidermy";}
 	private static final String[] triggerStrings = {"STUFF","TAXIDERMY"};
 	public String[] triggerStrings(){return triggerStrings;}
+    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_BODIES;}
 
 	private Item found=null;
 	private String foundShortName="";

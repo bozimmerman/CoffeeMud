@@ -26,6 +26,7 @@ public class FireBuilding extends CommonSkill
 	public String name(){ return "Fire Building";}
 	private static final String[] triggerStrings = {"LIGHT","FIREBUILD","FIREBUILDING"};
 	public String[] triggerStrings(){return triggerStrings;}
+    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_FIRE;}
 
 	public Item lighting=null;
 	private int durationOfBurn=0;

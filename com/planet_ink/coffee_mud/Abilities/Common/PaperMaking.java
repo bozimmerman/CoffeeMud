@@ -30,6 +30,7 @@ public class PaperMaking extends CraftingSkill
 	private static final String[] triggerStrings = {"PAPERMAKE","PAPERMAKING"};
 	public String[] triggerStrings(){return triggerStrings;}
     protected String supportedResourceString(){return "WOODEN|HEMP|SILK|CLOTH";}
+    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_WOOD|Ability.CAN_CLOTH;}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;

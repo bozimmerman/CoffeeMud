@@ -30,6 +30,7 @@ public class Weaponsmithing extends CraftingSkill
 	private static final String[] triggerStrings = {"WEAPONSMITH","WEAPONSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
     protected String supportedResourceString(){return "METAL|MITHRIL";}
+    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_FIRE|Ability.CAN_METALS;}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;

@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 import java.io.File;
 
@@ -28,6 +29,7 @@ public class Masonry extends CraftingSkill
 	public String name(){ return "Masonry";}
 	private static final String[] triggerStrings = {"MASONRY"};
 	public String[] triggerStrings(){return triggerStrings;}
+    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_STONE;}
 
 	private final static int BUILD_WALL=0;
 	private final static int BUILD_ROOF=1;
@@ -586,6 +588,16 @@ public class Masonry extends CraftingSkill
 			return false;
 		}
 
+        if(doingCode==BUILD_WALL)
+        {
+            Room nextRoom=mob.location().getRoomInDir(dir);
+            if((nextRoom!=null)&&(CoffeeUtensils.getLandTitle(nextRoom)==null))
+            {
+                commonTell(mob,"You can not build a wall blocking off the main entrance!");
+                return false;
+            }
+        }
+        
 		if(doingCode==BUILD_TITLE)
 		{
 			String title=Util.combine(commands,1);

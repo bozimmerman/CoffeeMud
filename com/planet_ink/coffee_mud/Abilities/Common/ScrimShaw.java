@@ -30,6 +30,7 @@ public class ScrimShaw extends CraftingSkill
 	private static final String[] triggerStrings = {"SCRIM","SCRIMSHAW"};
 	public String[] triggerStrings(){return triggerStrings;}
     protected String supportedResourceString(){return "BONE";}
+    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_BONE;}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;

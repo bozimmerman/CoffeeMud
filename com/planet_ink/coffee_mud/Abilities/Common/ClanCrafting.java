@@ -28,6 +28,7 @@ public class ClanCrafting extends CraftingSkill
 	public String name(){ return "Clan Crafting";}
 	private static final String[] triggerStrings = {"CLANCRAFT"};
 	public String[] triggerStrings(){return triggerStrings;}
+    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_WOOD|Ability.CAN_METALS;}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_MATERIAL1=1;

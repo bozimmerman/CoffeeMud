@@ -26,6 +26,7 @@ public class Butchering extends GatheringSkill
 	public String name(){ return "Butchering";}
 	private static final String[] triggerStrings = {"BUTCHER","BUTCHERING","SKIN"};
 	public String[] triggerStrings(){return triggerStrings;}
+    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_BODIES;}
 
 	protected String supportedResourceString(){return "FLESH|LEATHER|BLOOD|BONE|MILK|EGGS";}
 	private DeadBody body=null;

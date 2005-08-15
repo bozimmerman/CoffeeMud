@@ -29,6 +29,7 @@ public class Smelting extends CraftingSkill
 	public String name(){ return "Smelting";}
 	private static final String[] triggerStrings = {"SMELT","SMELTING"};
 	public String[] triggerStrings(){return triggerStrings;}
+    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_METALS|Ability.CAN_FIRE;}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;

@@ -30,6 +30,7 @@ public class LeatherWorking extends CraftingSkill
 	private static final String[] triggerStrings = {"LEATHERWORK","LEATHERWORKING"};
 	public String[] triggerStrings(){return triggerStrings;}
     protected String supportedResourceString(){return "LEATHER";}
+    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_LEATHER;}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;

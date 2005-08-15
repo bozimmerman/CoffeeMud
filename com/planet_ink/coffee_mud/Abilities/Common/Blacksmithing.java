@@ -30,6 +30,7 @@ public class Blacksmithing extends CraftingSkill
 	private static final String[] triggerStrings = {"BLACKSMITH","BLACKSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
     protected String supportedResourceString(){return "METAL|MITHRIL";}
+    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_FIRE|Ability.CAN_METALS;}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

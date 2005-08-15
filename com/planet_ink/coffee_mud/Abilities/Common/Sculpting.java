@@ -30,6 +30,7 @@ public class Sculpting extends CraftingSkill
 	private static final String[] triggerStrings = {"SCULPT","SCULPTING"};
 	public String[] triggerStrings(){return triggerStrings;}
     protected String supportedResourceString(){return "ROCK|STONE";}
+    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_STONE;}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;

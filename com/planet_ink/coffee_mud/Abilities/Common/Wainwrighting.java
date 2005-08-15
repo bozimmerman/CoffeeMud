@@ -30,6 +30,7 @@ public class Wainwrighting extends CraftingSkill
 	private static final String[] triggerStrings = {"WAINWRIGHTING"};
 	public String[] triggerStrings(){return triggerStrings;}
     protected String supportedResourceString(){return "WOODEN";}
+    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_WOOD;}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;

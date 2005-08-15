@@ -31,6 +31,7 @@ public class Distilling extends Cooking
 	public String cookWordShort(){return "distill";};
 	public String cookWord(){return "distilling";};
 	public boolean honorHerbs(){return false;}
+    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_BREW;}
 
 	protected Vector loadRecipes()
 	{

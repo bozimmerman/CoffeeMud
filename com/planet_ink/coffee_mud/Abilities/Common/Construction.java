@@ -27,6 +27,7 @@ public class Construction extends CraftingSkill
 	public String name(){ return "Construction";}
 	private static final String[] triggerStrings = {"CONSTRUCT"};
 	public String[] triggerStrings(){return triggerStrings;}
+    protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_WOOD;}
 
 	private final static int BUILD_WALL=0;
 	private final static int BUILD_DOOR=1;
@@ -542,6 +543,16 @@ public class Construction extends CraftingSkill
 			return false;
 		}
 
+        if(doingCode==BUILD_WALL)
+        {
+            Room nextRoom=mob.location().getRoomInDir(dir);
+            if((nextRoom!=null)&&(CoffeeUtensils.getLandTitle(nextRoom)==null))
+            {
+                commonTell(mob,"You can not build a wall blocking off the main entrance!");
+                return false;
+            }
+        }
+        
 		if(doingCode==BUILD_TITLE)
 		{
 			String title=Util.combine(commands,1);
