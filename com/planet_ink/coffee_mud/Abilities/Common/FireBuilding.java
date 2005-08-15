@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -64,12 +65,46 @@ public class FireBuilding extends CommonSkill
 		super.unInvoke();
 	}
 
+    public boolean fireHere(Room R)
+    {
+        for(int i=0;i<R.numItems();i++)
+        {
+            Item I2=R.fetchItem(i);
+            if((I2!=null)&&(I2.container()==null)&&(Sense.isOnFire(I2)))
+                return true;
+        }
+        return false;
+    }
+    
+    public Vector resourceHere(Room R, int material)
+    {
+        Vector here=new Vector();
+        for(int i=0;i<R.numItems();i++)
+        {
+            Item I2=R.fetchItem(i);
+            if((I2!=null)
+            &&(I2.container()==null)
+            &&(I2 instanceof EnvResource)
+            &&(((I2.material()&EnvResource.RESOURCE_MASK)==material)
+                ||(((I2.material())&EnvResource.MATERIAL_MASK)==material))
+            &&(!Sense.enchanted(I2)))
+                here.addElement(I2);
+        }
+        return here;
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.isMonster()
 		&&(!Sense.isAnimalIntelligence(mob)))
 		&&(commands.size()==0))
-			commands.addElement("fire");
+        {
+            if((!fireHere(mob.location()))
+            &&(resourceHere(mob.location(),EnvResource.MATERIAL_WOODEN).size()>0))
+                commands.addElement(((Environmental)resourceHere(mob.location(),EnvResource.MATERIAL_WOODEN).firstElement()).Name());
+            else
+    			commands.addElement("fire");
+        }
 
 		if(commands.size()==0)
 		{

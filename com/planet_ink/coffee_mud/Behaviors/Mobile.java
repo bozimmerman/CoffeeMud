@@ -164,6 +164,19 @@ public class Mobile extends ActiveTicker
 					objections.addElement(R);
 				}
 			}
+            Ability A=null;
+            for(int i=0;i<mob.numEffects();i++)
+            {
+                A=mob.fetchEffect(i);
+                if((A.canBeUninvoked())
+                &&(!A.isAutoInvoked())
+                &&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL)
+                &&(Dice.roll(1,10,0)>1))
+                {
+                    tickDown=0;
+                    return true;
+                }
+            }
 			Room oldRoom=mob.location();
 			MUDTracker.beMobile((MOB)ticking,dooropen,wander,false,objections!=null,objections);
 			if(mob.location()==oldRoom)
