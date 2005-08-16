@@ -270,7 +270,10 @@ public class CMMap
             {
                 E=(Environmental)V.elementAt(v);
                 if(!Sense.isInTheGame(E,true))
-                    CMMap.delGlobalHandler(E,category);
+                {
+                    if(!Sense.isInTheGame(E,false))
+                        CMMap.delGlobalHandler(E,category);
+                }
                 else
                 {
                     R=CoffeeUtensils.roomLocation(E);

@@ -36,6 +36,7 @@ public class Scriptable extends StdBehavior
 	private Hashtable delayProgCounters=new Hashtable();
 	private Hashtable lastTimeProgsDone=new Hashtable();
 	private Hashtable lastDayProgsDone=new Hashtable();
+    private HashSet registeredSpecialEvents=new HashSet();
 	private long tickStatus=Tickable.STATUS_NOT;
     
 	public long getTickStatus()
@@ -119,7 +120,9 @@ public class Scriptable extends StdBehavior
         "LOGIN_PROG", // 29
         "LOGOFF_PROG", // 30
         "REGMASK_PROG", // 31
+        "LEVEL_PROG", // 32
 	};
+    
 	private static final String[] funcs={
 		"RAND", //1
 		"HAS", //2
@@ -6025,7 +6028,30 @@ public class Scriptable extends StdBehavior
 				}
 				break;
             case 29: // login_prog
+                if(!registeredSpecialEvents.contains(new Integer(CMMsg.TYP_LOGIN)))
+                {
+                    CMMap.addGlobalHandler(affecting,CMMsg.TYP_LOGIN);
+                    registeredSpecialEvents.add(new Integer(CMMsg.TYP_LOGIN));
+                }
                 if((msg.sourceMinor()==CMMsg.TYP_LOGIN)
+                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
+                &&(!Sense.isCloaked(msg.source())))
+                {
+                    int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
+                    if(Dice.rollPercentage()<prcnt)
+                    {
+                        que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
+                        return;
+                    }
+                }
+                break;
+            case 32: // level_prog
+                if(!registeredSpecialEvents.contains(new Integer(CMMsg.TYP_LEVEL)))
+                {
+                    CMMap.addGlobalHandler(affecting,CMMsg.TYP_LEVEL);
+                    registeredSpecialEvents.add(new Integer(CMMsg.TYP_LEVEL));
+                }
+                if((msg.sourceMinor()==CMMsg.TYP_LEVEL)
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
                 &&(!Sense.isCloaked(msg.source())))
                 {

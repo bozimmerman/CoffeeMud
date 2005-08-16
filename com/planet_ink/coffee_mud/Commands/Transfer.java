@@ -124,7 +124,7 @@ public class Transfer extends At
 			MOB M=(MOB)V.elementAt(i);
 			if(!room.isInhabitant(M))
 			{
-				if(mob.playerStats().tranPoofOut().length()>0)
+				if((mob.playerStats().tranPoofOut().length()>0)&&(mob.location()!=null))
 					M.location().show(M,null,CMMsg.MSG_OK_VISUAL,mob.playerStats().tranPoofOut());
 				room.bringMobHere(M,true);
 				if(mob.playerStats().tranPoofIn().length()>0)

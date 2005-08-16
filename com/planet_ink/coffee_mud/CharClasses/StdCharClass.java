@@ -613,6 +613,8 @@ public class StdCharClass implements CharClass, Cloneable
 		||(leveless())
 		||(mob.charStats().getMyRace().leveless()))
 	        return;
+        if(!CMMap.sendGlobalMessage(mob,CMMsg.TYP_LEVEL,new FullMsg(mob,CMMsg.MSG_LEVEL,null,mob.baseEnvStats().level()+1)))
+            return;
 		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CommonStrings.msp("level_gain.wav",60));
 		theNews.append(levelAdjuster(mob,1));
 		if(mob.playerStats()!=null)

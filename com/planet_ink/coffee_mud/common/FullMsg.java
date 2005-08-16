@@ -46,6 +46,39 @@ public class FullMsg implements CMMsg
 		othersCode=newAllCode;
 		othersMsg=allMessage;
 	}
+    
+    public FullMsg(MOB source,
+                   int newAllCode,
+                   String allMessage)
+    {
+        myAgent=source;
+        myTarget=null;
+        myTool=null;
+        sourceMsg=allMessage;
+        targetMsg=allMessage;
+        targetCode=newAllCode;
+        sourceCode=newAllCode;
+        othersCode=newAllCode;
+        othersMsg=allMessage;
+    }
+    
+    public FullMsg(MOB source,
+                   int newAllCode,
+                   String allMessage,
+                   int newValue)
+    {
+         myAgent=source;
+         myTarget=null;
+         myTool=null;
+         sourceMsg=allMessage;
+         targetMsg=allMessage;
+         targetCode=newAllCode;
+         sourceCode=newAllCode;
+         othersCode=newAllCode;
+         othersMsg=allMessage;
+         value=newValue;
+    }
+    
 	public FullMsg(MOB source,
 				   Environmental target,
 				   Environmental tool,

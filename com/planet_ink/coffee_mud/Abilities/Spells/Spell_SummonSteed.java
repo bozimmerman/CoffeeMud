@@ -61,7 +61,9 @@ public class Spell_SummonSteed extends Spell
 					if(mob.amDead()) mob.setLocation(null);
 					mob.destroy();
 				}
-                if((mob.amFollowing()==null)&&(mob.curState().getHitPoints()<((mob.maxState().getHitPoints()/10)*3)))
+                if((mob.amFollowing()==null)
+                &&(mob.location()!=null)
+                &&(mob.curState().getHitPoints()<((mob.maxState().getHitPoints()/10)*3)))
                 {
                     mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> flees.");
                     mob.delEffect(this);
