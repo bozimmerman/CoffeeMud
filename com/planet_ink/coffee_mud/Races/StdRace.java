@@ -191,40 +191,58 @@ public class StdRace implements Race
 		if(!(myHost instanceof MOB)) return;
 
 		MOB myChar=(MOB)myHost;
-		if((msg.amITarget(myChar))
-		&&(msg.tool()!=null)
+		if((msg.tool()!=null)
 		&&(msg.tool().ID().equals("Social"))
-		&&(myChar.charStats().getStat(CharStats.GENDER)==('F'))
-		&&(msg.source().charStats().getStat(CharStats.GENDER)==('M'))
-		&&(msg.tool().Name().equals("MATE <T-NAME>")
-			||msg.tool().Name().equals("SEX <T-NAME>"))
-		&&(myChar.location()==msg.source().location()))
-	   {
-			msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
-			myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
-			if((Dice.rollPercentage()<10)
-			&&(fertile())
-			&&(myChar.numWearingHere(Item.ON_LEGS)==0)
-			&&(msg.source().numWearingHere(Item.ON_LEGS)==0)
-			&&(myChar.numWearingHere(Item.ON_WAIST)==0)
-			&&(msg.source().numWearingHere(Item.ON_WAIST)==0)
-			&&((ID().equals("Human"))
-			   ||(msg.source().charStats().getMyRace().ID().equals("Human"))
-			   ||(msg.source().charStats().getMyRace().ID().equals(ID())))
-			&&(msg.source().charStats().getMyRace().fertile())
-			&&((msg.source().charStats().getStat(CharStats.AGE)==0)
-			        ||((msg.source().charStats().ageCategory()>Race.AGE_CHILD)
-			                &&(msg.source().charStats().ageCategory()<Race.AGE_OLD)))
-			&&((myChar.charStats().getStat(CharStats.AGE)==0)
-			        ||((myChar.charStats().ageCategory()>Race.AGE_CHILD)
-			                &&(myChar.charStats().ageCategory()<Race.AGE_OLD))))
-			{
-				Ability A=CMClass.getAbility("Pregnancy");
-				if((A!=null)
-				&&(myChar.fetchAbility(A.ID())==null)
-				&&(myChar.fetchEffect(A.ID())==null))
-					A.invoke(msg.source(),myChar,true,0);
-			}
+		&&(msg.amITarget(myChar)||(msg.source()==myChar))
+		&&(myChar.location()==msg.source().location())
+		&&(msg.tool().Name().startsWith("MATE ")
+            ||msg.tool().Name().startsWith("SEX ")))
+        {
+            if(msg.tool().Name().endsWith("SELF"))
+            {
+                if((msg.source()==myChar)
+                &&(fertile())
+                &&(msg.source().numWearingHere(Item.ON_LEGS)==0)
+                &&(msg.source().numWearingHere(Item.ON_WAIST)==0))
+                {
+                    msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
+                    myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
+                    Ability A=CMClass.getAbility("Spell_Blindness");
+                    if(A!=null) A.invoke(myChar,myChar,true,myChar.envStats().level());
+                }
+            }
+            else
+            if((msg.target()==myChar)
+            &&(msg.tool().Name().endsWith("<T-NAME>")))
+            {
+                msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
+                myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
+    			if((Dice.rollPercentage()<10)
+                &&(myChar.charStats().getStat(CharStats.GENDER)==('F'))
+                &&(msg.source().charStats().getStat(CharStats.GENDER)==('M'))
+    			&&(fertile())
+    			&&(myChar.numWearingHere(Item.ON_LEGS)==0)
+    			&&(msg.source().numWearingHere(Item.ON_LEGS)==0)
+    			&&(myChar.numWearingHere(Item.ON_WAIST)==0)
+    			&&(msg.source().numWearingHere(Item.ON_WAIST)==0)
+    			&&((ID().equals("Human"))
+    			   ||(msg.source().charStats().getMyRace().ID().equals("Human"))
+    			   ||(msg.source().charStats().getMyRace().ID().equals(ID())))
+    			&&(msg.source().charStats().getMyRace().fertile())
+    			&&((msg.source().charStats().getStat(CharStats.AGE)==0)
+    			        ||((msg.source().charStats().ageCategory()>Race.AGE_CHILD)
+    			                &&(msg.source().charStats().ageCategory()<Race.AGE_OLD)))
+    			&&((myChar.charStats().getStat(CharStats.AGE)==0)
+    			        ||((myChar.charStats().ageCategory()>Race.AGE_CHILD)
+    			                &&(myChar.charStats().ageCategory()<Race.AGE_OLD))))
+    			{
+    				Ability A=CMClass.getAbility("Pregnancy");
+    				if((A!=null)
+    				&&(myChar.fetchAbility(A.ID())==null)
+    				&&(myChar.fetchEffect(A.ID())==null))
+    					A.invoke(msg.source(),myChar,true,0);
+    			}
+            }
 		}
 	}
 	public String arriveStr()

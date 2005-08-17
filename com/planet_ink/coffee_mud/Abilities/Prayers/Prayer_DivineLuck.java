@@ -91,6 +91,8 @@ public class Prayer_DivineLuck extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+        Environmental target=mob;
+        if((auto)&&(givenTarget!=null)) target=givenTarget;
 		if(mob.fetchEffect(this.ID())!=null)
 		{
 			mob.tell("You are already affected by "+name()+".");
@@ -99,9 +101,6 @@ public class Prayer_DivineLuck extends Prayer
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
-		Environmental target=mob;
-		if((auto)&&(givenTarget!=null)) target=givenTarget;
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
