@@ -71,9 +71,12 @@ public class Prayer_DivineFavor extends Prayer
         &&(!((MOB)affected).getVictim().getWorshipCharID().equals(((MOB)affected).getWorshipCharID())))
         {
             MOB deityM=CMMap.getDeity(((MOB)affected).getWorshipCharID());
-            struckDownToday=true;
-            ((MOB)affected).location().showOthers(deityM,((MOB)affected).getVictim(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> strike(s) down <T-NAME> with all of <T-HIS-HER> divine fury!");
-            MUDFight.postDeath(deityM,((MOB)affected).getVictim(),null);
+            if(deityM!=null)
+            {
+                struckDownToday=true;
+                ((MOB)affected).location().showOthers(deityM,((MOB)affected).getVictim(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> strike(s) down <T-NAME> with all of <T-HIS-HER> divine fury!");
+                MUDFight.postDeath(deityM,((MOB)affected).getVictim(),null);
+            }
         }
         return true;
     }
