@@ -93,7 +93,7 @@ public class Prayer_DivineLuck extends Prayer
 	{
         Environmental target=mob;
         if((auto)&&(givenTarget!=null)) target=givenTarget;
-		if(mob.fetchEffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell("You are already affected by "+name()+".");
 			return false;

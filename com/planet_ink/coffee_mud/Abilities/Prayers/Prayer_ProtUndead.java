@@ -80,7 +80,9 @@ public class Prayer_ProtUndead extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(mob.fetchEffect(this.ID())!=null)
+        Environmental target=mob;
+        if((auto)&&(givenTarget!=null)) target=givenTarget;
+        if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell("You are already affected by "+name()+".");
 			return false;
@@ -88,9 +90,6 @@ public class Prayer_ProtUndead extends Prayer
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
-		Environmental target=mob;
-		if((auto)&&(givenTarget!=null)) target=givenTarget;
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
