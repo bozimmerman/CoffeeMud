@@ -1171,12 +1171,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								if(I==null) I=mobFor.fetchFirstWornItem(Item.HELD);
 								if(I==null) I=mobFor.fetchWornItem("all");
 								if(I==null) I=mobFor.fetchCarried(null,"all");
-								if(I==null) return;
-								V.addElement(I.name()+"$");
-								addInventory(I);
-								A.invoke(this,V,I,true,0);
-								delInventory(I);
-								if(!mobFor.isMine(I)) mobFor.addInventory(I);
+								if(I!=null)
+                                {
+    								V.addElement(I.name()+"$");
+    								addInventory(I);
+    								A.invoke(this,V,I,true,0);
+    								delInventory(I);
+    								if(!mobFor.isMine(I)) mobFor.addInventory(I);
+                                }
 							}
 							curState().setMana(maxState().getMana());
 							curState().setMovement(maxState().getMovement());

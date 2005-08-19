@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Races;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -104,6 +105,40 @@ public class Chicken extends StdRace
 		else
 			return "^c" + mob.name() + "^c is in perfect health.^N";
 	}
+    
+    public boolean tick(Tickable ticking, int tickID)
+    {
+        if(!super.tick(ticking,tickID))
+            return false;
+        if((tickID==MudHost.TICK_MOB)&&(ticking instanceof MOB))
+        {
+            if((Dice.rollPercentage()>99)&&(((MOB)ticking).inventorySize()<9))
+            {
+                Item I=CMClass.getItem("GenFoodResource");
+                I.setName("an egg");
+                I.setDisplayText("an egg has been left here.");
+                I.setMaterial(EnvResource.RESOURCE_EGGS);
+                I.setDescription("It looks like a chicken egg!");
+                I.baseEnvStats().setWeight(1);
+                ((MOB)ticking).addInventory((Item)I.copyOf());
+            }
+            if((((MOB)ticking).inventorySize()>5)
+            &&(((MOB)ticking).location()!=null)
+            &&(((MOB)ticking).location().fetchItem(null,"an egg")==null))
+            {
+                Item I=((MOB)ticking).fetchInventory("am egg");
+                if(I!=null)
+                {
+                    ((MOB)ticking).location().show(((MOB)ticking),null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> lay(s) an egg.");
+                    I.removeFromOwnerContainer();
+                    ((MOB)ticking).location().addItemRefuse(I,Item.REFUSE_RESOURCE);
+                    ((MOB)ticking).location().recoverRoomStats();
+                }
+            }
+        }
+        return true;
+    }
+    
 	public Vector myResources()
 	{
 		synchronized(resources)
@@ -112,8 +147,6 @@ public class Chicken extends StdRace
 			{
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" lips",EnvResource.RESOURCE_MEAT));
-				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" egg",EnvResource.RESOURCE_EGGS));
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
 				resources.addElement(makeResource
