@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.Abilities.Misc.Amputation;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -118,7 +119,33 @@ public class Fighter_Gouge extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> blinded!");
-				maliciousAffect(mob,target,asLevel,0,-1);
+				maliciousAffect(mob,target,asLevel,5,-1);
+                Amputation A=(Amputation)target.fetchEffect("Amputation");
+                if(A==null) A=new Amputation();
+                Vector remainingLimbList=A.remainingLimbNameSet(target);
+                String gone=null;
+                for(int i=0;i<remainingLimbList.size();i++)
+                    if(((String)remainingLimbList.elementAt(i)).toUpperCase().endsWith("EYE"))
+                    {
+                        gone=(String)remainingLimbList.elementAt(i);
+                        break;
+                    }
+                if(gone!=null)
+                {
+                    Ability A2=CMClass.getAbility("Injury");
+                    if(A2!=null)
+                    {
+                        A2.setMiscText(mob.Name()+"/"+gone);
+                        FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSG_DAMAGE,"<DAMAGE> <T-NAME>");
+                        msg2.setValue(target.maxState().getHitPoints()/20);
+                        if(!A2.invoke(mob,Util.makeVector(msg2),target,true,0))
+                        {
+                            A2=target.fetchEffect("Injury");
+                            A2.setMiscText(mob.Name()+"/"+gone);
+                            if(A2!=null) A2.okMessage(target,msg2);
+                        }
+                    }
+                }
 			}
 		}
 		else

@@ -174,9 +174,10 @@ public class Injury extends StdAbility
 	    &&(msg.value()>0)
 	    &&(affected instanceof MOB)
 	    &&(msg.targetMessage()!=null)
-	    &&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTHP)>=(int)Math.round(Util.div(((MOB)affected).curState().getHitPoints(),((MOB)affected).maxState().getHitPoints())*100.0))
-	    &&(msg.targetMessage().indexOf("<DAMAGE>")>=0)
-	    &&(Dice.rollPercentage()<=CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTCHANCE)))
+        &&(msg.targetMessage().indexOf("<DAMAGE>")>=0)
+        &&(text().startsWith(msg.source().Name()+"/")
+	       ||((CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTHP)>=(int)Math.round(Util.div(((MOB)affected).curState().getHitPoints(),((MOB)affected).maxState().getHitPoints())*100.0))
+	        &&(Dice.rollPercentage()<=CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTCHANCE)))))
 	    {
 	        MOB mob=(MOB)affected;
 	        Amputation A=(Amputation)mob.fetchEffect("Amputation");
@@ -259,47 +260,46 @@ public class Injury extends StdAbility
 					                msg.sourceCode(),fixMessageString(msg.sourceMessage(),((String)remains.elementAt(chosenOne)).toLowerCase()),
 					                msg.targetCode(),newTarg,
 					                msg.othersCode(),fixMessageString(msg.othersMessage(),((String)remains.elementAt(chosenOne)).toLowerCase()));
+                            Object[] O=null;
 						    if(whichInjury<0)
 						    {
-						        Object[] O=new Object[2];
+						        O=new Object[2];
 						        O[0]=((String)remains.elementAt(chosenOne)).toLowerCase();
-						        O[1]=new Integer(LimbPct);
+						        O[1]=new Integer(0);
 						        bodyVec.addElement(O);
+                                whichInjury=bodyVec.size()-1;
 						    }
-						    else
-						    {
-						        Object[] O=(Object[])bodyVec.elementAt(whichInjury);
-						        O[1]=new Integer(((Integer)O[1]).intValue()+LimbPct);
-						        if(((Integer)O[1]).intValue()>100)
-						            O[1]=new Integer(100);
-						        if((((Integer)O[1]).intValue()>=100)
-								||((BodyPct>5)
-									&&((msg.tool() instanceof Electronics)||(BodyPct>=CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTHPAMP)))))
+					        O=(Object[])bodyVec.elementAt(whichInjury);
+					        O[1]=new Integer(((Integer)O[1]).intValue()+LimbPct);
+					        if(((Integer)O[1]).intValue()>100)
+					            O[1]=new Integer(100);
+					        if((((Integer)O[1]).intValue()>=100)
+							||((BodyPct>5)
+								&&((msg.tool() instanceof Electronics)||(BodyPct>=CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTHPAMP)))))
+							{
+							    boolean proceed=Dice.rollPercentage()<=CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTCHANCEAMP);
+							    if(msg.tool() instanceof Weapon)
 								{
-								    boolean proceed=Dice.rollPercentage()<=CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTCHANCEAMP);
-								    if(msg.tool() instanceof Weapon)
+									switch(((Weapon)msg.tool()).weaponType())
 									{
-										switch(((Weapon)msg.tool()).weaponType())
-										{
-										case Weapon.TYPE_FROSTING:
-										case Weapon.TYPE_GASSING:
-										    proceed=false;
-											break;
-										default:
-											break;
-										}
+									case Weapon.TYPE_FROSTING:
+									case Weapon.TYPE_GASSING:
+									    proceed=false;
+										break;
+									default:
+										break;
 									}
-						            if(Amputation.validamputees[bodyLoc]&&proceed)
-				                    {
-							            bodyVec.removeElement(O);
-							            if(bodyVec.size()==0)
-							                injuries[bodyLoc]=null;
-							            Amputation.amputate(mob,A,((String)O[0]).toLowerCase());
-							            if(mob.fetchEffect(A.ID())==null)
-							                mob.addNonUninvokableEffect(A);
-				                    }
-						        }
-						    }
+								}
+					            if(Amputation.validamputees[bodyLoc]&&proceed)
+			                    {
+						            bodyVec.removeElement(O);
+						            if(bodyVec.size()==0)
+						                injuries[bodyLoc]=null;
+						            Amputation.amputate(mob,A,((String)O[0]).toLowerCase());
+						            if(mob.fetchEffect(A.ID())==null)
+						                mob.addNonUninvokableEffect(A);
+			                    }
+					        }
 					    }
 					}
 				}
@@ -315,9 +315,14 @@ public class Injury extends StdAbility
 		    if(givenTarget.fetchEffect(ID())!=null)
 		        return false;
 		    Ability A=(Ability)copyOf();
-		    A.startTickDown(mob,mob,Integer.MAX_VALUE/2);
+		    A.startTickDown(mob,givenTarget,Integer.MAX_VALUE/2);
 		    if((commands!=null)&&(commands.size()>0)&&(commands.firstElement() instanceof CMMsg))
-		        return okMessage(mob,(CMMsg)commands.firstElement());
+            {
+                A=givenTarget.fetchEffect(ID());
+                if(A!=null)
+    		        return A.okMessage(mob,(CMMsg)commands.firstElement());
+                return false;
+            }
 		    return true;
 		}
 		else
