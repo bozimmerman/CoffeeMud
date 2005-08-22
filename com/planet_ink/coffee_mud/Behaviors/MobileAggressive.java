@@ -41,14 +41,23 @@ public class MobileAggressive extends Mobile
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
+        tickStatus=Tickable.STATUS_MISC+0;
 		super.tick(ticking,tickID);
-		if(tickID!=MudHost.TICK_MOB) return true;
+        tickStatus=Tickable.STATUS_MISC+1;
+		if(tickID!=MudHost.TICK_MOB)
+        {
+            tickStatus=Tickable.STATUS_NOT;
+            return true;
+        }
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;
+            tickStatus=Tickable.STATUS_MISC+2;
 			Aggressive.tickAggressively(ticking,tickID,(getParms().toUpperCase().indexOf("MOBKILL")>=0),getParms());
+            tickStatus=Tickable.STATUS_MISC+3;
 			VeryAggressive.tickVeryAggressively(ticking,tickID,wander,(getParms().toUpperCase().indexOf("MOBKILL")>=0),getParms());
 		}
+        tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
 }

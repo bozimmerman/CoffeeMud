@@ -153,6 +153,9 @@ public class List extends StdCommand
 		return lines;
 
 	}
+    
+    
+    
 
 	public StringBuffer listLinkages(MOB mob)
 	{

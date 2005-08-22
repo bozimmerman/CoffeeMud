@@ -30,6 +30,8 @@ public class Mobile extends ActiveTicker
 	protected int leash=0;
 	protected Hashtable leashHash=null;
 	protected Vector restrictedLocales=null;
+    protected long tickStatus=Tickable.STATUS_NOT;
+    public long getTickStatus(){return tickStatus;}
 
 	public Mobile()
 	{
@@ -147,12 +149,15 @@ public class Mobile extends ActiveTicker
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
+        tickStatus=Tickable.STATUS_MISC2+0;
 		super.tick(ticking,tickID);
+        tickStatus=Tickable.STATUS_MISC2+1;
 		if((canAct(ticking,tickID))
 		&&(ticking instanceof MOB)
 		&&(!((MOB)ticking).isInCombat())
 		&&(!CMSecurity.isDisabled("MOBILITY")))
 		{
+            tickStatus=Tickable.STATUS_MISC2+2;
 			Vector objections=null;
 			MOB mob=(MOB)ticking;
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -164,6 +169,7 @@ public class Mobile extends ActiveTicker
 					objections.addElement(R);
 				}
 			}
+            tickStatus=Tickable.STATUS_MISC2+3;
             Ability A=null;
             for(int i=0;i<mob.numEffects();i++)
             {
@@ -177,11 +183,14 @@ public class Mobile extends ActiveTicker
                     return true;
                 }
             }
+            tickStatus=Tickable.STATUS_MISC2+4;
 			Room oldRoom=mob.location();
 			MUDTracker.beMobile((MOB)ticking,dooropen,wander,false,objections!=null,objections);
+            tickStatus=Tickable.STATUS_MISC2+5;
 			if(mob.location()==oldRoom)
 				tickDown=0;
 		}
+        tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
 }

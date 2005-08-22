@@ -1051,7 +1051,7 @@ useless. </P>
   <TR>
     <TD>GOLDAMT([code])</TD>
     <TD>Returns the total value of the money the given 
-      mob has, expressed in base gold.</TD></TR>
+      mob has, or value of item, expressed in base gold.</TD></TR>
   <TR>
     <TD>GSTAT([code] [stat variable])</TD>
     <TD>Value of the given stat variable for the given 
@@ -2422,7 +2422,8 @@ style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">goldamt<o:p></O
 <P class=MsoNormal>Usage: <BR><EM>goldamt(character &gt; amount)</EM></P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>This&nbsp;evaluates the total amount of 
-money that the character variable has on hand. Where '==' may be any other 
+money that the character variable has on hand, or the value of the item if an item code is
+used instead of a character code. Where '==' may be any other 
 logical operator from&nbsp;above.&nbsp; The value is always expressed in base 
 gold, regardless of currency or denomination.</P>
 <P class=MsoNormal>EXAMPLE:</P>

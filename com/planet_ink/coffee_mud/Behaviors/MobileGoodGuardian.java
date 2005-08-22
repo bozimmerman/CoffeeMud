@@ -24,52 +24,81 @@ public class MobileGoodGuardian extends Mobile
 {
 	public String ID(){return "MobileGoodGuardian";}
 
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
+        tickStatus=Tickable.STATUS_MISC+0;
 		super.tick(ticking,tickID);
 
-		if(tickID!=MudHost.TICK_MOB) return true;
-		if(!canFreelyBehaveNormal(ticking)) return true;
+        tickStatus=Tickable.STATUS_MISC+1;
+		if(tickID!=MudHost.TICK_MOB)
+        {
+            tickStatus=Tickable.STATUS_NOT;
+            return true;
+        }
+		if(!canFreelyBehaveNormal(ticking))
+        {
+            tickStatus=Tickable.STATUS_NOT;
+            return true;
+        }
 		MOB mob=(MOB)ticking;
 
 		// ridden things dont wander!
 		if(ticking instanceof Rideable)
 			if(((Rideable)ticking).numRiders()>0)
-				return true;
+            {
+                tickStatus=Tickable.STATUS_NOT;
+                return true;
+            }
+        tickStatus=Tickable.STATUS_MISC+2;
 		if(((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location()))
 		||(!Sense.canTaste(mob)))
-		   return true;
+        {
+            tickStatus=Tickable.STATUS_NOT;
+            return true;
+        }
 
+        tickStatus=Tickable.STATUS_MISC+3;
 		Room thisRoom=mob.location();
 		MOB victim=GoodGuardian.anyPeaceToMake(mob.location(),mob);
 		GoodGuardian.keepPeace(mob,victim);
 		victim=null;
 		int dirCode=-1;
+        tickStatus=Tickable.STATUS_MISC+4;
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
+            tickStatus=Tickable.STATUS_MISC+5+d;
 			Room room=thisRoom.getRoomInDir(d);
 			Exit exit=thisRoom.getExitInDir(d);
 			if((room!=null)&&(exit!=null)&&(okRoomForMe(thisRoom,room)))
 			{
+                tickStatus=Tickable.STATUS_MISC+20+d;
 				if(exit.isOpen())
 				{
+                    tickStatus=Tickable.STATUS_MISC+40+d;
 					victim=GoodGuardian.anyPeaceToMake(room,mob);
 					if(victim!=null)
 					{
 						dirCode=d;
 						break;
 					}
+                    tickStatus=Tickable.STATUS_MISC+60+d;
 				}
+                tickStatus=Tickable.STATUS_MISC+80+d;
 			}
 			if(dirCode>=0) break;
+            tickStatus=Tickable.STATUS_MISC+100+d;
 		}
+        tickStatus=Tickable.STATUS_MISC+120;
 		if((dirCode>=0)
 		&&(!CMSecurity.isDisabled("MOBILITY")))
 		{
+            tickStatus=Tickable.STATUS_MISC+121;
 			MUDTracker.move(mob,dirCode,false,false);
+            tickStatus=Tickable.STATUS_MISC+122;
 			GoodGuardian.keepPeace(mob,victim);
-		}
+            tickStatus=Tickable.STATUS_MISC+123;
+    	}
+        tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
 }
