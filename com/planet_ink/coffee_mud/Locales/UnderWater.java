@@ -233,6 +233,7 @@ public class UnderWater extends StdRoom implements Drink
 	public void setThirstQuenched(int amount){}
 	public void setLiquidHeld(int amount){}
 	public void setLiquidRemaining(int amount){}
+    public boolean disappearsAfterDrinking(){return false;}
 	public boolean containsDrink(){return true;}
 	public static final Integer[] resourceList={
 		new Integer(EnvResource.RESOURCE_SEAWEED),

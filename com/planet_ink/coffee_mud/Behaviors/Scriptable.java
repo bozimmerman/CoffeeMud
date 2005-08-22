@@ -2811,7 +2811,7 @@ public class Scriptable extends StdBehavior
 				{
 					int val1=0;
 					if(E instanceof MOB)
-						val1=(int)Math.round(BeanCounter.getTotalAbsoluteNativeValue(((MOB)E)));
+						val1=(int)Math.round(BeanCounter.getTotalAbsoluteValue((MOB)E,BeanCounter.getCurrency(scripted)));
 					else
 					if(E instanceof Coins)
 						val1=(int)Math.round(((Coins)E).getTotalValue());
@@ -3998,7 +3998,7 @@ public class Scriptable extends StdBehavior
 				{
 					int val1=0;
 					if(E instanceof MOB)
-						val1=(int)Math.round(BeanCounter.getTotalAbsoluteNativeValue(((MOB)E)));
+						val1=(int)Math.round(BeanCounter.getTotalAbsoluteValue((MOB)E,BeanCounter.getCurrency(scripted)));
 					else
 					if(E instanceof Coins)
 						val1=(int)Math.round(((Coins)E).getTotalValue());

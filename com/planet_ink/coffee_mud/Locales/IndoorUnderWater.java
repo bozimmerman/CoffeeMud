@@ -60,6 +60,7 @@ public class IndoorUnderWater extends StdRoom implements Drink
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}
+    public boolean disappearsAfterDrinking(){return false;}
 	public int thirstQuenched(){return 500;}
 	public int liquidHeld(){return Integer.MAX_VALUE-1000;}
 	public int liquidRemaining(){return Integer.MAX_VALUE-1000;}

@@ -97,6 +97,7 @@ public class Cow extends StdMOB implements Drink
 	public int liquidHeld(){return Integer.MAX_VALUE-1000;}
 	public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
 	public int liquidType(){return EnvResource.RESOURCE_MILK;}
+    public boolean disappearsAfterDrinking(){return false;}
 	public void setLiquidType(int newLiquidType){}
 	public void setThirstQuenched(int amount){}
 	public void setLiquidHeld(int amount){}

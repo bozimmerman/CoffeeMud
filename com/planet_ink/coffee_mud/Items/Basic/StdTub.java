@@ -47,6 +47,7 @@ public class StdTub extends StdRideable implements Drink
 	}
 
 
+    public boolean disappearsAfterDrinking(){return disappearsAfterDrinking;}
 	public int thirstQuenched(){return amountOfThirstQuenched;}
 	public int liquidHeld(){return amountOfLiquidHeld;}
 	public int liquidRemaining(){return amountOfLiquidRemaining;}

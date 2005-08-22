@@ -48,6 +48,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 	public int thirstQuenched(){return amountOfThirstQuenched;}
 	public int liquidHeld(){return amountOfLiquidHeld;}
 	public int liquidRemaining(){return amountOfLiquidRemaining;}
+    public boolean disappearsAfterDrinking(){return disappearsAfterDrinking;}
 	public int liquidType(){
 		if((material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)
 			return material();
@@ -177,9 +178,13 @@ public class StdDrink extends StdContainer implements Drink,Item
 						amountOfLiquidRemaining+=amountToTake;
 					if(amountOfLiquidRemaining>amountOfLiquidHeld)
 						amountOfLiquidRemaining=amountOfLiquidHeld;
-					if((amountOfLiquidRemaining<=0)
-					&&((disappearsAfterDrinking)||(this instanceof EnvResource)))
-						destroy();
+					if((thePuddle.liquidRemaining()<=0)
+                    &&(thePuddle instanceof Item)
+					&&((thePuddle.disappearsAfterDrinking())||(thePuddle instanceof EnvResource)))
+						((Item)thePuddle).destroy();
+                    if((amountOfLiquidRemaining<=0)
+                    &&((disappearsAfterDrinking)||(this instanceof EnvResource)))
+                        destroy();
 				}
 				break;
 			default:
