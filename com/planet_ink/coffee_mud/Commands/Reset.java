@@ -180,19 +180,6 @@ public class Reset extends StdCommand
 		return -1;
 	}
 
-	public void resetArea(Area area)
-	{
-		boolean mobile=area.getMobility();
-		area.toggleMobility(false);
-		for(Enumeration r=area.getProperMap();r.hasMoreElements();)
-		{
-			Room R=(Room)r.nextElement();
-			CoffeeUtensils.resetRoom(R);
-		}
-		area.fillInAreaRooms();
-		area.toggleMobility(mobile);
-	}
-
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -211,7 +198,7 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("area"))
 		{
-			resetArea(mob.location().getArea());
+			CoffeeUtensils.resetArea(mob.location().getArea());
 			mob.tell("Done.");
 		}
 		else
@@ -853,7 +840,7 @@ public class Reset extends StdCommand
 		{
 			// this is just utility code and will change frequently
 			Area A=mob.location().getArea();
-			resetArea(A);
+            CoffeeUtensils.resetArea(A);
 			A.toggleMobility(false);
 			Hashtable rememberI=new Hashtable();
 			Hashtable rememberM=new Hashtable();

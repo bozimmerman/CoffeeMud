@@ -493,69 +493,83 @@ public class Quests implements Cloneable, Quest
 							A=R.getArea();
 					}
 					else
-					if(cmd.equals("ROOM"))
+					if(cmd.equals("RESET"))
 					{
-						R=null;
-						if(p.size()<3) continue;
-						String localeName=Util.combine(p,2).toUpperCase();
-						Vector choices=null;
-						Vector choices0=new Vector();
-						Vector choices1=new Vector();
-						Vector choices2=new Vector();
-						Vector choices3=new Vector();
-						try
-						{
-							Enumeration e=CMMap.rooms();
-							if(A!=null) e=A.getMetroMap();
-							for(;e.hasMoreElements();)
-							{
-								Room R2=(Room)e.nextElement();
-								String display=R2.displayText().toUpperCase();
-								String desc=R2.description().toUpperCase();
-								if(localeName.equalsIgnoreCase("any"))
-								{
-									choices=choices0;
-									choices0.addElement(R2);
-								}
-								else
-								if(R2.roomID().equalsIgnoreCase(localeName))
-								{
-									choices=choices0;
-									choices0.addElement(R2);
-								}
-								else
-								if(display.equals(localeName))
-								{
-									if((choices==null)||(choices==choices2)||(choices==choices3))
-										choices=choices1;
-									choices1.addElement(R2);
-								}
-								else
-								if(EnglishParser.containsString(display,localeName))
-								{
-									if((choices==null)||(choices==choices3))
-										choices=choices2;
-									choices2.addElement(R2);
-								}
-								else
-								if(EnglishParser.containsString(desc,localeName))
-								{
-									if(choices==null) choices=choices3;
-									choices3.addElement(R2);
-								}
-							}
-					    }catch(NoSuchElementException e){}
-						if((choices!=null)&&(choices.size()>0))
-							R=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
-						if(R==null)
-						{
-							if(!isQuiet)
-								Log.errOut("Quests","Quest '"+name()+"', !locale '"+localeName+"'.");
-							error=true; break;
-						}
-						else
-							A=R.getArea();
+                        if((A==null)&&(R==null))
+                        {
+                            Log.errOut("Quests","Quest '"+name()+"', no resettable room or area set.");
+                            error=true; 
+                            break;
+                        }
+                        if(R==null)
+                            CoffeeUtensils.resetArea(A);
+                        else
+                            CoffeeUtensils.resetRoom(R);
 					}
+                    else
+                    if(cmd.equals("ROOM"))
+                    {
+                        R=null;
+                        if(p.size()<3) continue;
+                        String localeName=Util.combine(p,2).toUpperCase();
+                        Vector choices=null;
+                        Vector choices0=new Vector();
+                        Vector choices1=new Vector();
+                        Vector choices2=new Vector();
+                        Vector choices3=new Vector();
+                        try
+                        {
+                            Enumeration e=CMMap.rooms();
+                            if(A!=null) e=A.getMetroMap();
+                            for(;e.hasMoreElements();)
+                            {
+                                Room R2=(Room)e.nextElement();
+                                String display=R2.displayText().toUpperCase();
+                                String desc=R2.description().toUpperCase();
+                                if(localeName.equalsIgnoreCase("any"))
+                                {
+                                    choices=choices0;
+                                    choices0.addElement(R2);
+                                }
+                                else
+                                if(R2.roomID().equalsIgnoreCase(localeName))
+                                {
+                                    choices=choices0;
+                                    choices0.addElement(R2);
+                                }
+                                else
+                                if(display.equals(localeName))
+                                {
+                                    if((choices==null)||(choices==choices2)||(choices==choices3))
+                                        choices=choices1;
+                                    choices1.addElement(R2);
+                                }
+                                else
+                                if(EnglishParser.containsString(display,localeName))
+                                {
+                                    if((choices==null)||(choices==choices3))
+                                        choices=choices2;
+                                    choices2.addElement(R2);
+                                }
+                                else
+                                if(EnglishParser.containsString(desc,localeName))
+                                {
+                                    if(choices==null) choices=choices3;
+                                    choices3.addElement(R2);
+                                }
+                            }
+                        }catch(NoSuchElementException e){}
+                        if((choices!=null)&&(choices.size()>0))
+                            R=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
+                        if(R==null)
+                        {
+                            if(!isQuiet)
+                                Log.errOut("Quests","Quest '"+name()+"', !locale '"+localeName+"'.");
+                            error=true; break;
+                        }
+                        else
+                            A=R.getArea();
+                    }
 					else
 					if(cmd.equals("MOB"))
 					{

@@ -37,6 +37,7 @@ public class Scriptable extends StdBehavior
 	private Hashtable lastTimeProgsDone=new Hashtable();
 	private Hashtable lastDayProgsDone=new Hashtable();
     private HashSet registeredSpecialEvents=new HashSet();
+    private Hashtable noTrigger=new Hashtable();
 	private long tickStatus=Tickable.STATUS_NOT;
     
 	public long getTickStatus()
@@ -198,6 +199,8 @@ public class Scriptable extends StdBehavior
         "FACTION", //72
         "ISSERVANT", // 73
         "HASNUM", // 74
+        "CURRENCY", // 75
+        "VALUE" // 76
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -254,6 +257,7 @@ public class Scriptable extends StdBehavior
 		"MPPLAYERCLASS", // 52
 		"MPWALKTO", // 53
         "MPFACTION", //54 
+        "MPNOTRIGGER", // 55
 	};
 
     private final static String[] clanVars={
@@ -1735,6 +1739,18 @@ public class Scriptable extends StdBehavior
 					returnable=simpleEvalStr(scripted,E.Name(),arg3,arg2,"NAME");
 				break;
 			}
+            case 75: // currency
+            {
+                String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+                String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+                String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(evaluable.substring(y+1,z),1));
+                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+                if(E==null)
+                    returnable=false;
+                else
+                    returnable=simpleEvalStr(scripted,BeanCounter.getCurrency(E),arg3,arg2,"CURRENCY");
+                break;
+            }
 			case 61: // strin
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
@@ -2828,6 +2844,49 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
+            case 76: // value
+            {
+                String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+                String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),1));
+                String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
+                String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),2));
+                if((arg2.length()==0)||(arg3.length()==0)||(arg4.length()==0))
+                {
+                    scriptableError(scripted,"VALUE","Syntax",evaluable);
+                    break;
+                }
+                if(!BeanCounter.getAllCurrencies().contains(arg2.toUpperCase()))
+                {
+                    scriptableError(scripted,"VALUE","Syntax",arg2+" is not a valid designated currency.");
+                    break;
+                }
+                if(E==null)
+                    returnable=false;
+                else
+                {
+                    int val1=0;
+                    if(E instanceof MOB)
+                        val1=(int)Math.round(BeanCounter.getTotalAbsoluteValue((MOB)E,arg2.toUpperCase()));
+                    else
+                    if(E instanceof Coins)
+                    {
+                        if(((Coins)E).getCurrency().equalsIgnoreCase(arg2))
+                            val1=(int)Math.round(((Coins)E).getTotalValue());
+                    }
+                    else
+                    if(E instanceof Item)
+                        val1=((Item)E).value();
+                    else
+                    {
+                        scriptableError(scripted,"VALUE","Syntax",evaluable);
+                        return returnable;
+                    }
+
+                    returnable=simpleEval(scripted,""+val1,arg4,arg3,"GOLDAMT");
+                }
+                break;
+            }
 			case 26: // objtype
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
@@ -3403,6 +3462,13 @@ public class Scriptable extends StdBehavior
 				if(E!=null)	results.append(E.name());
 				break;
 			}
+            case 75: // currency
+            {
+                String arg1=Util.cleanBit(evaluable.substring(y+1,z));
+                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+                if(E!=null)results.append(BeanCounter.getCurrency(E));
+                break;
+            }
 			case 14: // affected
 			{
 				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
@@ -4014,6 +4080,41 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
+            case 76: // value
+            {
+                String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+                String arg2=Util.getPastBitClean(evaluable.substring(y+1,z),0);
+                if(!BeanCounter.getAllCurrencies().contains(arg2.toUpperCase()))
+                {
+                    scriptableError(scripted,"VALUE","Syntax",arg2+" is not a valid designated currency.");
+                    return results.toString();
+                }
+                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+                if(E==null)
+                    results.append(false);
+                else
+                {
+                    int val1=0;
+                    if(E instanceof MOB)
+                        val1=(int)Math.round(BeanCounter.getTotalAbsoluteValue((MOB)E,arg2));
+                    else
+                    if(E instanceof Coins)
+                    {
+                        if(((Coins)E).getCurrency().equalsIgnoreCase(arg2))
+                            val1=(int)Math.round(((Coins)E).getTotalValue());
+                    }
+                    else
+                    if(E instanceof Item)
+                        val1=((Item)E).value();
+                    else
+                    {
+                        scriptableError(scripted,"GOLDAMT","Syntax",evaluable);
+                        return results.toString();
+                    }
+                    results.append(val1);
+                }
+                break;
+            }
 			case 26: // objtype
 			{
 				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
@@ -4735,6 +4836,26 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
+            case 55: // mpnotrigger
+            {
+                String trigger=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
+                String time=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
+                int triggerCode=-1;
+                for(int i=0;i<progs.length;i++)
+                    if(trigger.equalsIgnoreCase(progs[i]))
+                        triggerCode=i;
+                if(triggerCode<0)
+                    scriptableError(scripted,"MPNOTRIGGER","RunTime",trigger+" is not a valid trigger name.");
+                else
+                if(!Util.isInteger(time))
+                    scriptableError(scripted,"MPNOTRIGGER","RunTime",time+" is not a valid milisecond time.");
+                else
+                {
+                    noTrigger.remove(new Integer(triggerCode));
+                    noTrigger.put(new Integer(triggerCode),new Long(System.currentTimeMillis()+Util.s_long(time)));
+                }
+                break;
+            }
 			case 54: // mpfaction
 			{
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg);
@@ -5533,6 +5654,7 @@ public class Scriptable extends StdBehavior
 				&&(msg.amITarget(lastKnownLocation))
 				&&(!msg.amISource(eventMob))
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
+				&&canTrigger(1)
 				&&((!(affecting instanceof MOB))||Sense.canSenseMoving(msg.source(),(MOB)affecting)))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
@@ -5544,7 +5666,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 2: // all_greet_prog
-				if((msg.targetMinor()==CMMsg.TYP_ENTER)
+				if((msg.targetMinor()==CMMsg.TYP_ENTER)&&canTrigger(2)
 				&&(msg.amITarget(lastKnownLocation))
 				&&(!msg.amISource(eventMob))
 				&&(canActAtAll(monster)))
@@ -5558,7 +5680,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 3: // speech_prog
-				if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+				if((msg.sourceMinor()==CMMsg.TYP_SPEAK)&&canTrigger(3)
 				&&(!msg.amISource(monster))
 				&&(msg.othersMessage()!=null)
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
@@ -5597,7 +5719,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 4: // give_prog
-				if((msg.targetMinor()==CMMsg.TYP_GIVE)
+				if((msg.targetMinor()==CMMsg.TYP_GIVE)&&canTrigger(4)
 				&&((msg.amITarget(monster))||(msg.tool()==affecting)||(affecting instanceof Room)||(affecting instanceof Area))
 				&&(!msg.amISource(monster))
 				&&(msg.tool() instanceof Item)
@@ -5633,7 +5755,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 20: // get_prog
-				if((msg.targetMinor()==CMMsg.TYP_GET)
+				if((msg.targetMinor()==CMMsg.TYP_GET)&&canTrigger(20)
 				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
 				&&(!msg.amISource(monster))
 				&&(msg.target() instanceof Item)
@@ -5669,7 +5791,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 22: // drop_prog
-				if((msg.targetMinor()==CMMsg.TYP_DROP)
+				if((msg.targetMinor()==CMMsg.TYP_DROP)&&canTrigger(22)
 				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
 				&&(!msg.amISource(monster))
 				&&(msg.target() instanceof Item)
@@ -5711,7 +5833,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 24: // remove_prog
-				if((msg.targetMinor()==CMMsg.TYP_REMOVE)
+				if((msg.targetMinor()==CMMsg.TYP_REMOVE)&&canTrigger(24)
 				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
 				&&(!msg.amISource(monster))
 				&&(msg.target() instanceof Item)
@@ -5749,7 +5871,7 @@ public class Scriptable extends StdBehavior
 			case 25: // consume_prog
 				if(((msg.targetMinor()==CMMsg.TYP_EAT)||(msg.targetMinor()==CMMsg.TYP_DRINK))
 				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
-				&&(!msg.amISource(monster))
+				&&(!msg.amISource(monster))&&canTrigger(25)
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
@@ -5783,7 +5905,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 21: // put_prog
-				if((msg.targetMinor()==CMMsg.TYP_PUT)
+				if((msg.targetMinor()==CMMsg.TYP_PUT)&&canTrigger(21)
 				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
 				&&(msg.tool() instanceof Item)
 				&&(!msg.amISource(monster))
@@ -5826,7 +5948,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 27: // buy_prog
-				if((msg.targetMinor()==CMMsg.TYP_BUY)
+				if((msg.targetMinor()==CMMsg.TYP_BUY)&&canTrigger(27)
 				&&((!(affecting instanceof ShopKeeper))
                     ||msg.amITarget(affecting))
 				&&(!msg.amISource(monster))
@@ -5872,7 +5994,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 28: // sell_prog
-				if((msg.targetMinor()==CMMsg.TYP_SELL)
+				if((msg.targetMinor()==CMMsg.TYP_SELL)&&canTrigger(28)
 				&&((msg.amITarget(affecting))||(!(affecting instanceof ShopKeeper)))
 				&&(!msg.amISource(monster))
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
@@ -5921,7 +6043,7 @@ public class Scriptable extends StdBehavior
 					||(msg.targetMinor()==CMMsg.TYP_HOLD)
 					||(msg.targetMinor()==CMMsg.TYP_WIELD))
 				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
-				&&(!msg.amISource(monster))
+				&&(!msg.amISource(monster))&&canTrigger(23)
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
@@ -5957,7 +6079,7 @@ public class Scriptable extends StdBehavior
 			case 19: // bribe_prog
 				if((msg.targetMinor()==CMMsg.TYP_GIVE)
 				&&(msg.amITarget(eventMob)||(!(affecting instanceof MOB)))
-				&&(!msg.amISource(monster))
+				&&(!msg.amISource(monster))&&canTrigger(19)
 				&&(msg.tool() instanceof Coins)
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
@@ -5976,7 +6098,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 8: // entry_prog
-				if((msg.targetMinor()==CMMsg.TYP_ENTER)
+				if((msg.targetMinor()==CMMsg.TYP_ENTER)&&canTrigger(8)
 				&&(msg.amISource(eventMob)||(!(affecting instanceof MOB)))
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
@@ -5989,7 +6111,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 9: // exit prog
-				if((msg.targetMinor()==CMMsg.TYP_LEAVE)
+				if((msg.targetMinor()==CMMsg.TYP_LEAVE)&&canTrigger(9)
 				&&(msg.amITarget(lastKnownLocation))
 				&&(!msg.amISource(eventMob))
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
@@ -6003,7 +6125,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 10: // death prog
-				if((msg.sourceMinor()==CMMsg.TYP_DEATH)
+				if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&canTrigger(10)
 				&&(msg.amISource(eventMob)||(!(affecting instanceof MOB))))
 				{
 					MOB ded=msg.source();
@@ -6017,7 +6139,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 26: // damage prog
-				if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+				if((msg.targetMinor()==CMMsg.TYP_DAMAGE)&&canTrigger(26)
 				&&(msg.amITarget(eventMob)||(msg.tool()==affecting)))
 				{
 					Item I=null;
@@ -6033,7 +6155,7 @@ public class Scriptable extends StdBehavior
                     CMMap.addGlobalHandler(affecting,CMMsg.TYP_LOGIN);
                     registeredSpecialEvents.add(new Integer(CMMsg.TYP_LOGIN));
                 }
-                if((msg.sourceMinor()==CMMsg.TYP_LOGIN)
+                if((msg.sourceMinor()==CMMsg.TYP_LOGIN)&&canTrigger(29)
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
                 &&(!Sense.isCloaked(msg.source())))
                 {
@@ -6051,7 +6173,7 @@ public class Scriptable extends StdBehavior
                     CMMap.addGlobalHandler(affecting,CMMsg.TYP_LEVEL);
                     registeredSpecialEvents.add(new Integer(CMMsg.TYP_LEVEL));
                 }
-                if((msg.sourceMinor()==CMMsg.TYP_LEVEL)
+                if((msg.sourceMinor()==CMMsg.TYP_LEVEL)&&canTrigger(32)
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
                 &&(!Sense.isCloaked(msg.source())))
                 {
@@ -6064,7 +6186,7 @@ public class Scriptable extends StdBehavior
                 }
                 break;
             case 30: // logoff_prog
-                if((msg.sourceMinor()==CMMsg.TYP_QUIT)
+                if((msg.sourceMinor()==CMMsg.TYP_QUIT)&&canTrigger(30)
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
                 &&(!Sense.isCloaked(msg.source())))
                 {
@@ -6078,7 +6200,7 @@ public class Scriptable extends StdBehavior
                 break;
 			case 12: // mask prog
 			case 18: // act prog
-				if(!msg.amISource(monster))
+				if(!msg.amISource(monster)&&canTrigger(12)&&canTrigger(18))
 				{
 					boolean doIt=false;
 					String str=msg.othersMessage();
@@ -6125,7 +6247,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
             case 31: // regmask prog
-                if(!msg.amISource(monster))
+                if(!msg.amISource(monster)&&canTrigger(31))
                 {
                     boolean doIt=false;
                     String str=msg.othersMessage();
@@ -6210,6 +6332,16 @@ public class Scriptable extends StdBehavior
 		}
 		return mob;
 	}
+    
+    public boolean canTrigger(int triggerCode)
+    {
+        Long L=(Long)noTrigger.get(new Integer(triggerCode));
+        if(L==null) return true;
+        if(System.currentTimeMillis()<L.longValue())
+            return false;
+        noTrigger.remove(new Integer(triggerCode));
+        return true;
+    }
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -6240,7 +6372,7 @@ public class Scriptable extends StdBehavior
 			switch(triggerCode)
 			{
 			case 5: // rand_Prog
-				if(!mob.amDead())
+				if((!mob.amDead())&&canTrigger(5))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if(Dice.rollPercentage()<prcnt)
@@ -6248,7 +6380,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 16: // delay_prog
-				if(!mob.amDead())
+				if((!mob.amDead())&&canTrigger(16))
 				{
 					int targetTick=-1;
 					if(delayTargetTimes.containsKey(new Integer(thisScriptIndex)))
@@ -6276,7 +6408,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 7: // fightProg
-				if((mob.isInCombat())&&(!mob.amDead()))
+				if((mob.isInCombat())&&(!mob.amDead())&&canTrigger(7))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if(Dice.rollPercentage()<prcnt)
@@ -6284,6 +6416,7 @@ public class Scriptable extends StdBehavior
 				}
 				else
 				if((ticking instanceof Item)
+                &&canTrigger(7)
 				&&(((Item)ticking).owner() instanceof MOB)
 				&&(((MOB)((Item)ticking).owner()).isInCombat()))
 				{
@@ -6297,7 +6430,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 11: // hitprcnt
-				if((mob.isInCombat())&&(!mob.amDead()))
+				if((mob.isInCombat())&&(!mob.amDead())&&canTrigger(11))
 				{
 					int floor=(int)Math.round(Util.mul(Util.div(Util.s_int(Util.getCleanBit(trigger,1)),100.0),mob.maxState().getHitPoints()));
 					if(mob.curState().getHitPoints()<=floor)
@@ -6305,6 +6438,7 @@ public class Scriptable extends StdBehavior
 				}
 				else
 				if((ticking instanceof Item)
+                &&canTrigger(11)
 				&&(((Item)ticking).owner() instanceof MOB)
 				&&(((MOB)((Item)ticking).owner()).isInCombat()))
 				{
@@ -6318,7 +6452,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 6: // once_prog
-				if(!oncesDone.contains(script))
+				if(!oncesDone.contains(script)&&canTrigger(6))
 				{
 					oncesDone.addElement(script);
 					execute(affecting,mob,mob,mob,defaultItem,null,script,null);
@@ -6326,6 +6460,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 14: // time_prog
 				if((mob.location()!=null)
+                &&canTrigger(14)
 				&&(!mob.amDead()))
 				{
 					int lastTimeProgDone=-1;
@@ -6352,7 +6487,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 15: // day_prog
-				if((mob.location()!=null)
+				if((mob.location()!=null)&&canTrigger(15)
 				&&(!mob.amDead()))
 				{
 					int lastDayProgDone=-1;
@@ -6379,7 +6514,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 13: // questtimeprog
-				if(!oncesDone.contains(script))
+				if(!oncesDone.contains(script)&&canTrigger(13))
 				{
 					Quest Q=Quests.fetchQuest(Util.getCleanBit(trigger,1));
 					if((Q!=null)&&(Q.running())&&(!Q.stopping()))
