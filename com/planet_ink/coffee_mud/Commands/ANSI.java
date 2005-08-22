@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@ public class ANSI extends StdCommand
 {
 	public ANSI(){}
 
-	private String[] access={"ANSI","COLOR","COLOUR"};
+	private String[] access={"ANSI",getScr("ANSI","cmd1"),getScr("ANSI","cmd2")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -33,11 +33,11 @@ public class ANSI extends StdCommand
 			if(!Util.bset(mob.getBitmap(),MOB.ATT_ANSI))
 			{
 				mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_ANSI));
-				mob.tell("^!ANSI^N ^Hcolour^N enabled.\n\r");
+				mob.tell(getScr("ANSI","enabled"));
 			}
 			else
 			{
-				mob.tell("^!ANSI^N is ^Halready^N enabled.\n\r");
+				mob.tell(getScr("ANSI","alenabled"));
 			}
 		}
 		return false;

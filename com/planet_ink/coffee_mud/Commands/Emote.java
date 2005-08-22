@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,14 +23,14 @@ public class Emote extends StdCommand
 {
 	public Emote(){}
 
-	private String[] access={"EMOTE",",",";",":"};
+	private String[] access={getScr("Emote","emotecmd"),",",";",":"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("emote what?");
+			mob.tell(getScr("Emote","emoteerr"));
 			return false;
 		}
 		String combinedCommands=Util.combine(commands,1);
