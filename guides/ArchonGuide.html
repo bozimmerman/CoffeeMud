@@ -1571,8 +1571,10 @@ differently than described above:</P>
     <TD>A Journal is always readable, so this field is 
       really redundant to the journal. Therefore, it is now used as a field 
       where you may set requirements for reading from and writing to the 
-      journal. If no requirements are mentioned, anyone may read the journal. A 
+      journal. If no requirements are mentioned, anyone may read from, write to, or reply to the journal. A 
       reading requirement is specified by putting READ= followed by some 
+      requirements. A 
+      reply requirement is specified by putting REPLY= followed by some 
       requirements. A writing requirement is specified by putting WRITE= 
       followed by some requirements. The requirments for each of these setting 
       are as follows: 
@@ -4082,9 +4084,9 @@ LockableContainer, etc</P>
 <P class=MsoNormal>StdJournal</P>
 <UL>
   <LI>
-  <DIV class=MsoNormal>misc text - The reading and writing 
+  <DIV class=MsoNormal>misc text - The reading, writing, and replying
   requirements for the journal. The proper format is READ=REQUIREMENTS 
-  WRITE=REQUIREMENTS. The REQUIREMENTS are as described above under the Assigned 
+  WRITE=REQUIREMENTS REPLY=REQUIREMENTS. The REQUIREMENTS are as described above under the Assigned 
   Readable Text field in the GenJournal entry.&nbsp; </DIV></LI></UL>
 <P class=MsoNormal>StdKey</P>
 <UL>

@@ -122,8 +122,13 @@ public class StdJournal extends StdItem
 							repeat=false;
 							try
 							{
-								String prompt="^<MENU^>R^</MENU^>)eply ";
-								String cmds="R";
+								String prompt="";
+                                String cmds="";
+                                if(MUDZapper.zapperCheck(getReplyReq(),mob)||((CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))))
+                                {
+                                    prompt+="^<MENU^>R^</MENU^>)eply ";
+                                    cmds+="R";
+                                }
 								if((CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX).length()>0)
 								&&(from.length()>0))
 									prompt+="^<MENU^>E^</MENU^>)mail "; cmds+="E";
@@ -487,8 +492,9 @@ public class StdJournal extends StdItem
 		if(readeq<0) return "";
 		text=text.substring(readeq+5);
 		int writeeq=text.indexOf("WRITE=");
-		if(writeeq>=0)
-			return text.substring(0,writeeq);
+		if(writeeq>=0)text= text.substring(0,writeeq);
+        int replyreq=text.indexOf("REPLY=");
+        if(replyreq>=0) text=text.substring(0,replyreq);
 		return text;
 	}
 	private String getWriteReq()
@@ -499,9 +505,23 @@ public class StdJournal extends StdItem
 		if(writeeq<0) return "";
 		text=text.substring(writeeq+6);
 		int readeq=text.indexOf("READ=");
-		if(readeq>=0)
-			return text.substring(0,readeq);
+		if(readeq>=0) text=text.substring(0,readeq);
+        int replyreq=text.indexOf("REPLY=");
+        if(replyreq>=0) text=text.substring(0,replyreq);
 		return text;
 	}
+    private String getReplyReq()
+    {
+        if(readableText().length()==0) return "";
+        String text=readableText().toUpperCase();
+        int replyreq=text.indexOf("REPLY=");
+        if(replyreq<0) return "";
+        text=text.substring(replyreq+6);
+        int readeq=text.indexOf("READ=");
+        if(readeq>=0) text=text.substring(0,readeq);
+        int writeeq=text.indexOf("WRITE=");
+        if(writeeq>=0)text= text.substring(0,writeeq);
+        return text;
+    }
 	public void recoverEnvStats(){Sense.setReadable(this,true); super.recoverEnvStats();}
 }
