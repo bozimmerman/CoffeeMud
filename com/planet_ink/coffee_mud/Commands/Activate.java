@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,14 +24,14 @@ public class Activate extends BaseItemParser
 {
 	public Activate(){}
 
-	private String[] access={"ACTIVATE","ACT","A",">"};
+	private String[] access={getScr("Activate","actcmd1"),getScr("Activate","actcmd2"),"A",">"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Activate what?");
+			mob.tell(getScr("Activate","acterr"));
 			return false;
 		}
 		String cmd=(String)commands.firstElement();
@@ -49,11 +49,11 @@ public class Activate extends BaseItemParser
 		if((item==null)&&(E instanceof Electronics))
 		    item=(Item)E;
 		if((E==null)||(!Sense.canBeSeenBy(E,mob)))
-			mob.tell("You don't see anything called '"+what+"' here that you can activate.");
+			mob.tell(getScr("Activate","actsee",what));
 		else
 		if(item==null)
-			mob.tell("You can't activate '"+E.name()+"'.");
-		
+			mob.tell(getScr("Activate","actcant",E.name())+"'.");
+
 		String rest=Util.combine(commands,0);
 		FullMsg newMsg=new FullMsg(mob,item,null,CMMsg.MSG_ACTIVATE,null,CMMsg.MSG_ACTIVATE,rest,CMMsg.MSG_ACTIVATE,null);
 		if(mob.location().okMessage(mob,newMsg))

@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@ public class Affect extends StdCommand
 {
 	private String[] access={"AFFECT","AFF","AF"};
 	public String[] getAccessWords(){return access;}
-	
+
 	public String getAffects(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
@@ -42,7 +42,7 @@ public class Affect extends StdCommand
 		msg.append("^N\n\r");
 		return msg.toString();
 	}
-	
+
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -74,10 +74,10 @@ public class Affect extends StdCommand
 		if(S!=null)
 		{
 			if(S==mob.session())
-				S.colorOnlyPrint("\n\r^!You are affected by:^? ");
+				S.colorOnlyPrint(getScr("Affect","affected"));
             String msg=getAffects(mob);
             if(msg.length()<5)
-                S.colorOnlyPrintln("Nothing!\n\r^N");
+                S.colorOnlyPrintln(getScr("Affect","nothing"));
             else
                 S.colorOnlyPrintln(msg);
 		}

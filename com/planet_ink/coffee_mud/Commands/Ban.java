@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@ public class Ban extends StdCommand
 {
 	public Ban(){}
 
-	private String[] access={"BAN"};
+	private String[] access={getScr("Ban","bancmd")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -32,7 +32,7 @@ public class Ban extends StdCommand
 		String banMe=Util.combine(commands,0);
 		if(banMe.length()==0)
 		{
-			mob.tell("Ban what?  Enter an IP address or name mask.");
+			mob.tell(getScr("Ban","banerr"));
 			return false;
 		}
 		banMe=banMe.toUpperCase().trim();
@@ -43,11 +43,11 @@ public class Ban extends StdCommand
 			String B=(String)banned.elementAt(b);
 			if(B.equals(banMe))
 			{
-				mob.tell("That is already banned.  Do LIST BANNED and check out #"+(b+1)+".");
+				mob.tell(getScr("Ban","albanned")+(b+1)+".");
 				return false;
 			}
 		}
-		mob.tell("Logins and IPs matching '"+banMe+"' are now banned.");
+		mob.tell(getScr("Ban","banned",banMe));
 		StringBuffer str=Resources.getFileResource("banned.ini",false);
 		if(banMe.trim().length()>0) str.append(banMe+"\n");
 		Resources.updateResource("banned.ini",str);
