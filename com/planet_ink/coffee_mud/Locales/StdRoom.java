@@ -872,9 +872,9 @@ public class StdRoom
     
     					Say.append("^M^<RMob \""+mob2.name()+"\"^>");
     					if(mob2.displayText(mob).length()>0)
-    						Say.append(Util.capitalize(mob2.displayText(mob)));
+    						Say.append(Util.capitalizeFirstLetter(mob2.displayText(mob)));
     					else
-    						Say.append(Util.capitalize(mob2.name()));
+    						Say.append(Util.capitalizeFirstLetter(mob2.name()));
     					Say.append("^</RMob^>"+Sense.colorCodes(mob2,mob)+"^N\n\r");
                    }
                    else

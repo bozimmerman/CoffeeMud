@@ -143,7 +143,7 @@ public class Lacquerring extends CommonSkill
 		verb="lacquering "+target.name()+" "+writing;
 		displayText="You are "+verb;
 		found=target;
-		if(darkFlag) writing=Util.capitalize(writing);
+		if(darkFlag) writing=Util.capitalizeAndLower(writing);
 		if(!profficiencyCheck(mob,0,auto)) writing="";
 		int duration=60-mob.envStats().level();
 		if(duration<12) duration=12;

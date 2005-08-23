@@ -220,10 +220,10 @@ public class Burning extends StdAbility
 			case EnvResource.MATERIAL_ENERGY:
 			case EnvResource.MATERIAL_ROCK:
 			case EnvResource.MATERIAL_UNKNOWN:
-				mob.tell("Ouch!! "+Util.capitalize(affected.name())+" is HOT!");
+				mob.tell("Ouch!! "+Util.capitalizeAndLower(affected.name())+" is HOT!");
 				break;
 			default:
-				mob.tell("Ouch!! "+Util.capitalize(affected.name())+" is on fire!");
+				mob.tell("Ouch!! "+Util.capitalizeAndLower(affected.name())+" is on fire!");
 				break;
 			}
 			MUDFight.postDamage(invoker,mob,this,Dice.roll(1,5,5),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,null);

@@ -363,15 +363,15 @@ public class StdTitle extends StdItem implements LandTitle
 							else
 							if(n.length()!=0)
 							{
-								String nn=Util.replaceAll(AREA.Name(),"UNNAMED",Util.capitalize(n.toLowerCase()));
+								String nn=Util.replaceAll(AREA.Name(),"UNNAMED",Util.capitalizeFirstLetter(n.toLowerCase()));
 								if(CMClass.DBEngine().DBUserSearch(null,nn))
 									msg.source().tell("That name is already taken.  Please enter a different one.");
 								else
 								if(msg.source().session().confirm("If the name '"+nn+"' correct (y/N)?","N",60000))
 								{
-									name=Util.replaceAll(name,"UNNAMED",Util.capitalize(n.toLowerCase()));
-									displayText=Util.replaceAll(displayText,"UNNAMED",Util.capitalize(n.toLowerCase()));
-									setDescription(Util.replaceAll(description(),"UNNAMED",Util.capitalize(n.toLowerCase())));
+									name=Util.replaceAll(name,"UNNAMED",Util.capitalizeFirstLetter(n.toLowerCase()));
+									displayText=Util.replaceAll(displayText,"UNNAMED",Util.capitalizeFirstLetter(n.toLowerCase()));
+									setDescription(Util.replaceAll(description(),"UNNAMED",Util.capitalizeFirstLetter(n.toLowerCase())));
 									newName=nn;
 								}
 								else

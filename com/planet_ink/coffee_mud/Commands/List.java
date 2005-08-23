@@ -698,8 +698,8 @@ public class List extends StdCommand
 		str.append("Locales\n\r");
 		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
 		{
-			str.append(Util.padRight(Util.capitalize(EnvResource.RESOURCE_DESCS[i].toLowerCase()),12));
-			str.append(Util.padRight(Util.capitalize(EnvResource.MATERIAL_DESCS[(EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)>>8].toLowerCase()),11));
+			str.append(Util.padRight(Util.capitalizeAndLower(EnvResource.RESOURCE_DESCS[i].toLowerCase()),12));
+			str.append(Util.padRight(Util.capitalizeAndLower(EnvResource.MATERIAL_DESCS[(EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)>>8].toLowerCase()),11));
 			str.append(Util.padRight(""+EnvResource.RESOURCE_DATA[i][1],4));
 			str.append(Util.padRight(""+EnvResource.RESOURCE_DATA[i][2],5));
 			str.append(Util.padRight(""+EnvResource.RESOURCE_DATA[i][3],4));

@@ -418,7 +418,7 @@ public class Go extends StdCommand
 						break;
 				}
 			if(!doneAnything)
-				mob.tell(Util.capitalize(doing)+" "+getScr("Movement","goerr"));
+				mob.tell(Util.capitalizeAndLower(doing)+" "+getScr("Movement","goerr"));
 		}
 		return false;
 	}

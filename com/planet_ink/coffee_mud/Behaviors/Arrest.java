@@ -1366,7 +1366,6 @@ public class Arrest extends StdBehavior
     }
 	public int highestCrimeAction(Law laws, LegalWarrant W, MOB criminal)
 	{
-		int num=0;
 		int highest=0;
         if(Util.bset(W.actionCode(),Law.ACTIONMASK_SEPARATE))
             return W.actionCode();

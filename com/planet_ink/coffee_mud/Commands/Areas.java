@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@ public class Areas extends StdCommand
 {
 	public Areas(){}
 
-	private String[] access={"AREAS"};
+	private String[] access={getScr("Areas","cmd")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -39,7 +39,7 @@ public class Areas extends StdCommand
 					areasVec.addElement("("+A.name()+")");
 		}
 		Collections.sort(areasVec);
-		StringBuffer msg=new StringBuffer("^HComplete areas list:^?^N\n\r");
+		StringBuffer msg=new StringBuffer(getScr("Areas","cal"));
 		int col=0;
 		for(int i=0;i<areasVec.size();i++)
 		{
@@ -50,7 +50,7 @@ public class Areas extends StdCommand
 			}
 			msg.append(Util.padRight((String)areasVec.elementAt(i),22)+"^N");
 		}
-		msg.append("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
+		msg.append(getScr("Areas","help"));
 		if(!mob.isMonster())
 			mob.session().colorOnlyPrintln(msg.toString());
 		return false;

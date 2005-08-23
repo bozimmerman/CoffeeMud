@@ -133,7 +133,7 @@ public class Qualify extends BaseAbleLister
 				{ domain=i<<5; break;}
 			if(domain>0)
 			{
-				domainName=Util.capitalize(Ability.DOMAIN_DESCS[domain>>5]);
+				domainName=Util.capitalizeAndLower(Ability.DOMAIN_DESCS[domain>>5]);
 				msg.append(getQualifiedAbilities(mob,Ability.SPELL,domain,"\n\r^H"+domainName+" spells:^? "));
 			}
 		}

@@ -50,7 +50,7 @@ public class FactionList extends StdCommand
     public String formatFactionLine(String name,int faction) 
     {
         StringBuffer line=new StringBuffer();
-        line.append("  "+Util.padRight(Util.capitalize(Factions.getName(name).toLowerCase()),21)+" ");
+        line.append("  "+Util.padRight(Util.capitalizeAndLower(Factions.getName(name).toLowerCase()),21)+" ");
         Faction.FactionRange FR=Factions.getRange(name,faction);
         if(FR==null)
 	        line.append(Util.padRight(""+faction,17)+" ");

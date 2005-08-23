@@ -241,7 +241,7 @@ public class Druid_PlantForm extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE);
-				raceName=Util.capitalize(Util.startWithAorAn(raceName.toLowerCase()));
+				raceName=Util.capitalizeAndLower(Util.startWithAorAn(raceName.toLowerCase()));
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
 				mob.confirmWearability();
 			}

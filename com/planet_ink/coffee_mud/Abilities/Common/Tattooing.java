@@ -101,7 +101,7 @@ public class Tattooing extends CommonSkill
 		        {
 				    if(Item.wornLocation[i].equalsIgnoreCase(part))
 				        partNum=i;
-				    allParts.append(", "+Util.capitalize(Item.wornLocation[i].toLowerCase()));
+				    allParts.append(", "+Util.capitalizeAndLower(Item.wornLocation[i].toLowerCase()));
 				    break;
 			    }
 		}

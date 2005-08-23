@@ -76,7 +76,7 @@ public class Prayer_Revival extends Prayer
 			if((D!=null)&&(Dice.rollPercentage()<50))
 			switch(Dice.roll(1,13,0))
 			{
-			case 1:	CommonMsgs.say(mob,null,D.name()+" is great! Shout "+Util.capitalize(D.charStats().hisher())+" praises!",false,false); break;
+			case 1:	CommonMsgs.say(mob,null,D.name()+" is great! Shout "+Util.capitalizeAndLower(D.charStats().hisher())+" praises!",false,false); break;
 			case 2:	CommonMsgs.say(mob,null,"Can I hear an AMEN?!",false,false); break;
 			case 3:	CommonMsgs.say(mob,null,"Praise "+D.name()+"!",false,false); break;
 			case 4:	CommonMsgs.say(mob,null,"Halleluyah! "+D.name()+" is great!",false,false); break;

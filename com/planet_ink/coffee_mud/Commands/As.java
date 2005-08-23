@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@ public class As extends StdCommand
 {
 	public As(){}
 
-	private String[] access={"AS"};
+	private String[] access={getScr("As","cmd")};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -32,14 +32,14 @@ public class As extends StdCommand
 		commands.removeElementAt(0);
 		if(commands.size()<2)
 		{
-			mob.tell("As whom do what?");
+			mob.tell(getScr("As","error"));
 			return false;
 		}
 		String cmd=(String)commands.firstElement();
 		commands.removeElementAt(0);
-		if((!CMSecurity.isAllowed(mob,mob.location(),"AS"))||(mob.isMonster()))
+		if((!CMSecurity.isAllowed(mob,mob.location(),getScr("As","cmd")))||(mob.isMonster()))
 		{
-			mob.tell("You aren't powerful enough to do that.");
+			mob.tell(getScr("As","notp"));
 			return false;
 		}
 		Session mySession=mob.session();
@@ -61,17 +61,17 @@ public class As extends StdCommand
 		}
 		if(M==null)
 		{
-			mob.tell("You don't know of anyone by that name.");
+			mob.tell(getScr("As","noname"));
 			return false;
 		}
 		if(M.soulMate()!=null)
 		{
-		    mob.tell(M.Name()+" is being possessed at the moment.");
+		    mob.tell(M.Name()+" "+getScr("As","possessed"));
 		    return false;
 		}
 		if(CMSecurity.isASysOp(M))
 		{
-		    mob.tell("You can't do that as the mighty "+M.Name()+".");
+		    mob.tell(getScr("As","possessed",M.Name()));
 		    return false;
 		}
 		Session oldSession=M.session();
@@ -83,7 +83,7 @@ public class As extends StdCommand
 		M.setSession(mySession);
 		mySession.setMob(M);
 		M.setSoulMate(mob);
-		if(((String)commands.firstElement()).equalsIgnoreCase("here")
+		if(((String)commands.firstElement()).equalsIgnoreCase(getScr("As","here"))
 		   ||((String)commands.firstElement()).equalsIgnoreCase("."))
 		{
 		    if((M.location()!=mob.location())&&(!mob.location().isInhabitant(M)))
@@ -103,7 +103,7 @@ public class As extends StdCommand
 		else
 		if((oldRoom==null)||(!inside))
 		{
-			if(M.location()!=null) 
+			if(M.location()!=null)
 				M.location().delInhabitant(M);
 			M.setLocation(oldRoom);
 		}

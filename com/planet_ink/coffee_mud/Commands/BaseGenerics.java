@@ -97,7 +97,7 @@ public class BaseGenerics extends StdCommand
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String componentType=Util.capitalize(ShipComponent.ShipPanel.COMPONENT_PANEL_DESC[S.panelType()].toLowerCase());
+		String componentType=Util.capitalizeAndLower(ShipComponent.ShipPanel.COMPONENT_PANEL_DESC[S.panelType()].toLowerCase());
 		mob.tell(showNumber+". Panel Type: '"+componentType+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean continueThis=true;
@@ -3735,7 +3735,7 @@ public class BaseGenerics extends StdCommand
 			boolean found=false;
 			if(newName.startsWith("new "))
 			{
-				newName=Util.capitalize(newName.substring(4));
+				newName=Util.capitalizeAndLower(newName.substring(4));
 				if(newName.length()>0)
 					found=true;
 			}
@@ -3844,7 +3844,7 @@ public class BaseGenerics extends StdCommand
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<S.getCodes().length;i++)
 			if(Util.s_int(S.getStat(S.getCodes()[i]))!=0)
-				parts.append(Util.capitalize(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
+				parts.append(Util.capitalizeAndLower(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
 		mob.tell(showNumber+". EStat Adjustments: "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter a stat name\n\r:","");
@@ -3918,7 +3918,7 @@ public class BaseGenerics extends StdCommand
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<S.getCodes().length;i++)
 			if(Util.s_int(S.getStat(S.getCodes()[i]))!=0)
-				parts.append(Util.capitalize(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
+				parts.append(Util.capitalizeAndLower(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
 		mob.tell(showNumber+". "+prompt+": "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter a stat name\n\r:","");
@@ -3968,7 +3968,7 @@ public class BaseGenerics extends StdCommand
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<CharStats.TRAITS.length;i++)
 			if(S.getStat(i)!=0)
-				parts.append(Util.capitalize(CharStats.TRAITS[i])+"("+S.getStat(i)+") ");
+				parts.append(Util.capitalizeAndLower(CharStats.TRAITS[i])+"("+S.getStat(i)+") ");
 		mob.tell(showNumber+". "+FieldName+": "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter a stat name\n\r:","");
@@ -4019,7 +4019,7 @@ public class BaseGenerics extends StdCommand
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<S.getCodes().length;i++)
 			if(Util.s_int(S.getStat(S.getCodes()[i]))!=0)
-				parts.append(Util.capitalize(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
+				parts.append(Util.capitalizeAndLower(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
 		mob.tell(showNumber+". EStat Adjustments: "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter a stat name\n\r:","");
@@ -4093,7 +4093,7 @@ public class BaseGenerics extends StdCommand
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<S.getCodes().length;i++)
 			if(Util.s_int(S.getStat(S.getCodes()[i]))!=0)
-				parts.append(Util.capitalize(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
+				parts.append(Util.capitalizeAndLower(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
 		mob.tell(showNumber+". "+prompt+": "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter a stat name\n\r:","");
@@ -4143,7 +4143,7 @@ public class BaseGenerics extends StdCommand
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<CharStats.TRAITS.length;i++)
 			if(S.getStat(i)!=0)
-				parts.append(Util.capitalize(CharStats.TRAITS[i])+"("+S.getStat(i)+") ");
+				parts.append(Util.capitalizeAndLower(CharStats.TRAITS[i])+"("+S.getStat(i)+") ");
 		mob.tell(showNumber+". "+FieldName+": "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter a stat name\n\r:","");
@@ -5150,7 +5150,7 @@ public class BaseGenerics extends StdCommand
                 {
                     if(me.experienceFlag.equalsIgnoreCase(Faction.EXPAFFECT_NAMES[i]))
                         myval=i;
-                    nextPrompt.append("  "+(i+1)+") "+Util.capitalize(Faction.EXPAFFECT_NAMES[i].toLowerCase())+"\n\r");
+                    nextPrompt.append("  "+(i+1)+") "+Util.capitalizeAndLower(Faction.EXPAFFECT_NAMES[i].toLowerCase())+"\n\r");
                 }
                 if(myval<0){ me.experienceFlag="NONE"; myval=0;}
                 if((showFlag!=showNumber)&&(showFlag>-999))

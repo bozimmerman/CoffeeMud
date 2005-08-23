@@ -68,7 +68,7 @@ public class ClanAssign extends BaseClanner
 						mob.tell("'"+pos+"' is not a valid role.");
 						return false;
 					}
-					qual=Util.capitalize(qual);
+					qual=Util.capitalizeAndLower(qual);
 					for(int q=0;q<apps.size();q++)
 					{
 						if(((String)apps.elementAt(q,1)).equalsIgnoreCase(qual))

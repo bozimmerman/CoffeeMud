@@ -179,7 +179,7 @@ public class Farming extends GatheringSkill
 			  ||((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)))
 			{
 				code=EnvResource.RESOURCE_DATA[i][0];
-				foundShortName=Util.capitalize(str);
+				foundShortName=Util.capitalizeAndLower(str);
 				break;
 			}
 		}

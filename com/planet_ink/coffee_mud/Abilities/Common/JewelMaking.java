@@ -230,7 +230,7 @@ public class JewelMaking extends CraftingSkill
 			String word=str.toLowerCase();
 			if(commands.size()<3)
 			{
-				commonTell(mob,Util.capitalize(word)+" what jewel onto what item?");
+				commonTell(mob,Util.capitalizeAndLower(word)+" what jewel onto what item?");
 				return false;
 			}
 			fire=getRequiredFire(mob,autoGenerate);
@@ -269,7 +269,7 @@ public class JewelMaking extends CraftingSkill
 			String materialName=EnvResource.RESOURCE_DESCS[jewelI.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 			if(word.equals("encrust"))
 			{
-				beingDone.addElement(Util.capitalize(building.name())+" is encrusted with bits of "+materialName+".");
+				beingDone.addElement(Util.capitalizeAndLower(building.name())+" is encrusted with bits of "+materialName+".");
 				startStr="<S-NAME> start(s) encrusting "+building.name()+" with "+materialName+".";
 				displayText="You are encrusting "+building.name()+" with "+materialName;
 				verb="encrusting "+building.name()+" with bits of "+materialName;
@@ -277,7 +277,7 @@ public class JewelMaking extends CraftingSkill
 			else
 			{
 				materialName=Util.startWithAorAn(materialName).toLowerCase();
-				beingDone.addElement(Util.capitalize(building.name())+" has "+materialName+" mounted on it.");
+				beingDone.addElement(Util.capitalizeAndLower(building.name())+" has "+materialName+" mounted on it.");
 				startStr="<S-NAME> start(s) mounting "+materialName+" onto "+building.name()+".";
 				displayText="You are mounting "+materialName+" onto "+building.name();
 				verb="mounting "+materialName+" onto "+building.name();

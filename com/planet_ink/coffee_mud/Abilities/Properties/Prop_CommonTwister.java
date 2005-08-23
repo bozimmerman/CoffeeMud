@@ -124,8 +124,8 @@ public class Prop_CommonTwister extends Property
 						String newMatName=EnvResource.RESOURCE_DESCS[newMatCode&EnvResource.RESOURCE_MASK].toLowerCase();
 						msg.target().setName(Util.replaceAll(msg.target().name(),oldMatName,newMatName));
 						msg.target().setDisplayText(Util.replaceAll(msg.target().name(),oldMatName,newMatName));
-						msg.target().setName(Util.replaceAll(msg.target().name(),Util.capitalize(oldMatName),Util.capitalize(newMatName)));
-						msg.target().setDisplayText(Util.replaceAll(msg.target().name(),Util.capitalize(oldMatName),Util.capitalize(newMatName)));
+						msg.target().setName(Util.replaceAll(msg.target().name(),Util.capitalizeAndLower(oldMatName),Util.capitalizeAndLower(newMatName)));
+						msg.target().setDisplayText(Util.replaceAll(msg.target().name(),Util.capitalizeAndLower(oldMatName),Util.capitalizeAndLower(newMatName)));
 						msg.target().setName(Util.replaceAll(msg.target().name(),oldMatName.toUpperCase(),newMatName.toUpperCase()));
 						msg.target().setDisplayText(Util.replaceAll(msg.target().name(),oldMatName.toUpperCase(),newMatName.toUpperCase()));
 					}

@@ -87,7 +87,7 @@ public class GlassBlowing extends CraftingSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,Util.capitalize(building.name())+" explodes!");
+						commonTell(mob,Util.capitalizeAndLower(building.name())+" explodes!");
 					else
 						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
 				}

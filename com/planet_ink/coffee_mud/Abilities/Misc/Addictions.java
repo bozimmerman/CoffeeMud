@@ -85,21 +85,6 @@ public class Addictions extends StdAbility
     
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
-        String choice="";
-        if(givenTarget!=null)
-        {
-            if((commands.size()>0)&&(((String)commands.firstElement()).equals(givenTarget.name())))
-                commands.removeElementAt(0);
-            choice=Util.combine(commands,0);
-            commands.clear();
-        }
-        else
-        if(commands.size()>1)
-        {
-            choice=Util.combine(commands,1);
-            while(commands.size()>1)
-                commands.removeElementAt(1);
-        }
         MOB target=getTarget(mob,commands,givenTarget);
         
         if(target==null) return false;

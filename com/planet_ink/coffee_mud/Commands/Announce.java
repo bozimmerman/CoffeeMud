@@ -24,7 +24,7 @@ public class Announce extends StdCommand
 {
 	public Announce(){}
 
-	private String[] access={"ANNOUNCE"};
+	private String[] access={getScr("Announce","cmd")};
 	public String[] getAccessWords(){return access;}
 
 	public void sendAnnounce(String announcement, Session S)
@@ -34,18 +34,18 @@ public class Announce extends StdCommand
         if (Sense.isEvil(S.mob()))
             alignType = 0;
         else
-        if (Sense.isGood(S.mob())) 
+        if (Sense.isGood(S.mob()))
             alignType = 1;
 	  	switch(alignType)
 	  	{
 	  	  case 0:
-	  	    Message.append("^rA terrifying voice bellows out of Hell '");
+	  	    Message.append(getScr("Announce","evil")+" ");
 	  	    break;
 	  	  case 1:
-	  	    Message.append("^wAn awe-inspiring voice thunders down from Heaven '");
+	  	    Message.append(getScr("Announce","good")+" ");
 	  	    break;
 	  	  case 2:
-	  	    Message.append("^pA powerful voice rings out '");
+	  	    Message.append(getScr("Announce","neutral")+" ");
 	  	    break;
 	  	}
 	  	Message.append(announcement);
@@ -58,7 +58,7 @@ public class Announce extends StdCommand
 	{
 		if(commands.size()>1)
 		{
-			if(((String)commands.elementAt(1)).toUpperCase().equals("ALL"))
+			if(((String)commands.elementAt(1)).toUpperCase().equals(getScr("Announce","all")))
 			{
 				for(int s=0;s<Sessions.size();s++)
 				{
@@ -86,11 +86,11 @@ public class Announce extends StdCommand
 					}
 				}
 				if(!found)
-					mob.tell("You can't find anyone by that name.");
+					mob.tell(getScr("Announce","notfound"));
 			}
 		}
 		else
-			mob.tell("You can either send a message to everyone on the server or a single user using \n\r    ANNOUNCE [ALL|(USER NAME)] (MESSAGE) \n\rGood aligned players will perceive it as coming from heaven, evil from hell, and neutral from out of nowhere.");
+			mob.tell(getScr("Announce","exp"));
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

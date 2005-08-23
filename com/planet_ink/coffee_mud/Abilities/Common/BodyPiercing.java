@@ -101,7 +101,7 @@ public class BodyPiercing extends CommonSkill
 				    {
 				        if(piercables[ii][iii].startsWith(part.toLowerCase()))
 				        {    partNum=i; fullPartName=piercables[ii][iii];}
-					    allParts.append(", "+Util.capitalize(piercables[ii][iii]));
+					    allParts.append(", "+Util.capitalizeAndLower(piercables[ii][iii]));
 				    }
 				    break;
 			    }

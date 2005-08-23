@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import java.io.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@ public class AHelp extends StdCommand
 {
 	public AHelp(){}
 
-	private String[] access={"ARCHELP","AHELP"};
+	private String[] access={getScr("Ahelp","cmd1"),"AHELP"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -33,7 +33,7 @@ public class AHelp extends StdCommand
 		String helpStr=Util.combine(commands,1);
 		if(MUDHelp.getArcHelpFile().size()==0)
 		{
-			mob.tell("No archon help is available.");
+			mob.tell(getScr("Ahelp","aerr"));
 			return false;
 		}
 		StringBuffer thisTag=null;
@@ -47,7 +47,7 @@ public class AHelp extends StdCommand
 				{
 					Vector V=new Vector();
 					theRest=new StringBuffer("");
-					
+
 					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
@@ -56,10 +56,10 @@ public class AHelp extends StdCommand
 					}
 					if(V.size()>0)
 					{
-					    theRest.append("\n\rProperties:\n\r");
+					    theRest.append(getScr("Ahelp","Properties"));
 						theRest.append(CMLister.fourColumns(V));
 					}
-					
+
 					V.clear();
 					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					{
@@ -69,10 +69,10 @@ public class AHelp extends StdCommand
 					}
 					if(V.size()>0)
 					{
-					    theRest.append("\n\rDiseases:\n\r");
+					    theRest.append(getScr("Ahelp","Diseases"));
 						theRest.append(CMLister.fourColumns(V));
 					}
-					
+
 					V.clear();
 					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					{
@@ -82,10 +82,10 @@ public class AHelp extends StdCommand
 					}
 					if(V.size()>0)
 					{
-					    theRest.append("\n\rPoisons:\n\r");
+					    theRest.append(getScr("Ahelp","Poisons"));
 						theRest.append(CMLister.fourColumns(V));
 					}
-					
+
 					V.clear();
 					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					{
@@ -95,10 +95,10 @@ public class AHelp extends StdCommand
 					}
 					if(V.size()>0)
 					{
-					    theRest.append("\n\rSuper Powers:\n\r");
+					    theRest.append(getScr("Ahelp","SuperPowers"));
 						theRest.append(CMLister.fourColumns(V));
 					}
-					
+
 					V.clear();
 					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					{
@@ -108,10 +108,10 @@ public class AHelp extends StdCommand
 					}
 					if(V.size()>0)
 					{
-					    theRest.append("\n\rEvil Deeds:\n\r");
+					    theRest.append(getScr("Ahelp","EDeeds"));
 						theRest.append(CMLister.fourColumns(V));
 					}
-					
+
 					V.clear();
 					for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
 					{
@@ -120,7 +120,7 @@ public class AHelp extends StdCommand
 					}
 					if(V.size()>0)
 					{
-					    theRest.append("\n\r\n\rBehaviors:\n\r");
+					    theRest.append(getScr("Ahelp","Behavior"));
 						theRest.append(CMLister.fourColumns(V));
 					}
 					Resources.submitResource("arc_help.therest",theRest);
@@ -133,8 +133,8 @@ public class AHelp extends StdCommand
 			thisTag=MUDHelp.getHelpText(helpStr,MUDHelp.getArcHelpFile(),mob);
 		if(thisTag==null)
 		{
-			mob.tell("No archon help is available on '"+helpStr+"'.\n\rEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");
-			Log.errOut("Help",mob.Name()+" wanted archon help on "+helpStr);
+			mob.tell(getScr("Ahelp","ahelp",helpStr));
+			Log.errOut(getScr("Ahelp","errout",mob.name(),helpStr));
 		}
 		else
 		if(!mob.isMonster())

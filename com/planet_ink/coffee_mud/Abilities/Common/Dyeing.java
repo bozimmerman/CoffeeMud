@@ -141,7 +141,7 @@ public class Dyeing extends CommonSkill
 		verb="dyeing "+target.name()+" "+writing;
 		displayText="You are "+verb;
 		found=target;
-		if(darkFlag) writing=Util.capitalize(writing);
+		if(darkFlag) writing=Util.capitalizeAndLower(writing);
 		if(!profficiencyCheck(mob,0,auto)) writing="";
 		int duration=30-mob.envStats().level();
 		if((target.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER)

@@ -132,7 +132,7 @@ public class InstrumentMaking extends CraftingSkill
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					String type=(String)V.elementAt(RCP_MATERIAL);
 					String race=((String)V.elementAt(RCP_RACES)).trim();
-					String itype=Util.capitalize(((String)V.elementAt(RCP_TYPE)).toLowerCase()).trim();
+					String itype=Util.capitalizeAndLower(((String)V.elementAt(RCP_TYPE)).toLowerCase()).trim();
 					if((level<=mob.envStats().level())
 					&&((race.length()==0)||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
 						buf.append(Util.padRight(item,16)+" "+Util.padRight(""+level,3)+" "+Util.padRight(itype,10)+" "+wood+" "+type+"\n\r");

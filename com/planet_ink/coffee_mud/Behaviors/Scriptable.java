@@ -3277,7 +3277,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if((E!=null)&&((E instanceof MOB)))
-					results.append(Util.capitalize(Sense.getAlignmentName(E)).toLowerCase());
+					results.append(Util.capitalizeAndLower(Sense.getAlignmentName(E)).toLowerCase());
 				break;
 			}
 			case 9: // isneutral

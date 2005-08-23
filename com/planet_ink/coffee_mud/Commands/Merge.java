@@ -126,7 +126,7 @@ public class Merge extends StdCommand
 						if(!getStat(E,field).equals(getStat(E2,field)))
 						{
 							setStat(E,field,getStat(E2,field));
-							Log.sysOut("Merge","The "+Util.capitalize(field)+" field on "+E.Name()+" in "+room.roomID()+" was changed to "+getStat(E2,field)+".");
+							Log.sysOut("Merge","The "+Util.capitalizeAndLower(field)+" field on "+E.Name()+" in "+room.roomID()+" was changed to "+getStat(E2,field)+".");
 							didAnything=true;
 						}
 					}

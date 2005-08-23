@@ -65,12 +65,12 @@ public class SpecialistMage extends Mage
 	public int availabilityCode(){return 0;}
 	public String otherBonuses()
 	{
-		String chosen=Util.capitalize(Ability.DOMAIN_DESCS[domain()>>5]);
+		String chosen=Util.capitalizeAndLower(Ability.DOMAIN_DESCS[domain()>>5]);
 		return "At 5th level, receives 2%/lvl bonus damage from "+chosen+".  At 10th level, receives double duration on your "+chosen+" magic, and half duration from malicious "+chosen+" magic.";
 	}
 	public String otherLimitations()
 	{
-		String opposed=Util.capitalize(Ability.DOMAIN_DESCS[opposed()>>5]);
+		String opposed=Util.capitalizeAndLower(Ability.DOMAIN_DESCS[opposed()>>5]);
 		return "Unable to cast "+opposed+" spells.  Receives 2%/lvl penalty damage from "+opposed+".  Receives double duration from malicious "+opposed+" magic, half duration on other "+opposed+" effects.";
 	}
 

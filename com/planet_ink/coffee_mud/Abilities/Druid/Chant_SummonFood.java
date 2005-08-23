@@ -63,7 +63,7 @@ public class Chant_SummonFood extends Chant
 				{
 					newItem=(Food)CMClass.getStdItem("GenFoodResource");
 					newItem.setName("some "+EnvResource.RESOURCE_DESCS[berryType&EnvResource.RESOURCE_MASK].toLowerCase());
-					newItem.setDisplayText(Util.capitalize(newItem.name())+" are growing here.");
+					newItem.setDisplayText(Util.capitalizeAndLower(newItem.name())+" are growing here.");
 					newItem.setDescription("These little berries look juicy and good.");
 					newItem.setMaterial(berryType);
 					newItem.setNourishment(150);
@@ -72,7 +72,7 @@ public class Chant_SummonFood extends Chant
 					mob.location().addItemRefuse(newItem,Item.REFUSE_RESOURCE);
 				}
 				if(newItem!=null)
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,Util.capitalize(newItem.name())+" quickly begin to grow here.");
+					mob.location().showHappens(CMMsg.MSG_OK_ACTION,Util.capitalizeAndLower(newItem.name())+" quickly begin to grow here.");
 				mob.location().recoverEnvStats();
 			}
 		}

@@ -392,7 +392,7 @@ public class Cooking extends CraftingSkill
 					int level=Util.s_int((String)Vr.elementAt(RCP_LEVEL));
 					if(level<=mob.envStats().level())
 					{
-						buf.append("^c"+Util.padRight(Util.capitalize(replacePercent(item,"")),20)+"^w ");
+						buf.append("^c"+Util.padRight(Util.capitalizeAndLower(replacePercent(item,"")),20)+"^w ");
 						for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 						{
 							String ingredient=(String)Vr.elementAt(vr);

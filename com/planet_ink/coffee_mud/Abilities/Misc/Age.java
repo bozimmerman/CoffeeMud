@@ -282,8 +282,8 @@ public class Age extends StdAbility
 					}
 					CommonMsgs.channel("WIZINFO","",newMan.Name()+" has just been created.",true);
 					if(liege!=babe.amFollowing())
-						babe.amFollowing().tell(newMan.Name()+" has just grown up! "+Util.capitalize(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
-					liege.tell(newMan.Name()+" has just grown up! "+Util.capitalize(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
+						babe.amFollowing().tell(newMan.Name()+" has just grown up! "+Util.capitalizeAndLower(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
+					liege.tell(newMan.Name()+" has just grown up! "+Util.capitalizeAndLower(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
 					CMClass.DBEngine().DBUpdatePlayer(newMan);
 					newMan.removeFromGame();
 					babe.setFollowing(null);

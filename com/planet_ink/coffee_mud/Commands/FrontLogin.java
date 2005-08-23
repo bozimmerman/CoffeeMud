@@ -400,14 +400,14 @@ public class FrontLogin extends StdCommand
 			else
 			if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_MUDTHEME)==0)
 			{
-				mob.session().print("\n\r'"+Util.capitalize(login)+"' does not exist.\n\rThis server is not accepting new accounts.\n\r\n\r");
+				mob.session().print("\n\r'"+Util.capitalizeAndLower(login)+"' does not exist.\n\rThis server is not accepting new accounts.\n\r\n\r");
 				mob.setName("");
 				mob.setPlayerStats(null);
 			}
 			else
-			if(mob.session().confirm("\n\r'"+Util.capitalize(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
+			if(mob.session().confirm("\n\r'"+Util.capitalizeAndLower(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
 			{
-				login=Util.capitalize(login.trim());
+				login=Util.capitalizeAndLower(login.trim());
 				mob.session().println(null,null,null,"\n\r\n\r"+Resources.getFileResource("text"+File.separatorChar+"newchar.txt").toString());
 
 				String password="";

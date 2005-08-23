@@ -127,7 +127,7 @@ public class Equipment extends StdCommand
                         }
                         else
                         {
-    				        tat=Util.capitalize(tat.substring(wornName.length()+1).toLowerCase());
+    				        tat=Util.capitalizeAndLower(tat.substring(wornName.length()+1).toLowerCase());
                             if(tat.length()>53) tat=tat.substring(0,50)+"...";
                             msg.append(header+tat+"^?\n\r");
                         }

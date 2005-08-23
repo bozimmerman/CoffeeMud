@@ -304,7 +304,7 @@ public class Clans implements Clan, Tickable
 		roleName.append(roles[getRoleOrder(role)].toLowerCase());
 		if(titleCase)
 		{
-			String titled=Util.capitalize(roleName.toString());
+			String titled=Util.capitalizeAndLower(roleName.toString());
 			roleName.setLength(0);
 			roleName.append(titled);
 		}
@@ -497,7 +497,7 @@ public class Clans implements Clan, Tickable
 		          +"-----------------------------------------------------------------\n\r"
 		          +getPremise()+"\n\r"
 		          +"-----------------------------------------------------------------\n\r"
-				  +"^xType            :^.^N "+Util.capitalize(Clan.GVT_DESCS[getGovernment()])+"\n\r"
+				  +"^xType            :^.^N "+Util.capitalizeAndLower(Clan.GVT_DESCS[getGovernment()])+"\n\r"
 				  +"^xQualifications  :^.^N "+((getAcceptanceSettings().length()==0)?"Anyone may apply":MUDZapper.zapperDesc(getAcceptanceSettings()))+"\n\r");
 		if((mob.getClanID().equalsIgnoreCase(ID()))
 		||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
@@ -521,10 +521,10 @@ public class Clans implements Clan, Tickable
 				if(C!=this)
 				{
 					msg.append("^x"+Util.padRight(C.name(),16)+":^.^N ");
-					msg.append(Util.capitalize(Clan.REL_DESCS[getClanRelations(C.ID())]));
+					msg.append(Util.capitalizeAndLower(Clan.REL_DESCS[getClanRelations(C.ID())]));
 					int orel=C.getClanRelations(ID());
 					if(orel!=Clan.REL_NEUTRAL)
-						msg.append(" (<-"+Util.capitalize(Clan.REL_DESCS[orel])+")");
+						msg.append(" (<-"+Util.capitalizeAndLower(Clan.REL_DESCS[orel])+")");
 					msg.append("\n\r");
 				}
 			}
@@ -611,7 +611,7 @@ public class Clans implements Clan, Tickable
 		{
 		case Clan.TYPE_CLAN:
 			if((getGovernment()>=0)&&(getGovernment()<Clan.GVT_DESCS.length))
-				return Util.capitalize(Clan.GVT_DESCS[getGovernment()].toLowerCase());
+				return Util.capitalizeAndLower(Clan.GVT_DESCS[getGovernment()].toLowerCase());
 		}
 		return "Clan";
 	}

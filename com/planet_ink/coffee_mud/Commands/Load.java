@@ -57,9 +57,9 @@ public class Load extends StdCommand
 			mob.tell("'"+what+"' is not a valid class type.");
 		else
 		if(CMClass.loadClass(what,name))
-			mob.tell(Util.capitalize(what)+" "+name+" was loaded.");
+			mob.tell(Util.capitalizeAndLower(what)+" "+name+" was loaded.");
 		else
-			mob.tell(Util.capitalize(what)+" "+name+" was not loaded.");
+			mob.tell(Util.capitalizeAndLower(what)+" "+name+" was not loaded.");
 
 		return false;
 	}

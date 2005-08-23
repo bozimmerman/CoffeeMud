@@ -43,12 +43,12 @@ public class Chant_SummonSeed extends Chant
 				if(str.toUpperCase().equalsIgnoreCase(s))
 				{
 					material=EnvResource.RESOURCE_DATA[i][0];
-					foundShortName=Util.capitalize(str);
+					foundShortName=Util.capitalizeAndLower(str);
 					break;
 				}
 				if(col==4){ buf.append("\n\r"); col=0;}
 				col++;
-				buf.append(Util.padRight(Util.capitalize(str),15));
+				buf.append(Util.padRight(Util.capitalizeAndLower(str),15));
 			}
 		}
 		if(s.equalsIgnoreCase("list"))

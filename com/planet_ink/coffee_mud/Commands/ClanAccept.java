@@ -57,7 +57,7 @@ public class ClanAccept extends BaseClanner
 						mob.tell("There are no applicants to your "+C.typeName()+".");
 						return false;
 					}
-					qual=Util.capitalize(qual);
+					qual=Util.capitalizeAndLower(qual);
 					for(int q=0;q<apps.size();q++)
 					{
 						if(((String)apps.elementAt(q,1)).equalsIgnoreCase(qual))

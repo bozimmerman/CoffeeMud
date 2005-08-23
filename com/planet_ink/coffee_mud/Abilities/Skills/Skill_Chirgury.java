@@ -204,7 +204,7 @@ public class Skill_Chirgury extends StdAbility
 				            baby.charStats().setStat(CharStats.MAX_STRENGTH_ADJ+i,1);
 				        baby.charStats().setMyRace(((MOB)target).charStats().getMyRace());
 				        baby.recoverEnvStats();
-				        baby.setDescription(Util.capitalize(baby.charStats().hisher())+" body parts can be faintly made out in the twisted and mangled flesh.");
+				        baby.setDescription(Util.capitalizeAndLower(baby.charStats().hisher())+" body parts can be faintly made out in the twisted and mangled flesh.");
 				        baby.setMobDescription(baby.description());
 				        baby.text();
 				        mob.location().addItemRefuse(baby,Item.REFUSE_PLAYER_DROP);

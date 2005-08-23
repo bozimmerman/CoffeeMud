@@ -267,12 +267,12 @@ public class Pregnancy extends StdAbility
 			R=CMClass.getRace(halfRace);
 			if((R!=null)&&(!R.ID().toUpperCase().startsWith("HALF")))
 			{
-				halfRace="Half"+Util.capitalize(R.ID().toLowerCase());
+				halfRace="Half"+Util.capitalizeAndLower(R.ID().toLowerCase());
 				Race testR=CMClass.getRace(halfRace);
 				if(testR!=null)
 					R=testR;
 				else
-					R=mixRaces(babe,R,CMClass.getRace("Human"),halfRace,"Half "+Util.capitalize(R.name()));
+					R=mixRaces(babe,R,CMClass.getRace("Human"),halfRace,"Half "+Util.capitalizeAndLower(R.name()));
 			}
 		}
 		else
@@ -287,7 +287,7 @@ public class Pregnancy extends StdAbility
 				if(testR!=null)
 					R=testR;
 				else
-					R=mixRaces(babe,R,CMClass.getRace("Halfling"),halfRace,Util.capitalize(R.name())+"ling");
+					R=mixRaces(babe,R,CMClass.getRace("Halfling"),halfRace,Util.capitalizeAndLower(R.name())+"ling");
 			}
 		}
 		else

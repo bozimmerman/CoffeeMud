@@ -35,7 +35,7 @@ public class ColorSet extends StdCommand
 			for(int ii=0;ii<CMColor.COLOR_ALLEXTENDEDCOLORCODELETTERS.length;ii++)
 				if(what.charAt(1)==CMColor.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii].charAt(0))
 				{
-					buf.append("^"+CMColor.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]+Util.capitalize(CMColor.COLOR_ALLCOLORNAMES[ii]));
+					buf.append("^"+CMColor.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]+Util.capitalizeAndLower(CMColor.COLOR_ALLCOLORNAMES[ii]));
 					break;
 				}
 		    if(what.indexOf("|")>0)
@@ -125,7 +125,7 @@ public class ColorSet extends StdCommand
 					for(int ii=0;ii<CMColor.COLOR_ALLNORMALCOLORCODELETTERS.length;ii++)
 					{
 					    if(ii>0) buf.append(", ");
-						buf.append("^"+CMColor.COLOR_ALLNORMALCOLORCODELETTERS[ii]+Util.capitalize(CMColor.COLOR_ALLCOLORNAMES[ii]));
+						buf.append("^"+CMColor.COLOR_ALLNORMALCOLORCODELETTERS[ii]+Util.capitalizeAndLower(CMColor.COLOR_ALLCOLORNAMES[ii]));
 					}
 					mob.session().println(buf.toString()+"^N");
 					int colorNum=pickColor(mob,CMColor.COLOR_ALLNORMALCOLORCODELETTERS,"Enter Name of New Color: ");
@@ -146,9 +146,9 @@ public class ColorSet extends StdCommand
 						{
 						    if(first)first=false; else buf.append(", ");
 						    if(CMColor.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]==CMColor.COLOR_BLACK)
-								buf.append("^"+CMColor.COLOR_WHITE+Util.capitalize(CMColor.COLOR_ALLCOLORNAMES[ii]));
+								buf.append("^"+CMColor.COLOR_WHITE+Util.capitalizeAndLower(CMColor.COLOR_ALLCOLORNAMES[ii]));
 						    else
-								buf.append("^"+CMColor.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]+Util.capitalize(CMColor.COLOR_ALLCOLORNAMES[ii]));
+								buf.append("^"+CMColor.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]+Util.capitalizeAndLower(CMColor.COLOR_ALLCOLORNAMES[ii]));
 						}
 					buf.append("^N\n\rAvailable Foreground Colors: ");
 					first=true;
@@ -156,7 +156,7 @@ public class ColorSet extends StdCommand
 					    if(Character.isLowerCase(CMColor.COLOR_ALLNORMALCOLORCODELETTERS[ii].charAt(0)))
 						{
 						    if(first)first=false; else buf.append(", ");
-							buf.append("^"+CMColor.COLOR_ALLNORMALCOLORCODELETTERS[ii]+Util.capitalize(CMColor.COLOR_ALLCOLORNAMES[ii]));
+							buf.append("^"+CMColor.COLOR_ALLNORMALCOLORCODELETTERS[ii]+Util.capitalizeAndLower(CMColor.COLOR_ALLCOLORNAMES[ii]));
 						}
 					mob.session().println(buf.toString()+"^N");
 					int colorNum1=pickColor(mob,CMColor.COLOR_ALLEXTENDEDCOLORCODELETTERS,"Enter Name of Background Color: ");

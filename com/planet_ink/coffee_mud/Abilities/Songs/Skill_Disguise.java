@@ -258,7 +258,7 @@ public class Skill_Disguise extends BardSkill
 				return false;
 			}
 			else
-				how=Util.capitalize(how);
+				how=Util.capitalizeAndLower(how);
 			break;
 		}
 		case 6: // class

@@ -96,7 +96,7 @@ public class ClanDeclare extends BaseClanner
 					}
 					if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDECLARE,true))
 					{
-						clanAnnounce(mob,"Your "+C.typeName()+" has declared "+Util.capitalize(Clan.REL_STATES[newRole].toLowerCase())+" "+C2.name()+".");
+						clanAnnounce(mob,"Your "+C.typeName()+" has declared "+Util.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase())+" "+C2.name()+".");
 						C.setClanRelations(C2.ID(),newRole,System.currentTimeMillis());
 						C.update();
 						return false;

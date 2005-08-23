@@ -57,7 +57,7 @@ public class Prayer_Christen extends Prayer
 			return false;
 		}
 
-		name=Util.capitalize(name);
+		name=Util.capitalizeAndLower(name);
 
 		if(CMClass.DBEngine().DBUserSearch(null,name))
 		{

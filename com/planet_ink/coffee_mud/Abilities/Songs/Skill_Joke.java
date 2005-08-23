@@ -93,7 +93,7 @@ public class Skill_Joke extends BardSkill
 					break;
 				case 6:
 					joke= "Q: What do you call "+de[1]+" "+ob[1]+" without "+de[2]+" "+ob[2]+"?\n\r"
-					     +"A: "+Util.capitalize(de[3])+" "+ob[3]+"!";
+					     +"A: "+Util.capitalizeAndLower(de[3])+" "+ob[3]+"!";
 					break;
 				case 7:
 					joke= "Q: When is "+de[1]+" "+ob[1]+" not "+de[1]+" "+ob[1]+"?\n\r"

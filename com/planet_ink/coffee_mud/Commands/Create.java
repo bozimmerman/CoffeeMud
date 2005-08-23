@@ -305,7 +305,7 @@ public class Create extends BaseGenerics
 			return;
 		}
 		Race GR=CMClass.getRace("GenRace").copyOf();
-		GR.setRacialParms("<RACE><ID>"+Util.capitalize(raceID)+"</ID><NAME>"+Util.capitalize(raceID)+"</NAME></RACE>");
+		GR.setRacialParms("<RACE><ID>"+Util.capitalizeAndLower(raceID)+"</ID><NAME>"+Util.capitalizeAndLower(raceID)+"</NAME></RACE>");
 		CMClass.addRace(GR);
 		modifyGenRace(mob,GR);
 		CMClass.DBEngine().DBCreateRace(GR.ID(),GR.racialParms());
@@ -381,7 +381,7 @@ public class Create extends BaseGenerics
 			return;
 		}
 		CharClass CR=CMClass.getCharClass("GenCharClass").copyOf();
-		CR.setClassParms("<CCLASS><ID>"+Util.capitalize(classD)+"</ID><NAME>"+Util.capitalize(classD)+"</NAME></CCLASS>");
+		CR.setClassParms("<CCLASS><ID>"+Util.capitalizeAndLower(classD)+"</ID><NAME>"+Util.capitalizeAndLower(classD)+"</NAME></CCLASS>");
 		CMClass.addCharClass(CR);
 		modifyGenClass(mob,CR);
 		CMClass.DBEngine().DBCreateClass(CR.ID(),CR.classParms());

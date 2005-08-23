@@ -1011,12 +1011,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					if(msg.tool() instanceof Item)
 					{
 						Item I=(Item)msg.tool();
-						str.append("\n\rMaterial   : "+Util.capitalize(EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK].toLowerCase()));
+						str.append("\n\rMaterial   : "+Util.capitalizeAndLower(EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK].toLowerCase()));
 						str.append("\n\rWeight     : "+I.envStats().weight()+" pounds");
 						if(I instanceof Weapon)
 						{
-							str.append("\n\rWeap. Type : "+Util.capitalize(Weapon.typeDescription[((Weapon)I).weaponType()]));
-							str.append("\n\rWeap. Class: "+Util.capitalize(Weapon.classifictionDescription[((Weapon)I).weaponClassification()]));
+							str.append("\n\rWeap. Type : "+Util.capitalizeAndLower(Weapon.typeDescription[((Weapon)I).weaponType()]));
+							str.append("\n\rWeap. Class: "+Util.capitalizeAndLower(Weapon.classifictionDescription[((Weapon)I).weaponClassification()]));
 						}
 						else
 						if(I instanceof Armor)
@@ -1029,7 +1029,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								{
 									if(((I.rawProperLocationBitmap()&wornCode)==wornCode))
 									{
-										str.append(Util.capitalize(Sense.wornLocation(wornCode))+" ");
+										str.append(Util.capitalizeAndLower(Sense.wornLocation(wornCode))+" ");
 										if(I.rawLogicalAnd())
 											str.append("and ");
 										else
