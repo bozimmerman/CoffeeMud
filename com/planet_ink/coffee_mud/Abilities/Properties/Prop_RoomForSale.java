@@ -287,6 +287,34 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					I.recoverEnvStats();
 				}
 			}
+            boolean updateExits=false;
+            for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+            {
+                Room R2=R.rawDoors()[d];
+                Exit E=R.rawExits()[d];
+                if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
+                {
+                    E.setKeyName("");
+                    E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
+                    updateExits=true;
+                    if(R2!=null)
+                    {
+                        E=R2.rawExits()[Directions.getOpDirectionCode(d)];
+                        if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
+                        {
+                            E.setKeyName("");
+                            E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
+                            CMClass.DBEngine().DBUpdateExits(R2);
+                            R2.getArea().fillInAreaRoom(R2);
+                        }
+                    }
+                }
+            }
+            if(updateExits)
+            {
+                CMClass.DBEngine().DBUpdateExits(R);
+                R.getArea().fillInAreaRoom(R);
+            }
 			colorForSale(R,T.rentalProperty(),clearRoomIfUnsold);
 			return -1;
 		}

@@ -1376,13 +1376,17 @@ public class Arrest extends StdBehavior
 			LegalWarrant W2=(LegalWarrant)V.elementAt(w2);
             if(!Util.bset(W2.actionCode(),Law.ACTIONMASK_SEPARATE))
             {
-                num++;
     			if(((W2.actionCode()&Law.ACTION_MASK)+W2.offenses())>(highest&Law.ACTION_MASK))
-    				highest=(((W2.actionCode()&Law.ACTION_MASK)+W2.offenses()))|(W2.actionCode()-(W2.actionCode()&Law.ACTION_MASK));
+    				highest=(W2.actionCode()&Law.ACTION_MASK)+((W2.offenses()<4)?W2.offenses():3);
             }
 		}
-		highest+=num;
-		highest--;
+        for(int w2=0;w2<V.size();w2++)
+        {
+            LegalWarrant W2=(LegalWarrant)V.elementAt(w2);
+            if((!Util.bset(W2.actionCode(),Law.ACTIONMASK_SEPARATE))
+            &&(highest<((W2.actionCode()&Law.ACTION_MASK)+4)))
+                highest++;
+        }
 		if(highest>Law.ACTION_HIGHEST) highest=Law.ACTION_HIGHEST;
 		int adjusted=highest;
 		if((Sense.isGood(criminal))&&(adjusted>0))

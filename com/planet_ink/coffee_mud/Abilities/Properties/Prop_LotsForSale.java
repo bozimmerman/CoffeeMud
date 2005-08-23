@@ -63,6 +63,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			{
 				Room R2=R.rawDoors()[d];
 				foundOne=foundOne||(R2!=null);
+                Exit E=R.rawExits()[d];
 				if((R2!=null)&&(isCleanRoom(R,R2)))
 				{
 					R.rawDoors()[d]=null;
@@ -70,6 +71,24 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					updateExits=true;
 					CoffeeUtensils.obliterateRoom(R2);
 				}
+                else
+                if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
+                {
+                    E.setKeyName("");
+                    E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
+                    updateExits=true;
+                    if(R2!=null)
+                    {
+                        E=R2.rawExits()[Directions.getOpDirectionCode(d)];
+                        if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
+                        {
+                            E.setKeyName("");
+                            E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
+                            CMClass.DBEngine().DBUpdateExits(R2);
+                            R2.getArea().fillInAreaRoom(R2);
+                        }
+                    }
+                }
 			}
 			if(!foundOne)
 			{
