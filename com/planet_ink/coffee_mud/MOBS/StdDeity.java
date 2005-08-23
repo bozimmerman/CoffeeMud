@@ -557,7 +557,7 @@ public class StdDeity extends StdMOB implements Deity
 					break;
 				case TRIGGER_INROOM:
 					if((msg.source().location()!=null)
-					&&(msg.source().location().roomID().equals(DT.parm1)))
+					&&(msg.source().location().roomID().equalsIgnoreCase(DT.parm1)))
 						yup=true;
 					break;
 				case TRIGGER_RIDING:
@@ -1131,7 +1131,7 @@ public class StdDeity extends StdMOB implements Deity
 		CMMsg.TYP_FIRE,		//3
 		CMMsg.TYP_EAT,			//4
 		CMMsg.TYP_DRINK,		//5
-		CMMsg.TYP_ENTER,		//6
+		CMMsg.TYP_EXAMINESOMETHING,		//6
 		-999,					//7
 		CMMsg.TYP_CAST_SPELL,  //8
 		CMMsg.TYP_EMOTE,		//9

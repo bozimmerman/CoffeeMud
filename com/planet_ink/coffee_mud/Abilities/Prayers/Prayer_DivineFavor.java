@@ -45,7 +45,7 @@ public class Prayer_DivineFavor extends Prayer
             mob.tell("Your fall out of divine favor.");
     }
 
-    public void executeMsg(Environmental host, CMMsg msg)
+    public boolean okMessage(Environmental host, CMMsg msg)
     {
         if((msg.source()==affected)
         &&(msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
@@ -56,7 +56,7 @@ public class Prayer_DivineFavor extends Prayer
             else
                 msg.setValue(msg.value()*2);
         }
-        super.executeMsg(host,msg);
+        return super.okMessage(host,msg);
     }
     
     public boolean tick(Tickable ticking, int tickID)

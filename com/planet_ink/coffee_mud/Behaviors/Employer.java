@@ -24,6 +24,14 @@ import java.util.*;
 public class Employer extends StdBehavior
 {
     public String ID(){return "Employer";}
+    private DVector employees=null;
+    
+    public DVector employees()
+    {
+        if(employees!=null) return employees;
+        employees=new DVector(3);
+        return employees;
+    }
     
     public void setParms(String newParms)
     {
@@ -39,16 +47,19 @@ public class Employer extends StdBehavior
     
     public boolean okMessage(Environmental affecting, CMMsg msg)
     {
-        MOB source=msg.source();
         if(affecting instanceof MOB)
         {
-            MOB observer=(MOB)affecting;
         }
         return super.okMessage(affecting,msg);
     }
     
-    public void allDone(MOB observer)
+    public void allDone(MOB employerM)
     {
+    }
+    
+    public void handleQuit(MOB employerM, MOB employeeM)
+    {
+        
     }
     
     /** this method defines how this thing responds
@@ -58,7 +69,6 @@ public class Employer extends StdBehavior
     public void executeMsg(Environmental affecting, CMMsg msg)
     {
         super.executeMsg(affecting,msg);
-        MOB source=msg.source();
         if(!canActAtAll(affecting)) return;
         if(!(affecting instanceof MOB)) return;
         MOB observer=(MOB)affecting;
@@ -70,18 +80,18 @@ public class Employer extends StdBehavior
         &&(!msg.amISource(observer))
         &&(!msg.source().isMonster()))
         {
-            if(  ((msg.sourceMessage().toUpperCase().indexOf(" HIRE")>0)
+            if(  ((msg.sourceMessage().toUpperCase().indexOf(" HIRING")>0)
                 ||(msg.sourceMessage().toUpperCase().indexOf("'HIRE")>0)
-                ||(msg.sourceMessage().toUpperCase().indexOf(" HIRE")>0)
-                ||(msg.sourceMessage().toUpperCase().indexOf("'HIRE")>0)
-                ||(msg.sourceMessage().toUpperCase().indexOf(" HIRE")>0)
-                ||(msg.sourceMessage().toUpperCase().indexOf("'HIRE")>0)) )
+                ||(msg.sourceMessage().toUpperCase().indexOf(" JOB")>0)) )
+            {
+                
                 CommonMsgs.say(observer,null,"I'm hiring.",false,false);
+            }
             else
             if((msg.sourceMessage().toUpperCase().indexOf(" I QUIT")>0))
             {
                 CommonMsgs.say(observer,msg.source(),"Suit yourself.  Goodbye.",false,false);
-                allDone(observer);
+                handleQuit(observer,msg.source());
             }
         }
     }

@@ -580,7 +580,7 @@ public class List extends StdCommand
 
 	public StringBuffer listTicks(String whichTickTock)
 	{
-		StringBuffer msg=new StringBuffer("");
+		StringBuffer msg=new StringBuffer("\n\r");
 		boolean activeOnly=false;
 		if("ACTIVE".startsWith(whichTickTock.toUpperCase())&&(whichTickTock.length()>0))
 		{
@@ -618,7 +618,7 @@ public class List extends StdCommand
 					msg.append(Util.padRight(""+v,4)
 							   +Util.padRight(name,18)
 							   +" "+Util.padRight(id+"",5)
-							   +Util.padRight(status+(suspended?"*":""),10));
+							   +(activeOnly?(status+(suspended?"*":"")):Util.padRight(status+(suspended?"*":""),10)));
 				}
 			}
 		}

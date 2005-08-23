@@ -33,7 +33,7 @@ public class ListSessions extends StdCommand
 		String sort="";
 		if((commands!=null)&&(commands.size()>1))
 			sort=Util.combine(commands,1).trim().toUpperCase();
-		StringBuffer lines=new StringBuffer("^x");
+		StringBuffer lines=new StringBuffer("\n\r^x");
 		lines.append(Util.padRight("Status",9)+"| ");
 		lines.append(Util.padRight("Valid",5)+"| ");
 		lines.append(Util.padRight("Name",17)+"| ");

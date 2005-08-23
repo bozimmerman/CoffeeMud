@@ -40,7 +40,7 @@ public class DefaultTimeClock implements TimeClock, Cloneable
 			 "the 5th month","the 6th month","the 7th month","the 8th month"
 	};
 	private int daysInMonth=20;
-	private int[] dawnToDusk={0,1,4,5};
+	private int[] dawnToDusk={0,1,4,6};
 	private String[] weekNames={};
 	private String[] yearNames={"year #"};
 	

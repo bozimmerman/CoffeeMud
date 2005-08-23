@@ -51,9 +51,9 @@ public class Prayer_RighteousIndignation extends Prayer
 		&&(msg.source()==affected))
 		{
 			if(msg.value()<0)
-				msg.setValue(msg.value()/2);
+				msg.setValue(msg.value()-(msg.value()/4));
 			else
-				msg.setValue(msg.value()*2);
+				msg.setValue(msg.value()+(msg.value()/2));
 		}
 		return super.okMessage(myHost,msg);
 	}
