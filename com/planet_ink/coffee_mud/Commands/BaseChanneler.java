@@ -27,17 +27,18 @@ public class BaseChanneler extends StdCommand
 								 CMMsg msg,
 								 MOB mob)
 	{
+        MOB M=ses.mob();
 		if(ChannelSet.mayReadThisChannel(mob,areareq,ses,channelInt)
-		&&(ses.mob().okMessage(ses.mob(),msg)))
+        &&(M.location()!=null)
+		&&(M.location().okMessage(ses.mob(),msg)))
 		{
-			MOB M=ses.mob();
 			M.executeMsg(M,msg);
 			if(msg.trailerMsgs()!=null)
 			{
 				for(int i=0;i<msg.trailerMsgs().size();i++)
 				{
 					CMMsg msg2=(CMMsg)msg.trailerMsgs().elementAt(i);
-					if((msg!=msg2)&&(M.okMessage(M,msg2)))
+					if((msg!=msg2)&&(M.location()!=null)&&(M.location().okMessage(M,msg2)))
 						M.executeMsg(M,msg2);
 				}
 				msg.trailerMsgs().clear();

@@ -1093,7 +1093,8 @@ public final class IMC2Driver extends Thread {
 		{
 			Session ses=Sessions.elementAt(s);
 			if((ChannelSet.mayReadThisChannel(mob,false,ses,channelInt))
-			&&(ses.mob().okMessage(ses.mob(),msg)))
+            &&(ses.mob().location()!=null)
+			&&(ses.mob().location().okMessage(ses.mob(),msg)))
 				ses.mob().executeMsg(ses.mob(),msg);
 		}
 
