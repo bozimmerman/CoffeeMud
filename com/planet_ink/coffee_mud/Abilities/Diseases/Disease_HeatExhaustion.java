@@ -55,7 +55,7 @@ public class Disease_HeatExhaustion extends Disease
         if((affected!=null)
         &&(affected==msg.source())
         &&(msg.amITarget(msg.source().location()))
-        &&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
+        &&(msg.targetMinor()==CMMsg.TYP_LOOK))
         {
             Room R=room(msg.source().location());
             if((R==null)||(R==msg.source().location())) return true;

@@ -85,7 +85,7 @@ public class Prayer_HuntEvil extends Prayer
 		if((msg.amISource(mob))
 		&&(msg.amITarget(mob.location()))
 		&&(Sense.canBeSeenBy(mob.location(),mob))
-		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
+		&&(msg.targetMinor()==CMMsg.TYP_LOOK))
 			nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),false);
 	}
 

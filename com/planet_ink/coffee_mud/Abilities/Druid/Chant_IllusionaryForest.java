@@ -50,7 +50,7 @@ public class Chant_IllusionaryForest extends Chant
 		&&(affected instanceof Room)
 		&&(msg.amITarget(affected))
 		&&(newRoom().fetchEffect(ID())==null)
-		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
+		&&(msg.targetMinor()==CMMsg.TYP_LOOK))
 		{
 			FullMsg msg2=new FullMsg(msg.source(),newRoom(),msg.tool(),
 						  msg.sourceCode(),msg.sourceMessage(),

@@ -70,7 +70,7 @@ public class Skill_RegionalAwareness extends StdAbility
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_EXAMINESOMETHING,"<S-NAME> peer(s) at the horizon with a distant expression.");
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_LOOK,"<S-NAME> peer(s) at the horizon with a distant expression.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

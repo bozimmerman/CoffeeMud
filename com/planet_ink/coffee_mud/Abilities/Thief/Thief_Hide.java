@@ -63,7 +63,7 @@ public class Thief_Hide extends ThiefSkill
 			else
 			if((abilityCode()==0)
 			&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
-			&&(msg.othersMinor()!=CMMsg.TYP_EXAMINESOMETHING)
+			&&(msg.othersMinor()!=CMMsg.TYP_LOOK)
 			&&(msg.othersMajor()>0))
 			{
 				if(Util.bset(msg.othersMajor(),CMMsg.MASK_SOUND))

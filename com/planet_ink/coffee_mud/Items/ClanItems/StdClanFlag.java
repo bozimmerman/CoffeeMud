@@ -85,9 +85,9 @@ public class StdClanFlag extends StdItem implements ClanItem
 			&&(msg.source().getClanID().equals(clanID())))
 			{
 				if((msg.targetMinor()==CMMsg.TYP_DROP)&&(msg.trailerMsgs()==null))
-					msg.addTrailerMsg(new FullMsg(msg.source(),this,CMMsg.MSG_EXAMINESOMETHING,null));
+					msg.addTrailerMsg(new FullMsg(msg.source(),this,CMMsg.MSG_LOOK,null));
 				else
-				if(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
+				if(msg.targetMinor()==CMMsg.TYP_LOOK)
 				{
 					String s=getClanInfoAt(null,msg.source(),Law.MOD_WARINFO);
 					if(s.length()>0)

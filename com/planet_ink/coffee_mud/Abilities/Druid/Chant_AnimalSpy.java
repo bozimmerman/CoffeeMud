@@ -72,12 +72,12 @@ public class Chant_AnimalSpy extends Chant
 			if(invoker==null) return;
 
 			if((msg.amISource(spy))
-			&&(msg.sourceMinor()==CMMsg.TYP_EXAMINESOMETHING)
+			&&(msg.sourceMinor()==CMMsg.TYP_LOOK)
 			&&(msg.target()!=null)
 			&&((invoker.location()!=spy.location())||(!(msg.target() instanceof Room))))
 			{
 				disable=true;
-				FullMsg newAffect=new FullMsg(invoker,msg.target(),CMMsg.TYP_EXAMINESOMETHING,null);
+				FullMsg newAffect=new FullMsg(invoker,msg.target(),CMMsg.TYP_LOOK,null);
 				msg.target().executeMsg(invoker,newAffect);
 			}
 			else

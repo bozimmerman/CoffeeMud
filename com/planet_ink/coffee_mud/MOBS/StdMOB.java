@@ -2110,7 +2110,7 @@ public class StdMOB implements MOB
 					setLiegeID(msg.target().Name());
 				tell(this,msg.target(),msg.tool(),msg.sourceMessage());
 				break;
-			case CMMsg.TYP_EXAMINESOMETHING:
+			case CMMsg.TYP_LOOK:
 				if((Sense.canBeSeenBy(this,mob))&&(msg.amITarget(this)))
 				{
 					StringBuffer myDescription=new StringBuffer("");
@@ -2316,7 +2316,7 @@ public class StdMOB implements MOB
 					location().send(this,msg2);
 				}
 				else
-				if((msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
+				if((msg.targetMinor()==CMMsg.TYP_LOOK)
 				&&(Sense.canBeSeenBy(this,mob)))
 				{
 					StringBuffer myDescription=new StringBuffer("");

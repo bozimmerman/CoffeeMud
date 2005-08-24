@@ -162,7 +162,7 @@ public class Skill_Track extends StdAbility
 		MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.amITarget(mob.location()))
-		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
+		&&(msg.targetMinor()==CMMsg.TYP_LOOK))
 			nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),false);
 	}
 

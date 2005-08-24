@@ -54,7 +54,7 @@ public class Thief_Nondetection extends ThiefSkill
 				 ||(msg.sourceMinor()==CMMsg.TYP_RECALL)))
 			 &&(active)
 			 &&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
-			 &&(msg.sourceMinor()!=CMMsg.TYP_EXAMINESOMETHING)
+			 &&(msg.sourceMinor()!=CMMsg.TYP_LOOK)
 			 &&(msg.sourceMajor()>0))
 			{
 				active=false;

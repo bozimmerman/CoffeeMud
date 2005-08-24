@@ -34,7 +34,7 @@ public class Prayer_CureBlindness extends Prayer
 		MOB newerMOB=CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();
 
-		FullMsg msg=new FullMsg(newMOB,newerMOB,null,CMMsg.MSG_EXAMINESOMETHING,null);
+		FullMsg msg=new FullMsg(newMOB,newerMOB,null,CMMsg.MSG_LOOK,null);
 		for(int a=0;a<fromMe.numEffects();a++)
 		{
 			Ability A=fromMe.fetchEffect(a);

@@ -179,7 +179,7 @@ public class StdArmor extends StdContainer implements Armor
 		super.executeMsg(myHost,msg);
 		// lets do some damage!
 		if((msg.amITarget(this))
-		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
+		&&(msg.targetMinor()==CMMsg.TYP_LOOK)
 		&&(subjectToWearAndTear())
 		&&(usesRemaining()<100)
 		&&(Sense.canBeSeenBy(this,msg.source())))

@@ -71,7 +71,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 
 		if(msg.amITarget(myRoomContainer))
 		{
-			if((waitingForLook)&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
+			if((waitingForLook)&&(msg.targetMinor()==CMMsg.TYP_LOOK))
 			{
 				doMyThing();
 				return;

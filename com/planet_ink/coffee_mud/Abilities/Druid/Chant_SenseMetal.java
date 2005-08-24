@@ -43,7 +43,7 @@ public class Chant_SenseMetal extends Chant
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((msg.source()==affected)
-		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
+		&&(msg.targetMinor()==CMMsg.TYP_LOOK)
 		&&(msg.target() instanceof Room)
 		&&(msg.tool()==null)
 		&&(((((Room)msg.target()).myResource()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)

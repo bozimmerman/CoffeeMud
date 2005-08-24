@@ -638,7 +638,7 @@ public class StdItem implements Item
 		else
 		switch(msg.targetMinor())
 		{
-		case CMMsg.TYP_EXAMINESOMETHING:
+		case CMMsg.TYP_LOOK:
 		case CMMsg.TYP_READSOMETHING:
 		case CMMsg.TYP_QUIETMOVEMENT:
 		case CMMsg.TYP_NOISYMOVEMENT:
@@ -982,7 +982,7 @@ public class StdItem implements Item
 				    mob.tell(mob,this,null,"<T-NAME> has a "+s+" smell.");
 			}
 			break;
-		case CMMsg.TYP_EXAMINESOMETHING:
+		case CMMsg.TYP_LOOK:
 			if(!(this instanceof Container))
 			{
 				if(Sense.canBeSeenBy(this,mob))

@@ -68,7 +68,7 @@ public class Spell_DistantVision extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.tell("\n\r\n\r");
-				FullMsg msg2=new FullMsg(mob,thisRoom,CMMsg.MSG_EXAMINESOMETHING,null);
+				FullMsg msg2=new FullMsg(mob,thisRoom,CMMsg.MSG_LOOK,null);
 				thisRoom.executeMsg(mob,msg2);
 			}
 

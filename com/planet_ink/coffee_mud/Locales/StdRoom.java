@@ -469,7 +469,7 @@ public class StdRoom
 					recoverRoomStats();
 				break;
 			}
-			case CMMsg.TYP_EXAMINESOMETHING:
+			case CMMsg.TYP_LOOK:
 				look(mob,msg.sourceMessage()==null);
 				break;
 			case CMMsg.TYP_SNIFF:

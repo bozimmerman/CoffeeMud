@@ -89,7 +89,7 @@ public class Skill_Disguise extends BardSkill
 		MOB mob=(MOB)myHost;
 		if(msg.amITarget(mob)
 		&&(Sense.canBeSeenBy(mob,msg.source()))
-		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
+		&&(msg.targetMinor()==CMMsg.TYP_LOOK)
 		&&((values[0]!=null)||(values[4]!=null)))
 		{
 			String omsg=null;
@@ -113,7 +113,7 @@ public class Skill_Disguise extends BardSkill
 		MOB mob=(MOB)myHost;
 		if(msg.amITarget(this)
 		&&(Sense.canBeSeenBy(mob,msg.source()))
-		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
+		&&(msg.targetMinor()==CMMsg.TYP_LOOK)
 		&&((values[0]!=null)||(values[4]!=null)))
 		{
 			StringBuffer myDescription=new StringBuffer("");

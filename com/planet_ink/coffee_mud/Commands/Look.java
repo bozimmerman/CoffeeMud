@@ -98,7 +98,7 @@ public class Look extends StdCommand
 					if(dirCode>=0)
 						name=Directions.getDirectionName(dirCode);
 				}
-				FullMsg msg=new FullMsg(mob,thisThang,null,CMMsg.MSG_EXAMINESOMETHING,textMsg+name+".");
+				FullMsg msg=new FullMsg(mob,thisThang,null,CMMsg.MSG_LOOK,textMsg+name+".");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 				if((thisThang instanceof Room)&&(Util.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS)))
@@ -116,7 +116,7 @@ public class Look extends StdCommand
 					return false;
 				}
 
-			FullMsg msg=new FullMsg(mob,mob.location(),null,CMMsg.MSG_EXAMINESOMETHING,(quiet?null:textMsg+"around."),CMMsg.MSG_EXAMINESOMETHING,(quiet?null:textMsg+"at you."),CMMsg.MSG_EXAMINESOMETHING,(quiet?null:textMsg+"around."));
+			FullMsg msg=new FullMsg(mob,mob.location(),null,CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"at you."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			if((Util.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))

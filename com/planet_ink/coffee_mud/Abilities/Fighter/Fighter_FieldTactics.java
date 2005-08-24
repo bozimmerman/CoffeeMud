@@ -103,7 +103,7 @@ public class Fighter_FieldTactics extends StdAbility
 			 ||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
 			 ||(msg.sourceMinor()==CMMsg.TYP_RECALL)))
 		 &&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
-		 &&(msg.sourceMinor()!=CMMsg.TYP_EXAMINESOMETHING)
+		 &&(msg.sourceMinor()!=CMMsg.TYP_LOOK)
 		 &&(msg.sourceMajor()>0))
 		{
 			hidden=false;

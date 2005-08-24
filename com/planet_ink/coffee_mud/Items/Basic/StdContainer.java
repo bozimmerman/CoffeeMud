@@ -376,7 +376,7 @@ public class StdContainer extends StdItem implements Container
 						mob.location().recoverRoomStats();
 				}
 				break;
-			case CMMsg.TYP_EXAMINESOMETHING:
+			case CMMsg.TYP_LOOK:
 				if(Sense.canBeSeenBy(this,mob))
 				{
 					StringBuffer buf=new StringBuffer("");

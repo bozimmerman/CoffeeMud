@@ -54,7 +54,7 @@ public class Spell_MagicMouth extends Spell
 		if((msg.amITarget(myRoomContainer))
 		&&(!Sense.isSneaking(msg.source())))
 		{
-			if((waitingForLook)&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
+			if((waitingForLook)&&(msg.targetMinor()==CMMsg.TYP_LOOK))
 			{
 				doMyThing();
 				return;

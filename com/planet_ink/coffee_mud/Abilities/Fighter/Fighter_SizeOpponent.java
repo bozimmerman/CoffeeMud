@@ -49,7 +49,7 @@ public class Fighter_SizeOpponent extends StdAbility
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_EXAMINESOMETHING|(auto?CMMsg.MASK_GENERAL:0),"<S-NAME> size(s) up <T-NAMESELF> with <S-HIS-HER> eyes.");
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_LOOK|(auto?CMMsg.MASK_GENERAL:0),"<S-NAME> size(s) up <T-NAMESELF> with <S-HIS-HER> eyes.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -41,6 +41,8 @@ public class Addictions extends StdAbility
     {
         if(!super.tick(ticking,tickID))
             return false;
+        
+        // TODO: losing addiction after long ass time
         if((craving())&&(Dice.rollPercentage()<10)&&(ticking instanceof MOB))
         {
             switch(Dice.roll(1,7,0))

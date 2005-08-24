@@ -91,7 +91,7 @@ public class Spell_MirrorImage extends Spell
 			}
 		}
 		else
-		if((msg.amITarget(mob.location())&&(!msg.amISource(mob))&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
+		if((msg.amITarget(mob.location())&&(!msg.amISource(mob))&&(msg.targetMinor()==CMMsg.TYP_LOOK))
 		&&((Sense.canBeSeenBy(mob,msg.source()))&&(mob.displayText(msg.source()).length()>0)))
 		{
 			StringBuffer Say=new StringBuffer("");

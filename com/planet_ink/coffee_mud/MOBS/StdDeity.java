@@ -1131,7 +1131,7 @@ public class StdDeity extends StdMOB implements Deity
 		CMMsg.TYP_FIRE,		//3
 		CMMsg.TYP_EAT,			//4
 		CMMsg.TYP_DRINK,		//5
-		CMMsg.TYP_EXAMINESOMETHING,		//6
+		CMMsg.TYP_LOOK,		//6
 		-999,					//7
 		CMMsg.TYP_CAST_SPELL,  //8
 		CMMsg.TYP_EMOTE,		//9

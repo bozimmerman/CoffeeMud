@@ -140,7 +140,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 		&&(affected instanceof MOB)
 		&&(msg.target()!=null)
 		&&(msg.amISource((MOB)affected))
-		&&(msg.sourceMinor()==CMMsg.TYP_EXAMINESOMETHING))
+		&&(msg.sourceMinor()==CMMsg.TYP_LOOK))
 		{
 			if((msg.tool()!=null)&&(msg.tool().ID().equals(ID())))
 			{
@@ -153,7 +153,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 			&&(trapHere((MOB)affected,msg.target()).length()>0)
 			&&(msg.source()!=msg.target()))
 			{
-				FullMsg msg2=new FullMsg(msg.source(),msg.target(),this,CMMsg.MSG_EXAMINESOMETHING,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,null);
+				FullMsg msg2=new FullMsg(msg.source(),msg.target(),this,CMMsg.MSG_LOOK,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,null);
 				msg.addTrailerMsg(msg2);
 			}
 		}

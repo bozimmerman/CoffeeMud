@@ -65,7 +65,7 @@ public class Pregnancy extends StdAbility
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((msg.target()==affected)
-		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
+		&&(msg.targetMinor()==CMMsg.TYP_LOOK)
 		&&(Sense.canBeSeenBy(affected,msg.source()))
 		&&(affected instanceof MOB)
 		&&((monthsRemaining>0)&&(monthsRemaining<=3)))

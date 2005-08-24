@@ -81,7 +81,7 @@ public class ItemIdentifier extends StdBehavior
 			source.recoverEnvStats();
 			FullMsg newMsg=new FullMsg(msg.source(),observer,null,CMMsg.MSG_OK_ACTION,"<S-NAME> give(s) "+costStr+" to <T-NAMESELF>.");
 			msg.addTrailerMsg(newMsg);
-			newMsg=new FullMsg(observer,msg.tool(),null,CMMsg.MSG_EXAMINESOMETHING,"<S-NAME> examine(s) <T-NAME> very closely.");
+			newMsg=new FullMsg(observer,msg.tool(),null,CMMsg.MSG_LOOK,"<S-NAME> examine(s) <T-NAME> very closely.");
 			msg.addTrailerMsg(newMsg);
 			StringBuffer up=new StringBuffer(msg.tool().name()+" is made of "+EnvResource.RESOURCE_DESCS[((Item)msg.tool()).material()&EnvResource.RESOURCE_MASK].toLowerCase()+".\n\r");
 			if((msg.tool() instanceof Armor)&&(msg.tool().envStats().height()>0))

@@ -113,7 +113,7 @@ public class Chant_Farsight extends Chant
 							thatRoom=room;
 							limit--;
 							mob.tell("\n\r");
-							FullMsg msg2=new FullMsg(mob,thatRoom,CMMsg.MSG_EXAMINESOMETHING,null);
+							FullMsg msg2=new FullMsg(mob,thatRoom,CMMsg.MSG_LOOK,null);
 							thatRoom.executeMsg(mob,msg2);
 						}
 					}

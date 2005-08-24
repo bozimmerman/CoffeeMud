@@ -85,7 +85,7 @@ public class StdWeapon extends StdItem implements Weapon
 		super.executeMsg(myHost,msg);
 
 		if((msg.amITarget(this))
-		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
+		&&(msg.targetMinor()==CMMsg.TYP_LOOK)
 		&&(Sense.canBeSeenBy(this,msg.source())))
 		{
 			if(requiresAmmunition())

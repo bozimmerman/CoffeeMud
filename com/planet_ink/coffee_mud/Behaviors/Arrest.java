@@ -1226,7 +1226,7 @@ public class Arrest extends StdBehavior
 
 	public boolean canFocusOn(MOB officer, MOB criminal)
 	{
-		FullMsg msg=new FullMsg(officer,criminal,CMMsg.MSG_EXAMINESOMETHING,"<S-NAME> look(s) closely at <T-NAME>.");
+		FullMsg msg=new FullMsg(officer,criminal,CMMsg.MSG_LOOK,"<S-NAME> look(s) closely at <T-NAME>.");
 		if((officer!=null)&&(officer.location()!=null)&&(criminal.location()==officer.location()))
 		{
 			if(!officer.location().okMessage(officer,msg))

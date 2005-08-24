@@ -94,7 +94,7 @@ public class Display extends BaseItemParser
 		for(int i=0;i<V.size();i++)
 		{
 			Environmental giveThis=(Environmental)V.elementAt(i);
-			FullMsg newMsg=new FullMsg(recipient,giveThis,mob,CMMsg.MSG_EXAMINESOMETHING,"<O-NAME> show(s) <T-NAME> to <S-NAMESELF>.");
+			FullMsg newMsg=new FullMsg(recipient,giveThis,mob,CMMsg.MSG_LOOK,"<O-NAME> show(s) <T-NAME> to <S-NAMESELF>.");
 			if(mob.location().okMessage(recipient,newMsg))
 			{
 				recipient.tell(recipient,giveThis,mob,"<O-NAME> show(s) <T-NAME> to <S-NAMESELF>.");
