@@ -191,7 +191,7 @@ public class GenWallpaper implements Item
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_LOOK:
-		case CMMsg.TYP_READSOMETHING:
+		case CMMsg.TYP_READ:
 		case CMMsg.TYP_SPEAK:
 		case CMMsg.TYP_OK_ACTION:
 		case CMMsg.TYP_OK_VISUAL:
@@ -232,7 +232,7 @@ public class GenWallpaper implements Item
 			else
 				mob.tell("You can't see that!");
 			return;
-		case CMMsg.TYP_READSOMETHING:
+		case CMMsg.TYP_READ:
 			if(Sense.canBeSeenBy(this,mob))
 			{
 				if((Sense.isReadable(this))&&(readableText()!=null)&&(readableText().length()>0))

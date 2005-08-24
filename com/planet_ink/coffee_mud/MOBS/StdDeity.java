@@ -1142,7 +1142,7 @@ public class StdDeity extends StdMOB implements Deity
 		-999,					//14
 		-999,					//15
 		-999,					//16
-		CMMsg.TYP_READSOMETHING,//17
+		CMMsg.TYP_READ,//17
 		-999					,//18
 		-999					//19
 	};

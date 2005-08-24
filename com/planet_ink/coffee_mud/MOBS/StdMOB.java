@@ -1546,7 +1546,7 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_VALUE:
 				case CMMsg.TYP_SELL:
 				case CMMsg.TYP_VIEW:
-				case CMMsg.TYP_READSOMETHING:
+				case CMMsg.TYP_READ:
 					if(isInCombat()&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC)))
 					{
 						tell("Not while you are fighting!");
@@ -2165,7 +2165,7 @@ public class StdMOB implements MOB
 					tell(myDescription.toString());
 				}
 				break;
-			case CMMsg.TYP_READSOMETHING:
+			case CMMsg.TYP_READ:
 				if((Sense.canBeSeenBy(this,mob))&&(msg.amITarget(this)))
 					tell("There is nothing written on "+name());
 				break;

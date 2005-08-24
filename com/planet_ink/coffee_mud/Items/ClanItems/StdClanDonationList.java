@@ -69,7 +69,7 @@ public class StdClanDonationList extends StdClanItem
         if(((ClanItem)this).clanID().length()>0)
         {
             if((msg.target()==this)
-            &&(msg.targetMinor()==CMMsg.TYP_READSOMETHING))
+            &&(msg.targetMinor()==CMMsg.TYP_READ))
             {
                 MOB mob=msg.source();
                 if(Sense.canBeSeenBy(this,mob))

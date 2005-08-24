@@ -529,7 +529,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		else
 		switch(msg.targetMinor())
 		{
-		case CMMsg.TYP_READSOMETHING:
+		case CMMsg.TYP_READ:
 			if(Sense.canBeSeenBy(this,mob))
 			{
 				StringBuffer map[][]=getMyMappedRoom();

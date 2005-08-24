@@ -55,7 +55,7 @@ public class Spell_ObscureSelf extends Spell
 		if((msg.amITarget(mob))&&(msg.targetMinor()!=CMMsg.TYP_DAMAGE))
 		{
 			if((!msg.amISource(mob))&&((msg.targetMinor()==CMMsg.TYP_LOOK)
-										||(msg.targetMinor()==CMMsg.TYP_READSOMETHING)))
+										||(msg.targetMinor()==CMMsg.TYP_READ)))
 			{
 				msg.source().tell("He or she is too vague to make out any details.");
 				return false;

@@ -46,7 +46,7 @@ public class Read extends StdCommand
 		String soMsg=(mob.isMine(thisThang)?srcMsg:null);
 		String tMsg=theRest;
 		if((tMsg.trim().length()==0)||(thisThang instanceof MOB)) tMsg=soMsg;
-		FullMsg newMsg=new FullMsg(mob,thisThang,null,CMMsg.MSG_READSOMETHING,srcMsg,CMMsg.MSG_READSOMETHING,tMsg,CMMsg.MSG_READSOMETHING,soMsg);
+		FullMsg newMsg=new FullMsg(mob,thisThang,null,CMMsg.MSG_READ,srcMsg,CMMsg.MSG_READ,tMsg,CMMsg.MSG_READ,soMsg);
 		if(mob.location().okMessage(mob,newMsg))
 			mob.location().send(mob,newMsg);
 

@@ -60,7 +60,7 @@ public class Bug extends StdCommand
 				else
 				while(count<=size)
 				{
-					FullMsg msg=new FullMsg(mob,journalItem,null,CMMsg.MSG_READSOMETHING,null,CMMsg.MSG_READSOMETHING,""+count,CMMsg.MSG_READSOMETHING,null);
+					FullMsg msg=new FullMsg(mob,journalItem,null,CMMsg.MSG_READ,null,CMMsg.MSG_READ,""+count,CMMsg.MSG_READ,null);
 					msg.setValue(1);
 					journalItem.executeMsg(mob,msg);
 					if(msg.value()==0)

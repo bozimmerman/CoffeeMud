@@ -52,7 +52,7 @@ public class Prayer_BirdsEye extends Prayer
 					I.setReadableText(str.toString());
 					I.setName("");
 					I.baseEnvStats().setDisposition(EnvStats.IS_GLOWING);
-					msg=new FullMsg(mob,I,CMMsg.MSG_READSOMETHING,"");
+					msg=new FullMsg(mob,I,CMMsg.MSG_READ,"");
 					mob.addInventory(I);
 					mob.location().send(mob,msg);
 					I.destroy();

@@ -55,7 +55,7 @@ public class StdLawBook extends StdItem
 		if(msg.amITarget(this))
 		switch(msg.targetMinor())
 		{
-		case CMMsg.TYP_READSOMETHING:
+		case CMMsg.TYP_READ:
 			if(!Sense.canBeSeenBy(this,mob))
 				mob.tell("You can't see that!");
 			else

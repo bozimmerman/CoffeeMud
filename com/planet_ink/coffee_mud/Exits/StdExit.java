@@ -209,7 +209,7 @@ public class StdExit implements Exit
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_LOOK:
-		case CMMsg.TYP_READSOMETHING:
+		case CMMsg.TYP_READ:
 		case CMMsg.TYP_OK_VISUAL:
 		case CMMsg.TYP_KNOCK:
 		case CMMsg.TYP_OK_ACTION:
@@ -459,7 +459,7 @@ public class StdExit implements Exit
 			else
 				mob.tell("You can't see that way!");
 			return;
-		case CMMsg.TYP_READSOMETHING:
+		case CMMsg.TYP_READ:
 			if(Sense.canBeSeenBy(this,mob))
 			{
 				if((isReadable())&&(readableText()!=null)&&(readableText().length()>0))

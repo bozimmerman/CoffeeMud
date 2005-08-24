@@ -432,7 +432,7 @@ public class StdTitle extends StdItem implements LandTitle
 		}
 		else
 		if((msg.amITarget(this))
-		&&(msg.targetMinor()==CMMsg.TYP_READSOMETHING))
+		&&(msg.targetMinor()==CMMsg.TYP_READ))
 		{
 			if(Sense.canBeSeenBy(this,msg.source()))
 			{

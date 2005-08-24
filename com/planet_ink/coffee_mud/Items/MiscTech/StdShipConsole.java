@@ -65,7 +65,7 @@ public class StdShipConsole extends StdRideable
 	    {
 	        switch(msg.targetMinor())
 	        {
-	        case CMMsg.TYP_READSOMETHING:
+	        case CMMsg.TYP_READ:
 	            return true;
 	        case CMMsg.TYP_ACTIVATE:
 	            if((msg.targetMessage()==null)&&(activated()))
@@ -91,7 +91,7 @@ public class StdShipConsole extends StdRideable
 	    {
 	        switch(msg.targetMinor())
 	        {
-	        case CMMsg.TYP_READSOMETHING:
+	        case CMMsg.TYP_READ:
 		    {
 		        if(!activated())
 		        {

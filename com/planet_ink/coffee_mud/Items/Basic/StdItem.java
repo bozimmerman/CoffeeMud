@@ -639,7 +639,7 @@ public class StdItem implements Item
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_LOOK:
-		case CMMsg.TYP_READSOMETHING:
+		case CMMsg.TYP_READ:
 		case CMMsg.TYP_QUIETMOVEMENT:
 		case CMMsg.TYP_NOISYMOVEMENT:
 		case CMMsg.TYP_HANDS:
@@ -1003,7 +1003,7 @@ public class StdItem implements Item
 					mob.tell("You can't see that!");
 			}
 			return;
-		case CMMsg.TYP_READSOMETHING:
+		case CMMsg.TYP_READ:
 			if(!(this instanceof LandTitle))
 			{
 				if(Sense.canBeSeenBy(this,mob))

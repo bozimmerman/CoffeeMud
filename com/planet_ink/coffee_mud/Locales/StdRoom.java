@@ -538,7 +538,7 @@ public class StdRoom
 				    msg.source().tell(smell.toString());
 			}
 			break;
-			case CMMsg.TYP_READSOMETHING:
+			case CMMsg.TYP_READ:
 				if(Sense.canBeSeenBy(this,mob))
 					mob.tell("There is nothing written here.");
 				else

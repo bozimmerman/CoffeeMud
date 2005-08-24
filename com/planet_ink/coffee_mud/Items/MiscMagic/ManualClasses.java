@@ -46,7 +46,7 @@ public class ManualClasses extends StdItem implements MiscMagic,ArchonOnly
 			MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
-			case CMMsg.TYP_READSOMETHING:
+			case CMMsg.TYP_READ:
 				if(mob.isMine(this))
 				{
 					if(mob.fetchEffect("Spell_ReadMagic")!=null)

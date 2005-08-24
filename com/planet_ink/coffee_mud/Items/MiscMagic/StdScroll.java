@@ -229,7 +229,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 			MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
-			case CMMsg.TYP_READSOMETHING:
+			case CMMsg.TYP_READ:
 				if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
 					readIfAble(mob,this,msg.targetMessage());
 				else

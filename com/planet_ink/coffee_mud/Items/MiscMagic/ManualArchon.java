@@ -46,7 +46,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 			MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
-			case CMMsg.TYP_READSOMETHING:
+			case CMMsg.TYP_READ:
 				if(mob.isMine(this))
 				{
 					mob.tell("The manual glows softly, enveloping you in its magical energy.");
