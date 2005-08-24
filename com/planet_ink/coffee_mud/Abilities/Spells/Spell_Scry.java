@@ -46,12 +46,12 @@ public class Spell_Scry extends Spell
 		super.executeMsg(myHost,msg);
 		if((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
-		&&(msg.sourceMinor()==CMMsg.TYP_LOOK)
+		&&((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE))
 		&&(invoker!=null)
 		&&(msg.target()!=null)
 		&&((invoker.location()!=((MOB)affected).location())||(!(msg.target() instanceof Room))))
 		{
-			FullMsg newAffect=new FullMsg(invoker,msg.target(),CMMsg.TYP_LOOK,null);
+			FullMsg newAffect=new FullMsg(invoker,msg.target(),msg.sourceMinor(),null);
 			msg.target().executeMsg(msg.target(),newAffect);
 		}
 		else

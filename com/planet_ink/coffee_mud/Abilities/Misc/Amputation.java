@@ -86,7 +86,7 @@ public class Amputation extends StdAbility
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((msg.target()==affected)
-		&&(msg.targetMinor()==CMMsg.TYP_LOOK)
+		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 		&&(Sense.canBeSeenBy(affected,msg.source()))
 		&&(affected instanceof MOB))
 		{

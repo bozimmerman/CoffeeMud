@@ -51,6 +51,7 @@ public class Prop_Hidden extends Property
 				 ||(msg.sourceMinor()==CMMsg.TYP_RECALL)))
 			 &&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
 			 &&(msg.sourceMinor()!=CMMsg.TYP_LOOK)
+             &&(msg.sourceMinor()!=CMMsg.TYP_EXAMINE)
 			 &&(msg.sourceMajor()>0))
 			{
 				ticksSinceLoss=0;

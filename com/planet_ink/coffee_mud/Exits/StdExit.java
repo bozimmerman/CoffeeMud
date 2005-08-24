@@ -209,6 +209,7 @@ public class StdExit implements Exit
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_LOOK:
+        case CMMsg.TYP_EXAMINE:
 		case CMMsg.TYP_READ:
 		case CMMsg.TYP_OK_VISUAL:
 		case CMMsg.TYP_KNOCK:
@@ -435,6 +436,7 @@ public class StdExit implements Exit
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_LOOK:
+        case CMMsg.TYP_EXAMINE:
 			if(Sense.canBeSeenBy(this,mob))
 			{
 				if(description().trim().length()>0)

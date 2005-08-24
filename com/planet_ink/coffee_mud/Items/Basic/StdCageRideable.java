@@ -42,7 +42,8 @@ public class StdCageRideable extends StdRideable
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if((msg.amITarget(this))&&(msg.targetMinor()==CMMsg.TYP_LOOK))
+		if((msg.amITarget(this))
+        &&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
 			MOB mob=msg.source();
 			if(Sense.canBeSeenBy(this,mob))

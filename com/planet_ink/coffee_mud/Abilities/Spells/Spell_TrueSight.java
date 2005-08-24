@@ -46,8 +46,8 @@ public class Spell_TrueSight extends Spell
 		if(!super.okMessage(myHost,msg)) return false;
 		if((affected==null)||(!(affected instanceof MOB)))
 		   return true;
-		if((msg.targetMinor()==CMMsg.TYP_LOOK)
-		&&(msg.amISource((MOB)affected))
+		if((msg.amISource((MOB)affected))
+        &&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 		&&(msg.target()!=null)
 		&&(!msg.target().name().equals(msg.target().Name())))
 			msg.addTrailerMsg(new FullMsg(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,msg.target().name()+" is truely "+msg.target().Name()+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));

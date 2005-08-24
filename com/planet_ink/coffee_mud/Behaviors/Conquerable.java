@@ -846,7 +846,7 @@ public class Conquerable extends Arrest
 			if(msg.target() instanceof ClanItem)
 				registerClanItem(msg.target());
 
-			if((msg.targetMinor()==CMMsg.TYP_LOOK)
+			if(((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 			&&(msg.target() instanceof Room)
 			&&(holdingClan.length()>0)
 			&&(msg.source().getClanID().length()>0)

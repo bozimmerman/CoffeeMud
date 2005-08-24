@@ -55,11 +55,12 @@ public class Ranger_Hide extends StdAbility
 				 ||(msg.sourceMinor()==CMMsg.TYP_RECALL)))
 			 &&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
 			 &&(msg.sourceMinor()!=CMMsg.TYP_LOOK)
+             &&(msg.sourceMinor()!=CMMsg.TYP_EXAMINE)
 			 &&(msg.sourceMajor()>0))
-			{
+			 {
 				unInvoke();
 				mob.recoverEnvStats();
-			}
+			 }
 		}
 		return;
 	}

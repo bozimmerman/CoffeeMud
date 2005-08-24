@@ -84,7 +84,8 @@ public class Spell_IceSheet extends Spell
 		if((affected==null)||(!(affected instanceof Room)))
 		   return;
 		super.executeMsg(myHost,msg);
-		if((msg.target()==affected)&&(msg.targetMinor()==CMMsg.TYP_LOOK))
+		if((msg.target()==affected)
+        &&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
 			MOB mob=msg.source();
 			Room room=(Room)affected;

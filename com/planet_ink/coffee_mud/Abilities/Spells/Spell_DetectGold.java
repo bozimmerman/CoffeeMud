@@ -164,7 +164,7 @@ public class Spell_DetectGold extends Spell
 		   &&(affected instanceof MOB)
 		   &&(msg.target()!=null)
 		   &&(msg.amISource((MOB)affected))
-		   &&(msg.sourceMinor()==CMMsg.TYP_LOOK))
+		   &&((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE)))
 		{
 			if((msg.tool()!=null)&&(msg.tool().ID().equals(ID())))
 			{

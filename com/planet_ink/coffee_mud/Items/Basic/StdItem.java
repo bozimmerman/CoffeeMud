@@ -639,6 +639,7 @@ public class StdItem implements Item
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_LOOK:
+        case CMMsg.TYP_EXAMINE:
 		case CMMsg.TYP_READ:
 		case CMMsg.TYP_QUIETMOVEMENT:
 		case CMMsg.TYP_NOISYMOVEMENT:
@@ -983,6 +984,7 @@ public class StdItem implements Item
 			}
 			break;
 		case CMMsg.TYP_LOOK:
+        case CMMsg.TYP_EXAMINE:
 			if(!(this instanceof Container))
 			{
 				if(Sense.canBeSeenBy(this,mob))

@@ -59,7 +59,7 @@ public class Prop_Tattoo extends Property
 			MOB mob=(MOB)affected;
 
 			if((msg.amITarget(mob))
-			   &&(msg.targetMinor()==CMMsg.TYP_LOOK)
+			   &&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 			   &&(text().length()>0))
 			{
 				Vector V=getTattoos(msg.source());

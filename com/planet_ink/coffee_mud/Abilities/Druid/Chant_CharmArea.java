@@ -60,7 +60,8 @@ public class Chant_CharmArea extends Chant
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if(msg.amITarget(affected)&&(msg.targetMinor()==CMMsg.TYP_LOOK))
+		if(msg.amITarget(affected)
+        &&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
 			msg.addTrailerMsg(new FullMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,"There is something charming about this place."));
 		}

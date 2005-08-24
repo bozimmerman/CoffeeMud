@@ -2111,6 +2111,7 @@ public class StdMOB implements MOB
 				tell(this,msg.target(),msg.tool(),msg.sourceMessage());
 				break;
 			case CMMsg.TYP_LOOK:
+            case CMMsg.TYP_EXAMINE:
 				if((Sense.canBeSeenBy(this,mob))&&(msg.amITarget(this)))
 				{
 					StringBuffer myDescription=new StringBuffer("");
@@ -2316,7 +2317,7 @@ public class StdMOB implements MOB
 					location().send(this,msg2);
 				}
 				else
-				if((msg.targetMinor()==CMMsg.TYP_LOOK)
+				if(((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 				&&(Sense.canBeSeenBy(this,mob)))
 				{
 					StringBuffer myDescription=new StringBuffer("");

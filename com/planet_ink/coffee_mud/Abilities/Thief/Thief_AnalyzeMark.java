@@ -53,7 +53,7 @@ public class Thief_AnalyzeMark extends ThiefSkill
 		{
 			MOB mob=(MOB)affected;
 			if(msg.amISource(mob)
-			&&(msg.targetMinor()==CMMsg.TYP_LOOK)
+			&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 			&&(msg.target()!=null)
 			&&(getMark(mob)==msg.target())
 			&&(getMarkTicks(mob)>15)

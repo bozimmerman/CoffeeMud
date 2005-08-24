@@ -191,6 +191,7 @@ public class GenWallpaper implements Item
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_LOOK:
+        case CMMsg.TYP_EXAMINE:
 		case CMMsg.TYP_READ:
 		case CMMsg.TYP_SPEAK:
 		case CMMsg.TYP_OK_ACTION:
@@ -222,6 +223,7 @@ public class GenWallpaper implements Item
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_LOOK:
+        case CMMsg.TYP_EXAMINE:
 			if(Sense.canBeSeenBy(this,mob))
 			{
 				if(description().length()==0)

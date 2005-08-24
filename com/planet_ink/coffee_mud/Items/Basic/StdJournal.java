@@ -344,7 +344,7 @@ public class StdJournal extends StdItem
 			}
 		}
 		else
-		if((msg.targetMinor()==CMMsg.TYP_LOOK)
+		if(((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 		&&(msg.target() instanceof Room)
 		&&(msg.source()==owner)
 		&&(msg.source().playerStats()!=null)

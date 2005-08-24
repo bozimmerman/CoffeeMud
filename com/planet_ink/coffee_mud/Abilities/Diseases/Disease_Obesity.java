@@ -128,7 +128,7 @@ public class Disease_Obesity extends Disease
 		}
 		else
 		if((msg.target()==affected)
-		&&(msg.targetMinor()==CMMsg.TYP_LOOK)
+		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 		&&(Sense.canBeSeenBy(affected,msg.source()))
 		&&(affected instanceof MOB))
 		{

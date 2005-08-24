@@ -289,6 +289,7 @@ public class StdArea implements Area
 				case CMMsg.TYP_DEPOSIT:
 				case CMMsg.TYP_DROP:
 				case CMMsg.TYP_LOOK:
+                case CMMsg.TYP_EXAMINE:
 				case CMMsg.TYP_GET:
 				case CMMsg.TYP_GIVE:
 				case CMMsg.TYP_OPEN:

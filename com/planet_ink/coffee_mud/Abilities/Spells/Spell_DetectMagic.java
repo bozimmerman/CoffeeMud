@@ -49,7 +49,7 @@ public class Spell_DetectMagic extends Spell
 		&&(affected instanceof MOB)
 		&&(msg.target()!=null)
 		&&(msg.amISource((MOB)affected))
-		&&(msg.sourceMinor()==CMMsg.TYP_LOOK)
+		&&((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE))
 		&&(Sense.canBeSeenBy(msg.target(),(MOB)affected)))
 		{
 			String msg2=null;

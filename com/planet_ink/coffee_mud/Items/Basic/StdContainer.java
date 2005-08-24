@@ -377,6 +377,7 @@ public class StdContainer extends StdItem implements Container
 				}
 				break;
 			case CMMsg.TYP_LOOK:
+            case CMMsg.TYP_EXAMINE:
 				if(Sense.canBeSeenBy(this,mob))
 				{
 					StringBuffer buf=new StringBuffer("");

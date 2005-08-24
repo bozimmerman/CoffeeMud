@@ -67,7 +67,7 @@ public class Spell_Mirage extends Spell
 		&&(affected instanceof Room)
 		&&(msg.amITarget(affected))
 		&&(room().fetchEffect(ID())==null)
-		&&(msg.targetMinor()==CMMsg.TYP_LOOK))
+		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
 			FullMsg msg2=new FullMsg(msg.source(),room(),msg.tool(),
 						  msg.sourceCode(),msg.sourceMessage(),

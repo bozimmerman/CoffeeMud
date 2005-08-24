@@ -40,7 +40,7 @@ public class Prop_RoomView extends Property
 		&&((affected instanceof Room)||(affected instanceof Exit)||(affected instanceof Item))
 		&&(msg.amITarget(affected))
 		&&(newRoom.fetchEffect(ID())==null)
-		&&(msg.targetMinor()==CMMsg.TYP_LOOK))
+		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
 			FullMsg msg2=new FullMsg(msg.source(),newRoom,msg.tool(),
 						  msg.sourceCode(),msg.sourceMessage(),

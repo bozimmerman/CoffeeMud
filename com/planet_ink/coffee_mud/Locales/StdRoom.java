@@ -470,6 +470,7 @@ public class StdRoom
 				break;
 			}
 			case CMMsg.TYP_LOOK:
+            case CMMsg.TYP_EXAMINE:
 				look(mob,msg.sourceMessage()==null);
 				break;
 			case CMMsg.TYP_SNIFF:

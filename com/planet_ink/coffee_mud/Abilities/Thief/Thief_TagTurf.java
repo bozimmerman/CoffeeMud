@@ -53,7 +53,7 @@ public class Thief_TagTurf extends ThiefSkill
 		super.executeMsg(host,msg);
 		if((msg.target()==affected)
 		&&(affected instanceof Room)
-		&&(msg.targetMinor()==CMMsg.TYP_LOOK)
+		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 		&&((Sense.canSeeHidden(msg.source()))||(msg.source().Name().equals(text()))))
 		{
             if((msg.source().Name().equals(text()))

@@ -48,6 +48,7 @@ public class Song_Ode extends Song
 		{""+CMMsg.TYP_ACID,"ca",""+CharStats.SAVE_ACID,"<O-NAME> drips with warnings about acid!"},
 		{""+CMMsg.TYP_ELECTRIC,"ca",""+CharStats.SAVE_ELECTRIC,"The electric one, <O-NAME>, has shown us how to stay grounded!"},
 		{""+CMMsg.TYP_LOOK,"es",""+(EnvStats.CAN_SEE_DARK|EnvStats.CAN_SEE_HIDDEN),"<O-NAME> is ever watchful, and has opened our eyes!"},
+        {""+CMMsg.TYP_EXAMINE,"es",""+(EnvStats.CAN_SEE_BONUS|EnvStats.CAN_SEE_METAL),"<O-NAME> is a carefuly observer, and never misses the finest detail!"},
 		{""+CMMsg.TYP_JUSTICE,"ca",""+CharStats.SAVE_JUSTICE,"The dreadful <O-NAME> shows us the way out of danger!"},
 		{""+CMMsg.TYP_MIND,"ca",""+CharStats.SAVE_MIND,"<O-NAME>, the deceiver, reminds us to keep our wits!"},
 		{""+CMMsg.TYP_PARALYZE,"ca",""+CharStats.SAVE_PARALYSIS,"<O-NAME> paralyzes <O-HIS-HER> enemies, that we may stay free!"},
