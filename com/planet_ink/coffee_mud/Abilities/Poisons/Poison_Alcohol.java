@@ -77,6 +77,25 @@ public class Poison_Alcohol extends Poison
 		super.unInvoke();
 	}
 
+    protected boolean catchIt(MOB mob, Environmental target)
+    {
+        if(!super.catchIt(mob,target))
+            return false;
+        if(!(affected instanceof Drink)) return true;
+        if(Dice.roll(1,1000,0)>(alchoholContribution()*alchoholContribution()*alchoholContribution()))
+            return true;
+        if((target!=null)&&(target instanceof MOB)&&(target.fetchEffect(ID())==null))
+        {
+            MOB targetMOB=(MOB)target;
+            Ability A=targetMOB.fetchEffect("Addictions");
+            if(A==null)
+            {
+                A=CMClass.getAbility("Addictions");
+                if(A!=null) A.invoke(targetMOB,affected,true,0);
+            }
+        }
+        return true;
+    }
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

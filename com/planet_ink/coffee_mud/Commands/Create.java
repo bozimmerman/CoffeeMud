@@ -107,17 +107,7 @@ public class Create extends BaseGenerics
 	}
 
     public void polls(MOB mob, Vector commands)
-    throws IOException
     {
-        StringBuffer pollXML=new StringBuffer("");
-        pollXML.append("<POLL>");
-        pollXML.append("<NAME>The Title of the New Poll</NAME>");
-        pollXML.append("<DESCRIPTION />");
-        pollXML.append("<FLAGS>0</FLAGS>");
-        pollXML.append("<PARTICIPANTS />");
-        pollXML.append("<STATUS>PENDING</STATUS>");
-        
-        pollXML.append("</POLL>");
     }
     
 	public void items(MOB mob, Vector commands)

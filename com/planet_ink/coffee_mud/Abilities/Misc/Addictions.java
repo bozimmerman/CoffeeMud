@@ -34,6 +34,7 @@ public class Addictions extends StdAbility
     public int classificationCode(){return Ability.PROPERTY;}
     public boolean isAutoInvoked(){return true;}
     public boolean canBeUninvoked(){return false;}
+    private Item puffCredit=null;
     
     private boolean craving(){return (System.currentTimeMillis()-lastFix)>IQCalendar.MILI_HOUR;}
     
@@ -43,8 +44,21 @@ public class Addictions extends StdAbility
             return false;
         
         // TODO: losing addiction after long ass time
-        if((craving())&&(Dice.rollPercentage()<10)&&(ticking instanceof MOB))
+        
+        if((craving())
+        &&(Dice.rollPercentage()<=((System.currentTimeMillis()-lastFix)/IQCalendar.MILI_HOUR))
+        &&(ticking instanceof MOB))
         {
+            if((System.currentTimeMillis()-lastFix)>IQCalendar.MILI_DAY)
+            {
+                ((MOB)ticking).tell("You've managed to kick your addiction.");
+                return false;
+            }
+            if((puffCredit!=null)
+            &&(puffCredit.amDestroyed()
+                ||puffCredit.amWearingAt(Item.INVENTORY)
+                ||puffCredit.owner()!=(MOB)affected))
+                puffCredit=null;
             switch(Dice.roll(1,7,0))
             {
             case 1: ((MOB)ticking).tell("Man, you could sure use some "+text()+"."); break;
@@ -56,6 +70,22 @@ public class Addictions extends StdAbility
             case 7: ((MOB)ticking).tell("Some "+text()+" would be lovely."); break;
             }
             
+        }
+        return true;
+    }
+    
+    public boolean okMessage(Environmental host, CMMsg msg)
+    {
+        if((affected!=null)&&(affected instanceof MOB))
+        {
+            if((msg.source()==affected)
+            &&(msg.targetMinor()==CMMsg.TYP_WEAR)
+            &&(msg.target() instanceof Light)
+            &&(msg.target() instanceof Container)
+            &&(Util.bset(((Item)msg.target()).rawProperLocationBitmap(),Item.ON_MOUTH))
+            &&(((Container)msg.target()).getContents().size()>0)
+            &&(EnglishParser.containsString(((Environmental)((Container)msg.target()).getContents().firstElement()).Name(),text())))
+                puffCredit=(Item)msg.target();
         }
         return true;
     }
@@ -78,7 +108,7 @@ public class Addictions extends StdAbility
                 &&(msg.target()==msg.tool())
                 &&(((Light)msg.target()).amWearingAt(Item.ON_MOUTH))
                 &&(((Light)msg.target()).isLit())
-                &&(EnglishParser.containsString(msg.target().Name(),text())))
+                &&((puffCredit!=null)||EnglishParser.containsString(msg.target().Name(),text())))
                     lastFix=System.currentTimeMillis();
             }
         }
@@ -87,7 +117,7 @@ public class Addictions extends StdAbility
     
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
-        MOB target=getTarget(mob,commands,givenTarget);
+        Environmental target=givenTarget;
         
         if(target==null) return false;
         if(target.fetchEffect(ID())!=null) return false;
@@ -97,7 +127,7 @@ public class Addictions extends StdAbility
         boolean success=profficiencyCheck(mob,0,auto);
         if(success)
         {
-            String addiction=target.Name();
+            String addiction=target.Name().toUpperCase();
             if(addiction.toUpperCase().startsWith("A POUND OF "))
                 addiction=addiction.substring(11);
             if(addiction.toUpperCase().startsWith("A "))
@@ -107,21 +137,21 @@ public class Addictions extends StdAbility
             if(addiction.toUpperCase().startsWith("SOME "))
                 addiction=addiction.substring(5);
             FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"");
-            if(target.location()!=null)
+            if(mob.location()!=null)
             {
-                if(target.location().okMessage(target,msg))
+                if(mob.location().okMessage(mob,msg))
                 {
-                    target.location().send(target,msg);
+                    mob.location().send(mob,msg);
                     Ability A=(Ability)copyOf();
                     A.setMiscText(addiction.trim());
-                    target.addNonUninvokableEffect(A);
+                    mob.addNonUninvokableEffect(A);
                 }
             }
             else
             {
                 Ability A=(Ability)copyOf();
                 A.setMiscText(addiction.trim());
-                target.addNonUninvokableEffect(A);
+                mob.addNonUninvokableEffect(A);
             }
         }
         return success;

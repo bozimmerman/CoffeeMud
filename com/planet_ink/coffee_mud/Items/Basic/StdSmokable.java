@@ -170,6 +170,16 @@ public class StdSmokable extends StdContainer implements Light
 			   ||(room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE);
 	}
 
+    public void getAddictedTo(MOB mob, Item item)
+    {
+        Ability A=mob.fetchEffect("Addictions");
+        if(A==null)
+        {
+            A=CMClass.getAbility("Addictions");
+            if(A!=null) A.invoke(mob,item,true,0);
+        }
+    }
+    
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		MOB mob=msg.source();
@@ -212,9 +222,18 @@ public class StdSmokable extends StdContainer implements Light
 					if(capacity>0)
 					{
 						Vector V=getContents();
+                        Item I=null;
 						for(int v=0;v<V.size();v++)
-							((Item)V.elementAt(v)).destroy();
+                        {
+                            I=(Item)V.elementAt(v);
+                            if(Dice.roll(1,100,0)==1)
+                                getAddictedTo(msg.source(),I);
+                            I.destroy();
+                        }
 					}
+                    else
+                    if(Dice.roll(1,100,0)==1)
+                        getAddictedTo(msg.source(),this);
 
 					light(true);
 					CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_LIGHT_FLICKERS,1);
