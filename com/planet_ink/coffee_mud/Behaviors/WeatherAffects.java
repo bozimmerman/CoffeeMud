@@ -157,7 +157,7 @@ public class WeatherAffects extends PuddleMaker
                     break;
                 case Climate.WEATHER_SLEET:
                     if(Dice.rollPercentage()<sleetSlipChance)
-                        what="icey";
+                        what="icy";
                     break;
             }
             if((what!=null)

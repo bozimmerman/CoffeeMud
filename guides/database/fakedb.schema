@@ -172,3 +172,4 @@ CMOPTN string NULL
 CMFLAG integer NULL
 CMQUAL string NULL
 CHRESL string NULL
+CMEXPI integer NULL

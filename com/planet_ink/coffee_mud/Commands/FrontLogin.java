@@ -409,8 +409,11 @@ public class FrontLogin extends StdCommand
 			{
 				login=Util.capitalizeAndLower(login.trim());
 				mob.session().println(null,null,null,"\n\r\n\r"+Resources.getFileResource("text"+File.separatorChar+"newchar.txt").toString());
+                
+                boolean emailPassword=((CommonStrings.getVar(CommonStrings.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))&&(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX).length()>0));
 
 				String password="";
+                if(!emailPassword)
 				while(password.length()==0)
 				{
 					password=mob.session().prompt("\n\rEnter a password: ","");
@@ -427,6 +430,7 @@ public class FrontLogin extends StdCommand
 				{
 					String newEmail=mob.session().prompt("\n\rEnter your e-mail address:");
 					String confirmEmail=newEmail;
+                    if(emailPassword) mob.session().println("This email address will be used to send you a password.");
 					if(emailReq) confirmEmail=mob.session().prompt("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter:");
 					if(((newEmail.length()>6)&&(newEmail.indexOf("@")>0)&&((newEmail.equalsIgnoreCase(confirmEmail))))
 					   ||(!emailReq))
@@ -772,8 +776,28 @@ public class FrontLogin extends StdCommand
 			    mob.baseCharStats().setStat(CharStats.AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
 				mob.session().println(null,null,null,"\n\r\n\r"+Resources.getFileResource("text"+File.separatorChar+"newchardone.txt").toString());
 				mob.session().prompt("");
-				mob.bringToLife(mob.getStartRoom(),true);
-				mob.location().showOthers(mob,mob.location(),CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,"<S-NAME> appears!");
+                boolean logoff=false;
+                if(emailPassword)
+                {
+                    password="";
+                    for(int i=0;i<6;i++)
+                        password+=(char)('a'+Dice.roll(1,26,-1));
+                    mob.playerStats().setPassword(password);
+                    CMClass.DBEngine().DBUpdatePassword(mob);
+                    CMClass.DBEngine().DBWriteJournal(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX),
+                              mob.Name(),
+                              mob.Name(),
+                              "Password for "+mob.Name(),
+                              "Your new password for "+mob.Name()+" is: "+mob.playerStats().password()+"\n\rYou can login by pointing your mud client at "+CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN)+" port(s):"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.",-1);
+                    mob.tell("Your account has been created.  You will receive an email with your password shortly.");
+                    try{Thread.sleep(2000);}catch(Exception e){}
+                    mob.session().setKillFlag(true);
+                }
+                else
+                {
+    				mob.bringToLife(mob.getStartRoom(),true);
+    				mob.location().showOthers(mob,mob.location(),CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,"<S-NAME> appears!");
+                }
 				CMClass.DBEngine().DBCreateCharacter(mob);
 				if(CMMap.getPlayer(mob.Name())==null)
 					CMMap.addPlayer(mob);
@@ -803,7 +827,7 @@ public class FrontLogin extends StdCommand
 				CoffeeTables.bump(mob,CoffeeTables.STAT_NEWPLAYERS);
 				if(pendingLogins.containsKey(mob.Name().toUpperCase()))
 				   pendingLogins.remove(mob.Name().toUpperCase());
-				return true;
+				return !logoff;
 			}
 			if(pendingLogins.containsKey(mob.Name().toUpperCase()))
 			   pendingLogins.remove(mob.Name().toUpperCase());

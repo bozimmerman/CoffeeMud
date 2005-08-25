@@ -23,6 +23,7 @@ CMOPTN memo NULL ,
 CMFLAG integer NULL ,
 CMQUAL varchar (255) NULL ,
 CHRESL memo NULL,
+CMEXPI Double NULL,
 PRIMARY KEY (CMNAME)
 );
 

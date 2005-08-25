@@ -52,6 +52,11 @@ public class Spell_ClanHome extends Spell
 			mob.tell("You can't use this magic to get there from here.");
 			return false;
 		}
+        if(!CoffeeUtensils.doesOwnThisProperty(mob.getClanID(),clanHomeRoom))
+        {
+            mob.tell("Your clan no longer owns that room.");
+            return false;
+        }
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

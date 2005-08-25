@@ -41,6 +41,10 @@ public class Email extends StdCommand
 			String change=mob.session().prompt("You currently have '"+pstats.getEmail()+"' set as the email address for this character.\n\rChange it (y/N)?","N");
 			if(change.toUpperCase().startsWith("N")) return false;
 		}
+        if((CommonStrings.getVar(CommonStrings.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
+        &&(commands!=null)
+        &&(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX).length()>0))
+            mob.session().println("Changing your email address will cause a new password to be generated and emailed to the new address.");
 		String newEmail=mob.session().prompt("New E-mail Address:");
 		if(newEmail==null) return false;
 		newEmail=newEmail.trim();
@@ -54,8 +58,24 @@ public class Email extends StdCommand
 			if(confirmEmail.length()==0) return false;
 			if(!(newEmail.equalsIgnoreCase(confirmEmail))) return false;
 		}
-		pstats.setEmail(newEmail);
-		CMClass.DBEngine().DBUpdateEmail(mob);
+        pstats.setEmail(newEmail);
+        CMClass.DBEngine().DBUpdateEmail(mob);
+        if((commands!=null)
+        &&(CommonStrings.getVar(CommonStrings.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
+        &&(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX).length()>0))
+        {
+            String password="";
+            for(int i=0;i<6;i++)
+                password+=(char)('a'+Dice.roll(1,26,-1));
+            pstats.setPassword(password);
+            CMClass.DBEngine().DBUpdatePassword(mob);
+            CMClass.DBEngine().DBWriteJournal(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX),
+                      mob.Name(),
+                      mob.Name(),
+                      "Password for "+mob.Name(),
+                      "Your new password for "+mob.Name()+" is: "+pstats.password()+"\n\rYou can login by pointing your mud client at "+CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN)+" port(s):"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.",-1);
+            mob.tell("You will receive an email with your new password shortly.");
+        }
 		return true;
 	}
 	public int ticksToExecute(){return 0;}

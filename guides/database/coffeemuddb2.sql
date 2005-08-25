@@ -23,6 +23,7 @@ CREATE TABLE CMPOLL (
 	CMFLAG integer NULL ,
 	CMQUAL varchar (255) NULL ,
 	CHRESL text NULL,
+	CMEXPI bigint NULL,
 	PRIMARY KEY (CMNAME)
 );
 

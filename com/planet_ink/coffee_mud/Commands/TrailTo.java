@@ -30,10 +30,16 @@ public class TrailTo extends StdCommand
 	public String trailTo(Room R1, Vector commands)
 	{
 		String where=Util.combine(commands,1);
-		if(where.length()==0) return "Trail to where? Try a Room ID, 'everyroom', or 'everyarea'.";
+		if(where.length()==0) return "Trail to where? Try a Room ID, 'everyroom', or 'everyarea'.  You can also use the 'areanames' and 'confirm!' flags.";
 		if(R1==null) return "Where are you?";
 		boolean confirm=false;
-		if(where.endsWith(" CONFIRM!"))
+        boolean areaNames=false;
+        if(where.toUpperCase().endsWith(" AREANAMES"))
+        {
+            where=where.substring(0,where.length()-10).trim();
+            areaNames=true;
+        }
+		if(where.toUpperCase().endsWith(" CONFIRM!"))
 		{
 			where=where.substring(0,where.length()-9).trim();
 			confirm=true;
@@ -46,7 +52,7 @@ public class TrailTo extends StdCommand
 			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
-				str.append(Util.padRightPreserve(A.name(),30)+": "+trailTo(R1,set,A.name(),confirm)+"\n\r");
+				str.append(Util.padRightPreserve(A.name(),30)+": "+trailTo(R1,set,A.name(),areaNames,confirm)+"\n\r");
 			}
 			if(confirm) Log.rawSysOut(str.toString());
 			return str.toString();
@@ -61,7 +67,7 @@ public class TrailTo extends StdCommand
 				{
 					Room R=(Room)a.nextElement();
 					if((R!=R1)&&(R.roomID().length()>0))
-						str.append(Util.padRightPreserve(R.roomID(),30)+": "+trailTo(R1,set,R.roomID(),confirm)+"\n\r");
+						str.append(Util.padRightPreserve(R.roomID(),30)+": "+trailTo(R1,set,R.roomID(),areaNames,confirm)+"\n\r");
 				}
 		    }catch(NoSuchElementException nse){}
 			if(confirm) Log.rawSysOut(str.toString());
@@ -69,7 +75,7 @@ public class TrailTo extends StdCommand
 		}
 		else
 		{
-			String str=Util.padRightPreserve(where,30)+": "+trailTo(R1,set,where,confirm);
+			String str=Util.padRightPreserve(where,30)+": "+trailTo(R1,set,where,areaNames,confirm);
 			if(confirm) Log.rawSysOut(str);
 			return str;
 		}
@@ -83,7 +89,7 @@ public class TrailTo extends StdCommand
 				return d;
 		return -1;
 	}
-	public String trailTo(Room R1, Vector set, String where, boolean confirm)
+	public String trailTo(Room R1, Vector set, String where, boolean areaNames, boolean confirm)
 	{
 		Room R2=CMMap.getRoom(where);
 		if(R2==null)
@@ -133,6 +139,7 @@ public class TrailTo extends StdCommand
 		Room checkR=R2;
 		Vector trailV=new Vector();
 		trailV.addElement(R2);
+        HashSet areasDone=new HashSet();
 		boolean didSomething=false;
 		while(checkR!=R1)
 		{
@@ -143,6 +150,8 @@ public class TrailTo extends StdCommand
 				if(getRoomDirection(R,checkR,trailV)>=0)
 				{
 					trailV.addElement(R);
+                    if(!areasDone.contains(R.getArea()))
+                        areasDone.add(R.getArea());
 					foundAt=r;
 					checkR=R;
 					didSomething=true;
@@ -208,6 +217,15 @@ public class TrailTo extends StdCommand
 			theTrail.append("\n\r"+Util.padRight("Room",30)+": "+R.displayText()+"/"+R.description());
 			theTrail.append("\n\r\n\r");
 		}
+        if((areaNames)&&(areasDone.size()>0))
+        {
+            theTrail.append("\n\r"+Util.padRight("Areas",30)+":");
+            for(Iterator i=areasDone.iterator();i.hasNext();)
+            {
+                Area A=(Area)i.next();
+                theTrail.append(" \""+A.name()+"\",");
+            }
+        }
 		return theTrail.toString();
 	}
 
