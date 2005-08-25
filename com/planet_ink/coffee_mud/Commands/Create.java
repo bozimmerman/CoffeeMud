@@ -106,6 +106,20 @@ public class Create extends BaseGenerics
 		Log.sysOut("Exits",mob.location().roomID()+" exits changed by "+mob.Name()+".");
 	}
 
+    public void polls(MOB mob, Vector commands)
+    throws IOException
+    {
+        StringBuffer pollXML=new StringBuffer("");
+        pollXML.append("<POLL>");
+        pollXML.append("<NAME>The Title of the New Poll</NAME>");
+        pollXML.append("<DESCRIPTION />");
+        pollXML.append("<FLAGS>0</FLAGS>");
+        pollXML.append("<PARTICIPANTS />");
+        pollXML.append("<STATUS>PENDING</STATUS>");
+        
+        pollXML.append("</POLL>");
+    }
+    
 	public void items(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -526,6 +540,13 @@ public class Create extends BaseGenerics
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			mobs(mob,commands);
 		}
+        else
+        if(commandType.equals("POLL"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"POLLS")) return errorOut(mob);
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+            polls(mob,commands);
+        }
 		else
 		if(commandType.equals("QUEST"))
 		{

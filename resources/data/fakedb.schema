@@ -163,3 +163,13 @@ CMSTRT integer KEY
 CMENDT integer NULL
 CMDATA string NULL
 
+CMPOLL
+CMNAME string KEY
+CMBYNM string NULL
+CMSUBJ string NULL
+CMDESC string NULL
+CMOPTN string NULL
+CMFLAG integer NULL
+CMQUAL string NULL
+CHRESL string NULL
+

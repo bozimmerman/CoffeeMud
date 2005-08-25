@@ -4,11 +4,6 @@ CMABID string KEY
 CMABPF integer NULL
 CMABTX string NULL
 
-CMSTAT
-CMSTRT integer KEY
-CMENDT integer NULL
-CMDATA string NULL
-
 CMCHAR
 CMUSERID string KEY
 CMPASS string NULL
@@ -151,8 +146,8 @@ CMQWINNS string NULL
 
 CMPDAT
 CMPLID string KEY
-CMSECT string KEY
-CMPKEY string KEY
+CMSECT string NULL
+CMPKEY string NULL
 CMPDAT string NULL
 
 CMGRAC
@@ -164,6 +159,16 @@ CMCCID string KEY
 CMCDAT string NULL
 
 CMSTAT
-CMSTRT string KEY
-CMENDT string NULL
+CMSTRT integer KEY
+CMENDT integer NULL
 CMDATA string NULL
+
+CMPOLL
+CMNAME string KEY
+CMBYNM string NULL
+CMSUBJ string NULL
+CMDESC string NULL
+CMOPTN string NULL
+CMFLAG integer NULL
+CMQUAL string NULL
+CHRESL string NULL

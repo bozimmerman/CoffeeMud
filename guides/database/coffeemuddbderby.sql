@@ -13,6 +13,18 @@ CREATE TABLE CMSTAT (
 PRIMARY KEY (CMSTRT)
 );
 	
+CREATE TABLE CMPOLL (
+	CMNAME varchar (100) NOT NULL,
+	CMBYNM varchar (100)  ,
+	CMSUBJ varchar (255)  ,
+	CMDESC long varchar  ,
+	CMOPTN long varchar  ,
+	CMFLAG integer  ,
+	CMQUAL varchar (255)  ,
+	CHRESL long varchar ,
+	PRIMARY KEY (CMNAME)
+);
+
 CREATE TABLE CMCHAR (
 CMUSERID varchar (50) NOT NULL,
 CMPASS varchar (50),

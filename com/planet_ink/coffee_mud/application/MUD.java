@@ -437,6 +437,7 @@ public class MUD extends Thread implements MudHost
 						else
 							out.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
 						out.flush();
+                        try{Thread.sleep(250);}catch(Exception e){}
 						out.close();
 						sock = null;
 					}
@@ -1015,6 +1016,4 @@ public class MUD extends Thread implements MudHost
 			Log.errOut("MUD",e);
 		}
 	}
-
-
 }
