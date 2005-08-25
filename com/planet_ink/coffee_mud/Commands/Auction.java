@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,39 +24,39 @@ public class Auction extends Channel
 	public Auction(){}
 	protected Ability auctionA=null;
 
-	private String[] access={"AUCTION"};
+	private String[] access={getScr("Auction","cmd")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
-		int channelInt=ChannelSet.getChannelIndex("AUCTION");
-		int channelNum=ChannelSet.getChannelCodeNumber("AUCTION");
+		int channelInt=ChannelSet.getChannelIndex(getScr("Auction","cmd"));
+		int channelNum=ChannelSet.getChannelCodeNumber(getScr("Auction","cmd"));
 
 		if(Util.isSet(pstats.getChannelMask(),channelInt))
 		{
 			pstats.setChannelMask(pstats.getChannelMask()&(pstats.getChannelMask()-channelNum));
-			mob.tell("The AUCTION channel has been turned on.  Use `NOAUCTION` to turn it off again.");
+			mob.tell(getScr("Auction","turnon"));
 		}
 
 		if((commands.size()>1)
 		&&(auctionA!=null)
 		&&(auctionA.invoker()==mob))
 		{
-			if(((String)commands.elementAt(1)).equalsIgnoreCase("CHANNEL"))
+			if(((String)commands.elementAt(1)).equalsIgnoreCase(getScr("Auction","channel")))
 			{
 				commands.removeElementAt(1);
 				super.execute(mob,commands);
 				return false;
 			}
 			else
-			if(((String)commands.elementAt(1)).equalsIgnoreCase("CLOSE"))
+			if(((String)commands.elementAt(1)).equalsIgnoreCase(getScr("Auction","close")))
 			{
 				commands.removeElementAt(1);
 				Vector V=new Vector();
-				V.addElement("AUCTION");
-				V.addElement("The auction has been closed.");
+				V.addElement(getScr("Auction","cmd"));
+				V.addElement(getScr("Auction","closed"));
 				CMClass.ThreadEngine().deleteTick(auctionA,MudHost.TICK_QUEST);
 				auctionA=null;
 				super.execute(mob,V);
@@ -67,7 +67,7 @@ public class Auction extends Channel
 		{
 			if(commands.size()==1)
 			{
-				mob.tell("There is nothing up for auction right now.");
+				mob.tell(getScr("Auction","nothing"));
 				return false;
 			}
 			Vector V=new Vector();
@@ -84,10 +84,10 @@ public class Auction extends Channel
 			Environmental E=mob.fetchInventory(null,s);
 			if((E==null)||(E instanceof MOB))
 			{
-				mob.tell("'"+s+"' is not an item you can auction.");
+				mob.tell(getScr("Auction","erritem",s));
 				return false;
 			}
-			if((!mob.isMonster())&&(!mob.session().confirm("Auction "+E.name()+" with a starting bid of "+((String)V.firstElement())+" (Y/n)? ","Y")))
+			if((!mob.isMonster())&&(!mob.session().confirm(getScr("Auction","erritem",E.name(),((String)V.firstElement())),getScr("Auction","yes"))))
 				return false;
 			auctionA=CMClass.getAbility("Prop_Auction");
 			auctionA.invoke(mob,V,E,false,0);

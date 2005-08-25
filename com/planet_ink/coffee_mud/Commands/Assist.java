@@ -4,8 +4,8 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
-/* 
+/*
+/*
    Copyright 2005 Robert from The Looking Glass
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@ public class Assist extends Bug
 {
     public Assist(){}
 
-    private String[] access={"ASSIST"};
+    private String[] access={getScr("Assist","cmd")};
     public String[] getAccessWords(){return access;}
     public boolean execute(MOB mob, Vector commands)
         throws java.io.IOException
@@ -34,12 +34,12 @@ public class Assist extends Bug
             if(!review(mob,"SYSTEM_ASSIST","assist",commands,"KILLASSIST"))
             {
                 CMClass.DBEngine().DBWriteJournal("SYSTEM_ASSIST",mob.Name(),"ALL","ASSIST: "+Util.padRight(Util.combine(commands,1),10),Util.combine(commands,1),-1);
-                mob.tell("If a Game Master or Game Host is online, one will be with you shortly!"); /* Customize this line as you wish */
-                CommonMsgs.channel("WIZINFO","",mob.Name()+" request assistance!",true);  /* Customize this line as you wish */         
+                mob.tell(getScr("Assist","customline1")); /* Customize this line as you wish */
+                CommonMsgs.channel("WIZINFO","",getScr("Assist","customline2",mob.Name())+" request assistance!",true);  /* Customize this line as you wish */
 }
         }
         else
-            mob.tell("What do you need assistance with?"); /* Customize this line as you wish */
+            mob.tell(getScr("Assist","customline3")); /* Customize this line as you wish */
         return false;
     }
     public int ticksToExecute(){return 0;}

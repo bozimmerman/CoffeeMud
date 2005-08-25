@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@ public class At extends StdCommand
 {
 	public At(){}
 
-	private String[] access={"AT"};
+	private String[] access={getScr("At","cmd")};
 	public String[] getAccessWords(){return access;}
 
 	public Room findRoomLiberally(MOB mob, StringBuffer cmd)
@@ -179,7 +179,7 @@ public class At extends StdCommand
 		commands.removeElementAt(0);
 		if(commands.size()==0)
 		{
-			mob.tell("At where do what?");
+			mob.tell(getScr("At","error1"));
 			return false;
 		}
 		String cmd=(String)commands.firstElement();
@@ -188,14 +188,14 @@ public class At extends StdCommand
 		if(room==null)
 		{
 			if(CMSecurity.isAllowedAnywhere(mob,"AT"))
-				mob.tell("At where? Try a Room ID, player name, area name, or room text!");
+				mob.tell(getScr("At","error2"));
 			else
-				mob.tell("You aren't powerful enough to do that.");
+				mob.tell(getScr("At","npowerful"));
 			return false;
 		}
 		if(!CMSecurity.isAllowed(mob,room,"AT"))
 		{
-			mob.tell("You aren't powerful enough to do that there.");
+			mob.tell(getScr("At","npowerfult"));
 			return false;
 		}
 		Room R=mob.location();

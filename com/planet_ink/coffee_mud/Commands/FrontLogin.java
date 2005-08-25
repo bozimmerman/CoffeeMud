@@ -788,7 +788,7 @@ public class FrontLogin extends StdCommand
                               mob.Name(),
                               mob.Name(),
                               "Password for "+mob.Name(),
-                              "Your new password for "+mob.Name()+" is: "+mob.playerStats().password()+"\n\rYou can login by pointing your mud client at "+CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN)+" port(s):"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.",-1);
+                              "Your password for "+mob.Name()+" is: "+mob.playerStats().password()+"\n\rYou can login by pointing your mud client at "+CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN)+" port(s):"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.",-1);
                     mob.tell("Your account has been created.  You will receive an email with your password shortly.");
                     try{Thread.sleep(2000);}catch(Exception e){}
                     mob.session().setKillFlag(true);
