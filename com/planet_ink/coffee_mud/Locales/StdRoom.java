@@ -49,6 +49,10 @@ public class StdRoom
 	protected int baseThirst=1;
 	protected int myResource=-1;
 	protected long resourceFound=0;
+    
+    protected final static int LOOK_LONG=0;
+    protected final static int LOOK_NORMAL=1;
+    protected final static int LOOK_BRIEFOK=2;
 
 	protected boolean skyedYet=false;
 	public StdRoom()
@@ -470,8 +474,10 @@ public class StdRoom
 				break;
 			}
 			case CMMsg.TYP_LOOK:
+                look(mob,(msg.sourceMessage()==null)?LOOK_BRIEFOK:LOOK_NORMAL);
+                break;
             case CMMsg.TYP_EXAMINE:
-				look(mob,msg.sourceMessage()==null);
+                look(mob,LOOK_LONG);
 				break;
 			case CMMsg.TYP_SNIFF:
 			{
@@ -815,7 +821,7 @@ public class StdRoom
 		return parseVaries(description());
 	}
 
-	protected void look(MOB mob, boolean careAboutBrief)
+	protected void look(MOB mob, int lookCode)
 	{
 		StringBuffer Say=new StringBuffer("");
 		if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
@@ -833,9 +839,57 @@ public class StdRoom
 		if(Sense.canBeSeenBy(this,mob))
 		{
 			Say.append("^O^<RName^>" + roomTitle()+"^</RName^>"+Sense.colorCodes(this,mob)+"^L\n\r");
-			if((!careAboutBrief)||(!Util.bset(mob.getBitmap(),MOB.ATT_BRIEF)))
+			if((lookCode!=LOOK_BRIEFOK)||(!Util.bset(mob.getBitmap(),MOB.ATT_BRIEF)))
 			{
-				Say.append("^L^<RDesc^>" + roomDescription()+"^</RDesc^>");
+                if(lookCode==LOOK_LONG)
+                {
+                    String roomDesc=roomDescription();
+                    Vector keyWords=null;
+                    String word=null;
+                    int x=0;
+                    for(int c=0;c<numItems();c++)
+                    {
+                        Item item=fetchItem(c);
+                        if(item==null) continue;
+                        if((item.container()==null)
+                        &&(item.displayText().length()==0)
+                        &&(Sense.canBeSeenBy(item,mob)))
+                        {
+                            keyWords=Util.parse(item.name().toUpperCase());
+                            for(int k=0;k<keyWords.size();k++)
+                            {
+                                word=(String)keyWords.elementAt(k);
+                                x=roomDesc.toUpperCase().indexOf(word);
+                                while(x>=0)
+                                {
+                                    if(((x<=0)||((!Character.isLetterOrDigit(roomDesc.charAt(x-1)))&&(roomDesc.charAt(x-1)!='>')))
+                                    &&(((x+word.length())>=(roomDesc.length()-1))||((!Character.isLetterOrDigit(roomDesc.charAt((x+word.length()))))&&(roomDesc.charAt(x+word.length())!='^'))))
+                                    {
+                                        int brackCheck=roomDesc.substring(x).indexOf("^>");
+                                        int brackCheck2=roomDesc.substring(x).indexOf("^<");
+                                        if((brackCheck<0)||(brackCheck2<brackCheck))
+                                        {
+                                            int start=x;
+                                            while((start>=0)&&(!Character.isWhitespace(roomDesc.charAt(start))))
+                                                start--;
+                                            start++;
+                                            int end=(x+word.length());
+                                            while((end<roomDesc.length())&&(!Character.isWhitespace(roomDesc.charAt(end))))
+                                                end++;
+                                            int l=roomDesc.length();
+                                            roomDesc=roomDesc.substring(0,start)+"^H^<WItem \""+item.name()+"\"^>"+roomDesc.substring(start,end)+"^</WItem^>^?"+roomDesc.substring(end);
+                                            x=x+(roomDesc.length()-l);
+                                        }
+                                    }
+                                    x=roomDesc.toUpperCase().indexOf(word,x+1);
+                                }
+                            }
+                        }
+                    }
+                    Say.append("^L^<RDesc^>"+roomDesc+"^</RDesc^>");
+                }
+                else
+    				Say.append("^L^<RDesc^>" + roomDescription()+"^</RDesc^>");
 				Say.append("^N\n\r\n\r");
 			}
 		}
@@ -845,15 +899,17 @@ public class StdRoom
 		for(int c=0;c<numItems();c++)
 		{
 			Item item=fetchItem(c);
-			if((item!=null)
-            &&(item.container()==null))
+			if(item==null) continue;
+            
+            if(item.container()==null)
             {
                 if(Sense.canBarelyBeSeenBy(item,mob))
                     itemsInTheDarkness++;
 				viewItems.addElement(item);
             }
 		}
-        StringBuffer itemStr=CMLister.niceLister(mob,viewItems,false,"RItem"," \"*\"");
+        
+        StringBuffer itemStr=CMLister.itemLister(mob,viewItems,false,"RItem"," \"*\"",lookCode==LOOK_LONG);
         if(itemStr.length()>0)
     		Say.append(itemStr);
 

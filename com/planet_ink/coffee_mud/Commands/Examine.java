@@ -40,13 +40,10 @@ public class Examine extends StdCommand
         {
             Environmental thisThang=null;
             
-            if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("at")))
-               commands.removeElementAt(1);
-            else
-            if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("to")))
-               commands.removeElementAt(1);
             String ID=Util.combine(commands,1);
-            
+            if(ID.length()==0)
+                thisThang=mob.location();
+            else
             if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2)))
             {
                 mob.location().listExits(mob);
@@ -57,19 +54,6 @@ public class Examine extends StdCommand
             
             if(thisThang==null)
                 thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID,Item.WORN_REQ_ANY);
-            if((thisThang==null)
-            &&(commands.size()>2)
-            &&(((String)commands.elementAt(1)).equalsIgnoreCase("in")))
-            {
-                commands.removeElementAt(1);
-                String ID2=Util.combine(commands,1);
-                thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID2,Item.WORN_REQ_ANY);
-                if((thisThang!=null)&&((!(thisThang instanceof Container))||(((Container)thisThang).capacity()==0)))
-                {
-                    mob.tell("That's not a container.");
-                    return false;
-                }
-            }
             int dirCode=-1;
             if(thisThang==null)
             {
@@ -109,13 +93,6 @@ public class Examine extends StdCommand
         }
         else
         {
-            if((commands!=null)&&(commands.size()>0))
-                if(((String)commands.elementAt(0)).toUpperCase().startsWith("E"))
-                {
-                    mob.tell("Examine what?");
-                    return false;
-                }
-
             FullMsg msg=new FullMsg(mob,mob.location(),null,CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"at you."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."));
             if(mob.location().okMessage(mob,msg))
                 mob.location().send(mob,msg);

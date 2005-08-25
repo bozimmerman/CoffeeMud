@@ -385,8 +385,8 @@ public class StdContainer extends StdItem implements Container
 						buf.append(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight: "+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rDeath : "+dispossessionTimeLeftString()+"\n\r"+description()+"'\n\rKey  : "+keyName()+"\n\rMisc  :'"+text());
 					else
 						buf.append(description()+"\n\r");
-					//if(msg.source().charStats().getStat(CharStats.INTELLIGENCE)>=10)
-				    //    buf.append(Util.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_NOUNDESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase()+".\n\r");
+                    if(msg.targetMinor()==CMMsg.TYP_EXAMINE)
+                        buf.append(examineString(msg.source()));
 					if((isOpen)&&((capacity>0)||(getContents().size()>0)))
 					{
 						buf.append(name()+" contains:^<!ENTITY container \""+name()+"\"^>\n\r");
@@ -416,7 +416,7 @@ public class StdContainer extends StdItem implements Container
 								if((item!=null)&&(item.container()==this))
 									newItems.addElement(item);
 							}
-							buf.append(CMLister.niceLister(mob,newItems,true,"CMItem",""));
+							buf.append(CMLister.itemLister(mob,newItems,true,"CMItem","",false));
 						}
 						else
 						if(owner instanceof Room)
@@ -429,7 +429,7 @@ public class StdContainer extends StdItem implements Container
 								if((item!=null)&&(item.container()==this))
 									newItems.addElement(item);
 							}
-							buf.append(CMLister.niceLister(mob,newItems,true,"CRItem",""));
+							buf.append(CMLister.itemLister(mob,newItems,true,"CRItem","",false));
 						}
 					}
 					else

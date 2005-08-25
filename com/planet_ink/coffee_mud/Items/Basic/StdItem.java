@@ -997,8 +997,8 @@ public class StdItem implements Item
 						response.append("You don't see anything special about "+this.name());
 					else
 						response.append(description());
-					//if(msg.source().charStats().getStat(CharStats.INTELLIGENCE)>=10)
-				    //    response.append("\n\r"+Util.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_NOUNDESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase()+".");
+                    if(msg.targetMinor()==CMMsg.TYP_EXAMINE)
+                        response.append(examineString(msg.source()));
 				    mob.tell(response.toString());
 				}
 				else
@@ -1113,6 +1113,85 @@ public class StdItem implements Item
 		}
 	}
 
+    public String examineString(MOB mob)
+    {
+        StringBuffer response=new StringBuffer("");
+        String level=null;
+        if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<10))
+        {
+            int l=(int)Math.round(Math.floor(Util.div(envStats().level(),10.0)));
+            level=(l*10)+"-"+((l*10)+9);
+        }
+        else
+        if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<18))
+        {
+            int l=(int)Math.round(Math.floor(Util.div(envStats().level(),5.0)));
+            level=(l*5)+"-"+((l*5)+4);
+        }
+        else
+            level=""+envStats().level();
+        double divider=100.0;
+        if(envStats().weight()<10)
+            divider=4.0;
+        else
+        if(envStats().weight()<50)
+            divider=10.0;
+        else
+        if(envStats().weight()<150)
+            divider=20.0;
+        String weight=null;
+        if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<10))
+        {
+            double l=Math.floor(Util.div(envStats().level(),divider));
+            weight=(int)Math.round(Util.mul(l,divider))+"-"+(int)Math.round(Util.mul(l,divider)+(divider-1.0));
+        }
+        else
+        if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<18))
+        {
+            divider=divider/2.0;
+            double l=Math.floor(Util.div(envStats().level(),divider));
+            weight=(int)Math.round(Util.mul(l,divider))+"-"+(int)Math.round(Util.mul(l,divider)+(divider-1.0));
+        }
+        else
+            weight=""+envStats().weight();
+        response.append("\n\r"+Util.capitalizeFirstLetter(name())+" is a level "+level+" item, and weighs "+weight+" pounds.  ");
+        if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<10))
+            response.append("It is mostly made of a kind of "+EnvResource.MATERIAL_NOUNDESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase()+".  ");
+        else
+            response.append("It is mostly made of "+EnvResource.RESOURCE_DESCS[(material()&EnvResource.RESOURCE_MASK)].toLowerCase()+".  ");
+        if((this instanceof Weapon)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)>10))
+            response.append("It is a "+Util.capitalizeAndLower(Weapon.classifictionDescription[((Weapon)this).weaponClassification()])+" class weapon that does "+Util.capitalizeAndLower(Weapon.typeDescription[((Weapon)this).weaponType()])+" damage.  ");
+        else
+        if((this instanceof Armor)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)>10))
+        {
+            if(envStats().height()>0)
+                response.append(" It is a size "+envStats().height()+", and is worn on the ");
+            else
+                response.append(" It is your size, and is worn on the ");
+            for(int l=0;l<Item.wornCodes.length;l++)
+            {
+                int wornCode=1<<l;
+                if(Sense.wornLocation(wornCode).length()>0)
+                {
+                    if(((rawProperLocationBitmap()&wornCode)==wornCode))
+                    {
+                        response.append(Util.capitalizeAndLower(Sense.wornLocation(wornCode))+" ");
+                        if(rawLogicalAnd())
+                            response.append("and ");
+                        else
+                            response.append("or ");
+                    }
+                }
+            }
+            if(response.toString().endsWith(" and "))
+                response.delete(response.length()-5,response.length());
+            else
+            if(response.toString().endsWith(" or "))
+                response.delete(response.length()-4,response.length());
+        }
+        return response.toString();
+    }
+    
 	public void stopTicking(){destroyed=true;}
 	public void destroy()
 	{

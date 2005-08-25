@@ -95,7 +95,7 @@ public class Inventory extends StdCommand
 		else
 		{
 			if(viewItems.size()>0)
-				msg.append(CMLister.niceLister(seer,viewItems,true,"MItem",""));
+				msg.append(CMLister.itemLister(seer,viewItems,true,"MItem","",false));
 			if(moneyItems.size()>0)
 			{
 			    msg.append("\n\r^HMoney:^N\n\r");

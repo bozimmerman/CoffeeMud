@@ -14,6 +14,7 @@
 <!ELEMENT EItem '<SEND HREF="REMOVE &text;|LOOK &text;" hint="Right-mouse client to use this object|REMOVE &text;|LOOK &text;">'>
 <!ELEMENT RItem '<SEND HREF="GET &name;|LOOK &name;|DRINK &name;|READ &name;" hint="Right-mouse client to use this object|GET &name;|LOOK &name;|DRINK &name;|READ &name;">' ATT='name'>
 <!ELEMENT RMob '<SEND HREF="CONSIDER &name;|LOOK &name;|KILL &name;" hint="Right-mouse client to affect this creature|CONSIDER &name;|LOOK &name;|KILL &name;">' ATT='name'>
+<!ELEMENT WItem '<SEND HREF="LOOK &name;|READ &name;" hint="Right-mouse client to use this object|LOOK &name;|READ &name;">' ATT='name'>
 <!-- ********************************************************************* -->
 <!-- miscellaneous tags -->
 <!ELEMENT FIGHT EMPTY FLAG='Fight'>
