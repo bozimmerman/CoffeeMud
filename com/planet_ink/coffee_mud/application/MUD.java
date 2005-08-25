@@ -460,6 +460,7 @@ public class MUD extends Thread implements MudHost
 					out.flush();
 					out.println(rejectText);
 					out.flush();
+                    try{Thread.sleep(100);}catch(Exception e){}
 					out.close();
 					sock = null;
 				}
