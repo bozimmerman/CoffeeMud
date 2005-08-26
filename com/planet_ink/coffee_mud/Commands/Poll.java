@@ -29,35 +29,65 @@ public class Poll extends StdCommand
         throws java.io.IOException
     {
         if((mob==null)||mob.isMonster()) return false;
-        Vector mypolls=Polls.getMyVoteablePolls(mob,(commands==null));
-        Vector myrespolls=Polls.getPollList();
-        for(int r=myrespolls.size()-1;r>=0;r--)
-            if((!((Polls)myrespolls.elementAt(r)).mayISeeResults(mob))
-            ||(mypolls.contains(myrespolls.elementAt(r))))
-                myrespolls.removeElementAt(r);
-        if((mypolls.size()==0)&&(myrespolls.size()==0)&&(commands!=null))
+        Vector[] mypolls=Polls.getMyPolls(mob,(commands==null));
+        
+        if((mypolls[0].size()==0)&&(mypolls[2].size()==0))
         {
-            mob.tell("No polls are available at this time.");
-            return false;
+            if((commands!=null)&&(mypolls[1].size()==0))
+            {
+                mob.tell("No polls are available at this time.");
+                return false;
+            }
+            else
+            if(commands==null)
+            {
+                if(mypolls[1].size()>0)
+                    mob.tell(mypolls[1].size()+" polls are presently waiting for your participation.");
+                return false;
+            }
         }
-        for(int i=0;i<mypolls.size();i++)
+        
+        for(int i=0;i<mypolls[0].size();i++)
         {
-            Polls P=(Polls)mypolls.elementAt(i);
+            Polls P=(Polls)mypolls[0].elementAt(i);
             P.processVote(mob);
             if(P.mayISeeResults(mob))
+            {
                 P.processResults(mob);
-            if(i<(mypolls.size()-1))
-                mob.session().prompt("Press ENTER to continue:");
+                mob.session().prompt("Press ENTER to continue:\n\r");
+            }
         }
-        if(myrespolls.size()>0)
-            mob.tell("\n\rPrevious polling results:\n\r");
-        for(int i=0;i<myrespolls.size();i++)
+        if(commands==null)
         {
-            Polls P=(Polls)myrespolls.elementAt(i);
+            if(mypolls[1].size()>0)
+                mob.tell("\n\r^HThere are "+mypolls[1].size()+" other polls awaiting your participation.^N\n\r");
+            if(mypolls[2].size()>0)
+                mob.tell("\n\r^HThere are "+mypolls[2].size()+" poll results still available.^N\n\r");
+            return true;
+        }
+        else
+        for(int i=0;i<mypolls[1].size();i++)
+        {
+            Polls P=(Polls)mypolls[1].elementAt(i);
+            P.processVote(mob);
             if(P.mayISeeResults(mob))
+            {
                 P.processResults(mob);
-            if(i<(myrespolls.size()-1))
                 mob.session().prompt("Press ENTER to continue:");
+            }
+        }
+            
+        if(mypolls[2].size()>0)
+            mob.tell("\n\r^HPrevious polling results:^N\n\r");
+        for(int i=0;i<mypolls[2].size();i++)
+        {
+            Polls P=(Polls)mypolls[2].elementAt(i);
+            if(P.mayISeeResults(mob))
+            {
+                P.processResults(mob);
+                if((i<mypolls[2].size()-1)||(commands==null))
+                    mob.session().prompt("Press ENTER to continue:\n\r");
+            }
         }
         return false;
     }

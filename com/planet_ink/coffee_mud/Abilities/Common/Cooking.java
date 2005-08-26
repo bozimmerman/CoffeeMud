@@ -41,14 +41,14 @@ public class Cooking extends CraftingSkill
 	public static int RCP_MAININGR=4;
 	public static int RCP_MAINAMNT=5;
 
-	private Container cooking=null;
-	private Item fire=null;
-	private Item finalDish=null;
-	private String finalDishName=null;
-	private int finalAmount=0;
-	private Vector finalRecipe=null;
-	private boolean burnt=false;
-	private Hashtable oldContents=null;
+	protected Container cooking=null;
+    protected Item fire=null;
+    protected Item finalDish=null;
+    protected String finalDishName=null;
+    protected int finalAmount=0;
+    protected Vector finalRecipe=null;
+    protected boolean burnt=false;
+    protected Hashtable oldContents=null;
 	public Cooking()
 	{
 		super();

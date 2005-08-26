@@ -5200,7 +5200,7 @@ public class Scriptable extends StdBehavior
 				if(!which.equals("*"))
 				{
 					if(E==null)
-					    which="";
+					    which=varify(source,target,monster,primaryItem,secondaryItem,msg,which);
 					else
 					if(E instanceof Room)
 					    which=CMMap.getExtendedRoomID((Room)E);

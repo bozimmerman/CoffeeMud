@@ -146,7 +146,13 @@ public class Poison extends StdAbility
 					{
 					case CMMsg.TYP_DRINK:
 						if(myItem instanceof Drink)
+                        {
 							catchIt(msg.source(),msg.source());
+                            if(((((Drink)myItem).liquidRemaining()<0)
+                                ||((((Drink)myItem).liquidRemaining()-((Drink)myItem).thirstQuenched())<=0))
+                            &&(!((Drink)myItem).disappearsAfterDrinking()))
+                                affected.delEffect(this);
+                        }
 						break;
 					case CMMsg.TYP_EAT:
 						if(myItem instanceof Food)
@@ -167,6 +173,15 @@ public class Poison extends StdAbility
 							catchIt((MOB)msg.target(),msg.target());
 						}
 						break;
+                    case CMMsg.TYP_FILL:
+                        if((msg.target() instanceof Drink)
+                        &&(affected instanceof Drink))
+                        {
+                            msg.target().addEffect((Ability)this.copyOf());
+                            if((((Drink)affected).liquidRemaining()-((Drink)msg.target()).amountTakenToFillMe((Drink)affected))<=0)
+                                affected.delEffect(this);
+                        }
+                        break;
 					}
 			}
 			processing=false;

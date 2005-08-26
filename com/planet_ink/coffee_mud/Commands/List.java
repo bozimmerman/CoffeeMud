@@ -832,7 +832,8 @@ public class List extends StdCommand
                     str.append(" (inactive)");
                 else
                 if(P.getExpiration()>0) 
-                    str.append("(expires: "+new IQCalendar(P.getExpiration()).d2String()+")");
+                    str.append(" (expires: "+new IQCalendar(P.getExpiration()).d2String()+")");
+                str.append("\n\r");
             }
             mob.tell(str.toString());
         }

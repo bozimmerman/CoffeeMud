@@ -161,7 +161,7 @@ public class Polls
             PollResult PR=new PollResult();
             PR.user=XMLManager.getValFromPieces(XP.contents,"USER");
             PR.ip=XMLManager.getValFromPieces(XP.contents,"IP");
-            PR.answer=XMLManager.getValFromPieces(XP.contents,"ANSWER");
+            PR.answer=XMLManager.getValFromPieces(XP.contents,"ANS");
             results.addElement(PR);
         }
         expiration=((Long)V.elementAt(8)).longValue();
@@ -235,7 +235,7 @@ public class Polls
             if((!loaded)&&(!dbloadbyname())) 
                 return;
             StringBuffer present=new StringBuffer("");
-            present.append(description+"\n\r\n\r");
+            present.append("^O"+description+"^N\n\r\n\r");
             if(options.size()==0) 
             {
                 mob.tell(present.toString()+"Oops! No options defined!");
@@ -245,10 +245,10 @@ public class Polls
             for(int o=0;o<options.size();o++)
             {
                 PO=(PollOption)options.elementAt(o);
-                present.append(Util.padLeft(""+(o+1),2)+": "+PO.text+"\n\r");
+                present.append("^H"+Util.padLeft(""+(o+1),2)+": ^N"+PO.text+"\n\r");
             }
             if(Util.bset(bitmap,FLAG_ABSTAIN))
-                present.append("Press ENTER to abstain from voting.\n\r");
+                present.append("^H  : ^NPress ENTER to abstain from voting.^?\n\r");
             
             mob.tell(present.toString());
             int choice=-1;
@@ -360,7 +360,7 @@ public class Polls
         if((!loaded)&&(!dbloadbyname())) 
             return;
         StringBuffer present=new StringBuffer("");
-        present.append(subject+"\n\r\n\r");
+        present.append("^O"+subject+"^N\n\r\n\r");
         if(options.size()==0) 
         {
             mob.tell(present.toString()+"Oops! No options defined!");
@@ -374,11 +374,11 @@ public class Polls
         {
             R=(PollResult)results.elementAt(r);
             choice=Util.s_int(R.answer);
-            if(((choice<0)&&Util.bset(bitmap,FLAG_ABSTAIN))
-            ||((choice>0)&&(choice<options.size())))
+            if(((choice<=0)&&Util.bset(bitmap,FLAG_ABSTAIN))
+            ||((choice>=0)&&(choice<=options.size())))
             {
                 total++;
-                if(choice<0)
+                if(choice<=0)
                     votes[votes.length-1]++;
                 else
                     votes[choice-1]++;
@@ -391,14 +391,14 @@ public class Polls
             int pct=0;
             if(total>0)
                 pct=(int)Math.round(Util.div(votes[o],total)*100.0);
-            present.append(Util.padRight(""+(o+1),2)+": "+O.text+", Votes: "+votes[o]+" ("+pct+"%)\n\r");
+            present.append(Util.padRight("^H"+(o+1),2)+": ^N"+O.text+" ^O(Votes: "+votes[o]+" - "+pct+"%)^N\n\r");
         }
         if(Util.bset(bitmap,FLAG_ABSTAIN))
         {
             int pct=0;
             if(total>0)
                 pct=(int)Math.round(Util.div(votes[votes.length-1],total)*100.0);
-            present.append("Abstentions: "+votes[votes.length-1]+" ("+pct+"%)\n\r");
+            present.append("    ^NAbstentions ^O("+votes[votes.length-1]+" - "+pct+"%)^N\n\r");
         }
         mob.tell(present.toString());
     }
@@ -460,18 +460,27 @@ public class Polls
         return null;
     }
     
-    public static Vector getMyVoteablePolls(MOB mob, boolean login)
+    public static Vector[] getMyPolls(MOB mob, boolean login)
     {
         Vector V=getPollList();
-        Vector list=new Vector();
+        Vector list[]=new Vector[3];
+        for(int l=0;l<3;l++)
+            list[l]=new Vector();
+        
         Polls P=null;
         for(int v=0;v<V.size();v++)
         {
             P=(Polls)V.elementAt(v);
-            if((P.mayIVote(mob))&&((!login)||(!Util.bset(P.getFlags(),FLAG_NOTATLOGIN))))
+            if((P.loaded)||(P.dbloadbyname()))
             {
-                if((P.loaded)||(P.dbloadbyname()))
-                    list.addElement(P);
+                if((P.mayIVote(mob))&&(login)&&(Util.bset(P.getFlags(),FLAG_NOTATLOGIN)))
+                    list[1].addElement(P);
+                else
+                if(P.mayIVote(mob))
+                    list[0].addElement(P);
+                else
+                if(P.mayISeeResults(mob))
+                    list[2].addElement(P);
             }
         }
         return list;

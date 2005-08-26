@@ -183,5 +183,6 @@ public class WaterSurface extends StdRoom implements Drink
 	public void setLiquidRemaining(int amount){}
     public boolean disappearsAfterDrinking(){return false;}
 	public boolean containsDrink(){return true;}
+    public int amountTakenToFillMe(Drink theSource){return 0;}
 	public Vector resourceChoices(){return UnderWater.roomResources;}
 }

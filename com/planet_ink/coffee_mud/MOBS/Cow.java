@@ -103,4 +103,5 @@ public class Cow extends StdMOB implements Drink
 	public void setLiquidHeld(int amount){}
 	public void setLiquidRemaining(int amount){}
 	public boolean containsDrink(){return true;}
+    public int amountTakenToFillMe(Drink theSource){return 0;}
 }

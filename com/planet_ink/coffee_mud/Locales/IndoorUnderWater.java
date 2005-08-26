@@ -69,6 +69,7 @@ public class IndoorUnderWater extends StdRoom implements Drink
 	public void setThirstQuenched(int amount){}
 	public void setLiquidHeld(int amount){}
 	public void setLiquidRemaining(int amount){}
+    public int amountTakenToFillMe(Drink theSource){return 0;}
 	public boolean containsDrink(){return true;}
 	public Vector resourceChoices(){return UnderWater.roomResources;}
 }

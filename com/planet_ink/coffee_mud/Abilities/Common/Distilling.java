@@ -46,4 +46,15 @@ public class Distilling extends Cooking
 		}
 		return V;
 	}
+    
+    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    {
+        if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(finalDish==null))
+            return false;
+        Ability A2=finalDish.fetchEffect(0);
+        if((A2!=null)
+        &&(finalDish instanceof Drink))
+            ((Drink)finalDish).setLiquidType(EnvResource.RESOURCE_LIQUOR);
+        return true;
+    }
 }

@@ -110,6 +110,29 @@ public class StdDrink extends StdContainer implements Drink,Item
 					mob.tell(name()+" is full.");
 					return false;
 				}
+                if((msg.tool() instanceof Container)
+                &&((!(msg.tool() instanceof Drink))||(!((Drink)msg.tool()).containsDrink()))
+                &&(msg.tool()!=msg.target()))
+                {
+                    Vector V=((Container)msg.tool()).getContents();
+                    Item I=null;
+                    for(int i=0;i<V.size();i++)
+                    {
+                        I=(Item)V.elementAt(i);
+                        if(I instanceof Drink)
+                            break;
+                    }
+                    if(I instanceof Drink)
+                        msg.modify(msg.source(),msg.target(),I,
+                                msg.sourceCode(),msg.sourceMessage(),
+                                msg.targetCode(),msg.targetMessage(),
+                                msg.othersCode(),msg.othersMessage());
+                    else
+                    {
+                        msg.source().tell(msg.tool().name()+" has nothing you can fill this with.");
+                        return false;
+                    }
+                }
 				if((msg.tool()!=null)
 				&&(msg.tool()!=msg.target())
 				&&(msg.tool() instanceof Drink))
@@ -141,6 +164,16 @@ public class StdDrink extends StdContainer implements Drink,Item
 		}
 		return true;
 	}
+    
+    public int amountTakenToFillMe(Drink theSource)
+    {
+        int amountToTake=amountOfLiquidHeld-amountOfLiquidRemaining;
+        if(amountOfLiquidHeld>=500000)
+            amountToTake=theSource.liquidRemaining();
+        if(amountToTake>theSource.liquidRemaining())
+            amountToTake=theSource.liquidRemaining();
+        return amountToTake;
+    }
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -166,11 +199,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 				if((msg.tool()!=null)&&(msg.tool() instanceof Drink))
 				{
 					Drink thePuddle=(Drink)msg.tool();
-					int amountToTake=amountOfLiquidHeld-amountOfLiquidRemaining;
-					if(amountOfLiquidHeld>=500000)
-						amountToTake=thePuddle.liquidRemaining();
-					if(amountToTake>thePuddle.liquidRemaining())
-						amountToTake=thePuddle.liquidRemaining();
+					int amountToTake=amountTakenToFillMe(thePuddle);
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
 					if(amountOfLiquidRemaining<=0)
 						setLiquidType(thePuddle.liquidType());

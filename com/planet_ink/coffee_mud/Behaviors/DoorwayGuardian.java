@@ -25,13 +25,23 @@ public class DoorwayGuardian extends StdBehavior
 	public String ID(){return "DoorwayGuardian";}
 
 
+    
+    public String getWords()
+    {
+        int x=getParms().indexOf(";");
+        if(x<0) return "<S-NAME> won't let <T-NAME> through there.";
+        return getParms().substring(x+1);
+    }
 	public Exit[] getParmExits(MOB monster)
 	{
 		if(monster==null) return null;
 		if(monster.location()==null) return null;
 		if(getParms().length()==0) return null;
 		Room room=monster.location();
-		Vector V=Util.parse(getParms());
+        String parm=getParms();
+        int x=parm.indexOf(";");
+        if(x>0) parm=parm.substring(0,x);
+		Vector V=Util.parse(parm);
 		for(int v=0;v<V.size();v++)
 		{
 			int dir=Directions.getGoodDirectionCode((String)V.elementAt(v));
@@ -84,7 +94,7 @@ public class DoorwayGuardian extends StdBehavior
 				if((msg.targetMinor()!=CMMsg.TYP_CLOSE)
 				&&(msg.targetMinor()!=CMMsg.TYP_LOCK))
 				{
-					FullMsg msgs=new FullMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> through there.");
+					FullMsg msgs=new FullMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,getWords());
 					if(monster.location().okMessage(monster,msgs))
 					{
 						monster.location().send(monster,msgs);
@@ -104,7 +114,7 @@ public class DoorwayGuardian extends StdBehavior
 				&&(texit[1]!=exit))
 					return true;
 
-				FullMsg msgs=new FullMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> through there.");
+				FullMsg msgs=new FullMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,getWords());
 				if(monster.location().okMessage(monster,msgs))
 				{
 					monster.location().send(monster,msgs);

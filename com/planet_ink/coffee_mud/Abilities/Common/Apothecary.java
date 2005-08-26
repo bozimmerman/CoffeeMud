@@ -2,6 +2,10 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.interfaces.Ability;
+import com.planet_ink.coffee_mud.interfaces.Drink;
+import com.planet_ink.coffee_mud.interfaces.EnvResource;
+import com.planet_ink.coffee_mud.interfaces.Environmental;
+import com.planet_ink.coffee_mud.interfaces.MOB;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import java.io.File;
@@ -49,4 +53,15 @@ public class Apothecary extends Cooking
 		}
 		return V;
 	}
+    
+    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    {
+        if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(finalDish==null))
+            return false;
+        Ability A2=finalDish.fetchEffect(0);
+        if((A2!=null)
+        &&(finalDish instanceof Drink))
+            ((Drink)finalDish).setLiquidType(EnvResource.RESOURCE_POISON);
+        return true;
+    }
 }

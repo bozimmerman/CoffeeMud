@@ -223,6 +223,16 @@ public class StdTub extends StdRideable implements Drink
 		return true;
 	}
 
+    public int amountTakenToFillMe(Drink theSource)
+    {
+        int amountToTake=amountOfLiquidHeld-amountOfLiquidRemaining;
+        if(amountOfLiquidHeld>=500000)
+            amountToTake=theSource.liquidRemaining();
+        if(amountToTake>theSource.liquidRemaining())
+            amountToTake=theSource.liquidRemaining();
+        return amountToTake;
+    }
+    
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 	    if((msg.source().riding()==this)
@@ -257,11 +267,7 @@ public class StdTub extends StdRideable implements Drink
 				if((msg.tool()!=null)&&(msg.tool() instanceof Drink))
 				{
 					Drink thePuddle=(Drink)msg.tool();
-					int amountToTake=amountOfLiquidHeld-amountOfLiquidRemaining;
-					if(amountOfLiquidHeld>=500000)
-						amountToTake=thePuddle.liquidRemaining();
-					if(amountToTake>thePuddle.liquidRemaining())
-						amountToTake=thePuddle.liquidRemaining();
+					int amountToTake=amountTakenToFillMe(thePuddle);
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
 					if(amountOfLiquidRemaining<=0)
 						setLiquidType(thePuddle.liquidType());
