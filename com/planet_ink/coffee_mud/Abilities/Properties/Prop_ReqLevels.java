@@ -113,6 +113,7 @@ public class Prop_ReqLevels extends Property
 			else
 			{
 				msg.source().getGroupMembers(H);
+                H=(HashSet)H.clone();
 				for(Iterator e=H.iterator();e.hasNext();)
 					((MOB)e.next()).getRideBuddies(H);
 			}
