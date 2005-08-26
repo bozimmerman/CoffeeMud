@@ -222,12 +222,8 @@ FUNCTION_PROG DoStay
 		IF EVAL('$<$n BJTOTAL>' >= '17') AND EVAL('$<$n BJTOTAL>' < '$<$n MYBJTOTAL>')
 			MPCALLFUNC GameWinOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  The dealer may not draw again.  You win.
 		ELSE
-			IF EVAL('$<$n BJTOTAL>' == '$<$n MYBJTOTAL>')
-				IF VAR($n BJTOTAL < 17)
-					MPCALLFUNC DoStay
-				ELSE
-					MPCALLFUNC GameTieOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  Tie goes to the dealer.  You lose.
-				ENDIF
+			IF EVAL('$<$n BJTOTAL>' == '$<$n MYBJTOTAL>') AND VAR($n BJTOTAL >= 17)
+				MPCALLFUNC GameTieOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  Tie goes to the dealer.  You lose.
 			ELSE
 				MPCALLFUNC DealOut $<$n DEALERBJVALS>
 				MPSETVAR $n DEALERBJVALS $<$n BJLIST>

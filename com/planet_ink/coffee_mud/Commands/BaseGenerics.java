@@ -3468,69 +3468,6 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static String genText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp)
-		throws IOException
-	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
-		mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
-		String newName=mob.session().prompt("Enter a new value\n\r:","");
-		if(newName.length()>0)
-			return newName;
-		else
-        {
-            mob.tell("(no change)");
-			return oldVal;
-        }
-	}
-    static boolean genBool(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp)
-    throws IOException
-    {
-        if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
-        mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
-        if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
-        String newName=mob.session().prompt("Enter true or false:","");
-        if(newName.toUpperCase().startsWith("T")||newName.toUpperCase().startsWith("F"))
-            return newName.toUpperCase().startsWith("T");
-        else
-        {
-            mob.tell("(no change)");
-            return oldVal;
-        }
-    }
-    
-    static double genDouble(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp)
-    throws IOException
-    {
-        if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
-        mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
-        if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
-        String newName=mob.session().prompt("Enter a new value:","");
-        if(Util.isNumber(newName))
-            return Util.s_double(newName);
-        else
-        {
-            mob.tell("(no change)");
-            return oldVal;
-        }
-    }
-    
-    static int genInteger(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp)
-    throws IOException
-    {
-        if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
-        mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
-        if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
-        String newName=mob.session().prompt("Enter a new value:","");
-        if(Util.isInteger(newName))
-            return Util.s_int(newName);
-        else
-        {
-            mob.tell("(no change)");
-            return oldVal;
-        }
-    }
-    
 	static void genText(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
@@ -4992,7 +4929,7 @@ public class BaseGenerics extends StdCommand
         {
             int showNumber=0;
             // name
-            me.name=genText(mob,me.name,++showNumber,showFlag,"Name");
+            me.name=EnglishParser.promptText(mob,me.name,++showNumber,showFlag,"Name");
             
             // ranges
             ++showNumber;
@@ -5085,10 +5022,10 @@ public class BaseGenerics extends StdCommand
             
             
             // show in score
-            me.showinscore=genBool(mob,me.showinscore,++showNumber,showFlag,"Show in 'Score'");
+            me.showinscore=EnglishParser.promptBool(mob,me.showinscore,++showNumber,showFlag,"Show in 'Score'");
             
             // show in factions
-            me.showinfactionscommand=genBool(mob,me.showinfactionscommand,++showNumber,showFlag,"Show in 'Factions' command");
+            me.showinfactionscommand=EnglishParser.promptBool(mob,me.showinfactionscommand,++showNumber,showFlag,"Show in 'Factions' command");
             
             // show in special reports
             boolean alreadyReporter=false;
@@ -5098,14 +5035,14 @@ public class BaseGenerics extends StdCommand
                 if(F2.showinspecialreported) alreadyReporter=true;
             }
             if(!alreadyReporter)
-                me.showinspecialreported=genBool(mob,me.showinspecialreported,++showNumber,showFlag,"Show in Reports");
+                me.showinspecialreported=EnglishParser.promptBool(mob,me.showinspecialreported,++showNumber,showFlag,"Show in Reports");
             
             // show in editor
-            me.showineditor=genBool(mob,me.showineditor,++showNumber,showFlag,"Show in MOB Editor");
+            me.showineditor=EnglishParser.promptBool(mob,me.showineditor,++showNumber,showFlag,"Show in MOB Editor");
             
             // auto defaults
             boolean error=true;
-            me.autoDefaults=Util.parseSemicolons(BaseGenerics.genText(mob,Util.toSemicolonList(me.autoDefaults),++showNumber,showFlag,"Optional automatic assigned values with zapper masks (semicolon delimited).\n\r   "),true);
+            me.autoDefaults=Util.parseSemicolons(EnglishParser.promptText(mob,Util.toSemicolonList(me.autoDefaults),++showNumber,showFlag,"Optional automatic assigned values with zapper masks (semicolon delimited).\n\r   "),true);
             
             // non-auto defaults
             error=true;
@@ -5115,7 +5052,7 @@ public class BaseGenerics extends StdCommand
             while(error&&(mob.session()!=null)&&(!mob.session().killFlag()))
             {
                 error=false;
-                String newDefaults=BaseGenerics.genText(mob,Util.toSemicolonList(me.defaults),showNumber,showFlag,"Other default values with zapper masks (semicolon delimited).\n\r   ");
+                String newDefaults=EnglishParser.promptText(mob,Util.toSemicolonList(me.defaults),showNumber,showFlag,"Other default values with zapper masks (semicolon delimited).\n\r   ");
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
                 Vector V=Util.parseSemicolons(newDefaults,true);
                 if(V.size()==0)
@@ -5127,12 +5064,12 @@ public class BaseGenerics extends StdCommand
             }
             
             // choices and choice intro
-            me.choices=Util.parseSemicolons(BaseGenerics.genText(mob,Util.toSemicolonList(me.choices),++showNumber,showFlag,"Optional new player value choices (semicolon-delimited).\n\r   "),true);
+            me.choices=Util.parseSemicolons(EnglishParser.promptText(mob,Util.toSemicolonList(me.choices),++showNumber,showFlag,"Optional new player value choices (semicolon-delimited).\n\r   "),true);
             if(me.choices.size()>0)
-                me.choiceIntro=BaseGenerics.genText(mob,me.choiceIntro,++showNumber,showFlag,"Optional choices introduction text. Filename");
+                me.choiceIntro=EnglishParser.promptText(mob,me.choiceIntro,++showNumber,showFlag,"Optional choices introduction text. Filename");
             
             // rate modifier
-            String newModifier=BaseGenerics.genText(mob,Math.round(me.rateModifier*100.0)+"%",++showNumber,showFlag,"Rate modifier");
+            String newModifier=EnglishParser.promptText(mob,Math.round(me.rateModifier*100.0)+"%",++showNumber,showFlag,"Rate modifier");
             if(newModifier.endsWith("%"))
                 newModifier=newModifier.substring(0,newModifier.length()-1);
             if(Util.isNumber(newModifier))
@@ -5159,7 +5096,7 @@ public class BaseGenerics extends StdCommand
                     break;
                 }
                 String prompt="Affect on experience: "+Faction.EXPAFFECT_NAMES[myval]+nextPrompt.toString()+"\n\rSelect a value: ";
-                int mynewval=BaseGenerics.genInteger(mob,myval+1,showNumber,showFlag,prompt);
+                int mynewval=EnglishParser.promptInteger(mob,myval+1,showNumber,showFlag,prompt);
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
                 if((mynewval<=0)||(mynewval>Faction.EXPAFFECT_NAMES.length))
                 {
@@ -5830,7 +5767,7 @@ public class BaseGenerics extends StdCommand
 			if(me instanceof Container)
 				genCapacity(mob,(Container)me,++showNumber,showFlag);
 			if(me instanceof Perfume)
-				((Perfume)me).setSmellList(genText(mob,((Perfume)me).getSmellList(),++showNumber,showFlag,"Smells list (; delimited)"));
+				((Perfume)me).setSmellList(EnglishParser.promptText(mob,((Perfume)me).getSmellList(),++showNumber,showFlag,"Smells list (; delimited)"));
 			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
@@ -6344,9 +6281,9 @@ public class BaseGenerics extends StdCommand
 			genArmor(mob,me,++showNumber,showFlag);
 			genHitPoints(mob,me,++showNumber,showFlag);
 			genMoney(mob,me,++showNumber,showFlag);
-            me.setTrains(BaseGenerics.genInteger(mob,me.getTrains(),++showNumber,showFlag,"Training Points"));
-            me.setPractices(BaseGenerics.genInteger(mob,me.getPractices(),++showNumber,showFlag,"Practice Points"));
-            me.setQuestPoint(BaseGenerics.genInteger(mob,me.getQuestPoint(),++showNumber,showFlag,"Quest Points"));
+            me.setTrains(EnglishParser.promptInteger(mob,me.getTrains(),++showNumber,showFlag,"Training Points"));
+            me.setPractices(EnglishParser.promptInteger(mob,me.getPractices(),++showNumber,showFlag,"Practice Points"));
+            me.setQuestPoint(EnglishParser.promptInteger(mob,me.getQuestPoint(),++showNumber,showFlag,"Quest Points"));
 			genAbilities(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
@@ -6450,12 +6387,12 @@ public class BaseGenerics extends StdCommand
 			else
             if(me instanceof PostOffice)
             {
-                ((PostOffice)me).setPostalChain(BaseGenerics.genText(mob,((PostOffice)me).postalChain(),++showNumber,showFlag,"Postal chain"));
-                ((PostOffice)me).setFeeForNewBox(BaseGenerics.genDouble(mob,((PostOffice)me).feeForNewBox(),++showNumber,showFlag,"Fee to open a new box"));
-                ((PostOffice)me).setMinimumPostage(BaseGenerics.genDouble(mob,((PostOffice)me).minimumPostage(),++showNumber,showFlag,"Minimum postage cost"));
-                ((PostOffice)me).setPostagePerPound(BaseGenerics.genDouble(mob,((PostOffice)me).postagePerPound(),++showNumber,showFlag,"Postage cost per pound after 1st pound"));
-                ((PostOffice)me).setHoldFeePerPound(BaseGenerics.genDouble(mob,((PostOffice)me).holdFeePerPound(),++showNumber,showFlag,"Holding fee per pound per month"));
-                ((PostOffice)me).setMaxMudMonthsHeld(BaseGenerics.genInteger(mob,((PostOffice)me).maxMudMonthsHeld(),++showNumber,showFlag,"Maximum number of months held"));
+                ((PostOffice)me).setPostalChain(EnglishParser.promptText(mob,((PostOffice)me).postalChain(),++showNumber,showFlag,"Postal chain"));
+                ((PostOffice)me).setFeeForNewBox(EnglishParser.promptDouble(mob,((PostOffice)me).feeForNewBox(),++showNumber,showFlag,"Fee to open a new box"));
+                ((PostOffice)me).setMinimumPostage(EnglishParser.promptDouble(mob,((PostOffice)me).minimumPostage(),++showNumber,showFlag,"Minimum postage cost"));
+                ((PostOffice)me).setPostagePerPound(EnglishParser.promptDouble(mob,((PostOffice)me).postagePerPound(),++showNumber,showFlag,"Postage cost per pound after 1st pound"));
+                ((PostOffice)me).setHoldFeePerPound(EnglishParser.promptDouble(mob,((PostOffice)me).holdFeePerPound(),++showNumber,showFlag,"Holding fee per pound per month"));
+                ((PostOffice)me).setMaxMudMonthsHeld(EnglishParser.promptInteger(mob,((PostOffice)me).maxMudMonthsHeld(),++showNumber,showFlag,"Maximum number of months held"));
             }
             else
 			{

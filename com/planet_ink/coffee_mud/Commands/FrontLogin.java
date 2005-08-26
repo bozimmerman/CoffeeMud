@@ -178,12 +178,16 @@ public class FrontLogin extends StdCommand
 		        }
 		    }
 		}
+        
+        Command C=CMClass.getCommand("Poll");
+        try{ C.execute(mob,null);}catch(Exception e){}
+        
 		if((mob.session()==null)
 		||(mob.isMonster())
 		||(Util.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE)))
 			return;
 
-		Command C=CMClass.getCommand("MOTD");
+		C=CMClass.getCommand("MOTD");
 		try{ C.execute(mob,Util.parse("MOTD NEW"));}catch(Exception e){}
 	}
 

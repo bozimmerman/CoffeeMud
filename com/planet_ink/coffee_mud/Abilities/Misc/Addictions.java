@@ -43,8 +43,6 @@ public class Addictions extends StdAbility
         if(!super.tick(ticking,tickID))
             return false;
         
-        // TODO: losing addiction after long ass time
-        
         if((craving())
         &&(Dice.rollPercentage()<=((System.currentTimeMillis()-lastFix)/IQCalendar.MILI_HOUR))
         &&(ticking instanceof MOB))

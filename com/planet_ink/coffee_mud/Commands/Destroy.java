@@ -859,6 +859,33 @@ public class Destroy extends BaseItemParser
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			mobs(mob,commands);
 		}
+        else
+        if(commandType.equals("POLL"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"POLLS")) return errorOut(mob);
+            String name=Util.combine(commands,2);
+            Polls P=null;
+            if(Util.isInteger(name))
+                P=Polls.getPoll(Util.s_int(name)-1);
+            else
+            if(name.length()>0)
+                P=Polls.getPoll(name);
+            if(P==null)
+            {
+                mob.tell("POLL '"+name+"' not found. Try LIST POLLS.");
+                mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+                return false;
+            }
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+            if((mob.session()!=null)&&(mob.session().confirm("Destroy POLL "+P.getName()+", are you SURE? (Y/n)? ","Y")))
+            {
+                P.dbdelete();
+                mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^SThe world has grown a bit more certain.^?");
+                Log.sysOut("CreateEdit",mob.Name()+" modified Poll "+P.getName()+".");
+            }
+            else
+                mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+        }
 		else
 		if(commandType.equals("QUEST"))
 		{
@@ -977,7 +1004,7 @@ public class Destroy extends BaseItemParser
 					mob.tell(
 						"\n\rYou cannot destroy a '"+commandType+"'. "
 						+"However, you might try an "
-						+"EXIT, ITEM, USER, MOB, QUEST, FACTION, SOCIAL, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, or a ROOM.");
+						+"EXIT, ITEM, USER, MOB, QUEST, FACTION, SOCIAL, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, POLL, or a ROOM.");
 				}
 			}
 		}

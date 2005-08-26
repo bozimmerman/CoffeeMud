@@ -1005,6 +1005,28 @@ public class Modify extends BaseGenerics
 			players(mob,commands);
 		}
 		else
+        if(commandType.equals("POLL"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"POLLS")) return errorOut(mob);
+            String name=Util.combine(commands,2);
+            Polls P=null;
+            if(Util.isInteger(name))
+                P=Polls.getPoll(Util.s_int(name)-1);
+            else
+            if(name.length()>0)
+                P=Polls.getPoll(name);
+            if(P==null)
+            {
+                mob.tell("POLL '"+name+"' not found. Try LIST POLLS.");
+                mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+                return false;
+            }
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+            P.modifyVote(mob);
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^SThe world's uncertainty has changed.^?");
+            Log.sysOut("CreateEdit",mob.Name()+" modified Poll "+P.getName()+".");
+        }
+        else
 		if(commandType.equals("QUEST"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
@@ -1216,7 +1238,7 @@ public class Modify extends BaseGenerics
 				execute(mob,commands);
 			}
 			else
-				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, EXIT, QUEST, MOB, USER, FACTION, SOCIAL, CLAN, or ROOM.");
+				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, EXIT, QUEST, MOB, USER, FACTION, SOCIAL, CLAN, POLL, or ROOM.");
 		}
 		return false;
 	}

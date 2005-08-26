@@ -49,8 +49,8 @@ public class Poll extends StdCommand
             if(i<(mypolls.size()-1))
                 mob.session().prompt("Press ENTER to continue:");
         }
-        if(mypolls.size()>0)
-            mob.tell("\n\rPrevious polling results:");
+        if(myrespolls.size()>0)
+            mob.tell("\n\rPrevious polling results:\n\r");
         for(int i=0;i<myrespolls.size();i++)
         {
             Polls P=(Polls)myrespolls.elementAt(i);

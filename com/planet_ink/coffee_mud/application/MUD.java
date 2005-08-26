@@ -32,7 +32,7 @@ import com.planet_ink.coffee_mud.web.espresso.*;
 public class MUD extends Thread implements MudHost
 {
 	public static final float HOST_VERSION_MAJOR=(float)4.7;
-	public static final long  HOST_VERSION_MINOR=5;
+	public static final long  HOST_VERSION_MINOR=6;
 	
 	public static boolean keepDown=true;
 	public static String execExternalCommand=null;
@@ -743,6 +743,7 @@ public class MUD extends Thread implements MudHost
 		Socials.clearAllSocials();
 		Clans.shutdownClans();
 		ChannelSet.unloadChannels();
+        Polls.unload();
 
 		MUDHelp.unloadHelpFile(null);
 

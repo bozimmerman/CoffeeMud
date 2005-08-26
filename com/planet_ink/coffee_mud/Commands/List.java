@@ -813,8 +813,31 @@ public class List extends StdCommand
         /*46*/{"FACTIONS","LISTADMIN","CMDFACTIONS"},
         /*47*/{"ASSIST","KILLASSIST"},
         /*48*/{"TASKS","TASKS"},
+        /*49*/{"POLLS","POLLS","LISTADMIN"}
 	};
 
+    public void listPolls(MOB mob, Vector commands)
+    {
+        Vector V=Polls.getPollList();
+        if(V.size()==0)
+            mob.tell("\n\rNo polls available.  Fix that by entering CREATE POLL!");
+        else
+        {
+            StringBuffer str=new StringBuffer("");
+            for(int v=0;v<V.size();v++)
+            {
+                Polls P=(Polls)V.elementAt(v);
+                str.append(Util.padRight(""+(v+1),2)+": "+P.getName());
+                if(!Util.bset(P.getFlags(),Polls.FLAG_ACTIVE))
+                    str.append(" (inactive)");
+                else
+                if(P.getExpiration()>0) 
+                    str.append("(expires: "+new IQCalendar(P.getExpiration()).d2String()+")");
+            }
+            mob.tell(str.toString());
+        }
+    }
+    
 	public void archonlist(MOB mob, Vector commands)
 	{
 		if(commands.size()==0)
@@ -919,6 +942,7 @@ public class List extends StdCommand
         case 46: s.wraplessPrintln(Factions.listFactions()); break;
         case 47: s.println(journalList("SYSTEM_ASSIST").toString()); break;
         case 48: s.println(journalList("SYSTEM_TASKS").toString()); break;
+        case 49: listPolls(mob,commands); break;
         default:
 			s.println("List?!");
 			break;

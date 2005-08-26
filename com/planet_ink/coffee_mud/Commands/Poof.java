@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 import java.io.IOException;
 
@@ -20,7 +21,7 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Poof extends BaseGenerics
+public class Poof extends StdCommand
 {
 	public Poof(){}
 
@@ -43,10 +44,10 @@ public class Poof extends BaseGenerics
 		while((!ok)&&(mob.playerStats()!=null))
 		{
 			int showNumber=0;
-			String poofIn=genText(mob,mob.playerStats().poofIn(),++showNumber,showFlag,"Poof-in");
-			String poofOut=genText(mob,mob.playerStats().poofOut(),++showNumber,showFlag,"Poof-out");
-			String tranPoofIn=genText(mob,mob.playerStats().tranPoofIn(),++showNumber,showFlag,"Transfer-in");
-			String tranPoofOut=genText(mob,mob.playerStats().tranPoofOut(),++showNumber,showFlag,"Transfer-out");
+			String poofIn=EnglishParser.promptText(mob,mob.playerStats().poofIn(),++showNumber,showFlag,"Poof-in");
+			String poofOut=EnglishParser.promptText(mob,mob.playerStats().poofOut(),++showNumber,showFlag,"Poof-out");
+			String tranPoofIn=EnglishParser.promptText(mob,mob.playerStats().tranPoofIn(),++showNumber,showFlag,"Transfer-in");
+			String tranPoofOut=EnglishParser.promptText(mob,mob.playerStats().tranPoofOut(),++showNumber,showFlag,"Transfer-out");
 			mob.playerStats().setPoofs(poofIn,poofOut,tranPoofIn,tranPoofOut);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}

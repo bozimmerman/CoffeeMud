@@ -28,22 +28,22 @@ public class Task extends Bug
     
     public boolean execute(MOB mob, Vector commands)
         throws java.io.IOException
+    {
+        if(Util.combine(commands,1).length()>0)
         {
-            if(Util.combine(commands,1).length()>0)
+            if(!review(mob,"SYSTEM_TASKS","ideas",commands,"TASKS"))
             {
-                if(!review(mob,"SYSTEM_TASKS","ideas",commands,"TASKS"))
-                {
-                    CMClass.DBEngine().DBWriteJournal("SYSTEM_TASKS",mob.Name(),"ALL","TASK: "+Util.padRight(Util.combine(commands,1),10),Util.combine(commands,1),-1);
-                    mob.tell("Thank you for your contribution!");
-                }
+                CMClass.DBEngine().DBWriteJournal("SYSTEM_TASKS",mob.Name(),"ALL","TASK: "+Util.padRight(Util.combine(commands,1),10),Util.combine(commands,1),-1);
+                mob.tell("Thank you for your contribution!");
             }
-            else
-                mob.tell("What's the new task?");
-            return false;
         }
-        public int ticksToExecute(){return 0;}
-        public boolean canBeOrdered(){return false;}
-
-        public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+        else
+            mob.tell("What's the new task?");
+        return false;
     }
+    public int ticksToExecute(){return 0;}
+    public boolean canBeOrdered(){return false;}
 
+    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,"TASKS");}
+}

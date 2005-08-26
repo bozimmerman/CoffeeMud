@@ -535,7 +535,14 @@ public class Create extends BaseGenerics
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"POLLS")) return errorOut(mob);
             mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-            polls(mob,commands);
+            Polls P=new Polls();
+            while(Polls.getPoll(P.getName())!=null)
+                P.setName(P.getName()+"!");
+            P.setFlags(Polls.FLAG_ACTIVE);
+            P.dbcreate();
+            P.modifyVote(mob);
+            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^SThe world has grown more uncertain.^?");
+            Log.sysOut("CreateEdit",mob.Name()+" created Poll "+P.getName()+".");
         }
 		else
 		if(commandType.equals("QUEST"))
@@ -623,10 +630,10 @@ public class Create extends BaseGenerics
 						execute(mob,commands);
 					}
 					else
-						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, RACE, CLASS or ROOM.");
+						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, RACE, CLASS, POLL or ROOM.");
 				}
 				else
-					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, RACE, CLASS, or ROOM.");
+					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, RACE, CLASS, POLL, or ROOM.");
 			}
 		}
 		return false;
