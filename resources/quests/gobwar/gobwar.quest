@@ -5,11 +5,11 @@ set name gobwar
 set wait 18600
 set interval 9600
 
-set area GoblinMountains
-set mobgroup MASK=-PLAYER -RACE +Goblin 
-give behavior Scriptable LOAD=quests/gobwar/goblin.script
-give behavior MobileAggressive -Goblin MOBKILL
-give behavior Scavenger
+#set area GoblinMountains
+#set mobgroup MASK=-PLAYER -RACE +Goblin 
+#give behavior Scriptable LOAD=quests/gobwar/goblin.script
+#give behavior MobileAggressive -Goblin MOBKILL
+#give behavior Scavenger
 
 set mobgroup
 set room
