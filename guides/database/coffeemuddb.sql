@@ -31,7 +31,7 @@ CREATE TABLE CMPOLL (
 	CMOPTN text NULL ,
 	CMFLAG bigint NULL ,
 	CMQUAL char (255) NULL ,
-	CHRESL text NULL,
+	CMRESL text NULL,
 	CMEXPI bigint NULL
 );
 

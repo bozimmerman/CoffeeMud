@@ -22,7 +22,7 @@ CMDESC varchar (255) NULL ,
 CMOPTN varchar (255) NULL ,
 CMFLAG integer NULL ,
 CMQUAL varchar (255) NULL ,
-CHRESL varchar (255) NULL,
+CMRESL varchar (255) NULL,
 CMEXPI bigint NULL,
 PRIMARY KEY (CMNAME)
 );

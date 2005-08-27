@@ -42,7 +42,7 @@ CREATE TABLE CMPOLL (
 	CMOPTN text NULL ,
 	CMFLAG int NULL ,
 	CMQUAL varchar (255) NULL ,
-	CHRESL text NULL,
+	CMRESL text NULL,
 	CMEXPI bigint NULL
 );
 
