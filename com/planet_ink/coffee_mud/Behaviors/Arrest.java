@@ -318,12 +318,9 @@ public class Arrest extends StdBehavior
 					            T.updateTitle();
 			                    break;
 			                }
-			                else
-			                {
-				                paid+=new Integer(-T.backTaxes()).doubleValue();
-				                T.setBackTaxes(0);
-					            T.updateTitle();
-			                }
+			                paid+=new Integer(-T.backTaxes()).doubleValue();
+			                T.setBackTaxes(0);
+				            T.updateTitle();
 			            }
 			        }
 			        if(owed>0)
@@ -730,8 +727,7 @@ public class Arrest extends StdBehavior
 							W.setState(Law.STATE_ARRESTING);
 							return true;
 						}
-						else
-							return false;
+						return false;
 					}
 					return false;
 				}
@@ -936,8 +932,7 @@ public class Arrest extends StdBehavior
 					    answer=answer&&rooms.contains(V.elementAt(i));
 				    return answer;
 				}
-				else
-				    return false;
+			    return false;
 			case Law.MOD_CRIMEACCUSE:
 				if((laws!=null)
 		        &&(V!=null)
@@ -1132,7 +1127,6 @@ public class Arrest extends StdBehavior
 			if((laws.officerNames().size()<=0)
 			||(((String)laws.officerNames().firstElement()).equals("@")))
 			   return false;
-			else
 			for(int i=0;i<laws.officerNames().size();i++)
 				if((EnglishParser.containsString(M.displayText(),(String)laws.officerNames().elementAt(i))
 				||(EnglishParser.containsString(M.Name(),(String)laws.officerNames().elementAt(i)))))
@@ -1456,7 +1450,6 @@ public class Arrest extends StdBehavior
 		{
 			if((laws.judgeNames().size()<=0)||(((String)laws.judgeNames().firstElement()).equals("@")))
 				return false;
-			else
 			for(int i=0;i<laws.judgeNames().size();i++)
 			{
 				if((EnglishParser.containsString(M.displayText(),(String)laws.judgeNames().elementAt(i)))
@@ -1525,13 +1518,10 @@ public class Arrest extends StdBehavior
         {
     		if((laws.releaseRooms().size()==0)||(((String)laws.releaseRooms().firstElement()).equals("@")))
     			return (Room)myArea.getMetroMap().nextElement();
-    		else
-    		{
-    			room=getRoom(criminal.location().getArea(),laws.releaseRooms());
-    			if(room==null) room=getRoom(myArea,laws.releaseRooms());
-    			if(room==null) room=findTheJudge(laws,myArea);
-    			if(room==null) room=(Room)myArea.getMetroMap().nextElement();
-    		}
+			room=getRoom(criminal.location().getArea(),laws.releaseRooms());
+			if(room==null) room=getRoom(myArea,laws.releaseRooms());
+			if(room==null) room=findTheJudge(laws,myArea);
+			if(room==null) room=(Room)myArea.getMetroMap().nextElement();
         }
 		return room;
 	}
@@ -1634,11 +1624,8 @@ public class Arrest extends StdBehavior
 		Room jail=null;
 		if((laws.jailRooms().size()==0)||(((String)laws.jailRooms().firstElement()).equals("@")))
 			return null;
-		else
-		{
-			jail=getRoom(mob.location().getArea(),laws.jailRooms());
-			if(jail==null) jail=getRoom(myArea,laws.jailRooms());
-		}
+		jail=getRoom(mob.location().getArea(),laws.jailRooms());
+		if(jail==null) jail=getRoom(myArea,laws.jailRooms());
 		return jail;
 	}
 

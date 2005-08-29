@@ -45,9 +45,7 @@ public class ChannelList implements Serializable {
         if( !list.containsKey(channel) ) {
             return null;
         }
-        else {
-            return (Channel)list.get(channel);
-        }
+        return (Channel)list.get(channel);
     }
 
     public void removeChannel(Channel c) {

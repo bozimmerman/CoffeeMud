@@ -51,21 +51,18 @@ public class Chant_Chlorophyll extends Chant
 			unInvoke();
 			return false;
 		}
-		else
-		{
-			MOB mob=(MOB)affected;
-			Room R=mob.location();
-			if((R!=null)
-			&&((R.getArea().getTimeObj().getTODCode()==TimeClock.TIME_DAY)||(R.getArea().getTimeObj().getTODCode()==TimeClock.TIME_DAWN))
-			&&((R.domainType()&Room.INDOORS)==0)
-			&&((R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_CLEAR)
-			   ||(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_DROUGHT)
-			   ||(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_WINDY)
-			   ||(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_WINTER_COLD)
-			   ||(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_HEAT_WAVE)))
-			mob.curState().adjHunger(2,mob.maxState().maxHunger(mob.baseWeight()));
-			return true;
-		}
+		MOB mob=(MOB)affected;
+		Room R=mob.location();
+		if((R!=null)
+		&&((R.getArea().getTimeObj().getTODCode()==TimeClock.TIME_DAY)||(R.getArea().getTimeObj().getTODCode()==TimeClock.TIME_DAWN))
+		&&((R.domainType()&Room.INDOORS)==0)
+		&&((R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_CLEAR)
+		   ||(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_DROUGHT)
+		   ||(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_WINDY)
+		   ||(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_WINTER_COLD)
+		   ||(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_HEAT_WAVE)))
+		mob.curState().adjHunger(2,mob.maxState().maxHunger(mob.baseWeight()));
+		return true;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

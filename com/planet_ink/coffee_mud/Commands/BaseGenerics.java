@@ -2137,7 +2137,6 @@ public class BaseGenerics extends StdCommand
 		    E.addFaction(F.ID,Util.s_int(newOne));
 	        return;
 		}
-		else
 	    for(int v=0;v<F.ranges.size();v++)
 	    {
 	        Faction.FactionRange FR=(Faction.FactionRange)F.ranges.elementAt(v);
@@ -4367,12 +4366,9 @@ public class BaseGenerics extends StdCommand
 				mob.tell("(no change)");
 				return;
 			}
-			else
-			{
-				I=(Item)I.copyOf();
-				E.setStat("WEAPONCLASS",I.ID());
-				E.setStat("WEAPONXML",I.text());
-			}
+			I=(Item)I.copyOf();
+			E.setStat("WEAPONCLASS",I.ID());
+			E.setStat("WEAPONXML",I.text());
 		}
 		else
 		{

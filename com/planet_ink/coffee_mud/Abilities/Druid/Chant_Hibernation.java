@@ -85,8 +85,7 @@ public class Chant_Hibernation extends Chant
 				mob.tell("You can't withdraw from hibernation just yet.");
 				return false;
 			}
-			else
-				unInvoke();
+			unInvoke();
 		}
 		return super.okMessage(myHost,msg);
 	}

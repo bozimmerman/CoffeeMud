@@ -47,8 +47,7 @@ public class Channel extends BaseChanneler
 			reallyChannel(mob,channelName,message,systemMsg);
 			return true;
 		}
-		else
-			return channel(mob, commands, false);
+		return channel(mob, commands, false);
 	}
 
 	public boolean channel(MOB mob, Vector commands, boolean systemMsg)

@@ -48,20 +48,17 @@ public class Boot extends StdCommand
 					mob.tell("Try QUIT.");
 					return false;
 				}
-				else
-				{
-				    if(S.mob()!=null)
-				    {
-						mob.tell("You boot "+S.mob().name());
-						if(S.mob().location()!=null)
-							S.mob().location().show(S.mob(),null,CMMsg.MSG_OK_VISUAL,"Something is happening to <S-NAME>.");
-				    }
-				    else
-				        mob.tell("You boot "+S.getAddress());
-					S.setKillFlag(true);
-					boot=true;
-					break;
-				}
+			    if(S.mob()!=null)
+			    {
+					mob.tell("You boot "+S.mob().name());
+					if(S.mob().location()!=null)
+						S.mob().location().show(S.mob(),null,CMMsg.MSG_OK_VISUAL,"Something is happening to <S-NAME>.");
+			    }
+			    else
+			        mob.tell("You boot "+S.getAddress());
+				S.setKillFlag(true);
+				boot=true;
+				break;
 			}
 		}
 		if(!boot)

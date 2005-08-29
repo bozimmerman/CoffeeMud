@@ -347,25 +347,23 @@ public class BribeGateGuard extends StdBehavior
 		        if (checkBalance(price(), mob)) {
 		          return true;
 		        }
-		        else {
-		          FullMsg msgs = new FullMsg(monster, mob, CMMsg.MSG_NOISYMOVEMENT,
-		              "<S-NAME> won't let <T-NAME> through there.");
-		          if (monster.location().okMessage(monster, msgs)) {
-		            monster.location().send(monster, msgs);
-		            double denomination=BeanCounter.getLowestDenomination(currency);
-		            String thePrice=BeanCounter.getDenominationName(currency,denomination,Math.round(price()/denomination));
-		            CommonMsgs.say(monster, mob,
-		                "I'll let you through here if you pay the fee of "+thePrice+".", true, false);
-		            if (debug) // debugging
-		              CommonMsgs.say(monster, mob,
-		                                    "I'm telling you this from okAffect", true, false);
-		            return false;
-		          }
-		          if (debug) // debugging
-		            CommonMsgs.say(monster, mob,
-		                                  "I'm telling you this from okAffect (2)", true, false);
-		          return false;
-		        }
+    	          FullMsg msgs = new FullMsg(monster, mob, CMMsg.MSG_NOISYMOVEMENT,
+    	              "<S-NAME> won't let <T-NAME> through there.");
+    	          if (monster.location().okMessage(monster, msgs)) {
+    	            monster.location().send(monster, msgs);
+    	            double denomination=BeanCounter.getLowestDenomination(currency);
+    	            String thePrice=BeanCounter.getDenominationName(currency,denomination,Math.round(price()/denomination));
+    	            CommonMsgs.say(monster, mob,
+    	                "I'll let you through here if you pay the fee of "+thePrice+".", true, false);
+    	            if (debug) // debugging
+    	              CommonMsgs.say(monster, mob,
+    	                                    "I'm telling you this from okAffect", true, false);
+    	            return false;
+    	          }
+    	          if (debug) // debugging
+    	            CommonMsgs.say(monster, mob,
+    	                                  "I'm telling you this from okAffect (2)", true, false);
+    	        return false;
 		      }
 		      if (msg.target() instanceof Room) {
 		        if (debug) // debugging

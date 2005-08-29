@@ -84,8 +84,7 @@ public class Chant_HowlersMoon extends Chant
 				Vector choices=fillChoices(room);
 				if(choices.size()==0)
 					return true;
-				else
-					fromDir=((Integer)choices.elementAt(Dice.roll(1,choices.size(),-1))).intValue();
+				fromDir=((Integer)choices.elementAt(Dice.roll(1,choices.size(),-1))).intValue();
 			}
 			if(fromDir>=0)
 			{
