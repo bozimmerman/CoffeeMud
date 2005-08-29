@@ -110,8 +110,8 @@ public class StdCoins extends StdItem implements Coins
 		// import not to sup this, otherwise 'ability' makes it magical!
 		for(int a=0;a<numEffects();a++)
 		{
-			Ability effect=fetchEffect(a);
-			effect.affectEnvStats(this,envStats);
+			Ability A=fetchEffect(a);
+            if(A!=null)	A.affectEnvStats(this,envStats);
 		}
 	}
 	
