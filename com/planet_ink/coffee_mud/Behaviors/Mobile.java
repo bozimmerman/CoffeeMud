@@ -30,8 +30,15 @@ public class Mobile extends ActiveTicker
 	protected int leash=0;
 	protected Hashtable leashHash=null;
 	protected Vector restrictedLocales=null;
+    protected long[] altStatusTaker=null;
     protected long tickStatus=Tickable.STATUS_NOT;
-    public long getTickStatus(){return tickStatus;}
+    public long getTickStatus()
+    {
+        long[] o=altStatusTaker;
+        if((o!=null)&&(o[0]!=Tickable.STATUS_NOT))
+            return o[0];
+        return tickStatus;
+    }
 
 	public Mobile()
 	{
@@ -185,7 +192,8 @@ public class Mobile extends ActiveTicker
             }
             tickStatus=Tickable.STATUS_MISC2+4;
 			Room oldRoom=mob.location();
-			MUDTracker.beMobile((MOB)ticking,dooropen,wander,false,objections!=null,objections);
+            altStatusTaker=new long[1];
+			MUDTracker.beMobile((MOB)ticking,dooropen,wander,false,objections!=null,altStatusTaker,objections);
             tickStatus=Tickable.STATUS_MISC2+5;
 			if(mob.location()==oldRoom)
 				tickDown=0;

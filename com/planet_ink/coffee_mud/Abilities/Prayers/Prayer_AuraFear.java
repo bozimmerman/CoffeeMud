@@ -105,7 +105,7 @@ public class Prayer_AuraFear extends Prayer
 					    else
 					    {
 				            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,"<S-NAME> scream(s) in fear at the sight of <O-NAME>.");
-				            MUDTracker.beMobile(M,false,true,false,false,null);
+				            MUDTracker.beMobile(M,false,true,false,false,null,null);
 					    }
 				    }
 				    else
@@ -119,7 +119,7 @@ public class Prayer_AuraFear extends Prayer
 					    else
 					    {
 				            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,"<S-NAME> scream(s) in fear at the sight of <O-NAME>.");
-				            MUDTracker.beMobile(M,false,true,false,false,null);
+				            MUDTracker.beMobile(M,false,true,false,false,null,null);
 				            if(M.location()==R)
 				            {
 					            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,"<S-NAME> cringe(s) in fear at the sight of <O-NAME>.");

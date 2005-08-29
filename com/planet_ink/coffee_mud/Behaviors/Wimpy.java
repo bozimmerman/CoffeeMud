@@ -77,7 +77,7 @@ public class Wimpy extends StdBehavior
 								return true;
 						}
 						if(oldRoom==monster)
-							MUDTracker.beMobile(monster,false,false,false,false,null);
+							MUDTracker.beMobile(monster,false,false,false,false,null,null);
 					}
 				}
 			}

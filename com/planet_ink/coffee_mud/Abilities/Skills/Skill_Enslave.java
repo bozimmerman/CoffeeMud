@@ -209,7 +209,7 @@ public class Skill_Enslave extends StdAbility
 		            if(Dice.rollPercentage()<50)
 		            {
 		                mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,"<S-NAME> escape(s) <T-NAMESELF>!");
-		                MUDTracker.beMobile(mob,true,true,false,false,null);
+		                MUDTracker.beMobile(mob,true,true,false,false,null,null);
 		            }
 		        }
 	            if(mob.curState().getHunger()<=0)

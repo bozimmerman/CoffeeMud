@@ -59,7 +59,7 @@ public class AntiVagrant extends ActiveTicker
 					target.tell(observer.name()+" shakes you awake.");
 					CommonMsgs.stand(target,true);
 					if((kickout)&&(Sense.isStanding(target)))
-						MUDTracker.beMobile(target,true,false,false,false,null);
+						MUDTracker.beMobile(target,true,false,false,false,null,null);
 				}
 			}
 			else
@@ -72,7 +72,7 @@ public class AntiVagrant extends ActiveTicker
 					observer.location().send(observer,msg);
 					CommonMsgs.stand(target,true);
 					if((kickout)&&(Sense.isStanding(target)))
-						MUDTracker.beMobile(target,true,false,false,false,null);
+						MUDTracker.beMobile(target,true,false,false,false,null,null);
 				}
 			}
 			target=null;
