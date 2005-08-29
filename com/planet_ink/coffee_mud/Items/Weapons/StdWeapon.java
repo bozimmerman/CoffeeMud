@@ -335,15 +335,13 @@ public class StdWeapon extends StdItem implements Weapon
 	{
 		if(Util.bset(envStats().sensesMask(),EnvStats.SENSE_ITEMNOMINRANGE))
 			return 0;
-		else
-			return minRange;
+		return minRange;
 	}
 	public int maxRange()
 	{
 		if(Util.bset(envStats().sensesMask(),EnvStats.SENSE_ITEMNOMAXRANGE))
 			return 100;
-		else
-			return maxRange;
+		return maxRange;
 	}
 	public void setRanges(int min, int max){minRange=min;maxRange=max;}
 	public boolean requiresAmmunition()
@@ -377,8 +375,7 @@ public class StdWeapon extends StdItem implements Weapon
 	{
 		if((subjectToWearAndTear())&&(usesRemaining()<1000))
 			return (int)Math.round(Util.mul(super.value(),Util.div(usesRemaining(),100)));
-		else
-			return super.value();
+		return super.value();
 	}
 	public boolean subjectToWearAndTear()
 	{

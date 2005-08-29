@@ -99,35 +99,32 @@ public class Prop_LocationBound extends Property
 			        }
 			        return false;
 		        }
-		        else
-		        {
-		            Area A=CMMap.getArea(text());
-		            if((A!=null)&&(!A.inMetroArea(whereTo.getArea())))
-		            {
-				        if(!A.inMetroArea(R.getArea()))
+	            Area A=CMMap.getArea(text());
+	            if((A!=null)&&(!A.inMetroArea(whereTo.getArea())))
+	            {
+			        if(!A.inMetroArea(R.getArea()))
+			        {
+				        if(affected instanceof MOB)
 				        {
-					        if(affected instanceof MOB)
-					        {
-						        msg.source().tell("You are whisked back home!");
-						        A.getRandomMetroRoom().bringMobHere((MOB)affected,false);
-					        }
-					        else
-					        {
-						        msg.source().tell(affected.name()+" is whisked from you and back to its home.");
-						        A.getRandomMetroRoom().bringItemHere((Item)affected,0);
-                                return true;
-					        }
+					        msg.source().tell("You are whisked back home!");
+					        A.getRandomMetroRoom().bringMobHere((MOB)affected,false);
 				        }
 				        else
 				        {
-					        if(affected instanceof MOB)
-						        msg.source().tell("You are not allowed to leave this place.");
-					        else
-						        msg.source().tell(affected.name()+" prevents you from taking it that way.");
+					        msg.source().tell(affected.name()+" is whisked from you and back to its home.");
+					        A.getRandomMetroRoom().bringItemHere((Item)affected,0);
+                            return true;
 				        }
-				        return false;
-		            }
-		        }
+			        }
+			        else
+			        {
+				        if(affected instanceof MOB)
+					        msg.source().tell("You are not allowed to leave this place.");
+				        else
+					        msg.source().tell(affected.name()+" prevents you from taking it that way.");
+			        }
+			        return false;
+	            }
 		    }
 		}
 		return true;

@@ -66,11 +66,8 @@ public class Prop_Crawlspace extends Property
 			            mob.tell("You wake up, but you are still crawling.");
 			            return false;
 			        }
-			        else
-			        {
-			            msg.source().tell("You cannot stand up here, try crawling.");
-			            return false;
-			        }
+		            msg.source().tell("You cannot stand up here, try crawling.");
+		            return false;
 				}
 				break;
 			}

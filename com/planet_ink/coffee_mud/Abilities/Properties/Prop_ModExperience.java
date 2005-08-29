@@ -35,8 +35,7 @@ public class Prop_ModExperience extends Property
 	{
 		if(val.endsWith("%"))
 			return (int)Math.round(Util.mul(amount,Util.div(Util.s_int(val.substring(0,val.length()-1)),100)));
-		else
-			return Util.s_int(val);
+		return Util.s_int(val);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

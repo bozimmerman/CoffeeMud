@@ -48,8 +48,7 @@ public class StdPotion extends StdDrink implements Potion
 	{
 		if(isDrunk())
 			return 0;
-		else
-			return super.value();
+		return super.value();
 	}
 	
 	public void setDrunk(boolean isTrue)

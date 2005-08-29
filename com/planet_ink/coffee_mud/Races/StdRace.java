@@ -359,9 +359,9 @@ public class StdRace implements Race
 		}
 		if(naturalWeaponChoices.size()>0)
 			return (Weapon)naturalWeaponChoices.elementAt(Dice.roll(1,naturalWeaponChoices.size(),-1));
-		else
-			return CMClass.getWeapon("Natural");
+		return CMClass.getWeapon("Natural");
 	}
+    
 	public Vector myResources(){return new Vector();}
 	public void setHeightWeight(EnvStats stats, char gender)
 	{

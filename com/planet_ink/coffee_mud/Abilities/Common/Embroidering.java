@@ -87,8 +87,7 @@ public class Embroidering extends CommonSkill
 			commonTell(mob,"You don't seem to have a '"+((String)commands.firstElement())+"'.");
 			return false;
 		}
-		else
-			commands.remove(commands.firstElement());
+		commands.remove(commands.firstElement());
 		
 		Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)

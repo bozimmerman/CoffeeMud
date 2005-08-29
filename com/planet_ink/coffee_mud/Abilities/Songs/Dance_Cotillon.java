@@ -60,11 +60,8 @@ public class Dance_Cotillon extends Dance
 					{
 						if(pass)
 							return true;
-						else
-						{
-							pass=true;
-							i=-1;
-						}
+						pass=true;
+						i=-1;
 					}
 				}
 				if((whichLast!=null)

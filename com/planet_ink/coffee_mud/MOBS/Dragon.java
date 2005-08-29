@@ -187,7 +187,7 @@ public class Dragon extends StdMOB
 		if (iRoll<=92) return OLD;
 		if (iRoll<=97) return VERYOLD;
 		if (iRoll<=100) return ANCIENT;
-		else return SUBADULT;
+		return SUBADULT;
 	}
 
 	protected StringBuffer getAgeDescription(int draconianAge)

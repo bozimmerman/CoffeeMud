@@ -38,7 +38,6 @@ public class WoodsThinGrid extends StdThinGrid
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();
-	    else
-	        return new WoodsGrid().newInstance();
+        return new WoodsGrid().newInstance();
 	}
 }

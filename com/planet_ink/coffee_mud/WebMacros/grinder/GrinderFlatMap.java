@@ -170,11 +170,8 @@ public class GrinderFlatMap
 
                 	    if((dir.room.length()>0)&&((gridEdgeR==null)||((gridEdgeR!=null)&&(!gridEdgeR.roomID.equals(dir.room)))))
                     	    continue;
-                	    else
-                	    {
-                	        doneSomething=true;
-                	        block.add(gridEdgeR);
-                	    }
+            	        doneSomething=true;
+            	        block.add(gridEdgeR);
                     }
                 }
             }

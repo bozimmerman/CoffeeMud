@@ -61,7 +61,6 @@ public class StdSmokable extends StdContainer implements Light
 
 		if(!msg.amITarget(this))
 			return super.okMessage(myHost,msg);
-		else
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_WEAR:
@@ -124,32 +123,29 @@ public class StdSmokable extends StdContainer implements Light
 				}
 				return true;
 			}
-			else
+			if(owner() instanceof Room)
 			{
-				if(owner() instanceof Room)
-				{
-					if(((Room)owner()).numInhabitants()>0)
-						((Room)owner()).showHappens(CMMsg.MSG_OK_VISUAL,name()+" burns out.");
-					if(destroyedWhenBurnedOut())
-						destroy();
-					((Room)owner()).recoverRoomStats();
-				}
-				else
-				if(owner() instanceof MOB)
-				{
-					((MOB)owner()).tell(((MOB)owner()),null,this,"<O-NAME> burns out.");
-					durationTicks=0;
-					if(destroyedWhenBurnedOut())
-						destroy();
-					((MOB)owner()).recoverEnvStats();
-					((MOB)owner()).recoverCharStats();
-					((MOB)owner()).recoverMaxState();
-					((MOB)owner()).recoverEnvStats();
-					((MOB)owner()).location().recoverRoomStats();
-				}
-				light(false);
-				durationTicks=0;
+				if(((Room)owner()).numInhabitants()>0)
+					((Room)owner()).showHappens(CMMsg.MSG_OK_VISUAL,name()+" burns out.");
+				if(destroyedWhenBurnedOut())
+					destroy();
+				((Room)owner()).recoverRoomStats();
 			}
+			else
+			if(owner() instanceof MOB)
+			{
+				((MOB)owner()).tell(((MOB)owner()),null,this,"<O-NAME> burns out.");
+				durationTicks=0;
+				if(destroyedWhenBurnedOut())
+					destroy();
+				((MOB)owner()).recoverEnvStats();
+				((MOB)owner()).recoverCharStats();
+				((MOB)owner()).recoverMaxState();
+				((MOB)owner()).recoverEnvStats();
+				((MOB)owner()).location().recoverRoomStats();
+			}
+			light(false);
+			durationTicks=0;
 		}
 		return false;
 	}

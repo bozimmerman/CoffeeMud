@@ -299,7 +299,7 @@ public class Poison_Alcohol extends Poison
 				}
 				return false;
 			}
-			else
+            
 			for(int i=0;i<remove.size();i++)
 				givenTarget.delEffect((Ability)remove.elementAt(i));
 		}

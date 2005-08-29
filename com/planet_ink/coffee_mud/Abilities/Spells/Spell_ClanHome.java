@@ -37,11 +37,8 @@ public class Spell_ClanHome extends Spell
 			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
-		else
-		{
-			Clan C=Clans.getClan(mob.getClanID());
-			clanHomeRoom=CMMap.getRoom(C.getRecall());
-		}
+		Clan C=Clans.getClan(mob.getClanID());
+		clanHomeRoom=CMMap.getRoom(C.getRecall());
 		if(clanHomeRoom==null)
 		{
 			mob.tell("Your clan does not have a clan home.");

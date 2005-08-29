@@ -110,11 +110,8 @@ public class Tell extends StdCommand
 					mob.tell("Intermud is unavailable.");
 				return false;
 			}
-			else
-			{
-				mob.tell("That person doesn't appear to be online.");
-				return false;
-			}
+			mob.tell("That person doesn't appear to be online.");
+			return false;
 		}
 		
 		if(Util.bset(target.getBitmap(),MOB.ATT_QUIET))

@@ -274,8 +274,7 @@ public class Faction implements MsgListener
             }
             return str.toString();
         }
-        else
-            return rawTagName+"="+getTagValue(tag)+delimeter;
+        return rawTagName+"="+getTagValue(tag)+delimeter;
     }
     
     public FactionChangeEvent findChangeEvent(String key) 
@@ -482,8 +481,7 @@ public class Faction implements MsgListener
             {
                  if(gain)
                      return Util.s_double(((String)factor.elementAt(1)));
-                 else
-                     return Util.s_double(((String)factor.elementAt(0)));
+                 return Util.s_double(((String)factor.elementAt(0)));
              }
         }
         return 1.0;

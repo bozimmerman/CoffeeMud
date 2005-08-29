@@ -682,8 +682,7 @@ public class StdArea implements Area
 		{
 			if(properRooms!=null)
 				return properRooms.size();
-			else
-				makeProperMap();
+			makeProperMap();
 			return properRooms.size();
 		}
 	}
@@ -693,8 +692,7 @@ public class StdArea implements Area
 		{
 			if(metroRooms!=null)
 				return metroRooms.size();
-			else
-				makeMetroMap();
+			makeMetroMap();
 			return metroRooms.size();
 		}
 	}

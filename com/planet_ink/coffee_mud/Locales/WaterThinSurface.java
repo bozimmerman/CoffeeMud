@@ -37,7 +37,6 @@ public class WaterThinSurface extends WaterSurface
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();
-	    else
-	        return new WaterSurface().newInstance();
+        return new WaterSurface().newInstance();
 	}
 }

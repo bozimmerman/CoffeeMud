@@ -99,7 +99,6 @@ public class Disease_Lycanthropy extends Disease
 			rooms.addElement(room);
 			return true;
 		}
-		else
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
 			Room R=room.getRoomInDir(d);

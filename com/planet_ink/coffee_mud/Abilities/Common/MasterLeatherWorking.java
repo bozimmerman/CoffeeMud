@@ -153,8 +153,7 @@ public class MasterLeatherWorking extends CraftingSkill
             bundling=true;
             if(super.invoke(mob,commands,givenTarget,auto,asLevel))
                 return super.bundle(mob,commands);
-            else
-                return false;
+            return false;
         }
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);

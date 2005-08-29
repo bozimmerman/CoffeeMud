@@ -807,11 +807,9 @@ public class StdRoom
 			int x=text.indexOf("</VARIES>");
 			if(x>=0)
 				return parseVariesCodes(text.substring(8,x))+text.substring(x+9);
-			else
-				return parseVariesCodes(text.substring(8));
+			return parseVariesCodes(text.substring(8));
 		}
-		else
-			return text;
+		return text;
 	}
 
 	public String roomTitle(){
@@ -1059,8 +1057,7 @@ public class StdRoom
 		Room opRoom=getRoomInDir(direction);
 		if(opRoom!=null)
 			return opRoom.getExitInDir(Directions.getOpDirectionCode(direction));
-		else
-			return null;
+		return null;
 	}
 	public Exit getPairedExit(int direction)
 	{
@@ -1370,8 +1367,7 @@ public class StdRoom
 			{
 				if(numUsers==which)
 					return inhab;
-				else
-					numUsers++;
+				numUsers++;
 			}
 		}
 		return null;
@@ -1454,7 +1450,6 @@ public class StdRoom
 			if(found==null) found=EnglishParser.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,false);
 			if((found!=null)&&(Sense.canBeSeenBy(found,mob)))
 				return found;
-			else
 			while((found!=null)&&(!Sense.canBeSeenBy(found,mob)))
 			{
 				String newThingName=EnglishParser.bumpDotNumber(thingName);
@@ -1534,7 +1529,6 @@ public class StdRoom
 				found=fetchFromRoomFavorItems(goodLocation, thingName,wornReqCode);
 			if((found!=null)&&(Sense.canBeSeenBy(found,mob)))
 				return found;
-			else
 			while((found!=null)&&(!Sense.canBeSeenBy(found,mob)))
 			{
 				String newThingName=EnglishParser.bumpDotNumber(thingName);

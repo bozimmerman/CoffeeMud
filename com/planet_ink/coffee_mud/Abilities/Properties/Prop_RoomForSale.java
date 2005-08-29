@@ -318,65 +318,62 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			colorForSale(R,T.rentalProperty(),clearRoomIfUnsold);
 			return -1;
 		}
-		else
+		boolean updateItems=false;
+		if(lastNumItems<0)
 		{
-			boolean updateItems=false;
-			if(lastNumItems<0)
+			if((!CMClass.DBEngine().DBUserSearch(null,T.landOwner()))
+			&&(Clans.getClan(T.landOwner())==null))
 			{
-				if((!CMClass.DBEngine().DBUserSearch(null,T.landOwner()))
-				&&(Clans.getClan(T.landOwner())==null))
-				{
-					T.setLandOwner("");
-					T.updateLot();
-					return -1;
-				}
+				T.setLandOwner("");
+				T.updateLot();
+				return -1;
 			}
-
-			int x=R.description().indexOf(SALESTR);
-			if(x>=0)
-			{
-				R.setDescription(R.description().substring(0,x));
-				CMClass.DBEngine().DBUpdateRoom(R);
-			}
-			x=R.description().indexOf(RENTSTR);
-			if(x>=0)
-			{
-				R.setDescription(R.description().substring(0,x));
-				CMClass.DBEngine().DBUpdateRoom(R);
-			}
-			
-			// this works on the priciple that
-			// 1. if an item has ONLY been removed, the lastNumItems will be != current # items
-			// 2. if an item has ONLY been added, the dispossessiontime will be != null
-			// 3. if an item has been added AND removed, the dispossession time will be != null on the added
-			if((lastNumItems>=0)&&(R.numItems()!=lastNumItems))
-				updateItems=true;
-
-			for(int i=0;i<R.numItems();i++)
-			{
-				Item I=R.fetchItem(i);
-				if((I.dispossessionTime()!=0)
-                &&(I.savable())
-				&&(!(I instanceof DeadBody)))
-				{
-					I.setDispossessionTime(0);
-					updateItems=true;
-				}
-
-				if((I.envStats().rejuv()!=Integer.MAX_VALUE)
-				&&(I.envStats().rejuv()!=0))
-				{
-					I.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-					I.recoverEnvStats();
-					updateItems=true;
-				}
-			}
-			lastNumItems=R.numItems();
-			if((!CMSecurity.isSaveFlag("NOPROPERTYITEMS"))
-			&&(updateItems))
-				CMClass.DBEngine().DBUpdateItems(R);
-			return lastNumItems;
 		}
+
+		int x=R.description().indexOf(SALESTR);
+		if(x>=0)
+		{
+			R.setDescription(R.description().substring(0,x));
+			CMClass.DBEngine().DBUpdateRoom(R);
+		}
+		x=R.description().indexOf(RENTSTR);
+		if(x>=0)
+		{
+			R.setDescription(R.description().substring(0,x));
+			CMClass.DBEngine().DBUpdateRoom(R);
+		}
+		
+		// this works on the priciple that
+		// 1. if an item has ONLY been removed, the lastNumItems will be != current # items
+		// 2. if an item has ONLY been added, the dispossessiontime will be != null
+		// 3. if an item has been added AND removed, the dispossession time will be != null on the added
+		if((lastNumItems>=0)&&(R.numItems()!=lastNumItems))
+			updateItems=true;
+
+		for(int i=0;i<R.numItems();i++)
+		{
+			Item I=R.fetchItem(i);
+			if((I.dispossessionTime()!=0)
+            &&(I.savable())
+			&&(!(I instanceof DeadBody)))
+			{
+				I.setDispossessionTime(0);
+				updateItems=true;
+			}
+
+			if((I.envStats().rejuv()!=Integer.MAX_VALUE)
+			&&(I.envStats().rejuv()!=0))
+			{
+				I.baseEnvStats().setRejuv(Integer.MAX_VALUE);
+				I.recoverEnvStats();
+				updateItems=true;
+			}
+		}
+		lastNumItems=R.numItems();
+		if((!CMSecurity.isSaveFlag("NOPROPERTYITEMS"))
+		&&(updateItems))
+			CMClass.DBEngine().DBUpdateItems(R);
+		return lastNumItems;
 	}
 
 	public static boolean doRentalProperty(Area A, String ID, String owner, int rent)

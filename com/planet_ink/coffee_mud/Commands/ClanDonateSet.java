@@ -47,43 +47,37 @@ public class ClanDonateSet extends BaseClanner
 			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
+		Clan C=Clans.getClan(mob.getClanID());
+		if(C==null)
+		{
+			mob.tell("There is no longer a clan called "+mob.getClanID()+".");
+			return false;
+		}
+		if(C.getStatus()>Clan.CLANSTATUS_ACTIVE)
+		{
+			mob.tell("You cannot set a donation room.  Your "+C.typeName()+" does not have enough members to be considered active.");
+			return false;
+		}
+		if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDONATESET,false))
+		{
+			if(!CoffeeUtensils.doesOwnThisProperty(C.ID(),R))
+			{
+				mob.tell("Your "+C.typeName()+" does not own this room.");
+				return false;
+			}
+			if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDONATESET,true))
+			{
+				C.setDonation(CMMap.getExtendedRoomID(R));
+				C.update();
+				mob.tell("Your "+C.typeName()+" donation is now set to "+R.roomTitle()+".");
+				clanAnnounce(mob, "Your "+C.typeName()+" donation is now set to "+R.roomTitle()+".");
+				return true;
+			}
+		}
 		else
 		{
-			Clan C=Clans.getClan(mob.getClanID());
-			if(C==null)
-			{
-				mob.tell("There is no longer a clan called "+mob.getClanID()+".");
-				return false;
-			}
-			if(C.getStatus()>Clan.CLANSTATUS_ACTIVE)
-			{
-				mob.tell("You cannot set a donation room.  Your "+C.typeName()+" does not have enough members to be considered active.");
-				return false;
-			}
-			if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDONATESET,false))
-			{
-				if(!CoffeeUtensils.doesOwnThisProperty(C.ID(),R))
-				{
-					mob.tell("Your "+C.typeName()+" does not own this room.");
-					return false;
-				}
-				else
-				{
-					if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDONATESET,true))
-					{
-						C.setDonation(CMMap.getExtendedRoomID(R));
-						C.update();
-						mob.tell("Your "+C.typeName()+" donation is now set to "+R.roomTitle()+".");
-						clanAnnounce(mob, "Your "+C.typeName()+" donation is now set to "+R.roomTitle()+".");
-						return false;
-					}
-				}
-			}
-			else
-			{
-				mob.tell("You aren't in the right position to set your "+C.typeName()+"'s donation room.");
-				return false;
-			}
+			mob.tell("You aren't in the right position to set your "+C.typeName()+"'s donation room.");
+			return false;
 		}
 		return false;
 	}

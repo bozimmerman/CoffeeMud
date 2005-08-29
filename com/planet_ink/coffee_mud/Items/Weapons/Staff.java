@@ -76,8 +76,7 @@ public class Staff extends StdWeapon implements Wand
 	{
 		if(usesRemaining()<=0)
 			return 0;
-		else
-			return super.value();
+		return super.value();
 	}
 	public String secretIdentity()
 	{

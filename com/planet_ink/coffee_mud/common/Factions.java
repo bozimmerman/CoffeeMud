@@ -120,15 +120,12 @@ public class Factions implements Tickable
 	        }
 	        return true;
 	    }
-	    else
-	    {
-	        Faction F=getFactionByName(factionID);
-	        if(F==null) F=getFaction(factionID);
-	        if(F==null) return false;
-	        Resources.removeResource(F.ID);
-	        factionSet.remove(F.ID.toUpperCase());
-	        return true;
-	    }
+        Faction F=getFactionByName(factionID);
+        if(F==null) F=getFaction(factionID);
+        if(F==null) return false;
+        Resources.removeResource(F.ID);
+        factionSet.remove(F.ID.toUpperCase());
+        return true;
 	}
 	
 	public static String listFactions() 

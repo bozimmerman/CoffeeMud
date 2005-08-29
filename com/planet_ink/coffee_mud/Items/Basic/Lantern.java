@@ -66,11 +66,8 @@ public class Lantern extends LightSource
 						}
 						return true;
 					}
-					else
-					{
-						mob.tell("You can't fill "+name()+" from that.");
-						return false;
-					}
+					mob.tell("You can't fill "+name()+" from that.");
+					return false;
 				default:
 					break;
 			}

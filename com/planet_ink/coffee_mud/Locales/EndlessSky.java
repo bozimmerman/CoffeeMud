@@ -63,8 +63,7 @@ public class EndlessSky extends StdGrid
 	{
 		if(d!=Directions.DOWN)
 			return findCenterRoom(d);
-		else
-			return subMap[subMap.length-1][subMap[0].length-1];
+		return subMap[subMap.length-1][subMap[0].length-1];
 	}
 	
 	protected void buildFinalLinks()

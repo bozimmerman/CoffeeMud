@@ -117,14 +117,10 @@ public class Thief_Bind extends ThiefSkill
 				    A.unInvoke();
 				    return true;
 			    }
-			    else
-			        return false;
+		        return false;
 			}
-			else
-			{
-			    mob.tell(target.name()+" doesn't appear to be bound with ropes.");
-			    return false;
-			}
+		    mob.tell(target.name()+" doesn't appear to be bound with ropes.");
+		    return false;
 	    }
 	            
 	            

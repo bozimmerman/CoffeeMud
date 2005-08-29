@@ -240,11 +240,8 @@ public class Druid_ShapeShift extends StdAbility
 
 		if(myRaceCode<0)
 			return false;
-		else
-		{
-			setMiscText(""+myRaceCode);
-			setRaceName(mob);
-		}
+		setMiscText(""+myRaceCode);
+		setRaceName(mob);
 
 		// now check for alternate shapeshifts
 		if((triggerStrings().length>0)&&(commands.size()>0)&&(allShapeshifts.size()>1))

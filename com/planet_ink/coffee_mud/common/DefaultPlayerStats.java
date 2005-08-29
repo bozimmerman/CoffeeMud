@@ -71,8 +71,7 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		if((prompt==null)||(prompt.length()==0))
 			return defaultPrompt;
-		else
-			return prompt;
+		return prompt;
 	}
 
 	public HashSet getHashFrom(String str)
@@ -169,8 +168,7 @@ public class DefaultPlayerStats implements PlayerStats
         int day=C.getDayOfMonth();
         if((month<birthday[1])||((month==birthday[1])&&(birthday[0]<day)))
 		    return (R.getAgingChart()[Race.AGE_YOUNGADULT]+C.getYear()-birthday[2])-1;
-        else
-		    return (R.getAgingChart()[Race.AGE_YOUNGADULT]+C.getYear()-birthday[2]);
+	    return (R.getAgingChart()[Race.AGE_YOUNGADULT]+C.getYear()-birthday[2]);
 	}
 	
 	private String getPrivateList(HashSet h)
@@ -227,8 +225,7 @@ public class DefaultPlayerStats implements PlayerStats
 			String title=XMLManager.returnXMLValue(str,"TITLE"+t);
 			if(title.length()==0)
 			    break;
-			else
-			    titles.addElement(title);
+		    titles.addElement(title);
 		}
 		
 		poofin=XMLManager.returnXMLValue(str,"POOFIN");

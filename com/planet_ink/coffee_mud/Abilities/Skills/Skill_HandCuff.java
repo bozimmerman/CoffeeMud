@@ -165,14 +165,10 @@ public class Skill_HandCuff extends StdAbility
 				    A.unInvoke();
 				    return true;
 			    }
-			    else
-			        return false;
+		        return false;
 			}
-			else
-			{
-			    mob.tell(target.name()+" doesn't appear to be handcuffed.");
-			    return false;
-			}
+		    mob.tell(target.name()+" doesn't appear to be handcuffed.");
+		    return false;
 	    }
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

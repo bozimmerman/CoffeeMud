@@ -171,8 +171,7 @@ public class Thief_KillLog extends ThiefSkill
 				}
 				if(addOne==null)
 					break;
-				else
-					order.addElement(addOne);
+				order.addElement(addOne);
 			}
 			for(int i=0;i<order.size();i++)
 			{
@@ -188,11 +187,7 @@ public class Thief_KillLog extends ThiefSkill
 				mob.session().rawPrintln(str.toString());
 			return true;
 		}
-		else
-		{
-			mob.tell("You failed to recall your log.");
-			return false;
-		}
-
+		mob.tell("You failed to recall your log.");
+		return false;
 	}
 }

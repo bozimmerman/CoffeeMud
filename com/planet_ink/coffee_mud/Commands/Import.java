@@ -3821,42 +3821,38 @@ public class Import extends StdCommand
 			mob.tell("You dip!  You are IN that area!  Leave it first...");
 			return false;
 		}
-		else
+	    try
+	    {
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				if(!R.getArea().Name().equalsIgnoreCase(areaName))
+					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					{
+						Room dirR=R.rawDoors()[d];
+						if((dirR!=null)&&(dirR.getArea().Name().equalsIgnoreCase(areaName)))
+							reLinkTable.addElement(R.roomID()+"/"+d+"/"+dirR.roomID());
+					}
+			}
+	    }catch(NoSuchElementException e){}
+		while(true)
 		{
-		    try
-		    {
+			Room foundOne=null;
+			try
+			{
 				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if(!R.getArea().Name().equalsIgnoreCase(areaName))
-						for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-						{
-							Room dirR=R.rawDoors()[d];
-							if((dirR!=null)&&(dirR.getArea().Name().equalsIgnoreCase(areaName)))
-								reLinkTable.addElement(R.roomID()+"/"+d+"/"+dirR.roomID());
-						}
+					if(R.getArea().Name().equalsIgnoreCase(areaName))
+					{
+						foundOne=R;
+						break;
+					}
 				}
 		    }catch(NoSuchElementException e){}
-			while(true)
-			{
-				Room foundOne=null;
-				try
-				{
-					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-					{
-						Room R=(Room)r.nextElement();
-						if(R.getArea().Name().equalsIgnoreCase(areaName))
-						{
-							foundOne=R;
-							break;
-						}
-					}
-			    }catch(NoSuchElementException e){}
-				if(foundOne==null)
-					break;
-				else
-					CoffeeUtensils.obliterateRoom(foundOne);
-			}
+			if(foundOne==null)
+				break;
+			CoffeeUtensils.obliterateRoom(foundOne);
 		}
 		Area A1=CMMap.getArea(areaName);
 		if(A1!=null)
@@ -4089,12 +4085,9 @@ public class Import extends StdCommand
 					mob.tell("Please correct the problem and try the import again.");
 					return false;
 				}
-				else
-				{
-					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-					mob.tell("Area successfully imported!");
-					continue;
-				}
+				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
+				mob.tell("Area successfully imported!");
+				continue;
 			}
 			else
 			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<AROOM>")>=0))
@@ -4141,12 +4134,9 @@ public class Import extends StdCommand
 					mob.tell("Please correct the problem and try the import again.");
 					return false;
 				}
-				else
-				{
-					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-					mob.tell("Room successfully imported!");
-					continue;
-				}
+				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
+				mob.tell("Room successfully imported!");
+				continue;
 			}
 			else
 			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<MOBS>")>=0))
@@ -4172,20 +4162,17 @@ public class Import extends StdCommand
 					mob.tell("Please correct the problem and try the import again.");
 					return false;
 				}
-				else
+				for(int m=0;m<mobs.size();m++)
 				{
-					for(int m=0;m<mobs.size();m++)
-					{
-						MOB M=(MOB)mobs.elementAt(m);
-						M.setStartRoom(mob.location());
-						M.setLocation(mob.location());
-						M.bringToLife(mob.location(),true);
-					}
-					mob.location().recoverRoomStats();
-					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-					mob.tell("MOB(s) successfully imported!");
-					continue;
+					MOB M=(MOB)mobs.elementAt(m);
+					M.setStartRoom(mob.location());
+					M.setLocation(mob.location());
+					M.bringToLife(mob.location(),true);
 				}
+				mob.location().recoverRoomStats();
+				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
+				mob.tell("MOB(s) successfully imported!");
+				continue;
 			}
 			else
 			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<PLAYERS>")>=0))
@@ -4212,57 +4199,54 @@ public class Import extends StdCommand
 					mob.tell("Please correct the problem and try the import again.");
 					return false;
 				}
-				else
+				for(int m=0;m<mobs.size();m++)
 				{
-					for(int m=0;m<mobs.size();m++)
+					MOB M=(MOB)mobs.elementAt(m);
+					if(CMClass.DBEngine().DBUserSearch(null,M.Name()))
 					{
-						MOB M=(MOB)mobs.elementAt(m);
-						if(CMClass.DBEngine().DBUserSearch(null,M.Name()))
+						if(!prompt)
 						{
-							if(!prompt)
-							{
-								mob.tell("Player '"+M.Name()+"' already exists.  Skipping.");
-								continue;
-							}
-							else
-							if(!mob.session().confirm("Player: \""+M.Name()+"\" exists, obliterate first?","Y"))
-								continue;
-							else
-								CoffeeUtensils.obliteratePlayer(CMMap.getLoadPlayer(M.Name()),false);
+							mob.tell("Player '"+M.Name()+"' already exists.  Skipping.");
+							continue;
 						}
-						if(M.playerStats()!=null)
-							M.playerStats().setUpdated(System.currentTimeMillis());
-						CMClass.DBEngine().DBCreateCharacter(M);
-						CMMap.addPlayer(M);
-						Log.sysOut("Import","Imported user: "+M.Name());
-						for(int s=0;s<Sessions.size();s++)
-						{
-							Session S=Sessions.elementAt(s);
-							if((S!=null)
-							&&(S.mob()!=null)
-							&&((!Sense.isCloaked(M))||(CMSecurity.isASysOp(S.mob())))
-							&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
-							&&(S.mob().playerStats()!=null)
-							&&((S.mob().playerStats().getFriends().contains(M.Name())||S.mob().playerStats().getFriends().contains("All"))))
-								S.mob().tell("^X"+M.Name()+" has just been created.^.^?");
-						}
-						CommonMsgs.channel("WIZINFO","",M.Name()+" has just been created.",true);
-						if(M.getStartRoom()==null)
-							M.setStartRoom(CMMap.getStartRoom(M));
-						if(M.location()==null)
-							M.setLocation(mob.location());
-						if(M.playerStats().getBirthday()==null)
-						{
-						    M.baseCharStats().setStat(CharStats.AGE,M.playerStats().initializeBirthday((int)Math.round(Util.div(M.getAgeHours(),60.0)),M.baseCharStats().getMyRace()));
-						    M.recoverCharStats();
-						}
-						CMClass.DBEngine().DBUpdatePlayer(M);
-						M.removeFromGame();
+						else
+						if(!mob.session().confirm("Player: \""+M.Name()+"\" exists, obliterate first?","Y"))
+							continue;
+						else
+							CoffeeUtensils.obliteratePlayer(CMMap.getLoadPlayer(M.Name()),false);
 					}
-					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-					mob.tell("PLAYER(s) successfully imported!");
-					continue;
+					if(M.playerStats()!=null)
+						M.playerStats().setUpdated(System.currentTimeMillis());
+					CMClass.DBEngine().DBCreateCharacter(M);
+					CMMap.addPlayer(M);
+					Log.sysOut("Import","Imported user: "+M.Name());
+					for(int s=0;s<Sessions.size();s++)
+					{
+						Session S=Sessions.elementAt(s);
+						if((S!=null)
+						&&(S.mob()!=null)
+						&&((!Sense.isCloaked(M))||(CMSecurity.isASysOp(S.mob())))
+						&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
+						&&(S.mob().playerStats()!=null)
+						&&((S.mob().playerStats().getFriends().contains(M.Name())||S.mob().playerStats().getFriends().contains("All"))))
+							S.mob().tell("^X"+M.Name()+" has just been created.^.^?");
+					}
+					CommonMsgs.channel("WIZINFO","",M.Name()+" has just been created.",true);
+					if(M.getStartRoom()==null)
+						M.setStartRoom(CMMap.getStartRoom(M));
+					if(M.location()==null)
+						M.setLocation(mob.location());
+					if(M.playerStats().getBirthday()==null)
+					{
+					    M.baseCharStats().setStat(CharStats.AGE,M.playerStats().initializeBirthday((int)Math.round(Util.div(M.getAgeHours(),60.0)),M.baseCharStats().getMyRace()));
+					    M.recoverCharStats();
+					}
+					CMClass.DBEngine().DBUpdatePlayer(M);
+					M.removeFromGame();
 				}
+				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
+				mob.tell("PLAYER(s) successfully imported!");
+				continue;
 			}
 			else
 			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<ITEMS>")>=0))
@@ -4288,18 +4272,15 @@ public class Import extends StdCommand
 					mob.tell("Please correct the problem and try the import again.");
 					return false;
 				}
-				else
+				for(int i=0;i<items.size();i++)
 				{
-					for(int i=0;i<items.size();i++)
-					{
-						Item I=(Item)items.elementAt(i);
-						mob.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
-					}
-					mob.location().recoverRoomStats();
-					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-					mob.tell("Item(s) successfully imported!");
-					continue;
+					Item I=(Item)items.elementAt(i);
+					mob.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
 				}
+				mob.location().recoverRoomStats();
+				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
+				mob.tell("Item(s) successfully imported!");
+				continue;
 			}
 		}
 		catch(Exception e)
@@ -4475,11 +4456,8 @@ public class Import extends StdCommand
 					}
 					continue;
 				}
-				else
-				{
-					mob.tell("Missing data! It is very unlikely this is an .are file.");
-					return false;
-				}
+				mob.tell("Missing data! It is very unlikely this is an .are file.");
+				return false;
 			}
 		}
 		String areaName=getAreaName(areaData);
@@ -4490,8 +4468,7 @@ public class Import extends StdCommand
 				mob.tell("#AREA tag not found!");
 			if(multiArea)
 				continue;
-			else
-				return false;
+			return false;
 		}
 		if((areaName.toUpperCase().startsWith(areaAuthor.toUpperCase()+" "))
 		&&(areaName.substring(areaAuthor.length()+1).trim().length()>0))
@@ -4590,8 +4567,8 @@ public class Import extends StdCommand
 					returnAnError(mob,"Malformed room! Aborting this room "+R.roomID()+", display="+R.displayText()+", description="+R.description()+", numBits="+Util.numBits(codeLine)+", area="+areaName);
 					continue;
 				}
-				else
-					R.setRoomID(areaName+R.roomID());
+                
+				R.setRoomID(areaName+R.roomID());
 				int codeBits=getBitMask(codeLine,0);
 				int sectorType=getBitMask(codeLine,1);
 				final String[][] secTypes={

@@ -266,15 +266,10 @@ public class StdExit implements Exit
 					mob.tell("There is nothing to "+closeWord()+"!");
 					return false;
 				}
-				else
-					return true;
+				return true;
 			}
-			else
-			{
-				mob.tell("The "+doorName()+" is already "+closeWordPastTense()+".");
-				return false;
-			}
-			//break;
+			mob.tell("The "+doorName()+" is already "+closeWordPastTense()+".");
+			return false;
 		case CMMsg.TYP_OPEN:
 			if(!hasADoor())
 			{
@@ -286,17 +281,12 @@ public class StdExit implements Exit
 				mob.tell("The "+doorName()+" is already "+openWord()+"!");
 				return false;
 			}
-			else
+			if(isLocked()&&hasALock())
 			{
-				if(isLocked()&&hasALock())
-				{
-					mob.tell("The "+doorName()+" is locked.");
-					return false;
-				}
-				else
-					return true;
+				mob.tell("The "+doorName()+" is locked.");
+				return false;
 			}
-			//break;
+			return true;
 		case CMMsg.TYP_PUSH:
 			if((isOpen())||(!hasADoor()))
 			{
@@ -432,7 +422,6 @@ public class StdExit implements Exit
 		MOB mob=msg.source();
 		if((!msg.amITarget(this))&&(msg.tool()!=this))
 			return;
-		else
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_LOOK:

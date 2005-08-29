@@ -36,8 +36,7 @@ public class PlainsThinGrid extends StdThinGrid
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();
-	    else
-	        return new PlainsGrid().newInstance();
+        return new PlainsGrid().newInstance();
 	}
 	public String getChildLocaleID(){return "Plains";}
 	public Vector resourceChoices(){return Plains.roomResources;}

@@ -59,8 +59,10 @@ public class Spell_DetectAmbush extends Spell
 			{
 				MOB M=R.fetchInhabitant(m);
 				if(Sense.isHidden(M))
-				{ found=true; break;}
-				else
+				{ 
+                    found=true; 
+                    break;
+                }
 				for(int b=0;b<M.numBehaviors();b++)
 				{
 					Behavior B=M.fetchBehavior(b);

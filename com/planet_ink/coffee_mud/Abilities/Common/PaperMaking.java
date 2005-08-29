@@ -110,8 +110,7 @@ public class PaperMaking extends CraftingSkill
             bundling=true;
             if(super.invoke(mob,commands,givenTarget,auto,asLevel))
                 return super.bundle(mob,commands);
-            else
-                return false;
+            return false;
         }
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
@@ -136,76 +135,73 @@ public class PaperMaking extends CraftingSkill
 			commonTell(mob,buf.toString());
 			return true;
 		}
-		else
+		building=null;
+		messedUp=false;
+		String materialDesc="";
+		String recipeName=Util.combine(commands,0);
+		Vector foundRecipe=null;
+		Vector matches=matchingRecipeNames(recipes,recipeName,true);
+		for(int r=0;r<matches.size();r++)
 		{
-			building=null;
-			messedUp=false;
-			String materialDesc="";
-			String recipeName=Util.combine(commands,0);
-			Vector foundRecipe=null;
-			Vector matches=matchingRecipeNames(recipes,recipeName,true);
-			for(int r=0;r<matches.size();r++)
+			Vector V=(Vector)matches.elementAt(r);
+			if(V.size()>0)
 			{
-				Vector V=(Vector)matches.elementAt(r);
-				if(V.size()>0)
+				int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
+                if((autoGenerate>0)||(level<=mob.envStats().level()))
 				{
-					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-                    if((autoGenerate>0)||(level<=mob.envStats().level()))
-					{
-						foundRecipe=V;
-						materialDesc=(String)foundRecipe.elementAt(RCP_WOODTYPE);
-						if(materialDesc.equalsIgnoreCase("WOOD"))
-							materialDesc="WOODEN";
-						break;
-					}
+					foundRecipe=V;
+					materialDesc=(String)foundRecipe.elementAt(RCP_WOODTYPE);
+					if(materialDesc.equalsIgnoreCase("WOOD"))
+						materialDesc="WOODEN";
+					break;
 				}
 			}
-			if(materialDesc.length()==0) materialDesc="WOODEN";
-			if(foundRecipe==null)
-			{
-				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"make list\" for a list.");
-				return false;
-			}
-			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
-			int[][] data=fetchFoundResourceData(mob,
-												woodRequired,materialDesc,null,
-												0,null,null,
-												false,
-												autoGenerate);
-			if(data==null) return false;
-			woodRequired=data[0][FOUND_AMT];
-			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-				return false;
-			destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,autoGenerate);
-			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
-			if(building==null)
-			{
-				commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
-				return false;
-			}
-			completion=Util.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
-			itemName=Util.startWithAorAn(itemName);
-			building.setName(itemName);
-			startStr="<S-NAME> start(s) making "+building.name()+".";
-			displayText="You are making "+building.name();
-			verb="making "+building.name();
-			building.setDisplayText(itemName+" is here");
-			building.setDescription(itemName+". ");
-			building.baseEnvStats().setWeight(woodRequired);
-			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_VALUE])));
-			building.setMaterial(data[0][FOUND_CODE]);
-			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
-			addSpells(building,spell);
-			building.setSecretIdentity("This is the work of "+mob.Name()+".");
-			if(((data[0][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
-			||(data[0][FOUND_CODE]==EnvResource.RESOURCE_RICE))
-				building.setMaterial(EnvResource.RESOURCE_PAPER);
-			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
-			building.recoverEnvStats();
-			building.text();
-			building.recoverEnvStats();
 		}
+		if(materialDesc.length()==0) materialDesc="WOODEN";
+		if(foundRecipe==null)
+		{
+			commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"make list\" for a list.");
+			return false;
+		}
+		int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
+		int[][] data=fetchFoundResourceData(mob,
+											woodRequired,materialDesc,null,
+											0,null,null,
+											false,
+											autoGenerate);
+		if(data==null) return false;
+		woodRequired=data[0][FOUND_AMT];
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
+		destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,autoGenerate);
+		building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
+		if(building==null)
+		{
+			commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
+			return false;
+		}
+		completion=Util.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
+		itemName=Util.startWithAorAn(itemName);
+		building.setName(itemName);
+		startStr="<S-NAME> start(s) making "+building.name()+".";
+		displayText="You are making "+building.name();
+		verb="making "+building.name();
+		building.setDisplayText(itemName+" is here");
+		building.setDescription(itemName+". ");
+		building.baseEnvStats().setWeight(woodRequired);
+		building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_VALUE])));
+		building.setMaterial(data[0][FOUND_CODE]);
+		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+		addSpells(building,spell);
+		building.setSecretIdentity("This is the work of "+mob.Name()+".");
+		if(((data[0][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
+		||(data[0][FOUND_CODE]==EnvResource.RESOURCE_RICE))
+			building.setMaterial(EnvResource.RESOURCE_PAPER);
+		building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+		building.recoverEnvStats();
+		building.text();
+		building.recoverEnvStats();
 
 
 		messedUp=!profficiencyCheck(mob,0,auto);

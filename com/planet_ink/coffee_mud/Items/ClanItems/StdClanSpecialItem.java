@@ -71,8 +71,7 @@ public class StdClanSpecialItem extends StdClanItem
 		&&(B!=null)
 		&&(owner() instanceof MOB))
 			return B.okMessage(owner(),msg);
-		else
-			return true;
+		return true;
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

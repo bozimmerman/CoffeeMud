@@ -297,8 +297,7 @@ public abstract class Interactive implements ServerUser {
     public final String getAddressName() {
 		if(CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN).length()>0)
 			return CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN).toLowerCase();
-		else
-			return socket.getInetAddress().getHostName();
+		return socket.getInetAddress().getHostName();
     }
 
     /**

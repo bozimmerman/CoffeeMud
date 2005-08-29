@@ -158,8 +158,7 @@ public class CommonSkill extends StdAbility
 		}
 		if(possibilities.size()==0)
 			return -1;
-		else
-			return ((Integer)(possibilities.elementAt(Dice.roll(1,possibilities.size(),-1)))).intValue();
+		return ((Integer)(possibilities.elementAt(Dice.roll(1,possibilities.size(),-1)))).intValue();
 	}
 
 	public Item getRequiredFire(MOB mob,int autoGenerate)

@@ -549,8 +549,7 @@ public class StdArmor extends StdContainer implements Armor
 	{
 		if(usesRemaining()<1000)
 			return (int)Math.round(Util.mul(super.value(),Util.div(usesRemaining(),100)));
-		else
-			return super.value();
+		return super.value();
 	}
 	public boolean subjectToWearAndTear()
 	{

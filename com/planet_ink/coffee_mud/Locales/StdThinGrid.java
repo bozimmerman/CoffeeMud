@@ -449,8 +449,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 					{
 						if(R.getGridParent()!=null)
 							return R.getGridParent();
-						else
-							return R;
+						return R;
 					}
 				}
 			}catch(Exception e){}
@@ -679,16 +678,15 @@ public class StdThinGrid extends StdRoom implements GridLocale
 						mob.tell("Some great evil is preventing your movement that way.");
 						return false;
 					}
-					else
 					msg.modify(msg.source(),
-								  getAltRoomFrom(mob.location(),direction),
-								  msg.tool(),
-								  msg.sourceCode(),
-								  msg.sourceMessage(),
-								  msg.targetCode(),
-								  msg.targetMessage(),
-								  msg.othersCode(),
-								  msg.othersMessage());
+							  getAltRoomFrom(mob.location(),direction),
+							  msg.tool(),
+							  msg.sourceCode(),
+							  msg.sourceMessage(),
+							  msg.targetCode(),
+							  msg.targetMessage(),
+							  msg.othersCode(),
+							  msg.othersMessage());
 				}
 			}
 		}

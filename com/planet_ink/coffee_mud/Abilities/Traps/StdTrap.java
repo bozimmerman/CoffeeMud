@@ -286,8 +286,7 @@ public class StdTrap extends StdAbility implements Trap
 					I.destroy();
 					return false;
 				}
-				else
-					sprung=false;
+				sprung=false;
 				disabled=false;
 				return false;
 			}

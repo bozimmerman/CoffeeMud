@@ -976,8 +976,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			returnable+=practicesRequired()+" practices";
 		if(returnable.length()==0)
 			return "free!";
-		else
-			return returnable;
+		return returnable;
 	}
 
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
@@ -1222,15 +1221,12 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 		{
 			if(tickDown<0)
 				return !unInvoked;
-			else
+			tickDown-=1;
+			if(tickDown<=0)
 			{
-				tickDown-=1;
-				if(tickDown<=0)
-				{
-					tickDown=-1;
-					unInvoke();
-					return false;
-				}
+				tickDown=-1;
+				unInvoke();
+				return false;
 			}
 		}
 		return true;

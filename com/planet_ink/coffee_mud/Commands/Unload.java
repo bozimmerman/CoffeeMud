@@ -80,11 +80,8 @@ public class Unload extends StdCommand
                     mob.tell("Faction '"+which+"' unloaded.");
                     return false;
                 }
-                else
-                {
-                    mob.tell("Unknown Faction '"+which+"'.  Use LIST FACTIONS.");
-                    return false;
-                }
+                mob.tell("Unknown Faction '"+which+"'.  Use LIST FACTIONS.");
+                return false;
             }
         }
 		Vector V=Resources.findResourceKeys(str);

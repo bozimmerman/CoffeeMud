@@ -88,8 +88,7 @@ public class Trap_RoomPit extends StdTrap
 		&&(((((Room)pit.firstElement()).numPCInhabitants()>0)
 			||(((Room)pit.lastElement()).numPCInhabitants()>0))))
 			return true;
-		else
-			return super.tick(ticking,tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	protected synchronized void makePit(MOB target)

@@ -63,8 +63,7 @@ public class Druid_MyPlants extends StdAbility
 			{
 				if(plantNum==which)
 					return I;
-				else
-					plantNum++;
+				plantNum++;
 			}
 		}
 		return null;

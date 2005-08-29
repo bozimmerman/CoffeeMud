@@ -173,8 +173,7 @@ public class StdRideable extends StdMOB implements Rideable
 	{
 		if((R instanceof Rideable)&&((Rideable)R).rideBasis()==Rideable.RIDEABLE_WAGON)
 			return "pulling along";
-		else
-			return "being ridden by";
+		return "being ridden by";
 	}
 
 	public HashSet getRideBuddies(HashSet list)

@@ -110,8 +110,7 @@ public class Lacquerring extends CommonSkill
 			commonTell(mob,"You don't seem to have a '"+((String)commands.firstElement())+"'.");
 			return false;
 		}
-		else
-			commands.remove(commands.firstElement());
+		commands.remove(commands.firstElement());
 
 		if((((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_GLASS)
 			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)

@@ -43,8 +43,7 @@ public class Play_Instrument extends Play
 	{
 		if(instrument!=null)
 			return instrument.name();
-		else
-			return name();
+		return name();
 	}
 	protected Ability getSpell()
 	{

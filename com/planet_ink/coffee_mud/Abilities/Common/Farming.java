@@ -115,8 +115,7 @@ public class Farming extends GatheringSkill
             bundling=true;
 			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
 			    return super.bundle(mob,commands);
-			else
-			    return false;
+		    return false;
 		}
 		
 		verb="planting";

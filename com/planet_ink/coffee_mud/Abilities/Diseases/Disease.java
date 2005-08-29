@@ -68,8 +68,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 						targetMOB.setFollowing(following);
 					return doMe;
 				}
-				else
-				    spreadImmunity(targetMOB);
+			    spreadImmunity(targetMOB);
 			}
 			else
 			{

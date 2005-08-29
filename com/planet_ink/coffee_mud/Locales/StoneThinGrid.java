@@ -36,8 +36,7 @@ public class StoneThinGrid extends StdThinGrid
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();
-	    else
-	        return new StoneGrid().newInstance();
+        return new StoneGrid().newInstance();
 	}
 	public String getChildLocaleID(){return "StoneRoom";}
 }

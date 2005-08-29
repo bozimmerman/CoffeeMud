@@ -33,82 +33,79 @@ public class Spell_Cogniportive extends Spell
 	{
 		if(me instanceof LandTitle)
 			return ((Room)((LandTitle)me).getPropertyRooms().firstElement()).roomID();
-		else
-		{
-			// check mobs worn items first!
-		    try
-		    {
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		// check mobs worn items first!
+	    try
+	    {
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				if(Sense.canAccess(mob,R))
 				{
-					Room R=(Room)r.nextElement();
-					if(Sense.canAccess(mob,R))
+					for(int s=0;s<R.numInhabitants();s++)
 					{
-						for(int s=0;s<R.numInhabitants();s++)
+						MOB M=R.fetchInhabitant(s);
+						if((M!=null)
+						&&(M.isMonster())
+						&&(!(M instanceof ShopKeeper))
+						&&(M.fetchInventory(me.Name())!=null)
+						&&(!M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
+							return CMMap.getExtendedRoomID(M.getStartRoom());
+					}
+				}
+			}
+	    }catch(NoSuchElementException nse){}
+	    try
+	    {
+			// check shopkeepers second!
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				if(Sense.canAccess(mob,R))
+				{
+					for(int s=0;s<R.numInhabitants();s++)
+					{
+						MOB M=R.fetchInhabitant(s);
+						if((M!=null)&&(CoffeeUtensils.getShopKeeper(M)!=null))
 						{
-							MOB M=R.fetchInhabitant(s);
-							if((M!=null)
-							&&(M.isMonster())
-							&&(!(M instanceof ShopKeeper))
-							&&(M.fetchInventory(me.Name())!=null)
-							&&(!M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
+							ShopKeeper S=CoffeeUtensils.getShopKeeper(M);
+							if(S.doIHaveThisInStock(me.Name(),null))
 								return CMMap.getExtendedRoomID(M.getStartRoom());
 						}
 					}
 				}
-		    }catch(NoSuchElementException nse){}
-		    try
-		    {
-				// check shopkeepers second!
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			}
+	    }catch(NoSuchElementException nse){}
+	    try
+	    {
+			// check mobs inventory items third!
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				if(Sense.canAccess(mob,R))
 				{
-					Room R=(Room)r.nextElement();
-					if(Sense.canAccess(mob,R))
+					for(int s=0;s<R.numInhabitants();s++)
 					{
-						for(int s=0;s<R.numInhabitants();s++)
-						{
-							MOB M=R.fetchInhabitant(s);
-							if((M!=null)&&(CoffeeUtensils.getShopKeeper(M)!=null))
-							{
-								ShopKeeper S=CoffeeUtensils.getShopKeeper(M);
-								if(S.doIHaveThisInStock(me.Name(),null))
-									return CMMap.getExtendedRoomID(M.getStartRoom());
-							}
-						}
+						MOB M=R.fetchInhabitant(s);
+						if((M!=null)
+						&&(M.isMonster())
+						&&(!(M instanceof ShopKeeper))
+						&&(M.fetchInventory(me.Name())!=null)
+						&&(M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
+							return CMMap.getExtendedRoomID(M.getStartRoom());
 					}
 				}
-		    }catch(NoSuchElementException nse){}
-		    try
-		    {
-				// check mobs inventory items third!
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					if(Sense.canAccess(mob,R))
-					{
-						for(int s=0;s<R.numInhabitants();s++)
-						{
-							MOB M=R.fetchInhabitant(s);
-							if((M!=null)
-							&&(M.isMonster())
-							&&(!(M instanceof ShopKeeper))
-							&&(M.fetchInventory(me.Name())!=null)
-							&&(M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
-								return CMMap.getExtendedRoomID(M.getStartRoom());
-						}
-					}
-				}
-		    }catch(NoSuchElementException nse){}
-		    try
-		    {
-				// check room stuff last
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					if((Sense.canAccess(mob,R))&&(R.fetchItem(null,me.Name())!=null))
-					   return CMMap.getExtendedRoomID(R);
-				}
-		    }catch(NoSuchElementException nse){}
-		}
+			}
+	    }catch(NoSuchElementException nse){}
+	    try
+	    {
+			// check room stuff last
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				if((Sense.canAccess(mob,R))&&(R.fetchItem(null,me.Name())!=null))
+				   return CMMap.getExtendedRoomID(R);
+			}
+	    }catch(NoSuchElementException nse){}
 		return "";
 	}
 

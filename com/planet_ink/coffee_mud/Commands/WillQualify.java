@@ -98,10 +98,7 @@ public class WillQualify extends BaseAbleLister{
 			    mob.session().wraplessPrintln(msg.toString());
 			return false;
 		}
-		else
-		{
-			mob.tell(willQualErr);
-			return false;
-		}
+		mob.tell(willQualErr);
+		return false;
 	}
 }

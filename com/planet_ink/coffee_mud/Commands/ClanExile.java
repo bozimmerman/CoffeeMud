@@ -71,19 +71,16 @@ public class ClanExile extends BaseClanner
 							mob.tell(qual+" was not found.  Could not exile from "+C.typeName()+".");
 							return false;
 						}
-						else
+						if(skipChecks||goForward(mob,C,commands,Clans.FUNC_CLANEXILE,true))
 						{
-							if(skipChecks||goForward(mob,C,commands,Clans.FUNC_CLANEXILE,true))
-							{
-								clanAnnounce(mob,"Member exiled from "+C.name()+": "+M.Name());
-								CMClass.DBEngine().DBUpdateClanMembership(qual, "", 0);
-								M.setClanID("");
-								M.setClanRole(0);
-								mob.tell(M.Name()+" has been exiled from "+C.typeName()+" '"+C.ID()+"'.");
-								M.tell("You have been exiled from "+C.typeName()+" '"+C.ID()+"'.");
-								C.updateClanPrivileges(M);
-								return false;
-							}
+							clanAnnounce(mob,"Member exiled from "+C.name()+": "+M.Name());
+							CMClass.DBEngine().DBUpdateClanMembership(qual, "", 0);
+							M.setClanID("");
+							M.setClanRole(0);
+							mob.tell(M.Name()+" has been exiled from "+C.typeName()+" '"+C.ID()+"'.");
+							M.tell("You have been exiled from "+C.typeName()+" '"+C.ID()+"'.");
+							C.updateClanPrivileges(M);
+							return false;
 						}
 					}
 					else

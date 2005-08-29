@@ -136,22 +136,19 @@ public class Spell_Geas extends Spell
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) confused.");
 					return false;
 				}
-				else
+				setMiscText(Util.combine(commands,0));
+				if(maliciousAffect(mob,target,asLevel,500,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0)))
 				{
-					setMiscText(Util.combine(commands,0));
-					if(maliciousAffect(mob,target,asLevel,500,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0)))
+					target.makePeace();
+					if(mob.getVictim()==target)
+						mob.makePeace();
+					if(target.location()==mob.location())
 					{
-						target.makePeace();
-						if(mob.getVictim()==target)
-							mob.makePeace();
-						if(target.location()==mob.location())
+						for(int m=0;m<target.location().numInhabitants();m++)
 						{
-							for(int m=0;m<target.location().numInhabitants();m++)
-							{
-								MOB M=target.location().fetchInhabitant(m);
-								if((M!=null)&&(M.getVictim()==target))
-									M.makePeace();
-							}
+							MOB M=target.location().fetchInhabitant(m);
+							if((M!=null)&&(M.getVictim()==target))
+								M.makePeace();
 						}
 					}
 				}

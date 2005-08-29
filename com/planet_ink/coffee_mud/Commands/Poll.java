@@ -65,7 +65,6 @@ public class Poll extends StdCommand
                 mob.tell("\n\r^HThere are "+mypolls[2].size()+" poll results still available.^N\n\r");
             return true;
         }
-        else
         for(int i=0;i<mypolls[1].size();i++)
         {
             Polls P=(Polls)mypolls[1].elementAt(i);

@@ -37,8 +37,7 @@ public class DesertThinGrid extends StdThinGrid
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();
-	    else
-	        return new DesertGrid().newInstance();
+        return new DesertGrid().newInstance();
 	}
 
 	public String getChildLocaleID(){return "Desert";}

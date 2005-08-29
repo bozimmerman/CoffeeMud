@@ -93,8 +93,7 @@ public class Prayer_SenseDisease extends Prayer
 		}
 		if(V!=null)
 			return V;
-		else
-			return empty;
+		return empty;
 	}
 
 	public void messageTo(MOB mob)

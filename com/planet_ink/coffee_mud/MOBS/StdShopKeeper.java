@@ -534,8 +534,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
         if(likeThis==null) return null;
         if(likeThis.isGeneric())
             return (Integer)prices.get(likeThis.ID()+"/"+likeThis.name());
-        else
-            return (Integer)prices.get(likeThis.ID());
+        return (Integer)prices.get(likeThis.ID());
     }
     private void removeRawStockPrice(Environmental likeThis)
     {
@@ -836,8 +835,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				if(addThis.length()>0)
 					return addThis+" and to the "+(Directions.getDirectionName(d).toLowerCase());
-				else
-					return "to the "+(Directions.getDirectionName(d).toLowerCase());
+				return "to the "+(Directions.getDirectionName(d).toLowerCase());
 			}
 		}
 		return null;
@@ -1540,30 +1538,28 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					&&(!A.landOwner().equals(name))
 					&&((!A.landOwner().equals(mob.getLiegeID()))||(!mob.isMarriedToLiege())))
 						continue;
-					else
-					{
-						boolean skipThisOne=false;
-						if(R instanceof Room)
-							for(int d=0;d<4;d++)
+					boolean skipThisOne=false;
+					if(R instanceof Room)
+						for(int d=0;d<4;d++)
+						{
+							Room R2=((Room)R).getRoomInDir(d);
+							LandTitle L2=null;
+							if(R2!=null)
 							{
-								Room R2=((Room)R).getRoomInDir(d);
-								LandTitle L2=null;
-								if(R2!=null)
-								{
-									L2=(LandTitle)titles.get(R2);
-									if(L2==null)
-									{ skipThisOne=false; break;}
-								}
-								else
-									continue;
-								if((L2.landOwner().equals(name))
-								||(L2.landOwner().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
+								L2=(LandTitle)titles.get(R2);
+								if(L2==null)
 								{ skipThisOne=false; break;}
-								if(L2.landOwner().length()>0)
-									skipThisOne=true;
 							}
-						if(skipThisOne) continue;
-					}
+							else
+								continue;
+							if((L2.landOwner().equals(name))
+							||(L2.landOwner().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
+							{ skipThisOne=false; break;}
+							if(L2.landOwner().length()>0)
+								skipThisOne=true;
+						}
+					if(skipThisOne) 
+                        continue;
                     Item I=CMClass.getItem("GenTitle");
                     if(R instanceof Room)
                         ((LandTitle)I).setLandPropertyID(CMMap.getExtendedRoomID((Room)R));

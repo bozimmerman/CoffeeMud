@@ -40,8 +40,7 @@ public class Disease_FrostBite extends Disease
     {
         if(tickDown>0)
             return "Your frost bite heals.";
-        else
-            return "Your frost bite has cost you dearly.";
+        return "Your frost bite has cost you dearly.";
     }
     protected String DISEASE_START(){return "^G<S-NAME> <S-IS-ARE> getting frost bite.^?";}
     protected String DISEASE_AFFECT(){return "";}

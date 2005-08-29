@@ -800,8 +800,7 @@ public class StdLawBook extends StdItem
 							crimeSet=set;
 							break;
 						}
-						else
-							count++;
+						count++;
 					}
 				if(crimeName.length()>0)
 				{
@@ -1023,8 +1022,7 @@ public class StdLawBook extends StdItem
 							crimeSet=set;
 							break;
 						}
-						else
-							count++;
+						count++;
 					}
 				if(crimeName.length()>0)
 				{

@@ -329,8 +329,7 @@ public class StdMOB implements MOB
 	{
 		if(charStats().getMyRace()==baseCharStats().getMyRace())
 			return baseEnvStats().weight();
-		else
-			return charStats().getMyRace().getMaxWeight();
+		return charStats().getMyRace().getMaxWeight();
 	}
 	
 	public int maxCarry()
@@ -688,12 +687,9 @@ public class StdMOB implements MOB
 		if(curState().getFatigue()>CharState.FATIGUED_MILLIS) att=att*.8;
 		if(mob==null)
 			return (int)Math.round(att);
-		else
-		{
-		    int diff=envStats().level()-mob.envStats().level();
-			return (diff*Util.abs(diff)/2)
-				   +(int)Math.round(att);
-		}
+	    int diff=envStats().level()-mob.envStats().level();
+		return (diff*Util.abs(diff)/2)
+			   +(int)Math.round(att);
 	}
 
 	public int adjustedArmor()
@@ -772,8 +768,7 @@ public class StdMOB implements MOB
 	{
 		if(!isInCombat())
 			return null;
-		else
-			return victim;
+		return victim;
 	}
 
 	public void setVictim(MOB mob)
@@ -1002,8 +997,7 @@ public class StdMOB implements MOB
 			sendBack.append(".");
 			return sendBack.toString();
 		}
-		else
-			return displayText;
+		return displayText;
 	}
 
 	public String displayText()
@@ -2582,8 +2576,7 @@ public class StdMOB implements MOB
 							chosenI=I;
 							break;
 						}
-						else
-							totalChance+=I.baseEnvStats().rejuv();
+						totalChance+=I.baseEnvStats().rejuv();
 					}
 					for(int r=0;r<V.size();r++)
 					{

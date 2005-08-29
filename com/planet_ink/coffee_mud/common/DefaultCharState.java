@@ -100,8 +100,7 @@ public class DefaultCharState implements Cloneable, CharState
 	    factor*=getHunger();
 	    if(factor>Integer.MAX_VALUE)
 	        return Integer.MAX_VALUE;
-	    else
-	        return (int)factor;
+        return (int)factor;
 	}
 	public int getThirst(){return Thirst;}
 	public void setThirst(int newVal){Thirst=newVal; if(Thirst>0) ticksThirsty=0;}
@@ -130,8 +129,7 @@ public class DefaultCharState implements Cloneable, CharState
 	    factor*=getThirst();
 	    if(factor>Integer.MAX_VALUE)
 	        return Integer.MAX_VALUE;
-	    else
-	        return (int)factor;
+        return (int)factor;
 	}
 	
 	public int getMana(){return Mana;}

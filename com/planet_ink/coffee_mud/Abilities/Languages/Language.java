@@ -66,8 +66,7 @@ public class Language extends StdAbility
 	{
 		if(Character.isUpperCase(like))
 			return Character.toUpperCase(make);
-		else
-			return Character.toLowerCase(make);
+		return Character.toLowerCase(make);
 	}
 	protected String translate(String word)
 	{

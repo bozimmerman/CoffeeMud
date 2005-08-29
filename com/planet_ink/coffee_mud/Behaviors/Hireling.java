@@ -81,13 +81,14 @@ public class Hireling extends StdBehavior
 		int direction=-1;
 		for(int d=0;d<Directions.DIRECTIONS_BASE.length;d++)
 			if(observer.location().getExitInDir(Directions.DIRECTIONS_BASE[d])!=null)
+            {
 				if(observer.location().getExitInDir(Directions.DIRECTIONS_BASE[d]).isOpen())
 				{
 					direction=Directions.DIRECTIONS_BASE[d];
 					break;
 				}
-				else
-					direction=Directions.DIRECTIONS_BASE[d];
+				direction=Directions.DIRECTIONS_BASE[d];
+            }
 		if(direction>=0)
 			MUDTracker.move(observer,direction,false,false);
 		if(observer.getStartRoom()!=null)

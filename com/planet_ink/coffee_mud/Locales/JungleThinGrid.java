@@ -37,8 +37,7 @@ public class JungleThinGrid extends StdThinGrid
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();
-	    else
-	        return new JungleGrid().newInstance();
+        return new JungleGrid().newInstance();
 	}
 	public String getChildLocaleID(){return "Jungle";}
 	public Vector resourceChoices(){return Jungle.roomResources;}

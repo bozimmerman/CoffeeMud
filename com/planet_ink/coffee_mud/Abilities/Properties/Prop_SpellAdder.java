@@ -107,26 +107,21 @@ public class Prop_SpellAdder extends Property
 		{
 			if(Dice.rollPercentage()<=defaultPct)
 				return true;
-			else
-				return false;
+			return false;
 		}
-		else
+		int mul=1;
+		int tot=0;
+		while((--x)>=0)
 		{
-			int mul=1;
-			int tot=0;
-			while((--x)>=0)
-			{
-				if(Character.isDigit(A.text().charAt(x)))
-					tot+=Util.s_int(""+A.text().charAt(x))*mul;
-				else
-					x=-1;
-				mul=mul*10;
-			}
-			if(Dice.rollPercentage()<=tot)
-				return true;
+			if(Character.isDigit(A.text().charAt(x)))
+				tot+=Util.s_int(""+A.text().charAt(x))*mul;
 			else
-				return false;
+				x=-1;
+			mul=mul*10;
 		}
+		if(Dice.rollPercentage()<=tot)
+			return true;
+		return false;
 	}
 	public static Hashtable getMySpellsH(Ability spellHolder)
 	{

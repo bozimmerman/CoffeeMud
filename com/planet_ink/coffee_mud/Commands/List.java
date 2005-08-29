@@ -962,8 +962,7 @@ public class List extends StdCommand
 				archonlist(mob,commands);
 				return false;
 			}
-			else
-				V=CoffeeUtensils.shopkeepers(mob.location(),mob);
+			V=CoffeeUtensils.shopkeepers(mob.location(),mob);
 		}
 		else
 		{

@@ -69,8 +69,7 @@ public class StdWand extends StdItem implements Wand
 	{
 		if(usesRemaining()<=0)
 			return 0;
-		else
-			return super.value();
+		return super.value();
 	}
 	public static String getWandWord(String from)
 	{

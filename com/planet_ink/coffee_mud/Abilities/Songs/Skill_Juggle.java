@@ -79,9 +79,7 @@ public class Skill_Juggle extends BardSkill
 			}
 			return str.toString()+")";
 		}
-		else
-			return "(Juggling??)";
-
+		return "(Juggling??)";
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -338,12 +336,9 @@ public class Skill_Juggle extends BardSkill
 				mob.tell("Juggle what?");
 				return false;
 			}
-			else
-			{
-				mob.tell("You stop juggling.");
-				A.unInvoke();
-				return true;
-			}
+			mob.tell("You stop juggling.");
+			A.unInvoke();
+			return true;
 		}
 
 		if((A!=null)&&(A.juggles.size()>=A.maxJuggles()))

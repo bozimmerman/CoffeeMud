@@ -218,8 +218,7 @@ public class StdCharClass implements CharClass, Cloneable
 				H.add(new Integer(set[s]));
 			return H;
 		}
-		else
-			return null;
+		return null;
 	}
 
 

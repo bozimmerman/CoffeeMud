@@ -684,8 +684,7 @@ public class CommonStrings extends Scriptable
 	{
 		if(getVar(SYSTEM_MSPPATH).length()>0)
 			return " !!SOUND("+soundName+" V="+volume+" P="+priority+" U="+getVar(SYSTEM_MSPPATH)+soundName+") ";
-		else
-			return " !!SOUND("+soundName+" V="+volume+" P="+priority+") ";
+		return " !!SOUND("+soundName+" V="+volume+" P="+priority+") ";
 	}
 
     public static String mxpImagePath(String fileName)
@@ -696,8 +695,7 @@ public class CommonStrings extends Scriptable
             return "";
         if(getVar(SYSTEM_MXPIMAGEPATH).endsWith("/"))
             return getVar(SYSTEM_MXPIMAGEPATH)+fileName;
-        else
-            return getVar(SYSTEM_MXPIMAGEPATH)+"/"+fileName;
+        return getVar(SYSTEM_MXPIMAGEPATH)+"/"+fileName;
     }
 
     public static String msp(String soundName, int priority)

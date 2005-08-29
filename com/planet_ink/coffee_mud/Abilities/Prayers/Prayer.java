@@ -46,16 +46,14 @@ public class Prayer extends StdAbility
 	{
 		if(mob.getMyDeity()!=null)
 			return "pray(s) to "+mob.getMyDeity().name();
-		else
-			return "pray(s)";
+		return "pray(s)";
 	}
 
 	protected String prayForWord(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
 			return "pray(s) for "+mob.getMyDeity().name();
-		else
-			return "pray(s)";
+		return "pray(s)";
 	}
 
 	protected String inTheNameOf(MOB mob)
@@ -68,8 +66,7 @@ public class Prayer extends StdAbility
 	{
 		if(mob.getMyDeity()!=null)
 			return " against "+mob.getMyDeity().name();
-		else
-			return " against the gods";
+		return " against the gods";
 	}
 	protected String hisHerDiety(MOB mob)
 	{
@@ -87,8 +84,7 @@ public class Prayer extends StdAbility
 	{
 		if(mob.getMyDeity()!=null)
 			return "praying to "+mob.getMyDeity().name();
-		else
-			return "praying";
+		return "praying";
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)

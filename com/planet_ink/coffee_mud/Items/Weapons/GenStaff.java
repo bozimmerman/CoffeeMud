@@ -58,8 +58,7 @@ public class GenStaff extends GenWeapon implements Wand
 	{
 		if(usesRemaining()<=0)
 			return 0;
-		else
-			return super.value();
+		return super.value();
 	}
 	public void setSpell(Ability theSpell)
 	{

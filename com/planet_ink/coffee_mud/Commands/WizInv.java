@@ -74,11 +74,8 @@ public class WizInv extends StdCommand
 			mob.tell("You may uninvoke WIZINV with 'WIZINV OFF'.");
 			return false;
 		}
-		else
-		{
-			mob.tell("Wizard invisibility is not available!");
-			return false;
-		}
+		mob.tell("Wizard invisibility is not available!");
+		return false;
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}

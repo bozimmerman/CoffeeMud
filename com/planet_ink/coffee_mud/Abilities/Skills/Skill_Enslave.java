@@ -271,8 +271,7 @@ public class Skill_Enslave extends StdAbility
 					unInvoke();
 					return !canBeUninvoked();
 				}
-				else
-				    STEPS.step();
+			    STEPS.step();
 		    }
 		}
 		return super.tick(ticking,tickID);

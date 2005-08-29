@@ -110,7 +110,8 @@ public class Statement implements java.sql.Statement
          char c=sql.charAt(index);
          if ((c!=' ')&&(c!='\t')&&(c!='\r')&&(c!='\n')) break;
       }
-      if (index==0) return sql; else return sql.substring(index);
+      if (index==0) return sql; 
+      return sql.substring(index);
    }
    private static String[] parseVal(String sql)
    {

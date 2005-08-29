@@ -162,10 +162,7 @@ public class Sinking extends StdAbility
 				{
 					return stopSinking(mob);
 				}
-				else
-				{
-					return true;
-				}
+				return true;
 			}
 		}
 		else
@@ -187,35 +184,27 @@ public class Sinking extends StdAbility
 				unInvoke();
 				return false;
 			}
-			else
+			Room nextRoom=room.getRoomInDir(direction);
+			if((nextRoom!=null)&&(canSinkFrom(room,direction)))
 			{
-				Room nextRoom=room.getRoomInDir(direction);
-				if((nextRoom!=null)&&(canSinkFrom(room,direction)))
+				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> sinks "+addStr+".");
+				Vector V=new Vector();
+				recursiveRoomItems(V,item,room);
+				for(int v=0;v<V.size();v++)
 				{
-					room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> sinks "+addStr+".");
-					Vector V=new Vector();
-					recursiveRoomItems(V,item,room);
-					for(int v=0;v<V.size();v++)
-					{
-						Item thisItem=(Item)V.elementAt(v);
-						room.delItem(thisItem);
-						nextRoom.addItemRefuse(thisItem,Item.REFUSE_PLAYER_DROP);
-					}
-					room=nextRoom;
-					nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> sinks in from "+(reversed()?"below":"above")+".");
-					return true;
+					Item thisItem=(Item)V.elementAt(v);
+					room.delItem(thisItem);
+					nextRoom.addItemRefuse(thisItem,Item.REFUSE_PLAYER_DROP);
 				}
-				else
-				{
-					if(reversed())
-						return true;
-					unInvoke();
-					return false;
-				}
+				room=nextRoom;
+				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> sinks in from "+(reversed()?"below":"above")+".");
+				return true;
 			}
-
+			if(reversed())
+				return true;
+			unInvoke();
+			return false;
 		}
-
 		return false;
 	}
 

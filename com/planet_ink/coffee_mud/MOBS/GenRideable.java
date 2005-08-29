@@ -57,7 +57,6 @@ public class GenRideable extends StdRideable
 	{
 		if(CoffeeMaker.getGenMobCodeNum(code)>=0)
 			return CoffeeMaker.getGenMobStat(this,code);
-		else
 		switch(getCodeNum(code))
 		{
 		case 0: return ""+rideBasis();

@@ -231,8 +231,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
             if(mob.getClanID().length()==0) return null;
             return findBoxContents(mob.getClanID(),likeThis);
         }
-        else
-            return findBoxContents(mob.Name(),likeThis);
+        return findBoxContents(mob.Name(),likeThis);
     }
 
     public Item findBoxContents(String mob, String likeThis)
@@ -701,8 +700,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                             CommonMsgs.say(this,mob,"Too bad you can't afford it.",true,false);
                             return;
                         }
-                        else
-                            BeanCounter.subtractMoney(msg.source(),BeanCounter.getCurrency(this),feeForNewBox());
+                        BeanCounter.subtractMoney(msg.source(),BeanCounter.getCurrency(this),feeForNewBox());
                         createBoxHere(theName,theName);
                         if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
                             CommonMsgs.say(this,mob,"A box has been opened for your clan.",true,false);

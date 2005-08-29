@@ -61,8 +61,7 @@ public class GenMirror extends GenItem
 			A.invoke(mob,msg.source(),true,envStats().level());
 			return false;
 		}
-		else
-			oncePerRound=false;
+		oncePerRound=false;
 		return super.okMessage(myHost,msg);
 	}
 

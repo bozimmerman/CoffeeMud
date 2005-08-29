@@ -42,8 +42,7 @@ public class UnderSaltWaterThinGrid extends UnderWaterThinGrid
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();
-	    else
-	        return new UnderSaltWaterGrid().newInstance();
+        return new UnderSaltWaterGrid().newInstance();
 	}
 	public String getChildLocaleID(){return "UnderSaltWater";}
 

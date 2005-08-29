@@ -76,19 +76,16 @@ public class Chant_Treeform extends Chant
 				mob.setVictim(null);
 				return false;
 			}
-			else
-			{
-				Item item=CMClass.getItem("GenResource");
-				item.setName(mob.Name());
-				item.setDescription(mob.description());
-				item.setDisplayText(mob.displayText());
-				item.setMaterial(EnvResource.RESOURCE_WOOD);
-				Sense.setGettable(item,false);
-				item.envStats().setWeight(2000);
-				FullMsg msg2=new FullMsg(msg.source(),item,msg.targetCode(),null);
-				if(!okMessage(msg.source(),msg2))
-					return false;
-			}
+			Item item=CMClass.getItem("GenResource");
+			item.setName(mob.Name());
+			item.setDescription(mob.description());
+			item.setDisplayText(mob.displayText());
+			item.setMaterial(EnvResource.RESOURCE_WOOD);
+			Sense.setGettable(item,false);
+			item.envStats().setWeight(2000);
+			FullMsg msg2=new FullMsg(msg.source(),item,msg.targetCode(),null);
+			if(!okMessage(msg.source(),msg2))
+				return false;
 		}
 		if(!super.okMessage(myHost,msg))
 			return false;

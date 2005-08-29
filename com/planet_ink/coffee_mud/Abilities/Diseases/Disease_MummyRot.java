@@ -63,16 +63,13 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 			super.unInvoke();
 			return;
 		}
-		else
+		MOB mob=(MOB)affected;
+		super.unInvoke();
+		if(canBeUninvoked())
 		{
-			MOB mob=(MOB)affected;
-			super.unInvoke();
-			if(canBeUninvoked())
-			{
-				if(!mob.amDead())
-				    spreadImmunity(mob);
-				mob.tell("The rot is cured.");
-			}
+			if(!mob.amDead())
+			    spreadImmunity(mob);
+			mob.tell("The rot is cured.");
 		}
 	}
 

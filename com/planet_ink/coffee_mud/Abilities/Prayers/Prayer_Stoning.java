@@ -77,13 +77,10 @@ public class Prayer_Stoning extends Prayer
 		            unInvoke();
 		            break;
 		        }
-		        else
-		        {
-		            Room R2=CMClass.getLocale("StdRoom");
-		            cits.addElement(M);
-		            M.bringToLife(R2,true);
-		            MUDTracker.wanderIn(M,R);
-		        }
+	            Room R2=CMClass.getLocale("StdRoom");
+	            cits.addElement(M);
+	            M.bringToLife(R2,true);
+	            MUDTracker.wanderIn(M,R);
 			}
 		}
 		return true;

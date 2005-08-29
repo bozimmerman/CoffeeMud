@@ -167,8 +167,7 @@ public class StdRideable extends StdContainer implements Rideable
 		case Rideable.RIDEABLE_SLEEP:
 			if(commandType==CMMsg.TYP_SIT)
 				return "sit(s) down on";
-			else
-				return "lie(s) down on";
+			return "lie(s) down on";
 		}
 		return "board(s)";
 	}
@@ -263,8 +262,7 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 			return sendBack.toString();
 		}
-		else
-			return displayText;
+		return displayText;
 	}
 	public boolean amRiding(Rider mob)
 	{
@@ -536,8 +534,7 @@ public class StdRideable extends StdContainer implements Rideable
 				msg.source().tell("You can not do that while "+stateString(msg.source())+" "+name()+".");
 				return false;
 			}
-			else
-			    return super.okMessage(myHost,msg);
+		    return super.okMessage(myHost,msg);
 		}
 		if((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
 		&&(amRiding(msg.source()))

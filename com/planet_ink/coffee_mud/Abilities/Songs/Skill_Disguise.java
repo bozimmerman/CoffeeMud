@@ -151,12 +151,9 @@ public class Skill_Disguise extends BardSkill
 				mob.tell("Disguise what? "+validChoices+".");
 				return false;
 			}
-			else
-			{
-				A.unInvoke();
-				mob.tell("You remove your disguise.");
-				return true;
-			}
+			A.unInvoke();
+			mob.tell("You remove your disguise.");
+			return true;
 		}
 		String what=(String)commands.firstElement();
 		int which=-1;
@@ -228,8 +225,7 @@ public class Skill_Disguise extends BardSkill
 					mob.tell("'"+how+"' is an unknown race!");
 					return false;
 				}
-				else
-					how=CMClass.getRace(how).name();
+				how=CMClass.getRace(how).name();
 				break;
 			}
 		case 4: // height
@@ -273,8 +269,7 @@ public class Skill_Disguise extends BardSkill
 					mob.tell("'"+how+"' is an unknown character class!");
 					return false;
 				}
-				else
-					how=CMClass.getCharClass(how).name();
+				how=CMClass.getCharClass(how).name();
 				break;
 			}
 		case 7: // alignment

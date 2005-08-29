@@ -325,7 +325,6 @@ public class Injury extends StdAbility
             }
 		    return true;
 		}
-		else
-		    return super.invoke(mob,commands,givenTarget,auto,asLevel);
+	    return super.invoke(mob,commands,givenTarget,auto,asLevel);
 	}
 }

@@ -48,9 +48,7 @@ public class Server {
 			if( started ) {
 			    throw new ServerSecurityException("Illegal attempt to start Server.");
 			}
-			else {
-			    started = true;
-			}
+		    started = true;
 			thread = new ServerThread(mud, port, imud);
 			Log.sysOut("I3Server", "InterMud3 Core (c)1996 George Reese");
 			thread.start();

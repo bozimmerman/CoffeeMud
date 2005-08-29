@@ -208,8 +208,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			if(mob.getClanID().length()==0) return null;
 			return findDepositInventory(mob.getClanID(),likeThis);
 		}
-		else
-			return findDepositInventory(mob.Name(),likeThis);
+		return findDepositInventory(mob.Name(),likeThis);
 	}
 
 	public Item findDepositInventory(String mob, String likeThis)
@@ -460,14 +459,11 @@ public class StdBanker extends StdShopKeeper implements Banker
 									CommonMsgs.say(this,mob,"I have closed that account. Thanks for your business.",true,false);
 								return;
 							}
+							addDepositInventory(owner,coins);
+							if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+							    CommonMsgs.say(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+BeanCounter.nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
 							else
-							{
-								addDepositInventory(owner,coins);
-								if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-								    CommonMsgs.say(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+BeanCounter.nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
-								else
-								    CommonMsgs.say(this,mob,"Ok, your new balance is "+BeanCounter.nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
-							}
+							    CommonMsgs.say(this,mob,"Ok, your new balance is "+BeanCounter.nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
 						}
 						else
 						    CommonMsgs.say(this,mob,"But, your balance is "+BeanCounter.nameCurrencyLong(this,((Coins)depositInventoryItem).getTotalValue())+".",true,false);

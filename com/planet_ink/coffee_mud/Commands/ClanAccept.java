@@ -73,19 +73,16 @@ public class ClanAccept extends BaseClanner
 							mob.tell(qual+" was not found.  Could not add to "+C.typeName()+".");
 							return false;
 						}
-						else
+						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANACCEPT,true))
 						{
-							if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANACCEPT,true))
-							{
-								clanAnnounce(mob,"New Member of "+C.name()+": "+M.Name());
-								M.setClanID(mob.getClanID());
-								M.setClanRole(Clan.POS_MEMBER);
-								CMClass.DBEngine().DBUpdateClanMembership(qual, mob.getClanID(), Clan.POS_MEMBER);
-								mob.tell(M.Name()+" has been accepted into "+C.typeName()+" '"+C.ID()+"'.");
-								M.tell(mob.Name()+" has accepted you as a member of "+C.typeName()+" '"+C.ID()+"'.");
-								C.updateClanPrivileges(M);
-								return false;
-							}
+							clanAnnounce(mob,"New Member of "+C.name()+": "+M.Name());
+							M.setClanID(mob.getClanID());
+							M.setClanRole(Clan.POS_MEMBER);
+							CMClass.DBEngine().DBUpdateClanMembership(qual, mob.getClanID(), Clan.POS_MEMBER);
+							mob.tell(M.Name()+" has been accepted into "+C.typeName()+" '"+C.ID()+"'.");
+							M.tell(mob.Name()+" has accepted you as a member of "+C.typeName()+" '"+C.ID()+"'.");
+							C.updateClanPrivileges(M);
+							return false;
 						}
 					}
 					else

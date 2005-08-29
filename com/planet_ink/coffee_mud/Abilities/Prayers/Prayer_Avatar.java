@@ -30,8 +30,7 @@ public class Prayer_Avatar extends Prayer
 	public String displayText(){
 		if((invoker()!=null)&&(invoker().getWorshipCharID().length()>0))
 			return "(You are the AVATAR of "+invoker().getWorshipCharID()+")";
-		else
-			return "(You are the AVATAR of the gods)";
+		return "(You are the AVATAR of the gods)";
 	}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}

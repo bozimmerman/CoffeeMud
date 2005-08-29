@@ -219,7 +219,6 @@ public class GenWallpaper implements Item
 		MOB mob=msg.source();
 		if(!msg.amITarget(this))
 			return;
-		else
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_LOOK:

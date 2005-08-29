@@ -141,8 +141,7 @@ public class Falling extends StdAbility
 				temporarilyDisable=false;
 				if(!canFallFrom(mob.location(),direction))
 					return stopFalling(mob);
-				else
-					return true;
+				return true;
 			}
 		}
 		else
@@ -163,33 +162,26 @@ public class Falling extends StdAbility
 				unInvoke();
 				return false;
 			}
-			else
+			Room nextRoom=room.getRoomInDir(direction);
+			if(canFallFrom(room,direction))
 			{
-				Room nextRoom=room.getRoomInDir(direction);
-				if(canFallFrom(room,direction))
+				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> falls "+addStr+".");
+				Vector V=new Vector();
+				recursiveRoomItems(V,item,room);
+				for(int v=0;v<V.size();v++)
 				{
-					room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> falls "+addStr+".");
-					Vector V=new Vector();
-					recursiveRoomItems(V,item,room);
-					for(int v=0;v<V.size();v++)
-					{
-						Item thisItem=(Item)V.elementAt(v);
-						room.delItem(thisItem);
-						nextRoom.addItemRefuse(thisItem,Item.REFUSE_PLAYER_DROP);
-					}
-					room=nextRoom;
-					nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> falls in from "+(reversed()?"below":"above")+".");
-					return true;
+					Item thisItem=(Item)V.elementAt(v);
+					room.delItem(thisItem);
+					nextRoom.addItemRefuse(thisItem,Item.REFUSE_PLAYER_DROP);
 				}
-				else
-				{
-					if(reversed())
-						return true;
-					unInvoke();
-					return false;
-				}
+				room=nextRoom;
+				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> falls in from "+(reversed()?"below":"above")+".");
+				return true;
 			}
-
+			if(reversed())
+				return true;
+			unInvoke();
+			return false;
 		}
 
 		return false;

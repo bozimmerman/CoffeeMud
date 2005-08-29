@@ -83,8 +83,7 @@ public class Fighter_CircleParry extends StdAbility
 						helpProfficiency(mob);
 						return false;
 					}
-					else
-						lastTime=false;
+					lastTime=false;
 				}
 			}
 		}

@@ -967,11 +967,8 @@ public class Conquerable extends Arrest
 			return false;
 		if(flagFound(null,holdingClan))
 			return true;
-		else
-        {
-            if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest",holdingClan+" has "+totalControlPoints+" points and flag="+flagFound(null,holdingClan)+" in law check.");
-			endClanRule();
-        }
+        if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest",holdingClan+" has "+totalControlPoints+" points and flag="+flagFound(null,holdingClan)+" in law check.");
+		endClanRule();
 		return false;
 	}
 }

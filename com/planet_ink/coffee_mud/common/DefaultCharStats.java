@@ -141,8 +141,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 		{
 			if(shortForm)
 				return displayClassName()+" "+displayClassLevel;
-			else
-				return "level "+displayClassLevel+" "+displayClassName;
+			return "level "+displayClassLevel+" "+displayClassName;
 		}
         if(mob==null) return "";
 		int classLevel=getClassLevel(getCurrentClass());
@@ -153,8 +152,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 			levelStr=classLevel+"/"+mob.envStats().level();
 		if(shortForm)
 			return displayClassName()+" "+levelStr;
-		else
-			return "level "+levelStr+" "+displayClassName();
+		return "level "+levelStr+" "+displayClassName();
 	}
 	public String displayClassLevelOnly(MOB mob)
 	{

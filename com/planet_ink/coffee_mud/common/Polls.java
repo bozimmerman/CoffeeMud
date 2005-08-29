@@ -338,8 +338,7 @@ public class Polls
                 PO.text=EnglishParser.promptText(mob,PO.text,++showNumber,showFlag,"New Vote Option",true);
                 if(PO.text.length()==0) 
                     break;
-                else
-                    options.addElement(PO);
+                options.addElement(PO);
             }
             if(showFlag<-900){ ok=true; break;}
             if(showFlag>0){ showFlag=-1; continue;}

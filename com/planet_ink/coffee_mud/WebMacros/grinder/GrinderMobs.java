@@ -479,16 +479,13 @@ public class GrinderMobs
 					String MATCHING=httpReq.getRequestParameter("ITEM"+i);
 					if(MATCHING==null)
 						break;
-					else
+					Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
+					if(I2!=null)
 					{
-						Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
-						if(I2!=null)
-						{
-							if(Util.isNumber(MATCHING))
-								happilyAddItem(I2,M);
-							else
-								happilyAddItem((Item)I2.copyOf(),M);
-						}
+						if(Util.isNumber(MATCHING))
+							happilyAddItem(I2,M);
+						else
+							happilyAddItem((Item)I2.copyOf(),M);
 					}
 				}
 			}

@@ -56,8 +56,7 @@ public class Spell_CombatPrecognition extends Spell
 					helpProfficiency(mob);
 					return false;
 				}
-				else
-					lastTime=false;
+				lastTime=false;
 			}
 			else
 			if((msg.value()<=0)

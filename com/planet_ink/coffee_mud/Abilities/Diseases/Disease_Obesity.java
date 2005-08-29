@@ -163,7 +163,6 @@ public class Disease_Obesity extends Disease
 		    if(A!=null) A.setMiscText(""+Dice.roll(1,5,0));
 			return true;
 		}
-		else
-			return false;
+		return false;
 	}
 }

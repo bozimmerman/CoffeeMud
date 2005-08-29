@@ -45,8 +45,7 @@ public class Song_Babble extends Song
 	{
 		if(Character.isUpperCase(like))
 			return Character.toUpperCase(make);
-		else
-			return Character.toLowerCase(make);
+		return Character.toLowerCase(make);
 	}
 	protected String messChars(String words, int numToMess)
 	{

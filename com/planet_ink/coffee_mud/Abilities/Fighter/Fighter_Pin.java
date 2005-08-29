@@ -29,8 +29,7 @@ public class Fighter_Pin extends StdAbility
 	{
 		if(affected==invoker)
 			return "(Pinning)";
-		else
-			return "(Pinned)";
+		return "(Pinned)";
 	}
 	private static final String[] triggerStrings = {"PIN"};
 	public int quality(){return Ability.MALICIOUS;}

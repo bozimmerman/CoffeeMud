@@ -55,12 +55,9 @@ public class Withdraw extends StdCommand
     				mob.tell("Withdraw how much?");
     				return false;
     		    }
-    		    else
-    		    {
-    				thisThang=((Banker)shopkeeper).findDepositInventory(mob,""+Integer.MAX_VALUE);
-    				if(thisThang instanceof Coins)
-    				    thisThang=BeanCounter.makeCurrency(currency,denomination,numCoins);
-    		    }
+				thisThang=((Banker)shopkeeper).findDepositInventory(mob,""+Integer.MAX_VALUE);
+				if(thisThang instanceof Coins)
+				    thisThang=BeanCounter.makeCurrency(currency,denomination,numCoins);
     		}
     		else
     			thisThang=((Banker)shopkeeper).findDepositInventory(mob,str);

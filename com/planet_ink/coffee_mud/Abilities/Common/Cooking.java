@@ -522,61 +522,58 @@ public class Cooking extends CraftingSkill
 			}
 			return false;
 		}
-		else
+		Vector complaints=new Vector();
+		for(int vr=0;vr<recipes.size();vr++)
 		{
-			Vector complaints=new Vector();
-			for(int vr=0;vr<recipes.size();vr++)
+			Vector Vr=(Vector)recipes.elementAt(vr);
+			Vector counts=countIngredients(Vr);
+			Integer amountMaking=(Integer)counts.elementAt(0);
+			String recipeName=replacePercent((String)Vr.elementAt(RCP_FINALFOOD),((String)Vr.elementAt(RCP_MAININGR)).toLowerCase());
+			if(counts.size()==1)
 			{
-				Vector Vr=(Vector)recipes.elementAt(vr);
-				Vector counts=countIngredients(Vr);
-				Integer amountMaking=(Integer)counts.elementAt(0);
-				String recipeName=replacePercent((String)Vr.elementAt(RCP_FINALFOOD),((String)Vr.elementAt(RCP_MAININGR)).toLowerCase());
-				if(counts.size()==1)
+				if(Util.s_int((String)Vr.elementAt(RCP_LEVEL))>mob.envStats().level())
+					complaints.addElement("If you are trying to make "+recipeName+", you need to wait until you are level "+Util.s_int((String)Vr.elementAt(RCP_LEVEL))+".");
+				else
 				{
-					if(Util.s_int((String)Vr.elementAt(RCP_LEVEL))>mob.envStats().level())
-						complaints.addElement("If you are trying to make "+recipeName+", you need to wait until you are level "+Util.s_int((String)Vr.elementAt(RCP_LEVEL))+".");
+					finalRecipe=Vr;
+					finalAmount=amountMaking.intValue();
+					break;
+				}
+			}
+			else
+			if(amountMaking.intValue()<=0)
+			{
+				StringBuffer buf=new StringBuffer("If you are trying to make "+recipeName+", you need to add a little more ");
+				for(int i=1;i<counts.size();i++)
+					if(i==1)
+						buf.append(((String)counts.elementAt(i)).toLowerCase());
 					else
-					{
-						finalRecipe=Vr;
-						finalAmount=amountMaking.intValue();
-						break;
-					}
-				}
-				else
-				if(amountMaking.intValue()<=0)
-				{
-					StringBuffer buf=new StringBuffer("If you are trying to make "+recipeName+", you need to add a little more ");
-					for(int i=1;i<counts.size();i++)
-						if(i==1)
-							buf.append(((String)counts.elementAt(i)).toLowerCase());
-						else
-						if(i==counts.size()-1)
-							buf.append(", and "+((String)counts.elementAt(i)).toLowerCase());
-						else
-							buf.append(", "+((String)counts.elementAt(i)).toLowerCase());
-					complaints.addElement(buf.toString());
-				}
-				else
-				if(amountMaking.intValue()>0)
-				{
-					StringBuffer buf=new StringBuffer("If you are trying to make "+recipeName+", you need to remove some of the ");
-					for(int i=1;i<counts.size();i++)
-						if(i==1)
-							buf.append(((String)counts.elementAt(i)).toLowerCase());
-						else
-						if(i==counts.size()-1)
-							buf.append(", and "+((String)counts.elementAt(i)).toLowerCase());
-						else
-							buf.append(", "+((String)counts.elementAt(i)).toLowerCase());
-					complaints.addElement(buf.toString());
-				}
+					if(i==counts.size()-1)
+						buf.append(", and "+((String)counts.elementAt(i)).toLowerCase());
+					else
+						buf.append(", "+((String)counts.elementAt(i)).toLowerCase());
+				complaints.addElement(buf.toString());
 			}
-			if(finalRecipe==null)
+			else
+			if(amountMaking.intValue()>0)
 			{
-				for(int c=0;c<complaints.size();c++)
-					commonTell(mob,((String)complaints.elementAt(c)));
-				return false;
+				StringBuffer buf=new StringBuffer("If you are trying to make "+recipeName+", you need to remove some of the ");
+				for(int i=1;i<counts.size();i++)
+					if(i==1)
+						buf.append(((String)counts.elementAt(i)).toLowerCase());
+					else
+					if(i==counts.size()-1)
+						buf.append(", and "+((String)counts.elementAt(i)).toLowerCase());
+					else
+						buf.append(", "+((String)counts.elementAt(i)).toLowerCase());
+				complaints.addElement(buf.toString());
 			}
+		}
+		if(finalRecipe==null)
+		{
+			for(int c=0;c<complaints.size();c++)
+				commonTell(mob,((String)complaints.elementAt(c)));
+			return false;
 		}
 
 		String foodType=(String)finalRecipe.elementAt(RCP_FOODDRINK);

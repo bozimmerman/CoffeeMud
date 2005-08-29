@@ -83,28 +83,26 @@ public class Prop_HaveResister extends Property
 	public static int getProtection(Ability me, String protType)
 	{
 		int z=me.text().toUpperCase().indexOf(protType.toUpperCase());
-		if(z<0) return 0;
+		if(z<0) 
+            return 0;
 		int x=me.text().indexOf("%",z+protType.length());
 		if(x<0)
 			return 50;
-		else
+		int mul=1;
+		int tot=0;
+		while((--x)>=0)
 		{
-			int mul=1;
-			int tot=0;
-			while((--x)>=0)
+			if(Character.isDigit(me.text().charAt(x)))
+				tot+=Util.s_int(""+me.text().charAt(x))*mul;
+			else
 			{
-				if(Character.isDigit(me.text().charAt(x)))
-					tot+=Util.s_int(""+me.text().charAt(x))*mul;
-				else
-				{
-					if(me.text().charAt(x)=='-')
-						mul=mul*-1;
-					x=-1;
-				}
-				mul=mul*10;
+				if(me.text().charAt(x)=='-')
+					mul=mul*-1;
+				x=-1;
 			}
-			return tot;
+			mul=mul*10;
 		}
+		return tot;
 	}
 	public static void setAdjustments(Ability me, CharStats adjCharStats)
 	{

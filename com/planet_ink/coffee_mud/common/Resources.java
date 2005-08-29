@@ -97,8 +97,7 @@ public class Resources
 			if(!compress) return resource.elementAt(x);
 			if(resource.elementAt(x) instanceof byte[])
 				return new StringBuffer(Util.decompressString((byte[])resource.elementAt(x)));
-			else
-				return resource.elementAt(x);
+			return resource.elementAt(x);
 		}
 		return null;
 	}

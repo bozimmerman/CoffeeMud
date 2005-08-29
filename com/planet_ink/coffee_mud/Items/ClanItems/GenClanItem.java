@@ -57,7 +57,6 @@ public class GenClanItem extends StdClanItem
 	{
 		if(CoffeeMaker.getGenItemCodeNum(code)>=0)
 			return CoffeeMaker.getGenItemStat(this,code);
-		else
 		switch(getCodeNum(code))
 		{
 		case 0: return clanID();

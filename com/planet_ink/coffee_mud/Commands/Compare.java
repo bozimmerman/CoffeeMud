@@ -48,10 +48,7 @@ public class Compare extends StdCommand
 					{
                         continue; // next shopkeeper
                     }
-                    else
-                    {
-                        compareThis=(Item)itemToDo;
-                    }
+                    compareThis=(Item)itemToDo;
                 }
                 if((compareThis==null)||((compareThis!=null)&&(!Sense.canBeSeenBy(compareThis,mob)))) 
 				{

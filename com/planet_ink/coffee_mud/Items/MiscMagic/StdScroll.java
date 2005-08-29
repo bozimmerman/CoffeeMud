@@ -51,8 +51,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	{
 		if(usesRemaining()<=0)
 			return 0;
-		else
-			return super.value();
+		return super.value();
 	}
 	public boolean useTheScroll(Ability A, MOB mob)
 	{

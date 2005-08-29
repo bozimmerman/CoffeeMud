@@ -63,8 +63,7 @@ public class GenBanker extends StdBanker
 	{
 		if(CoffeeMaker.getGenMobCodeNum(code)>=0)
 			return CoffeeMaker.getGenMobStat(this,code);
-		else
-		switch(getCodeNum(code))
+        switch(getCodeNum(code))
 		{
 		case 0: return ""+whatIsSold();
 		case 1: return prejudiceFactors();

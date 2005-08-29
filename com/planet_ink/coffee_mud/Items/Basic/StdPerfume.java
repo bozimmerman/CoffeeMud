@@ -82,20 +82,16 @@ public class StdPerfume extends StdDrink implements Perfume
 		{
 			if(msg.targetMinor()==CMMsg.TYP_WEAR)
 				return true;
-			else
+			if(!super.okMessage(myHost,msg))
+				return false;
+			if(msg.targetMinor()==CMMsg.TYP_DRINK)
 			{
-				if(!super.okMessage(myHost,msg))
-					return false;
-				if(msg.targetMinor()==CMMsg.TYP_DRINK)
-				{
-					msg.source().tell("You don't want to be drinking that.");
-					return false;
-				}
-				return true;
+				msg.source().tell("You don't want to be drinking that.");
+				return false;
 			}
+			return true;
 		}
-		else
-			return super.okMessage(myHost,msg);
+		return super.okMessage(myHost,msg);
 	}
 	
 	public void executeMsg(Environmental myHost, CMMsg msg)

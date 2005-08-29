@@ -37,8 +37,7 @@ public class RoadThinGrid extends StdThinGrid
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();
-	    else
-	        return new RoadGrid().newInstance();
+        return new RoadGrid().newInstance();
 	}
 	public String getChildLocaleID(){return "Road";}
 	public Vector resourceChoices(){return Road.roomResources;}

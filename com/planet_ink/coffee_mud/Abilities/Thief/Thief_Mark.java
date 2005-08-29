@@ -41,8 +41,7 @@ public class Thief_Mark extends ThiefSkill
 	public String displayText(){
 		if(mark!=null)
 			return "(Marked: "+mark.name()+", "+ticks+" ticks)";
-		else
-			return "";
+		return "";
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -119,23 +118,20 @@ public class Thief_Mark extends ThiefSkill
 
 		if(!success)
 			return beneficialVisualFizzle(mob,target,"<S-NAME> lose(s) <S-HIS-HER> concentration on <T-NAMESELF>.");
-		else
+		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> mark(s) <T-NAMESELF>.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+		if(mob.location().okMessage(mob,msg))
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> mark(s) <T-NAMESELF>.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
-			if(mob.location().okMessage(mob,msg))
+			mob.location().send(mob,msg);
+			Ability A=mob.fetchEffect(ID());
+			if(A==null)
 			{
-				mob.location().send(mob,msg);
-				Ability A=mob.fetchEffect(ID());
-				if(A==null)
-				{
-					A=(Ability)copyOf();
-					mob.addEffect(A);
-					A.makeNonUninvokable();
-				}
-				((Thief_Mark)A).mark=target;
-				((Thief_Mark)A).ticks=0;
-				A.setMiscText(target.Name()+"/0");
+				A=(Ability)copyOf();
+				mob.addEffect(A);
+				A.makeNonUninvokable();
 			}
+			((Thief_Mark)A).mark=target;
+			((Thief_Mark)A).ticks=0;
+			A.setMiscText(target.Name()+"/0");
 		}
 		return success;
 	}

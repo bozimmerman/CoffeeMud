@@ -54,16 +54,15 @@ class ResultSet implements java.sql.ResultSet
             if(!key.startsWith(conditionValue+"\n")) continue;
 			currentRow++;
 	        return relation.getRecord(nullIndicators,values,(Backend.RecordInfo)relation.index.get(key));
-         } else {
-            if (!relation.getRecord(nullIndicators,values,(Backend.RecordInfo)iter.next())) 
-				return false;
-            if (conditionIndex>=0) {
-               if (nullIndicators[conditionIndex]) continue;
-               if (!conditionValue.equals(values[conditionIndex])) continue;
-            }
-			currentRow++;
-            return true;
          }
+        if (!relation.getRecord(nullIndicators,values,(Backend.RecordInfo)iter.next())) 
+			return false;
+        if (conditionIndex>=0) {
+           if (nullIndicators[conditionIndex]) continue;
+           if (!conditionValue.equals(values[conditionIndex])) continue;
+        }
+		currentRow++;
+        return true;
       }
    }
    public void close() throws java.sql.SQLException
@@ -78,10 +77,9 @@ class ResultSet implements java.sql.ResultSet
       if ((columnIndex<0)||(columnIndex>=nullIndicators.length)||(nullIndicators[columnIndex])) {
          nullFlag=true;
          return null;
-      } else {
-         nullFlag=false;
-         return values[columnIndex];
-      }
+      } 
+      nullFlag=false;
+      return values[columnIndex];
    }
    public java.sql.Array getArray(int columnIndex) throws java.sql.SQLException
    {

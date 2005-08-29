@@ -36,8 +36,7 @@ public class WoodRoomThinGrid extends StdThinGrid
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();
-	    else
-	        return new WoodRoomGrid().newInstance();
+        return new WoodRoomGrid().newInstance();
 	}
 	public String getChildLocaleID(){return "WoodRoom";}
 }

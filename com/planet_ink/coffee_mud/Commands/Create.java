@@ -217,15 +217,12 @@ public class Create extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		else
-		{
-			thisRoom.setArea(mob.location().getArea());
-			thisRoom.setRoomID(CMMap.getOpenRoomID(mob.location().getArea().Name()));
-			thisRoom.setDisplayText(CMClass.className(thisRoom)+"-"+thisRoom.roomID());
-			thisRoom.setDescription("");
-			CMClass.DBEngine().DBCreateRoom(thisRoom,Locale);
-			CMMap.addRoom(thisRoom);
-		}
+		thisRoom.setArea(mob.location().getArea());
+		thisRoom.setRoomID(CMMap.getOpenRoomID(mob.location().getArea().Name()));
+		thisRoom.setDisplayText(CMClass.className(thisRoom)+"-"+thisRoom.roomID());
+		thisRoom.setDescription("");
+		CMClass.DBEngine().DBCreateRoom(thisRoom,Locale);
+		CMMap.addRoom(thisRoom);
 
 		if(thisRoom==null)
 		{
@@ -415,12 +412,9 @@ public class Create extends BaseGenerics
 				mob.tell("That social already exists.  Try MODIFY!");
 				return;
 			}
-			else
-			{
-				Socials.put(soc2.name(),soc2);
-				Resources.removeResource("SOCIALS LIST");
-				Socials.save();
-			}
+			Socials.put(soc2.name(),soc2);
+			Resources.removeResource("SOCIALS LIST");
+			Socials.save();
 			Log.sysOut("SysopSocials",mob.Name()+" created social "+soc2.name()+".");
 		}
 	}

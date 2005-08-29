@@ -33,18 +33,14 @@ public class LPCData {
             if( ! flag ) {
                 return "";
             }
-            else {
-                return data;
-            }
+            return data;
         }
         str = str.trim();
         if( str.length() < 1 ) {
             if( !flag ) {
                 return "";
             }
-            else {
-                return data;
-            }
+            return data;
         }
         else if( str.length() == 1 ) {
             try {
@@ -53,10 +49,8 @@ public class LPCData {
                 if( !flag ) {
                     return new Integer(x);
                 }
-                else {
-                    data.setElementAt(new Integer(x), 0);
-                    return data;
-                }
+                data.setElementAt(new Integer(x), 0);
+                return data;
             }
             catch( NumberFormatException e ) {
                 throw new I3Exception("Invalid LPC Data in string: " + str);
@@ -88,9 +82,7 @@ public class LPCData {
                         if( str.charAt(0) != ')' ) {
                             throw new I3Exception("Illegal array terminator.");
                         }
-                        else {
-                            data.setElementAt(str.substring(1, str.length()), 1);
-                        }
+                        data.setElementAt(str.substring(1, str.length()), 1);
                     }
                     else {
                         data.setElementAt(str.substring(2,str.length()), 1);
@@ -114,9 +106,7 @@ public class LPCData {
                         if( str.charAt(0) != ':' ) {
                             throw new I3Exception("Invalid mapping format: " + str);
                         }
-                        else {
-                            str = str.substring(1, str.length());
-                        }
+                        str = str.substring(1, str.length());
                         key = tmp.elementAt(0);
                         tmp = (Vector)getLPCData(str, true);
                         value = tmp.elementAt(0);
@@ -136,7 +126,7 @@ public class LPCData {
                         if( str.charAt(0) != ')' ) {
                             throw new I3Exception("Invalid mapping format: " + str);
                         }
-                        else data.setElementAt(str.substring(1, str.length()).trim(), 1);
+                        data.setElementAt(str.substring(1, str.length()).trim(), 1);
                     }
                     else data.setElementAt(str.substring(2, str.length()).trim(), 1);
                     if( !flag ) {

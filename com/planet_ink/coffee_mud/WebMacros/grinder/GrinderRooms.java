@@ -198,16 +198,13 @@ public class GrinderRooms
 				String MATCHING=httpReq.getRequestParameter("ITEM"+i);
 				if(MATCHING==null)
 					break;
-				else
+				Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
+				if(I2!=null)
 				{
-					Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
-					if(I2!=null)
-					{
-						if(RoomData.isAllNum(MATCHING))
-							happilyAddItem(I2,R);
-						else
-							happilyAddItem((Item)I2.copyOf(),R);
-					}
+					if(RoomData.isAllNum(MATCHING))
+						happilyAddItem(I2,R);
+					else
+						happilyAddItem((Item)I2.copyOf(),R);
 				}
 			}
 		}

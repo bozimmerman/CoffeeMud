@@ -109,14 +109,11 @@ public class Drop extends BaseItemParser
 						mob.tell("You must remove that first.");
 						return false;
 					}
+					FullMsg newMsg=new FullMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
+					if(mob.location().okMessage(mob,newMsg))
+						mob.location().send(mob,newMsg);
 					else
-					{
-						FullMsg newMsg=new FullMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
-						if(mob.location().okMessage(mob,newMsg))
-							mob.location().send(mob,newMsg);
-						else
-							return false;
-					}
+						return false;
 				}
 			}
             if((allFlag)&&(!onlyGoldFlag)&&(dropThis instanceof Coins)&&(whatToDrop.equalsIgnoreCase("all")))

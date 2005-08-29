@@ -261,8 +261,7 @@ public class CMAble
 		}
 		if(theLevel<0) 
 			return CMAble.getQualifyingLevel(student.charStats().getCurrentClass().ID(),true,A.ID());
-		else
-			return theLevel;
+		return theLevel;
 	}
 
 	public static int qualifyingClassLevel(MOB student, 
@@ -292,8 +291,7 @@ public class CMAble
 			greatestDiff=classLevel-level;
 		if(theClass==null) 
 			return student.charStats().getClassLevel(student.charStats().getCurrentClass());
-		else
-			return student.charStats().getClassLevel(theClass);
+		return student.charStats().getClassLevel(theClass);
 	}
 
 	public static Object lowestQualifyingClassRace(MOB student, 
@@ -394,10 +392,11 @@ public class CMAble
 		{
 			Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
 			if(ableMap.containsKey(ability))
+            {
 				if(!((CMAble)ableMap.get(ability)).isSecret)
 					return false;
-				else
-					secretFound=true;
+				secretFound=true;
+            }
 		}
 		if(checkAll)
 		{
@@ -425,20 +424,22 @@ public class CMAble
 			{
 				Hashtable ableMap=(Hashtable)completeAbleMap.get(charClass);
 				if(ableMap.containsKey(ability))
+                {
 					if(!((CMAble)ableMap.get(ability)).isSecret)
 						return false;
-					else
-						secretFound=true;
+					secretFound=true;
+                }
 			}
 		}
 		if(completeAbleMap.containsKey(mob.charStats().getMyRace().ID()))
 		{
 			Hashtable ableMap=(Hashtable)completeAbleMap.get(mob.charStats().getMyRace().ID());
 			if(ableMap.containsKey(ability))
+            {
 				if(!((CMAble)ableMap.get(ability)).isSecret)
 					return false;
-				else
-					secretFound=true;
+				secretFound=true;
+            }
 		}
 		CMAble AB=getAllAbleMap(ability);
 		if(AB!=null) return AB.isSecret;
@@ -455,10 +456,11 @@ public class CMAble
 			{
 				Hashtable ableMap=(Hashtable)completeAbleMap.get(charClass);
 				if(ableMap.containsKey(ability))
+                {
 					if(!((CMAble)ableMap.get(ability)).isSecret)
 						return false;
-					else
-						secretFound=true;
+					secretFound=true;
+                }
 			}
 		}
 		for(Enumeration e=CMClass.races();e.hasMoreElements();)
@@ -468,10 +470,11 @@ public class CMAble
 			{
 				Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
 				if(ableMap.containsKey(ability))
+                {
 					if(!((CMAble)ableMap.get(ability)).isSecret)
 						return false;
-					else
-						secretFound=true;
+					secretFound=true;
+                }
 			}
 		}
 		CMAble AB=getAllAbleMap(ability);

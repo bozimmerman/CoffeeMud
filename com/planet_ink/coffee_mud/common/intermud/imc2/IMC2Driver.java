@@ -1248,8 +1248,7 @@ public final class IMC2Driver extends Thread {
           {
               if(p.value[i].startsWith("\""))
                   return p.value[i].substring(1, p.value[i].length()-1);
-              else
-                  return p.value[i];
+              return p.value[i];
           }
 
        return def;
@@ -1380,11 +1379,8 @@ public final class IMC2Driver extends Thread {
             tracef(8, "Password OK.");
 			return true;
 		}
-        else
-		{
-            tracef(0, "Password incorrect.");
-			return false;
-		}
+        tracef(0, "Password incorrect.");
+		return false;
     }
 
     final public void imc_read_from_socket(DataInputStream in) {

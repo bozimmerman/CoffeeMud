@@ -61,8 +61,7 @@ public class Play extends StdAbility
 		{
 			if(instrument!=null)
 				return invoker().envStats().level()+instrument.envStats().ability();
-			else
-				return invoker().envStats().level();
+			return invoker().envStats().level();
 		}
 		else
 		if(affected!=null)
@@ -82,8 +81,7 @@ public class Play extends StdAbility
 			return (((Rideable)I).amRiding(mob)
 					&&(mob.fetchFirstWornItem(Item.WIELD)==null)
 					&&(mob.fetchFirstWornItem(Item.HELD)==null));
-		else
-			return mob.isMine(I)&&(!I.amWearingAt(Item.INVENTORY));
+		return mob.isMine(I)&&(!I.amWearingAt(Item.INVENTORY));
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

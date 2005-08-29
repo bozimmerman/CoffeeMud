@@ -42,7 +42,7 @@ public class Spell_WizardsChest extends Spell
 		||(msg.source()==invoker())
 		||((invoker()!=null)&&(invoker().Name().equals(text()))))
 			return true;
-		else
+        
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_OPEN:

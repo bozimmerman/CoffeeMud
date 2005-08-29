@@ -76,8 +76,7 @@ public class Fighter_DualParry extends StdAbility
 						helpProfficiency(mob);
 						return false;
 					}
-					else
-						lastTime=false;
+					lastTime=false;
 				}
 			}
 		}

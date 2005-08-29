@@ -28,8 +28,7 @@ public class Power_OctoGrapple extends SuperPower
 	{
 		if(affected==invoker)
 			return "(Grappling)";
-		else
-			return "(Grappled)";
+		return "(Grappled)";
 	}
 	private static final String[] triggerStrings = {"GRAPPLE"};
 	public int quality(){return Ability.MALICIOUS;}

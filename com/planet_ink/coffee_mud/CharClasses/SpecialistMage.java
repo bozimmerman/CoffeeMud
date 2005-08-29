@@ -151,8 +151,7 @@ public class SpecialistMage extends Mage
 				{
 					if(duration>=(Integer.MAX_VALUE/2))
 						return duration;
-					else
-						return duration*2;
+					return duration*2;
 				}
 			}
 		}
@@ -162,8 +161,7 @@ public class SpecialistMage extends Mage
 			{
 				if(duration>=(Integer.MAX_VALUE/2))
 					return duration;
-				else
-					return duration*2;
+				return duration*2;
 			}
 			else
 			if(domain==domain())

@@ -74,7 +74,6 @@ public class Chant_WarningWinds extends Chant
 								fighting=true;
 								break;
 							}
-							else
 							for(int b=0;b<M.numBehaviors();b++)
 							{
 								Behavior B=M.fetchBehavior(b);

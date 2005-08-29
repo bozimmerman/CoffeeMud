@@ -512,7 +512,6 @@ public class DefaultClimate implements Climate
 	{
 		if(((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS)))
 			return base;
-		else
 		switch(currentWeather)
 		{
 		case Climate.WEATHER_DROUGHT:
@@ -539,7 +538,6 @@ public class DefaultClimate implements Climate
 	{
 		if(((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS)))
 			return base;
-		else
 		switch(currentWeather)
 		{
 		case Climate.WEATHER_THUNDERSTORM:

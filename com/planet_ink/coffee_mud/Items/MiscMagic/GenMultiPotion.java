@@ -68,8 +68,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 	{
 		if(isDrunk())
 			return 0;
-		else
-			return super.value();
+		return super.value();
 	}
 
 	public String getSpellList()

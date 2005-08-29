@@ -93,14 +93,11 @@ public class Give extends BaseItemParser
 						mob.tell("You must remove that first.");
 						return false;
 					}
+					FullMsg newMsg=new FullMsg(mob,giveThis,null,CMMsg.MSG_REMOVE,null);
+					if(mob.location().okMessage(mob,newMsg))
+						mob.location().send(mob,newMsg);
 					else
-					{
-						FullMsg newMsg=new FullMsg(mob,giveThis,null,CMMsg.MSG_REMOVE,null);
-						if(mob.location().okMessage(mob,newMsg))
-							mob.location().send(mob,newMsg);
-						else
-							return false;
-					}
+						return false;
 				}
 			}
             if((allFlag)&&(!onlyGoldFlag)&&(giveThis instanceof Coins)&&(thingToGive.equalsIgnoreCase("all")))

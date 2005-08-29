@@ -371,8 +371,7 @@ public class Destroy extends BaseItemParser
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
 				return;
 			}
-			else
-				confirmed=true;
+			confirmed=true;
 		}
 		CoffeeUtensils.obliterateArea(areaName);
 		if(confirmed)
@@ -485,20 +484,16 @@ public class Destroy extends BaseItemParser
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		else
+		if(mob.session().confirm("Are you sure you want to delete that social (y/N)? ","N"))
 		{
-			if(mob.session().confirm("Are you sure you want to delete that social (y/N)? ","N"))
-			{
-				Socials.remove(soc2.name());
-				Resources.removeResource("SOCIALS LIST");
-				Socials.save();
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just decreased!");
-			}
-			else
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just increased!");
-			Log.sysOut("SysopSocials",mob.Name()+" destroyed social "+soc2.name()+".");
+			Socials.remove(soc2.name());
+			Resources.removeResource("SOCIALS LIST");
+			Socials.save();
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just decreased!");
 		}
-
+		else
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just increased!");
+		Log.sysOut("SysopSocials",mob.Name()+" destroyed social "+soc2.name()+".");
 	}
 	
 	public static boolean destroyItem(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)

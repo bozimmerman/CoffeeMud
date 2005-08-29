@@ -1048,12 +1048,9 @@ public class Clans implements Clan, Tickable
 					Log.sysOut("Clans","Clan '"+getName()+" had the following membership: "+buf.toString());
 					return true;
 				}
-				else
-				{
-					setStatus(Clan.CLANSTATUS_FADING);
-					Log.sysOut("Clans","Clan '"+getName()+" fading with only "+activeMembers+" having logged on lately.");
-					clanAnnounce(""+typeName()+" "+name()+" is in danger of being deleted if more members do not log on within 24 hours.");
-				}
+				setStatus(Clan.CLANSTATUS_FADING);
+				Log.sysOut("Clans","Clan '"+getName()+" fading with only "+activeMembers+" having logged on lately.");
+				clanAnnounce(""+typeName()+" "+name()+" is in danger of being deleted if more members do not log on within 24 hours.");
 			}
 			else
 			switch(getStatus())

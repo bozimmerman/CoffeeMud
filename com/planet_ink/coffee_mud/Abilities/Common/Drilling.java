@@ -119,8 +119,7 @@ public class Drilling extends GatheringSkill
             bundling=true;
 			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
 			    return super.bundle(mob,commands);
-			else
-			    return false;
+		    return false;
 		}
 		
 		Item I=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);

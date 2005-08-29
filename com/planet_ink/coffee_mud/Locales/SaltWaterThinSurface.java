@@ -37,7 +37,6 @@ public class SaltWaterThinSurface extends SaltWaterSurface
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();
-	    else
-	        return new SaltWaterSurface().newInstance();
+        return new SaltWaterSurface().newInstance();
 	}
 }

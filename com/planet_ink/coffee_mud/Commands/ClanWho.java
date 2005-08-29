@@ -37,27 +37,24 @@ public class ClanWho extends Who
 			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
-		else
+		StringBuffer msg=new StringBuffer("");
+		for(int s=0;s<Sessions.size();s++)
 		{
-			StringBuffer msg=new StringBuffer("");
-			for(int s=0;s<Sessions.size();s++)
-			{
-				Session thisSession=Sessions.elementAt(s);
-				MOB mob2=thisSession.mob();
-				if((mob2!=null)&&(mob2.soulMate()!=null))
-					mob2=mob2.soulMate();
+			Session thisSession=Sessions.elementAt(s);
+			MOB mob2=thisSession.mob();
+			if((mob2!=null)&&(mob2.soulMate()!=null))
+				mob2=mob2.soulMate();
 
-				if((mob2!=null)
-				&&(!thisSession.killFlag())
-				&&((((mob2.envStats().disposition()&EnvStats.IS_CLOAKED)==0)
-						||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.envStats().level()>=mob2.envStats().level()))))
-				&&(mob2.getClanID().equals(mob.getClanID()))
-				&&(Sense.isInTheGame(mob2,true))
-				&&(mob2.envStats().level()>0))
-					msg.append(showWhoShort(mob2));
-			}
-			mob.tell(shortHead+msg.toString());
+			if((mob2!=null)
+			&&(!thisSession.killFlag())
+			&&((((mob2.envStats().disposition()&EnvStats.IS_CLOAKED)==0)
+					||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.envStats().level()>=mob2.envStats().level()))))
+			&&(mob2.getClanID().equals(mob.getClanID()))
+			&&(Sense.isInTheGame(mob2,true))
+			&&(mob2.envStats().level()>0))
+				msg.append(showWhoShort(mob2));
 		}
+		mob.tell(shortHead+msg.toString());
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

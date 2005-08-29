@@ -232,8 +232,7 @@ public class CombatAbilities extends StdBehavior
 				   ||(CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANACONSUMETIME)<=0)
 				   ||((mob.amFollowing()!=null)&&(!mob.amFollowing().isMonster())))
                         return true;
-                   else
-					   mob.curState().adjMana(tryThisOne.usageCost(mob)[0],mob.maxState());
+				   mob.curState().adjMana(tryThisOne.usageCost(mob)[0],mob.maxState());
 				}
 				mob.curState().adjMana(5,mob.maxState());
 			}

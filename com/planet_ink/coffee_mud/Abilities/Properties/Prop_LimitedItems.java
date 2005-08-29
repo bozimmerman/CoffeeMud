@@ -34,8 +34,7 @@ public class Prop_LimitedItems extends Property
 	{
 		if(Util.s_int(text())<=0)
 			return "Only 1 may exist";
-		else
-			return "Only "+Util.s_int(text())+" may exist.";
+		return "Only "+Util.s_int(text())+" may exist.";
 	}
 
 	private void countIfNecessary(Item I)

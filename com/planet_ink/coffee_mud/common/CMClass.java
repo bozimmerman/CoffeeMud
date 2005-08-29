@@ -1021,8 +1021,7 @@ public class CMClass extends ClassLoader
 		int lastDot=name.lastIndexOf(".");
 		if(lastDot>=0)
 			return name.substring(lastDot+1);
-		else
-			return name;
+		return name;
 	}
 
 	private static boolean checkClass(Class cl, Class ancestorCl)

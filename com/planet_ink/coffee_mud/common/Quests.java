@@ -179,12 +179,9 @@ public class Quests implements Cloneable, Quest
 						beQuiet=true;
 						continue;
 					}
-					else
-					{
-						isQuiet=true;
-						p.removeElementAt(0);
-						cmd=((String)p.elementAt(0)).toUpperCase();
-					}
+					isQuiet=true;
+					p.removeElementAt(0);
+					cmd=((String)p.elementAt(0)).toUpperCase();
 				}
 
 				if(cmd.equals("SET"))
@@ -318,19 +315,16 @@ public class Quests implements Cloneable, Quest
 								Log.errOut("Quests","Quest '"+name()+"', !mob '"+p+"'.");
 							error=true; break;
 						}
+						if(R!=null)
+							R.bringMobHere(M,false);
 						else
-						{
-							if(R!=null)
-								R.bringMobHere(M,false);
-							else
-								R=M.location();
-							A=R.getArea();
-							E=M;
-							if(!stuff.contains(M))
-								stuff.addElement(M);
-							R.recoverRoomStats();
-							R.showHappens(CMMsg.MSG_OK_ACTION,null);
-						}
+							R=M.location();
+						A=R.getArea();
+						E=M;
+						if(!stuff.contains(M))
+							stuff.addElement(M);
+						R.recoverRoomStats();
+						R.showHappens(CMMsg.MSG_OK_ACTION,null);
 					}
 					else
 					if(cmd.equals("MOBGROUP"))
@@ -435,18 +429,15 @@ public class Quests implements Cloneable, Quest
 								Log.errOut("Quests","Quest '"+name()+"', !item '"+p+"'.");
 							error=true; break;
 						}
+						if(R!=null)
+							R.bringItemHere(I,-1);
 						else
-						{
-							if(R!=null)
-								R.bringItemHere(I,-1);
-							else
-							if(I.owner() instanceof Room)
-								R=(Room)I.owner();
-							A=R.getArea();
-							E=I;
-							R.recoverRoomStats();
-							R.showHappens(CMMsg.MSG_OK_ACTION,null);
-						}
+						if(I.owner() instanceof Room)
+							R=(Room)I.owner();
+						A=R.getArea();
+						E=I;
+						R.recoverRoomStats();
+						R.showHappens(CMMsg.MSG_OK_ACTION,null);
 					}
 					else
 					if(cmd.equals("LOCALE"))
@@ -489,8 +480,7 @@ public class Quests implements Cloneable, Quest
 								Log.errOut("Quests","Quest '"+name()+"', !locale '"+localeName+"'.");
 							error=true; break;
 						}
-						else
-							A=R.getArea();
+						A=R.getArea();
 					}
 					else
 					if(cmd.equals("RESET"))
@@ -567,8 +557,7 @@ public class Quests implements Cloneable, Quest
                                 Log.errOut("Quests","Quest '"+name()+"', !locale '"+localeName+"'.");
                             error=true; break;
                         }
-                        else
-                            A=R.getArea();
+                        A=R.getArea();
                     }
 					else
 					if(cmd.equals("MOB"))
@@ -632,19 +621,16 @@ public class Quests implements Cloneable, Quest
 								Log.errOut("Quests","Quest '"+name()+"', !mob '"+mobName+"'.");
 							error=true; break;
 						}
+						if(R!=null)
+							R.bringMobHere(M,false);
 						else
-						{
-							if(R!=null)
-								R.bringMobHere(M,false);
-							else
-								R=M.location();
-							A=R.getArea();
-							E=M;
-							if(!stuff.contains(M))
-								stuff.addElement(M);
-							R.recoverRoomStats();
-							R.showHappens(CMMsg.MSG_OK_ACTION,null);
-						}
+							R=M.location();
+						A=R.getArea();
+						E=M;
+						if(!stuff.contains(M))
+							stuff.addElement(M);
+						R.recoverRoomStats();
+						R.showHappens(CMMsg.MSG_OK_ACTION,null);
 					}
 					else
 					if(cmd.equals("ITEM"))
@@ -680,18 +666,15 @@ public class Quests implements Cloneable, Quest
 								Log.errOut("Quests","Quest '"+name()+"', !item '"+itemName+"'.");
 							error=true; break;
 						}
+						if(R!=null)
+							R.bringItemHere(I,-1);
 						else
-						{
-							if(R!=null)
-								R.bringItemHere(I,-1);
-							else
-							if(I.owner() instanceof Room)
-								R=(Room)I.owner();
-							A=R.getArea();
-							E=I;
-							R.recoverRoomStats();
-							R.showHappens(CMMsg.MSG_OK_ACTION,null);
-						}
+						if(I.owner() instanceof Room)
+							R=(Room)I.owner();
+						A=R.getArea();
+						E=I;
+						R.recoverRoomStats();
+						R.showHappens(CMMsg.MSG_OK_ACTION,null);
 					}
 					else
 					if(cmd.equals("NAME")){}

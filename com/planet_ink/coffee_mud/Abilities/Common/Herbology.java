@@ -90,8 +90,7 @@ public class Herbology extends CommonSkill
 			commonTell(mob,"You don't seem to have a '"+((String)commands.firstElement())+"'.");
 			return false;
 		}
-		else
-			commands.remove(commands.firstElement());
+		commands.remove(commands.firstElement());
 
 		if((target.material()!=EnvResource.RESOURCE_HERBS)
 		||((!target.Name().toUpperCase().endsWith(" HERBS"))

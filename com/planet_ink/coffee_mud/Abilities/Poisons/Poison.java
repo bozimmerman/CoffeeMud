@@ -69,8 +69,7 @@ public class Poison extends StdAbility
 									POISON_TICKS(),-1);
 					return true;
 			    }
-			    else
-			        return false;
+		        return false;
 			}
 		}
 		return false;

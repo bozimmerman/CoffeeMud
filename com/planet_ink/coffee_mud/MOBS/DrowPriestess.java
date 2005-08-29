@@ -214,8 +214,7 @@ public class DrowPriestess extends DrowElf
 
 		if(prayer!=null)
 		    return prayer.invoke(this,null,false,0);
-		else
-	        return false;
+        return false;
 
     }
 

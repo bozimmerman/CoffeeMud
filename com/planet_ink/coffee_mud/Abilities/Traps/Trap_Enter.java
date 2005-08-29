@@ -41,11 +41,8 @@ public class Trap_Enter extends Trap_Trap
 			{
 				if(msg.targetMinor()==CMMsg.TYP_LEAVE)
 					return true;
-				else
-				{
-					spring(msg.source());
-					return false;
-				}
+				spring(msg.source());
+				return false;
 			}
 		}
 		return true;

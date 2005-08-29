@@ -563,8 +563,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		{
 			if(myRooms!=null)
 				return myRooms.size();
-			else
-				makeProperMap();
+			makeProperMap();
 			return myRooms.size();
 		}
 	}

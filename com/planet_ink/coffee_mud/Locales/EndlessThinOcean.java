@@ -38,8 +38,7 @@ public class EndlessThinOcean extends StdThinGrid
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();
-	    else
-	        return new EndlessOcean().newInstance();
+        return new EndlessOcean().newInstance();
 	}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

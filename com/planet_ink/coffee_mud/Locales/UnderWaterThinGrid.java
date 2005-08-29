@@ -49,8 +49,7 @@ public class UnderWaterThinGrid extends StdThinGrid
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();
-	    else
-	        return new UnderWaterGrid().newInstance();
+        return new UnderWaterGrid().newInstance();
 	}
 	
 	public String getChildLocaleID(){return "UnderWater";}

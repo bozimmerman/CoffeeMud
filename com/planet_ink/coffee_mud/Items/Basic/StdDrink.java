@@ -98,11 +98,8 @@ public class StdDrink extends StdContainer implements Drink,Item
 					}
 					return true;
 				}
-				else
-				{
-					mob.tell("You don't have that.");
-					return false;
-				}
+				mob.tell("You don't have that.");
+				return false;
 			case CMMsg.TYP_FILL:
 				if((liquidRemaining()>=amountOfLiquidHeld)
 				&&(liquidHeld()<500000))
@@ -153,11 +150,8 @@ public class StdDrink extends StdContainer implements Drink,Item
 					}
 					return true;
 				}
-				else
-				{
-					mob.tell("You can't fill "+name()+" from that.");
-					return false;
-				}
+				mob.tell("You can't fill "+name()+" from that.");
+				return false;
 			default:
 				break;
 			}

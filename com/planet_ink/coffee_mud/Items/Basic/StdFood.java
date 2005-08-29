@@ -64,11 +64,8 @@ public class StdFood extends StdItem implements Food
 			case CMMsg.TYP_EAT:
 				if((mob.isMine(this))||(!Sense.isGettable(this)))
 					return true;
-				else
-				{
-					mob.tell("You don't have that.");
-					return false;
-				}
+				mob.tell("You don't have that.");
+				return false;
 			}
 		}
 		return true;

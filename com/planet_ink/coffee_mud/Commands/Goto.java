@@ -54,16 +54,13 @@ public class Goto extends At
 			mob.tell("Done.");
 			return false;
 		}
-		else
-		{
-			if(mob.playerStats().poofOut().length()>0)
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,mob.playerStats().poofOut());
-			room.bringMobHere(mob,true);
-			if(mob.playerStats().poofIn().length()>0)
-				room.show(mob,null,CMMsg.MSG_OK_VISUAL,mob.playerStats().poofIn());
-			CommonMsgs.look(mob,true);
-			return false;
-		}
+		if(mob.playerStats().poofOut().length()>0)
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,mob.playerStats().poofOut());
+		room.bringMobHere(mob,true);
+		if(mob.playerStats().poofIn().length()>0)
+			room.show(mob,null,CMMsg.MSG_OK_VISUAL,mob.playerStats().poofIn());
+		CommonMsgs.look(mob,true);
+		return false;
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}

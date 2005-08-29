@@ -37,8 +37,7 @@ public class SwampThinGrid extends StdThinGrid
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();
-	    else
-	        return new SwampGrid().newInstance();
+        return new SwampGrid().newInstance();
 	}
 	public String getChildLocaleID(){return "Swamp";}
 	public Vector resourceChoices(){return Swamp.roomResources;}

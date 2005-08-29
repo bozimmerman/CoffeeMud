@@ -313,8 +313,7 @@ public class Drowness extends StdBehavior
         }
 		if(prayer!=null)
 	        return prayer.invoke(mob,null,false,0);
-		else
-			return false;
+		return false;
     }
 
 	public boolean okMessage(Environmental oking, CMMsg msg)
@@ -404,8 +403,7 @@ public class Drowness extends StdBehavior
         }
 		if(prayer!=null)
 	        return prayer.invoke(mob,null,false,0);
-		else
-			return false;
+		return false;
     }
 
 	protected boolean castDarkness(MOB mob)

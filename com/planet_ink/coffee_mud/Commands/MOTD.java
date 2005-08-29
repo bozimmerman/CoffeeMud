@@ -148,8 +148,7 @@ public class MOTD extends StdCommand
         }
         if(ct[0]>0)
             return whom+" "+ct[0]+" new of "+ct[1]+" items at the "+branchName+" branch of the "+P.postalChain()+" post office.";
-        else
-            return whom+" "+ct[1]+" items still waiting at the "+branchName+" branch of the "+P.postalChain()+" post office.";
+        return whom+" "+ct[1]+" items still waiting at the "+branchName+" branch of the "+P.postalChain()+" post office.";
     }
     
     private Hashtable getPostalResults(Vector mailData, long newTimeDate)

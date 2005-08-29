@@ -40,8 +40,7 @@ public class Spell_MassDisintegrate extends Spell
 				mob.tell("There doesn't appear to be anyone here worth disintgrating.");
 				return false;
 			}
-			else
-				h=new HashSet();
+			h=new HashSet();
 		}
 
 		// the invoke method for spells receives as

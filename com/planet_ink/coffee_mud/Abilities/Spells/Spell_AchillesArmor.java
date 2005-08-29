@@ -108,8 +108,7 @@ public class Spell_AchillesArmor extends Spell
 				mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"The armor around <S-NAME> blocks "+name+" attack from <T-NAME>!");
 				return false;
 			}
-			else
-				MUDFight.postDeath(msg.source(),mob,msg);
+			MUDFight.postDeath(msg.source(),mob,msg);
 		}
 		return super.okMessage(myHost,msg);
 	}

@@ -175,11 +175,8 @@ public class StdContainer extends StdItem implements Container
 						}
 						return true;
 					}
-					else
-					{
-						mob.tell("You don't see that here.");
-						return false;
-					}
+					mob.tell("You don't see that here.");
+					return false;
 				}
 				else
 				if((recursiveWeight(this)>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
@@ -216,11 +213,8 @@ public class StdContainer extends StdItem implements Container
 						else
 							return true;
 					}
-					else
-					{
-						mob.tell("You don't see that here.");
-						return false;
-					}
+					mob.tell("You don't see that here.");
+					return false;
 				}
 				break;
 			case CMMsg.TYP_CLOSE:
@@ -231,15 +225,10 @@ public class StdContainer extends StdItem implements Container
 						mob.tell("There is nothing to close on "+name()+".");
 						return false;
 					}
-					else
-						return true;
+					return true;
 				}
-				else
-				{
-					mob.tell(name()+" is already closed.");
-					return false;
-				}
-				//break;
+				mob.tell(name()+" is already closed.");
+				return false;
 			case CMMsg.TYP_OPEN:
 				if(!hasALid)
 				{
@@ -251,17 +240,12 @@ public class StdContainer extends StdItem implements Container
 					mob.tell(name()+" is already open!");
 					return false;
 				}
-				else
+				if(isLocked)
 				{
-					if(isLocked)
-					{
-						mob.tell(name()+" is locked.");
-						return false;
-					}
-					else
-						return true;
+					mob.tell(name()+" is locked.");
+					return false;
 				}
-				//break;
+				return true;
 			case CMMsg.TYP_LOCK:
 			case CMMsg.TYP_UNLOCK:
 				if(!hasALid)

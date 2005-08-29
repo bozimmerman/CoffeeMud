@@ -47,43 +47,37 @@ public class ClanHomeSet extends BaseClanner
 			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
+		Clan C=Clans.getClan(mob.getClanID());
+		if(C==null)
+		{
+			mob.tell("There is no longer a clan called "+mob.getClanID()+".");
+			return false;
+		}
+		if(C.getStatus()>Clan.CLANSTATUS_ACTIVE)
+		{
+			mob.tell("You cannot set a home.  Your "+C.typeName()+" does not have enough members to be considered active.");
+			return false;
+		}
+		if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,false))
+		{
+			if(!CoffeeUtensils.doesOwnThisProperty(C.ID(),R))
+			{
+				mob.tell("Your "+C.typeName()+" does not own this room.");
+				return false;
+			}
+			if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,true))
+			{
+				C.setRecall(CMMap.getExtendedRoomID(R));
+				C.update();
+				mob.tell("Your "+C.typeName()+" home is now set to "+R.roomTitle()+".");
+				clanAnnounce(mob, "Your "+C.typeName()+" home is now set to "+R.roomTitle()+".");
+				return true;
+			}
+		}
 		else
 		{
-			Clan C=Clans.getClan(mob.getClanID());
-			if(C==null)
-			{
-				mob.tell("There is no longer a clan called "+mob.getClanID()+".");
-				return false;
-			}
-			if(C.getStatus()>Clan.CLANSTATUS_ACTIVE)
-			{
-				mob.tell("You cannot set a home.  Your "+C.typeName()+" does not have enough members to be considered active.");
-				return false;
-			}
-			if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,false))
-			{
-				if(!CoffeeUtensils.doesOwnThisProperty(C.ID(),R))
-				{
-					mob.tell("Your "+C.typeName()+" does not own this room.");
-					return false;
-				}
-				else
-				{
-					if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,true))
-					{
-						C.setRecall(CMMap.getExtendedRoomID(R));
-						C.update();
-						mob.tell("Your "+C.typeName()+" home is now set to "+R.roomTitle()+".");
-						clanAnnounce(mob, "Your "+C.typeName()+" home is now set to "+R.roomTitle()+".");
-						return false;
-					}
-				}
-			}
-			else
-			{
-				mob.tell("You aren't in the right position to set your "+C.typeName()+"'s home.");
-				return false;
-			}
+			mob.tell("You aren't in the right position to set your "+C.typeName()+"'s home.");
+			return false;
 		}
 		return false;
 	}

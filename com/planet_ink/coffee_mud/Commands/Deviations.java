@@ -126,8 +126,9 @@ public class Deviations extends StdCommand
 	{
 		if(val==val2) return "0%";
 		int oval=val-val2;
-		if(oval>0) return "+"+oval;
-		else return ""+oval;
+		if(oval>0) 
+            return "+"+oval;
+        return ""+oval;
 	}
 
 	public StringBuffer deviations(MOB mob, String rest)

@@ -90,18 +90,15 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 			case GOLD_RING_OPAL:
 				if(Math.random()>.15)
 					return false;
-				else
-					return true;
+				return true;
 			case GOLD_RING_SAPPHIRE:
 				if(Math.random()>.15)
 					return false;
-				else
-					return true;
+				return true;
 			case MITHRIL_RING:
 				if(Math.random()>.05)
 					return false;
-				else
-					return true;
+				return true;
 			default:
 				return true;
 

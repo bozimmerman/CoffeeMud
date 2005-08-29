@@ -146,8 +146,7 @@ public class Equipment extends StdCommand
         {
             if(mob.isMonster())
                 return null;
-            else
-    			msg.append("^!(nothing)^?\n\r");
+			msg.append("^!(nothing)^?\n\r");
         }
         else
         if((paragraphView)&&(msg.lastIndexOf(",") > -1))

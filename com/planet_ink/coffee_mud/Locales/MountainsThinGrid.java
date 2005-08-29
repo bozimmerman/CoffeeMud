@@ -37,8 +37,7 @@ public class MountainsThinGrid extends StdThinGrid
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();
-	    else
-	        return new MountainsGrid().newInstance();
+        return new MountainsGrid().newInstance();
 	}
 	public String getChildLocaleID(){return "Mountains";}
 	public Vector resourceChoices(){return Mountains.roomResources;}

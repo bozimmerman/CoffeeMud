@@ -90,15 +90,12 @@ public class Prayer_AuraDivineEdict extends Prayer
 			   msg.source().tell("The divine care not about such orders.");
 			   return false;
 			}
-			else
-			{
-				noRecurse=true;
-				String oldLiege=((MOB)msg.target()).getLiegeID();
-				((MOB)msg.target()).setLiegeID(msg.source().Name());
-				msg.source().doCommand(V);
-				((MOB)msg.target()).setLiegeID(oldLiege);
-				noRecurse=false;
-			}
+			noRecurse=true;
+			String oldLiege=((MOB)msg.target()).getLiegeID();
+			((MOB)msg.target()).setLiegeID(msg.source().Name());
+			msg.source().doCommand(V);
+			((MOB)msg.target()).setLiegeID(oldLiege);
+			noRecurse=false;
 			return false;
 		}
 		noRecurse=false;

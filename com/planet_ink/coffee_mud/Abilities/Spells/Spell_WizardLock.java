@@ -42,7 +42,7 @@ public class Spell_WizardLock extends Spell
 		||(msg.source()==invoker())
 		||(CoffeeUtensils.doesHavePriviledgesHere(mob,msg.source().location()))&&(text().toUpperCase().indexOf("MALICIOUS")<0))
 			return true;
-		else
+        
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_OPEN:

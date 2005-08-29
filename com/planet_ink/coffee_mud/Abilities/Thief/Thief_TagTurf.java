@@ -89,11 +89,8 @@ public class Thief_TagTurf extends ThiefSkill
                 mob.tell("This place has been untagged.");
                 return true;
             }
-            else
-            {
-    			mob.tell("This place has already been tagged.");
-    			return false;
-            }
+			mob.tell("This place has already been tagged.");
+			return false;
 		}
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 		   &&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WOOD)

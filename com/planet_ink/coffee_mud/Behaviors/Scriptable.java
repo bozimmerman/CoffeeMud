@@ -805,8 +805,7 @@ public class Scriptable extends StdBehavior
 			case 'F':
 			case 'f': if((monster!=null)&&(monster.amFollowing()!=null))
 						return monster.amFollowing();
-					  else
-						return null;
+					  return null;
 			case 'r':
 			case 'R': return getRandomMOB(monster,null,lastKnownLocation);
 			case 'w': return primaryItem!=null?primaryItem.owner():null;
@@ -817,14 +816,11 @@ public class Scriptable extends StdBehavior
 				{
 					if((str.length()>2)&&(Directions.getGoodDirectionCode(""+str.charAt(2))>=0))
 						return lastKnownLocation.getExitInDir(Directions.getGoodDirectionCode(""+str.charAt(2)));
-					else
-					{
-						int i=0;
-						Exit E=null;
-						while(((++i)<100)||(E!=null))
-							E=lastKnownLocation.getExitInDir(Dice.roll(1,Directions.NUM_DIRECTIONS,-1));
-						return E;
-					}
+					int i=0;
+					Exit E=null;
+					while(((++i)<100)||(E!=null))
+						E=lastKnownLocation.getExitInDir(Dice.roll(1,Directions.NUM_DIRECTIONS,-1));
+					return E;
 				}
 				return null;
 			}
@@ -4251,7 +4247,6 @@ public class Scriptable extends StdBehavior
 		    tickStatus=Tickable.STATUS_MISC3+methCode.intValue();
 			if(cmd.length()==0)
 				continue;
-			else
 			switch(methCode.intValue())
 			{
 			case 19: // if

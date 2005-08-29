@@ -35,22 +35,19 @@ public class Poison_Rotten extends Poison
 	{
 	    if((affected instanceof Food)&&((((Food)affected).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_FLESH))
 		    return false;
-	    else
-	        return true;
+        return true;
 	}
 	protected String POISON_START_TARGETONLY()
 	{
 	    if((affected instanceof Food)&&((((Food)affected).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_FLESH))
 		    return "^G"+affected.name()+" was rotten! Blech!^?";
-	    else
-		    return "";
+	    return "";
 	}
 	protected String POISON_START()
 	{
 	    if(affected instanceof Food)
 		    return "^G"+affected.name()+" was rotten! <S-NAME> bend(s) over with horrid stomach pains!^?";
-	    else
-		    return "^G<S-NAME> bend(s) over with horrid stomach pains!^?";
+	    return "^G<S-NAME> bend(s) over with horrid stomach pains!^?";
 	}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

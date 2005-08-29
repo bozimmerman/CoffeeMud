@@ -84,36 +84,50 @@ public class ClanAssign extends BaseClanner
 							mob.tell(qual+" was not found.  Could not change "+C.typeName()+" role.");
 							return false;
 						}
-						else
+						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANASSIGN,true))
 						{
-							if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANASSIGN,true))
+						    int oldPos=M.getClanRole();
+							int max=Clan.ROL_MAX[C.getGovernment()][getIntFromRole(newPos)];
+							Vector olds=new Vector();
+							for(int i=0;i<apps.size();i++)
+								if(((Integer)apps.elementAt(i,2)).intValue()==newPos)
+									olds.addElement(apps.elementAt(i,1));
+							if(Clans.getRoleOrder(oldPos)==Clan.POSORDER.length-1)
 							{
-							    int oldPos=M.getClanRole();
-								int max=Clan.ROL_MAX[C.getGovernment()][getIntFromRole(newPos)];
-								Vector olds=new Vector();
+							    int numOlds=0;
 								for(int i=0;i<apps.size();i++)
-									if(((Integer)apps.elementAt(i,2)).intValue()==newPos)
-										olds.addElement(apps.elementAt(i,1));
-								if(Clans.getRoleOrder(oldPos)==Clan.POSORDER.length-1)
+								    if(!M.Name().equalsIgnoreCase((String)apps.elementAt(i,1)))
+										if(((Integer)apps.elementAt(i,2)).intValue()==oldPos)
+											numOlds++;
+								if(numOlds==0)
 								{
-								    int numOlds=0;
-									for(int i=0;i<apps.size();i++)
-									    if(!M.Name().equalsIgnoreCase((String)apps.elementAt(i,1)))
-											if(((Integer)apps.elementAt(i,2)).intValue()==oldPos)
-												numOlds++;
-									if(numOlds==0)
+								    mob.tell(M.Name()+" is the last "+Clans.getRoleName(C.getGovernment(),oldPos,true,false)+" and must be replaced before being reassigned.");
+								    return false;
+								}
+							}
+							if((olds.size()>0)&&(max<Integer.MAX_VALUE))
+							{
+								if(max==1)
+								{
+									for(int i=0;i<olds.size();i++)
 									{
-									    mob.tell(M.Name()+" is the last "+Clans.getRoleName(C.getGovernment(),oldPos,true,false)+" and must be replaced before being reassigned.");
-									    return false;
+										String s=(String)olds.elementAt(i);
+										clanAnnounce(mob,s+" is now a "+Clans.getRoleName(C.getGovernment(),Clan.POS_MEMBER,true,false));
+										MOB M2=CMMap.getPlayer(s);
+										if(M2!=null) M2.setClanRole(Clan.POS_MEMBER);
+										CMClass.DBEngine().DBUpdateClanMembership(s, C.ID(), Clan.POS_MEMBER);
+										C.updateClanPrivileges(M2);
 									}
 								}
-								if((olds.size()>0)&&(max<Integer.MAX_VALUE))
+								else
 								{
-									if(max==1)
+									if(olds.size()>3)
 									{
-										for(int i=0;i<olds.size();i++)
+										max=olds.size()/max;
+										while((olds.size()>max)&&(olds.size()>3))
 										{
-											String s=(String)olds.elementAt(i);
+											String s=(String)olds.elementAt(0);
+											apps.removeElementAt(0);
 											clanAnnounce(mob,s+" is now a "+Clans.getRoleName(C.getGovernment(),Clan.POS_MEMBER,true,false));
 											MOB M2=CMMap.getPlayer(s);
 											if(M2!=null) M2.setClanRole(Clan.POS_MEMBER);
@@ -121,32 +135,15 @@ public class ClanAssign extends BaseClanner
 											C.updateClanPrivileges(M2);
 										}
 									}
-									else
-									{
-										if(olds.size()>3)
-										{
-											max=olds.size()/max;
-											while((olds.size()>max)&&(olds.size()>3))
-											{
-												String s=(String)olds.elementAt(0);
-												apps.removeElementAt(0);
-												clanAnnounce(mob,s+" is now a "+Clans.getRoleName(C.getGovernment(),Clan.POS_MEMBER,true,false));
-												MOB M2=CMMap.getPlayer(s);
-												if(M2!=null) M2.setClanRole(Clan.POS_MEMBER);
-												CMClass.DBEngine().DBUpdateClanMembership(s, C.ID(), Clan.POS_MEMBER);
-												C.updateClanPrivileges(M2);
-											}
-										}
-									}
 								}
-								clanAnnounce(mob,M.Name()+" changed from "+Clans.getRoleName(C.getGovernment(),M.getClanRole(),true,false)+" to "+Clans.getRoleName(C.getGovernment(),newPos,true,false));
-								M.setClanRole(newPos);
-								C.updateClanPrivileges(M);
-								CMClass.DBEngine().DBUpdateClanMembership(M.Name(), C.ID(), newPos);
-								mob.tell(M.Name()+" has been assigned to be "+Util.startWithAorAn(Clans.getRoleName(C.getGovernment(),newPos,false,false))+" of "+C.typeName()+" '"+C.ID()+"'.");
-								M.tell("You have been assigned to be "+Util.startWithAorAn(Clans.getRoleName(C.getGovernment(),newPos,false,false))+" of "+C.typeName()+" '"+C.ID()+"'.");
-								return false;
 							}
+							clanAnnounce(mob,M.Name()+" changed from "+Clans.getRoleName(C.getGovernment(),M.getClanRole(),true,false)+" to "+Clans.getRoleName(C.getGovernment(),newPos,true,false));
+							M.setClanRole(newPos);
+							C.updateClanPrivileges(M);
+							CMClass.DBEngine().DBUpdateClanMembership(M.Name(), C.ID(), newPos);
+							mob.tell(M.Name()+" has been assigned to be "+Util.startWithAorAn(Clans.getRoleName(C.getGovernment(),newPos,false,false))+" of "+C.typeName()+" '"+C.ID()+"'.");
+							M.tell("You have been assigned to be "+Util.startWithAorAn(Clans.getRoleName(C.getGovernment(),newPos,false,false))+" of "+C.typeName()+" '"+C.ID()+"'.");
+							return false;
 						}
 					}
 					else

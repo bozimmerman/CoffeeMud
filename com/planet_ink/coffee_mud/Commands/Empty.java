@@ -104,14 +104,11 @@ public class Empty extends BaseItemParser
 						mob.tell("You must remove that first.");
 						return false;
 					}
+					FullMsg newMsg=new FullMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
+					if(mob.location().okMessage(mob,newMsg))
+						mob.location().send(mob,newMsg);
 					else
-					{
-						FullMsg newMsg=new FullMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
-						if(mob.location().okMessage(mob,newMsg))
-							mob.location().send(mob,newMsg);
-						else
-							return false;
-					}
+						return false;
 				}
 			}
 			if(dropThis==null) break;

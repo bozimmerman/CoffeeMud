@@ -71,17 +71,14 @@ public class ClanReject extends BaseClanner
 							mob.tell(qual+" was not found.  Could not reject from "+C.typeName()+".");
 							return false;
 						}
-						else
+						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANREJECT,true))
 						{
-							if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANREJECT,true))
-							{
-								M.setClanID("");
-								M.setClanRole(0);
-								CMClass.DBEngine().DBUpdateClanMembership(M.Name(), "", 0);
-								mob.tell(M.Name()+" has been denied acceptance to "+C.typeName()+" '"+C.ID()+"'.");
-								M.tell("You have been rejected as a member of "+C.typeName()+" '"+C.ID()+"'.");
-								return false;
-							}
+							M.setClanID("");
+							M.setClanRole(0);
+							CMClass.DBEngine().DBUpdateClanMembership(M.Name(), "", 0);
+							mob.tell(M.Name()+" has been denied acceptance to "+C.typeName()+" '"+C.ID()+"'.");
+							M.tell("You have been rejected as a member of "+C.typeName()+" '"+C.ID()+"'.");
+							return false;
 						}
 					}
 					else

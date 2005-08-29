@@ -72,8 +72,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 				}
 				return super.tick(ticking,tickID);
 			}
-			else
-				return false;
+			return false;
 		}
 		return super.tick(ticking,tickID);
 	}

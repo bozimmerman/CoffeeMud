@@ -24,7 +24,12 @@ public class Thief_Nondetection extends ThiefSkill
 {
 	public String ID() { return "Thief_Nondetection"; }
 	public String name(){ return "Nondetection";}
-	public String displayText(){ if(active)return "(Nondetectable)";else return "";}
+	public String displayText()
+    { 
+        if(active)
+            return "(Nondetectable)";
+        return "";
+    }
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.OK_SELF;}

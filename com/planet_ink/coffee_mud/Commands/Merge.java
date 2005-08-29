@@ -32,11 +32,9 @@ public class Merge extends StdCommand
 		{
 			if(E.baseEnvStats().rejuv()==Integer.MAX_VALUE)
 				return "0";
-			else
-				return ""+E.baseEnvStats().rejuv();
+			return ""+E.baseEnvStats().rejuv();
 		}
-		else
-			return E.getStat(stat);
+		return E.getStat(stat);
 	}
 
 	public static void setStat(Environmental E, String stat, String value)

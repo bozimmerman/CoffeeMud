@@ -111,11 +111,9 @@ public class Spell_Delirium extends Spell
 		{
 			if(likeThis instanceof MOB)
 				return "someone";
-			else
-				return "something";
+			return "something";
 		}
-		else
-			return E.name();
+		return E.name();
 	}
 
 	private String process(MOB mob, String str, Environmental obj)

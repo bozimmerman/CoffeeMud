@@ -37,8 +37,7 @@ public class HillsThinGrid extends StdThinGrid
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();
-	    else
-	        return new HillsGrid().newInstance();
+        return new HillsGrid().newInstance();
 	}
 	public String getChildLocaleID(){return "Hills";}
 	public Vector resourceChoices(){return Hills.roomResources;}

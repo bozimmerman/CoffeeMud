@@ -46,8 +46,7 @@ public class GenSSPanel extends GenShipContainer
 	public String displayText(){
 		if(isOpen())
 			return name()+" is opened here.";
-		else
-			return "";
+		return "";
 	}
 	public boolean canContain(Environmental E)
 	{

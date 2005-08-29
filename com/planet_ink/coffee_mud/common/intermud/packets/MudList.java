@@ -72,16 +72,12 @@ public class MudList implements Serializable
         if( !list.containsKey(mud) ) {
             return null;
         }
-        else {
-            Mud tmp = (Mud)list.get(mud);
+        Mud tmp = (Mud)list.get(mud);
 
-            if( tmp.modified == Persistent.DELETED ) {
-                return null;
-            }
-            else {
-                return tmp;
-            }
+        if( tmp.modified == Persistent.DELETED ) {
+            return null;
         }
+        return tmp;
     }
 
     public void removeMud(Mud mud) {

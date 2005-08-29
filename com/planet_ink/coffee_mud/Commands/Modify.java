@@ -755,11 +755,8 @@ public class Modify extends BaseGenerics
 				mob.session().rawPrintln("That social already exists in another form (<T-NAME>, or SELF).  Try deleting the other one first!");
 				return;
 			}
-			else
-			{
-				Resources.removeResource("SOCIALS LIST");
-				Socials.save();
-			}
+			Resources.removeResource("SOCIALS LIST");
+			Socials.save();
 			Log.sysOut("SysopSocials",mob.Name()+" modified social "+soc2.name()+".");
 		}
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just increased!");

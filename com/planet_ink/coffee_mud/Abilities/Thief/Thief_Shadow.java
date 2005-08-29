@@ -175,8 +175,7 @@ public class Thief_Shadow extends ThiefSkill
 					AA.unInvoke();
 					return true;
 				}
-				else
-					mob.delEffect(A);
+				mob.delEffect(A);
 			}
 		}
 		if(commands.size()<1)

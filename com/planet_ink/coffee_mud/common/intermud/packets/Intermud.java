@@ -129,12 +129,9 @@ public class Intermud implements Runnable, Persistent, Serializable
 		if(!isConnected()) return false;
         Mud m = thread.getMud(mud);
 
-        if( m == null ) {
+        if( m == null )
             return false;
-        }
-        else {
-            return (m.state == -1);
-        }
+        return (m.state == -1);
     }
 
     private boolean             connected;

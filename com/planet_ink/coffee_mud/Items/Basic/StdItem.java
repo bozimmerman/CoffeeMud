@@ -272,16 +272,13 @@ public class StdItem implements Item
 			}
 			return couldHaveBeenWornAt;
 		}
-		else
+		for(int i=1;i<wornCodes.length;i++)
 		{
-			for(int i=1;i<wornCodes.length;i++)
-			{
-				if((fitsOn(wornCodes[i]))
-				&&(mob.freeWearPositions(wornCodes[i])==0))
-					return wornCodes[i];
-			}
-			return 0;
+			if((fitsOn(wornCodes[i]))
+			&&(mob.freeWearPositions(wornCodes[i])==0))
+				return wornCodes[i];
 		}
+		return 0;
 	}
 
 	public boolean canWear(MOB mob, long where)
@@ -495,7 +492,6 @@ public class StdItem implements Item
     {
         if(!(this instanceof Container))
             return 1;
-        else
         return ((Container)this).getContents().size()+1;
     }
 	public int usesRemaining()
@@ -532,14 +528,11 @@ public class StdItem implements Item
 						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
 						return false;
 					}
-					else
+					alreadyWearing=mob.fetchFirstWornItem(cantWearAt);
+					if((alreadyWearing!=null)&&(!canWear(mob,0)))
 					{
-						alreadyWearing=mob.fetchFirstWornItem(cantWearAt);
-						if((alreadyWearing!=null)&&(!canWear(mob,0)))
-						{
-							mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
-							return false;
-						}
+						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
+						return false;
 					}
 				}
 				else
@@ -706,8 +699,7 @@ public class StdItem implements Item
 				}
 				return true;
 			}
-			else
-				return canWearComplete(mob);
+			return canWearComplete(mob);
 		case CMMsg.TYP_WEAR:
 			if(properWornBitmap==0)
 			{
