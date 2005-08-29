@@ -567,7 +567,7 @@ public class Create extends BaseGenerics
 			String allWord=Util.combine(commands,1);
 			String lastWord=null;
 			if(commands.size()>2)
-				lastWord=(String)commands.elementAt(commands.size()-1);
+				lastWord=(String)commands.lastElement();
 			Environmental E=null;
 			E=CMClass.getItem(allWord);
 			if(((E!=null)&&(E instanceof Item))||(EnglishParser.numPossibleGold(null,allWord)>0))

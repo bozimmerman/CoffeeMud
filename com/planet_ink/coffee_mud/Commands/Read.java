@@ -70,7 +70,7 @@ public class Read extends StdCommand
 		int dir=Directions.getGoodDirectionCode(Util.combine(commands,0));
 		Environmental thisThang=null;
 		if(dir>=0)	thisThang=mob.location().getExitInDir(dir);
-		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.elementAt(commands.size()-1),Item.WORN_REQ_ANY);
+		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Item.WORN_REQ_ANY);
 		String theRest=null;
 		if(thisThang==null)
 			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,Util.combine(commands,0),Item.WORN_REQ_ANY);

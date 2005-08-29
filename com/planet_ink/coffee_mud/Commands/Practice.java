@@ -38,7 +38,7 @@ public class Practice extends StdCommand
 		MOB teacher=null;
 		if(commands.size()>1)
 		{
-			teacher=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
+			teacher=mob.location().fetchInhabitant((String)commands.lastElement());
 			if(teacher!=null) commands.removeElementAt(commands.size()-1);
 		}
 

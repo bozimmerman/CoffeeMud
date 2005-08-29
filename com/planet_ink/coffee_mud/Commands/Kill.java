@@ -47,7 +47,7 @@ public class Kill extends StdCommand
 		String whomToKill=Util.combine(commands,1);
 		if(CMSecurity.isAllowed(mob,mob.location(),"KILLDEAD")&&(!mob.isMonster()))
 		{
-			if(((String)commands.elementAt(commands.size()-1)).equalsIgnoreCase("DEAD"))
+			if(((String)commands.lastElement()).equalsIgnoreCase("DEAD"))
 			{
 				commands.removeElementAt(commands.size()-1);
 				whomToKill=Util.combine(commands,1);

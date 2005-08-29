@@ -45,10 +45,10 @@ public class Take extends BaseItemParser
 				return false;
 			}
 
-			MOB victim=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
+			MOB victim=mob.location().fetchInhabitant((String)commands.lastElement());
 			if((victim==null)||((victim!=null)&&(!Sense.canBeSeenBy(victim,mob))))
 			{
-				mob.tell("I don't see anyone called "+(String)commands.elementAt(commands.size()-1)+" here.");
+				mob.tell("I don't see anyone called "+(String)commands.lastElement()+" here.");
 				return false;
 			}
 			if((!victim.isMonster())&&(!CMSecurity.isAllowedEverywhere(mob,"ORDER")))
@@ -57,7 +57,7 @@ public class Take extends BaseItemParser
 				return false;
 			}
 			commands.removeElementAt(commands.size()-1);
-			if((commands.size()>0)&&(((String)commands.elementAt(commands.size()-1)).equalsIgnoreCase("from")))
+			if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("from")))
 				commands.removeElementAt(commands.size()-1);
 
 			int maxToGive=Integer.MAX_VALUE;
@@ -141,7 +141,7 @@ public class Take extends BaseItemParser
 		}
 		else
 		{
-			if(((String)commands.elementAt(commands.size()-1)).equalsIgnoreCase("off"))
+			if(((String)commands.lastElement()).equalsIgnoreCase("off"))
 			{
 				commands.removeElementAt(commands.size()-1);
 				Command C=CMClass.getCommand("Remove");

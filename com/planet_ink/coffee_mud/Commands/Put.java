@@ -62,7 +62,7 @@ public class Put extends BaseItemParser
 			return false;
 		}
 
-		if(((String)commands.elementAt(commands.size()-1)).equalsIgnoreCase("on"))
+		if(((String)commands.lastElement()).equalsIgnoreCase("on"))
 		{
 			commands.removeElementAt(commands.size()-1);
 			Command C=CMClass.getCommand("Wear");
@@ -94,7 +94,7 @@ public class Put extends BaseItemParser
 		Environmental container=EnglishParser.possibleContainer(mob,commands,false,Item.WORN_REQ_ANY);
 		if((container==null)||((container!=null)&&(!Sense.canBeSeenBy(container,mob))))
 		{
-			mob.tell("I don't see a "+(String)commands.elementAt(commands.size()-1)+" here.");
+			mob.tell("I don't see a "+(String)commands.lastElement()+" here.");
 			return false;
 		}
 

@@ -121,7 +121,7 @@ public class Destroy extends BaseItemParser
 		boolean confirmed=false;
 		if((commands.size()>3))
 		{
-			if(((String)commands.elementAt(commands.size()-1)).equalsIgnoreCase("CONFIRMED"))
+			if(((String)commands.lastElement()).equalsIgnoreCase("CONFIRMED"))
 			{
 				commands.removeElementAt(commands.size()-1);
 				confirmed=true;
@@ -340,7 +340,7 @@ public class Destroy extends BaseItemParser
 		boolean confirmed=false;
 		if((commands.size()>3))
 		{
-			if(((String)commands.elementAt(commands.size()-1)).equalsIgnoreCase("CONFIRMED"))
+			if(((String)commands.lastElement()).equalsIgnoreCase("CONFIRMED"))
 			{
 				commands.removeElementAt(commands.size()-1);
 				confirmed=true;

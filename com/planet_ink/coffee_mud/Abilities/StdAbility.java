@@ -356,7 +356,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 		if((commands==null)||(commands.size()<2))
 			return null;
 
-		String possibleContainerID=(String)commands.elementAt(commands.size()-1);
+		String possibleContainerID=(String)commands.lastElement();
 		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,wornReqCode);
 		if((thisThang!=null)
 		&&(thisThang instanceof Item)

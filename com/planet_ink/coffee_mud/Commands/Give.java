@@ -41,14 +41,14 @@ public class Give extends BaseItemParser
 			return false;
 		}
 
-		MOB recipient=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
+		MOB recipient=mob.location().fetchInhabitant((String)commands.lastElement());
 		if((recipient==null)||((recipient!=null)&&(!Sense.canBeSeenBy(recipient,mob))))
 		{
-			mob.tell("I don't see anyone called "+(String)commands.elementAt(commands.size()-1)+" here.");
+			mob.tell("I don't see anyone called "+(String)commands.lastElement()+" here.");
 			return false;
 		}
 		commands.removeElementAt(commands.size()-1);
-		if((commands.size()>0)&&(((String)commands.elementAt(commands.size()-1)).equalsIgnoreCase("to")))
+		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("to")))
 			commands.removeElementAt(commands.size()-1);
 
 		int maxToGive=Integer.MAX_VALUE;
