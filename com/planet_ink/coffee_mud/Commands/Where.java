@@ -293,7 +293,7 @@ public class Where extends StdCommand
 				msg.append(((String)scores.elementAt(i,1))+"\n\r");
 			msg.append("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
 			if(!mob.isMonster())
-				mob.session().colorOnlyPrintln(msg.toString());
+				mob.session().colorOnlyPrintln(msg.toString()+"\n\r");
 		}
 		return false;
 	}

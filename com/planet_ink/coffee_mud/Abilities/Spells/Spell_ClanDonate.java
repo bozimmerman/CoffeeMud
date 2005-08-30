@@ -66,7 +66,8 @@ public class Spell_ClanDonate extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> invoke(s) a donation spell upon <T-NAMESELF>.^?");
-			if((mob.location().okMessage(mob,msg))&&(CommonMsgs.drop(mob,target,true,false)))
+			if((mob.location().okMessage(mob,msg))
+            &&((target instanceof Coins)||(CommonMsgs.drop(mob,target,true,false))))
 			{
 				mob.location().send(mob,msg);
                 msg=new FullMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> appears!");

@@ -112,7 +112,7 @@ public class Spell_Shrink extends Spell
                     }
                 }
                 
-                if(!isJustUnInvoking)
+                if((!isJustUnInvoking)&&(msg.value()<=0))
                 {
     				beneficialAffect(mob,E,asLevel,0);
     				if(E instanceof MOB)

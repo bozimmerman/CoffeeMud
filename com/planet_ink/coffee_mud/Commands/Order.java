@@ -69,7 +69,10 @@ public class Order extends StdCommand
 
 		if(V.size()==0)
 		{
-			mob.tell("You don't see anyone called '"+whomToOrder+" here.");
+            if(whomToOrder.equalsIgnoreCase("ALL"))
+    			mob.tell("You don't see anyone called '"+whomToOrder+"' here.");
+            else
+                mob.tell("You don't see anyone here.");
 			return false;
 		}
 		

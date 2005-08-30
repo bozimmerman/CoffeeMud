@@ -85,7 +85,7 @@ public class ItemIdentifier extends StdBehavior
 			msg.addTrailerMsg(newMsg);
 			StringBuffer up=new StringBuffer(msg.tool().name()+" is made of "+EnvResource.RESOURCE_DESCS[((Item)msg.tool()).material()&EnvResource.RESOURCE_MASK].toLowerCase()+".\n\r");
 			if((msg.tool() instanceof Armor)&&(msg.tool().envStats().height()>0))
-				up.append("It is a size "+msg.tool().envStats().height()+".");
+				up.append("It is a size "+msg.tool().envStats().height()+".\n\r");
 			int weight=msg.tool().envStats().weight();
 			if((weight!=msg.tool().baseEnvStats().weight())&&(msg.tool() instanceof Container))
 				up.append("It weighs "+msg.tool().baseEnvStats().weight()+" pounds empty and "+weight+" pounds right now.\n\r");

@@ -410,6 +410,7 @@ different points in the CoffeeMud engine.  A summary is as follows:</P>
 <TR><TD VALIGN=top><I>alignment.txt</I></TD><TD VALIGN=top> A text file describing alignment to new players.</TD></TR>
 <TR><TD VALIGN=top><I>classes.txt</I></TD><TD VALIGN=top>A text file describing class selections for new players.</TD></TR>
 <TR><TD VALIGN=top><I>credits.txt</I></TD><TD VALIGN=top>The text file shown to users who use the CREDITS command.</TD></TR>
+<TR><TD VALIGN=top><I>down.txt</I></TD><TD VALIGN=top>The text file displayed to users only when the OffLine application is running.</TD></TR>
 <TR><TD VALIGN=top><I>intro.txt</I></TD><TD VALIGN=top>The text file displayed to users when they connect to your mud.</TD></TR>
 <TR><TD VALIGN=top><I>mxp.txt</I></TD><TD VALIGN=top>A text file containing the complete MXP dictionary.  See <a href="http://www.zuggsoft.com/zmud/mxp.htm">http://www.zuggsoft.com/zmud/mxp.htm</a> for more information on this feature.</TD></TR>
 <TR><TD VALIGN=top><I>newchar.txt</I></TD><TD VALIGN=top>A text file introducing your mud to new players.</TD></TR>
@@ -782,7 +783,18 @@ derby.storage.pageCacheSize=10000
   same speed as other databases. More information on these properties can be 
   found at &lt;Derby Install Path&gt;\doc\pdf\tuning.pdf. </P>
   <P></P>
-            
-            
+<P>
+<IMG src="images/nuked.jpg">
+<P><STRONG><FONT size=5>The OffLine Application:</FONT></STRONG></P>
+<P align=left>In the off chance you should need to keep your mud down while database
+maintence, or other software (or hardware?) maintenance is going on, a&nbsp;small footprint&nbsp;OffLine application is
+available.  This application will read the port information from your coffeemud.ini file just
+like the regular mud server.  It will accept connections, but only to display the file
+resources/text/down.txt before disconnecting the user automatically.  To execute this application,
+you should go into your coffeemud directory and enter:<P>
+<PRE>
+java com.planet_ink.coffee_mud.application.OffLine
+</PRE>
+<P></P>
 </BODY>
 </HTML>
