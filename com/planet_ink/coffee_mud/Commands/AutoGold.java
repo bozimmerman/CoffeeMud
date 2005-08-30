@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,11 +19,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+
 public class AutoGold extends StdCommand
 {
 	public AutoGold(){}
 
-	private String[] access={"AUTOGOLD"};
+	private String[] access={getScr("AutoGold","cmd")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -31,12 +32,12 @@ public class AutoGold extends StdCommand
 		if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOGOLD))
 		{
 			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOGOLD));
-			mob.tell("Autogold has been turned off.");
+			mob.tell(getScr("AutoGold","turnoff"));
 		}
 		else
 		{
 			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTOGOLD));
-			mob.tell("Autogold has been turned on.");
+			mob.tell(getScr("AutoGold","turnon"));
 		}
 		return false;
 	}
@@ -45,3 +46,4 @@ public class AutoGold extends StdCommand
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }
+

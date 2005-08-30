@@ -4,27 +4,30 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
-   Copyright 2000-2005 Bo Zimmerman
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+/*
+Copyright 2000-2005 Bo Zimmerman
 
-       http://www.apache.org/licenses/LICENSE-2.0
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 */
+
 public class AutoGuard extends StdCommand
 {
 	public AutoGuard(){}
 
-	private String[] access={"AUTOGUARD","GUARD"};
+	private String[] access={getScr("AutoGuard","cmd"),getScr("AutoGuard","cmd1")};
 	public String[] getAccessWords(){return access;}
+
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -32,16 +35,16 @@ public class AutoGuard extends StdCommand
 		   ||((commands.size()>0)&&(((String)commands.firstElement()).toUpperCase().startsWith("G"))))
 		{
 			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
-			mob.tell("You are now on guard. You will no longer follow group leaders.");
+			mob.tell(getScr("AutoGuard","guardon"));
 			if(mob.isMonster())
-				CommonMsgs.say(mob,null,"I am now on guard.",false,false);
+				CommonMsgs.say(mob,null,getScr("AutoGuard","guardonmsg"),false,false);
 		}
 		else
 		{
 			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
-			mob.tell("You are no longer on guard.  You will now follow group leaders.");
+			mob.tell(getScr("AutoGuard","guardoff"));
 			if(mob.isMonster())
-				CommonMsgs.say(mob,null,"I will now follow my group leader.",false,false);
+				CommonMsgs.say(mob,null,getScr("AutoGuard","followglead"),false,false);
 		}
 		return false;
 	}
@@ -50,3 +53,4 @@ public class AutoGuard extends StdCommand
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }
+

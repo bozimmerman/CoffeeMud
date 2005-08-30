@@ -4,26 +4,28 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
-   Copyright 2000-2005 Bo Zimmerman
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+/*
+Copyright 2000-2005 Bo Zimmerman
 
-       http://www.apache.org/licenses/LICENSE-2.0
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 */
+
 public class AutoImprovement extends StdCommand
 {
 	public AutoImprovement(){}
 
-	private String[] access={"AUTOIMPROVEMENT"};
+	private String[] access={getScr("AutoImprovement","cmd")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -31,12 +33,12 @@ public class AutoImprovement extends StdCommand
 		if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOIMPROVE))
 		{
 			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOIMPROVE));
-			mob.tell("Skill improvement notifications are now off.");
+			mob.tell(getScr("AutoImprovement","turnoff"));
 		}
 		else
 		{
 			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTOIMPROVE));
-			mob.tell("Skill improvement notifications are now on.");
+			mob.tell(getScr("AutoImprovement","turnon"));
 		}
 		return false;
 	}
@@ -45,3 +47,4 @@ public class AutoImprovement extends StdCommand
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }
+
