@@ -562,9 +562,15 @@ public final class IMC2Driver extends Thread {
                                 found = true;
                         }
                         else
+                        {
+                            p=keys.length();
                             found = true;
+                        }
                     }
                     val = keys.substring(1, p);
+                    if(p>=keys.length())
+                        keys="";
+                    else
                     if(p+2>=keys.length())
 	                    keys = keys.substring(p+1, keys.length());
                     else
