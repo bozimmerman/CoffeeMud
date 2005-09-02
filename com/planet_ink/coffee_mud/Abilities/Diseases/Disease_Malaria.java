@@ -38,6 +38,7 @@ public class Disease_Malaria extends Disease
 	protected String DISEASE_AFFECT(){return "<S-NAME> ache(s) and sneeze(s). AAAAAAAAAAAAAACHOOO!!!!";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
 	public int difficultyLevel(){return 1;}
+    private boolean norecurse=false;
 	private int conDown=0;
 	private int tickUp=0;
 
@@ -85,12 +86,14 @@ public class Disease_Malaria extends Disease
 		if(affectableStats.getStat(CharStats.STRENGTH)<=0)
 			affectableStats.setStat(CharStats.STRENGTH,1);
 		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-(5+conDown));
-		if(affectableStats.getStat(CharStats.CONSTITUTION)<=0)
+		if((affectableStats.getStat(CharStats.CONSTITUTION)<=0)&&(!norecurse))
 		{
 			conDown=-1;
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=affected;
+            norecurse=true;
 			MUDFight.postDeath(diseaser,affected,null);
+            norecurse=false;
 		}
 	}
 

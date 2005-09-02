@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -39,6 +40,7 @@ public class Disease_Syphilis extends Disease
 	public int abilityCode(){return DiseaseAffect.SPREAD_STD;}
 	public int difficultyLevel(){return 0;}
 	protected int conDown=0;
+    private boolean norecurse=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -73,12 +75,14 @@ public class Disease_Syphilis extends Disease
 		if(affected==null) return;
 		if(conDown<=0) return;
 		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-conDown);
-		if(affectableStats.getStat(CharStats.CONSTITUTION)<=0)
+		if((affectableStats.getStat(CharStats.CONSTITUTION)<=0)&&(!norecurse))
 		{
 			conDown=-1;
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=affected;
-			MUDFight.postDeath(diseaser,affected,null);
+            norecurse=true;
+            MUDFight.postDeath(diseaser,affected,null);
+            norecurse=false;
 		}
 	}
 

@@ -37,6 +37,7 @@ public class Disease_Anthrax extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> look(s) ill.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> watch(s) black necrotic wounds appear on <S-HIS-HER> flesh.";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_CONTACT;}
+    private boolean norecurse=false;
 	private int conDown=0;
 	private int conTickDown=60;
 
@@ -75,12 +76,14 @@ public class Disease_Anthrax extends Disease
 		if(affected==null) return;
 		if(conDown<=0) return;
 		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-conDown);
-		if(affectableStats.getStat(CharStats.CONSTITUTION)<=0)
+		if((affectableStats.getStat(CharStats.CONSTITUTION)<=0)&&(!norecurse))
 		{
 			conDown=-1;
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=affected;
-			MUDFight.postDeath(diseaser,affected,null);
+            norecurse=true;
+            MUDFight.postDeath(diseaser,affected,null);
+            norecurse=false;
 		}
 	}
 }

@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -41,6 +42,7 @@ public class Disease_Gangrene extends Disease
 	public int abilityCode(){return 0;}
 	private int tickUpToDay=0;
 	private int daysSick=0;
+    private boolean norecurse=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -84,11 +86,13 @@ public class Disease_Gangrene extends Disease
 		if(daysSick>0)
 		{
 			affectableState.setHitPoints(affectableState.getHitPoints()-(daysSick*(affectableState.getHitPoints()/10)));
-			if(affectableState.getHitPoints()<=0)
+			if((affectableState.getHitPoints()<=0)&&(!norecurse))
 			{
 				MOB diseaser=invoker;
 				if(diseaser==null) diseaser=affected;
-				MUDFight.postDeath(diseaser,affected,null);
+                norecurse=true;
+                MUDFight.postDeath(diseaser,affected,null);
+                norecurse=false;
 			}
 		}
 	}

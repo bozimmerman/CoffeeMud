@@ -37,6 +37,7 @@ public class Disease_Cancer extends Disease
 	protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting sicker...";}
 	public int abilityCode(){return 0;}
 	protected int conDown=1;
+    private boolean norecurse=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -61,12 +62,14 @@ public class Disease_Cancer extends Disease
 		if(affected==null) return;
 		if(conDown<0) return;
 		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-conDown);
-		if(affectableStats.getStat(CharStats.CONSTITUTION)<=0)
+		if((affectableStats.getStat(CharStats.CONSTITUTION)<=0)&&(!norecurse))
 		{
 			conDown=-1;
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=affected;
-			MUDFight.postDeath(diseaser,affected,null);
+            norecurse=true;
+            MUDFight.postDeath(diseaser,affected,null);
+            norecurse=false;
 		}
 	}
 
