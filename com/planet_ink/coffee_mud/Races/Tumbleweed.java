@@ -118,7 +118,7 @@ public class Tumbleweed extends StdRace
 			return "^r" + mob.name() + "^r is massively shredded and damaged.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.name() + "^r is extremeley shredded and damaged.^N";
+			return "^r" + mob.name() + "^r is extremely shredded and damaged.^N";
 		else
 		if(pct<.40)
 			return "^y" + mob.name() + "^y is very shredded and damaged.^N";

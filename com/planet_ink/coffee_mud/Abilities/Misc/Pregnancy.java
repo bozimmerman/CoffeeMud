@@ -28,6 +28,7 @@ public class Pregnancy extends StdAbility
 	public String ID() { return "Pregnancy"; }
 	public String name(){ return "Pregnancy";}
 	protected long monthsRemaining=-1;
+    protected long daysRemaining=-1;
 
 	public String displayText()
 	{
@@ -68,7 +69,7 @@ public class Pregnancy extends StdAbility
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 		&&(Sense.canBeSeenBy(affected,msg.source()))
 		&&(affected instanceof MOB)
-		&&((monthsRemaining>0)&&(monthsRemaining<=3)))
+		&&((daysRemaining>0)&&(monthsRemaining<=3)))
 			msg.addTrailerMsg(new FullMsg(msg.source(),null,null,
 										  CMMsg.MSG_OK_VISUAL,"\n\r"+affected.name()+" is obviously with child.\n\r",
 										  CMMsg.NO_EFFECT,null,
@@ -336,9 +337,9 @@ public class Pregnancy extends StdAbility
 					int z=text().indexOf("/",y+1);
 					long end=Util.s_long(text().substring(x+1,y));
 					long divisor=MudHost.TICK_TIME*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
-					long days=(end-System.currentTimeMillis())/divisor; // down to days
-					monthsRemaining=days/DefaultTimeClock.globalClock.getDaysInMonth(); // down to months
-					if(days<7) // BIRTH!
+					daysRemaining=(end-System.currentTimeMillis())/divisor; // down to days
+					monthsRemaining=daysRemaining/DefaultTimeClock.globalClock.getDaysInMonth(); // down to months
+					if(daysRemaining<7) // BIRTH!
 					{
 						if(Sense.isSleeping(mob))
 							mob.enqueCommand(Util.parse("WAKE"),0);

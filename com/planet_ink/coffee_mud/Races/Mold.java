@@ -146,7 +146,7 @@ public class Mold extends StdRace
 			return "^r" + mob.name() + "^r is massively scrapped and damaged.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.name() + "^r is extremeley scrapped and damaged.^N";
+			return "^r" + mob.name() + "^r is extremely scrapped and damaged.^N";
 		else
 		if(pct<.40)
 			return "^y" + mob.name() + "^y is very scrapped and damaged.^N";

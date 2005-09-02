@@ -130,7 +130,7 @@ public class GatheringSkill extends CommonSkill
 				}
 			}
 	    }
-	    if(numHere==0)
+	    if((numHere==0)||(foundResource<0))
 	    {
 	        if(foundAnyway!=null)
 		        commonTell(mob,"You can't bundle "+foundAnyway.name()+" with this skill.");
@@ -146,6 +146,11 @@ public class GatheringSkill extends CommonSkill
 	    if(lowestNonZeroFoodNumber==Long.MAX_VALUE)
 	        lowestNonZeroFoodNumber=0;
 		Item I=(Item)CoffeeUtensils.makeResource(foundResource,mob.location().domainType(),true);
+        if(I==null)
+        {
+            commonTell(mob,"You could not bundle "+name+" due to "+foundResource+" being an invalid resource code.  Bug it!");
+            return false;
+        }
 		I.setName("a "+amount+"# "+EnvResource.RESOURCE_DESCS[foundResource&EnvResource.RESOURCE_MASK].toLowerCase()+" bundle");
 		I.setDisplayText(I.name()+" is here.");
 		I.baseEnvStats().setWeight(amount);

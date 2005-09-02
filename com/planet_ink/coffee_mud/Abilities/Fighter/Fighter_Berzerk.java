@@ -99,7 +99,7 @@ public class Fighter_Berzerk extends StdAbility
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> get(s) a wild look in <S-HIS-HER> eyes!");
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> get(s) a wild look in <T-HIS-HER> eyes!");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

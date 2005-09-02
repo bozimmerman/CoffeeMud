@@ -76,7 +76,7 @@ public class Undress extends StdCommand
 					{
 						mob.location().send(mob,msg);
 						if(CommonMsgs.get(mob,null,item,true))
-							mob.location().show(mob,target,item,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> take(s) <O-NAME> off <T-NAMESELF>.");
+							mob.location().show(mob,target,item,CMMsg.MASK_GENERAL|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> take(s) <O-NAME> off <T-NAMESELF>.");
 					}
 					else
 						mob.tell("You cannot seem to get "+item.name()+" off "+target.name()+".");

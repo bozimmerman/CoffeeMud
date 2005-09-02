@@ -1020,11 +1020,14 @@ public class Clans implements Clan, Tickable
 						if(getRoleOrder(((Integer)members.elementAt(i,2)).intValue())==highest)
 						{
 							String s=(String)members.elementAt(i,1);
-							clanAnnounce(s+" is now a "+Clans.getRoleName(getGovernment(),max,true,false));
-							Log.sysOut("Clans",s+" of clan "+name()+" was autopromoted to "+getRoleName(getGovernment(),max,true,false)+".");
-							MOB M2=CMMap.getPlayer(s);
-							if(M2!=null) M2.setClanRole(max);
-							CMClass.DBEngine().DBUpdateClanMembership(s, ID(), max);
+							MOB M2=CMMap.getLoadPlayer(s);
+							if(M2!=null) 
+                            {
+                                clanAnnounce(s+" is now a "+Clans.getRoleName(getGovernment(),max,true,false));
+                                Log.sysOut("Clans",s+" of clan "+name()+" was autopromoted to "+getRoleName(getGovernment(),max,true,false)+".");
+                                M2.setClanRole(max);
+    							CMClass.DBEngine().DBUpdateClanMembership(s, ID(), max);
+                            }
 							break;
 						}
 					}

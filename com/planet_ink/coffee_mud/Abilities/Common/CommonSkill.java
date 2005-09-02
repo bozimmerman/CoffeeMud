@@ -238,7 +238,6 @@ public class CommonSkill extends StdAbility
 				if(I.baseEnvStats().weight()>howMuch)
 				{
 					I.baseEnvStats().setWeight(I.baseEnvStats().weight()-howMuch);
-					lostValue+=I.value();
                     Environmental E=null;
 					for(int x=0;x<I.baseEnvStats().weight();x++)
 					{

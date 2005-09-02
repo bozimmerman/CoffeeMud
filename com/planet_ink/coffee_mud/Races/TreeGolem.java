@@ -102,7 +102,7 @@ public class TreeGolem extends StdRace
 			return "^r" + mob.name() + "^r is massively splintered and broken.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.name() + "^r is extremeley splintered and broken.^N";
+			return "^r" + mob.name() + "^r is extremely splintered and broken.^N";
 		else
 		if(pct<.40)
 			return "^y" + mob.name() + "^y is very splintered and broken.^N";

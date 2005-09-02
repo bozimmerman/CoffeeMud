@@ -19,4 +19,4 @@ name,level,ticks,wood,value,class,misc,capacity,armordmg,spell
 % Can	1	5	5	1	GenContainer		10	
 % Lamp Post	15	150	250	GenItem		0	Spell_ContinualLight
 % Colossus	75	4000	8000	10000	GenItem	STATUE	0	Spell_EnlargeObject
-% Hook-Hand	30	20	5	100	GenLimb		0	
+% Hook-Hand	10	20	5	100	GenLimb		0	

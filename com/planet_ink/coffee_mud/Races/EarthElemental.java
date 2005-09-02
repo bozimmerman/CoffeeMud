@@ -67,7 +67,7 @@ public class EarthElemental extends StdRace
 			return "^r" + mob.name() + "^r is massively cracked and damaged.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.name() + "^r is extremeley cracked and damaged.^N";
+			return "^r" + mob.name() + "^r is extremely cracked and damaged.^N";
 		else
 		if(pct<.40)
 			return "^y" + mob.name() + "^y is very cracked and damaged.^N";

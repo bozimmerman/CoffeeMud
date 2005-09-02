@@ -69,7 +69,7 @@ public class MetalGolem extends StdRace
 			return "^r" + mob.name() + "^r is massively dented and damaged.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.name() + "^r is extremeley dented and damaged.^N";
+			return "^r" + mob.name() + "^r is extremely dented and damaged.^N";
 		else
 		if(pct<.40)
 			return "^y" + mob.name() + "^y is very dented and damaged.^N";

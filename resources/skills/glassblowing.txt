@@ -15,4 +15,4 @@ Marbles	2	5	1	1	GenItem
 Vase	6	20	10	5	GenDrink		10
 Carafe	8	20	5	10	GenDrink		8
 Vial	12	10	2	5	GenDrink		1
-a Glass Eye	30	20	5	10	GenLimb		0
+a Glass Eye	10	20	5	10	GenLimb		0
