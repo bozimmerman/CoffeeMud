@@ -50,6 +50,11 @@ public class ClanCreate extends BaseClanner
 						String doubleCheck=mob.session().prompt(getScr("ClanCreate","enternamec"),"");
 						if(doubleCheck.length()<1)
 							return false;
+                        if(doubleCheck.length()>30) // Robert checking length
+                        {
+                            mob.tell(getScr("ClanCreate","shorter"));
+                            return false;
+                        }
 						Clan C=Clans.findClan(doubleCheck);
 						if((CMClass.DBEngine().DBUserSearch(null,doubleCheck))
 						||(doubleCheck.equalsIgnoreCase("All")))
