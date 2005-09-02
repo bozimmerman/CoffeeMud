@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,9 +33,9 @@ public class BaseAbleLister extends StdCommand
 		}
 		return -1;
 	}
-	public static StringBuffer getAbilities(MOB able, 
-											int ofType, 
-											int ofDomain, 
+	public static StringBuffer getAbilities(MOB able,
+											int ofType,
+											int ofDomain,
 											boolean addQualLine,
 											int maxLevel)
 	{
@@ -49,9 +49,9 @@ public class BaseAbleLister extends StdCommand
 		V.addElement(new Integer(ofType));
 		return getAbilities(able,V,mask,addQualLine,maxLevel);
 	}
-	public static StringBuffer getAbilities(MOB able, 
-											Vector ofTypes, 
-											int mask, 
+	public static StringBuffer getAbilities(MOB able,
+											Vector ofTypes,
+											int mask,
 											boolean addQualLine,
 											int maxLevel)
 	{
@@ -85,7 +85,7 @@ public class BaseAbleLister extends StdCommand
 				&&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))
 				{
 					if(thisLine.length()==0)
-						thisLine.append("\n\rLevel ^!"+l+"^?:\n\r");
+						thisLine.append(getScr("BaseAbleLister","level",""+l));
 					if((++col)>3)
 					{
 						thisLine.append("\n\r");
@@ -98,10 +98,10 @@ public class BaseAbleLister extends StdCommand
 				msg.append(thisLine);
 		}
 		if(msg.length()==0)
-			msg.append("^!None!^?");
+			msg.append(getScr("BaseAbleLister","none"));
 		else
 		if(addQualLine)
-			msg.append("\n\r\n\rUse QUALIFY to see additional skills you can GAIN.");
+			msg.append(getScr("BaseAbleLister","useq"));
 		return msg;
 	}
 }

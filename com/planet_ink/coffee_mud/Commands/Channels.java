@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,14 +23,14 @@ public class Channels extends StdCommand
 {
 	public Channels(){}
 
-	private String[] access={"CHANNELS"};
+	private String[] access={getScr("Channels","cmd")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
-		StringBuffer buf=new StringBuffer("Available channels: \n\r");
+		StringBuffer buf=new StringBuffer(getScr("Channels","avchannels"));
 		int col=0;
 		String[] names=ChannelSet.getChannelNames();
 		for(int x=0;x<names.length;x++)
@@ -46,9 +46,9 @@ public class Channels extends StdCommand
 				buf.append(Util.padRight("^<CHANNELS '"+(onoff?"":"NO")+"'^>"+channelName+"^</CHANNELS^>"+(onoff?" (OFF)":""),24));
 			}
 		if(names.length==0)
-			buf.append("None!");
+			buf.append(getScr("Channels","none"));
 		else
-			buf.append("\n\rUse NOCHANNELNAME (ex: NOGOSSIP) to turn a channel off.");
+			buf.append(getScr("Channels","avchannels"));
 		mob.tell(buf.toString());
 		return false;
 	}

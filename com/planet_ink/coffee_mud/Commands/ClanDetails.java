@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@ public class ClanDetails extends BaseClanner
 {
 	public ClanDetails(){}
 
-	private String[] access={"CLANDETAILS","CLAN"};
+	private String[] access={getScr("ClanDetails","cmd"),getScr("ClanDetails","cmd1")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -45,12 +45,12 @@ public class ClanDetails extends BaseClanner
 			}
 			if(!found)
 			{
-				msg.append("No clan was found by the name of '"+qual+"'.\n\r");
+				msg.append(getScr("ClanDetails","nocm",qual));
 			}
 		}
 		else
 		{
-			msg.append("You need to specify which clan you would like details on. Try 'CLANLIST'.\n\r");
+			msg.append(getScr("ClanDetails","spec"));
 		}
 		mob.tell(msg.toString());
 		return false;

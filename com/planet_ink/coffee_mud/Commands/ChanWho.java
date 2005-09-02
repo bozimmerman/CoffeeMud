@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@ public class ChanWho extends StdCommand
 {
 	public ChanWho(){}
 
-	private String[] access={"CHANWHO"};
+	private String[] access={getScr("ChanWho","cmd")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -31,7 +31,7 @@ public class ChanWho extends StdCommand
 		String channel=Util.combine(commands,1);
 		if((channel==null)||(channel.length()==0))
 		{
-			mob.tell("You must specify a channel name. Try CHANNELS for a list.");
+			mob.tell(getScr("ChanWho","specname"));
 			return false;
 		}
 		int x=channel.indexOf("@");
@@ -43,7 +43,7 @@ public class ChanWho extends StdCommand
 			channel=ChannelSet.getChannelName(channelInt).toUpperCase();
 			if((channel.length()==0)||(channelInt<0))
 			{
-				mob.tell("You must specify a valid channel name. Try CHANNELS for a list.");
+				mob.tell(getScr("ChanWho","validname"));
 				return false;
 			}
 			CMClass.I3Interface().i3chanwho(mob,channel,mud);
@@ -53,10 +53,10 @@ public class ChanWho extends StdCommand
 		channel=ChannelSet.getChannelName(channelInt);
 		if(channelInt<0)
 		{
-			mob.tell("You must specify a valid channel name. Try CHANNELS for a list.");
+			mob.tell(getScr("ChanWho","validname"));
 			return false;
 		}
-		String head=new String("\n\rListening on "+channel+":\n\r");
+		String head=new String(getScr("ChanWho","listening")+" "+channel+":\n\r");
 		StringBuffer buf=new StringBuffer("");
 		for(int s=0;s<Sessions.size();s++)
 		{
@@ -72,7 +72,7 @@ public class ChanWho extends StdCommand
 					buf.append("["+Util.padRight(mob2.name(),20)+"]\n\r");
 		}
 		if(buf.length()==0)
-			mob.tell(head+"Nobody!");
+			mob.tell(getScr("ChanWho","nobody",head));
 		else
 			mob.tell(head+buf.toString());
 		return false;

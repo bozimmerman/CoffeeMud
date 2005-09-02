@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,14 +23,14 @@ public class CharGen extends StdCommand
 {
 	public CharGen(){}
 
-	private String[] access={"CHARGEN"};
+	private String[] access={getScr("CharGen","cmd")};
 	public String[] getAccessWords(){return access;}
 
 	private MOB levelMOBup(int level, CharClass C)
 	{
 		MOB mob=CMClass.getMOB("StdMOB");
 		Factions.setAlignment(mob,Faction.ALIGN_NEUTRAL);
-		mob.setName("Average Joe");
+		mob.setName(getScr("CharGen","stdmobname"));
 		mob.baseCharStats().setMyRace(CMClass.getRace("Human"));
 		mob.baseCharStats().setStat(CharStats.GENDER,'M');
 		mob.baseCharStats().setStat(CharStats.STRENGTH,11);
@@ -201,10 +201,10 @@ public class CharGen extends StdCommand
 
 		if((C==null)&&(ClassName.toUpperCase().indexOf("ALL")<0))
 		{
-			mob.tell("Enter 'ALL' for all classes.");
+			mob.tell(getScr("CharGen","enterall"));
 			try
 			{
-				ClassName=mob.session().prompt("Enter a class name: ");
+				ClassName=mob.session().prompt(getScr("CharGen","entcname"+" "));
 			}
 			catch(Exception e){return false;}
 
@@ -217,7 +217,7 @@ public class CharGen extends StdCommand
 		{
 			try
 			{
-				level=Util.s_int(mob.session().prompt("Enter a level (1-25): "));
+				level=Util.s_int(mob.session().prompt(getScr("CharGen","entlevel")+" "));
 			}
 			catch(Exception e){return false;}
 			if(level<=0)
@@ -225,9 +225,9 @@ public class CharGen extends StdCommand
 		}
 
 		if(C!=null)
-			mob.session().print("\n\rAverage "+C.name()+"...");
+			mob.session().print(getScr("CharGen","average")+" "+C.name()+"...");
 		else
-			mob.session().print("\n\rAverage MOB stats, across all classes...");
+			mob.session().print(getScr("CharGen","averages"));
 
 		MOB avgMob=null;
 		if(C!=null)

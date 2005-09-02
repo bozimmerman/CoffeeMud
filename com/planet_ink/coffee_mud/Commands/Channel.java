@@ -61,19 +61,19 @@ public class Channel extends BaseChanneler
 		if((pstats!=null)&&(Util.isSet(pstats.getChannelMask(),channelInt)))
 		{
 			pstats.setChannelMask(pstats.getChannelMask()&(pstats.getChannelMask()-channelNum));
-			mob.tell(channelName+" has been turned on.  Use `NO"+channelName.toUpperCase()+"` to turn it off again.");
+			mob.tell(getScr("Channel","channelon",channelName,channelName.toUpperCase()));
 			return false;
 		}
 		
 		if(Util.bset(mob.getBitmap(),MOB.ATT_QUIET))
 		{
-			mob.tell("You have QUIET mode on.  You must turn it off first.");
+			mob.tell(getScr("Channel","quietalon"));
 			return false;
 		}
 
 		if(commands.size()==0)
 		{
-			mob.tell(channelName+" what?");
+			mob.tell(getScr("Channel","what",channelName));
 			return false;
 		}
 
@@ -85,13 +85,13 @@ public class Channel extends BaseChanneler
 		}
 		if(!MUDZapper.zapperCheck(ChannelSet.getChannelMask(channelInt),mob))
 		{
-			mob.tell("This channel is not available to you.");
+			mob.tell(getScr("Channel","notava"));
 			return false;
 		}
 
 		if((mob.getClanID().equalsIgnoreCase(""))&&(channelName.equalsIgnoreCase("CLANTALK")))
 		{
-		  mob.tell("You can't talk to your clan - you don't have one.");
+		  mob.tell(getScr("Channel","clandontex"));
 		  return false;
 		}
 		if((commands.size()==2)
@@ -103,7 +103,7 @@ public class Channel extends BaseChanneler
 			Vector que=ChannelSet.getChannelQue(channelInt);
 			if(que.size()==0)
 			{
-				mob.tell("There are no previous entries on this channel.");
+				mob.tell(getScr("Channel","noentries"));
 				return false;
 			}
 			if(num>que.size()) num=que.size();

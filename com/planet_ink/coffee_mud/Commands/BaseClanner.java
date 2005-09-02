@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,12 +43,12 @@ public class BaseClanner extends StdCommand
 			if((CV.voteStarter.equalsIgnoreCase(mob.Name()))
 			&&(CV.voteStatus==Clans.VSTAT_STARTED))
 			{
-				mob.tell("This matter must be voted upon, but you already have a vote underway.");
+				mob.tell(getScr("BaseClanner","alvote"));
 				return false;
 			}
 			if(CV.matter.equalsIgnoreCase(matter))
 			{
-				mob.tell("This matter must be voted upon, and is already BEING voted upon.  Use CLANVOTE to see.");
+				mob.tell(getScr("BaseClanner","bevote"));
 				return false;
 			}
 		}
@@ -57,7 +57,7 @@ public class BaseClanner extends StdCommand
 			int numVotes=C.getNumVoters(function);
 			if(numVotes==1) return true;
 
-			if(mob.session().confirm("This matter must be voted upon.  Would you like to start the vote now (y/N)?","N"))
+			if(mob.session().confirm(getScr("BaseClanner","msg1"),getScr("BaseClanner","yesno")))
 			{
 				Clans.ClanVote CV=new Clans.ClanVote();
 				CV.matter=matter;
@@ -71,27 +71,27 @@ public class BaseClanner extends StdCommand
 				switch(C.getGovernment())
 				{
 				case Clan.GVT_DEMOCRACY:
-					clanAnnounce(mob,"A new matter has come up for your votes. Use CLANVOTE to participate.");
+					clanAnnounce(mob,getScr("BaseClanner","msg2"));
 					break;
 				case Clan.GVT_DICTATORSHIP:
-					clanAnnounce(mob,"Something has come up for vote -- lord only knows how.");
+					clanAnnounce(mob,getScr("BaseClanner","msg3"));
 					break;
 				case Clan.GVT_OLIGARCHY:
-					clanAnnounce(mob,"The guildmasters have a new matter to vote upon. They should use CLANVOTE to participate.");
+					clanAnnounce(mob,getScr("BaseClanner","msg4"));
 					break;
 				case Clan.GVT_REPUBLIC:
 					if(function==Clan.FUNC_CLANASSIGN)
-						clanAnnounce(mob,"A new election has come up for your votes. Use CLANVOTE to participate.");
+						clanAnnounce(mob,getScr("BaseClanner","msg5"));
 					else
-						clanAnnounce(mob,"The senators have a new matter to vote upon. They should use CLANVOTE to participate.");
+						clanAnnounce(mob,getScr("BaseClanner","msg6"));
 					break;
 				}
-				mob.tell("Your vote has started.  Use CLANVOTE to cast your vote.");
+				mob.tell(getScr("BaseClanner","starvote"));
 				return false;
 			}
 		}
 		catch(java.io.IOException e){}
-		mob.tell("Without a vote, this command can not be executed.");
+		mob.tell(getScr("BaseClanner","errvote"));
 		return false;
 	}
 

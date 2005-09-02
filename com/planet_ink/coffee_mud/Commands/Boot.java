@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@ public class Boot extends StdCommand
 {
 	public Boot(){}
 
-	private String[] access={"BOOT"};
+	private String[] access={getScr("Boot","cmd")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -32,7 +32,7 @@ public class Boot extends StdCommand
 		if(mob.session()==null) return false;
 		if(commands.size()==0)
 		{
-			mob.tell("Boot out who?");
+			mob.tell(getScr("Boot","bootwho"));
 			return false;
 		}
 		String whom=Util.combine(commands,0);
@@ -45,24 +45,24 @@ public class Boot extends StdCommand
 			{
 				if(S==mob.session())
 				{
-					mob.tell("Try QUIT.");
+					mob.tell(getScr("Boot","tryquit"));
 					return false;
 				}
 			    if(S.mob()!=null)
 			    {
-					mob.tell("You boot "+S.mob().name());
+					mob.tell(getScr("Boot","youboot",S.mob().name()));
 					if(S.mob().location()!=null)
-						S.mob().location().show(S.mob(),null,CMMsg.MSG_OK_VISUAL,"Something is happening to <S-NAME>.");
+						S.mob().location().show(S.mob(),null,CMMsg.MSG_OK_VISUAL,getScr("Boot","bootsom"));
 			    }
 			    else
-			        mob.tell("You boot "+S.getAddress());
+			        mob.tell(getScr("Boot","youboot2",S.getAddress()));
 				S.setKillFlag(true);
 				boot=true;
 				break;
 			}
 		}
 		if(!boot)
-			mob.tell("You can't find anyone by that name or ip address.");
+			mob.tell(getScr("Boot","cantfind"));
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

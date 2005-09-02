@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@ public class ClanDonateSet extends BaseClanner
 {
 	public ClanDonateSet(){}
 
-	private String[] access={"CLANDONATESET"};
+	private String[] access={getScr("ClanDonateSet","cmd")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -44,39 +44,39 @@ public class ClanDonateSet extends BaseClanner
 
 		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
 		{
-			mob.tell("You aren't even a member of a clan.");
+			mob.tell(getScr("ClanDonateSet","evenmember"));
 			return false;
 		}
 		Clan C=Clans.getClan(mob.getClanID());
 		if(C==null)
 		{
-			mob.tell("There is no longer a clan called "+mob.getClanID()+".");
+			mob.tell(getScr("ClanDonateSet","nolonger",mob.getClanID()));
 			return false;
 		}
 		if(C.getStatus()>Clan.CLANSTATUS_ACTIVE)
 		{
-			mob.tell("You cannot set a donation room.  Your "+C.typeName()+" does not have enough members to be considered active.");
+			mob.tell(getScr("ClanDonateSet","donroom",C.typeName()));
 			return false;
 		}
 		if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDONATESET,false))
 		{
 			if(!CoffeeUtensils.doesOwnThisProperty(C.ID(),R))
 			{
-				mob.tell("Your "+C.typeName()+" does not own this room.");
+				mob.tell(getScr("ClanDonateSet","donotownroom",C.typeName()));
 				return false;
 			}
 			if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDONATESET,true))
 			{
 				C.setDonation(CMMap.getExtendedRoomID(R));
 				C.update();
-				mob.tell("Your "+C.typeName()+" donation is now set to "+R.roomTitle()+".");
-				clanAnnounce(mob, "Your "+C.typeName()+" donation is now set to "+R.roomTitle()+".");
+				mob.tell(getScr("ClanDonateSet","donationset",C.typeName(),R.roomTitle()));
+				clanAnnounce(mob,getScr("ClanDonateSet","youdon",C.typeName(),R.roomTitle()));
 				return true;
 			}
 		}
 		else
 		{
-			mob.tell("You aren't in the right position to set your "+C.typeName()+"'s donation room.");
+			mob.tell(getScr("ClanDonateSet","notrightpos",C.typeName()));
 			return false;
 		}
 		return false;

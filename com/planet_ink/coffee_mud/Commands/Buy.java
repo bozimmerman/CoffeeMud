@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,21 +23,21 @@ public class Buy extends StdCommand
 {
 	public Buy(){}
 
-	private String[] access={"BUY"};
+	private String[] access={getScr("Buy","cmd")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		MOB shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"Buy what from whom?");
+		MOB shopkeeper=EnglishParser.parseShopkeeper(mob,commands,getScr("Buy","buywhatwhom"));
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
-			mob.tell("Buy what?");
+			mob.tell(getScr("Buy","buywhat"));
 			return false;
 		}
 		if(CoffeeUtensils.getShopKeeper(shopkeeper)==null)
 		{
-			mob.tell(shopkeeper.name()+" is not a shopkeeper!");
+			mob.tell(getScr("Buy","notaspk",shopkeeper.name()));
 			return false;
 		}
 
@@ -56,14 +56,14 @@ public class Buy extends StdCommand
 			MOB M=mob.location().fetchInhabitant((String)commands.lastElement());
 			if(M==null)
 			{
-				mob.tell("There is noone called '"+((String)commands.lastElement())+"' here.");
+				mob.tell(getScr("Buy","nonecalled",((String)commands.lastElement())));
 				return false;
 			}
 			commands.removeElementAt(commands.size()-1);
 			commands.removeElementAt(commands.size()-1);
 			mobFor=M;
 		}
-		
+
 		String whatName=Util.combine(commands,0);
 		Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
@@ -85,18 +85,18 @@ public class Buy extends StdCommand
 		if((mobFor!=null)&&(mobFor!=mob))
 		{
 			if(mobFor.name().indexOf(" ")>=0)
-				forName=" for \""+mobFor.Name()+"\"";
+				forName=" "+getScr("Buy","forname1",mobFor.Name());
 			else
-				forName=" for "+mobFor.Name();
+				forName=" "+getScr("Buy","forname2",mobFor.Name());
 		}
 
 		if(V.size()==0)
-			mob.tell(shopkeeper,null,null,"<S-NAME> doesn't appear to have any '"+whatName+"' for sale.  Try LIST.");
+			mob.tell(shopkeeper,null,null,getScr("Buy","donthaveany",whatName));
 		else
 		for(int v=0;v<V.size();v++)
 		{
 			Environmental thisThang=(Environmental)V.elementAt(v);
-			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BUY,"<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>"+forName+".");
+			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BUY,getScr("Buy","buysfrom",forName));
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 		}

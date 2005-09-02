@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,13 +23,13 @@ public class Chants extends BaseAbleLister
 {
 	public Chants(){}
 
-	private String[] access={"CHANTS"};
+	private String[] access={getScr("Chants","cmd")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append("\n\r^HDruidic Chants known:^? "+getAbilities(mob,Ability.CHANT,-1,true,parseOutLevel(commands))+"\n\r");
+		msg.append(getScr("Chants","chantknow")+" "+getAbilities(mob,Ability.CHANT,-1,true,parseOutLevel(commands))+"\n\r");
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;

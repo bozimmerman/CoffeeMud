@@ -23,7 +23,7 @@ public class Beacon extends StdCommand
 {
 	public Beacon(){}
 
-	private String[] access={"BEACON"};
+	private String[] access={getScr("Beacon","cmd")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -32,11 +32,11 @@ public class Beacon extends StdCommand
 		if(commands.size()==0)
 		{
 			if(mob.getStartRoom()==mob.location())
-				mob.tell("This is already your beacon.");
+				mob.tell(getScr("Beacon","albeacon"));
 			else
 			{
 				mob.setStartRoom(mob.location());
-				mob.tell("You have modified your beacon.");
+				mob.tell(getScr("Beacon","modbeacon"));
 			}
 		}
 		else
@@ -51,21 +51,21 @@ public class Beacon extends StdCommand
 			}
 			if(M==null)
 			{
-				mob.tell("No one is online called '"+name+"'!");
+				mob.tell(getScr("Beacon","noonlinecld",name));
 				return false;
 			}
 			if(M.getStartRoom()==M.location())
 			{
-				mob.tell(M.name()+" is already at their beacon.");
+				mob.tell(getScr("Beacon","altheirbeacon",M.name()));
 				return false;
 			}
 			if(!CMSecurity.isAllowed(mob,M.location(),"BEACON"))
 			{
-				mob.tell("You cannot beacon "+M.name()+" there.");
+				mob.tell(getScr("Beacon","nobeaconthere",M.name()));
 				return false;
 			}
 			M.setStartRoom(M.location());
-			mob.tell("You have modified "+M.name()+"'s beacon.");
+			mob.tell(getScr("Beacon","modtheirbeacon",M.name()));
 		}
 		return false;
 	}

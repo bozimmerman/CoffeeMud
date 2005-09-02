@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@ public class ClanApply extends BaseClanner
 {
 	public ClanApply(){}
 
-	private String[] access={"CLANAPPLY"};
+	private String[] access={getScr("ClanApply","cmd")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -46,32 +46,32 @@ public class ClanApply extends BaseClanner
     						CMClass.DBEngine().DBUpdateClanMembership(mob.Name(), C.ID(), Clan.POS_APPLICANT);
     						mob.setClanID(C.ID());
     						mob.setClanRole(Clan.POS_APPLICANT);
-    						clanAnnounce(mob,"New Applicant: "+mob.Name());
-    						mob.tell("You have successfully applied for membership in clan "+C.ID()+".  Your application will be reviewed by management.  Use SCORE to check for a change in status.");
+    						clanAnnounce(mob,getScr("ClanApply","new")+" "+mob.Name());
+    						mob.tell(getScr("ClanApply","membapplied",C.ID()));
                         }
                         else
                         {
-                            msg.append("You must be at least level "+CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANLEVEL)+" to join a clan.");
+                            msg.append(getScr("ClanApply","leastlev",CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANLEVEL)+""));
                         }
 					}
 					else
 					{
-						msg.append("You are not of the right qualities to join "+C.ID()+". Use CLANDETAILS \""+C.ID()+"\" for more information.");
+						msg.append(getScr("ClanApply","nrq",C.ID()));
 					}
 				}
 				else
 				{
-					msg.append("There is no clan named '"+qual+"'.");
+					msg.append(getScr("ClanApply","noclan",qual));
 				}
 			}
 			else
 			{
-				msg.append("You are already a member of "+mob.getClanID()+". You need to resign from your before you can apply to another.");
+				msg.append(getScr("ClanApply","almember",mob.getClanID()));
 			}
 		}
 		else
 		{
-			msg.append("You haven't specified which clan you are applying to.");
+			msg.append(getScr("ClanApply","spec"));
 		}
 		mob.tell(msg.toString());
 		return false;

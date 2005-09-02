@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@ public class ClanAccept extends BaseClanner
 {
 	public ClanAccept(){}
 
-	private String[] access={"CLANACCEPT"};
+	private String[] access={getScr("ClanAccept","cmd")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -39,14 +39,14 @@ public class ClanAccept extends BaseClanner
 		{
 			if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
 			{
-				msg.append("You aren't even a member of a clan.");
+				msg.append(getScr("ClanAccept","even"));
 			}
 			else
 			{
 				C=Clans.getClan(mob.getClanID());
 				if(C==null)
 				{
-					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
+					mob.tell(getScr("ClanAccept","nolonger",mob.getClanID()));
 					return false;
 				}
 				if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANACCEPT,false))
@@ -54,7 +54,7 @@ public class ClanAccept extends BaseClanner
 					DVector apps=C.getMemberList(Clan.POS_APPLICANT);
 					if(apps.size()<1)
 					{
-						mob.tell("There are no applicants to your "+C.typeName()+".");
+						mob.tell(getScr("ClanAccept","noapplic",C.typeName()));
 						return false;
 					}
 					qual=Util.capitalizeAndLower(qual);
@@ -70,35 +70,35 @@ public class ClanAccept extends BaseClanner
 						MOB M=CMMap.getLoadPlayer(qual);
 						if(M==null)
 						{
-							mob.tell(qual+" was not found.  Could not add to "+C.typeName()+".");
+							mob.tell(getScr("ClanAccept","notfound",qual,C.typeName()));
 							return false;
 						}
 						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANACCEPT,true))
 						{
-							clanAnnounce(mob,"New Member of "+C.name()+": "+M.Name());
+							clanAnnounce(mob,getScr("ClanAccept","newmember")+" "+C.name()+": "+M.Name());
 							M.setClanID(mob.getClanID());
 							M.setClanRole(Clan.POS_MEMBER);
 							CMClass.DBEngine().DBUpdateClanMembership(qual, mob.getClanID(), Clan.POS_MEMBER);
-							mob.tell(M.Name()+" has been accepted into "+C.typeName()+" '"+C.ID()+"'.");
-							M.tell(mob.Name()+" has accepted you as a member of "+C.typeName()+" '"+C.ID()+"'.");
+							mob.tell(getScr("ClanAccept","hasaccepted",M.Name(),C.typeName(),C.ID()));
+							M.tell(getScr("ClanAccept","hasaccepyou",mob.Name(),C.typeName(),C.ID()));
 							C.updateClanPrivileges(M);
 							return false;
 						}
 					}
 					else
 					{
-						msg.append(qual+" isn't an applicant of your "+C.typeName()+".");
+						msg.append(getScr("ClanAccept","appli",qual,C.typeName()));
 					}
 				}
 				else
 				{
-					msg.append("You aren't in the right position to accept members into your "+C.typeName()+".");
+					msg.append(getScr("ClanAccept","notright",C.typeName()));
 				}
 			}
 		}
 		else
 		{
-			msg.append("You haven't specified which applicant you are accepting.");
+			msg.append(getScr("ClanAccept","notspec"));
 		}
 		mob.tell(msg.toString());
 		return false;

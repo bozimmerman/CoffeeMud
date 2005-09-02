@@ -23,7 +23,7 @@ public class Bug extends StdCommand
 {
 	public Bug(){}
 
-	private String[] access={"BUG"};
+	private String[] access={getScr("Bug","cmd")};
 	public String[] getAccessWords(){return access;}
 	
 	public boolean review(MOB mob,
@@ -44,19 +44,19 @@ public class Bug extends StdCommand
 			
 		Item journalItem=CMClass.getItem("StdJournal");
 		if(journalItem==null)
-			mob.tell("This feature has been disabled.");
+			mob.tell(getScr("Bug","featdis"));
 		else
 		{
 			Vector journal=CMClass.DBEngine().DBReadJournal(journalID);
 			int size=0;
 			if(journal!=null) size=journal.size();
 			if(size<=0)
-				mob.tell("There are no "+journalWord+" listed at this time.");
+				mob.tell(getScr("Bug","nolisted",journalWord));
 			else
 			{
 				journalItem.setName(journalID);						
 				if(count>size)
-					mob.tell("Maximum count of "+journalWord+" is "+size+".");
+					mob.tell(getScr("Bug","maxcount",journalWord,""+size));
 				else
 				while(count<=size)
 				{
@@ -84,11 +84,11 @@ public class Bug extends StdCommand
 			if(!review(mob,"SYSTEM_BUGS","bugs",commands,"KILLBUGS"))
 			{
 				CMClass.DBEngine().DBWriteJournal("SYSTEM_BUGS",mob.Name(),"ALL","BUG: "+Util.padRight(Util.combine(commands,1),10),Util.combine(commands,1),-1);
-				mob.tell("Thank you for your assistance in debugging CoffeeMud!");
+				mob.tell(getScr("Bug","thankyou"));
 			}
 		}
 		else
-			mob.tell("What's the bug? Be Specific!");
+			mob.tell(getScr("Bug","whats"));
 		return false;
 	}
 	public int ticksToExecute(){return 0;}
