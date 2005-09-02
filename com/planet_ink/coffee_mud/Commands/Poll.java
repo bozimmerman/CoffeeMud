@@ -42,7 +42,7 @@ public class Poll extends StdCommand
             if(commands==null)
             {
                 if(mypolls[1].size()>0)
-                    mob.tell(mypolls[1].size()+" polls are presently waiting for your participation.");
+                    mob.tell(mypolls[1].size()+" poll(s) are presently waiting for your participation.");
                 return false;
             }
         }
@@ -60,9 +60,9 @@ public class Poll extends StdCommand
         if(commands==null)
         {
             if(mypolls[1].size()>0)
-                mob.tell("\n\r^HThere are "+mypolls[1].size()+" other polls awaiting your participation.^N\n\r");
+                mob.tell("\n\r^HThere are still "+mypolls[1].size()+" poll(s) awaiting your participation.^N\n\r");
             if(mypolls[2].size()>0)
-                mob.tell("\n\r^HThere are "+mypolls[2].size()+" poll results still available.^N\n\r");
+                mob.tell("\n\r^HThere are results from "+mypolls[2].size()+" poll(s) still available.^N\n\r");
             return true;
         }
         for(int i=0;i<mypolls[1].size();i++)
