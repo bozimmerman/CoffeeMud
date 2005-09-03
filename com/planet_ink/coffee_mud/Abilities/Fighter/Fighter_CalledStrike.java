@@ -50,24 +50,10 @@ public class Fighter_CalledStrike extends StdAbility
 		MOB mob=target;
 		if(mob==null) return false;
 		Amputation A=(Amputation)mob.fetchEffect("Amputation");
-		boolean newOne=false;
-		if(A==null)
-		{
-			A=new Amputation();
-			newOne=true;
-		}
+		if(A==null)	A=new Amputation();
 		Amputation.amputate(mob,A,gone);
-		if(newOne==true)
-		{
-			mob.addAbility(A);
-			A.autoInvocation(mob);
-		}
-		else
-		{
-			Ability A2=mob.fetchAbility(A.ID());
-			if(A2!=null) A2.setMiscText(A.text());
-		}
-		mob.confirmWearability();
+        if(mob.fetchEffect(A.ID())==null)
+			mob.addNonUninvokableEffect(A);
 		return true;
 	}
 
