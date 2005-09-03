@@ -49,7 +49,9 @@ public class InTheAir extends StdRoom
 		if((avg>0)&&(room.getRoomInDir(Directions.UP)==null)) return;
 
 		if(((E instanceof MOB)&&(!Sense.isInFlight(E)))
-		||((E instanceof Item)&&(!Sense.isFlying(((Item)E).ultimateContainer()))))
+		||((E instanceof Item)
+                &&(((Item)E).container()==null)
+                &&(!Sense.isFlying(((Item)E).ultimateContainer()))))
 		{
 			if(!Sense.isFalling(E))
 			{
@@ -107,6 +109,7 @@ public class InTheAir extends StdRoom
 					foundNormal=foundNormal||(A.profficiency()<=0);
 				}
 				else
+                if(item.container()==null)
 					needToFall.addElement(item);
 			}
 		}

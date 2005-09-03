@@ -156,6 +156,7 @@ public class Falling extends StdAbility
 			if((room==null)
 			||((room!=null)&&(!room.isContent(item)))
 			||(!Sense.isGettable(item))
+            ||(item.container()!=null)
 			||(Sense.isInFlight(item.ultimateContainer()))
 			||(room.getRoomInDir(direction)==null))
 			{
@@ -166,14 +167,7 @@ public class Falling extends StdAbility
 			if(canFallFrom(room,direction))
 			{
 				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> falls "+addStr+".");
-				Vector V=new Vector();
-				recursiveRoomItems(V,item,room);
-				for(int v=0;v<V.size();v++)
-				{
-					Item thisItem=(Item)V.elementAt(v);
-					room.delItem(thisItem);
-					nextRoom.addItemRefuse(thisItem,Item.REFUSE_PLAYER_DROP);
-				}
+                nextRoom.bringItemHere(item,Item.REFUSE_PLAYER_DROP);
 				room=nextRoom;
 				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> falls in from "+(reversed()?"below":"above")+".");
 				return true;
@@ -186,18 +180,6 @@ public class Falling extends StdAbility
 
 		return false;
 	}
-
-	public void recursiveRoomItems(Vector V, Item item, Room room)
-	{
-		V.addElement(item);
-		for(int i=0;i<room.numItems();i++)
-		{
-			Item newItem=room.fetchItem(i);
-			if((newItem!=null)&&(newItem.container()==item))
-				recursiveRoomItems(V,newItem,room);
-		}
-	}
-
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
