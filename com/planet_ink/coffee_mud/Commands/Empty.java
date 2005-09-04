@@ -33,6 +33,7 @@ public class Empty extends BaseItemParser
 		String whatToDrop=null;
 		Environmental target=mob;
 		Vector V=new Vector();
+        Vector oldCommands=(Vector)commands.clone();
 
 		if(commands.size()<2)
 		{
@@ -145,10 +146,27 @@ public class Empty extends BaseItemParser
 			Container C=(Container)V.elementAt(v);
 			if(C==target) continue;
 			Vector V2=C.getContents();
+            
+            boolean skipMessage=false;
+            if((C instanceof Drink)&&(((Drink)C).containsDrink()))
+            {
+                if(target instanceof Drink)
+                {
+                    Command C2=CMClass.getCommand("Pour");
+                    C2.execute(mob,Util.makeVector("POUR",C.Name()+"$",target.Name()+"$"));
+                    skipMessage=true;
+                }
+                else
+                {
+                    ((Drink)C).setLiquidRemaining(0);
+                    if(((Drink)C).disappearsAfterDrinking())
+                        C.destroy();
+                }
+            }
 			FullMsg msg=new FullMsg(mob,C,CMMsg.MSG_QUIETMOVEMENT,str);
-			if(mob.location().okMessage(mob,msg))
+			if(skipMessage||(mob.location().okMessage(mob,msg)))
 			{
-				mob.location().send(mob,msg);
+                if(!skipMessage) mob.location().send(mob,msg);
 				for(int v2=0;v2<V2.size();v2++)
 				{
 					Item I=(Item)V2.elementAt(v2);

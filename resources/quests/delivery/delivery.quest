@@ -15,7 +15,7 @@ set area any
 quiet
 # this makes sure we don't get a final error message
 
-set mobtype Human Elf Dwarf HalfElf Halfing Gnome Orc Goblin
+set mob ANY MASK=+INT 6
 # load up any mob from the above area.  Will set a room!
 # since this quest relys on random specified mobs, most 
 # errors are turned off w/ quiet
@@ -30,12 +30,14 @@ give item
 # now we give the item to our mob
 
 set room
+set mob
+set area
 # clear the room designation
 
 set area any
 # set any other area as a designation
 
-set mobtype Human Elf Dwarf HalfElf Halfing Gnome Orc Goblin
+set mob ANY MASK=+INT 6
 # load up any other mob from any other area.  Will set a room!
 
 give behavior Scriptable LOAD=quests/delivery/deliveree.script

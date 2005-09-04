@@ -14,7 +14,7 @@ SPEECH_PROG mission problem secret quest help delivery deliver 'me to do' 'to do
 ~
 
 QUEST_TIME_PROG delivery -1
-	if !has($i 'a most secret note')
+	if !has($i 'a most secret note') and var('$<$i DELIVERY>' delivery != 'didit')
 		tell "$<$i DELIVERY>" "Never mind.  The information on that note doesn't matter any more.  Forget the mission.
 	endif
 	mpsetvar $i DELIVERY ''
@@ -27,6 +27,7 @@ SPEECH_PROG p i accept
 		give "a most secret note" "$n"
 		whisper "$n" Find ${2 delivery}.  Say these words: "I have a delivery from ${1 delivery}".  If he responds with "It is not for me.  Give it to someone else.", then give it to him.  Understood?  Now go!
 		mpsetvar $i DELIVERY $n
+		mpsetvar $n delivery
 	endif
 ~
 	

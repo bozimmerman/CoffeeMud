@@ -14,6 +14,7 @@ GIVE_PROG p a most secret note
 		mpoload QuestPoint
 		give "a quest point" "$n"
 	endif
+	mpsetvar $n delivery didit
 	mpoload 100
 	give 100 "$n"
 	mpquestwin $n delivery
