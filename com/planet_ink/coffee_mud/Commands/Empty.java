@@ -33,8 +33,6 @@ public class Empty extends BaseItemParser
 		String whatToDrop=null;
 		Environmental target=mob;
 		Vector V=new Vector();
-        Vector oldCommands=(Vector)commands.clone();
-
 		if(commands.size()<2)
 		{
 			mob.tell("Empty what where?");

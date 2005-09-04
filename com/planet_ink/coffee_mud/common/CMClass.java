@@ -471,43 +471,41 @@ public class CMClass extends ClassLoader
 	}
 	public static Ability findAbility(String calledThis, CharStats charStats)
 	{
-		Ability A=(Ability)getGlobal(abilities,calledThis);
-		if(A==null)
+		Ability A=null;
+		Vector As=new Vector();
+		for(Enumeration e=abilities();e.hasMoreElements();)
 		{
-			Vector As=new Vector();
-			for(Enumeration e=abilities();e.hasMoreElements();)
+			A=(Ability)e.nextElement();
+			for(int c=0;c<charStats.numClasses();c++)
 			{
-				A=(Ability)e.nextElement();
-				for(int c=0;c<charStats.numClasses();c++)
-				{
-					CharClass C=charStats.getMyClass(c);
-					if(CMAble.getQualifyingLevel(C.ID(),true,A.ID())>=0)
-					{	As.addElement(A); break;}
-				}
+				CharClass C=charStats.getMyClass(c);
+				if(CMAble.getQualifyingLevel(C.ID(),true,A.ID())>=0)
+				{	As.addElement(A); break;}
 			}
-			A=(Ability)EnglishParser.fetchEnvironmental(As,calledThis,true);
-			if(A==null)
-				A=(Ability)EnglishParser.fetchEnvironmental(As,calledThis,false);
 		}
+		A=(Ability)EnglishParser.fetchEnvironmental(As,calledThis,true);
+		if(A==null)
+			A=(Ability)EnglishParser.fetchEnvironmental(As,calledThis,false);
+        if(A==null)
+            A=(Ability)getGlobal(abilities,calledThis);
 		if(A!=null)A=(Ability)A.newInstance();
 		return A;
 	}
 
 	public static Ability findAbility(String calledThis, MOB mob)
 	{
-		Ability A=(Ability)getGlobal(abilities,calledThis);
-		if(A==null)
+		Vector As=new Vector();
+        Ability A=null;
+		for(int a=0;a<mob.numAbilities();a++)
 		{
-			Vector As=new Vector();
-			for(int a=0;a<mob.numAbilities();a++)
-			{
-			    Ability B=mob.fetchAbility(a);
-			    if(B!=null) As.addElement(B);
-			}
-			A=(Ability)EnglishParser.fetchEnvironmental(As,calledThis,true);
-			if(A==null)
-				A=(Ability)EnglishParser.fetchEnvironmental(As,calledThis,false);
+		    Ability B=mob.fetchAbility(a);
+		    if(B!=null) As.addElement(B);
 		}
+		A=(Ability)EnglishParser.fetchEnvironmental(As,calledThis,true);
+		if(A==null)
+			A=(Ability)EnglishParser.fetchEnvironmental(As,calledThis,false);
+        if(A==null)
+            A=(Ability)getGlobal(abilities,calledThis);
 		if(A!=null)A=(Ability)A.newInstance();
 		return A;
 	}

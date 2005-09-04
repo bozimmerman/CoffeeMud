@@ -39,17 +39,15 @@ public class Announce extends StdCommand
 	  	switch(alignType)
 	  	{
 	  	  case 0:
-	  	    Message.append(getScr("Announce","evil")+" ");
+	  	    Message.append(getScr("Announce","evil",announcement));
 	  	    break;
 	  	  case 1:
-	  	    Message.append(getScr("Announce","good")+" ");
+	  	    Message.append(getScr("Announce","good",announcement));
 	  	    break;
 	  	  case 2:
-	  	    Message.append(getScr("Announce","neutral")+" ");
+	  	    Message.append(getScr("Announce","neutral",announcement));
 	  	    break;
 	  	}
-	  	Message.append(announcement);
-	  	Message.append("'.^N");
 	  	S.stdPrintln(Message.toString());
 	}
 

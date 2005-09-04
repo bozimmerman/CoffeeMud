@@ -143,7 +143,7 @@ public class Soiled extends StdAbility
 	            {
 	            case 1: smell="<S-NAME> is stinky!"; break;
 	            case 2: smell="<S-NAME> smells like poo."; break;
-	            case 3: smell="<S-NAME> has soiled <S-HIM-HERSELF>."; break;
+	            case 3: smell="<S-NAME> has soiled a diaper."; break;
 	            case 4: smell="Whew! <S-NAME> stinks!"; break;
 	            case 5: smell="<S-NAME> must have let one go!"; break;
 	            }

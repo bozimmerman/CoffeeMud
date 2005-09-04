@@ -29,8 +29,8 @@ public class Regeneration extends StdAbility
 	private int regenTick=maxTickDown;
 
 	public String ID() { return "Regeneration"; }
-	public String name(){ return "Regeneration";}
-	public String displayText(){ return "(Regeneration)";}
+	public String name(){ return "Stat Regeneration";}
+	public String displayText(){ return "(Stat Regeneration)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.BENEFICIAL_OTHERS;}
