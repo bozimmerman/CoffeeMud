@@ -343,10 +343,15 @@ public class List extends StdCommand
 	}
 
 
-	public StringBuffer journalList(String journal)
+	public StringBuffer journalList(String partialjournal)
 	{
 		StringBuffer buf=new StringBuffer("");
-		Vector V=CMClass.DBEngine().DBReadJournal(journal);
+        String journal=null;
+        for(int i=0;i<ChannelSet.getNumCommandJournals();i++)
+            if((ChannelSet.getCommandJournalName(i).toUpperCase().trim()+"S").startsWith(partialjournal.toUpperCase().trim()))
+                journal=ChannelSet.getCommandJournalName(i).toUpperCase().trim();
+        if(journal==null) return buf;
+		Vector V=CMClass.DBEngine().DBReadJournal("SYSTEM_"+journal+"S");
 		if(V!=null)
 		{
 			buf.append("\n\r^x"+Util.padRight("#",5)+Util.padRight("From",10)+" Entry^.^N\n\r");
@@ -728,11 +733,17 @@ public class List extends StdCommand
 		for(int i=0;i<SECURITY_LISTMAP.length;i++)
 		{
 			String[] cmd=SECURITY_LISTMAP[i];
+            if(cmd.length==0) continue;
 			for(int c=1;c<cmd.length;c++)
 				if(CMSecurity.isAllowed(mob,mob.location(),cmd[c])
 				||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN"))
 				{ V.addElement(cmd[0]); break;}
 		}
+        for(int i=0;i<ChannelSet.getNumCommandJournals();i++)
+        if((CMSecurity.isAllowed(mob,mob.location(),ChannelSet.getCommandJournalName(i)))
+                ||CMSecurity.isAllowed(mob,mob.location(),"KILL"+ChannelSet.getCommandJournalName(i)+"S")
+                ||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN"))
+            V.addElement(ChannelSet.getCommandJournalName(i)+"S");
 		return V;
 	}
 
@@ -742,12 +753,19 @@ public class List extends StdCommand
 		for(int i=0;i<SECURITY_LISTMAP.length;i++)
 		{
 			String[] cmd=SECURITY_LISTMAP[i];
+            if(cmd.length==0) continue;
 			if(cmd[0].startsWith(s))
 			for(int c=1;c<cmd.length;c++)
 				if(CMSecurity.isAllowed(mob,mob.location(),cmd[c])
 				||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN"))
 				{ return i;}
 		}
+        for(int i=0;i<ChannelSet.getNumCommandJournals();i++)
+            if((ChannelSet.getCommandJournalName(i)+"S").startsWith(s)
+                    &&((CMSecurity.isAllowed(mob,mob.location(),ChannelSet.getCommandJournalName(i)))
+                            ||CMSecurity.isAllowed(mob,mob.location(),"KILL"+ChannelSet.getCommandJournalName(i)+"S")
+                            ||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")))
+                return 29;
 		return -1;
 	}
 
@@ -756,11 +774,17 @@ public class List extends StdCommand
 		for(int i=0;i<SECURITY_LISTMAP.length;i++)
 		{
 			String[] cmd=SECURITY_LISTMAP[i];
+            if(cmd.length==0) continue;
 			for(int c=1;c<cmd.length;c++)
 				if(CMSecurity.isAllowed(mob,mob.location(),cmd[c])
 				||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN"))
 				{ return i;}
 		}
+        for(int i=0;i<ChannelSet.getNumCommandJournals();i++)
+            if((CMSecurity.isAllowed(mob,mob.location(),ChannelSet.getCommandJournalName(i)))
+                    ||CMSecurity.isAllowed(mob,mob.location(),"KILL"+ChannelSet.getCommandJournalName(i)+"S")
+                    ||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN"))
+                return 29;
 		return -1;
 	}
 	public final static String[][] SECURITY_LISTMAP={
@@ -793,11 +817,11 @@ public class List extends StdCommand
 		/*26*/{"MAGIC","CMDITEMS"},
 		/*27*/{"TECH","CMDITEMS"},
 		/*28*/{"CLANITEMS","CMDITEMS"},
-		/*29*/{"BUGS","KILLBUGS"},
-		/*30*/{"IDEAS","KILLIDEAS"},
+		/*29*/{"COMMANDJOURNAL",""}, // blank, but used!
+		/*30*/{"",""},
 		/*31*/{"NOPURGE","NOPURGE"},
 		/*32*/{"BANNED","BAN"},
-		/*33*/{"TYPOS","KILLTYPOS"},
+		/*33*/{"",""},
 		/*34*/{"LOG","LISTADMIN"},
 		/*35*/{"USERS","CMDPLAYERS","STAT"},
 		/*36*/{"LINKAGES","CMDAREAS"},
@@ -811,8 +835,8 @@ public class List extends StdCommand
 		/*44*/{"DEEDS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*45*/{"EVILDEEDS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
         /*46*/{"FACTIONS","LISTADMIN","CMDFACTIONS"},
-        /*47*/{"ASSIST","KILLASSIST"},
-        /*48*/{"TASKS","TASKS"},
+        /*47*/{"",""},
+        /*48*/{"",""},
         /*49*/{"POLLS","POLLS","LISTADMIN"}
 	};
 
@@ -905,8 +929,8 @@ public class List extends StdCommand
 		case 26: s.wraplessPrintln(CMLister.reallyList(CMClass.miscMagic()).toString()); break;
 		case 27: s.wraplessPrintln(CMLister.reallyList(CMClass.miscTech()).toString()); break;
 		case 28: s.wraplessPrintln(CMLister.reallyList(CMClass.clanItems()).toString()); break;
-		case 29: s.println(journalList("SYSTEM_BUGS").toString()); break;
-		case 30: s.println(journalList("SYSTEM_IDEAS").toString()); break;
+		case 29: s.println(journalList(listWord).toString()); break;
+		case 30: break;
 		case 31:
 		{
 			StringBuffer str=new StringBuffer("\n\rProtected players:\n\r");
@@ -927,7 +951,7 @@ public class List extends StdCommand
 			s.wraplessPrintln(str.toString());
 			break;
 		}
-		case 33: s.println(journalList("SYSTEM_TYPOS").toString()); break;
+		case 33: break;
 		case 34: s.wraplessPrintln(Log.getLog().toString()); break;
 		case 35: listUsers(mob,commands); break;
 		case 36: s.println(listLinkages(mob).toString()); break;
@@ -941,8 +965,8 @@ public class List extends StdCommand
 		case 44:
 		case 45: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.EVILDEED).toString()); break;
         case 46: s.wraplessPrintln(Factions.listFactions()); break;
-        case 47: s.println(journalList("SYSTEM_ASSIST").toString()); break;
-        case 48: s.println(journalList("SYSTEM_TASKS").toString()); break;
+        case 47: break;
+        case 48: break;
         case 49: listPolls(mob,commands); break;
         default:
 			s.println("List?!");

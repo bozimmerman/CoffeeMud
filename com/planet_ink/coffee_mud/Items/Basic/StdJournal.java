@@ -199,11 +199,13 @@ public class StdJournal extends StdItem
 								    if(journal.length()>0)
 								    {
                                         String realName=null;
-                                        realName=(journal.equalsIgnoreCase("bugs")
-                                                  ||journal.equalsIgnoreCase("typos")
-                                                  ||journal.equalsIgnoreCase("tasks")
-                                                  ||journal.equalsIgnoreCase("assist")
-                                                  ||journal.equalsIgnoreCase("ideas"))?"SYSTEM_"+journal.toUpperCase():null;
+                                        for(int i=0;i<ChannelSet.getNumCommandJournals();i++)
+                                            if(journal.equalsIgnoreCase(ChannelSet.getCommandJournalName(i))
+                                            ||journal.equalsIgnoreCase(ChannelSet.getCommandJournalName(i)+"s"))
+                                            {
+                                                realName="SYSTEM_"+ChannelSet.getCommandJournalName(i).toUpperCase()+"S";
+                                                break;
+                                            }
                                         if(realName==null)
                                             realName=CMClass.DBEngine().DBGetRealJournalName(journal);
                                         if(realName==null)

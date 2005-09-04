@@ -636,6 +636,27 @@ public class Destroy extends BaseItemParser
 		{
 			commandType=((String)commands.elementAt(1)).toUpperCase();
 		}
+        for(int i=0;i<ChannelSet.getNumCommandJournals();i++)
+        {
+            if((ChannelSet.getCommandJournalName(i).equals(commandType))
+            &&(CMSecurity.isAllowed(mob,mob.location(),ChannelSet.getCommandJournalName(i))
+                ||CMSecurity.isAllowed(mob,mob.location(),"KILL"+ChannelSet.getCommandJournalName(i)+"S")))
+            {
+                String nam=ChannelSet.getCommandJournalName(i);
+                int which=-1;
+                if(commands.size()>2)
+                    which=Util.s_int((String)commands.elementAt(2));
+                if(which<=0)
+                    mob.tell("Please enter a valid "+nam.toLowerCase()+" number to delete.  Use LIST "+nam+"S for more information.");
+                else
+                {
+                    CMClass.DBEngine().DBDeleteJournal("SYSTEM_"+nam+"S",which-1);
+                    mob.tell(nam.toLowerCase()+" deletion submitted.");
+                    
+                }
+                return true;
+            }
+        }
 		if(commandType.equals("EXIT"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")) return errorOut(mob);
@@ -739,36 +760,6 @@ public class Destroy extends BaseItemParser
 				mob.tell("Ok.");
 			}
 		}
-		else
-		if(commandType.equals("BUG"))
-		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"KILLBUGS")) return errorOut(mob);
-			int which=-1;
-			if(commands.size()>2)
-				which=Util.s_int((String)commands.elementAt(2));
-			if(which<=0)
-				mob.tell("Please enter a valid bug number to delete.  Use List Bugs for more information.");
-			else
-			{
-				CMClass.DBEngine().DBDeleteJournal("SYSTEM_BUGS",which-1);
-				mob.tell("Bug deletion submitted.");
-			}
-		}
-        else
-        if(commandType.equals("TASK"))
-        {
-            if(!CMSecurity.isAllowed(mob,mob.location(),"TASKS")) return errorOut(mob);
-            int which=-1;
-            if(commands.size()>2)
-                which=Util.s_int((String)commands.elementAt(2));
-            if(which<=0)
-                mob.tell("Please enter a valid task number to delete.  Use List Tasks for more information.");
-            else
-            {
-                CMClass.DBEngine().DBDeleteJournal("SYSTEM_TASKS",which-1);
-                mob.tell("Task deletion submitted.");
-            }
-        }
         else
         if(commandType.equals("FACTION"))
         {
@@ -800,51 +791,6 @@ public class Destroy extends BaseItemParser
                         mob.tell("Faction File '"+F.ID+"' could NOT be deleted.");
                     }
                 }
-            }
-        }
-		else
-		if(commandType.equals("IDEA"))
-		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"KILLIDEAS")) return errorOut(mob);
-			int which=-1;
-			if(commands.size()>2)
-				which=Util.s_int((String)commands.elementAt(2));
-			if(which<=0)
-				mob.tell("Please enter a valid idea number to delete.  Use List ideas for more information.");
-			else
-			{
-				CMClass.DBEngine().DBDeleteJournal("SYSTEM_IDEAS",which-1);
-				mob.tell("Idea deletion submitted.");
-			}
-		}
-		else
-		if(commandType.equals("TYPO"))
-		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"KILLTYPOS")) return errorOut(mob);
-			int which=-1;
-			if(commands.size()>2)
-				which=Util.s_int((String)commands.elementAt(2));
-			if(which<=0)
-				mob.tell("Please enter a valid typo number to delete.  Use List typos for more information.");
-			else
-			{
-				CMClass.DBEngine().DBDeleteJournal("SYSTEM_TYPOS",which-1);
-				mob.tell("Typo deletion submitted.");
-			}
-		}
-		else
-        if(commandType.equals("ASSIST"))
-        {
-            if(!CMSecurity.isAllowed(mob,mob.location(),"KILLASSIST")) return errorOut(mob);
-            int which=-1;
-            if(commands.size()>2)
-                which=Util.s_int((String)commands.elementAt(2));
-            if(which<=0)
-                mob.tell("Please enter a valid assist number to delete.  Use List assist for more information.");
-            else
-            {
-                CMClass.DBEngine().DBDeleteJournal("SYSTEM_ASSIST",which-1);
-                mob.tell("Assist deletion submitted.");
             }
         }
         else

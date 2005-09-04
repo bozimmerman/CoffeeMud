@@ -26,11 +26,15 @@ public class ChannelSet
 	protected static int numChannelsLoaded=0;
 	protected static int numIChannelsLoaded=0;
 	protected static int numImc2ChannelsLoaded=0;
+    protected static int numCommandJournalsLoaded=0;
 	protected static Vector channelNames=new Vector();
 	protected static Vector channelMasks=new Vector();
 	protected static Vector ichannelList=new Vector();
 	protected static Vector imc2channelList=new Vector();
 	protected static Vector channelQue=new Vector();
+    protected static Vector commandJournalNames=new Vector();
+    protected static Vector commandJournalMasks=new Vector();
+    protected static Vector commandJournalChannels=new Vector();
 	
 	public static int getNumChannels()
 	{
@@ -180,15 +184,20 @@ public class ChannelSet
 		return "";
 	}
 	
-	public static void unloadChannels()
+	public static void unloadChannelsAndCommandJournals()
 	{
 		numChannelsLoaded=0;
 		numIChannelsLoaded=0;
+        numCommandJournalsLoaded=0;
+        numImc2ChannelsLoaded=0;
 		channelNames=new Vector();
 		channelMasks=new Vector();
 		ichannelList=new Vector();
 		imc2channelList=new Vector();
 		channelQue=new Vector();
+        commandJournalMasks=new Vector();
+        commandJournalChannels=new Vector();
+        commandJournalNames=new Vector();
 	}
 
 	public static String[][] imc2ChannelsArray()
@@ -284,11 +293,10 @@ public class ChannelSet
 			}
 			numChannelsLoaded++;
 			x=item.indexOf(" ");
-			if(item.indexOf(" ")>=0)
+			if(x>0)
 			{
-				int i=item.indexOf(" ");
-				channelMasks.addElement(item.substring(i+1).trim());
-				item=item.substring(0,i);
+				channelMasks.addElement(item.substring(x+1).trim());
+				item=item.substring(0,x);
 			}
 			else
 				channelMasks.addElement("");
@@ -378,5 +386,87 @@ public class ChannelSet
 		return numChannelsLoaded;
 	}
 
+    public static int loadCommandJournals(String list)
+    {
+        while(list.length()>0)
+        {
+            int x=list.indexOf(",");
+
+            String item=null;
+            if(x<0)
+            {
+                item=list.trim();
+                list="";
+            }
+            else
+            {
+                item=list.substring(0,x).trim();
+                list=list.substring(x+1);
+            }
+            numCommandJournalsLoaded++;
+            x=item.indexOf(" ");
+            String chan=null;
+            if(x>0)
+            {
+                String mask=item.substring(x+1).trim();
+                int x1=mask.toUpperCase().indexOf("CHANNEL:");
+                if(x1>=0)
+                {
+                    int y=mask.indexOf(" ",x1+1);
+                    if(y>x)
+                    {
+                        chan=mask.toUpperCase().substring(x1+8,y);
+                        mask=mask.substring(0,x1)+mask.substring(y);
+                    }
+                    else
+                    {
+                        chan=mask.toUpperCase().substring(x1+8);
+                        mask=mask.substring(0,x1).trim();
+                    }
+                }
+                commandJournalMasks.addElement(mask);
+                item=item.substring(0,x);
+            }
+            else
+                commandJournalMasks.addElement("");
+            if((chan!=null)&&(chan.trim().length()>0))
+                commandJournalChannels.addElement(chan.toUpperCase().trim());
+            else
+                commandJournalChannels.addElement("");
+            commandJournalNames.addElement(item.toUpperCase().trim());
+        }
+        return numCommandJournalsLoaded;
+    }
+    
+    public static int getNumCommandJournals()
+    {
+        return commandJournalNames.size();
+    }
+    
+    public static String getCommandJournalMask(int i)
+    {
+        if((i>=0)&&(i<commandJournalMasks.size()))
+            return (String)commandJournalMasks.elementAt(i);
+        return "";
+    }
+
+    public static String getCommandJournalName(int i)
+    {
+        if((i>=0)&&(i<commandJournalNames.size()))
+            return (String)commandJournalNames.elementAt(i);
+        return "";
+    }
+
+    public static String getCommandJournalChannel(int i)
+    {
+        if((i>=0)&&(i<commandJournalChannels.size()))
+            return (String)commandJournalChannels.elementAt(i);
+        return "";
+    }
+    public static String[] getCommandJournalNames()
+    {
+        if(commandJournalNames.size()==0) return null;
+        return Util.toStringArray(commandJournalNames);
+    }
 }
 	

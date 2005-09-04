@@ -42,7 +42,8 @@ public class CommandJournal extends StdCommand
         String second=(commands.size()>2)?Util.combine(commands,2):"";
         if(!("REVIEW".startsWith(first.toUpperCase().trim())))
            return false;
-        if(!CMSecurity.isAllowed(mob,mob.location(),security))
+        if((!CMSecurity.isAllowed(mob,mob.location(),security))
+        &&(!CMSecurity.isAllowed(mob,mob.location(),"KILL"+security+"S")))
             return false;
         if((second.length()>0)&&(!Util.isNumber(second)))
             return false;
@@ -94,18 +95,18 @@ public class CommandJournal extends StdCommand
         int journalNum=-1;
         if(journalWord==null)
         for(int i=0;i<ChannelSet.getNumCommandJournals();i++)
-            if(ChannelSet.getChannelName(i).equals(((String)commands.firstElement()).toUpperCase().trim()))
+            if(ChannelSet.getCommandJournalName(i).equals(((String)commands.firstElement()).toUpperCase().trim()))
             {
                 journalNum=i;
-                journalWord=ChannelSet.getChannelName(i).toUpperCase().trim();
+                journalWord=ChannelSet.getCommandJournalName(i).toUpperCase().trim();
                 break;
             }
         if(journalWord==null)
         for(int i=0;i<ChannelSet.getNumCommandJournals();i++)
-            if(ChannelSet.getChannelName(i).startsWith(((String)commands.firstElement()).toUpperCase().trim()))
+            if(ChannelSet.getCommandJournalName(i).startsWith(((String)commands.firstElement()).toUpperCase().trim()))
             {
                 journalNum=i;
-                journalWord=ChannelSet.getChannelName(i).toUpperCase().trim();
+                journalWord=ChannelSet.getCommandJournalName(i).toUpperCase().trim();
                 break;
             }
         if(journalWord==null)

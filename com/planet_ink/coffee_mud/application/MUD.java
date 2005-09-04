@@ -189,7 +189,8 @@ public class MUD extends Thread implements MudHost
 		int numChannelsLoaded=ChannelSet.loadChannels(page.getStr("CHANNELS"),
 													  page.getStr("ICHANNELS"),
 													  page.getStr("IMC2CHANNELS"));
-		Log.sysOut("MUD","Channels loaded   : "+numChannelsLoaded);
+        int numJournalsLoaded=ChannelSet.loadCommandJournals(page.getStr("COMMANDJOURNALS"));
+		Log.sysOut("MUD","Channels loaded   : "+(numChannelsLoaded+numJournalsLoaded));
 
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: loading socials");
 		Socials.load("resources"+File.separatorChar+"socials.txt");
@@ -742,7 +743,7 @@ public class MUD extends Thread implements MudHost
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Clearing socials, clans, channels");
 		Socials.clearAllSocials();
 		Clans.shutdownClans();
-		ChannelSet.unloadChannels();
+		ChannelSet.unloadChannelsAndCommandJournals();
         Polls.unload();
 
 		MUDHelp.unloadHelpFile(null);

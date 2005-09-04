@@ -44,7 +44,7 @@ public class Email extends StdCommand
         if((CommonStrings.getVar(CommonStrings.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
         &&(commands!=null)
         &&(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX).length()>0))
-            mob.session().println("Changing your email address will cause a new password to be generated and emailed to the new address.");
+            mob.session().println("\n\r** Changing your email address will cause you to be logged off, and a new password to be generated and emailed to the new address. **\n\r");
 		String newEmail=mob.session().prompt("New E-mail Address:");
 		if(newEmail==null) return false;
 		newEmail=newEmail.trim();
@@ -74,7 +74,12 @@ public class Email extends StdCommand
                       mob.Name(),
                       "Password for "+mob.Name(),
                       "Your new password for "+mob.Name()+" is: "+pstats.password()+"\n\rYou can login by pointing your mud client at "+CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN)+" port(s):"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.",-1);
-            mob.tell("You will receive an email with your new password shortly.");
+            mob.tell("You will receive an email with your new password shortly.  Goodbye.");
+            if(mob.session()!=null)
+            {
+                try{Thread.sleep(1000);}catch(Exception e){}
+                mob.session().setKillFlag(true);
+            }
         }
 		return true;
 	}

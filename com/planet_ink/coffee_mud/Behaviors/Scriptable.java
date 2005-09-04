@@ -5094,16 +5094,25 @@ public class Scriptable extends StdBehavior
 							{
 								findOne=lastKnownLocation.fetchInhabitant(s);
 								A=lastKnownLocation.getArea();
+                                if((findOne!=null)&&(findOne!=monster)&&(!findOne.isMonster()))
+                                    V.addElement(findOne);
 							}
+                            if(findOne==null)
+                            {
+                                findOne=CMMap.getPlayer(s);
+                                if((findOne!=null)&&(!Sense.isInTheGame(findOne,true)))
+                                    findOne=null;
+                                if((findOne!=null)&&(findOne!=monster)&&(!findOne.isMonster()))
+                                    V.addElement(findOne);
+                            }
 							if((findOne==null)&&(A!=null))
 								for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 								{
 									Room R=(Room)r.nextElement();
 									findOne=R.fetchInhabitant(s);
-									if(findOne!=null) V.addElement(findOne);
+                                    if((findOne!=null)&&(findOne!=monster)&&(!findOne.isMonster()))
+                                        V.addElement(findOne);
 								}
-							if((findOne!=null)&&(findOne!=monster)&&(!findOne.isMonster()))
-								V.addElement(findOne);
 						}
 						for(int v=0;v<V.size();v++)
 						{
@@ -5137,7 +5146,6 @@ public class Scriptable extends StdBehavior
 							}
 						}
 					}
-
 				}
 				break;
 			}
@@ -5414,12 +5422,14 @@ public class Scriptable extends StdBehavior
 				MOB M=null;
 				if(lastKnownLocation!=null)
 					M=lastKnownLocation.fetchInhabitant(whoName);
+                if(M==null) M=CMMap.getPlayer(whoName);
 				if(M!=null) whoName=M.Name();
 				if(whoName.length()>0)
 				{
 					s=Util.getPastBitClean(s,1);
 					Quest Q=Quests.fetchQuest(s);
-					if(Q!=null) Q.declareWinner(whoName);
+					if(Q!=null) 
+                        Q.declareWinner(whoName);
 					else
 						scriptableError(scripted,"MYQUESTWIN","Unknown","Quest: "+s);
 				}
