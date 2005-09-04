@@ -87,10 +87,12 @@ public class Auction extends Channel
 				mob.tell(getScr("Auction","erritem",s));
 				return false;
 			}
-			if((!mob.isMonster())&&(!mob.session().confirm(getScr("Auction","erritem",E.name(),((String)V.firstElement())),getScr("Auction","yes"))))
+			if((mob.isMonster())
+            ||(!mob.session().confirm(getScr("Auction","confirmed",E.name(),((String)V.firstElement())),getScr("Auction","yes"))))
 				return false;
 			auctionA=CMClass.getAbility("Prop_Auction");
 			auctionA.invoke(mob,V,E,false,0);
+            auctionA.setInvoker(mob);
 		}
 		else
 		{

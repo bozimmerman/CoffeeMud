@@ -113,7 +113,8 @@ public class Prop_Auction extends Property
 							{
 								((Item)auctioning).unWear();
 								highBidder.location().bringItemHere((Item)auctioning,Item.REFUSE_PLAYER_DROP);
-								if(CommonMsgs.get(highBidder,null,(Item)auctioning,false))
+								if(CommonMsgs.get(highBidder,null,(Item)auctioning,false)
+                                ||(highBidder.isMine(auctioning)))
                                 {
                                     BeanCounter.subtractMoney(highBidder,currency,bid);
                                     BeanCounter.addMoney(M,currency,bid);
