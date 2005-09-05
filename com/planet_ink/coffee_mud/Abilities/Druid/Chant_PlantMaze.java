@@ -42,6 +42,16 @@ public class Chant_PlantMaze extends Chant
 		return super.tick(ticking,tickID);
 	}
 
+    public boolean okMessage(Environmental host, CMMsg msg)
+    {
+        if((msg.sourceMinor()==CMMsg.TYP_QUIT)
+        &&(affected instanceof Room)
+        &&(((Room)affected).isInhabitant(msg.source())))
+            unInvoke();
+        return super.okMessage(host,msg);
+    }
+    
+    
 	public void unInvoke()
 	{
 		// undo the affects of this spell

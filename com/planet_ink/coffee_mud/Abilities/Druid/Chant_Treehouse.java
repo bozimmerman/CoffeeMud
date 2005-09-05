@@ -68,6 +68,15 @@ public class Chant_Treehouse extends Chant
 		super.unInvoke();
 	}
 
+    public boolean okMessage(Environmental host, CMMsg msg)
+    {
+        if((msg.sourceMinor()==CMMsg.TYP_QUIT)
+        &&(affected instanceof Room)
+        &&(((Room)affected).isInhabitant(msg.source())))
+            unInvoke();
+        return super.okMessage(host,msg);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target = mob.location();

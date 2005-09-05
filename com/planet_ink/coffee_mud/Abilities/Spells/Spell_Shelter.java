@@ -59,6 +59,16 @@ public class Spell_Shelter extends Spell
 		super.unInvoke();
 	}
 
+    public boolean okMessage(Environmental host, CMMsg msg)
+    {
+        if((msg.sourceMinor()==CMMsg.TYP_QUIT)
+        &&(shelter!=null)
+        &&(shelter.isInhabitant(msg.source())))
+            unInvoke();
+        return super.okMessage(host,msg);
+    }
+    
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
