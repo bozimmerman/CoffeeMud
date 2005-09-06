@@ -629,7 +629,6 @@ public class Quests implements Cloneable, Quest
 						E=M;
 						if(!stuff.contains(M))
 							stuff.addElement(M);
-System.out.println(M.Name());
 						R.recoverRoomStats();
 						R.showHappens(CMMsg.MSG_OK_ACTION,null);
 					}

@@ -63,7 +63,7 @@ public class DeckOfCards extends StdContainer implements MiscMagic
 			}
 		}
 		if((msg.amITarget(this))
-		&&(msg.targetMinor()==CMMsg.TYP_SPEAK)
+		&&(msg.targetMinor()==CMMsg.TYP_EMOTE)
 		&&(msg.targetMessage()!=null)
 		&&(msg.targetMessage().toUpperCase().indexOf("SHUFFLE")>0))
 		{
@@ -75,7 +75,6 @@ public class DeckOfCards extends StdContainer implements MiscMagic
 	        else
 		    if(R!=null)
 		    {
-		        R.show(msg.source(),null,this,CMMsg.MASK_GENERAL|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> shuffle(s) <O-NAMESELF>.");
 		        for(int i=0;i<V.size()*5;i++)
 		        {
 		            Item I=(Item)V.elementAt(Dice.roll(1,V.size(),-1));
@@ -87,6 +86,7 @@ public class DeckOfCards extends StdContainer implements MiscMagic
 		            if(own instanceof Room)
 		                R.addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
 		        }
+                R.show(msg.source(),null,this,CMMsg.MASK_GENERAL|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> <S-HAS-HAVE> thoroughly shuffled <O-NAMESELF>.");
 		    }
 		    return false;
 		}
