@@ -1411,7 +1411,10 @@ public class StdRoom
 	public void addItemRefuse(Item item, double survivalRLHours)
 	{
 		addItem(item);
-		item.setDispossessionTime(System.currentTimeMillis()+Math.round(Util.mul(survivalRLHours,IQCalendar.MILI_HOUR)));
+        if(survivalRLHours<=0)
+            item.setDispossessionTime(0);
+        else
+    		item.setDispossessionTime(System.currentTimeMillis()+Math.round(Util.mul(survivalRLHours,IQCalendar.MILI_HOUR)));
 	}
 	public void delItem(Item item)
 	{

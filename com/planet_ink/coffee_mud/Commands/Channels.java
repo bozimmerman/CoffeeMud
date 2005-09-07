@@ -48,7 +48,7 @@ public class Channels extends StdCommand
 		if(names.length==0)
 			buf.append(getScr("Channels","none"));
 		else
-			buf.append(getScr("Channels","avchannels"));
+			buf.append(getScr("Channels","usechannels"));
 		mob.tell(buf.toString());
 		return false;
 	}

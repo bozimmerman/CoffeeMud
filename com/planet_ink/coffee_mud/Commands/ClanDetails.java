@@ -45,7 +45,7 @@ public class ClanDetails extends BaseClanner
 			}
 			if(!found)
 			{
-				msg.append(getScr("ClanDetails","nocm",qual));
+				msg.append(getScr("ClanDetails","nocn",qual));
 			}
 		}
 		else
