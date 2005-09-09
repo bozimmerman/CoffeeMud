@@ -468,7 +468,7 @@ mo	WORRY <T-NAME>	You look at <T-NAMESELF> worriedly.	<S-NAME> looks at <T-NAMES
 ww	AGREE <T-NAME>	You nod in enthusiastic agreement with <T-NAMESELF>.	<S-NAME> nods in enthusiastic agreement with <T-NAMESELF>.	<S-NAME> nods in enthusiastic agreement with you.	Sorry, your target is absent.
 mo	MISCHIEVOUS SELF	You grin mischievously to yourself.	<S-NAME> grins mischievously to <S-HIM-HERSELF>.		
 ss	SNIFF <T-NAME>	You sniff sadly at the way <T-HE-SHE> is treating you.	<S-NAME> sniffs sadly at the way <T-NAMESELF> is treating <S-HIM-HER>.	<S-NAME> sniffs sadly at the way you are treating <S-HIM-HER>.	You see no reason to sniff.
-mt	TEASE <T-NAME>	You point at <t-name> and laugh. HAHA!!	<s-name> points at <t-name> and laughs. What`s so funny?	s-name> points <s-his-her> finger at you and laughs.	Tease who?
+mt	TEASE <T-NAME>	You point at <t-name> and laugh. HAHA!!	<s-name> points at <t-name> and laughs. What`s so funny?	<s-name> points <s-his-her> finger at you and laughs.	Tease who?
 oo	DUCK	DUCK!!!!	<S-NAME> ducks defensively.		
 mo	SHAKE <T-NAME>	<S-NAME> shake <S-YOUPOSS> head disapprovingly at <T-NAME>.	<S-NAME> shakes <S-HIS-HER> head disapprovingly at <T-NAME>.	<S-NAME> shakes <S-HIS-HER> head at <T-NAME> and <S-HE-SHE> does not look pleased.	Sorry good buddy, but that person doesn't seem to be here.
 ms	APPLAUD SELF	You applaud at yourself.  Boy, are we conceited!	<S-NAME> applauds at <S-HIM-HERSELF>.  Boy, are we conceited!		
