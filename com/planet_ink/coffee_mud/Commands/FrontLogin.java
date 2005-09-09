@@ -806,6 +806,7 @@ public class FrontLogin extends StdCommand
 				if(CMMap.getPlayer(mob.Name())==null)
 					CMMap.addPlayer(mob);
 
+                if((mob.session()==null)||(mob.playerStats()==null)) return false;
 				mob.playerStats().setLastIP(mob.session().getAddress());
 				Log.sysOut("FrontDoor","Created user: "+mob.Name());
 				for(int s=0;s<Sessions.size();s++)

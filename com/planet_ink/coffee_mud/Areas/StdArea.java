@@ -33,7 +33,6 @@ public class StdArea implements Area
 	protected Vector metroRooms=null;
 	protected boolean mobility=true;
 	protected long tickStatus=Tickable.STATUS_NOT;
-	private Boolean roomSemaphore=new Boolean(true);
 	private int[] statData=null;
 	protected boolean stopTicking=false;
 
@@ -669,7 +668,7 @@ public class StdArea implements Area
 
 	public void clearMaps()
 	{
-		synchronized(roomSemaphore)
+		synchronized(this)
 		{
 			properRooms=null;
 			metroRooms=null;
@@ -678,7 +677,7 @@ public class StdArea implements Area
 
 	public int properSize()
 	{
-		synchronized(roomSemaphore)
+		synchronized(this)
 		{
 			if(properRooms!=null)
 				return properRooms.size();
@@ -688,7 +687,7 @@ public class StdArea implements Area
 	}
 	public int metroSize()
 	{
-		synchronized(roomSemaphore)
+		synchronized(this)
 		{
 			if(metroRooms!=null)
 				return metroRooms.size();
@@ -712,7 +711,7 @@ public class StdArea implements Area
 	}
 	public Room getRandomProperRoom()
 	{
-		synchronized(roomSemaphore)
+		synchronized(this)
 		{
 			if(properRooms==null) makeProperMap();
 			if(properSize()==0) return null;
@@ -721,7 +720,7 @@ public class StdArea implements Area
 	}
 	public Room getRandomMetroRoom()
 	{
-		synchronized(roomSemaphore)
+		synchronized(this)
 		{
 			if(metroRooms==null) makeMetroMap();
 			if(metroSize()==0) return null;
@@ -731,7 +730,7 @@ public class StdArea implements Area
 
 	public Enumeration getProperMap()
 	{
-		synchronized(roomSemaphore)
+		synchronized(this)
 		{
 			if(properRooms!=null) return properRooms.elements();
 			makeProperMap();
@@ -740,7 +739,7 @@ public class StdArea implements Area
 	}
 	public Enumeration getMetroMap()
 	{
-		synchronized(roomSemaphore)
+		synchronized(this)
 		{
 			if(metroRooms!=null) return metroRooms.elements();
 			makeMetroMap();
@@ -749,7 +748,7 @@ public class StdArea implements Area
 	}
 	private void makeProperMap()
 	{
-		synchronized(roomSemaphore)
+		synchronized(this)
 		{
 			if(properRooms!=null) return;
 			Vector myMap=new Vector();
@@ -768,7 +767,7 @@ public class StdArea implements Area
 
 	private void makeMetroMap()
 	{
-		synchronized(roomSemaphore)
+		synchronized(this)
 		{
 			if(metroRooms!=null) return;
 			if(properRooms==null)

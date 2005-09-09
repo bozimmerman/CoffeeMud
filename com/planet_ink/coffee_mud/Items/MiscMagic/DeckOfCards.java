@@ -73,27 +73,14 @@ public class DeckOfCards extends StdContainer implements MiscMagic
 		&&(msg.targetMessage()!=null)
 		&&(msg.targetMessage().toUpperCase().indexOf("SHUFFLE")>0))
 		{
-		    Room R=CoffeeUtensils.roomLocation(this);
-	        Vector V=getContents();
-	        Environmental own=owner();
-	        if(V.size()==0)
+            if(!shuffleDeck())
 	            msg.source().tell("There are no cards left in the deck");
 	        else
-		    if(R!=null)
-		    {
-		        for(int i=0;i<V.size()*5;i++)
-		        {
-		            Item I=(Item)V.elementAt(Dice.roll(1,V.size(),-1));
-		            I.removeFromOwnerContainer();
-		            I.setContainer(this);
-		            if(own instanceof MOB)
-		                ((MOB)own).addInventory(I);
-		            else
-		            if(own instanceof Room)
-		                R.addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
-		        }
-                R.show(msg.source(),null,this,CMMsg.MASK_GENERAL|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> <S-HAS-HAVE> thoroughly shuffled <O-NAMESELF>.");
-		    }
+            {
+                Room R=CoffeeUtensils.roomLocation(this);
+    		    if(R!=null)
+                    R.show(msg.source(),null,this,CMMsg.MASK_GENERAL|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> <S-HAS-HAVE> thoroughly shuffled <O-NAMESELF>.");
+            }
 		    return false;
 		}
 		return super.okMessage(myHost,msg);

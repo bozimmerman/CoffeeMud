@@ -170,13 +170,15 @@ public class Mobile extends ActiveTicker
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
 				Room R=mob.location().getRoomInDir(d);
+                tickStatus=Tickable.STATUS_MISC2+3;
 				if((R!=null)&&(!okRoomForMe(mob.location(),R)))
 				{
+                    tickStatus=Tickable.STATUS_MISC2+4;
 					if(objections==null) objections=new Vector();
 					objections.addElement(R);
 				}
 			}
-            tickStatus=Tickable.STATUS_MISC2+3;
+            tickStatus=Tickable.STATUS_MISC2+5;
             Ability A=null;
             for(int i=0;i<mob.numEffects();i++)
             {
@@ -190,11 +192,11 @@ public class Mobile extends ActiveTicker
                     return true;
                 }
             }
-            tickStatus=Tickable.STATUS_MISC2+4;
+            tickStatus=Tickable.STATUS_MISC2+6;
 			Room oldRoom=mob.location();
             altStatusTaker=new long[1];
 			MUDTracker.beMobile((MOB)ticking,dooropen,wander,false,objections!=null,altStatusTaker,objections);
-            tickStatus=Tickable.STATUS_MISC2+5;
+            tickStatus=Tickable.STATUS_MISC2+7;
 			if(mob.location()==oldRoom)
 				tickDown=0;
 		}
