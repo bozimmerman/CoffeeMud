@@ -42,7 +42,7 @@ public class Apprentice extends StdCharClass
 	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_DAGGERONLY;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	protected HashSet disallowedWeaponClasses(){return disallowedWeapons;}
+	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 
 

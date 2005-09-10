@@ -233,6 +233,7 @@ public class GlassBlowing extends CraftingSkill
 				((Container)building).setLidsNLocks(true,false,true,false);
 				((Container)building).setKeyName(new Double(Math.random()).toString());
 			}
+            ((Container)building).setContainTypes(Container.CONTAIN_ANYTHING);
 		}
 		if(building instanceof Drink)
 		{

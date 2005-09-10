@@ -68,7 +68,7 @@ public class LightSource extends StdItem implements Light
 			if(room!=null)
 			{
 				if(((LightSource.inTheRain(room)&&(goesOutInTheRain()))
-					||(LightSource.inTheWater(room)&&(mob.riding()==null)))
+					||(LightSource.inTheWater(msg.source(),room)))
 				   &&(getDuration()>0)
 				   &&(mob.isMine(this)))
 				{
@@ -143,13 +143,18 @@ public class LightSource extends StdItem implements Light
 				&&((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_RAIN)
 				   ||(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_THUNDERSTORM)));
 	}
-	public static boolean inTheWater(Room room)
+	public static boolean inTheWater(MOB mob, Room room)
 	{
-		if(room==null) return false;
-		return (room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-			   ||(room.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-			   ||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-			   ||(room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE);
+		if((room==null)||(mob==null)) return false;
+		if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+	    ||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER))
+            return true;
+        if((!Sense.isFlying(mob))
+        &&(mob.riding()==null)
+        &&((room.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+		   ||(room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)))
+            return true;
+        return false;
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -161,7 +166,8 @@ public class LightSource extends StdItem implements Light
 		if(room==null) return;
 		if(room!=null)
 		{
-			if(((LightSource.inTheRain(room)&&goesOutInTheRain())||(LightSource.inTheWater(room)&&(mob.riding()==null)))
+			if(((LightSource.inTheRain(room)&&goesOutInTheRain())
+                    ||(LightSource.inTheWater(msg.source(),room)))
 			&&(isLit())
 			&&(getDuration()>0)
 			&&(mob.isMine(this))
@@ -169,7 +175,7 @@ public class LightSource extends StdItem implements Light
 			   ||(LightSource.inTheRain(room))
 			   ||((room.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(room.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))))
 			{
-				if(LightSource.inTheWater(room))
+				if(LightSource.inTheWater(msg.source(),room))
 					mob.tell("The water makes "+name()+" go out.");
 				else
 					mob.tell("The rain makes "+name()+" go out.");

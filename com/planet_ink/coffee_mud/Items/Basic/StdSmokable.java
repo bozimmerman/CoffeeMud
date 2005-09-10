@@ -80,9 +80,9 @@ public class StdSmokable extends StdContainer implements Light
 			if(room!=null)
 			{
 				if(((LightSource.inTheRain(room)&&(goesOutInTheRain()))
-					||(LightSource.inTheWater(room)&&(mob.riding()==null)))
-				   &&(durationTicks>0)
-				   &&(mob.isMine(this)))
+					||(LightSource.inTheWater(msg.source(),room)))
+			    &&(durationTicks>0)
+			    &&(mob.isMine(this)))
 				{
 					mob.tell("It's too wet to light "+name()+" here.");
 					return false;
@@ -184,7 +184,8 @@ public class StdSmokable extends StdContainer implements Light
 		if(room==null) return;
 		if(room!=null)
 		{
-			if(((LightSource.inTheRain(room)&&goesOutInTheRain())||(LightSource.inTheWater(room)&&(mob.riding()==null)))
+			if(((LightSource.inTheRain(room)&&goesOutInTheRain())
+                    ||(LightSource.inTheWater(msg.source(),room)))
 			&&(isLit())
 			&&(durationTicks>0)
 			&&(mob.isMine(this))
@@ -192,7 +193,7 @@ public class StdSmokable extends StdContainer implements Light
 			   ||(LightSource.inTheRain(room))
 			   ||((room.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(room.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))))
 			{
-				if(LightSource.inTheWater(room))
+				if(LightSource.inTheWater(msg.source(),room))
 					mob.tell("The water makes "+name()+" go out.");
 				else
 					mob.tell("The rain makes "+name()+" go out.");

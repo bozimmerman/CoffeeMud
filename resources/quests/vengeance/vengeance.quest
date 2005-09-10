@@ -5,7 +5,7 @@ set name vengeance
 set wait 7200
 set interval 3600
 
-set mob any
+set mob ANY MASK=+INT 6
 # load up any mob from the above area.  Will set a room!
 
 give behavior Scriptable LOAD=quests/vengeance/wronged.script
@@ -14,7 +14,7 @@ give behavior Scriptable LOAD=quests/vengeance/wronged.script
 set room
 # clears the room that was set above with set mob any.
 
-set mob any
+set mob ANY MASK=+INT 6
 # load up any mob from area with that name.  Since room was cleared, this 
 # will not move the mob.
 

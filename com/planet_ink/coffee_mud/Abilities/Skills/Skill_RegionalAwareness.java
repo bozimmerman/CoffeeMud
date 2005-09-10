@@ -58,12 +58,19 @@ public class Skill_RegionalAwareness extends StdAbility
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if((mob.location().domainType()&Room.INDOORS)==Room.INDOORS)
+		if((!auto)&&((mob.location().domainType()&Room.INDOORS)==Room.INDOORS))
 		{
 			mob.tell("This only works outdoors.");
 			return false;
 		}
 		
+        if((!auto)
+        &&(!Sense.canBeSeenBy(mob.location(),mob)))
+        {
+            mob.tell("You need to be able to see your surroundings to do that.");
+            return false;
+        }
+        
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 		    return false;
 		

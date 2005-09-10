@@ -30,7 +30,7 @@ public class Healer extends Cleric
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	protected HashSet disallowedWeaponClasses(){return disallowedWeapons;}
+	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	protected int alwaysFlunksThisQuality(){return 0;}
 
 	private DVector downs=new DVector(4);

@@ -647,8 +647,7 @@ public class StdMOB implements MOB
 			return true;
 		if(CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("NEVER"))
 			return false;
-		if((getClanID().length()>0)&&(mob.getClanID().length()>0)
-		&&(Clans.getClanRelations(getClanID(),mob.getClanID())==Clan.REL_WAR))
+		if(Clans.isCommonClanRelations(getClanID(),mob.getClanID(),Clan.REL_WAR))
 			return true;
 		if(Util.bset(getBitmap(),MOB.ATT_PLAYERKILL))
 		{
@@ -2759,12 +2758,25 @@ public class StdMOB implements MOB
                         else
                             dequeCommand();
 					
+                    MOB target=getVictim();
 					if(!isMonster())
 					{
-						MOB target=getVictim();
 						if((target!=null)&&(!target.amDead())&&(Sense.canBeSeenBy(target,this)))
 							session().print(target.healthText()+"\n\r\n\r");
 					}
+                    else
+                    {
+                        if((target!=null)
+                        &&(target.isMonster())
+                        &&(!target.amDead())
+                        &&(Dice.rollPercentage()<33)
+                        &&(location()!=null))
+                        {
+                            MOB possNextVictim=location().fetchInhabitant(Dice.roll(1,location().numInhabitants(),-1));
+                            if((possNextVictim!=null)&&(!possNextVictim.amDead())&&(!possNextVictim.isMonster()))
+                                setVictim(possNextVictim);
+                        }
+                    }
 				}
 				else
 				{

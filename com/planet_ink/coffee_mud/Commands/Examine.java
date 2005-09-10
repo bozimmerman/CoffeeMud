@@ -73,7 +73,7 @@ public class Examine extends StdCommand
             }
             if(thisThang!=null)
             {
-                String name="at <T-NAMESELF>";
+                String name="<T-NAMESELF>";
                 if((thisThang instanceof Room)||(thisThang instanceof Exit))
                 {
                     if(thisThang==mob.location())

@@ -847,6 +847,7 @@ public class Destroy extends BaseItemParser
 					mob.tell("Quest '"+name+"' is unknown.  Try list quests.");
 				else
 				{
+                    if(Q.running()&&(!Q.stopping())) Q.stopQuest();
 					mob.tell("Quest '"+Q.name()+"' is destroyed!");
 					Quests.delQuest(Q);
 				}

@@ -1980,10 +1980,10 @@ casters. See the digressions for more information on what the heck a source code
 of a message might be. </FONT></P><pre>public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
 
 private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+public HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 
 private HashSet requiredWeaponMaterials=buildRequiredWeaponMaterials();
-protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
+public HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
 
 </PRE>
 <P align=left><FONT size=4>The 

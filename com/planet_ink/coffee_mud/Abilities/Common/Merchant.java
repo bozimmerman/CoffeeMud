@@ -581,6 +581,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
     {
         if(!(E instanceof Item)) return true;
         if(((Item)E).container()!=null) return false;
+        if(mob==affected) return true;
         if(CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) return true;
         if(((Item)E).envStats().level()>mob.envStats().level()) return false;
         if(!Sense.canBeSeenBy(E,mob)) return false;

@@ -202,6 +202,38 @@ public class Clans implements Clan, Tickable
 		all.clear();
 	}
 
+    public static boolean isCommonClanRelations(String id1, String id2, int relation)
+    {
+        if((id1.length()==0)||(id2.length()==0)) return relation==Clan.REL_NEUTRAL;
+        Clan C1=getClan(id1);
+        Clan C2=getClan(id2);
+        if((C1==null)||(C2==null)) return relation==Clan.REL_NEUTRAL;
+        int i1=C1.getClanRelations(id2);
+        int i2=C2.getClanRelations(id1);
+        if((i1==i2)
+        &&((i1==Clan.REL_WAR)
+           ||(i1==Clan.REL_ALLY)))
+           return relation==Clan.REL_ALLY;
+        for(Enumeration e=clans();e.hasMoreElements();)
+        {
+            Clan C=(Clan)e.nextElement();
+            if((C!=C1)&&(C!=C2))
+            {
+                if((i1!=Clan.REL_WAR)
+                &&(C1.getClanRelations(C.ID())==Clan.REL_ALLY)
+                &&(C.getClanRelations(C2.ID())==Clan.REL_WAR))
+                    i1=Clan.REL_WAR;
+                if((i2!=Clan.REL_WAR)
+                &&(C2.getClanRelations(C.ID())==Clan.REL_ALLY)
+                &&(C.getClanRelations(C1.ID())==Clan.REL_WAR))
+                    i2=Clan.REL_WAR;
+            }
+        }
+        if(i1==i2) return relation==i1;
+        if(i1<i2) return relation==i1;
+        return relation==i2;
+    }
+    
 	public static int getClanRelations(String id1, String id2)
 	{
 		if((id1.length()==0)||(id2.length()==0)) return Clan.REL_NEUTRAL;
@@ -218,8 +250,8 @@ public class Clans implements Clan, Tickable
 			Clan C=(Clan)e.nextElement();
 			if((C!=C1)
 			&&(C!=C2)
-			&&(((C1.getClanRelations(C.ID())==Clan.REL_ALLY)&&(C2.getClanRelations(C.ID())==Clan.REL_WAR)))
-				||((C2.getClanRelations(C.ID())==Clan.REL_ALLY)&&(C1.getClanRelations(C.ID())==Clan.REL_WAR)))
+			&&(((C1.getClanRelations(C.ID())==Clan.REL_ALLY)&&(C.getClanRelations(C2.ID())==Clan.REL_WAR)))
+				||((C2.getClanRelations(C.ID())==Clan.REL_ALLY)&&(C.getClanRelations(C1.ID())==Clan.REL_WAR)))
 					return Clan.REL_WAR;
 		}
 		return rel;
