@@ -1075,16 +1075,16 @@ public class StdRoom
 		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS))
 			return null;
 		Room nextRoom=rawDoors()[direction];
-		GridLocale GP=getGridParent();
 		if((nextRoom==null)
-		&&(GP instanceof StdThinGrid))
-		{
+        &&(gridParent instanceof StdThinGrid))
+        {
+            GridLocale GP=getGridParent();
 			int x=GP.getChildX(this);
 			int y=GP.getChildY(this);
 			if((x>=0)&&(x<GP.xSize())&&(y>=0)&&(y<GP.ySize()))
 			    ((StdThinGrid)GP).fillExitsOfGridRoom(this,x,y);
 			nextRoom=rawDoors()[direction];
-		}
+        }
 		    
 		if(nextRoom instanceof GridLocale)
 		{
