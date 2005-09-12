@@ -34,7 +34,7 @@ public class ChannelSet
 	protected static Vector channelQue=new Vector();
     protected static Vector commandJournalNames=new Vector();
     protected static Vector commandJournalMasks=new Vector();
-    protected static Vector commandJournalChannels=new Vector();
+    protected static Vector commandJournalFlags=new Vector();
 	
 	public static int getNumChannels()
 	{
@@ -196,7 +196,7 @@ public class ChannelSet
 		imc2channelList=new Vector();
 		channelQue=new Vector();
         commandJournalMasks=new Vector();
-        commandJournalChannels=new Vector();
+        commandJournalFlags=new Vector();
         commandJournalNames=new Vector();
 	}
 
@@ -405,23 +405,27 @@ public class ChannelSet
             }
             numCommandJournalsLoaded++;
             x=item.indexOf(" ");
-            String chan=null;
+            Hashtable flags=new Hashtable();
             if(x>0)
             {
                 String mask=item.substring(x+1).trim();
-                int x1=mask.toUpperCase().indexOf("CHANNEL:");
-                if(x1>=0)
+                String[] possflags={"CHANNEL=","ADDROOM","EXPIRE=","ADMINECHO"};
+                for(int pf=0;pf<possflags.length;pf++)
                 {
-                    int y=mask.indexOf(" ",x1+1);
-                    if(y>x)
+                    int keyx=mask.toUpperCase().indexOf(possflags[pf]);
+                    if(keyx>=0)
                     {
-                        chan=mask.toUpperCase().substring(x1+8,y);
-                        mask=mask.substring(0,x1)+mask.substring(y);
-                    }
-                    else
-                    {
-                        chan=mask.toUpperCase().substring(x1+8);
-                        mask=mask.substring(0,x1).trim();
+                        int keyy=mask.indexOf(" ",keyx+1);
+                        if(keyy<0) keyy=mask.length();
+                        if((keyx==0)||(Character.isWhitespace(mask.charAt(keyx-1))))
+                        {
+                            String parm=mask.substring(keyx+possflags[pf].length(),keyy).trim();
+                            if((parm.length()==0)||(possflags[pf].endsWith("=")))
+                            {
+                                flags.put(possflags[pf],parm);
+                                mask=mask.substring(0,keyx).trim()+" "+mask.substring(keyy).trim();
+                            }
+                        }
                     }
                 }
                 commandJournalMasks.addElement(mask);
@@ -429,10 +433,7 @@ public class ChannelSet
             }
             else
                 commandJournalMasks.addElement("");
-            if((chan!=null)&&(chan.trim().length()>0))
-                commandJournalChannels.addElement(chan.toUpperCase().trim());
-            else
-                commandJournalChannels.addElement("");
+            commandJournalFlags.addElement(flags);
             commandJournalNames.addElement(item.toUpperCase().trim());
         }
         return numCommandJournalsLoaded;
@@ -457,11 +458,11 @@ public class ChannelSet
         return "";
     }
 
-    public static String getCommandJournalChannel(int i)
+    public static Hashtable getCommandJournalFlags(int i)
     {
-        if((i>=0)&&(i<commandJournalChannels.size()))
-            return (String)commandJournalChannels.elementAt(i);
-        return "";
+        if((i>=0)&&(i<commandJournalFlags.size()))
+            return (Hashtable)commandJournalFlags.elementAt(i);
+        return new Hashtable();
     }
     public static String[] getCommandJournalNames()
     {

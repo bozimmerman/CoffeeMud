@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -72,7 +73,8 @@ public class Train extends StdCommand
 				CharClass C=(CharClass)c.nextElement();
 				if(C.name().toUpperCase().startsWith(abilityName.toUpperCase()))
 				{
-					if(C.qualifiesForThisClass(mob,false))
+					if((!Util.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK))
+                    &&(C.qualifiesForThisClass(mob,false)))
 					{
 						abilityCode=106;
 						theClass=C;

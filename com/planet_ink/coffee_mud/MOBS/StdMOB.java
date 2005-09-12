@@ -2462,26 +2462,46 @@ public class StdMOB implements MOB
 			&&((canseesrc)||(canhearsrc)))
 				tell(msg.source(),msg.target(),msg.tool(),msg.othersMessage());
 
-			if(msg.othersMinor()==CMMsg.TYP_DEATH)
-			{
-			    if(victim!=null)
-			    {
-					MOB victim=this.victim;
-					if(victim==msg.source())
-						setVictim(null);
-					else
-					if((victim.getVictim()==null)||(victim.getVictim()==msg.source()))
-					{
-						if((amFollowing()!=null)&&(victim.amFollowing()!=null)&&(amFollowing()==victim.amFollowing()))
-							setVictim(null);
-						else
-						{
-							victim.setAtRange(-1);
-							victim.setVictim(this);
-						}
-					}
-			    }
-			}
+			if((msg.othersMinor()==CMMsg.TYP_DEATH)
+            &&(victim==msg.source())
+            &&(location()!=null))
+            {
+                Room R=location();
+                MOB newTargetM=null;
+                HashSet hisGroupH=victim.getGroupMembers(new HashSet());
+                HashSet myGroupH=getGroupMembers(new HashSet());
+                for(int r=0;r<R.numInhabitants();r++)
+                {
+                    MOB M=R.fetchInhabitant(r);
+                    if((M!=this)
+                    &&(M!=victim)
+                    &&(M!=null)
+                    &&(M.getVictim()==this)
+                    &&(!M.amDead())
+                    &&(Sense.isInTheGame(M,true)))
+                    {
+                        newTargetM=M;
+                        break;
+                    }
+                }
+                if(newTargetM==null)
+                for(int r=0;r<R.numInhabitants();r++)
+                {
+                    MOB M=R.fetchInhabitant(r);
+                    if((M!=this)
+                    &&(M!=victim)
+                    &&(M!=null)
+                    &&(hisGroupH.contains(M)
+                        ||((M.getVictim()!=null)&&(myGroupH.contains(M))))
+                    &&(!M.amDead())
+                    &&(Sense.isInTheGame(M,true)))
+                    {
+                        newTargetM=M;
+                        break;
+                    }
+                }
+                setVictim(newTargetM);
+            }
 		}
 
 		Item I=null;

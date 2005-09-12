@@ -111,6 +111,37 @@ public class MOTD extends StdCommand
                         buf.append("\n\r--------------------------------------\n\r");
                 }
                 
+                Vector myEchoableCommandJournals=new Vector();
+                for(int cj=0;cj<ChannelSet.getNumCommandJournals();cj++)
+                {
+                    if((ChannelSet.getCommandJournalFlags(cj).get("ADMINECHO")!=null)
+                    &&((CMSecurity.isAllowed(mob,mob.location(),ChannelSet.getCommandJournalName(cj)))
+                            ||CMSecurity.isAllowed(mob,mob.location(),"KILL"+ChannelSet.getCommandJournalName(cj)+"S")
+                            ||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")))
+                        myEchoableCommandJournals.addElement(new Integer(cj));
+                }
+                boolean CJseparator=false;
+                for(int cj=0;cj<myEchoableCommandJournals.size();cj++)
+                {
+                    Integer CJ=(Integer)myEchoableCommandJournals.elementAt(cj);
+                    Vector items=CMClass.DBEngine().DBReadJournal("SYSTEM_"+ChannelSet.getCommandJournalName(CJ.intValue())+"S");
+                    if(items!=null)
+                    for(int i=0;i<items.size();i++)
+                    {
+                        Vector entry=(Vector)items.elementAt(i);
+                        String from=(String)entry.elementAt(1);
+                        String message=(String)entry.elementAt(5);
+                        long compdate=Util.s_long((String)entry.elementAt(6));
+                        if(compdate>mob.playerStats().lastDateTime())
+                        {
+                            buf.append("\n\rNEW "+ChannelSet.getCommandJournalName(CJ.intValue())+" from "+from+": "+message+"\n\r");
+                            CJseparator=true;
+                        }
+                    }
+                }
+                if(CJseparator)
+                    buf.append("\n\r--------------------------------------\n\r");
+                
 				if(mob.session()!=null)
                     if(buf.length()>0)
                         mob.session().wraplessPrintln("\n\r--------------------------------------\n\r"+buf.toString());

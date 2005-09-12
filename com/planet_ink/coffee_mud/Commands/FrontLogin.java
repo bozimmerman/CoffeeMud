@@ -30,6 +30,7 @@ public class FrontLogin extends StdCommand
 	{
 		if((CommonStrings.isTheme(thisClass.availabilityCode()))
 		   &&(Util.bset(thisClass.availabilityCode(),theme))
+           &&(!Util.bset(thisClass.availabilityCode(),Area.THEME_SKILLONLYMASK))
 		   &&((CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("NO"))
 			  ||(CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("MULTI"))
 			  ||(thisClass.baseClass().equals(thisClass.ID())

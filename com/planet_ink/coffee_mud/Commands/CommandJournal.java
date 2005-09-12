@@ -123,10 +123,16 @@ public class CommandJournal extends StdCommand
         {
             if(!review(mob,"SYSTEM_"+journalWord+"S",journalWord.toLowerCase()+"s",commands,journalWord))
             {
-                CMClass.DBEngine().DBWriteJournal("SYSTEM_"+journalWord+"S",mob.Name(),"ALL",journalWord+": "+Util.padRight(Util.combine(commands,1),10),Util.combine(commands,1),-1);
+                String prePend="";
+                if((journalNum>=0)&&(ChannelSet.getCommandJournalFlags(journalNum).containsKey("ADDROOM")))
+                    prePend="("+CMMap.getExtendedRoomID(mob.location())+") ";
+                CMClass.DBEngine().DBWriteJournal("SYSTEM_"+journalWord+"S",mob.Name(),"ALL",
+                        journalWord+": "+Util.padRight(Util.combine(commands,1),15),
+                        prePend+Util.combine(commands,1),
+                        -1);
                 mob.tell(getScr("CommandJournal","thankyou",journalWord.toLowerCase()));
-                if((journalNum>=0)&&(ChannelSet.getCommandJournalChannel(journalNum).length()>0))
-                    CommonMsgs.channel(ChannelSet.getCommandJournalChannel(journalNum).toUpperCase().trim(),"",getScr("CommandJournal","customline",mob.Name(),journalWord,Util.combine(commands,1)),true);
+                if((journalNum>=0)&&(ChannelSet.getCommandJournalFlags(journalNum).get("CHANNEL=")!=null))
+                    CommonMsgs.channel(((String)ChannelSet.getCommandJournalFlags(journalNum).get("CHANNEL=")).toUpperCase().trim(),"",getScr("CommandJournal","customline",mob.Name(),journalWord,Util.combine(commands,1)),true);
             }
         }
         else

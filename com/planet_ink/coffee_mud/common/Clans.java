@@ -230,7 +230,8 @@ public class Clans implements Clan, Tickable
             }
         }
         if(i1==i2) return relation==i1;
-        if(i1<i2) return relation==i1;
+        
+        if(Clan.REL_NEUTRALITYGAUGE[i1]<Clan.REL_NEUTRALITYGAUGE[i2]) return relation==i1;
         return relation==i2;
     }
     

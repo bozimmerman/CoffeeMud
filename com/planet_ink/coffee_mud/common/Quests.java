@@ -197,32 +197,46 @@ public class Quests implements Cloneable, Quest
 					{
 						A=null;
 						if(p.size()<3) continue;
-						String areaName=Util.combine(p,2);
-						if(areaName.equalsIgnoreCase("any"))
-							A=CMMap.getRandomArea();
-						if(A==null)
+                        Vector names=new Vector();
+                        Vector areas=new Vector();
+                        if((p.size()>3)&&(((String)p.firstElement()).equalsIgnoreCase("any")))
+                            for(int ip=3;ip<p.size();ip++)
+                                names.addElement(p.elementAt(ip));
+                        else
+                            names.addElement(Util.combine(p,2));
+                        for(int n=0;n<names.size();n++)
+                        {
+                            String areaName=(String)names.elementAt(n);
+                            int oldSize=areas.size();
+                            if(areaName.equalsIgnoreCase("any"))
+                                areas.addElement(CMMap.getRandomArea());
+                            if(oldSize==areas.size())
 							for (Enumeration e = CMMap.areas(); e.hasMoreElements(); )
 							{
 								Area A2 = (Area) e.nextElement();
 								if (A2.Name().equalsIgnoreCase(areaName))
 								{
-								   A = A2;
-								   break;
+                                    areas.addElement(A2);
+								    break;
 								}
 							}
-						if(A==null)
+                            if(oldSize==areas.size())
 							for(Enumeration e=CMMap.areas();e.hasMoreElements();)
 							{
 								Area A2=(Area)e.nextElement();
 								if(EnglishParser.containsString(A2.Name(),areaName))
 								{
-									A=A2; break;
+                                    areas.addElement(A2);
+                                    break;
 								}
 							}
+                        }
+                        if(areas.size()>0)
+                            A=(Area)areas.elementAt(Dice.roll(1,areas.size(),-1));
 						if(A==null)
 						{
 							if(!isQuiet)
-								Log.errOut("Quests","Quest '"+name()+"', unknown area '"+areaName+"'.");
+								Log.errOut("Quests","Quest '"+name()+"', unknown area '"+Util.combine(p,2)+"'.");
 							error=true; break;
 						}
 					}
@@ -379,10 +393,12 @@ public class Quests implements Cloneable, Quest
 						I=null;
 						if(p.size()<3) continue;
 						Vector choices=new Vector();
-						Vector itemTypes=Util.parse(Util.combine(p,2).toUpperCase());
+						Vector itemTypes=new Vector();
+                        for(int i=2;i<p.size();i++)
+                            itemTypes.addElement(p.elementAt(i));
 						for(int t=0;t<itemTypes.size();t++)
 						{
-							String itemType=(String)itemTypes.elementAt(t);
+							String itemType=((String)itemTypes.elementAt(t)).toUpperCase();
 							if(itemType.startsWith("-")) continue;
 							try
 							{
@@ -444,40 +460,49 @@ public class Quests implements Cloneable, Quest
 					{
 						R=null;
 						if(p.size()<3) continue;
-						String localeName=Util.combine(p,2).toUpperCase();
+                        Vector names=new Vector();
+                        if((p.size()>3)&&(((String)p.firstElement()).equalsIgnoreCase("any")))
+                            for(int ip=3;ip<p.size();ip++)
+                                names.addElement(p.elementAt(ip));
+                        else
+                            names.addElement(Util.combine(p,2));
 						Vector choices=new Vector();
-						try
-						{
-							Enumeration e=CMMap.rooms();
-							if(A!=null) e=A.getMetroMap();
-							for(;e.hasMoreElements();)
-							{
-								Room R2=(Room)e.nextElement();
-								if(localeName.equalsIgnoreCase("any"))
-									choices.addElement(R2);
-								else
-								if(CMClass.className(R2).toUpperCase().indexOf(localeName)>=0)
-									choices.addElement(R2);
-								else
-								{
-									int dom=R2.domainType();
-									if((dom&Room.INDOORS)>0)
-									{
-										if(Room.indoorDomainDescs[dom-Room.INDOORS].indexOf(localeName)>=0)
-											choices.addElement(R2);
-									}
-									else
-									if(Room.outdoorDomainDescs[dom].indexOf(localeName)>=0)
-										choices.addElement(R2);
-								}
-							}
-					    }catch(NoSuchElementException e){}
+                        for(int n=0;n<names.size();n++)
+                        {
+                            String localeName=((String)names.elementAt(n)).toUpperCase();
+    						try
+    						{
+    							Enumeration e=CMMap.rooms();
+    							if(A!=null) e=A.getMetroMap();
+    							for(;e.hasMoreElements();)
+    							{
+    								Room R2=(Room)e.nextElement();
+    								if(localeName.equalsIgnoreCase("any"))
+    									choices.addElement(R2);
+    								else
+    								if(CMClass.className(R2).toUpperCase().indexOf(localeName)>=0)
+    									choices.addElement(R2);
+    								else
+    								{
+    									int dom=R2.domainType();
+    									if((dom&Room.INDOORS)>0)
+    									{
+    										if(Room.indoorDomainDescs[dom-Room.INDOORS].indexOf(localeName)>=0)
+    											choices.addElement(R2);
+    									}
+    									else
+    									if(Room.outdoorDomainDescs[dom].indexOf(localeName)>=0)
+    										choices.addElement(R2);
+    								}
+    							}
+    					    }catch(NoSuchElementException e){}
+                        }
 						if((choices!=null)&&(choices.size()>0))
 							R=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(R==null)
 						{
 							if(!isQuiet)
-								Log.errOut("Quests","Quest '"+name()+"', !locale '"+localeName+"'.");
+								Log.errOut("Quests","Quest '"+name()+"', !locale '"+Util.combine(p,2)+"'.");
 							error=true; break;
 						}
 						A=R.getArea();
@@ -501,60 +526,69 @@ public class Quests implements Cloneable, Quest
                     {
                         R=null;
                         if(p.size()<3) continue;
-                        String localeName=Util.combine(p,2).toUpperCase();
                         Vector choices=null;
                         Vector choices0=new Vector();
                         Vector choices1=new Vector();
                         Vector choices2=new Vector();
                         Vector choices3=new Vector();
-                        try
+                        Vector names=new Vector();
+                        if((p.size()>3)&&(((String)p.firstElement()).equalsIgnoreCase("any")))
+                            for(int ip=3;ip<p.size();ip++)
+                                names.addElement(p.elementAt(ip));
+                        else
+                            names.addElement(Util.combine(p,2));
+                        for(int n=0;n<names.size();n++)
                         {
-                            Enumeration e=CMMap.rooms();
-                            if(A!=null) e=A.getMetroMap();
-                            for(;e.hasMoreElements();)
+                            String localeName=((String)names.elementAt(n)).toUpperCase();
+                            try
                             {
-                                Room R2=(Room)e.nextElement();
-                                String display=R2.displayText().toUpperCase();
-                                String desc=R2.description().toUpperCase();
-                                if(localeName.equalsIgnoreCase("any"))
+                                Enumeration e=CMMap.rooms();
+                                if(A!=null) e=A.getMetroMap();
+                                for(;e.hasMoreElements();)
                                 {
-                                    choices=choices0;
-                                    choices0.addElement(R2);
+                                    Room R2=(Room)e.nextElement();
+                                    String display=R2.displayText().toUpperCase();
+                                    String desc=R2.description().toUpperCase();
+                                    if(localeName.equalsIgnoreCase("any"))
+                                    {
+                                        choices=choices0;
+                                        choices0.addElement(R2);
+                                    }
+                                    else
+                                    if(CMMap.getExtendedRoomID(R2).equalsIgnoreCase(localeName))
+                                    {
+                                        choices=choices0;
+                                        choices0.addElement(R2);
+                                    }
+                                    else
+                                    if(display.equalsIgnoreCase(localeName))
+                                    {
+                                        if((choices==null)||(choices==choices2)||(choices==choices3))
+                                            choices=choices1;
+                                        choices1.addElement(R2);
+                                    }
+                                    else
+                                    if(EnglishParser.containsString(display,localeName))
+                                    {
+                                        if((choices==null)||(choices==choices3))
+                                            choices=choices2;
+                                        choices2.addElement(R2);
+                                    }
+                                    else
+                                    if(EnglishParser.containsString(desc,localeName))
+                                    {
+                                        if(choices==null) choices=choices3;
+                                        choices3.addElement(R2);
+                                    }
                                 }
-                                else
-                                if(R2.roomID().equalsIgnoreCase(localeName))
-                                {
-                                    choices=choices0;
-                                    choices0.addElement(R2);
-                                }
-                                else
-                                if(display.equals(localeName))
-                                {
-                                    if((choices==null)||(choices==choices2)||(choices==choices3))
-                                        choices=choices1;
-                                    choices1.addElement(R2);
-                                }
-                                else
-                                if(EnglishParser.containsString(display,localeName))
-                                {
-                                    if((choices==null)||(choices==choices3))
-                                        choices=choices2;
-                                    choices2.addElement(R2);
-                                }
-                                else
-                                if(EnglishParser.containsString(desc,localeName))
-                                {
-                                    if(choices==null) choices=choices3;
-                                    choices3.addElement(R2);
-                                }
-                            }
-                        }catch(NoSuchElementException e){}
+                            }catch(NoSuchElementException e){}
+                        }
                         if((choices!=null)&&(choices.size()>0))
                             R=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
                         if(R==null)
                         {
                             if(!isQuiet)
-                                Log.errOut("Quests","Quest '"+name()+"', !locale '"+localeName+"'.");
+                                Log.errOut("Quests","Quest '"+name()+"', !locale '"+Util.combine(p,2)+"'.");
                             error=true; break;
                         }
                         A=R.getArea();
