@@ -36,23 +36,15 @@ public class Ban extends StdCommand
 			return false;
 		}
 		banMe=banMe.toUpperCase().trim();
-		Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
-		if((banned!=null)&&(banned.size()>0))
-		for(int b=0;b<banned.size();b++)
-		{
-			String B=(String)banned.elementAt(b);
-			if(B.equals(banMe))
-			{
-				mob.tell(getScr("Ban","albanned")+(b+1)+".");
-				return false;
-			}
+        int b=CMSecurity.ban(banMe);
+        if(b<0)
+            mob.tell(getScr("Ban","banned",banMe));
+        else
+        {
+			mob.tell(getScr("Ban","albanned")+(b+1)+".");
+			return false;
 		}
-		mob.tell(getScr("Ban","banned",banMe));
-		StringBuffer str=Resources.getFileResource("banned.ini",false);
-		if(banMe.trim().length()>0) str.append(banMe+"\n");
-		Resources.updateResource("banned.ini",str);
-		Resources.saveFileResource("banned.ini");
-		return false;
+        return true;
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}

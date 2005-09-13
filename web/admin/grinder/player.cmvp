@@ -55,6 +55,16 @@
 				document.RESOURCES.submit();
 			}
 		}
+		function BanEmail()
+		{
+			if(confirm('Ban this Email Address?'))
+			{
+				document.RESOURCES.action='playerdo.cmvp';
+				document.RESOURCES.FUNCTION.value='BANBYEMAIL';
+				document.RESOURCES.PLAYER.value='@PlayerID@';
+				document.RESOURCES.submit();
+			}
+		}
 	//-->
 	</script>
 </head>

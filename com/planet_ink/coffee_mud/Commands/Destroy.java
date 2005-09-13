@@ -746,17 +746,7 @@ public class Destroy extends BaseItemParser
 				mob.tell("Please enter a valid ban number to delete.  Use List Banned for more information.");
 			else
 			{
-				StringBuffer newBanned=new StringBuffer("");
-				Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
-				if((banned!=null)&&(banned.size()>0))
-					for(int b=0;b<banned.size();b++)
-					{
-						String B=(String)banned.elementAt(b);
-						if(((b+1)!=which)&&(B.trim().length()>0))
-							newBanned.append(B+"\n");
-					}
-				Resources.updateResource("banned.ini",newBanned);
-				Resources.saveFileResource("banned.ini");
+                CMSecurity.unban(which);
 				mob.tell("Ok.");
 			}
 		}

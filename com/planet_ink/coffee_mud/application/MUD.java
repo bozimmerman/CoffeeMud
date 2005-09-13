@@ -370,26 +370,9 @@ public class MUD extends Thread implements MudHost
 					String address="unknown";
 					try{address=sock.getInetAddress().getHostAddress().trim();}catch(Exception e){}
 					Log.sysOut("MUD","Got a connection from "+address+" on port "+port);
-					// now see if they are banned!
-					Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
-					int proceed=0;
-					if((banned!=null)&&(banned.size()>0))
-					for(int b=0;b<banned.size();b++)
-					{
-						String str=(String)banned.elementAt(b);
-						if(str.length()>0)
-						{
-							if(str.equals("*")||((str.indexOf("*")<0))&&(str.equals(address))) proceed=1;
-							else
-							if(str.startsWith("*")&&str.endsWith("*")&&(address.indexOf(str.substring(1,str.length()-1))>=0)) proceed=1;
-							else
-							if(str.startsWith("*")&&(address.endsWith(str.substring(1)))) proceed=1;
-							else
-							if(str.endsWith("*")&&(address.startsWith(str.substring(0,str.length()-1)))) proceed=1;
-						}
-						if(proceed!=0) break;
-					}
-
+                    int proceed=0;
+                    if(CMSecurity.isBanned(address))
+                        proceed=1;
 					int numAtThisAddress=0;
 					long ConnectionWindow=(180*1000);
 					long LastConnectionDelay=(5*60*1000);

@@ -29,6 +29,14 @@ document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 //-->
 </SCRIPT>
 @endif@
+@if?CheckReqParm?FUNCTION=BANBYEMAIL@ @PlayerOnline?BANBYEMAIL@ 
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+alert('Player Email Address has been banned.');
+document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
+//-->
+</SCRIPT>
+@endif@
 @if?CheckReqParm?FUNCTION=BANBYIP@ @PlayerOnline?BANBYIP@ 
 <SCRIPT LANGUAGE=JavaScript>
 <!--

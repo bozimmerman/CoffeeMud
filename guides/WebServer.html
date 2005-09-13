@@ -208,9 +208,9 @@ be abbreviated to MacParm, while Request Parameters will be abbreviated to ReqPa
       names.&nbsp; This macro inserts the contents of one of the files at random from one of the directories 
       into the current document. If the parameter LINKONLY is included, this macro will instead insert the 
       path and file name of the random file.</TD></TR>
-<TR><TD>AddRequestParameter</TD><TD>        The
-      parameters for this macro are one or
-      moreReqParmnamesandvalues.&nbsp;Forexample@AddRequestParameter?PARM1=VALUE&amp;PARM2=VALUE@.&nbsp; This is usually
+<TR><TD>AddRequestParameter</TD><TD>        
+      The parameters for this macro are one
+      ormoreReqParmnamesandvalues.&nbsp;Forexample@AddRequestParameter?PARM1=VALUE&amp;PARM2=VALUE@.&nbsp; This is usually
       used to provide literal data for other macros which may require certain
       Request parameter data.</TD></TR>
 <TR><TD>AreaData</TD><TD>Requires ReqParm AREA be set to a valid area
@@ -426,11 +426,11 @@ loops.</TD></TR>
       found.&nbsp; Returns @break@ when the list has been completed, or "" if
       MacParm "EMPTYOK" found.&nbsp;&nbsp; Accepts MacParm of RESET to restart
       listing.&nbsp; Accepts MacParm SORTBY=COLNAME to sort the list.</TD></TR>
-<TR><TD>PlayerOnline</TD><TD>Requires ReqParm PLAYER be set to a
-      valid&nbsp;player name.&nbsp; Returns true if online, false
-      otherwise.&nbsp; If MacParm BOOT found, will kick the player off.&nbsp; If
-      MacParm BANBYIP found, will ban the ip address for the player.&nbsp; If
-      MacParm BANBYNAME found, will be the name of the player.</TD></TR>
+<TR><TD>PlayerOnline</TD><TD>Requires ReqParm PLAYER be set to
+      a valid&nbsp;player name.&nbsp; Returns true if online,
+      false otherwise.&nbsp; If MacParm BOOT found, will kick the player off.&nbsp;
+      If MacParm BANBYIP found, will ban the ip address for the player.&nbsp;
+      If MacParm BANBYNAME&nbsp;or BANBYEMAIL os&nbsp;found,&nbsp;it will also ban the player.</TD></TR>
 <TR><TD>QuestData</TD><TD>Requires ReqParm QUEST be set to a valid quest
       name.&nbsp; Returns data about the Quest depending on MacParms
       found.&nbsp; Valid MacParms include: NAME, DURATION, WAIT, INTERVAL,

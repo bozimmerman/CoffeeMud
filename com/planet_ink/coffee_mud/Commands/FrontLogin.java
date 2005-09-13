@@ -56,27 +56,6 @@ public class FrontLogin extends StdCommand
 		return them;
 	}
 
-	private static boolean bannedName(String login)
-	{
-		Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
-		if((banned!=null)&&(banned.size()>0))
-		for(int b=0;b<banned.size();b++)
-		{
-			String str=(String)banned.elementAt(b);
-			if(str.length()>0)
-			{
-				if(str.equals("*")||((str.indexOf("*")<0))&&(str.equals(login))) return true;
-				else
-				if(str.startsWith("*")&&str.endsWith("*")&&(login.indexOf(str.substring(1,str.length()-1))>=0)) return true;
-				else
-				if(str.startsWith("*")&&(login.endsWith(str.substring(1)))) return true;
-				else
-				if(str.endsWith("*")&&(login.startsWith(str.substring(0,str.length()-1)))) return true;
-			}
-		}
-		return false;
-	}
-
 	private static boolean isOkName(String login)
 	{
         if(login.length()>20) return false;
@@ -155,7 +134,7 @@ public class FrontLogin extends StdCommand
 			if(("ABCDEFGHIJKLMNOPQRSTUVWXYZ ").indexOf(C)<0)
 				return false;
 		}
-		return !bannedName(login);
+		return !CMSecurity.isBanned(login);
 	}
 
 	public void showTheNews(MOB mob)
@@ -242,7 +221,7 @@ public class FrontLogin extends StdCommand
 			&&(pstats.password().equalsIgnoreCase(password))
 			&&(mob.Name().trim().length()>0))
 			{
-				if(bannedName(mob.Name()))
+				if(CMSecurity.isBanned(mob.Name()))
 				{
 					mob.tell("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
 					mob.session().setKillFlag(true);

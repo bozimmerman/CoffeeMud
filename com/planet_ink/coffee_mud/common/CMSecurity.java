@@ -350,4 +350,82 @@ public class CMSecurity
 
 	public static long getStartTime(){return startTime;}
 	
+    public static boolean isBanned(String login)
+    {
+        if((login==null)||(login.length()<=0))
+            return false;
+        Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+        if((banned!=null)&&(banned.size()>0))
+        for(int b=0;b<banned.size();b++)
+        {
+            String str=(String)banned.elementAt(b);
+            if(str.length()>0)
+            {
+                if(str.equals("*")||((str.indexOf("*")<0))&&(str.equals(login))) return true;
+                else
+                if(str.startsWith("*")&&str.endsWith("*")&&(login.indexOf(str.substring(1,str.length()-1))>=0)) return true;
+                else
+                if(str.startsWith("*")&&(login.endsWith(str.substring(1)))) return true;
+                else
+                if(str.endsWith("*")&&(login.startsWith(str.substring(0,str.length()-1)))) return true;
+            }
+        }
+        return false;
+    }
+
+    
+    public static void unban(String unBanMe)
+    {
+        if((unBanMe==null)||(unBanMe.length()<=0))
+            return;
+        StringBuffer newBanned=new StringBuffer("");
+        Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+        if((banned!=null)&&(banned.size()>0))
+        {
+            for(int b=0;b<banned.size();b++)
+            {
+                String B=(String)banned.elementAt(b);
+                if((!B.equals(unBanMe))&&(B.trim().length()>0))
+                    newBanned.append(B+"\n");
+            }
+            Resources.updateResource("banned.ini",newBanned);
+            Resources.saveFileResource("banned.ini");
+        }
+    }
+    
+    public static void unban(int unBanMe)
+    {
+        StringBuffer newBanned=new StringBuffer("");
+        Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+        if((banned!=null)&&(banned.size()>0))
+        {
+            for(int b=0;b<banned.size();b++)
+            {
+                String B=(String)banned.elementAt(b);
+                if(((b+1)!=unBanMe)&&(B.trim().length()>0))
+                    newBanned.append(B+"\n");
+            }
+            Resources.updateResource("banned.ini",newBanned);
+            Resources.saveFileResource("banned.ini");
+        }
+    }
+    
+    public static int ban(String banMe)
+    {
+        if((banMe==null)||(banMe.length()<=0))
+            return -1;
+        Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+        if((banned!=null)&&(banned.size()>0))
+        for(int b=0;b<banned.size();b++)
+        {
+            String B=(String)banned.elementAt(b);
+            if(B.equals(banMe))
+                return b;
+        }
+        StringBuffer str=Resources.getFileResource("banned.ini",false);
+        if(banMe.trim().length()>0) str.append(banMe+"\n");
+        Resources.updateResource("banned.ini",str);
+        Resources.saveFileResource("banned.ini");
+        return -1;
+    }
 }
