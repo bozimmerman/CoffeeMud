@@ -240,6 +240,14 @@ public class FrontLogin extends StdCommand
 					}
 					CMClass.DBEngine().DBUpdateEmail(mob);
 				}
+                if((pstats.getEmail()!=null)&&CMSecurity.isBanned(pstats.getEmail()))
+                {
+                    mob.tell("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
+                    mob.session().setKillFlag(true);
+                    if(pendingLogins.containsKey(mob.Name().toUpperCase()))
+                       pendingLogins.remove(mob.Name().toUpperCase());
+                    return false;
+                }
                 if(!checkExpiration(mob)) return false;
 
 				Long L=(Long)pendingLogins.get(mob.Name().toUpperCase());
@@ -424,6 +432,15 @@ public class FrontLogin extends StdCommand
 					}
 					mob.session().println("\n\rThat email address combination was invalid.\n\r");
 				}
+                if((mob.playerStats().getEmail()!=null)&&CMSecurity.isBanned(mob.playerStats().getEmail()))
+                {
+                    mob.tell("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
+                    mob.session().setKillFlag(true);
+                    if(pendingLogins.containsKey(mob.Name().toUpperCase()))
+                       pendingLogins.remove(mob.Name().toUpperCase());
+                    return false;
+                }
+                
 				Log.sysOut("FrontDoor","Creating user: "+mob.Name());
 
 				mob.setBitmap(MOB.ATT_AUTOEXITS|MOB.ATT_AUTOWEATHER);

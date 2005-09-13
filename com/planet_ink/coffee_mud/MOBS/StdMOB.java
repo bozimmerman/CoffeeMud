@@ -1936,6 +1936,91 @@ public class StdMOB implements MOB
 		tell(this,this,null,msg);
 	}
 
+    private String relativeCharStatTest(CharStats C, String weakword, String strongword, int stat)
+    {
+        double d=Util.div(C.getStat(stat),charStats.getStat(stat));
+        String prepend="";
+        if((d<=0.5)||(d>=3.0)) prepend="much ";
+        if(d>=1.6) return name()+" appears "+prepend+weakword+" than the average "+charStats.raceName()+".\n\r";
+        if(d<=0.67) return name()+" appears "+prepend+strongword+" than the average "+charStats.raceName()+".\n\r";
+        return "";
+    }
+    
+    public void look(MOB viewer, boolean longlook)
+    {
+        if(Sense.canBeSeenBy(this,viewer))
+        {
+            StringBuffer myDescription=new StringBuffer("");
+            if(Util.bset(viewer.getBitmap(),MOB.ATT_SYSOPMSGS))
+                myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc : "+text()+"\n\r"+description()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().roomID())+"\n\r");
+            if(!isMonster())
+            {
+                String levelStr=null;
+                if((!CMSecurity.isDisabled("CLASSES"))
+                &&(!charStats().getMyRace().classless())
+                &&(!charStats().getCurrentClass().leveless())
+                &&(!charStats().getMyRace().leveless())
+                &&(!CMSecurity.isDisabled("LEVELS")))
+                    levelStr=Util.startWithAorAn(charStats().displayClassLevel(this,false));
+                else
+                if((!CMSecurity.isDisabled("LEVELS"))
+                &&(!charStats().getCurrentClass().leveless())
+                &&(!charStats().getMyRace().leveless()))
+                    levelStr="level "+charStats().displayClassLevelOnly(this);
+                else
+                if((!CMSecurity.isDisabled("CLASSES"))
+                &&(!charStats().getMyRace().classless()))
+                    levelStr=Util.startWithAorAn(charStats().displayClassName());
+                if((!CMSecurity.isDisabled("RACES"))
+                &&(!charStats.getCurrentClass().raceless()))
+                {
+                    myDescription.append(name()+" the ");
+                    if(charStats.getStat(CharStats.AGE)>0)
+                        myDescription.append(charStats.ageName().toLowerCase()+" ");
+                    myDescription.append(charStats().raceName());
+                }
+                else
+                    myDescription.append(name()+" ");
+                if(levelStr!=null)
+                    myDescription.append(" is "+levelStr+".\n\r");
+                else
+                    myDescription.append("is here.\n\r");
+            }
+            if(envStats().height()>0)
+                myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
+            if((longlook)&&(viewer.charStats().getStat(CharStats.INTELLIGENCE)>12))
+            {
+                CharStats C=new DefaultCharStats();
+                MOB testMOB=CMClass.getMOB("StdMOB");
+                charStats().getMyRace().affectCharStats(testMOB,C);
+                myDescription.append(relativeCharStatTest(C,"weaker","stronger",CharStats.STRENGTH));
+                myDescription.append(relativeCharStatTest(C,"clumsier","more nimble",CharStats.DEXTERITY));
+                myDescription.append(relativeCharStatTest(C,"more sickly","healthier",CharStats.CONSTITUTION));
+                myDescription.append(relativeCharStatTest(C,"more repulsive","more attractive",CharStats.CHARISMA));
+                myDescription.append(relativeCharStatTest(C,"more naive","wiser",CharStats.WISDOM));
+                myDescription.append(relativeCharStatTest(C,"dumber","smarter",CharStats.INTELLIGENCE));
+            }
+            myDescription.append(healthText()+"\n\r\n\r");
+            myDescription.append(description()+"\n\r\n\r");
+            
+            StringBuffer eq=CommonMsgs.getEquipment(viewer,this);
+            if(eq.length() > 0)
+            {
+                if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)>1)
+                ||((viewer!=this)&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)>0)))
+                    myDescription.append(charStats().HeShe()+" is wearing "+eq.toString());
+                else
+                    myDescription.append(charStats().HeShe()+" is wearing:\n\r"+eq.toString());
+            }
+            viewer.tell(myDescription.toString());
+            if(longlook)
+            {
+                Command C=CMClass.getCommand("Consider");
+                try{if(C!=null)C.execute(viewer,Util.makeVector(this));}catch(java.io.IOException e){}
+            }
+        }
+    }
+
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(getMyDeity()!=null)
@@ -2104,60 +2189,12 @@ public class StdMOB implements MOB
 				tell(this,msg.target(),msg.tool(),msg.sourceMessage());
 				break;
 			case CMMsg.TYP_LOOK:
+                if(msg.target()==this)
+                    look(msg.source(),false);
+                break;
             case CMMsg.TYP_EXAMINE:
-				if((Sense.canBeSeenBy(this,mob))&&(msg.amITarget(this)))
-				{
-					StringBuffer myDescription=new StringBuffer("");
-					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-						myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc : "+text()+"\n\r"+description()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().roomID())+"\n\r");
-					if(!isMonster())
-					{
-						String levelStr=null;
-						if((!CMSecurity.isDisabled("CLASSES"))
-						&&(!charStats().getMyRace().classless())
-						&&(!charStats().getCurrentClass().leveless())
-						&&(!charStats().getMyRace().leveless())
-						&&(!CMSecurity.isDisabled("LEVELS")))
-							levelStr=Util.startWithAorAn(charStats().displayClassLevel(this,false));
-						else
-						if((!CMSecurity.isDisabled("LEVELS"))
-						&&(!charStats().getCurrentClass().leveless())
-						&&(!charStats().getMyRace().leveless()))
-						    levelStr="level "+charStats().displayClassLevelOnly(this);
-						else
-						if((!CMSecurity.isDisabled("CLASSES"))
-						&&(!charStats().getMyRace().classless()))
-						    levelStr=Util.startWithAorAn(charStats().displayClassName());
-						if((!CMSecurity.isDisabled("RACES"))
-						&&(!charStats.getCurrentClass().raceless()))
-						{
-							myDescription.append(name()+" the ");
-							if(charStats.getStat(CharStats.AGE)>0)
-							    myDescription.append(charStats.ageName().toLowerCase()+" ");
-							myDescription.append(charStats().raceName());
-						}
-						else
-							myDescription.append(name()+" ");
-						if(levelStr!=null)
-							myDescription.append(" is "+levelStr+".\n\r");
-						else
-						    myDescription.append("is here.\n\r");
-					}
-					if(envStats().height()>0)
-						myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
-					myDescription.append(healthText()+"\n\r\n\r");
-					myDescription.append(description()+"\n\r\n\r");
-					StringBuffer eq=CommonMsgs.getEquipment(msg.source(),this);
-					if(eq.length() > 0)
-                    {
-                        if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)>1)
-                        ||((msg.source()!=this)&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)>0)))
-    					    myDescription.append(charStats().HeShe()+" is wearing "+eq.toString());
-                        else
-                            myDescription.append(charStats().HeShe()+" is wearing:\n\r"+eq.toString());
-                    }
-					tell(myDescription.toString());
-				}
+                if(msg.target()==this)
+                    look(msg.source(),true);
 				break;
 			case CMMsg.TYP_READ:
 				if((Sense.canBeSeenBy(this,mob))&&(msg.amITarget(this)))
@@ -2312,57 +2349,7 @@ public class StdMOB implements MOB
 				else
 				if(((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 				&&(Sense.canBeSeenBy(this,mob)))
-				{
-					StringBuffer myDescription=new StringBuffer("");
-					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-						myDescription.append(Name()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc :'"+text()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().roomID())+"\n\r"+description()+"\n\r");
-					if(!isMonster())
-					{
-						String levelStr=null;
-						if((!CMSecurity.isDisabled("CLASSES"))
-						&&(!charStats.getMyRace().classless())
-						&&(!charStats.getMyRace().leveless())
-						&&(!charStats.getCurrentClass().leveless())
-						&&(!CMSecurity.isDisabled("LEVELS")))
-							levelStr=Util.startWithAorAn(charStats().displayClassLevel(this,false));
-						else
-						if((!CMSecurity.isDisabled("LEVELS"))
-						&&(!charStats.getMyRace().leveless())
-						&&(!charStats.getCurrentClass().leveless()))
-						    levelStr="level "+charStats().displayClassLevelOnly(this);
-						else
-						if((!CMSecurity.isDisabled("CLASSES"))
-						&&(!charStats.getMyRace().classless()))
-						    levelStr=Util.startWithAorAn(charStats().displayClassName());
-						if(!CMSecurity.isDisabled("RACES"))
-						{
-							myDescription.append(name()+" the ");
-							if(charStats.getStat(CharStats.AGE)>0)
-							    myDescription.append(charStats.ageName().toLowerCase()+" ");
-							myDescription.append(charStats().raceName());
-						}
-						else
-							myDescription.append(name()+" ");
-						if(levelStr!=null)
-							myDescription.append(" is "+levelStr+".\n\r");
-						else
-						    myDescription.append("is here.\n\r");
-					}
-					if(envStats().height()>0)
-						myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
-					myDescription.append(healthText()+"\n\r\n\r");
-					myDescription.append(description()+"\n\r\n\r");
-					StringBuffer eq=CommonMsgs.getEquipment(msg.source(),this);
-					if(eq.length() > 0)
-                    {
-                        if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)>1)
-                        ||((msg.source()!=this)&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)>0)))
-                            myDescription.append(charStats().HeShe()+" is wearing "+eq.toString());
-                        else
-                            myDescription.append(charStats().HeShe()+" is wearing:\n\r"+eq.toString());
-                    }
-					mob.tell(myDescription.toString());
-				}
+                    look(mob,(msg.targetMinor()==CMMsg.TYP_EXAMINE));
 				else
 				if((msg.targetMinor()==CMMsg.TYP_REBUKE)
 				&&(msg.source().Name().equals(getLiegeID())
@@ -2785,17 +2772,27 @@ public class StdMOB implements MOB
 							session().print(target.healthText()+"\n\r\n\r");
 					}
                     else
+                    if((target!=null)
+                    &&((amFollowing()==null)||(amFollowing().isMonster()))
+                    &&(target.isMonster())
+                    &&(!target.amDead())
+                    &&(Dice.rollPercentage()<33)
+                    &&(location()!=null))
                     {
-                        if((target!=null)
-                        &&(target.isMonster())
-                        &&(!target.amDead())
-                        &&(Dice.rollPercentage()<33)
-                        &&(location()!=null))
+                        MOB M=null;
+                        Room R=location();
+                        MOB nextVictimM=null;
+                        for(int m=0;m<R.numInhabitants();m++)
                         {
-                            MOB possNextVictim=location().fetchInhabitant(Dice.roll(1,location().numInhabitants(),-1));
-                            if((possNextVictim!=null)&&(!possNextVictim.amDead())&&(!possNextVictim.isMonster()))
-                                setVictim(possNextVictim);
+                            M=R.fetchInhabitant(m);
+                            if((M!=null)
+                            &&(!M.isMonster())
+                            &&(M.getVictim()==this)
+                            &&((nextVictimM==null)||(M.rangeToTarget()<nextVictimM.rangeToTarget())))
+                                nextVictimM=M;
                         }
+                        if(nextVictimM!=null)
+                            setVictim(nextVictimM);
                     }
 				}
 				else

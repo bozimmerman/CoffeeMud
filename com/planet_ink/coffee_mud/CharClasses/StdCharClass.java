@@ -635,7 +635,10 @@ public class StdCharClass implements CharClass, Cloneable
 		theNews.append("and ^H"+trainGain+"^N training sessions.\n\r^N");
 
 		mob.tell(theNews.toString());
-
+        HashSet oldAbilities=new HashSet();
+        for(int a=0;a<mob.numAbilities();a++)
+            oldAbilities.add(mob.fetchAbility(a).ID());
+        
 		grantAbilities(mob,false);
 
 		// check for autoinvoking abilities
@@ -646,6 +649,17 @@ public class StdCharClass implements CharClass, Cloneable
 			&&(CMAble.qualifiesByLevel(mob,A)))
 				A.autoInvocation(mob);
 		}
+        
+        if(mob.charStats().getClassLevel(this)<=30)
+        for(int a=0;a<mob.numAbilities();a++)
+        {
+            Ability A=mob.fetchAbility(a);
+            if(!oldAbilities.contains(A.ID()))
+            {
+                String type=Ability.TYPE_DESCS[(A.classificationCode()&Ability.ALL_CODES)].toLowerCase();
+                mob.tell("^NYou have learned the "+type+" ^H"+A.name()+"^?.^N");
+            }
+        }
 
 		// wrap it all up
 		mob.recoverEnvStats();

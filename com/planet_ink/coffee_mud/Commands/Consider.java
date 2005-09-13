@@ -55,19 +55,25 @@ public class Consider extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(commands.size()<2)
-		{
-			mob.tell("Consider whom?");
-			return false;
-		}
-		commands.removeElementAt(0);
-		String targetName=Util.combine(commands,0);
-		MOB target=mob.location().fetchInhabitant(targetName);
-		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
-		{
-			mob.tell("I don't see '"+targetName+"' here.");
-			return false;
-		}
+        MOB target=null;
+        if((commands.size()==1)&&(commands.firstElement() instanceof MOB))
+            target=(MOB)commands.firstElement();
+        else
+        {
+    		if(commands.size()<2)
+    		{
+    			mob.tell("Consider whom?");
+    			return false;
+    		}
+    		commands.removeElementAt(0);
+    		String targetName=Util.combine(commands,0);
+    		target=mob.location().fetchInhabitant(targetName);
+    		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+    		{
+    			mob.tell("I don't see '"+targetName+"' here.");
+    			return false;
+    		}
+        }
 
 		int relDiff=relativeLevelDiff(target,mob);
 		int lvlDiff=(target.envStats().level()-mob.envStats().level());

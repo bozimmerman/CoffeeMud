@@ -19,8 +19,8 @@ import com.planet_ink.coffee_mud.interfaces.Environmental;
 public class Lighteningbreath extends Dragonbreath
 {
 	public String ID() { return "Lighteningbreath"; }
-	public String name(){ return "Lighteningbreath";}
+	public String name(){ return "Lightningbreath";}
 	public String text(){return "lightning";}
-    private static final String[] triggerStrings = {"LIGHTENINGBREATH"};
+    private static final String[] triggerStrings = {"LIGHTNINGBREATH"};
     public String[] triggerStrings(){return triggerStrings;}
 }
