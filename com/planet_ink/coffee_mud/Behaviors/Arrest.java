@@ -2210,12 +2210,12 @@ public class Arrest extends StdBehavior
 		&&(msg.tool() instanceof Ability)
 		&&(msg.othersMessage()!=null)
 		&&((laws.abilityCrimes().containsKey(msg.tool().ID().toUpperCase()))
-                ||(laws.abilityCrimes().containsKey(CoffeeUtensils.getAbilityType((Ability)msg.tool())))
-                ||(laws.abilityCrimes().containsKey(CoffeeUtensils.getAbilityDomain((Ability)msg.tool())))))
+                ||(laws.abilityCrimes().containsKey(Sense.getAbilityType((Ability)msg.tool())))
+                ||(laws.abilityCrimes().containsKey(Sense.getAbilityDomain((Ability)msg.tool())))))
 		{
 			String[] info=(String[])laws.abilityCrimes().get(msg.tool().ID().toUpperCase());
-            if(info==null) info=(String[])laws.abilityCrimes().get(CoffeeUtensils.getAbilityType((Ability)msg.tool()));
-            if(info==null) info=(String[])laws.abilityCrimes().get(CoffeeUtensils.getAbilityDomain((Ability)msg.tool()));
+            if(info==null) info=(String[])laws.abilityCrimes().get(Sense.getAbilityType((Ability)msg.tool()));
+            if(info==null) info=(String[])laws.abilityCrimes().get(Sense.getAbilityDomain((Ability)msg.tool()));
 			fillOutWarrant(msg.source(),
 						   laws,
 							myArea,
@@ -2233,12 +2233,12 @@ public class Arrest extends StdBehavior
 			if((A!=null)
 			&&(!A.isAutoInvoked())
 			&&((laws.abilityCrimes().containsKey("$"+A.ID().toUpperCase()))
-                ||(laws.abilityCrimes().containsKey("$"+CoffeeUtensils.getAbilityType(A)))
-                ||(laws.abilityCrimes().containsKey("$"+CoffeeUtensils.getAbilityDomain(A)))))
+                ||(laws.abilityCrimes().containsKey("$"+Sense.getAbilityType(A)))
+                ||(laws.abilityCrimes().containsKey("$"+Sense.getAbilityDomain(A)))))
 			{
 				String[] info=(String[])laws.abilityCrimes().get("$"+A.ID().toUpperCase());
-                if(info==null) info=(String[])laws.abilityCrimes().get("$"+CoffeeUtensils.getAbilityType(A));
-                if(info==null) info=(String[])laws.abilityCrimes().get("$"+CoffeeUtensils.getAbilityDomain(A));
+                if(info==null) info=(String[])laws.abilityCrimes().get("$"+Sense.getAbilityType(A));
+                if(info==null) info=(String[])laws.abilityCrimes().get("$"+Sense.getAbilityDomain(A));
 				fillOutWarrant(msg.source(),
 								laws,
 								myArea,

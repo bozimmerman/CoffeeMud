@@ -137,7 +137,7 @@ public class Follower extends ActiveTicker
 			Item I=(Item)ticking;
 			if((I.owner()!=null)
 			&&(I.owner() instanceof MOB)
-			&&(MUDZapper.zapperCheck(getParms(),(MOB)I.owner()))
+			&&(MUDZapper.zapperCheck(getParms(),I.owner()))
 			&&(!CMSecurity.isAllowed((MOB)I.owner(),((MOB)I.owner()).location(),"CMDMOBS"))
 			&&(!CMSecurity.isAllowed((MOB)I.owner(),((MOB)I.owner()).location(),"CMDROOMS")))
 				lastOwner=(MOB)I.owner();

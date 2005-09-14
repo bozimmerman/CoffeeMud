@@ -55,7 +55,7 @@ public class Prop_ModExperience extends Property
 				if(affected instanceof Item)
 				{
 					if((mask.length()>0)
-					&&((msg.target()==null)||(!(msg.target() instanceof MOB))||(!MUDZapper.zapperCheck(mask,(MOB)msg.target()))))
+					&&((msg.target()==null)||(!(msg.target() instanceof MOB))||(!MUDZapper.zapperCheck(mask,msg.target()))))
 						return super.okMessage(myHost,msg);
 				}
 				else

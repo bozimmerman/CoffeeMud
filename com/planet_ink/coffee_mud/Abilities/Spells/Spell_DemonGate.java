@@ -99,7 +99,14 @@ public class Spell_DemonGate extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+                MOB otherMonster=mob.location().fetchInhabitant("the great demonbeast$");
 				MOB myMonster = determineMonster(mob, mob.envStats().level());
+                if(otherMonster!=null)
+                {
+                    myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> wrests itself from out of <T-YOUPOSS> control!^</FIGHT^>^?");
+                    myMonster.setVictim(otherMonster);
+                }
+                else
 				if(Dice.rollPercentage()<10)
                 {
 					myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> wrests itself from out of <T-YOUPOSS> control!^</FIGHT^>^?");

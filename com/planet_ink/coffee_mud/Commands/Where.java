@@ -100,6 +100,7 @@ public class Where extends StdCommand
 				boolean mobOnly=false;
 				boolean itemOnly=false;
 				boolean roomOnly=false;
+                boolean zapperMask=false;
 				if((who.toUpperCase().startsWith("ROOM "))
 				||(who.toUpperCase().startsWith("ROOMS ")))
 				{
@@ -120,6 +121,22 @@ public class Where extends StdCommand
 					mobOnly=true;
 					who=who.substring(4).trim();
 				}
+                else
+                if((who.toUpperCase().startsWith("MOBMASK "))
+                ||(who.toUpperCase().startsWith("MOBS ")))
+                {
+                    mobOnly=true;
+                    zapperMask=true;
+                    who=who.substring(7).trim();
+                }
+                else
+                if(who.toUpperCase().startsWith("ITEMMASK "))
+                {
+                    itemOnly=true;
+                    zapperMask=true;
+                    who=who.substring(8).trim();
+                }
+                
 				try
 				{
 					for(;r.hasMoreElements();)
@@ -156,6 +173,17 @@ public class Where extends StdCommand
 							    if((M!=null)&&((M.isMonster())||(canShowTo(mob,M))))
 							    {
 									if((!itemOnly)&&(!roomOnly))
+                                        if(zapperMask)
+                                        {
+                                            if(MUDZapper.zapperCheck(who,M))
+                                            {
+                                                lines.append("^!"+Util.padRight(M.name(),17)+"^?| ");
+                                                lines.append(R.roomTitle());
+                                                lines.append(" ("+R.roomID()+")");
+                                                lines.append("\n\r");
+                                            }
+                                        }
+                                        else
 										if((EnglishParser.containsString(M.name(),who))
 										||(EnglishParser.containsString(M.displayText(),who))
 										||(EnglishParser.containsString(M.description(),who)))
@@ -170,6 +198,18 @@ public class Where extends StdCommand
 										for(int i=0;i<M.inventorySize();i++)
 										{
 											Item I=M.fetchInventory(i);
+                                            if(zapperMask)
+                                            {
+                                                if(MUDZapper.zapperCheck(who,I))
+                                                {
+                                                    lines.append("^!"+Util.padRight(I.name(),17)+"^?| ");
+                                                    lines.append("INV: "+M.name());
+                                                    lines.append(" ("+R.roomID()+")");
+                                                    lines.append("\n\r");
+                                                    break;
+                                                }
+                                            }
+                                            else
 											if((EnglishParser.containsString(I.name(),who))
 											||(EnglishParser.containsString(I.displayText(),who))
 											||(EnglishParser.containsString(I.description(),who)))
@@ -187,6 +227,30 @@ public class Where extends StdCommand
 										for(int i=0;i<V.size();i++)
 										{
 											Environmental E=(Environmental)V.elementAt(i);
+                                            if((zapperMask)&&(E instanceof Item))
+                                            {
+                                                if(MUDZapper.zapperCheck(who,E))
+                                                {
+                                                    lines.append("^!"+Util.padRight(E.name(),17)+"^?| ");
+                                                    lines.append("SHOP: "+M.name());
+                                                    lines.append(" ("+R.roomID()+")");
+                                                    lines.append("\n\r");
+                                                    break;
+                                                }
+                                            }
+                                            else
+                                            if((zapperMask)&&(E instanceof MOB))
+                                            {
+                                                if(MUDZapper.zapperCheck(who,E))
+                                                {
+                                                    lines.append("^!"+Util.padRight(E.name(),17)+"^?| ");
+                                                    lines.append("SHOP: "+M.name());
+                                                    lines.append(" ("+R.roomID()+")");
+                                                    lines.append("\n\r");
+                                                    break;
+                                                }
+                                            }
+                                            else
 											if((EnglishParser.containsString(E.name(),who))
 											||(EnglishParser.containsString(E.displayText(),who))
 											||(EnglishParser.containsString(E.description(),who)))

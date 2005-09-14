@@ -726,8 +726,8 @@ public class StdLawBook extends StdItem
 				if(key.startsWith("$")) continue;
 				Ability AB=CMClass.getAbility(key);
 				if(((AB==null)
-                    &&(CoffeeUtensils.getAbilityType(key)<0)
-                    &&(CoffeeUtensils.getAbilityDomain(key)<0))
+                    &&(Sense.getAbilityType(key)<0)
+                    &&(Sense.getAbilityDomain(key)<0))
                 ||(set==null)
                 ||(set.length<Law.BIT_NUMBITS)) 
                     continue;
@@ -759,8 +759,8 @@ public class StdLawBook extends StdItem
 					Ability AB=CMClass.findAbility(s);
                     if(AB!=null) s=AB.ID();
 					if((AB==null)
-                    &&(CoffeeUtensils.getAbilityType(s)<0)
-                    &&(CoffeeUtensils.getAbilityDomain(s)<0))
+                    &&(Sense.getAbilityType(s)<0)
+                    &&(Sense.getAbilityDomain(s)<0))
 						mob.tell("That skill name or skill class is unknown.");
 					else
 					if(filteredTable.containsKey(s.toUpperCase()))
@@ -949,8 +949,8 @@ public class StdLawBook extends StdItem
 				if(!key.startsWith("$")) continue;
 				Ability AB=CMClass.getAbility(key.substring(1));
 				if(((AB==null)
-                    &&(CoffeeUtensils.getAbilityType(key.substring(1))<0)
-                    &&(CoffeeUtensils.getAbilityDomain(key.substring(1))<0))
+                    &&(Sense.getAbilityType(key.substring(1))<0)
+                    &&(Sense.getAbilityDomain(key.substring(1))<0))
                 ||(set==null)
                 ||(set.length<Law.BIT_NUMBITS)) continue;
 				filteredTable.put(key,set);
@@ -981,8 +981,8 @@ public class StdLawBook extends StdItem
 					Ability AB=CMClass.findAbility(s);
                     if(AB!=null)s=AB.ID();
 					if((AB==null)
-                    &&(CoffeeUtensils.getAbilityType(s)<0)
-                    &&(CoffeeUtensils.getAbilityDomain(s)<0))
+                    &&(Sense.getAbilityType(s)<0)
+                    &&(Sense.getAbilityDomain(s)<0))
 						mob.tell("That skill name or skill class is unknown.");
 					else
 					if(filteredTable.containsKey("$"+s.toUpperCase()))

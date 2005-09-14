@@ -2479,7 +2479,7 @@ public class StdMOB implements MOB
                     &&(M!=victim)
                     &&(M!=null)
                     &&(hisGroupH.contains(M)
-                        ||((M.getVictim()!=null)&&(myGroupH.contains(M))))
+                        ||((M.getVictim()!=null)&&(myGroupH.contains(M.getVictim()))))
                     &&(!M.amDead())
                     &&(Sense.isInTheGame(M,true)))
                     {
