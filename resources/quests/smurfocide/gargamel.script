@@ -36,6 +36,7 @@ GIVE_PROG 'the body of papa smurf'
 				mpsetvar $i SMURFOCIDE DONE
 				say "$n" Wonderful!  Now I can make my famous smurf stew!
 				MPFORCE Azreal emote licks his lips.
+				MPPURGE $o
 				mpexp $n 1000
 				mpoload QuestPoint
 				give "a quest point" "$n"
@@ -43,6 +44,7 @@ GIVE_PROG 'the body of papa smurf'
 				mpendquest smurfocide
 			else
 				say "$n" Well done.  This was a nasty one.  Thats $<$n SMURFOCIDE>. Now bring me the rest!
+				mppurge $o
 				MPSETVAR $n PAPASMURF DONE
 			endif
 		endif
@@ -63,6 +65,7 @@ GIVE_PROG 'the body of a smurf' 'the body of handy smurf' 'the body of grumpy sm
 				mpsetvar $i SMURFOCIDE DONE
 				say "$n" Wonderful!  Now I can make my famous smurf stew!
 				MPFORCE Azreal emote licks his lips.
+				mppurge $o
 				mpexp $n 1000
 				mpoload QuestPoint
 				give "a quest point" "$n"
@@ -70,6 +73,7 @@ GIVE_PROG 'the body of a smurf' 'the body of handy smurf' 'the body of grumpy sm
 				mpendquest smurfocide
 			else
 				say "$n" Lovely! Thats $<$n SMURFOCIDE>. Keep them coming!
+				mppurge $o
 			endif
 		endif
 	endif
