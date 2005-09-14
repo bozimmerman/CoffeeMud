@@ -101,6 +101,8 @@ public class Where extends StdCommand
 				boolean itemOnly=false;
 				boolean roomOnly=false;
                 boolean zapperMask=false;
+                boolean zapperMask2=false;
+                Vector compiledZapperMask=null;
 				if((who.toUpperCase().startsWith("ROOM "))
 				||(who.toUpperCase().startsWith("ROOMS ")))
 				{
@@ -122,12 +124,12 @@ public class Where extends StdCommand
 					who=who.substring(4).trim();
 				}
                 else
-                if((who.toUpperCase().startsWith("MOBMASK "))
-                ||(who.toUpperCase().startsWith("MOBS ")))
+                if(who.toUpperCase().startsWith("MOBMASK "))
                 {
                     mobOnly=true;
                     zapperMask=true;
                     who=who.substring(7).trim();
+                    compiledZapperMask=MUDZapper.zapperCompile(who);
                 }
                 else
                 if(who.toUpperCase().startsWith("ITEMMASK "))
@@ -135,6 +137,21 @@ public class Where extends StdCommand
                     itemOnly=true;
                     zapperMask=true;
                     who=who.substring(8).trim();
+                    compiledZapperMask=MUDZapper.zapperCompile(who);
+                }
+                else
+                if(who.toUpperCase().startsWith("MOBMASK2 "))
+                {
+                    mobOnly=true;
+                    zapperMask2=true;
+                    who=who.substring(8).trim();
+                }
+                else
+                if(who.toUpperCase().startsWith("ITEMMASK2 "))
+                {
+                    itemOnly=true;
+                    zapperMask2=true;
+                    who=who.substring(9).trim();
                 }
                 
 				try
@@ -157,6 +174,30 @@ public class Where extends StdCommand
 								for(int i=0;i<R.numItems();i++)
 								{
 									Item I=R.fetchItem(i);
+                                    if((zapperMask)&&(itemOnly))
+                                    {
+                                        if(MUDZapper.zapperCheckReal(compiledZapperMask,I))
+                                        {
+                                            lines.append("^!"+Util.padRight(I.name(),17)+"^?| ");
+                                            lines.append(R.roomTitle());
+                                            lines.append(" ("+R.roomID()+")");
+                                            lines.append("\n\r");
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    if((zapperMask2)&&(itemOnly))
+                                    {
+                                        if(MUDZapper.zapperCheck(who,I))
+                                        {
+                                            lines.append("^!"+Util.padRight(I.name(),17)+"^?| ");
+                                            lines.append(R.roomTitle());
+                                            lines.append(" ("+R.roomID()+")");
+                                            lines.append("\n\r");
+                                            break;
+                                        }
+                                    }
+                                    else
 									if((EnglishParser.containsString(I.name(),who))
 									||(EnglishParser.containsString(I.displayText(),who))
 									||(EnglishParser.containsString(I.description(),who)))
@@ -173,7 +214,18 @@ public class Where extends StdCommand
 							    if((M!=null)&&((M.isMonster())||(canShowTo(mob,M))))
 							    {
 									if((!itemOnly)&&(!roomOnly))
-                                        if(zapperMask)
+                                        if((zapperMask)&&(mobOnly))
+                                        {
+                                            if(MUDZapper.zapperCheckReal(compiledZapperMask,M))
+                                            {
+                                                lines.append("^!"+Util.padRight(M.name(),17)+"^?| ");
+                                                lines.append(R.roomTitle());
+                                                lines.append(" ("+R.roomID()+")");
+                                                lines.append("\n\r");
+                                            }
+                                        }
+                                        else
+                                        if((zapperMask2)&&(mobOnly))
                                         {
                                             if(MUDZapper.zapperCheck(who,M))
                                             {
@@ -198,7 +250,19 @@ public class Where extends StdCommand
 										for(int i=0;i<M.inventorySize();i++)
 										{
 											Item I=M.fetchInventory(i);
-                                            if(zapperMask)
+                                            if((zapperMask)&&(itemOnly))
+                                            {
+                                                if(MUDZapper.zapperCheckReal(compiledZapperMask,I))
+                                                {
+                                                    lines.append("^!"+Util.padRight(I.name(),17)+"^?| ");
+                                                    lines.append("INV: "+M.name());
+                                                    lines.append(" ("+R.roomID()+")");
+                                                    lines.append("\n\r");
+                                                    break;
+                                                }
+                                            }
+                                            else
+                                            if((zapperMask2)&&(itemOnly))
                                             {
                                                 if(MUDZapper.zapperCheck(who,I))
                                                 {
@@ -227,7 +291,31 @@ public class Where extends StdCommand
 										for(int i=0;i<V.size();i++)
 										{
 											Environmental E=(Environmental)V.elementAt(i);
-                                            if((zapperMask)&&(E instanceof Item))
+                                            if((zapperMask)&&(E instanceof Item)&&(itemOnly))
+                                            {
+                                                if(MUDZapper.zapperCheckReal(compiledZapperMask,E))
+                                                {
+                                                    lines.append("^!"+Util.padRight(E.name(),17)+"^?| ");
+                                                    lines.append("SHOP: "+M.name());
+                                                    lines.append(" ("+R.roomID()+")");
+                                                    lines.append("\n\r");
+                                                    break;
+                                                }
+                                            }
+                                            else
+                                            if((zapperMask)&&(E instanceof MOB)&&(mobOnly))
+                                            {
+                                                if(MUDZapper.zapperCheckReal(compiledZapperMask,E))
+                                                {
+                                                    lines.append("^!"+Util.padRight(E.name(),17)+"^?| ");
+                                                    lines.append("SHOP: "+M.name());
+                                                    lines.append(" ("+R.roomID()+")");
+                                                    lines.append("\n\r");
+                                                    break;
+                                                }
+                                            }
+                                            else
+                                            if((zapperMask2)&&(E instanceof Item)&&(itemOnly))
                                             {
                                                 if(MUDZapper.zapperCheck(who,E))
                                                 {
@@ -239,7 +327,7 @@ public class Where extends StdCommand
                                                 }
                                             }
                                             else
-                                            if((zapperMask)&&(E instanceof MOB))
+                                            if((zapperMask2)&&(E instanceof MOB)&&(mobOnly))
                                             {
                                                 if(MUDZapper.zapperCheck(who,E))
                                                 {
