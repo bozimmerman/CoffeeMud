@@ -27,7 +27,7 @@ public class Butchering extends GatheringSkill
 	private static final String[] triggerStrings = {"BUTCHER","BUTCHERING","SKIN"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	public String supportedResourceString(){return "FLESH|LEATHER|BLOOD|BONE|MILK|EGGS";}
+	public String supportedResourceString(){return "FLESH|LEATHER|BLOOD|BONE|MILK|EGGS|WOOL";}
 	private DeadBody body=null;
 	private boolean failed=false;
 	public Butchering()

@@ -32,11 +32,14 @@ public class Prop_SafePet extends Property
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)&&(msg.amITarget(affected))&&(affected!=null)&&(!disabled)))
+		if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)
+        &&(msg.target()==affected)
+        &&(affected instanceof MOB)
+        &&(!disabled)))
 		{
-			msg.source().tell("Ah, leave "+affected.name()+" alone.");
-			if(affected instanceof MOB)
-				((MOB)affected).makePeace();
+            if(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+    			msg.source().tell("Ah, leave "+affected.name()+" alone.");
+            ((MOB)affected).makePeace();
 			return false;
 		}
 		else
