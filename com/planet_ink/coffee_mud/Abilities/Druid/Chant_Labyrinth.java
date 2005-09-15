@@ -47,11 +47,17 @@ public class Chant_Labyrinth extends Chant
     public boolean okMessage(Environmental host, CMMsg msg)
     {
         if((msg.sourceMinor()==CMMsg.TYP_QUIT)
-        &&(affected instanceof Room)
-        &&(((Room)affected).isInhabitant(msg.source())))
-            unInvoke();
+        &&(msg.source().location()!=null)
+        &&(msg.source().location().getGridParent()==affected))
+        {
+            if(oldRoom!=null)
+                oldRoom.bringMobHere(msg.source(),false);
+            if(msg.source()==invoker)
+                unInvoke();
+        }
         return super.okMessage(host,msg);
     }
+    
     
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

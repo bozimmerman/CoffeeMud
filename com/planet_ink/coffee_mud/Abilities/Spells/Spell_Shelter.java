@@ -64,7 +64,12 @@ public class Spell_Shelter extends Spell
         if((msg.sourceMinor()==CMMsg.TYP_QUIT)
         &&(shelter!=null)
         &&(shelter.isInhabitant(msg.source())))
-            unInvoke();
+        {
+            if(previousLocation!=null)
+                previousLocation.bringMobHere(msg.source(),false);
+            if(msg.source().fetchEffect(ID())==this)
+                unInvoke();
+        }
         return super.okMessage(host,msg);
     }
     
