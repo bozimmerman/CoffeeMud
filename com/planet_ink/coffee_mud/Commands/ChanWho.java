@@ -56,7 +56,7 @@ public class ChanWho extends StdCommand
 			mob.tell(getScr("ChanWho","validname"));
 			return false;
 		}
-		String head=new String(getScr("ChanWho","listening")+" "+channel+":\n\r");
+		String head=new String("^x"+getScr("ChanWho","listening")+" "+channel+":^?^.^N\n\r");
 		StringBuffer buf=new StringBuffer("");
         String mask=ChannelSet.getChannelMask(channelInt);
         boolean areareq=mask.toUpperCase().indexOf("SAMEAREA")>=0;
@@ -71,7 +71,7 @@ public class ChanWho extends StdCommand
 			&&(Sense.isInTheGame(mob2,true))
 			&&((((mob2.envStats().disposition()&EnvStats.IS_CLOAKED)==0)
 					||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.envStats().level()>=mob2.envStats().level())))))
-					buf.append("["+Util.padRight(mob2.name(),20)+"]\n\r");
+					buf.append("^x[^?^.^N"+Util.padRight(mob2.name(),20)+"^x]^?^.^N\n\r");
 		}
 		if(buf.length()==0)
 			mob.tell(getScr("ChanWho","nobody",head));
