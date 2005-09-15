@@ -52,7 +52,9 @@ public class Herbology extends CommonSkill
 				else
 				{
 				    Vector herbList=Resources.getFileLineVector(Resources.getFileResource("skills"+File.separatorChar+"herbology.txt"));
-					String herb=((String)herbList.elementAt(Dice.roll(1,herbList.size(),-1))).trim().toLowerCase();
+					String herb=null;
+                    while((herbList.size()>2)&&((herb==null)||(herb.trim().length()==0)))
+                        herb=((String)herbList.elementAt(Dice.roll(1,herbList.size(),-1))).trim().toLowerCase();
 					
 					if(found.rawSecretIdentity().length()>0)
 					{	

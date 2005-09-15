@@ -129,6 +129,7 @@ public class Where extends StdCommand
                     mobOnly=true;
                     zapperMask=true;
                     who=who.substring(7).trim();
+                    mob.tell("^xMask used:^?^.^N "+MUDZapper.zapperDesc(who)+"\n\r");
                     compiledZapperMask=MUDZapper.zapperCompile(who);
                 }
                 else
@@ -137,6 +138,7 @@ public class Where extends StdCommand
                     itemOnly=true;
                     zapperMask=true;
                     who=who.substring(8).trim();
+                    mob.tell("^xMask used:^?^.^N "+MUDZapper.zapperDesc(who)+"\n\r");
                     compiledZapperMask=MUDZapper.zapperCompile(who);
                 }
                 else
@@ -144,6 +146,7 @@ public class Where extends StdCommand
                 {
                     mobOnly=true;
                     zapperMask2=true;
+                    mob.tell("^xMask used:^?^.^N "+MUDZapper.zapperDesc(who)+"\n\r");
                     who=who.substring(8).trim();
                 }
                 else
@@ -151,6 +154,7 @@ public class Where extends StdCommand
                 {
                     itemOnly=true;
                     zapperMask2=true;
+                    mob.tell("^xMask used:^?^.^N "+MUDZapper.zapperDesc(who)+"\n\r");
                     who=who.substring(9).trim();
                 }
                 

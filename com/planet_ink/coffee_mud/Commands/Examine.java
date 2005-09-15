@@ -23,7 +23,7 @@ public class Examine extends StdCommand
 {
     public Examine(){}
 
-    private String[] access={"EXAMINE","EXAM","EXA","LONGLOOK","LL"};
+    private String[] access={"EXAMINE","EXAM","EXA","LONGLOOK","LLOOK","LL"};
     public String[] getAccessWords(){return access;}
     public boolean execute(MOB mob, Vector commands)
         throws java.io.IOException

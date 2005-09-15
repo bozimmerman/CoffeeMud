@@ -58,13 +58,15 @@ public class ChanWho extends StdCommand
 		}
 		String head=new String(getScr("ChanWho","listening")+" "+channel+":\n\r");
 		StringBuffer buf=new StringBuffer("");
+        String mask=ChannelSet.getChannelMask(channelInt);
+        boolean areareq=mask.toUpperCase().indexOf("SAMEAREA")>=0;
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session ses=Sessions.elementAt(s);
 			MOB mob2=ses.mob();
 			if((mob2!=null)&&(mob2.soulMate()!=null))
 				mob2=mob2.soulMate();
-			if((ChannelSet.mayReadThisChannel(null,false,ses,channelInt))
+			if((ChannelSet.mayReadThisChannel(mob,areareq,ses,channelInt))
 			&&(mob2!=null)
 			&&(Sense.isInTheGame(mob2,true))
 			&&((((mob2.envStats().disposition()&EnvStats.IS_CLOAKED)==0)
