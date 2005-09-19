@@ -5280,7 +5280,6 @@ public class Scriptable extends StdBehavior
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if(E instanceof MOB)
 				{
-
 					String arg2="";
 					String arg3="";
 					if(Util.numBits(s)>2)

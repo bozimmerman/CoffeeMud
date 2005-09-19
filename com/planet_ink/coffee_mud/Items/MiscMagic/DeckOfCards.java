@@ -44,14 +44,21 @@ public class DeckOfCards extends StdContainer implements MiscMagic
 		I.baseEnvStats().setAbility(abilityCode);
 		I.recoverEnvStats();
 		I.setContainer(this);
-		if(owner() instanceof Room)
-			((Room)owner()).addItem(I);
-		else
-		if(owner() instanceof MOB)
-			((MOB)owner()).addInventory(I);
 		return I;
 	}
 
+    
+    private Vector makeAllCards()
+    {
+        Vector allCards=new Vector();
+        int[] suits={0,16,32,48};
+        int[] cards={1,2,3,4,5,6,7,8,9,10,11,12,13};
+        for(int i=0;i<suits.length;i++)
+            for(int ii=0;ii<cards.length;ii++)
+                allCards.addElement(makePlayingCard(suits[i]+cards[ii]));
+        return allCards;
+    }
+    
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((!alreadyFilled)&&(owner()!=null))
@@ -59,11 +66,13 @@ public class DeckOfCards extends StdContainer implements MiscMagic
 			alreadyFilled=true;
 			if(getContents().size()==0)
 			{
-			    int[] suits={0,16,32,48};
-			    int[] cards={1,2,3,4,5,6,7,8,9,10,11,12,13};
-			    for(int i=0;i<suits.length;i++)
-			        for(int ii=0;ii<cards.length;ii++)
-                        makePlayingCard(suits[i]+cards[ii]);
+                Vector allCards=makeAllCards();
+                for(int i=0;i<allCards.size();i++)
+                    if(owner() instanceof Room)
+                        ((Room)owner()).addItem((Item)allCards.elementAt(i));
+                    else
+                    if(owner() instanceof MOB)
+                        ((MOB)owner()).addInventory((Item)allCards.elementAt(i));
 			}
             cardsCache=getContents();
             hands=new Vector();
@@ -193,6 +202,23 @@ public class DeckOfCards extends StdContainer implements MiscMagic
             Item card=(Item)cardsCache.elementAt(i);
             if(card.owner()!=owner())
                 returnCardToDeck(card);
+        }
+        for(int i=0;i<hands.size();i++)
+            ((Item)hands.elementAt(i)).destroy();
+        hands.clear();
+        if(numberOfCardsInTheDeck()<52)
+        {
+            for(int i=0;i<cardsCache.size();i++)
+                ((Item)cardsCache.elementAt(i)).destroy();
+            cardsCache.clear();
+            Vector allCards=makeAllCards();
+            for(int i=0;i<allCards.size();i++)
+                if(owner() instanceof Room)
+                    ((Room)owner()).addItem((Item)allCards.elementAt(i));
+                else
+                if(owner() instanceof MOB)
+                    ((MOB)owner()).addInventory((Item)allCards.elementAt(i));
+            cardsCache=getContents();
         }
         return numberOfCardsInTheDeck()==52;
     }
@@ -347,6 +373,17 @@ public class DeckOfCards extends StdContainer implements MiscMagic
             break;
         }
         return -1;
+    }
+    
+    public boolean removeAllCardsFromHand(MOB player)
+    {
+        Item hand=getPlayersHand(player);
+        if(hand==null) return false;
+        Vector handContents=((Container)hand).getContents();
+        if(handContents.size()==0) return false;
+        for(int i=0;i<handContents.size();i++)
+            removeCardFromHand(player,(Item)handContents.elementAt(i));
+        return true;
     }
     
     public boolean removeCardFromHand(MOB player, String cardCode)
