@@ -490,10 +490,10 @@ public class Destroy extends BaseItemParser
 			Resources.removeResource("SOCIALS LIST");
 			Socials.save();
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just decreased!");
+            Log.sysOut("SysopSocials",mob.Name()+" destroyed social "+soc2.name()+".");
 		}
 		else
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just increased!");
-		Log.sysOut("SysopSocials",mob.Name()+" destroyed social "+soc2.name()+".");
 	}
 	
 	public static boolean destroyItem(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)

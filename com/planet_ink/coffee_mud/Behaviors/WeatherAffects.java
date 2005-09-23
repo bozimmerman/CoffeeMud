@@ -568,8 +568,11 @@ public class WeatherAffects extends PuddleMaker
                 {
                     R=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
                     MOB M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
-                    Ability A2=CMClass.getAbility("Skill_Dirt");
-                    if(A2!=null) A2.invoke(M,M,true,0);
+                    if((M!=null)&&(!Sense.isSleeping(M)))
+                    {
+                        Ability A2=CMClass.getAbility("Skill_Dirt");
+                        if(A2!=null) A2.invoke(M,M,true,0);
+                    }
                 }
             }
         }

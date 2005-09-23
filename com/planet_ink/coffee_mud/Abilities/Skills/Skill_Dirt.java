@@ -104,6 +104,13 @@ public class Skill_Dirt extends StdAbility
 			return false;
 		}
 		
+        if(Sense.isSleeping(target))
+        {
+            if(!auto)
+                mob.tell(target.name()+" has "+target.charStats().hisher()+" eyes closed.");
+            return false;
+        }
+        
 		if((!auto)&&Sense.isFlying(mob))
 		{
 			mob.tell("You are too far from the ground to kick dirt.");

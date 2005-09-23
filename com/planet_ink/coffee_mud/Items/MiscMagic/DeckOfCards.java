@@ -8,7 +8,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.system.*;
 
 /* 
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2005-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -21,14 +21,38 @@ import com.planet_ink.coffee_mud.system.*;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+   
+   Deck Of Cards
+   This class represents a deck of 52 cards without jokers
+   It inherets from the HandOfCards class for most of its
+   important functionality such as retreiving and adding cards and
+   shuffling and sorting.
+   
+   The Deck has added functionality to make the "reigning in" of cards
+   once a game is over easier.  It also has methods to keep track of
+   one or more Hands, each of which must be attributed to a player.
 */
-public class DeckOfCards extends StdContainer implements MiscMagic
+public class DeckOfCards extends HandOfCards
 {
 	public String ID(){	return "DeckOfCards";}
-	boolean alreadyFilled=false;
-    private Vector cardsCache=null;
-    private Vector hands=new Vector();
     
+    // a flag to tell us whether the deck instance
+    // has already been filled with cards.  
+	boolean alreadyFilled=false;
+    
+    // a vector of all the cards in the deck. 
+    // this is our private cache, since, as soon
+    // as cards start getting dealt, we would lose
+    // track of them otherwise.
+    protected Vector cardsCache=null;
+    
+    // this object can manage one or more hands
+    // keyed by the mob/player object.
+    // This functionality is optional.
+    DVector hands=new DVector(2);
+    
+    // the constructor for this class doesn't do much except set
+    // some of the display properties of the deck container
 	public DeckOfCards()
 	{
 		super();
@@ -38,175 +62,100 @@ public class DeckOfCards extends StdContainer implements MiscMagic
 		recoverEnvStats();
 	}
 
-	protected Item makePlayingCard(int abilityCode)
-	{
-		Item I=CMClass.getItem("PlayingCard");
-		I.baseEnvStats().setAbility(abilityCode);
-		I.recoverEnvStats();
-		I.setContainer(this);
-		return I;
-	}
+    // makePlayingCard(int cardBitCode)
+    // this method creates a playing card object for
+    // population in the deck.  The card created is
+    // determined by the cardCode, which is a bit masked
+    // value where bits 4-5 determine suit, and lower bits
+    // the value.  
+    protected PlayingCard makePlayingCard(int cardBitCode)
+    {
+        Item I=CMClass.getItem("PlayingCard");
+        I.baseEnvStats().setAbility(cardBitCode);
+        I.recoverEnvStats();
+        I.setContainer(this);
+        return (PlayingCard)I;
+    }
 
-    
+    // makeAllCards()
+    // this method creates all 52 cards in the deck
+    // and adds them to a vector which is returned.
     private Vector makeAllCards()
     {
         Vector allCards=new Vector();
-        int[] suits={0,16,32,48};
-        int[] cards={1,2,3,4,5,6,7,8,9,10,11,12,13};
-        for(int i=0;i<suits.length;i++)
-            for(int ii=0;ii<cards.length;ii++)
-                allCards.addElement(makePlayingCard(suits[i]+cards[ii]));
+        for(int i=0;i<PlayingCard.suits.length;i++)
+            for(int ii=0;ii<PlayingCard.cards.length;ii++)
+                allCards.addElement(makePlayingCard(PlayingCard.suits[i]+PlayingCard.cards[ii]));
         return allCards;
     }
     
-	public boolean okMessage(Environmental myHost, CMMsg msg)
-	{
-		if((!alreadyFilled)&&(owner()!=null))
-		{
-			alreadyFilled=true;
-			if(getContents().size()==0)
-			{
-                Vector allCards=makeAllCards();
-                for(int i=0;i<allCards.size();i++)
-                    if(owner() instanceof Room)
-                        ((Room)owner()).addItem((Item)allCards.elementAt(i));
-                    else
-                    if(owner() instanceof MOB)
-                        ((MOB)owner()).addInventory((Item)allCards.elementAt(i));
-			}
-            cardsCache=getContents();
-            hands=new Vector();
-		}
-		if((msg.amITarget(this))
-		&&(msg.targetMinor()==CMMsg.TYP_SPEAK)
-		&&(msg.targetMessage()!=null)
-		&&(msg.targetMessage().toUpperCase().indexOf("SHUFFLE")>0))
-		{
-            if(!shuffleDeck())
-	            msg.source().tell("There are no cards left in the deck");
-	        else
-            {
-                Room R=CoffeeUtensils.roomLocation(this);
-    		    if(R!=null)
-                    R.show(msg.source(),null,this,CMMsg.MASK_GENERAL|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> <S-HAS-HAVE> thoroughly shuffled <O-NAMESELF>.");
-            }
-		    return false;
-		}
-		return super.okMessage(myHost,msg);
-	}
+    // fillInTheDeck()
+    // this method creates all 52 cards in the deck
+    // and adds them to a deck owner
+    private Vector fillInTheDeck()
+    {
+        alreadyFilled=true;
+        if(getContents().size()==0)
+        {
+            Vector allCards=makeAllCards();
+            for(int i=0;i<allCards.size();i++)
+                addCard((PlayingCard)allCards.elementAt(i));
+        }
+        cardsCache=getContents();
+        hands.clear();
+        return cardsCache;
+    }
     
+    // createDeck(Environmental owner)
+    // This static method creates a new deck of cards container,
+    // gives it to the given owner object (mob or room), and 
+    // then populates the deck container with all appropriate cards.
     public static DeckOfCards createDeck(Environmental owner)
     {
         DeckOfCards deck=new DeckOfCards();
-        if(owner==null)
-            owner=CMClass.getLocale("StdRoom");
         if(owner instanceof MOB)
             ((MOB)owner).giveItem(deck);
         else
         if(owner instanceof Room)
             ((Room)owner).bringItemHere(deck,Item.REFUSE_PLAYER_DROP);
-        else
-            return null;
-        Room R=CoffeeUtensils.roomLocation(deck.owner());
-        if(R==null) return null;
-        FullMsg msg=new FullMsg(CMMap.god(R),deck,null,CMMsg.MSG_SPEAK," DONOTHING ",CMMsg.MSG_SPEAK," DONOTHING ",CMMsg.MSG_SPEAK," DONOTHING ");
-        deck.okMessage(CMMap.god(R),msg);
+        deck.fillInTheDeck();
         return deck;
     }
     
-    public boolean shuffleDeck()
-    {
-        Vector V=getContents();
-        Environmental own=owner();
-        if(V.size()==0)
-            return false;
-        for(int i=0;i<V.size()*5;i++)
-        {
-            Item I=(Item)V.elementAt(Dice.roll(1,V.size(),-1));
-            I.removeFromOwnerContainer();
-            I.setContainer(this);
-            if(own instanceof MOB)
-                ((MOB)own).addInventory(I);
-            else
-            if(own instanceof Room)
-                ((Room)own).addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
-        }
-        return true;
-    }
-    
-    public Item topCardFromDeck()
-    {
-        Vector deckContents=getContents();
-        while(deckContents.size()>0)
-        {
-            Item card=(Item)deckContents.firstElement();
-            if(cardsCache.contains(card))
-            {
-                card.removeFromOwnerContainer();
-                return card;
-            }
-            card.destroy();
-            deckContents.removeElement(card);
-        }
-        return null;
-    }
-    
-    public boolean returnCardToDeck(Item card)
-    {
-        if(card==null) return false;
-        if(!cardsCache.contains(card)) return false;
-        Item handToDestroy=null;
-        try{
-            for(int h=0;h<hands.size();h++)
-            {
-                Container hand=(Container)hands.elementAt(h);
-                if((hand.owner()==card.owner())
-                &&(hand.getContents().contains(card))
-                &&(hand.getContents().size()==1))
-                {
-                    handToDestroy=hand;
-                    break;
-                }
-            }
-        }catch(ArrayIndexOutOfBoundsException e){}
-        if(owner() instanceof MOB)
-            ((MOB)owner()).giveItem(card);
-        else
-        if(owner() instanceof Room)
-            ((Room)owner()).bringItemHere(card,Item.REFUSE_PLAYER_DROP);
-        else
-            return false;
-        card.setContainer(this);
-        if(handToDestroy!=null)
-            handToDestroy.destroy();
-        if(owner() instanceof MOB)
-            return ((MOB)owner()).isMine(card);
-        else
-        if(owner() instanceof Room)
-            return ((Room)owner()).isContent(card);
-        return true;
-    }
-    
-    public int numberOfCardsInTheDeck()
-    {
-        Vector deckContents=getContents();
-        return deckContents.size();
-    }
-    
+    // resetDeckBackTo52Cards()
+    // resets the deck back to 52 cards.  It will
+    // grab cards from all external sources first
+    // and return them to the deck container owner.
+    // If this fails to produce 52 cards, it will
+    // create a set of cards for the deck.
+    // this method also destroys any hands being
+    // managed.
     public boolean resetDeckBackTo52Cards()
     {
         if((cardsCache==null)||(cardsCache.size()==0))
             return false;
+        
+        // first retreive all our cards by looping
+        // through our cached list.  If we already 
+        // have a card, make sure its faced-down
         for(int i=0;i<cardsCache.size();i++)
         {
-            Item card=(Item)cardsCache.elementAt(i);
+            PlayingCard card=(PlayingCard)cardsCache.elementAt(i);
             if(card.owner()!=owner())
-                returnCardToDeck(card);
+                addCard(card);
+            else
+                card.turnFaceDown();
         }
-        for(int i=0;i<hands.size();i++)
-            ((Item)hands.elementAt(i)).destroy();
+        // next destroy and clear any hands we may
+        // be managing.  
+        for(int h=hands.size()-1;h>=0;h--)
+            ((Item)hands.elementAt(h,2)).destroy();
         hands.clear();
-        if(numberOfCardsInTheDeck()<52)
+        
+        // if something went wrong (because a player cast
+        // disintegrate on their cards or something) we
+        // just ditch the entire deck and rebuild it.
+        if(numberOfCards()<52)
         {
             for(int i=0;i<cardsCache.size();i++)
                 ((Item)cardsCache.elementAt(i)).destroy();
@@ -220,242 +169,100 @@ public class DeckOfCards extends StdContainer implements MiscMagic
                     ((MOB)owner()).addInventory((Item)allCards.elementAt(i));
             cardsCache=getContents();
         }
-        return numberOfCardsInTheDeck()==52;
+        return numberOfCards()==52;
     }
     
-    public Vector returnDeckContents()
+    // getPlayerHand(MOB player)
+    // If a hand of cards has previously been added to this
+    // deck for internal management, this method will return
+    // that hand given the player object.
+    public HandOfCards getPlayerHand(MOB player)
     {
-        return getContents();
-    }
-
-    private String convertAbilityCodeToCardCode(int abilityCode)
-    {
-        int suit=abilityCode&(16+32);
-        int card=abilityCode&(1+2+4+8);
-        String suitStr=" ";
-        switch(suit)
-        {
-        case 0: suitStr="S"; break;
-        case 16: suitStr="C"; break;
-        case 32: suitStr="H"; break;
-        case 48: suitStr="D"; break;
-        }
-        String cardStr=" ";
-        switch(card)
-        {
-            case 1: cardStr="A"; break;
-            case 11: cardStr="J"; break;
-            case 12: cardStr="Q"; break;
-            case 13: cardStr="K"; break;
-            case 2:case 3:case 4:case 5:case 6:case 7:case 8:case 9:case 10:
-                cardStr=""+card; break;
-        }
-        return suitStr+cardStr;
-    }
-    
-    public String[] returnDeckContentsEncoded()
-    {
-        Vector contents=getContents();
-        String[] encodedDeck=new String[contents.size()];
-        for(int i=0;i<contents.size();i++)
-        {
-            Item card=(Item)contents.elementAt(i);
-            encodedDeck[i]=convertAbilityCodeToCardCode(card.envStats().ability());
-        }
-        return encodedDeck;
-    }
-    
-    
-    private Item getPlayersHand(MOB player)
-    {
-        if((player==null)||(hands==null))
-            return null;
-        try{
-            for(int i=0;i<hands.size();i++)
-                if(((Item)hands.elementAt(i)).owner()==player)
-                    return (Item)hands.elementAt(i);
-        }catch(ArrayIndexOutOfBoundsException e){}
-        return null;
-    }
-    
-    private Item addEmptyHand(MOB player)
-    {
-        // calling this method without the intention
-        // of putting a card inside is counter-productive.
-        // the other methods should automatically create and
-        // destroy the hands as cards are dealt and returned
-        // to the deck respectively!
-        Item hand=getPlayersHand(player);
-        if(hand!=null) return hand;
-        hand=CMClass.getItem("GenContainer");
-        hand.setName("Your hand");
-        hand.setDisplayText("Somehow a hand of cards has fallen, and can't get up!");
-        hand.setDescription("");
-        Sense.setGettable(hand,false);
-        Sense.setDroppable(hand,false);
-        Sense.setRemovable(hand,false);
-        hand.baseEnvStats().setWeight(1);
-        hand.recoverEnvStats();
-        ((Container)hand).setCapacity(0);
-        ((Container)hand).setContainTypes(Container.CONTAIN_SSCOMPONENTS);
-        player.giveItem(hand);
-        if(player.isMine(hand))
-        {
-            hands.add(hand);
-            return hand;
-        }
+        if(player!=null)
+        for(int i=0;i<hands.size();i++)
+            if(hands.elementAt(i,1)==player)
+                return (HandOfCards)hands.elementAt(i,2);
         return null;
     }
 
-    
-    
-    public boolean addCardToPlayersHand(MOB player, Item card)
+    // addPlayerHand(MOB player, HandOfCards cards)
+    // adds and possibly creates a hand for the given player
+    // if no hand is passed in, a new empty one is created
+    // the hand is then added to our table, keyed by the player
+    // object
+    public HandOfCards addPlayerHand(MOB player, HandOfCards cards)
     {
-        if((player==null)||(card==null)) return false;
-        if(!cardsCache.contains(card)) return false;
-        Item hand=addEmptyHand(player);
-        if(hand==null) return false;
-        player.giveItem(card);
-        card.setContainer(hand);
-        return player.isMine(card);
-    }
-    
-    public int numberOfCardsInPlayersHand(MOB player)
-    {
-        Item I=getPlayersHand(player);
-        if(I instanceof Container) 
-            return ((Container)I).getContents().size();
-        return 0;
-    }
-    
-    public boolean removeCardFromHand(MOB player, Item card)
-    {
-        if((player==null)||(card==null)) return false;
-        if(!cardsCache.contains(card)) return false;
-        Item hand=getPlayersHand(player);
-        Item handToDestroy=null;
-        if((hand!=null)
-        &&(((Container)hand).getContents().contains(card))
-        &&(((Container)hand).getContents().size()==1))
-            handToDestroy=hand;
-        card.removeFromOwnerContainer();
-        card.setContainer(null);
-        if(handToDestroy!=null)
-            handToDestroy.destroy();
-        return true;
-    }
-    
-    private int translateCardCodeToSuitAbilityCode(String cardCode)
-    {
-        if((cardCode==null)||(cardCode.length()==0)) return -1;
-        switch(cardCode.toUpperCase().charAt(0))
-        {
-        case 'S': return 0;
-        case 'C': return 16;
-        case 'H': return 32;
-        case 'D': return 48;
-        }
-        return -1;
-    }
-    
-    private int translateCardCodeToValueAbilityCode(String cardCode)
-    {
-        if((cardCode==null)||(cardCode.length()<2)) return -1;
-        switch(cardCode.toUpperCase().charAt(1))
-        {
-        case 'K': return 13;
-        case 'J': return 11;
-        case 'Q': return 12;
-        case 'A': return 1;
-        default:
-            if(Util.isInteger(""+cardCode.charAt(1)))
-                return Util.s_int(""+cardCode.charAt(1));
-            break;
-        }
-        return -1;
-    }
-    
-    public boolean removeAllCardsFromHand(MOB player)
-    {
-        Item hand=getPlayersHand(player);
-        if(hand==null) return false;
-        Vector handContents=((Container)hand).getContents();
-        if(handContents.size()==0) return false;
-        for(int i=0;i<handContents.size();i++)
-            removeCardFromHand(player,(Item)handContents.elementAt(i));
-        return true;
-    }
-    
-    public boolean removeCardFromHand(MOB player, String cardCode)
-    {
-        Item hand=getPlayersHand(player);
-        if(hand==null) return false;
-        Vector handContents=((Container)hand).getContents();
-        if(handContents.size()==0) return false;
-        int suitCode=translateCardCodeToSuitAbilityCode(cardCode);
-        int valueCode=translateCardCodeToValueAbilityCode(cardCode);
-        if((suitCode<0)||(valueCode<0)) return false;
-        int totalAbilityCode=suitCode+valueCode;
-        for(int i=0;i<handContents.size();i++)
-        {
-            Item card=(Item)handContents.elementAt(i);
-            if(card.envStats().ability()==totalAbilityCode)
-                return removeCardFromHand(player,card);
-        }
-        return false;
+        if(player==null) return null;
+        if(hands.contains(player))
+            return (HandOfCards)hands.elementAt(hands.indexOf(player),2);
+        if(cards==null) cards=HandOfCards.createEmptyHand(player);
+        hands.addElement(player,cards);
+        return cards;
     }
 
-    
-    public boolean doesHandContainAtLeastOneOfValue(MOB player, String cardCode)
+    // removePlayerHand(MOB player)
+    // if the given player object has a hand of cards currently
+    // being managed by this deck, this method will remove all
+    // of the cards from the hand, return them to the deck,
+    // then remove the hand from management, and destroy the hand.
+    public void removePlayerHand(MOB player)
     {
-        Item hand=getPlayersHand(player);
-        if(hand==null) return false;
-        Vector handContents=((Container)hand).getContents();
-        if(handContents.size()==0) return false;
-        if(cardCode.length()==0) return false;
-        if(cardCode.length()==1) cardCode=" "+cardCode;
-        int valueCode=translateCardCodeToValueAbilityCode(cardCode);
-        if(valueCode<0) return false;
-        for(int i=0;i<handContents.size();i++)
-        {
-            Item card=(Item)handContents.elementAt(i);
-            if((card.envStats().ability()&(1+2+4+8))==valueCode)
-                return true;
-        }
-        return false;
+        HandOfCards cards=getPlayerHand(player);
+        if(cards==null) return;
+        Vector cardSet=cards.getContents();
+        for(int c=0;c<cardSet.size();c++)
+            addCard((PlayingCard)cardSet.elementAt(c));
+        hands.removeElement(player);
+        cards.destroy();
     }
     
-    public boolean doesHandContainAtLeastOneOfSuit(MOB player, String cardCode)
+    // addCard(PlayingCard card)
+    // this method adds to the base functionality found
+    // in HandOfCards.java by ensuring that all cards
+    // added to the deck are added face down.
+    public boolean addCard(PlayingCard card)
     {
-        Item hand=getPlayersHand(player);
-        if(hand==null) return false;
-        Vector handContents=((Container)hand).getContents();
-        if(handContents.size()==0) return false;
-        if(cardCode.length()==0) return false;
-        if(cardCode.length()==1) cardCode=cardCode+" ";
-        int suitCode=translateCardCodeToSuitAbilityCode(cardCode);
-        if(suitCode<0) return false;
-        for(int i=0;i<handContents.size();i++)
+        if(card!=null) card.turnFaceDown();
+        return super.addCard(card);
+    }
+
+    // this is a system event previewer method
+    // its purpose is normally to preview any events occurring
+    // in the same room, see if they are relevant to this object,
+    // and if so, whether this object should modify or cancel
+    // the event before it takes place.
+    // There are two things our deck needs to handle here.
+    public boolean okMessage(Environmental myHost, CMMsg msg)
+    {
+        // In this case, we use the instance of an event to trigger
+        // the initial filling of the deck with cards, since, once
+        // this object is capable of handling events, it must already
+        // be "in the world" and ready to receive cards.
+        if((!alreadyFilled)&&(owner()!=null))
+            fillInTheDeck();
+        
+        // This handler also checks to see if anyone is saying "shuffle"
+        // directly to the deck item.  If so, we cancel the message by
+        // returning false (since it would make them look silly to be
+        // talking to a deck of cards), and instead
+        // display a message showing the owner of this deck shuffling it.
+        if((msg.amITarget(this))
+        &&(msg.targetMinor()==CMMsg.TYP_SPEAK)
+        &&(msg.targetMessage()!=null)
+        &&(msg.targetMessage().toUpperCase().indexOf("SHUFFLE")>0))
         {
-            Item card=(Item)handContents.elementAt(i);
-            if((card.envStats().ability()&(16+32))==suitCode)
-                return true;
+            if(!shuffleDeck())
+                msg.source().tell("There are no cards left in the deck");
+            else
+            {
+                Room R=CoffeeUtensils.roomLocation(this);
+                if(R!=null)
+                    R.show(msg.source(),null,this,CMMsg.MASK_GENERAL|CMMsg.MSG_QUIETMOVEMENT,
+                            "<S-NAME> <S-HAS-HAVE> thoroughly shuffled <O-NAMESELF>.");
+            }
+            return false;
         }
-        return false;
+        return super.okMessage(myHost,msg);
     }
     
-    public String[] returnHandContentsEncoded(MOB player)
-    {
-        Item hand=getPlayersHand(player);
-        if(hand==null) return new String[0];
-        Vector contents=((Container)hand).getContents();
-        if(contents.size()==0) return new String[0];
-        String[] encodedHand=new String[contents.size()];
-        for(int i=0;i<contents.size();i++)
-        {
-            Item card=(Item)contents.elementAt(i);
-            encodedHand[i]=convertAbilityCodeToCardCode(card.envStats().ability());
-        }
-        return encodedHand;
-    }
 }
