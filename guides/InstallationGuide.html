@@ -785,16 +785,32 @@ derby.storage.pageCacheSize=10000
   <P></P>
 <P>
 <IMG src="images/nuked.jpg">
-<P><STRONG><FONT size=5>The OffLine Application:</FONT></STRONG></P>
-<P align=left>In the off chance you should need to keep your mud down while database
-maintence, or other software (or hardware?) maintenance is going on, a&nbsp;small footprint&nbsp;OffLine application is
+<P><STRONG><FONT size=5>The OffLine And Shutdown Applications:</FONT></STRONG></P>
+<P align=left> In the off chance you should need to keep your mud down while
+database, or other software (or hardware?) maintenance is going on, a&nbsp;small footprint&nbsp;OffLine application is
 available.  This application will read the port information from your coffeemud.ini file just
 like the regular mud server.  It will accept connections, but only to display the file
 resources/text/down.txt before disconnecting the user automatically.  To execute this application,
 you should go into your coffeemud directory and enter:<P>
 <PRE>
 java com.planet_ink.coffee_mud.application.OffLine
+</PRE><P>
+The Shutdown application is a means of shutting down 
+your MUD remotely without logging in. It is part of the application package of 
+CoffeeMud, but it does not rely on any of the other internal classes.&nbsp; You 
+may therefore, if you like, copy the file Shutdown.class&nbsp;onto a floppy disk 
+and execute it from there, so long as the file is stored in  a com/planet_ink/coffee_mud/application folder or directory.&nbsp; 
+</P>
+<P>The Shutdown application requires that you pass to it 
+the URL of your server, the standard MUD port to connect to, the login name of a valid Archon character, and the password.&nbsp; 
+You may optionally also include the word 'true' if you wish the system to reboot 
+instead of simply shutting down.&nbsp; To execute this application, you should go into 
+your coffeemud directory or wherever the "com" directory for CoffeeMud is located, and 
+enter:</P><PRE>java com.planet_ink.coffee_mud.application.Shutdown localhost 5555 AdminName AdminPassword
 </PRE>
-<P></P>
+<P>
+</P>
+<P>
+</P>
 </BODY>
 </HTML>
