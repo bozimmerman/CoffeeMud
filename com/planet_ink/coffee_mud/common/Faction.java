@@ -493,9 +493,18 @@ public class Faction implements MsgListener
 		&&(msg.source()==myHost)
 		&&(msg.tool() instanceof MOB))
         {
-            FactionChangeEvent C=findChangeEvent("MURDER");
-            if((C!=null)&&(C.applies(msg.source())))
-                executeChange((MOB)msg.tool(),msg.source(),C);
+            FactionChangeEvent eventC=findChangeEvent("MURDER");
+            if(eventC!=null)
+            {
+                CharClass combatCharClass=MUDFight.getCombatDominantClass((MOB)msg.tool(),msg.source());
+                HashSet combatBeneficiaries=MUDFight.getCombatBeneficiaries((MOB)msg.tool(),msg.source(),combatCharClass);
+                for(Iterator I=combatBeneficiaries.iterator();I.hasNext();)
+                {
+                    MOB killer=(MOB)I.next();
+                    if(eventC.applies(killer))
+                        executeChange(killer,msg.source(),eventC);
+                }
+            }
         }
 
         // Ability Watching

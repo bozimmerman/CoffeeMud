@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.CharClasses;
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
@@ -171,12 +172,10 @@ public class Necromancer extends Cleric
 		return true;
 	}
 
-	protected boolean isValidBeneficiary(MOB killer,
-									     MOB killed,
-									     MOB mob,
-									     HashSet followers)
+    public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, HashSet followers)
 	{
 		if((mob!=null)
+        &&(mob!=killed)
 		&&(!mob.amDead())
 		&&((!mob.isMonster())||(!mob.charStats().getMyRace().racialCategory().equals("Undead")))
 		&&((mob.getVictim()==killed)

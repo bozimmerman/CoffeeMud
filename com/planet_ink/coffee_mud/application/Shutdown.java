@@ -20,7 +20,10 @@ public class Shutdown
         }
         try
         {
-            StringBuffer msg=new StringBuffer("SHUTDOWN "+a[2]+" "+a[3]);
+            StringBuffer msg=new StringBuffer(" SHUTDOWN "+a[2]+" "+a[3]);
+            StringBuffer spaces=new StringBuffer("");
+            for(int i=0;i<255;i++)
+                spaces.append(" ");
             if(a.length>=5)
                 msg.append(" "+!(Util.s_bool(a[4])));
             if(a.length>=6)
@@ -29,7 +32,7 @@ public class Shutdown
             
             Socket sock=new Socket(a[0],Util.s_int(a[1]));
             OutputStream rawout=sock.getOutputStream();
-            rawout.write((msg.toString()+"\n\r").getBytes());
+            rawout.write((msg.toString()+spaces+"\n\r").getBytes());
             rawout.flush();
             Thread.sleep(1000);
         }

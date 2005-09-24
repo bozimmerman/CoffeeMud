@@ -40,16 +40,11 @@ public class Prop_SparringRoom extends Property
 			MOB target=msg.source();
 			Room deathRoom=target.location();
 			deathRoom.show(source,source,CMMsg.MSG_OK_VISUAL,msg.sourceMessage());
-			if((source!=null)&&(source.charStats()!=null))
+			if(source!=null)
 			{
-				CharClass C=source.charStats().getCurrentClass();
-				if(source.isMonster()
-				   &&(source.amFollowing()!=null)
-				   &&(!source.amFollowing().isMonster())
-				   &&(source.amFollowing().charStats()!=null))
-					C=source.amFollowing().charStats().getCurrentClass();
-
-				C.dispenseExperience(source,target);
+                CharClass combatCharClass=MUDFight.getCombatDominantClass(source,target);
+                HashSet beneficiaries=MUDFight.getCombatBeneficiaries(source,target,combatCharClass);
+                combatCharClass.dispenseExperience(beneficiaries,target);
 			}
 			target.makePeace();
 			target.setRiding(null);

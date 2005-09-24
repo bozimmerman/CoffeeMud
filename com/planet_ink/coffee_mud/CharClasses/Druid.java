@@ -311,12 +311,10 @@ public class Druid extends StdCharClass
 		return true;
 	}
 
-	protected boolean isValidBeneficiary(MOB killer,
-									   MOB killed,
-									   MOB mob,
-									   HashSet followers)
-	{
+    public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, HashSet followers)
+    {
 		if((mob!=null)
+        &&(mob!=killed)
 		&&(!mob.amDead())
 		&&((!mob.isMonster())||(!Sense.isAnimalIntelligence(mob)))
 		&&((mob.getVictim()==killed)

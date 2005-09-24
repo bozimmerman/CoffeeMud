@@ -703,12 +703,10 @@ public class StdCharClass implements CharClass, Cloneable
 		return move;
 	}
 
-	protected boolean isValidBeneficiary(MOB killer,
-									   MOB killed,
-									   MOB mob,
-									   HashSet followers)
+	public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, HashSet followers)
 	{
 		if((mob!=null)
+        &&(mob!=killed)
 		&&(!mob.amDead())
 		&&((mob.getVictim()==killed)
 		 ||(followers.contains(mob))
@@ -716,43 +714,25 @@ public class StdCharClass implements CharClass, Cloneable
 			return true;
 		return false;
 	}
-	public HashSet dispenseExperience(MOB killer, MOB killed)
-	{
-		if((killer==null)||(killed==null)) return new HashSet();
-		Room deathRoom=killed.location();
-		if(deathRoom==null) deathRoom=killer.location();
+    
+    public void dispenseExperience(HashSet killers, MOB killed)
+    {
+        int totalLevels=0;
+        int expAmount=100;
 
-		HashSet beneficiaries=new HashSet();
-		HashSet followers=(killer!=null)?killer.getGroupMembers(new HashSet()):(new HashSet());
-
-		int totalLevels=0;
-		int expAmount=100;
-
-		if(deathRoom!=null)
+        for(Iterator i=killers.iterator();i.hasNext();)
+        {
+            MOB mob=(MOB)i.next();
+            totalLevels+=(mob.envStats().level()*mob.envStats().level());
+            expAmount+=25;
+        }
+		for(Iterator i=killers.iterator();i.hasNext();)
 		{
-			for(int m=0;m<deathRoom.numInhabitants();m++)
-			{
-				MOB mob=deathRoom.fetchInhabitant(m);
-				if((isValidBeneficiary(killer,killed,mob,followers))
-				&&(killer!=killed)
-				&&(!beneficiaries.contains(mob)))
-				{
-					beneficiaries.add(mob);
-					totalLevels+=(mob.envStats().level()*mob.envStats().level());
-					expAmount+=25;
-				}
-			}
+			MOB mob=(MOB)i.next();
+			int myAmount=(int)Math.round(Util.mul(expAmount,Util.div(mob.envStats().level()*mob.envStats().level(),totalLevels)));
+			if(myAmount>100) myAmount=100;
+			MUDFight.postExperience(mob,killed,"",myAmount,false);
 		}
-
-		if(beneficiaries.size()>0)
-			for(Iterator i=beneficiaries.iterator();i.hasNext();)
-			{
-				MOB mob=(MOB)i.next();
-				int myAmount=(int)Math.round(Util.mul(expAmount,Util.div(mob.envStats().level()*mob.envStats().level(),totalLevels)));
-				if(myAmount>100) myAmount=100;
-				MUDFight.postExperience(mob,killed,"",myAmount,false);
-			}
-		return beneficiaries;
 	}
 	public String classParms(){ return "";}
 	public void setClassParms(String parms){}
