@@ -4378,10 +4378,11 @@ public class Scriptable extends StdBehavior
 				break;
 			}
 			case 3: // mpslay
-			{
-				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg);
+
+            {
+				Environmental newTarget=getArgumentItem(Util.getPastBitClean(s,0),source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if((newTarget!=null)&&(newTarget instanceof MOB))
-					MUDFight.postDeath((MOB)newTarget,monster,null);
+					MUDFight.postDeath(monster,(MOB)newTarget,null);
 				break;
 			}
 			case 16: // mpset
@@ -5064,7 +5065,9 @@ public class Scriptable extends StdBehavior
 			case 17: // mptransfer
 			{
 				String mobName=Util.getCleanBit(s,1);
-				String roomName=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,1));
+                String roomName="";
+                if(Util.numBits(s)>2)
+                    roomName=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,1));
 				if((roomName.length()==0)&&(lastKnownLocation!=null))
 					roomName=lastKnownLocation.roomID();
 				if(roomName.length()>0)
@@ -5081,7 +5084,7 @@ public class Scriptable extends StdBehavior
 								for(int x=0;x<lastKnownLocation.numInhabitants();x++)
 								{
 									MOB m=lastKnownLocation.fetchInhabitant(x);
-									if((m!=null)&&(m!=monster)&&(!m.isMonster())&&(!V.contains(m)))
+									if((m!=null)&&(m!=monster)&&(!V.contains(m)))
 										V.addElement(m);
 								}
 							}
@@ -5094,7 +5097,7 @@ public class Scriptable extends StdBehavior
 							{
 								findOne=lastKnownLocation.fetchInhabitant(s);
 								A=lastKnownLocation.getArea();
-                                if((findOne!=null)&&(findOne!=monster)&&(!findOne.isMonster()))
+                                if((findOne!=null)&&(findOne!=monster))
                                     V.addElement(findOne);
 							}
                             if(findOne==null)
@@ -5102,7 +5105,7 @@ public class Scriptable extends StdBehavior
                                 findOne=CMMap.getPlayer(s);
                                 if((findOne!=null)&&(!Sense.isInTheGame(findOne,true)))
                                     findOne=null;
-                                if((findOne!=null)&&(findOne!=monster)&&(!findOne.isMonster()))
+                                if((findOne!=null)&&(findOne!=monster))
                                     V.addElement(findOne);
                             }
 							if((findOne==null)&&(A!=null))
@@ -5110,7 +5113,7 @@ public class Scriptable extends StdBehavior
 								{
 									Room R=(Room)r.nextElement();
 									findOne=R.fetchInhabitant(s);
-                                    if((findOne!=null)&&(findOne!=monster)&&(!findOne.isMonster()))
+                                    if((findOne!=null)&&(findOne!=monster))
                                         V.addElement(findOne);
 								}
 						}
