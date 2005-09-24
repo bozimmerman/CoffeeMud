@@ -280,8 +280,8 @@ public class GenCharClass extends StdCharClass
         for(int i=0;i<securityGroups.length;i++)
         if(i<securityGroupLevels.length)
         {
-            str.append(XMLManager.convertXMLtoTag("GROUPS"+i,Util.combine(securityGroups[i],0)));
-            str.append(XMLManager.convertXMLtoTag("GROUPSLEVEL"+i,securityGroupLevels[i].intValue()));
+            str.append(XMLManager.convertXMLtoTag("SSET"+i,Util.combine(securityGroups[i],0)));
+            str.append(XMLManager.convertXMLtoTag("SSETLEVEL"+i,securityGroupLevels[i].intValue()));
         }
         
 		str.append("</CCLASS>");
@@ -438,8 +438,8 @@ public class GenCharClass extends StdCharClass
         int lastLevel=-1;
         while(true)
         {
-            String groups=XMLManager.getValFromPieces(classData,"GROUPS"+index);
-            int groupLevel=XMLManager.getIntFromPieces(classData,"GROUPSLEVEL"+index);
+            String groups=XMLManager.getValFromPieces(classData,"SSET"+index);
+            int groupLevel=XMLManager.getIntFromPieces(classData,"SSETLEVEL"+index);
             if((groups.length()==0)||(groupLevel<=lastLevel))
                 break;
             groupSet.addElement(Util.parseSpaces(groups,true));
@@ -481,7 +481,7 @@ public class GenCharClass extends StdCharClass
 									 "GETCABLE","GETCABLELVL","GETCABLEPROF","GETCABLEGAIN","GETCABLESECR",
 									 "GETCABLEPARM","NUMWEP","GETWEP", "NUMOFT","GETOFTID",
 									 "GETOFTPARM","HPDIE","MANADICE","MANADIE","DISFLAGS",
-									 "STARTASTATE","NUMNAME","NAMELEVEL","NUMGROUP","GROUP","GROUPLEVEL"
+									 "STARTASTATE","NUMNAME","NAMELEVEL","NUMSSET","SSET","SSETLEVEL"
 									 };
 	public String getStat(String code)
 	{

@@ -4924,18 +4924,18 @@ public class BaseGenerics extends StdCommand
 			genWeaponRestr(mob,me,++showNumber,showFlag,"Weapon Restr.","NUMWEP","GETWEP");
 			genOutfit(mob,me,++showNumber,showFlag);
 			genClassAbilities(mob,me,++showNumber,showFlag);
-            genInt(mob,me,++showNumber,showFlag,"Number of Security Code Sets: ","NUMGROUP");
-            int numGroups=Util.s_int(me.getStat("NUMGROUP"));
+            genInt(mob,me,++showNumber,showFlag,"Number of Security Code Sets: ","NUMSSET");
+            int numGroups=Util.s_int(me.getStat("NUMSSET"));
             for(int i=0;i<numGroups;i++)
             {
-                genText(mob,me,++showNumber,showFlag,"Security Codes in Set #"+i,"GROUP"+i);
+                genText(mob,me,++showNumber,showFlag,"Security Codes in Set #"+i,"SSET"+i);
                 if(i>0)
                 while(!mob.session().killFlag())
                 {
-                    int oldGroupLevel=Util.s_int(me.getStat("GROUPLEVEL"+i));
-                    genInt(mob,me,++showNumber,showFlag,"Class Level for Security Set #"+i+": ","GROUPLEVEL"+i);
-                    int previousGroupLevel=Util.s_int(me.getStat("GROUPLEVEL"+(i-1)));
-                    int newGroupLevel=Util.s_int(me.getStat("GROUPLEVEL"+i));
+                    int oldGroupLevel=Util.s_int(me.getStat("SSETLEVEL"+i));
+                    genInt(mob,me,++showNumber,showFlag,"Class Level for Security Set #"+i+": ","SSETLEVEL"+i);
+                    int previousGroupLevel=Util.s_int(me.getStat("SSETLEVEL"+(i-1)));
+                    int newGroupLevel=Util.s_int(me.getStat("SSETLEVEL"+i));
                     if((oldGroupLevel!=newGroupLevel)&&(newGroupLevel<(previousGroupLevel+1)))
                     {
                         mob.tell("This level may not be less than "+(previousGroupLevel+1)+".");
