@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.CharClasses;
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
@@ -24,6 +25,7 @@ public class StdCharClass implements CharClass, Cloneable
 {
 	public String ID(){return "StdCharClass";}
 	public String name(){return "mob";}
+    public String name(int classLevel){return name();}
 	public String baseClass(){return ID();}
 	public int getBonusPracLevel(){return 0;}
 	public int getBonusAttackLevel(){return 1;}
@@ -50,6 +52,8 @@ public class StdCharClass implements CharClass, Cloneable
 	public boolean raceless(){return false;}
 	public boolean leveless(){return false;}
 	public boolean expless(){return false;}
+    private static final Vector empty=new Vector();
+    public Vector getSecurityGroups(int classLevel){return empty;}
 
 	public StdCharClass()
 	{

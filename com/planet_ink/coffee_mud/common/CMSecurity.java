@@ -97,7 +97,9 @@ public class CMSecurity
 		if(isASysOp(mob)) return true;
 		if(mob==null) return false;
 		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
-		if(mob.playerStats().getSecurityGroups().size()==0) return false;
+		if((mob.playerStats().getSecurityGroups().size()==0)
+        &&(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()).size()==0))
+            return false;
 		return true;
 	}
 	
@@ -134,7 +136,8 @@ public class CMSecurity
 		if(isASysOp(mob)) return true;
 		if(mob==null) return false;
 		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
-		Vector V=mob.playerStats().getSecurityGroups();
+		Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
+        Util.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
 		if(V.size()==0) return false;
 		
 		boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
@@ -165,7 +168,8 @@ public class CMSecurity
 		if(isASysOp(mob)) return true;
 		if(mob==null) return false;
 		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
-		Vector V=mob.playerStats().getSecurityGroups();
+        Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
+        Util.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
 		if(V.size()==0) return false;
 		
 		boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
@@ -191,7 +195,8 @@ public class CMSecurity
 		if(isASysOp(mob)) return true;
 		if(mob==null) return false;
 		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
-		Vector V=mob.playerStats().getSecurityGroups();
+        Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
+        Util.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
 		if(V.size()==0) return false;
 		
 		for(int v=0;v<V.size();v++)
@@ -239,7 +244,8 @@ public class CMSecurity
 		if(isASysOp(mob)) return true;
 		if(mob==null) return false;
 		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
-		Vector V=mob.playerStats().getSecurityGroups();
+        Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
+        Util.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
 		if(V.size()==0) return false;
 		
 		for(int v=0;v<V.size();v++)
@@ -260,7 +266,8 @@ public class CMSecurity
 		if(isASysOp(mob)) return true;
 		if(mob==null) return false;
 		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
-		Vector V=mob.playerStats().getSecurityGroups();
+        Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
+        Util.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
 		if(V.size()==0) return false;
 		
 		for(int v=0;v<V.size();v++)

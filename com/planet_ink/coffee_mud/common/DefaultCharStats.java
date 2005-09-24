@@ -264,6 +264,13 @@ public class DefaultCharStats implements Cloneable, CharStats
 		}
 	}
 	
+    public void setCurrentClassLevel(int level)
+    {
+        CharClass currentClass=getCurrentClass();
+        if(currentClass!=null)
+            setClassLevel(currentClass,level);
+    }
+    
 	public void setCurrentClass(CharClass aClass)
 	{
         if(aClass==null) return;
@@ -325,6 +332,12 @@ public class DefaultCharStats implements Cloneable, CharStats
 		return myClasses[myClasses.length-1];
 	}
 	
+    public int getCurrentClassLevel()
+    {
+        if(myLevels==null) return -1;
+        return myLevels[myLevels.length-1].intValue();
+    }
+    
 	public Race getMyRace()
 	{
 		if(myRace==null) 
