@@ -88,8 +88,8 @@ public class Prop_EnterAdjuster extends Property
 			mob.baseCharStats().setStat(CharStats.GENDER,val.charAt(0));
 		mob.baseCharStats().setStat(CharStats.INTELLIGENCE,mob.baseCharStats().getStat(CharStats.INTELLIGENCE)+Util.getParmPlus(readableText,"int"));
 		val=Util.getParmStr(readableText,"cla","").toUpperCase();
-		if((val.length()>0)&&(CMClass.getCharClass(val)!=null)&&(!val.equalsIgnoreCase("Archon")))
-			mob.baseCharStats().setCurrentClass(CMClass.getCharClass(val));
+		if((val.length()>0)&&(CMClass.findCharClass(val)!=null)&&(!val.equalsIgnoreCase("Archon")))
+			mob.baseCharStats().setCurrentClass(CMClass.findCharClass(val));
 		val=Util.getParmStr(readableText,"rac","").toUpperCase();
 		if((val.length()>0)&&(CMClass.getRace(val)!=null))
 		{

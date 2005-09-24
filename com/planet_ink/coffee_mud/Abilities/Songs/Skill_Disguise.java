@@ -264,12 +264,12 @@ public class Skill_Disguise extends BardSkill
 					mob.tell("You cannot disguise yourself as an Archon.");
 					return false;
 				}
-				if(CMClass.getCharClass(how)==null)
+				if(CMClass.findCharClass(how)==null)
 				{
 					mob.tell("'"+how+"' is an unknown character class!");
 					return false;
 				}
-				how=CMClass.getCharClass(how).name();
+				how=Util.capitalizeAndLower(how);
 				break;
 			}
 		case 7: // alignment

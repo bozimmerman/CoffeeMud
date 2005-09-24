@@ -23,7 +23,6 @@ import com.planet_ink.coffee_mud.common.*;
 public class GenCharClass extends StdCharClass
 {
 	protected String ID="GenCharClass";
-	protected String[] names={"genmob"};
     protected Integer[] nameLevels={new Integer(0)};
 	protected String baseClass="Commoner";
 	protected int hpDivisor=3;
@@ -98,6 +97,12 @@ public class GenCharClass extends StdCharClass
 	public String otherLimitations(){return otherLimitations;}
 	public String otherBonuses(){return otherBonuses;}
 	public int availabilityCode(){return selectability;}
+    
+    public GenCharClass()
+    {
+        names=new String[1];
+        names[0]="genmob";
+    }
     
 	public String weaponLimitations()
 	{
@@ -298,9 +303,9 @@ public class GenCharClass extends StdCharClass
 		}
 		Vector classData=XMLManager.getRealContentsFromPieces(xml,"CCLASS");
 		if(classData==null){	Log.errOut("GenCharClass","Unable to get CCLASS data."); return;}
-		String id=XMLManager.getValFromPieces(classData,"ID");
-		if(id.length()==0) return;
-		ID=id;
+        String classID=XMLManager.getValFromPieces(classData,"ID");
+		if(classID.length()==0) return;
+		ID=classID;
         String singleName=XMLManager.getValFromPieces(classData,"NAME");
         if((singleName!=null)&&(singleName.length()>0))
         {
@@ -313,7 +318,7 @@ public class GenCharClass extends StdCharClass
         {
             Vector nameSet=new Vector();
             Vector levelSet=new Vector();
-            int index=1;
+            int index=0;
             int lastLevel=-1;
             while(true)
             {
@@ -324,6 +329,7 @@ public class GenCharClass extends StdCharClass
                 nameSet.addElement(name);
                 levelSet.addElement(new Integer(level));
                 lastLevel=level;
+                index++;
             }
             names=new String[nameSet.size()];
             nameLevels=new Integer[levelSet.size()];
@@ -434,7 +440,7 @@ public class GenCharClass extends StdCharClass
         // security groups
         Vector groupSet=new Vector();
         Vector groupLevelSet=new Vector();
-        int index=1;
+        int index=0;
         int lastLevel=-1;
         while(true)
         {
@@ -445,6 +451,7 @@ public class GenCharClass extends StdCharClass
             groupSet.addElement(Util.parseSpaces(groups,true));
             groupLevelSet.addElement(new Integer(groupLevel));
             lastLevel=groupLevel;
+            index++;
         }
         securityGroups=new Vector[groupSet.size()];
         securityGroupLevels=new Integer[groupLevelSet.size()];
@@ -496,7 +503,7 @@ public class GenCharClass extends StdCharClass
 		switch(getCodeNum(code))
 		{
 		case 0: return ID;
-		case 1: if(num<names.length) 
+		case 1: if(num<names.length)
                     return names[num];
                 break;
 		case 2: return baseClass;
@@ -555,6 +562,7 @@ public class GenCharClass extends StdCharClass
 	protected String[] tempables=new String[6];
 	public void setStat(String code, String val)
 	{
+        
 		int num=0;
 		int mul=1;
 		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
@@ -641,7 +649,8 @@ public class GenCharClass extends StdCharClass
 		case 38: manaDie=Util.s_int(val); break;
 		case 39: disableFlags=Util.s_int(val); break;
 		case 40: startAdjState=null;if(val.length()>0){startAdjState=new DefaultCharState(0); CoffeeMaker.setCharState(startAdjState,val);}break;
-        case 41: if(num>0)
+        case 41: num=Util.s_int(val);
+                 if(num>0)
                  {
                     String[] newNames=new String[num];
                     Integer[] newLevels=new Integer[num];
@@ -651,7 +660,8 @@ public class GenCharClass extends StdCharClass
                             newNames[i]=names[i];
                             newLevels[i]=nameLevels[i];
                         }
-                    for(int i=names.length-1;i<newNames.length;i++)
+                    if(newNames.length>names.length)
+                    for(int i=names.length;i<newNames.length;i++)
                     {
                         newNames[i]=names[names.length-1];
                         newLevels[i]=new Integer(newLevels[i-1].intValue()+1);
@@ -663,7 +673,8 @@ public class GenCharClass extends StdCharClass
         case 42: if(num<nameLevels.length)
                     nameLevels[num]=new Integer(Util.s_int(val)); 
                  break;
-        case 43: {
+        case 43:{  num=Util.s_int(val);
+                   if(num<0) num=0;
                    Vector[] newGroups=new Vector[num];
                    Integer[] newLevels=new Integer[num];
                    for(int i=0;i<securityGroups.length;i++)
@@ -672,10 +683,14 @@ public class GenCharClass extends StdCharClass
                            newGroups[i]=securityGroups[i];
                            newLevels[i]=securityGroupLevels[i];
                        }
-                   for(int i=names.length-1;i<newGroups.length;i++)
+                   if(newGroups.length>securityGroups.length)
+                   for(int i=securityGroups.length;i<newGroups.length;i++)
                    {
                        newGroups[i]=new Vector();
-                       newLevels[i]=new Integer(newLevels[i-1].intValue()+1);
+                       if(i==0)
+                           newLevels[0]=new Integer(0);
+                       else
+                           newLevels[i]=new Integer(newLevels[i-1].intValue()+1);
                    }
                    securityGroups=newGroups;
                    securityGroupLevels=newLevels;

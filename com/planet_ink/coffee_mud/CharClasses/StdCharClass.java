@@ -54,6 +54,14 @@ public class StdCharClass implements CharClass, Cloneable
 	public boolean expless(){return false;}
     private static final Vector empty=new Vector();
     public Vector getSecurityGroups(int classLevel){return empty;}
+    protected String[] names=null;
+    public String[] nameSet()
+    {
+        if(names!=null) return names;
+        names=new String[1];
+        names[0]=name();
+        return names;
+    }
 
 	public StdCharClass()
 	{

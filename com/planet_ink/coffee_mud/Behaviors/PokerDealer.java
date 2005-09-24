@@ -109,7 +109,8 @@ public class PokerDealer extends StdBehavior
         for(int i=0;i<GAME_DESCS.length;i++)
             if(str.equalsIgnoreCase(GAME_DESCS[i]))
                 gameRules=i;
-        
+        anti=Util.getParmDouble(newParms,"ANTI",1.0);
+        minPlayers=Util.getParmInt(newParms,"MINPLAYERS",2);
     }
     
     // the game that is being played.  Depending on behavior parameters,
@@ -1390,7 +1391,7 @@ public class PokerDealer extends StdBehavior
                 endTheGame(host);
                 return true;
             }
-            if(pot.size()<minPlayers)
+            if(pot.size()==1)
             {
                 announceWinners(host);
                 endTheGame(host);

@@ -656,7 +656,7 @@ public class FrontLogin extends StdCommand
 						mob.session().println(null,null,null,"\n\r"+Resources.getFileResource("text"+File.separatorChar+"classes.txt").toString());
 					else
 					{
-						newClass=CMClass.getCharClass(ClassStr);
+						newClass=CMClass.findCharClass(ClassStr);
 						if(newClass==null)
 						for(Enumeration c=qualClasses.elements();c.hasMoreElements();)
 						{

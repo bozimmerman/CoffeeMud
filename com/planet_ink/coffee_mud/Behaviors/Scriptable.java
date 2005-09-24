@@ -4975,7 +4975,7 @@ public class Scriptable extends StdBehavior
 				            ((MOB)newTarget).baseCharStats().setClassLevel(((MOB)newTarget).baseCharStats().getCurrentClass(),Util.s_int((String)V.elementAt(i)));
 				        else
 				        {
-				            CharClass C=CMClass.getCharClass((String)V.elementAt(i));
+				            CharClass C=CMClass.findCharClass((String)V.elementAt(i));
 				            if(C!=null)
 					            ((MOB)newTarget).baseCharStats().setCurrentClass(C);
 				        }

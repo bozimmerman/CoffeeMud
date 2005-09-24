@@ -549,7 +549,9 @@ public class List extends StdCommand
 				lines.append("\n\r");
 				column=1;
 			}
-			lines.append(Util.padRight(thisThang.ID()+" ("+thisThang.racialCategory()+")",25));
+			lines.append(Util.padRight(thisThang.ID()
+                                        +(thisThang.isGeneric()?"*":"")
+                                        +" ("+thisThang.racialCategory()+")",25));
 		}
 		lines.append("\n\r");
 		return lines;

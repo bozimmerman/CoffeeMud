@@ -381,19 +381,21 @@ public class CMClass extends ClassLoader
 	}
 
 	public static CharClass getCharClass(String calledThis)
-	{
-		CharClass thisItem= (CharClass)getGlobal(charClasses,calledThis);
-		if((thisItem==null)&&(charClasses.size()>0))
-		{
-			for(int i=0;i<charClasses.size();i++)
-			{
-				CharClass C=(CharClass)charClasses.elementAt(i);
-				if(C.name().equalsIgnoreCase(calledThis))
-					return C;
-			}
-		}
-		return thisItem;
-	}
+	{ return (CharClass)getGlobal(charClasses,calledThis);}
+    
+    public static CharClass findCharClass(String calledThis)
+    {
+        CharClass thisItem=getCharClass(calledThis);
+        if(thisItem!=null) return thisItem;
+        for(int i=0;i<charClasses.size();i++)
+        {
+            CharClass C=(CharClass)charClasses.elementAt(i);
+            for(int n=0;n<C.nameSet().length;n++)
+            if(C.nameSet()[n].equalsIgnoreCase(calledThis))
+                return C;
+        }
+        return null;
+    }
 	public static Race getRace(String calledThis)
 	{
 		Race thisItem= (Race)getGlobal(races,calledThis);

@@ -46,7 +46,7 @@ public class CombatAbilities extends StdBehavior
 	    CharClass C=null;
 	    if(theParms.trim().length()==0) 
 	    {
-	        C=CMClass.getCharClass(defaultClassName);
+	        C=CMClass.findCharClass(defaultClassName);
 			if(mob.baseCharStats().getCurrentClass()!=C)
 			{
 				mob.baseCharStats().setCurrentClass(C);
@@ -58,13 +58,13 @@ public class CombatAbilities extends StdBehavior
 	    Vector classes=new Vector();
 	    for(int v=0;v<V.size();v++)
 	    {
-	        C=CMClass.getCharClass((String)V.elementAt(v));
+	        C=CMClass.findCharClass((String)V.elementAt(v));
 	        if((C!=null)&&(!C.ID().equalsIgnoreCase("Archon")))
 	            classes.addElement(C);
 	    }
 	    if(classes.size()==0) 
 	    {
-	        C=CMClass.getCharClass(defaultClassName);
+	        C=CMClass.findCharClass(defaultClassName);
 			if(mob.baseCharStats().getCurrentClass()!=C)
 			{
 				mob.baseCharStats().setCurrentClass(C);

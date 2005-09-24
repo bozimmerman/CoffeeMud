@@ -826,7 +826,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" WAS A")>=0)
 			||(myWish.indexOf(" TRANSFORM")>=0)))
 			{
-				CharClass C=CMClass.getCharClass((String)wishV.lastElement());
+				CharClass C=CMClass.findCharClass((String)wishV.lastElement());
 				if((C!=null)&&(Util.bset(C.availabilityCode(),Area.THEME_FANTASY)))
 				{
 					CharClass oldC=mob.baseCharStats().getCurrentClass();

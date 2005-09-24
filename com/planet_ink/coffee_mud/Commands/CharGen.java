@@ -195,7 +195,7 @@ public class CharGen extends StdCommand
 		if(commands.size()>0)
 		{
 			ClassName=(String)commands.elementAt(0);
-			C=CMClass.getCharClass(ClassName);
+			C=CMClass.findCharClass(ClassName);
 			level=Util.s_int(Util.combine(commands,1));
 		}
 
@@ -208,7 +208,7 @@ public class CharGen extends StdCommand
 			}
 			catch(Exception e){return false;}
 
-			C=CMClass.getCharClass(ClassName);
+			C=CMClass.findCharClass(ClassName);
 			if((C==null)&&(ClassName.toUpperCase().indexOf("ALL")<0))
 				return false;
 		}

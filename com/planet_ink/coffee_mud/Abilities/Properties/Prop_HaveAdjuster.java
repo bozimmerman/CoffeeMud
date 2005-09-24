@@ -62,10 +62,10 @@ public class Prop_HaveAdjuster extends Property
 		}
 
 		val=Util.getParmStr(newText,"cla","").toUpperCase();
-		if((val.length()>0)&&(CMClass.getCharClass(val)!=null)&&(!val.equalsIgnoreCase("Archon")))
+		if((val.length()>0)&&(CMClass.findCharClass(val)!=null)&&(!val.equalsIgnoreCase("Archon")))
 		{
 			gotClass=true;
-			adjCharStats.setCurrentClass(CMClass.getCharClass(val));
+			adjCharStats.setCurrentClass(CMClass.findCharClass(val));
 		}
 		val=Util.getParmStr(newText,"rac","").toUpperCase();
 		if((val.length()>0)&&(CMClass.getRace(val)!=null))

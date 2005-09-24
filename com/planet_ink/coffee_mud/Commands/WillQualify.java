@@ -86,7 +86,7 @@ public class WillQualify extends BaseAbleLister{
 			
 			String className=mob.charStats().getCurrentClass().ID();
 			if(commands.size()>2) className=Util.combine(commands,2);
-			CharClass C=CMClass.getCharClass(className);
+			CharClass C=CMClass.findCharClass(className);
 			if (C == null) 
 			{
 			        mob.tell("No class found by that name.");

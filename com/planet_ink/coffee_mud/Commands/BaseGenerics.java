@@ -4890,6 +4890,7 @@ public class BaseGenerics extends StdCommand
                     if((oldNameLevel!=newNameLevel)&&(newNameLevel<(previousNameLevel+1)))
                     {
                         mob.tell("This level may not be less than "+(previousNameLevel+1)+".");
+                        me.setStat("NAMELEVEL"+i,""+(previousNameLevel+1));
                         showNumber--;
                     }
                     else
@@ -4929,16 +4930,18 @@ public class BaseGenerics extends StdCommand
             for(int i=0;i<numGroups;i++)
             {
                 genText(mob,me,++showNumber,showFlag,"Security Codes in Set #"+i,"SSET"+i);
-                if(i>0)
                 while(!mob.session().killFlag())
                 {
                     int oldGroupLevel=Util.s_int(me.getStat("SSETLEVEL"+i));
                     genInt(mob,me,++showNumber,showFlag,"Class Level for Security Set #"+i+": ","SSETLEVEL"+i);
                     int previousGroupLevel=Util.s_int(me.getStat("SSETLEVEL"+(i-1)));
                     int newGroupLevel=Util.s_int(me.getStat("SSETLEVEL"+i));
-                    if((oldGroupLevel!=newGroupLevel)&&(newGroupLevel<(previousGroupLevel+1)))
+                    if((oldGroupLevel!=newGroupLevel)
+                    &&(i>0)
+                    &&(newGroupLevel<(previousGroupLevel+1)))
                     {
                         mob.tell("This level may not be less than "+(previousGroupLevel+1)+".");
+                        me.setStat("SSETLEVEL"+i,""+(previousGroupLevel+1));
                         showNumber--;
                     }
                     else

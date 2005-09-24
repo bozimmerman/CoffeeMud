@@ -199,7 +199,11 @@ public class Train extends StdCommand
 		&&(teacher.charStats().getClassLevel(theClass)<1))
 	    {
 			if((!CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("MULTI")))
-				mob.tell("You can only learn that from another "+mob.charStats().getCurrentClass().baseClass()+".");
+            {
+                CharClass C=CMClass.getCharClass(mob.charStats().getCurrentClass().baseClass());
+                String baseClassName=(C!=null)?C.name():mob.charStats().getCurrentClass().baseClass();
+				mob.tell("You can only learn that from another "+baseClassName+".");
+            }
 			else
             {
                 int classLevel=mob.charStats().getClassLevel(theClass);
