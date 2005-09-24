@@ -4872,7 +4872,30 @@ public class BaseGenerics extends StdCommand
 		{
 			int showNumber=0;
 
-			genText(mob,me,++showNumber,showFlag,"Name","NAME");
+            genInt(mob,me,++showNumber,showFlag,"Number of Class Names: ","NUMNAME");
+            int numNames=Util.s_int(me.getStat("NUMNAME"));
+            if(numNames<=1)
+    			genText(mob,me,++showNumber,showFlag,"Name","NAME0");
+            else
+            for(int i=0;i<numNames;i++)
+            {
+                genText(mob,me,++showNumber,showFlag,"Name #"+i,"NAME"+i);
+                if(i>0)
+                while(!mob.session().killFlag())
+                {
+                    int oldNameLevel=Util.s_int(me.getStat("NAMELEVEL"+i));
+                    genInt(mob,me,++showNumber,showFlag,"Name #"+i+" class level: ","NAMELEVEL"+i);
+                    int previousNameLevel=Util.s_int(me.getStat("NAMELEVEL"+(i-1)));
+                    int newNameLevel=Util.s_int(me.getStat("NAMELEVEL"+i));
+                    if((oldNameLevel!=newNameLevel)&&(newNameLevel<(previousNameLevel+1)))
+                    {
+                        mob.tell("This level may not be less than "+(previousNameLevel+1)+".");
+                        showNumber--;
+                    }
+                    else
+                        break;
+                }
+            }
 			genText(mob,me,++showNumber,showFlag,"Base Class","BASE");
 			genBool(mob,me,++showNumber,showFlag,"Player Class","PLAYER");
 			genInt(mob,me,++showNumber,showFlag,"HP Con Divisor","HPDIV");
@@ -4901,6 +4924,28 @@ public class BaseGenerics extends StdCommand
 			genWeaponRestr(mob,me,++showNumber,showFlag,"Weapon Restr.","NUMWEP","GETWEP");
 			genOutfit(mob,me,++showNumber,showFlag);
 			genClassAbilities(mob,me,++showNumber,showFlag);
+            genInt(mob,me,++showNumber,showFlag,"Number of Security Code Sets: ","NUMGROUP");
+            int numGroups=Util.s_int(me.getStat("NUMGROUP"));
+            for(int i=0;i<numGroups;i++)
+            {
+                genText(mob,me,++showNumber,showFlag,"Security Codes in Set #"+i,"GROUP"+i);
+                if(i>0)
+                while(!mob.session().killFlag())
+                {
+                    int oldGroupLevel=Util.s_int(me.getStat("GROUPLEVEL"+i));
+                    genInt(mob,me,++showNumber,showFlag,"Class Level for Security Set #"+i+": ","GROUPLEVEL"+i);
+                    int previousGroupLevel=Util.s_int(me.getStat("GROUPLEVEL"+(i-1)));
+                    int newGroupLevel=Util.s_int(me.getStat("GROUPLEVEL"+i));
+                    if((oldGroupLevel!=newGroupLevel)&&(newGroupLevel<(previousGroupLevel+1)))
+                    {
+                        mob.tell("This level may not be less than "+(previousGroupLevel+1)+".");
+                        showNumber--;
+                    }
+                    else
+                        break;
+                }
+            }
+            
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));

@@ -218,22 +218,25 @@ Super Duper System Administrator' are indeed and always the same.&nbsp; If you
 wish&nbsp;to change it, the SYSOPMASK setting in your&nbsp;coffeemud.ini file is 
 the place to go, or to the &nbsp;<A href="MUDGrinder.html" >MUDGrinder</A> has a wonderful tool for security 
 in the Control Panel.</P>
-<P align=left>While players are just players, and are 
-unable to wipe their own noses without an Archon to provide them a tissue, they 
-may also be much more with the wave of an Archon's hand.&nbsp; The Security 
-setting one sees when using the command MODIFY <EM>playername</EM> from the command line can be used to give 
+<P align=left>While players are just players, and are unable 
+to wipe their own noses without an Archon to provide them a tissue, they may 
+also be much more with the wave of an Archon's hand.&nbsp; The Security setting 
+one sees when using the command MODIFY USER <EM>playername</EM> from the command line can be used to give 
 players a small portion of the creative powers.&nbsp; By combining this with the 
 Staff setting under Areas (see below), players can have their powers narrowed to 
-certain spheres of influence.&nbsp;</P>
-<P align=left>To upgrade the powers of a player, you must 
-use the MODIFY command as mentioned previously.&nbsp; From the Security setting, 
-players who are not SYSOPS may be granted very specific privileges. Each&nbsp;of 
-the privileges may be limited to specific areas, or available 
+certain spheres of influence.&nbsp;&nbsp; A customized Character Class can also be used to expand 
+the creative power of players by adding Security Group Levels to your players 
+character class.&nbsp; See the section on creating your own custom character classes for 
+more information on this.&nbsp;</P>
+<P align=left>To upgrade the powers of a player, you may use the MODIFY command as 
+mentioned previously.&nbsp; From the Security setting, players who are not SYSOPS 
+may be granted very specific privileges by adding special security codes. Each&nbsp;of 
+the privileges/flags may be limited to specific areas, or available 
 globally.&nbsp;&nbsp;Each&nbsp;entry listed under Security for a player may be 
 either a security Group, or&nbsp;a specific security code. Security Groups, like 
 the SYSOPMASK mentioned above,&nbsp;are also defined in the coffeemud.ini file 
-or from the <A href="MUDGrinder.html" >MUDGrinder</A> Control Panel. A 
-Security&nbsp;Group consists of a group name, and a set of strings or codes 
+or from the <A href="MUDGrinder.html" >MUDGrinder</A>  Control Panel. 
+A Security&nbsp;Group consists of a group name, and a set of string codes 
 representing privileges for&nbsp;that group. The Group names in the Control 
 Panel start with the string "GROUP_", but only the part after that string is a 
 valid group name.&nbsp; You should never include the "GROUP_" part when entering 
@@ -3716,8 +3719,18 @@ options:</P>
     <TD width="75%"><STRONG 
       >Description</STRONG></TD></TR>
   <TR>
-    <TD><EM>Name</EM></TD>
-    <TD>the displayable name of the class.</TD></TR>
+    <TD><EM>Number of Names</EM></TD>
+    <TD>the number of displayable names this class 
+      has.&nbsp; Normally just 1.</TD></TR>
+  <TR>
+    <TD><EM>Name #x</EM></TD>
+    <TD>a displayable name of the class.&nbsp; Each 
+      displayable name applies based on a class level.</TD></TR>
+  <TR>
+    <TD><EM>Name&nbsp;#x Class 
+      Level</EM></TD>
+    <TD>a class level at which this displayable name 
+      begins to apply.</TD></TR>
   <TR>
     <TD><EM>Base Class</EM></TD>
     <TD>the category into which the class fits.&nbsp; 
@@ -3846,8 +3859,26 @@ Flags</EM></TD>
       players/mobs of this class start out with. Also listed here is the class 
       level at which the skill becomes available, whether it is automatically 
       gained (true), or merely qualified for (false), whether it is a secret 
-      skill or not, and any miscellaneous parameters for this 
-  skill.</TD></TR></TABLE></P>
+      skill or not, and any miscellaneous parameters for this skill.</TD></TR>
+  <TR>
+    <TD><EM>Number of Security Code 
+      Sets</EM></TD>
+    <TD>If this class is intended to administrators or 
+      builders, you may specify one or more sets of security codes or security 
+      groups (see above section on CoffeeMud Security).&nbsp; Each set begins to 
+      apply at a given class level for that&nbsp;set.&nbsp; &nbsp;All previous 
+      sets at lower levels continue to apply as well.</TD></TR>
+  <TR>
+    <TD><EM>Security Codes in 
+      Set#x</EM></TD>
+    <TD>The space-delimited list of security codes or 
+      groups which applies to this set.</TD></TR>
+  <TR>
+    <TD><EM>Class Level for 
+      Set#x</EM></TD>
+    <TD>The&nbsp;class level at which this set of 
+      security codes or groups begins to apply, in addition to any previous 
+    sets.</TD></TR></TABLE></P>
 <P><STRONG><FONT color=blue size=5><A name=factions>Factions</A></FONT></STRONG></P>
 <P>Before learning the secrets of creating, modifying, and 
 destroying factions, needs must we delve into the topic of what a Faction 

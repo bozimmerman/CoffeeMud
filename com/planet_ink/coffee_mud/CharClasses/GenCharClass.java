@@ -23,7 +23,8 @@ import com.planet_ink.coffee_mud.common.*;
 public class GenCharClass extends StdCharClass
 {
 	protected String ID="GenCharClass";
-	protected String name="genmob";
+	protected String[] names={"genmob"};
+    protected Integer[] nameLevels={new Integer(0)};
 	protected String baseClass="Commoner";
 	protected int hpDivisor=3;
 	protected int hpDice=1;
@@ -55,10 +56,36 @@ public class GenCharClass extends StdCharClass
 	public boolean leveless(){return (disableFlags&CharClass.GENFLAG_NOLEVELS)==CharClass.GENFLAG_NOLEVELS;}
 	public boolean expless(){return (disableFlags&CharClass.GENFLAG_NOEXP)==CharClass.GENFLAG_NOEXP;}
 	//protected Vector outfitChoices=null; from stdcharclass -- but don't forget them!
+    protected Vector[] securityGroups={};
+    protected Integer[] securityGroupLevels={};
+    protected Hashtable securityGroupCache=new Hashtable();
+    public Vector getSecurityGroups(int classLevel)
+    {
+        if(securityGroups.length==0)
+            return super.getSecurityGroups(classLevel);
+        Vector V=(Vector)securityGroupCache.get(new Integer(classLevel));
+        if(V!=null) return V;
+        V=new Vector();
+        for(int i=securityGroupLevels.length-1;i>=0;i--)
+            if((classLevel>=securityGroupLevels[i].intValue())
+            &&(i<securityGroups.length))
+                Util.addToVector(securityGroups[i],V);
+        securityGroupCache.put(new Integer(classLevel),V);
+        return V;
+    }
+    
 	
 	public boolean isGeneric(){return true;}
 	public String ID(){return ID;}
-	public String name(){return name;}
+	public String name(){return names[0];}
+    public String name(int classLevel)
+    {
+        for(int i=nameLevels.length-1;i>=0;i--)
+            if((classLevel>=nameLevels[i].intValue())
+            &&(i<names.length))
+                return names[i];
+        return names[0];
+    }
 	public String baseClass(){return baseClass;}
 	public int getBonusPracLevel(){return bonusPracLevel;}
 	public int getBonusAttackLevel(){return bonusAttackLevel;}
@@ -71,7 +98,7 @@ public class GenCharClass extends StdCharClass
 	public String otherLimitations(){return otherLimitations;}
 	public String otherBonuses(){return otherBonuses;}
 	public int availabilityCode(){return selectability;}
-	
+    
 	public String weaponLimitations()
 	{
 		if((disallowedWeaponClasses(null)==null)||(disallowedWeaponClasses(null).size()==0))
@@ -161,7 +188,11 @@ public class GenCharClass extends StdCharClass
 	{
 		StringBuffer str=new StringBuffer("");
 		str.append("<CCLASS><ID>"+ID()+"</ID>");
-		str.append(XMLManager.convertXMLtoTag("NAME",name()));
+        for(int i=0;i<names.length;i++)
+        {
+    		str.append(XMLManager.convertXMLtoTag("NAME"+i,names[i]));
+            str.append(XMLManager.convertXMLtoTag("NAMELEVEL"+i,nameLevels[i].intValue()));
+        }
 		str.append(XMLManager.convertXMLtoTag("BASE",baseClass()));
 		str.append(XMLManager.convertXMLtoTag("HPDIV",""+hpDivisor));
 		str.append(XMLManager.convertXMLtoTag("HPDICE",""+hpDice));
@@ -246,6 +277,13 @@ public class GenCharClass extends StdCharClass
 			}
 			str.append("</OUTFIT>");
 		}
+        for(int i=0;i<securityGroups.length;i++)
+        if(i<securityGroupLevels.length)
+        {
+            str.append(XMLManager.convertXMLtoTag("GROUPS"+i,Util.combine(securityGroups[i],0)));
+            str.append(XMLManager.convertXMLtoTag("GROUPSLEVEL"+i,securityGroupLevels[i].intValue()));
+        }
+        
 		str.append("</CCLASS>");
 		return str.toString();
 	}
@@ -263,7 +301,38 @@ public class GenCharClass extends StdCharClass
 		String id=XMLManager.getValFromPieces(classData,"ID");
 		if(id.length()==0) return;
 		ID=id;
-		name=XMLManager.getValFromPieces(classData,"NAME");
+        String singleName=XMLManager.getValFromPieces(classData,"NAME");
+        if((singleName!=null)&&(singleName.length()>0))
+        {
+            names=new String[1];
+            names[0]=singleName;
+            nameLevels=new Integer[1];
+            nameLevels[0]=new Integer(0);
+        }
+        else
+        {
+            Vector nameSet=new Vector();
+            Vector levelSet=new Vector();
+            int index=1;
+            int lastLevel=-1;
+            while(true)
+            {
+                String name=XMLManager.getValFromPieces(classData,"NAME"+index);
+                int level=XMLManager.getIntFromPieces(classData,"NAMELEVEL"+index);
+                if((name.length()==0)||(level<=lastLevel))
+                    break;
+                nameSet.addElement(name);
+                levelSet.addElement(new Integer(level));
+                lastLevel=level;
+            }
+            names=new String[nameSet.size()];
+            nameLevels=new Integer[levelSet.size()];
+            for(int i=0;i<nameSet.size();i++)
+            {
+                names[i]=(String)nameSet.elementAt(i);
+                nameLevels[i]=(Integer)levelSet.elementAt(i);
+            }
+        }
 		String base=XMLManager.getValFromPieces(classData,"BASE");
 		if((base==null)||(base.length()==0))
 			return;
@@ -361,6 +430,30 @@ public class GenCharClass extends StdCharClass
 				outfitChoices.addElement(newOne);
 			}
 		}
+        
+        // security groups
+        Vector groupSet=new Vector();
+        Vector groupLevelSet=new Vector();
+        int index=1;
+        int lastLevel=-1;
+        while(true)
+        {
+            String groups=XMLManager.getValFromPieces(classData,"GROUPS"+index);
+            int groupLevel=XMLManager.getIntFromPieces(classData,"GROUPSLEVEL"+index);
+            if((groups.length()==0)||(groupLevel<=lastLevel))
+                break;
+            groupSet.addElement(Util.parseSpaces(groups,true));
+            groupLevelSet.addElement(new Integer(groupLevel));
+            lastLevel=groupLevel;
+        }
+        securityGroups=new Vector[groupSet.size()];
+        securityGroupLevels=new Integer[groupLevelSet.size()];
+        for(int i=0;i<groupSet.size();i++)
+        {
+            securityGroups[i]=(Vector)groupSet.elementAt(i);
+            securityGroupLevels[i]=(Integer)groupLevelSet.elementAt(i);
+        }
+        securityGroupCache.clear();
 	}
 	
 	protected DVector getAbleSet()
@@ -388,7 +481,7 @@ public class GenCharClass extends StdCharClass
 									 "GETCABLE","GETCABLELVL","GETCABLEPROF","GETCABLEGAIN","GETCABLESECR",
 									 "GETCABLEPARM","NUMWEP","GETWEP", "NUMOFT","GETOFTID",
 									 "GETOFTPARM","HPDIE","MANADICE","MANADIE","DISFLAGS",
-									 "STARTASTATE"
+									 "STARTASTATE","NUMNAME","NAMELEVEL","NUMGROUP","GROUP","GROUPLEVEL"
 									 };
 	public String getStat(String code)
 	{
@@ -403,7 +496,9 @@ public class GenCharClass extends StdCharClass
 		switch(getCodeNum(code))
 		{
 		case 0: return ID;
-		case 1: return name;
+		case 1: if(num<names.length) 
+                    return names[num];
+                break;
 		case 2: return baseClass;
 		case 3: return ""+hpDivisor;
 		case 4: return ""+hpDice;
@@ -443,6 +538,17 @@ public class GenCharClass extends StdCharClass
 		case 38: return ""+manaDie;
 		case 39: return ""+disableFlags; 
 		case 40: return (startAdjState==null)?"":CoffeeMaker.getCharStateStr(startAdjState);
+        case 41: return ""+names.length; 
+        case 42: if(num<nameLevels.length) 
+                    return ""+nameLevels[num].intValue();
+                 break;
+        case 43: return ""+securityGroups.length;
+        case 44: if(num<securityGroups.length)
+                    return Util.combine(securityGroups[num],0);
+                 break;
+        case 45: if(num<securityGroupLevels.length)
+                    return ""+securityGroupLevels[num];
+                 break;
 		}
 		return "";
 	}
@@ -460,7 +566,9 @@ public class GenCharClass extends StdCharClass
 		switch(getCodeNum(code))
 		{
 		case 0: ID=val; break;
-		case 1: name=val; break;
+		case 1: if(num<names.length)
+                    names[num]=val; 
+                break;
 		case 2: baseClass=val; break;
 		case 3: hpDivisor=Util.s_int(val); break;
 		case 4: hpDie=Util.s_int(val); break;
@@ -533,6 +641,55 @@ public class GenCharClass extends StdCharClass
 		case 38: manaDie=Util.s_int(val); break;
 		case 39: disableFlags=Util.s_int(val); break;
 		case 40: startAdjState=null;if(val.length()>0){startAdjState=new DefaultCharState(0); CoffeeMaker.setCharState(startAdjState,val);}break;
+        case 41: if(num>0)
+                 {
+                    String[] newNames=new String[num];
+                    Integer[] newLevels=new Integer[num];
+                    for(int i=0;i<names.length;i++)
+                        if(i<num)
+                        {
+                            newNames[i]=names[i];
+                            newLevels[i]=nameLevels[i];
+                        }
+                    for(int i=names.length-1;i<newNames.length;i++)
+                    {
+                        newNames[i]=names[names.length-1];
+                        newLevels[i]=new Integer(newLevels[i-1].intValue()+1);
+                    }
+                    names=newNames;
+                    nameLevels=newLevels;
+                    break;
+                 }
+        case 42: if(num<nameLevels.length)
+                    nameLevels[num]=new Integer(Util.s_int(val)); 
+                 break;
+        case 43: {
+                   Vector[] newGroups=new Vector[num];
+                   Integer[] newLevels=new Integer[num];
+                   for(int i=0;i<securityGroups.length;i++)
+                       if(i<num)
+                       {
+                           newGroups[i]=securityGroups[i];
+                           newLevels[i]=securityGroupLevels[i];
+                       }
+                   for(int i=names.length-1;i<newGroups.length;i++)
+                   {
+                       newGroups[i]=new Vector();
+                       newLevels[i]=new Integer(newLevels[i-1].intValue()+1);
+                   }
+                   securityGroups=newGroups;
+                   securityGroupLevels=newLevels;
+                   securityGroupCache.clear();
+                   break;
+                }
+        case 44: if(num<securityGroups.length)
+                    securityGroups[num]=Util.parse(val);
+                 securityGroupCache.clear();
+                 break;
+        case 45: if(num<securityGroupLevels.length)
+                    securityGroupLevels[num]=new Integer(Util.s_int(val)); 
+                securityGroupCache.clear();
+                 break;
 		}
 	}
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
