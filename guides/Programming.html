@@ -1907,22 +1907,33 @@ public class NormalGuy extends StdCharClass
 <P align=left><FONT size=4>Our Normal 
 Guy character class will define all of the basic elements of a filled-out 
 character class.&nbsp;</FONT></P><pre>public String ID(){return "NormalGuy";}
-public String name(){return "Normal Guy";}
 public String baseClass(){return ID();}
 </PRE>
 <P align=left><FONT size=4>The first 
-methods above are the unique Character Class ID and the displayable Name of the 
-class. Notice that the ID() is the same as the name of the class.&nbsp; This is 
-no accident -- this is required!&nbsp;The baseClass method takes a bit of 
-explaining. If your CoffeeMud system is using the default SubClassing system, 
-the baseClass will define which classes may be switched between by a player, as 
-well as which classes are available to choose from when a new player is created. 
-Fighter, Monk, Paladin, Ranger, and Barbarian, for instance, all have a 
-baseClass of "Fighter". This means that the Fighter class is one of the classes 
-which may be chosen by a new player (since it's ID() and baseClass() are the 
-same), and that any of the baseClass() "Fighter" classes may switch amongst each 
-other. If your CoffeeMud system is using the multi-class or single classing 
-system, this method is irrelevant.</FONT></P><pre>	public int getHPDivisor(){return 3;}
+methods above are the unique Character Class ID and the Base Class ID of the 
+class. The Class ID must be a unique identifier. The baseClass method takes a 
+bit of explaining. If your CoffeeMud system is using the default SubClassing 
+system, the baseClass will define which classes may be switched between by a 
+player, as well as which classes are available to choose from when a new player 
+is created. Fighter, Monk, Paladin, Ranger, and Barbarian, for instance, all 
+have a baseClass of "Fighter". This means that the Fighter class is one of the 
+classes which may be chosen by a new player (since it's ID() and baseClass() are 
+the same), and that any of the baseClass() "Fighter" classes may switch amongst 
+each other. If your CoffeeMud system is using the multi-class or single classing 
+system, this method is irrelevant.</FONT></P><pre>public String name(){return "Normal Guy";}
+public String name(int classLevel){return name();}
+</PRE>
+<P align=left><FONT size=4>Our next 
+method, name(), is the default displayable name of your class.&nbsp; The next 
+method name(int classLevel) is, in this case, simply returning the default name 
+again.&nbsp; However, if you like, your&nbsp;character classes may have 
+different names at different class levels.&nbsp;&nbsp; Simply check the 
+classLevel and return a different string!&nbsp; As standard practice, however, 
+class level 0 should always return the default name.&nbsp; Remember that Class 
+Levels are different from Player Levels.&nbsp; A Player may, in a multi-classing 
+system, have numerous levels in numerous classes.&nbsp; The Class Level 
+represents how many levels the player has gained in this character class 
+ONLY!</FONT></P><pre>	public int getHPDivisor(){return 3;}
 	public int getHPDice(){return 1;}
 	public int getHPDie(){return 6;}
 </PRE>
@@ -2057,14 +2068,30 @@ last parameter, almost always false, determines whether the skill is "secret"
 for this class.&nbsp; Secret skills are qualified for (or gained), but do not 
 appear on Qualify lists, Class information, or Help files.&nbsp; Secret skills 
 are never taught by Guildmasters (MOBTeachers) unless specifically told 
-to.</FONT></P><pre>public boolean playerSelectable()
+to.</FONT></P><pre>public Vector getSecurityGroups(int classLevel)
 {
-	return true;
+    if(classLevel&gt;1000)
+    {
+		Vector V=new Vector();
+		V.addElement("ABOVELAW");
+		V.addElement("LISTADMIN");
+		return V;
+    }
+    else
+		return new Vector();
 }
 </PRE>
-<P align=left><FONT size=4>You should 
-always have this method in your Character Class, and it should always return 
-true. Otherwise your players will never have access to the Class. </FONT></P><pre>public String statQualifications(){return "Warm body, breathe.";}
+<P align=left><FONT size=4>The purpose 
+of this method is to allow you to assign CoffeeMud Security Flags or CoffeeMud 
+Security Groups to your players based on their Character Class and Character 
+Class Level.&nbsp; This is a rather obscure feature that is really only meant 
+for special Character Classes you may design for your admins and builders.&nbsp; 
+Your player getSecurityGroups() methods will normally just return an empty 
+Vector regardless of classLevel.&nbsp;&nbsp; In this case, however, we are 
+demonstrating how a player who gains 1001 levels in our NormalGuy Class will 
+become immune to the CoffeeMud legal system (ABOVELAW flag) and gain access to 
+the Archon LIST command (LISTADMIN flag).&nbsp;&nbsp; See the Archon's Guide for 
+more information on the CoffeeMud security system.</FONT></P><pre>public String statQualifications(){return "Warm body, breathe.";}
 public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 {
 	if(!Sense.canBreathe(mob))
