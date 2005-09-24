@@ -1686,14 +1686,25 @@ other objects have circumstantial ticks in certain instances.</FONT></P>
 <P align=left><FONT size=4>Now, to add a 
 new periodic call to the "tick" method on an Environmental object, one needs 
 only to make a method call like this:</FONT></P><pre>	
-	CMClass.ThreadEngine().startTickDown(theEnvObject,Host.MY_TICK_ID,NUM_TICKS);
+	CMClass.ThreadEngine().startTickDown(theEnvObject,Host.MY_TICK_ID,TICK_TIME,NUM_TICKS);
 </pre>
 <P align=left><FONT size=4>The second 
 parameter is the tickID which will be used when the "tick" method on the 
-"theEnvObject" object is called. The third parameter is the number of 
-Host.TICK_TIME (4 second) intervals between each call. Stopping these tick calls 
-can be done by simply returning "false" from the tick method itself, or manually 
-using the following:</FONT></P><pre>	
+"theEnvObject" object 
+is called. The third parameter is the time interval, in milliseconds, between each event. 
+The fourth parameter is the number of time intervals between each call to
+the "tick" method.&nbsp;  The total time between each call to the "tick" 
+method, therefore, will be TICK_TIME * NUM_TICKS.</P></FONT>
+<P align=left><FONT size=4>Now, the 
+above version of startTickDown can be used to create timed   
+events of any duration. However,  all objects in the base distribution of CoffeeMud operate
+on a single default time interval of 4000 miliseconds as defined by MudHost.TICK_TIME.  For
+this reason, a different version of the startTickDown method is called which does not include
+the TICK_TIME parameter, utilitizing the standard 4 second delay instead:</FONT></P><pre>	
+	CMClass.ThreadEngine().startTickDown(theEnvObject,Host.MY_TICK_ID,NUM_TICKS);
+</pre>
+<P align=left><FONT size=4>Stopping any of these tick calls can be done by simply returning 
+"false" from the tick method itself, or manually using the following:</FONT></P><pre>	
 	CMClass.ThreadEngine().deleteTick(theEnvObject,Host.MY_TICK_ID);
 </pre>
 <P align=left></P>
