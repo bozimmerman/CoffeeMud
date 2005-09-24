@@ -53,7 +53,7 @@ public class Group extends StdCommand
 		{
 			if(who.charStats().getCurrentClass().leveless()
 			||who.charStats().getMyRace().leveless())
-				msg.append(Util.padRight(" ",5)+" ");
+				msg.append(Util.padRight(" ",5));
 			else
 				msg.append(Util.padRight(levelStr,5));
 		}

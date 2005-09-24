@@ -109,7 +109,27 @@ public class Kill extends StdCommand
 		if((!mob.mayPhysicallyAttack(target)))
 			mob.tell("You are not allowed to attack "+target.name()+".");
 		else
+        {
+            Item weapon=mob.fetchWieldedItem();
+            if(weapon==null)
+            {
+                Item possibleOtherWeapon=mob.fetchFirstWornItem(Item.HELD);
+                if((possibleOtherWeapon!=null)
+                &&(possibleOtherWeapon instanceof Weapon)
+                &&possibleOtherWeapon.fitsOn(Item.WIELD)
+                &&(Sense.canBeSeenBy(possibleOtherWeapon,mob))
+                &&(Sense.isRemovable(possibleOtherWeapon)))
+                {
+                    CommonMsgs.remove(mob,possibleOtherWeapon,false);
+                    if(possibleOtherWeapon.amWearingAt(Item.INVENTORY))
+                    {
+                        Command C=CMClass.getCommand("Wield");
+                        if(C!=null) C.execute(mob,Util.makeVector("WIELD",possibleOtherWeapon));
+                    }
+                }
+            }
 			MUDFight.postAttack(mob,target,mob.fetchWieldedItem());
+        }
 		return false;
 	}
 	public int ticksToExecute(){return 1;}

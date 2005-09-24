@@ -36,7 +36,16 @@ public class Wield extends BaseItemParser
 			return false;
 		}
 		commands.removeElementAt(0);
-		Vector items=EnglishParser.fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,false);
+        Vector items=null;
+        if(commands.elementAt(0) instanceof Item)
+        {
+            items=new Vector();
+            for(int i=0;i<commands.size();i++)
+                if(commands.elementAt(i) instanceof Item)
+                    items.addElement(commands.elementAt(i));
+        }
+        else
+            items=EnglishParser.fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,false);
 		if(items.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else

@@ -22,15 +22,15 @@ import java.util.*;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
-   //TODO: announce
 */
 public class PokerDealer extends StdBehavior
 {
     public String ID(){return "PokerDealer";}
 
+    // the poker dealer operates as a state machine
+    // each state tells this behavior what to expect, and
+    // how to react to player actions.
     private static final int STATE_MASK=15;
-    
     private static final int STATE_WAITING_FOR_ANTIS=0;
     private static final int STATE_DEALING=1;
     private static final int STATE_FIRST_BETTER=2;
