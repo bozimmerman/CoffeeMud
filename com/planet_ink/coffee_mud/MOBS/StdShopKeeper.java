@@ -1310,6 +1310,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				d=Util.s_double(bit);
             if(bit.equalsIgnoreCase(mob.charStats().getCurrentClass().name() ))
 			{ yes=true; break;}
+            if(bit.equalsIgnoreCase(mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel()) ))
+            { yes=true; break;}
             if(bit.equalsIgnoreCase(sex ))
             { yes=true; break;}
 			if(bit.equalsIgnoreCase(mob.charStats().getMyRace().racialCategory()))

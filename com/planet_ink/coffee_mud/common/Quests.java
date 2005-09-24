@@ -271,7 +271,7 @@ public class Quests implements Cloneable, Quest
 												if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
 												||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
 												||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
-												||(M2.charStats().getCurrentClass().name().toUpperCase().indexOf(mobType)>=0))
+												||(M2.charStats().getCurrentClass().name(M2.charStats().getCurrentClassLevel()).toUpperCase().indexOf(mobType)>=0))
 													choices.addElement(M2);
 											}
 										}
@@ -293,7 +293,7 @@ public class Quests implements Cloneable, Quest
 											if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
 											||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
 											||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
-											||(M2.charStats().getCurrentClass().name().toUpperCase().indexOf(mobType)>=0))
+											||(M2.charStats().getCurrentClass().name(M2.charStats().getCurrentClassLevel()).toUpperCase().indexOf(mobType)>=0))
 												choices.addElement(M2);
 										}
 									}
@@ -314,7 +314,7 @@ public class Quests implements Cloneable, Quest
 									if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
 									||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
 									||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
-									||(M2.charStats().getCurrentClass().name().toUpperCase().indexOf(mobType)>=0)
+									||(M2.charStats().getCurrentClass().name(M2.charStats().getCurrentClassLevel()).toUpperCase().indexOf(mobType)>=0)
 									||(M2.name().toUpperCase().indexOf(mobType)>=0)
 									||(M2.displayText().toUpperCase().indexOf(mobType)>=0))
 										choices.removeElement(M2);

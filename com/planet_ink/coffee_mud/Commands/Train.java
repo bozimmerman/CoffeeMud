@@ -71,7 +71,10 @@ public class Train extends StdCommand
 			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 			{
 				CharClass C=(CharClass)c.nextElement();
-				if(C.name().toUpperCase().startsWith(abilityName.toUpperCase()))
+                int classLevel=mob.charStats().getClassLevel(C);
+                if(classLevel<0) classLevel=0;
+				if((C.name().toUpperCase().startsWith(abilityName.toUpperCase()))
+                ||(C.name(classLevel).toUpperCase().startsWith(abilityName.toUpperCase())))
 				{
 					if((!Util.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK))
                     &&(C.qualifiesForThisClass(mob,false)))
@@ -198,7 +201,11 @@ public class Train extends StdCommand
 			if((!CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("MULTI")))
 				mob.tell("You can only learn that from another "+mob.charStats().getCurrentClass().baseClass()+".");
 			else
-				mob.tell("You can only learn that from another "+theClass.name()+".");
+            {
+                int classLevel=mob.charStats().getClassLevel(theClass);
+                if(classLevel<0) classLevel=0;
+				mob.tell("You can only learn that from another "+theClass.name(classLevel)+".");
+            }
 			return false;
 		}
 
@@ -287,7 +294,9 @@ public class Train extends StdCommand
 			mob.setPractices(mob.getPractices()+5);
 			break;
 		case 106:
-			mob.tell("You have undergone "+theClass.name()+" training!");
+            int classLevel=mob.charStats().getClassLevel(theClass);
+            if(classLevel<0) classLevel=0;
+			mob.tell("You have undergone "+theClass.name(classLevel)+" training!");
 			mob.setTrains(mob.getTrains()-1);
 			mob.baseCharStats().getCurrentClass().endCharacter(mob);
 			mob.baseCharStats().setCurrentClass(theClass);

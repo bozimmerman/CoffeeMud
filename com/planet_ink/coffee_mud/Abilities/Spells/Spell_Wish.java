@@ -853,7 +853,7 @@ public class Spell_Wish extends Spell
 					((MOB)target).baseCharStats().getCurrentClass().startCharacter((MOB)target,false,true);
 					((MOB)target).recoverCharStats();
 					((MOB)target).recoverEnvStats();
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now a "+C.name()+"!");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now a "+C.name(((MOB)target).baseCharStats().getCurrentClassLevel())+"!");
 					return true;
 				}
 			}

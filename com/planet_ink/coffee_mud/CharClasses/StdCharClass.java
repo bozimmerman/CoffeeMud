@@ -447,7 +447,7 @@ public class StdCharClass implements CharClass, Cloneable
 		mob.recoverEnvStats();
 		mob.recoverCharStats();
 		mob.recoverMaxState();
-		mob.tell("^HYou are now a level "+mob.charStats().getClassLevel(mob.charStats().getCurrentClass())+" "+mob.charStats().getCurrentClass().name()+"^N.\n\r");
+		mob.tell("^HYou are now a level "+mob.charStats().getClassLevel(mob.charStats().getCurrentClass())+" "+mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())+"^N.\n\r");
 	}
 
 	private static final int breakLevel=25;

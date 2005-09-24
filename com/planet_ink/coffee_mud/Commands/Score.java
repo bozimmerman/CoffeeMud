@@ -43,9 +43,9 @@ public class Score extends Affect
 		{
 			String levelStr=null;
 			if(classLevel>=mob.envStats().level())
-				levelStr="level "+mob.envStats().level()+" "+mob.charStats().getCurrentClass().name();
+				levelStr="level "+mob.envStats().level()+" "+mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel());
 			else
-				levelStr=mob.charStats().getCurrentClass().name()+" "+classLevel+"/"+mob.envStats().level();
+				levelStr=mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())+" "+classLevel+"/"+mob.envStats().level();
 			msg.append("You are ^H"+mob.Name()+"^? the ^H"+levelStr+"^?.\n\r");
 		}
 		else
@@ -63,7 +63,7 @@ public class Score extends Affect
 		else
 		if((!CMSecurity.isDisabled("CLASSES"))
 		&&(!mob.charStats().getMyRace().classless()))
-			msg.append("You are ^H"+mob.Name()+"^? the ^H"+mob.charStats().getCurrentClass().name()+"^?.\n\r");
+			msg.append("You are ^H"+mob.Name()+"^? the ^H"+mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())+"^?.\n\r");
 		else
 			msg.append("You are ^H"+mob.Name()+"^?.\n\r");
 
@@ -84,7 +84,7 @@ public class Score extends Affect
 							classList.append(", and ");
 						else
 							classList.append(", ");
-					classList.append(C.name()+" ("+mob.charStats().getClassLevel(C)+") ");
+					classList.append(C.name(mob.charStats().getClassLevel(C))+" ("+mob.charStats().getClassLevel(C)+") ");
 				}
 			}
 			msg.append(classList.toString()+".\n\r");

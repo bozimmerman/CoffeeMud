@@ -132,7 +132,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 	public String displayClassName()
 	{	
 		if(displayClassName!=null) return displayClassName;
-		return getCurrentClass().name();
+		return getCurrentClass().name(getCurrentClassLevel());
 	}
 	public void setDisplayClassLevel(String newLevel){displayClassLevel=newLevel;}
 	public String displayClassLevel(MOB mob, boolean shortForm)
