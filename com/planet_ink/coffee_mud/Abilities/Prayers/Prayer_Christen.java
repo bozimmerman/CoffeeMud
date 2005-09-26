@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -87,6 +88,9 @@ public class Prayer_Christen extends Prayer
 				txt=Util.replaceFirst(txt,"<NAME>"+oldName+"</NAME>","<NAME>"+name+"</NAME>");
 				txt=Util.replaceFirst(txt,"<DISP>"+oldName,"<DISP>"+name);
 				((CagedAnimal)target).setCageText(txt);
+                Vector channels=ChannelSet.getFlaggedChannelNames("CHRISTENINGS");
+                for(int i=0;i<channels.size();i++)
+                    CommonMsgs.channel((String)channels.elementAt(i),mob.getClanID(),target.name()+" was just christened.",true);
 			}
 		}
 		else

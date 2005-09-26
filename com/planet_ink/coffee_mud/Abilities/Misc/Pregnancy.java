@@ -456,6 +456,9 @@ public class Pregnancy extends StdAbility
 								    if(A!=null) A.invoke(mob,mob,true,0);
 								}
 							}
+                            Vector channels=ChannelSet.getFlaggedChannelNames("BIRTHS");
+                            for(int i=0;i<channels.size();i++)
+                                CommonMsgs.channel(mob,(String)channels.elementAt(i),mob.name()+" has just given birth to "+I.name()+"!",true);
 						}
 						else
 							mob.tell("You are in labor!!");
@@ -516,7 +519,10 @@ public class Pregnancy extends StdAbility
 			if(mob.location().show(mob,target,this,CMMsg.TYP_GENERAL,auto?null:"<S-NAME> imgregnate(s) <T-NAMESELF>."))
 			{
 				setMiscText(start+"/"+end+"/"+mob.Name()+"/"+mob.charStats().getMyRace().ID());
-				target.addNonUninvokableEffect((Ability)copyOf());
+                Vector channels=ChannelSet.getFlaggedChannelNames("CONCEPTIONS");
+                for(int i=0;i<channels.size();i++)
+                    CommonMsgs.channel((String)channels.elementAt(i),mob.getClanID(),target.name()+" is now in a 'family way'.",true);
+                target.addNonUninvokableEffect((Ability)copyOf());
 			}
 		}
 		else

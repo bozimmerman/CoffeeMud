@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -128,7 +129,10 @@ public class Prayer_Marry extends Prayer
 				wife.setLiegeID(husband.Name());
 				CoffeeTables.bump(husband,CoffeeTables.STAT_MARRIAGES);
 				CommonMsgs.say(mob,husband,"You may kiss your bride!",false,false);
-			}
+                Vector channels=ChannelSet.getFlaggedChannelNames("MARRIAGES");
+                for(int i=0;i<channels.size();i++)
+                    CommonMsgs.channel((String)channels.elementAt(i),husband.getClanID(),husband.name()+" and "+wife.name()+" were just joined in holy matrimony!",true);
+             }
 		}
 		else
 			beneficialWordsFizzle(mob,null,"<S-NAME> start(s) 'Dearly beloved', and then clear(s) <S-HIS-HER> throat.");

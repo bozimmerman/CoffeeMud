@@ -96,6 +96,12 @@ public class Channel extends BaseChanneler
             return false;
 		}
         
+        if(flags.contains("READONLY"))
+        {
+            mob.tell(getScr("Channel","readonly"));
+            return false;
+        }
+        
 		if((commands.size()==2)
 		&&(mob.session()!=null)
 		&&(((String)commands.firstElement()).equalsIgnoreCase("last"))

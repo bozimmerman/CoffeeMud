@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -57,6 +58,9 @@ public class Prayer_Annul extends Prayer
 				if((!target.isMonster())&&(target.soulMate()==null))
 					CoffeeTables.bump(target,CoffeeTables.STAT_DIVORCES);
 				mob.location().send(mob,msg);
+                Vector channels=ChannelSet.getFlaggedChannelNames("DIVORCES");
+                for(int i=0;i<channels.size();i++)
+                    CommonMsgs.channel((String)channels.elementAt(i),mob.getClanID(),target.name()+" and "+target.getLiegeID()+" just had their marriage annulled.",true);
 				MOB M=CMMap.getPlayer(target.getLiegeID());
 				if(M!=null) M.setLiegeID("");
 				target.setLiegeID("");
