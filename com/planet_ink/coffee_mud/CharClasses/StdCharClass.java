@@ -442,7 +442,11 @@ public class StdCharClass implements CharClass, Cloneable
 		    return;
 		mob.tell("^ZYou have ****LOST A LEVEL****^.^N\n\r\n\r"+CommonStrings.msp("doh.wav",60));
 		if(!mob.isMonster())
-			CommonMsgs.channel("WIZINFO","",mob.Name()+" has just lost a level.",true);
+        {
+            Vector channels=ChannelSet.getFlaggedChannelNames("LOSTLEVELS");
+            for(int i=0;i<channels.size();i++)
+                CommonMsgs.channel((String)channels.elementAt(i),"",mob.Name()+" has just lost a level.",true);
+        }
 
 		levelAdjuster(mob,-1);
 		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
@@ -630,7 +634,12 @@ public class StdCharClass implements CharClass, Cloneable
 		theNews.append(levelAdjuster(mob,1));
 		if(mob.playerStats()!=null)
 		{
-			CommonMsgs.channel("WIZINFO","",mob.Name()+" has just gained a level at "+CMMap.getExtendedRoomID(mob.location())+".",true);
+            Vector channels=ChannelSet.getFlaggedChannelNames("DETAILEDLEVELS");
+            Vector channels2=ChannelSet.getFlaggedChannelNames("LEVELS");
+            for(int i=0;i<channels.size();i++)
+                CommonMsgs.channel((String)channels.elementAt(i),"",mob.Name()+" has just gained a level at "+CMMap.getExtendedRoomID(mob.location())+".",true);
+            for(int i=0;i<channels2.size();i++)
+                CommonMsgs.channel((String)channels2.elementAt(i),"",mob.Name()+" has just gained a level.",true);
 			if(mob.soulMate()==null)
 				CoffeeTables.bump(mob,CoffeeTables.STAT_LEVELSGAINED);
 		}

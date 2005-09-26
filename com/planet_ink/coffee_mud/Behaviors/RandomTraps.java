@@ -287,20 +287,20 @@ public class RandomTraps extends ActiveTicker
                         tickStatus=Tickable.STATUS_MISC+10;
 					}
 
-                    tickStatus=Tickable.STATUS_MISC+11;
+                    tickStatus=Tickable.STATUS_MISC+21;
 					if((doAnyItems)||(doAnyContainers)||(doDooredContainers)||(doLockedContainers))
 					for(int i=0;i<R.numItems();i++)
 					{
-                        tickStatus=Tickable.STATUS_MISC+12;
+                        tickStatus=Tickable.STATUS_MISC+22;
 						Item I=R.fetchItem(i);
 						if((Sense.isGettable(I))
 						&&(!elligible.contains(I))
 						&&(!I.ID().endsWith("Wallpaper")))
 						{
-                            tickStatus=Tickable.STATUS_MISC+13;
+                            tickStatus=Tickable.STATUS_MISC+23;
 							if(I instanceof Container)
 							{
-                                tickStatus=Tickable.STATUS_MISC+14;
+                                tickStatus=Tickable.STATUS_MISC+24;
 								Container C=(Container)I;
 								if(C.hasALid()&&(!C.isOpen()))
 								{
@@ -318,30 +318,30 @@ public class RandomTraps extends ActiveTicker
 							if(doAnyItems)
 								elligible.addElement(I);
 						}
-                        tickStatus=Tickable.STATUS_MISC+15;
+                        tickStatus=Tickable.STATUS_MISC+25;
 					}
-                    tickStatus=Tickable.STATUS_MISC+16;
+                    tickStatus=Tickable.STATUS_MISC+26;
 				}
 
-                tickStatus=Tickable.STATUS_MISC+17;
+                tickStatus=Tickable.STATUS_MISC+27;
 				if(!doRooms)
 				while((elligible.size()>0)&&(elligible.firstElement() instanceof Room))
 					elligible.removeElementAt(0);
 
-                tickStatus=Tickable.STATUS_MISC+18;
+                tickStatus=Tickable.STATUS_MISC+28;
 				for(int e=elligible.size()-1;e>=0;e--)
 				{
-                    tickStatus=Tickable.STATUS_MISC+19;
+                    tickStatus=Tickable.STATUS_MISC+29;
 					if((maintained.contains(elligible.elementAt(e)))
 					||(CoffeeUtensils.fetchMyTrap((Environmental)elligible.elementAt(e))!=null))
 						elligible.removeElementAt(e);
-                    tickStatus=Tickable.STATUS_MISC+20;
+                    tickStatus=Tickable.STATUS_MISC+30;
 				}
 
 				if(elligible.size()==0)
 					break;
 
-                tickStatus=Tickable.STATUS_MISC+21;
+                tickStatus=Tickable.STATUS_MISC+31;
 				Environmental E=(Environmental)elligible.elementAt(Dice.roll(1,elligible.size(),-1));
 
 				Vector elligibleTraps=new Vector();
@@ -352,7 +352,7 @@ public class RandomTraps extends ActiveTicker
 				if(elligibleTraps.size()==0)
 					break;
 
-                tickStatus=Tickable.STATUS_MISC+22;
+                tickStatus=Tickable.STATUS_MISC+32;
 				Trap T=(Trap)elligibleTraps.elementAt(Dice.roll(1,elligibleTraps.size(),-1));
 				T=(Trap)T.copyOf();
 				T.setProfficiency(100);
@@ -376,7 +376,7 @@ public class RandomTraps extends ActiveTicker
 				*/
 				E.addEffect(T);
 				maintained.addElement(E);
-                tickStatus=Tickable.STATUS_MISC+23;
+                tickStatus=Tickable.STATUS_MISC+33;
 			}
 		}
         tickStatus=Tickable.STATUS_NOT;

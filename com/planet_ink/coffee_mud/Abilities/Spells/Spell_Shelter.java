@@ -113,6 +113,7 @@ public class Spell_Shelter extends Spell
 					}
 					thisRoom.send(follower,leaveMsg);
 					newRoom.bringMobHere(follower,false);
+                    thisRoom.delInhabitant(follower);
 					newRoom.send(follower,enterMsg);
 					follower.tell("\n\r\n\r");
 					CommonMsgs.look(follower,true);

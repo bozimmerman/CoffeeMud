@@ -58,8 +58,7 @@ public class ChanWho extends StdCommand
 		}
 		String head=new String("^x"+getScr("ChanWho","listening")+" "+channel+":^?^.^N\n\r");
 		StringBuffer buf=new StringBuffer("");
-        String mask=ChannelSet.getChannelMask(channelInt);
-        boolean areareq=mask.toUpperCase().indexOf("SAMEAREA")>=0;
+        boolean areareq=ChannelSet.getChannelFlags(channelInt).contains("SAMEAREA");
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session ses=Sessions.elementAt(s);

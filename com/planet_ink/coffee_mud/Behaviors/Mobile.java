@@ -54,10 +54,10 @@ public class Mobile extends ActiveTicker
 
 	public boolean okRoomForMe(Room currentRoom, Room newRoom)
 	{
-		if(currentRoom==null) return false;
 		if(newRoom==null) return false;
 		if(leash>0)
 		{
+            if(currentRoom==null) return false;
 			if(leashHash==null)	leashHash=new Hashtable();
 			Integer DISTNOW=(Integer)leashHash.get(currentRoom);
 			Integer DISTLATER=(Integer)leashHash.get(newRoom);

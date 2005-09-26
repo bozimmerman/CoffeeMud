@@ -280,7 +280,11 @@ public class Age extends StdAbility
 						&&((S.mob().playerStats().getFriends().contains(newMan.Name())||S.mob().playerStats().getFriends().contains("All"))))
 							S.mob().tell("^X"+newMan.Name()+" has just been created.^.^?");
 					}
-					CommonMsgs.channel("WIZINFO","",newMan.Name()+" has just been created.",true);
+                    
+                    Vector channels=ChannelSet.getFlaggedChannelNames("NEWPLAYERS");
+                    for(int i=0;i<channels.size();i++)
+                        CommonMsgs.channel((String)channels.elementAt(i),"",newMan.Name()+" has just been created.",true);
+                    
 					if(liege!=babe.amFollowing())
 						babe.amFollowing().tell(newMan.Name()+" has just grown up! "+Util.capitalizeAndLower(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
 					liege.tell(newMan.Name()+" has just grown up! "+Util.capitalizeAndLower(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");

@@ -6,7 +6,7 @@ link unlink save sysmsgs
 take load unload dumpfile
 reset order ticktock list
 boot ban beacon announce
-wizinfo nowizinfo wizemote
+nowizinfo wizemote
 task
 
 ^HModules^N  

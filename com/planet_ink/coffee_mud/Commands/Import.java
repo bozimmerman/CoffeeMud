@@ -4231,7 +4231,9 @@ public class Import extends StdCommand
 						&&((S.mob().playerStats().getFriends().contains(M.Name())||S.mob().playerStats().getFriends().contains("All"))))
 							S.mob().tell("^X"+M.Name()+" has just been created.^.^?");
 					}
-					CommonMsgs.channel("WIZINFO","",M.Name()+" has just been created.",true);
+                    Vector channels=ChannelSet.getFlaggedChannelNames("NEWPLAYERS");
+                    for(int i=0;i<channels.size();i++)
+                        CommonMsgs.channel((String)channels.elementAt(i),"",M.Name()+" has just been created.",true);
 					if(M.getStartRoom()==null)
 						M.setStartRoom(CMMap.getStartRoom(M));
 					if(M.location()==null)

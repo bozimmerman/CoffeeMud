@@ -29,12 +29,14 @@ public class ChannelSet
     protected static int numCommandJournalsLoaded=0;
 	protected static Vector channelNames=new Vector();
 	protected static Vector channelMasks=new Vector();
+    protected static Vector channelFlags=new Vector();
 	protected static Vector ichannelList=new Vector();
 	protected static Vector imc2channelList=new Vector();
 	protected static Vector channelQue=new Vector();
     protected static Vector commandJournalNames=new Vector();
     protected static Vector commandJournalMasks=new Vector();
     protected static Vector commandJournalFlags=new Vector();
+    protected static final Vector emptyVector=new Vector();
 	
 	public static int getNumChannels()
 	{
@@ -47,6 +49,14 @@ public class ChannelSet
 			return (String)channelMasks.elementAt(i);
 		return "";
 	}
+
+    
+    public static Vector getChannelFlags(int i)
+    {
+        if((i>=0)&&(i<channelFlags.size()))
+            return (Vector)channelFlags.elementAt(i);
+        return emptyVector;
+    }
 
 	public static String getChannelName(int i)
 	{
@@ -176,12 +186,14 @@ public class ChannelSet
 		return "";
 	}
 
-	public static String getDefaultChannelName()
+	public static Vector getFlaggedChannelNames(String flag)
 	{
+        flag=flag.toUpperCase().trim();
+        Vector channels=new Vector();
 		for(int c=0;c<channelNames.size();c++)
-			if(((String)channelMasks.elementAt(c)).toUpperCase().indexOf("DEFAULT")>=0)
-				return ((String)channelNames.elementAt(c)).toUpperCase();
-		return "";
+			if(((HashSet)channelFlags.elementAt(c)).contains(flag))
+                channels.addElement(((String)channelNames.elementAt(c)).toUpperCase());
+		return channels;
 	}
 	
 	public static void unloadChannelsAndCommandJournals()
@@ -192,6 +204,7 @@ public class ChannelSet
         numImc2ChannelsLoaded=0;
 		channelNames=new Vector();
 		channelMasks=new Vector();
+        channelFlags=new Vector();
 		ichannelList=new Vector();
 		imc2channelList=new Vector();
 		channelQue=new Vector();
@@ -202,18 +215,20 @@ public class ChannelSet
 
 	public static String[][] imc2ChannelsArray()
 	{
-		String[][] array=new String[numImc2ChannelsLoaded][3];
+		String[][] array=new String[numImc2ChannelsLoaded][4];
 		int num=0;
 		for(int i=0;i<channelNames.size();i++)
 		{
 			String name=(String)channelNames.elementAt(i);
 			String mask=(String)channelMasks.elementAt(i);
+            Vector flags=(Vector)channelFlags.elementAt(i);
 			String iname=(String)imc2channelList.elementAt(i);
 			if((iname!=null)&&(iname.trim().length()>0))
 			{
 				array[num][0]=iname.trim();
 				array[num][1]=name.trim();
 				array[num][2]=mask;
+                array[num][3]=Util.combine(flags,0);
 				num++;
 			}
 		}
@@ -221,18 +236,20 @@ public class ChannelSet
 	}
 	public static String[][] iChannelsArray()
 	{
-		String[][] array=new String[numIChannelsLoaded][3];
+		String[][] array=new String[numIChannelsLoaded][4];
 		int num=0;
 		for(int i=0;i<channelNames.size();i++)
 		{
 			String name=(String)channelNames.elementAt(i);
 			String mask=(String)channelMasks.elementAt(i);
 			String iname=(String)ichannelList.elementAt(i);
+            Vector flags=(Vector)channelFlags.elementAt(i);
 			if((iname!=null)&&(iname.trim().length()>0))
 			{
 				array[num][0]=iname.trim();
 				array[num][1]=name.trim();
 				array[num][2]=mask;
+                array[num][3]=Util.combine(flags,0);
 				num++;
 			}
 		}
@@ -273,7 +290,24 @@ public class ChannelSet
 		for(int s=0;s<invalid.size();s++)
 		    mySession.startBeingSnoopedBy((Session)invalid.elementAt(s));
 	}
-	
+
+    public static String parseOutFlags(String mask, Vector flags)
+    {
+        Vector V=Util.parse(mask);
+        for(int v=V.size()-1;v>=0;v--)
+        {
+            String s=(String)V.elementAt(v);
+            if(s.equalsIgnoreCase("DEFAULT")
+            ||s.equalsIgnoreCase("SAMEAREA")
+            ||s.equalsIgnoreCase("READONLY"))
+            {
+                V.removeElementAt(v);
+                flags.addElement(s.trim().toUpperCase());
+            }
+        }
+        return Util.combine(V,0);
+    }
+    
 	public static int loadChannels(String list, String ilist, String imc2list)
 	{
 		while(list.length()>0)
@@ -293,9 +327,10 @@ public class ChannelSet
 			}
 			numChannelsLoaded++;
 			x=item.indexOf(" ");
+            Vector flags=new Vector();
 			if(x>0)
 			{
-				channelMasks.addElement(item.substring(x+1).trim());
+				channelMasks.addElement(parseOutFlags(item.substring(x+1).trim(),flags));
 				item=item.substring(0,x);
 			}
 			else
@@ -303,6 +338,7 @@ public class ChannelSet
 			ichannelList.addElement("");
 			imc2channelList.addElement("");
 			channelNames.addElement(item.toUpperCase().trim());
+            channelFlags.addElement(flags);
 			channelQue.addElement(new Vector());
 		}
 		while(ilist.length()>0)
@@ -330,7 +366,9 @@ public class ChannelSet
 			item=item.substring(0,y1);
 			channelNames.addElement(item.toUpperCase().trim());
 			channelQue.addElement(new Vector());
-			channelMasks.addElement(lvl);
+            Vector flags=new Vector();
+			channelMasks.addElement(parseOutFlags(lvl,flags));
+            channelFlags.addElement(flags);
 			imc2channelList.addElement("");
 			ichannelList.addElement(ichan);
 		}
@@ -359,13 +397,16 @@ public class ChannelSet
 			item=item.substring(0,y1);
 			channelNames.addElement(item.toUpperCase().trim());
 			channelQue.addElement(new Vector());
-			channelMasks.addElement(lvl);
+            Vector flags=new Vector();
+            channelMasks.addElement(parseOutFlags(lvl,flags));
+            channelFlags.addElement(flags);
 			imc2channelList.addElement(ichan);
 			ichannelList.addElement("");
 		}
 		channelNames.addElement(new String("CLANTALK"));
 		channelQue.addElement(new Vector());
 		channelMasks.addElement("");
+        channelFlags.addElement(new Vector());
 		ichannelList.addElement("");
 		imc2channelList.addElement("");
 		numChannelsLoaded++;
@@ -373,15 +414,11 @@ public class ChannelSet
 		channelNames.addElement(new String("AUCTION"));
 		channelQue.addElement(new Vector());
 		channelMasks.addElement("");
+        channelFlags.addElement(new Vector());
 		ichannelList.addElement("");
 		imc2channelList.addElement("");
 		numChannelsLoaded++;
 
-		channelNames.addElement(new String("WIZINFO"));
-		channelQue.addElement(new Vector());
-		channelMasks.addElement("+SYSOP -NAMES "+CommonStrings.getVar(CommonStrings.SYSTEM_WIZINFONAMES));
-		ichannelList.addElement("");
-		imc2channelList.addElement("");
 		numChannelsLoaded++;
 		return numChannelsLoaded;
 	}

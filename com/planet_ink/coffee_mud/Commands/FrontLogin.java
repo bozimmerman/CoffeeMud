@@ -344,7 +344,9 @@ public class FrontLogin extends StdCommand
 				if((CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("NEVER"))
 				&&(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
 					mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
-				CommonMsgs.channel("WIZINFO","",mob.Name()+" has logged on.",true);
+                Vector channels=ChannelSet.getFlaggedChannelNames("LOGINS");
+                for(int i=0;i<channels.size();i++)
+                    CommonMsgs.channel((String)channels.elementAt(i),"",mob.Name()+" has logged on.",true);
 				if(pendingLogins.containsKey(mob.Name().toUpperCase()))
 				   pendingLogins.remove(mob.Name().toUpperCase());
 			}
@@ -824,7 +826,9 @@ public class FrontLogin extends StdCommand
 				&&(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
 					mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
 				CMClass.DBEngine().DBUpdatePlayer(mob);
-				CommonMsgs.channel("WIZINFO","",mob.Name()+" has just been created.",true);
+                Vector channels=ChannelSet.getFlaggedChannelNames("NEWPLAYERS");
+                for(int i=0;i<channels.size();i++)
+                    CommonMsgs.channel((String)channels.elementAt(i),"",mob.Name()+" has just been created.",true);
 				CoffeeTables.bump(mob,CoffeeTables.STAT_LOGINS);
 				CoffeeTables.bump(mob,CoffeeTables.STAT_NEWPLAYERS);
 				if(pendingLogins.containsKey(mob.Name().toUpperCase()))

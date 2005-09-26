@@ -107,7 +107,7 @@ public class Channel extends BaseChanneler
 				return false;
 			}
 			if(num>que.size()) num=que.size();
-			boolean areareq=ChannelSet.getChannelMask(channelInt).toUpperCase().indexOf("SAMEAREA")>=0;
+			boolean areareq=ChannelSet.getChannelFlags(channelInt).contains("SAMEAREA");
 			for(int i=que.size()-num;i<que.size();i++)
 			{
 				CMMsg msg=(CMMsg)que.elementAt(i);

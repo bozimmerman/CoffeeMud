@@ -57,6 +57,7 @@ public class BaseChanneler extends StdCommand
 		message=CommonStrings.applyFilter(message,CommonStrings.SYSTEM_CHANNELFILTER);
 		
 		String mask=ChannelSet.getChannelMask(channelInt);
+        Vector flags=ChannelSet.getChannelFlags(channelInt);
 		channelName=ChannelSet.getChannelName(channelInt);
 
 		CMMsg msg=null;
@@ -90,7 +91,7 @@ public class BaseChanneler extends StdCommand
 		if((mob.location()!=null)
 		&&((!mob.location().isInhabitant(mob))||(mob.location().okMessage(mob,msg))))
 		{
-			boolean areareq=mask.toUpperCase().indexOf("SAMEAREA")>=0;
+			boolean areareq=flags.contains("SAMEAREA");
 			ChannelSet.channelQueUp(channelInt,msg);
 			for(int s=0;s<Sessions.size();s++)
 			{

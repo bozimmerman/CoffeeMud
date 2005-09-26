@@ -2848,11 +2848,12 @@ public class Arrest extends StdBehavior
 									CommonMsgs.say(officer,judge,"The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness().name()+".",false,false);
 							}
 							W.setState(Law.STATE_WAITING);
-							if(highestCrimeAction(laws,W,W.criminal())==Law.ACTION_EXECUTE)
+							if((highestCrimeAction(laws,W,W.criminal())==Law.ACTION_EXECUTE)
+                            &&(judge.location()!=null))
 							{
-								String channel=ChannelSet.getDefaultChannelName();
-								if((channel.length()>0)&&(judge.location()!=null))
-									CommonMsgs.channel(judge,channel,W.criminal().Name()+" is being executed at "+judge.location().displayText()+" for "+W.criminal().charStats().hisher()+" crimes.",true);
+								Vector channels=ChannelSet.getFlaggedChannelNames("EXECUTIONS");
+                                for(int i=0;i<channels.size();i++)
+									CommonMsgs.channel(judge,(String)channels.elementAt(i),W.criminal().Name()+" is being executed at "+judge.location().displayText()+" for "+W.criminal().charStats().hisher()+" crimes.",true);
 							}
 						}
 						else

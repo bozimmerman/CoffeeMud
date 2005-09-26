@@ -313,7 +313,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		if((x<0)||(y<0)||(y>=ySize())||(x>=xSize())) 
 			return null;
 		
-		startThinTick();
+        // disabled to test theory that synchronized method is causing lock-ups
+        // if this is still commented out, the answer is YES.
+		//startThinTick();
 		Room R=getMakeSingleGridRoom(x,y);
 		if(R==null) return null;
 		fillExitsOfGridRoom(R,x,y);
@@ -700,9 +702,10 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 			return;
 		tickStarted=true;
-		//Permanently disabled until the roomdestroy problem can be fixed.
-		//ThinGridVacuum TGV=new ThinGridVacuum();
-		//CMClass.ThreadEngine().startTickDown(TGV,MudHost.TICK_ROOM_BEHAVIOR,450);
+        
+		//please Disable until the roomdestroy problem can be fixed.
+		ThinGridVacuum TGV=new ThinGridVacuum();
+		CMClass.ThreadEngine().startTickDown(TGV,MudHost.TICK_ROOM_BEHAVIOR,450);
 	}
 	
 	protected static class ThinGridVacuum implements Tickable
