@@ -283,7 +283,7 @@ public class Age extends StdAbility
                     
                     Vector channels=ChannelSet.getFlaggedChannelNames("NEWPLAYERS");
                     for(int i=0;i<channels.size();i++)
-                        CommonMsgs.channel((String)channels.elementAt(i),"",newMan.Name()+" has just been created.",true);
+                        CommonMsgs.channel((String)channels.elementAt(i),newMan.getClanID(),newMan.Name()+" has just been created.",true);
                     
 					if(liege!=babe.amFollowing())
 						babe.amFollowing().tell(newMan.Name()+" has just grown up! "+Util.capitalizeAndLower(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");

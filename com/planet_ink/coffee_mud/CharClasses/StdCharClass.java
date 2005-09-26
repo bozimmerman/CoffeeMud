@@ -445,7 +445,7 @@ public class StdCharClass implements CharClass, Cloneable
         {
             Vector channels=ChannelSet.getFlaggedChannelNames("LOSTLEVELS");
             for(int i=0;i<channels.size();i++)
-                CommonMsgs.channel((String)channels.elementAt(i),"",mob.Name()+" has just lost a level.",true);
+                CommonMsgs.channel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just lost a level.",true);
         }
 
 		levelAdjuster(mob,-1);
@@ -637,9 +637,9 @@ public class StdCharClass implements CharClass, Cloneable
             Vector channels=ChannelSet.getFlaggedChannelNames("DETAILEDLEVELS");
             Vector channels2=ChannelSet.getFlaggedChannelNames("LEVELS");
             for(int i=0;i<channels.size();i++)
-                CommonMsgs.channel((String)channels.elementAt(i),"",mob.Name()+" has just gained a level at "+CMMap.getExtendedRoomID(mob.location())+".",true);
+                CommonMsgs.channel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just gained a level at "+CMMap.getExtendedRoomID(mob.location())+".",true);
             for(int i=0;i<channels2.size();i++)
-                CommonMsgs.channel((String)channels2.elementAt(i),"",mob.Name()+" has just gained a level.",true);
+                CommonMsgs.channel((String)channels2.elementAt(i),mob.getClanID(),mob.Name()+" has just gained a level.",true);
 			if(mob.soulMate()==null)
 				CoffeeTables.bump(mob,CoffeeTables.STAT_LEVELSGAINED);
 		}

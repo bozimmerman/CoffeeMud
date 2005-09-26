@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -71,19 +72,19 @@ public class BaseClanner extends StdCommand
 				switch(C.getGovernment())
 				{
 				case Clan.GVT_DEMOCRACY:
-					clanAnnounce(mob,getScr("BaseClanner","msg2"));
+					clanAnnounce(mob,getScr("BaseClanner","msg2",C.typeName(),C.ID()));
 					break;
 				case Clan.GVT_DICTATORSHIP:
-					clanAnnounce(mob,getScr("BaseClanner","msg3"));
+					clanAnnounce(mob,getScr("BaseClanner","msg3",C.typeName(),C.ID()));
 					break;
 				case Clan.GVT_OLIGARCHY:
-					clanAnnounce(mob,getScr("BaseClanner","msg4"));
+					clanAnnounce(mob,getScr("BaseClanner","msg4",C.typeName(),C.ID()));
 					break;
 				case Clan.GVT_REPUBLIC:
 					if(function==Clan.FUNC_CLANASSIGN)
-						clanAnnounce(mob,getScr("BaseClanner","msg5"));
+						clanAnnounce(mob,getScr("BaseClanner","msg5",C.typeName(),C.ID()));
 					else
-						clanAnnounce(mob,getScr("BaseClanner","msg6"));
+						clanAnnounce(mob,getScr("BaseClanner","msg6",C.typeName(),C.ID()));
 					break;
 				}
 				mob.tell(getScr("BaseClanner","starvote"));
@@ -98,7 +99,9 @@ public class BaseClanner extends StdCommand
 
 	public static void clanAnnounce(MOB mob, String msg)
 	{
-		CommonMsgs.channel(mob,"CLANTALK",msg,true);
+        Vector channels=ChannelSet.getFlaggedChannelNames("CLANINFO");
+        for(int i=0;i<channels.size();i++)
+            CommonMsgs.channel(mob,(String)channels.elementAt(i),msg,true);
 	}
 
 	public static int getIntFromRole(int roleType)

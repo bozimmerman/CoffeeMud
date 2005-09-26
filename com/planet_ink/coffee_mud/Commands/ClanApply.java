@@ -46,7 +46,7 @@ public class ClanApply extends BaseClanner
     						CMClass.DBEngine().DBUpdateClanMembership(mob.Name(), C.ID(), Clan.POS_APPLICANT);
     						mob.setClanID(C.ID());
     						mob.setClanRole(Clan.POS_APPLICANT);
-    						clanAnnounce(mob,getScr("ClanApply","new")+" "+mob.Name());
+    						clanAnnounce(mob,getScr("ClanApply","new",C.typeName(),C.ID(),mob.Name()));
     						mob.tell(getScr("ClanApply","membapplied",C.ID()));
                         }
                         else

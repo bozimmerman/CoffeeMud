@@ -70,7 +70,7 @@ public class ClanDonateSet extends BaseClanner
 				C.setDonation(CMMap.getExtendedRoomID(R));
 				C.update();
 				mob.tell(getScr("ClanDonateSet","donationset",C.typeName(),R.roomTitle()));
-				clanAnnounce(mob,getScr("ClanDonateSet","youdon",C.typeName(),R.roomTitle()));
+				clanAnnounce(mob,getScr("ClanDonateSet","youdon",C.typeName(),C.ID(),R.roomTitle()));
 				return true;
 			}
 		}

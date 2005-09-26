@@ -237,7 +237,9 @@ public class Conquerable extends Arrest
 				}
 			}
             if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest",holdingClan+" has lost control of "+myArea.name()+".");
-			CommonMsgs.channel("CLANTALK","ALL",holdingClan+" has lost control of "+myArea.name()+".",false);
+            Vector channels=ChannelSet.getFlaggedChannelNames("CONQUESTS");
+            for(int i=0;i<channels.size();i++)
+                CommonMsgs.channel((String)channels.elementAt(i),"ALL",holdingClan+" has lost control of "+myArea.name()+".",false);
 			if(journalName.length()>0)
 				CMClass.DBEngine().DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" loses control of "+myArea.name()+".","See the subject line.",-1);
 			Law laws=getLaws(myArea,false);
@@ -487,7 +489,9 @@ public class Conquerable extends Arrest
                     if(Dice.rollPercentage()<chance)
                     {
                         if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" have revoluted against "+holdingClan+" with "+chance+"% chance, after "+calcItemControlPoints(myArea)+" item points of "+totalControlPoints+" control points.");
-                        CommonMsgs.channel("CLANTALK","ALL","The inhabitants of "+myArea.name()+" have revoluted against "+holdingClan+".",false);
+                        Vector channels=ChannelSet.getFlaggedChannelNames("CONQUESTS");
+                        for(int i=0;i<channels.size();i++)
+                            CommonMsgs.channel((String)channels.elementAt(i),"ALL","The inhabitants of "+myArea.name()+" have revoluted against "+holdingClan+".",false);
                         if(journalName.length()>0)
                             CMClass.DBEngine().DBWriteJournal(journalName,"Conquest","ALL","The inhabitants of "+myArea.name()+" have revoluted against "+holdingClan+".","See the subject line.",-1);
                         endClanRule();
@@ -645,7 +649,9 @@ public class Conquerable extends Arrest
 						M.setClanID(holdingClan);
 				}
 			}
-			CommonMsgs.channel("CLANTALK","ALL",holdingClan+" gains control of "+myArea.name()+".",false);
+            Vector channels=ChannelSet.getFlaggedChannelNames("CONQUESTS");
+            for(int i=0;i<channels.size();i++)
+                CommonMsgs.channel((String)channels.elementAt(i),"ALL",holdingClan+" gains control of "+myArea.name()+".",false);
 			if(journalName.length()>0)
 				CMClass.DBEngine().DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" gains control of "+myArea.name()+".","See the subject line.",-1);
 		}

@@ -73,7 +73,7 @@ public class ClanExile extends BaseClanner
 						}
 						if(skipChecks||goForward(mob,C,commands,Clans.FUNC_CLANEXILE,true))
 						{
-							clanAnnounce(mob,getScr("ClanExile","msgex",C.name(),M.Name()));
+							clanAnnounce(mob,getScr("ClanExile","msgex",C.typeName(),C.name(),M.Name()));
 							CMClass.DBEngine().DBUpdateClanMembership(qual, "", 0);
 							M.setClanID("");
 							M.setClanRole(0);

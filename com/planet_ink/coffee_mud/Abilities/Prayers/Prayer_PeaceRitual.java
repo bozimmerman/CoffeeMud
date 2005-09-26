@@ -41,7 +41,9 @@ public class Prayer_PeaceRitual extends Prayer
 			return false;
 
 		MOB mob=(MOB)affected;
-		CommonMsgs.channel("CLANTALK",clan2,mob.name()+" located in '"+mob.location().displayText()+" is performing a peace ritual on behalf of "+clan2+".",false);
+        Vector channels=ChannelSet.getFlaggedChannelNames("CLANINFO");
+        for(int i=0;i<channels.size();i++)
+    		CommonMsgs.channel((String)channels.elementAt(i),clan2,mob.name()+" located in '"+mob.location().displayText()+" is performing a peace ritual on behalf of "+clan2+".",false);
 		return super.tick(ticking,tickID);
 	}
 
@@ -97,7 +99,9 @@ public class Prayer_PeaceRitual extends Prayer
 					C2.setClanRelations(C1.ID(),Clan.REL_HOSTILE,System.currentTimeMillis());
 					C2.update();
 				}
-				CommonMsgs.channel("CLANTALK","ALL","There is now peace between "+C1.name()+" and "+C2.name()+".",false);
+                Vector channels=ChannelSet.getFlaggedChannelNames("CLANINFO");
+                for(int i=0;i<channels.size();i++)
+                    CommonMsgs.channel((String)channels.elementAt(i),"ALL","There is now peace between "+C1.name()+" and "+C2.name()+".",false);
 			}
 		}
 	}

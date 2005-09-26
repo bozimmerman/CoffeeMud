@@ -112,7 +112,7 @@ public class ClanAssign extends BaseClanner
 									for(int i=0;i<olds.size();i++)
 									{
 										String s=(String)olds.elementAt(i);
-										clanAnnounce(mob,s+" "+getScr("ClanAssign","isnowa")+" "+Clans.getRoleName(C.getGovernment(),Clan.POS_MEMBER,true,false));
+										clanAnnounce(mob,getScr("ClanAssign","isnowa",C.typeName(),C.ID(),s,Clans.getRoleName(C.getGovernment(),Clan.POS_MEMBER,true,false)));
 										MOB M2=CMMap.getPlayer(s);
 										if(M2!=null) M2.setClanRole(Clan.POS_MEMBER);
 										CMClass.DBEngine().DBUpdateClanMembership(s, C.ID(), Clan.POS_MEMBER);
@@ -128,7 +128,7 @@ public class ClanAssign extends BaseClanner
 										{
 											String s=(String)olds.elementAt(0);
 											apps.removeElementAt(0);
-											clanAnnounce(mob,s+" "+getScr("ClanAssign","isnowa")+" "+Clans.getRoleName(C.getGovernment(),Clan.POS_MEMBER,true,false));
+											clanAnnounce(mob,getScr("ClanAssign","isnowa",C.typeName(),C.ID(),s,Clans.getRoleName(C.getGovernment(),Clan.POS_MEMBER,true,false)));
 											MOB M2=CMMap.getPlayer(s);
 											if(M2!=null) M2.setClanRole(Clan.POS_MEMBER);
 											CMClass.DBEngine().DBUpdateClanMembership(s, C.ID(), Clan.POS_MEMBER);
@@ -137,7 +137,7 @@ public class ClanAssign extends BaseClanner
 									}
 								}
 							}
-							clanAnnounce(mob,M.Name()+" "+getScr("ClanAssign","changedfrom")+" "+Clans.getRoleName(C.getGovernment(),M.getClanRole(),true,false)+" to "+Clans.getRoleName(C.getGovernment(),newPos,true,false));
+							clanAnnounce(mob,getScr("ClanAssign","changedfrom",M.name(),C.typeName(),C.ID(),Clans.getRoleName(C.getGovernment(),M.getClanRole(),true,false),Clans.getRoleName(C.getGovernment(),newPos,true,false)));
 							M.setClanRole(newPos);
 							C.updateClanPrivileges(M);
 							CMClass.DBEngine().DBUpdateClanMembership(M.Name(), C.ID(), newPos);

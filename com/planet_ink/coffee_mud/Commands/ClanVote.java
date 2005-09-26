@@ -156,7 +156,7 @@ public class ClanVote extends BaseClanner
 								&&(mob.session().confirm("This will cancel this entire vote, are you sure (N/y)?","N")))
 								{
 									C.delVote(CV);
-									clanAnnounce(mob,"A prior vote has been deleted.");
+									clanAnnounce(mob,"A prior vote for "+C.typeName()+" "+C.ID()+" has been deleted.");
 									msg.append("The vote has been deleted.");
 									updateVote=true;
 								}

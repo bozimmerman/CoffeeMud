@@ -75,7 +75,7 @@ public class ClanAccept extends BaseClanner
 						}
 						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANACCEPT,true))
 						{
-							clanAnnounce(mob,getScr("ClanAccept","newmember")+" "+C.name()+": "+M.Name());
+							clanAnnounce(mob,getScr("ClanAccept","newmember",C.typeName(),C.name(),M.Name()));
 							M.setClanID(mob.getClanID());
 							M.setClanRole(Clan.POS_MEMBER);
 							CMClass.DBEngine().DBUpdateClanMembership(qual, mob.getClanID(), Clan.POS_MEMBER);

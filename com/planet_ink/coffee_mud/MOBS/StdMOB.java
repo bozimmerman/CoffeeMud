@@ -2162,12 +2162,12 @@ public class StdMOB implements MOB
                         Vector channels2=ChannelSet.getFlaggedChannelNames("DEATHS");
                         for(int i=0;i<channels.size();i++)
 						if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
-							CommonMsgs.channel((String)channels.elementAt(i),"",Name()+" was just killed in "+CMMap.getExtendedRoomID(location())+" by "+msg.tool().Name()+".",true);
+							CommonMsgs.channel((String)channels.elementAt(i),getClanID(),Name()+" was just killed in "+CMMap.getExtendedRoomID(location())+" by "+msg.tool().Name()+".",true);
 						else
-							CommonMsgs.channel((String)channels.elementAt(i),"",Name()+" has just died at "+CMMap.getExtendedRoomID(location()),true);
+							CommonMsgs.channel((String)channels.elementAt(i),getClanID(),Name()+" has just died at "+CMMap.getExtendedRoomID(location()),true);
                         for(int i=0;i<channels2.size();i++)
                             if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
-                                CommonMsgs.channel((String)channels2.elementAt(i),"",Name()+" was just killed.",true);
+                                CommonMsgs.channel((String)channels2.elementAt(i),getClanID(),Name()+" was just killed.",true);
 					}
 					if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
 					{

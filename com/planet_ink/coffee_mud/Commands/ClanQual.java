@@ -71,7 +71,7 @@ public class ClanQual extends BaseClanner
 								{
 									C.setAcceptanceSettings(premise);
 									C.update();
-									clanAnnounce(mob,"Your "+C.typeName()+"'s qualifications have been changed.");
+									clanAnnounce(mob,"The qualifications of "+C.typeName()+" "+C.ID()+" have been changed.");
 									return false;
 								}
 							}

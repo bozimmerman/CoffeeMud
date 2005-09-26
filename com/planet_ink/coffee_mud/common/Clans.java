@@ -1056,7 +1056,7 @@ public class Clans implements Clan, Tickable
 							MOB M2=CMMap.getLoadPlayer(s);
 							if(M2!=null) 
                             {
-                                clanAnnounce(s+" is now a "+Clans.getRoleName(getGovernment(),max,true,false));
+                                clanAnnounce(s+" is now a "+Clans.getRoleName(getGovernment(),max,true,false)+" of the "+typeName()+" "+name()+".");
                                 Log.sysOut("Clans",s+" of clan "+name()+" was autopromoted to "+getRoleName(getGovernment(),max,true,false)+".");
                                 M2.setClanRole(max);
     							CMClass.DBEngine().DBUpdateClanMembership(s, ID(), max);
@@ -1223,7 +1223,7 @@ public class Clans implements Clan, Tickable
 			        if(Util.bset(getTrophies(),Clan.TROPHY_EXP))
 			        {
 		                setTrophies(getTrophies()-Clan.TROPHY_EXP);
-			            clanAnnounce("Your "+typeName()+" has lost control of the trophy for "+Clans.TROPHY_DESCS[Clan.TROPHY_EXP]+".");
+			            clanAnnounce("The "+typeName()+" "+name()+" has lost control of the trophy for "+Clans.TROPHY_DESCS[Clan.TROPHY_EXP]+".");
 			        }
 			    }
 			    
@@ -1267,7 +1267,7 @@ public class Clans implements Clan, Tickable
 			        if(Util.bset(getTrophies(),Clan.TROPHY_AREA))
 			        {
 		                setTrophies(getTrophies()-Clan.TROPHY_AREA);
-			            clanAnnounce("Your "+typeName()+" has lost control of the trophy for "+Clans.TROPHY_DESCS[Clan.TROPHY_AREA]+".");
+			            clanAnnounce("The "+typeName()+" "+name()+" has lost control of the trophy for "+Clans.TROPHY_DESCS[Clan.TROPHY_AREA]+".");
 			        }
 			        if((winnerMostControlPoints==this)
 			        &&(CommonStrings.getVar(CommonStrings.SYSTEM_CLANTROPCP).length()>0)
@@ -1283,7 +1283,7 @@ public class Clans implements Clan, Tickable
 			        if(Util.bset(getTrophies(),Clan.TROPHY_CONTROL))
 			        {
 		                setTrophies(getTrophies()-Clan.TROPHY_CONTROL);
-			            clanAnnounce("Your "+typeName()+" has lost control of the trophy for "+Clans.TROPHY_DESCS[Clan.TROPHY_CONTROL]+".");
+			            clanAnnounce("The "+typeName()+" "+name()+" has lost control of the trophy for "+Clans.TROPHY_DESCS[Clan.TROPHY_CONTROL]+".");
 			        }
 			    }
 			}
@@ -1298,16 +1298,16 @@ public class Clans implements Clan, Tickable
 
 	public void clanAnnounce(String msg)
 	{
-		CommonMsgs.channel("CLANTALK",ID(),msg,true);
+        Vector channels=ChannelSet.getFlaggedChannelNames("CLANINFO");
+        for(int i=0;i<channels.size();i++)
+            CommonMsgs.channel((String)channels.elementAt(i),ID(),msg,true);
 	}
 
 	public static void clanAnnounceAll(String msg)
 	{
-        for(Enumeration e=Clans.clans();e.hasMoreElements();)
-        {
-            Clan C=(Clan)e.nextElement();
-            C.clanAnnounce(msg);
-        }
+        Vector channels=ChannelSet.getFlaggedChannelNames("CLANINFO");
+        for(int i=0;i<channels.size();i++)
+            CommonMsgs.channel((String)channels.elementAt(i),"ALL",msg,true);
 	}
 
 	public int applyExpMods(int exp)

@@ -88,12 +88,14 @@ public class Channel extends BaseChanneler
 			mob.tell(getScr("Channel","notava"));
 			return false;
 		}
-
-		if((mob.getClanID().equalsIgnoreCase(""))&&(channelName.equalsIgnoreCase("CLANTALK")))
+        
+        Vector flags=ChannelSet.getChannelFlags(channelInt);
+		if((mob.getClanID().equalsIgnoreCase(""))&&(flags.contains("CLANONLY")))
 		{
-		  mob.tell(getScr("Channel","clandontex"));
-		  return false;
+            mob.tell(getScr("Channel","clandontex"));
+            return false;
 		}
+        
 		if((commands.size()==2)
 		&&(mob.session()!=null)
 		&&(((String)commands.firstElement()).equalsIgnoreCase("last"))
@@ -107,7 +109,7 @@ public class Channel extends BaseChanneler
 				return false;
 			}
 			if(num>que.size()) num=que.size();
-			boolean areareq=ChannelSet.getChannelFlags(channelInt).contains("SAMEAREA");
+			boolean areareq=flags.contains("SAMEAREA");
 			for(int i=que.size()-num;i<que.size();i++)
 			{
 				CMMsg msg=(CMMsg)que.elementAt(i);

@@ -92,7 +92,7 @@ public class ClanCreate extends BaseClanner
 								newClan.create();
 								CMClass.DBEngine().DBUpdateClanMembership(mob.Name(),newClan.getName(),newClan.getTopRank());
 								newClan.updateClanPrivileges(mob);
-								clanAnnounce(mob, getScr("ClanCreate","cison",newClan.typeName()));
+								clanAnnounce(mob, getScr("ClanCreate","cison",newClan.typeName(),C.ID()));
 							}
 						}
 					}

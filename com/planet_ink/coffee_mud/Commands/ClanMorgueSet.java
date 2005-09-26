@@ -69,7 +69,7 @@ public class ClanMorgueSet extends BaseClanner
 				C.setMorgue(CMMap.getExtendedRoomID(R));
 				C.update();
 				mob.tell("Your "+C.typeName()+" morgue is now set to "+R.roomTitle()+".");
-				clanAnnounce(mob, "Your "+C.typeName()+" morgue is now set to "+R.roomTitle()+".");
+				clanAnnounce(mob, "The morgue of "+C.typeName()+" "+C.ID()+" is now set to "+R.roomTitle()+".");
 				return true;
 			}
 		}

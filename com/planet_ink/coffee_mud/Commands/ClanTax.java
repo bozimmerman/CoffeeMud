@@ -72,7 +72,7 @@ public class ClanTax extends BaseClanner
 					{
 						C.setTaxes(newRate);
 						C.update();
-						clanAnnounce(mob,"Your "+C.typeName()+"'s experience tax rate has been changed to "+((int)Math.round(C.getTaxes()*100.0)+"%."));
+						clanAnnounce(mob,"The experience tax rate of "+C.typeName()+" "+C.ID()+" has been changed to "+((int)Math.round(C.getTaxes()*100.0)+"%."));
 						return false;
 					}
 				}

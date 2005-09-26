@@ -84,7 +84,7 @@ public class ChannelSet
 		||(M.playerStats()==null))
 		    return false;
 		
-		if(getChannelName(i).equalsIgnoreCase("CLANTALK")
+		if(getChannelFlags(i).contains("CLANONLY")
 		&&((!sender.getClanID().equals("ALL"))||(M.getClanID().length()==0))
 		&&((!M.getClanID().equalsIgnoreCase(sender.getClanID()))||(M.getClanRole()==Clan.POS_APPLICANT)))
 			return false;
@@ -117,7 +117,7 @@ public class ChannelSet
 		int x=senderName.indexOf("@");
 		if(x>0) senderName=senderName.substring(0,x);
 		
-		if(getChannelName(i).equalsIgnoreCase("CLANTALK")
+		if(getChannelFlags(i).contains("CLANONLY")
 		&&((!sender.getClanID().equals("ALL"))||(M.getClanID().length()==0))
 		&&((!M.getClanID().equalsIgnoreCase(sender.getClanID()))||(M.getClanRole()==Clan.POS_APPLICANT)))
 			return false;
@@ -140,7 +140,7 @@ public class ChannelSet
 	    if(i>=ChannelSet.getNumChannels())
 	        return false;
 	    
-		if(getChannelName(i).equalsIgnoreCase("CLANTALK")
+		if(getChannelFlags(i).contains("CLANONLY")
 		&&((M.getClanID().length()==0)||(M.getClanRole()==Clan.POS_APPLICANT)))
 		    return false;
 
@@ -403,13 +403,6 @@ public class ChannelSet
 			imc2channelList.addElement(ichan);
 			ichannelList.addElement("");
 		}
-		channelNames.addElement(new String("CLANTALK"));
-		channelQue.addElement(new Vector());
-		channelMasks.addElement("");
-        channelFlags.addElement(new Vector());
-		ichannelList.addElement("");
-		imc2channelList.addElement("");
-		numChannelsLoaded++;
 
 		channelNames.addElement(new String("AUCTION"));
 		channelQue.addElement(new Vector());

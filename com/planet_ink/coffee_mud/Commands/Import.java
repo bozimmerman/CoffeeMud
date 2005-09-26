@@ -4233,7 +4233,7 @@ public class Import extends StdCommand
 					}
                     Vector channels=ChannelSet.getFlaggedChannelNames("NEWPLAYERS");
                     for(int i=0;i<channels.size();i++)
-                        CommonMsgs.channel((String)channels.elementAt(i),"",M.Name()+" has just been created.",true);
+                        CommonMsgs.channel((String)channels.elementAt(i),M.getClanID(),M.Name()+" has just been created.",true);
 					if(M.getStartRoom()==null)
 						M.setStartRoom(CMMap.getStartRoom(M));
 					if(M.location()==null)

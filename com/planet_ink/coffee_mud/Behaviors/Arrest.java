@@ -344,7 +344,11 @@ public class Arrest extends StdBehavior
 							        if((T.landPrice()/T.backTaxes())<4)
 							        {
 							            if(Clans.getClan(T.landOwner())!=null)
-							        		CommonMsgs.channel("CLANTALK",T.landOwner(),"You clan has lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.",false);
+                                        {
+                                            Vector channels=ChannelSet.getFlaggedChannelNames("CLANINFO");
+                                            for(int i=0;i<channels.size();i++)
+                                                CommonMsgs.channel((String)channels.elementAt(i),T.landOwner(),T.landOwner()+" has lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.",false);
+                                        }
 							            else
 							            if(CMMap.getPlayer(T.landOwner())!=null)
 							                CMMap.getPlayer(T.landOwner()).tell("You have lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.");

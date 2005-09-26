@@ -62,7 +62,7 @@ public class ClanPremise extends BaseClanner
 						{
 							C.setPremise(premise);
 							C.update();
-							clanAnnounce(mob,"Your clans premise has been changed.");
+							clanAnnounce(mob,"The premise of "+C.typeName()+" "+C.ID()+" has been changed.");
 							return false;
 						}
 					}
