@@ -90,7 +90,8 @@ public class Channel extends BaseChanneler
 		}
         
         Vector flags=ChannelSet.getChannelFlags(channelInt);
-		if((mob.getClanID().equalsIgnoreCase(""))&&(flags.contains("CLANONLY")))
+		if((mob.getClanID().equalsIgnoreCase("")||mob.getClanRole()==Clan.POS_APPLICANT)
+        &&(flags.contains("CLANONLY")))
 		{
             mob.tell(getScr("Channel","clandontex"));
             return false;

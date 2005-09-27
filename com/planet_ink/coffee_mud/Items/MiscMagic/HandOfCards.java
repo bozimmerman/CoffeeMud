@@ -47,12 +47,15 @@ public class HandOfCards extends StdContainer implements MiscMagic
         setName("a hand of cards");
         setDisplayText("a pile of cards lay here");
         setDescription("");
-        Sense.setGettable(this,false);
-        Sense.setDroppable(this,false);
-        Sense.setRemovable(this,false);
+        
+        // uncomment below for added security
+        //Sense.setGettable(this,false);
+        //Sense.setDroppable(this,false);
+        //Sense.setRemovable(this,false);
         baseEnvStats().setWeight(1);
-        setCapacity(0);
-        // this type is arbitrary
+        // capacity is 52 cards + 1 for the deck itself.
+        setCapacity(53);
+        // this type is arbitrary -- we will override canContain method
         setContainTypes(Container.CONTAIN_SSCOMPONENTS);
         recoverEnvStats();
     }
@@ -128,14 +131,21 @@ public class HandOfCards extends StdContainer implements MiscMagic
         if(card==null) return false;
         if(card.container() instanceof HandOfCards)
             ((HandOfCards)card.container()).removeCard(card);
+        
         if(owner() instanceof MOB)
         {
+            if(card.owner()==null)
+                ((MOB)owner()).addInventory(card);
+            else
             if(!((MOB)owner()).isMine(card))
                 ((MOB)owner()).giveItem(card);
         }
         else
         if(owner() instanceof Room)
         {
+            if(card.owner()==null)
+                ((Room)owner()).addItem(card);
+            else
             if(!((Room)owner()).isContent(card))
                 ((Room)owner()).bringItemHere(card,Item.REFUSE_PLAYER_DROP);
         }
@@ -303,7 +313,10 @@ public class HandOfCards extends StdContainer implements MiscMagic
         HandOfCards hand=(HandOfCards)CMClass.getMiscMagic("HandOfCards");
         if(player instanceof MOB)
         {
-            ((MOB)player).giveItem(hand);
+            if(hand.owner==null)
+                ((MOB)player).addInventory(hand);
+            else
+                ((MOB)player).giveItem(hand);
             if(((MOB)player).isMine(hand))
                 return hand;
             return null;
@@ -311,7 +324,10 @@ public class HandOfCards extends StdContainer implements MiscMagic
         else
         if(player instanceof Room)
         {
-            ((Room)player).addItemRefuse(hand,0);
+            if(hand.owner==null)
+                ((Room)player).addItem(hand);
+            else
+                ((Room)player).addItemRefuse(hand,0);
             if(((Room)player).isContent(hand))
                 return hand;
             return null;
@@ -485,6 +501,16 @@ public class HandOfCards extends StdContainer implements MiscMagic
         return null;
     }
     
+    // canContain(Environmental E)
+    // we override the canContain method of StdContainer so
+    // that we are allowed to ONLY put playing cards in the
+    // container.
+    public boolean canContain(Environmental E)
+    {
+        if (!(E instanceof PlayingCard)) return false;
+        return true;
+    }
+        
     // this method is a general event handler
     // to make playing stud-games easier on the players,
     // we capture the LOOK event in this method and

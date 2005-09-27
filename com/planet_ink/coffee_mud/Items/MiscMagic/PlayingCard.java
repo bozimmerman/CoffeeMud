@@ -166,7 +166,6 @@ public class PlayingCard extends StdItem implements MiscMagic
     // value with a cached and saved one to determine
     // if the NAME and DISPLAY TEXT of the card should
     // be updated.
-    // The process also makes the card ungettable.
 	public void recoverEnvStats()
 	{
 	    super.recoverEnvStats();
@@ -185,7 +184,7 @@ public class PlayingCard extends StdItem implements MiscMagic
 	            name="the "+cardStr+" of "+suitStr;
 	            displayText="a playing card, "+name+", lies here";
 	        }
-            Sense.setGettable(this,false);
+            //Sense.setGettable(this,false);
 	    }
 	}
 }

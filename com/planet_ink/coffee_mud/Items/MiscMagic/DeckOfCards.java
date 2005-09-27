@@ -114,10 +114,20 @@ public class DeckOfCards extends HandOfCards
     {
         DeckOfCards deck=new DeckOfCards();
         if(owner instanceof MOB)
-            ((MOB)owner).giveItem(deck);
+        {
+            if(deck.owner==null)
+                ((MOB)owner).addInventory(deck);
+            else
+                ((MOB)owner).giveItem(deck);
+        }
         else
         if(owner instanceof Room)
-            ((Room)owner).bringItemHere(deck,Item.REFUSE_PLAYER_DROP);
+        {
+            if(deck.owner==null)
+                ((Room)owner).addItem(deck);
+            else
+                ((Room)owner).bringItemHere(deck,Item.REFUSE_PLAYER_DROP);
+        }
         deck.fillInTheDeck();
         return deck;
     }

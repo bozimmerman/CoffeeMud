@@ -56,7 +56,7 @@ public class PokerDealer extends StdBehavior
     // a game once antis are dropped, or how long
     // a player is allowed to bet.  Since timers are
     // checked every tick (3-4 secs), these are approx.
-    private static final int TIME_SECONDSTOSTART=10;
+    private static final int TIME_SECONDSTOSTART=20;
     private static final int TIME_SECONDSTOFIRSTBET=10;
     private static final int TIME_SECONDSTOBET=30;
     private static final int TIME_SECONDSTODRAW=30;

@@ -25,10 +25,10 @@ public class BaseChanneler extends StdCommand
 								 boolean areareq,
 								 int channelInt,
 								 CMMsg msg,
-								 MOB mob)
+								 MOB sender)
 	{
         MOB M=ses.mob();
-		if(ChannelSet.mayReadThisChannel(mob,areareq,ses,channelInt)
+		if(ChannelSet.mayReadThisChannel(sender,areareq,ses,channelInt)
         &&(M.location()!=null)
 		&&(M.location().okMessage(ses.mob(),msg)))
 		{
@@ -56,7 +56,6 @@ public class BaseChanneler extends StdCommand
 		
 		message=CommonStrings.applyFilter(message,CommonStrings.SYSTEM_CHANNELFILTER);
 		
-		String mask=ChannelSet.getChannelMask(channelInt);
         Vector flags=ChannelSet.getChannelFlags(channelInt);
 		channelName=ChannelSet.getChannelName(channelInt);
 

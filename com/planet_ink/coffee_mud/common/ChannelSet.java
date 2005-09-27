@@ -84,10 +84,18 @@ public class ChannelSet
 		||(M.playerStats()==null))
 		    return false;
 		
-		if(getChannelFlags(i).contains("CLANONLY")
-		&&((!sender.getClanID().equals("ALL"))||(M.getClanID().length()==0))
-		&&((!M.getClanID().equalsIgnoreCase(sender.getClanID()))||(M.getClanRole()==Clan.POS_APPLICANT)))
-			return false;
+		if(getChannelFlags(i).contains("CLANONLY"))
+        {
+            // only way to fail an all-clan send is to have NO clan.
+            if((M.getClanID().length()==0)
+            ||(M.getClanRole()==Clan.POS_APPLICANT))
+                return false;
+            
+            // now either clans must be same, or must be for all
+            if((!sender.getClanID().equalsIgnoreCase("ALL"))
+    		&&(!M.getClanID().equalsIgnoreCase(sender.getClanID())))
+    			return false;
+        }
 		
 		if((!M.playerStats().getIgnored().contains(sender.Name()))
 		&&(MUDZapper.zapperCheck(getChannelMask(i),M))
@@ -117,11 +125,17 @@ public class ChannelSet
 		int x=senderName.indexOf("@");
 		if(x>0) senderName=senderName.substring(0,x);
 		
-		if(getChannelFlags(i).contains("CLANONLY")
-		&&((!sender.getClanID().equals("ALL"))||(M.getClanID().length()==0))
-		&&((!M.getClanID().equalsIgnoreCase(sender.getClanID()))||(M.getClanRole()==Clan.POS_APPLICANT)))
-			return false;
-		
+        if(getChannelFlags(i).contains("CLANONLY"))
+        {
+            // only way to fail an all-clan send is to have NO clan.
+            if((M.getClanID().length()==0)
+            ||(M.getClanRole()==Clan.POS_APPLICANT))
+                return false;
+            // now either clans must be same, or must be for all
+            if((!sender.getClanID().equalsIgnoreCase("ALL"))
+            &&(!M.getClanID().equalsIgnoreCase(sender.getClanID())))
+                return false;
+        }
 		
 		if((!ses.killFlag())
 		&&(!M.playerStats().getIgnored().contains(senderName))
@@ -191,7 +205,7 @@ public class ChannelSet
         flag=flag.toUpperCase().trim();
         Vector channels=new Vector();
 		for(int c=0;c<channelNames.size();c++)
-			if(((HashSet)channelFlags.elementAt(c)).contains(flag))
+			if(((Vector)channelFlags.elementAt(c)).contains(flag))
                 channels.addElement(((String)channelNames.elementAt(c)).toUpperCase());
 		return channels;
 	}
@@ -291,18 +305,24 @@ public class ChannelSet
 		    mySession.startBeingSnoopedBy((Session)invalid.elementAt(s));
 	}
 
+    public static String[] ALLFLAGS={
+        "DEFAULT","SAMEAREA","CLANONLY","READONLY",
+        "EXECUTIONS","LOGINS","LOGOFFS","BIRTHS","MARRIAGES", 
+        "DIVORCES","CHRISTENINGS","LEVELS","DETAILEDLEVELS","DEATHS","DETAILEDDEATHS",
+        "CONQUESTS","CONCEPTIONS","NEWPLAYERS","LOSTLEVELS","PLAYERPURGES","CLANINFO"};
+    
     public static String parseOutFlags(String mask, Vector flags)
     {
         Vector V=Util.parse(mask);
         for(int v=V.size()-1;v>=0;v--)
         {
-            String s=(String)V.elementAt(v);
-            if(s.equalsIgnoreCase("DEFAULT")
-            ||s.equalsIgnoreCase("SAMEAREA")
-            ||s.equalsIgnoreCase("READONLY"))
+            String s=((String)V.elementAt(v)).toUpperCase();
+            for(int i=0;i<ALLFLAGS.length;i++)
+            if(s.equals(ALLFLAGS[i]))
             {
                 V.removeElementAt(v);
                 flags.addElement(s.trim().toUpperCase());
+                break;
             }
         }
         return Util.combine(V,0);
