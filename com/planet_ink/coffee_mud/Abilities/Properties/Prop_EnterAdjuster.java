@@ -24,10 +24,19 @@ public class Prop_EnterAdjuster extends Property
 	public String ID() { return "Prop_EnterAdjuster"; }
 	public String name(){ return "Room entering adjuster";}
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
+    private Vector mask=new Vector();
 
+    public void setMiscText(String newText)
+    {
+        super.setMiscText(newText);
+        mask.clear();
+        Prop_HaveAdjuster.buildMask(newText,mask);
+    }
+    
 	public String accountForYourself()
 	{ return "Goodies for entry.";	}
 
+    
 	public void eatIfAble(MOB mob)
 	{
 		String names=text();
@@ -127,7 +136,8 @@ public class Prop_EnterAdjuster extends Property
 	{
 		if((affected!=null)
 		&&(((msg.targetMinor()==CMMsg.TYP_ENTER)&&((affected instanceof Room)||(affected instanceof Exit)))
-		   ||((msg.targetMinor()==CMMsg.TYP_SIT)&&(affected==msg.target())&&(affected instanceof Rideable))))
+		   ||((msg.targetMinor()==CMMsg.TYP_SIT)&&(affected==msg.target())&&(affected instanceof Rideable)))
+        &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,msg.source()))))
 			EATME(msg.source());
 		return super.okMessage(myHost,msg);
 	}

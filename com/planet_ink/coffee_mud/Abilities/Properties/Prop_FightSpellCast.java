@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -28,6 +29,7 @@ public class Prop_FightSpellCast extends Property
 	protected Hashtable spellH=null;
 	protected Vector spellV=null;
 	private boolean processing=false;
+    private Vector mask=new Vector();
 
 	public Vector getMySpellsV()
 	{
@@ -47,6 +49,8 @@ public class Prop_FightSpellCast extends Property
 		super.setMiscText(newText);
 		spellV=null;
 		spellH=null;
+        mask.clear();
+        Prop_HaveAdjuster.buildMask(newText,mask);
 	}
 
 
@@ -129,12 +133,14 @@ public class Prop_FightSpellCast extends Property
 				if((myItem instanceof Weapon)
 				&&(msg.tool()==myItem)
 				&&(myItem.amWearingAt(Item.WIELD))
-				&&(msg.amISource(mob)))
+				&&(msg.amISource(mob))
+                &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,msg.source()))))
 					addMeIfNeccessary(msg.source(),(MOB)msg.target());
 				else
 				if((msg.amITarget(mob))
 				&&(!myItem.amWearingAt(Item.WIELD))
-				&&(!(myItem instanceof Weapon)))
+				&&(!(myItem instanceof Weapon))
+                &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob))))
 					addMeIfNeccessary((MOB)msg.target(),(MOB)msg.target());
 			}
 		}

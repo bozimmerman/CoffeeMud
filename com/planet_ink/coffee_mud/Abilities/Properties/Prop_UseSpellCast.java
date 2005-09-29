@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -26,7 +27,15 @@ public class Prop_UseSpellCast extends Property
 	public String ID() { return "Prop_UseSpellCast"; }
 	public String name(){ return "Casting spells when used";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
+    private Vector mask=new Vector();
 
+    public void setMiscText(String newText)
+    {
+        super.setMiscText(newText);
+        mask.clear();
+        Prop_HaveAdjuster.buildMask(newText,mask);
+    }
+    
 	public void addMeIfNeccessary(MOB sourceMOB, MOB newMOB)
 	{
 		Vector V=Prop_SpellAdder.getMySpellsV(this);
@@ -53,7 +62,8 @@ public class Prop_UseSpellCast extends Property
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-				A.invoke(sourceMOB,V2,newMOB,true,(affected!=null)?affected.envStats().level():0);
+                if((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,sourceMOB)))
+    				A.invoke(sourceMOB,V2,newMOB,true,(affected!=null)?affected.envStats().level():0);
 			}
 		}
 	}

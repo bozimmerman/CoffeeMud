@@ -32,6 +32,7 @@ public class Prop_WearAdjuster extends Property
 	boolean gotClass=false;
 	boolean gotRace=false;
 	boolean gotSex=false;
+    private Vector mask=new Vector();
 
 
 	public String accountForYourself()
@@ -45,7 +46,8 @@ public class Prop_WearAdjuster extends Property
 		this.adjCharStats=new DefaultCharStats();
 		this.adjEnvStats=new DefaultEnvStats();
 		this.adjCharState=new DefaultCharState();
-		int gotit=Prop_HaveAdjuster.setAdjustments(newText,adjEnvStats,adjCharStats,adjCharState);
+        this.mask=new Vector();
+		int gotit=Prop_HaveAdjuster.setAdjustments(newText,adjEnvStats,adjCharStats,adjCharState,mask);
 		gotClass=((gotit&1)==1);
 		gotRace=((gotit&2)==2);
 		gotSex=((gotit&4)==4);
@@ -64,7 +66,8 @@ public class Prop_WearAdjuster extends Property
 		&&(affected !=null)
 		&&(affected instanceof Item)
 		&&(!((Item)affected).amWearingAt(Item.INVENTORY))
-		&&((!((Item)affected).amWearingAt(Item.FLOATING_NEARBY))||(((Item)affected).fitsOn(Item.FLOATING_NEARBY))))
+		&&((!((Item)affected).amWearingAt(Item.FLOATING_NEARBY))||(((Item)affected).fitsOn(Item.FLOATING_NEARBY)))
+        &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,affectedMOB))))
 			Prop_HaveAdjuster.envStuff(affectableStats,adjEnvStats);
 		super.affectEnvStats(affectedMOB,affectableStats);
 	}
@@ -75,7 +78,8 @@ public class Prop_WearAdjuster extends Property
 		if((affected !=null)
 		&&(affected instanceof Item)
 		&&(!((Item)affected).amWearingAt(Item.INVENTORY))
-		&&((!((Item)affected).amWearingAt(Item.FLOATING_NEARBY))||(((Item)affected).fitsOn(Item.FLOATING_NEARBY))))
+		&&((!((Item)affected).amWearingAt(Item.FLOATING_NEARBY))||(((Item)affected).fitsOn(Item.FLOATING_NEARBY)))
+        &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,affectedMOB))))
 			Prop_HaveAdjuster.adjCharStats(affectedStats,gotClass,gotRace,gotSex,adjCharStats);
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
@@ -85,7 +89,8 @@ public class Prop_WearAdjuster extends Property
 		if((affected !=null)
 		&&(affected instanceof Item)
 		&&(!((Item)affected).amWearingAt(Item.INVENTORY))
-		&&((!((Item)affected).amWearingAt(Item.FLOATING_NEARBY))||(((Item)affected).fitsOn(Item.FLOATING_NEARBY))))
+		&&((!((Item)affected).amWearingAt(Item.FLOATING_NEARBY))||(((Item)affected).fitsOn(Item.FLOATING_NEARBY)))
+        &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,affectedMOB))))
 			Prop_HaveAdjuster.adjCharState(affectedState,adjCharState);
 		super.affectCharState(affectedMOB,affectedState);
 	}

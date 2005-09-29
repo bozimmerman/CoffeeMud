@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -32,6 +33,8 @@ public class Prop_HereSpellCast extends Property
 	protected Vector lastMOBs=new Vector();
 	protected Hashtable spellH=null;
 	protected Vector spellV=null;
+    private Vector mask=new Vector();
+    
 	public Vector getMySpellsV()
 	{
 		if(spellV!=null) return spellV;
@@ -50,6 +53,8 @@ public class Prop_HereSpellCast extends Property
 		super.setMiscText(newText);
 		spellV=null;
 		spellH=null;
+        mask.clear();
+        Prop_HaveAdjuster.buildMask(newText,mask);
 	}
 
 
@@ -99,7 +104,8 @@ public class Prop_HereSpellCast extends Property
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-				A.invoke(newMOB,V2,newMOB,true,0);
+                if((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,newMOB)))
+    				A.invoke(newMOB,V2,newMOB,true,0);
 				EA=newMOB.fetchEffect(A.ID());
 			}
 			if(EA!=null)
