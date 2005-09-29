@@ -676,6 +676,16 @@ public class CMMap
         globalHandlers.clear();
 	}
 
+    
+    public boolean explored(Room R, Vector areas)
+    {
+        if((R==null) 
+        ||(Util.bset(R.envStats().sensesMask(),EnvStats.SENSE_ROOMUNEXPLORABLE))
+        ||(R.getArea()==null))
+            return false;
+        return false;
+    }
+    
 	public static class CrossExit
 	{
 		public int x;

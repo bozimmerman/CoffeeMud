@@ -508,7 +508,8 @@ public class PokerDealer extends StdBehavior
         // if someone enters the same room where this
         // behavior is operating, and a game is NOT
         // in progress, they should get a greeting!
-        if((msg.targetMinor()==CMMsg.TYP_ENTER)
+        if((msg.targetMinor()==CMMsg.TYP_LOOK)
+        &&(msg.othersMessage()==null)
         &&(msg.target() instanceof Room)
         &&(msg.target()==CoffeeUtensils.roomLocation(host))
         &&((gameState&STATE_MASK)==STATE_WAITING_FOR_ANTIS))

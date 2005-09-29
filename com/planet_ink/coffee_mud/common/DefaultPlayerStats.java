@@ -47,6 +47,7 @@ public class DefaultPlayerStats implements PlayerStats
 	private MOB replyTo=null;
 	private Vector securityGroups=new Vector();
     private long accountExpiration=0;
+    private RoomnumberSet roomSet=new RoomnumberSet();
 
 	public String lastIP(){return lastIP;}
 	public void setLastIP(String ip){lastIP=ip;}
@@ -193,7 +194,8 @@ public class DefaultPlayerStats implements PlayerStats
 			+((poofout.length()>0)?"<POOFOUT>"+poofout+"</POOFOUT>":"")
 			+((tranpoofin.length()>0)?"<TRANPOOFIN>"+tranpoofin+"</TRANPOOFIN>":"")
 			+((tranpoofout.length()>0)?"<TRANPOOFOUT>"+tranpoofout+"</TRANPOOFOUT>":"")
-			+getSecurityGroupStr();
+			+getSecurityGroupStr()
+            +roomSet.xml();
 	}
 	public void setXML(String str)
 	{
@@ -236,6 +238,7 @@ public class DefaultPlayerStats implements PlayerStats
 		if(tranpoofin==null) tranpoofin="";
 		tranpoofout=XMLManager.returnXMLValue(str,"TRANPOOFOUT");
 		if(tranpoofout==null) tranpoofout="";
+        roomSet.parseXML(str);
 	}
 	
 	private void setSecurityGroupStr(String grps)
@@ -289,4 +292,16 @@ public class DefaultPlayerStats implements PlayerStats
     // Acct Expire Code
     public long getAccountExpiration() {return accountExpiration;}
     public void setAccountExpiration(long newVal){accountExpiration=newVal;}
+    
+    public void addRoomVisit(Room R)
+    {
+        if((!CMSecurity.isDisabled("ROOMVISITS"))
+        &&(R!=null)
+        &&(!Util.bset(R.envStats().sensesMask(),EnvStats.SENSE_ROOMUNEXPLORABLE)))
+            roomSet.add(CMMap.getExtendedRoomID(R));
+    }
+    public boolean hasVisited(Room R)
+    {
+        return roomSet.contains(CMMap.getExtendedRoomID(R));
+    }
 }

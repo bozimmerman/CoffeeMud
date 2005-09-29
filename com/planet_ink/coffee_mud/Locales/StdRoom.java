@@ -471,6 +471,8 @@ public class StdRoom
 			{
 				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					recoverRoomStats();
+                if(msg.source().playerStats()!=null)
+                    msg.source().playerStats().addRoomVisit(this);
 				break;
 			}
 			case CMMsg.TYP_LOOK:
