@@ -1111,12 +1111,11 @@ public class StdRoom
 		}
 
 		mob.tell("^DObvious exits:^.^N");
+        String Dir=null;
 		for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
 		{
 			Exit exit=getExitInDir(i);
 			Room room=getRoomInDir(i);
-
-			String Dir=Directions.getDirectionName(i);
 			StringBuffer Say=new StringBuffer("");
 			if(exit!=null)
 				Say=exit.viewableText(mob, room);
@@ -1124,7 +1123,16 @@ public class StdRoom
 			if((room!=null)&&(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
 				Say.append(room.roomID()+" via NULL");
 			if(Say.length()>0)
-				mob.tell("^D^<EX^>" + Util.padRightPreserve(Dir,5)+"^</EX^>:^.^N ^d"+Say+"^.^N");
+            {
+                Dir=Util.padRightPreserve(Directions.getDirectionName(i),5);
+                if((mob!=null)
+                &&(mob.playerStats()!=null)
+                &&(room!=null)
+                &&(!mob.playerStats().hasVisited(room)))
+    				mob.tell("^U^<EX^>" + Dir+"^</EX^>:^.^N ^u"+Say+"^.^N");
+                else
+                    mob.tell("^D^<EX^>" + Dir+"^</EX^>:^.^N ^d"+Say+"^.^N");
+            }
 		}
 		Item I=null;
 		for(int i=0;i<numItems();i++)
