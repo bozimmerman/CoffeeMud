@@ -2,8 +2,7 @@ package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.Dice;
-import com.planet_ink.coffee_mud.utils.Directions;
+import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -29,6 +28,16 @@ public class StdMaze extends StdGrid
 	}
 
 
+    protected Room getGridRoom(int x, int y)
+    {
+        Room R=super.getGridRoom(x,y);
+        if((R!=null)&&(!Util.bset(R.envStats().sensesMask(),EnvStats.SENSE_ROOMUNEXPLORABLE)))
+        {
+            R.baseEnvStats().setSensesMask(R.baseEnvStats().sensesMask()|EnvStats.SENSE_ROOMUNEXPLORABLE);
+            R.envStats().setSensesMask(R.envStats().sensesMask()|EnvStats.SENSE_ROOMUNEXPLORABLE);
+        }
+        return R;
+    }
 	protected Room findMyCenter(int d)
 	{
 		Room dirRoom=rawDoors()[d];
