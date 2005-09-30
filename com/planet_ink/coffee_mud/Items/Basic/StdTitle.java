@@ -258,7 +258,26 @@ public class StdTitle extends StdItem implements LandTitle
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
+        if((msg.amITarget(this))
+        &&(msg.targetMinor()==CMMsg.TYP_READ))
+        {
+            if(Sense.canBeSeenBy(this,msg.source()))
+            {
+                if((landPropertyID()==null)||(landPropertyID().length()==0))
+                    msg.source().tell("It appears to be a blank property title.");
+                else
+                if((landOwner()==null)||(landOwner().length()==0))
+                    msg.source().tell("It states that the property herein known as '"+landPropertyID()+"' is available for ownership.");
+                else
+                    msg.source().tell("It states that the property herein known as '"+landPropertyID()+"' is deeded to "+landOwner()+".");
+            }
+            else
+                msg.source().tell("You can't see that!");
+            msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),"CANCEL",msg.othersCode(),msg.othersMessage());
+        }
+        
 		super.executeMsg(myHost,msg);
+        
 		if((msg.targetMinor()==CMMsg.TYP_SELL)
 		&&(msg.tool()==this)
 		&&(msg.target()!=null)
@@ -429,24 +448,6 @@ public class StdTitle extends StdItem implements LandTitle
 				msg.source().tell(name()+" is now signed over to "+A.landOwner()+".");
 			}
 			recoverEnvStats();
-		}
-		else
-		if((msg.amITarget(this))
-		&&(msg.targetMinor()==CMMsg.TYP_READ))
-		{
-			if(Sense.canBeSeenBy(this,msg.source()))
-			{
-				if((landPropertyID()==null)||(landPropertyID().length()==0))
-					msg.source().tell("It appears to be a blank property title.");
-				else
-				if((landOwner()==null)||(landOwner().length()==0))
-					msg.source().tell("It states that the property herein known as '"+landPropertyID()+"' is available for ownership.");
-				else
-					msg.source().tell("It states that the property herein known as '"+landPropertyID()+"' is deeded to "+landOwner()+".");
-			}
-			else
-				msg.source().tell("You can't see that!");
-			return;
 		}
 	}
 }

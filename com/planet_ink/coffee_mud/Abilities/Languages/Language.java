@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -135,10 +136,51 @@ public class Language extends StdAbility
 		return w.toString();
 	}
 
+    protected String scrambleAll(String str, int numToMess)
+    {
+        StringBuffer newStr=new StringBuffer("");
+        int start=0;
+        int end=0;
+        int state=-1;
+        while(start<=str.length())
+        {
+            char c='\0';
+            if(end>=str.length())
+                c=' ';
+            else
+                c=str.charAt(end);
+            switch(state)
+            {
+            case -1:
+                if(Character.isLetter(c))
+                { state=0; end++;}
+                else
+                { newStr.append(c); end++;start=end;}
+                break;
+            case 0:
+                if(Character.isLetter(c))
+                { end++;}
+                else
+                if(Character.isDigit(c))
+                { newStr.append(str.substring(start,end+1)); end++; start=end; state=1; }
+                else
+                { newStr.append(translate(str.substring(start,end))+c); end++; start=end; state=-1; }
+                break;
+            case 1:
+                if(Character.isLetterOrDigit(c))
+                { newStr.append(c); end++; start=end;}
+                else
+                { newStr.append(c); end++; start=end; state=-1; }
+                break;
+            }
+        }
+        return newStr.toString();
+    }
+    
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((beingSpoken())
-		&&(affected instanceof MOB)
+		if((affected instanceof MOB)
+        &&(beingSpoken())
 		&&(msg.amISource((MOB)affected))
 		&&(msg.sourceMessage()!=null)
 		&&(msg.tool()==null)
@@ -150,47 +192,10 @@ public class Language extends StdAbility
 			if(str==null) str=getMsgFromAffect(msg.targetMessage());
 			if(str!=null)
 			{
-				String smsg=getMsgFromAffect(msg.sourceMessage());
-				int numToMess=(int)Math.round(Util.mul(numChars(str),Util.div(100-profficiency(),100)));
-				if(numToMess>0)
-					smsg=messChars(smsg,numToMess);
-				StringBuffer newStr=new StringBuffer("");
-				int start=0;
-				int end=0;
-				int state=-1;
-				while(start<=str.length())
-				{
-					char c='\0';
-					if(end>=str.length())
-						c=' ';
-					else
-						c=str.charAt(end);
-					switch(state)
-					{
-					case -1:
-						if(Character.isLetter(c))
-						{ state=0; end++;}
-						else
-						{ newStr.append(c); end++;start=end;}
-						break;
-					case 0:
-						if(Character.isLetter(c))
-						{ end++;}
-						else
-						if(Character.isDigit(c))
-						{ newStr.append(str.substring(start,end+1)); end++; start=end; state=1; }
-						else
-						{ newStr.append(translate(str.substring(start,end))+c); end++; start=end; state=-1; }
-						break;
-					case 1:
-						if(Character.isLetterOrDigit(c))
-						{ newStr.append(c); end++; start=end;}
-						else
-						{ newStr.append(c); end++; start=end; state=-1; }
-						break;
-					}
-				}
-				str=newStr.toString();
+                String smsg=getMsgFromAffect(msg.sourceMessage());
+                int numToMess=(int)Math.round(Util.mul(numChars(str),Util.div(100-profficiency(),100)));
+                if(numToMess>0) smsg=messChars(smsg,numToMess);
+                str=scrambleAll(str,numToMess);
 				msg.modify(msg.source(),
 							  msg.target(),
 							  this,
@@ -266,6 +271,75 @@ public class Language extends StdAbility
 				}
 			}
 		}
+        else
+        if((affected instanceof MOB)
+        &&(msg.source()==affected)
+        &&(beingSpoken())
+        &&(msg.target() instanceof Item)
+        &&(msg.sourceMinor()==CMMsg.TYP_WRITE)
+        &&(Sense.isReadable((Item)msg.target()))
+        &&(msg.targetMessage()!=null)
+        &&(msg.targetMessage().length()>0))
+        {
+            Ability L=null;
+            for(int i=msg.target().numEffects()-1;i>=0;i--)
+            {
+                L=msg.target().fetchEffect(i);
+                if(L instanceof Language)
+                {
+                    msg.target().delEffect(L);
+                    break;
+                }
+            }
+            msg.target().addNonUninvokableEffect((Ability)this.copyOf());
+        }
+        else
+        if((affected instanceof Item)
+        &&(!canBeUninvoked())
+        &&(msg.target()==affected)
+        &&(msg.targetMinor()==CMMsg.TYP_READ)
+        &&((msg.targetMessage()==null)||(!msg.targetMessage().equals("CANCEL")))
+        &&(!(affected instanceof LandTitle))
+        &&(Sense.canBeSeenBy(this,msg.source()))
+        &&((Sense.isReadable((Item)affected))
+        &&(((Item)affected).readableText()!=null)
+        &&(((Item)affected).readableText().length()>0)))
+        {
+            // first make sure the Item does not handle it,
+            // since THIS item is in another language.
+            msg.modify(msg.source(),
+                       msg.target(),
+                       msg.tool(),
+                       msg.sourceCode(),
+                       msg.sourceMessage(),
+                       msg.targetCode(),
+                       "CANCEL",
+                       msg.othersCode(),
+                       msg.othersMessage());
+            Language L=(Language)msg.source().fetchEffect(ID());
+            String str=((Item)affected).readableText();
+            if(str.startsWith("FILE=")
+            ||str.startsWith("FILE="))
+            {
+                StringBuffer buf=Resources.getFileResource(str.substring(5));
+                if((buf!=null)&&(buf.length()>0))
+                    str=buf.toString();
+                else
+                    str="";
+            }
+            int numToMess=numChars(str);
+            if(numToMess==0)
+                msg.source().tell("There is nothing written on "+affected.name()+".");
+            else
+            {
+                String original=scrambleAll(str,numToMess);
+                if(L!=null)
+                    numToMess=(int)Math.round(Util.mul(numChars(str),Util.div(100-L.profficiency(),100)));
+                str=scrambleAll(str,numToMess);
+                msg.source().tell("It says '"+str+"'");
+                if((L!=null)&&(!original.equals(str)))
+                    msg.source().tell("It says '"+original+"' (translated from "+L.name()+").");
+            }
+        }
 	}
-
 }

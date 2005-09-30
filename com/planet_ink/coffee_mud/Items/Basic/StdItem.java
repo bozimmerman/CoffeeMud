@@ -998,7 +998,7 @@ public class StdItem implements Item
 			}
 			return;
 		case CMMsg.TYP_READ:
-			if(!(this instanceof LandTitle))
+			if((msg.targetMessage()==null)||(!msg.targetMessage().equals("CANCEL")))
 			{
 				if(Sense.canBeSeenBy(this,mob))
 				{

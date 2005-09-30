@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.Vector;
 
 /*
@@ -216,4 +217,29 @@ public class Property implements Ability, Cloneable
 	public Behavior fetchBehavior(int index){return null;}
 	public Behavior fetchBehavior(String ID){return null;}
 	public boolean isGeneric(){return false;}
+    
+    public String buildMask(String newText, Vector mask)
+    {
+        int maskindex=newText.toUpperCase().indexOf("MASK=");
+        if(maskindex>0)
+        {
+            String maskStr=newText.substring(maskindex+5).trim();
+            if(maskStr.length()>0)
+                Util.addToVector(MUDZapper.zapperCompile(maskStr),mask);
+            newText=newText.substring(0,maskindex).trim();
+        }
+        return newText;
+    }
+
+    public String[] separateMask(String newText)
+    {
+        String[] strs=new String[2];
+        int maskindex=newText.toUpperCase().indexOf("MASK=");
+        if(maskindex>0)
+        {
+            strs[1]=newText.substring(maskindex+5).trim();
+            strs[0]=newText.substring(0,maskindex).trim();
+        }
+        return strs;
+    }
 }
