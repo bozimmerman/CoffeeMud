@@ -86,25 +86,8 @@ public class Prop_UseSpellCast2 extends Property
 		}
 	}
 
-	public String accountForYourself()
-	{
-		String id="";
-		Vector V=getMySpellsV();
-		for(int v=0;v<V.size();v++)
-		{
-			Ability A=(Ability)V.elementAt(v);
-			if(V.size()==1)
-				id+=A.name();
-			else
-			if(v==(V.size()-1))
-				id+="and "+A.name();
-			else
-				id+=A.name()+", ";
-		}
-		if(V.size()>0)
-			id="Casts "+id+" when used.";
-		return id;
-	}
+    public String accountForYourself()
+    { return Prop_FightSpellCast.spellAccountingsWithMask(getMySpellsV(),"Casts "," when used.",text());}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

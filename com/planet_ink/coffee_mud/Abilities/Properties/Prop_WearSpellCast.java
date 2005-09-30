@@ -56,25 +56,8 @@ public class Prop_WearSpellCast extends Property
 	}
 
 
-	public String accountForYourself()
-	{
-		String id="";
-		Vector V=getMySpellsV();
-		for(int v=0;v<V.size();v++)
-		{
-			Ability A=(Ability)V.elementAt(v);
-			if(V.size()==1)
-				id+=A.name();
-			else
-			if(v==(V.size()-1))
-				id+="and "+A.name();
-			else
-				id+=A.name()+", ";
-		}
-		if(V.size()>0)
-			id="Casts "+id+" on the wearer.";
-		return id;
-	}
+    public String accountForYourself()
+    { return Prop_FightSpellCast.spellAccountingsWithMask(Prop_SpellAdder.getMySpellsV(this),"Casts "," on the wearer.",text());}
 
 	public void addMeIfNeccessary(MOB newMOB)
 	{

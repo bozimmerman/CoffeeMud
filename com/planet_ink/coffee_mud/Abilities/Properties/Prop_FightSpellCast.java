@@ -84,26 +84,31 @@ public class Prop_FightSpellCast extends Property
 			}
 		}
 	}
+    
+    public static String spellAccountingsWithMask(Vector spellList, String pre, String post, String text)
+    {
+        String[] strs=Prop_HaveAdjuster.separateMask(text);
+        String id="";
+        for(int v=0;v<spellList.size();v++)
+        {
+            Ability A=(Ability)spellList.elementAt(v);
+            if(spellList.size()==1)
+                id+=A.name();
+            else
+            if(v==(spellList.size()-1))
+                id+="and "+A.name();
+            else
+                id+=A.name()+", ";
+        }
+        if(spellList.size()>0)
+            id=pre+id+post;
+        if(strs[1].length()>0)
+            id+="\n\rRestrictions: "+MUDZapper.zapperDesc(strs[1]);
+        return id;
+    }
 
 	public String accountForYourself()
-	{
-		String id="";
-		Vector V=getMySpellsV();
-		for(int v=0;v<V.size();v++)
-		{
-			Ability A=(Ability)V.elementAt(v);
-			if(V.size()==1)
-				id+=A.name();
-			else
-			if(v==(V.size()-1))
-				id+="and "+A.name();
-			else
-				id+=A.name()+", ";
-		}
-		if(V.size()>0)
-			id="Casts "+id+" during combat.";
-		return id;
-	}
+	{ return spellAccountingsWithMask(getMySpellsV(),"Casts "," during combat.",text());}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

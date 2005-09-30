@@ -56,25 +56,8 @@ public class Prop_HaveSpellCast extends Property
 	}
 
 
-	public String accountForYourself()
-	{
-		String id="";
-		Vector V=getMySpellsV();
-		for(int v=0;v<V.size();v++)
-		{
-			Ability A=(Ability)V.elementAt(v);
-			if(V.size()==1)
-				id+=A.name();
-			else
-			if(v==(V.size()-1))
-				id+="and "+A.name();
-			else
-				id+=A.name()+", ";
-		}
-		if(V.size()>0)
-			id="Casts "+id+" on the owner.";
-		return id;
-	}
+    public String accountForYourself()
+    { return Prop_FightSpellCast.spellAccountingsWithMask(getMySpellsV(),"Casts "," on the owner.",text());}
 
 	public void addMeIfNeccessary(MOB newMOB)
 	{
@@ -83,7 +66,8 @@ public class Prop_HaveSpellCast extends Property
 		{
 			Ability A=(Ability)V.elementAt(v);
 			Ability EA=newMOB.fetchEffect(A.ID());
-			if((EA==null)&&(Prop_SpellAdder.didHappen(100,this)))
+			if((EA==null)&&(Prop_SpellAdder.didHappen(100,this))
+            &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,newMOB))))
 			{
 				String t=A.text();
 				A=(Ability)A.copyOf();
@@ -102,8 +86,7 @@ public class Prop_HaveSpellCast extends Property
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-                if((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,newMOB)))
-    				A.invoke(newMOB,V2,newMOB,true,(affected!=null)?affected.envStats().level():0);
+				A.invoke(newMOB,V2,newMOB,true,(affected!=null)?affected.envStats().level():0);
 				EA=newMOB.fetchEffect(A.ID());
 			}
 			if(EA!=null)
