@@ -36,7 +36,7 @@ public class Prop_RideAdjuster extends Property
 
 	public String accountForYourself()
 	{
-		return Prop_HaveAdjuster.fixAccoutings("Affects on the mounted: "+text());
+		return Prop_HaveAdjuster.fixAccoutingsWithMask("Affects on the mounted: "+text());
 	}
 
 	public void setMiscText(String newText)

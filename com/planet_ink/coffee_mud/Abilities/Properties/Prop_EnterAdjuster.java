@@ -34,7 +34,9 @@ public class Prop_EnterAdjuster extends Property
     }
     
 	public String accountForYourself()
-	{ return "Goodies for entry.";	}
+	{ 
+        return Prop_HaveAdjuster.fixAccoutingsWithMask("Affects those who enter: "+text());
+    }
 
     
 	public void eatIfAble(MOB mob)

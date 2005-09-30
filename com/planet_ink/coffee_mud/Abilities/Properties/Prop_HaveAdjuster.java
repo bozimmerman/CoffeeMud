@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 // this ability is the very picture of the infectuous msg.
@@ -35,13 +36,45 @@ public class Prop_HaveAdjuster extends Property
 	boolean gotClass=false;
 	boolean gotRace=false;
 	boolean gotSex=false;
+    private Vector mask=new Vector();
+    
+    public static String buildMask(String newText, Vector mask)
+    {
+        int maskindex=newText.toUpperCase().indexOf("MASK=");
+        if(maskindex>0)
+        {
+            String maskStr=newText.substring(maskindex+5).trim();
+            if(maskStr.length()>0)
+                Util.addToVector(MUDZapper.zapperCompile(maskStr),mask);
+            newText=newText.substring(0,maskindex).trim();
+        }
+        return newText;
+    }
 
-	public static int setAdjustments(String newText, EnvStats adjEnvStats, CharStats adjCharStats, CharState adjCharState)
+    public static String[] separateMask(String newText)
+    {
+        String[] strs=new String[2];
+        int maskindex=newText.toUpperCase().indexOf("MASK=");
+        if(maskindex>0)
+        {
+            strs[1]=newText.substring(maskindex+5).trim();
+            strs[0]=newText.substring(0,maskindex).trim();
+        }
+        return strs;
+    }
+    
+	public static int setAdjustments(String newText, 
+                                     EnvStats adjEnvStats, 
+                                     CharStats adjCharStats, 
+                                     CharState adjCharState,
+                                     Vector mask)
 	{
 		boolean gotClass=false;
 		boolean gotRace=false;
 		boolean gotSex=false;
-
+        
+        newText=buildMask(newText,mask);
+        
 		adjEnvStats.setAbility(Util.getParmPlus(newText,"abi"));
 		adjEnvStats.setArmor(Util.getParmPlus(newText,"arm"));
 		adjEnvStats.setAttackAdjustment(Util.getParmPlus(newText,"att"));
@@ -100,7 +133,8 @@ public class Prop_HaveAdjuster extends Property
 		this.adjCharStats=new DefaultCharStats();
 		this.adjCharState=new DefaultCharState();
 		this.adjEnvStats=new DefaultEnvStats();
-		int gotit=setAdjustments(newText,adjEnvStats,adjCharStats,adjCharState);
+        this.mask=new Vector();
+		int gotit=setAdjustments(newText,adjEnvStats,adjCharStats,adjCharState,mask);
 		gotClass=((gotit&1)==1);
 		gotRace=((gotit&2)==2);
 		gotSex=((gotit&4)==4);
@@ -134,7 +168,8 @@ public class Prop_HaveAdjuster extends Property
 		&&(affectedMOB instanceof MOB)
 		&&(affected!=null)
 		&&(affected instanceof Item)
-		&&(!((Item)affected).amDestroyed()))
+		&&(!((Item)affected).amDestroyed())
+        &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,affectedMOB))))
 			envStuff(affectableStats,adjEnvStats);
 		super.affectEnvStats(affectedMOB,affectableStats);
 	}
@@ -172,18 +207,23 @@ public class Prop_HaveAdjuster extends Property
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		ensureStarted();
-		adjCharStats(affectedStats,gotClass,gotRace,gotSex,adjCharStats);
+        if((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,affectedMOB)))
+    		adjCharStats(affectedStats,gotClass,gotRace,gotSex,adjCharStats);
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{
 		ensureStarted();
-		adjCharState(affectedState,adjCharState);
+        if((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,affectedMOB)))
+    		adjCharState(affectedState,adjCharState);
 		super.affectCharState(affectedMOB,affectedState);
 	}
 
-	public static String fixAccoutings(String id)
+	public static String fixAccoutingsWithMask(String id)
 	{
+        Vector mask=new Vector();
+        String[] strs=separateMask(id);
+        id=strs[0];
 		int x=id.toUpperCase().indexOf("ARM");
 		for(StringBuffer ID=new StringBuffer(id);((x>0)&&(x<id.length()));x++)
 			if(id.charAt(x)=='-')
@@ -230,11 +270,13 @@ public class Prop_HaveAdjuster extends Property
 				id=id.substring(0,x)+middle.toString().trim()+id.substring(y+((""+val).length()));
 			}
 		}
+        if(strs[1].length()>0)
+            id+="\n\rRestrictions: "+MUDZapper.zapperDesc(strs[1]);
 		return id;
 	}
 
 	public String accountForYourself()
 	{
-		return fixAccoutings("Affects the owner: "+text());
+		return fixAccoutingsWithMask("Affects the owner: "+text());
 	}
 }

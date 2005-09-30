@@ -37,7 +37,7 @@ public class Prop_WearAdjuster extends Property
 
 	public String accountForYourself()
 	{
-		return Prop_HaveAdjuster.fixAccoutings("Affects on the wearer: "+text());
+		return Prop_HaveAdjuster.fixAccoutingsWithMask("Affects on the wearer: "+text());
 	}
 
 	public void setMiscText(String newText)

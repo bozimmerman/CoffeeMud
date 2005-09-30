@@ -37,7 +37,7 @@ public class Prop_HereAdjuster extends Property
 
 	public String accountForYourself()
 	{
-		return Prop_HaveAdjuster.fixAccoutings("Affects on those here: "+text());
+		return Prop_HaveAdjuster.fixAccoutingsWithMask("Affects on those here: "+text());
 	}
 
 	public void setMiscText(String newText)
