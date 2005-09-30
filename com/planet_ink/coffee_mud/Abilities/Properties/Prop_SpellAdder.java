@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -30,6 +31,8 @@ public class Prop_SpellAdder extends Property
 
 	protected Hashtable spellH=null;
 	protected Vector spellV=null;
+    private Vector mask=new Vector();
+    
 	public Vector getMySpellsV()
 	{
 		if(spellV!=null) return spellV;
@@ -48,12 +51,14 @@ public class Prop_SpellAdder extends Property
 		super.setMiscText(newText);
 		spellV=null;
 		spellH=null;
+        mask.clear();
+        Prop_HaveAdjuster.buildMask(newText,mask);
 	}
 
 	public static Vector getMySpellsV(Ability spellHolder)
 	{
 		Vector theSpells=new Vector();
-		String names=spellHolder.text();
+		String names=Prop_HaveAdjuster.buildMask(spellHolder.text(),new Vector());
 		int del=names.indexOf(";");
 		while(del>=0)
 		{
@@ -154,8 +159,10 @@ public class Prop_SpellAdder extends Property
 		{
 			Ability A=(Ability)V.elementAt(v);
 			Ability EA=target.fetchEffect(A.ID());
-			if((EA==null)&&(didHappen(100,this)))
-			{
+			if((EA==null)&&(didHappen(100,this))
+            &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,qualifiedMOB(target)))))
+
+            {
 				String t=A.text();
 				A=(Ability)A.copyOf();
 				Vector V2=new Vector();
@@ -181,6 +188,9 @@ public class Prop_SpellAdder extends Property
 		}
 	}
 
+    public String accountForYourself()
+    { return Prop_FightSpellCast.spellAccountingsWithMask(getMySpellsV(),"Casts ",".",text());}
+    
 	public void removeMyAffectsFrom(Environmental lastMOB)
 	{
 		Hashtable h=getMySpellsH();

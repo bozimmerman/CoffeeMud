@@ -26,13 +26,10 @@ public class Prop_WearResister extends Property
 	public boolean bubbleAffect(){return true;}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	private CharStats adjCharStats=null;
+    private Vector mask=new Vector();
 
-
-	public String accountForYourself()
-	{
-		String id="The wearer gains resistances: "+text();
-		return id;
-	}
+    public String accountForYourself()
+    { return "The wearer gains resistances: "+Prop_Resistance.describeResistance(text());}
 
 	private void ensureStarted()
 	{
@@ -44,13 +41,16 @@ public class Prop_WearResister extends Property
 		super.setMiscText(newText);
 		this.adjCharStats=new DefaultCharStats();
 		Prop_HaveResister.setAdjustments(this,adjCharStats);
+        mask.clear();
+        Prop_HaveAdjuster.buildMask(newText,mask);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		ensureStarted();
 		if((affected !=null)
 		&&(affected instanceof Item)
-		&&(!((Item)affected).amWearingAt(Item.INVENTORY)))
+		&&(!((Item)affected).amWearingAt(Item.INVENTORY))
+        &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,affectedMOB))))
 			Prop_HaveResister.adjCharStats(affectedStats,adjCharStats);
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
@@ -67,9 +67,9 @@ public class Prop_WearResister extends Property
 			MOB mob=(MOB)((Item)affected).owner();
 			if((msg.amITarget(mob))&&(mob.location()!=null))
 			{
-				if((msg.value()<=0)&&(!Prop_HaveResister.isOk(msg,this,mob)))
+				if((msg.value()<=0)&&(!Prop_HaveResister.isOk(msg,this,mob,mask)))
 					return false;
-				Prop_HaveResister.resistAffect(msg,mob,this);
+				Prop_HaveResister.resistAffect(msg,mob,this,mask);
 			}
 		}
 		return true;

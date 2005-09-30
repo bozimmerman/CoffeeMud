@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 // this ability is the very picture of the infectuous msg.
@@ -29,12 +30,15 @@ public class Prop_HaveResister extends Property
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	public boolean bubbleAffect(){return true;}
 	private CharStats adjCharStats=null;
+    private Vector mask=new Vector();
 
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		adjCharStats=new DefaultCharStats();
 		setAdjustments(this,adjCharStats);
+        mask.clear();
+        Prop_HaveAdjuster.buildMask(newText,mask);
 	}
 
 	private void ensureStarted()
@@ -64,7 +68,8 @@ public class Prop_HaveResister extends Property
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		ensureStarted();
-		adjCharStats(affectedStats,adjCharStats);
+        if((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,affectedMOB)))
+    		adjCharStats(affectedStats,adjCharStats);
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
 
@@ -122,7 +127,7 @@ public class Prop_HaveResister extends Property
 		adjCharStats.setStat(CharStats.SAVE_TRAPS,getProtection(me,"traps"));
 	}
 
-	public static void resistAffect(CMMsg msg, MOB mob, Ability me)
+	public static void resistAffect(CMMsg msg, MOB mob, Ability me, Vector mask)
 	{
 		if(mob.location()==null) return;
 		if(mob.amDead()) return;
@@ -131,7 +136,8 @@ public class Prop_HaveResister extends Property
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0)
 		&&(msg.tool()!=null)
-		   &&(msg.tool() instanceof Weapon))
+	    &&(msg.tool() instanceof Weapon)
+        &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob))))
 		{
 			if(Prop_HaveResister.checkProtection(me,"weapons"))
 				msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection(me,"weapons"),100.0))));
@@ -149,13 +155,10 @@ public class Prop_HaveResister extends Property
 		}
 	}
 
-	public String accountForYourself()
-	{
-		String id="The owner gains resistances: "+text();
-		return id;
-	}
+    public String accountForYourself()
+    { return "The owner gains resistances: "+Prop_Resistance.describeResistance(text());}
 
-	public static boolean isOk(CMMsg msg, Ability me, MOB mob)
+	public static boolean isOk(CMMsg msg, Ability me, MOB mob, Vector mask)
 	{
 		if(!Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			return true;
@@ -168,7 +171,8 @@ public class Prop_HaveResister extends Property
 				if((A.ID().equals("Spell_Summon"))
 				   ||(A.ID().equals("Spell_Gate")))
 				{
-					if(Prop_HaveResister.checkProtection(me,"teleport"))
+					if((Prop_HaveResister.checkProtection(me,"teleport"))
+                    &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob))))
 					{
 						msg.source().tell("You can't seem to fixate on '"+mob.name()+"'.");
 						return false;
@@ -179,7 +183,8 @@ public class Prop_HaveResister extends Property
 				&&(Util.bset(A.flags(),Ability.FLAG_HOLY))
 				&&(!Util.bset(A.flags(),Ability.FLAG_UNHOLY)))
 				{
-					if(Prop_HaveResister.checkProtection(me,"holy"))
+					if((Prop_HaveResister.checkProtection(me,"holy"))
+                    &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob))))
 					{
 						mob.location().show(msg.source(),mob,CMMsg.MSG_OK_VISUAL,"Holy energies from <S-NAME> are repelled from <T-NAME>.");
 						return false;
@@ -201,11 +206,12 @@ public class Prop_HaveResister extends Property
 		&&(((Item)affected).owner() instanceof MOB))
 		{
 			MOB mob=(MOB)((Item)affected).owner();
-			if((msg.amITarget(mob))&&(mob.location()!=null))
+			if((msg.amITarget(mob))
+            &&(mob.location()!=null))
 			{
-				if((msg.value()<=0)&&(!Prop_HaveResister.isOk(msg,this,mob)))
+				if((msg.value()<=0)&&(!Prop_HaveResister.isOk(msg,this,mob,mask)))
 					return false;
-				Prop_HaveResister.resistAffect(msg,mob,this);
+				Prop_HaveResister.resistAffect(msg,mob,this,mask);
 			}
 		}
 		return true;

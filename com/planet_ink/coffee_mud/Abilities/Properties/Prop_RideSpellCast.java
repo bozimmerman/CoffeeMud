@@ -66,7 +66,8 @@ public class Prop_RideSpellCast extends Property
 		{
 			Ability A=(Ability)V.elementAt(v);
 			Ability EA=E.fetchEffect(A.ID());
-			if(EA==null)
+			if((EA==null)
+            &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,E))))
 			{
 				String t=A.text();
 				A=(Ability)A.copyOf();
@@ -85,8 +86,7 @@ public class Prop_RideSpellCast extends Property
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-                if((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,E)))
-    				A.invoke(E,V2,E,true,(affected!=null)?affected.envStats().level():0);
+				A.invoke(E,V2,E,true,(affected!=null)?affected.envStats().level():0);
 				EA=E.fetchEffect(A.ID());
 			}
 			if(EA!=null)

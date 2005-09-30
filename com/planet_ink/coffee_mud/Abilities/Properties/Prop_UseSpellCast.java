@@ -43,7 +43,8 @@ public class Prop_UseSpellCast extends Property
 		{
 			Ability A=(Ability)V.elementAt(v);
 			Ability EA=newMOB.fetchEffect(A.ID());
-			if((EA==null)&&(Prop_SpellAdder.didHappen(100,this)))
+			if((EA==null)&&(Prop_SpellAdder.didHappen(100,this))
+            &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,sourceMOB))))
 			{
 				String t=A.text();
 				A=(Ability)A.copyOf();
@@ -62,8 +63,7 @@ public class Prop_UseSpellCast extends Property
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-                if((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,sourceMOB)))
-    				A.invoke(sourceMOB,V2,newMOB,true,(affected!=null)?affected.envStats().level():0);
+				A.invoke(sourceMOB,V2,newMOB,true,(affected!=null)?affected.envStats().level():0);
 			}
 		}
 	}

@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -30,6 +31,8 @@ public class Prop_WearEnabler extends Property
 	boolean processing=false;
     boolean processing2=false;
 	protected Vector spellV=null;
+    private Vector mask=new Vector();
+    
 	public Vector getMySpellsV()
 	{
 		if(spellV!=null) return spellV;
@@ -41,28 +44,13 @@ public class Prop_WearEnabler extends Property
 	{
 		super.setMiscText(newText);
 		spellV=null;
+        mask.clear();
+        Prop_HaveAdjuster.buildMask(newText,mask);
 	}
 
 
-	public String accountForYourself()
-	{
-		String id="";
-		Vector V=getMySpellsV();
-		for(int v=0;v<V.size();v++)
-		{
-			Ability A=(Ability)V.elementAt(v);
-			if(V.size()==1)
-				id+=A.name();
-			else
-			if(v==(V.size()-1))
-				id+="and "+A.name();
-			else
-				id+=A.name()+", ";
-		}
-		if(V.size()>0)
-			id="Grants "+id+" to the wearer/wielder.";
-		return id;
-	}
+    public String accountForYourself()
+    { return Prop_FightSpellCast.spellAccountingsWithMask(getMySpellsV(),"Grants "," to the wearer/wielder.",text());}
 
 	public void addMeIfNeccessary(MOB newMOB)
 	{
@@ -86,7 +74,8 @@ public class Prop_WearEnabler extends Property
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
-			if(newMOB.fetchAbility(A.ID())==null)
+			if((newMOB.fetchAbility(A.ID())==null)
+            &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,newMOB))))
 			{
 				String t=A.text();
 				if(t.length()>0)

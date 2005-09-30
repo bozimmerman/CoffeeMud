@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -26,13 +27,10 @@ public class Prop_RideResister extends Property
 	public boolean bubbleAffect(){return true;}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	private CharStats adjCharStats=null;
-
+    private Vector mask=new Vector();
 
 	public String accountForYourself()
-	{
-		String id="Those mounted gain resistances: "+text();
-		return id;
-	}
+	{ return "Those mounted gain resistances: "+Prop_Resistance.describeResistance(text());}
 
 	private void ensureStarted()
 	{
@@ -44,12 +42,15 @@ public class Prop_RideResister extends Property
 		super.setMiscText(newText);
 		this.adjCharStats=new DefaultCharStats();
 		Prop_HaveResister.setAdjustments(this,adjCharStats);
+        mask.clear();
+        Prop_HaveAdjuster.buildMask(newText,mask);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		ensureStarted();
 		if((affected !=null)
-		&&(((Rider)affectedMOB).riding()==affected))
+		&&(((Rider)affectedMOB).riding()==affected)
+        &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,affectedMOB))))
 			Prop_HaveResister.adjCharStats(affectedStats,adjCharStats);
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
@@ -66,9 +67,9 @@ public class Prop_RideResister extends Property
 		&&(((MOB)msg.target()).location()!=null))
 		{
 			MOB mob=(MOB)msg.target();
-			if((msg.value()<=0)&&(!Prop_HaveResister.isOk(msg,this,mob)))
+			if((msg.value()<=0)&&(!Prop_HaveResister.isOk(msg,this,mob,mask)))
 				return false;
-			Prop_HaveResister.resistAffect(msg,mob,this);
+			Prop_HaveResister.resistAffect(msg,mob,this,mask);
 		}
 		return true;
 	}

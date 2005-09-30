@@ -68,7 +68,8 @@ public class Prop_HereSpellCast extends Property
 		{
 			Ability A=(Ability)V.elementAt(v);
 			Ability EA=newMOB.fetchEffect(A.ID());
-			if(EA==null)
+			if((EA==null)
+            &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,newMOB))))
 			{
 				String t=A.text();
 				A=(Ability)A.copyOf();
@@ -87,8 +88,7 @@ public class Prop_HereSpellCast extends Property
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-                if((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,newMOB)))
-    				A.invoke(newMOB,V2,newMOB,true,0);
+				A.invoke(newMOB,V2,newMOB,true,0);
 				EA=newMOB.fetchEffect(A.ID());
 			}
 			if(EA!=null)
