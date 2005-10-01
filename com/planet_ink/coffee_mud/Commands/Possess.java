@@ -131,7 +131,7 @@ public class Possess extends StdCommand
 		target.setSoulMate(mob);
 		mob.setSession(null);
 		CommonMsgs.look(target,true);
-		target.tell("^HYour spirit has changed bodies...");
+		target.tell("^HYour spirit has changed bodies, use QUIT to return to yours.");
 		return false;
 	}
 	public int ticksToExecute(){return 0;}
