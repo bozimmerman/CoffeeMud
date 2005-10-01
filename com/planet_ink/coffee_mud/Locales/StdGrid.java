@@ -37,6 +37,16 @@ public class StdGrid extends StdRoom implements GridLocale
 		myID=getClass().getName().substring(getClass().getName().lastIndexOf('.')+1);
 	}
 
+    protected void cloneFix(Room E)
+    {
+        super.cloneFix(E);
+        if(E instanceof StdGrid)
+        {
+            descriptions=(Vector)((StdGrid)E).descriptions.clone();
+            displayTexts=(Vector)((StdGrid)E).displayTexts.clone();
+            gridexits=(Vector)((StdGrid)E).gridexits.clone();
+        }
+    }
 	public String getChildLocaleID(){return "StdRoom";}
 
 	public int xSize(){return xsize;}

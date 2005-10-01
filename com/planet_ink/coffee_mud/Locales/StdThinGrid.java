@@ -39,12 +39,23 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	protected final DVector rooms=new DVector(4);
 	protected static boolean tickStarted=false;
 
+    
 	public StdThinGrid()
 	{
 		super();
 		myID=getClass().getName().substring(getClass().getName().lastIndexOf('.')+1);
 	}
 
+    protected void cloneFix(Room E)
+    {
+        super.cloneFix(E);
+        if(E instanceof StdThinGrid)
+        {
+            descriptions=(Vector)((StdThinGrid)E).descriptions.clone();
+            displayTexts=(Vector)((StdThinGrid)E).displayTexts.clone();
+            gridexits=(Vector)((StdThinGrid)E).gridexits.clone();
+        }
+    }
 	public String getChildLocaleID(){return "StdRoom";}
 
 	public int xSize(){return xsize;}

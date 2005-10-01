@@ -57,6 +57,7 @@ public class HandOfCards extends StdContainer implements MiscMagic
         setCapacity(53);
         // this type is arbitrary -- we will override canContain method
         setContainTypes(Container.CONTAIN_SSCOMPONENTS);
+        backupContents=new Vector();
         recoverEnvStats();
     }
 

@@ -36,6 +36,12 @@ public class Skill_Juggle extends BardSkill
 	protected long lastJuggle=-1;
 	protected boolean pause=false;
 
+    public void setMiscText(String newText)
+    {
+        super.setMiscText(newText);
+        juggles=new Vector();
+    }
+    
 	public int maxJuggles()
 	{
 		if((affected!=null)&&(affected instanceof MOB))

@@ -149,6 +149,10 @@ public class Conquerable extends Arrest
 		journalName=Util.getParmStr(newParms,"JOURNAL","");
 		allowLaw=Util.getParmStr(newParms,"LAW","FALSE").toUpperCase().startsWith("T");
 		loadAttempt=false;
+        clanItems=new Vector();
+        clanControlPoints=new DVector(2);
+        assaults=new DVector(2);
+        noMultiFollows=new Vector();
 	}
 
 	public boolean isAnyKindOfOfficer(Law laws, MOB M)

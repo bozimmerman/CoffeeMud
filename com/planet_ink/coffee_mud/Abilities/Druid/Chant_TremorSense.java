@@ -133,7 +133,7 @@ public class Chant_TremorSense extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				rooms.clear();
+				rooms=new Vector();
 				MUDTracker.getRadiantRooms(mob.location(),rooms,false,false,true,true,true,null,5);
 				for(int r=0;r<rooms.size();r++)
 				{

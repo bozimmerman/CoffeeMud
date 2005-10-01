@@ -33,6 +33,12 @@ public class Prayer_Stoning extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	protected Vector cits=new Vector();
 
+    public void setMiscText(String newText)
+    {
+        super.setMiscText(newText);
+        cits=new Vector();
+    }
+    
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;

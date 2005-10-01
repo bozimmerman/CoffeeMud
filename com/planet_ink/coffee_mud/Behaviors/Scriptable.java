@@ -39,7 +39,7 @@ public class Scriptable extends StdBehavior
     private HashSet registeredSpecialEvents=new HashSet();
     private Hashtable noTrigger=new Hashtable();
 	private long tickStatus=Tickable.STATUS_NOT;
-    
+
 	public long getTickStatus()
 	{
 	    Tickable T=altStatusTickable;
@@ -327,6 +327,14 @@ public class Scriptable extends StdBehavior
 	public void setParms(String newParms)
 	{
 		newParms=Util.replaceAll(newParms,"'","`");
+        que=new Vector();
+        oncesDone=new Vector();
+        delayTargetTimes=new Hashtable();
+        delayProgCounters=new Hashtable();
+        lastTimeProgsDone=new Hashtable();
+        lastDayProgsDone=new Hashtable();
+        registeredSpecialEvents=new HashSet();
+        noTrigger=new Hashtable();
 		super.setParms(newParms);
 		oncesDone.clear();
 	}

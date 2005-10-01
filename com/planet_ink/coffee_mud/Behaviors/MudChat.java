@@ -47,6 +47,12 @@ public class MudChat extends StdBehavior
 	// on tick or more.
 	private final static int RESPONSE_DELAY=2;
 
+    public void setParms(String newParms)
+    {
+        super.setParms(newParms);
+        responseQue=new Vector();
+    }
+    
 	private static synchronized Vector getChatGroups(String parms)
 	{
 		Vector rsc=null;

@@ -61,7 +61,8 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	public void loadMeUp(Item item, Room room)
 	{
 		unloadIfNecessary(item);
-
+        contents=new Vector();
+        ccontents=new Vector();
 		ItemRejuv ability=new ItemRejuv();
 		ability.myProperLocation=room;
 		if(item.fetchEffect(ability.ID())==null)

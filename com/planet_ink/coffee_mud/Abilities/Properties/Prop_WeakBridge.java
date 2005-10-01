@@ -37,6 +37,7 @@ public class Prop_WeakBridge extends Property
 
 	public void setMiscText(String newText)
 	{
+        mobsToKill=new Vector();
 		super.setMiscText(newText);
 		max=Util.getParmInt(newText,"max",400);
 		chance=Util.getParmInt(newText,"chance",75);

@@ -45,6 +45,7 @@ public class DelayedTransporter extends ActiveTicker
 			super.setParms(parmText);
 		}
 		destRoomNames=new Vector();
+        transportees=new Hashtable();
 		while(myParms.length()>0)
 		{
 			String thisRoom=myParms;

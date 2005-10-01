@@ -38,7 +38,7 @@ public class StdRideable extends StdContainer implements Rideable
 		capacity=3000;
 		material=EnvResource.RESOURCE_OAK;
 	}
-
+    
 	public void destroy()
 	{
 		while(riders.size()>0)

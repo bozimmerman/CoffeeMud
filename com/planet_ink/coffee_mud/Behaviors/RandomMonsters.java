@@ -54,6 +54,7 @@ public class RandomMonsters extends ActiveTicker
 
 	public void setParms(String newParms)
 	{
+        maintained=new Vector();
 		int x=newParms.indexOf(";");
 		String oldParms=newParms;
 		restrictedLocales=null;

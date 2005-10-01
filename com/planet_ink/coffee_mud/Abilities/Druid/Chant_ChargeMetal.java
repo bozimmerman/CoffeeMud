@@ -32,6 +32,12 @@ public class Chant_ChargeMetal extends Chant
 
 	private Vector affectedItems=new Vector();
 
+    public void setMiscText(String newText)
+    {
+        super.setMiscText(newText);
+        affectedItems=new Vector();
+    }
+    
 	public Item wieldingMetal(MOB mob)
 	{
 		for(int i=0;i<mob.inventorySize();i++)

@@ -35,6 +35,7 @@ public class Prop_NarrowLedge extends Property
 
 	public void setMiscText(String newText)
 	{
+        mobsToKill=new Vector();
 		super.setMiscText(newText);
 		check=Util.getParmInt(newText,"check",16);
 		name=Util.getParmStr(newText,"name","the narrow ledge");

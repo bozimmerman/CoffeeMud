@@ -34,6 +34,12 @@ public class Prayer_CurseMetal extends Prayer
 
 	private Vector affectedItems=new Vector();
 
+    public void setMiscText(String newText)
+    {
+        super.setMiscText(newText);
+        affectedItems=new Vector();
+    }
+    
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;

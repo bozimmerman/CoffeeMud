@@ -88,7 +88,7 @@ public class StdRoom
 	public void setImage(String newImage){imageName=newImage;}
 	
 	public boolean isGeneric(){return false;}
-	private void cloneFix(Room E)
+	protected void cloneFix(Room E)
 	{
 		baseEnvStats=E.baseEnvStats().cloneStats();
 		envStats=E.envStats().cloneStats();

@@ -33,6 +33,11 @@ public class Prayer_FreezeMetal extends Prayer
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
 	private Vector affectedItems=new Vector();
+    public void setMiscText(String newText)
+    {
+        super.setMiscText(newText);
+        affectedItems=new Vector();
+    }
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

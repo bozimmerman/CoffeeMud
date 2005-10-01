@@ -61,6 +61,27 @@ public class StdDeity extends StdMOB implements Deity
 		recoverEnvStats();
 	}
 
+    protected void cloneFix(MOB E)
+    {
+        super.cloneFix(E);
+        if(E instanceof StdDeity)
+        {
+            worshipTriggers=(Vector)((StdDeity)E).worshipTriggers.clone();
+            worshipCurseTriggers=(Vector)((StdDeity)E).worshipCurseTriggers.clone();
+            clericTriggers=(Vector)((StdDeity)E).clericTriggers.clone();
+            clericPowerTriggers=(Vector)((StdDeity)E).clericPowerTriggers.clone();
+            clericCurseTriggers=(Vector)((StdDeity)E).clericCurseTriggers.clone();
+            blessings=(Vector)((StdDeity)E).blessings.clone();
+            curses=(Vector)((StdDeity)E).curses.clone();
+            powers=(Vector)((StdDeity)E).powers.clone();
+            trigBlessingParts=(Hashtable)((StdDeity)E).trigBlessingParts.clone();
+            trigBlessingTimes=(Hashtable)((StdDeity)E).trigBlessingTimes.clone();
+            trigPowerParts=(Hashtable)((StdDeity)E).trigPowerParts.clone();
+            trigPowerTimes=(Hashtable)((StdDeity)E).trigPowerTimes.clone();
+            trigCurseParts=(Hashtable)((StdDeity)E).trigCurseParts.clone();
+            trigCurseTimes=(Hashtable)((StdDeity)E).trigCurseTimes.clone();
+        }
+    }
 
 	public String getClericRequirements(){return clericReqs;}
 	public void setClericRequirements(String reqs){clericReqs=reqs;}

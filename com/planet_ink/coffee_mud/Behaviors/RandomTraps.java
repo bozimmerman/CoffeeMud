@@ -48,6 +48,7 @@ public class RandomTraps extends ActiveTicker
 
 	public void setParms(String newParms)
 	{
+        maintained=new Vector();
 		doAnyItems=false;
 		doAnyContainers=false;
 		doDooredContainers=false;

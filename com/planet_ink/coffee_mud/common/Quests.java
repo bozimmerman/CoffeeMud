@@ -70,6 +70,7 @@ public class Quests implements Cloneable, Quest
 			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_QUEST,1);
 		}
 	}
+    
 	protected void setVars(Vector script)
 	{
 		name="";

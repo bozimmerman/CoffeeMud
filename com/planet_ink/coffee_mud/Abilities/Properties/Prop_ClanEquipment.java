@@ -293,7 +293,8 @@ public class Prop_ClanEquipment extends Property
 		    && (activated)
 		    && (! ( (Armor) affected).amWearingAt(Item.INVENTORY)))
 		{
-			Prop_HaveResister.adjCharStats(affectedStats, EQadjCharStats);
+            for(int i=0;i<Prop_HaveResister.stats.length;i++)
+                affectedStats.setStat(((Integer)Prop_HaveResister.stats[i][0]).intValue(),affectedStats.getStat(((Integer)Prop_HaveResister.stats[i][0]).intValue())+EQadjCharStats.getStat(((Integer)Prop_HaveResister.stats[i][0]).intValue()));
 		}
 		super.affectCharStats(affectedMOB, affectedStats);
 	}

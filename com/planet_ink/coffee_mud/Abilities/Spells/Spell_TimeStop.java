@@ -33,6 +33,12 @@ public class Spell_TimeStop extends Spell
 
 	protected Vector fixed=new Vector();
 
+    public void setMiscText(String newText)
+    {
+        super.setMiscText(newText);
+        fixed=new Vector();
+    }
+    
 	public void unInvoke()
 	{
 		// undo the affects of this spell

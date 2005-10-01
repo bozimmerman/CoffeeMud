@@ -37,6 +37,18 @@ public class Fighter_PointBlank extends StdAbility
 
 	protected Vector qualifiedWeapons=new Vector();
 
+    protected void cloneFix(Ability E)
+    {
+        super.cloneFix(E);
+        qualifiedWeapons=((Vector)((Fighter_PointBlank)E).qualifiedWeapons.clone());
+    }
+    
+    public void setMiscText(String newText)
+    {
+        super.setMiscText(newText);
+        qualifiedWeapons=new Vector();
+    }
+    
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);

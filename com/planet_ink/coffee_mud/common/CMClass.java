@@ -1046,6 +1046,14 @@ public class CMClass extends ClassLoader
 		return (ancestorCl.isAssignableFrom(cl)) ;
 	}
 
+    public static String classPtrStr(Object e)
+    {
+        String ptr=""+e;
+        int x=ptr.lastIndexOf("@");
+        if(x>0)return ptr.substring(x+1);
+        return ptr;
+    }
+    
 	public static String classID(Object e)
 	{
 		if(e!=null)
