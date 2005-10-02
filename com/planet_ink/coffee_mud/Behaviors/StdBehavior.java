@@ -53,7 +53,9 @@ public class StdBehavior implements Behavior
 	{
 		try
 		{
-			return (Behavior)this.clone();
+            Behavior B=(Behavior)this.clone();
+            B.setParms(getParms());
+            return B;
 		}
 		catch(CloneNotSupportedException e)
 		{

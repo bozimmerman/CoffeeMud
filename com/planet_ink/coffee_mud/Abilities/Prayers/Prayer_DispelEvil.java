@@ -54,6 +54,8 @@ public class Prayer_DispelEvil extends Prayer
 				if(Sense.isEvil(target))
 					MUDFight.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The wicked spell <DAMAGE> <T-NAME>!");
 			}
+            else
+                return false;
 		}
 		else
 			return maliciousFizzle(mob,target,"<S-NAME> exorcise(s) <T-NAMESELF>, but nothing emerges.");
