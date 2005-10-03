@@ -1773,7 +1773,6 @@ public class StdMOB implements MOB
 					}
 				}
 
-System.out.println(msg.targetMinor()+"/"+CMMsg.TYP_ACID+"/"+msg.value());                
 				if((msg.targetMinor()!=CMMsg.TYP_WEAPONATTACK)&&(msg.value()<=0))
 				{
 					int chanceToFail=Integer.MIN_VALUE;

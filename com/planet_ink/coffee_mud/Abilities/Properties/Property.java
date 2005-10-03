@@ -240,6 +240,11 @@ public class Property implements Ability, Cloneable
             strs[1]=newText.substring(maskindex+5).trim();
             strs[0]=newText.substring(0,maskindex).trim();
         }
+        else
+        {
+            strs[0]=newText;
+            strs[1]="";
+        }
         return strs;
     }
 }
