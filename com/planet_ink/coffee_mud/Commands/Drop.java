@@ -121,7 +121,7 @@ public class Drop extends BaseItemParser
             else
             {
     			if(dropThis==null) break;
-    			if((Sense.canBeSeenBy(dropThis,mob))
+    			if((Sense.canBeSeenBy(dropThis,mob)||(dropThis instanceof Light))
     			&&(!V.contains(dropThis)))
     				V.addElement(dropThis);
             }

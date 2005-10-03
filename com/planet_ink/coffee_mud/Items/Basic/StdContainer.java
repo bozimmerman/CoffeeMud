@@ -135,11 +135,11 @@ public class StdContainer extends StdItem implements Container
 					Item newitem=(Item)msg.tool();
 					if(newitem.container()==this)
 					{
-						if((!Sense.canBeSeenBy(newitem,mob))
+						if((!(Sense.canBeSeenBy(newitem,mob)||(newitem instanceof Light)))
 						&&(amWearingAt(Item.INVENTORY))
 						&&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0))
 						{
-							mob.tell("You can't see that.");
+							mob.tell(mob,newitem,this,"You can't see <T-NAME> in <O-NAME>.");
 							return false;
 						}
 						else
@@ -175,7 +175,7 @@ public class StdContainer extends StdItem implements Container
 						}
 						return true;
 					}
-					mob.tell("You don't see that here.");
+                    mob.tell(mob,newitem,this,"You can't see <T-NAME> in <O-NAME>.");
 					return false;
 				}
 				else

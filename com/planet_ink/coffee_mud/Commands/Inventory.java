@@ -31,6 +31,7 @@ public class Inventory extends StdCommand
 	{
 		StringBuffer msg=new StringBuffer("");
 		boolean foundAndSeen=false;
+        boolean foundButUnseen=false;
 		Vector viewItems=new Vector();
 		Hashtable moneyItems=new Hashtable();
 		Vector V=null;
@@ -45,6 +46,8 @@ public class Inventory extends StdCommand
 			{
 				if(Sense.canBeSeenBy(thisItem,seer))
 					foundAndSeen=true;
+                else
+                    foundButUnseen=true;
 				if((!(thisItem instanceof Coins))||(((Coins)thisItem).getDenomination()==0.0))
 					viewItems.addElement(thisItem);
 				else
@@ -66,7 +69,10 @@ public class Inventory extends StdCommand
 			}
 		}
 		if((viewItems.size()>0)&&(!foundAndSeen))
+        {
 			viewItems.clear();
+            foundButUnseen=true;
+        }
 		else
 		if((mask!=null)&&(mask.trim().length()>0))
 		{
@@ -96,6 +102,9 @@ public class Inventory extends StdCommand
 		{
 			if(viewItems.size()>0)
 				msg.append(CMLister.itemLister(seer,viewItems,true,"MItem","",false));
+            if(foundButUnseen)
+                msg.append("(stuff you can't see right now)");
+                
 			if(moneyItems.size()>0)
 			{
 			    msg.append("\n\r^HMoney:^N\n\r");

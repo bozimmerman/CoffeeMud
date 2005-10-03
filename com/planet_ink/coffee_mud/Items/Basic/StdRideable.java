@@ -557,6 +557,13 @@ public class StdRideable extends StdContainer implements Rideable
 		super.executeMsg(myHost,msg);
 		switch(msg.targetMinor())
 		{
+        case CMMsg.TYP_LOOK:
+        case CMMsg.TYP_EXAMINE:
+            if((msg.target()==this)
+            &&(numRiders()>0)
+            &&(Sense.canBeSeenBy(this,msg.source())))
+                msg.addTrailerMsg(new FullMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,displayText(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+            break;
 		case CMMsg.TYP_DISMOUNT:
 			if((msg.tool()!=null)
 			   &&(msg.tool() instanceof Rider))

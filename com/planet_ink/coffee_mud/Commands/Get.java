@@ -131,8 +131,7 @@ public class Get extends BaseItemParser
 				    while(commands.size()>fromDex)
 				        commands.removeElementAt(fromDex);
 				    Environmental fromWhat=mob.location().fetchFromMOBRoomFavorsItems(mob,null,fromWhatName,Item.WORN_REQ_UNWORNONLY);
-				    if((fromWhat==null)
-				    ||(!Sense.canBeSeenBy(fromWhat,mob)))
+				    if(fromWhat==null)
 				    {
 				        mob.tell("You don't see '"+fromWhatName+"' here.");
 				        return false;
@@ -179,7 +178,7 @@ public class Get extends BaseItemParser
 				}
 				if(getThis==null) break;
 				if((getThis instanceof Item)
-				&&(Sense.canBeSeenBy(getThis,mob))
+				&&((Sense.canBeSeenBy(getThis,mob)||(getThis instanceof Light)))
 				&&((!allFlag)||Sense.isGettable(((Item)getThis))||(getThis.displayText().length()>0))
 				&&(!V.contains(getThis)))
 					V.addElement(getThis);
@@ -206,7 +205,7 @@ public class Get extends BaseItemParser
 			{
 				Item container=(Item)containers.elementAt(0);
 				if(((Container)container).isOpen())
-					mob.tell("You don't see that in "+container.name()+".");
+                    mob.tell(mob,container,null,"You don't see that in <T-NAME>.");
 				else
 					mob.tell(container.name()+" is closed.");
 			}

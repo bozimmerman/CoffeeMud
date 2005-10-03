@@ -50,9 +50,11 @@ public class WillQualify extends BaseAbleLister{
 					}
 					Ability A=CMClass.getAbility(cimable.abilityName);
 					if(A!=null)
-					thisLine.append("^N[^H" + Util.padRight("" + l, 3) + "^?] "
-					        + Util.padRight("^<HELP^>"+A.name()+"^</HELP^>", 19) + " "
-					        + Util.padRight(A.requirements(), (col == 2) ? 12 : 13));
+                    {
+    					thisLine.append("^N[^H" + Util.padRight("" + l, 3) + "^?] "
+    					        + Util.padRight("^<HELP^>"+A.name()+"^</HELP^>", 19) + " "
+    					        + Util.padRight(A.requirements()+(cimable.autoGain?" *":""), (col == 2) ? 12 : 13));
+                    }
 				}
 			}
 			if (thisLine.length() > 0) 
@@ -65,7 +67,7 @@ public class WillQualify extends BaseAbleLister{
 		if (msg.length() == 0)
 		        return msg;
 		msg.insert(0, prefix);
-		msg.append("\n\r");
+		msg.append("\n\r* This skill is automatically granted.");
 		return msg;
 	}
 

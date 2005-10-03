@@ -209,6 +209,27 @@ public class Language extends StdAbility
     				helpProfficiency((MOB)affected);
 			}
 		}
+        else
+        if((affected instanceof MOB)
+        &&(msg.sourceMinor()==CMMsg.TYP_WRITE)
+        &&(msg.source()==affected)
+        &&(beingSpoken())
+        &&(msg.target() instanceof Item)
+        &&(Sense.isReadable((Item)msg.target()))
+        &&(msg.targetMessage()!=null)
+        &&(msg.targetMessage().length()>0))
+        {
+            Ability L=null;
+            for(int i=msg.target().numEffects()-1;i>=0;i--)
+            {
+                L=msg.target().fetchEffect(i);
+                if((L instanceof Language)&&(!L.ID().equals(ID())))
+                {
+                    msg.source().tell(msg.target().name()+" is already written in "+L.name()+" and can not have "+name()+" writing added.");
+                    return false;
+                }
+            }
+        }
 		return super.okMessage(myHost,msg);
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -332,9 +353,9 @@ public class Language extends StdAbility
                 msg.source().tell("There is nothing written on "+affected.name()+".");
             else
             {
-                String original=scrambleAll(str,numToMess);
                 if(L!=null)
                     numToMess=(int)Math.round(Util.mul(numChars(str),Util.div(100-L.profficiency(),100)));
+                String original=messChars(str,numToMess);
                 str=scrambleAll(str,numToMess);
                 msg.source().tell("It says '"+str+"'");
                 if((L!=null)&&(!original.equals(str)))
