@@ -20,7 +20,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_RideZapper extends Property
+public class Prop_RideZapper extends Prop_HaveZapper
 {
 	public String ID() { return "Prop_RideZapper"; }
 	public String name(){ return "Restrictions to riding";}
@@ -33,9 +33,6 @@ public class Prop_RideZapper extends Property
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg))
-			return false;
-
 		if(affected==null) return true;
 		if(!(affected instanceof Rideable)) return true;
 
@@ -49,7 +46,7 @@ public class Prop_RideZapper extends Property
 		case CMMsg.TYP_SLEEP:
 		case CMMsg.TYP_MOUNT:
 		case CMMsg.TYP_ENTER:
-			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
+			if((!MUDZapper.zapperCheck(text(),mob))&&(didHappen(100)))
 			{
 				mob.location().show(mob,null,affected,CMMsg.MSG_OK_VISUAL,Util.getParmStr(text(),"MESSAGE","<O-NAME> zaps <S-NAME>, making <S-HIM-HER> jump up!"));
 				return false;

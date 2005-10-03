@@ -21,7 +21,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_WearZapper extends Property
+public class Prop_WearZapper extends Prop_HaveZapper
 {
 	public String ID() { return "Prop_WearZapper"; }
 	public String name(){ return "Restrictions to wielding/wearing/holding";}
@@ -34,9 +34,6 @@ public class Prop_WearZapper extends Property
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg))
-			return false;
-
 		if(affected==null) return false;
 		if(!(affected instanceof Item)) return false;
 		Item myItem=(Item)affected;
@@ -49,21 +46,21 @@ public class Prop_WearZapper extends Property
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_HOLD:
-			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
+			if((!MUDZapper.zapperCheck(text(),mob))&&(didHappen(100)))
 			{
 				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out of <S-HIS-HER> hands!"));
 				return false;
 			}
 			break;
 		case CMMsg.TYP_WEAR:
-			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
+			if((!MUDZapper.zapperCheck(text(),mob))&&(didHappen(100)))
 			{
 				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out of <S-HIS-HER> hands!"));
 				return false;
 			}
 			break;
 		case CMMsg.TYP_WIELD:
-			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
+			if((!MUDZapper.zapperCheck(text(),mob))&&(didHappen(100)))
 			{
 				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out of <S-HIS-HER> hands!"));
 				return false;

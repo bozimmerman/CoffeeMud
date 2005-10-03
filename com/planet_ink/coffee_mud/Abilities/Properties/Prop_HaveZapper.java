@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -28,13 +29,35 @@ public class Prop_HaveZapper extends Property
 
 	public String accountForYourself()
 	{
-		return "Ownership restricted as follows: "+MUDZapper.zapperDesc(miscText);
+		return "Ownership restricted as follows: "+MUDZapper.zapperDesc(text());
 	}
 
+    public boolean didHappen(int defaultPct)
+    {
+        int x=text().indexOf("%");
+        if(x<0)
+        {
+            if(Dice.rollPercentage()<=defaultPct)
+                return true;
+            return false;
+        }
+        int mul=1;
+        int tot=0;
+        while((--x)>=0)
+        {
+            if(Character.isDigit(text().charAt(x)))
+                tot+=Util.s_int(""+text().charAt(x))*mul;
+            else
+                x=-1;
+            mul=mul*10;
+        }
+        if(Dice.rollPercentage()<=tot)
+            return true;
+        return false;
+    }
+    
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg))
-			return false;
 		if(affected==null) return false;
 
 		MOB mob=msg.source();
@@ -51,7 +74,7 @@ public class Prop_HaveZapper extends Property
 		case CMMsg.TYP_WIELD:
 			break;
 		case CMMsg.TYP_GET:
-			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
+			if((!MUDZapper.zapperCheck(text(),mob))&&(didHappen(100)))
 			{
 				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and flies out of <S-HIS-HER> hands!"));
 				return false;
@@ -59,7 +82,7 @@ public class Prop_HaveZapper extends Property
 			break;
 		case CMMsg.TYP_EAT:
 		case CMMsg.TYP_DRINK:
-			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
+			if((!MUDZapper.zapperCheck(text(),mob))&&(didHappen(100)))
 			{
 				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out <S-HIS-HER> mouth!"));
 				return false;
