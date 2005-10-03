@@ -29,16 +29,50 @@ public class Prop_HaveResister extends Property
 	public String name(){ return "Resistance due to ownership";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	public boolean bubbleAffect(){return true;}
-	private CharStats adjCharStats=null;
-    private Vector mask=new Vector();
+    protected CharStats adjCharStats=null;
+    protected Vector mask=new Vector();
+    protected String maskString="";
+    protected String parmString="";
+    protected boolean ignoreCharStats=true;
 
+    public static Object[][] stats={
+            {new Integer(CharStats.SAVE_MAGIC),"magic"},
+            {new Integer(CharStats.SAVE_GAS),"gas"},
+            {new Integer(CharStats.SAVE_FIRE),"fire"},
+            {new Integer(CharStats.SAVE_ELECTRIC),"elec"},
+            {new Integer(CharStats.SAVE_MIND),"mind"},
+            {new Integer(CharStats.SAVE_JUSTICE),"justice"},
+            {new Integer(CharStats.SAVE_COLD),"cold"},
+            {new Integer(CharStats.SAVE_ACID),"acid"},
+            {new Integer(CharStats.SAVE_WATER),"water"},
+            {new Integer(CharStats.SAVE_UNDEAD),"evil"},
+            {new Integer(CharStats.SAVE_DISEASE),"disease"},
+            {new Integer(CharStats.SAVE_POISON),"poison"},
+            {new Integer(CharStats.SAVE_PARALYSIS),"paralyze"},
+            {new Integer(CharStats.SAVE_TRAPS),"traps"}
+    };
+    
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		adjCharStats=new DefaultCharStats();
-		setAdjustments(this,adjCharStats);
-        mask.clear();
-        Prop_HaveAdjuster.buildMask(newText,mask);
+        ignoreCharStats=true;
+        for(int i=0;i<stats.length;i++)
+        {
+            adjCharStats.setStat(((Integer)stats[i][0]).intValue(),getProtection((String)stats[i][1]));
+            if(adjCharStats.getStat(((Integer)stats[i][0]).intValue())!=0)
+                ignoreCharStats=false;
+        }
+        mask=new Vector();
+        parmString=newText;
+        int maskindex=newText.toUpperCase().indexOf("MASK=");
+        if(maskindex>0)
+        {
+            maskString=newText.substring(maskindex+5).trim();
+            if(maskString.length()>0)
+                Util.addToVector(MUDZapper.zapperCompile(maskString),mask);
+            parmString=newText.substring(0,maskindex).trim();
+        }
 	}
 
 	private void ensureStarted()
@@ -47,36 +81,21 @@ public class Prop_HaveResister extends Property
 			setMiscText(text());
 	}
 
-	public static void adjCharStats(CharStats affectedStats,
-									CharStats adjCharStats)
-	{
-		affectedStats.setStat(CharStats.SAVE_MAGIC,affectedStats.getStat(CharStats.SAVE_MAGIC)+adjCharStats.getStat(CharStats.SAVE_MAGIC));
-		affectedStats.setStat(CharStats.SAVE_GAS,affectedStats.getStat(CharStats.SAVE_GAS)+adjCharStats.getStat(CharStats.SAVE_GAS));
-		affectedStats.setStat(CharStats.SAVE_FIRE,affectedStats.getStat(CharStats.SAVE_FIRE)+adjCharStats.getStat(CharStats.SAVE_FIRE));
-		affectedStats.setStat(CharStats.SAVE_ELECTRIC,affectedStats.getStat(CharStats.SAVE_ELECTRIC)+adjCharStats.getStat(CharStats.SAVE_ELECTRIC));
-		affectedStats.setStat(CharStats.SAVE_MIND,affectedStats.getStat(CharStats.SAVE_MIND)+adjCharStats.getStat(CharStats.SAVE_MIND));
-		affectedStats.setStat(CharStats.SAVE_JUSTICE,affectedStats.getStat(CharStats.SAVE_JUSTICE)+adjCharStats.getStat(CharStats.SAVE_JUSTICE));
-		affectedStats.setStat(CharStats.SAVE_COLD,affectedStats.getStat(CharStats.SAVE_COLD)+adjCharStats.getStat(CharStats.SAVE_COLD));
-		affectedStats.setStat(CharStats.SAVE_ACID,affectedStats.getStat(CharStats.SAVE_ACID)+adjCharStats.getStat(CharStats.SAVE_ACID));
-		affectedStats.setStat(CharStats.SAVE_WATER,affectedStats.getStat(CharStats.SAVE_WATER)+adjCharStats.getStat(CharStats.SAVE_WATER));
-		affectedStats.setStat(CharStats.SAVE_UNDEAD,affectedStats.getStat(CharStats.SAVE_UNDEAD)+adjCharStats.getStat(CharStats.SAVE_UNDEAD));
-		affectedStats.setStat(CharStats.SAVE_DISEASE,affectedStats.getStat(CharStats.SAVE_DISEASE)+adjCharStats.getStat(CharStats.SAVE_DISEASE));
-		affectedStats.setStat(CharStats.SAVE_POISON,affectedStats.getStat(CharStats.SAVE_POISON)+adjCharStats.getStat(CharStats.SAVE_POISON));
-		affectedStats.setStat(CharStats.SAVE_PARALYSIS,affectedStats.getStat(CharStats.SAVE_PARALYSIS)+adjCharStats.getStat(CharStats.SAVE_PARALYSIS));
-		affectedStats.setStat(CharStats.SAVE_TRAPS,affectedStats.getStat(CharStats.SAVE_TRAPS)+adjCharStats.getStat(CharStats.SAVE_TRAPS));
-	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		ensureStarted();
-        if((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,affectedMOB)))
-    		adjCharStats(affectedStats,adjCharStats);
+        if((!ignoreCharStats)
+        &&(canResist(affectedMOB))
+        &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,affectedMOB))))
+            for(int i=0;i<stats.length;i++)
+                affectedStats.setStat(((Integer)stats[i][0]).intValue(),affectedStats.getStat(((Integer)stats[i][0]).intValue())+adjCharStats.getStat(((Integer)stats[i][0]).intValue()));
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
 
 
-	public static boolean checkProtection(Ability me, String protType)
+	public boolean checkProtection(String protType)
 	{
-		int prot=getProtection(me,protType);
+		int prot=getProtection(protType);
 		if(prot==0) return false;
 		if(prot<5) prot=5;
 		if(prot>95) prot=95;
@@ -85,23 +104,24 @@ public class Prop_HaveResister extends Property
 		return false;
 	}
 
-	public static int getProtection(Ability me, String protType)
+	public int getProtection(String protType)
 	{
-		int z=me.text().toUpperCase().indexOf(protType.toUpperCase());
+        String nonMask=parmString.toUpperCase();
+		int z=nonMask.indexOf(protType.toUpperCase());
 		if(z<0) 
             return 0;
-		int x=me.text().indexOf("%",z+protType.length());
+		int x=nonMask.indexOf("%",z+protType.length());
 		if(x<0)
 			return 50;
 		int mul=1;
 		int tot=0;
 		while((--x)>=0)
 		{
-			if(Character.isDigit(me.text().charAt(x)))
-				tot+=Util.s_int(""+me.text().charAt(x))*mul;
+			if(Character.isDigit(nonMask.charAt(x)))
+				tot+=Util.s_int(""+nonMask.charAt(x))*mul;
 			else
 			{
-				if(me.text().charAt(x)=='-')
+				if(nonMask.charAt(x)=='-')
 					mul=mul*-1;
 				x=-1;
 			}
@@ -109,25 +129,8 @@ public class Prop_HaveResister extends Property
 		}
 		return tot;
 	}
-	public static void setAdjustments(Ability me, CharStats adjCharStats)
-	{
-		adjCharStats.setStat(CharStats.SAVE_MAGIC,getProtection(me,"magic"));
-		adjCharStats.setStat(CharStats.SAVE_GAS,getProtection(me,"gas"));
-		adjCharStats.setStat(CharStats.SAVE_FIRE,getProtection(me,"fire"));
-		adjCharStats.setStat(CharStats.SAVE_ELECTRIC,getProtection(me,"elec"));
-		adjCharStats.setStat(CharStats.SAVE_MIND,getProtection(me,"mind"));
-		adjCharStats.setStat(CharStats.SAVE_JUSTICE,getProtection(me,"justice"));
-		adjCharStats.setStat(CharStats.SAVE_COLD,getProtection(me,"cold"));
-		adjCharStats.setStat(CharStats.SAVE_ACID,getProtection(me,"acid"));
-		adjCharStats.setStat(CharStats.SAVE_WATER,getProtection(me,"water"));
-		adjCharStats.setStat(CharStats.SAVE_UNDEAD,getProtection(me,"evil"));
-		adjCharStats.setStat(CharStats.SAVE_DISEASE,getProtection(me,"disease"));
-		adjCharStats.setStat(CharStats.SAVE_POISON,getProtection(me,"poison"));
-		adjCharStats.setStat(CharStats.SAVE_PARALYSIS,getProtection(me,"paralyze"));
-		adjCharStats.setStat(CharStats.SAVE_TRAPS,getProtection(me,"traps"));
-	}
-
-	public static void resistAffect(CMMsg msg, MOB mob, Ability me, Vector mask)
+    
+	public void resistAffect(CMMsg msg, MOB mob, Ability me, Vector mask)
 	{
 		if(mob.location()==null) return;
 		if(mob.amDead()) return;
@@ -136,29 +139,37 @@ public class Prop_HaveResister extends Property
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0)
 		&&(msg.tool()!=null)
-	    &&(msg.tool() instanceof Weapon)
-        &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob))))
+	    &&(msg.tool() instanceof Weapon))
 		{
-			if(Prop_HaveResister.checkProtection(me,"weapons"))
-				msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection(me,"weapons"),100.0))));
+			if(checkProtection("weapons"))
+            {
+                if((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob)))
+    				msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection("weapons"),100.0))));
+            }
 			else
 			{
 				Weapon W=(Weapon)msg.tool();
-				if((W.weaponType()==Weapon.TYPE_BASHING)&&(Prop_HaveResister.checkProtection(me,"blunt")))
-					msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection(me,"blunt"),100.0))));
-				if((W.weaponType()==Weapon.TYPE_PIERCING)&&(Prop_HaveResister.checkProtection(me,"pierce")));
-					msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection(me,"pierce"),100.0))));
-			    if((W.weaponType()==Weapon.TYPE_SLASHING)&&(Prop_HaveResister.checkProtection(me,"slash")));
-			    	msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection(me,"slash"),100.0))));
+				if((W.weaponType()==Weapon.TYPE_BASHING)
+                &&(checkProtection("blunt"))
+                &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob))))
+					msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection("blunt"),100.0))));
+				if((W.weaponType()==Weapon.TYPE_PIERCING)
+                &&(checkProtection("pierce"))
+                &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob))))
+					msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection("pierce"),100.0))));
+			    if((W.weaponType()==Weapon.TYPE_SLASHING)
+                &&(checkProtection("slash"))
+                &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob))))
+			    	msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection("slash"),100.0))));
 			}
 			return;
 		}
 	}
 
     public String accountForYourself()
-    { return "The owner gains resistances: "+Prop_Resistance.describeResistance(text());}
+    { return "The owner gains resistances: "+describeResistance(text());}
 
-	public static boolean isOk(CMMsg msg, Ability me, MOB mob, Vector mask)
+	public boolean isOk(CMMsg msg, Ability me, MOB mob, Vector mask)
 	{
 		if(!Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			return true;
@@ -168,10 +179,9 @@ public class Prop_HaveResister extends Property
 			if(msg.tool() instanceof Ability)
 			{
 				Ability A=(Ability)msg.tool();
-				if((A.ID().equals("Spell_Summon"))
-				   ||(A.ID().equals("Spell_Gate")))
+				if(Util.bset(A.flags(),Ability.FLAG_TRANSPORTING))
 				{
-					if((Prop_HaveResister.checkProtection(me,"teleport"))
+					if((checkProtection("teleport"))
                     &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob))))
 					{
 						msg.source().tell("You can't seem to fixate on '"+mob.name()+"'.");
@@ -183,7 +193,7 @@ public class Prop_HaveResister extends Property
 				&&(Util.bset(A.flags(),Ability.FLAG_HOLY))
 				&&(!Util.bset(A.flags(),Ability.FLAG_UNHOLY)))
 				{
-					if((Prop_HaveResister.checkProtection(me,"holy"))
+					if((checkProtection("holy"))
                     &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob))))
 					{
 						mob.location().show(msg.source(),mob,CMMsg.MSG_OK_VISUAL,"Holy energies from <S-NAME> are repelled from <T-NAME>.");
@@ -194,24 +204,35 @@ public class Prop_HaveResister extends Property
 		}
 		return true;
 	}
+    
+    public String describeResistance(String text)
+    {
+        String id=parmString+".";
+        if(maskString.length()>0)
+            id+="  Restrictions: "+MUDZapper.zapperDesc(maskString)+".";
+        return id;
+    }
+    
+    public boolean canResist(Environmental E)
+    {
+        if((affected instanceof Item)
+        &&(E instanceof MOB)
+        &&(!((Item)affected).amDestroyed())
+        &&(E==((Item)affected).owner()))
+            return true;
+        return false;
+    }
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg))
-			return false;
-
-		if((affected!=null)
-		&&(affected instanceof Item)
-		&&(!((Item)affected).amDestroyed())
-		&&(((Item)affected).owner() instanceof MOB))
+        if(canResist(msg.target()))
 		{
-			MOB mob=(MOB)((Item)affected).owner();
-			if((msg.amITarget(mob))
-            &&(mob.location()!=null))
+			MOB mob=(MOB)msg.target();
+			if((msg.amITarget(mob))&&(mob.location()!=null))
 			{
-				if((msg.value()<=0)&&(!Prop_HaveResister.isOk(msg,this,mob,mask)))
+				if((msg.value()<=0)&&(!isOk(msg,this,mob,mask)))
 					return false;
-				Prop_HaveResister.resistAffect(msg,mob,this,mask);
+				resistAffect(msg,mob,this,mask);
 			}
 		}
 		return true;

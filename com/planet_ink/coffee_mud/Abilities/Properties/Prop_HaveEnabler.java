@@ -21,40 +21,29 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_HaveEnabler extends Property
+public class Prop_HaveEnabler extends Prop_SpellAdder
 {
 	public String ID() { return "Prop_HaveEnabler"; }
 	public String name(){ return "Granting skills when owned";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	private Item myItem=null;
-	private MOB lastMOB=null;
-    private Vector lastMOBeffected=new Vector();
-    boolean processing2=false;
-	boolean processing=false;
-	protected Vector spellV=null;
-    private Vector mask=new Vector();
+    protected Item myItem=null;
+    protected Vector lastMOBeffected=new Vector();
+    protected boolean processing2=false;
     
-	public Vector getMySpellsV()
-	{
-		if(spellV!=null) return spellV;
-		spellV=Prop_SpellAdder.getMySpellsV(this);
-		return spellV;
-	}
-
-	public void setMiscText(String newText)
-	{
-		super.setMiscText(newText);
-		spellV=null;
-        mask.clear();
-        Prop_HaveAdjuster.buildMask(newText,mask);
-	}
-
-
     public String accountForYourself()
-    { return Prop_FightSpellCast.spellAccountingsWithMask(getMySpellsV(),"Grants "," to the owner.",text());}
+    { return spellAccountingsWithMask("Grants "," to the owner.");}
 
-	public void addMeIfNeccessary(MOB newMOB)
+    public void setMiscText(String newText)
+    {
+        super.setMiscText(newText);
+        lastMOBeffected=new Vector();
+    }
+	public boolean addMeIfNeccessary(Environmental source, Environmental target)
 	{
+        if((!(target instanceof MOB))
+        ||((mask.size()>0)&&(!MUDZapper.zapperCheckReal(mask,target))))
+            return false;
+        MOB newMOB=(MOB)target;
 		Vector V=getMySpellsV();
 		int proff=100;
 		int x=text().indexOf("%");
@@ -72,11 +61,11 @@ public class Prop_HaveEnabler extends Property
 			}
 			proff=tot;
 		}
+        boolean clearedYet=false;
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
-			if((newMOB.fetchAbility(A.ID())==null)
-            &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,newMOB))))
+			if(newMOB.fetchAbility(A.ID())==null)
 			{
 				String t=A.text();
 				if(t.length()>0)
@@ -92,44 +81,50 @@ public class Prop_HaveEnabler extends Property
 				newMOB.addAbility(A);
 				A.setBorrowed(newMOB,true);
                 A.autoInvocation(newMOB);
+                if(!clearedYet)
+                {
+                    lastMOBeffected.clear();    
+                    clearedYet=true;
+                }
                 if((A2==null)&&(!lastMOBeffected.contains(A.ID()))) 
                     lastMOBeffected.addElement(A.ID());
 			}
 		}
 		lastMOB=newMOB;
+        return true;
 	}
 
-    public void setAffectedOne(Environmental E)
+    public void removeMyAffectsFrom(Environmental E)
     {
-        if(E==null)
+        if(!(E instanceof MOB))
+            return;
+        Vector V=getMySpellsV();
+        for(int v=0;v<V.size();v++)
         {
-            if((lastMOB!=null)
-            &&(lastMOB.location()!=null))
-                removeMyAffectsFromLastMob();
+            Ability A=(Ability)V.elementAt(v);
+            ((MOB)E).delAbility(A);
         }
-        super.setAffectedOne(E);
+        if(E==lastMOB)
+        {
+            for(Iterator e=lastMOBeffected.iterator();e.hasNext();)
+            {
+                String AID=(String)e.next();
+                Ability A2=lastMOB.fetchEffect(AID);
+                if(A2!=null)
+                {
+                    A2.unInvoke();
+                    A2.delEffect(A2);
+                }
+            }
+            lastMOBeffected.clear();
+        }
     }
     
 	public void removeMyAffectsFromLastMob()
 	{
-        if(lastMOB==null) return;
-		Vector V=getMySpellsV();
-		for(int v=0;v<V.size();v++)
-		{
-			Ability A=(Ability)V.elementAt(v);
-			lastMOB.delAbility(A);
-		}
-        for(Iterator e=lastMOBeffected.iterator();e.hasNext();)
-        {
-            String AID=(String)e.next();
-            Ability A2=lastMOB.fetchEffect(AID);
-            if(A2!=null)
-            {
-                A2.unInvoke();
-                A2.delEffect(A2);
-            }
-        }
-        lastMOBeffected.clear();
+        if(!(lastMOB instanceof MOB))
+            return;
+        removeMyAffectsFrom(lastMOB);
 		lastMOB=null;
 	}
 
@@ -137,35 +132,36 @@ public class Prop_HaveEnabler extends Property
     {
         if(processing2) return;
         processing2=true;
-        super.recoverEnvStats();
         if((affected instanceof Item)
-        &&(lastMOB!=null)
+        &&(lastMOB instanceof MOB)
         &&((((Item)affected).owner()!=lastMOB)||(((Item)affected).amDestroyed()))
-        &&(lastMOB.location()!=null))
+        &&(((MOB)lastMOB).location()!=null))
             removeMyAffectsFromLastMob();
         processing2=false;
     }
     
-	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
+    public void executeMsg(Environmental host, CMMsg msg)
+    {}
+    
+	public void affectEnvStats(Environmental host, EnvStats affectableStats)
 	{
 		if(processing) return;
 		processing=true;
-		if(affectedMOB instanceof Item)
+		if(host instanceof Item)
 		{
-			myItem=(Item)affectedMOB;
+			myItem=(Item)host;
 
-			if((lastMOB!=null)
+			if((lastMOB instanceof MOB)
 			&&((myItem.owner()!=lastMOB)||(myItem.amDestroyed()))
-			&&(lastMOB.location()!=null))
+			&&(((MOB)lastMOB).location()!=null))
 				removeMyAffectsFromLastMob();
 			
 			if((lastMOB==null)
             &&(myItem.owner()!=null)
 			&&(myItem.owner() instanceof MOB)
             &&(((MOB)myItem.owner()).location()!=null))
-				addMeIfNeccessary((MOB)myItem.owner());
+				addMeIfNeccessary(myItem.owner(),myItem.owner());
 		}
-		super.affectEnvStats(affectedMOB,affectableStats);
 		processing=false;
 	}
 }

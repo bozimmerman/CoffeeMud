@@ -21,79 +21,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_UseSpellCast2 extends Property
+public class Prop_UseSpellCast2 extends Prop_UseSpellCast
 {
-	private boolean processing=false;
 	public String ID() { return "Prop_UseSpellCast2"; }
 	public String name(){ return "Casting spells when used";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected Hashtable spellH=null;
-	protected Vector spellV=null;
-    private Vector mask=new Vector();
     
-	public Vector getMySpellsV()
-	{
-		if(spellV!=null) return spellV;
-		spellV=Prop_SpellAdder.getMySpellsV(this);
-		return spellV;
-	}
-	public Hashtable getMySpellsH()
-	{
-		if(spellH!=null) return spellH;
-		spellH=Prop_SpellAdder.getMySpellsH(this);
-		return spellH;
-	}
-
-	public void setMiscText(String newText)
-	{
-		super.setMiscText(newText);
-		spellV=null;
-		spellH=null;
-        mask.clear();
-        Prop_HaveAdjuster.buildMask(newText,mask);
-	}
-
-
-	public void addMeIfNeccessary(MOB sourceMOB, MOB newMOB)
-	{
-		Vector V=getMySpellsV();
-		for(int v=0;v<V.size();v++)
-		{
-			Ability A=(Ability)V.elementAt(v);
-			Ability EA=newMOB.fetchEffect(A.ID());
-			if((EA==null)
-            &&(Prop_SpellAdder.didHappen(100,this))
-            &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,sourceMOB))))
-			{
-				String t=A.text();
-				A=(Ability)A.copyOf();
-				Vector V2=new Vector();
-				if(t.length()>0)
-				{
-					int x=t.indexOf("/");
-					if(x<0)
-					{
-						V2=Util.parse(t);
-						A.setMiscText("");
-					}
-					else
-					{
-						V2=Util.parse(t.substring(0,x));
-						A.setMiscText(t.substring(x+1));
-					}
-				}
-				A.invoke(sourceMOB,V2,newMOB,true,(affected!=null)?affected.envStats().level():0);
-			}
-		}
-	}
-
-    public String accountForYourself()
-    { return Prop_FightSpellCast.spellAccountingsWithMask(getMySpellsV(),"Casts "," when used.",text());}
-
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.executeMsg(myHost,msg);
-
 		if(processing) return;
 		processing=true;
 

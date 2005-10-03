@@ -21,99 +21,20 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_FightSpellCast extends Property
+public class Prop_FightSpellCast extends Prop_SpellAdder
 {
 	public String ID() { return "Prop_FightSpellCast"; }
 	public String name(){ return "Casting spells when properly used during combat";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected Hashtable spellH=null;
-	protected Vector spellV=null;
-	private boolean processing=false;
-    private Vector mask=new Vector();
-
-	public Vector getMySpellsV()
-	{
-		if(spellV!=null) return spellV;
-		spellV=Prop_SpellAdder.getMySpellsV(this);
-		return spellV;
-	}
-	public Hashtable getMySpellsH()
-	{
-		if(spellH!=null) return spellH;
-		spellH=Prop_SpellAdder.getMySpellsH(this);
-		return spellH;
-	}
-
-	public void setMiscText(String newText)
-	{
-		super.setMiscText(newText);
-		spellV=null;
-		spellH=null;
-        mask.clear();
-        Prop_HaveAdjuster.buildMask(newText,mask);
-	}
-
-
-	public void addMeIfNeccessary(MOB sourceMOB, MOB newMOB)
-	{
-		Vector V=getMySpellsV();
-		for(int v=0;v<V.size();v++)
-		{
-			Ability A=(Ability)V.elementAt(v);
-			Ability EA=newMOB.fetchEffect(A.ID());
-			if((EA==null)&&(Prop_SpellAdder.didHappen(100,this)))
-			{
-				String t=A.text();
-				A=(Ability)A.copyOf();
-				Vector V2=new Vector();
-				if(t.length()>0)
-				{
-					int x=t.indexOf("/");
-					if(x<0)
-					{
-						V2=Util.parse(t);
-						A.setMiscText("");
-					}
-					else
-					{
-						V2=Util.parse(t.substring(0,x));
-						A.setMiscText(t.substring(x+1));
-					}
-				}
-				A.invoke(sourceMOB,V2,newMOB,true,(affected!=null)?affected.envStats().level():0);
-			}
-		}
-	}
-    
-    public static String spellAccountingsWithMask(Vector spellList, String pre, String post, String text)
-    {
-        String[] strs=Prop_HaveAdjuster.separateMask(text);
-        String id="";
-        for(int v=0;v<spellList.size();v++)
-        {
-            Ability A=(Ability)spellList.elementAt(v);
-            if(spellList.size()==1)
-                id+=A.name();
-            else
-            if(v==(spellList.size()-1))
-                id+="and "+A.name();
-            else
-                id+=A.name()+", ";
-        }
-        if(spellList.size()>0)
-            id=pre+id+post;
-        if(strs[1].length()>0)
-            id+="\n\rRestrictions: "+MUDZapper.zapperDesc(strs[1]);
-        return id;
-    }
 
 	public String accountForYourself()
-	{ return spellAccountingsWithMask(getMySpellsV(),"Casts "," during combat.",text());}
+	{ return spellAccountingsWithMask("Casts "," during combat.");}
 
+    public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+    {}
+    
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.executeMsg(myHost,msg);
-
 		if(processing) return;
 
 		if(!(affected instanceof Item)) return;
@@ -138,15 +59,13 @@ public class Prop_FightSpellCast extends Property
 				if((myItem instanceof Weapon)
 				&&(msg.tool()==myItem)
 				&&(myItem.amWearingAt(Item.WIELD))
-				&&(msg.amISource(mob))
-                &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,msg.source()))))
-					addMeIfNeccessary(msg.source(),(MOB)msg.target());
+				&&(msg.amISource(mob)))
+					addMeIfNeccessary(msg.source(),msg.target());
 				else
 				if((msg.amITarget(mob))
 				&&(!myItem.amWearingAt(Item.WIELD))
-				&&(!(myItem instanceof Weapon))
-                &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob))))
-					addMeIfNeccessary((MOB)msg.target(),(MOB)msg.target());
+				&&(!(myItem instanceof Weapon)))
+					addMeIfNeccessary(msg.target(),msg.target());
 			}
 		}
 		processing=false;

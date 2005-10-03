@@ -21,136 +21,37 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_WearSpellCast extends Property
+public class Prop_WearSpellCast extends Prop_HaveSpellCast
 {
 	public String ID() { return "Prop_WearSpellCast"; }
 	public String name(){ return "Casting spells when worn";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	private Item myItem=null;
-	private MOB lastMOB=null;
-	private boolean processing=false;
-    private Vector mask=new Vector();
-
-	protected Hashtable spellH=null;
-	protected Vector spellV=null;
-	public Vector getMySpellsV()
-	{
-		if(spellV!=null) return spellV;
-		spellV=Prop_SpellAdder.getMySpellsV(this);
-		return spellV;
-	}
-	public Hashtable getMySpellsH()
-	{
-		if(spellH!=null) return spellH;
-		spellH=Prop_SpellAdder.getMySpellsH(this);
-		return spellH;
-	}
-
-	public void setMiscText(String newText)
-	{
-		super.setMiscText(newText);
-		spellV=null;
-		spellH=null;
-        mask.clear();
-        Prop_HaveAdjuster.buildMask(newText,mask);
-	}
-
-
     public String accountForYourself()
-    { return Prop_FightSpellCast.spellAccountingsWithMask(Prop_SpellAdder.getMySpellsV(this),"Casts "," on the wearer.",text());}
+    { return spellAccountingsWithMask("Casts "," on the wearer.");}
 
-	public void addMeIfNeccessary(MOB newMOB)
-	{
-		Vector V=getMySpellsV();
-		for(int v=0;v<V.size();v++)
-		{
-			Ability A=(Ability)V.elementAt(v);
-			Ability EA=newMOB.fetchEffect(A.ID());
-			if((EA==null)
-            &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,newMOB))))
-			{
-				String t=A.text();
-				A=(Ability)A.copyOf();
-				Vector V2=new Vector();
-				if(t.length()>0)
-				{
-					int x=t.indexOf("/");
-					if(x<0)
-					{
-						V2=Util.parse(t);
-						A.setMiscText("");
-					}
-					else
-					{
-						V2=Util.parse(t.substring(0,x));
-						A.setMiscText(t.substring(x+1));
-					}
-				}
-				A.invoke(newMOB,V2,newMOB,true,(affected!=null)?affected.envStats().level():0);
-				EA=newMOB.fetchEffect(A.ID());
-			}
-			if(EA!=null)
-				EA.makeLongLasting();
-		}
-		lastMOB=newMOB;
-	}
-
-    public void setAffectedOne(Environmental E)
-    {
-        if(E==null)
-        {
-            if((lastMOB!=null)
-            &&(lastMOB.location()!=null))
-                removeMyAffectsFromLastMob();
-        }
-        super.setAffectedOne(E);
-    }
-    
-	public void removeMyAffectsFromLastMob()
-	{
-		Hashtable h=getMySpellsH();
-		int x=0;
-		while(x<lastMOB.numEffects())
-		{
-			Ability thisAffect=lastMOB.fetchEffect(x);
-			if(thisAffect!=null)
-			{
-				String ID=(String)h.get(thisAffect.ID());
-				if((ID!=null)&&(thisAffect.invoker()==lastMOB))
-				{
-					thisAffect.unInvoke();
-					x=-1;
-				}
-			}
-			x++;
-		}
-		lastMOB=null;
-	}
-
-	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
+	public void affectEnvStats(Environmental host, EnvStats affectableStats)
 	{
 		if(processing) return;
 		processing=true;
-		if((affectedMOB!=null)&&(affectedMOB instanceof Item))
+		if((host!=null)&&(host instanceof Item))
 		{
-			myItem=(Item)affectedMOB;
+			myItem=(Item)host;
 
 			boolean worn=(!myItem.amWearingAt(Item.INVENTORY))
 			&&((!myItem.amWearingAt(Item.FLOATING_NEARBY))||(myItem.fitsOn(Item.FLOATING_NEARBY)));
 			
-			if((lastMOB!=null)
-			&&(lastMOB.location()!=null)
+			if((lastMOB instanceof MOB)
+			&&(((MOB)lastMOB).location()!=null)
 			&&((myItem.owner()!=lastMOB)||(!worn)))
-				removeMyAffectsFromLastMob();
+				removeMyAffectsFromLastMOB();
 
 			if((lastMOB==null)
 			&&(worn)
 			&&(myItem.owner()!=null)
 			&&(myItem.owner() instanceof MOB)
 			&&(((MOB)myItem.owner()).location()!=null))
-				addMeIfNeccessary((MOB)myItem.owner());
+				addMeIfNeccessary(myItem.owner(),myItem.owner());
 		}
-		super.affectEnvStats(affectedMOB,affectableStats);
 		processing=false;
 	}
 }

@@ -20,78 +20,22 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_WearAdjuster extends Property
+public class Prop_WearAdjuster extends Prop_HaveAdjuster
 {
 	public String ID() { return "Prop_WearAdjuster"; }
 	public String name(){ return "Adjustments to stats when worn";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	public boolean bubbleAffect(){return true;}
-	private CharStats adjCharStats=null;
-	private CharState adjCharState=null;
-	private EnvStats  adjEnvStats=null;
-	boolean gotClass=false;
-	boolean gotRace=false;
-	boolean gotSex=false;
-    private Vector mask=new Vector();
-
 
 	public String accountForYourself()
 	{
-		return Prop_HaveAdjuster.fixAccoutingsWithMask("Affects on the wearer: "+text());
+		return super.fixAccoutingsWithMask("Affects on the wearer: "+text());
 	}
-
-	public void setMiscText(String newText)
-	{
-		super.setMiscText(newText);
-		this.adjCharStats=new DefaultCharStats();
-		this.adjEnvStats=new DefaultEnvStats();
-		this.adjCharState=new DefaultCharState();
-        this.mask=new Vector();
-		int gotit=Prop_HaveAdjuster.setAdjustments(newText,adjEnvStats,adjCharStats,adjCharState,mask);
-		gotClass=((gotit&1)==1);
-		gotRace=((gotit&2)==2);
-		gotSex=((gotit&4)==4);
-	}
-
-	private void ensureStarted()
-	{
-		if(adjCharStats==null)
-			setMiscText(text());
-	}
-	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
-	{
-		ensureStarted();
-		if((affectedMOB!=null)
-		&&(affectedMOB instanceof MOB)
-		&&(affected !=null)
-		&&(affected instanceof Item)
-		&&(!((Item)affected).amWearingAt(Item.INVENTORY))
-		&&((!((Item)affected).amWearingAt(Item.FLOATING_NEARBY))||(((Item)affected).fitsOn(Item.FLOATING_NEARBY)))
-        &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,affectedMOB))))
-			Prop_HaveAdjuster.envStuff(affectableStats,adjEnvStats);
-		super.affectEnvStats(affectedMOB,affectableStats);
-	}
-
-	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
-	{
-		ensureStarted();
-		if((affected !=null)
-		&&(affected instanceof Item)
-		&&(!((Item)affected).amWearingAt(Item.INVENTORY))
-		&&((!((Item)affected).amWearingAt(Item.FLOATING_NEARBY))||(((Item)affected).fitsOn(Item.FLOATING_NEARBY)))
-        &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,affectedMOB))))
-			Prop_HaveAdjuster.adjCharStats(affectedStats,gotClass,gotRace,gotSex,adjCharStats);
-		super.affectCharStats(affectedMOB,affectedStats);
-	}
-	public void affectCharState(MOB affectedMOB, CharState affectedState)
-	{
-		ensureStarted();
-		if((affected !=null)
-		&&(affected instanceof Item)
-		&&(!((Item)affected).amWearingAt(Item.INVENTORY))
-		&&((!((Item)affected).amWearingAt(Item.FLOATING_NEARBY))||(((Item)affected).fitsOn(Item.FLOATING_NEARBY)))
-        &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,affectedMOB))))
-			Prop_HaveAdjuster.adjCharState(affectedState,adjCharState);
-		super.affectCharState(affectedMOB,affectedState);
-	}
+    public boolean canApply(MOB mob)
+    {
+        if(!super.canApply(mob))
+            return false;
+        if((!((Item)affected).amWearingAt(Item.INVENTORY))
+        &&((!((Item)affected).amWearingAt(Item.FLOATING_NEARBY))||(((Item)affected).fitsOn(Item.FLOATING_NEARBY))))
+            return true;
+        return false;
+    }
 }

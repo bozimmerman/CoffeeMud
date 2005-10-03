@@ -21,90 +21,26 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_RideEnabler extends Property
+public class Prop_RideEnabler extends Prop_HaveEnabler
 {
 	public String ID() { return "Prop_RideEnabler"; }
 	public String name(){ return "Granting skills when ridden";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
-	private Vector lastRiders=new Vector();
-	boolean processing=false;
-	protected Vector spellV=null;
-    private Vector mask=new Vector();
+    protected Vector lastRiders=new Vector();
     
-	public Vector getMySpellsV()
-	{
-		if(spellV!=null) return spellV;
-		spellV=Prop_SpellAdder.getMySpellsV(this);
-		return spellV;
-	}
-
-	public void setMiscText(String newText)
-	{
-		super.setMiscText(newText);
-		spellV=null;
-        mask.clear();
-        Prop_HaveAdjuster.buildMask(newText,mask);
-	}
-
-
     public String accountForYourself()
-    { return Prop_FightSpellCast.spellAccountingsWithMask(getMySpellsV(),"Grants "," to those mounted.",text());}
+    { return spellAccountingsWithMask("Grants "," to those mounted.");}
 
-	public void addMeIfNeccessary(MOB newMOB)
-	{
-		Vector V=getMySpellsV();
-		int proff=100;
-		int x=text().indexOf("%");
-		if(x>0)
-		{
-			int mul=1;
-			int tot=0;
-			while((--x)>=0)
-			{
-				if(Character.isDigit(text().charAt(x)))
-					tot+=Util.s_int(""+text().charAt(x))*mul;
-				else
-					x=-1;
-				mul=mul*10;
-			}
-			proff=tot;
-		}
-		for(int v=0;v<V.size();v++)
-		{
-			Ability A=(Ability)V.elementAt(v);
-			if((newMOB.fetchAbility(A.ID())==null)
-            &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,newMOB))))
-			{
-				String t=A.text();
-				if(t.length()>0)
-				{
-					x=t.indexOf("/");
-					if(x<0)
-						A.setMiscText("");
-					else
-						A.setMiscText(t.substring(x+1));
-				}
-				A.setProfficiency(proff);
-				newMOB.addAbility(A);
-				A.setBorrowed(newMOB,true);
-			}
-		}
-		if(!lastRiders.contains(newMOB))	lastRiders.addElement(newMOB);
-	}
 
-	public void removeMyAffectsFromRider(MOB E)
-	{
-		Vector V=getMySpellsV();
-		for(int v=0;v<V.size();v++)
-		{
-			Ability A=(Ability)V.elementAt(v);
-			E.delAbility(A);
-		}
-		while(lastRiders.contains(E))
-			lastRiders.removeElement(E);
-	}
-
-	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
+    public void setMiscText(String newText)
+    { 
+        super.setMiscText(newText);
+        lastRiders=new Vector();
+    }
+    public void recoverEnvStats()
+    {}
+    
+	public void affectEnvStats(Environmental host, EnvStats affectableStats)
 	{
 		if(processing) return;
 		processing=true;
@@ -118,17 +54,23 @@ public class Prop_RideEnabler extends Property
 				{
 					MOB M=(MOB)R;
 					if((!lastRiders.contains(M))&&(RI.amRiding(M)))
-						addMeIfNeccessary(M);
+                    {
+						if(addMeIfNeccessary(M,M))
+                            lastRiders.add(M);
+                    }
 				}
 			}
 			for(int i=lastRiders.size()-1;i>=0;i--)
 			{
 				MOB M=(MOB)lastRiders.elementAt(i);
 				if(!RI.amRiding(M))
-					removeMyAffectsFromRider(M);
+                {
+					removeMyAffectsFrom(M);
+                    while(lastRiders.contains(M))
+                        lastRiders.removeElement(M);
+                }
 			}
 		}
-		super.affectEnvStats(affectedMOB,affectableStats);
 		processing=false;
 	}
 }

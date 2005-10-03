@@ -21,105 +21,35 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_HereSpellCast extends Property
+public class Prop_HereSpellCast extends Prop_HaveSpellCast
 {
 	public String ID() { return "Prop_HereSpellCast"; }
 	public String name(){ return "Casting spells when here";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	public boolean bubbleAffect(){return true;}
-	private boolean processing=false;
 	protected int lastNum=-1;
-
-	protected Vector lastMOBs=new Vector();
-	protected Hashtable spellH=null;
-	protected Vector spellV=null;
-    private Vector mask=new Vector();
-    
-	public Vector getMySpellsV()
-	{
-		if(spellV!=null) return spellV;
-		spellV=Prop_SpellAdder.getMySpellsV(this);
-		return spellV;
-	}
-	public Hashtable getMySpellsH()
-	{
-		if(spellH!=null) return spellH;
-		spellH=Prop_SpellAdder.getMySpellsH(this);
-		return spellH;
-	}
-
-	public void setMiscText(String newText)
-	{
-		super.setMiscText(newText);
-		spellV=null;
-		spellH=null;
-        mask.clear();
-        Prop_HaveAdjuster.buildMask(newText,mask);
-	}
-
+    private Vector lastMOBs=new Vector();
 
     public String accountForYourself()
-    { return Prop_FightSpellCast.spellAccountingsWithMask(getMySpellsV(),"Casts "," on those here.",text());}
+    { return spellAccountingsWithMask("Casts "," on those here.");}
 
-	public void addMeIfNeccessary(MOB newMOB)
-	{
-		Vector V=getMySpellsV();
-		for(int v=0;v<V.size();v++)
-		{
-			Ability A=(Ability)V.elementAt(v);
-			Ability EA=newMOB.fetchEffect(A.ID());
-			if((EA==null)
-            &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,newMOB))))
-			{
-				String t=A.text();
-				A=(Ability)A.copyOf();
-				Vector V2=new Vector();
-				if(t.length()>0)
-				{
-					int x=t.indexOf("/");
-					if(x<0)
-					{
-						V2=Util.parse(t);
-						A.setMiscText("");
-					}
-					else
-					{
-						V2=Util.parse(t.substring(0,x));
-						A.setMiscText(t.substring(x+1));
-					}
-				}
-				A.invoke(newMOB,V2,newMOB,true,0);
-				EA=newMOB.fetchEffect(A.ID());
-			}
-			if(EA!=null)
-				EA.makeLongLasting();
-		}
-	}
-
+    public void setMiscText(String newText)
+    { 
+        super.setMiscText(newText);
+        lastMOBs=new Vector();
+    }
+    
 	public void process(MOB mob, Room room, int code) // code=0 add/sub, 1=addon, 2=subon
 	{
 		if((code==2)||((code==0)&&(lastNum!=room.numInhabitants())))
 		{
-			Hashtable h=getMySpellsH();
 			for(int v=lastMOBs.size()-1;v>=0;v--)
 			{
 				MOB lastMOB=(MOB)lastMOBs.elementAt(v);
 				if((lastMOB.location()!=room)
 				||((mob==lastMOB)&&(code==2)))
 				{
-					int x=0;
-					while(x<lastMOB.numEffects())
-					{
-						Ability thisAffect=lastMOB.fetchEffect(x);
-						if((thisAffect!=null)
-						&&(h.containsKey(thisAffect.ID())
-						&&(thisAffect.invoker()==lastMOB)))
-						{
-							thisAffect.unInvoke();
-							x=-1;
-						}
-						x++;
-					}
+                    removeMyAffectsFrom(lastMOB);
 					lastMOBs.removeElementAt(v);
 				}
 			}
@@ -128,8 +58,8 @@ public class Prop_HereSpellCast extends Property
 		if((!lastMOBs.contains(mob))
 		&&((code==1)||((code==0)&&(room.isInhabitant(mob)))))
 		{
-			addMeIfNeccessary(mob);
-			lastMOBs.addElement(mob);
+			if(addMeIfNeccessary(mob,mob))
+    			lastMOBs.addElement(mob);
 		}
 	}
 
@@ -147,13 +77,12 @@ public class Prop_HereSpellCast extends Property
 			process(msg.source(),(Room)affected,2);
 	}
 	
-	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
+	public void affectEnvStats(Environmental host, EnvStats affectableStats)
 	{
 		if(processing) return;
 		processing=true;
-		if((affectedMOB instanceof MOB)&&(affected instanceof Room))
-			process((MOB)affectedMOB, (Room)affected,0);
-		super.affectEnvStats(affectedMOB,affectableStats);
+		if((host instanceof MOB)&&(affected instanceof Room))
+			process((MOB)host, (Room)affected,0);
 		processing=false;
 	}
 }

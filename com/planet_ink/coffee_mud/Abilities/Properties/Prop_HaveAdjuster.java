@@ -30,40 +30,15 @@ public class Prop_HaveAdjuster extends Property
 	public String name(){ return "Adjustments to stats when owned";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	public boolean bubbleAffect(){return true;}
-	private CharStats adjCharStats=null;
-	private CharState adjCharState=null;
-	private EnvStats adjEnvStats=null;
-	boolean gotClass=false;
-	boolean gotRace=false;
-	boolean gotSex=false;
-    private Vector mask=new Vector();
+	protected CharStats adjCharStats=null;
+    protected CharState adjCharState=null;
+    protected EnvStats adjEnvStats=null;
+    protected boolean gotClass=false;
+    protected boolean gotRace=false;
+    protected boolean gotSex=false;
+    protected Vector mask=new Vector();
     
-    public static String buildMask(String newText, Vector mask)
-    {
-        int maskindex=newText.toUpperCase().indexOf("MASK=");
-        if(maskindex>0)
-        {
-            String maskStr=newText.substring(maskindex+5).trim();
-            if(maskStr.length()>0)
-                Util.addToVector(MUDZapper.zapperCompile(maskStr),mask);
-            newText=newText.substring(0,maskindex).trim();
-        }
-        return newText;
-    }
-
-    public static String[] separateMask(String newText)
-    {
-        String[] strs=new String[2];
-        int maskindex=newText.toUpperCase().indexOf("MASK=");
-        if(maskindex>0)
-        {
-            strs[1]=newText.substring(maskindex+5).trim();
-            strs[0]=newText.substring(0,maskindex).trim();
-        }
-        return strs;
-    }
-    
-	public static int setAdjustments(String newText, 
+	public int setAdjustments(String newText, 
                                      EnvStats adjEnvStats, 
                                      CharStats adjCharStats, 
                                      CharState adjCharState,
@@ -90,7 +65,7 @@ public class Prop_HaveAdjuster extends Property
 		String val=Util.getParmStr(newText,"gen","").toUpperCase();
 		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
 		{
-			adjCharStats.setStat(CharStats.GENDER,val.charAt(0));
+            adjCharStats.setStat(CharStats.GENDER,val.charAt(0));
 			gotSex=true;
 		}
 
@@ -140,7 +115,7 @@ public class Prop_HaveAdjuster extends Property
 		gotSex=((gotit&4)==4);
 	}
 
-	public static void envStuff(EnvStats affectableStats, EnvStats adjEnvStats)
+	public void envStuff(EnvStats affectableStats, EnvStats adjEnvStats)
 	{
 		affectableStats.setAbility(affectableStats.ability()+adjEnvStats.ability());
 		affectableStats.setArmor(affectableStats.armor()+adjEnvStats.armor());
@@ -155,26 +130,38 @@ public class Prop_HaveAdjuster extends Property
 		affectableStats.setHeight(affectableStats.height()+adjEnvStats.height());
 	}
 
+    public boolean canApply(MOB mob)
+    {
+        if((affected!=null)
+        &&(affected instanceof Item)
+        &&(!((Item)affected).amDestroyed())
+        &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob))))
+            return true;
+        return false;
+    }
+    
+    public boolean canApply(Environmental E)
+    {
+        if(E instanceof MOB)
+            return canApply((MOB)E);
+        return false;
+    }
+    
 	private void ensureStarted()
 	{
 		if(adjCharStats==null)
 			setMiscText(text());
 	}
 
-	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
+	public void affectEnvStats(Environmental host, EnvStats affectableStats)
 	{
 		ensureStarted();
-		if((affectedMOB!=null)
-		&&(affectedMOB instanceof MOB)
-		&&(affected!=null)
-		&&(affected instanceof Item)
-		&&(!((Item)affected).amDestroyed())
-        &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,affectedMOB))))
+        if(canApply(host))
 			envStuff(affectableStats,adjEnvStats);
-		super.affectEnvStats(affectedMOB,affectableStats);
+		super.affectEnvStats(host,affectableStats);
 	}
 
-	public static void adjCharStats(CharStats affectedStats,
+	public void adjCharStats(CharStats affectedStats,
 									boolean gotClass,
 									boolean gotRace,
 									boolean gotSex,
@@ -194,7 +181,7 @@ public class Prop_HaveAdjuster extends Property
 		affectedStats.setStat(CharStats.WISDOM,affectedStats.getStat(CharStats.WISDOM)+adjCharStats.getStat(CharStats.WISDOM));
 	}
 
-	public static void adjCharState(CharState affectedState,
+	public void adjCharState(CharState affectedState,
 									CharState adjCharState)
 	{
 		affectedState.setHitPoints(affectedState.getHitPoints()+adjCharState.getHitPoints());
@@ -207,21 +194,20 @@ public class Prop_HaveAdjuster extends Property
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		ensureStarted();
-        if((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,affectedMOB)))
+        if(canApply(affectedMOB))
     		adjCharStats(affectedStats,gotClass,gotRace,gotSex,adjCharStats);
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{
 		ensureStarted();
-        if((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,affectedMOB)))
+        if(canApply(affectedMOB))
     		adjCharState(affectedState,adjCharState);
 		super.affectCharState(affectedMOB,affectedState);
 	}
 
-	public static String fixAccoutingsWithMask(String id)
+	public String fixAccoutingsWithMask(String id)
 	{
-        Vector mask=new Vector();
         String[] strs=separateMask(id);
         id=strs[0];
 		int x=id.toUpperCase().indexOf("ARM");
@@ -271,7 +257,7 @@ public class Prop_HaveAdjuster extends Property
 			}
 		}
         if(strs[1].length()>0)
-            id+="\n\rRestrictions: "+MUDZapper.zapperDesc(strs[1]);
+            id+="  Restrictions: "+MUDZapper.zapperDesc(strs[1]);
 		return id;
 	}
 

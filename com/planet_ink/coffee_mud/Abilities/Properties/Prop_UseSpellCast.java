@@ -21,30 +21,27 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_UseSpellCast extends Property
+public class Prop_UseSpellCast extends Prop_SpellAdder
 {
-	private boolean processing=false;
 	public String ID() { return "Prop_UseSpellCast"; }
 	public String name(){ return "Casting spells when used";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-    private Vector mask=new Vector();
-
-    public void setMiscText(String newText)
-    {
-        super.setMiscText(newText);
-        mask.clear();
-        Prop_HaveAdjuster.buildMask(newText,mask);
-    }
     
-	public void addMeIfNeccessary(MOB sourceMOB, MOB newMOB)
-	{
-		Vector V=Prop_SpellAdder.getMySpellsV(this);
+    public boolean addMeIfNeccessary(Environmental source, Environmental target)
+    {
+        Vector V=getMySpellsV();
+        if((target==null)
+        ||(V.size()==0)
+        ||((mask.size()>0)
+            &&(!MUDZapper.zapperCheckReal(mask,qualifiedMOB(source)))))
+            return false;
+        
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
-			Ability EA=newMOB.fetchEffect(A.ID());
-			if((EA==null)&&(Prop_SpellAdder.didHappen(100,this))
-            &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,sourceMOB))))
+			Ability EA=target.fetchEffect(A.ID());
+			if((EA==null)&&(didHappen(100))
+            &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,qualifiedMOB(source)))))
 			{
 				String t=A.text();
 				A=(Ability)A.copyOf();
@@ -63,18 +60,20 @@ public class Prop_UseSpellCast extends Property
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-				A.invoke(sourceMOB,V2,newMOB,true,(affected!=null)?affected.envStats().level():0);
+				A.invoke(qualifiedMOB(source),V2,target,true,(affected!=null)?affected.envStats().level():0);
 			}
 		}
+        return true;
 	}
 
     public String accountForYourself()
-    { return Prop_FightSpellCast.spellAccountingsWithMask(Prop_SpellAdder.getMySpellsV(this),"Casts "," when used.",text());}
+    { return spellAccountingsWithMask("Casts "," when used.");}
 
+    public void affectEnvStats(Environmental host, EnvStats affectableStats)
+    {}
+    
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.executeMsg(myHost,msg);
-
 		if(processing) return;
 		processing=true;
 

@@ -21,127 +21,40 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_WearEnabler extends Property
+public class Prop_WearEnabler extends Prop_HaveEnabler
 {
 	public String ID() { return "Prop_WearEnabler"; }
 	public String name(){ return "Granting skills when worn/wielded";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	private Item myItem=null;
-	private MOB lastMOB=null;
-	boolean processing=false;
-    boolean processing2=false;
-	protected Vector spellV=null;
-    private Vector mask=new Vector();
-    
-	public Vector getMySpellsV()
-	{
-		if(spellV!=null) return spellV;
-		spellV=Prop_SpellAdder.getMySpellsV(this);
-		return spellV;
-	}
-
-	public void setMiscText(String newText)
-	{
-		super.setMiscText(newText);
-		spellV=null;
-        mask.clear();
-        Prop_HaveAdjuster.buildMask(newText,mask);
-	}
-
 
     public String accountForYourself()
-    { return Prop_FightSpellCast.spellAccountingsWithMask(getMySpellsV(),"Grants "," to the wearer/wielder.",text());}
-
-	public void addMeIfNeccessary(MOB newMOB)
-	{
-		Vector V=getMySpellsV();
-		int proff=100;
-		int x=text().indexOf("%");
-		if(x>0)
-		{
-			int mul=1;
-			int tot=0;
-			while((--x)>=0)
-			{
-				if(Character.isDigit(text().charAt(x)))
-					tot+=Util.s_int(""+text().charAt(x))*mul;
-				else
-					x=-1;
-				mul=mul*10;
-			}
-			proff=tot;
-		}
-		for(int v=0;v<V.size();v++)
-		{
-			Ability A=(Ability)V.elementAt(v);
-			if((newMOB.fetchAbility(A.ID())==null)
-            &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,newMOB))))
-			{
-				String t=A.text();
-				if(t.length()>0)
-				{
-					x=t.indexOf("/");
-					if(x<0)
-						A.setMiscText("");
-					else
-						A.setMiscText(t.substring(x+1));
-				}
-				A.setProfficiency(proff);
-				newMOB.addAbility(A);
-				A.setBorrowed(newMOB,true);
-			}
-		}
-		lastMOB=newMOB;
-	}
-
-    public void setAffectedOne(Environmental E)
-    {
-        if(E==null)
-        {
-            if((lastMOB!=null)
-            &&(lastMOB.location()!=null))
-                removeMyAffectsFromLastMob();
-        }
-        super.setAffectedOne(E);
-    }
-    
-	public void removeMyAffectsFromLastMob()
-	{
-		Vector V=getMySpellsV();
-		for(int v=0;v<V.size();v++)
-		{
-			Ability A=(Ability)V.elementAt(v);
-			lastMOB.delAbility(A);
-		}
-		lastMOB=null;
-	}
+    { return spellAccountingsWithMask("Grants "," to the wearer/wielder.");}
 
     public void recoverEnvStats()
     {
         if(processing2) return;
         processing2=true;
-        super.recoverEnvStats();
         if((affected instanceof Item)
-        &&(lastMOB!=null)
+        &&(lastMOB instanceof MOB)
         &&((((Item)affected).owner()!=lastMOB)||(((Item)affected).amDestroyed()))
-        &&(lastMOB.location()!=null))
+        &&(((MOB)lastMOB).location()!=null))
             removeMyAffectsFromLastMob();
         processing2=false;
     }
     
-	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
+	public void affectEnvStats(Environmental host, EnvStats affectableStats)
 	{
 		if(processing) return;
 		processing=true;
-		if((affectedMOB!=null)&&(affectedMOB instanceof Item))
+		if(host instanceof Item)
 		{
-			myItem=(Item)affectedMOB;
+			myItem=(Item)host;
 
 			boolean worn=(!myItem.amWearingAt(Item.INVENTORY))
 			&&((!myItem.amWearingAt(Item.FLOATING_NEARBY))||(myItem.fitsOn(Item.FLOATING_NEARBY)));
 			
-			if((lastMOB!=null)
-			&&(lastMOB.location()!=null)
+			if((lastMOB instanceof MOB)
+			&&(((MOB)lastMOB).location()!=null)
 			&&((myItem.owner()!=lastMOB)||(!worn)))
 				removeMyAffectsFromLastMob();
 
@@ -150,9 +63,8 @@ public class Prop_WearEnabler extends Property
 			&&(myItem.owner()!=null)
 			&&(myItem.owner() instanceof MOB)
 			&&(((MOB)myItem.owner()).location()!=null))
-				addMeIfNeccessary((MOB)myItem.owner());
+				addMeIfNeccessary(myItem.owner(),myItem.owner());
 		}
-		super.affectEnvStats(affectedMOB,affectableStats);
 		processing=false;
 	}
 }
