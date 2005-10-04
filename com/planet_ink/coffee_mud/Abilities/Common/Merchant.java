@@ -685,17 +685,25 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		if(commands.size()>1)
 		{
 			String s=(String)commands.lastElement();
-			long numberCoins=EnglishParser.numPossibleGold(mob,s);
-		    if(numberCoins>0)
-		    {
-			    String currency=EnglishParser.numPossibleGoldCurrency(mob,s);
-			    double denom=EnglishParser.numPossibleGoldDenomination(mob,currency,s);
-			    if(denom>0.0)
-			    {
-					val=Util.mul(numberCoins,denom);
-					if(val>0) commands.removeElement(s);
-			    }
-		    }
+            if(Util.isInteger(s))
+            {
+                val=new Integer(Util.s_int(s)).doubleValue();
+                if(val>0) commands.removeElement(s);
+            }
+            else
+            {
+    			long numberCoins=EnglishParser.numPossibleGold(mob,s);
+    		    if(numberCoins>0)
+    		    {
+    			    String currency=EnglishParser.numPossibleGoldCurrency(mob,s);
+    			    double denom=EnglishParser.numPossibleGoldDenomination(mob,currency,s);
+    			    if(denom>0.0)
+    			    {
+    					val=Util.mul(numberCoins,denom);
+    					if(val>0) commands.removeElement(s);
+    			    }
+    		    }
+            }
 		}
 
 		String itemName=Util.combine(commands,0);
