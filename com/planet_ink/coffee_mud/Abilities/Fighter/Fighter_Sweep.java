@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -89,8 +90,11 @@ public class Fighter_Sweep extends StdAbility
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> sweep(s)!^</FIGHT^>^?"))
+            FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> sweep(s)!^</FIGHT^>^?");
+            CMColor.fixSourceFightColor(msg);
+			if(mob.location().okMessage(mob,msg))
 			{
+                mob.location().send(mob,msg);
 				invoker=mob;
 				mob.addEffect(this);
 				mob.recoverEnvStats();
@@ -101,7 +105,7 @@ public class Fighter_Sweep extends StdAbility
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_OK_ACTION|(auto?CMMsg.MASK_GENERAL:0),null);
+					msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_OK_ACTION|(auto?CMMsg.MASK_GENERAL:0),null);
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);

@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -53,8 +54,11 @@ public class Fighter_Cleave extends StdAbility
 		{
 			Item w=mob.fetchWieldedItem();
 			if(w==null) w=mob.myNaturalWeapon();
-			if(mob.location().show(mob,nextTarget,this,CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> CLEAVE(S) INTO <T-NAME>!!^</FIGHT^>^?"))
+            FullMsg msg=new FullMsg(mob,nextTarget,this,CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> CLEAVE(S) INTO <T-NAME>!!^</FIGHT^>^?");
+            CMColor.fixSourceFightColor(msg);
+			if(mob.location().okMessage(mob,msg))
 			{
+                mob.location().send(mob,msg);
 				MUDFight.postAttack(mob,nextTarget,w);
 				helpProfficiency(mob);
 			}

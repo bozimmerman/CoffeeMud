@@ -24,47 +24,85 @@ public class Announce extends StdCommand
 {
 	public Announce(){}
 
-	private String[] access={getScr("Announce","cmd")};
+	private String[] access={getScr("Announce","cmd"),getScr("Announce","cmdt"),getScr("Announce","cmdm")};
 	public String[] getAccessWords(){return access;}
 
 	public void sendAnnounce(String announcement, Session S)
 	{
 	  	StringBuffer Message=new StringBuffer("");
-	  	int alignType=2;
-        if (Sense.isEvil(S.mob()))
-            alignType = 0;
+        if((S.mob()!=null)&&(S.mob().playerStats()!=null)&&(S.mob().playerStats().announceMessage().length()>0))
+            Message.append(S.mob().playerStats().announceMessage()+" '"+announcement+"'.^.^N");
         else
-        if (Sense.isGood(S.mob()))
-            alignType = 1;
-	  	switch(alignType)
-	  	{
-	  	  case 0:
-	  	    Message.append(getScr("Announce","evil",announcement));
-	  	    break;
-	  	  case 1:
-	  	    Message.append(getScr("Announce","good",announcement));
-	  	    break;
-	  	  case 2:
-	  	    Message.append(getScr("Announce","neutral",announcement));
-	  	    break;
-	  	}
+        {
+    	  	int alignType=2;
+            if (Sense.isEvil(S.mob()))
+                alignType = 0;
+            else
+            if (Sense.isGood(S.mob()))
+                alignType = 1;
+    	  	switch(alignType)
+    	  	{
+    	  	  case 0:
+    	  	    Message.append(getScr("Announce","evil",announcement));
+    	  	    break;
+    	  	  case 1:
+    	  	    Message.append(getScr("Announce","good",announcement));
+    	  	    break;
+    	  	  case 2:
+    	  	    Message.append(getScr("Announce","neutral",announcement));
+    	  	    break;
+    	  	}
+        }
 	  	S.stdPrintln(Message.toString());
 	}
 
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+        
+        String cmd=((String)commands.firstElement()).toUpperCase();
+        if((!cmd.equalsIgnoreCase(getScr("Announce","cmdm")))
+        &&(!cmd.equalsIgnoreCase(getScr("Announce","cmdt")))
+        &&(!cmd.equalsIgnoreCase(getScr("Announce","cmd"))))
+        {
+            boolean cmdm=getScr("Announce","cmdm").toUpperCase().startsWith(cmd);
+            boolean cmdt=getScr("Announce","cmdt").toUpperCase().startsWith(cmd);
+            boolean cmd1=getScr("Announce","cmd").toUpperCase().startsWith(cmd);
+            if(cmdm&&(!cmdt)&&(!cmd1))
+                cmd=getScr("Announce","cmdm");
+            else
+            if(cmdt&&(!cmdm)&&(!cmd1))
+                cmd=getScr("Announce","cmdt");
+            else
+            if(cmd1&&(!cmdm)&&(!cmdt))
+                cmd=getScr("Announce","cmd");
+        }
 		if(commands.size()>1)
 		{
-			if(((String)commands.elementAt(1)).toUpperCase().equals(getScr("Announce","all")))
+            if(cmd.equalsIgnoreCase(getScr("Announce","cmdm")))
+            {
+                String s=Util.combine(commands,1);
+                if(mob.playerStats()!=null)
+                    mob.playerStats().setAnnounceMessage(s);
+                mob.tell("Your announce message has been changed.");
+            }
+            else
+            if((!cmd.equalsIgnoreCase(getScr("Announce","cmdt")))
+            ||(((String)commands.elementAt(1)).toUpperCase().equals(getScr("Announce","all"))))
 			{
+                String text=null;
+                if(cmd.equalsIgnoreCase(getScr("Announce","cmdt")))
+                    text=Util.combine(commands,2);
+                else
+                    text=Util.combine(commands,1);
+                    
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session S=Sessions.elementAt(s);
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
 					&&(CMSecurity.isAllowed(mob,S.mob().location(),"ANNOUNCE")))
-						sendAnnounce(Util.combine(commands,2),S);
+						sendAnnounce(text,S);
 				}
 			}
 			else

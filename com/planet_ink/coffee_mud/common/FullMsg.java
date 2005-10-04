@@ -139,6 +139,12 @@ public class FullMsg implements CMMsg
 	{
 		return new FullMsg(source(),target(),tool(),sourceCode(),sourceMessage(),targetCode(),targetMessage(),othersCode(),othersMessage());
 	}
+    public void setSourceCode(int code){sourceCode=code;}
+    public void setTargetCode(int code){targetCode=code;}
+    public void setOthersCode(int code){othersCode=code;}
+    public void setSourceMessage(String str){sourceMsg=str;}
+    public void setTargetMessage(String str){targetMsg=str;}
+    public void setOthersMessage(String str){othersMsg=str;}
 
 	public int value(){return value;}
 	public void setValue(int amount){value=amount;}

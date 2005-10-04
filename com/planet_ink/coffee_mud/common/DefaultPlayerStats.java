@@ -42,6 +42,7 @@ public class DefaultPlayerStats implements PlayerStats
 	private String poofout="";						  
 	private String tranpoofin="";
 	private String tranpoofout="";
+    private String announceMsg="";
 	private int wrap=78;
 	private int[] birthday=null;
 	private MOB replyTo=null;
@@ -68,6 +69,8 @@ public class DefaultPlayerStats implements PlayerStats
 	public void setPrompt(String newPrompt){prompt=newPrompt;}
 	public String getColorStr(){return colorStr;}
 	public void setColorStr(String newColors){colorStr=newColors;}
+    public String announceMessage(){return announceMsg;}
+    public void setAnnounceMessage(String msg){announceMsg=msg;}
 	public String getPrompt()
 	{
 		if((prompt==null)||(prompt.length()==0))
@@ -192,6 +195,7 @@ public class DefaultPlayerStats implements PlayerStats
 			+((birthday!=null)?"<BIRTHDAY>"+Util.toStringList(birthday)+"</BIRTHDAY>":"")
 			+((poofin.length()>0)?"<POOFIN>"+poofin+"</POOFIN>":"")
 			+((poofout.length()>0)?"<POOFOUT>"+poofout+"</POOFOUT>":"")
+            +((announceMsg.length()>0)?"<ANNOUNCE>"+announceMsg+"</ANNOUNCE>":"")
 			+((tranpoofin.length()>0)?"<TRANPOOFIN>"+tranpoofin+"</TRANPOOFIN>":"")
 			+((tranpoofout.length()>0)?"<TRANPOOFOUT>"+tranpoofout+"</TRANPOOFOUT>":"")
 			+getSecurityGroupStr()
@@ -238,6 +242,8 @@ public class DefaultPlayerStats implements PlayerStats
 		if(tranpoofin==null) tranpoofin="";
 		tranpoofout=XMLManager.returnXMLValue(str,"TRANPOOFOUT");
 		if(tranpoofout==null) tranpoofout="";
+        announceMsg=XMLManager.returnXMLValue(str,"ANNOUNCE");
+        if(announceMsg==null) poofout="";
         roomSet.parseXML(str);
 	}
 	

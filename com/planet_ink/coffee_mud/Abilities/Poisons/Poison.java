@@ -199,6 +199,7 @@ public class Poison extends StdAbility
 		{
 			String str=auto?"":POISON_CAST();
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON|(auto?CMMsg.MASK_GENERAL:0),str);
+            CMColor.fixSourceFightColor(msg);
 			Room R=mob.location();
 			if((target instanceof MOB)&&(((MOB)target).location()!=null))
 				R=((MOB)target).location();

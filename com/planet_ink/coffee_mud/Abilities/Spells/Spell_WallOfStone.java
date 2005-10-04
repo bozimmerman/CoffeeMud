@@ -53,14 +53,19 @@ public class Spell_WallOfStone extends Spell
 				Item w=mob.fetchWieldedItem();
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
-				mob.location().show(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the wall of stone with "+w.name()+".^</FIGHT^>^?");
-				amountRemaining-=mob.envStats().damage();
-				if(amountRemaining<0)
-				{
-					deathNotice="The wall of stone is destroyed!";
-					((Item)affected).destroy();
-				}
-				return false;
+                FullMsg msg2=new FullMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the wall of stone with "+w.name()+".^</FIGHT^>^?");
+                CMColor.fixSourceFightColor(msg2);
+                if(mob.location().okMessage(mob,msg2))
+                {
+                    mob.location().send(mob,msg2);
+    				amountRemaining-=mob.envStats().damage();
+    				if(amountRemaining<0)
+    				{
+    					deathNotice="The wall of stone is destroyed!";
+    					((Item)affected).destroy();
+    				}
+                }
+                return false;
 			}
 		}
 		return super.okMessage(myHost,msg);

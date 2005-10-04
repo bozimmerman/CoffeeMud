@@ -147,6 +147,7 @@ public class Archon_Banish extends ArchonSkill
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> is banished!":"^F<S-NAME> banish(es) <T-NAMESELF>.^?");
+            CMColor.fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE/2);

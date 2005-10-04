@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -55,14 +56,19 @@ public class Chant_PlantWall extends Chant
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
 			&&(msg.tool().maxRange()>0))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> fire(s) at the plant wall with "+msg.tool().name()+".^</FIGHT^>^?");
-				amountRemaining-=mob.envStats().damage();
-				if(amountRemaining<0)
-				{
-					deathNotice="The plant wall is destroyed!";
-					((Item)affected).destroy();
-				}
-				return false;
+                FullMsg msg2=new FullMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> fire(s) at the plant wall with "+msg.tool().name()+".^</FIGHT^>^?");
+                CMColor.fixSourceFightColor(msg2);
+                if(mob.location().okMessage(mob,msg2))
+                {
+                    mob.location().send(mob,msg2);
+    				amountRemaining-=mob.envStats().damage();
+    				if(amountRemaining<0)
+    				{
+    					deathNotice="The plant wall is destroyed!";
+    					((Item)affected).destroy();
+    				}
+                }
+                return false;
 			}
 			else
 			if((mob.rangeToTarget()==1)&&(msg.sourceMinor()==CMMsg.TYP_ADVANCE))
@@ -70,14 +76,19 @@ public class Chant_PlantWall extends Chant
 				Item w=mob.fetchWieldedItem();
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
- 				mob.location().show(mob,null,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the plant wall with "+w.name()+".^?");
-				amountRemaining-=mob.envStats().damage();
-				if(amountRemaining<0)
-				{
-					deathNotice="The plant wall is destroyed!";
-					((Item)affected).destroy();
-				}
-				return false;
+                FullMsg msg2=new FullMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the plant wall with "+w.name()+".^?");
+                CMColor.fixSourceFightColor(msg2);
+                if(mob.location().okMessage(mob,msg2))
+                {
+                    mob.location().send(mob,msg2);
+    				amountRemaining-=mob.envStats().damage();
+    				if(amountRemaining<0)
+    				{
+    					deathNotice="The plant wall is destroyed!";
+    					((Item)affected).destroy();
+    				}
+                }
+                return false;
 			}
 			else
 			if((mob.rangeToTarget()>0)
@@ -86,8 +97,11 @@ public class Chant_PlantWall extends Chant
 			&&(msg.tool() instanceof Ability)
 			&&(msg.tool().maxRange()>0))
 			{
-				mob.location().show(mob,null,msg.tool(),CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^>The plant wall absorbs <O-NAME> from <S-NAME>.^</FIGHT^>^?");
-				return false;
+                FullMsg msg2=new FullMsg(mob,null,msg.tool(),CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^>The plant wall absorbs <O-NAME> from <S-NAME>.^</FIGHT^>^?");
+                CMColor.fixSourceFightColor(msg2);
+                if(mob.location().okMessage(mob,msg2))
+                    mob.location().send(mob,msg2);
+                return false;
 			}
 		}
 		return super.okMessage(myHost,msg);

@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.Abilities.Misc.Injury;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -197,8 +198,11 @@ public class Fighter_CalledStrike extends StdAbility
 		boolean success=profficiencyCheck(mob,0,auto);
 		if((success)&&(gone.length()>0))
 		{
-			if(mob.location().show(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> call(s) '"+gone+"'!^</FIGHT^>^?"))
-			{
+            FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> call(s) '"+gone+"'!^</FIGHT^>^?");
+            CMColor.fixSourceFightColor(msg);
+            if(mob.location().okMessage(mob,msg))
+            {
+                mob.location().send(mob,msg);
 				invoker=mob;
 				beneficialAffect(mob,mob,asLevel,2);
 				Ability A2=target.fetchEffect("Injury");

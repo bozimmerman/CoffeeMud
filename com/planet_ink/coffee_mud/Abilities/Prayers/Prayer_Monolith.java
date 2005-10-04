@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -61,24 +62,29 @@ public class Prayer_Monolith extends Prayer
 					if(w==null) w=mob.myNaturalWeapon();
 					if(w==null) return false;
 					Room room=mob.location();
-					room.show(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the monolith of ice with "+w.name()+".^</FIGHT^>^?");
-					amountRemaining-=mob.envStats().damage();
-					if(amountRemaining<0)
-					{
-						for(int i=0;i<room.numInhabitants();i++)
-						{
-							MOB M=room.fetchInhabitant(i);
-							if((M.isInCombat())
-							&&(M.getVictim()==invoker)
-							&&(M.rangeToTarget()>0)
-							&&(M.rangeToTarget()<3)
-							&&(!M.amDead()))
-								MUDFight.postDamage(invoker,M,this,Dice.roll(M.envStats().level()/2,6,0),CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
-						}
-					    mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The monolith of ice shatters!!!");
-						((Item)affected).destroy();
-					}
-					return false;
+                    FullMsg msg2=new FullMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the monolith of ice with "+w.name()+".^</FIGHT^>^?");
+                    CMColor.fixSourceFightColor(msg2);
+                    if(room.okMessage(mob,msg2))
+                    {
+                        room.send(mob,msg2);
+    					amountRemaining-=mob.envStats().damage();
+    					if(amountRemaining<0)
+    					{
+    						for(int i=0;i<room.numInhabitants();i++)
+    						{
+    							MOB M=room.fetchInhabitant(i);
+    							if((M.isInCombat())
+    							&&(M.getVictim()==invoker)
+    							&&(M.rangeToTarget()>0)
+    							&&(M.rangeToTarget()<3)
+    							&&(!M.amDead()))
+    								MUDFight.postDamage(invoker,M,this,Dice.roll(M.envStats().level()/2,6,0),CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
+    						}
+    					    mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The monolith of ice shatters!!!");
+    						((Item)affected).destroy();
+    					}
+                    }
+                    return false;
 				}
 			}
 			break;

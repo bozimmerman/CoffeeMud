@@ -84,7 +84,8 @@ public class ColorSet extends StdCommand
 		if(clookup==null) return false;
 		String[][] theSet={{"Normal Text","N"},
 						   {"Highlighted Text","H"},
-						   {"Fight Text","F"},
+                           {"Your Fight Text","f"},
+						   {"Other Fight Text","F"},
 						   {"Spells","S"},
 						   {"Emotes","E"},
 						   {"Says","T"},

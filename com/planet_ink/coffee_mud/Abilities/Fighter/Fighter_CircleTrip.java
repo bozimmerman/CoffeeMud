@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -109,6 +110,7 @@ public class Fighter_CircleTrip extends StdAbility
 
 		boolean success=true;
 		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"":"^F^<FIGHT^><S-NAME> slide(s) into a circle trip!^<FIGHT^>^?");
+        CMColor.fixSourceFightColor(msg);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -144,6 +146,7 @@ public class Fighter_CircleTrip extends StdAbility
 				if(success)
 				{
 					msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> trip(s)!":"^F^<FIGHT^><S-NAME> trip(s) <T-NAMESELF>!^</FIGHT^>^?");
+                    CMColor.fixSourceFightColor(msg);
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);

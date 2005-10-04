@@ -70,6 +70,7 @@ public class Fighter_BullRush extends StdAbility
 
 		str="^F^<FIGHT^><S-NAME> bullrush(es) <T-NAME> "+direction+".^</FIGHT^>^?";
 		FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|CMMsg.MASK_HANDS|CMMsg.TYP_JUSTICE,str);
+        CMColor.fixSourceFightColor(msg);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

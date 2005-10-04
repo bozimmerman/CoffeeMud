@@ -815,6 +815,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 		// it didn't work, but tell everyone you tried.
 		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|CMMsg.MASK_MALICIOUS,message);
 		if(mob.location()==null) return false;
+        CMColor.fixSourceFightColor(msg);
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 

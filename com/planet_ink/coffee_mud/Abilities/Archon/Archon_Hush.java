@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Archon;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.utils.CMColor;
 import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
 
@@ -83,6 +84,7 @@ public class Archon_Hush extends ArchonSkill
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"Silence falls upon <T-NAME>!":"^F<S-NAME> hush(es) <T-NAMESELF>.^?");
+            CMColor.fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

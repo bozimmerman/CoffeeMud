@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -54,8 +55,11 @@ public class Spell_WallOfIce extends Spell
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
 				Room room=mob.location();
-				if(room.show(mob,null,w,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the wall of ice with <O-NAME>.^</FIGHT^>^?"))
-				{
+                FullMsg msg2=new FullMsg(mob,null,w,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the wall of ice with <O-NAME>.^</FIGHT^>^?");
+                CMColor.fixSourceFightColor(msg2);
+                if(mob.location().okMessage(mob,msg2))
+                {
+                    mob.location().send(mob,msg2);
 					amountRemaining-=mob.envStats().damage();
 					if(amountRemaining<0)
 					{
