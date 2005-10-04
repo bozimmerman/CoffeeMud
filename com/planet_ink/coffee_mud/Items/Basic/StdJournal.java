@@ -44,12 +44,18 @@ public class StdJournal extends StdItem
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_WRITE:
-			if((!MUDZapper.zapperCheck(getWriteReq(),msg.source()))&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))))
+        {
+            String adminReq=getAdminReq().trim();
+            boolean admin=(adminReq.length()>0)&&MUDZapper.zapperCheck(adminReq,msg.source());
+			if((!MUDZapper.zapperCheck(getWriteReq(),msg.source()))
+            &&(!admin)
+            &&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))))
 			{
 				msg.source().tell("You are not allowed to write on "+name());
 				return false;
 			}
 			return true;
+        }
 		}
 		return super.okMessage(myHost,msg);
 	}
@@ -67,8 +73,10 @@ public class StdJournal extends StdItem
 			if((!mob.isMonster())
 			&&(mob.playerStats()!=null))
 			{
+                String adminReq=getAdminReq().trim();
+                boolean admin=(adminReq.length()>0)&&MUDZapper.zapperCheck(adminReq,mob);
 				long lastTime=mob.playerStats().lastDateTime();
-				if(!MUDZapper.zapperCheck(getReadReq(),mob))
+				if((admin)&&(!MUDZapper.zapperCheck(getReadReq(),mob)))
 				{
 					mob.tell("You are not allowed to read "+name()+".");
 					return;
@@ -103,6 +111,7 @@ public class StdJournal extends StdItem
 						entry.setCharAt(0,' ');
 					}
 					if((entry.charAt(0)=='*')
+                       ||(admin)
 					   ||(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")))
 					{
 						mineAble=true;
@@ -114,7 +123,9 @@ public class StdJournal extends StdItem
 					mob.tell(entry.toString()+"\n\r");
 					if((entry.toString().trim().length()>0)
 					&&(which>0)
-					&&(MUDZapper.zapperCheck(getWriteReq(),mob)||((CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS")))))
+					&&(MUDZapper.zapperCheck(getWriteReq(),mob)
+                            ||(admin)
+                            ||(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))))
 					{
 						boolean repeat=true;
 						while(repeat)
@@ -124,7 +135,9 @@ public class StdJournal extends StdItem
 							{
 								String prompt="";
                                 String cmds="";
-                                if(MUDZapper.zapperCheck(getReplyReq(),mob)||((CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))))
+                                if(MUDZapper.zapperCheck(getReplyReq(),mob)
+                                ||admin
+                                ||(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS")))
                                 {
                                     prompt+="^<MENU^>R^</MENU^>)eply ";
                                     cmds+="R";
@@ -136,7 +149,7 @@ public class StdJournal extends StdItem
 								else
 								{ prompt+="^<MENU^>N^</MENU^>)ext "; cmds+="N";}
 								if(mineAble){ prompt+="^<MENU^>D^</MENU^>)elete "; cmds+="D";}
-								if(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))
+								if((admin)&&(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS")))
 								{ prompt+="^<MENU^>T^</MENU^>)ransfer "; cmds+="T";}
 								prompt+="or RETURN: ";
 								String s=mob.session().choose(prompt,cmds+"\n","\n");
@@ -274,8 +287,10 @@ public class StdJournal extends StdItem
 		case CMMsg.TYP_WRITE:
 			try
 			{
+                String adminReq=getAdminReq().trim();
+                boolean admin=(adminReq.length()>0)&&MUDZapper.zapperCheck(adminReq,mob);
 				if((msg.targetMessage().toUpperCase().startsWith("DEL"))
-				   &&(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS"))
+				   &&(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")||admin)
 				   &&(!mob.isMonster()))
 				{
 					if(mob.session().confirm("Delete all journal entries? Are you sure (y/N)?","N"))
@@ -304,6 +319,7 @@ public class StdJournal extends StdItem
 						return;
 					}
 					if((subject.toUpperCase().startsWith("MOTD")||subject.toUpperCase().startsWith("MOTM")||subject.toUpperCase().startsWith("MOTY"))
+                       &&(!admin)
 					   &&(!(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS"))))
 						subject=subject.substring(4);
 					String message=mob.session().prompt("Enter your message\n\r: ");
@@ -313,6 +329,7 @@ public class StdJournal extends StdItem
 						return;
 					}
 					if(message.startsWith("<cmvp>")
+                    &&(!admin)
 					&&(!(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS"))))
 					{
 						mob.tell("Illegal code, aborted.");
@@ -497,6 +514,8 @@ public class StdJournal extends StdItem
 		if(writeeq>=0)text= text.substring(0,writeeq);
         int replyreq=text.indexOf("REPLY=");
         if(replyreq>=0) text=text.substring(0,replyreq);
+        int adminreq=text.indexOf("ADMIN=");
+        if(adminreq>=0) text=text.substring(0,adminreq);
 		return text;
 	}
 	private String getWriteReq()
@@ -510,6 +529,8 @@ public class StdJournal extends StdItem
 		if(readeq>=0) text=text.substring(0,readeq);
         int replyreq=text.indexOf("REPLY=");
         if(replyreq>=0) text=text.substring(0,replyreq);
+        int adminreq=text.indexOf("ADMIN=");
+        if(adminreq>=0) text=text.substring(0,adminreq);
 		return text;
 	}
     private String getReplyReq()
@@ -523,6 +544,23 @@ public class StdJournal extends StdItem
         if(readeq>=0) text=text.substring(0,readeq);
         int writeeq=text.indexOf("WRITE=");
         if(writeeq>=0)text= text.substring(0,writeeq);
+        int adminreq=text.indexOf("ADMIN=");
+        if(adminreq>=0) text=text.substring(0,adminreq);
+        return text;
+    }
+    private String getAdminReq()
+    {
+        if(readableText().length()==0) return "";
+        String text=readableText().toUpperCase();
+        int adminreq=text.indexOf("ADMIN=");
+        if(adminreq<0) return "";
+        text=text.substring(adminreq+6);
+        int readeq=text.indexOf("READ=");
+        if(readeq>=0) text=text.substring(0,readeq);
+        int writeeq=text.indexOf("WRITE=");
+        if(writeeq>=0)text= text.substring(0,writeeq);
+        int replyreq=text.indexOf("REPLY=");
+        if(replyreq>=0) text=text.substring(0,replyreq);
         return text;
     }
 	public void recoverEnvStats(){Sense.setReadable(this,true); super.recoverEnvStats();}
