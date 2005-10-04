@@ -8,7 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,64 +33,64 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Name: '"+E.Name()+"'.");
+		mob.tell(getScr("BaseGenerics","Name",showNumber+"",E.Name()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
 		if(newName.length()>0)
 			E.setName(newName);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	static void genImage(MOB mob, Environmental E, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". MXP file: '"+E.image()+"'.");
+		mob.tell(getScr("BaseGenerics","mxpfile",showNumber+"",E.image()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new filename\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","enterfile"),"");
 		if(newName.length()>0)
 			E.setImage(newName);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	static void genCorpseData(MOB mob, DeadBody E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Corpse Data: '"+E.mobName()+"/"+E.killerName()+"'.");
+		mob.tell(getScr("BaseGenerics","corpsedata",showNumber+"",E.mobName(),E.killerName()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new name\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","enternewname"),"");
 		if(newName.length()>0)
 			E.setMobName(newName);
 		else
-			mob.tell("(no change)");
-		mob.tell("Dead MOB Description: '"+E.mobDescription()+"'.");
-		newName=mob.session().prompt("Enter a new description\n\r:","");
+			mob.tell(getScr("BaseGenerics","nochange"));
+		mob.tell(getScr("BaseGenerics","deadMobd",E.mobDescription()));
+		newName=mob.session().prompt(getScr("BaseGenerics","enterd"),"");
 		if(newName.length()>0)
 			E.setMobDescription(newName);
 		else
-			mob.tell("(no change)");
-		mob.tell("Killers Name: '"+E.killerName()+"'.");
-		newName=mob.session().prompt("Enter a new killer\n\r:","");
+			mob.tell(getScr("BaseGenerics","nochange"));
+		mob.tell(getScr("BaseGenerics","killersname",E.killerName()));
+		newName=mob.session().prompt(getScr("BaseGenerics","enterk"),"");
 		if(newName.length()>0)
 			E.setKillerName(newName);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	static void genAuthor(MOB mob, Area A, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Author: '"+A.getAuthorID()+"'.");
+		mob.tell(getScr("BaseGenerics","author",showNumber+"",A.getAuthorID()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
 		if(newName.length()>0)
 			A.setAuthorID(newName);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	static void genPanelType(MOB mob, ShipComponent.ShipPanel S, int showNumber, int showFlag)
@@ -98,18 +98,18 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String componentType=Util.capitalizeAndLower(ShipComponent.ShipPanel.COMPONENT_PANEL_DESC[S.panelType()].toLowerCase());
-		mob.tell(showNumber+". Panel Type: '"+componentType+"'.");
+		mob.tell(getScr("BaseGenerics","paneltype",showNumber+"",componentType));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean continueThis=true;
 		while(continueThis)
 		{
 		    continueThis=false;
-			String newName=mob.session().prompt("Enter a new one (?)\n\r:","");
+			String newName=mob.session().prompt(getScr("BaseGenerics","enter2"),"");
 			if(newName.length()>0)
 			{
 			    if(newName.equalsIgnoreCase("?"))
 			    {
-			        mob.tell("Component Types: "+Util.toStringList(ShipComponent.ShipPanel.COMPONENT_PANEL_DESC));
+			        mob.tell(getScr("BaseGenerics","comptypes",Util.toStringList(ShipComponent.ShipPanel.COMPONENT_PANEL_DESC)));
 			        continueThis=true;
 			    }
 			    else
@@ -120,7 +120,7 @@ public class BaseGenerics extends StdCommand
 			                newType=i;
 			        if(newType<0)
 			        {
-			            mob.tell("'"+newName+"' is not recognized.  Try '?' for a list.");
+			            mob.tell(getScr("BaseGenerics","newnotrec",newName));
 			            continueThis=true;
 			        }
 			        else
@@ -128,18 +128,18 @@ public class BaseGenerics extends StdCommand
 			    }
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 		}
 	}
-    
+
 	static void genCurrency(MOB mob, Area A, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String currencyName=A.getCurrency().length()==0?"Default":A.getCurrency();
-		mob.tell(showNumber+". Currency: '"+currencyName+"'.");
+		mob.tell(getScr("BaseGenerics","currencyname",showNumber+"",currencyName));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new one or 'DEFAULT'\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","entdef"),"");
 		if(newName.length()>0)
 		{
 		    if(newName.equalsIgnoreCase("default"))
@@ -148,7 +148,7 @@ public class BaseGenerics extends StdCommand
 		    if((newName.indexOf("=")<0)&&(!BeanCounter.getAllCurrencies().contains(newName.trim().toUpperCase())))
 		    {
 		        Vector V=BeanCounter.getAllCurrencies();
-		        mob.tell("'"+newName.trim().toUpperCase()+"' is not a known currency. Existing currencies include: DEFAULT"+Util.toStringList(V));
+		        mob.tell(getScr("BaseGenerics","currencyerr",newName.trim().toUpperCase(),Util.toStringList(V)));
 		    }
 		    else
 		    if(newName.indexOf("=")>=0)
@@ -157,7 +157,7 @@ public class BaseGenerics extends StdCommand
 				A.setCurrency(newName.toUpperCase().trim());
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	static void genTimeClock(MOB mob, Area A, int showNumber, int showFlag)
@@ -168,43 +168,43 @@ public class BaseGenerics extends StdCommand
 		TimeClock TC=A.getTimeObj();
 		StringBuffer report=new StringBuffer("");
 		if(TC==DefaultTimeClock.globalClock)
-			report.append("Default -- Can't be changed.");
+			report.append(getScr("BaseGenerics","defaultant"));
 		else
 		{
-		    report.append(TC.getHoursInDay()+" hrs-day/");
-		    report.append(TC.getDaysInMonth()+" days-mn/");
-		    report.append(TC.getMonthsInYear()+" mnths-yr");
+		    report.append(getScr("BaseGenerics","hrsday",TC.getHoursInDay()+""));
+		    report.append(getScr("BaseGenerics","daysmn",TC.getDaysInMonth()+""));
+		    report.append(getScr("BaseGenerics","mthyrs",TC.getMonthsInYear()+""));
 		}
-		mob.tell(showNumber+". Calendar: '"+report.toString()+"'.");
+		mob.tell(getScr("BaseGenerics","calendar",showNumber+"",report.toString()));
 		if(TC==DefaultTimeClock.globalClock) return;
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName="";
 		while(newName.length()==0)
 		{
-			report=new StringBuffer("\n\rCalendar/Clock settings:\n\r");
-		    report.append("1. "+TC.getHoursInDay()+" hours per day\n\r");
-		    report.append("2. Dawn Hour: "+TC.getDawnToDusk()[TimeClock.TIME_DAWN]+"\n\r");
-		    report.append("3. Day Hour: "+TC.getDawnToDusk()[TimeClock.TIME_DAY]+"\n\r");
-		    report.append("4. Dusk Hour: "+TC.getDawnToDusk()[TimeClock.TIME_DUSK]+"\n\r");
-		    report.append("5. Night Hour: "+TC.getDawnToDusk()[TimeClock.TIME_NIGHT]+"\n\r");
-		    report.append("6. Weekdays: "+Util.toStringList(TC.getWeekNames())+"\n\r");
-		    report.append("7. Months: "+Util.toStringList(TC.getMonthNames())+"\n\r");
-		    report.append("8. Year Title(s): "+Util.toStringList(TC.getYearNames()));
+			report=new StringBuffer(getScr("BaseGenerics","calset"));
+		    report.append(getScr("BaseGenerics","hoursperday",TC.getHoursInDay()+""));
+		    report.append(getScr("BaseGenerics","dawnhour",TC.getDawnToDusk()[TimeClock.TIME_DAWN]+""));
+		    report.append(getScr("BaseGenerics","dayhour",TC.getDawnToDusk()[TimeClock.TIME_DAY]+""));
+		    report.append(getScr("BaseGenerics","duskhour",TC.getDawnToDusk()[TimeClock.TIME_DUSK]+""));
+		    report.append(getScr("BaseGenerics","nighthour",TC.getDawnToDusk()[TimeClock.TIME_NIGHT]+""));
+		    report.append(getScr("BaseGenerics","weekdays",Util.toStringList(TC.getWeekNames())));
+		    report.append(getScr("BaseGenerics","months",Util.toStringList(TC.getMonthNames())));
+		    report.append(getScr("BaseGenerics","yeartitle",Util.toStringList(TC.getYearNames())));
 		    mob.tell(report.toString());
-			newName=mob.session().prompt("Enter one to change: ","");
+			newName=mob.session().prompt(getScr("BaseGenerics","entchange"),"");
 			if(newName.length()==0) break;
 			int which=Util.s_int(newName);
-			
+
 			if((which<0)||(which>8))
-				mob.tell("Invalid: "+which);
+				mob.tell(getScr("BaseGenerics","invalid",which+""));
 			else
 			if(which<=5)
 			{
 			    newName="";
-			    String newNum=mob.session().prompt("Enter a new number: ","");
+			    String newNum=mob.session().prompt(getScr("BaseGenerics","entnumb"),"");
 			    int val=Util.s_int(newNum);
 			    if(newNum.length()==0)
-			        mob.tell("No Change");
+			        mob.tell(getScr("BaseGenerics","nochange"));
 			    else
 				switch(which)
 			    {
@@ -216,28 +216,28 @@ public class BaseGenerics extends StdCommand
 		            break;
 		        case 3:
 		            if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TIME_DAWN]>=val))
-                        mob.tell("That value is before the dawn!");
+                        mob.tell(getScr("BaseGenerics","dawnerr"));
 		            else
 			            TC.getDawnToDusk()[TimeClock.TIME_DAY]=val;
 		            break;
 		        case 4:
 		            if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TIME_DAWN]>=val))
-                        mob.tell("That value is before the dawn!");
+                        mob.tell(getScr("BaseGenerics","dawnerr"));
 		            else
 		            if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TIME_DAY]>=val))
-                        mob.tell("That value is before the day!");
+                        mob.tell(getScr("BaseGenerics","dayerr"));
 		            else
 			            TC.getDawnToDusk()[TimeClock.TIME_DUSK]=val;
 		            break;
 		        case 5:
 		            if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TIME_DAWN]>=val))
-                        mob.tell("That value is before the dawn!");
+                        mob.tell(getScr("BaseGenerics","dawnerr"));
 		            else
 		            if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TIME_DAY]>=val))
-                        mob.tell("That value is before the day!");
+                        mob.tell(getScr("BaseGenerics","dayerr"));
 		            else
 		            if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TIME_DUSK]>=val))
-                        mob.tell("That value is before the dusk!");
+                        mob.tell(getScr("BaseGenerics","duskerr"));
 		            else
 			            TC.getDawnToDusk()[TimeClock.TIME_NIGHT]=val;
 		            break;
@@ -246,9 +246,9 @@ public class BaseGenerics extends StdCommand
 			else
 			{
 			    newName="";
-			    String newNum=mob.session().prompt("Enter a new list (comma delimited)\n\r: ","");
+			    String newNum=mob.session().prompt(getScr("BaseGenerics","entlist"),"");
 			    if(newNum.length()==0)
-			        mob.tell("No Change");
+			        mob.tell(getScr("BaseGenerics","nochange"));
 			    else
 			    switch(which)
 			    {
@@ -272,10 +272,10 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag<=0)||(showFlag==showNumber))
 		{
-			mob.tell(showNumber+". Clan (ID): '"+E.getClanID()+"'.");
+			mob.tell(getScr("BaseGenerics","clanid",showNumber+"",E.getClanID()));
 			if((showFlag==showNumber)||(showFlag<=-999))
 			{
-				String newName=mob.session().prompt("Enter a new one (null)\n\r:","");
+				String newName=mob.session().prompt(getScr("BaseGenerics","entnull"),"");
 				if(newName.equalsIgnoreCase("null"))
 					E.setClanID("");
 				else
@@ -285,7 +285,7 @@ public class BaseGenerics extends StdCommand
 					E.setClanRole(Clan.POS_MEMBER);
 				}
 				else
-					mob.tell("(no change)");
+					mob.tell(getScr("BaseGenerics","nochange"));
 			}
 		}
 		if(((showFlag<=0)||(showFlag==showNumber))
@@ -295,10 +295,10 @@ public class BaseGenerics extends StdCommand
 		{
 
 			Clan C=Clans.getClan(E.getClanID());
-			mob.tell(showNumber+". Clan (Role): '"+Clans.getRoleName(C.getGovernment(),E.getClanRole(),true,false)+"'.");
+			mob.tell(getScr("BaseGenerics","clanrole",showNumber+"",Clans.getRoleName(C.getGovernment(),E.getClanRole(),true,false)));
 			if((showFlag==showNumber)||(showFlag<=-999))
 			{
-				String newName=mob.session().prompt("Enter a new one\n\r:","");
+				String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
 				if(newName.length()>0)
 				{
 					int newRole=-1;
@@ -309,12 +309,12 @@ public class BaseGenerics extends StdCommand
 							break;
 						}
 					if(newRole<0)
-						mob.tell("That role is invalid. Try: "+Util.toStringList(Clan.ROL_DESCS[C.getGovernment()]));
+						mob.tell(getScr("BaseGenerics","errrole",Util.toStringList(Clan.ROL_DESCS[C.getGovernment()])));
 					else
 						E.setClanRole(newRole);
 				}
 				else
-					mob.tell("(no change)");
+					mob.tell(getScr("BaseGenerics","nochange"));
 			}
 		}
 	}
@@ -323,16 +323,16 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Archive file name: '"+E.getArchivePath()+"'.");
+		mob.tell(getScr("BaseGenerics","arcfilename",showNumber+"",E.getArchivePath()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new one (null=default)\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","entnull2"),"");
 		if(newName.equalsIgnoreCase("null"))
 			E.setArchivePath("");
 		else
 		if(newName.length()>0)
 			E.setArchivePath(newName);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	public static Room changeRoomType(Room R, Room newRoom)
@@ -486,12 +486,12 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return R;
-		mob.tell(showNumber+". Type: '"+CMClass.className(R)+"'");
+		mob.tell(getScr("BaseGenerics","type",showNumber+"",CMClass.className(R)));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return R;
 		String newName="";
 		while(newName.length()==0)
 		{
-			newName=mob.session().prompt("Enter a new one (?)\n\r:","");
+			newName=mob.session().prompt(getScr("BaseGenerics","enter2"),"");
 			if(newName.trim().equals("?"))
 			{
 				mob.tell(CMLister.reallyList2Cols(CMClass.locales(),-1,null).toString()+"\n\r");
@@ -502,15 +502,15 @@ public class BaseGenerics extends StdCommand
 			{
 				Room newRoom=CMClass.getLocale(newName);
 				if(newRoom==null)
-					mob.tell("'"+newName+"' does not exist. No Change.");
+					mob.tell(getScr("BaseGenerics","newdontex",newName));
 				else
-				if(mob.session().confirm("This will change the room type of room '"+R.roomID()+"'.  It will automatically save any mobs and items in this room permanently.  Are you absolutely sure (y/N)? ","N"))
+				if(mob.session().confirm(getScr("BaseGenerics","roomcng",R.roomID()),"N"))
 					R=changeRoomType(R,newRoom);
 				R.recoverRoomStats();
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 				break;
 			}
 		}
@@ -521,32 +521,32 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Description: '"+E.description()+"'.");
+		mob.tell(getScr("BaseGenerics","description",showNumber+"",E.description()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new one (null = empty)\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","entnull3"),"");
 		if(newName.trim().equalsIgnoreCase("null"))
 			E.setDescription("");
 		else
 		if(newName.length()>0)
 			E.setDescription(newName);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	static void genPassword(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Password: ********.");
+		mob.tell(getScr("BaseGenerics","pwd",showNumber+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new one to reset\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","entreset"),"");
 		if((newName.length()>0)&&(E.playerStats()!=null))
 		{
 			E.playerStats().setPassword(newName);
 			CMClass.DBEngine().DBUpdatePassword(E);
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	static void genEmail(MOB mob, MOB E, int showNumber, int showFlag)
@@ -554,29 +554,29 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		if(E.playerStats()!=null)
-			mob.tell(showNumber+". Email: "+E.playerStats().getEmail());
+			mob.tell(getScr("BaseGenerics","email",showNumber+"",E.playerStats().getEmail()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
 		if((newName.length()>0)&&(E.playerStats()!=null))
 			E.playerStats().setEmail(newName);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	public static void genDisplayText(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Display: '"+E.displayText()+"'.");
+		mob.tell(getScr("BaseGenerics","display",showNumber+"",E.displayText()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=null;
 		if(E instanceof Item)
-			newName=mob.session().prompt("Enter something new (null == blended)\n\r:","");
+			newName=mob.session().prompt(getScr("BaseGenerics","some1"),"");
 		else
 		if(E instanceof Exit)
-			newName=mob.session().prompt("Enter something new (null == see-through)\n\r:","");
+			newName=mob.session().prompt(getScr("BaseGenerics","some2"),"");
 		else
-			newName=mob.session().prompt("Enter something new (null = empty)\n\r:","");
+			newName=mob.session().prompt(getScr("BaseGenerics","some3"),"");
 		if(newName.length()>0)
 		{
 			if(newName.trim().equalsIgnoreCase("null"))
@@ -584,48 +584,48 @@ public class BaseGenerics extends StdCommand
 			E.setDisplayText(newName);
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 		if((E instanceof Item)&&(E.displayText().length()==0))
-			mob.tell("(blended)");
+			mob.tell(getScr("BaseGenerics","blended"));
 	}
 	public static void genClosedText(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		if(E instanceof Item)
-			mob.tell(showNumber+". Exit Closed Text: '"+E.closedText()+"'.");
+			mob.tell(getScr("BaseGenerics","exitclosedtxt",showNumber+"",E.closedText()));
 		else
-			mob.tell(showNumber+". Closed Text: '"+E.closedText()+"'.");
+			mob.tell(getScr("BaseGenerics","closedtxt",showNumber+"",E.closedText()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter something new\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","some4"),"");
 		if(newName.equals("null"))
 			E.setExitParams(E.doorName(),E.closeWord(),E.openWord(),"");
 		else
 		if(newName.length()>0)
 			E.setExitParams(E.doorName(),E.closeWord(),E.openWord(),newName);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	public static void genDoorName(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		if(E instanceof Item)
-			mob.tell(showNumber+". Exit Direction: '"+E.doorName()+"'.");
+			mob.tell(getScr("BaseGenerics","exitdir",showNumber+"",E.doorName()));
 		else
-			mob.tell(showNumber+". Door Name: '"+E.doorName()+"'.");
+			mob.tell(getScr("BaseGenerics","doorn",showNumber+"",E.doorName()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter something new\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","some4"),"");
 		if(newName.length()>0)
 			E.setExitParams(newName,E.closeWord(),E.openWord(),E.closedText());
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	public static void genBurnout(MOB mob, Light E, int showNumber, int showFlag)
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Is destroyed after burnout: '"+E.destroyedWhenBurnedOut()+"'.");
+		mob.tell(getScr("BaseGenerics","isdestroyed",showNumber+"",E.destroyedWhenBurnedOut()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.setDestroyedWhenBurntOut(!E.destroyedWhenBurnedOut());
 	}
@@ -634,13 +634,13 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Open Word: '"+E.openWord()+"'.");
+		mob.tell(getScr("BaseGenerics","openword",showNumber+"",E.openWord()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter something new\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","some4"),"");
 		if(newName.length()>0)
 			E.setExitParams(E.doorName(),E.closeWord(),newName,E.closedText());
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	public static void genSubOps(MOB mob, Area A, int showNumber, int showFlag)
@@ -650,24 +650,24 @@ public class BaseGenerics extends StdCommand
 		String newName="Q";
 		while(newName.length()>0)
 		{
-			mob.tell(showNumber+". Area staff names: "+A.getSubOpList());
+			mob.tell(getScr("BaseGenerics","aeastaffname",showNumber+"",A.getSubOpList()));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			newName=mob.session().prompt("Enter a name to add or remove\n\r:","");
+			newName=mob.session().prompt(getScr("BaseGenerics","addrem"),"");
 			if(newName.length()>0)
 			{
 				if(A.amISubOp(newName))
 				{
 					A.delSubOp(newName);
-					mob.tell("Staff removed.");
+					mob.tell(getScr("BaseGenerics","staffrem"));
 				}
 				else
 				if(CMClass.DBEngine().DBUserSearch(null,newName))
 				{
 					A.addSubOp(newName);
-					mob.tell("Staff added.");
+					mob.tell(getScr("BaseGenerics","ataffadd"));
 				}
 				else
-					mob.tell("'"+newName+"' is not recognized as a valid user name.");
+					mob.tell(getScr("BaseGenerics","usererr",newName));
 			}
 		}
 	}
@@ -679,9 +679,9 @@ public class BaseGenerics extends StdCommand
 		String newArea="Q";
 		while(newArea.length()>0)
 		{
-		    mob.tell(showNumber+". Parent Areas: "+A.getParentsList());
+		    mob.tell(getScr("BaseGenerics","parentareas",showNumber+"",A.getParentsList()));
 		    if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		    newArea=mob.session().prompt("Enter an area name to add or remove\n\r:","");
+		    newArea=mob.session().prompt(getScr("BaseGenerics","arearem"),"");
 		    if(newArea.length()>0)
 		    {
 		        Area lookedUp=CMMap.getArea(newArea);
@@ -693,7 +693,7 @@ public class BaseGenerics extends StdCommand
 						// they must want it removed
 						A.removeParent(lookedUp);
 						lookedUp.removeChild(A);
-						mob.tell("Area '" + lookedUp.Name() + "' removed.");
+						mob.tell(getScr("BaseGenerics","arearem", lookedUp.Name()+""));
 		            }
 		            else
 					{
@@ -701,16 +701,16 @@ public class BaseGenerics extends StdCommand
 						{
 		                    A.addParent(lookedUp);
 		                    lookedUp.addChild(A);
-		                    mob.tell("Area '" + lookedUp.Name() + "' added.");
+		                    mob.tell(getScr("BaseGenerics","areaadd",lookedUp.Name()+""));
 		                }
 		                else
 		                {
-		                    mob.tell("Area '" + lookedUp.Name() +"' cannot be added because this would create a circular reference.");
+		                    mob.tell(getScr("BaseGenerics","areaerr",lookedUp.Name()+"" ));
 		                }
 		            }
 		        }
 		        else
-		            mob.tell("'"+newArea+"' is not recognized as a valid area name.");
+		            mob.tell(getScr("BaseGenerics","areaerr2",newArea));
 		    }
 		}
     }
@@ -722,9 +722,9 @@ public class BaseGenerics extends StdCommand
         String newArea="Q";
         while(newArea.length()>0)
         {
-            mob.tell(showNumber+". Area Children: "+A.getChildrenList());
+            mob.tell(getScr("BaseGenerics","areachild",showNumber+"",A.getChildrenList()));
             if((showFlag!=showNumber)&&(showFlag>-999)) return;
-            newArea=mob.session().prompt("Enter an area name to add or remove\n\r:","");
+            newArea=mob.session().prompt(getScr("BaseGenerics","arearem"),"");
             if(newArea.length()>0)
             {
                 Area lookedUp=CMMap.getArea(newArea);
@@ -735,7 +735,7 @@ public class BaseGenerics extends StdCommand
                         // this area is already a child to A, they must want it removed
                         A.removeChild(lookedUp);
                         lookedUp.removeParent(A);
-                        mob.tell("Area '" + lookedUp.Name() + "' removed.");
+                        mob.tell(getScr("BaseGenerics","arearem",lookedUp.Name()+""));
                     }
                     else
 					{
@@ -743,16 +743,16 @@ public class BaseGenerics extends StdCommand
 						{
                             A.addChild(lookedUp);
                             lookedUp.addParent(A);
-                            mob.tell("Area '" + lookedUp.Name() + "' added.");
+                            mob.tell(getScr("BaseGenerics","areaadd", lookedUp.Name()+""));
                         }
                         else
                         {
-                            mob.tell("Area '" + lookedUp.Name() +"' cannot be added because this would create a circular reference.");
+                            mob.tell(getScr("BaseGenerics","areaerr", lookedUp.Name()+"" ));
                         }
                     }
                 }
                 else
-                    mob.tell("'"+newArea+"' is not recognized as a valid area name.");
+                    mob.tell(getScr("BaseGenerics","areaerr2",newArea));
             }
         }
     }
@@ -761,13 +761,13 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Close Word: '"+E.closeWord()+"'.");
+		mob.tell(getScr("BaseGenerics","closeword",showNumber+"",E.closeWord()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter something new\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","some4"),"");
 		if(newName.length()>0)
 			E.setExitParams(E.doorName(),newName,E.openWord(),E.closedText());
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	public static void genExitMisc(MOB mob, Exit E, int showNumber, int showFlag)
@@ -777,37 +777,37 @@ public class BaseGenerics extends StdCommand
 		if(E.hasALock())
 		{
 			E.setReadable(false);
-			mob.tell(showNumber+". Assigned Key Item: '"+E.keyName()+"'.");
+			mob.tell(getScr("BaseGenerics","asskeyitem",showNumber+"",E.keyName()));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			String newName=mob.session().prompt("Enter something new (null=blank)\n\r:","");
+			String newName=mob.session().prompt(getScr("BaseGenerics","some5"),"");
 			if(newName.equalsIgnoreCase("null"))
 				E.setKeyName("");
 			else
 			if(newName.length()>0)
 				E.setKeyName(newName);
 			else
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 		}
 		else
 		{
 			if((showFlag!=showNumber)&&(showFlag>-999))
 			{
 				if(!E.isReadable())
-					mob.tell(showNumber+". Door not is readable.");
+					mob.tell(getScr("BaseGenerics","dorrnread",showNumber+""));
 				else
-					mob.tell(showNumber+". Door is readable: "+E.readableText());
+					mob.tell(getScr("BaseGenerics","dorread",showNumber+"",E.readableText()));
 				return;
 			}
 			else
-			if(genGenericPrompt(mob,"Is this door readable",E.isReadable()))
+			if(genGenericPrompt(mob,getScr("BaseGenerics","msgreadble"),E.isReadable()))
 			{
 				E.setReadable(true);
-				mob.tell("\n\rText: '"+E.readableText()+"'.");
-				String newName=mob.session().prompt("Enter something new\n\r:","");
+				mob.tell(getScr("BaseGenerics","readabletxt",E.readableText()));
+				String newName=mob.session().prompt(getScr("BaseGenerics","some4"),"");
 				if(newName.length()>0)
 					E.setReadableText(newName);
 				else
-					mob.tell("(no change)");
+					mob.tell(getScr("BaseGenerics","nochange"));
 			}
 			else
 				E.setReadable(false);
@@ -832,9 +832,9 @@ public class BaseGenerics extends StdCommand
 			Sense.setReadable(E,true);
 		else
 		if((showFlag!=showNumber)&&(showFlag>-999))
-			mob.tell(showNumber+". Item is readable: "+Sense.isReadable(E));
+			mob.tell(getScr("BaseGenerics","itemread",showNumber+"",Sense.isReadable(E)+""));
 		else
-			Sense.setReadable(E,genGenericPrompt(mob,showNumber+". Is this item readable",Sense.isReadable(E)));
+			Sense.setReadable(E,genGenericPrompt(mob,showNumber+getScr("BaseGenerics","msgitemr"),Sense.isReadable(E)));
 	}
 
 	public static void genReadable2(MOB mob, Item E, int showNumber, int showFlag)
@@ -856,48 +856,48 @@ public class BaseGenerics extends StdCommand
 			{
 				if(CMClass.className(E).endsWith("SuperPill"))
 				{
-					mob.tell(showNumber+". Assigned Spell or Parameters: '"+E.readableText()+"'.");
+					mob.tell(getScr("BaseGenerics","assspellorp",showNumber+"",E.readableText()));
 					ok=true;
 				}
 				else
 				if(E instanceof SpellHolder)
-					mob.tell(showNumber+". Assigned Spell(s) ( ';' delimited)\n: '"+E.readableText()+"'.");
+					mob.tell(getScr("BaseGenerics","assspell",showNumber+"",E.readableText()));
 				else
 				if(E instanceof Ammunition)
 				{
-					mob.tell(showNumber+". Ammunition type: '"+E.readableText()+"'.");
+					mob.tell(getScr("BaseGenerics","ammotype",showNumber+"",E.readableText()));
 					ok=true;
 				}
 				else
 				if(CMClass.className(E).toUpperCase().endsWith("PORTAL"))
 				{
-					mob.tell(showNumber+". Assigned Room IDs: '"+E.readableText()+"'.");
+					mob.tell(getScr("BaseGenerics","assroomid",showNumber+"",E.readableText()));
 					ok=true;
 				}
 				else
 				if(E instanceof Wand)
-					mob.tell(showNumber+". Assigned Spell Name: '"+E.readableText()+"'.");
+					mob.tell(getScr("BaseGenerics","asspellname",showNumber+"",E.readableText()));
 				else
 				if(E instanceof Key)
 				{
-					mob.tell(showNumber+". Assigned Key Code: '"+E.readableText()+"'.");
+					mob.tell(getScr("BaseGenerics","asskeycode",showNumber+"",E.readableText()));
 					ok=true;
 				}
 				else
 				if(E instanceof com.planet_ink.coffee_mud.interfaces.Map)
 				{
-					mob.tell(showNumber+". Assigned Map Area(s): '"+E.readableText()+"'.");
+					mob.tell(getScr("BaseGenerics","assmaparea",showNumber+"",E.readableText()));
 					ok=true;
 				}
 				else
 				if(E instanceof Light)
 				{
-					mob.tell(showNumber+". Light duration (before burn out): '"+Util.s_int(E.readableText())+"'.");
+					mob.tell(getScr("BaseGenerics","lightdur",showNumber+"",Util.s_int(E.readableText())+""));
 					ok=true;
 				}
 				else
 				{
-					mob.tell(showNumber+". Assigned Read Text: '"+E.readableText()+"'.");
+					mob.tell(getScr("BaseGenerics","assreadtxt",showNumber+"",E.readableText())+"");
 					ok=true;
 				}
 
@@ -907,7 +907,7 @@ public class BaseGenerics extends StdCommand
 				if((E instanceof Wand)
 				||((E instanceof SpellHolder)&&(!(CMClass.className(E).endsWith("SuperPill")))))
 				{
-					newName=mob.session().prompt("Enter something new (?)\n\r:","");
+					newName=mob.session().prompt(getScr("BaseGenerics","some6"),"");
 					if(newName.length()==0)
 						ok=true;
 					else
@@ -921,7 +921,7 @@ public class BaseGenerics extends StdCommand
 							if(chosenOne!=null)
 								ok=true;
 							else
-								mob.tell("'"+newName+"' is not recognized.  Try '?'.");
+								mob.tell(getScr("BaseGenerics","namenotrec",newName));
 						}
 						else
 						if(E instanceof SpellHolder)
@@ -937,7 +937,7 @@ public class BaseGenerics extends StdCommand
 									ok=true;
 								else
 								{
-									mob.tell("'"+spellName+"' is not recognized.  Try '?'.");
+									mob.tell(getScr("BaseGenerics","spellnotrec",spellName));
 									break;
 								}
 								newName=newName.substring(x+1).trim();
@@ -948,26 +948,26 @@ public class BaseGenerics extends StdCommand
 					}
 				}
 				else
-					newName=mob.session().prompt("Enter something new\n\r:","");
+					newName=mob.session().prompt(getScr("BaseGenerics","some4"),"");
 
 				if(ok)
 				{
 					if(newName.length()>0)
 						E.setReadableText(newName);
 					else
-						mob.tell("(no change)");
+						mob.tell(getScr("BaseGenerics","nochange"));
 				}
 			}
 		}
 		else
 		if(E instanceof Drink)
 		{
-			mob.session().println(showNumber+". Current liquid type: "+EnvResource.RESOURCE_DESCS[((Drink)E).liquidType()&EnvResource.RESOURCE_MASK]);
+			mob.session().println(showNumber+getScr("BaseGenerics","curliq")+" "+EnvResource.RESOURCE_DESCS[((Drink)E).liquidType()&EnvResource.RESOURCE_MASK]);
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			boolean q=false;
 			while(!q)
 			{
-				String newType=mob.session().prompt("Enter a new type (?)\n\r:",EnvResource.RESOURCE_DESCS[((Drink)E).liquidType()&EnvResource.RESOURCE_MASK]);
+				String newType=mob.session().prompt(getScr("BaseGenerics","newtype"),EnvResource.RESOURCE_DESCS[((Drink)E).liquidType()&EnvResource.RESOURCE_MASK]);
 				if(newType.equals("?"))
 				{
 					StringBuffer say=new StringBuffer("");
@@ -988,23 +988,23 @@ public class BaseGenerics extends StdCommand
 					if(newValue>=0)
 						((Drink)E).setLiquidType(newValue);
 					else
-						mob.tell("(no change)");
+						mob.tell(getScr("BaseGenerics","nochange"));
 				}
 			}
 		}
 	}
-	
+
 	public static void genRecipe(MOB mob, Recipe E, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String prompt="Recipe Data for";
+		String prompt=getScr("BaseGenerics","recipedata");
 		mob.tell(showNumber+". "+prompt+": "+E.getCommonSkillID()+".");
 		mob.tell(Util.padRight(" ",(""+showNumber).length()+2+prompt.length())+": "+Util.replaceAll(E.getRecipeCodeLine(),"\t",",")+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		while(!mob.session().killFlag())
 		{
-			String newName=mob.session().prompt("Enter new skill id (?)\n\r:","");
+			String newName=mob.session().prompt(getScr("BaseGenerics","entskillid"),"");
 			if(newName.equalsIgnoreCase("?"))
 			{
 			    StringBuffer str=new StringBuffer("");
@@ -1016,7 +1016,7 @@ public class BaseGenerics extends StdCommand
 				 	&&(Util.bset(A.flags(),Ability.FLAG_CRAFTING)))
 				 	    str.append(A.ID()+"\n\r");
 				}
-				mob.tell("\n\rCommon Skills:\n\r"+str.toString()+"\n\r");
+				mob.tell(getScr("BaseGenerics","comskill",str.toString()));
 			}
 			else
 			if((newName.length()>0)
@@ -1028,18 +1028,18 @@ public class BaseGenerics extends StdCommand
 			}
 			else
 			if(newName.length()>0)
-			    mob.tell("'"+newName+"' is not a valid common skill.  Try ?.");
+			    mob.tell(getScr("BaseGenerics","cskillerr",newName));
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 				break;
 			}
 		}
-		String newName=mob.session().prompt("Enter new data line\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","entdataline"),"");
 		if(newName.length()>0)
 			E.setRecipeCodeLine(Util.replaceAll(newName,",","\t"));
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	public static void genGettable(MOB mob, Item E, int showNumber, int showFlag)
@@ -1052,14 +1052,14 @@ public class BaseGenerics extends StdCommand
 		String c="Q";
 		while(!c.equals("\n"))
 		{
-			mob.session().println(showNumber+". A) Is Gettable   : "+(!Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET)));
-			mob.session().println("    B) Is Droppable  : "+(!Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP)));
-			mob.session().println("    C) Is Removable  : "+(!Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE)));
-			mob.session().println("    D) Non-Locatable : "+(((E.baseEnvStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)>0)?"true":"false"));
+			mob.session().println(showNumber+getScr("BaseGenerics","gettable")+" "+(!Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET)));
+			mob.session().println("    "+getScr("BaseGenerics","droppable")+" "+(!Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP)));
+			mob.session().println("    "+getScr("BaseGenerics","removable")+" "+(!Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE)));
+			mob.session().println("    "+getScr("BaseGenerics","nonlocatable")+" "+(((E.baseEnvStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)>0)?"true":"false"));
 			if(E instanceof Weapon)
-				mob.session().println("    E) Is Two-Handed : "+E.rawLogicalAnd());
+				mob.session().println("    "+getScr("BaseGenerics","some4")+" "+E.rawLogicalAnd());
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			c=mob.session().choose("Enter one to change, or ENTER when done: ","ABCDE\n","\n").toUpperCase();
+			c=mob.session().choose(getScr("BaseGenerics","msgabcde"),"ABCDE\n","\n").toUpperCase();
 			switch(Character.toUpperCase(c.charAt(0)))
 			{
 			case 'A': Sense.setGettable(E,(Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET))); break;
@@ -1116,7 +1116,7 @@ public class BaseGenerics extends StdCommand
 						 "good"};
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			StringBuffer buf=new StringBuffer(showNumber+". Dispositions: ");
+			StringBuffer buf=new StringBuffer(getScr("BaseGenerics","disptxt",showNumber+""));
 			for(int i=0;i<disps.length;i++)
 			{
 				int mask=disps[i];
@@ -1143,7 +1143,7 @@ public class BaseGenerics extends StdCommand
 					}
 				letter++;
 			}
-			c=mob.session().choose("Enter one to change, or ENTER when done: ",letters+"\n","\n").toUpperCase();
+			c=mob.session().choose(getScr("BaseGenerics","msgabcde")+" ",letters+"\n","\n").toUpperCase();
 			letter='A';
 			for(int i=0;i<disps.length;i++)
 			{
@@ -1203,14 +1203,14 @@ public class BaseGenerics extends StdCommand
 		String c="Q";
 		while(!c.equals("\n"))
 		{
-			mob.session().println(""+showNumber+". Climate:");
-			mob.session().println("    R) Wet and Rainy    : "+((A.climateType()&Area.CLIMASK_WET)>0));
-			mob.session().println("    H) Excessively hot  : "+((A.climateType()&Area.CLIMASK_HOT)>0));
-			mob.session().println("    C) Excessively cold : "+((A.climateType()&Area.CLIMASK_COLD)>0));
-			mob.session().println("    W) Very windy       : "+((A.climateType()&Area.CLIMATE_WINDY)>0));
-			mob.session().println("    D) Very dry         : "+((A.climateType()&Area.CLIMASK_DRY)>0));
+			mob.session().println(""+showNumber+getScr("BaseGenerics","climate"));
+			mob.session().println("    "+getScr("BaseGenerics","wetrainy")+" "+((A.climateType()&Area.CLIMASK_WET)>0));
+			mob.session().println("    "+getScr("BaseGenerics","exhot")+" "+((A.climateType()&Area.CLIMASK_HOT)>0));
+			mob.session().println("    "+getScr("BaseGenerics","excold")+" "+((A.climateType()&Area.CLIMASK_COLD)>0));
+			mob.session().println("    "+getScr("BaseGenerics","verywindy")+" "+((A.climateType()&Area.CLIMATE_WINDY)>0));
+			mob.session().println("    "+getScr("BaseGenerics","verydry")+" "+((A.climateType()&Area.CLIMASK_DRY)>0));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			c=mob.session().choose("Enter one to change, or ENTER when done: ","RHCWD\n","\n").toUpperCase();
+			c=mob.session().choose(getScr("BaseGenerics","msgabcde")+" ","RHCWD\n","\n").toUpperCase();
 			switch(c.charAt(0))
 			{
 			case 'C': toggleClimateMask(A,Area.CLIMASK_COLD); break;
@@ -1228,7 +1228,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			StringBuffer buf=new StringBuffer(showNumber+". Stats: ");
+			StringBuffer buf=new StringBuffer(showNumber+getScr("BaseGenerics","stats")+" ");
 			for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 				buf.append(CharStats.TRAITABBR1[i]+":"+E.baseCharStats().getStat(i)+" ");
 			mob.tell(buf.toString());
@@ -1241,11 +1241,11 @@ public class BaseGenerics extends StdCommand
 			for(int i=0;i<CharStats.TRAITS.length;i++)
 				if(i!=CharStats.GENDER)
 					mob.session().println("    "+commandStr.charAt(i)+") "+Util.padRight(CharStats.TRAITS[i],20)+":"+((E.baseCharStats().getStat(i))));
-			c=mob.session().choose("Enter one to change, or ENTER when done: ",commandStr.substring(0,CharStats.TRAITS.length)+"\n","\n").toUpperCase();
+			c=mob.session().choose(getScr("BaseGenerics","msgabcde")+" ",commandStr.substring(0,CharStats.TRAITS.length)+"\n","\n").toUpperCase();
 			int num=commandStr.indexOf(c);
 			if(num>=0)
 			{
-				String newVal=mob.session().prompt("Enter new value for "+CharStats.TRAITS[num]+" ("+E.baseCharStats().getStat(num)+"): ","");
+				String newVal=mob.session().prompt(getScr("BaseGenerics","entnewvalue")+" "+CharStats.TRAITS[num]+" ("+E.baseCharStats().getStat(num)+"): ","");
 				if(((Util.s_int(newVal)>0)||(newVal.trim().equals("0")))
 				&&(num!=CharStats.GENDER))
 				{
@@ -1254,7 +1254,7 @@ public class BaseGenerics extends StdCommand
 					    E.playerStats().getBirthday()[2]=DefaultTimeClock.globalClock.getYear()-Util.s_int(newVal);
 				}
 				else
-					mob.tell("(no change)");
+					mob.tell(getScr("BaseGenerics","nochange"));
 			}
 		}
 	}
@@ -1287,7 +1287,7 @@ public class BaseGenerics extends StdCommand
 						 "BLIND"};
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			StringBuffer buf=new StringBuffer(showNumber+". Senses: ");
+			StringBuffer buf=new StringBuffer(showNumber+getScr("BaseGenerics","senses")+" ");
 			for(int i=0;i<senses.length;i++)
 			{
 				int mask=senses[i];
@@ -1314,7 +1314,7 @@ public class BaseGenerics extends StdCommand
 					}
 				letter++;
 			}
-			c=mob.session().choose("Enter one to change, or ENTER when done: ",letters+"\n","\n").toUpperCase();
+			c=mob.session().choose(getScr("BaseGenerics","msgabcde")+" ",letters+"\n","\n").toUpperCase();
 			letter='A';
 			for(int i=0;i<senses.length;i++)
 			{
@@ -1340,21 +1340,21 @@ public class BaseGenerics extends StdCommand
 		boolean Locked=E.isLocked();
 		boolean DefaultsLocked=E.defaultsLocked();
 		if((showFlag!=showNumber)&&(showFlag>-999)){
-			mob.tell(showNumber+". Has a door: "+E.hasADoor()
-					+"\n\r   Has a lock: "+E.hasALock()
-					+"\n\r   Open ticks: "+E.openDelayTicks());
+			mob.tell(showNumber+getScr("BaseGenerics","hasadoor")+" "+E.hasADoor()
+					+getScr("BaseGenerics","hasalock")+" "+E.hasALock()
+					+getScr("BaseGenerics","openticks")+" "+E.openDelayTicks());
 			return;
 		}
 
-		if(genGenericPrompt(mob,"Has a door",E.hasADoor()))
+		if(genGenericPrompt(mob,getScr("BaseGenerics","hasadoor"),E.hasADoor()))
 		{
 			HasDoor=true;
-			DefaultsClosed=genGenericPrompt(mob,"Defaults closed",E.defaultsClosed());
+			DefaultsClosed=genGenericPrompt(mob,getScr("BaseGenerics","defclosed"),E.defaultsClosed());
 			Open=!DefaultsClosed;
-			if(genGenericPrompt(mob,"Has a lock",E.hasALock()))
+			if(genGenericPrompt(mob,getScr("BaseGenerics","hasalock"),E.hasALock()))
 			{
 				HasLock=true;
-				DefaultsLocked=genGenericPrompt(mob,"Defaults locked",E.defaultsLocked());
+				DefaultsLocked=genGenericPrompt(mob,getScr("BaseGenerics","deflocked"),E.defaultsLocked());
 				Locked=DefaultsLocked;
 			}
 			else
@@ -1363,12 +1363,12 @@ public class BaseGenerics extends StdCommand
 				Locked=false;
 				DefaultsLocked=false;
 			}
-			mob.tell("\n\rReset Delay (# ticks): '"+E.openDelayTicks()+"'.");
-			int newLevel=Util.s_int(mob.session().prompt("Enter a new delay\n\r:",""));
+			mob.tell(getScr("BaseGenerics","resetdticks",E.openDelayTicks()+""));
+			int newLevel=Util.s_int(mob.session().prompt(getScr("BaseGenerics","entdelay"),""));
 			if(newLevel>0)
 				E.setOpenDelayTicks(newLevel);
 			else
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 		}
 		else
 		{
@@ -1401,16 +1401,16 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		if((showFlag!=showNumber)&&(showFlag>-999)){
-			mob.tell(showNumber+". Can contain : "+makeContainerTypes(E)
-					+"\n\r   Has a lid   : "+E.hasALid()
-					+"\n\r   Has a lock  : "+E.hasALock());
+			mob.tell(showNumber+getScr("BaseGenerics","cancontaini")+" "+makeContainerTypes(E)
+					+getScr("BaseGenerics","hasalid")+" "+E.hasALid()
+					+getScr("BaseGenerics","hasalock")+" "+E.hasALock());
 			return;
 		}
 		String change="NO";
 		while(change.length()>0)
 		{
-			mob.tell("\n\rCan only contain: "+makeContainerTypes(E));
-			change=mob.session().prompt("Enter a type to add/remove (?)\n\r:","");
+			mob.tell(getScr("BaseGenerics","cancontain",makeContainerTypes(E)));
+			change=mob.session().prompt(getScr("BaseGenerics","typeaddrem"),"");
 			if(change.length()==0) break;
 			int found=-1;
 			if(change.equalsIgnoreCase("?"))
@@ -1422,7 +1422,7 @@ public class BaseGenerics extends StdCommand
 					if(Container.CONTAIN_DESCS[i].startsWith(change.toUpperCase()))
 						found=i;
 				if(found<0)
-					mob.tell("Unknown type.  Try '?'.");
+					mob.tell(getScr("BaseGenerics","unktype"));
 				else
 				if(found==0)
 					E.setContainTypes(0);
@@ -1434,18 +1434,18 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 
-		if(genGenericPrompt(mob,"Has a lid ",E.hasALid()))
+		if(genGenericPrompt(mob,getScr("BaseGenerics","hasalidmsg")+" " ,E.hasALid()))
 		{
 			E.setLidsNLocks(true,false,E.hasALock(),E.isLocked());
-			if(genGenericPrompt(mob,"Has a lock",E.hasALock()))
+			if(genGenericPrompt(mob,getScr("BaseGenerics","hasalockmsg"),E.hasALock()))
 			{
 				E.setLidsNLocks(E.hasALid(),E.isOpen(),true,true);
-				mob.tell("\n\rText: '"+E.keyName()+"'.");
-				String newName=mob.session().prompt("Enter something new\n\r:","");
+				mob.tell(getScr("BaseGenerics","textkey",E.keyName()));
+				String newName=mob.session().prompt(getScr("BaseGenerics","some4"),"");
 				if(newName.length()>0)
 					E.setKeyName(newName);
 				else
-					mob.tell("(no change)");
+					mob.tell(getScr("BaseGenerics","nochange"));
 			}
 			else
 			{
@@ -1466,9 +1466,9 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		if(E.baseEnvStats().level()<0)
 			E.baseEnvStats().setLevel(1);
-		mob.tell(showNumber+". Level: '"+E.baseEnvStats().level()+"'.");
+		mob.tell(getScr("BaseGenerics","leveltxt",showNumber+"",E.baseEnvStats().level()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.baseEnvStats().setLevel(getNumericData(mob,"Enter a new level\n\r:",E.baseEnvStats().level()));
+		E.baseEnvStats().setLevel(getNumericData(mob,getScr("BaseGenerics","entlev"),E.baseEnvStats().level()));
 	}
 
 	public static void genRejuv(MOB mob, Environmental E, int showNumber, int showFlag)
@@ -1476,11 +1476,11 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		if(E instanceof Item)
-			mob.tell(showNumber+". Rejuv/Pct: '"+E.baseEnvStats().rejuv()+"' (0=special).");
+			mob.tell(getScr("BaseGenerics","rejuv",showNumber+"",E.baseEnvStats().rejuv()+""));
 		else
-			mob.tell(showNumber+". Rejuv Ticks: '"+E.baseEnvStats().rejuv()+"' (0=never).");
+			mob.tell(getScr("BaseGenerics","rejuvticks",showNumber+"",E.baseEnvStats().rejuv()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String rlevel=mob.session().prompt("Enter new amount\n\r:","");
+		String rlevel=mob.session().prompt(getScr("BaseGenerics","entamount"),"");
 		int newLevel=Util.s_int(rlevel);
 		if((newLevel>0)||(rlevel.trim().equals("0")))
 		{
@@ -1488,38 +1488,38 @@ public class BaseGenerics extends StdCommand
 			if((E.baseEnvStats().rejuv()==0)&&(E instanceof MOB))
 			{
 				E.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-				mob.tell(E.Name()+" will now never rejuvinate.");
+				mob.tell(getScr("BaseGenerics","neverrej",E.Name()));
 			}
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	public static void genUses(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Uses Remaining: '"+E.usesRemaining()+"'.");
+		mob.tell(getScr("BaseGenerics","usesrema",showNumber+"",E.usesRemaining()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.setUsesRemaining(getNumericData(mob,"Enter a new value\n\r:",E.usesRemaining()));
+		E.setUsesRemaining(getNumericData(mob,getScr("BaseGenerics","entvaluenew"),E.usesRemaining()));
 	}
 
 	public static void genMaxUses(MOB mob, Wand E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Maximum Uses: '"+E.maxUses() +"'.");
+		mob.tell(getScr("BaseGenerics","maxuses",showNumber+"",E.maxUses()+"" ));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.setMaxUses(getNumericData(mob,"Enter a new value\n\r:",E.maxUses()));
+		E.setMaxUses(getNumericData(mob,getScr("BaseGenerics","entvaluenew"),E.maxUses()));
 	}
 
 	public static void genCondition(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Condition: '"+E.usesRemaining()+"'.");
+		mob.tell(getScr("BaseGenerics","condition",showNumber+"",E.usesRemaining()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.setUsesRemaining(getNumericData(mob,"Enter a new value\n\r:",E.usesRemaining()));
+		E.setUsesRemaining(getNumericData(mob,getScr("BaseGenerics","entvaluenew"),E.usesRemaining()));
 	}
 
 	public static void genMiscSet(MOB mob, Environmental E)
@@ -1577,7 +1577,7 @@ public class BaseGenerics extends StdCommand
 		int numValue=Util.s_int(value);
 		if((numValue==0)&&(!value.trim().equals("0")))
 		{
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 			return oldValue;
 		}
 		return numValue;
@@ -1590,7 +1590,7 @@ public class BaseGenerics extends StdCommand
 		long numValue=Util.s_long(value);
 		if((numValue==0)&&(!value.trim().equals("0")))
 		{
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 			return oldValue;
 		}
 		return numValue;
@@ -1602,10 +1602,10 @@ public class BaseGenerics extends StdCommand
 		String value=mob.session().prompt(prompt,"").trim();
 		if(value.length()==0)
 		{
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 			return oldValue;
 		}
-		if(value.equalsIgnoreCase("null")) 
+		if(value.equalsIgnoreCase("null"))
 		    value="";
 		return value;
 	}
@@ -1617,7 +1617,7 @@ public class BaseGenerics extends StdCommand
 		double numValue=Util.s_double(value);
 		if((numValue==0.0)&&(!value.trim().equals("0")))
 		{
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 			return oldValue;
 		}
 		return numValue;
@@ -1631,16 +1631,16 @@ public class BaseGenerics extends StdCommand
 		else
 		{
 			if((showFlag>0)&&(showFlag!=showNumber)) return;
-			mob.tell(showNumber+". Misc Text: '"+E.text()+"'.");
+			mob.tell(getScr("BaseGenerics","misctxt",showNumber+"",E.text()));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			String newText=mob.session().prompt("Re-enter now (null=blank)\n\r:","");
+			String newText=mob.session().prompt(getScr("BaseGenerics","reent"),"");
 			if(newText.equalsIgnoreCase("NULL"))
 				E.setMiscText("");
 			else
 			if(newText.length()>0)
 				E.setMiscText(newText);
 			else
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 		}
 
 	}
@@ -1649,21 +1649,21 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Land plot ID: '"+E.landPropertyID()+"'.");
+		mob.tell(getScr("BaseGenerics","landplotid",showNumber+"",E.landPropertyID()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newText="?!?!";
 		while((newText.length()>0)&&(CMMap.getRoom(newText)==null))
 		{
-			newText=mob.session().prompt("New Property ID:","");
+			newText=mob.session().prompt(getScr("BaseGenerics","newprpid"),"");
 			if((newText.length()==0)
 			&&(CMMap.getRoom(newText)==null)
 			&&(CMMap.getArea(newText)==null))
-				mob.tell("That property (room ID) doesn't exist!");
+				mob.tell(getScr("BaseGenerics","roomiderror"));
 		}
 		if(newText.length()>0)
 			E.setLandPropertyID(newText);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 
 	}
 
@@ -1671,16 +1671,16 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Magical Ability: '"+E.baseEnvStats().ability()+"'.");
+		mob.tell(getScr("BaseGenerics","magicalability",showNumber+"",E.baseEnvStats().ability()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.baseEnvStats().setAbility(getNumericData(mob,"Enter a new value (0=no magic)\n\r:",E.baseEnvStats().ability()));
+		E.baseEnvStats().setAbility(getNumericData(mob,getScr("BaseGenerics","zeronomag"),E.baseEnvStats().ability()));
 	}
 
 	public static void genCoinStuff(MOB mob, Coins E, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Money data: '"+E.getNumberOfCoins()+" x "+BeanCounter.getDenominationName(E.getCurrency(),E.getDenomination())+"'.");
+		mob.tell(getScr("BaseGenerics","moneydata",showNumber+"",E.getNumberOfCoins()+"",BeanCounter.getDenominationName(E.getCurrency(),E.getDenomination())));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean gocontinue=true;
 		while(gocontinue)
@@ -1688,17 +1688,17 @@ public class BaseGenerics extends StdCommand
 		    gocontinue=false;
 		    String oldCurrency=E.getCurrency();
 		    if(oldCurrency.length()==0) oldCurrency="Default";
-			oldCurrency=mob.session().prompt("Enter currency code (?):",oldCurrency).trim().toUpperCase();
+			oldCurrency=mob.session().prompt(getScr("BaseGenerics","entcurcode"),oldCurrency).trim().toUpperCase();
 			if(oldCurrency.equalsIgnoreCase("Default"))
 			{
 			    if(E.getCurrency().length()>0)
 				    E.setCurrency("");
 			    else
-			        mob.tell("(no change)");
+			        mob.tell(getScr("BaseGenerics","nochange"));
 			}
 			else
 			if((oldCurrency.length()==0)||(oldCurrency.equalsIgnoreCase(E.getCurrency())))
-			    mob.tell("(no change)");
+			    mob.tell(getScr("BaseGenerics","nochange"));
 			else
 			if(!BeanCounter.getAllCurrencies().contains(oldCurrency))
 			{
@@ -1706,7 +1706,7 @@ public class BaseGenerics extends StdCommand
 			    for(int v=0;v<V.size();v++)
 			        if(((String)V.elementAt(v)).length()==0)
 			            V.setElementAt("Default",v);
-			    mob.tell("'"+oldCurrency+"' is not recognized.  Try: "+Util.toStringList(V)+".");
+			    mob.tell(getScr("BaseGenerics","currencyerr",oldCurrency,Util.toStringList(V)));
 			    gocontinue=true;
 			}
 			else
@@ -1716,7 +1716,7 @@ public class BaseGenerics extends StdCommand
 		while(gocontinue)
 		{
 		    gocontinue=false;
-		    String newDenom=mob.session().prompt("Enter denomination (?):",""+E.getDenomination()).trim().toUpperCase();
+		    String newDenom=mob.session().prompt(getScr("BaseGenerics","entde"),""+E.getDenomination()).trim().toUpperCase();
 			DVector DV=BeanCounter.getCurrencySet(E.getCurrency());
 			if((newDenom.length()>0)
 			&&(!Util.isDouble(newDenom))
@@ -1729,7 +1729,7 @@ public class BaseGenerics extends StdCommand
 		    ||(Util.isDouble(newDenom)
 	            &&(!newDenom.equalsIgnoreCase("?"))
 	            &&(Util.s_double(newDenom)==E.getDenomination())))
-			        mob.tell("(no change)");
+			        mob.tell(getScr("BaseGenerics","nochange"));
 		    else
 			if((!Util.isDouble(newDenom))
 			||(newDenom.equalsIgnoreCase("?"))
@@ -1740,45 +1740,45 @@ public class BaseGenerics extends StdCommand
 			        allDenoms.append(((Double)DV.elementAt(i,1)).doubleValue()+"("+((String)DV.elementAt(i,2))+"), ");
 			    if(allDenoms.toString().endsWith(", "))
 			        allDenoms=new StringBuffer(allDenoms.substring(0,allDenoms.length()-2));
-			    mob.tell("'"+newDenom+"' is not a defined denomination. Try one of these: "+allDenoms.toString()+".");
+			    mob.tell(getScr("BaseGenerics","denomerr",newDenom,allDenoms.toString()));
 			    gocontinue=true;
 			}
 			else
 			    E.setDenomination(Util.s_double(newDenom));
 		}
-		E.setNumberOfCoins(getLongData(mob,"Enter stack size\n\r:",E.getNumberOfCoins()));
+		E.setNumberOfCoins(getLongData(mob,getScr("BaseGenerics","entstacksize"),E.getNumberOfCoins()));
 	}
 
 	public static void genHitPoints(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Hit Points/Level Modifier (hp=((level*level) + (random*level*THIS))) : '"+E.baseEnvStats().ability()+"'.");
+		mob.tell(getScr("BaseGenerics","hitpointsmod",showNumber+"",E.baseEnvStats().ability()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newLevelStr=mob.session().prompt("Enter a new value\n\r:","");
+		String newLevelStr=mob.session().prompt(getScr("BaseGenerics","entvaluenew"),"");
 		int newLevel=Util.s_int(newLevelStr);
 		if((newLevel!=0)||(newLevelStr.equals("0")))
 			E.baseEnvStats().setAbility(newLevel);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	public static void genValue(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Base Value: '"+E.baseGoldValue()+"'.");
+		mob.tell(getScr("BaseGenerics","basevalue",showNumber+"",E.baseGoldValue()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.setBaseValue(getNumericData(mob,"Enter a new value\n\r:",E.baseGoldValue()));
+		E.setBaseValue(getNumericData(mob,getScr("BaseGenerics","entvaluenew"),E.baseGoldValue()));
 	}
 
 	public static void genWeight(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Weight: '"+E.baseEnvStats().weight()+"'.");
+		mob.tell(getScr("BaseGenerics","weight",showNumber+"",E.baseEnvStats().weight()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.baseEnvStats().setWeight(getNumericData(mob,"Enter a new weight\n\r:",E.baseEnvStats().weight()));
+		E.baseEnvStats().setWeight(getNumericData(mob,getScr("BaseGenerics","weightmsg"),E.baseEnvStats().weight()));
 	}
 
 
@@ -1786,23 +1786,23 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Clan: '"+E.clanID()+"', Type: "+ClanItem.CI_DESC[E.ciType()]+".");
+		mob.tell(getScr("BaseGenerics","clanline",showNumber+"",E.clanID(),ClanItem.CI_DESC[E.ciType()]));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String clanID=E.clanID();
-		E.setClanID(mob.session().prompt("Enter a new clan\n\r:",clanID));
+		E.setClanID(mob.session().prompt(getScr("BaseGenerics","entclan"),clanID));
 		if(E.clanID().equals(clanID))
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 		String clanType=ClanItem.CI_DESC[E.ciType()];
 		String s="?";
 		while(s.equals("?"))
 		{
-			s=mob.session().prompt("Enter a new type (?)\n\r:",clanType);
+			s=mob.session().prompt(getScr("BaseGenerics","newtype"),clanType);
 			if(s.equalsIgnoreCase("?"))
-				mob.tell("Types: "+Util.toStringList(ClanItem.CI_DESC));
+				mob.tell(getScr("BaseGenerics","typesclan",Util.toStringList(ClanItem.CI_DESC)));
 			else
 			if(s.equalsIgnoreCase(clanType))
 			{
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 				break;
 			}
 			else
@@ -1813,7 +1813,7 @@ public class BaseGenerics extends StdCommand
 					{ found=true; E.setCIType(i); break;}
 				if(!found)
 				{
-					mob.tell("'"+s+"' is unknown.  Try '?'");
+					mob.tell(getScr("BaseGenerics","unknown",s));
 					s="?";
 				}
 			}
@@ -1824,9 +1824,9 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Height: '"+E.baseEnvStats().height()+"'.");
+		mob.tell(getScr("BaseGenerics","height",showNumber+"",E.baseEnvStats().height()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.baseEnvStats().setHeight(getNumericData(mob,"Enter a new height\n\r:",E.baseEnvStats().height()));
+		E.baseEnvStats().setHeight(getNumericData(mob,getScr("BaseGenerics","heightmsg"),E.baseEnvStats().height()));
 	}
 
 
@@ -1834,9 +1834,9 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Size: '"+E.baseEnvStats().height()+"'.");
+		mob.tell(getScr("BaseGenerics","size",showNumber+"",E.baseEnvStats().height()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.baseEnvStats().setHeight(getNumericData(mob,"Enter a new size\n\r:",E.baseEnvStats().height()));
+		E.baseEnvStats().setHeight(getNumericData(mob,getScr("BaseGenerics","entnewsize"),E.baseEnvStats().height()));
 	}
 
 
@@ -1844,65 +1844,65 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Capacity: '"+E.capacity()+"'.");
+		mob.tell(getScr("BaseGenerics","capacity",showNumber+"",E.capacity()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.setCapacity(getNumericData(mob,"Enter a new capacity\n\r:",E.capacity()));
+		E.setCapacity(getNumericData(mob,getScr("BaseGenerics","entnewcap"),E.capacity()));
 	}
 
 	public static void genAttack(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". AttackAdjustment: '"+E.baseEnvStats().attackAdjustment()+"'.");
+		mob.tell(getScr("BaseGenerics","attackadj",showNumber+"",E.baseEnvStats().attackAdjustment()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.baseEnvStats().setAttackAdjustment(getNumericData(mob,"Enter a new value\n\r:",E.baseEnvStats().attackAdjustment()));
+		E.baseEnvStats().setAttackAdjustment(getNumericData(mob,getScr("BaseGenerics","entvaluenew"),E.baseEnvStats().attackAdjustment()));
 	}
 
 	public static void genDamage(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Damage/Hit: '"+E.baseEnvStats().damage()+"'.");
+		mob.tell(getScr("BaseGenerics","damagehit",showNumber+"",E.baseEnvStats().damage()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.baseEnvStats().setDamage(getNumericData(mob,"Enter a new value\n\r:",E.baseEnvStats().damage()));
+		E.baseEnvStats().setDamage(getNumericData(mob,getScr("BaseGenerics","entvaluenew"),E.baseEnvStats().damage()));
 	}
 
 	public static void genBanker1(MOB mob, Banker E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Coin Interest: '"+E.getCoinInterest()+"'% per real day.");
+		mob.tell(getScr("BaseGenerics","coininter",showNumber+"",E.getCoinInterest()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.setCoinInterest(getDoubleData(mob,"Enter a new value\n\r:",E.getCoinInterest()));
+		E.setCoinInterest(getDoubleData(mob,getScr("BaseGenerics","entvaluenew"),E.getCoinInterest()));
 	}
 	public static void genBanker2(MOB mob, Banker E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Item Interest: '"+E.getItemInterest()+"'% per real day.");
+		mob.tell(getScr("BaseGenerics","iteminter",showNumber+"",E.getItemInterest()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.setItemInterest(getDoubleData(mob,"Enter a new value\n\r:",E.getItemInterest()));
+		E.setItemInterest(getDoubleData(mob,getScr("BaseGenerics","entvaluenew"),E.getItemInterest()));
 	}
 	public static void genBanker3(MOB mob, Banker E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Bank Chain   : '"+E.bankChain()+"'.");
+		mob.tell(getScr("BaseGenerics","bankchain",showNumber+"",E.bankChain()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter a new chain\n\r:","");
+		String newValue=mob.session().prompt(getScr("BaseGenerics","entnewchain"),"");
 		if(newValue.length()>0)
 			E.setBankChain(newValue);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	public static void genSpeed(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Attacks/Round: '"+((int)Math.round(E.baseEnvStats().speed()))+"'.");
+		mob.tell(getScr("BaseGenerics","attacksperound",showNumber+"",((int)Math.round(E.baseEnvStats().speed())+"")));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.baseEnvStats().setSpeed(getNumericData(mob,"Enter a new value\n\r:",(int)Math.round(E.baseEnvStats().speed())));
+		E.baseEnvStats().setSpeed(getNumericData(mob,getScr("BaseGenerics","entvaluenew"),(int)Math.round(E.baseEnvStats().speed())));
 	}
 
 	public static void genArmor(MOB mob, Environmental E, int showNumber, int showFlag)
@@ -1910,20 +1910,20 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		if(E instanceof MOB)
-			mob.tell(showNumber+". Armor (lower-better): '"+E.baseEnvStats().armor()+"'.");
+			mob.tell(getScr("BaseGenerics","armorlb",showNumber+"",E.baseEnvStats().armor()+""));
 		else
-			mob.tell(showNumber+". Armor (higher-better): '"+E.baseEnvStats().armor()+"'.");
+			mob.tell(getScr("BaseGenerics","armorhb",showNumber+"",E.baseEnvStats().armor()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.baseEnvStats().setArmor(getNumericData(mob,"Enter a new value\n\r:",E.baseEnvStats().armor()));
+		E.baseEnvStats().setArmor(getNumericData(mob,getScr("BaseGenerics","entvaluenew"),E.baseEnvStats().armor()));
 	}
 
 	public static void genMoney(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Money: '"+BeanCounter.getMoney(E)+"'.");
+		mob.tell(getScr("BaseGenerics","moneycounter",showNumber+"",BeanCounter.getMoney(E)+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		BeanCounter.setMoney(E,getNumericData(mob,"Enter a new value\n\r:",BeanCounter.getMoney(E)));
+		BeanCounter.setMoney(E,getNumericData(mob,getScr("BaseGenerics","entvaluenew"),BeanCounter.getMoney(E)));
 	}
 
 	public static void genWeaponAmmo(MOB mob, Weapon E, int showNumber, int showFlag)
@@ -1933,27 +1933,27 @@ public class BaseGenerics extends StdCommand
 		String defaultAmmo=(E.requiresAmmunition())?"Y":"N";
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			mob.tell(showNumber+". Ammo required: "+(E.requiresAmmunition()?E.ammunitionType():"NO"));
+			mob.tell(getScr("BaseGenerics","ammorequi",showNumber+"",E.requiresAmmunition()+"",E.ammunitionType()+""));
 			return;
 		}
 
-		if(mob.session().confirm("Does this weapon require ammunition (default="+defaultAmmo+") (Y/N)?",defaultAmmo))
+		if(mob.session().confirm(getScr("BaseGenerics","confammo",defaultAmmo),defaultAmmo))
 		{
-			mob.tell("\n\rAmmo type: '"+E.ammunitionType()+"'.");
-			String newName=mob.session().prompt("Enter a new one\n\r:","");
+			mob.tell(getScr("BaseGenerics","ammotype",E.ammunitionType()));
+			String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
 			if(newName.length()>0)
 			{
 				E.setAmmunitionType(newName);
-				mob.tell("(Remember to create a readable GenItem with '"+E.ammunitionType()+"' in the secret identity, and the uses remaining above 0!");
+				mob.tell(getScr("BaseGenerics","remembergenitem",E.ammunitionType()));
 			}
 			else
-				mob.tell("(no change)");
-			mob.tell("\n\rAmmo capacity: '"+E.ammunitionCapacity()+"'.");
-			int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
+				mob.tell(getScr("BaseGenerics","nochange"));
+			mob.tell(getScr("BaseGenerics","ammocapacity",E.ammunitionCapacity()+""));
+			int newValue=Util.s_int(mob.session().prompt(getScr("BaseGenerics","entvaluenew"),""));
 			if(newValue>0)
 				E.setAmmoCapacity(newValue);
 			else
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 			E.setAmmoRemaining(E.ammunitionCapacity());
 		}
 		else
@@ -1966,18 +1966,18 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Minimum/Maximum Ranges: "+Math.round(E.minRange())+"/"+Math.round(E.maxRange())+".");
+		mob.tell(getScr("BaseGenerics","minmaxranges",showNumber+"",Math.round(E.minRange())+"",Math.round(E.maxRange())+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newMinStr=mob.session().prompt("Enter a new minimum range\n\r:","");
-		String newMaxStr=mob.session().prompt("Enter a new maximum range\n\r:","");
+		String newMinStr=mob.session().prompt(getScr("BaseGenerics","minrangemsg"),"");
+		String newMaxStr=mob.session().prompt(getScr("BaseGenerics","maxrangemsg"),"");
 		if((newMinStr.length()==0)&&(newMaxStr.length()==0))
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 		else
 		{
 			E.setRanges(Util.s_int(newMinStr),Util.s_int(newMaxStr));
 			if((E.minRange()>E.maxRange())||(E.minRange()<0)||(E.maxRange()<0))
 			{
-				mob.tell("(defective entries.  resetting.)");
+				mob.tell(getScr("BaseGenerics","defectiveent"));
 				E.setRanges(0,0);
 			}
 		}
@@ -1987,13 +1987,13 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Weapon Attack Type: '"+Weapon.typeDescription[E.weaponType()]+"'.");
+		mob.tell(getScr("BaseGenerics","weapatttype",showNumber+"",Weapon.typeDescription[E.weaponType()]));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
 		String sel="NSPBFMR";
 		while(!q)
 		{
-			String newType=mob.session().choose("Enter a new value (?)\n\r:",sel+"?","");
+			String newType=mob.session().choose(getScr("BaseGenerics","entvaluenew"),sel+"?","");
 			if(newType.equals("?"))
 			{
 				for(int i=0;i<sel.length();i++)
@@ -2009,7 +2009,7 @@ public class BaseGenerics extends StdCommand
 				if(newValue>=0)
 					E.setWeaponType(newValue);
 				else
-					mob.tell("(no change)");
+					mob.tell(getScr("BaseGenerics","nochange"));
 			}
 		}
 	}
@@ -2018,12 +2018,12 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Theme setting: '"+Area.THEME_DESCS[A.getTechLevel()]+"'.");
+		mob.tell(getScr("BaseGenerics","themesettings",showNumber+"",Area.THEME_DESCS[A.getTechLevel()]));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
 		while(!q)
 		{
-			String newType=mob.session().prompt("Enter a new level (?)\n\r:",Area.THEME_DESCS[A.getTechLevel()]);
+			String newType=mob.session().prompt(getScr("BaseGenerics","entnewlev"),Area.THEME_DESCS[A.getTechLevel()]);
 			if(newType.equals("?"))
 			{
 				StringBuffer say=new StringBuffer("");
@@ -2045,7 +2045,7 @@ public class BaseGenerics extends StdCommand
 				if(newValue>=0)
 					A.setTechLevel(newValue);
 				else
-					mob.tell("(no change)");
+					mob.tell(getScr("BaseGenerics","nochange"));
 			}
 		}
 	}
@@ -2055,12 +2055,12 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Material Type: '"+EnvResource.RESOURCE_DESCS[E.material()&EnvResource.RESOURCE_MASK]+"'.");
+		mob.tell(getScr("BaseGenerics","materialtype",showNumber+"",EnvResource.RESOURCE_DESCS[E.material()&EnvResource.RESOURCE_MASK]));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
 		while(!q)
 		{
-			String newType=mob.session().prompt("Enter a new material (?)\n\r:",EnvResource.RESOURCE_DESCS[E.material()&EnvResource.RESOURCE_MASK]);
+			String newType=mob.session().prompt(getScr("BaseGenerics","entnewmaterial"),EnvResource.RESOURCE_DESCS[E.material()&EnvResource.RESOURCE_MASK]);
 			if(newType.equals("?"))
 			{
 				StringBuffer say=new StringBuffer("");
@@ -2079,7 +2079,7 @@ public class BaseGenerics extends StdCommand
 				if(newValue>=0)
 					E.setMaterial(newValue);
 				else
-					mob.tell("(no change)");
+					mob.tell(getScr("BaseGenerics","nochange"));
 			}
 		}
 	}
@@ -2088,12 +2088,12 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Instrument Type: '"+MusicalInstrument.TYPE_DESC[E.instrumentType()]+"'.");
+		mob.tell(getScr("BaseGenerics","instrumentype",showNumber+"",MusicalInstrument.TYPE_DESC[E.instrumentType()]));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
 		while(!q)
 		{
-			String newType=mob.session().prompt("Enter a new type (?)\n\r:",MusicalInstrument.TYPE_DESC[E.instrumentType()]);
+			String newType=mob.session().prompt(getScr("BaseGenerics","entnewty"),MusicalInstrument.TYPE_DESC[E.instrumentType()]);
 			if(newType.equals("?"))
 			{
 				StringBuffer say=new StringBuffer("");
@@ -2112,7 +2112,7 @@ public class BaseGenerics extends StdCommand
 				if(newValue>=0)
 					E.setInstrumentType(newValue);
 				else
-					mob.tell("(no change)");
+					mob.tell(getScr("BaseGenerics","nochange"));
 			}
 		}
 	}
@@ -2131,7 +2131,7 @@ public class BaseGenerics extends StdCommand
 	        Faction.FactionRange FR=(Faction.FactionRange)F.ranges.elementAt(v);
 	        mob.tell(Util.padRight(FR.Name,20)+": "+FR.low+" - "+FR.high+")");
 	    }
-		String newOne=mob.session().prompt("Enter a new value: ");
+		String newOne=mob.session().prompt(getScr("BaseGenerics","entnewvalue"));
 		if(Util.isInteger(newOne))
 		{
 		    E.addFaction(F.ID,Util.s_int(newOne));
@@ -2142,17 +2142,17 @@ public class BaseGenerics extends StdCommand
 	        Faction.FactionRange FR=(Faction.FactionRange)F.ranges.elementAt(v);
 	        if(FR.Name.toUpperCase().startsWith(newOne.toUpperCase()))
 	        {
-	            if(FR.low==F.lowest) 
+	            if(FR.low==F.lowest)
 	                E.addFaction(F.ID,FR.low);
 	            else
-	            if(FR.high==F.highest) 
+	            if(FR.high==F.highest)
 	                E.addFaction(F.ID,FR.high);
 	            else
 	                E.addFaction(F.ID,FR.low+((FR.high-FR.low)/2));
 	            return;
 	        }
 	    }
-	    mob.tell("(no change)");
+	    mob.tell(getScr("BaseGenerics","nochange"));
     }
     public static void genFaction(MOB mob, MOB E, int showNumber, int showFlag)
     throws IOException
@@ -2161,9 +2161,9 @@ public class BaseGenerics extends StdCommand
 		String newFact="Q";
 		while(newFact.length()>0)
 		{
-		    mob.tell(showNumber+". Factions: "+E.getFactionListing());
+		    mob.tell(getScr("BaseGenerics","factions",showNumber+"",E.getFactionListing()));
 		    if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		    newFact=mob.session().prompt("Enter a faction name to add or remove\n\r:","");
+		    newFact=mob.session().prompt(getScr("BaseGenerics","factionmsg"),"");
 		    if(newFact.length()>0)
 		    {
 		        Faction lookedUp=Factions.getFactionByName(newFact);
@@ -2174,31 +2174,31 @@ public class BaseGenerics extends StdCommand
 		            {
 		                // this mob already has this faction, they must want it removed
 		                E.removeFaction(lookedUp.ID);
-		                mob.tell("Faction '" + lookedUp.name + "' removed.");
+		                mob.tell(getScr("BaseGenerics","factionrem",lookedUp.name  ));
 		            }
 		            else
 		            {
-						int value =new Integer(mob.session().prompt("How much faction ("+lookedUp.findDefault(E)+")?",
+						int value =new Integer(mob.session().prompt(getScr("BaseGenerics","howmuchf",lookedUp.findDefault(E)+""),
 						           new Integer(lookedUp.findDefault(E)).toString())).intValue();
 			            if(value<lookedUp.minimum) value=lookedUp.minimum;
 					    if(value>lookedUp.maximum) value=lookedUp.maximum;
 		                E.addFaction(lookedUp.ID,value);
-		                mob.tell("Faction '" + lookedUp.name + "' added.");
+		                mob.tell(getScr("BaseGenerics","factionadd",lookedUp.name ));
 		            }
 		         }
 		         else
-		            mob.tell("'"+newFact+"' is not recognized as a valid faction name or file.");
+		            mob.tell(getScr("BaseGenerics","factionerr",newFact));
 		    }
 		}
 	}
-    
+
 	public static void genGender(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Gender: '"+Character.toUpperCase((char)E.baseCharStats().getStat(CharStats.GENDER))+"'.");
+		mob.tell(getScr("BaseGenerics","gender",showNumber+"",""+Character.toUpperCase((char)E.baseCharStats().getStat(CharStats.GENDER))));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newType=mob.session().choose("Enter a new gender (M/F/N)\n\r:","MFN","");
+		String newType=mob.session().choose(getScr("BaseGenerics","entergemsg"),"MFN","");
 		int newValue=-1;
 		if(newType.length()>0)
 			newValue=("MFN").indexOf(newType.trim().toUpperCase());
@@ -2218,20 +2218,20 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	public static void genWeaponClassification(MOB mob, Weapon E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Weapon Classification: '"+Weapon.classifictionDescription[E.weaponClassification()]+"'.");
+		mob.tell(getScr("BaseGenerics","weaponclass",showNumber+"",Weapon.classifictionDescription[E.weaponClassification()]));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
 		String sel=("ABEFHKPRSDTN");
 		while(!q)
 		{
-			String newType=mob.session().choose("Enter a new value (?)\n\r:",sel+"?","");
+			String newType=mob.session().choose(getScr("BaseGenerics","entvaluenew"),sel+"?","");
 			if(newType.equals("?"))
 			{
 				for(int i=0;i<sel.length();i++)
@@ -2247,7 +2247,7 @@ public class BaseGenerics extends StdCommand
 				if(newValue>=0)
 					E.setWeaponClassification(newValue);
 				else
-					mob.tell("(no change)");
+					mob.tell(getScr("BaseGenerics","nochange"));
 			}
 		}
 	}
@@ -2256,29 +2256,29 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Secret Identity: '"+E.rawSecretIdentity()+"'.");
+		mob.tell(getScr("BaseGenerics","secretid",showNumber+"",E.rawSecretIdentity()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter a new identity (null=blank)\n\r:","");
+		String newValue=mob.session().prompt(getScr("BaseGenerics","entnewid"),"");
 		if(newValue.equalsIgnoreCase("null"))
 			E.setSecretIdentity("");
 		else
 		if(newValue.length()>0)
 			E.setSecretIdentity(newValue);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	public static void genNourishment(MOB mob, Food E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Nourishment/Eat: '"+E.nourishment()+"'.");
+		mob.tell(getScr("BaseGenerics","noureat",showNumber+"",E.nourishment()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		int newValue=Util.s_int(mob.session().prompt("Enter a new amount\n\r:",""));
+		int newValue=Util.s_int(mob.session().prompt(getScr("BaseGenerics","entnewamount"),""));
 		if(newValue>0)
 			E.setNourishment(newValue);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	public static void genRace(MOB mob, MOB E, int showNumber, int showFlag)
@@ -2288,14 +2288,14 @@ public class BaseGenerics extends StdCommand
 		String raceID="begin!";
 		while(raceID.length()>0)
 		{
-			mob.tell(showNumber+". Race: '"+E.baseCharStats().getMyRace().ID()+"'.");
+			mob.tell(getScr("BaseGenerics","race",showNumber+"",E.baseCharStats().getMyRace().ID()));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			raceID=mob.session().prompt("Enter a new race (?)\n\r:","").trim();
+			raceID=mob.session().prompt(getScr("BaseGenerics","entnewrace"),"").trim();
 			if(raceID.equalsIgnoreCase("?"))
 				mob.tell(CMLister.reallyList(CMClass.races(),-1).toString());
 			else
 			if(raceID.length()==0)
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 			else
 			{
 				Race R=CMClass.getRace(raceID);
@@ -2306,7 +2306,7 @@ public class BaseGenerics extends StdCommand
 					E.baseCharStats().getMyRace().setHeightWeight(E.baseEnvStats(),(char)E.baseCharStats().getStat(CharStats.GENDER));
 				}
 				else
-					mob.tell("Unknown race! Try '?'.");
+					mob.tell(getScr("BaseGenerics","unknownrace"));
 			}
 		}
 	}
@@ -2324,14 +2324,14 @@ public class BaseGenerics extends StdCommand
 				CharClass C=E.baseCharStats().getMyClass(c);
 				str.append(C.ID()+"("+E.baseCharStats().getClassLevel(C)+") ");
 			}
-			mob.tell(showNumber+". Class: '"+str.toString()+"'.");
+			mob.tell(getScr("BaseGenerics","classline",showNumber+"",str.toString()));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			classID=mob.session().prompt("Enter a class to add/remove(?)\n\r:","").trim();
+			classID=mob.session().prompt(getScr("BaseGenerics","entclassar"),"").trim();
 			if(classID.equalsIgnoreCase("?"))
 				mob.tell(CMLister.reallyList(CMClass.charClasses(),-1).toString());
 			else
 			if(classID.length()==0)
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 			else
 			{
 				CharClass C=CMClass.getCharClass(classID);
@@ -2340,7 +2340,7 @@ public class BaseGenerics extends StdCommand
 					if(E.baseCharStats().getClassLevel(C)>=0)
 					{
 						if(E.baseCharStats().numClasses()<2)
-							mob.tell("Final class may not be removed.  To change a class, add the new one first.");
+							mob.tell(getScr("BaseGenerics","finalclassmsg"));
 						else
 						{
 							StringBuffer charClasses=new StringBuffer("");
@@ -2378,14 +2378,14 @@ public class BaseGenerics extends StdCommand
 						String lvl=null;
 						if(levels>0)
 						{
-							lvl=mob.session().prompt("Levels to give this class ("+levels+")\n\r:",""+levels).trim();
+							lvl=mob.session().prompt(getScr("BaseGenerics","levelsclass",levels+""),""+levels).trim();
 							int lvl2=Util.s_int(lvl);
 							if(lvl2>levels) lvl2=levels;
 							E.baseCharStats().setClassLevel(C,lvl2);
 						}
 						else
 						{
-							lvl=mob.session().prompt("Levels to siphon from "+highestC.ID()+" for this class (0)\n\r:",""+0).trim();
+							lvl=mob.session().prompt(getScr("BaseGenerics","siphon",highestC.ID()),""+0).trim();
 							int lvl2=Util.s_int(lvl);
 							if(lvl2>highLvl) lvl2=highLvl;
 							E.baseCharStats().setClassLevel(highestC,highLvl-lvl2);
@@ -2399,7 +2399,7 @@ public class BaseGenerics extends StdCommand
 					E.baseCharStats().setClassLevel(C,levels);
 				}
 				else
-					mob.tell("Unknown character class! Try '?'.");
+					mob.tell(getScr("BaseGenerics","classerr"));
 			}
 		}
 	}
@@ -2419,9 +2419,9 @@ public class BaseGenerics extends StdCommand
 			}
 			if(behaviorstr.length()>0)
 				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
-			mob.tell(showNumber+". Tattoos: '"+behaviorstr+"'.");
+			mob.tell(getScr("BaseGenerics","tattoos",showNumber+"",behaviorstr));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			behave=mob.session().prompt("Enter a tattoo to add/remove\n\r:","");
+			behave=mob.session().prompt(getScr("BaseGenerics","tattooent"),"");
 			if(behave.length()>0)
 			{
 				String tattoo=behave;
@@ -2432,17 +2432,17 @@ public class BaseGenerics extends StdCommand
 					tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
 				if(E.fetchTattoo(tattoo)!=null)
 				{
-					mob.tell(tattoo.trim().toUpperCase()+" removed.");
+					mob.tell(getScr("BaseGenerics","tattoorem",tattoo.trim().toUpperCase()));
 					E.delTattoo(behave);
 				}
 				else
 				{
-					mob.tell(behave.trim().toUpperCase()+" added.");
+					mob.tell(getScr("BaseGenerics","tattooadd",behave.trim().toUpperCase()));
 					E.addTattoo(behave);
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 		}
 	}
 
@@ -2462,9 +2462,9 @@ public class BaseGenerics extends StdCommand
 			}
 			if(behaviorstr.length()>0)
 				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
-			mob.tell(showNumber+". Titles: '"+behaviorstr+"'.");
+			mob.tell(getScr("BaseGenerics","titles",showNumber+"",behaviorstr));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			behave=mob.session().prompt("Enter a title to add/remove\n\r:","");
+			behave=mob.session().prompt(getScr("BaseGenerics","titleent"),"");
 			if(behave.length()>0)
 			{
 				String tattoo=behave;
@@ -2475,20 +2475,20 @@ public class BaseGenerics extends StdCommand
 					tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
 				if(E.playerStats().getTitles().contains(tattoo))
 				{
-					mob.tell(tattoo.trim().toUpperCase()+" removed.");
+					mob.tell(getScr("BaseGenerics","tattoorem",tattoo.trim().toUpperCase()));
 					E.playerStats().getTitles().remove(tattoo);
 				}
 				else
 				{
-					mob.tell(behave.trim().toUpperCase()+" added.");
+					mob.tell(getScr("BaseGenerics","tattooadd",behave.trim().toUpperCase()));
 					E.playerStats().getTitles().addElement(tattoo);
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 		}
 	}
-	
+
 	public static void genEducations(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -2504,24 +2504,24 @@ public class BaseGenerics extends StdCommand
 			}
 			if(behaviorstr.length()>0)
 				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
-			mob.tell(showNumber+". Educations: '"+behaviorstr+"'.");
+			mob.tell(getScr("BaseGenerics","educations",showNumber+"",behaviorstr));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			behave=mob.session().prompt("Enter a lesson to add/remove\n\r:","");
+			behave=mob.session().prompt(getScr("BaseGenerics","lessonent"),"");
 			if(behave.length()>0)
 			{
 				if(E.fetchEducation(behave)!=null)
 				{
-					mob.tell(behave+" removed.");
+					mob.tell(getScr("BaseGenerics","behaverem",behave));
 					E.delEducation(behave);
 				}
 				else
 				{
-					mob.tell(behave+" added.");
+					mob.tell(getScr("BaseGenerics","behaveadd",behave));
 					E.addEducation(behave);
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 		}
 	}
 
@@ -2542,24 +2542,24 @@ public class BaseGenerics extends StdCommand
 			}
 			if(behaviorstr.length()>0)
 				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
-			mob.tell(showNumber+". Security Groups: '"+behaviorstr+"'.");
+			mob.tell(getScr("BaseGenerics","secgroups",showNumber+"",behaviorstr));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			behave=mob.session().prompt("Enter a group to add/remove\n\r:","");
+			behave=mob.session().prompt(getScr("BaseGenerics","groupent"),"");
 			if(behave.length()>0)
 			{
 				if(P.getSecurityGroups().contains(behave.trim().toUpperCase()))
 				{
 					P.getSecurityGroups().remove(behave.trim().toUpperCase());
-					mob.tell(behave+" removed.");
+					mob.tell(getScr("BaseGenerics","behaverem",behave));
 				}
 				else
 				{
 					P.getSecurityGroups().addElement(behave.trim().toUpperCase());
-					mob.tell(behave+" added.");
+					mob.tell(getScr("BaseGenerics","behaveadd",behave));
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 		}
 	}
 
@@ -2585,9 +2585,9 @@ public class BaseGenerics extends StdCommand
 			}
 			if(behaviorstr.length()>0)
 				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
-			mob.tell(showNumber+". Behaviors: '"+behaviorstr+"'.");
+			mob.tell(getScr("BaseGenerics","behaviorsline",showNumber+"",behaviorstr));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			behave=mob.session().prompt("Enter a behavior to add/remove (?)\n\r:","");
+			behave=mob.session().prompt(getScr("BaseGenerics","behaent"),"");
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
@@ -2603,7 +2603,7 @@ public class BaseGenerics extends StdCommand
 					}
 					if(chosenOne!=null)
 					{
-						mob.tell(chosenOne.ID()+" removed.");
+						mob.tell(getScr("BaseGenerics","cidr",chosenOne.ID()));
 						E.delBehavior(chosenOne);
 					}
 					else
@@ -2622,25 +2622,25 @@ public class BaseGenerics extends StdCommand
 								}
 							}
 							String parms=chosenOne.getParms();
-							parms=mob.session().prompt("Enter any behavior parameters\n\r:",parms);
+							parms=mob.session().prompt(getScr("BaseGenerics","behapar",parms));
 							chosenOne.setParms(parms.trim());
 							if(!alreadyHasIt)
 							{
-								mob.tell(chosenOne.ID()+" added.");
+								mob.tell(getScr("BaseGenerics","cida",chosenOne.ID()));
 								E.addBehavior(chosenOne);
 							}
 							else
-								mob.tell(chosenOne.ID()+" re-added.");
+								mob.tell(getScr("BaseGenerics","cidaa",chosenOne.ID()));
 						}
 						else
 						{
-							mob.tell("'"+behave+"' is not recognized.  Try '?'.");
+							mob.tell(getScr("BaseGenerics","behaveerr",behave));
 						}
 					}
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 		}
 	}
 
@@ -2667,9 +2667,9 @@ public class BaseGenerics extends StdCommand
 			}
 			if(affectstr.length()>0)
 				affectstr=affectstr.substring(0,affectstr.length()-2);
-			mob.tell(showNumber+". Effects: '"+affectstr+"'.");
+			mob.tell(getScr("BaseGenerics","effects",showNumber+"",affectstr));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			behave=mob.session().prompt("Enter an effect to add/remove (?)\n\r:","");
+			behave=mob.session().prompt(getScr("BaseGenerics","effectent"),"");
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
@@ -2685,7 +2685,7 @@ public class BaseGenerics extends StdCommand
 					}
 					if(chosenOne!=null)
 					{
-						mob.tell(chosenOne.ID()+" removed.");
+						mob.tell(getScr("BaseGenerics","cidr",chosenOne.ID()));
 						E.delEffect(chosenOne);
 					}
 					else
@@ -2694,20 +2694,20 @@ public class BaseGenerics extends StdCommand
 						if(chosenOne!=null)
 						{
 							String parms=chosenOne.text();
-							parms=mob.session().prompt("Enter any effect parameters (';' delimited!)\n\r:",parms);
+							parms=mob.session().prompt(getScr("BaseGenerics","effectpar",parms));
 							chosenOne.setMiscText(parms.trim());
-							mob.tell(chosenOne.ID()+" added.");
+							mob.tell(getScr("BaseGenerics","cida",chosenOne.ID()));
 							E.addNonUninvokableEffect(chosenOne);
 						}
 						else
 						{
-							mob.tell("'"+behave+"' is not recognized.  Try '?'.");
+							mob.tell(getScr("BaseGenerics","behaveerr",behave));
 						}
 					}
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 		}
 	}
 
@@ -2715,13 +2715,13 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Rideable Type: '"+Rideable.RIDEABLE_DESCS[R.rideBasis()]+"'.");
+		mob.tell(getScr("BaseGenerics","ridetype",showNumber+"",Rideable.RIDEABLE_DESCS[R.rideBasis()]));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
 		String sel="LWACBTEDG";
 		while(!q)
 		{
-			String newType=mob.session().choose("Enter a new value (?)\n\r:",sel+"?","");
+			String newType=mob.session().choose(getScr("BaseGenerics","entnewvalueh"),sel+"?","");
 			if(newType.equals("?"))
 			{
 				for(int i=0;i<sel.length();i++)
@@ -2737,7 +2737,7 @@ public class BaseGenerics extends StdCommand
 				if(newValue>=0)
 					R.setRideBasis(newValue);
 				else
-					mob.tell("(no change)");
+					mob.tell(getScr("BaseGenerics","nochange"));
 			}
 		}
 	}
@@ -2745,21 +2745,21 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Number of MOBs held: '"+R.riderCapacity()+"'.");
+		mob.tell(getScr("BaseGenerics","nomobheld",showNumber+"",R.riderCapacity()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newLevelStr=mob.session().prompt("Enter a new value: ","");
+		String newLevelStr=mob.session().prompt(getScr("BaseGenerics","entnewvalue"),"");
 		int newLevel=Util.s_int(newLevelStr);
 		if(newLevel>0)
 			R.setRiderCapacity(newLevel);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	public static void genShopkeeper1(MOB mob, ShopKeeper E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Shopkeeper type: '"+E.storeKeeperString()+"'.");
+		mob.tell(getScr("BaseGenerics","shopktype",showNumber+"",E.storeKeeperString()));
 		StringBuffer buf=new StringBuffer("");
 		StringBuffer codes=new StringBuffer("");
 		String codeStr="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -2800,7 +2800,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newType=mob.session().choose(buf.toString()+"Enter a new value\n\r:",codes.toString(),"");
+		String newType=mob.session().choose(getScr("BaseGenerics","entvaluech",buf.toString()),codes.toString(),"");
 		int newValue=-1;
 		if(newType.length()>0)
 			newValue=codeStr.indexOf(newType.toUpperCase());
@@ -2837,9 +2837,9 @@ public class BaseGenerics extends StdCommand
 			}
 			if(inventorystr.length()>0)
 				inventorystr=inventorystr.substring(0,inventorystr.length()-2);
-			mob.tell(showNumber+". Inventory: '"+inventorystr+"'.");
+			mob.tell(getScr("BaseGenerics","inventoryline",showNumber+"",inventorystr));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			itemstr=mob.session().prompt("Enter something to add/remove (?)\n\r:","");
+			itemstr=mob.session().prompt(getScr("BaseGenerics","entsometh"),"");
 			if(itemstr.length()>0)
 			{
 				if(itemstr.equalsIgnoreCase("?"))
@@ -2852,15 +2852,15 @@ public class BaseGenerics extends StdCommand
 					mob.tell(CMLister.reallyList(CMClass.clanItems(),-1).toString());
 					mob.tell(CMLister.reallyList(CMClass.items(),-1).toString());
 					mob.tell(CMLister.reallyList(CMClass.mobTypes(),-1).toString());
-					mob.tell("* Plus! Any items on the ground.");
-					mob.tell("* Plus! Any mobs hanging around in the room.");
+					mob.tell(getScr("BaseGenerics","msgitemground"));
+					mob.tell(getScr("BaseGenerics","msgmobsroom"));
 				}
 				else
 				{
 					Environmental item=E.getStock(itemstr,null);
 					if(item!=null)
 					{
-						mob.tell(item.ID()+" removed.");
+						mob.tell(getScr("BaseGenerics","itemidrem",item.ID()));
 						E.delStoreInventory(item.copyOf());
 					}
 					else
@@ -2890,7 +2890,7 @@ public class BaseGenerics extends StdCommand
 								ok=true;
 							if(!ok)
 							{
-								mob.tell("The shopkeeper does not sell that.");
+								mob.tell(getScr("BaseGenerics","shoperror"));
 							}
 							else
 							{
@@ -2901,100 +2901,100 @@ public class BaseGenerics extends StdCommand
 
 								if(!alreadyHasIt)
 								{
-									mob.tell(item.ID()+" added.");
+									mob.tell(getScr("BaseGenerics","itemidadd",item.ID()));
 									int num=1;
 									if(!(item instanceof Ability))
-										num=Util.s_int(mob.session().prompt("How many? :",""));
-									int price=Util.s_int(mob.session().prompt("At what price? :",""));
+										num=Util.s_int(mob.session().prompt(getScr("BaseGenerics","howman"),""));
+									int price=Util.s_int(mob.session().prompt(getScr("BaseGenerics","atwprice"),""));
 									E.addStoreInventory(item,num,price);
 								}
 							}
 						}
 						else
 						{
-							mob.tell("'"+itemstr+"' is not recognized.  Try '?'.");
+							mob.tell(getScr("BaseGenerics","itemerr",itemstr));
 						}
 					}
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 		}
 	}
 	public static void genShopkeeper3(MOB mob, ShopKeeper E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Prejudice: '"+E.prejudiceFactors()+"'.");
+		mob.tell(getScr("BaseGenerics","prejudice",showNumber+"",E.prejudiceFactors()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter a new string (null=default)\n\r:","");
+		String newValue=mob.session().prompt(getScr("BaseGenerics","anewstri"),"");
 		if(newValue.equalsIgnoreCase("null"))
 			E.setPrejudiceFactors("");
 		else
 		if(newValue.length()>0)
 			E.setPrejudiceFactors(newValue);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	public static void genShopkeeper4(MOB mob, ShopKeeper E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Budget: '"+E.budget()+"'.");
+		mob.tell(getScr("BaseGenerics","budget",showNumber+"",E.budget()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter a new string (null=default)\n\r:","");
+		String newValue=mob.session().prompt(getScr("BaseGenerics","anewstri"),"");
 		if(newValue.equalsIgnoreCase("null"))
 			E.setBudget("");
 		else
 		if(newValue.length()>0)
 			E.setBudget(newValue);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
-	
+
 	public static void genShopkeeper5(MOB mob, ShopKeeper E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Devaluation rate(s): '"+E.devalueRate()+"'.");
+		mob.tell(getScr("BaseGenerics","devaluationrate",showNumber+"",E.devalueRate()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter a new string (null=default)\n\r:","");
+		String newValue=mob.session().prompt(getScr("BaseGenerics","anewstri"),"");
 		if(newValue.equalsIgnoreCase("null"))
 			E.setDevalueRate("");
 		else
 		if(newValue.length()>0)
 			E.setDevalueRate(newValue);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	public static void genShopkeeper6(MOB mob, ShopKeeper E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Inventory reset rate: "+E.invResetRate()+" ticks.");
+		mob.tell(getScr("BaseGenerics","inventoryresetrate",showNumber+"",E.invResetRate()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter a new number\n\r:","");
+		String newValue=mob.session().prompt(getScr("BaseGenerics","anewnum"),"");
 		if(newValue.equals("0")||(Util.s_int(newValue)!=0))
 			E.setInvResetRate(Util.s_int(newValue));
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
-	
+
     public static void genShopkeeper7(MOB mob, ShopKeeper E, int showNumber, int showFlag)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        mob.tell(showNumber+". Ignore Mask: '"+E.ignoreMask()+"'.");
+        mob.tell(getScr("BaseGenerics","ignoremask",showNumber+"",E.ignoreMask()));
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
-        String newValue=mob.session().prompt("Enter a new string (null=no mask)\n\r:","");
+        String newValue=mob.session().prompt(getScr("BaseGenerics","anewsmask"),"");
         if(newValue.equalsIgnoreCase("null"))
             E.setIgnoreMask("");
         else
         if(newValue.length()>0)
             E.setIgnoreMask(newValue);
         else
-            mob.tell("(no change)");
+            mob.tell(getScr("BaseGenerics","nochange"));
     }
 
 	public static void genAbilities(MOB mob, MOB E, int showNumber, int showFlag)
@@ -3013,9 +3013,9 @@ public class BaseGenerics extends StdCommand
 			}
 			if(abilitiestr.length()>0)
 				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
-			mob.tell(showNumber+". Abilities: '"+abilitiestr+"'.");
+			mob.tell(getScr("BaseGenerics","abilities",showNumber+"",abilitiestr));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			behave=mob.session().prompt("Enter an ability to add/remove (?)\n\r:","");
+			behave=mob.session().prompt(getScr("BaseGenerics","entabaddrem"),"");
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
@@ -3031,7 +3031,7 @@ public class BaseGenerics extends StdCommand
 					}
 					if(chosenOne!=null)
 					{
-						mob.tell(chosenOne.ID()+" removed.");
+						mob.tell(getScr("BaseGenerics","cidr",chosenOne.ID()));
 						E.delAbility(chosenOne);
 						if(E.fetchEffect(chosenOne.ID())!=null)
 							E.delEffect(E.fetchEffect(chosenOne.ID()));
@@ -3043,9 +3043,9 @@ public class BaseGenerics extends StdCommand
 						{
 							boolean alreadyHasIt=(E.fetchAbility(chosenOne.ID())!=null);
 							if(!alreadyHasIt)
-								mob.tell(chosenOne.ID()+" added.");
+								mob.tell(getScr("BaseGenerics","cida",chosenOne.ID()));
 							else
-								mob.tell(chosenOne.ID()+" re-added.");
+								mob.tell(getScr("BaseGenerics","cidaa",chosenOne.ID()));
 							if(!alreadyHasIt)
 							{
 								chosenOne=(Ability)chosenOne.copyOf();
@@ -3056,13 +3056,13 @@ public class BaseGenerics extends StdCommand
 						}
 						else
 						{
-							mob.tell("'"+behave+"' is not recognized.  Try '?'.");
+							mob.tell(getScr("BaseGenerics","behaveerr",behave));
 						}
 					}
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 		}
 	}
 
@@ -3070,49 +3070,49 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Cleric Requirements: '"+E.getClericRequirements()+"'.");
+		mob.tell(getScr("BaseGenerics","clericreq",showNumber+"",E.getClericRequirements()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter new requirements\n\r:","");
+		String newValue=mob.session().prompt(getScr("BaseGenerics","newreq"),"");
 		if(newValue.length()>0)
 			E.setClericRequirements(newValue);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	public static void genDeity2(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Cleric Ritual: '"+E.getClericRitual()+"'.");
+		mob.tell(getScr("BaseGenerics","clericrit",showNumber+"",E.getClericRitual()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter new ritual\n\r:","");
+		String newValue=mob.session().prompt(getScr("BaseGenerics","newrit"),"");
 		if(newValue.length()>0)
 			E.setClericRitual(newValue);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	public static void genDeity3(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Worshiper Requirements: '"+E.getWorshipRequirements()+"'.");
+		mob.tell(getScr("BaseGenerics","worshipreq",showNumber+"",E.getWorshipRequirements()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter new requirements\n\r:","");
+		String newValue=mob.session().prompt(getScr("BaseGenerics","newreq"),"");
 		if(newValue.length()>0)
 			E.setWorshipRequirements(newValue);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	public static void genDeity4(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Worshiper Ritual: '"+E.getWorshipRitual()+"'.");
+		mob.tell(getScr("BaseGenerics","worshiprit",showNumber+"",E.getWorshipRitual()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter new ritual\n\r:","");
+		String newValue=mob.session().prompt(getScr("BaseGenerics","newrit"),"");
 		if(newValue.length()>0)
 			E.setWorshipRitual(newValue);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	public static void genDeity5(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
@@ -3130,9 +3130,9 @@ public class BaseGenerics extends StdCommand
 			}
 			if(abilitiestr.length()>0)
 				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
-			mob.tell(showNumber+". Blessings: '"+abilitiestr+"'.");
+			mob.tell(getScr("BaseGenerics","blessings",showNumber+"",abilitiestr));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			behave=mob.session().prompt("Enter an ability to add/remove (?)\n\r:","");
+			behave=mob.session().prompt(getScr("BaseGenerics","entabaddrem"),"");
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
@@ -3148,7 +3148,7 @@ public class BaseGenerics extends StdCommand
 					}
 					if(chosenOne!=null)
 					{
-						mob.tell(chosenOne.ID()+" removed.");
+						mob.tell(getScr("BaseGenerics","cidr",chosenOne.ID()));
 						E.delBlessing(chosenOne);
 					}
 					else
@@ -3164,21 +3164,21 @@ public class BaseGenerics extends StdCommand
 									alreadyHasIt=true;
 							}
 							if(!alreadyHasIt)
-								mob.tell(chosenOne.ID()+" added.");
+								mob.tell(getScr("BaseGenerics","cida",chosenOne.ID()));
 							else
-								mob.tell(chosenOne.ID()+" re-added.");
+								mob.tell(getScr("BaseGenerics","cidaa",chosenOne.ID()));
 							if(!alreadyHasIt)
 								E.addBlessing((Ability)chosenOne.copyOf());
 						}
 						else
 						{
-							mob.tell("'"+behave+"' is not recognized.  Try '?'.");
+							mob.tell(getScr("BaseGenerics","behaveerr",behave));
 						}
 					}
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 		}
 	}
 
@@ -3198,9 +3198,9 @@ public class BaseGenerics extends StdCommand
 			}
 			if(abilitiestr.length()>0)
 				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
-			mob.tell(showNumber+". Curses: '"+abilitiestr+"'.");
+			mob.tell(getScr("BaseGenerics","curses",showNumber+"",abilitiestr));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			behave=mob.session().prompt("Enter an ability to add/remove (?)\n\r:","");
+			behave=mob.session().prompt(getScr("BaseGenerics","entabaddrem"),"");
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
@@ -3216,7 +3216,7 @@ public class BaseGenerics extends StdCommand
 					}
 					if(chosenOne!=null)
 					{
-						mob.tell(chosenOne.ID()+" removed.");
+						mob.tell(getScr("BaseGenerics","cidr",chosenOne.ID()));
 						E.delCurse(chosenOne);
 					}
 					else
@@ -3232,21 +3232,21 @@ public class BaseGenerics extends StdCommand
 									alreadyHasIt=true;
 							}
 							if(!alreadyHasIt)
-								mob.tell(chosenOne.ID()+" added.");
+								mob.tell(getScr("BaseGenerics","cida",chosenOne.ID()));
 							else
-								mob.tell(chosenOne.ID()+" re-added.");
+								mob.tell(getScr("BaseGenerics","cidaa",chosenOne.ID()));
 							if(!alreadyHasIt)
 								E.addCurse((Ability)chosenOne.copyOf());
 						}
 						else
 						{
-							mob.tell("'"+behave+"' is not recognized.  Try '?'.");
+							mob.tell(getScr("BaseGenerics","behaveerr",behave));
 						}
 					}
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 		}
 	}
 
@@ -3266,9 +3266,9 @@ public class BaseGenerics extends StdCommand
 			}
 			if(abilitiestr.length()>0)
 				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
-			mob.tell(showNumber+". Granted Powers: '"+abilitiestr+"'.");
+			mob.tell(getScr("BaseGenerics","grantedpowers",showNumber+"",abilitiestr));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			behave=mob.session().prompt("Enter an ability to add/remove (?)\n\r:","");
+			behave=mob.session().prompt(getScr("BaseGenerics","entabaddrem"),"");
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
@@ -3284,7 +3284,7 @@ public class BaseGenerics extends StdCommand
 					}
 					if(chosenOne!=null)
 					{
-						mob.tell(chosenOne.ID()+" removed.");
+						mob.tell(getScr("BaseGenerics","cidr",chosenOne.ID()));
 						E.delPower(chosenOne);
 					}
 					else
@@ -3300,83 +3300,83 @@ public class BaseGenerics extends StdCommand
 									alreadyHasIt=true;
 							}
 							if(!alreadyHasIt)
-								mob.tell(chosenOne.ID()+" added.");
+								mob.tell(getScr("BaseGenerics","cida",chosenOne.ID()));
 							else
-								mob.tell(chosenOne.ID()+" re-added.");
+								mob.tell(getScr("BaseGenerics","cidaa",chosenOne.ID()));
 							if(!alreadyHasIt)
 								E.addPower((Ability)chosenOne.copyOf());
 						}
 						else
 						{
-							mob.tell("'"+behave+"' is not recognized.  Try '?'.");
+							mob.tell(getScr("BaseGenerics","behaveerr",behave));
 						}
 					}
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 		}
 	}
 	public static void genDeity8(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Cleric Sin: '"+E.getClericSin()+"'.");
+		mob.tell(getScr("BaseGenerics","clericsin",showNumber+"",E.getClericSin()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter new sin ritual\n\r:","");
+		String newValue=mob.session().prompt(getScr("BaseGenerics","sinritual"),"");
 		if(newValue.length()>0)
 			E.setClericSin(newValue);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	public static void genDeity9(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Worshiper Sin: '"+E.getWorshipSin()+"'.");
+		mob.tell(getScr("BaseGenerics","worshipsin",showNumber+"",E.getWorshipSin()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter new sin ritual\n\r:","");
+		String newValue=mob.session().prompt(getScr("BaseGenerics","sinritual"),"");
 		if(newValue.length()>0)
 			E.setWorshipSin(newValue);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	public static void genDeity0(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Cleric Power Ritual: '"+E.getClericPowerup()+"'.");
+		mob.tell(getScr("BaseGenerics","clericpowrit",showNumber+"",E.getClericPowerup()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter new power ritual\n\r:","");
+		String newValue=mob.session().prompt(getScr("BaseGenerics","newpowritual"),"");
 		if(newValue.length()>0)
 			E.setClericPowerup(newValue);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	public static void genGridLocaleX(MOB mob, GridLocale E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Size (X): '"+E.xSize()+"'.");
+		mob.tell(getScr("BaseGenerics","sizex",showNumber+"",E.xSize()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter a new size\n\r:","");
+		String newValue=mob.session().prompt(getScr("BaseGenerics","newsize"),"");
 		if(Util.s_int(newValue)>0)
 			E.setXSize(Util.s_int(newValue));
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	public static void genGridLocaleY(MOB mob, GridLocale E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Size (Y): '"+E.ySize()+"'.");
+		mob.tell(getScr("BaseGenerics","sizey",showNumber+"",E.ySize()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter a new size\n\r:","");
+		String newValue=mob.session().prompt(getScr("BaseGenerics","newsize"),"");
 		if(Util.s_int(newValue)>0)
 			E.setYSize(Util.s_int(newValue));
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	public static void genWornLocation(MOB mob, Item E, int showNumber, int showFlag)
@@ -3387,9 +3387,9 @@ public class BaseGenerics extends StdCommand
 		{
 			StringBuffer buf=new StringBuffer(showNumber+". ");
 			if(!E.rawLogicalAnd())
-				buf.append("Wear on any one of: ");
+				buf.append(getScr("BaseGenerics","wearonany"));
 			else
-				buf.append("Worn on all of: ");
+				buf.append(getScr("BaseGenerics","wornonall"));
 			for(int l=0;l<Item.wornCodes.length;l++)
 			{
 				long wornCode=1<<l;
@@ -3403,11 +3403,11 @@ public class BaseGenerics extends StdCommand
 		int codeVal=-1;
 		while(codeVal!=0)
 		{
-			mob.tell("Wearing parameters\n\r0: Done");
+			mob.tell(getScr("BaseGenerics","wearingpar"));
 			if(!E.rawLogicalAnd())
-				mob.tell("1: Able to worn on any ONE of these locations:");
+				mob.tell(getScr("BaseGenerics","msgworn1"));
 			else
-				mob.tell("1: Must be worn on ALL of these locations:");
+				mob.tell(getScr("BaseGenerics","msgworn2"));
 			for(int l=0;l<Item.wornCodes.length;l++)
 			{
 				long wornCode=1<<l;
@@ -3417,7 +3417,7 @@ public class BaseGenerics extends StdCommand
 					mob.tell(header);
 				}
 			}
-			codeVal=Util.s_int(mob.session().prompt("Select an option number above to TOGGLE\n\r:"));
+			codeVal=Util.s_int(mob.session().prompt(getScr("BaseGenerics","togglenumber")));
 			if(codeVal>0)
 			{
 				if(codeVal==1)
@@ -3438,7 +3438,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Quenched/Drink: '"+E.thirstQuenched()+"'.");
+		mob.tell(getScr("BaseGenerics","qdrink",showNumber+"",E.thirstQuenched()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.setThirstQuenched(getNumericData(mob,"Enter a new amount\n\r:",E.thirstQuenched()));
 	}
@@ -3447,7 +3447,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Amount of Drink Held: '"+E.liquidHeld()+"'.");
+		mob.tell(getScr("BaseGenerics","amountdrinks",showNumber+"",""+E.liquidHeld()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.setLiquidHeld(getNumericData(mob,"Enter a new amount\n\r:",E.liquidHeld()));
 		E.setLiquidRemaining(E.liquidHeld());
@@ -3461,11 +3461,11 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
 		if(newName.length()>0)
 			E.setStat(Field,newName);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	static void genText(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
@@ -3473,11 +3473,11 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
 		if(newName.length()>0)
 			E.setStat(Field,newName);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	static void genAttackAttribute(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
@@ -3485,7 +3485,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". "+FieldDisp+": '"+CharStats.TRAITS[Util.s_int(E.getStat(Field))]+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
 		String newStat="";
 		for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 			if(newName.equalsIgnoreCase(CharStats.TRAITS[i]))
@@ -3493,7 +3493,7 @@ public class BaseGenerics extends StdCommand
 		if(newStat.length()>0)
 			E.setStat(Field,newStat);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	static void genArmorCode(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
@@ -3501,7 +3501,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". "+FieldDisp+": '"+CharClass.ARMOR_LONGDESC[Util.s_int(E.getStat(Field))]+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter ("+Util.toStringList(CharClass.ARMOR_DESCS)+")\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","enter",Util.toStringList(CharClass.ARMOR_DESCS)),"");
 		String newStat="";
 		for(int i=0;i<CharClass.ARMOR_DESCS.length;i++)
 			if(newName.equalsIgnoreCase(CharClass.ARMOR_DESCS[i]))
@@ -3509,7 +3509,7 @@ public class BaseGenerics extends StdCommand
 		if(newStat.length()>0)
 			E.setStat(Field,newStat);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	static void genQualifications(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
@@ -3520,14 +3520,14 @@ public class BaseGenerics extends StdCommand
 		String newName="?";
 		while(newName.equals("?"))
 		{
-			newName=mob.session().prompt("Enter a new mask (?)\n\r:","");
+			newName=mob.session().prompt(getScr("BaseGenerics","entermask"),"");
 			if(newName.equals("?"))
-				mob.tell(MUDZapper.zapperInstructions("\n","Allows"));
+				mob.tell(MUDZapper.zapperInstructions("\n",getScr("BaseGenerics","allows")));
 		}
 		if((newName.length()>0)&&(!newName.equals("?")))
 			E.setStat(Field,newName);
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	static void genWeaponRestr(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String FieldNum, String Field)
 		throws IOException
@@ -3544,7 +3544,7 @@ public class BaseGenerics extends StdCommand
 		boolean setChanged=false;
 		while(newName.equals("?"))
 		{
-			newName=mob.session().prompt("Enter a weapon class to add/remove (?)\n\r:","");
+			newName=mob.session().prompt(getScr("BaseGenerics","weapclass"),"");
 			if(newName.equals("?"))
 				mob.tell(Util.toStringList(Weapon.classifictionDescription));
 			else
@@ -3556,7 +3556,7 @@ public class BaseGenerics extends StdCommand
 						foundCode=i;
 				if(foundCode<0)
 				{
-					mob.tell("'"+newName+"' is not recognized.  Try '?'");
+					mob.tell(getScr("BaseGenerics","namenotrec",newName));
 					newName="?";
 				}
 				else
@@ -3566,14 +3566,14 @@ public class BaseGenerics extends StdCommand
 					{
 						setChanged=true;
 						set.removeElementAt(x);
-						mob.tell("'"+newName+"' removed.");
+						mob.tell(getScr("BaseGenerics","namerem",newName));
 						newName="?";
 					}
 					else
 					{
 						set.addElement(""+foundCode);
 						setChanged=true;
-						mob.tell("'"+newName+"' added.");
+						mob.tell(getScr("BaseGenerics","nameadd",newName));
 						newName="?";
 					}
 				}
@@ -3582,7 +3582,7 @@ public class BaseGenerics extends StdCommand
 		if(setChanged)
 			E.setStat(Field,Util.toStringList(set));
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	static void genInt(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
@@ -3590,11 +3590,11 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
 		if((newName.length()>0)&&((newName.trim().equals("0"))||(Util.s_int(newName)!=0)))
 			E.setStat(Field,""+Util.s_int(newName));
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	static void genInt(MOB mob, Race E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
@@ -3602,11 +3602,11 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
 		if((newName.length()>0)&&((newName.trim().equals("0"))||(Util.s_int(newName)!=0)))
 			E.setStat(Field,""+Util.s_int(newName));
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	static void genBool(MOB mob, Race E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
@@ -3614,11 +3614,11 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new true/false\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","truefalse"),"");
 		if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
 			E.setStat(Field,newName.toLowerCase());
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	static void genBool(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
@@ -3626,37 +3626,37 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". "+FieldDisp+": '"+E.getStat(Field)+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new true/false\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","truefalse"),"");
 		if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
 			E.setStat(Field,newName.toLowerCase());
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	static void genRaceAvailability(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Availability: '"+Area.THEME_DESCS_EXT[Util.s_int(E.getStat("AVAIL"))]+"'.");
+		mob.tell(getScr("BaseGenerics","availab",showNumber+"",Area.THEME_DESCS_EXT[Util.s_int(E.getStat("AVAIL"))]));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName="?";
 		while(newName.equals("?"))
 		{
-			newName=mob.session().prompt("Enter a new value (?)\n\r:","");
+			newName=mob.session().prompt(getScr("BaseGenerics","entnewvalueh"),"");
 			if(newName.length()==0)
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 			else
 			if((Util.isNumber(newName))&&(Util.s_int(newName)<Area.THEME_DESCS_EXT.length))
 				E.setStat("AVAIL",""+Util.s_int(newName));
 			else
 			if(newName.equalsIgnoreCase("?"))
 			{
-			    StringBuffer str=new StringBuffer("Valid values: \n\r");
+			    StringBuffer str=new StringBuffer(getScr("BaseGenerics","validv"));
 			    for(int i=0;i<Area.THEME_DESCS_EXT.length;i++)
 			        str.append(i+") "+Area.THEME_DESCS_EXT[i]+"\n\r");
 			    mob.tell(str.toString());
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 		}
 	}
     static void genClassAvailability(MOB mob, CharClass E, int showNumber, int showFlag)
@@ -3691,9 +3691,9 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Racial Category: '"+E.racialCategory()+"'.");
+		mob.tell(getScr("BaseGenerics","racialcate",showNumber+"",E.racialCategory()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
 		if(newName.length()>0)
 		{
 			boolean found=false;
@@ -3716,7 +3716,7 @@ public class BaseGenerics extends StdCommand
 			}
 			if(!found)
 			{
-				StringBuffer str=new StringBuffer("That category does not exist.  Valid categories include: ");
+				StringBuffer str=new StringBuffer(getScr("BaseGenerics","cateerr"));
 				HashSet H=new HashSet();
 				for(Enumeration r=CMClass.races();r.hasMoreElements();)
 				{
@@ -3733,15 +3733,15 @@ public class BaseGenerics extends StdCommand
 				E.setStat("CAT",newName);
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	static void genHealthBuddy(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Health Race: '"+E.getStat("HEALTHRACE")+"'.");
+		mob.tell(getScr("BaseGenerics","healthrace",showNumber+"",E.getStat("HEALTHRACE")));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
 		if(newName.length()>0)
 		{
 			Race R2=CMClass.getRace(newName);
@@ -3749,7 +3749,7 @@ public class BaseGenerics extends StdCommand
 				R2=null;
 			if(R2==null)
 			{
-				StringBuffer str=new StringBuffer("That race name is invalid.  Valid races include: ");
+				StringBuffer str=new StringBuffer(getScr("BaseGenerics","racenameinv"));
 				for(Enumeration r=CMClass.races();r.hasMoreElements();)
 				{
 					Race R=(Race)r.nextElement();
@@ -3762,7 +3762,7 @@ public class BaseGenerics extends StdCommand
 				E.setStat("HEALTHRACE",R2.ID());
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	static void genBodyParts(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
@@ -3771,9 +3771,9 @@ public class BaseGenerics extends StdCommand
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
 			if(E.bodyMask()[i]!=0) parts.append(Race.BODYPARTSTR[i].toLowerCase()+"("+E.bodyMask()[i]+") ");
-		mob.tell(showNumber+". Body Parts: "+parts.toString()+".");
+		mob.tell(getScr("BaseGenerics","bodyparts",showNumber+"",parts.toString()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a body part\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","bodypart"),"");
 		if(newName.length()>0)
 		{
 			int partNum=-1;
@@ -3782,22 +3782,22 @@ public class BaseGenerics extends StdCommand
 				{ partNum=i; break;}
 			if(partNum<0)
 			{
-				StringBuffer str=new StringBuffer("That body part is invalid.  Valid parts include: ");
+				StringBuffer str=new StringBuffer(getScr("BaseGenerics","bodyerr"));
 				for(int i=0;i<Race.BODYPARTSTR.length;i++)
 					str.append(Race.BODYPARTSTR[i]+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
 			}
 			else
 			{
-				newName=mob.session().prompt("Enter new number ("+E.bodyMask()[partNum]+"), 0=none\n\r:",""+E.bodyMask()[partNum]);
+				newName=mob.session().prompt(getScr("BaseGenerics","newnumb",E.bodyMask()[partNum]+""),""+E.bodyMask()[partNum]);
 				if(newName.length()>0)
 					E.bodyMask()[partNum]=Util.s_int(newName);
 				else
-					mob.tell("(no change)");
+					mob.tell(getScr("BaseGenerics","nochange"));
 			}
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	static void genEStats(MOB mob, Race R, int showNumber, int showFlag)
 		throws IOException
@@ -3809,9 +3809,9 @@ public class BaseGenerics extends StdCommand
 		for(int i=0;i<S.getCodes().length;i++)
 			if(Util.s_int(S.getStat(S.getCodes()[i]))!=0)
 				parts.append(Util.capitalizeAndLower(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
-		mob.tell(showNumber+". EStat Adjustments: "+parts.toString()+".");
+		mob.tell(getScr("BaseGenerics","Estatadj",showNumber+"",parts.toString()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a stat name\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
 		if(newName.length()>0)
 		{
 			String partName=null;
@@ -3820,7 +3820,7 @@ public class BaseGenerics extends StdCommand
 				{ partName=S.getCodes()[i]; break;}
 			if(partName==null)
 			{
-				StringBuffer str=new StringBuffer("That stat is invalid.  Valid stats include: ");
+				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
 				for(int i=0;i<S.getCodes().length;i++)
 					str.append(S.getCodes()[i]+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -3841,14 +3841,14 @@ public class BaseGenerics extends StdCommand
 				}
 				else
 				{
-					newName=mob.session().prompt("Enter a value\n\r:","");
+					newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
 					if(newName.length()>0)
 					{
 						S.setStat(partName,newName);
 						checkChange=true;
 					}
 					else
-						mob.tell("(no change)");
+						mob.tell(getScr("BaseGenerics","nochange"));
 				}
 				if(checkChange)
 				{
@@ -3866,13 +3866,13 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
-	static void genAState(MOB mob, 
-	        			  Race R, 
+	static void genAState(MOB mob,
+	        			  Race R,
 	        			  String field,
 	        			  String prompt,
-	        			  int showNumber, 
+	        			  int showNumber,
 	        			  int showFlag)
 		throws IOException
 	{
@@ -3885,7 +3885,7 @@ public class BaseGenerics extends StdCommand
 				parts.append(Util.capitalizeAndLower(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
 		mob.tell(showNumber+". "+prompt+": "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a stat name\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
 		if(newName.length()>0)
 		{
 			String partName=null;
@@ -3894,14 +3894,14 @@ public class BaseGenerics extends StdCommand
 				{ partName=S.getCodes()[i]; break;}
 			if(partName==null)
 			{
-				StringBuffer str=new StringBuffer("That stat is invalid.  Valid stats include: ");
+				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
 				for(int i=0;i<S.getCodes().length;i++)
 					str.append(S.getCodes()[i]+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
 			}
 			else
 			{
-				newName=mob.session().prompt("Enter a value\n\r:","");
+				newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
 				if(newName.length()>0)
 				{
 					S.setStat(partName,newName);
@@ -3917,11 +3917,11 @@ public class BaseGenerics extends StdCommand
 						R.setStat(field,CoffeeMaker.getCharStateStr(S));
 				}
 				else
-					mob.tell("(no change)");
+					mob.tell(getScr("BaseGenerics","nochange"));
 			}
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	static void genAStats(MOB mob, Race R, String Field, String FieldName, int showNumber, int showFlag)
 		throws IOException
@@ -3935,7 +3935,7 @@ public class BaseGenerics extends StdCommand
 				parts.append(Util.capitalizeAndLower(CharStats.TRAITS[i])+"("+S.getStat(i)+") ");
 		mob.tell(showNumber+". "+FieldName+": "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a stat name\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
 		if(newName.length()>0)
 		{
 			int partNum=-1;
@@ -3944,14 +3944,14 @@ public class BaseGenerics extends StdCommand
 				{ partNum=i; break;}
 			if(partNum<0)
 			{
-				StringBuffer str=new StringBuffer("That stat is invalid.  Valid stats include: ");
+				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
 				for(int i=0;i<CharStats.TRAITS.length;i++)
 					str.append(CharStats.TRAITS[i]+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
 			}
 			else
 			{
-				newName=mob.session().prompt("Enter a value\n\r:","");
+				newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
 				if(newName.length()>0)
 				{
 					S.setStat(partNum,Util.s_int(newName));
@@ -3967,11 +3967,11 @@ public class BaseGenerics extends StdCommand
 						R.setStat(Field,CoffeeMaker.getCharStatsStr(S));
 				}
 				else
-					mob.tell("(no change)");
+					mob.tell(getScr("BaseGenerics","nochange"));
 			}
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	static void genEStats(MOB mob, CharClass R, int showNumber, int showFlag)
@@ -3984,9 +3984,9 @@ public class BaseGenerics extends StdCommand
 		for(int i=0;i<S.getCodes().length;i++)
 			if(Util.s_int(S.getStat(S.getCodes()[i]))!=0)
 				parts.append(Util.capitalizeAndLower(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
-		mob.tell(showNumber+". EStat Adjustments: "+parts.toString()+".");
+		mob.tell(getScr("BaseGenerics","Estatadjline",showNumber+"",parts.toString()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a stat name\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
 		if(newName.length()>0)
 		{
 			String partName=null;
@@ -3995,7 +3995,7 @@ public class BaseGenerics extends StdCommand
 				{ partName=S.getCodes()[i]; break;}
 			if(partName==null)
 			{
-				StringBuffer str=new StringBuffer("That stat is invalid.  Valid stats include: ");
+				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
 				for(int i=0;i<S.getCodes().length;i++)
 					str.append(S.getCodes()[i]+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -4016,14 +4016,14 @@ public class BaseGenerics extends StdCommand
 				}
 				else
 				{
-					newName=mob.session().prompt("Enter a value\n\r:","");
+					newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
 					if(newName.length()>0)
 					{
 						S.setStat(partName,newName);
 						checkChange=true;
 					}
 					else
-						mob.tell("(no change)");
+						mob.tell(getScr("BaseGenerics","nochange"));
 				}
 				if(checkChange)
 				{
@@ -4041,13 +4041,13 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
-	static void genAState(MOB mob, 
-	        			  CharClass R, 
+	static void genAState(MOB mob,
+	        			  CharClass R,
 	        			  String field,
 	        			  String prompt,
-	        			  int showNumber, 
+	        			  int showNumber,
 	        			  int showFlag)
 		throws IOException
 	{
@@ -4060,7 +4060,7 @@ public class BaseGenerics extends StdCommand
 				parts.append(Util.capitalizeAndLower(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
 		mob.tell(showNumber+". "+prompt+": "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a stat name\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
 		if(newName.length()>0)
 		{
 			String partName=null;
@@ -4069,14 +4069,14 @@ public class BaseGenerics extends StdCommand
 				{ partName=S.getCodes()[i]; break;}
 			if(partName==null)
 			{
-				StringBuffer str=new StringBuffer("That stat is invalid.  Valid stats include: ");
+				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
 				for(int i=0;i<S.getCodes().length;i++)
 					str.append(S.getCodes()[i]+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
 			}
 			else
 			{
-				newName=mob.session().prompt("Enter a value\n\r:","");
+				newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
 				if(newName.length()>0)
 				{
 					S.setStat(partName,newName);
@@ -4092,11 +4092,11 @@ public class BaseGenerics extends StdCommand
 						R.setStat(field,CoffeeMaker.getCharStateStr(S));
 				}
 				else
-					mob.tell("(no change)");
+					mob.tell(getScr("BaseGenerics","nochange"));
 			}
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	static void genAStats(MOB mob, CharClass R, String Field, String FieldName, int showNumber, int showFlag)
 		throws IOException
@@ -4110,7 +4110,7 @@ public class BaseGenerics extends StdCommand
 				parts.append(Util.capitalizeAndLower(CharStats.TRAITS[i])+"("+S.getStat(i)+") ");
 		mob.tell(showNumber+". "+FieldName+": "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a stat name\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
 		if(newName.length()>0)
 		{
 			int partNum=-1;
@@ -4119,14 +4119,14 @@ public class BaseGenerics extends StdCommand
 				{ partNum=i; break;}
 			if(partNum<0)
 			{
-				StringBuffer str=new StringBuffer("That stat is invalid.  Valid stats include: ");
+				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
 				for(int i=0;i<CharStats.TRAITS.length;i++)
 					str.append(CharStats.TRAITS[i]+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
 			}
 			else
 			{
-				newName=mob.session().prompt("Enter a value\n\r:","");
+				newName=mob.session().prompt(getScr("BaseGenerics","entvaluep"),"");
 				if(newName.length()>0)
 				{
 					S.setStat(partNum,Util.s_int(newName));
@@ -4142,11 +4142,11 @@ public class BaseGenerics extends StdCommand
 						R.setStat(Field,CoffeeMaker.getCharStatsStr(S));
 				}
 				else
-					mob.tell("(no change)");
+					mob.tell(getScr("BaseGenerics","nochange"));
 			}
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 	}
 	static void genResources(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
@@ -4170,9 +4170,9 @@ public class BaseGenerics extends StdCommand
 			}
 			if(parts.toString().endsWith(", "))
 			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
-			mob.tell(showNumber+". Resources: "+parts.toString()+".");
+			mob.tell(getScr("BaseGenerics","resources",showNumber+"",parts.toString()));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			String newName=mob.session().prompt("Enter a resource name to remove or\n\rthe word new and an item name to add from your inventory\n\r:","");
+			String newName=mob.session().prompt(getScr("BaseGenerics","resname"),"");
 			if(newName.length()>0)
 			{
 				int partNum=-1;
@@ -4183,7 +4183,7 @@ public class BaseGenerics extends StdCommand
 				if(partNum<0)
 				{
 					if(!newName.toLowerCase().startsWith("new "))
-						mob.tell("That is neither an existing resource name, or the word new followed by a valid item name.");
+						mob.tell(getScr("BaseGenerics","reserr"));
 					else
 					{
 						Item I=mob.fetchCarried(null,newName.substring(4).trim());
@@ -4191,7 +4191,7 @@ public class BaseGenerics extends StdCommand
 						{
 							I=(Item)I.copyOf();
 							V.addElement(I);
-							mob.tell(I.name()+" added.");
+							mob.tell(getScr("BaseGenerics","inameadd",I.name()));
 							updateList=true;
 						}
 
@@ -4201,7 +4201,7 @@ public class BaseGenerics extends StdCommand
 				{
 					Item I=(Item)V.elementAt(partNum);
 					V.removeElementAt(partNum);
-					mob.tell(I.name()+" removed.");
+					mob.tell(getScr("BaseGenerics","inamerem",I.name()));
 					updateList=true;
 				}
 				if(updateList)
@@ -4215,7 +4215,7 @@ public class BaseGenerics extends StdCommand
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 				return;
 			}
 		}
@@ -4242,9 +4242,9 @@ public class BaseGenerics extends StdCommand
 			}
 			if(parts.toString().endsWith(", "))
 			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
-			mob.tell(showNumber+". Outfit: "+parts.toString()+".");
+			mob.tell(getScr("BaseGenerics","outfit",showNumber+"",parts.toString()));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			String newName=mob.session().prompt("Enter an item name to remove or\n\rthe word new and an item name to add from your inventory\n\r:","");
+			String newName=mob.session().prompt(getScr("BaseGenerics","itemname"),"");
 			if(newName.length()>0)
 			{
 				int partNum=-1;
@@ -4255,7 +4255,7 @@ public class BaseGenerics extends StdCommand
 				if(partNum<0)
 				{
 					if(!newName.toLowerCase().startsWith("new "))
-						mob.tell("That is neither an existing item name, or the word new followed by a valid item name.");
+						mob.tell(getScr("BaseGenerics","nameitemerr"));
 					else
 					{
 						Item I=mob.fetchCarried(null,newName.substring(4).trim());
@@ -4263,7 +4263,7 @@ public class BaseGenerics extends StdCommand
 						{
 							I=(Item)I.copyOf();
 							V.addElement(I);
-							mob.tell(I.name()+" added.");
+							mob.tell(getScr("BaseGenerics","inameadd",I.name()));
 							updateList=true;
 						}
 
@@ -4273,7 +4273,7 @@ public class BaseGenerics extends StdCommand
 				{
 					Item I=(Item)V.elementAt(partNum);
 					V.removeElementAt(partNum);
-					mob.tell(I.name()+" removed.");
+					mob.tell(getScr("BaseGenerics","inamerem",I.name()));
 					updateList=true;
 				}
 				if(updateList)
@@ -4287,7 +4287,7 @@ public class BaseGenerics extends StdCommand
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 				return;
 			}
 		}
@@ -4314,9 +4314,9 @@ public class BaseGenerics extends StdCommand
 			}
 			if(parts.toString().endsWith(", "))
 			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
-			mob.tell(showNumber+". Outfit: "+parts.toString()+".");
+			mob.tell(getScr("BaseGenerics","outfitline",showNumber+"",parts.toString()));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			String newName=mob.session().prompt("Enter an item name to remove or\n\rthe word new and an item name to add from your inventory\n\r:","");
+			String newName=mob.session().prompt(getScr("BaseGenerics","itemname"),"");
 			if(newName.length()>0)
 			{
 				int partNum=-1;
@@ -4327,7 +4327,7 @@ public class BaseGenerics extends StdCommand
 				if(partNum<0)
 				{
 					if(!newName.toLowerCase().startsWith("new "))
-						mob.tell("That is neither an existing item name, or the word new followed by a valid item name.");
+						mob.tell(getScr("BaseGenerics","nameitemerr"));
 					else
 					{
 						Item I=mob.fetchCarried(null,newName.substring(4).trim());
@@ -4335,7 +4335,7 @@ public class BaseGenerics extends StdCommand
 						{
 							I=(Item)I.copyOf();
 							V.addElement(I);
-							mob.tell(I.name()+" added.");
+							mob.tell(getScr("BaseGenerics","inameadd",I.name()));
 							updateList=true;
 						}
 
@@ -4345,7 +4345,7 @@ public class BaseGenerics extends StdCommand
 				{
 					Item I=(Item)V.elementAt(partNum);
 					V.removeElementAt(partNum);
-					mob.tell(I.name()+" removed.");
+					mob.tell(getScr("BaseGenerics","inamerem",I.name()));
 					updateList=true;
 				}
 				if(updateList)
@@ -4359,7 +4359,7 @@ public class BaseGenerics extends StdCommand
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 				return;
 			}
 		}
@@ -4376,13 +4376,13 @@ public class BaseGenerics extends StdCommand
 			I.recoverEnvStats();
 			parts.append(I.name());
 		}
-		mob.tell(showNumber+". Natural Weapon: "+parts.toString()+".");
+		mob.tell(getScr("BaseGenerics","naturalweap",showNumber+"",parts.toString()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a weapon name from your inventory to change, or 'null' for human\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","weapname"),"");
 		if(newName.equalsIgnoreCase("null"))
 		{
 			E.setStat("WEAPONCLASS","");
-			mob.tell("Human weapons set.");
+			mob.tell(getScr("BaseGenerics","humanweapset"));
 		}
 		else
 		if(newName.length()>0)
@@ -4390,8 +4390,8 @@ public class BaseGenerics extends StdCommand
 			I=mob.fetchCarried(null,newName);
 			if(I==null)
 			{
-				mob.tell("'"+newName+"' is not in your inventory.");
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","errinventory",newName));
+				mob.tell(getScr("BaseGenerics","nochange"));
 				return;
 			}
 			I=(Item)I.copyOf();
@@ -4400,7 +4400,7 @@ public class BaseGenerics extends StdCommand
 		}
 		else
 		{
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 			return;
 		}
 	}
@@ -4409,15 +4409,15 @@ public class BaseGenerics extends StdCommand
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		
-		mob.tell(showNumber+". Aging Chart: "+Util.toStringList(E.getAgingChart())+".");
+
+		mob.tell(getScr("BaseGenerics","agingchart",showNumber+"",Util.toStringList(E.getAgingChart())));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		while(true)
 		{
-			String newName=mob.session().prompt("Enter a comma-delimited list of 9 numbers, running from infant -> ancient\n\r:","");
+			String newName=mob.session().prompt(getScr("BaseGenerics","comma"),"");
 			if(newName.length()==0)
 			{
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 				return;
 			}
 			Vector V=Util.parseCommas(newName,true);
@@ -4429,7 +4429,7 @@ public class BaseGenerics extends StdCommand
 			    {
 			        if(Util.s_int((String)V.elementAt(i))<highest)
 			        {
-			            mob.tell("Entry "+((String)V.elementAt(i))+" is out of place.");
+			            mob.tell(getScr("BaseGenerics","entryout",((String)V.elementAt(i))));
 			            cont=true;
 			            break;
 			        }
@@ -4445,22 +4445,22 @@ public class BaseGenerics extends StdCommand
 	static void genRaceFlags(MOB mob, Race E, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) 
+		if((showFlag>0)&&(showFlag!=showNumber))
 		    return;
-		
+
 		int flags=Util.s_int(E.getStat("DISFLAGS"));
 		StringBuffer sets=new StringBuffer("");
 	    if(Util.bset(flags,Race.GENFLAG_NOCLASS))
-		    sets.append("Classless ");
+		    sets.append(getScr("BaseGenerics","classless"));
 	    if(Util.bset(flags,Race.GENFLAG_NOLEVELS))
-		    sets.append("Leveless ");
+		    sets.append(getScr("BaseGenerics","leveless"));
 	    if(Util.bset(flags,Race.GENFLAG_NOEXP))
-		    sets.append("Expless ");
-		
-		mob.tell(showNumber+". Extra Racial Flags: "+sets.toString()+".");
-		if((showFlag!=showNumber)&&(showFlag>-999)) 
+		    sets.append(getScr("BaseGenerics","expless"));
+
+		mob.tell(getScr("BaseGenerics","extraracflags",showNumber+"",sets.toString()));
+		if((showFlag!=showNumber)&&(showFlag>-999))
 		    return;
-		String newName=mob.session().prompt("Enter: 1) Classless, 2) Leveless, 3) Expless\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","esslist"),"");
 		switch(Util.s_int(newName))
 		{
 		case 1:
@@ -4482,7 +4482,7 @@ public class BaseGenerics extends StdCommand
 		        flags=flags|Race.GENFLAG_NOEXP;
 		    break;
 		default:
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 			break;
 		}
 		E.setStat("DISFLAGS",""+flags);
@@ -4491,22 +4491,22 @@ public class BaseGenerics extends StdCommand
 	static void genClassFlags(MOB mob, CharClass E, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) 
+		if((showFlag>0)&&(showFlag!=showNumber))
 		    return;
-		
+
 		int flags=Util.s_int(E.getStat("DISFLAGS"));
 		StringBuffer sets=new StringBuffer("");
 	    if(Util.bset(flags,CharClass.GENFLAG_NORACE))
-		    sets.append("Raceless ");
+		    sets.append(getScr("BaseGenerics","raceless"));
 	    if(Util.bset(flags,CharClass.GENFLAG_NOLEVELS))
-		    sets.append("Leveless ");
+		    sets.append(getScr("BaseGenerics","leveless"));
 	    if(Util.bset(flags,CharClass.GENFLAG_NOEXP))
-		    sets.append("Expless ");
-		
-		mob.tell(showNumber+". Extra CharClass Flags: "+sets.toString()+".");
-		if((showFlag!=showNumber)&&(showFlag>-999)) 
+		    sets.append(getScr("BaseGenerics","expless"));
+
+		mob.tell(getScr("BaseGenerics","extracharcfl",showNumber+"",sets.toString()));
+		if((showFlag!=showNumber)&&(showFlag>-999))
 		    return;
-		String newName=mob.session().prompt("Enter: 1) Raceless, 2) Leveless, 3) Expless\n\r:","");
+		String newName=mob.session().prompt(getScr("BaseGenerics","esslist"),"");
 		switch(Util.s_int(newName))
 		{
 		case 1:
@@ -4528,7 +4528,7 @@ public class BaseGenerics extends StdCommand
 		        flags=flags|CharClass.GENFLAG_NOEXP;
 		    break;
 		default:
-			mob.tell("(no change)");
+			mob.tell(getScr("BaseGenerics","nochange"));
 			break;
 		}
 		E.setStat("DISFLAGS",""+flags);
@@ -4556,9 +4556,9 @@ public class BaseGenerics extends StdCommand
 			}
 			if(parts.toString().endsWith(", "))
 			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
-			mob.tell(showNumber+". Racial Abilities: "+parts.toString()+".");
+			mob.tell(getScr("BaseGenerics","racialab",showNumber+"",parts.toString()));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			String newName=mob.session().prompt("Enter an ability name to add or remove\n\r:","");
+			String newName=mob.session().prompt(getScr("BaseGenerics","abname"),"");
 			if(newName.equalsIgnoreCase("?"))
 				mob.tell(CMLister.reallyList(CMClass.abilities(),-1).toString());
 			else
@@ -4573,27 +4573,27 @@ public class BaseGenerics extends StdCommand
 				{
 					Ability A=CMClass.getAbility(newName);
 					if(A==null)
-						mob.tell("That is neither an existing ability name, nor a valid one to add.  Use ? for a list.");
+						mob.tell(getScr("BaseGenerics","abilityerr"));
 					else
 					if(A.isAutoInvoked())
-						mob.tell("'"+A.name()+"' cannot be named, as it is autoinvoked.");
+						mob.tell(getScr("BaseGenerics","autoinverr",A.name()));
 					else
 					if((A.triggerStrings()==null)||(A.triggerStrings().length==0))
-						mob.tell("'"+A.name()+"' cannot be named, as it has no trigger/command words.");
+						mob.tell(getScr("BaseGenerics","notriggererr",A.name()));
 					else
 					{
 						StringBuffer str=new StringBuffer(A.ID()+";");
-						String level=mob.session().prompt("Enter the level of this skill (1): ","1");
+						String level=mob.session().prompt(getScr("BaseGenerics","skilllev"),"1");
 						str.append((""+Util.s_int(level))+";");
 						if(mob.session().confirm("Is this skill automatically gained (Y/n)?","Y"))
-							str.append("false;");
+							str.append(getScr("BaseGenerics","falseword"));
 						else
-							str.append("true;");
-						String prof=mob.session().prompt("Enter the (perm) profficiency level (100): ","100");
+							str.append(getScr("BaseGenerics","trueword"));
+						String prof=mob.session().prompt(getScr("BaseGenerics","proflev"),"100");
 						str.append((""+Util.s_int(prof)));
 						data.addElement(str.toString());
 						ables.addElement(A);
-						mob.tell(A.name()+" added.");
+						mob.tell(getScr("BaseGenerics","anameadd",A.name()));
 						updateList=true;
 					}
 				}
@@ -4603,7 +4603,7 @@ public class BaseGenerics extends StdCommand
 					ables.removeElementAt(partNum);
 					data.removeElementAt(partNum);
 					updateList=true;
-					mob.tell(A.name()+" removed.");
+					mob.tell(getScr("BaseGenerics","anamerem",A.name()));
 				}
 				if(updateList)
 				{
@@ -4623,7 +4623,7 @@ public class BaseGenerics extends StdCommand
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 				return;
 			}
 		}
@@ -4650,9 +4650,9 @@ public class BaseGenerics extends StdCommand
 			}
 			if(parts.toString().endsWith(", "))
 			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
-			mob.tell(showNumber+". Racial Effects: "+parts.toString()+".");
+			mob.tell(getScr("BaseGenerics","racialfx",showNumber+"",parts.toString()));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			String newName=mob.session().prompt("Enter an effect name to add or remove\n\r:","");
+			String newName=mob.session().prompt(getScr("BaseGenerics","effaddrem"),"");
 			if(newName.equalsIgnoreCase("?"))
 				mob.tell(CMLister.reallyList(CMClass.abilities(),-1).toString());
 			else
@@ -4667,17 +4667,17 @@ public class BaseGenerics extends StdCommand
 				{
 					Ability A=CMClass.getAbility(newName);
 					if(A==null)
-						mob.tell("That is neither an existing effect name, nor a valid one to add.  Use ? for a list.");
+						mob.tell(getScr("BaseGenerics","effecterr"));
 					else
 					{
 						StringBuffer str=new StringBuffer(A.ID()+"~");
-						String level=mob.session().prompt("Enter the level to gain this effect (1): ","1");
+						String level=mob.session().prompt(getScr("BaseGenerics","entgaine"),"1");
 						str.append((""+Util.s_int(level))+"~");
-						String prof=mob.session().prompt("Enter any parameters: ","");
+						String prof=mob.session().prompt(getScr("BaseGenerics","anypar"),"");
 						str.append(""+prof);
 						data.addElement(str.toString());
 						ables.addElement(A);
-						mob.tell(A.name()+" added.");
+						mob.tell(getScr("BaseGenerics","anameadd",A.name()));
 						updateList=true;
 					}
 				}
@@ -4687,7 +4687,7 @@ public class BaseGenerics extends StdCommand
 					ables.removeElementAt(partNum);
 					data.removeElementAt(partNum);
 					updateList=true;
-					mob.tell(A.name()+" removed.");
+					mob.tell(getScr("BaseGenerics","anamerem",A.name()));
 				}
 				if(updateList)
 				{
@@ -4706,7 +4706,7 @@ public class BaseGenerics extends StdCommand
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 				return;
 			}
 		}
@@ -4733,9 +4733,9 @@ public class BaseGenerics extends StdCommand
 			}
 			if(parts.toString().endsWith(", "))
 			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
-			mob.tell(showNumber+". Class Abilities: "+parts.toString()+".");
+			mob.tell(getScr("BaseGenerics","classabilities",showNumber+"",parts.toString()));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			String newName=mob.session().prompt("Enter an ability name to add or remove\n\r:","");
+			String newName=mob.session().prompt(getScr("BaseGenerics","abname"),"");
 			if(newName.equalsIgnoreCase("?"))
 				mob.tell(CMLister.reallyList(CMClass.abilities(),-1).toString());
 			else
@@ -4750,27 +4750,27 @@ public class BaseGenerics extends StdCommand
 				{
 					Ability A=CMClass.getAbility(newName);
 					if(A==null)
-						mob.tell("That is neither an existing ability name, nor a valid one to add.  Use ? for a list.");
+						mob.tell(getScr("BaseGenerics","abilityerr"));
 					else
 					{
 						StringBuffer str=new StringBuffer(A.ID()+";");
-						String level=mob.session().prompt("Enter the level of this skill (1): ","1");
+						String level=mob.session().prompt(getScr("BaseGenerics","skilllev"),"1");
 						str.append((""+Util.s_int(level))+";");
-						String prof=mob.session().prompt("Enter the (default) profficiency level (0): ","0");
+						String prof=mob.session().prompt(getScr("BaseGenerics","defaultprof"),"0");
 						str.append((""+Util.s_int(prof))+";");
 						if(mob.session().confirm("Is this skill automatically gained (Y/n)?","Y"))
-							str.append("true;");
+							str.append(getScr("BaseGenerics","trueword"));
 						else
-							str.append("false;");
+							str.append(getScr("BaseGenerics","falseword"));
 						if(mob.session().confirm("Is this skill secret (N/y)?","N"))
-							str.append("true;");
+							str.append(getScr("BaseGenerics","trueword"));
 						else
-							str.append("false;");
-						String parm=mob.session().prompt("Enter any properties (): ","");
+							str.append(getScr("BaseGenerics","falseword"));
+						String parm=mob.session().prompt(getScr("BaseGenerics","anyprop"),"");
 						str.append(parm);
 						data.addElement(str.toString());
 						ables.addElement(A);
-						mob.tell(A.name()+" added.");
+						mob.tell(getScr("BaseGenerics","anameadd",A.name()));
 						updateList=true;
 					}
 				}
@@ -4780,7 +4780,7 @@ public class BaseGenerics extends StdCommand
 					ables.removeElementAt(partNum);
 					data.removeElementAt(partNum);
 					updateList=true;
-					mob.tell(A.name()+" removed.");
+					mob.tell(getScr("BaseGenerics","anamerem",A.name()));
 				}
 				if(updateList)
 				{
@@ -4802,7 +4802,7 @@ public class BaseGenerics extends StdCommand
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 				return;
 			}
 		}
@@ -4829,9 +4829,9 @@ public class BaseGenerics extends StdCommand
 			}
 			if(parts.toString().endsWith(", "))
 			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
-			mob.tell(showNumber+". Cultural Abilities: "+parts.toString()+".");
+			mob.tell(getScr("BaseGenerics","culturalab",showNumber+"",parts.toString()));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			String newName=mob.session().prompt("Enter an ability name to add or remove\n\r:","");
+			String newName=mob.session().prompt(getScr("BaseGenerics","abname"),"");
 			if(newName.equalsIgnoreCase("?"))
 				mob.tell(CMLister.reallyList(CMClass.abilities(),-1).toString());
 			else
@@ -4846,15 +4846,15 @@ public class BaseGenerics extends StdCommand
 				{
 					Ability A=CMClass.getAbility(newName);
 					if(A==null)
-						mob.tell("That is neither an existing ability name, nor a valid one to add.  Use ? for a list.");
+						mob.tell(getScr("BaseGenerics","abilityerr"));
 					else
 					{
 						StringBuffer str=new StringBuffer(A.ID()+";");
-						String prof=mob.session().prompt("Enter the default profficiency level (100): ","100");
+						String prof=mob.session().prompt(getScr("BaseGenerics","defproflev"),"100");
 						str.append((""+Util.s_int(prof)));
 						data.addElement(str.toString());
 						ables.addElement(A);
-						mob.tell(A.name()+" added.");
+						mob.tell(getScr("BaseGenerics","anameadd",A.name()));
 						updateList=true;
 					}
 				}
@@ -4864,7 +4864,7 @@ public class BaseGenerics extends StdCommand
 					ables.removeElementAt(partNum);
 					data.removeElementAt(partNum);
 					updateList=true;
-					mob.tell(A.name()+" removed.");
+					mob.tell(getScr("BaseGenerics","anamerem",A.name()));
 				}
 				if(updateList)
 				{
@@ -4882,7 +4882,7 @@ public class BaseGenerics extends StdCommand
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(getScr("BaseGenerics","nochange"));
 				return;
 			}
 		}
@@ -4925,6 +4925,7 @@ public class BaseGenerics extends StdCommand
                         break;
                 }
             }
+		    genText(mob,me,++showNumber,showFlag,"Name","NAME");
 			genText(mob,me,++showNumber,showFlag,"Base Class","BASE");
             genClassAvailability(mob,me,+showNumber,showFlag);
 			genInt(mob,me,++showNumber,showFlag,"HP Con Divisor","HPDIV");
@@ -4979,7 +4980,7 @@ public class BaseGenerics extends StdCommand
             
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+			showFlag=Util.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;
@@ -5001,15 +5002,15 @@ public class BaseGenerics extends StdCommand
         {
             int showNumber=0;
             // name
-            me.name=EnglishParser.promptText(mob,me.name,++showNumber,showFlag,"Name");
-            
+            me.name=EnglishParser.promptText(mob,me.name,++showNumber,showFlag,getScr("BaseGenerics","namename"));
+
             // ranges
             ++showNumber;
             if(me.ranges.size()==0)
                 me.ranges.addElement(new Faction.FactionRange(me,"0;100;Sample Range;SAMPLE;"));
             while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
-                StringBuffer list=new StringBuffer(showNumber+") Faction Division/Ranges List:\n\r");
+                StringBuffer list=new StringBuffer(getScr("BaseGenerics","faction",showNumber+""));
                 list.append(Util.padRight("   Name",21)+Util.padRight("Min",11)+Util.padRight("Max",11)+Util.padRight("Code",16)+Util.padRight("Align",6)+"\n\r");
                 for(int r=0;r<me.ranges.size();r++)
                 {
@@ -5022,7 +5023,7 @@ public class BaseGenerics extends StdCommand
                 }
                 mob.tell(list.toString());
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
-                String which=mob.session().prompt("Enter a name to add, remove, or modify:","");
+                String which=mob.session().prompt(getScr("BaseGenerics","addremmodname"),"");
                 if(which.length()==0)
                     break;
                 Faction.FactionRange FR=null;
@@ -5043,12 +5044,12 @@ public class BaseGenerics extends StdCommand
                 if(mob.session().choose("Would you like to M)odify or D)elete this range (M/d): ","MD","M").toUpperCase().startsWith("D"))
                 {
                     me.ranges.remove(FR);
-                    mob.tell("Range deleted.");
+                    mob.tell(getScr("BaseGenerics","rangedeleted"));
                     FR=null;
                 }
                 if(FR!=null)
                 {
-                    String newName=mob.session().prompt("Enter a new name ("+FR.Name+")\n\r: ",FR.Name);
+                    String newName=mob.session().prompt(getScr("BaseGenerics","entnamefr",FR.Name,FR.Name));
                     boolean error99=false;
                     if(newName.length()==0)
                         error99=true;
@@ -5057,48 +5058,48 @@ public class BaseGenerics extends StdCommand
                     {
                         Faction.FactionRange FR3=(Faction.FactionRange)me.ranges.elementAt(r);
                         if(FR3.Name.equalsIgnoreCase(FR.Name)&&(FR3!=FR))
-                        { mob.tell("A range already exists with that name!"); error99=true; break;} 
+                        { mob.tell(getScr("BaseGenerics","alreadyrange")); error99=true; break;}
                     }
                     if(error99)
-                        mob.tell("No Change");
+                        mob.tell(getScr("BaseGenerics","nochange"));
                     else
                         FR.Name=newName;
-                    newName=mob.session().prompt("Enter the low end of the range ("+FR.low+")\n\r: ",""+FR.low);
+                    newName=mob.session().prompt(getScr("BaseGenerics","lowendrange",FR.low+""),""+FR.low);
                     if(!Util.isInteger(newName))
-                        mob.tell("No Change");
+                        mob.tell(getScr("BaseGenerics","nochange"));
                     else
                         FR.low=Util.s_int(newName);
-                    newName=mob.session().prompt("Enter the high end of the range ("+FR.high+")\n\r: ",""+FR.high);
+                    newName=mob.session().prompt(getScr("BaseGenerics","highendrange",FR.high+""),""+FR.high);
                     if((!Util.isInteger(newName))||(Util.s_int(newName)<FR.low))
-                        mob.tell("No Change");
+                        mob.tell(getScr("BaseGenerics","nochange"));
                     else
                         FR.high=Util.s_int(newName);
-                    newName=mob.session().prompt("Enter a code-name ("+FR.CodeName+")\n\r: ",""+FR.CodeName);
+                    newName=mob.session().prompt(getScr("BaseGenerics","codename",FR.CodeName),""+FR.CodeName);
                     if(newName.trim().length()==0)
-                        mob.tell("No Change");
+                        mob.tell(getScr("BaseGenerics","nochange"));
                     else
                         FR.CodeName=newName.toUpperCase().trim();
-                    StringBuffer prompt=new StringBuffer("Select the 'virtue' (if any) of this range:\n\r");
+                    StringBuffer prompt=new StringBuffer(getScr("BaseGenerics","virtuename"));
                     StringBuffer choices=new StringBuffer("");
                     for(int r=0;r<Faction.ALIGN_NAMES.length;r++)
                     {
                         choices.append(""+r);
                         if(r==Faction.ALIGN_INDIFF)
-                            prompt.append(r+") Not applicable\n\r");
+                            prompt.append(getScr("BaseGenerics","notappmsg",r+""));
                         else
                             prompt.append(r+") "+Faction.ALIGN_NAMES[r].toLowerCase()+"\n\r");
                     }
                     FR.AlignEquiv=Util.s_int(mob.session().choose(prompt.toString()+"Enter alignment equivalency or 0: ",choices.toString(),""+FR.AlignEquiv));
                 }
             }
-            
-            
+
+
             // show in score
             me.showinscore=EnglishParser.promptBool(mob,me.showinscore,++showNumber,showFlag,"Show in 'Score'");
-            
+
             // show in factions
             me.showinfactionscommand=EnglishParser.promptBool(mob,me.showinfactionscommand,++showNumber,showFlag,"Show in 'Factions' command");
-            
+
             // show in special reports
             boolean alreadyReporter=false;
             for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
@@ -5108,14 +5109,14 @@ public class BaseGenerics extends StdCommand
             }
             if(!alreadyReporter)
                 me.showinspecialreported=EnglishParser.promptBool(mob,me.showinspecialreported,++showNumber,showFlag,"Show in Reports");
-            
+
             // show in editor
             me.showineditor=EnglishParser.promptBool(mob,me.showineditor,++showNumber,showFlag,"Show in MOB Editor");
-            
+
             // auto defaults
             boolean error=true;
-            me.autoDefaults=Util.parseSemicolons(EnglishParser.promptText(mob,Util.toSemicolonList(me.autoDefaults),++showNumber,showFlag,"Optional automatic assigned values with zapper masks (semicolon delimited).\n\r   "),true);
-            
+            me.autoDefaults=Util.parseSemicolons(EnglishParser.promptText(mob,Util.toSemicolonList(me.autoDefaults),++showNumber,showFlag,getScr("BaseGenerics","zappermasksmsg2")),true);
+
             // non-auto defaults
             error=true;
             if(me.defaults.size()==0)
@@ -5124,29 +5125,29 @@ public class BaseGenerics extends StdCommand
             while(error&&(mob.session()!=null)&&(!mob.session().killFlag()))
             {
                 error=false;
-                String newDefaults=EnglishParser.promptText(mob,Util.toSemicolonList(me.defaults),showNumber,showFlag,"Other default values with zapper masks (semicolon delimited).\n\r   ");
+                String newDefaults=EnglishParser.promptText(mob,Util.toSemicolonList(me.defaults),showNumber,showFlag,getScr("BaseGenerics","zappermasksmsg2"));
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
                 Vector V=Util.parseSemicolons(newDefaults,true);
                 if(V.size()==0)
                 {
-                    mob.tell("This field may not be empty.");
+                    mob.tell(getScr("BaseGenerics","fielderr"));
                     error=true;
                 }
                 me.defaults=Util.parseSemicolons(newDefaults,true);
             }
-            
+
             // choices and choice intro
-            me.choices=Util.parseSemicolons(EnglishParser.promptText(mob,Util.toSemicolonList(me.choices),++showNumber,showFlag,"Optional new player value choices (semicolon-delimited).\n\r   "),true);
+            me.choices=Util.parseSemicolons(EnglishParser.promptText(mob,Util.toSemicolonList(me.choices),++showNumber,showFlag,getScr("BaseGenerics","newplayervchoices")),true);
             if(me.choices.size()>0)
-                me.choiceIntro=EnglishParser.promptText(mob,me.choiceIntro,++showNumber,showFlag,"Optional choices introduction text. Filename");
-            
+                me.choiceIntro=EnglishParser.promptText(mob,me.choiceIntro,++showNumber,showFlag,getScr("BaseGenerics","introtxt"));
+
             // rate modifier
-            String newModifier=EnglishParser.promptText(mob,Math.round(me.rateModifier*100.0)+"%",++showNumber,showFlag,"Rate modifier");
+            String newModifier=EnglishParser.promptText(mob,Math.round(me.rateModifier*100.0)+"%",++showNumber,showFlag,getScr("BaseGenerics","ratemod"));
             if(newModifier.endsWith("%"))
                 newModifier=newModifier.substring(0,newModifier.length()-1);
             if(Util.isNumber(newModifier))
                 me.rateModifier=Util.s_double(newModifier)/100.0;
-            
+
             // experience flag
             boolean error2=true;
             ++showNumber;
@@ -5164,7 +5165,7 @@ public class BaseGenerics extends StdCommand
                 if(myval<0){ me.experienceFlag="NONE"; myval=0;}
                 if((showFlag!=showNumber)&&(showFlag>-999))
                 {
-                    mob.tell(showNumber+") Affect on experience: "+Faction.EXPAFFECT_NAMES[myval]);
+                    mob.tell(getScr("BaseGenerics","affectexp",showNumber+"",Faction.EXPAFFECT_NAMES[myval]));
                     break;
                 }
                 String prompt="Affect on experience: "+Faction.EXPAFFECT_NAMES[myval]+nextPrompt.toString()+"\n\rSelect a value: ";
@@ -5172,18 +5173,18 @@ public class BaseGenerics extends StdCommand
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
                 if((mynewval<=0)||(mynewval>Faction.EXPAFFECT_NAMES.length))
                 {
-                    mob.tell("That value is not valid.");
+                    mob.tell(getScr("BaseGenerics","valuerr"));
                     error2=true;
                 }
                 else
                     me.experienceFlag=Faction.EXPAFFECT_NAMES[mynewval-1];
             }
-            
+
             // factors by mask
             ++showNumber;
             while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
-                StringBuffer list=new StringBuffer(showNumber+") Faction change adjustment Factors with Zapper Masks:\n\r");
+                StringBuffer list=new StringBuffer(getScr("BaseGenerics","factionmod",showNumber+""));
                 list.append("    #) "+Util.padRight("Zapper Mask",31)+Util.padRight("Loss",6)+Util.padRight("Gain",6)+"\n\r");
                 StringBuffer choices=new StringBuffer("");
                 for(int r=0;r<me.factors.size();r++)
@@ -5202,7 +5203,7 @@ public class BaseGenerics extends StdCommand
                 }
                 mob.tell(list.toString());
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
-                String which=mob.session().choose("Enter a # to remove, or modify, or enter 0 to Add:","0"+choices.toString(),"").trim().toUpperCase();
+                String which=mob.session().choose(getScr("BaseGenerics","whichstring"),"0"+choices.toString(),"").trim().toUpperCase();
                 int factorNum=choices.toString().indexOf(which);
                 if((which.length()!=1)
                 ||((!which.equalsIgnoreCase("0"))
@@ -5216,7 +5217,7 @@ public class BaseGenerics extends StdCommand
                         if(mob.session().choose("Would you like to M)odify or D)elete this range (M/d): ","MD","M").toUpperCase().startsWith("D"))
                         {
                             me.factors.remove(factor);
-                            mob.tell("Factor deleted.");
+                            mob.tell(getScr("BaseGenerics","factordel"));
                             factor=null;
                         }
                 }
@@ -5230,22 +5231,22 @@ public class BaseGenerics extends StdCommand
                 }
                 if(factor!=null)
                 {
-                    String mask=mob.session().prompt("Enter a new zapper mask ("+((String)factor.elementAt(2))+")\n\r: ",((String)factor.elementAt(2)));
+                    String mask=mob.session().prompt(getScr("BaseGenerics","entzapper",((String)factor.elementAt(2)),((String)factor.elementAt(2))));
                     double newHigh=Util.s_double((String)factor.elementAt(0));
-                    String newName=mob.session().prompt("Enter gain adjustment ("+Math.round(newHigh*100)+"%): ",Math.round(newHigh*100)+"%").trim();
+                    String newName=mob.session().prompt(getScr("BaseGenerics","gainadj",Math.round(newHigh*100)+"",Math.round(newHigh*100)+"".trim()));
                     if(newName.endsWith("%"))
                         newName=newName.substring(0,newName.length()-1);
                     if(!Util.isNumber(newName))
-                        mob.tell("No Change");
+                        mob.tell(getScr("BaseGenerics","nochange"));
                     else
                         newHigh=Util.s_double(newName)/100.0;
-                    
+
                     double newLow=Util.s_double((String)factor.elementAt(1));
-                    newName=mob.session().prompt("Enter loss adjustment ("+Math.round(newLow*100)+"%): ",Math.round(newLow*100)+"%").trim();
+                    newName=mob.session().prompt(getScr("BaseGenerics","lossadj",Math.round(newLow*100)+"",Math.round(newLow*100)+"".trim()));
                     if(newName.endsWith("%"))
                         newName=newName.substring(0,newName.length()-1);
                     if(!Util.isNumber(newName))
-                        mob.tell("No Change");
+                        mob.tell(getScr("BaseGenerics","nochange"));
                     else
                         newLow=Util.s_double(newName)/100.0;
                     me.factors.removeElement(factor);
@@ -5256,13 +5257,13 @@ public class BaseGenerics extends StdCommand
                     me.factors.addElement(factor);
                 }
             }
-            
+
             // relations between factions
             ++showNumber;
             while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
-                StringBuffer list=new StringBuffer(showNumber+") Cross-Faction Relations:\n\r");
-                list.append("    "+Util.padRight("Faction",31)+"Percentage change\n\r");
+                StringBuffer list=new StringBuffer(getScr("BaseGenerics","crossrelati",showNumber+""));
+                list.append(getScr("BaseGenerics","percchange",Util.padRight("Faction",31)));
                 for(Enumeration e=me.relations.keys();e.hasMoreElements();)
                 {
                     String key=(String)e.nextElement();
@@ -5278,7 +5279,7 @@ public class BaseGenerics extends StdCommand
                 }
                 mob.tell(list.toString());
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
-                String which=mob.session().prompt("Enter a faction to add, remove, or modify relations:","");
+                String which=mob.session().prompt(getScr("BaseGenerics","factionarm"),"");
                 if(which.length()==0)
                     break;
                 Faction theF=null;
@@ -5294,7 +5295,7 @@ public class BaseGenerics extends StdCommand
                     Faction possibleF=Factions.getFaction(which);
                     if(possibleF==null) possibleF=Factions.getFactionByName(which);
                     if(possibleF==null)
-                        mob.tell("'"+which+"' is not a valid faction.");
+                        mob.tell(getScr("BaseGenerics","errfaction",which));
                     else
                     if(mob.session().confirm("Create a new relation for faction  '"+possibleF.name+"' (y/N): ","N"))
                     {
@@ -5306,28 +5307,28 @@ public class BaseGenerics extends StdCommand
                 if(mob.session().choose("Would you like to M)odify or D)elete this relation (M/d): ","MD","M").toUpperCase().startsWith("D"))
                 {
                     me.relations.remove(theF.ID);
-                    mob.tell("Relation deleted.");
+                    mob.tell(getScr("BaseGenerics","reldel"));
                     theF=null;
                 }
                 if(theF!=null)
                 {
                     long amount=Math.round(((Double)me.relations.get(theF.ID)).doubleValue()*100.0);
-                    String newName=mob.session().prompt("Enter a relation amount ("+amount+"%): ",""+amount+"%");
+                    String newName=mob.session().prompt(getScr("BaseGenerics","relamount",amount+""),""+amount+"%");
                     if(newName.endsWith("%")) newName=newName.substring(0,newName.length()-1);
                     if(!Util.isInteger(newName))
-                        mob.tell("(no change)");
+                        mob.tell(getScr("BaseGenerics","nochange"));
                     else
                         amount=Util.s_long(newName);
                     me.relations.remove(theF.ID);
                     me.relations.put(theF.ID,new Double(amount/100.0));
                 }
             }
-            
+
             // faction change triggers
             ++showNumber;
             while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
-                StringBuffer list=new StringBuffer(showNumber+") Faction Change Triggers:\n\r");
+                StringBuffer list=new StringBuffer(getScr("BaseGenerics","factrigg",showNumber+""));
                 list.append("    "+Util.padRight("Type",15)
                         +" "+Util.padRight("Direction",10)
                         +" "+Util.padRight("Factor",10)
@@ -5348,12 +5349,12 @@ public class BaseGenerics extends StdCommand
                 }
                 mob.tell(list.toString());
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
-                String which=mob.session().prompt("Select a trigger ID to add, remove, or modify (?):","");
+                String which=mob.session().prompt(getScr("BaseGenerics","triggerid"),"");
                 which=which.toUpperCase().trim();
                 if(which.length()==0) break;
                 if(which.equalsIgnoreCase("?"))
                 {
-                    mob.tell("Valid triggers: \n\r"+Faction.FactionChangeEvent.ALL_TYPES());
+                    mob.tell(getScr("BaseGenerics","validtrigg",Faction.FactionChangeEvent.ALL_TYPES()));
                     continue;
                 }
                 Faction.FactionChangeEvent CE=(Faction.FactionChangeEvent)me.Changes.get(which);
@@ -5362,7 +5363,7 @@ public class BaseGenerics extends StdCommand
                     CE=new Faction.FactionChangeEvent();
                     if(!CE.setFilterID(which))
                     {
-                        mob.tell("That ID is invalid.  Try '?'.");
+                        mob.tell(getScr("BaseGenerics","iderr"));
                         continue;
                     }
                     else
@@ -5378,22 +5379,22 @@ public class BaseGenerics extends StdCommand
                 if(mob.session().choose("Would you like to M)odify or D)elete this trigger (M/d): ","MD","M").toUpperCase().startsWith("D"))
                 {
                     me.Changes.remove(CE.ID);
-                    mob.tell("Trigger deleted.");
+                    mob.tell(getScr("BaseGenerics","trigrem"));
                     CE=null;
                 }
-                
+
                 if(CE!=null)
                 {
-                    StringBuffer directions=new StringBuffer("Valid directions:\n\r");
+                    StringBuffer directions=new StringBuffer(getScr("BaseGenerics","validdir"));
                     StringBuffer cmds=new StringBuffer("");
                     for(int i=0;i<Faction.FactionChangeEvent.FACTION_DIRECTIONS.length;i++)
                     {
                         directions.append(((char)('A'+i))+") "+Faction.FactionChangeEvent.FACTION_DIRECTIONS[i]+"\n\r");
                         cmds.append((char)('A'+i));
                     }
-                    String str=mob.session().choose(directions+"\n\rSelect a new direction ("+Faction.FactionChangeEvent.FACTION_DIRECTIONS[CE.direction]+"): ",cmds.toString()+"\n\r","");
+                    String str=mob.session().choose(directions+getScr("BaseGenerics","selnewdir")+Faction.FactionChangeEvent.FACTION_DIRECTIONS[CE.direction]+"): ",cmds.toString()+"\n\r","");
                     if((str.length()==0)||str.equals("\n")||str.equals("\r")||(cmds.toString().indexOf(str.charAt(0))<0))
-                        mob.tell("(no change)");
+                        mob.tell(getScr("BaseGenerics","nochange"));
                     else
                         CE.direction=(cmds.toString().indexOf(str.charAt(0)));
                 }
@@ -5401,38 +5402,38 @@ public class BaseGenerics extends StdCommand
                 {
                     if(CE.factor==0.0) CE.factor=1.0;
                     int amount=(int)Math.round(CE.factor*100.0);
-                    String newName=mob.session().prompt("Enter the amount factor ("+amount+"%): ",""+amount+"%");
+                    String newName=mob.session().prompt(getScr("BaseGenerics","amountfactor",amount+""),""+amount+"%");
                     if(newName.endsWith("%")) newName=newName.substring(0,newName.length()-1);
                     if(!Util.isInteger(newName))
-                        mob.tell("(no Change)");
+                        mob.tell(getScr("BaseGenerics","nochange"));
                     else
                         CE.factor=new Double(Util.s_int(newName)/100.0).doubleValue();
                 }
                 if(CE!=null)
                 {
-                    mob.tell("Valid flags include: "+Util.toStringList(Faction.FactionChangeEvent.VALID_FLAGS)+"\n\r");
-                    String newFlags=mob.session().prompt("Enter new flag(s) ("+CE.flagCache+"): ",CE.flagCache);
+                    mob.tell(getScr("BaseGenerics","validflags",Util.toStringList(Faction.FactionChangeEvent.VALID_FLAGS)));
+                    String newFlags=mob.session().prompt(getScr("BaseGenerics","newflags",CE.flagCache,CE.flagCache));
                     if((newFlags.length()==0)||(newFlags.equals(CE.flagCache)))
-                        mob.tell("(no change)");
+                        mob.tell(getScr("BaseGenerics","nochange"));
                     else
                         CE.setFlags(newFlags);
                 }
                 if(CE!=null)
                 {
-                    String newFlags=mob.session().prompt("Zapper mask ("+CE.zapper+"): ",CE.zapper);
+                    String newFlags=mob.session().prompt(getScr("BaseGenerics","zappermsg",CE.zapper,CE.zapper));
                     if((newFlags.length()==0)||(newFlags.equals(CE.zapper)))
-                        mob.tell("(no change)");
+                        mob.tell(getScr("BaseGenerics","nochange"));
                     else
                         CE.zapper=newFlags;
                 }
             }
-            
+
             // Ability allowances
             ++showNumber;
             while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 if((showFlag>0)&&(showFlag!=showNumber)) break;
-                StringBuffer list=new StringBuffer(showNumber+") Ability allowances:\n\r");
+                StringBuffer list=new StringBuffer(getScr("BaseGenerics","abiallow",showNumber+""));
                 list.append("    #) "
                         +Util.padRight("Ability masks",40)
                         +" "+Util.padRight("Low value",10)
@@ -5448,7 +5449,7 @@ public class BaseGenerics extends StdCommand
                         list.append("    "+((char)('A'+num)+") "));
                         list.append(Util.padRight(CA.ID,40)+" ");
                         list.append(Util.padRight(CA.low+"",10)+" ");
-                        list.append(Util.padRight(CA.high+"",10)+" "); 
+                        list.append(Util.padRight(CA.high+"",10)+" ");
                         list.append("\n\r");
                         choices.append((char)('A'+num));
                         num++;
@@ -5456,7 +5457,7 @@ public class BaseGenerics extends StdCommand
                 }
                 mob.tell(list.toString());
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
-                String which=mob.session().choose("Select an allowance to remove or modify, or enter 0 to Add:",choices.toString(),"");
+                String which=mob.session().choose(getScr("BaseGenerics","allmsg"),choices.toString(),"");
                 if(which.length()!=1)
                     break;
                 which=which.toUpperCase().trim();
@@ -5469,13 +5470,13 @@ public class BaseGenerics extends StdCommand
                     CA=(Faction.FactionAbilityUsage)me.abilityUsages.elementAt(num);
                     if(CA==null)
                     {
-                        mob.tell("That allowance is invalid..");
+                        mob.tell(getScr("BaseGenerics","allowancerr"));
                         continue;
                     }
                     if(mob.session().choose("Would you like to M)odify or D)elete this allowance (M/d): ","MD","M").toUpperCase().startsWith("D"))
                     {
                         me.abilityUsages.remove(CA);
-                        mob.tell("Allowance deleted.");
+                        mob.tell(getScr("BaseGenerics","alldel"));
                         CA=null;
                     }
                 }
@@ -5495,17 +5496,17 @@ public class BaseGenerics extends StdCommand
                     boolean cont=false;
                     while((!cont)&&(!mob.session().killFlag()))
                     {
-                        String newFlags=mob.session().prompt("Ability determinate masks or ? ("+CA.ID+"): ",CA.ID);
+                        String newFlags=mob.session().prompt(getScr("BaseGenerics","abdmasks",CA.ID,CA.ID));
                         if(newFlags.equalsIgnoreCase("?"))
                         {
-                            StringBuffer vals=new StringBuffer("Valid masks: \n\r");
+                            StringBuffer vals=new StringBuffer(getScr("BaseGenerics","validmasks"));
                             for(int i=0;i<Ability.TYPE_DESCS.length;i++)
                                 vals.append(Ability.TYPE_DESCS[i]+", ");
-                            for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
+                            for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
                                 vals.append(Ability.DOMAIN_DESCS[i]+", ");
                             for(int i=0;i< Ability.FLAG_DESCS.length;i++)
                                 vals.append(Ability.FLAG_DESCS[i]+", ");
-                            vals.append(" * Any ABILITY ID (skill/prayer/spell/etc)");
+                            vals.append(getScr("BaseGenerics","abilityidmsg"));
                             mob.tell(vals.toString());
                             cont=false;
                         }
@@ -5513,7 +5514,7 @@ public class BaseGenerics extends StdCommand
                         {
                             cont=true;
                             if((newFlags.length()==0)||(newFlags.equals(CA.ID)))
-                                mob.tell("(no change)");
+                                mob.tell(getScr("BaseGenerics","nochange"));
                             else
                             {
                                 Vector unknowns=CA.setAbilityFlag(newFlags);
@@ -5523,26 +5524,26 @@ public class BaseGenerics extends StdCommand
                                             unknowns.removeElementAt(i);
                                 if(unknowns.size()>0)
                                 {
-                                    mob.tell("The following are unknown masks: '"+Util.toStringList(unknowns)+"'.  Please correct them.");
+                                    mob.tell(getScr("BaseGenerics","unknownmasks",Util.toStringList(unknowns)));
                                     cont=false;
                                 }
                             }
                         }
                     }
-                    String newName=mob.session().prompt("Enter the minimum value to use the ability ("+CA.low+"): ",""+CA.low);
+                    String newName=mob.session().prompt(getScr("BaseGenerics","minvalueab",CA.low+""),""+CA.low);
                     if((!Util.isInteger(newName))||(CA.low==Util.s_int(newName)))
-                        mob.tell("(no Change)");
+                        mob.tell(getScr("BaseGenerics","nochange"));
                     else
                         CA.low=Util.s_int(newName);
-                    newName=mob.session().prompt("Enter the maximum value to use the ability ("+CA.high+"): ",""+CA.high);
+                    newName=mob.session().prompt(getScr("BaseGenerics","maxvalueab",CA.high+""),""+CA.high);
                     if((!Util.isInteger(newName))||(CA.high==Util.s_int(newName)))
-                        mob.tell("(no Change)");
+                        mob.tell(getScr("BaseGenerics","nochange"));
                     else
                         CA.high=Util.s_int(newName);
                     if(CA.high<CA.low) CA.high=CA.low;
                 }
             }
-            
+
             // calculate new max/min
             me.minimum=Integer.MAX_VALUE;
             me.maximum=Integer.MIN_VALUE;
@@ -5562,12 +5563,12 @@ public class BaseGenerics extends StdCommand
             }
             me.middle=me.minimum+(int)Math.round(Util.div(me.maximum-me.minimum,2.0));
             me.difference=Util.abs(me.maximum-me.minimum);
-            
-            
-            
+
+
+
             if(showFlag<-900){ ok=true; break;}
             if(showFlag>0){ showFlag=-1; continue;}
-            showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+            showFlag=Util.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
             if(showFlag<=0)
             {
                 showFlag=-1;
@@ -5579,7 +5580,7 @@ public class BaseGenerics extends StdCommand
             Vector oldV=Resources.getFileLineVector(Resources.getFileResource(me.ID));
             if(oldV.size()<10)
             {
-                
+
             }
             boolean[] defined=new boolean[Faction.ALL_TAGS.length];
             for(int i=0;i<defined.length;i++) defined[i]=false;
@@ -5630,7 +5631,7 @@ public class BaseGenerics extends StdCommand
                 {
                     String tag=s.substring(0,s.indexOf("=")).trim().toUpperCase();
                     int tagRef=Faction.isTag(tag);
-                    if(tagRef<0) 
+                    if(tagRef<0)
                         buf.append(s+CR);
                     else
                     if(!done[tagRef])
@@ -5645,7 +5646,7 @@ public class BaseGenerics extends StdCommand
             Resources.removeResource(me.ID);
             Resources.submitResource(me.ID,buf);
             if(!Resources.saveFileResource(me.ID))
-                mob.tell("Faction File '"+me.ID+"' could not be modified.  Make sure it is not READ-ONLY.");
+                mob.tell(getScr("BaseGenerics","factionfilereadonly",me.ID));
         }
     }
 
@@ -5689,7 +5690,7 @@ public class BaseGenerics extends StdCommand
 			//genRacialEffects(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+			showFlag=Util.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;
@@ -5745,7 +5746,7 @@ public class BaseGenerics extends StdCommand
 			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+			showFlag=Util.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;
@@ -5753,7 +5754,7 @@ public class BaseGenerics extends StdCommand
 				me.recoverEnvStats();
 				if(me.text().length()>=maxLength)
 				{
-					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
+					mob.tell(getScr("BaseGenerics","stringlimiterr",maxLength+""));
 					ok=false;
 				}
 			}
@@ -5792,7 +5793,7 @@ public class BaseGenerics extends StdCommand
 			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+			showFlag=Util.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;
@@ -5800,7 +5801,7 @@ public class BaseGenerics extends StdCommand
 				me.recoverEnvStats();
 				if(me.text().length()>=maxLength)
 				{
-					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
+					mob.tell(getScr("BaseGenerics","stringlimiterr",maxLength+""));
 					ok=false;
 				}
 			}
@@ -5839,11 +5840,11 @@ public class BaseGenerics extends StdCommand
 			if(me instanceof Container)
 				genCapacity(mob,(Container)me,++showNumber,showFlag);
 			if(me instanceof Perfume)
-				((Perfume)me).setSmellList(EnglishParser.promptText(mob,((Perfume)me).getSmellList(),++showNumber,showFlag,"Smells list (; delimited)"));
+				((Perfume)me).setSmellList(EnglishParser.promptText(mob,((Perfume)me).getSmellList(),++showNumber,showFlag,getScr("BaseGenerics","smelllist")));
 			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+			showFlag=Util.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;
@@ -5851,7 +5852,7 @@ public class BaseGenerics extends StdCommand
 				me.recoverEnvStats();
 				if(me.text().length()>=maxLength)
 				{
-					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
+					mob.tell(getScr("BaseGenerics","stringlimiterr",maxLength+""));
 					ok=false;
 				}
 			}
@@ -5877,7 +5878,7 @@ public class BaseGenerics extends StdCommand
 			if(me instanceof Light)	genBurnout(mob,(Light)me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+			showFlag=Util.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;
@@ -5885,7 +5886,7 @@ public class BaseGenerics extends StdCommand
 				me.recoverEnvStats();
 				if(me.text().length()>=maxLength)
 				{
-					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
+					mob.tell(getScr("BaseGenerics","stringlimiterr",maxLength+""));
 					ok=false;
 				}
 			}
@@ -5922,7 +5923,7 @@ public class BaseGenerics extends StdCommand
 			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+			showFlag=Util.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;
@@ -5930,7 +5931,7 @@ public class BaseGenerics extends StdCommand
 				me.recoverEnvStats();
 				if(me.text().length()>=maxLength)
 				{
-					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
+					mob.tell(getScr("BaseGenerics","stringlimiterr",maxLength+""));
 					ok=false;
 				}
 			}
@@ -5982,7 +5983,7 @@ public class BaseGenerics extends StdCommand
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
 			}
-			if(me instanceof Exit) 
+			if(me instanceof Exit)
 			{
 				genDoorName(mob,(Exit)me,++showNumber,showFlag);
 				genClosedText(mob,(Exit)me,++showNumber,showFlag);
@@ -5990,7 +5991,7 @@ public class BaseGenerics extends StdCommand
 			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+			showFlag=Util.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;
@@ -5998,7 +5999,7 @@ public class BaseGenerics extends StdCommand
 				me.recoverEnvStats();
 				if(me.text().length()>=maxLength)
 				{
-					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
+					mob.tell(getScr("BaseGenerics","stringlimiterr",maxLength+""));
 					ok=false;
 				}
 			}
@@ -6053,7 +6054,7 @@ public class BaseGenerics extends StdCommand
 			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+			showFlag=Util.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;
@@ -6061,7 +6062,7 @@ public class BaseGenerics extends StdCommand
 				me.recoverEnvStats();
 				if(me.text().length()>=maxLength)
 				{
-					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
+					mob.tell(getScr("BaseGenerics","stringlimiterr",maxLength+""));
 					ok=false;
 				}
 			}
@@ -6107,7 +6108,7 @@ public class BaseGenerics extends StdCommand
 			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+			showFlag=Util.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;
@@ -6115,14 +6116,14 @@ public class BaseGenerics extends StdCommand
 				me.recoverEnvStats();
 				if(me.text().length()>=maxLength)
 				{
-					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
+					mob.tell(getScr("BaseGenerics","stringlimiterr",maxLength+""));
 					ok=false;
 				}
 			}
 		}
 	}
-	
-	
+
+
 	public static void modifyGenInstrument(MOB mob, MusicalInstrument me)
 		throws IOException
 	{
@@ -6154,7 +6155,7 @@ public class BaseGenerics extends StdCommand
 			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+			showFlag=Util.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;
@@ -6162,14 +6163,14 @@ public class BaseGenerics extends StdCommand
 				me.recoverEnvStats();
 				if(me.text().length()>=maxLength)
 				{
-					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
+					mob.tell(getScr("BaseGenerics","stringlimiterr",maxLength+""));
 					ok=false;
 				}
 			}
 		}
 	}
-	
-	
+
+
 	public static void modifyGenExit(MOB mob, Exit me)
 		throws IOException
 	{
@@ -6201,7 +6202,7 @@ public class BaseGenerics extends StdCommand
 			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+			showFlag=Util.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;
@@ -6209,14 +6210,14 @@ public class BaseGenerics extends StdCommand
 				me.recoverEnvStats();
 				if(me.text().length()>=maxLength)
 				{
-					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
+					mob.tell(getScr("BaseGenerics","stringlimiterr",maxLength+""));
 					ok=false;
 				}
 			}
 		}
 	}
-	
-	
+
+
 	public static void modifyGenMOB(MOB mob, MOB me)
 		throws IOException
 	{
@@ -6288,7 +6289,7 @@ public class BaseGenerics extends StdCommand
 			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+			showFlag=Util.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;
@@ -6299,14 +6300,14 @@ public class BaseGenerics extends StdCommand
 				me.resetToMaxState();
 				if(me.text().length()>=maxLength)
 				{
-					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
+					mob.tell(getScr("BaseGenerics","stringlimiterr",maxLength+""));
 					ok=false;
 				}
 				me.setMiscText(me.text());
 			}
 		}
 
-		mob.tell("\n\rNow don't forget to equip "+me.charStats().himher()+" with stuff before saving!\n\r");
+		mob.tell(getScr("BaseGenerics","equipbeforesave",me.charStats().himher()));
 	}
 
 	public static void modifyPlayer(MOB mob, MOB me)
@@ -6325,7 +6326,7 @@ public class BaseGenerics extends StdCommand
 			genName(mob,me,++showNumber,showFlag);
 			while((!me.Name().equals(oldName))&&(CMClass.DBEngine().DBUserSearch(null,me.Name())))
 			{
-				mob.tell("The name given cannot be chosen, as it is already being used.");
+				mob.tell(getScr("BaseGenerics","namealused"));
 				genName(mob,me,showNumber,showFlag);
 			}
 			genPassword(mob,me,++showNumber,showFlag);
@@ -6353,9 +6354,9 @@ public class BaseGenerics extends StdCommand
 			genArmor(mob,me,++showNumber,showFlag);
 			genHitPoints(mob,me,++showNumber,showFlag);
 			genMoney(mob,me,++showNumber,showFlag);
-            me.setTrains(EnglishParser.promptInteger(mob,me.getTrains(),++showNumber,showFlag,"Training Points"));
-            me.setPractices(EnglishParser.promptInteger(mob,me.getPractices(),++showNumber,showFlag,"Practice Points"));
-            me.setQuestPoint(EnglishParser.promptInteger(mob,me.getQuestPoint(),++showNumber,showFlag,"Quest Points"));
+            me.setTrains(EnglishParser.promptInteger(mob,me.getTrains(),++showNumber,showFlag,getScr("BaseGenerics","trpoints")));
+            me.setPractices(EnglishParser.promptInteger(mob,me.getPractices(),++showNumber,showFlag,getScr("BaseGenerics","practicep")));
+            me.setQuestPoint(EnglishParser.promptInteger(mob,me.getQuestPoint(),++showNumber,showFlag,getScr("BaseGenerics","questpoints")));
 			genAbilities(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
@@ -6375,7 +6376,7 @@ public class BaseGenerics extends StdCommand
 			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+			showFlag=Util.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;
@@ -6459,12 +6460,12 @@ public class BaseGenerics extends StdCommand
 			else
             if(me instanceof PostOffice)
             {
-                ((PostOffice)me).setPostalChain(EnglishParser.promptText(mob,((PostOffice)me).postalChain(),++showNumber,showFlag,"Postal chain"));
-                ((PostOffice)me).setFeeForNewBox(EnglishParser.promptDouble(mob,((PostOffice)me).feeForNewBox(),++showNumber,showFlag,"Fee to open a new box"));
-                ((PostOffice)me).setMinimumPostage(EnglishParser.promptDouble(mob,((PostOffice)me).minimumPostage(),++showNumber,showFlag,"Minimum postage cost"));
-                ((PostOffice)me).setPostagePerPound(EnglishParser.promptDouble(mob,((PostOffice)me).postagePerPound(),++showNumber,showFlag,"Postage cost per pound after 1st pound"));
-                ((PostOffice)me).setHoldFeePerPound(EnglishParser.promptDouble(mob,((PostOffice)me).holdFeePerPound(),++showNumber,showFlag,"Holding fee per pound per month"));
-                ((PostOffice)me).setMaxMudMonthsHeld(EnglishParser.promptInteger(mob,((PostOffice)me).maxMudMonthsHeld(),++showNumber,showFlag,"Maximum number of months held"));
+                ((PostOffice)me).setPostalChain(EnglishParser.promptText(mob,((PostOffice)me).postalChain(),++showNumber,showFlag,getScr("BaseGenerics","postalchainl")));
+                ((PostOffice)me).setFeeForNewBox(EnglishParser.promptDouble(mob,((PostOffice)me).feeForNewBox(),++showNumber,showFlag,getScr("BaseGenerics","feebox")));
+                ((PostOffice)me).setMinimumPostage(EnglishParser.promptDouble(mob,((PostOffice)me).minimumPostage(),++showNumber,showFlag,getScr("BaseGenerics","minpostcost")));
+                ((PostOffice)me).setPostagePerPound(EnglishParser.promptDouble(mob,((PostOffice)me).postagePerPound(),++showNumber,showFlag,getScr("BaseGenerics","poundcost")));
+                ((PostOffice)me).setHoldFeePerPound(EnglishParser.promptDouble(mob,((PostOffice)me).holdFeePerPound(),++showNumber,showFlag,getScr("BaseGenerics","feepound")));
+                ((PostOffice)me).setMaxMudMonthsHeld(EnglishParser.promptInteger(mob,((PostOffice)me).maxMudMonthsHeld(),++showNumber,showFlag,getScr("BaseGenerics","monthsmac")));
             }
             else
 			{
@@ -6480,7 +6481,7 @@ public class BaseGenerics extends StdCommand
 			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+			showFlag=Util.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;
@@ -6491,12 +6492,12 @@ public class BaseGenerics extends StdCommand
 				mme.resetToMaxState();
 				if(me.text().length()>=maxLength)
 				{
-					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
+					mob.tell(getScr("BaseGenerics","stringlimiterr",maxLength+""));
 					ok=false;
 				}
 				me.setMiscText(me.text());
 			}
 		}
-		mob.tell("\n\rNow don't forget to equip him with non-generic items before saving! If you DO add items to his list, be sure to come back here in case you've exceeded the string limit again.\n\r");
+		mob.tell(getScr("BaseGenerics","genmobmsg"));
 	}
 }
