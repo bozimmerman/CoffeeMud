@@ -32,7 +32,10 @@ public class AFK extends StdCommand
 		if(mob.session().afkFlag())
 			mob.session().setAfkFlag(false);
 		else
+        {
+            mob.session().setAFKMessage(Util.combine(commands,1));
 			mob.session().setAfkFlag(true);
+        }
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

@@ -123,7 +123,7 @@ public class Tell extends StdCommand
 		CommonMsgs.say(mob,target,combinedCommands,true,true);
 		if((target.session()!=null)
 		&&(target.session().afkFlag()))
-			mob.tell(target.name()+" is AFK at the moment.");
+			mob.tell(target.session().afkMessage());
 		return false;
 	}
 	public int ticksToExecute(){return 1;}

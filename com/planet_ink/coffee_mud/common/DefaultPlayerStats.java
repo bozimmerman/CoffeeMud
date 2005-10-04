@@ -310,4 +310,29 @@ public class DefaultPlayerStats implements PlayerStats
     {
         return roomSet.contains(CMMap.getExtendedRoomID(R));
     }
+    
+    public int percentVisited(MOB mob, Area A)
+    {
+        if(A==null)
+        {
+            long totalRooms=0;
+            long totalVisits=0;
+            for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+            {
+                A=(Area)e.nextElement();
+                if(Sense.canAccess(mob,A))
+                {
+                    totalRooms+=A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS];
+                    totalVisits+=roomSet.roomCount(A.Name());
+                }
+            }
+            if(totalRooms==0) return 100;
+            double pct=Util.div(totalVisits,totalRooms);
+            return (int)Math.round(100.0*pct);
+        }
+        int numRooms=A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS];
+        if(numRooms==0) return 100;
+        double pct=Util.div(roomSet.roomCount(A.Name()),numRooms);
+        return (int)Math.round(100.0*pct);
+    }
 }

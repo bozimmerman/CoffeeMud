@@ -557,7 +557,6 @@ public class StdArea implements Area
 		s.append(description()+"\n\r");
 		if(author.length()>0)
 			s.append("Author         : "+author+"\n\r");
-		s.append("Number of rooms: "+numberOfProperIDedRooms()+"\n\r");
 
 		Vector levelRanges=new Vector();
 		Vector alignRanges=new Vector();
@@ -577,6 +576,8 @@ public class StdArea implements Area
 		statData[Area.AREASTAT_AVGALIGN]=0;
 		statData[Area.AREASTAT_TOTLEVEL]=0;
 		statData[Area.AREASTAT_INTLEVEL]=0;
+        statData[Area.AREASTAT_VISITABLEROOMS]=numberOfProperIDedRooms();
+        s.append("Number of rooms: "+statData[Area.AREASTAT_VISITABLEROOMS]+"\n\r");
 		long totalAlignments=0;
         Room R=null;
         MOB mob=null;

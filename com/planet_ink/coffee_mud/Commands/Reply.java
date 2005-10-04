@@ -51,7 +51,7 @@ public class Reply extends StdCommand
 		CommonMsgs.say(mob,pstats.replyTo(),Util.combine(commands,1),true,!mob.location().isInhabitant(pstats.replyTo()));
 		if((pstats.replyTo().session()!=null)
 		&&(pstats.replyTo().session().afkFlag()))
-			mob.tell("Note: "+pstats.replyTo().name()+" is AFK at the moment.");
+			mob.tell(pstats.replyTo().session().afkMessage());
 		return false;
 	}
 	public int ticksToExecute(){return 1;}
