@@ -25,6 +25,7 @@ public class Spell_RogueLimb extends Spell
 {
 	public String ID() { return "Spell_RogueLimb"; }
 	public String name(){return "Rogue Limb";}
+    public String displayText(){return "(Rogue Limb)";}
 	public int quality(){return Ability.MALICIOUS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	protected int canAffectCode(){return CAN_MOBS;}

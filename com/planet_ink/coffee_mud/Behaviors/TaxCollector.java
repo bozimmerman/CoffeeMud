@@ -311,7 +311,12 @@ public class TaxCollector extends StdBehavior
 				if((demandDex>=0)
 				&&((System.currentTimeMillis()-((Long)demanded.elementAt(demandDex,2)).longValue())>waitTime))
 				{
-				    Behavior B=CoffeeUtensils.getLegalBehavior(R.getArea());
+                    Behavior B=CoffeeUtensils.getLegalBehavior(R.getArea());
+                    if(M.isMonster()
+                    &&(M.getStartRoom()!=null)
+                    &&(CoffeeUtensils.getLandTitle(M.getStartRoom())==null))
+                        demanded.removeElementAt(demandDex);
+                    else
 				    if(B!=null)
 				    {
 						Vector VB=new Vector();
@@ -349,9 +354,10 @@ public class TaxCollector extends StdBehavior
 						{
 							Vector V=new Vector();
 							V.addElement("GIVE");
-							V.addElement(""+owe[OWE_TOTAL]);
+							V.addElement(""+Math.round(owe[OWE_TOTAL]));
 							V.addElement(mob.name());
 							M.doCommand(V);
+                            
 						}
 				    }
 				}

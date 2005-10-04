@@ -3194,13 +3194,18 @@ public class StdMOB implements MOB
 			return true;
 		return false;
 	}
+    
 	public boolean willFollowOrdersOf(MOB mob)
 	{
-		if((isMonster()?CMSecurity.isAllowed(mob,location(),"ORDER"):CMSecurity.isAllowedEverywhere(mob,"ORDER"))
-		||(amFollowing()==mob)
-		||(getLiegeID().equals(mob.Name()))
-		||(CoffeeUtensils.doesOwnThisProperty(mob,getStartRoom())))
-			return true;
+        if((amFollowing()==mob)
+        ||((isMonster()&&CMSecurity.isAllowed(mob,location(),"ORDER")))
+        ||(getLiegeID().equals(mob.Name()))
+        ||(CoffeeUtensils.doesOwnThisProperty(mob,getStartRoom())))
+            return true;
+        if((!isMonster())
+        &&(CMSecurity.isAllowedEverywhere(mob,"ORDER"))
+        &&((!CMSecurity.isASysOp(this))||CMSecurity.isASysOp(mob)))
+            return true;
 		if((getClanID().length()>0)&&(getClanID().equals(mob.getClanID())))
 		{
 			Clan C=Clans.getClan(getClanID());
@@ -3211,6 +3216,7 @@ public class StdMOB implements MOB
 		}
 		return false;
 	}
+    
 	public MOB amFollowing()
 	{
 	    MOB following=amFollowing;

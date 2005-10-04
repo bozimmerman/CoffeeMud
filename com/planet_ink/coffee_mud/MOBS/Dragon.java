@@ -78,12 +78,13 @@ public class Dragon extends StdMOB
 	public void setupDragon(int colorValue, int ageValue)
 	{
 		// ===== set the parameter stuff		DragonAge() = ageValue;
-		birthAge=ageValue;
-		birthColor=colorValue;
 
 		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 			return;
 
+        birthAge=ageValue;
+        birthColor=colorValue;
+        
 		// ===== is it a male or female
 		short gend = (short)Math.round(Math.random());
 		if (gend == 0)
@@ -168,8 +169,8 @@ public class Dragon extends StdMOB
 		baseEnvStats().setAbility(colorValue);
 		baseEnvStats().setLevel(ageValue);
 		setupDragon(colorValue,ageValue);
-		birthAge=-1;
-		birthColor=-1;
+        birthColor=0;
+        birthAge=0;
 	}
 
 	private static int determineAge()
@@ -237,11 +238,12 @@ public class Dragon extends StdMOB
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
+        if((tickID==MudHost.TICK_MOB)
+        &&((baseEnvStats().level()!=birthAge)
+        ||(baseEnvStats().ability()!=birthColor)))
+            setupDragon(baseEnvStats().ability(),baseEnvStats().level());
 		if((!amDead())&&(tickID==MudHost.TICK_MOB))
 		{
-			if((baseEnvStats().level()!=birthAge)
-			||(baseEnvStats().ability()!=birthColor))
-				setupDragon(baseEnvStats().ability(),baseEnvStats().level());
 			if((Stomach==null)
 			&&(location()!=null)
 			&&(DragonAge()>=ADULT))

@@ -69,11 +69,19 @@ public class As extends StdCommand
 		    mob.tell(M.Name()+" "+getScr("As","possessed"));
 		    return false;
 		}
-		if(CMSecurity.isASysOp(M))
+		if((CMSecurity.isASysOp(M))&&(!CMSecurity.isASysOp(mob)))
 		{
-		    mob.tell(getScr("As","possessed",M.Name()));
+		    mob.tell(getScr("As","notp",M.Name()));
 		    return false;
 		}
+        if(!M.isMonster())
+        {
+            if(!CMSecurity.isAllowedEverywhere(mob,"ORDER"))
+            {
+                mob.tell(getScr("As","notpl",M.Name()));
+                return false;
+            }
+        }
 		Session oldSession=M.session();
 		Room oldRoom=M.location();
 		boolean inside=(oldRoom!=null)?oldRoom.isInhabitant(M):false;
@@ -117,7 +125,7 @@ public class As extends StdCommand
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,"AT");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,"AS");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

@@ -4199,9 +4199,32 @@ public class Import extends StdCommand
 					mob.tell("Please correct the problem and try the import again.");
 					return false;
 				}
+                Vector names=null;
+                for(int m=0;m<mobs.size();m++)
+                {
+                    MOB M=(MOB)mobs.elementAt(m);
+                    for(int af=areaFile+1;af<commands.size();af++)
+                        if(M.Name().equalsIgnoreCase((String)commands.elementAt(af)))
+                        {
+                            if(names==null) names=new Vector();
+                            names.addElement(commands.elementAt(af));
+                        }
+                }
+                if(names!=null)
+                for(int n=0;n<names.size();n++)
+                    commands.removeElement(names.elementAt(n));
 				for(int m=0;m<mobs.size();m++)
 				{
 					MOB M=(MOB)mobs.elementAt(m);
+                    if(names!=null)
+                    {
+                        boolean found=false;
+                        for(int n=0;n<names.size();n++)
+                            if(M.Name().equalsIgnoreCase((String)names.elementAt(n)))
+                                found=true;
+                        if(!found)
+                            continue;
+                    }
 					if(CMClass.DBEngine().DBUserSearch(null,M.Name()))
 					{
 						if(!prompt)

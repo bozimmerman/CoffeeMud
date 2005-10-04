@@ -55,6 +55,9 @@ public class Goblin extends StdMOB
 
 	public void setMOBSpecifics(int goblinType)
 	{
+        if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+            return;
+        
 		if (goblinType < 0)
 			goblinType *= -1;
 

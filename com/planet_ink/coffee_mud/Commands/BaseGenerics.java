@@ -3659,6 +3659,34 @@ public class BaseGenerics extends StdCommand
 				mob.tell("(no change)");
 		}
 	}
+    static void genClassAvailability(MOB mob, CharClass E, int showNumber, int showFlag)
+    throws IOException
+    {
+        if((showFlag>0)&&(showFlag!=showNumber)) return;
+        mob.tell(showNumber+". Availability: '"+Area.THEME_DESCS_EXT[Util.s_int(E.getStat("PLAYER"))]+"'.");
+        if((showFlag!=showNumber)&&(showFlag>-999)) return;
+        String newName="?";
+        while(newName.equals("?"))
+        {
+            newName=mob.session().prompt("Enter a new value (?)\n\r:","");
+            if(newName.length()==0)
+                mob.tell("(no change)");
+            else
+            if((Util.isNumber(newName))&&(Util.s_int(newName)<Area.THEME_DESCS_EXT.length))
+                E.setStat("PLAYER",""+Util.s_int(newName));
+            else
+            if(newName.equalsIgnoreCase("?"))
+            {
+                StringBuffer str=new StringBuffer("Valid values: \n\r");
+                for(int i=0;i<Area.THEME_DESCS_EXT.length;i++)
+                    str.append(i+") "+Area.THEME_DESCS_EXT[i]+"\n\r");
+                mob.tell(str.toString());
+            }
+            else
+                mob.tell("(no change)");
+        }
+    }
+    
 	static void genCat(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -4898,7 +4926,7 @@ public class BaseGenerics extends StdCommand
                 }
             }
 			genText(mob,me,++showNumber,showFlag,"Base Class","BASE");
-			genBool(mob,me,++showNumber,showFlag,"Player Class","PLAYER");
+            genClassAvailability(mob,me,+showNumber,showFlag);
 			genInt(mob,me,++showNumber,showFlag,"HP Con Divisor","HPDIV");
 			genInt(mob,me,++showNumber,showFlag,"HP #Dice","HPDICE");
 			genInt(mob,me,++showNumber,showFlag,"HP Die","HPDIE");
