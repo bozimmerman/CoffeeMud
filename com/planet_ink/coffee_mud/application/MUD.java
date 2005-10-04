@@ -536,6 +536,7 @@ public class MUD extends Thread implements MudHost
 	{
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MUDSTARTED,false);
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MUDSHUTTINGDOWN,true);
+        CMClass.ThreadEngine().suspendAll();
 		if(S!=null)S.print("Closing MUD listeners to new connections...");
 		for(int i=0;i<mudThreads.size();i++)
 			((MUD)mudThreads.elementAt(i)).acceptConnections=false;
@@ -572,6 +573,7 @@ public class MUD extends Thread implements MudHost
 		if((saveThread==null)||(utiliThread==null))
 		{
 			CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MUDSHUTTINGDOWN,false);
+            CMClass.ThreadEngine().resumeAll();
 		    return;
 		}
 
@@ -809,6 +811,7 @@ public class MUD extends Thread implements MudHost
 		try{Thread.sleep(500);}catch(Exception i){}
 		Log.sysOut("MUD","CoffeeMud shutdown complete.");
 		if(S!=null)S.println("CoffeeMud shutdown complete.");
+        CMClass.ThreadEngine().resumeAll();
 		if(!keepItDown)
 			if(S!=null)S.println("Restarting...");
 		if(S!=null)S.logoff();
