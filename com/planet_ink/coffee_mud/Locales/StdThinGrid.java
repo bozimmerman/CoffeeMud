@@ -324,8 +324,6 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		if((x<0)||(y<0)||(y>=ySize())||(x>=xSize())) 
 			return null;
 		
-        // disabled to test theory that synchronized method is causing lock-ups
-        // if this is still commented out, the answer is YES.
 		//startThinTick();
 		Room R=getMakeSingleGridRoom(x,y);
 		if(R==null) return null;
