@@ -322,8 +322,11 @@ public class DefaultPlayerStats implements PlayerStats
                 A=(Area)e.nextElement();
                 if(Sense.canAccess(mob,A))
                 {
-                    totalRooms+=A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS];
-                    totalVisits+=roomSet.roomCount(A.Name());
+                    if(A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS]>0)
+                    {
+                        totalRooms+=A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS];
+                        totalVisits+=roomSet.roomCount(A.Name());
+                    }
                 }
             }
             if(totalRooms==0) return 100;
@@ -331,7 +334,7 @@ public class DefaultPlayerStats implements PlayerStats
             return (int)Math.round(100.0*pct);
         }
         int numRooms=A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS];
-        if(numRooms==0) return 100;
+        if(numRooms<=0) return 100;
         double pct=Util.div(roomSet.roomCount(A.Name()),numRooms);
         return (int)Math.round(100.0*pct);
     }

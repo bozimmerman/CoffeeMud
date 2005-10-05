@@ -54,11 +54,9 @@ public class Mobile extends ActiveTicker
 
 	public boolean okRoomForMe(Room currentRoom, Room newRoom)
 	{
-        tickStatus=Tickable.STATUS_MISC2+3;
 		if(newRoom==null) return false;
 		if(leash>0)
 		{
-            tickStatus=Tickable.STATUS_MISC2+4;
             if(currentRoom==null) return false;
 			if(leashHash==null)	leashHash=new Hashtable();
 			Integer DISTNOW=(Integer)leashHash.get(currentRoom);
@@ -68,7 +66,6 @@ public class Mobile extends ActiveTicker
 				DISTNOW=new Integer(0);
 				leashHash.put(currentRoom,DISTNOW);
 			}
-            tickStatus=Tickable.STATUS_MISC2+5;
 			if(DISTLATER==null)
 			{
 				DISTLATER=new Integer(DISTNOW.intValue()+1);
@@ -80,13 +77,10 @@ public class Mobile extends ActiveTicker
 				leashHash.remove(newRoom);
 				leashHash.put(newRoom,DISTLATER);
 			}
-            tickStatus=Tickable.STATUS_MISC2+6;
 			if(DISTLATER.intValue()>leash)
 				return false;
 		}
-        tickStatus=Tickable.STATUS_MISC2+7;
 		if(restrictedLocales==null) return true;
-        tickStatus=Tickable.STATUS_MISC2+8;
 		return !restrictedLocales.contains(new Integer(newRoom.domainType()));
 	}
 
@@ -175,11 +169,11 @@ public class Mobile extends ActiveTicker
 			MOB mob=(MOB)ticking;
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
-				Room R=mob.location().getRoomInDir(d);
                 tickStatus=Tickable.STATUS_MISC2+3;
+				Room R=mob.location().getRoomInDir(d);
+                tickStatus=Tickable.STATUS_MISC2+4;
 				if((R!=null)&&(!okRoomForMe(mob.location(),R)))
 				{
-                    tickStatus=Tickable.STATUS_MISC2+14;
 					if(objections==null) objections=new Vector();
 					objections.addElement(R);
 				}

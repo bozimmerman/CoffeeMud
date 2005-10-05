@@ -124,8 +124,8 @@ public class StdJournal extends StdItem
 					if((entry.toString().trim().length()>0)
 					&&(which>0)
 					&&(MUDZapper.zapperCheck(getWriteReq(),mob)
-                            ||(admin)
-                            ||(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))))
+                        ||(admin)
+                        ||(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))))
 					{
 						boolean repeat=true;
 						while(repeat)
@@ -149,7 +149,8 @@ public class StdJournal extends StdItem
 								else
 								{ prompt+="^<MENU^>N^</MENU^>)ext "; cmds+="N";}
 								if(mineAble){ prompt+="^<MENU^>D^</MENU^>)elete "; cmds+="D";}
-								if((admin)&&(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS")))
+								if((admin)
+                                ||(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS")))
 								{ prompt+="^<MENU^>T^</MENU^>)ransfer "; cmds+="T";}
 								prompt+="or RETURN: ";
 								String s=mob.session().choose(prompt,cmds+"\n","\n");
