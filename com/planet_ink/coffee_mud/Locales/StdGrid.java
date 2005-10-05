@@ -155,7 +155,7 @@ public class StdGrid extends StdRoom implements GridLocale
 				}
 			}
 		}
-		return findMyCenter(opDirection);
+		return findCenterRoom(opDirection);
 	}
 
 	protected Room[][] getBuiltGrid()
@@ -258,89 +258,118 @@ public class StdGrid extends StdRoom implements GridLocale
 		loc.rawExits()[opCode]=ao;
 	}
 
-	protected Room findMyCenter(int d)
-	{
-		return findCenterRoom(d);
-	}
-	
+    protected int[] initCenterRoomXY(int dirCode)
+    {
+        int[] xy=new int[2];
+        switch(dirCode)
+        {
+        case Directions.NORTHEAST:
+            xy[0]=xSize()-1;
+            break;
+        case Directions.NORTHWEST:
+            break;
+        case Directions.NORTH:
+            xy[0]=xSize()/2;
+            break;
+        case Directions.SOUTHEAST:
+            xy[1]=ySize()-1;
+            xy[0]=xSize()-1;
+            break;
+        case Directions.SOUTHWEST:
+            xy[1]=ySize()-1;
+            break;
+        case Directions.SOUTH:
+            xy[0]=xSize()/2;
+            xy[1]=ySize()-1;
+            break;
+        case Directions.EAST:
+            xy[0]=xSize()-1;
+            xy[1]=ySize()/2;
+            break;
+        case Directions.WEST:
+            xy[1]=ySize()/2;
+            break;
+        default:
+            xy[0]=xSize()/2;
+            xy[1]=ySize()/2;
+            break;
+        }
+        return xy;
+    }
+    
+    private static int[][] XY_ADJUSTMENT_CHART=null;
+    private static int[] XY_ADJUSTMENT_DEFAULT={1,1};
+    protected int[] initCenterRoomAdjustsXY(int dirCode)
+    {
+        if((dirCode<0)||(dirCode>=Directions.NUM_DIRECTIONS))
+            return XY_ADJUSTMENT_DEFAULT;
+        if((XY_ADJUSTMENT_CHART!=null)&&(dirCode<XY_ADJUSTMENT_CHART.length))
+            return XY_ADJUSTMENT_CHART[dirCode];
+        
+        int[][] xy=new int[Directions.NUM_DIRECTIONS][2];
+        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+        {
+            switch(d)
+            {
+            case Directions.NORTHEAST:
+            case Directions.NORTH:
+            case Directions.SOUTHEAST:
+            case Directions.SOUTH:
+                xy[d][0]=1;
+                xy[d][1]=0;
+                break;
+            case Directions.NORTHWEST:
+            case Directions.EAST:
+            case Directions.SOUTHWEST:
+            case Directions.WEST:
+                xy[d][0]=0;
+                xy[d][1]=1;
+                break;
+            default:
+                xy[d][0]=1;
+                xy[d][1]=1;
+                break;
+            }
+        }
+        XY_ADJUSTMENT_CHART=xy;
+        return xy[dirCode];
+    }
+    
 	protected Room findCenterRoom(int dirCode)
 	{
-		int x=0;
-		int y=0;
-		switch(dirCode)
-		{
-		case Directions.NORTHEAST:
-			x=subMap.length-1;
-			break;
-		case Directions.NORTHWEST:
-		    break;
-		case Directions.NORTH:
-			x=subMap.length/2;
-			break;
-		case Directions.SOUTHEAST:
-			y=subMap[0].length-1;
-			x=subMap.length-1;
-			break;
-		case Directions.SOUTHWEST:
-			y=subMap[0].length-1;
-			break;
-		case Directions.SOUTH:
-			x=subMap.length/2;
-			y=subMap[0].length-1;
-			break;
-		case Directions.EAST:
-			x=subMap.length-1;
-			y=subMap[0].length/2;
-			break;
-		case Directions.WEST:
-			y=subMap[0].length/2;
-			break;
-		case Directions.UP:
-		case Directions.DOWN:
-			x=subMap.length/2;
-			y=subMap[0].length/2;
-			break;
-		}
+        int[] xy=initCenterRoomXY(dirCode);
+        int[] adjXY=initCenterRoomAdjustsXY(dirCode);
+        
 		Room returnRoom=null;
 		int xadjust=0;
 		int yadjust=0;
-		try
+        boolean moveAndCheckAgain=true;
+		while((subMap!=null)&&(moveAndCheckAgain))
 		{
-			while(returnRoom==null)
-			{
-				if(subMap[x+xadjust][y+yadjust]!=null)
-					returnRoom=subMap[x+xadjust][y+yadjust];
-				else
-				if(subMap[x-xadjust][y-yadjust]!=null)
-					returnRoom=subMap[x-xadjust][y-yadjust];
-				else
-				{
-					switch(dirCode)
-					{
-					case Directions.NORTHEAST:
-					case Directions.NORTH:
-					case Directions.SOUTHEAST:
-					case Directions.SOUTH:
-						xadjust++;
-						break;
-					case Directions.NORTHWEST:
-					case Directions.EAST:
-					case Directions.SOUTHWEST:
-					case Directions.WEST:
-						yadjust++;
-						break;
-					case Directions.UP:
-					case Directions.DOWN:
-						xadjust++;
-						yadjust++;
-						break;
-					}
-
-				}
-			}
-		}
-		catch(Exception e)
-		{
+            moveAndCheckAgain=false;
+            
+            if(((xy[0]-xadjust)>=0)&&((xy[1]-yadjust)>=0))
+            {
+                moveAndCheckAgain=true;
+                try{
+                    if(subMap[xy[0]-xadjust][xy[1]-yadjust]!=null)
+                        return subMap[xy[0]-xadjust][xy[1]-yadjust];
+                }catch(Exception e){}
+            }
+            
+            if(((xy[0]+xadjust)<xSize())&&((xy[1]+yadjust)<ySize()))
+            {
+                moveAndCheckAgain=true;
+                try{
+                    if(subMap[xy[0]+xadjust][xy[1]+yadjust]!=null)
+                        return subMap[xy[0]+xadjust][xy[1]+yadjust];
+                }catch(Exception e){}
+            }
+            if(moveAndCheckAgain)
+            {
+                xadjust+=adjXY[0];
+                yadjust+=adjXY[1];
+            }
 		}
 		return returnRoom;
 	}
@@ -546,6 +575,13 @@ public class StdGrid extends StdRoom implements GridLocale
 									M.destroy();
 								else
 									M.getStartRoom().bringMobHere(M,false);
+                                if(room.isInhabitant(M))
+                                {
+                                    M.destroy();
+                                    M.setLocation(null);
+                                    if(room.isInhabitant(M))
+                                        room.delInhabitant(M);
+                                }
 							}
 						}
 						while(room.numItems()>0)
@@ -557,6 +593,15 @@ public class StdGrid extends StdRoom implements GridLocale
 									backHere.bringItemHere(I,Item.REFUSE_PLAYER_DROP);
 								else
 									I.destroy();
+                                if(room.isContent(I))
+                                {
+                                    I.destroy();
+                                    if(room.isContent(I))
+                                    {
+                                        I.setOwner(null);
+                                        room.delItem(I);
+                                    }
+                                }
 							}
 						}
 					}

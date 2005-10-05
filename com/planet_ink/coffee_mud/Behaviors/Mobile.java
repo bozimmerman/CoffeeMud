@@ -174,9 +174,11 @@ public class Mobile extends ActiveTicker
                 tickStatus=Tickable.STATUS_MISC2+4;
 				if((R!=null)&&(!okRoomForMe(mob.location(),R)))
 				{
+                    tickStatus=Tickable.STATUS_MISC2+5;
 					if(objections==null) objections=new Vector();
 					objections.addElement(R);
 				}
+                tickStatus=Tickable.STATUS_MISC2+6;
 			}
             tickStatus=Tickable.STATUS_MISC2+15;
             Ability A=null;

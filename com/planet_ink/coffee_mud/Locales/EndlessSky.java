@@ -59,10 +59,10 @@ public class EndlessSky extends StdGrid
 	}
 	public String getChildLocaleID(){return "InTheAir";}
 
-	public Room findMyCenter(int d)
+    protected Room findCenterRoom(int dirCode)
 	{
-		if(d!=Directions.DOWN)
-			return findCenterRoom(d);
+		if(dirCode!=Directions.DOWN)
+			return super.findCenterRoom(dirCode);
 		return subMap[subMap.length-1][subMap[0].length-1];
 	}
 	

@@ -38,16 +38,16 @@ public class StdMaze extends StdGrid
         }
         return R;
     }
-	protected Room findMyCenter(int d)
+    protected Room findCenterRoom(int dirCode)
 	{
-		Room dirRoom=rawDoors()[d];
+		Room dirRoom=rawDoors()[dirCode];
 		if(dirRoom!=null)
 		{
-			Room altR=findCenterRoom(d);
+			Room altR=super.findCenterRoom(dirCode);
 			if(altR!=null)
 			{
 				Exit ox=CMClass.getExit("Open");
-				linkRoom(altR,dirRoom,d,ox,ox);
+				linkRoom(altR,dirRoom,dirCode,ox,ox);
 				return altR;
 			}
 		}

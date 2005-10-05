@@ -69,13 +69,13 @@ public class UnderWaterGrid extends StdGrid
 	}
 	public Vector resourceChoices(){return UnderWater.roomResources;}
 
-	protected Room findMyCenter(int d)
+    protected Room findCenterRoom(int dirCode)
 	{
-		if(d==Directions.UP)
+		if(dirCode==Directions.UP)
 			return subMap[0][0];
 		else
-		if(d!=Directions.DOWN)
-			return findCenterRoom(d);
+		if(dirCode!=Directions.DOWN)
+			return super.findCenterRoom(dirCode);
 		else
 			return subMap[subMap.length-1][subMap[0].length-1];
 	}
