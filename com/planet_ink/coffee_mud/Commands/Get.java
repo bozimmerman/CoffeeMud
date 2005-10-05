@@ -138,8 +138,14 @@ public class Get extends BaseItemParser
 				    }
 				    
 				    Environmental toWhat=null;
+                    if((fromWhat instanceof PackagedItems)
+                    &&(mob.isMine(fromWhat)))
+                    {
+                        mob.tell("You'll need to put that down first.");
+                        return false;
+                    }
 				    if(fromWhat instanceof Item)
-					    toWhat=CoffeeUtensils.unbundle((Item)fromWhat);
+					    toWhat=CoffeeUtensils.unbundle((Item)fromWhat,maxToGet);
 				    if(toWhat==null)
 				    {
 				        mob.tell("You can't get anything from "+fromWhat.name()+".");
