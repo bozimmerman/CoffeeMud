@@ -41,7 +41,8 @@ public class Equipment extends StdCommand
 	    String tat=null;
 	    int numWears=0;
         boolean paragraphView=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)>1)
-                            ||((seer!=mob)&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)>0));
+                            ||((seer!=mob)&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)>0))
+                            ||Util.bset(seer.getBitmap(),MOB.ATT_COMPRESS);
 		for(int l=0;l<Item.wornOrder.length;l++)
 		{
 		    found=0;

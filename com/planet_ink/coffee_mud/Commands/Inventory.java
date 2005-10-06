@@ -101,7 +101,7 @@ public class Inventory extends StdCommand
 		else
 		{
 			if(viewItems.size()>0)
-				msg.append(CMLister.itemLister(seer,viewItems,true,"MItem","",false));
+				msg.append(CMLister.itemLister(seer,viewItems,true,"MItem","",false,Util.bset(seer.getBitmap(),MOB.ATT_COMPRESS)));
             if(foundButUnseen)
                 msg.append("(stuff you can't see right now)");
                 

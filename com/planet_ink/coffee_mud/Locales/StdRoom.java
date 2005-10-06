@@ -824,6 +824,7 @@ public class StdRoom
 	protected void look(MOB mob, int lookCode)
 	{
 		StringBuffer Say=new StringBuffer("");
+        boolean compress=Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS);
 		if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 		{
 			if(!CMSecurity.isAllowed(mob,this,"SYSMSGS"))
@@ -890,7 +891,10 @@ public class StdRoom
                 }
                 else
     				Say.append("^L^<RDesc^>" + roomDescription()+"^</RDesc^>");
-				Say.append("^N\n\r\n\r");
+                if(compress)
+                    Say.append("^N  ");
+                else
+    				Say.append("^N\n\r\n\r");
 			}
 		}
 
@@ -909,7 +913,7 @@ public class StdRoom
             }
 		}
         
-        StringBuffer itemStr=CMLister.itemLister(mob,viewItems,false,"RItem"," \"*\"",lookCode==LOOK_LONG);
+        StringBuffer itemStr=CMLister.itemLister(mob,viewItems,false,"RItem"," \"*\"",lookCode==LOOK_LONG,compress);
         if(itemStr.length()>0)
     		Say.append(itemStr);
 
@@ -928,11 +932,16 @@ public class StdRoom
     						Say.append("^H("+CMClass.className(mob2)+")^N ");
     
     					Say.append("^M^<RMob \""+mob2.name()+"\"^>");
+                        if(compress) Say.append(Sense.colorCodes(mob2,mob)+"^M ");
     					if(mob2.displayText(mob).length()>0)
-    						Say.append(Util.capitalizeFirstLetter(mob2.displayText(mob)));
+    						Say.append(Util.endWithAPeriod(Util.capitalizeFirstLetter(mob2.displayText(mob))));
     					else
-    						Say.append(Util.capitalizeFirstLetter(mob2.name()));
-    					Say.append("^</RMob^>"+Sense.colorCodes(mob2,mob)+"^N\n\r");
+    						Say.append(Util.endWithAPeriod(Util.capitalizeFirstLetter(mob2.name())));
+    					Say.append("^</RMob^>");
+                        if(!compress)
+                            Say.append(Sense.colorCodes(mob2,mob)+"^N\n\r");
+                        else
+                            Say.append("^N");
                    }
                    else
                    if(Sense.canBarelyBeSeenBy(mob2,mob))
@@ -945,7 +954,8 @@ public class StdRoom
 			mob.tell("You can't see anything!");
 		else
         {
-			mob.tell(Say.toString());
+            if(compress) Say.append("\n\r");
+            mob.tell(Say.toString());
             if(itemsInTheDarkness>0)
                 mob.tell("      ^IThere is something here, but it's too dark to make out.^?\n\r");
             if(mobsInTheDarkness>1)

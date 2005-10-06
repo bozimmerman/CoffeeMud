@@ -31,12 +31,12 @@ public class Compress extends StdCommand
         if(Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS))
         {
             mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_COMPRESS));
-            mob.tell("Compressed room views are now inactive.");
+            mob.tell("Compressed views are now inactive.");
         }
         else
         {
             mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_COMPRESS));
-            mob.tell("Compressed room views are now active.");
+            mob.tell("Compressed views are now active.");
         }
         return false;
     }
