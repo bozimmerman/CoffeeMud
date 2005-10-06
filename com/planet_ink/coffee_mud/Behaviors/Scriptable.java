@@ -1702,7 +1702,7 @@ public class Scriptable extends StdBehavior
                 if((((MOB)E).getLiegeID()==null)||(((MOB)E).getLiegeID().length()==0))
                     returnable=false;
                 else
-                if(lastKnownLocation.fetchInhabitant(((MOB)E).getLiegeID()+"$")==null)
+                if(lastKnownLocation.fetchInhabitant("$"+((MOB)E).getLiegeID()+"$")==null)
                     returnable=false;
                 else
                     returnable=true;

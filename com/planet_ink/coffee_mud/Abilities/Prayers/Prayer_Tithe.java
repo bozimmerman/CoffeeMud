@@ -70,7 +70,7 @@ public class Prayer_Tithe extends Prayer
 		&&(msg.tool()!=null))
 		{
 			ShopKeeper SK=CoffeeUtensils.getShopKeeper((MOB)affected);
-			if(SK.doIHaveThisInStock(msg.tool().Name()+"$",msg.source()))
+			if(SK.doIHaveThisInStock("$"+msg.tool().Name()+"$",msg.source()))
 			{
 			    ShopKeeper.ShopPrice price=SK.yourValue(msg.source(),msg.tool(),true,true);
 				if((price.absoluteGoldPrice>0.0)&&(price.absoluteGoldPrice<=BeanCounter.getTotalAbsoluteShopKeepersValue(msg.source(),invoker())))

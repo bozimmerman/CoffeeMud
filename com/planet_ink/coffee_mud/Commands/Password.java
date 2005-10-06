@@ -30,12 +30,21 @@ public class Password extends StdCommand
 	{
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
-		if(commands.size()<2)
-		{
-			mob.tell("Change your password to what?");
-			return false;
-		}
-		pstats.setPassword(Util.combine(commands,1));
+        if(mob.isMonster()) return false;
+        String old=mob.session().prompt("Enter your old password : ");
+        String nep=mob.session().prompt("Enter a new password    : ");
+        String ne2=mob.session().prompt("Enter new password again: ");
+        if(!pstats.password().equals(old))
+        {
+            mob.tell("Your old password was not entered correctly.");
+            return false;
+        }
+        if(!nep.equals(ne2))
+        {
+            mob.tell("Your new password was not entered the same way twice!");
+            return false;
+        }
+		pstats.setPassword(nep);
 		mob.tell("Your password has been changed.");
 		CMClass.DBEngine().DBUpdatePassword(mob);
 		return false;

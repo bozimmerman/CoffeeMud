@@ -311,7 +311,7 @@ public class StdDeity extends StdMOB implements Deity
 				if(I==null) I=mob.fetchWornItem("all");
 				if(I==null) I=mob.fetchCarried(null,"all");
 				if(I==null) return;
-				V.addElement(I.name()+"$");
+				V.addElement("$"+I.name()+"$");
 				addInventory(I);
 				Blessing.invoke(this,V,I,true,mob.envStats().level());
 				delInventory(I);
@@ -351,7 +351,7 @@ public class StdDeity extends StdMOB implements Deity
 			Vector V=new Vector();
 			if(Curse.canTarget(mob))
 			{
-				V.addElement(mob.name()+"$");
+				V.addElement("$"+mob.name()+"$");
 				Curse.invoke(this,V,mob,true,mob.envStats().level());
 			}
 			else
@@ -362,7 +362,7 @@ public class StdDeity extends StdMOB implements Deity
 				if(I==null) I=mob.fetchWornItem("all");
 				if(I==null) I=mob.fetchCarried(null,"all");
 				if(I==null) return;
-				V.addElement(I.name()+"$");
+				V.addElement("$"+I.name()+"$");
 				addInventory(I);
 				Curse.invoke(this,V,I,true,mob.envStats().level());
 				delInventory(I);

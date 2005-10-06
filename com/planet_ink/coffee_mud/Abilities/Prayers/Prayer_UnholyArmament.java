@@ -167,8 +167,8 @@ public class Prayer_UnholyArmament extends Prayer
 				I.addNonUninvokableEffect(A);
 			}
 			I.recoverEnvStats();
-			if((mob.fetchInventory(null,I.name()+"$")!=null)
-			||(mob.location().fetchItem(null,I.name()+"$")!=null))
+			if((mob.fetchInventory(null,"$"+I.name()+"$")!=null)
+			||(mob.location().fetchItem(null,"$"+I.name()+"$")!=null))
 			{
 				i++;
 				I=null;

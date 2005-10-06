@@ -474,7 +474,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 					{
 						String s=(String)V.lastElement();
 						if(s.endsWith(".")) s=s.substring(0,s.length()-1);
-						MOB M2=mob.location().fetchInhabitant(s+"$");
+						MOB M2=mob.location().fetchInhabitant("$"+s+"$");
 						if(M2!=null) 
 							mobFor=M2;
 					}

@@ -620,7 +620,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
         ||(A.isBorrowed(mob))) return;
 
 		if((System.currentTimeMillis()
-		-((StdAbility)A).lastCastHelp)<60000)
+		-((StdAbility)A).lastCastHelp)<300000)
 			return;
         
         if(!A.appropriateToMyFactions(mob))

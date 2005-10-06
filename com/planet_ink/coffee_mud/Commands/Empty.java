@@ -151,7 +151,7 @@ public class Empty extends BaseItemParser
                 if(target instanceof Drink)
                 {
                     Command C2=CMClass.getCommand("Pour");
-                    C2.execute(mob,Util.makeVector("POUR",C.Name()+"$",target.Name()+"$"));
+                    C2.execute(mob,Util.makeVector("POUR","$"+C.Name()+"$","$"+target.Name()+"$"));
                     skipMessage=true;
                 }
                 else

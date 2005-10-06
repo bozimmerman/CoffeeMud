@@ -715,7 +715,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
                 if(!ignoreIfNecessary(msg.source())) 
                     return false;
 				if((msg.tool()!=null)
-				&&(doIHaveThisInStock(msg.tool().Name()+"$",mob)))
+				&&(doIHaveThisInStock("$"+msg.tool().Name()+"$",mob)))
 				{
 					if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
 					    return false;
@@ -1000,7 +1000,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				break;
 			case CMMsg.TYP_VIEW:
 				super.executeMsg(myHost,msg);
-				if((msg.tool()!=null)&&(doIHaveThisInStock(msg.tool().Name()+"$",mob)))
+				if((msg.tool()!=null)&&(doIHaveThisInStock("$"+msg.tool().Name()+"$",mob)))
 				{
 					StringBuffer str=new StringBuffer("");
 					str.append("Interested in "+msg.tool().name()+"?");
@@ -1056,16 +1056,16 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					{
 						String s=(String)V.lastElement();
 						if(s.endsWith(".")) s=s.substring(0,s.length()-1);
-						MOB M=location().fetchInhabitant(s+"$");
+						MOB M=location().fetchInhabitant("$"+s+"$");
 						if(M!=null) 
 							mobFor=M;
 					}
 				}
 				if((msg.tool()!=null)
-				&&(doIHaveThisInStock(msg.tool().Name()+"$",mobFor))
+				&&(doIHaveThisInStock("$"+msg.tool().Name()+"$",mobFor))
 				&&(location()!=null))
 				{
-					Vector products=removeSellableProduct(msg.tool().Name()+"$",mobFor);
+					Vector products=removeSellableProduct("$"+msg.tool().Name()+"$",mobFor);
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
 					ShopPrice price=yourValue(mob,product,true,true);
@@ -1159,7 +1159,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							Vector V=new Vector();
 							if(A.canTarget(mobFor))
 							{
-								V.addElement(mobFor.name()+"$");
+								V.addElement("$"+mobFor.name()+"$");
 								A.invoke(this,V,mobFor,true,0);
 							}
 							else
@@ -1171,7 +1171,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								if(I==null) I=mobFor.fetchCarried(null,"all");
 								if(I!=null)
                                 {
-    								V.addElement(I.name()+"$");
+    								V.addElement("$"+I.name()+"$");
     								addInventory(I);
     								A.invoke(this,V,I,true,0);
     								delInventory(I);
