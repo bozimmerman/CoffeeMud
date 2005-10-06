@@ -258,6 +258,7 @@ public class Scriptable extends StdBehavior
 		"MPWALKTO", // 53
         "MPFACTION", //54 
         "MPNOTRIGGER", // 55
+        "MPSTOP", // 56
 	};
 
     private final static String[] clanVars={
@@ -4653,6 +4654,26 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
+            case 56: // mpstop
+            {
+                Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg);
+                if(newTarget instanceof MOB)
+                {
+                    MOB mob=(MOB)newTarget;
+                    Ability A=null;
+                    for(int a=mob.numEffects();a>=0;a--)
+                    {
+                        A=mob.fetchEffect(a);
+                        if(((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL)
+                        &&(A.canBeUninvoked())
+                        &&(!A.isAutoInvoked()))
+                            A.unInvoke();
+                    }
+                    mob.makePeace();
+                    if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
+                }
+                break;
+            }
 			case 43: // mpunhide
 			{
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg);
