@@ -99,9 +99,9 @@ public class Spell_MirrorImage extends Spell
 			{
 				Say.append("^M");
 				if(mob.displayText(msg.source()).length()>0)
-					Say.append(mob.displayText(msg.source()));
+					Say.append(Util.endWithAPeriod(mob.displayText(msg.source())));
 				else
-					Say.append(mob.name());
+					Say.append(Util.endWithAPeriod(mob.name()));
 				Say.append(Sense.colorCodes(mob,msg.source())+"^N\n\r");
 			}
 			if(Say.toString().length()>0)
