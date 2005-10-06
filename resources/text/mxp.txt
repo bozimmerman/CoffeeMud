@@ -19,6 +19,7 @@
 <!-- miscellaneous tags -->
 <!ELEMENT FIGHT EMPTY FLAG='Fight'>
 <!ELEMENT HELP '<SEND HREF="HELP &text;" hint="Click to view the help entry.">'>
+<!ELEMENT HELPNAME '<SEND HREF="HELP &name;" hint="Click to view the help entry.|HELP &text;">' ATT='name'>
 <!ELEMENT SHOP '<SEND HREF="VIEW &quot;&text;&quot; &quot;&shopkeeper;&quot;|BUY &quot;&text;&quot; &quot;&shopkeeper;&quot;" hint="Right-mouse client to use this object|VIEW &quot;&text;&quot; &quot;&shopkeeper;&quot;|BUY &quot;&text;&quot; &quot;&shopkeeper;&quot;">'>
 <!ELEMENT Health EMPTY ATT='name'>
 <!ELEMENT HealthText EMPTY ATT='name'>

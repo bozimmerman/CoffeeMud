@@ -610,11 +610,17 @@ public class FrontLogin extends StdCommand
 								listOfClasses.append(((CharClass)V.elementAt(v)).name()+"^?, ^?");
 							}
 
-						mob.session().println("Your current stats are: \n\r"
-											  +mob.charStats().getStats()
-											  +Util.padRight("TOTAL POINTS",15)+": "
-											  +CommonStrings.getIntVar(CommonStrings.SYSTEMI_MAXSTAT)+"/"+(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)*6));
-
+                        int max=CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT);
+                        StringBuffer statstr=new StringBuffer("Your current stats are: \n\r");
+                        CharStats CT=mob.charStats();
+                        statstr.append(Util.padRight("Strength",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.MAX_STRENGTH_ADJ))+"\n\r");
+                        statstr.append(Util.padRight("Intelligence",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.MAX_INTELLIGENCE_ADJ))+"\n\r");
+                        statstr.append(Util.padRight("Dexterity",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.DEXTERITY)),2)+"/"+(max+CT.getStat(CharStats.MAX_DEXTERITY_ADJ))+"\n\r");
+                        statstr.append(Util.padRight("Wisdom",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.WISDOM)),2)+"/"+(max+CT.getStat(CharStats.MAX_WISDOM_ADJ))+"\n\r");
+                        statstr.append(Util.padRight("Constitution",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.CONSTITUTION)),2)+"/"+(max+CT.getStat(CharStats.MAX_CONSTITUTION_ADJ))+"\n\r");
+                        statstr.append(Util.padRight("Charisma",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.CHARISMA)),2)+"/"+(max+CT.getStat(CharStats.MAX_CHARISMA_ADJ))+"\n\r");
+                        statstr.append(Util.padRight("TOTAL POINTS",15)+": "+CommonStrings.getIntVar(CommonStrings.SYSTEMI_MAXSTAT)+"/"+(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)*6));
+                        mob.session().println(statstr.toString());
 						if(!CMSecurity.isDisabled("CLASSES")
 						&&!mob.baseCharStats().getMyRace().classless())
 							mob.session().println("\n\rThis would qualify you for ^H"+classes.toString()+"^N.");

@@ -254,25 +254,39 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 
 	public void addStoreInventory(Environmental thisThang, int number, int price)
 	{
-		if((whatISell==DEAL_INVENTORYONLY)&&(!inBaseInventory(thisThang)))
-			baseInventory.addElement(thisThang.copyOf());
+        if((whatISell==DEAL_INVENTORYONLY)&&(!inBaseInventory(thisThang)))
+            baseInventory.addElement(thisThang.copyOf());
         addRawStockPrice(thisThang,price);
-		if(thisThang instanceof InnKey)
-		{
-			for(int v=0;v<number;v++)
-			{
-				Environmental copy=thisThang.copyOf();
-				((InnKey)copy).hangOnRack(this);
-				storeInventory.addElement(copy);
-			}
-		}
-		else
-		{
-			Environmental copy=thisThang.copyOf();
-			storeInventory.addElement(copy);
-			if(number>1)
-				duplicateInventory.put(copy,new Integer(number));
-		}
+        if(thisThang instanceof InnKey)
+        {
+            for(int v=0;v<number;v++)
+            {
+                Environmental copy=thisThang.copyOf();
+                ((InnKey)copy).hangOnRack(this);
+                storeInventory.addElement(copy);
+            }
+        }
+        else
+        {
+            Environmental copy=null;
+            thisThang=thisThang.copyOf();
+            for(Enumeration e=duplicateInventory.keys();e.hasMoreElements();)
+            {
+                copy=(Environmental)e.nextElement();
+                if(copy.sameAs(thisThang))
+                {
+                    Integer I=(Integer)duplicateInventory.get(copy);
+                    duplicateInventory.remove(copy);
+                    duplicateInventory.put(copy,new Integer(I.intValue()+number));
+                    return;
+                }
+            }
+            storeInventory.addElement(thisThang);
+            if(number>1)
+                duplicateInventory.put(thisThang,new Integer(number));
+        }
+        if(thisThang instanceof Item)
+            ((Item)thisThang).destroy();
 	}
 
 	protected int processVariableEquipment()
@@ -343,8 +357,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 
 	public boolean doISellThis(Environmental thisThang)
 	{
-		if(thisThang==null)
-			return false;
+        if(thisThang instanceof PackagedItems)
+            thisThang=((PackagedItems)thisThang).getItem();
+        if(thisThang==null) return false;
 		switch(whatISell)
 		{
 		case DEAL_ANYTHING:
@@ -920,11 +935,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					||(CMSecurity.isAllowed(msg.source(),location(),"CMDMOBS")&&(isMonster()))
 					||(CMSecurity.isAllowed(msg.source(),location(),"CMDROOMS")&&(isMonster()))))
 				&&((doISellThis(msg.tool()))||(whatISell==DEAL_INVENTORYONLY)))
-				{
-					Item item2=(Item)msg.tool().copyOf();
-					storeInventory.addElement(item2);
-					if(item2 instanceof InnKey)
-						((InnKey)item2).hangOnRack(this);
+                {
+                    addStoreInventory(msg.tool(),1,-1);
 					return;
 				}
 				super.executeMsg(myHost,msg);
@@ -934,40 +946,54 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				CommonMsgs.say(this,mob,"I'll give you "+BeanCounter.nameCurrencyShort(this,yourValue(mob,msg.tool(),false,true).absoluteGoldPrice)+" for "+msg.tool().name()+".",true,false);
 				break;
 			case CMMsg.TYP_SELL:
+            {
 				super.executeMsg(myHost,msg);
-				if((msg.tool()!=null)&&(doISellThis(msg.tool())))
+                Environmental coreSoldItem=msg.tool();
+                Environmental rawSoldItem=msg.tool();
+                int number=1;
+                if(coreSoldItem instanceof PackagedItems)
+                {
+                    coreSoldItem=((PackagedItems)rawSoldItem).getItem();
+                    number=((PackagedItems)rawSoldItem).numberOfItemsInPackage();
+                }
+				if((coreSoldItem!=null)&&(doISellThis(coreSoldItem)))
 				{
-					double val=yourValue(mob,msg.tool(),false,true).absoluteGoldPrice;
+					double val=yourValue(mob,rawSoldItem,false,true).absoluteGoldPrice;
 					String currency=BeanCounter.getCurrency(this);
 					BeanCounter.giveSomeoneMoney(this,mob,currency,val);
 					budgetRemaining=budgetRemaining-Math.round(val);
 					mob.recoverEnvStats();
-					mob.tell(name()+" pays you "+BeanCounter.nameCurrencyShort(this,val)+" for "+msg.tool().name()+".");
-					if(msg.tool() instanceof Item)
+					mob.tell(name()+" pays you "+BeanCounter.nameCurrencyShort(this,val)+" for "+rawSoldItem.name()+".");
+					if(rawSoldItem instanceof Item)
 					{
-						Item item=(Item)msg.tool();
 						Vector V=null;
-						if(item instanceof Container)
-							V=((Container)item).getContents();
+						if(rawSoldItem instanceof Container)
+							V=((Container)rawSoldItem).getContents();
 						else
 							V=new Vector();
-						if(!V.contains(item)) V.addElement(item);
+						if(!V.contains(rawSoldItem)) V.addElement(rawSoldItem);
 						for(int v=0;v<V.size();v++)
 						{
 							Item item2=(Item)V.elementAt(v);
 							item2.unWear();
 							mob.delInventory(item2);
-							if(item!=item2)
+							if(rawSoldItem!=item2)
 							{
-								item2.setContainer(item);
-								storeInventory.addElement(item2);
+                                if(item2 instanceof PackagedItems)
+                                    addStoreInventory(((PackagedItems)item2).getItem(),
+                                                      ((PackagedItems)item2).numberOfItemsInPackage(),
+                                                      -1);
+                                else
+                                {
+    								item2.setContainer((Item)rawSoldItem);
+                                    addStoreInventory(item2,1,-1);
+                                }
 							}
 							else
-								storeInventory.addElement(item2);
-							if(item2 instanceof InnKey)
-								((InnKey)item2).hangOnRack(this);
+                                addStoreInventory(coreSoldItem,number,-1);
 						}
-						item.setContainer(null);
+						((Item)rawSoldItem).setContainer(null);
+                        ((Item)rawSoldItem).destroy();
 					}
 					else
 					if(msg.tool() instanceof MOB)
@@ -998,6 +1024,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						mob.location().recoverRoomStats();
 				}
 				break;
+            }
 			case CMMsg.TYP_VIEW:
 				super.executeMsg(myHost,msg);
 				if((msg.tool()!=null)&&(doIHaveThisInStock("$"+msg.tool().Name()+"$",mob)))
@@ -1047,6 +1074,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				}
 				break;
 			case CMMsg.TYP_BUY:
+            {
 				super.executeMsg(myHost,msg);
 				MOB mobFor=msg.source();
 				if((msg.targetMessage()!=null)&&(msg.targetMessage().length()>0)&&(location()!=null))
@@ -1189,6 +1217,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						mob.location().recoverRoomStats();
 				}
 				break;
+            }
 			case CMMsg.TYP_LIST:
 				{
 					super.executeMsg(myHost,msg);
@@ -1386,6 +1415,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	
 	public ShopPrice yourValue(MOB mob, Environmental product, boolean sellTo, boolean includeTax)
 	{
+        double number=1.0;
+        if((product instanceof PackagedItems)&&(!sellTo))
+        {
+            number=new Integer(((PackagedItems)product).numberOfItemsInPackage()).doubleValue();
+            product=((PackagedItems)product).getItem();
+        }
 	    ShopPrice val=new ShopPrice();
 		if(product==null) return val;
 		Integer I=rawStockPrice(product);
@@ -1399,7 +1434,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		}
 
 		if(product instanceof Item)
-		    val.absoluteGoldPrice=((Item)product).value();
+		    val.absoluteGoldPrice=((Item)product).value()*number;
 		else
 		if(product instanceof Ability)
 		{

@@ -126,10 +126,19 @@ public class Score extends Affect
 				msg.append("You are "+role+" of the ^H"+mob.getClanID()+"^?^. Clan.\n\r");
 			}
 		}
-		msg.append("\n\r^NYour stats are: \n\r^!"+mob.charStats().getStats()+"^?\n\r");
-		msg.append("You have ^H"+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+"^? hit points, ^H");
-		msg.append(mob.curState().getMana()+"/"+mob.maxState().getMana()+"^? mana, and ^H");
-		msg.append(mob.curState().getMovement()+"/"+mob.maxState().getMovement()+"^? movement.\n\r");
+        msg.append("\n\r^NYour stats are: \n\r^!");
+        int max=CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT);
+        CharStats CT=mob.charStats();
+        msg.append(Util.padRight("^<HELP^>Strength^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.MAX_STRENGTH_ADJ))+"\n\r");
+        msg.append(Util.padRight("^<HELP^>Intelligence^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.MAX_INTELLIGENCE_ADJ))+"\n\r");
+        msg.append(Util.padRight("^<HELP^>Dexterity^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.DEXTERITY)),2)+"/"+(max+CT.getStat(CharStats.MAX_DEXTERITY_ADJ))+"\n\r");
+        msg.append(Util.padRight("^<HELP^>Wisdom^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.WISDOM)),2)+"/"+(max+CT.getStat(CharStats.MAX_WISDOM_ADJ))+"\n\r");
+        msg.append(Util.padRight("^<HELP^>Constitution^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.CONSTITUTION)),2)+"/"+(max+CT.getStat(CharStats.MAX_CONSTITUTION_ADJ))+"\n\r");
+        msg.append(Util.padRight("^<HELP^>Charisma^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.CHARISMA)),2)+"/"+(max+CT.getStat(CharStats.MAX_CHARISMA_ADJ))+"\n\r");
+        msg.append("^?\n\r");
+		msg.append("You have ^H"+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+"^? ^<HELP^>hit points^</HELP^>, ^H");
+		msg.append(mob.curState().getMana()+"/"+mob.maxState().getMana()+"^? ^<HELP^>mana^</HELP^>, and ^H");
+		msg.append(mob.curState().getMovement()+"/"+mob.maxState().getMovement()+"^? ^<HELP^>movement^</HELP^>.\n\r");
 		if(mob.envStats().height()<0)
 			msg.append("You are incorporeal, but still weigh ^!"+mob.baseWeight()+"^? pounds.\n\r");
 		else
@@ -138,12 +147,12 @@ public class Score extends Affect
             msg.append("You are carrying ^!"+mob.inventorySize()+"^? items weighing ^!"+mob.envStats().weight()+"^? pounds.\n\r");
         else
     		msg.append("You are carrying ^!"+mob.inventorySize()+"^?/^!"+mob.maxItems()+"^? items weighing ^!"+mob.envStats().weight()+"^?/^!"+mob.maxCarry()+"^? pounds.\n\r");
-		msg.append("You have ^!"+mob.getPractices()+"^? practices, ^!"+mob.getTrains()+"^? training sessions, and ^!"+mob.getQuestPoint()+"^? quest points.\n\r");
+		msg.append("You have ^!"+mob.getPractices()+"^? ^<HELP^>practices^</HELP^>, ^!"+mob.getTrains()+"^? ^<HELP^>training sessions^</HELP^>, and ^!"+mob.getQuestPoint()+"^? ^<HELP^>quest points^</HELP^>.\n\r");
 		if((!CMSecurity.isDisabled("EXPERIENCE"))
 		&&!mob.charStats().getCurrentClass().expless()
 		&&!mob.charStats().getMyRace().expless())
 		{
-			msg.append("You have scored ^!"+mob.getExperience()+"^? experience points, and have been online for ^!"+Math.round(Util.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
+			msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>, and have been online for ^!"+Math.round(Util.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
 			if((!CMSecurity.isDisabled("LEVELS"))
 			&&(!mob.charStats().getCurrentClass().leveless())
 			&&(!mob.charStats().getMyRace().leveless()))
@@ -155,7 +164,7 @@ public class Score extends Affect
 				if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
 					msg.append("You will not gain further levels through experience.\n\r");
 				else
-					msg.append("You need ^!"+(mob.getExpNeededLevel())+"^? experience points to advance to the next level.\n\r");
+					msg.append("You need ^!"+(mob.getExpNeededLevel())+"^? ^<HELP^>experience points^</HELP^> to advance to the next level.\n\r");
 			}
 		}
 		for(Enumeration e=mob.fetchFactions();e.hasMoreElements();)
@@ -163,10 +172,10 @@ public class Score extends Affect
 		    String factionID=(String)e.nextElement();
 		    Faction.FactionRange FR=Factions.getRange(factionID,mob.fetchFaction(factionID));
 		    if((FR!=null)&&(FR.myFaction.showinscore))
-	            msg.append("Your "+Util.padRight(FR.myFaction.name+" is",18)+": ^H"+FR.Name+"^?.\n\r");
+	            msg.append("Your "+Util.padRight("^<HELP^>"+FR.myFaction.name+"^</HELP^> is",18)+": ^H"+FR.Name+"^?.\n\r");
 		}
-		msg.append("Your armored defense is: ^H"+CommonStrings.armorStr(adjustedArmor)+"^?.\n\r");
-		msg.append("Your combat prowess is : ^H"+CommonStrings.fightingProwessStr(adjustedAttack)+"^?.\n\r");
+		msg.append("Your ^<HELP^>armored defense^</HELP^> is: ^H"+CommonStrings.armorStr(adjustedArmor)+"^?.\n\r");
+		msg.append("Your ^<HELP^>combat prowess^</HELP^> is : ^H"+CommonStrings.fightingProwessStr(adjustedAttack)+"^?.\n\r");
 		msg.append("Wimpy is set to ^!"+mob.getWimpHitPoint()+"^? hit points.\n\r");
 	    if((mob.playerStats()!=null)&&(mob.soulMate()==null)&&(mob.playerStats().getHygiene()>=PlayerStats.HYGIENE_DELIMIT))
 	    {

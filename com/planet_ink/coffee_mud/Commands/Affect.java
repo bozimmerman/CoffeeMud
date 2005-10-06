@@ -35,7 +35,7 @@ public class Affect extends StdCommand
 			if((thisAffect!=null)&&(disp.length()>0))
 			{
 				if(((++colnum)>2)||(disp.length()>25)){ msg.append("\n\r"); colnum=0;}
-				msg.append("^S"+Util.padRightPreserve(thisAffect.displayText(),25));
+				msg.append("^S"+Util.padRightPreserve("^<HELPNAME NAME='"+thisAffect.Name()+"'^>"+thisAffect.displayText()+"^</HELPNAME^>",25));
 				if(disp.length()>25) colnum=99;
 			}
 		}

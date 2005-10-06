@@ -125,7 +125,7 @@ public class CommandJournal extends StdCommand
             {
                 String prePend="";
                 if((journalNum>=0)&&(ChannelSet.getCommandJournalFlags(journalNum).containsKey("ADDROOM")))
-                    prePend="("+CMMap.getExtendedRoomID(mob.location())+") ";
+                    prePend="(^<LSTROOMID^>"+CMMap.getExtendedRoomID(mob.location())+"^</LSTROOMID^>) ";
                 CMClass.DBEngine().DBWriteJournal("SYSTEM_"+journalWord+"S",mob.Name(),"ALL",
                         journalWord+": "+Util.padRight(Util.combine(commands,1),15),
                         prePend+Util.combine(commands,1),

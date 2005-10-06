@@ -56,7 +56,8 @@ public class Where extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(CMSecurity.isAllowed(mob,mob.location(),"WHERE"))
+		if((CMSecurity.isAllowed(mob,mob.location(),"WHERE"))
+        &&(!Util.combine(commands,1).equalsIgnoreCase("!")))
 		{
 			StringBuffer lines=new StringBuffer("^x");
 			lines.append(Util.padRight("Name",17)+"| ");
@@ -74,7 +75,7 @@ public class Where extends StdCommand
 						if(thisSession.mob().location() != null )
 						{
 							lines.append(thisSession.mob().location().displayText());
-							lines.append(" ("+CMMap.getExtendedRoomID(thisSession.mob().location())+")");
+							lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(thisSession.mob().location())+"^</LSTROOMID^>)");
 						}
 						else
 							lines.append("^!(no location)^?");
@@ -171,7 +172,7 @@ public class Where extends StdCommand
 								{
 									lines.append("^!"+Util.padRight("*",17)+"^?| ");
 									lines.append(R.roomTitle());
-									lines.append(" ("+R.roomID()+")");
+									lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
 									lines.append("\n\r");
 								}
 							if((!mobOnly)&&(!roomOnly))
@@ -184,7 +185,7 @@ public class Where extends StdCommand
                                         {
                                             lines.append("^!"+Util.padRight(I.name(),17)+"^?| ");
                                             lines.append(R.roomTitle());
-                                            lines.append(" ("+R.roomID()+")");
+                                            lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                             lines.append("\n\r");
                                             break;
                                         }
@@ -196,7 +197,7 @@ public class Where extends StdCommand
                                         {
                                             lines.append("^!"+Util.padRight(I.name(),17)+"^?| ");
                                             lines.append(R.roomTitle());
-                                            lines.append(" ("+R.roomID()+")");
+                                            lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                             lines.append("\n\r");
                                             break;
                                         }
@@ -208,7 +209,7 @@ public class Where extends StdCommand
 									{
 										lines.append("^!"+Util.padRight(I.name(),17)+"^?| ");
 										lines.append(R.roomTitle());
-										lines.append(" ("+R.roomID()+")");
+										lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
 										lines.append("\n\r");
 									}
 								}
@@ -224,7 +225,7 @@ public class Where extends StdCommand
                                             {
                                                 lines.append("^!"+Util.padRight(M.name(),17)+"^?| ");
                                                 lines.append(R.roomTitle());
-                                                lines.append(" ("+R.roomID()+")");
+                                                lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                                 lines.append("\n\r");
                                             }
                                         }
@@ -235,7 +236,7 @@ public class Where extends StdCommand
                                             {
                                                 lines.append("^!"+Util.padRight(M.name(),17)+"^?| ");
                                                 lines.append(R.roomTitle());
-                                                lines.append(" ("+R.roomID()+")");
+                                                lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                                 lines.append("\n\r");
                                             }
                                         }
@@ -246,7 +247,7 @@ public class Where extends StdCommand
 										{
 											lines.append("^!"+Util.padRight(M.name(),17)+"^?| ");
 											lines.append(R.roomTitle());
-											lines.append(" ("+R.roomID()+")");
+											lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
 											lines.append("\n\r");
 										}
 									if((!mobOnly)&&(!roomOnly))
@@ -260,7 +261,7 @@ public class Where extends StdCommand
                                                 {
                                                     lines.append("^!"+Util.padRight(I.name(),17)+"^?| ");
                                                     lines.append("INV: "+M.name());
-                                                    lines.append(" ("+R.roomID()+")");
+                                                    lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                                     lines.append("\n\r");
                                                     break;
                                                 }
@@ -272,7 +273,7 @@ public class Where extends StdCommand
                                                 {
                                                     lines.append("^!"+Util.padRight(I.name(),17)+"^?| ");
                                                     lines.append("INV: "+M.name());
-                                                    lines.append(" ("+R.roomID()+")");
+                                                    lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                                     lines.append("\n\r");
                                                     break;
                                                 }
@@ -284,7 +285,7 @@ public class Where extends StdCommand
 											{
 												lines.append("^!"+Util.padRight(I.name(),17)+"^?| ");
 												lines.append("INV: "+M.name());
-												lines.append(" ("+R.roomID()+")");
+												lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
 												lines.append("\n\r");
 												break;
 											}
@@ -301,7 +302,7 @@ public class Where extends StdCommand
                                                 {
                                                     lines.append("^!"+Util.padRight(E.name(),17)+"^?| ");
                                                     lines.append("SHOP: "+M.name());
-                                                    lines.append(" ("+R.roomID()+")");
+                                                    lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                                     lines.append("\n\r");
                                                     break;
                                                 }
@@ -313,7 +314,7 @@ public class Where extends StdCommand
                                                 {
                                                     lines.append("^!"+Util.padRight(E.name(),17)+"^?| ");
                                                     lines.append("SHOP: "+M.name());
-                                                    lines.append(" ("+R.roomID()+")");
+                                                    lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                                     lines.append("\n\r");
                                                     break;
                                                 }
@@ -325,7 +326,7 @@ public class Where extends StdCommand
                                                 {
                                                     lines.append("^!"+Util.padRight(E.name(),17)+"^?| ");
                                                     lines.append("SHOP: "+M.name());
-                                                    lines.append(" ("+R.roomID()+")");
+                                                    lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                                     lines.append("\n\r");
                                                     break;
                                                 }
@@ -337,7 +338,7 @@ public class Where extends StdCommand
                                                 {
                                                     lines.append("^!"+Util.padRight(E.name(),17)+"^?| ");
                                                     lines.append("SHOP: "+M.name());
-                                                    lines.append(" ("+R.roomID()+")");
+                                                    lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                                     lines.append("\n\r");
                                                     break;
                                                 }
@@ -349,7 +350,7 @@ public class Where extends StdCommand
 											{
 												lines.append("^!"+Util.padRight(E.name(),17)+"^?| ");
 												lines.append("SHOP: "+M.name());
-												lines.append(" ("+R.roomID()+")");
+												lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
 												lines.append("\n\r");
 												break;
 											}
