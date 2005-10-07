@@ -217,18 +217,18 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		}
 		return V;
 	}
-	public void addStoreInventory(Environmental thisThang)
-	{ addStoreInventory(thisThang,1); }
-	public void addStoreInventory(Environmental thisThang, int number)
+	public Environmental addStoreInventory(Environmental thisThang)
+	{ return addStoreInventory(thisThang,1,-1); }
+    
+	public Environmental addStoreInventory(Environmental thisThang, int number)
 	{
 		if(thisThang instanceof Item)
-			addStoreInventory(thisThang,number,stockPrice(thisThang));
-		else
-			addStoreInventory(thisThang,number,1);
+			return addStoreInventory(thisThang,number,stockPrice(thisThang));
+		return addStoreInventory(thisThang,number,1);
 	}
-	public void addStoreInventory(Environmental thisThang, int number, int val)
+	public Environmental addStoreInventory(Environmental thisThang, int number, int val)
 	{
-		if(thisThang==null) return;
+		if(thisThang==null) return null;
 
 		Item I=getBaseItem(thisThang);
 		if(I!=null)
@@ -240,14 +240,15 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			inventorySize.put(""+I,N);
 			stockValues.remove(""+I);
 			stockValues.put(""+I,new Integer(val));
-			return;
+			return I;
 		}
 		baseInventory.addElement(thisThang);
 		inventorySize.put(""+thisThang,new Integer(number));
 		stockValues.put(""+thisThang,new Integer(val));
 		updateBaseStoreInventory();
+        return thisThang;
 	}
-	public void delStoreInventory(Environmental thisThang)
+	public void delAllStoreInventory(Environmental thisThang)
 	{
 		if(thisThang==null) return;
 
@@ -672,7 +673,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				mob.addInventory(I);
 				I=(Item)removeStock(itemName,mob);
 			}
-			delStoreInventory(I);
+			delAllStoreInventory(I);
 			mob.recoverCharStats();
 			mob.recoverEnvStats();
 			mob.recoverMaxState();

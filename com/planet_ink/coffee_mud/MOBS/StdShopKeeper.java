@@ -110,9 +110,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return false;
 	}
 
-	public void addStoreInventory(Environmental thisThang)
+	public Environmental addStoreInventory(Environmental thisThang)
 	{
-		addStoreInventory(thisThang,1,-1);
+		return addStoreInventory(thisThang,1,-1);
 	}
 
 	public int baseStockSize()
@@ -252,16 +252,18 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		}
 	}
 
-	public void addStoreInventory(Environmental thisThang, int number, int price)
+	public Environmental addStoreInventory(Environmental thisThang, int number, int price)
 	{
         if((whatISell==DEAL_INVENTORYONLY)&&(!inBaseInventory(thisThang)))
             baseInventory.addElement(thisThang.copyOf());
+        Environmental originalUncopiedThang=thisThang;
         addRawStockPrice(thisThang,price);
         if(thisThang instanceof InnKey)
         {
+            Environmental copy=null;
             for(int v=0;v<number;v++)
             {
-                Environmental copy=thisThang.copyOf();
+                copy=thisThang.copyOf();
                 ((InnKey)copy).hangOnRack(this);
                 storeInventory.addElement(copy);
             }
@@ -273,20 +275,21 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
             for(Enumeration e=duplicateInventory.keys();e.hasMoreElements();)
             {
                 copy=(Environmental)e.nextElement();
-                if(copy.sameAs(thisThang))
+                if(copy.Name().equals(thisThang.Name()))
                 {
                     Integer I=(Integer)duplicateInventory.get(copy);
                     duplicateInventory.remove(copy);
                     duplicateInventory.put(copy,new Integer(I.intValue()+number));
-                    return;
+                    return copy;
                 }
             }
             storeInventory.addElement(thisThang);
             if(number>1)
                 duplicateInventory.put(thisThang,new Integer(number));
         }
-        if(thisThang instanceof Item)
-            ((Item)thisThang).destroy();
+        if(originalUncopiedThang instanceof Item)
+            ((Item)originalUncopiedThang).destroy();
+        return thisThang;
 	}
 
 	protected int processVariableEquipment()
@@ -305,7 +308,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				Environmental E=(Environmental)rivals.elementAt(r);
 				if(Dice.rollPercentage()>E.baseEnvStats().rejuv())
-					delStoreInventory(E);
+					delAllStoreInventory(E);
 				else
 				{
 					E.baseEnvStats().setRejuv(0);
@@ -317,7 +320,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	}
 
 
-	public void delStoreInventory(Environmental thisThang)
+	public void delAllStoreInventory(Environmental thisThang)
 	{
 		if((whatISell==DEAL_INVENTORYONLY)&&(inBaseInventory(thisThang)))
 		{
@@ -702,16 +705,20 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					}
 					if((msg.tool() instanceof Container)&&(((Container)msg.tool()).hasALock()))
 					{
-						for(int i=0;i<mob.inventorySize();i++)
+                        boolean found=false;
+                        Vector V=((Container)msg.tool()).getContents();
+						for(int i=0;i<V.size();i++)
 						{
-							Item I=mob.fetchInventory(i);
-							if((I!=null)
-							&&(I instanceof Key)
-							&&(((Key)I).getKey().equals(((Container)msg.tool()).keyName()))&&(I.container()==msg.tool()))
-								return true;
+							Item I=(Item)V.elementAt(i);
+							if((I instanceof Key)
+							&&(((Key)I).getKey().equals(((Container)msg.tool()).keyName())))
+								found=true;
 						}
-						CommonMsgs.say(this,mob,"I won't buy that back unless you put the key in it.",true,false);
-						return false;
+                        if(!found)
+                        {
+    						CommonMsgs.say(this,mob,"I won't buy that back unless you put the key in it.",true,false);
+    						return false;
+                        }
 					}
 					if((msg.tool() instanceof Item)&&(msg.source().isMine(msg.tool())))
 					{
@@ -932,10 +939,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_GIVE:
 				if((msg.tool()!=null)
 				&&((CMSecurity.isAllowed(msg.source(),location(),"ORDER")
+                    ||(CoffeeUtensils.doesOwnThisProperty(msg.source(),getStartRoom()))
 					||(CMSecurity.isAllowed(msg.source(),location(),"CMDMOBS")&&(isMonster()))
 					||(CMSecurity.isAllowed(msg.source(),location(),"CMDROOMS")&&(isMonster()))))
 				&&((doISellThis(msg.tool()))||(whatISell==DEAL_INVENTORYONLY)))
                 {
+                    msg.source().tell("Yes, I will now sell "+msg.tool().name()+".");
                     addStoreInventory(msg.tool(),1,-1);
 					return;
 				}
@@ -969,31 +978,20 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						Vector V=null;
 						if(rawSoldItem instanceof Container)
 							V=((Container)rawSoldItem).getContents();
-						else
-							V=new Vector();
-						if(!V.contains(rawSoldItem)) V.addElement(rawSoldItem);
+                        ((Item)rawSoldItem).unWear();
+                        ((Item)rawSoldItem).removeFromOwnerContainer();
+                        for(int v=0;v<V.size();v++)
+                            ((Item)V.elementAt(v)).removeFromOwnerContainer();
+                        addStoreInventory(coreSoldItem,number,-1);
 						for(int v=0;v<V.size();v++)
 						{
 							Item item2=(Item)V.elementAt(v);
-							item2.unWear();
-							mob.delInventory(item2);
-							if(rawSoldItem!=item2)
-							{
-                                if(item2 instanceof PackagedItems)
-                                    addStoreInventory(((PackagedItems)item2).getItem(),
-                                                      ((PackagedItems)item2).numberOfItemsInPackage(),
-                                                      -1);
-                                else
-                                {
-    								item2.setContainer((Item)rawSoldItem);
-                                    addStoreInventory(item2,1,-1);
-                                }
-							}
-							else
-                                addStoreInventory(coreSoldItem,number,-1);
+                            item2.unWear();
+                            if(item2 instanceof Key)
+                                item2.destroy();
+                            else
+                                addStoreInventory(item2,1,-1);
 						}
-						((Item)rawSoldItem).setContainer(null);
-                        ((Item)rawSoldItem).destroy();
 					}
 					else
 					if(msg.tool() instanceof MOB)

@@ -700,7 +700,7 @@ public class Reset extends StdCommand
 										{
 											int numInStock=SK.numberInStock(I);
 											int stockPrice=SK.stockPrice(I);
-											SK.delStoreInventory(I);
+											SK.delAllStoreInventory(I);
 											SK.addStoreInventory(I,numInStock,stockPrice);
 										}
 									}
@@ -769,7 +769,7 @@ public class Reset extends StdCommand
 										{
 											int numInStock=SK.numberInStock(I);
 											int stockPrice=SK.stockPrice(I);
-											SK.delStoreInventory(I);
+											SK.delAllStoreInventory(I);
 											SK.addStoreInventory(I,numInStock,stockPrice);
 										}
 									}
@@ -974,7 +974,7 @@ public class Reset extends StdCommand
 								int returned=resetAreaOramaManaI(mob,I,rememberI," - ");
 								if(returned<0)
 								{
-									SK.delStoreInventory(I);
+									SK.delAllStoreInventory(I);
 									somethingDone=true;
 									mob.tell("   deleted");
 								}
@@ -984,7 +984,7 @@ public class Reset extends StdCommand
 									somethingDone=true;
 									int numInStock=SK.numberInStock(I);
 									int stockPrice=SK.stockPrice(I);
-									SK.delStoreInventory(I);
+									SK.delAllStoreInventory(I);
 									SK.addStoreInventory(I,numInStock,stockPrice);
 								}
 							}

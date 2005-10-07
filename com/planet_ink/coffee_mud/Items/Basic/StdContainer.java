@@ -373,7 +373,7 @@ public class StdContainer extends StdItem implements Container
                         buf.append(examineString(msg.source()));
 					if((isOpen)&&((capacity>0)||(getContents().size()>0)))
 					{
-						buf.append(name()+" contains:^<!ENTITY container \""+name()+"\"^>\n\r");
+						buf.append(name()+" contains:^<!ENTITY container \""+name()+"\"^>"+(Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)?" ":"\n\r"));
 						Vector newItems=new Vector();
 						if((this instanceof Drink)&&(((Drink)this).liquidRemaining()>0))
 						{
@@ -400,7 +400,7 @@ public class StdContainer extends StdItem implements Container
 								if((item!=null)&&(item.container()==this))
 									newItems.addElement(item);
 							}
-							buf.append(CMLister.itemLister(mob,newItems,true,"CMItem","",false));
+							buf.append(CMLister.itemLister(mob,newItems,true,"CMItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
 						}
 						else
 						if(owner instanceof Room)
@@ -413,7 +413,7 @@ public class StdContainer extends StdItem implements Container
 								if((item!=null)&&(item.container()==this))
 									newItems.addElement(item);
 							}
-							buf.append(CMLister.itemLister(mob,newItems,true,"CRItem","",false));
+							buf.append(CMLister.itemLister(mob,newItems,true,"CRItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
 						}
 					}
 					else

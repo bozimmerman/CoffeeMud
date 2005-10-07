@@ -62,7 +62,7 @@ public class StdCageRideable extends StdRideable
 				//if(msg.source().charStats().getStat(CharStats.INTELLIGENCE)>=10)
 			    //    buf.append(Util.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_NOUNDESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase()+".\n\r");
 				if((isOpen)&&((capacity>0)||(getContents().size()>0)))
-					buf.append(name()+" contains:^<!ENTITY Container \""+name()+"\"^>\n\r");
+					buf.append(name()+" contains:^<!ENTITY Container \""+name()+"\"^>"+(Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)?" ":"\n\r"));
 				Vector newItems=new Vector();
 
 				if(owner instanceof MOB)
@@ -74,7 +74,7 @@ public class StdCageRideable extends StdRideable
 						if((item!=null)&&(item.container()==this))
 							newItems.addElement(item);
 					}
-					buf.append(CMLister.itemLister(mob,newItems,true,"CMItem","",false));
+					buf.append(CMLister.itemLister(mob,newItems,true,"CMItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
 				}
 				else
 				if(owner instanceof Room)
@@ -87,7 +87,7 @@ public class StdCageRideable extends StdRideable
 						if((item!=null)&&(item.container()==this))
 							newItems.addElement(item);
 					}
-					buf.append(CMLister.itemLister(mob,newItems,true,"CRItem","",false));
+					buf.append(CMLister.itemLister(mob,newItems,true,"CRItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
 				}
 				mob.tell(buf.toString());
 			}

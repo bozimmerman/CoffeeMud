@@ -2813,7 +2813,7 @@ public class BaseGenerics extends StdCommand
                 Vector V=E.getUniqueStoreInventory();
                 for(int b=0;b<V.size();b++)
                     if(!E.doISellThis((Environmental)V.elementAt(b)))
-                        E.delStoreInventory((Environmental)V.elementAt(b));
+                        E.delAllStoreInventory((Environmental)V.elementAt(b));
             }
 		}
 	}
@@ -2861,7 +2861,7 @@ public class BaseGenerics extends StdCommand
 					if(item!=null)
 					{
 						mob.tell(getScr("BaseGenerics","itemidrem",item.ID()));
-						E.delStoreInventory(item.copyOf());
+						E.delAllStoreInventory(item.copyOf());
 					}
 					else
 					{
