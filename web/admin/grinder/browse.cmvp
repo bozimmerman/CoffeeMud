@@ -53,8 +53,9 @@
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 @if?CheckReqParm?FUNCTION=NEWDIR@<FONT COLOR=RED>@FileMgr?CREATEDIR@</FONT><BR>@endif@
 @if?CheckReqParm?FUNCTION=UPLOAD@<FONT COLOR=RED>@FileMgr?UPLOAD@</FONT><BR>@endif@
+@if?CheckReqParm?FUNCTION=SEARCH@<FONT COLOR=RED>@FileMgr?SEARCH&STR=@@RequestParameter?SEARCHSTR@@ @</FONT><BR>@endif@
+@if?CheckReqParm?FUNCTION=NAMESEARCH@<FONT COLOR=RED>@FileMgr?NAMESEARCH&STR=@@RequestParameter?SEARCHSTR@@ @</FONT><BR>@endif@
 <a href="javascript:CreateDir();"><FONT COLOR=YELLOW>*create new dir*</FONT></a><P>
-<BR><BR>
 <a href="javascript:BackDir()"><FONT COLOR=YELLOW>..</FONT></a><BR>
 @FileNext?RESET@
 @loop@
@@ -69,6 +70,24 @@
 	<BR>
 @back@
 <a href="javascript:NewFile('@RequestParametersEncoded@');"><FONT COLOR=WHITE>*create new file*</FONT></a><BR>
+</FORM>
+<HR>
+<FONT COLOR=WHITE>*search for filenames*</FONT>
+<FORM NAME=UPLOAD TARGET=_top ENCTYPE="multipart/form-data" ACTION=browse.cmvp METHOD=POST>
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="NAMESEARCH">
+<INPUT TYPE=TEXT NAME=SEARCHSTR VALUE="" SIZE=20>
+<INPUT TYPE=SUBMIT NAME=SUBMIT VALUE=SUBMIT>
+</FORM>
+<HR>
+<FONT COLOR=WHITE>*search inside files*</FONT>
+<FORM NAME=UPLOAD TARGET=_top ENCTYPE="multipart/form-data" ACTION=browse.cmvp METHOD=POST>
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="SEARCH">
+<INPUT TYPE=TEXT NAME=SEARCHSTR VALUE="" SIZE=20>
+<INPUT TYPE=SUBMIT NAME=SUBMIT VALUE=SUBMIT>
 </FORM>
 <HR>
 <FONT COLOR=WHITE>*upload a file*</FONT>
