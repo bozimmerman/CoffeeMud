@@ -1180,6 +1180,7 @@ public class StdItem implements Item
             else
             if(response.toString().endsWith(" or "))
                 response.delete(response.length()-4,response.length());
+            response.append(".  ");
         }
         return response.toString();
     }

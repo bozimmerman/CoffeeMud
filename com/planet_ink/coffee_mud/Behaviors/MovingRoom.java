@@ -287,7 +287,10 @@ public class MovingRoom extends ActiveTicker
 					{
 						currentStopRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(reverseVec.elementAt(CODE0_OUTSIDEDEPARTMSG).toString(),nextStopRoom));
 						subwayRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(reverseVec.elementAt(CODE0_INSIDEDEPARTMSG).toString(),nextStopRoom));
-						if (((subwayRoom.rawDoors()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]!=null) && ((currentStop==0) || (currentStop==(listOfRooms.size()-1))))||(subwayRoom.rawDoors()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]!=null))
+						if (((subwayRoom.rawDoors()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]!=null) 
+                                && ((currentStop==0) 
+                                        || (currentStop==(listOfRooms.size()-1))))
+                        ||(subwayRoom.rawDoors()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]!=null))
 						{
 							if ((currentStop==0)||(currentStop==(listOfRooms.size()-1)))
 							{
@@ -327,7 +330,10 @@ public class MovingRoom extends ActiveTicker
 						// departing, not reversed
 						currentStopRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(normalVec.elementAt(CODE0_OUTSIDEDEPARTMSG).toString(),nextStopRoom));
 						subwayRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(normalVec.elementAt(CODE0_INSIDEDEPARTMSG).toString(),nextStopRoom));
-						if (((subwayRoom.rawDoors()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]!=null) && ((currentStop==0) || (currentStop==(listOfRooms.size()-1))))||(subwayRoom.rawDoors()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]!=null))
+						if (((subwayRoom.rawDoors()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]!=null) 
+                                && ((currentStop==0) 
+                                        || (currentStop==(listOfRooms.size()-1))))
+                        ||(subwayRoom.rawDoors()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]!=null))
 						{
 							if ((currentStop==0)||(currentStop==(listOfRooms.size()-1)))
 							{

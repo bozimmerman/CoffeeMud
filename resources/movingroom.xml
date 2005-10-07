@@ -15,6 +15,7 @@
 	   <B/>$inopendir   -this is the direction the door opens from the inside.
 	   <C/>$outopendir  -this is the direction the door opens from the outside.
 	   <D/>$traveldir   -this is the current direction the room is traveling</Five>
+    <Six>Remember to remove all exits to and from your moving room before adding the MovingRoom behavior</Six>
   </INSTRUCTIONS>
   <EXAMPLE>
     <ROOMPRINTNAME>[very short name of the mover for the MoverMap, example. 'the crowded subway car' = 'subway car']</ROOMPRINTNAME>
