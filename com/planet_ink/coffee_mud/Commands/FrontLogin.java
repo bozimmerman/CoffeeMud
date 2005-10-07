@@ -204,12 +204,19 @@ public class FrontLogin extends StdCommand
 	        else
 	        if(((String)commands.elementAt(i)).equalsIgnoreCase("LAST"))
 	            attempt=Integer.MAX_VALUE;
+        boolean wizi=false;
 
 		String login=mob.session().prompt("name:^<USER^>");
 		if(login==null) return false;
 		login=login.trim();
 		if(login.length()==0) return false;
-
+        if(login.endsWith(" !"))
+        {
+            login=login.substring(0,login.length()-2);
+            login=login.trim();
+            wizi=true;
+        }
+        
 		boolean found=CMClass.DBEngine().DBUserSearch(mob,login);
 		if(found)
 		{
@@ -315,6 +322,12 @@ public class FrontLogin extends StdCommand
 					mob.setSession(oldMOB.session());
 					if(mob!=oldMOB)
 						oldMOB.setSession(null);
+                    if(wizi)
+                    {
+                        Command C=CMClass.getCommand("WizInv");
+                        if((C!=null)&&(C.securityCheck(mob)||C.securityCheck(mob)))
+                            C.execute(mob,Util.makeVector("WIZINV"));
+                    }
 					showTheNews(mob);
 					mob.bringToLife(mob.location(),false);
 					CoffeeTables.bump(mob,CoffeeTables.STAT_LOGINS);
@@ -339,6 +352,12 @@ public class FrontLogin extends StdCommand
 				else
 				{
 					CMClass.DBEngine().DBReadPlayer(mob);
+                    if(wizi)
+                    {
+                        Command C=CMClass.getCommand("WizInv");
+                        if((C!=null)&&(C.securityCheck(mob)||C.securityCheck(mob)))
+                            C.execute(mob,Util.makeVector("WIZINV"));
+                    }
 					showTheNews(mob);
 					mob.bringToLife(mob.location(),true);
 					CoffeeTables.bump(mob,CoffeeTables.STAT_LOGINS);
