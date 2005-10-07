@@ -2160,11 +2160,13 @@ public class StdMOB implements MOB
 						CoffeeTables.bump(this,CoffeeTables.STAT_DEATHS);
                         Vector channels=ChannelSet.getFlaggedChannelNames("DETAILEDDEATHS");
                         Vector channels2=ChannelSet.getFlaggedChannelNames("DEATHS");
+                        if(!Sense.isCloaked(this))
                         for(int i=0;i<channels.size();i++)
 						if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
 							CommonMsgs.channel((String)channels.elementAt(i),getClanID(),Name()+" was just killed in "+CMMap.getExtendedRoomID(location())+" by "+msg.tool().Name()+".",true);
 						else
 							CommonMsgs.channel((String)channels.elementAt(i),getClanID(),Name()+" has just died at "+CMMap.getExtendedRoomID(location()),true);
+                        if(!Sense.isCloaked(this))
                         for(int i=0;i<channels2.size();i++)
                             if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
                                 CommonMsgs.channel((String)channels2.elementAt(i),getClanID(),Name()+" was just killed.",true);

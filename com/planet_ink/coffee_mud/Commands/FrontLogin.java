@@ -366,18 +366,6 @@ public class FrontLogin extends StdCommand
 				}
 				if((mob.session()!=null)&&(mob.playerStats()!=null))
 					mob.playerStats().setLastIP(mob.session().getAddress());
-				for(int s=0;s<Sessions.size();s++)
-				{
-					Session S=Sessions.elementAt(s);
-					if((S!=null)
-					&&(S.mob()!=null)
-					&&(S.mob()!=mob)
-					&&((!Sense.isCloaked(mob))||(CMSecurity.isASysOp(S.mob())))
-					&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
-					&&(S.mob().playerStats()!=null)
-					&&((S.mob().playerStats().getFriends().contains(mob.Name())||S.mob().playerStats().getFriends().contains("All"))))
-						S.mob().tell("^X"+mob.Name()+" has logged on.^.^?");
-				}
 				if((CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("ALWAYS"))
 				&&(!Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
 					mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
@@ -385,6 +373,7 @@ public class FrontLogin extends StdCommand
 				&&(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
 					mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
                 Vector channels=ChannelSet.getFlaggedChannelNames("LOGINS");
+                if(!Sense.isCloaked(mob))
                 for(int i=0;i<channels.size();i++)
                     CommonMsgs.channel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has logged on.",true);
 				if(pendingLogins.containsKey(mob.Name().toUpperCase()))
