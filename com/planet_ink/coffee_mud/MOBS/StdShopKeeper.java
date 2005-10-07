@@ -986,8 +986,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						for(int v=0;v<V.size();v++)
 						{
 							Item item2=(Item)V.elementAt(v);
-                            item2.unWear();
-                            if(item2 instanceof Key)
+                            if(!doISellThis(item2)||(item2 instanceof Key))
                                 item2.destroy();
                             else
                                 addStoreInventory(item2,1,-1);
