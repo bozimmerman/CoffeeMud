@@ -60,7 +60,7 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_EMOTEFILTER=35;
 	public static final int SYSTEM_SAYFILTER=36;
 	public static final int SYSTEM_CHANNELFILTER=37;
-	//public static final int SYSTEM_WIZINFONAMES=38;
+	//public static final int SYSTEM_MAXCONNSPERIP=38;
 	public static final int SYSTEM_MAILBOX=39;
 	public static final int SYSTEM_CLANTROPCP=40;
 	public static final int SYSTEM_CLANTROPEXP=41;
@@ -113,7 +113,9 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_STARTMOVE=37;
     public static final int SYSTEMI_TRIALDAYS=38;
     public static final int SYSTEMI_EQVIEW=39;
-	public static final int NUMI_SYSTEM=40;
+    public static final int SYSTEMI_MAXCONNSPERIP=40;
+    public static final int SYSTEMI_MAXNEWPERIP=41;
+	public static final int NUMI_SYSTEM=42;
 
 	public static final int SYSTEMB_MOBCOMPRESS=0;
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -133,6 +135,7 @@ public class CommonStrings extends Scriptable
 	private static Vector sayFilter=new Vector();
 	private static Vector channelFilter=new Vector();
 	private static Vector emoteFilter=new Vector();
+    private static DVector newusersByIP=new DVector(2);
 
 	public static int pkillLevelDiff=26;
 
@@ -206,6 +209,30 @@ public class CommonStrings extends Scriptable
 			break;
 		}
 	}
+
+    public static int getCountNewUserByIP(String address)
+    {
+        int count=0;
+        synchronized(newusersByIP)
+        {
+            for(int i=newusersByIP.size()-1;i>=0;i--)
+                if(((String)newusersByIP.elementAt(i,1)).equalsIgnoreCase(address))
+                {
+                    if(System.currentTimeMillis()>(((Long)newusersByIP.elementAt(i,2)).longValue()))
+                        newusersByIP.removeElementAt(i);
+                    else
+                        count++;
+                }
+        }
+        return count;
+    }
+    public static void addNewUserByIP(String address)
+    {
+        synchronized(newusersByIP)
+        {
+            newusersByIP.addElement(address,new Long(System.currentTimeMillis()+IQCalendar.MILI_DAY));
+        }
+    }
 
 	public static void loadCommonINISettings(INI page)
 	{
@@ -311,6 +338,8 @@ public class CommonStrings extends Scriptable
 		setIntVar(SYSTEMI_JOURNALLIMIT,page.getStr("JOURNALLIMIT"));
 		setIntVar(SYSTEMI_MUDTHEME,page.getStr("MUDTHEME"));
         setIntVar(SYSTEMI_TRIALDAYS,page.getStr("TRIALDAYS"));
+        setIntVar(SYSTEMI_MAXCONNSPERIP,page.getStr("MAXCONNSPERIP"));
+        setIntVar(SYSTEMI_MAXNEWPERIP,page.getStr("MAXNEWPERIP"));
 		Vector V=Util.parseCommas(page.getStr("INJURYSYSTEM"),true);
 		if(V.size()!=5)
 		{

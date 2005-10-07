@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -95,14 +96,19 @@ public class Spell_MirrorImage extends Spell
 		&&((Sense.canBeSeenBy(mob,msg.source()))&&(mob.displayText(msg.source()).length()>0)))
 		{
 			StringBuffer Say=new StringBuffer("");
+            boolean compress=Util.bset(msg.source().getBitmap(),MOB.ATT_COMPRESS);
 			for(int i=0;i<numberOfImages;i++)
 			{
 				Say.append("^M");
-				if(mob.displayText(msg.source()).length()>0)
-					Say.append(Util.endWithAPeriod(mob.displayText(msg.source())));
-				else
-					Say.append(Util.endWithAPeriod(mob.name()));
-				Say.append(Sense.colorCodes(mob,msg.source())+"^N\n\r");
+                if(compress) Say.append(Sense.colorCodes(mob,mob)+"^M ");
+                if(mob.displayText(msg.source()).length()>0)
+                    Say.append(Util.endWithAPeriod(Util.capitalizeFirstLetter(mob.displayText(msg.source()))));
+                else
+                    Say.append(Util.endWithAPeriod(Util.capitalizeFirstLetter(mob.name())));
+                if(!compress)
+                    Say.append(Sense.colorCodes(mob,msg.source())+"^N\n\r");
+                else
+                    Say.append("^N");
 			}
 			if(Say.toString().length()>0)
 			{

@@ -286,6 +286,27 @@ public class FrontLogin extends StdCommand
 					}
 				}
 
+                // count number of multiplays
+                int numAtAddress=0;
+                try{
+                for(int s=0;s<Sessions.size();s++)
+                {
+                    if((Sessions.elementAt(s)!=mob.session())
+                    &&(mob.session().getAddress().equalsIgnoreCase((Sessions.elementAt(s).getAddress()))))
+                        numAtAddress++;
+                }
+                }catch(Exception e){}
+                
+                if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_MAXCONNSPERIP)>0)
+                &&(numAtAddress>=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MAXCONNSPERIP))
+                &&(!CMSecurity.isDisabled("MAXCONNSPERIP")))
+                {
+                    mob.session().println("The maximum player limit has already been reached for your IP address.");
+                    if(pendingLogins.containsKey(mob.Name().toUpperCase()))
+                        pendingLogins.remove(mob.Name().toUpperCase());
+                    return false;
+                }
+                
 				MOB oldMOB=mob;
 				if(CMMap.getPlayer(oldMOB.Name())!=null)
 				{
@@ -399,6 +420,15 @@ public class FrontLogin extends StdCommand
 				mob.setPlayerStats(null);
 			}
 			else
+            if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_MAXNEWPERIP)>0)
+            &&(CommonStrings.getCountNewUserByIP(mob.session().getAddress())>=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MAXNEWPERIP))
+            &&(!CMSecurity.isDisabled("MAXCONNSPERIP")))
+            {
+                mob.session().println("\n\rThat name is unrecognized.\n\rAlso, the maximum daily new player limit has already been reached for your location.");
+                mob.setName("");
+                mob.setPlayerStats(null);
+            }
+            else
 			if(mob.session().confirm("\n\r'"+Util.capitalizeAndLower(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
 			{
 				login=Util.capitalizeAndLower(login.trim());
@@ -814,6 +844,7 @@ public class FrontLogin extends StdCommand
                 if((mob.session()==null)||(mob.playerStats()==null)) return false;
 				mob.playerStats().setLastIP(mob.session().getAddress());
 				Log.sysOut("FrontDoor","Created user: "+mob.Name());
+                CommonStrings.addNewUserByIP(mob.session().getAddress());
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session S=Sessions.elementAt(s);

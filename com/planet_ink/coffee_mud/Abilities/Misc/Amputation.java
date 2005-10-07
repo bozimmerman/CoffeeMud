@@ -369,7 +369,7 @@ public class Amputation extends StdAbility
                 &&(!I.amWearingAt(Item.INVENTORY))
                 &&(I.ID().endsWith("Limb"))
 				&&((I.name().toUpperCase().endsWith(gone.toUpperCase()))
-				||(I.rawSecretIdentity().toUpperCase().endsWith(gone.toUpperCase()))))
+    				||(I.rawSecretIdentity().toUpperCase().endsWith(gone.toUpperCase()))))
 		        {
 		            limb=I;
 		            I.unWear();
@@ -408,12 +408,12 @@ public class Amputation extends StdAbility
 		if(target!=null)
 		{
 			if(target instanceof MOB)
-				((MOB)target).location().bringItemHere(limb,Item.REFUSE_PLAYER_DROP);
+				((MOB)target).location().addItemRefuse(limb,Item.REFUSE_PLAYER_DROP);
 			else
 			if((target instanceof DeadBody)
 			&&(((Item)target).owner()!=null)
 			&&(((Item)target).owner() instanceof Room))
-				((Room)((Item)target).owner()).bringItemHere(limb,Item.REFUSE_PLAYER_DROP);
+				((Room)((Item)target).owner()).addItemRefuse(limb,Item.REFUSE_PLAYER_DROP);
 		}
 		Vector theRest=A.affectedLimbNameSet(target,gone,A.missingLimbNameSet());
 		if(!theRest.contains(gone)) theRest.addElement(gone);

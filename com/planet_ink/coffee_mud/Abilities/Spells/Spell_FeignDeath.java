@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -139,14 +140,22 @@ public class Spell_FeignDeath extends Spell
 				if(follower!=null)
 					follower.setFollowing(null);
 			}
-			deathRoom.show(target,null,CMMsg.MSG_OK_ACTION,"^Z"+target.name()+" is DEAD!!!^.^?\n\r");
-			Body.setName("the body of "+target.name());
-			Body.setDisplayText("the body of "+target.name()+" lies here.");
-			Body.baseEnvStats().setWeight(target.envStats().weight()+100);
-			Body.setSecretIdentity("FAKE");
-			deathRoom.addItemRefuse(Body,Item.REFUSE_MONSTER_BODY);
-			Body.recoverEnvStats();
-			deathRoom.recoverRoomStats();
+            String msp=CommonStrings.msp("death"+Dice.roll(1,4,0)+".wav",50);
+            msg=new FullMsg(target,null,null,
+                    CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
+                    CMMsg.MSG_OK_VISUAL,null,
+                    CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r"+msp);
+            if(deathRoom.okMessage(target,msg))
+            {
+                deathRoom.send(target,msg);
+    			Body.setName("the body of "+target.name());
+    			Body.setDisplayText("the body of "+target.name()+" lies here.");
+    			Body.baseEnvStats().setWeight(target.envStats().weight()+100);
+    			Body.setSecretIdentity("FAKE");
+    			deathRoom.addItemRefuse(Body,Item.REFUSE_MONSTER_BODY);
+    			Body.recoverEnvStats();
+    			deathRoom.recoverRoomStats();
+            }
 		}
 
 		return success;

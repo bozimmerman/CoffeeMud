@@ -64,13 +64,13 @@ public class Assassin extends Thief
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Thief_KillLog",false);
+            CMAble.addCharAbilityMapping(ID(),1,"Thief_Mark",true);
 			
 			CMAble.addCharAbilityMapping(ID(),2,"Thief_Hide",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Kick",false);
 			
-			CMAble.addCharAbilityMapping(ID(),3,"Thief_Mark",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Thief_SneakAttack",false);
+            CMAble.addCharAbilityMapping(ID(),3,"Thief_KillLog",false);
 			
 			CMAble.addCharAbilityMapping(ID(),4,"Thief_Sneak",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Skill_IdentifyPoison",false);
