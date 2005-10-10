@@ -2553,6 +2553,14 @@ public class BaseGenerics extends StdCommand
 					mob.tell(getScr("BaseGenerics","behaverem",behave));
 				}
 				else
+                if((behave.trim().toUpperCase().startsWith("AREA "))
+                &&(!CMSecurity.isAllowedAnywhere(mob,behave.trim().toUpperCase().substring(5).trim())))
+                    mob.tell(getScr("BaseGenerics","behavebad",behave));
+                else
+                if((!behave.trim().toUpperCase().startsWith("AREA "))
+                &&(!CMSecurity.isAllowedEverywhere(mob,behave.trim().toUpperCase())))
+                    mob.tell(getScr("BaseGenerics","behavebad",behave));
+                else
 				{
 					P.getSecurityGroups().addElement(behave.trim().toUpperCase());
 					mob.tell(getScr("BaseGenerics","behaveadd",behave));

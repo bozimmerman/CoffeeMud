@@ -57,7 +57,9 @@ public class Prayer_GodLight extends Prayer
 	{
 
 		Environmental target=null;
-		if((!auto)&&(commands.size()==0)&&(!mob.isInCombat()))
+		if((!auto)
+        &&((commands.size()==0)||(((String)commands.firstElement()).equalsIgnoreCase("ROOM")))
+        &&(!mob.isInCombat()))
 			target=mob.location();
 		if((target==null)&&(commands.size()==0)&&(mob.isInCombat()))
 			target=mob.getVictim();
@@ -96,6 +98,8 @@ public class Prayer_GodLight extends Prayer
 					if(target instanceof MOB)
 						mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> go(es) blind!");
 					maliciousAffect(mob,target,asLevel,0,-1);
+                    mob.location().recoverRoomStats();
+                    mob.location().recoverRoomStats();
 				}
 			}
 		}

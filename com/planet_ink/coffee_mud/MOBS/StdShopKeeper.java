@@ -980,6 +980,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							V=((Container)rawSoldItem).getContents();
                         ((Item)rawSoldItem).unWear();
                         ((Item)rawSoldItem).removeFromOwnerContainer();
+                        if(V!=null)
                         for(int v=0;v<V.size();v++)
                             ((Item)V.elementAt(v)).removeFromOwnerContainer();
                         addStoreInventory(coreSoldItem,number,-1);

@@ -125,10 +125,10 @@ public class Transfer extends At
 			if(!room.isInhabitant(M))
 			{
 				if((mob.playerStats().tranPoofOut().length()>0)&&(mob.location()!=null))
-					M.location().show(M,null,CMMsg.MSG_OK_VISUAL,mob.playerStats().tranPoofOut());
+					M.location().show(mob,M,CMMsg.MSG_OK_VISUAL,mob.playerStats().tranPoofOut());
 				room.bringMobHere(M,true);
 				if(mob.playerStats().tranPoofIn().length()>0)
-					room.show(M,null,CMMsg.MSG_OK_VISUAL,mob.playerStats().tranPoofIn());
+					room.show(mob,M,CMMsg.MSG_OK_VISUAL,mob.playerStats().tranPoofIn());
 				if(!M.isMonster())
 					CommonMsgs.look(M,true);
 			}

@@ -1,7 +1,9 @@
 package com.planet_ink.coffee_mud.Abilities.Archon;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.CMColor;
+import com.planet_ink.coffee_mud.utils.Log;
 import com.planet_ink.coffee_mud.common.*;
+
 import java.util.*;
 
 /* 
@@ -90,6 +92,7 @@ public class Archon_Hush extends ArchonSkill
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> hushed!");
 				beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE/2);
+                Log.sysOut("Banish",mob.name()+" hushed "+target.name()+".");
 			}
 		}
 		else

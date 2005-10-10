@@ -68,7 +68,7 @@ public class Spell_MindBlock extends Spell
 			}
 			if(yep)
 			{
-				msg.source().tell(msg.source(),mob,null,"<T-NAME> seem(s) unaffected.");
+				msg.source().tell(msg.source(),mob,null,"<T-NAME> seem(s) unaffected by the enchantment.");
 				return false;
 			}
 		}

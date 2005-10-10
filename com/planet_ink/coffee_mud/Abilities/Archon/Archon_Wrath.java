@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Archon;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.CMColor;
+import com.planet_ink.coffee_mud.utils.Log;
 import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
 
@@ -66,6 +67,7 @@ public class Archon_Wrath extends ArchonSkill
 					I.removeFromOwnerContainer();
 					target.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
 				}
+                Log.sysOut("Banish",mob.name()+" wrathed "+target.name()+".");
 			}
 		}
 		else

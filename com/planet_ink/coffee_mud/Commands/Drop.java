@@ -64,7 +64,10 @@ public class Drop extends BaseItemParser
 		}
 		commands.removeElementAt(0);
 
-		container=EnglishParser.possibleContainer(mob,commands,true,Item.WORN_REQ_UNWORNONLY);
+        // uncommenting this allows dropping directly from containers
+        // "drop all sack" will no longer drop all of your "sack", but will drop 
+        // all of the contents of your 1.sack, leaving the sack in inventory.
+		//container=EnglishParser.possibleContainer(mob,commands,true,Item.WORN_REQ_UNWORNONLY);
 
 
 		int maxToDrop=Integer.MAX_VALUE;

@@ -57,6 +57,7 @@ public class Soiled extends StdAbility
 				MOB following=((MOB)E).amFollowing();
 				if((following!=null)
 				&&(following.location()==mob.location())
+                &&(Sense.isInTheGame(E,true))
 			    &&(Sense.canBeSeenBy(mob,following)))
 					following.tell(E.name()+" is longer soiled.");
 		    }

@@ -67,8 +67,7 @@ public class Spell_Shelter extends Spell
         {
             if(previousLocation!=null)
                 previousLocation.bringMobHere(msg.source(),false);
-            if(msg.source().fetchEffect(ID())==this)
-                unInvoke();
+            unInvoke();
         }
         return super.okMessage(host,msg);
     }
