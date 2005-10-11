@@ -183,6 +183,33 @@ unless they are a buy_prog p with different keyword lists but some of the same
 keywords – for example a buy_prog p apple red juicy and a buy_prog p apple red 
 poisoned.</P>
 <P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">channel_prog</SPAN></P>
+<P class=MsoNormal>Usage:<BR><EM>channel_prog [trigger message]<BR>channel_prog 
+p [trigger message]&nbsp;<?XML:NAMESPACE PREFIX = O /><O:P></O:P></EM></P>
+<P class=MsoNormal>This type of mobprog will trigger when the mob sees a certain 
+string of text over one of the public channels. When the 'p' is inserted into 
+the trigger line, the string of text must be precise, while if it is not, any of 
+the words in the list can trigger the mobprog. This type of mobprog has many 
+uses, one of which is communication between mobs. The possibilities are 
+endlessly finite.</P>
+<P class=MsoNormal>EXAMPLES:</P>
+<P class=MsoNormal><EM>channel_prog&nbsp;help me</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger whenever 
+the mob sees a segment of text containing any of the words help or me. If the 
+string contains more than one of these, the prog will be triggered multiple 
+times.)</P>
+<P class=MsoNormal><EM>channel_prog p GOSSIP hello.</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger the prog 
+when it sees this message channeled. Note that punctuation is important here as 
+well.)</P>
+<P class=MsoNormal>MULTIPLE PROGS: You can have more than one channel_prog on a 
+mob, but you shouldn’t have multiple channel_progs that trigger off of the same 
+message.</P>
+<P class=MsoNormal>SPECIAL NOTES: ANSI colors on objects don’t seem to work well 
+with channel_progs, so avoid using ANSI colors in anything that may be part of 
+your channel_prog trigger. Variables and Codes are not used in channel_progs, so 
+do not try to use them; it won’t work.</P>
+<P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">consume_prog<O:P></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>consume_prog [keyword list]<BR>consume_prog p [keyword list]<BR>consume_prog all</EM></P>
 <P class=MsoNormal>This type of mobprog is triggered eating 
@@ -582,8 +609,8 @@ apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This
 container&nbsp;used&nbsp; has any of the keywords orange, apple, or banana. This 
 means that it would be triggered by putting something into a banana, an apple 
 pie, or even an orange shield.)</P>
-<P class=MsoNormal><EM>put_prog p 
-apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+<P class=MsoNormal><EM>put_prog p apple 
+pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
 container used up has the exact keywords apple pie delicious. The prog would not 
 be triggered by putting anything into a&nbsp;container with keywords red apple 
 or blackberry pie or anything except the exact order and wording of the keyword 
@@ -644,8 +671,8 @@ are endless.</P>
 mob sees a segment of text starting with the lowercase letter a, then containing 
 0 or more other letter as followed by the string "be".&nbsp; This would match 
 aaaaabe)</P>
-<P class=MsoNormal><EM>regmask_prog p 
-A wolf howls at the moon.</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger the prog when 
+<P class=MsoNormal><EM>regmask_prog p A 
+wolf howls at the moon.</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger the prog when 
 it sees this precise message. Note that punctuation and case is important here 
 as well.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
@@ -689,8 +716,8 @@ lists but some of the same keywords – for example a remove_prog p apple red
 juicy and a remove_prog p apple red poisoned.</P>
 <P><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">sell_prog<O:P></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>sell_prog [keyword list]<BR>sell_prog 
-p [keyword phrase]<BR>sell_prog all</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>sell_prog [keyword list]<BR>sell_prog p 
+[keyword phrase]<BR>sell_prog all</EM></P>
 <P class=MsoNormal>This type of mobprog is triggered by 
 selling an item to a shopkeeper. If the&nbsp;item being sold&nbsp;has any of the 
 keywords of the sell_prog, the prog is triggered. If there is a ‘p’ placed 
@@ -700,13 +727,13 @@ in it will trigger it. If a sell_prog all is used, then the sell_prog will
 trigger for any item at all being&nbsp;sold. This type of prog is usually used 
 for in-zone quests and special mob behavior, and has a variety of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>sell_prog 
-orange apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+<P class=MsoNormal><EM>sell_prog orange 
+apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
 item&nbsp;being sold&nbsp; has any of the keywords orange, apple, or banana. 
 This means that it would be triggered by&nbsp;selling a banana, an apple pie, or 
 even an orange shield.)</P>
-<P class=MsoNormal><EM>sell_prog p 
-apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the item 
+<P class=MsoNormal><EM>sell_prog p apple 
+pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the item 
 being sold has the exact keywords apple pie delicious. The prog would not be 
 triggered by selling anything with keywords red apple or blackberry pie or 
 anything except the exact order and wording of the keyword list.)<SPAN 
@@ -737,8 +764,8 @@ wolf coyote</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This 
 whenever dog, wolf, or coyote is said in the room with the mob. If more than one 
 of the keywords is spoken in the same line, the prog will trigger more than 
 once.)</P>
-<P class=MsoNormal><EM>speech_prog p 
-The dog barks at the cat</EM>.<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger the prog only 
+<P class=MsoNormal><EM>speech_prog p The 
+dog barks at the cat</EM>.<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger the prog only 
 if the exact expression is said. Note that punctuation counts, although you 
 don't *have* to use it.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
@@ -759,8 +786,8 @@ if&nbsp;hour of the&nbsp;day is 10, 1, or 2. )</P>
 the&nbsp;3rd&nbsp;hour of every day.)&nbsp;</P><o:p></O:P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">wear_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>wear_prog [keyword list]<BR>wear_prog 
-p [keyword list]<BR>wear_prog all</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>wear_prog [keyword list]<BR>wear_prog p 
+[keyword list]<BR>wear_prog all</EM></P>
 <P class=MsoNormal>This type of mobprog is triggered by 
 wearing, wielding, or holding an item. If the object&nbsp;worn matches the 
 keywords of the wear_prog, the prog is triggered. If there is a ‘p’ placed 
@@ -770,13 +797,13 @@ list in it will trigger it. If a wear_prog all is used, then the wear_prog will
 trigger from any object at all worn. This type of prog is usually used for 
 in-zone quests and special mob behavior, and has a variety of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>wear_prog 
-orange apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+<P class=MsoNormal><EM>wear_prog orange 
+apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
 object&nbsp;worn&nbsp; has any of the keywords orange, apple, or banana. This 
 means that it would be triggered by&nbsp;wearing a banana, an apple pie, or even 
 an orange shield.)</P>
-<P class=MsoNormal><EM>wear_prog p 
-apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+<P class=MsoNormal><EM>wear_prog p apple 
+pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
 object&nbsp;worn has the exact keywords apple pie delicious. The prog would not 
 be triggered by wearing an object with keywords red apple or blackberry pie or 
 anything except the exact order and wording of the keyword list.)<SPAN 
@@ -853,8 +880,7 @@ being the sword.</P>
     <TD colSpan=2>A random pc inhabitants name.</TD></TR>
   <TR>
     <TD>$j</TD>
-    <TD colSpan=2>The pronoun he/she of the 
-monster.</TD></TR>
+    <TD colSpan=2>The pronoun he/she of the monster.</TD></TR>
   <TR>
     <TD>$e</TD>
     <TD colSpan=2>The pronoun he/she of the source of the 
@@ -866,7 +892,7 @@ monster.</TD></TR>
   <TR>
     <TD>$E</TD>
     <TD colSpan=2>The pronoun he/she of the trigger 
-      target.</TD></TR>
+    target.</TD></TR>
   <TR>
     <TD>$F</TD>
     <TD colSpan=2>The he/she of the person which the 
@@ -889,12 +915,12 @@ monster.</TD></TR>
       syntax below.</TD></TR>
   <TR>
     <TD>$m</TD>
-    <TD colSpan=2>The pronoun his/her of the source of 
-      the trigger.</TD></TR>
+    <TD colSpan=2>The pronoun his/her of the source of the 
+      trigger.</TD></TR>
   <TR>
     <TD>$M</TD>
-    <TD colSpan=2>The pronoun his/her of the target of 
-      the trigger.</TD></TR>
+    <TD colSpan=2>The pronoun his/her of the target of the 
+      trigger.</TD></TR>
   <TR>
     <TD>$d</TD>
     <TD colSpan=2>The title of the room of the scripted 
@@ -963,8 +989,8 @@ monster.</TD></TR>
       the quest is running.&nbsp;The number corresponds to the order in which 
       items were designated in the quest script.&nbsp; Counting starts at 1. 
   </TD></TR></TABLE></P>
-<P class=MsoNormal>Any of the above codes may be followed 
-by a period and a literal number to&nbsp;designate a particular word inside a 
+<P class=MsoNormal>Any of the above codes may be followed by 
+a period and a literal number to&nbsp;designate a particular word inside a 
 string of many words. For instance,&nbsp;if $o evaluates to "a magic wand", then 
 $o.1 would evalulate to "magic". If&nbsp;$l evaluated to "orc bob hassan", then 
 $l.2 would give "hassan".&nbsp; This can be very useful when used with the $l 
@@ -1031,7 +1057,7 @@ useless. </P>
   <TR>
     <TD>CLANRANK([code])</TD>
     <TD>Returns the rank of the given mob in their 
-    clan.</TD></TR>
+  clan.</TD></TR>
   <TR>
     <TD>CLANDATA([clan code] [variable])</TD>
     <TD>Returns data about the given clan. See CLANDATA 
@@ -1059,12 +1085,12 @@ useless. </P>
       the given faction.</TD></TR>
   <TR>
     <TD>GOLDAMT([code])</TD>
-    <TD>Returns the total value of the money the given 
-      mob has, or value of item, expressed in base gold.</TD></TR>
+    <TD>Returns the total value of the money the given mob 
+      has, or value of item, expressed in base gold.</TD></TR>
   <TR>
     <TD>GSTAT([code] [stat variable])</TD>
-    <TD>Value of the given stat variable for the given 
-      mob or item.&nbsp; For example: &nbsp;<EM>$%GSTAT($i 
+    <TD>Value of the given stat variable for the given mob 
+      or item.&nbsp; For example: &nbsp;<EM>$%GSTAT($i 
       strength)%</EM>&nbsp; See the MPGSET command below for a complete list of 
       variables.</TD></TR>
   <TR>
@@ -1078,11 +1104,11 @@ useless. </P>
   <TR>
     <TD>HASTITLE([code])</TD>
     <TD>Returns the selected title of the given player 
-      mob.</TD></TR>
+    mob.</TD></TR>
   <TR>
     <TD>HITPRCNT([code])</TD>
-    <TD>Return the % of hit points remaining for the 
-      given mob.</TD></TR>
+    <TD>Return the % of hit points remaining for the given 
+      mob.</TD></TR>
   <TR>
     <TD>INCONTAINER([code])</TD>
     <TD>Teturns the name of the container of&nbsp;the 
@@ -1133,7 +1159,7 @@ useless. </P>
   <TR>
     <TD>ISGOOD([code])</TD>
     <TD>Returns&nbsp;the alignment string of the given 
-      mob.</TD></TR>
+    mob.</TD></TR>
   <TR>
     <TD>ISHERE()</TD>
     <TD>Returns the name of the area the scripted monster 
@@ -1181,7 +1207,7 @@ useless. </P>
   <TR>
     <TD>ISTIME()</TD>
     <TD>Returns the approximate time of day in 
-  words.</TD></TR>
+words.</TD></TR>
   <TR>
     <TD>ISWEATHER()</TD>
     <TD>Returns&nbsp;a description of the&nbsp;weather in 
@@ -1214,20 +1240,20 @@ useless. </P>
       monsters area matching the given mob name.</TD></TR>
   <TR>
     <TD>NUMMOBSROOM()</TD>
-    <TD>Returns the number of mobs in the same room as 
-      the scripted monster, including the monster.</TD></TR>
+    <TD>Returns the number of mobs in the same room as the 
+      scripted monster, including the monster.</TD></TR>
   <TR>
     <TD>NUMPCSROOM()</TD>
     <TD>Returns the number of pcs in the same room as the 
       scripted monster.</TD></TR>
   <TR>
     <TD>NUMRACEINAREA([race name])</TD>
-    <TD>Returns the number of mobs in the same area as 
-      the scripted monster whose race matches the given string.</TD></TR>
+    <TD>Returns the number of mobs in the same area as the 
+      scripted monster whose race matches the given string.</TD></TR>
   <TR>
     <TD>NUMRACES([race name])</TD>
-    <TD>Returns the number of mobs in the world whose 
-      race matches the given string.</TD></TR>
+    <TD>Returns the number of mobs in the world whose race 
+      matches the given string.</TD></TR>
   <TR>
     <TD>POSITION([code])</TD>
     <TD>Returns the sitting/standing/sleeping position 
@@ -1248,7 +1274,7 @@ useless. </P>
   <TR>
     <TD>RACECAT([code])</TD>
     <TD>Returns the racial category of the given 
-  mob.</TD></TR>
+mob.</TD></TR>
   <TR>
     <TD>RAND()</TD>
     <TD>Returns random number between 1 and 100.</TD></TR>
@@ -1258,8 +1284,7 @@ useless. </P>
   value-1.</TD></TR>
   <TR>
     <TD>RANDNUM([integer number or code])</TD>
-    <TD>Returns a random number from 1..given 
-value.</TD></TR>
+    <TD>Returns a random number from 1..given value.</TD></TR>
   <TR>
     <TD>ROOMITEM([integer number])</TD>
     <TD>Returns the name of the nth item in the same room 
@@ -1287,8 +1312,8 @@ only.</TD></TR>
       only in the given currency.</TD></TR>
   <TR>
     <TD>VAR([code] [variable name])</TD>
-    <TD>Returns the value of the given variable.&nbsp; 
-      See MPSETVAR in the section on Commands for more information.</TD></TR>
+    <TD>Returns the value of the given variable.&nbsp; See 
+      MPSETVAR in the section on Commands for more information.</TD></TR>
   <TR>
     <TD>WORN([code])</TD>
     <TD>The name of a random worn item in the given mobs 
@@ -1349,8 +1374,8 @@ the endif statement, then the statements between the else statement and the
 endif statement will be executed whenever the condition is false, but not ever 
 if the condition is true.&nbsp; Either way,&nbsp;statements after an endif 
 statement are executed regardless.</FONT></P>
-<P class=MsoNormal><FONT size=3>Every 
-if statement MUST have a corresponding endif statement somewhere after it.&nbsp; 
+<P class=MsoNormal><FONT size=3>Every if 
+statement MUST have a corresponding endif statement somewhere after it.&nbsp; 
 The else statement is completely optional, but if it is used, it must be between 
 the if statement and the endif statement.&nbsp; A BREAK statement may be 
 included inside an IF..ENDIF block to skip the&nbsp;remaining statements in that 
@@ -1362,17 +1387,16 @@ name followed by an open parenthesis, followed by any parameters required by
 that function, and a close parenthesis.&nbsp; A simple example is 
 below:</FONT></P>
 <P class=MsoNormal><FONT size=3><EM>if sex($n == M)</EM></FONT></P>
-<P class=MsoNormal><FONT size=3>In 
-this example, the sex function is called to determine whether $n (which is a 
-variable representing the cause of a trigger) is male.&nbsp; If the mob who 
-caused the trigger is male, the condition is true.&nbsp; Otherwise it is 
-false.&nbsp; In the particular function above, the '==' symbols mean 'equal 
-to'.</FONT></P>
+<P class=MsoNormal><FONT size=3>In this 
+example, the sex function is called to determine whether $n (which is a variable 
+representing the cause of a trigger) is male.&nbsp; If the mob who caused the 
+trigger is male, the condition is true.&nbsp; Otherwise it is false.&nbsp; In 
+the particular function above, the '==' symbols mean 'equal to'.</FONT></P>
 <P class=MsoNormal><FONT size=3>Conditional statements may be negated using the "!" 
 character as follows:</FONT></P><FONT size=3>
 <P class=MsoNormal><FONT size=3><EM>if !sex($n == M)</EM></FONT></P>
-<P class=MsoNormal><FONT size=3>In 
-this case, the condition evaluages to false if the mob who caused the trigger is 
+<P class=MsoNormal><FONT size=3>In this 
+case, the condition evaluages to false if the mob who caused the trigger is 
 male, and true otherwise.</FONT></P>
 <P class=MsoNormal>Conditional statements may contain more 
 than one function call if they are seperated by the key words 'and' or 
@@ -1391,15 +1415,15 @@ ensure that certain sets of function calls are evaulated together, while others
 are not.&nbsp; For instance:</P>
 <P class=MsoNormal><EM>if sex($n == 
 M)&nbsp;or isevil($n)&nbsp;and race($n == Harpy)</EM></P>
-<P class=MsoNormal><EM>if&nbsp;( 
-sex($n == M)&nbsp;or isevil($n) )&nbsp;&nbsp;and race($n == Harpy) </EM></P>
-<P class=MsoNormal>In these examples, if $n happens to 
-refer to a Good&nbsp;Male Gnome, then the first statement would evaulate to 
-true, while the second statement would evaluate to false.&nbsp;This is because 
-the parenthesis force the sex and isevil checks to be evaulated first in the 
-second example.</P>
-<P class=MsoNormal>Please see the section below on 
-functions for a list of the conditional functions and their 
+<P class=MsoNormal><EM>if&nbsp;( sex($n 
+== M)&nbsp;or isevil($n) )&nbsp;&nbsp;and race($n == Harpy) </EM></P>
+<P class=MsoNormal>In these examples, if $n happens to refer 
+to a Good&nbsp;Male Gnome, then the first statement would evaulate to true, 
+while the second statement would evaluate to false.&nbsp;This is because the 
+parenthesis force the sex and isevil checks to be evaulated first in the second 
+example.</P>
+<P class=MsoNormal>Please see the section below on functions 
+for a list of the conditional functions and their 
 uses.</P></FONT></FONT></SPAN><FONT color=black><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">
 <P class=MsoNormal><FONT color=black><SPAN 
@@ -1436,20 +1460,20 @@ group of instructions in the function_prog after&nbsp;some delay.</FONT> </P>
 <P class=MsoNormal><FONT color=black><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpasound<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage: <BR><EM>mpasound [text string]</EM></P>
-<P class=MsoNormal>This command will echo the text string 
-to all of the rooms adjacent to the one the mob is in, much like the echo when a 
+<P class=MsoNormal>This command will echo the text string to 
+all of the rooms adjacent to the one the mob is in, much like the echo when a 
 mob yells. This can be useful for creating dramatic deaths from mobs, or for use 
 with mobs such as a wandering minstrel or the like.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>mpasound You 
-hear a scream from nearby!<BR>mpasound A delightful music 
-fills the air from somewhere near here.<BR>mpasound The 
-drunken hollering of $n can be heard nearby.<BR>mpasound 
-The earth thunders as $n’s corpse falls to the ground nearby.</EM></P>
-<P class=MsoNormal>SPECIAL NOTES: Keep in mind that 
-mpasound does not echo to those in the room with the mob, only to rooms adjacent 
-to it. So if you want people in the room to hear the mpasound too, you’ll need 
-to use an mpecho as well.</P>
+<P class=MsoNormal><EM>mpasound You hear 
+a scream from nearby!<BR>mpasound A delightful music fills 
+the air from somewhere near here.<BR>mpasound The drunken 
+hollering of $n can be heard nearby.<BR>mpasound The earth 
+thunders as $n’s corpse falls to the ground nearby.</EM></P>
+<P class=MsoNormal>SPECIAL NOTES: Keep in mind that mpasound 
+does not echo to those in the room with the mob, only to rooms adjacent to it. 
+So if you want people in the room to hear the mpasound too, you’ll need to use 
+an mpecho as well.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpat<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage: <BR><EM>mpat [destination] [command]</EM></P>
@@ -1463,8 +1487,8 @@ doing things elsewhere in the zone for you. It has many potential uses.</P>
 <P class=MsoNormal><EM>mpat&nbsp;MyArea#1232 unlock door<BR>mpat<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>guardone poke guardone<BR><SPAN style="mso-spacerun: yes"></SPAN>mpat&nbsp;'a lovely pool'&nbsp;mpechoat $n&nbsp;You 
 feel weakened from your escape.<BR>mpat Sewers#1252 drop 
 all</EM> </P>
-<P class=MsoNormal>SPECIAL NOTES: When using mpat, it is 
-not a bad idea to give your mobs specific, unique keywords so they can be 
+<P class=MsoNormal>SPECIAL NOTES: When using mpat, it is not 
+a bad idea to give your mobs specific, unique keywords so they can be 
 manipulated with no error. The command is usually essential for zones that have 
 complicated quests, and can be used to trigger other mobs, unlock and open doors 
 and chests away from the mob, and a variety of other things.</P>
@@ -1540,8 +1564,8 @@ a number of hit points equal to their condition.&nbsp; This command is useful
 not only for hurting mobs, but for scratching up their armor when acid falls 
 from the ceiling or something similar.</FONT></P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>mpdamage $r 1 
-10 KILL<BR>mpdamage $n 10 50</EM></P>
+<P class=MsoNormal><EM>mpdamage $r 1 10 
+KILL<BR>mpdamage $n 10 50</EM></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpdisable</SPAN></P>
 <P class=MsoNormal>Usage: <BR><EM>mpdisable&nbsp;[target] [spell]</EM></P>
@@ -1566,9 +1590,9 @@ act_progs.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>mpecho $i says, 
 ‘Hey how’s it going?’<BR>mpecho A blast of strong wind 
-rushes into the room suddenly!<BR>mpecho $i hisses, ‘So, 
-$n, you’ve come to face me…’<BR>mpecho A dagger flashes 
-into $i’s hand, and $j snickers softly.</EM></P>
+rushes into the room suddenly!<BR>mpecho $i hisses, ‘So, $n, 
+you’ve come to face me…’<BR>mpecho A dagger flashes into 
+$i’s hand, and $j snickers softly.</EM></P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>SPECIAL NOTES: Using mpecho $i says, 
 ‘blah’ is a safe way to have a mob talk. Anytime you want to have a mob say 
@@ -1608,11 +1632,11 @@ the text string. This is useful for cutting down on spam from greet_prog
 mpechos, for example, as well as personalizing the text string for all parties 
 involved in conjunction with the mpechoaround command. </P>
 <P class=MsoNormal><o:p></O:P></P>
-<P class=MsoNormal>EXAMPLES:<BR><BR><EM>mpechoat $n You hear voices 
-speaking all around you.<BR>mpechoat $n You cringe as a 
-poisoned dart strikes you in the chest!<BR>mpechoat $n A 
-pile of rocks rains down upon you!<BR>mpechoat $n A circle 
-of light surrounds you, and you are transported.</EM></P>
+<P class=MsoNormal>EXAMPLES:<BR><BR><EM>mpechoat $n You hear voices speaking 
+all around you.<BR>mpechoat $n You cringe as a poisoned dart 
+strikes you in the chest!<BR>mpechoat $n A pile of rocks 
+rains down upon you!<BR>mpechoat $n A circle of light 
+surrounds you, and you are transported.</EM></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpenable</SPAN></P>
 <P class=MsoNormal><O:P></O:P></P>
@@ -1631,9 +1655,9 @@ style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpendquest</SPA
 <P class=MsoNormal><O:P></O:P></P>
 <P class=MsoNormal>Usage: <BR><EM>mpendquest [quest name]</EM></P>
 <P class=MsoNormal><O:P></O:P></P>
-<P class=MsoNormal>This command&nbsp;forces a Quest which 
-is in progress to shut itself down gracefully, removing its specific mobs, 
-items, and properties from your map.</P>
+<P class=MsoNormal>This command&nbsp;forces a Quest which is 
+in progress to shut itself down gracefully, removing its specific mobs, items, 
+and properties from your map.</P>
 <P class=MsoNormal><O:P></O:P></P>
 <P class=MsoNormal>EXAMPLES:<BR><BR><EM>mpendquest smurfocide</EM></P>
 <P class=MsoNormal><SPAN 
@@ -1652,16 +1676,16 @@ give some sort of message to the player about why they are receiving the award.
 <P class=MsoNormal>EXAMPLES:<BR 
 style="mso-special-character: line-break"><BR 
 style="mso-special-character: line-break"></P>
-<P class=MsoNormal><EM>mpexp $n 
-500</EM> </P>
+<P class=MsoNormal><EM>mpexp $n 500</EM> 
+</P>
 <P class=MsoNormal><EM><o:p></O:P></EM></P>
 <P class=MsoNormal>SPECIAL NOTES: Players can level off of 
 these experience awards, just as if they had killed something.<SPAN 
-style="mso-spacerun: yes">&nbsp; </SPAN>Be careful with 
-this command. You don’t want to give out awards for every little thing 
-characters do, nor do you want to give large awards for menial tasks. You also 
-will, of course, not want to make it so a mob can accidentally give the same 
-award over and over endlessly, or something equally abusable.</P>
+style="mso-spacerun: yes">&nbsp; </SPAN>Be careful with this 
+command. You don’t want to give out awards for every little thing characters do, 
+nor do you want to give large awards for menial tasks. You also will, of course, 
+not want to make it so a mob can accidentally give the same award over and over 
+endlessly, or something equally abusable.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpfaction</SPAN></P>
 <P class=MsoNormal><O:P></O:P></P>
@@ -1697,15 +1721,16 @@ which triggers an act_prog.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><O:P></O:P></P>
 <P class=MsoNormal><EM>mpforce $n 
-flee<BR>mpforce&nbsp;$i sleep<BR>mpforce guardtwo poke self<BR>mpforce 
-$n cast "heal serious" $i</EM> </P>
+flee<BR>mpforce&nbsp;$i sleep<BR>mpforce 
+guardtwo poke self<BR>mpforce $n cast "heal serious" $i</EM> 
+</P>
 <P class=MsoNormal><EM><O:P></O:P></EM></P>
-<P class=MsoNormal>SPECIAL NOTES: Remember that whatever 
-you force something to do, it needs to be typed out exactly as if they were 
-typing the command themselves. That means if you want a player, for example, to 
-be forced to cast ‘heal serious’ on your mob, you need to make sure you observe 
-the double-quote rule for word groupings, as opposed to the single quote rule 
-for mobprog commands.</P>
+<P class=MsoNormal>SPECIAL NOTES: Remember that whatever you 
+force something to do, it needs to be typed out exactly as if they were typing 
+the command themselves. That means if you want a player, for example, to be 
+forced to cast ‘heal serious’ on your mob, you need to make sure you observe the 
+double-quote rule for word groupings, as opposed to the single quote rule for 
+mobprog commands.</P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><SPAN 
@@ -1728,8 +1753,8 @@ level, and so on.</P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><o:p></O:P></P>
-<P class=MsoNormal><EM>mpplayerclass 
-$n Fighter<BR>mpplayerclass $n Thief 20<BR>mpplayerclass guardtwo Fighter 10<BR>mpplayerclass $n Thief 20 Fighter 10 Mage 5</EM><EM><o:p></O:P></EM></P>
+<P class=MsoNormal><EM>mpplayerclass $n 
+Fighter<BR>mpplayerclass $n Thief 20<BR>mpplayerclass guardtwo Fighter 10<BR>mpplayerclass $n Thief 20 Fighter 10 Mage 5</EM><EM><o:p></O:P></EM></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpgoto<o:p></O:P></SPAN></P>
 <P class=MsoNormal><o:p></O:P></P>
@@ -1748,8 +1773,8 @@ style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpgset</SPAN></
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>Usage: <BR><EM>mpgset [target] [variable] [value]</EM> </P>
 <P class=MsoNormal><o:p></O:P></P>
-<P class=MsoNormal>This powerful command lets you change 
-all kinds of aspects of the target mob or item or whatever.&nbsp;</P>
+<P class=MsoNormal>This powerful command lets you change all 
+kinds of aspects of the target mob or item or whatever.&nbsp;</P>
 <P class=MsoNormal>Valid variable names for items include: 
 "CLASS", "USES", "LEVEL", "ABILITY", "NAME", "DISPLAY", "DESCRIPTION", "SECRET", 
 "PROPERWORN",&nbsp; "WORNAND", "BASEGOLD", "ISREADABLE", "ISDROPPABLE", 
@@ -2447,28 +2472,27 @@ that can, if used properly, take care of all of the evaluation needs which other
 functions do not provide.&nbsp; Examine carefully the section on codes above to 
 see all the different things you can evaluate.</P>
 <P class=MsoNormal>EXAMPLE:</P>
-<P><EM>if eval($n == an orc) or eval('$&lt;$i 
-VAR&gt;'&nbsp; !=&nbsp; 7)&nbsp;<BR>&nbsp; mpecho Evaluates 
-to true.<BR>else<BR>&nbsp; mpecho 
-Evaluates to false.<BR>endif</EM></P>
+<P><EM>if eval($n == an orc) or 
+eval('$&lt;$i VAR&gt;'&nbsp; !=&nbsp; 7)&nbsp;<BR>&nbsp; 
+mpecho Evaluates to true.<BR>else<BR>&nbsp; mpecho Evaluates to false.<BR>endif</EM></P>
 <P><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">explored</SPAN></B></P>
-<P class=MsoNormal>Usage: <BR><EM>explored(character areaname&nbsp;== 
-number)<BR>explored(character&nbsp;world&nbsp;== number)</EM></P>
-<P class=MsoNormal>This function compares the percentage of the given area or of 
-the world which the given mob has explored.&nbsp; The number should always be 
-between 0 and 100, reflecting what percentage of the area or world that the 
-character has explored.&nbsp; Where '==' may be any other logical operator 
-from&nbsp;above.&nbsp; Remember that percentage exploration is only stored for 
-players, not for NPC mobs.</P>
+<P class=MsoNormal>Usage: <BR><EM>explored(character areaname&nbsp;== number)<BR>explored(character&nbsp;world&nbsp;== number)</EM></P>
+<P class=MsoNormal>This function compares the percentage of 
+the given area or of the world which the given mob has explored.&nbsp; The 
+number should always be between 0 and 100, reflecting what percentage of the 
+area or world that the character has explored.&nbsp; Where '==' may be any other 
+logical operator from&nbsp;above.&nbsp; Remember that percentage exploration is 
+only stored for players, not for NPC mobs.</P>
 <P class=MsoNormal>EXAMPLES:<BR><BR><EM>if&nbsp;explored($n $a&nbsp;&gt; 
-10)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho You have explored 
-more than 10% of this area.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
-</SPAN>mpecho You have explored less than 10% of this area.<BR>endif</EM></P>
-<P class=MsoNormal><EM>if&nbsp;explored($n&nbsp;world&nbsp;&gt; 10)<BR><SPAN 
-style="mso-spacerun: yes">&nbsp; </SPAN>mpecho You have explored more than 10% 
-of the world.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho 
-You have explored less than 10% of the world.<BR>endif</EM></P>
+10)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho You have explored more than 10% of 
+this area.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho You have 
+explored less than 10% of this area.<BR>endif</EM></P>
+<P class=MsoNormal><EM>if&nbsp;explored($n&nbsp;world&nbsp;&gt; 10)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho You have explored more than 10% of the world.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho You have 
+explored less than 10% of the world.<BR>endif</EM></P>
 <P><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">faction</SPAN></B></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>faction(character factionid == value)</EM></P>
