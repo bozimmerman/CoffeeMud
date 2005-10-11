@@ -200,7 +200,8 @@ public class Scriptable extends StdBehavior
         "ISSERVANT", // 73
         "HASNUM", // 74
         "CURRENCY", // 75
-        "VALUE" // 76
+        "VALUE", // 76
+        "EXPLORED" // 77
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -2091,6 +2092,42 @@ public class Scriptable extends StdBehavior
 					returnable=simpleEval(scripted,""+lastKnownLocation.numPCInhabitants(),arg2,arg1,"NUMPCSROOM");
 				break;
 			}
+            case 77: // explored
+            {
+                String whom=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+                String where=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),1));
+                String cmp=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2));
+                String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),2));
+                Environmental E=getArgumentItem(whom,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+                if((E==null)||(!(E instanceof MOB)))
+                {
+                    scriptableError(scripted,"EXPLORED","Unknown Code",whom);
+                    return returnable;
+                }
+                Area A=null;
+                if(!where.equalsIgnoreCase("world"))
+                {
+                    Environmental E2=getArgumentItem(where,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+                    if(E2 instanceof Area)
+                        A=(Area)E2;
+                    else
+                        A=CMMap.getArea(where);
+                    if(A==null)
+                    {
+                        scriptableError(scripted,"EXPLORED","Unknown Area",where);
+                        return returnable;
+                    }
+                }
+                if(lastKnownLocation!=null)
+                {
+                    int pct=0;
+                    MOB M=(MOB)E;
+                    if(M.playerStats()!=null)
+                        pct=M.playerStats().percentVisited(M,A);
+                    returnable=simpleEval(scripted,""+pct,arg2,cmp,"EXPLORED");
+                }
+                break;
+            }
             case 72: // faction
             {
                 String whom=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
@@ -3674,6 +3711,34 @@ public class Scriptable extends StdBehavior
 					results.append(""+lastKnownLocation.numPCInhabitants());
 				break;
 			}
+            case 77: // explored
+            {
+                String whom=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+                String where=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),1));
+                Environmental E=getArgumentItem(whom,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+                if(E instanceof MOB)
+                {
+                    Area A=null;
+                    if(!where.equalsIgnoreCase("world"))
+                    {
+                        Environmental E2=getArgumentItem(where,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+                        if(E2 instanceof Area)
+                            A=(Area)E2;
+                        else
+                            A=CMMap.getArea(where);
+                    }
+                    if((lastKnownLocation!=null)
+                    &&((A!=null)||(where.equalsIgnoreCase("world"))))
+                    {
+                        int pct=0;
+                        MOB M=(MOB)E;
+                        if(M.playerStats()!=null)
+                            pct=M.playerStats().percentVisited(M,A);
+                        results.append(""+pct);
+                    }
+                }
+                break;
+            }
             case 72: // faction
             {
                 String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);

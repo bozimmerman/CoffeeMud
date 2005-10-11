@@ -85,6 +85,7 @@ public class ColorSet extends StdCommand
 		String[][] theSet={{"Normal Text","N"},
 						   {"Highlighted Text","H"},
                            {"Your Fight Text","f"},
+                           {"Fighting You Text","e"},
 						   {"Other Fight Text","F"},
 						   {"Spells","S"},
 						   {"Emotes","E"},

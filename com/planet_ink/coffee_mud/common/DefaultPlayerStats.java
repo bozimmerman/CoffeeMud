@@ -330,11 +330,13 @@ public class DefaultPlayerStats implements PlayerStats
                 }
             }
             if(totalRooms==0) return 100;
+System.out.println("!-"+totalVisits+"/"+totalRooms);            
             double pct=Util.div(totalVisits,totalRooms);
             return (int)Math.round(100.0*pct);
         }
         int numRooms=A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS];
         if(numRooms<=0) return 100;
+System.out.println("!-"+A.name()+"/"+roomSet.roomCount(A.Name())+"/"+numRooms);            
         double pct=Util.div(roomSet.roomCount(A.Name()),numRooms);
         return (int)Math.round(100.0*pct);
     }

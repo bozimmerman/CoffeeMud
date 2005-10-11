@@ -75,7 +75,7 @@ public final class IMC2Driver extends Thread {
     public Hashtable chan_conf = new Hashtable();
 	public Hashtable chan_mask = new Hashtable();
 
-    DataInputStream in;
+    BufferedReader in;
     DataOutputStream out;
 
     public String imc_name = "";
@@ -272,7 +272,7 @@ public final class IMC2Driver extends Thread {
         try 
         {
             sa.setSoTimeout(60000);
-            in = new DataInputStream(sa.getInputStream());
+            in = new BufferedReader(new InputStreamReader(sa.getInputStream()));
             out = new DataOutputStream(sa.getOutputStream());
         } 
         catch(Exception e) 
@@ -1389,9 +1389,9 @@ public final class IMC2Driver extends Thread {
 		return false;
     }
 
-    final public void imc_read_from_socket(DataInputStream in) {
+    final public void imc_read_from_socket(BufferedReader in) {
         try {
-            if ((in!=null)&&(in.available() > 0))
+            if ((in!=null)&&(in.ready()))
 			{
                 String s = in.readLine();
                 if (s == null) return;

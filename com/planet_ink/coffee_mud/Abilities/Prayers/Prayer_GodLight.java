@@ -35,6 +35,8 @@ public class Prayer_GodLight extends Prayer
 		if(affected==null) return;
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GLOWING);
+        if(Util.bset(affectableStats.disposition(),EnvStats.IS_DARK))
+            affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
 		if(!(affected instanceof MOB)) return;
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
 	}
