@@ -282,6 +282,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			for(int i=R.numItems()-1;i>=0;i--)
 			{
 				I=R.fetchItem(i);
+                if(I==null) continue;
                 if(clearAllItems)
                 {
                     I.destroy();
