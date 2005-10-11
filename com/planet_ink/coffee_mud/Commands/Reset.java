@@ -248,6 +248,24 @@ public class Reset extends StdCommand
 			return false;
 		}
 		else
+        if(s.equalsIgnoreCase("propertygarbage"))
+        {
+            Room R=null;
+            LandTitle T=null;
+            for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+            {
+                R=(Room)e.nextElement();
+                T=CoffeeUtensils.getLandTitle(R);
+                if((T!=null)
+                &&(T.landOwner().length()==0))
+                {
+                    T.setLandOwner(mob.Name());
+                    T.setLandOwner("");
+                    T.updateLot();
+                }
+            }
+        }
+        else
 		if(s.equalsIgnoreCase("genraceagingcharts"))
 		{
 		    for(Enumeration e=CMClass.races();e.hasMoreElements();)

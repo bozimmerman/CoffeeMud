@@ -89,7 +89,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 	{
 		if(affected instanceof Room)
 		{
-			lastItemNums=updateLotWithThisData((Room)affected,this,false,lastItemNums);
+			lastItemNums=updateLotWithThisData((Room)affected,this,false,scheduleReset,lastItemNums);
 			if((lastDayDone!=((Room)affected).getArea().getTimeObj().getDayOfMonth())
 			&&(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED)))
 			{
@@ -108,9 +108,10 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 			        {
 			            setLandOwner("");
 			            updateTitle();
-						lastItemNums=updateLotWithThisData((Room)affected,this,false,lastItemNums);
+						lastItemNums=updateLotWithThisData((Room)affected,this,false,scheduleReset,lastItemNums);
 			        }
 			}
+            scheduleReset=false;
 		}
 	}
 }

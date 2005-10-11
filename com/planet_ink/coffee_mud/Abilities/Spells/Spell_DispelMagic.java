@@ -35,6 +35,7 @@ public class Spell_DispelMagic extends Spell
 
 		Ability revokeThis=null;
 		boolean foundSomethingAtLeast=false;
+        boolean admin=CMSecurity.isASysOp(mob);
 		for(int a=0;a<target.numEffects();a++)
 		{
 			Ability A=target.fetchEffect(a);
@@ -49,7 +50,8 @@ public class Spell_DispelMagic extends Spell
 				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
 				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT))
 				&&((A.invoker()==mob)
-				||(A.invoker().envStats().level()<=mob.envStats().level()+5)))
+    				||(A.invoker().envStats().level()<=mob.envStats().level()+5)
+                    ||admin))
 					revokeThis=A;
 			}
 		}

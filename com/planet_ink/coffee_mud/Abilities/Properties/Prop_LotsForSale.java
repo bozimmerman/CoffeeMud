@@ -52,7 +52,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 	{
 		if(!(affected instanceof Room))
 			return;
-		lastItemNums=updateLotWithThisData((Room)affected,this,true,lastItemNums);
+		lastItemNums=updateLotWithThisData((Room)affected,this,true,scheduleReset,lastItemNums);
 
 		Room R=(Room)affected;
 		if(landOwner().length()==0)
@@ -139,5 +139,6 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				R.getArea().fillInAreaRoom(R);
 			}
 		}
+        scheduleReset=false;
 	}
 }
