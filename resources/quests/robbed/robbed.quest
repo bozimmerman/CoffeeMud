@@ -8,8 +8,11 @@ set interval 3600
 set area Midgaard
 # inform the quest that it occurs in Midgaard
 
+set mobgroup MASK=+NAMES -guildmaster "-the waiter"
+# create a subgroup of the mobs in the above area that excludes waiters and guildmasters
+
 set mobtype ShopKeeper
-# load up any mob from the above area of type shopkeeper. Will set a room!
+# load up any mob from the above group of type shopkeeper. Will set a room!
 
 give behavior Scriptable LOAD=quests/robbed/shopkeeper.script
 # load the above behavior into the last mob (in this case, the shopkeeper)

@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -122,6 +123,7 @@ public class Scriptable extends StdBehavior
         "LOGOFF_PROG", // 30
         "REGMASK_PROG", // 31
         "LEVEL_PROG", // 32
+        "CHANNEL_PROG", // 33
 	};
     
 	private static final String[] funcs={
@@ -6347,6 +6349,60 @@ public class Scriptable extends StdBehavior
 					}
 				}
 				break;
+            case 33: // channel prog
+                if(!registeredSpecialEvents.contains(new Integer(CMMsg.TYP_CHANNEL)))
+                {
+                    CMMap.addGlobalHandler(affecting,CMMsg.TYP_CHANNEL);
+                    registeredSpecialEvents.add(new Integer(CMMsg.TYP_CHANNEL));
+                }
+                if(!msg.amISource(monster)
+                &&(Util.bset(msg.othersMajor(),CMMsg.MASK_CHANNEL))
+                &&canTrigger(33))
+                {
+                    boolean doIt=false;
+                    String str=msg.sourceMessage();
+                    if(str==null) str=msg.othersMessage();
+                    if(str==null) str=msg.targetMessage();
+                    if(str==null) break;
+                    str=" "+CoffeeFilter.fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false).toUpperCase()+" ";
+                    trigger=Util.getPastBit(trigger.trim(),0);
+                    if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                    {
+                        trigger=trigger.substring(1).trim().toUpperCase();
+                        if(match(str,trigger))
+                            doIt=true;
+                    }
+                    else
+                    {
+                        int num=Util.numBits(trigger);
+                        for(int i=0;i<num;i++)
+                        {
+                            String t=Util.getCleanBit(trigger,i).trim();
+                            if(str.indexOf(" "+t+" ")>=0)
+                            {
+                                str=t;
+                                doIt=true;
+                                break;
+                            }
+                        }
+                    }
+                    if(doIt)
+                    {
+                        Item Tool=null;
+                        if(msg.tool() instanceof Item)
+                            Tool=(Item)msg.tool();
+                        if(Tool==null) Tool=defaultItem;
+                        if(msg.target() instanceof MOB)
+                            que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str));
+                        else
+                        if(msg.target() instanceof Item)
+                            que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,str));
+                        else
+                            que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,1,str));
+                        return;
+                    }
+                }
+                break;
             case 31: // regmask prog
                 if(!msg.amISource(monster)&&canTrigger(31))
                 {

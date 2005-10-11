@@ -156,6 +156,7 @@ public class Quests implements Cloneable, Quest
 		Vector script=parseScripts(script());
 		Vector loadedMobs=new Vector();
 		Vector loadedItems=new Vector();
+        stuff.clear();
 		Area A=null;
 		Room R=null;
 		MOB M=null;

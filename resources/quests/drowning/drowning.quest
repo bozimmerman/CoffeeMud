@@ -8,8 +8,9 @@ set interval 600
 #since this quest relys on random specified mobs, most errors are turned OFF
 quiet
 
-set locale WaterSurface
+set locale Ocean Water
 # select a random locale of some water surface type
+# the above will select any rooms whose locale IDs hand the words Ocean or Water in them.
 
 quiet set mobtype Human Elf Dwarf HalfElf Halfing Gnome Orc Goblin -guildmaster -cityguard
 # find a random human in that area and bring him or her there

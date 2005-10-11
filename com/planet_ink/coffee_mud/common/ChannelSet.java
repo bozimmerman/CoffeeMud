@@ -167,6 +167,7 @@ public class ChannelSet
 
 	public static void channelQueUp(int i, CMMsg msg)
 	{
+        CMMap.sendGlobalMessage(msg.source(),CMMsg.TYP_CHANNEL,msg);
 		Vector q=getChannelQue(i);
 		synchronized(q)
 		{
