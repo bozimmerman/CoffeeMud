@@ -366,6 +366,18 @@ public class FrontLogin extends StdCommand
 				}
 				if((mob.session()!=null)&&(mob.playerStats()!=null))
 					mob.playerStats().setLastIP(mob.session().getAddress());
+                for(int s=0;s<Sessions.size();s++)
+                {
+                    Session S=Sessions.elementAt(s);
+                    if((S!=null)
+                    &&(S.mob()!=null)
+                    &&(S.mob()!=mob)
+                    &&((!Sense.isCloaked(mob))||(CMSecurity.isASysOp(S.mob())))
+                    &&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
+                    &&(S.mob().playerStats()!=null)
+                    &&((S.mob().playerStats().getFriends().contains(mob.Name())||S.mob().playerStats().getFriends().contains("All"))))
+                        S.mob().tell("^X"+mob.Name()+" has logged on.^.^?");
+                }
 				if((CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("ALWAYS"))
 				&&(!Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
 					mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
@@ -845,6 +857,7 @@ public class FrontLogin extends StdCommand
     				mob.bringToLife(mob.getStartRoom(),true);
     				mob.location().showOthers(mob,mob.location(),CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,"<S-NAME> appears!");
                 }
+                mob.playerStats().leveledDateTime(0);
 				CMClass.DBEngine().DBCreateCharacter(mob);
 				if(CMMap.getPlayer(mob.Name())==null)
 					CMMap.addPlayer(mob);

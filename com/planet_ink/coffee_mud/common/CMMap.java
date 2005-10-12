@@ -265,7 +265,6 @@ public class CMMap
         if(V==null) return true;
         try{
             Environmental E=null;
-            Room R=null;
             for(int v=V.size()-1;v>=0;v--)
             {
                 E=(Environmental)V.elementAt(v);
@@ -275,21 +274,13 @@ public class CMMap
                         CMMap.delGlobalHandler(E,category);
                 }
                 else
-                {
-                    R=CoffeeUtensils.roomLocation(E);
-                    if(R!=null)
-                    {
-                        if(!R.okMessage(host,msg))
-                            return false;
-                    }
-                }
+                if(!E.okMessage(host,msg))
+                    return false;
             }
             for(int v=V.size()-1;v>=0;v--)
             {
                 E=(Environmental)V.elementAt(v);
-                R=CoffeeUtensils.roomLocation(E);
-                if(R!=null)
-                    R.send(host,msg);
+                E.executeMsg(host,msg);
             }
         }
         catch(ArrayIndexOutOfBoundsException x){}

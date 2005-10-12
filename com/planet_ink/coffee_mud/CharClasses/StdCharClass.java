@@ -635,6 +635,7 @@ public class StdCharClass implements CharClass, Cloneable
 		theNews.append(levelAdjuster(mob,1));
 		if(mob.playerStats()!=null)
 		{
+            mob.playerStats().setLeveledDateTime(mob.baseEnvStats().level());
             Vector channels=ChannelSet.getFlaggedChannelNames("DETAILEDLEVELS");
             Vector channels2=ChannelSet.getFlaggedChannelNames("LEVELS");
             if(!Sense.isCloaked(mob))

@@ -49,6 +49,7 @@ public class DefaultPlayerStats implements PlayerStats
 	private Vector securityGroups=new Vector();
     private long accountExpiration=0;
     private RoomnumberSet roomSet=new RoomnumberSet();
+    private DVector levelDateTimes=new DVector(2);
 
 	public String lastIP(){return lastIP;}
 	public void setLastIP(String ip){lastIP=ip;}
@@ -198,6 +199,7 @@ public class DefaultPlayerStats implements PlayerStats
             +((announceMsg.length()>0)?"<ANNOUNCE>"+announceMsg+"</ANNOUNCE>":"")
 			+((tranpoofin.length()>0)?"<TRANPOOFIN>"+tranpoofin+"</TRANPOOFIN>":"")
 			+((tranpoofout.length()>0)?"<TRANPOOFOUT>"+tranpoofout+"</TRANPOOFOUT>":"")
+            +"<DATES>"+this.getLevelDateTimesStr()+"</DATES>"
 			+getSecurityGroupStr()
             +roomSet.xml();
 	}
@@ -244,9 +246,45 @@ public class DefaultPlayerStats implements PlayerStats
 		if(tranpoofout==null) tranpoofout="";
         announceMsg=XMLManager.returnXMLValue(str,"ANNOUNCE");
         if(announceMsg==null) poofout="";
+        String dates=XMLManager.returnXMLValue(str,"DATES");
+        if(dates==null) dates="";
+        // now parse all the level date/times
+        int lastNum=Integer.MIN_VALUE;
+        levelDateTimes.clear();
+        if(dates.length()>0)
+        {
+            Vector sets=Util.parseSemicolons(dates,true);
+            for(int ss=0;ss<sets.size();ss++)
+            {
+                String sStr=(String)sets.elementAt(ss);
+                Vector twin=Util.parseCommas(sStr,true);
+                if(twin.size()!=2) continue;
+                if(Util.s_int((String)twin.firstElement())>=lastNum)
+                {
+                    levelDateTimes.addElement(new Integer(Util.s_int((String)twin.firstElement())),
+                                              new Long(Util.s_long((String)twin.lastElement())));
+                    lastNum=Util.s_int((String)twin.firstElement());
+                }
+            }
+        }
+        if(levelDateTimes.size()==0)
+            levelDateTimes.addElement(new Integer(0),new Long(System.currentTimeMillis()));
         roomSet.parseXML(str);
 	}
-	
+
+    private String getLevelDateTimesStr()
+    {
+        if(levelDateTimes.size()==0)
+            levelDateTimes.addElement(new Integer(0),new Long(System.currentTimeMillis()));
+        StringBuffer buf=new StringBuffer("");
+        for(int ss=0;ss<levelDateTimes.size();ss++)
+        {
+            buf.append(((Integer)levelDateTimes.elementAt(ss,1)).intValue()+",");
+            buf.append(((Long)levelDateTimes.elementAt(ss,2)).intValue()+";");
+        }
+        return buf.toString();
+    }
+    
 	private void setSecurityGroupStr(String grps)
 	{
 		securityGroups=new Vector();
@@ -337,5 +375,47 @@ public class DefaultPlayerStats implements PlayerStats
         if(numRooms<=0) return 100;
         double pct=Util.div(roomSet.roomCount(A.Name()),numRooms);
         return (int)Math.round(100.0*pct);
+    }
+    
+    public long leveledDateTime(int level)
+    {
+        if(levelDateTimes.size()==0)
+            levelDateTimes.addElement(new Integer(0),new Long(System.currentTimeMillis()));
+        long lowest=((Long)levelDateTimes.elementAt(0,2)).longValue();
+        for(int l=1;l<levelDateTimes.size();l++)
+        {
+            if(level<((Integer)levelDateTimes.elementAt(l,1)).intValue())
+                return lowest;
+            lowest=((Long)levelDateTimes.elementAt(l,2)).longValue();
+        }
+        return lowest;
+    }
+    
+    public void setLeveledDateTime(int level)
+    {
+        if(levelDateTimes.size()==0)
+            levelDateTimes.addElement(new Integer(0),new Long(System.currentTimeMillis()));
+        long lastTime=0;
+        for(int l=0;l<levelDateTimes.size();l++)
+        {
+            if(level==((Integer)levelDateTimes.elementAt(l,1)).intValue())
+            {
+                levelDateTimes.setElementAt(l,2,new Long(System.currentTimeMillis()));
+                return;
+            }
+            else
+            if((System.currentTimeMillis()-lastTime)<IQCalendar.MILI_HOUR)
+                return;
+            else
+            if(level<((Integer)levelDateTimes.elementAt(l,1)).intValue())
+            {
+                levelDateTimes.insertElementAt(l,new Integer(level),new Long(System.currentTimeMillis()));
+                return;
+            }
+            lastTime=((Long)levelDateTimes.elementAt(l,2)).longValue();
+        }
+        if((System.currentTimeMillis()-lastTime)<IQCalendar.MILI_HOUR)
+            return;
+        levelDateTimes.addElement(new Integer(level),new Long(System.currentTimeMillis()));
     }
 }

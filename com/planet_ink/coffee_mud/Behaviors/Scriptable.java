@@ -6360,29 +6360,35 @@ public class Scriptable extends StdBehavior
                 &&canTrigger(33))
                 {
                     boolean doIt=false;
-                    String str=msg.sourceMessage();
-                    if(str==null) str=msg.othersMessage();
-                    if(str==null) str=msg.targetMessage();
-                    if(str==null) break;
-                    str=" "+CoffeeFilter.fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false).toUpperCase()+" ";
-                    trigger=Util.getPastBit(trigger.trim(),0);
-                    if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                    String channel=Util.getBit(trigger.trim(),1);
+                    int channelInt=msg.othersMinor()-CMMsg.TYP_CHANNEL;
+                    String str=null;
+                    if(channel.equalsIgnoreCase(ChannelSet.getChannelName(channelInt)))
                     {
-                        trigger=trigger.substring(1).trim().toUpperCase();
-                        if(match(str,trigger))
-                            doIt=true;
-                    }
-                    else
-                    {
-                        int num=Util.numBits(trigger);
-                        for(int i=0;i<num;i++)
+                        str=msg.sourceMessage();
+                        if(str==null) str=msg.othersMessage();
+                        if(str==null) str=msg.targetMessage();
+                        if(str==null) break;
+                        str=" "+CoffeeFilter.fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false).toUpperCase()+" ";
+                        trigger=Util.getPastBit(trigger.trim(),1);
+                        if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
                         {
-                            String t=Util.getCleanBit(trigger,i).trim();
-                            if(str.indexOf(" "+t+" ")>=0)
-                            {
-                                str=t;
+                            trigger=trigger.substring(1).trim().toUpperCase();
+                            if(match(str,trigger))
                                 doIt=true;
-                                break;
+                        }
+                        else
+                        {
+                            int num=Util.numBits(trigger);
+                            for(int i=0;i<num;i++)
+                            {
+                                String t=Util.getCleanBit(trigger,i).trim();
+                                if(str.indexOf(" "+t+" ")>=0)
+                                {
+                                    str=t;
+                                    doIt=true;
+                                    break;
+                                }
                             }
                         }
                     }
