@@ -31,7 +31,8 @@ public class CoffeeTables
 	public static final int STAT_DIVORCES=8;
 	public static final int STAT_CLASSCHANGE=9;
 	public static final int STAT_PURGES=10;
-	public static final int STAT_TOTAL=11;
+    public static final int STAT_SKILLUSE=11;
+	public static final int STAT_TOTAL=12;
 	
 	public static final int STAT_SPECIAL_NUMONLINE=1000;
 	
@@ -102,9 +103,9 @@ public class CoffeeTables
 		return s.trim().replaceAll(" ","_").toUpperCase();
 	}
 	
-	public void bumpVal(MOB mob, int type)
+	public void bumpVal(Environmental E, int type)
 	{
-		if((mob!=null)&&(mob.isMonster())) return;
+		if((E instanceof MOB)&&(((MOB)E).isMonster())) return;
 		
 		if(type==STAT_SPECIAL_NUMONLINE)
 		{
@@ -125,20 +126,27 @@ public class CoffeeTables
 		}
 										   
 		// classes, races, levels, genders, faiths, clanned, grouped
-		bumpVal("B"+tagFix(mob.baseCharStats().getCurrentClass().baseClass()),type);
-		bumpVal("C"+tagFix(mob.baseCharStats().getCurrentClass().ID()),type);
-		bumpVal("R"+tagFix(mob.baseCharStats().getMyRace().ID()),type);
-		bumpVal("L"+mob.baseEnvStats().level(),type);
-		bumpVal("G"+((char)mob.baseCharStats().getStat(CharStats.GENDER)),type);
-		bumpVal("F"+tagFix(mob.getWorshipCharID()),type);
-		bumpVal("Q"+tagFix(mob.getClanID()),type);
-		HashSet H=mob.getGroupMembers(new HashSet());
-		bumpVal("J"+H.size(),type);
-		int pct=0;
-		for(Iterator e=H.iterator();e.hasNext();)
-			if(!((MOB)e.next()).isMonster()) pct++;
-		if(pct==0)pct=1;
-		bumpVal("P"+pct,type);
+        if(E instanceof MOB)
+        {
+            MOB mob=(MOB)E;
+    		bumpVal("B"+tagFix(mob.baseCharStats().getCurrentClass().baseClass()),type);
+    		bumpVal("C"+tagFix(mob.baseCharStats().getCurrentClass().ID()),type);
+    		bumpVal("R"+tagFix(mob.baseCharStats().getMyRace().ID()),type);
+    		bumpVal("L"+mob.baseEnvStats().level(),type);
+    		bumpVal("G"+((char)mob.baseCharStats().getStat(CharStats.GENDER)),type);
+    		bumpVal("F"+tagFix(mob.getWorshipCharID()),type);
+    		bumpVal("Q"+tagFix(mob.getClanID()),type);
+    		HashSet H=mob.getGroupMembers(new HashSet());
+    		bumpVal("J"+H.size(),type);
+    		int pct=0;
+    		for(Iterator e=H.iterator();e.hasNext();)
+    			if(!((MOB)e.next()).isMonster()) pct++;
+    		if(pct==0)pct=1;
+    		bumpVal("P"+pct,type);
+        }
+        else
+        if(E instanceof Ability)
+            bumpVal("A"+tagFix(E.ID()),type);
 	}
 	
 	public void populate(long start, long end, String data)
@@ -186,7 +194,7 @@ public class CoffeeTables
 		if(todays!=null)
 			CMClass.DBEngine().DBUpdateStat(todays.startTime(),todays.data());
 	}
-	public static void bump(MOB mob, int type)
+	public static void bump(Environmental E, int type)
 	{
 		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 			return;
@@ -202,14 +210,14 @@ public class CoffeeTables
 			todays=(CoffeeTables)CMClass.DBEngine().DBReadStat(S.getTimeInMillis());
 			if(todays==null)
 			{
-				Calendar E=Calendar.getInstance();
-				E.set(Calendar.HOUR_OF_DAY,23);
-				E.set(Calendar.MINUTE,59);
-				E.set(Calendar.SECOND,59);
-				E.set(Calendar.MILLISECOND,999);
+				Calendar C=Calendar.getInstance();
+				C.set(Calendar.HOUR_OF_DAY,23);
+				C.set(Calendar.MINUTE,59);
+				C.set(Calendar.SECOND,59);
+				C.set(Calendar.MILLISECOND,999);
 				todays=new CoffeeTables();
 				todays.startTime=S.getTimeInMillis();
-				todays.endTime=E.getTimeInMillis();
+				todays.endTime=C.getTimeInMillis();
 				CMClass.DBEngine().DBCreateStat(todays.startTime(),todays.endTime(),todays.data());
 			}
 		}
@@ -221,16 +229,16 @@ public class CoffeeTables
 			S.set(Calendar.MINUTE,0);
 			S.set(Calendar.SECOND,0);
 			S.set(Calendar.MILLISECOND,0);
-			Calendar E=Calendar.getInstance();
-			E.set(Calendar.HOUR_OF_DAY,23);
-			E.set(Calendar.MINUTE,59);
-			E.set(Calendar.SECOND,59);
-			E.set(Calendar.MILLISECOND,999);
+			Calendar C=Calendar.getInstance();
+			C.set(Calendar.HOUR_OF_DAY,23);
+			C.set(Calendar.MINUTE,59);
+			C.set(Calendar.SECOND,59);
+			C.set(Calendar.MILLISECOND,999);
 			todays=new CoffeeTables();
 			todays.startTime=S.getTimeInMillis();
-			todays.endTime=E.getTimeInMillis();
+			todays.endTime=C.getTimeInMillis();
 			CMClass.DBEngine().DBCreateStat(todays.startTime(),todays.endTime(),todays.data());
 		}
-		todays.bumpVal(mob,type);
+		todays.bumpVal(E,type);
 	}
 }

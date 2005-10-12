@@ -448,7 +448,7 @@ public class GenCharClass extends StdCharClass
             int groupLevel=XMLManager.getIntFromPieces(classData,"SSETLEVEL"+index);
             if((groups.length()==0)||(groupLevel<=lastLevel))
                 break;
-            groupSet.addElement(Util.parse(groups));
+            groupSet.addElement(Util.parse(groups.toUpperCase()));
             groupLevelSet.addElement(new Integer(groupLevel));
             lastLevel=groupLevel;
             index++;
@@ -698,7 +698,7 @@ public class GenCharClass extends StdCharClass
                    break;
                 }
         case 44: if(num<securityGroups.length)
-                    securityGroups[num]=Util.parse(val);
+                    securityGroups[num]=Util.parse(val.toUpperCase());
                  securityGroupCache.clear();
                  break;
         case 45: if(num<securityGroupLevels.length)

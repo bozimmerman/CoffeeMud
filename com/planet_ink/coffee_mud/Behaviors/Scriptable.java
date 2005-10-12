@@ -5796,6 +5796,7 @@ public class Scriptable extends StdBehavior
 							str=str.substring(0,str.indexOf("\'"));
 					}
 					str=(" "+str+" ").toUpperCase();
+                    str=Util.removeColors(str);
 					trigger=trigger.substring(11).trim();
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
@@ -6311,6 +6312,7 @@ public class Scriptable extends StdBehavior
 					if(str==null) str=msg.sourceMessage();
 					if(str==null) break;
 					str=" "+CoffeeFilter.fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false).toUpperCase()+" ";
+                    str=Util.removeColors(str);
 					trigger=Util.getPastBit(trigger.trim(),0);
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
@@ -6369,7 +6371,17 @@ public class Scriptable extends StdBehavior
                         if(str==null) str=msg.othersMessage();
                         if(str==null) str=msg.targetMessage();
                         if(str==null) break;
-                        str=" "+CoffeeFilter.fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false).toUpperCase()+" ";
+                        str=CoffeeFilter.fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false).toUpperCase().trim();
+                        int dex=str.indexOf("["+channel+"]");
+                        if(dex>0) 
+                            str=str.substring(dex+2+channel.length()).trim();
+                        else
+                        {
+                            dex=str.indexOf("'");
+                            int edex=str.lastIndexOf("'");
+                            if(edex>dex) str=str.substring(dex+1,edex);
+                        }
+                        str=" "+Util.removeColors(str)+" ";
                         trigger=Util.getPastBit(trigger.trim(),1);
                         if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
                         {
