@@ -549,9 +549,14 @@ public class MUD extends Thread implements MudHost
 			if(S!=null)S.print("Saving players...");
 			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Saving players...");
 			saveThread.savePlayers();
+            CoffeeTables.update();
 			if(S!=null)S.println("done");
 			Log.sysOut("MUD","All users saved.");
 		}
+        if(S!=null)S.print("Saving stats...");
+        CoffeeTables.update();
+        if(S!=null)S.println("done");
+        Log.sysOut("MUD","Stats saved.");
 		
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down" + (keepItDown? "..." : " and restarting..."));
 		Log.sysOut("MUD","Notifying all objects...");

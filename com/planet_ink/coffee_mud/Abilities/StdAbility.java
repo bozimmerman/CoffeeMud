@@ -616,8 +616,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	{
 		if(mob==null) return;
 		Ability A=mob.fetchAbility(ID());
-		if((A==null)
-        ||(A.isBorrowed(mob))) return;
+		if((A==null)||(A.isBorrowed(mob))) return;
 
         if(!mob.isMonster()) CoffeeTables.bump(this,CoffeeTables.STAT_SKILLUSE);
         

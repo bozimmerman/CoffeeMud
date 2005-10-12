@@ -124,7 +124,6 @@ public class CoffeeTables
 				highestOnline=ct;
 			return;
 		}
-										   
 		// classes, races, levels, genders, faiths, clanned, grouped
         if(E instanceof MOB)
         {
@@ -194,6 +193,7 @@ public class CoffeeTables
 		if(todays!=null)
 			CMClass.DBEngine().DBUpdateStat(todays.startTime(),todays.data());
 	}
+    
 	public static void bump(Environmental E, int type)
 	{
 		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))

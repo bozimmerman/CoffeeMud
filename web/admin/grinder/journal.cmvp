@@ -56,7 +56,7 @@
 <INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@RequestParameter?JOURNALMESSAGE@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Journal Browser</H2></FONT><a href="javascript:sfideas();"><FONT COLOR=WHITE>.</FONT></a></TD></TR>
+	<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Journal Browser<a href="javascript:sfideas();"><FONT COLOR=WHITE>.</FONT></a></H2></FONT></TD></TR>
 		@AddRequestParameter?OLDJOURNAL=@@RequestParameter?JOURNAL@@ @
 		@AddRequestParameter?OLDMESSAGE=@@RequestParameter?JOURNALMESSAGE@@ @
 		@JournalNext?RESET@
