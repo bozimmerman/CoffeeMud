@@ -91,6 +91,17 @@ public class DefaultTimeClock implements TimeClock, Cloneable
             timeDesc.append(", "+Util.replaceAll(getYearNames()[getYear()%getYearNames().length],"#",""+getYear()));
         return timeDesc.toString();
     }
+    
+    public static int determineSeason(String str)
+    {
+        str=str.toUpperCase().trim();
+        if(str.length()==0) return -1;
+        for(int i=0;i<TimeClock.SEASON_DESCS.length;i++)
+            if(TimeClock.SEASON_DESCS[i].startsWith(str))
+                return i;
+        return -1;
+    }
+    
 	public String timeDescription(MOB mob, Room room)
 	{
 		StringBuffer timeDesc=new StringBuffer("");
