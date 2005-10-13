@@ -585,6 +585,28 @@ public class List extends StdCommand
 		return buf;
 	}
 
+    public StringBuffer listJournals()
+    {
+        StringBuffer buf=new StringBuffer("");
+        Vector journals=CMClass.DBEngine().DBReadJournal(null);
+        
+        if(journals.size()==0)
+            buf.append("No journals exits.");
+        else
+        {
+            buf.append("\n\r^xJournals List:^.^N\n\r");
+            buf.append("\n\r^x"+Util.padRight("#",5)+Util.padRight("Name",30)+" Messages^.^N\n\r");
+            for(int i=0;i<journals.size();i++)
+            {
+                String journal=(String)journals.elementAt(i);
+                int messages=CMClass.DBEngine().DBCountJournal(journal,null,null);
+                buf.append(Util.padRight(""+(i+1),5)+Util.padRight(journal,30)+" "+messages);
+                buf.append("^N\n\r");
+            }
+        }
+        return buf;
+    }
+
 	public StringBuffer listTicks(String whichTickTock)
 	{
 		StringBuffer msg=new StringBuffer("\n\r");
@@ -810,7 +832,7 @@ public class List extends StdCommand
 		/*17*/{"PROPERTIES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*18*/{"THIEFSKILLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*19*/{"COMMON","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*20*/{"",""},
+		/*20*/{"JOURNALS","JOURNALS"},
 		/*21*/{"SKILLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*22*/{"QUESTS","CMDQUESTS"},
 		/*23*/{"DISEASES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
@@ -922,7 +944,7 @@ public class List extends StdCommand
 		case 17: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.PROPERTY).toString()); break;
 		case 18: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.THIEF_SKILL).toString()); break;
 		case 19: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.COMMON_SKILL).toString()); break;
-		case 20: break;
+		case 20: s.println(listJournals().toString()); break;
 		case 21: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SKILL).toString()); break;
 		case 22: s.println(listQuests().toString()); break;
 		case 23: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.DISEASE).toString()); break;

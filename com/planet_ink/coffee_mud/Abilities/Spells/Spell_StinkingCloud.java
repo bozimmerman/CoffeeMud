@@ -44,7 +44,9 @@ public class Spell_StinkingCloud extends Spell
 			if((M.location()!=castingLocation)||(M.amDead()))
 				unInvoke();
 			else
-			if((!M.amDead())&&(M.location()!=null)&&(Sense.canSmell(M)))
+			if((!M.amDead())
+            &&(M.location()!=null)
+            &&(Sense.canSmell(M)))
 			{
 				if((M.curState().getHunger()<=0))
 					MUDFight.postDamage(invoker,M,this,M.envStats().level(),CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) in the stinking cloud.");

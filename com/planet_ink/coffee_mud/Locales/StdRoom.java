@@ -913,7 +913,7 @@ public class StdRoom
             }
 		}
         
-        StringBuffer itemStr=CMLister.itemLister(mob,viewItems,false,"RItem"," \"*\"",lookCode==LOOK_LONG,compress);
+        StringBuffer itemStr=CMLister.lister(mob,viewItems,false,"RItem"," \"*\"",lookCode==LOOK_LONG,compress);
         if(itemStr.length()>0)
     		Say.append(itemStr);
 
@@ -1566,6 +1566,10 @@ public class StdRoom
 		}
 		if((mob!=null)&&(found==null)&&(wornReqCode!=Item.WORN_REQ_UNWORNONLY))
 			found=mob.fetchWornItem(thingName);
+        if(found==null)
+        for(int d=0;d<exits.length;d++)
+            if((exits[d]!=null)&&(thingName.equalsIgnoreCase(Directions.getDirectionName(d))))
+                return getExitInDir(d);
 		return found;
 	}
 

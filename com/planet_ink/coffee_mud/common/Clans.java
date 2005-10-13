@@ -36,6 +36,8 @@ public class Clans implements Clan, Tickable
 	protected int ClanStatus=0;
 	protected Vector voteList=null;
 	protected long exp=0;
+    protected Vector clanKills=new Vector();
+    protected String lastClanKillRecord=null;
 	protected double taxRate=0.0;
 	
 	//*****************
@@ -43,6 +45,45 @@ public class Clans implements Clan, Tickable
 	public int government=Clan.GVT_DICTATORSHIP;
 	//*****************
 
+    private synchronized void clanKills()
+    {
+        if(lastClanKillRecord==null)
+        {
+            Vector V=CMClass.DBEngine().DBReadData(ID(),"CLANKILLS",ID()+"/CLANKILLS");
+            clanKills.clear();
+            if(V.size()==0)
+                lastClanKillRecord="";
+            else
+            {
+                lastClanKillRecord=(String)((Vector)V.firstElement()).elementAt(3);
+                V=Util.parseSemicolons(lastClanKillRecord,true);
+                for(int v=0;v<V.size();v++)
+                    clanKills.addElement(new Long(Util.s_long((String)V.elementAt(v))));
+            }
+        }
+    }
+    
+    private void updateClanKills()
+    {
+        Long date=null;
+        StringBuffer str=new StringBuffer("");
+        for(int i=clanKills.size();i>=0;i--)
+        {
+            date=(Long)clanKills.elementAt(i);
+            if(date.longValue()<(System.currentTimeMillis()))
+                clanKills.removeElementAt(i);
+            else
+                str.append(date.longValue()+";");
+        }
+        if((lastClanKillRecord==null)||(!lastClanKillRecord.equals(str.toString())))
+        {
+            lastClanKillRecord=str.toString();
+            CMClass.DBEngine().DBDeleteData(ID(),"CLANKILLS",ID()+"/CLANKILLS");
+            try{Thread.sleep(200);}catch(Exception e){}
+            CMClass.DBEngine().DBCreateData(ID(),"CLANKILLS",ID()+"/CLANKILLS",str.toString());
+        }
+    }
+    
 	public void updateVotes()
 	{
 		CMClass.DBEngine().DBDeleteData(ID(),"CLANVOTES",ID()+"/CLANVOTES");
@@ -82,6 +123,18 @@ public class Clans implements Clan, Tickable
 		voteList.removeElement(CV);
 	}
 
+    public void recordClanKill()
+    {
+        clanKills();
+        clanKills.addElement(new Long(System.currentTimeMillis()));
+        updateClanKills();
+    }
+    public int getCurrentClanKills()
+    {
+        clanKills();
+        return clanKills.size();
+    }
+    
 	public long calculateMapPoints()
 	{
 	    return calculateMapPoints(getControlledAreas());
@@ -901,6 +954,7 @@ public class Clans implements Clan, Tickable
 		government=XMLManager.getIntFromPieces(poliData,"GOVERNMENT");
 		exp=XMLManager.getLongFromPieces(poliData,"EXP");
 		taxRate=XMLManager.getDoubleFromPieces(poliData,"TAXRATE");
+
 		// now RESOURCES!
 		Vector xV=XMLManager.getRealContentsFromPieces(poliData,"RELATIONS");
 		if((xV!=null)&&(xV.size()>0))
@@ -1227,6 +1281,32 @@ public class Clans implements Clan, Tickable
 			        }
 			    }
 			    
+                // calculate winner of the pk contest
+                if(CommonStrings.getVar(CommonStrings.SYSTEM_CLANTROPPK).length()>0)
+                {
+                    Clan winner=null;
+                    for(Enumeration e=Clans.clans();e.hasMoreElements();)
+                    {
+                        Clan C=(Clan)e.nextElement();
+                        if((winner==null)||(C.getCurrentClanKills()>winner.getCurrentClanKills()))
+                            winner=C;
+                    }
+                    if(winner==this)
+                    {
+                        if((!Util.bset(getTrophies(),Clan.TROPHY_PK))&&(getExp()>0))
+                        {
+                            setTrophies(getTrophies()|Clan.TROPHY_PK);
+                            Clans.clanAnnounceAll("The "+typeName()+" "+name()+" has been awarded the trophy for "+Clans.TROPHY_DESCS[Clan.TROPHY_PK]+".");
+                        }
+                    }
+                    else
+                    if(Util.bset(getTrophies(),Clan.TROPHY_PK))
+                    {
+                        setTrophies(getTrophies()-Clan.TROPHY_PK);
+                        clanAnnounce("The "+typeName()+" "+name()+" has lost control of the trophy for "+Clans.TROPHY_DESCS[Clan.TROPHY_PK]+".");
+                    }
+                }
+                
 			    // calculate winner of the conquest contests
 			    if((CommonStrings.getVar(CommonStrings.SYSTEM_CLANTROPAREA).length()>0)
 			    ||(CommonStrings.getVar(CommonStrings.SYSTEM_CLANTROPCP).length()>0))

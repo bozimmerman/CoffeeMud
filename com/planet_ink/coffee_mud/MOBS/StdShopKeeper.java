@@ -684,6 +684,30 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				&&(doISellThis(msg.tool()))
 				&&(!(msg.tool() instanceof Coins)))
 				{
+                    if(location()!=null)
+                    {
+                        int medianLevel=location().getArea().getAreaIStats()[Area.AREASTAT_MEDLEVEL];
+                        if(medianLevel>0)
+                        {
+                            String range=Util.getParmStr(prejudiceFactors(),"RANGE","0");
+                            int rangeI=0;
+                            if((range.endsWith("%"))&&(Util.isInteger(range.substring(0,range.length()-1))))
+                            {
+                                rangeI=Util.s_int(range.substring(0,range.length()-1));
+                                rangeI=(int)Math.round(Util.mul(medianLevel,Util.div(rangeI,100.0)));
+                            }
+                            else
+                            if(Util.isInteger(range))
+                                rangeI=Util.s_int(range);
+                            if((rangeI>0)
+                            &&((msg.tool().envStats().level()>(medianLevel+rangeI))
+                                ||(msg.tool().envStats().level()<(medianLevel-rangeI))))
+                            {
+                                CommonMsgs.say(this,mob,"I'm sorry, that's out of my level range.",true,false);
+                                return false;
+                            }
+                        }
+                    }
 				    double yourValue=yourValue(mob,msg.tool(),false,true).absoluteGoldPrice;
 					if(yourValue<2)
 					{

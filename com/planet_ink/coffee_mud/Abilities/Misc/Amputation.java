@@ -408,12 +408,12 @@ public class Amputation extends StdAbility
 		if(target!=null)
 		{
 			if(target instanceof MOB)
-				((MOB)target).location().addItemRefuse(limb,Item.REFUSE_PLAYER_DROP);
+				((MOB)target).location().addItemRefuse(limb,Item.REFUSE_MONSTER_EQ);
 			else
 			if((target instanceof DeadBody)
 			&&(((Item)target).owner()!=null)
 			&&(((Item)target).owner() instanceof Room))
-				((Room)((Item)target).owner()).addItemRefuse(limb,Item.REFUSE_PLAYER_DROP);
+				((Room)((Item)target).owner()).addItemRefuse(limb,Item.REFUSE_MONSTER_EQ);
 		}
 		Vector theRest=A.affectedLimbNameSet(target,gone,A.missingLimbNameSet());
 		if(!theRest.contains(gone)) theRest.addElement(gone);

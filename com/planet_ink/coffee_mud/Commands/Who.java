@@ -118,6 +118,22 @@ public class Who extends StdCommand
 			friends=mob.playerStats().getFriends();
 			mobName=null;
 		}
+        
+        if((mobName!=null)
+        &&(mob!=null)
+        &&(mobName.equalsIgnoreCase("pk")
+        ||mobName.equalsIgnoreCase("pkill")
+        ||mobName.equalsIgnoreCase("playerkill")))
+        {
+            friends=new HashSet();
+            for(int s=0;s<Sessions.size();s++)
+            {
+                Session thisSession=Sessions.elementAt(s);
+                MOB mob2=thisSession.mob();
+                if((mob2!=null)&&(Util.bset(mob2.getBitmap(),MOB.ATT_PLAYERKILL)))
+                    friends.add(mob2.Name());
+            }
+        }
 
 		StringBuffer msg=new StringBuffer("");
 		for(int s=0;s<Sessions.size();s++)

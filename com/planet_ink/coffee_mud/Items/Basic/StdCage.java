@@ -67,7 +67,7 @@ public class StdCage extends StdContainer
 						if((item!=null)&&(item.container()==this))
 							newItems.addElement(item);
 					}
-					buf.append(CMLister.itemLister(mob,newItems,true,"CMItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
+					buf.append(CMLister.lister(mob,newItems,true,"CMItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
 				}
 				else
 				if(owner instanceof Room)
@@ -80,7 +80,7 @@ public class StdCage extends StdContainer
 						if((item!=null)&&(item.container()==this))
 							newItems.addElement(item);
 					}
-					buf.append(CMLister.itemLister(mob,newItems,true,"CRItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
+					buf.append(CMLister.lister(mob,newItems,true,"CRItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
 				}
 				mob.tell(buf.toString());
 			}

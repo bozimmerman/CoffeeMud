@@ -58,7 +58,9 @@ public class Social implements Environmental
 						  boolean auto)
 	{
 		String targetStr="";
-		if((commands.size()>1)&&(!((String)commands.elementAt(1)).equalsIgnoreCase("SELF")))
+		if((commands.size()>1)
+        &&(!((String)commands.elementAt(1)).equalsIgnoreCase("SELF"))
+        &&(!((String)commands.elementAt(1)).equalsIgnoreCase("ALL")))
 			targetStr=(String)commands.elementAt(1);
 
 		Environmental Target=target;
@@ -122,7 +124,9 @@ public class Social implements Environmental
 								boolean makeTarget)
 	{
 		String targetStr="";
-		if((commands.size()>1)&&(!((String)commands.elementAt(1)).equalsIgnoreCase("SELF")))
+		if((commands.size()>1)
+        &&(!((String)commands.elementAt(1)).equalsIgnoreCase("SELF"))
+        &&(!((String)commands.elementAt(1)).equalsIgnoreCase("ALL")))
 			targetStr=(String)commands.elementAt(1);
 		Environmental Target=null;
 		if((Target==null)&&(targetStr.length()>0))

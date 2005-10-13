@@ -404,6 +404,32 @@ public class StdExit implements Exit
 		return Say;
 	}
 
+    private static boolean isAClearView(MOB mob, Room room, Exit exit)
+    {
+        if((room!=null)
+        &&(exit!=null)
+        &&(exit.isOpen())
+        &&(Sense.canBeSeenBy(room,mob))
+        &&(Sense.canBeSeenBy(exit,mob)))
+        {
+            int domain=room.domainType();
+            switch(domain)
+            {
+            case Room.DOMAIN_INDOORS_AIR:
+            case Room.DOMAIN_INDOORS_UNDERWATER:
+            case Room.DOMAIN_OUTDOORS_AIR:
+            case Room.DOMAIN_OUTDOORS_UNDERWATER:
+            {
+                int weather=room.getArea().getClimateObj().weatherType(room);
+                if((weather!=Climate.WEATHER_BLIZZARD)&&(weather!=Climate.WEATHER_DUSTSTORM))
+                    return true;
+                break;
+            }
+            }
+        }
+        return false;
+    }
+    
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		for(int b=0;b<numBehaviors();b++)
@@ -433,14 +459,60 @@ public class StdExit implements Exit
 				else
 				if(mob.location()!=null)
 				{
-					Room room=null;
+                    Room room=null;
+                    int direction=-1;
+                    if(msg.tool() instanceof Room)
+                        room=(Room)msg.tool();
+                    else
 					for(int r=0;r<Directions.NUM_DIRECTIONS;r++)
 						if(mob.location().getExitInDir(r)==this)
 						{
 							room=mob.location().getRoomInDir(r);
 							break;
 						}
-					mob.tell(this.viewableText(mob,room).toString());
+                    if(room!=null)
+                    for(int r=0;r<Directions.NUM_DIRECTIONS;r++)
+                        if((mob.location().getRoomInDir(r)==room)
+                        &&((mob.location().getExitInDir(r)==this)))
+                            direction=r;
+					mob.tell(viewableText(mob,room).toString());
+                    if(isAClearView(mob,room,this)&&(direction>=0))
+                    {
+                        Vector view=null;
+                        Vector items=new Vector();
+                        if(room.getGridParent()!=null)
+                            view=room.getGridParent().getAllRooms();
+                        else
+                        {
+                            view=new Vector();
+                            view.addElement(room);
+                            for(int i=0;i<5;i++)
+                            {
+                                room=room.getRoomInDir(direction);
+                                Exit E=room.getExitInDir(direction);
+                                if((room!=null)&&(isAClearView(mob,room,E)))
+                                    view.addElement(room);
+                            }
+                        }
+                        Environmental E=null;
+                        for(int r=0;r<view.size();r++)
+                        {
+                            room=(Room)view.elementAt(r);
+                            for(int i=0;i<room.numItems();i++)
+                            {
+                                E=room.fetchItem(i);
+                                if(E!=null) items.addElement(E);
+                            }
+                            for(int i=0;i<room.numInhabitants();i++)
+                            {
+                                E=room.fetchInhabitant(i);
+                                if(E!=null) items.addElement(E);
+                            }
+                        }
+                        StringBuffer seenThatWay=CMLister.lister(msg.source(),items,true,"","",false,true);
+                        if(seenThatWay.length()>0)
+                            mob.tell("Yonder, you can also see: "+seenThatWay.toString());
+                    }
 				}
 				else
 					mob.tell("You don't see anything special.");

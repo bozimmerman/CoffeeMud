@@ -849,7 +849,7 @@ public class Spell_Wish extends Spell
 					mob.tell(str.toString()+"\n\r");
 					((MOB)target).baseCharStats().setCurrentClass(C);
 					if((!((MOB)target).isMonster())&&(((MOB)target).soulMate()==null))
-						CoffeeTables.bump(((MOB)target),CoffeeTables.STAT_CLASSCHANGE);
+						CoffeeTables.bump(target,CoffeeTables.STAT_CLASSCHANGE);
 					((MOB)target).baseCharStats().getCurrentClass().startCharacter((MOB)target,false,true);
 					((MOB)target).recoverCharStats();
 					((MOB)target).recoverEnvStats();

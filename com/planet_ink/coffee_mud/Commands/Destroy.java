@@ -469,7 +469,9 @@ public class Destroy extends BaseItemParser
 		if(commands.size()>3)
 		{
 			String therest=Util.combine(commands,3);
-			if(!((therest.equalsIgnoreCase("<T-NAME>")||therest.equalsIgnoreCase("SELF"))))
+			if(!((therest.equalsIgnoreCase("<T-NAME>")
+                    ||therest.equalsIgnoreCase("SELF")
+                    ||therest.equalsIgnoreCase("ALL"))))
 			{
 				mob.session().rawPrintln("but fail to specify the proper second parameter.\n\rThe format is DESTROY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r");
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
@@ -751,6 +753,42 @@ public class Destroy extends BaseItemParser
 			}
 		}
         else
+        if(commandType.equals("JOURNAL"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")) return errorOut(mob);
+            if(commands.size()<3)
+            {
+                mob.tell("Destroy which journal? Try List Journal");
+                return errorOut(mob);
+            }
+            Vector V=CMClass.DBEngine().DBReadJournal(null);
+            String name=Util.combine(commands,2);
+            int which=-1;
+            for(int v=0;v<V.size();v++)
+                if(((String)V.elementAt(v)).equalsIgnoreCase(name))
+                {
+                    name=(String)V.elementAt(v);
+                    which=v;
+                    break;
+                }
+            if(which<0)
+            for(int v=0;v<V.size();v++)
+                if(((String)V.elementAt(v)).startsWith(name))
+                {
+                    name=(String)V.elementAt(v);
+                    which=v;
+                    break;
+                }
+            if(which<0)
+                mob.tell("Please enter a valid journal name to delete.  Use List Journals for more information.");
+            else
+            if(mob.session().confirm("This will destroy all "+CMClass.DBEngine().DBCountJournal(name,null,null)+" messages.  Are you SURE (y/N)? ","N"))
+            {
+                CMClass.DBEngine().DBDeleteJournal(name,Integer.MAX_VALUE);
+                mob.tell("It is done.");
+            }
+        }
+        else
         if(commandType.equals("FACTION"))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"CMDFACTIONS")) return errorOut(mob);
@@ -936,7 +974,7 @@ public class Destroy extends BaseItemParser
 					mob.tell(
 						"\n\rYou cannot destroy a '"+commandType+"'. "
 						+"However, you might try an "
-						+"EXIT, ITEM, USER, MOB, QUEST, FACTION, SOCIAL, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, POLL, or a ROOM.");
+						+"EXIT, ITEM, USER, MOB, QUEST, FACTION, JOURNAL, SOCIAL, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, POLL, or a ROOM.");
 				}
 			}
 		}

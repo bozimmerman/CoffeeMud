@@ -161,6 +161,7 @@ public class Socials
 		int x=name.toUpperCase().indexOf("<T-NAME>");
 		boolean targeted=false;
 		boolean self=false;
+        boolean all=false;
 		if(x>=0)
 		{
 			targeted=true;
@@ -172,6 +173,12 @@ public class Socials
 			self=true;
 			name=name.substring(0,name.length()-4).trim().toUpperCase();
 		}
+        else
+        if(name.toUpperCase().endsWith("ALL"))
+        {
+            all=true;
+            name=name.substring(0,name.length()-3).trim().toUpperCase();
+        }
 
 
 		mob.session().rawPrintln("\n\rSocial name '"+name+"' Enter new.");
@@ -181,8 +188,8 @@ public class Socials
 		else
 			mob.session().println("(no change)");
 
-		mob.session().rawPrintln("\n\rTarget="+(targeted?"TARGET":(self?"SELF":"NONE")));
-		newName=mob.session().choose("Change T)arget, S)elf, N)one: ","TSN","");
+		mob.session().rawPrintln("\n\rTarget="+(targeted?"TARGET":(self?"SELF":all?"ALL":"NONE")));
+		newName=mob.session().choose("Change T)arget, S)elf, A)ll, or N)one: ","TSNA","");
 		if((newName!=null)&&(newName.length()>0))
 		{
 			newName=newName.toUpperCase();
@@ -191,13 +198,21 @@ public class Socials
 				case 'T':
 				targeted=true;
 				self=false;
+                all=false;
 				break;
+                case 'A':
+                targeted=false;
+                self=false;
+                all=true;
+                break;
 				case 'S':
 				targeted=false;
+                all=false;
 				self=true;
 				break;
 				case 'N':
 				targeted=false;
+                all=false;
 				self=false;
 				break;
 			}
@@ -210,6 +225,9 @@ public class Socials
 		else
 		if(self)
 			soc.setName(name+" SELF");
+        else
+        if(all)
+            soc.setName(name+" ALL");
 		else
 			soc.setName(name);
 
@@ -365,7 +383,7 @@ public class Socials
 		if(C.size()>1)
 		{
 			String Target=((String)C.elementAt(1)).toUpperCase();
-			if(!Target.equals("SELF"))
+			if((!Target.equals("SELF"))&&(!Target.equals("ALL")))
 				Target="<T-NAME>";
 			theRest=" "+Target;
 		}
@@ -437,6 +455,21 @@ public class Socials
 				if(!V.contains(S1))
 					V.addElement(S1);
 			}
+            Vector sorted=new Vector();
+            while(V.size()>0)
+            {
+                Social lowest=(Social)V.firstElement();
+                Social S=null;
+                for(int i=1;i<V.size();i++)
+                {
+                    S=(Social)V.elementAt(i);
+                    if(S.name().compareToIgnoreCase(lowest.Name())<=0)
+                        lowest=S;
+                }
+                V.remove(lowest);
+                sorted.add(lowest);
+            }
+            V=sorted;
 			for(int v=0;v<V.size();v++)
 			{
 				Social I=(Social)V.elementAt(v);
@@ -494,8 +527,8 @@ public class Socials
 					else
 						buf.append(stuff[i]+"\t");
 				}
-				buf.setCharAt(buf.length()-1,'\n');
-				buf.append('\r');
+				buf.setCharAt(buf.length()-1,'\r');
+				buf.append('\n');
 			}
 			writer.write(buf.toString());
 			writer.flush();

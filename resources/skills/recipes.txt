@@ -3,7 +3,7 @@ mush	FOOD		1	hops	2	water	1
 hard-boiled eggs	FOOD		1	eggs	1	water	1										
 corn on the cob	FOOD		2	corn	1												
 fried eggs	FOOD		2	eggs													
-creamed corn	FOOD		3	corn	1												
+creamed corn	FOOD		3	corn	1	milk	1										
 fried tomatoes	FOOD		3	tomatoes	1												
 cooked olives	FOOD		4	olives	1												
 fried rice	FOOD		4	rice	1												

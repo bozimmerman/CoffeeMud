@@ -71,6 +71,7 @@ public class Look extends StdCommand
 				}
 			}
 			int dirCode=-1;
+            Environmental lookingTool=null;
 			if(thisThang==null)
 			{
 				dirCode=Directions.getGoodDirectionCode(ID);
@@ -79,7 +80,10 @@ public class Look extends StdCommand
 					Room room=mob.location().getRoomInDir(dirCode);
 					Exit exit=mob.location().getExitInDir(dirCode);
 					if((room!=null)&&(exit!=null))
+                    {
 						thisThang=exit;
+                        lookingTool=room;
+                    }
 					else
 					{
 						mob.tell("You don't see anything that way.");
@@ -98,7 +102,7 @@ public class Look extends StdCommand
 					if(dirCode>=0)
 						name=Directions.getDirectionName(dirCode);
 				}
-				FullMsg msg=new FullMsg(mob,thisThang,null,CMMsg.MSG_LOOK,textMsg+name+".");
+				FullMsg msg=new FullMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK,textMsg+name+".");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 				if((thisThang instanceof Room)&&(Util.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS)))

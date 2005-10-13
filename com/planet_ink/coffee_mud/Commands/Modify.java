@@ -730,7 +730,9 @@ public class Modify extends BaseGenerics
 		if(commands.size()>3)
 		{
 			String therest=Util.combine(commands,3);
-			if(!((therest.equalsIgnoreCase("<T-NAME>")||therest.equalsIgnoreCase("SELF"))))
+			if(!((therest.equalsIgnoreCase("<T-NAME>")
+                    ||therest.equalsIgnoreCase("SELF")
+                    ||therest.equalsIgnoreCase("ALL"))))
 			{
 				mob.session().rawPrintln("but fail to specify the proper second parameter.\n\rThe format is MODIFY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r");
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");

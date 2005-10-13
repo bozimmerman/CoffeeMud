@@ -6185,6 +6185,7 @@ public class Scriptable extends StdBehavior
 				&&(msg.amITarget(eventMob)||(!(affecting instanceof MOB)))
 				&&(!msg.amISource(monster))&&canTrigger(19)
 				&&(msg.tool() instanceof Coins)
+                &&(((Coins)msg.tool()).getCurrency().equals(BeanCounter.getCurrency(monster)))
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					trigger=trigger.substring(10).trim();
