@@ -49,10 +49,18 @@ public class StdArea implements Area
 	protected String currency="";
 	public void setCurrency(String newCurrency)
 	{
-	    if(currency.length()>0)
-	        BeanCounter.unloadCurrencySet(currency);
-	    currency=newCurrency;
-	    BeanCounter.getCurrencySet(currency);
+        if(currency.length()>0)
+        {
+            BeanCounter.unloadCurrencySet(currency);
+            currency=newCurrency;
+            for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+                BeanCounter.getCurrencySet(((Area)e.nextElement()).getCurrency());
+        }
+        else
+        {
+            currency=newCurrency;
+            BeanCounter.getCurrencySet(currency);
+        }
 	}
 	public String getCurrency(){return currency;}
 
