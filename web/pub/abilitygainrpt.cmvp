@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>Ability Gain Report</title>
+</head>
+
+<body>
+<h3>Ability Gain Report</h3><P>
+<BR><FONT COLOR=BLACK>
+<H2>General Cross-Class Report</H2>
+@AbilityGainReport@
+<P>
+<HR>
+<H2>By-Class Report</H2>
+<TABLE WIDTH=100%>
+<TR><TD WIDTH=30%>CLASS</TD><TD>Data</TD></TR>
+@BaseCharClassNext?RESET@
+@loop@
+@BaseCharClassNext@
+	@CharClassNext?RESET@
+	@loop@
+		@CharClassNext@
+		<TR>
+		<TD VALIGN=TOP><h3><FONT COLOR=RED>@CharClassName@</FONT></h3></TD>
+		<TD>@AbilityGainReport@</TD>
+		</TR>
+		<TR><TD COLSPAN=2><HR></TD></TR>
+	@back@
+@back@
+</TABLE>
+</BODY>
+</HTML>

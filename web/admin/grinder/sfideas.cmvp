@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?SYSOP=true&AUTH_JOURNALS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<title>SourceForge RFE Submitter</title>
+	<script language=JavaScript>
+	<!--
+		function submittosf()
+		{
+			document.SOURCEFORGE.submit();
+		}
+		function Clicked(action)
+		{
+			document.JOURNAL.action=action;
+			document.JOURNAL.JOURNAL.value='';
+			document.JOURNAL.JOURNALMESSAGE.value='';
+			document.JOURNAL.FUNCTION.value='';
+			document.JOURNAL.submit();
+		}
+		function Clicked1(journal)
+		{
+			document.JOURNAL.JOURNAL.value=journal;
+			document.JOURNAL.JOURNALMESSAGE.value='';
+			document.JOURNAL.FUNCTION.value='';
+			document.JOURNAL.action="sfideas.cmvp#"+journal;
+			document.JOURNAL.submit();
+		}
+		function Clicked2(journal,message)
+		{
+			document.JOURNAL.JOURNAL.value=journal;
+			document.JOURNAL.JOURNALMESSAGE.value=message;
+			document.JOURNAL.FUNCTION.value='';
+			document.JOURNAL.action="sfideas.cmvp#"+journal;
+			document.JOURNAL.submit();
+		}
+		function Clicked3(journal,message,action)
+		{
+			document.JOURNAL.JOURNAL.value=journal;
+			document.JOURNAL.JOURNALMESSAGE.value=message;
+			document.JOURNAL.FUNCTION.value=action;
+			document.JOURNAL.action="sfideas.cmvp#"+journal;
+			document.JOURNAL.submit();
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<CENTER>
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
+<FORM NAME=JOURNAL TARGET=_top METHOD=POST ACTION="sfideas.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
+<INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@RequestParameter?JOURNALMESSAGE@">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+</FORM>
+<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ SourceForge RFE Submitter</H2></FONT></TD></TR>
+		@AddRequestParameter?OLDJOURNAL=@@RequestParameter?JOURNAL@@ @
+		@AddRequestParameter?OLDMESSAGE=@@RequestParameter?JOURNALMESSAGE@@ @
+		@JournalNext?RESET@
+		@loop@
+			@JournalNext@
+		    <TR><TD WIDTH=30% VALIGN=TOP>
+			<a name="@JournalName@" href="javascript:Clicked1('@JournalName@')"><FONT COLOR=YELLOW>@JournalName@</FONT></a>
+			@if?CheckReqParm?JOURNAL=@@RequestParameter?OLDJOURNAL@@ @
+				@if?CheckReqParm?FUNCTION=DELETE@
+				<CENTER><FONT COLOR=RED><B>@JournalFunction?DELETE@</B></FONT></CENTER>
+				@endif@
+				@if?CheckReqParm?FUNCTION=TRANSFER@
+				<CENTER><FONT COLOR=RED><B>@JournalFunction?TRANSFER@</B></FONT></CENTER>
+				@endif@
+				@if?CheckReqParm?FUNCTION=EMAIL@
+				<CENTER><FONT COLOR=RED><B>@JournalFunction?EMAIL@</B></FONT></CENTER>
+				@endif@
+				@if?CheckReqParm?FUNCTION=NEWPOST@
+				<CENTER><FONT COLOR=RED><B>@JournalFunction?NEWPOST@</B></FONT></CENTER>
+				@endif@
+				@AddRequestParameter?OLDMESSAGE=@@RequestParameter?JOURNALMESSAGE@@ @
+			
+				@JournalMessageNext?RESET@
+				<UL>
+				@loop@
+					@JournalMessageNext@
+					<LI><a href="javascript:Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@')">
+					<FONT COLOR=YELLOW>
+					@RequestParameter?JOURNALMESSAGE@
+					</FONT>
+					<FONT COLOR=WHITE>. @JournalInfo?SUBJECT@
+					</FONT>
+					</a>
+				@back@
+				</UL>
+				</TD>
+				<TD WIDTH=70% VALIGN=TOP>
+				@AddRequestParameter?JOURNALMESSAGE=@@RequestParameter?OLDMESSAGE@@ @
+				@AddRequestParameter?JOURNAL=@@RequestParameter?OLDJOURNAL@@ @
+				
+				@if?!CheckReqParm?JOURNAL=@
+					@if?!CheckReqParm?JOURNALMESSAGE=@
+						<FONT COLOR=YELLOW>Message: #@RequestParameter?JOURNALMESSAGE@ <b>For Project:</b> CoffeeMud<BR>
+						<form NAME="SOURCEFORGE" ID="SOURCEFORGE" method="POST" enctype="multipart/form-data" ACTION="http://sourceforge.net/tracker/">
+						<input type="hidden" name="group_id" value="110299">
+						<input type="hidden" name="atid" value="655944">
+						<input type="hidden" NAME="func" value="postadd">
+						<table>
+						<tr>
+							<td valign="top">
+							<FONT COLOR=YELLOW>
+								<b>Category: 
+							<select NAME="category_id">
+							<OPTION VALUE="100">None</OPTION>
+									<OPTION VALUE="638966">Base Engine</OPTION>
+									<OPTION VALUE="680465">Clan Features</OPTION>
+									<OPTION VALUE="664086">Guides/Docs</OPTION>
+									<OPTION VALUE="664074">Help files/Common Skill lists</OPTION>
+									<OPTION VALUE="664075">High-Tech System</OPTION>
+									<OPTION VALUE="718720">New Archon Commands/Security</OPTION>
+									<OPTION VALUE="664077">New Behaviors/Properties</OPTION>
+									<OPTION VALUE="664078">New Common Skills</OPTION>
+									<OPTION VALUE="664081">New Diseases/Poisons/Traps</OPTION>
+									<OPTION VALUE="664079">New Fighter/Thief Skills</OPTION>
+									<OPTION VALUE="664082">New Languages/Racial Skills</OPTION>
+									<OPTION VALUE="664083">New Sample Quests</OPTION>
+									<OPTION VALUE="677295">New Scripting Features</OPTION>
+									<OPTION VALUE="664080">New Spells/Chants/Prayers/Song</OPTION>
+									<OPTION VALUE="664085">New Web/MUDGrinder Features</OPTION>
+									<OPTION VALUE="664084">Other/Miscellaneous</OPTION>
+									<OPTION VALUE="664073">Socials</OPTION>
+									<OPTION VALUE="664076">Trade/Commerce System</OPTION>
+							</select>
+							</td>
+							<td>
+							<FONT COLOR=YELLOW>
+								<b>Group: 
+								
+							<select NAME="artifact_group_id">
+							<OPTION VALUE="100">None</OPTION>
+									<OPTION VALUE="479381">Currency</OPTION>
+									<OPTION VALUE="482779">Dreaming</OPTION>
+									<OPTION VALUE="479382">Economy</OPTION>
+									<OPTION VALUE="483866">Law</OPTION>
+									<OPTION VALUE="479383">Mating/Sex</OPTION>
+									<OPTION VALUE="402578">Post Version 5</OPTION>
+							</select>
+							</td>
+						</tr>
+					
+						<tr>
+							<td>
+							<FONT COLOR=YELLOW>
+								<b>Assigned To: 
+								
+							<select NAME="assigned_to">
+							<OPTION VALUE="100">None</OPTION>
+									<OPTION VALUE="1048818">bozimmerman</OPTION>
+									<OPTION VALUE="1020668">syypher</OPTION>
+									<OPTION VALUE="1110860">thrinntu</OPTION>
+							</select>
+							</td>
+							<td>
+							<FONT COLOR=YELLOW>
+								<b>Priority: 
+								<select NAME="priority"><OPTION VALUE="1" >1 - Lowest<OPTION VALUE="2" >2<OPTION VALUE="3" >3<OPTION VALUE="4" >4<OPTION VALUE="5" selected>5 - Medium<OPTION VALUE="6" >6<OPTION VALUE="7" >7<OPTION VALUE="8" >8<OPTION VALUE="9" >9 - Highest</select>
+							</td>
+						</tr>
+					
+						<tr>
+							<td colspan="2">
+							<FONT COLOR=YELLOW>
+								<b>Summary: <input type="text" name="summary" size="35" maxlength="60" VALUE="@JournalInfo?SUBJECT@">
+							</td>
+						</tr>
+					
+						<tr>
+							<td colspan="2" ALIGN=LEFT>
+							<FONT COLOR=YELLOW>
+								<b>Detailed Description:</b><BR>
+<textarea name="details" rows="15" cols="55" wrap="hard">
+@JournalInfo?MESSAGE@
+(From: @JournalInfo?FROM@ Date: @JournalInfo?DATE@)
+</textarea>
+							</td>
+						</tr>
+						<tr>
+							<td colspan=2>
+								<input type="button" name="submit rfe" value="SUBMIT RFE" onclick="submittosf()">
+								</form>
+								<p>
+							</td>
+						</tr>
+					
+					</table>
+					@endif@
+				@endif@
+				</TD>
+			@else@
+			<TD><BR></TR>
+			@endif@
+		@back@
+</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=50% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=REFRESH VALUE="REFRESH" ONCLICK="Clicked2('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@');">
+	</TD>
+	<TD WIDTH=50% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+@endif@
+@endif@

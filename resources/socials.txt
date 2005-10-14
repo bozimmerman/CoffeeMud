@@ -457,7 +457,9 @@ ww	PLEAD	You beg and plead to anyone who will listen.	<S-NAME> pleads <S-HIS-HER
 mv	POCKETS	You shove your hands into your pockets, look skyward and whistle a jaunty tune.	<S-NAME> shove <S-HIS-HER> hands into <S-HIS-HER> pockets, look skyward and whistle a jaunty tune.		
 mo	POINT	You point in every direction.	<S-NAME> points excitedly!		
 mo	POINT <T-NAME>	You point at <T-NAMESELF>.	<S-NAME> points excitedly at <T-NAMESELF>!	<S-NAME> points at you.  How rude!	You point at no one in particular.
+mv	POINT EAST	You point east.	<S-NAME> point(s) east.		
 mo	POINT SELF	You point at yourself, obviously very confused.	<S-NAME> points at <S-HIM-HERSELF>, obviously very confused.		
+m 	POINT WEST	You point west.	<S-NAME> points west.		
 mo	POKE	Poke who??			
 mt	POKE <T-NAME>	You poke <T-HIM-HER> in the ribs.	<S-NAME> pokes <T-NAMESELF> in the ribs.	<S-NAME> pokes you in the ribs.	You can't poke someone who's not here!.
 mo	POKE SELF	You poke yourself in the ribs, feeling very silly.	<S-NAME> pokes <S-HIM-HERSELF> in the ribs, looking very sheepish.		

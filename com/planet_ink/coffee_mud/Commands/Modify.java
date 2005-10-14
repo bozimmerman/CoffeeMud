@@ -722,46 +722,29 @@ public class Modify extends BaseGenerics
 
 		if(commands.size()<3)
 		{
-			mob.session().rawPrintln("but fail to specify the proper fields.\n\rThe format is MODIFY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r");
+			mob.session().rawPrintln("but fail to specify the proper fields.\n\rThe format is MODIFY SOCIAL [NAME] ([PARAM])\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		else
-		if(commands.size()>3)
-		{
-			String therest=Util.combine(commands,3);
-			if(!((therest.equalsIgnoreCase("<T-NAME>")
-                    ||therest.equalsIgnoreCase("SELF")
-                    ||therest.equalsIgnoreCase("ALL"))))
-			{
-				mob.session().rawPrintln("but fail to specify the proper second parameter.\n\rThe format is MODIFY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r");
-				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
-				return;
-			}
-		}
-
-		String stuff=Util.combine(commands,2).toUpperCase();
-		Social soc2=Socials.FetchSocial(stuff,true);
-		if(soc2==null)
-		{
-			mob.tell("but fail to specify an EXISTING SOCIAL!\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
-			return;
-		}
-
-		if(Socials.modifySocialInterface(mob,soc2))
-		{
-			soc2.setName(soc2.name().toUpperCase());
-			if(Socials.FetchSocial(soc2.name(),true)!=soc2)
-			{
-				mob.session().rawPrintln("That social already exists in another form (<T-NAME>, or SELF).  Try deleting the other one first!");
-				return;
-			}
-			Resources.removeResource("SOCIALS LIST");
-			Socials.save();
-			Log.sysOut("SysopSocials",mob.Name()+" modified social "+soc2.name()+".");
-		}
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just increased!");
+        String name=((String)commands.elementAt(2)).toUpperCase();
+        String stuff="";
+        if(commands.size()>3)
+            stuff=Util.combine(commands,3).toUpperCase().trim();
+        if(stuff.startsWith("<")||stuff.startsWith(">")||(stuff.startsWith("T-")))
+            stuff="TNAME";
+        if(stuff.equals("TNAME")) 
+            stuff="<T-NAME>";
+        String oldStuff=stuff;
+        if(stuff.equals("NONE")) 
+            stuff="";
+        if(Socials.FetchSocial((name+" "+stuff).trim(),false)==null)
+        {
+            mob.tell("The social '"+stuff+"' does not exist.");
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+            return;
+        }
+		Socials.modifySocialInterface(mob,(name+" "+oldStuff).trim());
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just fluxuated!");
 	}
 
 	public void players(MOB mob, Vector commands)

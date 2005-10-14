@@ -401,22 +401,14 @@ public class Create extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-
-		Social soc2=new Social();
-		soc2.setName(((String)commands.elementAt(2)).toUpperCase());
-		if(Socials.modifySocialInterface(mob,soc2))
-		{
-			soc2.setName(soc2.name().toUpperCase());
-			if(Socials.FetchSocial(soc2.name(),true)!=null)
-			{
-				mob.tell("That social already exists.  Try MODIFY!");
-				return;
-			}
-			Socials.put(soc2.name(),soc2);
-			Resources.removeResource("SOCIALS LIST");
-			Socials.save();
-			Log.sysOut("SysopSocials",mob.Name()+" created social "+soc2.name()+".");
-		}
+        String stuff=Util.combine(commands,2);
+        if(Socials.FetchSocial(stuff,false)!=null)
+        {
+            mob.tell("The social '"+stuff+"' already exists.");
+            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+            return;
+        }
+		Socials.modifySocialInterface(mob,stuff);
 	}
 
 	public boolean errorOut(MOB mob)
