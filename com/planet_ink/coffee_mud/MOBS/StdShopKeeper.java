@@ -963,13 +963,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_GIVE:
 				if((msg.tool()!=null)
 				&&((CMSecurity.isAllowed(msg.source(),location(),"ORDER")
-                    ||(CoffeeUtensils.doesOwnThisProperty(msg.source(),getStartRoom()))
+                    ||(CoffeeUtensils.doesHavePriviledgesHere(msg.source(),getStartRoom()))
 					||(CMSecurity.isAllowed(msg.source(),location(),"CMDMOBS")&&(isMonster()))
 					||(CMSecurity.isAllowed(msg.source(),location(),"CMDROOMS")&&(isMonster()))))
 				&&((doISellThis(msg.tool()))||(whatISell==DEAL_INVENTORYONLY)))
                 {
-                    msg.source().tell("Yes, I will now sell "+msg.tool().name()+".");
+                    CommonMsgs.say(this,msg.source(),"Yes, I will now sell "+msg.tool().name()+".",false,false);
                     addStoreInventory(msg.tool(),1,-1);
+                    if(isGeneric()) text();
 					return;
 				}
 				super.executeMsg(myHost,msg);
@@ -1045,6 +1046,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						mySession.stdPrintln(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
 					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 						mob.location().recoverRoomStats();
+                    if(isGeneric()) text();
 				}
 				break;
             }
@@ -1196,6 +1198,11 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						CommonMsgs.follow(newMOB,mobFor,false);
 						if(newMOB.amFollowing()==null)
 							mobFor.tell("You cannot accept seem to accept this follower!");
+                        else
+                        {
+                            msg.modify(msg.source(),msg.target(),newMOB,msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
+                            newMOB.executeMsg(myHost,msg);
+                        }
 					}
 					else
 					if(product instanceof Ability)

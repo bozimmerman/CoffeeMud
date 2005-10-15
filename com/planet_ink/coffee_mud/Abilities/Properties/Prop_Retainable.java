@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -31,6 +32,7 @@ public class Prop_Retainable extends Property
 	protected int periodic=0;
 	protected int price=0;
 	protected long last=0;
+    protected long lastMoveIn=0;
 	
 	public String accountForYourself()
 	{ return "Retainable";	}
@@ -78,6 +80,18 @@ public class Prop_Retainable extends Property
 			MOB mob=(MOB)affected;
 			if(mob.location()!=null)
 			{
+                if((lastMoveIn>0)&&((System.currentTimeMillis()-lastMoveIn)>4))
+                {
+                    lastMoveIn=0;
+                    if(mob.location()==lastRoom)
+                    {
+                        if((mob.amFollowing()!=null)&&(mob.location().isInhabitant(mob.amFollowing())))
+                            CommonMsgs.say(mob,mob.amFollowing(),"Is this my new permanent post?  If so, order me to NOFOLLOW and I'll stay here.",false,false);
+                        else
+                        if(mob.location().numPCInhabitants()>0)
+                            CommonMsgs.say(mob,mob.amFollowing(),"I guess this is my new permanent posting?",false,false);
+                    }
+                }
 				if(periodic>0)
 				{
 					if(last==0) 
@@ -142,6 +156,24 @@ public class Prop_Retainable extends Property
 		return true;
 	}
 	
+    public void tellSkills(MOB me, MOB toMe)
+    {
+        StringBuffer skills = new StringBuffer("");
+        if(me instanceof ShopKeeper)
+            skills.append(", selling "+ShopKeeper.SOLDCODES[((ShopKeeper)me).whatIsSold()].toLowerCase());
+        for (int a = 0; a < me.numAbilities(); a++)
+        {
+            Ability A = me.fetchAbility(a);
+            if(A.profficiency() == 0)
+                A.setProfficiency(50 + me.envStats().level() - CMAble.lowestQualifyingLevel(A.ID()));
+            skills.append(", " + A.name());
+        }
+        if(me instanceof ShopKeeper)
+            skills.append(".  Once I'm at my permanent post, you may give me appropriate items to sell at any time");
+        if(skills.length()>2)
+            CommonMsgs.say(me, toMe, "My skills include: " + skills.substring(2) + ".",false,false);
+    }
+    
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -150,16 +182,28 @@ public class Prop_Retainable extends Property
 			MOB mob=(MOB)affected;
 			if(mob.location()!=null)
 			{
+                if((msg.tool()==affected)
+                &&(msg.targetMinor()==CMMsg.TYP_BUY))
+                {
+                    tellSkills(mob,msg.source());
+                    if(periodic>0)
+                        CommonMsgs.say(mob,msg.source(),"I accept your terms of employment, and I understand I will be paid "+BeanCounter.abbreviatedPrice(mob,new Integer(price).doubleValue())+" every "+period+" days.",false,false);
+                    else
+                        CommonMsgs.say(mob,msg.source(),"I accept your terms of employment.",false,false);
+                    CommonMsgs.say(mob,msg.source(),"Please show me the way to my permanent post.",false,false);
+                }
+                else
 				if(mob.amFollowing()!=null)
 				{
 					Room room=mob.location();
 					if((room!=lastRoom)
-					&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),room))
+					&&(CoffeeUtensils.doesHavePriviledgesHere(mob.amFollowing(),room))
 					&&(room.isInhabitant(mob)))
 					{
 						lastRoom=room;
 						mob.baseEnvStats().setRejuv(0);
 						mob.setStartRoom(room);
+                        lastMoveIn=System.currentTimeMillis();
 					}
 					if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 					||((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(msg.amISource(mob.amFollowing()))))

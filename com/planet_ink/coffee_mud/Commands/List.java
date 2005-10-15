@@ -37,17 +37,41 @@ public class List extends StdCommand
 		StringBuffer lines=new StringBuffer("");
 		if(!these.hasMoreElements()) return lines;
 		if(likeRoom==null) return lines;
-		for(Enumeration r=these;r.hasMoreElements();)
-		{
-			Room thisThang=(Room)r.nextElement();
-			String thisOne=thisThang.roomID();
+        Room thisThang=null;
+        String thisOne=null;
+        for(Enumeration r=these;r.hasMoreElements();)
+        {
+            thisThang=(Room)r.nextElement();
+            thisOne=thisThang.roomID();
 			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
-				lines.append(Util.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+thisThang.displayText()+"\n\r");
+				lines.append(Util.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+Util.limit(thisThang.displayText(),43)+"\n\r");
 		}
 		lines.append("\n\r");
 		return lines;
 	}
 
+    public StringBuffer roomPropertyDetails(Enumeration these, Room likeRoom)
+    {
+        StringBuffer lines=new StringBuffer("");
+        if(!these.hasMoreElements()) return lines;
+        if(likeRoom==null) return lines;
+        LandTitle t=null;
+        Room thisThang=null;
+        String thisOne=null;
+        for(Enumeration r=these;r.hasMoreElements();)
+        {
+            thisThang=(Room)r.nextElement();
+            t=CoffeeUtensils.getLandTitle(thisThang);
+            if(t!=null)
+            {
+                thisOne=thisThang.roomID();
+                if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
+                    lines.append(Util.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+Util.limit(thisThang.displayText()+" (price: "+t.landPrice()+", owner="+t.landOwner()+")",43)+"\n\r");
+            }
+        }
+        lines.append("\n\r");
+        return lines;
+    }
 	public StringBuffer roomTypes(Vector these, Room likeRoom)
 	{return roomDetails(these.elements(),likeRoom);}
 	public StringBuffer roomTypes(Enumeration these, Room likeRoom)
@@ -55,10 +79,12 @@ public class List extends StdCommand
 		StringBuffer lines=new StringBuffer("");
 		if(!these.hasMoreElements()) return lines;
 		if(likeRoom==null) return lines;
-		for(Enumeration r=these;r.hasMoreElements();)
-		{
-			Room thisThang=(Room)r.nextElement();
-			String thisOne=thisThang.roomID();
+        Room thisThang=null;
+        String thisOne=null;
+        for(Enumeration r=these;r.hasMoreElements();)
+        {
+            thisThang=(Room)r.nextElement();
+            thisOne=thisThang.roomID();
 			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
 				lines.append(Util.padRightPreserve(thisOne,30)+": "+thisThang.ID()+"\n\r");
 		}
@@ -842,7 +868,7 @@ public class List extends StdCommand
 		/*27*/{"TECH","CMDITEMS"},
 		/*28*/{"CLANITEMS","CMDITEMS"},
 		/*29*/{"COMMANDJOURNAL",""}, // blank, but used!
-		/*30*/{"",""},
+        /*30*/{"TITLES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*31*/{"NOPURGE","NOPURGE"},
 		/*32*/{"BANNED","BAN"},
 		/*33*/{"",""},
@@ -930,8 +956,8 @@ public class List extends StdCommand
 		case 3: s.wraplessPrintln(listEnvResources()); break;
 		case 4: s.wraplessPrintln(CMLister.reallyList(CMClass.weapons()).toString()); break;
 		case 5: s.wraplessPrintln(CMLister.reallyList(CMClass.mobTypes()).toString()); break;
-		case 6: s.wraplessPrintln(roomDetails(CMMap.rooms(),mob.location()).toString()); break;
-		case 7: s.wraplessPrintln(roomTypes(CMMap.rooms(),mob.location()).toString()); break;
+		case 6: s.wraplessPrintln(roomDetails(mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
+		case 7: s.wraplessPrintln(roomTypes(mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
 		case 8: s.wraplessPrintln(CMLister.reallyList(CMClass.locales()).toString()); break;
 		case 9: s.wraplessPrintln(CMLister.reallyList(CMClass.behaviors()).toString()); break;
 		case 10: s.wraplessPrintln(CMLister.reallyList(CMClass.exits()).toString()); break;
@@ -954,7 +980,7 @@ public class List extends StdCommand
 		case 27: s.wraplessPrintln(CMLister.reallyList(CMClass.miscTech()).toString()); break;
 		case 28: s.wraplessPrintln(CMLister.reallyList(CMClass.clanItems()).toString()); break;
 		case 29: s.println(journalList(listWord).toString()); break;
-		case 30: break;
+        case 30: s.wraplessPrintln(roomPropertyDetails(mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
 		case 31:
 		{
 			StringBuffer str=new StringBuffer("\n\rProtected players:\n\r");

@@ -308,8 +308,8 @@
 		<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Logins</B></FONT></TD>
 		<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Tot. Hr.</B></FONT></TD>
 		<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Avg. Mn.</B></FONT></TD>
-		<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Avg. On</B></FONT></TD>
-		<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Most On</B></FONT></TD>
+		<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Avg. On *</B></FONT></TD>
+		<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Most On *</B></FONT></TD>
 		<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Deaths</B></FONT></TD>
 		<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>PKDeaths</B></FONT></TD>
 		<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Levels</B></FONT></TD>
@@ -331,6 +331,7 @@
 	<BR>
 	<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
 	</TD></TR></TABLE>
+	<FONT COLOR=WHITE>* This statistic always applies to all users, regardless of filter.</FONT><P>
 	</CENTER>
 </BODY>
 </HTML>

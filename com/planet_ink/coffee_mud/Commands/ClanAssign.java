@@ -141,8 +141,8 @@ public class ClanAssign extends BaseClanner
 							M.setClanRole(newPos);
 							C.updateClanPrivileges(M);
 							CMClass.DBEngine().DBUpdateClanMembership(M.Name(), C.ID(), newPos);
-							mob.tell(M.Name()+" "+getScr("ClanAssign","assigned")+" "+Util.startWithAorAn(Clans.getRoleName(C.getGovernment(),newPos,false,false))+" "+getScr("ClanAssign","of")+" "+C.typeName()+" '"+C.ID()+"'.");
-							M.tell(getScr("ClanAssign","youassigned")+" "+Util.startWithAorAn(Clans.getRoleName(C.getGovernment(),newPos,false,false))+" "+getScr("ClanAssign","of")+" "+C.typeName()+" '"+C.ID()+"'.");
+							mob.tell(getScr("ClanAssign","assigned",M.Name(),C.typeName(),C.ID(),Util.startWithAorAn(Clans.getRoleName(C.getGovernment(),newPos,false,false))));
+							M.tell(getScr("ClanAssign","youassigned",Util.startWithAorAn(Clans.getRoleName(C.getGovernment(),newPos,false,false)),C.typeName(),C.ID()));
 							return false;
 						}
 					}

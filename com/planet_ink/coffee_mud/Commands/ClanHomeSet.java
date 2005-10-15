@@ -69,7 +69,7 @@ public class ClanHomeSet extends BaseClanner
 			{
 				C.setRecall(CMMap.getExtendedRoomID(R));
 				C.update();
-				mob.tell(getScr("ClanHomeSet","homesetted",C.typeName(),R.roomTitle()));
+				mob.tell(getScr("ClanHomeSet","homesetted",C.typeName(),C.ID(),R.roomTitle()));
 				clanAnnounce(mob,getScr("ClanHomeSet","homesetted",C.typeName(),C.ID(),R.roomTitle()));
 				return true;
 			}
