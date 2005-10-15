@@ -354,12 +354,12 @@ public class Quests implements Cloneable, Quest
 						Vector choices3=new Vector();
 						String mobName=Util.combine(p,2).toUpperCase();
 						String mask="";
-						int x=mobName.indexOf("MASK=");
-						if(x>=0)
-						{
-							mask=mobName.substring(x+5).trim();
-							mobName=mobName.substring(0,x).trim();
-						}
+                        int x=s.lastIndexOf("MASK=");
+                        if(x>=0)
+                        {
+                            mask=s.substring(x+5).trim();
+                            mobName=Util.combine(Util.parse(s.substring(0,x).trim()),2).toUpperCase();
+                        }
 						if(mobName.length()==0) mobName="ANY";
 						try
 						{
@@ -607,11 +607,11 @@ public class Quests implements Cloneable, Quest
 						Vector choices3=new Vector();
 						String mobName=Util.combine(p,2).toUpperCase();
 						String mask="";
-						int x=mobName.indexOf("MASK=");
+						int x=s.lastIndexOf("MASK=");
 						if(x>=0)
 						{
-							mask=mobName.substring(x+5).trim();
-							mobName=mobName.substring(0,x).trim();
+							mask=s.substring(x+5).trim();
+							mobName=Util.combine(Util.parse(s.substring(0,x).trim()),2).toUpperCase();
 						}
 						if(mobName.length()==0) mobName="ANY";
 						if(MG!=null)
@@ -746,7 +746,7 @@ public class Quests implements Cloneable, Quest
 							error=true; break;
 						}
 						StringBuffer buf=Resources.getFileResource(Util.combine(p,2));
-						if((buf==null)||((buf!=null)&&(buf.length()==0)))
+						if((buf==null)||((buf!=null)&&(buf.length()<20)))
 						{
 							if(!isQuiet)
 								Log.errOut("Quests","Unknown XML file: '"+Util.combine(p,2)+"' for '"+name()+"'.");
@@ -783,7 +783,7 @@ public class Quests implements Cloneable, Quest
 							error=true; break;
 						}
 						StringBuffer buf=Resources.getFileResource(Util.combine(p,2));
-						if((buf==null)||((buf!=null)&&(buf.length()==0)))
+						if((buf==null)||((buf!=null)&&(buf.length()<20)))
 						{
 							if(!isQuiet)
 								Log.errOut("Quests","Unknown XML file: '"+Util.combine(p,2)+"' for '"+name()+"'.");
@@ -843,12 +843,12 @@ public class Quests implements Cloneable, Quest
 						}
 						String mobName=Util.combine(p,2);
 						String mask="";
-						int x=mobName.indexOf("MASK=");
-						if(x>=0)
-						{
-							mask=mobName.substring(x+5).trim();
-							mobName=mobName.substring(0,x).trim();
-						}
+                        int x=s.lastIndexOf("MASK=");
+                        if(x>=0)
+                        {
+                            mask=s.substring(x+5).trim();
+                            mobName=Util.combine(Util.parse(s.substring(0,x).trim()),2).toUpperCase();
+                        }
 						if(mobName.length()==0) mobName="ANY";
 						Vector choices=new Vector();
 						for(int i=0;i<loadedMobs.size();i++)
@@ -1080,12 +1080,12 @@ public class Quests implements Cloneable, Quest
 								V.addElement(A4);
 								V.addElement(A4);
 								V.addElement(A4.text());
-								A4.setMiscText(Util.combine(p,3));
+								A4.setMiscText(Util.combineWithQuotes(p,3));
 								A4.setProfficiency(100);
 							}
 							else
 							{
-								A4.setMiscText(Util.combine(p,3));
+								A4.setMiscText(Util.combineWithQuotes(p,3));
 								V.addElement(A4);
 								V.addElement(A4);
 								A4.setProfficiency(100);
@@ -1133,12 +1133,12 @@ public class Quests implements Cloneable, Quest
 								B=E2.fetchBehavior(B.ID());
 								V.addElement(B);
 								V.addElement(B.getParms());
-								B.setParms(Util.combine(p,3));
+								B.setParms(Util.combineWithQuotes(p,3));
 							}
 							else
 							{
 								V.addElement(B);
-								B.setParms(Util.combine(p,3));
+								B.setParms(Util.combineWithQuotes(p,3));
 								E2.addBehavior(B);
 							}
 							addons.addElement(V);
@@ -1186,12 +1186,12 @@ public class Quests implements Cloneable, Quest
 								V.addElement(A4);
 								V.addElement(A4.text());
 								A4.makeLongLasting();
-								A4.setMiscText(Util.combine(p,3));
+								A4.setMiscText(Util.combineWithQuotes(p,3));
 							}
 							else
 							{
 								V.addElement(A4);
-								A4.setMiscText(Util.combine(p,3));
+								A4.setMiscText(Util.combineWithQuotes(p,3));
 								if(M!=null)
 									A4.startTickDown(M,E2,99999);
 								else

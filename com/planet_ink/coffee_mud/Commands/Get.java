@@ -86,10 +86,10 @@ public class Get extends BaseItemParser
 			else
 			if(commands.elementAt(1) instanceof Boolean)
 				quiet=((Boolean)commands.elementAt(1)).booleanValue();
-			get(mob,container,item,quiet);
+			boolean success=get(mob,container,item,quiet);
 			if(item instanceof Coins)
 			    ((Coins)item).putCoinsBack();
-			return false;
+			return success;
 		}
 
 		if(commands.size()<2)

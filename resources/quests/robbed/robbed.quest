@@ -20,6 +20,7 @@ give behavior Scriptable LOAD=quests/robbed/shopkeeper.script
 set locale CityStreet 
 # find any locale in Midgaard of type CityStreet
 
+set mobgroup
 set mob "the thief"
 # load up any mob from area with that name.  Since a room was set above, this will
 # move the mob into the room (locale CityStreet)

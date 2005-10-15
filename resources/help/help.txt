@@ -6,7 +6,7 @@ sleep wake rest stand enter         quiet emote socials yell ask
 ^HCOMBAT/SPELLS/SKILLS^?                ^HINFORMATION^?
 kill backstab flee wimpy rescue     help credits commands areas
 sweep bash disarm dirt trip         report score gods topics who
-spells skills prayers songs         look exits topics weather
+spells skills prayers songs         look exits topics time helplist
 pray practice cast sing chant
                                     ^HGROUPS^?
 ^HOBJECTS^?                             follow group gtell split

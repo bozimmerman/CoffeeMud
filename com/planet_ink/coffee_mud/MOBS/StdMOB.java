@@ -499,12 +499,12 @@ public class StdMOB implements MOB
 	public void removeFromGame()
 	{
 		pleaseDestroy=true;
-		if(location!=null)
-		{
-			location().delInhabitant(this);
-			if(mySession!=null)
-				location().show(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> vanish(es) in a puff of smoke.");
-		}
+		if((location!=null)&&(location.isInhabitant(this)))
+        {
+            location().delInhabitant(this);
+            if(mySession!=null)
+                location().show(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> vanish(es) in a puff of smoke.");
+        }
 		setFollowing(null);
 		DVector oldFollowers=new DVector(2);
 		while(numFollowers()>0)

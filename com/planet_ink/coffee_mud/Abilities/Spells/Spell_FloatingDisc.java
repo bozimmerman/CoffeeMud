@@ -61,6 +61,12 @@ public class Spell_FloatingDisc extends Spell
 		}
 	}
 
+    public void executeMsg(Environmental host, CMMsg msg)
+    {
+        if((msg.target()==affected)
+        &&(msg.targetMinor()==CMMsg.TYP_REMOVE))
+            unInvoke();
+    }
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

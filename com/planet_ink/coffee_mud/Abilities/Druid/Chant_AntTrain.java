@@ -71,6 +71,13 @@ public class Chant_AntTrain extends Chant
 		affectableStats.setWeight(0);
 	}
 
+    public void executeMsg(Environmental host, CMMsg msg)
+    {
+        if((msg.target()==affected)
+        &&(msg.targetMinor()==CMMsg.TYP_REMOVE))
+            unInvoke();
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);

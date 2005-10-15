@@ -34,7 +34,8 @@ public class AutoAffects extends StdCommand
             String disp=thisAffect.name();
             if((thisAffect!=null)
             &&(thisAffect.displayText().length()==0)
-            &&(thisAffect.isNowAnAutoEffect()))
+            &&(mob.fetchAbility(thisAffect.ID())!=null)
+            &&(thisAffect.isAutoInvoked()))
             {
                 if(((++colnum)>2)||(disp.length()>25)){ msg.append("\n\r"); colnum=0;}
                 msg.append("^S"+Util.padRightPreserve("^<HELPNAME NAME='"+thisAffect.Name()+"'^>"+disp+"^</HELPNAME^>",25));
