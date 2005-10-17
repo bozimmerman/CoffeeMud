@@ -157,6 +157,16 @@ public class FrontLogin extends StdCommand
 			        mob.session().setTermID(Util.unsetb(mob.session().getTermID(),Session.TERM_MXP));
 		        }
 		    }
+            if(Util.bset(mob.getBitmap(),MOB.ATT_SOUND))
+            {
+                if(mob.session().supports(Session.TERM_MSP))
+                    mob.session().setTermID(mob.session().getTermID()|Session.TERM_MSP);
+                else
+                {
+                    mob.tell("MSP sounds have been disabled for this session.");
+                    mob.session().setTermID(Util.unsetb(mob.session().getTermID(),Session.TERM_MSP));
+                }
+            }
 		}
         
         Command C=CMClass.getCommand("Poll");

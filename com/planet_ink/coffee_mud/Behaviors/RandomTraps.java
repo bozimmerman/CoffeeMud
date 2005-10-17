@@ -265,6 +265,7 @@ public class RandomTraps extends ActiveTicker
 					try{R=(Room)elligible.elementAt(r);}catch(IndexOutOfBoundsException e){}
 					if(R==null) continue;
 
+                    
 					if((doAnyDoors)||(doAnyLockedDoors))
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 					{

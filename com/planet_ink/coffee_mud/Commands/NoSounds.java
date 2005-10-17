@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -30,15 +31,10 @@ public class NoSounds extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			if(Util.bset(mob.getBitmap(),MOB.ATT_SOUND))
-			{
-				mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_SOUND));
-				mob.tell("MSP Sound/Music disabled.\n\r");
-			}
-			else
-			{
-				mob.tell("MSP Sound/Music is already disabled.\n\r");
-			}
+            if(Util.bset(mob.getBitmap(),MOB.ATT_SOUND))
+                mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_SOUND));
+            mob.session().setTermID(Util.unsetb(mob.session().getTermID(),Session.TERM_MSP));
+            mob.tell("MSP Sound/Music disabled.\n\r");
 		}
 		return false;
 	}
