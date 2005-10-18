@@ -3448,7 +3448,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(getScr("BaseGenerics","qdrink",showNumber+"",E.thirstQuenched()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.setThirstQuenched(getNumericData(mob,"Enter a new amount\n\r:",E.thirstQuenched()));
+		E.setThirstQuenched(getNumericData(mob,getScr("BaseGenerics","moumou"),E.thirstQuenched()));
 	}
 
 	public static void genDrinkHeld(MOB mob, Drink E, int showNumber, int showFlag)
@@ -3457,7 +3457,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(getScr("BaseGenerics","amountdrinks",showNumber+"",""+E.liquidHeld()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.setLiquidHeld(getNumericData(mob,"Enter a new amount\n\r:",E.liquidHeld()));
+		E.setLiquidHeld(getNumericData(mob,getScr("BaseGenerics","moumou"),E.liquidHeld()));
 		E.setLiquidRemaining(E.liquidHeld());
 	}
 
@@ -3676,22 +3676,22 @@ public class BaseGenerics extends StdCommand
         String newName="?";
         while(newName.equals("?"))
         {
-            newName=mob.session().prompt("Enter a new value (?)\n\r:","");
+            newName=mob.session().prompt(getScr("BaseGenerics","entnewval"),"");
             if(newName.length()==0)
-                mob.tell("(no change)");
+                mob.tell(getScr("BaseGenerics","nochange"));
             else
             if((Util.isNumber(newName))&&(Util.s_int(newName)<Area.THEME_DESCS_EXT.length))
                 E.setStat("PLAYER",""+Util.s_int(newName));
             else
             if(newName.equalsIgnoreCase("?"))
             {
-                StringBuffer str=new StringBuffer("Valid values: \n\r");
+                StringBuffer str=new StringBuffer(getScr("BaseGenerics","validval"));
                 for(int i=0;i<Area.THEME_DESCS_EXT.length;i++)
                     str.append(i+") "+Area.THEME_DESCS_EXT[i]+"\n\r");
                 mob.tell(str.toString());
             }
             else
-                mob.tell("(no change)");
+                mob.tell(getScr("BaseGenerics","nochange"));
         }
     }
     
@@ -4593,7 +4593,7 @@ public class BaseGenerics extends StdCommand
 						StringBuffer str=new StringBuffer(A.ID()+";");
 						String level=mob.session().prompt(getScr("BaseGenerics","skilllev"),"1");
 						str.append((""+Util.s_int(level))+";");
-						if(mob.session().confirm("Is this skill automatically gained (Y/n)?","Y"))
+						if(mob.session().confirm(getScr("BaseGenerics","autaut"),"Y"))
 							str.append(getScr("BaseGenerics","falseword"));
 						else
 							str.append(getScr("BaseGenerics","trueword"));
@@ -4766,11 +4766,11 @@ public class BaseGenerics extends StdCommand
 						str.append((""+Util.s_int(level))+";");
 						String prof=mob.session().prompt(getScr("BaseGenerics","defaultprof"),"0");
 						str.append((""+Util.s_int(prof))+";");
-						if(mob.session().confirm("Is this skill automatically gained (Y/n)?","Y"))
+						if(mob.session().confirm(getScr("BaseGenerics","autaut"),"Y"))
 							str.append(getScr("BaseGenerics","trueword"));
 						else
 							str.append(getScr("BaseGenerics","falseword"));
-						if(mob.session().confirm("Is this skill secret (N/y)?","N"))
+						if(mob.session().confirm(getScr("BaseGenerics","sese"),"N"))
 							str.append(getScr("BaseGenerics","trueword"));
 						else
 							str.append(getScr("BaseGenerics","falseword"));
@@ -4908,14 +4908,14 @@ public class BaseGenerics extends StdCommand
 		{
 			int showNumber=0;
 
-            genInt(mob,me,++showNumber,showFlag,"Number of Class Names: ","NUMNAME");
+            genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","nunu")+" ","NUMNAME");
             int numNames=Util.s_int(me.getStat("NUMNAME"));
             if(numNames<=1)
     			genText(mob,me,++showNumber,showFlag,"Name","NAME0");
             else
             for(int i=0;i<numNames;i++)
             {
-                genText(mob,me,++showNumber,showFlag,"Name #"+i,"NAME"+i);
+                genText(mob,me,++showNumber,showFlag,getScr("BaseGenerics","nclvl",i+"")+" ","NAME"+i);
                 if(i>0)
                 while(!mob.session().killFlag())
                 {
@@ -4925,7 +4925,7 @@ public class BaseGenerics extends StdCommand
                     int newNameLevel=Util.s_int(me.getStat("NAMELEVEL"+i));
                     if((oldNameLevel!=newNameLevel)&&(newNameLevel<(previousNameLevel+1)))
                     {
-                        mob.tell("This level may not be less than "+(previousNameLevel+1)+".");
+                        mob.tell(getScr("BaseGenerics","levelless",(previousNameLevel+1)+""));
                         me.setStat("NAMELEVEL"+i,""+(previousNameLevel+1));
                         showNumber--;
                     }
@@ -4933,51 +4933,51 @@ public class BaseGenerics extends StdCommand
                         break;
                 }
             }
-		    genText(mob,me,++showNumber,showFlag,"Name","NAME");
-			genText(mob,me,++showNumber,showFlag,"Base Class","BASE");
+		    genText(mob,me,++showNumber,showFlag,getScr("BaseGenerics","nana"),"NAME");
+			genText(mob,me,++showNumber,showFlag,getScr("BaseGenerics","baba"),"BASE");
             genClassAvailability(mob,me,+showNumber,showFlag);
-			genInt(mob,me,++showNumber,showFlag,"HP Con Divisor","HPDIV");
-			genInt(mob,me,++showNumber,showFlag,"HP #Dice","HPDICE");
-			genInt(mob,me,++showNumber,showFlag,"HP Die","HPDIE");
-			genInt(mob,me,++showNumber,showFlag,"Mana Divisor","MANADIV");
-			genInt(mob,me,++showNumber,showFlag,"Mana #Dice","MANADICE");
-			genInt(mob,me,++showNumber,showFlag,"Mana Die","MANADIE");
-			genInt(mob,me,++showNumber,showFlag,"Prac/Level","LVLPRAC");
-			genInt(mob,me,++showNumber,showFlag,"Attack/Level","LVLATT");
-			genAttackAttribute(mob,me,++showNumber,showFlag,"Attack Attribute","ATTATT");
-			genInt(mob,me,++showNumber,showFlag,"Practices/1stLvl","FSTPRAC");
-			genInt(mob,me,++showNumber,showFlag,"Trains/1stLvl","FSTTRAN");
-			genInt(mob,me,++showNumber,showFlag,"Levels/Dmg Pt","LVLDAM");
-			genInt(mob,me,++showNumber,showFlag,"Moves/Level","LVLMOVE");
-			genArmorCode(mob,me,++showNumber,showFlag,"Armor Restr.","ARMOR");
-			genText(mob,me,++showNumber,showFlag,"Limitations","STRLMT");
-			genText(mob,me,++showNumber,showFlag,"Bonuses","STRBON");
-			genQualifications(mob,me,++showNumber,showFlag,"Qualifications","QUAL");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","ipip"),"HPDIV");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","didi"),"HPDICE");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","hphp"),"HPDIE");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","divodivo"),"MANADIV");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","dicedice"),"MANADICE");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","diedie"),"MANADIE");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","pracprac"),"LVLPRAC");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","atleatle"),"LVLATT");
+			genAttackAttribute(mob,me,++showNumber,showFlag,getScr("BaseGenerics","atat"),"ATTATT");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","prapra"),"FSTPRAC");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","traintrain"),"FSTTRAN");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","dmdm"),"LVLDAM");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","movmov"),"LVLMOVE");
+			genArmorCode(mob,me,++showNumber,showFlag,getScr("BaseGenerics","armarm"),"ARMOR");
+			genText(mob,me,++showNumber,showFlag,getScr("BaseGenerics","limlim"),"STRLMT");
+			genText(mob,me,++showNumber,showFlag,getScr("BaseGenerics","bonbon"),"STRBON");
+			genQualifications(mob,me,++showNumber,showFlag,getScr("BaseGenerics","qualqual"),"QUAL");
 			genEStats(mob,me,++showNumber,showFlag);
-			genAStats(mob,me,"ASTATS","CharStat Adjustments",++showNumber,showFlag);
-			genAStats(mob,me,"CSTATS","CharStat Settings",++showNumber,showFlag);
-			genAState(mob,me,"ASTATE","CharState Adjustments",++showNumber,showFlag);
-			genAState(mob,me,"STARTASTATE","New Player CharState Adj.",++showNumber,showFlag);
+			genAStats(mob,me,"ASTATS",getScr("BaseGenerics","charsadj"),++showNumber,showFlag);
+			genAStats(mob,me,"CSTATS",getScr("BaseGenerics","chastatsett"),++showNumber,showFlag);
+			genAState(mob,me,"ASTATE",getScr("BaseGenerics","chastateadj"),++showNumber,showFlag);
+			genAState(mob,me,"STARTASTATE",getScr("BaseGenerics","newplaycs"),++showNumber,showFlag);
 			genClassFlags(mob,me,++showNumber,showFlag);
-			genWeaponRestr(mob,me,++showNumber,showFlag,"Weapon Restr.","NUMWEP","GETWEP");
+			genWeaponRestr(mob,me,++showNumber,showFlag,getScr("BaseGenerics","weapres"),"NUMWEP","GETWEP");
 			genOutfit(mob,me,++showNumber,showFlag);
 			genClassAbilities(mob,me,++showNumber,showFlag);
-            genInt(mob,me,++showNumber,showFlag,"Number of Security Code Sets: ","NUMSSET");
+            genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","numsecs")+" ","NUMSSET");
             int numGroups=Util.s_int(me.getStat("NUMSSET"));
             for(int i=0;i<numGroups;i++)
             {
-                genText(mob,me,++showNumber,showFlag,"Security Codes in Set #"+i,"SSET"+i);
+                genText(mob,me,++showNumber,showFlag,getScr("BaseGenerics","seccodes")+i,"SSET"+i);
                 while(!mob.session().killFlag())
                 {
                     int oldGroupLevel=Util.s_int(me.getStat("SSETLEVEL"+i));
-                    genInt(mob,me,++showNumber,showFlag,"Class Level for Security Set #"+i+": ","SSETLEVEL"+i);
+                    genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","cllevsec")+i+": ","SSETLEVEL"+i);
                     int previousGroupLevel=Util.s_int(me.getStat("SSETLEVEL"+(i-1)));
                     int newGroupLevel=Util.s_int(me.getStat("SSETLEVEL"+i));
                     if((oldGroupLevel!=newGroupLevel)
                     &&(i>0)
                     &&(newGroupLevel<(previousGroupLevel+1)))
                     {
-                        mob.tell("This level may not be less than "+(previousGroupLevel+1)+".");
+                        mob.tell(getScr("BaseGenerics","levelless",(previousGroupLevel+1)+""));
                         me.setStat("SSETLEVEL"+i,""+(previousGroupLevel+1));
                         showNumber--;
                     }
@@ -4985,7 +4985,7 @@ public class BaseGenerics extends StdCommand
                         break;
                 }
             }
-            
+
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
@@ -5042,14 +5042,14 @@ public class BaseGenerics extends StdCommand
                 }
                 if(FR==null)
                 {
-                    if(mob.session().confirm("Create a new range called '"+which+"' (y/N): ","N"))
+                    if(mob.session().confirm(getScr("BaseGenerics","cnrange",which)+" ","N"))
                     {
                         FR=new Faction.FactionRange(me,"0;100;"+which+";CHANGEMYCODENAME;");
                         me.ranges.addElement(FR);
                     }
                 }
                 else
-                if(mob.session().choose("Would you like to M)odify or D)elete this range (M/d): ","MD","M").toUpperCase().startsWith("D"))
+                if(mob.session().choose(getScr("BaseGenerics","moddelran")+" ","MD","M").toUpperCase().startsWith("D"))
                 {
                     me.ranges.remove(FR);
                     mob.tell(getScr("BaseGenerics","rangedeleted"));
@@ -5097,16 +5097,16 @@ public class BaseGenerics extends StdCommand
                         else
                             prompt.append(r+") "+Faction.ALIGN_NAMES[r].toLowerCase()+"\n\r");
                     }
-                    FR.AlignEquiv=Util.s_int(mob.session().choose(prompt.toString()+"Enter alignment equivalency or 0: ",choices.toString(),""+FR.AlignEquiv));
+                    FR.AlignEquiv=Util.s_int(mob.session().choose(prompt.toString()+getScr("BaseGenerics","enteralign")+" ",choices.toString(),""+FR.AlignEquiv));
                 }
             }
 
 
             // show in score
-            me.showinscore=EnglishParser.promptBool(mob,me.showinscore,++showNumber,showFlag,"Show in 'Score'");
+            me.showinscore=EnglishParser.promptBool(mob,me.showinscore,++showNumber,showFlag,getScr("BaseGenerics","shosco"));
 
             // show in factions
-            me.showinfactionscommand=EnglishParser.promptBool(mob,me.showinfactionscommand,++showNumber,showFlag,"Show in 'Factions' command");
+            me.showinfactionscommand=EnglishParser.promptBool(mob,me.showinfactionscommand,++showNumber,showFlag,getScr("BaseGenerics","shofcmd"));
 
             // show in special reports
             boolean alreadyReporter=false;
@@ -5116,10 +5116,10 @@ public class BaseGenerics extends StdCommand
                 if(F2.showinspecialreported) alreadyReporter=true;
             }
             if(!alreadyReporter)
-                me.showinspecialreported=EnglishParser.promptBool(mob,me.showinspecialreported,++showNumber,showFlag,"Show in Reports");
+                me.showinspecialreported=EnglishParser.promptBool(mob,me.showinspecialreported,++showNumber,showFlag,getScr("BaseGenerics","shorep"));
 
             // show in editor
-            me.showineditor=EnglishParser.promptBool(mob,me.showineditor,++showNumber,showFlag,"Show in MOB Editor");
+            me.showineditor=EnglishParser.promptBool(mob,me.showineditor,++showNumber,showFlag,getScr("BaseGenerics","shomed"));
 
             // auto defaults
             boolean error=true;
@@ -5176,7 +5176,7 @@ public class BaseGenerics extends StdCommand
                     mob.tell(getScr("BaseGenerics","affectexp",showNumber+"",Faction.EXPAFFECT_NAMES[myval]));
                     break;
                 }
-                String prompt="Affect on experience: "+Faction.EXPAFFECT_NAMES[myval]+nextPrompt.toString()+"\n\rSelect a value: ";
+                String prompt=getScr("BaseGenerics","afexp")+" "+Faction.EXPAFFECT_NAMES[myval]+nextPrompt.toString()+getScr("BaseGenerics","selvaluen")+" ";
                 int mynewval=EnglishParser.promptInteger(mob,myval+1,showNumber,showFlag,prompt);
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
                 if((mynewval<=0)||(mynewval>Faction.EXPAFFECT_NAMES.length))
@@ -5222,7 +5222,7 @@ public class BaseGenerics extends StdCommand
                 {
                     factor=(Vector)me.factors.elementAt(factorNum);
                     if(factor!=null)
-                        if(mob.session().choose("Would you like to M)odify or D)elete this range (M/d): ","MD","M").toUpperCase().startsWith("D"))
+                        if(mob.session().choose(getScr("BaseGenerics","moddelran")+" ","MD","M").toUpperCase().startsWith("D"))
                         {
                             me.factors.remove(factor);
                             mob.tell(getScr("BaseGenerics","factordel"));
@@ -5305,14 +5305,14 @@ public class BaseGenerics extends StdCommand
                     if(possibleF==null)
                         mob.tell(getScr("BaseGenerics","errfaction",which));
                     else
-                    if(mob.session().confirm("Create a new relation for faction  '"+possibleF.name+"' (y/N): ","N"))
+                    if(mob.session().confirm(getScr("BaseGenerics","cnf",possibleF.name),"N"))
                     {
                         theF=possibleF;
                         me.relations.put(theF.ID,new Double(1.0));
                     }
                 }
                 else
-                if(mob.session().choose("Would you like to M)odify or D)elete this relation (M/d): ","MD","M").toUpperCase().startsWith("D"))
+                if(mob.session().choose(getScr("BaseGenerics","moddelrel")+" ","MD","M").toUpperCase().startsWith("D"))
                 {
                     me.relations.remove(theF.ID);
                     mob.tell(getScr("BaseGenerics","reldel"));
@@ -5375,7 +5375,7 @@ public class BaseGenerics extends StdCommand
                         continue;
                     }
                     else
-                    if(!mob.session().confirm("Create a new trigger using ID '"+which+"' (y/N): ","N"))
+                    if(!mob.session().confirm(getScr("BaseGenerics","cnt",which)+" ","N"))
                     {
                         CE=null;
                         break;
@@ -5384,7 +5384,7 @@ public class BaseGenerics extends StdCommand
                         me.Changes.put(CE.ID.toUpperCase(),CE);
                 }
                 else
-                if(mob.session().choose("Would you like to M)odify or D)elete this trigger (M/d): ","MD","M").toUpperCase().startsWith("D"))
+                if(mob.session().choose(getScr("BaseGenerics","moddeltrig")+" ","MD","M").toUpperCase().startsWith("D"))
                 {
                     me.Changes.remove(CE.ID);
                     mob.tell(getScr("BaseGenerics","trigrem"));
@@ -5481,7 +5481,7 @@ public class BaseGenerics extends StdCommand
                         mob.tell(getScr("BaseGenerics","allowancerr"));
                         continue;
                     }
-                    if(mob.session().choose("Would you like to M)odify or D)elete this allowance (M/d): ","MD","M").toUpperCase().startsWith("D"))
+                    if(mob.session().choose(getScr("BaseGenerics","moddelall")+" ","MD","M").toUpperCase().startsWith("D"))
                     {
                         me.abilityUsages.remove(CA);
                         mob.tell(getScr("BaseGenerics","alldel"));
@@ -5489,7 +5489,7 @@ public class BaseGenerics extends StdCommand
                     }
                 }
                 else
-                if(!mob.session().confirm("Create a new allowance (y/N): ","N"))
+                if(!mob.session().confirm(getScr("BaseGenerics","cna")+" ","N"))
                 {
                     CA=null;
                     continue;
@@ -5670,25 +5670,25 @@ public class BaseGenerics extends StdCommand
 		while(!ok)
 		{
 			int showNumber=0;
-			genText(mob,me,++showNumber,showFlag,"Name","NAME");
+			genText(mob,me,++showNumber,showFlag,getScr("BaseGenerics","edname"),"NAME");
 			genCat(mob,me,++showNumber,showFlag);
-			genInt(mob,me,++showNumber,showFlag,"Base Weight","BWEIGHT");
-			genInt(mob,me,++showNumber,showFlag,"Weight Variance","VWEIGHT");
-			genInt(mob,me,++showNumber,showFlag,"Base Male Height","MHEIGHT");
-			genInt(mob,me,++showNumber,showFlag,"Base Female Height","FHEIGHT");
-			genInt(mob,me,++showNumber,showFlag,"Height Variance","VHEIGHT");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","basewei"),"BWEIGHT");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","edvaria"),"VWEIGHT");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","edmhe"),"MHEIGHT");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","edfhe"),"FHEIGHT");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","edhevar"),"VHEIGHT");
 			genRaceAvailability(mob,me,++showNumber,showFlag);
-			genText(mob,me,++showNumber,showFlag,"Leaving text","LEAVE");
-			genText(mob,me,++showNumber,showFlag,"Arriving text","ARRIVE");
+			genText(mob,me,++showNumber,showFlag,getScr("BaseGenerics","edleavtxt"),"LEAVE");
+			genText(mob,me,++showNumber,showFlag,getScr("BaseGenerics","edarrtxt"),"ARRIVE");
 			genHealthBuddy(mob,me,++showNumber,showFlag);
 			genBodyParts(mob,me,++showNumber,showFlag);
 			genAgingChart(mob,me,++showNumber,showFlag);
-            genBool(mob,me,++showNumber,showFlag,"Never create corpse","BODYKILL");
+            genBool(mob,me,++showNumber,showFlag,getScr("BaseGenerics","edncc"),"BODYKILL");
 			genEStats(mob,me,++showNumber,showFlag);
-			genAStats(mob,me,"ASTATS","CharStat Adjustments",++showNumber,showFlag);
-			genAStats(mob,me,"CSTATS","CharStat Settings",++showNumber,showFlag);
-			genAState(mob,me,"ASTATE","CharState Adjustments",++showNumber,showFlag);
-			genAState(mob,me,"STARTASTATE","New Player CharState Adj.",++showNumber,showFlag);
+			genAStats(mob,me,"ASTATS",getScr("BaseGenerics","edcadj"),++showNumber,showFlag);
+			genAStats(mob,me,"CSTATS",getScr("BaseGenerics","edcset"),++showNumber,showFlag);
+			genAState(mob,me,"ASTATE",getScr("BaseGenerics","edcsta"),++showNumber,showFlag);
+			genAState(mob,me,"STARTASTATE",getScr("BaseGenerics","ednpca"),++showNumber,showFlag);
 			genRaceFlags(mob,me,++showNumber,showFlag);
 			genResources(mob,me,++showNumber,showFlag);
 			genOutfit(mob,me,++showNumber,showFlag);
