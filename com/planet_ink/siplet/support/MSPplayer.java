@@ -37,7 +37,6 @@ public class MSPplayer extends Thread
     {
         super();
         applet=theApplet;
-        // TODO Auto-generated constructor stub
     }
     
     public void stopPlaying()
@@ -58,13 +57,17 @@ public class MSPplayer extends Thread
         orderedStopped=false;
         try
         {
-            if(url==null)
-                clip=applet.getAudioClip(applet.getCodeBase(),key);
-            else
-                clip=applet.getAudioClip(new URL(url+key));
+            if(clip==null)
+            {
+                if(url==null)
+                    clip=applet.getAudioClip(applet.getCodeBase(),key);
+                else
+                    clip=applet.getAudioClip(new URL(url+key));
+            }
         }
         catch(MalformedURLException m)
         {
+            clip=null;
             playing=false;
             return;
         }

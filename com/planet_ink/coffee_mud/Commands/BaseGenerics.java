@@ -3676,7 +3676,7 @@ public class BaseGenerics extends StdCommand
         String newName="?";
         while(newName.equals("?"))
         {
-            newName=mob.session().prompt(getScr("BaseGenerics","entnewval"),"");
+            newName=mob.session().prompt(getScr("BaseGenerics","entnewvalueh"),"");
             if(newName.length()==0)
                 mob.tell(getScr("BaseGenerics","nochange"));
             else
@@ -5672,7 +5672,7 @@ public class BaseGenerics extends StdCommand
 			int showNumber=0;
 			genText(mob,me,++showNumber,showFlag,getScr("BaseGenerics","edname"),"NAME");
 			genCat(mob,me,++showNumber,showFlag);
-			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","basewei"),"BWEIGHT");
+			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","edwei"),"BWEIGHT");
 			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","edvaria"),"VWEIGHT");
 			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","edmhe"),"MHEIGHT");
 			genInt(mob,me,++showNumber,showFlag,getScr("BaseGenerics","edfhe"),"FHEIGHT");

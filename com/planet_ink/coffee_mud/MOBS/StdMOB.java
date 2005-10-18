@@ -1986,6 +1986,8 @@ public class StdMOB implements MOB
                 else
                     myDescription.append("is here.\n\r");
             }
+            if(CommonStrings.mxpImagePath(image()).length()>0)
+                myDescription.append("^<IMAGE '"+image()+"' URL=\""+CommonStrings.mxpImagePath(image())+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
             if(envStats().height()>0)
                 myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
             if((longlook)&&(viewer.charStats().getStat(CharStats.INTELLIGENCE)>12))

@@ -722,8 +722,8 @@ public class CommonStrings extends Scriptable
         if(getVar(SYSTEM_MXPIMAGEPATH).length()==0)
             return "";
         if(getVar(SYSTEM_MXPIMAGEPATH).endsWith("/"))
-            return getVar(SYSTEM_MXPIMAGEPATH)+fileName;
-        return getVar(SYSTEM_MXPIMAGEPATH)+"/"+fileName;
+            return getVar(SYSTEM_MXPIMAGEPATH);
+        return getVar(SYSTEM_MXPIMAGEPATH)+"/";
     }
 
     public static String msp(String soundName, int priority)

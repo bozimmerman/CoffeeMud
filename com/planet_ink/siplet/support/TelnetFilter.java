@@ -59,7 +59,7 @@ public class TelnetFilter
     protected boolean MSPsupport=false;
     protected boolean MXPsupport=false;
     
-    private MSP mspPlayer=new MSP();
+    private MSP mspModule=new MSP();
     
     private TelnetFilter(){};
     public TelnetFilter(Siplet codebase)
@@ -325,13 +325,67 @@ public class TelnetFilter
                 if((i<buf.length()-3)
                 &&(buf.charAt(i+1)=='!'))
                 {
-                    int endl=mspPlayer.process(buf,i,codeBase);
-                    if(endl==-1)
-                        i--;
-                    else
-                    if(endl>0)
-                        return endl;
+                    if(MSPsupport())
+                    {
+                        int endl=mspModule.process(buf,i,codeBase);
+                        if(endl==-1)
+                            i--;
+                        else
+                        if(endl>0)
+                            return endl;
+                    }
                 }
+            case '&':
+            {
+                boolean convertIt=true;
+                int x=i;
+                if((!MSPsupport())||(i>buf.length()-3))
+                    convertIt=true;
+                else
+                if((buf.charAt(i+1)=='#')&&(Character.isDigit(buf.charAt(i+2))))
+                {
+                    x++; // skip to the hash, the next line will skip to the digit
+                    while((++x)<buf.length())
+                    {
+                        if(buf.charAt(x)==';')
+                        {
+                            convertIt=false;
+                            break;
+                        }
+                        else
+                        if(!Character.isDigit(buf.charAt(x)))
+                        {
+                            convertIt=true;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    while((++x)<buf.length())
+                    {
+                        if(buf.charAt(x)==';')
+                        {
+                            convertIt=false;
+                            break;
+                        }
+                        else
+                        if(!Character.isLetter(buf.charAt(x)))
+                        {
+                            convertIt=true;
+                            break;
+                        }
+                    }
+                }
+                if(!convertIt)
+                    i=x;
+                else
+                {
+                    buf.insert(i+1,"amp;");
+                    i+=4;
+                }
+                break;
+            }
             case ' ':
                 buf.setCharAt(i,'&');
                 buf.insert(i+1,"nbsp;");
