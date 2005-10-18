@@ -253,7 +253,7 @@ public class CommonStrings extends Scriptable
 		setVar(SYSTEM_ESC7,page.getStr("ESCAPE7"));
 		setVar(SYSTEM_ESC8,page.getStr("ESCAPE8"));
 		setVar(SYSTEM_ESC9,page.getStr("ESCAPE9"));
-		setVar(SYSTEM_MSPPATH,page.getStr("SOUNDPATH"));
+		setVar(SYSTEM_MSPPATH,page.getStr("SOUNDPATH"),false);
 		setVar(SYSTEM_CLANVOTED,page.getStr("CLANVOTED"));
 		setVar(SYSTEM_CLANVOTEO,page.getStr("CLANVOTEO"));
 		setVar(SYSTEM_CLANVOTER,page.getStr("CLANVOTER"));
@@ -711,7 +711,7 @@ public class CommonStrings extends Scriptable
 	public static String msp(String soundName, int volume, int priority)
 	{
 		if(getVar(SYSTEM_MSPPATH).length()>0)
-			return " !!SOUND("+soundName+" V="+volume+" P="+priority+" U="+getVar(SYSTEM_MSPPATH)+soundName+") ";
+			return " !!SOUND("+soundName+" V="+volume+" P="+priority+" U="+getVar(SYSTEM_MSPPATH)+") ";
 		return " !!SOUND("+soundName+" V="+volume+" P="+priority+") ";
 	}
 

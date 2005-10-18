@@ -7,19 +7,13 @@ import com.planet_ink.siplet.applet.Siplet;
 public class TelnetFilter
 {
     
-    protected static final char IS = 0;
-    protected static final char DO = 253;
-    protected static final char SB = 250;
-    protected static final char SE = 240;
-    protected static final char MXP = 91;
-    protected static final char IAC = 255;
-    protected static final char EOR = 239;
-    protected static final char WILL = 251;
-    protected static final char WONT = 252;
-    protected static final char DONT = 254;
-    protected static final char DEAD = 65535;
-    protected static final char NULL = 0;
-    protected static final String CR = "\r";
+    protected static final char IAC_ = 255;
+    protected static final char IAC_DO = 253;
+    protected static final char IAC_WILL = 251;
+    protected static final char IAC_WONT = 252;
+    protected static final char IAC_DONT = 254;
+    protected static final char IAC_MSP = 90;
+    protected static final char IAC_MXP = 91;
     protected static final char TELOPT_EOR = 25;
     protected static final char TELOPT_ECHO = 1;
     protected static final char TELOPT_NAWS = 31;
@@ -43,14 +37,25 @@ public class TelnetFilter
     protected boolean boldOn=false;
     protected boolean underlineOn=false;
     protected boolean italicsOn=false;
-    private Siplet logger=null;
+    private Siplet codeBase=null;
 
+    protected boolean neverSupportMSP=false;
+    protected boolean neverSupportMXP=true;
+    protected boolean MSPsupport=false;
+    protected boolean MXPsupport=false;
+    
+    private MSP mspPlayer=new MSP();
     
     private TelnetFilter(){};
-    public TelnetFilter(Siplet log)
+    public TelnetFilter(Siplet codebase)
     {
-        logger=log;
+        codeBase=codebase;
     }
+    
+    public boolean MSPsupport(){return MSPsupport;}
+    public void setMSPSupport(boolean truefalse){MSPsupport=truefalse;}
+    public boolean MXPsupport(){return MXPsupport;}
+    public void setMXPSupport(boolean truefalse){MXPsupport=truefalse;}
     
     private String blinkOff(){ if(blinkOn){blinkOn=false; return "</BLINK>";}return ""; }
     private String underlineOff(){ if(underlineOn){underlineOn=false; return "</U>";}return ""; }
@@ -198,22 +203,134 @@ public class TelnetFilter
         return "";
     }
     
-    // filters out color codes -> <FONT>
-    // CRS -> <BR>
-    // SPACES -> &nbsp;
-    // < -> &lt;
-    // TELNET codes -> response outputstream
-    public int filter(StringBuffer buf, DataOutputStream response)
+    public int TelenetFilter(StringBuffer buf, DataOutputStream response)
+    throws IOException
     {
         int i=0;
         while(i<buf.length())
         {
             switch(buf.charAt(i))
             {
+            case IAC_:
+                {
+                    if(i>=buf.length()-3)
+                        return i;
+                    int oldI=i;
+                    switch(buf.charAt(++i))
+                    {
+                    case IAC_WILL:
+                        i++;
+                        if(buf.charAt(i)==IAC_MSP)
+                        {
+                            if(neverSupportMSP)
+                            {
+                                if(MSPsupport())
+                                {
+                                    response.writeBytes(""+IAC_+IAC_DONT+IAC_MSP);
+                                    setMSPSupport(false);
+                                }
+                            }
+                            else
+                            if(!MSPsupport())
+                            {
+                                response.writeBytes(""+IAC_+IAC_DO+IAC_MSP);
+                                setMSPSupport(true);
+                            }
+                            response.flush();
+                        }
+                        else
+                        if(buf.charAt(i)==IAC_MXP)
+                        {
+                            if(neverSupportMXP)
+                            {
+                                if(MXPsupport())
+                                {
+                                    response.writeBytes(""+IAC_+IAC_DONT+IAC_MXP);
+                                    setMXPSupport(false);
+                                }
+                            }
+                            else
+                            if(!MXPsupport())
+                            {
+                                response.writeBytes(""+IAC_+IAC_DO+IAC_MXP);
+                                response.flush();
+                                setMXPSupport(true);
+                            }
+                        }
+                        else
+                        {
+                            response.writeBytes(""+IAC_+IAC_DONT+buf.charAt(i));
+                            response.flush();
+                        }
+                        break;
+                    case IAC_WONT:
+                        i++;
+                        if(buf.charAt(i)==IAC_MSP)
+                        {
+                            if(MSPsupport())
+                            {
+                                response.writeBytes(""+IAC_+IAC_DONT+IAC_MSP);
+                                setMSPSupport(false);
+                            }
+                        }
+                        else
+                        if(buf.charAt(i)==IAC_MXP)
+                        {
+                            if(MXPsupport())
+                            {
+                                response.writeBytes(""+IAC_+IAC_DONT+IAC_MXP);
+                                setMXPSupport(false);
+                            }
+                        }
+                        break;
+                    }
+                    buf.delete(oldI,oldI+3);
+                    i=oldI-1;
+                    break;
+                }
+            }
+            i++;
+        }
+        return buf.length();
+    }
+    
+    // filters out color codes -> <FONT>
+    // CRS -> <BR>
+    // SPACES -> &nbsp;
+    // < -> &lt;
+    // TELNET codes -> response outputstream
+    public int HTMLFilter(StringBuffer buf)
+    {
+        int i=0;
+        while(i<buf.length())
+        {
+            switch(buf.charAt(i))
+            {
+            case '!':
+                if((i<buf.length()-3)
+                &&(buf.charAt(i+1)=='!'))
+                {
+                    int endl=mspPlayer.process(buf,i,codeBase);
+                    if(endl==-1)
+                        i--;
+                    else
+                    if(endl>0)
+                        return endl;
+                }
             case ' ':
                 buf.setCharAt(i,'&');
                 buf.insert(i+1,"nbsp;");
                 i+=5;
+                break;
+            case '>':
+                buf.setCharAt(i,'&');
+                buf.insert(i+1,"gt;");
+                i+=3;
+                break;
+            case '<':
+                buf.setCharAt(i,'&');
+                buf.insert(i+1,"lt;");
+                i+=3;
                 break;
             case '\n':
                 buf.setCharAt(i,'<');
@@ -224,6 +341,12 @@ public class TelnetFilter
                 buf.deleteCharAt(i);
                 i--;
                 break;
+            case IAC_:
+            {
+                if(i>=buf.length()-3)
+                    return i;
+                break;
+            }
             case '\033':
                 {
                     int savedI=i;

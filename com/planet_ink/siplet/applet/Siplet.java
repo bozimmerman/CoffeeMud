@@ -117,11 +117,14 @@ public class Siplet extends Applet
     {
         synchronized(buf)
         {
-            int endAt=Telnet.filter(buf,out);
+            int endAt=Telnet.HTMLFilter(buf);
             String data=null;
+            if(buf.length()==0) return "";
+            if(endAt<0) endAt=buf.length();
+            if(endAt==0) return "";
             if(endAt<buf.length())
             {
-                data=buf.substring(0,endAt);
+                data=buf.substring(0,endAt).toString();
                 buf.delete(0,endAt);
             }
             else
@@ -158,31 +161,23 @@ public class Siplet extends Applet
                 }
                 catch(java.io.InterruptedIOException e)
                 {
-                    if(e.getMessage().toUpperCase().indexOf("CONNECTION RESET BY PEER")>=0)
-                    {
-                        disconnectFromURL();
-                        return;
-                    }
+                    disconnectFromURL();
+                    return;
                 }
                 catch(Exception e)
                 {
-                    if(e.getMessage().toUpperCase().indexOf("CONNECTION RESET BY PEER")>=0)
-                    {
-                        disconnectFromURL();
-                        return;
-                    }
-                    break;
+                    disconnectFromURL();
+                    return;
                 }
             }
+            if(buf.length()>0)
+                Telnet.TelenetFilter(buf,out);
+
         }
         catch(Exception e)
         {
-            if(e.getMessage().toUpperCase().indexOf("CONNECTION RESET BY PEER")>=0)
-            {
-                disconnectFromURL();
-                return;
-            }
-            e.printStackTrace();
+            disconnectFromURL();
+            return;
         }
     }
 }
