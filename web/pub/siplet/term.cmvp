@@ -1,0 +1,72 @@
+<HTML>
+<HEAD>
+<LINK REL=StyleSheet HREF="term.css" TYPE="text/css">
+</HEAD>
+<BODY BGCOLOR=BLACK>
+<script language=JavaScript>
+function displayData()
+{
+    if(!document.myApplet.isConnectedToURL())
+    {
+        alert('Lost connection.');
+    }
+    else
+    {
+        document.myApplet.readURLData();
+        var s=document.myApplet.getURLData();
+        if(s.length>0)
+        {
+            if(DISPLAYSPAN.innerHTML.length>200000)
+            {
+                var x=DISPLAYSPAN.innerHTML;
+                while(x.length>150000)
+                {
+                    var y=x.indexOf('<BR>');
+                    if(y<0) break;
+                    x=x.substring(y+4);
+                }
+                DISPLAYSPAN.innerHTML=x;
+            }
+            DISPLAYSPAN.insertAdjacentHTML('beforeEnd',s);
+            NODISPLAY.scrollIntoView(false);
+        }
+        setTimeout('displayData();',100);
+    }
+}
+function sendData(me)
+{
+	var s=me.value;
+    document.myApplet.sendData(s);
+    me.value='';
+}
+function connect(url,port)
+{
+    if(!document.myApplet.connectToURL(url,port))
+        alert('Could not connect.');
+    else
+        setTimeout('displayData();',100);
+}
+</SCRIPT>
+<P>
+<BR>
+<SPAN ID=DISPLAYSPAN NAME=DISPLAYSPAN>
+</SPAN>
+<SPAN ID=NODISPLAY style="display:none">
+<applet
+    code="com.planet_ink.siplet.applet.Siplet"
+    archive="/siplet/siplet.jar"
+    codebase="siplet.jar"
+    width="0"
+    height="0"
+    name="myApplet"
+    id="myApplet"
+    mayscript="TRUE">
+</applet>
+</SPAN>
+<script language=JavaScript>
+setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
+var s=document.myApplet.info();
+s='<B><FONT COLOR=BLUE SIZE=5>'+s+'</FONT></B>';
+DISPLAYSPAN.insertAdjacentHTML('beforeEnd',s);
+</script>
+</BODY></HTML>
