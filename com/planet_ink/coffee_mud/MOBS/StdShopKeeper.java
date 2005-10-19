@@ -796,11 +796,18 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					if((msg.tool() instanceof LandTitle)
 					&&((whatISell==DEAL_CLANDSELLER)||(whatISell==DEAL_CSHIPSELLER)))
 					{
-						if(mob.getClanID().length()==0)
+                        Clan C=null;
+                        if(mob.getClanID().length()>0)C=Clans.getClan(mob.getClanID());
+						if(C==null)
 						{
 							CommonMsgs.say(this,mob,"I only sell to clans.",true,false);
 							return false;
 						}
+                        if((C.allowedToDoThis(mob,Clans.FUNC_CLANPROPERTYOWNER)<0)&&(!mob.isMonster()))
+                        {
+                            CommonMsgs.say(this,mob,"You are not authorized by your clan to handle property.",true,false);
+                            return false;
+                        }
 					}
 					if(msg.tool() instanceof MOB)
 					{
