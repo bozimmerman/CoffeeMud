@@ -487,7 +487,12 @@ public class Masonry extends CraftingSkill
 			for(int r=0;r<data.length;r++)
 			{
 				if((r!=BUILD_MONUMENT)||(mob.charStats().getCurrentClass().baseClass().equals("Druid")))
-					buf.append(Util.padRight(data[r][DAT_NAME],20)+" "+data[r][DAT_WOOD]+"\n\r");
+                {
+					buf.append(Util.padRight(data[r][DAT_NAME],20)+" "+data[r][DAT_WOOD]);
+                    if(doingCode==BUILD_PORTCULIS)
+                        buf.append(" metal");
+                    buf.append("\n\r");
+                }
 			}
 			commonTell(mob,buf.toString());
 			return true;

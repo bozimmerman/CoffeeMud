@@ -544,8 +544,8 @@ public class CMMap
 	        Clan C=Clans.getClan(mob.getClanID());
 		    if((C!=null)&&(C.getMorgue().length()>0))
 		    {
-		        Room room=CMMap.getRoom(Clans.getClan(mob.getClanID()).getMorgue());
-		        if((room!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.getClanID(),room)))
+		        Room room=CMMap.getRoom(C.getMorgue());
+		        if((room!=null)&&(CoffeeUtensils.doesHavePriviledgesHere(mob,room)))
 		            return room;
 		    }
 	    }

@@ -114,7 +114,7 @@ public class Soiled extends StdAbility
 	public boolean tick(Tickable ticking, int tickID)
 	{
 	    if(affected!=null)
-	    if(Dice.rollPercentage()<10)
+	    if(Dice.rollPercentage()==1)
 	    {
 	        Environmental E=affected;
 	        Room R=CoffeeUtensils.roomLocation(E);

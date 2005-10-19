@@ -275,7 +275,6 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),19,"Spell_FleshStone",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Spell_Forget",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Spell_StoneFlesh",false);
-			CMAble.addCharAbilityMapping(ID(),19,"Spell_Flagportation",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Spell_WallOfForce",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Spell_ImprovedInvisibility",false);
 			// level 20
