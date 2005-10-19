@@ -67,8 +67,6 @@ public class Score extends Affect
 		else
 			msg.append("You are ^H"+mob.Name()+"^?.\n\r");
 
-		if(CommonStrings.mxpImagePath(mob.image()).length()>0)
-            msg.append("^<IMAGE '"+mob.image()+"' URL=\""+CommonStrings.mxpImagePath(mob.image())+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
 		if((!CMSecurity.isDisabled("CLASSES"))
 		&&(classLevel<mob.envStats().level()))
 		{
@@ -128,6 +126,8 @@ public class Score extends Affect
 		}
         msg.append("\n\r^NYour stats are: \n\r^!");
         int max=CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT);
+        if(CommonStrings.mxpImagePath(mob.image()).length()>0)
+            msg.append("^<IMAGE '"+mob.image()+"' URL=\""+CommonStrings.mxpImagePath(mob.image())+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
         CharStats CT=mob.charStats();
         msg.append(Util.padRight("^<HELP^>Strength^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.MAX_STRENGTH_ADJ))+"\n\r");
         msg.append(Util.padRight("^<HELP^>Intelligence^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.MAX_INTELLIGENCE_ADJ))+"\n\r");

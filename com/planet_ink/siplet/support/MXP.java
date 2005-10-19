@@ -23,4 +23,14 @@ public class MXP
 
     public MXP(){super();}
   
+    public String escapeTranslate(String escapeString)
+    {
+        if(escapeString.endsWith("z"))
+        {
+            
+            return "";
+        }
+        return escapeString;
+    }
+    
 }

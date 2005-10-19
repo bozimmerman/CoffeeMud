@@ -60,6 +60,7 @@ public class TelnetFilter
     protected boolean MXPsupport=false;
     
     private MSP mspModule=new MSP();
+    private MXP mxpModule=new MXP();
     
     private TelnetFilter(){};
     public TelnetFilter(Siplet codebase)
@@ -215,7 +216,7 @@ public class TelnetFilter
             }
             return str.toString();
         }
-        return "";
+        return escapeString;
     }
     
     public int TelenetFilter(StringBuffer buf, DataOutputStream response)
@@ -335,8 +336,9 @@ public class TelnetFilter
                             return endl;
                     }
                 }
-            case '&':
-            {
+                break;
+           case '&':
+           {
                 boolean convertIt=true;
                 int x=i;
                 if((!MSPsupport())||(i>buf.length()-3))
@@ -361,20 +363,18 @@ public class TelnetFilter
                     }
                 }
                 else
+                while((++x)<buf.length())
                 {
-                    while((++x)<buf.length())
+                    if(buf.charAt(x)==';')
                     {
-                        if(buf.charAt(x)==';')
-                        {
-                            convertIt=false;
-                            break;
-                        }
-                        else
-                        if(!Character.isLetter(buf.charAt(x)))
-                        {
-                            convertIt=true;
-                            break;
-                        }
+                        convertIt=false;
+                        break;
+                    }
+                    else
+                    if(!Character.isLetter(buf.charAt(x)))
+                    {
+                        convertIt=true;
+                        break;
                     }
                 }
                 if(!convertIt)
@@ -432,9 +432,15 @@ public class TelnetFilter
                                 quote=!quote;
                         if(i==buf.length())
                             return savedI;
-                        String translate=escapeTranslate(buf.substring(savedI+2,i+1));
-                        buf.replace(savedI,i+1,translate);
-                        i=savedI+translate.length()-1;
+                        String oldStr=buf.substring(savedI+2,i+1);
+                        String translate=escapeTranslate(oldStr);
+                        if(translate.equals(oldStr))
+                            translate=mxpModule.escapeTranslate(oldStr);
+                        if(!translate.equals(oldStr))
+                        {
+                            buf.replace(savedI,i+1,translate);
+                            i=savedI+translate.length()-1;
+                        }
                     }
                 }
                 break;

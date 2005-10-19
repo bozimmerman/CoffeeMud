@@ -29,13 +29,13 @@ public class Alias extends StdCommand
         if((mob.playerStats()==null)||(mob.session()==null))
             return false;
         PlayerStats ps=mob.playerStats();
-        StringBuffer menu=new StringBuffer("^xAlias definitions:^.^?\n\r");
-        String[] aliasNames=ps.getAliasNames();
-        for(int i=0;i<aliasNames.length;i++)
-            menu.append(Util.padRight((i+1)+" "+aliasNames[i],15)+": "+ps.getAlias(aliasNames[i])+"\n\r");
-        menu.append((aliasNames.length+1)+" Add a new alias\n\r");
         while((mob.session()!=null)&&(!mob.session().killFlag()))
         {
+            StringBuffer menu=new StringBuffer("^xAlias definitions:^.^?\n\r");
+            String[] aliasNames=ps.getAliasNames();
+            for(int i=0;i<aliasNames.length;i++)
+                menu.append(Util.padRight((i+1)+". "+aliasNames[i],15)+": "+ps.getAlias(aliasNames[i])+"\n\r");
+            menu.append((aliasNames.length+1)+". Add a new alias\n\r");
             mob.tell(menu.toString());
             String which=mob.session().prompt("Enter a selection: ","");
             if(which.length()==0)
@@ -44,7 +44,7 @@ public class Alias extends StdCommand
             String selection=null;
             if((num>0)&&(num<=(aliasNames.length)))
             {
-                selection=aliasNames[num];
+                selection=aliasNames[num-1];
                 if(mob.session().choose("\n\rAlias selected '"+selection+"'.\n\rWould you like to D)elete or M)odify this alias (d/M)? ","MD","M").equals("D"))
                 {
                     ps.delAliasName(selection);
@@ -53,7 +53,7 @@ public class Alias extends StdCommand
                 }
             }
             else
-            if(num==0)
+            if(num<=0)
                 break;
             else
             {
@@ -82,7 +82,8 @@ public class Alias extends StdCommand
             }
             if(selection!=null)
             {
-                String value=mob.session().prompt("Enter a value for alias '"+selection+"'.  Use \\n for line breaks.\n\r: ","").trim();
+                mob.session().rawPrintln("Enter a value for alias '"+selection+"'.  Use ~ to separate commands.");
+                String value=mob.session().prompt(": ","").trim();
                 value=Util.replaceAll(value,"<","");
                 value=Util.replaceAll(value,"&","");
                 if((value.length()==0)&&(ps.getAlias(selection).length()>0))
@@ -100,7 +101,7 @@ public class Alias extends StdCommand
                 }
             }
         }
-        return false;
+        return true;
     }
     public int ticksToExecute(){return 0;}
     public boolean canBeOrdered(){return true;}

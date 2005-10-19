@@ -30,6 +30,7 @@ public class DefaultPlayerStats implements PlayerStats
 	private Vector tellStack=new Vector();
 	private Vector gtellStack=new Vector();
 	private Vector titles=new Vector();
+    private DVector alias=new DVector(2);
 	private String lastIP="";
 	private long LastDateTime=System.currentTimeMillis();
 	private long lastUpdated=0;
@@ -126,6 +127,56 @@ public class DefaultPlayerStats implements PlayerStats
 	public HashSet getFriends(){return friends;}
 	public HashSet getIgnored(){return ignored;}
 	
+    public String[] getAliasNames()
+    {
+        String[] aliasNames=new String[alias.size()];
+        for(int s=0;s<alias.size();s++)
+            aliasNames[s]=(String)alias.elementAt(s,1);
+        return aliasNames;
+    }
+    
+    public String getAlias(String named)
+    {
+        int x=alias.indexOf(named.toUpperCase().trim());
+        if(x<0) return "";
+        return (String)alias.elementAt(x,2);
+    }
+    public void addAliasName(String named)
+    {
+        named=named.toUpperCase().trim();
+        if(getAlias(named).length()==0)
+            alias.addElement(named,"");
+    }
+    public void delAliasName(String named)
+    {
+        int x=alias.indexOf(named.toUpperCase().trim());
+        if(x>=0) alias.removeElementAt(x);
+    }
+    public void setAlias(String named, String value)
+    {
+        int x=alias.indexOf(named.toUpperCase().trim());
+        if(x>=0) alias.setElementAt(x,2,value);
+    }
+    
+    public String getAliasXML()
+    {
+        if(alias.size()==0) return "";
+        StringBuffer str=new StringBuffer("");
+        for(int t=alias.size()-1;t>=0;t--)
+        {
+            String s=(String)alias.elementAt(t,1);
+            if(s.length()==0) alias.removeElementAt(t);
+        }
+        for(int t=0;t<alias.size();t++)
+        {
+            String s=(String)alias.elementAt(t,1);
+            String v=(String)alias.elementAt(t,2);
+            str.append("<ALIAS"+t+">"+s+"</ALIAS"+t+">");
+            str.append("<ALIASV"+t+">"+v+"</ALIASV"+t+">");
+        }
+        return str.toString();
+    }
+    
 	public Vector getTitles()
 	{
 	    return titles;
@@ -192,6 +243,7 @@ public class DefaultPlayerStats implements PlayerStats
 			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"")
 			+"<WRAP>"+wrap+"</WRAP>"
 			+getTitleXML()
+            +getAliasXML()
 			+"<ACCTEXP>"+accountExpiration+"</ACCTEXP>"
 			+((birthday!=null)?"<BIRTHDAY>"+Util.toStringList(birthday)+"</BIRTHDAY>":"")
 			+((poofin.length()>0)?"<POOFIN>"+poofin+"</POOFIN>":"")
@@ -236,6 +288,17 @@ public class DefaultPlayerStats implements PlayerStats
 		    titles.addElement(title);
 		}
 		
+        alias.clear();
+        int a=-1;
+        while((++a)>=0)
+        {
+            String name=XMLManager.returnXMLValue(str,"ALIAS"+a);
+            String value=XMLManager.returnXMLValue(str,"ALIASV"+a);
+            if((name.length()==0)||(value.length()==0))
+                break;
+            alias.addElement(name,value);
+        }
+        
 		poofin=XMLManager.returnXMLValue(str,"POOFIN");
 		if(poofin==null) poofin="";
 		poofout=XMLManager.returnXMLValue(str,"POOFOUT");
