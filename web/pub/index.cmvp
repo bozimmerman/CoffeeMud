@@ -23,15 +23,23 @@ Players currently online: <b>@NUMPLAYERS@</B>
 </B></FONT></TD></TR>
 <TR><TD WIDTH=100%>
 <BR>
-<LI><a href="mudintro.html"><FONT COLOR=GREEN><B>What are MUDs?</B></FONT></a>
-<LI><a href="cmintro.html"><FONT COLOR=GREEN><B>What is CoffeeMUD?</B></FONT></a>
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+	if(navigator.appName=='Microsoft Internet Explorer') 
+		document.write('<LI><a href="siplet/index.html"><FONT COLOR=GREEN><B>Play NOW!</B></FONT></a>');
+	
+//-->
+</SCRIPT>
 <LI><a href="helps.cmvp?FIRSTLETTER=A"><FONT COLOR=GREEN><B>Help Topics</B></FONT></a>
-<LI><a href="guides/Features.html"><FONT COLOR=GREEN><B>CoffeeMud features</B></FONT></a>
 <LI><a href="areas.cmvp"><FONT COLOR=GREEN><B>Installed Areas Information</B></FONT></a>
 <LI><a href="deities.cmvp"><FONT COLOR=GREEN><B>Installed Deities</B></FONT></a>
 <LI><a href="socials.cmvp"><FONT COLOR=GREEN><B>Socials List</B></FONT></a>
-<LI><a href="sounds.zip"><FONT COLOR=GREEN><B>Download Sounds for MSP support</B></FONT></a>
 <LI><a href="channels.cmvp"><FONT COLOR=GREEN><B>Channel Backlogs</B></FONT></a>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;<B>CoffeeMud Info</B><BR>
+<LI><a href="cmintro.html"><FONT COLOR=GREEN><B>What is CoffeeMUD?</B></FONT></a>
+<LI><a href="mudintro.html"><FONT COLOR=GREEN><B>What are MUDs?</B></FONT></a>
+<LI><a href="guides/Features.html"><FONT COLOR=GREEN><B>CoffeeMud features</B></FONT></a>
+<LI><a href="sounds.zip"><FONT COLOR=GREEN><B>Download Sounds for MSP support</B></FONT></a>
 <P>
 <LI><B>Player Races: </B>
 	@loop@

@@ -39,6 +39,11 @@ public class Siplet extends Applet
         buffer = new StringBuffer();
     }
 
+    public String info()
+    {
+        return "Siplet V"+VERSION_MAJOR+"."+VERSION_MINOR+" (C)2005 Bo Zimmerman";
+    }
+    
     public void start() 
     {
         addItem("starting siplet "+VERSION_MAJOR+"."+VERSION_MINOR+" ");

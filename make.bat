@@ -52,7 +52,8 @@ IF "%1" == "docs" GOTO :DOCS
 %JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/web/macros/*.java
 %JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/web/macros/grinder/*.java
 %JAVACPATH% -g -deprecation com/planet_ink/fakedb/*.java
-
+%JAVACPATH% -g -deprecation com/planet_ink/siplet/applet/*.java
+%JAVACPATH% -g -deprecation com/planet_ink/fakedb/support/*.java
 
 GOTO :FINISH
 
