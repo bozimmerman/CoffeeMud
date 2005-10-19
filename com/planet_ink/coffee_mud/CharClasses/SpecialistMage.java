@@ -104,7 +104,9 @@ public class SpecialistMage extends Mage
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==domain()))
 			{
-				int recovery=(int)Math.round(Util.mul((msg.value()),Util.mul(0.02,myChar.charStats().getClassLevel(this))));
+                int classLevel=myChar.charStats().getClassLevel(this);
+                if(classLevel>30) classLevel=30;
+				int recovery=(int)Math.round(Util.mul(msg.value(),Util.mul(0.02,classLevel)));
 				msg.setValue(msg.value()-recovery);
 			}
 		}

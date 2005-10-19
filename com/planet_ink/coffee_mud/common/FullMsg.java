@@ -147,7 +147,10 @@ public class FullMsg implements CMMsg
     public void setOthersMessage(String str){othersMsg=str;}
 
 	public int value(){return value;}
-	public void setValue(int amount){value=amount;}
+	public void setValue(int amount)
+    {
+        value=amount;
+    }
 	
 	public Vector trailerMsgs()
 	{	return trailMsgs;}
