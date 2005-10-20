@@ -27,9 +27,14 @@ Players currently online: <b>@NUMPLAYERS@</B>
 <!--
 	if(navigator.appName=='Microsoft Internet Explorer') 
 		document.write('<LI><a href="siplet/index.html"><FONT COLOR=GREEN><B>Play NOW!</B></FONT></a>');
+	else
+		document.write('<LI><a href="telnet:@MudInfo?DOMAIN@"><FONT COLOR=GREEN><B>Play NOW!</B></FONT></a>');
 	
 //-->
 </SCRIPT>
+<NOSCRIPT>
+<LI><a href="telnet:@MudInfo?DOMAIN@"><FONT COLOR=GREEN><B>Play NOW!</B></FONT></a>
+</NOSCRIPT>
 <LI><a href="helps.cmvp?FIRSTLETTER=A"><FONT COLOR=GREEN><B>Help Topics</B></FONT></a>
 <LI><a href="areas.cmvp"><FONT COLOR=GREEN><B>Installed Areas Information</B></FONT></a>
 <LI><a href="deities.cmvp"><FONT COLOR=GREEN><B>Installed Deities</B></FONT></a>
