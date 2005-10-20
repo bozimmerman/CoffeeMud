@@ -492,7 +492,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				{
 					String shoptext;
 					if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
-						shoptext=CoffeeMaker.getGenMOBTextUnpacked(this,Util.decompressString(miscText));
+						shoptext=CoffeeMaker.getGenMOBTextUnpacked(this,CMEncoder.decompressString(miscText));
 					else
 						shoptext=CoffeeMaker.getGenMOBTextUnpacked(this,new String(miscText));
 					Vector xml=XMLManager.parseAllXML(shoptext);
@@ -1654,8 +1654,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return V;
 	}
 	
-	public String prejudiceFactors(){return Util.decompressString(miscText);}
-	public void setPrejudiceFactors(String factors){miscText=Util.compressString(factors);}
+	public String prejudiceFactors(){return CMEncoder.decompressString(miscText);}
+	public void setPrejudiceFactors(String factors){miscText=CMEncoder.compressString(factors);}
     
     public String ignoreMask(){return "";}
     public void setIgnoreMask(String factors){}

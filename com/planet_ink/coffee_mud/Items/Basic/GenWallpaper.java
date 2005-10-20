@@ -155,7 +155,7 @@ public class GenWallpaper implements Item
 			return "You see nothing special about "+name()+".";
 		else
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ITEMDCOMPRESS))
-			return Util.decompressString(description);
+			return CMEncoder.decompressString(description);
 		else
 			return new String(description);
 	}
@@ -165,7 +165,7 @@ public class GenWallpaper implements Item
 			description=null;
 		else
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ITEMDCOMPRESS))
-			description=Util.compressString(newDescription);
+			description=CMEncoder.compressString(newDescription);
 		else
 			description=newDescription.getBytes();
 	}

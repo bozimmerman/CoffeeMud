@@ -470,7 +470,7 @@ public class StdItem implements Item
 			return "";
 		else
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ITEMDCOMPRESS))
-			return Util.decompressString(description);
+			return CMEncoder.decompressString(description);
 		else
 			return new String(description);
 	}
@@ -480,7 +480,7 @@ public class StdItem implements Item
 			description=null;
 		else
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ITEMDCOMPRESS))
-			description=Util.compressString(newDescription);
+			description=CMEncoder.compressString(newDescription);
 		else
 			description=newDescription.getBytes();
 	}

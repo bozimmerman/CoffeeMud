@@ -3,7 +3,7 @@
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <html>
 <head>
-	<title>System Resources</title>
+	<title>Player Information</title>
 	<script language=JavaScript>
 	<!--
 		function openUp2(named)
@@ -41,6 +41,16 @@
 			{
 				document.RESOURCES.action='playerdo.cmvp';
 				document.RESOURCES.FUNCTION.value='BANBYIP';
+				document.RESOURCES.PLAYER.value='@PlayerID@';
+				document.RESOURCES.submit();
+			}
+		}
+		function DelImg()
+		{
+			if(confirm('Delete this players image?'))
+			{
+				document.RESOURCES.action='playerdo.cmvp';
+				document.RESOURCES.FUNCTION.value='DELIMG';
 				document.RESOURCES.PLAYER.value='@PlayerID@';
 				document.RESOURCES.submit();
 			}
@@ -104,7 +114,7 @@
 	</TABLE>
 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
 <TR>
-	<TD WIDTH=60%>
+	<TD WIDTH=40%>
 	<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 	<TR>
 		<TD WIDTH=33%><FONT COLOR=YELLOW>Name: </FONT></TD>
@@ -113,9 +123,15 @@
 	</TABLE>
 	</TD>
 	<TD WIDTH=40%><FONT COLOR=YELLOW>Race: </FONT><FONT COLOR=WHITE>@PlayerData?GENDER@ @PlayerData?RACE@</FONT></TD>
+	<TD WIDTH=20% VALIGN=CENTER ALIGN=CENTER ROWSPAN=3>
+	@if?PlayerData?HASIMG@
+	<IMG HEIGHT=70 WIDTH=70 SRC="@PlayerData?IMGURL@">
+	<A HREF="javascript:DelImg();"><FONT COLOR=RED>(X)</FONT></A>
+	@endif@
+	</TD>
 </TR>
 <TR>
-	<TD WIDTH=100% COLSPAN=2>
+	<TD WIDTH=80% COLSPAN=2>
 	<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 	<TR>
 		<TD WIDTH=20%><FONT COLOR=YELLOW>Description: </FONT></TD>
@@ -125,7 +141,7 @@
 	</TD>
 </TR>
 <TR>
-	<TD WIDTH=100% COLSPAN=2>
+	<TD WIDTH=80% COLSPAN=2>
 	<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 	<TR>
 		<TD WIDTH=20%><FONT COLOR=YELLOW>Level: </FONT>&nbsp;&nbsp;<FONT COLOR=WHITE>@PlayerData?LEVEL@</FONT></TD>
@@ -135,7 +151,7 @@
 	</TD>
 </TR>
 <TR>
-	<TD COLSPAN=2>
+	<TD COLSPAN=3>
 	<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 	<TR>
 		<TD WIDTH=20%><FONT COLOR=YELLOW>Hit Points: </FONT></TD>
@@ -170,7 +186,7 @@
 	</TD>
 </TR>
 <TR>
-	<TD COLSPAN=2>
+	<TD COLSPAN=3>
 	<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 	<TR>
 		<TD WIDTH=20%><FONT COLOR=YELLOW>Height: </FONT></TD>
@@ -205,7 +221,7 @@
 	</TD>
 </TR>
 <TR>
-	<TD COLSPAN=2>
+	<TD COLSPAN=3>
 	<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 	<TR>
 		<TD WIDTH=20%><FONT COLOR=YELLOW>Combat Info: </FONT></TD>
@@ -256,7 +272,7 @@
 	</TD>
 </TR>
 <TR>
-	<TD COLSPAN=2>
+	<TD COLSPAN=3>
 	<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 	<TR>
 		<TD WIDTH=20%><FONT COLOR=YELLOW>Location: </FONT></TD>
@@ -286,10 +302,10 @@
 	</TD>
 </TR>
 <TR>
-	<TD WIDTH=100% COLSPAN=2><FONT COLOR=YELLOW>Equipment: </FONT><FONT COLOR=WHITE>@PlayerData?INVENTORY@</FONT></TD>
+	<TD WIDTH=100% COLSPAN=3><FONT COLOR=YELLOW>Equipment: </FONT><FONT COLOR=WHITE>@PlayerData?INVENTORY@</FONT></TD>
 </TR>
 <TR>
-	<TD WIDTH=100% COLSPAN=2><FONT COLOR=YELLOW>Abilities: </FONT>@AbilityPlayerNext?reset@ @loop@ @AbilityPlayerNext@ <a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE>@AbilityName@</FONT></a> <FONT COLOR=WHITE>/</FONT> @back@</TD>
+	<TD WIDTH=100% COLSPAN=3><FONT COLOR=YELLOW>Abilities: </FONT>@AbilityPlayerNext?reset@ @loop@ @AbilityPlayerNext@ <a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE>@AbilityName@</FONT></a> <FONT COLOR=WHITE>/</FONT> @back@</TD>
 </TR>
 </TABLE>
 </FORM>

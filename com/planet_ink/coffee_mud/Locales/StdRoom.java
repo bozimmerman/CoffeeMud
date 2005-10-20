@@ -202,7 +202,7 @@ public class StdRoom
 			return "";
 		else
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ROOMDCOMPRESS))
-			return Util.decompressString(description);
+			return CMEncoder.decompressString(description);
 		else
 			return new String(description);
 	}
@@ -212,7 +212,7 @@ public class StdRoom
 			description=null;
 		else
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ROOMDCOMPRESS))
-			description=Util.compressString(newDescription);
+			description=CMEncoder.compressString(newDescription);
 		else
 			description=newDescription.getBytes();
 	}

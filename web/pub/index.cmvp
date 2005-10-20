@@ -35,11 +35,11 @@ Players currently online: <b>@NUMPLAYERS@</B>
 <NOSCRIPT>
 <LI><a href="telnet:@MudInfo?DOMAIN@"><FONT COLOR=GREEN><B>Play NOW!</B></FONT></a>
 </NOSCRIPT>
+<LI><a href="access.cmvp"><FONT COLOR=GREEN><B>Player Access</B></FONT></a>
 <LI><a href="helps.cmvp?FIRSTLETTER=A"><FONT COLOR=GREEN><B>Help Topics</B></FONT></a>
 <LI><a href="areas.cmvp"><FONT COLOR=GREEN><B>Installed Areas Information</B></FONT></a>
 <LI><a href="deities.cmvp"><FONT COLOR=GREEN><B>Installed Deities</B></FONT></a>
 <LI><a href="socials.cmvp"><FONT COLOR=GREEN><B>Socials List</B></FONT></a>
-<LI><a href="channels.cmvp"><FONT COLOR=GREEN><B>Channel Backlogs</B></FONT></a>
 <P>&nbsp;&nbsp;&nbsp;&nbsp;<B>CoffeeMud Info</B><BR>
 <LI><a href="cmintro.html"><FONT COLOR=GREEN><B>What is CoffeeMUD?</B></FONT></a>
 <LI><a href="mudintro.html"><FONT COLOR=GREEN><B>What are MUDs?</B></FONT></a>

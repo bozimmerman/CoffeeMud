@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ Not authenticated @else@
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<html>
+<head>
+	<title>Player Information</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action,func)
+		{
+			document.RESOURCES.action='/'+action;
+			document.RESOURCES.FUNCTION.value=func;
+			document.RESOURCES.submit();
+		}
+		
+		function Clicked2(action,func)
+		{
+			document.UPLOAD.action='/'+action;
+			document.UPLOAD.FUNCTION.value=func;
+			document.UPLOAD.submit();
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=WHITE>
+<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="picture.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=AUTHPLAYER VALUE="@Authenticate?SETPLAYER@">
+<INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerData?NAME@">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+</FORM>
+<CENTER>
+@if?CheckReqParm?FUNCTION=NEWIMAGE@ <FONT COLOR=RED><B>@PlayerOnline?NEWIMAGE@</B></FONT><P> @endif@ 
+<TR>
+<FONT COLOR=BLUE>Name: </FONT><FONT COLOR=BLACK><B>@PlayerData?NAME@</B></FONT>@if?PlayerOnline?=true@<FONT COLOR=BLUE>&nbsp;&nbsp;&nbsp; *ONLINE*</FONT>@endif@
+<BR>
+<FONT COLOR=BLUE>Race: </FONT><FONT COLOR=BLACK>@PlayerData?GENDER@ @PlayerData?RACE@</FONT>
+<BR>
+<FONT COLOR=BLUE><B>Your Current Portrait:</B><BR>
+@if?PlayerData?HASIMG@
+<IMG HEIGHT=70 WIDTH=70 SRC="@PlayerData?IMGURL@">
+@endif@
+<BR CLEAR=RIGHT>
+<BR CLEAR=LEFT>
+<FONT COLOR=BLACK><B>All images are automatically sized to 70x70 or 10x10.</B><BR>
+<FONT COLOR=BLACK><B>Images may be in JPEG, GIF, or BMP format, but no images over 50 kilobytes will be accepted.</B><BR>
+<FORM NAME=UPLOAD TARGET=_top ENCTYPE="multipart/form-data" ACTION=picture.cmvp METHOD=POST>
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=AUTHPLAYER VALUE="@Authenticate?SETPLAYER@">
+<INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerData?NAME@">
+<INPUT TYPE=HIDDEN NAME=PATH VALUE="">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<INPUT TYPE=FILE NAME=FILE>
+	<TABLE WIDTH=100% BORDER=0>
+	<TD WIDTH=20% ALIGN=CENTER><BR></TD>
+	<TD WIDTH=20% ALIGN=CENTER>
+	<INPUT TYPE=SUBMIT NAME=UPLOAD VALUE="Upload New" ONCLICK="Clicked2('picture.cmvp','NEWIMAGE');">
+	</TD>
+	<TD WIDTH=20% ALIGN=CENTER><BR></TD>
+	<TD WIDTH=20% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=BACK VALUE="Back" ONCLICK="Clicked('access.cmvp','');">
+	</TD>
+	<TD WIDTH=20% ALIGN=CENTER><BR></TD>
+	</TR>
+	</TABLE>
+</FORM>
+</CENTER>
+</BODY>
+</HTML>
+@endif@

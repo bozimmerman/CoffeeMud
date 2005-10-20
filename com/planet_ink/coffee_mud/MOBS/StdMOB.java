@@ -560,7 +560,7 @@ public class StdMOB implements MOB
 		if((miscText!=null)&&(resetStats)&&(isGeneric()))
 		{
 			if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
-				CoffeeMaker.resetGenMOB(this,CoffeeMaker.getGenMOBTextUnpacked(this,Util.decompressString(miscText)));
+				CoffeeMaker.resetGenMOB(this,CoffeeMaker.getGenMOBTextUnpacked(this,CMEncoder.decompressString(miscText)));
 			else
 				CoffeeMaker.resetGenMOB(this,CoffeeMaker.getGenMOBTextUnpacked(this,new String(miscText)));
 		}
@@ -1013,7 +1013,7 @@ public class StdMOB implements MOB
 			return "";
 		else
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBDCOMPRESS))
-			return Util.decompressString(description);
+			return CMEncoder.decompressString(description);
 		else
 			return new String(description);
 	}
@@ -1023,7 +1023,7 @@ public class StdMOB implements MOB
 			description=null;
 		else
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBDCOMPRESS))
-			description=Util.compressString(newDescription);
+			description=CMEncoder.compressString(newDescription);
 		else
 			description=newDescription.getBytes();
 	}
@@ -1033,7 +1033,7 @@ public class StdMOB implements MOB
 			miscText=null;
 		else
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
-			miscText=Util.compressString(newText);
+			miscText=CMEncoder.compressString(newText);
 		else
 			miscText=newText.getBytes();
 	}
@@ -1043,7 +1043,7 @@ public class StdMOB implements MOB
 			return "";
 		else
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
-			return Util.decompressString(miscText);
+			return CMEncoder.decompressString(miscText);
 		else
 			return new String(miscText);
 	}
@@ -1986,8 +1986,6 @@ public class StdMOB implements MOB
                 else
                     myDescription.append("is here.\n\r");
             }
-            if(CommonStrings.mxpImagePath(image()).length()>0)
-                myDescription.append("^<IMAGE '"+image()+"' URL=\""+CommonStrings.mxpImagePath(image())+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
             if(envStats().height()>0)
                 myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
             if((longlook)&&(viewer.charStats().getStat(CharStats.INTELLIGENCE)>12))
@@ -2003,6 +2001,8 @@ public class StdMOB implements MOB
                 myDescription.append(relativeCharStatTest(C,"dumber","smarter",CharStats.INTELLIGENCE));
             }
             myDescription.append(healthText()+"\n\r\n\r");
+            if(CommonStrings.mxpImagePath(image()).length()>0)
+                myDescription.append("^<IMAGE '"+image()+"' URL=\""+CommonStrings.mxpImagePath(image())+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
             myDescription.append(description()+"\n\r\n\r");
             
             StringBuffer eq=CommonMsgs.getEquipment(viewer,this);

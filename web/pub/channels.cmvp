@@ -12,20 +12,11 @@
 <CENTER>
 	<h2>CoffeeMud Channel Backlogs</H2>
 	<br>
-	<a href="/"><FONT COLOR=BLUE>Back to public pages</FONT></A><br>
+	<a href="/access.cmvp?@RequestParametersEncoded@"><FONT COLOR=BLUE>Back to the access menu</FONT></A><br>
 	<br>
 </CENTER>
 	@if?!Authenticate@ 
-		<FORM NAME=LOGIN METHOD=POST ACTION=/channels.cmvp TARGET=_top>
-		<CENTER>
-		<TABLE WIDTH=200 BORDER=1>
-		<TR><TD WIDTH=200 COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Player Login</B></FONT></TD></TR>
-		<TR><TD WIDTH=50><FONT COLOR=WHITE>Login:</FONT></TD><TD WIDTH=150><INPUT TYPE=TEXT SIZE=10 NAME=LOGIN></TD></TR>
-		<TR><TD WIDTH=50><FONT COLOR=WHITE>Password:</FONT></TD><TD WIDTH=150><INPUT TYPE=PASSWORD SIZE=15 NAME=PASSWORD></TD></TR>
-		<TR><TD COLSPAN=2 WIDTH=200 ALIGN=CENTER><INPUT TYPE=SUBMIT NAME=LOGIN VALUE=Login></TD></TR>
-		</TABLE>
-		</CENTER>
-		</FORM>
+		You are not authenticated.
 	@else@
 	<TABLE WIDTH=100% BORDER=1>
 	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#90ee90 ALIGN=CENTER><H3>Available Channels</H32></TD></TR>

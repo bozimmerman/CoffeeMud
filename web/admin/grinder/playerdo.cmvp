@@ -21,6 +21,14 @@ document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 //-->
 </SCRIPT>
 @endif@
+@if?CheckReqParm?FUNCTION=DELIMG@ @PlayerOnline?DELIMG@ 
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+alert('The personalized image for @PlayerID@ has been deleted.');
+document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
+//-->
+</SCRIPT>
+@endif@
 @if?CheckReqParm?FUNCTION=BANBYNAME@ @PlayerOnline?BANBYNAME@ 
 <SCRIPT LANGUAGE=JavaScript>
 <!--

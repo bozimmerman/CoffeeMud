@@ -39,7 +39,7 @@ public class GenPostman extends StdPostman
     public String text()
     {
         if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
-            miscText=Util.compressString(CoffeeMaker.getPropertiesStr(this,false));
+            miscText=CMEncoder.compressString(CoffeeMaker.getPropertiesStr(this,false));
         else
             miscText=CoffeeMaker.getPropertiesStr(this,false).getBytes();
         return super.text();

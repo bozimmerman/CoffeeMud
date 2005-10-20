@@ -96,7 +96,7 @@ public class Resources
 		{
 			if(!compress) return resource.elementAt(x);
 			if(resource.elementAt(x) instanceof byte[])
-				return new StringBuffer(Util.decompressString((byte[])resource.elementAt(x)));
+				return new StringBuffer(CMEncoder.decompressString((byte[])resource.elementAt(x)));
 			return resource.elementAt(x);
 		}
 		return null;
@@ -114,7 +114,7 @@ public class Resources
 	{
 		if(!compress) return obj;
 		if(obj instanceof StringBuffer)
-			return Util.compressString(((StringBuffer)obj).toString());
+			return CMEncoder.compressString(((StringBuffer)obj).toString());
 		return obj;
 	}
 	

@@ -42,42 +42,30 @@ public class Test extends StdCommand
 
     public boolean isAllAdjusted(MOB mob)
     {
-        //System.out.println("1-"+mob.envStats().ability());        
         if(mob.envStats().ability()<10)
             return false;
-        //System.out.println("2-"+(char)mob.charStats().getStat(CharStats.GENDER));        
         if(mob.charStats().getStat(CharStats.GENDER)!='F')
             return false;
-        //System.out.println("3-"+mob.charStats().getCurrentClass().ID());        
         if(!mob.charStats().getCurrentClass().ID().equals("Fighter"))
             return false;
-        //System.out.println("4-"+mob.charStats().getStat(CharStats.CHARISMA));        
         if(mob.charStats().getStat(CharStats.CHARISMA)<18)
             return false;
-        //System.out.println("5-"+mob.maxState().getMana());        
         if(mob.maxState().getMana()<1000)
             return false;
-        //System.out.println("6-!");        
         return true;
     }
     public boolean isAnyAdjusted(MOB mob)
     {
-        //System.out.println("7-"+mob.envStats().ability());        
         if(mob.envStats().ability()>=10)
             return true;
-        //System.out.println("8-"+(char)mob.charStats().getStat(CharStats.GENDER));        
         if(mob.charStats().getStat(CharStats.GENDER)=='F')
             return true;
-        //System.out.println("9-"+mob.charStats().getCurrentClass().ID());        
         if(mob.charStats().getCurrentClass().ID().equals("Fighter"))
             return true;
-        //System.out.println("10-"+mob.charStats().getStat(CharStats.CHARISMA));        
         if(mob.charStats().getStat(CharStats.CHARISMA)>=18)
             return true;
-        //System.out.println("11-"+mob.maxState().getMana());        
         if(mob.maxState().getMana()>=1000)
             return true;
-        //System.out.println("12-!");        
         return false;
     }
     
@@ -91,7 +79,6 @@ public class Test extends StdCommand
     
     public boolean testResistance(MOB mob)
     {
-        //Resistance.setMiscText("pierce 100% holy 100% acid 10%");
         Item I=CMClass.getWeapon("Dagger");
         mob.curState().setHitPoints(mob.maxState().getHitPoints());
         int curHitPoints=mob.curState().getHitPoints();
