@@ -7,32 +7,37 @@ import java.util.*;
 import com.planet_ink.coffee_mud.system.*;
 
 /* 
-   Copyright 2005-2005 Bo Zimmerman
+    Copyright (c) 2005, Bo Zimmerman
+    All rights reserved.
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+    Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
+    following conditions are met:
 
-       http://www.apache.org/licenses/LICENSE-2.0
+    * Redistributions of source code must retain the above copyright notice, this list of conditions and the following 
+    disclaimer. 
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-   
-   The Playing Card
-   This item represents a single card in a deck of 52 without wild cards.
-   The value of the card is set by changing the baseEnvStats().ability()
-   value to the numeric representation of the suit and card value from 2-14.
-   Methods then exist to parse the ability score into usable values and 
-   encodings.  The card uses bits 0-3 to represent value 2-14, bits 4,5 to
-   represent the suit, and bit 6 to represent whether the card is face-up
-   or face-down.
-   
-   The card with automatically set its own name and display text based on
-   the encoding.  The card has no weight, but is ungettable to prevent
-   cheating.
+    * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following 
+    disclaimer in the documentation and/or other materials provided with the distribution. 
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+    DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF 
+    THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+    The Playing Card
+    This item represents a single card in a deck of 52 without wild cards.
+    The value of the card is set by changing the baseEnvStats().ability()
+    value to the numeric representation of the suit and card value from 2-14.
+    Methods then exist to parse the ability score into usable values and 
+    encodings.  The card uses bits 0-3 to represent value 2-14, bits 4,5 to
+    represent the suit, and bit 6 to represent whether the card is face-up
+    or face-down.
+       
+    The card with automatically set its own name and display text based on
+    the encoding.  
 */
 public class PlayingCard extends StdItem implements MiscMagic
 {
