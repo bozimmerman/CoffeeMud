@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>Player Access Login</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.ACCESS.action='/'+action;
+			document.ACCESS.submit();
+		}
+	//-->
+	</SCRIPT>
+</head>
+
+<body>
+<CENTER>
+</CENTER>
+	@if?!Authenticate@ 
+		<CENTER>
+		<h2>Player Access Login</H2>
+		<br>
+		<a href="/"><FONT COLOR=BLUE>Back to public pages</FONT></A><br>
+		<br>
+		<FORM NAME=LOGIN METHOD=POST ACTION=/access.cmvp TARGET=_top>
+		Please login as your CoffeeMud player to gain access.<BR>
+		If you do not have a player account, click the Back link above and select Play NOW!<P>
+		<TABLE WIDTH=200 BORDER=1>
+		<TR><TD WIDTH=200 COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Player Login</B></FONT></TD></TR>
+		<TR><TD WIDTH=50><FONT COLOR=WHITE>Login:</FONT></TD><TD WIDTH=150><INPUT TYPE=TEXT SIZE=10 NAME=LOGIN></TD></TR>
+		<TR><TD WIDTH=50><FONT COLOR=WHITE>Password:</FONT></TD><TD WIDTH=150><INPUT TYPE=PASSWORD SIZE=15 NAME=PASSWORD></TD></TR>
+		<TR><TD COLSPAN=2 WIDTH=200 ALIGN=CENTER><INPUT TYPE=SUBMIT NAME=LOGIN VALUE=Login></TD></TR>
+		</TABLE>
+		</CENTER>
+		</FORM>
+	@else@
+		<FORM NAME=ACCESS METHOD=POST ACTION=/access.cmvp TARGET=_top>
+		<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+		<INPUT TYPE=HIDDEN NAME=AUTHPLAYER VALUE="@Authenticate?SETPLAYER@">
+		<INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerData?NAME@">
+		<CENTER>
+		<H2>Welcome @PlayerData?NAME@!</H2>
+		<BR>
+		<TABLE WIDTH=200 BORDER=1>
+		<TR><TD ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK SIZE=4><B>Menu:</B></FONT></TD></TR>
+		<TR><TD ALIGN=CENTER>
+			<A href="javascript:Clicked('stats.cmvp')"><FONT COLOR=BLACK><B>Player Statistics</B></FONT></a>
+			<BR>
+			<A href="javascript:Clicked('channels.cmvp')"><FONT COLOR=BLACK><B>Channel Backlogs</B></FONT></a>
+			<BR>
+			<A href="javascript:Clicked('email.cmvp')"><FONT COLOR=BLACK><B>Send MUD Email</B></FONT></a>
+			<BR>
+			<A href="javascript:Clicked('picture.cmvp')"><FONT COLOR=BLACK><B>Character Portrait</B></FONT></a>
+			<BR>
+			<A href="javascript:Clicked('index.cmvp')"><FONT COLOR=BLACK><B>Public Pages</B></FONT></a>
+			<BR>
+		</TD></TR>
+		</TABLE>
+		</CENTER>
+		</FORM>
+	@endif@
+</body>
+</html>
