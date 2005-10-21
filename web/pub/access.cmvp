@@ -51,8 +51,11 @@
 			<A href="javascript:Clicked('stats.cmvp')"><FONT COLOR=BLACK><B>Player Statistics</B></FONT></a>
 			<BR>
 			<A href="javascript:Clicked('channels.cmvp')"><FONT COLOR=BLACK><B>Channel Backlogs</B></FONT></a>
+			@if?MudInfo?EMAILOK@
 			<BR>
-			<A href="javascript:Clicked('email.cmvp')"><FONT COLOR=BLACK><B>Send MUD Email</B></FONT></a>
+			<A href="javascript:Clicked('email.cmvp')">
+			<FONT COLOR=BLACK><B>Player Email</B></FONT></a>
+			@endif@
 			<BR>
 			<A href="javascript:Clicked('picture.cmvp')"><FONT COLOR=BLACK><B>Character Portrait</B></FONT></a>
 			<BR>

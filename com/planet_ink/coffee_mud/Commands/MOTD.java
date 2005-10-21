@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 import java.io.*;
 import com.planet_ink.coffee_mud.exceptions.HTTPRedirectException;
@@ -141,6 +142,22 @@ public class MOTD extends StdCommand
                 }
                 if(CJseparator)
                     buf.append("\n\r--------------------------------------\n\r");
+                
+                if((!Util.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
+                &&(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX).length()>0))
+                {
+                    Vector msgs=CMClass.DBEngine().DBReadJournal(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX));
+                    int mymsgs=0;
+                    for(int num=0;num<msgs.size();num++)
+                    {
+                        Vector thismsg=(Vector)msgs.elementAt(num);
+                        String to=((String)thismsg.elementAt(3));
+                        if(to.equalsIgnoreCase("all")||to.equalsIgnoreCase(mob.Name()))
+                            mymsgs++;
+                    }
+                    if(mymsgs>0)
+                        buf.append("\n\r^ZYou have mail waiting. Enter 'EMAIL BOX' to read.^?^.\n\r");
+                }
                 
 				if(mob.session()!=null)
                     if(buf.length()>0)

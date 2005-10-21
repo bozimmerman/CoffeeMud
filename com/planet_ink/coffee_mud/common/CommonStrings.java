@@ -116,7 +116,8 @@ public class CommonStrings extends Scriptable
     public static final int SYSTEMI_EQVIEW=39;
     public static final int SYSTEMI_MAXCONNSPERIP=40;
     public static final int SYSTEMI_MAXNEWPERIP=41;
-	public static final int NUMI_SYSTEM=42;
+    public static final int SYSTEMI_MAXMAILBOX=42;
+	public static final int NUMI_SYSTEM=43;
 
 	public static final int SYSTEMB_MOBCOMPRESS=0;
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;

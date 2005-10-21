@@ -242,7 +242,7 @@ public class Resources
 	public static boolean isFileResource(String filename)
 	{
 	    if(getResource(filename)!=null) return true;
-	    if(getFile(makeFileResourceName(filename))!=null)
+	    if(getFile(makeFileResourceName(filename),false)!=null)
 	    	return true;
 	    return false;
 	}
@@ -258,7 +258,7 @@ public class Resources
 				return new StringBuffer((String)rsc);
 		}
 		
-		StringBuffer buf=getFile(makeFileResourceName(filename));
+		StringBuffer buf=getFile(makeFileResourceName(filename),reportErrors);
 		if(buf==null) buf=new StringBuffer("");
 		submitResource(filename,buf);
 		return buf;
