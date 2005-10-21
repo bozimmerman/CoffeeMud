@@ -3,7 +3,7 @@
 <FORM NAME=ENTER>
 <TABLE WIDTH=100%)
 <TR><TD WIDTH=85%>
-<TEXTAREA NAME=TEXT ID=TEXT ROWS=4 COLS=80 ONKEYPRESS="keyme();" SIZE=80>
+<TEXTAREA NAME=TEXT ID=TEXT ROWS=4 COLS=80 WRAP="soft" ONKEYPRESS="keyme(this);" ONKEYDOWN="keydown(this);" SIZE=80>
 </TEXTAREA>
 </TD><TD WIDTH=15% ALIGN=CENTER>
 <a href="javascript:sendText();"><TABLE WIDTH=57 HEIGHT=23 BACKGROUND="lilButt.gif"  style="cursor:hand" ONCLICK="sendText();" TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0><TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2><B>Submit</B></FONT></a></TD></TR></TABLE></a>
@@ -11,28 +11,94 @@
 <a href="javascript:disconnect();"><TABLE WIDTH=57 HEIGHT=23 BACKGROUND="lilButt.gif"  style="cursor:hand" ONCLICK="disconnect();" TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0><TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2><B>Disconnect</B></FONT></a></TD></TR></TABLE></a>
 </TD></TABLE>
 </FORM>
+
 <script language=JavaScript>
-function sendText()
-{
-	top.term.sendData(document.ENTER.TEXT);
-    setTimeout('document.ENTER.TEXT.focus();',100);
-}
-function disconnect()
-{
-	top.term.myApplet.disconnectFromURL();
-	top.document.location.href='/index.cmvp';
-}
-function keyme()
-{
-    if(event.keyCode==13)
+<!--
+    String.prototype.trim = function() { return this.replace(/^\s+|\s+$/, ''); };
+    var input=new Array(0);
+    var position=-1;
+    
+    function enqueText(s)
     {
-        top.term.DISPLAYSPAN.insertAdjacentHTML('beforeEnd','<BR>');
-        sendText();
-        event.cancelBubble=true;
-        event.returnValue=false;
+        if(s.trim().length>0)
+        {
+            if((input.length==0)||(s.toUpperCase().trim()!=input[input.length-1].toUpperCase().trim()))
+            {
+                var input2;
+                if(input.length>=100)
+                {
+                    input2=new Array(input.length);
+                    for(i=1;i<input.length;i++)
+                        input2[i-1]=input[i];
+                    input2[input.length-1]=s;
+                }
+                else
+                {
+                    input2=new Array(input.length+1);
+                    for(i=0;i<input.length;i++)
+                        input2[i]=input[i];
+                    input2[input.length]=s;
+                }
+                input=input2;
+            }
+        }
     }
-}
-setTimeout('document.ENTER.TEXT.focus()',1000);
+    
+    function sendText(textEl)
+    {
+        position=-1;
+        enqueText(textEl.value);
+    	top.term.sendData(textEl);
+        setTimeout('document.ENTER.TEXT.focus();',100);
+    }
+    
+    function disconnect()
+    {
+    	top.term.myApplet.disconnectFromURL();
+    	top.document.location.href='/index.cmvp';
+    }
+    
+    function keydown(textEl)
+    {
+        if(event.keyCode==38)
+        {
+            if(position<0)
+            {
+                enqueText(textEl.value);
+                position=input.length-1;
+            }
+            else
+            if(position==0)
+                return;
+            else
+                position--;
+            if((position>=0)&&(position<input.length))
+                textEl.value=input[position];
+        }
+        else
+        if((event.keyCode==40)&&(position>=0))
+        {
+            if(position==(input.length-1))
+                return;
+            position++;
+            if((position>=0)&&(position<input.length))
+                textEl.value=input[position];
+        }
+    }
+    
+    function keyme(textEl)
+    {
+        if(event.keyCode==13)
+        {
+            top.term.DISPLAYSPAN.insertAdjacentHTML('beforeEnd',textEl.value+'<BR>');
+            sendText(textEl);
+            event.cancelBubble=true;
+            event.returnValue=false;
+        }
+    }
+    
+    setTimeout('document.ENTER.TEXT.focus()',1000);
+//-->
 </script>
 </BODY>
 </HTML>
