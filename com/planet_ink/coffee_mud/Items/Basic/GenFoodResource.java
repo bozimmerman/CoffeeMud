@@ -108,7 +108,9 @@ public class GenFoodResource extends GenFood implements EnvResource, Food
 		    	break;
 		    }
     	}
-	    if((decayTime>0)&&(System.currentTimeMillis()>decayTime))
+	    if((decayTime>0)
+        &&(!Sense.isABonusItems(this))
+        &&(System.currentTimeMillis()>decayTime))
 	    {
             if(fetchEffect("Poison_Rotten")==null)
             {
