@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ you are not logged in @else@
+<html>
+<head>
+	<title>Email Browser</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.JOURNAL.action=action;
+			document.JOURNAL.JOURNAL.value='';
+			document.JOURNAL.JOURNALMESSAGE.value='';
+			document.JOURNAL.FUNCTION.value='';
+			document.JOURNAL.submit();
+		}
+		function Clicked1(journal)
+		{
+			document.JOURNAL.JOURNAL.value=journal;
+			document.JOURNAL.JOURNALMESSAGE.value='';
+			document.JOURNAL.FUNCTION.value='';
+			document.JOURNAL.action="email.cmvp";
+			document.JOURNAL.submit();
+		}
+		function Clicked2(journal,message)
+		{
+			document.JOURNAL.JOURNAL.value=journal;
+			document.JOURNAL.JOURNALMESSAGE.value=message;
+			document.JOURNAL.FUNCTION.value='';
+			document.JOURNAL.action="email.cmvp";
+			document.JOURNAL.submit();
+		}
+		function Clicked3(journal,message,action)
+		{
+			document.JOURNAL.JOURNAL.value=journal;
+			document.JOURNAL.JOURNALMESSAGE.value=message;
+			document.JOURNAL.FUNCTION.value=action;
+			document.JOURNAL.action="email.cmvp";
+			document.JOURNAL.submit();
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=WHITE>
+<CENTER>
+<FORM NAME=JOURNAL TARGET=_top METHOD=POST ACTION="email.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@MudInfo?MAILBOX@">
+		 @AddRequestParameter?JOURNAL=@@MudInfo?MAILBOX@@ @
+<INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@RequestParameter?JOURNALMESSAGE@">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=BLACK ALIGN=CENTER><FONT COLOR=WHITE><H2>CoffeeMud @MudServerVersion@ Email Browser</H2></FONT></TD></TR>
+		@AddRequestParameter?OLDMESSAGE=@@RequestParameter?JOURNALMESSAGE@@ @
+    <TR><TD WIDTH=30% VALIGN=TOP>
+	@if?CheckReqParm?FUNCTION=DELETE@
+		<CENTER><FONT COLOR=RED><B>@JournalFunction?DELETE@</B></FONT></CENTER>
+	@endif@
+	@if?CheckReqParm?FUNCTION=NEWPOST@
+		<CENTER><FONT COLOR=RED><B>@JournalFunction?NEWPOST@</B></FONT></CENTER>
+	@endif@
+	@AddRequestParameter?OLDMESSAGE=@@RequestParameter?JOURNALMESSAGE@@ @
+	@JournalMessageNext?RESET@
+	<UL>
+	@loop@
+		@JournalMessageNext?NOPRIV@
+		<LI><a href="javascript:Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@')">
+		<FONT COLOR=BLUE>
+		@RequestParameter?JOURNALMESSAGE@
+		</FONT>
+		<FONT COLOR=BLACK>. @JournalInfo?SUBJECT@
+		</FONT>
+		</a>
+	@back@
+	</UL>
+	</TD>
+	<TD WIDTH=70% VALIGN=TOP>
+	@AddRequestParameter?JOURNALMESSAGE=@@RequestParameter?OLDMESSAGE@@ @
+	@if?CheckReqParm?FUNCTION=POSTNEW@
+		<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+		<TR>
+			<TD WIDTH=20%><FONT COLOR=BLUE>To: </FONT>
+			</TD>
+			<TD WIDTH=80%><INPUT TYPE=TEXT SIZE=30 MAXLENGTH=50 NAME=TO VALUE="?"></TD>
+		</TR>
+		<TR>
+			<TD><FONT COLOR=BLUE>Subject: </FONT></TD>
+			<TD><INPUT TYPE=TEXT SIZE=30 MAXLENGTH=50 NAME=SUBJECT></TD>
+		</TR>
+		</TABLE>
+		<TEXTAREA NAME=NEWTEXT ROWS=3 COLS=40 WRAP=VIRTUAL></TEXTAREA><BR>
+		<INPUT TYPE=BUTTON NAME=SUBMITPOST VALUE="Submit Post" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','NEWPOST');">
+		<SCRIPT LANGUAGE=JavaScript>
+		<!--
+			document.JOURNAL.TO.select();
+			document.JOURNAL.TO.focus();
+		//-->
+		</SCRIPT>
+	@else@
+		@if?!CheckReqParm?JOURNALMESSAGE=@
+			<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+			<TR>
+				<TD WIDTH=20%><FONT COLOR=BLUE>Message: </FONT>
+				</TD>
+				<TD WIDTH=80%><FONT COLOR=BLACK>#@RequestParameter?JOURNALMESSAGE@</FONT></TD>
+			</TR>
+			<TR>
+				<TD><FONT COLOR=BLUE>From: </FONT></TD>
+				<TD><FONT COLOR=BLACK>@JournalInfo?FROM@</FONT></TD>
+			</TR>
+			<TR>
+				<TD><FONT COLOR=BLUE>To: </FONT></TD>
+				<TD><FONT COLOR=BLACK>@JournalInfo?TO@</FONT></TD>
+			</TR>
+			<TR>
+				<TD><FONT COLOR=BLUE>Date: </FONT></TD>
+				<TD><FONT COLOR=BLACK>@JournalInfo?DATE@</FONT></TD>
+			</TR>
+			<TR>
+				<TD><FONT COLOR=BLUE>Subject: </FONT></TD>
+				<TD><FONT COLOR=BLACK>@JournalInfo?SUBJECT@</FONT></TD>
+			</TR>
+			</TABLE>
+			<HR>
+			<FONT COLOR=WHITE>@JournalInfo?MESSAGE@</FONT><P>
+			<INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete Message" ONCLICK="if(confirm('Delete this message?'))Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','DELETE');">
+			</TD>
+			</TR>
+			</TABLE>
+		@endif@
+	@endif@
+</TD></TR>
+</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=33% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=REFRESH VALUE="REFRESH" ONCLICK="Clicked2('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@');">
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER>
+		<INPUT TYPE=BUTTON NAME=ADDNEW VALUE="Compose New Message" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTNEW');">
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=BACK VALUE="Player Menu" ONCLICK="Clicked('access.cmvp');">
+	</TD>
+	</TR>
+	</TABLE>
+</FORM>
+</BODY>
+</HTML>
+@endif@
