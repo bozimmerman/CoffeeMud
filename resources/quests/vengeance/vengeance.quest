@@ -8,7 +8,7 @@ set interval 3600
 set mob ANY MASK=+INT 6
 # load up any mob from the above area.  Will set a room!
 
-give behavior Scriptable LOAD=quests/vengeance/wronged.script
+give behavior Scriptable LOAD=quests/vengeance/wronger.script
 # load the above behavior into the last mob
 
 set room
@@ -18,7 +18,7 @@ set mob ANY MASK=+INT 6
 # load up any mob from area with that name.  Since room was cleared, this 
 # will not move the mob.
 
-give behavior Scriptable LOAD=quests/vengeance/wronger.script
+give behavior Scriptable LOAD=quests/vengeance/wronged.script
 # load the above behavior into the last mob
 
 set duration 75

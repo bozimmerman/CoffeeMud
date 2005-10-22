@@ -1,6 +1,6 @@
 # this script is for the one who will give the reward!
 ONCE_PROG
-	QUESTCHAT Vengeance! I have been wronged by ${2 vengeance}!
+	QUESTCHAT Vengeance! I have been wronged by ${1 vengeance}!
 	mpsetvar $i VENGEANCE  ''
 ~
 
@@ -10,11 +10,11 @@ QUEST_TIME_PROG vengeance -1
 ~
 
 SPEECH_PROG trouble problem wronged quest help honor insult reward corpse enemy trouble? problem? wronged? quest? help? honor? insult? reward? corpse? enemy?
-	say "$n" ${2 vengeance} has insulted my honor!  Kill him dead and I'll have a reward.
+	say "$n" ${1 vengeance} has insulted my honor!  Kill him dead and I'll have a reward.
 ~
 
 QUEST_TIME_PROG vengeance 1
-	QUESTCHAT One minute to left kill ${2 vengeance}, or I'm doing it myself.
+	QUESTCHAT One minute to left kill ${1 vengeance}, or I'm doing it myself.
 ~
 
 
