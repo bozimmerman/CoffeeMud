@@ -745,7 +745,7 @@ public class List extends StdCommand
 	public String listEnvResources()
 	{
 		StringBuffer str=new StringBuffer("");
-		str.append(Util.padRight("Resource",11)+" ");
+		str.append(Util.padRight("Resource",15)+" ");
 		str.append(Util.padRight("Material",10)+" ");
 		str.append(Util.padRight("Val",3)+" ");
 		str.append(Util.padRight("Freq",4)+" ");
@@ -753,7 +753,7 @@ public class List extends StdCommand
 		str.append("Locales\n\r");
 		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
 		{
-			str.append(Util.padRight(Util.capitalizeAndLower(EnvResource.RESOURCE_DESCS[i].toLowerCase()),12));
+			str.append(Util.padRight(Util.capitalizeAndLower(EnvResource.RESOURCE_DESCS[i].toLowerCase()),16));
 			str.append(Util.padRight(Util.capitalizeAndLower(EnvResource.MATERIAL_DESCS[(EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)>>8].toLowerCase()),11));
 			str.append(Util.padRight(""+EnvResource.RESOURCE_DATA[i][1],4));
 			str.append(Util.padRight(""+EnvResource.RESOURCE_DATA[i][2],5));
@@ -766,10 +766,10 @@ public class List extends StdCommand
 					if((R.resourceChoices()!=null)&&(R.resourceChoices().contains(new Integer(EnvResource.RESOURCE_DATA[i][0]))))
 						locales.append(R.ID()+" ");
 			}
-			while(locales.length()>43)
+			while(locales.length()>36)
 			{
-				str.append(locales.toString().substring(0,42)+"\n\r"+Util.padRight(" ",36));
-				locales=new StringBuffer(locales.toString().substring(42));
+				str.append(locales.toString().substring(0,36)+"\n\r"+Util.padRight(" ",40));
+				locales=new StringBuffer(locales.toString().substring(36));
 			}
 			str.append(locales.toString());
 			str.append("\n\r");
