@@ -23,7 +23,7 @@ public class Dismount extends StdCommand
 {
 	public Dismount(){}
 
-	private String[] access={"DISMOUNT","DISEMBARK","LEAVE"};
+	private String[] access={getScr("Dismount","cmd"),getScr("Dismount","cmd1"),getScr("Dismount","cmd2")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException

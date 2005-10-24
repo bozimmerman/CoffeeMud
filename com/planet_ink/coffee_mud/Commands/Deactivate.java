@@ -24,14 +24,14 @@ public class Deactivate extends BaseItemParser
 {
 	public Deactivate(){}
 
-	private String[] access={"DEACTIVATE","DEACT","DEA","<"};
+	private String[] access={getScr("Deactivate","cmd"),getScr("Deactivate","cmd1"),getScr("Deactivate","cmd2"),getScr("Deactivate","cmd3")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Deactivate what?");
+			mob.tell(getScr("Deactivate","dewhat"));
 			return false;
 		}
 		String cmd=(String)commands.firstElement();
@@ -49,10 +49,10 @@ public class Deactivate extends BaseItemParser
 		if((item==null)&&(E instanceof Electronics))
 		    item=(Item)E;
 		if((E==null)||(!Sense.canBeSeenBy(E,mob)))
-			mob.tell("You don't see anything called '"+what+"' here that you can deactivate.");
+			mob.tell(getScr("Deactivate","anythingcall",what));
 		else
 		if(item==null)
-			mob.tell("You can't deactivate '"+E.name()+"'.");
+			mob.tell(getScr("Deactivate","cantde",E.name()));
 		
 		String rest=Util.combine(commands,0);
 		FullMsg newMsg=new FullMsg(mob,item,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.MSG_DEACTIVATE,rest,CMMsg.MSG_DEACTIVATE,null);

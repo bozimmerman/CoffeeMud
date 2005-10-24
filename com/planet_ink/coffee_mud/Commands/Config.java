@@ -23,12 +23,12 @@ public class Config extends StdCommand
 {
 	public Config(){}
 
-	private String[] access={"CONFIG","AUTO"};
+	private String[] access={getScr("Config","cmd"),getScr("Config","cmd1")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		StringBuffer msg=new StringBuffer("^HYour configuration flags:^?\n\r");
+		StringBuffer msg=new StringBuffer(getScr("Config","flagstxt"));
 		for(int i=0;i<MOB.AUTODESC.length;i++)
 		{
             if((MOB.AUTODESC[i].equalsIgnoreCase("SYSMSGS"))&&(!(CMSecurity.isAllowed(mob,mob.location(),"SYSMSGS"))))

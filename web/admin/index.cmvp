@@ -15,16 +15,12 @@
 <B>@WEBSERVERVERSION@ '@WEBSERVERNAME@'</B> on port <B>@WEBSERVERPORT@</B><br>
 <br>
 MUD Server: <b>@MUDSERVERVERSION@</b> on port <b>@MUDSERVERPORT@</b>: <b>@MUDSERVERSTATUS@</B><br>
-
-<big>
-	<br>
-	Players currently online: <b>@NUMPLAYERS@</B><br>
 	<br>
 	<a href="pub/"><FONT COLOR=BLUE>Go to public pages</FONT></A><br>
 	<br>
 	<TABLE WIDTH=100% BORDER=0>
 	<TR>
-	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP>
+	<TD WIDTH=25% ALIGN=CENTER VALIGN=TOP>
 	<FORM NAME=LOGIN METHOD=POST ACTION=/grinder/loggedin.cmvp TARGET=_top>
 	<TABLE WIDTH=200 BORDER=1>
 	<TR><TD WIDTH=200 COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Login to MUDGrinder</B></FONT></TD></TR>
@@ -34,26 +30,30 @@ MUD Server: <b>@MUDSERVERVERSION@</b> on port <b>@MUDSERVERPORT@</b>: <b>@MUDSER
 	</TABLE>
 	</FORM>
 	</TD>
-	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP>
-	<B><FONT COLOR=WHITE>Guides</FONT></B><br>
-	<A HREF="pub/guides/InstallationGuide.html"><FONT COLOR=BLUE>The Installation Guide</FONT></A><br>
-	<A HREF="pub/guides/WebServer.html"><FONT COLOR=BLUE>The Web Server guide</FONT></A><br>
-	<A HREF="pub/guides/SMTPServer.html"><FONT COLOR=BLUE>The SMTP Server guide</FONT></A><br>
+	<TD WIDTH=25% ALIGN=CENTER VALIGN=TOP>
+	<B><FONT COLOR=WHITE>Builders Guides</FONT></B><br>
 	<a href="pub/guides/ArchonGuide.html"><FONT COLOR=BLUE>Archon's Guide</FONT></a><BR>
 	<A HREF="pub/guides/Scriptable.html"><FONT COLOR=BLUE>Scripting Guide</FONT></A><br>
-	<A HREF="pub/guides/MUDChat.html"><FONT COLOR=BLUE>The MUDChat Guide</FONT></A><br>
-	<A HREF="pub/guides/MUDGrinder.html"><FONT COLOR=BLUE>The MUDGrinder Guide</FONT></A><br>
-	<A HREF="pub/guides/Programming.html"><FONT COLOR=BLUE>The Programmer's Guide</FONT></A><br>
+	<A HREF="pub/guides/MUDChat.html"><FONT COLOR=BLUE>MUDChat Guide</FONT></A><br>
+	<A HREF="pub/guides/MUDGrinder.html"><FONT COLOR=BLUE>MUDGrinder Guide</FONT></A><br>
+	<A HREF="pub/guides/BuildersFAQ.html"><FONT COLOR=BLUE>Builders FAQ</FONT></A><br>
 	</TD>
-	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP>
-	<B><FONT COLOR=WHITE>Lists</FONT></B><br>
+	<TD WIDTH=25% ALIGN=CENTER VALIGN=TOP>
+	<B><FONT COLOR=WHITE>Builders Lists</FONT></B><br>
 	<a href="ahelps.cmvp"><FONT COLOR=BLUE>Archon Help Topics</FONT></A><br>
-	<A href="abilities.cmvp"><FONT COLOR=BLUE>Complete Skills List</FONT></a><BR>
-	<A href="behaviors.cmvp"><FONT COLOR=BLUE>Complete Behaviors List</FONT></a><BR>
-	<A href="affects.cmvp"><FONT COLOR=BLUE>Complete Affects List</FONT></a><BR>
+	<A href="abilities.cmvp"><FONT COLOR=BLUE>Skills List</FONT></a><BR>
+	<A href="behaviors.cmvp"><FONT COLOR=BLUE>Behaviors List</FONT></a><BR>
+	<A href="affects.cmvp"><FONT COLOR=BLUE>Affects List</FONT></a><BR>
 	</TD>
-	</TR></TABLE>
-</big>
+	<TD WIDTH=25% ALIGN=CENTER VALIGN=TOP>
+	<B><FONT COLOR=WHITE>Other Guides</FONT></B><br>
+	<A HREF="pub/guides/InstallationGuide.html"><FONT COLOR=BLUE>Installation Guide</FONT></A><br>
+	<A HREF="pub/guides/WebServer.html"><FONT COLOR=BLUE>Web Server guide</FONT></A><br>
+	<A HREF="pub/guides/SMTPServer.html"><FONT COLOR=BLUE>SMTP Server guide</FONT></A><br>
+	<A HREF="pub/guides/Programmers.html"><FONT COLOR=BLUE>Programmers Guide</FONT></A><br>
+	</TD>
+	</TR>
+	</TABLE>
 <br>
 </DIV>
 </body>

@@ -23,7 +23,7 @@ public class Crawl extends Go
 {
 	public Crawl(){}
 
-	private String[] access={"CRAWL","CR"};
+	private String[] access={getScr("Crawl","cmd"),getScr("Crawl","cmd1")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException

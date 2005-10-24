@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@ public class Compress extends StdCommand
 {
     public Compress(){}
 
-    private String[] access={"COMPRESS"};
+    private String[] access={getScr("Compress","cmd")};
     public String[] getAccessWords(){return access;}
     public boolean execute(MOB mob, Vector commands)
         throws java.io.IOException
@@ -31,12 +31,12 @@ public class Compress extends StdCommand
         if(Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS))
         {
             mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_COMPRESS));
-            mob.tell("Compressed views are now inactive.");
+            mob.tell(getScr("Compress","off"));
         }
         else
         {
             mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_COMPRESS));
-            mob.tell("Compressed views are now active.");
+            mob.tell(getScr("Compress","on"));
         }
         return false;
     }

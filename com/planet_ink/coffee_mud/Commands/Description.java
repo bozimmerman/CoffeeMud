@@ -23,23 +23,23 @@ public class Description extends StdCommand
 {
 	public Description(){}
 
-	private String[] access={"DESCRIPTION"};
+	private String[] access={getScr("Description","cmd")};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Change your description to what?");
+			mob.tell(getScr("Description","changetxt"));
 			return false;
 		}
 		String s=Util.combine(commands,1);
 		if(s.length()>255)
-			mob.tell("Your description exceeds 255 characters in length.  Please re-enter a shorter one.");
+			mob.tell(getScr("Description","toolong"));
 		else
 		{
 			mob.setDescription(s);
-			mob.tell("Your description has been changed.");
+			mob.tell(getScr("Description","changeok"));
 		}
 		return false;
 	}
