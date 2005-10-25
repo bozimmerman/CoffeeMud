@@ -535,6 +535,7 @@ public class StdArea implements Area
 			if((B!=null)&&(B.ID().equals(to.ID())))
 				return;
 		}
+        to.startBehavior(this);
 		behaviors.addElement(to);
 	}
 	public void delBehavior(Behavior to)

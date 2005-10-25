@@ -299,6 +299,54 @@ public class TelnetFilter
                             }
                         }
                         break;
+                    case IAC_DO:
+                        i++;
+                        if(buf.charAt(i)==IAC_MSP)
+                        {
+                            if(neverSupportMSP)
+                                response.writeBytes(""+IAC_+IAC_WONT+IAC_MSP);
+                            else
+                            {
+                                response.writeBytes(""+IAC_+IAC_WILL+IAC_MSP);
+                                setMSPSupport(true);
+                            }
+                        }
+                        else
+                        if(buf.charAt(i)==IAC_MXP)
+                        {
+                            if(neverSupportMXP)
+                                response.writeBytes(""+IAC_+IAC_WONT+IAC_MXP);
+                            else
+                            {
+                                response.writeBytes(""+IAC_+IAC_WILL+IAC_MXP);
+                                setMXPSupport(true);
+                            }
+                        }
+                        break;
+                    case IAC_DONT:
+                        i++;
+                        if(buf.charAt(i)==IAC_MSP)
+                        {
+                            if(neverSupportMSP)
+                                response.writeBytes(""+IAC_+IAC_WONT+IAC_MSP);
+                            else
+                            {
+                                response.writeBytes(""+IAC_+IAC_WONT+IAC_MSP);
+                                setMSPSupport(false);
+                            }
+                        }
+                        else
+                        if(buf.charAt(i)==IAC_MXP)
+                        {
+                            if(neverSupportMXP)
+                                response.writeBytes(""+IAC_+IAC_WONT+IAC_MXP);
+                            else
+                            {
+                                response.writeBytes(""+IAC_+IAC_WONT+IAC_MXP);
+                                setMXPSupport(false);
+                            }
+                        }
+                        break;
                     }
                     buf.delete(oldI,oldI+3);
                     i=oldI-1;

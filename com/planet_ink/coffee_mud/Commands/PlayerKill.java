@@ -49,8 +49,8 @@ public class PlayerKill extends StdCommand
 			}
             
             if((mob.session()!=null)
-            &&(mob.session().getLastPKChange()>0)
-            &&((System.currentTimeMillis()-mob.session().getLastPKChange())<(5*60*1000)))
+            &&(mob.session().getLastPKFight()>0)
+            &&((System.currentTimeMillis()-mob.session().getLastPKFight())<(5*60*1000)))
             {
                 mob.tell("You'll need to wait a few minutes before you can turn off your PK flag.");
                 return false;
@@ -65,7 +65,6 @@ public class PlayerKill extends StdCommand
 			mob.tell("Turning on this flag will allow you to kill and be killed by other players.");
 			if(mob.session().confirm("Are you absolutely sure (y/N)?","N"))
 			{
-                if(mob.session()!=null) mob.session().setLastPKChange();
 				mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_PLAYERKILL));
 				mob.tell("Your playerkill flag has been turned on.");
 			}

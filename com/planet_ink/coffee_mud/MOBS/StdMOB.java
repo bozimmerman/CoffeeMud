@@ -478,7 +478,6 @@ public class StdMOB implements MOB
 		return !pleaseDestroy;
 	}
 
-
 	public void destroy()
 	{
 		removeFromGame();
@@ -585,12 +584,13 @@ public class StdMOB implements MOB
 		if(tickStatus==Tickable.STATUS_NOT)
 			tick(this,MudHost.TICK_MOB); // slap on the butt
 
+        Ability A=null;
 		for(int a=0;a<numLearnedAbilities();a++)
 		{
-			Ability A=fetchAbility(a);
-			if(A!=null)
-				A.autoInvocation(this);
+			A=fetchAbility(a);
+			if(A!=null) A.autoInvocation(this);
 		}
+        
 		location().recoverRoomStats();
 		if((!isGeneric())&&(resetStats))
 			resetToMaxState();
@@ -780,11 +780,6 @@ public class StdMOB implements MOB
 		}
 		if(victim==mob) return;
 		if(mob==this) return;
-        if(mob!=null)
-        {
-            if((!isMonster())&&(!mob.isMonster()))
-                session().setLastPKFight();
-        }
         
 		victim=mob;
 		recoverEnvStats();
@@ -2328,6 +2323,8 @@ public class StdMOB implements MOB
 					}
 					if(isInCombat())
 					{
+                       if((!isMonster())&&(!msg.source().isMonster()))
+                            msg.source().session().setLastPKFight();
 						if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 						{
 							Item weapon=msg.source().myNaturalWeapon();
