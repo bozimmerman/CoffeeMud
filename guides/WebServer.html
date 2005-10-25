@@ -199,7 +199,10 @@ be abbreviated to MacParm, while Request Parameters will be abbreviated to ReqPa
       of RESET to restart listing.</TD></TR>
 <TR><TD>AddFile</TD><TD>The parameters for this macro are a list of file
       names.&nbsp; Inserts the contents of the files&nbsp; into the current
-      document.</TD></TR>
+      document. If the MacParm "WEBIFY" precedes a file name in the list,
+      then the macro will reformat the text file for the web, translating
+      any CoffeeMud color codes, spaces, line breaks, and other special
+      characters not normally displayable on the web.</TD></TR>
 <TR><TD>AddRandomFile</TD><TD>The parameters for this macro are a list of file
       names.&nbsp; This macro inserts the contents of one of the files at random into the current
       document.  If the parameter LINKONLY is included, this macro will instead insert the 

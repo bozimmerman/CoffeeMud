@@ -133,14 +133,16 @@ public class Unbinding extends CommonSkill
 			return false;
 		
 		int duration=CMAble.lowestQualifyingLevel(A.ID())-CMAble.qualifyingLevel(mob,A);
-		if(duration<5) duration=3;
+		if(duration<5) duration=4;
 		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> begin(s) to unbind <T-NAMESELF>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			found=target;
-			if(profficiencyCheck(mob,0,auto))
-			    found=null;
+            verb="unbinding "+found.name();
+            displayText="You are "+verb;
+            found=profficiencyCheck(mob,0,auto)?found:null;
+            beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
 		

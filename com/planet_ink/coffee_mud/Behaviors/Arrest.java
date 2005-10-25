@@ -931,9 +931,9 @@ public class Arrest extends StdBehavior
 		        &&(V.elementAt(1) instanceof Room))
 				{
 				    Vector rooms=getRooms((Area)hostObj,laws.jailRooms());
-				    boolean answer=true;
+				    boolean answer=false;
 				    for(int i=1;i<V.size();i++)
-					    answer=answer&&rooms.contains(V.elementAt(i));
+					    answer=answer||rooms.contains(V.elementAt(i));
 				    return answer;
 				}
 			    return false;
