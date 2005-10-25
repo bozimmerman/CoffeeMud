@@ -34,8 +34,31 @@ public class Skill_RegionalAwareness extends StdAbility
 	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONTRAINCOST);}
 	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONPRACCOST);}
 
+    public char roomColor(Room room)
+    {
+        if(room==null) return ' ';
+        switch(room.domainType())
+        {
+        case Room.DOMAIN_OUTDOORS_CITY:return 'w';
+        case Room.DOMAIN_OUTDOORS_WOODS:return 'G';
+        case Room.DOMAIN_OUTDOORS_ROCKS:return 'W';
+        case Room.DOMAIN_OUTDOORS_PLAINS:return 'Y';
+        case Room.DOMAIN_OUTDOORS_UNDERWATER:return 'B';
+        case Room.DOMAIN_OUTDOORS_AIR:return ' ';
+        case Room.DOMAIN_OUTDOORS_WATERSURFACE:return 'b';
+        case Room.DOMAIN_OUTDOORS_JUNGLE:return 'R';
+        case Room.DOMAIN_OUTDOORS_SWAMP:return 'r';
+        case Room.DOMAIN_OUTDOORS_DESERT:return 'y';
+        case Room.DOMAIN_OUTDOORS_HILLS:return 'g';
+        case Room.DOMAIN_OUTDOORS_MOUNTAINS:return 'p';
+        case Room.DOMAIN_OUTDOORS_SPACEPORT:return 'P';
+        default: 
+            return 'k';
+        }
+    }
 	public char roomChar(Room room)
 	{
+        if(room==null) return ' ';
 		switch(room.domainType())
 		{
 		case Room.DOMAIN_OUTDOORS_CITY:return '=';
@@ -132,13 +155,22 @@ public class Skill_RegionalAwareness extends StdAbility
 					}
 				}
 				StringBuffer str=new StringBuffer("");
+                char r=' ';
+                char c=' ';
 				for(int i2=0;i2<diameter;i2++)
 				{
 					for(int i3=0;i3<diameter;i3++)
-						str.append(map[i2][i3]);
+                    {
+                        r=map[i2][i3];
+                        c=roomColor(rmap[i2][i3]);
+                        if(c!=' ')
+    						str.append("^"+c+""+r);
+                        else
+                            str.append(r);
+                    }
 					str.append("\n\r");
 				}
-				if(mob.session()!=null) mob.session().rawPrintln(str.toString());
+				if(mob.session()!=null) mob.session().colorOnlyPrintln(str.toString());
 			}
 		}
 		else

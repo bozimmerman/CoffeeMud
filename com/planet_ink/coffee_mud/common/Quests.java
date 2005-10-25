@@ -201,7 +201,7 @@ public class Quests implements Cloneable, Quest
 						if(p.size()<3) continue;
                         Vector names=new Vector();
                         Vector areas=new Vector();
-                        if((p.size()>3)&&(((String)p.firstElement()).equalsIgnoreCase("any")))
+                        if((p.size()>3)&&(((String)p.elementAt(2)).equalsIgnoreCase("any")))
                             for(int ip=3;ip<p.size();ip++)
                                 names.addElement(p.elementAt(ip));
                         else
@@ -463,7 +463,7 @@ public class Quests implements Cloneable, Quest
 						R=null;
 						if(p.size()<3) continue;
                         Vector names=new Vector();
-                        if((p.size()>3)&&(((String)p.firstElement()).equalsIgnoreCase("any")))
+                        if((p.size()>3)&&(((String)p.elementAt(2)).equalsIgnoreCase("any")))
                             for(int ip=3;ip<p.size();ip++)
                                 names.addElement(p.elementAt(ip));
                         else
@@ -534,7 +534,7 @@ public class Quests implements Cloneable, Quest
                         Vector choices2=new Vector();
                         Vector choices3=new Vector();
                         Vector names=new Vector();
-                        if((p.size()>3)&&(((String)p.firstElement()).equalsIgnoreCase("any")))
+                        if((p.size()>3)&&(((String)p.elementAt(2)).equalsIgnoreCase("any")))
                             for(int ip=3;ip<p.size();ip++)
                                 names.addElement(p.elementAt(ip));
                         else

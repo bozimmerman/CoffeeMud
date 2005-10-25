@@ -510,7 +510,20 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				            }
 						}
 				    }
-					BeanCounter.addMoney(merchantM,currency,price);
+                    if(merchantM.isMonster())
+                    {
+                        LandTitle T=CoffeeUtensils.getLandTitle(merchantM.getStartRoom());
+                        if((T!=null)&&(T.landOwner().length()>0))
+                        {
+                            BeanCounter.modifyLocalBankGold(merchantM.getStartRoom().getArea(),
+                                                            T.landOwner(),
+                                                            CoffeeUtensils.getFormattedDate(merchantM)+": Deposit of "+BeanCounter.nameCurrencyShort(merchantM,price)+": Purchase: "+msg.tool().Name()+" from "+merchantM.Name(),
+                                                            BeanCounter.getCurrency(this),
+                                                            price);
+                        }
+                    }
+                    else
+                        BeanCounter.addMoney(merchantM,currency,price);
 					mob.recoverEnvStats();
 					if(product instanceof Item)
 					{

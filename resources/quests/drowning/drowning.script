@@ -1,5 +1,5 @@
 ONCE_PROG
-	if inlocale($i Water)
+	if inlocale(Water)
 		QUESTCHAT Help, I'm in $a, and I'm drowning!
 	else
 		mpendquest drowning
@@ -13,8 +13,8 @@ QUEST_TIME_PROG drowning -1
 ~
 
 ALL_GREET_PROG 99
-	if var($i DROWNING == '') AND inlocale($i Water)
-		if ispc($n)
+	if var($i DROWNING == '') AND ispc($n)
+		if inlocale(Water)
 			say "$n" Thank goodness! I can't swim! Bring me a boat and get me out of here!
 			follow $n
 			mpsetvar $i DROWNING $n
@@ -23,7 +23,7 @@ ALL_GREET_PROG 99
 ~
 
 RAND_PROG 90
-	if (!inlocale($i Water))
+	if (!inlocale(Water))
 		if var($i DROWNING != '') and ishere($f)
 			say "$f" You saved me!
 			follow self
@@ -49,7 +49,7 @@ QUEST_TIME_PROG drowning 1
 ~
 
 EXIT_PROG 99
-	if (!inlocale($i Water))
+	if (!inlocale(Water))
 		if var($i DROWNING != '') and ishere($f)
 			say "$f" You saved me!
 			follow self

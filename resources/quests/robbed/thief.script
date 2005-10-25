@@ -11,6 +11,11 @@ SPEECH_PROG robbed stole rob thief quest help robbed? stole? money? money thief?
 say "$n" Yea, I stole it.  So what?
 ~
 
+QUEST_TIME_PROG robbed -1
+	gossip heh heh heh -- suckers!
+	MPGSET $i MONEY 0
+~
+
 DEATH_PROG
 	mpsetvar $n ROBBED KILLER
 ~

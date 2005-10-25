@@ -1132,6 +1132,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					if(price.absoluteGoldPrice>0.0) 
 					{
 					    BeanCounter.subtractMoney(mob,BeanCounter.getCurrency(this),price.absoluteGoldPrice);
+                        double totalFunds=price.absoluteGoldPrice;
 					    if(getSalesTax()!=0.0)
 					    {
 							Law theLaw=CoffeeUtensils.getTheLaw(location(),this);
@@ -1143,11 +1144,25 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								Item treasuryItem=(Item)Treas[1];
 					            if(treasuryR!=null)
 					            {
-					                Coins COIN=BeanCounter.makeBestCurrency(BeanCounter.getCurrency(this),price.absoluteGoldPrice-yourValue(mob,product,true,false).absoluteGoldPrice,treasuryR,treasuryItem);
+                                    double taxAmount=totalFunds-yourValue(mob,product,true,false).absoluteGoldPrice;
+                                    totalFunds-=taxAmount;
+					                Coins COIN=BeanCounter.makeBestCurrency(BeanCounter.getCurrency(this),taxAmount,treasuryR,treasuryItem);
 				    				if(COIN!=null) COIN.putCoinsBack();
 					            }
 							}
 					    }
+                        if(isMonster())
+                        {
+                            LandTitle T=CoffeeUtensils.getLandTitle(getStartRoom());
+                            if((T!=null)&&(T.landOwner().length()>0))
+                            {
+                                BeanCounter.modifyLocalBankGold(getStartRoom().getArea(),
+                                                                T.landOwner(),
+                                                                CoffeeUtensils.getFormattedDate(mob)+": Deposit of "+BeanCounter.nameCurrencyShort(this,totalFunds)+": Purchase: "+msg.tool().Name()+" from "+Name(),
+                                                                BeanCounter.getCurrency(this),
+                                                                totalFunds);
+                            }
+                        }
 					}
 					if(price.questPointPrice>0) mob.setQuestPoint(mob.getQuestPoint()-price.questPointPrice);
 					if(price.experiencePrice>0) MUDFight.postExperience(mob,null,null,-price.experiencePrice,false);
