@@ -780,7 +780,12 @@ public class StdMOB implements MOB
 		}
 		if(victim==mob) return;
 		if(mob==this) return;
-
+        if(mob!=null)
+        {
+            if((!isMonster())&&(!mob.isMonster()))
+                session().setLastPKFight();
+        }
+        
 		victim=mob;
 		recoverEnvStats();
 		recoverCharStats();

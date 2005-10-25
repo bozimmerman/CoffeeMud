@@ -54,6 +54,14 @@ public class Quit extends StdCommand
 		else
 		if(!mob.isMonster())
 		{
+            if((mob.session()!=null)
+            &&(mob.session().getLastPKFight()>0)
+            &&((System.currentTimeMillis()-mob.session().getLastPKFight())<(5*60*1000)))
+            {
+                mob.tell("You must wait a few more minutes before you are allowed to quit.");
+                return false;
+            }
+            
 			try
 			{
 				mob.session().cmdExit(mob,commands);
