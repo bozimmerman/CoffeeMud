@@ -387,50 +387,16 @@ public class TelnetFilter
                 break;
            case '&':
            {
-                boolean convertIt=true;
-                int x=i;
-                if((!MSPsupport())||(i>buf.length()-3))
-                    convertIt=true;
-                else
-                if((buf.charAt(i+1)=='#')&&(Character.isDigit(buf.charAt(i+2))))
-                {
-                    x++; // skip to the hash, the next line will skip to the digit
-                    while((++x)<buf.length())
-                    {
-                        if(buf.charAt(x)==';')
-                        {
-                            convertIt=false;
-                            break;
-                        }
-                        else
-                        if(!Character.isDigit(buf.charAt(x)))
-                        {
-                            convertIt=true;
-                            break;
-                        }
-                    }
-                }
-                else
-                while((++x)<buf.length())
-                {
-                    if(buf.charAt(x)==';')
-                    {
-                        convertIt=false;
-                        break;
-                    }
-                    else
-                    if(!Character.isLetter(buf.charAt(x)))
-                    {
-                        convertIt=true;
-                        break;
-                    }
-                }
-                if(!convertIt)
-                    i=x;
-                else
+                if(!MXPsupport())
                 {
                     buf.insert(i+1,"amp;");
                     i+=4;
+                }
+                else
+                {
+                    int x=mxpModule.processEntity(buf,i);
+                    if(x==Integer.MAX_VALUE) return i;
+                    i+=x;
                 }
                 break;
             }
@@ -445,9 +411,18 @@ public class TelnetFilter
                 i+=3;
                 break;
             case '<':
-                buf.setCharAt(i,'&');
-                buf.insert(i+1,"lt;");
-                i+=3;
+                if(!MXPsupport())
+                {
+                    buf.setCharAt(i,'&');
+                    buf.insert(i+1,"lt;");
+                    i+=3;
+                }
+                else
+                {
+                    int x=mxpModule.processTag(buf,i);
+                    if(x==Integer.MAX_VALUE) return i;
+                    i+=x;
+                }
                 break;
             case '\n':
                 buf.setCharAt(i,'<');

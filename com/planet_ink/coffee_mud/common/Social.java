@@ -27,6 +27,7 @@ public class Social implements Environmental
 	private String Third_party_sees;
 	private String Target_sees;
 	private String See_when_no_target;
+    private String MSPfile="";
 	private int sourceCode=CMMsg.MSG_OK_ACTION;
 	private int othersCode=CMMsg.MSG_OK_ACTION;
 	private int targetCode=CMMsg.MSG_OK_ACTION;
@@ -51,6 +52,8 @@ public class Social implements Environmental
 	public void setTargetCode(int code){targetCode=code;}
 	public boolean targetable(){return name().endsWith(" <T-NAME>");}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
+    public String MSPfile(){return MSPfile;}
+    public void setMSPfile(String newFile){MSPfile=newFile;}
 
 	public boolean invoke(MOB mob,
 						  Vector commands,
@@ -71,12 +74,22 @@ public class Social implements Environmental
 
 		String You_see=You_see();
 		if((You_see!=null)&&(You_see.trim().length()==0)) You_see=null;
+        if((You_see!=null)&&(MSPfile!=null)&&(MSPfile.length()>0))
+            You_see+=CommonStrings.msp(MSPfile,10);
+        
 		String Third_party_sees=Third_party_sees();
 		if((Third_party_sees!=null)&&(Third_party_sees.trim().length()==0)) Third_party_sees=null;
+        if((Third_party_sees!=null)&&(MSPfile!=null)&&(MSPfile.length()>0))
+            Third_party_sees+=CommonStrings.msp(MSPfile,10);
+        
 		String Target_sees=Target_sees();
 		if((Target_sees!=null)&&(Target_sees.trim().length()==0)) Target_sees=null;
+        if((Target_sees!=null)&&(MSPfile!=null)&&(MSPfile.length()>0))
+            Target_sees+=CommonStrings.msp(MSPfile,10);
+        
 		String See_when_no_target=See_when_no_target();
 		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0)) See_when_no_target=null;
+        
 		if((Target==null)&&(targetable()))
 		{
 			FullMsg msg=new FullMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|sourceCode(),See_when_no_target,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
@@ -147,14 +160,24 @@ public class Social implements Environmental
 			   Target=null;
 		}
 
-		String You_see=You_see();
-		if((You_see!=null)&&(You_see.trim().length()==0)) You_see=null;
-		String Third_party_sees=Third_party_sees();
-		if((Third_party_sees!=null)&&(Third_party_sees.trim().length()==0)) Third_party_sees=null;
-		String Target_sees=Target_sees();
-		if((Target_sees!=null)&&(Target_sees.trim().length()==0)) Target_sees=null;
+        String You_see=You_see();
+        if((You_see!=null)&&(You_see.trim().length()==0)) You_see=null;
+        if((You_see!=null)&&(MSPfile!=null)&&(MSPfile.length()>0)&(!makeTarget))
+            You_see+=CommonStrings.msp(MSPfile,10);
+        
+        String Third_party_sees=Third_party_sees();
+        if((Third_party_sees!=null)&&(Third_party_sees.trim().length()==0)) Third_party_sees=null;
+        if((Third_party_sees!=null)&&(MSPfile!=null)&&(MSPfile.length()>0)&&(!makeTarget))
+            Third_party_sees+=CommonStrings.msp(MSPfile,10);
+        
+        String Target_sees=Target_sees();
+        if((Target_sees!=null)&&(Target_sees.trim().length()==0)) Target_sees=null;
+        if((Target_sees!=null)&&(MSPfile!=null)&&(MSPfile.length()>0)&(!makeTarget))
+            Target_sees+=CommonStrings.msp(MSPfile,10);
+        
 		String See_when_no_target=See_when_no_target();
 		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0)) See_when_no_target=null;
+        
 		FullMsg msg=null;
 		String str=makeTarget?"":"^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] ";
 		String end=makeTarget?"":"^</CHANNEL^>^?^.";

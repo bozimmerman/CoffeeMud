@@ -54,7 +54,7 @@ ww	BEG SELF	Begging yourself for money doesn't help.
 mo	BIRD	You flick a bird...How obscene!	<S-NAME> flicks a bird at no one in particular.		
 mo	BIRD <T-NAME>	You shoot a bird at <T-NAMESELF>.	<S-NAME> gives <T-NAMESELF> the bird.	<S-NAME> gives you the bird...What an ass!	Don't you hate to waste a good obscene gesture like that?
 ww	BITE	You glare around, muttering "Bite me..." under your breath.	<S-NAME> glares around, muttering "Bite me..." under <S-HIS-HER> breath.		
-ot	BITE <T-NAME>	You bite <T-NAMESELF> on the neck.	<S-NAME> bites <T-NAMESELF> on the neck!	<S-NAME> bites you on the neck.	Hungry?  No such luck.
+mt	BITE <T-NAME>	You bite <T-NAMESELF> on the neck.	<S-NAME> bites <T-NAMESELF> on the neck!	<S-NAME> bites you on the neck.	Hungry?  No such luck.
 mo	BITE SELF	You bite your knuckle in anguish.	<S-NAME> bites <S-HIS-HER> knuckle in anguish...the tragedy!		
 ss	BKISS	You blow kisses to the air.	<S-NAME> blows kisses at no one in particular.		
 ms	BKISS <T-NAME>	You blow a kiss at <T-NAMESELF> and wonder if <T-HE-SHE> will catch it.	<S-NAME> blows a kiss at <T-NAMESELF> ... isn't <S-HE-SHE> so CUTE?	<S-NAME> blows a kiss at you and hopes you'll blow one back at <S-HIM-HER>.	You kiss falls to the ground with no one to go to.
@@ -175,8 +175,8 @@ mo	DROOL SELF	You drool down the front of your shirt.	<S-NAME> drools all over <
 ss	DSIGH	You let out a deep sigh of exasperation.	<S-NAME> sighs deeply.		
 ss	DSIGH <T-NAME>	You sigh deeply at <T-NAME>, exasperated.	<S-NAME> sighs deeply at <T-NAME> in exasperation.	Oh, no.  Now you`ve done it.  <S-NAME> sighs deeply at <T-NAME> in exasperation.	*sigh*
 ss	DSIGH SELF	You exhale deeply because of your loss.	<S-NAME> sighs deeply, saddened by something.		
-oo	DUCK	DUCK!!!!	<S-NAME> ducks defensively.		
-oo	DUCK <T-NAME>	You duck defensively, anticipating the oncoming swipe from <T-NAMESELF>.	<S-NAME> ducks, anticipating <T-NAMESELF>'s reaction.	<S-NAME> ducks, please oh please don't hit <S-HIM-HER>!	
+mo	DUCK	DUCK!!!!	<S-NAME> ducks defensively.		
+mo	DUCK <T-NAME>	You duck defensively, anticipating the oncoming swipe from <T-NAMESELF>.	<S-NAME> ducks, anticipating <T-NAMESELF>'s reaction.	<S-NAME> ducks, please oh please don't hit <S-HIM-HER>!	
 mo	EGRIN	You grin evilly.	<S-NAME> grins evilly.		
 mv	EGRIN <T-NAME>	You grin evilly at <T-NAME>.	<S-NAME> grins at <T-NAMESELF> evilly-- <T-HE-SHE> better watch out!	<S-NAME> grins at <T-NAME> evilly-- You better watch out!	You grin evilly at who?
 mo	EMBRACE	Who would you like to embrace?			
@@ -419,7 +419,7 @@ mo	NUDGE	Nudge whom?
 mt	NUDGE <T-NAME>	You nudge <T-HIM-HER>.	<S-NAME> nudges <T-NAMESELF>.	<S-NAME> nudges you.	Who?
 oo	NUDGE SELF	You nudge yourself, for some strange reason.	<S-NAME> nudges <S-HIM-HERSELF>, to keep <S-HIM-HERSELF> awake.		
 mo	NUZZLE	Nuzzle who??			
-ot	NUZZLE <T-NAME>	You nuzzle <T-HIS-HER> neck softly.	<S-NAME> softly nuzzles <T-NAMESELF>'s neck.	<S-NAME> softly nuzzles your neck.	No.. they aren't here..
+mt	NUZZLE <T-NAME>	You nuzzle <T-HIS-HER> neck softly.	<S-NAME> softly nuzzles <T-NAMESELF>'s neck.	<S-NAME> softly nuzzles your neck.	No.. they aren't here..
 mo	NUZZLE SELF	I'm sorry, friend, but that's impossible.			
 mo	OOGLE	You start to oogle at everyone in the room.	<S-NAME> oogles at everyone in the room.		
 mo	OOGLE <T-NAME>	You oogle at <T-name>.	<S-NAME> oogles at <T-NAME> and drools.	<S-NAME> oogles at you, drooling and grinning.	Aww. All your oogle zen and they aren`t even here.

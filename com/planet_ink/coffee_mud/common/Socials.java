@@ -133,7 +133,15 @@ public class Socials extends Scriptable
 									getline=getline.substring(x+1);
 									x=getline.indexOf("\t");
 									if(x>=0)
+                                    {
 										socobj.setSee_when_no_target(getline.substring(0,x));
+                                        getline=getline.substring(x+1);
+                                        x=getline.indexOf("\t");
+                                        if(x>=0)
+                                            socobj.setMSPfile(getline.substring(0,x));
+                                        else
+                                            socobj.setMSPfile(getline);
+                                    }
 									else
 										socobj.setSee_when_no_target(getline);
 
@@ -421,6 +429,7 @@ public class Socials extends Scriptable
                     }
                     if(soc.Name().endsWith(" <T-NAME>")||(soc.Name().endsWith(" ALL")))
                         soc.setSee_when_no_target(EnglishParser.promptText(mob,soc.See_when_no_target(),++showNumber,showFlag,"You-see when no target",false,true));
+                    soc.setMSPfile(EnglishParser.promptText(mob,soc.MSPfile(),++showNumber,showFlag,"Sound file",true,false));
                     resaveSocials=true;
                     if(showFlag<-900){ ok=true; break;}
                     if(showFlag>0){ showFlag=-1; continue;}
@@ -601,12 +610,13 @@ public class Socials extends Scriptable
 					buf.append(' ');
 					break;
 				}
-				String[] stuff=new String[5];
+				String[] stuff=new String[6];
 				stuff[0]=I.name();
 				stuff[1]=I.You_see();
 				stuff[2]=I.Third_party_sees();
 				stuff[3]=I.Target_sees();
 				stuff[4]=I.See_when_no_target();
+                stuff[5]=I.MSPfile();
 				buf.append('\t');
 				for(int i=0;i<stuff.length;i++)
 				{

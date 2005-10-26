@@ -712,6 +712,7 @@ public class CommonStrings extends Scriptable
 	// info, and the info provided.
 	public static String msp(String soundName, int volume, int priority)
 	{
+        if((soundName==null)||(soundName.length()==0)) return "";
 		if(getVar(SYSTEM_MSPPATH).length()>0)
 			return " !!SOUND("+soundName+" V="+volume+" P="+priority+" U="+getVar(SYSTEM_MSPPATH)+") ";
 		return " !!SOUND("+soundName+" V="+volume+" P="+priority+") ";
