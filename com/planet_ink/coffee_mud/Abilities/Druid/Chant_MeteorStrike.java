@@ -54,7 +54,7 @@ public class Chant_MeteorStrike extends Chant
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,affectType(auto),auto?"A devastating meteor shower erupts!":"^S<S-NAME> chant(s) for a devastating meteor shower!^?"))
+			if(mob.location().show(mob,null,this,affectType(auto),(auto?"A devastating meteor shower erupts!":"^S<S-NAME> chant(s) for a devastating meteor shower!^?")+CommonStrings.msp("meteor.wav",40)))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();

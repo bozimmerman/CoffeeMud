@@ -110,7 +110,7 @@ public class Prayer_Tremor extends Prayer
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" thunderously.^?"))
+			if(mob.location().show(mob,null,this,affectType(auto),(auto?"":"^S<S-NAME> "+prayWord(mob)+" thunderously.^?")+CommonStrings.msp("earthquake.wav",40)))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();

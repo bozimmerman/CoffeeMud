@@ -49,7 +49,7 @@ public class Spell_MeteorStorm extends Spell
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,affectType(auto),auto?"A devastating meteor shower erupts!":"^S<S-NAME> conjur(s) up a devastating meteor shower!^?"))
+			if(mob.location().show(mob,null,this,affectType(auto),(auto?"A devastating meteor shower erupts!":"^S<S-NAME> conjur(s) up a devastating meteor shower!^?")+CommonStrings.msp("meteor.wav",40)))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();

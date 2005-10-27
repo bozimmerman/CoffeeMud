@@ -410,17 +410,17 @@ public class WeatherAffects extends PuddleMaker
                     case Climate.WEATHER_THUNDERSTORM:
                     {
                         if(C.weatherType(R)!=Climate.WEATHER_THUNDERSTORM)
-                            S.mob().tell("A thunderous rumble and CRACK of lightning can be heard.");
+                            S.mob().tell("A thunderous rumble and CRACK of lightning can be heard."+CommonStrings.msp("thunder.wav",40));
                         else
                         if(R.getArea().getTimeObj().getTODCode()==TimeClock.TIME_DAY)
-                            S.mob().tell("A thunderous rumble and CRACK of lightning can be heard as the pounding rain soaks you.");
+                            S.mob().tell("A thunderous rumble and CRACK of lightning can be heard as the pounding rain soaks you."+CommonStrings.msp("thunderandrain.wav",40));
                         else
-                            S.mob().tell("A bolt of lightning streaks across the sky as the pounding rain soaks you!");
+                            S.mob().tell("A bolt of lightning streaks across the sky as the pounding rain soaks you!"+CommonStrings.msp("thunderandrain.wav",40));
                         break;
                     }
                     case Climate.WEATHER_BLIZZARD:
                         if(C.weatherType(R)==Climate.WEATHER_BLIZZARD)
-                            S.mob().tell("Swirling clouds of snow buffet you.");
+                            S.mob().tell("Swirling clouds of snow buffet you."+CommonStrings.msp("blizzard.wav",40));
                         break;
                     case Climate.WEATHER_SNOW:
                         if(C.weatherType(R)==Climate.WEATHER_SNOW)
@@ -428,23 +428,23 @@ public class WeatherAffects extends PuddleMaker
                         break;
                     case Climate.WEATHER_DUSTSTORM:
                         if(C.weatherType(R)==Climate.WEATHER_DUSTSTORM)
-                            S.mob().tell("Swirling clouds of dust assault you.");
+                            S.mob().tell("Swirling clouds of dust assault you."+CommonStrings.msp("windy.wav",40));
                         break;
                     case Climate.WEATHER_HAIL:
                         if(C.weatherType(R)==Climate.WEATHER_HAIL)
-                            S.mob().tell("You are being pelleted by hail! Ouch!");
+                            S.mob().tell("You are being pelleted by hail! Ouch!"+CommonStrings.msp("hail.wav",40));
                         break;
                     case Climate.WEATHER_RAIN:
                         if(C.weatherType(R)==Climate.WEATHER_RAIN)
-                            S.mob().tell("The rain is soaking you!");
+                            S.mob().tell("The rain is soaking you!"+CommonStrings.msp("rainlong.wav",40));
                         break;
                     case Climate.WEATHER_SLEET:
                         if(C.weatherType(R)==Climate.WEATHER_SLEET)
-                            S.mob().tell("Cold and blistering sleet is soaking you numb!");
+                            S.mob().tell("Cold and blistering sleet is soaking you numb!"+CommonStrings.msp("rain.wav",40));
                         break;
                     case Climate.WEATHER_WINDY:
                         if(C.weatherType(R)==Climate.WEATHER_WINDY)
-                            S.mob().tell("The wind gusts around you.");
+                            S.mob().tell("The wind gusts around you."+CommonStrings.msp("wind.wav",40));
                         break;
                     }
                 }
@@ -489,9 +489,9 @@ public class WeatherAffects extends PuddleMaker
                         if((R2!=R)&&(R2.numInhabitants()>0))
                             if((A.getTimeObj().getTODCode()==TimeClock.TIME_DAY)
                             ||(C.weatherType(R2)!=Climate.WEATHER_THUNDERSTORM))
-                                R2.showHappens(CMMsg.MSG_OK_ACTION,"A thunderous rumble and crack of lightning can be heard.");
+                                R2.showHappens(CMMsg.MSG_OK_ACTION,"A thunderous rumble and crack of lightning can be heard."+CommonStrings.msp("thunder2.wav",40));
                             else
-                                R2.showHappens(CMMsg.MSG_OK_ACTION,"You hear a thunderous rumble as a bolt of lightning streaks across the sky!");
+                                R2.showHappens(CMMsg.MSG_OK_ACTION,"You hear a thunderous rumble as a bolt of lightning streaks across the sky!"+CommonStrings.msp("thunder3.wav",40));
                     }
                 }
             }
@@ -537,9 +537,9 @@ public class WeatherAffects extends PuddleMaker
                         if((R2!=R)&&(R2.numInhabitants()>0))
                             if((A.getTimeObj().getTODCode()==TimeClock.TIME_DAY)
                             ||(C.weatherType(R2)!=Climate.WEATHER_THUNDERSTORM))
-                                R2.showHappens(CMMsg.MSG_OK_ACTION,"The terrible rumble of a tornado can be heard.");
+                                R2.showHappens(CMMsg.MSG_OK_ACTION,"The terrible rumble of a tornado can be heard."+CommonStrings.msp("tornado.wav",40));
                             else
-                                R2.showHappens(CMMsg.MSG_OK_ACTION,"A huge and terrible tornado touches down somewhere near by.");
+                                R2.showHappens(CMMsg.MSG_OK_ACTION,"A huge and terrible tornado touches down somewhere near by."+CommonStrings.msp("tornado.wav",40));
                     }
                 }
             }
@@ -634,7 +634,7 @@ public class WeatherAffects extends PuddleMaker
                 {
                     Ability A2=CMClass.getAbility("Burning");
                     MOB mob=CMMap.god(R);
-                    R.showHappens(CMMsg.MSG_OK_VISUAL,I.Name()+" spontaneously combusts in the seering heat!");
+                    R.showHappens(CMMsg.MSG_OK_VISUAL,I.Name()+" spontaneously combusts in the seering heat!"+CommonStrings.msp("fire.wav",40));
                     A2.invoke(mob,I,true,0);
                 }
                 break;    

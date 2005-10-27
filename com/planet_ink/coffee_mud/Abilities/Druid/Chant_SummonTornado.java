@@ -77,7 +77,7 @@ public class Chant_SummonTornado extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, null, this, affectType(auto), (auto?"A":"^S<S-NAME> chant(s) to the sky and a")+" tornado touches down!^?");
+			FullMsg msg = new FullMsg(mob, null, this, affectType(auto), ((auto?"A":"^S<S-NAME> chant(s) to the sky and a")+" tornado touches down!^?")+CommonStrings.msp("tornado.wav",40));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -109,7 +109,7 @@ public class Spell_Earthquake extends Spell
 		if(success)
 		{
 
-			mob.location().show(mob,null,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a thunderous spell.^?");
+			mob.location().show(mob,null,affectType(auto),(auto?"":"^S<S-NAME> invoke(s) a thunderous spell.^?")+CommonStrings.msp("earthquake.wav",40));
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();

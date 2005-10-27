@@ -44,7 +44,7 @@ public class Prayer_Thunderbolt extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			Prayer_Thunderbolt newOne=(Prayer_Thunderbolt)this.copyOf();
-			FullMsg msg=new FullMsg(mob,target,newOne,affectType(auto),auto?"<T-NAME> is filled with a holy charge!":"^S<S-NAME> "+prayForWord(mob)+" to strike down <T-NAMESELF>!^?");
+			FullMsg msg=new FullMsg(mob,target,newOne,affectType(auto),(auto?"<T-NAME> is filled with a holy charge!":"^S<S-NAME> "+prayForWord(mob)+" to strike down <T-NAMESELF>!^?")+CommonStrings.msp("lightning.wav",40));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
