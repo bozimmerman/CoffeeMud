@@ -991,6 +991,8 @@ public class StdItem implements Item
 						response.append(description());
                     if(msg.targetMinor()==CMMsg.TYP_EXAMINE)
                         response.append(examineString(msg.source()));
+                    if(CommonStrings.mxpImagePath(image()).length()>0)
+                        response.append("^<IMAGE '"+image()+"' URL=\""+CommonStrings.mxpImagePath(image())+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
 				    mob.tell(response.toString());
 				}
 				else

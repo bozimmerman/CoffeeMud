@@ -518,6 +518,8 @@ public class StdExit implements Exit
 					mob.tell("You don't see anything special.");
 				if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 					mob.tell("Misc   : "+text());
+                if(CommonStrings.mxpImagePath(image()).length()>0)
+                    mob.tell("^<IMAGE '"+image()+"' URL=\""+CommonStrings.mxpImagePath(image())+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
 			}
 			else
 				mob.tell("You can't see that way!");

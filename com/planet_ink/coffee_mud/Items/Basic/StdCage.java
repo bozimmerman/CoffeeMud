@@ -54,6 +54,8 @@ public class StdCage extends StdContainer
 					buf.append(description()+"\n\r");
 				//if(msg.source().charStats().getStat(CharStats.INTELLIGENCE)>=10)
 			    //    buf.append(Util.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_DESCS[(material()&EnvResource.				        response.append("\n\r"+Util.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_NOUNDESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase()+"."))>>8].toLowerCase()+".\n\r");
+                if(CommonStrings.mxpImagePath(image()).length()>0)
+                    buf.append("^<IMAGE '"+image()+"' URL=\""+CommonStrings.mxpImagePath(image())+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
 				if((isOpen)&&((capacity>0)||(getContents().size()>0)))
 					buf.append(name()+" contains:^<!ENTITY Container \""+name()+"\"^>"+(Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)?" ":"\n\r"));
 				Vector newItems=new Vector();

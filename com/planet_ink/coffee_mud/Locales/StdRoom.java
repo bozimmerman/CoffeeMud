@@ -891,6 +891,8 @@ public class StdRoom
                 }
                 else
     				Say.append("^L^<RDesc^>" + roomDescription()+"^</RDesc^>");
+                if(CommonStrings.mxpImagePath(image()).length()>0)
+                    Say.append("^<IMAGE '"+image()+"' URL=\""+CommonStrings.mxpImagePath(image())+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
                 if(compress)
                     Say.append("^N  ");
                 else
