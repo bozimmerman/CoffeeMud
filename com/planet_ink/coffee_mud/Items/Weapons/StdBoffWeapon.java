@@ -64,7 +64,7 @@ public class StdBoffWeapon extends StdWeapon
 		case Weapon.CLASS_THROWN:
 			return "<S-NAME> throw(s) "+name()+" at <T-NAMESELF> and "+word+((showDamn)?" ("+damageAmount+")":"")+" <T-HIM-HER>."+CommonStrings.msp("arrow.wav",20);
 		default:
-			return "<S-NAME> "+word+((showDamn)?" ("+damageAmount+")":"")+" <T-NAMESELF> with "+name()+"."+CommonStrings.msp("punch"+Dice.roll(1,4,0)+".wav",20);
+			return "<S-NAME> "+word+((showDamn)?" ("+damageAmount+")":"")+" <T-NAMESELF> with "+name()+"."+CommonStrings.msp("punch"+Dice.roll(1,7,0)+".wav",20);
 		}
 	}
 }

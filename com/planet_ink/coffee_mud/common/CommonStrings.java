@@ -629,7 +629,7 @@ public class CommonStrings extends Scriptable
 		case Weapon.CLASS_THROWN:
 			return "<S-NAME> throw(s) "+weaponName+" at <T-NAMESELF> and <DAMAGE> <T-HIM-HER>."+msp("arrow.wav",20);
 		default:
-			return "<S-NAME> <DAMAGE> <T-NAMESELF> with "+weaponName+"."+msp("punch"+Dice.roll(1,4,0)+".wav",20);
+			return "<S-NAME> <DAMAGE> <T-NAMESELF> with "+weaponName+"."+msp("punch"+Dice.roll(1,7,0)+".wav",20);
 		}
 	}
 
