@@ -343,6 +343,7 @@ public class Weaponsmithing extends CraftingSkill
 			startStr="<S-NAME> start(s) smithing "+building.name()+".";
 			displayText="You are smithing "+building.name();
 			verb="smithing "+building.name();
+            playSound="tinktinktink2.wav";
 			int hardness=EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_STRENGTH]-6;
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");

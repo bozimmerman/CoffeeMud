@@ -51,6 +51,7 @@ public class Chopping extends GatheringSkill
 					commonTell(mob,"You have a good tree for "+foundShortName+".");
 					displayText="You are chopping up "+foundShortName;
 					verb="chopping "+foundShortName;
+                    playSound="chopping.wav";
 				}
 				else
 				{
@@ -109,6 +110,7 @@ public class Chopping extends GatheringSkill
 		}
 		
 		verb="chopping";
+        playSound=null;
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

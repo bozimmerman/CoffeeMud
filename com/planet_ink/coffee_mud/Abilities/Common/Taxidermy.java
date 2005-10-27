@@ -190,6 +190,7 @@ public class Taxidermy extends CraftingSkill
 		found.recoverEnvStats();
 		displayText="You are stuffing "+I.name();
 		verb="stuffing "+I.name();
+        playSound="scissor.wav";
 		I.destroy();
 		FullMsg msg=new FullMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) stuffing "+I.name()+".");
 		if(mob.location().okMessage(mob,msg))

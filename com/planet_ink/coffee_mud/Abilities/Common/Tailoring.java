@@ -297,6 +297,7 @@ public class Tailoring extends CraftingSkill
 			startStr="<S-NAME> start(s) knitting "+building.name()+".";
 			displayText="You are knitting "+building.name();
 			verb="knitting "+building.name();
+            playSound="scissor.wav";
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
 			if(bundling)

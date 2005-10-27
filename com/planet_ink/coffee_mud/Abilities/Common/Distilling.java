@@ -32,6 +32,8 @@ public class Distilling extends Cooking
 	public String cookWord(){return "distilling";};
 	public boolean honorHerbs(){return false;}
     public String supportedResourceString(){return "MISC";}
+    protected String defaultFoodSound="hotspring.wav";
+    protected String defaultDrinkSound="hotspring.wav";
 
 	protected Vector loadRecipes()
 	{

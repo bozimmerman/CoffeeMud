@@ -301,6 +301,7 @@ public class MasterCostuming extends CraftingSkill
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) knitting "+building.name()+".";
 			displayText="You are knitting "+building.name();
+            playSound="scissor.wav";
 			verb="knitting "+building.name();
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");

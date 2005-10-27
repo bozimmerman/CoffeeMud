@@ -295,6 +295,7 @@ public class ClanCrafting extends CraftingSkill
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) crafting "+building.name()+".";
 		displayText="You are crafting "+building.name();
+        playSound="sanding.wav";
 		verb="crafting "+building.name();
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");

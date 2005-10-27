@@ -262,6 +262,7 @@ public class LockSmith extends CraftingSkill
 		startStr="<S-NAME> start(s) working on "+(keyFlag?"a key for ":"")+workingOn.name()+".";
 		displayText="You are working on "+(keyFlag?"a key for ":"")+workingOn.name();
 		verb="working on "+(keyFlag?"a key for ":"")+workingOn.name();
+        playSound="drill.wav";
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);

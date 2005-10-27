@@ -52,6 +52,7 @@ public class Drilling extends GatheringSkill
 					commonTell(mob,"You have found some "+foundShortName+"!");
 					displayText="You are drilling out some "+foundShortName;
 					verb="drilling out some "+foundShortName;
+                    playSound="drill.wav";
 				}
 				else
 				{
@@ -153,6 +154,7 @@ public class Drilling extends GatheringSkill
 
 		verb="drilling";
 		found=null;
+        playSound=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		int resourceType=mob.location().myResource();

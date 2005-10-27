@@ -206,6 +206,7 @@ public class Wainwrighting extends CraftingSkill
 		startStr="<S-NAME> start(s) building "+building.name()+".";
 		displayText="You are building "+building.name();
 		verb="building "+building.name();
+        playSound="hammer.wav";
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);

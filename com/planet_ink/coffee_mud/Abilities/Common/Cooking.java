@@ -49,6 +49,9 @@ public class Cooking extends CraftingSkill
     protected Vector finalRecipe=null;
     protected boolean burnt=false;
     protected Hashtable oldContents=null;
+    protected String defaultFoodSound="sizzle.wav";
+    protected String defaultDrinkSound="liquid.wav";
+    
 	public Cooking()
 	{
 		super();
@@ -633,6 +636,7 @@ public class Cooking extends CraftingSkill
 			}
 			food.setNourishment(food.nourishment()/finalAmount);
 			food.baseEnvStats().setWeight(food.baseEnvStats().weight()/finalAmount);
+            playSound=defaultFoodSound;
 		}
 		else
 		if(foodType.equalsIgnoreCase("DRINK"))
@@ -665,6 +669,7 @@ public class Cooking extends CraftingSkill
 			}
 			drink.baseEnvStats().setWeight(drink.baseEnvStats().weight()/finalAmount);
 			if(burnt)drink.setThirstQuenched(1);
+            playSound=defaultDrinkSound;
 		}
 		else
 		if(CMClass.getItem(foodType)!=null)
@@ -695,6 +700,7 @@ public class Cooking extends CraftingSkill
 				finalDish.setMaterial(drink.liquidType());
 			}
 			finalDish.baseEnvStats().setWeight(finalDish.baseEnvStats().weight()/finalAmount);
+            playSound=defaultFoodSound;
 		}
 		else
 		{
@@ -712,6 +718,7 @@ public class Cooking extends CraftingSkill
 			finalDish.setDisplayText("some "+((burnt)?"ruined ":"")+finalDishName+" has been left here");
 			finalDish.setSecretIdentity("This was prepared by "+mob.Name()+".");
 			finalDish.baseEnvStats().setWeight(finalDish.baseEnvStats().weight()/finalAmount);
+            playSound=defaultFoodSound;
 		}
 		
 		if(finalDish!=null)

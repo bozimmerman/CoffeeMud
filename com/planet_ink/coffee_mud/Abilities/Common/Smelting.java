@@ -213,6 +213,7 @@ public class Smelting extends CraftingSkill
 		building=(Item)CoffeeUtensils.makeResource(EnvResource.RESOURCE_DATA[doneResourceCode][0],-1,false);
 		startStr="<S-NAME> start(s) smelting "+doneResourceDesc.toLowerCase()+".";
 		displayText="You are smelting "+doneResourceDesc.toLowerCase();
+        playSound="sizzling.wav";
 		verb="smelting "+doneResourceDesc.toLowerCase();
 
 		messedUp=!profficiencyCheck(mob,0,auto);

@@ -319,6 +319,7 @@ public class Cobbling extends CraftingSkill
 			startStr="<S-NAME> start(s) cobbling "+building.name()+".";
 			displayText="You are cobbling "+building.name();
 			verb="cobbling "+building.name();
+            playSound="sanding.wav";
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);

@@ -309,9 +309,10 @@ public class Costuming extends CraftingSkill
 			else
 				itemName=Util.startWithAorAn(itemName);
 			building.setName(itemName);
-			startStr="<S-NAME> start(s) costuming "+building.name()+".";
-			displayText="You are costuming "+building.name();
-			verb="costuming "+building.name();
+			startStr="<S-NAME> start(s) making "+building.name()+".";
+			displayText="You are making "+building.name();
+            playSound="scissor.wav";
+			verb="making "+building.name();
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
 			if(bundling)

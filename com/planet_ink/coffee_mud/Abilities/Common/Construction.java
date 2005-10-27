@@ -709,6 +709,7 @@ public class Construction extends CraftingSkill
 		}
 		messedUp=!profficiencyCheck(mob,0,auto);
 		startStr="<S-NAME> start(s) "+verb;
+        playSound="hammer.wav";
 		if(completion<25) completion=25;
 
 		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr+".");

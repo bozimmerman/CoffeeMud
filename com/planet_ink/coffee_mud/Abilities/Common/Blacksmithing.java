@@ -218,6 +218,7 @@ public class Blacksmithing extends CraftingSkill
 		startStr="<S-NAME> start(s) smithing "+building.name()+".";
 		displayText="You are smithing "+building.name();
 		verb="smithing "+building.name();
+        playSound="tinktinktink2.wav";
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);

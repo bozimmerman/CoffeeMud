@@ -111,6 +111,7 @@ public class Digging extends GatheringSkill
 		}
 		
 		verb="digging";
+        playSound="dig.wav";
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

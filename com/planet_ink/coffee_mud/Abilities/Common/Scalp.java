@@ -138,6 +138,7 @@ public class Scalp extends CommonSkill
 			I=(Item)msg.target();
 			body=(DeadBody)I;
 			verb="scalping "+I.name();
+            playSound="ripping.wav";
 			int duration=(I.envStats().weight()/10);
 			if(duration<3) duration=3;
 			if(duration>40) duration=40;

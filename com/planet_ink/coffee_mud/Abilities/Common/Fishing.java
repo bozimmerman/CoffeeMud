@@ -122,6 +122,7 @@ public class Fishing extends GatheringSkill
 		}
 		verb="fishing";
 		found=null;
+        playSound="fishreel.wav";
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if((profficiencyCheck(mob,0,auto))

@@ -325,6 +325,7 @@ public class LeatherWorking extends CraftingSkill
 			startStr="<S-NAME> start(s) making "+building.name()+".";
 			displayText="You are making "+building.name();
 			verb="making "+building.name();
+            playSound="scissor.wav";
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);

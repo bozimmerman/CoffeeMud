@@ -263,6 +263,7 @@ public class Sculpting extends CraftingSkill
 			startStr="<S-NAME> start(s) sculpting "+building.name()+".";
 			displayText="You are sculpting "+building.name();
 			verb="sculpting "+building.name();
+            playSound="metalbat.wav";
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);

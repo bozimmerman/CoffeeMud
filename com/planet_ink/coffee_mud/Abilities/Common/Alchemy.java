@@ -68,7 +68,8 @@ public class Alchemy extends CraftingSkill
 					commonEmote(mob,"<S-NAME> start(s) brewing "+building.name()+".");
 					displayText="You are brewing "+building.name();
 					verb="brewing "+building.name();
-				}
+                    playSound="hotspring.wav";
+                }
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -285,6 +286,7 @@ public class Alchemy extends CraftingSkill
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 
+            playSound=null;
 			MUDFight.postExperience(mob,null,null,-experienceToLose,false);
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
 			oldName=building.name();

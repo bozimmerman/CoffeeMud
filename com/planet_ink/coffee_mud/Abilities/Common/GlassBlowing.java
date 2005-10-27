@@ -206,6 +206,7 @@ public class GlassBlowing extends CraftingSkill
 		startStr="<S-NAME> start(s) blowing "+building.name()+".";
 		displayText="You are blowing "+building.name();
 		verb="blowing "+building.name();
+        playSound="fire.wav";
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);

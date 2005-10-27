@@ -107,6 +107,7 @@ public class Mining extends GatheringSkill
 		    return false;
 		}
 		verb="mining";
+        playSound="dig.wav";
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

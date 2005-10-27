@@ -418,6 +418,7 @@ public class JewelMaking extends CraftingSkill
 			startStr="<S-NAME> start(s) making "+building.name()+".";
 			displayText="You are making "+building.name();
 			verb="making "+building.name();
+            playSound="tinktinktink.wav";
 			building.setDisplayText(itemName+" is here");
 			if((data[1][FOUND_CODE]>0)
 			&&(((data[0][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)

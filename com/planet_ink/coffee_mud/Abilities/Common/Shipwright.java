@@ -276,6 +276,7 @@ public class Shipwright extends CraftingSkill
 			startStr="<S-NAME> start(s) carving "+building.name()+".";
 			displayText="You are carving "+building.name();
 			verb="carving "+building.name();
+            playSound="saw.wav";
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);

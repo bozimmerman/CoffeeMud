@@ -157,6 +157,7 @@ public class MasterLeatherWorking extends CraftingSkill
         }
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
+        playSound="scissor.wav";
 		String startStr=null;
 		String prefix="";
         bundling=false;

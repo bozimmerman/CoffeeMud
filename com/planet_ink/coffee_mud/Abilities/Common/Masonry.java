@@ -765,6 +765,7 @@ public class Masonry extends CraftingSkill
 		}
 		messedUp=!profficiencyCheck(mob,0,auto);
 		startStr="<S-NAME> start(s) "+verb;
+        playSound="stone.wav";
 		if(completion<15) completion=15;
 
 		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr+".");

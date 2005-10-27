@@ -185,6 +185,7 @@ public class Scrapping extends CommonSkill
 		messedUp=!profficiencyCheck(mob,0,auto);
 		found=CoffeeUtensils.makeItemResource(I.material());
 		foundShortName="nothing";
+        playSound="ripping.wav";
 		if(found!=null)
 			foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 		FullMsg msg=new FullMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scrapping "+I.name()+".");

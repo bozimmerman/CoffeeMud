@@ -285,6 +285,7 @@ public class Herbalism extends CraftingSkill
 			building.setDescription("");
 			building.recoverEnvStats();
 			building.text();
+            playSound="hotspring.wav";
 
 			int completion=CMAble.qualifyingLevel(mob,theSpell)*5;
 			if(completion<10) completion=10;

@@ -144,6 +144,7 @@ public class Butchering extends GatheringSkill
 			mob.location().send(mob,msg);
 			body=(DeadBody)I;
 			verb="skinning and butchering "+I.name();
+            playSound="ripping.wav";
 			int duration=(I.envStats().weight()/10);
 			if(duration<3) duration=3;
 			if(duration>40) duration=40;

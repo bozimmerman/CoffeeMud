@@ -31,7 +31,8 @@ public class FoodPrep extends Cooking
 	public String cookWord(){return "making";};
 	public boolean honorHerbs(){return false;}
 	public boolean requireFire(){return false;}
-
+    protected String defaultFoodSound="chopchop.wav";
+    
 	protected Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("FOODPREP RECIPES");

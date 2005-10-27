@@ -47,6 +47,7 @@ public class CommonSkill extends StdAbility
 	protected CommonSkill helpingAbility=null;
 	protected int tickUp=0;
 	protected String verb="working";
+    protected String playSound=null;
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
@@ -66,11 +67,12 @@ public class CommonSkill extends StdAbility
 			MOB mob=(MOB)affected;
 			if((mob.isInCombat())||(mob.location()!=activityRoom)||(!Sense.aliveAwakeMobile(mob,true)))
 			{aborted=true; unInvoke(); return false;}
+            String sound=(playSound!=null)?CommonStrings.msp(playSound,10):"";
 			if(tickDown==4)
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> almost done "+verb+".");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> almost done "+verb+"."+sound);
 			else
 			if((tickUp%4)==0)
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> continue(s) "+verb+".");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> continue(s) "+verb+"."+sound);
 			if((helping)
 			&&(helpingAbility!=null)
 			&&(helpingAbility.affected instanceof MOB)

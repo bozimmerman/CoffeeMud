@@ -371,6 +371,7 @@ public class DefaultClimate implements Climate
 				desc.append("swirl down from above.");
 			else
 				desc.append("fall from the sky.");
+            desc.append(CommonStrings.msp("hail.wav",10));
 			break;
 		case Climate.WEATHER_HEAT_WAVE:
 			if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
@@ -409,6 +410,7 @@ public class DefaultClimate implements Climate
 				desc.append("swirls all around you.");
 			else
 				desc.append("pours down from above.");
+            desc.append(CommonStrings.msp("thunderandrain.wav",10));
 			break;
 		case Climate.WEATHER_DUSTSTORM:
 			desc.append("An eye-stinging dust storm ");
@@ -416,6 +418,7 @@ public class DefaultClimate implements Climate
 				desc.append("swirls all around you.");
 			else
 				desc.append("blows in from "+Directions.getFromDirectionName(windDirection));
+            desc.append(CommonStrings.msp("windy.wav",10));
 			break;
 		case Climate.WEATHER_BLIZZARD:
 			desc.append("A thunderous blizzard ");
@@ -423,6 +426,7 @@ public class DefaultClimate implements Climate
 				desc.append("swirls all around you.");
 			else
 				desc.append("pours down from above.");
+            desc.append(CommonStrings.msp("blizzard.wav",10));
 			break;
 		case Climate.WEATHER_CLEAR:
 			if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
@@ -453,6 +457,7 @@ public class DefaultClimate implements Climate
 				desc.append("swirls down from the sky.");
 			else
 				desc.append("falls from the sky.");
+            desc.append(CommonStrings.msp("rainlong.wav",10));
 			break;
 		case Climate.WEATHER_SNOW:
 			if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
@@ -485,6 +490,7 @@ public class DefaultClimate implements Climate
 				desc.append("swirls down from the sky.");
 			else
 				desc.append("falls from the sky.");
+            desc.append(CommonStrings.msp("rain.wav",10));
 			break;
 		case Climate.WEATHER_WINDY:
 			if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
@@ -498,6 +504,7 @@ public class DefaultClimate implements Climate
 			else
 				desc.append("A light "+(((A.climateType()&Area.CLIMASK_DRY)>0)?"dry ":"")+"wind ");
 			desc.append("blows from "+Directions.getFromDirectionName(windDirection));
+            desc.append(CommonStrings.msp("wind.wav",10));
 			break;
 		}
 		return desc.toString();
