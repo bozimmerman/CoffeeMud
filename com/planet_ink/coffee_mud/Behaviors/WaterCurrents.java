@@ -216,6 +216,7 @@ public class WaterCurrents extends ActiveTicker
 		public void setDescription(String newDescription){}
 		public void setDisplayText(String newDisplayText){}
 		public String image(){return "";}
+        public String rawImage(){return "";}
 		public void setImage(String newImage){}
 		public MOB invoker(){return null;}
 		public void setInvoker(MOB mob){}

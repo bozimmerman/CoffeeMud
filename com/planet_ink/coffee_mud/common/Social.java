@@ -269,6 +269,7 @@ public class Social implements Environmental
 	public int minRange(){return 0;}
 
 	public String image(){return "";}
+    public String rawImage(){return "";}
 	public void setImage(String newImage){}
 	public void addEffect(Ability to){}
 	public void addNonUninvokableEffect(Ability to){}

@@ -29,6 +29,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	public String description(){return "&";}
 	public String displayText(){return "Affected list display for "+ID();}
 	public String image(){return "";}
+    public String rawImage(){return "";}
 	public void setImage(String newImage){}
 	public static final String[] empty={};
 	public String[] triggerStrings(){return empty;}

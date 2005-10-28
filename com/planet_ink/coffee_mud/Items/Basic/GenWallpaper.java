@@ -34,6 +34,7 @@ public class GenWallpaper implements Item
 	public Rideable riding(){return null;}
 	public void setRiding(Rideable one){};
 	public String image(){return "";}
+    public String rawImage(){return "";}
 	public void setImage(String newImage){}
 	
 

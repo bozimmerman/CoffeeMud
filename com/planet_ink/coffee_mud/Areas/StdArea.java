@@ -117,6 +117,7 @@ public class StdArea implements Area
 	public void setArchivePath(String pathFile){archPath=pathFile;}
 
 	public String image(){return imageName;}
+    public String rawImage(){return "";}
 	public void setImage(String newImage){imageName=newImage;}
 
 	public boolean getMobility(){return mobility;}

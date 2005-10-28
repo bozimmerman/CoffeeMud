@@ -195,6 +195,7 @@ public class StdMOB implements MOB
 	}
 
 	public String image(){return imageName;}
+    public String rawImage(){return imageName;}
 	public void setImage(String newImage){imageName=newImage;}
 	
 	public StdMOB()
@@ -2001,8 +2002,7 @@ public class StdMOB implements MOB
                 myDescription.append(relativeCharStatTest(C,"dumber","smarter",CharStats.INTELLIGENCE));
             }
             myDescription.append(healthText()+"\n\r\n\r");
-            if(CommonStrings.mxpImagePath(image()).length()>0)
-                myDescription.append("^<IMAGE '"+image()+"' URL=\""+CommonStrings.mxpImagePath(image())+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
+            myDescription.append(CommonStrings.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
             myDescription.append(description()+"\n\r\n\r");
             
             StringBuffer eq=CommonMsgs.getEquipment(viewer,this);

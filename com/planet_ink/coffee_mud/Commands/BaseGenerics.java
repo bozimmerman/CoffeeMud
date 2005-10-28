@@ -46,7 +46,7 @@ public class BaseGenerics extends StdCommand
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(getScr("BaseGenerics","mxpfile",showNumber+"",E.image()));
+		mob.tell(getScr("BaseGenerics","mxpfile",showNumber+"",E.rawImage()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt(getScr("BaseGenerics","enterfile"),"");
 		if(newName.length()>0)

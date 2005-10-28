@@ -64,6 +64,7 @@ public class StdItem implements Item
 		return Name();
 	}
 	public String image(){return imageName;}
+    public String rawImage(){return imageName;}
 	public void setImage(String newImage){imageName=newImage;}
 	
 	public EnvStats envStats()
@@ -991,8 +992,7 @@ public class StdItem implements Item
 						response.append(description());
                     if(msg.targetMinor()==CMMsg.TYP_EXAMINE)
                         response.append(examineString(msg.source()));
-                    if(CommonStrings.mxpImagePath(image()).length()>0)
-                        response.append("^<IMAGE '"+image()+"' URL=\""+CommonStrings.mxpImagePath(image())+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
+                    response.append(CommonStrings.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
 				    mob.tell(response.toString());
 				}
 				else

@@ -128,6 +128,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public void setTechLevel(int level){}
 
 	public String image(){return imageName;}
+    public String rawImage(){return imageName;}
 	public void setImage(String newImage){imageName=newImage;}
 	
 	public String getArchivePath(){return "";}

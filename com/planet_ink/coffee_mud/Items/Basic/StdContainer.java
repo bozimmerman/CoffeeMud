@@ -371,8 +371,7 @@ public class StdContainer extends StdItem implements Container
 						buf.append(description()+"\n\r");
                     if(msg.targetMinor()==CMMsg.TYP_EXAMINE)
                         buf.append(examineString(msg.source()));
-                    if(CommonStrings.mxpImagePath(image()).length()>0)
-                        buf.append("^<IMAGE '"+image()+"' URL=\""+CommonStrings.mxpImagePath(image())+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
+                    buf.append(CommonStrings.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
 					if((isOpen)&&((capacity>0)||(getContents().size()>0)))
 					{
 						buf.append(name()+" contains:^<!ENTITY container \""+name()+"\"^>"+(Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)?" ":"\n\r"));

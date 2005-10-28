@@ -85,6 +85,7 @@ public class StdRoom
 	}
 
 	public String image(){return imageName;}
+    public String rawImage(){return imageName;}
 	public void setImage(String newImage){imageName=newImage;}
 	
 	public boolean isGeneric(){return false;}
@@ -891,8 +892,7 @@ public class StdRoom
                 }
                 else
     				Say.append("^L^<RDesc^>" + roomDescription()+"^</RDesc^>");
-                if(CommonStrings.mxpImagePath(image()).length()>0)
-                    Say.append("^<IMAGE '"+image()+"' URL=\""+CommonStrings.mxpImagePath(image())+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
+                Say.append(CommonStrings.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
                 if(compress)
                     Say.append("^N  ");
                 else

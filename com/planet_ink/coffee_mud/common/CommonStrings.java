@@ -728,6 +728,17 @@ public class CommonStrings extends Scriptable
             return getVar(SYSTEM_MXPIMAGEPATH);
         return getVar(SYSTEM_MXPIMAGEPATH)+"/";
     }
+    
+    public static String mxpImage(Environmental E, String parms)
+    {
+        if(getVar(SYSTEM_MXPIMAGEPATH).length()==0)
+            return "";
+        String image=E.image();
+        if(image.length()==0) return "";
+        String path=mxpImagePath(image);
+        if(path.length()==0) return "";
+        return "^<IMAGE '"+image+"' URL=\""+path+"\" "+parms+"^>^N\n\r";
+    }
 
     public static String msp(String soundName, int priority)
 	{ return msp(soundName,50,Dice.roll(1,50,priority));}

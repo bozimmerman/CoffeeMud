@@ -81,6 +81,7 @@ public class StdExit implements Exit
 	}
 
 	public String image(){return imageName;}
+    public String rawImage(){return "";}
 	public void setImage(String newImage){imageName=newImage;}
 	
 	public Environmental newInstance()
@@ -518,8 +519,7 @@ public class StdExit implements Exit
 					mob.tell("You don't see anything special.");
 				if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 					mob.tell("Misc   : "+text());
-                if(CommonStrings.mxpImagePath(image()).length()>0)
-                    mob.tell("^<IMAGE '"+image()+"' URL=\""+CommonStrings.mxpImagePath(image())+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
+                mob.tell(CommonStrings.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
 			}
 			else
 				mob.tell("You can't see that way!");
