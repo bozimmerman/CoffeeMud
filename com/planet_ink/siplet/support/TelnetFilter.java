@@ -73,6 +73,7 @@ public class TelnetFilter
     public boolean MXPsupport(){return MXPsupport;}
     public void setMXPSupport(boolean truefalse){MXPsupport=truefalse;}
     
+    public boolean isUIonHold(){return MXPsupport()&&mxpModule.isUIonHold();}
     private String blinkOff(){ if(blinkOn){blinkOn=false; return "</BLINK>";}return ""; }
     private String underlineOff(){ if(underlineOn){underlineOn=false; return "</U>";}return ""; }
     private String fontOff()
