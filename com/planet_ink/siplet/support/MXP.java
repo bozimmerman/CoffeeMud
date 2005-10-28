@@ -184,7 +184,9 @@ public class MXP
             else
             if(code<100)
             {
-                //TODO: process an MXP tag
+                MXPElement replace=(MXPElement)tags.get(new Integer(code));
+                if(replace!=null)
+                    return replace.getFoldedDefinition("");
             }
             return "";
         }

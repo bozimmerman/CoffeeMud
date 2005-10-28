@@ -179,10 +179,10 @@ public class MXPElement implements Cloneable
     {
         StringBuffer buf=new StringBuffer(desc);
         Vector tags=new Vector();
-        int i=0;
         StringBuffer bit=null;
         Vector quotes=new Vector();
-        while(i<buf.length())
+        int i=-1;
+        while((++i)<buf.length())
         {
             switch(buf.charAt(i))
             {

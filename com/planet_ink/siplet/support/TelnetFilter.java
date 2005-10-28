@@ -244,6 +244,7 @@ public class TelnetFilter
                                 if(MSPsupport())
                                 {
                                     response.writeBytes(""+IAC_+IAC_DONT+IAC_MSP);
+                                    response.flush();
                                     setMSPSupport(false);
                                 }
                             }
@@ -251,9 +252,9 @@ public class TelnetFilter
                             if(!MSPsupport())
                             {
                                 response.writeBytes(""+IAC_+IAC_DO+IAC_MSP);
+                                response.flush();
                                 setMSPSupport(true);
                             }
-                            response.flush();
                         }
                         else
                         if(buf.charAt(i)==IAC_MXP)
@@ -263,6 +264,7 @@ public class TelnetFilter
                                 if(MXPsupport())
                                 {
                                     response.writeBytes(""+IAC_+IAC_DONT+IAC_MXP);
+                                    response.flush();
                                     setMXPSupport(false);
                                 }
                             }
@@ -287,6 +289,7 @@ public class TelnetFilter
                             if(MSPsupport())
                             {
                                 response.writeBytes(""+IAC_+IAC_DONT+IAC_MSP);
+                                response.flush();
                                 setMSPSupport(false);
                             }
                         }
@@ -296,6 +299,7 @@ public class TelnetFilter
                             if(MXPsupport())
                             {
                                 response.writeBytes(""+IAC_+IAC_DONT+IAC_MXP);
+                                response.flush();
                                 setMXPSupport(false);
                             }
                         }
@@ -305,10 +309,19 @@ public class TelnetFilter
                         if(buf.charAt(i)==IAC_MSP)
                         {
                             if(neverSupportMSP)
-                                response.writeBytes(""+IAC_+IAC_WONT+IAC_MSP);
+                            {
+                                if(MSPsupport())
+                                {
+                                    response.writeBytes(""+IAC_+IAC_WONT+IAC_MSP);
+                                    response.flush();
+                                    setMSPSupport(false);
+                                }
+                            }
                             else
+                            if(!MSPsupport())
                             {
                                 response.writeBytes(""+IAC_+IAC_WILL+IAC_MSP);
+                                response.flush();
                                 setMSPSupport(true);
                             }
                         }
@@ -316,34 +329,46 @@ public class TelnetFilter
                         if(buf.charAt(i)==IAC_MXP)
                         {
                             if(neverSupportMXP)
-                                response.writeBytes(""+IAC_+IAC_WONT+IAC_MXP);
+                            {
+                                if(MXPsupport())
+                                {
+                                    response.writeBytes(""+IAC_+IAC_WONT+IAC_MXP);
+                                    response.flush();
+                                    setMXPSupport(false);
+                                }
+                            }
                             else
+                            if(!MXPsupport())
                             {
                                 response.writeBytes(""+IAC_+IAC_WILL+IAC_MXP);
+                                response.flush();
                                 setMXPSupport(true);
                             }
+                        }
+                        else
+                        {
+                            response.writeBytes(""+IAC_+IAC_WONT+buf.charAt(i));
+                            response.flush();
                         }
                         break;
                     case IAC_DONT:
                         i++;
                         if(buf.charAt(i)==IAC_MSP)
                         {
-                            if(neverSupportMSP)
-                                response.writeBytes(""+IAC_+IAC_WONT+IAC_MSP);
-                            else
+                            if(MSPsupport())
                             {
                                 response.writeBytes(""+IAC_+IAC_WONT+IAC_MSP);
+                                response.flush();
                                 setMSPSupport(false);
                             }
                         }
                         else
                         if(buf.charAt(i)==IAC_MXP)
                         {
-                            if(neverSupportMXP)
-                                response.writeBytes(""+IAC_+IAC_WONT+IAC_MXP);
-                            else
+                            if(MXPsupport())
                             {
                                 response.writeBytes(""+IAC_+IAC_WONT+IAC_MXP);
+                                response.flush();
                                 setMXPSupport(false);
                             }
                         }

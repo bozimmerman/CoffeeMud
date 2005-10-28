@@ -142,6 +142,7 @@ public class Siplet extends Applet
             if(buf.length()==0) return "";
             if(endAt<0) endAt=buf.length();
             if(endAt==0) return "";
+            if(Telnet.isUIonHold()) return "";
             if(endAt<buf.length())
             {
                 data=buf.substring(0,endAt).toString();
