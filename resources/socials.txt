@@ -149,9 +149,9 @@ mo	CRINGE SELF	I beg your pardon?
 ww	CRITICIZE	Yes, but who?				
 ww	CRITICIZE <T-NAME>	You criticize <T-HIM-HER> with all the warmth of a snake.	With a nasty grin, <S-NAME> rips apart <T-NAMESELF>s efforts.	<S-NAME> informs you that your attempts need some MAJOR adjustments.	Where oh where has my victim gone, oh where oh where...	
 ww	CRITICIZE SELF	You criticize yourself profusely.	<S-NAME> tears <S-HIM-HERSELF> apart, cursing <S-HIS-HER> own stupidity.			
-ss	CRY	Waaaaah..	<S-NAME> bursts into tears.			cry.wav
-ss	CRY <T-NAME>	You cry on <T-HIS-HER> shoulder.	<S-NAME> cries on <T-NAMESELF>'s shoulder.	<S-NAME> cries on your shoulder.	Who's that?	cry.wav
-ss	CRY SELF	You cry to yourself.	<S-NAME> sobs quietly to <S-HIM-HERSELF>.			cry.wav
+ss	CRY	Waaaaah..	<S-NAME> bursts into tears.			scry.wav
+ss	CRY <T-NAME>	You cry on <T-HIS-HER> shoulder.	<S-NAME> cries on <T-NAMESELF>'s shoulder.	<S-NAME> cries on your shoulder.	Who's that?	scry.wav
+ss	CRY SELF	You cry to yourself.	<S-NAME> sobs quietly to <S-HIM-HERSELF>.			scry.wav
 mo	CUDDLE	Who do you feel like cuddling today?				
 mt	CUDDLE <T-NAME>	You cuddle <T-HIM-HER>.	<S-NAME> cuddles <T-NAMESELF>.	<S-NAME> cuddles you.	They aren't here.	
 mo	CUDDLE SELF	You must feel very cuddly indeed ... :)	<S-NAME> cuddles up to <S-HIS-HER> shadow.  What a sorry sight.			
@@ -240,7 +240,7 @@ mt	FONDLE	Who needs to be fondled ?
 mt	FONDLE <T-NAME>	You fondly fondle <T-HIM-HER>.	<S-NAME> fondly fondles <T-NAMESELF>.	<S-NAME> fondly fondles you.	You fondly try to fondle someone not in the room, but who cares.	
 mt	FONDLE SELF	You fondly fondle yourself, feels funny doesn't it?	<S-NAME> fondly fondles <S-HIM-HERSELF> - this is going too far!!			
 mt	FRENCH	Kiss whom?				
-ot	FRENCH <T-NAME>	You give <T-NAMESELF> a long and passionate kiss, it seems to last forever...	<S-NAME> kisses <T-NAMESELF> passionately.	<S-NAME> gives you a long and passionate kiss, it seems to last forever...	Your heart is filled with despair as that person is not here.	
+mt	FRENCH <T-NAME>	You give <T-NAMESELF> a long and passionate kiss, it seems to last forever...	<S-NAME> kisses <T-NAMESELF> passionately.	<S-NAME> gives you a long and passionate kiss, it seems to last forever...	Your heart is filled with despair as that person is not here.	
 ot	FRENCH SELF	You gather yourself in your arms and try to kiss yourself.	<S-NAME> makes an attempt at kissing <S-HIM-HERSELF>.			
 mv	FROLICK	You frolick merrily about. Hop, bunny, hop!	<S-NAME> frolicks about merrily with no apparent direction in mind.			
 mv	FROLICK <T-NAME>	You frolick about <T-NAME>, trying to make <T-HIM-HER> dizzy. Or disgusted. Or both.	<S-NAME> frolicks playfully about <T-NAME>.	<S-NAME> frolicks around <T-NAME> playfully.	They left too quickly, it seems.	
@@ -490,8 +490,8 @@ mv	PUKE SELF	You puke on yourself.	<S-NAME> pukes on <S-HIS-HER> clothes.			puke
 oo	PUNCH	Punch whom?				
 ov	PUNCH <T-NAME>	You punch <T-HIM-HER> playfully.	<S-NAME> punches <T-NAMESELF> playfully.	<S-NAME> punches you playfully.  OUCH!	You can't find your boxing partner.	punch.wav
 ov	PUNCH SELF	You punch yourself.  You deserve it.	<S-NAME> punches <S-HIM-HERSELF>.  Why don't you join in?			punch.wav
-ss	PURR	MMMMMMEEEEEEEEEOOOOOOOOOOOOOWWWWWWWWWWW!!!!!!!!!!!	<S-NAME> purrs contentedly.			
-ss	PURR <T-NAME>	You rub up against <T-NAMESELF> and purr contentedly.	<S-NAME> rubs against <T-NAMESELF> and purrs contentedly.	<S-NAME> rubs up against you and purrs contentedly.	You silly cat!  They aren't here.	
+ss	PURR	MMMMMMEEEEEEEEEOOOOOOOOOOOOOWWWWWWWWWWW!!!!!!!!!!!	<S-NAME> purrs contentedly.			meow.wav
+ss	PURR <T-NAME>	You rub up against <T-NAMESELF> and purr contentedly.	<S-NAME> rubs against <T-NAMESELF> and purrs contentedly.	<S-NAME> rubs up against you and purrs contentedly.	You silly cat!  They aren't here.	meow.wav
 ss	PURR SELF	You purr quietly to yourself.	<S-NAME> purrs contentedly to <S-HIM-HERSELF>.			
 mv	PURSE	You purse your lips.	<S-NAME> gains a look of perplexity as <S-HE-SHE> purses <S-HIS-HER> lips.			
 mv	PURSE <T-NAME>	You gaze at <T-NAME>, pursing your lips.	<S-NAME> gazes at <T-NAME> with <S-HIS-HER> lips pursed, looking quite perplexed.	<S-NAME> gazes at <T-NAME> as <S-HE-SHE> purses <S-HIS-HER> lips, looking quite perplexed.	How perplexing -- they aren`t there.	

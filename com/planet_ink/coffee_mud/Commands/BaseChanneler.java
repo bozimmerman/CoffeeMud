@@ -80,7 +80,9 @@ public class BaseChanneler extends StdCommand
 			else
 			{
 				msgstr=CommonStrings.applyFilter(msgstr,CommonStrings.SYSTEM_EMOTEFILTER);
-                if(!msgstr.startsWith("'"))
+                if(msgstr.trim().startsWith("'")||msgstr.trim().startsWith("`"))
+                    msgstr=msgstr.trim();
+                else
                     msgstr=" "+msgstr.trim();
 				String srcstr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+mob.name()+msgstr+"^</CHANNEL^>^?^.";
 				String reststr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] <S-NAME>"+msgstr+"^</CHANNEL^>^?^.";

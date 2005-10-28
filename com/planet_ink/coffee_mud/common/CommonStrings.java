@@ -739,6 +739,224 @@ public class CommonStrings extends Scriptable
         if(path.length()==0) return "";
         return "^<IMAGE '"+image+"' URL=\""+path+"\" "+parms+"^>^N\n\r";
     }
+    
+    public static String getDefaultMXPImage(Object O)
+    {
+        if(getVar(SYSTEM_MXPIMAGEPATH).length()==0)
+            return "";
+        Hashtable H=(Hashtable)Resources.getResource("MXP_IMAGES");
+        if(H==null)
+        {
+            H=new Hashtable();
+            Vector V=Resources.getFileLineVector(Resources.getFile("mxp_images.txt",false));
+            if((V!=null)&&(V.size()>0))
+            {
+                String s=null;
+                int x=0;
+                for(int v=0;v<V.size();v++)
+                {
+                    s=((String)V.elementAt(v)).trim();
+                    if(s.startsWith("//")||s.startsWith(";"))
+                        continue;
+                    x=s.indexOf("=");
+                    if(x<0) continue;
+                    H.put(s.substring(0,x),s.substring(x+1));
+                }
+            }
+            Resources.submitResource("MXP_IMAGES",H);
+        }
+        String image=null;
+        if(O instanceof Race)
+        {
+            image=(String)H.get("RACE_"+((Race)O).ID().toUpperCase());
+            if(image==null) image=(String)H.get("RACECAT_"+((Race)O).racialCategory().toUpperCase().replace(' ','_'));
+            if(image==null) image=(String)H.get("RACE_*");
+            if(image==null) image=(String)H.get("RACECAT_*");
+        }
+        else
+        if(O instanceof MOB)
+            image=getDefaultMXPImage(((MOB)O).charStats().getMyRace());
+        else
+        if(O instanceof Room)
+        {
+            image=(String)H.get("ROOM_"+((Room)O).ID().toUpperCase());
+            if(image==null)
+                if(Util.bset(((Room)O).domainType(),Room.INDOORS))
+                    image=(String)H.get("LOCALE_"+Room.indoorDomainDescs[((Room)O).domainType()-Room.INDOORS]);
+                else
+                    image=(String)H.get("LOCALE_"+Room.outdoorDomainDescs[((Room)O).domainType()]);
+            if(image==null) image=(String)H.get("ROOM_*");
+            if(image==null) image=(String)H.get("LOCALE_*");
+        }
+        else
+        if(O instanceof Exit)
+        {
+            image=(String)H.get("EXIT_"+((Exit)O).ID().toUpperCase());
+            if(image==null) image=(String)H.get("EXIT_"+((Exit)O).doorName().toUpperCase());
+            if(image==null)
+                if(((Exit)O).hasADoor())
+                    image=(String)H.get("EXIT_WITHDOOR");
+                else
+                    image=(String)H.get("EXIT_OPEN");
+            if(image==null) image=(String)H.get("EXIT_*");
+        }
+        else
+        if(O instanceof Rideable)
+        {
+            
+        }
+        else
+        if(O instanceof Shield)
+        {
+            
+        }
+        else
+        if(O instanceof Coins)
+        {
+            
+        }
+        else
+        if(O instanceof Ammunition)
+        {
+            
+        }
+        else
+        if(O instanceof CagedAnimal)
+        {
+            
+        }
+        else
+        if(O instanceof ClanItem)
+        {
+            
+        }
+        else
+        if(O instanceof DeadBody)
+        {
+            
+        }
+        else
+        if(O instanceof EnvResource)
+        {
+            
+        }
+        else
+        if(O instanceof Key)
+        {
+            
+        }
+        else
+        if(O instanceof LandTitle)
+        {
+            
+        }
+        else
+        if(O instanceof MagicDust)
+        {
+            
+        }
+        else
+        if(O instanceof com.planet_ink.coffee_mud.interfaces.Map)
+        {
+            
+        }
+        else
+        if(O instanceof MusicalInstrument)
+        {
+            
+        }
+        else
+        if(O instanceof PackagedItems)
+        {
+            
+        }
+        else
+        if(O instanceof Perfume)
+        {
+            
+        }
+        else
+        if(O instanceof Pill)
+        {
+            
+        }
+        else
+        if(O instanceof Potion)
+        {
+            
+        }
+        else
+        if(O instanceof Recipe)
+        {
+            
+        }
+        else
+        if(O instanceof Scroll)
+        {
+            
+        }
+        else
+        if(O instanceof ShipComponent)
+        {
+            
+        }
+        else
+        if(O instanceof Software)
+        {
+            
+        }
+        else
+        if(O instanceof Armor)
+        {
+            
+        }
+        else
+        if(O instanceof Weapon)
+        {
+            
+        }
+        else
+        if(O instanceof Wand)
+        {
+            
+        }
+        else
+        if(O instanceof Food)
+        {
+            
+        }
+        else
+        if(O instanceof Drink)
+        {
+            
+        }
+        else
+        if(O instanceof MiscMagic)
+        {
+            
+        }
+        else
+        if(O instanceof Light)
+        {
+            
+        }
+        else
+        if(O instanceof Container)
+        {
+            
+        }
+        else
+        if(O instanceof Electronics)
+        {
+            
+        }
+        if((image==null)&&(O instanceof Item))
+        {
+            
+        }
+        if(image==null) return "";
+        return image;
+    }
 
     public static String msp(String soundName, int priority)
 	{ return msp(soundName,50,Dice.roll(1,50,priority));}
