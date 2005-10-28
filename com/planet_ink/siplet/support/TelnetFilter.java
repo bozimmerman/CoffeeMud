@@ -53,6 +53,7 @@ public class TelnetFilter
     protected boolean underlineOn=false;
     protected boolean italicsOn=false;
     private Siplet codeBase=null;
+    protected boolean comment=false;
 
     protected boolean neverSupportMSP=false;
     protected boolean neverSupportMXP=true;
@@ -394,6 +395,15 @@ public class TelnetFilter
         int i=0;
         while(i<buf.length())
         {
+            if(comment)
+            {
+                if(buf.substring(i,i+3).equals("-->"))
+                {
+                    comment=false;
+                    i+=3;
+                }
+            }
+            else
             switch(buf.charAt(i))
             {
             case '!':
@@ -443,6 +453,9 @@ public class TelnetFilter
                     buf.insert(i+1,"lt;");
                     i+=3;
                 }
+                else
+                if(buf.substring(i+1,i+4).equals("!--"))
+                    comment=true;
                 else
                 {
                     int x=mxpModule.processTag(buf,i);
