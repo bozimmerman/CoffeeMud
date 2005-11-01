@@ -562,11 +562,19 @@ public class List extends StdCommand
 		mob.tell(head.toString());
 	}
 
-	public StringBuffer listRaces(Enumeration these)
+	public StringBuffer listRaces(Enumeration these, boolean shortList)
 	{
 		StringBuffer lines=new StringBuffer("");
 		if(!these.hasMoreElements()) return lines;
 		int column=0;
+        if(shortList)
+        {
+            Vector raceNames=new Vector();
+            for(Enumeration e=these;e.hasMoreElements();)
+                raceNames.addElement(((Race)e.nextElement()).ID());
+            lines.append(Util.toStringList(raceNames));
+        }
+        else
 		for(Enumeration e=these;e.hasMoreElements();)
 		{
 			Race thisThang=(Race)e.nextElement();
@@ -582,6 +590,37 @@ public class List extends StdCommand
 		lines.append("\n\r");
 		return lines;
 	}
+    public StringBuffer listRaceCats(Enumeration these, boolean shortList)
+    {
+        StringBuffer lines=new StringBuffer("");
+        if(!these.hasMoreElements()) return lines;
+        int column=0;
+        Vector raceCats=new Vector();
+        Race R=null;
+        for(Enumeration e=these;e.hasMoreElements();)
+        {
+            R=(Race)e.nextElement();
+            if(!raceCats.contains(R.racialCategory()))
+                raceCats.addElement(R.racialCategory());
+        }
+        Object[] sortedB=(new TreeSet(raceCats)).toArray();
+        if(shortList)
+            lines.append(Util.toStringList((String[])sortedB));
+        else
+        for(int i=0;i<sortedB.length;i++)
+        {
+            String raceCat=(String)sortedB[i];
+            if(++column>3)
+            {
+                lines.append("\n\r");
+                column=1;
+            }
+            lines.append(Util.padRight(raceCat,25));
+        }
+        lines.append("\n\r");
+        return lines;
+    }
+    
 	public StringBuffer listQuests()
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -871,7 +910,7 @@ public class List extends StdCommand
         /*30*/{"TITLES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*31*/{"NOPURGE","NOPURGE"},
 		/*32*/{"BANNED","BAN"},
-		/*33*/{"",""},
+        /*33*/{"RACECATS","CMDRACES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS"},
 		/*34*/{"LOG","LISTADMIN"},
 		/*35*/{"USERS","CMDPLAYERS","STAT"},
 		/*36*/{"LINKAGES","CMDAREAS"},
@@ -925,6 +964,7 @@ public class List extends StdCommand
 		if(s==null) return;
 
 		String listWord=((String)commands.firstElement()).toUpperCase();
+        String rest=(commands.size()>1)?rest=Util.combine(commands,1):"";
 		int code=getMyCmdCode(mob, listWord);
 		if((code<0)||(listWord.length()==0))
 		{
@@ -961,7 +1001,7 @@ public class List extends StdCommand
 		case 8: s.wraplessPrintln(CMLister.reallyList(CMClass.locales()).toString()); break;
 		case 9: s.wraplessPrintln(CMLister.reallyList(CMClass.behaviors()).toString()); break;
 		case 10: s.wraplessPrintln(CMLister.reallyList(CMClass.exits()).toString()); break;
-		case 11: s.wraplessPrintln(listRaces(CMClass.races()).toString()); break;
+		case 11: s.wraplessPrintln(listRaces(CMClass.races(),rest.equalsIgnoreCase("SHORT")).toString()); break;
 		case 12: s.wraplessPrintln(CMLister.reallyList(CMClass.charClasses()).toString()); break;
 		case 13: s.wraplessPrintln(listSubOps(mob).toString()); break;
 		case 14: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SPELL).toString()); break;
@@ -1001,7 +1041,7 @@ public class List extends StdCommand
 			s.wraplessPrintln(str.toString());
 			break;
 		}
-		case 33: break;
+        case 33: s.wraplessPrintln(listRaceCats(CMClass.races(),rest.equalsIgnoreCase("SHORT")).toString()); break;
 		case 34: s.wraplessPrintln(Log.getLog().toString()); break;
 		case 35: listUsers(mob,commands); break;
 		case 36: s.println(listLinkages(mob).toString()); break;

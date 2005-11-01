@@ -363,6 +363,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
         if(thisThang instanceof PackagedItems)
             thisThang=((PackagedItems)thisThang).getItem();
         if(thisThang==null) return false;
+        if(thisThang instanceof Coins) return false;
 		switch(whatISell)
 		{
 		case DEAL_ANYTHING:

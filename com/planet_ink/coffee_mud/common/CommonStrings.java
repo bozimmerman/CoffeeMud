@@ -740,6 +740,26 @@ public class CommonStrings extends Scriptable
         return "^<IMAGE '"+image+"' URL=\""+path+"\" "+parms+"^>^N\n\r";
     }
     
+    
+    public static String getHashedMXPImage(String key)
+    {
+        Hashtable H=(Hashtable)Resources.getResource("MXP_IMAGES");
+        if(H==null) getDefaultMXPImage(null);
+        H=(Hashtable)Resources.getResource("MXP_IMAGES");
+        if(H==null) return "";
+        return getHashedMXPImage(H,key);
+        
+    }
+    public static String getHashedMXPImage(Hashtable H, String key)
+    {
+        if(H==null) return "";
+        String s=getHashedMXPImage(H,key);
+        if(s==null) return null;
+        if(s.trim().length()==0) return null;
+        if(s.equalsIgnoreCase("NULL")) return "";
+        return s;
+    }
+    
     public static String getDefaultMXPImage(Object O)
     {
         if(getVar(SYSTEM_MXPIMAGEPATH).length()==0)
@@ -748,7 +768,7 @@ public class CommonStrings extends Scriptable
         if(H==null)
         {
             H=new Hashtable();
-            Vector V=Resources.getFileLineVector(Resources.getFile("mxp_images.txt",false));
+            Vector V=Resources.getFileLineVector(Resources.getFile("mxp_images.ini",false));
             if((V!=null)&&(V.size()>0))
             {
                 String s=null;
@@ -760,7 +780,8 @@ public class CommonStrings extends Scriptable
                         continue;
                     x=s.indexOf("=");
                     if(x<0) continue;
-                    H.put(s.substring(0,x),s.substring(x+1));
+                    if(s.substring(x+1).trim().length()>0)
+                        H.put(s.substring(0,x),s.substring(x+1));
                 }
             }
             Resources.submitResource("MXP_IMAGES",H);
@@ -768,10 +789,10 @@ public class CommonStrings extends Scriptable
         String image=null;
         if(O instanceof Race)
         {
-            image=(String)H.get("RACE_"+((Race)O).ID().toUpperCase());
-            if(image==null) image=(String)H.get("RACECAT_"+((Race)O).racialCategory().toUpperCase().replace(' ','_'));
-            if(image==null) image=(String)H.get("RACE_*");
-            if(image==null) image=(String)H.get("RACECAT_*");
+            image=getHashedMXPImage(H,"RACE_"+((Race)O).ID().toUpperCase());
+            if(image==null) image=getHashedMXPImage(H,"RACECAT_"+((Race)O).racialCategory().toUpperCase().replace(' ','_'));
+            if(image==null) image=getHashedMXPImage(H,"RACE_*");
+            if(image==null) image=getHashedMXPImage(H,"RACECAT_*");
         }
         else
         if(O instanceof MOB)
@@ -779,181 +800,255 @@ public class CommonStrings extends Scriptable
         else
         if(O instanceof Room)
         {
-            image=(String)H.get("ROOM_"+((Room)O).ID().toUpperCase());
+            image=getHashedMXPImage(H,"ROOM_"+((Room)O).ID().toUpperCase());
             if(image==null)
                 if(Util.bset(((Room)O).domainType(),Room.INDOORS))
-                    image=(String)H.get("LOCALE_"+Room.indoorDomainDescs[((Room)O).domainType()-Room.INDOORS]);
+                    image=getHashedMXPImage(H,"LOCALE_"+Room.indoorDomainDescs[((Room)O).domainType()-Room.INDOORS]);
                 else
-                    image=(String)H.get("LOCALE_"+Room.outdoorDomainDescs[((Room)O).domainType()]);
-            if(image==null) image=(String)H.get("ROOM_*");
-            if(image==null) image=(String)H.get("LOCALE_*");
+                    image=getHashedMXPImage(H,"LOCALE_"+Room.outdoorDomainDescs[((Room)O).domainType()]);
+            if(image==null) image=getHashedMXPImage(H,"ROOM_*");
+            if(image==null) image=getHashedMXPImage(H,"LOCALE_*");
         }
         else
         if(O instanceof Exit)
         {
-            image=(String)H.get("EXIT_"+((Exit)O).ID().toUpperCase());
-            if(image==null) image=(String)H.get("EXIT_"+((Exit)O).doorName().toUpperCase());
+            image=getHashedMXPImage(H,"EXIT_"+((Exit)O).ID().toUpperCase());
+            if(image==null) image=getHashedMXPImage(H,"EXIT_"+((Exit)O).doorName().toUpperCase());
             if(image==null)
                 if(((Exit)O).hasADoor())
-                    image=(String)H.get("EXIT_WITHDOOR");
+                    image=getHashedMXPImage(H,"EXIT_WITHDOOR");
                 else
-                    image=(String)H.get("EXIT_OPEN");
-            if(image==null) image=(String)H.get("EXIT_*");
+                    image=getHashedMXPImage(H,"EXIT_OPEN");
+            if(image==null) image=getHashedMXPImage(H,"EXIT_*");
         }
         else
         if(O instanceof Rideable)
         {
-            
+            image=getHashedMXPImage(H,"RIDEABLE_"+Rideable.RIDEABLE_DESCS[((Rideable)O).rideBasis()]);
+            if(image==null) image=getHashedMXPImage(H,"RIDEABLE_*");
         }
         else
         if(O instanceof Shield)
         {
-            
+            image=getHashedMXPImage(H,"SHIELD_"+EnvResource.MATERIAL_DESCS[(((Shield)O).material()&EnvResource.MATERIAL_MASK)>>8]);
+            if(image==null) image=getHashedMXPImage(H,"SHIELD_*");
         }
         else
         if(O instanceof Coins)
         {
-            
+            image=getHashedMXPImage(H,"COINS_"+EnvResource.RESOURCE_DESCS[(((Coins)O).material()&EnvResource.RESOURCE_MASK)]);
+            if(image==null) image=getHashedMXPImage(H,"COINS_*");
         }
         else
         if(O instanceof Ammunition)
         {
-            
+            image=getHashedMXPImage(H,"AMMO_"+((Ammunition)O).ammunitionType().toUpperCase().replace(' ','_'));
+            if(image==null) image=getHashedMXPImage(H,"AMMO_*");
         }
         else
         if(O instanceof CagedAnimal)
         {
-            
+            MOB mob=((CagedAnimal)O).unCageMe();
+            return getDefaultMXPImage(mob);
         }
         else
         if(O instanceof ClanItem)
         {
-            
+            image=getHashedMXPImage(H,"CLAN_"+((ClanItem)O).ID().toUpperCase());
+            if(image==null) image=getHashedMXPImage(H,"CLAN_"+ClanItem.CI_DESC[((ClanItem)O).ciType()].toUpperCase());
+            if(image==null) image=getHashedMXPImage(H,"CLAN_*");
         }
         else
         if(O instanceof DeadBody)
         {
-            
+            Race R=((DeadBody)O).charStats().getMyRace();
+            if(R!=null)
+            {
+                image=getHashedMXPImage(H,"CORPSE_"+R.ID().toUpperCase());
+                if(image==null) image=getHashedMXPImage(H,"CORPSECAT_"+R.racialCategory().toUpperCase().replace(' ','_'));
+            }
+            if(image==null) image=getHashedMXPImage(H,"CORPSE_*");
+            if(image==null) image=getHashedMXPImage(H,"CORPSECAT_*");
         }
         else
         if(O instanceof EnvResource)
         {
-            
+            image=getHashedMXPImage(H,"RESOURCE_"+EnvResource.RESOURCE_DESCS[(((EnvResource)O).material()&EnvResource.RESOURCE_MASK)]);
+            image=getHashedMXPImage(H,"RESOURCE_"+EnvResource.MATERIAL_DESCS[(((EnvResource)O).material()&EnvResource.MATERIAL_MASK)>>8]);
+            if(image==null) image=getHashedMXPImage(H,"RESOURCE_*");
         }
         else
         if(O instanceof Key)
         {
-            
+            image=getHashedMXPImage(H,"KEY_"+EnvResource.RESOURCE_DESCS[(((Key)O).material()&EnvResource.RESOURCE_MASK)]);
+            image=getHashedMXPImage(H,"KEY_"+EnvResource.MATERIAL_DESCS[(((Key)O).material()&EnvResource.MATERIAL_MASK)>>8]);
+            if(image==null) image=getHashedMXPImage(H,"KEY_*");
         }
         else
         if(O instanceof LandTitle)
-        {
-            
-        }
+            image=getHashedMXPImage(H,"ITEM_LANDTITLE");
         else
         if(O instanceof MagicDust)
         {
-            
+            Vector V=((MagicDust)O).getSpells();
+            if(V.size()>0)
+                image=getHashedMXPImage(H,"DUST_"+((Ability)V.firstElement()).ID().toUpperCase());
+            if(image==null) image=getHashedMXPImage(H,"DUST_*");
         }
         else
         if(O instanceof com.planet_ink.coffee_mud.interfaces.Map)
-        {
-            
-        }
+            image=getHashedMXPImage(H,"ITEM_MAP");
         else
         if(O instanceof MusicalInstrument)
         {
-            
+            image=getHashedMXPImage(H,"MUSINSTR_"+MusicalInstrument.TYPE_DESC[((MusicalInstrument)O).instrumentType()]);
+            if(image==null) image=getHashedMXPImage(H,"MUSINSTR_*");
         }
         else
         if(O instanceof PackagedItems)
-        {
-            
-        }
+            image=getHashedMXPImage(H,"ITEM_PACKAGED");
         else
         if(O instanceof Perfume)
-        {
-            
-        }
+            image=getHashedMXPImage(H,"ITEM_PERFUME");
         else
         if(O instanceof Pill)
         {
-            
+            Vector V=((Pill)O).getSpells();
+            if(V.size()>0)
+                image=getHashedMXPImage(H,"PILL_"+((Ability)V.firstElement()).ID().toUpperCase());
+            if(image==null) image=getHashedMXPImage(H,"PILL_*");
         }
         else
         if(O instanceof Potion)
         {
-            
+            Vector V=((Potion)O).getSpells();
+            if(V.size()>0)
+                image=getHashedMXPImage(H,"POTION_"+((Ability)V.firstElement()).ID().toUpperCase());
+            if(image==null) image=getHashedMXPImage(H,"POTION_*");
         }
         else
         if(O instanceof Recipe)
-        {
-            
-        }
+            image=getHashedMXPImage(H,"ITEM_RECIPE");
         else
         if(O instanceof Scroll)
         {
-            
+            Vector V=((Scroll)O).getSpells();
+            if(V.size()>0)
+                image=getHashedMXPImage(H,"SCROLL_"+((Ability)V.firstElement()).ID().toUpperCase());
+            if(image==null) image=getHashedMXPImage(H,"SCROLL_*");
         }
         else
         if(O instanceof ShipComponent)
         {
-            
+            if(H.containsKey("SHIPCOMP_"+((ShipComponent)O).ID().toUpperCase()))
+                image=getHashedMXPImage(H,"SHIPCOMP_"+((ShipComponent)O).ID().toUpperCase());
+            else
+            if(O instanceof ShipComponent.ShipEngine)
+                image=getHashedMXPImage(H,"SHIPCOMP_ENGINE");
+            else
+            if(O instanceof ShipComponent.ShipEnviroControl)
+                image=getHashedMXPImage(H,"SHIPCOMP_ENVIRO");
+            else
+            if(O instanceof ShipComponent.ShipPanel)
+                image=getHashedMXPImage(H,"SHIPCOMP_PANEL");
+            else
+            if(O instanceof ShipComponent.ShipPowerSource)
+                image=getHashedMXPImage(H,"SHIPCOMP_POWER");
+            else
+            if(O instanceof ShipComponent.ShipSensor)
+                image=getHashedMXPImage(H,"SHIPCOMP_SENSOR");
+            else
+            if(O instanceof ShipComponent.ShipWeapon)
+                image=getHashedMXPImage(H,"SHIPCOMP_WEAPON");
+            if(image==null) image=getHashedMXPImage(H,"SHIPCOMP_*");
         }
         else
         if(O instanceof Software)
-        {
-            
-        }
+            image=getHashedMXPImage(H,"ITEM_SOFTWARE");
         else
         if(O instanceof Armor)
         {
-            
+            Armor A=(Armor)O;
+            final long[] bits=
+            {Item.ON_TORSO, Item.ON_FEET, Item.ON_LEGS, Item.ON_HANDS, Item.ON_ARMS,
+             Item.ON_HEAD, Item.ON_EARS, Item.ON_EYES, Item.ON_MOUTH, Item.ON_NECK,
+             Item.ON_LEFT_FINGER, Item.ON_LEFT_WRIST, Item.ON_BACK, Item.ON_WAIST,
+             Item.ABOUT_BODY, Item.FLOATING_NEARBY, Item.HELD, Item.WIELD};
+            final String[] bitdesc=
+            {"TORSO","FEET","LEGS","HANDS","ARMS","HEAD","EARS","EYES","MOUTH",
+             "NECK","FINGERS","WRIST","BACK","WAIST","BODY","FLOATER","HELD","WIELDED"};
+            for(int i=0;i<bits.length;i++)
+                if(Util.bset(A.rawProperLocationBitmap(),bits[i]))
+                {
+                    image=getHashedMXPImage(H,"ARMOR_"+bitdesc[i]);
+                    break;
+                }
+            if(image==null) image=getHashedMXPImage(H,"ARMOR_*");
         }
         else
         if(O instanceof Weapon)
         {
-            
+            image=getHashedMXPImage(H,"WEAPON_"+Weapon.classifictionDescription[((Weapon)O).weaponClassification()]);
+            if(image==null) image=getHashedMXPImage(H,"WEAPON_"+Weapon.typeDescription[((Weapon)O).weaponType()]);
+            if(image==null) image=getHashedMXPImage(H,"WEAPON_"+((Weapon)O).ammunitionType().toUpperCase().replace(' ','_'));
+            if(image==null) image=getHashedMXPImage(H,"WEAPON_*");
         }
         else
         if(O instanceof Wand)
         {
-            
+            image=getHashedMXPImage(H,"WAND_"+((Wand)O).ID().toUpperCase());
+            if(image==null)
+            {
+                Ability A=((Wand)O).getSpell();
+                if(A!=null) image=getHashedMXPImage(H,"WAND_"+A.ID().toUpperCase());
+            }
+            if(image==null) image=getHashedMXPImage(H,"WAND_*");
         }
         else
         if(O instanceof Food)
         {
-            
+            image=getHashedMXPImage(H,"FOOD_"+((Food)O).ID().toUpperCase());
+            if(image==null) image=getHashedMXPImage(H,"FOOD_"+EnvResource.RESOURCE_DESCS[(((Food)O).material()&EnvResource.RESOURCE_MASK)]);
+            if(image==null) image=getHashedMXPImage(H,"FOOD_"+EnvResource.MATERIAL_DESCS[(((Food)O).material()&EnvResource.MATERIAL_MASK)>>8]);
+            if(image==null) image=getHashedMXPImage(H,"FOOD_*");
         }
         else
         if(O instanceof Drink)
         {
-            
-        }
-        else
-        if(O instanceof MiscMagic)
-        {
-            
+            image=getHashedMXPImage(H,"DRINK_"+((Drink)O).ID().toUpperCase());
+            if(image==null) image=getHashedMXPImage(H,"DRINK_"+EnvResource.RESOURCE_DESCS[(((Item)O).material()&EnvResource.RESOURCE_MASK)]);
+            if(image==null) image=getHashedMXPImage(H,"DRINK_"+EnvResource.MATERIAL_DESCS[(((Item)O).material()&EnvResource.MATERIAL_MASK)>>8]);
+            if(image==null) image=getHashedMXPImage(H,"DRINK_*");
         }
         else
         if(O instanceof Light)
         {
-            
+            image=getHashedMXPImage(H,"LIGHT_"+((Light)O).ID().toUpperCase());
+            image=getHashedMXPImage(H,"LIGHT_"+EnvResource.MATERIAL_DESCS[(((Light)O).material()&EnvResource.MATERIAL_MASK)>>8]);
+            if(image==null) image=getHashedMXPImage(H,"LIGHT_*");
         }
         else
         if(O instanceof Container)
         {
-            
+            image=getHashedMXPImage(H,"CONTAINER_"+((Container)O).ID().toUpperCase());
+            String lid=((Container)O).hasALid()?"LID_":"";
+            if(image==null) image=getHashedMXPImage(H,"CONTAINER_"+lid+EnvResource.MATERIAL_DESCS[(((Container)O).material()&EnvResource.MATERIAL_MASK)>>8]);
+            if(image==null) image=getHashedMXPImage(H,"CONTAINER_"+lid+"*");
         }
         else
         if(O instanceof Electronics)
-        {
-            
-        }
+            image=getHashedMXPImage(H,"ITEM_ELECTRONICS");
+        else
+        if(O instanceof MiscMagic)
+            if(image==null) image=getHashedMXPImage(H,"ITEM_MISCMAGIC");
         if((image==null)&&(O instanceof Item))
         {
-            
+            if(image==null) image=getHashedMXPImage(H,"ITEM_"+((Item)O).ID().toUpperCase());
+            image=getHashedMXPImage(H,"ITEM_"+EnvResource.RESOURCE_DESCS[(((Item)O).material()&EnvResource.RESOURCE_MASK)]);
+            image=getHashedMXPImage(H,"ITEM_"+EnvResource.MATERIAL_DESCS[(((Item)O).material()&EnvResource.MATERIAL_MASK)>>8]);
+            if(image==null) image=getHashedMXPImage(H,"ITEM_*");
         }
+        if(image==null) return getHashedMXPImage(H,"*");
         if(image==null) return "";
         return image;
     }
