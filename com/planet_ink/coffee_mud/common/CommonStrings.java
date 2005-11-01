@@ -796,7 +796,18 @@ public class CommonStrings extends Scriptable
         }
         else
         if(O instanceof MOB)
-            image=getDefaultMXPImage(((MOB)O).charStats().getMyRace());
+        {
+            String raceName=((MOB)O).charStats().raceName().toUpperCase();
+            Race R=null;
+            for(Enumeration e=CMClass.races();e.hasMoreElements();)
+            {
+                R=(Race)e.nextElement();
+                if(raceName.equalsIgnoreCase(R.name()))
+                    image=getDefaultMXPImage(R);
+            }
+            if(image==null)
+                image=getDefaultMXPImage(((MOB)O).charStats().getMyRace());
+        }
         else
         if(O instanceof Room)
         {

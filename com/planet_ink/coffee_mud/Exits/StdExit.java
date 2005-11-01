@@ -28,7 +28,7 @@ public class StdExit implements Exit
 	protected boolean isOpen=true;
 	protected boolean isLocked=false;
 	protected String miscText="";
-	protected String imageName="";
+	protected String imageName=null;
 	protected Vector affects=null;
 	protected Vector behaviors=null;
 
@@ -80,9 +80,25 @@ public class StdExit implements Exit
 		baseEnvStats=newBaseEnvStats.cloneStats();
 	}
 
-	public String image(){return imageName;}
-    public String rawImage(){return "";}
-	public void setImage(String newImage){imageName=newImage;}
+    public String image()
+    {
+        if(imageName==null) 
+            imageName=CommonStrings.getDefaultMXPImage(this);
+        return imageName;
+    }
+    public String rawImage()
+    {
+        if(imageName==null) 
+            return "";
+        return imageName;
+    }
+    public void setImage(String newImage)
+    {
+        if((newImage==null)||(newImage.trim().length()==0))
+            imageName=null;
+        else
+            imageName=newImage;
+    }
 	
 	public Environmental newInstance()
 	{

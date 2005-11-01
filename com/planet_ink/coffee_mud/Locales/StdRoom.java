@@ -27,7 +27,7 @@ public class StdRoom
 	protected String myID="room#";
 	protected String name="the room";
 	protected String displayText="Standard Room";
-	protected String imageName="";
+	protected String imageName=null;
 	protected byte[] description=null;
 	protected Area myArea=null;
 	protected EnvStats envStats=new DefaultEnvStats();
@@ -84,9 +84,26 @@ public class StdRoom
 		return name;
 	}
 
-	public String image(){return imageName;}
-    public String rawImage(){return imageName;}
-	public void setImage(String newImage){imageName=newImage;}
+    public String image()
+    {
+        if(imageName==null) 
+            imageName=CommonStrings.getDefaultMXPImage(this);
+        return imageName;
+    }
+    public String rawImage()
+    {
+        if(imageName==null) 
+            return "";
+        return imageName;
+    }
+    public void setImage(String newImage)
+    {
+        if((newImage==null)||(newImage.trim().length()==0))
+            imageName=null;
+        else
+            imageName=newImage;
+    }
+    
 	
 	public boolean isGeneric(){return false;}
 	protected void cloneFix(Room E)

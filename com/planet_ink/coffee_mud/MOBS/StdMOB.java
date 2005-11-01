@@ -44,7 +44,7 @@ public class StdMOB implements MOB
 	protected boolean pleaseDestroy=false;
 	protected byte[] description=null;
 	protected String displayText="";
-	protected String imageName="";
+	protected String imageName=null;
 	protected byte[] miscText=null;
 
 	protected long tickStatus=Tickable.STATUS_NOT;
@@ -194,9 +194,28 @@ public class StdMOB implements MOB
 	    return Util.replaceAll((String)playerStats.getTitles().firstElement(),"*",Name());
 	}
 
-	public String image(){return imageName;}
-    public String rawImage(){return imageName;}
-	public void setImage(String newImage){imageName=newImage;}
+	public String image()
+    {
+        if(imageName==null)
+            imageName=CommonStrings.getDefaultMXPImage(this);
+        if(!baseCharStats().getMyRace().name().equalsIgnoreCase(charStats().raceName()))
+            return CommonStrings.getDefaultMXPImage(this);
+        if(imageName==null) return "";
+        return imageName;
+    }
+    public String rawImage()
+    {
+        if(imageName==null) 
+            return "";
+        return imageName;
+    }
+	public void setImage(String newImage)
+    {
+        if((newImage==null)||(newImage.trim().length()==0))
+            imageName=null;
+        else
+            imageName=newImage;
+    }
 	
 	public StdMOB()
 	{

@@ -605,7 +605,12 @@ public class List extends StdCommand
         }
         Object[] sortedB=(new TreeSet(raceCats)).toArray();
         if(shortList)
-            lines.append(Util.toStringList((String[])sortedB));
+        {
+            String[] sortedC=new String[sortedB.length];
+            for(int i=0;i<sortedB.length;i++)
+                sortedC[i]=(String)sortedB[i];
+            lines.append(Util.toStringList(sortedC));
+        }
         else
         for(int i=0;i<sortedB.length;i++)
         {
@@ -781,9 +786,17 @@ public class List extends StdCommand
 		return str.toString();
 	}
 
-	public String listEnvResources()
+    public String listMaterials()
+    {
+        return Util.toStringList(EnvResource.MATERIAL_DESCS);
+    }
+	public String listEnvResources(boolean shortList)
 	{
+        if(shortList)
+            return Util.toStringList(EnvResource.RESOURCE_DESCS);
 		StringBuffer str=new StringBuffer("");
+        for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+            str.append(Util.padRight(Util.capitalizeAndLower(EnvResource.RESOURCE_DESCS[i].toLowerCase()),16));
 		str.append(Util.padRight("Resource",15)+" ");
 		str.append(Util.padRight("Material",10)+" ");
 		str.append(Util.padRight("Val",3)+" ");
@@ -924,7 +937,7 @@ public class List extends StdCommand
 		/*44*/{"DEEDS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*45*/{"EVILDEEDS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
         /*46*/{"FACTIONS","LISTADMIN","CMDFACTIONS"},
-        /*47*/{"",""},
+        /*47*/{"MATERIALS","CMDITEMS","CMDROOMS","CMDAREAS"},
         /*48*/{"",""},
         /*49*/{"POLLS","POLLS","LISTADMIN"}
 	};
@@ -993,7 +1006,7 @@ public class List extends StdCommand
 		case 0:	s.wraplessPrintln(unlinkedExits(mob,commands)); break;
 		case 1: s.wraplessPrintln(CMLister.reallyList(CMClass.items()).toString()); break;
 		case 2: s.wraplessPrintln(CMLister.reallyList(CMClass.armor()).toString()); break;
-		case 3: s.wraplessPrintln(listEnvResources()); break;
+		case 3: s.wraplessPrintln(listEnvResources(rest.equalsIgnoreCase("SHORT"))); break;
 		case 4: s.wraplessPrintln(CMLister.reallyList(CMClass.weapons()).toString()); break;
 		case 5: s.wraplessPrintln(CMLister.reallyList(CMClass.mobTypes()).toString()); break;
 		case 6: s.wraplessPrintln(roomDetails(mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
@@ -1055,7 +1068,7 @@ public class List extends StdCommand
 		case 44:
 		case 45: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.EVILDEED).toString()); break;
         case 46: s.wraplessPrintln(Factions.listFactions()); break;
-        case 47: break;
+        case 47: s.wraplessPrintln(listMaterials()); break;
         case 48: break;
         case 49: listPolls(mob,commands); break;
         default:
