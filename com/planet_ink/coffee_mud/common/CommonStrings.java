@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
+import java.io.File;
 
 /*
    Copyright 2000-2005 Bo Zimmerman
@@ -753,7 +754,7 @@ public class CommonStrings extends Scriptable
     public static String getHashedMXPImage(Hashtable H, String key)
     {
         if(H==null) return "";
-        String s=getHashedMXPImage(H,key);
+        String s=(String)H.get(key);
         if(s==null) return null;
         if(s.trim().length()==0) return null;
         if(s.equalsIgnoreCase("NULL")) return "";
@@ -768,7 +769,7 @@ public class CommonStrings extends Scriptable
         if(H==null)
         {
             H=new Hashtable();
-            Vector V=Resources.getFileLineVector(Resources.getFile("mxp_images.ini",false));
+            Vector V=Resources.getFileLineVector(Resources.getFile("resources"+File.separatorChar+"mxp_images.ini",false));
             if((V!=null)&&(V.size()>0))
             {
                 String s=null;
@@ -814,7 +815,7 @@ public class CommonStrings extends Scriptable
             image=getHashedMXPImage(H,"ROOM_"+((Room)O).ID().toUpperCase());
             if(image==null)
                 if(Util.bset(((Room)O).domainType(),Room.INDOORS))
-                    image=getHashedMXPImage(H,"LOCALE_"+Room.indoorDomainDescs[((Room)O).domainType()-Room.INDOORS]);
+                    image=getHashedMXPImage(H,"LOCALE_INDOOR_"+Room.indoorDomainDescs[((Room)O).domainType()-Room.INDOORS]);
                 else
                     image=getHashedMXPImage(H,"LOCALE_"+Room.outdoorDomainDescs[((Room)O).domainType()]);
             if(image==null) image=getHashedMXPImage(H,"ROOM_*");
@@ -1059,7 +1060,7 @@ public class CommonStrings extends Scriptable
             image=getHashedMXPImage(H,"ITEM_"+EnvResource.MATERIAL_DESCS[(((Item)O).material()&EnvResource.MATERIAL_MASK)>>8]);
             if(image==null) image=getHashedMXPImage(H,"ITEM_*");
         }
-        if(image==null) return getHashedMXPImage(H,"*");
+        if(image==null) image=getHashedMXPImage(H,"*");
         if(image==null) return "";
         return image;
     }

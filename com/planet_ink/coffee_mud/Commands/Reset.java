@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
+import java.io.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -202,6 +203,196 @@ public class Reset extends StdCommand
 			mob.tell("Done.");
 		}
 		else
+        if(s.equalsIgnoreCase("imagewebpage"))
+        {
+            try
+            {
+                FileWriter FW=new FileWriter(new File("images.html"));
+                String[] tags={
+                        "LOCALE_CITY", "LOCALE_WOODS", "LOCALE_ROCKY", "LOCALE_PLAINS", 
+                        "LOCALE_UNDERWATER", "LOCALE_AIR", "LOCALE_WATERSURFACE",
+                        "LOCALE_JUNGLE", "LOCALE_SWAMP", "LOCALE_DESERT", 
+                        "LOCALE_HILLS", "LOCALE_MOUNTAINS", "LOCALE_SPACEPORT",
+                        "LOCALE_INDOOR_STONE", "LOCALE_INDOOR_WOODEN", 
+                        "LOCALE_INDOOR_CAVE", "LOCALE_INDOOR_MAGIC", 
+                        "LOCALE_INDOOR_UNDERWATER", "LOCALE_INDOOR_AIR", 
+                        "LOCALE_INDOOR_WATERSURFACE","LOCALE_INDOOR_METAL",
+                        "LOCALE_*","ROOM_*"
+                        
+                };
+                Vector allTags=new Vector();
+                for(int t=0;t<tags.length;t++)
+                    allTags.addElement(tags[t]);
+                HashSet done=new HashSet();
+                for(Enumeration e=CMClass.races();e.hasMoreElements();)
+                    allTags.addElement("RACE_"+((Race)e.nextElement()).ID().toUpperCase());
+                for(Enumeration e=CMClass.races();e.hasMoreElements();)
+                {
+                    Race R=(Race)e.nextElement();
+                    if(!done.contains(R.racialCategory()))
+                    {
+                        done.add(R.racialCategory());
+                        allTags.addElement("RACECAT_"+((Race)e.nextElement()).racialCategory().toUpperCase().replace(' ','_'));
+                    }
+                }
+                allTags.addElement("RACE_*");
+                allTags.addElement("RACECAT_*");
+                for(Enumeration e=CMClass.exits();e.hasMoreElements();)
+                    allTags.addElement("EXIT_"+((Exit)e.nextElement()).ID().toUpperCase());
+                allTags.addElement("EXIT_WITHDOOR");
+                allTags.addElement("EXIT_OPEN");
+                allTags.addElement("EXIT_*");
+                    
+                allTags.addElement("SHIELD_METAL");
+                allTags.addElement("SHIELD_MITHRIL");
+                allTags.addElement("SHIELD_WOODEN");
+                allTags.addElement("SHIELD_LEATHER");
+                allTags.addElement("SHIELD_*");
+                
+                allTags.addElement("RIDEABLE_LAND-BASED");
+                allTags.addElement("RIDEABLE_WATER-BASED");
+                allTags.addElement("RIDEABLE_AIR-FLYING");
+                allTags.addElement("RIDEABLE_FURNITURE-SIT");
+                allTags.addElement("RIDEABLE_FURNITURE-SLEEP");
+                allTags.addElement("RIDEABLE_FURNITURE-TABLE");
+                allTags.addElement("RIDEABLE_ENTER-IN");
+                allTags.addElement("RIDEABLE_LADDER");
+                allTags.addElement("RIDEABLE_WAGON");
+                allTags.addElement("RIDEABLE_*");
+                
+                allTags.addElement("COINS_PAPER");
+                allTags.addElement("COINS_MITHRIL");
+                allTags.addElement("COINS_ADAMANTITE");
+                allTags.addElement("COINS_IRON");
+                allTags.addElement("COINS_GOLD");
+                allTags.addElement("COINS_SILVER");
+                allTags.addElement("COINS_PLATINUM");
+                allTags.addElement("COINS_COPPER");
+                allTags.addElement("COINS_*");
+                
+                allTags.addElement("AMMO_ARROWS");
+                allTags.addElement("AMMO_BULLETS");
+                allTags.addElement("AMMO_BOLTS");
+                allTags.addElement("AMMO_*");
+                
+                allTags.addElement("CORPSE_*");
+                
+                for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+                    allTags.addElement("RESOURCE_"+EnvResource.RESOURCE_DESCS[i]);
+                allTags.addElement("RESOURCE_*");
+                
+                allTags.addElement("DUST_*");
+                allTags.addElement("POTION_*");
+                allTags.addElement("PILL_*");
+                allTags.addElement("SCROLL_*");
+                allTags.addElement("WAND_*");
+                
+                for(int i=0;i<MusicalInstrument.TYPE_DESC.length;i++)
+                    allTags.addElement("MUSINSTR_"+MusicalInstrument.TYPE_DESC[i]);
+                allTags.addElement("MUSINSTR_*");
+                
+                allTags.addElement("SHIPCOMP_ENGINE");
+                allTags.addElement("SHIPCOMP_ENVIRO");
+                allTags.addElement("SHIPCOMP_PANEL");
+                allTags.addElement("SHIPCOMP_POWER");
+                allTags.addElement("SHIPCOMP_SENSOR");
+                allTags.addElement("SHIPCOMP_WEAPON");
+                allTags.addElement("SHIPCOMP_*");
+                
+                final long[] bits=
+                {Item.ON_TORSO, Item.ON_FEET, Item.ON_LEGS, Item.ON_HANDS, Item.ON_ARMS,
+                 Item.ON_HEAD, Item.ON_EARS, Item.ON_EYES, Item.ON_MOUTH, Item.ON_NECK,
+                 Item.ON_LEFT_FINGER, Item.ON_LEFT_WRIST, Item.ON_BACK, Item.ON_WAIST,
+                 Item.ABOUT_BODY, Item.FLOATING_NEARBY, Item.HELD, Item.WIELD};
+                final String[] bitdesc=
+                {"TORSO","FEET","LEGS","HANDS","ARMS","HEAD","EARS","EYES","MOUTH",
+                 "NECK","FINGERS","WRIST","BACK","WAIST","BODY","FLOATER","HELD","WIELDED"};
+                for(int i=0;i<bits.length;i++)
+                    allTags.addElement("ARMOR_"+bitdesc[i]);
+                allTags.addElement("ARMOR_*");
+                
+                for(int i=0;i<Weapon.classifictionDescription.length;i++)
+                    allTags.addElement("WEAPON_"+Weapon.classifictionDescription[i]);
+                allTags.addElement("WEAPON_*");
+                
+                allTags.addElement("FOOD_*");
+                allTags.addElement("DRINK_GENFOUNTAIN");
+                allTags.addElement("DRINK_*");
+                
+                allTags.addElement("LIGHT_GENCIGAR");
+                allTags.addElement("LIGHT_GENLANTERN");
+                allTags.addElement("LIGHT_GENLIGHTSOURCE");
+                allTags.addElement("LIGHT_GENPIPE");
+                allTags.addElement("LIGHT_STDSMOKEABLE");
+                allTags.addElement("LIGHT_*");
+                
+                allTags.addElement("CONTAINER_GENCAGE");
+                allTags.addElement("CONTAINER_LEATHER");
+                allTags.addElement("CONTAINER_CLOTH");
+                allTags.addElement("CONTAINER_METAL");
+                allTags.addElement("CONTAINER_MITHRIL");
+                allTags.addElement("CONTAINER_WOODEN");
+                allTags.addElement("CONTAINER_GLASS");
+                allTags.addElement("CONTAINER_ROCK");
+                allTags.addElement("CONTAINER_PRECIOUS");
+                allTags.addElement("CONTAINER_PLASTIC");
+                allTags.addElement("CONTAINER_LID_LEATHER");
+                allTags.addElement("CONTAINER_LID_CLOTH");
+                allTags.addElement("CONTAINER_LID_METAL");
+                allTags.addElement("CONTAINER_LID_MITHRIL");
+                allTags.addElement("CONTAINER_LID_WOODEN");
+                allTags.addElement("CONTAINER_LID_GLASS");
+                allTags.addElement("CONTAINER_LID_ROCK");
+                allTags.addElement("CONTAINER_LID_PRECIOUS");
+                allTags.addElement("CONTAINER_LID_PLASTIC");
+                allTags.addElement("CONTAINER_LID_*");
+                allTags.addElement("CONTAINER_*");
+                
+                allTags.addElement("CLAN_FLAG");
+                allTags.addElement("CLAN_BANNER");
+                allTags.addElement("CLAN_GAVEL");
+                allTags.addElement("CLAN_PROPAGANDA");
+                allTags.addElement("CLAN_GATHERITEM");
+                allTags.addElement("CLAN_CRAFTITEM");
+                allTags.addElement("CLAN_SPECIALSCALES");
+                allTags.addElement("CLAN_SPECIALSCAVENGER");
+                allTags.addElement("CLAN_SPECIALOTHER");
+                allTags.addElement("CLAN_SPECIALTAXER");
+                allTags.addElement("CLAN_DONATIONJOURNAL");
+                allTags.addElement("CLAN_ANTI-PROPAGANDA");
+                allTags.addElement("CLAN_GENCLANCARD");
+                allTags.addElement("CLAN_GENCLANDONATIONLIST");
+                allTags.addElement("CLAN_*");
+                
+                allTags.addElement("ITEM_SOFTWARE");
+                allTags.addElement("ITEM_RECIPE");
+                allTags.addElement("ITEM_PERFUME");
+                allTags.addElement("ITEM_PACKAGED");
+                allTags.addElement("ITEM_MAP");
+                allTags.addElement("ITEM_LANDTITLE");
+                allTags.addElement("ITEM_ELECTRONICS");
+                allTags.addElement("ITEM_MISCMAGIC");
+                
+                FW.write("<!--\n\r");
+                for(int a=0;a<allTags.size();a++)
+                    FW.write(((String)allTags.elementAt(a))+"=\n\r");
+                FW.write("-->\n\r");
+                FW.write("<TABLE WIDTH=100% BORDER=1>\n\r");
+                for(int a=0;a<allTags.size();a++)
+                {
+                    if((a%5)==0) FW.write("<TR>\n\r");
+                    String s2=(String)allTags.elementAt(a);
+                    String s3=s2;
+                    if(s3.endsWith("*")) s3=s3.substring(0,s3.length()-1);
+                    s3=s3.toLowerCase()+".jpg";
+                    FW.write("<TD WIDTH=20% CENTER> "+s2+"<BR><IMG SRC="+s3+" WIDTH=70 HEIGHT=70></TD>\n\r");
+                    if(((a+1)%5)==0) FW.write("</TR>\n\r");
+                }
+                FW.write("</TABLE>\n\r");
+                FW.close();
+            }catch(Exception e){Log.errOut("Reset",e);}
+        }
+        else
 		if(s.equalsIgnoreCase("arearoomids"))
 		{
 			Area A=mob.location().getArea();

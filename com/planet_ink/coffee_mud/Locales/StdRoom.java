@@ -909,7 +909,8 @@ public class StdRoom
                 }
                 else
     				Say.append("^L^<RDesc^>" + roomDescription()+"^</RDesc^>");
-                Say.append(CommonStrings.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
+                if(!mob.isMonster())
+                    Say.append(CommonStrings.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
                 if(compress)
                     Say.append("^N  ");
                 else
