@@ -93,38 +93,11 @@ public class Archon extends StdCharClass
 
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
-		// the most efficient way of doing this -- just hash em!
-		Hashtable alreadyAble=new Hashtable();
-		Hashtable alreadyAff=new Hashtable();
-		for(int a=0;a<mob.numAllEffects();a++)
-		{
-			Ability A=mob.fetchEffect(a);
-			if(A!=null) alreadyAff.put(A.ID(),A);
-		}
-		for(int a=0;a<mob.numLearnedAbilities();a++)
-		{
-			Ability A=mob.fetchAbility(a);
-			if(A!=null)
-			{
-				A.setProfficiency(100);
-				A.setBorrowed(mob,true);
-				Ability A2=(Ability)alreadyAff.get(A.ID());
-				if(A2!=null)
-					A2.setProfficiency(100);
-				else
-					A.autoInvocation(mob);
-				alreadyAble.put(A.ID(),A);
-			}
-		}
-		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
-		{
-			Ability A=(Ability)a.nextElement();
-			int lvl=CMAble.getQualifyingLevel(ID(),true,A.ID());
-			if((lvl>=0)
-			&&(!alreadyAble.containsKey(A.ID())))
-				giveMobAbility(mob,A,100,"",true,false);
-		}
-		alreadyAble.clear();
-		alreadyAff.clear();
+        boolean allowed=CMSecurity.isAllowedEverywhere(mob,"ALLTASKS");
+        if((!allowed)&&(mob.playerStats()!=null)&&(!mob.playerStats().getSecurityGroups().contains("ALLTASKS"))) 
+            mob.playerStats().getSecurityGroups().addElement("ALLTASKS");
+        super.grantAbilities(mob,isBorrowedClass);
+        if((!allowed)&&(mob.playerStats()!=null)&&(mob.playerStats().getSecurityGroups().contains("ALLTASKS"))) 
+            mob.playerStats().getSecurityGroups().removeElement("ALLTASKS");
 	}
 }

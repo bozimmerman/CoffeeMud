@@ -72,23 +72,22 @@ public class Social implements Environmental
 		if((Target!=null)&&(!Sense.canBeSeenBy(Target,mob)))
 		   Target=null;
 
+        String mspFile=((MSPfile!=null)&&(MSPfile.length()>0))?CommonStrings.msp(MSPfile,10):"";
+        
 		String You_see=You_see();
-		if((You_see!=null)&&(You_see.trim().length()==0)) You_see=null;
-        if((You_see!=null)&&(MSPfile!=null)&&(MSPfile.length()>0))
-            You_see+=CommonStrings.msp(MSPfile,10);
+		if((You_see!=null)&&(You_see.trim().length()==0)) 
+            You_see=null;
         
 		String Third_party_sees=Third_party_sees();
-		if((Third_party_sees!=null)&&(Third_party_sees.trim().length()==0)) Third_party_sees=null;
-        if((Third_party_sees!=null)&&(MSPfile!=null)&&(MSPfile.length()>0))
-            Third_party_sees+=CommonStrings.msp(MSPfile,10);
+		if((Third_party_sees!=null)&&(Third_party_sees.trim().length()==0)) 
+            Third_party_sees=null;
         
 		String Target_sees=Target_sees();
 		if((Target_sees!=null)&&(Target_sees.trim().length()==0)) Target_sees=null;
-        if((Target_sees!=null)&&(MSPfile!=null)&&(MSPfile.length()>0))
-            Target_sees+=CommonStrings.msp(MSPfile,10);
         
 		String See_when_no_target=See_when_no_target();
-		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0)) See_when_no_target=null;
+		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0)) 
+            See_when_no_target=null;
         
 		if((Target==null)&&(targetable()))
 		{
@@ -99,13 +98,13 @@ public class Social implements Environmental
 		else
 		if(Target==null)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|sourceCode(),You_see,CMMsg.NO_EFFECT,null,othersCode(),Third_party_sees);
+			FullMsg msg=new FullMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|sourceCode(),(You_see==null)?null:You_see+mspFile,CMMsg.NO_EFFECT,null,othersCode(),(Third_party_sees==null)?null:Third_party_sees+mspFile);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,Target,this,(auto?CMMsg.MASK_GENERAL:0)|sourceCode(),You_see,targetCode(),Target_sees,othersCode(),Third_party_sees);
+			FullMsg msg=new FullMsg(mob,Target,this,(auto?CMMsg.MASK_GENERAL:0)|sourceCode(),(You_see==null)?null:You_see+mspFile,targetCode(),(Target_sees==null)?null:Target_sees+mspFile,othersCode(),(Third_party_sees==null)?null:Third_party_sees+mspFile);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -160,34 +159,33 @@ public class Social implements Environmental
 			   Target=null;
 		}
 
+        String mspFile=((MSPfile!=null)&&(MSPfile.length()>0))?CommonStrings.msp(MSPfile,10):"";
         String You_see=You_see();
-        if((You_see!=null)&&(You_see.trim().length()==0)) You_see=null;
-        if((You_see!=null)&&(MSPfile!=null)&&(MSPfile.length()>0)&(!makeTarget))
-            You_see+=CommonStrings.msp(MSPfile,10);
+        if((You_see!=null)&&(You_see.trim().length()==0)) 
+            You_see=null;
         
         String Third_party_sees=Third_party_sees();
-        if((Third_party_sees!=null)&&(Third_party_sees.trim().length()==0)) Third_party_sees=null;
-        if((Third_party_sees!=null)&&(MSPfile!=null)&&(MSPfile.length()>0)&&(!makeTarget))
-            Third_party_sees+=CommonStrings.msp(MSPfile,10);
+        if((Third_party_sees!=null)&&(Third_party_sees.trim().length()==0)) 
+            Third_party_sees=null;
         
         String Target_sees=Target_sees();
         if((Target_sees!=null)&&(Target_sees.trim().length()==0)) Target_sees=null;
-        if((Target_sees!=null)&&(MSPfile!=null)&&(MSPfile.length()>0)&(!makeTarget))
-            Target_sees+=CommonStrings.msp(MSPfile,10);
         
 		String See_when_no_target=See_when_no_target();
-		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0)) See_when_no_target=null;
+		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0)) 
+            See_when_no_target=null;
         
 		FullMsg msg=null;
 		String str=makeTarget?"":"^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] ";
 		String end=makeTarget?"":"^</CHANNEL^>^?^.";
+        if(end.length()==0) mspFile="";
 		if((Target==null)&&(targetable()))
 			msg=new FullMsg(mob,null,this,CMMsg.MASK_CHANNEL|sourceCode(),str+See_when_no_target+end,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		else
 		if(Target==null)
-			msg=new FullMsg(mob,null,this,CMMsg.MASK_CHANNEL|sourceCode(),str+You_see+end,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str+Third_party_sees+end);
+			msg=new FullMsg(mob,null,this,CMMsg.MASK_CHANNEL|sourceCode(),str+You_see+end+mspFile,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str+Third_party_sees+end+mspFile);
 		else
-			msg=new FullMsg(mob,Target,this,CMMsg.MASK_CHANNEL|sourceCode(),str+You_see+end,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str+Target_sees+end,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str+Third_party_sees+end);
+			msg=new FullMsg(mob,Target,this,CMMsg.MASK_CHANNEL|sourceCode(),str+You_see+end+mspFile,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str+Target_sees+end+mspFile,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str+Third_party_sees+end+mspFile);
 		return msg;
 	}
 

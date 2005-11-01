@@ -69,7 +69,7 @@ public class PokerDealer extends StdBehavior
     
     // the count down to begin a game starts when the first
     // player puts down an anti.  This holds the time, in
-    // miliseconds, when the even expires.  Players also
+    // miliseconds, when the event expires.  Players also
     // have a time limit on betting and drawing.  This
     // number is used for that purpose as well.
     private long timer=0;

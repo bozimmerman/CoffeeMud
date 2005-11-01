@@ -343,7 +343,7 @@ public class DefaultPlayerStats implements PlayerStats
         for(int ss=0;ss<levelDateTimes.size();ss++)
         {
             buf.append(((Integer)levelDateTimes.elementAt(ss,1)).intValue()+",");
-            buf.append(((Long)levelDateTimes.elementAt(ss,2)).intValue()+";");
+            buf.append(((Long)levelDateTimes.elementAt(ss,2)).longValue()+";");
         }
         return buf.toString();
     }

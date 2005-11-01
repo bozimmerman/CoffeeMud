@@ -57,6 +57,7 @@ public class Prayer_MassCureDisease extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+                boolean worked=false;
 				for(Enumeration e=mob.location().getArea().getProperMap();e.hasMoreElements();)
 				{
 					Room R=(Room)e.nextElement();
@@ -82,7 +83,8 @@ public class Prayer_MassCureDisease extends Prayer
 								    }
 								    else
 								        A.unInvoke();
-								        
+                                    if(target.fetchEffect(A.ID())==null)
+                                        worked=true;
 								}
 								if(badOnes)
 								    mob.tell(mob,target,null,"<T-NAME> had diseases too powerful for this magic.");
@@ -92,6 +94,8 @@ public class Prayer_MassCureDisease extends Prayer
 						}
 					}
 				}
+                if((worked)&&(!auto))
+                    mob.tell("Your healing prayer has cured the sick.");
 			}
 		}
 		else

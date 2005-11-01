@@ -465,6 +465,7 @@ public class CMMap
 
 	public static Enumeration players() { return playersList.elements(); }
 
+    
 	public static Room getStartRoom(MOB mob)
 	{
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();

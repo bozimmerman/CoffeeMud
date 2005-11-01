@@ -867,7 +867,7 @@ public class Destroy extends BaseItemParser
 				String name=Util.combine(commands,2);
                 if(Util.isInteger(name))
                 {
-                    Quest Q=Quests.fetchQuest(Util.s_int(name));
+                    Quest Q=Quests.fetchQuest(Util.s_int(name)-1);
                     if(Q!=null) name=Q.name();
                 }
 				Quest Q=Quests.fetchQuest(name);

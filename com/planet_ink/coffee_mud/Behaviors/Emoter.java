@@ -48,6 +48,7 @@ public class Emoter extends ActiveTicker
 	protected final static int EMOTE_VISUAL=0;
 	protected final static int EMOTE_SOUND=1;
 	protected final static int EMOTE_SMELL=2;
+    protected final static int EMOTE_SOCIAL=3;
 	protected int emoteType=0;
 
     private boolean setEmoteType(String str)
@@ -67,6 +68,9 @@ public class Emoter extends ActiveTicker
         else
         if(str.equals("SOUND")||(str.equals("NOISE")))
             emoteType=EMOTE_SOUND;
+        else
+        if(str.equals("SOCIAL"))
+            emoteType=EMOTE_SOCIAL;
         else
             return false;
         return true;
@@ -193,15 +197,24 @@ public class Emoter extends ActiveTicker
 		FullMsg msg;
 		Room oldLoc=emoter.location();
 		String str=(String)emote.elementAt(2);
-		if(Wrapper) str="^E<S-NAME> "+str+" ^?";
 		if(emoter.location()!=room) emoter.setLocation(room);
+        if(((Integer)emote.elementAt(0)).intValue()==EMOTE_SOCIAL)
+        {
+            Social S=Socials.FetchSocial(str,true);
+            if(S==null) S=Socials.FetchSocial(str,false);
+            if(S!=null) 
+            {
+                S.invoke(emoter,Util.parse(str),emoteTo,false);
+                return;
+            }
+        }
+        if(Wrapper) str="^E<S-NAME> "+str+" ^?";
 		if(emoteTo!=null)
 		{
 		    emoteTo.tell(emoter,emoteTo,null,str);
 		    return;
 		}
-		
-		msg=new FullMsg(emoter,null,CMMsg.MSG_EMOTE,str);
+        msg=new FullMsg(emoter,null,CMMsg.MSG_EMOTE,str);
 		if(room.okMessage(emoter,msg))
 		for(int i=0;i<room.numInhabitants();i++)
 		{

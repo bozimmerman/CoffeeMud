@@ -178,11 +178,7 @@ public class DeckOfCards extends HandOfCards
             cardsCache.clear();
             Vector allCards=makeAllCards();
             for(int i=0;i<allCards.size();i++)
-                if(owner() instanceof Room)
-                    ((Room)owner()).addItem((Item)allCards.elementAt(i));
-                else
-                if(owner() instanceof MOB)
-                    ((MOB)owner()).addInventory((Item)allCards.elementAt(i));
+                addCard((PlayingCard)allCards.elementAt(i));
             cardsCache=getContents();
         }
         return numberOfCards()==52;

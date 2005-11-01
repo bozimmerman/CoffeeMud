@@ -50,7 +50,7 @@ public class Prayer_MoralBalance extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					target.tell("Your views on the world suddenly moderate.");
+					target.tell("Your views on the world suddenly change.");
                     Faction F=Factions.getFaction(Factions.AlignID());
                     if(F!=null)
 	                    target.addFaction(Factions.AlignID(),(int)Math.round(Util.div((F.maximum-F.minimum)-target.fetchFaction(Factions.AlignID()),2)));
