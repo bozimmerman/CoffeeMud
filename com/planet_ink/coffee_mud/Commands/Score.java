@@ -127,6 +127,7 @@ public class Score extends Affect
         msg.append("\n\r^NYour stats are: \n\r^!");
         int max=CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT);
         CharStats CT=mob.charStats();
+        msg.append(CommonStrings.mxpImage(mob," ALIGN=RIGHT H=70 W=70"));
         msg.append(Util.padRight("^<HELP^>Strength^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.MAX_STRENGTH_ADJ))+"\n\r");
         msg.append(Util.padRight("^<HELP^>Intelligence^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.MAX_INTELLIGENCE_ADJ))+"\n\r");
         msg.append(Util.padRight("^<HELP^>Dexterity^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.DEXTERITY)),2)+"/"+(max+CT.getStat(CharStats.MAX_DEXTERITY_ADJ))+"\n\r");
@@ -134,7 +135,6 @@ public class Score extends Affect
         msg.append(Util.padRight("^<HELP^>Constitution^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.CONSTITUTION)),2)+"/"+(max+CT.getStat(CharStats.MAX_CONSTITUTION_ADJ))+"\n\r");
         msg.append(Util.padRight("^<HELP^>Charisma^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.CHARISMA)),2)+"/"+(max+CT.getStat(CharStats.MAX_CHARISMA_ADJ))+"\n\r");
         msg.append("^?\n\r");
-        msg.append(CommonStrings.mxpImage(mob," ALIGN=RIGHT H=70 W=70"));
 		msg.append("You have ^H"+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+"^? ^<HELP^>hit points^</HELP^>, ^H");
 		msg.append(mob.curState().getMana()+"/"+mob.maxState().getMana()+"^? ^<HELP^>mana^</HELP^>, and ^H");
 		msg.append(mob.curState().getMovement()+"/"+mob.maxState().getMovement()+"^? ^<HELP^>movement^</HELP^>.\n\r");

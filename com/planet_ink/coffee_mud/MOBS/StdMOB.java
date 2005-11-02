@@ -2021,8 +2021,9 @@ public class StdMOB implements MOB
                 myDescription.append(relativeCharStatTest(C,"dumber","smarter",CharStats.INTELLIGENCE));
             }
             myDescription.append(healthText()+"\n\r\n\r");
-            myDescription.append(CommonStrings.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
             myDescription.append(description()+"\n\r\n\r");
+            if(!viewer.isMonster())
+                myDescription.append(CommonStrings.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
             
             StringBuffer eq=CommonMsgs.getEquipment(viewer,this);
             if(eq.length() > 0)

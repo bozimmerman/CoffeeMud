@@ -1008,7 +1008,8 @@ public class StdItem implements Item
 						response.append(description());
                     if(msg.targetMinor()==CMMsg.TYP_EXAMINE)
                         response.append(examineString(msg.source()));
-                    response.append(CommonStrings.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
+                    if(!msg.source().isMonster())
+                        response.append(CommonStrings.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
 				    mob.tell(response.toString());
 				}
 				else
