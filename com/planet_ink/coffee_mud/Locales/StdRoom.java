@@ -951,6 +951,8 @@ public class StdRoom
     					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
     						Say.append("^H("+CMClass.className(mob2)+")^N ");
     
+                        if(!compress)
+                            Say.append(CommonStrings.mxpImage(mob2," H=10 W=10",""," "));
     					Say.append("^M^<RMob \""+mob2.name()+"\"^>");
                         if(compress) Say.append(Sense.colorCodes(mob2,mob)+"^M ");
     					if(mob2.displayText(mob).length()>0)

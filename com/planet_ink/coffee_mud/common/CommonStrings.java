@@ -738,9 +738,19 @@ public class CommonStrings extends Scriptable
         if(image.length()==0) return "";
         String path=mxpImagePath(image);
         if(path.length()==0) return "";
-        return "^<IMAGE '"+image+"' URL=\""+path+"\" "+parms+"^>^N\n\r";
+        return "^<IMAGE '"+image+"' URL=\""+path+"\" "+parms+"^>^N";
     }
     
+    public static String mxpImage(Environmental E, String parms, String pre, String post)
+    {
+        if(getVar(SYSTEM_MXPIMAGEPATH).length()==0)
+            return "";
+        String image=E.image();
+        if(image.length()==0) return "";
+        String path=mxpImagePath(image);
+        if(path.length()==0) return "";
+        return pre+"^<IMAGE '"+image+"' URL=\""+path+"\" "+parms+"^>^N"+post;
+    }
     
     public static String getHashedMXPImage(String key)
     {
