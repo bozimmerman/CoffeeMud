@@ -40,8 +40,8 @@ mo	BEAM	You beam delightedly at nothing in particular.	<S-NAME> beams broadly at
 mo	BEAM <T-NAME>	You dazzle <T-NAMESELF> with your smile.	<S-NAME> must like <T-NAMESELF> a great deal to beam at <T-HIM-HER> so broadly!	<S-NAME> must like you a great deal to beam at you so broadly!	You look pretty silly beaming at imaginary friends...	
 mo	BEAM SELF	Well, aren't you special?	<S-NAME> beams at <S-HIM-HERSELF>, obviously pleased.			
 oo	BEARHUG	Whom do you wish to bearhug?				
-ov	BEARHUG <T-NAME>	You overwhelm <T-NAMESELF> with a great, big, hulking bearhug.	<S-NAME> encompasses <T-NAMESELF> in an ENORMOUS bearhug!	<S-NAME> clutches you tightly in an overwhelming bearhug!	Perhaps you should shower your affections on someone who is here?	
-oo	BEARHUG SELF	You vainly clutch yourself in a bearhug for consolation.	<S-NAME> hugs <S-HIM-HERSELF> as tightly as possible.  Looks like <S-HE-SHE> could use a hand.			
+ov	BEARHUG <T-NAME>	You overwhelm <T-NAMESELF> with a great, big, hulking bearhug.	<S-NAME> encompasses <T-NAMESELF> in an ENORMOUS bearhug!	<S-NAME> clutches you tightly in an overwhelming bearhug!	Perhaps you should shower your affections on someone who is here?	bighug.wav
+oo	BEARHUG SELF	You vainly clutch yourself in a bearhug for consolation.	<S-NAME> hugs <S-HIM-HERSELF> as tightly as possible.  Looks like <S-HE-SHE> could use a hand.			bighug.wav
 mo	BECKON	You beckon for everyone to follow.	<S-NAME> beckons for everyone to follow.			
 mo	BECKON <T-NAME>	You beckon for <T-NAMESELF> to follow -- sure hope they do!	<S-NAME> beckons <T-NAMESELF> to follow...hmmm what's going on?	<S-NAME> beckons for you to follow.	So sorry, that person has already left.	
 mo	BECKON SELF	You beckon to your shadow to follow.	<S-NAME> beckons to <S-HIS-HER> shadow to follow.			
@@ -457,12 +457,12 @@ ww	PLEAD	You beg and plead to anyone who will listen.	<S-NAME> pleads <S-HIS-HER
 mv	POCKETS	You shove your hands into your pockets, look skyward and whistle a jaunty tune.	<S-NAME> shove <S-HIS-HER> hands into <S-HIS-HER> pockets, look skyward and whistle a jaunty tune.			
 mo	POINT	You point in every direction.	<S-NAME> points excitedly!			
 mo	POINT <T-NAME>	You point at <T-NAMESELF>.	<S-NAME> points excitedly at <T-NAMESELF>!	<S-NAME> points at you.  How rude!	You point at no one in particular.	
-m 	POINT DOWN	You point down.	<S-NAME> points down.			
+mv	POINT DOWN	You point down.	<S-NAME> points down.			
 mv	POINT EAST	You point east.	<S-NAME> point(s) east.			
-m 	POINT NORTH	You point north.	<S-NAME> points north.			
+mv	POINT NORTH	You point north.	<S-NAME> points north.			
 mo	POINT SELF	You point at yourself, obviously very confused.	<S-NAME> points at <S-HIM-HERSELF>, obviously very confused.			
-m 	POINT SOUTH	You point south.	<S-NAME> points south.			
-m 	POINT UP	You point up.	<S-NAME> points up.			
+mv	POINT SOUTH	You point south.	<S-NAME> points south.			
+mv	POINT UP	You point up.	<S-NAME> points up.			
 mv	POINT WEST	You point west.	<S-NAME> points west.			
 mo	POKE	Poke who??				
 mt	POKE <T-NAME>	You poke <T-HIM-HER> in the ribs.	<S-NAME> pokes <T-NAMESELF> in the ribs.	<S-NAME> pokes you in the ribs.	You can't poke someone who's not here!.	

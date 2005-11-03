@@ -1057,7 +1057,7 @@ public class BaseGenerics extends StdCommand
 			mob.session().println("    "+getScr("BaseGenerics","removable")+" "+(!Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE)));
 			mob.session().println("    "+getScr("BaseGenerics","nonlocatable")+" "+(((E.baseEnvStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)>0)?"true":"false"));
 			if(E instanceof Weapon)
-				mob.session().println("    "+getScr("BaseGenerics","some4")+" "+E.rawLogicalAnd());
+				mob.session().println("    "+getScr("BaseGenerics","twohanded")+" "+E.rawLogicalAnd());
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			c=mob.session().choose(getScr("BaseGenerics","msgabcde"),"ABCDE\n","\n").toUpperCase();
 			switch(Character.toUpperCase(c.charAt(0)))
