@@ -391,7 +391,7 @@ public class TelnetFilter
     // SPACES -> &nbsp;
     // < -> &lt;
     // TELNET codes -> response outputstream
-    public int HTMLFilter(StringBuffer buf, MXPElement currentElement)
+    public int HTMLFilter(StringBuffer buf)
     {
         int i=0;
         while(i<buf.length())
@@ -431,7 +431,7 @@ public class TelnetFilter
                 }
                 else
                 {
-                    int x=mxpModule.processEntity(buf,i,currentElement);
+                    int x=mxpModule.processEntity(buf,i,null);
                     if(x==Integer.MAX_VALUE) return i;
                     i+=x;
                 }
@@ -458,9 +458,8 @@ public class TelnetFilter
                 if(((i+4)<buf.length())&&(buf.substring(i+1,i+4).equals("!--")))
                     comment=true;
                 else
-                if(currentElement==null)
                 {
-                    int x=mxpModule.processTag(buf,i,this,currentElement);
+                    int x=mxpModule.processTag(buf,i);
                     if(x==Integer.MAX_VALUE) return i;
                     i+=x;
                 }

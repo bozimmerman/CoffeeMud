@@ -1,4 +1,5 @@
-Span{   font-family: courier;   font-size: 10; background-color: black; color: yellow;}
+DIV{   font-family: courier;   font-size: 10; background-color: black; color: yellow;}
+A{ text-decoration: none}
 .BKBK{ background-color: black; color: black; }
 .BKWH{ background-color: black; color: white; }
 .BKLG{ background-color: black; color: lightgreen; }
@@ -239,3 +240,26 @@ Span{   font-family: courier;   font-size: 10; background-color: black; color: y
 .PUCY{ background-color: purple; color: darkcyan; }
 .PUPU{ background-color: purple; color: purple; }
 .PUDG{ background-color: purple; color: gray; }
+
+#dropmenudiv{
+position:absolute;
+border:1px solid black;
+border-bottom-width: 0;
+font:normal 12px Verdana;
+line-height:18px;
+z-index:100;
+}
+
+#dropmenudiv a{
+width: 100%;
+display: block;
+text-indent: 3px;
+border-bottom: 1px solid black;
+padding: 1px 0;
+text-decoration: none;
+font-weight: bold;
+}
+
+#dropmenudiv a:hover{ /*hover background color*/
+background-color: yellow;
+}

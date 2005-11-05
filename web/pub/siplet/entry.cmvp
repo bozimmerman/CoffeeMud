@@ -3,7 +3,7 @@
 <FORM NAME=ENTER>
 <TABLE WIDTH=100%)
 <TR><TD WIDTH=85%>
-<TEXTAREA NAME=TEXT ID=TEXT ROWS=4 COLS=80 WRAP="soft" ONKEYPRESS="keyme(this);" ONKEYDOWN="keydown(this);" SIZE=80>
+<TEXTAREA NAME=TEXT ID=TEXT ROWS=4 COLS=80 WRAP="soft" ONKEYPRESS="keyme(event,this);" ONKEYDOWN="keydown(event,this);" SIZE=80>
 </TEXTAREA>
 </TD><TD WIDTH=15% ALIGN=CENTER>
 <a href="javascript:sendText();"><TABLE WIDTH=57 HEIGHT=23 BACKGROUND="lilButt.gif"  style="cursor:hand" ONCLICK="sendText();" TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0><TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2><B>Submit</B></FONT></a></TD></TR></TABLE></a>
@@ -44,8 +44,9 @@
         }
     }
     
-    function sendText(textEl)
+    function sendText()
     {
+        var textEl=document.getElementById("TEXT");
         position=-1;
         enqueText(textEl.value);
     	top.term.sendData(textEl);
@@ -54,12 +55,14 @@
     
     function disconnect()
     {
-    	top.term.myApplet.disconnectFromURL();
+        var theapplet=top.term.document.getElementById("myApplet");
+        theapplet.disconnectFromURL();
     	top.document.location.href='/index.cmvp';
     }
     
-    function keydown(textEl)
+    function keydown(event,textEl)
     {
+        event = event || window.event; // window.event for IE 
         if(event.keyCode==38)
         {
             if(position<0)
@@ -86,12 +89,20 @@
         }
     }
     
-    function keyme(textEl)
+    function keyme(event,textEl)
     {
+        event = event || window.event; // window.event for IE 
+        if(event.keyCode==10)
+        {
+            textEl.value='';
+            event.cancelBubble=true;
+        }
         if(event.keyCode==13)
         {
-            top.term.DISPLAYSPAN.insertAdjacentHTML('beforeEnd',textEl.value+'<BR>');
-            sendText(textEl);
+            var thespan=top.term.document.getElementById("DISPLAYSPAN");
+            thespan+=textEl.value+'<BR>';
+            sendText();
+            textEl.value='';
             event.cancelBubble=true;
             event.returnValue=false;
         }

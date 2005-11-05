@@ -71,8 +71,8 @@ public class MXP
         addElement(MXPElement.createMXPElement("H","","")); // not supported
         addElement(MXPElement.createMXPElement("FONT","<FONT FACE=&face; SIZE=&size; COLOR=&color; STYLE=\"background-color: &back;\">","FACE SIZE COLOR BACK"));
         addElement(new MXPElement("NOBR","","","",MXPElement.BIT_NEEDTEXT|MXPElement.BIT_SPECIAL));
-        addElement(MXPElement.createMXPElement("A","<A HREF=&href; TITLE=&hint;>","HREF HINT EXPIRE"));
-        addElement(MXPElement.createMXPElement("SEND","<A TITLE=&hint; HREF=\"javascript: Send('&href');\">","HREF HINT PROMPT EXPIRE"));
+        addElement(MXPElement.createMXPElement("A","<A HREF=\"&href;\" TITLE=\"&hint;\">","HREF HINT EXPIRE"));
+        addElement(MXPElement.createMXPElement("SEND","<A TITLE=\"&hint;\" HREF=\"javascript: Send('&href;');\">","HREF HINT PROMPT EXPIRE"));
         addElement(MXPElement.createMXPCommand("EXPIRE","","NAME")); // not supported
         addElement(new MXPElement("VERSION","","","",MXPElement.BIT_SPECIAL));
         addElement(new MXPElement("GAUGE","","ENTITY MAX CAPTION COLOR","",MXPElement.BIT_SPECIAL));
@@ -210,7 +210,26 @@ public class MXP
         return escapeString.length();
     }
 
-    public int processTag(StringBuffer buf, int i, TelnetFilter filter, MXPElement currentElement)
+    public void processAnyEntities(StringBuffer buf, MXPElement currentElement)
+    {
+        int i=0;
+        while(i<buf.length())
+        {
+            switch(buf.charAt(i))
+            {
+            case '&':
+            {
+                 int x=processEntity(buf,i,currentElement);
+                 if(x==Integer.MAX_VALUE) return;
+                 i+=x;
+                 break;
+            }
+            }
+            i++;
+        }
+    }
+    
+    public int processTag(StringBuffer buf, int i)
     {
         // first step is to parse the motherfather
         // if we can't parse it, we convert the < char at i into &lt;
@@ -388,8 +407,12 @@ public class MXP
             return totalDefinition.length()-1;
         }
         StringBuffer def=new StringBuffer(totalDefinition);
-        filter.HTMLFilter(def,E);
+System.out.println("1-"+oldI+"/"+i+"/"+def.toString());
+        processAnyEntities(def,E);
+System.out.println("2-"+oldI+"/"+i+"/"+def.toString());
         buf.insert(oldI,def.toString());
+        if(def.toString().equalsIgnoreCase(oldString))
+            return totalDefinition.length()-1;
         return -1;
     }
     
@@ -540,23 +563,23 @@ public class MXP
             }
         String oldValue=buf.substring(oldI,i+1);
         buf.delete(oldI,i+1);
+        if(val==null)
+        {
+            MXPEntity N=(MXPEntity)entities.get(tag);
+            if(N==null) N=(MXPEntity)entities.get(tag.toLowerCase());
+            if(N==null) N=(MXPEntity)entities.get(tag.toUpperCase());
+            if(N!=null) val=N.getDefinition();
+        }
         if(val!=null)
         {
             buf.insert(oldI,val);
+            if((val.equalsIgnoreCase(oldValue))
+            ||(currentE!=null))
+                return val.length();
             return -1;
         }
-        MXPEntity N=(MXPEntity)entities.get(tag);
-        if(N==null) N=(MXPEntity)entities.get(tag.toLowerCase());
-        if(N==null) N=(MXPEntity)entities.get(tag.toUpperCase());
-        if(N==null)
-        {
-            buf.insert(oldI+1,"amp;");
-            return 4;
-        }
-        buf.insert(oldI+1,N.getDefinition());
-        if(N.getDefinition().equals(oldValue))
-            return oldValue.length()-1;
-        return -1;
+        buf.insert(oldI+1,"amp;");
+        return 4;
     }
     
 }

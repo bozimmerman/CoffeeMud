@@ -136,7 +136,7 @@ public class Siplet extends Applet
     {
         synchronized(buf)
         {
-            int endAt=Telnet.HTMLFilter(buf,null);
+            int endAt=Telnet.HTMLFilter(buf);
             String data=null;
             if(buf.length()==0) return "";
             if(endAt<0) endAt=buf.length();
