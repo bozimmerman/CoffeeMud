@@ -2193,11 +2193,17 @@ public class StdMOB implements MOB
                             if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
                                 CommonMsgs.channel((String)channels2.elementAt(i),getClanID(),Name()+" was just killed.",true);
 					}
-					if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
+					if(msg.tool() instanceof MOB)
 					{
-						MUDFight.justDie((MOB)msg.tool(),this);
-						if((!isMonster())&&(soulMate()==null)&&(msg.tool()!=this)&&(!((MOB)msg.tool()).isMonster()))
+                        MOB killer=(MOB)msg.tool();
+						MUDFight.justDie(killer,this);
+						if((!isMonster())&&(soulMate()==null)&&(killer!=this)&&(!killer.isMonster()))
 							CoffeeTables.bump(this,CoffeeTables.STAT_PKDEATHS);
+                        if((getClanID().length()>0)&&(killer.getClanID().length()>0)&&(!getClanID().equals(killer.getClanID())))
+                        {
+                            Clan C=Clans.getClan(killer.getClanID());
+                            C.recordClanKill();
+                        }
 					}
 					else
 						MUDFight.justDie(null,this);

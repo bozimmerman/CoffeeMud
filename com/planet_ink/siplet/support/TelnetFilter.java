@@ -56,7 +56,7 @@ public class TelnetFilter
     protected boolean comment=false;
 
     protected boolean neverSupportMSP=false;
-    protected boolean neverSupportMXP=true;
+    protected boolean neverSupportMXP=false;
     protected boolean MSPsupport=false;
     protected boolean MXPsupport=false;
     
@@ -69,6 +69,7 @@ public class TelnetFilter
         codeBase=codebase;
     }
     
+    public void debugout(String s){codeBase.append(s);}
     public boolean MSPsupport(){return MSPsupport;}
     public void setMSPSupport(boolean truefalse){MSPsupport=truefalse;}
     public boolean MXPsupport(){return MXPsupport;}
@@ -390,7 +391,7 @@ public class TelnetFilter
     // SPACES -> &nbsp;
     // < -> &lt;
     // TELNET codes -> response outputstream
-    public int HTMLFilter(StringBuffer buf)
+    public int HTMLFilter(StringBuffer buf, MXPElement currentElement)
     {
         int i=0;
         while(i<buf.length())
@@ -430,7 +431,7 @@ public class TelnetFilter
                 }
                 else
                 {
-                    int x=mxpModule.processEntity(buf,i);
+                    int x=mxpModule.processEntity(buf,i,currentElement);
                     if(x==Integer.MAX_VALUE) return i;
                     i+=x;
                 }
@@ -454,11 +455,12 @@ public class TelnetFilter
                     i+=3;
                 }
                 else
-                if(buf.substring(i+1,i+4).equals("!--"))
+                if(((i+4)<buf.length())&&(buf.substring(i+1,i+4).equals("!--")))
                     comment=true;
                 else
+                if(currentElement==null)
                 {
-                    int x=mxpModule.processTag(buf,i);
+                    int x=mxpModule.processTag(buf,i,this,currentElement);
                     if(x==Integer.MAX_VALUE) return i;
                     i+=x;
                 }
@@ -497,7 +499,12 @@ public class TelnetFilter
                         String oldStr=buf.substring(savedI+2,i+1);
                         String translate=escapeTranslate(oldStr);
                         if(translate.equals(oldStr))
-                            translate=mxpModule.escapeTranslate(oldStr);
+                        {
+                            int x=mxpModule.escapeTranslate(oldStr,buf,i);
+                            if(x==Integer.MAX_VALUE) return i;
+                            i+=x;
+                        }
+                        else
                         if(!translate.equals(oldStr))
                         {
                             buf.replace(savedI,i+1,translate);

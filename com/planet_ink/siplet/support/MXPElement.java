@@ -132,7 +132,6 @@ public class MXPElement implements Cloneable
                 break;
             case '"':
             case '\'':
-                bit.append(buf.charAt(i));
                 if((lastC=='=')
                 ||(quotes.size()>0)
                 ||((quotes.size()==0)&&((lastC==' ')||(lastC=='\t'))))
@@ -147,10 +146,18 @@ public class MXPElement implements Cloneable
                             bit=new StringBuffer("");
                             firstEqual=false;
                         }
+                        else
+                            bit.append(buf.charAt(i));
                     }
                     else
+                    {
+                        if(quotes.size()>0)
+                            bit.append(buf.charAt(i));
                         quotes.addElement(new Character(buf.charAt(i)));
+                    }
                 }
+                else
+                    bit.append(buf.charAt(i));
                 break;
             default:
                 bit.append(buf.charAt(i));
@@ -171,7 +178,7 @@ public class MXPElement implements Cloneable
     public int getBufInsert(){return bufInsert;}
     public void deleteAttribute(String name)
     {
-        Vector aV=getParsedAttributes();
+        getParsedAttributes();
         attributeValues.remove(name.toUpperCase().trim());
     }
     

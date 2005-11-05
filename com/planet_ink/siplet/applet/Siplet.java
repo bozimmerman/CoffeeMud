@@ -31,7 +31,7 @@ public class Siplet extends Applet
     protected DataOutputStream out;
     protected boolean connected=false;
     protected TelnetFilter Telnet=new TelnetFilter(this);
-
+    
     StringBuffer buffer;
 
     public void init() 
@@ -91,7 +91,7 @@ public class Siplet extends Applet
             PrintWriter pw=new PrintWriter(new OutputStreamWriter(bw));
             e.printStackTrace(pw);
             pw.flush();
-            addItem(bw.toString());
+            //addItem(bw.toString());
             return false;
         }
         return true;
@@ -121,7 +121,6 @@ public class Siplet extends Applet
     {
         if(connected)
         {
-            append(data);
             try
             {
                 out.writeBytes(data+"\n\r");
@@ -129,7 +128,7 @@ public class Siplet extends Applet
             }
             catch(IOException e)
             {
-                append(e.getMessage());
+                //append(e.getMessage());
             }
         }
     }
@@ -137,7 +136,7 @@ public class Siplet extends Applet
     {
         synchronized(buf)
         {
-            int endAt=Telnet.HTMLFilter(buf);
+            int endAt=Telnet.HTMLFilter(buf,null);
             String data=null;
             if(buf.length()==0) return "";
             if(endAt<0) endAt=buf.length();

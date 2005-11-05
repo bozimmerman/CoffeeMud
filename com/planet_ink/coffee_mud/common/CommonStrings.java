@@ -278,6 +278,7 @@ public class CommonStrings extends Scriptable
 		setVar(SYSTEM_CLANTROPAREA,page.getStr("CLANTROPAREA"));
 		setVar(SYSTEM_CLANTROPCP,page.getStr("CLANTROPCP"));
 		setVar(SYSTEM_CLANTROPEXP,page.getStr("CLANTROPEXP"));
+        setVar(SYSTEM_CLANTROPPK,page.getStr("CLANTROPPK"));
 		setVar(SYSTEM_COLORSCHEME,page.getStr("COLORSCHEME"));
 		setVar(SYSTEM_SMTPSERVERNAME,page.getStr("SMTPSERVERNAME"));
         setVar(SYSTEM_EXPCONTACTLINE,page.getStr("EXPCONTACTLINE"));

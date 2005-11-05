@@ -67,7 +67,7 @@ public class Clans implements Clan, Tickable
     {
         Long date=null;
         StringBuffer str=new StringBuffer("");
-        for(int i=clanKills.size();i>=0;i--)
+        for(int i=clanKills.size()-1;i>=0;i--)
         {
             date=(Long)clanKills.elementAt(i);
             if(date.longValue()<(System.currentTimeMillis()))
@@ -1293,7 +1293,8 @@ public class Clans implements Clan, Tickable
                     }
                     if(winner==this)
                     {
-                        if((!Util.bset(getTrophies(),Clan.TROPHY_PK))&&(getExp()>0))
+                        if((!Util.bset(getTrophies(),Clan.TROPHY_PK))
+                        &&(getCurrentClanKills()>0))
                         {
                             setTrophies(getTrophies()|Clan.TROPHY_PK);
                             Clans.clanAnnounceAll("The "+typeName()+" "+name()+" has been awarded the trophy for "+Clans.TROPHY_DESCS[Clan.TROPHY_PK]+".");
