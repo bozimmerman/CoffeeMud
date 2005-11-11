@@ -64,7 +64,7 @@ function connect(url,port)
     code="com.planet_ink.siplet.applet.Siplet"
     archive="/siplet/siplet.jar"
     codebase="siplet.jar"
-    width="800"
+    width="600"
     height="30"
     name="myApplet"
     id="myApplet"

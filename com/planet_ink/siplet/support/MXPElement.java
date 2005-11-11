@@ -16,6 +16,7 @@ public class MXPElement implements Cloneable
     private int bitmap=0;
     private Vector parsedAttributes=null;
     private Hashtable attributeValues=null;
+    private Hashtable alternativeAttributes=null;
     
     private int bufInsert=-1;
     private Vector userParms=new Vector();
@@ -82,6 +83,7 @@ public class MXPElement implements Cloneable
         attributes=newAttributes;
         parsedAttributes=null;
         attributeValues=null;
+        alternativeAttributes=null;
     }
     public String getAttributeValue(String tag)
     {
@@ -94,6 +96,7 @@ public class MXPElement implements Cloneable
         if(parsedAttributes!=null) return parsedAttributes;
         parsedAttributes=new Vector();
         attributeValues=new Hashtable();
+        alternativeAttributes=new Hashtable();
         StringBuffer buf=new StringBuffer(attributes.trim());
         StringBuffer bit=new StringBuffer("");
         Vector quotes=new Vector();
@@ -167,6 +170,17 @@ public class MXPElement implements Cloneable
         }
         if((!firstEqual)&&(bit.length()>0))
             parsedAttributes.addElement(bit.toString().toUpperCase().trim());
+        for(int p=parsedAttributes.size()-1;p>=0;p--)
+        {
+            String PA=(String)parsedAttributes.elementAt(p);
+            StringBuffer VAL=(StringBuffer)attributeValues.get(PA);
+            if((VAL!=null)&&(parsedAttributes.contains(VAL.toString())))
+            {
+                parsedAttributes.removeElementAt(p);
+                attributeValues.remove(PA);
+                alternativeAttributes.put(PA,VAL.toString());
+            }
+        }
         return parsedAttributes;
     }
     public String getFlag(){return flag;}
@@ -249,6 +263,15 @@ public class MXPElement implements Cloneable
             for(int u=0;u<userParms.size();u++)
             {
                 userParm=((String)userParms.elementAt(u)).toUpperCase().trim();
+                int xx=userParm.indexOf("=");
+                if((xx>0)&&(alternativeAttributes.containsKey(userParm.substring(0,xx).trim())))
+                {
+                    String newKey=(String)alternativeAttributes.get(userParm.substring(0,xx).trim());
+                    String uu=(String)userParms.elementAt(u);
+                    xx=uu.indexOf("=");
+                    userParms.setElementAt(newKey+uu.substring(xx),u);
+                    userParm=((String)userParms.elementAt(u)).toUpperCase().trim();
+                }
                 boolean found=false;
                 for(int a=0;a<aV.size();a++)
                 {
