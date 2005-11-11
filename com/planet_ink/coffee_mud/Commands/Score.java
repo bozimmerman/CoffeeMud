@@ -128,6 +128,7 @@ public class Score extends Affect
         int max=CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT);
         CharStats CT=mob.charStats();
         msg.append(CommonStrings.mxpImage(mob," ALIGN=RIGHT H=70 W=70"));
+        msg.append("^N^!");
         msg.append(Util.padRight("^<HELP^>Strength^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.MAX_STRENGTH_ADJ))+"\n\r");
         msg.append(Util.padRight("^<HELP^>Intelligence^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.MAX_INTELLIGENCE_ADJ))+"\n\r");
         msg.append(Util.padRight("^<HELP^>Dexterity^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.DEXTERITY)),2)+"/"+(max+CT.getStat(CharStats.MAX_DEXTERITY_ADJ))+"\n\r");
