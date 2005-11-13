@@ -1,4 +1,5 @@
 <!-- Elements to support the Automapper -->
+<P>
 <!ELEMENT RName '<B>' FLAG="RoomName">
 <!ELEMENT RDesc EMPTY FLAG='RoomDesc'>
 <!ELEMENT RExits '<FONT COLOR=Blue>' FLAG='RoomExit'>
@@ -51,3 +52,4 @@
 <!ELEMENT MaxMana EMPTY FLAG="Set maxmana">
 <!ELEMENT Move FLAG="Set move">
 <!ELEMENT MaxMove EMPTY FLAG="Set maxmove">
+</P>
