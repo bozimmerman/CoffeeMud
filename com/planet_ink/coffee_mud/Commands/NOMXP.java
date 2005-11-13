@@ -35,6 +35,7 @@ public class NOMXP extends StdCommand
 				mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_MXP));
 			mob.session().setTermID(Util.unsetb(mob.session().getTermID(),Session.TERM_MXP));
 			mob.tell("MXP codes are disabled.\033[3z \033[7z\n\r");
+            mob.session().requestServerChangeOption(Session.TELNET_MXP,false);
 		}
 		return false;
 	}

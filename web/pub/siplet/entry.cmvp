@@ -49,7 +49,7 @@
         var textEl=document.getElementById("TEXT");
         position=-1;
         enqueText(textEl.value);
-    	top.term.sendData(textEl);
+    	top.term.sendData(textEl.value);
         setTimeout('document.ENTER.TEXT.focus();',100);
     }
     
@@ -63,6 +63,15 @@
     function keydown(event,textEl)
     {
         event = event || window.event; // window.event for IE 
+        if(event.keyCode==13)
+        {
+            doReturn(textEl.value);
+            event.cancelBubble=true;
+            event.returnValue=0;
+            textEl.value='';
+            return false;
+        }
+        else
         if(event.keyCode==38)
         {
             if(position<0)
@@ -89,6 +98,14 @@
         }
     }
     
+    function doReturn(val)
+    {
+        var thespan=top.term.document.getElementById("DISPLAYSPAN");
+        thespan.innerHTML+=val+'<BR>';
+        sendText();
+        document.ENTER.TEXT.value='';
+    }
+    
     function keyme(event,textEl)
     {
         event = event || window.event; // window.event for IE 
@@ -96,15 +113,6 @@
         {
             textEl.value='';
             event.cancelBubble=true;
-        }
-        if(event.keyCode==13)
-        {
-            var thespan=top.term.document.getElementById("DISPLAYSPAN");
-            thespan+=textEl.value+'<BR>';
-            sendText();
-            textEl.value='';
-            event.cancelBubble=true;
-            event.returnValue=false;
         }
     }
     

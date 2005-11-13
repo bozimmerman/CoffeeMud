@@ -39,6 +39,7 @@ public class Sounds extends StdCommand
                 {
                     mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_SOUND));
                     mob.session().setTermID(mob.session().getTermID()|Session.TERM_MSP);
+                    mob.session().requestServerChangeOption(Session.TELNET_MSP,true);
                     mob.tell("MSP Sound/Music enabled.\n\r");
                 }
                 else

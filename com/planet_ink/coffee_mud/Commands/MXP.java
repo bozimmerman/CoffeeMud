@@ -38,6 +38,7 @@ public class MXP extends StdCommand
 			    {
 					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_MXP));
 					mob.session().setTermID(mob.session().getTermID()|Session.TERM_MXP);
+                    mob.session().requestServerChangeOption(Session.TELNET_MXP,true);
 					StringBuffer mxpText=Resources.getFileResource("text"+File.separatorChar+"mxp.txt");
 			        if(mxpText!=null)
 			            mob.session().rawPrintln("\033[6z\n\r"+mxpText.toString()+"\n\r");

@@ -21,6 +21,7 @@ limitations under the License.
 */
 public class TelnetFilter
 {
+    public final static boolean debugChars=false;
     
     protected static final char IAC_ = 255;
     protected static final char IAC_DO = 253;
@@ -38,12 +39,26 @@ public class TelnetFilter
     protected static final char MCCP_COMPRESS2 = 86;
     protected static final char TELOPT_NEWENVIRONMENT = 39;
 
-    private static String defaultBackground="BK";
-    private static String defaultForeground="WH";
+    private static String defaultBackground="black";
+    private static String defaultForeground="white";
     private static String[] colorCodes1={ // 30-37
-            "BK","RD","GR","BR","BL","PU","CY","GY"};
+            "black", // black
+            "#993300", // red
+            "green", // green
+            "#999966", // brown
+            "#000099", // blue
+            "purple", // purple
+            "darkcyan", // cyan 
+            "lightgrey"}; // grey
     private static String[] colorCodes2={ 
-            "DG","LR","LG","YL","LB","LP","LC","WH"};
+            "gray", // dark grey
+            "red", // light red
+            "lightgreen", // light green
+            "yellow", // yellow
+            "blue", // light blue
+            "violet", // light purple
+            "cyan", // light cyan
+            "white" }; // white
     
     protected String lastBackground=null;
     protected String lastForeground=null;
@@ -69,7 +84,6 @@ public class TelnetFilter
         codeBase=codebase;
     }
     
-    public void debugout(String s){codeBase.append(s);}
     public boolean MSPsupport(){return MSPsupport;}
     public void setMSPSupport(boolean truefalse){MSPsupport=truefalse;}
     public boolean MXPsupport(){return MXPsupport;}
@@ -82,8 +96,8 @@ public class TelnetFilter
     { 
         if(fontOn)
         {
-            lastBackground=defaultBackground;
-            lastForeground=defaultForeground;
+            setLastBackground(defaultBackground);
+            setLastForeground(defaultForeground);
             fontOn=false; 
             return "</FONT>";
         }
@@ -99,6 +113,42 @@ public class TelnetFilter
         off.append(italicsOff());
         return off.toString();
     }
+    
+    public static int getColorCodeIndex(String word)
+    {
+        if(word==null) word=defaultForeground;
+        for(int i=0;i<colorCodes1.length;i++)
+            if(word.equalsIgnoreCase(colorCodes1[i]))
+                return (40+i);
+        for(int i=0;i<colorCodes2.length;i++)
+            if(word.equalsIgnoreCase(colorCodes2[i]))
+                return (30+i);
+        return 30;
+    }
+    public static int getRelativeColorCodeIndex(String word)
+    {
+        int x=getColorCodeIndex(word);
+        if(x<40) return x-30;
+        if(x>50) return x%10;
+        return x-40;
+    }
+    private void setLastBackground(String val)
+    {
+        if(MXPsupport())
+            mxpModule.lastBackground=val;
+        else
+            lastBackground=val;
+    }
+    private void setLastForeground(String val)
+    {
+        if(MXPsupport())
+            mxpModule.lastForeground=val;
+        else
+            lastForeground=val;
+    }
+    private String lastBackground(){return MXPsupport()?mxpModule.lastBackground:lastBackground;}
+    private String lastForeground(){return MXPsupport()?mxpModule.lastForeground:lastForeground;}
+    
     private String escapeTranslate(String escapeString)
     {
         if(escapeString.endsWith("m"))
@@ -120,7 +170,11 @@ public class TelnetFilter
                             str.append(allOff());
                         boldOn=false;
                         break;
-                case 1: boldOn=true; break;
+                case 1:
+                    boldOn=true; 
+                    if((V.size()==1)&&(lastForeground()!=null))
+                        foreground=colorCodes2[getRelativeColorCodeIndex(lastForeground())];
+                    break;
                 case 4: 
                     {
                         if(!underlineOn)
@@ -202,18 +256,21 @@ public class TelnetFilter
                 }
                 if((background!=null)||(foreground!=null))
                 {
-                    if(lastBackground==null)lastBackground=defaultBackground;
-                    if(lastForeground==null)lastForeground=defaultForeground;
-                    if(background==null) background=lastBackground;
-                    if(foreground==null) foreground=defaultForeground;
-                    if((!background.equals(lastBackground))
-                    ||(!foreground.equals(lastForeground)))
+                    if(lastBackground()==null)setLastBackground(defaultBackground);
+                    if(lastForeground()==null)setLastForeground(defaultForeground);
+                    if(background==null) background=lastBackground();
+                    if(foreground==null) foreground=lastForeground();
+                    if((!background.equals(lastBackground()))
+                    ||(!foreground.equals(lastForeground())))
                     {
                         str.append(fontOff());
-                        lastBackground=background;
-                        lastForeground=foreground;
+                        setLastBackground(background);
+                        setLastForeground(foreground);
                         fontOn=true;
-                        str.append("<FONT CLASS="+background+foreground+">");
+                        if(MXPsupport())
+                            str.append("<FONT COLOR="+foreground+" BACK="+background+">");
+                        else
+                            str.append("<FONT STYLE=\"color: "+foreground+";background-color: "+background+"\">");
                     }
                 }
             }
@@ -394,8 +451,10 @@ public class TelnetFilter
     public int HTMLFilter(StringBuffer buf)
     {
         int i=0;
+        boolean[] eolEater=new boolean[1];
         while(i<buf.length())
         {
+            if(debugChars) System.out.println(">"+buf.charAt(i));
             if(comment)
             {
                 if(buf.substring(i,i+3).equals("-->"))
@@ -431,7 +490,7 @@ public class TelnetFilter
                 }
                 else
                 {
-                    int x=mxpModule.processEntity(buf,i,null);
+                    int x=mxpModule.processEntity(buf,i,null,true);
                     if(x==Integer.MAX_VALUE) return i;
                     i+=x;
                 }
@@ -465,10 +524,28 @@ public class TelnetFilter
                 }
                 break;
             case '\n':
-                buf.setCharAt(i,'<');
-                buf.insert(i+1,"BR>");
-                i+=3;
+            {
+                if(MXPsupport())
+                {
+                    int x=mxpModule.newlineDetected(buf,i+1,eolEater);
+                    if(eolEater[0]) 
+                        buf.deleteCharAt(i);
+                    else
+                    {
+                        buf.setCharAt(i,'<');
+                        buf.insert(i+1,"BR>");
+                        i+=3;
+                    }
+                    i+=x;
+                }
+                else
+                {
+                    buf.setCharAt(i,'<');
+                    buf.insert(i+1,"BR>");
+                    i+=3;
+                }
                 break;
+            }
             case '\r':
                 buf.deleteCharAt(i);
                 i--;
@@ -499,9 +576,9 @@ public class TelnetFilter
                         String translate=escapeTranslate(oldStr);
                         if(translate.equals(oldStr))
                         {
-                            int x=mxpModule.escapeTranslate(oldStr,buf,i);
+                            int x=mxpModule.escapeTranslate(oldStr,buf,savedI);
                             if(x==Integer.MAX_VALUE) return i;
-                            i+=x;
+                            i=savedI+x;
                         }
                         else
                         if(!translate.equals(oldStr))

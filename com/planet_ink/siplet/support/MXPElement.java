@@ -90,6 +90,12 @@ public class MXPElement implements Cloneable
         getParsedAttributes();
         return (String)attributeValues.get(tag.toUpperCase().trim());
     }
+    public void setAttributeValue(String tag, String value)
+    {
+        getParsedAttributes();
+        attributeValues.remove(tag);
+        attributeValues.put(tag,value);
+    }
     
     public synchronized Vector getParsedAttributes()
     {
@@ -220,13 +226,15 @@ public class MXPElement implements Cloneable
                     bit=new StringBuffer("");
                 break;
             case '>':
-                if((quotes.size()==0)&&(bit!=null))
+                if((quotes.size()==0)&&(bit!=null)&&(bit.toString().trim().length()>0))
+                {
                     tags.add(bit.toString().toUpperCase().trim());
+                }
                 bit=null;
                 break;
             case ' ':
             case '\t':
-                if((quotes.size()==0)&&(bit!=null))
+                if((quotes.size()==0)&&(bit!=null)&&(bit.toString().trim().length()>0))
                     tags.add(bit.toString().toUpperCase().trim());
                 bit=null;
                 break;
@@ -245,7 +253,6 @@ public class MXPElement implements Cloneable
                     bit=null;
                 break;
             }
-            break;
         }
         return tags;
     }

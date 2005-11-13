@@ -498,6 +498,28 @@ public class Util
 		}
 		return str;
 	}
+    
+    public static String replaceAllIgnoreCase(String str, String thisStr, String withThisStr)
+    {
+        if((str==null)
+        ||(thisStr==null)
+        ||(withThisStr==null)
+        ||(str.length()==0)
+        ||(thisStr.length()==0))
+            return str;
+        for(int i=str.length()-1;i>=0;i--)
+        {
+            if(Character.toUpperCase(str.charAt(i))==Character.toUpperCase(thisStr.charAt(0)))
+                if(str.substring(i).toUpperCase().startsWith(thisStr.toUpperCase()))
+                {
+                    boolean isUpperCase=Character.isUpperCase(str.charAt(i));
+                    if(withThisStr.length()>0)
+                        withThisStr=(isUpperCase?Character.toUpperCase(withThisStr.charAt(0)):Character.toLowerCase(withThisStr.charAt(0)))+withThisStr.substring(1);
+                    str=str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
+                }
+        }
+        return str;
+    }
 	public static String replaceFirst(String str, String thisStr, String withThisStr)
 	{
 		if((str==null)
@@ -1047,6 +1069,64 @@ public class Util
 		return commands;
 	}
 
+    public static String stripBadHTMLTags(String s)
+    {
+        StringBuffer buf=new StringBuffer(s);
+        Vector quotes=new Vector();
+        int i=-1;
+        int start=-1;
+        StringBuffer bit=null;
+        String lastTag=null;
+        while((++i)<buf.length())
+        {
+            switch(buf.charAt(i))
+            {
+            case '<':
+                if(quotes.size()>0)
+                    break;
+                bit=new StringBuffer("");
+                lastTag=null;
+                start=i;
+                break;
+            case '>':
+                if(bit!=null) lastTag=bit.toString();
+                if((quotes.size()==0)
+                &&(start>=0)
+                &&(i-start>0)
+                &&(lastTag!=null)
+                &&(lastTag.trim().equalsIgnoreCase("FONT")))
+                {
+                    int distance=(i-start)+1;
+                    buf.delete(start,i+1);
+                    i=i-distance;
+                }
+                bit=null;
+                lastTag=null;
+                start=-1;
+                break;
+            case ' ':
+                if(bit!=null)
+                {
+                    lastTag=bit.toString();
+                    bit=null;
+                }
+                break;
+            case '"':
+            case '\'':
+                if(start<0) break;
+                if((quotes.size()>0)&&(((Character)quotes.lastElement()).charValue()==buf.charAt(i)))
+                    quotes.removeElementAt(quotes.size()-1);
+                else
+                    quotes.addElement(new Character(buf.charAt(i)));
+                break;
+            default:
+                if(bit!=null) bit.append(buf.charAt(i));
+                break;
+            }
+        }
+        return buf.toString();
+    }
+    
 	public static Vector parseCommas(String s, boolean ignoreNulls)
 	{
 		Vector V=new Vector();
@@ -1065,6 +1145,24 @@ public class Util
 		return V;
 	}
 	
+    public static Vector parsePipes(String s, boolean ignoreNulls)
+    {
+        Vector V=new Vector();
+        if((s==null)||(s.length()==0)) return V;
+        int x=s.indexOf("|");
+        while(x>=0)
+        {
+            String s2=s.substring(0,x).trim();
+            s=s.substring(x+1).trim();
+            if((!ignoreNulls)||(s2.length()>0))
+                V.addElement(s2);
+            x=s.indexOf("|");
+        }
+        if((!ignoreNulls)||(s.trim().length()>0))
+            V.addElement(s.trim());
+        return V;
+    }
+    
 	public static Vector parseSquiggles(String s)
 	{
 		Vector V=new Vector();

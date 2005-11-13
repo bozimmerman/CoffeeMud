@@ -1,9 +1,9 @@
 <HTML>
 <HEAD>
 <LINK REL=StyleSheet HREF="term.css" TYPE="text/css">
+<SCRIPT LANGUAGE=JavaScript src="dropdown.js"></SCRIPT>
 </HEAD>
 <BODY BGCOLOR=BLACK>
-<SCRIPT language=JavaScript src="dropdown.js"></SCRIPT>
 <script language=JavaScript>
 function displayData()
 {
@@ -42,9 +42,8 @@ function displayData()
 function sendData(me)
 {
     var theapplet=document.getElementById("myApplet");
-	var s=me.value;
+	var s=''+me;
     theapplet.sendData(s);
-    me.value='';
 }
 function connect(url,port)
 {
@@ -54,23 +53,32 @@ function connect(url,port)
     else
         setTimeout('displayData();',100);
 }
+function addToPrompt(x,att)
+{
+    top.entry.document.ENTER.TEXT.value=x;
+    if(!att)
+        top.entry.doReturn(x);
+    else
+        top.entry.document.ENTER.TEXT.value+=" ";
+}
+function goDefault(x)
+{
+    // do nothing
+}
 </SCRIPT>
-<P>
-<BR>
-<DIV ID=DISPLAYSPAN NAME=DISPLAYSPAN>
-</DIV>
-<DIV ID=NODISPLAY style="display:">
 <applet
     code="com.planet_ink.siplet.applet.Siplet"
     archive="/siplet/siplet.jar"
     codebase="siplet.jar"
-    width="600"
-    height="30"
+    width="0"
+    height="0"
     name="myApplet"
     id="myApplet"
     mayscript="TRUE">
-</applet>
+</applet><BR>
+<DIV ID=DISPLAYSPAN NAME=DISPLAYSPAN>
 </DIV>
+<DIV ID=NODISPLAY NAME=NODISPLAY></DIV>
 <script language=JavaScript>
     var theapplet=document.getElementById("myApplet");
     setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);

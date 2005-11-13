@@ -22,6 +22,8 @@ limitations under the License.
 */
 public class Siplet extends Applet 
 {
+    public final static boolean debugDataOut=false;
+    
     public final static long serialVersionUID=6;
     public static final float VERSION_MAJOR=(float)1.0;
     public static final long  VERSION_MINOR=0;
@@ -46,19 +48,18 @@ public class Siplet extends Applet
     
     public void start() 
     {
-        addItem("starting siplet "+VERSION_MAJOR+"."+VERSION_MINOR+" ");
+        //addItem("starting siplet "+VERSION_MAJOR+"."+VERSION_MINOR+" ");
     }
 
     public void stop() 
     {
-        addItem("!stopped siplet!");
+        //addItem("!stopped siplet!");
     }
 
     public void destroy() 
     {
     }
 
-    public void append(String newWord) { addItem(newWord);}
     public void addItem(String newWord) 
     {
         System.out.println(newWord);
@@ -78,7 +79,7 @@ public class Siplet extends Applet
         connected=false;
         try
         {
-            addItem("connecting to "+url+":"+port+" ");
+            //addItem("connecting to "+url+":"+port+" ");
             sock=new Socket(InetAddress.getByName(url),port);
             in=new BufferedReader(new InputStreamReader(sock.getInputStream()));
             out=new DataOutputStream(sock.getOutputStream());
@@ -152,6 +153,7 @@ public class Siplet extends Applet
                 data=buf.toString();
                 buf.setLength(0);
             }
+            if(debugDataOut) if(data.length()>0) System.out.println(data);
             return data;
         }
     }

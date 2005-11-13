@@ -23,15 +23,7 @@ Players currently online: <b>@NUMPLAYERS@</B>
 </B></FONT></TD></TR>
 <TR><TD WIDTH=100%>
 <BR>
-<SCRIPT LANGUAGE=JavaScript>
-<!--
-	if(navigator.appName=='Microsoft Internet Explorer') 
-		document.write('<LI><a href="siplet/index.html"><FONT COLOR=GREEN><B>Play NOW!</B></FONT></a>');
-	else
-		document.write('<LI><a href="telnet:@MudInfo?DOMAIN@"><FONT COLOR=GREEN><B>Play NOW!</B></FONT></a>');
-	
-//-->
-</SCRIPT>
+<LI><a href="siplet/index.html"><FONT COLOR=GREEN><B>Play NOW</B></FONT></a><FONT COLOR=GREEN>&nbsp;(IE/NS7/FF)!</B></FONT>&nbsp;&nbsp;<a href="telnet:@MudInfo?DOMAIN@"><FONT SIZE=-2 COLOR=GREEN><I>(Others)</I></FONT></a>
 <NOSCRIPT>
 <LI><a href="telnet:@MudInfo?DOMAIN@"><FONT COLOR=GREEN><B>Play NOW!</B></FONT></a>
 </NOSCRIPT>
