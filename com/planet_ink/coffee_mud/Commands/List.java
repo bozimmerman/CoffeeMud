@@ -122,7 +122,7 @@ public class List extends StdCommand
                 if(tArray[i] instanceof Session)
                 {
                     Session S=(Session)tArray[i];
-                    lines.append("Session "+S.getTermID()+"-"+S.getStatus()+"-"+Util.combine(S.previousCMD(),0) + "\n\r");
+                    lines.append("Session status "+S.getStatus()+"-"+Util.combine(S.previousCMD(),0) + "\n\r");
                 }
                 else
                 if(tArray[i] instanceof Tickable)

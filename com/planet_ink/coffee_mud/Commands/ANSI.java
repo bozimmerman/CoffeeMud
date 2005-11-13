@@ -39,6 +39,8 @@ public class ANSI extends StdCommand
 			{
 				mob.tell(getScr("ANSI","alenabled"));
 			}
+            mob.session().setClientTelnetMode(Session.TELNET_ANSI,true);
+            mob.session().setServerTelnetMode(Session.TELNET_ANSI,true);
 		}
 		return false;
 	}

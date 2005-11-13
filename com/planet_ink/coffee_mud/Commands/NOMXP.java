@@ -31,11 +31,18 @@ public class NOMXP extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			if(Util.bset(mob.getBitmap(),MOB.ATT_MXP))
+            if((Util.bset(mob.getBitmap(),MOB.ATT_MXP))
+            ||(mob.session().clientTelnetMode(Session.TELNET_MXP)))
+            {
+                if(mob.session().clientTelnetMode(Session.TELNET_MXP))
+                    mob.session().rawPrint("\033[3z \033[7z");
 				mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_MXP));
-			mob.session().setTermID(Util.unsetb(mob.session().getTermID(),Session.TERM_MXP));
-			mob.tell("MXP codes are disabled.\033[3z \033[7z\n\r");
-            mob.session().requestServerChangeOption(Session.TELNET_MXP,false);
+                mob.session().changeTelnetMode(Session.TELNET_MXP,false);
+                mob.session().setClientTelnetMode(Session.TELNET_MXP,false);
+    			mob.tell("MXP codes are disabled.\n\r");
+            }
+            else
+                mob.tell("MXP codes are already disabled.\n\r");
 		}
 		return false;
 	}

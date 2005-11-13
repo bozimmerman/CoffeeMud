@@ -39,6 +39,8 @@ public class NoANSI extends StdCommand
 			{
 				mob.tell("ANSI is already disabled.\n\r");
 			}
+            mob.session().setClientTelnetMode(Session.TELNET_ANSI,false);
+            mob.session().setServerTelnetMode(Session.TELNET_ANSI,false);
 		}
 		return false;
 	}

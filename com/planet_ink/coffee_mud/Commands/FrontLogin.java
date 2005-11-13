@@ -141,32 +141,21 @@ public class FrontLogin extends StdCommand
 	{
 		if(mob.session()!=null)
 		{
-		    mob.session().initTermID(mob.getBitmap());
+		    mob.session().initTelnetMode(mob.getBitmap());
 		    if(Util.bset(mob.getBitmap(),MOB.ATT_MXP))
-		    {
-		        if(mob.session().supports(Session.TERM_MXP))
-		        {
-		            mob.session().setTermID(mob.session().getTermID()|Session.TERM_MXP);
-					StringBuffer mxpText=Resources.getFileResource("text"+File.separatorChar+"mxp.txt");
-			        if(mxpText!=null)
-			            mob.session().rawPrintln("\033[6z"+mxpText.toString()+"\n\r");
-		        }
-		        else
-		        {
-			        mob.tell("MXP codes have been disabled for this session.");
-			        mob.session().setTermID(Util.unsetb(mob.session().getTermID(),Session.TERM_MXP));
-		        }
-		    }
-            if(Util.bset(mob.getBitmap(),MOB.ATT_SOUND))
             {
-                if(mob.session().supports(Session.TERM_MSP))
-                    mob.session().setTermID(mob.session().getTermID()|Session.TERM_MSP);
-                else
+                if(mob.session().clientTelnetMode(Session.TELNET_MXP))
                 {
-                    mob.tell("MSP sounds have been disabled for this session.");
-                    mob.session().setTermID(Util.unsetb(mob.session().getTermID(),Session.TERM_MSP));
+                    StringBuffer mxpText=Resources.getFileResource("text"+File.separatorChar+"mxp.txt");
+                    if(mxpText!=null)
+                        mob.session().rawPrintln("\033[6z"+mxpText.toString()+"\n\r");
                 }
+                else
+                    mob.tell("MXP codes have been disabled for this session.");
             }
+            if((Util.bset(mob.getBitmap(),MOB.ATT_SOUND))
+            &&(!mob.session().clientTelnetMode(Session.TELNET_MSP)))
+                mob.tell("MSP sounds have been disabled for this session.");
 		}
         
         Command C=CMClass.getCommand("Poll");

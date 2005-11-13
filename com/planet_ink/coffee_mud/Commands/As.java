@@ -117,9 +117,9 @@ public class As extends StdCommand
 		}
 		M.setSoulMate(null);
 		M.setSession(oldSession);
-		M.setBitmap(oldBitmap);
+        M.session().initTelnetMode(oldBitmap);
 		mySession.setMob(mob);
-		mob.setBitmap(myBitmap);
+        mob.session().initTelnetMode(myBitmap);
 		if(dead) M.removeFromGame();
 		return false;
 	}

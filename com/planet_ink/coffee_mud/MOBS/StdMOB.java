@@ -98,11 +98,7 @@ public class StdMOB implements MOB
 	public void setPractices(int newVal){ Practices=newVal;}
 	public void setTrains(int newVal){ Trains=newVal;}
 	public void setMoney(int newVal){ Money=newVal;}
-	public void setBitmap(int newVal)
-	{
-		attributesBitmap=newVal;
-		if(mySession!=null) mySession.initTermID(attributesBitmap);
-	}
+	public void setBitmap(int newVal){ attributesBitmap=newVal;}
     public String getFactionListing() 
     {
         StringBuffer msg=new StringBuffer();

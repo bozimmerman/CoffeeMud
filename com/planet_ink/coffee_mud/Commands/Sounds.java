@@ -33,13 +33,16 @@ public class Sounds extends StdCommand
         if(!mob.isMonster())
         {
             if((!Util.bset(mob.getBitmap(),MOB.ATT_SOUND))
-            ||(!Util.bset(mob.session().getTermID(),Session.TERM_MSP)))
+            ||(!mob.session().clientTelnetMode(Session.TELNET_MSP)))
             {
-                if(mob.session().supports(Session.TERM_MSP))
+                mob.session().changeTelnetMode(Session.TELNET_MSP,true);
+                for(int i=0;((i<5)&&(!mob.session().clientTelnetMode(Session.TELNET_MSP)));i++)
+                {
+                    try{mob.session().prompt("",100);}catch(Exception e){}
+                }
+                if(mob.session().serverTelnetMode(Session.TELNET_MSP))
                 {
                     mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_SOUND));
-                    mob.session().setTermID(mob.session().getTermID()|Session.TERM_MSP);
-                    mob.session().requestServerChangeOption(Session.TELNET_MSP,true);
                     mob.tell("MSP Sound/Music enabled.\n\r");
                 }
                 else

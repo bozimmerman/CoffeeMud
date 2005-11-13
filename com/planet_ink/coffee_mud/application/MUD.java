@@ -895,7 +895,7 @@ public class MUD extends Thread implements MudHost
 			    if(tArray[i] instanceof Session)
 			    {
 			        Session S=(Session)tArray[i];
-					Log.sysOut("MUD", "-->Thread: Session "+S.getTermID()+"-"+S.getStatus()+"-"+Util.combine(S.previousCMD(),0) + "\n\r");
+					Log.sysOut("MUD", "-->Thread: Session status "+S.getStatus()+"-"+Util.combine(S.previousCMD(),0) + "\n\r");
 			    }
 			    else
 			    if(tArray[i] instanceof Tickable)

@@ -20,7 +20,7 @@ limitations under the License.
 */
 public class MXP
 {
-    public final static boolean tagDebug=true;
+    public final static boolean tagDebug=false;
     public final static boolean entityDebug=false;
 
     private int defaultMode=0;
@@ -177,7 +177,7 @@ public class MXP
         MXPElement E=null;
         for(int x=openElements.size()-1;x>=0;x--)
         {
-            E=(MXPElement)openElements.elementAt(i);
+            E=(MXPElement)openElements.elementAt(x);
             if(E.isOpen())
             {
                 String close=closeTag(E);

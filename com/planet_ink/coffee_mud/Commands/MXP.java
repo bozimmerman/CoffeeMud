@@ -32,25 +32,27 @@ public class MXP extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			if((!Util.bset(mob.getBitmap(),MOB.ATT_MXP))||(!Util.bset(mob.session().getTermID(),Session.TERM_MXP)))
+			if((!Util.bset(mob.getBitmap(),MOB.ATT_MXP))
+            ||(!mob.session().clientTelnetMode(Session.TELNET_MXP)))
 			{
-			    if(mob.session().supports(Session.TERM_MXP))
-			    {
+                mob.session().changeTelnetMode(Session.TELNET_MXP,true);
+                for(int i=0;((i<5)&&(!mob.session().clientTelnetMode(Session.TELNET_MXP)));i++)
+                {
+                    try{mob.session().prompt("",100);}catch(Exception e){}
+                }
+                if(mob.session().serverTelnetMode(Session.TELNET_MXP))
+                {
 					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_MXP));
-					mob.session().setTermID(mob.session().getTermID()|Session.TERM_MXP);
-                    mob.session().requestServerChangeOption(Session.TELNET_MXP,true);
 					StringBuffer mxpText=Resources.getFileResource("text"+File.separatorChar+"mxp.txt");
 			        if(mxpText!=null)
 			            mob.session().rawPrintln("\033[6z\n\r"+mxpText.toString()+"\n\r");
 					mob.tell("MXP codes enabled.\n\r");
 			    }
-			    else
-			        mob.tell("Your client does not appear to support MXP.");
+                else
+                    mob.tell("Your client does not appear to support MXP.");
 			}
 			else
-			{
 				mob.tell("MXP codes are already enabled.\n\r");
-			}
 		}
 		return false;
 	}
