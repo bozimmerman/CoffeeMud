@@ -91,6 +91,7 @@ public class As extends StdCommand
 		M.setSession(mySession);
 		mySession.setMob(M);
 		M.setSoulMate(mob);
+        mySession.initTelnetMode(oldBitmap);
 		if(((String)commands.firstElement()).equalsIgnoreCase(getScr("As","here"))
 		   ||((String)commands.firstElement()).equalsIgnoreCase("."))
 		{
@@ -117,9 +118,8 @@ public class As extends StdCommand
 		}
 		M.setSoulMate(null);
 		M.setSession(oldSession);
-        M.session().initTelnetMode(oldBitmap);
 		mySession.setMob(mob);
-        mob.session().initTelnetMode(myBitmap);
+        mySession.initTelnetMode(myBitmap);
 		if(dead) M.removeFromGame();
 		return false;
 	}

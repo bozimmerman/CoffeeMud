@@ -137,12 +137,12 @@ public class FrontLogin extends StdCommand
 		return !CMSecurity.isBanned(login);
 	}
 
-	public void showTheNews(MOB mob)
-	{
-		if(mob.session()!=null)
-		{
-		    mob.session().initTelnetMode(mob.getBitmap());
-		    if(Util.bset(mob.getBitmap(),MOB.ATT_MXP))
+    public void reloadTerminal(MOB mob)
+    {
+        if(mob.session()!=null)
+        {
+            mob.session().initTelnetMode(mob.getBitmap());
+            if(Util.bset(mob.getBitmap(),MOB.ATT_MXP))
             {
                 if(mob.session().clientTelnetMode(Session.TELNET_MXP))
                 {
@@ -156,8 +156,12 @@ public class FrontLogin extends StdCommand
             if((Util.bset(mob.getBitmap(),MOB.ATT_SOUND))
             &&(!mob.session().clientTelnetMode(Session.TELNET_MSP)))
                 mob.tell("MSP sounds have been disabled for this session.");
-		}
-        
+        }
+    }
+    
+	public void showTheNews(MOB mob)
+	{
+        reloadTerminal(mob);
         Command C=CMClass.getCommand("Poll");
         try{ C.execute(mob,null);}catch(Exception e){}
         
@@ -284,7 +288,7 @@ public class FrontLogin extends StdCommand
 							Log.sysOut("FrontDoor","Session swap for "+mob.session().mob().Name()+".");
                             commands.clear();
                             commands.addElement("SWAPPED");
-                            mob.session().initTelnetMode(mob.session().mob().getBitmap());
+                            reloadTerminal(mob.session().mob());
 							mob.session().mob().bringToLife(oldRoom,false);
 							if(pendingLogins.containsKey(mob.Name().toUpperCase()))
 							   pendingLogins.remove(mob.Name().toUpperCase());
