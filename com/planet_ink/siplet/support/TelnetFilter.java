@@ -22,14 +22,18 @@ limitations under the License.
 public class TelnetFilter
 {
     public final static boolean debugChars=false;
+    public final static boolean debugTelnetCodes=false;
     
+    protected static final char IAC_SE=240;
     protected static final char IAC_ = 255;
+    protected static final char IAC_SB=250;
     protected static final char IAC_DO = 253;
     protected static final char IAC_WILL = 251;
     protected static final char IAC_WONT = 252;
     protected static final char IAC_DONT = 254;
     protected static final char IAC_MSP = 90;
     protected static final char IAC_MXP = 91;
+    protected static final char TELOPT_BINARY=0;
     protected static final char TELOPT_EOR = 25;
     protected static final char TELOPT_ECHO = 1;
     protected static final char TELOPT_NAWS = 31;
@@ -84,6 +88,9 @@ public class TelnetFilter
         codeBase=codebase;
     }
     
+    public static String getSipletVersion(){ return Siplet.VERSION_MAJOR+"."+Siplet.VERSION_MINOR;}
+    
+    public String getEnquedResponses(){return MXPsupport()?mxpModule.getAnyResponses():"";}
     public boolean MSPsupport(){return MSPsupport;}
     public void setMSPSupport(boolean truefalse){MSPsupport=truefalse;}
     public boolean MXPsupport(){return MXPsupport;}
@@ -289,19 +296,90 @@ public class TelnetFilter
             {
             case IAC_:
                 {
-                    if(i>=buf.length()-3)
+                    if(debugTelnetCodes) System.out.println("Got IAC in "+i+"/"+buf.length());
+                    if(i>=buf.length()-2)
                         return i;
+                    if(debugTelnetCodes) System.out.println("Receiving "+(int)buf.charAt(i+1));
                     int oldI=i;
+                    int end=oldI+3;
                     switch(buf.charAt(++i))
                     {
+                    case IAC_SB:
+                    {
+                        char[] subOptionData = new char[1024];
+                        int subOptionCode = buf.charAt(++i);
+                        if(debugTelnetCodes) System.out.println("Got sub-option "+subOptionCode);
+                        int numBytes = 0;
+                        int last = 0;
+                        while((i<(buf.length()-1))
+                        &&((last = buf.charAt(++i)) != -1)
+                        &&(numBytes<subOptionData.length))
+                        {
+                            if((last == IAC_)&&(i<(buf.length()-1)))
+                            {
+                                last = buf.charAt(++i);
+                                if(last == IAC_)
+                                    subOptionData[numBytes++] = IAC_;
+                                else 
+                                if(last == IAC_SE)
+                                    break;
+                            }
+                            else
+                                subOptionData[numBytes++] = (char)last;
+                        }
+                        end=i+1;
+                        if(debugTelnetCodes) System.out.println("Got SB "+subOptionCode);
+                        if(subOptionCode==TELOPT_TTYPE)
+                        {
+                            if(debugTelnetCodes) System.out.println("Responding with termtype.");
+                            byte[] data=new byte[6];
+                            data[0]=(short)'s';
+                            data[1]=(short)'i';
+                            data[2]=(short)'p';
+                            data[3]=(short)'l';
+                            data[4]=(short)'e';
+                            data[5]=(short)'t';
+                            response.writeBytes(""+IAC_+IAC_SB+TELOPT_TTYPE+(char)0);
+                            response.write(data);
+                            response.writeBytes(""+IAC_+IAC_SE);
+                            response.flush();
+                        }
+                        else
+                        if(subOptionCode==TELOPT_NAWS)
+                        {
+                            if(debugTelnetCodes) System.out.println("Responding with screen size.");
+                            byte[] data=new byte[4];
+                            data[1]=80;
+                            data[3]=25;
+                            response.writeBytes(""+IAC_+IAC_SB+TELOPT_NAWS);
+                            response.write(data);
+                            response.writeBytes(""+IAC_+IAC_SE);
+                            response.flush();
+                        }
+                        break;
+                    }
                     case IAC_WILL:
                         i++;
+                        if(buf.charAt(i)==TELOPT_NAWS)
+                        {
+                            if(debugTelnetCodes) System.out.println("Responding with screen size to WILL NAWS.");
+                            byte[] data=new byte[4];
+                            data[1]=80;
+                            data[3]=25;
+                            response.writeBytes(""+IAC_+IAC_SB+TELOPT_NAWS);
+                            response.write(data);
+                            response.writeBytes(""+IAC_+IAC_SE);
+                            break;
+                        }
+                        else
                         if(buf.charAt(i)==IAC_MSP)
                         {
+                            if(debugTelnetCodes) System.out.println("Got WILL MSP!");
                             if(neverSupportMSP)
                             {
                                 if(MSPsupport())
                                 {
+                                    if(debugTelnetCodes) System.out.println("Sent DONT MSP!");
                                     response.writeBytes(""+IAC_+IAC_DONT+IAC_MSP);
                                     response.flush();
                                     setMSPSupport(false);
@@ -310,6 +388,7 @@ public class TelnetFilter
                             else
                             if(!MSPsupport())
                             {
+                                if(debugTelnetCodes) System.out.println("Sent DO MSP!");
                                 response.writeBytes(""+IAC_+IAC_DO+IAC_MSP);
                                 response.flush();
                                 setMSPSupport(true);
@@ -318,10 +397,12 @@ public class TelnetFilter
                         else
                         if(buf.charAt(i)==IAC_MXP)
                         {
+                            if(debugTelnetCodes) System.out.println("Got WILL MXP!");
                             if(neverSupportMXP)
                             {
                                 if(MXPsupport())
                                 {
+                                    if(debugTelnetCodes) System.out.println("Send DONT MXP!");
                                     response.writeBytes(""+IAC_+IAC_DONT+IAC_MXP);
                                     response.flush();
                                     setMXPSupport(false);
@@ -330,13 +411,16 @@ public class TelnetFilter
                             else
                             if(!MXPsupport())
                             {
+                                if(debugTelnetCodes) System.out.println("Send DO MXP!");
                                 response.writeBytes(""+IAC_+IAC_DO+IAC_MXP);
                                 response.flush();
                                 setMXPSupport(true);
                             }
                         }
                         else
+                        if(buf.charAt(i)!=TELOPT_BINARY)
                         {
+                            if(debugTelnetCodes) System.out.println("Sent DONT "+((int)buf.charAt(i))+"!");
                             response.writeBytes(""+IAC_+IAC_DONT+buf.charAt(i));
                             response.flush();
                         }
@@ -345,8 +429,10 @@ public class TelnetFilter
                         i++;
                         if(buf.charAt(i)==IAC_MSP)
                         {
+                            if(debugTelnetCodes) System.out.println("Got WONT MSP!");
                             if(MSPsupport())
                             {
+                                if(debugTelnetCodes) System.out.println("Sent DONT MSP!");
                                 response.writeBytes(""+IAC_+IAC_DONT+IAC_MSP);
                                 response.flush();
                                 setMSPSupport(false);
@@ -355,8 +441,10 @@ public class TelnetFilter
                         else
                         if(buf.charAt(i)==IAC_MXP)
                         {
+                            if(debugTelnetCodes) System.out.println("Got WONT MXP!");
                             if(MXPsupport())
                             {
+                                if(debugTelnetCodes) System.out.println("Sent DONT MXP!");
                                 response.writeBytes(""+IAC_+IAC_DONT+IAC_MXP);
                                 response.flush();
                                 setMXPSupport(false);
@@ -367,10 +455,12 @@ public class TelnetFilter
                         i++;
                         if(buf.charAt(i)==IAC_MSP)
                         {
+                            if(debugTelnetCodes) System.out.println("Got DO MSP!");
                             if(neverSupportMSP)
                             {
                                 if(MSPsupport())
                                 {
+                                    if(debugTelnetCodes) System.out.println("Sent WONT MSP!");
                                     response.writeBytes(""+IAC_+IAC_WONT+IAC_MSP);
                                     response.flush();
                                     setMSPSupport(false);
@@ -379,6 +469,7 @@ public class TelnetFilter
                             else
                             if(!MSPsupport())
                             {
+                                if(debugTelnetCodes) System.out.println("Sent WILL MSP!");
                                 response.writeBytes(""+IAC_+IAC_WILL+IAC_MSP);
                                 response.flush();
                                 setMSPSupport(true);
@@ -387,10 +478,12 @@ public class TelnetFilter
                         else
                         if(buf.charAt(i)==IAC_MXP)
                         {
+                            if(debugTelnetCodes) System.out.println("Got DO MXP!");
                             if(neverSupportMXP)
                             {
                                 if(MXPsupport())
                                 {
+                                    if(debugTelnetCodes) System.out.println("Sent WONT MXP!");
                                     response.writeBytes(""+IAC_+IAC_WONT+IAC_MXP);
                                     response.flush();
                                     setMXPSupport(false);
@@ -400,12 +493,15 @@ public class TelnetFilter
                             if(!MXPsupport())
                             {
                                 response.writeBytes(""+IAC_+IAC_WILL+IAC_MXP);
+                                if(debugTelnetCodes) System.out.println("Sent WILL MXP!");
                                 response.flush();
                                 setMXPSupport(true);
                             }
                         }
                         else
+                        if(buf.charAt(i)!=TELOPT_BINARY)
                         {
+                            if(debugTelnetCodes) System.out.println("Send WONT "+(int)buf.charAt(i)+"!");
                             response.writeBytes(""+IAC_+IAC_WONT+buf.charAt(i));
                             response.flush();
                         }
@@ -414,8 +510,10 @@ public class TelnetFilter
                         i++;
                         if(buf.charAt(i)==IAC_MSP)
                         {
+                            if(debugTelnetCodes) System.out.println("Got DONT MSP!");
                             if(MSPsupport())
                             {
+                                if(debugTelnetCodes) System.out.println("Sent WONT MSP!");
                                 response.writeBytes(""+IAC_+IAC_WONT+IAC_MSP);
                                 response.flush();
                                 setMSPSupport(false);
@@ -426,6 +524,7 @@ public class TelnetFilter
                         {
                             if(MXPsupport())
                             {
+                                if(debugTelnetCodes) System.out.println("Sent WONT MXP!");
                                 response.writeBytes(""+IAC_+IAC_WONT+IAC_MXP);
                                 response.flush();
                                 setMXPSupport(false);
@@ -433,7 +532,7 @@ public class TelnetFilter
                         }
                         break;
                     }
-                    buf.delete(oldI,oldI+3);
+                    buf.delete(oldI,end);
                     i=oldI-1;
                     break;
                 }
@@ -462,6 +561,15 @@ public class TelnetFilter
                     comment=false;
                     i+=3;
                 }
+            }
+            else
+            if((MXPsupport()
+            &&(mxpModule.eatTextUntilNextEOLN())
+            &&(buf.charAt(i)!='\n')
+            &&(buf.charAt(i)!='\r')))
+            {
+                buf.deleteCharAt(i);
+                i--;
             }
             else
             switch(buf.charAt(i))

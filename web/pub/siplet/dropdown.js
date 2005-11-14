@@ -142,6 +142,16 @@ clearTimeout(delayhide)
 if (hidemenu_onclick=="yes")
 document.onclick=hidemenu
 
+function replaceAll(s)
+{
+    var x=s.indexOf('\"');
+    while(x>=0)
+    {
+        s=s.substr(0,x)+'&quot;'+s.substr(x+1);
+        x=s.indexOf('\"');
+    }
+    return s;
+}
 function getSendMenu(titleSet,menu,hints,prompt)
 {
     var mmenu=new Array();
@@ -181,17 +191,17 @@ function getSendMenu(titleSet,menu,hints,prompt)
         else
         if(hints.length>0)
             hint=hints;
-        mmenu[count]='<a href="javascript:addToPrompt(\''+menu.substr(0,x)+'\','+prompt+');">'+hint+'</a>';
+        mmenu[count]='<a href="javascript:addToPrompt(\''+replaceAll(menu.substr(0,x))+'\','+prompt+');">'+hint+'</a>';
         count++;
         menu=menu.substr(x+1);
         x=menu.indexOf("|");
     }
-    var hint=menu.substr(0,x);
+    var hint=menu;
     if(y>=0)
         hint=hints.substr(0,y);
     else
     if(hints.length>0)
         hint=hints;
-    mmenu[count]='<a href="javascript:addToPrompt(\''+menu.substr(0,x)+'\','+prompt+');">'+hint+'</a>';
+    mmenu[count]='<a href="javascript:addToPrompt(\''+replaceAll(menu)+'\','+prompt+');">'+hint+'</a>';
     return mmenu;
 }

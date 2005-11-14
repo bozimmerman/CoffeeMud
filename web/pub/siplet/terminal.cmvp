@@ -1,0 +1,62 @@
+<HTML>
+<HEAD>
+<LINK REL=StyleSheet HREF="term.css" TYPE="text/css">
+<SCRIPT LANGUAGE=JavaScript src="floater.js"></SCRIPT>
+<script language=JavaScript>
+var allwindows=new Array();
+
+function closeWindow()
+{
+	allwindows[currentWindow].closeWindow();
+}
+
+function addToWindow(s)
+{
+	allwindows[currentWindow].addToWindow(s);
+}
+function sendData(me)
+{
+	allwindows[currentWindow].sendData(me);
+}
+function addToPrompt(x,att)
+{
+	allwindows[currentWindow].addToPrompt(x,att);
+}
+function goDefault(x)
+{
+	allwindows[currentWindow].goDefault(x);
+}
+var windowsOpen=0;
+var currentWindow=0;
+function openWindow()
+{
+	windowsOpen++;
+	currentWindow=windowsOpen;
+	var wname='dwindow'+windowsOpen;
+    var thespan=document.getElementById("DWINDOW");
+    thespan.innerHTML=thespan.innerHTML+getFrameHTML(wname);
+    loadwindow('term.cmvp',700,400,wname);
+}
+
+function rotateWindow()
+{
+	if(windowsOpen==0) return;
+	var wname='dwindow'+currentWindow;
+    var thespan=document.getElementById(wname);
+    thespan.style.display='none';
+    
+	currentWindow++;
+	if(currentWindow>windowsOpen) currentWindow=1;
+	wname='dwindow'+currentWindow;
+    thespan=document.getElementById(wname);
+    thespan.style.display='';
+}
+</SCRIPT>
+</HEAD>
+<BODY BGCOLOR=BLACK>
+<DIV ID=DWINDOW NAME=DWINDOW>
+</DIV>
+<SCRIPT LANGUAGE=JavaScript>
+window.onload=new Function('openWindow()');
+</SCRIPT>
+</BODY></HTML>
