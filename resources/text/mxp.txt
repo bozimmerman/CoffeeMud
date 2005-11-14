@@ -53,5 +53,5 @@
 <!ELEMENT Move FLAG="Set move">
 <!ELEMENT MaxMove EMPTY FLAG="Set maxmove">
 <VERSION>
-<SUPPORT image send gauge font b>
+<SUPPORT image send gauge font b image.url>
 </P>

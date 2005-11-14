@@ -8,15 +8,20 @@ public class MXPElement implements Cloneable
     public static final int BIT_NEEDTEXT=4;
     public static final int BIT_SPECIAL=8;
     public static final int BIT_HTML=16;
+    public static final int BIT_NOTSUPPORTED=32;
+    public static final int BIT_EATTEXT=64;
+    public static final int BIT_DISABLED=128;
     
     private String name="";
     private String definition="";
     private String attributes="";
     private String flag="";
+    private String unsupportedParms="";
     private int bitmap=0;
     private Vector parsedAttributes=null;
     private Hashtable attributeValues=null;
     private Hashtable alternativeAttributes=null;
+    private boolean basicElement=true;
     
     private int bufInsert=-1;
     private Vector userParms=new Vector();
@@ -38,6 +43,24 @@ public class MXPElement implements Cloneable
               bitmap=bitmap|BIT_NEEDTEXT;
     }
     
+    public MXPElement(String newName,
+                      String theDefinition,
+                      String theAttributes,
+                      String theFlag,
+                      int theBitmap,
+                      String unsupported)
+    {
+        super();
+        name=newName;
+        definition=theDefinition;
+        attributes=theAttributes;
+        flag=theFlag;
+        bitmap=theBitmap;
+        if((!isCommand())
+        &&(theDefinition.toUpperCase().indexOf("&TEXT;")>=0))
+            bitmap=bitmap|BIT_NEEDTEXT;
+        unsupportedParms=unsupported;
+    }
     public MXPElement copyOf()
     {
         try
@@ -48,36 +71,29 @@ public class MXPElement implements Cloneable
         return null;
     }
 
-    public static MXPElement createMXPCommand(String name, String definition)
-    {
-        return new MXPElement(name,definition,"","",BIT_COMMAND);
-    }
-    public static MXPElement createHTMLCommand(String name,String definition)
-    {
-        return new MXPElement(name,definition,"","",BIT_COMMAND|BIT_HTML);
-    }
-    public static MXPElement createMXPCommand(String name, String definition, String attributes)
-    {
-        return new MXPElement(name,definition,attributes,"",BIT_COMMAND);
-    }
-    public static MXPElement createMXPElement(String name, String definition, String attributes)
-    {
-        return new MXPElement(name,definition,attributes,"",0);
-    }
-    public static MXPElement createHTMLElement(String name, String definition, String attributes)
-    {
-        return new MXPElement(name,definition,attributes,"",BIT_HTML);
-    }
-
     public String name(){return name;}
     public void setName(String newName){name=newName;}
     public boolean isCommand(){return Util.bset(bitmap,BIT_COMMAND);}
     public boolean isOpen(){return Util.bset(bitmap,BIT_OPEN);}
     public boolean isHTML(){return Util.bset(bitmap,BIT_HTML);}
     public boolean isSpecialProcessor(){return Util.bset(bitmap,BIT_SPECIAL);}
+    public boolean isDisabled(){return Util.bset(bitmap,BIT_DISABLED);}
+    public boolean isTextEater(){return Util.bset(bitmap,BIT_EATTEXT);}
     public String getDefinition(){return definition;}
+    public void setDefinition(String defi){definition=defi;}
     public String getAttributes(){return attributes;}
     public boolean needsText(){return Util.bset(bitmap,BIT_NEEDTEXT);}
+    public void setNotBasicElement(){basicElement=false;}
+    public boolean isBasicElement(){return basicElement;}
+    public boolean isGenerallySupported(){return !Util.bset(bitmap,BIT_NOTSUPPORTED);}
+    public void setBitmap(int newBitmap){bitmap=newBitmap;}
+    public int getBitmap(){return bitmap;}
+    public Vector getUnsupportedParms()
+    {
+        if((unsupportedParms==null)||(unsupportedParms.trim().length()==0))
+            return new Vector();
+        return Util.parseSpaces(unsupportedParms,true);
+    }
     public void setAttributes(String newAttributes)
     { 
         attributes=newAttributes;
@@ -190,6 +206,7 @@ public class MXPElement implements Cloneable
         return parsedAttributes;
     }
     public String getFlag(){return flag;}
+    public Vector getUserParms(){return userParms;}
     public void saveSettings(int insertPoint, Vector theUserParms)
     {
         bufInsert=insertPoint;
