@@ -284,6 +284,7 @@ public class FrontLogin extends StdCommand
 							Log.sysOut("FrontDoor","Session swap for "+mob.session().mob().Name()+".");
                             commands.clear();
                             commands.addElement("SWAPPED");
+                            mob.session().initTelnetMode(mob.session().mob().getBitmap());
 							mob.session().mob().bringToLife(oldRoom,false);
 							if(pendingLogins.containsKey(mob.Name().toUpperCase()))
 							   pendingLogins.remove(mob.Name().toUpperCase());
