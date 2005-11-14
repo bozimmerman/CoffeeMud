@@ -52,4 +52,6 @@
 <!ELEMENT MaxMana EMPTY FLAG="Set maxmana">
 <!ELEMENT Move FLAG="Set move">
 <!ELEMENT MaxMove EMPTY FLAG="Set maxmove">
+<VERSION>
+<SUPPORT image send gauge font b>
 </P>
