@@ -14,6 +14,10 @@ function addToWindow(s)
 {
 	allwindows[currentWindow].addToWindow(s);
 }
+function reconnect(s)
+{
+	allwindows[currentWindow].reconnect();
+}
 function sendData(me)
 {
 	allwindows[currentWindow].sendData(me);

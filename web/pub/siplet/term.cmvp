@@ -5,11 +5,51 @@
 </HEAD>
 <BODY BGCOLOR=BLACK>
 <script language=JavaScript>
+var myname='dwindow'+top.term.currentWindow;
+var gauges=new Array();
+function closeWindow()
+{
+    var theapplet=document.getElementById("myApplet");
+    theapplet.disconnectFromURL();
+    top.document.location.href='/index.cmvp';
+}
+function reconnect()
+{
+    var theapplet=document.getElementById("myApplet");
+    theapplet.disconnectFromURL();
+    setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
+}
+
+function addToWindow(s)
+{
+    if(s.length>0)
+    {
+        var thespan=document.getElementById("DISPLAYSPAN");
+        var theend=document.getElementById("NODISPLAY");
+        if(thespan.innerHTML.length>200000)
+        {
+            var x=thespan.innerHTML;
+            while(x.length>150000)
+            {
+                var y=x.indexOf('<BR>');
+                if(y<0) break;
+                x=x.substring(y+4);
+            }
+            thespan.innerHTML=x;
+        }
+        thespan.innerHTML=thespan.innerHTML+s;
+        theend.scrollIntoView(false);
+    }
+}
 function displayData()
 {
     var theapplet=document.getElementById("myApplet");
     if(!theapplet.isConnectedToURL())
     {
+        var thespan=top.term.document.getElementById(myname+'bar');
+        thespan.style.backgroundColor='red'
+        thespan=top.term.document.getElementById(myname+'namer');
+        thespan.style.backgroundColor='red'
         alert('Lost connection.');
     }
     else
@@ -18,24 +58,11 @@ function displayData()
         var t=theapplet.getURLData();
         var s="";
         s=s+t;
-        if(s.length>0)
-        {
-            var thespan=document.getElementById("DISPLAYSPAN");
-            var theend=document.getElementById("NODISPLAY");
-            if(thespan.innerHTML.length>200000)
-            {
-                var x=thespan.innerHTML;
-                while(x.length>150000)
-                {
-                    var y=x.indexOf('<BR>');
-                    if(y<0) break;
-                    x=x.substring(y+4);
-                }
-                thespan.innerHTML=x;
-            }
-            thespan.innerHTML=thespan.innerHTML+s;
-            theend.scrollIntoView(false);
-        }
+        addToWindow(s);
+        t=theapplet.getJScriptCommands();
+        s="";
+        s=s+t;
+        if(s.length>0) eval(s);
         setTimeout('displayData();',100);
     }
 }
@@ -45,13 +72,72 @@ function sendData(me)
 	var s=''+me;
     theapplet.sendData(s);
 }
+
+function createGauge(entity,caption,color,value,max)
+{
+    var gaugedata=new Array(5);
+    gaugedata[0]=entity;
+    gaugedata[1]=caption;
+    gaugedata[2]=color;
+    gaugedata[3]=value;
+    gaugedata[4]=max;
+    gauges[gauges.length]=gaugedata;
+    modifyGauge(entity,value,max);
+}
+function modifyGauge(entity,value,max)
+{
+    var div=top.term.document.getElementById(myname+'extracontent');
+    if(gauges.length==0)
+        div.innerHTML='';
+    else
+    {
+        var gaugewid=100;
+        var s='<TABLE WIDTH=100% CELLPADDING=0 CELLSPACING=0 BORDER=1><TR>';
+        var i=0;
+        var cellwidth=100/gauges.length;
+        for(i=0;i<gauges.length;i++)
+        {
+            var gaugedata=gauges[i];
+            if(gaugedata[0]==entity)
+            {
+                gaugedata[3]=value;
+                gaugedata[4]=max;
+            }
+        }
+        for(i=0;i<gauges.length;i++)
+        {
+            var gaugedata=gauges[i];
+            s+='<TD WIDTH='+cellwidth+'%>';
+            s+='<FONT STYLE="color: '+gaugedata[2]+'" SIZE=-2>'+gaugedata[1]+'</FONT><BR>';
+            var gaugedata=gauges[i];
+            var fullwidth=100-gaugedata[3];
+            var lesswidth=gaugedata[3];
+            s+='<TABLE WIDTH=100% CELLPADDING=0 CELLSPACING=0 BORDER=0 HEIGHT=5><TR HEIGHT=5>';
+            s+='<TD STYLE="background-color: '+gaugedata[2]+'" WIDTH='+lesswidth+'%></TD>';
+            s+='<TD STYLE="background-color: black" WIDTH='+fullwidth+'%></TD>';
+            s+='</TR></TABLE>';
+            s+='</TD>';
+        }
+        s+='</TR></TABLE>'
+        div.innerHTML=s;
+    }
+}
 function connect(url,port)
 {
     var theapplet=document.getElementById("myApplet");
+    var s=theapplet.info();
+    var thespan=top.term.document.getElementById(myname+'namer');
+    thespan.innerHTML=s
+    gauges=new Array(0);
     if(!theapplet.connectToURL(url,port))
         alert('Could not connect.');
     else
+    {
+        thespan.style.backgroundColor='green'
+        thespan=top.term.document.getElementById(myname+'bar');
+        thespan.style.backgroundColor='green'
         setTimeout('displayData();',100);
+    }
 }
 function addToPrompt(x,att)
 {
@@ -65,6 +151,7 @@ function goDefault(x)
 {
     // do nothing
 }
+top.term.allwindows[top.term.currentWindow]=this;
 </SCRIPT>
 <applet
     code="com.planet_ink.siplet.applet.Siplet"
@@ -82,10 +169,6 @@ function goDefault(x)
 <script language=JavaScript>
     var theapplet=document.getElementById("myApplet");
     setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
-    var s=theapplet.info();
-    s='<B><FONT COLOR=BLUE SIZE=5>'+s+'</FONT></B>';
-    var thespan=document.getElementById('DISPLAYSPAN');
-    thespan.innerHTML=thespan.innerHTML+s;
 //-->
 </script>
 </BODY></HTML>

@@ -1,15 +1,21 @@
 <HTML>
 <BODY BGCOLOR=BLACK>
 <FORM NAME=ENTER>
-<TABLE WIDTH=100%)
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0>
 <TR><TD WIDTH=85%>
+<TABLE WIDH=100% CELLSPACING=0 CELLPADDING=0>
+<TR><TD WIDTH=80%>
 <TEXTAREA NAME=TEXT ID=TEXT ROWS=4 COLS=80 WRAP="soft" ONKEYPRESS="keyme(event,this);" ONKEYDOWN="keydown(event,this);" SIZE=80>
 </TEXTAREA>
-</TD><TD WIDTH=15% ALIGN=CENTER>
+<TD WIDTH=15% ALIGN=CENTER VALIGN=TOP>
 <a href="javascript:sendText();"><TABLE WIDTH=57 HEIGHT=23 BACKGROUND="lilButt.gif"  style="cursor:hand" ONCLICK="sendText();" TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0><TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2><B>Submit</B></FONT></a></TD></TR></TABLE></a>
+</TD>
+</TD></TR></TABLE>
+<TD WIDTH=15% ALIGN=CENTER VALIGN=TOP>
+<a href="javascript:disconnect();"><TABLE WIDTH=57 HEIGHT=23 BACKGROUND="lilButt.gif"  style="cursor:hand" ONCLICK="disconnect();" TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0><TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2><B>Quit</B></FONT></a></TD></TR></TABLE></a>
 <BR>
-<a href="javascript:disconnect();"><TABLE WIDTH=57 HEIGHT=23 BACKGROUND="lilButt.gif"  style="cursor:hand" ONCLICK="disconnect();" TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0><TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2><B>Disconnect</B></FONT></a></TD></TR></TABLE></a>
-</TD></TABLE>
+<a href="javascript:reconnect();"><TABLE WIDTH=57 HEIGHT=23 BACKGROUND="lilButt.gif"  style="cursor:hand" ONCLICK="reconnect();" TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0><TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2><B>Reconnect</B></FONT></a></TD></TR></TABLE></a>
+</TD></TR></TABLE>
 </FORM>
 
 <script language=JavaScript>
@@ -55,9 +61,11 @@
     
     function disconnect()
     {
-        var theapplet=top.term.document.getElementById("myApplet");
-        theapplet.disconnectFromURL();
-    	top.document.location.href='/index.cmvp';
+        top.term.closeWindow();
+    }
+    function reconnect()
+    {
+        top.term.reconnect();
     }
     
     function keydown(event,textEl)
@@ -100,8 +108,7 @@
     
     function doReturn(val)
     {
-        var thespan=top.term.document.getElementById("DISPLAYSPAN");
-        thespan.innerHTML+=val+'<BR>';
+        top.term.addToWindow(val+'<BR>');
         sendText();
         document.ENTER.TEXT.value='';
     }

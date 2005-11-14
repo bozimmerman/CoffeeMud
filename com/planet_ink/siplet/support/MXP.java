@@ -43,66 +43,72 @@ public class MXP
     private Vector openElements=new Vector();
     public String lastForeground="WH";
     public String lastBackground="WH";
+    private boolean eatTextUntilEOLN=false;
     private boolean eatNextEOLN=false;
     private boolean eatAllEOLN=false;
+    private StringBuffer responses=new StringBuffer("");
+    private StringBuffer jscriptBuffer=new StringBuffer("");
+    private Vector gauges=new Vector();
     
     public MXP()
     {
         super();
-        addElement(MXPElement.createHTMLElement("B","<B>",""));
-        addElement(MXPElement.createHTMLElement("BOLD","<B>",""));
-        addElement(MXPElement.createHTMLElement("STRONG","<B>",""));
-        addElement(MXPElement.createHTMLElement("U","<U>",""));
-        addElement(MXPElement.createHTMLElement("UNDERLINE","<U>",""));
-        addElement(MXPElement.createHTMLElement("I","<I>",""));
-        addElement(MXPElement.createHTMLElement("ITALIC","<I>",""));
-        addElement(MXPElement.createHTMLElement("S","<S>",""));
-        addElement(MXPElement.createHTMLElement("STRIKEOUT","<S>",""));
-        addElement(MXPElement.createHTMLElement("EM","<I>",""));
-        addElement(MXPElement.createHTMLElement("H1","<H1>",""));
-        addElement(MXPElement.createHTMLElement("H2","<H2>",""));
-        addElement(MXPElement.createHTMLElement("H3","<H3>",""));
-        addElement(MXPElement.createHTMLElement("H4","<H4>",""));
-        addElement(MXPElement.createHTMLElement("H5","<H5>",""));
-        addElement(MXPElement.createHTMLElement("H6","<H6>",""));
-        addElement(MXPElement.createHTMLCommand("HR","<HR>"));
-        addElement(MXPElement.createHTMLElement("SMALL","<SMALL>",""));
-        addElement(MXPElement.createHTMLElement("TT","<PRE>",""));
-        addElement(MXPElement.createHTMLCommand("BR","<BR>"));
-        addElement(MXPElement.createHTMLCommand("SBR","&nbsp;")); // not fully supported
-        addElement(new MXPElement("P","","","",MXPElement.BIT_HTML|MXPElement.BIT_SPECIAL));
-        addElement(MXPElement.createMXPElement("C","<FONT COLOR=&fore; BACK=&back;>","FORE BACK"));
-        addElement(MXPElement.createMXPElement("COLOR","<FONT COLOR=&fore; BACK=&back;>","FORE BACK"));
-        addElement(MXPElement.createMXPElement("HIGH","","")); // not supported
-        addElement(MXPElement.createMXPElement("H","","")); // not supported
-        addElement(MXPElement.createMXPElement("FONT","<FONT STYLE=\"color: &color;;background-color: &back;;font-family: &face;;font-size: &size;;\">","FACE SIZE COLOR BACK STYLE"));
-        addElement(new MXPElement("NOBR","","","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND));
-        addElement(MXPElement.createMXPElement("A","<A STYLE=\"&lcc;\" ONMOUSEOVER=\"&onmouseover;\" ONCLICK=\"&onclick;\" HREF=\"&href;\" TITLE=\"&hint;\">","HREF HINT EXPIRE TITLE=HINT STYLE ONMOUSEOUT ONMOUSEOVER ONCLICK"));
-        addElement(new MXPElement("SEND","<A STYLE=\"&lcc;\" HREF=\"&href;\" ONMOUSEOUT=\"delayhidemenu();\" ONCLICK=\"&onclick;\" TITLE=\"&hint;\">","HREF HINT PROMPT EXPIRE STYLE","",MXPElement.BIT_SPECIAL));
-        addElement(MXPElement.createMXPCommand("EXPIRE","","NAME")); // not supported
-        addElement(new MXPElement("VERSION","","","",MXPElement.BIT_SPECIAL));
-        addElement(new MXPElement("GAUGE","","ENTITY MAX CAPTION COLOR","",MXPElement.BIT_SPECIAL));
-        addElement(new MXPElement("STAT","","ENTITY MAX CAPTION","",MXPElement.BIT_SPECIAL));
-        addElement(new MXPElement("FRAME","","NAME ACTION TITLE INTERNAL ALIGN LEFT TOP WIDTH HEIGHT SCROLLING FLOATING","",MXPElement.BIT_SPECIAL));
-        addElement(new MXPElement("DEST","","NAME","",MXPElement.BIT_SPECIAL));
-        addElement(new MXPElement("RELOCATE","","URL PORT","",MXPElement.BIT_SPECIAL));
-        addElement(new MXPElement("USER","","","",0)); // not supported, yet
-        addElement(new MXPElement("PASSWORD","","","",0)); // not supported, yet
-        addElement(MXPElement.createMXPCommand("IMAGE","<IMG SRC=&src;&fname; HEIGHT=&h; WIDTH=&w; ALIGN=&align;>","FNAME URL T H W HSPACE VSPACE ALIGN ISMAP"));
-        addElement(MXPElement.createMXPCommand("IMG","<IMG SRC=&src; HEIGHT=&height; WIDTH=&width; ALIGN=&align;>","SRC HEIGHT=70 WIDTH=70 ALIGN"));
-        addElement(MXPElement.createMXPCommand("FILTER","","SRC DEST NAME")); // not supported
-        addElement(MXPElement.createMXPCommand("SCRIPT","")); // not supported
-        addElement(new MXPElement("ENTITY","","NAME VALUE DESC PRIVATE PUBLISH DELETE ADD","",MXPElement.BIT_SPECIAL));
-        addElement(new MXPElement("EN","","NAME VALUE DESC PRIVATE PUBLISH DELETE ADD","",MXPElement.BIT_SPECIAL));
-        addElement(new MXPElement("TAG","","INDEX WINDOWNAME FORE BACK GAG ENABLE DISABLE","",MXPElement.BIT_SPECIAL));
-        addElement(new MXPElement("VAR","","NAME DESC PRIVATE PUBLISH DELETE ADD REMOVE","",MXPElement.BIT_SPECIAL));
-        addElement(new MXPElement("V","","NAME DESC PRIVATE PUBLISH DELETE ADD REMOVE","",MXPElement.BIT_SPECIAL));
-        addElement(new MXPElement("ELEMENT","","NAME DEFINITION ATT TAG FLAG OPEN DELETE EMPTY","",MXPElement.BIT_SPECIAL));
-        addElement(new MXPElement("EL","","NAME DEFINITION ATT TAG FLAG OPEN DELETE EMPTY","",MXPElement.BIT_SPECIAL));
-        addElement(new MXPElement("ATTLIST","","NAME ATT","",MXPElement.BIT_SPECIAL));
-        addElement(new MXPElement("AT","","NAME ATT","",MXPElement.BIT_SPECIAL));
-        addElement(MXPElement.createMXPCommand("SOUND","!!SOUND(&fname; V=&v; L=&l; P=&p; T=&t; U=&u;)","FNAME V=100 L=1 P=50 T U"));
-        addElement(MXPElement.createMXPCommand("MUSIC","!!MUSIC(&fname; V=&v; L=&l; P=&p; T=&t; U=&u;)","FNAME V=100 L=1 P=50 T U"));
+        addElement(new MXPElement("B","<B>","","",MXPElement.BIT_HTML));
+        addElement(new MXPElement("BOLD","<B>","","",MXPElement.BIT_HTML));
+        addElement(new MXPElement("STRONG","<B>","","",MXPElement.BIT_HTML));
+        addElement(new MXPElement("U","<U>","","",MXPElement.BIT_HTML));
+        addElement(new MXPElement("UNDERLINE","<U>","","",MXPElement.BIT_HTML));
+        addElement(new MXPElement("I","<I>","","",MXPElement.BIT_HTML));
+        addElement(new MXPElement("ITALIC","<I>","","",MXPElement.BIT_HTML));
+        addElement(new MXPElement("S","<S>","","",MXPElement.BIT_HTML));
+        addElement(new MXPElement("STRIKEOUT","<S>","","",MXPElement.BIT_HTML));
+        addElement(new MXPElement("EM","<I>","","",MXPElement.BIT_HTML));
+        addElement(new MXPElement("H1","<H1>","","",MXPElement.BIT_HTML));
+        addElement(new MXPElement("H2","<H2>","","",MXPElement.BIT_HTML));
+        addElement(new MXPElement("H3","<H3>","","",MXPElement.BIT_HTML));
+        addElement(new MXPElement("H4","<H4>","","",MXPElement.BIT_HTML));
+        addElement(new MXPElement("H5","<H5>","","",MXPElement.BIT_HTML));
+        addElement(new MXPElement("H6","<H6>","","",MXPElement.BIT_HTML));
+        addElement(new MXPElement("HR","<HR>","","",MXPElement.BIT_HTML|MXPElement.BIT_COMMAND));
+        addElement(new MXPElement("SMALL","<SMALL>","","",MXPElement.BIT_HTML));
+        addElement(new MXPElement("TT","<PRE>","","",MXPElement.BIT_HTML));
+        addElement(new MXPElement("BR","<BR>","","",MXPElement.BIT_HTML|MXPElement.BIT_COMMAND));
+        addElement(new MXPElement("SBR","&nbsp;","","",MXPElement.BIT_HTML|MXPElement.BIT_COMMAND|MXPElement.BIT_NOTSUPPORTED));
+        addElement(new MXPElement("P","","","",MXPElement.BIT_HTML|MXPElement.BIT_SPECIAL)); // special done
+        addElement(new MXPElement("C","<FONT COLOR=&fore; BACK=&back;>","FORE BACK","",0));
+        addElement(new MXPElement("COLOR","<FONT COLOR=&fore; BACK=&back;>","FORE BACK","",0));
+        addElement(new MXPElement("HIGH","","","",MXPElement.BIT_NOTSUPPORTED));
+        addElement(new MXPElement("H","","","",MXPElement.BIT_NOTSUPPORTED));
+        addElement(new MXPElement("FONT","<FONT STYLE=\"color: &color;;background-color: &back;;font-family: &face;;font-size: &size;;\">","FACE SIZE COLOR BACK STYLE","",0));
+        addElement(new MXPElement("NOBR","","","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND));  // special done
+        addElement(new MXPElement("A","<A STYLE=\"&lcc;\" ONMOUSEOVER=\"&onmouseover;\" ONCLICK=\"&onclick;\" HREF=\"&href;\" TITLE=\"&hint;\">","HREF HINT EXPIRE TITLE=HINT STYLE ONMOUSEOUT ONMOUSEOVER ONCLICK","",0,"EXPIRE"));
+        addElement(new MXPElement("SEND","<A STYLE=\"&lcc;\" HREF=\"&href;\" ONMOUSEOUT=\"delayhidemenu();\" ONCLICK=\"&onclick;\" TITLE=\"&hint;\">","HREF HINT PROMPT EXPIRE STYLE","",MXPElement.BIT_SPECIAL,"EXPIRE")); // special done
+        addElement(new MXPElement("EXPIRE","","NAME","",MXPElement.BIT_NOTSUPPORTED));
+        addElement(new MXPElement("VERSION","","","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND)); // special done
+        addElement(new MXPElement("SUPPORT","","","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND)); // special done
+        addElement(new MXPElement("GAUGE","","ENTITY MAX CAPTION COLOR","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND));
+        addElement(new MXPElement("STAT","","ENTITY MAX CAPTION","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND|MXPElement.BIT_NOTSUPPORTED));
+        addElement(new MXPElement("FRAME","","NAME ACTION TITLE INTERNAL ALIGN LEFT TOP WIDTH HEIGHT SCROLLING FLOATING","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND|MXPElement.BIT_NOTSUPPORTED));
+        addElement(new MXPElement("DEST","","NAME","",MXPElement.BIT_SPECIAL|MXPElement.BIT_NOTSUPPORTED));
+        addElement(new MXPElement("DESTINATION","","NAME","",MXPElement.BIT_SPECIAL|MXPElement.BIT_NOTSUPPORTED));
+        addElement(new MXPElement("RELOCATE","","URL PORT","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND|MXPElement.BIT_NOTSUPPORTED));
+        addElement(new MXPElement("USER","","","",MXPElement.BIT_COMMAND|MXPElement.BIT_NOTSUPPORTED));
+        addElement(new MXPElement("PASSWORD","","","",MXPElement.BIT_COMMAND|MXPElement.BIT_NOTSUPPORTED));
+        addElement(new MXPElement("IMAGE","<IMG SRC=&src;&fname; HEIGHT=&h; WIDTH=&w; ALIGN=&align;>","FNAME URL T H W HSPACE VSPACE ALIGN ISMAP","",MXPElement.BIT_COMMAND,"HSPACE VSPACE ISMAP"));
+        addElement(new MXPElement("IMG","<IMG SRC=&src; HEIGHT=&height; WIDTH=&width; ALIGN=&align;>","SRC HEIGHT=70 WIDTH=70 ALIGN","",MXPElement.BIT_COMMAND));
+        addElement(new MXPElement("FILTER","","SRC DEST NAME","",MXPElement.BIT_COMMAND|MXPElement.BIT_NOTSUPPORTED));
+        addElement(new MXPElement("SCRIPT","","","",MXPElement.BIT_COMMAND|MXPElement.BIT_NOTSUPPORTED));
+        addElement(new MXPElement("ENTITY","","NAME VALUE DESC PRIVATE PUBLISH DELETE ADD","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND,"DESC PRIVATE PUBLISH ADD")); // special done
+        addElement(new MXPElement("EN","","NAME VALUE DESC PRIVATE PUBLISH DELETE ADD","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND,"DESC PRIVATE PUBLISH ADD")); // special done
+        addElement(new MXPElement("TAG","","INDEX WINDOWNAME FORE BACK GAG ENABLE DISABLE","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND,"WINDOWNAME"));
+        addElement(new MXPElement("VAR","","NAME DESC PRIVATE PUBLISH DELETE ADD REMOVE","",MXPElement.BIT_SPECIAL,"DESC PRIVATE PUBLISH ADD REMOVE")); // special done
+        addElement(new MXPElement("V","","NAME DESC PRIVATE PUBLISH DELETE ADD REMOVE","",MXPElement.BIT_SPECIAL,"DESC PRIVATE PUBLISH ADD REMOVE")); // special done
+        addElement(new MXPElement("ELEMENT","","NAME DEFINITION ATT TAG FLAG OPEN DELETE EMPTY","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND)); // special done
+        addElement(new MXPElement("EL","","NAME DEFINITION ATT TAG FLAG OPEN DELETE EMPTY","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND)); // special done
+        addElement(new MXPElement("ATTLIST","","NAME ATT","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND));
+        addElement(new MXPElement("AT","","NAME ATT","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND));
+        addElement(new MXPElement("SOUND","!!SOUND(&fname; V=&v; L=&l; P=&p; T=&t; U=&u;)","FNAME V=100 L=1 P=50 T U","",MXPElement.BIT_COMMAND));
+        addElement(new MXPElement("MUSIC","!!MUSIC(&fname; V=&v; L=&l; P=&p; T=&t; U=&u;)","FNAME V=100 L=1 P=50 T U","",MXPElement.BIT_COMMAND));
         //-------------------------------------------------------------------------
         entities.put("nbsp",new MXPEntity("nbsp","&nbsp;"));
         entities.put("lt",new MXPEntity("lt","&lt;"));
@@ -114,6 +120,28 @@ public class MXP
     public void addElement(MXPElement E)
     {
         elements.put(E.name(),E);
+    }
+    
+    public String getAnyResponses()
+    {
+        synchronized(responses)
+        {
+            if(responses.length()==0) return "";
+            String s=responses.toString();
+            responses.setLength(0);
+            return s;
+        }
+    }
+    
+    public String getAnyJScript()
+    {
+        synchronized(jscriptBuffer)
+        {
+            if(jscriptBuffer.length()==0) return "";
+            String s=jscriptBuffer.toString();
+            jscriptBuffer.setLength(0);
+            return s;
+        }
     }
     
     private int mode=0;
@@ -151,6 +179,11 @@ public class MXP
         }
         eatEOL[0]=eatNextEOLN;
         eatNextEOLN=eatAllEOLN;
+        if(eatTextUntilEOLN)
+        {
+            eatTextUntilEOLN=false;
+            eatEOL[0]=true;
+        }
         switch(mode())
         {
         case MODE_LINE_OPEN:
@@ -225,14 +258,20 @@ public class MXP
             if(code<100)
             {
                 MXPElement replace=(MXPElement)tags.get(new Integer(code));
-                if(replace!=null)
+                if((replace!=null)&&(!replace.isDisabled()))
+                {
                     buf.insert(i,replace.getFoldedDefinition(""));
+                    if(replace.isTextEater()) 
+                        eatTextUntilEOLN=true;
+                }
             }
             return -1;
         }
         return escapeString.length();
     }
 
+    public boolean eatTextUntilNextEOLN(){return eatTextUntilEOLN;}
+    
     private void processAnyEntities(StringBuffer buf, MXPElement currentElement)
     {
         int i=0;
@@ -441,8 +480,7 @@ public class MXP
             String f=E.getFlag().trim();
             if(f.toUpperCase().startsWith("SET "))
                 f=f.substring(4).trim();
-            entities.remove(f);
-            entities.put(f,text);
+            modifyEntity(f,text);
         }
         if(E.isSpecialProcessor())
             specialElements(E,endTag);
@@ -575,6 +613,7 @@ public class MXP
             if(OPEN!=null) bitmap|=MXPElement.BIT_OPEN;
             if(EMPTY!=null) bitmap|=MXPElement.BIT_COMMAND;
             MXPElement L=new MXPElement(name.toUpperCase().trim(),definition,attributes,flags,bitmap);
+            L.setNotBasicElement();
             elements.remove(L.name());
             elements.put(L.name(),L);
             if((tag!=null)&&(Util.isInteger(tag))&&(Util.s_int(tag)>19)&&(Util.s_int(tag)<100))
@@ -585,7 +624,7 @@ public class MXP
             }
             return;
         }
-        
+        else
         if(E.name().equals("ENTITY")||E.name().equals("EN"))
         {
             String name=E.getAttributeValue("NAME");
@@ -612,9 +651,283 @@ public class MXP
                 // whatever a string list is (| separated things) this removes it
             }
             else
-                entities.put(name,new MXPEntity(name,value));
+                modifyEntity(name,value);
             return;
         }
+        else
+        if((E.name().equals("VAR")||E.name().equals("V"))&&(endTag))
+        {
+            String name=E.getAttributeValue("NAME");
+            //String PRIVATE=E.getAttributeValue("PRIVATE");
+            //String PUBLISH=E.getAttributeValue("PUBLISH");
+            String DELETE=E.getAttributeValue("DELETE");
+            String REMOVE=E.getAttributeValue("REMOVE");
+            String VALUE=E.getAttributeValue("TEXT");
+            if(VALUE==null) VALUE="";
+            String ADD=E.getAttributeValue("ADD");
+            if((name==null)||(name.length()==0)) return;
+            if(DELETE!=null)
+            {
+                entities.remove(name);
+                return;
+            }
+            if(REMOVE!=null)
+            {
+                // whatever a string list is (| separated things) this removes it
+            }
+            else
+            if(ADD!=null)
+            {
+                // whatever a string list is (| separated things) this removes it
+            }
+            else
+                modifyEntity(name,VALUE);
+            return;
+        }
+        else
+        if(E.name().equalsIgnoreCase("VERSION"))
+            responses.append("\033[1z<VERSION MXP=1.0 STYLE=1.0 CLIENT=Siplet VERSION="+TelnetFilter.getSipletVersion()+" REGISTERED=NO>\n");
+        else
+        if(E.name().equalsIgnoreCase("GAUGE"))
+        {
+            String ENTITY=E.getAttributeValue("ENTITY");
+            String MAX=E.getAttributeValue("MAX");
+            if((ENTITY==null)||(MAX==null)) return;
+            ENTITY=ENTITY.toLowerCase();
+            MAX=MAX.toLowerCase();
+            String CAPTION=E.getAttributeValue("CAPTION");
+            if(CAPTION==null) CAPTION="";
+            String COLOR=E.getAttributeValue("COLOR");
+            if(COLOR==null) COLOR="WHITE";
+            String initEntity=getEntityValue(ENTITY,null);
+            int initValue=0;
+            if((initEntity!=null)&&(Util.isInteger(initEntity))) 
+                initValue=Util.s_int(initEntity);
+            String maxEntity=getEntityValue(MAX,null);
+            int maxValue=100;
+            if((maxEntity!=null)&&(Util.isInteger(maxEntity))) 
+                maxValue=Util.s_int(maxEntity);
+            if(maxValue<initValue)  maxValue=(initValue<=0)?100:initValue;
+            if(initValue>0) initValue=(int)Math.round(Util.mul(100.0,initValue/maxValue));
+            synchronized(jscriptBuffer)
+            {
+                jscriptBuffer.append("createGauge('"+ENTITY+"','"+CAPTION+"','"+COLOR+"',"+initValue+","+maxValue+");");
+                String[] gauge=new String[2];
+                gauge[0]=ENTITY;
+                gauge[1]=MAX;
+                gauges.addElement(gauge);
+            }
+        }
+        else
+        if(E.name().equalsIgnoreCase("ATTLIST")||E.name().equalsIgnoreCase("ATT"))
+        {
+            String name=E.getAttributeValue("NAME");
+            String value=E.getAttributeValue("ATT");
+            if((name==null)||(value==null)) return;
+            MXPElement E2=(MXPElement)elements.get(name.toUpperCase().trim());
+            if(E2==null) return;
+            E2.setAttributes(value);
+        }
+        else
+        if(E.name().equalsIgnoreCase("SUPPORT"))
+        {
+            StringBuffer supportResponse=new StringBuffer("");
+            Vector V=E.getUserParms();
+            if((V==null)||(V.size()==0))
+            {
+                for(Enumeration e=elements.elements();e.hasMoreElements();)
+                {
+                    MXPElement E2=(MXPElement)e.nextElement();
+                    if(!E2.isBasicElement()) continue;
+                    Vector unsupportedParms=E2.getUnsupportedParms();
+                    if(!E2.isGenerallySupported())
+                        supportResponse.append(" -"+E2.name());
+                    else
+                    {
+                        supportResponse.append(" +"+E2.name());
+                        if(unsupportedParms.size()>0)
+                        {
+                            for(int x=0;x<unsupportedParms.size();x++)
+                                supportResponse.append(" -"+E2.name()+"."+((String)unsupportedParms.elementAt(x)));
+                        }
+                    }
+                }
+            }
+            else
+            for(int v=0;v<V.size();v++)
+            {
+                String request=((String)V.elementAt(v)).trim().toUpperCase();
+                if(request.startsWith("\"")) request=request.substring(1).trim();
+                if(request.endsWith("\"")) request=request.substring(0,request.length()-1).trim();
+                if(request.startsWith("\'")) request=request.substring(1).trim();
+                if(request.endsWith("\'")) request=request.substring(0,request.length()-1).trim();
+                int x=request.indexOf(".");
+                String tag=request;
+                String parm="";
+                if(x>0)
+                {
+                    tag=request.substring(0,x).trim();;
+                    parm=request.substring(x+1).trim();
+                }
+                MXPElement RE=(MXPElement)elements.get(tag);
+                if((RE==null)
+                ||(!RE.isGenerallySupported()))
+                {
+                    if((parm.length()>0)&&(!parm.equals("*")))
+                        supportResponse.append(" -"+tag+"."+parm);
+                    else
+                        supportResponse.append(" -"+tag);
+                    continue;
+                }
+                if(parm.length()==0)
+                {
+                    supportResponse.append(" +"+tag);
+                    continue;
+                }
+                Vector unsupportedParms=RE.getUnsupportedParms();
+                Vector allAttributes=RE.getParsedAttributes();
+                if(parm.equals("*"))
+                {
+                    for(int a=0;a<allAttributes.size();a++)
+                    {
+                        String att=(String)allAttributes.elementAt(a);
+                        if(!unsupportedParms.contains(att))
+                            supportResponse.append(" +"+tag+"."+att);
+                    }
+                    continue;
+                }
+                if((unsupportedParms.contains(parm))
+                ||(!allAttributes.contains(parm)))
+                    supportResponse.append(" -"+tag+"."+parm);
+                else
+                    supportResponse.append(" +"+tag+"."+parm);
+            }
+            responses.append("\033[1z<SUPPORTS"+supportResponse.toString()+">\n");
+        }
+        else
+        if(E.name().equals("TAG"))
+        {
+            addElement(new MXPElement("TAG","","INDEX WINDOWNAME FORE BACK GAG ENABLE DISABLE","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND));
+            //String window=E.getAttributeValue("WINDOWNAME");
+            String index=E.getAttributeValue("INDEX");
+            if(!Util.isNumber(index)) return;
+            int number=Util.s_int(index);
+            if((number<20)||(number>99)) return;
+            String foreColor=E.getAttributeValue("FORE");
+            if(foreColor==null) foreColor="";
+            String backColor=E.getAttributeValue("BACK");
+            if(backColor==null) backColor="";
+            String gag=E.getAttributeValue("GAG");
+            String enable=E.getAttributeValue("ENABLE");
+            String disable=E.getAttributeValue("DISABLE");
+            StringBuffer parms=new StringBuffer("");
+            if((foreColor.length()>0)||(backColor.length()>0))
+            {
+                parms.append("<FONT ");
+                if(foreColor.length()>0) parms.append(" COLOR="+foreColor);
+                if(backColor.length()>0) parms.append(" BACK="+backColor);
+                parms.append(">");
+            }
+            MXPElement L=(MXPElement)tags.get(new Integer(number));
+            if(L==null) return;
+            int newBitmap=L.getBitmap();
+            if(gag!=null) 
+                newBitmap|=MXPElement.BIT_EATTEXT;
+            else
+            if(disable!=null)
+                newBitmap|=MXPElement.BIT_DISABLED;
+            else
+            if(L.isDisabled()&&(enable!=null))
+                newBitmap-=MXPElement.BIT_DISABLED;
+            L.setBitmap(newBitmap);
+            if(parms.length()>0)
+            {
+                String definition=Util.stripBadHTMLTags(L.getDefinition());
+                L.setDefinition(definition+parms.toString());
+            }
+            return;
+        }
+    }
+
+    public String getEntityValue(String tag, MXPElement currentE)
+    {
+        String val=null;
+        if(tag.equalsIgnoreCase("lcc")) val="color: "+lastForeground+"; background-color: "+lastBackground;
+        if(val==null) val=(currentE!=null)?currentE.getAttributeValue(tag):null;
+        if((val==null)&&(currentE!=null)) val=currentE.getAttributeValue(tag.toLowerCase());
+        if((val==null)&&(currentE!=null)) val=currentE.getAttributeValue(tag.toUpperCase());
+        if(val==null)
+            for(int x=openElements.size()-1;x>=0;x--)
+            {
+                MXPElement E=(MXPElement)openElements.elementAt(x);
+                val=E.getAttributeValue(tag);
+                if(val!=null) break;
+            }
+        if(val==null)
+            for(int x=openElements.size()-1;x>=0;x--)
+            {
+                MXPElement E=(MXPElement)openElements.elementAt(x);
+                val=E.getAttributeValue(tag.toLowerCase());
+                if(val!=null) break;
+            }
+        if(val==null)
+            for(int x=openElements.size()-1;x>=0;x--)
+            {
+                MXPElement E=(MXPElement)openElements.elementAt(x);
+                val=E.getAttributeValue(tag.toUpperCase());
+                if(val!=null) break;
+            }
+        if(val==null)
+        {
+            MXPEntity N=(MXPEntity)entities.get(tag);
+            if(N==null) N=(MXPEntity)entities.get(tag.toLowerCase());
+            if(N==null) N=(MXPEntity)entities.get(tag.toUpperCase());
+            if(N!=null) val=N.getDefinition();
+        }
+        return val;
+    }
+
+    
+    public void modifyEntity(String name, String value)
+    {
+        name=name.toLowerCase();
+        MXPEntity X=(MXPEntity)entities.get(name);
+        if(X==null) 
+        {
+            X=new MXPEntity(name,value);
+            entities.put(name,X);
+        }
+        else
+        {
+            if(X.getDefinition().equalsIgnoreCase(value))
+                return;
+            X.setDefinition(value);
+        }
+        String[] gauge=null;
+        for(int g=0;g<gauges.size();g++)
+        {
+            gauge=(String[])gauges.elementAt(g);
+            if((gauge[0].equalsIgnoreCase(name))
+            ||(gauge[1].equalsIgnoreCase(name)))
+            {
+                String initEntity=getEntityValue(gauge[0],null);
+                int initValue=0;
+                if((initEntity!=null)&&(Util.isInteger(initEntity))) 
+                    initValue=Util.s_int(initEntity);
+                String maxEntity=getEntityValue(gauge[1],null);
+                int maxValue=100;
+                if((maxEntity!=null)&&(Util.isInteger(maxEntity))) 
+                    maxValue=Util.s_int(maxEntity);
+                if(maxValue<initValue)  maxValue=(initValue<=0)?100:initValue;
+                if(initValue>0) 
+                    initValue=(int)Math.round(Util.mul(100.0,Util.div(initValue,maxValue)));
+                synchronized(jscriptBuffer)
+                {
+                    jscriptBuffer.append("modifyGauge('"+gauge[0]+"',"+initValue+","+maxValue+");");
+                }
+            }
+        }
+        
     }
     
     public int processEntity(StringBuffer buf, int i, MXPElement currentE, boolean convertIfNecessary)
@@ -681,40 +994,8 @@ public class MXP
             return 0;
         }
         String tag=content.toString().trim();
-        String val=null;
-        if(tag.equalsIgnoreCase("lcc")) val="color: "+lastForeground+"; background-color: "+lastBackground;
-        if(val==null) val=(currentE!=null)?currentE.getAttributeValue(tag):null;
-        if((val==null)&&(currentE!=null)) val=currentE.getAttributeValue(tag.toLowerCase());
-        if((val==null)&&(currentE!=null)) val=currentE.getAttributeValue(tag.toUpperCase());
-        if(val==null)
-            for(int x=openElements.size()-1;x>=0;x--)
-            {
-                MXPElement E=(MXPElement)openElements.elementAt(x);
-                val=E.getAttributeValue(tag);
-                if(val!=null) break;
-            }
-        if(val==null)
-            for(int x=openElements.size()-1;x>=0;x--)
-            {
-                MXPElement E=(MXPElement)openElements.elementAt(x);
-                val=E.getAttributeValue(tag.toLowerCase());
-                if(val!=null) break;
-            }
-        if(val==null)
-            for(int x=openElements.size()-1;x>=0;x--)
-            {
-                MXPElement E=(MXPElement)openElements.elementAt(x);
-                val=E.getAttributeValue(tag.toUpperCase());
-                if(val!=null) break;
-            }
+        String val=getEntityValue(tag,currentE);
         String oldValue=buf.substring(oldI,i+1);
-        if(val==null)
-        {
-            MXPEntity N=(MXPEntity)entities.get(tag);
-            if(N==null) N=(MXPEntity)entities.get(tag.toLowerCase());
-            if(N==null) N=(MXPEntity)entities.get(tag.toUpperCase());
-            if(N!=null) val=N.getDefinition();
-        }
         if(entityDebug) System.out.println("ent="+tag+", val="+val);
         buf.delete(oldI,i+1);
         if(val!=null)

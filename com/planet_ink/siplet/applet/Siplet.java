@@ -25,7 +25,7 @@ public class Siplet extends Applet
     public final static boolean debugDataOut=false;
     
     public final static long serialVersionUID=6;
-    public static final float VERSION_MAJOR=(float)1.0;
+    public static final float VERSION_MAJOR=(float)2.0;
     public static final long  VERSION_MINOR=0;
     protected StringBuffer buf=new StringBuffer("");
     protected Socket sock=null;
@@ -34,7 +34,9 @@ public class Siplet extends Applet
     protected boolean connected=false;
     protected TelnetFilter Telnet=new TelnetFilter(this);
     
-    StringBuffer buffer;
+    protected StringBuffer buffer;
+    protected int sillyCounter=0;
+    
 
     public void init() 
     {
@@ -124,19 +126,32 @@ public class Siplet extends Applet
         {
             try
             {
-                out.writeBytes(data+"\n\r");
-                out.flush();
+                if(sock.isClosed()) 
+                    disconnectFromURL();
+                else
+                if(!sock.isConnected())
+                    disconnectFromURL();
+                else
+                {
+                    out.writeBytes(data+"\n\r");
+                    out.flush();
+                }
             }
             catch(IOException e)
             {
-                //append(e.getMessage());
+                disconnectFromURL();
             }
         }
     }
+    public String getJScriptCommands()
+    { return Telnet.getEnquedJScript();}
+    
     public String getURLData()
     {
         synchronized(buf)
         {
+            String s=Telnet.getEnquedResponses();
+            if(s.length()>0)  sendData(s);
             int endAt=Telnet.HTMLFilter(buf);
             String data=null;
             if(buf.length()==0) return "";
@@ -165,21 +180,20 @@ public class Siplet extends Applet
     {
         try
         {
-            while(connected&&in.ready())
+            while(connected
+            &&in.ready()
+            &&(!sock.isClosed())
+            &&(sock.isConnected()))
             {
                 try
                 {
                     char c=(char)in.read();
-                    if(c>0)
+                    buf.append(c);
+                    if(c==65535)
                     {
-                        buf.append(c);
-                        if(c==65535)
-                        {
-                            disconnectFromURL();
-                            return;
-                        }
+                        disconnectFromURL();
+                        return;
                     }
-                    
                 }
                 catch(java.io.InterruptedIOException e)
                 {
@@ -192,6 +206,12 @@ public class Siplet extends Applet
                     return;
                 }
             }
+            if(sock.isClosed()) 
+                disconnectFromURL();
+            else
+            if(!sock.isConnected())
+                disconnectFromURL();
+            else
             if(buf.length()>0)
                 Telnet.TelenetFilter(buf,out);
 

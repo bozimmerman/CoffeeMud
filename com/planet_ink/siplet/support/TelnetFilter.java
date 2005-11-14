@@ -91,6 +91,7 @@ public class TelnetFilter
     public static String getSipletVersion(){ return Siplet.VERSION_MAJOR+"."+Siplet.VERSION_MINOR;}
     
     public String getEnquedResponses(){return MXPsupport()?mxpModule.getAnyResponses():"";}
+    public String getEnquedJScript(){return MXPsupport()?mxpModule.getAnyJScript():"";}
     public boolean MSPsupport(){return MSPsupport;}
     public void setMSPSupport(boolean truefalse){MSPsupport=truefalse;}
     public boolean MXPsupport(){return MXPsupport;}

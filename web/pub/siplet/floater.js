@@ -16,6 +16,9 @@ var botBound=2000
 function iecompattest(){
 return (!window.opera && document.compatMode && document.compatMode!="BackCompat")? document.documentElement : document.body
 }
+function iecontenttest(){
+return (!window.opera && document.compatMode && document.compatMode!="BackCompat")? document.getElementById(wname+'content').document.documentElement : document.getElementById(wname+'content').document.body
+}
 
 function drag_drop(e){
 if (ie5&&dragapproved&&event.button==1){
@@ -77,6 +80,12 @@ document.getElementById(wname).style.left=ns6? window.pageXOffset+"px" : iecompa
 document.getElementById(wname).style.top=ns6? window.pageYOffset+"px" : iecompattest().scrollTop+"px"
 }
 
+function reposition(wname)
+{
+    maximize(wname);
+    maximize(wname);
+}
+
 function closeit(wname){
 document.getElementById(wname).style.display="none"
 }
@@ -91,10 +100,16 @@ function getFrameHTML(wname)
 {
     var addBackToDivForDragDrop='onMousedown="initializedrag(event,\''+wname+'\')" onMouseup="stopdrag(\''+wname+'\')"';
     var s='<div id="'+wname+'" style="position:absolute;background-color:#EBEBEB;cursor:hand;left:0px;top:0px;display:none"  onSelectStart="return false">';
-    s+='<div align="right" style="background-color:yellow">';
+    s+='<div id="'+wname+'bar" style="background-color:red">';
+    s+='<table width=100% border=0 cellspacing=0 cellpadding=0><tr><td width=80% align=left>'
+    s+='<div id="'+wname+'namer" style="background-color:red"></div>';
+    s+='</td><td width=20% align=right>'
     s+='<img src="max.gif" id="'+wname+'max" onClick="maximize(\''+wname+'\')">';
+    s+='</td></tr></table>'
     //s+='<img src="close.gif" onClick="closeit(\''+wname+'\')">';
-    s+='</div><div id="'+wname+'content" style="height:100%">';
+    s+='</div>';
+    s+='<div id="'+wname+'content" style="height:100%">';
+    s+='<div id="'+wname+'extracontent"></div>';
     s+='<iframe id="'+wname+'frame" src="" width=100% height=100%></iframe>';
     s+='</div>';
     s+='</div>';
