@@ -502,6 +502,10 @@ public class FrontLogin extends StdCommand
 				mob.setBitmap(MOB.ATT_AUTOEXITS|MOB.ATT_AUTOWEATHER);
 				if(mob.session().confirm("\n\rDo you want ANSI colors (Y/n)?","Y"))
 					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_ANSI));
+                if(mob.session().clientTelnetMode(Session.TELNET_MSP))
+                    mob.setBitmap(mob.getBitmap()|MOB.ATT_SOUND);
+                if(mob.session().clientTelnetMode(Session.TELNET_MXP))
+                    mob.setBitmap(mob.getBitmap()|MOB.ATT_MXP);
 
 				int themeCode=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MUDTHEME);
 				int theme=Area.THEME_FANTASY;
@@ -766,18 +770,14 @@ public class FrontLogin extends StdCommand
 
 				CoffeeUtensils.outfit(mob,mob.baseCharStats().getMyRace().outfit());
 
-				if(Dice.rollPercentage()>50)
-				{
-			        Ability A=CMClass.getAbility("Allergies");
-			        if(A!=null) A.invoke(mob,mob,true,0);
-				}
+		        Ability A=CMClass.getAbility("Allergies");
+		        if(A!=null) A.invoke(mob,mob,true,0);
 
 				mob.recoverCharStats();
 				mob.recoverEnvStats();
 				mob.recoverMaxState();
 				mob.resetToMaxState();
 
-				
 				Faction F=null;
 				Vector mine=null;
 				int defaultValue=0;
@@ -858,6 +858,7 @@ public class FrontLogin extends StdCommand
                 }
                 else
                 {
+                    reloadTerminal(mob);
     				mob.bringToLife(mob.getStartRoom(),true);
     				mob.location().showOthers(mob,mob.location(),CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,"<S-NAME> appears!");
                 }
