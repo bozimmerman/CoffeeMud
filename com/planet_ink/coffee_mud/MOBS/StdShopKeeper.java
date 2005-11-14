@@ -1310,7 +1310,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						}
 	
 						String c="^x["+Util.padRight("Cost",4+csize)+"] "+Util.padRight("Product",totalWidth-csize);
-						str.append(c+((totalCols>1)?c:"")+"^.^N^<!ENTITY Shopkeeper \""+name()+"\"^>\n\r");
+						str.append(c+((totalCols>1)?c:"")+"^.^N^<!ENTITY shopkeeper \""+name()+"\"^>\n\r");
 						int colNum=0;
 						int rowNum=0;
 						String col=null;
