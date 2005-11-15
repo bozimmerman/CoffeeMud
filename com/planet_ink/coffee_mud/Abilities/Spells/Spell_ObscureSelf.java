@@ -164,7 +164,7 @@ public class Spell_ObscureSelf extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"^S<T-NAME> become(s) obscure!":"^S<S-NAME> whisper(s) to <S-HIS-HERSELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"^S<T-NAME> become(s) obscure!":"^S<S-NAME> whisper(s) to <S-HIM-HERSELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -172,7 +172,7 @@ public class Spell_ObscureSelf extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> whisper(s) to <S-HIS-HERSELF>, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> whisper(s) to <S-HIM-HERSELF>, but nothing happens.");
 		// return whether it worked
 		return success;
 	}

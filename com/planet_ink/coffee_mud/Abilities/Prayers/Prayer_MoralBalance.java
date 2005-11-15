@@ -35,8 +35,11 @@ public class Prayer_MoralBalance extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
+        
 		boolean success=profficiencyCheck(mob,0,auto);
-		FullMsg msg2=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,"<T-NAME> does not seem to like <S-NAME> messing with <T-HIS-HER> head.");
+        FullMsg msg2=null;
+        if((mob!=target)&&(!mob.getGroupMembers(new HashSet()).contains(target)))
+            msg2=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,"<T-NAME> does not seem to like <S-NAME> messing with <T-HIS-HER> head.");
 
 		if((success)&&(Factions.getFaction(Factions.AlignID())!=null))
 		{
@@ -45,35 +48,24 @@ public class Prayer_MoralBalance extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"<T-NAME> feel(s) completely different about the world.":"^S<S-NAME> "+prayWord(mob)+" to bring balance to <T-NAMESELF>!^?"));
-			if(mob.location().okMessage(mob,msg))
+			if((mob.location().okMessage(mob,msg))
+            &&((msg2==null)||(mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
-				if(msg.value()<=0)
+                if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					target.tell("Your views on the world suddenly change.");
                     Faction F=Factions.getFaction(Factions.AlignID());
                     if(F!=null)
 	                    target.addFaction(Factions.AlignID(),(int)Math.round(Util.div((F.maximum-F.minimum)-target.fetchFaction(Factions.AlignID()),2)));
-
-					if(!target.isInCombat() && target.isMonster())
-					{
-					   if(mob.location().okMessage(mob,msg2))
-					   {
-					      mob.location().send(mob,msg2);
-					   }
-					}
 				}
+                if(msg2!=null) mob.location().send(mob,msg2);
 			}
 		}
 		else
 		{
-			if(!target.isInCombat() && target.isMonster())
-			{
-			   if(mob.location().okMessage(mob,msg2))
-			   {
-			      mob.location().send(mob,msg2);
-			   }
-			}
+            if((msg2!=null)&&(mob.location().okMessage(mob,msg2)))
+                mob.location().send(mob,msg2);
 			return beneficialWordsFizzle(mob,target,"<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+", but nothing happens.");
 		}
 

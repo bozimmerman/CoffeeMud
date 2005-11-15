@@ -128,7 +128,7 @@ public class Email extends StdCommand
                     mob.tell("There is no player called '"+name+"' to send email to.  If you were trying to read your mail, try EMAIL BOX.  If you were trying to change your email address, just enter EMAIL without any parameters.");
                     return false;
                 }
-                if(Util.bset(M.getBitmap(),MOB.ATT_AUTOFORWARD))
+                if(!Util.bset(M.getBitmap(),MOB.ATT_AUTOFORWARD))
                 {
                     if(!mob.session().confirm("Send email to '"+M.Name()+"' (Y/n)?","Y"))
                         return false;

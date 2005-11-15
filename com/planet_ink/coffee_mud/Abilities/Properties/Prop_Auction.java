@@ -28,19 +28,19 @@ public class Prop_Auction extends Property
 	public String accountForYourself(){ return "";	}
 	public Environmental auctioning=null;
 	public MOB highBidder=null;
-	String currency="";
-	public double highBid=Integer.MIN_VALUE;
-	public double bid=Integer.MIN_VALUE;
-	public int state=-1;
-	public long tickDown=0;
-	public long auctionStart=0;
+	private String currency="";
+    private double highBid=Integer.MIN_VALUE;
+    private double bid=Integer.MIN_VALUE;
+    private int state=-1;
+    private long tickDown=0;
+    private long auctionStart=0;
 
-	public static final int STATE_START=0;
-	public static final int STATE_RUNOUT=1;
-	public static final int STATE_ONCE=2;
-	public static final int STATE_TWICE=3;
-	public static final int STATE_THREE=4;
-	public static final int STATE_CLOSED=5;
+    private static final int STATE_START=0;
+    private static final int STATE_RUNOUT=1;
+    private static final int STATE_ONCE=2;
+    private static final int STATE_TWICE=3;
+    private static final int STATE_THREE=4;
+    private static final int STATE_CLOSED=5;
 
 	public void setAbilityCode(int code)
 	{

@@ -186,6 +186,20 @@ public class Quests implements Cloneable, Quest
 					cmd=((String)p.elementAt(0)).toUpperCase();
 				}
 
+                if(cmd.equals("RESET"))
+                {
+                    if((A==null)&&(R==null))
+                    {
+                        Log.errOut("Quests","Quest '"+name()+"', no resettable room or area set.");
+                        error=true; 
+                        break;
+                    }
+                    if(R==null)
+                        CoffeeUtensils.resetArea(A);
+                    else
+                        CoffeeUtensils.resetRoom(R);
+                }
+                else
 				if(cmd.equals("SET"))
 				{
 					if(p.size()<2)
@@ -508,20 +522,6 @@ public class Quests implements Cloneable, Quest
 							error=true; break;
 						}
 						A=R.getArea();
-					}
-					else
-					if(cmd.equals("RESET"))
-					{
-                        if((A==null)&&(R==null))
-                        {
-                            Log.errOut("Quests","Quest '"+name()+"', no resettable room or area set.");
-                            error=true; 
-                            break;
-                        }
-                        if(R==null)
-                            CoffeeUtensils.resetArea(A);
-                        else
-                            CoffeeUtensils.resetRoom(R);
 					}
                     else
                     if(cmd.equals("ROOM"))

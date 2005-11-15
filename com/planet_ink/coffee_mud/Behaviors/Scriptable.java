@@ -4829,12 +4829,49 @@ public class Scriptable extends StdBehavior
                 return varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim());
 			case 7: // mpechoat
 			{
-				Environmental newTarget=getArgumentMOB(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
-				if((newTarget!=null)&&(newTarget instanceof MOB)&&(lastKnownLocation!=null))
-				{
-					s=Util.getPastBit(s,1).trim();
-					lastKnownLocation.showSource((MOB)newTarget,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
-				}
+                String parm=Util.getCleanBit(s,1);
+                Environmental newTarget=getArgumentMOB(parm,source,monster,target,primaryItem,secondaryItem,msg);
+                if((newTarget!=null)&&(newTarget instanceof MOB)&&(lastKnownLocation!=null))
+                {
+                    s=Util.getPastBit(s,1).trim();
+                    lastKnownLocation.showSource((MOB)newTarget,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
+                }
+                else
+                if(parm.equalsIgnoreCase("world"))
+                {
+                    lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
+                    for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+                    {
+                        Room R=(Room)e.nextElement();
+                        if(R.numInhabitants()>0)
+                            lastKnownLocation.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
+                    }
+                }
+                else
+                if(parm.equalsIgnoreCase("area")&&(lastKnownLocation!=null))
+                {
+                    lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
+                    for(Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
+                    {
+                        Room R=(Room)e.nextElement();
+                        if(R.numInhabitants()>0)
+                            lastKnownLocation.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
+                    }
+                }
+                else
+                if(CMMap.getRoom(parm)!=null)
+                    CMMap.getRoom(parm).show(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
+                else
+                if(CMMap.findArea(parm)!=null)
+                {
+                    lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
+                    for(Enumeration e=CMMap.findArea(parm).getMetroMap();e.hasMoreElements();)
+                    {
+                        Room R=(Room)e.nextElement();
+                        if(R.numInhabitants()>0)
+                            lastKnownLocation.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
+                    }
+                }
 				break;
 			}
 			case 8: // mpechoaround

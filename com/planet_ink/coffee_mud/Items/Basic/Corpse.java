@@ -128,7 +128,12 @@ public class Corpse extends GenContainer implements DeadBody
         {
             if(CMSecurity.isAllowed(msg.source(),(Room)myHost,"CMDITEMS"))
                 return true;
-            if(msg.source().isMonster())
+            MOB ultimateFollowing=msg.source().amFollowing();
+            while((ultimateFollowing!=null)&&(ultimateFollowing.amFollowing()!=null))
+                ultimateFollowing=ultimateFollowing.amFollowing();
+                
+            if((msg.source().isMonster())
+            &&((ultimateFollowing==null)||(ultimateFollowing.isMonster())))
                 return true;
             if(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).equalsIgnoreCase("ANY"))
                 return true;

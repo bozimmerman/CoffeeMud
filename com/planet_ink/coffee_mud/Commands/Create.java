@@ -542,14 +542,16 @@ public class Create extends BaseGenerics
 				String script=Util.combine(commands,2);
 				Quest Q=new Quests();
 				Q.setScript(script);
-				if((Q.name().length()==0)||(Q.duration()<0))
+				if((Q.name().trim().length()==0)||(Q.duration()<0))
 					mob.tell("You must specify a VALID quest string.  This one contained errors.  Try AHELP QUESTS.");
 				else
-				if(Quests.fetchQuest(Q.name())!=null)
-					mob.tell("That quest is already loaded.  Try list quests.");
+				if((Quests.fetchQuest(Q.name())!=null)
+                &&((mob.isMonster())
+                    ||(!mob.session().confirm("That quest is already loaded.  Load a duplicate (N/y)? ","N"))))
+                    return false;
 				else
 				{
-					mob.tell("Quest added.");
+					mob.tell("Quest '"+Q.name()+"' added.");
 					Quests.addQuest(Q);
 				}
 			}

@@ -595,7 +595,7 @@ public class Cooking extends CraftingSkill
 					name=name.substring(0,name.length()-6);
 				name=name.trim();
 				int x=name.lastIndexOf(" ");
-				if(x>0)
+				if((x>0)&&(!name.substring(x+1).trim().equalsIgnoreCase("of")))
 					replaceName=name.substring(x+1);
 				else
 					replaceName=name;

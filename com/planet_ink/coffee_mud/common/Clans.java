@@ -433,6 +433,7 @@ public class Clans implements Clan, Tickable
 	public boolean updateClanPrivileges(MOB M)
 	{
 		boolean did=false;
+        if(M==null) return false;
 		if(M.getClanID().equals(ID())
 		&&(M.getClanRole()!=Clan.POS_APPLICANT))
 		{

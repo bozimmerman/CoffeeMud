@@ -85,7 +85,9 @@
 					@JournalMessageNext@
 					<LI><a href="javascript:Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@')">
 					<FONT COLOR=YELLOW>
-					@RequestParameter?JOURNALMESSAGE@
+					@AddRequestParameter?DISPLAYMSGNUM=@@RequestParameter?JOURNALMESSAGE@@ @
+					@AddRequestParameter?DISPLAYMSGNUM=++@
+					@RequestParameter?DISPLAYMSGNUM@
 					</FONT>
 					<FONT COLOR=WHITE>. @JournalInfo?SUBJECT@
 					</FONT>

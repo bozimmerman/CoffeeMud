@@ -37,6 +37,8 @@ public class Skill_RegionalAwareness extends StdAbility
     public char roomColor(Room room)
     {
         if(room==null) return ' ';
+        if(Util.bset(room.envStats().sensesMask(),EnvStats.SENSE_ROOMUNMAPPABLE))
+            return 'w';
         switch(room.domainType())
         {
         case Room.DOMAIN_OUTDOORS_CITY:return 'w';
@@ -59,6 +61,8 @@ public class Skill_RegionalAwareness extends StdAbility
 	public char roomChar(Room room)
 	{
         if(room==null) return ' ';
+        if(Util.bset(room.envStats().sensesMask(),EnvStats.SENSE_ROOMUNMAPPABLE))
+            return ' ';
 		switch(room.domainType())
 		{
 		case Room.DOMAIN_OUTDOORS_CITY:return '=';

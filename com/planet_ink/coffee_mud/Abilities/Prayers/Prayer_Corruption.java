@@ -51,7 +51,7 @@ public class Prayer_Corruption extends Prayer
 			&&((msg2==null)||(mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
-				if(msg.value()<=0)
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					target.tell("Evil, vile thoughts fill your head.");
 					int evilness=Dice.roll(10,adjustedLevel(mob,asLevel),0)*-1;
@@ -61,7 +61,11 @@ public class Prayer_Corruption extends Prayer
 			}
 		}
 		else
+        {
+            if((msg2!=null)&&(mob.location().okMessage(mob,msg2)))
+                mob.location().send(mob,msg2);
 			return beneficialWordsFizzle(mob,target,"<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+", but nothing happens.");
+        }
 
 		// return whether it worked
 		return success;

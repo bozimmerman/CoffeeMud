@@ -1018,12 +1018,13 @@ public class Modify extends BaseGenerics
 			else
 			{
 				String name=Util.combine(commands,2);
+                Quest Q=null;
                 if(Util.isInteger(name))
                 {
-                    Quest Q=Quests.fetchQuest(Util.s_int(name));
+                    Q=Quests.fetchQuest(Util.s_int(name));
                     if(Q!=null) name=Q.name();
                 }
-				Quest Q=Quests.fetchQuest(name);
+                if(Q==null) Q=Quests.fetchQuest(name);
 				if(Q==null)
 					mob.tell("Quest '"+name+"' is unknown.  Try list quests.");
 				else
