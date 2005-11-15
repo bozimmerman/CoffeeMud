@@ -21,10 +21,10 @@ public class MXPElement implements Cloneable
     private Vector parsedAttributes=null;
     private Hashtable attributeValues=null;
     private Hashtable alternativeAttributes=null;
+    private Vector userParms=new Vector();
     private boolean basicElement=true;
     
     private int bufInsert=-1;
-    private Vector userParms=new Vector();
     
     public MXPElement(String newName,
                       String theDefinition,
@@ -65,10 +65,15 @@ public class MXPElement implements Cloneable
     {
         try
         {
-            return (MXPElement)this.clone();
+            MXPElement E=(MXPElement)this.clone();
+            if(E.parsedAttributes!=null) E.parsedAttributes=(Vector)E.parsedAttributes.clone();
+            if(E.attributeValues!=null) E.attributeValues=(Hashtable)E.attributeValues.clone();
+            if(E.alternativeAttributes!=null) E.alternativeAttributes=(Hashtable)E.alternativeAttributes.clone();
+            if(E.userParms!=null) E.userParms=(Vector)E.userParms.clone();
+            return E;
         }
         catch(Exception e){};
-        return null;
+        return this;
     }
 
     public String name(){return name;}

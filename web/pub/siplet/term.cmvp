@@ -7,6 +7,11 @@
 <script language=JavaScript>
 var myname='dwindow'+top.term.currentWindow;
 var gauges=new Array();
+
+var limit=100000;
+var halflimit=limit/2;
+var tenthlimit=limit/10;
+
 function closeWindow()
 {
     var theapplet=document.getElementById("myApplet");
@@ -26,10 +31,17 @@ function addToWindow(s)
     {
         var thespan=document.getElementById("DISPLAYSPAN");
         var theend=document.getElementById("NODISPLAY");
-        if(thespan.innerHTML.length>200000)
+        if(thespan.innerHTML.length>(limit+halflimit))
         {
             var x=thespan.innerHTML;
-            while(x.length>150000)
+            var xcess=x.length-limit;
+            var y=x.indexOf('<BR>',xcess);
+            if((y<0)||(y>xcess+tenthlimit))
+                y=x.indexOf('<BR>',xcess/2);
+            if(y>=0)
+                x=x.substring(y+4);
+            else
+            while(x.length>limit)
             {
                 var y=x.indexOf('<BR>');
                 if(y<0) break;
