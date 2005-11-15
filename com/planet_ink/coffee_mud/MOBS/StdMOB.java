@@ -2017,10 +2017,10 @@ public class StdMOB implements MOB
                 myDescription.append(relativeCharStatTest(C,"dumber","smarter",CharStats.INTELLIGENCE));
                 testMOB.destroy();
             }
-            myDescription.append(healthText()+"\n\r\n\r");
-            myDescription.append(description()+"\n\r\n\r");
             if(!viewer.isMonster())
                 myDescription.append(CommonStrings.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
+            myDescription.append(healthText()+"\n\r\n\r");
+            myDescription.append(description()+"\n\r\n\r");
             
             StringBuffer eq=CommonMsgs.getEquipment(viewer,this);
             if(eq.length() > 0)
@@ -2196,10 +2196,12 @@ public class StdMOB implements MOB
 						MUDFight.justDie(killer,this);
 						if((!isMonster())&&(soulMate()==null)&&(killer!=this)&&(!killer.isMonster()))
 							CoffeeTables.bump(this,CoffeeTables.STAT_PKDEATHS);
-                        if((getClanID().length()>0)&&(killer.getClanID().length()>0)&&(!getClanID().equals(killer.getClanID())))
+                        if((getClanID().length()>0)
+                        &&(killer.getClanID().length()>0)
+                        &&(!getClanID().equals(killer.getClanID())))
                         {
                             Clan C=Clans.getClan(killer.getClanID());
-                            C.recordClanKill();
+                            if(C!=null) C.recordClanKill();
                         }
 					}
 					else

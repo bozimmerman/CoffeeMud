@@ -94,15 +94,15 @@ public class MXP
         addElement(new MXPElement("RELOCATE","","URL PORT","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND|MXPElement.BIT_NOTSUPPORTED));
         addElement(new MXPElement("USER","","","",MXPElement.BIT_COMMAND|MXPElement.BIT_NOTSUPPORTED));
         addElement(new MXPElement("PASSWORD","","","",MXPElement.BIT_COMMAND|MXPElement.BIT_NOTSUPPORTED));
-        addElement(new MXPElement("IMAGE","<IMG SRC=&src;&fname; HEIGHT=&h; WIDTH=&w; ALIGN=&align;>","FNAME URL T H W HSPACE VSPACE ALIGN ISMAP","",MXPElement.BIT_COMMAND,"HSPACE VSPACE ISMAP"));
+        addElement(new MXPElement("IMAGE","<IMG SRC=&url;&fname; HEIGHT=&h; WIDTH=&w; ALIGN=&align;>","FNAME URL T H W HSPACE VSPACE ALIGN ISMAP","",MXPElement.BIT_COMMAND,"HSPACE VSPACE ISMAP"));
         addElement(new MXPElement("IMG","<IMG SRC=&src; HEIGHT=&height; WIDTH=&width; ALIGN=&align;>","SRC HEIGHT=70 WIDTH=70 ALIGN","",MXPElement.BIT_COMMAND));
         addElement(new MXPElement("FILTER","","SRC DEST NAME","",MXPElement.BIT_COMMAND|MXPElement.BIT_NOTSUPPORTED));
         addElement(new MXPElement("SCRIPT","","","",MXPElement.BIT_COMMAND|MXPElement.BIT_NOTSUPPORTED));
-        addElement(new MXPElement("ENTITY","","NAME VALUE DESC PRIVATE PUBLISH DELETE ADD","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND,"DESC PRIVATE PUBLISH ADD")); // special done
-        addElement(new MXPElement("EN","","NAME VALUE DESC PRIVATE PUBLISH DELETE ADD","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND,"DESC PRIVATE PUBLISH ADD")); // special done
+        addElement(new MXPElement("ENTITY","","NAME VALUE DESC PRIVATE PUBLISH DELETE ADD","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND,"PRIVATE PUBLISH ADD")); // special done
+        addElement(new MXPElement("EN","","NAME VALUE DESC PRIVATE PUBLISH DELETE ADD","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND,"PRIVATE PUBLISH ADD")); // special done
         addElement(new MXPElement("TAG","","INDEX WINDOWNAME FORE BACK GAG ENABLE DISABLE","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND,"WINDOWNAME"));
-        addElement(new MXPElement("VAR","","NAME DESC PRIVATE PUBLISH DELETE ADD REMOVE","",MXPElement.BIT_SPECIAL,"DESC PRIVATE PUBLISH ADD REMOVE")); // special done
-        addElement(new MXPElement("V","","NAME DESC PRIVATE PUBLISH DELETE ADD REMOVE","",MXPElement.BIT_SPECIAL,"DESC PRIVATE PUBLISH ADD REMOVE")); // special done
+        addElement(new MXPElement("VAR","","NAME DESC PRIVATE PUBLISH DELETE ADD REMOVE","",MXPElement.BIT_SPECIAL,"PRIVATE PUBLISH ADD REMOVE")); // special done
+        addElement(new MXPElement("V","","NAME DESC PRIVATE PUBLISH DELETE ADD REMOVE","",MXPElement.BIT_SPECIAL,"PRIVATE PUBLISH ADD REMOVE")); // special done
         addElement(new MXPElement("ELEMENT","","NAME DEFINITION ATT TAG FLAG OPEN DELETE EMPTY","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND)); // special done
         addElement(new MXPElement("EL","","NAME DEFINITION ATT TAG FLAG OPEN DELETE EMPTY","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND)); // special done
         addElement(new MXPElement("ATTLIST","","NAME ATT","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND));
