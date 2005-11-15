@@ -68,9 +68,11 @@ public class Inventory extends StdCommand
 				}
 			}
 		}
-		if((viewItems.size()>0)&&(!foundAndSeen))
+		if(((viewItems.size()>0)||(moneyItems.size()>0))
+        &&(!foundAndSeen))
         {
 			viewItems.clear();
+            moneyItems.clear();
             foundButUnseen=true;
         }
 		else
@@ -91,6 +93,7 @@ public class Inventory extends StdCommand
 				}
 			}
 		}
+        
 		if((viewItems.size()==0)&&(moneyItems.size()==0))
 		{
 			if((mask!=null)&&(mask.trim().length()>0))
