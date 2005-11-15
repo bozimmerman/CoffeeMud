@@ -71,16 +71,26 @@ public class Statement implements java.sql.Statement
          sql=split(sql,token);
 
          String relationName=token[0];
-         String conditionVar=null,conditionValue=null,orderVar=null;
+         String conditionVar=null,conditionValue=null,orderVar=null,comparitor=null;
 
          if (sql.length()>0) {
             sql=split(sql,token);
             if (token[0].equalsIgnoreCase("where")) {
                sql=split(sql,token);
-               int e=token[0].indexOf('=');
-               if (e<0) throw new java.sql.SQLException("no equal sign");
+               int e=token[0].indexOf(">=");
+               if(e<0)e=token[0].indexOf("<=");
+               if(e<0)e=token[0].indexOf("<>");
+               if(e<0)e=token[0].indexOf("=");
+               if(e<0)e=token[0].indexOf("<");
+               if(e<0)e=token[0].indexOf(">");
+               if (e<0) throw new java.sql.SQLException("no comparitor");
+               int len=1;
+               if((e<token[0].length()-1)
+               &&((token[0].charAt(e+1)=='=')||(token[0].charAt(e+1)=='>')))
+                   len=2;
+               comparitor=token[0].substring(e,e+len);
                conditionVar=token[0].substring(0,e);
-               conditionValue=token[0].substring(e+1);
+               conditionValue=token[0].substring(e+len);
                if ((conditionValue.length()>0)&&(conditionValue.charAt(0)=='\''))
                   conditionValue=conditionValue.substring(1,conditionValue.length()-1);
 
@@ -97,7 +107,7 @@ public class Statement implements java.sql.Statement
             if (sql.length()>0) throw new java.sql.SQLException("extra garbage");
          }
 
-         return connection.getBackend().constructScan(this,relationName,conditionVar,conditionValue,orderVar);
+         return connection.getBackend().constructScan(this,relationName,conditionVar,conditionValue,orderVar,comparitor);
       } catch (java.sql.SQLException e) {
          log("unsupported SQL in executeQuery: "+sql);
          throw e;

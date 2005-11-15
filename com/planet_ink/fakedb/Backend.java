@@ -423,7 +423,13 @@ class Backend
 	  }
    }
    
-   java.sql.ResultSet constructScan(Statement s,String relationName,String conditionVar,String conditionValue,String orderVar) throws java.sql.SQLException
+   java.sql.ResultSet constructScan(Statement s,
+                                    String relationName,
+                                    String conditionVar,
+                                    String conditionValue,
+                                    String orderVar,
+                                    String comparitor) 
+   throws java.sql.SQLException
    {
       Relation relation=(Relation)relations.get(relationName);
       if (relation==null) throw new java.sql.SQLException("unknown relation "+relationName);
@@ -443,7 +449,7 @@ class Backend
          if ((relation.keys.length==0)||((relation.keys[0]!=index)&&((conditionVar==null)||(conditionIndex>=0)||(relation.keys.length<2)||(relation.keys[1]!=index))))
             throw new java.sql.SQLException("order by "+orderVar+" not supported");
       }
-      return new ResultSet(s,relation,conditionIndex,conditionValue);
+      return new ResultSet(s,relation,conditionIndex,conditionValue,comparitor);
    }
    void insertValues(String relationName,String[] attributes,String[] attributeValues) throws java.sql.SQLException
    {

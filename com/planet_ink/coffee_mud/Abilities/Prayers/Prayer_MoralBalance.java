@@ -52,7 +52,7 @@ public class Prayer_MoralBalance extends Prayer
             &&((msg2==null)||(mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
-                if((msg.value()<=0)&&(msg2.value()<=0))
+                if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
 				{
 					target.tell("Your views on the world suddenly change.");
                     Faction F=Factions.getFaction(Factions.AlignID());
