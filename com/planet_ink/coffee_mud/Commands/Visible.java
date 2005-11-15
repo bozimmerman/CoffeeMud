@@ -47,6 +47,7 @@ public class Visible extends StdCommand
                 {}
             }
         }
+        newMOB.destroy();
         return offenders;
     }
 

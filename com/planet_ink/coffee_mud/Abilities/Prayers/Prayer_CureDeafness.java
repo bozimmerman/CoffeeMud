@@ -47,6 +47,7 @@ public class Prayer_CureDeafness extends Prayer
 						offenders.addElement(A);
 			}
 		}
+        newMOB.destroy();
 		return offenders;
 	}
 

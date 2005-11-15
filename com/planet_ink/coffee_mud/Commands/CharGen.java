@@ -175,6 +175,7 @@ public class CharGen extends StdCommand
 					}
 					else
 						addHimIn(avgMob,mob2);
+                    if(avgMob!=mob2) mob2.destroy();
 				}
 			}
 		}
@@ -243,6 +244,7 @@ public class CharGen extends StdCommand
 			if(!mob.isMonster())
 				mob.session().wraplessPrintln(msg.toString());
 		}
+        avgMob.destroy();
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

@@ -214,6 +214,7 @@ public class WeatherAffects extends PuddleMaker
                     {
                         MOB mob=CMMap.god(R);
                         A2.invoke(mob,R,true,0);
+                        mob.destroy();
                     }
                 }
             }
@@ -229,6 +230,7 @@ public class WeatherAffects extends PuddleMaker
                     {
                         MOB mob=CMMap.god(R);
                         A2.invoke(mob,R,true,0);
+                        mob.destroy();
                     }
                 }
             }
@@ -526,6 +528,7 @@ public class WeatherAffects extends PuddleMaker
                             A2.setMiscText("RENDER MUNDANE"); 
                             MOB mob=CMMap.god(R);
                             A2.invoke(mob,null,true,0);
+                            mob.destroy();
                         }
                     }
                     else
@@ -636,6 +639,7 @@ public class WeatherAffects extends PuddleMaker
                     MOB mob=CMMap.god(R);
                     R.showHappens(CMMsg.MSG_OK_VISUAL,I.Name()+" spontaneously combusts in the seering heat!"+CommonStrings.msp("fire.wav",40));
                     A2.invoke(mob,I,true,0);
+                    mob.destroy();
                 }
                 break;    
                 }
@@ -675,6 +679,7 @@ public class WeatherAffects extends PuddleMaker
                         A2.setMiscText("RENDER MUNDANE"); 
                         A2.invoke(M,M,true,M.envStats().level());
                     }
+                    M.destroy();
                 }
             }
         }

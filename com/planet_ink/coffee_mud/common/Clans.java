@@ -1237,6 +1237,7 @@ public class Clans implements Clan, Tickable
 									}
 									Vector V=Util.parse(CV.matter);
 									mob.doCommand(V);
+                                    mob.destroy();
 								}
 							}
 						}

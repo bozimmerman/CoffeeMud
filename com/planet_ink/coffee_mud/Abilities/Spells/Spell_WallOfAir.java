@@ -63,6 +63,7 @@ public class Spell_WallOfAir extends Spell
 			M.setVictim(null);
 			if(mob.isMonster())
 				CommonMsgs.remove(mob,(Item)msg.tool(),true);
+            M.destroy();
 			return false;
 		}
 

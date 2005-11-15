@@ -185,6 +185,7 @@ public class ClanVote extends BaseClanner
 								}
 								Vector V=Util.parse(CV.matter);
 								mob2.doCommand(V);
+                                mob2.destroy();
 							}
 						}
 						if(updateVote)	C.updateVotes();

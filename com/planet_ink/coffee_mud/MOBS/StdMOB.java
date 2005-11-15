@@ -2015,6 +2015,7 @@ public class StdMOB implements MOB
                 myDescription.append(relativeCharStatTest(C,"more repulsive","more attractive",CharStats.CHARISMA));
                 myDescription.append(relativeCharStatTest(C,"more naive","wiser",CharStats.WISDOM));
                 myDescription.append(relativeCharStatTest(C,"dumber","smarter",CharStats.INTELLIGENCE));
+                testMOB.destroy();
             }
             myDescription.append(healthText()+"\n\r\n\r");
             myDescription.append(description()+"\n\r\n\r");

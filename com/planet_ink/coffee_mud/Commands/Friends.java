@@ -60,15 +60,18 @@ public class Friends extends StdCommand
 			if(!CMClass.DBEngine().DBUserSearch(M,name))
 			{
 				mob.tell("No player by that name was found.");
+                M.destroy();
 				return false;
 			}
 			if(h.contains(M.Name()))
 			{
 				mob.tell("That name is already on your list.");
+                M.destroy();
 				return false;
 			}
 			h.add(M.Name());
 			mob.tell("The Player '"+M.Name()+"' has been added to your friends list.");
+            M.destroy();
 		}
 		else
 		if(((String)commands.elementAt(1)).equalsIgnoreCase("REMOVE"))

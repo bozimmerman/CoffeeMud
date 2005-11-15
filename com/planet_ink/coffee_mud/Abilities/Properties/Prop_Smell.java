@@ -182,6 +182,7 @@ public class Prop_Smell extends Property
 								emoteHere(R,emoter,emote);
 							}
 						}
+                        emoter.destroy();
 		            }
 		        }
 	        }

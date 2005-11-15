@@ -55,11 +55,13 @@ public class Prayer_MassMobility extends Prayer
 				   ||(!A.okMessage(newMOB,msg2)))
 				{
 					mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The aura around <S-NAME> repels the "+A.name()+" from <T-NAME>.");
+                    newMOB.destroy();
 					return false;
 				}
 			}
 			catch(Exception e)
 			{}
+            newMOB.destroy();
 		}
 		return true;
 	}

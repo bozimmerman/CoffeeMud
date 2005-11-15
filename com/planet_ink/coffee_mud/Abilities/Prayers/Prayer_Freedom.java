@@ -57,6 +57,7 @@ public class Prayer_Freedom extends Prayer
 				{}
 			}
 		}
+        newMOB.destroy();
 		return offenders;
 	}
 

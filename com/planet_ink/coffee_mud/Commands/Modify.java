@@ -778,6 +778,7 @@ public class Modify extends BaseGenerics
 			M.recoverEnvStats();
 			M.recoverCharStats();
 		}
+        TM.destroy();
 		if(M==null)
 		{
 			mob.tell("There is no such player as '"+mobID+"'!");

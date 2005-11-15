@@ -92,6 +92,7 @@ public class Destroy extends BaseItemParser
 		{
 			mob.tell("The user '"+Util.combine(commands,2)+"' does not exist!\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+            deadMOB.destroy();
 			return false;
 		}
 
@@ -100,8 +101,10 @@ public class Destroy extends BaseItemParser
 			CoffeeUtensils.obliteratePlayer(deadMOB,false);
 			mob.tell("The user '"+Util.combine(commands,2)+"' is no more!\n\r");
 			Log.sysOut("Mobs",mob.Name()+" destroyed user "+deadMOB.Name()+".");
+            deadMOB.destroy();
 			return true;
 		}
+        deadMOB.destroy();
 		return true;
 	}
 

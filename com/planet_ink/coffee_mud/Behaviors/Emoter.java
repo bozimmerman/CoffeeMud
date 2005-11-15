@@ -161,21 +161,26 @@ public class Emoter extends ActiveTicker
 			{
 				emoter=CMClass.getMOB("StdMOB");
 				emoteHere((Room)myHost,emoter,emote,msg.source(),false);
+                emoter.destroy();
 				return;
 			}
 			Room room=getBehaversRoom(myHost);
 			if(room!=null)
 			{
 				if(myHost instanceof MOB)
+                {
 					emoter=(MOB)myHost;
+                    emoteHere(room,emoter,emote,null,true);
+                }
 				else
 				{
 					if((myHost instanceof Item)&&(!Sense.isInTheGame(myHost,false)))
 						return;
 					emoter=CMClass.getMOB("StdMOB");
 					emoter.setName(myHost.name());
+                    emoteHere(room,emoter,emote,null,true);
+                    emoter.destroy();
 				}
-				emoteHere(room,emoter,emote,null,true);
 			}
 		}
 	}
@@ -260,17 +265,20 @@ public class Emoter extends ActiveTicker
 					Room R=(Room)r.nextElement();
 					emoteHere(R,emoter,emote,null,false);
 				}
+                emoter.destroy();
 				return true;
 			}
 			if(ticking instanceof Room)
 			{
 				emoter=CMClass.getMOB("StdMOB");
 				emoteHere((Room)ticking,emoter,emote,null,false);
+                emoter.destroy();
 				return true;
 			}
 
 			Room room=getBehaversRoom(ticking);
 			if(room==null) return true;
+            boolean killEmoter=false;
 			if(ticking instanceof MOB)
 			{
 				if(canFreelyBehaveNormal(ticking))
@@ -282,6 +290,7 @@ public class Emoter extends ActiveTicker
 					return true;
 
 				emoter=CMClass.getMOB("StdMOB");
+                killEmoter=true;
 				MOB mob=getBehaversMOB(ticking);
 				String name=ticking.name();
 				if(ticking instanceof Environmental)
@@ -296,14 +305,16 @@ public class Emoter extends ActiveTicker
 				else
 					emoter.setName(name);
 			}
-			if(emoter==null) return true;
-
-			emoteHere(room,emoter,emote,null,true);
+            if(emoter==null) return true;
+            emoteHere(room,emoter,emote,null,true);
 
 			if(((Boolean)emote.elementAt(1)).booleanValue())
 			{
 				if(ticking instanceof MOB)
+                {
 					emoter=CMClass.getMOB("StdMOB");
+                    killEmoter=true;
+                }
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
 					Room R=room.getRoomInDir(d);
@@ -315,6 +326,7 @@ public class Emoter extends ActiveTicker
 					}
 				}
 			}
+            if(killEmoter) emoter.destroy();
 		}
 		return true;
 	}

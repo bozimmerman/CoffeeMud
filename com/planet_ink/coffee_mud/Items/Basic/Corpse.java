@@ -121,7 +121,6 @@ public class Corpse extends GenContainer implements DeadBody
 				&&(!msg.tool().ID().equalsIgnoreCase("Prayer_Resurrect"))
 				&&(!msg.tool().ID().equalsIgnoreCase("Prayer_PreserveBody"))
 				&&(!msg.tool().ID().equalsIgnoreCase("Song_Rebirth"))))
-        &&((envStats().ability()>10)||(Sense.isABonusItems(this)))
 		&&(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).length()>0)
         &&(playerCorpse())
 		&&(mobName().length()>0))

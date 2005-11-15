@@ -67,6 +67,8 @@ public class Trap_RoomPit extends StdTrap
 			R1.rawDoors()[Directions.UP]=null;
 			R1.rawExits()[Directions.UP]=null;
 			pit=null;
+            R1.destroyRoom();
+            R2.destroyRoom();
 			super.unInvoke();
 		}
 		else

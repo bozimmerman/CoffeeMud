@@ -50,6 +50,8 @@ public class Prayer_CureBlindness extends Prayer
 						offenders.addElement(A);
 			}
 		}
+        newMOB.destroy();
+        newerMOB.destroy();
 		return offenders;
 	}
 

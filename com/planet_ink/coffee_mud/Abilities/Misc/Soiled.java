@@ -121,17 +121,16 @@ public class Soiled extends StdAbility
 	        if(R!=null)
 	        {
 	            MOB M=(E instanceof MOB)?(MOB)E:null;
+                boolean killmob=false;
 	            if(M==null)
 	            {
 					M=CMClass.getMOB("StdMOB");
-					if(M!=null)
-					{
-						M.setName(affected.name());
-						M.setDisplayText(affected.name()+" is here.");
-						M.setDescription("");
-						if(M.location()!=R)
-							M.setLocation(R);
-					}
+					M.setName(affected.name());
+					M.setDisplayText(affected.name()+" is here.");
+					M.setDescription("");
+					if(M.location()!=R)
+						M.setLocation(R);
+                    killmob=true;
 	            }
 	            else
 	            if((M.playerStats()!=null)&&(M.playerStats().getHygiene()<10000))
@@ -159,6 +158,7 @@ public class Soiled extends StdAbility
 		                    mob.executeMsg(mob,msg);
 		            }
 	            }
+                if(killmob) M.destroy();
 	        }
 	    }
 	    return super.tick(ticking,tickID);

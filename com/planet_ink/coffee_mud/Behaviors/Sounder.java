@@ -335,6 +335,7 @@ public class Sounder extends StdBehavior
 				Room R=(Room)r.nextElement();
 				emoteHere(R,emoter,emote);
 			}
+            emoter.destroy();
 		}
 		else
 		if(ticking instanceof Room)
@@ -343,6 +344,7 @@ public class Sounder extends StdBehavior
 			emoter.setName(ticking.name());
 			emoter.charStats().setStat(CharStats.GENDER,'N');
 			emoteHere((Room)ticking,emoter,emote);
+            emoter.destroy();
 		}
 		else
 		if(ticking instanceof MOB)
@@ -363,6 +365,7 @@ public class Sounder extends StdBehavior
 				emoter.setName(ticking.name());
 				emoter.charStats().setStat(CharStats.GENDER,'N');
 				emoteHere(R,emoter,emote);
+                emoter.destroy();
 			}
 		}
 	}

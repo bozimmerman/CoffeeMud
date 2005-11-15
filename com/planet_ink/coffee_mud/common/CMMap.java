@@ -460,6 +460,7 @@ public class CMMap
 			M.recoverEnvStats();
 			M.recoverCharStats();
 		}
+        TM.destroy();
 		return M;
 	}
 

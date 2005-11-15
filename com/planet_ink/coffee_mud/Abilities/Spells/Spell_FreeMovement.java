@@ -72,11 +72,13 @@ public class Spell_FreeMovement extends Spell
 				   ||(!A.okMessage(newMOB,msg2)))
 				{
 					msg.addTrailerMsg(new FullMsg(mob,null,CMMsg.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.name()+"."));
+                    newMOB.destroy();
 					return false;
 				}
 			}
 			catch(Exception e)
 			{}
+            newMOB.destroy();
 		}
 		return true;
 	}

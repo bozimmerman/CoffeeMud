@@ -98,17 +98,16 @@ document.getElementById(wname+"content").style.display="" //extra
 
 function getFrameHTML(wname)
 {
-    var addBackToDivForDragDrop='onMousedown="initializedrag(event,\''+wname+'\')" onMouseup="stopdrag(\''+wname+'\')"';
-    var s='<div id="'+wname+'" style="position:absolute;background-color:#EBEBEB;cursor:hand;left:0px;top:0px;display:none"  onSelectStart="return false">';
+    var s='<div id="'+wname+'" style="position:absolute;background-color:#EBEBEB;cursor:hand;left:0px;top:0px;display:none" onMousedown="initializedrag(event,\''+wname+'\')" onMouseup="stopdrag(\''+wname+'\')" onSelectStart="return false">';
     s+='<div id="'+wname+'bar" style="background-color:red">';
     s+='<table width=100% border=0 cellspacing=0 cellpadding=0><tr><td width=80% align=left>'
+    s+='<div id="'+wname+'content" style="height:100%">';
     s+='<div id="'+wname+'namer" style="background-color:red"></div>';
     s+='</td><td width=20% align=right>'
     s+='<img src="max.gif" id="'+wname+'max" onClick="maximize(\''+wname+'\')">';
     s+='</td></tr></table>'
     //s+='<img src="close.gif" onClick="closeit(\''+wname+'\')">';
     s+='</div>';
-    s+='<div id="'+wname+'content" style="height:100%">';
     s+='<div id="'+wname+'extracontent"></div>';
     s+='<iframe id="'+wname+'frame" src="" width=100% height=100%></iframe>';
     s+='</div>';

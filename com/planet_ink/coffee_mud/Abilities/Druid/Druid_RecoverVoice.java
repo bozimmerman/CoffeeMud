@@ -53,6 +53,7 @@ public class Druid_RecoverVoice extends StdAbility
 						offenders.addElement(A);
 			}
 		}
+        newMOB.destroy();
 		return offenders;
 	}
 

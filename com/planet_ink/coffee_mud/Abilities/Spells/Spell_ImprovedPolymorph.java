@@ -128,6 +128,7 @@ public class Spell_ImprovedPolymorph extends Spell
 			mob.tell(target.name()+" is a player, so you must be group members, or your playerkill flags must be on for this to work.");
 			success=false;
 		}
+        fakeMOB.destroy();
 		
 		if(success)
 		{

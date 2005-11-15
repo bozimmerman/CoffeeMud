@@ -128,6 +128,7 @@ public class Spell_PolymorphSelf extends Spell
 		for(int s=0;s<CharStats.NUM_BASE_STATS;s++)
 			fakeStatTotal+=fakeMOB.charStats().getStat(s);
 
+        fakeMOB.destroy();
 		int statDiff=mobStatTotal-fakeStatTotal;
 		boolean success=profficiencyCheck(mob,-(statDiff*5),auto);
 		if(success)

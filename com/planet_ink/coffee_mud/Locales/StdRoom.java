@@ -1252,6 +1252,7 @@ public class StdRoom
 		MOB everywhereMOB=CMMap.god(this);
 		FullMsg msg=new FullMsg(everywhereMOB,null,null,allCode,allCode,allCode,allMessage);
 		sendOthers(everywhereMOB,msg);
+        everywhereMOB.destroy();
 	}
 	public void showHappens(int allCode, Environmental like, String allMessage)
 	{
@@ -1262,6 +1263,7 @@ public class StdRoom
 		everywhereMOB.recoverEnvStats();
 		FullMsg msg=new FullMsg(everywhereMOB,null,null,allCode,allCode,allCode,allMessage);
 		send(everywhereMOB,msg);
+        everywhereMOB.destroy();
 	}
 	public boolean show(MOB source,
 					 Environmental target,

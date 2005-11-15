@@ -38,7 +38,8 @@ public class MOBEater extends ActiveTicker
 
 	public void startBehavior(Environmental forMe)
 	{
-		Stomach = CMClass.getLocale("StdRoom");
+        if(Stomach==null)
+    		Stomach = CMClass.getLocale("StdRoom");
 		if((forMe!=null)&&(forMe instanceof MOB))
 		{
 			lastKnownLocation=((MOB)forMe).location();

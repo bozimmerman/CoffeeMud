@@ -1030,6 +1030,9 @@ public final class IMC2Driver extends Thread {
 		MOB smob=findSessMob(d.name);
 		if(smob!=null)
 			CommonMsgs.say(mob,smob,text,true,true);
+        Room R=mob.location();
+        mob.destroy();
+        if(R!=null) R.destroyRoom();
     }
 
 	private MOB findSessMob(String mobName)
@@ -1070,9 +1073,6 @@ public final class IMC2Driver extends Thread {
 		if(st.countTokens()> 0)
 			channel=st.nextToken();
 
-		MOB mob=CMClass.getMOB("StdMOB");
-		mob.setName(from);
-		mob.setLocation(CMClass.getLocale("StdRoom"));
 		String channelName=channel;
 		FullMsg msg=null;
 		if(from.toUpperCase().endsWith(imc_name.toUpperCase()))
@@ -1083,6 +1083,9 @@ public final class IMC2Driver extends Thread {
 		if(channelName.length()==0) return;
 		int channelInt=ChannelSet.getChannelIndex(channelName);
 		if(channelInt<0) return;
+        MOB mob=CMClass.getMOB("StdMOB");
+        mob.setName(from);
+        mob.setLocation(CMClass.getLocale("StdRoom"));
 		String str="^Q^<CHANNEL \""+channelName+"\"^>"+mob.name()+" "+channelName+"(S) '"+text+"'^</CHANNEL^>^?^.";
 		if(emote>0) 
 		{
@@ -1110,6 +1113,9 @@ public final class IMC2Driver extends Thread {
 
         l.add(str);
         chanhist.put(channel, l);
+        Room R=mob.location();
+        mob.destroy();
+        if(R!=null) R.destroyRoom();
     }
 
 

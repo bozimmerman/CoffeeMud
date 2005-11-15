@@ -46,6 +46,7 @@ public class Prayer_RestoreSmell extends Prayer
 						offenders.addElement(A);
 			}
 		}
+        newMOB.destroy();
 		return offenders;
 	}
 

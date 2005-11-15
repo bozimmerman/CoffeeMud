@@ -113,6 +113,7 @@ public class Prayer_Monolith extends Prayer
 				M.setVictim(null);
 				if(mob.isMonster())
 					CommonMsgs.remove(mob,(Weapon)msg.tool(),true);
+                M.destroy();
 				return false;
 			}
 			break;
