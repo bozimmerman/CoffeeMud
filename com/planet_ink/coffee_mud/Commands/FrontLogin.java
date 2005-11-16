@@ -153,9 +153,21 @@ public class FrontLogin extends StdCommand
                 else
                     mob.tell("MXP codes have been disabled for this session.");
             }
+            else
+            if(mob.session().clientTelnetMode(Session.TELNET_MXP))
+            {
+                mob.session().changeTelnetMode(Session.TELNET_MXP,false);
+                mob.session().setClientTelnetMode(Session.TELNET_MXP,false);
+            }
             if((Util.bset(mob.getBitmap(),MOB.ATT_SOUND))
             &&(!mob.session().clientTelnetMode(Session.TELNET_MSP)))
                 mob.tell("MSP sounds have been disabled for this session.");
+            else
+            if(mob.session().clientTelnetMode(Session.TELNET_MSP))
+            {
+                mob.session().changeTelnetMode(Session.TELNET_MSP,false);
+                mob.session().setClientTelnetMode(Session.TELNET_MSP,false);
+            }
         }
     }
     

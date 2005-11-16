@@ -1088,7 +1088,7 @@ public class Import extends StdCommand
 		case 39: return "Spell_GiantStrength";
 		case 40: return "Spell_Summon";
 		case 41: return "Spell_Ventriloquate";
-		case 42: return "Skill_Recall";
+		case 42: return "Skill_WordRecall";
 		case 43: return "Prayer_RemovePoison";
 		case 44: return "Chant_Dragonsight";
 		case 45: return "Prayer_CureDisease"; // not the real ###
@@ -1265,7 +1265,7 @@ public class Import extends StdCommand
 		case 536: return ""; //warmount
 		case 537: return ""; //despair
 		case 538: return "Spell_Forget";
-		case 539: return "Skill_Recall";
+		case 539: return "Skill_WordRecall";
 		case 540: return "Spell_Portal";
 		case 541: return ""; // mass armor
 		case 542: return ""; // arcane perception

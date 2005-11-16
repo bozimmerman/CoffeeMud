@@ -412,39 +412,6 @@ public class MUD extends Thread implements MudHost
     					accessed.addElement(address,new Long(System.currentTimeMillis()));
                     }
                     
-                    try
-                    {
-                        Thread.sleep(250);
-                        sock.setSoTimeout(100);
-                        InputStream instream=sock.getInputStream();
-                        if(instream.available()>255)
-                        {
-                            if(instream.markSupported())
-                                instream.mark(10);
-                            if(sock.getInputStream().read()==32)
-                            {
-                                BufferedReader in = new BufferedReader(new InputStreamReader(instream,"iso-8859-1"));
-                                String str=in.readLine();
-                                if(str.startsWith("SHUTDOWN "))
-                                {
-                                    Vector V=Util.parse(str);
-                                    MOB M=CMMap.getLoadPlayer((String)V.elementAt(1));
-                                    if((M!=null)&&(M.playerStats().password().equalsIgnoreCase((String)V.elementAt(2)))&&(CMSecurity.isASysOp(M)))
-                                    {
-                                        boolean keepDown=V.size()>3?Util.s_bool((String)V.elementAt(3)):true;
-                                        String externalCmd=(V.size()>4)?Util.combine(V,4):null;
-                                        shutdown(null,keepDown,externalCmd);
-                                    }
-                                }
-                            }
-                            else
-                            if(instream.markSupported())
-                                sock.getInputStream().reset();
-                        }
-                    }
-                    catch(Exception e){}
-                    
-                    
 					if(proceed!=0)
 					{
 						Log.sysOut("MUD","Blocking a connection from "+address+" on port "+port);
