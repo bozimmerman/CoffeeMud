@@ -49,8 +49,8 @@ public class Spell_WordRecall extends StdAbility
             int AUTO=auto?CMMsg.MASK_GENERAL:0;
             Room recalledRoom=mob.location();
             Room recallRoom=mob.getStartRoom();
-            FullMsg msg=new FullMsg(mob,recalledRoom,this,affectType(auto),AUTO|CMMsg.MSG_LEAVE,affectType(auto),auto?getScr(ID(),"recallgo1"):getScr(ID(),"recallgo2"));
-            FullMsg msg2=new FullMsg(mob,recallRoom,this,affectType(auto),AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,affectType(auto),null);
+            FullMsg msg=new FullMsg(mob,recalledRoom,this,affectType(auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,affectType(auto),auto?getScr(ID(),"recallgo1"):getScr(ID(),"recallgo2"));
+            FullMsg msg2=new FullMsg(mob,recallRoom,this,affectType(auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,affectType(auto),null);
             if((recalledRoom.okMessage(mob,msg))&&(recallRoom.okMessage(mob,msg2)))
             {
                 recalledRoom.send(mob,msg);
@@ -61,7 +61,7 @@ public class Spell_WordRecall extends StdAbility
                 {
                     MOB follower=mob.fetchFollower(f);
                     
-                    msg=new FullMsg(follower,recalledRoom,this,affectType(auto),AUTO|CMMsg.MSG_LEAVE,affectType(auto),auto?getScr(ID(),"recallgo1"):getScr(ID(),"recallgo3",mob.name()));
+                    msg=new FullMsg(follower,recalledRoom,this,affectType(auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,affectType(auto),auto?getScr(ID(),"recallgo1"):getScr(ID(),"recallgo3",mob.name()));
                     if((follower!=null)
                     &&(follower.isMonster())
                     &&(!follower.isPossessing())
@@ -69,7 +69,7 @@ public class Spell_WordRecall extends StdAbility
                     &&(recalledRoom.isInhabitant(follower))
                     &&(recalledRoom.okMessage(follower,msg)))
                     {
-                        msg2=new FullMsg(follower,recallRoom,this,affectType(auto),AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,affectType(auto),null);
+                        msg2=new FullMsg(follower,recallRoom,this,affectType(auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,affectType(auto),null);
                         if(recallRoom.okMessage(follower,msg2))
                         {
                             recallRoom.send(follower,msg2);
