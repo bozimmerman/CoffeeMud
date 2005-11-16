@@ -1026,6 +1026,117 @@ public class Reset extends StdCommand
 			mob.session().println("done!");
 		}
 		else
+        if(s.equalsIgnoreCase("recallscrollfixer"))
+        {
+            if(mob.session()==null) return false;
+            mob.session().print("working...");
+            Vector rooms=new Vector();
+            rooms.addElement("Arcadia#12141");
+            rooms.addElement("Calinth#20230");
+            rooms.addElement("Elvandar#9837");
+            rooms.addElement("Midgaard#3033");
+            rooms.addElement("Midgaard Apartments#30");
+            rooms.addElement("New Thalos#9624");
+            rooms.addElement("Prison#32087");
+            rooms.addElement("The Keep of the Warlock#15722");
+            
+            for(Enumeration a=rooms.elements();a.hasMoreElements();)
+            {
+                Room R=CMMap.getRoom((String)a.nextElement());
+                R.getArea().toggleMobility(false);
+                if(R.roomID().length()>0)
+                {
+                    CoffeeUtensils.resetRoom(R);
+                    boolean changedItems=false;
+                    boolean changedMobs=false;
+                    for(int i=0;i<R.numItems();i++)
+                    {
+                        Item I=R.fetchItem(i);
+                        if(I instanceof Scroll)
+                        {
+                            Scroll S=(Scroll)I;
+                            String l=S.getSpellList();
+                            int x=l.toUpperCase().indexOf("SKILL_RECALL");
+                            while(x>=0)
+                            {
+                                changedItems=true;
+                                l=l.substring(0,x)+"Spell_WordRecall"+l.substring(x+12);
+                                x=l.toUpperCase().indexOf("SKILL_RECALL");
+                            }
+                            S.setSpellList(l);
+                        }
+                    }
+                    for(int m=0;m<R.numInhabitants();m++)
+                    {
+                        MOB M=R.fetchInhabitant(m);
+                        if(M==mob) continue;
+                        if(!M.isEligibleMonster()) continue;
+                        for(int i=0;i<M.inventorySize();i++)
+                        {
+                            Item I=M.fetchInventory(i);
+                            if(I instanceof Scroll)
+                            {
+                                Scroll S=(Scroll)I;
+                                String l=S.getSpellList();
+                                int x=l.toUpperCase().indexOf("SKILL_RECALL");
+                                while(x>=0)
+                                {
+                                    changedMobs=true;
+                                    l=l.substring(0,x)+"Spell_WordRecall"+l.substring(x+12);
+                                    x=l.toUpperCase().indexOf("SKILL_RECALL");
+                                }
+                                S.setSpellList(l);
+                            }
+                        }
+                        ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
+                        if(SK!=null)
+                        {
+                            Vector V=SK.getUniqueStoreInventory();
+                            for(int i=V.size()-1;i>=0;i--)
+                            {
+                                Environmental E=(Environmental)V.elementAt(i);
+                                if(E instanceof Item)
+                                {
+                                    Item I=(Item)E;
+                                    boolean didSomething=false;
+                                    if(I instanceof Scroll)
+                                    {
+                                        Scroll S=(Scroll)I;
+                                        String l=S.getSpellList();
+                                        int x=l.toUpperCase().indexOf("SKILL_RECALL");
+                                        while(x>=0)
+                                        {
+                                            didSomething=true;
+                                            l=l.substring(0,x)+"Spell_WordRecall"+l.substring(x+12);
+                                            x=l.toUpperCase().indexOf("SKILL_RECALL");
+                                        }
+                                        S.setSpellList(l);
+                                    }
+                                    changedMobs=changedMobs||didSomething;
+                                    if(didSomething)
+                                    {
+                                        int numInStock=SK.numberInStock(I);
+                                        int stockPrice=SK.stockPrice(I);
+                                        SK.delAllStoreInventory(I);
+                                        SK.addStoreInventory(I,numInStock,stockPrice);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if(changedItems)
+                        CMClass.DBEngine().DBUpdateItems(R);
+                    if(changedMobs)
+                        CMClass.DBEngine().DBUpdateMOBs(R);
+                    if(changedItems) Log.sysOut("Reset","Fixed a scroll in "+CMMap.getExtendedRoomID(R));
+                    if(changedMobs) Log.sysOut("Reset","Fixed a scroll mob in "+CMMap.getExtendedRoomID(R));
+                    mob.session().print(".");
+                    R.getArea().toggleMobility(true);
+                }
+            }
+            mob.session().println("done!");
+        }
+        else
 		if(s.equalsIgnoreCase("clantick"))
 			Clans.tickAllClans();
 		else
