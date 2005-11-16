@@ -20,7 +20,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spell_MinManaShield extends Spell
+public class Spell_MinManaShield extends Spell_ManaShield
 {
     public String ID() { return "Spell_MinManaShield"; }
     public String name(){return "Minor Mana Shield";}
