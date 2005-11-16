@@ -213,6 +213,26 @@ public class DefaultTimeClock implements TimeClock, Cloneable
         return globalClock;
     }
 
+    public long deriveMillisAfter(TimeClock C)
+    {
+        long numMudHours=0;
+        if(C.getYear()>getYear()) return -1;
+        else 
+        if(C.getYear()==getYear())
+            if(C.getMonth()>getMonth()) return -1;
+            else 
+            if(C.getMonth()==getMonth())
+                if(C.getDayOfMonth()>getDayOfMonth()) return -1;
+                else 
+                if(C.getDayOfMonth()==getDayOfMonth())
+                    if(C.getTimeOfDay()>getTimeOfDay()) return -1;
+        numMudHours+=(getYear()-C.getYear())*(getHoursInDay()*getDaysInMonth()*getMonthsInYear());
+        numMudHours+=(getMonth()-C.getMonth())*(getHoursInDay()*getDaysInMonth());
+        numMudHours+=(getDayOfMonth()-C.getDayOfMonth())*getHoursInDay();
+        numMudHours+=(getTimeOfDay()-C.getTimeOfDay());
+        return numMudHours*MudHost.TIME_UTILTHREAD_SLEEP;
+    }
+    
 	public void raiseLowerTheSunEverywhere()
 	{
 	    try

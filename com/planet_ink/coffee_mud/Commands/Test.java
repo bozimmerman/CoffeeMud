@@ -196,6 +196,30 @@ public class Test extends StdCommand
         if(commands.size()>1)
         {
             String what=((String)commands.elementAt(1)).toUpperCase().trim();
+            if(what.equalsIgnoreCase("mudhourstil"))
+            {
+                String startDate=Util.combine(commands,2);
+                int x=startDate.indexOf("-");
+                int mudmonth=Util.s_int(startDate.substring(0,x));
+                int mudday=Util.s_int(startDate.substring(x+1));
+                TimeClock C=new DefaultTimeClock();
+                TimeClock NOW=mob.location().getArea().getTimeObj();
+                C.setMonth(mudmonth);
+                C.setDayOfMonth(mudday);
+                C.setTimeOfDay(0);
+                if((mudmonth<NOW.getMonth())
+                ||((mudmonth==NOW.getMonth())&&(mudday<NOW.getDayOfMonth())))
+                    C.setYear(NOW.getYear()+1);
+                else
+                    C.setYear(NOW.getYear());
+                long millidiff=C.deriveMillisAfter(NOW);
+                System.out.println("MilliDiff="+millidiff);
+                return true;
+            }
+            
+            
+            
+            
             Ability A2=null;
             Item I=null;
             FullMsg msg=null;

@@ -23,6 +23,8 @@ public class Quests implements Cloneable, Quest
 	public String ID(){return "Quests";}
 	protected static Vector quests=new Vector();
 	protected String name="";
+    protected String startDate="";
+    protected boolean alreadyDateStarted=false;
 	protected int duration=450; // about 30 minutes
 	protected String parms="";
 	protected Vector stuff=new Vector();
@@ -47,6 +49,10 @@ public class Quests implements Cloneable, Quest
 	public String name(){return name;}
 	public void setName(String newName){name=newName;}
 
+    // the unique name of the quest
+    public String startDate(){return name;}
+    public void setStartDate(String newName){name=newName;}
+    
 	// the duration, in ticks
 	public int duration(){return duration;}
 	public void setDuration(int newTicks){duration=newTicks;}
@@ -61,19 +67,18 @@ public class Quests implements Cloneable, Quest
 
 	public void autostartup()
 	{
-		if((minWait()<0)||(waitInterval()<0))
+        if(!setWaitRemaining())
 			CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_QUEST);
 		else
 		if(!running())
-		{
-			waitRemaining=minWait+(Dice.roll(1,maxWait,0));
 			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_QUEST,1);
-		}
 	}
     
 	protected void setVars(Vector script)
 	{
 		name="";
+        startDate="";
+        alreadyDateStarted=false;
 		duration=-1;
 		minWait=-1;
 		maxWait=-1;
@@ -95,6 +100,26 @@ public class Quests implements Cloneable, Quest
 					else
 					if((cmd.equals("WAIT"))&&(p.size()>2))
 						setMinWait(Util.s_int((String)p.elementAt(2)));
+                    else
+                    if((cmd.equals("DATE"))&&(p.size()>2))
+                    {
+                        String s2=Util.combine(p,2);
+                        int x=s2.indexOf("-");
+                        if((x>0)
+                        &&(Util.isInteger(s2.substring(0,x)))
+                        &&(Util.isInteger(s2.substring(x+1))))
+                            setStartDate(s2);
+                    }
+                    else
+                    if((cmd.equals("MUDDAY"))&&(p.size()>2))
+                    {
+                        String s2=Util.combine(p,2);
+                        int x=s2.indexOf("-");
+                        if((x>0)
+                        &&(Util.isInteger(s2.substring(0,x)))
+                        &&(Util.isInteger(s2.substring(x+1))))
+                            setStartDate("MUDDAY "+s2);
+                    }
 					else
 					if((cmd.equals("INTERVAL"))&&(p.size()>2))
 						setWaitInterval(Util.s_int((String)p.elementAt(2)));
@@ -1343,13 +1368,55 @@ public class Quests implements Cloneable, Quest
 		if(running())
 		{
 			ticksRemaining=-1;
-			if((minWait()<0)||(maxWait<0))
+            if(!setWaitRemaining())
 				CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_QUEST);
-			else
-				waitRemaining=minWait+(Dice.roll(1,maxWait,0));
 		}
 		stoppingQuest=false;
 	}
+    
+    public boolean setWaitRemaining()
+    {
+        if(((minWait()<0)||(maxWait<0))
+        &&(startDate.trim().length()==0))
+            return false;
+        if(running()) return true;
+        if(startDate.length()>0)
+        {
+            if(startDate.toUpperCase().startsWith("MUDDAY"))
+            {
+                startDate=startDate.substring(0,"MUDDAY".length()).trim();
+                int x=startDate.indexOf("-");
+                int mudmonth=Util.s_int(startDate.substring(0,x));
+                int mudday=Util.s_int(startDate.substring(x+1));
+                TimeClock C=new DefaultTimeClock();
+                TimeClock NOW=DefaultTimeClock.globalClock;
+                C.setMonth(mudmonth);
+                C.setDayOfMonth(mudday);
+                C.setTimeOfDay(0);
+                if((mudmonth<NOW.getMonth())
+                ||((mudmonth==NOW.getMonth())&&(mudday<NOW.getDayOfMonth())))
+                    C.setYear(NOW.getYear()+1);
+                else
+                    C.setYear(NOW.getYear());
+                long distance=C.deriveMillisAfter(NOW);
+                waitRemaining=(int)((distance-System.currentTimeMillis())/MudHost.TICK_TIME);
+            }
+            else
+            {
+                int x=startDate.indexOf("-");
+                int month=Util.s_int(startDate.substring(0,x));
+                int day=Util.s_int(startDate.substring(x+1));
+                int year=IQCalendar.getIQInstance().get(Calendar.YEAR);
+                long distance=IQCalendar.string2Millis(month+"/"+day+"/"+year+" 12:00 AM");
+                while(distance<System.currentTimeMillis())
+                    distance=IQCalendar.string2Millis(month+"/"+day+"/"+(++year)+" 12:00 AM");
+                waitRemaining=(int)((distance-System.currentTimeMillis())/MudHost.TICK_TIME);
+            }
+        }
+        else
+            waitRemaining=minWait+(Dice.roll(1,maxWait,0));
+        return true;
+    }
 
 	public int minWait(){return minWait;}
 	public void setMinWait(int wait){minWait=wait;}
@@ -1433,9 +1500,8 @@ public class Quests implements Cloneable, Quest
 			if(ticksRemaining<0)
 			{
 				stopQuest();
-				if((minWait()<0)||(maxWait<0))
-					return false;
-				waitRemaining=minWait+(Dice.roll(1,maxWait,0));
+                if(!setWaitRemaining()) 
+                    return false;
 			}
 			tickStatus=Tickable.STATUS_END;
 		}
