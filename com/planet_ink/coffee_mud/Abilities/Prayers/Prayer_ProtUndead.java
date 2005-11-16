@@ -84,7 +84,7 @@ public class Prayer_ProtUndead extends Prayer
         if((auto)&&(givenTarget!=null)) target=givenTarget;
         if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell("You are already affected by "+name()+".");
+            mob.tell(mob,target,null,"<T-NAME> <T-IS-ARE> already affected by "+name()+".");
 			return false;
 		}
 
