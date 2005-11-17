@@ -168,7 +168,7 @@ public class Siplet extends Applet
                 data=buf.toString();
                 buf.setLength(0);
             }
-            if(debugDataOut) if(data.length()>0) System.out.println(data);
+            if(debugDataOut) if(data.length()>0) System.out.println("/DATA="+data);
             return data;
         }
     }

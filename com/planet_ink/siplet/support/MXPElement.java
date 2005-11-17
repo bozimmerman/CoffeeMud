@@ -115,7 +115,8 @@ public class MXPElement implements Cloneable
     {
         getParsedAttributes();
         attributeValues.remove(tag);
-        attributeValues.put(tag,value);
+        if(value!=null)
+            attributeValues.put(tag,value);
     }
     
     public synchronized Vector getParsedAttributes()
@@ -126,7 +127,7 @@ public class MXPElement implements Cloneable
         alternativeAttributes=new Hashtable();
         StringBuffer buf=new StringBuffer(attributes.trim());
         StringBuffer bit=new StringBuffer("");
-        Vector quotes=new Vector();
+        char quotes='\0';
         int i=-1;
         char lastC=' ';
         boolean firstEqual=false;
@@ -150,7 +151,7 @@ public class MXPElement implements Cloneable
             case '\r':
             case ' ':
             case '\t':
-                if(quotes.size()==0)
+                if(quotes=='\0')
                 {
                     if((!firstEqual)&&(bit.length()>0))
                         parsedAttributes.addElement(bit.toString().toUpperCase().trim());
@@ -162,28 +163,27 @@ public class MXPElement implements Cloneable
                 break;
             case '"':
             case '\'':
+                if(lastC=='\\')
+                    bit.append(buf.charAt(i));
+                else
                 if((lastC=='=')
-                ||(quotes.size()>0)
-                ||((quotes.size()==0)&&((lastC==' ')||(lastC=='\t'))))
+                ||(quotes!='\0')
+                ||((quotes=='\0')&&((lastC==' ')||(lastC=='\t'))))
                 {
-                    if((quotes.size()>0)&&(((Character)quotes.lastElement()).charValue()==buf.charAt(i)))
+                    if((quotes!='\0')&&(quotes==buf.charAt(i)))
                     {
-                        quotes.removeElementAt(quotes.size()-1);
-                        if(quotes.size()==0)
-                        {
-                            if((!firstEqual)&&(bit.length()>0))
-                                parsedAttributes.addElement(bit.toString().toUpperCase().trim());
-                            bit=new StringBuffer("");
-                            firstEqual=false;
-                        }
-                        else
-                            bit.append(buf.charAt(i));
+                        quotes='\0';
+                        if((!firstEqual)&&(bit.length()>0))
+                            parsedAttributes.addElement(bit.toString().toUpperCase().trim());
+                        bit=new StringBuffer("");
+                        firstEqual=false;
                     }
                     else
                     {
-                        if(quotes.size()>0)
+                        if(quotes!='\0')
                             bit.append(buf.charAt(i));
-                        quotes.addElement(new Character(buf.charAt(i)));
+                        else
+                            quotes=buf.charAt(i);
                     }
                 }
                 else
@@ -224,48 +224,52 @@ public class MXPElement implements Cloneable
         attributeValues.remove(name.toUpperCase().trim());
     }
     
-    public Vector getEndableTags(String desc)
+    public Vector getCloseTags(String desc)
     {
         StringBuffer buf=new StringBuffer(desc);
         Vector tags=new Vector();
         StringBuffer bit=null;
-        Vector quotes=new Vector();
+        char quotes='\0';
         int i=-1;
+        char lastC=' ';
         while((++i)<buf.length())
         {
             switch(buf.charAt(i))
             {
             case '<':
-                if(quotes.size()>0)
-                {
+                if(quotes!='\0')
                     bit=null;
-                    break;
-                }
                 else
                 if(bit!=null)
+                {
+                    if(MXP.tagDebug){System.out.println("/TAG/CLOSER2S="+Util.toStringList(tags)); System.out.flush();}
                     return tags;
+                }
                 else
                     bit=new StringBuffer("");
                 break;
             case '>':
-                if((quotes.size()==0)&&(bit!=null)&&(bit.toString().trim().length()>0))
-                {
+                if((quotes=='\0')&&(bit!=null)&&(bit.toString().trim().length()>0))
                     tags.add(bit.toString().toUpperCase().trim());
-                }
                 bit=null;
                 break;
             case ' ':
             case '\t':
-                if((quotes.size()==0)&&(bit!=null)&&(bit.toString().trim().length()>0))
+                if((quotes=='\0')&&(bit!=null)&&(bit.toString().trim().length()>0))
                     tags.add(bit.toString().toUpperCase().trim());
                 bit=null;
                 break;
             case '"':
             case '\'':
-                if((quotes.size()>0)&&(((Character)quotes.lastElement()).charValue()==buf.charAt(i)))
-                    quotes.removeElementAt(quotes.size()-1);
+                if(lastC=='\\')
+                    bit=null;
                 else
-                    quotes.addElement(new Character(buf.charAt(i)));
+                if((quotes!='\0')
+                &&(quotes==buf.charAt(i)))
+                    quotes='\0';
+                else
+                if(quotes=='\0')
+                    quotes=buf.charAt(i);
                 bit=null;
                 break;
             default:
@@ -275,7 +279,9 @@ public class MXPElement implements Cloneable
                     bit=null;
                 break;
             }
+            lastC=buf.charAt(i);
         }
+        if(MXP.tagDebug){System.out.println("/TAG/CLOSERS="+Util.toStringList(tags)); System.out.flush();}
         return tags;
     }
     

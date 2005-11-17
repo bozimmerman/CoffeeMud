@@ -56,7 +56,7 @@
         position=-1;
         enqueText(textEl.value);
     	top.term.sendData(textEl.value);
-        setTimeout('document.ENTER.TEXT.focus();',100);
+        boxFocus();
     }
     
     function disconnect()
@@ -122,8 +122,11 @@
             event.cancelBubble=true;
         }
     }
-    
-    setTimeout('document.ENTER.TEXT.focus()',1000);
+    function boxFocus()
+    {
+        setTimeout('document.ENTER.TEXT.focus();',100);
+    }
+    setTimeout('boxFocus()',900);
 //-->
 </script>
 </BODY>

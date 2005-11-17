@@ -148,7 +148,7 @@ function connect(url,port)
         thespan.style.backgroundColor='green'
         thespan=top.term.document.getElementById(myname+'bar');
         thespan.style.backgroundColor='green'
-        setTimeout('displayData();',100);
+        setTimeout('displayData(); top.entry.boxFocus();',100);
     }
 }
 function addToPrompt(x,att)

@@ -21,6 +21,7 @@ limitations under the License.
 public class MXP
 {
     public final static boolean tagDebug=false;
+    public final static boolean tagDebugLong=false;
     public final static boolean entityDebug=false;
 
     private int defaultMode=0;
@@ -79,7 +80,7 @@ public class MXP
         addElement(new MXPElement("COLOR","<FONT COLOR=&fore; BACK=&back;>","FORE BACK","",0));
         addElement(new MXPElement("HIGH","","","",MXPElement.BIT_NOTSUPPORTED));
         addElement(new MXPElement("H","","","",MXPElement.BIT_NOTSUPPORTED));
-        addElement(new MXPElement("FONT","<FONT STYLE=\"color: &color;;background-color: &back;;font-family: &face;;font-size: &size;;\">","FACE SIZE COLOR BACK STYLE","",0));
+        addElement(new MXPElement("FONT","<FONT STYLE=\"color: &color;;background-color: &back;;font-family: &face;;font-size: &size;;\">","FACE SIZE COLOR BACK STYLE","",MXPElement.BIT_SPECIAL));
         addElement(new MXPElement("NOBR","","","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND));  // special done
         addElement(new MXPElement("A","<A STYLE=\"&lcc;\" ONMOUSEOVER=\"&onmouseover;\" ONCLICK=\"&onclick;\" HREF=\"&href;\" TITLE=\"&hint;\">","HREF HINT EXPIRE TITLE=HINT STYLE ONMOUSEOUT ONMOUSEOVER ONCLICK","",0,"EXPIRE"));
         addElement(new MXPElement("SEND","<A STYLE=\"&lcc;\" HREF=\"&href;\" ONMOUSEOUT=\"delayhidemenu();\" ONCLICK=\"&onclick;\" TITLE=\"&hint;\">","HREF HINT PROMPT EXPIRE STYLE","",MXPElement.BIT_SPECIAL,"EXPIRE")); // special done
@@ -238,7 +239,7 @@ public class MXP
     
     private String closeTag(MXPElement E)
     {
-        Vector endTags=E.getEndableTags(E.getDefinition());
+        Vector endTags=E.getCloseTags(E.getDefinition());
         StringBuffer newEnd=new StringBuffer("");
         for(int e=endTags.size()-1;e>=0;e--)
             if(elements.containsKey((((String)endTags.elementAt(e))).toUpperCase().trim()))
@@ -290,19 +291,37 @@ public class MXP
             i++;
         }
     }
+
+    private String substr(String buf, int start, int end)
+    {return substr(new StringBuffer(buf),start,end);}
+    private String substr(StringBuffer buf, int start, int end)
+    {
+        if(start<0) return "?";
+        if(end<start) end=start+80;
+        if(end>buf.length()) end=buf.length();
+        String s=buf.substring(start,end);
+        s=Util.replaceAll(s,"\n","\\n");
+        s=Util.replaceAll(s,"\r","\\r");
+        return s;
+    }
     
     public int processTag(StringBuffer buf, int i)
     {
         if((mode()==MXP.MODE_LINE_LOCKED)||(mode()==MXP.MODE_LOCK_LOCKED))
-            return 0;
+        {
+            buf.setCharAt(i,'&');
+            buf.insert(i+1,"lt;");
+            return 3;
+        }
         
         // first step is to parse the motherfather
         // if we can't parse it, we convert the < char at i into &lt;
         // remember, incomplete tags should nodify the main filterdude
         Vector parts=new Vector();
         int oldI=i;
+        int oldOldI=i;
         char lastC=' ';
-        Vector quotes=new Vector();
+        char quotes='\0';
         StringBuffer bit=new StringBuffer("");
         
         //allowing the ! and / as a second char in a tag is an EXCEPTION! 
@@ -311,6 +330,8 @@ public class MXP
             i++;
             bit.append(buf.charAt(i));
         }
+        if(tagDebug){System.out.println("/***:::!!!TAG/"+oldI+"/"+substr(buf,oldI,oldI+10)); System.out.flush();}
+        if(tagDebugLong){System.out.println("/TAG>"+substr(buf,0,buf.length())); System.out.flush();}
         while((bit!=null)&&((++i)<buf.length()))
         {
             switch(buf.charAt(i))
@@ -319,12 +340,14 @@ public class MXP
             case '\r':
                 buf.setCharAt(oldI,'&');
                 buf.insert(oldI+1,"lt;");
+                if(tagDebug){System.out.println("/TAG*/****/Tag has CR!!!!"); System.out.flush();}
                 return 3;
             case ' ':
             case '\t':
-                if(quotes.size()==0)
+                if(quotes=='\0')
                 {
-                    if(bit.length()>0) parts.addElement(bit.toString());
+                    if(bit.length()>0) 
+                        parts.addElement(bit.toString());
                     bit.setLength(0);
                 }
                 else
@@ -332,53 +355,66 @@ public class MXP
                 break;
             case '"':
             case '\'':
-                if((lastC=='=')
-                ||(quotes.size()>0)
-                ||((quotes.size()==0)&&((lastC==' ')||(lastC=='\t'))))
+                if(lastC=='\\')
                 {
-                    if((quotes.size()>0)&&(((Character)quotes.lastElement()).charValue()==buf.charAt(i)))
+                    if((quotes!='\0')
+                    ||(bit.length()>0))
+                        bit.append(buf.charAt(i));
+                    else
                     {
-                        quotes.removeElementAt(quotes.size()-1);
-                        if(quotes.size()==0)
-                        {
-                            parts.addElement(bit.toString());
-                            bit.setLength(0);
-                        }
-                        else
-                            bit.append(buf.charAt(i));
+                        // DANGER WILL ROBINSON! DANGER!
+                        buf.setCharAt(oldI,'&');
+                        buf.insert(oldI+1,"lt;");
+                        if(tagDebug){System.out.println("/TAG*/****/Tag has wierd quote!!!!"); System.out.flush();}
+                        return 3;
+                    }
+                }
+                else
+                if((lastC=='=')
+                ||(quotes!='\0')
+                ||((quotes=='\0')&&((lastC==' ')||(lastC=='\t'))))
+                {
+                    if((quotes!='\0')&&(quotes==buf.charAt(i)))
+                    {
+                        quotes='\0';
+                        parts.addElement(bit.toString());
+                        bit.setLength(0);
                     }
                     else
                     {
-                        if(quotes.size()>0)
+                        if(quotes!='\0')
                             bit.append(buf.charAt(i));
-                        quotes.addElement(new Character(buf.charAt(i)));
+                        else
+                            quotes=buf.charAt(i);
                     }
                 }
                 else
                     bit.append(buf.charAt(i));
                 break;
             case '<':
-                if(quotes.size()>0)
+                if(quotes!='\0')
                     bit.append(buf.charAt(i));
                 else
                 {
                     // argh! abort! abort!
                     buf.setCharAt(oldI,'&');
                     buf.insert(oldI+1,"lt;");
+                    if(tagDebug){System.out.println("/TAG*/****/Tag has REOPEN!!!!"); System.out.flush();}
                     return 3;
                 }
                 break;
             case '>':
-                if(quotes.size()>0)
+                if(quotes!='\0')
                     bit.append(buf.charAt(i));
                 else
                 {
-                    if(bit.length()>0) parts.add(bit.toString());
+                    if(bit.length()>0) 
+                        parts.add(bit.toString());
                     bit=null;
                 }
                 break;
             default:
-                if((quotes.size()>0)
+                if((quotes!='\0')
                 ||(Character.isLetter(buf.charAt(i)))
                 ||(bit.length()>0))
                     bit.append(buf.charAt(i));
@@ -387,6 +423,7 @@ public class MXP
                     // DANGER WILL ROBINSON! DANGER!
                     buf.setCharAt(oldI,'&');
                     buf.insert(oldI+1,"lt;");
+                    if(tagDebug){System.out.println("/TAG*/****/Char is illegal!!!"); System.out.flush();}
                     return 3;
                 }
                 break;
@@ -395,7 +432,10 @@ public class MXP
         }
         // never hit the end, so let papa know
         if((i>=buf.length())||(buf.charAt(i)!='>'))
+        {
+            if(tagDebug){System.out.println("/TAG*/****/Tag is unclosed!!!!"); System.out.flush();}
             return Integer.MAX_VALUE;
+        }
         int endI=i+1;
         
         //nothing doin
@@ -409,11 +449,11 @@ public class MXP
         {
             buf.setCharAt(oldI,'&');
             buf.insert(oldI+1,"lt;");
+            if(tagDebug){System.out.println("/TAG*/****/Tag is unknown!!!!"); System.out.flush();}
             return 3;
         }
         MXPElement E=(MXPElement)elements.get(tag);
         String text="";
-        int oldOldI=oldI;
         if(endTag)
         {
             MXPElement troubleE=null;
@@ -430,38 +470,62 @@ public class MXP
                 if(E.needsText())
                     troubleE=E;
             }
+            // as of this moment, we need the telnet parser
+            // to back up one character so continue.
             buf.delete(oldI,endI);
             if(foundAt<0) 
+            {
+                if(tagDebug){System.out.println("/TAG*/****/Closed tag never opened!!!"); System.out.flush();}
                 return -1;
-            
+            }
             // a close tag of an mxp element always erases an 
             //**INTERIOR** needstext element
             if(troubleE!=null)
                 openElements.removeElement(troubleE);
             String close=closeTag(E);
+            if(tagDebug){System.out.println("/TAG/ENDENTITY="+E.name()+"/CLOSE="+close); System.out.flush();}
             if(close.length()>0)
                 buf.insert(oldI,close.toString()+">");
+            if((tagDebug)&&(!E.needsText()))
+            {
+                if(tagDebugLong)
+                    System.out.println("/TAG>"+substr(buf,0,buf.length()));
+                System.out.println("/TAG/END/!2!/"+substr(buf,oldI+1+close.length(),oldI+40));
+                System.out.flush();
+            }
             if(E.needsText())
             {
                 text=buf.substring(E.getBufInsert(),oldI);
                 text=Util.stripBadHTMLTags(Util.replaceAll(text,"&nbsp;"," "));
                 oldI=E.getBufInsert();
+                if(tagDebug){System.out.println("/TAG/END/text="+substr(text,0,100)); System.out.flush();}
             }
             else
             if(E.isHTML())
             {
                 if(E.isSpecialProcessor())
-                    specialElements(E,true);
+                    specialProcessorElements(E,true);
+                if(tagDebug){System.out.println("/TAG*/END/3/adji=!2.5!/"+(close.length()-1)); System.out.flush();}
                 return close.length();
             }
             else
             if(close.equals("</"+E.name()))
+            {
+                if(tagDebug){System.out.println("/TAG*/END/4/adji=!2.5!/"+(close.length()-1)); System.out.flush();}
                 return close.length();
+            }
             else
             if(E.getBufInsert()<oldI)
+            {
+                if(tagDebug){System.out.println("/TAG/END/5/adji="+(-((oldI-E.getBufInsert())+1))); System.out.flush();}
+                if(tagDebug){System.out.println("/TAG*/END/6/willbe="+substr(buf,oldI-((oldI-E.getBufInsert())),oldI+80)); System.out.flush();}
                 return -((oldI-E.getBufInsert())+1);
+            }
             else
+            {
+                if(tagDebug){System.out.println("/TAG*/END/6/adji=!2.5!/"+(close.length()-1)); System.out.flush();}
                 return close.length();
+            }
         }
         else
         {
@@ -471,8 +535,13 @@ public class MXP
             if(!E.isCommand())
                 openElements.addElement(E);
             buf.delete(oldI,endI);
+            if(tagDebug){System.out.println("/TAG/ENTITY="+E.name()); System.out.flush();}
             if(E.needsText())
+            {
+                if(tagDebugLong){System.out.println("/TAG>"+substr(buf,0,buf.length())); System.out.flush();}
+                if(tagDebug){System.out.println("/TAG*/Entity needs text, so purge and look for close."); ; System.out.flush();}           
                 return -1; // we want it to continue to look for closing tag 
+            }
         }
         String totalDefinition=E.getFoldedDefinition(text);
         if((endTag)&&(!E.isCommand())&&(E.getFlag()!=null)&&(E.getFlag().length()>0))
@@ -482,32 +551,38 @@ public class MXP
                 f=f.substring(4).trim();
             modifyEntity(f,text);
         }
+        
         if(E.isSpecialProcessor())
-            specialElements(E,endTag);
-        if(tagDebug){ System.out.println("I-"+oldI+"/"+oldString); System.out.flush();}
+            specialProcessorElements(E,endTag);
         if((E.isHTML())
         ||(totalDefinition.equalsIgnoreCase(oldString)))
         {
-            if(tagDebug) System.out.println("o-"+oldI+"/"+totalDefinition);
-            if(tagDebug) System.out.flush();
             buf.insert(oldI,totalDefinition);
-            if((endTag)&&(oldI<oldOldI)) 
+            if(tagDebugLong){System.out.println("/TAG>"+substr(buf,0,buf.length())); System.out.flush();}
+            if((endTag)&&(oldI<oldOldI))
+            {
+                if(tagDebug){ System.out.println("/TAG*/ENDEND1/"+substr(buf,(oldOldI+1+(-((oldOldI-oldI)+1))),oldOldI+80)); System.out.flush();}
                 return -((oldOldI-oldI)+1);
+            }
+            if(tagDebug){ System.out.println("/TAG*/THEEND1/"+substr(buf,(oldOldI+(totalDefinition.length()-1))+1,oldOldI+80)); System.out.flush();}
             return totalDefinition.length()-1;
         }
         StringBuffer def=new StringBuffer(totalDefinition);
         processAnyEntities(def,E);
-        if(tagDebug){ 
-            System.out.println("O-"+oldI+"/"+def.toString());
-            System.out.println("OO-"+getFirstTag(def.toString())+"/"+E.name());
-            System.out.flush();
-        }
         buf.insert(oldI,def.toString());
+        if(tagDebugLong){System.out.println("/TAG/"+substr(buf,0,buf.length())); System.out.flush();}
         if((endTag)&&(oldI<oldOldI)) 
+        {
+            if(tagDebug){ System.out.println("/TAG*/ENDEND2/"+oldI+"/"+oldOldI+"/"+substr(buf,oldOldI+1+(-((oldOldI-oldI)+1)),oldOldI+80)); System.out.flush();}
             return -((oldOldI-oldI)+1);
+        }
         if((def.toString().equalsIgnoreCase(oldString))
         ||(E.name().toUpperCase().trim().equals(getFirstTag(def.toString().trim()))))
+        {
+            if(tagDebug){ System.out.println("/TAG*/THEEND2/"+substr(buf,oldOldI+1+(def.toString().length()-1),oldOldI+80)); System.out.flush();}
             return def.toString().length()-1;
+        }
+        if(tagDebug){ System.out.println("/TAG*/THEEND3/"+substr(buf,(oldOldI-1)+1,oldOldI+80)); System.out.flush();}
         return -1;
     }
     
@@ -521,8 +596,58 @@ public class MXP
         return s.substring(1,x).toUpperCase().trim();
     }
     
-    private void specialElements(MXPElement E, boolean endTag)
+    private void specialProcessorElements(MXPElement E, boolean endTag)
     {
+        if(E.name().equals("FONT"))
+        {
+            String style=E.getAttributeValue("STYLE");
+            String color=E.getAttributeValue("COLOR");
+            String back=E.getAttributeValue("BACK");
+            String face=E.getAttributeValue("FACE");
+            String size=E.getAttributeValue("SIZE");
+            if((style!=null)
+            &&(color==null)
+            &&(back==null)
+            &&(face==null)
+            &&(size==null))
+            {
+                String s=null;
+                String v=null;
+                while(style.length()>0)
+                {
+                    int x=style.indexOf(";");
+                    if(x>=0)
+                    {
+                        s=style.substring(0,x).trim();
+                        style=style.substring(x+1).trim();
+                    }
+                    else
+                    {
+                        s=style.trim();
+                        style="";
+                    }
+                    int y=s.indexOf(":");
+                    if(y>=0)
+                    {
+                        v=s.substring(y+1);
+                        s=s.substring(0,y);
+                        if(s.equalsIgnoreCase("color"))
+                            E.setAttributeValue("COLOR",v);
+                        else
+                        if(s.equalsIgnoreCase("background-color"))
+                            E.setAttributeValue("BACK",v);
+                        else
+                        if(s.equalsIgnoreCase("font-size"))
+                            E.setAttributeValue("SIZE",v);
+                        else
+                        if(s.equalsIgnoreCase("font-family"))
+                            E.setAttributeValue("FACE",v);
+                    }
+                }
+                E.setAttributeValue("STYLE",null);
+            }
+        }
+        else
         if(E.name().equals("NOBR"))
             eatNextEOLN=true;
         else
@@ -560,7 +685,8 @@ public class MXP
             Vector hintV=Util.parsePipes(hint,true);
             if(hrefV.size()==1)
             {
-                E.setAttributeValue("HREF","javascript:addToPrompt('"+((String)hrefV.firstElement())+"',"+prompt+")");
+                href=Util.replaceAll(((String)hrefV.firstElement()),"'","\\'");
+                E.setAttributeValue("HREF","javascript:addToPrompt('"+href+"',"+prompt+")");
                 if(hintV.size()>1) hint=(String)hintV.firstElement();
                 E.setAttributeValue("HINT",hint);
             }
@@ -576,15 +702,16 @@ public class MXP
                     newHint.append((String)hintV.elementAt(i));
                     if(i<(hintV.size()-1)) newHint.append("|");
                 }
-                href=Util.replaceAll(href,"'","\'");
-                newHint=new StringBuffer(Util.replaceAll(newHint.toString(),"'","\'"));
-                E.setAttributeValue("ONCLICK","return dropdownmenu(this, event, getSendMenu(this,'"+href+"','"+newHint.toString()+"','"+prompt+"'), '200px');");
+                href=Util.replaceAll(href,"'","\\'");
+                hint=Util.replaceAll(newHint.toString(),"'","\\'");
+                E.setAttributeValue("ONCLICK","return dropdownmenu(this, event, getSendMenu(this,'"+href+"','"+hint+"','"+prompt+"'), '200px');");
             }
             else
             {
                 E.setAttributeValue("HINT","Click to open menu");
                 E.setAttributeValue("HREF","javascript:goDefault(0);");
-                href=Util.replaceAll(href,"'","\'");
+                href=Util.replaceAll(href,"'","\\'");
+                hint=Util.replaceAll(hint,"'","\\'");
                 E.setAttributeValue("ONCLICK","return dropdownmenu(this, event, getSendMenu(this,'"+href+"','"+hint+"','"+prompt+"'), '200px');");
             }
         }
@@ -856,27 +983,30 @@ public class MXP
         if(val==null) val=(currentE!=null)?currentE.getAttributeValue(tag):null;
         if((val==null)&&(currentE!=null)) val=currentE.getAttributeValue(tag.toLowerCase());
         if((val==null)&&(currentE!=null)) val=currentE.getAttributeValue(tag.toUpperCase());
-        if(val==null)
-            for(int x=openElements.size()-1;x>=0;x--)
-            {
-                MXPElement E=(MXPElement)openElements.elementAt(x);
-                val=E.getAttributeValue(tag);
-                if(val!=null) break;
-            }
-        if(val==null)
-            for(int x=openElements.size()-1;x>=0;x--)
-            {
-                MXPElement E=(MXPElement)openElements.elementAt(x);
-                val=E.getAttributeValue(tag.toLowerCase());
-                if(val!=null) break;
-            }
-        if(val==null)
-            for(int x=openElements.size()-1;x>=0;x--)
-            {
-                MXPElement E=(MXPElement)openElements.elementAt(x);
-                val=E.getAttributeValue(tag.toUpperCase());
-                if(val!=null) break;
-            }
+        if((val==null)&&(currentE==null))
+        {
+            if(val==null)
+                for(int x=openElements.size()-1;x>=0;x--)
+                {
+                    MXPElement E=(MXPElement)openElements.elementAt(x);
+                    val=E.getAttributeValue(tag);
+                    if(val!=null) break;
+                }
+            if(val==null)
+                for(int x=openElements.size()-1;x>=0;x--)
+                {
+                    MXPElement E=(MXPElement)openElements.elementAt(x);
+                    val=E.getAttributeValue(tag.toLowerCase());
+                    if(val!=null) break;
+                }
+            if(val==null)
+                for(int x=openElements.size()-1;x>=0;x--)
+                {
+                    MXPElement E=(MXPElement)openElements.elementAt(x);
+                    val=E.getAttributeValue(tag.toUpperCase());
+                    if(val!=null) break;
+                }
+        }
         if(val==null)
         {
             MXPEntity N=(MXPEntity)entities.get(tag);
@@ -996,7 +1126,7 @@ public class MXP
         String tag=content.toString().trim();
         String val=getEntityValue(tag,currentE);
         String oldValue=buf.substring(oldI,i+1);
-        if(entityDebug) System.out.println("ent="+tag+", val="+val);
+        if(entityDebug) System.out.println("entity="+tag+", val="+val);
         buf.delete(oldI,i+1);
         if(val!=null)
         {

@@ -127,6 +127,7 @@ if (typeof dropmenuobj!="undefined"){
 if (ie4||ns6)
 dropmenuobj.style.visibility="hidden"
 }
+top.entry.boxFocus();
 }
 
 function delayhidemenu(){
