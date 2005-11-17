@@ -1022,7 +1022,7 @@ public class Modify extends BaseGenerics
                 Quest Q=null;
                 if(Util.isInteger(name))
                 {
-                    Q=Quests.fetchQuest(Util.s_int(name));
+                    Q=Quests.fetchQuest(Util.s_int(name)-1);
                     if(Q!=null) name=Q.name();
                 }
                 if(Q==null) Q=Quests.fetchQuest(name);

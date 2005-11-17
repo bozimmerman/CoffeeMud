@@ -548,7 +548,7 @@ public class Create extends BaseGenerics
 				if((Quests.fetchQuest(Q.name())!=null)
                 &&((mob.isMonster())
                     ||(!mob.session().confirm("That quest is already loaded.  Load a duplicate (N/y)? ","N"))))
-                    return false;
+                        return false;
 				else
 				{
 					mob.tell("Quest '"+Q.name()+"' added.");

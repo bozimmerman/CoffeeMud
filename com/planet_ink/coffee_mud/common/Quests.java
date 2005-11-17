@@ -50,8 +50,8 @@ public class Quests implements Cloneable, Quest
 	public void setName(String newName){name=newName;}
 
     // the unique name of the quest
-    public String startDate(){return name;}
-    public void setStartDate(String newName){name=newName;}
+    public String startDate(){return startDate;}
+    public void setStartDate(String newName){startDate=newName;}
     
 	// the duration, in ticks
 	public int duration(){return duration;}
@@ -740,6 +740,10 @@ public class Quests implements Cloneable, Quest
 					else
 					if(cmd.equals("NAME")){}
 					else
+                    if(cmd.equals("DATE")){}
+                    else
+                    if(cmd.equals("MUDDAY")){}
+                    else
 					if(cmd.equals("DURATION")){}
 					else
 					if(cmd.equals("WAIT")){}
@@ -1377,17 +1381,18 @@ public class Quests implements Cloneable, Quest
     public boolean setWaitRemaining()
     {
         if(((minWait()<0)||(maxWait<0))
-        &&(startDate.trim().length()==0))
+        &&(startDate().trim().length()==0))
             return false;
         if(running()) return true;
-        if(startDate.length()>0)
+        if(startDate().length()>0)
         {
-            if(startDate.toUpperCase().startsWith("MUDDAY"))
+            if(startDate().toUpperCase().startsWith("MUDDAY"))
             {
-                startDate=startDate.substring(0,"MUDDAY".length()).trim();
-                int x=startDate.indexOf("-");
-                int mudmonth=Util.s_int(startDate.substring(0,x));
-                int mudday=Util.s_int(startDate.substring(x+1));
+                String sd2=startDate().substring("MUDDAY".length()).trim();
+                int x=sd2.indexOf("-");
+                if(x<0) return false;
+                int mudmonth=Util.s_int(sd2.substring(0,x));
+                int mudday=Util.s_int(sd2.substring(x+1));
                 TimeClock C=new DefaultTimeClock();
                 TimeClock NOW=DefaultTimeClock.globalClock;
                 C.setMonth(mudmonth);
@@ -1399,11 +1404,12 @@ public class Quests implements Cloneable, Quest
                 else
                     C.setYear(NOW.getYear());
                 long distance=C.deriveMillisAfter(NOW);
-                waitRemaining=(int)((distance-System.currentTimeMillis())/MudHost.TICK_TIME);
+                waitRemaining=(int)(distance/MudHost.TICK_TIME);
             }
             else
             {
                 int x=startDate.indexOf("-");
+                if(x<0) return false;
                 int month=Util.s_int(startDate.substring(0,x));
                 int day=Util.s_int(startDate.substring(x+1));
                 int year=IQCalendar.getIQInstance().get(Calendar.YEAR);
@@ -1660,9 +1666,7 @@ public class Quests implements Cloneable, Quest
 				text=text.substring(y+1).trim();
 			}
 			if((cmd.length()>0)&&(!cmd.startsWith("#")))
-			{
 				script.addElement(Util.replaceAll(cmd,"\\;",";"));
-			}
 		}
 		return script;
 	}

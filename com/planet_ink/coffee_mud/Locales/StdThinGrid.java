@@ -30,7 +30,6 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	protected Vector descriptions=new Vector();
 	protected Vector displayTexts=new Vector();
 	protected Vector gridexits=new Vector();
-	protected static HashSet working=new HashSet();
 	
 	protected int xsize=5;
 	protected int ysize=5;
@@ -38,7 +37,6 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	
 	protected final DVector rooms=new DVector(4);
 	protected static boolean tickStarted=false;
-
     
 	public StdThinGrid()
 	{
@@ -172,8 +170,13 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	{
 		if((x<0)||(y<0)||(y>=ySize())||(x>=xSize())) 
 			return;
-		if(working.contains(R)) return;
-		working.add(R);
+        synchronized(R.baseEnvStats())
+        {
+            int mask=R.baseEnvStats().sensesMask();
+            if(Util.bset(mask,EnvStats.SENSE_ROOMSYNC))
+                return;
+            R.baseEnvStats().setSensesMask(mask|EnvStats.SENSE_ROOMSYNC);
+        }
 		
 		// the adjacent rooms created by this method should also take
 		// into account the possibility that they are on the edge.
@@ -302,7 +305,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 					}
 			}catch(Exception e){}
 		}
-		working.remove(R);
+        R.baseEnvStats().setSensesMask(Util.unsetb(R.baseEnvStats().sensesMask(),EnvStats.SENSE_ROOMSYNC));
 	}
 	
 	public void tryFillInExtraneousExternal(CMMap.CrossExit EX, Exit ox, Room linkFrom)
@@ -324,7 +327,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		if((x<0)||(y<0)||(y>=ySize())||(x>=xSize())) 
 			return null;
 		
-		//startThinTick();
+		startThinTick();
 		Room R=getMakeSingleGridRoom(x,y);
 		if(R==null) return null;
 		fillExitsOfGridRoom(R,x,y);
@@ -594,7 +597,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		}
 		if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+17;
 	}
-	
+    
 	public void clearGrid(Room bringBackHere)
 	{
 		try
@@ -608,7 +611,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		    {
 				Room room=(Room)rooms.elementAt(0,1);
 				room.destroyRoom();
-                rooms.removeElement(room);
+                rooms.removeElementAt(0);
 		    }
 		}
         catch(Exception e){Log.debugOut("StdThinGrid",e);}

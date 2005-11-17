@@ -300,7 +300,6 @@ public class CMMap
 
 	public static Room getRoom(String calledThis)
 	{
-		Room R = null;
 		try
 		{
 			if(calledThis==null) return null;
@@ -309,17 +308,18 @@ public class CMMap
 				int child=calledThis.lastIndexOf("#(");
 				if(child>1)
 				{
-					R=getRoom(calledThis.substring(0,child));
+					Room R=getRoom(calledThis.substring(0,child));
 					if((R!=null)&&(R instanceof GridLocale))
+                    {
 						R=((GridLocale)R).getChild(calledThis);
-					else
-						R=null;
+                        if(R!=null) return R;
+                    }
 				}
 			}
-			if(R!=null) return R;
-			for (Enumeration i=rooms(); i.hasMoreElements();)
+            Room R=null;
+            for(Enumeration e=roomsList.elements();e.hasMoreElements();)
 			{
-				R = (Room)i.nextElement();
+				R = (Room)e.nextElement();
 				if (R.roomID().equalsIgnoreCase(calledThis))
 					return R;
 			}
