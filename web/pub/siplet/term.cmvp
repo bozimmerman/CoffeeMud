@@ -134,10 +134,17 @@ function modifyGauge(entity,value,max)
         div.innerHTML=s;
     }
 }
+function NoJava()
+{
+    var thespan=document.getElementById("DISPLAYSPAN");
+    thespan.innerHTML='<P><BR><FONT COLOR=RED SIZE=4>It does not appear that your browser has the proper version of the Java Runtime Environment installed.  Please visit <a href=http://java.sun.com>java.sun.com</a> to download the JRE.  Then restart your browser and try this page again.  If problems persist, make sure your browser has the <I>Allow Applet Installation</I> and <I>Allow Scripting</I> features enabled.</FONT><P>';
+}
 function connect(url,port)
 {
     var theapplet=document.getElementById("myApplet");
+    window.onerror=new Function('NoJava();');
     var s=theapplet.info();
+    window.onerror=null;
     var thespan=top.term.document.getElementById(myname+'namer');
     thespan.innerHTML=s
     gauges=new Array(0);

@@ -123,7 +123,7 @@ public class DefaultClimate implements Climate
 	public String weatherDescription(Room room)
 	{
 		if(!CoffeeUtensils.hasASky(room))
-			return "You can't tell much about the weather from here.";
+			return "^JYou can't tell much about the weather from here.^?";
 		return getWeatherDescription(room.getArea());
 	}
 	public boolean canSeeTheMoon(Room room)
