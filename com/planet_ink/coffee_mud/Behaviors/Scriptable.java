@@ -492,6 +492,24 @@ public class Scriptable extends StdBehavior
 		Room inAreaRoom=null;
 		try
 		{
+            for(Enumeration p=CMMap.players();p.hasMoreElements();)
+            {
+                MOB M=(MOB)p.nextElement();
+                if((M.Name().equalsIgnoreCase(thisName))
+                &&(M.location()!=null)
+                &&(Sense.isInTheGame(M,true)))
+                    inAreaRoom=M.location();
+            }
+            if(inAreaRoom==null)
+            for(Enumeration p=CMMap.players();p.hasMoreElements();)
+            {
+                MOB M=(MOB)p.nextElement();
+                if((M.name().equalsIgnoreCase(thisName))
+                &&(M.location()!=null)
+                &&(Sense.isInTheGame(M,true)))
+                    inAreaRoom=M.location();
+            }
+            if(inAreaRoom==null)
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
@@ -5056,7 +5074,7 @@ public class Scriptable extends StdBehavior
             case 49: // mptitle
             {
                 Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg);
-                String tattooName=Util.getCleanBit(s,2);
+                String tattooName=Util.getPastBitClean(s,1);
                 if((newTarget!=null)&&(tattooName.length()>0)&&(newTarget instanceof MOB))
                 {
                     MOB themob=(MOB)newTarget;
