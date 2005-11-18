@@ -71,11 +71,13 @@ public class Statement implements java.sql.Statement
          sql=split(sql,token);
 
          String relationName=token[0];
-         String conditionVar=null,conditionValue=null,orderVar=null,comparitor=null;
+         String conditionVar=null,conditionValue=null,orderVar=null,comparitor="=";
 
-         if (sql.length()>0) {
+         if (sql.length()>0) 
+         {
             sql=split(sql,token);
-            if (token[0].equalsIgnoreCase("where")) {
+            if (token[0].equalsIgnoreCase("where")) 
+            {
                sql=split(sql,token);
                int e=token[0].indexOf(">=");
                if(e<0)e=token[0].indexOf("<=");
@@ -86,7 +88,8 @@ public class Statement implements java.sql.Statement
                if (e<0) throw new java.sql.SQLException("no comparitor");
                int len=1;
                if((e<token[0].length()-1)
-               &&((token[0].charAt(e+1)=='=')||(token[0].charAt(e+1)=='>')))
+               &&((token[0].charAt(e+1)=='=')
+                       ||(token[0].charAt(e+1)=='>')))
                    len=2;
                comparitor=token[0].substring(e,e+len);
                conditionVar=token[0].substring(0,e);
