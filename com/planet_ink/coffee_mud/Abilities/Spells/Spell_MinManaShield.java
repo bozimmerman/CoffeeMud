@@ -25,7 +25,7 @@ public class Spell_MinManaShield extends Spell_ManaShield
     public String ID() { return "Spell_MinManaShield"; }
     public String name(){return "Minor Mana Shield";}
     public String displayText(){return "(Minor Mana Shield)";}
-    protected double protection=0.25;
-    protected String adjective=" a faint";
+    protected double protection(){return 0.25;}
+    protected String adjective(){return " a faint";}
 
 }

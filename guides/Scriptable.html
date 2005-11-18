@@ -1241,9 +1241,10 @@ useless. </P>
     <TD>Returns the number of mobs in the scripted 
       monsters area matching the given mob name.</TD></TR>
   <TR>
-    <TD>NUMMOBSROOM()</TD>
+    <TD>NUMMOBSROOM([*/name])</TD>
     <TD>Returns the number of mobs in the same room as 
-      the scripted monster, including the monster.</TD></TR>
+      the scripted monster, including the monster, whose name
+      or display text matches the name pattern.</TD></TR>
   <TR>
     <TD>NUMPCSROOM()</TD>
     <TD>Returns the number of pcs in the same room as the 
@@ -3003,13 +3004,15 @@ style="mso-spacerun: yes">&nbsp; </SPAN>mpecho There are 10
 or less&nbsp;goobers in this area.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">nummobsroom</SPAN></B></P>
-<P class=MsoNormal>Usage: <BR><EM>nummobsroom( == number)</EM></P>
+<P class=MsoNormal>Usage: <BR><EM>nummobsroom(pattern == number)</EM></P>
 <P class=MsoNormal>This function compares the total number 
-of mobs in the&nbsp;same room as the monster&nbsp;to the number 
-given.&nbsp;&nbsp;&nbsp;This function counts players, npcs, and the hidden and 
+of mobs in the&nbsp;same room as the monster, whose names or display texts match
+the given pattern &nbsp;to the number 
+given.&nbsp;&nbsp;&nbsp;A pattern of * may be used to count all mobs of any name.
+&nbsp;&nbsp;&nbsp;This function counts players, npcs, and the hidden and 
 undetectable.&nbsp; The '==' may also be any of the logical operators from 
 above.</P>
-<P class=MsoNormal>EXAMPLES:<BR><BR><EM>if&nbsp;nummobsroom( &gt; 10)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+<P class=MsoNormal>EXAMPLES:<BR><BR><EM>if&nbsp;nummobsroom(* &gt; 10)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
 </SPAN>mpecho There are more than 10 mobs in this room.<BR>else<BR><SPAN 
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho There are 10 
 or less&nbsp;mobs in the room&nbsp;.<BR>endif</EM></P>

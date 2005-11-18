@@ -20,7 +20,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spell_WordRecall extends StdAbility
+public class Spell_WordRecall extends Spell
 {
     public String ID() { return "Spell_WordRecall"; }
     public String name(){ return "Word of Recall";}

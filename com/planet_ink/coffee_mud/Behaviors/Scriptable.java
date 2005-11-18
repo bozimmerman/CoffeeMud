@@ -2080,10 +2080,33 @@ public class Scriptable extends StdBehavior
 			}
 			case 45: // nummobsroom
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),0));
+                int num=0;
+                int startbit=0;
+                if(lastKnownLocation!=null) 
+                {
+                    num=lastKnownLocation.numInhabitants();
+                    if((Util.numBits(evaluable.substring(y+1,z))>2)
+                    &&(!Util.isInteger(Util.getCleanBit(evaluable.substring(y+1,z),1))))
+                    {
+                        String name=Util.getCleanBit(evaluable.substring(y+1,z),0);
+                        startbit++;
+                        if(!name.equalsIgnoreCase("*"))
+                        {
+                            num=0;
+                            for(int i=0;i<lastKnownLocation.numInhabitants();i++)
+                            {
+                                MOB M=lastKnownLocation.fetchInhabitant(i);
+                                if(EnglishParser.containsString(M.Name(),name)
+                                ||EnglishParser.containsString(M.displayText(),name))
+                                    num++;
+                            }
+                        }
+                    }
+                }
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),startbit));
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),startbit));
 				if(lastKnownLocation!=null)
-					returnable=simpleEval(scripted,""+lastKnownLocation.numInhabitants(),arg2,arg1,"NUMMOBSROOM");
+					returnable=simpleEval(scripted,""+num,arg2,arg1,"NUMMOBSROOM");
 				break;
 			}
 			case 63: // numpcsroom
@@ -3703,8 +3726,24 @@ public class Scriptable extends StdBehavior
 			}
 			case 45: // nummobsroom
 			{
-				if(lastKnownLocation!=null)
-					results.append(""+lastKnownLocation.numInhabitants());
+                int num=0;
+                if(lastKnownLocation!=null)
+                {
+                    num=lastKnownLocation.numInhabitants();
+                    String name=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.cleanBit(evaluable.substring(y+1,z)));
+                    if((name.length()>0)&&(!name.equalsIgnoreCase("*")))
+                    {
+                        num=0;
+                        for(int i=0;i<lastKnownLocation.numInhabitants();i++)
+                        {
+                            MOB M=lastKnownLocation.fetchInhabitant(i);
+                            if(EnglishParser.containsString(M.Name(),name)
+                            ||EnglishParser.containsString(M.displayText(),name))
+                                num++;
+                        }
+                    }
+                }
+				results.append(""+num);
 				break;
 			}
 			case 63: // numpcsroom

@@ -28,8 +28,8 @@ public class Spell_ManaShield extends Spell
     public int quality(){ return BENEFICIAL_SELF;}
     protected int canAffectCode(){return CAN_MOBS;}
     public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
-    protected double protection=0.5;
-    protected String adjective=" a";
+    protected double protection(){return 0.5;}
+    protected String adjective(){return " a";}
 
     public void unInvoke()
     {
@@ -57,7 +57,7 @@ public class Spell_ManaShield extends Spell
         if((msg.amITarget(mob))
            &&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
         {
-            int recovery=(int)Math.round(Util.mul((msg.value()),protection));
+            int recovery=(int)Math.round(Util.mul((msg.value()),protection()));
             if(recovery>mob.curState().getMana())
                 recovery=mob.curState().getMana();
             if(recovery>0)
@@ -93,16 +93,16 @@ public class Spell_ManaShield extends Spell
             // and add it to the affects list of the
             // affected MOB.  Then tell everyone else
             // what happened.
-            FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s)"+adjective+" protective shield.^?");
+            FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s)"+adjective()+" protective shield.^?");
             if(mob.location().okMessage(mob,msg))
             {
                 mob.location().send(mob,msg);
-                mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,Util.capitalizeAndLower(adjective).trim()+" protective aura of mana surrounds <T-NAME>.");
+                mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,Util.capitalizeAndLower(adjective()).trim()+" protective aura of mana surrounds <T-NAME>.");
                 beneficialAffect(mob,target,asLevel,0);
             }
         }
         else
-            return beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke"+adjective+" protective shield, but mess(es) up.");
+            return beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke"+adjective()+" protective shield, but mess(es) up.");
 
 
         // return whether it worked
