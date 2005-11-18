@@ -93,6 +93,7 @@ public class ColorSet extends StdCommand
 						   {"Tells","t"},
 						   {"Room Titles","O"},
 						   {"Room Descriptions","L"},
+                           {"Weather","J"},
 						   {"Doors","d"},
 						   {"Items","I"},
 						   {"MOBs","M"},

@@ -1126,7 +1126,8 @@ public class Quests implements Cloneable, Quest
 					else
 					if(cmd.equals("BEHAVIOR"))
 					{
-						if((E==null)&&(MG==null))
+						if((E==null)
+                        &&(MG==null))
 						{
 							if(!isQuiet)
 								Log.errOut("Quests","Quest '"+name()+"', cannot give behavior, no mob or item set.");
@@ -1146,6 +1147,9 @@ public class Quests implements Cloneable, Quest
 							error=true; break;
 						}
 						Vector toSet=new Vector();
+                        if((MG!=null)&&(M==null)) 
+                            toSet=MG;
+                        else
 						if(E!=null) 
 							toSet.addElement(E);
 						else
@@ -1196,6 +1200,9 @@ public class Quests implements Cloneable, Quest
 							error=true; break;
 						}
 						Vector toSet=new Vector();
+                        if((MG!=null)&&(M==null)) 
+                            toSet=MG;
+                        else
 						if(E!=null) 
 							toSet.addElement(E);
 						else

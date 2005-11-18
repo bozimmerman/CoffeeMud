@@ -272,7 +272,7 @@ public class Export extends StdCommand
 			if(fileNameCode==2) fileName=fileName+File.separatorChar+"mobs";
 			Hashtable found=new Hashtable();
 			if(commandType.equalsIgnoreCase("ROOM"))
-				xml="<MOBS>"+CoffeeMaker.getRoomMobs(mob.location(),files,custom,found).toString()+"</MOBS>";
+				xml="<MOBS>"+CoffeeMaker.getRoomMobs(mob.location(),custom,files,found).toString()+"</MOBS>";
 			else
 			if(commandType.equalsIgnoreCase("AREA"))
 			{
@@ -391,7 +391,8 @@ public class Export extends StdCommand
 			StringBuffer str=new StringBuffer("<FILES>");
 			for(Iterator i=files.iterator();i.hasNext();)
 			{
-				String filename=(String)i.next();
+                Object O=i.next();
+				String filename=(String)O;
 				StringBuffer buf=Resources.getFile("resources"+File.separatorChar+filename);
 				if(buf!=null)
 				{

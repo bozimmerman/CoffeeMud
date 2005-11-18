@@ -34,7 +34,7 @@ public class Chicken extends StdRace
 	public String racialCategory(){return "Avian";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,2 };
+	private static final int[] parts={0 ,2 ,0 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,0 ,0 ,1 ,1 ,0 ,2 };
 	public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,1,2,4,7,15,20,21,22};
