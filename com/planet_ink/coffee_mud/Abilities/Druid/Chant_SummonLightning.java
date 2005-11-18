@@ -62,7 +62,7 @@ public class Chant_SummonLightning extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"A lightning bolt streaks out of the sky!":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly a lightning bolt streaks from the sky!^?")+CommonStrings.msp("lightning.wav",40));
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"^JA lightning bolt streaks out of the sky!^?":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly a lightning bolt streaks from the sky!^?")+CommonStrings.msp("lightning.wav",40));
 			FullMsg msg2=new FullMsg(mob,target,this,verbalCastMask(auto)|CMMsg.TYP_ELECTRIC,null);
 			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 			{

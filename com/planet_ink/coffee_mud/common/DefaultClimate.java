@@ -174,17 +174,17 @@ public class DefaultClimate implements Climate
 	{
 		switch(weatherCode)
 		{
-		case Climate.WEATHER_HAIL: return "The hailstorm stops.";
-		case Climate.WEATHER_CLOUDY: return "The clouds dissipate.";
-		case Climate.WEATHER_THUNDERSTORM: return "The thunderstorm stops.";
-		case Climate.WEATHER_RAIN: return "It stops raining.";
-		case Climate.WEATHER_SNOW: return "It stops snowing.";
-		case Climate.WEATHER_WINDY: return "The wind gusts stop.";
-		case Climate.WEATHER_WINTER_COLD: return "The cold snap is over.";
-		case Climate.WEATHER_HEAT_WAVE: return "The heat wave eases.";
-		case Climate.WEATHER_SLEET: return "The sleet stops pouring down.";
-		case Climate.WEATHER_DUSTSTORM: return "The dust storm ends.";
-		case Climate.WEATHER_DROUGHT: return "The drought is finally over.";
+		case Climate.WEATHER_HAIL: return "^JThe hailstorm stops.^?";
+		case Climate.WEATHER_CLOUDY: return "^JThe clouds dissipate.^?";
+		case Climate.WEATHER_THUNDERSTORM: return "^JThe thunderstorm stops.^?";
+		case Climate.WEATHER_RAIN: return "^JIt stops raining.^?";
+		case Climate.WEATHER_SNOW: return "^JIt stops snowing.^?";
+		case Climate.WEATHER_WINDY: return "^JThe wind gusts stop.^?";
+		case Climate.WEATHER_WINTER_COLD: return "^JThe cold snap is over.^?";
+		case Climate.WEATHER_HEAT_WAVE: return "^JThe heat wave eases.^?";
+		case Climate.WEATHER_SLEET: return "^JThe sleet stops pouring down.^?";
+		case Climate.WEATHER_DUSTSTORM: return "^JThe dust storm ends.^?";
+		case Climate.WEATHER_DROUGHT: return "^JThe drought is finally over.^?";
 		}
 		return "";
 	}
@@ -507,7 +507,7 @@ public class DefaultClimate implements Climate
             desc.append(CommonStrings.msp("wind.wav",10));
 			break;
 		}
-		return desc.toString();
+		return "^J"+desc.toString()+"^?";
 	}
 
 	public String getWeatherDescription(Area A)

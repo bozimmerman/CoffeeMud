@@ -46,7 +46,7 @@ public class Chant_SummonCold extends Chant
 		boolean success=profficiencyCheck(mob,-size,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"The sky changes color!":"^S<S-NAME> chant(s) into the sky for cold!^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"^JThe sky changes color!^?":"^S<S-NAME> chant(s) into the sky for cold!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

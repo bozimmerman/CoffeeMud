@@ -65,7 +65,7 @@ public class Chant_CalmWind extends Chant
 		boolean success=profficiencyCheck(mob,-size,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"^SThe swirling sky changes color!^?":"^S<S-NAME> chant(s) into the swirling sky!^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"^JThe swirling sky changes color!^?":"^S<S-NAME> chant(s) into the swirling sky!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
