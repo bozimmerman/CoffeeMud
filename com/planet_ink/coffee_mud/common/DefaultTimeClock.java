@@ -259,15 +259,15 @@ public class DefaultTimeClock implements TimeClock, Cloneable
 								switch(getTODCode())
 								{
 								case TimeClock.TIME_DAWN:
-									mob.tell("The sun begins to rise in the west.");
+									mob.tell("^JThe sun begins to rise in the west.^?");
 									break;
 								case TimeClock.TIME_DAY:
 									break;
 									//mob.tell("The sun is now shining brightly."); break;
 								case TimeClock.TIME_DUSK:
-									mob.tell("The sun begins to set in the east."); break;
+									mob.tell("^JThe sun begins to set in the east.^?"); break;
 								case TimeClock.TIME_NIGHT:
-									mob.tell("The sun has set and darkness again covers the world."); break;
+									mob.tell("^JThe sun has set and darkness again covers the world.^?"); break;
 								}
 							}
 							else
