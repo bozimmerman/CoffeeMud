@@ -459,6 +459,7 @@ public class StdRace implements Race
 		Body.baseEnvStats().setLevel(mob.baseEnvStats().level());
 		Body.baseEnvStats().setWeight(mob.baseEnvStats().weight());
 		Body.setPlayerCorpse(!mob.isMonster());
+        Body.setTimeOfDeath(System.currentTimeMillis());
 		Body.setMobPKFlag(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL));
 		Body.setName("the body of "+mob.Name());
 		Body.setMobName(mob.Name());
