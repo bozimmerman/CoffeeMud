@@ -79,8 +79,11 @@ public class StdArea implements Area
 
 	public StdArea()
 	{
+        super();
+        CMClass.bumpCounter(CMClass.OBJECT_AREA);
 		DefaultTimeClock.globalClock.setLoadName("GLOBAL");
 	}
+    protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_AREA);}
 	public String name()
 	{
 		if(envStats().newName()!=null) return envStats().newName();
@@ -158,14 +161,15 @@ public class StdArea implements Area
 
 	public Environmental newInstance()
 	{
-		try{
+		try
+        {
 			return (Environmental)this.getClass().newInstance();
 		}
 		catch(Exception e)
 		{
 			Log.errOut(ID(),e);
 		}
-		return new StdArea();
+        return new StdArea();
 	}
 	public boolean isGeneric(){return false;}
 	protected void cloneFix(StdArea E)
@@ -200,6 +204,7 @@ public class StdArea implements Area
 		try
 		{
 			StdArea E=(StdArea)this.clone();
+            CMClass.bumpCounter(CMClass.OBJECT_AREA);
 			E.cloneFix(this);
 			return E;
 

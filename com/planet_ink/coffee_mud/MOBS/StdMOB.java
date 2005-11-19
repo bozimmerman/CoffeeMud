@@ -69,7 +69,39 @@ public class StdMOB implements MOB
 	protected long AgeHours=0;
 	protected int Money=0;
 	protected int attributesBitmap=MOB.ATT_NOTEACH;
-	public long getAgeHours(){return AgeHours;}
+    
+    protected int tickCounter=0;
+    private long lastMoveTime=0;
+    private int movesSinceTick=0;
+    private int manaConsumeCounter=Dice.roll(1,10,0);
+
+    // the core state values
+    public CharState curState=new DefaultCharState();
+    public CharState maxState=new DefaultCharState();
+    public CharState baseState=new DefaultCharState();
+    private long lastTickedDateTime=0;
+    public long lastTickedDateTime(){return lastTickedDateTime;}
+    public void flagVariableEq(){lastTickedDateTime=-2;}
+
+    // mental characteristics
+    protected int Alignment=0;
+    protected String WorshipCharID="";
+    protected String LiegeID="";
+    protected int WimpHitPoint=0;
+    protected int QuestPoint=0;
+    protected int DeityIndex=-1;
+
+    // location!
+    protected Room StartRoom=null;
+    
+    protected MOB victim=null;
+    protected MOB amFollowing=null;
+    protected MOB soulMate=null;
+    private double speeder=0.0;
+    protected int atRange=-1;
+    private long peaceTime=0;
+    
+    public long getAgeHours(){return AgeHours;}
 	public int getPractices(){return Practices;}
 	public int getExperience(){return Experience;}
 	public int getExpNextLevel(){return ExpNextLevel;}
@@ -110,26 +142,6 @@ public class StdMOB implements MOB
         return msg.toString();
     }
 
-	protected int tickCounter=0;
-	private long lastMoveTime=0;
-	private int movesSinceTick=0;
-	private int manaConsumeCounter=Dice.roll(1,10,0);
-
-	// the core state values
-	public CharState curState=new DefaultCharState();
-	public CharState maxState=new DefaultCharState();
-	public CharState baseState=new DefaultCharState();
-	private long lastTickedDateTime=0;
-	public long lastTickedDateTime(){return lastTickedDateTime;}
-	public void flagVariableEq(){lastTickedDateTime=-2;}
-
-	// mental characteristics
-	protected int Alignment=0;
-	protected String WorshipCharID="";
-	protected String LiegeID="";
-	protected int WimpHitPoint=0;
-	protected int QuestPoint=0;
-	protected int DeityIndex=-1;
 	public String getLiegeID(){return LiegeID;}
 	public String getWorshipCharID(){return WorshipCharID;}
 	public int getWimpHitPoint(){return WimpHitPoint;}
@@ -149,7 +161,8 @@ public class StdMOB implements MOB
 
 	public Environmental newInstance()
 	{
-		try{
+		try
+        {
 			return (Environmental)this.getClass().newInstance();
 		}
 		catch(Exception e)
@@ -159,18 +172,10 @@ public class StdMOB implements MOB
 		return new StdMOB();
 	}
 	
-	// location!
-	protected Room StartRoom=null;
 	public Room getStartRoom(){return StartRoom;}
 	public void setStartRoom(Room newVal){StartRoom=newVal;}
 
 
-	protected MOB victim=null;
-	protected MOB amFollowing=null;
-	protected MOB soulMate=null;
-	private double speeder=0.0;
-	protected int atRange=-1;
-	private long peaceTime=0;
 	public long peaceTime(){return peaceTime;}
 
 	public String Name()
@@ -215,9 +220,12 @@ public class StdMOB implements MOB
 	
 	public StdMOB()
 	{
+        super();
+        CMClass.bumpCounter(CMClass.OBJECT_MOB);
 		baseCharStats().setMyRace(CMClass.getRace("Human"));
 		baseEnvStats().setLevel(1);
 	}
+    protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_MOB);}
 
 	protected void cloneFix(MOB E)
 	{
@@ -281,6 +289,7 @@ public class StdMOB implements MOB
 		try
 		{
 			StdMOB E=(StdMOB)this.clone();
+            CMClass.bumpCounter(CMClass.OBJECT_MOB);
 			E.cloneFix(this);
 			return E;
 
@@ -509,6 +518,36 @@ public class StdMOB implements MOB
 			I.destroy();
 			delInventory(I);
 		}
+        CMClass.ThreadEngine().deleteTick(this,-1);
+        clanID=null;
+        baseCharStats=new DefaultCharStats();
+        charStats=baseCharStats();
+        baseEnvStats=new DefaultEnvStats();
+        envStats=baseEnvStats;
+        playerStats=null;
+        location=null;
+        lastLocation=null;
+        riding=null;
+        mySession=null;
+        imageName=null;
+        inventory=new Vector();
+        followers=null;
+        abilities=new Vector();
+        affects=new Vector();
+        behaviors=new Vector();
+        tattoos=new Vector();
+        educations=new Vector();
+        factions=new Hashtable();
+        commandQue=new DVector(2);
+        baseState=new DefaultCharState();
+        maxState=new DefaultCharState();
+        curState=maxState;
+        WorshipCharID="";
+        LiegeID="";
+        StartRoom=null;
+        victim=null;
+        amFollowing=null;
+        soulMate=null;
 	}
 
 	public void removeFromGame()

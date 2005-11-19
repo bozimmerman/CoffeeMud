@@ -19,9 +19,6 @@ public class FieryRoom
     protected int canImproveCode() {
         return Behavior.CAN_ROOMS; }
 
-    public Behavior newInstance() {
-        return new FieryRoom(); }
-
     private String newDisplay = "";
     private String newDesc = "";
     private int directDamage = 10;
@@ -33,7 +30,9 @@ public class FieryRoom
 
     private String[] FireTexts = {"The fire here crackles and burns."};
 
-    public FieryRoom() {
+    public FieryRoom() 
+    {
+        super();
         minTicks = 5; maxTicks = 10; chance = 100;
         tickReset();
     }

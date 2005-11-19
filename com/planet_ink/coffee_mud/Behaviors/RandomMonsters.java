@@ -132,6 +132,7 @@ public class RandomMonsters extends ActiveTicker
 
 	public RandomMonsters()
 	{
+        super();
 		tickReset();
 	}
 

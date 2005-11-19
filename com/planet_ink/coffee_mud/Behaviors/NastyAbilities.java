@@ -28,6 +28,7 @@ public class NastyAbilities extends ActiveTicker
 
 	public NastyAbilities()
 	{
+        super();
 		minTicks=10; maxTicks=20; chance=100;
 		tickReset();
 	}

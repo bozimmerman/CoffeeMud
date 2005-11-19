@@ -95,12 +95,14 @@ public class Property implements Ability, Cloneable
 	protected static final EnvStats envStats=new DefaultEnvStats();
 	public EnvStats envStats(){return envStats;}
 	public EnvStats baseEnvStats(){return envStats;}
+    protected void finalize(){ CMClass.unbumpCounter(CMClass.OBJECT_ABILITY); }
 
 	public void recoverEnvStats(){}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
 	public Environmental newInstance()
 	{
-		try{
+		try
+        {
 			return (Environmental)this.getClass().newInstance();
 		}
 		catch(Exception e)
@@ -110,6 +112,11 @@ public class Property implements Ability, Cloneable
 		return new Property();
 	}
 
+    public Property()
+    {
+        super();
+        CMClass.bumpCounter(CMClass.OBJECT_ABILITY);
+    }
 	private static final String[] CODES={"CLASS","TEXT"};
 	public String[] getStatCodes(){return CODES;}
 	private int getCodeNum(String code){
@@ -148,6 +155,7 @@ public class Property implements Ability, Cloneable
 		try
 		{
 			Property E=(Property)this.clone();
+            CMClass.bumpCounter(CMClass.OBJECT_ABILITY);
 			E.cloneFix(this);
 			return E;
 

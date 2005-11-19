@@ -37,6 +37,7 @@ public class ProtectedCitizen extends ActiveTicker
 
 	public ProtectedCitizen()
 	{
+        super();
 		minTicks=1; maxTicks=3; chance=99; radius=7; maxAssistance=1;
 		tickReset();
 	}

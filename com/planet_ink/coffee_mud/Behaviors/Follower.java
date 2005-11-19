@@ -32,6 +32,7 @@ public class Follower extends ActiveTicker
 	
 	public Follower()
 	{
+        super();
 		minTicks=0;
 		maxTicks=0;
 		direction=-1;

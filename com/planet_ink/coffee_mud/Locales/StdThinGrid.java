@@ -592,6 +592,13 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		if(cleaner!=null) cleaner.tickStatus=Tickable.STATUS_MISC+16;
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
+            if(room.rawDoors()[d]!=null)
+            for(int d2=0;d2<Directions.NUM_DIRECTIONS;d2++)
+                if(room.rawDoors()[d].rawDoors()[d2]==room)
+                {
+                    room.rawDoors()[d].rawDoors()[d2]=null;
+                    room.rawDoors()[d].rawExits()[d2]=null;
+                }
 			room.rawDoors()[d]=null;
 			room.rawExits()[d]=null;
 		}
@@ -729,95 +736,89 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		public boolean tick(Tickable ticking, int tickID)
 		{
 		    tickStatus=Tickable.STATUS_START;
-			Room R=null;
-			StdThinGrid STG=null;
-		    Vector roomsToClear=new Vector();
-		    Vector roomSetsToClear=new Vector();
+            Vector thinGrids=new Vector();
+            Room R=null;
 			try
 			{
 				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 				{
 					R=(Room)e.nextElement();
 					if(R instanceof StdThinGrid)
-					{
-					    STG=(StdThinGrid)R;
-						DVector DV=STG.rooms;
-						if(DV.size()>0)
-						{
-						    tickStatus=Tickable.STATUS_ALIVE;
-                            try
-							{
-								long time=System.currentTimeMillis()-EXPIRATION;
-								for(int r=DV.size()-1;r>=0;r--)
-									if(((Long)DV.elementAt(r,4)).longValue()<time)
-									{
-									    tickStatus=Tickable.STATUS_MISC;
-										R=(Room)DV.elementAt(r,1);
-										if(!cleanRoom(R)) continue;
-									    tickStatus=Tickable.STATUS_MISC+1;
-										boolean cleanOne=true;
-										for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-										{
-											Room R2=R.rawDoors()[d];
-											if((R2!=null)&&(!cleanRoom(R2)))
-											{ cleanOne=false; break;}
-										}
-									    tickStatus=Tickable.STATUS_MISC+2;
-										if(cleanOne)
-										{
-											DV.removeElementAt(r);
-										    roomsToClear.addElement(R);
-										    if(!roomSetsToClear.contains(DV))
-										        roomSetsToClear.addElement(DV);
-										}
-									    tickStatus=Tickable.STATUS_MISC+3;
-									}
-							}
-                            catch(Exception e2){Log.debugOut("StdThinGrid",e2);}
-							tickStatus=Tickable.STATUS_MISC+4;
-						}
-					}
-				}
-			}
-			catch(java.util.NoSuchElementException  nse){}
-			tickStatus=Tickable.STATUS_MISC+5;
-			for(int i=0;i<roomsToClear.size();i++)
-			{
-			    R=(Room)roomsToClear.elementAt(i);
-			    tickStatus=Tickable.STATUS_MISC+6;
-			    clearRoom(R,null,this);
-			    tickStatus=Tickable.STATUS_MISC+7;
-			}
-		    tickStatus=Tickable.STATUS_MISC+8;
-			for(int i=0;i<roomsToClear.size();i++)
-			{
-			    R=(Room)roomsToClear.elementAt(i);
-			    tickStatus=Tickable.STATUS_MISC+9;
-				R.destroyRoom();
-			    tickStatus=Tickable.STATUS_MISC+10;
-			}
-		    tickStatus=Tickable.STATUS_MISC+11;
-		    Room R2=null;
-			for(int i=0;i<roomSetsToClear.size();i++)
-			{
-			    DVector DV=(DVector)roomSetsToClear.elementAt(i);
-			    try
-			    {
-				    int d=0;
-					for(int r=DV.size()-1;r>=0;r--)
-					{
-						R=(Room)DV.elementAt(r,1);
-					    for(d=0;d<Directions.NUM_DIRECTIONS;d++)
-					    {
-					        R2=R.rawDoors()[d];
-					        if(roomsToClear.contains(R2))
-					            R.rawDoors()[d]=null;
-					    }
-					}
-				}
-                catch(Exception e){Log.debugOut("StdThinGrid",e);}
+                        thinGrids.addElement(R);
+                }
             }
-		    tickStatus=Tickable.STATUS_MISC+12;
+            catch(java.util.NoSuchElementException  nse){}
+            StdThinGrid STG=null;
+            DVector thisGridRooms=null;
+            for(Enumeration e=thinGrids.elements();e.hasMoreElements();)
+            {
+			    STG=(StdThinGrid)e.nextElement();
+                thisGridRooms=STG.rooms;
+				if(thisGridRooms.size()==0) continue;
+			    tickStatus=Tickable.STATUS_ALIVE;
+                try
+				{
+                    Vector roomsToClear=new Vector();
+					long time=System.currentTimeMillis()-EXPIRATION;
+					for(int r=thisGridRooms.size()-1;r>=0;r--)
+                    {
+						if(((Long)thisGridRooms.elementAt(r,4)).longValue()<time)
+						{
+						    tickStatus=Tickable.STATUS_MISC;
+							R=(Room)thisGridRooms.elementAt(r,1);
+							if(!cleanRoom(R)) continue;
+						    tickStatus=Tickable.STATUS_MISC+1;
+							boolean cleanOne=true;
+							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+							{
+								Room R2=R.rawDoors()[d];
+								if((R2!=null)&&(!cleanRoom(R2)))
+								{ cleanOne=false; break;}
+							}
+						    tickStatus=Tickable.STATUS_MISC+2;
+							if(cleanOne)
+							{
+                                thisGridRooms.removeElementAt(r);
+                                roomsToClear.addElement(R);
+							}
+						    tickStatus=Tickable.STATUS_MISC+3;
+						}
+                    }
+                    tickStatus=Tickable.STATUS_MISC+4;
+                    Room R2=null;
+                    for(Enumeration i=roomsToClear.elements();i.hasMoreElements();)
+                    {
+                        R=(Room)i.nextElement();
+                        tickStatus=Tickable.STATUS_MISC+5;
+                        for(int r=thisGridRooms.size()-1;r>=0;r--)
+                        {
+                            R2=(Room)thisGridRooms.elementAt(r,1);
+                            for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+                                if(R2.rawDoors()[d]==R)
+                                {
+                                    R2.rawDoors()[d]=null;
+                                    R2.rawExits()[d]=null;
+                                }
+                        }
+                        tickStatus=Tickable.STATUS_MISC+6;
+                        clearRoom(R,null,this);
+                        tickStatus=Tickable.STATUS_MISC+7;
+                    }
+                    tickStatus=Tickable.STATUS_MISC+8;
+                    for(Enumeration i=roomsToClear.elements();i.hasMoreElements();)
+                    {
+                        R=(Room)i.nextElement();
+                        tickStatus=Tickable.STATUS_MISC+9;
+                        // locked up on this line on 11/19/05
+                        R.destroyRoom();
+                        tickStatus=Tickable.STATUS_MISC+10;
+                    }
+                    tickStatus=Tickable.STATUS_MISC+11;
+				}
+                catch(Exception e2){Log.debugOut("StdThinGrid",e2);}
+				tickStatus=Tickable.STATUS_MISC+12;
+			}
+            tickStatus=Tickable.STATUS_MISC+13;
 			CMMap.trimRoomsList();
 			tickStatus=Tickable.STATUS_NOT;
 			return true;

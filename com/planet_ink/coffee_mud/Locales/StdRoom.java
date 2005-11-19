@@ -57,12 +57,16 @@ public class StdRoom
 	protected boolean skyedYet=false;
 	public StdRoom()
 	{
+        super();
+        CMClass.bumpCounter(CMClass.OBJECT_LOCALE);
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
 	}
+    protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_LOCALE);}
 	public Environmental newInstance()
 	{
-		try{
+		try
+        {
 			return (Environmental)this.getClass().newInstance();
 		}
 		catch(Exception e)
@@ -174,6 +178,7 @@ public class StdRoom
 		try
 		{
 			StdRoom R=(StdRoom)this.clone();
+            CMClass.bumpCounter(CMClass.OBJECT_LOCALE);
 			R.cloneFix(this);
 			return R;
 
@@ -310,17 +315,17 @@ public class StdRoom
 	public void clearSky()
 	{
 		if(!skyedYet) return;
-		Room room=rawDoors()[Directions.UP];
-		if(room==null) return;
-		if((room.roomID().length()==0)
-		&&((room instanceof EndlessSky)||(room instanceof EndlessThinSky)))
+		Room skyGridRoom=rawDoors()[Directions.UP];
+		if(skyGridRoom==null) return;
+		if((skyGridRoom.roomID().length()==0)
+		&&((skyGridRoom instanceof EndlessSky)||(skyGridRoom instanceof EndlessThinSky)))
 		{
-			((GridLocale)room).clearGrid(null);
+			((GridLocale)skyGridRoom).clearGrid(null);
 			rawDoors()[Directions.UP]=null;
 			rawExits()[Directions.UP]=null;
-			room.rawDoors()[Directions.DOWN]=null;
-			room.rawExits()[Directions.DOWN]=null;
-			room.destroyRoom();
+            skyGridRoom.rawDoors()[Directions.DOWN]=null;
+            skyGridRoom.rawExits()[Directions.DOWN]=null;
+            skyGridRoom.destroyRoom();
 			skyedYet=false;
 		}
 	}
@@ -623,7 +628,7 @@ public class StdRoom
 			}
 		}
 	}
-
+    
 	public long getTickStatus(){return tickStatus;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -1371,6 +1376,17 @@ public class StdRoom
 		clearSky();
 		CMClass.ThreadEngine().deleteTick(this,-1);
 		CMMap.delRoom(this);
+        imageName=null;
+        myArea=null;
+        envStats=new DefaultEnvStats();
+        baseEnvStats=new DefaultEnvStats();
+        exits=new Exit[Directions.NUM_DIRECTIONS];
+        doors=new Room[Directions.NUM_DIRECTIONS];
+        affects=null;
+        behaviors=null;
+        contents=new Vector();
+        inhabitants=new Vector();
+        gridParent=null;
 	}
 
 	public MOB fetchInhabitant(String inhabitantID)

@@ -322,7 +322,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         double amt=0.0;
         TimeClock TC=(getStartRoom()==null)?DefaultTimeClock.globalClock:getStartRoom().getArea().getTimeObj();
         long time=System.currentTimeMillis()-Util.s_long((String)data.elementAt(PIECE_TIME));
-        long millisPerMudMonth=TC.getDaysInMonth()*MudHost.TIME_UTILTHREAD_SLEEP*TC.getHoursInDay();
+        long millisPerMudMonth=TC.getDaysInMonth()*MudHost.TIME_MILIS_PER_MUDHOUR*TC.getHoursInDay();
         if(time<=0) return amt;
         amt+=Util.mul(Util.mul(Math.floor(Util.div(time,millisPerMudMonth)),holdFeePerPound()),chargeableWeight);
         return amt;
@@ -493,7 +493,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                         if((data!=null)&&(data.size()>1)&&(getStartRoom()!=null))
                         {
                             long time=System.currentTimeMillis()-Util.s_long((String)data.elementAt(PIECE_TIME));
-                            long millisPerMudMonth=TC.getDaysInMonth()*MudHost.TIME_UTILTHREAD_SLEEP*TC.getHoursInDay();
+                            long millisPerMudMonth=TC.getDaysInMonth()*MudHost.TIME_MILIS_PER_MUDHOUR*TC.getHoursInDay();
                             if(time>0)
                             {
                                 int months=(int)Math.round(Math.floor(Util.div(time,millisPerMudMonth)));

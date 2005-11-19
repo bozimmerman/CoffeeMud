@@ -26,6 +26,7 @@ public class GetsAllEquipped extends ActiveTicker
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public GetsAllEquipped()
 	{
+        super();
 		maxTicks=5;minTicks=10;chance=100;
 		tickReset();
 	}

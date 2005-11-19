@@ -27,6 +27,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 		try
 		{
 			StdPlanet E=(StdPlanet)this.clone();
+            CMClass.bumpCounter(CMClass.OBJECT_AREA);
 			E.cloneFix(this);
 			E.setTimeObj(new DefaultTimeClock());
 			return E;

@@ -25,6 +25,7 @@ public class Spell_Siphon extends Spell
 	private static Random randomizer = null;
 	public Spell_Siphon()
 	{
+        super();
 		if(randomizer==null)
 		   randomizer = new Random(System.currentTimeMillis());
 	}

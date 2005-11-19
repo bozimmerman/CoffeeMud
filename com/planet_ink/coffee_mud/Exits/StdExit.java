@@ -34,10 +34,13 @@ public class StdExit implements Exit
 
 	public StdExit()
 	{
+        super();
+        CMClass.bumpCounter(CMClass.OBJECT_EXIT);
 		isOpen=!defaultsClosed();
 		isLocked=defaultsLocked();
 	}
 
+    protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_EXIT);}
 	public String Name(){ return "a walkway";}
 	public boolean hasADoor(){return false;}
 	public boolean hasALock(){return false;}
@@ -102,7 +105,8 @@ public class StdExit implements Exit
 	
 	public Environmental newInstance()
 	{
-		try{
+		try
+        {
 			return (Environmental)this.getClass().newInstance();
 		}
 		catch(Exception e)
@@ -131,6 +135,7 @@ public class StdExit implements Exit
 		try
 		{
 			StdExit E=(StdExit)this.clone();
+            CMClass.bumpCounter(CMClass.OBJECT_EXIT);
 			E.cloneFix(this);
 			return E;
 

@@ -36,6 +36,7 @@ public class Sounder extends StdBehavior
 
 	public Sounder()
 	{
+        super();
 		minTicks=23;
 		maxTicks=23;
 		tickReset();

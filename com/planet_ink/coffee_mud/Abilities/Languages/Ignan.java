@@ -17,7 +17,10 @@ public class Ignan extends Language
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Ignan();}
+	public Environmental newInstance()
+    {	
+        return new Ignan();
+    }
 	public Vector translationVector()
 	{
 		if(wordLists==null)

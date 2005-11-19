@@ -28,6 +28,7 @@ public class WaterCurrents extends ActiveTicker
 
 	public WaterCurrents()
 	{
+        super();
 		minTicks=3;maxTicks=5;chance=75;
 		tickReset();
 	}
@@ -192,6 +193,11 @@ public class WaterCurrents extends ActiveTicker
 	protected static final int[] cost=new int[3];
 	private class AWaterCurrent implements Ability, Cloneable
 	{
+        public AWaterCurrent()
+        {
+            super();
+            CMClass.bumpCounter(CMClass.OBJECT_ABILITY);
+        }
 		public String ID() { return "AWaterCurrent"; }
 		public String name(){ return "a water current";}
 		public String Name(){return name();}
@@ -211,6 +217,7 @@ public class WaterCurrents extends ActiveTicker
 		public long flags(){return Ability.FLAG_TRANSPORTING;}
 		public long getTickStatus(){return Tickable.STATUS_NOT;}
 		public int usageType(){return 0;}
+        protected void finalize(){ CMClass.unbumpCounter(CMClass.OBJECT_ABILITY); }
 
 		public void setName(String newName){}
 		public void setDescription(String newDescription){}
@@ -267,7 +274,8 @@ public class WaterCurrents extends ActiveTicker
 		public void setBaseEnvStats(EnvStats newBaseEnvStats){}
 		public Environmental newInstance()
 		{
-			try{
+			try
+            {
 				return (Environmental)this.getClass().newInstance();
 			}
 			catch(Exception e)
@@ -314,6 +322,7 @@ public class WaterCurrents extends ActiveTicker
 			try
 			{
 			    AWaterCurrent E=(AWaterCurrent)this.clone();
+                CMClass.bumpCounter(CMClass.OBJECT_ABILITY);
 				E.cloneFix(this);
 				return E;
 

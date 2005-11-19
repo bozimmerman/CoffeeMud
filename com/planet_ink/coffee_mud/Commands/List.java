@@ -938,7 +938,7 @@ public class List extends StdCommand
 		/*45*/{"EVILDEEDS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
         /*46*/{"FACTIONS","LISTADMIN","CMDFACTIONS"},
         /*47*/{"MATERIALS","CMDITEMS","CMDROOMS","CMDAREAS"},
-        /*48*/{"",""},
+        /*48*/{"OBJCOUNTERS","LISTADMIN"},
         /*49*/{"POLLS","POLLS","LISTADMIN"}
 	};
 
@@ -1069,7 +1069,7 @@ public class List extends StdCommand
 		case 45: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.EVILDEED).toString()); break;
         case 46: s.wraplessPrintln(Factions.listFactions()); break;
         case 47: s.wraplessPrintln(listMaterials()); break;
-        case 48: break;
+        case 48: s.println("\n\r^xCounter Report:^.^N\n\r"+CMClass.getCounterReport()); break;
         case 49: listPolls(mob,commands); break;
         default:
 			s.println("List?!");

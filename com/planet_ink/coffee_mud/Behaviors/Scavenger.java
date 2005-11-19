@@ -27,6 +27,7 @@ public class Scavenger extends ActiveTicker
 
 	public Scavenger()
 	{
+        super();
 		minTicks=10; maxTicks=30; chance=25;
 		tickReset();
 	}

@@ -26,6 +26,7 @@ public class Decay extends ActiveTicker
 	protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
 	public Decay()
 	{
+        super();
 		minTicks=50;maxTicks=50;chance=100;
 		tickReset();
 	}

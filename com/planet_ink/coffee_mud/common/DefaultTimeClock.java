@@ -202,7 +202,7 @@ public class DefaultTimeClock implements TimeClock, Cloneable
         try
         {
             TimeClock C=(TimeClock)this.clone();
-            long diff=(System.currentTimeMillis()-millis)/MudHost.TIME_UTILTHREAD_SLEEP;
+            long diff=(System.currentTimeMillis()-millis)/MudHost.TIME_MILIS_PER_MUDHOUR;
             C.tickTock((int)diff);
             return C;
         }
@@ -230,7 +230,7 @@ public class DefaultTimeClock implements TimeClock, Cloneable
         numMudHours+=(getMonth()-C.getMonth())*(getHoursInDay()*getDaysInMonth());
         numMudHours+=(getDayOfMonth()-C.getDayOfMonth())*getHoursInDay();
         numMudHours+=(getTimeOfDay()-C.getTimeOfDay());
-        return numMudHours*MudHost.TIME_UTILTHREAD_SLEEP;
+        return numMudHours*MudHost.TIME_MILIS_PER_MUDHOUR;
     }
     
 	public void raiseLowerTheSunEverywhere()

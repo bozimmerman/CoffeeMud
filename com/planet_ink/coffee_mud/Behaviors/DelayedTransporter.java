@@ -29,6 +29,7 @@ public class DelayedTransporter extends ActiveTicker
 
 	public DelayedTransporter()
 	{
+        super();
 		minTicks=5;maxTicks=5;chance=100;
 		tickReset();
 	}

@@ -52,10 +52,13 @@ public class StdItem implements Item
 
 	public StdItem()
 	{
+        super();
+        CMClass.bumpCounter(CMClass.OBJECT_ITEM);
 		baseEnvStats().setWeight(1);
 		baseEnvStats().setArmor(0);
 	}
-	public boolean isGeneric(){return false;}
+    protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_ITEM);}
+    public boolean isGeneric(){return false;}
 	public String Name(){ return name;}
 	public void setName(String newName){name=newName;}
 	public String name()
@@ -116,7 +119,8 @@ public class StdItem implements Item
 	}
 	public Environmental newInstance()
 	{
-		try{
+		try
+        {
 			return (Environmental)this.getClass().newInstance();
 		}
 		catch(Exception e)
@@ -153,6 +157,7 @@ public class StdItem implements Item
 		try
 		{
 			StdItem E=(StdItem)this.clone();
+            CMClass.bumpCounter(CMClass.OBJECT_ITEM);
 			E.cloneFix(this);
 			return E;
 
@@ -1250,6 +1255,13 @@ public class StdItem implements Item
 				mob.delInventory(this);
 			}
 		}
+        myContainer=null;
+        imageName=null;
+        secretIdentity=null;
+        owner=null;
+        affects=null;
+        behaviors=null;
+        baseEnvStats=new DefaultEnvStats();
 		recoverEnvStats();
 	}
 

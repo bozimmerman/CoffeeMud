@@ -27,6 +27,7 @@ public class CorpseEater extends ActiveTicker
     private boolean EatItems=false;
 	public CorpseEater()
 	{
+        super();
 		minTicks=5; maxTicks=20; chance=75;
 		tickReset();
 	}

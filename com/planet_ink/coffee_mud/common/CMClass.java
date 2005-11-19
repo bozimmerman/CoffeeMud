@@ -41,12 +41,32 @@ public class CMClass extends ClassLoader
 	private static Hashtable webMacros=new Hashtable();
 	public static int longestWebMacro=-1;
 	private static Hashtable CommandWords=new Hashtable();
-	private static final String[] names={
+    public static final int OBJECT_RACE=0;
+    public static final int OBJECT_CHARCLASS=1;
+    public static final int OBJECT_MOB=2;
+    public static final int OBJECT_ABILITY=3;
+    public static final int OBJECT_LOCALE=4;
+    public static final int OBJECT_EXIT=5;
+    public static final int OBJECT_ITEM=6;
+    public static final int OBJECT_BEHAVIOR=7;
+    public static final int OBJECT_CLAN=8;
+    public static final int OBJECT_WEAPON=9;
+    public static final int OBJECT_ARMOR=10;
+    public static final int OBJECT_MISCMAGIC=11;
+    public static final int OBJECT_AREA=12;
+    public static final int OBJECT_COMMAND=13;
+    public static final int OBJECT_CLANITEMS=14;
+    public static final int OBJECT_MISCTECH=15;
+    public static final int OBJECT_WEBMACROS=16;
+    public static final int OBJECT_TOTAL=17;
+    public static final long[] OBJECT_CREATIONS=new long[OBJECT_TOTAL];
+    public static final long[] OBJECT_DESTRUCTIONS=new long[OBJECT_TOTAL];
+    public static final String[] OBJECT_DESCS={
 		"RACE","CHARCLASS","MOB","ABILITY","LOCALE","EXIT","ITEM","BEHAVIOR",
 		"CLAN","WEAPON","ARMOR","MISCMAGIC","AREA","COMMAND","CLANITEMS",
 		"MISCTECH","WEBMACROS"
-		};
-	private static final String[] ancestors={
+	};
+	private static final String[] OBJECT_ANCESTORS={
 		"com.planet_ink.coffee_mud.interfaces.Race",
 		"com.planet_ink.coffee_mud.interfaces.CharClass",
 		"com.planet_ink.coffee_mud.interfaces.MOB",
@@ -66,6 +86,8 @@ public class CMClass extends ClassLoader
 		"com.planet_ink.coffee_mud.interfaces.WebMacro"
 		};
 
+    public static void bumpCounter(int which){OBJECT_CREATIONS[which]++;}
+    public static void unbumpCounter(int which){OBJECT_DESTRUCTIONS[which]++;}
 	public static Enumeration races(){return races.elements();}
 	public static Race randomRace(){return (Race)races.elementAt((int)Math.round(Math.floor(Math.random()*new Integer(races.size()).doubleValue())));}
 	public static Enumeration charClasses(){return charClasses.elements();}
@@ -94,6 +116,14 @@ public class CMClass extends ClassLoader
 		dbEngine=newEngine;
 		thEngine=newThreader;
 	}
+    public static String getCounterReport()
+    {
+        StringBuffer str=new StringBuffer("");
+        for(int i=0;i<OBJECT_TOTAL;i++)
+            if(OBJECT_CREATIONS[i]>0)
+                str.append(Util.padRight(OBJECT_DESCS[i],12)+": Created: "+OBJECT_CREATIONS[i]+", Destroyed: "+OBJECT_DESTRUCTIONS[i]+", Remaining: "+(OBJECT_CREATIONS[i]-OBJECT_DESTRUCTIONS[i])+"\n");
+        return str.toString();
+    }
 	public static DatabaseEngine DBEngine(){return dbEngine;}
 	public static ThreadEngine ThreadEngine(){return thEngine;}
 	
@@ -250,9 +280,9 @@ public class CMClass extends ClassLoader
 
 	public static int classCode(String name)
 	{
-		for(int i=0;i<names.length;i++)
+		for(int i=0;i<OBJECT_DESCS.length;i++)
 		{
-			if(names[i].toUpperCase().startsWith(name.toUpperCase()))
+			if(OBJECT_DESCS[i].toUpperCase().startsWith(name.toUpperCase()))
 				return i;
 		}
 		return -1;
@@ -283,7 +313,7 @@ public class CMClass extends ClassLoader
 		}
 		if(set==null) return false;
 
-		loadListToObj(set,path,"",(path.indexOf(File.separatorChar)>0),ancestors[code]);
+		loadListToObj(set,path,"",(path.indexOf(File.separatorChar)>0),OBJECT_ANCESTORS[code]);
 		
 		switch(code)
 		{

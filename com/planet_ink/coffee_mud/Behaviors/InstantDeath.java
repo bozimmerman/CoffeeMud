@@ -25,6 +25,7 @@ public class InstantDeath extends ActiveTicker
 	public String ID(){return "InstantDeath";}
 	public InstantDeath()
 	{
+        super();
 		minTicks=1;maxTicks=1;chance=100;
 		tickReset();
 	}

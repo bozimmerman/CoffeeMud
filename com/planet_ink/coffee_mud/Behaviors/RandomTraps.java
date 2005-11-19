@@ -42,6 +42,7 @@ public class RandomTraps extends ActiveTicker
 
 	public RandomTraps()
 	{
+        super();
 		tickReset();
 	}
 

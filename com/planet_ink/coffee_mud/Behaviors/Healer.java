@@ -28,6 +28,7 @@ public class Healer extends ActiveTicker
 
 	public Healer()
 	{
+        super();
 		minTicks=10; maxTicks=20; chance=100;
 		tickReset();
 		if(healingVector.size()==0)

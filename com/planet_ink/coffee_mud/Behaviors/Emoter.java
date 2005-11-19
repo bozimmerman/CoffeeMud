@@ -27,6 +27,7 @@ public class Emoter extends ActiveTicker
 	private int expires=0;
 	public Emoter()
 	{
+        super();
 		minTicks=10;maxTicks=30;chance=50;expires=0;
 		tickReset();
 	}

@@ -26,6 +26,7 @@ public class FightFlee extends ActiveTicker
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public FightFlee()
 	{
+        super();
 		minTicks=1;maxTicks=1;chance=33;
 		tickReset();
 	}

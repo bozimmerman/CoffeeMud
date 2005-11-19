@@ -27,6 +27,7 @@ public class StdTimeZone extends StdArea
 		try
 		{
 		    StdTimeZone E=(StdTimeZone)this.clone();
+            CMClass.bumpCounter(CMClass.OBJECT_AREA);
 			E.cloneFix(this);
 			E.setTimeObj(new DefaultTimeClock());
 			return E;

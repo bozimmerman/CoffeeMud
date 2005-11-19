@@ -71,11 +71,15 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 
 	public StdAbility()
 	{
+        super();
+        CMClass.bumpCounter(CMClass.OBJECT_ABILITY);
 	}
+    protected void finalize(){ CMClass.unbumpCounter(CMClass.OBJECT_ABILITY); }
 
 	public Environmental newInstance()
 	{
-		try{
+		try
+        {
 			return (Environmental)this.getClass().newInstance();
 		}
 		catch(Exception e)
@@ -423,6 +427,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 		try
 		{
 			StdAbility E=(StdAbility)this.clone();
+            CMClass.bumpCounter(CMClass.OBJECT_ABILITY);
 			E.cloneFix(this);
 			return E;
 

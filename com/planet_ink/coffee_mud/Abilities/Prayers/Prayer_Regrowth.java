@@ -37,6 +37,7 @@ public class Prayer_Regrowth extends Prayer
 
 	public Prayer_Regrowth()
 	{
+        super();
 		if(limbsToRegrow==null)
 		{
 			limbsToRegrow = new Vector();

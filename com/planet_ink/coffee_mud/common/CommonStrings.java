@@ -396,8 +396,8 @@ public class CommonStrings extends Scriptable
 									Util.s_int(page.getStr("DUSKHR")),
 									Util.s_int(page.getStr("NIGHTHR")));
 
-		setIntVar(SYSTEMI_TICKSPERMUDDAY,""+((MudHost.TIME_UTILTHREAD_SLEEP*DefaultTimeClock.globalClock.getHoursInDay()/MudHost.TICK_TIME)));
-		setIntVar(SYSTEMI_TICKSPERMUDMONTH,""+""+((MudHost.TIME_UTILTHREAD_SLEEP*DefaultTimeClock.globalClock.getHoursInDay()*DefaultTimeClock.globalClock.getDaysInMonth()/MudHost.TICK_TIME)));
+		setIntVar(SYSTEMI_TICKSPERMUDDAY,""+((MudHost.TIME_MILIS_PER_MUDHOUR*DefaultTimeClock.globalClock.getHoursInDay()/MudHost.TICK_TIME)));
+		setIntVar(SYSTEMI_TICKSPERMUDMONTH,""+""+((MudHost.TIME_MILIS_PER_MUDHOUR*DefaultTimeClock.globalClock.getHoursInDay()*DefaultTimeClock.globalClock.getDaysInMonth()/MudHost.TICK_TIME)));
 		CMSecurity.setDisableVars(page.getStr("DISABLE"));
 		if(page.getStr("DISABLE").trim().length()>0)
 			Log.sysOut("MUD","Disabled subsystems: "+page.getStr("DISABLE"));

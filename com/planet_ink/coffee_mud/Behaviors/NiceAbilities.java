@@ -26,6 +26,7 @@ public class NiceAbilities extends ActiveTicker
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public NiceAbilities()
 	{
+        super();
 		minTicks=10; maxTicks=20; chance=100;
 		tickReset();
 	}

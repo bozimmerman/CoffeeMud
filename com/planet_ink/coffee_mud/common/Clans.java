@@ -586,10 +586,10 @@ public class Clans implements Clan, Tickable
 		          +"-----------------------------------------------------------------\n\r"
 				  +"^xType            :^.^N "+Util.capitalizeAndLower(Clan.GVT_DESCS[getGovernment()])+"\n\r"
 				  +"^xQualifications  :^.^N "+((getAcceptanceSettings().length()==0)?"Anyone may apply":MUDZapper.zapperDesc(getAcceptanceSettings()))+"\n\r");
+        msg.append("^xExp. Tax Rate   :^.^N "+((int)Math.round(getTaxes()*100))+"%\n\r");
 		if((mob.getClanID().equalsIgnoreCase(ID()))
 		||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
 		{
-			msg.append("^xExp. Tax Rate   :^.^N "+((int)Math.round(getTaxes()*100))+"%\n\r");
 			msg.append("^xExperience Pts. :^.^N "+getExp()+"\n\r");
 		}
 		msg.append("^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_BOSS,true,true),16)+":^.^N "+crewList(Clan.POS_BOSS)+"\n\r"

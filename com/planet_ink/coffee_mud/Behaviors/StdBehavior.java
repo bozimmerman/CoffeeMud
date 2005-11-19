@@ -6,10 +6,6 @@ import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
-/**
- * something that is affected by, or affects
- * the environment around them.
- */
 /* 
    Copyright 2000-2005 Bo Zimmerman
 
@@ -35,12 +31,19 @@ public class StdBehavior implements Behavior
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
     protected boolean isBorrowedBehavior=false;
 
+    public StdBehavior()
+    {
+        super();
+        CMClass.bumpCounter(CMClass.OBJECT_BEHAVIOR);
+    }
+    
 	protected String parms="";
 
 	/** return a new instance of the object*/
 	public Behavior newInstance()
 	{
-		try{
+		try
+        {
 			return (Behavior)this.getClass().newInstance();
 		}
 		catch(Exception e)
@@ -54,6 +57,7 @@ public class StdBehavior implements Behavior
 		try
 		{
             Behavior B=(Behavior)this.clone();
+            CMClass.bumpCounter(CMClass.OBJECT_BEHAVIOR);
             B.setParms(getParms());
             return B;
 		}
@@ -66,6 +70,7 @@ public class StdBehavior implements Behavior
 	{
 
 	}
+    protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_BEHAVIOR);}
     public void setBorrowed(boolean truefalse){isBorrowedBehavior=truefalse;}
     public boolean isBorrowed(){return isBorrowedBehavior;}
 	public boolean modifyBehavior(Environmental hostObj, MOB mob, Object O)

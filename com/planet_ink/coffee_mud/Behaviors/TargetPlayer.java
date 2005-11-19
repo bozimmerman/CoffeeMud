@@ -28,10 +28,10 @@ public class TargetPlayer extends ActiveTicker
 {
 	public String ID(){return "TargetPlayer";}
 	protected int canImproveCode() {return Behavior.CAN_MOBS;}
-	public Behavior newInstance() { return new TargetPlayer(); }
 
 	public TargetPlayer() 
 	{
+        super();
 	    minTicks=3; maxTicks=12; chance=100;
 		tickReset();
 	}
