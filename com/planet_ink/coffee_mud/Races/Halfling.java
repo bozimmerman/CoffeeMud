@@ -59,6 +59,7 @@ public class Halfling extends StdRace
 		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)-1);
 		affectableStats.setStat(CharStats.MAX_STRENGTH_ADJ,affectableStats.getStat(CharStats.MAX_STRENGTH_ADJ)-1);
 		affectableStats.setStat(CharStats.SAVE_PARALYSIS,affectableStats.getStat(CharStats.SAVE_PARALYSIS)+10);
+        affectableStats.setStat(CharStats.SAVE_DETECTION,affectableStats.getStat(CharStats.SAVE_DETECTION)+20);
 	}
 	public Vector outfit()
 	{

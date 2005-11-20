@@ -240,16 +240,10 @@ public class StdExit implements Exit
 		case CMMsg.TYP_ENTER:
 			if((hasADoor())&&(!isOpen())&&(mob.envStats().height()>=0))
 			{
-				if((!Sense.canBeSeenBy(this,mob))
-				&&(Sense.canSee(mob))
-				&&(!Sense.isGlowing(this))
-				&&((Sense.isHidden(this)&&(!Sense.canSeeHidden(mob)))
-					||(Sense.isInvisible(this)&&(!Sense.canSeeInvisible(mob)))))
-				{
+				if(!Sense.canBeSeenBy(this,mob))
 					mob.tell("You can't go that way.");
-					return false;
-				}
-				mob.tell("The "+doorName()+" is "+closeWordPastTense()+".");
+                else
+    				mob.tell("The "+doorName()+" is "+closeWordPastTense()+".");
 				return false;
 			}
 			if((Sense.isFlying(this))
