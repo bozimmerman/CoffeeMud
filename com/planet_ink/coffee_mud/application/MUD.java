@@ -983,11 +983,10 @@ public class MUD extends Thread implements MudHost
 					((MUD)mudThreads.firstElement()).join();
 
 				System.gc();
-                try{Thread.sleep(2000);}catch(Exception e){}
+                try{Thread.sleep(1000);}catch(Exception e){}
 				System.runFinalization();
-                try{Thread.sleep(2000);}catch(Exception e){}
-
-                Log.sysOut("MUD","Final Object Report:\n\r"+CMClass.getCounterReport());
+                try{Thread.sleep(1000);}catch(Exception e){}
+                
 				if(activeCount(Thread.currentThread().getThreadGroup())>1)
 				{
 					try{ Thread.sleep(1000);}catch(Exception e){}

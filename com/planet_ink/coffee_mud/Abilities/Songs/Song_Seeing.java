@@ -26,6 +26,14 @@ public class Song_Seeing extends Song
 	public String ID() { return "Song_Seeing"; }
 	public String name(){ return "Seeing";}
 	public int quality(){ return OK_OTHERS;}
+    
+    
+    public void affectCharStats(MOB affected, CharStats affectableStats)
+    {
+        super.affectCharStats(affected,affectableStats);
+        affectableStats.setStat(CharStats.SAVE_OVERLOOKING,affected.envStats().level()+100+affectableStats.getStat(CharStats.SAVE_OVERLOOKING));
+    }
+    
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

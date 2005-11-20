@@ -34,10 +34,16 @@ public class Prayer_SenseHidden extends Prayer
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
-
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
 	}
-
+    
+    public void affectCharStats(MOB affected, CharStats affectableStats)
+    {
+        super.affectCharStats(affected,affectableStats);
+        affectableStats.setStat(CharStats.SAVE_OVERLOOKING,affected.envStats().level()+100+affectableStats.getStat(CharStats.SAVE_OVERLOOKING));
+    }
+    
+    
 	public void unInvoke()
 	{
 		// undo the affects of this spell

@@ -30,7 +30,15 @@ public class Thief_Detection extends ThiefSkill
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"DETECT","DETECTION"};
 	public String[] triggerStrings(){return triggerStrings;}
-
+	private Room lastRoom=null;
+    private int bonusThisRoom=0;
+    
+    public void affectCharStats(MOB affected, CharStats affectableStats)
+    {
+        super.affectCharStats(affected,affectableStats);
+        affectableStats.setStat(CharStats.SAVE_OVERLOOKING,bonusThisRoom+profficiency()+affectableStats.getStat(CharStats.SAVE_OVERLOOKING));
+    }
+    
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -39,10 +47,19 @@ public class Thief_Detection extends ThiefSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)
-		&&(affected instanceof MOB)
-		&&(!Sense.aliveAwakeMobile((MOB)affected,true)))
-		{ unInvoke(); return false;}
+		if((affected!=null)&&(affected instanceof MOB))
+        {
+    		if(!Sense.aliveAwakeMobile((MOB)affected,true))
+    		{ unInvoke(); return false;}
+            if(((MOB)affected).location()!=lastRoom)
+            {
+                lastRoom=((MOB)affected).location();
+                bonusThisRoom=0;
+            }
+            else
+            if(bonusThisRoom<affected.envStats().level())
+                bonusThisRoom+=5;
+        }
 		return true;
 	}
 

@@ -29,6 +29,11 @@ public class Chant_Dragonsight extends Chant
 	public int quality(){ return BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
+    public void affectCharStats(MOB affected, CharStats affectableStats)
+    {
+        super.affectCharStats(affected,affectableStats);
+        affectableStats.setStat(CharStats.SAVE_OVERLOOKING,affected.envStats().level()+50+affectableStats.getStat(CharStats.SAVE_OVERLOOKING));
+    }
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

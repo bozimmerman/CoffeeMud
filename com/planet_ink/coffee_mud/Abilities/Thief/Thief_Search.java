@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -31,6 +32,32 @@ public class Thief_Search extends ThiefSkill
 	private static final String[] triggerStrings = {"SEARCH"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+    private Room lastRoom=null;
+    private int bonusThisRoom=0;
+    
+    public void affectCharStats(MOB affected, CharStats affectableStats)
+    {
+        super.affectCharStats(affected,affectableStats);
+        affectableStats.setStat(CharStats.SAVE_OVERLOOKING,bonusThisRoom+profficiency()+affectableStats.getStat(CharStats.SAVE_OVERLOOKING));
+    }
+    
+    public boolean tick(Tickable ticking, int tickID)
+    {
+        if((affected!=null)&&(affected instanceof MOB))
+        {
+            if(!Sense.aliveAwakeMobile((MOB)affected,true))
+            { unInvoke(); return false;}
+            if(((MOB)affected).location()!=lastRoom)
+            {
+                lastRoom=((MOB)affected).location();
+                bonusThisRoom=0;
+            }
+            else
+            if(bonusThisRoom<affected.envStats().level())
+                bonusThisRoom+=5;
+        }
+        return true;
+    }
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

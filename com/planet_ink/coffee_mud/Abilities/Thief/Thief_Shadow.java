@@ -133,6 +133,20 @@ public class Thief_Shadow extends ThiefSkill
 		return true;
 	}
 
+    public void affectCharStats(MOB affected, CharStats affectableStats)
+    {
+        super.affectCharStats(affected,affectableStats);
+        if((shadowing!=null)&&(shadowing.location()==affected.location()))
+            affectableStats.setStat(CharStats.SAVE_DETECTION,
+                    25
+                    +profficiency()
+                    +affectableStats.getStat(CharStats.SAVE_DETECTION));
+        else
+            affectableStats.setStat(CharStats.SAVE_DETECTION,
+                    +profficiency()
+                    +affectableStats.getStat(CharStats.SAVE_DETECTION));
+    }
+    
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

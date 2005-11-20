@@ -27,6 +27,13 @@ public class Searching extends CommonSkill
 	private static final String[] triggerStrings = {"SEARCH","SEARCHING"};
 	public String[] triggerStrings(){return triggerStrings;}
 	private Room searchRoom=null;
+    private int bonusThisRoom=0;
+    
+    public void affectCharStats(MOB affected, CharStats affectableStats)
+    {
+        super.affectCharStats(affected,affectableStats);
+        affectableStats.setStat(CharStats.SAVE_OVERLOOKING,bonusThisRoom+profficiency()+affectableStats.getStat(CharStats.SAVE_OVERLOOKING));
+    }
 
 	private boolean success=false;
 	public Searching()
@@ -48,9 +55,18 @@ public class Searching extends CommonSkill
 					StringBuffer str=new StringBuffer("You get distracted from your search.\n\r");
 					commonTell(mob,str.toString());
 					unInvoke();
+                    return super.tick(ticking,tickID);
 				}
 
 			}
+            if(((MOB)affected).location()!=searchRoom)
+            {
+                searchRoom=((MOB)affected).location();
+                bonusThisRoom=0;
+            }
+            else
+            if(bonusThisRoom<affected.envStats().level())
+                bonusThisRoom+=5;
 		}
 		return super.tick(ticking,tickID);
 	}
