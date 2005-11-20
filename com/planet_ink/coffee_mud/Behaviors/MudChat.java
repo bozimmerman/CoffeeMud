@@ -437,6 +437,7 @@ public class MudChat extends StdBehavior
 							{
 								if(myResponses==null) myResponses=new Vector();
 								myResponses.addAll(possResponses);
+                                break;
 							}
 						}
 					}
@@ -485,6 +486,7 @@ public class MudChat extends StdBehavior
 							{
 								if(myResponses==null) myResponses=new Vector();
 								myResponses.addAll(possResponses);
+                                break;
 							}
 						}
 					}

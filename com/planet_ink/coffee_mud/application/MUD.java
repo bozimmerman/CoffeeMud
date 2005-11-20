@@ -987,31 +987,6 @@ public class MUD extends Thread implements MudHost
 				System.runFinalization();
                 try{Thread.sleep(2000);}catch(Exception e){}
 
-                System.gc();
-                try{Thread.sleep(2000);}catch(Exception e){}
-                System.runFinalization();
-                try{Thread.sleep(2000);}catch(Exception e){}
-
-                System.gc();
-                try{Thread.sleep(2000);}catch(Exception e){}
-                System.runFinalization();
-                try{Thread.sleep(2000);}catch(Exception e){}
-
-                System.gc();
-                try{Thread.sleep(2000);}catch(Exception e){}
-                System.runFinalization();
-                try{Thread.sleep(2000);}catch(Exception e){}
-
-                System.gc();
-                try{Thread.sleep(2000);}catch(Exception e){}
-                System.runFinalization();
-                try{Thread.sleep(2000);}catch(Exception e){}
-
-                System.gc();
-                try{Thread.sleep(2000);}catch(Exception e){}
-                System.runFinalization();
-                try{Thread.sleep(2000);}catch(Exception e){}
-
                 Log.sysOut("MUD","Final Object Report:\n\r"+CMClass.getCounterReport());
 				if(activeCount(Thread.currentThread().getThreadGroup())>1)
 				{

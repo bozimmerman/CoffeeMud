@@ -6616,8 +6616,10 @@ public class Scriptable extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
+        if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+            return false;
+        
 		MOB mob=getScriptableMOB(ticking);
-
 		Item defaultItem=(ticking instanceof Item)?(Item)ticking:null;
 
 		if((mob==null)||(lastKnownLocation==null))

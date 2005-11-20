@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.MOBS;
+import java.io.*;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.utils.*;
@@ -544,10 +545,10 @@ public class StdMOB implements MOB
         curState=maxState;
         WorshipCharID="";
         LiegeID="";
-        StartRoom=null;
         victim=null;
         amFollowing=null;
         soulMate=null;
+        StartRoom=null;
 	}
 
 	public void removeFromGame()
@@ -611,6 +612,7 @@ public class StdMOB implements MOB
 	public void bringToLife(Room newLocation, boolean resetStats)
 	{
 		amDead=false;
+        Room origStartRoom=getStartRoom();
 		if((miscText!=null)&&(resetStats)&&(isGeneric()))
 		{
 			if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
@@ -645,7 +647,14 @@ public class StdMOB implements MOB
 			A=fetchAbility(a);
 			if(A!=null) A.autoInvocation(this);
 		}
-        
+        if(location()==null)
+        {
+            Log.errOut("StdMOB","Object: "+this+", was probably destroyed very recently! Life call details below:");
+            try{int x=4/0;x=x/0;}catch(Exception e){Log.errOut("StdMOB",e);}
+            Log.errOut("StdMOB","Original Start room was: "+CMMap.getExtendedRoomID(origStartRoom));
+            destroy();
+            return;
+        }
 		location().recoverRoomStats();
 		if((!isGeneric())&&(resetStats))
 			resetToMaxState();

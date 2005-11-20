@@ -48,7 +48,8 @@ public class MudList implements Serializable
     }
 
     public void addMud(Mud mud) {
-        if( mud.mud_name == null ) {
+        if(( mud.mud_name == null )||( mud.mud_name.length() == 0 )) 
+        {
             return;
         }
         { // temp hack
