@@ -61,6 +61,12 @@ public class Prop_Hidden extends Property
 		return;
 	}
 
+    public void affectCharStats(MOB affected, CharStats affectableStats)
+    {
+        super.affectCharStats(affected,affectableStats);
+        affectableStats.setStat(CharStats.SAVE_DETECTION,100+affectableStats.getStat(CharStats.SAVE_DETECTION));
+    }
+    
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(ticksSinceLoss<9999)
