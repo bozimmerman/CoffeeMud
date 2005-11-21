@@ -1243,8 +1243,8 @@ useless. </P>
   <TR>
     <TD>NUMMOBSROOM([*/name])</TD>
     <TD>Returns the number of mobs in the same room as 
-      the scripted monster, including the monster, whose name
-      or display text matches the name pattern.</TD></TR>
+      the scripted monster, including the monster, whose name or display text 
+      matches the name pattern.</TD></TR>
   <TR>
     <TD>NUMPCSROOM()</TD>
     <TD>Returns the number of pcs in the same room as the 
@@ -1428,8 +1428,67 @@ true, while the second statement would evaluate to false.&nbsp;This is because
 the parenthesis force the sex and isevil checks to be evaulated first in the 
 second example.</P>
 <P class=MsoNormal>Please see the section below on 
-functions for a list of the conditional functions and their 
-uses.</P></FONT></FONT></SPAN><FONT color=black><SPAN 
+functions for a list of the conditional functions and their uses.</P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">&lt;SCRIPT&gt;</SPAN></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
+color=#000000 size=3>This command denotes the beginning of a section of ECMA 
+Javascript.&nbsp; Any lines of text following this command, and before the 
+adjoining &lt;/SCRIPT&gt; command will be assumed to be executable 
+Javascript.&nbsp; These commands can only be embedded in standard event handlers 
+as described above.&nbsp; </FONT></SPAN></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
+color=#000000 size=3>Javascript is a wholly different language than the standard 
+Scriptable/MOBPROG language described in this document.&nbsp; Please see the web 
+site <A 
+href="http://www.mozilla.org/js/">http://www.mozilla.org/js/</A>&nbsp;for more 
+information on this language.&nbsp; </FONT></SPAN></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"></SPAN><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
+color=#000000 size=3>If you are familiar with Javascript, there are a few minor 
+details to be aware of regarding CoffeeMuds integration of the Rhino interpretor 
+from Mozilla.&nbsp; O</FONT></SPAN><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
+color=#000000 size=3>ne is that, unlike the Javascript you may be used to, this 
+one requires that all variables be declared.&nbsp; </FONT></SPAN><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
+color=#000000 size=3>Second is that Scriptable will provide certain methods for 
+accessing important event-related objects.&nbsp; These include the object 
+functions&nbsp;source(), target(), host(), monster(), item1(), item2(), and 
+message().&nbsp; Third is that Javascript variables defined will be lost from 
+execution to execution, even of the same script.&nbsp; For this reason, 
+additional methods String getVar(String host, String variableName),&nbsp; and 
+void setVar(String host, String variableName, String value) have been provided 
+to save the variables globally.&nbsp;&nbsp;&nbsp;The last important detail 
+relates to semicolon characters.&nbsp; It is lucky that Javascript does not 
+require them, because Scriptable will strip them out as part of its command 
+parsing process.&nbsp; For this reason, if you absolutely must keep a semicolon 
+ANYWHERE in your javascript, whether as part of a displayable string, or a line 
+delimeter, it must be escaped: \;</FONT></SPAN></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
+color=#000000 size=3>Here&nbsp;is an example:</FONT></SPAN></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
+color=#000000 size=3><EM>GREET_PROG 100<BR>mpecho Greetings $n! This command is 
+mpecho, a mobprog command!<BR><BR>&lt;SCRIPT&gt;<BR>var 
+greetedBefore=getVar(source().Name(),"GREETEDBEFORE");</EM></FONT></SPAN><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
+color=#000000 size=3><BR><EM>source().tell("However, this greeting comes 
+from&nbsp;Javascript!");<BR>if(greetedBefore == 'true')<BR>&nbsp;&nbsp;&nbsp; 
+source().tell("We've met before\; we will meet 
+again!!");<BR>else<BR></EM></FONT></SPAN><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
+color=#000000 size=3><EM>&nbsp;&nbsp;&nbsp; 
+setVar(source().Name(),"GREETEDBEFORE","true");<BR></EM></FONT></SPAN><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
+color=#000000 size=3><EM>&lt;/SCRIPT&gt;<BR><BR>if var($n GREETEDBEFORE == 
+true)<BR>&nbsp;&nbsp; mpecho The variable set in Javascript can be read here in 
+mobprog land 
+also!<BR>endif<BR>~</EM></FONT></SPAN></P></FONT></FONT></SPAN><FONT color=black><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">
 <P class=MsoNormal><FONT color=black><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpaffect</SPAN></P>
@@ -1632,12 +1691,12 @@ style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpechoat<o:p></
 <P class=MsoNormal>Usage: <BR><EM>mpechoat [target] [text string]</EM></P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>This command functions similar to the 
-mpecho command, but can be used in such a way that only the targeted person or place sees 
-the text string. This is useful for cutting down on spam from greet_prog 
-mpechos, for example, as well as personalizing the text string for all parties 
-involved in conjunction with the mpechoaround command.  It also allows mobs to emulate the
-announce command.  The target may be a local mob name, the word "world", the word "area", a room id,
-or an area name.</P>
+mpecho command, but can be used in such a way that only the targeted person or 
+place sees the text string. This is useful for cutting down on spam from 
+greet_prog mpechos, for example, as well as personalizing the text string for 
+all parties involved in conjunction with the mpechoaround command. It also 
+allows mobs to emulate the announce command. The target may be a local mob name, 
+the word "world", the word "area", a room id, or an area name.</P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>EXAMPLES:<BR><BR><EM>mpechoat $n You hear voices 
 speaking all around you.<BR>mpechoat $n You cringe as a 
@@ -2034,6 +2093,25 @@ again.</P>
 <P class=MsoNormal><O:P></O:P></P>
 <P class=MsoNormal>EXAMPLES:<BR><BR><EM>mpquestwin 
 $n&nbsp;smurfocide</EM></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpreset</SPAN></P>
+<P class=MsoNormal><?XML:NAMESPACE PREFIX = O /><O:P></O:P></P>
+<P class=MsoNormal>Usage: <BR><EM>mpreset&nbsp;area<BR>mpreset&nbsp;room</EM> 
+<BR><EM>mpreset&nbsp;[area name]</EM><BR><EM>mpreset&nbsp;[room id]</EM>
+<P class=MsoNormal><O:P>This command allows you to force the system to reload an 
+area or a room from the database.&nbsp; The keywords area and room will refer to 
+the scripted objects current area and room.&nbsp; Otherwise, the name of the 
+area, or the full roomID can be specified.</O:P> </P></P>
+<P class=MsoNormal><O:P></O:P></P>
+<P 
+class=MsoNormal>EXAMPLES:<BR><BR><EM>mpreset&nbsp;area<BR></EM><EM><BR></EM>SPECIAL 
+NOTES: Be very careful with this command when dealing with players in the 
+area.&nbsp; It will end their combat, clean up items in the rooms they are in, 
+and otherwise freeze them up while the reset process completes.&nbsp; This 
+process can be time consuming for large areas, so take that into 
+consideration.</P>
+<P class=MsoNormal><O:P></O:P></P>
+<P class=MsoNormal><O:P></O:P></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpsavevar</SPAN></P>
 <P class=MsoNormal><o:p></O:P></P>
@@ -3006,12 +3084,11 @@ or less&nbsp;goobers in this area.<BR>endif</EM></P>
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">nummobsroom</SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>nummobsroom(pattern == number)</EM></P>
 <P class=MsoNormal>This function compares the total number 
-of mobs in the&nbsp;same room as the monster, whose names or display texts match
-the given pattern &nbsp;to the number 
-given.&nbsp;&nbsp;&nbsp;A pattern of * may be used to count all mobs of any name.
-&nbsp;&nbsp;&nbsp;This function counts players, npcs, and the hidden and 
-undetectable.&nbsp; The '==' may also be any of the logical operators from 
-above.</P>
+of mobs in the&nbsp;same room as the monster, whose names or display texts match 
+the given pattern &nbsp;to the number given.&nbsp;&nbsp;&nbsp;A pattern of * may 
+be used to count all mobs of any name. &nbsp;&nbsp;&nbsp;This function counts 
+players, npcs, and the hidden and undetectable.&nbsp; The '==' may also be any 
+of the logical operators from above.</P>
 <P class=MsoNormal>EXAMPLES:<BR><BR><EM>if&nbsp;nummobsroom(* &gt; 10)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
 </SPAN>mpecho There are more than 10 mobs in this room.<BR>else<BR><SPAN 
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho There are 10 
