@@ -152,6 +152,7 @@ public class Resources
 	public static Vector getFileLineVector(StringBuffer buf)
 	{
 		Vector V=new Vector();
+        if(buf==null) return V;
 		StringBuffer str=new StringBuffer("");
 		for(int i=0;i<buf.length()-1;i++)
 		{
