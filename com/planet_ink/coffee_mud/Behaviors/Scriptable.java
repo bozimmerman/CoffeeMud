@@ -41,6 +41,7 @@ public class Scriptable extends StdBehavior
     private HashSet registeredSpecialEvents=new HashSet();
     private Hashtable noTrigger=new Hashtable();
 	private long tickStatus=Tickable.STATUS_NOT;
+    private boolean executing=false;
 
 	public long getTickStatus()
 	{

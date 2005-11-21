@@ -94,6 +94,7 @@ public class StdMOB implements MOB
 
     // location!
     protected Room StartRoom=null;
+    protected boolean bringToLifeRecurseFlag=false;
     
     protected MOB victim=null;
     protected MOB amFollowing=null;
@@ -506,49 +507,54 @@ public class StdMOB implements MOB
 
 	public void destroy()
 	{
-		removeFromGame();
-		while(numBehaviors()>0)
-			delBehavior(fetchBehavior(0));
-		while(numEffects()>0)
-			delEffect(fetchEffect(0));
-		while(numLearnedAbilities()>0)
-			delAbility(fetchAbility(0));
-		while(inventorySize()>0)
-		{
-			Item I=fetchInventory(0);
-			I.destroy();
-			delInventory(I);
-		}
-        CMClass.ThreadEngine().deleteTick(this,-1);
-        clanID=null;
-        baseCharStats=new DefaultCharStats();
-        charStats=baseCharStats();
-        baseEnvStats=new DefaultEnvStats();
-        envStats=baseEnvStats;
-        playerStats=null;
-        location=null;
-        lastLocation=null;
-        riding=null;
-        mySession=null;
-        imageName=null;
-        inventory=new Vector();
-        followers=null;
-        abilities=new Vector();
-        affects=new Vector();
-        behaviors=new Vector();
-        tattoos=new Vector();
-        educations=new Vector();
-        factions=new Hashtable();
-        commandQue=new DVector(2);
-        baseState=new DefaultCharState();
-        maxState=new DefaultCharState();
-        curState=maxState;
-        WorshipCharID="";
-        LiegeID="";
-        victim=null;
-        amFollowing=null;
-        soulMate=null;
-        StartRoom=null;
+        try
+        {
+            if(bringToLifeRecurseFlag) return;
+            bringToLifeRecurseFlag=true;
+    		removeFromGame();
+    		while(numBehaviors()>0)
+    			delBehavior(fetchBehavior(0));
+    		while(numEffects()>0)
+    			delEffect(fetchEffect(0));
+    		while(numLearnedAbilities()>0)
+    			delAbility(fetchAbility(0));
+    		while(inventorySize()>0)
+    		{
+    			Item I=fetchInventory(0);
+    			I.destroy();
+    			delInventory(I);
+    		}
+            CMClass.ThreadEngine().deleteTick(this,-1);
+            clanID=null;
+            baseCharStats=new DefaultCharStats();
+            charStats=baseCharStats();
+            baseEnvStats=new DefaultEnvStats();
+            envStats=baseEnvStats;
+            playerStats=null;
+            location=null;
+            lastLocation=null;
+            riding=null;
+            mySession=null;
+            imageName=null;
+            inventory=new Vector();
+            followers=null;
+            abilities=new Vector();
+            affects=new Vector();
+            behaviors=new Vector();
+            tattoos=new Vector();
+            educations=new Vector();
+            factions=new Hashtable();
+            commandQue=new DVector(2);
+            baseState=new DefaultCharState();
+            maxState=new DefaultCharState();
+            curState=maxState;
+            WorshipCharID="";
+            LiegeID="";
+            victim=null;
+            amFollowing=null;
+            soulMate=null;
+            StartRoom=null;
+        }finally{bringToLifeRecurseFlag=false;}
 	}
 
 	public void removeFromGame()
@@ -600,76 +606,89 @@ public class StdMOB implements MOB
 
 	public void bringToLife()
 	{
-		amDead=false;
-		pleaseDestroy=false;
+        try
+        {
+            if(bringToLifeRecurseFlag) return;
+            bringToLifeRecurseFlag=true;
+            
+    		amDead=false;
+    		pleaseDestroy=false;
 
-		// will ensure no duplicate ticks, this obj, this id
-		CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_MOB,1);
-		if(tickStatus==Tickable.STATUS_NOT)
-			tick(this,MudHost.TICK_MOB); // slap on the butt
+    		// will ensure no duplicate ticks, this obj, this id
+    		CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_MOB,1);
+    		if(tickStatus==Tickable.STATUS_NOT)
+    			tick(this,MudHost.TICK_MOB); // slap on the butt
+        }
+        finally{bringToLifeRecurseFlag=false;}
 	}
 	
 	public void bringToLife(Room newLocation, boolean resetStats)
 	{
-		amDead=false;
-        Room origStartRoom=getStartRoom();
-		if((miscText!=null)&&(resetStats)&&(isGeneric()))
-		{
-			if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
-				CoffeeMaker.resetGenMOB(this,CoffeeMaker.getGenMOBTextUnpacked(this,CMEncoder.decompressString(miscText)));
-			else
-				CoffeeMaker.resetGenMOB(this,CoffeeMaker.getGenMOBTextUnpacked(this,new String(miscText)));
-		}
-		if(getStartRoom()==null)
-			setStartRoom(isMonster()?newLocation:CMMap.getStartRoom(this));
-		setLocation(newLocation);
-		if(location()==null)
-		{
-			setLocation(getStartRoom());
-			if(location()==null)
-			{
-				Log.errOut("StdMOB",Username+" cannot get a location.");
-				return;
-			}
-		}
-		if(!location().isInhabitant(this))
-			location().addInhabitant(this);
-		pleaseDestroy=false;
-
-		// will ensure no duplicate ticks, this obj, this id
-		CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_MOB,1);
-		if(tickStatus==Tickable.STATUS_NOT)
-			tick(this,MudHost.TICK_MOB); // slap on the butt
-
-        Ability A=null;
-		for(int a=0;a<numLearnedAbilities();a++)
-		{
-			A=fetchAbility(a);
-			if(A!=null) A.autoInvocation(this);
-		}
-        if(location()==null)
+        try
         {
-            Log.errOut("StdMOB","Object: "+this+", was probably destroyed very recently! Life call details below:");
-            try{int x=4/0;x=x/0;}catch(Exception e){Log.errOut("StdMOB",e);}
-            Log.errOut("StdMOB","Original Start room was: "+CMMap.getExtendedRoomID(origStartRoom));
-            destroy();
-            return;
+            if(bringToLifeRecurseFlag) return;
+            bringToLifeRecurseFlag=true;
+    		amDead=false;
+            Room origStartRoom=getStartRoom();
+    		if((miscText!=null)&&(resetStats)&&(isGeneric()))
+    		{
+    			if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
+    				CoffeeMaker.resetGenMOB(this,CoffeeMaker.getGenMOBTextUnpacked(this,CMEncoder.decompressString(miscText)));
+    			else
+    				CoffeeMaker.resetGenMOB(this,CoffeeMaker.getGenMOBTextUnpacked(this,new String(miscText)));
+    		}
+    		if(getStartRoom()==null)
+    			setStartRoom(isMonster()?newLocation:CMMap.getStartRoom(this));
+    		setLocation(newLocation);
+    		if(location()==null)
+    		{
+    			setLocation(getStartRoom());
+    			if(location()==null)
+    			{
+    				Log.errOut("StdMOB",Username+" cannot get a location.");
+    				return;
+    			}
+    		}
+    		if(!location().isInhabitant(this))
+    			location().addInhabitant(this);
+    		pleaseDestroy=false;
+    
+    		// will ensure no duplicate ticks, this obj, this id
+    		CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_MOB,1);
+    		if(tickStatus==Tickable.STATUS_NOT)
+    			tick(this,MudHost.TICK_MOB); // slap on the butt
+    
+            Ability A=null;
+    		for(int a=0;a<numLearnedAbilities();a++)
+    		{
+    			A=fetchAbility(a);
+    			if(A!=null) A.autoInvocation(this);
+    		}
+            if(location()==null)
+            {
+                Log.errOut("StdMOB","Object: "+this+", was probably destroyed very recently! Life call details below:");
+                try{int x=4/0;x=x/0;}catch(Exception e){Log.errOut("StdMOB",e);}
+                Log.errOut("StdMOB","Original Start room was: "+CMMap.getExtendedRoomID(origStartRoom));
+                destroy();
+                return;
+            }
+    		location().recoverRoomStats();
+    		if((!isGeneric())&&(resetStats))
+    			resetToMaxState();
+    		Faction F=null;
+    		for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
+    		{
+    		    F=(Faction)e.nextElement();
+    		    if((!F.hasFaction(this))&&(F.findAutoDefault(this)!=Integer.MAX_VALUE))
+    		        addFaction(F.ID,F.findAutoDefault(this));
+    		}
+    		    
+    		if(Sense.isSleeping(this))
+    			tell("(You are asleep)");
+    		else
+    			CommonMsgs.look(this,true);
         }
-		location().recoverRoomStats();
-		if((!isGeneric())&&(resetStats))
-			resetToMaxState();
-		Faction F=null;
-		for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
-		{
-		    F=(Faction)e.nextElement();
-		    if((!F.hasFaction(this))&&(F.findAutoDefault(this)!=Integer.MAX_VALUE))
-		        addFaction(F.ID,F.findAutoDefault(this));
-		}
-		    
-		if(Sense.isSleeping(this))
-			tell("(You are asleep)");
-		else
-			CommonMsgs.look(this,true);
+        finally{bringToLifeRecurseFlag=false;}
 	}
 
 	public boolean isInCombat()

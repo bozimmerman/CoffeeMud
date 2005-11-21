@@ -39,6 +39,11 @@ public class JRun extends StdCommand
 
         String fn = new String ( (String)commands.elementAt(0) );
         StringBuffer ft = Resources.getFile(fn);
+        if(ft==null)
+        {
+            mob.tell("File '"+fn+"' could not be found.");
+            return false;
+        }
         commands.removeElementAt(0);
         Context cx = Context.enter();
         try
