@@ -28,6 +28,7 @@ public class Quests implements Cloneable, Quest
 	protected int duration=450; // about 30 minutes
 	protected String parms="";
 	protected Vector stuff=new Vector();
+    protected Vector loaded=new Vector();
 	protected Vector winners=new Vector();
 	protected int minWait=-1;
 	protected int maxWait=-1;
@@ -1305,13 +1306,14 @@ public class Quests implements Cloneable, Quest
 					Behavior B=((MOB)E).fetchBehavior("Scriptable");
 					if(B!=null)	B.modifyBehavior(E,M,"endquest "+name());
 					MUDTracker.wanderAway(M,true,false);
-					if(M.getStartRoom()!=null)
+                    Room R=M.getStartRoom();
+					if(R!=null)
 					{
 						if(M.location()!=null)
 							M.location().delInhabitant(M);
 						M.setLocation(null);
 						M.destroy();
-						CoffeeUtensils.resetRoom(M.getStartRoom());
+						CoffeeUtensils.resetRoom(R);
 					}
 					else
 					{

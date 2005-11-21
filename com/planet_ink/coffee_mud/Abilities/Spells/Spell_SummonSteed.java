@@ -61,6 +61,7 @@ public class Spell_SummonSteed extends Spell
 					if(mob.amDead()) mob.setLocation(null);
 					mob.destroy();
 				}
+                else
                 if((mob.amFollowing()==null)
                 &&(mob.location()!=null)
                 &&(mob.curState().getHitPoints()<((mob.maxState().getHitPoints()/10)*3)))

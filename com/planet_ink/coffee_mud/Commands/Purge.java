@@ -116,9 +116,9 @@ public class Purge extends BaseItemParser
 		if(deadItem==null) deadItem=(srchRoom==null)?null:srchRoom.fetchItem(null,itemID);
 		while(deadItem!=null)
 		{
-			deadItem.destroy();
-			mob.location().recoverRoomStats();
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,deadItem.name()+" disintegrates!");
+            deadItem.destroy();
+            mob.location().recoverRoomStats();
 			doneSomething=true;
 			deadItem=null;
 			if(!allFlag) deadItem=(srchMob==null)?null:srchMob.fetchInventory(null,itemID);

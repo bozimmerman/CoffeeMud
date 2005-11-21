@@ -59,9 +59,9 @@ public class Destroy extends BaseItemParser
 				return false;
 			}
 			doneSomething=true;
-			deadMOB.destroy();
 			mob.location().showHappens(CMMsg.MSG_OK_VISUAL,deadMOB.name()+" vanishes in a puff of smoke.");
 			Log.sysOut("Mobs",mob.Name()+" destroyed mob "+deadMOB.Name()+".");
+            deadMOB.destroy();
 			deadMOB=mob.location().fetchInhabitant(mobID);
 			if(!allFlag) break;
 		}
