@@ -983,7 +983,13 @@ public class Modify extends BaseGenerics
 		else
         if(commandType.startsWith("JSCRIPT"))
         {
-            if(!CMSecurity.isAllowed(mob,mob.location(),"JSCRIPTS")) return errorOut(mob);
+            if(!CMSecurity.isAllowed(mob,mob.location(),"JSCRIPTS")) 
+                return errorOut(mob);
+            if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_JSCRIPTS)!=1)
+            {
+                mob.tell("This command is only used when your Scriptable Javascripts require approval as specified in your coffeemud.ini file.");
+                return true;
+            }
             Long L=null;
             Object O=null;
             Hashtable j=CMSecurity.getApprovedJScriptTable();

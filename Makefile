@@ -30,7 +30,7 @@ JAVADOC         = javadoc
 JAR             = jar
 
 # Build flags
-JAVAC_FLAGS     = -verbose -classpath ".:js.jar"
+JAVAC_FLAGS     = -verbose -classpath ".:./lib/js.jar"
 JAVADOC_FLAGS   = -d ./docs -J-Xmx128m
 JAR_FLAGS       = cvf0
 JIKES_DEP_FLAG	= +M

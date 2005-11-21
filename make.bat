@@ -1,5 +1,5 @@
 SET Java_Home=C:\java\j2sdk1.4.2_04
-set CLASSPATH=.;%Java_Home%\lib\dt.jar;%Java_Home%\lib\tools.jar;js.jar
+set CLASSPATH=.;%Java_Home%\lib\dt.jar;%Java_Home%\lib\tools.jar;.\lib\js.jar
 SET JAVACPATH=%Java_Home%\bin\javac
 
 IF "%1" == "docs" GOTO :DOCS
