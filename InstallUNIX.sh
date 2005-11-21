@@ -55,53 +55,53 @@ fi
 
 if [ $yesnofullcompile = y ] ; then
 
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/Archon/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/Common/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/Diseases/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/Druid/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/Fighter/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/Languages/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/Misc/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/Paladin/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/Poisons/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/Prayers/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/Properties/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/Ranger/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/Skills/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/Songs/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/Specializations/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/Spells/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/Thief/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Abilities/Traps/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/application/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Areas/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Behaviors/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/CharClasses/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Commands/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/common/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/exceptions/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Exits/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/i3/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/i3/net/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/i3/packets/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/i3/persist/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/i3/server/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/interfaces/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Items/Basic/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Items/Weapons/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Items/MiscMagic/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Items/ClanItems/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Items/Armor/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Locales/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/MOBS/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Races/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/system/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/utils/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/web/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/web/macros/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/web/macros/grinder/*.java
-$JAVACPATH -verbose ./com/planet_ink/fakedb/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/Archon/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/Common/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/Diseases/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/Druid/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/Fighter/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/Languages/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/Misc/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/Paladin/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/Poisons/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/Prayers/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/Properties/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/Ranger/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/Skills/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/Songs/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/Specializations/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/Spells/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/Thief/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Abilities/Traps/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/application/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Areas/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Behaviors/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/CharClasses/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Commands/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/common/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/exceptions/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Exits/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/i3/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/i3/net/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/i3/packets/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/i3/persist/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/i3/server/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/interfaces/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Items/Basic/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Items/Weapons/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Items/MiscMagic/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Items/ClanItems/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Items/Armor/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Locales/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/MOBS/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/Races/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/system/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/utils/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/web/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/web/macros/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/coffee_mud/web/macros/grinder/*.java
+$JAVACPATH -verbose -classpath ".;js.jar" ./com/planet_ink/fakedb/*.java
 
 else
 

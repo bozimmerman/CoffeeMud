@@ -981,6 +981,32 @@ public class Modify extends BaseGenerics
 			mobs(mob,commands);
 		}
 		else
+        if(commandType.startsWith("JSCRIPT"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"JSCRIPTS")) return errorOut(mob);
+            Long L=null;
+            Object O=null;
+            Hashtable j=CMSecurity.getApprovedJScriptTable();
+            boolean somethingFound=false;
+            for(Enumeration e=j.keys();e.hasMoreElements();)
+            {
+                L=(Long)e.nextElement();
+                O=j.get(L);
+                if(O instanceof StringBuffer)
+                {
+                    somethingFound=true;
+                    mob.tell("Unapproved script:\n\r"+((StringBuffer)O).toString()+"\n\r");
+                    if((!mob.isMonster())
+                    &&(mob.session().confirm("Approve this script (Y/n)?","Y")))
+                        CMSecurity.approveJScript(mob.Name(),L.longValue());
+                    else
+                        j.remove(L);
+                }
+            }
+            if(!somethingFound)
+                mob.tell("No Javascripts require approval at this time.");
+        }
+        else
 		if(commandType.equals("USER"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
@@ -1222,7 +1248,7 @@ public class Modify extends BaseGenerics
 				execute(mob,commands);
 			}
 			else
-				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, EXIT, QUEST, MOB, USER, FACTION, SOCIAL, CLAN, POLL, or ROOM.");
+				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, EXIT, QUEST, MOB, USER, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, or ROOM.");
 		}
 		return false;
 	}

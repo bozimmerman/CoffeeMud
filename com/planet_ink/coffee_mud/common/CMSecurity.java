@@ -311,6 +311,64 @@ public class CMSecurity
 	
 	public static boolean isSaveFlag(String key)
 	{ return (saveFlags.size()>0)&&saveFlags.contains(key);}
+    
+    public static void approveJScript(String approver, long hashCode)
+    {
+        if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_JSCRIPTS)!=1)
+            return;
+        Hashtable approved=CMSecurity.getApprovedJScriptTable();
+        if(approved.containsKey(new Long(hashCode)))
+            approved.remove(new Long(hashCode));
+        approved.put(new Long(hashCode),approver);
+        StringBuffer newApproved=new StringBuffer("");
+        for(Enumeration e=approved.keys();e.hasMoreElements();)
+        {
+            Long L=(Long)e.nextElement();
+            Object O=approved.get(L);
+            if(O instanceof String)
+                newApproved.append(L.toString()+"="+((String)O)+"\n");
+        }
+        Resources.saveFile("resources"+java.io.File.separatorChar+"jscripts.ini",newApproved);
+    }
+    
+    public static Hashtable getApprovedJScriptTable()
+    {
+        Hashtable approved=(Hashtable)Resources.getResource("APPROVEDJSCRIPTS");
+        if(approved==null)
+        {
+            approved=new Hashtable();
+            Resources.submitResource("APPROVEDJSCRIPTS",approved);
+            Vector jscripts=Resources.getFileLineVector(Resources.getFile("resources"+java.io.File.separatorChar+"jscripts.ini",false));
+            if((jscripts!=null)&&(jscripts.size()>0))
+            {
+                for(int i=0;i<jscripts.size();i++)
+                {
+                    String s=(String)jscripts.elementAt(i);
+                    int x=s.indexOf("=");
+                    if(x>0)
+                        approved.put(new Long(Util.s_long(s.substring(0,x))),s.substring(x+1));
+                }
+            }
+        }
+        return approved;
+    }
+    
+    public static boolean isApprovedJScript(StringBuffer script)
+    {
+        if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_JSCRIPTS)==2)
+            return true;
+        if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_JSCRIPTS)==0)
+            return false;
+        Hashtable approved=CMSecurity.getApprovedJScriptTable();
+        Long hashCode=new Long(script.toString().hashCode());
+        Object approver=approved.get(hashCode);
+        if(approver==null)
+        {
+            approved.put(hashCode,script);
+            return false;
+        }
+        return approver instanceof String;
+    }
 	
 	public static void setDebugVars(String vars)
 	{

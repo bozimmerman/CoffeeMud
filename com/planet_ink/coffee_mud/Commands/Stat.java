@@ -58,18 +58,27 @@ public class Stat extends BaseAbleLister
 		Vector V=CMClass.DBEngine().DBReadStats(ENDQ.getTimeInMillis()-1);
 		if(V.size()==0){ mob.tell("No Stats?!"); return false;}
 		StringBuffer table=new StringBuffer("");
+        boolean skillUse=false;
+        if(rest.toUpperCase().trim().startsWith("SKILLUSE"))
+        {
+            skillUse=true;
+            rest=rest.substring("SKILLUSE".length()).trim();
+        }
 		table.append("^xStatistics since "+ENDQ.d2String()+":^.^N\n\r\n\r");
-		table.append(Util.padRight("Date",25)
-					 +Util.padRight("CONs",5)
-					 +Util.padRight("HIGH",5)
-					 +Util.padRight("ONLN",5)
-					 +Util.padRight("AVGM",5)
-					 +Util.padRight("NEWB",5)
-					 +Util.padRight("DTHs",5)
-					 +Util.padRight("PKDs",5)
-					 +Util.padRight("CLAS",5)
-					 +Util.padRight("PURG",5)
-					 +Util.padRight("MARR",5)+"\n\r");
+        if(skillUse)
+            table.append(Util.padRight("Skill",25)+Util.padRight("Uses",10)+Util.padRight("Skill",25)+Util.padRight("Uses",10)+"\n\r");
+        else
+    		table.append(Util.padRight("Date",25)
+    					 +Util.padRight("CONs",5)
+    					 +Util.padRight("HIGH",5)
+    					 +Util.padRight("ONLN",5)
+    					 +Util.padRight("AVGM",5)
+    					 +Util.padRight("NEWB",5)
+    					 +Util.padRight("DTHs",5)
+    					 +Util.padRight("PKDs",5)
+    					 +Util.padRight("CLAS",5)
+    					 +Util.padRight("PURG",5)
+    					 +Util.padRight("MARR",5)+"\n\r");
 		table.append(Util.repeat("-",75)+"\n\r");
 		IQCalendar C=new IQCalendar(System.currentTimeMillis());
 		C.set(Calendar.HOUR_OF_DAY,23);
@@ -80,6 +89,72 @@ public class Stat extends BaseAbleLister
 		String code="*";
 		if(rest.length()>0) code=""+rest.toUpperCase().charAt(0);
 		long lastCur=System.currentTimeMillis();
+        if(skillUse)
+        {
+            CharClass CharC=CMClass.getCharClass(rest);
+            Vector allSkills=new Vector();
+            for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                allSkills.addElement(e.nextElement());
+            long[][] totals=new long[allSkills.size()][CoffeeTables.STAT_TOTAL];
+            while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
+            {
+                lastCur=curTime;
+                IQCalendar C2=new IQCalendar(curTime);
+                C2.add(Calendar.DATE,-(scale));
+                curTime=C2.getTimeInMillis();
+                C2.set(Calendar.HOUR_OF_DAY,23);
+                C2.set(Calendar.MINUTE,59);
+                C2.set(Calendar.SECOND,59);
+                C2.set(Calendar.MILLISECOND,999);
+                curTime=C2.getTimeInMillis();
+                Vector set=new Vector();
+                for(int v=V.size()-1;v>=0;v--)
+                {
+                    CoffeeTables T=(CoffeeTables)V.elementAt(v);
+                    if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
+                    {
+                        set.addElement(T);
+                        V.removeElementAt(v);
+                    }
+                }
+                for(int s=0;s<set.size();s++)
+                {
+                    CoffeeTables T=(CoffeeTables)set.elementAt(s);
+                    for(int x=0;x<allSkills.size();x++)
+                        T.totalUp("A"+((Ability)allSkills.elementAt(x)).ID().toUpperCase(),totals[x]);
+                }
+                if(scale==0) break;
+            }
+            boolean cr=false;
+            for(int x=0;x<allSkills.size();x++)
+            {
+                Ability A=(Ability)allSkills.elementAt(x);
+                if((CharC==null)||(CMAble.getQualifyingLevel(CharC.ID(),true,A.ID())<0))
+                    continue;
+                if(totals[x][CoffeeTables.STAT_SKILLUSE]>0)
+                {
+                    table.append(Util.padRight(""+A.ID(),25)
+                            +Util.centerPreserve(""+totals[x][CoffeeTables.STAT_SKILLUSE],10));
+                    if(cr) table.append("\n\r");
+                    cr=!cr;
+                }
+                x++;
+                if(x<allSkills.size())
+                {
+                    A=(Ability)allSkills.elementAt(x);
+                    if(totals[x][CoffeeTables.STAT_SKILLUSE]>0)
+                    {
+                        
+                        table.append(Util.padRight(""+A.ID(),25)
+                                +Util.centerPreserve(""+totals[x][CoffeeTables.STAT_SKILLUSE],10));
+                        if(cr) table.append("\n\r");
+                        cr=!cr;
+                    }
+                }
+            }
+            if(cr)table.append("\n\r");
+        }
+        else
 		while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
 		{
 			lastCur=curTime;
@@ -127,8 +202,8 @@ public class Stat extends BaseAbleLister
 						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_CLASSCHANGE],5)
 						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_PURGES],5)
 						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_MARRIAGES],5)+"\n\r");
-			if(scale==0) break;
-		}
+            if(scale==0) break;
+        }
 		mob.tell(table.toString());
 		return false;
 	}

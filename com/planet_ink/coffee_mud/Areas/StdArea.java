@@ -770,9 +770,10 @@ public class StdArea implements Area
 			Vector myMap=new Vector();
 			try
 			{
+                Room R=null;
 				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					R=(Room)r.nextElement();
 					if(R.getArea()==this)
 						myMap.addElement(R);
 				}

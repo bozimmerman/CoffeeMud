@@ -118,7 +118,8 @@ public class CommonStrings extends Scriptable
     public static final int SYSTEMI_MAXCONNSPERIP=40;
     public static final int SYSTEMI_MAXNEWPERIP=41;
     public static final int SYSTEMI_MAXMAILBOX=42;
-	public static final int NUMI_SYSTEM=43;
+    public static final int SYSTEMI_JSCRIPTS=43;
+	public static final int NUMI_SYSTEM=44;
 
 	public static final int SYSTEMB_MOBCOMPRESS=0;
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -344,6 +345,8 @@ public class CommonStrings extends Scriptable
         setIntVar(SYSTEMI_TRIALDAYS,page.getStr("TRIALDAYS"));
         setIntVar(SYSTEMI_MAXCONNSPERIP,page.getStr("MAXCONNSPERIP"));
         setIntVar(SYSTEMI_MAXNEWPERIP,page.getStr("MAXNEWPERIP"));
+        setIntVar(SYSTEMI_JSCRIPTS,page.getStr("JSCRIPTS"));
+        
 		Vector V=Util.parseCommas(page.getStr("INJURYSYSTEM"),true);
 		if(V.size()!=5)
 		{

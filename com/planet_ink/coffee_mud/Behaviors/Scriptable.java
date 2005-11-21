@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+import org.mozilla.javascript.*;
 
 import java.util.*;
 
@@ -262,6 +263,8 @@ public class Scriptable extends StdBehavior
         "MPFACTION", //54 
         "MPNOTRIGGER", // 55
         "MPSTOP", // 56
+        "<SCRIPT>", // 57
+        "MPRESET", // 58
 	};
 
     private final static String[] clanVars={
@@ -285,6 +288,56 @@ public class Scriptable extends StdBehavior
     };
 
 
+    protected class JScriptEvent extends ScriptableObject
+    {
+        public String getClassName(){ return "event";}
+        static final long serialVersionUID=42;
+        Environmental h=null;
+        MOB s=null;
+        Environmental t=null;
+        MOB m=null;
+        Item pi=null;
+        Item si=null;
+        Vector scr;
+        String message=null;
+        public Environmental host(){return h;}
+        public MOB source(){return s;}
+        public Environmental target(){return t;}
+        public MOB monster(){return m;}
+        public Item item(){return pi;}
+        public Item item2(){return si;}
+        public String message(){return message;}
+        public void setVar(String host, String var, String value)
+        {
+            Scriptable.mpsetvar(host.toString(),var.toString().toUpperCase(),value.toString());
+        }
+        public String getVar(String host, String var)
+        {
+            Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+host.toString());
+            if(H==null) return "";
+            String s=(String)H.get(var.toString().toUpperCase());
+            if(s==null) return "undefined";
+            return s;
+        }
+        public JScriptEvent(Environmental host,
+                            MOB source,
+                            Environmental target,
+                            MOB monster,
+                            Item primaryItem,
+                            Item secondaryItem,
+                            String msg)
+        {
+            h=host;
+            s=source;
+            t=target;
+            m=monster;
+            pi=primaryItem;
+            si=secondaryItem;
+            message=msg;
+        }
+        
+    }
+    
 	protected class ScriptableResponse
 	{
 		int tickDelay=0;
@@ -1019,8 +1072,8 @@ public class Scriptable extends StdBehavior
 						}
                         if(arg1.length()>0)
                         {
-                            Hashtable H=null;
                             middle=null;
+                            Hashtable H=null;
     						if(E==null)
                                 H=(Hashtable)Resources.getResource("SCRIPTVAR-"+arg1);
                             else
@@ -1155,7 +1208,7 @@ public class Scriptable extends StdBehavior
 		return varifyable;
 	}
 
-	public DVector getScriptVarSet(String mobname, String varname)
+	public static DVector getScriptVarSet(String mobname, String varname)
 	{
 		DVector set=new DVector(2);
 		if(mobname.equals("*"))
@@ -1197,7 +1250,7 @@ public class Scriptable extends StdBehavior
 		return set;
 	}
 
-	public void mpsetvar(String name, String key, String val)
+	public static void mpsetvar(String name, String key, String val)
 	{
 		DVector V=getScriptVarSet(name,key);
 		for(int v=0;v<V.size();v++)
@@ -4382,6 +4435,43 @@ public class Scriptable extends StdBehavior
 				continue;
 			switch(methCode.intValue())
 			{
+            case 57: // <SCRIPT>
+            {
+                StringBuffer jscript=new StringBuffer("");
+                while((++si)<script.size())
+                {
+                    s=((String)script.elementAt(si)).trim();
+                    cmd=Util.getCleanBit(s,0).toUpperCase();
+                    if(cmd.equalsIgnoreCase("</SCRIPT>"))
+                        break;
+                    jscript.append(s+"\n");
+                }
+                if(CMSecurity.isApprovedJScript(jscript))
+                {
+                    Context cx = Context.enter();
+                    try
+                    {
+                        JScriptEvent scope = new JScriptEvent(scripted,source,target,monster,primaryItem,secondaryItem,msg);
+                        cx.initStandardObjects(scope);
+                        String[] names = { "host", "source", "target", "monster", "item", "item2", "message" ,"getVar", "setVar"};
+                        scope.defineFunctionProperties(names, JScriptEvent.class,
+                                                       ScriptableObject.DONTENUM);
+                        cx.evaluateString(scope, jscript.toString(),"<cmd>", 1, null);
+                    }
+                    catch(Exception e)
+                    {
+                        Log.errOut("Scriptable",scripted.name()+"/"+CMMap.getExtendedRoomID(lastKnownLocation)+"/JSCRIPT Error: "+e.getMessage());
+                    }
+                    Context.exit();
+                }
+                else
+                if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_JSCRIPTS)==1)
+                {
+                    if(lastKnownLocation!=null)
+                        lastKnownLocation.showHappens(CMMsg.MSG_OK_ACTION,"A Javascript was not authorized.  Contact an Admin to use MODIFY JSCRIPT to authorize this script.");
+                }
+                break;
+            }
 			case 19: // if
 			{
 				String conditionStr=(s.substring(2).trim());
@@ -4390,11 +4480,20 @@ public class Scriptable extends StdBehavior
 				V.addElement("");
 				int depth=0;
 				boolean foundendif=false;
+                boolean ignoreUntilEndScript=false;
 				si++;
 				while(si<script.size())
 				{
 					s=((String)script.elementAt(si)).trim();
 					cmd=Util.getCleanBit(s,0).toUpperCase();
+                    if(cmd.equals("<SCRIPT>"))
+                        ignoreUntilEndScript=true;
+                    else
+                    if(cmd.equals("</SCRIPT>"))
+                        ignoreUntilEndScript=false;
+                    else
+                    if(ignoreUntilEndScript){}
+                    else
 					if(cmd.equals("ENDIF")&&(depth==0))
 					{
 						foundendif=true;
@@ -4778,6 +4877,36 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
+            case 58: // mpreset
+            {
+                String arg=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(s,0));
+                if(arg.equalsIgnoreCase("area"))
+                {
+                    if(lastKnownLocation!=null) 
+                        CoffeeUtensils.resetArea(lastKnownLocation.getArea());
+                }
+                else
+                if(arg.equalsIgnoreCase("room"))
+                {
+                    if(lastKnownLocation!=null) 
+                        CoffeeUtensils.resetRoom(lastKnownLocation);
+                }
+                else
+                {
+                    Room R=CMMap.getRoom(arg);
+                    if(R!=null) 
+                        CoffeeUtensils.resetRoom(R);
+                    else
+                    {
+                        Area A=CMMap.findArea(arg);
+                        if(A!=null)
+                            CoffeeUtensils.resetArea(A);
+                        else
+                            scriptableError(scripted,"MPRESET","Syntax","Unknown location: "+arg+" for "+scripted.Name());
+                    }
+                }
+                break;
+            }
             case 56: // mpstop
             {
                 Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg);
