@@ -1432,63 +1432,64 @@ functions for a list of the conditional functions and their uses.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">&lt;SCRIPT&gt;</SPAN></P>
 <P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT color=#000000 size=3>This 
+command denotes the beginning of a section of ECMA Javascript.&nbsp; Any lines 
+of text following this command, and before the adjoining &lt;/SCRIPT&gt; command 
+will be assumed to be executable Javascript.&nbsp; These commands can only be 
+embedded in standard event handlers as described above.&nbsp; </FONT></SPAN></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT color=#000000><FONT 
+size=3>Javascript is a wholly different language than the standard 
+Scriptable/MOBPROG language described in this document.&nbsp; You should read 
+the&nbsp;JavaScripting section of the CoffeeMud </FONT><A 
+href="Programming.html"><FONT size=3>Programming Guide</FONT></A><FONT 
+size=3>&nbsp;for more information, as well as the following web sites which 
+discuss the usage and syntax of the Javascript language itself: </FONT><A 
+href="http://www.mozilla.org/js/"><FONT 
+size=3>http://www.mozilla.org/js/</FONT></A><FONT size=3>&nbsp; and </FONT><A 
+href="http://www.mozilla.org/rhino/"><FONT 
+size=3>http://www.mozilla.org/rhino/</FONT></A><FONT 
+size=3>&nbsp;.</FONT></FONT></SPAN></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT color=#000000 size=3><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
-color=#000000 size=3>This command denotes the beginning of a section of ECMA 
-Javascript.&nbsp; Any lines of text following this command, and before the 
-adjoining &lt;/SCRIPT&gt; command will be assumed to be executable 
-Javascript.&nbsp; These commands can only be embedded in standard event handlers 
-as described above.&nbsp; </FONT></SPAN></P>
+color=#000000 size=3>After you've read the above documentation, there are still 
+a few small details to be aware of before getting 
+started.&nbsp;&nbsp;One</FONT></SPAN><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
+color=#000000 size=3> is that the Scriptable behavior will provide certain 
+methods for accessing important event-related objects from inside your 
+Javascript.&nbsp; These include the object functions&nbsp;source(), target(), 
+host(), monster(), item1(), item2(), and message().&nbsp;&nbsp;Another important 
+detail&nbsp;is that Javascript variables defined will be lost from execution to 
+execution, even of the same script.&nbsp; For this reason, additional methods 
+<EM>String getVar(String host, String variableName)</EM>,&nbsp; and void 
+setVar<EM>(String host, String variableName, String value)</EM> have been 
+provided to save the variables globally.&nbsp;&nbsp;&nbsp;The last important 
+detail relates to semicolon characters.&nbsp; It is lucky that Javascript does 
+not require them, because the Scriptable behavior will strip them out as part of 
+its command parsing process.&nbsp; For this reason, if you absolutely must keep 
+a semicolon ANYWHERE in your javascript, whether as part of a displayable 
+string, or a line delimeter, it must be escaped: 
+\;</FONT></SPAN></FONT></SPAN></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
-color=#000000 size=3>Javascript is a wholly different language than the standard 
-Scriptable/MOBPROG language described in this document.&nbsp; Please see the web 
-site <A 
-href="http://www.mozilla.org/js/">http://www.mozilla.org/js/</A>&nbsp;for more 
-information on this language.&nbsp; </FONT></SPAN></P>
+color=#000000 size=3><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"></SPAN>Here&nbsp;is 
+an example:</FONT></SPAN></P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"></SPAN><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
-color=#000000 size=3>If you are familiar with Javascript, there are a few minor 
-details to be aware of regarding CoffeeMuds integration of the Rhino interpretor 
-from Mozilla.&nbsp; O</FONT></SPAN><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
-color=#000000 size=3>ne is that, unlike the Javascript you may be used to, this 
-one requires that all variables be declared.&nbsp; </FONT></SPAN><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
-color=#000000 size=3>Second is that Scriptable will provide certain methods for 
-accessing important event-related objects.&nbsp; These include the object 
-functions&nbsp;source(), target(), host(), monster(), item1(), item2(), and 
-message().&nbsp; Third is that Javascript variables defined will be lost from 
-execution to execution, even of the same script.&nbsp; For this reason, 
-additional methods String getVar(String host, String variableName),&nbsp; and 
-void setVar(String host, String variableName, String value) have been provided 
-to save the variables globally.&nbsp;&nbsp;&nbsp;The last important detail 
-relates to semicolon characters.&nbsp; It is lucky that Javascript does not 
-require them, because Scriptable will strip them out as part of its command 
-parsing process.&nbsp; For this reason, if you absolutely must keep a semicolon 
-ANYWHERE in your javascript, whether as part of a displayable string, or a line 
-delimeter, it must be escaped: \;</FONT></SPAN></P>
-<P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
-color=#000000 size=3>Here&nbsp;is an example:</FONT></SPAN></P>
-<P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
-color=#000000 size=3><EM>GREET_PROG 100<BR>mpecho Greetings $n! This command is 
-mpecho, a mobprog command!<BR><BR>&lt;SCRIPT&gt;<BR>var 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT color=#000000 size=3><EM>GREET_PROG 100<BR>mpecho Greetings $n! 
+This command is mpecho, a mobprog command!<BR><BR>&lt;SCRIPT&gt;<BR>var 
 greetedBefore=getVar(source().Name(),"GREETEDBEFORE");</EM></FONT></SPAN><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
-color=#000000 size=3><BR><EM>source().tell("However, this greeting comes 
-from&nbsp;Javascript!");<BR>if(greetedBefore == 'true')<BR>&nbsp;&nbsp;&nbsp; 
-source().tell("We've met before\; we will meet 
-again!!");<BR>else<BR></EM></FONT></SPAN><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
-color=#000000 size=3><EM>&nbsp;&nbsp;&nbsp; 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT color=#000000 size=3><BR><EM>source().tell("However, this 
+greeting comes from&nbsp;Javascript!");<BR>if(greetedBefore 
+== 'true')<BR>&nbsp;&nbsp;&nbsp; source().tell("We've met 
+before\; we will meet again!!");<BR>else<BR></EM></FONT></SPAN><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT color=#000000 size=3><EM>&nbsp;&nbsp;&nbsp; 
 setVar(source().Name(),"GREETEDBEFORE","true");<BR></EM></FONT></SPAN><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT 
-color=#000000 size=3><EM>&lt;/SCRIPT&gt;<BR><BR>if var($n GREETEDBEFORE == 
-true)<BR>&nbsp;&nbsp; mpecho The variable set in Javascript can be read here in 
-mobprog land 
-also!<BR>endif<BR>~</EM></FONT></SPAN></P></FONT></FONT></SPAN><FONT color=black><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><FONT color=#000000 size=3><EM>&lt;/SCRIPT&gt;<BR><BR>if var($n GREETEDBEFORE == true)<BR>&nbsp;&nbsp; mpecho The variable set in Javascript can be 
+read here in mobprog land also!<BR>endif<BR>~</EM></FONT></SPAN></P></FONT></FONT></SPAN><FONT 
+color=black><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">
 <P class=MsoNormal><FONT color=black><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpaffect</SPAN></P>
@@ -2095,28 +2096,27 @@ again.</P>
 $n&nbsp;smurfocide</EM></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpreset</SPAN></P>
-<P class=MsoNormal><?XML:NAMESPACE PREFIX = O /><O:P></O:P></P>
-<P class=MsoNormal>Usage: <BR><EM>mpreset&nbsp;area<BR>mpreset&nbsp;room</EM> 
-<BR><EM>mpreset&nbsp;[area name]</EM><BR><EM>mpreset&nbsp;[room id]</EM>
-<P class=MsoNormal><O:P>This command allows you to force the system to reload an 
-area or a room from the database.&nbsp; The keywords area and room will refer to 
-the scripted objects current area and room.&nbsp; Otherwise, the name of the 
-area, or the full roomID can be specified.</O:P> </P></P>
 <P class=MsoNormal><O:P></O:P></P>
-<P 
-class=MsoNormal>EXAMPLES:<BR><BR><EM>mpreset&nbsp;area<BR></EM><EM><BR></EM>SPECIAL 
-NOTES: Be very careful with this command when dealing with players in the 
-area.&nbsp; It will end their combat, clean up items in the rooms they are in, 
-and otherwise freeze them up while the reset process completes.&nbsp; This 
-process can be time consuming for large areas, so take that into 
-consideration.</P>
+<P class=MsoNormal>Usage: <BR><EM>mpreset&nbsp;area<BR>mpreset&nbsp;room</EM> <BR><EM>mpreset&nbsp;[area name]</EM><BR><EM>mpreset&nbsp;[room id]</EM> 
+<P class=MsoNormal><O:P>This command 
+allows you to force the system to reload an area or a room from the 
+database.&nbsp; The keywords area and room will refer to the scripted objects 
+current area and room.&nbsp; Otherwise, the name of the area, or the full roomID 
+can be specified.</O:P> </P>
+<P></P>
+<P class=MsoNormal><O:P></O:P></P>
+<P class=MsoNormal>EXAMPLES:<BR><BR><EM>mpreset&nbsp;area<BR></EM><EM><BR></EM>SPECIAL NOTES: Be very careful with this command when 
+dealing with players in the area.&nbsp; It will end their combat, clean up items 
+in the rooms they are in, and otherwise freeze them up while the reset process 
+completes.&nbsp; This process can be time consuming for large areas, so take 
+that into consideration.</P>
 <P class=MsoNormal><O:P></O:P></P>
 <P class=MsoNormal><O:P></O:P></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpsavevar</SPAN></P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>Usage: <BR><EM>mpsavevar [mob name] [variable name]</EM>&nbsp;</P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>This command saves a variable&nbsp;to 
 the database using the given parameters.&nbsp; This will ensure that the 
 variable, if reloaded later using mploadvar, survives reboots, resets, and other 
@@ -2126,16 +2126,16 @@ command.</P>
 be a literal name string or a code like $n or $i.&nbsp; The mob name can also be 
 *, which will save the value of every existing variable of the given variable 
 name.&nbsp; Likewide, the variable name can also be *, which will save the value 
-of every existing variable for the given mob.&nbsp;&nbsp;<o:p></O:P></P>
+of every existing variable for the given mob.&nbsp;&nbsp;<o:p></o:p></P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal><EM>mpsavevar $n 
 KILLS<BR>mpsavevar guardfour RESCUES</EM></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpset</SPAN></P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>Usage: <BR><EM>mpset [target] [variable] [value]</EM> </P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>This powerful command lets you change 
 all kinds of aspects of the target mob or item or whatever.&nbsp;&nbsp;This 
 command differentiates between generic and standard items and mobs.&nbsp; 
@@ -2144,44 +2144,44 @@ items do.&nbsp; For the maximum range of available variables, use mpgset.</P>
 <P class=MsoNormal>Valid variable names are identical to 
 those listed under mpset.&nbsp; Please see that command above for a list of 
 valid variables. 
-<P class=MsoNormal><o:p></O:P></P>EXAMPLES:<BR><BR><EM>mpset&nbsp;$n CHARISMA 10<BR>mpset $n&nbsp;NAME my name is mud</EM> 
+<P class=MsoNormal><o:p></o:p></P>EXAMPLES:<BR><BR><EM>mpset&nbsp;$n CHARISMA 10<BR>mpset $n&nbsp;NAME my name is mud</EM> 
 <P></P>
-<P class=MsoNormal><o:p></O:P></P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>SPECIAL NOTES: Be very careful with this 
 command when dealing with players. If used poorly it can cause bad things to 
 happen to them, so make sure you have good checks to ensure they get affected 
 correctly and fairly.</P>
-<P class=MsoNormal><o:p></O:P></P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpsetclandata</SPAN></P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>Usage: <BR><EM>mpsetclandata [clan] [variable] [value]</EM> </P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>This powerful command lets you change 
 several aspects of the given clan based on the given variable. The clan code may 
 be either a mob code to denote that mobs clan, or a clan name. Valid variables 
 for setting are: ACCEPTANCE,&nbsp;DONATEROOM, EXP, GOVT, MORGUE, POLITICS, 
 PREMISE, RECALL,&nbsp;STATUS, TAXES, TROPHIES. 
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P>EXAMPLES:<BR><BR><EM>mpsetclandata&nbsp;'Groovy Clan' 
 EXP 0<BR>mpecho Groovy Clans experience is now 
 gone!</EM><EM><BR>mpset 
 $n&nbsp;PREMISE my premise is new.<BR>mpecho Whoever $n is, 
 their clan now has a new premise!</EM></P>
 <P></P>
-<P class=MsoNormal><o:p></O:P></P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>SPECIAL NOTES: Be very careful with this 
 command, to ensure no damage is done to clan records.</P>
-<P class=MsoNormal><o:p></O:P></P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpsetvar<o:p></O:P></SPAN></P>
-<P class=MsoNormal><o:p></O:P></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpsetvar<o:p></o:p></SPAN></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>Usage: <BR><EM>mpsetvar [mob name] [variable name] [value]<BR>mpsetvar [mob name] [variable name] ++<BR>mpsetvar [mob name] [variable name] --<BR>mpsetvar [mob name] [variable name] +[number]<BR>mpsetvar [mob name] [variable name] -[number]<BR>mpsetvar [mob name] [variable name] *[number]<BR>mpsetvar [mob name] [variable name] /[number]</EM> </P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>This command creates a variable for a 
 mob or player and stores a value in it. You can mpsetvar any name that you 
 choose to, and the value can be a specific text string, an integer, or an 
@@ -2197,20 +2197,20 @@ but&nbsp;not giving a value removes&nbsp;that variable from memory, so if you
 want a variable to remain in memory so&nbsp;as to be&nbsp;accessible to * 
 syntax, you will need to include some value.</P>
 <P class=MsoNormal>See the examples below.</P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>EXAMPLES:<BR><BR><EM>mpsetvar&nbsp;$i bugcount 1<BR>mpsetvar&nbsp;$i bugcount ++<BR>mpsetvar 'frog boy' 'my victim' The guard<BR>mpsetvar&nbsp;$n 'my victim' var-actor<BR>mpsetvar $i bugcount $&lt;$n bugcount&gt;</EM> <BR><EM>mpsetvar&nbsp;* bugcount </EM><BR><EM>mpsetvar&nbsp;$i&nbsp; *&nbsp; 
 null&nbsp;</EM><BR>
-<P class=MsoNormal><o:p></O:P></P>SPECIAL NOTES: Variables rock. You can do almost 
+<P class=MsoNormal><o:p></o:p></P>SPECIAL NOTES: Variables rock. You can do almost 
 anything you ever wanted to do once you get the hang of them. 
 <P></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpslay</SPAN></P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>Usage: <BR><EM>mslay [victim]</EM> 
-<P class=MsoNormal><o:p></O:P></P>This 
+<P class=MsoNormal><o:p></o:p></P>This 
 command kills the victim dead. 
 <P></P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>EXAMPLES:<BR><EM>mpslay $n<BR>mpslay ogre</EM></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpstartquest</SPAN></P>
@@ -2225,13 +2225,13 @@ you.</P>
 <P class=MsoNormal>EXAMPLES:<BR><BR><EM>mpstartquest&nbsp;smurfocide</EM></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpstop</SPAN></P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>Usage: <BR><EM>mpstop [target]</EM> 
-<P class=MsoNormal><o:p></O:P></P>This 
+<P class=MsoNormal><o:p></o:p></P>This 
 command forces the target to stop fighting. If the target happens to be in the 
 middle of working with a common skill, it will stop that too. 
 <P></P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>EXAMPLES:<BR><EM>mpstop $n<BR>mpstop ogre</EM></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mptattoo</SPAN></P>
@@ -2277,13 +2277,13 @@ unless the tracking mob is a fish or a bird.
 <P class=MsoNormal><O:P></O:P></P>EXAMPLES:<BR><BR><EM>mptrackto the master guildsmith<BR>mptrackto myArea#123<BR>mptrackro 
 Smurf Villiage</EM> 
 <P></P>
-<P class=MsoNormal><o:p></O:P></P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mptransfer<o:p></O:P></SPAN></P>
-<P class=MsoNormal><o:p></O:P></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mptransfer<o:p></o:p></SPAN></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>Usage: <BR><EM>mptransfer [victim] [destination]</EM> </P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>This command sends the victim to a 
 designated destination. The victim can be either a mob keyword or a character 
 variable. The destination can be a room id, room name or description, a mob 
@@ -2292,10 +2292,10 @@ transfers the victim to the same room that it is in. There is no message given
 to this command, so if you want there to be one, you need to include an mpecho 
 in your mobprog. This command is a good way to move players around your zone or 
 into other zones.</P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>EXAMPLES:<BR>mptransfer $n myarea#10049<BR>mptransfer $n<BR>mptransfer guardeight 
 myarea#1252<BR>mptransfer guardten $n</P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>SPECIAL NOTES: You need to be careful 
 with this command. First of all, you should never transfer a character variable 
 that is a mob. Why not? Because you may actually end up transferring a different 
@@ -2467,7 +2467,7 @@ empty.<BR>&nbsp; endif<BR>~</EM></P>
 <P class=MsoNormal><B><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><O:P><EM></EM></O:P></SPAN></B></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">clan<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">clan<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>clan(character == clanname)</EM></P>
 <P class=MsoNormal>This checks the name of the clan of the 
 character variable.&nbsp; Where '==' may be&nbsp;another logical operator 
@@ -2479,7 +2479,7 @@ an Unholy Goober.<BR>else<BR><SPAN
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
 triggering me appears not to be a Goober.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">clandata<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">clandata<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>clandata(clan variable == value)</EM></P>
 <P class=MsoNormal>This checks the value of a piece of 
 datum about the given clan. The clan parameter may be either a mob to denote the 
@@ -2495,7 +2495,7 @@ the only solitary member of the clan.<BR>else<BR><SPAN style="mso-spacerun: yes"
 </SPAN>mpecho The actor triggering me appears to be part of a clan larger than 1 
 member.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">clanrank<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">clanrank<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>clanrank(character == integer)</EM></P>
 <P class=MsoNormal>This checks the rank of the character in 
 their clan.&nbsp; Where '==' may be&nbsp;another logical operator 
@@ -2508,7 +2508,7 @@ an APPLICANT.<BR>else<BR><SPAN
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
 triggering me appears not to be an APPLICANT.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">class<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">class<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>class(character == classname)</EM></P>
 <P class=MsoNormal>This checks the class of the character 
 variable.&nbsp; For players, this is their class, or in the case of a 
@@ -2534,7 +2534,7 @@ be '!='.&nbsp; </P>
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho You must be 
 using something else.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">deity<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">deity<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>deity(character == deityname)</EM></P>
 <P class=MsoNormal>This checks the name of the deity of the 
 character variable.&nbsp; Where '==' may be&nbsp;another logical operator 
@@ -2593,9 +2593,9 @@ with the value given.</P>
 very very good.<BR>else<BR>&nbsp; 
 mpecho The actor is some other alignment.<BR>endif</EM></P>
 <P><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">goldamt<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">goldamt<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>goldamt(character &gt; amount)</EM></P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>This&nbsp;evaluates the total amount of 
 money that the character variable has on hand, or the value of the item if an 
 item code is used instead of a character code. Where '==' may be any other 
@@ -2698,7 +2698,7 @@ InTheAir)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor eith
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor is 
 not up in the air.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">inroom<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">inroom<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>inroom(target == roomcode)</EM></P>
 <P class=MsoNormal>This checks to see if the target is 
 in&nbsp;the room specified by the room code.&nbsp; The room code may be a room 
@@ -2755,7 +2755,7 @@ Mobile)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor trigge
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
 triggering me is not mobile.<BR>endif<BR></EM><BR><B 
 style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">ischarmed<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">ischarmed<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>ischarmed(character)</EM></P>
 <P class=MsoNormal>This checks to see if the character 
 variable is charmed. </P>
@@ -2783,7 +2783,7 @@ evil.</P>
 isevil($i)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am evil!<BR>else<BR>&nbsp; mpecho I am either 
 neutral or good.</EM><EM><BR>end</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isfight<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isfight<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>isfight(character)</EM></P>
 <P class=MsoNormal>This checks to see if the character 
 variable is in combat.</P>
@@ -2793,7 +2793,7 @@ isfight($i)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am fightin
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am not 
 fighting.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isfollow<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isfollow<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>isfollow(character)</EM></P>
 <P class=MsoNormal>This checks to see if the character 
 variable’s master (the person they are following) is in the room.</P>
@@ -2813,7 +2813,7 @@ good.</P>
 isgood($i)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am good!<BR>else<BR>&nbsp; mpecho I am either 
 neutral or evil.</EM><EM><BR>end</EM></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></o:p></SPAN></B></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>ishere</STRONG></SPAN></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>ishere(name)</EM></P>
@@ -2826,7 +2826,7 @@ literal string.</P>
 happy frog)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho A happy frog is in the room.<BR>else<BR>&nbsp; mpecho A happy frog is 
 not in the room.</EM><EM><BR>end</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isimmort<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isimmort<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>isimmort(character)</EM></P>
 <P class=MsoNormal>This checks to see if the character 
 variable is immortal.&nbsp; In CoffeeMud, that means they have the security code 
@@ -2892,7 +2892,7 @@ color=black><SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>isneutral(char
 color=black size=3>if isneutral($i)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
 </SPAN>mpecho I am neutral!<BR>else<BR>&nbsp; mpecho I am either&nbsp;good or evil.</FONT></EM><EM><BR><FONT color=black size=3>end</FONT></EM></P></SPAN>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isnpc<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isnpc<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: </P>
 <P class=MsoNormal><EM>isnpc(character)</EM></P>
 <P class=MsoNormal>This checks to see if a character 
@@ -2915,7 +2915,7 @@ chest)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The chest is open
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The chest is 
 not open.<BR>endif</EM></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">ispc<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">ispc<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>ispc(character)</EM></P>
 <P class=MsoNormal>This checks to see if a character 
 variable is a player character.</P>
@@ -2994,7 +2994,7 @@ isweather(rain)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Rain, ra
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho We can play! 
 No Rain!<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">level<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">level<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>level(character == number)</EM></P>
 <P class=MsoNormal>This checks the total level of the 
 character variable.&nbsp; Where '==' may be any of the logical operators 
@@ -3023,7 +3023,7 @@ cardinality is represented by the code $g.1 is a sword.<BR>else<BR><SPAN
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Neither of 
 those items is a sword.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">number<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">number<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>number(string)</EM></P>
 <P class=MsoNormal>This function returns whether the string 
 given is a number.</P>
@@ -3135,7 +3135,7 @@ style="mso-spacerun: yes">&nbsp; </SPAN>mpecho There are 10
 or less&nbsp;goblins in this area.<BR>endif</EM></P>
 <P class=MsoNormal>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">position<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">position<o:p></o:p></SPAN></B></P>
 <P></P>
 <P class=MsoNormal>Usage: <BR><EM>position(character == posword)</EM></P>
 <P class=MsoNormal>This checks the position of the 
@@ -3186,9 +3186,9 @@ winner of the quest myquest.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp;
 </SPAN>mpecho This means the&nbsp;the actor&nbsp;hss not&nbsp;been a winner of 
 the&nbsp;quest myquest.<BR>endif</EM></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></o:p></SPAN></B></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">race<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">race<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>race(character == race)</EM></P>
 <P class=MsoNormal>This function compares the race of the 
 character variable with the race name given. For a list of race names, do LIST 
@@ -3198,7 +3198,7 @@ the logical operators from above.</P>
 </SPAN>mpecho The actor is a goblin.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
 </SPAN>mpecho The actor is not a goblin.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">racecat<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">racecat<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>race(character == category)</EM></P>
 <P class=MsoNormal>This function compares the racial 
 category of the race&nbsp;of the character variable with the racial category 
@@ -3209,9 +3209,9 @@ above.</P>
 </SPAN>mpecho The actor is an Elf, or Elf-kin.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
 </SPAN>mpecho The actor is not an Elf-Kin.<BR>endif</EM></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></O:P><EM></EM></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></o:p><EM></EM></SPAN></B></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">rand<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">rand<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>rand(integer)</EM></P>
 <P class=MsoNormal>This generates a random number and 
 checks to see if it is under the integer. This is best used for random events 
@@ -3222,7 +3222,7 @@ where there are only two outcomes.</P>
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Not under 
 40%.<BR>endif</EM></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">rand0num<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">rand0num<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>rand0num(integer == integer)</EM></P>
 <P class=MsoNormal>This generates a random number from 0 to 
 the first integer given minus 1, and checks to see if it is under the value give 
@@ -3233,7 +3233,7 @@ item in a string list. See the example below.</P>
 ho<BR><SPAN style="mso-spacerun: yes"></SPAN>&nbsp; say I just wanted to say $&lt;$i 
 GREETINGLIST&gt;.$%RAND0NUM(5)%!<BR>endif</EM></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">randnum<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">randnum<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>randnum(integer == integer)</EM></P>
 <P class=MsoNormal>This generates a random number from 1 to 
 the first integer given, and checks to see if it is under the value give in the 
@@ -3271,7 +3271,7 @@ the code $g.1 is joe.<BR>else<BR><SPAN
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Neither of 
 those mobs is joe.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">sex<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">sex<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>sex(character == letter)</EM></P>
 <P class=MsoNormal>This compares the sex of the character 
 variable to the letter given.&nbsp; The letter may be "M", "F", or "N".&nbsp; 
@@ -3316,7 +3316,7 @@ variables were used in the example, this is technically impossible.<BR>endif</EM
 <P><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">value</SPAN></B></P>
 <P class=MsoNormal><EM>Usage: <BR>value(character currency &gt; amount)<BR>value(coinitem currency &gt; amount)</EM></P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><o:p></o:p></P>
 <P class=MsoNormal>This&nbsp;evaluates the total amount of 
 money that the character variable has on hand in the given currency, or the 
 value of the coins of the given currency. Where '==' may be any other logical 
@@ -3330,7 +3330,7 @@ has&nbsp;less than&nbsp;10000 base-gold with of money in the 'COPPER' currency
 on hand<BR>else<BR>&nbsp; mpecho The 
 actor has plenty<BR></EM><EM>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">var<o:p></O:P></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">var<o:p></o:p></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>var(character variable == value)</EM></P>
 <P class=MsoNormal>This function compares the variable 
 belonging to the character to the given value.&nbsp; The character is almost 

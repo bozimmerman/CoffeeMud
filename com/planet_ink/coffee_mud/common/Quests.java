@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.common;
 import java.util.*;
+import org.mozilla.javascript.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
 

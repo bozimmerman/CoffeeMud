@@ -26,10 +26,12 @@ browser:<BR><BR><A
 <P><A href="http://localhost:27777/">http://localhost:27777/</A></P>
 
 <p><b>What it does and doesn't do:</b><br>
-It supports 
-GET,
-urlencoded and multipart POST requests,&nbsp;and HEAD
-requests (I think HEAD is HTTP 1.1, but it's supported anyway).&nbsp;
+It supports GET, urlencoded and multipart POST 
+requests,&nbsp;and HEAD requests (I think HEAD is HTTP 1.1, 
+but it's 
+supported
+anyway).&nbsp; It supports numerous coded web
+macros, as well as inline server-side Javascripts to create custom pages.&nbsp;
 It does not cache.
 </p>
 
@@ -212,8 +214,8 @@ be abbreviated to MacParm, while Request Parameters will be abbreviated to ReqPa
       into the current document. If the parameter LINKONLY is included, this macro will instead insert the 
       path and file name of the random file.</TD></TR>
 <TR><TD>AddRequestParameter</TD><TD>        
-      The parameters for this macro are one
-      ormoreReqParmnamesandvalues.&nbsp;Forexample@AddRequestParameter?PARM1=VALUE&amp;PARM2=VALUE@.&nbsp; This is usually
+       The parameters for this macro are
+      oneormoreReqParmnamesandvalues.&nbsp;Forexample@AddRequestParameter?PARM1=VALUE&amp;PARM2=VALUE@.&nbsp; This is usually
       used to provide literal data for other macros which may require certain
       Request parameter data.</TD></TR>
 <TR><TD>AreaData</TD><TD>Requires ReqParm AREA be set to a valid area
@@ -566,6 +568,32 @@ return a meaningful name as well) </P>
 <P>
 If your macro is intended to be for the admin server only, you can override the
 <code>.isAdminMacro()</code> member to return <code>true.</code></P>
+<P><CODE><FONT face="Times New Roman" size=4><STRONG><FONT 
+size=3>Using</FONT> <FONT size=3>Javascript in your 
+pages</FONT></STRONG></FONT></CODE></P>
+<P><CODE><FONT face="Times New Roman" size=4><FONT size=3>The CoffeeMud web 
+server allows you to use the Javascript language to generate the tags and data 
+which make up your <STRONG>cmvp</STRONG> web pages.&nbsp; The Javascript to do 
+this is inserted directly into your web page at the point where you want the 
+script-generated content to appear using the embedded macros <FONT 
+face="Courier New" size=2>@jscript@</FONT> and </FONT><FONT face="Courier New" 
+size=2>@/jscript@. <FONT face="Times New Roman" size=3>The script included 
+between those two tags will follow the rules for Javascripting found in the <A 
+href="Programming.html">Programmers Guide</A>. <FONT size=4><FONT size=3>The web 
+server makes the</FONT> </FONT><FONT face="Courier New" 
+size=2>ExternalHTTPRequests request()</FONT><FONT size=4> <FONT size=3>object 
+available to the script, as well as the method</FONT> </FONT><FONT 
+face="Courier New" size=2>void write(String s)<FONT face="Times New Roman" 
+size=3> for writing text into the page</FONT></FONT><FONT 
+size=4>.&nbsp;&nbsp;</FONT></FONT></FONT></FONT></CODE><CODE><FONT 
+face="Times New Roman" size=4><FONT face="Courier New" size=2><FONT 
+face="Times New Roman" size=3>Here is an 
+example:</FONT></FONT></FONT></CODE></P>
+<P><CODE><FONT face="Times New Roman">&lt;HTML&gt;<BR>&lt;BODY&gt;<BR><FONT 
+face="Courier New" size=2>@jscript@<BR>var 
+x=request().ServerVersionString();<BR>write('&lt;P&gt;The version of this 
+CoffeeMud server is 
+&lt;B&gt;'+x+'&lt;/B&gt;.&lt;/P&gt;');<BR>@/jscript@<BR></FONT>&lt;/BODY&gt;<BR>&lt;/HTML&gt;</FONT></CODE></P>
 <P><CODE></CODE>&nbsp;</P>
 
 

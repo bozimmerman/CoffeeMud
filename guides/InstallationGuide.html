@@ -43,13 +43,28 @@ this script.</P>
 above instructions...</P>
 <P align=center><STRONG><FONT size=6>Congratulations!</FONT></STRONG></P>
 <P align=left>You have successfully installed CoffeeMud.&nbsp; </P>
-<P align=left>You may wish, at this point, to investigate the settings and components 
-of the CoffeeMud server.&nbsp; If so, by all means, finish reading this 
-document.&nbsp; If you couldn't care less, then go into the your CoffeeMud directory 
-on a command line&nbsp;or DOS prompt&nbsp;and enter:</P>
-<P align=left><STRONG>java -classpath "." 
+<P align=left>You may wish, at this point, to investigate the settings and components of the CoffeeMud server.&nbsp; 
+If so, by all means, finish reading this document.&nbsp; If you couldn't 
+care less, then go into the your CoffeeMud directory on a&nbsp;command line or&nbsp;DOS 
+prompt&nbsp;and enter (for Windows or DOS users):</P>
+<P align=left><STRONG>java -classpath ".;.\lib\js.jar" 
 -Xms25535000</STRONG> <STRONG>-Xmx85535000 
 com.planet_ink.coffee_mud.application.MUD&nbsp;"Your Muds Name"</STRONG></P>
+<P align=left>          
+              
+           
+              
+        And for Unix, Linux, or FreeBSD users, the 
+command differs only          
+              
+           
+              
+              
+               
+   in the classpath:</P>
+<P align=left><STRONG>java -classpath ".:./lib/js.jar" -Xms25535000</STRONG> 
+<STRONG>-Xmx85535000 com.planet_ink.coffee_mud.application.MUD&nbsp;"Your Muds 
+Name"</STRONG></P>
 <P align=left>          
               
            
@@ -60,13 +75,8 @@ unique name you want to give your mud.&nbsp; If you are running Windows, you
 might also get away with first modifying the file mud.bat using Notepad, and 
 then&nbsp;executing that&nbsp;file.&nbsp; If you are running some flavor of 
 FreeBSD, Unix, or Linux, you also have a mudLINUX.sh you may first modify, then 
-make executable using the command <STRONG>chmod 755 mudLINUX.sh, </STRONG>          
-              
-           
-              
-              
-               
-   and then execute.</P>
+make executable using the command <STRONG>chmod 755 mudLINUX.sh, </STRONG>and then 
+execute.</P>
 <P align=left>Now, connect to the server on port&nbsp;5555 using your telnet or 
 other MUD client.&nbsp; Create yourself a new character.&nbsp; This new 
 character will be your administrative player, or Archon, so most of the player 
@@ -108,7 +118,7 @@ href="ArchonGuide.html">Archon's Guide</A>
              
              
               
-         , and the <A href="BuildersFAQ.html">Builders FAQ</a>.&nbsp;&nbsp; Otherwise, 
+         , and the <A href="BuildersFAQ.html">Builders FAQ</A>.&nbsp;&nbsp; Otherwise, 
 once you have your administrator and a few areas, you are technically 
 ready to play!</P>
 <P>&nbsp;</P>
@@ -349,6 +359,10 @@ and others.</P>
 <P>The <STRONG>guides/images</STRONG>
   directory contains image files used inside the HTML files in 
 the guides directory.</P>
+<IMG src="images/dir-lib.jpg">
+<P>The <STRONG>lib</STRONG> directory holds any external libraries or components necessary 
+to run CoffeeMud, but not necessarily part of the CoffeeMud source proper.  For instance, 
+this directory holds the Mozilla Rhino Javascript library jar file, called js.jar.</P>
 <IMG src="images/dir-web.jpg">
 <P>The <STRONG>web</STRONG>  directory is where you'll find several important files
 related to the configuration of the two default web servers: admin, and public (pub):</P>
