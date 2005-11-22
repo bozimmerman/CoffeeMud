@@ -192,12 +192,12 @@ public class Quests implements Cloneable, Quest
 			if(p.size()>0)
 			{
 				String cmd=((String)p.elementAt(0)).toUpperCase();
-                if(cmd.equals("<JSCRIPT>"))
+                if(cmd.equals("<SCRIPT>"))
                 {
                     StringBuffer jscript=new StringBuffer("");
                     while(((++v)<script.size())
                     &&(!((String)script.elementAt(v)).trim().toUpperCase().startsWith("</SCRIPT>")))
-                        jscript.append((String)script.elementAt(v));
+                        jscript.append(((String)script.elementAt(v))+"\n");
                     if(v>=script.size())
                     {
                         Log.errOut("Quests","Quest '"+name()+"', <SCRIPT> command without </SCRIPT> found.");
