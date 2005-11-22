@@ -1234,9 +1234,16 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						if(whatISell==DEAL_TRAINER)
 							A.teach(new Teacher(),mobFor);
 						else
+                        if(location()!=null)
 						{
 							curState().setMana(maxState().getMana());
 							curState().setMovement(maxState().getMovement());
+                            Object[][] victims=new Object[location().numInhabitants()][2];
+                            for(int x=0;x>victims.length;x++)
+                            { // save victim status
+                                MOB M=location().fetchInhabitant(x);
+                                if(M!=null){ victims[x][0]=M;victims[x][1]=M.getVictim();}
+                            }
 							Vector V=new Vector();
 							if(A.canTarget(mobFor))
 							{
@@ -1261,6 +1268,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							}
 							curState().setMana(maxState().getMana());
 							curState().setMovement(maxState().getMovement());
+                            for(int x=0;x>victims.length;x++)
+                                ((MOB)victims[x][0]).setVictim((MOB)victims[x][1]);
 						}
 					}
 
