@@ -50,7 +50,7 @@ public class JRun extends StdCommand
         {
             JScriptWindow scope = new JScriptWindow(mob,commands);
             cx.initStandardObjects(scope);
-            String[] names = { "mob", "numParms", "getParm", "getParms"};
+            String[] names = { "mob", "numParms", "getParm", "getParms", "toJavaString"};
             scope.defineFunctionProperties(names, JScriptWindow.class,
                                            ScriptableObject.DONTENUM);
             cx.evaluateString(scope, ft.toString(),"<cmd>", 1, null);
@@ -74,6 +74,7 @@ public class JRun extends StdCommand
         Vector v=null;
         public MOB mob(){return s;}
         public int numParms(){return (v==null)?0:v.size();}
+        public String toJavaString(Object O){return Context.toString(O);}
         public String getParm(int i)
         {
             if(v==null) return "";

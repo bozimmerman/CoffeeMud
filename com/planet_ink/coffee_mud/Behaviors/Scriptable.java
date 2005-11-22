@@ -41,7 +41,6 @@ public class Scriptable extends StdBehavior
     private HashSet registeredSpecialEvents=new HashSet();
     private Hashtable noTrigger=new Hashtable();
 	private long tickStatus=Tickable.STATUS_NOT;
-    private boolean executing=false;
 
 	public long getTickStatus()
 	{
@@ -308,6 +307,7 @@ public class Scriptable extends StdBehavior
         public Item item(){return pi;}
         public Item item2(){return si;}
         public String message(){return message;}
+        public String toJavaString(Object O){return Context.toString(O);}
         public void setVar(String host, String var, String value)
         {
             Scriptable.mpsetvar(host.toString(),var.toString().toUpperCase(),value.toString());
@@ -4454,7 +4454,7 @@ public class Scriptable extends StdBehavior
                     {
                         JScriptEvent scope = new JScriptEvent(scripted,source,target,monster,primaryItem,secondaryItem,msg);
                         cx.initStandardObjects(scope);
-                        String[] names = { "host", "source", "target", "monster", "item", "item2", "message" ,"getVar", "setVar"};
+                        String[] names = { "host", "source", "target", "monster", "item", "item2", "message" ,"getVar", "setVar", "toJavaString"};
                         scope.defineFunctionProperties(names, JScriptEvent.class,
                                                        ScriptableObject.DONTENUM);
                         cx.evaluateString(scope, jscript.toString(),"<cmd>", 1, null);
