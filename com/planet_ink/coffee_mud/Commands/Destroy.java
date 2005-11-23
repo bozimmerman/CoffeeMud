@@ -311,11 +311,11 @@ public class Destroy extends BaseItemParser
 		if((!allFlag)&&(deadItem==null)) deadItem=(srchMob==null)?null:srchMob.fetchInventory(null,itemID);
 		while(deadItem!=null)
 		{
-			deadItem.destroy();
 			mob.location().recoverRoomStats();
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,deadItem.name()+" disintegrates!");
 			doneSomething=true;
 			Log.sysOut("Items",mob.Name()+" destroyed item "+deadItem.name()+".");
+            deadItem.destroy();
 			deadItem=null;
 			if(!allFlag) deadItem=(srchMob==null)?null:srchMob.fetchInventory(null,itemID);
 			if(deadItem==null) deadItem=(srchRoom==null)?null:srchRoom.fetchItem(null,itemID);

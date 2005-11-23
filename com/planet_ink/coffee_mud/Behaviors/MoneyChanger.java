@@ -162,7 +162,7 @@ public class MoneyChanger extends StdBehavior
             Coins C=BeanCounter.makeBestCurrency(observer,value);
 			if((value>0.0)&&(C!=null))
 			{
-				FullMsg newMsg=new FullMsg(observer,source,C,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
+				FullMsg newMsg=new FullMsg(observer,source,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
                 C.setOwner(observer);
                 C.destroy();
 				msg.addTrailerMsg(newMsg);

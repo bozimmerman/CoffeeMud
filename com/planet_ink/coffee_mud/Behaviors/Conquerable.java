@@ -929,7 +929,6 @@ public class Conquerable extends Arrest
 									data.append(XMLManager.convertXMLtoTag("MOB",((MOB)((Item)I).owner()).Name()));
 								}
 							}
-							((Item)I).destroy();
 							data.append(XMLManager.convertXMLtoTag("ICLAS",CMClass.className(I)));
 							data.append(XMLManager.convertXMLtoTag("IREJV",I.baseEnvStats().rejuv()));
 							data.append(XMLManager.convertXMLtoTag("IUSES",((Item)I).usesRemaining()));
@@ -937,6 +936,7 @@ public class Conquerable extends Arrest
 							data.append(XMLManager.convertXMLtoTag("IABLE",I.baseEnvStats().ability()));
 							data.append(XMLManager.convertXMLtoTag("ITEXT",CoffeeMaker.parseOutAngleBrackets(I.text())));
 							data.append("</ACITEM>");
+                            ((Item)I).destroy();
 						}
 					}
 					clanItems.clear();

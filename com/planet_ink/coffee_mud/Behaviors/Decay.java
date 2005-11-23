@@ -81,7 +81,6 @@ public class Decay extends ActiveTicker
 				if(E==null) return true;
 				Room room=getBehaversRoom(ticking);
 				if(room==null) return true;
-				item.destroy();
 				if(answer.trim().length()>0)
 				{
 					if(E instanceof MOB)
@@ -95,6 +94,7 @@ public class Decay extends ActiveTicker
 					if(E instanceof Room)
 						((Room)E).showHappens(CMMsg.MSG_OK_VISUAL,item.name()+" "+answer);
 				}
+                item.destroy();
 				room.recoverRoomStats();
 			}
 		}
