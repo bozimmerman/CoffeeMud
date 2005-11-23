@@ -123,9 +123,10 @@ public class Corpse extends GenContainer implements DeadBody
 				&&(!msg.tool().ID().equalsIgnoreCase("Song_Rebirth"))))
 		&&(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).length()>0)
         &&(playerCorpse())
+        &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE")))
 		&&(mobName().length()>0))
         {
-            if(CMSecurity.isAllowed(msg.source(),(Room)myHost,"CMDITEMS"))
+            if(CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDITEMS"))
                 return true;
             MOB ultimateFollowing=msg.source().amFollowing();
             while((ultimateFollowing!=null)&&(ultimateFollowing.amFollowing()!=null))
