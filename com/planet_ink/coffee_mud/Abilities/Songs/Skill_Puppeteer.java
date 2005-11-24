@@ -85,9 +85,7 @@ public class Skill_Puppeteer extends BardSkill
 		{
 			if(invoker().isInCombat())
 			{
-				boolean isHit=(Dice.normalizeAndRollLess(invoker().adjustedAttackBonus(invoker().getVictim())
-																   +((Item)affected).envStats().attackAdjustment()
-																   +invoker().getVictim().adjustedArmor()));
+				boolean isHit=(MUDFight.rollToHit(invoker().adjustedAttackBonus(invoker().getVictim())+((Item)affected).envStats().attackAdjustment(),invoker().getVictim().adjustedArmor()));
 				if(!isHit)
 					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else

@@ -39,9 +39,7 @@ public class Spell_AnimateWeapon extends Spell
 		{
 			if(invoker().isInCombat())
 			{
-				boolean isHit=(Dice.normalizeAndRollLess(invoker().adjustedAttackBonus(invoker().getVictim())
-																   +((Item)affected).envStats().attackAdjustment()
-																   +invoker().getVictim().adjustedArmor()));
+				boolean isHit=(MUDFight.rollToHit(invoker().adjustedAttackBonus(invoker().getVictim())+((Item)affected).envStats().attackAdjustment(),invoker().getVictim().adjustedArmor()));
 				if((!isHit)||(!(affected instanceof Weapon)))
 					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else

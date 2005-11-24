@@ -759,7 +759,7 @@ public class StdMOB implements MOB
 		if(mob==null)
 			return (int)Math.round(att);
 	    int diff=envStats().level()-mob.envStats().level();
-		return (diff*Util.abs(diff)/2)
+		return (diff*Util.abs(diff))
 			   +(int)Math.round(att);
 	}
 
@@ -2413,8 +2413,7 @@ public class StdMOB implements MOB
 								weapon=(Item)msg.tool();
 							if(weapon!=null)
 							{
-								boolean isHit=(Dice.normalizeAndRollLess(msg.source().adjustedAttackBonus(this)+adjustedArmor()));
-								MUDFight.postWeaponDamage(msg.source(),this,weapon,isHit);
+								MUDFight.postWeaponDamage(msg.source(),this,weapon,MUDFight.rollToHit(msg.source(),this));
 								msg.setValue(1);
 							}
 							if((soulMate==null)&&(playerStats!=null)&&(location!=null))
