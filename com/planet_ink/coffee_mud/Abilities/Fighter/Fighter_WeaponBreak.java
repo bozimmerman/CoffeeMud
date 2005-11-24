@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -69,7 +70,7 @@ public class Fighter_WeaponBreak extends StdAbility
 			levelDiff=0;
 		Item hisWeapon=mob.getVictim().fetchWieldedItem();
 		int chance=(-levelDiff)+(-(mob.getVictim().charStats().getStat(CharStats.DEXTERITY)*2));
-		boolean hit=(auto)||(Dice.normalizeAndRollLess(mob.adjustedAttackBonus(mob.getVictim())+mob.getVictim().adjustedArmor()));
+		boolean hit=(auto)||MUDFight.rollToHit(mob,mob.getVictim());
 		boolean success=profficiencyCheck(mob,chance,auto)&&(hit);
 		if((success)
 		   &&(hisWeapon!=null)

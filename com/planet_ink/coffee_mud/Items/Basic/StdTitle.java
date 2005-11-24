@@ -222,8 +222,8 @@ public class StdTitle extends StdItem implements LandTitle
 				        CommonMsgs.say((MOB)msg.target(),msg.source(),str,false,false);
 			        else
 			            ((MOB)msg.target()).tell(str+" You might want to tell the customer.");
+                    if(SK!=null) SK.removeStock(Name(),msg.source());
 			        destroy();
-					if(SK!=null) SK.removeStock(Name(),msg.source());
 			        return false;
 			    }
 			        
@@ -286,8 +286,8 @@ public class StdTitle extends StdItem implements LandTitle
 			LandTitle A=fetchALandTitle();
 			if(A==null)
 			{
-				destroy();
 				Log.errOut("StdTitle","Unsellable room: "+landPropertyID());
+                destroy();
 				return;
 			}
 			A.setLandOwner("");
@@ -313,8 +313,8 @@ public class StdTitle extends StdItem implements LandTitle
 			LandTitle A=fetchALandTitle();
 			if(A==null)
 			{
-				destroy();
 				Log.errOut("StdTitle","Unsellable room: "+landPropertyID());
+                destroy();
 				return;
 			}
             if(msg.source().getClanID().equals(landOwner())
@@ -360,8 +360,8 @@ public class StdTitle extends StdItem implements LandTitle
 			LandTitle A=fetchALandTitle();
 			if(A==null)
 			{
-				destroy();
 				Log.errOut("StdTitle","Unsellable room: "+landPropertyID());
+                destroy();
 				return;
 			}
 			if(A.landOwner().length()==0)
@@ -412,8 +412,8 @@ public class StdTitle extends StdItem implements LandTitle
 					A=fetchALandTitle();
 					if(A==null)
 					{
-						destroy();
 						Log.errOut("StdTitle","Unsellable room: "+landPropertyID());
+                        destroy();
 						return;
 					}
 					A.setLandPropertyID(AREA.Name());

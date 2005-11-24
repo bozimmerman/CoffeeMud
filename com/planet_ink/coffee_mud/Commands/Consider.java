@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -31,21 +32,20 @@ public class Consider extends StdCommand
 		if((mob1==null)||(mob2==null)) return 0;
 		int mob2Armor=mob2.adjustedArmor();
 		int mob1Armor=mob1.adjustedArmor();
-		int mob2Attack=mob2.adjustedAttackBonus(mob1);
-		int mob1Attack=mob1.adjustedAttackBonus(mob2);
+		double mob1Attack=new Integer(mob1.adjustedAttackBonus(mob2)).doubleValue();
+        double mob2Attack=new Integer(mob2.adjustedAttackBonus(mob1)).doubleValue();
 		int mob2Dmg=mob2.envStats().damage();
 		int mob1Dmg=mob1.envStats().damage();
 		int mob2Hp=mob2.baseState().getHitPoints();
 		int mob1Hp=mob1.baseState().getHitPoints();
 
-
-		double mob2HitRound=(((Util.div(Dice.normalizeBy5((mob2Attack+mob1Armor)),100.0))*Util.div(mob2Dmg,2.0))+1.0)*Util.mul(mob2.envStats().speed(),1.0);
-		double mob1HitRound=(((Util.div(Dice.normalizeBy5((mob1Attack+mob2Armor)),100.0))*Util.div(mob1Dmg,2.0))+1.0)*Util.mul(mob1.envStats().speed(),1.0);
+		double mob2HitRound=(((Util.div(Dice.normalizeBy5((int)Math.round(50.0*mob2Attack/mob1Armor)),100.0))*Util.div(mob2Dmg,2.0))+1.0)*Util.mul(mob2.envStats().speed(),1.0);
+		double mob1HitRound=(((Util.div(Dice.normalizeBy5((int)Math.round(50.0*mob1Attack/mob2Armor)),100.0))*Util.div(mob1Dmg,2.0))+1.0)*Util.mul(mob1.envStats().speed(),1.0);
 		double mob2SurvivalRounds=Util.div(mob2Hp,mob1HitRound);
 		double mob1SurvivalRounds=Util.div(mob1Hp,mob2HitRound);
 
 		//int levelDiff=(int)Math.round(Util.div((mob1SurvivalRounds-mob2SurvivalRounds),1));
-		double levelDiff=mob1SurvivalRounds-mob2SurvivalRounds;
+		double levelDiff=(mob1SurvivalRounds-mob2SurvivalRounds)/2;
 		int levelDiffed=(int)Math.round(Math.sqrt(Math.abs(levelDiff)));
 
 		return levelDiffed*(levelDiff<0.0?-1:1);

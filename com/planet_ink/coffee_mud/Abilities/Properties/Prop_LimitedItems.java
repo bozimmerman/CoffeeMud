@@ -105,8 +105,6 @@ public class Prop_LimitedItems extends Property
 		
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.SENSE_UNLOCATABLE);
 		
-		if(destroy) ((Item)affected).destroy();
-		
 		synchronized(playersLoaded)
 		{
 			if(!playersLoaded[0])
@@ -126,6 +124,7 @@ public class Prop_LimitedItems extends Property
 		if((((Item)affected).owner() instanceof MOB)
 		&&(((MOB)((Item)affected).owner()).playerStats()!=null))
 			countIfNecessary((Item)affected);
+        if(destroy) ((Item)affected).destroy();
 		norecurse=false;
 	}
 }

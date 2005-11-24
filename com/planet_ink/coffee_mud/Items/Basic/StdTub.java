@@ -255,7 +255,10 @@ public class StdTub extends StdRideable implements Drink
 				if(full)
 					mob.tell("You have drunk all you can.");
 				if(disappearsAfterDrinking)
-					destroy();
+                {
+                    destroy();
+                    return;
+                }
 				break;
 			case CMMsg.TYP_FILL:
 				if((msg.tool()!=null)&&(msg.tool() instanceof Drink))
@@ -270,7 +273,10 @@ public class StdTub extends StdRideable implements Drink
 					if(amountOfLiquidRemaining>amountOfLiquidHeld)
 						amountOfLiquidRemaining=amountOfLiquidHeld;
 					if((amountOfLiquidRemaining<=0)&&(disappearsAfterDrinking))
+                    {
 						destroy();
+                        return;
+                    }
 				}
 				break;
 			default:

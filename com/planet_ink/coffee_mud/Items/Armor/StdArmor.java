@@ -480,7 +480,8 @@ public class StdArmor extends StdContainer implements Armor
 				owner.recoverEnvStats();
 				owner.recoverCharStats();
 				owner.recoverMaxState();
-				owner.location().recoverRoomStats();
+                if(owner.location()!=null)
+    				owner.location().recoverRoomStats();
 			}
 		}
 	}

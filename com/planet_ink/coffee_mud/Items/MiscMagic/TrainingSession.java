@@ -49,12 +49,12 @@ public class TrainingSession extends StdItem implements MiscMagic
             case CMMsg.TYP_REMOVE:
             {
                 setContainer(null);
-                destroy();
+                unWear();
                 if(!mob.isMine(this))
                     mob.setTrains(mob.getTrains()+1);
-                unWear();
                 if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
                     mob.location().recoverRoomStats();
+                destroy();
                 return;
             }
             default:

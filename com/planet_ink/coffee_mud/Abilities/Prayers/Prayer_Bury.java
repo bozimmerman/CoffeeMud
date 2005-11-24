@@ -65,7 +65,6 @@ public class Prayer_Bury extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.destroy();
 				if(Sense.isNeutral(mob))
 				{
 					double exp=5.0;
@@ -74,6 +73,7 @@ public class Prayer_Bury extends Prayer
 					if(levelDiff>levelLimit) exp=0.0;
 					MUDFight.postExperience(mob,null,null,(int)Math.round(exp),false);
 				}
+                target.destroy();
 				mob.location().recoverRoomStats();
 			}
 		}

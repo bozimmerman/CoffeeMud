@@ -125,24 +125,27 @@ public class StdSmokable extends StdContainer implements Light
 			}
 			if(owner() instanceof Room)
 			{
-				if(((Room)owner()).numInhabitants()>0)
-					((Room)owner()).showHappens(CMMsg.MSG_OK_VISUAL,name()+" burns out.");
+                Room R=(Room)owner;
+				if(R.numInhabitants()>0)
+					R.showHappens(CMMsg.MSG_OK_VISUAL,name()+" burns out.");
 				if(destroyedWhenBurnedOut())
 					destroy();
-				((Room)owner()).recoverRoomStats();
+				R.recoverRoomStats();
 			}
 			else
 			if(owner() instanceof MOB)
 			{
-				((MOB)owner()).tell(((MOB)owner()),null,this,"<O-NAME> burns out.");
+                MOB M=(MOB)owner();
+				M.tell(M,null,this,"<O-NAME> burns out.");
 				durationTicks=0;
 				if(destroyedWhenBurnedOut())
 					destroy();
-				((MOB)owner()).recoverEnvStats();
-				((MOB)owner()).recoverCharStats();
-				((MOB)owner()).recoverMaxState();
-				((MOB)owner()).recoverEnvStats();
-				((MOB)owner()).location().recoverRoomStats();
+				M.recoverEnvStats();
+				M.recoverCharStats();
+				M.recoverMaxState();
+				M.recoverEnvStats();
+                if(M.location()!=null)
+    				M.location().recoverRoomStats();
 			}
 			light(false);
 			durationTicks=0;

@@ -56,8 +56,8 @@ public class Trap_SnakePit extends Trap_RoomPit
 		int num=0;
 		while((I!=null)&&((++num)<6))
 		{
-			I.destroy();
 			buf.append(((CagedAnimal)I).cageText());
+            I.destroy();
 			I=getCagedAnimal(mob);
 		}
 		buf.append("</SNAKES>");

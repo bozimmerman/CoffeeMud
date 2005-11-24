@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -81,7 +82,7 @@ public class Thief_Snatch extends StdAbility
 			levelDiff=levelDiff*6;
 		else
 			levelDiff=0;
-		boolean hit=(auto)||(Dice.normalizeAndRollLess(mob.adjustedAttackBonus(mob.getVictim())+mob.getVictim().adjustedArmor()));
+		boolean hit=(auto)||MUDFight.rollToHit(mob,mob.getVictim());
 		boolean success=profficiencyCheck(mob,-levelDiff,auto)&&(hit);
 		if((success)
 		   &&(hisWeapon!=null)

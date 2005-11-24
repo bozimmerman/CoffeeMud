@@ -164,7 +164,8 @@ public class StdWeapon extends StdItem implements Weapon
 					owner.recoverEnvStats();
 					owner.recoverCharStats();
 					owner.recoverMaxState();
-					owner.location().recoverRoomStats();
+                    if(owner.location()!=null)
+    					owner.location().recoverRoomStats();
 				}
 			}
 		}

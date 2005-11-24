@@ -276,6 +276,7 @@ public class GenWallpaper implements Item
 		if(owner==null) return;
 		destroyed=true;
 		removeFromOwnerContainer();
+        owner=null;
 	}
 
 	public void removeFromOwnerContainer()

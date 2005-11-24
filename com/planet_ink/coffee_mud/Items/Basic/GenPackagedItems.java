@@ -119,12 +119,12 @@ public class GenPackagedItems extends GenItem implements PackagedItems
             V.addElement(I.copyOf());
         setNumberOfItemsInPackage(numberOfItemsInPackage()-number);
         if(numberOfItemsInPackage()<=0)
-            destroy();
-        else
         {
-            baseEnvStats().setWeight(itemWeight*number);
-            setBaseValue(itemValue*number);
+            destroy();
+           return V;
         }
+        baseEnvStats().setWeight(itemWeight*number);
+        setBaseValue(itemValue*number);
         recoverEnvStats();
         return V;
     }

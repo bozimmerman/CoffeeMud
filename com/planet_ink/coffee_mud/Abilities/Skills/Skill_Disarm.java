@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -68,7 +69,7 @@ public class Skill_Disarm extends StdAbility
 			levelDiff=levelDiff*5;
 		else
 			levelDiff=0;
-		boolean hit=(auto)||(Dice.normalizeAndRollLess(mob.adjustedAttackBonus(victim)+victim.adjustedArmor()));
+		boolean hit=(auto)||MUDFight.rollToHit(mob,victim);
 		boolean success=profficiencyCheck(mob,-levelDiff,auto)&&(hit);
 		if((success)&&(hisWeapon!=null)
 		   &&((hisWeapon.fitsOn(Item.WIELD))

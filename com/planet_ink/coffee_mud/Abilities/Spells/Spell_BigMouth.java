@@ -51,7 +51,7 @@ public class Spell_BigMouth extends Spell
 				if(msg.target() instanceof MOB)
 				{
 					MOB target=(MOB)msg.target();
-					boolean isHit=(Dice.normalizeAndRollLess(msg.source().adjustedAttackBonus(target)+target.adjustedArmor()));
+					boolean isHit=MUDFight.rollToHit(msg.source(),target);
 					if(!isHit)
 					{
 						mob.tell("You fail to eat "+target.name());

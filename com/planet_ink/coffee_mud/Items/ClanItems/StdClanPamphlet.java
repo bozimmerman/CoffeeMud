@@ -104,6 +104,7 @@ public class StdClanPamphlet extends StdClanItem
 							mob.location().send(mob,newMsg);
 						if(!M.isMine(I)) 
                             ((Item)I).destroy();
+                        else
                         if(mob.isMine(I))
                             ((Item)I).destroy();
 					}

@@ -73,9 +73,12 @@ public class StdClanFlag extends StdItem implements ClanItem
 	{
 	    if((System.currentTimeMillis()-lastClanCheck)>IQCalendar.MILI_HOUR)
 	    {
+            lastClanCheck=System.currentTimeMillis();
 		    if((clanID().length()>0)&&(Clans.getClan(clanID())==null))
-		        destroy();
-		    lastClanCheck=System.currentTimeMillis();
+            {
+                destroy();
+                return;
+            }
 	    }
 		if(StdClanItem.stdExecuteMsg(this,msg))
 		{

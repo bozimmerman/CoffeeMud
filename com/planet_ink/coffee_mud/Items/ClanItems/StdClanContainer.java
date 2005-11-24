@@ -51,9 +51,12 @@ public class StdClanContainer extends StdContainer implements ClanItem
 	{
 	    if((System.currentTimeMillis()-lastClanCheck)>IQCalendar.MILI_HOUR)
 	    {
+            lastClanCheck=System.currentTimeMillis();
 		    if((clanID().length()>0)&&(Clans.getClan(clanID())==null))
+            {
 		        destroy();
-		    lastClanCheck=System.currentTimeMillis();
+                return;
+            }
 	    }
 		if(StdClanItem.stdExecuteMsg(this,msg))
 			super.executeMsg(myHost,msg);

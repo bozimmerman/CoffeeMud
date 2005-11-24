@@ -47,13 +47,13 @@ public class QuestPoint extends StdItem
 			case CMMsg.TYP_GET:
 			case CMMsg.TYP_REMOVE:
 			{
+                unWear();
 				setContainer(null);
-				destroy();
 				if(!mob.isMine(this))
 					mob.setQuestPoint(mob.getQuestPoint()+1);
-				unWear();
 				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();
+                destroy();
 				return;
 			}
 			default:
