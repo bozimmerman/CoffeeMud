@@ -33,7 +33,7 @@ public class Skill_TwoWeaponFighting extends StdAbility
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 
-	private Weapon lastWeapon=null;
+	private Weapon lastSecondary=null;
 	private Weapon lastPrimary=null;
 
 
@@ -60,11 +60,11 @@ public class Skill_TwoWeaponFighting extends StdAbility
 
 	private Weapon getSecondWeapon(MOB mob)
 	{
-		if((lastWeapon!=null)
-		&&(lastWeapon.amWearingAt(Item.HELD))
-		&&(!lastWeapon.amWearingAt(Item.WIELD))
-		&&(lastWeapon.container()==null))
-			return lastWeapon;
+		if((lastSecondary!=null)
+		&&(lastSecondary.amWearingAt(Item.HELD))
+		&&(!lastSecondary.amWearingAt(Item.WIELD))
+		&&(lastSecondary.container()==null))
+			return lastSecondary;
 		Weapon weapon=null;
 		for(int i=0;i<mob.inventorySize();i++)
 		{
@@ -75,7 +75,7 @@ public class Skill_TwoWeaponFighting extends StdAbility
 			    &&(item.container()==null))
 			{ weapon=(Weapon)item; break; }
 		}
-		lastWeapon=weapon;
+        lastSecondary=weapon;
 		return weapon;
 	}
 
@@ -88,8 +88,8 @@ public class Skill_TwoWeaponFighting extends StdAbility
 			if((getSecondWeapon(mob)!=null)&&(getFirstWeapon(mob)!=null))
 			{
 				affectableStats.setSpeed(affectableStats.speed()+1.0);
-				if(lastWeapon!=null)
-					affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/5));
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/5));
+                affectableStats.setDamage(affectableStats.damage()-(affectableStats.damage()/20));
 			}
 		}
 	}
