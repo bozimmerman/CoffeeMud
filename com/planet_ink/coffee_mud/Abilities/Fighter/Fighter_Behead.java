@@ -97,7 +97,7 @@ public class Fighter_Behead extends StdAbility
 			levelDiff=levelDiff*3;
 		else
 			levelDiff=0;
-		boolean hit=(auto)||(Dice.normalizeAndRollLess(mob.adjustedAttackBonus(target)+target.adjustedArmor()));
+		boolean hit=(auto)||MUDFight.rollToHit(mob,target);
 		boolean success=profficiencyCheck(mob,0,auto)&&(hit);
 		if(success)
 		{
