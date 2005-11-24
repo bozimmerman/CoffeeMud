@@ -87,9 +87,7 @@ public class Skill_TwoWeaponFighting extends StdAbility
 
 			if((getSecondWeapon(mob)!=null)&&(getFirstWeapon(mob)!=null))
 			{
-				if((affectableStats.speed()>=2.0)&&(lastWeapon!=null))
-					affectableStats.setSpeed(affectableStats.speed()-1.0);
-				else
+				affectableStats.setSpeed(affectableStats.speed()+1.0);
 				if(lastWeapon!=null)
 					affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/5));
 			}
