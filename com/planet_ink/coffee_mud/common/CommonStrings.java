@@ -119,7 +119,8 @@ public class CommonStrings extends Scriptable
     public static final int SYSTEMI_MAXNEWPERIP=41;
     public static final int SYSTEMI_MAXMAILBOX=42;
     public static final int SYSTEMI_JSCRIPTS=43;
-	public static final int NUMI_SYSTEM=44;
+    public static final int SYSTEMI_INJMINLEVEL=44;
+	public static final int NUMI_SYSTEM=45;
 
 	public static final int SYSTEMB_MOBCOMPRESS=0;
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -348,22 +349,20 @@ public class CommonStrings extends Scriptable
         setIntVar(SYSTEMI_JSCRIPTS,page.getStr("JSCRIPTS"));
         
 		Vector V=Util.parseCommas(page.getStr("INJURYSYSTEM"),true);
-		if(V.size()!=5)
-		{
-		    CommonStrings.setIntVar(SYSTEMI_INJPCTCHANCE,100);
-		    CommonStrings.setIntVar(SYSTEMI_INJPCTHP,40);
-		    CommonStrings.setIntVar(SYSTEMI_INJPCTHPAMP,10);
-		    CommonStrings.setIntVar(SYSTEMI_INJPCTCHANCEAMP,100);
-		    CommonStrings.setIntVar(SYSTEMI_INJMULTIPLIER,4);
-		}
-		else
-		{
-		    CommonStrings.setIntVar(SYSTEMI_INJPCTCHANCE,Util.s_int((String)V.elementAt(0)));
-		    CommonStrings.setIntVar(SYSTEMI_INJPCTHP,Util.s_int((String)V.elementAt(1)));
-		    CommonStrings.setIntVar(SYSTEMI_INJPCTHPAMP,Util.s_int((String)V.elementAt(2)));
-		    CommonStrings.setIntVar(SYSTEMI_INJPCTCHANCEAMP,Util.s_int((String)V.elementAt(3)));
-		    CommonStrings.setIntVar(SYSTEMI_INJMULTIPLIER,Util.s_int((String)V.elementAt(4)));
-		}
+	    
+        if(V.size()>0) CommonStrings.setIntVar(SYSTEMI_INJPCTCHANCE,Util.s_int((String)V.elementAt(0)));
+        else CommonStrings.setIntVar(SYSTEMI_INJPCTCHANCE,100);
+        if(V.size()>1) CommonStrings.setIntVar(SYSTEMI_INJPCTHP,Util.s_int((String)V.elementAt(1)));
+        else CommonStrings.setIntVar(SYSTEMI_INJPCTHP,40);
+        if(V.size()>2) CommonStrings.setIntVar(SYSTEMI_INJPCTHPAMP,Util.s_int((String)V.elementAt(2)));
+        else CommonStrings.setIntVar(SYSTEMI_INJPCTHPAMP,10);
+        if(V.size()>3) CommonStrings.setIntVar(SYSTEMI_INJPCTCHANCEAMP,Util.s_int((String)V.elementAt(3)));
+        else CommonStrings.setIntVar(SYSTEMI_INJPCTCHANCEAMP,100);
+        if(V.size()>4) CommonStrings.setIntVar(SYSTEMI_INJMULTIPLIER,Util.s_int((String)V.elementAt(4)));
+        else CommonStrings.setIntVar(SYSTEMI_INJMULTIPLIER,4);
+        if(V.size()>5) CommonStrings.setIntVar(SYSTEMI_INJMINLEVEL,Util.s_int((String)V.elementAt(5)));
+        else CommonStrings.setIntVar(SYSTEMI_INJMINLEVEL,10);
+        
 		String stateVar=page.getStr("STARTHP");
 		if((stateVar.length()>0)&&(Util.isNumber(stateVar)))
 		    CommonStrings.setIntVar(SYSTEMI_STARTHP,Util.s_int(stateVar));

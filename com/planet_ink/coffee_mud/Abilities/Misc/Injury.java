@@ -277,7 +277,8 @@ public class Injury extends StdAbility
 							||((BodyPct>5)
 								&&((msg.tool() instanceof Electronics)||(BodyPct>=CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTHPAMP)))))
 							{
-							    boolean proceed=Dice.rollPercentage()<=CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTCHANCEAMP);
+							    boolean proceed=(Dice.rollPercentage()<=CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTCHANCEAMP))
+                                                &&(mob.envStats().level()>=CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJMINLEVEL));
 							    if(msg.tool() instanceof Weapon)
 								{
 									switch(((Weapon)msg.tool()).weaponType())
