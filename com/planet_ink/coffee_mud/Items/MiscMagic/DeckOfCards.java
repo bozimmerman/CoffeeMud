@@ -68,6 +68,7 @@ public class DeckOfCards extends HandOfCards
 		recoverEnvStats();
 	}
 
+    protected boolean abilityImbuesMagic(){return false;}
     // makePlayingCard(int cardBitCode)
     // this method creates a playing card object for
     // population in the deck.  The card created is

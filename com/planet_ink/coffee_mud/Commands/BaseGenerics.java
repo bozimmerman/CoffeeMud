@@ -61,23 +61,42 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(getScr("BaseGenerics","corpsedata",showNumber+"",E.mobName(),E.killerName()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+        mob.tell(getScr("BaseGenerics","deadMobname",E.mobName()));
 		String newName=mob.session().prompt(getScr("BaseGenerics","enternewname"),"");
-		if(newName.length()>0)
-			E.setMobName(newName);
-		else
-			mob.tell(getScr("BaseGenerics","nochange"));
+		if(newName.length()>0) E.setMobName(newName);
+		else mob.tell(getScr("BaseGenerics","nochange"));
 		mob.tell(getScr("BaseGenerics","deadMobd",E.mobDescription()));
 		newName=mob.session().prompt(getScr("BaseGenerics","enterd"),"");
-		if(newName.length()>0)
-			E.setMobDescription(newName);
-		else
-			mob.tell(getScr("BaseGenerics","nochange"));
+		if(newName.length()>0) E.setMobDescription(newName);
+		else mob.tell(getScr("BaseGenerics","nochange"));
+        mob.tell(getScr("BaseGenerics","deadmobplayercorpse",""+E.playerCorpse()));
+        newName=mob.session().prompt(getScr("BaseGenerics","truefalse"),"");
+        if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
+            E.setPlayerCorpse(Boolean.valueOf(newName.toLowerCase()).booleanValue());
+        else mob.tell(getScr("BaseGenerics","nochange"));
+        mob.tell(getScr("BaseGenerics","deadmobpkflag",""+E.mobPKFlag()));
+        newName=mob.session().prompt(getScr("BaseGenerics","truefalse"),"");
+        if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
+            E.setMobPKFlag(Boolean.valueOf(newName.toLowerCase()).booleanValue());
+        else mob.tell(getScr("BaseGenerics","nochange"));
+        genCharStats(mob,E.charStats());
 		mob.tell(getScr("BaseGenerics","killersname",E.killerName()));
 		newName=mob.session().prompt(getScr("BaseGenerics","enterk"),"");
-		if(newName.length()>0)
-			E.setKillerName(newName);
-		else
-			mob.tell(getScr("BaseGenerics","nochange"));
+		if(newName.length()>0) E.setKillerName(newName);
+		else mob.tell(getScr("BaseGenerics","nochange"));
+        mob.tell(getScr("BaseGenerics","deadmobkillerplayer",""+E.killerPlayer()));
+        newName=mob.session().prompt(getScr("BaseGenerics","truefalse"),"");
+        if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
+            E.setKillerPlayer(Boolean.valueOf(newName.toLowerCase()).booleanValue());
+        else mob.tell(getScr("BaseGenerics","nochange"));
+        mob.tell(getScr("BaseGenerics","deadmobtod",IQCalendar.d2String(E.timeOfDeath())));
+        newName=mob.session().prompt(getScr("BaseGenerics","entvaluenew"),"");
+        if(newName.length()>0) E.setTimeOfDeath(IQCalendar.string2Millis(newName));
+        else mob.tell(getScr("BaseGenerics","nochange"));
+        mob.tell(getScr("BaseGenerics","deadmoblastmsg",E.lastMessage()));
+        newName=mob.session().prompt(getScr("BaseGenerics","entvaluenew"),"");
+        if(newName.length()>0) E.setLastMessage(newName);
+        else mob.tell(getScr("BaseGenerics","nochange"));
 	}
 
 	static void genAuthor(MOB mob, Area A, int showNumber, int showFlag)
@@ -1222,6 +1241,31 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
+    public static void genCharStats(MOB mob, CharStats E)
+    throws IOException
+    {
+        String c="Q";
+        String commandStr="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()=+-";
+        while(!c.equals("\n"))
+        {
+            for(int i=0;i<CharStats.TRAITS.length;i++)
+                if(i!=CharStats.GENDER)
+                    mob.session().println("    "+commandStr.charAt(i)+") "+Util.padRight(CharStats.TRAITS[i],20)+":"+((E.getStat(i))));
+            c=mob.session().choose(getScr("BaseGenerics","msgabcde")+" ",commandStr.substring(0,CharStats.TRAITS.length)+"\n","\n").toUpperCase();
+            int num=commandStr.indexOf(c);
+            if(num>=0)
+            {
+                String newVal=mob.session().prompt(getScr("BaseGenerics","entnewvalue")+" "+CharStats.TRAITS[num]+" ("+E.getStat(num)+"): ","");
+                if(((Util.s_int(newVal)>0)||(newVal.trim().equals("0")))
+                &&(num!=CharStats.GENDER))
+                    E.setStat(num,Util.s_int(newVal));
+                else
+                    mob.tell(getScr("BaseGenerics","nochange"));
+            }
+        }
+    }
+    
+    
 	public static void genCharStats(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -2131,7 +2175,7 @@ public class BaseGenerics extends StdCommand
 	        Faction.FactionRange FR=(Faction.FactionRange)F.ranges.elementAt(v);
 	        mob.tell(Util.padRight(FR.Name,20)+": "+FR.low+" - "+FR.high+")");
 	    }
-		String newOne=mob.session().prompt(getScr("BaseGenerics","entnewvalue"));
+		String newOne=mob.session().prompt(getScr("BaseGenerics","entvaluenew"));
 		if(Util.isInteger(newOne))
 		{
 		    E.addFaction(F.ID,Util.s_int(newOne));
@@ -2755,7 +2799,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(getScr("BaseGenerics","nomobheld",showNumber+"",R.riderCapacity()+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newLevelStr=mob.session().prompt(getScr("BaseGenerics","entnewvalue"),"");
+		String newLevelStr=mob.session().prompt(getScr("BaseGenerics","entvaluenew"),"");
 		int newLevel=Util.s_int(newLevelStr);
 		if(newLevel>0)
 			R.setRiderCapacity(newLevel);
@@ -5731,6 +5775,8 @@ public class BaseGenerics extends StdCommand
 			    if(me instanceof ShipComponent.ShipPanel)
 				    genPanelType(mob,(ShipComponent.ShipPanel)me,++showNumber,showFlag);
 			}
+            if(me instanceof PackagedItems)
+                ((PackagedItems)me).setNumberOfItemsInPackage(EnglishParser.promptInteger(mob,((PackagedItems)me).numberOfItemsInPackage(),++showNumber,showFlag,getScr("BaseGenerics","numpackaged")));
 			genGettable(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);

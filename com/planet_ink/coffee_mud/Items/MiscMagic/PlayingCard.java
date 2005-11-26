@@ -57,6 +57,7 @@ public class PlayingCard extends StdItem implements MiscMagic
 		setBaseValue(0);
 		recoverEnvStats();
 	}
+    protected boolean abilityImbuesMagic(){return false;}
 
     // the encoded suit
     public int getBitEncodedSuit(){return envStats().ability()&(16+32);}

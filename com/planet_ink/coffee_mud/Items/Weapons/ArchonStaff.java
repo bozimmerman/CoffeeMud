@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.utils.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ArchonStaff extends Staff implements Wand, ArchonOnly
+public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 {
 	public String ID(){	return "ArchonStaff";}
 	private static Wand theWand=(Wand)CMClass.getMiscMagic("StdWand");

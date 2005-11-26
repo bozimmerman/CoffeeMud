@@ -47,6 +47,7 @@ public class GenCoins extends GenItem implements Coins
         return BeanCounter.getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins())+((getNumberOfCoins()==1)?" lies here.":" lie here.");
 	}
 	
+    protected boolean abilityImbuesMagic(){return false;}
 	public void setDynamicMaterial()
 	{
 	    if((EnglishParser.containsString(name(),"note"))

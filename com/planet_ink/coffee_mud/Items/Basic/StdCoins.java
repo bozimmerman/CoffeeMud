@@ -37,6 +37,7 @@ public class StdCoins extends StdItem implements Coins
 		baseEnvStats.setWeight(0);
 		recoverEnvStats();
 	}
+    protected boolean abilityImbuesMagic(){return false;}
 
 	public String Name()
 	{

@@ -57,6 +57,7 @@ public class StdItem implements Item
 		baseEnvStats().setWeight(1);
 		baseEnvStats().setArmor(0);
 	}
+    protected boolean abilityImbuesMagic(){return true;}
     protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_ITEM);}
     public boolean isGeneric(){return false;}
 	public String Name(){ return name;}
@@ -105,7 +106,7 @@ public class StdItem implements Item
 			if(A!=null)
 				A.affectEnvStats(this,envStats);
 		}
-		if(envStats().ability()>0)
+		if(((envStats().ability()>0)&&abilityImbuesMagic())||(this instanceof MiscMagic))
 			envStats().setDisposition(envStats().disposition()|EnvStats.IS_BONUS);
 		if((owner()!=null)
 		&&(owner() instanceof MOB)

@@ -36,6 +36,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
         setMaterial(EnvResource.RESOURCE_MEAT);
         recoverEnvStats();
     }
+    protected boolean abilityImbuesMagic(){return false;}
     public String name(){return "a package of "+numberOfItemsInPackage()+" "+Name()+"(s)";}
     public String displayText(){return "a package of "+numberOfItemsInPackage()+" "+Name()+"(s) sit here.";}
     public int numberOfItemsInPackage(){return baseEnvStats().ability();}
