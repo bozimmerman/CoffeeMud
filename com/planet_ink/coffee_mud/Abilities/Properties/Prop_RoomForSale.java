@@ -225,10 +225,11 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	    String theStr=rental?RENTSTR:SALESTR;
 	    String otherStr=rental?SALESTR:RENTSTR;
 		int x=R.description().indexOf(otherStr);
-		if(x>=0)
+		while(x>=0)
 		{
 			R.setDescription(R.description().substring(0,x));
 			CMClass.DBEngine().DBUpdateRoom(R);
+            x=R.description().indexOf(otherStr);
 		}
 		if(R.description().indexOf(theStr.trim())<0)
 		{
@@ -239,18 +240,17 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			}
 			R.setDescription(R.description()+theStr);
 			CMClass.DBEngine().DBUpdateRoom(R);
-
-			Item I=R.fetchItem(null,"$id$");
-			if((I==null)||(!I.ID().equals("GenWallpaper")))
-			{
-				I=CMClass.getItem("GenWallpaper");
-				Sense.setReadable(I,true);
-				I.setName("id");
-				I.setReadableText("This room is "+CMMap.getExtendedRoomID(R));
-				I.setDescription("This room is "+CMMap.getExtendedRoomID(R));
-				R.addItem(I);
-				CMClass.DBEngine().DBUpdateItems(R);
-			}
+        }
+		Item I=R.fetchItem(null,"$id$");
+		if((I==null)||(!I.ID().equals("GenWallpaper")))
+		{
+			I=CMClass.getItem("GenWallpaper");
+			Sense.setReadable(I,true);
+			I.setName("id");
+			I.setReadableText("This room is "+CMMap.getExtendedRoomID(R));
+			I.setDescription("This room is "+CMMap.getExtendedRoomID(R));
+			R.addItem(I);
+			CMClass.DBEngine().DBUpdateItems(R);
 		}
 	}
 
