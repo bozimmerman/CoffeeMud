@@ -835,11 +835,13 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					}
 					if(msg.tool() instanceof Ability)
 					{
-						if((whatISell==DEAL_TRAINER)&&(!((Ability)msg.tool()).canBeLearnedBy(new Teacher(),mob)))
-							return false;
-
-						if((msg.targetMinor()==CMMsg.TYP_BUY)
-						&&(whatISell!=DEAL_TRAINER))
+                        if(whatISell==DEAL_TRAINER)
+                        {
+    						if(!((Ability)msg.tool()).canBeLearnedBy(new Teacher(),mob))
+    							return false;
+                        }
+                        else
+						if(msg.targetMinor()==CMMsg.TYP_BUY)
 						{
 							Ability A=(Ability)msg.tool();
 							if(A.canTarget(mob)){}

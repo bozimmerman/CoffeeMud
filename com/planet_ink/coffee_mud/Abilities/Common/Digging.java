@@ -82,7 +82,7 @@ public class Digging extends GatheringSkill
 						amount=Dice.roll(1,55,0);
 					amount=amount*(abilityCode());
 					String s="s";
-					if(amount==1) s="";
+					if((amount==1)||(foundShortName.endsWith("s"))) s="";
 					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to dig out "+amount+" "+foundShortName+s+".");
 					for(int i=0;i<amount;i++)
 					{
