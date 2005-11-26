@@ -809,7 +809,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
                     {
                         R=(Room)i.nextElement();
                         tickStatus=Tickable.STATUS_MISC+9;
-                        // locked up on this line on 11/19/05
+                        // locked up on this line on 11/19/05 & 11/26
                         R.destroyRoom();
                         tickStatus=Tickable.STATUS_MISC+10;
                     }
