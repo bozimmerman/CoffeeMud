@@ -24,6 +24,7 @@ public class Siplet extends Applet
 {
     public final static boolean debugDataOut=false;
     
+    
     public final static long serialVersionUID=6;
     public static final float VERSION_MAJOR=(float)2.0;
     public static final long  VERSION_MINOR=1;

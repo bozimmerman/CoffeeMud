@@ -1057,7 +1057,6 @@ public class MXP
                 }
             }
         }
-        
     }
     
     public int processEntity(StringBuffer buf, int i, MXPElement currentE, boolean convertIfNecessary)

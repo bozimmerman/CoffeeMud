@@ -113,6 +113,14 @@ public class Patroller extends ActiveTicker
 		    return false;
 		if(canAct(ticking,tickID))
 		{
+            Vector riders=null;
+            if(ticking instanceof Rideable)
+            {
+                riders=new Vector();
+                for(int i=0;i<((Rideable)ticking).numRiders();i++)
+                    riders.addElement(((Rideable)ticking).fetchRider(i));
+            }
+            
 		    tickStatus=Tickable.STATUS_START;
 			Room thisRoom=null;
 			if(ticking instanceof MOB) 
@@ -319,12 +327,8 @@ public class Patroller extends ActiveTicker
 			if(ticking instanceof Item)
 			{
 				Item I=(Item)ticking;
-				Vector riders=null;
 				if(ticking instanceof Rideable)
 				{
-					riders=new Vector();
-					for(int i=0;i<((Rideable)ticking).numRiders();i++)
-						riders.addElement(((Rideable)ticking).fetchRider(i));
 					Exit opExit=thatRoom.getReverseExit(direction);
 					for(int i=0;i<riders.size();i++)
 					{
@@ -333,6 +337,7 @@ public class Patroller extends ActiveTicker
 						{
 						    tickStatus=Tickable.STATUS_MISC+16;
 							MOB mob=(MOB)R;
+                            mob.setRiding((Rideable)ticking);
 							FullMsg enterMsg=new FullMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
 							FullMsg leaveMsg=new FullMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
 							rideFlag=true;
@@ -389,6 +394,7 @@ public class Patroller extends ActiveTicker
 								if(R instanceof MOB)
 								{
 									thatRoom.bringMobHere((MOB)R,true);
+                                    ((MOB)R).setRiding((Rideable)ticking);
 									CommonMsgs.look((MOB)R,true);
 								}
 								else

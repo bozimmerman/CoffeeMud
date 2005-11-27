@@ -199,7 +199,7 @@ public class Modify extends BaseGenerics
 				{
 					genGridLocaleX(mob,(GridLocale)mob.location(),++showNumber,showFlag);
 					genGridLocaleY(mob,(GridLocale)mob.location(),++showNumber,showFlag);
-					((GridLocale)mob.location()).buildGrid();
+					//((GridLocale)mob.location()).buildGrid();
 				}
 				genBehaviors(mob,mob.location(),++showNumber,showFlag);
 				genAffects(mob,mob.location(),++showNumber,showFlag);
