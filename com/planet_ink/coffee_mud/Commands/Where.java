@@ -62,7 +62,7 @@ public class Where extends StdCommand
 			StringBuffer lines=new StringBuffer("^x");
 			lines.append(Util.padRight("Name",17)+"| ");
 			lines.append(Util.padRight("Location",17)+"^.^N\n\r");
-			String who=Util.combine(commands,1);
+			String who=Util.combineWithQuotes(commands,1);
 			if(who.length()==0)
 			{
 				for(int s=0;s<Sessions.size();s++)
@@ -101,6 +101,7 @@ public class Where extends StdCommand
 				boolean mobOnly=false;
 				boolean itemOnly=false;
 				boolean roomOnly=false;
+                boolean exitOnly=false;
                 boolean zapperMask=false;
                 boolean zapperMask2=false;
                 Vector compiledZapperMask=null;
@@ -111,6 +112,13 @@ public class Where extends StdCommand
 					who=who.substring(5).trim();
 				}
 				else
+                if((who.toUpperCase().startsWith("EXIT "))
+                ||(who.toUpperCase().startsWith("EXITS ")))
+                {
+                    exitOnly=true;
+                    who=who.substring(5).trim();
+                }
+                else
 				if((who.toUpperCase().startsWith("ITEM "))
 				||(who.toUpperCase().startsWith("ITEMS ")))
 				{
@@ -158,7 +166,6 @@ public class Where extends StdCommand
                     mob.tell("^xMask used:^?^.^N "+MUDZapper.zapperDesc(who)+"\n\r");
                     who=who.substring(9).trim();
                 }
-                
 				try
 				{
 					for(;r.hasMoreElements();)
@@ -166,7 +173,7 @@ public class Where extends StdCommand
 						Room R=(Room)r.nextElement();
 						if((R!=null)&&(CMSecurity.isAllowed(mob,R,"WHERE")))
 						{
-							if((!mobOnly)&&(!itemOnly))
+							if((!mobOnly)&&(!itemOnly)&&(!exitOnly))
 								if(EnglishParser.containsString(R.displayText(),who)
 								||EnglishParser.containsString(R.description(),who))
 								{
@@ -175,7 +182,23 @@ public class Where extends StdCommand
 									lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
 									lines.append("\n\r");
 								}
-							if((!mobOnly)&&(!roomOnly))
+                            if(exitOnly)
+                            {
+                                for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+                                {
+                                    Exit E=R.rawExits()[d];
+                                    if((E!=null)
+                                    &&(((E.Name().length()>0)&&(EnglishParser.containsString(E.Name(),who)))
+                                            ||((E.doorName().length()>0)&& EnglishParser.containsString(E.doorName(),who))
+                                            ||(EnglishParser.containsString(E.viewableText(mob,R).toString(),who))))
+                                    {
+                                        lines.append("^!"+Util.padRight(Directions.getDirectionName(d),17)+"^?| ");
+                                        lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
+                                        lines.append("\n\r");
+                                    }
+                                }
+                            }
+							if((!mobOnly)&&(!roomOnly)&&(!exitOnly))
 								for(int i=0;i<R.numItems();i++)
 								{
 									Item I=R.fetchItem(i);
@@ -187,7 +210,6 @@ public class Where extends StdCommand
                                             lines.append(R.roomTitle());
                                             lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                             lines.append("\n\r");
-                                            break;
                                         }
                                     }
                                     else
@@ -199,7 +221,6 @@ public class Where extends StdCommand
                                             lines.append(R.roomTitle());
                                             lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                             lines.append("\n\r");
-                                            break;
                                         }
                                     }
                                     else
@@ -218,7 +239,7 @@ public class Where extends StdCommand
 								MOB M=R.fetchInhabitant(m);
 							    if((M!=null)&&((M.isMonster())||(canShowTo(mob,M))))
 							    {
-									if((!itemOnly)&&(!roomOnly))
+									if((!itemOnly)&&(!roomOnly)&&(!exitOnly))
                                         if((zapperMask)&&(mobOnly))
                                         {
                                             if(MUDZapper.zapperCheckReal(compiledZapperMask,M))
@@ -250,7 +271,7 @@ public class Where extends StdCommand
 											lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
 											lines.append("\n\r");
 										}
-									if((!mobOnly)&&(!roomOnly))
+									if((!mobOnly)&&(!roomOnly)&&(!exitOnly))
 									{
 										for(int i=0;i<M.inventorySize();i++)
 										{
@@ -263,7 +284,6 @@ public class Where extends StdCommand
                                                     lines.append("INV: "+M.name());
                                                     lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                                     lines.append("\n\r");
-                                                    break;
                                                 }
                                             }
                                             else
@@ -275,7 +295,6 @@ public class Where extends StdCommand
                                                     lines.append("INV: "+M.name());
                                                     lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                                     lines.append("\n\r");
-                                                    break;
                                                 }
                                             }
                                             else
@@ -287,7 +306,6 @@ public class Where extends StdCommand
 												lines.append("INV: "+M.name());
 												lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
 												lines.append("\n\r");
-												break;
 											}
 										}
 										ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
@@ -304,7 +322,6 @@ public class Where extends StdCommand
                                                     lines.append("SHOP: "+M.name());
                                                     lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                                     lines.append("\n\r");
-                                                    break;
                                                 }
                                             }
                                             else
@@ -316,7 +333,6 @@ public class Where extends StdCommand
                                                     lines.append("SHOP: "+M.name());
                                                     lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                                     lines.append("\n\r");
-                                                    break;
                                                 }
                                             }
                                             else
@@ -328,7 +344,6 @@ public class Where extends StdCommand
                                                     lines.append("SHOP: "+M.name());
                                                     lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                                     lines.append("\n\r");
-                                                    break;
                                                 }
                                             }
                                             else
@@ -340,7 +355,6 @@ public class Where extends StdCommand
                                                     lines.append("SHOP: "+M.name());
                                                     lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                                     lines.append("\n\r");
-                                                    break;
                                                 }
                                             }
                                             else
@@ -352,7 +366,6 @@ public class Where extends StdCommand
 												lines.append("SHOP: "+M.name());
 												lines.append(" (^<LSTROOMID^>"+CMMap.getExtendedRoomID(R)+"^</LSTROOMID^>)");
 												lines.append("\n\r");
-												break;
 											}
 										}
 									}

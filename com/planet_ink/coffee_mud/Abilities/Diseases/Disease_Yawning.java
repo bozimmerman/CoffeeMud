@@ -68,7 +68,7 @@ public class Disease_Yawning extends Disease
 		&&(!Sense.isSleeping(mob)))
 		{
 			diseaseTick=DISEASE_DELAY();
-			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISE,DISEASE_AFFECT());
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISE,DISEASE_AFFECT()+CommonStrings.msp("yawn.wav",40));
 			if((mob.location()!=null)&&(mob.location().okMessage(mob,msg)))
 				mob.location().send(mob,msg);
 			catchIt(mob);

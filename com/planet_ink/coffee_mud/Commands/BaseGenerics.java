@@ -2275,7 +2275,7 @@ public class BaseGenerics extends StdCommand
 		String sel=("ABEFHKPRSDTN");
 		while(!q)
 		{
-			String newType=mob.session().choose(getScr("BaseGenerics","entvaluenew"),sel+"?","");
+			String newType=mob.session().choose(getScr("BaseGenerics","entnewvalueh"),sel+"?","");
 			if(newType.equals("?"))
 			{
 				for(int i=0;i<sel.length();i++)

@@ -67,14 +67,16 @@ public class Whisper extends StdCommand
 			Rideable R=mob.riding();
 			if(R==null)
 			{
-				msg=new FullMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) to <S-HIM-HERSELF> '"+combinedCommands+"'.^?",CMMsg.NO_EFFECT,null,CMMsg.MSG_QUIETMOVEMENT,"^T<S-NAME> whisper(s) to <S-HIM-HERSELF>.^?");
+				msg=new FullMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) to <S-HIM-HERSELF> '"+combinedCommands+"'.^?"+CommonStrings.msp("whisper.wav",40),
+                                              CMMsg.NO_EFFECT,null,
+                                              CMMsg.MSG_QUIETMOVEMENT,"^T<S-NAME> whisper(s) to <S-HIM-HERSELF>.^?"+CommonStrings.msp("whisper.wav",40));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
 			else
 			{
-				msg=new FullMsg(mob,R,null,CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) around <T-NAMESELF> '"+combinedCommands+"'.^?",
-								CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) around <T-NAMESELF> '"+combinedCommands+"'.^?",
+				msg=new FullMsg(mob,R,null,CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) around <T-NAMESELF> '"+combinedCommands+"'.^?"+CommonStrings.msp("whisper.wav",40),
+								CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) around <T-NAMESELF> '"+combinedCommands+"'.^?"+CommonStrings.msp("whisper.wav",40),
 								CMMsg.NO_EFFECT,null);
 				if(mob.location().okMessage(mob,msg))
 				{
@@ -85,12 +87,12 @@ public class Whisper extends StdCommand
 						if(M!=null)
 						{
 							if(R.amRiding(M))
-								msg=new FullMsg(mob,M,null,CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) around "+R.name()+" '"+combinedCommands+"'.^?",
-												CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) around "+R.name()+" '"+combinedCommands+"'.^?",
+								msg=new FullMsg(mob,M,null,CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) around "+R.name()+" '"+combinedCommands+"'.^?"+CommonStrings.msp("whisper.wav",40),
+												CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) around "+R.name()+" '"+combinedCommands+"'.^?"+CommonStrings.msp("whisper.wav",40),
 												CMMsg.NO_EFFECT,null);
 							else
-								msg=new FullMsg(mob,M,null,CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) around "+R.name()+" '"+combinedCommands+"'.^?",
-												CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) something around "+R.name()+".^?",
+								msg=new FullMsg(mob,M,null,CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) around "+R.name()+" '"+combinedCommands+"'.^?"+CommonStrings.msp("whisper.wav",40),
+												CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) something around "+R.name()+".^?"+CommonStrings.msp("whisper.wav",40),
 												CMMsg.NO_EFFECT,null);
 							if(mob.location().okMessage(mob,msg))
 								mob.location().sendOthers(mob,msg);
@@ -101,9 +103,9 @@ public class Whisper extends StdCommand
 		}
 		else
 		{
-			msg=new FullMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<WHISPER \""+target.name()+"\"^><S-NAME> whisper(s) to <T-NAMESELF> '"+combinedCommands+"'.^</WHISPER^>^?"
-										   ,CMMsg.MSG_SPEAK,"^T^<WHISPER \""+target.name()+"\"^><S-NAME> whisper(s) to <T-NAMESELF> '"+combinedCommands+"'^</WHISPER^>.^?"
-										   ,CMMsg.MSG_QUIETMOVEMENT,"^T<S-NAME> whisper(s) something to <T-NAMESELF>.^</WHISPER^>^?");
+			msg=new FullMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<WHISPER \""+target.name()+"\"^><S-NAME> whisper(s) to <T-NAMESELF> '"+combinedCommands+"'.^</WHISPER^>^?"+CommonStrings.msp("whisper.wav",40)
+										   ,CMMsg.MSG_SPEAK,"^T^<WHISPER \""+target.name()+"\"^><S-NAME> whisper(s) to <T-NAMESELF> '"+combinedCommands+"'^</WHISPER^>.^?"+CommonStrings.msp("whisper.wav",40)
+										   ,CMMsg.MSG_QUIETMOVEMENT,"^T<S-NAME> whisper(s) something to <T-NAMESELF>.^</WHISPER^>^?"+CommonStrings.msp("whisper.wav",40));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

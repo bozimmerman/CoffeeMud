@@ -65,6 +65,5 @@ Players currently online: <b>@NUMPLAYERS@</B>
 	<BR><BR>
 </TD></TR>
 </TABLE></TR></TR></TABLE>
-@jscript@ write('hi there, this is a test!@WEBSERVERNAME@'); @/jscript@ 
 </body>
 </html>
