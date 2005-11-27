@@ -37,6 +37,8 @@ public class Skill_Convert extends StdAbility
 		if(commands.size()==0)
 		{
 			mob.tell("You must specify either a deity to convert yourself to, or a player to convert to your religeon.");
+            if(mob.isMonster())
+                CommonMsgs.say(mob,null,"I am unable to convert.",false,false);
 			return false;
 		}
 
@@ -49,17 +51,23 @@ public class Skill_Convert extends StdAbility
 			if(target==null)
 			{
 				mob.tell("You've also never heard of a deity called '"+Util.combine(commands,0)+"'.");
+                if(mob.isMonster())
+                    CommonMsgs.say(mob,target,"I've never heard of '"+Util.combine(commands,0)+"'.",false,false);
 				return false;
 			}
 			if(D==null)
 			{
 				mob.tell("A faithless one cannot convert "+target.name()+".");
+                if(mob.isMonster())
+                    CommonMsgs.say(mob,target,"I am faithless, and can not convert you.",false,false);
 				return false;
 			}
 		}
 		if(target.isMonster())
 		{
 			mob.tell("You can't convert "+target.name()+".");
+            if(mob.isMonster())
+                CommonMsgs.say(mob,target,"I can not convert you.",false,false);
 			return false;
 		}
 		if(!auto)
@@ -73,6 +81,8 @@ public class Skill_Convert extends StdAbility
 			if(convertStack.contains(target))
 			{
 				mob.tell(target.name()+" must wait to be converted again.");
+                if(mob.isMonster())
+                    CommonMsgs.say(mob,target,"You must wait to be converted again.",false,false);
 				return false;
 			}
 		}
@@ -89,11 +99,15 @@ public class Skill_Convert extends StdAbility
 				if(target.getMyDeity()!=null)
 				{
 					mob.tell(target.name()+" is worshiping "+target.getMyDeity().name()+".  "+target.charStats().HeShe()+" must REBUKE "+target.getMyDeity().charStats().himher()+" first.");
+                    if(mob.isMonster())
+                        CommonMsgs.say(mob,target,"You already worship "+target.getMyDeity().Name()+".",false,false);
 					return false;
 				}
 				if(target.getMyDeity()==D)
 				{
 					mob.tell(target.name()+" already worships "+D.name()+".");
+                    if(mob.isMonster())
+                        CommonMsgs.say(mob,target,"You already worship "+D.Name()+".",false,false);
 					return false;
 				}
 				try
@@ -111,7 +125,7 @@ public class Skill_Convert extends StdAbility
 			}
 			Room dRoom=D.location();
 			if(dRoom==mob.location()) dRoom=null;
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,auto?"<S-NAME> <S-IS-ARE> converted!":"<S-NAME> convert(s) <T-NAMESELF> to the worship of "+D.name()+".");
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,auto?"<T-NAME> <T-IS-ARE> converted!":"<S-NAME> convert(s) <T-NAMESELF> to the worship of "+D.name()+".");
 			FullMsg msg2=new FullMsg(target,D,this,CMMsg.MSG_SERVE,null);
 			if((mob.location().okMessage(mob,msg))
 			   &&(mob.location().okMessage(mob,msg2))
