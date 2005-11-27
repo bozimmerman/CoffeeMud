@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Locales;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+import com.sun.rsasign.r;
 
 import java.util.*;
 
@@ -809,16 +810,51 @@ public class StdThinGrid extends StdRoom implements GridLocale
                     {
                         R=(Room)i.nextElement();
                         tickStatus=Tickable.STATUS_MISC+9;
-                        // locked up on this line on 11/19/05 & 11/26
-                        R.destroyRoom();
+                        try{
+                            for(int a=R.numEffects()-1;a>=0;a--)
+                                R.fetchEffect(a).unInvoke();
+                        }catch(Exception e2){}
                         tickStatus=Tickable.STATUS_MISC+10;
+                        while(R.numEffects()>0)
+                            R.delEffect(R.fetchEffect(0));
+                        tickStatus=Tickable.STATUS_MISC+11;
+                        try{
+                        for(int a=R.numInhabitants()-1;a>=0;a--)
+                            R.fetchInhabitant(a).destroy();
+                        }catch(Exception e2){}
+                        tickStatus=Tickable.STATUS_MISC+12;
+                        while(R.numInhabitants()>0)
+                            R.delInhabitant(R.fetchInhabitant(0));
+                        tickStatus=Tickable.STATUS_MISC+13;
+                        while(R.numBehaviors()>0)
+                            R.delBehavior(R.fetchBehavior(0));
+                        tickStatus=Tickable.STATUS_MISC+13;
+                        try{
+                        while(R.numItems()>0)
+                            R.fetchItem(0).destroy();
+                        }catch(Exception e2){}
+                        tickStatus=Tickable.STATUS_MISC+13;
+                        while(R.numItems()>0)
+                            R.delItem(R.fetchItem(0));
+                        tickStatus=Tickable.STATUS_MISC+14;
+                        if(R instanceof GridLocale)
+                            ((GridLocale)R).clearGrid(null);
+                        tickStatus=Tickable.STATUS_MISC+15;
+                        R.clearSky();
+                        tickStatus=Tickable.STATUS_MISC+16;
+                        CMClass.ThreadEngine().deleteTick(R,-1);
+                        tickStatus=Tickable.STATUS_MISC+17;
+                        CMMap.delRoom(R);
+                        tickStatus=Tickable.STATUS_MISC+18;
+                        R.destroyRoom();
+                        tickStatus=Tickable.STATUS_MISC+19;
                     }
-                    tickStatus=Tickable.STATUS_MISC+11;
+                    tickStatus=Tickable.STATUS_MISC+20;
 				}
                 catch(Exception e2){Log.debugOut("StdThinGrid",e2);}
-				tickStatus=Tickable.STATUS_MISC+12;
+				tickStatus=Tickable.STATUS_MISC+21;
 			}
-            tickStatus=Tickable.STATUS_MISC+13;
+            tickStatus=Tickable.STATUS_MISC+22;
 			CMMap.trimRoomsList();
 			tickStatus=Tickable.STATUS_NOT;
 			return true;

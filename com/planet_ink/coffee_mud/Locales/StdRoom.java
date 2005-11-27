@@ -1366,8 +1366,8 @@ public class StdRoom
 		while(numBehaviors()>0)
 			delBehavior(fetchBehavior(0));
 		try{
-		for(int a=numItems()-1;a>=0;a--)
-			fetchItem(a).destroy();
+            while(numItems()>0)
+                fetchItem(0).destroy();
 		}catch(Exception e){}
 		while(numItems()>0)
 			delItem(fetchItem(0));
