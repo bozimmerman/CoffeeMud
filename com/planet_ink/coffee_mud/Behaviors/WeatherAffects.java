@@ -750,7 +750,7 @@ public class WeatherAffects extends PuddleMaker
                     for(int i=0;i<rustThese.size();i++)
                     {
                         Item I=(Item)rustThese.elementAt(i);
-                        FullMsg msg=new FullMsg(M,I,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WATER,(weatherType!=0)?"<T-NAME> rusts in the "+weatherDesc+".":"<T-NAME> rusts in the water.",CMMsg.TYP_WATER,null,CMMsg.NO_EFFECT,null);
+                        FullMsg msg=new FullMsg(M,I,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WATER,(weatherType!=0)?"<T-NAME> rusts.":"<T-NAME> rusts in the water.",CMMsg.TYP_WATER,null,CMMsg.NO_EFFECT,null);
                         if(R.okMessage(M,msg))
                         {
                             R.send(M,msg);
