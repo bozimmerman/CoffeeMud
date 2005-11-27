@@ -730,7 +730,6 @@ public class WeatherAffects extends PuddleMaker
                 if(Dice.rollPercentage()<rustChance)
                 {
                     int weatherType=C.weatherType(R);
-                    String weatherDesc=Climate.WEATHER_DESCS[weatherType].toLowerCase();
                     Vector rustThese=new Vector();
                     for(int i=0;i<M.inventorySize();i++)
                     {

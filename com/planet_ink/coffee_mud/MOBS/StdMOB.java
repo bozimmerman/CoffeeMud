@@ -463,7 +463,11 @@ public class StdMOB implements MOB
 			return soulMate.playerStats();
 		return playerStats;
 	}
-	public void setPlayerStats(PlayerStats newStats){playerStats=newStats;}
+	public void setPlayerStats(PlayerStats newStats)
+    {
+if(newStats==null){ try{int x=0;x=x/0;}catch(Exception e){e.printStackTrace();} }
+        playerStats=newStats;
+    }
 	public void setBaseState(CharState newState)
 	{
 		baseState=newState.cloneCharState();
@@ -503,9 +507,31 @@ public class StdMOB implements MOB
 	{
 		return !pleaseDestroy;
 	}
+    
+    public void dispossess(boolean giveMsg)
+    {
+        MOB mate=soulMate();
+        if(mate==null) return;
+        if(mate.soulMate()!=null) 
+            mate.dispossess(giveMsg);
+        Session s=session();
+        if(s!=null)
+        {
+            s.setMob(mate);
+            mate.setSession(s);
+            setSession(null);
+            if(giveMsg)
+            {
+                mate.tell("^HYour spirit has returned to your body...\n\r\n\r^N");
+                CommonMsgs.look(mate,true);
+            }
+            setSoulMate(null);
+        }
+    }
 
 	public void destroy()
 	{
+        if(soulMate()!=null) dispossess(false);
 		removeFromGame();
 		while(numBehaviors()>0)
 			delBehavior(fetchBehavior(0));

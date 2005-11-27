@@ -33,17 +33,7 @@ public class Quit extends StdCommand
 			mob.tell("Huh?");
 			return;
 		}
-		MOB mate=mob.soulMate();
-		if(mate.soulMate()!=null) 
-		    dispossess(mate);
-		
-		Session s=mob.session();
-		s.setMob(mate);
-		mate.setSession(s);
-		mob.setSession(null);
-		mate.tell("^HYour spirit has returned to your body...\n\r\n\r^N");
-		CommonMsgs.look(mate,true);
-		mob.setSoulMate(null);
+        mob.dispossess(true);
 	}
 
 	public boolean execute(MOB mob, Vector commands)
