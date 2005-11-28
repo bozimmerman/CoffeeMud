@@ -532,6 +532,9 @@ if(newStats==null){ try{int x=0;x=x/0;}catch(Exception e){e.printStackTrace();} 
 	public void destroy()
 	{
         if(soulMate()!=null) dispossess(false);
+        MOB possessor=CoffeeUtensils.getMobPossessingAnother(this);
+        if(possessor!=null) possessor.dispossess(false);
+        if(session()!=null){ session().setKillFlag(true); try{Thread.sleep(1000);}catch(Exception e){}}
 		removeFromGame();
 		while(numBehaviors()>0)
 			delBehavior(fetchBehavior(0));
@@ -3380,8 +3383,10 @@ if(newStats==null){ try{int x=0;x=x/0;}catch(Exception e){e.printStackTrace();} 
 
 	public boolean isEligibleMonster()
 	{
-		if(!isMonster())
-			return false;
+		if((!isMonster())&&(soulMate()==null)) 
+            return false;
+        if(CoffeeUtensils.getMobPossessingAnother(this)!=null)
+            return false;
 		MOB followed=amFollowing();
 		if(followed!=null)
 			if(!followed.isMonster())

@@ -895,7 +895,7 @@ public class Reset extends StdCommand
 							ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
 							if(SK!=null)
 							{
-								Vector V=SK.getUniqueStoreInventory();
+								Vector V=SK.getStoreInventory();
 								for(int i=V.size()-1;i>=0;i--)
 								{
 									Environmental E=(Environmental)V.elementAt(i);
@@ -964,7 +964,7 @@ public class Reset extends StdCommand
 							ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
 							if(SK!=null)
 							{
-								Vector V=SK.getUniqueStoreInventory();
+								Vector V=SK.getStoreInventory();
 								for(int i=V.size()-1;i>=0;i--)
 								{
 									Environmental E=(Environmental)V.elementAt(i);
@@ -1091,7 +1091,7 @@ public class Reset extends StdCommand
                         ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
                         if(SK!=null)
                         {
-                            Vector V=SK.getUniqueStoreInventory();
+                            Vector V=SK.getStoreInventory();
                             for(int i=V.size()-1;i>=0;i--)
                             {
                                 Environmental E=(Environmental)V.elementAt(i);
@@ -1284,7 +1284,7 @@ public class Reset extends StdCommand
 					ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
 					if(SK!=null)
 					{
-						Vector V=SK.getUniqueStoreInventory();
+						Vector V=SK.getStoreInventory();
 						for(int i=V.size()-1;i>=0;i--)
 						{
 							Environmental E=(Environmental)V.elementAt(i);

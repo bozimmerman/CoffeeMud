@@ -21,7 +21,7 @@ limitations under the License.
 */
 public class TelnetFilter
 {
-    public final static boolean debugChars=true;
+    public final static boolean debugChars=false;
     public final static boolean debugTelnetCodes=false;
     
     protected static final char IAC_SE=240;

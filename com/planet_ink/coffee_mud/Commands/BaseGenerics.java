@@ -2862,7 +2862,7 @@ public class BaseGenerics extends StdCommand
 			E.setWhatIsSold(newValue);
             if(reexamine)
             {
-                Vector V=E.getUniqueStoreInventory();
+                Vector V=E.getStoreInventory();
                 for(int b=0;b<V.size();b++)
                     if(!E.doISellThis((Environmental)V.elementAt(b)))
                         E.delAllStoreInventory((Environmental)V.elementAt(b));
@@ -2878,7 +2878,7 @@ public class BaseGenerics extends StdCommand
 		while(itemstr.length()>0)
 		{
 			String inventorystr="";
-			Vector V=E.getUniqueStoreInventory();
+			Vector V=E.getStoreInventory();
 			for(int b=0;b<V.size();b++)
 			{
 				Environmental E2=(Environmental)V.elementAt(b);

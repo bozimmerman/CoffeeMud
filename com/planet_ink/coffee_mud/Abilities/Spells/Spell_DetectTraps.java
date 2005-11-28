@@ -97,7 +97,7 @@ public class Spell_DetectTraps extends Spell
 			}
 			if(CoffeeUtensils.getShopKeeper((MOB)E)!=null)
 			{
-				Vector V=CoffeeUtensils.getShopKeeper((MOB)E).getUniqueStoreInventory();
+				Vector V=CoffeeUtensils.getShopKeeper((MOB)E).getStoreInventory();
 				for(int v=0;v<V.size();v++)
 				{
 					Environmental E2=(Environmental)V.elementAt(v);

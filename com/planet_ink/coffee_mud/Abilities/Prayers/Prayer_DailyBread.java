@@ -69,7 +69,7 @@ public class Prayer_DailyBread extends Prayer
 			ShopKeeper SK=CoffeeUtensils.getShopKeeper(target);
 			if(SK!=null)
 			{
-				Vector inv=SK.getUniqueStoreInventory();
+				Vector inv=SK.getStoreInventory();
 				for(int i=0;i<inv.size();i++)
 				{
 					Item I=(Item)inv.elementAt(i);

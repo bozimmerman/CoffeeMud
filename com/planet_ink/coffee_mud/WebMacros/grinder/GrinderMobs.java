@@ -496,7 +496,7 @@ public class GrinderMobs
 			&&(httpReq.isRequestParameter("SHP1")))
 			{
 				ShopKeeper K=(ShopKeeper)M;
-				Vector inventory=K.getUniqueStoreInventory();
+				Vector inventory=K.getStoreInventory();
 				K.clearStoreInventory();
 
 				int num=1;

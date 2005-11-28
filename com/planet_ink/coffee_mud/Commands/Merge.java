@@ -445,7 +445,7 @@ public class Merge extends StdCommand
 						}
 						if(CoffeeUtensils.getShopKeeper(M)!=null)
 						{
-							Vector V=CoffeeUtensils.getShopKeeper(M).getUniqueStoreInventory();
+							Vector V=CoffeeUtensils.getShopKeeper(M).getStoreInventory();
 							for(int i=0;i<V.size();i++)
 							{
 								if(V.elementAt(i) instanceof Item)

@@ -33,9 +33,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLTRAINCOST);}
 	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST);}
 
-	protected Vector baseInventory=new Vector();
-	protected Hashtable inventorySize=new Hashtable();
-	protected Hashtable stockValues=new Hashtable();
+    protected CoffeeShop shop=new CoffeeShop();
 	public Merchant()
 	{
 		super();
@@ -45,23 +43,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 	public String text()
 	{
-		String text="";
-		Vector V=getBaseInventory();
-		if((V!=null)&&(V.size()>0))
-		{
-			StringBuffer itemstr=new StringBuffer("<INVS>");
-			for(int i=0;i<V.size();i++)
-			{
-				Item I=(Item)V.elementAt(i);
-				itemstr.append("<INV>");
-				itemstr.append(XMLManager.convertXMLtoTag("ICLASS",CMClass.className(I)));
-				itemstr.append(XMLManager.convertXMLtoTag("INUM",""+numberInStock(I)));
-				itemstr.append(XMLManager.convertXMLtoTag("IVAL",""+stockPrice(I)));
-				itemstr.append(XMLManager.convertXMLtoTag("IDATA",CoffeeMaker.getPropertiesStr(I,true)));
-				itemstr.append("</INV>");
-			}
-			text=itemstr.toString()+"</INVS>";
-		}
+		String text=shop.makeXML();
 		return text;
 	}
 	public String budget(){return "";}
@@ -74,278 +56,49 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	{
 		synchronized(this)
 		{
-			baseInventory=new Vector();
-			Vector V=new Vector();
-			inventorySize=new Hashtable();
-			stockValues=new Hashtable();
-			if(text.length()==0) return;
-
-			Vector buf=XMLManager.parseAllXML(text);
-			if(buf==null)
-			{
-				Log.errOut("Merchant","Error parsing data.");
-				return;
-			}
-			Vector iV=XMLManager.getRealContentsFromPieces(buf,"INVS");
-			if(iV==null)
-			{
-				Log.errOut("Merchant","Error parsing 'INVS'.");
-				return;
-			}
-			for(int i=0;i<iV.size();i++)
-			{
-				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)iV.elementAt(i);
-				if((!iblk.tag.equalsIgnoreCase("INV"))||(iblk.contents==null))
-				{
-					Log.errOut("Merchant","Error parsing 'INVS' data.");
-					return;
-				}
-				String itemi=XMLManager.getValFromPieces(iblk.contents,"ICLASS");
-				int itemnum=XMLManager.getIntFromPieces(iblk.contents,"INUM");
-				int val=XMLManager.getIntFromPieces(iblk.contents,"IVAL");
-				Environmental newOne=CMClass.getItem(itemi);
-				Vector idat=XMLManager.getRealContentsFromPieces(iblk.contents,"IDATA");
-				if((idat==null)||(newOne==null)||(!(newOne instanceof Item)))
-				{
-					Log.errOut("Merchant","Error parsing 'INV' data.");
-					return;
-				}
-				CoffeeMaker.setPropertiesStr(newOne,idat,true);
-				Item I=(Item)newOne;
-				I.recoverEnvStats();
-				V.addElement(I);
-				inventorySize.put(""+I,new Integer(itemnum));
-				stockValues.put(""+I,new Integer(val));
-			}
-			baseInventory=V;
+            shop.buildShopFromXML(text,whatIsSold(),this);
 		}
 	}
 
 	public void affectEnvStats(Environmental E, EnvStats affectableStats)
 	{
 		if(E instanceof MOB)
-		{
-			Vector V=getBaseInventory();
-			for(int i=0;i<V.size();i++)
-			{
-				Item I=(Item)V.elementAt(i);
-				Integer N=(Integer)inventorySize.get(""+I);
-				int num=(N!=null)?N.intValue():0;
-				affectableStats.setWeight(affectableStats.weight()+(I.envStats().weight()*num));
-			}
-		}
+			affectableStats.setWeight(affectableStats.weight()+shop.totalStockWeight());
 	}
 
 	public int whatIsSold(){return ShopKeeper.DEAL_INVENTORYONLY;}
 	public void setWhatIsSold(int newSellCode){}
-	private void updateBaseStoreInventory()
-	{
-		if((affected!=null)&&(affected instanceof MOB))
-		{
-			MOB M=(MOB)affected;
-			Merchant A=(Merchant)M.fetchAbility(ID());
-			if((A!=null)&&(A!=this)) A.baseInventory=baseInventory;
-			A=(Merchant)M.fetchEffect(ID());
-			if((A!=null)&&(A!=this)) A.baseInventory=baseInventory;
-		}
-	}
-	private Item getBaseItem(Environmental like)
-	{
-		Vector V=getBaseInventory();
-		for(int x=0;x<V.size();x++)
-		{
-			Environmental E=(Environmental)V.elementAt(x);
-			if((E.sameAs(like))&&(E instanceof Item))
-				return (Item)E;
-		}
-		return null;
-	}
-
-	public int stockPrice(Environmental E)
-	{
-		if(E==null) return 0;
-		if(!(E instanceof Item)) return 0;
-		Item I=(Item)E;
-		Item I2=getBaseItem(I);
-		Integer N=null;
-		if(I2!=null) N=(Integer)stockValues.get(""+I2);
-		return (N!=null)?N.intValue():I.baseGoldValue();
-	}
-	public Vector getUniqueStoreInventory()
-	{
-		Vector V=new Vector();
-		Environmental lastE=null;
-		for(int x=0;x<baseInventory.size();x++)
-		{
-			Environmental E=(Environmental)baseInventory.elementAt(x);
-			boolean ok=true;
-
-			if(lastE!=null)
-			{
-				if((lastE.isGeneric())&&(E.isGeneric()))
-				{
-					if(E.Name().equals(lastE.Name()))
-						ok=false;
-				}
-				else
-				if(lastE.ID().equals(E.ID()))
-					ok=false;
-			}
-
-			if(ok)
-			for(int v=0;v<V.size();v++)
-			{
-				Environmental EE=(Environmental)V.elementAt(v);
-				if((EE.isGeneric())&&(E.isGeneric()))
-				{
-					if(E.Name().equals(EE.Name()))
-					{
-						ok=false;
-						break;
-					}
-				}
-				else
-				if(EE.ID().equals(E.ID()))
-					ok=false;
-			}
-
-			if(ok)
-			{
-				V.addElement(E);
-				lastE=E;
-			}
-		}
-		return V;
-	}
-	public Environmental addStoreInventory(Environmental thisThang)
-	{ return addStoreInventory(thisThang,1,-1); }
-    
-	public Environmental addStoreInventory(Environmental thisThang, int number)
-	{
-		if(thisThang instanceof Item)
-			return addStoreInventory(thisThang,number,stockPrice(thisThang));
-		return addStoreInventory(thisThang,number,1);
-	}
-	public Environmental addStoreInventory(Environmental thisThang, int number, int val)
-	{
-		if(thisThang==null) return null;
-
-		Item I=getBaseItem(thisThang);
-		if(I!=null)
-		{
-			Integer N=(Integer)inventorySize.get(""+I);
-			if(N==null) N=new Integer(0);
-			N=new Integer(N.intValue()+number);
-			inventorySize.remove(""+I);
-			inventorySize.put(""+I,N);
-			stockValues.remove(""+I);
-			stockValues.put(""+I,new Integer(val));
-			return I;
-		}
-		baseInventory.addElement(thisThang);
-		inventorySize.put(""+thisThang,new Integer(number));
-		stockValues.put(""+thisThang,new Integer(val));
-		updateBaseStoreInventory();
-        return thisThang;
-	}
-	public void delAllStoreInventory(Environmental thisThang)
-	{
-		if(thisThang==null) return;
-
-		boolean doneSomething=false;
-		Vector V=getBaseInventory();
-		for(int i=0;i<V.size();i++)
-		{
-			Item I=(Item)V.elementAt(i);
-			if(I.sameAs(thisThang))
-			{
-				baseInventory.removeElement(I);
-				inventorySize.remove(""+I);
-				stockValues.remove(""+I);
-				doneSomething=true;
-			}
-		}
-		if(doneSomething) updateBaseStoreInventory();
-	}
+    protected boolean inBaseInventory(Environmental thisThang)
+    { return shop.inBaseInventory(thisThang);}
+    public Environmental addStoreInventory(Environmental thisThang)
+    { return shop.addStoreInventory(thisThang,1,-1,whatIsSold(),this);}
+    public int baseStockSize(){return shop.baseStockSize();}
+    public int totalStockSize(){return shop.totalStockSize();}
+    public void clearStoreInventory(){shop.clearStoreInventory(); setMiscText("");}
+    public Vector getStoreInventory(){return shop.getStoreInventory();}
+    public Vector getBaseInventory(){return shop.getBaseInventory();}
+    public Environmental addStoreInventory(Environmental thisThang, int number, int price)
+    { return shop.addStoreInventory(thisThang,number,price,whatIsSold(),this);}
+    public void delAllStoreInventory(Environmental thisThang)
+    { shop.delAllStoreInventory(thisThang,whatIsSold());}
+    public boolean doIHaveThisInStock(String name, MOB mob)
+    { return shop.doIHaveThisInStock(name,mob,whatIsSold(),null);}
+    public int stockPrice(Environmental likeThis)
+    { return shop.stockPrice(likeThis);}
+    public int numberInStock(Environmental likeThis)
+    { return shop.numberInStock(likeThis);}
+    public Environmental getStock(String name, MOB mob)
+    { return shop.getStock(name,mob,whatIsSold(),null);}
+    public Environmental removeStock(String name, MOB mob)
+    { return shop.removeStock(name,mob,whatIsSold(),null);}
+    public Vector removeSellableProduct(String named, MOB mob)
+    { return shop.removeSellableProduct(named,mob,whatIsSold(),null);}
 	public boolean doISellThis(Environmental thisThang)
 	{
 		return (thisThang instanceof Item)&&(numberInStock(thisThang)>0);
 	}
-	public boolean doIHaveThisInStock(String name, MOB mob)
-	{
-		return numberInStock(getStock(name,mob))>0;
-	}
-	public int numberInStock(Environmental likeThis)
-	{
-		if(likeThis==null) return 0;
-		Vector V=getBaseInventory();
-		for(int x=0;x<V.size();x++)
-		{
-			Environmental E=(Environmental)V.elementAt(x);
-			if(E.sameAs(likeThis))
-			{
-				Integer I=(Integer)inventorySize.get(""+E);
-				if(I!=null) return I.intValue();
-			}
-		}
-		return 0;
-
-	}
-	public Environmental getStock(String name, MOB mob)
-	{
-		Vector V=getUniqueStoreInventory();
-		Environmental item=EnglishParser.fetchEnvironmental(V,name,true);
-		if(item==null) item=EnglishParser.fetchEnvironmental(V,name,false);
-		if(item==null) return null;
-		return item;
-	}
-	public Environmental removeStock(String name, MOB mob)
-	{
-		Item I=(Item)getStock(name,mob);
-		if(I==null) return null;
-		Integer N=(Integer)inventorySize.get(""+I);
-		if(N==null)
-		{
-			baseInventory.removeElement(I);
-			stockValues.remove(""+I);
-		}
-		else
-		{
-			N=new Integer(N.intValue()-1);
-			inventorySize.remove(""+I);
-			if(N.intValue()<=0)
-			{
-				stockValues.remove(""+I);
-				baseInventory.removeElement(I);
-			}
-			else
-				inventorySize.put(""+I,N);
-		}
-		updateBaseStoreInventory();
-		return (Item)I.copyOf();
-	}
-	public Vector removeSellableProduct(String named, MOB mob)
-	{
-		Vector V=new Vector();
-		Environmental product=removeStock(named,mob);
-		if(product!=null) V.addElement(product);
-		return V;
-	}
-	public int baseStockSize()
-	{
-		return getBaseInventory().size();
-	}
-	public int totalStockSize()
-	{
-		return baseStockSize();
-	}
-	public Vector getBaseInventory()
-	{
-		return baseInventory;
-	}
 
 	public String storeKeeperString(){return "Only my Inventory";}
-	public void clearStoreInventory(){setMiscText("");}
 	public String prejudiceFactors(){return "";}
 	public void setPrejudiceFactors(String factors){}
     public String ignoreMask(){return "";}
@@ -363,7 +116,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
         &&(msg.target() instanceof Item))
         {
             Item newitem=(Item)msg.target();
-            if((newitem.numberOfItems()>(merchantM.maxItems()-(merchantM.inventorySize()+inventorySize.size())))
+            if((newitem.numberOfItems()>(merchantM.maxItems()-(merchantM.inventorySize()+shop.totalStockSizeIncludingDuplicates())))
             &&(!merchantM.isMine(this)))
             {
                 merchantM.tell("You can't carry that many items.");
@@ -377,33 +130,16 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			{
 			case CMMsg.TYP_VALUE:
 			case CMMsg.TYP_SELL:
+                
                 shopperM.tell("You'll have to talk to "+merchantM.name()+" about that.");
 				return false;
 			case CMMsg.TYP_BUY:
 			case CMMsg.TYP_VIEW:
 			{
-				if((msg.tool()!=null)
-				&&(doIHaveThisInStock(msg.tool().Name(),shopperM)))
-				{
-					if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
-					    return false;
-					if((msg.targetMinor()!=CMMsg.TYP_VIEW)
-					&&(yourValue(shopperM,msg.tool(),true,true).absoluteGoldPrice>BeanCounter.getTotalAbsoluteShopKeepersValue(shopperM,merchantM)))
-					{
-						CommonMsgs.say(merchantM,shopperM,"You can't afford to buy "+msg.tool().name()+".",false,false);
-						return false;
-					}
-					if(msg.tool() instanceof Item)
-					{
-						if(((Item)msg.tool()).envStats().level()>shopperM.envStats().level())
-						{
-							CommonMsgs.say(merchantM,shopperM,"That's too advanced for you, I'm afraid.",true,false);
-							return false;
-						}
-					}
+                if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
+                    return false;
+                if(CoffeeShops.standardBuyEvaluation(merchantM,msg.source(),msg.tool(),this,msg.targetMinor()==CMMsg.TYP_BUY))
 					return super.okMessage(myHost,msg);
-				}
-				CommonMsgs.say(merchantM,shopperM,"I don't have that in stock.  Ask for my LIST.",true,false);
 				return false;
 			}
 			case CMMsg.TYP_LIST:
@@ -426,26 +162,6 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		return super.okMessage(myHost,msg);
 	}
 
-	protected double getSalesTax()
-	{
-	    if(affected instanceof MOB)
-	    {
-	        MOB mob=(MOB)affected;
-	        if(mob.location()!=null)
-	        {
-				Law theLaw=CoffeeUtensils.getTheLaw(mob.location(),mob);
-				if(theLaw!=null)
-				{
-					String taxs=(String)theLaw.taxLaws().get("SALESTAX");
-					if(taxs!=null)
-						return Util.s_double(taxs);
-				}
-	        }
-	    }
-		return 0.0;
-	    
-	}
-	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -465,95 +181,53 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				if((msg.tool()!=null)&&(doIHaveThisInStock(msg.tool().Name(),mob)))
 					CommonMsgs.say(merchantM,msg.source(),"Interested in "+msg.tool().name()+"? Here is some information for you:\n\rLevel "+msg.tool().envStats().level()+"\n\rDescription: "+msg.tool().description(),true,false);
 				break;
+            case CMMsg.TYP_SELL: // sell TO -- this is a shopkeeper purchasing from a player
+            {
+                super.executeMsg(myHost,msg);
+                CoffeeShops.transactPawn(merchantM,msg.source(),this,msg.tool());
+                break;
+            }
 			case CMMsg.TYP_BUY:
+            {
 				super.executeMsg(myHost,msg);
-				MOB mobFor=msg.source();
-				if((msg.targetMessage()!=null)&&(msg.targetMessage().length()>0)&&(mob.location()!=null))
-				{
-					Vector V=Util.parse(msg.targetMessage());
-					if(((String)V.elementAt(V.size()-2)).equalsIgnoreCase("for"))
-					{
-						String s=(String)V.lastElement();
-						if(s.endsWith(".")) s=s.substring(0,s.length()-1);
-						MOB M2=mob.location().fetchInhabitant("$"+s+"$");
-						if(M2!=null) 
-							mobFor=M2;
-					}
-				}
-				if((msg.tool()!=null)
-				&&(doIHaveThisInStock(msg.tool().Name(),mobFor)))
-				{
-					double price=yourValue(mob,msg.tool(),true,true).absoluteGoldPrice;
-					Vector products=removeSellableProduct(msg.tool().Name(),mobFor);
-					if(products.size()==0) break;
-					Environmental product=(Environmental)products.firstElement();
-					String currency=BeanCounter.getCurrency(merchantM);
-					BeanCounter.subtractMoney(mob,currency,price);
-				    if(getSalesTax()!=0.0)
-				    {
-						Law theLaw=CoffeeUtensils.getTheLaw(merchantM.location(),merchantM);
-					    Area A2=CoffeeUtensils.getLegalObject(merchantM.location());
-						if((theLaw!=null)&&(A2!=null))
-						{
-							Environmental[] Treas=theLaw.getTreasuryNSafe(A2);
-							Room treasuryR=(Room)Treas[0];
-							Item treasuryItem=(Item)Treas[1];
-				            if(treasuryR!=null)
-				            {
-				                Coins COIN=BeanCounter.makeBestCurrency(BeanCounter.getCurrency(merchantM),price-yourValue(mob,product,true,false).absoluteGoldPrice,treasuryR,treasuryItem);
-			    				if(COIN!=null) 
-			    				{
-			    				    COIN.putCoinsBack();
-			    				    price-=COIN.getTotalValue();
-			    				    if(price<0) price=0.0;
-			    				}
-				            }
-						}
-				    }
-                    if(merchantM.isMonster())
+                MOB mobFor=CoffeeShops.parseBuyingFor(msg.source(),msg.targetMessage());
+                if((msg.tool()!=null)
+                &&(doIHaveThisInStock("$"+msg.tool().Name()+"$",mobFor))
+                &&(merchantM.location()!=null))
+                {
+                    Vector products=removeSellableProduct("$"+msg.tool().Name()+"$",mobFor);
+                    if(products.size()==0) break;
+                    Environmental product=(Environmental)products.firstElement();
+                    
+                    CoffeeShops.transactMoneyOnly(merchantM,msg.source(),this,product);
+                    
+                    if(product instanceof Item)
                     {
-                        LandTitle T=CoffeeUtensils.getLandTitle(merchantM.getStartRoom());
-                        if((T!=null)&&(T.landOwner().length()>0))
+                        if(!CoffeeShops.purchaseItems((Item)product,products,merchantM,mobFor))
+                            return;
+                    }
+                    else
+                    if(product instanceof MOB)
+                    {
+                        if(CoffeeShops.purchaseMOB((MOB)product,merchantM,this,mobFor))
                         {
-                            BeanCounter.modifyLocalBankGold(merchantM.getStartRoom().getArea(),
-                                                            T.landOwner(),
-                                                            CoffeeUtensils.getFormattedDate(merchantM)+": Deposit of "+BeanCounter.nameCurrencyShort(merchantM,price)+": Purchase: "+msg.tool().Name()+" from "+merchantM.Name(),
-                                                            BeanCounter.getCurrency(this),
-                                                            price);
+                            msg.modify(msg.source(),msg.target(),product,msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
+                            product.executeMsg(myHost,msg);
                         }
                     }
                     else
-                        BeanCounter.addMoney(merchantM,currency,price);
-					mob.recoverEnvStats();
-					if(product instanceof Item)
-					{
-						for(int p=0;p<products.size();p++)
-						{
-							Item I=(Item)products.elementAt(p);
-							mob.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
-						}
-						FullMsg msg2=new FullMsg(mobFor,product,this,CMMsg.MSG_GET,null);
-						if(merchantM.location().okMessage(mobFor,msg2))
-                            merchantM.location().send(mobFor,msg2);
-						else
-							return;
-					}
-					mob.location().recoverRoomStats();
-				}
+                    if(product instanceof Ability)
+                        CoffeeShops.purchaseAbility((Ability)product,merchantM,this,mobFor);
+                }
 				break;
+            }
 			case CMMsg.TYP_LIST:
 				{
 					super.executeMsg(myHost,msg);
-					StringBuffer str=listInventory(mob);
-					if(str.length()==0)
-						CommonMsgs.say(merchantM,mob,"I have nothing for sale.",false,false);
-					else
-					{
-					    double salesTax=getSalesTax();
-						mob.tell("\n\r"+str
-						        +((salesTax<=0.0)?"":"\n\r\n\rPrices above include a "+salesTax+"% sales tax.")
-						        +"^T");
-					}
+                    Vector inventory=getStoreInventory();
+                    String s=CoffeeShops.getListInventory(merchantM,mob,inventory,0,this);
+                    if(s.length()>0)
+                        mob.tell(s);
 				}
 				break;
 			default:
@@ -563,92 +237,6 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		}
 		else
 			super.executeMsg(myHost,msg);
-	}
-
-	public ShopKeeper.ShopPrice yourValue(MOB mob, Environmental product, boolean sellTo, boolean includeTax)
-	{
-		ShopKeeper.ShopPrice price=new ShopKeeper.ShopPrice();
-		if((product==null)||(!(product instanceof Item)))
-			return price;
-		price.absoluteGoldPrice=new Integer(stockPrice(product)).doubleValue();
-		MOB merchantM=mob;
-		if(affected instanceof MOB) merchantM=(MOB)affected;
-		if((mob==null)||(mob==affected)) 
-		{
-		    price.absoluteGoldPrice=BeanCounter.abbreviatedRePrice(merchantM,price.absoluteGoldPrice);
-		    return price;
-		}
-
-		// the price is 200% at 0 charisma, and 100% at 30
-		price.absoluteGoldPrice=price.absoluteGoldPrice+price.absoluteGoldPrice-Util.mul(price.absoluteGoldPrice,Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0));
-		if(price.absoluteGoldPrice<=0) price.absoluteGoldPrice=1.0;
-		if(sellTo)
-		{
-		    if(includeTax)
-			    price.absoluteGoldPrice+=(Util.mul(price.absoluteGoldPrice,Util.div(getSalesTax(),100.0)));
-		    price.absoluteGoldPrice=BeanCounter.abbreviatedRePrice(merchantM,price.absoluteGoldPrice);
-		}
-		return price;
-	}
-
-    private boolean shownInInventory(Environmental E, MOB mob)
-    {
-        if(!(E instanceof Item)) return true;
-        if(((Item)E).container()!=null) return false;
-        if(mob==affected) return true;
-        if(CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) return true;
-        if(((Item)E).envStats().level()>mob.envStats().level()) return false;
-        if(!Sense.canBeSeenBy(E,mob)) return false;
-        return true;
-    }
-    
-    
-	private StringBuffer listInventory(MOB mob)
-	{
-		StringBuffer msg=new StringBuffer("");
-		int csize=0;
-		Vector inventory=getUniqueStoreInventory();
-		if(inventory.size()==0) return msg;
-
-        MOB merchantM=(MOB)affected;
-        if(merchantM==null) return msg;
-        
-		int totalCols=2;
-		int totalWidth=60/totalCols;
-		Environmental E=null;
-		String price=null;
-		for(int i=0;i<inventory.size();i++)
-		{
-			E=(Environmental)inventory.elementAt(i);
-            if(shownInInventory(E,mob))
-			{
-				price=BeanCounter.abbreviatedPrice(merchantM,yourValue(mob,E,true,true).absoluteGoldPrice);
-				if(price.length()>(4+csize))
-					csize=price.length()-4;
-			}
-		}
-
-		String c="^x["+Util.padRight("Cost",4+csize)+"] "+Util.padRight("Product",totalWidth-csize);
-		msg.append(c+((totalCols>1)?c:"")+"^.^N\n\r");
-		int colNum=0;
-		for(int i=0;i<inventory.size();i++)
-		{
-			E=(Environmental)inventory.elementAt(i);
-
-			if(shownInInventory(E,mob))
-			{
-				String col=null;
-				price=BeanCounter.abbreviatedPrice(merchantM,yourValue(mob,E,true,true).absoluteGoldPrice);
-				col=Util.padRight("["+price,5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
-				if((++colNum)>totalCols)
-				{
-					msg.append("\n\r");
-					colNum=1;
-				}
-				msg.append(col);
-			}
-		}
-		return msg;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

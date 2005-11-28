@@ -309,7 +309,7 @@ public class Where extends StdCommand
 											}
 										}
 										ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
-										Vector V=(SK!=null)?SK.getUniqueStoreInventory():null;
+										Vector V=(SK!=null)?SK.getStoreInventory():null;
 										if(V!=null)
 										for(int i=0;i<V.size();i++)
 										{

@@ -198,8 +198,10 @@ class Backend
                      if (c=='\\') {
                         if (fileBuffer[sub+1]=='\\') {
                            buffer.append('\\');
+                           sub++;
                         } else if (fileBuffer[sub+1]=='n') {
                            buffer.append((char)0x0A);
+                           sub++;
                         } else {
                            int val=0;
                            for (int i=0;i<4;i++) {
