@@ -505,8 +505,9 @@ public class StdExit implements Exit
                             for(int i=0;i<5;i++)
                             {
                                 room=room.getRoomInDir(direction);
+                                if(room==null) break;
                                 Exit E=room.getExitInDir(direction);
-                                if((room!=null)&&(isAClearView(mob,room,E)))
+                                if((isAClearView(mob,room,E)))
                                     view.addElement(room);
                             }
                         }

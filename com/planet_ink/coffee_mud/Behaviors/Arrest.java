@@ -1522,7 +1522,8 @@ public class Arrest extends StdBehavior
         {
     		if((laws.releaseRooms().size()==0)||(((String)laws.releaseRooms().firstElement()).equals("@")))
     			return (Room)myArea.getMetroMap().nextElement();
-			room=getRoom(criminal.location().getArea(),laws.releaseRooms());
+            if(criminal.location()!=null)
+    			room=getRoom(criminal.location().getArea(),laws.releaseRooms());
 			if(room==null) room=getRoom(myArea,laws.releaseRooms());
 			if(room==null) room=findTheJudge(laws,myArea);
 			if(room==null) room=(Room)myArea.getMetroMap().nextElement();

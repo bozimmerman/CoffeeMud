@@ -1390,12 +1390,12 @@ public class BaseGenerics extends StdCommand
 			return;
 		}
 
-		if(genGenericPrompt(mob,getScr("BaseGenerics","hasadoor"),E.hasADoor()))
+		if(genGenericPrompt(mob,getScr("BaseGenerics","hasadoor2"),E.hasADoor()))
 		{
 			HasDoor=true;
 			DefaultsClosed=genGenericPrompt(mob,getScr("BaseGenerics","defclosed"),E.defaultsClosed());
 			Open=!DefaultsClosed;
-			if(genGenericPrompt(mob,getScr("BaseGenerics","hasalock"),E.hasALock()))
+			if(genGenericPrompt(mob,getScr("BaseGenerics","hasalock2"),E.hasALock()))
 			{
 				HasLock=true;
 				DefaultsLocked=genGenericPrompt(mob,getScr("BaseGenerics","deflocked"),E.defaultsLocked());

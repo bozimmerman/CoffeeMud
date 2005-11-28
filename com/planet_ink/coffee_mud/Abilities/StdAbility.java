@@ -737,7 +737,9 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	public HashSet properTargets(MOB mob, Environmental givenTarget, boolean auto)
 	{
 		HashSet h=MUDFight.properTargets(this,mob,auto);
-		if((givenTarget!=null)&&(givenTarget instanceof MOB))
+		if((givenTarget!=null)
+        &&(givenTarget instanceof MOB)
+        &&(Sense.isInTheGame(givenTarget,true)))
 		{
 			if(h==null) h=new HashSet();
 			if(!h.contains(givenTarget))
