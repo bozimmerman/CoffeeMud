@@ -124,8 +124,8 @@ public class Spell_LocateObject extends Spell
 							if(inhab==null) break;
 	
 							item=inhab.fetchInventory(what);
-							if((item==null)&&(CoffeeUtensils.getShopKeeper(inhab)!=null))
-								item=CoffeeUtensils.getShopKeeper(inhab).getStock(what,mob);
+							if((item==null)&&(CoffeeShops.getShopKeeper(inhab)!=null))
+								item=CoffeeShops.getShopKeeper(inhab).getStock(what,mob);
 							if((item instanceof Item)
 							&&((Sense.canBeLocated((Item)item)))
 							&&(item.envStats().level()>minLevel)

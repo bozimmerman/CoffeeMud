@@ -32,7 +32,7 @@ public class SlaveTrading extends CommonSkill
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		commands.insertElementAt("SELL",0);
-		MOB shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"Sell whom to whom?");
+        Environmental shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"Sell whom to whom?");
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{

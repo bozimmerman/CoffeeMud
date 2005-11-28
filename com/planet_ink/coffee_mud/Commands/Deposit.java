@@ -28,9 +28,10 @@ public class Deposit extends BaseItemParser
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		MOB shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"Deposit how much with whom?");
+        Environmental shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"Deposit how much with whom?");
+        ShopKeeper SHOP=CoffeeShops.getShopKeeper(shopkeeper);
 		if(shopkeeper==null) return false;
-		if((!(shopkeeper instanceof Banker))&&(!(shopkeeper instanceof PostOffice)))
+		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice)))
 		{
 			mob.tell("You can not deposit anything with "+shopkeeper.name()+".");
 			return false;
@@ -55,7 +56,7 @@ public class Deposit extends BaseItemParser
 	    if(((Coins)thisThang).getNumberOfCoins()<EnglishParser.numPossibleGold(mob,thisName))
 	        return false;
 		FullMsg newMsg=null;
-        if(shopkeeper instanceof Banker)
+        if(SHOP instanceof Banker)
             newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,"<S-NAME> deposit(s) <O-NAME> into <S-HIS-HER> account with <T-NAMESELF>.");
         else
             newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,"<S-NAME> mail(s) <O-NAME>.");

@@ -136,7 +136,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	        M=R.fetchInhabitant(i);
 	        if((M.getStartRoom()==R)
 	        &&(M.isMonster())
-	        &&(CoffeeUtensils.getShopKeeper(M)!=null))
+	        &&(CoffeeShops.getShopKeeper(M)!=null))
 	            return true;
 	    }
 	    return false;

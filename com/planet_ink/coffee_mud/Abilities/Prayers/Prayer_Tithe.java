@@ -69,7 +69,7 @@ public class Prayer_Tithe extends Prayer
 		&&(msg.amITarget(affected))
 		&&(msg.tool()!=null))
 		{
-			ShopKeeper SK=CoffeeUtensils.getShopKeeper((MOB)affected);
+			ShopKeeper SK=CoffeeShops.getShopKeeper(affected);
 			if(SK.doIHaveThisInStock("$"+msg.tool().Name()+"$",msg.source()))
 			{
 			    ShopKeeper.ShopPrice price=CoffeeShops.sellingPrice((MOB)affected,msg.source(),msg.tool(),SK,true);

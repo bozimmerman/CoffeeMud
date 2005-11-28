@@ -95,9 +95,9 @@ public class Spell_DetectTraps extends Spell
 				if(trapCheck(I).length()>0)
 					return E.name()+" is carrying something trapped.";
 			}
-			if(CoffeeUtensils.getShopKeeper((MOB)E)!=null)
+			if(CoffeeShops.getShopKeeper(E)!=null)
 			{
-				Vector V=CoffeeUtensils.getShopKeeper((MOB)E).getStoreInventory();
+				Vector V=CoffeeShops.getShopKeeper(E).getStoreInventory();
 				for(int v=0;v<V.size();v++)
 				{
 					Environmental E2=(Environmental)V.elementAt(v);

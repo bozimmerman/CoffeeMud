@@ -1089,12 +1089,12 @@ public class List extends StdCommand
 				archonlist(mob,commands);
 				return false;
 			}
-			V=CoffeeUtensils.shopkeepers(mob.location(),mob);
+            V=CoffeeShops.getAllShopkeepers(mob.location(),mob);
 		}
 		else
 		{
 			MOB shopkeeper=mob.location().fetchInhabitant(Util.combine(commands,0));
-			if((shopkeeper!=null)&&(CoffeeUtensils.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
+			if((shopkeeper!=null)&&(CoffeeShops.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
 				V.addElement(shopkeeper);
 			else
 			if(getAnyCode(mob)>=0)
@@ -1110,12 +1110,13 @@ public class List extends StdCommand
 		}
 		for(int i=0;i<V.size();i++)
 		{
-			MOB shopkeeper=(MOB)V.elementAt(i);
+			Environmental shopkeeper=(Environmental)V.elementAt(i);
+            ShopKeeper SHOP=CoffeeShops.getShopKeeper(shopkeeper);
             String str="<S-NAME> review(s) <T-YOUPOSS> inventory.";
-            if(shopkeeper instanceof Banker)
+            if(SHOP instanceof Banker)
                 str="<S-NAME> review(s) <S-HIS-HER> account with <T-NAMESELF>.";
             else
-            if(shopkeeper instanceof PostOffice)
+            if(SHOP instanceof PostOffice)
                 str="<S-NAME> check(s) <S-HIS-HER> postal box with <T-NAMESELF>.";
 			FullMsg newMsg=new FullMsg(mob,shopkeeper,null,CMMsg.MSG_LIST,str);
 			if(!mob.location().okMessage(mob,newMsg))

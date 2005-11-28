@@ -100,8 +100,8 @@ public class Copy extends StdCommand
 						if(mob2!=null)
 						{
 							E=mob2.fetchInventory(name);
-							if((E==null)&&(CoffeeUtensils.getShopKeeper(mob2)!=null))
-								E=CoffeeUtensils.getShopKeeper(mob2).getStock(name,null);
+							if((E==null)&&(CoffeeShops.getShopKeeper(mob2)!=null))
+								E=CoffeeShops.getShopKeeper(mob2).getStock(name,null);
 						}
 						if(E!=null) break;
 					}

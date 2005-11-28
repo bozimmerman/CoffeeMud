@@ -308,7 +308,7 @@ public class Where extends StdCommand
 												lines.append("\n\r");
 											}
 										}
-										ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
+										ShopKeeper SK=CoffeeShops.getShopKeeper(M);
 										Vector V=(SK!=null)?SK.getStoreInventory():null;
 										if(V!=null)
 										for(int i=0;i<V.size();i++)

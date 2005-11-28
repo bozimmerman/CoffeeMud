@@ -28,9 +28,10 @@ public class Withdraw extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		MOB shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"Withdraw what or how much from whom?");
+		Environmental shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"Withdraw what or how much from whom?");
 		if(shopkeeper==null) return false;
-		if((!(shopkeeper instanceof Banker))&&(!(shopkeeper instanceof PostOffice)))
+        ShopKeeper SHOP=CoffeeShops.getShopKeeper(shopkeeper);
+		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice)))
 		{
 			mob.tell("You can not withdraw anything from "+shopkeeper.name()+".");
 			return false;
@@ -46,7 +47,7 @@ public class Withdraw extends StdCommand
 	    String currency=EnglishParser.numPossibleGoldCurrency(shopkeeper,str);
 	    double denomination=EnglishParser.numPossibleGoldDenomination(shopkeeper,currency,str);
 		Item thisThang=null;
-        if(shopkeeper instanceof Banker)
+        if(SHOP instanceof Banker)
         {
     		if(numCoins>0)
     		{
@@ -55,21 +56,21 @@ public class Withdraw extends StdCommand
     				mob.tell("Withdraw how much?");
     				return false;
     		    }
-				thisThang=((Banker)shopkeeper).findDepositInventory(mob,""+Integer.MAX_VALUE);
+				thisThang=((Banker)SHOP).findDepositInventory(mob,""+Integer.MAX_VALUE);
 				if(thisThang instanceof Coins)
 				    thisThang=BeanCounter.makeCurrency(currency,denomination,numCoins);
     		}
     		else
-    			thisThang=((Banker)shopkeeper).findDepositInventory(mob,str);
+    			thisThang=((Banker)SHOP).findDepositInventory(mob,str);
     
     		if(((thisThang==null)||((thisThang instanceof Coins)&&(((Coins)thisThang).getNumberOfCoins()<=0)))
-    		&&(((Banker)shopkeeper).whatIsSold()!=ShopKeeper.DEAL_CLANBANKER)
+    		&&(((Banker)SHOP).whatIsSold()!=ShopKeeper.DEAL_CLANBANKER)
     		&&(mob.isMarriedToLiege()))
     		{
     			MOB mob2=CMMap.getPlayer(mob.getLiegeID());
     			if(numCoins>0)
     			{
-    				thisThang=((Banker)shopkeeper).findDepositInventory(mob2,""+Integer.MAX_VALUE);
+    				thisThang=((Banker)SHOP).findDepositInventory(mob2,""+Integer.MAX_VALUE);
     				if(thisThang instanceof Coins)
     				    thisThang=BeanCounter.makeCurrency(currency,denomination,numCoins);
     				else
@@ -79,19 +80,19 @@ public class Withdraw extends StdCommand
     			    }
     			}
     			else
-    				thisThang=((Banker)shopkeeper).findDepositInventory(mob2,str);
+    				thisThang=((Banker)SHOP).findDepositInventory(mob2,str);
     		}
         }
         else
-        if(shopkeeper instanceof PostOffice)
+        if(SHOP instanceof PostOffice)
         {
-            thisThang=((PostOffice)shopkeeper).findBoxContents(mob,str);
+            thisThang=((PostOffice)SHOP).findBoxContents(mob,str);
             if((thisThang==null)
-            &&(((PostOffice)shopkeeper).whatIsSold()!=ShopKeeper.DEAL_CLANPOSTMAN)
+            &&(((PostOffice)SHOP).whatIsSold()!=ShopKeeper.DEAL_CLANPOSTMAN)
             &&(mob.isMarriedToLiege()))
             {
                 MOB mob2=CMMap.getPlayer(mob.getLiegeID());
-                thisThang=((PostOffice)shopkeeper).findBoxContents(mob2,str);
+                thisThang=((PostOffice)SHOP).findBoxContents(mob2,str);
             }
         }
 
@@ -101,7 +102,7 @@ public class Withdraw extends StdCommand
 			return false;
 		}
         String str2="<S-NAME> withdraw(s) <O-NAME> from <S-HIS-HER> account with "+shopkeeper.name()+".";
-        if(shopkeeper instanceof PostOffice)
+        if(SHOP instanceof PostOffice)
             str2="<S-NAME> withdraw(s) <O-NAME> from <S-HIS-HER> postal box with "+shopkeeper.name()+".";
 		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_WITHDRAW,str2);
 		if(!mob.location().okMessage(mob,newMsg))

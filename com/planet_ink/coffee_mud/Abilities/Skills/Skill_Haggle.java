@@ -50,7 +50,7 @@ public class Skill_Haggle extends StdAbility
 			return false;
 		}
 
-		MOB shopkeeper=EnglishParser.parseShopkeeper(mob,commands,Util.capitalizeAndLower(cmd)+" what to whom?");
+        Environmental shopkeeper=EnglishParser.parseShopkeeper(mob,commands,Util.capitalizeAndLower(cmd)+" what to whom?");
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{

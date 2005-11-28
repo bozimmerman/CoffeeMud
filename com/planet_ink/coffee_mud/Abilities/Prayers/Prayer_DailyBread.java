@@ -66,7 +66,7 @@ public class Prayer_DailyBread extends Prayer
 			CommonMsgs.get(target,BreadContainer,Bread,false);
 		if(Bread==null)
 		{
-			ShopKeeper SK=CoffeeUtensils.getShopKeeper(target);
+			ShopKeeper SK=CoffeeShops.getShopKeeper(target);
 			if(SK!=null)
 			{
 				Vector inv=SK.getStoreInventory();

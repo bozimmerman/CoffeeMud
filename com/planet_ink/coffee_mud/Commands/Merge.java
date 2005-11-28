@@ -443,9 +443,9 @@ public class Merge extends StdCommand
 							if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore,noisy)))
 								savemobs=true;
 						}
-						if(CoffeeUtensils.getShopKeeper(M)!=null)
+						if(CoffeeShops.getShopKeeper(M)!=null)
 						{
-							Vector V=CoffeeUtensils.getShopKeeper(M).getStoreInventory();
+							Vector V=CoffeeShops.getShopKeeper(M).getStoreInventory();
 							for(int i=0;i<V.size();i++)
 							{
 								if(V.elementAt(i) instanceof Item)

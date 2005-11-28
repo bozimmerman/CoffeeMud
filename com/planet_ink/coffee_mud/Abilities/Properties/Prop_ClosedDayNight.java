@@ -136,7 +136,7 @@ public class Prop_ClosedDayNight extends Property
 		   ||(msg.targetMinor()==CMMsg.TYP_WITHDRAW)
 		   ||(msg.targetMinor()==CMMsg.TYP_VIEW)))
 		{
-			ShopKeeper sk=CoffeeUtensils.getShopKeeper((MOB)affected);
+			ShopKeeper sk=CoffeeShops.getShopKeeper(affected);
 			if(sk!=null)
 				CommonMsgs.say((MOB)affected,msg.source(),(shopMsg!=null)?shopMsg:"Sorry, I'm off right now.  Try me tomorrow.",false,false);
 			return false;
@@ -236,7 +236,7 @@ public class Prop_ClosedDayNight extends Property
 						// still tracking...
 						if(mob.fetchEffect("Skill_Track")!=null)
 							return true;
-						ShopKeeper sk=CoffeeUtensils.getShopKeeper((MOB)affected);
+						ShopKeeper sk=CoffeeShops.getShopKeeper(affected);
 						if(sk!=null)
 							CommonMsgs.say((MOB)affected,null,(shopMsg!=null)?shopMsg:"Sorry, I'm off right now.  Try me tomorrow.",false,false);
 						Ability A=CMClass.getAbility("Skill_Track");

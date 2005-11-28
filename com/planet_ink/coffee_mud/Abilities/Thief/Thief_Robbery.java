@@ -95,7 +95,7 @@ public class Thief_Robbery extends ThiefSkill
 		}
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 
-		if(((!target.mayIFight(mob))&&(levelDiff<10))||(CoffeeUtensils.getShopKeeper(target)==null))
+		if(((!target.mayIFight(mob))&&(levelDiff<10))||(CoffeeShops.getShopKeeper(target)==null))
 		{
 			mob.tell("You cannot rob from "+target.charStats().himher()+".");
 			return false;
@@ -108,7 +108,7 @@ public class Thief_Robbery extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		ShopKeeper shop=CoffeeUtensils.getShopKeeper(target);
+		ShopKeeper shop=CoffeeShops.getShopKeeper(target);
 		Environmental stolen=shop.getStock(itemToSteal,mob);
 		if(stolen!=null)
 		{

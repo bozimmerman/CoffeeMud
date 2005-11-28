@@ -28,7 +28,7 @@ public class Value extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		MOB shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"Value what with whom?");
+        Environmental shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"Value what with whom?");
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{

@@ -892,7 +892,7 @@ public class Reset extends StdCommand
 							if(!M.isEligibleMonster()) continue;
 							for(int i=0;i<M.inventorySize();i++)
 								changedMOBS=changedMOBS||(rightImportMat(null,M.fetchInventory(i),false)>=0);
-							ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
+							ShopKeeper SK=CoffeeShops.getShopKeeper(M);
 							if(SK!=null)
 							{
 								Vector V=SK.getStoreInventory();
@@ -961,7 +961,7 @@ public class Reset extends StdCommand
 								if(itemFix(I))
 									changedMOBS=true;
 							}
-							ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
+							ShopKeeper SK=CoffeeShops.getShopKeeper(M);
 							if(SK!=null)
 							{
 								Vector V=SK.getStoreInventory();
@@ -1088,7 +1088,7 @@ public class Reset extends StdCommand
                                 S.setSpellList(l);
                             }
                         }
-                        ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
+                        ShopKeeper SK=CoffeeShops.getShopKeeper(M);
                         if(SK!=null)
                         {
                             Vector V=SK.getStoreInventory();
@@ -1281,7 +1281,7 @@ public class Reset extends StdCommand
 						if(returned>0)
 							somethingDone=true;
 					}
-					ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
+					ShopKeeper SK=CoffeeShops.getShopKeeper(M);
 					if(SK!=null)
 					{
 						Vector V=SK.getStoreInventory();

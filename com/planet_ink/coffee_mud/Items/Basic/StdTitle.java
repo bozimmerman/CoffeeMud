@@ -209,7 +209,7 @@ public class StdTitle extends StdItem implements LandTitle
 			LandTitle A=fetchALandTitle();
 			if((A!=null)&&(A.landOwner().length()>0))
 			{
-				ShopKeeper SK=CoffeeUtensils.getShopKeeper((MOB)msg.target());
+				ShopKeeper SK=CoffeeShops.getShopKeeper(msg.target());
 			    if((((SK.whatIsSold()==ShopKeeper.DEAL_CLANBANKER)||(SK.whatIsSold()==ShopKeeper.DEAL_CLANDSELLER))
 			            &&(!A.landOwner().equals(msg.source().getClanID())))
 			    ||(((SK.whatIsSold()==ShopKeeper.DEAL_BANKER)||(SK.whatIsSold()==ShopKeeper.DEAL_CLANBANKER))
@@ -247,7 +247,7 @@ public class StdTitle extends StdItem implements LandTitle
 			        CommonMsgs.say((MOB)msg.target(),msg.source(),str,false,false);
 		        else
 		            ((MOB)msg.target()).tell(str+" You might want to tell the customer.");
-				ShopKeeper SK=CoffeeUtensils.getShopKeeper((MOB)msg.target());
+				ShopKeeper SK=CoffeeShops.getShopKeeper(msg.target());
 				if(SK!=null) SK.removeStock(msg.tool().Name(),msg.source());
                 destroy();
 		        return false;

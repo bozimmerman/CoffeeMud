@@ -98,7 +98,7 @@ public class Deviations extends StdCommand
 						&&((I instanceof Armor)||(I instanceof Weapon)))
 							check.addElement(I);
 					}
-					ShopKeeper sk=CoffeeUtensils.getShopKeeper(M);
+					ShopKeeper sk=CoffeeShops.getShopKeeper(M);
 					if(sk!=null)
 					{
 						Vector V=sk.getBaseInventory();

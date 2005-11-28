@@ -73,9 +73,9 @@ public class Spell_KnowOrigin extends Spell
 						for(int s=0;s<R.numInhabitants();s++)
 						{
 							MOB M=R.fetchInhabitant(s);
-							if((M!=null)&&(CoffeeUtensils.getShopKeeper(M)!=null))
+							if((M!=null)&&(CoffeeShops.getShopKeeper(M)!=null))
 							{
-								ShopKeeper S=CoffeeUtensils.getShopKeeper(M);
+								ShopKeeper S=CoffeeShops.getShopKeeper(M);
 								if(S.doIHaveThisInStock(me.Name(),null))
 									return M.getStartRoom();
 							}

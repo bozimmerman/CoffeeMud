@@ -836,8 +836,8 @@ public class Scriptable extends StdBehavior
 							if(M!=null)
 							{
 								E=M.fetchInventory(thisName);
-								if((CoffeeUtensils.getShopKeeper(M)!=null)&&(E==null))
-									E=CoffeeUtensils.getShopKeeper(M).getStock(thisName,null);
+								if((CoffeeShops.getShopKeeper(M)!=null)&&(E==null))
+									E=CoffeeShops.getShopKeeper(M).getStock(thisName,null);
 							}
 						}
 					}
@@ -4791,8 +4791,8 @@ public class Scriptable extends StdBehavior
 					long coins=EnglishParser.numPossibleGold(null,s);
 					if(coins>0)
 					{
-					    String currency=EnglishParser.numPossibleGoldCurrency((MOB)scripted,s);
-					    double denom=EnglishParser.numPossibleGoldDenomination((MOB)scripted,currency,s);
+					    String currency=EnglishParser.numPossibleGoldCurrency(scripted,s);
+					    double denom=EnglishParser.numPossibleGoldDenomination(scripted,currency,s);
 					    Coins C=BeanCounter.makeCurrency(currency,denom,coins);
 					    monster.addInventory(C);
 					    C.putCoinsBack();

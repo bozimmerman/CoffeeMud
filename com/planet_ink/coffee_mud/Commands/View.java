@@ -28,7 +28,7 @@ public class View extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		MOB shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"View what merchandise from whom?");
+        Environmental shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"View what merchandise from whom?");
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
@@ -36,7 +36,7 @@ public class View extends StdCommand
 			return false;
 		}
 
-		if(CoffeeUtensils.getShopKeeper(shopkeeper)==null)
+		if(CoffeeShops.getShopKeeper(shopkeeper)==null)
 		{
 			mob.tell(shopkeeper.name()+" is not a shopkeeper!");
 			return false;
@@ -58,18 +58,18 @@ public class View extends StdCommand
 		int addendum=1;
 		do
 		{
-			Environmental itemToDo=CoffeeUtensils.getShopKeeper(shopkeeper).getStock(whatName,mob);
+			Environmental itemToDo=CoffeeShops.getShopKeeper(shopkeeper).getStock(whatName,mob);
 			if(itemToDo==null) break;
 			if(Sense.canBeSeenBy(itemToDo,mob))
 				V.addElement(itemToDo);
-			if(addendum>=CoffeeUtensils.getShopKeeper(shopkeeper).numberInStock(itemToDo))
+			if(addendum>=CoffeeShops.getShopKeeper(shopkeeper).numberInStock(itemToDo))
 				break;
 			addendum++;
 		}
 		while((allFlag)&&(addendum<=maxToDo));
 
 		if(V.size()==0)
-			mob.tell(shopkeeper,null,null,"<S-NAME> doesn't appear to have any '"+whatName+"' for sale.  Try LIST.");
+			mob.tell(mob,shopkeeper,null,"<T-NAME> doesn't appear to have any '"+whatName+"' for sale.  Try LIST.");
 		else
 		for(int v=0;v<V.size();v++)
 		{

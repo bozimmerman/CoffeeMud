@@ -550,9 +550,7 @@ if(newStats==null){ try{int x=0;x=x/0;}catch(Exception e){e.printStackTrace();} 
 		}
         CMClass.ThreadEngine().deleteTick(this,-1);
         clanID=null;
-        baseCharStats=new DefaultCharStats();
-        charStats=baseCharStats();
-        baseEnvStats=new DefaultEnvStats();
+        charStats=baseCharStats;
         envStats=baseEnvStats;
         playerStats=null;
         location=null;
@@ -569,8 +567,6 @@ if(newStats==null){ try{int x=0;x=x/0;}catch(Exception e){e.printStackTrace();} 
         educations=new Vector();
         factions=new Hashtable();
         commandQue=new DVector(2);
-        baseState=new DefaultCharState();
-        maxState=new DefaultCharState();
         curState=maxState;
         WorshipCharID="";
         LiegeID="";

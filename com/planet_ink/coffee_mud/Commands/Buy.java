@@ -28,14 +28,14 @@ public class Buy extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		MOB shopkeeper=EnglishParser.parseShopkeeper(mob,commands,getScr("Buy","buywhatwhom"));
+        Environmental shopkeeper=EnglishParser.parseShopkeeper(mob,commands,getScr("Buy","buywhatwhom"));
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
 			mob.tell(getScr("Buy","buywhat"));
 			return false;
 		}
-		if(CoffeeUtensils.getShopKeeper(shopkeeper)==null)
+		if(CoffeeShops.getShopKeeper(shopkeeper)==null)
 		{
 			mob.tell(getScr("Buy","notaspk",shopkeeper.name()));
 			return false;
@@ -72,11 +72,11 @@ public class Buy extends StdCommand
 		int addendum=1;
 		do
 		{
-			Environmental itemToDo=CoffeeUtensils.getShopKeeper(shopkeeper).getStock(whatName,mob);
+			Environmental itemToDo=CoffeeShops.getShopKeeper(shopkeeper).getStock(whatName,mob);
 			if(itemToDo==null) break;
 			if(Sense.canBeSeenBy(itemToDo,mob))
 				V.addElement(itemToDo);
-			if(addendum>=CoffeeUtensils.getShopKeeper(shopkeeper).numberInStock(itemToDo))
+			if(addendum>=CoffeeShops.getShopKeeper(shopkeeper).numberInStock(itemToDo))
 				break;
 			++addendum;
 		}
@@ -91,8 +91,8 @@ public class Buy extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell(shopkeeper,null,null,getScr("Buy","donthaveany",whatName));
-		else
+            mob.tell(mob,shopkeeper,null,getScr("Buy","donthaveany",whatName));
+        else
 		for(int v=0;v<V.size();v++)
 		{
 			Environmental thisThang=(Environmental)V.elementAt(v);

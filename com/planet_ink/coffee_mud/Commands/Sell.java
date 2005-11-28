@@ -28,7 +28,7 @@ public class Sell extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		MOB shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"Sell what to whom?");
+        Environmental shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"Sell what to whom?");
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{

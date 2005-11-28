@@ -1262,8 +1262,6 @@ public class StdItem implements Item
         owner=null;
         affects=null;
         behaviors=null;
-        baseEnvStats=new DefaultEnvStats();
-		recoverEnvStats();
 	}
 
 	public void removeFromOwnerContainer()

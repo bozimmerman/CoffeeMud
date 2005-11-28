@@ -37,13 +37,13 @@ public class Compare extends StdCommand
 		Item compareThis=mob.fetchInventory(null,(String)commands.elementAt(0));
 		if((compareThis==null)||((compareThis!=null)&&(!Sense.canBeSeenBy(compareThis,mob))))
 		{
-            Vector V=CoffeeUtensils.shopkeepers(mob.location(),mob);
+            Vector V=CoffeeShops.getAllShopkeepers(mob.location(),mob);
             if(V.size()>0) 
 			{
                 for(int i=0;i<V.size();i++) 
 				{
-                    MOB shopkeeper=(MOB)V.elementAt(i);
-                    Environmental itemToDo=CoffeeUtensils.getShopKeeper(shopkeeper).getStock((String)commands.elementAt(0),mob);
+                    Environmental shopkeeper=(Environmental)V.elementAt(i);
+                    Environmental itemToDo=CoffeeShops.getShopKeeper(shopkeeper).getStock((String)commands.elementAt(0),mob);
                     if((itemToDo==null)||(!(itemToDo instanceof Item))) 
 					{
                         continue; // next shopkeeper
