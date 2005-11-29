@@ -43,8 +43,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 	public String text()
 	{
-		String text=shop.makeXML();
-		return text;
+		return shop.makeXML();
 	}
 	public String budget(){return "";}
 	public void setBudget(String factors){}
@@ -169,7 +168,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
                 double budgetMax=budgetRemaining*100;
                 if(CoffeeShops.standardSellEvaluation(merchantM,msg.source(),msg.tool(),this,budgetRemaining,budgetMax,msg.targetMinor()==CMMsg.TYP_SELL))
                     return super.okMessage(myHost,msg);
-                break;
+                return false;
             }
 			case CMMsg.TYP_BUY:
 			case CMMsg.TYP_VIEW:

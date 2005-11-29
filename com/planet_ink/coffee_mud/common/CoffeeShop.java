@@ -357,7 +357,7 @@ public class CoffeeShop
     
     public String makeXML()
     {
-        Vector V=getBaseInventory();
+        Vector V=getStoreInventory();
         if((V!=null)&&(V.size()>0))
         {
             StringBuffer itemstr=new StringBuffer("<INVS>");
