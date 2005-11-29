@@ -139,38 +139,40 @@ public class FrontLogin extends StdCommand
 
     public void reloadTerminal(MOB mob)
     {
-        if(mob.session()!=null)
+        if(mob==null) return;
+        
+        Session S=mob.session();
+        if(S==null) return;
+        
+        S.initTelnetMode(mob.getBitmap());
+        if(Util.bset(mob.getBitmap(),MOB.ATT_MXP))
         {
-            mob.session().initTelnetMode(mob.getBitmap());
-            if(Util.bset(mob.getBitmap(),MOB.ATT_MXP))
+            if(S.clientTelnetMode(Session.TELNET_MXP))
             {
-                if(mob.session().clientTelnetMode(Session.TELNET_MXP))
-                {
-                    StringBuffer mxpText=Resources.getFileResource("text"+File.separatorChar+"mxp.txt");
-                    if(mxpText!=null)
-                        mob.session().rawPrintln("\033[6z"+mxpText.toString()+"\n\r");
-                }
-                else
-                    mob.tell("MXP codes have been disabled for this session.");
+                StringBuffer mxpText=Resources.getFileResource("text"+File.separatorChar+"mxp.txt");
+                if(mxpText!=null)
+                    S.rawPrintln("\033[6z"+mxpText.toString()+"\n\r");
             }
             else
-            if(mob.session().clientTelnetMode(Session.TELNET_MXP))
-            {
-                mob.session().changeTelnetMode(Session.TELNET_MXP,false);
-                mob.session().setClientTelnetMode(Session.TELNET_MXP,false);
-            }
-            
-            if(Util.bset(mob.getBitmap(),MOB.ATT_SOUND))
-            {
-                if(!mob.session().clientTelnetMode(Session.TELNET_MSP))
-                    mob.tell("MSP sounds have been disabled for this session.");
-            }
-            else
-            if(mob.session().clientTelnetMode(Session.TELNET_MSP))
-            {
-                mob.session().changeTelnetMode(Session.TELNET_MSP,false);
-                mob.session().setClientTelnetMode(Session.TELNET_MSP,false);
-            }
+                mob.tell("MXP codes have been disabled for this session.");
+        }
+        else
+        if(S.clientTelnetMode(Session.TELNET_MXP))
+        {
+            S.changeTelnetMode(Session.TELNET_MXP,false);
+            S.setClientTelnetMode(Session.TELNET_MXP,false);
+        }
+        
+        if(Util.bset(mob.getBitmap(),MOB.ATT_SOUND))
+        {
+            if(!S.clientTelnetMode(Session.TELNET_MSP))
+                mob.tell("MSP sounds have been disabled for this session.");
+        }
+        else
+        if(S.clientTelnetMode(Session.TELNET_MSP))
+        {
+            S.changeTelnetMode(Session.TELNET_MSP,false);
+            S.setClientTelnetMode(Session.TELNET_MSP,false);
         }
     }
     

@@ -652,19 +652,19 @@ style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">&nbsp;<O:P></O:
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">regmask_prog</SPAN></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>regmask_prog [regular expression]<BR>regmask_prog p [exact, case 
+<P class=MsoNormal>Usage:<BR><EM>regmask_prog [java regular expression]<BR>regmask_prog p [exact, case 
 sensitive&nbsp;message]&nbsp;<O:P></O:P></EM></P>
 <P class=MsoNormal>This type of mobprog will trigger when 
 the mob sees a certain string of text. When the 'p' is inserted into the trigger 
 line, the string of text must be precisely the same, case included,&nbsp;as the 
 string generated.&nbsp; If 'p' is not the first character, then the trigger will 
-attempt to match against a java regular expression string. This type of mobprog 
-has many uses, one of which is communication between mobs. There are a few 
-socials which create a message only to the person performing them and to the one 
-receiving them.&nbsp; You can use these and act_progs to safely have mobs 
-trigger each other, without people seeing what is going on. Other uses include 
-triggering off of people fleeing, moving out of the room, etc. The possibilities 
-are endless.</P>
+attempt to find the first match&nbsp;of&nbsp;the given&nbsp;java regular 
+expression string. This type of mobprog has many uses, one of which is 
+communication between mobs. There are a few socials which create a message only 
+to the person performing them and to the one receiving them.&nbsp; You can use 
+these and act_progs to safely have mobs trigger each other, without people 
+seeing what is going on. Other uses include triggering off of people fleeing, 
+moving out of the room, etc. The possibilities are endless.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal>regmask<EM>_prog 
 </EM>a*b<EM>e</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger whenever the 

@@ -6,6 +6,8 @@ import com.planet_ink.coffee_mud.utils.*;
 import org.mozilla.javascript.*;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -33,6 +35,7 @@ public class Scriptable extends StdBehavior
 	private static final Hashtable funcH=new Hashtable();
 	private static final Hashtable methH=new Hashtable();
 	private static final Hashtable progH=new Hashtable();
+    private static Hashtable patterns=new Hashtable();
 	private Vector oncesDone=new Vector();
 	private Hashtable delayTargetTimes=new Hashtable();
 	private Hashtable delayProgCounters=new Hashtable();
@@ -6037,9 +6040,10 @@ public class Scriptable extends StdBehavior
 						for(int i=0;i<num;i++)
 						{
 							String t=Util.getCleanBit(trigger,i);
-							if(str.indexOf(" "+t+" ")>=0)
+                            int x=str.indexOf(" "+t+" ");
+							if(x>=0)
 							{
-								que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,t));
+								que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str.substring(x).trim()));
 								return;
 							}
 						}
@@ -6659,7 +6663,17 @@ public class Scriptable extends StdBehavior
                     if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
                         doIt=str.equals(trigger.substring(1).trim());
                     else
-                        doIt=str.matches(trigger);
+                    {
+                        Pattern P=(Pattern)patterns.get(trigger);
+                        if(P==null)
+                        {
+                            P=Pattern.compile(trigger, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+                            patterns.put(trigger,P);
+                        }
+                        Matcher M=P.matcher(str);
+                        doIt=M.find();
+                        if(doIt) str=str.substring(M.start()).trim();
+                    }
                     if(doIt)
                     {
                         Item Tool=null;
