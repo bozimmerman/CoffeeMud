@@ -40,7 +40,29 @@ public class Flee extends Go
 				return false;
 			}
 		}
-
+        
+        boolean XPloss=true;
+        if(mob.getVictim()!=null)
+        {
+            HashSet H=MUDFight.allCombatants(mob);
+            for(Iterator i=H.iterator();i.hasNext();)
+            {
+                MOB M=(MOB)i.next();
+                if(Sense.aliveAwakeMobileUnbound(M,true))
+                {
+                    XPloss=true;
+                    break;
+                }
+                XPloss=false;
+            }
+        }
+        
+        if((!XPloss)&&(direction.length()==0))
+        {
+            mob.tell(getScr("Movement","fleestop"));
+            direction="NOWHERE";
+        }
+        
 		int directionCode=-1;
 		if(!direction.equals("NOWHERE"))
 		{
@@ -72,7 +94,7 @@ public class Flee extends Go
 			}
 		}
 		int lostExperience=10;
-		if(mob.getVictim()!=null)
+		if(XPloss&&(mob.getVictim()!=null))
 		{
 			MOB victim=mob.getVictim();
 			String whatToDo=CommonStrings.getVar(CommonStrings.SYSTEM_PLAYERFLEE);
@@ -127,7 +149,7 @@ public class Flee extends Go
 		if((direction.equals("NOWHERE"))||((directionCode>=0)&&(move(mob,directionCode,true,false,false))))
 		{
 			mob.makePeace();
-			if(lostExperience>0)
+			if(XPloss&&(lostExperience>0))
 			{
 				mob.tell(getScr("Movement","fleeexp",""+lostExperience));
 				MUDFight.postExperience(mob,null,null,-lostExperience,false);

@@ -100,7 +100,7 @@ public class Play extends StdAbility
 		||(invoker.fetchEffect(ID())==null)
 		||((instrument!=null)&&(!usingInstrument(instrument,invoker)))
 		||(invoker.location()!=mob.location())
-		||(!Sense.aliveAwakeMobile(invoker,true))
+		||(!Sense.aliveAwakeMobileUnbound(invoker,true))
 		||(!Sense.canBeHeardBy(invoker,mob)))
 		{
 			unplay(mob,null,false);
@@ -236,7 +236,7 @@ public class Play extends StdAbility
 		if(skipStandardSongInvoke())
 			return true;
 
-		if((!auto)&&(!Sense.aliveAwakeMobile(mob,false)))
+		if((!auto)&&(!Sense.aliveAwakeMobileUnbound(mob,false)))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);

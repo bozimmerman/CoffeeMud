@@ -83,11 +83,13 @@ public class Fighter_CircleTrip extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if((!Sense.aliveAwakeMobile(mob,true)||(Sense.isSitting(mob))))
-		{
-			mob.tell("You need to stand up!");
-			return false;
-		}
+        if(Sense.isSitting(mob))
+        {
+            mob.tell("You need to stand up!");
+            return false;
+        }
+        if(!Sense.aliveAwakeMobileUnbound(mob,false))
+            return false;
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
 			mob.tell("You are too far away to circle trip!");

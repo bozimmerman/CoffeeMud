@@ -46,8 +46,8 @@ public class Spell_RogueLimb extends Spell
 			}
 			if((rogueLimb.amFollowing()!=null)
 			||(rogueLimb.getVictim()!=affected)
-			||(!Sense.aliveAwakeMobile(rogueLimb,true))
-			||(!Sense.aliveAwakeMobile((MOB)affected,true))
+			||(!Sense.aliveAwakeMobileUnbound(rogueLimb,true))
+			||(!Sense.aliveAwakeMobileUnbound((MOB)affected,true))
 			||(!Sense.isInTheGame(affected,false))
 			||(!Sense.isInTheGame(rogueLimb,false)))
 				unInvoke();
@@ -66,8 +66,8 @@ public class Spell_RogueLimb extends Spell
 		   ||(rogueLimb==null))
 			return true;
 		if(msg.amITarget(rogueLimb)
-		&&(Sense.aliveAwakeMobile(rogueLimb,true))
-		&&(Sense.aliveAwakeMobile((MOB)affected,true))
+		&&(Sense.aliveAwakeMobileUnbound(rogueLimb,true))
+		&&(Sense.aliveAwakeMobileUnbound((MOB)affected,true))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 			MUDFight.postDamage(rogueLimb,(MOB)affected,this,msg.value(),CMMsg.MASK_GENERAL|msg.sourceCode(),Weapon.TYPE_NATURAL,null);
 		if(msg.amISource(rogueLimb)

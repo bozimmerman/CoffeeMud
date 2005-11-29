@@ -2918,7 +2918,7 @@ if(newStats==null){ try{int x=0;x=x/0;}catch(Exception e){e.printStackTrace();} 
 					peaceTime+=MudHost.TICK_TIME;
 					if(Util.bset(getBitmap(),MOB.ATT_AUTODRAW)
 					&&(peaceTime>=SHEATH_TIME)
-					&&(Sense.aliveAwakeMobile(this,true)))
+					&&(Sense.aliveAwakeMobileUnbound(this,true)))
 						CommonMsgs.sheath(this,true);
                     if(mySession!=null)
                         mySession.dequeCommand();

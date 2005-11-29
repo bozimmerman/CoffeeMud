@@ -58,7 +58,7 @@ public class Fighter_AutoBash extends StdAbility
 		MOB mob=(MOB)affected;
 		if(mob.isInCombat()
 		&&(mob.rangeToTarget()==0)
-		&&(Sense.aliveAwakeMobile(mob,true))
+		&&(Sense.aliveAwakeMobileUnbound(mob,true))
 		&&(mob.fetchFirstWornItem(Item.HELD) instanceof Shield)
 		&&(profficiencyCheck(null,0,false)))
 		{

@@ -126,7 +126,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 							if((M!=null)
 							&&(M.isMonster())
 							&&(M.getClanID().equals(clanID())
-							&&(Sense.aliveAwakeMobile(M,true))
+							&&(Sense.aliveAwakeMobileUnbound(M,true))
 							&&(Sense.canBeSeenBy(this,M))
 							&&(!Sense.isAnimalIntelligence(M))))
 							{

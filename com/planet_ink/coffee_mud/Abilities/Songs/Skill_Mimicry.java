@@ -41,7 +41,7 @@ public class Skill_Mimicry extends BardSkill
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
-		if((affecting instanceof MOB)&&(!Sense.aliveAwakeMobile((MOB)affecting,true)))
+		if((affecting instanceof MOB)&&(!Sense.aliveAwakeMobileUnbound((MOB)affecting,true)))
 			return;
 		if(disabled) return;
 		
@@ -89,7 +89,7 @@ public class Skill_Mimicry extends BardSkill
 		CMMsg msg=lastMsg;
 		if(msg==null) return true;
 		lastMsg=null;
-		if(((affected instanceof MOB)&&(!Sense.aliveAwakeMobile((MOB)affected,true))))
+		if(((affected instanceof MOB)&&(!Sense.aliveAwakeMobileUnbound((MOB)affected,true))))
 			return true;
 		msg=msg.copyOf();
 		MOB sMOB=msg.source();

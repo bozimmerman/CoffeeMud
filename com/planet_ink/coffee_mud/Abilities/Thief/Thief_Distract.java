@@ -94,11 +94,13 @@ public class Thief_Distract extends ThiefSkill
 			return false;
 		}
 
-		if((!Sense.aliveAwakeMobile(mob,true)||(Sense.isSitting(mob))))
-		{
-			mob.tell("You need to stand up!");
+        if(Sense.isSitting(mob))
+        {
+            mob.tell("You need to stand up!");
+            return false;
+        }
+		if(!Sense.aliveAwakeMobileUnbound(mob,false))
 			return false;
-		}
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
 			mob.tell("You are too far away to distract "+mob.getVictim().name()+"!");

@@ -28,7 +28,8 @@ public class BaseItemParser extends StdCommand
         for(int i=0;i<mob.inventorySize();i++)
         {
             Item I=mob.fetchInventory(i);
-            if((I.amWearingAt(Item.INVENTORY))
+            if(I.amWearingAt(Item.INVENTORY)
+            &&((I.container()==null)||(I.ultimateContainer().amWearingAt(Item.INVENTORY)))
             &&(!(I instanceof Coins)))
                 return false;
         }

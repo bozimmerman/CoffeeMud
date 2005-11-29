@@ -49,7 +49,7 @@ public class Skill_Parry extends StdAbility
 		MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
-		   &&(Sense.aliveAwakeMobile(mob,true))
+		   &&(Sense.aliveAwakeMobileUnbound(mob,true))
 		   &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		   &&(!doneThisRound)
 		   &&(mob.rangeToTarget()==0))

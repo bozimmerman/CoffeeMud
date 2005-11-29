@@ -146,7 +146,7 @@ public class ProtectedCitizen extends ActiveTicker
 					if((M2!=null)
 					&&(M2.mayIFight(mob.getVictim()))
 					&&(M2!=mob.getVictim())
-					&&(Sense.aliveAwakeMobile(M2,true)
+					&&(Sense.aliveAwakeMobileUnbound(M2,true)
 					&&(!M2.isInCombat())
 					&&(Sense.isMobile(M2))
 					&&(MUDZapper.zapperCheck(getCityguardName(),M2))

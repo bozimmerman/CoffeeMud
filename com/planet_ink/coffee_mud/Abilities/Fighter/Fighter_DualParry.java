@@ -43,7 +43,7 @@ public class Fighter_DualParry extends StdAbility
 		MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
-		   &&(Sense.aliveAwakeMobile(mob,true))
+		   &&(Sense.aliveAwakeMobileUnbound(mob,true))
 		   &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		   &&(mob.rangeToTarget()==0))
 		{

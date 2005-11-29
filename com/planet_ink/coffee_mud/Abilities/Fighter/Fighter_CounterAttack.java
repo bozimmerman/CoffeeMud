@@ -42,7 +42,7 @@ public class Fighter_CounterAttack extends StdAbility
 		MOB mob=(MOB)affected;
 
 		if(msg.amISource(mob)
-		&&(Sense.aliveAwakeMobile(mob,true))
+		&&(Sense.aliveAwakeMobileUnbound(mob,true))
 		&&(msg.target() instanceof MOB)
 		&&(msg.tool() instanceof Ability)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,0,false))

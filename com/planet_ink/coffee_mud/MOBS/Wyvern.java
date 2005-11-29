@@ -84,7 +84,7 @@ public class Wyvern extends StdMOB
 	}
 	protected boolean sting()
 	{
-		if (Sense.aliveAwakeMobile(this,true)&&
+		if (Sense.aliveAwakeMobileUnbound(this,true)&&
 			(Sense.canHear(this)||Sense.canSee(this)||Sense.canSmell(this)))
 		{
 			MOB target = getVictim();

@@ -156,7 +156,7 @@ public class Thief_Assassinate extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!Sense.aliveAwakeMobile(mob,false))
+		if(!Sense.aliveAwakeMobileUnbound(mob,false))
 			return false;
 
 		if(!Sense.canBeSeenBy(mob.location(),mob))

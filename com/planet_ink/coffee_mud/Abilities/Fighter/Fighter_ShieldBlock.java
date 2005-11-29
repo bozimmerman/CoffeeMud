@@ -43,7 +43,7 @@ public class Fighter_ShieldBlock extends StdAbility
 
 		if(msg.amITarget(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
-		&&(Sense.aliveAwakeMobile(mob,true))
+		&&(Sense.aliveAwakeMobileUnbound(mob,true))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&(profficiencyCheck(null,mob.charStats().getStat(CharStats.DEXTERITY)-90,false))

@@ -400,7 +400,7 @@ public class Dragon extends StdMOB
 	protected boolean trySwallowWhole()
 	{
 		if(Stomach==null) return true;
-		if (Sense.aliveAwakeMobile(this,true)
+		if (Sense.aliveAwakeMobileUnbound(this,true)
 			&&(rangeToTarget()==0)
 			&&(Sense.canHear(this)||Sense.canSee(this)||Sense.canSmell(this)))
 		{

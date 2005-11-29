@@ -45,7 +45,7 @@ public class Fighter_ReturnProjectile extends StdAbility
 		MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(!doneThisRound)
-		&&(Sense.aliveAwakeMobile(mob,true))
+		&&(Sense.aliveAwakeMobileUnbound(mob,true))
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)

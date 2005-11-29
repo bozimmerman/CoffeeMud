@@ -67,7 +67,7 @@ public class Spell_FreeMovement extends Spell
 			try
 			{
 				A.affectEnvStats(newMOB,newMOB.envStats());
-				if((!Sense.aliveAwakeMobile(newMOB,true))
+				if((!Sense.aliveAwakeMobileUnbound(newMOB,true))
 				   ||(Util.bset(A.flags(),Ability.FLAG_PARALYZING))
 				   ||(!A.okMessage(newMOB,msg2)))
 				{

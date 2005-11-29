@@ -42,7 +42,7 @@ public class Fighter_WeaponCatch extends StdAbility
 		MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
-		&&(Sense.aliveAwakeMobile(mob,true))
+		&&(Sense.aliveAwakeMobileUnbound(mob,true))
 		&&(msg.tool() instanceof Ability)
 		&&(msg.tool().ID().equals("Skill_Disarm"))
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,0,false))

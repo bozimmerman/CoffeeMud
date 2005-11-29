@@ -44,11 +44,13 @@ public class Thief_Shadowstrike extends ThiefSkill
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!Sense.aliveAwakeMobile(mob,true))
-		{
-			mob.tell("You need to stand up!");
-			return false;
-		}
+        if(Sense.isSitting(mob))
+        {
+            mob.tell("You need to stand up!");
+            return false;
+        }
+        if(!Sense.aliveAwakeMobileUnbound(mob,false))
+            return false;
 		if(Sense.canBeSeenBy(mob,target))
 		{
 			mob.tell(target.name()+" is watching you too closely.");

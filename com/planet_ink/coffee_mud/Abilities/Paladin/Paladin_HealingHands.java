@@ -36,7 +36,7 @@ public class Paladin_HealingHands extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!Sense.aliveAwakeMobile(mob,false))
+		if(!Sense.aliveAwakeMobileUnbound(mob,false))
 			return false;
 
 		if((!auto)&&(!(Sense.isGood(mob))))

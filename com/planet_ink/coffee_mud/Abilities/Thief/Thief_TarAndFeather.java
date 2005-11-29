@@ -57,11 +57,13 @@ public class Thief_TarAndFeather extends ThiefSkill
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!Sense.aliveAwakeMobile(mob,true))
-		{
-			mob.tell("You need to stand up!");
-			return false;
-		}
+        if(Sense.isSitting(mob))
+        {
+            mob.tell("You need to stand up!");
+            return false;
+        }
+        if(!Sense.aliveAwakeMobileUnbound(mob,false))
+            return false;
 		if((!auto)&&(!Sense.isBoundOrHeld(target))&&(!Sense.isSleeping(target)))
 		{
 			mob.tell(target.name()+" must be prone or bound first.");

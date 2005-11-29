@@ -111,7 +111,7 @@ public class Skill_TwoWeaponFighting extends StdAbility
 				&&(mob.rangeToTarget()>=0)
 				&&(mob.rangeToTarget()>=weapon.minRange())
 				&&(mob.rangeToTarget()<=weapon.maxRange())
-				&&(Sense.aliveAwakeMobile(mob,true))
+				&&(Sense.aliveAwakeMobileUnbound(mob,true))
 				&&(!mob.amDead())
 				&&(mob.curState().getHitPoints()>0)
 				&&(Sense.isStanding(mob))

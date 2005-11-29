@@ -41,7 +41,7 @@ public class Power_OctoArms extends SuperPower
 		{
 			MOB mob=(MOB)affected;
 			if((mob.isInCombat())
-			&&(Sense.aliveAwakeMobile(mob,true))
+			&&(Sense.aliveAwakeMobileUnbound(mob,true))
 			&&(mob.charStats().getBodyPart(Race.BODY_ARM)>2))
 			{
 				if(Dice.rollPercentage()>95)

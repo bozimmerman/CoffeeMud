@@ -109,7 +109,7 @@ public class Thief_ContractHit extends ThiefSkill
 					if((!M.amDead())
 					   &&(M.location()!=null)
 					   &&(Sense.isInTheGame(M,false))
-					   &&(Sense.aliveAwakeMobile(M,true)))
+					   &&(Sense.aliveAwakeMobileUnbound(M,true)))
 					{
 						anyLeft=true;
 						M.isInCombat();

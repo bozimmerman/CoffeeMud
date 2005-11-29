@@ -121,7 +121,7 @@ public class ProtectedCitizens extends ActiveTicker
 
 		if((!mob.isMonster())
 		||(!mob.isInCombat())
-		||(!Sense.aliveAwakeMobile(mob,true))
+		||(!Sense.aliveAwakeMobileUnbound(mob,true))
 		||(mob.location()==null))
 		{
 			if(assisters.containsKey(mob))
@@ -166,7 +166,7 @@ public class ProtectedCitizens extends ActiveTicker
 			&&(M.mayIFight(mob.getVictim()))
 			&&(M!=mob.getVictim())
 			&&(M.location()!=null)
-			&&(Sense.aliveAwakeMobile(M,true)
+			&&(Sense.aliveAwakeMobileUnbound(M,true)
 			&&(!M.isInCombat())
 			&&(!BrotherHelper.isBrother(mob.getVictim(),M))
 			&&(BrotherHelper.canFreelyBehaveNormal(M))
@@ -198,7 +198,7 @@ public class ProtectedCitizens extends ActiveTicker
 					if((M!=null)
 					&&(M.mayIFight(mob.getVictim()))
 					&&(M!=mob.getVictim())
-					&&(Sense.aliveAwakeMobile(M,true)
+					&&(Sense.aliveAwakeMobileUnbound(M,true)
 					&&(!M.isInCombat())
 					&&((Sense.isMobile(M))||(M.location()==thisRoom))
 					&&(!assMOBS.contains(M))

@@ -882,7 +882,7 @@ public class Conquerable extends Arrest
 						&&(M.getClanID().equals(holdingClan))
 						&&(!M.isInCombat())
 						&&(!Sense.isAnimalIntelligence(M))
-						&&(Sense.aliveAwakeMobile(M,true))
+						&&(Sense.aliveAwakeMobileUnbound(M,true))
 						&&(Sense.canBeSeenBy(msg.source(),M))
 						&&(!assaults.contains(M)))
 							assaults.addElement(M,msg.source());

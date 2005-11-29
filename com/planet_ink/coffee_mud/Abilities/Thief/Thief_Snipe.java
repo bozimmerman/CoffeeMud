@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -43,11 +44,13 @@ public class Thief_Snipe extends ThiefSkill
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!Sense.aliveAwakeMobile(mob,true))
-		{
-			mob.tell("You need to stand up!");
-			return false;
-		}
+        if(Sense.isSitting(mob))
+        {
+            mob.tell("You need to stand up!");
+            return false;
+        }
+        if(!Sense.aliveAwakeMobileUnbound(mob,false))
+            return false;
 		if(Sense.canBeSeenBy(mob,target))
 		{
 			mob.tell(target.name()+" is watching you too closely.");

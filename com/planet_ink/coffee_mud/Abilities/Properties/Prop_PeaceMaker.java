@@ -42,7 +42,7 @@ public class Prop_PeaceMaker extends Property
 				if(affected instanceof MOB)
 				{
 					MOB mob=(MOB)affected;
-					if((Sense.aliveAwakeMobile(mob,true))
+					if((Sense.aliveAwakeMobileUnbound(mob,true))
 					&&(!mob.isInCombat()))
 					{
 						String t="No fighting!";

@@ -83,7 +83,7 @@ public class StdClanSpecialItem extends StdClanItem
 		&&(clanID().length()>0)
 		&&(((MOB)owner()).isMonster())
 		&&((((MOB)owner()).getClanID().equals(clanID()))
-		&&(Sense.aliveAwakeMobile((MOB)owner(),true))
+		&&(Sense.aliveAwakeMobileUnbound((MOB)owner(),true))
 		&&(!Sense.isAnimalIntelligence((MOB)owner()))))
 		{
 			switch(ciType())

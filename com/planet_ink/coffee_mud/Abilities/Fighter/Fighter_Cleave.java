@@ -92,7 +92,7 @@ public class Fighter_Cleave extends StdAbility
 			if((damAmount>victim.curState().getHitPoints())
 			&&(w.weaponType()==Weapon.TYPE_SLASHING)
 			&&(w.weaponClassification()!=Weapon.CLASS_NATURAL)
-			&&(Sense.aliveAwakeMobile(mob,true))
+			&&(Sense.aliveAwakeMobileUnbound(mob,true))
 			&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,0,false)))
 			{
 				nextTarget=null;

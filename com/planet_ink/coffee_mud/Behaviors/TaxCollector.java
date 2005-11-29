@@ -295,7 +295,7 @@ public class TaxCollector extends StdBehavior
 		
 		if((R!=null)
 		&&(!mob.isInCombat())
-		&&(Sense.aliveAwakeMobile(mob,true))
+		&&(Sense.aliveAwakeMobileUnbound(mob,true))
 		&&(R.numInhabitants()>1))
 		{
 			MOB M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));

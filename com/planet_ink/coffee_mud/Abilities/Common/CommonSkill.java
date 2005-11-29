@@ -65,7 +65,7 @@ public class CommonSkill extends StdAbility
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==MudHost.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
-			if((mob.isInCombat())||(mob.location()!=activityRoom)||(!Sense.aliveAwakeMobile(mob,true)))
+			if((mob.isInCombat())||(mob.location()!=activityRoom)||(!Sense.aliveAwakeMobileUnbound(mob,true)))
 			{aborted=true; unInvoke(); return false;}
             String sound=(playSound!=null)?CommonStrings.msp(playSound,10):"";
 			if(tickDown==4)
@@ -327,7 +327,7 @@ public class CommonSkill extends StdAbility
 		isAnAutoEffect=false;
 
 		// if you can't move, you can't do anything!
-		if(!Sense.aliveAwakeMobile(mob,false))
+		if(!Sense.aliveAwakeMobileUnbound(mob,false))
 			return false;
 
 		int[] consumed=usageCost(mob);

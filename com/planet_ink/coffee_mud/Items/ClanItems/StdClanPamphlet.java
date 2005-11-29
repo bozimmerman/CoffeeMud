@@ -84,7 +84,7 @@ public class StdClanPamphlet extends StdClanItem
 				&&(rulingClan.length()>0)
                 &&(!rulingClan.equals(clanID()))
 				&&(Sense.canSpeak(mob))
-				&&(Sense.aliveAwakeMobile(mob,true))
+				&&(Sense.aliveAwakeMobileUnbound(mob,true))
 				&&(R!=null))
 				{
 					MOB M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));

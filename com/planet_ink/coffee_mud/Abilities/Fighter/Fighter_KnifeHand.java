@@ -43,7 +43,7 @@ public class Fighter_KnifeHand extends StdAbility
 		{
 			MOB mob=(MOB)affected;
 			if((mob.isInCombat())
-			&&(Sense.aliveAwakeMobile(mob,true))
+			&&(Sense.aliveAwakeMobileUnbound(mob,true))
 			&&(mob.rangeToTarget()==0)
 			&&(mob.charStats().getBodyPart(Race.BODY_HAND)>1)
 			&&(!anyWeapons(mob)))
