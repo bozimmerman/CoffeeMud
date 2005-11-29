@@ -5,7 +5,7 @@
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="admin.css">
-	<title>CoffeeMud ADMIN Server</title>
+	<title>@MUDSERVERVERSION@, @WEBSERVERVERSION@ '@WEBSERVERNAME@'</title>
 </head>
 
 <body>
