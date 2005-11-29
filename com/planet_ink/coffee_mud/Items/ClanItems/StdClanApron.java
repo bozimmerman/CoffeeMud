@@ -1,0 +1,88 @@
+package com.planet_ink.coffee_mud.Items.ClanItems;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+
+import java.util.*;
+import java.io.*;
+
+/* 
+   Copyright 2000-2005 Bo Zimmerman
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+public class StdClanApron extends StdClanItem
+{
+    public String ID(){ return "StdClanApron";}
+
+    public StdClanApron()
+    {
+        super();
+
+        setName("a clan apron");
+        baseEnvStats.setWeight(1);
+        setDisplayText("an apron belonging to a clan is here.");
+        setDescription("");
+        secretIdentity="";
+        baseGoldValue=1;
+        setCIType(ClanItem.CI_SPECIALAPRON);
+        material=EnvResource.RESOURCE_COTTON;
+        setRawProperLocationBitmap(Item.ON_WAIST|Item.ABOUT_BODY);
+        setRawLogicalAnd(false);
+        recoverEnvStats();
+    }
+    
+    public boolean okMessage(Environmental affecting, CMMsg msg)
+    {
+        if(owner() instanceof MOB)
+        if(msg.amITarget(owner()))
+        {
+            switch(msg.targetMinor())
+            {
+            case CMMsg.TYP_VALUE:
+            case CMMsg.TYP_SELL:
+            case CMMsg.TYP_BUY:
+            case CMMsg.TYP_VIEW:
+            case CMMsg.TYP_LIST:
+                if((clanID().length()>0)
+                &&(msg.source()!=owner())
+                &&(!msg.source().getClanID().equals(clanID())))
+                {
+                    Clan C=Clans.getClan(clanID());
+                    int state=Clan.REL_NEUTRAL;
+                    if(C!=null) state=C.getClanRelations(msg.source().getClanID());
+                    if((state!=Clan.REL_NEUTRAL)
+                    &&(state!=Clan.REL_ALLY)
+                    &&(state!=Clan.REL_FRIENDLY))
+                    {
+                        msg.source().tell(((MOB)owner()),null,null,"<S-NAME> seem(s) to be ignoring you.");
+                        return false;
+                    }
+                }
+                break;
+            }
+        }
+        return super.okMessage(affecting,msg);
+    }
+    public boolean tick(Tickable ticking, int tickID)
+    {
+        if(!super.tick(ticking,tickID))
+            return false;
+        if(fetchEffect("Merchant")==null)
+        {
+            Ability A=CMClass.getAbility("Merchant");
+            if(A!=null) addNonUninvokableEffect(A);
+        }
+        return true;
+    }
+}
