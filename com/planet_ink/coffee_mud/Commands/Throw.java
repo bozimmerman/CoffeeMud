@@ -114,8 +114,8 @@ public class Throw extends StdCommand
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,target,item,CMMsg.MSG_THROW,"<S-NAME> throw(s) <T-NAME> "+Directions.getInDirectionName(dir).toLowerCase()+".");
-			FullMsg msg2=new FullMsg(mob,target,item,CMMsg.MSG_THROW,"<T-NAME> fl(ys) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+".");
+			FullMsg msg=new FullMsg(mob,target,item,CMMsg.MSG_THROW,"<S-NAME> throw(s) <O-NAME> "+Directions.getInDirectionName(dir).toLowerCase()+".");
+			FullMsg msg2=new FullMsg(mob,target,item,CMMsg.MSG_THROW,"<O-NAME> fl(ys) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+".");
 			if(mob.location().okMessage(mob,msg)&&((Room)target).okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg);

@@ -331,7 +331,7 @@ public class Quests implements Cloneable, Quest
 										for(int i=0;i<R2.numInhabitants();i++)
 										{
 											MOB M2=R2.fetchInhabitant(i);
-											if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
+											if((M2!=null)&&(M2.isMonster()))
 											{
 												if(mobType.equalsIgnoreCase("any"))
 													choices.addElement(M2);
@@ -353,7 +353,7 @@ public class Quests implements Cloneable, Quest
 									for(Enumeration e=q.mobGroup.elements();e.hasMoreElements();)
 									{
 										MOB M2=(MOB)e.nextElement();
-										if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
+										if((M2!=null)&&(M2.isMonster()))
 										{
 											if(mobType.equalsIgnoreCase("any"))
 												choices.addElement(M2);
@@ -389,6 +389,14 @@ public class Quests implements Cloneable, Quest
 								}
 							}
 						}
+                        if((choices!=null)&&(choices.size()>0))
+                        {
+                            for(int c=choices.size()-1;c>=0;c--)
+                                if(objectInUse((Environmental)choices.elementAt(c))!=null)
+                                    choices.removeElementAt(c);
+                            if((choices.size()==0)&&(!isQuiet))
+                                Log.errOut("Quests","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+                        }
 						if((choices!=null)&&(choices.size()>0))
 							q.mob=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(q.mob==null)
@@ -436,7 +444,7 @@ public class Quests implements Cloneable, Quest
 								for(int i=0;i<R2.numInhabitants();i++)
 								{
 									MOB M2=R2.fetchInhabitant(i);
-									if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
+									if((M2!=null)&&(M2.isMonster()))
 									{
 										if(!MUDZapper.zapperCheck(mask,M2))
 											continue;
@@ -445,6 +453,15 @@ public class Quests implements Cloneable, Quest
 								}
 							}
 					    }catch(NoSuchElementException e){}
+                        
+                        if((choices!=null)&&(choices.size()>0))
+                        {
+                            for(int c=choices.size()-1;c>=0;c--)
+                                if(objectInUse((Environmental)choices.elementAt(c))!=null)
+                                    choices.removeElementAt(c);
+                            if((choices.size()==0)&&(!isQuiet))
+                                Log.errOut("Quests","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+                        }
 						if((choices!=null)&&(choices.size()>0))
 							q.mobGroup=choices;
 						else
@@ -477,7 +494,7 @@ public class Quests implements Cloneable, Quest
 									for(int i=0;i<R2.numItems();i++)
 									{
 										Item I2=R2.fetchItem(i);
-										if((I2!=null)&&(objectInUse(I2)==null))
+										if((I2!=null))
 										{
 											if(itemType.equalsIgnoreCase("any"))
 												choices.addElement(I2);
@@ -504,6 +521,14 @@ public class Quests implements Cloneable, Quest
 									choices.removeElement(I2);
 							}
 						}
+                        if((choices!=null)&&(choices.size()>0))
+                        {
+                            for(int c=choices.size()-1;c>=0;c--)
+                                if(objectInUse((Environmental)choices.elementAt(c))!=null)
+                                    choices.removeElementAt(c);
+                            if((choices.size()==0)&&(!isQuiet))
+                                Log.errOut("Quests","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+                        }
 						if((choices!=null)&&(choices.size()>0))
 							q.item=(Item)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(q.item==null)
@@ -670,7 +695,7 @@ public class Quests implements Cloneable, Quest
 							for(Enumeration e=q.mobGroup.elements();e.hasMoreElements();)
 							{
 								MOB M2=(MOB)e.nextElement();
-								if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
+								if((M2!=null)&&(M2.isMonster()))
 								{
 									if(!MUDZapper.zapperCheck(mask,M2))
 										continue;
@@ -690,7 +715,7 @@ public class Quests implements Cloneable, Quest
 									for(int i=0;i<R2.numInhabitants();i++)
 									{
 										MOB M2=R2.fetchInhabitant(i);
-										if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
+										if((M2!=null)&&(M2.isMonster()))
 										{
 											if(!MUDZapper.zapperCheck(mask,M2))
 												continue;
@@ -700,6 +725,14 @@ public class Quests implements Cloneable, Quest
 								}
 						    }catch(NoSuchElementException e){}
 						}
+                        if((choices!=null)&&(choices.size()>0))
+                        {
+                            for(int c=choices.size()-1;c>=0;c--)
+                                if(objectInUse((Environmental)choices.elementAt(c))!=null)
+                                    choices.removeElementAt(c);
+                            if((choices.size()==0)&&(!isQuiet))
+                                Log.errOut("Quests","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+                        }
 						if((choices!=null)&&(choices.size()>0))
 							q.mob=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(q.mob==null)
@@ -739,11 +772,19 @@ public class Quests implements Cloneable, Quest
 								for(int i=0;i<R2.numItems();i++)
 								{
 									Item I2=R2.fetchItem(i);
-									if((I2!=null)&&(objectInUse(I2)==null))
+									if(I2!=null)
 										choices=sortSelect(I2,itemName,choices,choices0,choices1,choices2,choices3);
 								}
 							}
 					    }catch(NoSuchElementException e){}
+                        if((choices!=null)&&(choices.size()>0))
+                        {
+                            for(int c=choices.size()-1;c>=0;c--)
+                                if(objectInUse((Environmental)choices.elementAt(c))!=null)
+                                    choices.removeElementAt(c);
+                            if((choices.size()==0)&&(!isQuiet))
+                                Log.errOut("Quests","Quest '"+name()+"', all choices were taken: '"+p+"'.");
+                        }
 						if((choices!=null)&&(choices.size()>0))
 							q.item=(Item)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(q.item==null)

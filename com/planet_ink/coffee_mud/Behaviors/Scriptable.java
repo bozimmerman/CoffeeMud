@@ -5562,6 +5562,7 @@ public class Scriptable extends StdBehavior
 					{
 						arg1=(String)V.elementAt(0,1);
 						arg2=((String)V.elementAt(0,2)).toUpperCase();
+                        CMClass.DBEngine().DBDeleteData(arg1,"SCRIPTABLEVARS",arg2);
 						Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+arg1);
 						String val="";
 						if(H!=null)
@@ -5569,8 +5570,8 @@ public class Scriptable extends StdBehavior
 							val=(String)H.get(arg2);
 							if(val==null) val="";
 						}
-						CMClass.DBEngine().DBDeleteData(arg1,"SCRIPTABLEVARS",arg2);
-						CMClass.DBEngine().DBCreateData(arg1,"SCRIPTABLEVARS",arg2,val);
+                        if(val.length()>0)
+    						CMClass.DBEngine().DBCreateData(arg1,"SCRIPTABLEVARS",arg2,val);
 					}
 				}
 				break;

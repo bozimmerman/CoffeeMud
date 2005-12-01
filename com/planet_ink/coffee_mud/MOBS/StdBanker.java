@@ -585,7 +585,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			case CMMsg.TYP_GIVE:
 			case CMMsg.TYP_DEPOSIT:
 				{
-                    if(!ignoreIfNecessary(msg.source())) 
+                    if(!CoffeeShops.ignoreIfNecessary(msg.source(),ignoreMask(),this)) 
                         return false;
 					if(msg.tool()==null) 
                         return false;
@@ -629,7 +629,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				return true;
 			case CMMsg.TYP_WITHDRAW:
 				{
-                    if(!ignoreIfNecessary(msg.source())) 
+                    if(!CoffeeShops.ignoreIfNecessary(msg.source(),ignoreMask(),this)) 
                         return false;
 					String thename=msg.source().Name();
 					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
@@ -725,7 +725,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				return super.okMessage(myHost,msg);
 			case CMMsg.TYP_LIST:
 			{
-                if(!ignoreIfNecessary(msg.source())) 
+                if(!CoffeeShops.ignoreIfNecessary(msg.source(),ignoreMask(),this)) 
                     return false;
 				String thename=msg.source().Name();
 				if(whatISell==ShopKeeper.DEAL_CLANBANKER)

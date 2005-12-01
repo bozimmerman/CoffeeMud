@@ -417,8 +417,8 @@ public class StdRoom
 			case CMMsg.TYP_SPEAK:
 				break;
 			default:
-				if((Util.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
-				||(Util.bset(msg.targetMajor(),CMMsg.MASK_MOUTH)))
+				if(((Util.bset(msg.targetMajor(),CMMsg.MASK_HANDS))||(Util.bset(msg.targetMajor(),CMMsg.MASK_MOUTH)))
+                &&(msg.targetMinor()!=CMMsg.TYP_THROW))
 				{
 					mob.tell("You can't do that here.");
 					return false;

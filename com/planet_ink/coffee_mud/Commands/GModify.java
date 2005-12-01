@@ -212,32 +212,38 @@ public class GModify extends StdCommand
             lastCode=codes;
         }
         if(checkedOut)
-        for(int i=0;i<changes.size();i++)
         {
-            field=(String)onfields.elementAt(i,1);
-            value=(String)onfields.elementAt(i,3);
-            if(noisy) gmodifydebugtell(mob,E.name()+" wants to change "+field+" value "+getStat(E,field)+" to "+value+"/"+(!getStat(E,field).equals(value)));
-            if(Util.bset(codes,FLAG_SUBSTRING))
+            if(changes.size()==0)
+                mob.tell("Matched on "+E.name()+" from "+CMMap.getExtendedRoomID(CoffeeUtensils.roomLocation(E))+".");
+            else
+            for(int i=0;i<changes.size();i++)
             {
-                int matchStart=-1;
-                int matchEnd=-1;
-                for(int m=0;m<matches.size();m++)
-                    if(((String)matches.elementAt(m,1)).equals(field))
-                    {
-                        matchStart=((Integer)matches.elementAt(m,2)).intValue();
-                        matchEnd=((Integer)matches.elementAt(m,2)).intValue();
-                    }
-                if(matchStart>=0)
+                field=(String)changes.elementAt(i,1);
+                value=(String)changes.elementAt(i,3);
+                codes=((Integer)onfields.elementAt(i,4)).intValue();
+                if(noisy) gmodifydebugtell(mob,E.name()+" wants to change "+field+" value "+getStat(E,field)+" to "+value+"/"+(!getStat(E,field).equals(value)));
+                if(Util.bset(codes,FLAG_SUBSTRING))
                 {
-                    stat=getStat(E,field);
-                    value=stat.substring(0,matchStart)+value+stat.substring(matchEnd);
+                    int matchStart=-1;
+                    int matchEnd=-1;
+                    for(int m=0;m<matches.size();m++)
+                        if(((String)matches.elementAt(m,1)).equals(field))
+                        {
+                            matchStart=((Integer)matches.elementAt(m,2)).intValue();
+                            matchEnd=((Integer)matches.elementAt(m,3)).intValue();
+                        }
+                    if(matchStart>=0)
+                    {
+                        stat=getStat(E,field);
+                        value=stat.substring(0,matchStart)+value+stat.substring(matchEnd);
+                    }
                 }
-            }
-            if(!getStat(E,field).equals(value))
-            {
-                setStat(E,field,value);
-                Log.sysOut("GMODIFY","The "+Util.capitalizeAndLower(field)+" field on "+E.Name()+" in "+room.roomID()+" was changed to "+value+".");
-                didAnything=true;
+                if(!getStat(E,field).equals(value))
+                {
+                    Log.sysOut("GMODIFY","The "+Util.capitalizeAndLower(field)+" field on "+E.Name()+" in "+room.roomID()+" was changed from "+getStat(E,field)+" to "+value+".");
+                    setStat(E,field,value);
+                    didAnything=true;
+                }
             }
         }
         if(didAnything)
@@ -348,19 +354,40 @@ public class GModify extends StdCommand
 
         allKnownFields.addElement("REJUV");
         allFieldsMsg.append("REJUV ");
-
+        use=onfields;
+        Vector newSet=new Vector();
+        StringBuffer s=new StringBuffer("");
         for(int i=0;i<commands.size();i++)
         {
-            String str=((String)commands.elementAt(i)).toUpperCase();
-            if(str.startsWith("CHANGE="))
+            String str=((String)commands.elementAt(i));
+            if((str.toUpperCase().startsWith("CHANGE="))
+            ||(str.toUpperCase().startsWith("WHEN=")))
+            {
+                if(s.length()>0)
+                    newSet.addElement(s.toString());
+                s=new StringBuffer("");
+            }
+            if(str.indexOf(" ")>=0)
+                str="\""+str+"\"";
+            if(s.length()>0)
+                s.append(" "+str);
+            else
+                s.append(str);
+        }
+        if(s.length()>0)
+            newSet.addElement(s.toString());
+        for(int i=0;i<newSet.size();i++)
+        {
+            String str=((String)newSet.elementAt(i));
+            if(str.toUpperCase().startsWith("CHANGE="))
             {
                 use=changes;
                 str=str.substring(7).trim();
             }
-            if(str.startsWith("WHEN="))
+            if(str.toUpperCase().startsWith("WHEN="))
             {
-                use=onfields;
                 str=str.substring(5).trim();
+                use=onfields;
             }
             while(str.trim().length()>0)
             {
@@ -402,7 +429,7 @@ public class GModify extends StdCommand
                 
                 int divBackLen=0;
                 eq=-1;
-                while((divBackLen<0)&&((++eq)<val.length()))
+                while((divBackLen==0)&&((++eq)<val.length()))
                     switch(val.charAt(eq))
                     {
                     case '&':
@@ -420,7 +447,7 @@ public class GModify extends StdCommand
                         }
                         break;
                     }
-                if(divBackLen<0)
+                if(divBackLen==0)
                     str="";
                 else
                 {
@@ -459,6 +486,7 @@ public class GModify extends StdCommand
                         patCodes=patCodes|Pattern.CASE_INSENSITIVE;
                     P=Pattern.compile(val,patCodes);
                 }
+                key=key.toUpperCase().trim();
                 if(allKnownFields.contains(key))
                     use.addElement(key,equator,val,code,P);
                 else
@@ -470,7 +498,7 @@ public class GModify extends StdCommand
         }
         if((onfields.size()==0)&&(changes.size()==0))
         {
-            mob.tell("You must specify either WHERE, or CHANGES parameters for valid matches to be made.");
+            mob.tell("You must specify either WHEN, or CHANGES parameters for valid matches to be made.");
             return false;
         }
         if(placesToDo.size()==0)
@@ -507,7 +535,12 @@ public class GModify extends StdCommand
         }
         // now do the modification...
         if(mob.session()!=null)
-            mob.session().rawPrint("Searching and/or modifying and saving...");
+        {
+            if(changes.size()==0)
+                mob.session().rawPrint("Searching, modifying and saving...");
+            else
+                mob.session().rawPrintln("Searching...");
+        }
         if(noisy) gmodifydebugtell(mob,"Rooms to do: "+placesToDo.size());
         if(noisy) gmodifydebugtell(mob,"When fields="+Util.toStringList(onfields.getDimensionVector(1)));
         if(noisy) gmodifydebugtell(mob,"Change fields="+Util.toStringList(changes.getDimensionVector(1)));
@@ -557,7 +590,8 @@ public class GModify extends StdCommand
             }
             if(saveitems) CMClass.DBEngine().DBUpdateItems(R);
             if(savemobs) CMClass.DBEngine().DBUpdateMOBs(R);
-            if(mob.session()!=null) mob.session().rawPrint(".");
+            if((mob.session()!=null)&&(changes.size()>0)) 
+                mob.session().rawPrint(".");
             R.getArea().toggleMobility(oldMobility);
         }
 

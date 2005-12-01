@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.system.Tick;
 import com.planet_ink.coffee_mud.utils.*;
+import com.sun.rsasign.v;
 
 import java.util.*;
 
@@ -1080,8 +1081,8 @@ public class List extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		commands.removeElementAt(0);
 		Vector V=new Vector();
+        commands.removeElementAt(0);
 		if(commands.size()==0)
 		{
 			if(getAnyCode(mob)>=0)
@@ -1093,8 +1094,16 @@ public class List extends StdCommand
 		}
 		else
 		{
-			MOB shopkeeper=mob.location().fetchInhabitant(Util.combine(commands,0));
-			if((shopkeeper!=null)&&(CoffeeShops.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
+            String what=Util.combine(commands,0);
+            Vector V2=CoffeeShops.getAllShopkeepers(mob.location(),mob);
+            Environmental shopkeeper=EnglishParser.fetchEnvironmental(V2,what,false);
+            if((shopkeeper==null)&&(what.equals("shop")||what.equals("the shop")))
+                for(int v=0;v<V2.size();v++)
+                    if(V2.elementAt(v) instanceof Area)
+                    { shopkeeper=(Environmental)V2.elementAt(v); break;}
+			if((shopkeeper!=null)
+            &&(CoffeeShops.getShopKeeper(shopkeeper)!=null)
+            &&(Sense.canBeSeenBy(shopkeeper,mob)))
 				V.addElement(shopkeeper);
 			else
 			if(getAnyCode(mob)>=0)

@@ -70,7 +70,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	}
     
     
-	protected boolean inBaseInventory(Environmental thisThang)
+    public boolean inBaseInventory(Environmental thisThang)
 	{ return shop.inBaseInventory(thisThang);}
 	public Environmental addStoreInventory(Environmental thisThang)
 	{ return shop.addStoreInventory(thisThang,1,-1,whatIsSold(),this);}
@@ -125,165 +125,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
     }
 
 
-    public String storeKeeperString()
-    {
-        switch(whatISell)
-        {
-        case DEAL_ANYTHING:
-            return "*Anything*";
-        case DEAL_GENERAL:
-            return "General items";
-        case DEAL_ARMOR:
-            return "Armor";
-        case DEAL_MAGIC:
-            return "Miscellaneous Magic Items";
-        case DEAL_WEAPONS:
-            return "Weapons";
-        case DEAL_PETS:
-            return "Pets and Animals";
-        case DEAL_LEATHER:
-            return "Leather";
-        case DEAL_INVENTORYONLY:
-            return "Only my Inventory";
-        case DEAL_TRAINER:
-            return "Training in skills/spells/prayers/songs";
-        case DEAL_CASTER:
-            return "Caster of spells/prayers";
-        case DEAL_ALCHEMIST:
-            return "Potions";
-        case DEAL_INNKEEPER:
-            return "My services as an Inn Keeper";
-        case DEAL_JEWELLER:
-            return "Precious stones and jewellery";
-        case DEAL_BANKER:
-            return "My services as a Banker";
-        case DEAL_CLANBANKER:
-            return "My services as a Banker to Clans";
-        case DEAL_LANDSELLER:
-            return "Real estate";
-        case DEAL_CLANDSELLER:
-            return "Clan estates";
-        case DEAL_ANYTECHNOLOGY:
-            return "Any technology";
-        case DEAL_BUTCHER:
-            return "Meats";
-        case DEAL_FOODSELLER:
-            return "Foodstuff";
-        case DEAL_GROWER:
-            return "Vegetables";
-        case DEAL_HIDESELLER:
-            return "Hides and Furs";
-        case DEAL_LUMBERER:
-            return "Lumber";
-        case DEAL_METALSMITH:
-            return "Metal ores";
-        case DEAL_STONEYARDER:
-            return "Stone and rock";
-        case DEAL_SHIPSELLER:
-            return "Ships";
-        case DEAL_CSHIPSELLER:
-            return "Clan Ships";
-        case DEAL_SLAVES:
-            return "Slaves";
-        case DEAL_POSTMAN:
-            return "My services as a Postman";
-        case DEAL_CLANPOSTMAN:
-            return "My services as a Postman for Clans";
-        default:
-            return "... I have no idea WHAT I sell";
-        }
-    }
-
-	public boolean doISellThis(Environmental thisThang)
-	{
-        if(thisThang instanceof PackagedItems)
-            thisThang=((PackagedItems)thisThang).getItem();
-        if(thisThang==null) return false;
-        if(thisThang instanceof Coins) return false;
-		switch(whatISell)
-		{
-		case DEAL_ANYTHING:
-			return true;
-		case DEAL_ARMOR:
-			return (thisThang instanceof Armor);
-		case DEAL_MAGIC:
-			return (thisThang instanceof MiscMagic);
-		case DEAL_WEAPONS:
-			return (thisThang instanceof Weapon)||(thisThang instanceof Ammunition);
-		case DEAL_GENERAL:
-			return ((thisThang instanceof Item)
-					&&(!(thisThang instanceof Armor))
-					&&(!(thisThang instanceof MiscMagic))
-					&&(!(thisThang instanceof ClanItem))
-					&&(!(thisThang instanceof Weapon))
-					&&(!(thisThang instanceof Ammunition))
-					&&(!(thisThang instanceof MOB))
-					&&(!(thisThang instanceof EnvResource))
-					&&(!(thisThang instanceof Ability)));
-		case DEAL_LEATHER:
-			return ((thisThang instanceof Item)
-					&&((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER)
-					&&(!(thisThang instanceof EnvResource)));
-		case DEAL_PETS:
-			return ((thisThang instanceof MOB)&&(Sense.isAnimalIntelligence((MOB)thisThang)));
-		case DEAL_SLAVES:
-			return ((thisThang instanceof MOB)&&(!Sense.isAnimalIntelligence((MOB)thisThang)));
-		case DEAL_INVENTORYONLY:
-			return (inBaseInventory(thisThang));
-		case DEAL_INNKEEPER:
-			return thisThang instanceof InnKey;
-		case DEAL_JEWELLER:
-			return ((thisThang instanceof Item)
-					&&(!(thisThang instanceof Weapon))
-					&&(!(thisThang instanceof MiscMagic))
-					&&(!(thisThang instanceof ClanItem))
-					&&(((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_GLASS)
-					||((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)
-					||((Item)thisThang).fitsOn(Item.ON_EARS)
-					||((Item)thisThang).fitsOn(Item.ON_NECK)
-					||((Item)thisThang).fitsOn(Item.ON_RIGHT_FINGER)
-					||((Item)thisThang).fitsOn(Item.ON_LEFT_FINGER)));
-		case DEAL_ALCHEMIST:
-			return (thisThang instanceof Potion);
-		case DEAL_LANDSELLER:
-		case DEAL_CLANDSELLER:
-		case DEAL_SHIPSELLER:
-		case DEAL_CSHIPSELLER:
-			return (thisThang instanceof LandTitle);
-		case DEAL_ANYTECHNOLOGY:
-			return (thisThang instanceof Electronics);
-		case DEAL_BUTCHER:
-			return ((thisThang instanceof EnvResource)
-				&&(((EnvResource)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_FLESH);
-		case DEAL_FOODSELLER:
-			return (((thisThang instanceof Food)||(thisThang instanceof Drink))
-					&&(!(thisThang instanceof EnvResource)));
-		case DEAL_GROWER:
-			return ((thisThang instanceof EnvResource)
-				&&(((EnvResource)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION);
-		case DEAL_HIDESELLER:
-			return ((thisThang instanceof EnvResource)
-				&&((((EnvResource)thisThang).material()==EnvResource.RESOURCE_HIDE)
-				||(((EnvResource)thisThang).material()==EnvResource.RESOURCE_FEATHERS)
-				||(((EnvResource)thisThang).material()==EnvResource.RESOURCE_LEATHER)
-				||(((EnvResource)thisThang).material()==EnvResource.RESOURCE_SCALES)
-				||(((EnvResource)thisThang).material()==EnvResource.RESOURCE_WOOL)
-				||(((EnvResource)thisThang).material()==EnvResource.RESOURCE_FUR)));
-		case DEAL_LUMBERER:
-			return ((thisThang instanceof EnvResource)
-				&&((((EnvResource)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN));
-		case DEAL_METALSMITH:
-			return ((thisThang instanceof EnvResource)
-				&&(((((EnvResource)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
-				||(((EnvResource)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL));
-		case DEAL_STONEYARDER:
-			return ((thisThang instanceof EnvResource)
-				&&((((EnvResource)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK));
-		}
-
-		return false;
-	}
-
+    public String storeKeeperString(){return CoffeeShops.storeKeeperString(whatIsSold());}
+	public boolean doISellThis(Environmental thisThang){return CoffeeShops.doISellThis(thisThang,this);}
+    
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -362,19 +206,6 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return true;
 	}
 
-    protected boolean ignoreIfNecessary(MOB mob)
-    {
-        String ignoreMask=ignoreMask();
-        if(ignoreMask.length()==0) ignoreMask=CommonStrings.getVar(CommonStrings.SYSTEM_IGNOREMASK);
-        if((ignoreMask.length()>0)&&(!MUDZapper.zapperCheck(ignoreMask(),mob)))
-        {
-            mob.tell(this,null,null,"<S-NAME> appear(s) to be ignoring you.");
-            return false;
-        }
-        return true;
-    }
-    
-    
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -384,7 +215,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_VALUE:
 			case CMMsg.TYP_SELL:
 			{
-                if(!ignoreIfNecessary(msg.source())) 
+                if(!CoffeeShops.ignoreIfNecessary(msg.source(),ignoreMask(),this)) 
                     return false;
                 if(CoffeeShops.standardSellEvaluation(this,msg.source(),msg.tool(),this,budgetRemaining,budgetMax,msg.targetMinor()==CMMsg.TYP_SELL))
                     return super.okMessage(myHost,msg);
@@ -393,7 +224,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_BUY:
 			case CMMsg.TYP_VIEW:
 			{
-                if(!ignoreIfNecessary(msg.source())) 
+                if(!CoffeeShops.ignoreIfNecessary(msg.source(),ignoreMask(),this)) 
                     return false;
                 if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
                     return false;
@@ -403,7 +234,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			}
 			case CMMsg.TYP_LIST:
             {
-                if(!ignoreIfNecessary(msg.source())) 
+                if(!CoffeeShops.ignoreIfNecessary(msg.source(),ignoreMask(),this)) 
                     return false;
 				return super.okMessage(myHost,msg);
             }

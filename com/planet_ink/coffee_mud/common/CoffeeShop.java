@@ -355,12 +355,18 @@ public class CoffeeShop
         return V;
     }
     
-    public String makeXML()
+    public String makeXML(ShopKeeper shop)
     {
         Vector V=getStoreInventory();
         if((V!=null)&&(V.size()>0))
         {
-            StringBuffer itemstr=new StringBuffer("<INVS>");
+            StringBuffer itemstr=new StringBuffer("");
+            itemstr.append(XMLManager.convertXMLtoTag("ISELL",shop.whatIsSold()));
+            itemstr.append(XMLManager.convertXMLtoTag("IPREJ",shop.prejudiceFactors()));
+            itemstr.append(XMLManager.convertXMLtoTag("IBUDJ",shop.budget()));
+            itemstr.append(XMLManager.convertXMLtoTag("IDVAL",shop.devalueRate()));
+            itemstr.append(XMLManager.convertXMLtoTag("IGNOR",shop.ignoreMask()));
+            itemstr.append("<INVS>");
             for(int i=0;i<V.size();i++)
             {
                 Item I=(Item)V.elementAt(i);
@@ -383,6 +389,26 @@ public class CoffeeShop
         baseInventory=new Vector();
         
         if(text.length()==0) return;
+        if(!text.trim().startsWith("<"))
+        {
+            String parm=Util.getParmStr(text,"ISELL",""+ShopKeeper.DEAL_ANYTHING);
+            if((parm!=null)&&(Util.isNumber(parm))) 
+                shop.setWhatIsSold(Util.s_int(parm));
+            else
+            if(parm!=null)
+            for(int s=0;s<ShopKeeper.SOLDCODES.length;s++)
+                if(parm.equalsIgnoreCase(ShopKeeper.SOLDCODES[s]))
+                    shop.setWhatIsSold(s);
+            parm=Util.getParmStr(text,"IPREJ","");
+            if(parm!=null) shop.setPrejudiceFactors(parm);
+            parm=Util.getParmStr(text,"IBUDJ","1000000");
+            if(parm!=null) shop.setBudget(parm);
+            parm=Util.getParmStr(text,"IDVAL","");
+            if(parm!=null) shop.setDevalueRate(parm);
+            parm=Util.getParmStr(text,"IGNOR","");
+            if(parm!=null) shop.setIgnoreMask(parm);
+            return;
+        }
 
         Vector buf=XMLManager.parseAllXML(text);
         if(buf==null)
@@ -390,6 +416,18 @@ public class CoffeeShop
             Log.errOut("Merchant","Error parsing data.");
             return;
         }
+        String parm=XMLManager.getValFromPieces(buf,"ISELL");
+        if((parm!=null)&&(Util.isNumber(parm))) 
+            shop.setWhatIsSold(Util.s_int(parm));
+        parm=XMLManager.getValFromPieces(buf,"IPREJ");
+        if(parm!=null) shop.setPrejudiceFactors(parm);
+        parm=XMLManager.getValFromPieces(buf,"IBUDJ");
+        if(parm!=null) shop.setBudget(parm);
+        parm=XMLManager.getValFromPieces(buf,"IDVAL");
+        if(parm!=null) shop.setDevalueRate(parm);
+        parm=XMLManager.getValFromPieces(buf,"IGNOR");
+        if(parm!=null) shop.setIgnoreMask(parm);
+        
         Vector iV=XMLManager.getRealContentsFromPieces(buf,"INVS");
         if(iV==null)
         {

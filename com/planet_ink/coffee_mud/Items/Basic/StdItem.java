@@ -676,6 +676,10 @@ public class StdItem implements Item
 			if(this instanceof Rideable)
 				return true;
 			break;
+        case CMMsg.TYP_LIST:
+            if(CoffeeShops.getShopKeeper(this)!=null)
+                return true;
+            break;
 		case CMMsg.TYP_RELOAD:
 			if((this instanceof Weapon)
 			&&(((Weapon)this).requiresAmmunition()))

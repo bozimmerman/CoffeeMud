@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Areas;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -656,6 +657,18 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	        }
 	}
 	public Enumeration getParents() { initParents(); return parents.elements(); }
+    public Vector getParentsRecurse()
+    {
+        Vector V=new Vector();
+        Area A=null;
+        for(Enumeration e=getParents();e.hasMoreElements();)
+        {
+            A=(Area)e.nextElement();
+            V.addElement(A);
+            Util.addToVector(A.getParentsRecurse(),V);
+        }
+        return V;
+    }
 	public String getParentsList() {
 	        initParents();
 	        StringBuffer str=new StringBuffer("");

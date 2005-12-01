@@ -923,6 +923,19 @@ public class StdArea implements Area
 	        }
 	}
 	public Enumeration getParents() { initParents(); return parents.elements(); }
+    public Vector getParentsRecurse()
+    {
+        Vector V=new Vector();
+        Area A=null;
+        for(Enumeration e=getParents();e.hasMoreElements();)
+        {
+            A=(Area)e.nextElement();
+            V.addElement(A);
+            Util.addToVector(A.getParentsRecurse(),V);
+        }
+        return V;
+    }
+    
 	public String getParentsList() {
 	        initParents();
 	        StringBuffer str=new StringBuffer("");
