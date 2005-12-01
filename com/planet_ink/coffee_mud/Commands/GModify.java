@@ -89,20 +89,23 @@ public class GModify extends StdCommand
             stat=getStat(E,field);
             if(equator.equals("$")&&(pattern!=null))
             {
-                if(Util.bset(codes,FLAG_SUBSTRING))
+                if(!Util.bset(codes,FLAG_SUBSTRING))
+                {
+                    if(stat.matches(value))
+                    {
+                        matchStart=0;
+                        matchEnd=stat.length();
+                    }
+                }
+                else
                 {
                     M=pattern.matcher(stat);
+                    M.reset();
                     if(M.find())
                     {
                         matchStart=M.start();
                         matchEnd=M.end();
                     }
-                }
-                else
-                if(stat.matches(value));
-                {
-                    matchStart=0;
-                    matchEnd=stat.length();
                 }
             }
             else
@@ -220,7 +223,7 @@ public class GModify extends StdCommand
             {
                 field=(String)changes.elementAt(i,1);
                 value=(String)changes.elementAt(i,3);
-                codes=((Integer)onfields.elementAt(i,4)).intValue();
+                codes=((Integer)changes.elementAt(i,4)).intValue();
                 if(noisy) gmodifydebugtell(mob,E.name()+" wants to change "+field+" value "+getStat(E,field)+" to "+value+"/"+(!getStat(E,field).equals(value)));
                 if(Util.bset(codes,FLAG_SUBSTRING))
                 {
@@ -537,9 +540,9 @@ public class GModify extends StdCommand
         if(mob.session()!=null)
         {
             if(changes.size()==0)
-                mob.session().rawPrint("Searching, modifying and saving...");
-            else
                 mob.session().rawPrintln("Searching...");
+            else
+                mob.session().rawPrint("Searching, modifying and saving...");
         }
         if(noisy) gmodifydebugtell(mob,"Rooms to do: "+placesToDo.size());
         if(noisy) gmodifydebugtell(mob,"When fields="+Util.toStringList(onfields.getDimensionVector(1)));
