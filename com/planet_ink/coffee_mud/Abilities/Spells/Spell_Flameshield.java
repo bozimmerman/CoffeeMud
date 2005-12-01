@@ -90,6 +90,7 @@ public class Spell_Flameshield extends Spell
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 		affectableStats.setArmor(affectableStats.armor()-5);
+        affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

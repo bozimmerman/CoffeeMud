@@ -465,7 +465,6 @@ public class StdMOB implements MOB
 	}
 	public void setPlayerStats(PlayerStats newStats)
     {
-if(newStats==null){ try{int x=0;x=x/0;}catch(Exception e){e.printStackTrace();} }
         playerStats=newStats;
     }
 	public void setBaseState(CharState newState)
@@ -535,7 +534,7 @@ if(newStats==null){ try{int x=0;x=x/0;}catch(Exception e){e.printStackTrace();} 
         MOB possessor=CoffeeUtensils.getMobPossessingAnother(this);
         if(possessor!=null) possessor.dispossess(false);
         if(session()!=null){ session().setKillFlag(true); try{Thread.sleep(1000);}catch(Exception e){}}
-		removeFromGame();
+		removeFromGame(session()!=null);
 		while(numBehaviors()>0)
 			delBehavior(fetchBehavior(0));
 		while(numEffects()>0)
@@ -582,7 +581,7 @@ if(newStats==null){ try{int x=0;x=x/0;}catch(Exception e){e.printStackTrace();} 
 	}
     String destroyString="";
 
-	public void removeFromGame()
+	public void removeFromGame(boolean preserveFollowers)
 	{
 		pleaseDestroy=true;
 		if((location!=null)&&(location.isInhabitant(this)))
@@ -605,7 +604,7 @@ if(newStats==null){ try{int x=0;x=x/0;}catch(Exception e){e.printStackTrace();} 
 			}
 		}
 
-		if(!isMonster())
+		if(preserveFollowers)
 		{
 			for(int f=0;f<oldFollowers.size();f++)
 			{

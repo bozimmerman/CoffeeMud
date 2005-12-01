@@ -120,7 +120,7 @@ public class As extends StdCommand
 		M.setSession(oldSession);
 		mySession.setMob(mob);
         mySession.initTelnetMode(myBitmap);
-		if(dead) M.removeFromGame();
+		if(dead) M.removeFromGame(true);
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

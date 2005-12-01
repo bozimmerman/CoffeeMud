@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+import com.sun.rsasign.c;
 
 import java.util.*;
 
@@ -162,9 +163,16 @@ public class MoneyChanger extends StdBehavior
             Coins C=BeanCounter.makeBestCurrency(observer,value);
 			if((value>0.0)&&(C!=null))
 			{
-				FullMsg newMsg=new FullMsg(observer,source,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
+                // this message will actually end up triggering the hand-over.
+				FullMsg newMsg=new FullMsg(observer,source,C,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
                 C.setOwner(observer);
+                long num=C.getNumberOfCoins();
+                String curr=C.getCurrency();
+                double denom=C.getDenomination();
                 C.destroy();
+                C.setNumberOfCoins(num);
+                C.setCurrency(curr);
+                C.setDenomination(denom);
 				msg.addTrailerMsg(newMsg);
 			}
 			else

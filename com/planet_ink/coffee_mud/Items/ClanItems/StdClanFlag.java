@@ -208,10 +208,10 @@ public class StdClanFlag extends StdItem implements ClanItem
 			{
 				String rulingClan=getClanInfoAt(null,msg.source(),Law.MOD_RULINGCLAN);
 				if(rulingClan.length()==0)
-					msg.source().tell("This area is presently neutral.");
+					msg.source().tell("Area '"+msg.source().location().getArea().name()+"' is presently neutral.");
 				else
 				{
-					msg.source().tell("This area is presently controlled by "+rulingClan+".");
+					msg.source().tell("Area '"+msg.source().location().getArea().name()+"' is presently controlled by "+rulingClan+".");
 					if(!rulingClan.equals(clanID()))
 					{
 						int relation=Clan.REL_WAR;

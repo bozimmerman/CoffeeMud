@@ -591,6 +591,19 @@ public class Clans implements Clan, Tickable
 		||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
 		{
 			msg.append("^xExperience Pts. :^.^N "+getExp()+"\n\r");
+            if(getMorgue().length()>0)
+            {
+                Room R=CMMap.getRoom(getMorgue());
+                if(R!=null)
+                    msg.append("^x Morgue         :^.^N "+R.displayText()+"\n\r");
+            }
+            if(getRecall().length()>0)
+            {
+                Room R=CMMap.getRoom(getRecall());
+                if(R!=null)
+                    msg.append("^x Morgue         :^.^N "+R.displayText()+"\n\r");
+            }
+            msg.append("^xExperience Pts. :^.^N "+getExp()+"\n\r");
 		}
 		msg.append("^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_BOSS,true,true),16)+":^.^N "+crewList(Clan.POS_BOSS)+"\n\r"
 		          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_LEADER,true,true),16)+":^.^N "+crewList(Clan.POS_LEADER)+"\n\r"

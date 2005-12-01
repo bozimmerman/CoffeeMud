@@ -100,13 +100,13 @@ public class Conquerable extends Arrest
 					V.clear();
 					StringBuffer str=new StringBuffer("");
 					if((holdingClan.length()==0)||(totalControlPoints<0))
-						str.append("This area is not currently controlled by any clan.\n\r");
+						str.append("Area '"+((Area)hostObj).name()+"' is not currently controlled by any clan.\n\r");
 					else
 					{
 						Clan C=Clans.getClan(holdingClan);
 						if(C!=null)
                         {
-							str.append("This area is currently controlled by "+C.typeName()+" "+C.name()+".\n\r");
+							str.append("Area '"+((Area)hostObj).name()+"' is currently controlled by "+C.typeName()+" "+C.name()+".\n\r");
                             int pts=calcItemControlPoints((Area)hostObj);
                             int chance=calcRevoltChance((Area)hostObj);
                             str.append(C.name()+" has handed out clan items here for "+pts+" loyalty points.\n\r");
