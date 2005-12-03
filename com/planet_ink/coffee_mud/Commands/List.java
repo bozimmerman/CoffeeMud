@@ -940,9 +940,73 @@ public class List extends StdCommand
         /*46*/{"FACTIONS","LISTADMIN","CMDFACTIONS"},
         /*47*/{"MATERIALS","CMDITEMS","CMDROOMS","CMDAREAS"},
         /*48*/{"OBJCOUNTERS","LISTADMIN"},
-        /*49*/{"POLLS","POLLS","LISTADMIN"}
+        /*49*/{"POLLS","POLLS","LISTADMIN"},
+        /*50*/{"CONTENTS","CMDROOMS","CMDITEMS","CMDMOBS","CMDAREAS"},
 	};
 
+    public StringBuffer listContent(MOB mob, Vector commands)
+    {
+        commands.removeElementAt(0);
+        Enumeration roomsToDo=null;
+        String rest=Util.combine(commands,0);
+        if(rest.equalsIgnoreCase("area"))
+            roomsToDo=mob.location().getArea().getMetroMap();
+        else
+        if(rest.trim().length()==0)
+            roomsToDo=Util.makeVector(mob.location()).elements();
+        else
+        {
+            Area A=CMMap.findArea(rest);
+            if(A!=null)
+                roomsToDo=A.getMetroMap();
+            else
+            {
+                Room R=CMMap.getRoom(rest);
+                if(R!=null)
+                    roomsToDo=Util.makeVector(mob.location()).elements();
+                else
+                    return new StringBuffer("There's no such place as '"+rest+"'");
+            }
+        }
+        StringBuffer buf=new StringBuffer("");
+        Room R=null;
+        Room TR=null;
+        Hashtable set=null;
+        for(;roomsToDo.hasMoreElements();)
+        {
+            R=(Room)roomsToDo.nextElement();
+            if(R.roomID().length()==0) continue;
+            set=CMClass.DBEngine().DBReadRoomData(CMMap.getExtendedRoomID(R),false,null);
+            if((set==null)||(set.size()==0))
+                buf.append("'"+CMMap.getExtendedRoomID(R)+"' could not be read from the database!\n\r");
+            else
+            {
+                TR=(Room)set.elements().nextElement();
+                CMClass.DBEngine().DBReadContent(TR,set);
+                buf.append("\n\r^NRoomID: "+CMMap.getExtendedRoomID(TR)+"\n\r");
+                for(int m=0;m<TR.numInhabitants();m++)
+                {
+                    MOB M=TR.fetchInhabitant(m);
+                    if(M==null) continue;
+                    buf.append("^M"+M.ID()+": "+M.displayText()+"^N\n\r");
+                    for(int i=0;i<M.inventorySize();i++)
+                    {
+                        Item I=M.fetchInventory(i);
+                        if(I!=null)
+                            buf.append("    ^I"+I.ID()+": "+(I.displayText().length()>0?I.displayText():I.Name())+"^N"+((I.container()!=null)?I.Name():"")+"\n\r");
+                    }
+                }
+                for(int i=0;i<TR.numItems();i++)
+                {
+                    Item I=TR.fetchItem(i);
+                    if(I!=null)
+                        buf.append("^I"+I.ID()+": "+(I.displayText().length()>0?I.displayText():I.Name())+"^N"+((I.container()!=null)?I.Name():"")+"\n\r");
+                }
+            }
+        }
+        return buf;
+    }
+    
     public void listPolls(MOB mob, Vector commands)
     {
         Vector V=Polls.getPollList();
@@ -1072,6 +1136,7 @@ public class List extends StdCommand
         case 47: s.wraplessPrintln(listMaterials()); break;
         case 48: s.println("\n\r^xCounter Report:^.^N\n\r"+CMClass.getCounterReport()); break;
         case 49: listPolls(mob,commands); break;
+        case 50: s.wraplessPrintln(listContent(mob,commands).toString()); break;
         default:
 			s.println("List?!");
 			break;

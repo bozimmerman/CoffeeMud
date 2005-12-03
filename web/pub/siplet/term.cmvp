@@ -96,6 +96,23 @@ function createGauge(entity,caption,color,value,max)
     gauges[gauges.length]=gaugedata;
     modifyGauge(entity,value,max);
 }
+function removeGauge(entity)
+{
+    var oldgauges=gauges;
+    gauges=new Array();
+    var o=0;
+    var ndex=0;
+    for(o=0;o<oldgauges.length;o++)
+    {
+        var gaugedata=oldgauges[o];
+        if(gaugedata[0]!=entity)
+        {
+            gauges[ndex]=gaugedata;
+            ndex++;
+        }
+    }
+    modifyGauge(entity,-1,-1);
+}
 function modifyGauge(entity,value,max)
 {
     var div=top.term.document.getElementById(myname+'extracontent');

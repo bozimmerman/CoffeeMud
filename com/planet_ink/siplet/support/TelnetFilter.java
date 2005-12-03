@@ -91,7 +91,7 @@ public class TelnetFilter
     public static String getSipletVersion(){ return Siplet.VERSION_MAJOR+"."+Siplet.VERSION_MINOR;}
     
     public String getEnquedResponses(){return MXPsupport()?mxpModule.getAnyResponses():"";}
-    public String getEnquedJScript(){return MXPsupport()?mxpModule.getAnyJScript():"";}
+    public String getEnquedJScript(){return (mxpModule!=null)?mxpModule.getAnyJScript():"";}
     public boolean MSPsupport(){return MSPsupport;}
     public void setMSPSupport(boolean truefalse){MSPsupport=truefalse;}
     public boolean MXPsupport(){return MXPsupport;}
@@ -449,6 +449,7 @@ public class TelnetFilter
                                 response.writeBytes(""+IAC_+IAC_DONT+IAC_MXP);
                                 response.flush();
                                 setMXPSupport(false);
+                                if(mxpModule!=null) mxpModule.shutdownMXP();
                             }
                         }
                         break;
@@ -529,6 +530,7 @@ public class TelnetFilter
                                 response.writeBytes(""+IAC_+IAC_WONT+IAC_MXP);
                                 response.flush();
                                 setMXPSupport(false);
+                                if(mxpModule!=null) mxpModule.shutdownMXP();
                             }
                         }
                         break;

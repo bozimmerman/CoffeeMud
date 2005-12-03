@@ -54,6 +54,12 @@ public class MXP
     public MXP()
     {
         super();
+        initMXP();
+    }
+    
+    public void initMXP()
+    {
+        elements.clear();
         addElement(new MXPElement("B","<B>","","",MXPElement.BIT_HTML));
         addElement(new MXPElement("BOLD","<B>","","",MXPElement.BIT_HTML));
         addElement(new MXPElement("STRONG","<B>","","",MXPElement.BIT_HTML));
@@ -111,6 +117,7 @@ public class MXP
         addElement(new MXPElement("SOUND","!!SOUND(&fname; V=&v; L=&l; P=&p; T=&t; U=&u;)","FNAME V=100 L=1 P=50 T U","",MXPElement.BIT_COMMAND));
         addElement(new MXPElement("MUSIC","!!MUSIC(&fname; V=&v; L=&l; P=&p; T=&t; U=&u;)","FNAME V=100 L=1 P=50 T U","",MXPElement.BIT_COMMAND));
         //-------------------------------------------------------------------------
+        entities.clear();
         entities.put("nbsp",new MXPEntity("nbsp","&nbsp;"));
         entities.put("lt",new MXPEntity("lt","&lt;"));
         entities.put("gt",new MXPEntity("gt","&gt;"));
@@ -1058,6 +1065,29 @@ public class MXP
             }
         }
     }
+    
+    public void shutdownMXP()
+    {
+        openElements.clear();
+        eatAllEOLN=false;
+        eatNextEOLN=false;
+        eatTextUntilEOLN=false;
+        initMXP();
+        jscriptBuffer.setLength(0);
+        responses.setLength(0);
+        while(gauges.size()>0)
+        {
+            synchronized(jscriptBuffer)
+            {
+                jscriptBuffer.append("removeGauge('"+((String[])gauges.elementAt(0))[0]+"');");
+            }
+            gauges.removeElementAt(0);
+        }
+        mode=0;
+        defaultMode=0;
+        tags.clear();
+    }
+    
     
     public int processEntity(StringBuffer buf, int i, MXPElement currentE, boolean convertIfNecessary)
     {

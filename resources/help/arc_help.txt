@@ -7,7 +7,7 @@ take load unload dumpfile
 reset order ticktock list
 boot ban beacon announce
 nowizinfo wizemote
-task
+task gmodify
 
 ^HModules^N  
 import export xml i3 merge

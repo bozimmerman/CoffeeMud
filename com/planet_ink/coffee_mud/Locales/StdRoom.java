@@ -414,6 +414,17 @@ public class StdRoom
 			case CMMsg.TYP_OK_VISUAL:
 			case CMMsg.TYP_SNIFF:
 				break;
+            case CMMsg.TYP_LIST:
+            case CMMsg.TYP_BUY:
+            case CMMsg.TYP_SELL:
+            case CMMsg.TYP_VIEW:
+            case CMMsg.TYP_VALUE:
+                if(CoffeeShops.getShopKeeper(this)==null)
+                {
+                    mob.tell("You can't shop here.");
+                    return false;
+                }
+                break;
 			case CMMsg.TYP_SPEAK:
 				break;
 			default:
