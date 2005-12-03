@@ -556,7 +556,11 @@ public class GModify extends StdCommand
             if(R.roomID().length()==0) continue;
             boolean oldMobility=R.getArea().getMobility();
             R.getArea().toggleMobility(false);
-            CoffeeUtensils.resetRoom(R);
+            if(changes.size()==0)
+                R=CoffeeMaker.makeNewRoomContent(R);
+            else
+                CoffeeUtensils.resetRoom(R);
+            if(R==null) continue;
             boolean savemobs=false;
             boolean saveitems=false;
             for(int i=0;i<R.numItems();i++)
@@ -596,6 +600,7 @@ public class GModify extends StdCommand
             if((mob.session()!=null)&&(changes.size()>0)) 
                 mob.session().rawPrint(".");
             R.getArea().toggleMobility(oldMobility);
+            if(changes.size()==0) R.destroyRoom();
         }
 
         if(mob.session()!=null) mob.session().rawPrintln("!\n\rDone!");
