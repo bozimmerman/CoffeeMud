@@ -72,16 +72,18 @@ public class ChannelSet
 		return new Vector();
 	}
 	
+    public static boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i)
+    { return mayReadThisChannel(sender,areaReq,M,i,false);}
 	public static boolean mayReadThisChannel(MOB sender,
 											 boolean areaReq,
 											 MOB M, 
-											 int i)
+											 int i,
+                                             boolean offlineOK)
 	{
-		if((sender==null)
-		||(M==null)
-		||(M.amDead())
-		||(M.location()==null)
-		||(M.playerStats()==null))
+        if(sender==null) return false;
+		if((sender==null)||(M==null)||(M.playerStats()==null)) return false;
+        if(((!offlineOK))
+        &&((M.amDead())||(M.location()==null)))
 		    return false;
 		
 		if(getChannelFlags(i).contains("CLANONLY"))

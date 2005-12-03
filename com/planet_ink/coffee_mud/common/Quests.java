@@ -204,6 +204,12 @@ public class Quests implements Cloneable, Quest
                         q.error=true; 
                         break;
                     }
+                    if(!CMSecurity.isApprovedJScript(jscript))
+                    {
+                        Log.errOut("Quests","Quest '"+name()+"', <SCRIPT> not approved.  Use MODIFY JSCRIPT to approve.");
+                        q.error=true; 
+                        break;
+                    }
                     Context cx = Context.enter();
                     try
                     {

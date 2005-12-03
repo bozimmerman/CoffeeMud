@@ -618,7 +618,8 @@ public class StdMOB implements MOB
 					addFollower(newFol, ((Integer)oldFollowers.elementAt(f,2)).intValue());
 				}
 			}
-			session().setKillFlag(true);
+            if(session()!=null)
+    			session().setKillFlag(true);
 		}
 		setRiding(null);
 	}
