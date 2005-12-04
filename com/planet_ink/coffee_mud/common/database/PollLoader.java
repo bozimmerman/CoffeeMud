@@ -1,0 +1,163 @@
+package com.planet_ink.coffee_mud.system;
+
+import java.sql.*;
+import java.util.*;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+
+/*
+   Copyright 2000-2005 Bo Zimmerman
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+public class PollLoader
+{
+    public static Vector DBRead(String name)
+    {
+        DBConnection D=null;
+        Vector V=new Vector();
+        try
+        {
+            D=DBConnector.DBFetch();
+            ResultSet R=D.query("SELECT * FROM CMPOLL WHERE CMNAME='"+name+"'");
+            while(R.next())
+            {
+                V.addElement(DBConnections.getRes(R,"CMNAME"));
+                V.addElement(DBConnections.getRes(R,"CMBYNM"));
+                V.addElement(DBConnections.getRes(R,"CMSUBJ"));
+                V.addElement(DBConnections.getRes(R,"CMDESC"));
+                V.addElement(DBConnections.getRes(R,"CMOPTN"));
+                V.addElement(new Long(DBConnections.getLongRes(R,"CMFLAG")));
+                V.addElement(DBConnections.getRes(R,"CMQUAL"));
+                V.addElement(DBConnections.getRes(R,"CMRESL"));
+                V.addElement(new Long(DBConnections.getLongRes(R,"CMEXPI")));
+            }
+        }
+        catch(Exception sqle)
+        {
+            Log.errOut("PollLoader",sqle);
+        }
+        if(D!=null) DBConnector.DBDone(D);
+        // log comment
+        return V;
+    }
+
+    
+    public static Vector DBReadList()
+    {
+        DBConnection D=null;
+        Vector rows=new Vector();
+        try
+        {
+            D=DBConnector.DBFetch();
+            ResultSet R=D.query("SELECT * FROM CMPOLL");
+            while(R.next())
+            {
+                Vector V=new Vector();
+                V.addElement(DBConnections.getRes(R,"CMNAME"));
+                V.addElement(new Long(DBConnections.getLongRes(R,"CMFLAG")));
+                V.addElement(DBConnections.getRes(R,"CMQUAL"));
+                V.addElement(new Long(DBConnections.getLongRes(R,"CMEXPI")));
+                rows.addElement(V);
+            }
+        }
+        catch(Exception sqle)
+        {
+            Log.errOut("PollLoader",sqle);
+        }
+        if(D!=null) DBConnector.DBDone(D);
+        // log comment
+        return rows;
+    }
+    
+    public static void DBUpdate(String OldName,
+                                String name,
+                                String player, 
+                                String subject, 
+                                String description,
+                                String optionXML,
+                                int flag,
+                                String qualZapper,
+                                String results,
+                                long expiration)
+    {
+        DBConnector.update(
+                "UPDATE CMPOLL SET"
+                +" CMRESL='"+results+" '"
+                +" WHERE CMNAME='"+OldName+"'");
+        
+        DBConnector.update(
+            "UPDATE CMPOLL SET"
+            +"  CMNAME='"+name+"'"
+            +", CMBYNM='"+player+"'"
+            +", CMSUBJ='"+subject+"'"
+            +", CMDESC='"+description+" '"
+            +", CMOPTN='"+optionXML+" '"
+            +", CMFLAG="+flag
+            +", CMQUAL='"+qualZapper+"'"
+            +", CMEXPI="+expiration
+            +"  WHERE CMNAME='"+OldName+"'");
+
+    }
+    
+    public static void DBUpdate(String name,  String results)
+    {
+        DBConnector.update(
+        "UPDATE CMPOLL SET"
+        +" CMRESL='"+results+" '"
+        +" WHERE CMNAME='"+name+"'");
+    }
+    
+    public static void DBDelete(String name)
+    {
+        DBConnector.update("DELETE FROM CMPOLL WHERE CMNAME='"+name+"'");
+        try{Thread.sleep(500);}catch(Exception e){}
+        if(DBConnector.queryRows("SELECT * FROM CMPOLL WHERE CMNAME='"+name+"'")>0)
+            Log.errOut("Failed to delete data from poll "+name+".");
+    }
+    
+    public static void DBCreate(String name, 
+                                String player, 
+                                String subject, 
+                                String description,
+                                String optionXML,
+                                int flag,
+                                String qualZapper,
+                                String results,
+                                long expiration)
+    {
+        DBConnector.update(
+         "INSERT INTO CMPOLL ("
+         +"CMNAME, "
+         +"CMBYNM, "
+         +"CMSUBJ, "
+         +"CMDESC, "
+         +"CMOPTN, "
+         +"CMFLAG, "
+         +"CMQUAL, "
+         +"CMRESL, "
+         +"CMEXPI "
+         +") values ("
+         +"'"+name+"',"
+         +"'"+player+"',"
+         +"'"+subject+"',"
+         +"'"+description+"', "
+         +"'"+optionXML+"',"
+         +""+flag+","
+         +"'"+qualZapper+"',"
+         +"'"+results+" ',"
+         +""+expiration+""
+         +")");
+    }
+}
