@@ -503,7 +503,7 @@ public class DefaultClimate implements Climate
 				desc.append("A hot "+(((A.climateType()&Area.CLIMASK_DRY)>0)?"dry ":"")+"wind ");
 			else
 				desc.append("A light "+(((A.climateType()&Area.CLIMASK_DRY)>0)?"dry ":"")+"wind ");
-			desc.append("blows from "+Directions.getFromDirectionName(windDirection));
+			desc.append("blows from "+Directions.getFromDirectionName(windDirection)+".");
             desc.append(CommonStrings.msp("wind.wav",10));
 			break;
 		}

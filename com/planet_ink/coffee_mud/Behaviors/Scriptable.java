@@ -2566,6 +2566,15 @@ public class Scriptable extends StdBehavior
 				{
 					boolean found=false;
 					String val="";
+                    for(int i=0;i<E.getStatCodes().length;i++)
+                    {
+                        if(E.getStatCodes()[i].equalsIgnoreCase(arg2))
+                        {
+                            val=E.getStat(arg2);
+                            found=true; break;
+                        }
+                    }
+                    if(!found)
 					if(E instanceof MOB)
 					{
 						for(int i=0;i<CoffeeMaker.GENMOBCODES.length;i++)
@@ -4018,6 +4027,15 @@ public class Scriptable extends StdBehavior
 				{
 					boolean found=false;
 					String val="";
+                    for(int i=0;i<E.getStatCodes().length;i++)
+                    {
+                        if(E.getStatCodes()[i].equalsIgnoreCase(arg2))
+                        {
+                            val=E.getStat(arg2);
+                            found=true; break;
+                        }
+                    }
+                    if(!found)
 					if(E instanceof MOB)
 					{
 						for(int i=0;i<CoffeeMaker.GENMOBCODES.length;i++)
@@ -4683,6 +4701,15 @@ public class Scriptable extends StdBehavior
 				if(newTarget!=null)
 				{
 					boolean found=false;
+                    for(int i=0;i<newTarget.getStatCodes().length;i++)
+                    {
+                        if(newTarget.getStatCodes()[i].equalsIgnoreCase(arg2))
+                        {
+                            CoffeeMaker.setGenMobStat((MOB)newTarget,newTarget.getStatCodes()[i],arg3);
+                            found=true; break;
+                        }
+                    }
+                    if(!found)
 					if(newTarget instanceof MOB)
 					{
 						for(int i=0;i<CoffeeMaker.GENMOBCODES.length;i++)

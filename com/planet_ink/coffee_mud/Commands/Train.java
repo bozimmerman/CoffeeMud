@@ -37,11 +37,15 @@ public class Train extends StdCommand
 		commands.removeElementAt(0);
 
 		String abilityName=((String)commands.elementAt(0)).toUpperCase();
-
+        StringBuffer thingsToTrainFor=new StringBuffer("");
+        for(int i=0;i<CharStats.TRAITS.length;i++)
+            if(i<CharStats.NUM_BASE_STATS)
+                thingsToTrainFor.append(CharStats.TRAITS[i]+", ");
+        
 		int trainsRequired=1;
 		int abilityCode=mob.baseCharStats().getCode(abilityName);
 		int curStat=-1;
-		if(abilityCode>=0)
+		if((abilityCode>=0)&&(abilityCode<CharStats.NUM_BASE_STATS))
 		{
 			CharStats copyStats=mob.baseCharStats().cloneCharStats();
 			mob.charStats().getMyRace().affectCharStats(mob,copyStats);
@@ -64,6 +68,8 @@ public class Train extends StdCommand
 				return false;
 			}
 		}
+        else
+            abilityCode=-1;
 		CharClass theClass=null;
 		if((!CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("NO"))
 		&&(abilityCode<0))
@@ -74,16 +80,20 @@ public class Train extends StdCommand
                 int classLevel=mob.charStats().getClassLevel(C);
                 if(classLevel<0) classLevel=0;
 				if((C.name().toUpperCase().startsWith(abilityName.toUpperCase()))
-                ||(C.name(classLevel).toUpperCase().startsWith(abilityName.toUpperCase())))
+		        ||(C.name(classLevel).toUpperCase().startsWith(abilityName.toUpperCase())))
 				{
-					if((!Util.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK))
-                    &&(C.qualifiesForThisClass(mob,false)))
+                    if((C.qualifiesForThisClass(mob,false))
+                    &&(!Util.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK)))
 					{
 						abilityCode=106;
 						theClass=C;
 					}
 					break;
 				}
+                else
+                if((C.qualifiesForThisClass(mob,true))
+                &&(!Util.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+                    thingsToTrainFor.append(C.name()+", ");
 			}
 		}
 
@@ -105,7 +115,7 @@ public class Train extends StdCommand
 				abilityCode=105;
 			else
 			{
-				mob.tell("You don't seem to have "+abilityName+".");
+				mob.tell("You can't train for '"+abilityName+"'. Try "+thingsToTrainFor.toString()+"HIT POINTS, MANA, MOVE, GAIN, or PRACTICES.");
 				return false;
 			}
 		}
