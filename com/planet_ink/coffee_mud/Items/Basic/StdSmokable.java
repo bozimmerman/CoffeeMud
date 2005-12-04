@@ -119,7 +119,14 @@ public class StdSmokable extends StdContainer implements Light
 					MOB mob=(MOB)owner();
 					if((mob.location()!=null)
 					&&(Sense.aliveAwakeMobile(mob,true)))
+                    {
 						mob.location().show(mob,this,this,CMMsg.MSG_HANDS,"<S-NAME> puff(s) on <T-NAME>.");
+                        if(Dice.roll(1,1000,0)==1)
+                        {
+                            Ability A=CMClass.getAbility("Disease_Cancer");
+                            if(A!=null) A.invoke(mob,mob,true,0);
+                        }
+                    }
 				}
 				return true;
 			}

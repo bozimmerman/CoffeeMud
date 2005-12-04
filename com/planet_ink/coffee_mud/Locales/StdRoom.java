@@ -1389,8 +1389,8 @@ public class StdRoom
 		CMMap.delRoom(this);
         imageName=null;
         myArea=null;
-        envStats=new DefaultEnvStats();
         baseEnvStats=new DefaultEnvStats();
+        envStats=baseEnvStats;
         exits=new Exit[Directions.NUM_DIRECTIONS];
         doors=new Room[Directions.NUM_DIRECTIONS];
         affects=null;

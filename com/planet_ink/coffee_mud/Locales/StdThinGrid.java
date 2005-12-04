@@ -810,6 +810,10 @@ public class StdThinGrid extends StdRoom implements GridLocale
                     {
                         R=(Room)i.nextElement();
                         tickStatus=Tickable.STATUS_MISC+9;
+                        // all of the below is contained in R.destroyRoom()
+                        // it was replaced with content for debugging purposes
+                        // and will be replaced later.
+                        //R.destroyRoom();
                         try{
                             for(int a=R.numEffects()-1;a>=0;a--)
                                 R.fetchEffect(a).unInvoke();
@@ -846,7 +850,17 @@ public class StdThinGrid extends StdRoom implements GridLocale
                         tickStatus=Tickable.STATUS_MISC+17;
                         CMMap.delRoom(R);
                         tickStatus=Tickable.STATUS_MISC+18;
-                        R.destroyRoom();
+                        ((StdRoom)R).imageName=null;
+                        ((StdRoom)R).myArea=null;
+                        ((StdRoom)R).baseEnvStats=new DefaultEnvStats();
+                        ((StdRoom)R).envStats=((StdRoom)R).baseEnvStats;
+                        ((StdRoom)R).exits=new Exit[Directions.NUM_DIRECTIONS];
+                        ((StdRoom)R).doors=new Room[Directions.NUM_DIRECTIONS];
+                        ((StdRoom)R).affects=null;
+                        ((StdRoom)R).behaviors=null;
+                        ((StdRoom)R).contents=new Vector();
+                        ((StdRoom)R).inhabitants=new Vector();
+                        ((StdRoom)R).gridParent=null;
                         tickStatus=Tickable.STATUS_MISC+19;
                     }
                     tickStatus=Tickable.STATUS_MISC+20;

@@ -248,7 +248,7 @@ public class Export extends StdCommand
 					{
 						if(mob.session()!=null)
 							mob.session().rawPrint("Reading area '"+A.name()+"'...");
-						buf.append(CoffeeMaker.getAreaXML(A,mob.session(),files,custom,true).toString());
+						buf.append(CoffeeMaker.getAreaXML(A,mob.session(),custom,files,true).toString());
 						if(mob.session()!=null)
 							mob.session().rawPrintln("!");
 						if(fileNameCode==2)
