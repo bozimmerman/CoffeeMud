@@ -404,6 +404,7 @@ public class Export extends StdCommand
 			str.append("</FILES>");
 			xml+=str.toString();
 		}
+        if(fileNameCode==2) fileName=fileName+File.separatorChar+"extras";
 		reallyExport(mob,fileName,xml);
 		return false;
 	}
