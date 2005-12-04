@@ -194,7 +194,7 @@ public class RandomMonsters extends ActiveTicker
 			if((monsters==null)&&(!alreadyTriedLoad))
 			{
 				alreadyTriedLoad=true;
-				StringBuffer buf=Resources.getFileResource(filename);
+				StringBuffer buf=Resources.getFileResource(filename,true);
 				String thangName="null";
 				if(thang instanceof Room)
 				    thangName=CMMap.getExtendedRoomID((Room)thang);

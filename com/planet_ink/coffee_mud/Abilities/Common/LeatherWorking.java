@@ -51,10 +51,11 @@ public class LeatherWorking extends CraftingSkill
 
 	protected Vector loadRecipes()
 	{
-		Vector recipes=(Vector)Resources.getResource("LEATHERWORK RECIPES");
+        String filename="leatherworking.txt";
+		Vector recipes=(Vector)Resources.getResource("PARSED: "+filename);
 		if(recipes==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"leatherworking.txt");
+			StringBuffer str=Resources.getFile(Resources.buildResourcePath("skills")+filename,true);
             recipes=loadList(str);
 			if(recipes.size()==0)
 				Log.errOut("LeatherWorking","Recipes not found!");
@@ -83,7 +84,7 @@ public class LeatherWorking extends CraftingSkill
                 for(int i=0;i<pleaseAdd2.size();i++)
                     recipes.addElement(pleaseAdd2.elementAt(i));
             }
-			Resources.submitResource("LEATHERWORK RECIPES",recipes);
+			Resources.submitResource("PARSED: "+filename,recipes);
 		}
 		return recipes;
 	}

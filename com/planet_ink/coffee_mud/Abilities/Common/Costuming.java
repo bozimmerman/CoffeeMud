@@ -58,19 +58,7 @@ public class Costuming extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("COSTUME RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"costume.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Costuming","Recipes not found!");
-			Resources.submitResource("COSTUME RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("costume.txt");}
 
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{

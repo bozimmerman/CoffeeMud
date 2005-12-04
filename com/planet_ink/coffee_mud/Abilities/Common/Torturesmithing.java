@@ -46,19 +46,7 @@ public class Torturesmithing extends CraftingSkill
 	protected Item building=null;
 	protected boolean messedUp=false;
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("TORTURESMITHING RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"torturesmith.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Torturesmith","Recipes not found!");
-			Resources.submitResource("TORTURESMITHING RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("torturesmith.txt");}
 
 	public void unInvoke()
 	{

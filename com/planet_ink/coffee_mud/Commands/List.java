@@ -1,7 +1,6 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.system.Tick;
 import com.planet_ink.coffee_mud.utils.*;
 import com.sun.rsasign.v;
 
@@ -109,10 +108,9 @@ public class List extends StdCommand
 		{
 			if (tArray[i] != null)
 			{
-                if((tArray[i] instanceof Tick)
-                &&(((Tick)tArray[i]).lastClient!=null)
-                &&(((Tick)tArray[i]).lastClient.clientObject!=null)
-                &&(((Tick)tArray[i]).lastClient.clientObject.getTickStatus()==0))
+                if((tArray[i] instanceof TickableGroup)
+                &&(((TickableGroup)tArray[i]).lastTicked()!=null)
+                &&(((TickableGroup)tArray[i]).lastTicked().getTickStatus()==0))
                     continue;
                 if((tArray[i] instanceof Tickable)
                 &&(((Tickable)tArray[i]).getTickStatus()==0))
@@ -132,14 +130,13 @@ public class List extends StdCommand
                     lines.append("Tickable "+T.ID()+"-"+T.name()+"-"+T.getTickStatus() + "\n\r");
                 }
                 else
-                if((tArray[i] instanceof Tick)
-                &&(((Tick)tArray[i]).lastClient!=null)
-                &&(((Tick)tArray[i]).lastClient.clientObject!=null))
+                if((tArray[i] instanceof TickableGroup)
+                &&(((TickableGroup)tArray[i]).lastTicked()!=null))
                     lines.append("Tick "+tArray[i].getName()+" "
-                            +((Tick)tArray[i]).lastClient.clientObject.ID()
-                            +"-"+((Tick)tArray[i]).lastClient.clientObject.name()
-                            +"-"+((Tick)tArray[i]).lastClient.clientObject.getTickStatus() 
-                            +" ("+CMClass.ThreadEngine().getTickStatusSummary(((Tick)tArray[i]).lastClient.clientObject)+")\n\r");
+                            +((TickableGroup)tArray[i]).lastTicked().ID()
+                            +"-"+((TickableGroup)tArray[i]).lastTicked().name()
+                            +"-"+((TickableGroup)tArray[i]).lastTicked().getTickStatus() 
+                            +" ("+CMClass.ThreadEngine().getTickStatusSummary(((TickableGroup)tArray[i]).lastTicked())+")\n\r");
                 else
                 {
                     String status=CMClass.ThreadEngine().getServiceThreadSummary(tArray[i]);

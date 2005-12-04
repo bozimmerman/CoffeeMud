@@ -342,7 +342,7 @@ public class Language extends StdAbility
             if(str.startsWith("FILE=")
             ||str.startsWith("FILE="))
             {
-                StringBuffer buf=Resources.getFileResource(str.substring(5));
+                StringBuffer buf=Resources.getFileResource(str.substring(5),true);
                 if((buf!=null)&&(buf.length()>0))
                     str=buf.toString();
                 else

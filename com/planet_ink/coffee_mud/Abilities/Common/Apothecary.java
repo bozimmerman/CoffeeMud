@@ -42,19 +42,7 @@ public class Apothecary extends Cooking
     protected String defaultDrinkSound="hotspring.wav";
 
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("APOTHECARY RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"poisons.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Apothecary","Recipes not found!");
-			Resources.submitResource("APOTHECARY RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("poisons.txt");}
     
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {

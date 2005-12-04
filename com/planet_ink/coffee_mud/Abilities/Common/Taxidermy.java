@@ -61,11 +61,12 @@ public class Taxidermy extends CraftingSkill
 
 	protected Vector loadRecipes()
 	{
-		Vector V=(Vector)Resources.getResource("TAXIDERMY POSES");
+        String filename="taxidermy.txt";
+		Vector V=(Vector)Resources.getResource("PARSED: "+filename);
 		if(V==null)
 		{
 			V=new Vector();
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"taxidermy.txt");
+			StringBuffer str=Resources.getFile(Resources.buildResourcePath("skills")+filename,true);
 			Vector strV=Resources.getFileLineVector(str);
 			Vector V2=null;
 			boolean header=true;
@@ -90,7 +91,7 @@ public class Taxidermy extends CraftingSkill
 				V.addElement(V2);
 			if(V.size()==0)
 				Log.errOut("Taxidermy","Poses not found!");
-			Resources.submitResource("TAXIDERMY POSES",V);
+			Resources.submitResource("PARSED: "+filename,V);
 		}
 		return V;
 	}

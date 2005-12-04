@@ -48,19 +48,7 @@ public class Fletching extends CraftingSkill
 	private boolean messedUp=false;
 	private boolean mending=false;
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("FLECTHING RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"fletching.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Fletching","Recipes not found!");
-			Resources.submitResource("FLECTHING RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("fletching.txt");}
 
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{

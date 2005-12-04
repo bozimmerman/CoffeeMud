@@ -6,6 +6,20 @@
 # Host: localhost
 # Saved: 2003-04-01 00:27:39
 # 
+CREATE TABLE CMVFS (
+	CMFNAM char (255),
+	CMDTYP int ,
+	CMMODD bigint,
+	CMWHOM char (50) NULL,
+	CMDATA longtext NULL
+);
+
+ALTER TABLE CMVFS
+	ADD 
+	( 
+		UNIQUE KEY (CMFNAM)
+	);
+
 CREATE TABLE CMCHAB (
 	CMUSERID char (50) NULL ,
 	CMABID char (50) NULL ,

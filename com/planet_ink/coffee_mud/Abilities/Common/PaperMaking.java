@@ -54,19 +54,7 @@ public class PaperMaking extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("PAPERMAKING RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"papermaking.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("PaperMaking","Recipes not found!");
-			Resources.submitResource("PAPERMAKING RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("papermaking.txt");}
 
 	public void unInvoke()
 	{

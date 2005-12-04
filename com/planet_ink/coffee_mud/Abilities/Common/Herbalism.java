@@ -59,19 +59,7 @@ public class Herbalism extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("HERBALISM RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"herbalism.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Herbalism","Recipes not found!");
-			Resources.submitResource("HERBALISM RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("herbalism.txt");}
 
 	public void unInvoke()
 	{

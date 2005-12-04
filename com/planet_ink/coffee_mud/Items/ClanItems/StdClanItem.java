@@ -151,14 +151,14 @@ public class StdClanItem extends StdItem implements ClanItem
 
 	public static synchronized Vector loadRecipes()
 	{
-		Vector V=(Vector)Resources.getResource("CLANCRAFTING RECIPES");
+		Vector V=(Vector)Resources.getResource("PARSED: clancraft.txt");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"clancraft.txt");
+			StringBuffer str=Resources.getFile(Resources.buildResourcePath("skills")+"clancraft.txt",true);
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("StdClanItem","Recipes not found!");
-			Resources.submitResource("CLANCRAFTING RECIPES",V);
+			Resources.submitResource("PARSED: clancrtaft.txt",V);
 		}
 		return V;
 	}

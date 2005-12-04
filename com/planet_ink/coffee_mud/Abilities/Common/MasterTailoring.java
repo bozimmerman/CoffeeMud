@@ -58,19 +58,7 @@ public class MasterTailoring extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("MASTER TAILOR RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"mastertailor.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("MasterTailoring","Recipes not found!");
-			Resources.submitResource("MASTER TAILOR RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("mastertailor.txt");}
 
 	public void unInvoke()
 	{

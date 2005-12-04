@@ -33,17 +33,5 @@ public class Baking extends Cooking
 	public boolean honorHerbs(){return false;}
 	public boolean requireLid(){return true;}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("BAKING RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"bake.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Baking","Recipes not found!");
-			Resources.submitResource("BAKING RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("bake.txt");}
 }

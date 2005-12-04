@@ -35,19 +35,7 @@ public class Distilling extends Cooking
     protected String defaultFoodSound="hotspring.wav";
     protected String defaultDrinkSound="hotspring.wav";
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("DISTILLING RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"liquors.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Distilling","Recipes not found!");
-			Resources.submitResource("DISTILLING RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("liquors.txt");}
     
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {

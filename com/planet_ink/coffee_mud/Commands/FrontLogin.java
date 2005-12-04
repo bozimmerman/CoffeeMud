@@ -149,7 +149,7 @@ public class FrontLogin extends StdCommand
         {
             if(S.clientTelnetMode(Session.TELNET_MXP))
             {
-                StringBuffer mxpText=Resources.getFileResource("text"+File.separatorChar+"mxp.txt");
+                StringBuffer mxpText=Resources.getFileResource("text"+File.separatorChar+"mxp.txt",true);
                 if(mxpText!=null)
                     S.rawPrintln("\033[6z"+mxpText.toString()+"\n\r");
             }
@@ -473,7 +473,7 @@ public class FrontLogin extends StdCommand
 			if(mob.session().confirm("\n\r'"+Util.capitalizeAndLower(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
 			{
 				login=Util.capitalizeAndLower(login.trim());
-				mob.session().println(null,null,null,"\n\r\n\r"+Resources.getFileResource("text"+File.separatorChar+"newchar.txt").toString());
+				mob.session().println(null,null,null,"\n\r\n\r"+Resources.getFile(Resources.buildResourcePath("text")+"newchar.txt",true).toString());
                 
                 boolean emailPassword=((CommonStrings.getVar(CommonStrings.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))&&(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX).length()>0));
 
@@ -547,7 +547,7 @@ public class FrontLogin extends StdCommand
 						}
 					    while((theme<0)&&(!mob.session().killFlag()))
 					    {
-							mob.session().println(null,null,null,Resources.getFileResource("text"+File.separatorChar+"themes.txt").toString());
+							mob.session().println(null,null,null,Resources.getFile(Resources.buildResourcePath("text")+"themes.txt",true).toString());
 							mob.session().print("\n\r^!Please select from the following:^N "+selections.substring(1)+"\n\r");
 							String themeStr=mob.session().choose(": ",choices,"");
 							if(themeStr.toUpperCase().startsWith("F"))
@@ -560,7 +560,7 @@ public class FrontLogin extends StdCommand
 					    break;
 				}
 				if(!CMSecurity.isDisabled("RACES"))
-					mob.session().println(null,null,null,Resources.getFileResource("text"+File.separatorChar+"races.txt").toString());
+					mob.session().println(null,null,null,Resources.getFile(Resources.buildResourcePath("text")+"races.txt",true).toString());
 
 				StringBuffer listOfRaces=new StringBuffer("[");
 				boolean tmpFirst = true;
@@ -596,7 +596,7 @@ public class FrontLogin extends StdCommand
 					mob.session().print(listOfRaces.toString());
 					String raceStr=mob.session().prompt("\n\r: ","");
 					if(raceStr.trim().equalsIgnoreCase("?"))
-						mob.session().println(null,null,null,"\n\r"+Resources.getFileResource("text"+File.separatorChar+"races.txt").toString());
+						mob.session().println(null,null,null,"\n\r"+Resources.getFile(Resources.buildResourcePath("text")+"races.txt",true).toString());
 					else
 					{
 						newRace=CMClass.getRace(raceStr);
@@ -655,7 +655,7 @@ public class FrontLogin extends StdCommand
                 if((CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ACCOUNTEXPIRATION))&&(mob.playerStats()!=null))
                     mob.playerStats().setAccountExpiration(System.currentTimeMillis()+(1000*60*60*24*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TRIALDAYS)));
 
-				mob.session().println(null,null,null,"\n\r\n\r"+Resources.getFileResource("text"+File.separatorChar+"stats.txt").toString());
+				mob.session().println(null,null,null,"\n\r\n\r"+Resources.getFile(Resources.buildResourcePath("text")+"stats.txt",true).toString());
 
 				boolean mayCont=true;
 				StringBuffer listOfClasses=new StringBuffer("??? no classes ???");
@@ -706,7 +706,7 @@ public class FrontLogin extends StdCommand
 				}
 				if(!CMSecurity.isDisabled("CLASSES")
 				&&!mob.baseCharStats().getMyRace().classless())
-					mob.session().println(null,null,null,Resources.getFileResource("text"+File.separatorChar+"classes.txt").toString());
+					mob.session().println(null,null,null,Resources.getFile(Resources.buildResourcePath("text")+"classes.txt",true).toString());
 
 				CharClass newClass=null;
 				Vector qualClasses=classQualifies(mob,theme);
@@ -736,7 +736,7 @@ public class FrontLogin extends StdCommand
 					mob.session().print("^H[" + listOfClasses.toString() + "]^N");
 					String ClassStr=mob.session().prompt("\n\r: ","");
 					if(ClassStr.trim().equalsIgnoreCase("?"))
-						mob.session().println(null,null,null,"\n\r"+Resources.getFileResource("text"+File.separatorChar+"classes.txt").toString());
+						mob.session().println(null,null,null,"\n\r"+Resources.getFile(Resources.buildResourcePath("text")+"classes.txt",true).toString());
 					else
 					{
 						newClass=CMClass.findCharClass(ClassStr);
@@ -811,7 +811,7 @@ public class FrontLogin extends StdCommand
 				    if(mine.size()>1)
 				    {
 				        if((F.choiceIntro!=null)&&(F.choiceIntro.length()>0))
-							mob.session().println(null,null,null,"\n\r\n\r"+Resources.getFileResource(F.choiceIntro).toString());
+							mob.session().println(null,null,null,"\n\r\n\r"+Resources.getFile(Resources.buildResourcePath(null)+F.choiceIntro,true).toString());
 				        StringBuffer menu=new StringBuffer("Select one: ");
 				        Vector namedChoices=new Vector();
 				        for(int m=0;m<mine.size();m++)
@@ -854,7 +854,7 @@ public class FrontLogin extends StdCommand
 				CoffeeUtensils.outfit(mob,mob.baseCharStats().getCurrentClass().outfit());
 				mob.setStartRoom(CMMap.getStartRoom(mob));
 			    mob.baseCharStats().setStat(CharStats.AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
-				mob.session().println(null,null,null,"\n\r\n\r"+Resources.getFileResource("text"+File.separatorChar+"newchardone.txt").toString());
+				mob.session().println(null,null,null,"\n\r\n\r"+Resources.getFile(Resources.buildResourcePath("text")+"newchardone.txt",true).toString());
 				mob.session().prompt("");
                 boolean logoff=false;
                 if(emailPassword)

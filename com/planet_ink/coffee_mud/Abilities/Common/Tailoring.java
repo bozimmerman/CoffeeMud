@@ -58,19 +58,7 @@ public class Tailoring extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("TAILOR RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"tailor.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Tailoring","Recipes not found!");
-			Resources.submitResource("TAILOR RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("tailor.txt");}
 
 	public void unInvoke()
 	{

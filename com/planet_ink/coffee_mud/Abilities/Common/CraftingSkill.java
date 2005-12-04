@@ -3,6 +3,8 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
+import java.io.File;
 import java.util.*;
 
 /* 
@@ -159,6 +161,20 @@ public class CraftingSkill extends GatheringSkill
 		return V;
 	}
 
+    protected Vector loadRecipes(String filename)
+    {
+        Vector V=(Vector)Resources.getResource("PARSED: "+filename);
+        if(V==null)
+        {
+            StringBuffer str=Resources.getFile(Resources.buildResourcePath("skills")+filename,true);
+            V=loadList(str);
+            if(V.size()==0)
+                Log.errOut(ID(),"Recipes not found!");
+            Resources.submitResource("PARSED"+filename,V);
+        }
+        return V;
+    }
+    
 	protected Item findFirstResource(Room room, String other)
 	{
 		if((other==null)||(other.length()==0))

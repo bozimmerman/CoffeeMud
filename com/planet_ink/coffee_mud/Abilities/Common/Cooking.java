@@ -115,19 +115,7 @@ public class Cooking extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("COOKING RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"recipes.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Cook","Recipes not found!");
-			Resources.submitResource("COOKING RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("recipes.txt");}
 
 	public void unInvoke()
 	{

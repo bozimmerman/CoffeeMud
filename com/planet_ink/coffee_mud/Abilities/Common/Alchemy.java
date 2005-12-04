@@ -75,19 +75,7 @@ public class Alchemy extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("ALCHEMY RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"alchemy.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Alchemy","Recipes not found!");
-			Resources.submitResource("ALCHEMY RECIPES",V);
-		}
-		return V;
-	}
+	protected Vector loadRecipes(){return super.loadRecipes("alchemy.txt");}
 
 	public void unInvoke()
 	{

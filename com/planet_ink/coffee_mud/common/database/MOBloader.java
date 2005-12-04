@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.system;
+package com.planet_ink.coffee_mud.system.database;
 
 import java.sql.*;
 import java.util.*;

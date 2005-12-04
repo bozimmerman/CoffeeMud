@@ -4,6 +4,8 @@ import java.net.*;
 import java.util.*;
 import java.sql.*;
 import com.planet_ink.coffee_mud.system.*;
+import com.planet_ink.coffee_mud.system.database.*;
+import com.planet_ink.coffee_mud.system.threads.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
@@ -12,6 +14,7 @@ import com.planet_ink.coffee_mud.i3.server.Server;
 import com.planet_ink.coffee_mud.i3.imc2.IMC2Driver;
 import com.planet_ink.coffee_mud.web.*;
 import com.planet_ink.coffee_mud.web.espresso.*;
+import com.planet_ink.coffee_mud.system.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -430,7 +433,7 @@ public class MUD extends Thread implements MudHost
 					else
 					{
                         state=2;
-						StringBuffer introText=Resources.getFileResource("text"+File.separatorChar+"intro.txt");
+						StringBuffer introText=Resources.getFileResource("text"+File.separatorChar+"intro.txt",true);
 						TelnetSession S=new TelnetSession(sock,
 							introText != null ? introText.toString() : null);
 						S.start();
@@ -440,7 +443,7 @@ public class MUD extends Thread implements MudHost
 				}
 				else
 				{
-					StringBuffer rejectText=Resources.getFileResource("text"+File.separatorChar+"offline.txt");
+					StringBuffer rejectText=Resources.getFileResource("text"+File.separatorChar+"offline.txt",true);
 					PrintWriter out = new PrintWriter(sock.getOutputStream());
 					out.println("\n\rOFFLINE: " + CommonStrings.getVar(CommonStrings.SYSTEM_MUDSTATUS)+"\n\r");
 					out.flush();

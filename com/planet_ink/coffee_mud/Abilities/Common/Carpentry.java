@@ -59,19 +59,7 @@ public class Carpentry extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("CARPENTRY RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"carpentry.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Carpentry","Recipes not found!");
-			Resources.submitResource("CARPENTRY RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("carpentry.txt");}
 
 	public void unInvoke()
 	{

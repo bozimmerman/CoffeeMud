@@ -1036,7 +1036,7 @@ public class StdItem implements Item
 						if(readableText().startsWith("FILE=")
 							||readableText().startsWith("FILE="))
 						{
-							StringBuffer buf=Resources.getFileResource(readableText().substring(5));
+							StringBuffer buf=Resources.getFileResource(readableText().substring(5),true);
 							if((buf!=null)&&(buf.length()>0))
 								mob.tell("It says '"+buf.toString()+"'.");
 							else

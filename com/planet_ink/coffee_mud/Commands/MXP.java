@@ -43,7 +43,7 @@ public class MXP extends StdCommand
                 if(mob.session().serverTelnetMode(Session.TELNET_MXP))
                 {
 					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_MXP));
-					StringBuffer mxpText=Resources.getFileResource("text"+File.separatorChar+"mxp.txt");
+					StringBuffer mxpText=Resources.getFileResource("text"+File.separatorChar+"mxp.txt",true);
 			        if(mxpText!=null)
 			            mob.session().rawPrintln("\033[6z\n\r"+mxpText.toString()+"\n\r");
 					mob.tell("MXP codes enabled.\n\r");

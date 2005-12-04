@@ -29,19 +29,7 @@ public class CageBuilding extends Wainwrighting
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN";}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("CAGEBUILD RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"cagebuilding.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("CageBuilding","Recipes not found!");
-			Resources.submitResource("CAGEBUILD RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("cagebuilding.txt");}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

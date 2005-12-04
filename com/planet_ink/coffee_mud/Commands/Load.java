@@ -46,7 +46,7 @@ public class Load extends StdCommand
         }
 		if(what.equalsIgnoreCase("RESOURCE"))
 		{
-			StringBuffer buf=Resources.getFileResource(name);
+			StringBuffer buf=Resources.getFileResource(name,true);
 			if((buf==null)||(buf.length()==0))
 				mob.tell("Resource '"+name+"' was not found.");
 			else

@@ -233,7 +233,7 @@ public class Merge extends StdCommand
 		}
 		String filename=(String)commands.lastElement();
 		commands.remove(filename);
-		StringBuffer buf=Resources.getFile(filename);
+		StringBuffer buf=Resources.getFile(filename,true);
 		if(buf==null)
 		{
 			mob.tell("File not found at: '"+filename+"'!");

@@ -63,19 +63,7 @@ public class Pottery extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("POTTERY RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"pottery.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Pottery","Recipes not found!");
-			Resources.submitResource("POTTERY RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("pottery.txt");}
 
 	public void unInvoke()
 	{

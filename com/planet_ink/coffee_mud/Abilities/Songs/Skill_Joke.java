@@ -56,8 +56,8 @@ public class Skill_Joke extends BardSkill
 			if(auto) str="<T-NAME> remember(s) a joke!";
 			else
 			{
-				Vector insultd=Resources.getFileLineVector(Resources.getFileResource("skills"+File.separatorChar+"insultd.txt"));
-				Vector insulto=Resources.getFileLineVector(Resources.getFileResource("skills"+File.separatorChar+"insulto.txt"));
+				Vector insultd=Resources.getFileLineVector(Resources.getFileResource("skills"+File.separatorChar+"insultd.txt",true));
+				Vector insulto=Resources.getFileLineVector(Resources.getFileResource("skills"+File.separatorChar+"insulto.txt",true));
 				String[] ob=new String[5];
 				String[] de=new String[5];
 				for (int cnt=1; cnt<4; cnt++)

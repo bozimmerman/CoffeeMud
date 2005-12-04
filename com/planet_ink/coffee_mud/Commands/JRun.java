@@ -38,7 +38,7 @@ public class JRun extends StdCommand
         commands.removeElementAt(0);
 
         String fn = new String ( (String)commands.elementAt(0) );
-        StringBuffer ft = Resources.getFile(fn);
+        StringBuffer ft = Resources.getFile(fn,true);
         if(ft==null)
         {
             mob.tell("File '"+fn+"' could not be found.");

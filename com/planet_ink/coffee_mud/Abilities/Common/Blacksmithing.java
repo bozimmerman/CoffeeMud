@@ -68,19 +68,7 @@ public class Blacksmithing extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("BLACKSMITHING RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"blacksmith.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Blacksmith","Recipes not found!");
-			Resources.submitResource("BLACKSMITHING RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("blacksmith.txt");}
 
 	public void unInvoke()
 	{

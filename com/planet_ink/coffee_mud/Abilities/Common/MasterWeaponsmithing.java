@@ -29,19 +29,8 @@ public class MasterWeaponsmithing extends Weaponsmithing
 	private static final String[] triggerStrings = {"MWEAPONSMITH","MASTERWEAPONSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("MASTERWEAPONSMITHING RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"masterweaponsmith.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("MasterWeaponsmithing","Recipes not found!");
-			Resources.submitResource("MASTERWEAPONSMITHING RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("masterweaponsmith.txt");}
+    
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{
 		if(!super.canBeLearnedBy(teacher,student))

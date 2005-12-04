@@ -29,20 +29,7 @@ public class MasterArmorsmithing extends Armorsmithing
 	private static final String[] triggerStrings = {"MARMORSMITH","MASTERARMORSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("MASTERARMORSMITHING RECIPES");
-		if(V==null)
-		{
-			StringBuffer
-			str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"masterarmorsmith.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("MasterArmorsmithing","Recipes not found!");
-			Resources.submitResource("MASTERARMORSMITHING RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("masterarmorsmith.txt");}
 
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{

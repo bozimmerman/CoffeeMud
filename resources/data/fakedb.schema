@@ -173,3 +173,11 @@ CMFLAG integer NULL
 CMQUAL string NULL
 CMRESL string NULL
 CMEXPI integer NULL
+
+CMVFS
+CMFNAM string KEY
+CMDTYP integer NULL
+CMMODD integer NULL
+CMWHOM string NULL
+CMDATA string NULL
+

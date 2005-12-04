@@ -5629,7 +5629,7 @@ public class BaseGenerics extends StdCommand
         }
         if((me.ID.length()>0)&&(Factions.getFaction(me.ID)!=null))
         {
-            Vector oldV=Resources.getFileLineVector(Resources.getFileResource(me.ID));
+            Vector oldV=Resources.getFileLineVector(Resources.getFileResource(me.ID,true));
             if(oldV.size()<10)
             {
 

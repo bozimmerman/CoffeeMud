@@ -393,7 +393,7 @@ public class Export extends StdCommand
 			{
                 Object O=i.next();
 				String filename=(String)O;
-				StringBuffer buf=Resources.getFile("resources"+File.separatorChar+filename);
+				StringBuffer buf=Resources.getFile(Resources.buildResourcePath(null)+filename,true);
 				if(buf!=null)
 				{
 					str.append("<FILE NAME=\""+filename+"\">");

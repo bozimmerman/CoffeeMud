@@ -328,7 +328,7 @@ public class CMSecurity
             if(O instanceof String)
                 newApproved.append(L.toString()+"="+((String)O)+"\n");
         }
-        Resources.saveFile("resources"+java.io.File.separatorChar+"jscripts.ini",newApproved);
+        Resources.saveFileResource("jscripts.ini",approver,0,newApproved);
     }
     
     public static Hashtable getApprovedJScriptTable()
@@ -338,7 +338,7 @@ public class CMSecurity
         {
             approved=new Hashtable();
             Resources.submitResource("APPROVEDJSCRIPTS",approved);
-            Vector jscripts=Resources.getFileLineVector(Resources.getFile("resources"+java.io.File.separatorChar+"jscripts.ini",false));
+            Vector jscripts=Resources.getFileLineVector(Resources.getFileResource("jscripts.ini",false));
             if((jscripts!=null)&&(jscripts.size()>0))
             {
                 for(int i=0;i<jscripts.size();i++)

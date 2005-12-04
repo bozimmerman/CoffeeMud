@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.system;
+package com.planet_ink.coffee_mud.system.threads;
 
 import com.planet_ink.coffee_mud.interfaces.Tickable;
 import com.planet_ink.coffee_mud.interfaces.Environmental;

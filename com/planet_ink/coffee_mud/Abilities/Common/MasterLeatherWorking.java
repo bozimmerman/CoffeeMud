@@ -49,19 +49,7 @@ public class MasterLeatherWorking extends CraftingSkill
 	private boolean refitting=false;
 	private boolean messedUp=false;
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("MASTER LEATHERWORK RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"masterleatherworking.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("masterLeatherWorking","Recipes not found!");
-			Resources.submitResource("MASTER LEATHERWORK RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("masterleatherworking.txt");}
 
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{

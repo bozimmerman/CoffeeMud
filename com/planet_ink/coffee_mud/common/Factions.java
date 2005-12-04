@@ -1,6 +1,5 @@
 package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.system.DBConnections;
 import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
@@ -75,7 +74,7 @@ public class Factions implements Tickable
 	    if(factionID==null) return null;
 		Faction F=(Faction)factionSet.get(factionID.toUpperCase());
 		if(F!=null) return F;
-        StringBuffer buf=Resources.getFileResource(factionID);
+        StringBuffer buf=Resources.getFile(Resources.buildResourcePath(null)+factionID,true);
 	    if((buf!=null)&&(buf.length()>0))
 	    {
             F=new Faction(buf,factionID);

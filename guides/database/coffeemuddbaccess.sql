@@ -1,4 +1,13 @@
 
+CREATE TABLE CMVFS (
+CMFNAM varchar (255),
+CMDTYP integer ,
+CMMODD Double,
+CMWHOM varchar (50) NULL,
+CMDATA memo NULL,
+PRIMARY KEY (CMFNAM)
+);
+
 CREATE TABLE CMCHAB (
 CMUSERID varchar (50),
 CMABID varchar (50),

@@ -50,19 +50,7 @@ public class ClanCrafting extends CraftingSkill
 	private Item building=null;
 	private boolean messedUp=false;
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("CLANCRAFTING RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"clancraft.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("ClanCrafting","Recipes not found!");
-			Resources.submitResource("CLANCRAFTING RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("clancraft.txt");}
 
 	public void unInvoke()
 	{

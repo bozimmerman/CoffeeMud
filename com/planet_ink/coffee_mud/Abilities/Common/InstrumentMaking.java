@@ -55,19 +55,7 @@ public class InstrumentMaking extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("INSTRUMENT RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"instruments.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("InstrumentMaking","Recipes not found!");
-			Resources.submitResource("INSTRUMENT RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("instruments.txt");}
 
 	public void unInvoke()
 	{

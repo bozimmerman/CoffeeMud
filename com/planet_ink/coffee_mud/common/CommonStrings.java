@@ -778,11 +778,11 @@ public class CommonStrings extends Scriptable
     {
         if(getVar(SYSTEM_MXPIMAGEPATH).length()==0)
             return "";
-        Hashtable H=(Hashtable)Resources.getResource("MXP_IMAGES");
+        Hashtable H=(Hashtable)Resources.getResource("PARSED: mxp_images.ini");
         if(H==null)
         {
             H=new Hashtable();
-            Vector V=Resources.getFileLineVector(Resources.getFile("resources"+File.separatorChar+"mxp_images.ini",false));
+            Vector V=Resources.getFileLineVector(Resources.getFile(Resources.buildResourcePath(null)+"mxp_images.ini",false));
             if((V!=null)&&(V.size()>0))
             {
                 String s=null;
@@ -798,7 +798,7 @@ public class CommonStrings extends Scriptable
                         H.put(s.substring(0,x),s.substring(x+1));
                 }
             }
-            Resources.submitResource("MXP_IMAGES",H);
+            Resources.submitResource("PARSED: mxp_images.ini",H);
         }
         String image=null;
         if(O instanceof Race)

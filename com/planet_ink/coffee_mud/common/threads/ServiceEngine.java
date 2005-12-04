@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.system;
+package com.planet_ink.coffee_mud.system.threads;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.interfaces.*;

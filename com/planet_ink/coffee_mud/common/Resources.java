@@ -22,17 +22,37 @@ import java.io.*;
 */
 public class Resources
 {
+    public static final int VFS_TEXT=0;
+    public static final int VFS_BINARY=1;
+    public static final int VFS_READONLY=2;
+    public static final int VFS_HIDDEN=4;
+    
+    public static final int VFS_INFO_FILENAME=0;
+    public static final int VFS_INFO_BITS=1;
+    public static final int VFS_INFO_DATE=2;
+    public static final int VFS_INFO_WHOM=3;
+    public static final int VFS_INFO_DATA=4;
+    
 	private static boolean compress=false;
-	private static Vector resourceIDs=new Vector();
-	private static Vector resource=new Vector();
-									   
+	private static DVector resources=new DVector(3);
+    private static Vector vfs=null;
+    
 	public static void clearResources()
 	{
-		resourceIDs=new Vector();
-		resource=new Vector();
+		resources=new DVector(3);
+        vfs=null;
 	}
+    
+    public static String buildPath(String path)
+    { return path+File.separatorChar;}
+    
+    public static String buildResourcePath(String path)
+    {
+        if((path==null)||(path.length()==0)) return "resources"+File.separatorChar;
+        return "resources"+File.separatorChar+path+File.separatorChar;
+    }
 	
-	public static void updateMultiList(String filename, Hashtable lists)
+	public static void updateMultiList(String filename, String whom, int vfsBits, Hashtable lists)
 	{
 		StringBuffer str=new StringBuffer("");
 		for(Enumeration e=lists.keys();e.hasMoreElements();)
@@ -45,7 +65,7 @@ public class Resources
 				str.append(((String)V.elementAt(v))+"\r\n");
 			str.append("\r\n");
 		}
-		Resources.saveFileResource(filename,str);
+		Resources.saveFileResource(filename,whom,vfsBits,str);
 	}
 	
 	public static Hashtable getMultiLists(String filename)
@@ -53,7 +73,7 @@ public class Resources
 		Hashtable oldH=new Hashtable();
 		Vector V=new Vector();
 		try{
-			V=Resources.getFileLineVector(Resources.getFile("resources"+File.separatorChar+filename,false));
+			V=Resources.getFileLineVector(Resources.getFile(Resources.buildResourcePath(null)+filename,false));
 		}catch(Exception e){}
 		if((V!=null)&&(V.size()>0))
 		{
@@ -81,9 +101,9 @@ public class Resources
 	public static Vector findResourceKeys(String srch)
 	{
 		Vector V=new Vector();
-		for(int i=0;i<resourceIDs.size();i++)
+		for(int i=0;i<resources.size();i++)
 		{
-			String key=(String)resourceIDs.elementAt(i);
+			String key=(String)resources.elementAt(i,1);
 			if((srch.length()==0)||(key.toUpperCase().indexOf(srch.toUpperCase())>=0))
 				V.addElement(key);
 		}
@@ -92,20 +112,21 @@ public class Resources
 	
 	private static Object fetchResource(int x)
 	{
-		if((x<resource.size())&&(x>=0))
+		if((x<resources.size())&&(x>=0))
 		{
-			if(!compress) return resource.elementAt(x);
-			if(resource.elementAt(x) instanceof byte[])
-				return new StringBuffer(CMEncoder.decompressString((byte[])resource.elementAt(x)));
-			return resource.elementAt(x);
+			if(!compress) return resources.elementAt(x,2);
+			if((((Boolean)resources.elementAt(x,3)).booleanValue())
+            &&(resources.elementAt(x,2) instanceof byte[]))
+				return new StringBuffer(CMEncoder.decompressString((byte[])resources.elementAt(x,2)));
+			return resources.elementAt(x,2);
 		}
 		return null;
 	}
 	
 	public static Object getResource(String ID)
 	{
-		for(int i=0;i<resourceIDs.size();i++)
-			if(((String)resourceIDs.elementAt(i)).equalsIgnoreCase(ID))
+		for(int i=0;i<resources.size();i++)
+			if(((String)resources.elementAt(i,1)).equalsIgnoreCase(ID))
 				return fetchResource(i);
 		return null;
 	}
@@ -122,16 +143,18 @@ public class Resources
 	{
 		if(getResource(ID)!=null)
 			return;
-		resourceIDs.addElement(ID);
-		resource.addElement(prepareObject(obj));
+        Object prepared=prepareObject(obj);
+		resources.addElement(ID,prepared,new Boolean(prepared!=obj));
 	}
 	
 	public static void updateResource(String ID, Object obj)
 	{
-		for(int i=0;i<resourceIDs.size();i++)
-			if(((String)resourceIDs.elementAt(i)).equalsIgnoreCase(ID))
+		for(int i=0;i<resources.size();i++)
+			if(((String)resources.elementAt(i,1)).equalsIgnoreCase(ID))
 			{
-				resource.setElementAt(prepareObject(obj),i);
+                Object prepared=prepareObject(obj);
+				resources.setElementAt(i,2,prepared);
+                resources.setElementAt(i,3,new Boolean(prepared!=obj));
 				return;
 			}
 	}
@@ -139,11 +162,10 @@ public class Resources
 	public static void removeResource(String ID)
 	{
 		try{
-			for(int i=0;i<resourceIDs.size();i++)
-				if(((String)resourceIDs.elementAt(i)).equalsIgnoreCase(ID))
+			for(int i=0;i<resources.size();i++)
+				if(((String)resources.elementAt(i,1)).equalsIgnoreCase(ID))
 				{
-					resourceIDs.removeElementAt(i);
-					resource.removeElementAt(i);
+					resources.removeElementAt(i);
 					return;
 				}
 		}catch(ArrayIndexOutOfBoundsException e){}
@@ -180,7 +202,7 @@ public class Resources
 	
 	public static StringBuffer getFileRaw(String filename)
 	{ return getFileRaw(filename,true);}
-	public static StringBuffer getFileRaw(String filename, boolean reportErrors)
+    public static StringBuffer getFileRaw(String filename, boolean reportErrors)
 	{
 		StringBuffer buf=new StringBuffer("");
 		try
@@ -203,11 +225,69 @@ public class Resources
 		}
 		return buf;
 	}
-	public static StringBuffer getFile(String filename)
-	{ return getFile(filename,true);}
+    public static Vector getVFSDirectory()
+    {
+        if(vfs==null)
+            vfs=CMClass.DBEngine().DBReadVFSDirectory();
+        return vfs;
+    }
+    public static String unvfsFilename(String filename)
+    {
+        if(filename.startsWith("::"))
+            filename=filename.substring(2);
+        else
+        if(filename.trim().startsWith("::"))
+            filename=filename.trim().substring(2);
+        return filename;
+    }
+    public static Vector getVFSFileInfo(String filename)
+    {
+        Vector vfs=getVFSDirectory();
+        filename=Util.replaceAll(unvfsFilename(filename),"\\","/");
+        Vector file=null;
+        for(Enumeration e=vfs.elements();e.hasMoreElements();)
+        {
+            file=(Vector)e.nextElement();
+            if(((String)file.firstElement()).equalsIgnoreCase(filename))
+                return file;
+        }
+        return null;
+    }
+    
+    public static Object getVFSFileData(String filename)
+    {
+        Vector vfs=getVFSDirectory();
+        filename=Util.replaceAll(unvfsFilename(filename),"\\","/");
+        Vector file=null;
+        for(Enumeration e=vfs.elements();e.hasMoreElements();)
+        {
+            file=(Vector)e.nextElement();
+            if(((String)file.firstElement()).equalsIgnoreCase(filename))
+                return CMClass.DBEngine().DBReadVFSFile((String)file.firstElement());
+        }
+        return null;
+    }
 	public static StringBuffer getFile(String filename, boolean reportErrors)
 	{
-		StringBuffer buf=new StringBuffer("");
+        StringBuffer buf=new StringBuffer("");
+        if(filename.trim().startsWith("::"))
+        {
+            filename=unvfsFilename(filename);
+            Vector info=getVFSFileInfo(filename);
+            if(info!=null)
+            {
+                int bits=((Integer)info.elementAt(VFS_INFO_BITS)).intValue();
+                if(Util.bset(bits,VFS_BINARY))
+                    return buf;
+                Object data=getVFSFileData(filename);
+                if(data==null) return buf;
+                if(data instanceof String)
+                    return new StringBuffer((String)data);
+                if(data instanceof StringBuffer)
+                    return (StringBuffer)data;
+                return null;
+            }
+        }
 		try
 		{
 			FileReader F=new FileReader(filename);
@@ -235,10 +315,8 @@ public class Resources
 	
 	public static String makeFileResourceName(String filename)
 	{
-	    return "resources"+File.separatorChar+filename;
+	    return buildResourcePath(null)+filename;
 	}
-	public static StringBuffer getFileResource(String filename)
-	{ return getFileResource(filename,true);}
 	public static boolean isFileResource(String filename)
 	{
 	    if(getResource(filename)!=null) return true;
@@ -280,15 +358,41 @@ public class Resources
 	    return myRsc;
 	}
 	
-	public static boolean saveFileResource(String filename)
-	{return saveFileResource(filename,getFileResource(filename));}
-	public static boolean saveFile(String filename, StringBuffer myRsc)
+	public static boolean saveFile(String filename, String whom, int vfsBits, StringBuffer myRsc)
 	{
 		if(myRsc==null)
 		{
 			Log.errOut("Resources","Unable to save file '"+filename+"': No Data.");
 			return false;
 		}
+        boolean isVfs=false;
+        if(filename.trim().startsWith("::"))
+        {
+            filename=unvfsFilename(filename);
+            isVfs=true;
+        }
+        else
+            isVfs=getVFSFileInfo(filename)!=null;
+        if(isVfs)
+        {
+            Vector info=getVFSFileInfo(filename);
+            if(info!=null)
+            {
+                filename=(String)info.firstElement();
+                if(vfsBits<0) vfsBits=((Integer)info.elementAt(VFS_INFO_BITS)).intValue();
+                if(vfs!=null) vfs.removeElement(info);
+                CMClass.DBEngine().DBDeleteVFSFile(filename);
+            }
+            if(vfsBits<0) vfsBits=0;
+            if(whom==null) whom="unknown";
+            info=new Vector();
+            info.addElement(filename);
+            info.addElement(new Integer(vfsBits));
+            info.addElement(new Long(System.currentTimeMillis()));
+            info.addElement(whom);
+            CMClass.DBEngine().DBCreateVFSFile(filename,vfsBits,whom,myRsc);
+            return true;
+        }
 		try
 		{
 			File F=new File(filename);
@@ -303,25 +407,16 @@ public class Resources
 		}
         return false;
 	}
-	public static boolean saveFileResource(String filename, StringBuffer myRsc)
+    public static boolean saveFileResource(String filename)
+    {return saveFileResource(filename,null,-1,getFileResource(filename,false));}
+	public static boolean saveFileResource(String filename, String whom, int vfsBits, StringBuffer myRsc)
 	{
-		if(myRsc==null)
-		{
-			Log.errOut("Resources","Unable to save file resource '"+filename+"': No Data.");
-			return false;
-		}
-		try
-		{
-			File F=new File("resources"+File.separatorChar+filename);
-			FileWriter FW=new FileWriter(F);
-			FW.write(saveBufNormalize(myRsc).toString());
-			FW.close();
-            return true;
-		}
-		catch(IOException e)
-		{
-            Log.errOut("Resources","Save "+filename+": "+e.getMessage());
-		}
+        boolean vfsFile=filename.trim().startsWith("::");
+        filename=unvfsFilename(filename);
+        if(!filename.startsWith("resources"+File.separatorChar))
+            saveFile((vfsFile?"::":"")+"resources"+File.separatorChar+filename,whom,vfsBits,myRsc);
+        else
+            saveFile((vfsFile?"::":"")+filename,whom,vfsBits,myRsc);
         return false;
 	}
 	

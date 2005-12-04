@@ -218,7 +218,7 @@ public class OffLine extends Thread implements MudHost
                     else
                     {
                         state=2;
-                        StringBuffer offLineText=Resources.getFileResource("text"+File.separatorChar+"down.txt");
+                        StringBuffer offLineText=Resources.getFileResource("text"+File.separatorChar+"down.txt",true);
                         try
                         {
                             sock.setSoTimeout(300);
@@ -253,7 +253,7 @@ public class OffLine extends Thread implements MudHost
                 }
                 else
                 {
-                    StringBuffer rejectText=Resources.getFileResource("text"+File.separatorChar+"offline.txt");
+                    StringBuffer rejectText=Resources.getFileResource("text"+File.separatorChar+"offline.txt",true);
                     PrintWriter out = new PrintWriter(sock.getOutputStream());
                     out.flush();
                     out.println(rejectText);

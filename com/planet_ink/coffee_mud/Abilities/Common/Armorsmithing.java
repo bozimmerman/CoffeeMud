@@ -69,19 +69,7 @@ public class Armorsmithing extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("ARMORSMITHING RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"armorsmith.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Armorsmithing","Recipes not found!");
-			Resources.submitResource("ARMORSMITHING RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("armorsmith.txt");}
 
 	public void unInvoke()
 	{

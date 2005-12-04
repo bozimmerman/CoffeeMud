@@ -2411,7 +2411,7 @@ public class Import extends StdCommand
 							{
 								int x=F2.getAbsolutePath().lastIndexOf(File.separatorChar);
 								String path=F2.getAbsolutePath().substring(0,x)+File.separatorChar+mobprg;
-								StringBuffer buf=Resources.getFile(path);
+								StringBuffer buf=Resources.getFile(path,true);
 								if((buf==null)||(buf.length()==0))
 									returnAnError(mob,"Unknown MobPrg: "+mobprg);
 								else
@@ -3750,7 +3750,7 @@ public class Import extends StdCommand
 					if(!mob.session().confirm("\n\rExternal resource '"+filename+"' found, import (Y/n)?","Y"))
 						continue;
 			}
-		    Resources.saveFileResource(filename,new StringBuffer(data));
+		    Resources.saveFileResource(filename,mob.Name(),0,new StringBuffer(data));
 		}
 	}
 
@@ -3931,7 +3931,7 @@ public class Import extends StdCommand
 
 		String areaFileName=(String)commands.elementAt(areaFile);
 		// read in the .are file
-		StringBuffer buf=Resources.getFile(areaFileName);
+		StringBuffer buf=Resources.getFile(areaFileName,true);
 		if((buf==null)||((buf!=null)&&(buf.length()==0)))
 		{
 			mob.tell("File not found at: '"+areaFileName+"'!");

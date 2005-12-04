@@ -63,19 +63,7 @@ public class GlassBlowing extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("GLASS BLOWING RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"glassblowing.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("GlassBlowing","Recipes not found!");
-			Resources.submitResource("GLASS BLOWING RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("glassblowing.txt");}
 
 	public void unInvoke()
 	{

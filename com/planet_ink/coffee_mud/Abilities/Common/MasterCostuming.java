@@ -58,19 +58,7 @@ public class MasterCostuming extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("MASTER COSTUME RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"mastercostume.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("MasterCostuming","Recipes not found!");
-			Resources.submitResource("MASTER COSTUME RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("mastercostume.txt");}
 
 	public void unInvoke()
 	{

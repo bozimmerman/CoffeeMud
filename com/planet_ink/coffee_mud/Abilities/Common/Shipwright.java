@@ -58,19 +58,7 @@ public class Shipwright extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("SHIPWRIGHT RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"shipwright.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Shipwright","Recipes not found!");
-			Resources.submitResource("SHIPWRIGHT RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("shipwright.txt");}
 
 	public void unInvoke()
 	{

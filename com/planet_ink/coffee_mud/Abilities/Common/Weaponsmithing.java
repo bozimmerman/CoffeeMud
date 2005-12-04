@@ -69,19 +69,7 @@ public class Weaponsmithing extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("WEAPONSMITHING RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"weaponsmith.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Weaponsmithing","Recipes not found!");
-			Resources.submitResource("WEAPONSMITHING RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("weaponsmith.txt");}
 
 	public void unInvoke()
 	{

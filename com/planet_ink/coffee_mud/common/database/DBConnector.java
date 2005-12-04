@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.system;
+package com.planet_ink.coffee_mud.system.database;
 import java.sql.ResultSet;
 import java.io.IOException;
 import java.io.PrintStream;

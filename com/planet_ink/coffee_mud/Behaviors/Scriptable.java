@@ -416,13 +416,13 @@ public class Scriptable extends StdBehavior
 					String filename=parse.substring(y+5,z).trim();
 					parse=parse.substring(z+1);
 					filenames.addElement(filename);
-					parseParmFilenames(Resources.getFileResource(filename).toString(),filenames,depth+1);
+					parseParmFilenames(Resources.getFileResource(filename,true).toString(),filenames,depth+1);
 				}
 				else
 				{
 					String filename=parse.substring(y+5).trim();
 					filenames.addElement(filename);
-					parseParmFilenames(Resources.getFileResource(filename).toString(),filenames,depth+1);
+					parseParmFilenames(Resources.getFileResource(filename,true).toString(),filenames,depth+1);
 					break;
 				}
 			}
@@ -449,12 +449,12 @@ public class Scriptable extends StdBehavior
 				{
 					String filename=parse.substring(y+5,z).trim();
 					parse=parse.substring(z+1);
-					results.append(parseLoads(Resources.getFileResource(filename).toString(),depth+1));
+					results.append(parseLoads(Resources.getFileResource(filename,true).toString(),depth+1));
 				}
 				else
 				{
 					String filename=parse.substring(y+5).trim();
-					results.append(parseLoads(Resources.getFileResource(filename).toString(),depth+1));
+					results.append(parseLoads(Resources.getFileResource(filename,true).toString(),depth+1));
 					break;
 				}
 			}
@@ -712,7 +712,7 @@ public class Scriptable extends StdBehavior
 		filename=filename.trim();
 		Vector monsters=(Vector)Resources.getResource("RANDOMMONSTERS-"+filename);
 		if(monsters!=null) return monsters;
-		StringBuffer buf=Resources.getFile(filename);
+		StringBuffer buf=Resources.getFile(filename,true);
 		String thangName="null";
 		Room R=CoffeeUtensils.roomLocation(scripted);
 		if(R!=null)
@@ -751,7 +751,7 @@ public class Scriptable extends StdBehavior
 		filename=filename.trim();
 		Vector items=(Vector)Resources.getResource("RANDOMITEMS-"+filename);
 		if(items!=null) return items;
-		StringBuffer buf=Resources.getFile(filename);
+		StringBuffer buf=Resources.getFile(filename,true);
 		String thangName="null";
 		Room R=CoffeeUtensils.roomLocation(scripted);
 		if(R!=null)

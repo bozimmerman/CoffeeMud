@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.system;
+package com.planet_ink.coffee_mud.system.threads;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
@@ -190,7 +190,7 @@ public class UtiliThread extends Thread
 		status="checking sessions.";
 		for(int s=0;s<Sessions.size();s++)
 		{
-			TelnetSession S=(TelnetSession)Sessions.elementAt(s);
+			Session S=Sessions.elementAt(s);
 			long time=System.currentTimeMillis()-S.lastLoopTime();
 			if(time>0)
 			{
@@ -216,10 +216,8 @@ public class UtiliThread extends Thread
 						Log.errOut("UtiliThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+", out for "+time);
 						Log.errOut("UtiliThread","STATUS  was :"+S.getStatus()+", "+"LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
 						status="killing session ";
-						S.setKillFlag(true);
-						S.interrupt();
-						try{Thread.sleep(500);}catch(Exception e){}
-						S.interrupt();
+						S.logoff();
+						S.logoff();
 						Sessions.removeElement(S);
 						status="checking sessions.";
 					}
@@ -228,10 +226,8 @@ public class UtiliThread extends Thread
 					{
                         if((S.mob()==null)||(S.mob().Name()==null)||(S.mob().Name().length()==0))
                         {
-                            S.setKillFlag(true);
-                            S.interrupt();
-                            try{Thread.sleep(500);}catch(Exception e){}
-                            S.interrupt();
+                            S.logoff();
+                            S.logoff();
                             Sessions.removeElement(S);
                         }
                         else
@@ -249,10 +245,8 @@ public class UtiliThread extends Thread
 					if((S.getStatus()!=1)||((S.previousCMD()!=null)&&(S.previousCMD().size()>0)))
 					Log.errOut("UtiliThread","STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
 					status="killing session ";
-					S.setKillFlag(true);
-					S.interrupt();
-					try{Thread.sleep(500);}catch(Exception e){}
-					S.interrupt();
+					S.logoff();
+					S.logoff();
 					Sessions.removeElement(S);
 					status="checking sessions.";
 				}

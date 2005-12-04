@@ -33,17 +33,5 @@ public class FoodPrep extends Cooking
 	public boolean requireFire(){return false;}
     protected String defaultFoodSound="chopchop.wav";
     
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("FOODPREP RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"foodprep.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("FoodPrep","Recipes not found!");
-			Resources.submitResource("FOODPREP RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("foodprep.txt");}
 }

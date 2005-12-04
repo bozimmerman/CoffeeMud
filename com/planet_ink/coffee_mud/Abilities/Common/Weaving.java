@@ -57,19 +57,7 @@ public class Weaving extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("WEAVING RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"weaving.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Weaving","Recipes not found!");
-			Resources.submitResource("WEAVING RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("weaving.txt");}
 
 	public void unInvoke()
 	{

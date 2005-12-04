@@ -72,19 +72,7 @@ public class JewelMaking extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("JEWELMAKING RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"jewelmaking.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Jewelmaking","Recipes not found!");
-			Resources.submitResource("JEWELMAKING RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("jewelmaking.txt");}
 
 	public void unInvoke()
 	{

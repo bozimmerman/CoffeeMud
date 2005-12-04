@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.system;
+package com.planet_ink.coffee_mud.system.threads;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
@@ -105,15 +105,15 @@ public class SaveThread extends Thread
 			if(!mob.isMonster())
 			{
 				status="just saving "+mob.Name();
-				MOBloader.DBUpdateJustMOB(mob);
+				CMClass.DBEngine().DBUpdatePlayerStatsOnly(mob);
 				if((mob.Name().length()==0)||(mob.playerStats()==null))
 					continue;
 				status="saving "+mob.Name()+", "+mob.inventorySize()+"items";
-				MOBloader.DBUpdateItems(mob);
+                CMClass.DBEngine().DBUpdatePlayerItems(mob);
 				status="saving "+mob.Name()+", "+mob.numLearnedAbilities()+"abilities";
-				MOBloader.DBUpdateAbilities(mob);
+                CMClass.DBEngine().DBUpdatePlayerAbilities(mob);
 				status="saving "+mob.numFollowers()+" followers of "+mob.Name();
-				MOBloader.DBUpdateFollowers(mob);
+                CMClass.DBEngine().DBUpdateFollowers(mob);
 				mob.playerStats().setUpdated(System.currentTimeMillis());
 				processed++;
 			}
@@ -123,13 +123,13 @@ public class SaveThread extends Thread
 			   ||(mob.playerStats().lastUpdated()<mob.playerStats().lastDateTime())))
 			{
 				status="just saving "+mob.Name();
-				MOBloader.DBUpdateJustMOB(mob);
+                CMClass.DBEngine().DBUpdatePlayerStatsOnly(mob);
 				if((mob.Name().length()==0)||(mob.playerStats()==null))
 					continue;
 				status="just saving "+mob.Name()+", "+mob.inventorySize()+" items";
-				MOBloader.DBUpdateItems(mob);
+                CMClass.DBEngine().DBUpdatePlayerItems(mob);
 				status="just saving "+mob.Name()+", "+mob.numLearnedAbilities()+" abilities";
-				MOBloader.DBUpdateAbilities(mob);
+                CMClass.DBEngine().DBUpdatePlayerAbilities(mob);
 				mob.playerStats().setUpdated(System.currentTimeMillis());
 				processed++;
 			}
@@ -383,8 +383,8 @@ public class SaveThread extends Thread
 				if(!CMSecurity.isDisabled("SAVETHREAD"))
 				{
 					status="checking database health";
-					StringBuffer ok=DBConnector.errorStatus();
-					if((ok.length()!=0)&&(!ok.toString().startsWith("OK")))
+					String ok=CMClass.DBEngine().errorStatus();
+					if((ok.length()!=0)&&(!ok.startsWith("OK")))
 						Log.errOut("Save Thread","DB: "+ok);
 					else
 					{

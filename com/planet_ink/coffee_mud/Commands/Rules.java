@@ -29,7 +29,7 @@ public class Rules extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		StringBuffer credits=Resources.getFileResource("text"+File.separatorChar+"rules.txt");
+		StringBuffer credits=Resources.getFile(Resources.buildResourcePath("text")+"rules.txt",true);
 		if((credits!=null)&&(mob.session()!=null))
 			mob.session().colorOnlyPrintln(credits.toString());
 		else

@@ -84,7 +84,7 @@ public class MudChat extends StdBehavior
 	
 	private static Vector loadChatData(String resourceName, Vector chatGroups)
 	{
-		StringBuffer rsc=Resources.getFileResource(resourceName);
+		StringBuffer rsc=Resources.getFileResource(resourceName,true);
 		Vector currentChatGroup=new Vector();
 		Vector otherChatGroup;
 		currentChatGroup.addElement("");
@@ -122,7 +122,7 @@ public class MudChat extends StdBehavior
 				break;
 			case '%':
 				{
-	  				StringBuffer rsc2=new StringBuffer(Resources.getFileResource(str.substring(1).trim()).toString());
+	  				StringBuffer rsc2=new StringBuffer(Resources.getFileResource(str.substring(1).trim(),true).toString());
 	  				if(rsc2.length()<1) { Log.sysOut("MudChat","Error reading resource "+resourceName); }
 	  				rsc.insert(0,rsc2.toString());
 				}

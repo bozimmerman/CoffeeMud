@@ -1,5 +1,6 @@
-package com.planet_ink.coffee_mud.system;
+package com.planet_ink.coffee_mud.system.database;
 import com.planet_ink.coffee_mud.interfaces.*;
+
 import java.util.*;
 import java.io.IOException;
 /* 
@@ -52,6 +53,12 @@ public class DBInterface implements DatabaseEngine
 	public String[] DBFetchEmailData(String name)
 	{ return MOBloader.DBFetchEmailData(name);}
 		
+    public void DBUpdatePlayerAbilities(MOB mob)
+    { MOBloader.DBUpdateAbilities(mob);}
+
+    public void DBUpdatePlayerItems(MOB mob)
+    { MOBloader.DBUpdateItems(mob);}
+    
 	public void DBUpdateFollowers(MOB mob)
 	{MOBloader.DBUpdateFollowers(mob);}
 
@@ -246,5 +253,12 @@ public class DBInterface implements DatabaseEngine
     public Vector DBReadPoll(String name)
     {return PollLoader.DBRead(name);}
 
-
+    public Vector DBReadVFSDirectory()
+    { return VFSLoader.DBReadDirectory();}
+    public Vector DBReadVFSFile(String filename)
+    { return VFSLoader.DBRead(filename);}
+    public void DBCreateVFSFile(String filename, int bits, String creator, Object data)
+    { VFSLoader.DBCreate(filename,bits,creator,data);}
+    public void DBDeleteVFSFile(String filename)
+    { VFSLoader.DBDelete(filename);}
 }

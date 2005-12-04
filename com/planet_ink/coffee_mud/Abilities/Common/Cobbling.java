@@ -60,19 +60,7 @@ public class Cobbling extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes()
-	{
-		Vector V=(Vector)Resources.getResource("COBBLING RECIPES");
-		if(V==null)
-		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"cobbler.txt");
-			V=loadList(str);
-			if(V.size()==0)
-				Log.errOut("Cobbling","Recipes not found!");
-			Resources.submitResource("COBBLING RECIPES",V);
-		}
-		return V;
-	}
+    protected Vector loadRecipes(){return super.loadRecipes("cobbler.txt");}
 
 	public void unInvoke()
 	{

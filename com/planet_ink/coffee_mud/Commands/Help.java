@@ -38,7 +38,7 @@ public class Help extends StdCommand
 		}
 		StringBuffer thisTag=null;
 		if(helpStr.length()==0)
-			thisTag=Resources.getFileResource("help"+File.separatorChar+"help.txt");
+			thisTag=Resources.getFileResource("help"+File.separatorChar+"help.txt",true);
 		else
 			thisTag=MUDHelp.getHelpText(helpStr,MUDHelp.getHelpFile(),mob);
 		if((thisTag==null)&&(CMSecurity.isAllowed(mob,mob.location(),"AHELP")))

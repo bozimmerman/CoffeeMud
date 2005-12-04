@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.system;
+package com.planet_ink.coffee_mud.system.threads;
 
 import java.io.*;
 import java.sql.*;
@@ -23,7 +23,7 @@ import com.planet_ink.coffee_mud.utils.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Tick extends Thread
+public class Tick extends Thread implements TickableGroup
 {
 	public long lastStart=0;
 	public long lastStop=0;
@@ -90,6 +90,10 @@ public class Tick extends Thread
 
 	public boolean awake=false;
 	public TockClient lastClient=null;
+    public Tickable lastTicked()
+    {
+        return lastClient!=null?lastClient.clientObject:null;
+    }
 
 	public void shutdown()
 	{
