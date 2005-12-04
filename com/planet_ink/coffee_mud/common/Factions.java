@@ -35,6 +35,13 @@ public class Factions implements Tickable
 	    factionSet.clear();
 	    hashedFactionRanges.clear();
 	}
+    public static void reloadFactions(String factionList)
+    {
+        Vector preLoadFactions=Util.parseSemicolons(factionList,true);
+        clearFactions();
+        for(int i=0;i<preLoadFactions.size();i++)
+            getFaction((String)preLoadFactions.elementAt(i));
+    }
 	
 	private static Hashtable rangeCodeNames(){ return hashedFactionRanges; }
 	public static boolean isRangeCodeName(String key){ return rangeCodeNames().containsKey(key.toUpperCase());}

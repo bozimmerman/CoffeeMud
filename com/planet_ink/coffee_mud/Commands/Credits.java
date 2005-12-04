@@ -29,7 +29,7 @@ public class Credits extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		StringBuffer credits=Resources.getFile(Resources.buildResourcePath("text")+File.separatorChar+"credits.txt",true);
+		StringBuffer credits=Resources.getFile(Resources.buildResourcePath("text")+"credits.txt",true);
 		if((credits!=null)&&(mob.session()!=null))
 			mob.session().colorOnlyPrintln(credits.toString());
 		else

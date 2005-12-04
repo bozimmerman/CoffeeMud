@@ -449,12 +449,12 @@ public class Scriptable extends StdBehavior
 				{
 					String filename=parse.substring(y+5,z).trim();
 					parse=parse.substring(z+1);
-					results.append(parseLoads(Resources.getFileResource(filename,true).toString(),depth+1));
+					results.append(parseLoads(Resources.getFile(Resources.buildResourcePath("")+filename,true).toString(),depth+1));
 				}
 				else
 				{
 					String filename=parse.substring(y+5).trim();
-					results.append(parseLoads(Resources.getFileResource(filename,true).toString(),depth+1));
+					results.append(parseLoads(Resources.getFile(Resources.buildResourcePath("")+filename,true).toString(),depth+1));
 					break;
 				}
 			}
@@ -5931,18 +5931,18 @@ public class Scriptable extends StdBehavior
 			return empty;
 		Vector scripts=null;
 		if(getParms().length()>100)
-			scripts=(Vector)Resources.getResource("PARSED SCRIPTS: "+getParms().substring(0,100)+getParms().length()+getParms().hashCode());
+			scripts=(Vector)Resources.getResource("PARSEDPRG: "+getParms().substring(0,100)+getParms().length()+getParms().hashCode());
 		else
-			scripts=(Vector)Resources.getResource("PARSED SCRIPTS: "+getParms());
+			scripts=(Vector)Resources.getResource("PARSEDPRG: "+getParms());
 		if(scripts==null)
 		{
 			String script=getParms();
 			script=Util.replaceAll(script,"`","'");
 			scripts=parseScripts(script);
 			if(getParms().length()>100)
-				Resources.submitResource("PARSED SCRIPTS: "+getParms().substring(0,100)+getParms().length()+getParms().hashCode(),scripts);
+				Resources.submitResource("PARSEDPRG: "+getParms().substring(0,100)+getParms().length()+getParms().hashCode(),scripts);
 			else
-				Resources.submitResource("PARSED SCRIPTS: "+getParms(),scripts);
+				Resources.submitResource("PARSEDPRG: "+getParms(),scripts);
 		}
 		return scripts;
 	}

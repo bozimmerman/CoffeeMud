@@ -240,6 +240,21 @@ public class Resources
             filename=filename.trim().substring(2);
         return filename;
     }
+    public static boolean isVFSFile(String filename)
+    {
+        if(filename.trim().startsWith("::"))
+            return true;
+        Vector vfs=getVFSDirectory();
+        filename=Util.replaceAll(unvfsFilename(filename),"\\","/");
+        Vector file=null;
+        for(Enumeration e=vfs.elements();e.hasMoreElements();)
+        {
+            file=(Vector)e.nextElement();
+            if(((String)file.firstElement()).equalsIgnoreCase(filename))
+                return true;
+        }
+        return false;
+    }
     public static Vector getVFSFileInfo(String filename)
     {
         Vector vfs=getVFSDirectory();
@@ -270,7 +285,7 @@ public class Resources
 	public static StringBuffer getFile(String filename, boolean reportErrors)
 	{
         StringBuffer buf=new StringBuffer("");
-        if(filename.trim().startsWith("::"))
+        if(isVFSFile(filename))
         {
             filename=unvfsFilename(filename);
             Vector info=getVFSFileInfo(filename);
@@ -285,8 +300,8 @@ public class Resources
                     return new StringBuffer((String)data);
                 if(data instanceof StringBuffer)
                     return (StringBuffer)data;
-                return null;
             }
+            return null;
         }
 		try
 		{
@@ -365,15 +380,7 @@ public class Resources
 			Log.errOut("Resources","Unable to save file '"+filename+"': No Data.");
 			return false;
 		}
-        boolean isVfs=false;
-        if(filename.trim().startsWith("::"))
-        {
-            filename=unvfsFilename(filename);
-            isVfs=true;
-        }
-        else
-            isVfs=getVFSFileInfo(filename)!=null;
-        if(isVfs)
+        if(isVFSFile(filename))
         {
             Vector info=getVFSFileInfo(filename);
             if(info!=null)

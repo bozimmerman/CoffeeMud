@@ -170,7 +170,7 @@ public class CraftingSkill extends GatheringSkill
             V=loadList(str);
             if(V.size()==0)
                 Log.errOut(ID(),"Recipes not found!");
-            Resources.submitResource("PARSED"+filename,V);
+            Resources.submitResource("PARSED: "+filename,V);
         }
         return V;
     }

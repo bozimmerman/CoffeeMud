@@ -73,7 +73,8 @@ public class CommonStrings extends Scriptable
     public static final int SYSTEM_MXPIMAGEPATH=47;
     public static final int SYSTEM_IGNOREMASK=48;
     public static final int SYSTEM_SIPLET=49;
-	public static final int NUM_SYSTEM=50;
+    public static final int SYSTEM_PREFACTIONS=50; 
+	public static final int NUM_SYSTEM=51;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -287,10 +288,7 @@ public class CommonStrings extends Scriptable
         setVar(SYSTEM_AUTOWEATHERPARMS,page.getStr("AUTOWEATHERPARMS"));
         setUpLowVar(SYSTEM_MXPIMAGEPATH,page.getStr("MXPIMAGEPATH"));
         setBoolVar(SYSTEMB_ACCOUNTEXPIRATION,page.getStr("ACCOUNTEXPIRATION").equalsIgnoreCase("YES")?true:false);
-        Vector preLoadFactions=Util.parseSemicolons(page.getStr("FACTIONS"),true);
-        Factions.clearFactions();
-        for(int i=0;i<preLoadFactions.size();i++)
-            Factions.getFaction((String)preLoadFactions.elementAt(i));
+        setVar(SYSTEM_PREFACTIONS,page.getStr("FACTIONS"));
         
 		CMColor.clookup=null;
 		if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))

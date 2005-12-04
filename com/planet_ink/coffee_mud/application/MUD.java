@@ -143,6 +143,8 @@ public class MUD extends Thread implements MudHost
 			Log.errOut("MUD","Fatal database error: "+DBerrors);
 			System.exit(-1);
 		}
+        
+        Factions.reloadFactions(CommonStrings.getVar(CommonStrings.SYSTEM_PREFACTIONS));
 
 
 		if(page.getStr("RUNWEBSERVERS").equalsIgnoreCase("true"))

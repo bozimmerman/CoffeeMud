@@ -84,7 +84,7 @@ public class MudChat extends StdBehavior
 	
 	private static Vector loadChatData(String resourceName, Vector chatGroups)
 	{
-		StringBuffer rsc=Resources.getFileResource(resourceName,true);
+		StringBuffer rsc=Resources.getFile(Resources.buildResourcePath(null)+resourceName,true);
 		Vector currentChatGroup=new Vector();
 		Vector otherChatGroup;
 		currentChatGroup.addElement("");
