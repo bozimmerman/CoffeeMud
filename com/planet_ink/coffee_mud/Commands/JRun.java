@@ -39,7 +39,7 @@ public class JRun extends StdCommand
 
         String fn = new String ( (String)commands.elementAt(0) );
         StringBuffer ft = Resources.getFile(fn,true);
-        if(ft==null)
+        if((ft==null)||(ft.length()==0))
         {
             mob.tell("File '"+fn+"' could not be found.");
             return false;

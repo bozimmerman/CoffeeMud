@@ -47,6 +47,8 @@ IF "%1" == "docs" GOTO :DOCS
 %JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/MOBS/*.java
 %JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/Races/*.java
 %JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/system/*.java
+%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/system/database/*.java
+%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/system/threads/*.java
 %JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/utils/*.java
 %JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/web/*.java
 %JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/web/macros/*.java

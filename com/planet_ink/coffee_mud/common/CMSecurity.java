@@ -1,6 +1,8 @@
 package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
+
+import java.io.File;
 import java.util.*;
 
 /* 
@@ -36,6 +38,8 @@ public class CMSecurity
 	// CMDMOBS (also prevents walkaways), KILLASSIST, ALLSKILLS, GMODIFY
 	// SUPERSKILL (never fails skills), IMMORT (never dies), MXPTAGS
 	// JOURNALS, PKILL, SESSIONS, TRAILTO, CMDFACTIONS
+    // FS:relative path from /coffeemud/ -- read/write access to regular file sys
+    // VFS:relative path from /coffeemud/ -- read/write access to virtual file sys
 	// LIST: (affected by killx, cmdplayers, loadunload, cmdclans, ban, nopurge,
 	//		cmditems, cmdmobs, cmdrooms, sessions, cmdareas, listadmin, stat
 	// 
@@ -102,6 +106,201 @@ public class CMSecurity
             return false;
 		return true;
 	}
+    
+    public static boolean hasAccessibleDir(MOB mob, Room room)
+    {
+        if(isASysOp(mob)) return true;
+        if(mob==null) return false;
+        if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
+        if(mob.playerStats().getSecurityGroups().size()==0)
+            return false;
+        Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
+        Util.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
+        if(V.size()==0) return false;
+        boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
+        for(int v=0;v<V.size();v++)
+        {
+            String set=((String)V.elementAt(v)).toUpperCase();
+            if(set.startsWith("FS:"))
+            {
+                set=set.substring(3).trim();
+                if(set.startsWith("AREA ")&&(!subop))
+                    continue;
+                return true;
+            }
+            else
+            if(set.startsWith("VFS:"))
+            {
+                set=set.substring(4).trim();
+                if(set.startsWith("AREA ")&&(!subop))
+                    continue;
+                return true;
+            }
+            else
+            {
+                HashSet H=(HashSet)groups.get(set);
+                if(H==null) continue;
+                for(Iterator i=H.iterator();i.hasNext();)
+                {
+                    set=((String)i.next()).toUpperCase();
+                    if(set.startsWith("FS:"))
+                    {
+                        set=set.substring(3).trim();
+                        if(set.startsWith("AREA ")&&(!subop))
+                            continue;
+                        return true;
+                    }
+                    else
+                    if(set.startsWith("VFS:"))
+                    {
+                        set=set.substring(4).trim();
+                        if(set.startsWith("AREA ")&&(!subop))
+                            continue;
+                        return true;
+                    }
+                    else
+                        continue;
+                }
+                continue;
+            }
+        }
+        return false;
+    }
+    
+    public static boolean canTraverseDir(MOB mob, Room room, String path)
+    {
+        if(isASysOp(mob)) return true;
+        if(mob==null) return false;
+        if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
+        if(mob.playerStats().getSecurityGroups().size()==0)
+            return false;
+        path=Util.replaceAll(Resources.fixFilename(path.trim()),"\\","/").toUpperCase();
+        if(path.equals("/")||path.equals(".")) path="";
+        if(path.length()>0)
+        {
+            File F=new File(path.replace('/',File.separatorChar));
+            if((!F.exists())||(!F.isDirectory()))
+            {
+                Vector vfs=Resources.getVFSDirectory();
+                boolean found=false;
+                for(int v=0;v<vfs.size();v++)
+                    if(((String)((Vector)vfs.elementAt(v)).elementAt(0)).toUpperCase().startsWith(path.toUpperCase()+"/"))
+                    { found=true; break;}
+                if(!found) return false;
+            }
+        }
+        String areaPath=("AREA "+path).trim();
+        String pathSlash=path+"/";
+        Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
+        Util.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
+        if(V.size()==0) return false;
+        boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
+        for(int v=0;v<V.size();v++)
+        {
+            String set=((String)V.elementAt(v)).toUpperCase();
+            if(set.startsWith("FS:"))
+                set=set.substring(3).trim();
+            else
+            if(set.startsWith("VFS:"))
+                set=set.substring(4).trim();
+            else
+            {
+                HashSet H=(HashSet)groups.get(set);
+                if(H==null) continue;
+                for(Iterator i=H.iterator();i.hasNext();)
+                {
+                    set=((String)i.next()).toUpperCase();
+                    if(set.startsWith("FS:"))
+                        set=set.substring(3).trim();
+                    else
+                    if(set.startsWith("VFS:"))
+                        set=set.substring(4).trim();
+                    else
+                        continue;
+                    if((set.length()==0)||(subop&&set.equals("AREA"))) 
+                        return true;
+                    if(set.startsWith(pathSlash)
+                    ||path.startsWith(set+"/")
+                    ||set.equals(path)
+                    ||(subop&&areaPath.startsWith(set+"/"))
+                    ||(subop&&("AREA "+set).startsWith(pathSlash))
+                    ||(subop&&("AREA "+set).equals(path)))
+                        return true;
+                }
+                continue;
+            }
+            if(set.length()==0) return true;
+            if(set.startsWith(pathSlash)
+            ||path.startsWith(set+"/")
+            ||set.equals(path)
+            ||(subop&&areaPath.startsWith(set+"/"))
+            ||(subop&&("AREA "+set).startsWith(pathSlash))
+            ||(subop&&("AREA "+set).equals(path)))
+               return true;
+        }
+        return false;
+    }
+    
+    public static boolean canAccessFile(MOB mob, Room room, String path, boolean isVFS)
+    {
+        if(isASysOp(mob)) return true;
+        if(mob==null) return false;
+        if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
+        if(mob.playerStats().getSecurityGroups().size()==0)
+            return false;
+        path=Util.replaceAll(Resources.fixFilename(path.trim()),"\\","/").toUpperCase();
+        if(path.equals("/")||path.equals(".")) path="";
+        Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
+        Util.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
+        if(V.size()==0) return false;
+        boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
+        for(int v=0;v<V.size();v++)
+        {
+            String set=((String)V.elementAt(v)).toUpperCase();
+            if(set.startsWith("FS:"))
+                set=set.substring(3).trim();
+            else
+            if(set.startsWith("VFS:"))
+            {
+                if(!isVFS) continue;
+                set=set.substring(4).trim();
+            }
+            else
+            {
+                HashSet H=(HashSet)groups.get(set);
+                if(H==null) continue;
+                for(Iterator i=H.iterator();i.hasNext();)
+                {
+                    set=((String)i.next()).toUpperCase();
+                    if(set.startsWith("FS:"))
+                        set=set.substring(3).trim();
+                    else
+                    if(set.startsWith("VFS:"))
+                    {
+                        if(!isVFS) continue;
+                        set=set.substring(4).trim();
+                    }
+                    else
+                        continue;
+                    if((set.length()==0)||(subop&&set.equals("AREA"))) 
+                        return true;
+                    if(path.startsWith(set+"/")
+                    ||(path.equals(set))
+                    ||(subop&&("AREA "+path).startsWith(set+"/"))
+                    ||(subop&&("AREA "+path).equals(set)))
+                        return true;
+                }
+                continue;
+            }
+            if(set.length()==0) return true;
+            if(path.startsWith(set+"/")
+            ||(path.equals(set))
+            ||(subop&&("AREA "+path).startsWith(set+"/"))
+            ||(subop&&("AREA "+path).equals(set)))
+               return true;
+        }
+        return false;
+    }
 	
 	public static Vector getSecurityCodes(MOB mob, Room room)
 	{

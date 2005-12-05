@@ -72,7 +72,7 @@ public class VFSLoader
                     row.addElement(new Long(DBConnections.getLongRes(R,"CMMODD")));
                     row.addElement(DBConnections.getRes(R,"CMWHOM"));
                     String data=DBConnections.getRes(R,"CMDATA");
-                    if(Util.bset(bits,Resources.VFS_BINARY))
+                    if(Util.bset(bits,Resources.VFS_MASK_BINARY))
                     {
                         byte[] buf=null;
                         if(data.length()==0)

@@ -416,13 +416,13 @@ public class Scriptable extends StdBehavior
 					String filename=parse.substring(y+5,z).trim();
 					parse=parse.substring(z+1);
 					filenames.addElement(filename);
-					parseParmFilenames(Resources.getFileResource(filename,true).toString(),filenames,depth+1);
+					parseParmFilenames(Resources.getFile(Resources.buildResourcePath("")+filename,true).toString(),filenames,depth+1);
 				}
 				else
 				{
 					String filename=parse.substring(y+5).trim();
 					filenames.addElement(filename);
-					parseParmFilenames(Resources.getFileResource(filename,true).toString(),filenames,depth+1);
+					parseParmFilenames(Resources.getFile(Resources.buildResourcePath("")+filename,true).toString(),filenames,depth+1);
 					break;
 				}
 			}

@@ -97,6 +97,8 @@ $JAVACPATH -verbose -classpath ".:./lib/js.jar" ./com/planet_ink/coffee_mud/Loca
 $JAVACPATH -verbose -classpath ".:./lib/js.jar" ./com/planet_ink/coffee_mud/MOBS/*.java
 $JAVACPATH -verbose -classpath ".:./lib/js.jar" ./com/planet_ink/coffee_mud/Races/*.java
 $JAVACPATH -verbose -classpath ".:./lib/js.jar" ./com/planet_ink/coffee_mud/system/*.java
+$JAVACPATH -verbose -classpath ".:./lib/js.jar" ./com/planet_ink/coffee_mud/system/database/*.java
+$JAVACPATH -verbose -classpath ".:./lib/js.jar" ./com/planet_ink/coffee_mud/system/threads/*.java
 $JAVACPATH -verbose -classpath ".:./lib/js.jar" ./com/planet_ink/coffee_mud/utils/*.java
 $JAVACPATH -verbose -classpath ".:./lib/js.jar" ./com/planet_ink/coffee_mud/web/*.java
 $JAVACPATH -verbose -classpath ".:./lib/js.jar" ./com/planet_ink/coffee_mud/web/macros/*.java

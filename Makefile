@@ -121,6 +121,8 @@ PACKAGES = \
 	com.planet_ink.coffee_mud.Abilities.Ranger \
 	com.planet_ink.coffee_mud.web.macros \
 	com.planet_ink.coffee_mud.system \
+	com.planet_ink.coffee_mud.system.database \
+	com.planet_ink.coffee_mud.system.threads \
 	com.planet_ink.coffee_mud.i3.server \
 	com.planet_ink.fakedb \
 	com.planet_ink.coffee_mud.web.espresso.Commands \
@@ -481,6 +483,8 @@ com.planet_ink.coffee_mud.i3.packets : $(call PACKAGE_OBJS,com.planet_ink.coffee
 com.planet_ink.coffee_mud.Abilities.Ranger : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Ranger)
 com.planet_ink.coffee_mud.web.macros : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.web.macros)
 com.planet_ink.coffee_mud.system : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.system)
+com.planet_ink.coffee_mud.system.database : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.system.database)
+com.planet_ink.coffee_mud.system.threads : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.system.threads)
 com.planet_ink.coffee_mud.i3.server : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.i3.server)
 com.planet_ink.fakedb : $(call PACKAGE_OBJS,com.planet_ink.fakedb)
 com.planet_ink.coffee_mud.web.espresso.Commands : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.web.espresso.Commands)

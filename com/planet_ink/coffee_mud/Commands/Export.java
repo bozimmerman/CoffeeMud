@@ -394,7 +394,7 @@ public class Export extends StdCommand
                 Object O=i.next();
 				String filename=(String)O;
 				StringBuffer buf=Resources.getFile(Resources.buildResourcePath(null)+filename,true);
-				if(buf!=null)
+				if((buf!=null)&&(buf.length()>0))
 				{
 					str.append("<FILE NAME=\""+filename+"\">");
 					str.append(buf);

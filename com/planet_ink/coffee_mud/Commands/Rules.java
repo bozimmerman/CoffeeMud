@@ -30,7 +30,7 @@ public class Rules extends StdCommand
 		throws java.io.IOException
 	{
 		StringBuffer credits=Resources.getFile(Resources.buildResourcePath("text")+"rules.txt",true);
-		if((credits!=null)&&(mob.session()!=null))
+		if((credits!=null)&&(mob.session()!=null)&&(credits.length()>0))
 			mob.session().colorOnlyPrintln(credits.toString());
 		else
 			mob.tell("This mud has no rules.  Welcome to chaos.");

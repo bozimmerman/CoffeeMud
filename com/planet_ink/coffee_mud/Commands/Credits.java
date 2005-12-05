@@ -30,7 +30,7 @@ public class Credits extends StdCommand
 		throws java.io.IOException
 	{
 		StringBuffer credits=Resources.getFile(Resources.buildResourcePath("text")+"credits.txt",true);
-		if((credits!=null)&&(mob.session()!=null))
+		if((credits!=null)&&(mob.session()!=null)&&(credits.length()>0))
 			mob.session().colorOnlyPrintln(credits.toString());
 		else
 			mob.tell(getScr("Credits","thegreatmaker"));
