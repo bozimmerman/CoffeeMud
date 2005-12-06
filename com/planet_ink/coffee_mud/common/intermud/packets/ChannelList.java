@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.i3.packets;
 import java.util.Hashtable;
 import java.io.Serializable;
 
+
 /**
  * Copyright (c) 1996 George Reese
  * Licensed under the Apache License, Version 2.0 (the "License");

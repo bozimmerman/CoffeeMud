@@ -1,8 +1,9 @@
     package com.planet_ink.coffee_mud.application;
-    import java.io.*;
+    
     import java.net.*;
     import java.util.*;
     import java.sql.*;
+    import java.io.*;
     import com.planet_ink.coffee_mud.interfaces.*;
     import com.planet_ink.coffee_mud.utils.DVector;
     import com.planet_ink.coffee_mud.common.Resources;
@@ -218,7 +219,7 @@ public class OffLine extends Thread implements MudHost
                     else
                     {
                         state=2;
-                        StringBuffer offLineText=Resources.getFileResource("text"+File.separatorChar+"down.txt",true);
+                        StringBuffer offLineText=Resources.getFileResource("text"+Resources.pathSeparator+"down.txt",true);
                         try
                         {
                             sock.setSoTimeout(300);
@@ -253,7 +254,7 @@ public class OffLine extends Thread implements MudHost
                 }
                 else
                 {
-                    StringBuffer rejectText=Resources.getFileResource("text"+File.separatorChar+"offline.txt",true);
+                    StringBuffer rejectText=Resources.getFileResource("text"+Resources.pathSeparator+"offline.txt",true);
                     PrintWriter out = new PrintWriter(sock.getOutputStream());
                     out.flush();
                     out.println(rejectText);

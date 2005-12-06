@@ -1,7 +1,9 @@
 package com.planet_ink.coffee_mud.common;
 
 import java.util.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
 
@@ -42,7 +44,7 @@ public class INI extends Properties
 	{
 		try
 		{
-			this.load(new FileInputStream(filename));
+			this.load(new ByteArrayInputStream(Resources.getFile(filename,false).toString().getBytes()));
 			loaded=true;
 		}
 		catch(IOException e)
@@ -57,7 +59,7 @@ public class INI extends Properties
 		
 		try
 		{
-			this.load(new FileInputStream(filename));
+            this.load(new ByteArrayInputStream(Resources.getFile(filename,false).toString().getBytes()));
 			loaded=true;
 		}
 		catch(IOException e)

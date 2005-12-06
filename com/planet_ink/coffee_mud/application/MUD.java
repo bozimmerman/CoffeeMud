@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.application;
-import java.io.*;
+
+import java.io.PrintWriter; // for writing to sockets
+import java.io.IOException;
 import java.net.*;
 import java.util.*;
 import java.sql.*;
@@ -198,7 +200,7 @@ public class MUD extends Thread implements MudHost
 		Log.sysOut("MUD","Channels loaded   : "+(numChannelsLoaded+numJournalsLoaded));
 
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: loading socials");
-		Socials.load("resources"+File.separatorChar+"socials.txt");
+		Socials.load("resources"+Resources.pathSeparator+"socials.txt");
 		if(!Socials.isLoaded())
 			Log.errOut("MUD","WARNING: Unable to load socials from socials.txt!");
 		else
@@ -435,7 +437,7 @@ public class MUD extends Thread implements MudHost
 					else
 					{
                         state=2;
-						StringBuffer introText=Resources.getFileResource("text"+File.separatorChar+"intro.txt",true);
+						StringBuffer introText=Resources.getFileResource("text"+Resources.pathSeparator+"intro.txt",true);
 						TelnetSession S=new TelnetSession(sock,
 							introText != null ? introText.toString() : null);
 						S.start();
@@ -445,7 +447,7 @@ public class MUD extends Thread implements MudHost
 				}
 				else
 				{
-					StringBuffer rejectText=Resources.getFileResource("text"+File.separatorChar+"offline.txt",true);
+					StringBuffer rejectText=Resources.getFileResource("text"+Resources.pathSeparator+"offline.txt",true);
 					PrintWriter out = new PrintWriter(sock.getOutputStream());
 					out.println("\n\rOFFLINE: " + CommonStrings.getVar(CommonStrings.SYSTEM_MUDSTATUS)+"\n\r");
 					out.flush();
