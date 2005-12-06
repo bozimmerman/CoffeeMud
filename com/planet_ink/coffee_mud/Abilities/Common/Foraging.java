@@ -139,7 +139,7 @@ public class Foraging extends GatheringSkill
 				Hashtable H=(Hashtable)Resources.getResource("HERB_LOCALE_MAP");
 				if(H==null)
 				{
-					H=Resources.getMultiLists("skills"+CMFile.pathSeparator+"herbs.txt");
+					H=Resources.getMultiLists("skills/herbs.txt");
 					if(H!=null)
 						Resources.submitResource("HERB_LOCALE_MAP",H);
 				}

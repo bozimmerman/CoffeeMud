@@ -846,7 +846,7 @@ public class Quests implements Cloneable, Quest
 								Log.errOut("Quests","Quest '"+name()+"', no IMPORT MOBS file.");
 							q.error=true; break;
 						}
-						StringBuffer buf=new CMFile(Resources.buildResourcePath(null)+Util.combine(p,2),null,true).text();
+						StringBuffer buf=new CMFile("resources/"+Util.combine(p,2),null,true).text();
 						if((buf==null)||((buf!=null)&&(buf.length()<20)))
 						{
 							if(!isQuiet)
@@ -883,7 +883,7 @@ public class Quests implements Cloneable, Quest
 								Log.errOut("Quests","Quest '"+name()+"', no import filename!");
 							q.error=true; break;
 						}
-						StringBuffer buf=new CMFile(Resources.buildResourcePath(null)+Util.combine(p,2),null,true).text();
+						StringBuffer buf=new CMFile("resources/"+Util.combine(p,2),null,true).text();
 						if((buf==null)||((buf!=null)&&(buf.length()<20)))
 						{
 							if(!isQuiet)
@@ -1737,7 +1737,7 @@ public class Quests implements Cloneable, Quest
 	{
 		if(text.toUpperCase().startsWith("LOAD="))
 		{
-			StringBuffer buf=new CMFile(Resources.buildResourcePath(null)+text.substring(5),null,true).text();
+			StringBuffer buf=new CMFile("resources/"+text.substring(5),null,true).text();
 			if(buf!=null) text=buf.toString();
 		}
 		Vector script=new Vector();

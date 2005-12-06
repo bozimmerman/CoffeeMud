@@ -493,12 +493,12 @@ public class Create extends BaseGenerics
                 if(F!=null)
                     mob.tell("Faction '"+name+"' already exists.  Try another.");
                 else
-                if((!mob.isMonster())&&(mob.session().confirm("Create a new faction with ID/filename: 'resources"+CMFile.pathSeparator+name+"' (N/y)? ","N")))
+                if((!mob.isMonster())&&(mob.session().confirm("Create a new faction with ID/filename: 'resources/"+name+"' (N/y)? ","N")))
                 {
                     StringBuffer template=new CMFile(Resources.buildResourcePath("data")+"factiontemplate.ini",null,true).text();
                     if((template==null)||(template.length()==0))
                     {
-                        mob.tell("The file 'resources"+CMFile.pathSeparator+"data"+CMFile.pathSeparator+"factiontemplate.ini' could not be located and is required for command line faction creation.");
+                        mob.tell("The file 'resources/data/factiontemplate.ini' could not be located and is required for command line faction creation.");
                         return false;
                     }
                     Resources.submitResource(name,template);

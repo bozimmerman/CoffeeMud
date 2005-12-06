@@ -178,7 +178,7 @@ public class CMSecurity
         if(path.equals("/")||path.equals(".")) path="";
         if(path.length()>0)
         {
-            File F=new File(path.replace('/',CMFile.pathSeparator));
+            File F=new File(path.replace('/',File.separatorChar));
             if((!F.exists())||(!F.isDirectory()))
             {
                 Vector vfs=CMFile.getVFSDirectory();

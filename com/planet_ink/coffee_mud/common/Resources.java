@@ -34,8 +34,8 @@ public class Resources
     
     public static String buildResourcePath(String path)
     {
-        if((path==null)||(path.length()==0)) return "resources"+CMFile.pathSeparator;
-        return "resources"+CMFile.pathSeparator+path+CMFile.pathSeparator;
+        if((path==null)||(path.length()==0)) return "resources/";
+        return "resources/"+path+"/";
     }
 	
 	public static void updateMultiList(String filename, Hashtable lists)
@@ -59,7 +59,7 @@ public class Resources
 		Hashtable oldH=new Hashtable();
 		Vector V=new Vector();
 		try{
-			V=Resources.getFileLineVector(new CMFile(Resources.buildResourcePath(null)+filename,null,false).text());
+			V=Resources.getFileLineVector(new CMFile("resources/"+filename,null,false).text());
 		}catch(Exception e){}
 		if((V!=null)&&(V.size()>0))
 		{
@@ -188,7 +188,7 @@ public class Resources
 	
 	public static String makeFileResourceName(String filename)
 	{
-	    return buildResourcePath(null)+filename;
+	    return "resources/"+filename;
 	}
 	public static boolean isFileResource(String filename)
 	{

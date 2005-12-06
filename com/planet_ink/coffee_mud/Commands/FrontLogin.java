@@ -148,7 +148,7 @@ public class FrontLogin extends StdCommand
         {
             if(S.clientTelnetMode(Session.TELNET_MXP))
             {
-                StringBuffer mxpText=Resources.getFileResource("text"+CMFile.pathSeparator+"mxp.txt",true);
+                StringBuffer mxpText=Resources.getFileResource("text/mxp.txt",true);
                 if(mxpText!=null)
                     S.rawPrintln("\033[6z"+mxpText.toString()+"\n\r");
             }
@@ -810,7 +810,7 @@ public class FrontLogin extends StdCommand
 				    if(mine.size()>1)
 				    {
 				        if((F.choiceIntro!=null)&&(F.choiceIntro.length()>0))
-							mob.session().println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath(null)+F.choiceIntro,null,true).text().toString());
+							mob.session().println(null,null,null,"\n\r\n\r"+new CMFile("resources/"+F.choiceIntro,null,true).text().toString());
 				        StringBuffer menu=new StringBuffer("Select one: ");
 				        Vector namedChoices=new Vector();
 				        for(int m=0;m<mine.size();m++)

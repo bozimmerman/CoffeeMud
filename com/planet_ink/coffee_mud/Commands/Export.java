@@ -196,7 +196,7 @@ public class Export extends StdCommand
 						x.append("</PLAYER>");
 					}
 				}
-				if(fileNameCode==2) fileName=fileName+CMFile.pathSeparator+"player";
+				if(fileNameCode==2) fileName=fileName+"/player";
 				xml=x.toString()+"</PLAYERS>";
 				if(mob.session()!=null)
 					mob.session().rawPrintln("!");
@@ -205,7 +205,7 @@ public class Export extends StdCommand
 			if(commandType.equalsIgnoreCase("ROOM"))
 			{
 				xml=CoffeeMaker.getRoomXML(mob.location(),custom,files,true).toString();
-				if(fileNameCode==2) fileName=fileName+CMFile.pathSeparator+"room";
+				if(fileNameCode==2) fileName=fileName+"/room";
 			}
 			else
 			if(commandType.equalsIgnoreCase("AREA"))
@@ -215,9 +215,9 @@ public class Export extends StdCommand
 				xml=CoffeeMaker.getAreaXML(mob.location().getArea(),mob.session(),custom,files,true).toString();
 				if(fileNameCode==2){
 					if(mob.location().getArea().getArchivePath().length()>0)
-						fileName=fileName+CMFile.pathSeparator+mob.location().getArea().getArchivePath();
+						fileName=fileName+"/"+mob.location().getArea().getArchivePath();
 					else
-						fileName=fileName+CMFile.pathSeparator+mob.location().getArea().Name();
+						fileName=fileName+"/"+mob.location().getArea().Name();
 				}
 				if(mob.session()!=null)
 					mob.session().rawPrintln("!");
@@ -245,9 +245,9 @@ public class Export extends StdCommand
 						{
 							String name=fileName;
 							if(A.getArchivePath().length()>0)
-								name=fileName+CMFile.pathSeparator+A.getArchivePath();
+								name=fileName+"/"+A.getArchivePath();
 							else
-								name=fileName+CMFile.pathSeparator+A.Name();
+								name=fileName+"/"+A.Name();
 							reallyExport(mob,name,buf.toString());
 							buf=new StringBuffer("");
 						}
@@ -259,7 +259,7 @@ public class Export extends StdCommand
 		else
 		if(subType.equalsIgnoreCase("MOBS"))
 		{
-			if(fileNameCode==2) fileName=fileName+CMFile.pathSeparator+"mobs";
+			if(fileNameCode==2) fileName=fileName+"/mobs";
 			Hashtable found=new Hashtable();
 			if(commandType.equalsIgnoreCase("ROOM"))
 				xml="<MOBS>"+CoffeeMaker.getRoomMobs(mob.location(),custom,files,found).toString()+"</MOBS>";
@@ -307,20 +307,20 @@ public class Export extends StdCommand
 			if(subType.equalsIgnoreCase("WEAPONS"))
 			{
 				if(fileNameCode==2)
-					fileName=fileName+CMFile.pathSeparator+"weapons";
+					fileName=fileName+"/weapons";
 				type=1;
 			}
 			else
 			if(subType.equalsIgnoreCase("ARMOR"))
 			{
 				if(fileNameCode==2)
-					fileName=fileName+CMFile.pathSeparator+"armor";
+					fileName=fileName+"/armor";
 				type=2;
 			}
 			else
 			if(fileNameCode==2)
 			{
-				fileName=fileName+CMFile.pathSeparator+"items";
+				fileName=fileName+"/items";
 			}
 
 			Hashtable found=new Hashtable();
@@ -383,7 +383,7 @@ public class Export extends StdCommand
 			{
                 Object O=i.next();
 				String filename=(String)O;
-				StringBuffer buf=new CMFile(Resources.buildResourcePath(null)+filename,null,true).text();
+				StringBuffer buf=new CMFile("resources/"+filename,null,true).text();
 				if((buf!=null)&&(buf.length()>0))
 				{
 					str.append("<FILE NAME=\""+filename+"\">");
@@ -394,7 +394,7 @@ public class Export extends StdCommand
 			str.append("</FILES>");
 			xml+=str.toString();
 		}
-        if(fileNameCode==2) fileName=fileName+CMFile.pathSeparator+"extras";
+        if(fileNameCode==2) fileName=fileName+"/extras";
 		reallyExport(mob,fileName,xml);
 		return false;
 	}

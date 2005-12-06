@@ -200,7 +200,7 @@ public class MUD extends Thread implements MudHost
 		Log.sysOut("MUD","Channels loaded   : "+(numChannelsLoaded+numJournalsLoaded));
 
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: loading socials");
-		Socials.load("resources"+CMFile.pathSeparator+"socials.txt");
+		Socials.load("resources/socials.txt");
 		if(!Socials.isLoaded())
 			Log.errOut("MUD","WARNING: Unable to load socials from socials.txt!");
 		else
@@ -437,7 +437,7 @@ public class MUD extends Thread implements MudHost
 					else
 					{
                         state=2;
-						StringBuffer introText=Resources.getFileResource("text"+CMFile.pathSeparator+"intro.txt",true);
+						StringBuffer introText=Resources.getFileResource("text/intro.txt",true);
 						TelnetSession S=new TelnetSession(sock,
 							introText != null ? introText.toString() : null);
 						S.start();
@@ -447,7 +447,7 @@ public class MUD extends Thread implements MudHost
 				}
 				else
 				{
-					StringBuffer rejectText=Resources.getFileResource("text"+CMFile.pathSeparator+"offline.txt",true);
+					StringBuffer rejectText=Resources.getFileResource("text/offline.txt",true);
 					PrintWriter out = new PrintWriter(sock.getOutputStream());
 					out.println("\n\rOFFLINE: " + CommonStrings.getVar(CommonStrings.SYSTEM_MUDSTATUS)+"\n\r");
 					out.flush();

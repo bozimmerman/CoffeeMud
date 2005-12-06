@@ -810,7 +810,7 @@ public class Destroy extends BaseItemParser
                 {
                     try
                     {
-                        java.io.File F2=new java.io.File("resources"+CMFile.pathSeparator+F.ID);
+                        java.io.File F2=new java.io.File("resources/"+F.ID);
                         if(F2.exists()) F2.delete();
                         Log.sysOut("CreateEdit",mob.Name()+" destroyed Faction "+F.name+" ("+F.ID+").");
                         mob.tell("Faction File '"+F.ID+"' deleted.");

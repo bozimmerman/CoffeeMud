@@ -81,7 +81,7 @@ public class Factions implements Tickable
 	    if(factionID==null) return null;
 		Faction F=(Faction)factionSet.get(factionID.toUpperCase());
 		if(F!=null) return F;
-        StringBuffer buf=new CMFile(Resources.buildResourcePath(null)+factionID,null,true).text();
+        StringBuffer buf=new CMFile("resources/"+factionID,null,true).text();
 	    if((buf!=null)&&(buf.length()>0))
 	    {
             F=new Faction(buf,factionID);

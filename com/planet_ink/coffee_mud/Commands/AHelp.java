@@ -38,7 +38,7 @@ public class AHelp extends StdCommand
 		StringBuffer thisTag=null;
 		if(helpStr.length()==0)
 		{
-			thisTag=Resources.getFileResource("help"+CMFile.pathSeparator+"arc_help.txt",true);
+			thisTag=Resources.getFileResource("help/arc_help.txt",true);
 			if((thisTag!=null)&&(helpStr.equalsIgnoreCase("more")))
 			{
 				StringBuffer theRest=(StringBuffer)Resources.getResource("arc_help.therest");

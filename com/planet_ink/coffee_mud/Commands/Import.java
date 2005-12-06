@@ -2409,8 +2409,8 @@ public class Import extends StdCommand
 							CMFile F2=new CMFile(areaFileName,M,true);
 							if((F2.exists())&&(!F2.isDirectory()))
 							{
-								int x=F2.getLocalStyleAbsolutePath().lastIndexOf(CMFile.pathSeparator);
-								String path=F2.getLocalStyleAbsolutePath().substring(0,x)+CMFile.pathSeparator+mobprg;
+								int x=F2.getAbsolutePath().lastIndexOf('/');
+								String path=F2.getAbsolutePath().substring(0,x)+"/"+mobprg;
 								StringBuffer buf=new CMFile(path,M,true).text();
 								if((buf==null)||(buf.length()==0))
 									returnAnError(mob,"Unknown MobPrg: "+mobprg);
@@ -3907,7 +3907,7 @@ public class Import extends StdCommand
 			if((FF!=null)&&(FF.length>0))
 			{
 				for(int f=0;f<FF.length;f++)
-					commands.addElement(FF[f].getLocalStyleAbsolutePath());
+					commands.addElement(FF[f].getAbsolutePath());
 				commands.removeElementAt(areaFile);
 			}
 		}
@@ -3943,7 +3943,7 @@ public class Import extends StdCommand
 			{
 				mob.tell("Unpacking areas lists from file : '"+areaFileName+"'...");
 				String filePrefix="";
-				int c=areaFileName.lastIndexOf(CMFile.pathSeparator);
+				int c=areaFileName.lastIndexOf('/');
 				if(c>=0) filePrefix=areaFileName.substring(0,c+1);
 				c=0;
 				String fn="";

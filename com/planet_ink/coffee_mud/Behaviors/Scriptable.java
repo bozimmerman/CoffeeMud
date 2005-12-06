@@ -443,13 +443,13 @@ public class Scriptable extends StdBehavior
 					String filename=parse.substring(y+5,z).trim();
 					parse=parse.substring(z+1);
 					filenames.addElement(filename);
-                    parseParmFilenames(new CMFile(Resources.buildResourcePath("")+filename,null,true).text().toString(),filenames,depth+1);
+                    parseParmFilenames(new CMFile("resources/"+filename,null,true).text().toString(),filenames,depth+1);
 				}
 				else
 				{
 					String filename=parse.substring(y+5).trim();
 					filenames.addElement(filename);
-					parseParmFilenames(new CMFile(Resources.buildResourcePath("")+filename,null,true).text().toString(),filenames,depth+1);
+					parseParmFilenames(new CMFile("resources/"+filename,null,true).text().toString(),filenames,depth+1);
 					break;
 				}
 			}
@@ -476,12 +476,12 @@ public class Scriptable extends StdBehavior
 				{
 					String filename=parse.substring(y+5,z).trim();
 					parse=parse.substring(z+1);
-					results.append(parseLoads(new CMFile(Resources.buildResourcePath("")+filename,null,true).text().toString(),depth+1));
+					results.append(parseLoads(new CMFile("resources/"+filename,null,true).text().toString(),depth+1));
 				}
 				else
 				{
 					String filename=parse.substring(y+5).trim();
-					results.append(parseLoads(new CMFile(Resources.buildResourcePath("")+filename,null,true).text().toString(),depth+1));
+					results.append(parseLoads(new CMFile("resources/"+filename,null,true).text().toString(),depth+1));
 					break;
 				}
 			}
