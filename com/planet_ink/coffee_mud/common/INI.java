@@ -44,7 +44,7 @@ public class INI extends Properties
 	{
 		try
 		{
-			this.load(new ByteArrayInputStream(CMFile.getFile(filename,false).toString().getBytes()));
+			this.load(new ByteArrayInputStream(new CMFile(filename,null,false).text().toString().getBytes()));
 			loaded=true;
 		}
 		catch(IOException e)
@@ -53,13 +53,27 @@ public class INI extends Properties
 		}
 	}
 
+    public boolean load(String filename)
+    {
+        try
+        {
+            this.load(new ByteArrayInputStream(new CMFile(filename,null,false).text().toString().getBytes()));
+            loaded=true;
+        }
+        catch(IOException e)
+        {
+            loaded=false;
+        }
+        return loaded;
+    }
+    
 	public INI(Properties p, String filename)
 	{
 		super(p);
 		
 		try
 		{
-            this.load(new ByteArrayInputStream(CMFile.getFile(filename,false).toString().getBytes()));
+            this.load(new ByteArrayInputStream(new CMFile(filename,null,false).text().toString().getBytes()));
 			loaded=true;
 		}
 		catch(IOException e)
@@ -74,7 +88,7 @@ public class INI extends Properties
 		INI page=null;
 		if (page==null || !page.loaded)
 		{
-			page=new INI(iniFile);
+            page=new INI(iniFile);
 			if(!page.loaded)
 				return null;
 		}
@@ -82,7 +96,7 @@ public class INI extends Properties
 	}
 	public static Vector loadEnumerablePage(String iniFile)
 	{
-		StringBuffer str=CMFile.getFile(iniFile,true);
+		StringBuffer str=new CMFile(iniFile,null,true).text();
 		if((str==null)||(str.length()==0)) return new Vector();
 		Vector page=Resources.getFileLineVector(str);
 		for(int p=0;p<(page.size()-1);p++)

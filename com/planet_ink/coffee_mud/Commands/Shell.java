@@ -5,7 +5,6 @@ import com.planet_ink.coffee_mud.utils.*;
 import com.sun.rsasign.f;
 
 import java.util.*;
-import java.io.*;
 
 
 /* 
@@ -138,7 +137,7 @@ public class Shell extends StdCommand
                 changeTo=pwd+"/"+changeTo;
             if(changeTo.startsWith("/"))
                 changeTo=changeTo.substring(1);
-            changeTo=Resources.fixFilename(changeTo);
+            changeTo=new CMFile(changeTo,mob,false).getLocalStyleAbsolutePath().replace(CMFile.pathSeparator,'/');
             if(!CMSecurity.canTraverseDir(mob,mob.location(),changeTo))
             {
                 mob.tell("^xError: you are not authorized enter that directory.^N");
@@ -160,42 +159,42 @@ public class Shell extends StdCommand
         }
         case 7: // directory
         {
-            DVector dir=Resources.allFilesInDir(mob,mob.location(),pwd);
+            CMFile[] dir=new CMFile(pwd,mob,false).listFiles();
             StringBuffer msg=new StringBuffer("\n^xFile list for directory: /"+pwd+"^.^N\n\r^y .\n\r");
             if(pwd.length()>0) msg.append("^y ..\n\r");
-            for(int d=0;d<dir.size();d++)
+            for(int d=0;d<dir.length;d++)
             {
-                int bits=((Integer)dir.elementAt(d,Resources.VFS_INFO_BITS+1)).intValue();
-                if(Util.bset(bits,Resources.VFS_MASK_DIRECTORY))
+                CMFile entry=dir[d];
+                if(entry.isDirectory())
                 {
-                    if(Util.bset(bits,Resources.VFS_MASK_NOTVFS))
+                    if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
                         msg.append(" ");
                     else
-                    if(Util.bset(bits,Resources.VFS_MASK_ALSONOTVFS))
+                    if(entry.isLocalFile()&&(entry.canVFSEquiv()))
                         msg.append("^R+");
                     else
                         msg.append("^r-");
-                    msg.append("^y"+Util.padRight((String)dir.elementAt(d,Resources.VFS_INFO_FILENAME+1),25));
-                    msg.append("^w"+Util.padRight(IQCalendar.d2String(((Long)dir.elementAt(d,Resources.VFS_INFO_DATE+1)).longValue()),20));
-                    msg.append("^w"+Util.padRight((String)dir.elementAt(d,Resources.VFS_INFO_WHOM+1),20));
+                    msg.append("^y"+Util.padRight(entry.getName(),25));
+                    msg.append("^w"+Util.padRight(IQCalendar.d2String(entry.lastModified()),20));
+                    msg.append("^w"+Util.padRight(entry.author(),20));
                     msg.append("\n\r");
                 }
             }
-            for(int d=0;d<dir.size();d++)
+            for(int d=0;d<dir.length;d++)
             {
-                int bits=((Integer)dir.elementAt(d,Resources.VFS_INFO_BITS+1)).intValue();
-                if(!Util.bset(bits,Resources.VFS_MASK_DIRECTORY))
+                CMFile entry=dir[d];
+                if(!entry.isDirectory())
                 {
-                    if(Util.bset(bits,Resources.VFS_MASK_NOTVFS))
+                    if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
                         msg.append(" ");
                     else
-                    if(Util.bset(bits,Resources.VFS_MASK_ALSONOTVFS))
+                    if(entry.isLocalFile()&&(entry.canVFSEquiv()))
                         msg.append("^R+");
                     else
                         msg.append("^r-");
-                    msg.append("^w"+Util.padRight((String)dir.elementAt(d,Resources.VFS_INFO_FILENAME+1),25));
-                    msg.append("^w"+Util.padRight(IQCalendar.d2String(((Long)dir.elementAt(d,Resources.VFS_INFO_DATE+1)).longValue()),20));
-                    msg.append("^w"+Util.padRight((String)dir.elementAt(d,Resources.VFS_INFO_WHOM+1),20));
+                    msg.append("^w"+Util.padRight(entry.getName(),25));
+                    msg.append("^w"+Util.padRight(IQCalendar.d2String(entry.lastModified()),20));
+                    msg.append("^w"+Util.padRight(entry.author(),20));
                     msg.append("\n\r");
                 }
             }
@@ -209,22 +208,18 @@ public class Shell extends StdCommand
         }
         case 9: // type
         {
-            Vector V=getFileData(mob,mob.location(),pwd,Util.combine(commands,1));
-            if(V==null)
+            CMFile CF=getFileData(mob,mob.location(),pwd,Util.combine(commands,1));
+            if(!CF.exists())
             {
                 mob.tell("^xError: file does not exist!^N");
                 return false;
             }
-            String fullPath=(String)V.elementAt(0);
-            fullPath="/"+(String)V.elementAt(1);
-            while(fullPath.startsWith("/"))
-                fullPath=fullPath.substring(1);
-            if(!CMSecurity.canAccessFile(mob,mob.location(),fullPath,Resources.isVFSFile(fullPath)))
+            if(!CF.canRead())
             {
                 mob.tell("^xError: access denied!^N");
                 return false;
             }
-            StringBuffer buf=Resources.getFile(fullPath,false);
+            StringBuffer buf=CF.text();
             if((buf==null)||(buf.length()==0))
             {
                 mob.tell("^xError: file is empty or doesn't exist!^N");
@@ -240,7 +235,7 @@ public class Shell extends StdCommand
 		return true;
 	}
 
-    public Vector getFileData(MOB mob, Room room, String pwd, String path)
+    public CMFile getFileData(MOB mob, Room room, String pwd, String path)
     {
         if(path.startsWith("./"))
             path=path.substring(2);
@@ -264,13 +259,13 @@ public class Shell extends StdCommand
         int x=path.lastIndexOf("/");
         String file=(x>=0)?path.substring(x+1):path;
         path=(x>=0)?path.substring(0,x):"";
-        path=Resources.fixFilename(path);
+        path=new CMFile(path,mob,false).getLocalStyleAbsolutePath().replace(CMFile.pathSeparator,'/');
         if(!CMSecurity.canTraverseDir(mob,room,path))
             return null;
-        DVector dir=Resources.allFilesInDir(mob,room,path);
-        for(int d=0;d<dir.size();d++)
-            if(((String)dir.elementAt(d,Resources.VFS_INFO_FILENAME+1)).equalsIgnoreCase(file))
-                return Util.makeVector(path,file,dir.elementAt(d,Resources.VFS_INFO_BITS+1));
+        CMFile[] dir=new CMFile(path,mob,false).listFiles();
+        for(int d=0;d<dir.length;d++)
+            if(dir[d].getName().equalsIgnoreCase(file))
+                return dir[d];
         return null;
     }
     

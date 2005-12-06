@@ -2,7 +2,7 @@ package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
-import java.io.File;
+
 
 /*
    Copyright 2000-2005 Bo Zimmerman
@@ -780,7 +780,7 @@ public class CommonStrings extends Scriptable
         if(H==null)
         {
             H=new Hashtable();
-            Vector V=Resources.getFileLineVector(Resources.getFile(Resources.buildResourcePath(null)+"mxp_images.ini",false));
+            Vector V=Resources.getFileLineVector(new CMFile(Resources.buildResourcePath(null)+"mxp_images.ini",null,false).text());
             if((V!=null)&&(V.size()>0))
             {
                 String s=null;

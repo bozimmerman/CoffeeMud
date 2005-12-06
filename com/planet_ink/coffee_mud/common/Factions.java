@@ -3,7 +3,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
-import java.io.*;
+
 /**
  * <p>Portions Copyright (c) 2003 Jeremy Vyska</p>
  * <p>Portions Copyright (c) 2004 Bo Zimmerman</p>
@@ -81,7 +81,7 @@ public class Factions implements Tickable
 	    if(factionID==null) return null;
 		Faction F=(Faction)factionSet.get(factionID.toUpperCase());
 		if(F!=null) return F;
-        StringBuffer buf=Resources.getFile(Resources.buildResourcePath(null)+factionID,true);
+        StringBuffer buf=new CMFile(Resources.buildResourcePath(null)+factionID,null,true).text();
 	    if((buf!=null)&&(buf.length()>0))
 	    {
             F=new Faction(buf,factionID);

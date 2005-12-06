@@ -1,7 +1,6 @@
 package com.planet_ink.siplet.support;
 
 import java.util.*;
-import java.io.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman

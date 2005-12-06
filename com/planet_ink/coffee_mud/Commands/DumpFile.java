@@ -70,7 +70,7 @@ public class DumpFile extends StdCommand
 			if (Resources.getResource(fn) != null)
 				wipeAfter = false;
 
-			StringBuffer ft = Resources.getFile(fn,true);
+			StringBuffer ft = new CMFile(fn,mob,true).text();
 			if (ft != null && ft.length() > 0)
 			{
 				fileText.append("\n\r");

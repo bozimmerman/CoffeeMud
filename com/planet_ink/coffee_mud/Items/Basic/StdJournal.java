@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.exceptions.HTTPRedirectException;
 import java.util.*;
-import java.io.*;
+import java.io.IOException;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman

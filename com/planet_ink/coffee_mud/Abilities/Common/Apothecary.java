@@ -8,7 +8,6 @@ import com.planet_ink.coffee_mud.interfaces.Environmental;
 import com.planet_ink.coffee_mud.interfaces.MOB;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
-import java.io.File;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman

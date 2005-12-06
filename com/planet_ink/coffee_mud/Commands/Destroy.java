@@ -493,7 +493,7 @@ public class Destroy extends BaseItemParser
 		{
 			Socials.remove(soc2.name());
 			Resources.removeResource("SOCIALS LIST");
-			Socials.save();
+			Socials.save(mob);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just decreased!");
             Log.sysOut("SysopSocials",mob.Name()+" destroyed social "+soc2.name()+".");
 		}
@@ -810,7 +810,7 @@ public class Destroy extends BaseItemParser
                 {
                     try
                     {
-                        java.io.File F2=new java.io.File("resources"+java.io.File.separatorChar+F.ID);
+                        java.io.File F2=new java.io.File("resources"+CMFile.pathSeparator+F.ID);
                         if(F2.exists()) F2.delete();
                         Log.sysOut("CreateEdit",mob.Name()+" destroyed Faction "+F.name+" ("+F.ID+").");
                         mob.tell("Faction File '"+F.ID+"' deleted.");

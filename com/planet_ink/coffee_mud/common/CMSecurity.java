@@ -2,7 +2,7 @@ package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
 
-import java.io.File;
+import java.io.File; // does some cmfile type stuff
 import java.util.*;
 
 /* 
@@ -174,14 +174,14 @@ public class CMSecurity
         if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
         if(mob.playerStats().getSecurityGroups().size()==0)
             return false;
-        path=Util.replaceAll(Resources.fixFilename(path.trim()),"\\","/").toUpperCase();
+        path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
         if(path.equals("/")||path.equals(".")) path="";
         if(path.length()>0)
         {
-            File F=new File(path.replace('/',File.separatorChar));
+            File F=new File(path.replace('/',CMFile.pathSeparator));
             if((!F.exists())||(!F.isDirectory()))
             {
-                Vector vfs=Resources.getVFSDirectory();
+                Vector vfs=CMFile.getVFSDirectory();
                 boolean found=false;
                 for(int v=0;v<vfs.size();v++)
                     if(((String)((Vector)vfs.elementAt(v)).elementAt(0)).toUpperCase().startsWith(path.toUpperCase()+"/"))
@@ -248,7 +248,7 @@ public class CMSecurity
         if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
         if(mob.playerStats().getSecurityGroups().size()==0)
             return false;
-        path=Util.replaceAll(Resources.fixFilename(path.trim()),"\\","/").toUpperCase();
+        path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
         if(path.equals("/")||path.equals(".")) path="";
         Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
         Util.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
@@ -527,7 +527,7 @@ public class CMSecurity
             if(O instanceof String)
                 newApproved.append(L.toString()+"="+((String)O)+"\n");
         }
-        Resources.saveFileResource("jscripts.ini",approver,0,newApproved);
+        Resources.saveFileResource("jscripts.ini",null,newApproved);
     }
     
     public static Hashtable getApprovedJScriptTable()

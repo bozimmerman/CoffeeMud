@@ -4,7 +4,6 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
-import java.io.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -56,8 +55,8 @@ public class Skill_Joke extends BardSkill
 			if(auto) str="<T-NAME> remember(s) a joke!";
 			else
 			{
-				Vector insultd=Resources.getFileLineVector(Resources.getFileResource("skills"+File.separatorChar+"insultd.txt",true));
-				Vector insulto=Resources.getFileLineVector(Resources.getFileResource("skills"+File.separatorChar+"insulto.txt",true));
+				Vector insultd=Resources.getFileLineVector(Resources.getFileResource("skills"+CMFile.pathSeparator+"insultd.txt",true));
+				Vector insulto=Resources.getFileLineVector(Resources.getFileResource("skills"+CMFile.pathSeparator+"insulto.txt",true));
 				String[] ob=new String[5];
 				String[] de=new String[5];
 				for (int cnt=1; cnt<4; cnt++)

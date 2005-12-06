@@ -2,8 +2,8 @@ package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
 
+import java.io.ByteArrayInputStream;
 import java.util.*;
-import java.io.*;
 import java.lang.reflect.*;
 /**
  * <p>Portions Copyright (c) 2003 Jeremy Vyska</p>

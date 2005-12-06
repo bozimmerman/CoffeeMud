@@ -1,11 +1,12 @@
 package com.planet_ink.coffee_mud.common;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.*;
 import java.util.*;
 import java.sql.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
+import java.io.IOException;
 
 // requires nothing to load
 /* 
@@ -50,116 +51,106 @@ public class Socials extends Scriptable
 
 	public static void load(String newFilename)
 	{
-		filename=newFilename;
-		try
+		Socials.filename=newFilename;
+        Vector V=Resources.getFileLineVector(new CMFile(newFilename,null,true).text());
+        for(int v=0;v<V.size();v++)
 		{
-			FileInputStream fin=new FileInputStream(filename);
-			BufferedReader reader=new BufferedReader(new InputStreamReader(fin));
-			String getline=reader.readLine();
-			while(getline!=null)
+            String getline=(String)V.elementAt(v);
+			int x=getline.indexOf("\t");
+			if(x>=0)
 			{
-				int x=getline.indexOf("\t");
+				Social socobj=new Social();
+				String s=getline.substring(0,x).toUpperCase();
+				if(s.length()>0)
+				switch(s.charAt(0))
+				{
+				case 'W':
+					socobj.setSourceCode(CMMsg.MSG_SPEAK);
+					break;
+				case 'M':
+					socobj.setSourceCode(CMMsg.MSG_HANDS);
+					break;
+				case 'S':
+					socobj.setSourceCode(CMMsg.MSG_NOISE);
+					break;
+				case 'O':
+					socobj.setSourceCode(CMMsg.MSG_NOISYMOVEMENT);
+					break;
+				default:
+					socobj.setSourceCode(CMMsg.MSG_HANDS);
+					break;
+				}
+				if(s.length()>1)
+				switch(s.charAt(1))
+				{
+				case 'T':
+					socobj.setOthersCode(CMMsg.MSG_HANDS);
+					socobj.setTargetCode(CMMsg.MSG_HANDS);
+					break;
+				case 'S':
+					socobj.setOthersCode(CMMsg.MSG_NOISE);
+					socobj.setTargetCode(CMMsg.MSG_NOISE);
+					break;
+				case 'W':
+					socobj.setOthersCode(CMMsg.MSG_SPEAK);
+					socobj.setTargetCode(CMMsg.MSG_SPEAK);
+					break;
+				case 'V':
+					socobj.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
+					socobj.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
+					break;
+				case 'O':
+					socobj.setOthersCode(CMMsg.MSG_OK_VISUAL);
+					socobj.setTargetCode(CMMsg.MSG_OK_VISUAL);
+					break;
+				default:
+					socobj.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
+					socobj.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
+					break;
+				}
+				getline=getline.substring(x+1);
+				x=getline.indexOf("\t");
 				if(x>=0)
 				{
-					Social socobj=new Social();
-					String s=getline.substring(0,x).toUpperCase();
-					if(s.length()>0)
-					switch(s.charAt(0))
-					{
-					case 'W':
-						socobj.setSourceCode(CMMsg.MSG_SPEAK);
-						break;
-					case 'M':
-						socobj.setSourceCode(CMMsg.MSG_HANDS);
-						break;
-					case 'S':
-						socobj.setSourceCode(CMMsg.MSG_NOISE);
-						break;
-					case 'O':
-						socobj.setSourceCode(CMMsg.MSG_NOISYMOVEMENT);
-						break;
-					default:
-						socobj.setSourceCode(CMMsg.MSG_HANDS);
-						break;
-					}
-					if(s.length()>1)
-					switch(s.charAt(1))
-					{
-					case 'T':
-						socobj.setOthersCode(CMMsg.MSG_HANDS);
-						socobj.setTargetCode(CMMsg.MSG_HANDS);
-						break;
-					case 'S':
-						socobj.setOthersCode(CMMsg.MSG_NOISE);
-						socobj.setTargetCode(CMMsg.MSG_NOISE);
-						break;
-					case 'W':
-						socobj.setOthersCode(CMMsg.MSG_SPEAK);
-						socobj.setTargetCode(CMMsg.MSG_SPEAK);
-						break;
-					case 'V':
-						socobj.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
-						socobj.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
-						break;
-					case 'O':
-						socobj.setOthersCode(CMMsg.MSG_OK_VISUAL);
-						socobj.setTargetCode(CMMsg.MSG_OK_VISUAL);
-						break;
-					default:
-						socobj.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
-						socobj.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
-						break;
-					}
+					socobj.setName(getline.substring(0,x).toUpperCase());
 					getline=getline.substring(x+1);
 					x=getline.indexOf("\t");
 					if(x>=0)
 					{
-						socobj.setName(getline.substring(0,x).toUpperCase());
+						socobj.setYou_see(getline.substring(0,x));
 						getline=getline.substring(x+1);
 						x=getline.indexOf("\t");
 						if(x>=0)
 						{
-							socobj.setYou_see(getline.substring(0,x));
+							socobj.setThird_party_sees(getline.substring(0,x));
 							getline=getline.substring(x+1);
 							x=getline.indexOf("\t");
 							if(x>=0)
 							{
-								socobj.setThird_party_sees(getline.substring(0,x));
+								socobj.setTarget_sees(getline.substring(0,x));
 								getline=getline.substring(x+1);
 								x=getline.indexOf("\t");
 								if(x>=0)
-								{
-									socobj.setTarget_sees(getline.substring(0,x));
-									getline=getline.substring(x+1);
-									x=getline.indexOf("\t");
-									if(x>=0)
-                                    {
-										socobj.setSee_when_no_target(getline.substring(0,x));
-                                        getline=getline.substring(x+1);
-                                        x=getline.indexOf("\t");
-                                        if(x>=0)
-                                            socobj.setMSPfile(getline.substring(0,x));
-                                        else
-                                            socobj.setMSPfile(getline);
-                                    }
-									else
-										socobj.setSee_when_no_target(getline);
+                                {
+									socobj.setSee_when_no_target(getline.substring(0,x));
+                                    getline=getline.substring(x+1);
+                                    x=getline.indexOf("\t");
+                                    if(x>=0)
+                                        socobj.setMSPfile(getline.substring(0,x));
+                                    else
+                                        socobj.setMSPfile(getline);
+                                }
+								else
+									socobj.setSee_when_no_target(getline);
 
-								}
 							}
-							soc.put(socobj.name(),socobj);
 						}
+						soc.put(socobj.name(),socobj);
 					}
 				}
-				getline=reader.readLine();
 			}
-			loaded= true;
-		}
-		catch(IOException e)
-		{
-			Log.errOut("Socials",e.getMessage());
-			loaded= false;
-		}
+        }
+        loaded=true;
 	}
 
     public static void modifySocialOthersCode(MOB mob, Social me, int showNumber, int showFlag)
@@ -443,7 +434,7 @@ public class Socials extends Scriptable
             }
             if((resaveSocials)&&(soc!=null))
             {
-                Socials.save();
+                Socials.save(mob);
                 Log.sysOut("Socials",mob.Name()+" modified social "+soc.name()+".");
                 soc=null;
                 if(rest.length()>0)
@@ -529,116 +520,106 @@ public class Socials extends Scriptable
 		return null;
 	}
 
-	public static void save()
+	public static void save(MOB whom)
 	{
 		if(loaded==false) return;
-		try
+		StringBuffer buf=new StringBuffer("");
+		Vector V=new Vector();
+		for (Enumeration e = soc.elements() ; e.hasMoreElements() ; )
 		{
-			FileWriter writer=new FileWriter(filename,false);
-			StringBuffer buf=new StringBuffer("");
-			Vector V=new Vector();
-			for (Enumeration e = soc.elements() ; e.hasMoreElements() ; )
+			Social S1=(Social)e.nextElement();
+			for(int i=0;i<V.size();i++)
 			{
-				Social S1=(Social)e.nextElement();
-				for(int i=0;i<V.size();i++)
+				Social S2=(Social)V.elementAt(i);
+				if(S1.equals(S2))
 				{
-					Social S2=(Social)V.elementAt(i);
-					if(S1.equals(S2))
-					{
-						V.insertElementAt(S1,i);
-						break;
-					}
+					V.insertElementAt(S1,i);
+					break;
 				}
-				if(!V.contains(S1))
-					V.addElement(S1);
 			}
-            Vector sorted=new Vector();
-            while(V.size()>0)
+			if(!V.contains(S1))
+				V.addElement(S1);
+		}
+        Vector sorted=new Vector();
+        while(V.size()>0)
+        {
+            Social lowest=(Social)V.firstElement();
+            Social S=null;
+            for(int i=1;i<V.size();i++)
             {
-                Social lowest=(Social)V.firstElement();
-                Social S=null;
-                for(int i=1;i<V.size();i++)
-                {
-                    S=(Social)V.elementAt(i);
-                    if(S.name().compareToIgnoreCase(lowest.Name())<=0)
-                        lowest=S;
-                }
-                V.remove(lowest);
-                sorted.add(lowest);
+                S=(Social)V.elementAt(i);
+                if(S.name().compareToIgnoreCase(lowest.Name())<=0)
+                    lowest=S;
             }
-            V=sorted;
-			for(int v=0;v<V.size();v++)
-			{
-				Social I=(Social)V.elementAt(v);
-
-				switch(I.sourceCode())
-				{
-				case CMMsg.MSG_SPEAK:
-					buf.append('w');
-					break;
-				case CMMsg.MSG_HANDS:
-					buf.append('m');
-					break;
-				case CMMsg.MSG_NOISE:
-					buf.append('s');
-					break;
-				case CMMsg.MSG_NOISYMOVEMENT:
-					buf.append('o');
-					break;
-				default:
-					buf.append(' ');
-					break;
-				}
-				switch(I.targetCode())
-				{
-				case CMMsg.MSG_HANDS:
-					buf.append('t');
-					break;
-				case CMMsg.MSG_NOISE:
-					buf.append('s');
-					break;
-				case CMMsg.MSG_SPEAK:
-					buf.append('w');
-					break;
-				case CMMsg.MSG_NOISYMOVEMENT:
-					buf.append('v');
-					break;
-				case CMMsg.MSG_OK_VISUAL:
-					buf.append('o');
-					break;
-				default:
-					buf.append(' ');
-					break;
-				}
-				String[] stuff=new String[6];
-				stuff[0]=I.name();
-				stuff[1]=I.You_see();
-				stuff[2]=I.Third_party_sees();
-				stuff[3]=I.Target_sees();
-				stuff[4]=I.See_when_no_target();
-                stuff[5]=I.MSPfile();
-				buf.append('\t');
-				for(int i=0;i<stuff.length;i++)
-				{
-					if(stuff[i]==null)
-						buf.append("\t");
-					else
-						buf.append(stuff[i]+"\t");
-				}
-				buf.setCharAt(buf.length()-1,'\r');
-				buf.append('\n');
-			}
-			writer.write(buf.toString());
-			writer.flush();
-			writer.close();
-			Resources.removeResource("SOCIALS LIST");
-			Resources.removeResource("WEB SOCIALS TBL");
-		}
-		catch(IOException e)
+            V.remove(lowest);
+            sorted.add(lowest);
+        }
+        V=sorted;
+		for(int v=0;v<V.size();v++)
 		{
-			Log.errOut("Socials",e.getMessage());
-			loaded= false;
+			Social I=(Social)V.elementAt(v);
+
+			switch(I.sourceCode())
+			{
+			case CMMsg.MSG_SPEAK:
+				buf.append('w');
+				break;
+			case CMMsg.MSG_HANDS:
+				buf.append('m');
+				break;
+			case CMMsg.MSG_NOISE:
+				buf.append('s');
+				break;
+			case CMMsg.MSG_NOISYMOVEMENT:
+				buf.append('o');
+				break;
+			default:
+				buf.append(' ');
+				break;
+			}
+			switch(I.targetCode())
+			{
+			case CMMsg.MSG_HANDS:
+				buf.append('t');
+				break;
+			case CMMsg.MSG_NOISE:
+				buf.append('s');
+				break;
+			case CMMsg.MSG_SPEAK:
+				buf.append('w');
+				break;
+			case CMMsg.MSG_NOISYMOVEMENT:
+				buf.append('v');
+				break;
+			case CMMsg.MSG_OK_VISUAL:
+				buf.append('o');
+				break;
+			default:
+				buf.append(' ');
+				break;
+			}
+			String[] stuff=new String[6];
+			stuff[0]=I.name();
+			stuff[1]=I.You_see();
+			stuff[2]=I.Third_party_sees();
+			stuff[3]=I.Target_sees();
+			stuff[4]=I.See_when_no_target();
+            stuff[5]=I.MSPfile();
+			buf.append('\t');
+			for(int i=0;i<stuff.length;i++)
+			{
+				if(stuff[i]==null)
+					buf.append("\t");
+				else
+					buf.append(stuff[i]+"\t");
+			}
+			buf.setCharAt(buf.length()-1,'\r');
+			buf.append('\n');
 		}
+        if(!new CMFile(filename,whom,false).saveText(buf))
+            Log.errOut("Socials","Unable to save socials.txt!");
+		Resources.removeResource("SOCIALS LIST");
+		Resources.removeResource("WEB SOCIALS TBL");
 	}
 
     public static Vector getAllSocialObjects(String named)

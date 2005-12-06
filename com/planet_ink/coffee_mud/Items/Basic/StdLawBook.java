@@ -4,7 +4,8 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -166,7 +167,7 @@ public class StdLawBook extends StdItem
 			if((lawProps==null)||(lawProps.isEmpty()))
 			{
 				lawProps=new Properties();
-				lawProps.load(new FileInputStream("resources"+File.separatorChar+"lawtoc.ini"));
+                lawProps.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("")+"lawtoc.ini",null,false).text().toString().getBytes()));
 				Resources.submitResource("LAWBOOKTOC",lawProps);
 			}
 			String s=(String)lawProps.get(tag);

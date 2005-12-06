@@ -4,7 +4,6 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import java.util.*;
-import java.io.*;
 
 
 /* 
@@ -154,7 +153,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		Vector V=(Vector)Resources.getResource("PARSED: clancraft.txt");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile(Resources.buildResourcePath("skills")+"clancraft.txt",true);
+			StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+"clancraft.txt",null,true).text();
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("StdClanItem","Recipes not found!");

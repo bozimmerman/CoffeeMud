@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 
-import java.io.File;
+
 import java.util.*;
 
 /* 
@@ -166,7 +166,7 @@ public class CraftingSkill extends GatheringSkill
         Vector V=(Vector)Resources.getResource("PARSED: "+filename);
         if(V==null)
         {
-            StringBuffer str=Resources.getFile(Resources.buildResourcePath("skills")+filename,true);
+            StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,true).text();
             V=loadList(str);
             if(V.size()==0)
                 Log.errOut(ID(),"Recipes not found!");

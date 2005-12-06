@@ -3,7 +3,6 @@ package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.MOB;
 import com.planet_ink.coffee_mud.interfaces.Room;
 import com.planet_ink.coffee_mud.utils.*;
-import java.io.*;
 import java.util.*;
 
 
@@ -39,7 +38,7 @@ public class Resources
         return "resources"+CMFile.pathSeparator+path+CMFile.pathSeparator;
     }
 	
-	public static void updateMultiList(String filename, String whom, int vfsBits, Hashtable lists)
+	public static void updateMultiList(String filename, Hashtable lists)
 	{
 		StringBuffer str=new StringBuffer("");
 		for(Enumeration e=lists.keys();e.hasMoreElements();)
@@ -52,7 +51,7 @@ public class Resources
 				str.append(((String)V.elementAt(v))+"\r\n");
 			str.append("\r\n");
 		}
-		Resources.saveFile(filename,whom,vfsBits,str);
+        new CMFile(filename,null,false).saveText(str);
 	}
 	
 	public static Hashtable getMultiLists(String filename)
@@ -60,7 +59,7 @@ public class Resources
 		Hashtable oldH=new Hashtable();
 		Vector V=new Vector();
 		try{
-			V=Resources.getFileLineVector(CMFile.getFile(Resources.buildResourcePath(null)+filename,false));
+			V=Resources.getFileLineVector(new CMFile(Resources.buildResourcePath(null)+filename,null,false).text());
 		}catch(Exception e){}
 		if((V!=null)&&(V.size()>0))
 		{
@@ -194,7 +193,7 @@ public class Resources
 	public static boolean isFileResource(String filename)
 	{
 	    if(getResource(filename)!=null) return true;
-	    if(CMFile.getFile(makeFileResourceName(filename),false)!=null)
+	    if(new CMFile(makeFileResourceName(filename),null,false).exists())
 	    	return true;
 	    return false;
 	}
@@ -210,24 +209,22 @@ public class Resources
 				return new StringBuffer((String)rsc);
 		}
 		
-		StringBuffer buf=CMFile.getFile(makeFileResourceName(filename),reportErrors);
-		if(buf==null) buf=new StringBuffer("");
+		StringBuffer buf=new CMFile(makeFileResourceName(filename),null,reportErrors).text();
 		submitResource(filename,buf);
 		return buf;
 	}
 	
     public static boolean saveFileResource(String filename)
-    {return saveFileResource(filename,null,-1,getFileResource(filename,false));}
-	public static boolean saveFileResource(String filename, String whom, int vfsBits, StringBuffer myRsc)
+    {return saveFileResource(filename,null,getFileResource(filename,false));}
+	public static boolean saveFileResource(String filename, MOB whom, StringBuffer myRsc)
 	{
         boolean vfsFile=filename.trim().startsWith("::");
         boolean localFile=filename.trim().startsWith("||");
-        filename=CMFile.fixFilename(filename);
-        if(!filename.startsWith("resources"+CMFile.pathSeparator))
-            CMFile.saveFile((vfsFile?"::":localFile?"||":"")+"resources"+CMFile.pathSeparator+filename,whom,vfsBits,myRsc);
-        else
-            CMFile.saveFile((vfsFile?"::":localFile?"||":"")+filename,whom,vfsBits,myRsc);
-        return false;
+        filename=CMFile.vfsifyFilename(filename);
+        if(filename.startsWith("resources/"))
+            filename="resources/"+filename;
+        filename=(vfsFile?"::":localFile?"||":"")+filename;
+        return new CMFile(filename,whom,false).saveRaw(myRsc);
 	}
 	
 	public static void setCompression(boolean truefalse)

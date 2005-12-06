@@ -3,7 +3,6 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
-import java.io.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -66,7 +65,7 @@ public class Taxidermy extends CraftingSkill
 		if(V==null)
 		{
 			V=new Vector();
-			StringBuffer str=Resources.getFile(Resources.buildResourcePath("skills")+filename,true);
+			StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,true).text();
 			Vector strV=Resources.getFileLineVector(str);
 			Vector V2=null;
 			boolean header=true;

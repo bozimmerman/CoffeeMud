@@ -1,5 +1,4 @@
 package com.planet_ink.coffee_mud.MOBS;
-import java.io.*;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.utils.*;
@@ -573,13 +572,7 @@ public class StdMOB implements MOB
         amFollowing=null;
         soulMate=null;
         StartRoom=null;
-        try{int x=45/0;x=x/0;}catch(Exception e){
-            ByteArrayOutputStream o=new ByteArrayOutputStream();
-            e.printStackTrace(new PrintStream(o));
-            destroyString+=o.toString();
-        }
 	}
-    String destroyString="";
 
 	public void removeFromGame(boolean preserveFollowers)
 	{
@@ -683,8 +676,6 @@ public class StdMOB implements MOB
             Log.errOut("StdMOB","Object: "+this+", was probably destroyed very recently! Life call details below:");
             try{int x=4/0;x=x/0;}catch(Exception e){Log.errOut("StdMOB",e);}
             Log.errOut("StdMOB","Original Start room was: "+CMMap.getExtendedRoomID(origStartRoom));
-            Log.errOut("StdMOB",destroyString);
-            destroyString="";
             destroy();
             return;
         }

@@ -3,7 +3,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 
-import java.io.File;
+
 import java.util.*;
 
 /* 
@@ -43,7 +43,7 @@ public class MXP extends StdCommand
                 if(mob.session().serverTelnetMode(Session.TELNET_MXP))
                 {
 					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_MXP));
-					StringBuffer mxpText=Resources.getFileResource("text"+File.separatorChar+"mxp.txt",true);
+					StringBuffer mxpText=Resources.getFileResource("text"+CMFile.pathSeparator+"mxp.txt",true);
 			        if(mxpText!=null)
 			            mob.session().rawPrintln("\033[6z\n\r"+mxpText.toString()+"\n\r");
 					mob.tell("MXP codes enabled.\n\r");

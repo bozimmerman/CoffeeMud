@@ -4,7 +4,6 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
-import java.io.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -93,24 +92,9 @@ public class MovingRoom extends ActiveTicker
 	private static synchronized String loadInfo()
 	{
 		StringBuffer str=new StringBuffer("");
-		try
-		{
-			FileReader F=new FileReader("resources"+File.separatorChar+"movingroom.xml");
-			BufferedReader reader=new BufferedReader(F);
-			String line="";
-			while((line!=null)&&(reader.ready()))
-			{
-				line=reader.readLine();
-				if(line!=null)
-					str.append(line);
-			}
-			F.close();
-		}
-		catch(Exception e)
-		{
-			Log.errOut("MovingRoom",e.getMessage());
-			return null;
-		}
+        Vector V=Resources.getFileLineVector(new CMFile(Resources.buildResourcePath("")+"movingroom.xml",null,true).text());
+        for(int v=0;v<V.size();v++)
+			str.append((String)V.elementAt(v));
 		String theString = str.toString();
 		return theString;
 	}

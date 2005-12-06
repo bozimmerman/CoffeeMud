@@ -4,8 +4,10 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 
-import java.io.*;
 import java.util.*;
+import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 /*
    Copyright 2000-2005 Bo Zimmerman
@@ -1049,7 +1051,7 @@ public class Arrest extends StdBehavior
 					}
 				}
 				if(lawprops.isEmpty())
-					lawprops.load(new FileInputStream("resources"+File.separatorChar+lawName));
+                    lawprops.load(new ByteArrayInputStream(new CMFile("resources"+CMFile.pathSeparator+lawName,null,false).text().toString().getBytes()));
 			}
 			catch(IOException e)
 			{

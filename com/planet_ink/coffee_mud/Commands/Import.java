@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
-import java.io.*;
+import java.io.IOException;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -2406,12 +2406,12 @@ public class Import extends StdCommand
 					else
 					{
 						try{
-							File F2=new File(areaFileName);
+							CMFile F2=new CMFile(areaFileName,M,true);
 							if((F2.exists())&&(!F2.isDirectory()))
 							{
-								int x=F2.getAbsolutePath().lastIndexOf(File.separatorChar);
-								String path=F2.getAbsolutePath().substring(0,x)+File.separatorChar+mobprg;
-								StringBuffer buf=Resources.getFile(path,true);
+								int x=F2.getLocalStyleAbsolutePath().lastIndexOf(CMFile.pathSeparator);
+								String path=F2.getLocalStyleAbsolutePath().substring(0,x)+CMFile.pathSeparator+mobprg;
+								StringBuffer buf=new CMFile(path,M,true).text();
 								if((buf==null)||(buf.length()==0))
 									returnAnError(mob,"Unknown MobPrg: "+mobprg);
 								else
@@ -3744,13 +3744,13 @@ public class Import extends StdCommand
 			if(customBother.contains(filename))
 			   continue;
 
-			if(Resources.getFileRaw(filename,false)!=null)
+			if(new CMFile(filename,mob,false).exists())
 			{
 				if(!noPrompt)
 					if(!mob.session().confirm("\n\rExternal resource '"+filename+"' found, import (Y/n)?","Y"))
 						continue;
 			}
-		    Resources.saveFileResource(filename,mob.Name(),0,new StringBuffer(data));
+		    Resources.saveFileResource(filename,mob,new StringBuffer(data));
 		}
 	}
 
@@ -3902,12 +3902,12 @@ public class Import extends StdCommand
 		for(int areaFile=commands.size()-1;areaFile>=0;areaFile--)
 		{
 			String areaFileName=(String)commands.elementAt(areaFile);
-			File F=new File(areaFileName);
-			File[] FF=F.listFiles();
+			CMFile F=new CMFile(areaFileName,mob,true);
+			CMFile[] FF=F.listFiles();
 			if((FF!=null)&&(FF.length>0))
 			{
 				for(int f=0;f<FF.length;f++)
-					commands.addElement(FF[f].getAbsolutePath());
+					commands.addElement(FF[f].getLocalStyleAbsolutePath());
 				commands.removeElementAt(areaFile);
 			}
 		}
@@ -3931,7 +3931,7 @@ public class Import extends StdCommand
 
 		String areaFileName=(String)commands.elementAt(areaFile);
 		// read in the .are file
-		StringBuffer buf=Resources.getFile(areaFileName,true);
+		StringBuffer buf=new CMFile(areaFileName,mob,true).text();
 		if((buf==null)||((buf!=null)&&(buf.length()==0)))
 		{
 			mob.tell("File not found at: '"+areaFileName+"'!");
@@ -3943,7 +3943,7 @@ public class Import extends StdCommand
 			{
 				mob.tell("Unpacking areas lists from file : '"+areaFileName+"'...");
 				String filePrefix="";
-				int c=areaFileName.lastIndexOf(File.separator);
+				int c=areaFileName.lastIndexOf(CMFile.pathSeparator);
 				if(c>=0) filePrefix=areaFileName.substring(0,c+1);
 				c=0;
 				String fn="";
@@ -3976,7 +3976,7 @@ public class Import extends StdCommand
 					mob.tell("You are not allowed to import areas in '"+areaFileName+"'.");
 					continue;
 				}
-				buf=Resources.getFileRaw(areaFileName);
+                buf=new CMFile(areaFileName,mob,true).textUnformatted();
 				Vector areas=new Vector();
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking area(s) from file: '"+areaFileName+"'...");
@@ -4050,7 +4050,7 @@ public class Import extends StdCommand
 					mob.tell("You are not allowed to import area in '"+areaFileName+"'.");
 					continue;
 				}
-				buf=Resources.getFileRaw(areaFileName);
+                buf=new CMFile(areaFileName,mob,true).textUnformatted();
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking area from file: '"+areaFileName+"'...");
 				Vector areaD=new Vector();
@@ -4097,7 +4097,7 @@ public class Import extends StdCommand
 					mob.tell("You are not allowed to import room in '"+areaFileName+"'.");
 					continue;
 				}
-				buf=Resources.getFileRaw(areaFileName);
+				buf=new CMFile(areaFileName,mob,true).textUnformatted();
 				mob.tell("Unpacking room from file: '"+areaFileName+"'...");
 				String error=CoffeeMaker.fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt);
@@ -4146,7 +4146,7 @@ public class Import extends StdCommand
 					mob.tell("You are not allowed to import mobs in '"+areaFileName+"' here.");
 					continue;
 				}
-				buf=Resources.getFileRaw(areaFileName);
+                buf=new CMFile(areaFileName,mob,true).textUnformatted();
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking mobs from file: '"+areaFileName+"'...");
 				Vector mobs=new Vector();
@@ -4182,7 +4182,7 @@ public class Import extends StdCommand
 					mob.tell("You are not allowed to import players in '"+areaFileName+"' here.");
 					continue;
 				}
-				buf=Resources.getFileRaw(areaFileName);
+                buf=new CMFile(areaFileName,mob,true).textUnformatted();
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking players from file: '"+areaFileName+"'...");
 				Vector mobs=new Vector();
@@ -4281,7 +4281,7 @@ public class Import extends StdCommand
 					mob.tell("You are not allowed to import items in '"+areaFileName+"' here.");
 					continue;
 				}
-				buf=Resources.getFileRaw(areaFileName);
+                buf=new CMFile(areaFileName,mob,true).textUnformatted();
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking items from file: '"+areaFileName+"'...");
 				Vector items=new Vector();
@@ -4455,7 +4455,7 @@ public class Import extends StdCommand
 			if(didSocials)
 			{
 				Log.sysOut("Import",mob.Name()+" imported socials from "+areaFileName);
-				Socials.save();
+				Socials.save(mob);
 			}
 		}
 		catch(Exception e)

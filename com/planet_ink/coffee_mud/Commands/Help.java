@@ -3,7 +3,6 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
-import java.io.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -38,7 +37,7 @@ public class Help extends StdCommand
 		}
 		StringBuffer thisTag=null;
 		if(helpStr.length()==0)
-			thisTag=Resources.getFileResource("help"+File.separatorChar+"help.txt",true);
+			thisTag=Resources.getFileResource("help"+CMFile.pathSeparator+"help.txt",true);
 		else
 			thisTag=MUDHelp.getHelpText(helpStr,MUDHelp.getHelpFile(),mob);
 		if((thisTag==null)&&(CMSecurity.isAllowed(mob,mob.location(),"AHELP")))

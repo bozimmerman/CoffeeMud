@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
-import java.io.File;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -55,7 +55,7 @@ public class LeatherWorking extends CraftingSkill
 		Vector recipes=(Vector)Resources.getResource("PARSED: "+filename);
 		if(recipes==null)
 		{
-			StringBuffer str=Resources.getFile(Resources.buildResourcePath("skills")+filename,true);
+			StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,true).text();
             recipes=loadList(str);
 			if(recipes.size()==0)
 				Log.errOut("LeatherWorking","Recipes not found!");

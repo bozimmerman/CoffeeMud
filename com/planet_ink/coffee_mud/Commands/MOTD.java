@@ -4,7 +4,6 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
-import java.io.*;
 import com.planet_ink.coffee_mud.exceptions.HTTPRedirectException;
 
 /* 
@@ -40,7 +39,7 @@ public class MOTD extends StdCommand
 			StringBuffer buf=new StringBuffer("");
 			try
 			{
-				String msg = Resources.getFile(Resources.buildResourcePath("text")+"motd.txt",false).toString();
+				String msg = new CMFile(Resources.buildResourcePath("text")+"motd.txt",null,false).text().toString();
 				if(msg.length()>0)
 				{
 					if(msg.startsWith("<cmvp>"))
