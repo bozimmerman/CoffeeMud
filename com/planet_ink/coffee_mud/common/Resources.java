@@ -3,9 +3,9 @@ package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.MOB;
 import com.planet_ink.coffee_mud.interfaces.Room;
 import com.planet_ink.coffee_mud.utils.*;
-
-import java.util.*;
 import java.io.*;
+import java.util.*;
+
 
 
 /* 
@@ -25,128 +25,18 @@ import java.io.*;
 */
 public class Resources
 {
-    public static final int VFS_MASK_TEXT=0;
-    public static final int VFS_MASK_BINARY=1;
-    public static final int VFS_MASK_READONLY=2;
-    public static final int VFS_MASK_HIDDEN=4;
-    public static final int VFS_MASK_DIRECTORY=8;
-    public static final int VFS_MASK_NOTVFS=16;
-    public static final int VFS_MASK_WRITABLE=32;
-    public static final int VFS_MASK_ALSONOTVFS=34;
-    
-    public static final int VFS_INFO_FILENAME=0;
-    public static final int VFS_INFO_BITS=1;
-    public static final int VFS_INFO_DATE=2;
-    public static final int VFS_INFO_WHOM=3;
-    public static final int VFS_INFO_DATA=4;
-    
 	private static boolean compress=false;
 	private static DVector resources=new DVector(3);
-    private static Vector vfs=null;
     
 	public static void clearResources()
 	{
 		resources=new DVector(3);
-        vfs=null;
 	}
-    
-    public static DVector allFilesInDir(MOB mob, Room room, String pwd)
-    {
-        DVector dir=new DVector(4);
-        Vector fcheck=new Vector();
-        Vector vfs=Resources.getVFSDirectory();
-        Vector info=null;
-        for(int v=0;v<vfs.size();v++)
-        {
-            info=(Vector)vfs.elementAt(v);
-            String name=(String)info.firstElement();
-            if(name.toUpperCase().startsWith(pwd+"/"))
-            {
-                name=name.substring((pwd+"/").length());
-                int x=name.indexOf("/");
-                if(x>0)
-                {
-                    name=name.substring(0,x);
-                    String path=(pwd.length()>0)?pwd+"/"+name:name;
-                    if((!fcheck.contains(name.toUpperCase()))
-                    &&CMSecurity.canTraverseDir(mob,room,path))
-                    {
-                        fcheck.addElement(name.toUpperCase());
-                        if(!dir.contains(name))
-                        {
-                            int bit=VFS_MASK_DIRECTORY|((Integer)info.elementAt(VFS_INFO_BITS)).intValue();
-                            if(CMSecurity.canAccessFile(mob,room,path,true)) bit=bit|VFS_MASK_WRITABLE;
-                                dir.addElement(name,new Integer(bit),info.elementAt(VFS_INFO_DATE),info.elementAt(VFS_INFO_WHOM));
-                        }
-                    }
-                }
-                else
-                if((!fcheck.contains(name.toUpperCase()))
-                &&(CMSecurity.canAccessFile(mob,room,(pwd.length()>0)?pwd+"/"+name:name,true)))
-                {
-                    fcheck.addElement(name.toUpperCase());
-                    if(!dir.contains(name))
-                    {
-                        int bit=VFS_MASK_WRITABLE|((Integer)info.elementAt(VFS_INFO_BITS)).intValue();
-                        dir.addElement(name,new Integer(bit),info.elementAt(VFS_INFO_DATE),info.elementAt(VFS_INFO_WHOM));
-                    }
-                }
-            }
-        }
-        
-        File F=null;
-        if(pwd.length()==0) F=new File(".");
-        else F=new File(pwd.replace('/',File.separatorChar));
-        if(!F.isDirectory()) return dir;
-        String[] list=F.list();
-        File F2=null;
-        for(int l=0;l<list.length;l++)
-        {
-            String path=(pwd.length()>0)?pwd+"/"+list[l]:list[l];
-            String name=list[l];
-            F2=new File(path.replace('/',File.separatorChar));
-            if(F2.isDirectory())
-            {
-                if(CMSecurity.canTraverseDir(mob,room,path))
-                {
-                    if((!dir.contains(name))&&(!fcheck.contains(name.toUpperCase())))
-                    {
-                        int bit=VFS_MASK_DIRECTORY|VFS_MASK_NOTVFS;
-                        if(CMSecurity.canAccessFile(mob,room,path,false)) bit=bit|VFS_MASK_WRITABLE;
-                        dir.addElement(name,new Integer(bit),new Long(F.lastModified()),"unknown");
-                    }
-                    else
-                    {
-                        int x=dir.indexOf(name);
-                        if(x>=0) dir.setElementAt(x,2,new Integer(((Integer)dir.elementAt(x,2)).intValue()|VFS_MASK_ALSONOTVFS));
-                    }
-                }
-            }
-            else
-            if(CMSecurity.canAccessFile(mob,room,path,true))
-            {
-                if((!dir.contains(name))&&(!fcheck.contains(name.toUpperCase())))
-                {
-                    int bit=VFS_MASK_WRITABLE|VFS_MASK_NOTVFS;
-                    dir.addElement(name,new Integer(bit),new Long(F.lastModified()),"unknown");
-                }
-                else
-                {
-                    int x=dir.indexOf(name);
-                    if(x>=0) dir.setElementAt(x,2,new Integer(((Integer)dir.elementAt(x,2)).intValue()|VFS_MASK_ALSONOTVFS));
-                }
-            }
-        }
-        return dir;
-    }
-    
-    public static String buildPath(String path)
-    { return path+File.separatorChar;}
     
     public static String buildResourcePath(String path)
     {
-        if((path==null)||(path.length()==0)) return "resources"+File.separatorChar;
-        return "resources"+File.separatorChar+path+File.separatorChar;
+        if((path==null)||(path.length()==0)) return "resources"+CMFile.pathSeparator;
+        return "resources"+CMFile.pathSeparator+path+CMFile.pathSeparator;
     }
 	
 	public static void updateMultiList(String filename, String whom, int vfsBits, Hashtable lists)
@@ -162,7 +52,7 @@ public class Resources
 				str.append(((String)V.elementAt(v))+"\r\n");
 			str.append("\r\n");
 		}
-		Resources.saveFileResource(filename,whom,vfsBits,str);
+		Resources.saveFile(filename,whom,vfsBits,str);
 	}
 	
 	public static Hashtable getMultiLists(String filename)
@@ -170,7 +60,7 @@ public class Resources
 		Hashtable oldH=new Hashtable();
 		Vector V=new Vector();
 		try{
-			V=Resources.getFileLineVector(Resources.getFile(Resources.buildResourcePath(null)+filename,false));
+			V=Resources.getFileLineVector(CMFile.getFile(Resources.buildResourcePath(null)+filename,false));
 		}catch(Exception e){}
 		if((V!=null)&&(V.size()>0))
 		{
@@ -297,137 +187,6 @@ public class Resources
 		return V;
 	}
 	
-	public static StringBuffer getFileRaw(String filename)
-	{ return getFileRaw(filename,true);}
-    public static StringBuffer getFileRaw(String filename, boolean reportErrors)
-	{
-		StringBuffer buf=new StringBuffer("");
-		try
-		{
-			FileReader F=new FileReader(filename);
-			char c=' ';
-			while(F.ready())
-			{
-				c=(char)F.read();
-				if(c<0) break;
-				buf.append(c);
-			}
-			F.close();
-		}
-		catch(Exception e)
-		{
-			if(reportErrors)
-				Log.errOut("Resource",e.getMessage());
-			return null;
-		}
-		return buf;
-	}
-    public static Vector getVFSDirectory()
-    {
-        if(vfs==null)
-            vfs=CMClass.DBEngine().DBReadVFSDirectory();
-        return vfs;
-    }
-    public static String fixFilename(String filename)
-    {
-        if(filename.startsWith("::"))
-            filename=filename.substring(2);
-        else
-        if(filename.trim().startsWith("::"))
-            filename=filename.trim().substring(2);
-        while(filename.startsWith("/")) filename=filename.substring(1);
-        while(filename.startsWith("\\")) filename=filename.substring(1);
-        return filename;
-    }
-    
-    public static boolean isVFSFile(String filename)
-    {
-        if(filename.trim().startsWith("::"))
-            return true;
-        Vector vfs=getVFSDirectory();
-        filename=Util.replaceAll(fixFilename(filename),"\\","/");
-        Vector file=null;
-        for(Enumeration e=vfs.elements();e.hasMoreElements();)
-        {
-            file=(Vector)e.nextElement();
-            if(((String)file.firstElement()).equalsIgnoreCase(filename))
-                return true;
-        }
-        return false;
-    }
-    public static Vector getVFSFileInfo(String filename)
-    {
-        Vector vfs=getVFSDirectory();
-        filename=Util.replaceAll(fixFilename(filename),"\\","/");
-        Vector file=null;
-        for(Enumeration e=vfs.elements();e.hasMoreElements();)
-        {
-            file=(Vector)e.nextElement();
-            if(((String)file.firstElement()).equalsIgnoreCase(filename))
-                return file;
-        }
-        return null;
-    }
-    
-    public static Object getVFSFileData(String filename)
-    {
-        Vector vfs=getVFSDirectory();
-        filename=Util.replaceAll(fixFilename(filename),"\\","/");
-        Vector file=null;
-        for(Enumeration e=vfs.elements();e.hasMoreElements();)
-        {
-            file=(Vector)e.nextElement();
-            if(((String)file.firstElement()).equalsIgnoreCase(filename))
-                return CMClass.DBEngine().DBReadVFSFile((String)file.firstElement());
-        }
-        return null;
-    }
-	public static StringBuffer getFile(String filename, boolean reportErrors)
-	{
-        StringBuffer buf=new StringBuffer("");
-        if(isVFSFile(filename))
-        {
-            filename=fixFilename(filename);
-            Vector info=getVFSFileInfo(filename);
-            if(info!=null)
-            {
-                int bits=((Integer)info.elementAt(VFS_INFO_BITS)).intValue();
-                if(Util.bset(bits,VFS_MASK_BINARY))
-                    return buf;
-                Object data=getVFSFileData(filename);
-                if(data==null) return buf;
-                if(data instanceof String)
-                    return new StringBuffer((String)data);
-                if(data instanceof StringBuffer)
-                    return (StringBuffer)data;
-            }
-            return buf;
-        }
-		try
-		{
-			FileReader F=new FileReader(filename);
-			BufferedReader reader=new BufferedReader(F);
-			String line="";
-			while((line!=null)&&(reader.ready()))
-			{
-				line=reader.readLine();
-				if(line!=null)
-				{
-					buf.append(line);
-					buf.append("\n\r");
-				}
-			}
-			F.close();
-		}
-		catch(Exception e)
-		{
-			if(reportErrors)
-				Log.errOut("Resource",e.getMessage());
-			return buf;
-		}
-		return buf;
-	}
-	
 	public static String makeFileResourceName(String filename)
 	{
 	    return buildResourcePath(null)+filename;
@@ -435,7 +194,7 @@ public class Resources
 	public static boolean isFileResource(String filename)
 	{
 	    if(getResource(filename)!=null) return true;
-	    if(getFile(makeFileResourceName(filename),false)!=null)
+	    if(CMFile.getFile(makeFileResourceName(filename),false)!=null)
 	    	return true;
 	    return false;
 	}
@@ -451,79 +210,23 @@ public class Resources
 				return new StringBuffer((String)rsc);
 		}
 		
-		StringBuffer buf=getFile(makeFileResourceName(filename),reportErrors);
+		StringBuffer buf=CMFile.getFile(makeFileResourceName(filename),reportErrors);
 		if(buf==null) buf=new StringBuffer("");
 		submitResource(filename,buf);
 		return buf;
 	}
 	
-	public static StringBuffer saveBufNormalize(StringBuffer myRsc)
-	{
-	    for(int i=0;i<myRsc.length();i++)
-	        if(myRsc.charAt(i)=='\n')
-	        {
-	    	    for(i=myRsc.length()-1;i>=0;i--)
-	    	        if(myRsc.charAt(i)=='\r')
-	    	            myRsc.deleteCharAt(i);
-	    	    return myRsc;
-	        }
-	    for(int i=0;i<myRsc.length();i++)
-	        if(myRsc.charAt(i)=='\r')
-	            myRsc.setCharAt(i,'\n');
-	    return myRsc;
-	}
-	
-	public static boolean saveFile(String filename, String whom, int vfsBits, StringBuffer myRsc)
-	{
-		if(myRsc==null)
-		{
-			Log.errOut("Resources","Unable to save file '"+filename+"': No Data.");
-			return false;
-		}
-        if(isVFSFile(filename))
-        {
-            Vector info=getVFSFileInfo(filename);
-            if(info!=null)
-            {
-                filename=(String)info.firstElement();
-                if(vfsBits<0) vfsBits=((Integer)info.elementAt(VFS_INFO_BITS)).intValue();
-                if(vfs!=null) vfs.removeElement(info);
-                CMClass.DBEngine().DBDeleteVFSFile(filename);
-            }
-            if(vfsBits<0) vfsBits=0;
-            if(whom==null) whom="unknown";
-            info=new Vector();
-            info.addElement(filename);
-            info.addElement(new Integer(vfsBits));
-            info.addElement(new Long(System.currentTimeMillis()));
-            info.addElement(whom);
-            CMClass.DBEngine().DBCreateVFSFile(filename,vfsBits,whom,myRsc);
-            return true;
-        }
-		try
-		{
-			File F=new File(filename);
-			FileWriter FW=new FileWriter(F);
-			FW.write(saveBufNormalize(myRsc).toString());
-			FW.close();
-            return true;
-		}
-		catch(IOException e)
-		{
-			Log.errOut("Resources","Save "+filename+": "+e.getMessage());
-		}
-        return false;
-	}
     public static boolean saveFileResource(String filename)
     {return saveFileResource(filename,null,-1,getFileResource(filename,false));}
 	public static boolean saveFileResource(String filename, String whom, int vfsBits, StringBuffer myRsc)
 	{
         boolean vfsFile=filename.trim().startsWith("::");
-        filename=fixFilename(filename);
-        if(!filename.startsWith("resources"+File.separatorChar))
-            saveFile((vfsFile?"::":"")+"resources"+File.separatorChar+filename,whom,vfsBits,myRsc);
+        boolean localFile=filename.trim().startsWith("||");
+        filename=CMFile.fixFilename(filename);
+        if(!filename.startsWith("resources"+CMFile.pathSeparator))
+            CMFile.saveFile((vfsFile?"::":localFile?"||":"")+"resources"+CMFile.pathSeparator+filename,whom,vfsBits,myRsc);
         else
-            saveFile((vfsFile?"::":"")+filename,whom,vfsBits,myRsc);
+            CMFile.saveFile((vfsFile?"::":localFile?"||":"")+filename,whom,vfsBits,myRsc);
         return false;
 	}
 	
