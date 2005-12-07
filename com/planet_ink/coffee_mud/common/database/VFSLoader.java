@@ -123,7 +123,7 @@ public class VFSLoader
          +"CMDATA"
          +") values ("
          +"'"+filename+"',"
-         +""+bits+","
+         +""+(bits&CMFile.VFS_MASK_MASKSAVABLE)+","
          +""+System.currentTimeMillis()+","
          +"'"+creator+"',"
          +"'"+buf+"'"

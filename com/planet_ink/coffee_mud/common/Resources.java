@@ -219,11 +219,11 @@ public class Resources
 	public static boolean saveFileResource(String filename, MOB whom, StringBuffer myRsc)
 	{
         boolean vfsFile=filename.trim().startsWith("::");
-        boolean localFile=filename.trim().startsWith("||");
+        boolean localFile=filename.trim().startsWith("//");
         filename=CMFile.vfsifyFilename(filename);
         if(filename.startsWith("resources/"))
             filename="resources/"+filename;
-        filename=(vfsFile?"::":localFile?"||":"")+filename;
+        filename=(vfsFile?"::":localFile?"//":"")+filename;
         return new CMFile(filename,whom,false).saveRaw(myRsc);
 	}
 	

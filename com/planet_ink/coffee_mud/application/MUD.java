@@ -932,7 +932,7 @@ public class MUD extends Thread implements MudHost
 		{
 			while(true)
 			{
-				page=INI.loadPropPage("||"+iniFile);
+				page=INI.loadPropPage("//"+iniFile);
 				if ((page==null)||(!page.loaded))
 				{
 					Log.startLogFiles(1);

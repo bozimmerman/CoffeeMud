@@ -845,11 +845,11 @@ public class StdThinGrid extends StdRoom implements GridLocale
                             ((GridLocale)R).clearGrid(null);
                         tickStatus=Tickable.STATUS_MISC+15;
                         R.clearSky();
-                        tickStatus=Tickable.STATUS_MISC+16;
+                        tickStatus=Tickable.STATUS_MISC+16; // once locked here
                         CMClass.ThreadEngine().deleteTick(R,-1);
-                        tickStatus=Tickable.STATUS_MISC+17;
-                        CMMap.delRoom(R);
-                        tickStatus=Tickable.STATUS_MISC+18;
+                        tickStatus=Tickable.STATUS_MISC+17; // twice locked here
+                        CMMap.justDelRoom(R);
+                        tickStatus=Tickable.STATUS_MISC+18; // usually locked here 
                         ((StdRoom)R).imageName=null;
                         ((StdRoom)R).myArea=null;
                         ((StdRoom)R).baseEnvStats=new DefaultEnvStats();
