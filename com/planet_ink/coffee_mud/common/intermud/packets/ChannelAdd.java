@@ -1,5 +1,5 @@
-package com.planet_ink.coffee_mud.i3.packets;
-import com.planet_ink.coffee_mud.i3.server.Server;
+package com.planet_ink.coffee_mud.system.intermud.packets;
+import com.planet_ink.coffee_mud.system.intermud.server.Server;
 
 
 import java.util.Vector;

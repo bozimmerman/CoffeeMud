@@ -29,7 +29,7 @@
  *
  */
 
-package com.planet_ink.coffee_mud.i3.imc2;
+package com.planet_ink.coffee_mud.system.intermud.imc2;
 
 import java.util.*;
 import java.io.*;

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.i3;
+package com.planet_ink.coffee_mud.system.intermud;
 
 import java.util.*;
 import java.net.*;
@@ -6,8 +6,8 @@ import java.net.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.i3.imc2.*;
-import com.planet_ink.coffee_mud.i3.packets.*;
+import com.planet_ink.coffee_mud.system.intermud.imc2.*;
+import com.planet_ink.coffee_mud.system.intermud.packets.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman

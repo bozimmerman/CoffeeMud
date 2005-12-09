@@ -1,11 +1,11 @@
-package com.planet_ink.coffee_mud.i3;
+package com.planet_ink.coffee_mud.system.intermud;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.i3.packets.*;
-import com.planet_ink.coffee_mud.i3.persist.*;
+import com.planet_ink.coffee_mud.system.intermud.packets.*;
+import com.planet_ink.coffee_mud.system.intermud.persist.*;
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

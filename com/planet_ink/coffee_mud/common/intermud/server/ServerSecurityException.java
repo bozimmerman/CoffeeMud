@@ -16,7 +16,7 @@
  * An exception for attempts to violate server security
  */
 
-package com.planet_ink.coffee_mud.i3.server;
+package com.planet_ink.coffee_mud.system.intermud.server;
 
 
 /**

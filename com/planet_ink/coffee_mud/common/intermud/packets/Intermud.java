@@ -8,10 +8,10 @@
  * This is the TCP/IP interface to version 3 of the
  * Intermud network.
  */
-package com.planet_ink.coffee_mud.i3.packets;
-import com.planet_ink.coffee_mud.i3.packets.InvalidPacketException;
-import com.planet_ink.coffee_mud.i3.net.Interactive;
-import com.planet_ink.coffee_mud.i3.persist.*;
+package com.planet_ink.coffee_mud.system.intermud.packets;
+import com.planet_ink.coffee_mud.system.intermud.packets.InvalidPacketException;
+import com.planet_ink.coffee_mud.system.intermud.net.Interactive;
+import com.planet_ink.coffee_mud.system.intermud.persist.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.common.*;
 import java.io.*;

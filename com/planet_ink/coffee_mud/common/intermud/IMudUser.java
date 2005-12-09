@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.i3;
+package com.planet_ink.coffee_mud.system.intermud;
 
 /**
  * Copyright (c) 1996 George Reese
@@ -15,6 +15,6 @@ package com.planet_ink.coffee_mud.i3;
  * limitations under the License.
  *
  */
-public class IMudUser extends com.planet_ink.coffee_mud.i3.net.Interactive
+public class IMudUser extends com.planet_ink.coffee_mud.system.intermud.net.Interactive
 {
 }

@@ -7,7 +7,7 @@
  * 
  * The interface for a intermud services daemon
  */
-package com.planet_ink.coffee_mud.i3.packets;
+package com.planet_ink.coffee_mud.system.intermud.packets;
 
 import java.util.Vector;
 

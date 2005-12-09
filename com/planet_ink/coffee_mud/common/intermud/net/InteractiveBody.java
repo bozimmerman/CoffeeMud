@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.i3.net;
+package com.planet_ink.coffee_mud.system.intermud.net;
 
 /**
  * Copyright (c) 1996 George Reese

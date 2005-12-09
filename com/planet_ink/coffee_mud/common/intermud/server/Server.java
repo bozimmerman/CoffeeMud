@@ -15,9 +15,9 @@
  *
  * The mudlib interface to the server.
  */
-package com.planet_ink.coffee_mud.i3.server;
+package com.planet_ink.coffee_mud.system.intermud.server;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.i3.packets.ImudServices;
+import com.planet_ink.coffee_mud.system.intermud.packets.ImudServices;
 /**
  * The Server class is the mudlib's interface to the
  * Imaginary Mud Server.  It is responsible with knowing all

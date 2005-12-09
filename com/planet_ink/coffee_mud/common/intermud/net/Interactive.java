@@ -17,10 +17,10 @@
  * of interactive connections.
  */
 
-package com.planet_ink.coffee_mud.i3.net;
+package com.planet_ink.coffee_mud.system.intermud.net;
 
-import com.planet_ink.coffee_mud.i3.server.ServerUser;
-import com.planet_ink.coffee_mud.i3.server.Server;
+import com.planet_ink.coffee_mud.system.intermud.server.ServerUser;
+import com.planet_ink.coffee_mud.system.intermud.server.Server;
 import com.planet_ink.coffee_mud.utils.Log;
 import com.planet_ink.coffee_mud.common.CommonStrings;
 import java.io.*;

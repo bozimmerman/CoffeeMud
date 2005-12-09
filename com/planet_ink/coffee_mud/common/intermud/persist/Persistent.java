@@ -9,7 +9,7 @@
  * to some data store.
  */
 
-package com.planet_ink.coffee_mud.i3.persist;
+package com.planet_ink.coffee_mud.system.intermud.persist;
 
 
 /**

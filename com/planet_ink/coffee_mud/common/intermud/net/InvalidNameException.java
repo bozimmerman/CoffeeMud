@@ -16,7 +16,7 @@
  * An exception thrown for invalid user names.
  */
 
-package com.planet_ink.coffee_mud.i3.net;
+package com.planet_ink.coffee_mud.system.intermud.net;
 
 /**
  * This class is thrown whenever an attempt to create

@@ -1,12 +1,12 @@
-package com.planet_ink.coffee_mud.i3;
+package com.planet_ink.coffee_mud.system.intermud;
 
 import java.util.*;
 import java.io.Serializable;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.i3.packets.ImudServices;
-import com.planet_ink.coffee_mud.i3.packets.*;
+import com.planet_ink.coffee_mud.system.intermud.packets.ImudServices;
+import com.planet_ink.coffee_mud.system.intermud.packets.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
