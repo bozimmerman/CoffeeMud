@@ -1,13 +1,13 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.system;
 
 import java.io.*;
 import java.util.*;
 import java.sql.*;
 import java.net.*;
 
-import com.planet_ink.coffee_mud.core.*;
-import com.planet_ink.coffee_mud.core.interfaces.*;
-
+import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
 /*
    Copyright 2000-2005 Bo Zimmerman
