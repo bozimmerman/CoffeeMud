@@ -43,13 +43,13 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	{
 		if(climateObj==null)
 		{
-			climateObj=new DefaultClimate();
+			climateObj=(Climate)CMClass.getShared("DefaultClimate");
 			climateObj.setCurrentWeatherType(Climate.WEATHER_CLEAR);
 			climateObj.setNextWeatherType(Climate.WEATHER_CLEAR);
 		}
 		return climateObj;
 	}
-	protected TimeClock localClock=new DefaultTimeClock();
+	protected TimeClock localClock=(TimeClock)CMClass.getShared("DefaultTimeClock");
 	public TimeClock getTimeObj(){return localClock;}
 	public void setTimeObj(TimeClock obj){localClock=obj;}
 	protected String currency="";
@@ -80,8 +80,8 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public void setAuthorID(String authorID){author=authorID;}
 	public String getAuthorID(){return author;}
 
-	protected EnvStats envStats=new DefaultEnvStats();
-	protected EnvStats baseEnvStats=new DefaultEnvStats();
+	protected EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+	protected EnvStats baseEnvStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
 
 	protected Vector affects=new Vector();
 	protected Vector behaviors=new Vector();
@@ -114,7 +114,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	}
 	public void recoverEnvStats()
 	{
-		envStats=baseEnvStats.cloneStats();
+		envStats=(EnvStats)baseEnvStats.copyOf();
 		for(int a=0;a<numEffects();a++)
 		{
 			Ability A=fetchEffect(a);
@@ -124,7 +124,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats)
 	{
-		baseEnvStats=newBaseEnvStats.cloneStats();
+		baseEnvStats=(EnvStats)newBaseEnvStats.copyOf();
 	}
 	public void setNextWeatherType(int weatherCode){}
 	public void setCurrentWeatherType(int weatherCode){}
@@ -145,11 +145,11 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public void setSubOpList(String list){}
 	public void addSubOp(String username){}
 	public void delSubOp(String username){}
-	public Environmental newInstance()
+	public CMObject newInstance()
 	{
 		try
         {
-			return (Environmental)this.getClass().newInstance();
+			return (CMObject)this.getClass().newInstance();
 		}
 		catch(Exception e)
 		{
@@ -160,8 +160,8 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public boolean isGeneric(){return false;}
 	protected void cloneFix(StdSpaceShip E)
 	{
-		baseEnvStats=E.baseEnvStats().cloneStats();
-		envStats=E.envStats().cloneStats();
+		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
+		envStats=(EnvStats)E.envStats().copyOf();
 
 		affects=new Vector();
 		behaviors=new Vector();
@@ -180,9 +180,9 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 			if(A!=null)
 				affects.addElement(A.copyOf());
 		}
-		setTimeObj(new DefaultTimeClock());
+		setTimeObj((TimeClock)CMClass.getShared("DefaultTimeClock"));
 	}
-	public Environmental copyOf()
+	public CMObject copyOf()
 	{
 		try
 		{

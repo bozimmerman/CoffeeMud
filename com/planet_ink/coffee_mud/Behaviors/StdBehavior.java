@@ -40,7 +40,7 @@ public class StdBehavior implements Behavior
 	protected String parms="";
 
 	/** return a new instance of the object*/
-	public Behavior newInstance()
+	public CMObject newInstance()
 	{
 		try
         {
@@ -52,7 +52,7 @@ public class StdBehavior implements Behavior
 		}
 		return new StdBehavior();
 	}
-	public Behavior copyOf()
+	public CMObject copyOf()
 	{
 		try
 		{

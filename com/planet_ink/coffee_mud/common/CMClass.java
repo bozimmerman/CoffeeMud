@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
+
 import java.util.*;
 import java.lang.reflect.Modifier;
 import com.planet_ink.coffee_mud.utils.*;
@@ -22,6 +23,8 @@ import com.planet_ink.coffee_mud.utils.*;
 */
 public class CMClass extends ClassLoader
 {
+    private static TimeClock globalClock=null;
+    private static Vector shared=new Vector();
 	private static Vector races=new Vector();
 	private static Vector charClasses=new Vector();
 	private static Vector MOBs=new Vector();
@@ -88,6 +91,7 @@ public class CMClass extends ClassLoader
     public static void bumpCounter(int which){OBJECT_CREATIONS[which]++;}
     public static void unbumpCounter(int which){OBJECT_DESTRUCTIONS[which]++;}
 	public static Enumeration races(){return races.elements();}
+    public static Enumeration sharedObjects(){return shared.elements();}
 	public static Race randomRace(){return (Race)races.elementAt((int)Math.round(Math.floor(Math.random()*new Integer(races.size()).doubleValue())));}
 	public static Enumeration charClasses(){return charClasses.elements();}
 	public static CharClass randomCharClass(){return (CharClass)charClasses.elementAt((int)Math.round(Math.floor(Math.random()*new Integer(charClasses.size()).doubleValue())));}
@@ -260,6 +264,7 @@ public class CMClass extends ClassLoader
 		if(clanItems.contains(O)){ clanItems.removeElement(O); return true;}
 		if(miscTech.contains(O)){ miscTech.removeElement(O); return true;}
 		if(areaTypes.contains(O)){ areaTypes.removeElement(O); return true;}
+        if(shared.contains(O)){ shared.removeElement(O); return true;}
 		if(commands.contains(O))
 		{
 			for(Enumeration e=CommandWords.keys();e.hasMoreElements();)
@@ -309,6 +314,7 @@ public class CMClass extends ClassLoader
 		case 14: set=clanItems; break;
 		case 15: set=miscTech; break;
 		case 16: set=webMacros; break;
+        case 17: set=shared; break;
 		}
 		if(set==null) return false;
 
@@ -342,6 +348,7 @@ public class CMClass extends ClassLoader
 				break;
 		case 14: clanItems=new Vector(new TreeSet(clanItems)); break;
 		case 15: miscTech=new Vector(new TreeSet(miscTech)); break;
+        case 17: races=new Vector(new TreeSet(shared)); break;
 		}
 		return true;
 	}
@@ -362,6 +369,7 @@ public class CMClass extends ClassLoader
 		if(thisItem==null) thisItem=getGlobal(areaTypes,calledThis);
 		if(thisItem==null) thisItem=getGlobal(clanItems,calledThis);
 		if(thisItem==null) thisItem=getGlobal(miscTech,calledThis);
+        if(thisItem==null) thisItem=getGlobal(shared,calledThis);
 		return thisItem;
 	}
 
@@ -436,11 +444,14 @@ public class CMClass extends ClassLoader
 		}
 		return thisItem;
 	}
+    public static CMObject getShared(String calledThis)
+    {return ((CMObject)getGlobal(shared,calledThis)).newInstance();}
+    
 	public static Behavior getBehavior(String calledThis)
 	{
 		Behavior B=(Behavior)getGlobal(behaviors,calledThis);
 		if(B!=null)
-			B=B.newInstance();
+			B=(Behavior)B.newInstance();
 		return B;
 	}
 	public static Room getLocale(String calledThis)
@@ -544,7 +555,7 @@ public class CMClass extends ClassLoader
 	public static Environmental getEnv(Vector fromThese, String calledThis)
 	{
 		Environmental E=(Environmental)getGlobal(fromThese,calledThis);
-		if(E!=null) return E.newInstance();
+		if(E!=null) return (Environmental)E.newInstance();
 		return E;
 	}
 
@@ -568,7 +579,10 @@ public class CMClass extends ClassLoader
 	{
 		String prefix="com/planet_ink/coffee_mud/";
 
-		webMacros=CMClass.loadHashListToObj(prefix+"web/macros/", "%DEFAULT%","com.planet_ink.coffee_mud.interfaces.WebMacro");
+        shared=loadVectorListToObj(prefix+"Shared/",page.getStr("SHARED"),"com.planet_ink.coffee_mud.interfaces.CMObject");
+        if(shared.size()==0) return false;
+        
+		webMacros=CMClass.loadHashListToObj(prefix+"system/http/macros/", "%DEFAULT%","com.planet_ink.coffee_mud.interfaces.WebMacro");
 		Log.sysOut("MUD","WebMacros loaded  : "+webMacros.size());
 		for(Enumeration e=webMacros.keys();e.hasMoreElements();)
 		{
@@ -755,7 +769,7 @@ public class CMClass extends ClassLoader
 			int loaded=0;
 			for(int r=0;r<genRaces.size();r++)
 			{
-				Race GR=getRace("GenRace").copyOf();
+				Race GR=(Race)getRace("GenRace").copyOf();
 				GR.setRacialParms((String)((Vector)genRaces.elementAt(r)).elementAt(1));
 				if(!GR.ID().equals("GenRace"))
 				{
@@ -773,7 +787,7 @@ public class CMClass extends ClassLoader
 			int loaded=0;
 			for(int r=0;r<genClasses.size();r++)
 			{
-				CharClass CR=(CMClass.getCharClass("GenCharClass").copyOf());
+				CharClass CR=(CharClass)(CMClass.getCharClass("GenCharClass").copyOf());
 				CR.setClassParms((String)((Vector)genClasses.elementAt(r)).elementAt(1));
 				if(!CR.ID().equals("GenCharClass"))
 				{
@@ -849,6 +863,7 @@ public class CMClass extends ClassLoader
 
 	public static void unload()
 	{
+        shared=new Vector();
 		races=new Vector();
 		charClasses=new Vector();
 		MOBs=new Vector();
@@ -1080,20 +1095,8 @@ public class CMClass extends ClassLoader
 	{
 		if(e!=null)
 		{
-			if(e instanceof Environmental)
-				return ((Environmental)e).ID();
-			else
-			if(e instanceof Race)
-				return ((Race)e).ID();
-			else
-			if(e instanceof CharClass)
-				return ((CharClass)e).ID();
-			else
-			if(e instanceof Behavior)
-				return ((Behavior)e).ID();
-			else
-			if(e instanceof WebMacro)
-				return ((WebMacro)e).ID();
+			if(e instanceof CMObject)
+				return ((CMObject)e).ID();
 			else
 			if(e instanceof Command)
 				return className(e);
@@ -1102,4 +1105,14 @@ public class CMClass extends ClassLoader
 		}
 		return "";
 	}
+    
+    public static final TimeClock globalClock()
+    {
+        if(globalClock==null) 
+        {
+            globalClock=(TimeClock)getShared("DefaultTimeClock");
+            if(globalClock!=null) globalClock.setLoadName("GLOBAL");
+        }
+        return globalClock;
+    }
 }

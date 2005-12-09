@@ -1052,8 +1052,8 @@ public class Clans implements Clan, Tickable
 	}
 
 	/** return a new instance of the object*/
-	public Clan newInstance(){return new Clans();}
-	public Clan copyOf()
+	public CMObject newInstance(){return new Clans();}
+	public CMObject copyOf()
 	{
 		try
 		{
@@ -1492,6 +1492,5 @@ public class Clans implements Clan, Tickable
 		public int function=0;
 		public DVector votes=null;
 	}
-
-
+    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

@@ -41,8 +41,8 @@ public class StdArea implements Area
     protected Vector childrenToLoad=new Vector();
     protected Vector parentsToLoad=new Vector();
 
-	protected EnvStats envStats=new DefaultEnvStats();
-	protected EnvStats baseEnvStats=new DefaultEnvStats();
+	protected EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+	protected EnvStats baseEnvStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
 	protected String author="";
 	public void setAuthorID(String authorID){author=authorID;}
 	public String getAuthorID(){return author;}
@@ -67,21 +67,24 @@ public class StdArea implements Area
 	protected Vector affects=new Vector();
 	protected Vector behaviors=new Vector();
 	protected Vector subOps=new Vector();
-	protected Climate climateObj=new DefaultClimate();
+	protected Climate climateObj=(Climate)CMClass.getShared("DefaultClimate");
 	public void setClimateObj(Climate obj){climateObj=obj;}
 	public Climate getClimateObj()
 	{
 		return climateObj;
 	}
-	protected TimeClock myClock=DefaultTimeClock.globalClock;
+	protected TimeClock myClock=null;
 	public void setTimeObj(TimeClock obj){myClock=obj;}
-	public TimeClock getTimeObj(){return myClock;}
+	public TimeClock getTimeObj()
+    {
+        if(myClock==null) myClock=CMClass.globalClock();
+        return myClock;
+    }
 
 	public StdArea()
 	{
         super();
         CMClass.bumpCounter(CMClass.OBJECT_AREA);
-		DefaultTimeClock.globalClock.setLoadName("GLOBAL");
 	}
     protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_AREA);}
 	public String name()
@@ -101,7 +104,7 @@ public class StdArea implements Area
 	}
 	public void recoverEnvStats()
 	{
-		envStats=baseEnvStats.cloneStats();
+		envStats=(EnvStats)baseEnvStats.copyOf();
 		for(int a=0;a<numEffects();a++)
 		{
 			Ability A=fetchEffect(a);
@@ -111,7 +114,7 @@ public class StdArea implements Area
 	}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats)
 	{
-		baseEnvStats=newBaseEnvStats.cloneStats();
+		baseEnvStats=(EnvStats)newBaseEnvStats.copyOf();
 	}
 	public int getTechLevel(){return techLevel;}
 	public void setTechLevel(int level){techLevel=level;}
@@ -159,11 +162,11 @@ public class StdArea implements Area
 		}
 	}
 
-	public Environmental newInstance()
+	public CMObject newInstance()
 	{
 		try
         {
-			return (Environmental)this.getClass().newInstance();
+			return (CMObject)this.getClass().newInstance();
 		}
 		catch(Exception e)
 		{
@@ -174,8 +177,8 @@ public class StdArea implements Area
 	public boolean isGeneric(){return false;}
 	protected void cloneFix(StdArea E)
 	{
-		baseEnvStats=E.baseEnvStats().cloneStats();
-		envStats=E.envStats().cloneStats();
+		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
+		envStats=(EnvStats)E.envStats().copyOf();
 
 		parents=null;
 		if(E.parents!=null)
@@ -199,7 +202,7 @@ public class StdArea implements Area
 		}
 		setSubOpList(E.getSubOpList());
 	}
-	public Environmental copyOf()
+	public CMObject copyOf()
 	{
 		try
 		{

@@ -44,7 +44,7 @@ public class Socials extends Scriptable
                 int x=getline.indexOf("\t");
                 if(x>=0)
                 {
-                    Social socobj=new Social();
+                    Social socobj=(Social)CMClass.getShared("DefaultSocial");
                     String s=getline.substring(0,x).toUpperCase();
                     if(s.length()>0)
                     switch(s.charAt(0))
@@ -348,7 +348,7 @@ public class Socials extends Scriptable
                 {
                     if((newOne.length()>0)&&(!newOne.startsWith(" ")))
                         newOne=" "+newOne;
-                    soc=new Social();
+                    soc=(Social)CMClass.getShared("DefaultSocial");
                     soc.setName(name+newOne);
                     if(newOne.trim().length()==0)
                     {

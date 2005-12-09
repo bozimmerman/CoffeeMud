@@ -33,7 +33,7 @@ public class Fey extends Language
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance()
+	public CMObject newInstance()
     {	
         return new Fey();
     }

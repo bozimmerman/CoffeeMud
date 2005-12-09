@@ -47,7 +47,7 @@ public class Train extends StdCommand
 		int curStat=-1;
 		if((abilityCode>=0)&&(abilityCode<CharStats.NUM_BASE_STATS))
 		{
-			CharStats copyStats=mob.baseCharStats().cloneCharStats();
+			CharStats copyStats=(CharStats)mob.baseCharStats().copyOf();
 			mob.charStats().getMyRace().affectCharStats(mob,copyStats);
 			for(int c=0;c<mob.charStats().numClasses();c++)
 				mob.charStats().getMyClass(c).affectCharStats(mob,copyStats);

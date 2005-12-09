@@ -23,8 +23,8 @@ public class StdExit implements Exit
 {
 	public String ID(){	return "StdExit";}
 
-	protected EnvStats envStats=new DefaultEnvStats();
-	protected EnvStats baseEnvStats=new DefaultEnvStats();
+	protected EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+	protected EnvStats baseEnvStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
 	protected boolean isOpen=true;
 	protected boolean isLocked=false;
 	protected String miscText="";
@@ -70,7 +70,7 @@ public class StdExit implements Exit
 	}
 	public void recoverEnvStats()
 	{
-		envStats=baseEnvStats.cloneStats();
+		envStats=(EnvStats)baseEnvStats.copyOf();
 		for(int a=0;a<numEffects();a++)
 		{
 			Ability A=fetchEffect(a);
@@ -80,7 +80,7 @@ public class StdExit implements Exit
 	}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats)
 	{
-		baseEnvStats=newBaseEnvStats.cloneStats();
+		baseEnvStats=(EnvStats)newBaseEnvStats.copyOf();
 	}
 
     public String image()
@@ -103,7 +103,7 @@ public class StdExit implements Exit
             imageName=newImage;
     }
 	
-	public Environmental newInstance()
+	public CMObject newInstance()
 	{
 		try
         {
@@ -118,8 +118,8 @@ public class StdExit implements Exit
 	public boolean isGeneric(){return false;}
 	protected void cloneFix(Exit E)
 	{
-		baseEnvStats=E.baseEnvStats().cloneStats();
-		envStats=E.envStats().cloneStats();
+		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
+		envStats=(EnvStats)E.envStats().copyOf();
 
 		affects=null;
 		behaviors=null;
@@ -127,10 +127,10 @@ public class StdExit implements Exit
 		{
 			Behavior B=E.fetchBehavior(b);
 			if(B!=null)
-				addBehavior(B.copyOf());
+				addBehavior((Behavior)B.copyOf());
 		}
 	}
-	public Environmental copyOf()
+	public CMObject copyOf()
 	{
 		try
 		{

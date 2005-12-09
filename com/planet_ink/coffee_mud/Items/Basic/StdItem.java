@@ -45,8 +45,8 @@ public class StdItem implements Item
 	protected Vector affects=null;
 	protected Vector behaviors=null;
 
-	protected EnvStats envStats=new DefaultEnvStats();
-	protected EnvStats baseEnvStats=new DefaultEnvStats();
+	protected EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+	protected EnvStats baseEnvStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
 
 	protected boolean destroyed=false;
 
@@ -99,7 +99,7 @@ public class StdItem implements Item
 
 	public void recoverEnvStats()
 	{
-		envStats=baseEnvStats.cloneStats();
+		envStats=(EnvStats)baseEnvStats.copyOf();
 		for(int a=0;a<numEffects();a++)
 		{
 			Ability A=fetchEffect(a);
@@ -116,13 +116,13 @@ public class StdItem implements Item
 
 	public void setBaseEnvStats(EnvStats newBaseEnvStats)
 	{
-		baseEnvStats=newBaseEnvStats.cloneStats();
+		baseEnvStats=(EnvStats)newBaseEnvStats.copyOf();
 	}
-	public Environmental newInstance()
+	public CMObject newInstance()
 	{
 		try
         {
-			return (Environmental)this.getClass().newInstance();
+			return (CMObject)this.getClass().newInstance();
 		}
 		catch(Exception e)
 		{
@@ -134,15 +134,15 @@ public class StdItem implements Item
 	protected void cloneFix(Item E)
 	{
 		destroyed=false;
-		baseEnvStats=E.baseEnvStats().cloneStats();
-		envStats=E.envStats().cloneStats();
+		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
+		envStats=(EnvStats)E.envStats().copyOf();
 
 		affects=null;
 		behaviors=null;
 		for(int b=0;b<E.numBehaviors();b++)
 		{
 			Behavior B=E.fetchBehavior(b);
-			if(B!=null)	addBehavior(B.copyOf());
+			if(B!=null)	addBehavior((Behavior)B.copyOf());
 		}
 
 		for(int a=0;a<E.numEffects();a++)
@@ -153,7 +153,7 @@ public class StdItem implements Item
 		}
 
 	}
-	public Environmental copyOf()
+	public CMObject copyOf()
 	{
 		try
 		{

@@ -21,7 +21,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Property implements Ability, Cloneable
+public class Property implements Ability
 {
 	public String ID() { return "Property"; }
 	public String name(){ return "a Property";}
@@ -92,18 +92,18 @@ public class Property implements Ability, Cloneable
 	public boolean isBorrowed(Environmental toMe){ return borrowed;	}
 	public void setBorrowed(Environmental toMe, boolean truefalse)	{ borrowed=truefalse; }
 
-	protected static final EnvStats envStats=new DefaultEnvStats();
+	protected static final EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
 	public EnvStats envStats(){return envStats;}
 	public EnvStats baseEnvStats(){return envStats;}
     protected void finalize(){ CMClass.unbumpCounter(CMClass.OBJECT_ABILITY); }
 
 	public void recoverEnvStats(){}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
-	public Environmental newInstance()
+	public CMObject newInstance()
 	{
 		try
         {
-			return (Environmental)this.getClass().newInstance();
+			return (CMObject)this.getClass().newInstance();
 		}
 		catch(Exception e)
 		{
@@ -150,7 +150,7 @@ public class Property implements Ability, Cloneable
 	}
 	private void cloneFix(Ability E){}
 
-	public Environmental copyOf()
+	public CMObject copyOf()
 	{
 		try
 		{

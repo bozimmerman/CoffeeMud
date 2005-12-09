@@ -1,6 +1,7 @@
-package com.planet_ink.coffee_mud.common;
+package com.planet_ink.coffee_mud.Shared;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.utils.Util;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 /* 
@@ -18,9 +19,11 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class DefaultCharStats implements Cloneable, CharStats
+public class DefaultCharStats implements CharStats
 {
 
+    public String ID(){return "DefaultCharStats";}
+    public CMObject newInstance(){return new DefaultCharStats();}
 	// competency characteristics
 	protected int[] stats=new int[NUM_STATS];
 	protected int[] partials=null;
@@ -35,15 +38,14 @@ public class DefaultCharStats implements Cloneable, CharStats
 	
 	public DefaultCharStats()
 	{
-		for(int i=0;i<NUM_BASE_STATS;i++)
-			stats[i]=10;
+        setAllValues(10);
 		stats[GENDER]='M';
 	}
-	public DefaultCharStats(int def)
-	{
-		for(int i=0;i<NUM_STATS;i++)
-			stats[i]=def;
-	}
+    public void setAllValues(int def)
+    {
+        for(int i=0;i<NUM_STATS;i++)
+            stats[i]=def;
+    }
 
 	public void setMyClasses(String classes)
 	{
@@ -450,7 +452,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 	}
 
 	// create a new one of these
-	public CharStats cloneCharStats()
+    public CMObject copyOf()
 	{
 		DefaultCharStats newOne=new DefaultCharStats();
 		if(myClasses!=null)
@@ -588,5 +590,5 @@ public class DefaultCharStats implements Cloneable, CharStats
 				return i;
 		return -1;
 	}
-
+    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

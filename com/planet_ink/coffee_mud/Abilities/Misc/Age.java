@@ -38,8 +38,8 @@ public class Age extends StdAbility
 		if(start<Integer.MAX_VALUE)
 		    return "";
 		long days=((System.currentTimeMillis()-start)/MudHost.TICK_TIME)/CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY); // down to days;
-		long months=days/DefaultTimeClock.globalClock.getDaysInMonth();
-		long years=months/DefaultTimeClock.globalClock.getMonthsInYear();
+		long months=days/CMClass.globalClock().getDaysInMonth();
+		long years=months/CMClass.globalClock().getMonthsInYear();
 		if(days<1)
 			return "(<1 day old)";
 		else
@@ -71,7 +71,7 @@ public class Age extends StdAbility
 		norecurse=true;
 
 		if(divisor==0.0)
-		    divisor=new Integer(DefaultTimeClock.globalClock.getMonthsInYear()*DefaultTimeClock.globalClock.getDaysInMonth()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
+		    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
 		
 		int ellapsed=(int)Math.round(Math.floor(Util.div(Util.div(System.currentTimeMillis()-l,MudHost.TICK_TIME),divisor)));
 		if((affected instanceof Item)&&(affected instanceof CagedAnimal))
@@ -227,7 +227,7 @@ public class Age extends StdAbility
 					newMan.setLocation(babe.location());
 					BeanCounter.setMoney(newMan,BeanCounter.getMoney(babe));
 					newMan.setName(babe.Name());
-					newMan.setPlayerStats(new DefaultPlayerStats());
+					newMan.setPlayerStats((PlayerStats)CMClass.getShared("DefaultPlayerStats"));
 					newMan.setPractices(babe.getPractices());
 					newMan.setQuestPoint(babe.getQuestPoint());
 					newMan.setStartRoom(babe.getStartRoom());
@@ -363,7 +363,7 @@ public class Age extends StdAbility
 			        mob=(MOB)affected;
 				    if(myRace==null) myRace=((MOB)affected).charStats().getMyRace();
 					if(divisor==0.0)
-					    divisor=new Integer(DefaultTimeClock.globalClock.getMonthsInYear()*DefaultTimeClock.globalClock.getDaysInMonth()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
+					    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
 					long l=Util.s_long(text());
 					if((l>0)&&(l<Integer.MAX_VALUE))
 					{
@@ -404,7 +404,7 @@ public class Age extends StdAbility
 		else
 		{
 			if(divisor==0.0)
-			    divisor=new Integer(DefaultTimeClock.globalClock.getMonthsInYear()*DefaultTimeClock.globalClock.getDaysInMonth()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
+			    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
 			affected.baseCharStats().setStat(CharStats.AGE,(int)Math.round(Math.floor(Util.div(Util.div(System.currentTimeMillis()-l,MudHost.TICK_TIME),divisor))));
 			affectableStats.setStat(CharStats.AGE,affected.baseCharStats().getStat(CharStats.AGE));
 		}

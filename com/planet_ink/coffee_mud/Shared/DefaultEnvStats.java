@@ -1,4 +1,5 @@
-package com.planet_ink.coffee_mud.common;
+package com.planet_ink.coffee_mud.Shared;
+import com.planet_ink.coffee_mud.common.CMClass;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
 
@@ -17,8 +18,9 @@ import com.planet_ink.coffee_mud.utils.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class DefaultEnvStats implements Cloneable, EnvStats
+public class DefaultEnvStats implements EnvStats
 {
+    public String ID(){return "DefaultEnvStats";}
 	protected int Level=0;
 	protected int SensesMask=0;			// see Senses class
 	protected int Armor=100;			// should be positive
@@ -33,7 +35,7 @@ public class DefaultEnvStats implements Cloneable, EnvStats
 	protected String replacementName=null;
 	
 	public DefaultEnvStats(){}
-	public DefaultEnvStats(int def)
+	public void setAllValues(int def)
 	{
 		Level=def;
 		SensesMask=def;
@@ -72,7 +74,8 @@ public class DefaultEnvStats implements Cloneable, EnvStats
 	public void setSensesMask(int newMask){SensesMask=newMask;}
 	public void setHeight(int newHeight){Height=newHeight;}
 	public void setName(String newName){ replacementName=newName;}
-	public EnvStats cloneStats()
+    public CMObject newInstance(){return new DefaultEnvStats();}
+	public CMObject copyOf()
 	{
 		try
 		{
@@ -132,5 +135,5 @@ public class DefaultEnvStats implements Cloneable, EnvStats
 		default: return "";
 		}
 	}
-	
+    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

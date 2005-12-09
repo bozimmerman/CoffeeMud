@@ -36,7 +36,7 @@ public class MOBloader
 			{
 				CharStats stats=mob.baseCharStats();
 				CharState state=mob.baseState();
-				PlayerStats pstats=new DefaultPlayerStats();
+				PlayerStats pstats=(PlayerStats)CMClass.getShared("DefaultPlayerStats");
 				mob.setPlayerStats(pstats);
 				String username=DBConnections.getRes(R,"CMUSERID");
 				String password=DBConnections.getRes(R,"CMPASS");
@@ -898,7 +898,7 @@ public class MOBloader
 		if(mob!=null)
 		{
 			if(mob.playerStats()==null)
-				mob.setPlayerStats(new DefaultPlayerStats());
+				mob.setPlayerStats((PlayerStats)CMClass.getShared("DefaultPlayerStats"));
 			mob.setName("");
 			mob.playerStats().setPassword("");
 		}

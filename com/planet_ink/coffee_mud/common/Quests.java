@@ -51,6 +51,9 @@ public class Quests implements Cloneable, Quest
 	// the unique name of the quest
 	public String name(){return name;}
 	public void setName(String newName){name=newName;}
+    public CMObject newInstance(){return this;}
+    public CMObject copyOf(){return this;}
+    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
     // the unique name of the quest
     public String startDate(){return startDate;}
@@ -1408,8 +1411,8 @@ public class Quests implements Cloneable, Quest
                 if(x<0) return false;
                 int mudmonth=Util.s_int(sd2.substring(0,x));
                 int mudday=Util.s_int(sd2.substring(x+1));
-                TimeClock C=new DefaultTimeClock();
-                TimeClock NOW=DefaultTimeClock.globalClock;
+                TimeClock C=(TimeClock)CMClass.getShared("DefaultTimeClock");
+                TimeClock NOW=CMClass.globalClock();
                 C.setMonth(mudmonth);
                 C.setDayOfMonth(mudday);
                 C.setTimeOfDay(0);

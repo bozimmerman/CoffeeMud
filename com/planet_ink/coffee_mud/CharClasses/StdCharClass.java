@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.common.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdCharClass implements CharClass, Cloneable
+public class StdCharClass implements CharClass
 {
 	public String ID(){return "StdCharClass";}
 	public String name(){return "mob";}
@@ -54,6 +54,7 @@ public class StdCharClass implements CharClass, Cloneable
 	public boolean expless(){return false;}
     private static final Vector empty=new Vector();
     public Vector getSecurityGroups(int classLevel){return empty;}
+    public CMObject newInstance(){return this;}
     protected String[] names=null;
     public String[] nameSet()
     {
@@ -136,7 +137,7 @@ public class StdCharClass implements CharClass, Cloneable
 	{
 	}
 
-	public CharClass copyOf()
+	public CMObject copyOf()
 	{
 		try
 		{

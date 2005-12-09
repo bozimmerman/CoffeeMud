@@ -22,7 +22,17 @@ import java.util.*;
 public class StdCommand extends Scriptable implements Command
 {
 	public StdCommand(){}
-
+    protected String ID=null;
+	public String ID()
+    {
+        if(ID==null){
+            ID=this.getClass().getName();
+            int x=ID.lastIndexOf(".");
+            if(x>=0) ID=ID.substring(x+1);
+        }
+        return ID;
+    }
+    
 	private String[] access=null;
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
@@ -36,6 +46,19 @@ public class StdCommand extends Scriptable implements Command
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return true;}
 	public boolean staffCommand(){return false;}
+    public CMObject newInstance(){return this;}
+    public CMObject copyOf()
+    {
+        try
+        {
+            Object O=this.clone();
+            return (CMObject)O;
+        }
+        catch(CloneNotSupportedException e)
+        {
+            return this;
+        }
+    }
 	
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

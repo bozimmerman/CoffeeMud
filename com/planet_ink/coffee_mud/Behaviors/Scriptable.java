@@ -5946,7 +5946,7 @@ public class Scriptable extends StdBehavior
             product.setName(E.Name());
             product.setDisplayText(E.displayText());
             product.setDescription(E.description());
-            product.setBaseEnvStats(E.baseEnvStats().cloneStats());
+            product.setBaseEnvStats((EnvStats)E.baseEnvStats().copyOf());
             product.recoverEnvStats();
         }
         return product;

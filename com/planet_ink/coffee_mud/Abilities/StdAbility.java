@@ -21,7 +21,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class StdAbility extends Scriptable implements Ability, Cloneable
+public class StdAbility extends Scriptable implements Ability
 {
 	public String ID() { return "StdAbility"; }
 	public String Name(){return name();}
@@ -76,11 +76,11 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	}
     protected void finalize(){ CMClass.unbumpCounter(CMClass.OBJECT_ABILITY); }
 
-	public Environmental newInstance()
+	public CMObject newInstance()
 	{
 		try
         {
-			return (Environmental)this.getClass().newInstance();
+			return (CMObject)this.getClass().newInstance();
 		}
 		catch(Exception e)
 		{
@@ -90,7 +90,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	}
 	public int classificationCode(){ return Ability.SKILL; }
 
-	protected static final EnvStats envStats=new DefaultEnvStats();
+	protected static final EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
 	public EnvStats envStats(){return envStats;}
 	public EnvStats baseEnvStats(){return envStats;}
 
@@ -422,7 +422,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 
 
 	protected void cloneFix(Ability E){}
-	public Environmental copyOf()
+	public CMObject copyOf()
 	{
 		try
 		{

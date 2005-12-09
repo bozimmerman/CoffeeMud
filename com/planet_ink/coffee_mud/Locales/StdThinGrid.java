@@ -160,7 +160,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			for(int a=0;a<numEffects();a++)
 				R.addEffect((Ability)fetchEffect(a).copyOf());
 			for(int b=0;b<numBehaviors();b++)
-				R.addBehavior(fetchBehavior(b).copyOf());
+				R.addBehavior((Behavior)fetchBehavior(b).copyOf());
 			rooms.addElement(R,new Integer(x),new Integer(y),new Long(System.currentTimeMillis()));
 			CMMap.addRoom(R);
 		}
@@ -732,6 +732,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	{
 		public String ID(){return "ThinGridVacuum";}
 		public String name(){return ID();}
+        public CMObject newInstance(){return new ThinGridVacuum();}
+        public CMObject copyOf(){return new ThinGridVacuum();}
+        public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 		public long tickStatus=Tickable.STATUS_NOT;
 		public long getTickStatus(){return tickStatus;}
 		public boolean tick(Tickable ticking, int tickID)
@@ -852,7 +855,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
                         tickStatus=Tickable.STATUS_MISC+18; // usually locked here 
                         ((StdRoom)R).imageName=null;
                         ((StdRoom)R).myArea=null;
-                        ((StdRoom)R).baseEnvStats=new DefaultEnvStats();
+                        ((StdRoom)R).baseEnvStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
                         ((StdRoom)R).envStats=((StdRoom)R).baseEnvStats;
                         ((StdRoom)R).exits=new Exit[Directions.NUM_DIRECTIONS];
                         ((StdRoom)R).doors=new Room[Directions.NUM_DIRECTIONS];

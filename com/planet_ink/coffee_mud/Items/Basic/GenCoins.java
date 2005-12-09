@@ -90,7 +90,7 @@ public class GenCoins extends GenItem implements Coins
 		if(((material&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
 		&&((material&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PAPER))
 			baseEnvStats.setWeight((int)Math.round((new Integer(baseEnvStats().ability()).doubleValue()/100.0)));
-		envStats=baseEnvStats.cloneStats();
+		envStats=(EnvStats)baseEnvStats.copyOf();
 		// import not to sup this, otherwise 'ability' makes it magical!
 		for(int a=0;a<numEffects();a++)
 		{

@@ -30,8 +30,8 @@ public class StdRoom
 	protected String imageName=null;
 	protected byte[] description=null;
 	protected Area myArea=null;
-	protected EnvStats envStats=new DefaultEnvStats();
-	protected EnvStats baseEnvStats=new DefaultEnvStats();
+	protected EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+	protected EnvStats baseEnvStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
 	public Exit[] exits=new Exit[Directions.NUM_DIRECTIONS];
 	public Room[] doors=new Room[Directions.NUM_DIRECTIONS];
 	protected Vector affects=null;
@@ -63,7 +63,7 @@ public class StdRoom
 		recoverEnvStats();
 	}
     protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_LOCALE);}
-	public Environmental newInstance()
+	public CMObject newInstance()
 	{
 		try
         {
@@ -112,8 +112,8 @@ public class StdRoom
 	public boolean isGeneric(){return false;}
 	protected void cloneFix(Room E)
 	{
-		baseEnvStats=E.baseEnvStats().cloneStats();
-		envStats=E.envStats().cloneStats();
+		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
+		envStats=(EnvStats)E.envStats().copyOf();
 
 		contents=new Vector();
 		inhabitants=new Vector();
@@ -170,10 +170,10 @@ public class StdRoom
 		{
 			Behavior B=E.fetchBehavior(i);
 			if(B!=null)
-				addBehavior(B.copyOf());
+				addBehavior((Behavior)B.copyOf());
 		}
 	}
-	public Environmental copyOf()
+	public CMObject copyOf()
 	{
 		try
 		{
@@ -687,7 +687,7 @@ public class StdRoom
 	}
 	public void recoverEnvStats()
 	{
-		envStats=baseEnvStats.cloneStats();
+		envStats=(EnvStats)baseEnvStats.copyOf();
 		Area myArea=getArea();
 		if(myArea!=null)
 			myArea.affectEnvStats(this,envStats());
@@ -735,7 +735,7 @@ public class StdRoom
 
 	public void setBaseEnvStats(EnvStats newBaseEnvStats)
 	{
-		baseEnvStats=newBaseEnvStats.cloneStats();
+		baseEnvStats=(EnvStats)newBaseEnvStats.copyOf();
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -1389,7 +1389,7 @@ public class StdRoom
 		CMMap.delRoom(this);
         imageName=null;
         myArea=null;
-        baseEnvStats=new DefaultEnvStats();
+        baseEnvStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
         envStats=baseEnvStats;
         exits=new Exit[Directions.NUM_DIRECTIONS];
         doors=new Room[Directions.NUM_DIRECTIONS];

@@ -26,7 +26,7 @@ public class GenWallpaper implements Item
 	protected String 	name="some wallpaper";
 	protected byte[] 	description=null;
 	protected String	readableText="";
-	protected EnvStats envStats=new DefaultEnvStats();
+	protected EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
 	protected boolean destroyed=false;
 	protected Environmental owner=null;
 
@@ -60,11 +60,11 @@ public class GenWallpaper implements Item
 	public boolean isAContainer(){return false;}
     public int numberOfItems(){return 1;}
     protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_ITEM);}
-	public Environmental newInstance()
+	public CMObject newInstance()
 	{
 		try
         {
-			return (Environmental)this.getClass().newInstance();
+			return (CMObject)this.getClass().newInstance();
 		}
 		catch(Exception e)
 		{
@@ -73,7 +73,7 @@ public class GenWallpaper implements Item
 		return new GenWallpaper();
 	}
 	public boolean subjectToWearAndTear(){return false;}
-	public Environmental copyOf()
+	public CMObject copyOf()
 	{
 		try
 		{

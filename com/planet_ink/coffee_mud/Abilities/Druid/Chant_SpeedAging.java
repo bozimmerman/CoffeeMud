@@ -110,7 +110,7 @@ public class Chant_SpeedAging extends Chant
 					{
 					    double aging=Util.mul(M.baseCharStats().getStat(CharStats.AGE),.10);
 					    int years=(int)Math.round(Math.floor(aging));
-					    int monthsInYear=DefaultTimeClock.globalClock.getMonthsInYear();
+					    int monthsInYear=CMClass.globalClock().getMonthsInYear();
 					    int months=(int)Math.round(Util.mul(aging-Math.floor(aging),monthsInYear));
 					    M.playerStats().getBirthday()[2]-=years;
 					    M.playerStats().getBirthday()[1]-=months;

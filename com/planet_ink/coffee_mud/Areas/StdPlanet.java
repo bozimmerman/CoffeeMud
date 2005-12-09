@@ -22,14 +22,14 @@ import java.util.*;
 public class StdPlanet extends StdTimeZone implements SpaceObject
 {
 	public String ID(){	return "StdPlanet";}
-	public Environmental copyOf()
+	public CMObject copyOf()
 	{
 		try
 		{
 			StdPlanet E=(StdPlanet)this.clone();
             CMClass.bumpCounter(CMClass.OBJECT_AREA);
 			E.cloneFix(this);
-			E.setTimeObj(new DefaultTimeClock());
+			E.setTimeObj((TimeClock)CMClass.getShared("DefaultTimeClock"));
 			return E;
 		}
 		catch(CloneNotSupportedException e)
@@ -48,7 +48,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	public void setVelocity(long v){velocity=v;}
 	public long accelleration(){return 0;}
 	public void setAccelleration(long x){}
-	protected TimeClock myClock=new DefaultTimeClock();
+	protected TimeClock myClock=(TimeClock)CMClass.getShared("DefaultTimeClock");
 	public TimeClock getTimeObj(){return myClock;}
 	public void setName(String newName)
 	{

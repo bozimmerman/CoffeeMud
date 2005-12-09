@@ -455,7 +455,7 @@ public class Patroller extends ActiveTicker
 						if(A2!=null)
 							A2.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob,0)*15));
 					}
-					CharState oldState=mob.curState().cloneCharState();
+					CharState oldState=(CharState)mob.curState().copyOf();
 					A.invoke(mob,V,null,false,0);
 					mob.curState().setMana(oldState.getMana());
 					mob.curState().setMovement(oldState.getMovement());

@@ -158,6 +158,9 @@ public class Factions implements Tickable
 	public String ID(){return "Factions";}
 	public String name(){return "Factions";}
 	public long getTickStatus(){ return Tickable.STATUS_NOT;}
+    public CMObject newInstance(){return this;}
+    public CMObject copyOf(){return this;}
+    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public static String getName(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.name; return ""; }
 	public static int getMinimum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.minimum; return 0; }
 	public static int getMaximum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.maximum; return 0; }

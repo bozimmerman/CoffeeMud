@@ -1,6 +1,6 @@
-package com.planet_ink.coffee_mud.common;
+package com.planet_ink.coffee_mud.Shared;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.utils.XMLManager;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
@@ -21,6 +21,7 @@ import java.util.*;
 */
 public class DefaultPlayerStats implements PlayerStats
 {
+    public String ID(){return "DefaultPlayerStats";}
 	private final static int TELL_STACK_MAX_SIZE=50;
 	private final static int GTELL_STACK_MAX_SIZE=50;
 	private long Hygiene=0; 
@@ -52,6 +53,28 @@ public class DefaultPlayerStats implements PlayerStats
     private RoomnumberSet roomSet=new RoomnumberSet();
     private DVector levelDateTimes=new DVector(2);
 
+    public CMObject newInstance(){return new DefaultPlayerStats();}
+    public CMObject copyOf()
+    {
+        try
+        {
+            DefaultPlayerStats O=(DefaultPlayerStats)this.clone();
+            O.levelDateTimes=levelDateTimes.copyOf();
+            O.roomSet=(RoomnumberSet)roomSet.clone();
+            O.securityGroups=(Vector)securityGroups.clone();
+            O.friends=(HashSet)friends.clone();
+            O.ignored=(HashSet)ignored.clone();
+            O.tellStack=(Vector)tellStack.clone();
+            O.gtellStack=(Vector)gtellStack.clone();
+            O.titles=(Vector)titles.clone();
+            O.alias=alias.copyOf();
+            return O;
+        }
+        catch(CloneNotSupportedException e)
+        {
+            return new DefaultPlayerStats();
+        }
+    }
 	public String lastIP(){return lastIP;}
 	public void setLastIP(String ip){lastIP=ip;}
 	public String getEmail(){if(email==null) return ""; return email;}
@@ -206,7 +229,7 @@ public class DefaultPlayerStats implements PlayerStats
 	public int initializeBirthday(int ageHours, Race R)
 	{
 	    birthday=new int[3];
-	    TimeClock C=DefaultTimeClock.globalClock;
+	    TimeClock C=CMClass.globalClock();
 	    birthday[0]=C.getDayOfMonth();
 	    birthday[1]=C.getMonth();
 	    birthday[2]=C.getYear();
@@ -481,4 +504,5 @@ public class DefaultPlayerStats implements PlayerStats
             return;
         levelDateTimes.addElement(new Integer(level),new Long(System.currentTimeMillis()));
     }
+    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

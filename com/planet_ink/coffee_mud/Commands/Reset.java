@@ -637,7 +637,7 @@ public class Reset extends StdCommand
 					Behavior B=A.fetchBehavior(((Behavior)O).ID());
 					if(B==null)
 					{
-						B=((Behavior)O).copyOf();
+						B=(Behavior)((Behavior)O).copyOf();
 						B.setParms(Util.combine(commands,2));
 						A.addBehavior(B);
 						changed=true;

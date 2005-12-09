@@ -1,6 +1,7 @@
-package com.planet_ink.coffee_mud.common;
+package com.planet_ink.coffee_mud.Shared;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.common.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -17,8 +18,9 @@ import com.planet_ink.coffee_mud.utils.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class DefaultCharState implements Cloneable, CharState
+public class DefaultCharState implements CharState
 {
+    public String ID(){return "DefaultCharState";}
 	protected int HitPoints=10;
 	protected int Mana=100;
 	protected int Movement=50;
@@ -33,7 +35,8 @@ public class DefaultCharState implements Cloneable, CharState
 	protected int annoyanceTicker=ANNOYANCE_DEFAULT_TICKS;
 
 	public DefaultCharState(){}
-	public DefaultCharState(int def)
+    public CMObject newInstance(){return new DefaultCharState();}
+    public void setAllValues(int def)
 	{
 		HitPoints=def;
 		Mana=def;
@@ -42,6 +45,7 @@ public class DefaultCharState implements Cloneable, CharState
 		Thirst=def;
 		Fatigue=def;
 	}
+    
 
 
 	public int getHitPoints(){return HitPoints;}
@@ -368,7 +372,7 @@ public class DefaultCharState implements Cloneable, CharState
 	}
 
 	// create a new one of these
-	public CharState cloneCharState()
+    public CMObject copyOf()
 	{
 		try
 		{
@@ -379,4 +383,5 @@ public class DefaultCharState implements Cloneable, CharState
 			return new DefaultCharState();
 		}
 	}
+    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

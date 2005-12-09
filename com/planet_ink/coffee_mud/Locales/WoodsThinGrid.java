@@ -34,7 +34,7 @@ public class WoodsThinGrid extends StdThinGrid
 
 	public String getChildLocaleID(){return "Woods";}
 	public Vector resourceChoices(){return Woods.roomResources;}
-	public Environmental newInstance()
+	public CMObject newInstance()
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();

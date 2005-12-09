@@ -38,7 +38,7 @@ public class UnderSaltWaterThinGrid extends UnderWaterThinGrid
 	}
 
 
-	public Environmental newInstance()
+	public CMObject newInstance()
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();

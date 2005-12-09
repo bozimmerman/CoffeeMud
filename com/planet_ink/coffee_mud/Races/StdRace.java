@@ -43,6 +43,7 @@ public class StdRace implements Race
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 	public int[] bodyMask(){return parts;}
 
+    public CMObject newInstance(){return this;}
 	private int[] agingChart={0,1,3,15,35,53,70,74,78};
 	public int[] getAgingChart(){return agingChart;}
 	
@@ -69,7 +70,7 @@ public class StdRace implements Race
 
 	public boolean fertile(){return true;}
 
-	public Race copyOf()
+	public CMObject copyOf()
 	{
 		try
 		{
@@ -455,7 +456,7 @@ public class StdRace implements Race
 		if(room==null) room=mob.location();
 
 		DeadBody Body=(DeadBody)CMClass.getItem("Corpse");
-		Body.setCharStats(mob.baseCharStats().cloneCharStats());
+		Body.setCharStats((CharStats)mob.baseCharStats().copyOf());
 		Body.baseEnvStats().setLevel(mob.baseEnvStats().level());
 		Body.baseEnvStats().setWeight(mob.baseEnvStats().weight());
 		Body.setPlayerCorpse(!mob.isMonster());

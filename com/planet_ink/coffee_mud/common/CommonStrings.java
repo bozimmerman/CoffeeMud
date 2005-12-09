@@ -239,7 +239,7 @@ public class CommonStrings extends Scriptable
             newusersByIP.addElement(address,new Long(System.currentTimeMillis()+IQCalendar.MILI_DAY));
         }
     }
-
+    
 	public static void loadCommonINISettings(INI page)
 	{
 		setVar(SYSTEM_BADNAMES,page.getStr("BADNAMES"));
@@ -373,31 +373,6 @@ public class CommonStrings extends Scriptable
 
 		Directions.ReInitialize(page.getInt("DIRECTIONS"));
 
-		if(Util.s_int(page.getStr("HOURSINDAY"))>0)
-			DefaultTimeClock.globalClock.setHoursInDay(Util.s_int(page.getStr("HOURSINDAY")));
-
-		if(Util.s_int(page.getStr("DAYSINMONTH"))>0)
-			DefaultTimeClock.globalClock.setDaysInMonth(Util.s_int(page.getStr("DAYSINMONTH")));
-
-		String monthsInYear=page.getStr("MONTHSINYEAR");
-		if(monthsInYear.trim().length()>0)
-			DefaultTimeClock.globalClock.setMonthsInYear(Util.toStringArray(Util.parseCommas(monthsInYear,true)));
-
-		DefaultTimeClock.globalClock.setDaysInWeek(Util.toStringArray(Util.parseCommas(page.getStr("DAYSINWEEK"),true)));
-
-		if(page.containsKey("YEARDESC"))
-			DefaultTimeClock.globalClock.setYearNames(Util.toStringArray(Util.parseCommas(page.getStr("YEARDESC"),true)));
-
-		if(page.containsKey("DAWNHR")&&page.containsKey("DAYHR")
-			&&page.containsKey("DUSKHR")&&page.containsKey("NIGHTHR"))
-		DefaultTimeClock.globalClock.setDawnToDusk(
-									Util.s_int(page.getStr("DAWNHR")),
-									Util.s_int(page.getStr("DAYHR")),
-									Util.s_int(page.getStr("DUSKHR")),
-									Util.s_int(page.getStr("NIGHTHR")));
-
-		setIntVar(SYSTEMI_TICKSPERMUDDAY,""+((MudHost.TIME_MILIS_PER_MUDHOUR*DefaultTimeClock.globalClock.getHoursInDay()/MudHost.TICK_TIME)));
-		setIntVar(SYSTEMI_TICKSPERMUDMONTH,""+((MudHost.TIME_MILIS_PER_MUDHOUR*DefaultTimeClock.globalClock.getHoursInDay()*DefaultTimeClock.globalClock.getDaysInMonth()/MudHost.TICK_TIME)));
 		CMSecurity.setDisableVars(page.getStr("DISABLE"));
 		if(page.getStr("DISABLE").trim().length()>0)
 			Log.sysOut("MUD","Disabled subsystems: "+page.getStr("DISABLE"));

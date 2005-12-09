@@ -1,8 +1,9 @@
-package com.planet_ink.coffee_mud.common;
+package com.planet_ink.coffee_mud.Shared;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.common.*;
 
 // requires nothing to load
 /* 
@@ -20,7 +21,7 @@ import com.planet_ink.coffee_mud.utils.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Social implements Environmental
+public class DefaultSocial implements Social
 {
 	private String Social_name;
 	private String You_see;
@@ -32,7 +33,7 @@ public class Social implements Environmental
 	private int othersCode=CMMsg.MSG_OK_ACTION;
 	private int targetCode=CMMsg.MSG_OK_ACTION;
 
-	public String ID() { return "Social"; }
+	public String ID() { return "DefaultSocial"; }
 	public String name(){ return Social_name;}
 	public String Name(){return name();}
 	public void setName(String newName){Social_name=newName;}
@@ -193,14 +194,17 @@ public class Social implements Environmental
 	public void setDescription(String str){}
 	public String displayText(){return "";}
 	public void setDisplayText(String str){}
-	protected static final EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
-	public EnvStats envStats(){return envStats;}
-	public EnvStats baseEnvStats(){return envStats;}
+    public EnvStats stats=null;
+	public EnvStats envStats()
+    {
+        if(stats==null) stats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+        return stats;
+    }
+	public EnvStats baseEnvStats(){return envStats();}
 
 	public void recoverEnvStats(){}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
-	public CMObject newInstance()
-	{ return new Social();}
+	public CMObject newInstance() { return new DefaultSocial();}
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	private static final String[] CODES={"CLASS","NAME"};
@@ -232,9 +236,9 @@ public class Social implements Environmental
 		String name=Social_name.toUpperCase().trim();
 		if(name.indexOf(" ")>=0)
 			name=name.substring(0,name.indexOf(" ")+1);
-		if(((Social)E).Social_name.toUpperCase().startsWith(name))
+		if(((Social)E).name().toUpperCase().startsWith(name))
 			return true;
-		if((((Social)E).Social_name.toUpperCase().equals(name.trim())))
+		if((((Social)E).name().toUpperCase().equals(name.trim())))
 		   return true;
 		return false;
 	}
@@ -244,7 +248,7 @@ public class Social implements Environmental
 	{
 		try
 		{
-			Social E=(Social)this.clone();
+			DefaultSocial E=(DefaultSocial)this.clone();
 			E.cloneFix(this);
 			return E;
 

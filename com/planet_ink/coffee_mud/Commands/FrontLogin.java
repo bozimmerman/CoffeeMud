@@ -486,7 +486,7 @@ public class FrontLogin extends StdCommand
 				}
 
 				mob.setName(login);
-				mob.setPlayerStats(new DefaultPlayerStats());
+				mob.setPlayerStats((PlayerStats)CMClass.getShared("DefaultPlayerStats"));
 				mob.playerStats().setPassword(password);
 
 				boolean emailReq=(!CommonStrings.getVar(CommonStrings.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"));

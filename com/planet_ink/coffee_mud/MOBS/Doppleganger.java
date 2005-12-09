@@ -37,9 +37,9 @@ public class Doppleganger extends StdMOB
 		Username="a doppleganger";
 		setDescription("A formless biped creature, with wicked black eyes.");
 		setDisplayText("A formless biped stands here.");
-		setBaseEnvStats(new DefaultEnvStats());
-		setBaseCharStats(new DefaultCharStats());
-		setBaseState(new DefaultCharState());
+		setBaseEnvStats((EnvStats)CMClass.getShared("DefaultEnvStats"));
+		setBaseCharStats((CharStats)CMClass.getShared("DefaultCharStats"));
+		setBaseState((CharState)CMClass.getShared("DefaultCharState"));
 		Factions.setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(250);
 		baseEnvStats.setWeight(100 + Math.abs(randomizer.nextInt() % 101));
@@ -109,9 +109,9 @@ public class Doppleganger extends StdMOB
 				Username=mimicing.Name();
 				setDisplayText(mimicing.displayText());
 				setDescription(mimicing.description());
-				setBaseEnvStats(mimicing.baseEnvStats().cloneStats());
-				setBaseCharStats(mimicing.baseCharStats().cloneCharStats());
-				setBaseState(mimicing.baseState().cloneCharState());
+				setBaseEnvStats((EnvStats)mimicing.baseEnvStats().copyOf());
+				setBaseCharStats((CharStats)mimicing.baseCharStats().copyOf());
+				setBaseState((CharState)mimicing.baseState().copyOf());
 				recoverEnvStats();
 				recoverCharStats();
 				recoverMaxState();

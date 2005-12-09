@@ -188,7 +188,7 @@ public class WaterCurrents extends ActiveTicker
 		return true;
 	}
 	protected static final String[] empty={};
-	protected static final EnvStats envStats=new DefaultEnvStats();
+	protected static final EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
 	protected static final String[] CODES={"CLASS","TEXT"};
 	protected static final int[] cost=new int[3];
 	private class AWaterCurrent implements Ability, Cloneable
@@ -272,11 +272,11 @@ public class WaterCurrents extends ActiveTicker
 
 		public void recoverEnvStats(){}
 		public void setBaseEnvStats(EnvStats newBaseEnvStats){}
-		public Environmental newInstance()
+		public CMObject newInstance()
 		{
 			try
             {
-				return (Environmental)this.getClass().newInstance();
+				return (CMObject)this.getClass().newInstance();
 			}
 			catch(Exception e)
 			{
@@ -317,7 +317,7 @@ public class WaterCurrents extends ActiveTicker
 		}
 		private void cloneFix(Ability E){}
 
-		public Environmental copyOf()
+		public CMObject copyOf()
 		{
 			try
 			{

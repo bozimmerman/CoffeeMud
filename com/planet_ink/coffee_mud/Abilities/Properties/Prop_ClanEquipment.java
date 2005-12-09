@@ -101,7 +101,7 @@ public class Prop_ClanEquipment extends Property
 		secretWord = getWandWord(text); // try to randomize the spell word a little
 
 		// Armor
-		this.EQadjCharStats = new DefaultCharStats();
+		this.EQadjCharStats = (CharStats)CMClass.getShared("DefaultCharStats");
 		initAdjustments(EQadjCharStats);
 
 		if (type.equalsIgnoreCase("PARALYSIS")) {

@@ -41,7 +41,7 @@ public class Sword extends StdWeapon
 		weaponClassification=Weapon.CLASS_SWORD;
 	}
 
-	public Environmental newInstance()
+	public CMObject newInstance()
 	{
 		if(!ID().equals("Sword"))
 		{

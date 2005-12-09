@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.CharClasses;
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.Races.GenRace;
 import com.planet_ink.coffee_mud.common.*;
 
 /* 
@@ -121,7 +122,8 @@ public class GenCharClass extends StdCharClass
 	{
 	}
 
-	public CharClass copyOf()
+    public CMObject newInstance(){return new GenCharClass();}
+	public CMObject copyOf()
 	{
 		GenCharClass E=new GenCharClass();
 		E.setClassParms(classParms());
@@ -371,20 +373,20 @@ public class GenCharClass extends StdCharClass
 			selectability=Util.s_bool(s)?Area.THEME_FANTASY:0;
 		adjEStats=null;
 		String eStats=XMLManager.getValFromPieces(classData,"ESTATS");
-		if(eStats.length()>0){ adjEStats=new DefaultEnvStats(); CoffeeMaker.setEnvStats(adjEStats,eStats);}
+		if(eStats.length()>0){ adjEStats=(EnvStats)CMClass.getShared("DefaultEnvStats"); CoffeeMaker.setEnvStats(adjEStats,eStats);}
 		adjStats=null;
 		String aStats=XMLManager.getValFromPieces(classData,"ASTATS");
-		if(aStats.length()>0){ adjStats=new DefaultCharStats(); CoffeeMaker.setCharStats(adjStats,aStats);}
+		if(aStats.length()>0){ adjStats=(CharStats)CMClass.getShared("DefaultCharStats"); CoffeeMaker.setCharStats(adjStats,aStats);}
 		setStats=null;
 		String cStats=XMLManager.getValFromPieces(classData,"CSTATS");
-		if(cStats.length()>0){ setStats=new DefaultCharStats(); CoffeeMaker.setCharStats(setStats,cStats);}
+		if(cStats.length()>0){ setStats=(CharStats)CMClass.getShared("DefaultCharStats"); CoffeeMaker.setCharStats(setStats,cStats);}
 		adjState=null;
 		String aState=XMLManager.getValFromPieces(classData,"ASTATE");
-		if(aState.length()>0){ adjState=new DefaultCharState(); CoffeeMaker.setCharState(adjState,aState);}
+		if(aState.length()>0){ adjState=(CharState)CMClass.getShared("DefaultCharState"); CoffeeMaker.setCharState(adjState,aState);}
 		startAdjState=null;
 		disableFlags=XMLManager.getIntFromPieces(classData,"DISFLAGS");
 		String saState=XMLManager.getValFromPieces(classData,"STARTASTATE");
-		if(saState.length()>0){ startAdjState=new DefaultCharState(0); CoffeeMaker.setCharState(startAdjState,saState);}
+		if(saState.length()>0){ startAdjState=(CharState)CMClass.getShared("DefaultCharState"); startAdjState.setAllValues(0); CoffeeMaker.setCharState(startAdjState,saState);}
 
 		Vector xV=XMLManager.getRealContentsFromPieces(classData,"CABILITIES");
 		CMAble.delCharMappings(ID());
@@ -595,10 +597,10 @@ public class GenCharClass extends StdCharClass
 		case 17: otherBonuses=val;break;
 		case 18: qualifications=val;break;
 		case 19: selectability=Util.s_int(val); break;
-		case 20: adjEStats=null;if(val.length()>0){adjEStats=new DefaultEnvStats(0); CoffeeMaker.setEnvStats(adjEStats,val);}break;
-		case 21: adjStats=null;if(val.length()>0){adjStats=new DefaultCharStats(0); CoffeeMaker.setCharStats(adjStats,val);}break;
-		case 22: setStats=null;if(val.length()>0){setStats=new DefaultCharStats(0); CoffeeMaker.setCharStats(setStats,val);}break;
-		case 23: adjState=null;if(val.length()>0){adjState=new DefaultCharState(0); CoffeeMaker.setCharState(adjState,val);}break;
+		case 20: adjEStats=null;if(val.length()>0){adjEStats=(EnvStats)CMClass.getShared("DefaultEnvStats"); adjEStats.setAllValues(0); CoffeeMaker.setEnvStats(adjEStats,val);}break;
+		case 21: adjStats=null;if(val.length()>0){adjStats=(CharStats)CMClass.getShared("DefaultCharStats"); adjStats.setAllValues(0); CoffeeMaker.setCharStats(adjStats,val);}break;
+		case 22: setStats=null;if(val.length()>0){setStats=(CharStats)CMClass.getShared("DefaultCharStats"); setStats.setAllValues(0); CoffeeMaker.setCharStats(setStats,val);}break;
+		case 23: adjState=null;if(val.length()>0){adjState=(CharState)CMClass.getShared("DefaultCharState"); adjState.setAllValues(0); CoffeeMaker.setCharState(adjState,val);}break;
 		case 24: CMAble.delCharMappings(ID()); break;
 		case 25: tempables[0]=val; break;
 		case 26: tempables[1]=val; break;
@@ -648,7 +650,7 @@ public class GenCharClass extends StdCharClass
 		case 37: manaDice=Util.s_int(val); break;
 		case 38: manaDie=Util.s_int(val); break;
 		case 39: disableFlags=Util.s_int(val); break;
-		case 40: startAdjState=null;if(val.length()>0){startAdjState=new DefaultCharState(0); CoffeeMaker.setCharState(startAdjState,val);}break;
+		case 40: startAdjState=null;if(val.length()>0){startAdjState=(CharState)CMClass.getShared("DefaultCharState"); startAdjState.setAllValues(0); CoffeeMaker.setCharState(startAdjState,val);}break;
         case 41: num=Util.s_int(val);
                  if(num>0)
                  {

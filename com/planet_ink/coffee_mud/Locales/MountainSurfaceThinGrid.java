@@ -33,7 +33,7 @@ public class MountainSurfaceThinGrid extends StdThinGrid
 		domainCondition=Room.CONDITION_NORMAL;
 	}
 
-	public Environmental newInstance()
+	public CMObject newInstance()
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();

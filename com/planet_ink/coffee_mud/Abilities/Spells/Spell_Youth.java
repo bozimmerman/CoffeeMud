@@ -74,7 +74,7 @@ public class Spell_Youth extends Spell
 					    age=(int)Math.round(Util.div(chart[cat]+chart[cat-1],2.0));
 					if(target.playerStats()!=null)
 					{
-					    TimeClock C=DefaultTimeClock.globalClock;
+					    TimeClock C=CMClass.globalClock();
 					    target.playerStats().getBirthday()[2]=C.getYear()-age;
 					    int day=C.getDayOfMonth();
 					    int month=C.getMonth();

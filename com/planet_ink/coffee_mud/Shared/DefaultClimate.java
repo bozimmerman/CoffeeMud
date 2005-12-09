@@ -1,5 +1,6 @@
-package com.planet_ink.coffee_mud.common;
+package com.planet_ink.coffee_mud.Shared;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
@@ -29,6 +30,19 @@ public class DefaultClimate implements Climate
 	protected int weatherTicker=WEATHER_TICK_DOWN;
 	protected static int windDirection=Directions.NORTH;
 
+    public CMObject newInstance(){return new DefaultClimate();}
+    public CMObject copyOf()
+    {
+        try
+        {
+            Object O=this.clone();
+            return (CMObject)O;
+        }
+        catch(CloneNotSupportedException e)
+        {
+            return new DefaultClimate();
+        }
+    }
 	public int nextWeatherType(Room room)
 	{
 		if(room==null) return nextWeather;
@@ -558,5 +572,5 @@ public class DefaultClimate implements Climate
 		}
 		return base;
 	}
-
+    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

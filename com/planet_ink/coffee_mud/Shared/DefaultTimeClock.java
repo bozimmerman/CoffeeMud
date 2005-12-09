@@ -1,6 +1,7 @@
-package com.planet_ink.coffee_mud.common;
+package com.planet_ink.coffee_mud.Shared;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.common.*;
 
 import java.util.*;
 
@@ -92,7 +93,7 @@ public class DefaultTimeClock implements TimeClock
         return timeDesc.toString();
     }
     
-    public static int determineSeason(String str)
+    public int determineSeason(String str)
     {
         str=str.toUpperCase().trim();
         if(str.length()==0) return -1;
@@ -100,6 +101,35 @@ public class DefaultTimeClock implements TimeClock
             if(TimeClock.SEASON_DESCS[i].startsWith(str))
                 return i;
         return -1;
+    }
+    
+    public void initializeINIClock(INI page)
+    {
+        if(Util.s_int(page.getStr("HOURSINDAY"))>0)
+            setHoursInDay(Util.s_int(page.getStr("HOURSINDAY")));
+
+        if(Util.s_int(page.getStr("DAYSINMONTH"))>0)
+            setDaysInMonth(Util.s_int(page.getStr("DAYSINMONTH")));
+
+        String monthsInYear=page.getStr("MONTHSINYEAR");
+        if(monthsInYear.trim().length()>0)
+            setMonthsInYear(Util.toStringArray(Util.parseCommas(monthsInYear,true)));
+
+        setDaysInWeek(Util.toStringArray(Util.parseCommas(page.getStr("DAYSINWEEK"),true)));
+
+        if(page.containsKey("YEARDESC"))
+            setYearNames(Util.toStringArray(Util.parseCommas(page.getStr("YEARDESC"),true)));
+
+        if(page.containsKey("DAWNHR")&&page.containsKey("DAYHR")
+                &&page.containsKey("DUSKHR")&&page.containsKey("NIGHTHR"))
+        setDawnToDusk(
+                        Util.s_int(page.getStr("DAWNHR")),
+                        Util.s_int(page.getStr("DAYHR")),
+                        Util.s_int(page.getStr("DUSKHR")),
+                        Util.s_int(page.getStr("NIGHTHR")));
+
+        CommonStrings.setIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY,""+((MudHost.TIME_MILIS_PER_MUDHOUR*CMClass.globalClock().getHoursInDay()/MudHost.TICK_TIME)));
+        CommonStrings.setIntVar(CommonStrings.SYSTEMI_TICKSPERMUDMONTH,""+((MudHost.TIME_MILIS_PER_MUDHOUR*CMClass.globalClock().getHoursInDay()*CMClass.globalClock().getDaysInMonth()/MudHost.TICK_TIME)));
     }
     
 	public String timeDescription(MOB mob, Room room)

@@ -49,8 +49,8 @@ public class CorpseEater extends ActiveTicker
 			mob.setName(corpse.name());
 			mob.setDisplayText(corpse.displayText());
 			mob.setDescription(corpse.description());
-			mob.setBaseCharStats(corpse.charStats().cloneCharStats());
-			mob.setBaseEnvStats(corpse.baseEnvStats().cloneStats());
+			mob.setBaseCharStats((CharStats)corpse.charStats().copyOf());
+			mob.setBaseEnvStats((EnvStats)corpse.baseEnvStats().copyOf());
 			mob.recoverCharStats();
 			mob.recoverEnvStats();
 			int level=mob.baseEnvStats().level();

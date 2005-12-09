@@ -105,9 +105,9 @@ public class Prop_HaveAdjuster extends Property
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		this.adjCharStats=new DefaultCharStats();
-		this.adjCharState=new DefaultCharState();
-		this.adjEnvStats=new DefaultEnvStats();
+		this.adjCharStats=(CharStats)CMClass.getShared("DefaultCharStats");
+		this.adjCharState=(CharState)CMClass.getShared("DefaultCharState");
+		this.adjEnvStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
         this.mask=new Vector();
 		int gotit=setAdjustments(newText,adjEnvStats,adjCharStats,adjCharState,mask);
 		gotClass=((gotit&1)==1);

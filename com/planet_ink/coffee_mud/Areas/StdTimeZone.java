@@ -22,14 +22,14 @@ import java.util.*;
 public class StdTimeZone extends StdArea
 {
 	public String ID(){	return "StdTimeZone";}
-	public Environmental copyOf()
+	public CMObject copyOf()
 	{
 		try
 		{
 		    StdTimeZone E=(StdTimeZone)this.clone();
             CMClass.bumpCounter(CMClass.OBJECT_AREA);
 			E.cloneFix(this);
-			E.setTimeObj(new DefaultTimeClock());
+			E.setTimeObj((TimeClock)CMClass.getShared("DefaultTimeClock"));
 			return E;
 		}
 		catch(CloneNotSupportedException e)
@@ -37,7 +37,7 @@ public class StdTimeZone extends StdArea
 			return this.newInstance();
 		}
 	}
-	protected TimeClock myClock=new DefaultTimeClock();
+	protected TimeClock myClock=(TimeClock)CMClass.getShared("DefaultTimeClock");
 	public TimeClock getTimeObj(){return myClock;}
 	public void setName(String newName)
 	{

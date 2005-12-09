@@ -320,7 +320,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
             return 0.0;
         if(getStartRoom()==null) return 0.0;
         double amt=0.0;
-        TimeClock TC=(getStartRoom()==null)?DefaultTimeClock.globalClock:getStartRoom().getArea().getTimeObj();
+        TimeClock TC=(getStartRoom()==null)?CMClass.globalClock():getStartRoom().getArea().getTimeObj();
         long time=System.currentTimeMillis()-Util.s_long((String)data.elementAt(PIECE_TIME));
         long millisPerMudMonth=TC.getDaysInMonth()*MudHost.TIME_MILIS_PER_MUDHOUR*TC.getHoursInDay();
         if(time<=0) return amt;
@@ -792,7 +792,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                     }
                 }
 
-                TimeClock C=DefaultTimeClock.globalClock;
+                TimeClock C=CMClass.globalClock();
                 if(getStartRoom()!=null) C=getStartRoom().getArea().getTimeObj();
                 boolean codCharge=false;
                 if(V.size()==0)

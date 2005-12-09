@@ -55,7 +55,7 @@ public class Prop_HaveResister extends Property
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		adjCharStats=new DefaultCharStats();
+		adjCharStats=(CharStats)CMClass.getShared("DefaultCharStats");
         ignoreCharStats=true;
         for(int i=0;i<stats.length;i++)
         {

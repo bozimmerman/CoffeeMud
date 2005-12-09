@@ -4340,7 +4340,7 @@ public class Import extends StdCommand
 					boolean changing=true;
 					if((S1==null)||(!S1.name().toUpperCase().equals(word)))
 					{
-						S1=new Social();
+						S1=(Social)CMClass.getShared("DefaultSocial");
 						S1.setName(word);
 						Socials.addSocial(S1);
 						changing=false;
@@ -4373,7 +4373,7 @@ public class Import extends StdCommand
 					if(str.startsWith("#")) continue;
 					if(S2==null)
 					{
-						S2=new Social();
+						S2=(Social)CMClass.getShared("DefaultSocial");
 						S2.setName(word+" <T-NAME>");
 						Socials.addSocial(S2);
 						changing=false;
@@ -4425,7 +4425,7 @@ public class Import extends StdCommand
 					if(str.startsWith("#")) continue;
 					if(S3==null)
 					{
-						S3=new Social();
+						S3=(Social)CMClass.getShared("DefaultSocial");
 						S3.setName(word+" SELF");
 						Socials.addSocial(S3);
 						changing=false;

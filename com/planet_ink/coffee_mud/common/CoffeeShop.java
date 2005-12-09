@@ -33,7 +33,7 @@ public class CoffeeShop
             Integer P=(Integer)E.storeInventory.elementAt(i,3);
             if(I2!=null)
             {
-                Environmental I3=I2.copyOf();
+                Environmental I3=(Environmental)I2.copyOf();
                 copyFix.put(I2,I3);
                 storeInventory.addElement(I3,N,P);
             }
@@ -44,7 +44,7 @@ public class CoffeeShop
             if(I2!=null)
             {
                 Environmental I3=(Environmental)copyFix.get(I2);
-                if(I3==null) I3=I2.copyOf();
+                if(I3==null) I3=(Environmental)I2.copyOf();
                 baseInventory.addElement(I3);
             }
         }
@@ -112,7 +112,7 @@ public class CoffeeShop
             Environmental copy=null;
             for(int v=0;v<number;v++)
             {
-                copy=thisThang.copyOf();
+                copy=(Environmental)thisThang.copyOf();
                 ((InnKey)copy).hangOnRack(shop);
                 storeInventory.addElement(copy,new Integer(1),new Integer(-1));
             }
@@ -120,7 +120,7 @@ public class CoffeeShop
         else
         {
             Environmental copy=null;
-            thisThang=thisThang.copyOf();
+            thisThang=(Environmental)thisThang.copyOf();
             for(int e=0;e<storeInventory.size();e++)
             {
                 copy=(Environmental)storeInventory.elementAt(e,1);
@@ -296,7 +296,7 @@ public class CoffeeShop
                 if(possValue>=1)
                     storeInventory.setElementAt(index,2,new Integer(possValue));
                 if(possValue>1)
-                    item=item.copyOf();
+                    item=(Environmental)item.copyOf();
                 if(possValue<1)
                     storeInventory.removeElementAt(index);
             }

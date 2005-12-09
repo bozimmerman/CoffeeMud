@@ -527,7 +527,7 @@ public class GrinderMobs
 						if(O==null)
 							O=RoomData.getItemFromAnywhere(null,MATCHING);
 						if(O!=null)
-							K.addStoreInventory(O.copyOf(),Util.s_int(theparm),Util.s_int(theprice));
+							K.addStoreInventory((Environmental)O.copyOf(),Util.s_int(theparm),Util.s_int(theprice));
 					}
 					else
 					{
@@ -536,19 +536,19 @@ public class GrinderMobs
 						{
 							MOB M2=(MOB)m.nextElement();
 							if(CMClass.className(M2).equals(MATCHING)&&(!M2.isGeneric()))
-							{	O=M2.copyOf(); break;	}
+							{	O=(MOB)M2.copyOf(); break;	}
 						}
 						if(O==null)
 						for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 						{
 							Ability A2=(Ability)a.nextElement();
 							if(CMClass.className(A2).equals(MATCHING))
-							{	O=A2.copyOf(); break;	}
+							{	O=(Ability)A2.copyOf(); break;	}
 						}
 						if(O==null)
 							O=RoomData.getItemFromAnywhere(null,MATCHING);
 						if(O!=null)
-							K.addStoreInventory(O.copyOf(),Util.s_int(theparm),Util.s_int(theprice));
+							K.addStoreInventory((Environmental)O.copyOf(),Util.s_int(theparm),Util.s_int(theprice));
 					}
 					num++;
 					MATCHING=httpReq.getRequestParameter("SHP"+num);

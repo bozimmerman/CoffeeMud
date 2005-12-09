@@ -78,7 +78,7 @@ public class Archon_Multiwatch extends ArchonSkill
 			int[] data=(int[])DATA.get(msg.source());
 
 			if(data==null) return;
-			if(msg.tool() instanceof Social)
+			if(msg.tool().ID().equals("Social"))
 			{
 				if(nonIPnonMonsterWithMe(msg.source()))
 					data[DATA_GOODSOCIAL]++;

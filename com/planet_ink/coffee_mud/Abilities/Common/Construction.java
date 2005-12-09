@@ -78,7 +78,7 @@ public class Construction extends CraftingSkill
 		E2.setDisplayText(E.displayText());
 		E2.setDescription(E.description());
 		E2.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),E.hasALock(),E.isLocked(),E.defaultsLocked());
-		E2.setBaseEnvStats(E.baseEnvStats().cloneStats());
+		E2.setBaseEnvStats((EnvStats)E.baseEnvStats().copyOf());
 		E2.setExitParams(E.doorName(),E.closeWord(),E.openWord(),E.closedText());
 		E2.setKeyName(E.keyName());
 		E2.setOpenDelayTicks(E.openDelayTicks());

@@ -27,11 +27,11 @@ public class StdMOB implements MOB
 	private String clanID=null;
 	private int clanRole=0;
 
-	protected CharStats baseCharStats=new DefaultCharStats();
-	protected CharStats charStats=new DefaultCharStats();
+	protected CharStats baseCharStats=(CharStats)CMClass.getShared("DefaultCharStats");
+	protected CharStats charStats=(CharStats)CMClass.getShared("DefaultCharStats");
 
-	protected EnvStats envStats=new DefaultEnvStats();
-	protected EnvStats baseEnvStats=new DefaultEnvStats();
+	protected EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+	protected EnvStats baseEnvStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
 
 	protected PlayerStats playerStats=null;
 
@@ -76,9 +76,9 @@ public class StdMOB implements MOB
     private int manaConsumeCounter=Dice.roll(1,10,0);
 
     // the core state values
-    public CharState curState=new DefaultCharState();
-    public CharState maxState=new DefaultCharState();
-    public CharState baseState=new DefaultCharState();
+    public CharState curState=(CharState)CMClass.getShared("DefaultCharState");
+    public CharState maxState=(CharState)CMClass.getShared("DefaultCharState");
+    public CharState baseState=(CharState)CMClass.getShared("DefaultCharState");
     private long lastTickedDateTime=0;
     public long lastTickedDateTime(){return lastTickedDateTime;}
     public void flagVariableEq(){lastTickedDateTime=-2;}
@@ -159,7 +159,7 @@ public class StdMOB implements MOB
 		return bob;
 	}
 
-	public Environmental newInstance()
+	public CMObject newInstance()
 	{
 		try
         {
@@ -230,13 +230,13 @@ public class StdMOB implements MOB
 	protected void cloneFix(MOB E)
 	{
 		affects=new Vector();
-		baseEnvStats=E.baseEnvStats().cloneStats();
-		envStats=E.envStats().cloneStats();
-		baseCharStats=E.baseCharStats().cloneCharStats();
-		charStats=E.charStats().cloneCharStats();
-		baseState=E.baseState().cloneCharState();
-		curState=E.curState().cloneCharState();
-		maxState=E.maxState().cloneCharState();
+		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
+		envStats=(EnvStats)E.envStats().copyOf();
+		baseCharStats=(CharStats)E.baseCharStats().copyOf();
+		charStats=(CharStats)E.charStats().copyOf();
+		baseState=(CharState)E.baseState().copyOf();
+		curState=(CharState)E.curState().copyOf();
+		maxState=(CharState)E.maxState().copyOf();
 
 		pleaseDestroy=false;
 
@@ -284,7 +284,7 @@ public class StdMOB implements MOB
 				behaviors.addElement(B.copyOf());
 		}
 	}
-	public Environmental copyOf()
+	public CMObject copyOf()
 	{
 		try
 		{
@@ -311,7 +311,7 @@ public class StdMOB implements MOB
 	}
 	public void recoverEnvStats()
 	{
-		envStats=baseEnvStats.cloneStats();
+		envStats=(EnvStats)baseEnvStats.copyOf();
 		if(location()!=null)
 			location().affectEnvStats(this,envStats);
 		envStats().setWeight(envStats().weight()+(int)Math.round(Util.div(getMoney(),100.0)));
@@ -347,7 +347,7 @@ public class StdMOB implements MOB
 	}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats)
 	{
-		baseEnvStats=newBaseEnvStats.cloneStats();
+		baseEnvStats=(EnvStats)newBaseEnvStats.copyOf();
 	}
 
 	public int baseWeight()
@@ -392,7 +392,7 @@ public class StdMOB implements MOB
 	public void recoverCharStats()
 	{
 		baseCharStats.setClassLevel(baseCharStats.getCurrentClass(),baseEnvStats().level()-baseCharStats().combinedSubLevels());
-		charStats=baseCharStats().cloneCharStats();
+		charStats=(CharStats)baseCharStats().copyOf();
 
 		if(riding()!=null) riding().affectCharStats(this,charStats);
 		if(getMyDeity()!=null) getMyDeity().affectCharStats(this,charStats);
@@ -427,7 +427,7 @@ public class StdMOB implements MOB
 	
 	public void setBaseCharStats(CharStats newBaseCharStats)
 	{
-		baseCharStats=newBaseCharStats.cloneCharStats();
+		baseCharStats=(CharStats)newBaseCharStats.copyOf();
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -468,17 +468,17 @@ public class StdMOB implements MOB
     }
 	public void setBaseState(CharState newState)
 	{
-		baseState=newState.cloneCharState();
-		maxState=newState.cloneCharState();
+		baseState=(CharState)newState.copyOf();
+		maxState=(CharState)newState.copyOf();
 	}
 	public void resetToMaxState()
 	{
 		recoverMaxState();
-		curState=maxState.cloneCharState();
+		curState=(CharState)maxState.copyOf();
 	}
 	public void recoverMaxState()
 	{
-		maxState=baseState.cloneCharState();
+		maxState=(CharState)baseState.copyOf();
 		if(charStats.getMyRace()!=null)	charStats.getMyRace().affectCharState(this,maxState);
 		if(riding()!=null) riding().affectCharState(this,maxState);
 		for(int a=0;a<numAllEffects();a++)
@@ -2078,7 +2078,7 @@ public class StdMOB implements MOB
                 myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
             if((longlook)&&(viewer.charStats().getStat(CharStats.INTELLIGENCE)>12))
             {
-                CharStats C=new DefaultCharStats();
+                CharStats C=(CharStats)CMClass.getShared("DefaultCharStats");
                 MOB testMOB=CMClass.getMOB("StdMOB");
                 charStats().getMyRace().affectCharStats(testMOB,C);
                 myDescription.append(relativeCharStatTest(C,"weaker","stronger",CharStats.STRENGTH));
@@ -2949,9 +2949,9 @@ public class StdMOB implements MOB
 						&&(playerStats().getBirthday()!=null)
 						&&((AgeHours%20)==0))
 						{
-						    int tage=baseCharStats().getMyRace().getAgingChart()[Race.AGE_YOUNGADULT]+DefaultTimeClock.globalClock.getYear()-playerStats().getBirthday()[2];
-					        int month=DefaultTimeClock.globalClock.getMonth();
-					        int day=DefaultTimeClock.globalClock.getDayOfMonth();
+						    int tage=baseCharStats().getMyRace().getAgingChart()[Race.AGE_YOUNGADULT]+CMClass.globalClock().getYear()-playerStats().getBirthday()[2];
+					        int month=CMClass.globalClock().getMonth();
+					        int day=CMClass.globalClock().getDayOfMonth();
 					        int bday=playerStats().getBirthday()[0];
 					        int bmonth=playerStats().getBirthday()[1];
 						    while((tage>baseCharStats.getStat(CharStats.AGE))

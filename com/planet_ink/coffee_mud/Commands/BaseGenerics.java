@@ -186,7 +186,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		TimeClock TC=A.getTimeObj();
 		StringBuffer report=new StringBuffer("");
-		if(TC==DefaultTimeClock.globalClock)
+		if(TC==CMClass.globalClock())
 			report.append(getScr("BaseGenerics","defaultant"));
 		else
 		{
@@ -195,7 +195,7 @@ public class BaseGenerics extends StdCommand
 		    report.append(getScr("BaseGenerics","mthyrs",TC.getMonthsInYear()+""));
 		}
 		mob.tell(getScr("BaseGenerics","calendar",showNumber+"",report.toString()));
-		if(TC==DefaultTimeClock.globalClock) return;
+		if(TC==CMClass.globalClock()) return;
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName="";
 		while(newName.length()==0)
@@ -1295,7 +1295,7 @@ public class BaseGenerics extends StdCommand
 				{
 					E.baseCharStats().setStat(num,Util.s_int(newVal));
 					if((num==CharStats.AGE)&&(E.playerStats()!=null)&&(E.playerStats().getBirthday()!=null))
-					    E.playerStats().getBirthday()[2]=DefaultTimeClock.globalClock.getYear()-Util.s_int(newVal);
+					    E.playerStats().getBirthday()[2]=CMClass.globalClock().getYear()-Util.s_int(newVal);
 				}
 				else
 					mob.tell(getScr("BaseGenerics","nochange"));
@@ -2913,7 +2913,7 @@ public class BaseGenerics extends StdCommand
 					if(item!=null)
 					{
 						mob.tell(getScr("BaseGenerics","itemidrem",item.ID()));
-						E.delAllStoreInventory(item.copyOf());
+						E.delAllStoreInventory((Environmental)item.copyOf());
 					}
 					else
 					{
@@ -2931,7 +2931,7 @@ public class BaseGenerics extends StdCommand
 						}
 						if(item!=null)
 						{
-							item=item.copyOf();
+							item=(Environmental)item.copyOf();
 							item.recoverEnvStats();
 							boolean ok=E.doISellThis(item);
 							if((item instanceof Ability)
@@ -3855,7 +3855,8 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		EnvStats S=new DefaultEnvStats(0);
+        EnvStats S=(EnvStats)CMClass.getShared("DefaultEnvStats");
+        S.setAllValues(0);
 		CoffeeMaker.setEnvStats(S,R.getStat("ESTATS"));
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<S.getCodes().length;i++)
@@ -3929,7 +3930,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		CharState S=new DefaultCharState(0);
+		CharState S=(CharState)CMClass.getShared("DefaultCharState"); S.setAllValues(0);
 		CoffeeMaker.setCharState(S,R.getStat(field));
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<S.getCodes().length;i++)
@@ -3979,7 +3980,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		CharStats S=new DefaultCharStats(0);
+        CharStats S=(CharStats)CMClass.getShared("DefaultCharStats"); S.setAllValues(0);
 		CoffeeMaker.setCharStats(S,R.getStat(Field));
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<CharStats.TRAITS.length;i++)
@@ -4030,7 +4031,8 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		EnvStats S=new DefaultEnvStats(0);
+        EnvStats S=(EnvStats)CMClass.getShared("DefaultEnvStats");
+        S.setAllValues(0);
 		CoffeeMaker.setEnvStats(S,R.getStat("ESTATS"));
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<S.getCodes().length;i++)
@@ -4104,7 +4106,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		CharState S=new DefaultCharState(0);
+        CharState S=(CharState)CMClass.getShared("DefaultCharState"); S.setAllValues(0);
 		CoffeeMaker.setCharState(S,R.getStat(field));
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<S.getCodes().length;i++)
@@ -4154,7 +4156,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		CharStats S=new DefaultCharStats(0);
+        CharStats S=(CharStats)CMClass.getShared("DefaultCharStats"); S.setAllValues(0);
 		CoffeeMaker.setCharStats(S,R.getStat(Field));
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<CharStats.TRAITS.length;i++)

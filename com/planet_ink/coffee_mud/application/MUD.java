@@ -172,6 +172,8 @@ public class MUD extends Thread implements MudHost
 			fatalStartupError(t,0);
 			return false;
 		}
+        
+        CMClass.globalClock().initializeINIClock(page);
 		CMSecurity.setSysOp(page.getStr("SYSOPMASK")); // requires all classes be loaded
 		CMSecurity.parseGroups(page);
 

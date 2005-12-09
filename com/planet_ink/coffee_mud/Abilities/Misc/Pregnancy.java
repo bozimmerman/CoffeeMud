@@ -40,7 +40,7 @@ public class Pregnancy extends StdAbility
 			long start=Util.s_long(text().substring(0,x));
 			long divisor=MudHost.TICK_TIME*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
 			long days=(System.currentTimeMillis()-start)/divisor; // down to days;
-			long months=days/DefaultTimeClock.globalClock.getDaysInMonth();
+			long months=days/CMClass.globalClock().getDaysInMonth();
 			if(days<1)
 				return "(<1 day pregnant)";
 			else
@@ -79,7 +79,7 @@ public class Pregnancy extends StdAbility
 
 	public Race mixRaces(MOB babe, Race race1, Race race2, String ID, String name)
 	{
-		Race GR=CMClass.getRace("GenRace").copyOf();
+		Race GR=(Race)CMClass.getRace("GenRace").copyOf();
 		GR.setRacialParms("<RACE><ID>"+ID+"</ID><NAME>"+name+"</NAME></RACE>");
 		Race nonHuman=(race1.ID().equals("Human"))?race2:race1;
 		Race otherRace=(nonHuman==race1)?race2:race1;
@@ -108,7 +108,8 @@ public class Pregnancy extends StdAbility
 			else
 				GR.bodyMask()[i]=race1.bodyMask()[i];
 
-		EnvStats RS=new DefaultEnvStats(0);
+		EnvStats RS=(EnvStats)CMClass.getShared("DefaultEnvStats");
+        RS.setAllValues(0);
 		race1.affectEnvStats(babe,RS);
 		race2.affectEnvStats(babe,RS);
 		RS.setAbility(RS.ability()/2);
@@ -121,12 +122,12 @@ public class Pregnancy extends StdAbility
 		RS.setRejuv(0);
 		GR.setStat("ESTATS",CoffeeMaker.getEnvStatsStr(RS));
 
-		CharStats S1=new DefaultCharStats(0);
-		CharStats S2=new DefaultCharStats(10);
-		CharStats S3=new DefaultCharStats(0);
-		CharStats S4=new DefaultCharStats(10);
-		CharStats SETSTAT=new DefaultCharStats(0);
-		CharStats ADJSTAT=new DefaultCharStats(0);
+        CharStats S1=(CharStats)CMClass.getShared("DefaultCharStats"); S1.setAllValues(0);
+        CharStats S2=(CharStats)CMClass.getShared("DefaultCharStats"); S2.setAllValues(10);
+        CharStats S3=(CharStats)CMClass.getShared("DefaultCharStats"); S3.setAllValues(0);
+        CharStats S4=(CharStats)CMClass.getShared("DefaultCharStats"); S4.setAllValues(10);
+        CharStats SETSTAT=(CharStats)CMClass.getShared("DefaultCharStats"); SETSTAT.setAllValues(0);
+        CharStats ADJSTAT=(CharStats)CMClass.getShared("DefaultCharStats"); ADJSTAT.setAllValues(0);
 		race1.affectCharStats(babe,S1);
 		race1.affectCharStats(babe,S2);
 		race2.affectCharStats(babe,S3);
@@ -154,7 +155,7 @@ public class Pregnancy extends StdAbility
 		GR.setStat("ASTATS",CoffeeMaker.getCharStatsStr(ADJSTAT));
 		GR.setStat("CSTATS",CoffeeMaker.getCharStatsStr(SETSTAT));
 
-		CharState CS=new DefaultCharState(0);
+        CharState CS=(CharState)CMClass.getShared("DefaultCharState"); CS.setAllValues(0);
 		race1.affectCharState(babe,CS);
 		race2.affectCharState(babe,CS);
 		CS.setFatigue(CS.getFatigue()/2);
@@ -165,7 +166,7 @@ public class Pregnancy extends StdAbility
 		CS.setThirst(CS.getThirst()/2);
 		GR.setStat("ASTATE",CoffeeMaker.getCharStateStr(CS));
 
-		CharState STARTCS=new DefaultCharState(0);
+        CharState STARTCS=(CharState)CMClass.getShared("DefaultCharState"); STARTCS.setAllValues(0);
 		race1.affectCharState(babe,STARTCS);
 		race2.affectCharState(babe,STARTCS);
 		CS.setFatigue(STARTCS.getFatigue()/2);
@@ -338,7 +339,7 @@ public class Pregnancy extends StdAbility
 					long end=Util.s_long(text().substring(x+1,y));
 					long divisor=MudHost.TICK_TIME*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
 					daysRemaining=(end-System.currentTimeMillis())/divisor; // down to days
-					monthsRemaining=daysRemaining/DefaultTimeClock.globalClock.getDaysInMonth(); // down to months
+					monthsRemaining=daysRemaining/CMClass.globalClock().getDaysInMonth(); // down to months
 					if(daysRemaining<7) // BIRTH!
 					{
 						if(Sense.isSleeping(mob))
@@ -502,8 +503,8 @@ public class Pregnancy extends StdAbility
 		long start=System.currentTimeMillis();
 		Race R=mob.charStats().getMyRace();
 		long tickspermudmonth=CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
-		tickspermudmonth=tickspermudmonth*DefaultTimeClock.globalClock.getDaysInMonth();
-		int birthmonths=(int)Math.round(Util.mul((R.getAgingChart()[1]-R.getAgingChart()[0])*DefaultTimeClock.globalClock.getMonthsInYear(),0.8335));
+		tickspermudmonth=tickspermudmonth*CMClass.globalClock().getDaysInMonth();
+		int birthmonths=(int)Math.round(Util.mul((R.getAgingChart()[1]-R.getAgingChart()[0])*CMClass.globalClock().getMonthsInYear(),0.8335));
 		if(birthmonths<=0) birthmonths=5;
 		long ticksperbirthperiod=tickspermudmonth*birthmonths;
 		long millisperbirthperiod=ticksperbirthperiod*MudHost.TICK_TIME;

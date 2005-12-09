@@ -32,7 +32,7 @@ public class StoneThinGrid extends StdThinGrid
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
+	public CMObject newInstance()
 	{
 	    if(!CMSecurity.isDisabled("THINGRIDS"))
 	        return super.newInstance();

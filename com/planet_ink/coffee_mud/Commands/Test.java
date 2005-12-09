@@ -202,7 +202,7 @@ public class Test extends StdCommand
                 int x=startDate.indexOf("-");
                 int mudmonth=Util.s_int(startDate.substring(0,x));
                 int mudday=Util.s_int(startDate.substring(x+1));
-                TimeClock C=new DefaultTimeClock();
+                TimeClock C=(TimeClock)CMClass.getShared("DefaultTimeClock");
                 TimeClock NOW=mob.location().getArea().getTimeObj();
                 C.setMonth(mudmonth);
                 C.setDayOfMonth(mudday);

@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.system.smtp;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
+
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.interfaces.*;
@@ -26,6 +27,9 @@ public class SMTPserver extends Thread implements Tickable
 {
 	public String ID(){return "SMTPserver";}
 	public String name(){return "SMTPserver";}
+    public CMObject newInstance(){return new SMTPserver(mud);}
+    public CMObject copyOf(){try{return (SMTPserver)this.clone();}catch(Exception e){return newInstance();}}
+    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public long tickStatus=STATUS_NOT;
 	public long getTickStatus(){return tickStatus;}
 	public long lastAllProcessing=System.currentTimeMillis();

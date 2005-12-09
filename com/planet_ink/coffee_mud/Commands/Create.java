@@ -305,7 +305,7 @@ public class Create extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		Race GR=CMClass.getRace("GenRace").copyOf();
+		Race GR=(Race)CMClass.getRace("GenRace").copyOf();
 		GR.setRacialParms("<RACE><ID>"+Util.capitalizeAndLower(raceID)+"</ID><NAME>"+Util.capitalizeAndLower(raceID)+"</NAME></RACE>");
 		CMClass.addRace(GR);
 		modifyGenRace(mob,GR);
@@ -381,7 +381,7 @@ public class Create extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		CharClass CR=CMClass.getCharClass("GenCharClass").copyOf();
+		CharClass CR=(CharClass)CMClass.getCharClass("GenCharClass").copyOf();
 		CR.setClassParms("<CCLASS><ID>"+Util.capitalizeAndLower(classD)+"</ID><NAME>"+Util.capitalizeAndLower(classD)+"</NAME></CCLASS>");
 		CMClass.addCharClass(CR);
 		modifyGenClass(mob,CR);

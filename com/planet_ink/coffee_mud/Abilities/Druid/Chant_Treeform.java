@@ -194,7 +194,7 @@ public class Chant_Treeform extends Chant
 				{
 					target.makePeace();
 					CommonMsgs.stand(target,true);
-					oldState=target.curState().cloneCharState();
+					oldState=(CharState)target.curState().copyOf();
 					success=beneficialAffect(mob,target,asLevel,mob.envStats().level()*50);
 					if(success)
 					{
