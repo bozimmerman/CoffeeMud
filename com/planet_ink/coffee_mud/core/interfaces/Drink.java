@@ -1,17 +1,4 @@
 package com.planet_ink.coffee_mud.core.interfaces;
-import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.*;
-import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.Areas.interfaces.*;
-import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
-import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
-import com.planet_ink.coffee_mud.Commands.interfaces.*;
-import com.planet_ink.coffee_mud.Common.interfaces.*;
-import com.planet_ink.coffee_mud.Exits.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Locales.interfaces.*;
-import com.planet_ink.coffee_mud.MOBS.interfaces.*;
-import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -28,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface Drinkable extends Environmental
+public interface Drink extends Environmental
 {
 	public int thirstQuenched();
 	public int liquidHeld();
@@ -43,5 +30,5 @@ public interface Drinkable extends Environmental
 	public boolean containsDrink();
     public boolean disappearsAfterDrinking();
     
-    public int amountTakenToFillMe(Drinkable theSource);
+    public int amountTakenToFillMe(Drink theSource);
 }
