@@ -167,7 +167,7 @@ public class StdLawBook extends StdItem
 			if((lawProps==null)||(lawProps.isEmpty()))
 			{
 				lawProps=new Properties();
-                lawProps.load(new ByteArrayInputStream(new CMFile("resources/lawtoc.ini",null,false).text().toString().getBytes()));
+                lawProps.load(new ByteArrayInputStream(new CMFile("resources/lawtoc.ini",null,false).raw()));
 				Resources.submitResource("LAWBOOKTOC",lawProps);
 			}
 			String s=(String)lawProps.get(tag);

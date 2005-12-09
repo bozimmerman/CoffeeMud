@@ -44,7 +44,7 @@ public class INI extends Properties
 	{
 		try
 		{
-			this.load(new ByteArrayInputStream(new CMFile(filename,null,false).text().toString().getBytes()));
+			this.load(new ByteArrayInputStream(new CMFile(filename,null,false).raw()));
 			loaded=true;
 		}
 		catch(IOException e)
@@ -57,7 +57,7 @@ public class INI extends Properties
     {
         try
         {
-            this.load(new ByteArrayInputStream(new CMFile(filename,null,false).text().toString().getBytes()));
+            this.load(new ByteArrayInputStream(new CMFile(filename,null,false).raw()));
             loaded=true;
         }
         catch(IOException e)
@@ -73,7 +73,7 @@ public class INI extends Properties
 		
 		try
 		{
-            this.load(new ByteArrayInputStream(new CMFile(filename,null,false).text().toString().getBytes()));
+            this.load(new ByteArrayInputStream(new CMFile(filename,null,false).raw()));
 			loaded=true;
 		}
 		catch(IOException e)

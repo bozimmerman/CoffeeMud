@@ -106,26 +106,24 @@ endif
 PACKAGES = \
 	com.planet_ink.coffee_mud.common \
 	com.planet_ink.coffee_mud.Abilities.Common \
-	com.planet_ink.coffee_mud.web.espresso.Drawing \
 	com.planet_ink.coffee_mud.Areas \
 	com.planet_ink.coffee_mud.exceptions \
 	com.planet_ink.coffee_mud.Abilities.Songs \
-	com.planet_ink.coffee_mud.i3 \
-	com.planet_ink.coffee_mud.web.espresso \
+	com.planet_ink.coffee_mud.system.intermud \
 	com.planet_ink.coffee_mud.utils \
 	com.planet_ink.coffee_mud.Abilities.Properties \
 	com.planet_ink.coffee_mud.Abilities.Diseases \
 	com.planet_ink.coffee_mud.Abilities.Skills \
 	com.planet_ink.coffee_mud.Behaviors \
-	com.planet_ink.coffee_mud.i3.packets \
+	com.planet_ink.coffee_mud.system.intermud.packets \
 	com.planet_ink.coffee_mud.Abilities.Ranger \
-	com.planet_ink.coffee_mud.web.macros \
+	com.planet_ink.coffee_mud.system.smtp \
+	com.planet_ink.coffee_mud.system.http.macros \
 	com.planet_ink.coffee_mud.system \
 	com.planet_ink.coffee_mud.system.database \
 	com.planet_ink.coffee_mud.system.threads \
-	com.planet_ink.coffee_mud.i3.server \
+	com.planet_ink.coffee_mud.system.intermud.server \
 	com.planet_ink.fakedb \
-	com.planet_ink.coffee_mud.web.espresso.Commands \
 	com.planet_ink.coffee_mud.Items.Weapons \
 	com.planet_ink.coffee_mud.Items.MiscTech \
 	com.planet_ink.coffee_mud.MOBS \
@@ -136,8 +134,8 @@ PACKAGES = \
 	com.planet_ink.coffee_mud.Items.MiscMagic \
 	com.planet_ink.coffee_mud.Abilities.Spells \
 	com.planet_ink.coffee_mud.CharClasses \
-	com.planet_ink.coffee_mud.i3.persist \
-	com.planet_ink.coffee_mud.i3.net \
+	com.planet_ink.coffee_mud.system.intermud.persist \
+	com.planet_ink.coffee_mud.system.intermud.net \
 	com.planet_ink.coffee_mud.Abilities.Thief \
 	com.planet_ink.coffee_mud.Abilities.Languages \
 	com.planet_ink.coffee_mud.Abilities.Fighter \
@@ -150,9 +148,9 @@ PACKAGES = \
 	com.planet_ink.coffee_mud.Abilities.Poisons \
 	com.planet_ink.coffee_mud.Abilities.Specializations \
 	com.planet_ink.coffee_mud.Items.ClanItems \
-	com.planet_ink.coffee_mud.i3.imc2 \
-	com.planet_ink.coffee_mud.web \
-	com.planet_ink.coffee_mud.web.macros.grinder \
+	com.planet_ink.coffee_mud.system.intermud.imc2 \
+	com.planet_ink.coffee_mud.system.http \
+	com.planet_ink.coffee_mud.system.http.macros.grinder \
 	com.planet_ink.coffee_mud.Abilities.Misc \
 	com.planet_ink.coffee_mud.Abilities.Traps \
 	com.planet_ink.coffee_mud.Abilities.Prayers \
@@ -469,25 +467,22 @@ com.planet_ink.coffee_mud.Items : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.
 com : $(call PACKAGE_OBJS,com)
 com.planet_ink.coffee_mud.common : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.common)
 com.planet_ink.coffee_mud.Abilities.Common : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Common)
-com.planet_ink.coffee_mud.web.espresso.Drawing : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.web.espresso.Drawing)
 com.planet_ink.coffee_mud.Areas : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Areas)
 com.planet_ink.coffee_mud.exceptions : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.exceptions)
 com.planet_ink.coffee_mud.Abilities.Songs : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Songs)
-com.planet_ink.coffee_mud.web.espresso : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.web.espresso)
 com.planet_ink.coffee_mud.utils : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.utils)
 com.planet_ink.coffee_mud.Abilities.Properties : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Properties)
 com.planet_ink.coffee_mud.Abilities.Diseases : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Diseases)
 com.planet_ink.coffee_mud.Abilities.Skills : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Skills)
 com.planet_ink.coffee_mud.Behaviors : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Behaviors)
-com.planet_ink.coffee_mud.i3.packets : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.i3.packets)
+com.planet_ink.coffee_mud.system.intermud.packets : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.system.intermud.packets)
 com.planet_ink.coffee_mud.Abilities.Ranger : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Ranger)
-com.planet_ink.coffee_mud.web.macros : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.web.macros)
+com.planet_ink.coffee_mud.system.http.macros : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.system.http.macros)
 com.planet_ink.coffee_mud.system : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.system)
 com.planet_ink.coffee_mud.system.database : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.system.database)
 com.planet_ink.coffee_mud.system.threads : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.system.threads)
-com.planet_ink.coffee_mud.i3.server : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.i3.server)
+com.planet_ink.coffee_mud.system.intermud.server : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.system.intermud.server)
 com.planet_ink.fakedb : $(call PACKAGE_OBJS,com.planet_ink.fakedb)
-com.planet_ink.coffee_mud.web.espresso.Commands : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.web.espresso.Commands)
 com.planet_ink.coffee_mud.Items.Weapons : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Items.Weapons)
 com.planet_ink.coffee_mud.Items.MiscTech : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Items.MiscTech)
 com.planet_ink.coffee_mud.MOBS : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.MOBS)
@@ -498,8 +493,8 @@ com.planet_ink.coffee_mud.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee
 com.planet_ink.coffee_mud.Items.MiscMagic : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Items.MiscMagic)
 com.planet_ink.coffee_mud.Abilities.Spells : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Spells)
 com.planet_ink.coffee_mud.CharClasses : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.CharClasses)
-com.planet_ink.coffee_mud.i3.persist : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.i3.persist)
-com.planet_ink.coffee_mud.i3.net : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.i3.net)
+com.planet_ink.coffee_mud.system.intermud.persist : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.system.intermud.persist)
+com.planet_ink.coffee_mud.system.intermud.net : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.system.intermud.net)
 com.planet_ink.coffee_mud.Abilities.Thief : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Thief)
 com.planet_ink.coffee_mud.Abilities.Languages : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Languages)
 com.planet_ink.coffee_mud.Abilities.Fighter : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Fighter)
@@ -512,9 +507,9 @@ com.planet_ink.coffee_mud.Abilities : $(call PACKAGE_OBJS,com.planet_ink.coffee_
 com.planet_ink.coffee_mud.Abilities.Poisons : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Poisons)
 com.planet_ink.coffee_mud.Abilities.Specializations : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Specializations)
 com.planet_ink.coffee_mud.Items.ClanItems : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Items.ClanItems)
-com.planet_ink.coffee_mud.i3.imc2 : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.i3.imc2)
-com.planet_ink.coffee_mud.web : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.web)
-com.planet_ink.coffee_mud.web.macros.grinder : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.web.macros.grinder)
+com.planet_ink.coffee_mud.system.intermud.imc2 : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.system.intermud.imc2)
+com.planet_ink.coffee_mud.system.http : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.system.http)
+com.planet_ink.coffee_mud.system.http.macros.grinder : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.system.http.macros.grinder)
 com.planet_ink.coffee_mud.Abilities.Misc : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Misc)
 com.planet_ink.coffee_mud.Abilities.Traps : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Traps)
 com.planet_ink.coffee_mud.Abilities.Prayers : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Prayers)

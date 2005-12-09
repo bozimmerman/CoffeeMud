@@ -10,6 +10,11 @@
 	<title>CoffeeMud MUDGrinder</title>
 	<script language=JavaScript>
 	<!--
+		function Browse(named)
+		{
+			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=250,alwaysRaised=yes,dependent=yes";
+			var w2=window.open("/grinder/browse.cmvp?AUTH=@Authenticate?AUTH@&PATH="+named,"Browse",strFeatures,false);
+		}
 		function Clicked(action)
 		{
 			document.SELECTAREA.action='/grinder/'+action;
@@ -81,16 +86,24 @@
 <TABLE WIDTH=200 BORDER=1>
 <TR><TD ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Utilities:</B></FONT></TD></TR>
 <TR><TD ALIGN=CENTER>
-	@if?CheckAuthCode?AUTH_LOADUNLOAD=true@
-	<A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Manage Resources</FONT></a>
+	@if?CheckAuthCode?SYSOP=true@
+	<A href="javascript:Clicked('control.cmvp')"><FONT COLOR=WHITE>Control Panel</FONT></a>
+	<BR>
+	@endif@
+	@if?CheckAuthCode?ANYFILEBROWSE=true@
+	<A HREF="javascript:Browse('/');"><FONT COLOR=WHITE>File Browser</FONT></a>
+	<BR>
+	@endif@
+	@if?CheckAuthCode?AUTH_JOURNALS=true@
+	<A href="javascript:Clicked('journal.cmvp')"><FONT COLOR=WHITE>Journals Browser</FONT></a>
 	<BR>
 	@endif@
 	@if?CheckAuthCode?AUTH_STAT=true&AUTH_CMDPLAYERS=true&AUTH_LISTADMIN=true@
 	<A href="javascript:Clicked('players.cmvp')"><FONT COLOR=WHITE>Players List</FONT></a>
 	<BR>
 	@endif@
-	@if?CheckAuthCode?AUTH_JOURNALS=true@
-	<A href="javascript:Clicked('journal.cmvp')"><FONT COLOR=WHITE>Journals Browser</FONT></a>
+	@if?CheckAuthCode?AUTH_LOADUNLOAD=true@
+	<A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Manage Resources</FONT></a>
 	<BR>
 	@endif@
 	@if?CheckAuthCode?AUTH_CMDQUESTS=true@
@@ -109,12 +122,9 @@
 	<A href="javascript:Clicked('log.cmvp')"><FONT COLOR=WHITE>Server Log</FONT></a>
 	<BR>
 	@endif@
-	@if?CheckAuthCode?SYSOP=true@
-	<A href="javascript:Clicked('control.cmvp')"><FONT COLOR=WHITE>Control Panel</FONT></a>
-	<BR>
-	@endif@
 	@if?CheckAuthCode?AUTH_STAT=true@
 	<A href="javascript:Clicked('stats.cmvp')"><FONT COLOR=WHITE>Statistics</FONT></a>
+	<BR>
 	@endif@
 </TD></TR>
 </TABLE>

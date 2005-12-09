@@ -28,130 +28,130 @@ public class Socials extends Scriptable
 {
 	private Socials() {};
 
-	private static String filename="";
-	private static boolean loaded=false;
-	private static Hashtable soc=new Hashtable();
+    private static final String filename=Resources.buildResourcePath("")+"socials.txt";
+    
+    private static Hashtable getSocialHash()
+    {
+        Hashtable soc=(Hashtable)Resources.getResource("PARSED: "+filename);
+        if(soc==null)
+        {
+            soc=new Hashtable();
+            Resources.submitResource("PARSED: "+filename,soc);
+            Vector V=Resources.getFileLineVector(new CMFile(filename,null,true).text());
+            for(int v=0;v<V.size();v++)
+            {
+                String getline=(String)V.elementAt(v);
+                int x=getline.indexOf("\t");
+                if(x>=0)
+                {
+                    Social socobj=new Social();
+                    String s=getline.substring(0,x).toUpperCase();
+                    if(s.length()>0)
+                    switch(s.charAt(0))
+                    {
+                    case 'W':
+                        socobj.setSourceCode(CMMsg.MSG_SPEAK);
+                        break;
+                    case 'M':
+                        socobj.setSourceCode(CMMsg.MSG_HANDS);
+                        break;
+                    case 'S':
+                        socobj.setSourceCode(CMMsg.MSG_NOISE);
+                        break;
+                    case 'O':
+                        socobj.setSourceCode(CMMsg.MSG_NOISYMOVEMENT);
+                        break;
+                    default:
+                        socobj.setSourceCode(CMMsg.MSG_HANDS);
+                        break;
+                    }
+                    if(s.length()>1)
+                    switch(s.charAt(1))
+                    {
+                    case 'T':
+                        socobj.setOthersCode(CMMsg.MSG_HANDS);
+                        socobj.setTargetCode(CMMsg.MSG_HANDS);
+                        break;
+                    case 'S':
+                        socobj.setOthersCode(CMMsg.MSG_NOISE);
+                        socobj.setTargetCode(CMMsg.MSG_NOISE);
+                        break;
+                    case 'W':
+                        socobj.setOthersCode(CMMsg.MSG_SPEAK);
+                        socobj.setTargetCode(CMMsg.MSG_SPEAK);
+                        break;
+                    case 'V':
+                        socobj.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
+                        socobj.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
+                        break;
+                    case 'O':
+                        socobj.setOthersCode(CMMsg.MSG_OK_VISUAL);
+                        socobj.setTargetCode(CMMsg.MSG_OK_VISUAL);
+                        break;
+                    default:
+                        socobj.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
+                        socobj.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
+                        break;
+                    }
+                    getline=getline.substring(x+1);
+                    x=getline.indexOf("\t");
+                    if(x>=0)
+                    {
+                        socobj.setName(getline.substring(0,x).toUpperCase());
+                        getline=getline.substring(x+1);
+                        x=getline.indexOf("\t");
+                        if(x>=0)
+                        {
+                            socobj.setYou_see(getline.substring(0,x));
+                            getline=getline.substring(x+1);
+                            x=getline.indexOf("\t");
+                            if(x>=0)
+                            {
+                                socobj.setThird_party_sees(getline.substring(0,x));
+                                getline=getline.substring(x+1);
+                                x=getline.indexOf("\t");
+                                if(x>=0)
+                                {
+                                    socobj.setTarget_sees(getline.substring(0,x));
+                                    getline=getline.substring(x+1);
+                                    x=getline.indexOf("\t");
+                                    if(x>=0)
+                                    {
+                                        socobj.setSee_when_no_target(getline.substring(0,x));
+                                        getline=getline.substring(x+1);
+                                        x=getline.indexOf("\t");
+                                        if(x>=0)
+                                            socobj.setMSPfile(getline.substring(0,x));
+                                        else
+                                            socobj.setMSPfile(getline);
+                                    }
+                                    else
+                                        socobj.setSee_when_no_target(getline);
 
-	public static boolean isLoaded() { return loaded; }
-	public static void put(String name, Social S) { soc.put(name, S); }
-	public static void remove(String name) { soc.remove(name); }
+                                }
+                            }
+                            soc.put(socobj.name(),socobj);
+                        }
+                    }
+                }
+            }
+        }
+        return soc;
+    }
+	public static boolean isLoaded() { return Resources.getResource("PARSED: "+filename)!=null; }
+	public static void put(String name, Social S) { getSocialHash().put(name, S); }
+	public static void remove(String name) { getSocialHash().remove(name); }
+    public static void addSocial(Social S){ getSocialHash().put(S.name(),S);}
+    public static int num() {return getSocialHash().size();}
+
 	public static void clearAllSocials()
 	{
-		loaded=false;
-		filename="";
-		soc=new Hashtable();
+        String filename=Resources.buildResourcePath("")+"socials.txt";
+        Resources.removeResource("PARSED: "+filename);
 		Resources.removeResource("SOCIALS LIST");
 		Resources.removeResource("WEB SOCIALS TBL");
 	}
 
-	public static void addSocial(Social S)
-	{
-		soc.put(S.name(),S);
-	}
-
-	public static void load(String newFilename)
-	{
-		Socials.filename=newFilename;
-        Vector V=Resources.getFileLineVector(new CMFile(newFilename,null,true).text());
-        for(int v=0;v<V.size();v++)
-		{
-            String getline=(String)V.elementAt(v);
-			int x=getline.indexOf("\t");
-			if(x>=0)
-			{
-				Social socobj=new Social();
-				String s=getline.substring(0,x).toUpperCase();
-				if(s.length()>0)
-				switch(s.charAt(0))
-				{
-				case 'W':
-					socobj.setSourceCode(CMMsg.MSG_SPEAK);
-					break;
-				case 'M':
-					socobj.setSourceCode(CMMsg.MSG_HANDS);
-					break;
-				case 'S':
-					socobj.setSourceCode(CMMsg.MSG_NOISE);
-					break;
-				case 'O':
-					socobj.setSourceCode(CMMsg.MSG_NOISYMOVEMENT);
-					break;
-				default:
-					socobj.setSourceCode(CMMsg.MSG_HANDS);
-					break;
-				}
-				if(s.length()>1)
-				switch(s.charAt(1))
-				{
-				case 'T':
-					socobj.setOthersCode(CMMsg.MSG_HANDS);
-					socobj.setTargetCode(CMMsg.MSG_HANDS);
-					break;
-				case 'S':
-					socobj.setOthersCode(CMMsg.MSG_NOISE);
-					socobj.setTargetCode(CMMsg.MSG_NOISE);
-					break;
-				case 'W':
-					socobj.setOthersCode(CMMsg.MSG_SPEAK);
-					socobj.setTargetCode(CMMsg.MSG_SPEAK);
-					break;
-				case 'V':
-					socobj.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
-					socobj.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
-					break;
-				case 'O':
-					socobj.setOthersCode(CMMsg.MSG_OK_VISUAL);
-					socobj.setTargetCode(CMMsg.MSG_OK_VISUAL);
-					break;
-				default:
-					socobj.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
-					socobj.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
-					break;
-				}
-				getline=getline.substring(x+1);
-				x=getline.indexOf("\t");
-				if(x>=0)
-				{
-					socobj.setName(getline.substring(0,x).toUpperCase());
-					getline=getline.substring(x+1);
-					x=getline.indexOf("\t");
-					if(x>=0)
-					{
-						socobj.setYou_see(getline.substring(0,x));
-						getline=getline.substring(x+1);
-						x=getline.indexOf("\t");
-						if(x>=0)
-						{
-							socobj.setThird_party_sees(getline.substring(0,x));
-							getline=getline.substring(x+1);
-							x=getline.indexOf("\t");
-							if(x>=0)
-							{
-								socobj.setTarget_sees(getline.substring(0,x));
-								getline=getline.substring(x+1);
-								x=getline.indexOf("\t");
-								if(x>=0)
-                                {
-									socobj.setSee_when_no_target(getline.substring(0,x));
-                                    getline=getline.substring(x+1);
-                                    x=getline.indexOf("\t");
-                                    if(x>=0)
-                                        socobj.setMSPfile(getline.substring(0,x));
-                                    else
-                                        socobj.setMSPfile(getline);
-                                }
-								else
-									socobj.setSee_when_no_target(getline);
-
-							}
-						}
-						soc.put(socobj.name(),socobj);
-					}
-				}
-			}
-        }
-        loaded=true;
-	}
 
     public static void modifySocialOthersCode(MOB mob, Social me, int showNumber, int showFlag)
     throws IOException
@@ -446,6 +446,7 @@ public class Socials extends Scriptable
 
 	public static Social FetchSocial(String name, boolean exactOnly)
 	{
+        Hashtable soc=getSocialHash();
 		Social thisOne=(Social)soc.get(name.toUpperCase());
 		if((exactOnly)||(thisOne!=null)) return thisOne;
 		name=name.toUpperCase();
@@ -478,6 +479,7 @@ public class Socials extends Scriptable
 		if(S==null) S=FetchSocial(SocialName+theRest,true);
 		if((S==null)&&(!exactOnly))
 		{
+            Hashtable soc=getSocialHash();
 			String backupSocialName=null;
 			for(Enumeration e=soc.keys();e.hasMoreElements();)
 			{
@@ -503,15 +505,11 @@ public class Socials extends Scriptable
 		return S;
 	}
 
-	public static int num()
-	{
-		return soc.size();
-	}
-
 	public static Social enumSocial(int index)
 	{
 		if((index<0)||(index>num())) return null;
 		int i=0;
+        Hashtable soc=getSocialHash();
 		for (Enumeration e = soc.elements() ; e.hasMoreElements() ; i++)
 		{
 			Social I=(Social)e.nextElement();
@@ -522,7 +520,8 @@ public class Socials extends Scriptable
 
 	public static void save(MOB whom)
 	{
-		if(loaded==false) return;
+		if(!Socials.isLoaded()) return;
+        Hashtable soc=getSocialHash();
 		StringBuffer buf=new StringBuffer("");
 		Vector V=new Vector();
 		for (Enumeration e = soc.elements() ; e.hasMoreElements() ; )
@@ -625,6 +624,7 @@ public class Socials extends Scriptable
     public static Vector getAllSocialObjects(String named)
     {
         Vector all=new Vector();
+        Hashtable soc=getSocialHash();
         for (Enumeration e = soc.elements() ; e.hasMoreElements() ; )
         {
             Social I=(Social)e.nextElement();
@@ -646,6 +646,7 @@ public class Socials extends Scriptable
 		if(socialsList!=null) return socialsList.toString();
 		socialsList=new StringBuffer("");
 		Hashtable uniqueList=new Hashtable();
+        Hashtable soc=getSocialHash();
 		for (Enumeration e = soc.elements() ; e.hasMoreElements() ; )
 		{
 			Social I=(Social)e.nextElement();

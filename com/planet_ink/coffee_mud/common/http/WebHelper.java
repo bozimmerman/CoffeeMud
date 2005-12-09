@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.web;
+package com.planet_ink.coffee_mud.system.http;
 import java.net.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;

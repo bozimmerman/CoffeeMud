@@ -47,6 +47,7 @@ public class VFSLoader
         catch(Exception sqle)
         {
             Log.errOut("VFSLoader",sqle);
+            return null;
         }
         if(D!=null) DBConnector.DBDone(D);
         // log comment
@@ -72,17 +73,7 @@ public class VFSLoader
                     row.addElement(new Long(DBConnections.getLongRes(R,"CMMODD")));
                     row.addElement(DBConnections.getRes(R,"CMWHOM"));
                     String data=DBConnections.getRes(R,"CMDATA");
-                    if(Util.bset(bits,CMFile.VFS_MASK_BINARY))
-                    {
-                        byte[] buf=null;
-                        if(data.length()==0)
-                            buf=new byte[0];
-                        else
-                            buf=CMEncoder.B64decode(data);
-                        row.addElement(buf);
-                    }
-                    else
-                        row.addElement(data);
+                    row.addElement(CMEncoder.B64decode(data));
                 }
             }
         }
@@ -102,10 +93,10 @@ public class VFSLoader
             buf="";
         else
         if(data instanceof String)
-            buf=(String)data;
+            buf=CMEncoder.B64encodeBytes(((String)data).getBytes());
         else
         if(data instanceof StringBuffer)
-            buf=((StringBuffer)data).toString();
+            buf=CMEncoder.B64encodeBytes(((StringBuffer)data).toString().getBytes());
         else
         if(data instanceof byte[])
             buf=CMEncoder.B64encodeBytes((byte[])data);

@@ -61,15 +61,27 @@
 @loop@
 @FileNext@
 	@if?FileInfo?ISDIRECTORY@
-		<a href="javascript:NewDir('@RequestParameter?FILE@')"><FONT COLOR=YELLOW>@RequestParameter?FILE@</FONT></a>
-	@else@
-		@if?FileInfo?ISFILE@
-		<a href="javascript:OpenFile('@RequestParametersEncoded@')"><FONT COLOR=WHITE>@RequestParameter?FILE@</FONT>
-		@endif@
-	@endif@
+		<a href="javascript:NewDir('@RequestParameter?FILE@')"  style="text-decoration:none">
+		@if?FileInfo?ISVFS@<I>@endif@ 	@if?FileInfo?ISBOTH@<B>@endif@
+		<FONT COLOR=YELLOW>@RequestParameter?FILE@</FONT>
+		@if?FileInfo?ISVFS@</I>@endif@ 	@if?FileInfo?ISBOTH@</B>@endif@
+		</a>
 	<BR>
+	@endif@
 @back@
-<a href="javascript:NewFile('@RequestParametersEncoded@');"><FONT COLOR=WHITE>*create new file*</FONT></a><BR>
+@FileNext?RESET@
+@loop@
+@FileNext@
+	@if?!FileInfo?ISDIRECTORY@ @if?FileInfo?ISFILE@
+	<a href="javascript:OpenFile('@RequestParametersEncoded@')"  style="text-decoration:none">
+	@if?FileInfo?ISVFS@<I>@endif@ 	@if?FileInfo?ISBOTH@<B>@endif@
+		<FONT COLOR=WHITE>@RequestParameter?FILE@</FONT>
+	@if?FileInfo?ISVFS@</I>@endif@ 	@if?FileInfo?ISBOTH@</B>@endif@
+	</a>
+	<BR>
+	@endif@ @endif@
+@back@
+<a href="javascript:NewFile('@RequestParametersEncoded@');"><FONT COLOR=AQUA>*create new file*</FONT></a><BR>
 </FORM>
 <HR>
 <FONT COLOR=WHITE>*search for filenames*</FONT>

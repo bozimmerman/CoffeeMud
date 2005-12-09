@@ -47,17 +47,17 @@ public class GenFoodResource extends GenFood implements EnvResource, Food
 	
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
-	    if((msg.tool() instanceof ShopKeeper)
-	    &&(msg.targetMinor()==CMMsg.TYP_GET)
-	    &&(msg.target()!=null)
-	    &&((msg.target()==this)||(msg.target()==container())))
-	    {
-	        Ability A=fetchEffect("Poison_Rotten");
-	        if(A!=null) delEffect(A);
-	        decayTime=0;
-	        readyToSet=true;
-	    }
-	    super.executeMsg(host,msg);
+        if((msg.target()==this)||((msg.target()==container())&&(container()!=null)))
+        {
+    	    if(((msg.tool() instanceof ShopKeeper)&&(msg.targetMinor()==CMMsg.TYP_GET))
+            ||(msg.targetMinor()==CMMsg.TYP_ROOMRESET))
+    	    {
+    	        Ability A=fetchEffect("Poison_Rotten");
+    	        if(A!=null) delEffect(A);
+    	        decayTime=0;
+    	        readyToSet=true;
+    	    }
+        }
 	}
 	
 	public boolean okMessage(Environmental host, CMMsg msg)

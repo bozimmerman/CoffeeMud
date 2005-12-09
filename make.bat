@@ -31,11 +31,11 @@ IF "%1" == "docs" GOTO :DOCS
 %JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/common/*.java
 %JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/exceptions/*.java
 %JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/Exits/*.java
-%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/i3/*.java
-%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/i3/net/*.java
-%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/i3/packets/*.java
-%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/i3/persist/*.java
-%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/i3/server/*.java
+%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/system/intermud/*.java
+%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/system/intermud/net/*.java
+%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/system/intermud/packets/*.java
+%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/system/intermud/persist/*.java
+%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/system/intermud/server/*.java
 %JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/interfaces/*.java
 %JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/Items/*.java
 %JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/Items/Basic/*.java
@@ -50,9 +50,10 @@ IF "%1" == "docs" GOTO :DOCS
 %JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/system/database/*.java
 %JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/system/threads/*.java
 %JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/utils/*.java
-%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/web/*.java
-%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/web/macros/*.java
-%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/web/macros/grinder/*.java
+%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/system/smtp/*.java
+%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/system/http/*.java
+%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/system/http/macros/*.java
+%JAVACPATH% -g -deprecation com/planet_ink/coffee_mud/system/http/macros/grinder/*.java
 %JAVACPATH% -g -deprecation com/planet_ink/fakedb/*.java
 %JAVACPATH% -g -deprecation com/planet_ink/siplet/applet/*.java
 %JAVACPATH% -g -deprecation com/planet_ink/fakedb/support/*.java
@@ -61,6 +62,6 @@ GOTO :FINISH
 
 :DOCS
 
-%Java_Home%\bin\javadoc -d .\docs -J-Xmx128m com/planet_ink/coffee_mud/Abilities/*.java com/planet_ink/coffee_mud/Abilities/Archon/*.java com/planet_ink/coffee_mud/Abilities/Common/*.java com/planet_ink/coffee_mud/Abilities/Diseases/*.java com/planet_ink/coffee_mud/Abilities/Druid/*.java com/planet_ink/coffee_mud/Abilities/Fighter/*.java com/planet_ink/coffee_mud/Abilities/Languages/*.java com/planet_ink/coffee_mud/Abilities/Misc/*.java com/planet_ink/coffee_mud/Abilities/Paladin/*.java com/planet_ink/coffee_mud/Abilities/Poisons/*.java com/planet_ink/coffee_mud/Abilities/Prayers/*.java com/planet_ink/coffee_mud/Abilities/Properties/*.java com/planet_ink/coffee_mud/Abilities/Ranger/*.java com/planet_ink/coffee_mud/Abilities/Skills/*.java com/planet_ink/coffee_mud/Abilities/Songs/*.java com/planet_ink/coffee_mud/Abilities/Specializations/*.java com/planet_ink/coffee_mud/Abilities/Spells/*.java com/planet_ink/coffee_mud/Abilities/Thief/*.java com/planet_ink/coffee_mud/Abilities/Traps/*.java com/planet_ink/coffee_mud/application/*.java com/planet_ink/coffee_mud/Areas/*.java com/planet_ink/coffee_mud/Behaviors/*.java com/planet_ink/coffee_mud/CharClasses/*.java com/planet_ink/coffee_mud/Clans/*.java com/planet_ink/coffee_mud/commands/*.java com/planet_ink/coffee_mud/commands/base/*.java com/planet_ink/coffee_mud/commands/sysop/*.java com/planet_ink/coffee_mud/common/*.java com/planet_ink/coffee_mud/exceptions/*.java com/planet_ink/coffee_mud/Exits/*.java com/planet_ink/coffee_mud/interfaces/*.java com/planet_ink/coffee_mud/Items/*.java com/planet_ink/coffee_mud/Items/Weapons/*.java com/planet_ink/coffee_mud/Items/MiscMagic/*.java com/planet_ink/coffee_mud/Items/ClanItems/*.java com/planet_ink/coffee_mud/Items/Armor/*.java com/planet_ink/coffee_mud/Locales/*.java com/planet_ink/coffee_mud/MOBS/*.java com/planet_ink/coffee_mud/Races/*.java com/planet_ink/coffee_mud/system/*.java com/planet_ink/coffee_mud/utils/*.java com/planet_ink/coffee_mud/web/*.java com/planet_ink/coffee_mud/web/macros/*.java com/planet_ink/coffee_mud/web/macros/grinder/*.java 
+%Java_Home%\bin\javadoc -d .\docs -J-Xmx128m com/planet_ink/coffee_mud/Abilities/*.java com/planet_ink/coffee_mud/Abilities/Archon/*.java com/planet_ink/coffee_mud/Abilities/Common/*.java com/planet_ink/coffee_mud/Abilities/Diseases/*.java com/planet_ink/coffee_mud/Abilities/Druid/*.java com/planet_ink/coffee_mud/Abilities/Fighter/*.java com/planet_ink/coffee_mud/Abilities/Languages/*.java com/planet_ink/coffee_mud/Abilities/Misc/*.java com/planet_ink/coffee_mud/Abilities/Paladin/*.java com/planet_ink/coffee_mud/Abilities/Poisons/*.java com/planet_ink/coffee_mud/Abilities/Prayers/*.java com/planet_ink/coffee_mud/Abilities/Properties/*.java com/planet_ink/coffee_mud/Abilities/Ranger/*.java com/planet_ink/coffee_mud/Abilities/Skills/*.java com/planet_ink/coffee_mud/Abilities/Songs/*.java com/planet_ink/coffee_mud/Abilities/Specializations/*.java com/planet_ink/coffee_mud/Abilities/Spells/*.java com/planet_ink/coffee_mud/Abilities/Thief/*.java com/planet_ink/coffee_mud/Abilities/Traps/*.java com/planet_ink/coffee_mud/application/*.java com/planet_ink/coffee_mud/Areas/*.java com/planet_ink/coffee_mud/Behaviors/*.java com/planet_ink/coffee_mud/CharClasses/*.java com/planet_ink/coffee_mud/Clans/*.java com/planet_ink/coffee_mud/commands/*.java com/planet_ink/coffee_mud/commands/base/*.java com/planet_ink/coffee_mud/commands/sysop/*.java com/planet_ink/coffee_mud/common/*.java com/planet_ink/coffee_mud/exceptions/*.java com/planet_ink/coffee_mud/Exits/*.java com/planet_ink/coffee_mud/interfaces/*.java com/planet_ink/coffee_mud/Items/*.java com/planet_ink/coffee_mud/Items/Weapons/*.java com/planet_ink/coffee_mud/Items/MiscMagic/*.java com/planet_ink/coffee_mud/Items/ClanItems/*.java com/planet_ink/coffee_mud/Items/Armor/*.java com/planet_ink/coffee_mud/Locales/*.java com/planet_ink/coffee_mud/MOBS/*.java com/planet_ink/coffee_mud/Races/*.java com/planet_ink/coffee_mud/system/*.java com/planet_ink/coffee_mud/utils/*.java com/planet_ink/coffee_mud/system/smtp/*.java com/planet_ink/coffee_mud/system/http/*.java com/planet_ink/coffee_mud/system/http/macros/*.java com/planet_ink/coffee_mud/system/http/macros/grinder/*.java 
 
 :FINISH

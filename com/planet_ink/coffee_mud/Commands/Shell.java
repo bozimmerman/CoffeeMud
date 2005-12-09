@@ -2,8 +2,6 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.sun.rsasign.f;
-
 import java.util.*;
 
 
@@ -31,17 +29,16 @@ public class Shell extends StdCommand
     
     protected static DVector pwds=new DVector(2);
     protected String[][] SUB_CMDS={
-            {">>","MOVE","MV"},
-            {"<<","REMOVE","RM"},
+            {"$","DIRECTORY","LS"},
             {">","COPY","CP"},
-            {"<","BACKUP","BK"},
             {".","CHANGEDIRECTORY","CD","GO"},
             {"-","DELETE","RM","RD"},
-            {"/","EDIT"},
-            {"$","DIRECTORY","LS"},
-            {"@","MAKEDIRECTORY","MD"},
             {"\\","TYPE","TP"},
+            {"+","MAKEDIRECTORY","MKDIR","MD"},
+            //{"/","EDIT"},
+            //{"?","COMPAREFILES","DIFF","CF"},
     };
+    
     
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -95,82 +92,25 @@ public class Shell extends StdCommand
         }
         switch(cmd)
         {
-        case 0: // move
+        case 0: // directory
         {
-            break;
-        }
-        case 1: // remove
-        {
-            break;
-        }
-        case 2: // copy
-        {
-            break;
-        }
-        case 3: // backup
-        {
-            break;
-        }
-        case 4: // cd
-        {
-            String changeTo=Util.combine(commands,1);
-            if(changeTo.equals("."))
+            CMFile[] dirs=CMFile.getFileList(pwd,Util.combine(commands,1),mob);
+            if(dirs==null)
             {
-                mob.tell("Directory is now: /"+pwd);
-                return true;
-            }
-            if(changeTo.equals(".."))
-            {
-                if(pwd.trim().length()==0)
-                {
-                    mob.tell("^xError: can't go back any farther!^N");
-                    return true;
-                }
-                int x=pwd.lastIndexOf("/");
-                if(x>=0)
-                    changeTo=pwd.substring(0,x);
-                else
-                    changeTo="";
-            }
-            else
-            if(!changeTo.startsWith("/"))
-                changeTo=pwd+"/"+changeTo;
-            if(changeTo.startsWith("/"))
-                changeTo=changeTo.substring(1);
-            changeTo=new CMFile(changeTo,mob,false).getLocalStyleAbsolutePath().replace(CMFile.pathSeparator,'/');
-            if(!CMSecurity.canTraverseDir(mob,mob.location(),changeTo))
-            {
-                mob.tell("^xError: you are not authorized enter that directory.^N");
+                mob.tell("^xError: invalid directory!^N");
                 return false;
             }
-            pwd=changeTo;
-            mob.tell("Directory is now: /"+pwd);
-            pwds.removeElement(mob);
-            pwds.addElement(mob,pwd);
-            return true;
-        }
-        case 5: // delete
-        {
-            break;
-        }
-        case 6: // edit
-        {
-            break;
-        }
-        case 7: // directory
-        {
-            CMFile[] dir=new CMFile(pwd,mob,false).listFiles();
-            StringBuffer msg=new StringBuffer("\n^xFile list for directory: /"+pwd+"^.^N\n\r^y .\n\r");
-            if(pwd.length()>0) msg.append("^y ..\n\r");
-            for(int d=0;d<dir.length;d++)
+            StringBuffer msg=new StringBuffer("\n\r^y .\n\r^y ..\n\r");
+            for(int d=0;d<dirs.length;d++)
             {
-                CMFile entry=dir[d];
+                CMFile entry=dirs[d];
                 if(entry.isDirectory())
                 {
                     if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
                         msg.append(" ");
                     else
-                    if(entry.isLocalFile()&&(entry.canVFSEquiv()))
+                    if((entry.isLocalFile()&&(entry.canVFSEquiv()))
+                    ||((entry.isVFSFile())&&(entry.canLocalEquiv())))
                         msg.append("^R+");
                     else
                         msg.append("^r-");
@@ -180,15 +120,16 @@ public class Shell extends StdCommand
                     msg.append("\n\r");
                 }
             }
-            for(int d=0;d<dir.length;d++)
+            for(int d=0;d<dirs.length;d++)
             {
-                CMFile entry=dir[d];
+                CMFile entry=dirs[d];
                 if(!entry.isDirectory())
                 {
                     if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
                         msg.append(" ");
                     else
-                    if(entry.isLocalFile()&&(entry.canVFSEquiv()))
+                    if((entry.isLocalFile()&&(entry.canVFSEquiv()))
+                    ||((entry.isVFSFile())&&(entry.canLocalEquiv())))
                         msg.append("^R+");
                     else
                         msg.append("^r-");
@@ -202,31 +143,190 @@ public class Shell extends StdCommand
                 mob.session().colorOnlyPrintln(msg.toString());
             break;
         }
-        case 8: // makedirectory
+        case 1: // copy
         {
-            break;
-        }
-        case 9: // type
-        {
-            CMFile CF=getFileData(mob,mob.location(),pwd,Util.combine(commands,1));
-            if(!CF.exists())
+            if(commands.size()==2)
+                commands.addElement(".");
+            if(commands.size()<3)
             {
-                mob.tell("^xError: file does not exist!^N");
+                mob.tell("^xError: source and destination must be specified!^N");
                 return false;
             }
-            if(!CF.canRead())
+            String source=(String)commands.elementAt(1);
+            String target=Util.combine(commands,2);
+            CMFile[] dirs=CMFile.getFileList(pwd,source,mob);
+            if(dirs==null)
+            {
+                mob.tell("^xError: invalid source!^N");
+                return false;
+            }
+            if(dirs.length==0)
+            {
+                mob.tell("^xError: no source files matched^N");
+                return false;
+            }
+            CMFile DD=new CMFile(pwd,target,mob,false);
+            for(int d=0;d<dirs.length;d++)
+            {
+                CMFile SF=dirs[d];
+                if((SF==null)||(!SF.exists())){ mob.tell("^xError: source "+desc(SF)+" does not exist!^N"); return false;}
+                if(!SF.canRead()){mob.tell("^xError: access denied to source "+desc(SF)+"!^N"); return false;}
+                if(SF.isDirectory())
+                {
+                    if(dirs.length==1)
+                    {
+                        mob.tell("^xError: source can not be a directory!^N"); 
+                        return false;
+                    }
+                    continue;
+                }
+                CMFile DF=DD;
+                target=DD.getVFSPathAndName();
+                if(DD.isDirectory())
+                {
+                    if(target.length()>0) 
+                        target=target+"/"+SF.getName();
+                    else
+                        target=SF.getName();
+                    target=(DD.isLocalFile())?"//"+target:"::"+target;
+                    DF=new CMFile(target,mob,false);
+                }
+                else
+                if(dirs.length>1)
+                {
+                    mob.tell("^xError: destination must be a directory!^N"); 
+                    return false;
+                }
+                if(DF.canRead()){ mob.tell("^xError: destination "+desc(DF)+" already exists!^N"); return false;}
+                if(!DF.canWrite()){ mob.tell("^xError: access denied to destination "+desc(DF)+"!^N"); return false;}
+                byte[] O=SF.raw();
+                if(O.length==0){ mob.tell("^xWarning: "+desc(SF)+" file had no data^N");}
+                if(!DF.saveRaw(O))
+                    mob.tell("^xWarning: write failed to "+desc(DF)+" ^N");
+                else
+                    mob.tell(desc(SF)+" copied to "+desc(DF));
+            }
+            break;
+        }
+        case 2: // cd
+        {
+            CMFile newDir=new CMFile(pwd,Util.combine(commands,1),mob,false);
+            String changeTo=newDir.getVFSPathAndName();
+            if(!newDir.exists())
+            {
+                mob.tell("^xError: Directory '"+Util.combine(commands,1)+"' does not exist.^N");
+                return false;
+            }
+            if((!newDir.canRead())||(!newDir.isDirectory()))
+            {
+                mob.tell("^xError: You are not authorized enter that directory.^N");
+                return false;
+            }
+            pwd=changeTo;
+            mob.tell("Directory is now: /"+pwd);
+            pwds.removeElement(mob);
+            pwds.addElement(mob,pwd);
+            return true;
+        }
+        case 3: // delete
+        {
+            CMFile[] dirs=CMFile.getFileList(pwd,Util.combine(commands,1),mob);
+            if(dirs==null)
+            {
+                mob.tell("^xError: invalid filename!^N");
+                return false;
+            }
+            if(dirs.length==0)
+            {
+                mob.tell("^xError: no files matched^N");
+                return false;
+            }
+            for(int d=0;d<dirs.length;d++)
+            {
+                CMFile CF=dirs[d];
+                if((CF==null)||(!CF.exists()))
+                {
+                    mob.tell("^xError: "+desc(CF)+"does not exist!^N");
+                    return false;
+                }
+                if(!CF.canWrite())
+                {
+                    mob.tell("^xError: access denied to "+desc(CF)+"!^N");
+                    return false;
+                }
+                if(!CF.delete())
+                {
+                    mob.tell("^xError: delete of "+desc(CF)+" failed.  If this is a directory, are you sure it's empty?^N");
+                    return false;
+                }
+                mob.tell(desc(CF)+" deleted.");
+            }
+            break;
+        }
+        case 4: // type
+        {
+            CMFile[] dirs=CMFile.getFileList(pwd,Util.combine(commands,1),mob);
+            if(dirs==null)
+            {
+                mob.tell("^xError: invalid filename!^N");
+                return false;
+            }
+            if(dirs.length==0)
+            {
+                mob.tell("^xError: no files matched^N");
+                return false;
+            }
+            for(int d=0;d<dirs.length;d++)
+            {
+                CMFile CF=dirs[d];
+                if((CF==null)||(!CF.exists()))
+                {
+                    mob.tell("^xError: file does not exist!^N");
+                    return false;
+                }
+                if(!CF.canRead())
+                {
+                    mob.tell("^xError: access denied!^N");
+                    return false;
+                }
+                if(mob.session()!=null)
+                {
+                    mob.session().rawPrintln("\n\r^xFile /"+CF.getVFSPathAndName()+"^.^N");
+                    mob.session().rawPrint(CF.text().toString(),25);
+                }
+            }
+            break;
+        }
+        case 5: // makedirectory
+        {
+            CMFile CF=new CMFile(pwd,Util.combine(commands,1),mob,false);
+            if(CF.exists())
+            {
+                mob.tell("^xError: file already exists!^N");
+                return false;
+            }
+            if(!CF.canWrite())
             {
                 mob.tell("^xError: access denied!^N");
                 return false;
             }
-            StringBuffer buf=CF.text();
-            if((buf==null)||(buf.length()==0))
+            if(!CF.mkdir())
             {
-                mob.tell("^xError: file is empty or doesn't exist!^N");
+                mob.tell("^xError: makedirectory failed.^N");
                 return false;
             }
-            if(mob.session()!=null) mob.session().colorOnlyPrintln(buf.toString());
+            mob.tell("Directory '/"+CF.getAbsolutePath()+"' created.");
             break;
+        }
+        case 6: // edit
+        {
+            mob.tell("^xNot yet implemented.^N");
+            return false;
+        }
+        case 7: // compare files
+        {
+            mob.tell("^xNot yet implemented.^N");
+            return false;
         }
         default:
             mob.tell("'"+first+"' is an unknown command.  Valid commands are: "+allcmds.toString()+"and VFS alone to check your current directory.");
@@ -234,41 +334,8 @@ public class Shell extends StdCommand
         }
 		return true;
 	}
-
-    public CMFile getFileData(MOB mob, Room room, String pwd, String path)
-    {
-        if(path.startsWith("./"))
-            path=path.substring(2);
-        if(path.startsWith(".."))
-        {
-            while(path.startsWith(".."))
-            {
-                if(pwd.trim().length()==0)
-                    return null;
-                path=path.substring(2);
-                int x=pwd.lastIndexOf("/");
-                if(x>=0)
-                    path=pwd.substring(0,x)+path;
-            }
-        }
-        else
-        if(!path.startsWith("/"))
-            path=pwd+"/"+path;
-        while(path.startsWith("/"))
-            path=path.substring(1);
-        int x=path.lastIndexOf("/");
-        String file=(x>=0)?path.substring(x+1):path;
-        path=(x>=0)?path.substring(0,x):"";
-        path=new CMFile(path,mob,false).getLocalStyleAbsolutePath().replace(CMFile.pathSeparator,'/');
-        if(!CMSecurity.canTraverseDir(mob,room,path))
-            return null;
-        CMFile[] dir=new CMFile(path,mob,false).listFiles();
-        for(int d=0;d<dir.length;d++)
-            if(dir[d].getName().equalsIgnoreCase(file))
-                return dir[d];
-        return null;
-    }
     
+    public String desc(CMFile CF){ return (CF.isLocalFile()?"Local file ":"VFS file ")+"'/"+CF.getVFSPathAndName()+"'";}
     public int ticksToExecute(){return 0;}
     public boolean canBeOrdered(){return false;}
     public boolean securityCheck(MOB mob){return CMSecurity.hasAccessibleDir(mob,null);}

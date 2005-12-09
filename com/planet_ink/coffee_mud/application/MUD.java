@@ -6,17 +6,16 @@ import java.net.*;
 import java.util.*;
 import java.sql.*;
 import com.planet_ink.coffee_mud.system.*;
+import com.planet_ink.coffee_mud.system.http.*;
+import com.planet_ink.coffee_mud.system.smtp.*;
 import com.planet_ink.coffee_mud.system.database.*;
 import com.planet_ink.coffee_mud.system.threads.*;
+import com.planet_ink.coffee_mud.system.intermud.*;
+import com.planet_ink.coffee_mud.system.intermud.server.*;
+import com.planet_ink.coffee_mud.system.intermud.imc2.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.i3.*;
-import com.planet_ink.coffee_mud.i3.server.Server;
-import com.planet_ink.coffee_mud.i3.imc2.IMC2Driver;
-import com.planet_ink.coffee_mud.web.*;
-import com.planet_ink.coffee_mud.web.espresso.*;
-import com.planet_ink.coffee_mud.system.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -47,7 +46,6 @@ public class MUD extends Thread implements MudHost
 	public static IMC2Driver imc2server=null;
 	public static HTTPserver webServerThread=null;
 	public static HTTPserver adminServerThread=null;
-    public static EspressoServer espserver=null;
 	public static SMTPserver smtpServerThread=null;
 	public static Vector mudThreads=new Vector();
 	public static DVector accessed=new DVector(2);
@@ -168,22 +166,6 @@ public class MUD extends Thread implements MudHost
 			CMClass.ThreadEngine().startTickDown(smtpServerThread,MudHost.TICK_EMAIL,60);
 		}
 
-        if(page.getBoolean("RUNESPRESSOSERVER"))
-        {
-			try
-			{
-			    int espport=page.getInt("ESPRESSOPORT");
-			    if(espport==0) espport=27755;
-			    espserver=new EspressoServer((MudHost)mudThreads.firstElement(),espport);
-			    espserver.start();
-			    EspressoServer.loadEspressoCommands();
-			}
-			catch(Exception e)
-			{
-			    Log.errOut("MUD",e);
-			}
-        }
-		
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: loading base classes");
 		if(!CMClass.loadClasses(page))
 		{
@@ -199,9 +181,9 @@ public class MUD extends Thread implements MudHost
         int numJournalsLoaded=ChannelSet.loadCommandJournals(page.getStr("COMMANDJOURNALS"));
 		Log.sysOut("MUD","Channels loaded   : "+(numChannelsLoaded+numJournalsLoaded));
 
-		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: loading socials");
-		Socials.load("resources/socials.txt");
-		if(!Socials.isLoaded())
+        CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: loading socials");
+		Socials.clearAllSocials();
+		if(Socials.num()==0)
 			Log.errOut("MUD","WARNING: Unable to load socials from socials.txt!");
 		else
 			Log.sysOut("MUD","Socials loaded    : "+Socials.num());
@@ -772,15 +754,6 @@ public class MUD extends Thread implements MudHost
 			adminServerThread = null;
 			Log.sysOut("MUD","Admin Web Server stopped.");
 			if(S!=null)S.println("Admin Web Server stopped");
-		}
-		
-		if(espserver!=null)
-		{
-			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...espresso server");
-			espserver.shutdown(S);
-			espserver = null;
-			Log.sysOut("MUD","Espresso Server stopped.");
-			if(S!=null)S.println("Espresso Server stopped");
 		}
 		
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...unloading macros");

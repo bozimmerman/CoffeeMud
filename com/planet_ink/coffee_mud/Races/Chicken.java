@@ -126,11 +126,12 @@ public class Chicken extends StdRace
             &&(((MOB)ticking).location()!=null)
             &&(((MOB)ticking).location().fetchItem(null,"an egg")==null))
             {
-                Item I=((MOB)ticking).fetchInventory("am egg");
+                Item I=((MOB)ticking).fetchInventory("an egg");
                 if(I!=null)
                 {
                     ((MOB)ticking).location().show(((MOB)ticking),null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> lay(s) an egg.");
                     I.removeFromOwnerContainer();
+                    I.executeMsg((MOB)ticking,new FullMsg((MOB)ticking,I,null,CMMsg.TYP_ROOMRESET,null));
                     ((MOB)ticking).location().addItemRefuse(I,Item.REFUSE_RESOURCE);
                     ((MOB)ticking).location().recoverRoomStats();
                 }
