@@ -43,7 +43,7 @@ public class DefaultCharStats implements CharStats
 	}
     public void setAllValues(int def)
     {
-        for(int i=0;i<NUM_STATS;i++)
+        for(int i=0;i<NUM_BASE_STATS;i++)
             stats[i]=def;
     }
 
