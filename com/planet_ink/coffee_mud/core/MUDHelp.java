@@ -1,0 +1,577 @@
+package com.planet_ink.coffee_mud.utils;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.*;
+
+/* 
+   Copyright 2000-2005 Bo Zimmerman
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+public class MUDHelp
+{
+	private MUDHelp(){};
+
+    public static StringBuffer getHelpText(String helpStr, MOB forMOB, boolean favorAHelp)
+    {
+        if(helpStr.length()==0) return null;
+        StringBuffer thisTag=null;
+        if(favorAHelp)
+        {
+            if(getArcHelpFile().size()>0)
+                thisTag=getHelpText(helpStr,getArcHelpFile(),forMOB);
+            if(thisTag==null)
+            {
+                if(getHelpFile().size()==0) return null;
+                thisTag=getHelpText(helpStr,getHelpFile(),forMOB);
+            }
+        }
+        else
+        {
+            if(getHelpFile().size()>0)
+                thisTag=getHelpText(helpStr,getHelpFile(),forMOB);
+            if(thisTag==null)
+            {
+                if(getArcHelpFile().size()==0) return null;
+                thisTag=getHelpText(helpStr,getArcHelpFile(),forMOB);
+            }
+        }
+        return thisTag;
+    }
+
+	public static Vector getTopics(boolean archonHelp, boolean standardHelp)
+	{
+        Vector reverseList=new Vector();
+		Properties rHelpFile=null;
+		if(archonHelp)
+			rHelpFile=getArcHelpFile();
+		if(standardHelp)
+		{
+			if(rHelpFile==null)
+				rHelpFile=getHelpFile();
+			else
+			{
+				for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
+				{
+					String ptop = (String)e.nextElement();
+					String thisTag=rHelpFile.getProperty(ptop);
+					if ((thisTag==null)||(thisTag.length()==0)||(thisTag.length()>=35)
+						|| (rHelpFile.getProperty(thisTag)== null) )
+							reverseList.addElement(ptop);
+				}
+				rHelpFile=getHelpFile();
+			}
+		}
+		if(rHelpFile!=null)
+		for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
+		{
+			String ptop = (String)e.nextElement();
+			String thisTag=rHelpFile.getProperty(ptop);
+			if ((thisTag==null)||(thisTag.length()==0)||(thisTag.length()>=35)
+				|| (rHelpFile.getProperty(thisTag)== null) )
+					reverseList.addElement(ptop);
+		}
+		Collections.sort(reverseList);
+		return reverseList;
+	}
+	
+	private static String getActualUsage(Ability A, int which, MOB forMOB)
+	{
+        boolean destroymob=false;
+		if(forMOB==null)
+        {
+            destroymob=true;
+			forMOB=CMClass.getMOB("StdMOB");
+			forMOB.maxState().setMana(Integer.MAX_VALUE/2);
+			forMOB.maxState().setMovement(Integer.MAX_VALUE/2);
+			forMOB.maxState().setHitPoints(Integer.MAX_VALUE/2);
+		}
+
+		int[] consumption=A.usageCost(forMOB);
+		int whichConsumed=consumption[0];
+		switch(which)
+		{
+		case Ability.USAGE_MOVEMENT: whichConsumed=consumption[1]; break;
+		case Ability.USAGE_MANA: whichConsumed=consumption[0]; break;
+		case Ability.USAGE_HITPOINTS: whichConsumed=consumption[2]; break;
+		}
+        if(destroymob) forMOB.destroy();
+		if(whichConsumed==Integer.MAX_VALUE/2) return "all";
+		return ""+whichConsumed;
+	}
+
+	public static String fixHelp(String tag, String str, MOB forMOB)
+	{
+		if(str.startsWith("<ABILITY>"))
+		{
+			str=str.substring(9);
+			String name=tag;
+			int type=-1;
+			if(name.startsWith("SPELL_"))
+			{
+				type=Ability.SPELL;
+				name=name.substring(6);
+			}
+			else
+			if(name.startsWith("PRAYER_"))
+			{
+				type=Ability.PRAYER;
+				name=name.substring(7);
+			}
+			else
+			if(name.startsWith("DANCE_"))
+			{
+				type=Ability.SONG;
+				name=name.substring(6);
+			}
+			else
+			if((name.startsWith("SONG_"))
+			||(name.startsWith("PLAY_")))
+			{
+				type=Ability.SONG;
+				name=name.substring(5);
+			}
+			else
+			if(name.startsWith("CHANT_"))
+			{
+				type=Ability.CHANT;
+				name=name.substring(6);
+			}
+			name=name.replace('_',' ');
+			Vector helpedPreviously=new Vector();
+			String subTag=tag;
+			while(subTag.indexOf("_")!=subTag.lastIndexOf("_"))
+			{
+			    int x=subTag.lastIndexOf("_");
+			    subTag=subTag.substring(0,x)+subTag.substring(x+1);
+			}
+			
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+			{
+				Ability A=(Ability)a.nextElement();
+				if(((A.ID().equalsIgnoreCase(tag)||A.ID().equalsIgnoreCase(subTag))
+						&&((type<0)||(type==(A.classificationCode()&Ability.ALL_CODES)))
+					||(A.name().equalsIgnoreCase(name)))
+				&&(!helpedPreviously.contains(A)))
+				{
+					helpedPreviously.addElement(A);
+					StringBuffer prepend=new StringBuffer("");
+					type=(A.classificationCode()&Ability.ALL_CODES);
+					prepend.append("\n\r");
+					switch(type)
+					{
+					case Ability.SPELL:
+						prepend.append(Util.padRight("Spell",9));
+						break;
+					case Ability.PRAYER:
+						prepend.append(Util.padRight("Prayer",9));
+						break;
+					case Ability.CHANT:
+						prepend.append(Util.padRight("Chant",9));
+						break;
+					case Ability.SONG:
+						prepend.append(Util.padRight("Song",9));
+						break;
+					default:
+						prepend.append(Util.padRight("Skill",9));
+						break;
+					}
+					prepend.append(": "+A.name());
+					if(type==Ability.SPELL)
+					{
+						prepend.append("\n\rSchool   : ");
+						int school=(A.classificationCode()&Ability.ALL_DOMAINS)>>5;
+						prepend.append(Util.capitalizeAndLower(Ability.DOMAIN_DESCS[school]));
+					}
+					Vector avail=new Vector();
+					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+					{
+						CharClass C=(CharClass)c.nextElement();
+						int lvl=CMAble.getQualifyingLevel(C.ID(),true,A.ID());
+						if((!C.ID().equalsIgnoreCase("Archon"))
+						&&(lvl>=0)
+						&&(C.availabilityCode()!=0)
+						&&(!CMAble.getSecretSkill(C.ID(),true,A.ID())))
+							avail.addElement(C.name(lvl)+"("+lvl+")");
+					}
+					for(int c=0;c<avail.size();c++)
+					{
+						if((c%4)==0)
+							prepend.append("\n\rAvailable: ");
+						prepend.append(((String)avail.elementAt(c))+" ");
+					}
+					if(type==Ability.PRAYER)
+					{
+					    for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
+					    {
+					        Faction F=(Faction)e.nextElement();
+					        if(F.usageFactors(A).length()>0)
+					            prepend.append("\n\r"+Util.capitalizeAndLower(F.name)+": "+F.usageFactors(A));
+					    }
+					}
+					if(!A.isAutoInvoked())
+					{
+						prepend.append("\n\rUse Cost : ");
+						if(A.usageType()==Ability.USAGE_NADA)
+							prepend.append("None");
+						if(Util.bset(A.usageType(),Ability.USAGE_MANA))
+							prepend.append("Mana ("+getActualUsage(A,Ability.USAGE_MANA,forMOB)+") ");
+						if(Util.bset(A.usageType(),Ability.USAGE_MOVEMENT))
+							prepend.append("Movement ("+getActualUsage(A,Ability.USAGE_MOVEMENT,forMOB)+") ");
+						if(Util.bset(A.usageType(),Ability.USAGE_HITPOINTS))
+							prepend.append("Hit Points ("+getActualUsage(A,Ability.USAGE_HITPOINTS,forMOB)+") ");
+						prepend.append("\n\rQuality  : ");
+						switch(A.quality())
+						{
+						case Ability.MALICIOUS:
+							prepend.append("Malicious");
+							break;
+						case Ability.BENEFICIAL_OTHERS:
+						case Ability.BENEFICIAL_SELF:
+							prepend.append("Always Beneficial");
+							break;
+						case Ability.OK_OTHERS:
+						case Ability.OK_SELF:
+							prepend.append("Sometimes Beneficial");
+							break;
+						case Ability.INDIFFERENT:
+							prepend.append("Circumstantial");
+							break;
+						}
+						prepend.append("\n\rTargets  : ");
+						if((A.quality()==Ability.BENEFICIAL_SELF)
+						||(A.quality()==Ability.OK_SELF))
+							prepend.append("Caster only");
+						else
+						if((CMClass.items().hasMoreElements())
+						&&(CMClass.mobTypes().hasMoreElements())
+						&&(CMClass.exits().hasMoreElements())
+						&&(CMClass.locales().hasMoreElements()))
+						{
+							Item I=(Item)CMClass.items().nextElement();
+							MOB M=(MOB)CMClass.mobTypes().nextElement();
+							Exit E=(Exit)CMClass.exits().nextElement();
+							Room R=(Room)CMClass.locales().nextElement();
+							if(A.canAffect(I)||A.canTarget(I))
+								prepend.append("Items ");
+							if(A.canAffect(M)||A.canTarget(M))
+								prepend.append("Creatures ");
+							if(A.canAffect(E)||A.canTarget(E))
+								prepend.append("Exits ");
+							if(A.canAffect(R)||A.canTarget(R))
+								prepend.append("Rooms ");
+						}
+						else
+						if(A.quality()==Ability.INDIFFERENT)
+							prepend.append("Items or Rooms");
+						else
+						if(A.quality()==Ability.MALICIOUS)
+							prepend.append("Others");
+						else
+						if((A.quality()==Ability.BENEFICIAL_OTHERS)
+						||(A.quality()==Ability.OK_SELF))
+							prepend.append("Caster, or others");
+						prepend.append("\n\rRange    : ");
+						int min=A.minRange();
+						int max=A.maxRange();
+						if(min+max==0)
+							prepend.append("Touch, or not applicable");
+						else
+						{
+							if(min==0)
+								prepend.append("Touch");
+							else
+								prepend.append("Range "+min);
+							if(max>0)
+								prepend.append(" - Range "+max);
+						}
+						if((A.triggerStrings()!=null)
+						   &&(A.triggerStrings().length>0))
+						{
+							prepend.append("\n\rCommands : ");
+							for(int i=0;i<A.triggerStrings().length;i++)
+							{
+								prepend.append(A.triggerStrings()[i]);
+								if(i<(A.triggerStrings().length-1))
+								   prepend.append(", ");
+							}
+						}
+					}
+					else
+						prepend.append("\n\rInvoked  : Automatic");
+					str=prepend.toString()+"\n\r"+str;
+				}
+			}
+		}
+        try{
+            if(str!=null)
+                return CMClass.httpUtils().doVirtualPage(str);
+        }catch(com.planet_ink.coffee_mud.exceptions.HTTPRedirectException x){}
+		return str;
+	}
+
+	public static StringBuffer getHelpText(String helpStr, Properties rHelpFile, MOB forMOB)
+	{
+		helpStr=helpStr.toUpperCase().trim();
+		if(helpStr.indexOf(" ")>=0)
+			helpStr=helpStr.replace(' ','_');
+		String thisTag=rHelpFile.getProperty(helpStr);
+		if(thisTag==null){thisTag=rHelpFile.getProperty("SPELL_"+helpStr); if(thisTag!=null) helpStr="SPELL_"+helpStr;}
+		if(thisTag==null){thisTag=rHelpFile.getProperty("PRAYER_"+helpStr); if(thisTag!=null) helpStr="PRAYER_"+helpStr;}
+		if(thisTag==null){thisTag=rHelpFile.getProperty("SONG_"+helpStr); if(thisTag!=null) helpStr="SONG_"+helpStr;}
+		if(thisTag==null){thisTag=rHelpFile.getProperty("DANCE_"+helpStr); if(thisTag!=null) helpStr="DANCE_"+helpStr;}
+		if(thisTag==null){thisTag=rHelpFile.getProperty("PLAY_"+helpStr); if(thisTag!=null) helpStr="PLAY_"+helpStr;}
+		if(thisTag==null){thisTag=rHelpFile.getProperty("CHANT_"+helpStr); if(thisTag!=null) helpStr="CHANT_"+helpStr;}
+		if(thisTag==null){thisTag=rHelpFile.getProperty("PROP_"+helpStr); if(thisTag!=null) helpStr="PROP_"+helpStr;}
+		if(thisTag==null){thisTag=rHelpFile.getProperty("BEHAVIOR_"+helpStr); if(thisTag!=null) helpStr="BEHAVIOR_"+helpStr;}
+
+		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
+		for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
+		{
+			String key=((String)e.nextElement()).toUpperCase();
+			if(key.startsWith(helpStr))
+			{
+				thisTag=rHelpFile.getProperty(key);
+				helpStr=key;
+				break;
+			}
+		}
+		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
+		for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
+		{
+			String key=((String)e.nextElement()).toUpperCase();
+			if(key.indexOf(helpStr)>=0)
+			{
+				thisTag=rHelpFile.getProperty(key);
+				helpStr=key;
+				break;
+			}
+		}
+		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
+		{
+			String ahelpStr=helpStr.replaceAll("_"," ").trim();
+			boolean found=false;
+			for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+			{
+				Area A=(Area)e.nextElement();
+				if(A.name().equalsIgnoreCase(ahelpStr))
+				{
+					helpStr=A.name();
+					found=true;
+					break;
+				}
+			}
+			if(!found)
+				for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+				{
+					Area A=(Area)e.nextElement();
+					if(EnglishParser.containsString(A.name(),ahelpStr))
+					{
+						helpStr=A.name();
+						break;
+					}
+				}
+			if(!found)
+			{
+			    String currency=EnglishParser.matchAnyCurrencySet(ahelpStr);
+			    if(currency!=null)
+			    {
+			        double denom=EnglishParser.matchAnyDenomination(currency,ahelpStr);
+			        if(denom>0.0)
+			        {
+			            Coins C=BeanCounter.makeCurrency(currency,denom,1);
+			            if((C!=null)&&(C.description().length()>0))
+			                return new StringBuffer(C.name()+" is "+C.description().toLowerCase());
+			        }
+			    }
+			}
+		}
+		while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<31))
+		{
+			String thisOtherTag=rHelpFile.getProperty(thisTag);
+			if((thisOtherTag!=null)&&(thisOtherTag.equals(thisTag)))
+				thisTag=null;
+			else
+			if(thisOtherTag!=null)
+			{
+				helpStr=thisTag;
+				thisTag=thisOtherTag;
+			}
+			else
+			    break;
+		}
+		// the area exception
+		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
+			if(CMMap.getArea(helpStr.trim())!=null)
+				return CMMap.getArea(helpStr.trim()).getAreaStats();
+		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
+			return null;
+		return new StringBuffer(fixHelp(helpStr,thisTag,forMOB));
+	}
+
+	public static StringBuffer getHelpList(String helpStr, 
+                                	       Properties rHelpFile1, 
+                                	       Properties rHelpFile2, 
+                                	       MOB forMOB)
+	{
+		helpStr=helpStr.toUpperCase().trim();
+		if(helpStr.indexOf(" ")>=0)
+			helpStr=helpStr.replace(' ','_');
+		Vector matches=new Vector();
+
+		for(Enumeration e=rHelpFile1.keys();e.hasMoreElements();)
+		{
+			String key=(String)e.nextElement();
+            String prop=rHelpFile1.getProperty(key,"");
+			if((key.toUpperCase().indexOf(helpStr)>=0)||(EnglishParser.containsString(prop,helpStr)))
+			    matches.addElement(key.toUpperCase());
+		}
+		if(rHelpFile2!=null)
+		for(Enumeration e=rHelpFile2.keys();e.hasMoreElements();)
+		{
+            String key=(String)e.nextElement();
+            String prop=rHelpFile1.getProperty(key,"");
+            if((key.toUpperCase().indexOf(helpStr)>=0)||(EnglishParser.containsString(prop,helpStr)))
+			    matches.addElement(key.toUpperCase());
+		}
+		if(matches.size()==0)
+		    return new StringBuffer("");
+		return CMLister.fourColumns(matches);
+	}
+	
+	public static Properties getArcHelpFile()
+	{
+        try
+        {
+    		Properties arcHelpFile=(Properties)Resources.getResource("ARCHON HELP FILE");
+    		if(arcHelpFile==null)
+    		{
+    			arcHelpFile=new Properties();
+    			CMFile directory=new CMFile(Resources.buildResourcePath("help"),null,true);
+    			if((directory.canRead())&&(directory.isDirectory()))
+    			{
+    				String[] list=directory.list();
+    				for(int l=0;l<list.length;l++)
+    				{
+    					String item=list[l];
+    					if((item!=null)
+                        &&(item.length()>0)
+    					&&item.toUpperCase().endsWith(".INI")
+                        &&(item.toUpperCase().startsWith("ARC_")))
+                            arcHelpFile.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,true).raw()));
+    				}
+    			}
+    			if(arcHelpFile!=null)
+    			{
+    				for(Enumeration e=arcHelpFile.keys();e.hasMoreElements();)
+    				{
+    					String key=(String)e.nextElement();
+    					String entry=(String)arcHelpFile.get(key);
+    					int x=entry.indexOf("<ZAP=");
+    					if(x>=0)
+    					{
+    						int y=entry.indexOf(">",x);
+    						if(y>(x+5))
+    						{
+    							String word=entry.substring(x+5,y).trim();
+    							entry=entry.substring(0,x)+MUDZapper.zapperInstructions("\n\r",word)+entry.substring(y+1);
+    							arcHelpFile.remove(key);
+    							arcHelpFile.put(key,entry);
+    						}
+    					}
+    				}
+    				Resources.submitResource("ARCHON HELP FILE",arcHelpFile);
+    			}
+    		}
+            return arcHelpFile;
+        }
+        catch(IOException e)
+        {
+            Log.errOut("MUDHelp",e);
+        }
+        return new Properties();
+	}
+
+	public static Properties getHelpFile()
+	{
+        try
+        {
+    		Properties helpFile=(Properties)Resources.getResource("MAIN HELP FILE");
+    		if(helpFile==null)
+    		{
+    			helpFile=new Properties();
+    			CMFile directory=new CMFile(Resources.buildResourcePath("help"),null,true);
+    			if((directory.canRead())&&(directory.isDirectory()))
+    			{
+    				String[] list=directory.list();
+    				for(int l=0;l<list.length;l++)
+    				{
+    					String item=list[l];
+    					if((item!=null)
+                        &&(item.length()>0)
+    					&&item.toUpperCase().endsWith(".INI")
+                        &&(!item.toUpperCase().startsWith("ARC_")))
+                            helpFile.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,true).raw()));
+    				}
+    			}
+    			if(helpFile!=null)
+    				Resources.submitResource("MAIN HELP FILE",helpFile);
+    		}
+    		return helpFile;
+        }
+        catch(IOException e)
+        {
+            Log.errOut("MUDHelp",e);
+        }
+        return new Properties();
+	}
+	
+	public static void unloadHelpFile(MOB mob)
+	{
+		if(Resources.getResource("PLAYER TOPICS")!=null)
+			Resources.removeResource("PLAYER TOPICS");
+		if(Resources.getResource("ARCHON TOPICS")!=null)
+			Resources.removeResource("ARCHON TOPICS");
+		if(Resources.getResource("help"+"/help.txt")!=null)
+			Resources.removeResource("help"+"/help.txt");
+		if(Resources.getResource("text"+"/races.txt")!=null)
+			Resources.removeResource("text"+"/races.txt");
+		if(Resources.getResource("text"+"/newchar.txt")!=null)
+			Resources.removeResource("text"+"/newchar.txt");
+		if(Resources.getResource("text"+"/stats.txt")!=null)
+			Resources.removeResource("text"+"/stats.txt");
+		if(Resources.getResource("text"+"/classes.txt")!=null)
+			Resources.removeResource("text"+"/classes.txt");
+		if(Resources.getResource("text"+"/alignment.txt")!=null)
+			Resources.removeResource("text"+"/alignment.txt");
+		if(Resources.getResource("help"+"/arc_help.txt")!=null)
+			Resources.removeResource("help"+"/arc_help.txt");
+		if(Resources.getResource("MAIN HELP FILE")!=null)
+			Resources.removeResource("MAIN HELP FILE");
+		if(Resources.getResource("ARCHON HELP FILE")!=null)
+			Resources.removeResource("ARCHON HELP FILE");
+
+		// also the intro page
+		if(Resources.getResource("text"+"/intro.txt")!=null)
+			Resources.removeResource("text"+"/intro.txt");
+
+		if(Resources.getResource("text"+"/offline.txt")!=null)
+			Resources.removeResource("text"+"/offline.txt");
+
+		if(mob!=null)
+			mob.tell("Help files unloaded. Next HELP, AHELP, new char will reload.");
+	}
+}
