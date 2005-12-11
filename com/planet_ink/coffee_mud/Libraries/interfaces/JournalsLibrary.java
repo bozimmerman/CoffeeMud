@@ -13,10 +13,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-import com.planet_ink.coffee_mud.core.exceptions.*;
-
-import java.net.InetAddress;
 /* 
    Copyright 2000-2005 Bo Zimmerman
 
@@ -32,29 +28,18 @@ import java.net.InetAddress;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface ExternalHTTPRequests extends CMObject
+public interface JournalsLibrary extends CMObject
 {
-	public byte [] doVirtualPage(byte [] data)
-		throws HTTPRedirectException;
-    public String doVirtualPage(String s) 
-        throws HTTPRedirectException;
-    public StringBuffer doVirtualPage(StringBuffer s) 
-        throws HTTPRedirectException;
-	public String ServerVersionString();
-	public String getWebServerPortStr();
-	public String getHTTPstatus();
-	public String getHTTPstatusInfo();
-	public String getHTTPclientIP();
-	public String getWebServerPartialName();
-	public CMFile grabFile(String filename);
-	public MudHost getMUD();
-	public boolean isRequestParameter(String key);
-	public String getRequestParameter(String key);
-	public void removeRequestParameter(String key);
-	public void addRequestParameters(String key, String value);
-	public Hashtable getVirtualDirectories();
-	public String getRequestEncodedParameters();
-	public InetAddress getServerAddress();
-	public String getPageContent(String filename);
-	public Hashtable getRequestObjects();
+    public int loadCommandJournals(String list);
+    public int getNumCommandJournals();
+    public String getCommandJournalMask(int i);
+    public String getCommandJournalName(int i);
+    public Hashtable getCommandJournalFlags(int i);
+    public String[] getCommandJournalNames();
+    public void unloadCommandJournals();
+    public static final String[] ALLFLAGS={
+        "DEFAULT","SAMEAREA","CLANONLY","READONLY",
+        "EXECUTIONS","LOGINS","LOGOFFS","BIRTHS","MARRIAGES", 
+        "DIVORCES","CHRISTENINGS","LEVELS","DETAILEDLEVELS","DEATHS","DETAILEDDEATHS",
+        "CONQUESTS","CONCEPTIONS","NEWPLAYERS","LOSTLEVELS","PLAYERPURGES","CLANINFO"};
 }

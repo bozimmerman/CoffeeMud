@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core.interfaces;
+package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -28,7 +28,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface I3Interface
+public interface I3Interface extends CMObject
 {
 	public void i3who(MOB mob, String mudName);
 	public void i3tell(MOB mob, String tellName, String mudName, String message);

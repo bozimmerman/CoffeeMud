@@ -9,14 +9,14 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.MUDZapper;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.*;
-
-import com.planet_ink.coffee_mud.core.exceptions.*;
-
-import java.net.InetAddress;
 /* 
    Copyright 2000-2005 Bo Zimmerman
 
@@ -32,29 +32,15 @@ import java.net.InetAddress;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface ExternalHTTPRequests extends CMObject
+public interface HelpLibrary extends CMObject
 {
-	public byte [] doVirtualPage(byte [] data)
-		throws HTTPRedirectException;
-    public String doVirtualPage(String s) 
-        throws HTTPRedirectException;
-    public StringBuffer doVirtualPage(StringBuffer s) 
-        throws HTTPRedirectException;
-	public String ServerVersionString();
-	public String getWebServerPortStr();
-	public String getHTTPstatus();
-	public String getHTTPstatusInfo();
-	public String getHTTPclientIP();
-	public String getWebServerPartialName();
-	public CMFile grabFile(String filename);
-	public MudHost getMUD();
-	public boolean isRequestParameter(String key);
-	public String getRequestParameter(String key);
-	public void removeRequestParameter(String key);
-	public void addRequestParameters(String key, String value);
-	public Hashtable getVirtualDirectories();
-	public String getRequestEncodedParameters();
-	public InetAddress getServerAddress();
-	public String getPageContent(String filename);
-	public Hashtable getRequestObjects();
+    public StringBuffer getHelpText(String helpStr, MOB forMOB, boolean favorAHelp);
+    public Vector getTopics(boolean archonHelp, boolean standardHelp);
+    public String getActualUsage(Ability A, int which, MOB forMOB);
+    public String fixHelp(String tag, String str, MOB forMOB);
+    public StringBuffer getHelpText(String helpStr, Properties rHelpFile, MOB forMOB);
+    public StringBuffer getHelpList(String helpStr,  Properties rHelpFile1, Properties rHelpFile2, MOB forMOB);
+    public Properties getArcHelpFile();
+    public Properties getHelpFile();
+    public void unloadHelpFile(MOB mob);
 }
