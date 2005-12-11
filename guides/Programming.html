@@ -465,7 +465,7 @@ objects are in your CoffeeMud classpath, they can be accessed and used.&nbsp;
 For instance, either of these will let you use the CoffeeMud 
 pow(x,y)&nbsp;function in Util.java:</FONT></P>
 <P align=left><FONT face="Courier New" size=2>var 
-value=Packages.com.planet_ink.coffee_mud.utils.Util.pow(2,4);</FONT></P>
+value=Packages.com.planet_ink.coffee_mud.core.Util.pow(2,4);</FONT></P>
 <P align=left><FONT size=4>Depending 
 upon the context from which your script runs (the Scriptable behavior, JRun 
 command,&nbsp;the Quest engine, or&nbsp;the http/web server), certain other 
@@ -496,9 +496,9 @@ things you type into the mud are handled by CoffeeMud Commands. </FONT></P>
 Command may or may not belong to any particular package, though it is important 
 that the NAME of the Command be unique in the system.&nbsp; A custom Command 
 must import the following packages:</FONT></P><pre>import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+
 </PRE>
 <P><FONT size=4>As well as any other 
 java.*,&nbsp;&nbsp;sun.*, or&nbsp;custom&nbsp;packages you may need.&nbsp; No 
@@ -513,7 +513,7 @@ listed.</FONT> </P><pre>public class DoNothing extends StdCommand
 </PRE>
 <P><FONT size=4>All Commands should 
 extend StdCommand for conformity's sake, though it is not required so long as 
-your class implements the com.planet_ink.coffee_mud.interfaces.Command 
+your class implements the com.planet_ink.coffee_mud.core.interfaces.Command 
 interface.&nbsp; In our example above, we have an empty constructor, but we 
 do&nbsp;define some access words.</FONT> </P>
 <P><FONT size=4>Access words are what 
@@ -616,10 +616,10 @@ MOB:</STRONG></FONT></P>
 MOB may or may not belong to any particular package, though it is important that 
 the NAME of the MOB be unique in the system.&nbsp; A custom MOB must import the 
 following packages:</FONT></P><pre>import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.*;
-import com.planet_ink.coffee_mud.common.*;
+
 </PRE>
 <P><FONT size=4>As well as any other 
 java.*,&nbsp;&nbsp;sun.*, or&nbsp;custom&nbsp;packages you may need.&nbsp; No 
@@ -825,13 +825,13 @@ color=orange size=5><STRONG>Items:</STRONG></FONT></A></P>
 Item may or may not belong to any particular package, though it is important 
 that the NAME of the Item be unique in the system.&nbsp; A custom Item must 
 import the following packages:</FONT></P><FONT size=3><PRE>import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.Items.Basic.*;
 import com.planet_ink.coffee_mud.Items.Armor.*;
 import com.planet_ink.coffee_mud.Items.Weapons.*;
 import com.planet_ink.coffee_mud.Items.MiscMagic.*;
-import com.planet_ink.coffee_mud.common.*;</FONT> 
+</FONT> 
 </PRE></FONT>
 <P><FONT size=4>As well as any other 
 java.*,&nbsp;&nbsp;sun.*, or&nbsp;custom&nbsp;packages you may need.&nbsp; No 
@@ -1817,9 +1817,9 @@ is defined as a property of an item, mob, exit, or room which takes proactive
 (as opposed to REactive) steps on behalf of its host.&nbsp; Examples of 
 Behaviors include aggressiveness, mobility, auto-emoting, and scripting.&nbsp; 
 Let's take a look at a sample Behavior and see how they are put 
-together:</FONT></P><PRE>import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+together:</FONT></P><PRE>import com.planet_ink.coffee_mud.core.interfaces.*;
+
+import com.planet_ink.coffee_mud.core.*;
 import java.util.*;
 
 public class Ravenous implements Behavior
@@ -1986,9 +1986,9 @@ Thankfully,&nbsp;despite all this weighty responsibility, Character Classes are
 not difficult to code.&nbsp; Let's take a look at a simple one here:</FONT></P><pre>package com.planet_ink.coffee_mud.CharClasses;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+
 
 public class NormalGuy extends StdCharClass
 {
@@ -2317,9 +2317,9 @@ everyone is encouraged to code as many races as humanly possible. The more, the
 better!&nbsp; Let's take a look at a simple one here:</FONT></P><pre>package com.planet_ink.coffee_mud.Races;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+
 
 public class Grumbler extends StdRace
 {
@@ -2583,8 +2583,8 @@ exits associated with that connection.&nbsp; One from room A to room B, and the
 other from room B to room A.&nbsp; </FONT></P>
 <P align=left><FONT size=4>Here is an 
 example exit:</FONT></P><PRE>package com.planet_ink.coffee_mud.Exits;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+
 
 public class SlidingDoor extends StdExit
 {
@@ -2646,8 +2646,8 @@ standard room, the standard grid, and the standard maze.&nbsp; Each of those
 respectively is a functional superset of the former respectively.</FONT></P>
 <P align=left>Let's looks at an example of a standard grid 
 room, which has much of the functionality we are interested in:</P></FONT><PRE>package com.planet_ink.coffee_mud.Locales;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+
 import java.util.*;
 
 public class RoadGrid extends StdGrid
@@ -2732,9 +2732,9 @@ attempt must be made.&nbsp; Therefore, we will go over some of the methods and
 features available on the Area object, which might be overridden for some other 
 use:</FONT></P></FONT>
 <P align=left><PRE>package com.planet_ink.coffee_mud.Areas;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+
+import com.planet_ink.coffee_mud.core.*;
 import java.util.*;
 
 public class StdArea implements Area
@@ -2878,10 +2878,10 @@ should do so now.</FONT></P>
 property may or may not belong to any particular package, though it is important 
 that the NAME of the property be unique in the system.&nbsp; A custom property 
 must import the following packages:</FONT></P><PRE>import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.Properties.Property;
-import com.planet_ink.coffee_mud.common.*;
+
 </PRE>
 <P><FONT size=4>As well as any other 
 java.*,&nbsp;&nbsp;sun.*, or&nbsp;custom&nbsp;packages you may need.&nbsp; No 
@@ -3027,10 +3027,10 @@ effects list of a mob, item, room, area, or exit via the addEffect method.&nbsp;
 ability may or may not belong to any particular package, though it is important 
 that the NAME of the ability be unique in the system.&nbsp; A custom ability 
 must import the following packages:</FONT></P><PRE>import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.common.*;
+
 </PRE>
 <P><FONT size=4>As well as any other 
 java.*,&nbsp;&nbsp;sun.*, or&nbsp;custom&nbsp;packages you may need.&nbsp; No 
@@ -3441,10 +3441,10 @@ Digressions elsewhere in this document as well.</FONT></P>
 <P align=left><FONT size=4><STRONG>Spells</STRONG></FONT></P>
 <P align=left><FONT size=4>Spells will 
 follow all the rules mentioned above in the Skill Abilities section, with a few 
-differences:</FONT></P><PRE>import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.utils.Abilities.Spells.Spell;
+differences:</FONT></P><PRE>import com.planet_ink.coffee_mud.core.interfaces.*;
+
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.Abilities.Spells.Spell;
 import java.util.*;
 
 public class Spell_ResistFire extends Spell
@@ -3532,9 +3532,9 @@ set.&nbsp; You will also notice that different message strings are constructed
 depending upon whether the auto flag is set.</FONT></P></FONT>
 <P align=left><FONT size=4><STRONG>Prayers</STRONG></FONT></P>
 <P align=left><FONT size=4>Prayers&nbsp;will follow all the rules mentioned above in 
-the Skill Abilities section, with a few differences:</FONT></P><PRE>import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;<BR>import com.planet_ink.coffee_mud.Abilities.Prayers.Prayer;
+the Skill Abilities section, with a few differences:</FONT></P><PRE>import com.planet_ink.coffee_mud.core.interfaces.*;
+
+import com.planet_ink.coffee_mud.core.*;<BR>import com.planet_ink.coffee_mud.Abilities.Prayers.Prayer;
 import java.util.*;
 
 public class Prayer_Anger extends Prayer
@@ -3596,9 +3596,9 @@ auto flag is set.</FONT></P></FONT></FONT>
 <P align=left><FONT size=4><STRONG>Chants</STRONG></FONT></P>
 <P align=left><FONT size=4>Chants will 
 follow all the rules mentioned above in the Skill Abilities section, with a few 
-differences:</FONT></P><PRE>import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;<BR>import com.planet_ink.coffee_mud.Abilities.Druid.Chant;
+differences:</FONT></P><PRE>import com.planet_ink.coffee_mud.core.interfaces.*;
+
+import com.planet_ink.coffee_mud.core.*;<BR>import com.planet_ink.coffee_mud.Abilities.Druid.Chant;
 import java.util.*;
 
 public class Chant_AlterTime extends Chant
@@ -3708,9 +3708,9 @@ a Common Skill.</FONT></P>
 <P align=left><a name=POISON><FONT 
 color=maroon size=5><STRONG>Poisons:</STRONG></FONT></A></P><PRE>package com.planet_ink.coffee_mud.Abilities.Poisons;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+
+import com.planet_ink.coffee_mud.core.*;
 import java.util.*;
 
 public class Poison_BeeSting extends Poison
@@ -3770,9 +3770,9 @@ color=maroon size=5><STRONG>Diseases:</STRONG></FONT></A></P>
 Poison, the Disease base class in the Diseasess package provides a tidy template 
 upon which your more common, mundane diseases can be based.</FONT></P><PRE>package com.planet_ink.coffee_mud.Abilities.Diseases;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+
+import com.planet_ink.coffee_mud.core.*;
 import java.util.*;
 
 public class Disease_Cold extends Disease
@@ -3903,9 +3903,9 @@ need very little of that extended knowledge if you follow the K.I.S.S. principle
 and use the simple template provided by the Language base class in the Languages 
 package.</FONT></P><PRE>package com.planet_ink.coffee_mud.Abilities.Languages;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+
+import com.planet_ink.coffee_mud.core.*;
 import java.util.*;
 
 public class Elvish extends Language
