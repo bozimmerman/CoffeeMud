@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -22,18 +22,12 @@ import java.util.Vector;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-public class CoffeeShop
+public class DefaultCoffeeShop implements CoffeeShop
 {
-
-    public CoffeeShop()
-    {
-        super();
-    }
-
     protected Vector baseInventory=new Vector(); // for Only Inventory situations
     protected DVector storeInventory=new DVector(3);
     
-    public void cloneFix(CoffeeShop E)
+    public void cloneFix(DefaultCoffeeShop E)
     {
         storeInventory=new DVector(3);
         baseInventory=new Vector();
