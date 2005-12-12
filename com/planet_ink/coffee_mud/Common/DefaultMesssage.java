@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Common;
+package com.planet_ink.coffee_mud.core;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -29,10 +29,8 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class DefaultMessage implements CMMsg
+public class FullMsg implements CMMsg
 {
-    public String ID(){return "DefaultMessge";}
-    
 	private int targetCode=0;
 	private int sourceCode=0;
 	private int othersCode=0;
@@ -117,6 +115,12 @@ public class DefaultMessage implements CMMsg
 		othersMsg=othersMessage;
 	}
 
+	public CMMsg copyOf()
+	{
+        FullMsg M=new FullMsg();
+		M.modify(source(),target(),tool(),sourceCode(),sourceMessage(),targetCode(),targetMessage(),othersCode(),othersMessage());
+        return M;
+	}
     public void setSourceCode(int code){sourceCode=code;}
     public void setTargetCode(int code){targetCode=code;}
     public void setOthersCode(int code){othersCode=code;}
