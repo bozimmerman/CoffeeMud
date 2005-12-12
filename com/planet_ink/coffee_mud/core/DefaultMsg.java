@@ -1,17 +1,5 @@
-package com.planet_ink.coffee_mud.core;
-import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.*;
-import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.Areas.interfaces.*;
-import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
-import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
-import com.planet_ink.coffee_mud.Commands.interfaces.*;
-import com.planet_ink.coffee_mud.Common.interfaces.*;
-import com.planet_ink.coffee_mud.Exits.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Locales.interfaces.*;
-import com.planet_ink.coffee_mud.MOBS.interfaces.*;
-import com.planet_ink.coffee_mud.Races.interfaces.*;
+package com.planet_ink.coffee_mud.common;
+import com.planet_ink.coffee_mud.interfaces.*;
 import java.util.Vector;
 
 /* 
@@ -43,7 +31,10 @@ public class FullMsg implements CMMsg
 	private int value=0;
 	private Vector trailMsgs=null;
 
-	public void modify(MOB source, Environmental target, int newAllCode, String allMessage)
+	public FullMsg(MOB source,
+				   Environmental target,
+				   int newAllCode,
+				   String allMessage)
 	{
 		myAgent=source;
 		myTarget=target;
@@ -56,7 +47,9 @@ public class FullMsg implements CMMsg
 		othersMsg=allMessage;
 	}
     
-    public void modify(MOB source, int newAllCode, String allMessage)
+    public FullMsg(MOB source,
+                   int newAllCode,
+                   String allMessage)
     {
         myAgent=source;
         myTarget=null;
@@ -69,7 +62,10 @@ public class FullMsg implements CMMsg
         othersMsg=allMessage;
     }
     
-    public void modify(MOB source, int newAllCode, String allMessage, int newValue)
+    public FullMsg(MOB source,
+                   int newAllCode,
+                   String allMessage,
+                   int newValue)
     {
          myAgent=source;
          myTarget=null;
@@ -83,7 +79,11 @@ public class FullMsg implements CMMsg
          value=newValue;
     }
     
-    public void modify(MOB source, Environmental target, Environmental tool, int newAllCode, String allMessage)
+	public FullMsg(MOB source,
+				   Environmental target,
+				   Environmental tool,
+				   int newAllCode,
+				   String allMessage)
 	{
 		myAgent=source;
 		myTarget=target;
@@ -95,14 +95,34 @@ public class FullMsg implements CMMsg
 		othersCode=newAllCode;
 		othersMsg=allMessage;
 	}
+	public FullMsg(MOB source,
+				   Environmental target,
+				   Environmental tool,
+				   int newSourceCode,
+				   String sourceMessage,
+				   int newTargetCode,
+				   String targetMessage,
+				   int newOthersCode,
+				   String othersMessage)
+	{
+		myAgent=source;
+		myTarget=target;
+		myTool=tool;
+		sourceMsg=sourceMessage;
+		targetMsg=targetMessage;
+		targetCode=newTargetCode;
+		sourceCode=newSourceCode;
+		othersCode=newOthersCode;
+		othersMsg=othersMessage;
+	}
 
-    public void modify(MOB source,
-    				   Environmental target,
-    				   Environmental tool,
-    				   int newSourceCode,
-    				   String sourceMessage,
-    				   String targetMessage,
-    				   String othersMessage)
+	public FullMsg(MOB source,
+				   Environmental target,
+				   Environmental tool,
+				   int newSourceCode,
+				   String sourceMessage,
+				   String targetMessage,
+				   String othersMessage)
 	{
 		myAgent=source;
 		myTarget=target;
@@ -117,9 +137,7 @@ public class FullMsg implements CMMsg
 
 	public CMMsg copyOf()
 	{
-        FullMsg M=new FullMsg();
-		M.modify(source(),target(),tool(),sourceCode(),sourceMessage(),targetCode(),targetMessage(),othersCode(),othersMessage());
-        return M;
+		return new FullMsg(source(),target(),tool(),sourceCode(),sourceMessage(),targetCode(),targetMessage(),othersCode(),othersMessage());
 	}
     public void setSourceCode(int code){sourceCode=code;}
     public void setTargetCode(int code){targetCode=code;}
@@ -162,13 +180,13 @@ public class FullMsg implements CMMsg
 		othersCode=newOthersCode;
 		othersMsg=othersMessage;
 	}
-    public void modify(MOB source,
-    				   Environmental target,
-    				   Environmental tool,
-    				   int newSourceCode,
-    				   int newTargetCode,
-    				   int newOthersCode,
-    				   String Message)
+	public FullMsg(MOB source,
+				   Environmental target,
+				   Environmental tool,
+				   int newSourceCode,
+				   int newTargetCode,
+				   int newOthersCode,
+				   String Message)
 	{
 		myAgent=source;
 		myTarget=target;
