@@ -1,18 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.*;
-import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.Areas.interfaces.*;
-import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
-import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
-import com.planet_ink.coffee_mud.Commands.interfaces.*;
-import com.planet_ink.coffee_mud.Common.interfaces.*;
-import com.planet_ink.coffee_mud.Exits.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Locales.interfaces.*;
-import com.planet_ink.coffee_mud.MOBS.interfaces.*;
-import com.planet_ink.coffee_mud.Races.interfaces.*;
-
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 /* 
@@ -60,7 +49,7 @@ public class Poll extends StdCommand
         
         for(int i=0;i<mypolls[0].size();i++)
         {
-            Poll P=(Poll)mypolls[0].elementAt(i);
+            Polls P=(Polls)mypolls[0].elementAt(i);
             P.processVote(mob);
             if(P.mayISeeResults(mob))
             {
@@ -78,7 +67,7 @@ public class Poll extends StdCommand
         }
         for(int i=0;i<mypolls[1].size();i++)
         {
-            Poll P=(Poll)mypolls[1].elementAt(i);
+            Polls P=(Polls)mypolls[1].elementAt(i);
             P.processVote(mob);
             if(P.mayISeeResults(mob))
             {
@@ -91,7 +80,7 @@ public class Poll extends StdCommand
             mob.tell("\n\r^HPrevious polling results:^N\n\r");
         for(int i=0;i<mypolls[2].size();i++)
         {
-            Poll P=(Poll)mypolls[2].elementAt(i);
+            Polls P=(Polls)mypolls[2].elementAt(i);
             if(P.mayISeeResults(mob))
             {
                 P.processResults(mob);
