@@ -1,8 +1,20 @@
 package com.planet_ink.coffee_mud.Items.ClanItems;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -54,12 +66,12 @@ public class StdClanFlag extends StdItem implements ClanItem
 			if(mob==null) return "";
 			R=mob.location();
 		}
-		Behavior B=CoffeeUtensils.getLegalBehavior(R);
+		Behavior B=CMLib.utensils().getLegalBehavior(R);
 		if(B!=null)
 		{
 			Vector V=new Vector();
 			V.addElement(new Integer(code));
-			if((B.modifyBehavior(CoffeeUtensils.getLegalObject(R),mob,V))
+			if((B.modifyBehavior(CMLib.utensils().getLegalObject(R),mob,V))
 			&&(V.size()>0)
 			&&(V.firstElement() instanceof String))
 				return ((String)V.firstElement());
@@ -71,10 +83,10 @@ public class StdClanFlag extends StdItem implements ClanItem
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-	    if((System.currentTimeMillis()-lastClanCheck)>IQCalendar.MILI_HOUR)
+	    if((System.currentTimeMillis()-lastClanCheck)>TimeManager.MILI_HOUR)
 	    {
             lastClanCheck=System.currentTimeMillis();
-		    if((clanID().length()>0)&&(Clans.getClan(clanID())==null))
+		    if((clanID().length()>0)&&(CMLib.clans().getClan(clanID())==null))
             {
                 destroy();
                 return;
@@ -88,7 +100,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 			&&(msg.source().getClanID().equals(clanID())))
 			{
 				if((msg.targetMinor()==CMMsg.TYP_DROP)&&(msg.trailerMsgs()==null))
-					msg.addTrailerMsg(new FullMsg(msg.source(),this,CMMsg.MSG_LOOK,null));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,CMMsg.MSG_LOOK,null));
 				else
 				if((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 				{
@@ -111,7 +123,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 				if((msg.targetMinor()==CMMsg.TYP_GET)
 				||(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
 				{
-					Room R=CoffeeUtensils.roomLocation(this);
+					Room R=CMLib.utensils().roomLocation(this);
 					if(msg.source().getClanID().length()==0)
 					{
 						msg.source().tell("You must belong to a clan to take a clan item.");
@@ -126,9 +138,9 @@ public class StdClanFlag extends StdItem implements ClanItem
 							if((M!=null)
 							&&(M.isMonster())
 							&&(M.getClanID().equals(clanID())
-							&&(Sense.aliveAwakeMobileUnbound(M,true))
-							&&(Sense.canBeSeenBy(this,M))
-							&&(!Sense.isAnimalIntelligence(M))))
+							&&(CMLib.flags().aliveAwakeMobileUnbound(M,true))
+							&&(CMLib.flags().canBeSeenBy(this,M))
+							&&(!CMLib.flags().isAnimalIntelligence(M))))
 							{
 								R.show(M,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> guard(s) "+name()+" closely.");
 								return false;
@@ -152,20 +164,20 @@ public class StdClanFlag extends StdItem implements ClanItem
 					if(R!=null)
 					{
 						A=R.getArea();
-						T=CoffeeUtensils.getLandTitle(R);
+						T=CMLib.utensils().getLandTitle(R);
 					}
 					if((T==null)
 					||((!T.landOwner().equals(clanID()))
 					   &&((!T.landOwner().equals(msg.source().getLiegeID()))||(!msg.source().isMarriedToLiege()))
 					   &&(!T.landOwner().equals(msg.source().Name()))))
 					{
-						if(A!=null) B=CoffeeUtensils.getLegalBehavior(A);
+						if(A!=null) B=CMLib.utensils().getLegalBehavior(A);
 						boolean ok=false;
 						if(B!=null)
 						{
 							Vector V=new Vector();
 							V.addElement(new Integer(Law.MOD_RULINGCLAN));
-							if((B.modifyBehavior(CoffeeUtensils.getLegalObject(A),msg.source(),V))
+							if((B.modifyBehavior(CMLib.utensils().getLegalObject(A),msg.source(),V))
 							&&(V.size()>0)
 							&&(V.firstElement() instanceof String))
 								ok=true;
@@ -215,12 +227,12 @@ public class StdClanFlag extends StdItem implements ClanItem
 					if(!rulingClan.equals(clanID()))
 					{
 						int relation=Clan.REL_WAR;
-						Clan C=Clans.getClan(clanID());
+						Clan C=CMLib.clans().getClan(clanID());
 						if(C!=null)
 							relation=C.getClanRelations(rulingClan);
 						else
 						{
-							C=Clans.getClan(rulingClan);
+							C=CMLib.clans().getClan(rulingClan);
 							if(C!=null)
 								relation=C.getClanRelations(clanID());
 						}

@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.MOBS;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -29,7 +40,7 @@ public class LizardMan extends StdMOB
 		Username="a Lizard Man";
 		setDescription("a 6 foot tall reptilian humanoid.");
 		setDisplayText("A mean looking Lizard Man stands here.");
-		Factions.setAlignment(this,Faction.ALIGN_EVIL);
+		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(20);
 		baseEnvStats.setWeight(225);
 		setWimpHitPoint(0);
@@ -45,7 +56,7 @@ public class LizardMan extends StdMOB
 		baseEnvStats().setLevel(2);
 		baseEnvStats().setArmor(50);
 
-		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

@@ -17,12 +17,12 @@
  * of interactive connections.
  */
 
-package com.planet_ink.coffee_mud.system.intermud.net;
+package com.planet_ink.coffee_mud.core.intermud.net;
 
-import com.planet_ink.coffee_mud.system.intermud.server.ServerUser;
-import com.planet_ink.coffee_mud.system.intermud.server.Server;
-import com.planet_ink.coffee_mud.utils.Log;
-import com.planet_ink.coffee_mud.common.CommonStrings;
+import com.planet_ink.coffee_mud.core.intermud.server.ServerUser;
+import com.planet_ink.coffee_mud.core.intermud.server.Server;
+import com.planet_ink.coffee_mud.core.*;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Date;
@@ -292,8 +292,8 @@ public abstract class Interactive implements ServerUser {
      * @return the host name for this user's current site
      */
     public final String getAddressName() {
-		if(CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN).length()>0)
-			return CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN).toLowerCase();
+		if(CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).length()>0)
+			return CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase();
 		return socket.getInetAddress().getHostName();
     }
 

@@ -1,8 +1,20 @@
 package com.planet_ink.coffee_mud.Items.Basic;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -60,7 +72,7 @@ public class Corpse extends GenContainer implements DeadBody
 	public CharStats charStats()
 	{
 		if(charStats==null)
-			charStats=(CharStats)CMClass.getShared("DefaultCharStats");
+			charStats=(CharStats)CMClass.getCommon("DefaultCharStats");
 		return charStats;
 	}
 	public void setCharStats(CharStats newStats){charStats=newStats;}
@@ -107,7 +119,7 @@ public class Corpse extends GenContainer implements DeadBody
 	{
 		super.executeMsg(myHost,msg);
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
-        &&((System.currentTimeMillis()-timeOfDeath())>(IQCalendar.MILI_HOUR/2)))
+        &&((System.currentTimeMillis()-timeOfDeath())>(TimeManager.MILI_HOUR/2)))
 		    msg.source().tell(name()+" has definitely started to decay.");
 	}
 	
@@ -121,7 +133,7 @@ public class Corpse extends GenContainer implements DeadBody
 				&&(!msg.tool().ID().equalsIgnoreCase("Prayer_Resurrect"))
 				&&(!msg.tool().ID().equalsIgnoreCase("Prayer_PreserveBody"))
 				&&(!msg.tool().ID().equalsIgnoreCase("Song_Rebirth"))))
-		&&(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).length()>0)
+		&&(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).length()>0)
         &&(playerCorpse())
         &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE")))
 		&&(mobName().length()>0))
@@ -135,18 +147,18 @@ public class Corpse extends GenContainer implements DeadBody
             if((msg.source().isMonster())
             &&((ultimateFollowing==null)||(ultimateFollowing.isMonster())))
                 return true;
-            if(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).equalsIgnoreCase("ANY"))
+            if(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).equalsIgnoreCase("ANY"))
                 return true;
             if (mobName().equalsIgnoreCase(msg.source().Name()))
 				return true;
             else
-            if(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).equalsIgnoreCase("SELFONLY"))
+            if(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).equalsIgnoreCase("SELFONLY"))
 			{
                 msg.source().tell("You may not loot another players corpse.");
                 return false;
 	        }
 			else
-            if(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).equalsIgnoreCase("PKONLY"))
+            if(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).equalsIgnoreCase("PKONLY"))
 			{
                 if(!(Util.bset((msg.source()).getBitmap(), MOB.ATT_PLAYERKILL)))
 				{

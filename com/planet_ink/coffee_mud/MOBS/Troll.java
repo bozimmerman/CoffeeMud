@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.MOBS;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /* 
    Copyright 2000-2005 Lee H. Fox
@@ -34,7 +45,7 @@ public class Troll extends StdMOB
 		Username="a troll";
 		setDescription("Nine foot tall and reeking of rotten meat..");
 		setDisplayText("A mean looking troll glares at you.");
-		Factions.setAlignment(this,Faction.ALIGN_EVIL);
+		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(10);
 		baseEnvStats.setWeight(350);
 		setWimpHitPoint(0);
@@ -52,7 +63,7 @@ public class Troll extends StdMOB
 		baseEnvStats().setSpeed(3.0);
 		baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK | EnvStats.CAN_SEE_INFRARED);
 
-		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
@@ -83,7 +94,7 @@ public class Troll extends StdMOB
 		{
 			String msgText = "The troll regenerates wounds";
 
-			FullMsg message = new FullMsg(this, target, null, CMMsg.MSG_OK_ACTION, msgText);
+			CMMsg message = CMClass.getMsg(this, target, null, CMMsg.MSG_OK_ACTION, msgText);
 
 			target.send(this, message);
 

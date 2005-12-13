@@ -1,5 +1,5 @@
 
-package com.planet_ink.coffee_mud.system.intermud.imc2;
+package com.planet_ink.coffee_mud.core.intermud.imc2;
 
 /**
  * IMC2 version 0.10 - an inter-mud communications protocol

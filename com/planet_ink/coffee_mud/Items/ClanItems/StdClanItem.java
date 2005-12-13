@@ -1,8 +1,20 @@
 package com.planet_ink.coffee_mud.Items.ClanItems;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -49,9 +61,9 @@ public class StdClanItem extends StdItem implements ClanItem
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
         super.executeMsg(myHost,msg);
-	    if((System.currentTimeMillis()-lastClanCheck)>IQCalendar.MILI_HOUR)
+	    if((System.currentTimeMillis()-lastClanCheck)>TimeManager.MILI_HOUR)
 	    {
-		    if((clanID().length()>0)&&(Clans.getClan(clanID())==null))
+		    if((clanID().length()>0)&&(CMLib.clans().getClan(clanID())==null))
 		        destroy();
 		    lastClanCheck=System.currentTimeMillis();
 	    }
@@ -196,7 +208,7 @@ public class StdClanItem extends StdItem implements ClanItem
 					return false;
 				}
 				if((((ClanItem)myHost).ciType()==ClanItem.CI_BANNER)
-				&&(!Sense.isMobile(targetMOB)))
+				&&(!CMLib.flags().isMobile(targetMOB)))
 				{
 					msg.source().tell("This item should only be given to those who roam the area.");
 					return false;
@@ -217,13 +229,13 @@ public class StdClanItem extends StdItem implements ClanItem
 			if((!msg.source().getClanID().equals(((ClanItem)myHost).clanID()))
 			&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
 			{
-				Clan C=Clans.getClan(msg.source().getClanID());
+				Clan C=CMLib.clans().getClan(msg.source().getClanID());
 				int relation=-1;
 				if(C!=null)
 					relation=C.getClanRelations(((ClanItem)myHost).clanID());
 				else
 				{
-					C=Clans.getClan(((ClanItem)myHost).clanID());
+					C=CMLib.clans().getClan(((ClanItem)myHost).clanID());
 					if(C!=null)
 						relation=C.getClanRelations(msg.source().getClanID());
 				}
@@ -248,7 +260,7 @@ public class StdClanItem extends StdItem implements ClanItem
 			if((M.getClanID().length()>0)
 			&&(!M.getClanID().equals(((ClanItem)myHost).clanID())))
 			{
-				Clan C=Clans.getClan(M.getClanID());
+				Clan C=CMLib.clans().getClan(M.getClanID());
 
 				if(M.location()!=null)
 					M.location().show(M,myHost,CMMsg.MSG_OK_ACTION,"<T-NAME> is destroyed by <S-YOUPOSS> touch!");

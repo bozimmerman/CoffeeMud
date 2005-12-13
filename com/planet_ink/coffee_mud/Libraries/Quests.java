@@ -1,6 +1,7 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -32,13 +33,12 @@ import org.mozilla.javascript.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Quests
+public class Quests extends StdLibrary implements QuestManager
 {
 	public String ID(){return "Quests";}
-	protected static Vector quests=new Vector();
+	protected Vector quests=new Vector();
     
-
-	public static Quest objectInUse(Environmental E)
+	public Quest objectInUse(Environmental E)
 	{
 		if(E==null) return null;
 		for(int q=0;q<numQuests();q++)
@@ -48,26 +48,25 @@ public class Quests
 		}
 		return null;
 	}
-	
 
-	public static int numQuests(){return quests.size();}
-	public static Quests fetchQuest(int i){
+	public int numQuests(){return quests.size();}
+	public Quest fetchQuest(int i){
 		try{
-			return (Quests)quests.elementAt(i);
+			return (Quest)quests.elementAt(i);
 		}catch(Exception e){}
 		return null;
 	}
-	public static Quests fetchQuest(String qname)
+	public Quest fetchQuest(String qname)
 	{
 		for(int i=0;i<numQuests();i++)
 		{
-			Quests Q=fetchQuest(i);
+			Quest Q=fetchQuest(i);
 			if(Q.name().equalsIgnoreCase(qname))
 				return Q;
 		}
 		return null;
 	}
-	public static void addQuest(Quest Q)
+	public void addQuest(Quest Q)
 	{
 		if((fetchQuest(Q.name())==null)
 		&&(!quests.contains(Q)))
@@ -76,7 +75,7 @@ public class Quests
 			Q.autostartup();
 		}
 	}
-	public static void shutdown()
+	public void shutdown()
 	{
 		for(int i=numQuests();i>=0;i--)
 		{
@@ -85,7 +84,7 @@ public class Quests
 		}
 		quests.clear();
 	}
-	public static void delQuest(Quest Q)
+	public void delQuest(Quest Q)
 	{
 		if(quests.contains(Q))
 		{
@@ -94,7 +93,7 @@ public class Quests
 			quests.removeElement(Q);
 		}
 	}
-	public static void save()
+	public void save()
 	{
 		CMLib.database().DBUpdateQuests(quests);
 	}

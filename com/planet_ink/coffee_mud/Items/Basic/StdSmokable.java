@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Items.Basic;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -118,10 +129,10 @@ public class StdSmokable extends StdContainer implements Light
 				{
 					MOB mob=(MOB)owner();
 					if((mob.location()!=null)
-					&&(Sense.aliveAwakeMobile(mob,true)))
+					&&(CMLib.flags().aliveAwakeMobile(mob,true)))
                     {
 						mob.location().show(mob,this,this,CMMsg.MSG_HANDS,"<S-NAME> puff(s) on <T-NAME>.");
-                        if(Dice.roll(1,1000,0)==1)
+                        if(CMLib.dice().roll(1,1000,0)==1)
                         {
                             Ability A=CMClass.getAbility("Disease_Cancer");
                             if(A!=null) A.invoke(mob,mob,true,0);
@@ -199,7 +210,7 @@ public class StdSmokable extends StdContainer implements Light
 			&&(isLit())
 			&&(durationTicks>0)
 			&&(mob.isMine(this))
-			&&((!Sense.isInFlight(mob))
+			&&((!CMLib.flags().isInFlight(mob))
 			   ||(LightSource.inTheRain(room))
 			   ||((room.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(room.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))))
 			{
@@ -218,7 +229,7 @@ public class StdSmokable extends StdContainer implements Light
 				if(isLit())
 				{
 					light(false);
-					CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_LIGHT_FLICKERS);
+					CMLib.threads().deleteTick(this,MudHost.TICK_LIGHT_FLICKERS);
 					recoverEnvStats();
 					room.recoverRoomStats();
 				}
@@ -233,17 +244,17 @@ public class StdSmokable extends StdContainer implements Light
 						for(int v=0;v<V.size();v++)
                         {
                             I=(Item)V.elementAt(v);
-                            if(Dice.roll(1,100,0)==1)
+                            if(CMLib.dice().roll(1,100,0)==1)
                                 getAddictedTo(msg.source(),I);
                             I.destroy();
                         }
 					}
                     else
-                    if(Dice.roll(1,100,0)==1)
+                    if(CMLib.dice().roll(1,100,0)==1)
                         getAddictedTo(msg.source(),this);
 
 					light(true);
-					CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_LIGHT_FLICKERS,1);
+					CMLib.threads().startTickDown(this,MudHost.TICK_LIGHT_FLICKERS,1);
 					recoverEnvStats();
 					room.recoverRoomStats();
 				}
@@ -259,7 +270,7 @@ public class StdSmokable extends StdContainer implements Light
 			{
 				if(msg.source().location()!=null)
 					msg.source().location().recoverRoomStats();
-				Room R=CoffeeUtensils.roomLocation(msg.target());
+				Room R=CMLib.utensils().roomLocation(msg.target());
 				if((R!=null)&&(R!=msg.source().location()))
 					R.recoverRoomStats();
 			}
@@ -279,7 +290,7 @@ public class StdSmokable extends StdContainer implements Light
 						msg.source().recoverEnvStats();
 						if(msg.source().location()!=null)
 							msg.source().location().recoverRoomStats();
-						Room R=CoffeeUtensils.roomLocation(msg.tool());
+						Room R=CMLib.utensils().roomLocation(msg.tool());
 						if((R!=null)&&(R!=msg.source().location()))
 							R.recoverRoomStats();
 					}

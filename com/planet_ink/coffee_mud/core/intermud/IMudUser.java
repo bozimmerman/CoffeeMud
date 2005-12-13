@@ -1,4 +1,22 @@
-package com.planet_ink.coffee_mud.system.intermud;
+package com.planet_ink.coffee_mud.core.intermud;
+import com.planet_ink.coffee_mud.core.intermud.packets.*;
+import com.planet_ink.coffee_mud.core.intermud.persist.*;
+import com.planet_ink.coffee_mud.core.intermud.server.*;
+import com.planet_ink.coffee_mud.core.intermud.net.*;
+import com.planet_ink.coffee_mud.core.intermud.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 /**
  * Copyright (c) 1996 George Reese
@@ -15,6 +33,6 @@ package com.planet_ink.coffee_mud.system.intermud;
  * limitations under the License.
  *
  */
-public class IMudUser extends com.planet_ink.coffee_mud.system.intermud.net.Interactive
+public class IMudUser extends com.planet_ink.coffee_mud.core.intermud.net.Interactive
 {
 }

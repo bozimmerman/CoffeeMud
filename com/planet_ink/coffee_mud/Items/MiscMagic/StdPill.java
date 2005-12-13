@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
-
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.Items.Basic.StdFood;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+
 import java.util.*;
 
 
@@ -75,10 +86,10 @@ public class StdPill extends StdFood implements Pill
 			if((thisOne.length()>0)&&(!thisOne.equals(";")))
 			{
 				Ability A=CMClass.getAbility(thisOne);
-				if((A!=null)&&(!CMAble.classOnly("Archon",A.ID())))
+				if((A!=null)&&(!CMLib.ableMapper().classOnly("Archon",A.ID())))
 				{
 					A=(Ability)A.copyOf();
-					baseValue+=(100*CMAble.lowestQualifyingLevel(A.ID()));
+					baseValue+=(100*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 					theSpells.addElement(A);
 				}
 			}
@@ -91,12 +102,11 @@ public class StdPill extends StdFood implements Pill
 			if(A!=null)
 			{
 				A=(Ability)A.copyOf();
-				baseValue+=(100*CMAble.lowestQualifyingLevel(A.ID()));
+				baseValue+=(100*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 				theSpells.addElement(A);
 			}
 		}
-		if(me instanceof Item)
-			((Item)me).recoverEnvStats();
+		me.recoverEnvStats();
 		return theSpells;
 	}
 	
@@ -116,7 +126,7 @@ public class StdPill extends StdFood implements Pill
 					super.executeMsg(myHost,msg);
 				}
 				else
-					msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),CMMsg.NO_EFFECT,null));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),CMMsg.NO_EFFECT,null));
 				break;
 			default:
 				super.executeMsg(myHost,msg);

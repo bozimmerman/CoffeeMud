@@ -1,11 +1,22 @@
-package com.planet_ink.coffee_mud.system.database;
+package com.planet_ink.coffee_mud.core.database;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.sql.*;
 import java.util.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 /*
    Copyright 2000-2005 Bo Zimmerman
 
@@ -73,7 +84,7 @@ public class VFSLoader
                     row.addElement(new Long(DBConnections.getLongRes(R,"CMMODD")));
                     row.addElement(DBConnections.getRes(R,"CMWHOM"));
                     String data=DBConnections.getRes(R,"CMDATA");
-                    row.addElement(CMEncoder.B64decode(data));
+                    row.addElement(CMLib.encoder().B64decode(data));
                 }
             }
         }
@@ -93,13 +104,13 @@ public class VFSLoader
             buf="";
         else
         if(data instanceof String)
-            buf=CMEncoder.B64encodeBytes(((String)data).getBytes());
+            buf=CMLib.encoder().B64encodeBytes(((String)data).getBytes());
         else
         if(data instanceof StringBuffer)
-            buf=CMEncoder.B64encodeBytes(((StringBuffer)data).toString().getBytes());
+            buf=CMLib.encoder().B64encodeBytes(((StringBuffer)data).toString().getBytes());
         else
         if(data instanceof byte[])
-            buf=CMEncoder.B64encodeBytes((byte[])data);
+            buf=CMLib.encoder().B64encodeBytes((byte[])data);
         else
         {
             Log.errOut("VFSLoader","Unable to save "+filename+" due to illegal data type: "+data.getClass().getName());

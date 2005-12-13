@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
-
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+
 import java.util.*;
 
 
@@ -56,10 +67,10 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	public boolean useTheScroll(Ability A, MOB mob)
 	{
 		int manaRequired=5;
-		int q=CMAble.qualifyingLevel(mob,A);
+		int q=CMLib.ableMapper().qualifyingLevel(mob,A);
 		if(q>0)
 		{
-			if(q<CMAble.qualifyingClassLevel(mob,A))
+			if(q<CMLib.ableMapper().qualifyingClassLevel(mob,A))
 				manaRequired=0;
 			else
 				manaRequired=5;
@@ -130,9 +141,9 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 						if(spellName.length()>0)
 						{
 							spellName=spellName.trim();
-							thisOne=(Ability)EnglishParser.fetchEnvironmental(Spells,spellName,true);
+							thisOne=(Ability)CMLib.english().fetchEnvironmental(Spells,spellName,true);
 							if(thisOne==null)
-								thisOne=(Ability)EnglishParser.fetchEnvironmental(Spells,spellName,false);
+								thisOne=(Ability)CMLib.english().fetchEnvironmental(Spells,spellName,false);
 							while((thisOne==null)&&(spellName.length()>0))
 							{
 
@@ -143,9 +154,9 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 								{
 									params.insertElementAt(spellName.substring(t).trim(),0);
 									spellName=spellName.substring(0,t);
-									thisOne=(Ability)EnglishParser.fetchEnvironmental(Spells,spellName,true);
+									thisOne=(Ability)CMLib.english().fetchEnvironmental(Spells,spellName,true);
 									if(thisOne==null)
-										thisOne=(Ability)EnglishParser.fetchEnvironmental(Spells,spellName,false);
+										thisOne=(Ability)CMLib.english().fetchEnvironmental(Spells,spellName,false);
 								}
 							}
 						}
@@ -167,7 +178,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 							for(int u=0;u<Spells.size();u++)
 							{
 								Ability A=(Ability)Spells.elementAt(u);
-								theNews.append("Level "+Util.padRight(""+CMAble.lowestQualifyingLevel(A.ID()),2)+": "+A.name()+"\n\r");
+								theNews.append("Level "+Util.padRight(""+CMLib.ableMapper().lowestQualifyingLevel(A.ID()),2)+": "+A.name()+"\n\r");
 							}
 							mob.tell(theNews.toString());
 						}
@@ -191,10 +202,10 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 			if((thisOne.length()>0)&&(!thisOne.equals(";")))
 			{
 				Ability A=CMClass.getAbility(thisOne);
-				if((A!=null)&&(!CMAble.classOnly("Archon",A.ID())))
+				if((A!=null)&&(!CMLib.ableMapper().classOnly("Archon",A.ID())))
 				{
 					A=(Ability)A.copyOf();
-					baseValue+=(100*CMAble.lowestQualifyingLevel(A.ID()));
+					baseValue+=(100*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 					theSpells.addElement(A);
 				}
 			}
@@ -207,15 +218,12 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 			if(A!=null)
 			{
 				A=(Ability)A.copyOf();
-				baseValue+=(100*CMAble.lowestQualifyingLevel(A.ID()));
+				baseValue+=(100*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 				theSpells.addElement(A);
 			}
 		}
-		if(me instanceof Item)
-		{
-			((Item)me).setBaseValue(baseValue);
-			((Item)me).recoverEnvStats();
-		}
+		me.setBaseValue(baseValue);
+		me.recoverEnvStats();
 		return theSpells;
 	}
 	
@@ -232,7 +240,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 				if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
 					readIfAble(mob,this,msg.targetMessage());
 				else
-					msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),CMMsg.NO_EFFECT,null));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),CMMsg.NO_EFFECT,null));
 				return;
 			default:
 				break;

@@ -1,8 +1,21 @@
 package com.planet_ink.coffee_mud.Races;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.GenCharClass;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -95,7 +108,7 @@ public class GenRace extends StdRace
 	private boolean destroyBodyAfterUse=false;
 	protected boolean destroyBodyAfterUse(){return destroyBodyAfterUse;}
 	
-    public CMObject newInstance(){return new GenRace();}
+    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new GenRace();}}
 	public CMObject copyOf()
 	{
 		GenRace E=new GenRace();
@@ -123,7 +136,7 @@ public class GenRace extends StdRace
 	{
 		if((healthBuddy!=null)&&(healthBuddy!=this))
 			return healthBuddy.healthText(mob);
-		return CommonStrings.standardMobCondition(mob);
+		return CMLib.combat().standardMobCondition(mob);
 	}
 
 	/** some general statistics about such an item
@@ -176,40 +189,40 @@ public class GenRace extends StdRace
 	{
 		StringBuffer str=new StringBuffer("");
 		str.append("<RACE><ID>"+ID()+"</ID>");
-		str.append(XMLManager.convertXMLtoTag("NAME",name()));
-		str.append(XMLManager.convertXMLtoTag("CAT",racialCategory()));
-		str.append(XMLManager.convertXMLtoTag("MHEIGHT",""+shortestMale()));
-		str.append(XMLManager.convertXMLtoTag("FHEIGHT",""+shortestFemale()));
-		str.append(XMLManager.convertXMLtoTag("VHEIGHT",""+heightVariance()));
-		str.append(XMLManager.convertXMLtoTag("BWEIGHT",""+lightestWeight()));
-		str.append(XMLManager.convertXMLtoTag("VWEIGHT",""+weightVariance()));
-		str.append(XMLManager.convertXMLtoTag("WEAR",""+forbiddenWornBits()));
-		str.append(XMLManager.convertXMLtoTag("AVAIL",""+availability));
-		str.append(XMLManager.convertXMLtoTag("DESTROYBODY",""+destroyBodyAfterUse()));
+		str.append(CMLib.xml().convertXMLtoTag("NAME",name()));
+		str.append(CMLib.xml().convertXMLtoTag("CAT",racialCategory()));
+		str.append(CMLib.xml().convertXMLtoTag("MHEIGHT",""+shortestMale()));
+		str.append(CMLib.xml().convertXMLtoTag("FHEIGHT",""+shortestFemale()));
+		str.append(CMLib.xml().convertXMLtoTag("VHEIGHT",""+heightVariance()));
+		str.append(CMLib.xml().convertXMLtoTag("BWEIGHT",""+lightestWeight()));
+		str.append(CMLib.xml().convertXMLtoTag("VWEIGHT",""+weightVariance()));
+		str.append(CMLib.xml().convertXMLtoTag("WEAR",""+forbiddenWornBits()));
+		str.append(CMLib.xml().convertXMLtoTag("AVAIL",""+availability));
+		str.append(CMLib.xml().convertXMLtoTag("DESTROYBODY",""+destroyBodyAfterUse()));
 		StringBuffer bbody=new StringBuffer("");
 		for(int i=0;i<bodyMask().length;i++)
 			bbody.append((""+bodyMask()[i])+";");
-		str.append(XMLManager.convertXMLtoTag("BODY",bbody.toString()));
-		str.append(XMLManager.convertXMLtoTag("HEALTHRACE",(healthBuddy!=null)?healthBuddy.ID():""));
-		str.append(XMLManager.convertXMLtoTag("ARRIVE",arriveStr()));
-		str.append(XMLManager.convertXMLtoTag("LEAVE",leaveStr()));
-		str.append(XMLManager.convertXMLtoTag("AGING",Util.toStringList(getAgingChart())));
+		str.append(CMLib.xml().convertXMLtoTag("BODY",bbody.toString()));
+		str.append(CMLib.xml().convertXMLtoTag("HEALTHRACE",(healthBuddy!=null)?healthBuddy.ID():""));
+		str.append(CMLib.xml().convertXMLtoTag("ARRIVE",arriveStr()));
+		str.append(CMLib.xml().convertXMLtoTag("LEAVE",leaveStr()));
+		str.append(CMLib.xml().convertXMLtoTag("AGING",Util.toStringList(getAgingChart())));
 		if(adjEStats==null) str.append("<ESTATS/>");
 		else
-			str.append(XMLManager.convertXMLtoTag("ESTATS",CoffeeMaker.getEnvStatsStr(adjEStats)));
+			str.append(CMLib.xml().convertXMLtoTag("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(adjEStats)));
 		if(adjStats==null) str.append("<ASTATS/>");
 		else
-			str.append(XMLManager.convertXMLtoTag("ASTATS",CoffeeMaker.getCharStatsStr(adjStats)));
+			str.append(CMLib.xml().convertXMLtoTag("ASTATS",CMLib.coffeeMaker().getCharStatsStr(adjStats)));
 		if(setStats==null) str.append("<CSTATS/>");
 		else
-			str.append(XMLManager.convertXMLtoTag("CSTATS",CoffeeMaker.getCharStatsStr(setStats)));
+			str.append(CMLib.xml().convertXMLtoTag("CSTATS",CMLib.coffeeMaker().getCharStatsStr(setStats)));
 		if(adjState==null) str.append("<ASTATE/>");
 		else
-			str.append(XMLManager.convertXMLtoTag("ASTATE",CoffeeMaker.getCharStateStr(adjState)));
+			str.append(CMLib.xml().convertXMLtoTag("ASTATE",CMLib.coffeeMaker().getCharStateStr(adjState)));
 		if(startAdjState==null) str.append("<STARTASTATE/>");
 		else
-			str.append(XMLManager.convertXMLtoTag("STARTASTATE",CoffeeMaker.getCharStateStr(startAdjState)));
-		str.append(XMLManager.convertXMLtoTag("DISFLAGS",""+disableFlags));
+			str.append(CMLib.xml().convertXMLtoTag("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(startAdjState)));
+		str.append(CMLib.xml().convertXMLtoTag("DISFLAGS",""+disableFlags));
 		
 		if(myResources().size()==0)	str.append("<RESOURCES/>");
 		else
@@ -219,8 +232,8 @@ public class GenRace extends StdRace
 			{
 				Item I=(Item)myResources().elementAt(i);
 				str.append("<RSCITEM>");
-				str.append(XMLManager.convertXMLtoTag("ICLASS",CMClass.className(I)));
-				str.append(XMLManager.convertXMLtoTag("IDATA",CoffeeMaker.parseOutAngleBrackets(I.text())));
+				str.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.className(I)));
+				str.append(CMLib.xml().convertXMLtoTag("IDATA",CMLib.coffeeMaker().parseOutAngleBrackets(I.text())));
 				str.append("</RSCITEM>");
 			}
 			str.append("</RESOURCES>");
@@ -233,8 +246,8 @@ public class GenRace extends StdRace
 			{
 				Item I=(Item)outfit().elementAt(i);
 				str.append("<OFTITEM>");
-				str.append(XMLManager.convertXMLtoTag("OFCLASS",CMClass.className(I)));
-				str.append(XMLManager.convertXMLtoTag("OFDATA",CoffeeMaker.parseOutAngleBrackets(I.text())));
+				str.append(CMLib.xml().convertXMLtoTag("OFCLASS",CMClass.className(I)));
+				str.append(CMLib.xml().convertXMLtoTag("OFDATA",CMLib.coffeeMaker().parseOutAngleBrackets(I.text())));
 				str.append("</OFTITEM>");
 			}
 			str.append("</OUTFIT>");
@@ -243,8 +256,8 @@ public class GenRace extends StdRace
 		else
 		{
 			str.append("<WEAPON>");
-			str.append(XMLManager.convertXMLtoTag("ICLASS",CMClass.className(naturalWeapon)));
-			str.append(XMLManager.convertXMLtoTag("IDATA",CoffeeMaker.parseOutAngleBrackets(naturalWeapon.text())));
+			str.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.className(naturalWeapon)));
+			str.append(CMLib.xml().convertXMLtoTag("IDATA",CMLib.coffeeMaker().parseOutAngleBrackets(naturalWeapon.text())));
 			str.append("</WEAPON>");
 		}
 		if((racialAbilityNames==null)||(racialAbilityNames.length==0))
@@ -305,29 +318,29 @@ public class GenRace extends StdRace
 			Log.errOut("GenRace","Unable to parse empty xml");
 			return;
 		}
-		Vector xml=XMLManager.parseAllXML(parms);
+		Vector xml=CMLib.xml().parseAllXML(parms);
 		if(xml==null)
 		{
 			Log.errOut("GenRace","Unable to parse xml: "+parms);
 			return;
 		}
-		Vector raceData=XMLManager.getRealContentsFromPieces(xml,"RACE");
+		Vector raceData=CMLib.xml().getRealContentsFromPieces(xml,"RACE");
 		if(raceData==null){	Log.errOut("GenRace","Unable to get RACE data: ("+parms.length()+"): "+Util.padRight(parms,30)+"."); return;}
-		String id=XMLManager.getValFromPieces(raceData,"ID");
+		String id=CMLib.xml().getValFromPieces(raceData,"ID");
 		if(id.length()==0)
 		{
 			Log.errOut("GenRace","Unable to parse: "+parms);
 			return;
 		}
 		ID=id;
-		name=XMLManager.getValFromPieces(raceData,"NAME");
+		name=CMLib.xml().getValFromPieces(raceData,"NAME");
 		if((name==null)||(name.length()==0))
 		{
 			Log.errOut("GenRace","Not able to parse: "+parms);
 			return;
 		}
 		
-		String rcat=XMLManager.getValFromPieces(raceData,"CAT");
+		String rcat=CMLib.xml().getValFromPieces(raceData,"CAT");
 		if((rcat==null)||(rcat.length()==0))
 		{
 			rcat=name;
@@ -335,13 +348,13 @@ public class GenRace extends StdRace
 		}
 		
 		racialCategory=rcat;
-		forbiddenWornBits=XMLManager.getLongFromPieces(raceData,"WEAR");
-		weightVariance=XMLManager.getIntFromPieces(raceData,"VWEIGHT");
-		lightestWeight=XMLManager.getIntFromPieces(raceData,"BWEIGHT");
-		heightVariance=XMLManager.getIntFromPieces(raceData,"VHEIGHT");
-		shortestFemale=XMLManager.getIntFromPieces(raceData,"FHEIGHT");
-		shortestMale=XMLManager.getIntFromPieces(raceData,"MHEIGHT");
-		String playerval=XMLManager.getValFromPieces(raceData,"PLAYER").trim().toUpperCase();
+		forbiddenWornBits=CMLib.xml().getLongFromPieces(raceData,"WEAR");
+		weightVariance=CMLib.xml().getIntFromPieces(raceData,"VWEIGHT");
+		lightestWeight=CMLib.xml().getIntFromPieces(raceData,"BWEIGHT");
+		heightVariance=CMLib.xml().getIntFromPieces(raceData,"VHEIGHT");
+		shortestFemale=CMLib.xml().getIntFromPieces(raceData,"FHEIGHT");
+		shortestMale=CMLib.xml().getIntFromPieces(raceData,"MHEIGHT");
+		String playerval=CMLib.xml().getValFromPieces(raceData,"PLAYER").trim().toUpperCase();
 		if(playerval.length()>0)
 		{
 			if(playerval.startsWith("T")) 
@@ -357,90 +370,90 @@ public class GenRace extends StdRace
 			case 2: availability=0; break;
 			}
 		}
-		String avail=XMLManager.getValFromPieces(raceData,"AVAIL").trim().toUpperCase();
+		String avail=CMLib.xml().getValFromPieces(raceData,"AVAIL").trim().toUpperCase();
 		if((avail!=null)&&(avail.length()>0)&&(Util.isNumber(avail)))
 		    availability=Util.s_int(avail);
-		destroyBodyAfterUse=XMLManager.getBoolFromPieces(raceData,"DESTROYBODY");
-		leaveStr=XMLManager.getValFromPieces(raceData,"LEAVE");
-		arriveStr=XMLManager.getValFromPieces(raceData,"ARRIVE");
-		healthBuddy=CMClass.getRace(XMLManager.getValFromPieces(raceData,"HEALTHRACE"));
-		String body=XMLManager.getValFromPieces(raceData,"BODY");
+		destroyBodyAfterUse=CMLib.xml().getBoolFromPieces(raceData,"DESTROYBODY");
+		leaveStr=CMLib.xml().getValFromPieces(raceData,"LEAVE");
+		arriveStr=CMLib.xml().getValFromPieces(raceData,"ARRIVE");
+		healthBuddy=CMClass.getRace(CMLib.xml().getValFromPieces(raceData,"HEALTHRACE"));
+		String body=CMLib.xml().getValFromPieces(raceData,"BODY");
 		Vector V=Util.parseSemicolons(body,false);
 		for(int v=0;v<V.size();v++)
 			if(v<bodyMask().length)
 				bodyMask()[v]=Util.s_int((String)V.elementAt(v));
 		adjEStats=null;
-		String eStats=XMLManager.getValFromPieces(raceData,"ESTATS");
-		if(eStats.length()>0){ adjEStats=(EnvStats)CMClass.getShared("DefaultEnvStats"); CoffeeMaker.setEnvStats(adjEStats,eStats);}
+		String eStats=CMLib.xml().getValFromPieces(raceData,"ESTATS");
+		if(eStats.length()>0){ adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); CMLib.coffeeMaker().setEnvStats(adjEStats,eStats);}
 		adjStats=null;
-		String aStats=XMLManager.getValFromPieces(raceData,"ASTATS");
-		if(aStats.length()>0){ adjStats=(CharStats)CMClass.getShared("DefaultCharStats"); CoffeeMaker.setCharStats(adjStats,aStats);}
+		String aStats=CMLib.xml().getValFromPieces(raceData,"ASTATS");
+		if(aStats.length()>0){ adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); CMLib.coffeeMaker().setCharStats(adjStats,aStats);}
 		setStats=null;
-		String cStats=XMLManager.getValFromPieces(raceData,"CSTATS");
-		if(cStats.length()>0){ setStats=(CharStats)CMClass.getShared("DefaultCharStats"); CoffeeMaker.setCharStats(setStats,cStats);}
+		String cStats=CMLib.xml().getValFromPieces(raceData,"CSTATS");
+		if(cStats.length()>0){ setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); CMLib.coffeeMaker().setCharStats(setStats,cStats);}
 		adjState=null;
-		String aState=XMLManager.getValFromPieces(raceData,"ASTATE");
-		if(aState.length()>0){ adjState=(CharState)CMClass.getShared("DefaultCharState"); CoffeeMaker.setCharState(adjState,aState);}
+		String aState=CMLib.xml().getValFromPieces(raceData,"ASTATE");
+		if(aState.length()>0){ adjState=(CharState)CMClass.getCommon("DefaultCharState"); CMLib.coffeeMaker().setCharState(adjState,aState);}
 		startAdjState=null;
-		disableFlags=XMLManager.getIntFromPieces(raceData,"DISFLAGS");
-		String saState=XMLManager.getValFromPieces(raceData,"STARTASTATE");
-		if(saState.length()>0){ startAdjState=(CharState)CMClass.getShared("DefaultCharState"); startAdjState.setAllValues(0); CoffeeMaker.setCharState(startAdjState,saState);}
-		String aging=XMLManager.getValFromPieces(raceData,"AGING");
+		disableFlags=CMLib.xml().getIntFromPieces(raceData,"DISFLAGS");
+		String saState=CMLib.xml().getValFromPieces(raceData,"STARTASTATE");
+		if(saState.length()>0){ startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,saState);}
+		String aging=CMLib.xml().getValFromPieces(raceData,"AGING");
 		Vector aV=Util.parseCommas(aging,true);
 		for(int v=0;v<aV.size();v++)
 		    getAgingChart()[v]=Util.s_int((String)aV.elementAt(v));
 
 		// now RESOURCES!
-		Vector xV=XMLManager.getRealContentsFromPieces(raceData,"RESOURCES");
+		Vector xV=CMLib.xml().getRealContentsFromPieces(raceData,"RESOURCES");
 		resourceChoices=null;
 		if((xV!=null)&&(xV.size()>0))
 		{
 			resourceChoices=new Vector();
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)xV.elementAt(x);
+				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.elementAt(x);
 				if((!iblk.tag.equalsIgnoreCase("RSCITEM"))||(iblk.contents==null))
 					continue;
-				Item newOne=CMClass.getItem(XMLManager.getValFromPieces(iblk.contents,"ICLASS"));
-				String idat=XMLManager.getValFromPieces(iblk.contents,"IDATA");
-				newOne.setMiscText(CoffeeMaker.restoreAngleBrackets(idat));
+				Item newOne=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"ICLASS"));
+				String idat=CMLib.xml().getValFromPieces(iblk.contents,"IDATA");
+				newOne.setMiscText(CMLib.coffeeMaker().restoreAngleBrackets(idat));
 				newOne.recoverEnvStats();
 				resourceChoices.addElement(newOne);
 			}
 		}
 		
 		// now OUTFIT!
-		Vector oV=XMLManager.getRealContentsFromPieces(raceData,"OUTFIT");
+		Vector oV=CMLib.xml().getRealContentsFromPieces(raceData,"OUTFIT");
 		outfitChoices=null;
 		if((oV!=null)&&(oV.size()>0))
 		{
 			outfitChoices=new Vector();
 			for(int x=0;x<oV.size();x++)
 			{
-				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)oV.elementAt(x);
+				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)oV.elementAt(x);
 				if((!iblk.tag.equalsIgnoreCase("OFTITEM"))||(iblk.contents==null))
 					continue;
-				Item newOne=CMClass.getItem(XMLManager.getValFromPieces(iblk.contents,"OFCLASS"));
-				String idat=XMLManager.getValFromPieces(iblk.contents,"OFDATA");
-				newOne.setMiscText(CoffeeMaker.restoreAngleBrackets(idat));
+				Item newOne=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"OFCLASS"));
+				String idat=CMLib.xml().getValFromPieces(iblk.contents,"OFDATA");
+				newOne.setMiscText(CMLib.coffeeMaker().restoreAngleBrackets(idat));
 				newOne.recoverEnvStats();
 				outfitChoices.addElement(newOne);
 			}
 		}
 		
 		naturalWeapon=null;
-		Vector wblk=XMLManager.getRealContentsFromPieces(raceData,"WEAPON");
+		Vector wblk=CMLib.xml().getRealContentsFromPieces(raceData,"WEAPON");
 		if(wblk!=null)
 		{
-			naturalWeapon=CMClass.getWeapon(XMLManager.getValFromPieces(wblk,"ICLASS"));
-			String idat=XMLManager.getValFromPieces(wblk,"IDATA");
+			naturalWeapon=CMClass.getWeapon(CMLib.xml().getValFromPieces(wblk,"ICLASS"));
+			String idat=CMLib.xml().getValFromPieces(wblk,"IDATA");
 			if((idat!=null)&&(naturalWeapon!=null))
 			{
-				naturalWeapon.setMiscText(CoffeeMaker.restoreAngleBrackets(idat));
+				naturalWeapon.setMiscText(CMLib.coffeeMaker().restoreAngleBrackets(idat));
 				naturalWeapon.recoverEnvStats();
 			}
 		}
-		xV=XMLManager.getRealContentsFromPieces(raceData,"RABILITIES");
+		xV=CMLib.xml().getRealContentsFromPieces(raceData,"RABILITIES");
 		racialAbilityNames=null;
 		racialAbilityProfficiencies=null;
 		racialAbilityQuals=null;
@@ -453,17 +466,17 @@ public class GenRace extends StdRace
 			racialAbilityLevels=new int[xV.size()];
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)xV.elementAt(x);
+				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.elementAt(x);
 				if((!iblk.tag.equalsIgnoreCase("RABILITY"))||(iblk.contents==null))
 					continue;
-				racialAbilityNames[x]=XMLManager.getValFromPieces(iblk.contents,"RCLASS");
-				racialAbilityProfficiencies[x]=XMLManager.getIntFromPieces(iblk.contents,"RPROFF");
-				racialAbilityQuals[x]=XMLManager.getBoolFromPieces(iblk.contents,"RAGAIN");
-				racialAbilityLevels[x]=XMLManager.getIntFromPieces(iblk.contents,"RLEVEL");
+				racialAbilityNames[x]=CMLib.xml().getValFromPieces(iblk.contents,"RCLASS");
+				racialAbilityProfficiencies[x]=CMLib.xml().getIntFromPieces(iblk.contents,"RPROFF");
+				racialAbilityQuals[x]=CMLib.xml().getBoolFromPieces(iblk.contents,"RAGAIN");
+				racialAbilityLevels[x]=CMLib.xml().getIntFromPieces(iblk.contents,"RLEVEL");
 			}
 		}
 		
-		xV=XMLManager.getRealContentsFromPieces(raceData,"REFFECTS");
+		xV=CMLib.xml().getRealContentsFromPieces(raceData,"REFFECTS");
 		racialEffectNames=null;
 		racialEffectParms=null;
 		racialEffectLevels=null;
@@ -474,17 +487,17 @@ public class GenRace extends StdRace
 			racialEffectLevels=new int[xV.size()];
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)xV.elementAt(x);
+				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.elementAt(x);
 				if((!iblk.tag.equalsIgnoreCase("REFFECT"))||(iblk.contents==null))
 					continue;
-				racialEffectNames[x]=XMLManager.getValFromPieces(iblk.contents,"RFCLASS");
-				racialEffectParms[x]=XMLManager.getValFromPieces(iblk.contents,"RFPARM");
-				racialEffectLevels[x]=XMLManager.getIntFromPieces(iblk.contents,"RFLEVEL");
+				racialEffectNames[x]=CMLib.xml().getValFromPieces(iblk.contents,"RFCLASS");
+				racialEffectParms[x]=CMLib.xml().getValFromPieces(iblk.contents,"RFPARM");
+				racialEffectLevels[x]=CMLib.xml().getIntFromPieces(iblk.contents,"RFLEVEL");
 			}
 		}
 		
 		
-		xV=XMLManager.getRealContentsFromPieces(raceData,"CABILITIES");
+		xV=CMLib.xml().getRealContentsFromPieces(raceData,"CABILITIES");
 		culturalAbilityNames=null;
 		culturalAbilityProfficiencies=null;
 		if((xV!=null)&&(xV.size()>0))
@@ -493,11 +506,11 @@ public class GenRace extends StdRace
 			culturalAbilityProfficiencies=new int[xV.size()];
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)xV.elementAt(x);
+				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.elementAt(x);
 				if((!iblk.tag.equalsIgnoreCase("CABILITY"))||(iblk.contents==null))
 					continue;
-				culturalAbilityNames[x]=XMLManager.getValFromPieces(iblk.contents,"CCLASS");
-				culturalAbilityProfficiencies[x]=XMLManager.getIntFromPieces(iblk.contents,"CPROFF");
+				culturalAbilityNames[x]=CMLib.xml().getValFromPieces(iblk.contents,"CCLASS");
+				culturalAbilityProfficiencies[x]=CMLib.xml().getIntFromPieces(iblk.contents,"CPROFF");
 			}
 		}
 	}
@@ -545,10 +558,10 @@ public class GenRace extends StdRace
 				bbody.append((""+bodyMask()[i])+";");
 			return bbody.toString();
 		}
-		case 14: return (adjEStats==null)?"":CoffeeMaker.getEnvStatsStr(adjEStats);
-		case 15: return (adjStats==null)?"":CoffeeMaker.getCharStatsStr(adjStats);
-		case 16: return (setStats==null)?"":CoffeeMaker.getCharStatsStr(setStats);
-		case 17: return (adjState==null)?"":CoffeeMaker.getCharStateStr(adjState);
+		case 14: return (adjEStats==null)?"":CMLib.coffeeMaker().getEnvStatsStr(adjEStats);
+		case 15: return (adjStats==null)?"":CMLib.coffeeMaker().getCharStatsStr(adjStats);
+		case 16: return (setStats==null)?"":CMLib.coffeeMaker().getCharStatsStr(setStats);
+		case 17: return (adjState==null)?"":CMLib.coffeeMaker().getCharStateStr(adjState);
 		case 18: return ""+myResources().size();
 		case 19: return ""+((Item)myResources().elementAt(num)).ID();
 		case 20: return ""+((Item)myResources().elementAt(num)).text();
@@ -572,7 +585,7 @@ public class GenRace extends StdRace
 		case 38: return (racialEffectLevels==null)?"0":(""+racialEffectLevels[num]);
 		case 39: return Util.toStringList(getAgingChart());
 		case 40: return ""+disableFlags; 
-		case 41: return (startAdjState==null)?"":CoffeeMaker.getCharStateStr(startAdjState);
+		case 41: return (startAdjState==null)?"":CMLib.coffeeMaker().getCharStateStr(startAdjState);
 		}
 		return "";
 	}
@@ -622,10 +635,10 @@ public class GenRace extends StdRace
 					bodyMask()[v]=Util.s_int((String)V.elementAt(v));
 			break;
 		}
-		case 14: adjEStats=null;if(val.length()>0){adjEStats=(EnvStats)CMClass.getShared("DefaultEnvStats"); adjEStats.setAllValues(0); CoffeeMaker.setEnvStats(adjEStats,val);}break;
-		case 15: adjStats=null;if(val.length()>0){adjStats=(CharStats)CMClass.getShared("DefaultCharStats"); adjStats.setAllValues(0); CoffeeMaker.setCharStats(adjStats,val);}break;
-		case 16: setStats=null;if(val.length()>0){setStats=(CharStats)CMClass.getShared("DefaultCharStats"); setStats.setAllValues(0); CoffeeMaker.setCharStats(setStats,val);}break;
-		case 17: adjState=null;if(val.length()>0){adjState=(CharState)CMClass.getShared("DefaultCharState"); adjState.setAllValues(0); CoffeeMaker.setCharState(adjState,val);}break;
+		case 14: adjEStats=null;if(val.length()>0){adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); adjEStats.setAllValues(0); CMLib.coffeeMaker().setEnvStats(adjEStats,val);}break;
+		case 15: adjStats=null;if(val.length()>0){adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(adjStats,val);}break;
+		case 16: setStats=null;if(val.length()>0){setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(setStats,val);}break;
+		case 17: adjState=null;if(val.length()>0){adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0); CMLib.coffeeMaker().setCharState(adjState,val);}break;
 		case 18: if(Util.s_int(val)==0) resourceChoices=null; break;
 		case 19: {   if(resourceChoices==null) resourceChoices=new Vector();
 					 if(num>=resourceChoices.size())
@@ -745,7 +758,7 @@ public class GenRace extends StdRace
 		    		break;
 				 }
 		case 40: disableFlags=Util.s_int(val); break;
-		case 41: startAdjState=null;if(val.length()>0){startAdjState=(CharState)CMClass.getShared("DefaultCharState"); startAdjState.setAllValues(0); CoffeeMaker.setCharState(startAdjState,val);}break;
+		case 41: startAdjState=null;if(val.length()>0){startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,val);}break;
 		}
 	}
 	public String[] getStatCodes(){return CODES;}

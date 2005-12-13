@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Items.ClanItems;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -47,13 +58,13 @@ public class StdClanCard extends StdClanItem
         &&(((MOB)owner()).isMonster())
         &&(((ClanItem)msg.tool()).ciType()==ClanItem.CI_PROPAGANDA)
         &&(!((ClanItem)msg.tool()).clanID().equals(clanID()))
-        &&(Sense.isInTheGame(owner(),true))
+        &&(CMLib.flags().isInTheGame(owner(),true))
         &&(msg.source()!=owner())
-        &&(Sense.isInTheGame(msg.source(),true)))
+        &&(CMLib.flags().isInTheGame(msg.source(),true)))
         {
             if(msg.source().location().show((MOB)msg.target(),msg.source(),msg.tool(),CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> reject(s) <O-NAME> from <T-NAME>."))
             {
-                CommonMsgs.say((MOB)msg.target(),msg.source(),"How dare you!  Give me those!",false,true);
+                CMLib.commands().say((MOB)msg.target(),msg.source(),"How dare you!  Give me those!",false,true);
                 if(msg.source().location().show((MOB)msg.target(),msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> takes(s) "+msg.tool().name()+" away from <T-NAME> and destroys it!"))
                 {
                     Item I=null;
@@ -81,7 +92,7 @@ public class StdClanCard extends StdClanItem
         &&(owner() instanceof MOB)
         &&(clanID().length()>0)
         &&(((MOB)owner()).isMonster())
-        &&(!Sense.isAnimalIntelligence((MOB)owner()))
+        &&(!CMLib.flags().isAnimalIntelligence((MOB)owner()))
         &&(((MOB)owner()).getStartRoom()!=null)
         &&(((MOB)owner()).location()!=null)
         &&(((MOB)owner()).getStartRoom().getArea()==((MOB)owner()).location().getArea()))
@@ -90,13 +101,13 @@ public class StdClanCard extends StdClanItem
             Room R=((MOB)owner()).location();
             if(((MOB)owner()).getClanID().length()==0)
             {
-                Behavior B=CoffeeUtensils.getLegalBehavior(R);
+                Behavior B=CMLib.utensils().getLegalBehavior(R);
                 if(B!=null)
                 {
                     Vector V=new Vector();
                     V.addElement(new Integer(Law.MOD_RULINGCLAN));
                     rulingClan="";
-                    if((B.modifyBehavior(CoffeeUtensils.getLegalObject(R),(MOB)owner(),V))
+                    if((B.modifyBehavior(CMLib.utensils().getLegalObject(R),(MOB)owner(),V))
                     &&(V.size()>0)
                     &&(V.firstElement() instanceof String))
                         rulingClan=(String)V.firstElement();

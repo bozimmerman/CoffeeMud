@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -68,7 +79,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 					if((usesRemaining()>0)&&(useTheWand(CMClass.getAbility("Falling"),mob)))
 					{
 						this.setUsesRemaining(this.usesRemaining()-1);
-						FullMsg msg2=new FullMsg(mob,msg.target(),null,CMMsg.MSG_HANDS,CMMsg.MSG_OK_ACTION,CMMsg.MSG_OK_ACTION,"<S-NAME> point(s) "+this.name()+" at <T-NAMESELF>, who begins to glow softly.");
+						CMMsg msg2=CMClass.getMsg(mob,msg.target(),null,CMMsg.MSG_HANDS,CMMsg.MSG_OK_ACTION,CMMsg.MSG_OK_ACTION,"<S-NAME> point(s) "+this.name()+" at <T-NAMESELF>, who begins to glow softly.");
 						if(mob.location().okMessage(mob,msg2))
 						{
 							mob.location().send(mob,msg2);
@@ -82,7 +93,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 							||(target.charStats().getMyRace().expless()))
 								target.charStats().getCurrentClass().level(target);
 							else
-								MUDFight.postExperience(target,null,null,target.getExpNeededLevel()+1,false);
+								CMLib.combat().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
 						}
 
 					}

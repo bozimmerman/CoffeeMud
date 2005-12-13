@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 /*
    Copyright 2000-2005 Bo Zimmerman
@@ -61,12 +72,12 @@ public class HolyAvenger extends TwoHandedSword
 		case CMMsg.TYP_WIELD:
 		case CMMsg.TYP_GET:
 			if((!msg.source().charStats().getCurrentClass().ID().equals("Paladin"))
-			||(!Sense.isGood(msg.source())))
+			||(!CMLib.flags().isGood(msg.source())))
 			{
 				unWear();
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,name()+" flashes and flies out of <S-HIS-HER> hands!");
 				if(msg.source().isMine(this))
-					CommonMsgs.drop(msg.source(),this,true,false);
+					CMLib.commands().drop(msg.source(),this,true,false);
 				return false;
 			}
 			break;
@@ -85,17 +96,17 @@ public class HolyAvenger extends TwoHandedSword
 		&&(msg.tool()==this)
 		&&(msg.target() instanceof MOB)
 		&&(!((MOB)msg.target()).amDead())
-		&&(Sense.isEvil(msg.target())))
+		&&(CMLib.flags().isEvil(msg.target())))
 		{
-			FullMsg msg2=new FullMsg(msg.source(),msg.target(),new HolyAvenger(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD,CMMsg.MSG_NOISYMOVEMENT,null);
+			CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),new HolyAvenger(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(msg.source().location().okMessage(msg.source(),msg2))
 			{
 				msg.source().location().send(msg.source(), msg2);
-				int damage=Dice.roll(1,15,0);
+				int damage=CMLib.dice().roll(1,15,0);
 				if(msg.value()>0)
 					damage=damage/2;
-				msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),CMMsg.MSG_OK_ACTION,name()+" dispels evil within <T-NAME> and "+CommonStrings.standardHitWord(Weapon.TYPE_BURSTING,damage)+" <T-HIM-HER>>!"));
-				FullMsg msg3=new FullMsg(msg.source(),msg.target(),null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_DAMAGE,CMMsg.NO_EFFECT,null);
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),CMMsg.MSG_OK_ACTION,name()+" dispels evil within <T-NAME> and "+CMLib.combat().standardHitWord(Weapon.TYPE_BURSTING,damage)+" <T-HIM-HER>>!"));
+				CMMsg msg3=CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_DAMAGE,CMMsg.NO_EFFECT,null);
 				msg3.setValue(damage);
 				msg.addTrailerMsg(msg3);
 			}

@@ -1,7 +1,18 @@
-package com.planet_ink.coffee_mud.Shared;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+package com.planet_ink.coffee_mud.Common;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -30,7 +41,7 @@ public class DefaultClimate implements Climate
 	protected int weatherTicker=WEATHER_TICK_DOWN;
 	protected static int windDirection=Directions.NORTH;
 
-    public CMObject newInstance(){return new DefaultClimate();}
+    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClimate();}}
     public CMObject copyOf()
     {
         try
@@ -46,12 +57,12 @@ public class DefaultClimate implements Climate
 	public int nextWeatherType(Room room)
 	{
 		if(room==null) return nextWeather;
-		if(!CoffeeUtensils.hasASky(room)) return Climate.WEATHER_CLEAR;
+		if(!CMLib.utensils().hasASky(room)) return Climate.WEATHER_CLEAR;
 		return nextWeather;
 	}
 	public String nextWeatherDescription(Room room)
 	{
-		if(!CoffeeUtensils.hasASky(room)) return "You can't tell much about the weather from here.";
+		if(!CMLib.utensils().hasASky(room)) return "You can't tell much about the weather from here.";
 		return getNextWeatherDescription(room.getArea());
 	}
 	public String getNextWeatherDescription(Area A)
@@ -131,12 +142,12 @@ public class DefaultClimate implements Climate
 	public int weatherType(Room room)
 	{
 		if(room==null) return currentWeather;
-		if(!CoffeeUtensils.hasASky(room)) return Climate.WEATHER_CLEAR;
+		if(!CMLib.utensils().hasASky(room)) return Climate.WEATHER_CLEAR;
 		return currentWeather;
 	}
 	public String weatherDescription(Room room)
 	{
-		if(!CoffeeUtensils.hasASky(room))
+		if(!CMLib.utensils().hasASky(room))
 			return "^JYou can't tell much about the weather from here.^?";
 		return getWeatherDescription(room.getArea());
 	}
@@ -144,7 +155,7 @@ public class DefaultClimate implements Climate
 	{
 		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_NIGHT)
                 &&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DUSK))
-		||(!CoffeeUtensils.hasASky(room)))
+		||(!CMLib.utensils().hasASky(room)))
 			return false;
 		switch(weatherType(room))
 		{
@@ -165,7 +176,7 @@ public class DefaultClimate implements Climate
 	public boolean canSeeTheSun(Room room)
 	{
 		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DAY)&&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DAWN))
-		||(!CoffeeUtensils.hasASky(room)))
+		||(!CMLib.utensils().hasASky(room)))
 			return false;
 
 		switch(weatherType(room))
@@ -273,7 +284,7 @@ public class DefaultClimate implements Climate
 			}*/
 
 			// roll a number from this to that.  Like the lottery, whosever number gets rolled wins!
-			int newGoodWeatherNum=Dice.roll(1,goodWeatherTotal,-1);
+			int newGoodWeatherNum=CMLib.dice().roll(1,goodWeatherTotal,-1);
 
 			// now, determine the winner!
 			int tempWeatherTotal=0;
@@ -303,7 +314,7 @@ public class DefaultClimate implements Climate
 			nextWeather=possibleNextWeather;
 			if(oldWeather!=currentWeather)
 			{
-				switch(Dice.rollPercentage())
+				switch(CMLib.dice().rollPercentage())
 				{
 				case 1: windDirection=Directions.NORTH; break;
 				case 2: windDirection=Directions.SOUTH; break;
@@ -346,13 +357,13 @@ public class DefaultClimate implements Climate
 				for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if(CoffeeUtensils.hasASky(R))
+					if(CMLib.utensils().hasASky(R))
 						for(int i=0;i<R.numInhabitants();i++)
 						{
 							MOB mob=R.fetchInhabitant(i);
 							if((mob!=null)
 							&&(!mob.isMonster())
-							&&(Sense.canSee(mob)||(currentWeather!=oldWeather)))
+							&&(CMLib.flags().canSee(mob)||(currentWeather!=oldWeather)))
 								mob.tell(say);
 						}
 				}
@@ -385,7 +396,7 @@ public class DefaultClimate implements Climate
 				desc.append("swirl down from above.");
 			else
 				desc.append("fall from the sky.");
-            desc.append(CommonStrings.msp("hail.wav",10));
+            desc.append(CMProps.msp("hail.wav",10));
 			break;
 		case Climate.WEATHER_HEAT_WAVE:
 			if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
@@ -424,7 +435,7 @@ public class DefaultClimate implements Climate
 				desc.append("swirls all around you.");
 			else
 				desc.append("pours down from above.");
-            desc.append(CommonStrings.msp("thunderandrain.wav",10));
+            desc.append(CMProps.msp("thunderandrain.wav",10));
 			break;
 		case Climate.WEATHER_DUSTSTORM:
 			desc.append("An eye-stinging dust storm ");
@@ -432,7 +443,7 @@ public class DefaultClimate implements Climate
 				desc.append("swirls all around you.");
 			else
 				desc.append("blows in from "+Directions.getFromDirectionName(windDirection));
-            desc.append(CommonStrings.msp("windy.wav",10));
+            desc.append(CMProps.msp("windy.wav",10));
 			break;
 		case Climate.WEATHER_BLIZZARD:
 			desc.append("A thunderous blizzard ");
@@ -440,7 +451,7 @@ public class DefaultClimate implements Climate
 				desc.append("swirls all around you.");
 			else
 				desc.append("pours down from above.");
-            desc.append(CommonStrings.msp("blizzard.wav",10));
+            desc.append(CMProps.msp("blizzard.wav",10));
 			break;
 		case Climate.WEATHER_CLEAR:
 			if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
@@ -471,7 +482,7 @@ public class DefaultClimate implements Climate
 				desc.append("swirls down from the sky.");
 			else
 				desc.append("falls from the sky.");
-            desc.append(CommonStrings.msp("rainlong.wav",10));
+            desc.append(CMProps.msp("rainlong.wav",10));
 			break;
 		case Climate.WEATHER_SNOW:
 			if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
@@ -504,7 +515,7 @@ public class DefaultClimate implements Climate
 				desc.append("swirls down from the sky.");
 			else
 				desc.append("falls from the sky.");
-            desc.append(CommonStrings.msp("rain.wav",10));
+            desc.append(CMProps.msp("rain.wav",10));
 			break;
 		case Climate.WEATHER_WINDY:
 			if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
@@ -518,7 +529,7 @@ public class DefaultClimate implements Climate
 			else
 				desc.append("A light "+(((A.climateType()&Area.CLIMASK_DRY)>0)?"dry ":"")+"wind ");
 			desc.append("blows from "+Directions.getFromDirectionName(windDirection)+".");
-            desc.append(CommonStrings.msp("wind.wav",10));
+            desc.append(CMProps.msp("wind.wav",10));
 			break;
 		}
 		return "^J"+desc.toString()+"^?";

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Items.Basic;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -108,7 +119,7 @@ public class StdTitle extends StdItem implements LandTitle
 	{
 		Vector V=getPropertyRooms();
 		if((V!=null)&&(V.size()>0))
-			return CoffeeUtensils.getLandTitle((Room)V.firstElement());
+			return CMLib.utensils().getLandTitle((Room)V.firstElement());
 		return null;
 	}
 
@@ -123,10 +134,10 @@ public class StdTitle extends StdItem implements LandTitle
 		{
 			Vector V=getPropertyRooms();
 			if((V.size()<2)
-			||(CMMap.getArea(landPropertyID())!=null))
+			||(CMLib.map().getArea(landPropertyID())!=null))
 				setName("the title to "+landPropertyID());
 			else
-				setName("the title to rooms around "+CMMap.getExtendedRoomID((Room)V.firstElement()));
+				setName("the title to rooms around "+CMLib.map().getExtendedRoomID((Room)V.firstElement()));
 		}
 	}
 
@@ -142,7 +153,7 @@ public class StdTitle extends StdItem implements LandTitle
 		for(int v=0;v<V.size();v++)
 		{
 			Room R=(Room)V.elementAt(v);
-			LandTitle T=CoffeeUtensils.getLandTitle(R);
+			LandTitle T=CMLib.utensils().getLandTitle(R);
 			if(T!=null) T.updateLot();
 		}
 	}
@@ -155,22 +166,22 @@ public class StdTitle extends StdItem implements LandTitle
 
 	public Vector getPropertyRooms()
 	{
-		Room R=CMMap.getRoom(landPropertyID());
+		Room R=CMLib.map().getRoom(landPropertyID());
 		if(R!=null)
 		{
-			LandTitle A=CoffeeUtensils.getLandTitle(R);
+			LandTitle A=CMLib.utensils().getLandTitle(R);
 			if(A!=null) return A.getPropertyRooms();
 		}
-		Area area=CMMap.getArea(landPropertyID());
+		Area area=CMLib.map().getArea(landPropertyID());
 		if(area!=null)
 		{
-			LandTitle A=CoffeeUtensils.getLandTitle(area);
+			LandTitle A=CMLib.utensils().getLandTitle(area);
 			if(A!=null) return A.getPropertyRooms();
 		}
 		return new Vector();
 	}
 
-	public void recoverEnvStats(){Sense.setReadable(this,true); super.recoverEnvStats();}
+	public void recoverEnvStats(){CMLib.flags().setReadable(this,true); super.recoverEnvStats();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -196,7 +207,7 @@ public class StdTitle extends StdItem implements LandTitle
 			}
 			if(A.landOwner().length()==0)
 			{
-				Area AREA=CMMap.getArea(A.landPropertyID());
+				Area AREA=CMLib.map().getArea(A.landPropertyID());
 				if((AREA!=null)&&(AREA.Name().indexOf("UNNAMED")>=0)&&(msg.source().isMonster()))
 					return false;
 			}
@@ -209,7 +220,7 @@ public class StdTitle extends StdItem implements LandTitle
 			LandTitle A=fetchALandTitle();
 			if((A!=null)&&(A.landOwner().length()>0))
 			{
-				ShopKeeper SK=CoffeeShops.getShopKeeper(msg.target());
+				ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(msg.target());
 			    if((((SK.whatIsSold()==ShopKeeper.DEAL_CLANBANKER)||(SK.whatIsSold()==ShopKeeper.DEAL_CLANDSELLER))
 			            &&(!A.landOwner().equals(msg.source().getClanID())))
 			    ||(((SK.whatIsSold()==ShopKeeper.DEAL_BANKER)||(SK.whatIsSold()==ShopKeeper.DEAL_CLANBANKER))
@@ -219,7 +230,7 @@ public class StdTitle extends StdItem implements LandTitle
 			    {
 			        String str="I'm sorry, '"+msg.tool().Name()+" is not for sale.  It already belongs to "+A.landOwner()+".  It should be destroyed.";
 			        if(((MOB)msg.target()).isMonster())
-				        CommonMsgs.say((MOB)msg.target(),msg.source(),str,false,false);
+				        CMLib.commands().say((MOB)msg.target(),msg.source(),str,false,false);
 			        else
 			            ((MOB)msg.target()).tell(str+" You might want to tell the customer.");
                     if(SK!=null) SK.removeStock(Name(),msg.source());
@@ -244,10 +255,10 @@ public class StdTitle extends StdItem implements LandTitle
 			{
 		        String str="I'm sorry, '"+msg.tool().Name()+" must be destroyed.";
 		        if(((MOB)msg.target()).isMonster())
-			        CommonMsgs.say((MOB)msg.target(),msg.source(),str,false,false);
+			        CMLib.commands().say((MOB)msg.target(),msg.source(),str,false,false);
 		        else
 		            ((MOB)msg.target()).tell(str+" You might want to tell the customer.");
-				ShopKeeper SK=CoffeeShops.getShopKeeper(msg.target());
+				ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(msg.target());
 				if(SK!=null) SK.removeStock(msg.tool().Name(),msg.source());
                 destroy();
 		        return false;
@@ -261,7 +272,7 @@ public class StdTitle extends StdItem implements LandTitle
         if((msg.amITarget(this))
         &&(msg.targetMinor()==CMMsg.TYP_READ))
         {
-            if(Sense.canBeSeenBy(this,msg.source()))
+            if(CMLib.flags().canBeSeenBy(this,msg.source()))
             {
                 if((landPropertyID()==null)||(landPropertyID().length()==0))
                     msg.source().tell("It appears to be a blank property title.");
@@ -303,8 +314,8 @@ public class StdTitle extends StdItem implements LandTitle
 		&&((msg.source().Name().equals(landOwner()))
 			||(msg.source().getLiegeID().equals(landOwner())&&msg.source().isMarriedToLiege())
             ||(msg.source().getClanID().equals(landOwner())
-                &&(Clans.getClan(msg.source().getClanID())!=null)
-                &&(Clans.getClan(msg.source().getClanID()).allowedToDoThis(msg.source(),Clan.FUNC_CLANPROPERTYOWNER)>=0)))
+                &&(CMLib.clans().getClan(msg.source().getClanID())!=null)
+                &&(CMLib.clans().getClan(msg.source().getClanID()).allowedToDoThis(msg.source(),Clan.FUNC_CLANPROPERTYOWNER)>=0)))
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&(!(msg.target() instanceof Banker))
@@ -318,8 +329,8 @@ public class StdTitle extends StdItem implements LandTitle
 				return;
 			}
             if(msg.source().getClanID().equals(landOwner())
-            &&(Clans.getClan(msg.source().getClanID())!=null)
-            &&(Clans.getClan(msg.source().getClanID()).allowedToDoThis(msg.source(),Clan.FUNC_CLANPROPERTYOWNER)>=0))
+            &&(CMLib.clans().getClan(msg.source().getClanID())!=null)
+            &&(CMLib.clans().getClan(msg.source().getClanID()).allowedToDoThis(msg.source(),Clan.FUNC_CLANPROPERTYOWNER)>=0))
                 A.setLandOwner(((MOB)msg.target()).getClanID());
             else
     			A.setLandOwner(msg.target().Name());
@@ -336,11 +347,11 @@ public class StdTitle extends StdItem implements LandTitle
 			    if((allRooms!=null)&&(allRooms.size()>0))
 			    {
 			        Room R=(Room)allRooms.firstElement();
-				    Behavior B=CoffeeUtensils.getLegalBehavior(R);
+				    Behavior B=CMLib.utensils().getLegalBehavior(R);
 				    if(B!=null)
 				    {
 						Vector VB=new Vector();
-						Area A2=CoffeeUtensils.getLegalObject(R);
+						Area A2=CMLib.utensils().getLegalObject(R);
 						VB.addElement(new Integer(Law.MOD_LEGALINFO));
 						B.modifyBehavior(A2,(MOB)msg.target(),VB);
 						Law theLaw=(Law)VB.firstElement();
@@ -366,7 +377,7 @@ public class StdTitle extends StdItem implements LandTitle
 			}
 			if(A.landOwner().length()==0)
 			{
-				Area AREA=CMMap.getArea(landPropertyID());
+				Area AREA=CMLib.map().getArea(landPropertyID());
 				if((AREA!=null)&&(AREA.Name().indexOf("UNNAMED")>=0))
 				{
 					String newName="";
@@ -383,7 +394,7 @@ public class StdTitle extends StdItem implements LandTitle
 							if(n.length()!=0)
 							{
 								String nn=Util.replaceAll(AREA.Name(),"UNNAMED",Util.capitalizeFirstLetter(n.toLowerCase()));
-								if(CMClass.DBEngine().DBUserSearch(null,nn))
+								if(CMLib.database().DBUserSearch(null,nn))
 									msg.source().tell("That name is already taken.  Please enter a different one.");
 								else
 								if(msg.source().session().confirm("If the name '"+nn+"' correct (y/N)?","N",60000))
@@ -402,7 +413,7 @@ public class StdTitle extends StdItem implements LandTitle
 					{
 						return;
 					};
-					AREA=CoffeeMaker.copyArea(AREA,newName);
+					AREA=CMLib.coffeeMaker().copyArea(AREA,newName);
 					if(AREA==null)
 					{
 						msg.source().tell("Purchase failed.");
@@ -427,7 +438,7 @@ public class StdTitle extends StdItem implements LandTitle
 							if(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
 							{ choices.addElement(R);}
 						}
-						if(choices.size()>0) spacePort=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
+						if(choices.size()>0) spacePort=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 						((SpaceShip)AREA).dockHere(spacePort);
 						msg.source().tell("Your ship is located at "+spacePort.displayText()+".");
 					}

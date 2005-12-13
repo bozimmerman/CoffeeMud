@@ -33,11 +33,9 @@ import java.util.*;
 */
 public interface WorldMap extends CMObject
 {
-    public void theWorldChanged();
     public int numAreas();
     public void addArea(Area newOne);
     public void delArea(Area oneToDel);
-    public void trimRoomsList();
     public Area getArea(String calledThis);
     public Area findArea(String calledThis);
     public Enumeration areas();
@@ -56,15 +54,11 @@ public interface WorldMap extends CMObject
     public String createNewExit(Room from, Room room, int direction);
     public String getOpenRoomID(String AreaID);
     public int numRooms();
-    public void addRoom(Room newOne);
-    public void delRoom(Room oneToDel);
-    public void justDelRoom(Room oneToDel);
     public boolean sendGlobalMessage(MOB host, int category, CMMsg msg);
     public String getExtendedRoomID(Room R);
     public Room getRoom(String calledThis);
+    public Room getRoom(Vector roomSet, String calledThis);
     public Enumeration rooms();
-    public void replaceRoom(Room newOne, Room oldOne);
-    public Room getFirstRoom();
     public Room getRandomRoom();
     public int numDeities();
     public void addDeity(Deity newOne);

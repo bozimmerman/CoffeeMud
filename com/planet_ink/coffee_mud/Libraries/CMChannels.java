@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -30,31 +31,28 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CMChannels
+public class CMChannels extends StdLibrary implements ChannelsLibrary
 {
-	protected static final int QUEUE_SIZE=100;
+    public String ID(){return "CMChannels";}
+	public final int QUEUE_SIZE=100;
 	
-	protected static int numChannelsLoaded=0;
-	protected static int numIChannelsLoaded=0;
-	protected static int numImc2ChannelsLoaded=0;
-    protected static int numCommandJournalsLoaded=0;
-	protected static Vector channelNames=new Vector();
-	protected static Vector channelMasks=new Vector();
-    protected static Vector channelFlags=new Vector();
-	protected static Vector ichannelList=new Vector();
-	protected static Vector imc2channelList=new Vector();
-	protected static Vector channelQue=new Vector();
-    protected static Vector commandJournalNames=new Vector();
-    protected static Vector commandJournalMasks=new Vector();
-    protected static Vector commandJournalFlags=new Vector();
-    protected static final Vector emptyVector=new Vector();
+	public int numChannelsLoaded=0;
+	public int numIChannelsLoaded=0;
+	public int numImc2ChannelsLoaded=0;
+	public Vector channelNames=new Vector();
+	public Vector channelMasks=new Vector();
+    public Vector channelFlags=new Vector();
+	public Vector ichannelList=new Vector();
+	public Vector imc2channelList=new Vector();
+	public Vector channelQue=new Vector();
+    public final Vector emptyVector=new Vector();
 	
-	public static int getNumChannels()
+	public int getNumChannels()
 	{
 		return channelNames.size();
 	}
 	
-	public static String getChannelMask(int i)
+	public String getChannelMask(int i)
 	{
 		if((i>=0)&&(i<channelMasks.size()))
 			return (String)channelMasks.elementAt(i);
@@ -62,30 +60,30 @@ public class CMChannels
 	}
 
     
-    public static Vector getChannelFlags(int i)
+    public Vector getChannelFlags(int i)
     {
         if((i>=0)&&(i<channelFlags.size()))
             return (Vector)channelFlags.elementAt(i);
         return emptyVector;
     }
 
-	public static String getChannelName(int i)
+	public String getChannelName(int i)
 	{
 		if((i>=0)&&(i<channelNames.size()))
 			return (String)channelNames.elementAt(i);
 		return "";
 	}
 
-	public static Vector getChannelQue(int i)
+	public Vector getChannelQue(int i)
 	{
 		if((i>=0)&&(i<channelQue.size()))
 			return (Vector)channelQue.elementAt(i);
 		return new Vector();
 	}
 	
-    public static boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i)
+    public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i)
     { return mayReadThisChannel(sender,areaReq,M,i,false);}
-	public static boolean mayReadThisChannel(MOB sender,
+	public boolean mayReadThisChannel(MOB sender,
 											 boolean areaReq,
 											 MOB M, 
 											 int i,
@@ -119,7 +117,7 @@ public class CMChannels
 		return false;
 	}
 	
-	public static boolean mayReadThisChannel(MOB sender,
+	public boolean mayReadThisChannel(MOB sender,
 											 boolean areaReq,
 											 Session ses, 
 											 int i)
@@ -160,11 +158,11 @@ public class CMChannels
 		return false;
 	}
 	
-	public static boolean mayReadThisChannel(MOB M, int i, boolean zapCheckOnly)
+	public boolean mayReadThisChannel(MOB M, int i, boolean zapCheckOnly)
 	{
 	    if(M==null) return false;
 	    
-	    if(i>=CMChannels.getNumChannels())
+	    if(i>=getNumChannels())
 	        return false;
 	    
 		if(getChannelFlags(i).contains("CLANONLY")
@@ -178,9 +176,9 @@ public class CMChannels
 		return false;
 	}
 
-	public static void channelQueUp(int i, CMMsg msg)
+	public void channelQueUp(int i, CMMsg msg)
 	{
-        CMMap.sendGlobalMessage(msg.source(),CMMsg.TYP_CHANNEL,msg);
+        CMLib.map().sendGlobalMessage(msg.source(),CMMsg.TYP_CHANNEL,msg);
 		Vector q=getChannelQue(i);
 		synchronized(q)
 		{
@@ -190,7 +188,7 @@ public class CMChannels
 		}
 	}
 	
-	public static int getChannelIndex(String channelName)
+	public int getChannelIndex(String channelName)
 	{
 		for(int c=0;c<channelNames.size();c++)
 			if(((String)channelNames.elementAt(c)).startsWith(channelName))
@@ -198,7 +196,7 @@ public class CMChannels
 		return -1;
 	}
 
-	public static int getChannelCodeNumber(String channelName)
+	public int getChannelCodeNumber(String channelName)
 	{
 		for(int c=0;c<channelNames.size();c++)
 			if(((String)channelNames.elementAt(c)).startsWith(channelName))
@@ -206,7 +204,7 @@ public class CMChannels
 		return -1;
 	}
 
-	public static String getChannelName(String channelName)
+	public String getChannelName(String channelName)
 	{
 		for(int c=0;c<channelNames.size();c++)
 			if(((String)channelNames.elementAt(c)).startsWith(channelName))
@@ -214,7 +212,7 @@ public class CMChannels
 		return "";
 	}
 
-	public static Vector getFlaggedChannelNames(String flag)
+	public Vector getFlaggedChannelNames(String flag)
 	{
         flag=flag.toUpperCase().trim();
         Vector channels=new Vector();
@@ -224,11 +222,10 @@ public class CMChannels
 		return channels;
 	}
 	
-	public static void unloadChannelsAndCommandJournals()
+	public void unloadChannels()
 	{
 		numChannelsLoaded=0;
 		numIChannelsLoaded=0;
-        numCommandJournalsLoaded=0;
         numImc2ChannelsLoaded=0;
 		channelNames=new Vector();
 		channelMasks=new Vector();
@@ -236,12 +233,9 @@ public class CMChannels
 		ichannelList=new Vector();
 		imc2channelList=new Vector();
 		channelQue=new Vector();
-        commandJournalMasks=new Vector();
-        commandJournalFlags=new Vector();
-        commandJournalNames=new Vector();
 	}
 
-	public static String[][] imc2ChannelsArray()
+	public String[][] imc2ChannelsArray()
 	{
 		String[][] array=new String[numImc2ChannelsLoaded][4];
 		int num=0;
@@ -262,7 +256,7 @@ public class CMChannels
 		}
 		return array;
 	}
-	public static String[][] iChannelsArray()
+	public String[][] iChannelsArray()
 	{
 		String[][] array=new String[numIChannelsLoaded][4];
 		int num=0;
@@ -283,25 +277,25 @@ public class CMChannels
 		}
 		return array;
 	}
-	public static String[] getChannelNames()
+	public String[] getChannelNames()
 	{
 		if(channelNames.size()==0) return null;
 		return Util.toStringArray(channelNames);
 	}
 	
-	public static Vector clearInvalidSnoopers(Session mySession, int channelCode)
+	public Vector clearInvalidSnoopers(Session mySession, int channelCode)
 	{
 	    Vector invalid=null;
 	    if(mySession!=null)
 	    {
 		    Session S=null;
-		    for(int s=0;s<Sessions.size();s++)
+		    for(int s=0;s<CMLib.sessions().size();s++)
 		    {
-		        S=Sessions.elementAt(s);
+		        S=CMLib.sessions().elementAt(s);
 		        if((S!=mySession)
 		        &&(S.mob()!=null)
 		        &&(mySession.amBeingSnoopedBy(S))
-		        &&(!CMChannels.mayReadThisChannel(S.mob(),channelCode,false)))
+		        &&(!mayReadThisChannel(S.mob(),channelCode,false)))
 		        {
 		            if(invalid==null) invalid=new Vector();
 		            invalid.add(S);
@@ -312,20 +306,14 @@ public class CMChannels
 	    return invalid;	    
 	}
 	
-	public static void restoreInvalidSnoopers(Session mySession, Vector invalid)
+	public void restoreInvalidSnoopers(Session mySession, Vector invalid)
 	{
 	    if((mySession==null)||(invalid==null)) return;
 		for(int s=0;s<invalid.size();s++)
 		    mySession.startBeingSnoopedBy((Session)invalid.elementAt(s));
 	}
 
-    public static String[] ALLFLAGS={
-        "DEFAULT","SAMEAREA","CLANONLY","READONLY",
-        "EXECUTIONS","LOGINS","LOGOFFS","BIRTHS","MARRIAGES", 
-        "DIVORCES","CHRISTENINGS","LEVELS","DETAILEDLEVELS","DEATHS","DETAILEDDEATHS",
-        "CONQUESTS","CONCEPTIONS","NEWPLAYERS","LOSTLEVELS","PLAYERPURGES","CLANINFO"};
-    
-    public static String parseOutFlags(String mask, Vector flags)
+    public String parseOutFlags(String mask, Vector flags)
     {
         Vector V=Util.parse(mask);
         for(int v=V.size()-1;v>=0;v--)
@@ -342,7 +330,7 @@ public class CMChannels
         return Util.combine(V,0);
     }
     
-	public static int loadChannels(String list, String ilist, String imc2list)
+	public int loadChannels(String list, String ilist, String imc2list)
 	{
 		while(list.length()>0)
 		{
@@ -449,89 +437,4 @@ public class CMChannels
 		numChannelsLoaded++;
 		return numChannelsLoaded;
 	}
-
-    public static int loadCommandJournals(String list)
-    {
-        while(list.length()>0)
-        {
-            int x=list.indexOf(",");
-
-            String item=null;
-            if(x<0)
-            {
-                item=list.trim();
-                list="";
-            }
-            else
-            {
-                item=list.substring(0,x).trim();
-                list=list.substring(x+1);
-            }
-            numCommandJournalsLoaded++;
-            x=item.indexOf(" ");
-            Hashtable flags=new Hashtable();
-            if(x>0)
-            {
-                String mask=item.substring(x+1).trim();
-                String[] possflags={"CHANNEL=","ADDROOM","EXPIRE=","ADMINECHO"};
-                for(int pf=0;pf<possflags.length;pf++)
-                {
-                    int keyx=mask.toUpperCase().indexOf(possflags[pf]);
-                    if(keyx>=0)
-                    {
-                        int keyy=mask.indexOf(" ",keyx+1);
-                        if(keyy<0) keyy=mask.length();
-                        if((keyx==0)||(Character.isWhitespace(mask.charAt(keyx-1))))
-                        {
-                            String parm=mask.substring(keyx+possflags[pf].length(),keyy).trim();
-                            if((parm.length()==0)||(possflags[pf].endsWith("=")))
-                            {
-                                flags.put(possflags[pf],parm);
-                                mask=mask.substring(0,keyx).trim()+" "+mask.substring(keyy).trim();
-                            }
-                        }
-                    }
-                }
-                commandJournalMasks.addElement(mask);
-                item=item.substring(0,x);
-            }
-            else
-                commandJournalMasks.addElement("");
-            commandJournalFlags.addElement(flags);
-            commandJournalNames.addElement(item.toUpperCase().trim());
-        }
-        return numCommandJournalsLoaded;
-    }
-    
-    public static int getNumCommandJournals()
-    {
-        return commandJournalNames.size();
-    }
-    
-    public static String getCommandJournalMask(int i)
-    {
-        if((i>=0)&&(i<commandJournalMasks.size()))
-            return (String)commandJournalMasks.elementAt(i);
-        return "";
-    }
-
-    public static String getCommandJournalName(int i)
-    {
-        if((i>=0)&&(i<commandJournalNames.size()))
-            return (String)commandJournalNames.elementAt(i);
-        return "";
-    }
-
-    public static Hashtable getCommandJournalFlags(int i)
-    {
-        if((i>=0)&&(i<commandJournalFlags.size()))
-            return (Hashtable)commandJournalFlags.elementAt(i);
-        return new Hashtable();
-    }
-    public static String[] getCommandJournalNames()
-    {
-        if(commandJournalNames.size()==0) return null;
-        return Util.toStringArray(commandJournalNames);
-    }
 }
-	

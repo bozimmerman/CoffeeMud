@@ -1,7 +1,18 @@
-package com.planet_ink.coffee_mud.Shared;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.common.*;
+package com.planet_ink.coffee_mud.Common;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -24,7 +35,7 @@ public class DefaultTimeClock implements TimeClock
 {
 	public String ID(){return "DefaultTimeClock";}
 	public String name(){return "Time Object";}
-	public CMObject newInstance(){return new DefaultTimeClock();}
+    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultTimeClock();}}
     
 	protected long tickStatus=Tickable.STATUS_NOT;
 	public long getTickStatus(){return tickStatus;}
@@ -103,7 +114,7 @@ public class DefaultTimeClock implements TimeClock
         return -1;
     }
     
-    public void initializeINIClock(INI page)
+    public void initializeINIClock(CMProps page)
     {
         if(Util.s_int(page.getStr("HOURSINDAY"))>0)
             setHoursInDay(Util.s_int(page.getStr("HOURSINDAY")));
@@ -128,15 +139,15 @@ public class DefaultTimeClock implements TimeClock
                         Util.s_int(page.getStr("DUSKHR")),
                         Util.s_int(page.getStr("NIGHTHR")));
 
-        CommonStrings.setIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY,""+((MudHost.TIME_MILIS_PER_MUDHOUR*CMClass.globalClock().getHoursInDay()/MudHost.TICK_TIME)));
-        CommonStrings.setIntVar(CommonStrings.SYSTEMI_TICKSPERMUDMONTH,""+((MudHost.TIME_MILIS_PER_MUDHOUR*CMClass.globalClock().getHoursInDay()*CMClass.globalClock().getDaysInMonth()/MudHost.TICK_TIME)));
+        CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY,""+((MudHost.TIME_MILIS_PER_MUDHOUR*CMClass.globalClock().getHoursInDay()/MudHost.TICK_TIME)));
+        CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH,""+((MudHost.TIME_MILIS_PER_MUDHOUR*CMClass.globalClock().getHoursInDay()*CMClass.globalClock().getDaysInMonth()/MudHost.TICK_TIME)));
     }
     
 	public String timeDescription(MOB mob, Room room)
 	{
 		StringBuffer timeDesc=new StringBuffer("");
 
-		if((Sense.canSee(mob))&&(getTODCode()>=0))
+		if((CMLib.flags().canSee(mob))&&(getTODCode()>=0))
 			timeDesc.append(TOD_DESC[getTODCode()]);
 		timeDesc.append("(Hour: "+getTimeOfDay()+"/"+(getHoursInDay()-1)+")");
 		timeDesc.append("\n\rIt is ");
@@ -152,9 +163,9 @@ public class DefaultTimeClock implements TimeClock
 		if(getYearNames().length>0)
 			timeDesc.append(", "+Util.replaceAll(getYearNames()[getYear()%getYearNames().length],"#",""+getYear()));
 		timeDesc.append(".\n\rIt is "+(TimeClock.SEASON_DESCS[getSeasonCode()]).toLowerCase()+".");
-		if((Sense.canSee(mob))
+		if((CMLib.flags().canSee(mob))
 		&&(getTODCode()==TimeClock.TIME_NIGHT)
-		&&(CoffeeUtensils.hasASky(room)))
+		&&(CMLib.utensils().hasASky(room)))
 		{
 			switch(room.getArea().getClimateObj().weatherType(room))
 			{
@@ -279,7 +290,7 @@ public class DefaultTimeClock implements TimeClock
 	{
 	    try
 	    {
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if((R!=null)
@@ -294,9 +305,9 @@ public class DefaultTimeClock implements TimeClock
 						if((mob!=null)
 						&&(!mob.isMonster()))
 						{
-							if(CoffeeUtensils.hasASky(R)
-							&&(!Sense.isSleeping(mob))
-							&&(Sense.canSee(mob)))
+							if(CMLib.utensils().hasASky(R)
+							&&(!CMLib.flags().isSleeping(mob))
+							&&(CMLib.flags().canSee(mob)))
 							{
 								switch(getTODCode())
 								{
@@ -378,8 +389,8 @@ public class DefaultTimeClock implements TimeClock
 	{
 		if((loaded)&&(loadName!=null))
 		{
-			CMClass.DBEngine().DBDeleteData(loadName,"TIMECLOCK");
-			CMClass.DBEngine().DBCreateData(loadName,"TIMECLOCK","TIMECLOCK/"+loadName,
+			CMLib.database().DBDeleteData(loadName,"TIMECLOCK");
+			CMLib.database().DBCreateData(loadName,"TIMECLOCK","TIMECLOCK/"+loadName,
 			"<DAY>"+getDayOfMonth()+"</DAY><MONTH>"+getMonth()+"</MONTH><YEAR>"+getYear()+"</YEAR>"
 			+"<HOURS>"+getHoursInDay()+"</HOURS><DAYS>"+getDaysInMonth()+"</DAYS>"
 			+"<MONTHS>"+Util.toStringList(getMonthNames())+"</MONTHS>"
@@ -402,22 +413,22 @@ public class DefaultTimeClock implements TimeClock
 			if((loadName!=null)&&(!loaded))
 			{
 				loaded=true;
-				Vector V=CMClass.DBEngine().DBReadData(loadName,"TIMECLOCK");
+				Vector V=CMLib.database().DBReadData(loadName,"TIMECLOCK");
 				String timeRsc=null;
 				if((V==null)||(V.size()==0)||(!(V.elementAt(0) instanceof Vector)))
 					timeRsc="<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1</YEAR>";
 				else
 					timeRsc=(String)((Vector)V.elementAt(0)).elementAt(3);
-				V=XMLManager.parseAllXML(timeRsc);
-				setTimeOfDay(XMLManager.getIntFromPieces(V,"TIME"));
-				setDayOfMonth(XMLManager.getIntFromPieces(V,"DAY"));
-				setMonth(XMLManager.getIntFromPieces(V,"MONTH"));
-				setYear(XMLManager.getIntFromPieces(V,"YEAR"));
+				V=CMLib.xml().parseAllXML(timeRsc);
+				setTimeOfDay(CMLib.xml().getIntFromPieces(V,"TIME"));
+				setDayOfMonth(CMLib.xml().getIntFromPieces(V,"DAY"));
+				setMonth(CMLib.xml().getIntFromPieces(V,"MONTH"));
+				setYear(CMLib.xml().getIntFromPieces(V,"YEAR"));
 				if(this!=CMClass.globalClock())
 				{
-					if((XMLManager.getValFromPieces(V,"HOURS").length()==0)
-					||(XMLManager.getValFromPieces(V,"DAYS").length()==0)
-					||(XMLManager.getValFromPieces(V,"MONTHS").length()==0))
+					if((CMLib.xml().getValFromPieces(V,"HOURS").length()==0)
+					||(CMLib.xml().getValFromPieces(V,"DAYS").length()==0)
+					||(CMLib.xml().getValFromPieces(V,"MONTHS").length()==0))
 					{
 						setHoursInDay(CMClass.globalClock().getHoursInDay());
 						setDaysInMonth(CMClass.globalClock().getDaysInMonth());
@@ -431,15 +442,15 @@ public class DefaultTimeClock implements TimeClock
 					}
 					else
 					{
-						setHoursInDay(XMLManager.getIntFromPieces(V,"HOURS"));
-						setDaysInMonth(XMLManager.getIntFromPieces(V,"DAYS"));
-						setMonthsInYear(Util.toStringArray(Util.parseCommas(XMLManager.getValFromPieces(V,"MONTHS"),true)));
-						setDawnToDusk(XMLManager.getIntFromPieces(V,"DAWNHR"),
-									  XMLManager.getIntFromPieces(V,"DAYHR"),
-									  XMLManager.getIntFromPieces(V,"DUSKHR"),
-									  XMLManager.getIntFromPieces(V,"NIGHTHR"));
-						setDaysInWeek(Util.toStringArray(Util.parseCommas(XMLManager.getValFromPieces(V,"WEEK"),true)));
-						setYearNames(Util.toStringArray(Util.parseCommas(XMLManager.getValFromPieces(V,"YEARS"),true)));
+						setHoursInDay(CMLib.xml().getIntFromPieces(V,"HOURS"));
+						setDaysInMonth(CMLib.xml().getIntFromPieces(V,"DAYS"));
+						setMonthsInYear(Util.toStringArray(Util.parseCommas(CMLib.xml().getValFromPieces(V,"MONTHS"),true)));
+						setDawnToDusk(CMLib.xml().getIntFromPieces(V,"DAWNHR"),
+									  CMLib.xml().getIntFromPieces(V,"DAYHR"),
+									  CMLib.xml().getIntFromPieces(V,"DUSKHR"),
+									  CMLib.xml().getIntFromPieces(V,"NIGHTHR"));
+						setDaysInWeek(Util.toStringArray(Util.parseCommas(CMLib.xml().getValFromPieces(V,"WEEK"),true)));
+						setYearNames(Util.toStringArray(Util.parseCommas(CMLib.xml().getValFromPieces(V,"YEARS"),true)));
 					}
 				}
 			}

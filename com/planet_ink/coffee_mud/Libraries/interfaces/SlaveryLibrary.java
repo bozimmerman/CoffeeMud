@@ -169,13 +169,13 @@ public interface SlaveryLibrary extends CMObject
             bothering=null;
             if((me==null)||(me.location()==null)) 
                 return false;
-            if((msgOrQ!=null)&&(!Sense.isAnimalIntelligence(me)))
+            if((msgOrQ!=null)&&(!CMLib.flags().isAnimalIntelligence(me)))
                 for(int m=0;m<me.location().numInhabitants();m++)
                 {
                     MOB M=me.location().fetchInhabitant(m);
                     if((M!=null)
                     &&(M!=me)
-                    &&(!Sense.isAnimalIntelligence(M))
+                    &&(!CMLib.flags().isAnimalIntelligence(M))
                     &&(!mySteps.bothered.contains(M)))
                     {
                         CMLib.commands().say(me,M,msgOrQ,false,false);
@@ -218,7 +218,7 @@ public interface SlaveryLibrary extends CMObject
                             response=response.substring(responseStarters[s].length()).trim();
                         }
                     }
-                if((!starterFound)&&(speaker.isMonster())&&(Dice.rollPercentage()<10))
+                if((!starterFound)&&(speaker.isMonster())&&(CMLib.dice().rollPercentage()<10))
                     return false;
                 if(response.trim().length()==0)
                     return false;
@@ -267,7 +267,7 @@ public interface SlaveryLibrary extends CMObject
 
                 // do I already have it?
                 Item I=me.fetchInventory(item);
-                if((I!=null)&&(Sense.canBeSeenBy(I,me)))
+                if((I!=null)&&(CMLib.flags().canBeSeenBy(I,me)))
                 {
                     step=STEP_EVAL;
                     if(!I.amWearingAt(Item.INVENTORY))
@@ -286,7 +286,7 @@ public interface SlaveryLibrary extends CMObject
                 }
                 // is it just sitting around?
                 I=me.location().fetchItem(null,item);
-                if((I!=null)&&(Sense.canBeSeenBy(I,me)))
+                if((I!=null)&&(CMLib.flags().canBeSeenBy(I,me)))
                 {
                     step=STEP_EVAL;
                     CMLib.commands().get(me,null,I,false);
@@ -306,7 +306,7 @@ public interface SlaveryLibrary extends CMObject
                 for(int m=0;m<me.location().numInhabitants();m++)
                 {
                     MOB M=me.location().fetchInhabitant(m);
-                    if((M!=null)&&(M!=me)&&(Sense.canBeSeenBy(M,me)))
+                    if((M!=null)&&(M!=me)&&(CMLib.flags().canBeSeenBy(M,me)))
                     {
                         I=M.fetchInventory(null,item);
                         if((I!=null)&&(!I.amWearingAt(Item.INVENTORY)))
@@ -389,7 +389,7 @@ public interface SlaveryLibrary extends CMObject
 
                 MOB M=me.location().fetchInhabitant(name);
                 if(M==me) M=me.location().fetchInhabitant(name+".2");
-                if((M!=null)&&(M!=me)&&(Sense.canBeSeenBy(M,me)))
+                if((M!=null)&&(M!=me)&&(CMLib.flags().canBeSeenBy(M,me)))
                 {
                     if(CMSecurity.isDebugging("GEAS"))
                         Log.debugOut("GEAS","MOBFIND-FOUND: "+name);
@@ -445,7 +445,7 @@ public interface SlaveryLibrary extends CMObject
                     return "HOLD";
                 }
                 MOB M=me.location().fetchInhabitant(name);
-                if((M!=null)&&(M!=me)&&(Sense.canBeSeenBy(M,me)))
+                if((M!=null)&&(M!=me)&&(CMLib.flags().canBeSeenBy(M,me)))
                 {
                     step=STEP_EVAL;
                     que.removeElementAt(0);
@@ -453,7 +453,7 @@ public interface SlaveryLibrary extends CMObject
                 }
                 // is it just sitting around?
                 Item I=me.location().fetchItem(null,name);
-                if((I!=null)&&(Sense.canBeSeenBy(I,me)))
+                if((I!=null)&&(CMLib.flags().canBeSeenBy(I,me)))
                 {
                     step=STEP_EVAL;
                     CMLib.commands().get(me,null,I,false);

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core.http.interfaces;
+package com.planet_ink.coffee_mud.WebMacros.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;

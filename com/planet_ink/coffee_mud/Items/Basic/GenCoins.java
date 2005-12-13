@@ -1,9 +1,21 @@
 package com.planet_ink.coffee_mud.Items.Basic;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -34,34 +46,34 @@ public class GenCoins extends GenItem implements Coins
 		setMaterial(EnvResource.RESOURCE_GOLD);
 		setNumberOfCoins(100);
 		setCurrency("");
-		setDenomination(BeanCounter.getLowestDenomination(""));
+		setDenomination(CMLib.beanCounter().getLowestDenomination(""));
 		setDescription("");
 	}
 	
 	public String Name()
 	{
-        return BeanCounter.getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins());
+        return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins());
 	}
 	public String displayText()
 	{
-        return BeanCounter.getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins())+((getNumberOfCoins()==1)?" lies here.":" lie here.");
+        return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins())+((getNumberOfCoins()==1)?" lies here.":" lie here.");
 	}
 	
     protected boolean abilityImbuesMagic(){return false;}
 	public void setDynamicMaterial()
 	{
-	    if((EnglishParser.containsString(name(),"note"))
-	    ||(EnglishParser.containsString(name(),"bill"))
-	    ||(EnglishParser.containsString(name(),"dollar")))
+	    if((CMLib.english().containsString(name(),"note"))
+	    ||(CMLib.english().containsString(name(),"bill"))
+	    ||(CMLib.english().containsString(name(),"dollar")))
 	        setMaterial(EnvResource.RESOURCE_PAPER);
 	    else
 		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
-		    if(EnglishParser.containsString(name(),EnvResource.RESOURCE_DESCS[i]))
+		    if(CMLib.english().containsString(name(),EnvResource.RESOURCE_DESCS[i]))
 		    {
 		        setMaterial(EnvResource.RESOURCE_DATA[i][0]);
 		        break;
 		    }
-		setDescription(BeanCounter.getConvertableDescription(getCurrency(),getDenomination()));
+		setDescription(CMLib.beanCounter().getConvertableDescription(getCurrency(),getDenomination()));
 	}
 	public long getNumberOfCoins(){return envStats().ability();}
 	public void setNumberOfCoins(long number)
@@ -153,8 +165,8 @@ public class GenCoins extends GenItem implements Coins
 	private static String[] MYCODES={"NUMCOINS","CURRENCY","DENOM"};
 	public String getStat(String code)
 	{
-		if(CoffeeMaker.getGenItemCodeNum(code)>=0)
-			return CoffeeMaker.getGenItemStat(this,code);
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
 		case 0: return ""+getNumberOfCoins();
@@ -165,8 +177,8 @@ public class GenCoins extends GenItem implements Coins
 	}
 	public void setStat(String code, String val)
 	{
-		if(CoffeeMaker.getGenItemCodeNum(code)>=0)
-			CoffeeMaker.setGenItemStat(this,code,val);
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			CMLib.coffeeMaker().setGenItemStat(this,code,val);
 		else
 		switch(getCodeNum(code))
 		{
@@ -184,7 +196,7 @@ public class GenCoins extends GenItem implements Coins
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] superCodes=CoffeeMaker.GENITEMCODES;
+		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)

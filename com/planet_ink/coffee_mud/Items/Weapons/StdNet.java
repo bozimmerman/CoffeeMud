@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Items.Basic.StdItem;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -51,7 +61,7 @@ public class StdNet extends StdWeapon
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(weaponClassification()==Weapon.CLASS_THROWN))
 			return;
-			//msg.addTrailerMsg(new FullMsg(msg.source(),this,CMMsg.MSG_DROP,null));
+			//msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,CMMsg.MSG_DROP,null));
 		else
 		if((msg.tool()==this)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
@@ -60,9 +70,9 @@ public class StdNet extends StdWeapon
 		&&(weaponClassification()==Weapon.CLASS_THROWN))
 		{
 			unWear();
-			msg.addTrailerMsg(new FullMsg(msg.source(),this,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,null));
-			msg.addTrailerMsg(new FullMsg((MOB)msg.target(),this,CMMsg.MASK_GENERAL|CMMsg.MSG_GET,null));
-			msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),this,CMMsg.MASK_GENERAL|CMMsg.TYP_GENERAL,null));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,null));
+			msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),this,CMMsg.MASK_GENERAL|CMMsg.MSG_GET,null));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MASK_GENERAL|CMMsg.TYP_GENERAL,null));
 		}
 		else
 		if((msg.tool()==this)

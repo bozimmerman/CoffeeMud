@@ -1,10 +1,21 @@
-package com.planet_ink.coffee_mud.system.database;
+package com.planet_ink.coffee_mud.core.database;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.sql.*;
 import java.util.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 /**
  * <p>Portions Copyright (c) 2003 Jeremy Vyska</p>
@@ -28,7 +39,7 @@ public class ClanLoader
 
 	public static void updateBootStatus(String loading)
 	{
-		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Loading "+loading+" ("+currentRecordPos+" of "+recordCount+")");
+		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Loading "+loading+" ("+currentRecordPos+" of "+recordCount+")");
 	}
 
 	public static void DBRead()
@@ -44,7 +55,7 @@ public class ClanLoader
 			{
 				currentRecordPos=R.getRow();
 				String name=DBConnections.getRes(R,"CMCLID");
-				C=Clans.getClanType(Util.s_int(DBConnections.getRes(R,"CMTYPE")));
+				C=CMLib.clans().getClanType(Util.s_int(DBConnections.getRes(R,"CMTYPE")));
 				C.setName(name);
 				C.setPremise(DBConnections.getRes(R,"CMDESC"));
 				C.setAcceptanceSettings(DBConnections.getRes(R,"CMACPT"));
@@ -54,7 +65,7 @@ public class ClanLoader
 				C.setStatus(Util.s_int(DBConnections.getRes(R, "CMSTAT")));
 				C.setMorgue(DBConnections.getRes(R,"CMMORG"));
 				C.setTrophies(Util.s_int(DBConnections.getRes(R, "CMTROP")));
-				Clans.addClan(C);
+				CMLib.clans().addClan(C);
 		        updateBootStatus("Clans");
 			}
 		}
@@ -77,13 +88,13 @@ public class ClanLoader
 				+"CMSTAT="+C.getStatus()+","
 				+"CMMORG='"+C.getMorgue()+"',"
 				+"CMTROP="+C.getTrophies()+""
-				+" WHERE CMCLID='"+C.ID()+"'";
+				+" WHERE CMCLID='"+C.clanID()+"'";
 		DBConnector.update(str);
 	}
 
 	public static void DBCreate(Clan C)
 	{
-		if(C.ID().length()==0) return;
+		if(C.clanID().length()==0) return;
 		String str="INSERT INTO CMCLAN ("
 			+"CMCLID,"
 			+"CMTYPE,"
@@ -96,7 +107,7 @@ public class ClanLoader
 			+"CMMORG,"
 			+"CMTROP"
 			+") values ("
-			+"'"+C.ID()+"',"
+			+"'"+C.clanID()+"',"
 			+""+C.getType()+","
 			+"'"+C.getPremise()+"',"
 			+"'"+C.getAcceptanceSettings()+"',"
@@ -112,7 +123,7 @@ public class ClanLoader
 
 	public static void DBDelete(Clan C)
 	{
-		DBConnector.update("DELETE FROM CMCLAN WHERE CMCLID='"+C.ID()+"'");
+		DBConnector.update("DELETE FROM CMCLAN WHERE CMCLID='"+C.clanID()+"'");
 	}
 
 }

@@ -1,10 +1,22 @@
 package com.planet_ink.coffee_mud.Locales;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -87,8 +99,8 @@ public class StdGrid extends StdRoom implements GridLocale
 	}
 
 	public Vector outerExits(){return (Vector)gridexits.clone();}
-	public void addOuterExit(CMMap.CrossExit x){gridexits.addElement(x);}
-	public void delOuterExit(CMMap.CrossExit x){gridexits.remove(x);}
+	public void addOuterExit(WorldMap.CrossExit x){gridexits.addElement(x);}
+	public void delOuterExit(WorldMap.CrossExit x){gridexits.remove(x);}
 	
 	public Room getAltRoomFrom(Room loc, int direction)
 	{
@@ -101,11 +113,11 @@ public class StdGrid extends StdRoom implements GridLocale
 		if(gridexits.size()>0)
 		{
 			grid=getBuiltGrid();
-			String roomID=CMMap.getExtendedRoomID(loc);
+			String roomID=CMLib.map().getExtendedRoomID(loc);
 			if(grid!=null)
 				for(int d=0;d<gridexits.size();d++)
 				{
-					CMMap.CrossExit EX=(CMMap.CrossExit)gridexits.elementAt(d);
+					WorldMap.CrossExit EX=(WorldMap.CrossExit)gridexits.elementAt(d);
 					if((!EX.out)
 					&&(EX.destRoomID.equalsIgnoreCase(roomID))
 					&&(EX.dir==direction)
@@ -169,7 +181,7 @@ public class StdGrid extends StdRoom implements GridLocale
 	{
 		Vector V=getAllRooms();
 		if(V.size()==0) return null;
-		return (Room)V.elementAt(Dice.roll(1,V.size(),-1));
+		return (Room)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 	}
 	public Vector getAllRooms()
 	{
@@ -206,13 +218,13 @@ public class StdGrid extends StdRoom implements GridLocale
 		if((subMap!=null)&&(room.getGridParent()==this))
 		for(int d=0;d<gridexits.size();d++)
 		{
-			CMMap.CrossExit EX=(CMMap.CrossExit)gridexits.elementAt(d);
+			WorldMap.CrossExit EX=(WorldMap.CrossExit)gridexits.elementAt(d);
 			try{
 				if((EX.out)&&(EX.dir==dir)
 				&&(EX.x>=0)&&(EX.y>=0)&&(EX.x<xSize())&&(EX.y<ySize())
 				&&(subMap[EX.x][EX.y]==room))
 				{
-					Room R=CMMap.getRoom(EX.destRoomID);
+					Room R=CMLib.map().getRoom(EX.destRoomID);
 					if(R!=null)
 					{
 						if(R.getGridParent()!=null)
@@ -433,7 +445,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		}
 	}
 
-	public void tryFillInExtraneousExternal(CMMap.CrossExit EX, Exit ox)
+	public void tryFillInExtraneousExternal(WorldMap.CrossExit EX, Exit ox)
 	{
 		if(EX==null) return;
 		Room linkFrom=null;
@@ -441,7 +453,7 @@ public class StdGrid extends StdRoom implements GridLocale
 			linkFrom=subMap[EX.x][EX.y];
 		if(linkFrom!=null)
 		{
-			Room linkTo=CMMap.getRoom(EX.destRoomID);
+			Room linkTo=CMLib.map().getRoom(EX.destRoomID);
 			if((linkTo!=null)&&(linkTo.getGridParent()!=null)) 
 				linkTo=linkTo.getGridParent();
 			if((linkTo!=null)&&(linkFrom.rawDoors()[EX.dir]!=linkTo))
@@ -458,7 +470,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		if(subMap!=null)
 		for(int d=0;d<gridexits.size();d++)
 		{
-			CMMap.CrossExit EX=(CMMap.CrossExit)gridexits.elementAt(d);
+			WorldMap.CrossExit EX=(WorldMap.CrossExit)gridexits.elementAt(d);
 			try{
 				if(EX.out)
 				switch(EX.dir)
@@ -525,7 +537,6 @@ public class StdGrid extends StdRoom implements GridLocale
 						    if(((y+1)<subMap[x].length)&&(x>0)&&(subMap[x-1][y+1]!=null))
 								linkRoom(newRoom,subMap[x-1][y+1],Directions.SOUTHWEST,ox,ox);
 						}
-						CMMap.addRoom(newRoom);
 					}
 				}
 			buildFinalLinks();
@@ -680,14 +691,14 @@ public class StdGrid extends StdRoom implements GridLocale
 		if(displayTexts!=null)
 		if(displayTexts.size()>0)
 		{
-			c=Dice.roll(1,displayTexts.size(),-1);
+			c=CMLib.dice().roll(1,displayTexts.size(),-1);
 			gc.setDisplayText((String)displayTexts.elementAt(c));
 		}
 		if(descriptions!=null)
 		if(descriptions.size()>0)
 		{
 			if((c<0)||(c>descriptions.size())||(descriptions.size()!=displayTexts.size()))
-				c=Dice.roll(1,descriptions.size(),-1);
+				c=CMLib.dice().roll(1,descriptions.size(),-1);
 			gc.setDescription((String)descriptions.elementAt(c));
 		}
 

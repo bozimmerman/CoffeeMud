@@ -1,13 +1,29 @@
-package com.planet_ink.coffee_mud.system.intermud;
+package com.planet_ink.coffee_mud.core.intermud;
+import com.planet_ink.coffee_mud.core.http.ProcessHTTPrequest;
+import com.planet_ink.coffee_mud.core.intermud.imc2.*;
+import com.planet_ink.coffee_mud.core.intermud.packets.*;
+import com.planet_ink.coffee_mud.core.intermud.persist.*;
+import com.planet_ink.coffee_mud.core.intermud.server.*;
+import com.planet_ink.coffee_mud.core.intermud.net.*;
+import com.planet_ink.coffee_mud.core.intermud.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 import java.net.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.system.intermud.imc2.*;
-import com.planet_ink.coffee_mud.system.intermud.packets.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -26,6 +42,11 @@ import com.planet_ink.coffee_mud.system.intermud.packets.*;
 */
 public class IMudClient implements I3Interface
 {
+    public String ID(){return "IMudClient";}
+    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new IMudClient();}}
+    public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
+    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    
 	public IMC2Driver imc2=null;
 	public void registerIMC2(Object O)
 	{ 
@@ -232,7 +253,7 @@ public class IMudClient implements I3Interface
 			mob.tell("^CYou tell "+tellName+" '"+message+"'^?");
 			if(mob.playerStats()!=null) 
 			    mob.playerStats().addTellStack("You tell "+tellName+" '"+message+"'");
-			imc2.imc_send_tell(mob.name(),tellName,message,0,Sense.isInvisible(mob)?1:0);
+			imc2.imc_send_tell(mob.name(),tellName,message,0,CMLib.flags().isInvisible(mob)?1:0);
 		}
 		else
 		{
@@ -273,8 +294,8 @@ public class IMudClient implements I3Interface
 			{
 				String msgstr=message.substring(1);
 				Vector V=Util.parse(msgstr);
-				Social S=Socials.FetchSocial(V,true);
-				if(S==null) S=Socials.FetchSocial(V,false);
+				Social S=CMLib.socials().FetchSocial(V,true);
+				if(S==null) S=CMLib.socials().FetchSocial(V,false);
 				CMMsg msg=null;
 				if(S!=null)
 				{
@@ -347,8 +368,8 @@ public class IMudClient implements I3Interface
 				mob2.setName(mob.Name()+"@"+imc2.imc_name);
 				mob2.setLocation(CMClass.getLocale("StdRoom"));
 				Vector V=Util.parse(message);
-				Social S=Socials.FetchSocial(V,true);
-				if(S==null) S=Socials.FetchSocial(V,false);
+				Social S=CMLib.socials().FetchSocial(V,true);
+				if(S==null) S=CMLib.socials().FetchSocial(V,false);
 				CMMsg msg=null;
 				if(S!=null)
 				{
@@ -379,9 +400,9 @@ public class IMudClient implements I3Interface
 					}
 					
 					if((msg.othersMessage()!=null)&&(msg.othersMessage().length()>0))
-						message=CoffeeFilter.fullOutFilter(null,CMClass.sampleMOB(),mob2,msg.target(),null,Util.removeColors(msg.othersMessage()),false);
+						message=CMLib.coffeeFilter().fullOutFilter(null,CMClass.sampleMOB(),mob2,msg.target(),null,Util.removeColors(msg.othersMessage()),false);
 					else
-						message=CoffeeFilter.fullOutFilter(null,CMClass.sampleMOB(),mob2,msg.target(),null,Util.removeColors(msg.sourceMessage()),false);
+						message=CMLib.coffeeFilter().fullOutFilter(null,CMClass.sampleMOB(),mob2,msg.target(),null,Util.removeColors(msg.sourceMessage()),false);
 					if(message.toUpperCase().startsWith((mob.Name()+"@"+imc2.imc_name).toUpperCase()))
 						message=message.substring((mob.Name()+"@"+imc2.imc_name).length()).trim();
 					emote=2;
@@ -435,7 +456,7 @@ public class IMudClient implements I3Interface
 			for(Enumeration e=l.elements();e.hasMoreElements();)
 			{
 				Mud m=(Mud)e.nextElement();
-				if((m.state<0)&&(EnglishParser.containsString(m.mud_name,parms)))
+				if((m.state<0)&&(CMLib.english().containsString(m.mud_name,parms)))
 				{
 					buf.append(Util.padRight("Name",10)+": "+m.mud_name+"\n\r");
 					buf.append(Util.padRight("Address",10)+": "+m.address+"\n\r");

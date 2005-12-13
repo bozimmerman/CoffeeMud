@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Items.Basic;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -152,7 +163,7 @@ public class LightSource extends StdItem implements Light
 		if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 	    ||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER))
             return true;
-        if((!Sense.isFlying(mob))
+        if((!CMLib.flags().isFlying(mob))
         &&(mob.riding()==null)
         &&((room.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 		   ||(room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)))
@@ -174,7 +185,7 @@ public class LightSource extends StdItem implements Light
 			&&(isLit())
 			&&(getDuration()>0)
 			&&(mob.isMine(this))
-			&&((!Sense.isInFlight(mob))
+			&&((!CMLib.flags().isInFlight(mob))
 			   ||(LightSource.inTheRain(room))
 			   ||((room.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(room.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))))
 			{
@@ -193,7 +204,7 @@ public class LightSource extends StdItem implements Light
 				if(isLit())
 				{
 					light(false);
-					CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_LIGHT_FLICKERS);
+					CMLib.threads().deleteTick(this,MudHost.TICK_LIGHT_FLICKERS);
 					recoverEnvStats();
 					room.recoverRoomStats();
 				}
@@ -202,11 +213,11 @@ public class LightSource extends StdItem implements Light
 				if(getDuration()>0)
 				{
 					if(!isLit())
-						msg.addTrailerMsg(new FullMsg(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> light(s) up "+name()+"."));
+						msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> light(s) up "+name()+"."));
 					else
 						mob.tell(name()+" is already lit.");
 					light(true);
-					CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_LIGHT_FLICKERS,getDuration());
+					CMLib.threads().startTickDown(this,MudHost.TICK_LIGHT_FLICKERS,getDuration());
 					recoverEnvStats();
 					msg.source().recoverEnvStats();
 					room.recoverRoomStats();
@@ -222,7 +233,7 @@ public class LightSource extends StdItem implements Light
 				{
 					if(msg.source().location()!=null)
 						msg.source().location().recoverRoomStats();
-					Room R=CoffeeUtensils.roomLocation(msg.target());
+					Room R=CMLib.utensils().roomLocation(msg.target());
 					if((R!=null)&&(R!=msg.source().location()))
 						R.recoverRoomStats();
 				}
@@ -242,7 +253,7 @@ public class LightSource extends StdItem implements Light
 							msg.source().recoverEnvStats();
 							if(msg.source().location()!=null)
 								msg.source().location().recoverRoomStats();
-							Room R=CoffeeUtensils.roomLocation(msg.tool());
+							Room R=CMLib.utensils().roomLocation(msg.tool());
 							if((R!=null)&&(R!=msg.source().location()))
 								R.recoverRoomStats();
 						}

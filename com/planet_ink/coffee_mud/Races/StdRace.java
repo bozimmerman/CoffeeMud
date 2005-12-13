@@ -1,8 +1,20 @@
 package com.planet_ink.coffee_mud.Races;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -218,7 +230,7 @@ public class StdRace implements Race
             {
                 msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
                 myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
-    			if((Dice.rollPercentage()<10)
+    			if((CMLib.dice().rollPercentage()<10)
                 &&(myChar.charStats().getStat(CharStats.GENDER)==('F'))
                 &&(msg.source().charStats().getStat(CharStats.GENDER)==('M'))
     			&&(fertile())
@@ -265,7 +277,7 @@ public class StdRace implements Race
 		&&(culturalAbilityNames()!=null))
 		{
 			for(int a=0;a<culturalAbilityNames().length;a++)
-			    CMAble.addCharAbilityMapping(ID(),0,culturalAbilityNames()[a],false);
+			    CMLib.ableMapper().addCharAbilityMapping(ID(),0,culturalAbilityNames()[a],false);
 			mappedCulturalAbilities=true;
 		}
 		if(!verifyOnly)
@@ -306,7 +318,7 @@ public class StdRace implements Race
 	
 	public String healthText(MOB mob)
 	{
-		return CommonStrings.standardMobCondition(mob);
+		return CMLib.combat().standardMobCondition(mob);
 	}
 
 	public Weapon funHumanoidWeapon()
@@ -359,7 +371,7 @@ public class StdRace implements Race
 			}
 		}
 		if(naturalWeaponChoices.size()>0)
-			return (Weapon)naturalWeaponChoices.elementAt(Dice.roll(1,naturalWeaponChoices.size(),-1));
+			return (Weapon)naturalWeaponChoices.elementAt(CMLib.dice().roll(1,naturalWeaponChoices.size(),-1));
 		return CMClass.getWeapon("Natural");
 	}
     
@@ -368,7 +380,7 @@ public class StdRace implements Race
 	{
 		int weightModifier=0;
 		if(weightVariance()>0)
-			weightModifier=Dice.roll(1,weightVariance(),0);
+			weightModifier=CMLib.dice().roll(1,weightVariance(),0);
 		stats.setWeight(lightestWeight()+weightModifier);
 		int heightModifier=0;
 		if(heightVariance()>0)
@@ -379,7 +391,7 @@ public class StdRace implements Race
 				heightModifier=(int)Math.round(Util.mul(heightVariance(),variance));
 			}
 			else
-				heightModifier=Dice.roll(1,heightVariance(),0);
+				heightModifier=CMLib.dice().roll(1,heightVariance(),0);
 		}
 		if (gender == 'M')
 			stats.setHeight(shortestMale()+heightModifier);
@@ -418,10 +430,10 @@ public class StdRace implements Race
 	public void reRoll(MOB mob, CharStats C)
 	{
 	    // from Ashera
-        int basemax = CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT);
+        int basemax = CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
         int basemin = 3;
 
-        int points = CommonStrings.getIntVar(CommonStrings.SYSTEMI_MAXSTAT);
+        int points = CMProps.getIntVar(CMProps.SYSTEMI_MAXSTAT);
         // Make sure there are enough points
         if (points < ((basemin + 1) * CharStats.NUM_BASE_STATS))
             points = (basemin + 1) * CharStats.NUM_BASE_STATS;
@@ -439,7 +451,7 @@ public class StdRace implements Race
 
         while (pointsLeft > 0)
         {
-            int whichStat = Dice.roll(1,CharStats.NUM_BASE_STATS,-1);
+            int whichStat = CMLib.dice().roll(1,CharStats.NUM_BASE_STATS,-1);
             if(stats[whichStat]<basemax)
             {
                 stats[whichStat]++;
@@ -482,7 +494,7 @@ public class StdRace implements Race
 		}
 
 		Vector items=new Vector();
-		BeanCounter.getTotalAbsoluteNativeValue(mob); // converts mob.get-Money();
+		CMLib.beanCounter().getTotalAbsoluteNativeValue(mob); // converts mob.get-Money();
         Hashtable containerMap=new Hashtable();
         Hashtable itemMap=new Hashtable();
 		for(int i=0;i<mob.inventorySize();)
@@ -497,7 +509,7 @@ public class StdRace implements Race
                     if(thisItem.container()!=null)
                         containerMap.put(thisItem,thisItem.container());
 					newItem.setContainer(null);
-					newItem.setDispossessionTime(System.currentTimeMillis()+Math.round(Item.REFUSE_MONSTER_EQ*IQCalendar.MILI_HOUR));
+					newItem.setDispossessionTime(System.currentTimeMillis()+Math.round(Item.REFUSE_MONSTER_EQ*TimeManager.MILI_HOUR));
 					newItem.recoverEnvStats();
 					thisItem=newItem;
 					i++;
@@ -596,7 +608,7 @@ public class StdRace implements Race
 			racialAbilityMap=new Hashtable();
 			for(int i=0;i<racialAbilityNames().length;i++)
 			{
-				CMAble.addCharAbilityMapping(ID(),
+				CMLib.ableMapper().addCharAbilityMapping(ID(),
 											 racialAbilityLevels()[i],
 											 racialAbilityNames()[i],
 											 racialAbilityProfficiencies()[i],
@@ -613,16 +625,16 @@ public class StdRace implements Race
 			level=new Integer(Integer.MAX_VALUE);
 		if(racialAbilityMap.containsKey(level))
 			return (Vector)racialAbilityMap.get(level);
-		Vector V=CMAble.getUpToLevelListings(ID(),level.intValue(),true,(mob!=null));
+		Vector V=CMLib.ableMapper().getUpToLevelListings(ID(),level.intValue(),true,(mob!=null));
 		Vector finalV=new Vector();
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=CMClass.getAbility((String)V.elementAt(v));
 			if(A!=null)
 			{
-				A.setProfficiency(CMAble.getDefaultProfficiency(ID(),false,A.ID()));
+				A.setProfficiency(CMLib.ableMapper().getDefaultProfficiency(ID(),false,A.ID()));
 				A.setBorrowed(mob,true);
-				A.setMiscText(CMAble.getDefaultParm(ID(),false,A.ID()));
+				A.setMiscText(CMLib.ableMapper().getDefaultParm(ID(),false,A.ID()));
 				finalV.addElement(A);
 			}
 		}

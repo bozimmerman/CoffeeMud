@@ -1,11 +1,23 @@
 package com.planet_ink.coffee_mud.Items.Basic;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -38,7 +50,7 @@ public class GenRecipe extends GenReadable implements Recipe
 
 
 	public boolean isGeneric(){return true;}
-	public void recoverEnvStats(){Sense.setReadable(this,true); super.recoverEnvStats();}
+	public void recoverEnvStats(){CMLib.flags().setReadable(this,true); super.recoverEnvStats();}
 	public String getCommonSkillID(){return commonSkillID;}
 	public void setCommonSkillID(String ID){commonSkillID=ID;}
 	public String getRecipeCodeLine(){return recipeLine;}
@@ -47,8 +59,8 @@ public class GenRecipe extends GenReadable implements Recipe
 	private static String[] MYCODES={"SKILLID","RECIPE"};
 	public String getStat(String code)
 	{
-		if(CoffeeMaker.getGenItemCodeNum(code)>=0)
-			return CoffeeMaker.getGenItemStat(this,code);
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
 		case 0: return ""+getCommonSkillID();
@@ -58,8 +70,8 @@ public class GenRecipe extends GenReadable implements Recipe
 	}
 	public void setStat(String code, String val)
 	{
-		if(CoffeeMaker.getGenItemCodeNum(code)>=0)
-			CoffeeMaker.setGenItemStat(this,code,val);
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			CMLib.coffeeMaker().setGenItemStat(this,code,val);
 		else
 		switch(getCodeNum(code))
 		{
@@ -76,7 +88,7 @@ public class GenRecipe extends GenReadable implements Recipe
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] superCodes=CoffeeMaker.GENITEMCODES;
+		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)

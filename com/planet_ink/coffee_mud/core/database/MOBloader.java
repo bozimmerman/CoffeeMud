@@ -1,11 +1,22 @@
-package com.planet_ink.coffee_mud.system.database;
+package com.planet_ink.coffee_mud.core.database;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.sql.*;
 import java.util.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 /*
    Copyright 2000-2005 Bo Zimmerman
 
@@ -36,7 +47,7 @@ public class MOBloader
 			{
 				CharStats stats=mob.baseCharStats();
 				CharState state=mob.baseState();
-				PlayerStats pstats=(PlayerStats)CMClass.getShared("DefaultPlayerStats");
+				PlayerStats pstats=(PlayerStats)CMClass.getCommon("DefaultPlayerStats");
 				mob.setPlayerStats(pstats);
 				String username=DBConnections.getRes(R,"CMUSERID");
 				String password=DBConnections.getRes(R,"CMPASS");
@@ -61,8 +72,8 @@ public class MOBloader
 				state.setMovement(Util.s_int(DBConnections.getRes(R,"CMMOVE")));
 				mob.setDescription(DBConnections.getRes(R,"CMDESC"));
 				int align=(Util.s_int(DBConnections.getRes(R,"CMALIG")));
-				if((Factions.getFaction(Factions.AlignID())!=null)&&(align>=0))
-				    Factions.setAlignmentOldRange(mob,align);
+				if((CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)&&(align>=0))
+				    CMLib.factions().setAlignmentOldRange(mob,align);
 				mob.setExperience(Util.s_int(DBConnections.getRes(R,"CMEXPE")));
 				mob.setExpNextLevel(Util.s_int(DBConnections.getRes(R,"CMEXLV")));
 				mob.setWorshipCharID(DBConnections.getRes(R,"CMWORS"));
@@ -77,10 +88,10 @@ public class MOBloader
 				int x=roomID.indexOf("||");
 				if(x>=0)
 				{
-					mob.setLocation(CMMap.getRoom(roomID.substring(x+2)));
+					mob.setLocation(CMLib.map().getRoom(roomID.substring(x+2)));
 					roomID=roomID.substring(0,x);
 				}
-				mob.setStartRoom(CMMap.getRoom(roomID));
+				mob.setStartRoom(CMLib.map().getRoom(roomID));
 				pstats.setLastDateTime(Util.s_long(DBConnections.getRes(R,"CMDATE")));
 				pstats.setChannelMask((int)DBConnections.getLongRes(R,"CMCHAN"));
 				mob.baseEnvStats().setAttackAdjustment(Util.s_int(DBConnections.getRes(R,"CMATTA")));
@@ -101,18 +112,18 @@ public class MOBloader
 				String buf=DBConnections.getRes(R,"CMPFIL");
 				pstats.setXML(buf);
 				stats.setSaves(DBConnections.getRes(R,"CMSAVE"));
-				Vector V9=Util.parseSemicolons(XMLManager.returnXMLValue(buf,"TATTS"),true);
+				Vector V9=Util.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
 				while(mob.numTattoos()>0)mob.delTattoo(mob.fetchTattoo(0));
 				for(int v=0;v<V9.size();v++) mob.addTattoo((String)V9.elementAt(v));
 
-				V9=Util.parseSemicolons(XMLManager.returnXMLValue(buf,"EDUS"),true);
+				V9=Util.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
 				while(mob.numEducations()>0)mob.delEducation(mob.fetchEducation(0));
 				for(int v=0;v<V9.size();v++) mob.addEducation((String)V9.elementAt(v));
 				if(pstats.getBirthday()==null)
 				    stats.setStat(CharStats.AGE,pstats.initializeBirthday((int)Math.round(Util.div(mob.getAgeHours(),60.0)),stats.getMyRace()));
-				mob.setImage(XMLManager.returnXMLValue(buf,"IMG"));
-				Vector CleanXML=XMLManager.parseAllXML(DBConnections.getRes(R,"CMMXML"));
-				CoffeeMaker.setFactionFromXML(mob,CleanXML);
+				mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
+				Vector CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
+				CMLib.coffeeMaker().setFactionFromXML(mob,CleanXML);
 
 				found=true;
 			}
@@ -277,8 +288,8 @@ public class MOBloader
 		mob.recoverMaxState();
 		mob.resetToMaxState();
 
-		if(CMMap.getPlayer(mob.Name())==null)
-			CMMap.addPlayer(mob);
+		if(CMLib.map().getPlayer(mob.Name())==null)
+			CMLib.map().addPlayer(mob);
 	}
 
 	public static Vector userList()
@@ -345,7 +356,7 @@ public class MOBloader
 					if(lvl.length()>0) level+=Util.s_int(lvl);
 					thisUser.addElement(new Integer(level).toString());
 					thisUser.addElement(DBConnections.getRes(R,"CMAGEH"));
-					MOB M=CMMap.getPlayer((String)thisUser.firstElement());
+					MOB M=CMLib.map().getPlayer((String)thisUser.firstElement());
 					if((M!=null)&&(M.lastTickedDateTime()>0))
 						thisUser.addElement(""+M.lastTickedDateTime());
 					else
@@ -383,7 +394,7 @@ public class MOBloader
 			while(R.next())
 			{
 				String username=DBConnections.getRes(R,"CMUSERID");
-				MOB M=CMMap.getPlayer(username);
+				MOB M=CMLib.map().getPlayer(username);
 				if(M==null)
 				{
 					done.add(username);
@@ -413,7 +424,7 @@ public class MOBloader
 					head.append("\n\r");
 				}
 			}
-			for(Enumeration e=CMMap.players();e.hasMoreElements();)
+			for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
 			{
 				MOB M=(MOB)e.nextElement();
 				if((M.getLiegeID().equals(liegeID))
@@ -469,8 +480,8 @@ public class MOBloader
 					newMOB.resetToMaxState();
 					newMOB.setFollowing(mob);
 					if((newMOB.getStartRoom()!=null)
-					&&(CoffeeUtensils.doesHavePriviledgesHere(mob,newMOB.getStartRoom()))
-					&&((newMOB.location()==null)||(!CoffeeUtensils.doesHavePriviledgesHere(mob,newMOB.location()))))
+					&&(CMLib.utensils().doesHavePriviledgesHere(mob,newMOB.getStartRoom()))
+					&&((newMOB.location()==null)||(!CMLib.utensils().doesHavePriviledgesHere(mob,newMOB.location()))))
 					    newMOB.setLocation(newMOB.getStartRoom());
 					if(bringToLife)
 					{
@@ -514,7 +525,7 @@ public class MOBloader
 				int role=(int)DBConnector.getLongRes(R,"CMCLRO");
 				members.addElement(username);
 				roles.addElement(new Integer(role));
-				MOB M=CMMap.getPlayer(username);
+				MOB M=CMLib.map().getPlayer(username);
 				if((M!=null)&&(M.lastTickedDateTime()>0))
 					lastDates.addElement(new Long(M.lastTickedDateTime()));
 				else
@@ -530,7 +541,7 @@ public class MOBloader
 
 	public static void DBUpdateClan(String name, String clan, int role)
 	{
-		MOB M=CMMap.getPlayer(name);
+		MOB M=CMLib.map().getPlayer(name);
 		if(M!=null)
 		{
 			M.setClanID(clan);
@@ -578,8 +589,8 @@ public class MOBloader
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return;
 
-		String strStartRoomID=(mob.getStartRoom()!=null)?CMMap.getExtendedRoomID(mob.getStartRoom()):"";
-		String strOtherRoomID=(mob.location()!=null)?CMMap.getExtendedRoomID(mob.location()):"";
+		String strStartRoomID=(mob.getStartRoom()!=null)?CMLib.map().getExtendedRoomID(mob.getStartRoom()):"";
+		String strOtherRoomID=(mob.location()!=null)?CMLib.map().getExtendedRoomID(mob.location()):"";
 		StringBuffer pfxml=new StringBuffer(pstats.getXML());
 		if(mob.numTattoos()>0)
 		{
@@ -595,10 +606,10 @@ public class MOBloader
 				pfxml.append(mob.fetchEducation(i)+";");
 			pfxml.append("</EDUS>");
 		}
-		pfxml.append(XMLManager.convertXMLtoTag("IMG",mob.rawImage()));
+		pfxml.append(CMLib.xml().convertXMLtoTag("IMG",mob.rawImage()));
 
 		StringBuffer cleanXML=new StringBuffer();
-		cleanXML.append(CoffeeMaker.getFactionXML(mob));
+		cleanXML.append(CMLib.coffeeMaker().getFactionXML(mob));
 
 		DBConnector.update(
 		"UPDATE CMCHAR SET"
@@ -746,10 +757,10 @@ public class MOBloader
 	public static void DBDelete(MOB mob)
 	{
 		if(mob.Name().length()==0) return;
-        Vector channels=ChannelSet.getFlaggedChannelNames("PLAYERPURGES");
+        Vector channels=CMLib.channels().getFlaggedChannelNames("PLAYERPURGES");
         for(int i=0;i<channels.size();i++)
-                CommonMsgs.channel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just been deleted.",true);
-		CoffeeTables.bump(mob,CoffeeTables.STAT_PURGES);
+                CMLib.commands().channel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just been deleted.",true);
+		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_PURGES);
 		DBConnector.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mob.Name()+"'");
 		while(mob.inventorySize()>0)
 		{
@@ -898,7 +909,7 @@ public class MOBloader
 		if(mob!=null)
 		{
 			if(mob.playerStats()==null)
-				mob.setPlayerStats((PlayerStats)CMClass.getShared("DefaultPlayerStats"));
+				mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 			mob.setName("");
 			mob.playerStats().setPassword("");
 		}
@@ -922,11 +933,11 @@ public class MOBloader
 						mob.playerStats().setEmail(email);
                         // Acct Exp Code
                         String buf=DBConnections.getRes(R,"CMPFIL");
-                        if(XMLManager.returnXMLValue(buf,"ACCTEXP").length()>0)
-                            mob.playerStats().setAccountExpiration(Util.s_long(XMLManager.returnXMLValue(buf,"ACCTEXP")));
+                        if(CMLib.xml().returnXMLValue(buf,"ACCTEXP").length()>0)
+                            mob.playerStats().setAccountExpiration(Util.s_long(CMLib.xml().returnXMLValue(buf,"ACCTEXP")));
                         else
                         {
-                            IQCalendar C=new IQCalendar();
+                            Calendar C=Calendar.getInstance();
                             C.add(Calendar.DATE,15);
                             mob.playerStats().setAccountExpiration(C.getTimeInMillis());
                         }
@@ -946,7 +957,7 @@ public class MOBloader
 	public static String[] DBFetchEmailData(String name)
 	{
 		String[] data=new String[2];
-		for(Enumeration e=CMMap.players();e.hasMoreElements();)
+		for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
 		{
 			MOB M=(MOB)e.nextElement();
 			if((M.Name().equalsIgnoreCase(name))&&(M.playerStats()!=null))
@@ -984,7 +995,7 @@ public class MOBloader
 	public static String DBEmailSearch(String email)
 	{
 		DBConnection D=null;
-		for(Enumeration e=CMMap.players();e.hasMoreElements();)
+		for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
 		{
 			MOB M=(MOB)e.nextElement();
 			if((M.playerStats()!=null)&&(M.playerStats().getEmail().equalsIgnoreCase(email)))

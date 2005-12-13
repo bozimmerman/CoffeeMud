@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
-import java.util.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+import java.util.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -86,7 +97,7 @@ public class StdWeapon extends StdItem implements Weapon
 
 		if((msg.amITarget(this))
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
-		&&(Sense.canBeSeenBy(this,msg.source())))
+		&&(CMLib.flags().canBeSeenBy(this,msg.source())))
 		{
 			if(requiresAmmunition())
 				msg.source().tell(ammunitionType()+" remaining: "+ammunitionRemaining()+"/"+ammunitionCapacity()+".");
@@ -97,7 +108,7 @@ public class StdWeapon extends StdItem implements Weapon
 		if((msg.tool()==this)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(weaponClassification()==Weapon.CLASS_THROWN))
-			msg.addTrailerMsg(new FullMsg(msg.source(),this,CMMsg.MSG_DROP,null));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,CMMsg.MSG_DROP,null));
 
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.tool()==this)
@@ -117,15 +128,15 @@ public class StdWeapon extends StdItem implements Weapon
 			&&(tmob.curState().getHitPoints()>hurt))
 			{
 				if((!tmob.isMonster())
-				   &&(Dice.rollPercentage()==1)
-				   &&(Dice.rollPercentage()>(tmob.charStats().getStat(CharStats.CONSTITUTION)*4)))
+				   &&(CMLib.dice().rollPercentage()==1)
+				   &&(CMLib.dice().rollPercentage()>(tmob.charStats().getStat(CharStats.CONSTITUTION)*4)))
 				{
 					Ability A=null;
 					if(subjectToWearAndTear()
 					&&(usesRemaining()<25)
 					&&((material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL))
 					{
-						if(Dice.rollPercentage()>50)
+						if(CMLib.dice().rollPercentage()>50)
 							A=CMClass.getAbility("Disease_Lockjaw");
 						else
 							A=CMClass.getAbility("Disease_Tetanus");
@@ -139,9 +150,9 @@ public class StdWeapon extends StdItem implements Weapon
 			}
 
 			if((subjectToWearAndTear())
-			&&(Dice.rollPercentage()==1)
+			&&(CMLib.dice().rollPercentage()==1)
 			&&(msg.source().rangeToTarget()==0)
-			&&(Dice.rollPercentage()>((envStats().level()/2)+(10*envStats().ability())+(Sense.isABonusItems(this)?20:0)))
+			&&(CMLib.dice().rollPercentage()>((envStats().level()/2)+(10*envStats().ability())+(CMLib.flags().isABonusItems(this)?20:0)))
 			&&((material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_ENERGY))
 			{
 				setUsesRemaining(usesRemaining()-1);
@@ -158,7 +169,7 @@ public class StdWeapon extends StdItem implements Weapon
 				{
 					MOB owner=(MOB)owner();
 					setUsesRemaining(100);
-					msg.addTrailerMsg(new FullMsg(((MOB)owner()),null,null,CMMsg.MSG_OK_VISUAL,"^I"+name()+" is destroyed!!^?",CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_VISUAL,"^I"+name()+" being wielded by <S-NAME> is destroyed!^?"));
+					msg.addTrailerMsg(CMClass.getMsg(((MOB)owner()),null,null,CMMsg.MSG_OK_VISUAL,"^I"+name()+" is destroyed!!^?",CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_VISUAL,"^I"+name()+" being wielded by <S-NAME> is destroyed!^?"));
 					unWear();
 					destroy();
 					owner.recoverEnvStats();
@@ -188,7 +199,7 @@ public class StdWeapon extends StdItem implements Weapon
 
 				if((msg.source().isMine(this))
 				   &&(msg.source().location()!=null)
-				   &&(Sense.aliveAwakeMobile(msg.source(),true)))
+				   &&(CMLib.flags().aliveAwakeMobile(msg.source(),true)))
 				{
 					boolean recover=false;
 
@@ -249,7 +260,7 @@ public class StdWeapon extends StdItem implements Weapon
 				{
 					setAmmoRemaining(0);
 					msg.source().tell("You have no more "+ammunitionType()+".");
-					CommonMsgs.remove(msg.source(),this,false);
+					CMLib.commands().remove(msg.source(),this,false);
 					return false;
 				}
 			}
@@ -326,11 +337,11 @@ public class StdWeapon extends StdItem implements Weapon
 	}
 	public String missString()
 	{
-		return CommonStrings.standardMissString(weaponType,weaponClassification,name(),useExtendedMissString);
+		return CMLib.combat().standardMissString(weaponType,weaponClassification,name(),useExtendedMissString);
 	}
 	public String hitString(int damageAmount)
 	{
-		return CommonStrings.standardHitString(weaponClassification,damageAmount,name());
+		return CMLib.combat().standardHitString(weaponClassification,damageAmount,name());
 	}
 	public int minRange()
 	{

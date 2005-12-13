@@ -1,9 +1,21 @@
 package com.planet_ink.coffee_mud.MOBS;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+
 /* 
    Copyright 2000-2005 Bo Zimmerman
 
@@ -41,23 +53,23 @@ public class GenMob extends StdMOB
 
 	public String text()
 	{
-		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
-			miscText=CMEncoder.compressString(CoffeeMaker.getPropertiesStr(this,false));
+		if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
+			miscText=CMLib.encoder().compressString(CMLib.coffeeMaker().getPropertiesStr(this,false));
 		else
-			miscText=CoffeeMaker.getPropertiesStr(this,false).getBytes();
+			miscText=CMLib.coffeeMaker().getPropertiesStr(this,false).getBytes();
 		return super.text();
 	}
 
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		CoffeeMaker.resetGenMOB(this,newText);
+		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
 	public String getStat(String code)
-	{ return CoffeeMaker.getGenMobStat(this,code);}
+	{ return CMLib.coffeeMaker().getGenMobStat(this,code);}
 	public void setStat(String code, String val)
-	{ CoffeeMaker.setGenMobStat(this,code,val);}
-	public String[] getStatCodes(){return CoffeeMaker.GENMOBCODES;}
+	{ CMLib.coffeeMaker().setGenMobStat(this,code,val);}
+	public String[] getStatCodes(){return CMObjectBuilder.GENMOBCODES;}
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenMob)) return false;

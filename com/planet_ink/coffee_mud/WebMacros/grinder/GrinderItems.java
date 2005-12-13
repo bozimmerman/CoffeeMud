@@ -1,9 +1,20 @@
-package com.planet_ink.coffee_mud.system.http.macros.grinder;
+package com.planet_ink.coffee_mud.WebMacros.grinder;
+import com.planet_ink.coffee_mud.WebMacros.RoomData;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.system.http.macros.RoomData;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -32,7 +43,7 @@ public class GrinderItems
 		String mobNum=httpReq.getRequestParameter("MOB");
 		String newClassID=httpReq.getRequestParameter("CLASSES");
 
-		CoffeeUtensils.resetRoom(R);
+		CMLib.utensils().resetRoom(R);
 
 		Item I=null;
 		MOB M=null;
@@ -147,7 +158,7 @@ public class GrinderItems
 			case 9: // is generic
 				break;
 			case 10: // isreadable
-				Sense.setReadable(I,old.equals("on"));
+				CMLib.flags().setReadable(I,old.equals("on"));
 				break;
 			case 11: // readable text
 				if(!(I instanceof Ammunition))
@@ -225,13 +236,13 @@ public class GrinderItems
 				I.setSecretIdentity(old);
 				break;
 			case 29: // is gettable
-				Sense.setGettable(I,old.equals("on"));
+				CMLib.flags().setGettable(I,old.equals("on"));
 				break;
 			case 30: // is removable
-				Sense.setRemovable(I,old.equals("on"));
+				CMLib.flags().setRemovable(I,old.equals("on"));
 				break;
 			case 31: // is droppable
-				Sense.setDroppable(I,old.equals("on"));
+				CMLib.flags().setDroppable(I,old.equals("on"));
 				break;
 			case 32: // is two handed
 				if((I instanceof Weapon)||(I instanceof Armor))
@@ -270,7 +281,7 @@ public class GrinderItems
 			case 39: // is map
 				break;
 			case 40: // map areas
-				if(I instanceof com.planet_ink.coffee_mud.interfaces.Map)
+				if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.Map)
 				{
 					if(httpReq.isRequestParameter("MAPAREAS"))
 					{
@@ -282,7 +293,7 @@ public class GrinderItems
 								break;
 					}
 					old=old+";";
-					Sense.setReadable(I,false);
+					CMLib.flags().setReadable(I,false);
 					I.setReadableText(old);
 				}
 				break;
@@ -507,7 +518,7 @@ public class GrinderItems
 		}
 		if(M==null)
 		{
-			CMClass.DBEngine().DBUpdateItems(R);
+			CMLib.database().DBUpdateItems(R);
 			httpReq.addRequestParameters("ITEM",RoomData.getItemCode(R,I));
 			R.startItemRejuv();
 		}
@@ -521,7 +532,7 @@ public class GrinderItems
 			}
 			else
 				I.wearAt(Item.INVENTORY);
-			CMClass.DBEngine().DBUpdateMOBs(R);
+			CMLib.database().DBUpdateMOBs(R);
 			httpReq.addRequestParameters("MOB",RoomData.getMOBCode(R,M));
 			httpReq.addRequestParameters("ITEM",RoomData.getItemCode(M,I));
 		}

@@ -1,4 +1,5 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -35,23 +36,18 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class SMTPclient
+public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.SMTPClient
 {
-	/** Default port number */
-    public static final int DEFAULT_PORT = 25;
-	/** network end of line */
-    protected static final String EOL = "\r\n"; 
-	/** default timeout */
-	protected static final int DEFAULT_TIMEOUT=10000;
+    public String ID(){return "SMTPclient";}
 
 	/** Reply buffer */
-    protected BufferedReader reply = null;
+    public BufferedReader reply = null;
 	/** Send writer */
-    protected PrintWriter send = null;
+    public PrintWriter send = null;
 	/** Socket to use */
-    protected Socket sock = null;
+    public Socket sock = null;
 
-	static Attribute doMXLookup( String hostName ) 
+	Attribute doMXLookup( String hostName ) 
 	{
 		try
 		{
@@ -70,14 +66,26 @@ public class SMTPclient
 		return null;
 	}
   
+	public SMTPClient getClient(String hostid, int port) 
+        throws UnknownHostException,IOException 
+    {
+        return new SMTPclient(hostid,port);
+    }
+    public SMTPClient getClient(String emailAddress) 
+        throws IOException, BadEmailAddressException 
+    {
+        return new SMTPclient(emailAddress);
+    }
+    
     /**
      *   Create a SMTP object pointing to the specified host
      *   @param hostid The host to connect to.
      *   @exception UnknownHostException
      *   @exception IOException
      */
-    public SMTPclient() throws UnknownHostException, IOException {
-        this("127.0.0.1", DEFAULT_PORT);
+    public SMTPclient()
+    {
+        super();
     }
 
 	/** Main constructor that initialized  internal structures*/
@@ -161,7 +169,7 @@ public class SMTPclient
 		if(!connected) throw new IOException("Unable to connect to '"+domain+"'.");
 	}
 	
-	public static boolean emailIfPossible(String SMTPServerName, 
+	public boolean emailIfPossible(String SMTPServerName, 
 	        						     String from,
 	        						     String replyTo,
 	        						     String to,
@@ -249,7 +257,7 @@ public class SMTPclient
 		if (!rstr.startsWith("354")) throw new ProtocolException(rstr);
 		send.print("MIME-Version: 1.0");
 		send.print(EOL);
-		send.print("Date: " + new IQCalendar().d2SString());
+		send.print("Date: " + CMLib.time().date2SecondsString(System.currentTimeMillis()));
 		send.print(EOL);
 		send.print("From: " + froaddress);
 		send.print(EOL);
@@ -264,7 +272,7 @@ public class SMTPclient
 
 		// Create Date - we'll cheat by assuming that local clock is right
 
-		send.print("Date: " + msgDateFormat(IQCalendar.getIQInstance()));
+		send.print("Date: " + CMLib.time().smtpDateFormat(System.currentTimeMillis()));
 		send.print(EOL);
 		send.flush();
 
@@ -380,59 +388,9 @@ public class SMTPclient
 	* @param NA
 	* @return NA
 	*/
-	protected void finalize() throws Throwable {
+	public void finalize() throws Throwable {
         this.close();
         super.finalize();
     }
 
-	/**
-	* format the date
-	* 
-	* <br><br><b>Usage:</b>  msgDateFormat(IQCalendar.getIQInstance())
-	* @param NA
-	* @return NA
-	*/
-    private String msgDateFormat(IQCalendar senddate) {
-        String formatted = "hold";
-
-        String Day[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-        String Month[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"};
-		int dow=senddate.get(IQCalendar.DAY_OF_WEEK)-1;
-		int date=senddate.get(IQCalendar.DAY_OF_MONTH);
-		int m=senddate.get(IQCalendar.MONTH);
-		int y=senddate.get(IQCalendar.YEAR);
-		int h=senddate.get(IQCalendar.HOUR_OF_DAY);
-		int min=senddate.get(IQCalendar.MINUTE);
-		int s=senddate.get(IQCalendar.SECOND);
-		int zof=senddate.get(IQCalendar.ZONE_OFFSET);
-		int dof=senddate.get(IQCalendar.DST_OFFSET);
-
-        formatted = Day[dow] + ", ";
-        formatted = formatted + String.valueOf(date) + " ";
-        formatted = formatted + Month[m] + " ";
-        formatted = formatted + String.valueOf(y) + " ";
-        if (h < 10) formatted = formatted + "0";
-        formatted = formatted + String.valueOf(h) + ":";
-        if (min < 10) formatted = formatted + "0";
-        formatted = formatted + String.valueOf(min) + ":";
-        if (s < 10) formatted = formatted + "0";
-        formatted = formatted + String.valueOf(s) + " ";
-        if ((zof + dof) < 0)
-            formatted = formatted + "-";
-        else
-            formatted = formatted + "+";
-		
-		zof=Math.round(zof/1000); // now in seconds
-		zof=Math.round(zof/60); // now in minutes
-		
-		dof=Math.round(dof/1000); // now in seconds
-		dof=Math.round(dof/60); // now in minutes
-		
-        if ((Math.abs(zof + dof)/60) < 10) formatted = formatted + "0";
-        formatted = formatted + String.valueOf(Math.abs(zof + dof)/60);
-        if ((Math.abs(zof + dof)%60) < 10) formatted = formatted + "0";
-        formatted = formatted + String.valueOf(Math.abs(zof + dof)%60);
-
-        return formatted;
-    }
 }

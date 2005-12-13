@@ -1,8 +1,19 @@
-package com.planet_ink.coffee_mud.system.http.macros.grinder;
+package com.planet_ink.coffee_mud.WebMacros.grinder;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -157,7 +168,7 @@ public class GrinderExits
 		if(!E.hasADoor())
 			E.setDoorsNLocks(false,true,false,false,false,false);
 				
-		CMClass.DBEngine().DBUpdateExits(R);
+		CMLib.database().DBUpdateExits(R);
 		String makeSame=httpReq.getRequestParameter("MAKESAME");
 		if((makeSame!=null)&&(makeSame.equalsIgnoreCase("on")))
 		{
@@ -171,7 +182,7 @@ public class GrinderExits
 				E2=(Exit)E.copyOf();
 				E2.setDisplayText(oldE2.displayText());
 				R2.rawExits()[Directions.getOpDirectionCode(dir)]=E2;
-				CMClass.DBEngine().DBUpdateExits(R2);
+				CMLib.database().DBUpdateExits(R2);
 				R.getArea().fillInAreaRoom(R2);
 			}
 			R.getArea().fillInAreaRoom(R);
@@ -182,7 +193,7 @@ public class GrinderExits
 	{
 		R.rawDoors()[dir]=null;
 		R.rawExits()[dir]=null;
-		CMClass.DBEngine().DBUpdateExits(R);
+		CMLib.database().DBUpdateExits(R);
 		if(R instanceof GridLocale)
 			((GridLocale)R).buildGrid();
 		return "";
@@ -205,8 +216,8 @@ public class GrinderExits
 		if(R2.rawExits()[dir2]==null)
 			R2.rawExits()[dir2]=CMClass.getExit("StdOpenDoorway");
 		
-		CMClass.DBEngine().DBUpdateExits(R);
-		CMClass.DBEngine().DBUpdateExits(R2);
+		CMLib.database().DBUpdateExits(R);
+		CMLib.database().DBUpdateExits(R2);
 			
 		R.getArea().fillInAreaRoom(R);
 		R.getArea().fillInAreaRoom(R2);

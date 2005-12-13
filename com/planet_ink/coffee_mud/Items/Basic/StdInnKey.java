@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Items.Basic;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -79,7 +90,7 @@ public class StdInnKey extends StdKey implements InnKey
 		&&(msg.target()==myShopkeeper)
 		&&(msg.tool()==this))
 		{
-			CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_ITEM_BOUNCEBACK);
+			CMLib.threads().deleteTick(this,MudHost.TICK_ITEM_BOUNCEBACK);
 			myShopkeeper.addStoreInventory(this); //makes a copy
 			destroy();
 		}
@@ -96,7 +107,7 @@ public class StdInnKey extends StdKey implements InnKey
 		&&(msg.target()!=myShopkeeper)
 		&&(msg.tool()==this))
 		{
-			CommonMsgs.say((MOB)msg.target(),msg.source(),"I'm not interested.",false,false);
+			CMLib.commands().say((MOB)msg.target(),msg.source(),"I'm not interested.",false,false);
 			return false;
 		}
 		else
@@ -104,7 +115,7 @@ public class StdInnKey extends StdKey implements InnKey
 		&&(myShopkeeper!=null)
 		&&(msg.tool()==myShopkeeper)
 		&&(msg.target()==this))
-			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_ITEM_BOUNCEBACK,CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY));
+			CMLib.threads().startTickDown(this,MudHost.TICK_ITEM_BOUNCEBACK,CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
 		return true;
 	}
 }

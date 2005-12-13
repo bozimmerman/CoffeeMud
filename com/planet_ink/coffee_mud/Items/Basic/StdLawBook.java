@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Items.Basic;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 import java.io.ByteArrayInputStream;
@@ -57,20 +68,20 @@ public class StdLawBook extends StdItem
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_READ:
-			if(!Sense.canBeSeenBy(this,mob))
+			if(!CMLib.flags().canBeSeenBy(this,mob))
 				mob.tell("You can't see that!");
 			else
 			if(!mob.isMonster())
 			{
-				Area A=CMMap.getArea(readableText());
-				Behavior B=CoffeeUtensils.getLegalBehavior(A);
+				Area A=CMLib.map().getArea(readableText());
+				Behavior B=CMLib.utensils().getLegalBehavior(A);
 				if(B==null)
 				{
 					msg.source().tell("The pages appear blank, and damaged.");
 					return;
 				}
 				Vector VB=new Vector();
-				Area A2=CoffeeUtensils.getLegalObject(A);
+				Area A2=CMLib.utensils().getLegalObject(A);
 				VB.addElement(new Integer(Law.MOD_LEGALINFO));
 				B.modifyBehavior(A2,mob,VB);
 				Law theLaw=(Law)VB.firstElement();
@@ -93,7 +104,7 @@ public class StdLawBook extends StdItem
 					if((clanID.length()>0)
 					&&(mob.getClanID().equals(clanID)))
 					{
-						Clan C=Clans.getClan(clanID);
+						Clan C=CMLib.clans().getClan(clanID);
 						if((C!=null)&&(C.allowedToDoThis(mob,Clan.FUNC_CLANCANORDERCONQUERED)==1))
 							allowedToModify=true;
 					}
@@ -142,8 +153,8 @@ public class StdLawBook extends StdItem
 		case CMMsg.TYP_WRITE:
 			try
 			{
-				Area A=CMMap.getArea(readableText());
-				Area A2=CoffeeUtensils.getLegalObject(A);
+				Area A=CMLib.map().getArea(readableText());
+				Area A2=CMLib.utensils().getLegalObject(A);
 				if(A2==null)
 				{
 					msg.source().tell("The pages appear blank, and too damaged to write on.");
@@ -372,7 +383,7 @@ public class StdLawBook extends StdItem
                                     switch(Law.ACTIONMASK_CODES[selectedMask])
                                     {
                                     case Law.ACTIONMASK_DETAIN:
-                                        if(!CoffeeUtensils.getLegalObject(A).inMetroArea(mob.location().getArea()))
+                                        if(!CMLib.utensils().getLegalObject(A).inMetroArea(mob.location().getArea()))
                                         {
                                             mob.tell("You can not add this room as a detention center, as it is not in the area.");
                                             abort=true;
@@ -387,7 +398,7 @@ public class StdLawBook extends StdItem
                                                 abort=true;
                                             }
                                             else
-                                                parm=CMMap.getExtendedRoomID(mob.location())+","+time;
+                                                parm=CMLib.map().getExtendedRoomID(mob.location())+","+time;
                                         }
                                         else
                                             abort=true;
@@ -727,8 +738,8 @@ public class StdLawBook extends StdItem
 				if(key.startsWith("$")) continue;
 				Ability AB=CMClass.getAbility(key);
 				if(((AB==null)
-                    &&(Sense.getAbilityType(key)<0)
-                    &&(Sense.getAbilityDomain(key)<0))
+                    &&(CMLib.flags().getAbilityType(key)<0)
+                    &&(CMLib.flags().getAbilityDomain(key)<0))
                 ||(set==null)
                 ||(set.length<Law.BIT_NUMBITS)) 
                     continue;
@@ -760,8 +771,8 @@ public class StdLawBook extends StdItem
 					Ability AB=CMClass.findAbility(s);
                     if(AB!=null) s=AB.ID();
 					if((AB==null)
-                    &&(Sense.getAbilityType(s)<0)
-                    &&(Sense.getAbilityDomain(s)<0))
+                    &&(CMLib.flags().getAbilityType(s)<0)
+                    &&(CMLib.flags().getAbilityDomain(s)<0))
 						mob.tell("That skill name or skill class is unknown.");
 					else
 					if(filteredTable.containsKey(s.toUpperCase()))
@@ -854,7 +865,7 @@ public class StdLawBook extends StdItem
 					str.append("Any (*)");
 				else
 				{
-					Room R=CMMap.getRoom(room);
+					Room R=CMLib.map().getRoom(room);
 					if(R==null)
 						str.append("Unknown");
 					else
@@ -919,7 +930,7 @@ public class StdLawBook extends StdItem
 			case 5:
 				{
 				    String room2="/";
-					while((room2.equals("/"))||(!room2.equals("*"))&&(room2.length()>0)&&(CMMap.getRoom(room2)==null))
+					while((room2.equals("/"))||(!room2.equals("*"))&&(room2.length()>0)&&(CMLib.map().getRoom(room2)==null))
 					    room2=mob.session().prompt("Enter a new room ID (RETURN="+room+", *=any): ",room);
 					String item2=mob.session().prompt("Enter an optional container name (RETURN="+item+"): ",item);
 					if((!room.equalsIgnoreCase(room2))||(!item.equalsIgnoreCase(item2)))
@@ -950,8 +961,8 @@ public class StdLawBook extends StdItem
 				if(!key.startsWith("$")) continue;
 				Ability AB=CMClass.getAbility(key.substring(1));
 				if(((AB==null)
-                    &&(Sense.getAbilityType(key.substring(1))<0)
-                    &&(Sense.getAbilityDomain(key.substring(1))<0))
+                    &&(CMLib.flags().getAbilityType(key.substring(1))<0)
+                    &&(CMLib.flags().getAbilityDomain(key.substring(1))<0))
                 ||(set==null)
                 ||(set.length<Law.BIT_NUMBITS)) continue;
 				filteredTable.put(key,set);
@@ -982,8 +993,8 @@ public class StdLawBook extends StdItem
 					Ability AB=CMClass.findAbility(s);
                     if(AB!=null)s=AB.ID();
 					if((AB==null)
-                    &&(Sense.getAbilityType(s)<0)
-                    &&(Sense.getAbilityDomain(s)<0))
+                    &&(CMLib.flags().getAbilityType(s)<0)
+                    &&(CMLib.flags().getAbilityDomain(s)<0))
 						mob.tell("That skill name or skill class is unknown.");
 					else
 					if(filteredTable.containsKey("$"+s.toUpperCase()))
@@ -1125,7 +1136,7 @@ public class StdLawBook extends StdItem
 			{
 				String s=(String)V.elementAt(v);
 				highest++;
-				Room R=CMMap.getRoom(s);
+				Room R=CMLib.map().getRoom(s);
 				if(R!=null)
 					str.append((5+v)+". RELEASE ROOM: "+R.displayText()+"\n\r");
 				else
@@ -1138,12 +1149,12 @@ public class StdLawBook extends StdItem
 			boolean changed=false;
 			if(s.equalsIgnoreCase("A"))
 			{
-				if(CoffeeUtensils.getLegalObject(A).inMetroArea(mob.location().getArea()))
+				if(CMLib.utensils().getLegalObject(A).inMetroArea(mob.location().getArea()))
 					mob.tell("You can not add this room as a release room, as it is not in the area.");
 				else
 				if(mob.session().confirm("Add this room as a new release room (y/N)? ","N"))
 				{
-					V.addElement(CMMap.getExtendedRoomID(mob.location()));
+					V.addElement(CMLib.map().getExtendedRoomID(mob.location()));
 					changed=true;
 				}
 			}
@@ -1213,7 +1224,7 @@ public class StdLawBook extends StdItem
 			{
 				String s=(String)V.elementAt(v);
 				highest++;
-				Room R=CMMap.getRoom(s);
+				Room R=CMLib.map().getRoom(s);
 				if(R!=null)
 					str.append((5+v)+". JAIL ROOM: "+R.displayText()+"\n\r");
 				else
@@ -1226,12 +1237,12 @@ public class StdLawBook extends StdItem
 			boolean changed=false;
 			if(s.equalsIgnoreCase("A"))
 			{
-				if(!CoffeeUtensils.getLegalObject(A).inMetroArea(mob.location().getArea()))
+				if(!CMLib.utensils().getLegalObject(A).inMetroArea(mob.location().getArea()))
 					mob.tell("You can not add this room as a jail, as it is not in the area.");
 				else
 				if(mob.session().confirm("Add this room as a new jail room (y/N)? ","N"))
 				{
-					V.addElement(CMMap.getExtendedRoomID(mob.location()));
+					V.addElement(CMLib.map().getExtendedRoomID(mob.location()));
 					changed=true;
 				}
 			}
@@ -1287,7 +1298,7 @@ public class StdLawBook extends StdItem
 		mob.tell(getFromTOC("P7"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while(true)
 		{
-			mob.tell("1. Trespassers : "+MUDZapper.zapperDesc(theLaw.getInternalStr("TRESPASSERS")));
+			mob.tell("1. Trespassers : "+CMLib.masking().maskDesc(theLaw.getInternalStr("TRESPASSERS")));
 			mob.tell("2. Law         : "+shortLawDesc((String[])theLaw.basicCrimes().get("TRESPASSING")));
 			if(!theLaw.hasModifiableLaws())
 				return;
@@ -1302,7 +1313,7 @@ public class StdLawBook extends StdItem
 				{
 					s=mob.session().prompt("Enter a new mask, ? for help, or RETURN=["+theLaw.getInternalStr("TRESPASSERS")+"]\n\r: ",theLaw.getInternalStr("TRESPASSERS"));
 					if(s.trim().equals("?"))
-						mob.tell(MUDZapper.zapperInstructions("\n\r","arrests"));
+						mob.tell(CMLib.masking().maskHelp("\n\r","arrests"));
 					else
 					if(!s.equals(theLaw.getInternalStr("TRESPASSERS")))
 					{
@@ -1338,7 +1349,7 @@ public class StdLawBook extends StdItem
 	{
 		if(mob.session()==null) return;
 		mob.tell(getFromTOC("P3"+(theLaw.hasModifiableLaws()?"MOD":"")));
-		mob.tell("Protected victims: "+MUDZapper.zapperDesc(theLaw.getInternalStr("PROTECTED")));
+		mob.tell("Protected victims: "+CMLib.masking().maskDesc(theLaw.getInternalStr("PROTECTED")));
 		if(theLaw.hasModifiableLaws())
 		{
 			String s="?";
@@ -1346,7 +1357,7 @@ public class StdLawBook extends StdItem
 			{
 				s=mob.session().prompt("Enter a new mask, ? for help, or RETURN=["+theLaw.getInternalStr("PROTECTED")+"]\n\r: ",theLaw.getInternalStr("PROTECTED"));
 				if(s.trim().equals("?"))
-					mob.tell(MUDZapper.zapperInstructions("\n\r","protects"));
+					mob.tell(CMLib.masking().maskHelp("\n\r","protects"));
 				else
 				if(!s.equals(theLaw.getInternalStr("PROTECTED")))
 				{

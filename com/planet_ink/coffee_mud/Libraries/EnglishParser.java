@@ -1,6 +1,7 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -32,14 +33,11 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class EnglishParser extends Scriptable
+public class EnglishParser extends StdLibrary implements EnglishParsing
 {
-	protected EnglishParser(){};
-    public static final int FLAG_STR=0;
-    public static final int FLAG_DOT=1;
-    public static final int FLAG_ALL=2;
+    public String ID(){return "EnglishParser";}
     
-    public static String cleanArticles(String s)
+    public String cleanArticles(String s)
     {
         String[] articles={"a","an","all of","some one","a pair of","one of","all","the","some"};
         boolean didSomething=true;
@@ -58,7 +56,7 @@ public class EnglishParser extends Scriptable
         return s;
     }
 
-	public static Object findCommand(MOB mob, Vector commands)
+	public Object findCommand(MOB mob, Vector commands)
 	{
 		if((mob==null)
 		||(commands==null)
@@ -92,27 +90,27 @@ public class EnglishParser extends Scriptable
 						return A;
 		}
 
-		Social social=Socials.FetchSocial(commands,true);
+		Social social=CMLib.socials().FetchSocial(commands,true);
 		if(social!=null) return social;
 
-		for(int c=0;c<CMChannels.getNumChannels();c++)
+		for(int c=0;c<CMLib.channels().getNumChannels();c++)
 		{
-			if(CMChannels.getChannelName(c).equalsIgnoreCase(firstWord))
+			if(CMLib.channels().getChannelName(c).equalsIgnoreCase(firstWord))
 			{
 				C=CMClass.getCommand("Channel");
 				if((C!=null)&&(C.securityCheck(mob))) return C;
 			}
 			else
-			if(("NO"+CMChannels.getChannelName(c)).equalsIgnoreCase(firstWord))
+			if(("NO"+CMLib.channels().getChannelName(c)).equalsIgnoreCase(firstWord))
 			{
 				C=CMClass.getCommand("NoChannel");
 				if((C!=null)&&(C.securityCheck(mob))) return C;
 			}
 		}
 		
-        for(int c=0;c<CMChannels.getNumCommandJournals();c++)
+        for(int c=0;c<CMLib.journals().getNumCommandJournals();c++)
         {
-            if(CMChannels.getCommandJournalName(c).equalsIgnoreCase(firstWord))
+            if(CMLib.journals().getCommandJournalName(c).equalsIgnoreCase(firstWord))
             {
                 C=CMClass.getCommand("CommandJournal");
                 if((C!=null)&&(C.securityCheck(mob))) return C;
@@ -139,33 +137,33 @@ public class EnglishParser extends Scriptable
 					}
 		}
 
-		social=Socials.FetchSocial(commands,false);
+		social=CMLib.socials().FetchSocial(commands,false);
 		if(social!=null)
 		{
 			commands.setElementAt(social.ID(),0);
 			return social;
 		}
 		
-		for(int c=0;c<CMChannels.getNumChannels();c++)
+		for(int c=0;c<CMLib.channels().getNumChannels();c++)
 		{
-			if(CMChannels.getChannelName(c).startsWith(firstWord))
+			if(CMLib.channels().getChannelName(c).startsWith(firstWord))
 			{
-				commands.setElementAt(CMChannels.getChannelName(c),0);
+				commands.setElementAt(CMLib.channels().getChannelName(c),0);
 				C=CMClass.getCommand("Channel");
 				if((C!=null)&&(C.securityCheck(mob))) return C;
 			}
 			else
-			if(("NO"+CMChannels.getChannelName(c)).startsWith(firstWord))
+			if(("NO"+CMLib.channels().getChannelName(c)).startsWith(firstWord))
 			{
-				commands.setElementAt("NO"+CMChannels.getChannelName(c),0);
+				commands.setElementAt("NO"+CMLib.channels().getChannelName(c),0);
 				C=CMClass.getCommand("NoChannel");
 				if((C!=null)&&(C.securityCheck(mob))) return C;
 			}
 		}
         
-        for(int c=0;c<CMChannels.getNumCommandJournals();c++)
+        for(int c=0;c<CMLib.journals().getNumCommandJournals();c++)
         {
-            if(CMChannels.getCommandJournalName(c).startsWith(firstWord))
+            if(CMLib.journals().getCommandJournalName(c).startsWith(firstWord))
             {
                 C=CMClass.getCommand("CommandJournal");
                 if((C!=null)&&(C.securityCheck(mob))) return C;
@@ -174,7 +172,7 @@ public class EnglishParser extends Scriptable
 		return null;
 	}
 
-	private static boolean evokedBy(Ability thisAbility, String thisWord)
+	public boolean evokedBy(Ability thisAbility, String thisWord)
 	{
 		for(int i=0;i<thisAbility.triggerStrings().length;i++)
 		{
@@ -184,7 +182,7 @@ public class EnglishParser extends Scriptable
 		return false;
 	}
 
-	private static boolean evokedBy(Ability thisAbility, String thisWord, String secondWord)
+	public boolean evokedBy(Ability thisAbility, String thisWord, String secondWord)
 	{
 		for(int i=0;i<thisAbility.triggerStrings().length;i++)
 		{
@@ -197,7 +195,7 @@ public class EnglishParser extends Scriptable
 		return false;
 	}
 
-	public static Ability getToEvoke(MOB mob, Vector commands)
+	public Ability getToEvoke(MOB mob, Vector commands)
 	{
 		String evokeWord=((String)commands.elementAt(0)).toUpperCase();
 
@@ -305,7 +303,7 @@ public class EnglishParser extends Scriptable
 		return evokableAbility;
 	}
 
-    public static boolean preEvoke(MOB mob, Vector commands)
+    public boolean preEvoke(MOB mob, Vector commands)
     {
         commands=(Vector)commands.clone();
         Ability evokableAbility=getToEvoke(mob,commands);
@@ -314,15 +312,15 @@ public class EnglishParser extends Scriptable
             mob.tell(getScr("AbilityEvoker","evokeerr1"));
             return false;
         }
-        if((CMAble.qualifyingLevel(mob,evokableAbility)>=0)
-        &&(!CMAble.qualifiesByLevel(mob,evokableAbility)))
+        if((CMLib.ableMapper().qualifyingLevel(mob,evokableAbility)>=0)
+        &&(!CMLib.ableMapper().qualifiesByLevel(mob,evokableAbility)))
         {
             mob.tell(getScr("AbilityEvoker","evokeerr2"));
             return false;
         }
         return evokableAbility.preInvoke(mob,commands,null,false,0);
     }
-	public static void evoke(MOB mob, Vector commands)
+	public void evoke(MOB mob, Vector commands)
 	{
 		Ability evokableAbility=getToEvoke(mob,commands);
 		if(evokableAbility==null)
@@ -330,8 +328,8 @@ public class EnglishParser extends Scriptable
 			mob.tell(getScr("AbilityEvoker","evokeerr1"));
 			return;
 		}
-		if((CMAble.qualifyingLevel(mob,evokableAbility)>=0)
-		&&(!CMAble.qualifiesByLevel(mob,evokableAbility)))
+		if((CMLib.ableMapper().qualifyingLevel(mob,evokableAbility)>=0)
+		&&(!CMLib.ableMapper().qualifiesByLevel(mob,evokableAbility)))
 		{
 			mob.tell(getScr("AbilityEvoker","evokeerr2"));
 			return;
@@ -339,7 +337,7 @@ public class EnglishParser extends Scriptable
 		evokableAbility.invoke(mob,commands,null,false,0);
 	}
 
-	public static boolean containsString(String toSrchStr, String srchStr)
+	public boolean containsString(String toSrchStr, String srchStr)
 	{
 		if(srchStr.equalsIgnoreCase("all")) return true;
 		if(srchStr.equalsIgnoreCase(toSrchStr)) return true;
@@ -422,7 +420,7 @@ public class EnglishParser extends Scriptable
 		return found;
 	}
 	
-	public static String bumpDotNumber(String srchStr)
+	public String bumpDotNumber(String srchStr)
 	{
 		Object[] flags=fetchFlags(srchStr);
 		if(flags==null) return srchStr;
@@ -433,7 +431,7 @@ public class EnglishParser extends Scriptable
 		return (((Integer)flags[FLAG_DOT]).intValue()+1)+"."+((String)flags[FLAG_STR]);
 	}
 	
-	public static Object[] fetchFlags(String srchStr)
+	public Object[] fetchFlags(String srchStr)
 	{
 		if(srchStr.length()==0) return null;
 		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
@@ -475,7 +473,7 @@ public class EnglishParser extends Scriptable
 		return flags;
 	}
 
-	public static Environmental fetchEnvironmental(Vector list, String srchStr, boolean exactOnly)
+	public Environmental fetchEnvironmental(Vector list, String srchStr, boolean exactOnly)
 	{
 		Object[] flags=fetchFlags(srchStr);
 		if(flags==null) return null;
@@ -534,7 +532,7 @@ public class EnglishParser extends Scriptable
 		return null;
 	}
 
-	public static Environmental fetchEnvironmental(Hashtable list, String srchStr, boolean exactOnly)
+	public Environmental fetchEnvironmental(Hashtable list, String srchStr, boolean exactOnly)
 	{
 		Object[] flags=fetchFlags(srchStr);
 		if(flags==null) return null;
@@ -581,7 +579,7 @@ public class EnglishParser extends Scriptable
 		return null;
 	}
 
-	public static Environmental fetchEnvironmental(Environmental[] list, String srchStr, boolean exactOnly)
+	public Environmental fetchEnvironmental(Environmental[] list, String srchStr, boolean exactOnly)
 	{
 		Object[] flags=fetchFlags(srchStr);
 		if(flags==null) return null;
@@ -629,7 +627,7 @@ public class EnglishParser extends Scriptable
 		return null;
 	}
 
-	public static Item fetchAvailableItem(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
+	public Item fetchAvailableItem(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
 	{
 		Object[] flags=fetchFlags(srchStr);
 		if(flags==null) return null;
@@ -697,7 +695,7 @@ public class EnglishParser extends Scriptable
 		return null;
 	}
 
-	public static Environmental fetchAvailable(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
+	public Environmental fetchAvailable(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
 	{
 		Object[] flags=fetchFlags(srchStr);
 		if(flags==null) return null;
@@ -797,7 +795,7 @@ public class EnglishParser extends Scriptable
 		return null;
 	}
 
-	public static Environmental parseShopkeeper(MOB mob, Vector commands, String error)
+	public Environmental parseShopkeeper(MOB mob, Vector commands, String error)
 	{
 		if(commands.size()==0)
 		{
@@ -820,12 +818,12 @@ public class EnglishParser extends Scriptable
 				return null;
 			}
             String what=Util.combine(commands,0);
-            Environmental shopkeeper=EnglishParser.fetchEnvironmental(V,what,false);
+            Environmental shopkeeper=fetchEnvironmental(V,what,false);
             if((shopkeeper==null)&&(what.equals("shop")||what.equals("the shop")))
                 for(int v=0;v<V.size();v++)
                     if(V.elementAt(v) instanceof Area)
                     { shopkeeper=(Environmental)V.elementAt(v); break;}
-			if((shopkeeper!=null)&&(CMLib.coffeeShops().getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
+			if((shopkeeper!=null)&&(CMLib.coffeeShops().getShopKeeper(shopkeeper)!=null)&&(CMLib.flags().canBeSeenBy(shopkeeper,mob)))
 				commands.removeElementAt(commands.size()-1);
 			else
 			{
@@ -838,7 +836,7 @@ public class EnglishParser extends Scriptable
 		if(commands.size()>1)
 		{
 			MOB M=mob.location().fetchInhabitant((String)commands.lastElement());
-			if((M!=null)&&(CMLib.coffeeShops().getShopKeeper(M)!=null)&&(Sense.canBeSeenBy(M,mob)))
+			if((M!=null)&&(CMLib.coffeeShops().getShopKeeper(M)!=null)&&(CMLib.flags().canBeSeenBy(M,mob)))
 			{
 				shopkeeper=M;
 				commands.removeElementAt(commands.size()-1);
@@ -847,7 +845,7 @@ public class EnglishParser extends Scriptable
 		return shopkeeper;
 	}
 	
-	public static Vector fetchItemList(Environmental from,
+	public Vector fetchItemList(Environmental from,
 									   MOB mob,
                                        Item container,
                                        Vector commands,
@@ -888,7 +886,7 @@ public class EnglishParser extends Scriptable
 				item=((Room)from).fetchFromMOBRoomFavorsItems(mob,container,name+addendumStr,preferredLoc);
 			if((item!=null)
 			&&(item instanceof Item)
-			&&((!visionMatters)||(Sense.canBeSeenBy(item,mob))||(item instanceof Light))
+			&&((!visionMatters)||(CMLib.flags().canBeSeenBy(item,mob))||(item instanceof Light))
 			&&(!V.contains(item)))
 				V.addElement(item);
 			if(item==null) return V;
@@ -898,7 +896,7 @@ public class EnglishParser extends Scriptable
 		return V;
 	}
 	
-	public static long numPossibleGold(Environmental mine, String itemID)
+	public long numPossibleGold(Environmental mine, String itemID)
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
 			itemID=itemID.substring(10);
@@ -932,7 +930,7 @@ public class EnglishParser extends Scriptable
 	            if(mine instanceof MOB)
 	            {
 		            Vector V2=CMLib.beanCounter().getStandardCurrency((MOB)mine,currency);
-		            double denomination=EnglishParser.matchAnyDenomination(currency,Util.combine(V,1));
+		            double denomination=matchAnyDenomination(currency,Util.combine(V,1));
 		            Coins C=null;
 		            for(int v2=0;v2<V2.size();v2++)
 		            {
@@ -949,7 +947,7 @@ public class EnglishParser extends Scriptable
 	        return 1;
 		return 0;
 	}
-	public static String numPossibleGoldCurrency(Environmental mine, String itemID)
+	public String numPossibleGoldCurrency(Environmental mine, String itemID)
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
 			itemID=itemID.substring(10);
@@ -971,18 +969,18 @@ public class EnglishParser extends Scriptable
 		}
 	    Vector V=Util.parse(itemID);
 	    if((V.size()>1)&&(Util.isInteger((String)V.firstElement())))
-	        return EnglishParser.matchAnyCurrencySet(Util.combine(V,1));
+	        return matchAnyCurrencySet(Util.combine(V,1));
 	    else
 	    if((V.size()>1)&&(((String)V.firstElement()).equalsIgnoreCase("all")))
 	        return matchAnyCurrencySet(Util.combine(V,1));
 	    else
 	    if(V.size()>0)
-	        return EnglishParser.matchAnyCurrencySet(Util.combine(V,0));
+	        return matchAnyCurrencySet(Util.combine(V,0));
 		return CMLib.beanCounter().getCurrency(mine);
 	}
     
     
-	public static double numPossibleGoldDenomination(Environmental mine, String currency, String itemID)
+	public double numPossibleGoldDenomination(Environmental mine, String currency, String itemID)
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
 			itemID=itemID.substring(10);
@@ -1010,7 +1008,7 @@ public class EnglishParser extends Scriptable
 		return 0;
 	}
 	
-	public static String matchAnyCurrencySet(String itemID)
+	public String matchAnyCurrencySet(String itemID)
 	{
 	    Vector V=CMLib.beanCounter().getAllCurrencies();
 	    Vector V2=null;
@@ -1029,7 +1027,7 @@ public class EnglishParser extends Scriptable
 	    return null;
 	}
 	
-	public static double matchAnyDenomination(String currency, String itemID)
+	public double matchAnyDenomination(String currency, String itemID)
 	{
         DVector V2=CMLib.beanCounter().getCurrencySet(currency);
         itemID=itemID.toUpperCase();
@@ -1050,7 +1048,7 @@ public class EnglishParser extends Scriptable
 	    return 0.0;
 	}
 	
-	public static Item possibleRoomGold(MOB seer, Room room, Item container, String itemID)
+	public Item possibleRoomGold(MOB seer, Room room, Item container, String itemID)
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
 			itemID=itemID.substring(10);
@@ -1076,7 +1074,7 @@ public class EnglishParser extends Scriptable
 				Item I=room.fetchItem(i);
 				if((I.container()==container)
 				&&(I instanceof Coins)
-				&&(Sense.canBeSeenBy(I,seer))
+				&&(CMLib.flags().canBeSeenBy(I,seer))
 				&&((itemID.length()==0)||(containsString(I.name(),itemID))))
 				{
 					if(((Coins)I).getNumberOfCoins()<=gold)
@@ -1097,7 +1095,7 @@ public class EnglishParser extends Scriptable
 		return null;
 	}
 
-	public static Item bestPossibleGold(MOB mob, Container container, String itemID)
+	public Item bestPossibleGold(MOB mob, Container container, String itemID)
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
 			itemID=itemID.substring(10);
@@ -1170,7 +1168,7 @@ public class EnglishParser extends Scriptable
 		return null;
 	}
 
-	public static Vector possibleContainers(MOB mob, Vector commands, int wornReqCode, boolean withContentOnly)
+	public Vector possibleContainers(MOB mob, Vector commands, int wornReqCode, boolean withContentOnly)
 	{
 		Vector V=new Vector();
 		if(commands.size()==1)
@@ -1224,7 +1222,7 @@ public class EnglishParser extends Scriptable
 			&&(thisThang instanceof Item)
 			&&(((Item)thisThang) instanceof Container)
 			&&((!withContentOnly)||(((Container)thisThang).getContents().size()>0))
-            &&(Sense.canBeSeenBy(thisThang,mob)||mob.isMine(thisThang)))
+            &&(CMLib.flags().canBeSeenBy(thisThang,mob)||mob.isMine(thisThang)))
 			{
 				V.addElement(thisThang);
 				if(V.size()==1)
@@ -1244,7 +1242,7 @@ public class EnglishParser extends Scriptable
 		return V;
 	}
 
-	public static Item possibleContainer(MOB mob, Vector commands, boolean withStuff, int wornReqCode)
+	public Item possibleContainer(MOB mob, Vector commands, boolean withStuff, int wornReqCode)
 	{
 		if(commands.size()==1)
 			return null;
@@ -1271,17 +1269,17 @@ public class EnglishParser extends Scriptable
 		return null;
 	}
 
-    public static String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp)
+    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp)
     throws IOException
     {
         return promptText(mob,oldVal,showNumber,showFlag,FieldDisp,false,false);
     }
-    public static String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK)
+    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK)
     throws IOException
     {
         return promptText(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false);
     }
-    public static String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint)
+    public String promptText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
@@ -1302,7 +1300,7 @@ public class EnglishParser extends Scriptable
             return oldVal;
         }
     }
-    public static boolean promptBool(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp)
+    public boolean promptBool(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
@@ -1315,7 +1313,7 @@ public class EnglishParser extends Scriptable
         return oldVal;
     }
     
-    public static double promptDouble(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp)
+    public double promptDouble(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
@@ -1328,7 +1326,7 @@ public class EnglishParser extends Scriptable
         return oldVal;
     }
     
-    public static int promptInteger(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp)
+    public int promptInteger(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;

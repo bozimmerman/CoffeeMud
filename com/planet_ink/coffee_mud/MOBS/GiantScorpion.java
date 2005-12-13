@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.MOBS;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -33,7 +44,7 @@ public class GiantScorpion extends StdMOB
 		Username="a Giant Scorpion";
 		setDescription("The giant scorpion has a green carapace and yellowish green legs and pincers. The segmented tail is black, with a vicious stinger on the end.");
 		setDisplayText("A mean Giant Scorpion hunts.");
-		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(2);
 
@@ -50,7 +61,7 @@ public class GiantScorpion extends StdMOB
 		baseEnvStats().setLevel(5);
 		baseEnvStats().setArmor(30);
 
-		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
         addBehavior(CMClass.getBehavior("Mobile"));
 
@@ -78,8 +89,8 @@ public class GiantScorpion extends StdMOB
 
 	protected boolean sting()
 	{
-		if (Sense.aliveAwakeMobileUnbound(this,true)&&
-			(Sense.canHear(this)||Sense.canSee(this)||Sense.canSmell(this)))
+		if (CMLib.flags().aliveAwakeMobileUnbound(this,true)&&
+			(CMLib.flags().canHear(this)||CMLib.flags().canSee(this)||CMLib.flags().canSmell(this)))
 		{
 			MOB target = getVictim();
 			// ===== if it is less than three so roll for it
@@ -89,8 +100,8 @@ public class GiantScorpion extends StdMOB
 			if (roll<20)
 			{
                 // Sting was successful
- 				FullMsg msg=new FullMsg(this, target, null, CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON, "^F^<FIGHT^><S-NAME> sting(s) <T-NAMESELF>!^</FIGHT^>^?");
-                CMColor.fixSourceFightColor(msg);
+ 				CMMsg msg=CMClass.getMsg(this, target, null, CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON, "^F^<FIGHT^><S-NAME> sting(s) <T-NAMESELF>!^</FIGHT^>^?");
+                CMLib.color().fixSourceFightColor(msg);
 				if(location().okMessage(target,msg))
 				{
 					this.location().send(target,msg);

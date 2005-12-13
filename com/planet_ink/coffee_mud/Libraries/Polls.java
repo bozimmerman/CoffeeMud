@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.DefaultPoll;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -34,15 +35,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public class Polls
+public class Polls extends StdLibrary implements PollManager
 {
-    private static Vector pollCache=null;
-    public static void unload(){pollCache=null;}
+    public String ID(){return "Polls";}
     
-    public static void addPoll(Poll P){if(getCache()!=null) getCache().addElement(P);}
-    public static void removePoll(Poll P){if(getCache()!=null) getCache().removeElement(P);}
+    public Vector pollCache=null;
+    public void unload(){pollCache=null;}
     
-    public static synchronized Vector getCache()
+    public void addPoll(Poll P){if(getCache()!=null) getCache().addElement(P);}
+    public void removePoll(Poll P){if(getCache()!=null) getCache().removeElement(P);}
+    
+    public synchronized Vector getCache()
     {
         if(CMSecurity.isDisabled("POLLCACHE")) 
             return null;
@@ -63,7 +66,7 @@ public class Polls
         }
         return pollCache;
     }
-    public static Poll getPoll(String named)
+    public Poll getPoll(String named)
     {
         Vector V=getCache();
         if(V!=null)
@@ -86,7 +89,7 @@ public class Polls
         return null;
     }
     
-    public static Poll getPoll(int x)
+    public Poll getPoll(int x)
     {
         if(x<0) return null;
         Vector V=getPollList();
@@ -99,7 +102,7 @@ public class Polls
         return null;
     }
     
-    public static Vector[] getMyPolls(MOB mob, boolean login)
+    public Vector[] getMyPolls(MOB mob, boolean login)
     {
         Vector V=getPollList();
         Vector list[]=new Vector[3];
@@ -125,7 +128,7 @@ public class Polls
         return list;
     }
     
-    public static Vector getPollList()
+    public Vector getPollList()
     {
         Vector V=getCache();
         if(V!=null) 

@@ -966,7 +966,7 @@ public class DefaultClan implements Clan
                     {
                         String s=(String)members.elementAt(j,1);
                         long lastLogin=((Long)members.elementAt(j,3)).longValue();
-                        buf.append(s+" on "+new IQCalendar(lastLogin).d2String()+"  ");
+                        buf.append(s+" on "+CMLib.time().date2String(lastLogin)+"  ");
                     }
                     Log.sysOut("Clans","Clan '"+getName()+" had the following membership: "+buf.toString());
                     return true;

@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Items.Basic;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -47,7 +58,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	public Rider fetchRider(int which){return null;}
 	public void addRider(Rider mob){}
 	public void delRider(Rider mob){}
-	public void recoverEnvStats(){Sense.setReadable(this,false); super.recoverEnvStats();}
+	public void recoverEnvStats(){CMLib.flags().setReadable(this,false); super.recoverEnvStats();}
 
 	public HashSet getRideBuddies(HashSet list){return list;}
 
@@ -132,7 +143,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 					Vector V=Util.parseSemicolons(readableText(),true);
 					Room R=null;
 					if(V.size()>0)
-						R=CMMap.getRoom((String)V.elementAt(Dice.roll(1,V.size(),-1)));
+						R=CMLib.map().getRoom((String)V.elementAt(CMLib.dice().roll(1,V.size(),-1)));
 					if(R==null) R=thisRoom;
                     Exit E=CMClass.getExit("OpenNameable");
                     E.setMiscText(name());
@@ -142,7 +153,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 					thisRoom.rawDoors()[Directions.GATE]=R;
 					thisRoom.rawExits()[Directions.GATE]=E;
                     R.rawExits()[Directions.GATE]=E;
-					MUDTracker.move(msg.source(),Directions.GATE,false,false,false);
+					CMLib.tracking().move(msg.source(),Directions.GATE,false,false,false);
 					thisRoom.rawDoors()[Directions.GATE]=oldR;
 					thisRoom.rawExits()[Directions.GATE]=oldE;
                     R.rawExits()[Directions.GATE]=oldE2;
@@ -179,7 +190,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		Vector V=Util.parseSemicolons(readableText(),true);
 		Room room=myRoom;
 		if(V.size()>0)
-		    room=CMMap.getRoom((String)V.elementAt(Dice.roll(1,V.size(),-1)));
+		    room=CMLib.map().getRoom((String)V.elementAt(CMLib.dice().roll(1,V.size(),-1)));
 		if(room==null) return empty;
 		StringBuffer Say=new StringBuffer("");
 		if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
@@ -187,22 +198,22 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 			if(room==null)
 				Say.append("^Z(null)^.^? ");
 			else
-				Say.append("^H("+CMMap.getExtendedRoomID(room)+")^? "+room.roomTitle()+Sense.colorCodes(room,mob)+" ");
+				Say.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.roomTitle()+CMLib.flags().colorCodes(room,mob)+" ");
 			Say.append("via ^H("+ID()+")^? "+(isOpen()?name():closedText()));
 		}
 		else
-		if(((Sense.canBeSeenBy(this,mob))||(isOpen()&&hasADoor()))
-		&&(Sense.isSeen(this)))
+		if(((CMLib.flags().canBeSeenBy(this,mob))||(isOpen()&&hasADoor()))
+		&&(CMLib.flags().isSeen(this)))
 			if(isOpen())
 			{
-				if((room!=null)&&(!Sense.canBeSeenBy(room,mob)))
+				if((room!=null)&&(!CMLib.flags().canBeSeenBy(room,mob)))
 					Say.append("darkness");
 				else
-					Say.append(name()+Sense.colorCodes(this,mob));
+					Say.append(name()+CMLib.flags().colorCodes(this,mob));
 			}
 			else
-			if((Sense.canBeSeenBy(this,mob))&&(closedText().trim().length()>0))
-				Say.append(closedText()+Sense.colorCodes(this,mob));
+			if((CMLib.flags().canBeSeenBy(this,mob))&&(closedText().trim().length()>0))
+				Say.append(closedText()+CMLib.flags().colorCodes(this,mob));
 		return Say;
 	}
 	

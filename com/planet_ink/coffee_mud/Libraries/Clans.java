@@ -1,5 +1,6 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -7,6 +8,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.DefaultClan;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -16,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 /**
  * <p>Portions Copyright (c) 2003 Jeremy Vyska</p>
  * <p>Portions Copyright (c) 2004 Bo Zimmerman</p>
@@ -32,11 +33,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
  * <p>See the License for the specific language governing permissions and
  * <p>limitations under the License.
  */
-public class Clans
+public class Clans extends StdLibrary implements ClanManager
 {
-	private static Hashtable all=new Hashtable();
+	public Hashtable all=new Hashtable();
 
-	public static void shutdownClans()
+    public String ID(){return "Clans";}
+	public void shutdownClans()
 	{
 		for(Enumeration e=all.elements();e.hasMoreElements();)
 		{
@@ -46,7 +48,7 @@ public class Clans
 		all.clear();
 	}
 
-    public static boolean isCommonClanRelations(String id1, String id2, int relation)
+    public boolean isCommonClanRelations(String id1, String id2, int relation)
     {
         if((id1.length()==0)||(id2.length()==0)) return relation==Clan.REL_NEUTRAL;
         Clan C1=getClan(id1);
@@ -64,12 +66,12 @@ public class Clans
             if((C!=C1)&&(C!=C2))
             {
                 if((i1!=Clan.REL_WAR)
-                &&(C1.getClanRelations(C.ID())==Clan.REL_ALLY)
-                &&(C.getClanRelations(C2.ID())==Clan.REL_WAR))
+                &&(C1.getClanRelations(C.clanID())==Clan.REL_ALLY)
+                &&(C.getClanRelations(C2.clanID())==Clan.REL_WAR))
                     i1=Clan.REL_WAR;
                 if((i2!=Clan.REL_WAR)
-                &&(C2.getClanRelations(C.ID())==Clan.REL_ALLY)
-                &&(C.getClanRelations(C1.ID())==Clan.REL_WAR))
+                &&(C2.getClanRelations(C.clanID())==Clan.REL_ALLY)
+                &&(C.getClanRelations(C1.clanID())==Clan.REL_WAR))
                     i2=Clan.REL_WAR;
             }
         }
@@ -79,7 +81,7 @@ public class Clans
         return relation==i2;
     }
     
-	public static int getClanRelations(String id1, String id2)
+	public int getClanRelations(String id1, String id2)
 	{
 		if((id1.length()==0)||(id2.length()==0)) return Clan.REL_NEUTRAL;
 		Clan C1=getClan(id1);
@@ -95,14 +97,14 @@ public class Clans
 			Clan C=(Clan)e.nextElement();
 			if((C!=C1)
 			&&(C!=C2)
-			&&(((C1.getClanRelations(C.ID())==Clan.REL_ALLY)&&(C.getClanRelations(C2.ID())==Clan.REL_WAR)))
-				||((C2.getClanRelations(C.ID())==Clan.REL_ALLY)&&(C.getClanRelations(C1.ID())==Clan.REL_WAR)))
+			&&(((C1.getClanRelations(C.clanID())==Clan.REL_ALLY)&&(C.getClanRelations(C2.clanID())==Clan.REL_WAR)))
+				||((C2.getClanRelations(C.clanID())==Clan.REL_ALLY)&&(C.getClanRelations(C1.clanID())==Clan.REL_WAR)))
 					return Clan.REL_WAR;
 		}
 		return rel;
 	}
 
-	public static Clan getClan(String id)
+	public Clan getClan(String id)
 	{
 		if(id.length()==0) return null;
 		Clan C=(Clan)all.get(id.toUpperCase());
@@ -115,7 +117,7 @@ public class Clans
         }
         return null;
 	}
-    public static Clan findClan(String id)
+    public Clan findClan(String id)
     {
         Clan C=getClan(id);
         if(C!=null) return C;
@@ -128,7 +130,7 @@ public class Clans
         return null;
     }
 
-	public static Clan getClanType(int type)
+	public Clan getClanType(int type)
 	{
 		switch(type)
 		{
@@ -139,7 +141,7 @@ public class Clans
 		}
 	}
 
-	public static int getRoleOrder(int role)
+	public int getRoleOrder(int role)
 	{
 		for(int i=0;i<Clan.POSORDER.length;i++)
 			if(Clan.POSORDER[i]==role) return i;
@@ -147,7 +149,7 @@ public class Clans
 	}
 
 
-	public static String getRoleName(int government, int role, boolean titleCase, boolean plural)
+	public String getRoleName(int government, int role, boolean titleCase, boolean plural)
 	{
 		StringBuffer roleName=new StringBuffer();
 		if((government<0)||(government>=Clan.ROL_DESCS.length))
@@ -185,27 +187,27 @@ public class Clans
 		return roleName.toString();
 	}
 
-	public static Enumeration clans()
+	public Enumeration clans()
 	{
 		return all.elements();
 	}
-	public static int size()
+	public int size()
 	{
 		return all.size();
 	}
-	public static void addClan(Clan C)
+	public void addClan(Clan C)
 	{
 		if(!CMSecurity.isDisabled("CLANTICKS"))
 			CMLib.threads().startTickDown(C,MudHost.TICK_CLAN,CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
-		all.put(C.ID().toUpperCase(),C);
+		all.put(C.clanID().toUpperCase(),C);
 	}
-	public static void removeClan(Clan C)
+	public void removeClan(Clan C)
 	{
 		CMLib.threads().deleteTick(C,MudHost.TICK_CLAN);
-		all.remove(C.ID().toUpperCase());
+		all.remove(C.clanID().toUpperCase());
 	}
 
-	public static void tickAllClans()
+	public void tickAllClans()
 	{
 		for(Enumeration e=clans();e.hasMoreElements();)
 		{
@@ -214,14 +216,16 @@ public class Clans
 		}
 	}
 	
-	public static void clanAnnounceAll(String msg)
+	public void clanAnnounceAll(String msg)
 	{
         Vector channels=CMLib.channels().getFlaggedChannelNames("CLANINFO");
         for(int i=0;i<channels.size();i++)
             CMLib.commands().channel((String)channels.elementAt(i),"ALL",msg,true);
 	}
 
-	public static String translatePrize(int trophy)
+    public int numClans(){return all.size();}
+    public Enumeration allClans(){return ((Hashtable)(all.clone())).elements();}
+	public String translatePrize(int trophy)
 	{
 	    String prizeStr="";
 	    switch(trophy)
@@ -244,7 +248,7 @@ public class Clans
         }
 	    return prizeStr;
 	}
-	public static boolean trophySystemActive()
+	public boolean trophySystemActive()
 	{
 	    return (CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA).length()>0)
 	        || (CMProps.getVar(CMProps.SYSTEM_CLANTROPCP).length()>0)

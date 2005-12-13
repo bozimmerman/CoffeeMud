@@ -1,4 +1,17 @@
-package com.planet_ink.coffee_mud.utils;
+package com.planet_ink.coffee_mud.core;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.*;
 import java.util.*;
@@ -65,7 +78,7 @@ public class Log
 	/**
 	* Reset all of the log files
 	* 
-	* <br><br><b>Usage:</b>  INI.Initialize("ON","OFF");
+	* <br><br><b>Usage:</b>  CMProps.Initialize("ON","OFF");
 	* @param NA
 	* @return NA
 	*/
@@ -248,7 +261,26 @@ public class Log
 	*/
     private static String getLogHeader(Object Obj, String Type, String Module, String Message)
     {
-        StringBuffer Header=new StringBuffer((new IQCalendar(Calendar.getInstance()).d2String()+SPACES).substring(0,20));
+        Calendar C=Calendar.getInstance();
+        String MINUTE=Integer.toString(C.get(Calendar.MINUTE)).trim();
+        if(MINUTE.length()==1) MINUTE="0"+MINUTE;
+        String AMPM="AM";
+        if(C.get(Calendar.AM_PM)==Calendar.PM) AMPM="PM";
+        int Hour=C.get(Calendar.HOUR);
+        if(Hour==0) Hour=12;
+        String Year=Integer.toString(C.get(Calendar.YEAR));
+        if(Year.length()<4)
+        {
+            if(Year.length()<2)
+                Year=("0"+Year);
+            if(Year.length()<2)
+                Year=("0"+Year);
+            int Yr=Util.s_int(Year);
+            if(Yr<50)Year="20"+Year;
+            else Year="19"+Year;
+        }
+        String date=(C.get(Calendar.MONTH)+1)+"/"+C.get(Calendar.DATE)+"/"+Year+" "+Hour+":"+MINUTE+" "+AMPM;
+        StringBuffer Header=new StringBuffer((date+SPACES).substring(0,20));
         Header.append((Type+SPACES).substring(0,6));
         Header.append((Module+SPACES).substring(0,13));
         Header.append(Message);

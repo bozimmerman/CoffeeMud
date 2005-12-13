@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Items.Basic;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -46,7 +57,7 @@ public class StdCageRideable extends StdRideable
         &&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
 			MOB mob=msg.source();
-			if(Sense.canBeSeenBy(this,mob))
+			if(CMLib.flags().canBeSeenBy(this,mob))
 			{
 				StringBuffer buf=new StringBuffer("");
 				if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
@@ -74,7 +85,7 @@ public class StdCageRideable extends StdRideable
 						if((item!=null)&&(item.container()==this))
 							newItems.addElement(item);
 					}
-					buf.append(CMLister.lister(mob,newItems,true,"CMItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
+					buf.append(CMLib.lister().lister(mob,newItems,true,"CMItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
 				}
 				else
 				if(owner instanceof Room)
@@ -87,10 +98,10 @@ public class StdCageRideable extends StdRideable
 						if((item!=null)&&(item.container()==this))
 							newItems.addElement(item);
 					}
-					buf.append(CMLister.lister(mob,newItems,true,"CRItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
+					buf.append(CMLib.lister().lister(mob,newItems,true,"CRItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
 				}
                 if(!mob.isMonster())
-                    buf.append(CommonStrings.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
+                    buf.append(CMProps.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
 				mob.tell(buf.toString());
 			}
 			else

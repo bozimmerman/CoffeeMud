@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Items.ClanItems;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -48,7 +59,7 @@ public class StdClanPamphlet extends StdClanItem
 		&&(owner() instanceof MOB)
 		&&(clanID().length()>0)
 		&&(((MOB)owner()).isMonster())
-		&&(!Sense.isAnimalIntelligence((MOB)owner()))
+		&&(!CMLib.flags().isAnimalIntelligence((MOB)owner()))
 		&&(((MOB)owner()).getStartRoom()!=null)
 		&&(((MOB)owner()).location()!=null)
 		&&(((MOB)owner()).getStartRoom().getArea()==((MOB)owner()).location().getArea()))
@@ -58,13 +69,13 @@ public class StdClanPamphlet extends StdClanItem
             if((((MOB)owner()).getClanID().length()>0)
 			||(((--tradeTime)<=0)))
 			{
-				Behavior B=CoffeeUtensils.getLegalBehavior(R);
+				Behavior B=CMLib.utensils().getLegalBehavior(R);
 				if(B!=null)
 				{
 					Vector V=new Vector();
 					V.addElement(new Integer(Law.MOD_RULINGCLAN));
 					rulingClan="";
-					if((B.modifyBehavior(CoffeeUtensils.getLegalObject(R),(MOB)owner(),V))
+					if((B.modifyBehavior(CMLib.utensils().getLegalObject(R),(MOB)owner(),V))
 					&&(V.size()>0)
 					&&(V.firstElement() instanceof String))
 						rulingClan=(String)V.firstElement();
@@ -77,28 +88,28 @@ public class StdClanPamphlet extends StdClanItem
 			if(tradeTime<=0)
 			{
 				MOB mob=(MOB)owner();
-				tradeTime=CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
+				tradeTime=CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 				if((mob.getClanID().length()==0)
 				&&(rulingClan!=null)
 				&&(rulingClan.length()>0)
                 &&(!rulingClan.equals(clanID()))
-				&&(Sense.canSpeak(mob))
-				&&(Sense.aliveAwakeMobileUnbound(mob,true))
+				&&(CMLib.flags().canSpeak(mob))
+				&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				&&(R!=null))
 				{
-					MOB M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
+					MOB M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
 					if((M!=null)
 					&&(M!=mob)
 					&&(M.isMonster())
 					&&(M.getClanID().equals(rulingClan))
-					&&(!Sense.isAnimalIntelligence(M))
-					&&(Sense.canBeSeenBy(M,mob))
-					&&(Sense.canBeHeardBy(M,mob)))
+					&&(!CMLib.flags().isAnimalIntelligence(M))
+					&&(CMLib.flags().canBeSeenBy(M,mob))
+					&&(CMLib.flags().canBeHeardBy(M,mob)))
 					{
-						CommonMsgs.say(mob,M,"Hey, take a look at this.",false,false);
+						CMLib.commands().say(mob,M,"Hey, take a look at this.",false,false);
 						ClanItem I=(ClanItem)copyOf();
-						mob.addInventory((Item)I);
-						FullMsg newMsg=new FullMsg(mob,M,I,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+						mob.addInventory(I);
+						CMMsg newMsg=CMClass.getMsg(mob,M,I,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 						if(mob.location().okMessage(mob,newMsg)&&(!((Item)I).amDestroyed()))
 							mob.location().send(mob,newMsg);
 						if(!M.isMine(I)) 

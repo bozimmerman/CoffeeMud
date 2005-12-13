@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Items.Basic;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -41,27 +52,27 @@ public class StdCoins extends StdItem implements Coins
 
 	public String Name()
 	{
-        return BeanCounter.getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins());
+        return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins());
 	}
 	public String displayText()
 	{
-        return BeanCounter.getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins())+((getNumberOfCoins()==1)?" lies here.":" lie here.");
+        return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins())+((getNumberOfCoins()==1)?" lies here.":" lie here.");
 	}
 	
 	public void setDynamicMaterial()
 	{
-	    if((EnglishParser.containsString(name(),"note"))
-	    ||(EnglishParser.containsString(name(),"bill"))
-	    ||(EnglishParser.containsString(name(),"dollar")))
+	    if((CMLib.english().containsString(name(),"note"))
+	    ||(CMLib.english().containsString(name(),"bill"))
+	    ||(CMLib.english().containsString(name(),"dollar")))
 	        setMaterial(EnvResource.RESOURCE_PAPER);
 	    else
 		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
-		    if(EnglishParser.containsString(name(),EnvResource.RESOURCE_DESCS[i]))
+		    if(CMLib.english().containsString(name(),EnvResource.RESOURCE_DESCS[i]))
 		    {
 		        setMaterial(EnvResource.RESOURCE_DATA[i][0]);
 		        break;
 		    }
-		setDescription(BeanCounter.getConvertableDescription(getCurrency(),getDenomination()));
+		setDescription(CMLib.beanCounter().getConvertableDescription(getCurrency(),getDenomination()));
 	}
 	public long getNumberOfCoins(){return envStats().ability();}
 	public void setNumberOfCoins(long number)

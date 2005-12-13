@@ -1,9 +1,21 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -48,7 +60,7 @@ public class GenBoffWeapon extends StdBoffWeapon
 
 	public String text()
 	{
-		return CoffeeMaker.getPropertiesStr(this,false);
+		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
@@ -56,15 +68,15 @@ public class GenBoffWeapon extends StdBoffWeapon
 	public void setMiscText(String newText)
 	{
 		miscText="";
-		CoffeeMaker.setPropertiesStr(this,newText,false);
+		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
 	private static String[] MYCODES={"MINRANGE","MAXRANGE","WEAPONTYPE","WEAPONCLASS",
 							  "AMMOTYPE","AMMOCAPACITY"};
 	public String getStat(String code)
 	{
-		if(CoffeeMaker.getGenItemCodeNum(code)>=0)
-			return CoffeeMaker.getGenItemStat(this,code);
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
 		case 0: return ""+minRange();
@@ -78,8 +90,8 @@ public class GenBoffWeapon extends StdBoffWeapon
 	}
 	public void setStat(String code, String val)
 	{
-		if(CoffeeMaker.getGenItemCodeNum(code)>=0)
-			CoffeeMaker.setGenItemStat(this,code,val);
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			CMLib.coffeeMaker().setGenItemStat(this,code,val);
 		else
 		switch(getCodeNum(code))
 		{
@@ -100,7 +112,7 @@ public class GenBoffWeapon extends StdBoffWeapon
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] superCodes=CoffeeMaker.GENITEMCODES;
+		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)

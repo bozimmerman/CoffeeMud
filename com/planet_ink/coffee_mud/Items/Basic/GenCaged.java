@@ -1,9 +1,21 @@
 package com.planet_ink.coffee_mud.Items.Basic;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -48,8 +60,8 @@ public class GenCaged extends GenItem implements CagedAnimal
 		baseEnvStats().setHeight(M.baseEnvStats().height());
 		StringBuffer itemstr=new StringBuffer("");
 		itemstr.append("<MOBITEM>");
-		itemstr.append(XMLManager.convertXMLtoTag("MICLASS",CMClass.className(M)));
-		itemstr.append(XMLManager.convertXMLtoTag("MIDATA",CoffeeMaker.getPropertiesStr(M,true)));
+		itemstr.append(CMLib.xml().convertXMLtoTag("MICLASS",CMClass.className(M)));
+		itemstr.append(CMLib.xml().convertXMLtoTag("MIDATA",CMLib.coffeeMaker().getPropertiesStr(M,true)));
 		itemstr.append("</MOBITEM>");
 		setCageText(itemstr.toString());
 		recoverEnvStats();
@@ -73,27 +85,27 @@ public class GenCaged extends GenItem implements CagedAnimal
 	{
 		MOB M=null;
 		if(cageText().length()==0) return M;
-		Vector buf=XMLManager.parseAllXML(cageText());
+		Vector buf=CMLib.xml().parseAllXML(cageText());
 		if(buf==null)
 		{
 			Log.errOut("Caged","Error parsing 'MOBITEM'.");
 			return M;
 		}
-		XMLManager.XMLpiece iblk=XMLManager.getPieceFromPieces(buf,"MOBITEM");
+		XMLLibrary.XMLpiece iblk=CMLib.xml().getPieceFromPieces(buf,"MOBITEM");
 		if((iblk==null)||(iblk.contents==null))
 		{
 			Log.errOut("Caged","Error parsing 'MOBITEM'.");
 			return M;
 		}
-		String itemi=XMLManager.getValFromPieces(iblk.contents,"MICLASS");
+		String itemi=CMLib.xml().getValFromPieces(iblk.contents,"MICLASS");
 		Environmental newOne=CMClass.getMOB(itemi);
-		Vector idat=XMLManager.getRealContentsFromPieces(iblk.contents,"MIDATA");
+		Vector idat=CMLib.xml().getRealContentsFromPieces(iblk.contents,"MIDATA");
 		if((idat==null)||(newOne==null)||(!(newOne instanceof MOB)))
 		{
 			Log.errOut("Caged","Error parsing 'MOBITEM' data.");
 			return M;
 		}
-		CoffeeMaker.setPropertiesStr(newOne,idat,true);
+		CMLib.coffeeMaker().setPropertiesStr(newOne,idat,true);
 		M=(MOB)newOne;
 		M.baseEnvStats().setRejuv(0);
 		M.setStartRoom(null);
@@ -102,10 +114,10 @@ public class GenCaged extends GenItem implements CagedAnimal
 		M.resetToMaxState();
 		return M;
 	}
-	public String cageText(){ return CoffeeMaker.restoreAngleBrackets(readableText());}
+	public String cageText(){ return CMLib.coffeeMaker().restoreAngleBrackets(readableText());}
 	public void setCageText(String text)
 	{
-		setReadableText(CoffeeMaker.parseOutAngleBrackets(text));
-		Sense.setReadable(this,false);
+		setReadableText(CMLib.coffeeMaker().parseOutAngleBrackets(text));
+		CMLib.flags().setReadable(this,false);
 	}
 }

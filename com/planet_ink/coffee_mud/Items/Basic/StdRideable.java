@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Items.Basic;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -225,7 +236,7 @@ public class StdRideable extends StdContainer implements Rideable
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			if(!Sense.hasSeenContents(this))
+			if(!CMLib.flags().hasSeenContents(this))
 				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
 			if((mob.isInCombat())&&(mob.rangeToTarget()==0)&&(amRiding(mob)))
 			{
@@ -243,7 +254,7 @@ public class StdRideable extends StdContainer implements Rideable
 
 	public String displayText()
 	{
- 		if((numRiders()>0)&&(stateStringSubject(this).length()>0)&&Sense.hasSeenContents(this))
+ 		if((numRiders()>0)&&(stateStringSubject(this).length()>0)&&CMLib.flags().hasSeenContents(this))
 		{
 			StringBuffer sendBack=new StringBuffer(name());
 			sendBack.append(" "+stateStringSubject(this)+" ");
@@ -405,7 +416,7 @@ public class StdRideable extends StdContainer implements Rideable
 					return false;
 				}
 				if((msg.tool() instanceof MOB)
-				&&(!Sense.isBoundOrHeld(msg.tool())))
+				&&(!CMLib.flags().isBoundOrHeld(msg.tool())))
 			    {
 					msg.source().tell(msg.tool().name()+" won't let you do that.");
 					return false;
@@ -503,7 +514,7 @@ public class StdRideable extends StdContainer implements Rideable
 						msg.source().tell("You cannot ride "+name()+" that way.");
 						return false;
 					}
-					if(Sense.isSitting(msg.source()))
+					if(CMLib.flags().isSitting(msg.source()))
 					{
 						msg.source().tell("You cannot crawl while "+stateString(msg.source())+" "+name()+".");
 						return false;
@@ -541,10 +552,10 @@ public class StdRideable extends StdContainer implements Rideable
 		&&((msg.sourceMessage()!=null)||(msg.othersMessage()!=null))
 		&&(msg.target()!=this)
 		&&(msg.tool()!=this)
-		&&((!CoffeeUtensils.reachableItem(msg.source(),msg.target()))
-			|| (!CoffeeUtensils.reachableItem(msg.source(),msg.tool()))
+		&&((!CMLib.utensils().reachableItem(msg.source(),msg.target()))
+			|| (!CMLib.utensils().reachableItem(msg.source(),msg.tool()))
 			|| ((msg.sourceMinor()==CMMsg.TYP_GIVE)&&(msg.target() instanceof MOB)&&(msg.target()!=this)&&(!amRiding((MOB)msg.target()))))
-		&&(!((msg.sourceMinor()==CMMsg.TYP_GIVE)&&(msg.target() instanceof MOB)&&(amRiding((MOB)msg.target()))&&(Sense.isStanding(msg.source())))))
+		&&(!((msg.sourceMinor()==CMMsg.TYP_GIVE)&&(msg.target() instanceof MOB)&&(amRiding((MOB)msg.target()))&&(CMLib.flags().isStanding(msg.source())))))
 		{
 		    // some of the above applies to genrideable items only
 			msg.source().tell("You can not do that while "+stateString(msg.source())+" "+name()+".");
@@ -561,8 +572,8 @@ public class StdRideable extends StdContainer implements Rideable
         case CMMsg.TYP_EXAMINE:
             if((msg.target()==this)
             &&(numRiders()>0)
-            &&(Sense.canBeSeenBy(this,msg.source())))
-                msg.addTrailerMsg(new FullMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,displayText(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+            &&(CMLib.flags().canBeSeenBy(this,msg.source())))
+                msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,displayText(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
             break;
 		case CMMsg.TYP_DISMOUNT:
 			if((msg.tool()!=null)

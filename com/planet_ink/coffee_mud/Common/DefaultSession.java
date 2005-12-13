@@ -1,12 +1,23 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Common;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.*;
 import java.util.*;
 import java.sql.*;
 import java.net.*;
 
-import com.planet_ink.coffee_mud.core.*;
-import com.planet_ink.coffee_mud.core.interfaces.*;
 
 
 /*
@@ -24,7 +35,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class TelnetSession extends Thread implements Session
+public class DefaultSession extends Thread implements Session
 {
 	private int status=0;
 	private Socket sock;
@@ -78,10 +89,19 @@ public class TelnetSession extends Thread implements Session
     private int lastColor=-1;
 	private static int sessionCounter=0;
     
-	public TelnetSession(Socket s, String introTextStr)
+    public String ID(){return "DefaultSession";}
+    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultSession();}}
+    public CMObject copyOf(){ try{ Object O=this.clone(); return (CMObject)O;}catch(Exception e){return newInstance();} }
+    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+
+    public DefaultSession()
+    {
+        super("DefaultSession."+sessionCounter);
+        ++sessionCounter;
+    }
+    
+	public void initializeSession(Socket s, String introTextStr)
 	{
-		super("TelnetSession."+sessionCounter);
-		++sessionCounter;
 		sock=s;
 		try
 		{
@@ -121,7 +141,7 @@ public class TelnetSession extends Thread implements Session
             &&((mxpSupportSet.contains("+IMAGE.URL"))
                 ||((mxpSupportSet.contains("+IMAGE"))&&(!mxpSupportSet.contains("-IMAGE.URL")))))
             { 
-                String path=CommonStrings.mxpImagePath("intro.jpg");
+                String path=CMProps.mxpImagePath("intro.jpg");
                 if(path.length()>0)
                     println("\n\r\n\r\n\r<IMAGE 'intro.jpg' URL='"+path+"' H=400 W=400>\n\r\n\r");
             }
@@ -303,7 +323,7 @@ public class TelnetSession extends Thread implements Session
 	private void errorOut(Exception t)
 	{
 		Log.errOut("Session",t);
-		Sessions.removeElement(this);
+		CMLib.sessions().removeElement(this);
 		killFlag=true;
 	}
 
@@ -354,7 +374,7 @@ public class TelnetSession extends Thread implements Session
 			else
 				lastStr=msg;
 			
-			if(pageBreak<0)	pageBreak=CommonStrings.getIntVar(CommonStrings.SYSTEMI_PAGEBREAK);
+			if(pageBreak<0)	pageBreak=CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);
 			if(pageBreak>0)
 			{
 				int lines=0;
@@ -391,32 +411,32 @@ public class TelnetSession extends Thread implements Session
 	}
 
 	public void print(String msg)
-	{ onlyPrint(CoffeeFilter.fullOutFilter(this,mob,mob,mob,null,msg,false),-1); }
+	{ onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false),-1); }
 
 	public void rawPrintln(String msg){rawPrintln(msg,-1);}
 	public void rawPrintln(String msg, int pageBreak)
 	{ if(msg==null)return; rawPrint(msg+"\n\r",pageBreak);}
 
 	public void stdPrint(String msg)
-	{ rawPrint(CoffeeFilter.fullOutFilter(this,mob,mob,mob,null,msg,false)); }
+	{ rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false)); }
 
 	public void print(Environmental src, Environmental trg, Environmental tol, String msg)
-	{ onlyPrint((CoffeeFilter.fullOutFilter(this,mob,src,trg,tol,msg,false)),-1);}
+	{ onlyPrint((CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)),-1);}
 
 	public void stdPrint(Environmental src, Environmental trg, Environmental tol, String msg)
-	{ rawPrint(CoffeeFilter.fullOutFilter(this,mob,src,trg,trg,msg,false)); }
+	{ rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,trg,msg,false)); }
 
 	public void println(String msg)
 	{ if(msg==null)return; print(msg+"\n\r");}
 
 	public void wraplessPrintln(String msg)
 	{ if(msg==null)return;
-	  onlyPrint(CoffeeFilter.fullOutFilter(this,mob,mob,mob,null,msg,true)+"\n\r",-1);
+	  onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,true)+"\n\r",-1);
 	  needPrompt=true;
 	}
 
 	public void wraplessPrint(String msg)
-	{ onlyPrint(CoffeeFilter.fullOutFilter(this,mob,mob,mob,null,msg,true),-1);
+	{ onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,true),-1);
 	  needPrompt=true;
 	}
 
@@ -424,30 +444,30 @@ public class TelnetSession extends Thread implements Session
 	{ colorOnlyPrint(msg,-1);}
 	public void colorOnlyPrintln(String msg, int pageBreak)
 	{ if(msg==null)return;
-	  onlyPrint(CoffeeFilter.colorOnlyFilter(msg,this)+"\n\r",pageBreak);
+	  onlyPrint(CMLib.coffeeFilter().colorOnlyFilter(msg,this)+"\n\r",pageBreak);
 	  needPrompt=true;
 	}
 
 	public void colorOnlyPrint(String msg)
 	{ colorOnlyPrint(msg,-1);}
 	public void colorOnlyPrint(String msg, int pageBreak)
-	{ onlyPrint(CoffeeFilter.colorOnlyFilter(msg,this),pageBreak);
+	{ onlyPrint(CMLib.coffeeFilter().colorOnlyFilter(msg,this),pageBreak);
 	  needPrompt=true;
 	}
 
 	public void stdPrintln(String msg)
 	{ if(msg==null)return;
-	  rawPrint(CoffeeFilter.fullOutFilter(this,mob,mob,mob,null,msg,false)+"\n\r");
+	  rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false)+"\n\r");
 	}
 
 	public void println(Environmental src, Environmental trg, Environmental tol, String msg)
 	{ if(msg==null)return;
-	  onlyPrint(CoffeeFilter.fullOutFilter(this,mob,src,trg,tol,msg,false)+"\n\r",-1);
+	  onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)+"\n\r",-1);
 	}
 
 	public void stdPrintln(Environmental src,Environmental trg, Environmental tol, String msg)
 	{ if(msg==null)return;
-	  rawPrint(CoffeeFilter.fullOutFilter(this,mob,src,trg,tol,msg,false)+"\n\r");
+	  rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)+"\n\r");
 	}
 
 	public void setPromptFlag(boolean truefalse)
@@ -500,7 +520,7 @@ public class TelnetSession extends Thread implements Session
 	{
 		if (confirm("\n\rQuit -- are you sure (y/N)?","N"))
 		{
-            FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_QUIT,null);
+            CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
             Room R=mob.location();
             try{
                 if((R!=null)&&(R.okMessage(mob,msg)))
@@ -520,7 +540,7 @@ public class TelnetSession extends Thread implements Session
 
 	public String[] clookup(){
 		if(clookup==null)
-			clookup=CMColor.standardColorLookups();
+			clookup=CMLib.color().standardColorLookups();
 
 		if(mob()==null) return clookup;
 		PlayerStats pstats=mob().playerStats();
@@ -531,18 +551,18 @@ public class TelnetSession extends Thread implements Session
 		if(!pstats.getColorStr().equals(lastColorStr))
 		{
 			if(pstats.getColorStr().length()==0)
-				clookup=CMColor.standardColorLookups();
+				clookup=CMLib.color().standardColorLookups();
 			else
 			{
 				String changes=pstats.getColorStr();
 				lastColorStr=changes;
-				clookup=(String[])CMColor.standardColorLookups().clone();
+				clookup=(String[])CMLib.color().standardColorLookups().clone();
 				int x=changes.indexOf("#");
 				while(x>0)
 				{
 					String sub=changes.substring(0,x);
 					changes=changes.substring(x+1);
-					clookup[sub.charAt(0)]=CMColor.translateCMCodeToANSI(sub.substring(1));
+					clookup[sub.charAt(0)]=CMLib.color().translateCMCodeToANSI(sub.substring(1));
 					x=changes.indexOf("#");
 				}
 				for(int i=0;i<clookup.length;i++)
@@ -572,7 +592,7 @@ public class TelnetSession extends Thread implements Session
 		    case '6': case '7': case '8': case '9':
 			{
                 if(clientTelnetMode(Session.TELNET_MSP))
-					return CommonStrings.getVar(CommonStrings.SYSTEM_ESC0+(c-('0')));
+					return CMProps.getVar(CMProps.SYSTEM_ESC0+(c-('0')));
 				return "";
 			}
 		    default:
@@ -702,7 +722,7 @@ public class TelnetSession extends Thread implements Session
                 else
                 if(tag.equals("SHUTDOWN"))
                 {
-                    MOB M=CMMap.getLoadPlayer((String)parts.elementAt(1));
+                    MOB M=CMLib.map().getLoadPlayer((String)parts.elementAt(1));
                     if((M!=null)&&(M.playerStats().password().equalsIgnoreCase((String)parts.elementAt(2)))&&(CMSecurity.isASysOp(M)))
                     {
                         boolean keepDown=parts.size()>3?Util.s_bool((String)parts.elementAt(3)):true;
@@ -961,7 +981,7 @@ public class TelnetSession extends Thread implements Session
 			if((maxTime>0)&&((System.currentTimeMillis()-start)>=maxTime))
 				throw new java.io.InterruptedIOException("Timed Out.");
 		
-			StringBuffer inStr=CoffeeFilter.simpleInFilter(input,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,"MXPTAGS"));
+			StringBuffer inStr=CMLib.coffeeFilter().simpleInFilter(input,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,"MXPTAGS"));
 			input=new StringBuffer("");
 			if(inStr==null) return null;
 			return inStr.toString();
@@ -995,7 +1015,7 @@ public class TelnetSession extends Thread implements Session
 		        return null;
 		}
 
-		StringBuffer inStr=CoffeeFilter.simpleInFilter(input,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,"MXPTAGS"));
+		StringBuffer inStr=CMLib.coffeeFilter().simpleInFilter(input,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,"MXPTAGS"));
 		input=new StringBuffer("");
 		if(inStr==null) return null;
 		return inStr.toString();
@@ -1068,8 +1088,8 @@ public class TelnetSession extends Thread implements Session
 			{
 				switch(prompt.charAt(++c))
 				{
-                case 'a': { buf.append(Factions.getRangePercent(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()))+"%"); c++; break; }
-                case 'A': { Faction.FactionRange FR=Factions.getRange(Factions.AlignID(),mob.fetchFaction(Factions.AlignID()));buf.append((FR!=null)?FR.Name:""+mob.fetchFaction(Factions.AlignID())); c++; break;}
+                case 'a': { buf.append(CMLib.factions().getRangePercent(CMLib.factions().AlignID(),mob.fetchFaction(CMLib.factions().AlignID()))+"%"); c++; break; }
+                case 'A': { Faction.FactionRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),mob.fetchFaction(CMLib.factions().AlignID()));buf.append((FR!=null)?FR.name():""+mob.fetchFaction(CMLib.factions().AlignID())); c++; break;}
                 case 'B': { buf.append("\n\r"); c++; break;}
                 case 'c': { buf.append(mob().inventorySize()); c++; break;}
                 case 'C': { buf.append(mob().maxItems()); c++; break;}
@@ -1078,33 +1098,33 @@ public class TelnetSession extends Thread implements Session
                                   buf.append(""+mob().rangeToTarget());
                               c++; break; }
                 case 'e': {   MOB victim=mob().getVictim();
-                              if((mob().isInCombat())&&(victim!=null)&&(Sense.canBeSeenBy(victim,mob)))
+                              if((mob().isInCombat())&&(victim!=null)&&(CMLib.flags().canBeSeenBy(victim,mob)))
                                   buf.append(victim.name());
                               c++; break; }
                 case 'E': {   MOB victim=mob().getVictim();
-                              if((mob().isInCombat())&&(victim!=null)&&(Sense.canBeSeenBy(victim,mob)))
+                              if((mob().isInCombat())&&(victim!=null)&&(CMLib.flags().canBeSeenBy(victim,mob)))
                                   buf.append(victim.charStats().getMyRace().healthText(victim)+"\n\r");
                               c++; break; }
-                case 'g': { buf.append((int)Math.round(Math.floor(BeanCounter.getTotalAbsoluteNativeValue(mob())/BeanCounter.getLowestDenomination(BeanCounter.getCurrency(mob()))))); c++; break;}
-                case 'G': { buf.append(BeanCounter.nameCurrencyShort(mob(),BeanCounter.getTotalAbsoluteNativeValue(mob()))); c++; break;}
+                case 'g': { buf.append((int)Math.round(Math.floor(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob())/CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(mob()))))); c++; break;}
+                case 'G': { buf.append(CMLib.beanCounter().nameCurrencyShort(mob(),CMLib.beanCounter().getTotalAbsoluteNativeValue(mob()))); c++; break;}
 				case 'h': { buf.append("^<Hp^>"+mob().curState().getHitPoints()+"^</Hp^>"); c++; break;}
 				case 'H': { buf.append("^<MaxHp^>"+mob().maxState().getHitPoints()+"^</MaxHp^>"); c++; break;}
-                case 'I': {   if((Sense.isCloaked(mob()))&&(!Sense.isSeen(mob())))
+                case 'I': {   if((CMLib.flags().isCloaked(mob()))&&(!CMLib.flags().isSeen(mob())))
                                   buf.append("Wizinvisible");
                               else
-                              if(Sense.isCloaked(mob()))
+                              if(CMLib.flags().isCloaked(mob()))
                                   buf.append("Cloaked");
                               else
-                              if(!Sense.isSeen(mob()))
+                              if(!CMLib.flags().isSeen(mob()))
                                   buf.append("Undetectable");
                               else
-                              if(Sense.isInvisible(mob())&&Sense.isHidden(mob()))
+                              if(CMLib.flags().isInvisible(mob())&&CMLib.flags().isHidden(mob()))
                                   buf.append("Hidden/Invisible");
                               else
-                              if(Sense.isInvisible(mob()))
+                              if(CMLib.flags().isInvisible(mob()))
                                   buf.append("Invisible");
                               else
-                              if(Sense.isHidden(mob()))
+                              if(CMLib.flags().isHidden(mob()))
                                   buf.append("Hidden");
                               c++; break;}
                 case 'K':
@@ -1234,7 +1254,7 @@ public class TelnetSession extends Thread implements Session
                     {
 						Log.sysOut("Session","login: "+mob.Name());
                         if((tryV.size()<1)||(!(tryV.firstElement() instanceof String))||(!((String)tryV.firstElement()).equalsIgnoreCase("SWAPPED")))
-                            if(!CMMap.sendGlobalMessage(mob,CMMsg.TYP_LOGIN,new FullMsg(mob,null,CMMsg.MSG_LOGIN,null)))
+                            if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LOGIN,CMClass.getMsg(mob,null,CMMsg.MSG_LOGIN,null)))
                                 killFlag=true;
                     }
 					needPrompt=true;
@@ -1243,7 +1263,7 @@ public class TelnetSession extends Thread implements Session
 					{
                         while((!killFlag)
                         &&(mob!=null)
-                        &&(CMClass.ThreadEngine().isAllSuspended())
+                        &&(CMLib.threads().isAllSuspended())
                         &&(!CMSecurity.isASysOp(mob)))
                             try{Thread.sleep(2000);}catch(Exception e){}
 						status=Session.STATUS_OK;
@@ -1323,14 +1343,14 @@ public class TelnetSession extends Thread implements Session
 						&&((System.currentTimeMillis()-lastBlahCheck)>=60000))
 						{
 							lastBlahCheck=System.currentTimeMillis();
-							if((!Sense.isSleeping(mob))
+							if((!CMLib.flags().isSleeping(mob))
 							&&(mob().fetchEffect("Disease_Blahs")==null))
 							{
 								Ability A=CMClass.getAbility("Disease_Blahs");
 								if(A!=null) A.invoke(mob,mob,true,0);
 							}
 							else
-							if((Sense.isSleeping(mob))
+							if((CMLib.flags().isSleeping(mob))
 							&&(mob().fetchEffect("Disease_Narcolepsy")==null))
 							{
 								Ability A=CMClass.getAbility("Disease_Narcolepsy");
@@ -1391,13 +1411,13 @@ public class TelnetSession extends Thread implements Session
 			if(name.trim().length()==0) name="Unknown";
             if((mob.isInCombat())&&(mob.location()!=null))
             {
-                CommonMsgs.flee(mob,"NOWHERE");
+                CMLib.commands().flee(mob,"NOWHERE");
                 mob.makePeace();
             }
-            Vector channels=ChannelSet.getFlaggedChannelNames("LOGOFFS");
-            if(!Sense.isCloaked(mob))
+            Vector channels=CMLib.channels().getFlaggedChannelNames("LOGOFFS");
+            if(!CMLib.flags().isCloaked(mob))
             for(int i=0;i<channels.size();i++)
-                CommonMsgs.channel((String)channels.elementAt(i),mob.getClanID(),name+" has logged out.",true);
+                CMLib.commands().channel((String)channels.elementAt(i),mob.getClanID(),name+" has logged out.",true);
 			// the player quit message!
             loginLogoutThread LT=new loginLogoutThread(mob,CMMsg.MSG_QUIT);
             LT.initialize();
@@ -1420,7 +1440,7 @@ public class TelnetSession extends Thread implements Session
 		
 		
 		status=Session.STATUS_LOGOUT5;
-		Sessions.removeElement(this);
+		CMLib.sessions().removeElement(this);
 
 		//finally
 		//{
@@ -1433,8 +1453,8 @@ public class TelnetSession extends Thread implements Session
         public String name(){return (theMOB==null)?"Dead LLThread":"LLThread for "+theMOB.Name();}
         public boolean tick(Tickable ticking, int tickID){return false;}
         public String ID(){return name();}
-        public CMObject newInstance(){return new loginLogoutThread();}
-        public CMObject copyOf(){return new loginLogoutThread();}
+        public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new loginLogoutThread();}}
+        public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
         public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
         public long getTickStatus(){return 0;}
         private MOB theMOB=null;
@@ -1457,7 +1477,7 @@ public class TelnetSession extends Thread implements Session
                 if((M.location()!=null)&&(!skipRooms.contains(M.location())))
                     skipRooms.add(M.location());
             }
-            FullMsg msg=new FullMsg(theMOB,null,msgCode,null);
+            CMMsg msg=CMClass.getMsg(theMOB,null,msgCode,null);
             Room R=theMOB.location();
             if(R!=null) skipRooms.remove(R);
             try{
@@ -1475,10 +1495,10 @@ public class TelnetSession extends Thread implements Session
         
         public void run()
         {
-            FullMsg msg=new FullMsg(theMOB,null,msgCode,null);
+            CMMsg msg=CMClass.getMsg(theMOB,null,msgCode,null);
             Room R=null;
             try{
-                for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+                for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
                 {
                     R=(Room)e.nextElement();
                     if((!skipRooms.contains(R))&&(theMOB.location()!=null))

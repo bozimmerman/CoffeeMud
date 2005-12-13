@@ -1,9 +1,20 @@
-package com.planet_ink.coffee_mud.system.http.macros.grinder;
+package com.planet_ink.coffee_mud.WebMacros.grinder;
+import com.planet_ink.coffee_mud.WebMacros.RoomData;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.system.http.macros.RoomData;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -90,11 +101,11 @@ public class GrinderMobs
 			{
 				if(whichFaction.length()>0)
 				{
-					Faction F=Factions.getFaction(whichFaction);
+					Faction F=CMLib.factions().getFaction(whichFaction);
 					int amt=new Integer(howMuch).intValue();
-					if(amt<F.minimum) amt=F.minimum;
-					if(amt>F.maximum) amt=F.maximum;
-					if(F!=null) E.addFaction(F.ID,amt);
+					if(amt<F.minimum()) amt=F.minimum();
+					if(amt>F.maximum()) amt=F.maximum();
+					if(F!=null) E.addFaction(F.factionID(),amt);
 				}
 				num++;
 				whichFaction=httpReq.getRequestParameter("FACTION"+num);
@@ -192,7 +203,7 @@ public class GrinderMobs
 
 		String newClassID=httpReq.getRequestParameter("CLASSES");
 
-		CoffeeUtensils.resetRoom(R);
+		CMLib.utensils().resetRoom(R);
 
 		MOB M=null;
 		if(mobCode.equals("NEW"))
@@ -306,10 +317,10 @@ public class GrinderMobs
 			case 16: // alignment
 			    for(int v=0;v<Faction.ALIGN_NAMES.length;v++)
 			        if(old.equalsIgnoreCase(Faction.ALIGN_NAMES[v]))
-			            Factions.setAlignment(M,v);
+			            CMLib.factions().setAlignment(M,v);
 				break;
 			case 17: // money
-				BeanCounter.setMoney(M,Util.s_int(old));
+				CMLib.beanCounter().setMoney(M,Util.s_int(old));
 				break;
 			case 18: // is rideable
 				break;
@@ -589,7 +600,7 @@ public class GrinderMobs
 			M.bringToLife(R,true);
 		}
 		R.recoverRoomStats();
-		CMClass.DBEngine().DBUpdateMOBs(R);
+		CMLib.database().DBUpdateMOBs(R);
 		String newMobCode=RoomData.getMOBCode(R,M);
 		httpReq.addRequestParameters("MOB",newMobCode);
 		return "";

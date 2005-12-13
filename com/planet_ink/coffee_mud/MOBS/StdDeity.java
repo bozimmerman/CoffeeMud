@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.MOBS;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 /* 
    Copyright 2000-2005 Bo Zimmerman
 
@@ -139,7 +150,7 @@ public class StdDeity extends StdMOB implements Deity
 				break;
 			case TRIGGER_INROOM:
 				{
-				Room R=CMMap.getRoom(DT.parm1);
+				Room R=CMLib.map().getRoom(DT.parm1);
 				if(R==null)
 					buf.append("the player is in some unknown place");
 				else
@@ -165,7 +176,7 @@ public class StdDeity extends StdMOB implements Deity
 				buf.append(DT.parm1+"% of the time");
 				break;
 			case TRIGGER_CHECK:
-				buf.append(MUDZapper.zapperDesc(DT.parm1));
+				buf.append(CMLib.masking().maskDesc(DT.parm1));
 				break;
 			case TRIGGER_PUTVALUE:
 				buf.append("the player puts an item worth at least "+DT.parm1.toLowerCase()+" in "+DT.parm2.toLowerCase());
@@ -217,7 +228,7 @@ public class StdDeity extends StdMOB implements Deity
 
 	public String getClericRequirementsDesc()
 	{
-		return "The following may be clerics of "+name()+": "+MUDZapper.zapperDesc(getClericRequirements());
+		return "The following may be clerics of "+name()+": "+CMLib.masking().maskDesc(getClericRequirements());
 	}
 	public String getClericTriggerDesc()
 	{
@@ -227,7 +238,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 	public String getWorshipRequirementsDesc()
 	{
-		return "The following are acceptable worshipers of "+name()+": "+MUDZapper.zapperDesc(getWorshipRequirements());
+		return "The following are acceptable worshipers of "+name()+": "+CMLib.masking().maskDesc(getWorshipRequirements());
 	}
 	public String getWorshipTriggerDesc()
 	{
@@ -239,12 +250,12 @@ public class StdDeity extends StdMOB implements Deity
 	public void destroy()
 	{
 		super.destroy();
-		CMMap.delDeity(this);
+		CMLib.map().delDeity(this);
 	}
 	public void bringToLife(Room newLocation, boolean resetStats)
 	{
 		super.bringToLife(newLocation,resetStats);
-		CMMap.addDeity(this);
+		CMLib.map().addDeity(this);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -267,14 +278,14 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			if(msg.source().charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
 			{
-				if(!MUDZapper.zapperCheck(getClericRequirements(),msg.source()))
+				if(!CMLib.masking().maskCheck(getClericRequirements(),msg.source()))
 				{
 					msg.source().tell("You are unworthy of serving "+name()+".");
 					return false;
 				}
 			}
 			else
-			if(!MUDZapper.zapperCheck(getWorshipRequirements(),msg.source()))
+			if(!CMLib.masking().maskCheck(getWorshipRequirements(),msg.source()))
 			{
 				msg.source().tell("You are unworthy of "+name()+".");
 				return false;
@@ -333,7 +344,7 @@ public class StdDeity extends StdMOB implements Deity
 	public synchronized void bestowPower(MOB mob, Ability Power)
 	{
 		if((mob.fetchAbility(Power.ID())==null)
-		&&(CMAble.qualifyingLevel(mob,Power)<=0))
+		&&(CMLib.ableMapper().qualifyingLevel(mob,Power)<=0))
 		{
 			Power=(Ability)Power.copyOf();
 			Power.setProfficiency(100);
@@ -400,7 +411,7 @@ public class StdDeity extends StdMOB implements Deity
 				}
 				else
 				{
-					Ability Blessing=fetchBlessing(Dice.roll(1,numBlessings(),-1));
+					Ability Blessing=fetchBlessing(CMLib.dice().roll(1,numBlessings(),-1));
 					if(Blessing!=null)
 						bestowBlessing(mob,Blessing);
 				}
@@ -421,7 +432,7 @@ public class StdDeity extends StdMOB implements Deity
 			if((!alreadyPowered(mob))&&(numPowers()>0))
 			{
 				mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,"You feel the power of <S-NAME> in <T-NAME>.");
-				Ability Power=fetchPower(Dice.roll(1,numPowers(),-1));
+				Ability Power=fetchPower(CMLib.dice().roll(1,numPowers(),-1));
 				if(Power!=null)
 					bestowPower(mob,Power);
 			}
@@ -452,7 +463,7 @@ public class StdDeity extends StdMOB implements Deity
 				}
 				else
 				{
-					Ability Curse=fetchCurse(Dice.roll(1,numCurses(),-1));
+					Ability Curse=fetchCurse(CMLib.dice().roll(1,numCurses(),-1));
 					if(Curse!=null)
 						bestowCurse(mob,Curse);
 				}
@@ -552,11 +563,11 @@ public class StdDeity extends StdMOB implements Deity
 					   yup=true;
 					break;
 				case TRIGGER_RANDOM:
-					if(Dice.rollPercentage()<=Util.s_int(DT.parm1))
+					if(CMLib.dice().rollPercentage()<=Util.s_int(DT.parm1))
 					   yup=true;
 					break;
 				case TRIGGER_CHECK:
-					if(MUDZapper.zapperCheck(DT.parm1,msg.source()))
+					if(CMLib.masking().maskCheck(DT.parm1,msg.source()))
 					   yup=true;
 					break;
 				case TRIGGER_PUTTHING:
@@ -564,8 +575,8 @@ public class StdDeity extends StdMOB implements Deity
 					&&(msg.target() instanceof Container)
 					&&(msg.tool()!=null)
 					&&(msg.tool() instanceof Item)
-					&&(EnglishParser.containsString(msg.tool().name(),DT.parm1))
-					&&(EnglishParser.containsString(msg.target().name(),DT.parm2)))
+					&&(CMLib.english().containsString(msg.tool().name(),DT.parm1))
+					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
 						yup=true;
 					break;
 				case TRIGGER_BURNTHING:
@@ -573,7 +584,7 @@ public class StdDeity extends StdMOB implements Deity
 				case TRIGGER_DRINK:
 				case TRIGGER_EAT:
 					if((msg.target()!=null)
-					&&(DT.parm1.equals("0")||EnglishParser.containsString(msg.target().name(),DT.parm1)))
+					&&(DT.parm1.equals("0")||CMLib.english().containsString(msg.target().name(),DT.parm1)))
 					   yup=true;
 					break;
 				case TRIGGER_INROOM:
@@ -583,13 +594,13 @@ public class StdDeity extends StdMOB implements Deity
 					break;
 				case TRIGGER_RIDING:
 					if((msg.source().riding()!=null)
-					&&(EnglishParser.containsString(msg.source().riding().name(),DT.parm1)))
+					&&(CMLib.english().containsString(msg.source().riding().name(),DT.parm1)))
 					   yup=true;
 					break;
 				case TRIGGER_CAST:
 					if((msg.tool()!=null)
 					&&((msg.tool().ID().equalsIgnoreCase(DT.parm1))
-					||(EnglishParser.containsString(msg.tool().name(),DT.parm1))))
+					||(CMLib.english().containsString(msg.tool().name(),DT.parm1))))
 						yup=true;
 					break;
 				case TRIGGER_EMOTE:
@@ -602,7 +613,7 @@ public class StdDeity extends StdMOB implements Deity
 					&&(((Item)msg.tool()).baseGoldValue()>=Util.s_int(DT.parm1))
 					&&(msg.target()!=null)
 					&&(msg.target() instanceof Container)
-					&&(EnglishParser.containsString(msg.target().name(),DT.parm2)))
+					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
 						yup=true;
 					break;
 				case TRIGGER_PUTMATERIAL:
@@ -612,7 +623,7 @@ public class StdDeity extends StdMOB implements Deity
 						||((((Item)msg.tool()).material()&EnvResource.MATERIAL_MASK)==Util.s_int(DT.parm1)))
 					&&(msg.target()!=null)
 					&&(msg.target() instanceof Container)
-					&&(EnglishParser.containsString(msg.target().name(),DT.parm2)))
+					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
 						yup=true;
 					break;
 				case TRIGGER_BURNMATERIAL:
@@ -629,13 +640,13 @@ public class StdDeity extends StdMOB implements Deity
 						yup=true;
 					break;
 				case TRIGGER_SITTING:
-					yup=Sense.isSitting(msg.source());
+					yup=CMLib.flags().isSitting(msg.source());
 					break;
 				case TRIGGER_STANDING:
-					yup=(Sense.isStanding(msg.source()));
+					yup=(CMLib.flags().isStanding(msg.source()));
 					break;
 				case TRIGGER_SLEEPING:
-					yup=Sense.isSleeping(msg.source());
+					yup=CMLib.flags().isSleeping(msg.source());
 					break;
 				}
 			}
@@ -686,7 +697,7 @@ public class StdDeity extends StdMOB implements Deity
 					else
 					{
 						msg.source().tell(name()+" takes "+xpwrath+" of experience from you.");
-						MUDFight.postExperience(msg.source(),null,null,-xpwrath,false);
+						CMLib.combat().postExperience(msg.source(),null,null,-xpwrath,false);
 					}
 				}
 				break;
@@ -783,24 +794,24 @@ public class StdDeity extends StdMOB implements Deity
 		&&((--checkDown)<0))
 		{
 			checkDown=10;
-			for(Enumeration p=CMMap.players();p.hasMoreElements();)
+			for(Enumeration p=CMLib.map().players();p.hasMoreElements();)
 			{
 				MOB M=(MOB)p.nextElement();
 				if((!M.isMonster())&&(M.getWorshipCharID().equals(name())))
 				{
 					if(M.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
 					{
-						if(!MUDZapper.zapperCheck(getClericRequirements(),M))
+						if(!CMLib.masking().maskCheck(getClericRequirements(),M))
 						{
-							FullMsg msg=new FullMsg(M,this,null,CMMsg.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
+							CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
 							if((M.location()!=null)&&(M.okMessage(M,msg)))
 								M.location().send(M,msg);
 						}
 					}
 					else
-					if(!MUDZapper.zapperCheck(getWorshipRequirements(),M))
+					if(!CMLib.masking().maskCheck(getWorshipRequirements(),M))
 					{
-						FullMsg msg=new FullMsg(M,this,null,CMMsg.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
+						CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
 						if((M.location()!=null)&&(M.okMessage(M,msg)))
 							M.location().send(M,msg);
 					}
@@ -879,7 +890,7 @@ public class StdDeity extends StdMOB implements Deity
 			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}
-		return (Ability)EnglishParser.fetchEnvironmental(blessings,ID,false);
+		return (Ability)CMLib.english().fetchEnvironmental(blessings,ID,false);
 	}
 
 	private void parseTriggers(Vector putHere, String trigger)
@@ -1216,7 +1227,7 @@ public class StdDeity extends StdMOB implements Deity
 			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}
-		return (Ability)EnglishParser.fetchEnvironmental(curses,ID,false);
+		return (Ability)CMLib.english().fetchEnvironmental(curses,ID,false);
 	}
 
 	public String getClericSin()
@@ -1286,7 +1297,7 @@ public class StdDeity extends StdMOB implements Deity
 			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}
-		return (Ability)EnglishParser.fetchEnvironmental(powers,ID,false);
+		return (Ability)CMLib.english().fetchEnvironmental(powers,ID,false);
 	}
 
 	public String getClericPowerup()

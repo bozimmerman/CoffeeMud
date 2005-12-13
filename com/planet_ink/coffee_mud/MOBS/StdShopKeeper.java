@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.MOBS;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 /*
    Copyright 2000-2005 Bo Zimmerman
 
@@ -22,7 +33,7 @@ import com.planet_ink.coffee_mud.common.*;
 public class StdShopKeeper extends StdMOB implements ShopKeeper
 {
 	public String ID(){return "StdShopKeeper";}
-    protected CoffeeShop shop=new CoffeeShop();
+    protected CoffeeShop shop=(CoffeeShop)CMClass.getCommon("DefaultCoffeeShop");
 	protected int whatISell=0;
 	protected int invResetRate=0;
 	protected int invResetTickDown=0;
@@ -38,7 +49,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		Username="a shopkeeper";
 		setDescription("He\\`s pleased to be of assistance.");
 		setDisplayText("A shopkeeper is waiting to serve you.");
-		Factions.setAlignment(this,Faction.ALIGN_GOOD);
+		CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);
 		setMoney(0);
 		baseEnvStats.setWeight(150);
 		setWimpHitPoint(0);
@@ -63,24 +74,21 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	{
 		super.cloneFix(E);
 		if(E instanceof StdShopKeeper)
-		{
-            shop=new CoffeeShop();
-            shop.cloneFix(((StdShopKeeper)E).shop);
-		}
+            shop=(CoffeeShop)((StdShopKeeper)E).shop.copyOf();
 	}
     
     
     public boolean inBaseInventory(Environmental thisThang)
 	{ return shop.inBaseInventory(thisThang);}
 	public Environmental addStoreInventory(Environmental thisThang)
-	{ return shop.addStoreInventory(thisThang,1,-1,whatIsSold(),this);}
+	{ return shop.addStoreInventory(thisThang,1,-1,this);}
 	public int baseStockSize(){return shop.baseStockSize();}
 	public int totalStockSize(){return shop.totalStockSize();}
 	public void clearStoreInventory(){shop.clearStoreInventory();}
 	public Vector getStoreInventory(){return shop.getStoreInventory();}
 	public Vector getBaseInventory(){return shop.getBaseInventory();}
 	public Environmental addStoreInventory(Environmental thisThang, int number, int price)
-	{ return shop.addStoreInventory(thisThang,number,price,whatIsSold(),this);}
+	{ return shop.addStoreInventory(thisThang,number,price,this);}
 	public void delAllStoreInventory(Environmental thisThang)
 	{ shop.delAllStoreInventory(thisThang,whatIsSold());}
     public boolean doIHaveThisInStock(String name, MOB mob)
@@ -112,7 +120,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
             for(int r=0;r<rivals.size();r++)
             {
                 Environmental E=(Environmental)rivals.elementAt(r);
-                if(Dice.rollPercentage()>E.baseEnvStats().rejuv())
+                if(CMLib.dice().rollPercentage()>E.baseEnvStats().rejuv())
                     delAllStoreInventory(E);
                 else
                 {
@@ -125,8 +133,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
     }
 
 
-    public String storeKeeperString(){return CoffeeShops.storeKeeperString(whatIsSold());}
-	public boolean doISellThis(Environmental thisThang){return CoffeeShops.doISellThis(thisThang,this);}
+    public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(whatIsSold());}
+	public boolean doISellThis(Environmental thisThang){return CMLib.coffeeShops().doISellThis(thisThang,this);}
     
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -137,7 +145,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			if(invResetTickDown==0)
 			{
 				invResetTickDown=invResetRate();
-				if(invResetTickDown==0) invResetTickDown=Util.s_int(CommonStrings.getVar(CommonStrings.SYSTEM_INVRESETRATE));
+				if(invResetTickDown==0) invResetTickDown=Util.s_int(CMProps.getVar(CMProps.SYSTEM_INVRESETRATE));
 				if(invResetTickDown==0) invResetTickDown=Integer.MAX_VALUE;
 			}
 			else
@@ -145,19 +153,19 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
                 shop.emptyAllShelves();
 				invResetTickDown=invResetRate();
-				if(invResetTickDown==0) invResetTickDown=Util.s_int(CommonStrings.getVar(CommonStrings.SYSTEM_INVRESETRATE));
+				if(invResetTickDown==0) invResetTickDown=Util.s_int(CMProps.getVar(CMProps.SYSTEM_INVRESETRATE));
 				if(invResetTickDown==0) invResetTickDown=Integer.MAX_VALUE;
 				if(miscText!=null)
 				{
 					String shoptext;
-					if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
-						shoptext=CoffeeMaker.getGenMOBTextUnpacked(this,CMEncoder.decompressString(miscText));
+					if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
+						shoptext=CMLib.coffeeMaker().getGenMOBTextUnpacked(this,CMLib.encoder().decompressString(miscText));
 					else
-						shoptext=CoffeeMaker.getGenMOBTextUnpacked(this,new String(miscText));
-					Vector xml=XMLManager.parseAllXML(shoptext);
+						shoptext=CMLib.coffeeMaker().getGenMOBTextUnpacked(this,new String(miscText));
+					Vector xml=CMLib.xml().parseAllXML(shoptext);
 					if(xml!=null)
 					{
-						CoffeeMaker.populateShops(this,xml);
+						CMLib.coffeeMaker().populateShops(this,xml);
 						recoverEnvStats();
 						recoverCharStats();
 					}
@@ -168,7 +176,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				budgetTickDown=100;
 				budgetRemaining=Long.MAX_VALUE/2;
 				String s=budget();
-				if(s.length()==0) s=CommonStrings.getVar(CommonStrings.SYSTEM_BUDGET);
+				if(s.length()==0) s=CMProps.getVar(CMProps.SYSTEM_BUDGET);
 				Vector V=Util.parse(s.trim().toUpperCase());
 				if(V.size()>0)
 				{
@@ -183,21 +191,21 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					s="DAY";
 					if(V.size()>1) s=((String)V.lastElement()).toUpperCase();
 					if(s.startsWith("DAY"))
-						budgetTickDown=CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
+						budgetTickDown=CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 					else
 					if(location()!=null)
 					{
 						if(s.startsWith("HOUR"))
-							budgetTickDown=CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)/location().getArea().getTimeObj().getHoursInDay();
+							budgetTickDown=CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)/location().getArea().getTimeObj().getHoursInDay();
 						else
 						if(s.startsWith("WEEK"))
-							budgetTickDown=location().getArea().getTimeObj().getDaysInWeek()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
+							budgetTickDown=location().getArea().getTimeObj().getDaysInWeek()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 						else
 						if(s.startsWith("MONTH"))
-							budgetTickDown=location().getArea().getTimeObj().getDaysInMonth()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
+							budgetTickDown=location().getArea().getTimeObj().getDaysInMonth()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 						else
 						if(s.startsWith("YEAR"))
-							budgetTickDown=location().getArea().getTimeObj().getDaysInMonth()*location().getArea().getTimeObj().getMonthsInYear()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
+							budgetTickDown=location().getArea().getTimeObj().getDaysInMonth()*location().getArea().getTimeObj().getMonthsInYear()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 					}
 				}
 				budgetMax=budgetRemaining;
@@ -215,26 +223,26 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_VALUE:
 			case CMMsg.TYP_SELL:
 			{
-                if(!CoffeeShops.ignoreIfNecessary(msg.source(),ignoreMask(),this)) 
+                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),ignoreMask(),this)) 
                     return false;
-                if(CoffeeShops.standardSellEvaluation(this,msg.source(),msg.tool(),this,budgetRemaining,budgetMax,msg.targetMinor()==CMMsg.TYP_SELL))
+                if(CMLib.coffeeShops().standardSellEvaluation(this,msg.source(),msg.tool(),this,budgetRemaining,budgetMax,msg.targetMinor()==CMMsg.TYP_SELL))
                     return super.okMessage(myHost,msg);
                 return false;
 			}
 			case CMMsg.TYP_BUY:
 			case CMMsg.TYP_VIEW:
 			{
-                if(!CoffeeShops.ignoreIfNecessary(msg.source(),ignoreMask(),this)) 
+                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),ignoreMask(),this)) 
                     return false;
                 if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
                     return false;
-                if(CoffeeShops.standardBuyEvaluation(this,msg.source(),msg.tool(),this,msg.targetMinor()==CMMsg.TYP_BUY))
+                if(CMLib.coffeeShops().standardBuyEvaluation(this,msg.source(),msg.tool(),this,msg.targetMinor()==CMMsg.TYP_BUY))
                     return super.okMessage(myHost,msg);
                 return false;
 			}
 			case CMMsg.TYP_LIST:
             {
-                if(!CoffeeShops.ignoreIfNecessary(msg.source(),ignoreMask(),this)) 
+                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),ignoreMask(),this)) 
                     return false;
 				return super.okMessage(myHost,msg);
             }
@@ -255,12 +263,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_GIVE:
 				if((msg.tool()!=null)
 				&&((CMSecurity.isAllowed(msg.source(),location(),"ORDER")
-                    ||(CoffeeUtensils.doesHavePriviledgesHere(msg.source(),getStartRoom()))
+                    ||(CMLib.utensils().doesHavePriviledgesHere(msg.source(),getStartRoom()))
 					||(CMSecurity.isAllowed(msg.source(),location(),"CMDMOBS")&&(isMonster()))
 					||(CMSecurity.isAllowed(msg.source(),location(),"CMDROOMS")&&(isMonster()))))
 				&&((doISellThis(msg.tool()))||(whatISell==DEAL_INVENTORYONLY)))
                 {
-                    CommonMsgs.say(this,msg.source(),"Yes, I will now sell "+msg.tool().name()+".",false,false);
+                    CMLib.commands().say(this,msg.source(),"Yes, I will now sell "+msg.tool().name()+".",false,false);
                     addStoreInventory(msg.tool(),1,-1);
                     if(isGeneric()) text();
 					return;
@@ -269,12 +277,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				break;
 			case CMMsg.TYP_VALUE:
 				super.executeMsg(myHost,msg);
-				CommonMsgs.say(this,mob,"I'll give you "+BeanCounter.nameCurrencyShort(this,CoffeeShops.pawningPrice(mob,msg.tool(),this).absoluteGoldPrice)+" for "+msg.tool().name()+".",true,false);
+				CMLib.commands().say(this,mob,"I'll give you "+CMLib.beanCounter().nameCurrencyShort(this,CMLib.coffeeShops().pawningPrice(mob,msg.tool(),this).absoluteGoldPrice)+" for "+msg.tool().name()+".",true,false);
 				break;
 			case CMMsg.TYP_SELL: // sell TO -- this is a shopkeeper purchasing from a player
             {
 				super.executeMsg(myHost,msg);
-                double paid=CoffeeShops.transactPawn(this,msg.source(),this,msg.tool());
+                double paid=CMLib.coffeeShops().transactPawn(this,msg.source(),this,msg.tool());
                 if(paid>Double.MIN_VALUE)
                 {
                     budgetRemaining=budgetRemaining-Math.round(paid);
@@ -289,12 +297,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_VIEW:
 				super.executeMsg(myHost,msg);
 				if((msg.tool()!=null)&&(doIHaveThisInStock("$"+msg.tool().Name()+"$",mob)))
-					CommonMsgs.say(this,msg.source(),CoffeeShops.getViewDescription(msg.tool()),true,false);
+					CMLib.commands().say(this,msg.source(),CMLib.coffeeShops().getViewDescription(msg.tool()),true,false);
 				break;
 			case CMMsg.TYP_BUY: // buy-from -- this is a player buying from a shopkeeper
             {
 				super.executeMsg(myHost,msg);
-                MOB mobFor=CoffeeShops.parseBuyingFor(msg.source(),msg.targetMessage());
+                MOB mobFor=CMLib.coffeeShops().parseBuyingFor(msg.source(),msg.targetMessage());
 				if((msg.tool()!=null)
 				&&(doIHaveThisInStock("$"+msg.tool().Name()+"$",mobFor))
 				&&(location()!=null))
@@ -303,17 +311,17 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
                     
-                    CoffeeShops.transactMoneyOnly(this,msg.source(),this,product);
+                    CMLib.coffeeShops().transactMoneyOnly(this,msg.source(),this,product);
                     
 					if(product instanceof Item)
 					{
-                        if(!CoffeeShops.purchaseItems((Item)product,products,this,mobFor))
+                        if(!CMLib.coffeeShops().purchaseItems((Item)product,products,this,mobFor))
                             return;
 					}
 					else
 					if(product instanceof MOB)
 					{
-                        if(CoffeeShops.purchaseMOB((MOB)product,this,this,mobFor))
+                        if(CMLib.coffeeShops().purchaseMOB((MOB)product,this,this,mobFor))
                         {
                             msg.modify(msg.source(),msg.target(),product,msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
                             product.executeMsg(myHost,msg);
@@ -321,7 +329,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					}
 					else
 					if(product instanceof Ability)
-                        CoffeeShops.purchaseAbility((Ability)product,this,this,mobFor);
+                        CMLib.coffeeShops().purchaseAbility((Ability)product,this,this,mobFor);
 
 					if(mySession!=null)
 						mySession.stdPrintln(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
@@ -334,9 +342,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				{
 					super.executeMsg(myHost,msg);
 					Vector inventory=getStoreInventory();
-					inventory=CoffeeShops.addRealEstateTitles(inventory,mob,whatIsSold(),getStartRoom());
+					inventory=CMLib.coffeeShops().addRealEstateTitles(inventory,mob,whatIsSold(),getStartRoom());
                     int limit=Util.getParmInt(prejudiceFactors(),"LIMIT",0);
-                    String s=CoffeeShops.getListInventory(this,mob,inventory,limit,this);
+                    String s=CMLib.coffeeShops().getListInventory(this,mob,inventory,limit,this);
 					if(s.length()>0)
 						mob.tell(s);
 				}
@@ -350,8 +358,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			super.executeMsg(myHost,msg);
 	}
 
-	public String prejudiceFactors(){return CMEncoder.decompressString(miscText);}
-	public void setPrejudiceFactors(String factors){miscText=CMEncoder.compressString(factors);}
+	public String prejudiceFactors(){return CMLib.encoder().decompressString(miscText);}
+	public void setPrejudiceFactors(String factors){miscText=CMLib.encoder().compressString(factors);}
     
     public String ignoreMask(){return "";}
     public void setIgnoreMask(String factors){}

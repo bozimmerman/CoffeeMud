@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
-import com.planet_ink.coffee_mud.system.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -56,14 +66,14 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 			alreadyFilled=true;
 			if(getContents().size()==0)
 			{
-			    Vector V=BeanCounter.getAllCurrencies();
+			    Vector V=CMLib.beanCounter().getAllCurrencies();
 			    for(int v=0;v<V.size();v++)
 			    {
 			        String currency=(String)V.elementAt(v);
-			        DVector V2=BeanCounter.getCurrencySet(currency);
+			        DVector V2=CMLib.beanCounter().getCurrencySet(currency);
 			        for(int v2=0;v2<V2.size();v2++)
 			        {
-						Coins C=BeanCounter.makeBestCurrency(currency,((Double)V2.elementAt(v2,1)).doubleValue(),owner(),this);
+						Coins C=CMLib.beanCounter().makeBestCurrency(currency,((Double)V2.elementAt(v2,1)).doubleValue(),owner(),this);
 						if(C!=null)	C.setNumberOfCoins(100);
 			        }
 			    }

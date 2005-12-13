@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Races;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -84,7 +95,7 @@ public class Undead extends StdRace
 				&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HEALING|Ability.FLAG_HOLY))
 				&&(!Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
 				{
-					MUDFight.postDamage(msg.source(),mob,msg.tool(),amount,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The healing magic from <S-NAME> <DAMAGE> <T-NAMESELF>.");
+					CMLib.combat().postDamage(msg.source(),mob,msg.tool(),amount,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The healing magic from <S-NAME> <DAMAGE> <T-NAMESELF>.");
 					if((mob.getVictim()==null)&&(mob!=msg.source())&&(mob.isMonster()))
 						mob.setVictim(msg.source());
 				}
@@ -101,7 +112,7 @@ public class Undead extends StdRace
 				int amount=msg.value();
 				if(amount>0)
 				{
-					MUDFight.postHealing(msg.source(),mob,msg.tool(),CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,amount,"The harming magic heals <T-NAMESELF>.");
+					CMLib.combat().postHealing(msg.source(),mob,msg.tool(),CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,amount,"The harming magic heals <T-NAMESELF>.");
 					return false;
 				}
 			}

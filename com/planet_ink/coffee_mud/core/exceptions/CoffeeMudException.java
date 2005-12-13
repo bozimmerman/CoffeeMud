@@ -1,5 +1,4 @@
-
-package com.planet_ink.coffee_mud.exceptions;
+package com.planet_ink.coffee_mud.core.exceptions;
 import java.util.*;
 
 

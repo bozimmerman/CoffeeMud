@@ -1,10 +1,22 @@
-package com.planet_ink.coffee_mud.system.database;
+package com.planet_ink.coffee_mud.core.database;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.sql.*;
-import com.planet_ink.coffee_mud.utils.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -39,7 +51,7 @@ public class DBConnection
 	private String lastError=null;
 	
 	/** when this connection was put into use**/
-	private IQCalendar useTime=IQCalendar.getIQInstance();
+	private long useTime=System.currentTimeMillis();
 	
 	/** number of failures in a row */
 	private int failuresInARow=0;
@@ -147,7 +159,7 @@ public class DBConnection
 				// not a real error?!
 			}
 		
-			useTime=IQCalendar.getIQInstance();
+			useTime=System.currentTimeMillis();
 			inUse=true;
 			return true;
 		}
@@ -185,7 +197,7 @@ public class DBConnection
 			}
 		
 			sqlserver=false;
-			useTime=IQCalendar.getIQInstance();
+			useTime=System.currentTimeMillis();
 			failuresInARow=0;
 			inUse=true;
 			return true;
@@ -269,7 +281,7 @@ public class DBConnection
 		}
 		sqlserver=false;
 		failuresInARow=0;
-		useTime=IQCalendar.getIQInstance();
+		useTime=System.currentTimeMillis();
 		if(myParent!=null) 
 			myParent.clearErrors();
 		return R;
@@ -314,7 +326,7 @@ public class DBConnection
 		}
 		
 		sqlserver=false;
-		useTime=IQCalendar.getIQInstance();
+		useTime=System.currentTimeMillis();
 		failuresInARow=0;
 		if(myParent!=null) 
 			myParent.clearErrors();
@@ -392,9 +404,8 @@ public class DBConnection
 	 */
 	public boolean isProbablyLockedUp()
 	{
-		IQCalendar C=IQCalendar.getIQInstance();
-		C.add(IQCalendar.MINUTE,-2);
-		if(useTime.before(C)&&inUse) 
+        long twominsAgo=System.currentTimeMillis()-(2*60*1000);
+		if((useTime<twominsAgo)&&inUse) 
 			return true;
 		return false;
 	}

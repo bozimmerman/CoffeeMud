@@ -1,6 +1,7 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -29,43 +30,32 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CMMap
+public class CMMap extends StdLibrary implements WorldMap
 {
-	protected static Vector areasList = new Vector();
-	protected static Vector roomsList = new Vector();
-	protected static Vector playersList = new Vector();
-	protected static Vector deitiesList = new Vector();
-    protected static Vector postOfficeList=new Vector();
-	protected static Hashtable startRooms=new Hashtable();
-	protected static Hashtable deathRooms=new Hashtable();
-	protected static Hashtable bodyRooms=new Hashtable();
-	protected static final int QUADRANT_WIDTH=10;
-	protected static Vector space=new Vector();
-    protected static Hashtable globalHandlers=new Hashtable();
+    public String ID(){return "CMMap";}
+	public Vector areasList = new Vector();
+	//public Vector roomsList = new Vector();
+	public Vector playersList = new Vector();
+	public Vector deitiesList = new Vector();
+    public Vector postOfficeList=new Vector();
+	public Hashtable startRooms=new Hashtable();
+	public Hashtable deathRooms=new Hashtable();
+	public Hashtable bodyRooms=new Hashtable();
+	public final int QUADRANT_WIDTH=10;
+	public Vector space=new Vector();
+    public Hashtable globalHandlers=new Hashtable();
 
-	public static void theWorldChanged()
-	{
-		for (Enumeration a=areas(); a.hasMoreElements();)
-			((Area)a.nextElement()).clearMaps();
-	}
 	// areas
-	public static int numAreas() { return areasList.size(); }
-	public static void addArea(Area newOne)
+	public int numAreas() { return areasList.size(); }
+	public void addArea(Area newOne)
 	{
 		areasList.addElement(newOne);
 	}
-	public static void delArea(Area oneToDel)
+	public void delArea(Area oneToDel)
 	{
 		areasList.remove(oneToDel);
 	}
-	public static void trimRoomsList()
-	{
-	    synchronized(roomsList)
-	    {
-	        roomsList.trimToSize();
-	    }
-	}
-	public static Area getArea(String calledThis)
+	public Area getArea(String calledThis)
 	{
 		for(Enumeration a=areas();a.hasMoreElements();)
 		{
@@ -75,7 +65,7 @@ public class CMMap
 		}
 		return null;
 	}
-    public static Area findArea(String calledThis)
+    public Area findArea(String calledThis)
     {
         Area A=getArea(calledThis);
         if(A!=null) return A;
@@ -87,28 +77,28 @@ public class CMMap
         }
         return null;
     }
-	public static Enumeration areas(){
+	public Enumeration areas(){
 		return areasList.elements();
 	}
-	public static Area getFirstArea()
+	public Area getFirstArea()
 	{
 		if (areas().hasMoreElements())
 			return (Area) areas().nextElement();
 		return null;
 	}
-	public static Area getRandomArea()
+	public Area getRandomArea()
 	{
 		Area A=null;
 		while((numAreas()>0)&&(A==null))
 		{
 			try{
-				A=(Area)areasList.elementAt(Dice.roll(1,numAreas(),-1));
-			}catch(Exception e){}
+				A=(Area)areasList.elementAt(CMLib.dice().roll(1,numAreas(),-1));
+            }catch(ArrayIndexOutOfBoundsException e){}
 		}
 		return A;
 	}
 
-    public static void addGlobalHandler(Environmental E, int category)
+    public void addGlobalHandler(Environmental E, int category)
     {
         Vector V=(Vector)globalHandlers.get(new Integer(category));
         if(V==null)
@@ -120,34 +110,31 @@ public class CMMap
             V.add(E);
     }
     
-    public static void delGlobalHandler(Environmental E, int category)
+    public void delGlobalHandler(Environmental E, int category)
     {
         Vector V=(Vector)globalHandlers.get(new Integer(category));
         if(V==null) return;
         V.removeElement(E);
     }
     
-    
-    
-    
-    public static MOB god(Room R){
+    public MOB god(Room R){
         MOB everywhereMOB=CMClass.getMOB("StdMOB");
         everywhereMOB.setName("somebody");
         everywhereMOB.setLocation(R);
         return everywhereMOB;
     }
 
-	public static boolean isObjectInSpace(SpaceObject O){return space.contains(O);}
-	public static void delObjectInSpace(SpaceObject O){	space.removeElement(O);}
-	public static void addObjectToSpace(SpaceObject O){	space.addElement(O);}
+	public boolean isObjectInSpace(SpaceObject O){return space.contains(O);}
+	public void delObjectInSpace(SpaceObject O){	space.removeElement(O);}
+	public void addObjectToSpace(SpaceObject O){	space.addElement(O);}
 	
-	public static long getDistanceFrom(SpaceObject O1, SpaceObject O2)
+	public long getDistanceFrom(SpaceObject O1, SpaceObject O2)
 	{
 		return Math.round(Math.sqrt(Util.mul((O1.coordinates()[0]-O2.coordinates()[0]),(O1.coordinates()[0]-O2.coordinates()[0]))
 									+Util.mul((O1.coordinates()[1]-O2.coordinates()[1]),(O1.coordinates()[1]-O2.coordinates()[1]))
 									+Util.mul((O1.coordinates()[2]-O2.coordinates()[2]),(O1.coordinates()[2]-O2.coordinates()[2]))));
 	}
-	public static double[] getDirection(SpaceObject FROM, SpaceObject TO)
+	public double[] getDirection(SpaceObject FROM, SpaceObject TO)
 	{
 		double[] dir=new double[2];
 		double x=new Long(TO.coordinates()[0]-FROM.coordinates()[0]).doubleValue();
@@ -158,7 +145,7 @@ public class CMMap
 		return dir;
 	}
 	
-	public static void moveSpaceObject(SpaceObject O)
+	public void moveSpaceObject(SpaceObject O)
 	{
 		double x1=Math.cos(Math.toRadians(O.direction()[0]))*Math.sin(Math.toRadians(O.direction()[1]));
 		double y1=Math.sin(Math.toRadians(O.direction()[0]))*Math.sin(Math.toRadians(O.direction()[1]));
@@ -168,14 +155,14 @@ public class CMMap
 		O.coordinates()[2]=O.coordinates()[2]+Math.round(Util.mul(O.velocity(),z1));
 	}
 	
-	public static long getRelativeVelocity(SpaceObject O1, SpaceObject O2)
+	public long getRelativeVelocity(SpaceObject O1, SpaceObject O2)
 	{
 		return Math.round(Math.sqrt(new Long(((O1.velocity()*O1.coordinates()[0])-(O2.velocity()*O2.coordinates()[0])*(O1.velocity()*O1.coordinates()[0])-(O2.velocity()*O2.coordinates()[0]))
 									+((O1.velocity()*O1.coordinates()[1])-(O2.velocity()*O2.coordinates()[1])*(O1.velocity()*O1.coordinates()[1])-(O2.velocity()*O2.coordinates()[1]))
 									+((O1.velocity()*O1.coordinates()[2])-(O2.velocity()*O2.coordinates()[2])*(O1.velocity()*O1.coordinates()[2])-(O2.velocity()*O2.coordinates()[2]))).doubleValue()));
 	}
 	
-	public static String createNewExit(Room from, Room room, int direction)
+	public String createNewExit(Room from, Room room, int direction)
 	{
 		Room opRoom=from.rawDoors()[direction];
 		if((opRoom!=null)&&(opRoom.roomID().length()==0))
@@ -208,14 +195,14 @@ public class CMMap
 		return "";
 	}
 
-	public static String getOpenRoomID(String AreaID)
+	public String getOpenRoomID(String AreaID)
 	{
 		int highest=Integer.MIN_VALUE;
 		int lowest=Integer.MAX_VALUE;
 		Hashtable allNums=new Hashtable();
 		try
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if((R.getArea().Name().equals(AreaID))
@@ -241,36 +228,15 @@ public class CMMap
 	}
 
 
-	public static int numRooms() { return roomsList.size(); }
-	public static void addRoom(Room newOne)
-	{
-	    synchronized(roomsList)
-	    {
-			roomsList.addElement(newOne);
-	    }
-		theWorldChanged();
-	}
-	public static void delRoom(Room oneToDel)
-	{
-	    synchronized(roomsList)
-	    {
-			if(oneToDel instanceof GridLocale)
-				((GridLocale)oneToDel).clearGrid(null);
-			roomsList.removeElement(oneToDel);
-	    }
-		theWorldChanged();
-	}
-	public static void justDelRoom(Room oneToDel)
-	{
-	    synchronized(roomsList)
-	    {
-		    if(oneToDel!=null)
-				roomsList.removeElement(oneToDel);
-	    }
-	}
-
+	public int numRooms()
+    {
+        int total=0;
+        for(Enumeration e=areas();e.hasMoreElements();)
+            total+=((Area)e.nextElement()).properSize();
+        return total;
+    }
     
-    public static boolean sendGlobalMessage(MOB host, int category, CMMsg msg)
+    public boolean sendGlobalMessage(MOB host, int category, CMMsg msg)
     {
         Vector V=(Vector)globalHandlers.get(new Integer(category));
         if(V==null) return true;
@@ -282,7 +248,7 @@ public class CMMap
                 if(!CMLib.flags().isInTheGame(E,true))
                 {
                     if(!CMLib.flags().isInTheGame(E,false))
-                        CMMap.delGlobalHandler(E,category);
+                        delGlobalHandler(E,category);
                 }
                 else
                 if(!E.okMessage(host,msg))
@@ -298,7 +264,7 @@ public class CMMap
         return true;
     }
 
-	public static String getExtendedRoomID(Room R)
+	public String getExtendedRoomID(Room R)
 	{
 		if(R==null) return "";
 		if(R.roomID().length()>0) return R.roomID();
@@ -309,78 +275,114 @@ public class CMMap
 		return R.roomID();
 	}
 
-	public static Room getRoom(String calledThis)
-	{
-		try
-		{
-			if(calledThis==null) return null;
-			if(calledThis.endsWith(")"))
-			{
-				int child=calledThis.lastIndexOf("#(");
-				if(child>1)
-				{
-					Room R=getRoom(calledThis.substring(0,child));
-					if((R!=null)&&(R instanceof GridLocale))
+    public Room getRoom(Vector roomSet, String calledThis)
+    {
+        try
+        {
+            if(calledThis==null) return null;
+            if(calledThis.endsWith(")"))
+            {
+                int child=calledThis.lastIndexOf("#(");
+                if(child>1)
+                {
+                    Room R=getRoom(roomSet,calledThis.substring(0,child));
+                    if((R!=null)&&(R instanceof GridLocale))
                     {
-						R=((GridLocale)R).getChild(calledThis);
+                        R=((GridLocale)R).getChild(calledThis);
                         if(R!=null) return R;
                     }
-				}
-			}
+                }
+            }
             Room R=null;
-            for(Enumeration e=roomsList.elements();e.hasMoreElements();)
-			{
-				R = (Room)e.nextElement();
-				if (R.roomID().equalsIgnoreCase(calledThis))
-					return R;
-			}
-		}
-		catch(java.util.NoSuchElementException x){}
-		return null;
-	}
-	public static Enumeration rooms() {
-		return roomsList.elements();
-	}
-	public static void replaceRoom(Room newOne, Room oldOne)
-	{
-	    synchronized(roomsList)
-	    {
-			if(oldOne instanceof GridLocale)
-			  ((GridLocale)oldOne).clearGrid(null);
-			roomsList.removeElement(oldOne);
-			roomsList.addElement(newOne);
-	    }
-		theWorldChanged();
-	}
-	public static Room getFirstRoom()
-	{
-		if (rooms().hasMoreElements())
-			return (Room) rooms().nextElement();
-		return null;
-	}
-	public static Room getRandomRoom()
+            if(roomSet==null)
+            {
+                int x=calledThis.indexOf("#");
+                if(x>=0)
+                {
+                    Area A=getArea(calledThis.substring(0,x));
+                    if(A!=null) R=A.getRoom(calledThis);
+                    if(R!=null) return R;
+                }
+                for(Enumeration e=areas();e.hasMoreElements();)
+                {
+                    R = ((Area)e.nextElement()).getRoom(calledThis);
+                    if(R!=null) return R;
+                }
+            }
+            else
+            for(Enumeration e=roomSet.elements();e.hasMoreElements();)
+            {
+                R=(Room)e.nextElement();
+                if(R.roomID().equalsIgnoreCase(calledThis))
+                    return R;
+            }
+        }
+        catch(java.util.NoSuchElementException x){}
+        return null;
+    }
+	public Room getRoom(String calledThis){ return getRoom(null,calledThis); }
+	public Enumeration rooms(){ return new AreaEnumerator(); }
+	public Room getRandomRoom()
 	{
 		Room R=null;
-		while((numRooms()>0)&&(R==null))
+        int numRooms=-1;
+		while((R==null)&&((numRooms=numRooms())>0))
 		{
-			try{
-				R=(Room)roomsList.elementAt(Dice.roll(1,numRooms(),-1));
-			}catch(Exception e){}
+			try
+            {
+				int which=CMLib.dice().roll(1,numRooms,-1);
+                int total=0;
+                for(Enumeration e=areas();e.hasMoreElements();)
+                {
+                    Area A=(Area)e.nextElement();
+                    if(which<(total+A.properSize()))
+                    { R=A.getRandomProperRoom(); break;}
+                    total+=A.properSize();
+                }
+            }catch(NoSuchElementException e){}
 		}
 		return R;
 	}
 
-	public static int numDeities() { return deitiesList.size(); }
-	public static void addDeity(Deity newOne)
+    private class AreaEnumerator implements Enumeration
+    {
+        private Enumeration curAreaEnumeration=null;
+        private Enumeration curRoomEnumeration=null;
+        
+        public boolean hasMoreElements()
+        {
+            if(curAreaEnumeration==null) curAreaEnumeration=areas();
+            while((curRoomEnumeration==null)||(!curRoomEnumeration.hasMoreElements()))
+            {
+                if(!curAreaEnumeration.hasMoreElements()) return false;
+                curRoomEnumeration=((Area)curAreaEnumeration.nextElement()).getProperMap();
+            }
+            return curRoomEnumeration.hasMoreElements();
+        }
+        public Object nextElement()
+        {
+            if(curAreaEnumeration==null) curAreaEnumeration=areas();
+            while((curRoomEnumeration==null)||(!curRoomEnumeration.hasMoreElements()))
+            {
+                if(!curAreaEnumeration.hasMoreElements()) return null;
+                curRoomEnumeration=((Area)curAreaEnumeration.nextElement()).getProperMap();
+            }
+            return curRoomEnumeration.nextElement();
+        }
+        
+    }
+    
+	public int numDeities() { return deitiesList.size(); }
+	public void addDeity(Deity newOne)
 	{
 		if (!deitiesList.contains(newOne))
 			deitiesList.add(newOne);
 	}
-	public static void delDeity(Deity oneToDel)
+	public void delDeity(Deity oneToDel)
 	{
 		deitiesList.remove(oneToDel);
 	}
-	public static Deity getDeity(String calledThis)
+	public Deity getDeity(String calledThis)
 	{
 		Deity D = null;
 		for (Enumeration i=deities(); i.hasMoreElements();)
@@ -391,19 +393,19 @@ public class CMMap
 		}
 		return null;
 	}
-	public static Enumeration deities() { return deitiesList.elements(); }
+	public Enumeration deities() { return deitiesList.elements(); }
 
-    public static int numPostOffices() { return postOfficeList.size(); }
-    public static void addPostOffice(PostOffice newOne)
+    public int numPostOffices() { return postOfficeList.size(); }
+    public void addPostOffice(PostOffice newOne)
     {
         if (!postOfficeList.contains(newOne))
             postOfficeList.add(newOne);
     }
-    public static void delPostOffice(PostOffice oneToDel)
+    public void delPostOffice(PostOffice oneToDel)
     {
         postOfficeList.remove(oneToDel);
     }
-    public static PostOffice getPostOffice(String chain, String areaNameOrBranch)
+    public PostOffice getPostOffice(String chain, String areaNameOrBranch)
     {
         PostOffice P = null;
         for (Enumeration i=postOffices(); i.hasMoreElements();)
@@ -413,7 +415,7 @@ public class CMMap
             &&(P.postalBranch().equalsIgnoreCase(areaNameOrBranch)))
                 return P;
         }
-        Area A=CMMap.findArea(areaNameOrBranch);
+        Area A=findArea(areaNameOrBranch);
         if(A==null) return null;
         for (Enumeration i=postOffices(); i.hasMoreElements();)
         {
@@ -426,12 +428,12 @@ public class CMMap
         }
         return null;
     }
-    public static Enumeration postOffices() { return postOfficeList.elements(); }
+    public Enumeration postOffices() { return postOfficeList.elements(); }
     
-	public static int numPlayers() { return playersList.size(); }
-	public static void addPlayer(MOB newOne) { playersList.add(newOne); }
-	public static void delPlayer(MOB oneToDel) { playersList.remove(oneToDel); }
-	public static MOB getPlayer(String calledThis)
+	public int numPlayers() { return playersList.size(); }
+	public void addPlayer(MOB newOne) { playersList.add(newOne); }
+	public void delPlayer(MOB oneToDel) { playersList.remove(oneToDel); }
+	public MOB getPlayer(String calledThis)
 	{
 		MOB M = null;
 
@@ -444,7 +446,7 @@ public class CMMap
 		return null;
 	}
 
-	public static MOB getLoadPlayer(String last)
+	public MOB getLoadPlayer(String last)
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return null;
@@ -475,10 +477,10 @@ public class CMMap
 		return M;
 	}
 
-	public static Enumeration players() { return playersList.elements(); }
+	public Enumeration players() { return playersList.elements(); }
 
     
-	public static Room getStartRoom(MOB mob)
+	public Room getStartRoom(MOB mob)
 	{
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
 		race.replace(' ','_');
@@ -510,11 +512,11 @@ public class CMMap
 		if(room==null)
 			room=getRoom("START");
 		if((room==null)&&(numRooms()>0))
-			room=getFirstRoom();
+			room=(Room)CMLib.map().rooms().nextElement();
 		return room;
 	}
 
-	public static Room getDeathRoom(MOB mob)
+	public Room getDeathRoom(MOB mob)
 	{
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
 		race.replace(' ','_');
@@ -544,21 +546,21 @@ public class CMMap
 		if(room==null)
 			room=mob.getStartRoom();
 		if((room==null)&&(numRooms()>0))
-			room=getFirstRoom();
+			room=(Room)rooms().nextElement();
 		return room;
 	}
 
-	public static Room getBodyRoom(MOB mob)
+	public Room getBodyRoom(MOB mob)
 	{
 	    if((mob.getClanID().length()>0)
 	    &&(mob.getClanRole()!=Clan.POS_APPLICANT)
 	    &&((!mob.isMonster())||(mob.getStartRoom()==null)))
 	    {
-	        Clan C=Clans.getClan(mob.getClanID());
+	        Clan C=CMLib.clans().getClan(mob.getClanID());
 		    if((C!=null)&&(C.getMorgue().length()>0))
 		    {
-		        Room room=CMMap.getRoom(C.getMorgue());
-		        if((room!=null)&&(CoffeeUtensils.doesHavePriviledgesHere(mob,room)))
+		        Room room=getRoom(C.getMorgue());
+		        if((room!=null)&&(CMLib.utensils().doesHavePriviledgesHere(mob,room)))
 		            return room;
 		    }
 	    }
@@ -594,11 +596,11 @@ public class CMMap
 		if(room==null)
 			room=mob.location();
 		if((room==null)&&(numRooms()>0))
-			room=getFirstRoom();
+			room=(Room)rooms().nextElement();
 		return room;
 	}
 
-	private static void pageRooms(CMProps page, Hashtable table, String start)
+	public void pageRooms(CMProps page, Hashtable table, String start)
 	{
 		for(Enumeration i=page.keys();i.hasMoreElements();)
 		{
@@ -611,25 +613,25 @@ public class CMMap
 			table.put("ALL",thisOne);
 	}
 
-	public static void initStartRooms(CMProps page)
+	public void initStartRooms(CMProps page)
 	{
 		startRooms=new Hashtable();
 		pageRooms(page,startRooms,"START");
 	}
 
-	public static void initDeathRooms(CMProps page)
+	public void initDeathRooms(CMProps page)
 	{
 		deathRooms=new Hashtable();
 		pageRooms(page,deathRooms,"DEATH");
 	}
 
-	public static void initBodyRooms(CMProps page)
+	public void initBodyRooms(CMProps page)
 	{
 		bodyRooms=new Hashtable();
 		pageRooms(page,bodyRooms,"MORGUE");
 	}
 
-	public static void renameRooms(Area A, String oldName, Vector allMyDamnRooms)
+	public void renameRooms(Area A, String oldName, Vector allMyDamnRooms)
 	{
 		Vector onesToRenumber=new Vector();
 		for(int r=0;r<allMyDamnRooms.size();r++)
@@ -640,7 +642,7 @@ public class CMMap
 			{
 				if(R.roomID().startsWith(oldName+"#"))
 				{
-					Room R2=CMMap.getRoom(A.Name()+"#"+R.roomID().substring(oldName.length()+1));
+					Room R2=getRoom(A.Name()+"#"+R.roomID().substring(oldName.length()+1));
 					if((R2==null)||(!R2.roomID().startsWith(A.Name()+"#")))
 					{
 						String oldID=R.roomID();
@@ -654,23 +656,21 @@ public class CMMap
 					CMLib.database().DBUpdateRoom(R);
 			}
 		}
-		A.clearMaps();
 		if(oldName!=null)
 		{
 			for(int r=0;r<onesToRenumber.size();r++)
 			{
 				Room R=(Room)onesToRenumber.elementAt(r);
 				String oldID=R.roomID();
-				R.setRoomID(CMMap.getOpenRoomID(A.Name()));
+				R.setRoomID(getOpenRoomID(A.Name()));
 				CMLib.database().DBReCreate(R,oldID);
 			}
 		}
 	}
 
-	public static void unLoad()
+	public void unLoad()
 	{
 		areasList.clear();
-		roomsList.clear();
 		deitiesList.clear();
 		playersList.clear();
 		space=new Vector();
@@ -689,18 +689,4 @@ public class CMMap
             return false;
         return false;
     }
-    
-	public static class CrossExit
-	{
-		public int x;
-		public int y;
-		public int dir;
-		public String destRoomID="";
-		public boolean out=false;
-		public static CrossExit make(int xx, int xy, int xdir, String xdestRoomID, boolean xout)
-		{   CrossExit EX=new CrossExit();
-			EX.x=xx;EX.y=xy;EX.dir=xdir;EX.destRoomID=xdestRoomID;EX.out=xout;
-			return EX;
-		}
-	}
 }

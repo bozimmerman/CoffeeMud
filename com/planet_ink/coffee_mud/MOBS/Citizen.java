@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.MOBS;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 /* 
    Copyright 2000-2005 Lee H. Fox
 
@@ -27,9 +38,9 @@ public class Citizen extends StdMOB
 		super();
 		Username="a citizen";
 		setDescription("");
-		baseCharStats().setStat(CharStats.GENDER,(Dice.rollPercentage()>50)?'M':'F');
+		baseCharStats().setStat(CharStats.GENDER,(CMLib.dice().rollPercentage()>50)?'M':'F');
 		setDisplayText("A citizen goes about "+baseCharStats().hisher()+" business.");
-		Factions.setAlignment(this,Faction.ALIGN_GOOD);
+		CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);
 		setMoney(10);
 		baseEnvStats.setWeight(150);
 		setWimpHitPoint(0);
@@ -42,7 +53,7 @@ public class Citizen extends StdMOB
 		baseEnvStats().setLevel(1);
 		baseEnvStats().setArmor(50);
 
-		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

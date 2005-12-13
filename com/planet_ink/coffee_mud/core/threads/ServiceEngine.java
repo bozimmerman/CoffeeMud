@@ -1,9 +1,23 @@
-package com.planet_ink.coffee_mud.system.threads;
+package com.planet_ink.coffee_mud.core.threads;
+import com.planet_ink.coffee_mud.core.database.DBInterface;
+import com.planet_ink.coffee_mud.core.http.ProcessHTTPrequest;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -23,6 +37,12 @@ import com.planet_ink.coffee_mud.utils.*;
 public class ServiceEngine implements ThreadEngine
 {
     public static final long STATUS_ALLMISCTICKS=Tickable.STATUS_MISC|Tickable.STATUS_MISC2|Tickable.STATUS_MISC3|Tickable.STATUS_MISC4|Tickable.STATUS_MISC5|Tickable.STATUS_MISC6;
+    
+    public String ID(){return "ServiceEngine";}
+    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new ServiceEngine();}}
+    public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
+    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    
 	private Vector tickGroup=new Vector();
 	public Enumeration tickGroups(){return ((Vector)tickGroup.clone()).elements();}
     private boolean isSuspended=false;
@@ -45,21 +65,25 @@ public class ServiceEngine implements ThreadEngine
 	public Tick confirmAndGetTickThread(Tickable E, long TICK_TIME, int tickID)
 	{
 		Tick tock=null;
-
+        TockClient client=null;
+        Tick almostTock=null;
 		for(Enumeration v=tickGroups();v.hasMoreElements();)
 		{
-			Tick almostTock=(Tick)v.nextElement();
+			almostTock=(Tick)v.nextElement();
 			if((tock==null)
             &&(almostTock.TICK_TIME==TICK_TIME)
             &&(!almostTock.solitaryTicker)
             &&(almostTock.numTickers()<MudHost.MAX_TICK_CLIENTS))
 				tock=almostTock;
-			for(Enumeration t=almostTock.tickers();t.hasMoreElements();)
-			{
-				TockClient client=(TockClient)t.nextElement();
-				if((client.clientObject==E)&&(client.tickID==tickID))
-					return null;
-			}
+            try{
+    			for(Enumeration t=almostTock.tickers();t.hasMoreElements();)
+    			{
+    				client=(TockClient)t.nextElement();
+    				if((client.clientObject==E)&&(client.tickID==tickID))
+    					return null;
+    			}
+            }catch(NoSuchElementException e){}
+            
 		}
 
 		if(tock!=null)
@@ -91,36 +115,45 @@ public class ServiceEngine implements ThreadEngine
 
 	public boolean deleteTick(Tickable E, int tickID)
 	{
+        Tick almostTock=null;
+        TockClient C=null;
+        Tickable E2=null;
 		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
-			Tick almostTock=(Tick)v.nextElement();
-			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
-			{
-				TockClient C=(TockClient)e.nextElement();
-				Tickable E2=C.clientObject;
-				if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
-				{
-					almostTock.delTicker(C);
-					if(tickID>=0)
-						return true;
-				}
-			}
+			almostTock=(Tick)v.nextElement();
+            try{
+    			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
+    			{
+    				C=(TockClient)e.nextElement();
+    				E2=C.clientObject;
+    				if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
+    				{
+    					almostTock.delTicker(C);
+    					if(tickID>=0) return true;
+    				}
+    			}
+            }catch(NoSuchElementException e){}
 		}
 		return false;
 	}
 
 	public boolean isTicking(Tickable E, int tickID)
 	{
+        Tick almostTock=null;
+        TockClient C=null;
+        Tickable E2=null;
 		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
-			Tick almostTock=(Tick)v.nextElement();
-			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
-			{
-				TockClient C=(TockClient)e.nextElement();
-				Tickable E2=C.clientObject;
-				if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
-					return true;
-			}
+			almostTock=(Tick)v.nextElement();
+            try{
+    			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
+    			{
+    				C=(TockClient)e.nextElement();
+    				E2=C.clientObject;
+    				if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
+    					return true;
+    			}
+            }catch(NoSuchElementException e){}
 		}
 		return false;
 	}
@@ -132,16 +165,22 @@ public class ServiceEngine implements ThreadEngine
 	public void resumeTicking(Tickable E, int tickID){suspendResumeTicking(E,tickID,false);}
 	private boolean suspendResumeTicking(Tickable E, int tickID, boolean suspend)
 	{
+        Tick almostTock=null;
+        TockClient C=null;
+        Tickable E2=null;
 		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
-			Tick almostTock=(Tick)v.nextElement();
-			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
-			{
-				TockClient C=(TockClient)e.nextElement();
-				Tickable E2=C.clientObject;
-				if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
-					C.suspended=suspend;
-			}
+			almostTock=(Tick)v.nextElement();
+            try
+            {
+    			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
+    			{
+    				C=(TockClient)e.nextElement();
+    				E2=C.clientObject;
+    				if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
+    					C.suspended=suspend;
+    			}
+            }catch(NoSuchElementException e){}
 		}
 		return false;
 	}
@@ -185,9 +224,9 @@ public class ServiceEngine implements ThreadEngine
 		long topMOBMillis=0;
 		long topMOBTicks=0;
 		MOB topMOBClient=null;
-		for(int s=0;s<Sessions.size();s++)
+		for(int s=0;s<CMLib.sessions().size();s++)
 		{
-			Session S=Sessions.elementAt(s);
+			Session S=CMLib.sessions().elementAt(s);
 			totalMOBMillis+=S.getTotalMillis();
 			totalMOBTicks+=S.getTotalTicks();
 			if(S.getTotalMillis()>topMOBMillis)
@@ -252,17 +291,19 @@ public class ServiceEngine implements ThreadEngine
 				topGroupTicks=almostTock.tickTotal;
 				topGroupNumber=num;
 			}
-			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
-			{
-				TockClient C=(TockClient)e.nextElement();
-				if(C.milliTotal>topObjectMillis)
-				{
-					topObjectMillis=C.milliTotal;
-					topObjectTicks=C.tickTotal;
-					topObjectClient=C.clientObject;
-					topObjectGroup=num;
-				}
-			}
+            try{
+    			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
+    			{
+    				TockClient C=(TockClient)e.nextElement();
+    				if(C.milliTotal>topObjectMillis)
+    				{
+    					topObjectMillis=C.milliTotal;
+    					topObjectTicks=C.tickTotal;
+    					topObjectClient=C.clientObject;
+    					topObjectGroup=num;
+    				}
+    			}
+            }catch(NoSuchElementException e){}
 			num++;
 		}
 		if(itemCode.equalsIgnoreCase("freeMemory"))
@@ -275,10 +316,10 @@ public class ServiceEngine implements ThreadEngine
 			return ""+Util.returnTime(System.currentTimeMillis()-CMSecurity.getStartTime(),0);
 		else
 		if(itemCode.equalsIgnoreCase("startTime"))
-			return IQCalendar.d2String(CMSecurity.getStartTime());
+			return CMLib.time().date2String(CMSecurity.getStartTime());
 		else
 		if(itemCode.equalsIgnoreCase("currentTime"))
-			return IQCalendar.d2String(System.currentTimeMillis());
+			return CMLib.time().date2String(System.currentTimeMillis());
 		else
 		if(itemCode.equalsIgnoreCase("totalTickers"))
 			return ""+totalTickers;
@@ -371,26 +412,32 @@ public class ServiceEngine implements ThreadEngine
 
 	public void tickAllTickers(Room here)
 	{
+        Tick almostTock=null;
+        TockClient C=null;
+        Tickable E2=null;
 		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
-			Tick almostTock=(Tick)v.nextElement();
-			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
-			{
-				TockClient C=(TockClient)e.nextElement();
-				Tickable E2=C.clientObject;
-				if(isHere(E2,here))
-				{
-					if(Tick.tickTicker(C,isSuspended))
-						almostTock.delTicker(C);
-				}
-				else
-				if((E2 instanceof Ability)
-				&&(isHere(((Ability)E2).affecting(),here)))
-				{
-					if(Tick.tickTicker(C,isSuspended))
-						almostTock.delTicker(C);
-				}
-			}
+			almostTock=(Tick)v.nextElement();
+            try
+            {
+    			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
+    			{
+    				C=(TockClient)e.nextElement();
+    				E2=C.clientObject;
+    				if(isHere(E2,here))
+    				{
+    					if(Tick.tickTicker(C,isSuspended))
+    						almostTock.delTicker(C);
+    				}
+    				else
+    				if((E2 instanceof Ability)
+    				&&(isHere(((Ability)E2).affecting(),here)))
+    				{
+    					if(Tick.tickTicker(C,isSuspended))
+    						almostTock.delTicker(C);
+    				}
+    			}
+            }catch(NoSuchElementException e){}
 		}
 	}
 
@@ -464,10 +511,10 @@ public class ServiceEngine implements ThreadEngine
 			return ""+C.lastStop;
 		else
 		if(which.toLowerCase().startsWith("tickerlaststartdate"))
-			return IQCalendar.d2String(C.lastStart);
+			return CMLib.time().date2String(C.lastStart);
 		else
 		if(which.toLowerCase().startsWith("tickerlaststopdate"))
-			return IQCalendar.d2String(C.lastStop);
+			return CMLib.time().date2String(C.lastStop);
 		else
 		if(which.toLowerCase().startsWith("tickerlastduration"))
 		{
@@ -496,34 +543,41 @@ public class ServiceEngine implements ThreadEngine
 
 	public synchronized void clearDebri(Room room, int taskCode)
 	{
+        Tick almostTock=null;
+        TockClient C=null;
+        ItemTicker  I=null;
+        MOB mob=null;
 		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
-			Tick almostTock=(Tick)v.nextElement();
-			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
-			{
-				TockClient C=(TockClient)e.nextElement();
-				if((C.clientObject instanceof ItemTicker)&&(taskCode<2))
-				{
-					ItemTicker I=(ItemTicker)C.clientObject;
-					if(I.properLocation()==room)
-					{
-						almostTock.delTicker(C);
-						I.setProperLocation(null);
-					}
-				}
-				else
-				if((C.clientObject instanceof MOB)&&((taskCode==0)||(taskCode==2)))
-				{
-					MOB mob=(MOB)C.clientObject;
-					if((mob.getStartRoom()==room)
-					&&(mob.isMonster())
-					&&(!room.isInhabitant(mob)))
-					{
-						mob.destroy();
-						almostTock.delTicker(C);
-					}
-				}
-			}
+			almostTock=(Tick)v.nextElement();
+            try
+            {
+    			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
+    			{
+    				C=(TockClient)e.nextElement();
+    				if((C.clientObject instanceof ItemTicker)&&(taskCode<2))
+    				{
+    					I=(ItemTicker)C.clientObject;
+    					if(I.properLocation()==room)
+    					{
+    						almostTock.delTicker(C);
+    						I.setProperLocation(null);
+    					}
+    				}
+    				else
+    				if((C.clientObject instanceof MOB)&&((taskCode==0)||(taskCode==2)))
+    				{
+    					mob=(MOB)C.clientObject;
+    					if((mob.getStartRoom()==room)
+    					&&(mob.isMonster())
+    					&&(!room.isInhabitant(mob)))
+    					{
+    						mob.destroy();
+    						almostTock.delTicker(C);
+    					}
+    				}
+    			}
+            }catch(NoSuchElementException e){}
 		}
 	}
     

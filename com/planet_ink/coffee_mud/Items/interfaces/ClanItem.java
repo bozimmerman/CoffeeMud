@@ -1,4 +1,17 @@
-package com.planet_ink.coffee_mud.core.interfaces;
+package com.planet_ink.coffee_mud.Items.interfaces;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -15,7 +28,7 @@ package com.planet_ink.coffee_mud.core.interfaces;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface ClanItem extends Environmental
+public interface ClanItem extends Item
 {
 	public final static int CI_FLAG=0;
 	public final static int CI_BANNER=1;

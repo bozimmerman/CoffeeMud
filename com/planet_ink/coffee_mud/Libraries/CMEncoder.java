@@ -1,21 +1,9 @@
-package com.planet_ink.coffee_mud.core;
-import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.*;
-import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.Areas.interfaces.*;
-import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
-import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
-import com.planet_ink.coffee_mud.Commands.interfaces.*;
-import com.planet_ink.coffee_mud.Common.interfaces.*;
-import com.planet_ink.coffee_mud.Exits.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Locales.interfaces.*;
-import com.planet_ink.coffee_mud.MOBS.interfaces.*;
-import com.planet_ink.coffee_mud.Races.interfaces.*;
-
-import java.util.*;
+package com.planet_ink.coffee_mud.Libraries;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
+
+import com.planet_ink.coffee_mud.Libraries.interfaces.TextEncoders;
+import com.planet_ink.coffee_mud.core.Log;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -32,24 +20,24 @@ import java.util.zip.Inflater;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CMEncoder
+public class CMEncoder extends StdLibrary implements TextEncoders
 {
-
-    private static byte[] encodeBuffer = new byte[65536];
-    private static Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION);
-    private static Inflater decompresser = new Inflater();
+    public String ID(){return "CMEncoder";}
+    private byte[] encodeBuffer = new byte[65536];
+    private Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION);
+    private Inflater decompresser = new Inflater();
     /* Base 64 Encoding stuff */
-    public final static int NO_OPTIONS = 0;
-    public final static int ENCODE = 1;
-    public final static int DECODE = 0;
-    public final static int GZIP = 2;
-    public final static int DONT_BREAK_LINES = 8;
-    private final static int MAX_LINE_LENGTH = 76;
-    private final static byte EQUALS_SIGN = (byte)'=';
-    private final static byte NEW_LINE = (byte)'\n';
-    private final static String PREFERRED_ENCODING = "UTF-8";
-    private final static byte[] ALPHABET;
-    private final static byte[] _NATIVE_ALPHABET = /* May be something funny like EBCDIC */
+    public final int NO_OPTIONS = 0;
+    public final int ENCODE = 1;
+    public final int DECODE = 0;
+    public final int GZIP = 2;
+    public final int DONT_BREAK_LINES = 8;
+    private final int MAX_LINE_LENGTH = 76;
+    private final byte EQUALS_SIGN = (byte)'=';
+    private final byte NEW_LINE = (byte)'\n';
+    private final String PREFERRED_ENCODING = "UTF-8";
+    private final byte[] ALPHABET;
+    private final byte[] _NATIVE_ALPHABET = /* May be something funny like EBCDIC */
     {
         (byte)'A', (byte)'B', (byte)'C', (byte)'D', (byte)'E', (byte)'F', (byte)'G',
         (byte)'H', (byte)'I', (byte)'J', (byte)'K', (byte)'L', (byte)'M', (byte)'N',
@@ -62,7 +50,7 @@ public class CMEncoder
         (byte)'0', (byte)'1', (byte)'2', (byte)'3', (byte)'4', (byte)'5', 
         (byte)'6', (byte)'7', (byte)'8', (byte)'9', (byte)'+', (byte)'/'
     };
-    protected final static byte[] DECODABET =
+    protected final byte[] DECODABET =
     {   
         -9,-9,-9,-9,-9,-9,-9,-9,-9,                 // Decimal  0 -  8
         -5,-5,                                      // Whitespace: Tab and Linefeed
@@ -96,12 +84,12 @@ public class CMEncoder
         -9,-9,-9,-9,-9,-9,-9,-9,-9,-9,-9,-9,-9,     // Decimal 231 - 243
         -9,-9,-9,-9,-9,-9,-9,-9,-9,-9,-9,-9         // Decimal 244 - 255 */
     };
-    private final static byte WHITE_SPACE_ENC = -5; // Indicates white space in encoding
-    private final static byte EQUALS_SIGN_ENC = -1; // Indicates equals sign in encoding
+    private final byte WHITE_SPACE_ENC = -5; // Indicates white space in encoding
+    private final byte EQUALS_SIGN_ENC = -1; // Indicates equals sign in encoding
     
-    /** Determine which ALPHABET to use. */
-    static
+    public CMEncoder()
     {
+        super();
         byte[] __bytes;
         try
         {
@@ -112,11 +100,9 @@ public class CMEncoder
             __bytes = _NATIVE_ALPHABET; // Fall back to native encoding
         }   // end catch
         ALPHABET = __bytes;
-    }   // end static
-    
-    private CMEncoder(){super();}
+    }
 
-    public static String decompressString(byte[] b)
+    public String decompressString(byte[] b)
     {
         try
         {
@@ -139,7 +125,7 @@ public class CMEncoder
         }
     }
 
-    public static byte[] compressString(String s)
+    public byte[] compressString(String s)
     {
         byte[] result = null;
 
@@ -169,14 +155,14 @@ public class CMEncoder
         return result;
     }
     
-    protected static byte[] encode3to4( byte[] b4, byte[] threeBytes, int numSigBytes )
+    protected byte[] encode3to4( byte[] b4, byte[] threeBytes, int numSigBytes )
     {
         encode3to4( threeBytes, 0, numSigBytes, b4, 0 );
         return b4;
     }
 
     
-    protected static byte[] encode3to4(byte[] source, int srcOffset, int numSigBytes,
+    protected byte[] encode3to4(byte[] source, int srcOffset, int numSigBytes,
                                        byte[] destination, int destOffset )
     {
         int inBuff =   ( numSigBytes > 0 ? ((source[ srcOffset     ] << 24) >>>  8) : 0 )
@@ -211,12 +197,12 @@ public class CMEncoder
         }
     }
     
-    public static String B64encodeObject( java.io.Serializable serializableObject )
+    public String B64encodeObject( java.io.Serializable serializableObject )
     {
         return B64encodeObject( serializableObject, NO_OPTIONS );
     }
     
-    public static String B64encodeObject( java.io.Serializable serializableObject, int options )
+    public String B64encodeObject( java.io.Serializable serializableObject, int options )
     {
         java.io.ByteArrayOutputStream  baos  = null; 
         java.io.OutputStream           b64os = null; 
@@ -229,7 +215,7 @@ public class CMEncoder
         try
         {
             baos  = new java.io.ByteArrayOutputStream();
-            b64os = new CMEncoder.B64OutputStream( baos, ENCODE | dontBreakLines );
+            b64os = new B64OutputStream( baos, ENCODE | dontBreakLines );
     
             if( gzip == GZIP )
             {
@@ -265,23 +251,23 @@ public class CMEncoder
         
     } 
     
-    public static String B64encodeBytes( byte[] source )
+    public String B64encodeBytes( byte[] source )
     {
         return B64encodeBytes( source, 0, source.length, NO_OPTIONS );
     }   // end encodeBytes
     
-    public static String B64encodeBytes( byte[] source, int options )
+    public String B64encodeBytes( byte[] source, int options )
     {   
         return B64encodeBytes( source, 0, source.length, options );
     }   // end encodeBytes
     
-    public static String B64encodeBytes( byte[] source, int off, int len )
+    public String B64encodeBytes( byte[] source, int off, int len )
     {
         return B64encodeBytes( source, off, len, NO_OPTIONS );
     }   // end encodeBytes
     
     
-    public static String B64encodeBytes( byte[] source, int off, int len, int options )
+    public String B64encodeBytes( byte[] source, int off, int len, int options )
     {
         int dontBreakLines = ( options & DONT_BREAK_LINES );
         int gzip           = ( options & GZIP   );
@@ -290,13 +276,13 @@ public class CMEncoder
         {
             java.io.ByteArrayOutputStream  baos  = null;
             java.util.zip.GZIPOutputStream gzos  = null;
-            CMEncoder.B64OutputStream         b64os = null;
+            B64OutputStream         b64os = null;
             
     
             try
             {
                 baos = new java.io.ByteArrayOutputStream();
-                b64os = new CMEncoder.B64OutputStream( baos, ENCODE | dontBreakLines );
+                b64os = new B64OutputStream( baos, ENCODE | dontBreakLines );
                 gzos  = new java.util.zip.GZIPOutputStream( b64os ); 
             
                 gzos.write( source, off, len );
@@ -361,7 +347,7 @@ public class CMEncoder
         
     }
     
-    protected static int decode4to3( byte[] source, int srcOffset, byte[] destination, int destOffset )
+    protected int decode4to3( byte[] source, int srcOffset, byte[] destination, int destOffset )
     {
         if( source[ srcOffset + 2] == EQUALS_SIGN )
         {
@@ -404,7 +390,7 @@ public class CMEncoder
         }
     }
     
-    public static byte[] B64decode( byte[] source, int off, int len )
+    public byte[] B64decode( byte[] source, int off, int len )
     {
         int    len34   = len * 3 / 4;
         byte[] outBuff = new byte[ len34 ]; // Upper limit on size of output
@@ -447,7 +433,7 @@ public class CMEncoder
         return out;
     }
     
-    public static byte[] B64decode( String s )
+    public byte[] B64decode( String s )
     {   
         byte[] bytes;
         try
@@ -498,7 +484,7 @@ public class CMEncoder
         return bytes;
     }
 
-    public static Object B64decodeToObject( String encodedObject )
+    public Object B64decodeToObject( String encodedObject )
     {
         byte[] objBytes = B64decode( encodedObject );
         
@@ -532,14 +518,14 @@ public class CMEncoder
         return obj;
     }
     
-    public static boolean B64encodeToFile( byte[] dataToEncode, String filename )
+    public boolean B64encodeToFile( byte[] dataToEncode, String filename )
     {
         boolean success = false;
-        CMEncoder.B64OutputStream bos = null;
+        B64OutputStream bos = null;
         try
         {
-            bos = new CMEncoder.B64OutputStream( 
-                      new java.io.FileOutputStream( filename ), CMEncoder.ENCODE );
+            bos = new B64OutputStream( 
+                      new java.io.FileOutputStream( filename ), ENCODE );
             bos.write( dataToEncode );
             success = true;
         }
@@ -556,14 +542,14 @@ public class CMEncoder
         return success;
     }
     
-    public static boolean B64decodeToFile( String dataToDecode, String filename )
+    public boolean B64decodeToFile( String dataToDecode, String filename )
     {
         boolean success = false;
-        CMEncoder.B64OutputStream bos = null;
+        B64OutputStream bos = null;
         try
         {
-                bos = new CMEncoder.B64OutputStream( 
-                          new java.io.FileOutputStream( filename ), CMEncoder.DECODE );
+                bos = new B64OutputStream( 
+                          new java.io.FileOutputStream( filename ), DECODE );
                 bos.write( dataToDecode.getBytes( PREFERRED_ENCODING ) );
                 success = true;
         }
@@ -579,10 +565,10 @@ public class CMEncoder
         return success;
     }
     
-    public static byte[] B64decodeFromFile( String filename )
+    public byte[] B64decodeFromFile( String filename )
     {
         byte[] decodedData = null;
-        CMEncoder.B64InputStream bis = null;
+        B64InputStream bis = null;
         try
         {
             java.io.File file = new java.io.File( filename );
@@ -597,9 +583,9 @@ public class CMEncoder
             }
             buffer = new byte[ (int)file.length() ];
             
-            bis = new CMEncoder.B64InputStream( 
+            bis = new B64InputStream( 
                       new java.io.BufferedInputStream( 
-                      new java.io.FileInputStream( file ) ), CMEncoder.DECODE );
+                      new java.io.FileInputStream( file ) ), DECODE );
             
             while( ( numBytes = bis.read( buffer, length, 4096 ) ) >= 0 )
                 length += numBytes;
@@ -620,22 +606,22 @@ public class CMEncoder
         return decodedData;
     }
     
-    public static String B64encodeFromFile( String filename )
+    public String B64encodeFromFile( String filename )
     {
         String encodedData = null;
-        CMEncoder.B64InputStream bis = null;
+        B64InputStream bis = null;
         try
         {
             java.io.File file = new java.io.File( filename );
             byte[] buffer = new byte[ (int)(file.length() * 1.4) ];
             int length   = 0;
             int numBytes = 0;
-            bis = new CMEncoder.B64InputStream( 
+            bis = new B64InputStream( 
                       new java.io.BufferedInputStream( 
-                      new java.io.FileInputStream( file ) ), CMEncoder.ENCODE );
+                      new java.io.FileInputStream( file ) ), ENCODE );
             while( ( numBytes = bis.read( buffer, length, 4096 ) ) >= 0 )
                 length += numBytes;
-            encodedData = new String( buffer, 0, length, CMEncoder.PREFERRED_ENCODING );
+            encodedData = new String( buffer, 0, length, PREFERRED_ENCODING );
                 
         }
         catch( java.io.IOException e )
@@ -650,7 +636,7 @@ public class CMEncoder
         return encodedData;
     }
     
-    private static class B64InputStream extends java.io.FilterInputStream
+    private class B64InputStream extends java.io.FilterInputStream
     {
         private boolean encode;         // Encoding or decoding
         private int     position;       // Current position in the buffer
@@ -785,7 +771,7 @@ public class CMEncoder
         }
     }
     
-    private static class B64OutputStream extends java.io.FilterOutputStream
+    private class B64OutputStream extends java.io.FilterOutputStream
     {
         private boolean encode;
         private int     position;
@@ -843,7 +829,7 @@ public class CMEncoder
                     buffer[ position++ ] = (byte)theByte;
                     if( position >= bufferLength )
                     {
-                        int len = CMEncoder.decode4to3( buffer, 0, b4, 0 );
+                        int len = decode4to3( buffer, 0, b4, 0 );
                         out.write( b4, 0, len );
                         position = 0;
                     }

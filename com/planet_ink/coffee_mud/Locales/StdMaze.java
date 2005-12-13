@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Locales;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -124,7 +135,7 @@ public class StdMaze extends StdGrid
 				int dirCode=-1;
 				while(goRoom==null)
 				{
-					int d=Dice.roll(1,Directions.NUM_DIRECTIONS,0)-1;
+					int d=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS,0)-1;
 					Room possRoom=roomDir(x,y,d);
 					if(possRoom!=null)
 						if(visited.get(possRoom)==null)
@@ -158,10 +169,7 @@ public class StdMaze extends StdGrid
 				{
 					Room newRoom=getGridRoom(x,y);
 					if(newRoom!=null)
-					{
 						subMap[x][y]=newRoom;
-						CMMap.addRoom(newRoom);
-					}
 				}
 			buildMaze();
 			buildFinalLinks();

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -31,16 +32,18 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CoffeeMaker
+public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 {
-	private CoffeeMaker(){}
+    public String ID(){return "CoffeeMaker";}
+    public Hashtable GENMOBCODESHASH=new Hashtable();
+    public Hashtable GENITEMCODESHASH=new Hashtable();
 
-	public static boolean get(int x, int m)
+	public boolean get(int x, int m)
 	{
 		return (x&m)==m;
 	}
 
-	public static String getGenMOBTextUnpacked(MOB mob, String newText)
+	public String getGenMOBTextUnpacked(MOB mob, String newText)
 	{
 		if((newText!=null)&&((newText.length()>10)||newText.startsWith("%DBID>")))
 		{
@@ -58,7 +61,7 @@ public class CoffeeMaker
 		return null;
 	}
 	
-	public static void resetGenMOB(MOB mob, String newText)
+	public void resetGenMOB(MOB mob, String newText)
 	{
 		newText=getGenMOBTextUnpacked(mob,newText);
 		if(newText!=null)
@@ -66,7 +69,7 @@ public class CoffeeMaker
 
 		mob.recoverEnvStats();
 		mob.recoverCharStats();
-		mob.baseState().setHitPoints(Dice.rollHP(mob.baseEnvStats().level(),mob.baseEnvStats().ability()));
+		mob.baseState().setHitPoints(CMLib.dice().rollHP(mob.baseEnvStats().level(),mob.baseEnvStats().ability()));
 		mob.baseState().setMana(mob.baseCharStats().getCurrentClass().getLevelMana(mob));
 		mob.baseState().setMovement(mob.baseCharStats().getCurrentClass().getLevelMove(mob));
 		mob.recoverMaxState();
@@ -77,7 +80,7 @@ public class CoffeeMaker
 		mob.setExpNextLevel(mob.charStats().getCurrentClass().getLevelExperience(mob.envStats().level()+1));
 	}
 
-	public static String parseOutAngleBrackets(String s)
+	public String parseOutAngleBrackets(String s)
 	{
 		int x=s.indexOf("<");
 		while(x>=0)
@@ -94,8 +97,7 @@ public class CoffeeMaker
 		return s;
 	}
 
-	private final static String hexStr="0123456789ABCDEF";
-	public static String restoreAngleBrackets(String s)
+	public String restoreAngleBrackets(String s)
 	{
 		StringBuffer buf=new StringBuffer(s);
 		int loop=0;
@@ -132,7 +134,7 @@ public class CoffeeMaker
 		return buf.toString();
 	}
 
-	public static int envFlags(Environmental E)
+	public int envFlags(Environmental E)
 	{
 		int f=0;
 		if(E instanceof Item) 
@@ -184,16 +186,16 @@ public class CoffeeMaker
 		return f;
 	}
 
-	public static void setEnvFlags(Environmental E, int f)
+	public void setEnvFlags(Environmental E, int f)
 	{
 		if(E instanceof Item)
 		{
 			Item item=(Item)E;
 			// deprecated, but unfortunately, its here to stay.
-			Sense.setDroppable(item,get(f,1));
-			Sense.setGettable(item,get(f,2));
-			Sense.setReadable(item,get(f,4));
-			Sense.setRemovable(item,get(f,8));
+			CMLib.flags().setDroppable(item,get(f,1));
+			CMLib.flags().setGettable(item,get(f,2));
+			CMLib.flags().setReadable(item,get(f,4));
+			CMLib.flags().setRemovable(item,get(f,8));
 		}
 		if(E instanceof Container)
 		{
@@ -217,7 +219,7 @@ public class CoffeeMaker
 		}
 	}
 
-	public static String getPropertiesStr(Environmental E, boolean fromTop)
+	public String getPropertiesStr(Environmental E, boolean fromTop)
 	{
 		if(E==null)
 		{
@@ -227,13 +229,13 @@ public class CoffeeMaker
 		return (E.isGeneric()?getGenPropertiesStr(E):"") + (fromTop?getOrdPropertiesStr(E):"");
 	}
 
-	private static String getOrdPropertiesStr(Environmental E)
+	public String getOrdPropertiesStr(Environmental E)
 	{
 		if(E instanceof Room)
 		{
 			if(E instanceof GridLocale)
-				return XMLManager.convertXMLtoTag("XGRID",((GridLocale)E).xSize())
-					  +XMLManager.convertXMLtoTag("YGRID",((GridLocale)E).ySize())
+				return CMLib.xml().convertXMLtoTag("XGRID",((GridLocale)E).xSize())
+					  +CMLib.xml().convertXMLtoTag("YGRID",((GridLocale)E).ySize())
 					  +getExtraEnvPropertiesStr(E);
 			return getExtraEnvPropertiesStr(E);
 		}
@@ -243,60 +245,60 @@ public class CoffeeMaker
 		    StringBuffer str = new StringBuffer();
 		    StringBuffer parentstr = new StringBuffer();
 		    StringBuffer childrenstr = new StringBuffer();
-		    str.append(XMLManager.convertXMLtoTag("ARCHP", ( (Area) E).getArchivePath()));
+		    str.append(CMLib.xml().convertXMLtoTag("ARCHP", ( (Area) E).getArchivePath()));
 		    for(Enumeration e=((Area)E).getParents(); e.hasMoreElements();)
 			{
 		        Area A=(Area)e.nextElement();
 		        parentstr.append("<PARENT>");
-		        parentstr.append(XMLManager.convertXMLtoTag("PARENTNAMED", A.name()));
+		        parentstr.append(CMLib.xml().convertXMLtoTag("PARENTNAMED", A.name()));
 		        parentstr.append("</PARENT>");
 		    }
-		    str.append(XMLManager.convertXMLtoTag("PARENTS",parentstr.toString()));
+		    str.append(CMLib.xml().convertXMLtoTag("PARENTS",parentstr.toString()));
 		    for(Enumeration e=((Area)E).getChildren(); e.hasMoreElements();)
 			{
 		        Area A=(Area)e.nextElement();
 		        childrenstr.append("<CHILD>");
-		        childrenstr.append(XMLManager.convertXMLtoTag("CHILDNAMED", A.name()));
+		        childrenstr.append(CMLib.xml().convertXMLtoTag("CHILDNAMED", A.name()));
 		        childrenstr.append("</CHILD>");
 		    }
-		    str.append(XMLManager.convertXMLtoTag("CHILDREN",childrenstr.toString()));
+		    str.append(CMLib.xml().convertXMLtoTag("CHILDREN",childrenstr.toString()));
 		    str.append(getExtraEnvPropertiesStr(E));
-			str.append(XMLManager.convertXMLtoTag("AUTHOR",((Area)E).getAuthorID()));
-			str.append(XMLManager.convertXMLtoTag("CURRENCY",((Area)E).getCurrency()));
+			str.append(CMLib.xml().convertXMLtoTag("AUTHOR",((Area)E).getAuthorID()));
+			str.append(CMLib.xml().convertXMLtoTag("CURRENCY",((Area)E).getCurrency()));
 		    return str.toString();
 		}
 		else
 		if(E instanceof Ability)
-			return XMLManager.convertXMLtoTag("AWRAP",E.text());
+			return CMLib.xml().convertXMLtoTag("AWRAP",E.text());
 		else
 		if(E instanceof Item)
 		{
 			Item item=(Item)E;
 			String xml=
 				(((item instanceof Container)&&(((Container)item).capacity()>0))
-				?XMLManager.convertXMLtoTag("IID",""+E):"")
-				+XMLManager.convertXMLtoTag("IWORN",""+item.rawWornCode())
-				+XMLManager.convertXMLtoTag("ILOC",""+((item.container()!=null)?(""+item.container()):""))
-				+XMLManager.convertXMLtoTag("IUSES",""+item.usesRemaining())
-				+XMLManager.convertXMLtoTag("ILEVL",""+E.baseEnvStats().level())
-				+XMLManager.convertXMLtoTag("IABLE",""+E.baseEnvStats().ability())
-				+((E.isGeneric()?"":XMLManager.convertXMLtoTag("ITEXT",""+E.text())));
+				?CMLib.xml().convertXMLtoTag("IID",""+E):"")
+				+CMLib.xml().convertXMLtoTag("IWORN",""+item.rawWornCode())
+				+CMLib.xml().convertXMLtoTag("ILOC",""+((item.container()!=null)?(""+item.container()):""))
+				+CMLib.xml().convertXMLtoTag("IUSES",""+item.usesRemaining())
+				+CMLib.xml().convertXMLtoTag("ILEVL",""+E.baseEnvStats().level())
+				+CMLib.xml().convertXMLtoTag("IABLE",""+E.baseEnvStats().ability())
+				+((E.isGeneric()?"":CMLib.xml().convertXMLtoTag("ITEXT",""+E.text())));
 			return xml;
 		}
 		else
 		if(E instanceof MOB)
 		{
 			String xml=
-				 XMLManager.convertXMLtoTag("MLEVL",""+E.baseEnvStats().level())
-				+XMLManager.convertXMLtoTag("MABLE",""+E.baseEnvStats().ability())
-				+XMLManager.convertXMLtoTag("MREJV",""+E.baseEnvStats().rejuv())
-				+((E.isGeneric()?"":XMLManager.convertXMLtoTag("ITEXT",""+E.text())));
+				 CMLib.xml().convertXMLtoTag("MLEVL",""+E.baseEnvStats().level())
+				+CMLib.xml().convertXMLtoTag("MABLE",""+E.baseEnvStats().ability())
+				+CMLib.xml().convertXMLtoTag("MREJV",""+E.baseEnvStats().rejuv())
+				+((E.isGeneric()?"":CMLib.xml().convertXMLtoTag("ITEXT",""+E.text())));
 			return xml;
 		}
 		return "";
 	}
 
-	private static String getGenMobAbilities(MOB M)
+	public String getGenMobAbilities(MOB M)
 	{
 		StringBuffer abilitystr=new StringBuffer("");
 		for(int b=0;b<M.numLearnedAbilities();b++)
@@ -305,16 +307,16 @@ public class CoffeeMaker
 			if((A!=null)&&(!A.isBorrowed(M)))
 			{
 				abilitystr.append("<ABLTY>");
-				abilitystr.append(XMLManager.convertXMLtoTag("ACLASS",CMClass.className(A)));
-				abilitystr.append(XMLManager.convertXMLtoTag("APROF",""+A.profficiency()));
-				abilitystr.append(XMLManager.convertXMLtoTag("ADATA",getPropertiesStr(A,true)));
+				abilitystr.append(CMLib.xml().convertXMLtoTag("ACLASS",CMClass.className(A)));
+				abilitystr.append(CMLib.xml().convertXMLtoTag("APROF",""+A.profficiency()));
+				abilitystr.append(CMLib.xml().convertXMLtoTag("ADATA",getPropertiesStr(A,true)));
 				abilitystr.append("</ABLTY>");
 			}
 		}
-		return (XMLManager.convertXMLtoTag("ABLTYS",abilitystr.toString()));
+		return (CMLib.xml().convertXMLtoTag("ABLTYS",abilitystr.toString()));
 	}
 
-	private static String getGenMobInventory(MOB M)
+	public String getGenMobInventory(MOB M)
 	{
 		StringBuffer itemstr=new StringBuffer("");
 		for(int b=0;b<M.inventorySize();b++)
@@ -323,192 +325,192 @@ public class CoffeeMaker
 			if((I!=null)&&(I.savable()))
 			{
 				itemstr.append("<ITEM>");
-				itemstr.append(XMLManager.convertXMLtoTag("ICLASS",CMClass.className(I)));
-				itemstr.append(XMLManager.convertXMLtoTag("IDATA",getPropertiesStr(I,true)));
+				itemstr.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.className(I)));
+				itemstr.append(CMLib.xml().convertXMLtoTag("IDATA",getPropertiesStr(I,true)));
 				itemstr.append("</ITEM>");
 			}
 		}
-		return (XMLManager.convertXMLtoTag("INVEN",itemstr.toString()));
+		return (CMLib.xml().convertXMLtoTag("INVEN",itemstr.toString()));
 	}
 
-	private static String getGenPropertiesStr(Environmental E)
+	public String getGenPropertiesStr(Environmental E)
 	{
 		StringBuffer text=new StringBuffer("");
 		text.append(getEnvPropertiesStr(E));
 
-		text.append(XMLManager.convertXMLtoTag("FLAG",envFlags(E)));
+		text.append(CMLib.xml().convertXMLtoTag("FLAG",envFlags(E)));
 
 		if(E instanceof Exit)
 		{
 			Exit exit=(Exit)E;
 			text.append(
-			 XMLManager.convertXMLtoTag("CLOSTX",exit.closedText())
-			+XMLManager.convertXMLtoTag("DOORNM",exit.doorName())
-			+XMLManager.convertXMLtoTag("OPENNM",exit.openWord())
-			+XMLManager.convertXMLtoTag("CLOSNM",exit.closeWord())
-			+XMLManager.convertXMLtoTag("KEYNM",exit.keyName())
-			+XMLManager.convertXMLtoTag("OPENTK",exit.openDelayTicks()));
+			 CMLib.xml().convertXMLtoTag("CLOSTX",exit.closedText())
+			+CMLib.xml().convertXMLtoTag("DOORNM",exit.doorName())
+			+CMLib.xml().convertXMLtoTag("OPENNM",exit.openWord())
+			+CMLib.xml().convertXMLtoTag("CLOSNM",exit.closeWord())
+			+CMLib.xml().convertXMLtoTag("KEYNM",exit.keyName())
+			+CMLib.xml().convertXMLtoTag("OPENTK",exit.openDelayTicks()));
 		}
 
 		if(E instanceof ClanItem)
 		{
-			text.append(XMLManager.convertXMLtoTag("CLANID",""+((ClanItem)E).clanID()));
-			text.append(XMLManager.convertXMLtoTag("CITYPE",""+((ClanItem)E).ciType()));
+			text.append(CMLib.xml().convertXMLtoTag("CLANID",""+((ClanItem)E).clanID()));
+			text.append(CMLib.xml().convertXMLtoTag("CITYPE",""+((ClanItem)E).ciType()));
 		}
 
 		if(E instanceof Item)
 		{
 			Item item=(Item)E;
 			text.append(
-			 XMLManager.convertXMLtoTag("IDENT",item.rawSecretIdentity())
-			+XMLManager.convertXMLtoTag("VALUE",item.baseGoldValue())
-			//+XMLManager.convertXMLtoTag("USES",item.usesRemaining()) // handled 'from top' & in db
-			+XMLManager.convertXMLtoTag("MTRAL",item.material())
-			+XMLManager.convertXMLtoTag("READ",item.readableText())
-			+XMLManager.convertXMLtoTag("WORNL",item.rawLogicalAnd())
-			+XMLManager.convertXMLtoTag("WORNB",item.rawProperLocationBitmap()));
+			 CMLib.xml().convertXMLtoTag("IDENT",item.rawSecretIdentity())
+			+CMLib.xml().convertXMLtoTag("VALUE",item.baseGoldValue())
+			//+CMLib.xml().convertXMLtoTag("USES",item.usesRemaining()) // handled 'from top' & in db
+			+CMLib.xml().convertXMLtoTag("MTRAL",item.material())
+			+CMLib.xml().convertXMLtoTag("READ",item.readableText())
+			+CMLib.xml().convertXMLtoTag("WORNL",item.rawLogicalAnd())
+			+CMLib.xml().convertXMLtoTag("WORNB",item.rawProperLocationBitmap()));
 			if(E instanceof Container)
 			{
-				text.append(XMLManager.convertXMLtoTag("CAPA",((Container)item).capacity()));
-				text.append(XMLManager.convertXMLtoTag("CONT",((Container)item).containTypes()));
+				text.append(CMLib.xml().convertXMLtoTag("CAPA",((Container)item).capacity()));
+				text.append(CMLib.xml().convertXMLtoTag("CONT",((Container)item).containTypes()));
 			}
 			if(E instanceof Weapon)
-				text.append(XMLManager.convertXMLtoTag("CAPA",((Weapon)item).ammunitionCapacity()));
+				text.append(CMLib.xml().convertXMLtoTag("CAPA",((Weapon)item).ammunitionCapacity()));
 		}
 
 		if(E instanceof Coins)
 		{
-		    text.append(XMLManager.convertXMLtoTag("CRNC",((Coins)E).getCurrency()));
-		    text.append(XMLManager.convertXMLtoTag("DENOM",""+((Coins)E).getDenomination()));
+		    text.append(CMLib.xml().convertXMLtoTag("CRNC",((Coins)E).getCurrency()));
+		    text.append(CMLib.xml().convertXMLtoTag("DENOM",""+((Coins)E).getDenomination()));
 		}
 		if(E instanceof Electronics)
 		{
-		    text.append(XMLManager.convertXMLtoTag("FUELT",((Electronics)E).fuelType()));
-		    text.append(XMLManager.convertXMLtoTag("POWC",""+((Electronics)E).powerCapacity()));
-		    text.append(XMLManager.convertXMLtoTag("POWR",""+((Electronics)E).powerRemaining()));
+		    text.append(CMLib.xml().convertXMLtoTag("FUELT",((Electronics)E).fuelType()));
+		    text.append(CMLib.xml().convertXMLtoTag("POWC",""+((Electronics)E).powerCapacity()));
+		    text.append(CMLib.xml().convertXMLtoTag("POWR",""+((Electronics)E).powerRemaining()));
 		}
 	    if(E instanceof ShipComponent)
 	    {
 	        if(E instanceof ShipComponent.ShipPanel)
 	        {
-			    text.append(XMLManager.convertXMLtoTag("SSPANELT",""+((ShipComponent.ShipPanel)E).panelType()));
+			    text.append(CMLib.xml().convertXMLtoTag("SSPANELT",""+((ShipComponent.ShipPanel)E).panelType()));
 	        }
 	        if(E instanceof ShipComponent.ShipEngine)
 	        {
-			    text.append(XMLManager.convertXMLtoTag("SSTHRUST",""+((ShipComponent.ShipEngine)E).getMaxThrust()));
+			    text.append(CMLib.xml().convertXMLtoTag("SSTHRUST",""+((ShipComponent.ShipEngine)E).getMaxThrust()));
 	        }
 	    }
 		if(E instanceof Recipe)
 		{
-		    text.append(XMLManager.convertXMLtoTag("SKILLID",((Recipe)E).getCommonSkillID()));
-		    text.append(XMLManager.convertXMLtoTag("RECIPE",""+((Recipe)E).getRecipeCodeLine()));
+		    text.append(CMLib.xml().convertXMLtoTag("SKILLID",((Recipe)E).getCommonSkillID()));
+		    text.append(CMLib.xml().convertXMLtoTag("RECIPE",""+((Recipe)E).getRecipeCodeLine()));
 		}
 		
 		if(E instanceof Light)
-			text.append(XMLManager.convertXMLtoTag("BURNOUT",((Light)E).destroyedWhenBurnedOut()));
+			text.append(CMLib.xml().convertXMLtoTag("BURNOUT",((Light)E).destroyedWhenBurnedOut()));
 		
 		if(E instanceof Wand)
-			text.append(XMLManager.convertXMLtoTag("MAXUSE",((Wand)E).maxUses()));
+			text.append(CMLib.xml().convertXMLtoTag("MAXUSE",((Wand)E).maxUses()));
 		
 		if(E instanceof Rideable)
 		{
-			text.append(XMLManager.convertXMLtoTag("RIDET",((Rideable)E).rideBasis()));
-			text.append(XMLManager.convertXMLtoTag("RIDEC",((Rideable)E).riderCapacity()));
+			text.append(CMLib.xml().convertXMLtoTag("RIDET",((Rideable)E).rideBasis()));
+			text.append(CMLib.xml().convertXMLtoTag("RIDEC",((Rideable)E).riderCapacity()));
 		}
 		
 		if(E instanceof EnvResource)
-			text.append(XMLManager.convertXMLtoTag("DOMN",((EnvResource)E).domainSource()+""));
+			text.append(CMLib.xml().convertXMLtoTag("DOMN",((EnvResource)E).domainSource()+""));
 
 		if(E instanceof Food)
-			text.append(XMLManager.convertXMLtoTag("CAPA2",((Food)E).nourishment()));
+			text.append(CMLib.xml().convertXMLtoTag("CAPA2",((Food)E).nourishment()));
 
 		if(E instanceof Drink)
 		{
-			text.append(XMLManager.convertXMLtoTag("CAPA2",((Drink)E).liquidHeld()));
-			text.append(XMLManager.convertXMLtoTag("DRINK",((Drink)E).thirstQuenched()));
+			text.append(CMLib.xml().convertXMLtoTag("CAPA2",((Drink)E).liquidHeld()));
+			text.append(CMLib.xml().convertXMLtoTag("DRINK",((Drink)E).thirstQuenched()));
 		}
 
 		if(E instanceof Weapon)
 		{
-			text.append(XMLManager.convertXMLtoTag("TYPE",((Weapon)E).weaponType()));
-			text.append(XMLManager.convertXMLtoTag("CLASS",((Weapon)E).weaponClassification()));
-			text.append(XMLManager.convertXMLtoTag("MINR",((Weapon)E).minRange()));
-			text.append(XMLManager.convertXMLtoTag("MAXR",((Weapon)E).maxRange()));
+			text.append(CMLib.xml().convertXMLtoTag("TYPE",((Weapon)E).weaponType()));
+			text.append(CMLib.xml().convertXMLtoTag("CLASS",((Weapon)E).weaponClassification()));
+			text.append(CMLib.xml().convertXMLtoTag("MINR",((Weapon)E).minRange()));
+			text.append(CMLib.xml().convertXMLtoTag("MAXR",((Weapon)E).maxRange()));
 		}
 
 		if(E instanceof LandTitle)
-			text.append(XMLManager.convertXMLtoTag("LANDID",((LandTitle)E).landPropertyID()));
+			text.append(CMLib.xml().convertXMLtoTag("LANDID",((LandTitle)E).landPropertyID()));
 
 		if(E instanceof Perfume)
-			text.append(XMLManager.convertXMLtoTag("SMELLLST",((Perfume)E).getSmellList()));
+			text.append(CMLib.xml().convertXMLtoTag("SMELLLST",((Perfume)E).getSmellList()));
 		
 		if(E instanceof DeadBody)
 		{
 			if(((DeadBody)E).charStats()!=null)
 			{
-				text.append(XMLManager.convertXMLtoTag("GENDER",""+(char)((DeadBody)E).charStats().getStat(CharStats.GENDER)));
-				text.append(XMLManager.convertXMLtoTag("MRACE",""+((DeadBody)E).charStats().getMyRace().ID()));
-				text.append(XMLManager.convertXMLtoTag("MDNAME",""+((DeadBody)E).mobName()));
-				text.append(XMLManager.convertXMLtoTag("MDDESC",""+((DeadBody)E).mobDescription()));
-				text.append(XMLManager.convertXMLtoTag("MKNAME",""+((DeadBody)E).killerName()));
-				text.append(XMLManager.convertXMLtoTag("MTOD",""+((DeadBody)E).timeOfDeath()));
-				text.append(XMLManager.convertXMLtoTag("MKPLAY",""+((DeadBody)E).killerPlayer()));
-				text.append(XMLManager.convertXMLtoTag("MDLMSG",""+((DeadBody)E).lastMessage()));
-				text.append(XMLManager.convertXMLtoTag("MBREAL",""+((DeadBody)E).destroyAfterLooting()));
-				text.append(XMLManager.convertXMLtoTag("MPLAYR",""+((DeadBody)E).playerCorpse()));
-				text.append(XMLManager.convertXMLtoTag("MPKILL",""+((DeadBody)E).mobPKFlag()));
+				text.append(CMLib.xml().convertXMLtoTag("GENDER",""+(char)((DeadBody)E).charStats().getStat(CharStats.GENDER)));
+				text.append(CMLib.xml().convertXMLtoTag("MRACE",""+((DeadBody)E).charStats().getMyRace().ID()));
+				text.append(CMLib.xml().convertXMLtoTag("MDNAME",""+((DeadBody)E).mobName()));
+				text.append(CMLib.xml().convertXMLtoTag("MDDESC",""+((DeadBody)E).mobDescription()));
+				text.append(CMLib.xml().convertXMLtoTag("MKNAME",""+((DeadBody)E).killerName()));
+				text.append(CMLib.xml().convertXMLtoTag("MTOD",""+((DeadBody)E).timeOfDeath()));
+				text.append(CMLib.xml().convertXMLtoTag("MKPLAY",""+((DeadBody)E).killerPlayer()));
+				text.append(CMLib.xml().convertXMLtoTag("MDLMSG",""+((DeadBody)E).lastMessage()));
+				text.append(CMLib.xml().convertXMLtoTag("MBREAL",""+((DeadBody)E).destroyAfterLooting()));
+				text.append(CMLib.xml().convertXMLtoTag("MPLAYR",""+((DeadBody)E).playerCorpse()));
+				text.append(CMLib.xml().convertXMLtoTag("MPKILL",""+((DeadBody)E).mobPKFlag()));
 				if(((DeadBody)E).killingTool()==null) text.append("<KLTOOL />");
 				else
 				{
 					text.append("<KLTOOL>");
-					text.append(XMLManager.convertXMLtoTag("KLCLASS",CMClass.className(((DeadBody)E).killingTool())));
-					text.append(XMLManager.convertXMLtoTag("KLDATA",getPropertiesStr(((DeadBody)E).killingTool(),true)));
+					text.append(CMLib.xml().convertXMLtoTag("KLCLASS",CMClass.className(((DeadBody)E).killingTool())));
+					text.append(CMLib.xml().convertXMLtoTag("KLDATA",getPropertiesStr(((DeadBody)E).killingTool(),true)));
 					text.append("</KLTOOL>");
 				}
 			}
 			else
 			{
-				text.append(XMLManager.convertXMLtoTag("GENDER","M"));
-				text.append(XMLManager.convertXMLtoTag("MRACE","Human"));
-				text.append(XMLManager.convertXMLtoTag("MPLAYR","false"));
+				text.append(CMLib.xml().convertXMLtoTag("GENDER","M"));
+				text.append(CMLib.xml().convertXMLtoTag("MRACE","Human"));
+				text.append(CMLib.xml().convertXMLtoTag("MPLAYR","false"));
 			}
 		}
 
 		if(E instanceof MOB)
 		{
-			text.append(XMLManager.convertXMLtoTag("MONEY",CMLib.beanCounter().getMoney((MOB)E)));
+			text.append(CMLib.xml().convertXMLtoTag("MONEY",CMLib.beanCounter().getMoney((MOB)E)));
 			CMLib.beanCounter().clearInventoryMoney((MOB)E,null);
-			text.append(XMLManager.convertXMLtoTag("CLAN",((MOB)E).getClanID()));
-			text.append(XMLManager.convertXMLtoTag("GENDER",""+(char)((MOB)E).baseCharStats().getStat(CharStats.GENDER)));
-			text.append(XMLManager.convertXMLtoTag("MRACE",""+((MOB)E).baseCharStats().getMyRace().ID()));
+			text.append(CMLib.xml().convertXMLtoTag("CLAN",((MOB)E).getClanID()));
+			text.append(CMLib.xml().convertXMLtoTag("GENDER",""+(char)((MOB)E).baseCharStats().getStat(CharStats.GENDER)));
+			text.append(CMLib.xml().convertXMLtoTag("MRACE",""+((MOB)E).baseCharStats().getMyRace().ID()));
             text.append(getFactionXML((MOB)E));
 			text.append(getGenMobInventory((MOB)E));
 			text.append(getGenMobAbilities((MOB)E));
 
 			if(E instanceof Banker)
 			{
-				text.append(XMLManager.convertXMLtoTag("BANK",""+((Banker)E).bankChain()));
-				text.append(XMLManager.convertXMLtoTag("COININT",""+((Banker)E).getCoinInterest()));
-				text.append(XMLManager.convertXMLtoTag("ITEMINT",""+((Banker)E).getCoinInterest()));
+				text.append(CMLib.xml().convertXMLtoTag("BANK",""+((Banker)E).bankChain()));
+				text.append(CMLib.xml().convertXMLtoTag("COININT",""+((Banker)E).getCoinInterest()));
+				text.append(CMLib.xml().convertXMLtoTag("ITEMINT",""+((Banker)E).getCoinInterest()));
 			}
             if(E instanceof PostOffice)
             {
-                text.append(XMLManager.convertXMLtoTag("POSTCHAIN",""+((PostOffice)E).postalChain()));
-                text.append(XMLManager.convertXMLtoTag("POSTMIN",""+((PostOffice)E).minimumPostage()));
-                text.append(XMLManager.convertXMLtoTag("POSTLBS",""+((PostOffice)E).postagePerPound()));
-                text.append(XMLManager.convertXMLtoTag("POSTHOLD",""+((PostOffice)E).holdFeePerPound()));
-                text.append(XMLManager.convertXMLtoTag("POSTNEW",""+((PostOffice)E).feeForNewBox()));
-                text.append(XMLManager.convertXMLtoTag("POSTHELD",""+((PostOffice)E).maxMudMonthsHeld()));
+                text.append(CMLib.xml().convertXMLtoTag("POSTCHAIN",""+((PostOffice)E).postalChain()));
+                text.append(CMLib.xml().convertXMLtoTag("POSTMIN",""+((PostOffice)E).minimumPostage()));
+                text.append(CMLib.xml().convertXMLtoTag("POSTLBS",""+((PostOffice)E).postagePerPound()));
+                text.append(CMLib.xml().convertXMLtoTag("POSTHOLD",""+((PostOffice)E).holdFeePerPound()));
+                text.append(CMLib.xml().convertXMLtoTag("POSTNEW",""+((PostOffice)E).feeForNewBox()));
+                text.append(CMLib.xml().convertXMLtoTag("POSTHELD",""+((PostOffice)E).maxMudMonthsHeld()));
             }
 			if(E instanceof Deity)
 			{
-				text.append(XMLManager.convertXMLtoTag("CLEREQ",((Deity)E).getClericRequirements()));
-				text.append(XMLManager.convertXMLtoTag("WORREQ",((Deity)E).getWorshipRequirements()));
-				text.append(XMLManager.convertXMLtoTag("CLERIT",((Deity)E).getClericRitual()));
-				text.append(XMLManager.convertXMLtoTag("WORRIT",((Deity)E).getWorshipRitual()));
-				text.append(XMLManager.convertXMLtoTag("CLERSIT",((Deity)E).getClericSin()));
-				text.append(XMLManager.convertXMLtoTag("WORRSIT",((Deity)E).getWorshipSin()));
-				text.append(XMLManager.convertXMLtoTag("CLERPOW",((Deity)E).getClericPowerup()));
+				text.append(CMLib.xml().convertXMLtoTag("CLEREQ",((Deity)E).getClericRequirements()));
+				text.append(CMLib.xml().convertXMLtoTag("WORREQ",((Deity)E).getWorshipRequirements()));
+				text.append(CMLib.xml().convertXMLtoTag("CLERIT",((Deity)E).getClericRitual()));
+				text.append(CMLib.xml().convertXMLtoTag("WORRIT",((Deity)E).getWorshipRitual()));
+				text.append(CMLib.xml().convertXMLtoTag("CLERSIT",((Deity)E).getClericSin()));
+				text.append(CMLib.xml().convertXMLtoTag("WORRSIT",((Deity)E).getWorshipSin()));
+				text.append(CMLib.xml().convertXMLtoTag("CLERPOW",((Deity)E).getClericPowerup()));
 
 				StringBuffer itemstr=new StringBuffer("");
 				for(int b=0;b<((Deity)E).numBlessings();b++)
@@ -516,11 +518,11 @@ public class CoffeeMaker
 					Ability A=((Deity)E).fetchBlessing(b);
 					if(A==null) continue;
 					itemstr.append("<BLESS>");
-					itemstr.append(XMLManager.convertXMLtoTag("BLCLASS",CMClass.className(A)));
-					itemstr.append(XMLManager.convertXMLtoTag("BLDATA",getPropertiesStr(A,true)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("BLCLASS",CMClass.className(A)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("BLDATA",getPropertiesStr(A,true)));
 					itemstr.append("</BLESS>");
 				}
-				text.append(XMLManager.convertXMLtoTag("BLESSINGS",itemstr.toString()));
+				text.append(CMLib.xml().convertXMLtoTag("BLESSINGS",itemstr.toString()));
 
 				itemstr=new StringBuffer("");
 				for(int b=0;b<((Deity)E).numCurses();b++)
@@ -528,11 +530,11 @@ public class CoffeeMaker
 					Ability A=((Deity)E).fetchCurse(b);
 					if(A==null) continue;
 					itemstr.append("<CURSE>");
-					itemstr.append(XMLManager.convertXMLtoTag("CUCLASS",CMClass.className(A)));
-					itemstr.append(XMLManager.convertXMLtoTag("CUDATA",getPropertiesStr(A,true)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("CUCLASS",CMClass.className(A)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("CUDATA",getPropertiesStr(A,true)));
 					itemstr.append("</CURSE>");
 				}
-				text.append(XMLManager.convertXMLtoTag("CURSES",itemstr.toString()));
+				text.append(CMLib.xml().convertXMLtoTag("CURSES",itemstr.toString()));
 
 				itemstr=new StringBuffer("");
 				for(int b=0;b<((Deity)E).numPowers();b++)
@@ -540,20 +542,20 @@ public class CoffeeMaker
 					Ability A=((Deity)E).fetchPower(b);
 					if(A==null) continue;
 					itemstr.append("<POWER>");
-					itemstr.append(XMLManager.convertXMLtoTag("POCLASS",CMClass.className(A)));
-					itemstr.append(XMLManager.convertXMLtoTag("PODATA",getPropertiesStr(A,true)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("POCLASS",CMClass.className(A)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("PODATA",getPropertiesStr(A,true)));
 					itemstr.append("</POWER>");
 				}
-				text.append(XMLManager.convertXMLtoTag("POWERS",itemstr.toString()));
+				text.append(CMLib.xml().convertXMLtoTag("POWERS",itemstr.toString()));
 			}
 			if(E instanceof ShopKeeper)
 			{
-				text.append(XMLManager.convertXMLtoTag("SELLCD",((ShopKeeper)E).whatIsSold()));
-				text.append(XMLManager.convertXMLtoTag("PREJFC",((ShopKeeper)E).prejudiceFactors()));
-                text.append(XMLManager.convertXMLtoTag("IGNMSK",((ShopKeeper)E).ignoreMask()));
-				text.append(XMLManager.convertXMLtoTag("BUDGET",((ShopKeeper)E).budget()));
-				text.append(XMLManager.convertXMLtoTag("DEVALR",((ShopKeeper)E).devalueRate()));
-				text.append(XMLManager.convertXMLtoTag("INVRER",((ShopKeeper)E).invResetRate()));
+				text.append(CMLib.xml().convertXMLtoTag("SELLCD",((ShopKeeper)E).whatIsSold()));
+				text.append(CMLib.xml().convertXMLtoTag("PREJFC",((ShopKeeper)E).prejudiceFactors()));
+                text.append(CMLib.xml().convertXMLtoTag("IGNMSK",((ShopKeeper)E).ignoreMask()));
+				text.append(CMLib.xml().convertXMLtoTag("BUDGET",((ShopKeeper)E).budget()));
+				text.append(CMLib.xml().convertXMLtoTag("DEVALR",((ShopKeeper)E).devalueRate()));
+				text.append(CMLib.xml().convertXMLtoTag("INVRER",((ShopKeeper)E).invResetRate()));
 
 				Vector V=((ShopKeeper)E).getStoreInventory();
 				StringBuffer itemstr=new StringBuffer("");
@@ -561,13 +563,13 @@ public class CoffeeMaker
 				{
 					Environmental Env=(Environmental)V.elementAt(b);
 					itemstr.append("<SHITEM>");
-					itemstr.append(XMLManager.convertXMLtoTag("SICLASS",CMClass.className(Env)));
-					itemstr.append(XMLManager.convertXMLtoTag("SISTOCK",((ShopKeeper)E).numberInStock(Env)));
-					itemstr.append(XMLManager.convertXMLtoTag("SIPRICE",((ShopKeeper)E).stockPrice(Env)));
-					itemstr.append(XMLManager.convertXMLtoTag("SIDATA",getPropertiesStr(Env,true)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("SICLASS",CMClass.className(Env)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("SISTOCK",((ShopKeeper)E).numberInStock(Env)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("SIPRICE",((ShopKeeper)E).stockPrice(Env)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("SIDATA",getPropertiesStr(Env,true)));
 					itemstr.append("</SHITEM>");
 				}
-				text.append(XMLManager.convertXMLtoTag("STORE",itemstr.toString()));
+				text.append(CMLib.xml().convertXMLtoTag("STORE",itemstr.toString()));
 			}
 			if(((MOB)E).numTattoos()>0)
 			{
@@ -587,48 +589,47 @@ public class CoffeeMaker
 		return text.toString();
 	}
 
-	public static String unpackErr(String where, String msg)
+	public String unpackErr(String where, String msg)
 	{
 		Log.errOut("CoffeeMaker","unpack"+where+"FromXML: "+msg);
 		return msg;
 	}
 
-	public static String unpackRoomFromXML(String buf, boolean andContent)
+	public String unpackRoomFromXML(String buf, boolean andContent)
 	{
-		Vector xml=XMLManager.parseAllXML(buf);
+		Vector xml=CMLib.xml().parseAllXML(buf);
 		if(xml==null) return unpackErr("Room","null 'xml'");
-		Vector roomData=XMLManager.getRealContentsFromPieces(xml,"AROOM");
+		Vector roomData=CMLib.xml().getRealContentsFromPieces(xml,"AROOM");
 		if(roomData==null) return unpackErr("Room","null 'roomData'");
 		return unpackRoomFromXML(roomData,andContent);
 	}
 
-	public static String unpackRoomFromXML(Vector xml, boolean andContent)
+	public String unpackRoomFromXML(Vector xml, boolean andContent)
 	{
-		Area myArea=CMMap.getArea(XMLManager.getValFromPieces(xml,"RAREA"));
+		Area myArea=CMLib.map().getArea(CMLib.xml().getValFromPieces(xml,"RAREA"));
 		if(myArea==null) return unpackErr("Room","null 'myArea'");
-		String roomClass=XMLManager.getValFromPieces(xml,"RCLAS");
+		String roomClass=CMLib.xml().getValFromPieces(xml,"RCLAS");
 		Room newRoom=CMClass.getLocale(roomClass);
 		if(newRoom==null) return unpackErr("Room","null 'newRoom'");
-		newRoom.setRoomID(XMLManager.getValFromPieces(xml,"ROOMID"));
-		if(newRoom.roomID().equals("NEW")) newRoom.setRoomID(CMMap.getOpenRoomID(myArea.Name()));
-		if(CMMap.getRoom(newRoom.roomID())!=null) return "Room Exists: "+newRoom.roomID();
+		newRoom.setRoomID(CMLib.xml().getValFromPieces(xml,"ROOMID"));
+		if(newRoom.roomID().equals("NEW")) newRoom.setRoomID(CMLib.map().getOpenRoomID(myArea.Name()));
+		if(CMLib.map().getRoom(newRoom.roomID())!=null) return "Room Exists: "+newRoom.roomID();
 		newRoom.setArea(myArea);
 		CMLib.database().DBCreateRoom(newRoom,roomClass);
-		CMMap.addRoom(newRoom);
-		newRoom.setDisplayText(XMLManager.getValFromPieces(xml,"RDISP"));
-		newRoom.setDescription(XMLManager.getValFromPieces(xml,"RDESC"));
-		newRoom.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(xml,"RTEXT")));
+		newRoom.setDisplayText(CMLib.xml().getValFromPieces(xml,"RDISP"));
+		newRoom.setDescription(CMLib.xml().getValFromPieces(xml,"RDESC"));
+		newRoom.setMiscText(restoreAngleBrackets(CMLib.xml().getValFromPieces(xml,"RTEXT")));
 
 		// now EXITS!
-		Vector xV=XMLManager.getRealContentsFromPieces(xml,"ROOMEXITS");
+		Vector xV=CMLib.xml().getRealContentsFromPieces(xml,"ROOMEXITS");
 		if(xV==null) return unpackErr("Room","null 'xV'"+" in room "+newRoom.roomID());
 		for(int x=0;x<xV.size();x++)
 		{
-			XMLManager.XMLpiece xblk=(XMLManager.XMLpiece)xV.elementAt(x);
+			XMLLibrary.XMLpiece xblk=(XMLLibrary.XMLpiece)xV.elementAt(x);
 			if((!xblk.tag.equalsIgnoreCase("REXIT"))||(xblk.contents==null))
 				return unpackErr("Room","??"+xblk.tag+" in room "+newRoom.roomID());
-			int dir=XMLManager.getIntFromPieces(xblk.contents,"XDIRE");
-			String doorID=XMLManager.getValFromPieces(xblk.contents,"XDOOR");
+			int dir=CMLib.xml().getIntFromPieces(xblk.contents,"XDIRE");
+			String doorID=CMLib.xml().getValFromPieces(xblk.contents,"XDOOR");
 			if((dir<0)||(dir>=Directions.NUM_DIRECTIONS))
 			{
 				if((dir>255)&&(!(newRoom instanceof GridLocale)))
@@ -636,12 +637,12 @@ public class CoffeeMaker
 				else
 				if(dir>255)
 				{
-					String xdata=XMLManager.getValFromPieces(xblk.contents,"XDATA");
+					String xdata=CMLib.xml().getValFromPieces(xblk.contents,"XDATA");
 					Vector CEs=Util.parseSemicolons(xdata.trim(),true);
 					for(int ces=0;ces<CEs.size();ces++)
 					{
 						Vector SCE=Util.parse(((String)CEs.elementAt(ces)).trim());
-						CMMap.CrossExit CE=new CMMap.CrossExit();
+						WorldMap.CrossExit CE=new WorldMap.CrossExit();
 						if(SCE.size()<3) continue;
 						CE.x=Util.s_int((String)SCE.elementAt(0));
 						CE.y=Util.s_int((String)SCE.elementAt(1));
@@ -653,7 +654,7 @@ public class CoffeeMaker
 						CE.out=(codeddir&256)==256;
 						CE.dir=codeddir&255;
 						((GridLocale)newRoom).addOuterExit(CE);
-						Room link=CMMap.getRoom(doorID);
+						Room link=CMLib.map().getRoom(doorID);
 						if((!CE.out)&&(link!=null)&&(!(link instanceof GridLocale)))
 						{
 						    link.rawDoors()[CE.dir]=newRoom;
@@ -667,14 +668,14 @@ public class CoffeeMaker
 			}
 			else
 			{
-				Vector xxV=XMLManager.getContentsFromPieces(xblk.contents,"XEXIT");
+				Vector xxV=CMLib.xml().getContentsFromPieces(xblk.contents,"XEXIT");
 				if(xxV==null) return unpackErr("Room","null 'xxV'"+" in room "+newRoom.roomID());
 				Exit exit=null;
 				if(xxV.size()>0)
 				{
-					exit=CMClass.getExit(XMLManager.getValFromPieces(xxV,"EXID"));
+					exit=CMClass.getExit(CMLib.xml().getValFromPieces(xxV,"EXID"));
 					if(xxV==null) return unpackErr("Room","null 'exit'"+" in room "+newRoom.roomID());
-					exit.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(xxV,"EXDAT")));
+					exit.setMiscText(restoreAngleBrackets(CMLib.xml().getValFromPieces(xxV,"EXDAT")));
 					newRoom.rawExits()[dir]=exit;
 				}
 				else
@@ -682,7 +683,7 @@ public class CoffeeMaker
 				exit.recoverEnvStats();
 				if(doorID.length()>0)
 				{
-					Room link=CMMap.getRoom(doorID);
+					Room link=CMLib.map().getRoom(doorID);
 					if(link!=null)
 						newRoom.rawDoors()[dir]=link;
 					else
@@ -697,7 +698,7 @@ public class CoffeeMaker
 		// find any mis-linked exits and fix them!
 		try
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				boolean changed=false;
@@ -726,31 +727,31 @@ public class CoffeeMaker
 		{
 			Hashtable identTable=new Hashtable();
 
-			Vector cV=XMLManager.getRealContentsFromPieces(xml,"ROOMCONTENT");
+			Vector cV=CMLib.xml().getRealContentsFromPieces(xml,"ROOMCONTENT");
 			if(cV==null) return unpackErr("Room","null 'cV'"+" in room "+newRoom.roomID());
 			if(cV.size()>0)
 			{
 				Hashtable mobRideTable=new Hashtable();
-				Vector mV=XMLManager.getRealContentsFromPieces(cV,"ROOMMOBS");
+				Vector mV=CMLib.xml().getRealContentsFromPieces(cV,"ROOMMOBS");
 				if(mV!=null) //return unpackErr("Room","null 'mV'"+" in room "+newRoom.roomID());
 				for(int m=0;m<mV.size();m++)
 				{
-					XMLManager.XMLpiece mblk=(XMLManager.XMLpiece)mV.elementAt(m);
+					XMLLibrary.XMLpiece mblk=(XMLLibrary.XMLpiece)mV.elementAt(m);
 					if((!mblk.tag.equalsIgnoreCase("RMOB"))||(mblk.contents==null))
 						return unpackErr("Room","bad 'mblk'"+" in room "+newRoom.roomID());
-					String mClass=XMLManager.getValFromPieces(mblk.contents,"MCLAS");
+					String mClass=CMLib.xml().getValFromPieces(mblk.contents,"MCLAS");
 					MOB newMOB=CMClass.getMOB(mClass);
 					if(newMOB==null) return unpackErr("Room","null 'mClass': "+mClass+" in room "+newRoom.roomID());
 
 					// for rideables AND leaders now!
-					String iden=XMLManager.getValFromPieces(mblk.contents,"MIDEN");
+					String iden=CMLib.xml().getValFromPieces(mblk.contents,"MIDEN");
 					if((iden!=null)&&(iden.length()>0)) identTable.put(iden,newMOB);
 
-					newMOB.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(mblk.contents,"MTEXT")));
-					newMOB.baseEnvStats().setLevel(XMLManager.getIntFromPieces(mblk.contents,"MLEVL"));
-					newMOB.baseEnvStats().setAbility(XMLManager.getIntFromPieces(mblk.contents,"MABLE"));
-					newMOB.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(mblk.contents,"MREJV"));
-					String ride=XMLManager.getValFromPieces(mblk.contents,"MRIDE");
+					newMOB.setMiscText(restoreAngleBrackets(CMLib.xml().getValFromPieces(mblk.contents,"MTEXT")));
+					newMOB.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(mblk.contents,"MLEVL"));
+					newMOB.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(mblk.contents,"MABLE"));
+					newMOB.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(mblk.contents,"MREJV"));
+					String ride=CMLib.xml().getValFromPieces(mblk.contents,"MRIDE");
 					if((ride!=null)&&(ride.length()>0))
 						mobRideTable.put(newMOB,ride);
 					newMOB.setStartRoom(newRoom);
@@ -763,28 +764,28 @@ public class CoffeeMaker
 				}
 
 				Hashtable itemLocTable=new Hashtable();
-				Vector iV=XMLManager.getRealContentsFromPieces(cV,"ROOMITEMS");
+				Vector iV=CMLib.xml().getRealContentsFromPieces(cV,"ROOMITEMS");
 				if(iV!=null) //return unpackErr("Room","null 'iV'"+" in room "+newRoom.roomID());
 				for(int i=0;i<iV.size();i++)
 				{
-					XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)iV.elementAt(i);
+					XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)iV.elementAt(i);
 					if((!iblk.tag.equalsIgnoreCase("RITEM"))||(iblk.contents==null))
 						return unpackErr("Room","bad 'iblk'"+" in room "+newRoom.roomID());
-					String iClass=XMLManager.getValFromPieces(iblk.contents,"ICLAS");
+					String iClass=CMLib.xml().getValFromPieces(iblk.contents,"ICLAS");
 					Item newItem=CMClass.getItem(iClass);
 					if(newItem==null) return unpackErr("Room","null 'iClass': "+iClass+" in room "+newRoom.roomID());
 					if((newItem instanceof Container)||(newItem instanceof Rideable))
 					{
-						String iden=XMLManager.getValFromPieces(iblk.contents,"IIDEN");
+						String iden=CMLib.xml().getValFromPieces(iblk.contents,"IIDEN");
 						if((iden!=null)&&(iden.length()>0)) identTable.put(iden,newItem);
 					}
-					String iloc=XMLManager.getValFromPieces(iblk.contents,"ILOCA");
+					String iloc=CMLib.xml().getValFromPieces(iblk.contents,"ILOCA");
 					if(iloc.length()>0) itemLocTable.put(newItem,iloc);
-					newItem.baseEnvStats().setLevel(XMLManager.getIntFromPieces(iblk.contents,"ILEVL"));
-					newItem.baseEnvStats().setAbility(XMLManager.getIntFromPieces(iblk.contents,"IABLE"));
-					newItem.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(iblk.contents,"IREJV"));
-					newItem.setUsesRemaining(XMLManager.getIntFromPieces(iblk.contents,"IUSES"));
-					newItem.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(iblk.contents,"ITEXT")));
+					newItem.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(iblk.contents,"ILEVL"));
+					newItem.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(iblk.contents,"IABLE"));
+					newItem.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(iblk.contents,"IREJV"));
+					newItem.setUsesRemaining(CMLib.xml().getIntFromPieces(iblk.contents,"IUSES"));
+					newItem.setMiscText(restoreAngleBrackets(CMLib.xml().getValFromPieces(iblk.contents,"ITEXT")));
 					newItem.setContainer(null);
 					newItem.recoverEnvStats();
 					newRoom.addItem(newItem);
@@ -826,39 +827,39 @@ public class CoffeeMaker
 		return "";
 	}
 
-	public static String fillAreaAndCustomVectorFromXML(String buf, 
+	public String fillAreaAndCustomVectorFromXML(String buf, 
 	        											Vector area, 
 	        											Vector custom,
 	        											Hashtable externalFiles)
 	{
-		Vector xml=XMLManager.parseAllXML(buf);
+		Vector xml=CMLib.xml().parseAllXML(buf);
 		if(xml==null) return unpackErr("Fill","null 'xml'");
 		String error=fillCustomVectorFromXML(xml,custom,externalFiles);
 		if(error.length()>0) return error;
-		Vector areaData=XMLManager.getRealContentsFromPieces(xml,"AREA");
+		Vector areaData=CMLib.xml().getRealContentsFromPieces(xml,"AREA");
 		if(areaData==null) return unpackErr("Fill","null 'aV'");
 		for(int a=0;a<areaData.size();a++)
 			area.addElement(areaData.elementAt(a));
 		return "";
 	}
-	public static String fillCustomVectorFromXML(String xml, 
+	public String fillCustomVectorFromXML(String xml, 
 	        									 Vector custom,
      											 Hashtable externalFiles)
 	{
-		Vector xmlv=XMLManager.parseAllXML(xml);
+		Vector xmlv=CMLib.xml().parseAllXML(xml);
 		if(xmlv==null) return unpackErr("Custom","null 'xmlv'");
 		return fillCustomVectorFromXML(xmlv,custom,externalFiles);
 	}
-	public static String fillCustomVectorFromXML(Vector xml, 
+	public String fillCustomVectorFromXML(Vector xml, 
 	        									 Vector custom,
      											 Hashtable externalFiles)
 	{
-		Vector aV=XMLManager.getRealContentsFromPieces(xml,"CUSTOM");
+		Vector aV=CMLib.xml().getRealContentsFromPieces(xml,"CUSTOM");
 		if(aV!=null)
 		{
 			for(int r=0;r<aV.size();r++)
 			{
-				XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)aV.elementAt(r);
+				XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)aV.elementAt(r);
 				if(ablk.tag.equalsIgnoreCase("RACE"))
 				{
 					Race R=CMClass.getRace("GenRace");
@@ -886,16 +887,16 @@ public class CoffeeMaker
 					return unpackErr("Custom","??"+ablk.tag);
 			}
 		}
-		aV=XMLManager.getRealContentsFromPieces(xml,"FILES");
+		aV=CMLib.xml().getRealContentsFromPieces(xml,"FILES");
 		if(aV!=null)
 		{
 			for(int r=0;r<aV.size();r++)
 			{
-				XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)aV.elementAt(r);
+				XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)aV.elementAt(r);
 				if(!ablk.tag.equalsIgnoreCase("FILE"))
 					return unpackErr("Custom","Wrong tag in custome file! "+ablk.value);
 				String filename=((ablk.parms!=null)&&(ablk.parms.size()>0))?
-				    XMLManager.returnXMLParm((String)ablk.parms.firstElement(),"NAME"):"";
+				    CMLib.xml().returnXMLParm((String)ablk.parms.firstElement(),"NAME"):"";
 				if((filename==null)||(filename.length()==0))
 					return unpackErr("Custom","No custom file filename! "+ablk.value);
 				if(!externalFiles.containsKey(filename))
@@ -905,19 +906,19 @@ public class CoffeeMaker
 		return "";
 	}
 
-	public static String fillAreasVectorFromXML(String buf, 
+	public String fillAreasVectorFromXML(String buf, 
 	        									Vector areas, 
 	        									Vector custom,
     											Hashtable externalFiles)
 	{
-		Vector xml=XMLManager.parseAllXML(buf);
+		Vector xml=CMLib.xml().parseAllXML(buf);
 		if(xml==null) return unpackErr("Areas","null 'xml'");
 		fillCustomVectorFromXML(xml,custom,externalFiles);
-		Vector aV=XMLManager.getRealContentsFromPieces(xml,"AREAS");
+		Vector aV=CMLib.xml().getRealContentsFromPieces(xml,"AREAS");
 		if(aV==null) return unpackErr("Areas","null 'aV'");
 		for(int r=0;r<aV.size();r++)
 		{
-			XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)aV.elementAt(r);
+			XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)aV.elementAt(r);
 			if((!ablk.tag.equalsIgnoreCase("AREA"))||(ablk.contents==null))
 				return unpackErr("Areas","??"+ablk.tag);
 			areas.addElement(ablk.contents);
@@ -925,7 +926,7 @@ public class CoffeeMaker
 		return "";
 	}
 
-    public static void addWeatherToAreaIfNecessary(Area newArea)
+    public void addWeatherToAreaIfNecessary(Area newArea)
     {
         if((!CMProps.getVar(CMProps.SYSTEM_AUTOWEATHERPARMS).equalsIgnoreCase("no"))
         &&(newArea!=null)
@@ -937,29 +938,29 @@ public class CoffeeMaker
         }
     }
     
-	public static String unpackAreaFromXML(Vector aV, Session S, boolean andRooms)
+	public String unpackAreaFromXML(Vector aV, Session S, boolean andRooms)
 	{
-		String areaClass=XMLManager.getValFromPieces(aV,"ACLAS");
-		String areaName=XMLManager.getValFromPieces(aV,"ANAME");
+		String areaClass=CMLib.xml().getValFromPieces(aV,"ACLAS");
+		String areaName=CMLib.xml().getValFromPieces(aV,"ANAME");
 
-		if(CMMap.getArea(areaName)!=null) return "Area Exists: "+areaName;
+		if(CMLib.map().getArea(areaName)!=null) return "Area Exists: "+areaName;
 		if(CMClass.getAreaType(areaClass)==null) return unpackErr("Area","No class: "+areaClass);
 		Area newArea=CMLib.database().DBCreateArea(areaName,areaClass);
 		if(newArea==null) return unpackErr("Area","null 'area'");
 
-		newArea.setDescription(CoffeeFilter.safetyFilter(XMLManager.getValFromPieces(aV,"ADESC")));
-		newArea.setClimateType(XMLManager.getIntFromPieces(aV,"ACLIM"));
-		newArea.setTechLevel(XMLManager.getIntFromPieces(aV,"ATECH"));
-		newArea.setSubOpList(XMLManager.getValFromPieces(aV,"ASUBS"));
-		newArea.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(aV,"ADATA")));
+		newArea.setDescription(CMLib.coffeeFilter().safetyFilter(CMLib.xml().getValFromPieces(aV,"ADESC")));
+		newArea.setClimateType(CMLib.xml().getIntFromPieces(aV,"ACLIM"));
+		newArea.setTechLevel(CMLib.xml().getIntFromPieces(aV,"ATECH"));
+		newArea.setSubOpList(CMLib.xml().getValFromPieces(aV,"ASUBS"));
+		newArea.setMiscText(restoreAngleBrackets(CMLib.xml().getValFromPieces(aV,"ADATA")));
 		CMLib.database().DBUpdateArea(newArea.Name(),newArea);
 		if(andRooms)
 		{
-			Vector rV=XMLManager.getRealContentsFromPieces(aV,"AROOMS");
+			Vector rV=CMLib.xml().getRealContentsFromPieces(aV,"AROOMS");
 			if(rV==null) return unpackErr("Area","null 'rV'");
 			for(int r=0;r<rV.size();r++)
 			{
-				XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)rV.elementAt(r);
+				XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)rV.elementAt(r);
 				if((!ablk.tag.equalsIgnoreCase("AROOM"))||(ablk.contents==null))
 					return unpackErr("Area","??"+ablk.tag);
 				if(S!=null) S.rawPrint(".");
@@ -969,16 +970,16 @@ public class CoffeeMaker
 		}
 		return "";
 	}
-	public static String unpackAreaFromXML(String buf, Session S, boolean andRooms)
+	public String unpackAreaFromXML(String buf, Session S, boolean andRooms)
 	{
-		Vector xml=XMLManager.parseAllXML(buf);
+		Vector xml=CMLib.xml().parseAllXML(buf);
 		if(xml==null) return unpackErr("Area","null 'xml'");
-		Vector aV=XMLManager.getRealContentsFromPieces(xml,"AREA");
+		Vector aV=CMLib.xml().getRealContentsFromPieces(xml,"AREA");
 		if(aV==null) return unpackErr("Area","null 'aV'");
 		return unpackAreaFromXML(aV,S,andRooms);
 	}
 
-	public static StringBuffer getAreaXML(Area area, 
+	public StringBuffer getAreaXML(Area area, 
 	        							  Session S, 
 	        							  HashSet custom,
 	        							  HashSet files,
@@ -989,13 +990,13 @@ public class CoffeeMaker
 		boolean mobile=area.getMobility();
 		area.toggleMobility(false);
 		buf.append("<AREA>");
-		buf.append(XMLManager.convertXMLtoTag("ACLAS",area.ID()));
-		buf.append(XMLManager.convertXMLtoTag("ANAME",area.Name()));
-		buf.append(XMLManager.convertXMLtoTag("ADESC",area.description()));
-		buf.append(XMLManager.convertXMLtoTag("ACLIM",area.climateType()));
-		buf.append(XMLManager.convertXMLtoTag("ASUBS",area.getSubOpList()));
-		buf.append(XMLManager.convertXMLtoTag("ATECH",area.getTechLevel()));
-		buf.append(XMLManager.convertXMLtoTag("ADATA",area.text()));
+		buf.append(CMLib.xml().convertXMLtoTag("ACLAS",area.ID()));
+		buf.append(CMLib.xml().convertXMLtoTag("ANAME",area.Name()));
+		buf.append(CMLib.xml().convertXMLtoTag("ADESC",area.description()));
+		buf.append(CMLib.xml().convertXMLtoTag("ACLIM",area.climateType()));
+		buf.append(CMLib.xml().convertXMLtoTag("ASUBS",area.getSubOpList()));
+		buf.append(CMLib.xml().convertXMLtoTag("ATECH",area.getTechLevel()));
+		buf.append(CMLib.xml().convertXMLtoTag("ADATA",area.text()));
 		if(andRooms)
 		{
 			if(area.properSize()==0)
@@ -1013,13 +1014,13 @@ public class CoffeeMaker
 				buf.append("</AROOMS>");
 			}
 		}
-		CoffeeMaker.fillFileSet(area,files);
+		fillFileSet(area,files);
 		buf.append("</AREA>");
 		area.toggleMobility(mobile);
 		return buf;
 	}
 
-	private static StringBuffer logTextDiff(String e1, String e2)
+	public StringBuffer logTextDiff(String e1, String e2)
 	{
 		int start=0;
 		int end=e1.length()-1;
@@ -1060,7 +1061,7 @@ public class CoffeeMaker
 		return str;
 	}
 
-	private static void logDiff(Environmental E1, Environmental E2)
+	public void logDiff(Environmental E1, Environmental E2)
 	{
 		StringBuffer str=new StringBuffer("Unmatched - "+E1.Name()+"\n\r");
 		if(E1 instanceof MOB)
@@ -1096,7 +1097,7 @@ public class CoffeeMaker
 			Log.debugOut("CoffeeMaker",str.toString());
 	}
     
-    public static Room makeNewRoomContent(Room room)
+    public Room makeNewRoomContent(Room room)
     {
         if(room==null) return null;
         Room R=CMClass.getLocale(room.ID());
@@ -1106,7 +1107,7 @@ public class CoffeeMaker
         return R;
     }
 
-	public static StringBuffer getRoomMobs(Room room, 
+	public StringBuffer getRoomMobs(Room room, 
 	        							   HashSet custom, 
 	        							   HashSet files, 
 	        							   Hashtable found)
@@ -1174,15 +1175,15 @@ public class CoffeeMaker
 						continue;
 				}
 				buf.append("<MOB>");
-				buf.append(XMLManager.convertXMLtoTag("MCLAS",CMClass.className(mob)));
-				buf.append(XMLManager.convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
-				buf.append(XMLManager.convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
-				buf.append(XMLManager.convertXMLtoTag("MREJV",mob.baseEnvStats().rejuv()));
-				buf.append(XMLManager.convertXMLtoTag("MTEXT",parseOutAngleBrackets(mob.text())));
+				buf.append(CMLib.xml().convertXMLtoTag("MCLAS",CMClass.className(mob)));
+				buf.append(CMLib.xml().convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
+				buf.append(CMLib.xml().convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
+				buf.append(CMLib.xml().convertXMLtoTag("MREJV",mob.baseEnvStats().rejuv()));
+				buf.append(CMLib.xml().convertXMLtoTag("MTEXT",parseOutAngleBrackets(mob.text())));
 				if((mob.baseCharStats().getMyRace().isGeneric())
 				&&(!custom.contains(mob.baseCharStats().getMyRace())))
 				   custom.add(mob.baseCharStats().getMyRace());
-				CoffeeMaker.fillFileSet(mob,files);
+				fillFileSet(mob,files);
 				buf.append("</MOB>\n\r");
 			}
 		}
@@ -1190,7 +1191,7 @@ public class CoffeeMaker
 		return buf;
 	}
 
-	public static StringBuffer getUniqueItemXML(Item item, 
+	public StringBuffer getUniqueItemXML(Item item, 
 	        									int type, 
 	        									Hashtable found,
 	        									HashSet files)
@@ -1242,40 +1243,40 @@ public class CoffeeMaker
 				dups.addElement(item);
 			}
 			buf.append("<ITEM>");
-			buf.append(XMLManager.convertXMLtoTag("ICLAS",CMClass.className(item)));
-			buf.append(XMLManager.convertXMLtoTag("IUSES",item.usesRemaining()));
-			buf.append(XMLManager.convertXMLtoTag("ILEVL",item.baseEnvStats().level()));
-			buf.append(XMLManager.convertXMLtoTag("IABLE",item.baseEnvStats().ability()));
-			buf.append(XMLManager.convertXMLtoTag("IREJV",item.baseEnvStats().rejuv()));
-			buf.append(XMLManager.convertXMLtoTag("ITEXT",parseOutAngleBrackets(item.text())));
+			buf.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.className(item)));
+			buf.append(CMLib.xml().convertXMLtoTag("IUSES",item.usesRemaining()));
+			buf.append(CMLib.xml().convertXMLtoTag("ILEVL",item.baseEnvStats().level()));
+			buf.append(CMLib.xml().convertXMLtoTag("IABLE",item.baseEnvStats().ability()));
+			buf.append(CMLib.xml().convertXMLtoTag("IREJV",item.baseEnvStats().rejuv()));
+			buf.append(CMLib.xml().convertXMLtoTag("ITEXT",parseOutAngleBrackets(item.text())));
 			buf.append("</ITEM>\n\r");
-			CoffeeMaker.fillFileSet(item,files);
+			fillFileSet(item,files);
 		}
 		return buf;
 	}
 
-	public static String addItemsFromXML(String xmlBuffer,
+	public String addItemsFromXML(String xmlBuffer,
 										 Vector addHere,
 										 Session S)
 	{
-		Vector xml=XMLManager.parseAllXML(xmlBuffer);
+		Vector xml=CMLib.xml().parseAllXML(xmlBuffer);
 		if(xml==null) return unpackErr("Items","null 'xml'");
-		Vector iV=XMLManager.getRealContentsFromPieces(xml,"ITEMS");
+		Vector iV=CMLib.xml().getRealContentsFromPieces(xml,"ITEMS");
 		if(iV==null) return unpackErr("Items","null 'iV'");
 		for(int i=0;i<iV.size();i++)
 		{
-			XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)iV.elementAt(i);
+			XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)iV.elementAt(i);
 			if((!iblk.tag.equalsIgnoreCase("ITEM"))||(iblk.contents==null))
 				return unpackErr("Items","??"+iblk.tag);
 			if(S!=null) S.rawPrint(".");
-			String itemClass=XMLManager.getValFromPieces(iblk.contents,"ICLAS");
+			String itemClass=CMLib.xml().getValFromPieces(iblk.contents,"ICLAS");
 			Item newItem=CMClass.getItem(itemClass);
 			if(newItem==null) return unpackErr("Items","null 'iClass': "+itemClass);
-			newItem.baseEnvStats().setLevel(XMLManager.getIntFromPieces(iblk.contents,"ILEVL"));
-			newItem.baseEnvStats().setAbility(XMLManager.getIntFromPieces(iblk.contents,"IABLE"));
-			newItem.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(iblk.contents,"IREJV"));
-			newItem.setUsesRemaining(XMLManager.getIntFromPieces(iblk.contents,"IUSES"));
-			newItem.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(iblk.contents,"ITEXT")));
+			newItem.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(iblk.contents,"ILEVL"));
+			newItem.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(iblk.contents,"IABLE"));
+			newItem.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(iblk.contents,"IREJV"));
+			newItem.setUsesRemaining(CMLib.xml().getIntFromPieces(iblk.contents,"IUSES"));
+			newItem.setMiscText(restoreAngleBrackets(CMLib.xml().getValFromPieces(iblk.contents,"ITEXT")));
 			newItem.setContainer(null);
 			newItem.recoverEnvStats();
 			addHere.addElement(newItem);
@@ -1283,27 +1284,27 @@ public class CoffeeMaker
 		return "";
 	}
 
-	public static String addMOBsFromXML(String xmlBuffer,
+	public String addMOBsFromXML(String xmlBuffer,
 										Vector addHere,
 										Session S)
 	{
-		Vector xml=XMLManager.parseAllXML(xmlBuffer);
+		Vector xml=CMLib.xml().parseAllXML(xmlBuffer);
 		if(xml==null) return unpackErr("MOBs","null 'xml'");
-		Vector mV=XMLManager.getRealContentsFromPieces(xml,"MOBS");
+		Vector mV=CMLib.xml().getRealContentsFromPieces(xml,"MOBS");
 		if(mV==null) return unpackErr("MOBs","null 'mV'");
 		for(int m=0;m<mV.size();m++)
 		{
-			XMLManager.XMLpiece mblk=(XMLManager.XMLpiece)mV.elementAt(m);
+			XMLLibrary.XMLpiece mblk=(XMLLibrary.XMLpiece)mV.elementAt(m);
 			if((!mblk.tag.equalsIgnoreCase("MOB"))||(mblk.contents==null))
 				return unpackErr("MOBs","bad 'mblk'");
-			String mClass=XMLManager.getValFromPieces(mblk.contents,"MCLAS");
+			String mClass=CMLib.xml().getValFromPieces(mblk.contents,"MCLAS");
 			MOB newMOB=CMClass.getMOB(mClass);
 			if(newMOB==null) return unpackErr("MOBs","null 'mClass': "+mClass);
-			String text=restoreAngleBrackets(XMLManager.getValFromPieces(mblk.contents,"MTEXT"));
+			String text=restoreAngleBrackets(CMLib.xml().getValFromPieces(mblk.contents,"MTEXT"));
 			newMOB.setMiscText(text);
-			newMOB.baseEnvStats().setLevel(XMLManager.getIntFromPieces(mblk.contents,"MLEVL"));
-			newMOB.baseEnvStats().setAbility(XMLManager.getIntFromPieces(mblk.contents,"MABLE"));
-			newMOB.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(mblk.contents,"MREJV"));
+			newMOB.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(mblk.contents,"MLEVL"));
+			newMOB.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(mblk.contents,"MABLE"));
+			newMOB.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(mblk.contents,"MREJV"));
 			newMOB.recoverCharStats();
 			newMOB.recoverEnvStats();
 			newMOB.recoverMaxState();
@@ -1313,7 +1314,7 @@ public class CoffeeMaker
 		return "";
 	}
 
-	public static StringBuffer getRoomItems(Room room,
+	public StringBuffer getRoomItems(Room room,
 											Hashtable found,
 											HashSet files,
 											int type) // 0=item, 1=weapon, 2=armor
@@ -1359,7 +1360,7 @@ public class CoffeeMaker
 		return buf;
 	}
 
-	public static StringBuffer getRoomXML(Room room, 
+	public StringBuffer getRoomXML(Room room, 
 	        							  HashSet custom, 
 	        							  HashSet files, 
 	        							  boolean andContent)
@@ -1379,13 +1380,13 @@ public class CoffeeMaker
 			items.addElement(croom.fetchItem(i));
 
 		buf.append("<AROOM>");
-		buf.append(XMLManager.convertXMLtoTag("ROOMID",room.roomID()));
-		buf.append(XMLManager.convertXMLtoTag("RAREA",room.getArea().Name()));
-		buf.append(XMLManager.convertXMLtoTag("RCLAS",CMClass.className(room)));
-		buf.append(XMLManager.convertXMLtoTag("RDISP",room.displayText()));
-		buf.append(XMLManager.convertXMLtoTag("RDESC",room.description()));
-		buf.append(XMLManager.convertXMLtoTag("RTEXT",parseOutAngleBrackets(room.text())));
-		CoffeeMaker.fillFileSet(room,files);
+		buf.append(CMLib.xml().convertXMLtoTag("ROOMID",room.roomID()));
+		buf.append(CMLib.xml().convertXMLtoTag("RAREA",room.getArea().Name()));
+		buf.append(CMLib.xml().convertXMLtoTag("RCLAS",CMClass.className(room)));
+		buf.append(CMLib.xml().convertXMLtoTag("RDISP",room.displayText()));
+		buf.append(CMLib.xml().convertXMLtoTag("RDESC",room.description()));
+		buf.append(CMLib.xml().convertXMLtoTag("RTEXT",parseOutAngleBrackets(room.text())));
+		fillFileSet(room,files);
 		buf.append("<ROOMEXITS>");
 		for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
 		{
@@ -1394,21 +1395,21 @@ public class CoffeeMaker
 			if(((door!=null)&&(door.roomID().length()>0))||((door==null)&&(exit!=null)))
 			{
 				buf.append("<REXIT>");
-				buf.append(XMLManager.convertXMLtoTag("XDIRE",e));
+				buf.append(CMLib.xml().convertXMLtoTag("XDIRE",e));
 				if(door==null)
 					buf.append("<XDOOR />");
 				else
-					buf.append(XMLManager.convertXMLtoTag("XDOOR",door.roomID()));
+					buf.append(CMLib.xml().convertXMLtoTag("XDOOR",door.roomID()));
 				if(exit==null)
 					buf.append("<XEXIT />");
 				else
 				{
 					buf.append("<XEXIT>");
-					buf.append(XMLManager.convertXMLtoTag("EXID",exit.ID()));
-					buf.append(XMLManager.convertXMLtoTag("EXDAT",parseOutAngleBrackets(exit.text())));
+					buf.append(CMLib.xml().convertXMLtoTag("EXID",exit.ID()));
+					buf.append(CMLib.xml().convertXMLtoTag("EXDAT",parseOutAngleBrackets(exit.text())));
 					buf.append("</XEXIT>");
 				}
-				CoffeeMaker.fillFileSet(exit,files);
+				fillFileSet(exit,files);
 				buf.append("</REXIT>");
 			}
 		}
@@ -1419,8 +1420,8 @@ public class CoffeeMaker
 			int ordinal=0;
 			for(int v=0;v<exits.size();v++)
 			{
-				CMMap.CrossExit CE=(CMMap.CrossExit)exits.elementAt(v);
-				Room R=CMMap.getRoom(CE.destRoomID);
+				WorldMap.CrossExit CE=(WorldMap.CrossExit)exits.elementAt(v);
+				Room R=CMLib.map().getRoom(CE.destRoomID);
 				if(R==null) continue;
 				if(R.getGridParent()!=null) R=R.getGridParent();
 				if((R.roomID().length()>0)&&(!done.contains(R.roomID())))
@@ -1429,7 +1430,7 @@ public class CoffeeMaker
 					HashSet oldStrs=new HashSet();
 					for(int v2=0;v2<exits.size();v2++)
 					{
-						CMMap.CrossExit CE2=(CMMap.CrossExit)exits.elementAt(v2);
+						WorldMap.CrossExit CE2=(WorldMap.CrossExit)exits.elementAt(v2);
 						if((CE2.destRoomID.equals(R.roomID())
 						||(CE2.destRoomID.startsWith(R.roomID()+"#("))))
 						{
@@ -1442,9 +1443,9 @@ public class CoffeeMaker
 					for(Iterator a=oldStrs.iterator();a.hasNext();)
 						exitStr.append((String)a.next());
 					buf.append("<REXIT>");
-					buf.append(XMLManager.convertXMLtoTag("XDIRE",(256+(++ordinal))));
-					buf.append(XMLManager.convertXMLtoTag("XDOOR",R.roomID()));
-					buf.append(XMLManager.convertXMLtoTag("XDATA",exitStr.toString()));
+					buf.append(CMLib.xml().convertXMLtoTag("XDIRE",(256+(++ordinal))));
+					buf.append(CMLib.xml().convertXMLtoTag("XDOOR",R.roomID()));
+					buf.append(CMLib.xml().convertXMLtoTag("XDATA",exitStr.toString()));
 					buf.append("</REXIT>");
 				}
 			}
@@ -1468,21 +1469,21 @@ public class CoffeeMaker
 						   custom.add(mob.charStats().getMyRace());
 
 						buf.append("<RMOB>");
-						buf.append(XMLManager.convertXMLtoTag("MCLAS",CMClass.className(mob)));
+						buf.append(CMLib.xml().convertXMLtoTag("MCLAS",CMClass.className(mob)));
 						if((((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0)))||(mob.numFollowers()>0))
-							buf.append(XMLManager.convertXMLtoTag("MIDEN",""+mob));
-						buf.append(XMLManager.convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
-						buf.append(XMLManager.convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
-						buf.append(XMLManager.convertXMLtoTag("MREJV",mob.baseEnvStats().rejuv()));
-						buf.append(XMLManager.convertXMLtoTag("MTEXT",parseOutAngleBrackets(mob.text())));
+							buf.append(CMLib.xml().convertXMLtoTag("MIDEN",""+mob));
+						buf.append(CMLib.xml().convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
+						buf.append(CMLib.xml().convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
+						buf.append(CMLib.xml().convertXMLtoTag("MREJV",mob.baseEnvStats().rejuv()));
+						buf.append(CMLib.xml().convertXMLtoTag("MTEXT",parseOutAngleBrackets(mob.text())));
 						if(mob.riding()!=null)
-							buf.append(XMLManager.convertXMLtoTag("MRIDE",""+mob.riding()));
+							buf.append(CMLib.xml().convertXMLtoTag("MRIDE",""+mob.riding()));
 						else
 						if(mob.amFollowing()!=null)
-							buf.append(XMLManager.convertXMLtoTag("MRIDE",""+mob.amFollowing()));
+							buf.append(CMLib.xml().convertXMLtoTag("MRIDE",""+mob.amFollowing()));
 						else
 							buf.append("<MRIDE />");
-						CoffeeMaker.fillFileSet(mob,files);
+						fillFileSet(mob,files);
 						buf.append("</RMOB>");
 					}
 				}
@@ -1499,21 +1500,21 @@ public class CoffeeMaker
 					Item item=(Item)items.elementAt(i);
                     if(item.savable())
                     {
-    					buf.append(XMLManager.convertXMLtoTag("ICLAS",CMClass.className(item)));
+    					buf.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.className(item)));
     					if(((item instanceof Container)&&(((Container)item).capacity()>0))
     					||((item instanceof Rideable)&&(((Rideable)item).numRiders()>0)))
-    						buf.append(XMLManager.convertXMLtoTag("IIDEN",""+item));
+    						buf.append(CMLib.xml().convertXMLtoTag("IIDEN",""+item));
     					if(item.container()==null)
     						buf.append("<ILOCA />");
     					else
-    						buf.append(XMLManager.convertXMLtoTag("ILOCA",""+item.container()));
-    					buf.append(XMLManager.convertXMLtoTag("IREJV",item.baseEnvStats().rejuv()));
-    					buf.append(XMLManager.convertXMLtoTag("IUSES",item.usesRemaining()));
-    					buf.append(XMLManager.convertXMLtoTag("ILEVL",item.baseEnvStats().level()));
-    					buf.append(XMLManager.convertXMLtoTag("IABLE",item.baseEnvStats().ability()));
-    					buf.append(XMLManager.convertXMLtoTag("ITEXT",parseOutAngleBrackets(item.text())));
+    						buf.append(CMLib.xml().convertXMLtoTag("ILOCA",""+item.container()));
+    					buf.append(CMLib.xml().convertXMLtoTag("IREJV",item.baseEnvStats().rejuv()));
+    					buf.append(CMLib.xml().convertXMLtoTag("IUSES",item.usesRemaining()));
+    					buf.append(CMLib.xml().convertXMLtoTag("ILEVL",item.baseEnvStats().level()));
+    					buf.append(CMLib.xml().convertXMLtoTag("IABLE",item.baseEnvStats().ability()));
+    					buf.append(CMLib.xml().convertXMLtoTag("ITEXT",parseOutAngleBrackets(item.text())));
     					buf.append("</RITEM>");
-    					CoffeeMaker.fillFileSet(item,files);
+    					fillFileSet(item,files);
                     }
 				}
 				buf.append("</ROOMITEMS>");
@@ -1525,9 +1526,9 @@ public class CoffeeMaker
 		return buf;
 	}
 
-	public static void setPropertiesStr(Environmental E, String buf, boolean fromTop)
+	public void setPropertiesStr(Environmental E, String buf, boolean fromTop)
 	{
-		Vector V=XMLManager.parseAllXML(buf);
+		Vector V=CMLib.xml().parseAllXML(buf);
 		if(V==null)
 			Log.errOut("CoffeeMaker","setPropertiesStr: null 'V': "+((E==null)?"":E.Name()));
 		else
@@ -1543,7 +1544,7 @@ public class CoffeeMaker
 		}
 	}
 
-	private static void recoverEnvironmental(Environmental E)
+	public void recoverEnvironmental(Environmental E)
 	{
 		if(E==null) return;
 		E.recoverEnvStats();
@@ -1555,7 +1556,7 @@ public class CoffeeMaker
 		}
 	}
 
-	public static void setPropertiesStr(Environmental E, Vector V, boolean fromTop)
+	public void setPropertiesStr(Environmental E, Vector V, boolean fromTop)
 	{
 		if(E==null)
 			Log.errOut("CoffeeMaker","setPropertiesStr2: null 'E'");
@@ -1569,7 +1570,7 @@ public class CoffeeMaker
 		}
 	}
 
-	private static void setOrdPropertiesStr(Environmental E, Vector V)
+	public void setOrdPropertiesStr(Environmental E, Vector V)
 	{
 		if(V==null)
 		{
@@ -1582,74 +1583,74 @@ public class CoffeeMaker
 			setExtraEnvProperties(E,V);
 			if(E instanceof GridLocale)
 			{
-				((GridLocale)E).setXSize(XMLManager.getIntFromPieces(V,"XGRID"));
-				((GridLocale)E).setYSize(XMLManager.getIntFromPieces(V,"YGRID"));
+				((GridLocale)E).setXSize(CMLib.xml().getIntFromPieces(V,"XGRID"));
+				((GridLocale)E).setYSize(CMLib.xml().getIntFromPieces(V,"YGRID"));
 			}
 		}
 		else
 		if(E instanceof Area)
 		{
-			((Area)E).setArchivePath(XMLManager.getValFromPieces(V,"ARCHP"));
-			((Area)E).setAuthorID(XMLManager.getValFromPieces(V,"AUTHOR"));
-			((Area)E).setCurrency(XMLManager.getValFromPieces(V,"CURRENCY"));
-            Vector VP=XMLManager.getRealContentsFromPieces(V,"PARENTS");
+			((Area)E).setArchivePath(CMLib.xml().getValFromPieces(V,"ARCHP"));
+			((Area)E).setAuthorID(CMLib.xml().getValFromPieces(V,"AUTHOR"));
+			((Area)E).setCurrency(CMLib.xml().getValFromPieces(V,"CURRENCY"));
+            Vector VP=CMLib.xml().getRealContentsFromPieces(V,"PARENTS");
             if(VP!=null)
             {
                 for(int i=0;i<VP.size();i++)
                 {
-                    XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)VP.elementAt(i);
+                    XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)VP.elementAt(i);
                     if((!ablk.tag.equalsIgnoreCase("PARENT"))||(ablk.contents==null))
                     {
                         Log.errOut("CoffeeMaker","Error parsing 'PARENT' of "+identifier(E,null)+".  Load aborted");
                         return;
                     }
-                    ((Area)E).addParentToLoad(XMLManager.getValFromPieces(ablk.contents,"PARENTNAMED"));
+                    ((Area)E).addParentToLoad(CMLib.xml().getValFromPieces(ablk.contents,"PARENTNAMED"));
                 }
             }
-            Vector VC=XMLManager.getRealContentsFromPieces(V,"CHILDREN");
+            Vector VC=CMLib.xml().getRealContentsFromPieces(V,"CHILDREN");
             if(VC!=null)
             {
                 for(int i=0;i<VC.size();i++)
                 {
-                    XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)VC.elementAt(i);
+                    XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)VC.elementAt(i);
                     if((!ablk.tag.equalsIgnoreCase("CHILD"))||(ablk.contents==null))
                     {
                         Log.errOut("CoffeeMaker","Error parsing 'CHILD' of "+identifier(E,null)+".  Load aborted");
                         return;
                     }
-                    ((Area)E).addChildToLoad(XMLManager.getValFromPieces(ablk.contents,"CHILDNAMED"));
+                    ((Area)E).addChildToLoad(CMLib.xml().getValFromPieces(ablk.contents,"CHILDNAMED"));
                 }
             }
 			setExtraEnvProperties(E,V);
 		}
 		else
 		if(E instanceof Ability)
-			E.setMiscText(XMLManager.getValFromPieces(V,"AWRAP"));
+			E.setMiscText(CMLib.xml().getValFromPieces(V,"AWRAP"));
 		else
 		if(E instanceof Item)
 		{
 			Item item=(Item)E;
-			item.setUsesRemaining(XMLManager.getIntFromPieces(V,"IUSES"));
-			item.baseEnvStats().setLevel(XMLManager.getIntFromPieces(V,"ILEVL"));
-			item.baseEnvStats().setAbility(XMLManager.getIntFromPieces(V,"IABLE"));
+			item.setUsesRemaining(CMLib.xml().getIntFromPieces(V,"IUSES"));
+			item.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(V,"ILEVL"));
+			item.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(V,"IABLE"));
 			if(!E.isGeneric())
-				item.setMiscText(XMLManager.getValFromPieces(V,"ITEXT"));
-			//item.wearAt(XMLManager.getIntFromPieces(V,"USES"));
+				item.setMiscText(CMLib.xml().getValFromPieces(V,"ITEXT"));
+			//item.wearAt(CMLib.xml().getIntFromPieces(V,"USES"));
 		}
 		else
 		if(E instanceof MOB)
 		{
-			E.baseEnvStats().setLevel(XMLManager.getIntFromPieces(V,"MLEVL"));
-			E.baseEnvStats().setAbility(XMLManager.getIntFromPieces(V,"MABLE"));
-			E.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(V,"MREJV"));
+			E.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(V,"MLEVL"));
+			E.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(V,"MABLE"));
+			E.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(V,"MREJV"));
 			if(!E.isGeneric())
-				E.setMiscText(XMLManager.getValFromPieces(V,"MTEXT"));
+				E.setMiscText(CMLib.xml().getValFromPieces(V,"MTEXT"));
 		}
 	}
 
-	private static void setGenMobAbilities(MOB M, Vector buf)
+	public void setGenMobAbilities(MOB M, Vector buf)
 	{
-		Vector V=XMLManager.getRealContentsFromPieces(buf,"ABLTYS");
+		Vector V=CMLib.xml().getRealContentsFromPieces(buf,"ABLTYS");
 		if(V==null)
 		{
 			Log.errOut("CoffeeMaker","Error parsing 'ABLTYS' of "+identifier(M,null)+".  Load aborted");
@@ -1657,25 +1658,25 @@ public class CoffeeMaker
 		}
 		for(int i=0;i<V.size();i++)
 		{
-			XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
+			XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)V.elementAt(i);
 			if((!ablk.tag.equalsIgnoreCase("ABLTY"))||(ablk.contents==null))
 			{
 				Log.errOut("CoffeeMaker","Error parsing 'ABLTY' of "+identifier(M,null)+".  Load aborted");
 				return;
 			}
-			Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"ACLASS"));
+			Ability newOne=CMClass.getAbility(CMLib.xml().getValFromPieces(ablk.contents,"ACLASS"));
 			if(newOne==null)
 			{
-				Log.errOut("CoffeeMaker","Unknown ability "+XMLManager.getValFromPieces(ablk.contents,"ACLASS")+" on "+identifier(M,null)+", skipping.");
+				Log.errOut("CoffeeMaker","Unknown ability "+CMLib.xml().getValFromPieces(ablk.contents,"ACLASS")+" on "+identifier(M,null)+", skipping.");
 				continue;
 			}
-			Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"ADATA");
+			Vector adat=CMLib.xml().getRealContentsFromPieces(ablk.contents,"ADATA");
 			if((adat==null)||(newOne==null))
 			{
 				Log.errOut("CoffeeMaker","Error parsing 'ABLTY DATA' of "+identifier(M,null)+".  Load aborted");
 				return;
 			}
-			String proff=XMLManager.getValFromPieces(ablk.contents,"APROF");
+			String proff=CMLib.xml().getValFromPieces(ablk.contents,"APROF");
 			if(proff.length()>0)
 				newOne.setProfficiency(Util.s_int(proff));
 			else
@@ -1689,9 +1690,9 @@ public class CoffeeMaker
 		}
 	}
 
-	private static void setGenMobInventory(MOB M, Vector buf)
+	public void setGenMobInventory(MOB M, Vector buf)
 	{
-		Vector V=XMLManager.getRealContentsFromPieces(buf,"INVEN");
+		Vector V=CMLib.xml().getRealContentsFromPieces(buf,"INVEN");
 		boolean variableEq=false;
 		if(V==null)
 		{
@@ -1702,28 +1703,28 @@ public class CoffeeMaker
 		Hashtable LOCmap=new Hashtable();
 		for(int i=0;i<V.size();i++)
 		{
-			XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)V.elementAt(i);
+			XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)V.elementAt(i);
 			if((!iblk.tag.equalsIgnoreCase("ITEM"))||(iblk.contents==null))
 			{
 				Log.errOut("CoffeeMaker","Error parsing 'ITEM' of "+identifier(M,null)+".  Load aborted");
 				return;
 			}
-			Item newOne=CMClass.getItem(XMLManager.getValFromPieces(iblk.contents,"ICLASS"));
+			Item newOne=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"ICLASS"));
 			if(newOne==null)
 			{
-				Log.errOut("CoffeeMaker","Unknown item "+XMLManager.getValFromPieces(iblk.contents,"ICLASS")+" on "+identifier(M,null)+", skipping.");
+				Log.errOut("CoffeeMaker","Unknown item "+CMLib.xml().getValFromPieces(iblk.contents,"ICLASS")+" on "+identifier(M,null)+", skipping.");
 				continue;
 			}
-			Vector idat=XMLManager.getRealContentsFromPieces(iblk.contents,"IDATA");
+			Vector idat=CMLib.xml().getRealContentsFromPieces(iblk.contents,"IDATA");
 			if((idat==null)||(newOne==null))
 			{
 				Log.errOut("CoffeeMaker","Error parsing 'ITEM DATA' of "+identifier(M,null)+".  Load aborted");
 				return;
 			}
-			int wornCode=XMLManager.getIntFromPieces(idat,"IWORN");
+			int wornCode=CMLib.xml().getIntFromPieces(idat,"IWORN");
 			if((newOne instanceof Container)&&(((Container)newOne).capacity()>0))
-				IIDmap.put(XMLManager.getValFromPieces(idat,"IID"),newOne);
-			String ILOC=XMLManager.getValFromPieces(idat,"ILOC");
+				IIDmap.put(CMLib.xml().getValFromPieces(idat,"IID"),newOne);
+			String ILOC=CMLib.xml().getValFromPieces(idat,"ILOC");
 			M.addInventory(newOne);
 			if(ILOC.length()>0)
 				LOCmap.put(newOne,ILOC);
@@ -1751,18 +1752,18 @@ public class CoffeeMaker
 		if(variableEq) M.flagVariableEq();
 	}
 	
-	public static void populateShops(Environmental E, Vector buf)
+	public void populateShops(Environmental E, Vector buf)
 	{
 		boolean variableEq=false;
 		ShopKeeper shopmob=(ShopKeeper)E;
-		shopmob.setWhatIsSold(XMLManager.getIntFromPieces(buf,"SELLCD"));
-		shopmob.setPrejudiceFactors(XMLManager.getValFromPieces(buf,"PREJFC"));
-        shopmob.setIgnoreMask(XMLManager.getValFromPieces(buf,"IGNMSK"));
-		shopmob.setBudget(XMLManager.getValFromPieces(buf,"BUDGET"));
-		shopmob.setDevalueRate(XMLManager.getValFromPieces(buf,"DEVALR"));
-		shopmob.setInvResetRate(XMLManager.getIntFromPieces(buf,"INVRER"));
+		shopmob.setWhatIsSold(CMLib.xml().getIntFromPieces(buf,"SELLCD"));
+		shopmob.setPrejudiceFactors(CMLib.xml().getValFromPieces(buf,"PREJFC"));
+        shopmob.setIgnoreMask(CMLib.xml().getValFromPieces(buf,"IGNMSK"));
+		shopmob.setBudget(CMLib.xml().getValFromPieces(buf,"BUDGET"));
+		shopmob.setDevalueRate(CMLib.xml().getValFromPieces(buf,"DEVALR"));
+		shopmob.setInvResetRate(CMLib.xml().getIntFromPieces(buf,"INVRER"));
 
-		Vector V=XMLManager.getRealContentsFromPieces(buf,"STORE");
+		Vector V=CMLib.xml().getRealContentsFromPieces(buf,"STORE");
 		if(V==null)
 		{
 			Log.errOut("CoffeeMaker","Error parsing 'STORE' of "+identifier(E,null)+".  Load aborted");
@@ -1772,20 +1773,20 @@ public class CoffeeMaker
 		Hashtable LOCmap=new Hashtable();
 		for(int i=0;i<V.size();i++)
 		{
-			XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)V.elementAt(i);
+			XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)V.elementAt(i);
 			if((!iblk.tag.equalsIgnoreCase("SHITEM"))||(iblk.contents==null))
 			{
 				Log.errOut("CoffeeMaker","Error parsing 'SHITEM' of "+identifier(E,null)+".  Load aborted");
 				continue;
 			}
-			String itemi=XMLManager.getValFromPieces(iblk.contents,"SICLASS");
-			int numStock=XMLManager.getIntFromPieces(iblk.contents,"SISTOCK");
-			String prc=XMLManager.getValFromPieces(iblk.contents,"SIPRICE");
+			String itemi=CMLib.xml().getValFromPieces(iblk.contents,"SICLASS");
+			int numStock=CMLib.xml().getIntFromPieces(iblk.contents,"SISTOCK");
+			String prc=CMLib.xml().getValFromPieces(iblk.contents,"SIPRICE");
 			int stockPrice=-1;
 			if((prc!=null)&&(prc.length()>0))
 				stockPrice=Util.s_int(prc);
 			Environmental newOne=null;
-			Vector idat=XMLManager.getRealContentsFromPieces(iblk.contents,"SIDATA");
+			Vector idat=CMLib.xml().getRealContentsFromPieces(iblk.contents,"SIDATA");
 			if((iblk.value.indexOf("<ABLTY>")>=0)||(iblk.value.indexOf("&lt;ABLTY&gt;")>=0))
 				newOne=CMClass.getMOB(itemi);
 			if(newOne==null) newOne=CMClass.getUnknown(itemi);
@@ -1802,8 +1803,8 @@ public class CoffeeMaker
 			if(newOne instanceof Item)
 			{
 				if(newOne instanceof Container)
-					IIDmap.put(XMLManager.getValFromPieces(idat,"IID"),newOne);
-				String ILOC=XMLManager.getValFromPieces(idat,"ILOC");
+					IIDmap.put(CMLib.xml().getValFromPieces(idat,"IID"),newOne);
+				String ILOC=CMLib.xml().getValFromPieces(idat,"ILOC");
 				if(ILOC.length()>0)
 					LOCmap.put(ILOC,newOne);
 			}
@@ -1826,7 +1827,7 @@ public class CoffeeMaker
 		if(variableEq) ((MOB)E).flagVariableEq();
 	}
 
-	private static void setGenPropertiesStr(Environmental E, Vector buf)
+	public void setGenPropertiesStr(Environmental E, Vector buf)
 	{
 		if(buf==null)
 		{
@@ -1834,7 +1835,7 @@ public class CoffeeMaker
 			return;
 		}
 
-		if((E instanceof MOB)&&(XMLManager.getValFromPieces(buf,"GENDER").length()==0))
+		if((E instanceof MOB)&&(CMLib.xml().getValFromPieces(buf,"GENDER").length()==0))
 		{
 			Log.errOut("CoffeeMaker","MOB "+identifier(E,null)+" has malformed XML. Load aborted.");
 			return;
@@ -1886,10 +1887,10 @@ public class CoffeeMaker
 		if(E instanceof MOB)
 		{
 			MOB mob=(MOB)E;
-			mob.baseCharStats().setStat(CharStats.GENDER,XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
-			mob.setClanID(XMLManager.getValFromPieces(buf,"CLAN"));
+			mob.baseCharStats().setStat(CharStats.GENDER,CMLib.xml().getValFromPieces(buf,"GENDER").charAt(0));
+			mob.setClanID(CMLib.xml().getValFromPieces(buf,"CLAN"));
 			if(mob.getClanID().length()>0) mob.setClanRole(Clan.POS_MEMBER);
-			String raceID=XMLManager.getValFromPieces(buf,"MRACE");
+			String raceID=CMLib.xml().getValFromPieces(buf,"MRACE");
 			Race R=(raceID.length()>0)?CMClass.getRace(raceID):null;
 			if(R!=null)
 			{
@@ -1901,143 +1902,143 @@ public class CoffeeMaker
 		}
 
 		setEnvProperties(E,buf);
-		String deprecatedFlag=XMLManager.getValFromPieces(buf,"FLAG");
+		String deprecatedFlag=CMLib.xml().getValFromPieces(buf,"FLAG");
 		if((deprecatedFlag!=null)&&(deprecatedFlag.length()>0))
 			setEnvFlags(E,Util.s_int(deprecatedFlag));
 
 		if(E instanceof Exit)
 		{
 			Exit exit=(Exit)E;
-			String closedText=XMLManager.getValFromPieces(buf,"CLOSTX");
-			String doorName=XMLManager.getValFromPieces(buf,"DOORNM");
-			String openName=XMLManager.getValFromPieces(buf,"OPENNM");
-			String closeName=XMLManager.getValFromPieces(buf,"CLOSNM");
+			String closedText=CMLib.xml().getValFromPieces(buf,"CLOSTX");
+			String doorName=CMLib.xml().getValFromPieces(buf,"DOORNM");
+			String openName=CMLib.xml().getValFromPieces(buf,"OPENNM");
+			String closeName=CMLib.xml().getValFromPieces(buf,"CLOSNM");
 			exit.setExitParams(doorName,closeName,openName,closedText);
-			exit.setKeyName(XMLManager.getValFromPieces(buf,"KEYNM"));
-			exit.setOpenDelayTicks(XMLManager.getIntFromPieces(buf,"OPENTK"));
+			exit.setKeyName(CMLib.xml().getValFromPieces(buf,"KEYNM"));
+			exit.setOpenDelayTicks(CMLib.xml().getIntFromPieces(buf,"OPENTK"));
 		}
 
 		if(E instanceof ClanItem)
 		{
-			((ClanItem)E).setClanID(XMLManager.getValFromPieces(buf,"CLANID"));
-			((ClanItem)E).setCIType(XMLManager.getIntFromPieces(buf,"CITYPE"));
+			((ClanItem)E).setClanID(CMLib.xml().getValFromPieces(buf,"CLANID"));
+			((ClanItem)E).setCIType(CMLib.xml().getIntFromPieces(buf,"CITYPE"));
 		}
 
 		if(E instanceof Item)
 		{
 			Item item=(Item)E;
-			item.setSecretIdentity(XMLManager.getValFromPieces(buf,"IDENT"));
-			item.setBaseValue(XMLManager.getIntFromPieces(buf,"VALUE"));
-			item.setMaterial(XMLManager.getIntFromPieces(buf,"MTRAL"));
-			//item.setUsesRemaining(Util.s_int(XMLManager.returnXMLValue(buf,"USES")));
+			item.setSecretIdentity(CMLib.xml().getValFromPieces(buf,"IDENT"));
+			item.setBaseValue(CMLib.xml().getIntFromPieces(buf,"VALUE"));
+			item.setMaterial(CMLib.xml().getIntFromPieces(buf,"MTRAL"));
+			//item.setUsesRemaining(Util.s_int(CMLib.xml().returnXMLValue(buf,"USES")));
 			if(item instanceof Container)
 			{
-				((Container)item).setCapacity(XMLManager.getIntFromPieces(buf,"CAPA"));
-				((Container)item).setContainTypes(XMLManager.getLongFromPieces(buf,"CONT"));
+				((Container)item).setCapacity(CMLib.xml().getIntFromPieces(buf,"CAPA"));
+				((Container)item).setContainTypes(CMLib.xml().getLongFromPieces(buf,"CONT"));
 
 			}
 			if(item instanceof Weapon)
-				((Weapon)item).setAmmoCapacity(XMLManager.getIntFromPieces(buf,"CAPA"));
-			item.setRawLogicalAnd(XMLManager.getBoolFromPieces(buf,"WORNL"));
-			item.setRawProperLocationBitmap(XMLManager.getIntFromPieces(buf,"WORNB"));
-			item.setReadableText(XMLManager.getValFromPieces(buf,"READ"));
+				((Weapon)item).setAmmoCapacity(CMLib.xml().getIntFromPieces(buf,"CAPA"));
+			item.setRawLogicalAnd(CMLib.xml().getBoolFromPieces(buf,"WORNL"));
+			item.setRawProperLocationBitmap(CMLib.xml().getIntFromPieces(buf,"WORNB"));
+			item.setReadableText(CMLib.xml().getValFromPieces(buf,"READ"));
 
 		}
 
 		if(E instanceof Rideable)
 		{
-			((Rideable)E).setRideBasis(XMLManager.getIntFromPieces(buf,"RIDET"));
-			((Rideable)E).setRiderCapacity(XMLManager.getIntFromPieces(buf,"RIDEC"));
+			((Rideable)E).setRideBasis(CMLib.xml().getIntFromPieces(buf,"RIDET"));
+			((Rideable)E).setRiderCapacity(CMLib.xml().getIntFromPieces(buf,"RIDEC"));
 		}
 		if(E instanceof Electronics)
 		{
-			((Electronics)E).setFuelType(XMLManager.getIntFromPieces(buf,"FUELT"));
-			((Electronics)E).setPowerCapacity(XMLManager.getIntFromPieces(buf,"POWC"));
-			((Electronics)E).setPowerRemaining(XMLManager.getIntFromPieces(buf,"POWR"));
+			((Electronics)E).setFuelType(CMLib.xml().getIntFromPieces(buf,"FUELT"));
+			((Electronics)E).setPowerCapacity(CMLib.xml().getIntFromPieces(buf,"POWC"));
+			((Electronics)E).setPowerRemaining(CMLib.xml().getIntFromPieces(buf,"POWR"));
 		}
 	    if(E instanceof ShipComponent)
 	    {
 	        if(E instanceof ShipComponent.ShipPanel)
 	        {
-				((ShipComponent.ShipPanel)E).setPanelType(XMLManager.getIntFromPieces(buf,"SSPANELT"));
+				((ShipComponent.ShipPanel)E).setPanelType(CMLib.xml().getIntFromPieces(buf,"SSPANELT"));
 	        }
 	        if(E instanceof ShipComponent.ShipEngine)
 	        {
-				((ShipComponent.ShipEngine)E).setMaxThrust(XMLManager.getIntFromPieces(buf,"SSTHRUST"));
+				((ShipComponent.ShipEngine)E).setMaxThrust(CMLib.xml().getIntFromPieces(buf,"SSTHRUST"));
 	        }
 	    }
 		if(E instanceof Coins)
 		{
-			((Coins)E).setCurrency(XMLManager.getValFromPieces(buf,"CRNC"));
-			((Coins)E).setDenomination(XMLManager.getDoubleFromPieces(buf,"DENOM"));
+			((Coins)E).setCurrency(CMLib.xml().getValFromPieces(buf,"CRNC"));
+			((Coins)E).setDenomination(CMLib.xml().getDoubleFromPieces(buf,"DENOM"));
 		}
 		if(E instanceof Recipe)
 		{
-			((Recipe)E).setCommonSkillID(XMLManager.getValFromPieces(buf,"SKILLID"));
-			((Recipe)E).setRecipeCodeLine(XMLManager.getValFromPieces(buf,"RECIPE"));
+			((Recipe)E).setCommonSkillID(CMLib.xml().getValFromPieces(buf,"SKILLID"));
+			((Recipe)E).setRecipeCodeLine(CMLib.xml().getValFromPieces(buf,"RECIPE"));
 		}
 		if(E instanceof Light)
 		{
-			String bo=XMLManager.getValFromPieces(buf,"BURNOUT");
+			String bo=CMLib.xml().getValFromPieces(buf,"BURNOUT");
 			if((bo!=null)&&(bo.length()>0))
 				((Light)E).setDestroyedWhenBurntOut(Util.s_bool(bo));
 		}
 
 		if(E instanceof Wand)
 		{
-			String bo=XMLManager.getValFromPieces(buf,"MAXUSE");
+			String bo=CMLib.xml().getValFromPieces(buf,"MAXUSE");
 			if((bo!=null)&&(bo.length()>0))
 				((Wand)E).setMaxUses(Util.s_int(bo));
 		}
 		
 		if(E instanceof LandTitle)
-			((LandTitle)E).setLandPropertyID(XMLManager.getValFromPieces(buf,"LANDID"));
+			((LandTitle)E).setLandPropertyID(CMLib.xml().getValFromPieces(buf,"LANDID"));
 
 		if(E instanceof Perfume)
-			((Perfume)E).setSmellList(XMLManager.getValFromPieces(buf,"SMELLLST"));
+			((Perfume)E).setSmellList(CMLib.xml().getValFromPieces(buf,"SMELLLST"));
 		
 		if(E instanceof Food)
-			((Food)E).setNourishment(XMLManager.getIntFromPieces(buf,"CAPA2"));
+			((Food)E).setNourishment(CMLib.xml().getIntFromPieces(buf,"CAPA2"));
 		
 		if(E instanceof EnvResource)
-			((EnvResource)E).setDomainSource(XMLManager.getIntFromPieces(buf,"DOMN"));
+			((EnvResource)E).setDomainSource(CMLib.xml().getIntFromPieces(buf,"DOMN"));
 
 		if(E instanceof Drink)
 		{
-			((Drink)E).setLiquidHeld(XMLManager.getIntFromPieces(buf,"CAPA2"));
-			((Drink)E).setLiquidRemaining(XMLManager.getIntFromPieces(buf,"CAPA2"));
-			((Drink)E).setThirstQuenched(XMLManager.getIntFromPieces(buf,"DRINK"));
+			((Drink)E).setLiquidHeld(CMLib.xml().getIntFromPieces(buf,"CAPA2"));
+			((Drink)E).setLiquidRemaining(CMLib.xml().getIntFromPieces(buf,"CAPA2"));
+			((Drink)E).setThirstQuenched(CMLib.xml().getIntFromPieces(buf,"DRINK"));
 		}
 		if(E instanceof Weapon)
 		{
-			((Weapon)E).setWeaponType(XMLManager.getIntFromPieces(buf,"TYPE"));
-			((Weapon)E).setWeaponClassification(XMLManager.getIntFromPieces(buf,"CLASS"));
-			((Weapon)E).setRanges(XMLManager.getIntFromPieces(buf,"MINR"),XMLManager.getIntFromPieces(buf,"MAXR"));
+			((Weapon)E).setWeaponType(CMLib.xml().getIntFromPieces(buf,"TYPE"));
+			((Weapon)E).setWeaponClassification(CMLib.xml().getIntFromPieces(buf,"CLASS"));
+			((Weapon)E).setRanges(CMLib.xml().getIntFromPieces(buf,"MINR"),CMLib.xml().getIntFromPieces(buf,"MAXR"));
 		}
 		if(E instanceof DeadBody)
 		{
 			if(((DeadBody)E).charStats()==null)
 				((DeadBody)E).setCharStats((CharStats)CMClass.getCommon("DefaultCharStats"));
 			try{
-				((DeadBody)E).charStats().setStat(CharStats.GENDER,XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
-				((DeadBody)E).setPlayerCorpse(XMLManager.getBoolFromPieces(buf,"MPLAYR"));
-				String mobName=XMLManager.getValFromPieces(buf,"MDNAME");
+				((DeadBody)E).charStats().setStat(CharStats.GENDER,CMLib.xml().getValFromPieces(buf,"GENDER").charAt(0));
+				((DeadBody)E).setPlayerCorpse(CMLib.xml().getBoolFromPieces(buf,"MPLAYR"));
+				String mobName=CMLib.xml().getValFromPieces(buf,"MDNAME");
 				if(mobName.length()>0)
 				{
 					((DeadBody)E).setMobName(mobName);
-					((DeadBody)E).setMobDescription(XMLManager.getValFromPieces(buf,"MDDESC"));
-					((DeadBody)E).setTimeOfDeath(XMLManager.getLongFromPieces(buf,"MTOD"));
-					((DeadBody)E).setKillerName(XMLManager.getValFromPieces(buf,"MKNAME"));
-					((DeadBody)E).setKillerPlayer(XMLManager.getBoolFromPieces(buf,"MKPLAY"));
-					((DeadBody)E).setMobPKFlag(XMLManager.getBoolFromPieces(buf,"MPKILL"));
-					((DeadBody)E).setDestroyAfterLooting(XMLManager.getBoolFromPieces(buf,"MBREAL"));
-					((DeadBody)E).setLastMessage(XMLManager.getValFromPieces(buf,"MDLMSG"));
-					Vector dblk=XMLManager.getContentsFromPieces(buf,"KLTOOL");
+					((DeadBody)E).setMobDescription(CMLib.xml().getValFromPieces(buf,"MDDESC"));
+					((DeadBody)E).setTimeOfDeath(CMLib.xml().getLongFromPieces(buf,"MTOD"));
+					((DeadBody)E).setKillerName(CMLib.xml().getValFromPieces(buf,"MKNAME"));
+					((DeadBody)E).setKillerPlayer(CMLib.xml().getBoolFromPieces(buf,"MKPLAY"));
+					((DeadBody)E).setMobPKFlag(CMLib.xml().getBoolFromPieces(buf,"MPKILL"));
+					((DeadBody)E).setDestroyAfterLooting(CMLib.xml().getBoolFromPieces(buf,"MBREAL"));
+					((DeadBody)E).setLastMessage(CMLib.xml().getValFromPieces(buf,"MDLMSG"));
+					Vector dblk=CMLib.xml().getContentsFromPieces(buf,"KLTOOL");
 					if((dblk!=null)&&(dblk.size()>0))
 					{
-						String itemi=XMLManager.getValFromPieces(dblk,"KLCLASS");
+						String itemi=CMLib.xml().getValFromPieces(dblk,"KLCLASS");
 						Environmental newOne=null;
-						Vector idat=XMLManager.getRealContentsFromPieces(dblk,"KLDATA");
+						Vector idat=CMLib.xml().getRealContentsFromPieces(dblk,"KLDATA");
 						if(newOne==null) newOne=CMClass.getUnknown(itemi);
 						if(newOne==null)
 							Log.errOut("CoffeeMaker","Unknown tool "+itemi+" of "+identifier(E,null)+".  Skipping.");
@@ -2051,7 +2052,7 @@ public class CoffeeMaker
 						((DeadBody)E).setKillingTool(null);
 				}
 			} catch(Exception e){}
-			String raceID=XMLManager.getValFromPieces(buf,"MRACE");
+			String raceID=CMLib.xml().getValFromPieces(buf,"MRACE");
 			if((raceID.length()>0)&&(CMClass.getRace(raceID)!=null))
 			{
 				Race R=CMClass.getRace(raceID);
@@ -2061,43 +2062,43 @@ public class CoffeeMaker
 		if(E instanceof MOB)
 		{
 			MOB mob=(MOB)E;
-			String alignStr=XMLManager.getValFromPieces(buf,"ALIG");
-			if((alignStr.length()>0)&&(Factions.getFaction(Factions.AlignID())!=null))
-			    Factions.setAlignmentOldRange(mob,Util.s_int(alignStr));
-			CMLib.beanCounter().setMoney(mob,XMLManager.getIntFromPieces(buf,"MONEY"));
+			String alignStr=CMLib.xml().getValFromPieces(buf,"ALIG");
+			if((alignStr.length()>0)&&(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null))
+			    CMLib.factions().setAlignmentOldRange(mob,Util.s_int(alignStr));
+			CMLib.beanCounter().setMoney(mob,CMLib.xml().getIntFromPieces(buf,"MONEY"));
 			setGenMobInventory((MOB)E,buf);
 			setGenMobAbilities((MOB)E,buf);
             setFactionFromXML((MOB)E,buf);
 
 			if(E instanceof Banker)
 			{
-				((Banker)E).setBankChain(XMLManager.getValFromPieces(buf,"BANK"));
-				((Banker)E).setCoinInterest(XMLManager.getDoubleFromPieces(buf,"COININT"));
-				((Banker)E).setCoinInterest(XMLManager.getDoubleFromPieces(buf,"ITEMINT"));
+				((Banker)E).setBankChain(CMLib.xml().getValFromPieces(buf,"BANK"));
+				((Banker)E).setCoinInterest(CMLib.xml().getDoubleFromPieces(buf,"COININT"));
+				((Banker)E).setCoinInterest(CMLib.xml().getDoubleFromPieces(buf,"ITEMINT"));
 			}
             
             if(E instanceof PostOffice)
             {
-                ((PostOffice)E).setPostalChain(XMLManager.getValFromPieces(buf,"POSTCHAIN"));
-                ((PostOffice)E).setMinimumPostage(XMLManager.getDoubleFromPieces(buf,"POSTMIN"));
-                ((PostOffice)E).setPostagePerPound(XMLManager.getDoubleFromPieces(buf,"POSTLBS"));
-                ((PostOffice)E).setHoldFeePerPound(XMLManager.getDoubleFromPieces(buf,"POSTHOLD"));
-                ((PostOffice)E).setFeeForNewBox(XMLManager.getDoubleFromPieces(buf,"POSTNEW"));
-                ((PostOffice)E).setMaxMudMonthsHeld(XMLManager.getIntFromPieces(buf,"POSTHELD"));
+                ((PostOffice)E).setPostalChain(CMLib.xml().getValFromPieces(buf,"POSTCHAIN"));
+                ((PostOffice)E).setMinimumPostage(CMLib.xml().getDoubleFromPieces(buf,"POSTMIN"));
+                ((PostOffice)E).setPostagePerPound(CMLib.xml().getDoubleFromPieces(buf,"POSTLBS"));
+                ((PostOffice)E).setHoldFeePerPound(CMLib.xml().getDoubleFromPieces(buf,"POSTHOLD"));
+                ((PostOffice)E).setFeeForNewBox(CMLib.xml().getDoubleFromPieces(buf,"POSTNEW"));
+                ((PostOffice)E).setMaxMudMonthsHeld(CMLib.xml().getIntFromPieces(buf,"POSTHELD"));
             }
 
 			if(E instanceof Deity)
 			{
 				Deity godmob=(Deity)E;
-				godmob.setClericRequirements(XMLManager.getValFromPieces(buf,"CLEREQ"));
-				godmob.setWorshipRequirements(XMLManager.getValFromPieces(buf,"WORREQ"));
-				godmob.setClericRitual(XMLManager.getValFromPieces(buf,"CLERIT"));
-				godmob.setWorshipRitual(XMLManager.getValFromPieces(buf,"WORRIT"));
-				godmob.setClericSin(XMLManager.getValFromPieces(buf,"CLERSIT"));
-				godmob.setWorshipSin(XMLManager.getValFromPieces(buf,"WORRSIT"));
-				godmob.setClericPowerup(XMLManager.getValFromPieces(buf,"CLERPOW"));
+				godmob.setClericRequirements(CMLib.xml().getValFromPieces(buf,"CLEREQ"));
+				godmob.setWorshipRequirements(CMLib.xml().getValFromPieces(buf,"WORREQ"));
+				godmob.setClericRitual(CMLib.xml().getValFromPieces(buf,"CLERIT"));
+				godmob.setWorshipRitual(CMLib.xml().getValFromPieces(buf,"WORRIT"));
+				godmob.setClericSin(CMLib.xml().getValFromPieces(buf,"CLERSIT"));
+				godmob.setWorshipSin(CMLib.xml().getValFromPieces(buf,"WORRSIT"));
+				godmob.setClericPowerup(CMLib.xml().getValFromPieces(buf,"CLERPOW"));
 
-				Vector V=XMLManager.getRealContentsFromPieces(buf,"BLESSINGS");
+				Vector V=CMLib.xml().getRealContentsFromPieces(buf,"BLESSINGS");
 				if(V==null)
 				{
 					Log.errOut("CoffeeMaker","Error parsing 'BLESSINGS' of "+identifier(E,null)+".  Load aborted");
@@ -2105,19 +2106,19 @@ public class CoffeeMaker
 				}
 				for(int i=0;i<V.size();i++)
 				{
-					XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
+					XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)V.elementAt(i);
 					if((!ablk.tag.equalsIgnoreCase("BLESS"))||(ablk.contents==null))
 					{
 						Log.errOut("CoffeeMaker","Error parsing 'BLESS' of "+identifier(E,null)+".  Load aborted");
 						return;
 					}
-					Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"BLCLASS"));
+					Ability newOne=CMClass.getAbility(CMLib.xml().getValFromPieces(ablk.contents,"BLCLASS"));
 					if(newOne==null)
 					{
-						Log.errOut("CoffeeMaker","Unknown bless "+XMLManager.getValFromPieces(ablk.contents,"BLCLASS")+" on "+identifier(E,null)+", skipping.");
+						Log.errOut("CoffeeMaker","Unknown bless "+CMLib.xml().getValFromPieces(ablk.contents,"BLCLASS")+" on "+identifier(E,null)+", skipping.");
 						continue;
 					}
-					Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"BLDATA");
+					Vector adat=CMLib.xml().getRealContentsFromPieces(ablk.contents,"BLDATA");
 					if((adat==null)||(newOne==null))
 					{
 						Log.errOut("CoffeeMaker","Error parsing 'BLESS DATA' of "+identifier(E,null)+".  Load aborted");
@@ -2126,24 +2127,24 @@ public class CoffeeMaker
 					setPropertiesStr(newOne,adat,true);
 					godmob.addBlessing(newOne);
 				}
-				V=XMLManager.getRealContentsFromPieces(buf,"CURSES");
+				V=CMLib.xml().getRealContentsFromPieces(buf,"CURSES");
 				if(V!=null)
 				{
 					for(int i=0;i<V.size();i++)
 					{
-						XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
+						XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)V.elementAt(i);
 						if((!ablk.tag.equalsIgnoreCase("CURSE"))||(ablk.contents==null))
 						{
 							Log.errOut("CoffeeMaker","Error parsing 'CURSE' of "+identifier(E,null)+".  Load aborted");
 							return;
 						}
-						Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"CUCLASS"));
+						Ability newOne=CMClass.getAbility(CMLib.xml().getValFromPieces(ablk.contents,"CUCLASS"));
 						if(newOne==null)
 						{
-							Log.errOut("CoffeeMaker","Unknown curse "+XMLManager.getValFromPieces(ablk.contents,"CUCLASS")+" on "+identifier(E,null)+", skipping.");
+							Log.errOut("CoffeeMaker","Unknown curse "+CMLib.xml().getValFromPieces(ablk.contents,"CUCLASS")+" on "+identifier(E,null)+", skipping.");
 							continue;
 						}
-						Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"CUDATA");
+						Vector adat=CMLib.xml().getRealContentsFromPieces(ablk.contents,"CUDATA");
 						if((adat==null)||(newOne==null))
 						{
 							Log.errOut("CoffeeMaker","Error parsing 'CURSE DATA' of "+identifier(E,null)+".  Load aborted");
@@ -2153,24 +2154,24 @@ public class CoffeeMaker
 						godmob.addCurse(newOne);
 					}
 				}
-				V=XMLManager.getRealContentsFromPieces(buf,"POWERS");
+				V=CMLib.xml().getRealContentsFromPieces(buf,"POWERS");
 				if(V!=null)
 				{
 					for(int i=0;i<V.size();i++)
 					{
-						XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
+						XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)V.elementAt(i);
 						if((!ablk.tag.equalsIgnoreCase("POWER"))||(ablk.contents==null))
 						{
 							Log.errOut("CoffeeMaker","Error parsing 'POWER' of "+identifier(E,null)+".  Load aborted");
 							return;
 						}
-						Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"POCLASS"));
+						Ability newOne=CMClass.getAbility(CMLib.xml().getValFromPieces(ablk.contents,"POCLASS"));
 						if(newOne==null)
 						{
-							Log.errOut("CoffeeMaker","Unknown power "+XMLManager.getValFromPieces(ablk.contents,"POCLASS")+" on "+identifier(E,null)+", skipping.");
+							Log.errOut("CoffeeMaker","Unknown power "+CMLib.xml().getValFromPieces(ablk.contents,"POCLASS")+" on "+identifier(E,null)+", skipping.");
 							continue;
 						}
-						Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"PODATA");
+						Vector adat=CMLib.xml().getRealContentsFromPieces(ablk.contents,"PODATA");
 						if((adat==null)||(newOne==null))
 						{
 							Log.errOut("CoffeeMaker","Error parsing 'POWER DATA' of "+identifier(E,null)+".  Load aborted");
@@ -2181,11 +2182,11 @@ public class CoffeeMaker
 					}
 				}
 			}
-			Vector V9=Util.parseSemicolons(XMLManager.getValFromPieces(buf,"TATTS"),true);
+			Vector V9=Util.parseSemicolons(CMLib.xml().getValFromPieces(buf,"TATTS"),true);
 			while(((MOB)E).numTattoos()>0)((MOB)E).delTattoo(((MOB)E).fetchTattoo(0));
 			for(int v=0;v<V9.size();v++) ((MOB)E).addTattoo((String)V9.elementAt(v));
 			
-			V9=Util.parseSemicolons(XMLManager.getValFromPieces(buf,"EDUS"),true);
+			V9=Util.parseSemicolons(CMLib.xml().getValFromPieces(buf,"EDUS"),true);
 			while(((MOB)E).numEducations()>0)((MOB)E).delEducation(((MOB)E).fetchEducation(0));
 			for(int v=0;v<V9.size();v++) ((MOB)E).addEducation((String)V9.elementAt(v));
 
@@ -2194,7 +2195,7 @@ public class CoffeeMaker
 		}
 	}
 	
-	public static String getPlayerXML(MOB mob, 
+	public String getPlayerXML(MOB mob, 
 	        						  HashSet custom, 
 	        						  HashSet files)
 	{
@@ -2203,8 +2204,8 @@ public class CoffeeMaker
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return "";
 
-		String strStartRoomID=(mob.getStartRoom()!=null)?CMMap.getExtendedRoomID(mob.getStartRoom()):"";
-		String strOtherRoomID=(mob.location()!=null)?CMMap.getExtendedRoomID(mob.location()):"";
+		String strStartRoomID=(mob.getStartRoom()!=null)?CMLib.map().getExtendedRoomID(mob.getStartRoom()):"";
+		String strOtherRoomID=(mob.location()!=null)?CMLib.map().getExtendedRoomID(mob.location()):"";
 		StringBuffer pfxml=new StringBuffer(pstats.getXML());
 		if(mob.numTattoos()>0)
 		{
@@ -2227,52 +2228,52 @@ public class CoffeeMaker
 				pfxml.append(mob.fetchEducation(i)+";");
 			pfxml.append("</EDUS>");
 		}
-		pfxml.append(XMLManager.convertXMLtoTag("IMG",mob.rawImage()));
+		pfxml.append(CMLib.xml().convertXMLtoTag("IMG",mob.rawImage()));
 		
 		StringBuffer str=new StringBuffer("");
-		str.append(XMLManager.convertXMLtoTag("NAME",mob.Name()));
-		str.append(XMLManager.convertXMLtoTag("PASS",pstats.password()));
-		str.append(XMLManager.convertXMLtoTag("CLASS",mob.baseCharStats().getMyClassesStr()));
-		str.append(XMLManager.convertXMLtoTag("STR",mob.baseCharStats().getStat(CharStats.STRENGTH)));
-		str.append(XMLManager.convertXMLtoTag("RACE",mob.baseCharStats().getMyRace().ID()));
-		str.append(XMLManager.convertXMLtoTag("DEX",mob.baseCharStats().getStat(CharStats.DEXTERITY)));
-		str.append(XMLManager.convertXMLtoTag("CON",mob.baseCharStats().getStat(CharStats.CONSTITUTION)));
-		str.append(XMLManager.convertXMLtoTag("GEND",""+((char)mob.baseCharStats().getStat(CharStats.GENDER))));
-		str.append(XMLManager.convertXMLtoTag("WIS",mob.baseCharStats().getStat(CharStats.WISDOM)));
-		str.append(XMLManager.convertXMLtoTag("INT",mob.baseCharStats().getStat(CharStats.INTELLIGENCE)));
-		str.append(XMLManager.convertXMLtoTag("CHA",mob.baseCharStats().getStat(CharStats.CHARISMA)));
-		str.append(XMLManager.convertXMLtoTag("HIT",mob.baseState().getHitPoints()));
-		str.append(XMLManager.convertXMLtoTag("LVL",mob.baseCharStats().getMyLevelsStr()));
-		str.append(XMLManager.convertXMLtoTag("MANA",mob.baseState().getMana()));
-		str.append(XMLManager.convertXMLtoTag("MOVE",mob.baseState().getMovement()));
-		str.append(XMLManager.convertXMLtoTag("EXP",mob.getExperience()));
-		str.append(XMLManager.convertXMLtoTag("EXLV",mob.getExpNextLevel()));
-		str.append(XMLManager.convertXMLtoTag("WORS",mob.getWorshipCharID()));
-		str.append(XMLManager.convertXMLtoTag("PRAC",mob.getPractices()));
-		str.append(XMLManager.convertXMLtoTag("TRAI",mob.getTrains()));
-		str.append(XMLManager.convertXMLtoTag("AGEH",mob.getAgeHours()));
-		str.append(XMLManager.convertXMLtoTag("GOLD",mob.getMoney()));
-		str.append(XMLManager.convertXMLtoTag("WIMP",mob.getWimpHitPoint()));
-		str.append(XMLManager.convertXMLtoTag("QUES",mob.getQuestPoint()));
-		str.append(XMLManager.convertXMLtoTag("ROID",strStartRoomID+"||"+strOtherRoomID));
-		str.append(XMLManager.convertXMLtoTag("DATE",pstats.lastDateTime()));
-		str.append(XMLManager.convertXMLtoTag("CHAN",pstats.getChannelMask()));
-		str.append(XMLManager.convertXMLtoTag("ATTA",mob.baseEnvStats().attackAdjustment()));
-		str.append(XMLManager.convertXMLtoTag("AMOR",mob.baseEnvStats().armor()));
-		str.append(XMLManager.convertXMLtoTag("DAMG",mob.baseEnvStats().damage()));
-		str.append(XMLManager.convertXMLtoTag("BTMP",mob.getBitmap()));
-		str.append(XMLManager.convertXMLtoTag("LEIG",mob.getLiegeID()));
-		str.append(XMLManager.convertXMLtoTag("HEIT",mob.baseEnvStats().height()));
-		str.append(XMLManager.convertXMLtoTag("WEIT",mob.baseEnvStats().weight()));
-		str.append(XMLManager.convertXMLtoTag("PRPT",parseOutAngleBrackets(pstats.getPrompt())));
-		str.append(XMLManager.convertXMLtoTag("COLR",pstats.getColorStr()));
-		str.append(XMLManager.convertXMLtoTag("CLAN",mob.getClanID()));
-		str.append(XMLManager.convertXMLtoTag("LSIP",pstats.lastIP()));
-		str.append(XMLManager.convertXMLtoTag("CLRO",mob.getClanRole()));
-		str.append(XMLManager.convertXMLtoTag("EMAL",pstats.getEmail()));
-		str.append(XMLManager.convertXMLtoTag("PFIL",pfxml.toString()));
-		str.append(XMLManager.convertXMLtoTag("SAVE",mob.baseCharStats().getSavesStr()));
-		str.append(XMLManager.convertXMLtoTag("DESC",mob.description()));
+		str.append(CMLib.xml().convertXMLtoTag("NAME",mob.Name()));
+		str.append(CMLib.xml().convertXMLtoTag("PASS",pstats.password()));
+		str.append(CMLib.xml().convertXMLtoTag("CLASS",mob.baseCharStats().getMyClassesStr()));
+		str.append(CMLib.xml().convertXMLtoTag("STR",mob.baseCharStats().getStat(CharStats.STRENGTH)));
+		str.append(CMLib.xml().convertXMLtoTag("RACE",mob.baseCharStats().getMyRace().ID()));
+		str.append(CMLib.xml().convertXMLtoTag("DEX",mob.baseCharStats().getStat(CharStats.DEXTERITY)));
+		str.append(CMLib.xml().convertXMLtoTag("CON",mob.baseCharStats().getStat(CharStats.CONSTITUTION)));
+		str.append(CMLib.xml().convertXMLtoTag("GEND",""+((char)mob.baseCharStats().getStat(CharStats.GENDER))));
+		str.append(CMLib.xml().convertXMLtoTag("WIS",mob.baseCharStats().getStat(CharStats.WISDOM)));
+		str.append(CMLib.xml().convertXMLtoTag("INT",mob.baseCharStats().getStat(CharStats.INTELLIGENCE)));
+		str.append(CMLib.xml().convertXMLtoTag("CHA",mob.baseCharStats().getStat(CharStats.CHARISMA)));
+		str.append(CMLib.xml().convertXMLtoTag("HIT",mob.baseState().getHitPoints()));
+		str.append(CMLib.xml().convertXMLtoTag("LVL",mob.baseCharStats().getMyLevelsStr()));
+		str.append(CMLib.xml().convertXMLtoTag("MANA",mob.baseState().getMana()));
+		str.append(CMLib.xml().convertXMLtoTag("MOVE",mob.baseState().getMovement()));
+		str.append(CMLib.xml().convertXMLtoTag("EXP",mob.getExperience()));
+		str.append(CMLib.xml().convertXMLtoTag("EXLV",mob.getExpNextLevel()));
+		str.append(CMLib.xml().convertXMLtoTag("WORS",mob.getWorshipCharID()));
+		str.append(CMLib.xml().convertXMLtoTag("PRAC",mob.getPractices()));
+		str.append(CMLib.xml().convertXMLtoTag("TRAI",mob.getTrains()));
+		str.append(CMLib.xml().convertXMLtoTag("AGEH",mob.getAgeHours()));
+		str.append(CMLib.xml().convertXMLtoTag("GOLD",mob.getMoney()));
+		str.append(CMLib.xml().convertXMLtoTag("WIMP",mob.getWimpHitPoint()));
+		str.append(CMLib.xml().convertXMLtoTag("QUES",mob.getQuestPoint()));
+		str.append(CMLib.xml().convertXMLtoTag("ROID",strStartRoomID+"||"+strOtherRoomID));
+		str.append(CMLib.xml().convertXMLtoTag("DATE",pstats.lastDateTime()));
+		str.append(CMLib.xml().convertXMLtoTag("CHAN",pstats.getChannelMask()));
+		str.append(CMLib.xml().convertXMLtoTag("ATTA",mob.baseEnvStats().attackAdjustment()));
+		str.append(CMLib.xml().convertXMLtoTag("AMOR",mob.baseEnvStats().armor()));
+		str.append(CMLib.xml().convertXMLtoTag("DAMG",mob.baseEnvStats().damage()));
+		str.append(CMLib.xml().convertXMLtoTag("BTMP",mob.getBitmap()));
+		str.append(CMLib.xml().convertXMLtoTag("LEIG",mob.getLiegeID()));
+		str.append(CMLib.xml().convertXMLtoTag("HEIT",mob.baseEnvStats().height()));
+		str.append(CMLib.xml().convertXMLtoTag("WEIT",mob.baseEnvStats().weight()));
+		str.append(CMLib.xml().convertXMLtoTag("PRPT",parseOutAngleBrackets(pstats.getPrompt())));
+		str.append(CMLib.xml().convertXMLtoTag("COLR",pstats.getColorStr()));
+		str.append(CMLib.xml().convertXMLtoTag("CLAN",mob.getClanID()));
+		str.append(CMLib.xml().convertXMLtoTag("LSIP",pstats.lastIP()));
+		str.append(CMLib.xml().convertXMLtoTag("CLRO",mob.getClanRole()));
+		str.append(CMLib.xml().convertXMLtoTag("EMAL",pstats.getEmail()));
+		str.append(CMLib.xml().convertXMLtoTag("PFIL",pfxml.toString()));
+		str.append(CMLib.xml().convertXMLtoTag("SAVE",mob.baseCharStats().getSavesStr()));
+		str.append(CMLib.xml().convertXMLtoTag("DESC",mob.description()));
 		
 		str.append(getExtraEnvPropertiesStr(mob));
 		
@@ -2289,14 +2290,14 @@ public class CoffeeMaker
 			if((thisMOB!=null)&&(thisMOB.isMonster())&&(!thisMOB.isPossessing()))
 			{
 				fols.append("<FOLLOWER>");
-				fols.append(XMLManager.convertXMLtoTag("FCLAS",CMClass.className(thisMOB)));
-				fols.append(XMLManager.convertXMLtoTag("FTEXT",thisMOB.text()));
-				fols.append(XMLManager.convertXMLtoTag("FLEVL",thisMOB.baseEnvStats().level()));
-				fols.append(XMLManager.convertXMLtoTag("FABLE",thisMOB.baseEnvStats().ability()));
+				fols.append(CMLib.xml().convertXMLtoTag("FCLAS",CMClass.className(thisMOB)));
+				fols.append(CMLib.xml().convertXMLtoTag("FTEXT",thisMOB.text()));
+				fols.append(CMLib.xml().convertXMLtoTag("FLEVL",thisMOB.baseEnvStats().level()));
+				fols.append(CMLib.xml().convertXMLtoTag("FABLE",thisMOB.baseEnvStats().ability()));
 				fols.append("</FOLLOWER>");
 			}
 		}
-		str.append(XMLManager.convertXMLtoTag("FOLLOWERS",fols.toString()));
+		str.append(CMLib.xml().convertXMLtoTag("FOLLOWERS",fols.toString()));
 		if((mob.baseCharStats().getMyRace().isGeneric())
 		&&(!custom.contains(mob.baseCharStats().getMyRace())))
 		   custom.add(mob.baseCharStats().getMyRace());
@@ -2306,92 +2307,92 @@ public class CoffeeMaker
 			if((C.isGeneric())&&(!custom.contains(C)))
 				custom.add(C);
 		}
-		CoffeeMaker.fillFileSet(mob,files);
+		fillFileSet(mob,files);
 		return str.toString();
 	}
 
-	public static String addPLAYERsFromXML(String xmlBuffer,
+	public String addPLAYERsFromXML(String xmlBuffer,
 										   Vector addHere,
 										   Session S)
 	{
-		Vector xml=XMLManager.parseAllXML(xmlBuffer);
+		Vector xml=CMLib.xml().parseAllXML(xmlBuffer);
 		if(xml==null) return unpackErr("PLAYERs","null 'xml'");
-		Vector mV=XMLManager.getRealContentsFromPieces(xml,"PLAYERS");
+		Vector mV=CMLib.xml().getRealContentsFromPieces(xml,"PLAYERS");
 		if(mV==null) return unpackErr("PLAYERs","null 'mV'");
 		for(int m=0;m<mV.size();m++)
 		{
-			XMLManager.XMLpiece mblk=(XMLManager.XMLpiece)mV.elementAt(m);
+			XMLLibrary.XMLpiece mblk=(XMLLibrary.XMLpiece)mV.elementAt(m);
 			if((!mblk.tag.equalsIgnoreCase("PLAYER"))||(mblk.contents==null))
 				return unpackErr("PLAYERs","bad 'mblk'");
 			MOB mob=CMClass.getMOB("StdMOB");
 			mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
-			mob.setName(XMLManager.getValFromPieces(mblk.contents,"NAME"));
-			mob.playerStats().setPassword(XMLManager.getValFromPieces(mblk.contents,"PASS"));
-			mob.baseCharStats().setMyClasses(XMLManager.getValFromPieces(mblk.contents,"CLASS"));
-			mob.baseCharStats().setMyLevels(XMLManager.getValFromPieces(mblk.contents,"LVL"));
+			mob.setName(CMLib.xml().getValFromPieces(mblk.contents,"NAME"));
+			mob.playerStats().setPassword(CMLib.xml().getValFromPieces(mblk.contents,"PASS"));
+			mob.baseCharStats().setMyClasses(CMLib.xml().getValFromPieces(mblk.contents,"CLASS"));
+			mob.baseCharStats().setMyLevels(CMLib.xml().getValFromPieces(mblk.contents,"LVL"));
 			int level=0;
 			for(int i=0;i<mob.baseCharStats().numClasses();i++)
 				level+=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(i));
 			mob.baseEnvStats().setLevel(level);
-			mob.baseCharStats().setStat(CharStats.STRENGTH,XMLManager.getIntFromPieces(mblk.contents,"STR"));
-			mob.baseCharStats().setMyRace(CMClass.getRace(XMLManager.getValFromPieces(mblk.contents,"RACE")));
-			mob.baseCharStats().setStat(CharStats.DEXTERITY,XMLManager.getIntFromPieces(mblk.contents,"DEX"));
-			mob.baseCharStats().setStat(CharStats.CONSTITUTION,XMLManager.getIntFromPieces(mblk.contents,"CON"));
-			mob.baseCharStats().setStat(CharStats.GENDER,XMLManager.getValFromPieces(mblk.contents,"GEND").charAt(0));
-			mob.baseCharStats().setStat(CharStats.WISDOM,XMLManager.getIntFromPieces(mblk.contents,"WIS"));
-			mob.baseCharStats().setStat(CharStats.INTELLIGENCE,XMLManager.getIntFromPieces(mblk.contents,"INT"));
-			mob.baseCharStats().setStat(CharStats.CHARISMA,XMLManager.getIntFromPieces(mblk.contents,"CHA"));
-			mob.baseState().setHitPoints(XMLManager.getIntFromPieces(mblk.contents,"HIT"));
-			mob.baseState().setMana(XMLManager.getIntFromPieces(mblk.contents,"MANA"));
-			mob.baseState().setMovement(XMLManager.getIntFromPieces(mblk.contents,"MOVE"));
-			String alignStr=XMLManager.getValFromPieces(mblk.contents,"ALIG");
-			if((alignStr.length()>0)&&(Factions.getFaction(Factions.AlignID())!=null))
-			    Factions.setAlignmentOldRange(mob,Util.s_int(alignStr));
-			mob.setExperience(XMLManager.getIntFromPieces(mblk.contents,"EXP"));
-			mob.setExpNextLevel(XMLManager.getIntFromPieces(mblk.contents,"EXLV"));
-			mob.setWorshipCharID(XMLManager.getValFromPieces(mblk.contents,"WORS"));
-			mob.setPractices(XMLManager.getIntFromPieces(mblk.contents,"PRAC"));
-			mob.setTrains(XMLManager.getIntFromPieces(mblk.contents,"TRAI"));
-			mob.setAgeHours(XMLManager.getIntFromPieces(mblk.contents,"AGEH"));
-			mob.setWimpHitPoint(XMLManager.getIntFromPieces(mblk.contents,"WIMP"));
-			mob.setQuestPoint(XMLManager.getIntFromPieces(mblk.contents,"QUES"));
-			String roomID=XMLManager.getValFromPieces(mblk.contents,"ROID");
+			mob.baseCharStats().setStat(CharStats.STRENGTH,CMLib.xml().getIntFromPieces(mblk.contents,"STR"));
+			mob.baseCharStats().setMyRace(CMClass.getRace(CMLib.xml().getValFromPieces(mblk.contents,"RACE")));
+			mob.baseCharStats().setStat(CharStats.DEXTERITY,CMLib.xml().getIntFromPieces(mblk.contents,"DEX"));
+			mob.baseCharStats().setStat(CharStats.CONSTITUTION,CMLib.xml().getIntFromPieces(mblk.contents,"CON"));
+			mob.baseCharStats().setStat(CharStats.GENDER,CMLib.xml().getValFromPieces(mblk.contents,"GEND").charAt(0));
+			mob.baseCharStats().setStat(CharStats.WISDOM,CMLib.xml().getIntFromPieces(mblk.contents,"WIS"));
+			mob.baseCharStats().setStat(CharStats.INTELLIGENCE,CMLib.xml().getIntFromPieces(mblk.contents,"INT"));
+			mob.baseCharStats().setStat(CharStats.CHARISMA,CMLib.xml().getIntFromPieces(mblk.contents,"CHA"));
+			mob.baseState().setHitPoints(CMLib.xml().getIntFromPieces(mblk.contents,"HIT"));
+			mob.baseState().setMana(CMLib.xml().getIntFromPieces(mblk.contents,"MANA"));
+			mob.baseState().setMovement(CMLib.xml().getIntFromPieces(mblk.contents,"MOVE"));
+			String alignStr=CMLib.xml().getValFromPieces(mblk.contents,"ALIG");
+			if((alignStr.length()>0)&&(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null))
+			    CMLib.factions().setAlignmentOldRange(mob,Util.s_int(alignStr));
+			mob.setExperience(CMLib.xml().getIntFromPieces(mblk.contents,"EXP"));
+			mob.setExpNextLevel(CMLib.xml().getIntFromPieces(mblk.contents,"EXLV"));
+			mob.setWorshipCharID(CMLib.xml().getValFromPieces(mblk.contents,"WORS"));
+			mob.setPractices(CMLib.xml().getIntFromPieces(mblk.contents,"PRAC"));
+			mob.setTrains(CMLib.xml().getIntFromPieces(mblk.contents,"TRAI"));
+			mob.setAgeHours(CMLib.xml().getIntFromPieces(mblk.contents,"AGEH"));
+			mob.setWimpHitPoint(CMLib.xml().getIntFromPieces(mblk.contents,"WIMP"));
+			mob.setQuestPoint(CMLib.xml().getIntFromPieces(mblk.contents,"QUES"));
+			String roomID=CMLib.xml().getValFromPieces(mblk.contents,"ROID");
 			if(roomID==null) roomID="";
 			int x=roomID.indexOf("||");
 			if(x>=0)
 			{
-				mob.setLocation(CMMap.getRoom(roomID.substring(x+2)));
+				mob.setLocation(CMLib.map().getRoom(roomID.substring(x+2)));
 				roomID=roomID.substring(0,x);
 			}
-			mob.setStartRoom(CMMap.getRoom(roomID));
-			mob.playerStats().setLastDateTime(XMLManager.getLongFromPieces(mblk.contents,"DATE"));
-			mob.playerStats().setChannelMask(XMLManager.getIntFromPieces(mblk.contents,"CHAN"));
-			mob.baseEnvStats().setAttackAdjustment(XMLManager.getIntFromPieces(mblk.contents,"ATTA"));
-			mob.baseEnvStats().setArmor(XMLManager.getIntFromPieces(mblk.contents,"AMOR"));
-			mob.baseEnvStats().setDamage(XMLManager.getIntFromPieces(mblk.contents,"DAMG"));
-			mob.setBitmap(XMLManager.getIntFromPieces(mblk.contents,"BTMP"));
-			mob.setLiegeID(XMLManager.getValFromPieces(mblk.contents,"LEIG"));
-			mob.baseEnvStats().setHeight(XMLManager.getIntFromPieces(mblk.contents,"HEIT"));
-			mob.baseEnvStats().setWeight(XMLManager.getIntFromPieces(mblk.contents,"WEIT"));
-			mob.playerStats().setPrompt(restoreAngleBrackets(XMLManager.getValFromPieces(mblk.contents,"PRPT")));
-			String colorStr=XMLManager.getValFromPieces(mblk.contents,"COLR");
+			mob.setStartRoom(CMLib.map().getRoom(roomID));
+			mob.playerStats().setLastDateTime(CMLib.xml().getLongFromPieces(mblk.contents,"DATE"));
+			mob.playerStats().setChannelMask(CMLib.xml().getIntFromPieces(mblk.contents,"CHAN"));
+			mob.baseEnvStats().setAttackAdjustment(CMLib.xml().getIntFromPieces(mblk.contents,"ATTA"));
+			mob.baseEnvStats().setArmor(CMLib.xml().getIntFromPieces(mblk.contents,"AMOR"));
+			mob.baseEnvStats().setDamage(CMLib.xml().getIntFromPieces(mblk.contents,"DAMG"));
+			mob.setBitmap(CMLib.xml().getIntFromPieces(mblk.contents,"BTMP"));
+			mob.setLiegeID(CMLib.xml().getValFromPieces(mblk.contents,"LEIG"));
+			mob.baseEnvStats().setHeight(CMLib.xml().getIntFromPieces(mblk.contents,"HEIT"));
+			mob.baseEnvStats().setWeight(CMLib.xml().getIntFromPieces(mblk.contents,"WEIT"));
+			mob.playerStats().setPrompt(restoreAngleBrackets(CMLib.xml().getValFromPieces(mblk.contents,"PRPT")));
+			String colorStr=CMLib.xml().getValFromPieces(mblk.contents,"COLR");
 			if((colorStr!=null)&&(colorStr.length()>0)&&(!colorStr.equalsIgnoreCase("NULL")))
 				mob.playerStats().setColorStr(colorStr);
-			mob.setClanID(XMLManager.getValFromPieces(mblk.contents,"CLAN"));
-			mob.playerStats().setLastIP(XMLManager.getValFromPieces(mblk.contents,"LSIP"));
-			mob.setClanRole(XMLManager.getIntFromPieces(mblk.contents,"CLRO"));
-			mob.playerStats().setEmail(XMLManager.getValFromPieces(mblk.contents,"EMAL"));
-			String buf=XMLManager.getValFromPieces(mblk.contents,"CMPFIL");
+			mob.setClanID(CMLib.xml().getValFromPieces(mblk.contents,"CLAN"));
+			mob.playerStats().setLastIP(CMLib.xml().getValFromPieces(mblk.contents,"LSIP"));
+			mob.setClanRole(CMLib.xml().getIntFromPieces(mblk.contents,"CLRO"));
+			mob.playerStats().setEmail(CMLib.xml().getValFromPieces(mblk.contents,"EMAL"));
+			String buf=CMLib.xml().getValFromPieces(mblk.contents,"CMPFIL");
 			mob.playerStats().setXML(buf);
-			Vector V9=Util.parseSemicolons(XMLManager.returnXMLValue(buf,"TATTS"),true);
+			Vector V9=Util.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
 			while(mob.numTattoos()>0)mob.delTattoo(mob.fetchTattoo(0));
 			for(int v=0;v<V9.size();v++) mob.addTattoo((String)V9.elementAt(v));
-			V9=Util.parseSemicolons(XMLManager.returnXMLValue(buf,"EDUS"),true);
+			V9=Util.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
 			while(mob.numEducations()>0)mob.delEducation(mob.fetchEducation(0));
 			for(int v=0;v<V9.size();v++) mob.addEducation((String)V9.elementAt(v));
-			mob.baseCharStats().setSaves(XMLManager.getValFromPieces(mblk.contents,"SAVE"));
-			mob.setDescription(XMLManager.getValFromPieces(mblk.contents,"DESC"));
-			mob.setImage(XMLManager.returnXMLValue(buf,"IMG"));
+			mob.baseCharStats().setSaves(CMLib.xml().getValFromPieces(mblk.contents,"SAVE"));
+			mob.setDescription(CMLib.xml().getValFromPieces(mblk.contents,"DESC"));
+			mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
 			
 			setExtraEnvProperties(mob,mblk.contents);
 			
@@ -2401,19 +2402,19 @@ public class CoffeeMaker
 			
 			setFactionFromXML(mob,mblk.contents);
 			
-			Vector iV=XMLManager.getRealContentsFromPieces(mblk.contents,"FOLLOWERS");
+			Vector iV=CMLib.xml().getRealContentsFromPieces(mblk.contents,"FOLLOWERS");
 			if(iV==null) return unpackErr("PFols","null 'iV'");
 			for(int i=0;i<iV.size();i++)
 			{
-				XMLManager.XMLpiece fblk=(XMLManager.XMLpiece)iV.elementAt(i);
+				XMLLibrary.XMLpiece fblk=(XMLLibrary.XMLpiece)iV.elementAt(i);
 				if((!fblk.tag.equalsIgnoreCase("FOLLOWER"))||(fblk.contents==null))
 					return unpackErr("PFols","??"+fblk.tag);
-				String mobClass=XMLManager.getValFromPieces(fblk.contents,"FCLAS");
+				String mobClass=CMLib.xml().getValFromPieces(fblk.contents,"FCLAS");
 				MOB newFollower=CMClass.getMOB(mobClass);
 				if(newFollower==null) return unpackErr("PFols","null 'iClass': "+mobClass);
-				newFollower.baseEnvStats().setLevel(XMLManager.getIntFromPieces(fblk.contents,"FLEVL"));
-				newFollower.baseEnvStats().setAbility(XMLManager.getIntFromPieces(fblk.contents,"FABLE"));
-				newFollower.setMiscText(XMLManager.getValFromPieces(fblk.contents,"FTEXT"));
+				newFollower.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(fblk.contents,"FLEVL"));
+				newFollower.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(fblk.contents,"FABLE"));
+				newFollower.setMiscText(CMLib.xml().getValFromPieces(fblk.contents,"FTEXT"));
 				newFollower.recoverCharStats();
 				newFollower.recoverEnvStats();
 				newFollower.recoverMaxState();
@@ -2432,10 +2433,10 @@ public class CoffeeMaker
 
 
 
-	private static String getExtraEnvPropertiesStr(Environmental E)
+	public String getExtraEnvPropertiesStr(Environmental E)
 	{
 		StringBuffer text=new StringBuffer("");
-		text.append(XMLManager.convertXMLtoTag("IMG",E.rawImage()));
+		text.append(CMLib.xml().convertXMLtoTag("IMG",E.rawImage()));
 		StringBuffer behaviorstr=new StringBuffer("");
 		for(int b=0;b<E.numBehaviors();b++)
 		{
@@ -2443,12 +2444,12 @@ public class CoffeeMaker
 			if(B!=null)
 			{
 				behaviorstr.append("<BHAVE>");
-				behaviorstr.append(XMLManager.convertXMLtoTag("BCLASS",CMClass.className(B)));
-				behaviorstr.append(XMLManager.convertXMLtoTag("BPARMS",parseOutAngleBrackets(B.getParms())));
+				behaviorstr.append(CMLib.xml().convertXMLtoTag("BCLASS",CMClass.className(B)));
+				behaviorstr.append(CMLib.xml().convertXMLtoTag("BPARMS",parseOutAngleBrackets(B.getParms())));
 				behaviorstr.append("</BHAVE>");
 			}
 		}
-		text.append(XMLManager.convertXMLtoTag("BEHAVES",behaviorstr.toString()));
+		text.append(CMLib.xml().convertXMLtoTag("BEHAVES",behaviorstr.toString()));
 
 		StringBuffer affectstr=new StringBuffer("");
 		for(int a=0;a<E.numEffects();a++)
@@ -2457,16 +2458,16 @@ public class CoffeeMaker
 			if((A!=null)&&(!A.isBorrowed(E)))
 			{
 				affectstr.append("<AFF>");
-				affectstr.append(XMLManager.convertXMLtoTag("ACLASS",CMClass.className(A)));
-				affectstr.append(XMLManager.convertXMLtoTag("ATEXT",parseOutAngleBrackets(A.text())));
+				affectstr.append(CMLib.xml().convertXMLtoTag("ACLASS",CMClass.className(A)));
+				affectstr.append(CMLib.xml().convertXMLtoTag("ATEXT",parseOutAngleBrackets(A.text())));
 				affectstr.append("</AFF>");
 			}
 		}
-		text.append(XMLManager.convertXMLtoTag("AFFECS",affectstr.toString()));
+		text.append(CMLib.xml().convertXMLtoTag("AFFECS",affectstr.toString()));
 		return text.toString();
 	}
 
-	private static void fillFileSet(Vector V, HashSet H)
+	public void fillFileSet(Vector V, HashSet H)
 	{
 	    if(H==null) return;
 	    if(V==null) return;
@@ -2475,7 +2476,7 @@ public class CoffeeMaker
             &&(V.elementAt(v) instanceof String))
 	            H.add(V.elementAt(v));
 	}
-	private static void fillFileSet(Environmental E, HashSet H)
+	public void fillFileSet(Environmental E, HashSet H)
 	{
 	    if(E==null) return;
 		for(int b=0;b<E.numBehaviors();b++)
@@ -2502,7 +2503,7 @@ public class CoffeeMaker
 		}
 	}
 
-	public static String getEnvStatsStr(EnvStats E)
+	public String getEnvStatsStr(EnvStats E)
 	{
 		return E.ability()+"|"+
 				E.armor()+"|"+
@@ -2516,7 +2517,7 @@ public class CoffeeMaker
 				E.height()+"|"+
 				E.sensesMask()+"|";
 	}
-	public static String getCharStateStr(CharState E)
+	public String getCharStateStr(CharState E)
 	{
 		return E.getFatigue()+"|"+
 				E.getHitPoints()+"|"+
@@ -2525,7 +2526,7 @@ public class CoffeeMaker
 				E.getMovement()+"|"+
 				E.getThirst()+"|";
 	}
-	public static String getCharStatsStr(CharStats E)
+	public String getCharStatsStr(CharStats E)
 	{
 		StringBuffer str=new StringBuffer("");
 		for(int i=0;i<CharStats.NUM_STATS;i++)
@@ -2533,19 +2534,19 @@ public class CoffeeMaker
 		return str.toString();
 	}
 
-	private static String getEnvPropertiesStr(Environmental E)
+	public String getEnvPropertiesStr(Environmental E)
 	{
 		StringBuffer text=new StringBuffer("");
-		text.append(XMLManager.convertXMLtoTag("NAME",E.Name()));
-		text.append(XMLManager.convertXMLtoTag("DESC",E.description()));
-		text.append(XMLManager.convertXMLtoTag("DISP",E.displayText()));
-		text.append(XMLManager.convertXMLtoTag("PROP",getEnvStatsStr(E.baseEnvStats())));
+		text.append(CMLib.xml().convertXMLtoTag("NAME",E.Name()));
+		text.append(CMLib.xml().convertXMLtoTag("DESC",E.description()));
+		text.append(CMLib.xml().convertXMLtoTag("DISP",E.displayText()));
+		text.append(CMLib.xml().convertXMLtoTag("PROP",getEnvStatsStr(E.baseEnvStats())));
 
 		text.append(getExtraEnvPropertiesStr(E));
 		return text.toString();
 	}
 
-	public static void setCharStats(CharStats E, String props)
+	public void setCharStats(CharStats E, String props)
 	{
 		int x=0;
 		for(int y=props.indexOf("|");y>=0;y=props.indexOf("|"))
@@ -2562,7 +2563,7 @@ public class CoffeeMaker
 			props=props.substring(y+1);
 		}
 	}
-	public static void setCharState(CharState E, String props)
+	public void setCharState(CharState E, String props)
 	{
 		int[] nums=new int[6];
 		int x=0;
@@ -2586,7 +2587,7 @@ public class CoffeeMaker
 		E.setMovement(nums[4]);
 		E.setThirst(nums[5]);
 	}
-	public static void setEnvStats(EnvStats E, String props)
+	public void setEnvStats(EnvStats E, String props)
 	{
 		double[] nums=new double[11];
 		int x=0;
@@ -2616,16 +2617,16 @@ public class CoffeeMaker
 		E.setSensesMask((int)Math.round(nums[10]));
 	}
 
-	private static void setEnvProperties(Environmental E, Vector buf)
+	public void setEnvProperties(Environmental E, Vector buf)
 	{
-		E.setName(XMLManager.getValFromPieces(buf,"NAME"));
-		E.setDescription(XMLManager.getValFromPieces(buf,"DESC"));
-		E.setDisplayText(XMLManager.getValFromPieces(buf,"DISP"));
-		setEnvStats(E.baseEnvStats(),XMLManager.getValFromPieces(buf,"PROP"));
+		E.setName(CMLib.xml().getValFromPieces(buf,"NAME"));
+		E.setDescription(CMLib.xml().getValFromPieces(buf,"DESC"));
+		E.setDisplayText(CMLib.xml().getValFromPieces(buf,"DISP"));
+		setEnvStats(E.baseEnvStats(),CMLib.xml().getValFromPieces(buf,"PROP"));
 		setExtraEnvProperties(E,buf);
 	}
 
-    private static String identifier(Environmental E, Environmental parent)
+    public String identifier(Environmental E, Environmental parent)
     {
         StringBuffer str=new StringBuffer("");
         if((E instanceof MOB)&&(parent==null))
@@ -2643,11 +2644,11 @@ public class CoffeeMaker
         return str.toString();
     }
     
-	private static void setExtraEnvProperties(Environmental E, Vector buf)
+	public void setExtraEnvProperties(Environmental E, Vector buf)
 	{
 
-	    E.setImage(XMLManager.getValFromPieces(buf,"IMG"));
-		Vector V=XMLManager.getRealContentsFromPieces(buf,"BEHAVES");
+	    E.setImage(CMLib.xml().getValFromPieces(buf,"IMG"));
+		Vector V=CMLib.xml().getRealContentsFromPieces(buf,"BEHAVES");
 		if(V==null)
 		{
 			Log.errOut("CoffeeMaker","Error parsing 'BEHAVES' of "+identifier(E,null)+".  Load aborted");
@@ -2655,26 +2656,26 @@ public class CoffeeMaker
 		}
 		for(int i=0;i<V.size();i++)
 		{
-			XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
+			XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)V.elementAt(i);
 			if((!ablk.tag.equalsIgnoreCase("BHAVE"))||(ablk.contents==null))
 			{
 				Log.errOut("CoffeeMaker","Error parsing 'BHAVE' of "+identifier(E,null)+".  Load aborted");
 				return;
 			}
-			Behavior newOne=CMClass.getBehavior(XMLManager.getValFromPieces(ablk.contents,"BCLASS"));
-			String bparms=XMLManager.getValFromPieces(ablk.contents,"BPARMS");
+			Behavior newOne=CMClass.getBehavior(CMLib.xml().getValFromPieces(ablk.contents,"BCLASS"));
+			String bparms=CMLib.xml().getValFromPieces(ablk.contents,"BPARMS");
 			if(newOne==null)
 			{
-				Log.errOut("CoffeeMaker","Unknown behavior "+XMLManager.getValFromPieces(ablk.contents,"BCLASS")+" on "+identifier(E,null)+", skipping.");
+				Log.errOut("CoffeeMaker","Unknown behavior "+CMLib.xml().getValFromPieces(ablk.contents,"BCLASS")+" on "+identifier(E,null)+", skipping.");
 				continue;
 			}
 			newOne.setParms(restoreAngleBrackets(bparms));
 			E.addBehavior(newOne);
 		}
         if(E instanceof Area)
-            CoffeeMaker.addWeatherToAreaIfNecessary((Area)E);
+            addWeatherToAreaIfNecessary((Area)E);
 
-		V=XMLManager.getRealContentsFromPieces(buf,"AFFECS");
+		V=CMLib.xml().getRealContentsFromPieces(buf,"AFFECS");
 		if(V==null)
 		{
 			Log.errOut("CoffeeMaker","Error parsing 'AFFECS' of "+identifier(E,null)+".  Load aborted");
@@ -2682,17 +2683,17 @@ public class CoffeeMaker
 		}
 		for(int i=0;i<V.size();i++)
 		{
-			XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
+			XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)V.elementAt(i);
 			if((!ablk.tag.equalsIgnoreCase("AFF"))||(ablk.contents==null))
 			{
 				Log.errOut("CoffeeMaker","Error parsing 'AFF' of "+identifier(E,null)+".  Load aborted");
 				return;
 			}
-			Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"ACLASS"));
-			String aparms=XMLManager.getValFromPieces(ablk.contents,"ATEXT");
+			Ability newOne=CMClass.getAbility(CMLib.xml().getValFromPieces(ablk.contents,"ACLASS"));
+			String aparms=CMLib.xml().getValFromPieces(ablk.contents,"ATEXT");
 			if(newOne==null)
 			{
-				Log.errOut("CoffeeMaker","Unknown affect "+XMLManager.getValFromPieces(ablk.contents,"ACLASS")+" on "+identifier(E,null)+", skipping.");
+				Log.errOut("CoffeeMaker","Unknown affect "+CMLib.xml().getValFromPieces(ablk.contents,"ACLASS")+" on "+identifier(E,null)+", skipping.");
 				continue;
 			}
 			newOne.setMiscText(restoreAngleBrackets(aparms));
@@ -2700,14 +2701,7 @@ public class CoffeeMaker
 		}
 	}
 
-	public static Hashtable GENITEMCODESHASH=new Hashtable();
-	public static String[] GENITEMCODES={"CLASS","USES","LEVEL","ABILITY","NAME",
-									 "DISPLAY","DESCRIPTION","SECRET","PROPERWORN",
-									 "WORNAND","BASEGOLD","ISREADABLE","ISDROPPABLE",
-									 "ISREMOVABLE","MATERIAL","AFFBEHAV",
-									 "DISPOSITION","WEIGHT","ARMOR",
-									 "DAMAGE","ATTACK","READABLETEXT","IMG"};
-	public static int getGenItemCodeNum(String code)
+	public int getGenItemCodeNum(String code)
 	{
 		if(GENITEMCODESHASH.size()==0)
 		{
@@ -2720,7 +2714,7 @@ public class CoffeeMaker
 			if(code.toUpperCase().startsWith(GENITEMCODES[i])) return i;
 		return -1;
 	}
-	public static String getGenItemStat(Item I, String code)
+	public String getGenItemStat(Item I, String code)
 	{
 		switch(getGenItemCodeNum(code))
 		{
@@ -2750,7 +2744,7 @@ public class CoffeeMaker
 		}
 		return "";
 	}
-	public static void setGenItemStat(Item I, String code, String val)
+	public void setGenItemStat(Item I, String code, String val)
 	{
 		switch(getGenItemCodeNum(code))
 		{
@@ -2765,9 +2759,9 @@ public class CoffeeMaker
 		case 8: I.setRawProperLocationBitmap(Util.s_long(val)); break;
 		case 9: I.setRawLogicalAnd(Util.s_bool(val)); break;
 		case 10: I.setBaseValue(Util.s_int(val)); break;
-		case 11: Sense.setReadable(I,Util.s_bool(val)); break;
-		case 12: Sense.setDroppable(I,Util.s_bool(val)); break;
-		case 13: Sense.setRemovable(I,Util.s_bool(val)); break;
+		case 11: CMLib.flags().setReadable(I,Util.s_bool(val)); break;
+		case 12: CMLib.flags().setDroppable(I,Util.s_bool(val)); break;
+		case 13: CMLib.flags().setRemovable(I,Util.s_bool(val)); break;
 		case 14: I.setMaterial(Util.s_int(val)); break;
 		case 15: {
 					 while(I.numEffects()>0)
@@ -2780,7 +2774,7 @@ public class CoffeeMaker
 						 Behavior B=I.fetchBehavior(0);
 						 if(B!=null) I.delBehavior(B);
 					 }
-					 setExtraEnvProperties(I,XMLManager.parseAllXML(val)); 
+					 setExtraEnvProperties(I,CMLib.xml().parseAllXML(val)); 
 					 break;
 				 }
 		case 16: I.baseEnvStats().setDisposition(Util.s_int(val)); break;
@@ -2792,15 +2786,8 @@ public class CoffeeMaker
 		case 22: I.setImage(val); break;
 		}
 	}
-	public static Hashtable GENMOBCODESHASH=new Hashtable();
-	public static final String[] GENMOBCODES={"CLASS","RACE","LEVEL","ABILITY","NAME",
-									 "DISPLAY","DESCRIPTION","MONEY","ALIGNMENT",
-									 "DISPOSITION","SENSES","ARMOR",
-									 "DAMAGE","ATTACK","SPEED","AFFBEHAV",
-									 "ABLES","INVENTORY","TATTS","EDUS","IMG",
-									 "FACTIONS"};
 
-	public static int getGenMobCodeNum(String code)
+	public int getGenMobCodeNum(String code)
 	{
 		if(GENMOBCODESHASH.size()==0)
 		{
@@ -2813,7 +2800,7 @@ public class CoffeeMaker
 			if(code.toUpperCase().startsWith(GENMOBCODES[i])) return i;
 		return -1;
 	}
-	public static String getGenMobStat(MOB M, String code)
+	public String getGenMobStat(MOB M, String code)
 	{
 		switch(getGenMobCodeNum(code))
 		{
@@ -2829,7 +2816,7 @@ public class CoffeeMaker
 		    	CMLib.beanCounter().clearZeroMoney(M,null); 
 		    	return money;
 		    	}
-		case 8: return ""+M.fetchFaction(Factions.AlignID());
+		case 8: return ""+M.fetchFaction(CMLib.factions().AlignID());
 		case 9: return ""+M.baseEnvStats().disposition();
 		case 10: return ""+M.baseEnvStats().sensesMask();
 		case 11: return ""+M.baseEnvStats().armor();
@@ -2873,7 +2860,7 @@ public class CoffeeMaker
 		}
 		return "";
 	}
-	public static void setGenMobStat(MOB M, String code, String val)
+	public void setGenMobStat(MOB M, String code, String val)
 	{
 		switch(getGenMobCodeNum(code))
 		{
@@ -2886,9 +2873,9 @@ public class CoffeeMaker
 		case 6: M.setDescription(val); break;
 		case 7: CMLib.beanCounter().setMoney(M,Util.s_int(val)); break;
 		case 8: if(Util.s_int(val)==Integer.MAX_VALUE)
-		    		M.removeFaction(Factions.AlignID());
+		    		M.removeFaction(CMLib.factions().AlignID());
 				else
-		        	M.addFaction(Factions.AlignID(),Util.s_int(val)); 
+		        	M.addFaction(CMLib.factions().AlignID(),Util.s_int(val)); 
 				break;
 		case 9: M.baseEnvStats().setDisposition(Util.s_int(val)); break;
 		case 10: M.baseEnvStats().setSensesMask(Util.s_int(val)); break;
@@ -2907,7 +2894,7 @@ public class CoffeeMaker
 						 Behavior B=M.fetchBehavior(0);
 						 if(B!=null) M.delBehavior(B);
 					 }
-					 setExtraEnvProperties(M,XMLManager.parseAllXML(val)); 
+					 setExtraEnvProperties(M,CMLib.xml().parseAllXML(val)); 
 					 break;
 				 }
 		case 16:
@@ -2918,8 +2905,8 @@ public class CoffeeMaker
 					Ability A=M.fetchAbility(0);
 					if(A!=null) M.delAbility(A);
 				}
-				setExtraEnvProperties(M,XMLManager.parseAllXML(extras));
-				setGenMobAbilities(M,XMLManager.parseAllXML(val));
+				setExtraEnvProperties(M,CMLib.xml().parseAllXML(extras));
+				setGenMobAbilities(M,CMLib.xml().parseAllXML(val));
 				break;
 			}
 		case 17:
@@ -2929,7 +2916,7 @@ public class CoffeeMaker
 					Item I=M.fetchInventory(0);
 					if(I!=null) I.destroy();
 				}
-				setGenMobInventory(M,XMLManager.parseAllXML(val));
+				setGenMobInventory(M,CMLib.xml().parseAllXML(val));
 			}
 			break;
 		case 18:
@@ -2963,10 +2950,10 @@ public class CoffeeMaker
 		}
 	}
 
-	public static int levelsFromAbility(Item savedI)
+	public int levelsFromAbility(Item savedI)
 	{ return savedI.baseEnvStats().ability()*5;}
 	
-	public static int levelsFromCaster(Item savedI, Ability CAST)
+	public int levelsFromCaster(Item savedI, Ability CAST)
 	{
 		int level=0;
 		if(CAST!=null)
@@ -2991,14 +2978,14 @@ public class CoffeeMaker
 				int mul=1;
 				if(A.quality()==Ability.MALICIOUS) mul=-1;
 				if(ID.indexOf("HAVE")>=0)
-					level+=(mul*CMAble.lowestQualifyingLevel(A.ID()));
+					level+=(mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 				else
-					level+=(mul*CMAble.lowestQualifyingLevel(A.ID())/2);
+					level+=(mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID())/2);
 			}
 		}
 		return level;
 	}
-	public static int levelsFromAdjuster(Item savedI, Ability ADJ)
+	public int levelsFromAdjuster(Item savedI, Ability ADJ)
 	{
 		int level=0;
 		if(ADJ!=null)
@@ -3042,7 +3029,7 @@ public class CoffeeMaker
 		return level;
 	}
 	
-	public static Hashtable timsItemAdjustments(Item I,
+	public Hashtable timsItemAdjustments(Item I,
 												int level,
 												int material,
 												int weight,
@@ -3331,7 +3318,7 @@ public class CoffeeMaker
 		return vals;
 	}
 
-	public static Area copyArea(Area A, String newName)
+	public Area copyArea(Area A, String newName)
 	{
 		Area newArea=(Area)A.copyOf();
 		newArea.setName(newName);
@@ -3346,7 +3333,7 @@ public class CoffeeMaker
 				((GridLocale)newRoom).clearGrid(null);
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				newRoom.rawDoors()[d]=null;
-			newRoom.setRoomID(CMMap.getOpenRoomID(newName));
+			newRoom.setRoomID(CMLib.map().getOpenRoomID(newName));
 			newRoom.setArea(newArea);
 			CMLib.database().DBCreateRoom(newRoom,CMClass.className(newRoom));
 			altIDs.put(room.roomID(),newRoom.roomID());
@@ -3354,14 +3341,13 @@ public class CoffeeMaker
 				CMLib.database().DBUpdateMOBs(newRoom);
 			if(newRoom.numItems()>0)
 				CMLib.database().DBUpdateItems(newRoom);
-			CMMap.addRoom(newRoom);
 		}
 		for(Enumeration e=A.getProperMap();e.hasMoreElements();)
 		{
 			Room room=(Room)e.nextElement();
 			String altID=(String)altIDs.get(room.roomID());
 			if(altID==null) continue;
-			Room newRoom=CMMap.getRoom(altID);
+			Room newRoom=CMLib.map().getRoom(altID);
 			if(newRoom==null) continue;
 			
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -3370,7 +3356,7 @@ public class CoffeeMaker
 				String myRID=null;
 				if(R!=null) myRID=(String)altIDs.get(R.roomID());
 				Room myR=null;
-				if(myRID!=null) myR=CMMap.getRoom(myRID);
+				if(myRID!=null) myR=CMLib.map().getRoom(myRID);
 				newRoom.rawDoors()[d]=myR;
 			}
 			CMLib.database().DBUpdateExits(newRoom);
@@ -3379,24 +3365,24 @@ public class CoffeeMaker
 		return newArea;
 	}
 
-	public static String getFactionXML(MOB mob)
+	public String getFactionXML(MOB mob)
 	{
 		StringBuffer facts=new StringBuffer();
 		for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) {
 			String name=(String)e.nextElement();
 			facts.append("<FCTN ID=\""+name+"\">"+mob.fetchFaction(name)+"</FCTN>");
 		}
-		return XMLManager.convertXMLtoTag("FACTIONS",facts.toString());
+		return CMLib.xml().convertXMLtoTag("FACTIONS",facts.toString());
 	}
 
-	public static void setFactionFromXML(MOB mob, Vector xml)
+	public void setFactionFromXML(MOB mob, Vector xml)
 	{
 	   if(xml!=null) {
-		   Vector mV = XMLManager.getRealContentsFromPieces(xml,"FACTIONS");
+		   Vector mV = CMLib.xml().getRealContentsFromPieces(xml,"FACTIONS");
 		   if (mV!=null) {
 			   for (int m=0;m<mV.size();m++) {
-				   XMLManager.XMLpiece mblk=(XMLManager.XMLpiece) mV.elementAt(m);
-				   mob.addFaction(XMLManager.returnXMLParm(mblk.parms.toString(),"ID"),new Integer(mblk.value).intValue());
+				   XMLLibrary.XMLpiece mblk=(XMLLibrary.XMLpiece) mV.elementAt(m);
+				   mob.addFaction(CMLib.xml().returnXMLParm(mblk.parms.toString(),"ID"),new Integer(mblk.value).intValue());
 			   }
 		   }
 	   }

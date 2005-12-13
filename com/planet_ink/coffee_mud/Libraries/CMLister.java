@@ -1,6 +1,7 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -31,11 +32,10 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CMLister
+public class CMLister extends StdLibrary implements ListingLibrary
 {
-	private CMLister(){};
-	
-    public static String itemSeenString(MOB viewer, 
+    public String ID(){return "CMLister";}
+    public String itemSeenString(MOB viewer, 
                                         Environmental item, 
                                         boolean useName, 
                                         boolean longLook)
@@ -58,7 +58,7 @@ public class CMLister
             return Util.capitalizeFirstLetter(item.name());
     }
     
-    public static int getReps(Environmental item, 
+    public int getReps(Environmental item, 
                               Vector theRest, 
                               MOB mob, 
                               boolean useName, 
@@ -77,7 +77,7 @@ public class CMLister
                 theRest.removeElement(item2);
             else
             if((str.equals(str2))
-            &&(Sense.seenTheSameWay(mob,item,item2)))
+            &&(CMLib.flags().seenTheSameWay(mob,item,item2)))
             {
                 reps++;
                 theRest.removeElement(item2);
@@ -88,7 +88,7 @@ public class CMLister
         return reps;
     }
     
-    public static void appendReps(int reps, StringBuffer say, boolean compress)
+    public void appendReps(int reps, StringBuffer say, boolean compress)
     {
         if(compress)
         {
@@ -105,7 +105,7 @@ public class CMLister
             say.append(" ("+Util.padLeftPreserve(""+(reps+1),2)+") ");
     }
     
-    public static StringBuffer lister(MOB mob, 
+    public StringBuffer lister(MOB mob, 
                                       Vector things,
                                       boolean useName, 
                                       String tag,
@@ -121,7 +121,7 @@ public class CMLister
 			item=(Environmental)things.elementAt(0);
             things.removeElement(item);
             int reps=getReps(item,things,mob,useName,longLook);
-			if(Sense.canBeSeenBy(item,mob)
+			if(CMLib.flags().canBeSeenBy(item,mob)
 			&&((item.displayText().length()>0)
 			    ||Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)
 				||useName))
@@ -140,12 +140,12 @@ public class CMLister
 				    else
 				        say.append("^<"+tag+tagParm+"^>");
 				}
-                if(compress) say.append(Sense.colorCodes(item,mob)+"^I");
+                if(compress) say.append(CMLib.flags().colorCodes(item,mob)+"^I");
                 say.append(Util.endWithAPeriod(itemSeenString(mob,item,useName,longLook)));
 				if(tag!=null)
 				    say.append("^</"+tag+"^>");
 				if(!compress) 
-                    say.append(Sense.colorCodes(item,mob)+"^N\n\r");
+                    say.append(CMLib.flags().colorCodes(item,mob)+"^N\n\r");
                 else 
                     say.append("^N");
                 
@@ -154,7 +154,7 @@ public class CMLister
                 &&(((Container)item).container()==null)
                 &&(((Container)item).isOpen())
                 &&(!((Container)item).hasALid())
-                &&(!Sense.canBarelyBeSeenBy(item,mob)))
+                &&(!CMLib.flags().canBarelyBeSeenBy(item,mob)))
                 {
                     Vector V=((Container)item).getContents();
                     Item item2=null;
@@ -163,7 +163,7 @@ public class CMLister
                     {
                         item2=(Item)V.firstElement();
                         int reps2=getReps(item2,V,mob,useName,false);
-                        if(Sense.canBeSeenBy(item2,mob)
+                        if(CMLib.flags().canBeSeenBy(item2,mob)
                         &&((item2.displayText().length()>0)
                             ||Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)
                             ||(useName)))
@@ -173,10 +173,10 @@ public class CMLister
                             if((!compress)&&(!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
                                 say.append(CMProps.mxpImage(item," H=10 W=10",""," "));
                             say.append("^I");
-                            if(compress)say.append(Sense.colorCodes(item2,mob)+"^I");
+                            if(compress)say.append(CMLib.flags().colorCodes(item2,mob)+"^I");
                             say.append(Util.endWithAPeriod(itemSeenString(mob,item2,useName,longLook)));
                             if(!compress) 
-                                say.append(Sense.colorCodes(item2,mob)+"^N\n\r");
+                                say.append(CMLib.flags().colorCodes(item2,mob)+"^N\n\r");
                             else
                                 say.append("^N");
                         }
@@ -188,39 +188,39 @@ public class CMLister
 		return say;
 	}
 	
-	public static StringBuffer reallyList(Hashtable these, int ofType)
+	public StringBuffer reallyList(Hashtable these, int ofType)
 	{
 		return reallyList(these,ofType,null);
 	}
-	public static StringBuffer reallyList(Hashtable these)
+	public StringBuffer reallyList(Hashtable these)
 	{
 		return reallyList(these,-1,null);
 	}
-	public static StringBuffer reallyList(Hashtable these, Room likeRoom)
+	public StringBuffer reallyList(Hashtable these, Room likeRoom)
 	{
 		return reallyList(these,-1,likeRoom);
 	}
-	public static StringBuffer reallyList(Vector these, int ofType)
+	public StringBuffer reallyList(Vector these, int ofType)
 	{
 		return reallyList(these.elements(),ofType,null);
 	}
-	public static StringBuffer reallyList(Enumeration these, int ofType)
+	public StringBuffer reallyList(Enumeration these, int ofType)
 	{
 		return reallyList(these,ofType,null);
 	}
-	public static StringBuffer reallyList(Vector these)
+	public StringBuffer reallyList(Vector these)
 	{
 		return reallyList(these.elements(),-1,null);
 	}
-	public static StringBuffer reallyList(Enumeration these)
+	public StringBuffer reallyList(Enumeration these)
 	{
 		return reallyList(these,-1,null);
 	}
-	public static StringBuffer reallyList(Vector these, Room likeRoom)
+	public StringBuffer reallyList(Vector these, Room likeRoom)
 	{
 		return reallyList(these.elements(),-1,likeRoom);
 	}
-	public static StringBuffer reallyList(Hashtable these, int ofType, Room likeRoom)
+	public StringBuffer reallyList(Hashtable these, int ofType, Room likeRoom)
 	{
 		StringBuffer lines=new StringBuffer("");
 		if(these.size()==0) return lines;
@@ -267,11 +267,11 @@ public class CMLister
 		return lines;
 	}
 
-	public static StringBuffer reallyList(Vector these, int ofType, Room likeRoom)
+	public StringBuffer reallyList(Vector these, int ofType, Room likeRoom)
 	{ return reallyList(these.elements(),ofType,likeRoom);}
-	public static StringBuffer reallyList(Enumeration these, Room likeRoom)
+	public StringBuffer reallyList(Enumeration these, Room likeRoom)
 	{ return reallyList(these,-1,likeRoom);}
-	public static StringBuffer reallyList(Enumeration these, int ofType, Room likeRoom)
+	public StringBuffer reallyList(Enumeration these, int ofType, Room likeRoom)
 	{
 		StringBuffer lines=new StringBuffer("");
 		if(!these.hasMoreElements()) return lines;
@@ -316,7 +316,7 @@ public class CMLister
 		lines.append("\n\r");
 		return lines;
 	}
-	public static StringBuffer reallyList2Cols(Enumeration these, int ofType, Room likeRoom)
+	public StringBuffer reallyList2Cols(Enumeration these, int ofType, Room likeRoom)
 	{
 		StringBuffer lines=new StringBuffer("");
 		if(!these.hasMoreElements()) return lines;
@@ -362,9 +362,9 @@ public class CMLister
 		return lines;
 	}
 	
-	public static StringBuffer fourColumns(Vector reverseList)
+	public StringBuffer fourColumns(Vector reverseList)
 	{ return fourColumns(reverseList,null);}
-	public static StringBuffer fourColumns(Vector reverseList, String tag)
+	public StringBuffer fourColumns(Vector reverseList, String tag)
 	{
 		StringBuffer topicBuffer=new StringBuffer("");
 		int col=0;

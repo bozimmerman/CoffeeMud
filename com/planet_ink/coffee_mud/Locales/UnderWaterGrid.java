@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Locales;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -36,8 +47,8 @@ public class UnderWaterGrid extends StdGrid
 		setDisplayText("Under the water");
 		setDescription("");
 		baseThirst=0;
-		xsize=CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKYSIZE);
-		ysize=CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKYSIZE);
+		xsize=CMProps.getIntVar(CMProps.SYSTEMI_SKYSIZE);
+		ysize=CMProps.getIntVar(CMProps.SYSTEMI_SKYSIZE);
 		if((xsize==0)||(ysize==0))
 		{
 			xsize=3;
@@ -164,8 +175,6 @@ public class UnderWaterGrid extends StdGrid
                         
                         if((y>0)&&(x<subMap.length-1)&&(subMap[x+1][y-1]!=null)&&(Directions.NORTHEAST<Directions.NUM_DIRECTIONS))
                             linkRoom(newRoom,subMap[x+1][y-1],Directions.NORTHEAST,ox,ox);
-                        
-						CMMap.addRoom(newRoom);
 					}
 				}
 			buildFinalLinks();

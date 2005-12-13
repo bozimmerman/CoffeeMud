@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.MOBS;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /* 
    Copyright 2000-2005 Lee H. Fox
@@ -48,7 +59,7 @@ public class DrowElf extends StdMOB
 		setDescription("a " + sex + " Drow Fighter");
 		setDisplayText("The drow is armored in black chain mail and carrying a nice arsenal of weapons");
 
-		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
 		setMoney((int)Math.round(Util.div((50 * baseEnvStats().level()),(randomizer.nextInt() % 10 + 1))));
 		baseEnvStats.setWeight(70 + Math.abs(randomizer.nextInt() % 20));
 
@@ -99,7 +110,7 @@ public class DrowElf extends StdMOB
 	{
 		if(this.location()==null)
 			return true;
-		if(Sense.isInDark(this.location()))
+		if(CMLib.flags().isInDark(this.location()))
 			return true;
 
 		Ability dark=CMClass.getAbility("Spell_Darkness");

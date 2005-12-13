@@ -1,18 +1,8 @@
-package com.planet_ink.coffee_mud.core;
-import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.*;
-import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.Areas.interfaces.*;
-import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
-import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
-import com.planet_ink.coffee_mud.Commands.interfaces.*;
-import com.planet_ink.coffee_mud.Common.interfaces.*;
-import com.planet_ink.coffee_mud.Exits.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Locales.interfaces.*;
-import com.planet_ink.coffee_mud.MOBS.interfaces.*;
-import com.planet_ink.coffee_mud.Races.interfaces.*;
-import java.util.*;
+package com.planet_ink.coffee_mud.Libraries;
+import java.util.Vector;
+import com.planet_ink.coffee_mud.Common.interfaces.Session;
+import com.planet_ink.coffee_mud.Libraries.interfaces.SessionsList;
+
 /* 
    Copyright 2000-2005 Bo Zimmerman
 
@@ -28,26 +18,27 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Sessions
+public class Sessions extends StdLibrary implements SessionsList
 {
-	private static Vector all=new Vector();
-	public static Session elementAt(int x)
+    public String ID(){return "Sessions";}
+    public Vector all=new Vector();
+	public Session elementAt(int x)
 	{
 		return (Session)all.elementAt(x);
 	}
-	public static int size()
+	public int size()
 	{
 		return all.size();
 	}
-	public static void addElement(Session S)
+	public void addElement(Session S)
 	{
 		all.addElement(S);
 	}
-	public static void removeElementAt(int x)
+	public void removeElementAt(int x)
 	{
 		all.removeElementAt(x);
 	}
-	public static void removeElement(Session S)
+	public void removeElement(Session S)
 	{
 		all.removeElement(S);
 	}

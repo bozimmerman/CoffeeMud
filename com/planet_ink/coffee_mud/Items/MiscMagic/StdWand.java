@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -24,7 +35,7 @@ public class StdWand extends StdItem implements Wand
 {
 	public String ID(){	return "StdWand";}
 	public static final String[] words={"ZAP","ZAP","ZAP","ZOT","ZIT","ZEK","ZOM","ZUP","ZET","ZYT","ZVP","ZOP"};
-	protected String secretWord=words[Dice.roll(1,words.length,0)-1];
+	protected String secretWord=words[CMLib.dice().roll(1,words.length,0)-1];
 
 	public StdWand()
 	{
@@ -47,10 +58,10 @@ public class StdWand extends StdItem implements Wand
 	public static boolean useTheWand(Ability A, MOB mob)
 	{
 		int manaRequired=5;
-		int q=CMAble.qualifyingLevel(mob,A);
+		int q=CMLib.ableMapper().qualifyingLevel(mob,A);
 		if(q>0)
 		{
-			if(q<CMAble.qualifyingClassLevel(mob,A))
+			if(q<CMLib.ableMapper().qualifyingClassLevel(mob,A))
 				manaRequired=0;
 			else
 				manaRequired=5;
@@ -216,7 +227,7 @@ public class StdWand extends StdItem implements Wand
 			break;
 		case CMMsg.TYP_SPEAK:
 			if(msg.sourceMinor()==CMMsg.TYP_SPEAK)
-				msg.addTrailerMsg(new FullMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WAND_USE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WAND_USE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
 			break;
 		default:
 			break;

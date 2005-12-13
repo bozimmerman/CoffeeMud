@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -66,7 +77,7 @@ public class EternityQuarterstaff extends Quarterstaff
 					if(usesRemaining()>0)
 					{
 						this.setUsesRemaining(this.usesRemaining()-5);
-						FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSG_CAST_VERBAL_SPELL,"<S-NAME> point(s) <S-HIS-HER> quarterstaff at <T-NAMESELF>, and delivers a healing beam of light.");
+						CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_VERBAL_SPELL,"<S-NAME> point(s) <S-HIS-HER> quarterstaff at <T-NAMESELF>, and delivers a healing beam of light.");
 						if(mob.location().okMessage(mob,msg2))
 						{
 		   					int healing=1+(int)Math.round(Util.div(envStats().level(),10.0));

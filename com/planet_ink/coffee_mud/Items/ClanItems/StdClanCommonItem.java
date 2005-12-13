@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Items.ClanItems;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -46,7 +57,7 @@ public class StdClanCommonItem extends StdClanItem
         for(int i=0;i<R.numItems();i++)
         {
             Item I2=R.fetchItem(i);
-            if((I2!=null)&&(I2.container()==null)&&(Sense.isOnFire(I2)))
+            if((I2!=null)&&(I2.container()==null)&&(CMLib.flags().isOnFire(I2)))
                 return true;
         }
         return false;
@@ -63,7 +74,7 @@ public class StdClanCommonItem extends StdClanItem
             &&(I2 instanceof EnvResource)
             &&(((I2.material()&EnvResource.RESOURCE_MASK)==material)
                 ||(((I2.material())&EnvResource.MATERIAL_MASK)==material))
-            &&(!Sense.enchanted(I2)))
+            &&(!CMLib.flags().enchanted(I2)))
                 here.addElement(I2);
         }
         return here;
@@ -80,7 +91,7 @@ public class StdClanCommonItem extends StdClanItem
             &&(I2 instanceof EnvResource)
             &&(((I2.material()&EnvResource.RESOURCE_MASK)==material)
                 ||(((I2.material())&EnvResource.MATERIAL_MASK)==material))
-            &&(!Sense.enchanted(I2)))
+            &&(!CMLib.flags().enchanted(I2)))
                 here.addElement(I2);
         }
         return here;
@@ -152,9 +163,9 @@ public class StdClanCommonItem extends StdClanItem
         if(A!=null)
         {
             Room R=M2.location();
-            if((R!=null)&&(Sense.isInTheGame(M2,true)))
+            if((R!=null)&&(CMLib.flags().isInTheGame(M2,true)))
             {
-                A.invoke(M,Util.parse("\""+CMMap.getExtendedRoomID(R)+"\""),R,true,0);
+                A.invoke(M,Util.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
                 return true;
             }
         }
@@ -165,7 +176,7 @@ public class StdClanCommonItem extends StdClanItem
         Ability A=CMClass.getAbility("Skill_Track");
         if((A!=null)&&(R!=null))
         {
-            A.invoke(M,Util.parse("\""+CMMap.getExtendedRoomID(R)+"\""),R,true,0);
+            A.invoke(M,Util.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
             return true;
         }
         return false;
@@ -181,11 +192,11 @@ public class StdClanCommonItem extends StdClanItem
 		&&(readableText().length()>0)
 		&&(((MOB)owner()).getClanID().equals(clanID()))
 		&&((--workDown)<=0)
-        &&(!Sense.isATrackingMonster(owner))
-        &&(Sense.isInTheGame(owner,true))
-		&&(!Sense.isAnimalIntelligence((MOB)owner())))
+        &&(!CMLib.flags().isATrackingMonster(owner))
+        &&(CMLib.flags().isInTheGame(owner,true))
+		&&(!CMLib.flags().isAnimalIntelligence((MOB)owner())))
 		{
-			workDown=Dice.roll(1,7,0);
+			workDown=CMLib.dice().roll(1,7,0);
 			MOB M=(MOB)owner();
 			if(M.fetchEffect(readableText())==null)
 			{
@@ -194,7 +205,7 @@ public class StdClanCommonItem extends StdClanItem
 				{
 					A.setProfficiency(100);
                     boolean success=false;
-                    if((!Util.bset(A.flags(),Ability.FLAG_CRAFTING))&&(Sense.isMobile(M)))
+                    if((!Util.bset(A.flags(),Ability.FLAG_CRAFTING))&&(CMLib.flags().isMobile(M)))
                     {
                         DVector DV=(DVector)needChart.get(M.location().getArea());
                         if(DV!=null)
@@ -223,7 +234,7 @@ public class StdClanCommonItem extends StdClanItem
                                             break;
                                         }
                                         else
-                                        if((possibleMOBToGoTo==null)||(Dice.roll(1,2,0)==1))
+                                        if((possibleMOBToGoTo==null)||(CMLib.dice().roll(1,2,0)==1))
                                             possibleMOBToGoTo=M2;
                                     }
                                 }
@@ -243,7 +254,7 @@ public class StdClanCommonItem extends StdClanItem
                                     int rand=i;
                                     needs=(Vector)DV.elementAt(rand,2);
                                     M2=(MOB)DV.elementAt(rand,1);
-                                    if(!Sense.isInTheGame(M2,true))
+                                    if(!CMLib.flags().isInTheGame(M2,true))
                                     {
                                         DV.removeElementAt(i);
                                         continue;
@@ -256,7 +267,7 @@ public class StdClanCommonItem extends StdClanItem
                                     if(rsc.size()>0)
                                     {
                                         for(int r=0;r<rsc.size();r++)
-                                            CommonMsgs.drop(M,(Environmental)rsc.elementAt(r),false,true);
+                                            CMLib.commands().drop(M,(Environmental)rsc.elementAt(r),false,true);
                                         return true;
                                     }
                                 }
@@ -265,7 +276,7 @@ public class StdClanCommonItem extends StdClanItem
                             for(int i=0;i<DV.size();i++)
                             {
                                 try{
-                                    int rand=Dice.roll(1,DV.size(),-1);
+                                    int rand=CMLib.dice().roll(1,DV.size(),-1);
                                     needs=(Vector)DV.elementAt(rand,2);
                                     M2=(MOB)DV.elementAt(rand,1);
                                 }catch(Exception e){continue;}
@@ -282,7 +293,7 @@ public class StdClanCommonItem extends StdClanItem
                             for(int i=0;i<DV.size();i++)
                             {
                                 try{
-                                    int rand=Dice.roll(1,DV.size(),-1);
+                                    int rand=CMLib.dice().roll(1,DV.size(),-1);
                                     needs=(Vector)DV.elementAt(rand,2);
                                     M2=(MOB)DV.elementAt(rand,1);
                                 }catch(Exception e){continue;}
@@ -293,7 +304,7 @@ public class StdClanCommonItem extends StdClanItem
                                     if(rsc.size()>0)
                                     {
                                         for(int r=0;r<rsc.size();r++)
-                                            CommonMsgs.get(M,null,(Item)rsc.elementAt(r),false);
+                                            CMLib.commands().get(M,null,(Item)rsc.elementAt(r),false);
                                         if(trackTo(M,M2))
                                             return true;
                                     }
@@ -308,7 +319,7 @@ public class StdClanCommonItem extends StdClanItem
 						int tries=0;
 						while((I==null)&&((++tries)<20))
 						{
-							I=M.fetchInventory(Dice.roll(1,M.inventorySize(),-1));
+							I=M.fetchInventory(CMLib.dice().roll(1,M.inventorySize(),-1));
 							if((I==null)
                             ||(I==this)
                             ||(I instanceof EnvResource)

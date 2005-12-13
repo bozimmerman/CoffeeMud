@@ -1,12 +1,10 @@
 package com.planet_ink.coffee_mud.Libraries;
 
-import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.Log;
-import com.planet_ink.coffee_mud.core.interfaces.CMObject;
-import com.planet_ink.coffee_mud.core.intermud.IMudClient;
+import com.planet_ink.coffee_mud.core.interfaces.*;
 
-public class StdLibrary implements CMObject
+public class StdLibrary extends Scriptable implements CMObject
 {
     public String ID(){return "StdLibrary";}
     public CMObject newInstance()
@@ -19,7 +17,7 @@ public class StdLibrary implements CMObject
         {
             Log.errOut(ID(),e);
         }
-        return new StdItem();
+        return new StdLibrary();
     }
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}

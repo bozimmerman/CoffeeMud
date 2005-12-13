@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 import java.util.*;
 
@@ -30,17 +31,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class MUDFight
+public class MUDFight extends StdLibrary implements CombatLibrary
 {
-	private MUDFight(){};
+    public String ID(){return "MUDFight";}
+    public String lastStr="";
+    public long lastRes=0;
 
-	public static final int COMBAT_DEFAULT=0;
-	public static final int COMBAT_QUEUE=1;
-    private static String lastStr="";
-    private static long lastRes=0;
-
-
-	public static HashSet allPossibleCombatants(MOB mob, boolean beRuthless)
+	public HashSet allPossibleCombatants(MOB mob, boolean beRuthless)
 	{
 		HashSet h=new HashSet();
 		Room thisRoom=mob.location();
@@ -52,15 +49,15 @@ public class MUDFight
 			if((inhab!=null)
 			&&(inhab!=mob)
 			&&(!h1.contains(inhab))
-			&&(Sense.isSeen(inhab)||Sense.canMove(inhab))
-			&&(Sense.isSeen(inhab)||(!Sense.isCloaked(inhab)))
+			&&(CMLib.flags().isSeen(inhab)||CMLib.flags().canMove(inhab))
+			&&(CMLib.flags().isSeen(inhab)||(!CMLib.flags().isCloaked(inhab)))
 			&&((beRuthless)||(!mob.isMonster())||(!inhab.isMonster())))
 				h.add(inhab);
 		}
 		return h;
 	}
 
-	public static HashSet properTargets(Ability A, MOB caster, boolean beRuthless)
+	public HashSet properTargets(Ability A, MOB caster, boolean beRuthless)
 	{
 		HashSet h=null;
 		if(A.quality()!=Ability.MALICIOUS)
@@ -84,13 +81,13 @@ public class MUDFight
 		return h;
 	}
 
-    public static boolean rollToHit(MOB attacker, MOB defender)
+    public boolean rollToHit(MOB attacker, MOB defender)
     {
         if((attacker==null)||(defender==null)) return false;
         return rollToHit(attacker.adjustedAttackBonus(defender),defender.adjustedArmor());
     }
     
-    public static boolean rollToHit(int attack, int defense)
+    public boolean rollToHit(int attack, int defense)
     {
         double myArmor=new Integer(-(defense-100)).doubleValue();
         if(myArmor==0) myArmor=1.0;
@@ -100,9 +97,9 @@ public class MUDFight
         if(hisAttack==0.0) hisAttack=1.0;
         else
         if(hisAttack<0.0) hisAttack=-Util.div(1.0,myArmor);
-        return Dice.normalizeAndRollLess((int)Math.round(50.0*(hisAttack/myArmor)));
+        return CMLib.dice().normalizeAndRollLess((int)Math.round(50.0*(hisAttack/myArmor)));
     }
-	public static HashSet allCombatants(MOB mob)
+	public HashSet allCombatants(MOB mob)
 	{
 		HashSet h=new HashSet();
 		Room thisRoom=mob.location();
@@ -122,8 +119,8 @@ public class MUDFight
 			&&((inhab==mob.getVictim())
 				||((inhab!=mob)
 					&&(inhab.getVictim()!=mob.getVictim())
-					&&(Sense.isSeen(inhab)||(!Sense.isCloaked(inhab)))
-					&&(Sense.canMove(inhab)||Sense.isSeen(inhab))
+					&&(CMLib.flags().isSeen(inhab)||(!CMLib.flags().isCloaked(inhab)))
+					&&(CMLib.flags().canMove(inhab)||CMLib.flags().isSeen(inhab))
 					&&(!h1.contains(inhab)))))
 			 	h.add(inhab);
 		}
@@ -131,7 +128,7 @@ public class MUDFight
 
 	}
 
-	public static void makePeaceInGroup(MOB mob)
+	public void makePeaceInGroup(MOB mob)
 	{
 		HashSet myGroup=mob.getGroupMembers(new HashSet());
 		for(Iterator e=myGroup.iterator();e.hasNext();)
@@ -142,7 +139,7 @@ public class MUDFight
 		}
 	}
 
-	public static void postPanic(MOB mob, CMMsg addHere)
+	public void postPanic(MOB mob, CMMsg addHere)
 	{
 		if(mob==null) return;
 
@@ -157,7 +154,7 @@ public class MUDFight
 			   ||(msg.sourceMinor()==CMMsg.TYP_DEATH))
 				return;
 		}
-		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_PANIC,null);
+		CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_PANIC,null);
 		if(addHere!=null)
 			addHere.addTrailerMsg(msg);
 		else
@@ -165,7 +162,7 @@ public class MUDFight
 			mob.location().send(mob,msg);
 	}
 
-	public static void postDeath(MOB killerM, MOB deadM, CMMsg addHere)
+	public void postDeath(MOB killerM, MOB deadM, CMMsg addHere)
 	{
 		if(deadM==null) return;
 		Room deathRoom=deadM.location();
@@ -183,12 +180,12 @@ public class MUDFight
 				return;
 		}
 
-		String msp=CMProps.msp("death"+Dice.roll(1,7,0)+".wav",50);
-		FullMsg msg=new FullMsg(deadM,null,null,
+		String msp=CMProps.msp("death"+CMLib.dice().roll(1,7,0)+".wav",50);
+		CMMsg msg=CMClass.getMsg(deadM,null,null,
 			CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
 			CMMsg.MSG_OK_VISUAL,null,
 			CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r"+msp);
-		FullMsg msg2=new FullMsg(deadM,null,killerM,
+		CMMsg msg2=CMClass.getMsg(deadM,null,killerM,
 			CMMsg.MSG_DEATH,null,
 			CMMsg.MSG_DEATH,null,
 			CMMsg.MSG_DEATH,null);
@@ -209,7 +206,7 @@ public class MUDFight
 		}
 	}
 
-	public static boolean postAttack(MOB attacker, MOB target, Item weapon)
+	public boolean postAttack(MOB attacker, MOB target, Item weapon)
 	{
 		if((attacker==null)||(!attacker.mayPhysicallyAttack(target)))
 			return false;
@@ -217,10 +214,10 @@ public class MUDFight
 		if((weapon==null)
 		&&(Util.bset(attacker.getBitmap(),MOB.ATT_AUTODRAW)))
 		{
-			CommonMsgs.draw(attacker,false,true);
+			CMLib.commands().draw(attacker,false,true);
 			weapon=attacker.fetchWieldedItem();
 		}
-		FullMsg msg=new FullMsg(attacker,target,weapon,CMMsg.MSG_WEAPONATTACK,null);
+		CMMsg msg=CMClass.getMsg(attacker,target,weapon,CMMsg.MSG_WEAPONATTACK,null);
         Room R=target.location();
 		if(R.okMessage(attacker,msg))
 		{
@@ -230,7 +227,7 @@ public class MUDFight
 		return false;
 	}
 
-	public static boolean postHealing(MOB healer,
+	public boolean postHealing(MOB healer,
 									  MOB target,
 									  Environmental tool,
 									  int messageCode,
@@ -239,14 +236,14 @@ public class MUDFight
 	{
 		if(healer==null) healer=target;
 		if((healer==null)||(target==null)||(target.location()==null)) return false;
-		FullMsg msg=new FullMsg(healer,target,tool,messageCode,CMMsg.MSG_HEALING,messageCode,allDisplayMessage);
+		CMMsg msg=CMClass.getMsg(healer,target,tool,messageCode,CMMsg.MSG_HEALING,messageCode,allDisplayMessage);
 		msg.setValue(healing);
 		if(target.location().okMessage(target,msg))
 		{ target.location().send(target,msg); return true;}
 		return false;
 	}
 
-	public static String replaceDamageTag(String str, int damage, int damageType)
+	public String replaceDamageTag(String str, int damage, int damageType)
 	{
 		if(str==null) return null;
 		int replace=str.indexOf("<DAMAGE>");
@@ -269,7 +266,7 @@ public class MUDFight
 		return str;
 	}
 
-	public static void postDamage(MOB attacker,
+	public void postDamage(MOB attacker,
 								  MOB target,
 								  Environmental weapon,
 								  int damage,
@@ -279,9 +276,9 @@ public class MUDFight
 	{
 		if((attacker==null)||(target==null)||(target.location()==null)) return;
 		if(allDisplayMessage!=null) allDisplayMessage="^F^<FIGHT^>"+allDisplayMessage+"^</FIGHT^>^?";
-		FullMsg msg=new FullMsg(attacker,target,weapon,messageCode,CMMsg.MSG_DAMAGE,messageCode,allDisplayMessage);
+		CMMsg msg=CMClass.getMsg(attacker,target,weapon,messageCode,CMMsg.MSG_DAMAGE,messageCode,allDisplayMessage);
 		msg.setValue(damage);
-        CMColor.fixSourceFightColor(msg);
+        CMLib.color().fixSourceFightColor(msg);
 		if(target.location().okMessage(target,msg))
 		{
 			if(damageType>=0)
@@ -298,7 +295,7 @@ public class MUDFight
 		}
 	}
 
-	public static boolean postExperience(MOB mob,
+	public boolean postExperience(MOB mob,
 										 MOB victim,
 										 String homage,
 										 int amount,
@@ -309,7 +306,7 @@ public class MUDFight
 		||mob.charStats().getCurrentClass().expless()
 		||mob.charStats().getMyRace().expless())
 	        return false;
-		FullMsg msg=new FullMsg(mob,victim,null,CMMsg.MASK_GENERAL|CMMsg.TYP_EXPCHANGE,null,CMMsg.NO_EFFECT,homage,CMMsg.NO_EFFECT,""+quiet);
+		CMMsg msg=CMClass.getMsg(mob,victim,null,CMMsg.MASK_GENERAL|CMMsg.TYP_EXPCHANGE,null,CMMsg.NO_EFFECT,homage,CMMsg.NO_EFFECT,""+quiet);
 		msg.setValue(amount);
 		if(mob.location()!=null)
 		{
@@ -326,14 +323,14 @@ public class MUDFight
 		return true;
 	}
 
-    public static boolean changeFactions(MOB mob,
+    public boolean changeFactions(MOB mob,
                                          MOB victim,
                                          int amount,
                                          boolean quiet)
     {
         if((mob==null))
             return false;
-        FullMsg msg=new FullMsg(mob,victim,null,CMMsg.MASK_GENERAL|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,""+quiet);
+        CMMsg msg=CMClass.getMsg(mob,victim,null,CMMsg.MASK_GENERAL|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,""+quiet);
         msg.setValue(amount);
         if(mob.location()!=null)
         {
@@ -345,7 +342,7 @@ public class MUDFight
         return true;
     }
 
-	public static void postWeaponDamage(MOB source, MOB target, Item item, boolean success)
+	public void postWeaponDamage(MOB source, MOB target, Item item, boolean success)
 	{
 		if(source==null) return;
 		if(!source.mayIFight(target)) return;
@@ -363,15 +360,15 @@ public class MUDFight
             // calculate Base Damage (with Strength bonus)
 			String oldHitString="^F^<FIGHT^>"+((weapon!=null)?
 								weapon.hitString(damageInt):
-								MUDFight.standardHitString(Weapon.CLASS_BLUNT,damageInt,item.name()))+"^</FIGHT^>^?";
-			FullMsg msg=new FullMsg(source,
+								standardHitString(Weapon.CLASS_BLUNT,damageInt,item.name()))+"^</FIGHT^>^?";
+			CMMsg msg=CMClass.getMsg(source,
 									target,
 									item,
 									CMMsg.MSG_OK_VISUAL,
 									CMMsg.MSG_DAMAGE,
 									CMMsg.MSG_OK_VISUAL,
 									oldHitString);
-            CMColor.fixSourceFightColor(msg);
+            CMLib.color().fixSourceFightColor(msg);
 
 			msg.setValue(damageInt);
 			// why was there no okaffect here?
@@ -401,13 +398,13 @@ public class MUDFight
 		{
 			String missString="^F^<FIGHT^>"+((weapon!=null)?
 								weapon.missString():
-								MUDFight.standardMissString(Weapon.TYPE_BASHING,Weapon.CLASS_BLUNT,item.name(),false))+"^</FIGHT^>^?";
-			FullMsg msg=new FullMsg(source,
+								standardMissString(Weapon.TYPE_BASHING,Weapon.CLASS_BLUNT,item.name(),false))+"^</FIGHT^>^?";
+			CMMsg msg=CMClass.getMsg(source,
 									target,
 									weapon,
 									CMMsg.MSG_NOISYMOVEMENT,
 									missString);
-            CMColor.fixSourceFightColor(msg);
+            CMLib.color().fixSourceFightColor(msg);
 			// why was there no okaffect here?
 			if((source.location().okMessage(source,msg))
             &&(source.location()!=null))
@@ -415,7 +412,7 @@ public class MUDFight
 		}
 	}
 
-	public static void processFormation(Vector[] done, MOB leader, int level)
+	public void processFormation(Vector[] done, MOB leader, int level)
 	{
 		for(int i=0;i<done.length;i++)
 			if((done[i]!=null)&&(done[i].contains(leader)))
@@ -433,7 +430,7 @@ public class MUDFight
 		}
 	}
 
-	public static MOB getFollowedLeader(MOB mob)
+	public MOB getFollowedLeader(MOB mob)
 	{
 		int tries=0;
 		MOB leader=mob;
@@ -442,7 +439,7 @@ public class MUDFight
 	    return leader;
 	}
 
-	public static Vector[] getFormation(MOB mob)
+	public Vector[] getFormation(MOB mob)
 	{
 		int tries=0;
 		MOB leader=mob;
@@ -453,9 +450,9 @@ public class MUDFight
 	    return done;
 	}
 
-	public static Vector getFormationFollowed(MOB mob)
+	public Vector getFormationFollowed(MOB mob)
 	{
-	    Vector[] form=MUDFight.getFormation(mob);
+	    Vector[] form=getFormation(mob);
 	    for(int i=1;i<form.length;i++)
 	    {
 	        if((form[i]!=null)&&(form[i].contains(mob)))
@@ -472,9 +469,9 @@ public class MUDFight
 	    return null;
 	}
 
-	public static int getFormationAbsOrder(MOB mob)
+	public int getFormationAbsOrder(MOB mob)
 	{
-	    Vector[] form=MUDFight.getFormation(mob);
+	    Vector[] form=getFormation(mob);
 	    for(int i=1;i<form.length;i++)
 	    {
 	        if((form[i]!=null)&&(form[i].contains(mob)))
@@ -483,7 +480,7 @@ public class MUDFight
 	    return 0;
 	}
     
-    public static CharClass getCombatDominantClass(MOB killer, MOB killed)
+    public CharClass getCombatDominantClass(MOB killer, MOB killed)
     {
         CharClass C=null;
         
@@ -508,7 +505,7 @@ public class MUDFight
         return C;
     }
 
-    public static HashSet getCombatBeneficiaries(MOB killer, MOB killed, CharClass combatCharClass)
+    public HashSet getCombatBeneficiaries(MOB killer, MOB killed, CharClass combatCharClass)
     {
         if((killer==null)||(killed==null)) return new HashSet();
         Room deathRoom=killed.location();
@@ -531,7 +528,7 @@ public class MUDFight
     }
     
     
-	public static DeadBody justDie(MOB source, MOB target)
+	public DeadBody justDie(MOB source, MOB target)
 	{
 		if(target==null) return null;
 		Room deathRoom=target.location();
@@ -584,7 +581,7 @@ public class MUDFight
                 {
                     if(target.numLearnedAbilities()>0)
                     {
-                        Ability A=target.fetchAbility(Dice.roll(1,target.numLearnedAbilities(),-1));
+                        Ability A=target.fetchAbility(CMLib.dice().roll(1,target.numLearnedAbilities(),-1));
                         if(A!=null)
                         {
                             target.tell("You've forgotten "+A.Name()+".");
@@ -601,11 +598,11 @@ public class MUDFight
                 else
 				if(whatToDo.startsWith("PUR"))
 				{
-					MOB deadMOB=CMMap.getLoadPlayer(target.Name());
+					MOB deadMOB=CMLib.map().getLoadPlayer(target.Name());
 					if(deadMOB!=null)
 					{
 						Body=target.killMeDead(true);
-						CoffeeUtensils.obliteratePlayer(deadMOB,false);
+						CMLib.utensils().obliteratePlayer(deadMOB,false);
 					}
 				}
 				else
@@ -633,7 +630,7 @@ public class MUDFight
             Body.setKillerPlayer(!source.isMonster());
         }
 
-		if((!target.isMonster())&&(Dice.rollPercentage()==1))
+		if((!target.isMonster())&&(CMLib.dice().rollPercentage()==1))
 		{
 			Ability A=CMClass.getAbility("Disease_Amnesia");
 			if((A!=null)&&(target.fetchEffect(A.ID())==null))
@@ -647,7 +644,7 @@ public class MUDFight
 			target.soulMate().setSession(s);
 			target.setSession(null);
 			target.soulMate().tell("^HYour spirit has returned to your body...\n\r\n\r^N");
-			CommonMsgs.look(target.soulMate(),true);
+			CMLib.commands().look(target.soulMate(),true);
 			target.setSoulMate(null);
 		}
 
@@ -668,10 +665,10 @@ public class MUDFight
 				Item item=deathRoom.fetchItem(i);
 				if((item!=null)
 				&&(item.container()==Body)
-				&&(Sense.canBeSeenBy(Body,source))
+				&&(CMLib.flags().canBeSeenBy(Body,source))
 				&&((!Body.destroyAfterLooting())||(!(item instanceof EnvResource)))
-				&&(Sense.canBeSeenBy(item,source)))
-					CommonMsgs.get(source,Body,item,false);
+				&&(CMLib.flags().canBeSeenBy(item,source)))
+					CMLib.commands().get(source,Body,item,false);
 			}
 			if(Body.destroyAfterLooting())
 				deathRoom.recoverRoomStats();
@@ -694,8 +691,8 @@ public class MUDFight
 				if((mob.riding()!=null)&&(mob.riding() instanceof Item))
 					mob.tell("You'll need to disembark to get "+C.name()+" off the body.");
 				else
-				if(Sense.canBeSeenBy(Body,mob))
-					CommonMsgs.get(mob,Body,C,false);
+				if(CMLib.flags().canBeSeenBy(Body,mob))
+					CMLib.commands().get(mob,Body,C,false);
 		    }
 		}
 
@@ -714,191 +711,48 @@ public class MUDFight
         return Body;
 	}
 
-    public static String standardHitWord(int type, int damage)
+    public int[] damageThresholds(){return CombatLibrary.DEFAULT_DAMAGE_THRESHHOLDS;}
+    public String[][] hitWords(){return CombatLibrary.DEFAULT_DAMAGE_WORDS;}
+    public String[] armorDescs(){return CombatLibrary.DEFAULT_ARMOR_DESCS;}
+    public String[] prowessDescs(){return CombatLibrary.DEFAULT_PROWESS_DESCS;}
+    public String[] missWeaponDescs(){return CombatLibrary.DEFAULT_WEAPON_MISS_DESCS;}
+    public String[] missDescs(){return CombatLibrary.DEFAULT_MISS_DESCS;}
+    
+    public String standardHitWord(int type, int damage)
     {
         if(type<0) type=Weapon.TYPE_BURSTING;
+        int[] thresholds=damageThresholds();
+        String[][] hitwords=hitWords();
         int damnCode=0;
-        if(damage<=0) return "annoy(s)";
-        else if(damage<=3) damnCode=0; //3
-        else if(damage<=6) damnCode=1; //4
-        else if(damage<=10) damnCode=2;//5
-        else if(damage<=15) damnCode=3; //10
-        else if(damage<=25) damnCode=4; //10
-        else if(damage<=35) damnCode=5; //15
-        else if(damage<=50) damnCode=6; //20
-        else if(damage<=70) damnCode=7; //30
-        else if(damage<=100) damnCode=8; //30
-        else if(damage<=130) damnCode=9; //35
-        else if(damage<=165) damnCode=10; //50
-        else if(damage<=215) damnCode=11; //75
-        else if(damage<=295) damnCode=12; //100
-        else if(damage<=395) damnCode=13;
-        else damnCode=14;
-
-        switch(damnCode)
+        for(int i=0;i<thresholds.length;i++)
+            if(damage<=thresholds[i]){ damnCode=i; break;}
+        damnCode++; // always add 1 because index into hitwords is type=0, annoy=1;
+        String[] ALL=null;
+        String[] MINE=null;
+        for(int i=0;i<hitwords.length;i++)
         {
-            case 7: return "massacre(s)";
-            case 8: return "MASSACRE(S)";
-            case 9: return "destroy(s)";
-            case 10: return "DESTROY(S)";
-            case 11: return "obliterate(s)";
-            case 12: return "OBLITERATE(S)";
-            case 13: return "**OBLITERATE(S)**";
-            case 14: return "--==::OBLITERATE(S)::==--";
-        default:
-            break;
+            if(hitwords[i][0].equalsIgnoreCase("ALL"))
+                ALL=hitwords[i];
+            else
+            if(hitwords[i][0].equals(""+type))
+            { MINE=hitwords[i]; break;}
         }
-        switch(type)
-        {
-        case Weapon.TYPE_NATURAL:
-            switch(damnCode)
-            {
-            case 0: return "scratch(es)";
-            case 1: return "graze(s)";
-            case 2: return "hit(s)";
-            case 3: return "cut(s)";
-            case 4: return "hurt(s)";
-            case 5: return "rip(s)";
-            case 6: return "crunch(es)";
-            }
-            break;
-        case Weapon.TYPE_SLASHING:
-            switch(damnCode)
-            {
-            case 0: return "scratch(es)";
-            case 1: return "graze(s)";
-            case 2: return "wound(s)";
-            case 3: return "cut(s)";
-            case 4: return "slice(s)";
-            case 5: return "gut(s)";
-            case 6: return "murder(s)";
-            }
-            break;
-        case Weapon.TYPE_PIERCING:
-            switch(damnCode)
-            {
-            case 0: return "scratch(es)";
-            case 1: return "graze(s)";
-            case 2: return "prick(s)";
-            case 3: return "cut(s)";
-            case 4: return "stab(s)";
-            case 5: return "pierce(s)";
-            case 6: return "murder(s)";
-            }
-            break;
-        case Weapon.TYPE_BASHING:
-            switch(damnCode)
-            {
-            case 0: return "scratch(es)";
-            case 1: return "graze(s)";
-            case 2: return "hit(s)";
-            case 3: return "smash(es)";
-            case 4: return "bash(es)";
-            case 5: return "crush(es)";
-            case 6: return "crunch(es)";
-            }
-            break;
-        case Weapon.TYPE_BURNING:
-            switch(damnCode)
-            {
-            case 0: return "warm(s)";
-            case 1: return "heat(s)";
-            case 2: return "singe(s)";
-            case 3: return "burn(s)";
-            case 4: return "flame(s)";
-            case 5: return "scorch(es)";
-            case 6: return "incinerate(s)";
-            }
-            break;
-        case Weapon.TYPE_SHOOT:
-            switch(damnCode)
-            {
-            case 0: return "scratch(es)";
-            case 1: return "graze(s)";
-            case 2: return "hit(s)";
-            case 3: return "pierce(s)";
-            case 4: return "pierce(s)";
-            case 5: return "decimate(s)";
-            case 6: return "murder(s)";
-            }
-            break;
-        case Weapon.TYPE_FROSTING:
-            switch(damnCode)
-            {
-            case 0: return "chill(s)";
-            case 1: return "cool(s)";
-            case 2: return "ice(s)";
-            case 3: return "frost(s)";
-            case 4: return "blister(s)";
-            case 5: return "blast(s)";
-            case 6: return "incinerate(s)";
-            }
-            break;
-        case Weapon.TYPE_GASSING:
-            switch(damnCode)
-            {
-            case 0: return "mist(s)";
-            case 1: return "gass(es)";
-            case 2: return "gass(es)";
-            case 3: return "fume(s)";
-            case 4: return "choke(s)";
-            case 5: return "decimate(s)";
-            case 6: return "murder(s)";
-            }
-            break;
-        case Weapon.TYPE_MELTING:
-            switch(damnCode)
-            {
-            case 0: return "sting(s)";
-            case 1: return "sizzle(s)";
-            case 2: return "burn(s)";
-            case 3: return "scorch(es)";
-            case 4: return "dissolve(s)";
-            case 5: return "melt(s)";
-            case 6: return "melt(s)";
-            }
-            break;
-        case Weapon.TYPE_STRIKING:
-            switch(damnCode)
-            {
-            case 0: return "sting(s)";
-            case 1: return "charge(s)";
-            case 2: return "singe(s)";
-            case 3: return "burn(s)";
-            case 4: return "scorch(es)";
-            case 5: return "blast(s)";
-            case 6: return "incinerate(s)";
-            }
-            break;
-        case Weapon.TYPE_BURSTING:
-        default:
-            switch(damnCode)
-            {
-            case 0: return "scratch(es)";
-            case 1: return "graze(s)";
-            case 2: return "wound(s)";
-            case 3: return "cut(s)";
-            case 4: return "damage(s)";
-            case 5: return "decimate(s)";
-            case 6: return "murder(s)";
-            }
-            break;
-        }
-        return "";
+        if(damnCode<1) damnCode=1;
+        if((MINE==null)||(damnCode>=MINE.length)) MINE=ALL;
+        if(damnCode<MINE.length) return MINE[damnCode];
+        return MINE[MINE.length-1];
     }
 
-    public static final int ARMOR_CEILING=500;
-    public static final int ATTACK_CEILING=1000;
-
-    public static String armorStr(int armor){
-        return (armor<0)?armorStrs[0]:(
-               (armor>=ARMOR_CEILING)?armorStrs[armorStrs.length-1]+(Util.repeat("!",(armor-ARMOR_CEILING)/100))+" ("+armor+")":(
-                armorStrs[(int)Math.round(Math.floor(Util.mul(Util.div(armor,ARMOR_CEILING),armorStrs.length)))]+" ("+armor+")"));}
-    public static String fightingProwessStr(int prowess){
-        return (prowess<0)?fightStrs[0]:(
-               (prowess>=ATTACK_CEILING)?fightStrs[fightStrs.length-1]+(Util.repeat("!",(prowess-ATTACK_CEILING)/100))+" ("+prowess+")":(
-                fightStrs[(int)Math.round(Math.floor(Util.mul(Util.div(prowess,ATTACK_CEILING),fightStrs.length)))]+" ("+prowess+")"));}
-    public static String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString)
+    public String armorStr(int armor){
+        return (armor<0)?armorDescs()[0]:(
+               (armor>=ARMOR_CEILING)?armorDescs()[armorDescs().length-1]+(Util.repeat("!",(armor-ARMOR_CEILING)/100))+" ("+armor+")":(
+                       armorDescs()[(int)Math.round(Math.floor(Util.mul(Util.div(armor,ARMOR_CEILING),armorDescs().length)))]+" ("+armor+")"));}
+    public String fightingProwessStr(int prowess){
+        return (prowess<0)?prowessDescs()[0]:(
+               (prowess>=PROWESS_CEILING)?prowessDescs()[prowessDescs().length-1]+(Util.repeat("!",(prowess-PROWESS_CEILING)/100))+" ("+prowess+")":(
+                prowessDescs()[(int)Math.round(Math.floor(Util.mul(Util.div(prowess,PROWESS_CEILING),prowessDescs().length)))]+" ("+prowess+")"));}
+    
+    public String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString)
     {
         int dex=3;
         switch(weaponClassification)
@@ -921,14 +775,12 @@ public class MUDFight
             }
             break;
         }
-        if(!useExtendedMissString) return missStrs2[dex];
-        String str=missStrs1[dex];
-        int dexTool=str.indexOf("<TOOLNAME>");
-        return str.substring(0,dexTool)+weaponName+str.substring(dexTool+10)+CMProps.msp("missed.wav",20);
+        if(!useExtendedMissString) return missDescs()[dex];
+        return Util.replaceAll(missWeaponDescs()[dex],"<TOOLNAME>",weaponName)+CMProps.msp("missed.wav",20);
     }
 
 
-    public static String standardHitString(int weaponClass, int damageAmount,  String weaponName)
+    public String standardHitString(int weaponClass, int damageAmount,  String weaponName)
     {
         if((weaponName==null)||(weaponName.length()==0))
             weaponClass=Weapon.CLASS_NATURAL;
@@ -939,29 +791,20 @@ public class MUDFight
         case Weapon.CLASS_THROWN:
             return "<S-NAME> throw(s) "+weaponName+" at <T-NAMESELF> and <DAMAGE> <T-HIM-HER>."+CMProps.msp("arrow.wav",20);
         default:
-            return "<S-NAME> <DAMAGE> <T-NAMESELF> with "+weaponName+"."+CMProps.msp("punch"+Dice.roll(1,7,0)+".wav",20);
+            return "<S-NAME> <DAMAGE> <T-NAMESELF> with "+weaponName+"."+CMProps.msp("punch"+CMLib.dice().roll(1,7,0)+".wav",20);
         }
     }
 
-    public static String standardMobCondition(MOB mob)
+    public String[] healthDescs(){return DEFAULT_HEALTH_CHART;}
+    public String standardMobCondition(MOB mob)
     {
-        switch((int)Math.round(Math.floor((Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))*10)))
-        {
-        case 0: return "^r" + mob.name() + "^r is hovering on deaths door!^N";
-        case 1: return "^r" + mob.name() + "^r is covered in blood.^N";
-        case 2: return "^r" + mob.name() + "^r is bleeding badly from lots of wounds.^N";
-        case 3: return "^y" + mob.name() + "^y has numerous bloody wounds and gashes.^N";
-        case 4: return "^y" + mob.name() + "^y has some bloody wounds and gashes.^N";
-        case 5: return "^p" + mob.name() + "^p has a few bloody wounds.^N";
-        case 6: return "^p" + mob.name() + "^p is cut and bruised.^N";
-        case 7: return "^g" + mob.name() + "^g has some minor cuts and bruises.^N";
-        case 8: return "^g" + mob.name() + "^g has a few bruises and scratches.^N";
-        case 9: return "^g" + mob.name() + "^g has a few small bruises.^N";
-        default: return "^c" + mob.name() + "^c is in perfect health.^N";
-        }
+        int pct=(int)Math.round(Math.floor((Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))*10));
+        if(pct<0) pct=0;
+        if(pct>=healthDescs().length) pct=healthDescs().length-1;
+        return Util.replaceAll(healthDescs()[pct],"<MOB>",mob.name());
     }
 
-    public static void resistanceMsgs(CMMsg msg, MOB source, MOB target)
+    public void resistanceMsgs(CMMsg msg, MOB source, MOB target)
     {
         if(msg.value()>0) return;
 
@@ -1003,194 +846,10 @@ public class MUDFight
         {
             String newStr=target+"/"+source+"/"+tool;
             if(!newStr.equals(lastStr)||((System.currentTimeMillis()-lastRes)>250))
-                msg.addTrailerMsg(new FullMsg(target,source,CMMsg.MSG_OK_ACTION,tackOn));
+                msg.addTrailerMsg(CMClass.getMsg(target,source,CMMsg.MSG_OK_ACTION,tackOn));
             lastStr=newStr;
             lastRes=System.currentTimeMillis();
         }
         msg.setValue(msg.value()+1);
     }
-
-
-    public static String[] armorStrs={
-    "vulnerable",
-    "slightly covered",
-    "somewhat covered",
-    "covered",
-    "well covered",
-    "very covered",
-    "slightly protected",
-    "somewhat protected",
-    "protected",
-    "well protected",
-    "very protected",
-    "heavily protected",
-    "slightly armored",
-    "somewhat armored",
-    "armored",
-    "armored",
-    "well armored",
-    "very armored",
-    "heavily armored",
-    "completely armored",
-    "totally armored",
-    "divinely armored",
-    "slightly unhittable",
-    "somewhat unhittable",
-    "practically unhittable",
-    "unhittable",
-    "unhittable",
-    "totally unhittable",
-    "totally unhittable",
-    "slightly impenetrable",
-    "slightly impenetrable",
-    "somewhat impenetrable",
-    "somewhat impenetrable",
-    "almost impenetrable",
-    "almost impenetrable",
-    "impenetrable",
-    "impenetrable",
-    "slightly invincible",
-    "slightly invincible",
-    "slightly invincible",
-    "somewhat invincible",
-    "somewhat invincible",
-    "somewhat invincible",
-    "somewhat invincible",
-    "almost invincible",
-    "almost invincible",
-    "almost invincible",
-    "almost invincible",
-    "almost invincible",
-    "invincible!",
-    };
-
-    public final static String[] fightStrs={
-    "none",
-    "novice",
-    "initiate",
-    "trainee",
-    "barely skilled",
-    "a little skilled",
-    "slightly skilled",
-    "somewhat skilled",
-    "almost skilled",
-    "mostly skilled",
-    "simply skilled",
-    "skilled",
-    "really skilled",
-    "obviously skilled",
-    "very skilled",
-    "extremely skilled",
-    "terribly skilled",
-    "masterfully skilled",
-    "a little dangerous",
-    "barely dangerous",
-    "slightly dangerous",
-    "somewhat dangerous",
-    "almost dangerous",
-    "mostly dangerous",
-    "simply dangerous",
-    "dangerous",
-    "really dangerous",
-    "obviously dangerous",
-    "very dangerous",
-    "extremely dangerous",
-    "terribly dangerous",
-    "horribly dangerous",
-    "fearfully dangerous",
-    "frighteningly dangerous",
-    "totally dangerous",
-    "entirely dangerous",
-    "a novice master I",
-    "a novice master II",
-    "a novice master III",
-    "a master initiate I",
-    "a master initiate II",
-    "a master initiate III",
-    "an apprentice master I",
-    "an apprentice master II",
-    "an apprentice master III",
-    "a master I",
-    "a master I",
-    "a master II",
-    "a master II",
-    "a master III",
-    "a master III",
-    "a master IV",
-    "a master IV",
-    "a master V",
-    "a master V",
-    "a master VI",
-    "a master VI",
-    "a master VII",
-    "a master VII",
-    "a master VIII",
-    "a master VIII",
-    "a master IX",
-    "a master IX",
-    "a master X",
-    "a master X",
-    "an initiate of death I",
-    "an initiate of death II",
-    "an initiate of death III",
-    "an apprentice of death I",
-    "an apprentice of death II",
-    "an apprentice of death III",
-    "a servant of death I",
-    "a servant of death II",
-    "a servant of death III",
-    "a bringer of death I",
-    "a bringer of death II",
-    "a bringer of death III",
-    "a bringer of death IV",
-    "a giver of death I",
-    "a giver of death II",
-    "a giver of death III",
-    "a giver of death V",
-    "a giver of death VI",
-    "a giver of death VIII",
-    "a giver of death X",
-    "a dealer of death I",
-    "a dealer of death II",
-    "a dealer of death III",
-    "a dealer of death IV",
-    "a dealer of death V",
-    "a dealer of death VI",
-    "a dealer of death VIII",
-    "a dealer of death X",
-    "a master of death I",
-    "a master of death II",
-    "a master of death III",
-    "a master of death IV",
-    "a master of death V",
-    "a master of death VII",
-    "a master of death VIII",
-    "a master of death IX",
-    "a master of death X",
-    "a lord of death I",
-    "a lord of death II",
-    "a lord of death III",
-    "a lord of death IV",
-    "a lord of death V",
-    "a lord of death VI",
-    "a lord of death VII",
-    "a lord of death VIII",
-    "a lord of death IX",
-    "a lord of death X",
-    "death incarnate!"
-    };
-    public final static String[] missStrs1={
-        "<S-NAME> fire(s) at <T-NAMESELF> with <TOOLNAME> and miss(es).", // 0
-        "<S-NAME> throw(s) <TOOLNAME> at <T-NAMESELF> and miss(es).", // 1
-        "<S-NAME> swing(s) at <T-NAMESELF> with <TOOLNAME> and miss(es).", //2
-        "<S-NAME> attack(s) <T-NAMESELF> with <TOOLNAME> and miss(es).", //3
-        "<S-NAME> lunge(s) at <T-NAMESELF> with <TOOLNAME> and miss(es)." //4
-    };
-    public final static String[] missStrs2={
-        "<S-NAME> fire(s) at <T-NAMESELF> and miss(es).", //0
-        "<S-NAME> throw(s) at <T-NAMESELF> and miss(es).", //1
-        "<S-NAME> swing(s) at <T-NAMESELF> and miss(es).", //2
-        "<S-NAME> attack(s) <T-NAMESELF> and miss(es).",  //3
-        "<S-NAME> lunge(s) at <T-NAMESELF> and miss(es)." //4
-    };
 }

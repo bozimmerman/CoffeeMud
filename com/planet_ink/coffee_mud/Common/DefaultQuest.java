@@ -322,7 +322,7 @@ public class DefaultQuest implements Quest, Tickable
                             }
                         }
                         if(areas.size()>0)
-                            q.area=(Area)areas.elementAt(Dice.roll(1,areas.size(),-1));
+                            q.area=(Area)areas.elementAt(CMLib.dice().roll(1,areas.size(),-1));
                         if(q.area==null)
                         {
                             if(!isQuiet)
@@ -420,7 +420,7 @@ public class DefaultQuest implements Quest, Tickable
                                 Log.errOut("Quests","Quest '"+name()+"', all choices were taken: '"+p+"'.");
                         }
                         if((choices!=null)&&(choices.size()>0))
-                            q.mob=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
+                            q.mob=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         if(q.mob==null)
                         {
                             if(!isQuiet)
@@ -552,7 +552,7 @@ public class DefaultQuest implements Quest, Tickable
                                 Log.errOut("Quests","Quest '"+name()+"', all choices were taken: '"+p+"'.");
                         }
                         if((choices!=null)&&(choices.size()>0))
-                            q.item=(Item)choices.elementAt(Dice.roll(1,choices.size(),-1));
+                            q.item=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         if(q.item==null)
                         {
                             if(!isQuiet)
@@ -612,7 +612,7 @@ public class DefaultQuest implements Quest, Tickable
                             }catch(NoSuchElementException e){}
                         }
                         if((choices!=null)&&(choices.size()>0))
-                            q.room=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
+                            q.room=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         if(q.room==null)
                         {
                             if(!isQuiet)
@@ -684,7 +684,7 @@ public class DefaultQuest implements Quest, Tickable
                             }catch(NoSuchElementException e){}
                         }
                         if((choices!=null)&&(choices.size()>0))
-                            q.room=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
+                            q.room=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         if(q.room==null)
                         {
                             if(!isQuiet)
@@ -756,7 +756,7 @@ public class DefaultQuest implements Quest, Tickable
                                 Log.errOut("Quests","Quest '"+name()+"', all choices were taken: '"+p+"'.");
                         }
                         if((choices!=null)&&(choices.size()>0))
-                            q.mob=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
+                            q.mob=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         if(q.mob==null)
                         {
                             if(!isQuiet)
@@ -808,7 +808,7 @@ public class DefaultQuest implements Quest, Tickable
                                 Log.errOut("Quests","Quest '"+name()+"', all choices were taken: '"+p+"'.");
                         }
                         if((choices!=null)&&(choices.size()>0))
-                            q.item=(Item)choices.elementAt(Dice.roll(1,choices.size(),-1));
+                            q.item=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         if(q.item==null)
                         {
                             if(!isQuiet)
@@ -985,7 +985,7 @@ public class DefaultQuest implements Quest, Tickable
                                 Log.errOut("Quests","Quest '"+name()+"', no mob found to load '"+mobName+"'!");
                             q.error=true; break;
                         }
-                        q.mob=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
+                        q.mob=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         if(q.room==null)
                         {
                             if(q.area!=null)
@@ -1039,7 +1039,7 @@ public class DefaultQuest implements Quest, Tickable
                                 Log.errOut("Quests","Quest '"+name()+"', no item found to load '"+itemName+"'!");
                             q.error=true; break;
                         }
-                        q.item=(Item)choices.elementAt(Dice.roll(1,choices.size(),-1));
+                        q.item=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         if(q.room==null)
                         {
                             if(q.area!=null)
@@ -1113,7 +1113,7 @@ public class DefaultQuest implements Quest, Tickable
                                 Log.errOut("Quests","Quest '"+name()+"', cannot give follower, no mobs called '"+mobName+"' previously set in script.");
                             q.error=true; break;
                         }
-                        MOB M2=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
+                        MOB M2=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                         M2.setFollowing(q.mob);
                     }
                     else
@@ -1432,15 +1432,15 @@ public class DefaultQuest implements Quest, Tickable
                 if(x<0) return false;
                 int month=Util.s_int(startDate.substring(0,x));
                 int day=Util.s_int(startDate.substring(x+1));
-                int year=IQCalendar.getIQInstance().get(Calendar.YEAR);
-                long distance=IQCalendar.string2Millis(month+"/"+day+"/"+year+" 12:00 AM");
+                int year=Calendar.getInstance().get(Calendar.YEAR);
+                long distance=CMLib.time().string2Millis(month+"/"+day+"/"+year+" 12:00 AM");
                 while(distance<System.currentTimeMillis())
-                    distance=IQCalendar.string2Millis(month+"/"+day+"/"+(++year)+" 12:00 AM");
+                    distance=CMLib.time().string2Millis(month+"/"+day+"/"+(++year)+" 12:00 AM");
                 waitRemaining=(int)((distance-System.currentTimeMillis())/MudHost.TICK_TIME);
             }
         }
         else
-            waitRemaining=minWait+(Dice.roll(1,maxWait,0));
+            waitRemaining=minWait+(CMLib.dice().roll(1,maxWait,0));
         return true;
     }
 

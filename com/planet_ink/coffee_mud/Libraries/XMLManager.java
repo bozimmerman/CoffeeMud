@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -30,8 +31,9 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class XMLManager
+public class XMLManager extends StdLibrary implements XMLLibrary
 {
+    public String ID(){return "XMLManager";}
 	/**
 	 * Returns the double value of a string without crashing
  	 * 
@@ -39,7 +41,7 @@ public class XMLManager
 	 * @param double String to convert
 	 * @return double Double value of the string
 	 */
-	public static double s_double(String DOUBLE)
+	public double s_double(String DOUBLE)
 	{
 		double sdouble=0;
 		try{ sdouble=Double.parseDouble(DOUBLE); }
@@ -54,7 +56,7 @@ public class XMLManager
 	 * @param INT Integer value of string
 	 * @return int Integer value of the string
 	 */
-	private static int s_int(String INT)
+	public int s_int(String INT)
 	{
 		int sint=0;
 		try{ sint=Integer.parseInt(INT); }
@@ -69,7 +71,7 @@ public class XMLManager
 	 * @param LONG Long value of string
 	 * @return long Long value of the string
 	 */
-	private  static long s_long(String LONG)
+	public  long s_long(String LONG)
 	{
 		long slong=0;
 		try{ slong=Long.parseLong(LONG); }
@@ -85,7 +87,7 @@ public class XMLManager
 	 * @param Data String to searh
 	 * @return String Information corresponding to the tname
 	 */
-	public static String convertXMLtoTag(String TName, String Data)
+	public String convertXMLtoTag(String TName, String Data)
 	{
 	    if(Data.length()==0)
 			return "<"+TName+" />";
@@ -100,7 +102,7 @@ public class XMLManager
 	 * @param Data String to searh
 	 * @return String Information corresponding to the tname
 	 */
-	public static String convertXMLtoTag(String TName, int Data)
+	public String convertXMLtoTag(String TName, int Data)
 	{
 		return "<"+TName+">"+Data+"</"+TName+">";
 	}
@@ -113,7 +115,7 @@ public class XMLManager
 	 * @param Data String to searh
 	 * @return String Information corresponding to the tname
 	 */
-	public static String convertXMLtoTag(String TName, boolean Data)
+	public String convertXMLtoTag(String TName, boolean Data)
 	{
 		return "<"+TName+">"+Data+"</"+TName+">";
 	}
@@ -126,7 +128,7 @@ public class XMLManager
 	 * @param Data String to searh
 	 * @return String Information corresponding to the tname
 	 */
-	public static String convertXMLtoTag(String TName, long Data)
+	public String convertXMLtoTag(String TName, long Data)
 	{
 		return "<"+TName+">"+Data+"</"+TName+">";
 	}
@@ -139,7 +141,7 @@ public class XMLManager
 	 * @param Tag Tag name to search for
 	 * @return String Information corresponding to the tname
 	 */
-	public static String returnXMLBlock(String Blob, String Tag)
+	public String returnXMLBlock(String Blob, String Tag)
 	{
 		int foundb=Blob.indexOf("<"+Tag+">");
 		if(foundb<0) foundb=Blob.indexOf("<"+Tag+" ");
@@ -159,26 +161,7 @@ public class XMLManager
 		return Blob;
 	}
 	
-	public static class XMLpiece
-	{
-		public String tag="";
-		public String value="";
-		public Vector contents=new Vector();
-        public Vector parms=contents;
-        public XMLpiece parent=null;
-		public int outerStart=-1;
-		public int innerStart=-1;
-		public int innerEnd=-1;
-		public int outerEnd=-1;
-		public void addContent(XMLpiece x)
-		{
-			if(x==null) return;
-			if(contents==null) contents=new Vector();
-			contents.addElement(x);
-		}
-	}
-	
-	public static String parseOutParms(String blk, Vector parmList)
+	public String parseOutParms(String blk, Vector parmList)
 	{
 		blk=blk.trim();
 		for(int x=0;x<blk.length();x++)
@@ -195,7 +178,7 @@ public class XMLManager
 	}
 	
 	
-	public static String getValFromPieces(Vector V, String tag)
+	public String getValFromPieces(Vector V, String tag)
 	{
 		XMLpiece x=getPieceFromPieces(V,tag);
 		if((x!=null)&&(x.value!=null))
@@ -203,7 +186,7 @@ public class XMLManager
 		return "";
 	}
 	
-	public static Vector getContentsFromPieces(Vector V, String tag)
+	public Vector getContentsFromPieces(Vector V, String tag)
 	{
 		XMLpiece x=getPieceFromPieces(V,tag);
 		if((x!=null)&&(x.contents!=null))
@@ -211,14 +194,14 @@ public class XMLManager
 		return new Vector();
 	}
 	
-	public static Vector getRealContentsFromPieces(Vector V, String tag)
+	public Vector getRealContentsFromPieces(Vector V, String tag)
 	{
 		XMLpiece x=getPieceFromPieces(V,tag);
 		if(x!=null)	return x.contents;
 		return null;
 	}
 	
-	public static XMLpiece getPieceFromPieces(Vector V, String tag)
+	public XMLpiece getPieceFromPieces(Vector V, String tag)
 	{
 		if(V==null) return null;
 		for(int v=0;v<V.size();v++)
@@ -236,7 +219,7 @@ public class XMLManager
 	 * @param Tag Tag to search for
 	 * @return boolean Information from XML block
 	 */
-	public static boolean getBoolFromPieces(Vector V, String tag)
+	public boolean getBoolFromPieces(Vector V, String tag)
 	{
 		String val=getValFromPieces(V,tag);
 		if((val==null)||((val!=null)&&(val.length()==0)))
@@ -255,7 +238,7 @@ public class XMLManager
 	 * @param Tag Tag to search for
 	 * @return int Information from XML block
 	 */
-	public static int getIntFromPieces(Vector V, String tag)
+	public int getIntFromPieces(Vector V, String tag)
 	{
 		return s_int(getValFromPieces(V,tag));
 	}
@@ -270,7 +253,7 @@ public class XMLManager
 	 * @param Tag Tag to search for
 	 * @return long Information from XML block
 	 */
-	public static long getLongFromPieces(Vector V, String tag)
+	public long getLongFromPieces(Vector V, String tag)
 	{
 		return s_long(getValFromPieces(V,tag));
 	}
@@ -284,12 +267,12 @@ public class XMLManager
 	 * @param Tag Tag to search for
 	 * @return double Information from XML block
 	 */
-	public static double getDoubleFromPieces(Vector V, String tag)
+	public double getDoubleFromPieces(Vector V, String tag)
 	{
 		return s_double(getValFromPieces(V,tag));
 	}
 	
-    public static boolean acceptableTag(StringBuffer str, int start, int end)
+    public boolean acceptableTag(StringBuffer str, int start, int end)
     {
         while(Character.isWhitespace(str.charAt(start)))
             start++;
@@ -300,12 +283,12 @@ public class XMLManager
         ||((str.charAt(start)!='/')&&(!Character.isLetter(str.charAt(start)))))
             return false;
         if(start+1==end) return true;
-        if(CoffeeFilter.getTagTable().containsKey(str.substring(start,end).toUpperCase()))
+        if(CMLib.coffeeFilter().getTagTable().containsKey(str.substring(start,end).toUpperCase()))
             return false;
         return true;
     }
     
-    public static XMLpiece nextXML(StringBuffer buf, XMLpiece parent, int start)
+    public XMLpiece nextXML(StringBuffer buf, XMLpiece parent, int start)
     {
         int end=-1;
         start--;
@@ -371,10 +354,10 @@ public class XMLManager
 	}
 	
 	
-	public static Vector parseAllXML(String buf)
+	public Vector parseAllXML(String buf)
 	{  return parseAllXML(new StringBuffer(buf));}
 		
-	public static Vector parseAllXML(StringBuffer buf)
+	public Vector parseAllXML(StringBuffer buf)
 	{
 		Vector V=new Vector();
 		int end=-1;
@@ -397,7 +380,7 @@ public class XMLManager
 	 * @param Blob String to searh
 	 * @return String Information from first XML block
 	 */
-	public static String returnXMLValue(String Blob)
+	public String returnXMLValue(String Blob)
 	{
 		int start=0;
 		
@@ -419,7 +402,7 @@ public class XMLManager
 	 * @param Tag Tag to search for
 	 * @return String Information from XML block
 	 */
-	public static String returnXMLValue(String Blob, String Tag)
+	public String returnXMLValue(String Blob, String Tag)
 	{
 		int start=0;
 		Blob=returnXMLBlock(Blob,Tag);
@@ -440,7 +423,7 @@ public class XMLManager
 	 * @param Tag Tag to search for
 	 * @return String Information from XML block
 	 */
-	public static boolean returnXMLBoolean(String Blob, String Tag)
+	public boolean returnXMLBoolean(String Blob, String Tag)
 	{
 		String val=returnXMLValue(Blob,Tag);
 		if((val==null)||((val!=null)&&(val.length()==0)))
@@ -460,7 +443,7 @@ public class XMLManager
 	 * @param Tag Tag to search for
 	 * @return String Parameter value
 	 */
-	public static String returnXMLParm(String Blob, String Tag)
+	public String returnXMLParm(String Blob, String Tag)
 	{
 		int foundb=Blob.indexOf(Tag+"=");
 		if(foundb<0)foundb=Blob.indexOf(Tag+" =");

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Items.Basic;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -67,7 +78,7 @@ public class StdContainer extends StdItem implements Container
 				if((msg.tool()!=null)
 				&&(msg.tool() instanceof Item))
 				{
-					if(!Sense.isDroppable((Item)msg.tool()))
+					if(!CMLib.flags().isDroppable((Item)msg.tool()))
 					{
 						mob.tell("You can't seem to let go of "+msg.tool().name()+".");
 						return false;
@@ -122,7 +133,7 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						if((!msg.source().isMine(this))&&(msg.source().isMine(newitem)))
-							if(!CommonMsgs.drop(msg.source(),newitem,true,true))
+							if(!CMLib.commands().drop(msg.source(),newitem,true,true))
 								return false;
 						return true;
 					}
@@ -135,7 +146,7 @@ public class StdContainer extends StdItem implements Container
 					Item newitem=(Item)msg.tool();
 					if(newitem.container()==this)
 					{
-						if((!(Sense.canBeSeenBy(newitem,mob)||(newitem instanceof Light)))
+						if((!(CMLib.flags().canBeSeenBy(newitem,mob)||(newitem instanceof Light)))
 						&&(amWearingAt(Item.INVENTORY))
 						&&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0))
 						{
@@ -168,7 +179,7 @@ public class StdContainer extends StdItem implements Container
                             return false;
                         }
                         else
-						if(!Sense.isGettable(newitem))
+						if(!CMLib.flags().isGettable(newitem))
 						{
 							mob.tell("You can't get "+newitem.name()+".");
 							return false;
@@ -198,7 +209,7 @@ public class StdContainer extends StdItem implements Container
 					Item newitem=(Item)msg.tool();
 					if(newitem.container()==this)
 					{
-						if((!Sense.canBeSeenBy(newitem,mob))
+						if((!CMLib.flags().canBeSeenBy(newitem,mob))
 						&&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0))
 						{
 							mob.tell("You can't see that.");
@@ -289,7 +300,7 @@ public class StdContainer extends StdItem implements Container
 							   ||((item.container().container()==null)
 								  &&(item.container() instanceof Container)
 								  &&((((Container)item.container()).containTypes()&Container.CONTAIN_KEYS)>0)))
-							&&(Sense.canBeSeenBy(item,mob)))
+							&&(CMLib.flags().canBeSeenBy(item,mob)))
 								return true;
 						}
 						mob.tell("You don't have the key.");
@@ -362,7 +373,7 @@ public class StdContainer extends StdItem implements Container
 				break;
 			case CMMsg.TYP_LOOK:
             case CMMsg.TYP_EXAMINE:
-				if(Sense.canBeSeenBy(this,mob))
+				if(CMLib.flags().canBeSeenBy(this,mob))
 				{
 					StringBuffer buf=new StringBuffer("");
 					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
@@ -400,7 +411,7 @@ public class StdContainer extends StdItem implements Container
 								if((item!=null)&&(item.container()==this))
 									newItems.addElement(item);
 							}
-							buf.append(CMLister.lister(mob,newItems,true,"CMItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
+							buf.append(CMLib.lister().lister(mob,newItems,true,"CMItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
 						}
 						else
 						if(owner instanceof Room)
@@ -413,14 +424,14 @@ public class StdContainer extends StdItem implements Container
 								if((item!=null)&&(item.container()==this))
 									newItems.addElement(item);
 							}
-							buf.append(CMLister.lister(mob,newItems,true,"CRItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
+							buf.append(CMLib.lister().lister(mob,newItems,true,"CRItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
 						}
 					}
 					else
 					if(hasALid())
 						buf.append(name()+" is closed.");
                     if(!msg.source().isMonster())
-                        buf.append(CommonStrings.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
+                        buf.append(CMProps.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
 					mob.tell(buf.toString());
 				}
 				else
@@ -456,7 +467,7 @@ public class StdContainer extends StdItem implements Container
 		&&(msg.source().isMine(this)))
 		{
 			setContainer(null);
-			Room R=CoffeeUtensils.roomLocation(msg.target());
+			Room R=CMLib.utensils().roomLocation(msg.target());
 			if(R!=null)
 			{
 				recursiveDropMOB(msg.source(),R,this,this instanceof DeadBody);
@@ -574,7 +585,7 @@ public class StdContainer extends StdItem implements Container
 					break;
 				case CONTAIN_READABLES:
 					if((E instanceof Item)
-					&&(Sense.isReadable(((Item)E))))
+					&&(CMLib.flags().isReadable(((Item)E))))
 						return true;
 					break;
 				case CONTAIN_SCROLLS:
@@ -626,7 +637,7 @@ public class StdContainer extends StdItem implements Container
 		// caller is responsible for recovering any env
 		// stat changes!
 
-		if(Sense.isHidden(thisContainer))
+		if(CMLib.flags().isHidden(thisContainer))
 			thisContainer.baseEnvStats().setDisposition(thisContainer.baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
 		mob.delInventory(thisContainer);
 		thisContainer.unWear();

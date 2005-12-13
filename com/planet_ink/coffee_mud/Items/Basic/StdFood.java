@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Items.Basic;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -62,7 +73,7 @@ public class StdFood extends StdItem implements Food
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_EAT:
-				if((mob.isMine(this))||(!Sense.isGettable(this)))
+				if((mob.isMine(this))||(!CMLib.flags().isGettable(this)))
 					return true;
 				mob.tell("You don't have that.");
 				return false;
@@ -83,8 +94,8 @@ public class StdFood extends StdItem implements Food
 				boolean hungry=mob.curState().getHunger()<=0;
 			    if((!hungry)
 			    &&(mob.curState().getHunger()>=mob.maxState().maxHunger(mob.baseWeight()))
-				&&(Dice.roll(1,500,0)==1)
-				&&(!Sense.isGolem(msg.source()))
+				&&(CMLib.dice().roll(1,500,0)==1)
+				&&(!CMLib.flags().isGolem(msg.source()))
 				&&(msg.source().fetchEffect("Disease_Obesity")==null))
 				{
 				    Ability A=CMClass.getAbility("Disease_Obesity");

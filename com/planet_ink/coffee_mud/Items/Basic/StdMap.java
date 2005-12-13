@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Items.Basic;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -22,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfaces.Map
+public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.interfaces.Map
 {
 	public String ID(){	return "StdMap";}
 	protected StringBuffer[][] myMap=null;
@@ -184,7 +195,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		Hashtable mapRooms=new Hashtable();
 		for(int a=0;a<mapAreas.size();a++)
 		{
-			Area A=CMMap.getArea((String)mapAreas.elementAt(a));
+			Area A=CMLib.map().getArea((String)mapAreas.elementAt(a));
 			if(A!=null)
 			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 			{
@@ -458,7 +469,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 			{
 				if(envStats().level()<2)
 				{
-					if((!Sense.isHidden(exit))&&(!Sense.isInvisible(exit))&&(!exit.defaultsLocked()))
+					if((!CMLib.flags().isHidden(exit))&&(!CMLib.flags().isInvisible(exit))&&(!exit.defaultsLocked()))
 						ok=true;
 				}
 				else
@@ -474,7 +485,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		if(exit==null) return false;
 		if(envStats().level()<2)
 		{
-			if((Sense.isHidden(exit)||Sense.isInvisible(exit)))
+			if((CMLib.flags().isHidden(exit)||CMLib.flags().isInvisible(exit)))
 			   return false;
 			if(exit.defaultsLocked())
 				return false;
@@ -530,10 +541,10 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_READ:
-			if(Sense.canBeSeenBy(this,mob))
+			if(CMLib.flags().canBeSeenBy(this,mob))
 			{
 				StringBuffer map[][]=getMyMappedRoom();
-				if((Sense.isReadable(this))
+				if((CMLib.flags().isReadable(this))
 				&&(map!=null)
 				&&(map.length>0)
 				&&(map[0].length>0)

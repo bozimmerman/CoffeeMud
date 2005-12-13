@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.MOBS;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /* 
    Copyright 2000-2005 Lee H. Fox
@@ -36,7 +47,7 @@ public class DrowWarrior extends DrowElf
 	{
 		super();
 
-		baseEnvStats().setLevel(Dice.roll(4,6,1));
+		baseEnvStats().setLevel(CMLib.dice().roll(4,6,1));
 
         magicResistance = 50 + baseEnvStats().level() * 2;
 
@@ -47,19 +58,19 @@ public class DrowWarrior extends DrowElf
 
         equipDrow();
 
-		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
-		setMoney(Dice.roll(4,10,0) * 25);
-		baseEnvStats.setWeight(70 + Dice.roll(3,6,2));
+		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		setMoney(CMLib.dice().roll(4,10,0) * 25);
+		baseEnvStats.setWeight(70 + CMLib.dice().roll(3,6,2));
 		baseCharStats.setStat(CharStats.GENDER,'M');
 
 		setWimpHitPoint(1);
 
-		baseCharStats().setStat(CharStats.STRENGTH,12 + Dice.roll(1,6,0));
-		baseCharStats().setStat(CharStats.INTELLIGENCE,14 + Dice.roll(1,6,0));
-		baseCharStats().setStat(CharStats.WISDOM,13 + Dice.roll(1,6,0));
-		baseCharStats().setStat(CharStats.DEXTERITY,15 + Dice.roll(1,6,0));
-		baseCharStats().setStat(CharStats.CONSTITUTION,12 + Dice.roll(1,6,0));
-		baseCharStats().setStat(CharStats.CHARISMA,13 + Dice.roll(1,6,0));
+		baseCharStats().setStat(CharStats.STRENGTH,12 + CMLib.dice().roll(1,6,0));
+		baseCharStats().setStat(CharStats.INTELLIGENCE,14 + CMLib.dice().roll(1,6,0));
+		baseCharStats().setStat(CharStats.WISDOM,13 + CMLib.dice().roll(1,6,0));
+		baseCharStats().setStat(CharStats.DEXTERITY,15 + CMLib.dice().roll(1,6,0));
+		baseCharStats().setStat(CharStats.CONSTITUTION,12 + CMLib.dice().roll(1,6,0));
+		baseCharStats().setStat(CharStats.CHARISMA,13 + CMLib.dice().roll(1,6,0));
 		baseCharStats().setCurrentClass(CMClass.getCharClass("Fighter"));
 		baseCharStats().setMyRace(CMClass.getRace("Elf"));
 		baseCharStats().getMyRace().startRacing(this,false);
@@ -85,7 +96,7 @@ public class DrowWarrior extends DrowElf
         Weapon mainWeapon = null;
         Weapon secondWeapon = null;
 
-        int weaponry = Dice.roll(1,4,0);
+        int weaponry = CMLib.dice().roll(1,4,0);
         switch(weaponry)
         {
             case 1:
@@ -137,72 +148,72 @@ public class DrowWarrior extends DrowElf
         this.addAbility(dark);
 
         Ability p1 =CMClass.getAbility("Prayer_ProtGood");
-        p1.setProfficiency(Dice.roll(5, 10, 50));
+        p1.setProfficiency(CMLib.dice().roll(5, 10, 50));
 		p1.setBorrowed(this,true);
         this.addAbility(p1);
 
         Ability p2 =CMClass.getAbility("Prayer_CauseLight");
-        p2.setProfficiency(Dice.roll(5, 10, 50));
+        p2.setProfficiency(CMLib.dice().roll(5, 10, 50));
 		p2.setBorrowed(this,true);
         this.addAbility(p2);
 
         Ability p3 =CMClass.getAbility("Prayer_CauseSerious");
-        p3.setProfficiency(Dice.roll(5, 10, 50));
+        p3.setProfficiency(CMLib.dice().roll(5, 10, 50));
 		p3.setBorrowed(this,true);
         this.addAbility(p3);
 
         Ability p4 =CMClass.getAbility("Prayer_Curse");
-        p4.setProfficiency(Dice.roll(5, 10, 50));
+        p4.setProfficiency(CMLib.dice().roll(5, 10, 50));
 		p4.setBorrowed(this,true);
         this.addAbility(p4);
 
         Ability p5 =CMClass.getAbility("Prayer_Paralyze");
-        p5.setProfficiency(Dice.roll(5, 10, 50));
+        p5.setProfficiency(CMLib.dice().roll(5, 10, 50));
 		p5.setBorrowed(this,true);
         this.addAbility(p5);
 
         Ability p6 =CMClass.getAbility("Prayer_DispelGood");
-        p6.setProfficiency(Dice.roll(5, 10, 50));
+        p6.setProfficiency(CMLib.dice().roll(5, 10, 50));
 		p6.setBorrowed(this,true);
         this.addAbility(p6);
 
         Ability p7 =CMClass.getAbility("Prayer_Plague");
-        p7.setProfficiency(Dice.roll(5, 10, 50));
+        p7.setProfficiency(CMLib.dice().roll(5, 10, 50));
 		p7.setBorrowed(this,true);
         this.addAbility(p7);
 
         Ability p8 =CMClass.getAbility("Prayer_CauseCritical");
-        p8.setProfficiency(Dice.roll(5, 10, 50));
+        p8.setProfficiency(CMLib.dice().roll(5, 10, 50));
 		p8.setBorrowed(this,true);
         this.addAbility(p8);
 
         Ability p9 =CMClass.getAbility("Prayer_Blindness");
-        p9.setProfficiency(Dice.roll(5, 10, 50));
+        p9.setProfficiency(CMLib.dice().roll(5, 10, 50));
 		p9.setBorrowed(this,true);
         this.addAbility(p9);
 
         Ability p10 =CMClass.getAbility("Prayer_BladeBarrier");
-        p10.setProfficiency(Dice.roll(5, 10, 50));
+        p10.setProfficiency(CMLib.dice().roll(5, 10, 50));
 		p10.setBorrowed(this,true);
         this.addAbility(p10);
 
         Ability p11 =CMClass.getAbility("Prayer_Hellfire");
-        p11.setProfficiency(Dice.roll(5, 10, 50));
+        p11.setProfficiency(CMLib.dice().roll(5, 10, 50));
 		p11.setBorrowed(this,true);
         this.addAbility(p11);
 
         Ability p12 =CMClass.getAbility("Prayer_UnholyWord");
-        p12.setProfficiency(Dice.roll(5, 10, 50));
+        p12.setProfficiency(CMLib.dice().roll(5, 10, 50));
 		p12.setBorrowed(this,true);
         this.addAbility(p12);
 
         Ability p13 =CMClass.getAbility("Prayer_Deathfinger");
-        p13.setProfficiency(Dice.roll(5, 10, 50));
+        p13.setProfficiency(CMLib.dice().roll(5, 10, 50));
 		p13.setBorrowed(this,true);
         this.addAbility(p13);
 
         Ability p14 =CMClass.getAbility("Prayer_Harm");
-        p14.setProfficiency(Dice.roll(5, 10, 50));
+        p14.setProfficiency(CMLib.dice().roll(5, 10, 50));
 		p14.setBorrowed(this,true);
         this.addAbility(p14);
 
@@ -216,7 +227,7 @@ public class DrowWarrior extends DrowElf
 		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
 		{
-            if(Dice.rollPercentage() <= magicResistance)
+            if(CMLib.dice().rollPercentage() <= magicResistance)
             {
 	            msg.source().tell("The drow warrior resisted your spell!");
 	            return false;
@@ -264,11 +275,11 @@ public class DrowWarrior extends DrowElf
     public boolean useSkill()
     {
         Ability prayer = null;
-        if(Dice.rollPercentage() < 70)
+        if(CMLib.dice().rollPercentage() < 70)
         {
-            prayer =  this.fetchAbility(Dice.roll(1,numLearnedAbilities(),-1));
-            while((prayer==null)||(this.baseEnvStats().level() < CMAble.lowestQualifyingLevel(prayer.ID())))
-                prayer = this.fetchAbility(Dice.roll(1,numLearnedAbilities(),-1));
+            prayer =  this.fetchAbility(CMLib.dice().roll(1,numLearnedAbilities(),-1));
+            while((prayer==null)||(this.baseEnvStats().level() < CMLib.ableMapper().lowestQualifyingLevel(prayer.ID())))
+                prayer = this.fetchAbility(CMLib.dice().roll(1,numLearnedAbilities(),-1));
         }
         else
             prayer = CMClass.getAbility("Prayer_CureSerious");
@@ -281,7 +292,7 @@ public class DrowWarrior extends DrowElf
 	{
 		if(this.location()==null)
 			return true;
-		if(Sense.isInDark(this.location()))
+		if(CMLib.flags().isInDark(this.location()))
 			return true;
 
 		Ability dark=CMClass.getAbility("Spell_Darkness");

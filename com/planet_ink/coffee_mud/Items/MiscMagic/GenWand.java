@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Items.Basic.GenItem;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -36,7 +47,7 @@ public class GenWand extends StdWand
 		setUsesRemaining(0);
 		baseGoldValue=20000;
 		baseEnvStats().setLevel(12);
-		Sense.setReadable(this,false);
+		CMLib.flags().setReadable(this,false);
 		material=EnvResource.RESOURCE_OAK;
 		recoverEnvStats();
 	}
@@ -60,21 +71,21 @@ public class GenWand extends StdWand
 
 	public String text()
 	{
-		return CoffeeMaker.getPropertiesStr(this,false);
+		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
 	public void setMiscText(String newText)
 	{
 		miscText="";
-		CoffeeMaker.setPropertiesStr(this,newText,false);
+		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
 
 	public String getStat(String code)
-	{ return CoffeeMaker.getGenItemStat(this,code);}
+	{ return CMLib.coffeeMaker().getGenItemStat(this,code);}
 	public void setStat(String code, String val)
-	{ CoffeeMaker.setGenItemStat(this,code,val);}
-	public String[] getStatCodes(){return CoffeeMaker.GENITEMCODES;}
+	{ CMLib.coffeeMaker().setGenItemStat(this,code,val);}
+	public String[] getStatCodes(){return CMObjectBuilder.GENITEMCODES;}
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenWand)) return false;

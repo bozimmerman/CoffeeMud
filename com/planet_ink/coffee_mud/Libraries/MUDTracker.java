@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 
 /* 
@@ -30,11 +31,10 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class MUDTracker extends Scriptable
+public class MUDTracker extends StdLibrary implements TrackingLibrary
 {
-	private MUDTracker(){};
-    
-    public static Vector findBastardTheBestWay(Room location,
+    public String ID(){return "MUDTracker";}
+    public Vector findBastardTheBestWay(Room location,
                                                Room destRoom,
                                                boolean openOnly,
                                                boolean areaOnly,
@@ -44,7 +44,7 @@ public class MUDTracker extends Scriptable
                                                int maxRadius)
    {
         Vector radiant=new Vector();
-        MUDTracker.getRadiantRooms(location,radiant,openOnly,areaOnly,noAir,noAir,noWater,destRoom,maxRadius);
+        getRadiantRooms(location,radiant,openOnly,areaOnly,noAir,noAir,noWater,destRoom,maxRadius);
         if(!radiant.contains(location))
             radiant.insertElementAt(location,0);
         if((radiant!=null)&&(radiant.size()>0)
@@ -92,7 +92,7 @@ public class MUDTracker extends Scriptable
    }
     
     
-	public static Vector findBastardTheBestWay(Room location,
+	public Vector findBastardTheBestWay(Room location,
 											   Vector destRooms,
 											   boolean openOnly,
 											   boolean areaOnly,
@@ -107,7 +107,7 @@ public class MUDTracker extends Scriptable
         int pick=0;
         for(int i=0;(i<5)&&(destRooms.size()>0);i++)
         {
-            pick=Dice.roll(1,destRooms.size(),-1);
+            pick=CMLib.dice().roll(1,destRooms.size(),-1);
             destRoom=(Room)destRooms.elementAt(pick);
             destRooms.removeElementAt(pick);
             Vector thisTrail=findBastardTheBestWay(location,destRoom,openOnly,areaOnly,noEmptyGrids,noAir,noWater,maxRadius);
@@ -127,7 +127,7 @@ public class MUDTracker extends Scriptable
 	    return finalTrail;
 	}
 
-	public static int trackNextDirectionFromHere(Vector theTrail,
+	public int trackNextDirectionFromHere(Vector theTrail,
 												 Room location,
 												 boolean openOnly)
 	{
@@ -160,7 +160,7 @@ public class MUDTracker extends Scriptable
 		return winningDirection;
 	}
 
-	public static int radiatesFromDir(Room room, Vector rooms)
+	public int radiatesFromDir(Room room, Vector rooms)
 	{
 	    Room R=null;
 		for(int i=0;i<rooms.size();i++)
@@ -175,7 +175,7 @@ public class MUDTracker extends Scriptable
 		return -1;
 	}
 	
-	public static void getRadiantRooms(Room room,
+	public void getRadiantRooms(Room room,
 									   Vector rooms,
 									   boolean openOnly,
 									   boolean areaOnly,
@@ -243,7 +243,7 @@ public class MUDTracker extends Scriptable
 		}
 	}
 
-	public static boolean beMobile(MOB mob,
+	public boolean beMobile(MOB mob,
 								   boolean dooropen,
 								   boolean wander,
 								   boolean roomprefer, 
@@ -291,7 +291,7 @@ public class MUDTracker extends Scriptable
 		while(((tries++)<10)&&(direction<0))
 		{
             if(status!=null)status[0]=Tickable.STATUS_MISC7+5;
-			direction=Dice.roll(1,Directions.NUM_DIRECTIONS,-1);
+			direction=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS,-1);
 			Room nextRoom=oldRoom.getRoomInDir(direction);
 			Exit nextExit=oldRoom.getExitInDir(direction);
 			if((nextRoom!=null)&&(nextExit!=null))
@@ -318,13 +318,13 @@ public class MUDTracker extends Scriptable
 				}
                 if(status!=null)status[0]=Tickable.STATUS_MISC7+9;
 				if((oldRoom.domainType()!=nextRoom.domainType())
-				&&(!Sense.isInFlight(mob))
+				&&(!CMLib.flags().isInFlight(mob))
 				&&((nextRoom.domainType()==Room.DOMAIN_INDOORS_AIR)
 				||(nextRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)))
 					direction=-1;
 				else
 				if((oldRoom.domainType()!=nextRoom.domainType())
-				&&(!Sense.isSwimming(mob))
+				&&(!CMLib.flags().isSwimming(mob))
 				&&((nextRoom.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 				||(nextRoom.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
 					direction=-1;
@@ -364,8 +364,8 @@ public class MUDTracker extends Scriptable
 		
         if(status!=null)status[0]=Tickable.STATUS_MISC7+11;
         
-		if((CoffeeUtensils.getLandTitle(nextRoom)!=null)
-		&&(CoffeeUtensils.getLandTitle(nextRoom).landOwner().length()>0))
+		if((CMLib.utensils().getLandTitle(nextRoom)!=null)
+		&&(CMLib.utensils().getLandTitle(nextRoom).landOwner().length()>0))
 			dooropen=false;
 
 		boolean reclose=false;
@@ -377,14 +377,14 @@ public class MUDTracker extends Scriptable
 			if((nextExit.hasALock())&&(nextExit.isLocked()))
 			{
                 if(status!=null)status[0]=Tickable.STATUS_MISC7+13;
-				FullMsg msg=new FullMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+				CMMsg msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 				if(oldRoom.okMessage(mob,msg))
 				{
                     if(status!=null)status[0]=Tickable.STATUS_MISC7+14;
 					relock=true;
-					msg=new FullMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
+					msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
 					if(oldRoom.okMessage(mob,msg))
-						CoffeeUtensils.roomAffectFully(msg,oldRoom,direction);
+						CMLib.utensils().roomAffectFully(msg,oldRoom,direction);
 				}
 			}
             if(status!=null)status[0]=Tickable.STATUS_MISC7+15;
@@ -404,15 +404,15 @@ public class MUDTracker extends Scriptable
 
 		if(((nextRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 		||(nextRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-		   &&(!Sense.isWaterWorthy(mob))
-		   &&(!Sense.isInFlight(mob))
+		   &&(!CMLib.flags().isWaterWorthy(mob))
+		   &&(!CMLib.flags().isInFlight(mob))
 		   &&(mob.fetchAbility("Skill_Swim")!=null))
 		{
             if(status!=null)status[0]=Tickable.STATUS_MISC7+17;
 			Ability A=mob.fetchAbility("Skill_Swim");
 			Vector V=new Vector();
 			V.add(Directions.getDirectionName(direction));
-			if(A.profficiency()<50)	A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob,0)*15));
+			if(A.profficiency()<50)	A.setProfficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 			CharState oldState=(CharState)mob.curState().copyOf();
 			A.invoke(mob,V,null,false,0);
 			mob.curState().setMana(oldState.getMana());
@@ -420,8 +420,8 @@ public class MUDTracker extends Scriptable
 		}
 		else
 		if((nextRoom.ID().indexOf("Surface")>0)
-		&&(!Sense.isClimbing(mob))
-		&&(!Sense.isInFlight(mob))
+		&&(!CMLib.flags().isClimbing(mob))
+		&&(!CMLib.flags().isInFlight(mob))
 		&&((mob.fetchAbility("Skill_Climb")!=null)||(mob.fetchAbility("Power_SuperClimb")!=null)))
 		{
             if(status!=null)status[0]=Tickable.STATUS_MISC7+18;
@@ -429,7 +429,7 @@ public class MUDTracker extends Scriptable
 			if(A==null )A=mob.fetchAbility("Power_SuperClimb");
 			Vector V=new Vector();
 			V.add(Directions.getDirectionName(direction));
-			if(A.profficiency()<50)	A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob,0)*15));
+			if(A.profficiency()<50)	A.setProfficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 			CharState oldState=(CharState)mob.curState().copyOf();
 			A.invoke(mob,V,null,false,0);
 			mob.curState().setMana(oldState.getMana());
@@ -444,10 +444,10 @@ public class MUDTracker extends Scriptable
 			V.add(Directions.getDirectionName(direction));
 			if(A.profficiency()<50)
 			{
-				A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob,0)*15));
+				A.setProfficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 				Ability A2=mob.fetchAbility("Thief_Hide");
 				if(A2!=null)
-					A2.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob,0)*15));
+					A2.setProfficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 			}
 			CharState oldState=(CharState)mob.curState().copyOf();
 			A.invoke(mob,V,null,false,0);
@@ -473,12 +473,12 @@ public class MUDTracker extends Scriptable
 				if((opExit.hasALock())&&(relock))
 				{
                     if(status!=null)status[0]=Tickable.STATUS_MISC7+23;
-					FullMsg msg=new FullMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+					CMMsg msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 					if(nextRoom.okMessage(mob,msg))
 					{
-						msg=new FullMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
+						msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
 						if(nextRoom.okMessage(mob,msg))
-							CoffeeUtensils.roomAffectFully(msg,nextRoom,opDirection);
+							CMLib.utensils().roomAffectFully(msg,nextRoom,opDirection);
 					}
 				}
 			}
@@ -487,7 +487,7 @@ public class MUDTracker extends Scriptable
 		return mob.location()!=oldRoom;
 	}
 
-	public static void wanderAway(MOB M, boolean mindPCs, boolean andGoHome)
+	public void wanderAway(MOB M, boolean mindPCs, boolean andGoHome)
 	{
 	    if(M==null) return;
 		Room R=M.location();
@@ -499,7 +499,7 @@ public class MUDTracker extends Scriptable
 			M.getStartRoom().bringMobHere(M,true);
 	}
 
-	public static void wanderFromTo(MOB M, Room toHere, boolean mindPCs)
+	public void wanderFromTo(MOB M, Room toHere, boolean mindPCs)
 	{
 	    if(M==null) return;
 	    if((M.location()!=null)&&(M.location().isInhabitant(M)))
@@ -507,7 +507,7 @@ public class MUDTracker extends Scriptable
 	    wanderIn(M,toHere);
 	}
 	
-	public static void wanderIn(MOB M, Room toHere)
+	public void wanderIn(MOB M, Room toHere)
 	{
 	    if(toHere==null) return;
 	    if(M==null) return;
@@ -515,16 +515,16 @@ public class MUDTracker extends Scriptable
 		int dir=-1;
 		while((dir<0)&&((++tries)<100))
 		{
-		    dir=Dice.roll(1,Directions.NUM_DIRECTIONS,-1);
+		    dir=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS,-1);
 		    Room R=toHere.getRoomInDir(dir);
 		    if(R!=null)
 		    {
-		        if(((R.domainType()==Room.DOMAIN_INDOORS_AIR)&&(!Sense.isFlying(M)))
-		        ||((R.domainType()==Room.DOMAIN_OUTDOORS_AIR)&&(!Sense.isFlying(M)))
-		        ||((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)&&(!Sense.isSwimming(M)))
-		        ||((R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)&&(!Sense.isSwimming(M)))
-		        ||((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(!Sense.isSwimming(M)))
-		        ||((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(!Sense.isSwimming(M))))
+		        if(((R.domainType()==Room.DOMAIN_INDOORS_AIR)&&(!CMLib.flags().isFlying(M)))
+		        ||((R.domainType()==Room.DOMAIN_OUTDOORS_AIR)&&(!CMLib.flags().isFlying(M)))
+		        ||((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)&&(!CMLib.flags().isSwimming(M)))
+		        ||((R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)&&(!CMLib.flags().isSwimming(M)))
+		        ||((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(!CMLib.flags().isSwimming(M)))
+		        ||((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(!CMLib.flags().isSwimming(M))))
 		            dir=-1;
 		    }
 		    else
@@ -537,7 +537,7 @@ public class MUDTracker extends Scriptable
 		toHere.bringMobHere(M,true);
 	}
 
-	public static boolean move(MOB mob,
+	public boolean move(MOB mob,
 							   int directionCode,
 							   boolean flee,
 							   boolean nolook,
@@ -561,12 +561,12 @@ public class MUDTracker extends Scriptable
 		}
 		return false;
 	}
-	public static boolean move(MOB mob, int directionCode, boolean flee, boolean nolook)
+	public boolean move(MOB mob, int directionCode, boolean flee, boolean nolook)
 	{
 		return move(mob,directionCode,flee,nolook,false);
 	}
 
-	public static int findExitDir(MOB mob, Room R, String desc)
+	public int findExitDir(MOB mob, Room R, String desc)
 	{
 		int dir=Directions.getGoodDirectionCode(desc);
 		if(dir<0)
@@ -576,7 +576,7 @@ public class MUDTracker extends Scriptable
 			Room r=R.getRoomInDir(d);
 			if((e!=null)&&(r!=null))
 			{
-				if((Sense.canBeSeenBy(e,mob))
+				if((CMLib.flags().canBeSeenBy(e,mob))
 				&&((e.name().equalsIgnoreCase(desc))
 				||(e.displayText().equalsIgnoreCase(desc))
 				||(r.roomTitle().equalsIgnoreCase(desc))
@@ -593,11 +593,11 @@ public class MUDTracker extends Scriptable
 			Room r=R.getRoomInDir(d);
 			if((e!=null)&&(r!=null))
 			{
-				if((Sense.canBeSeenBy(e,mob))
-				&&(((EnglishParser.containsString(e.name(),desc))
-				||(EnglishParser.containsString(e.displayText(),desc))
-				||(EnglishParser.containsString(r.displayText(),desc))
-				||(EnglishParser.containsString(e.description(),desc)))))
+				if((CMLib.flags().canBeSeenBy(e,mob))
+				&&(((CMLib.english().containsString(e.name(),desc))
+				||(CMLib.english().containsString(e.displayText(),desc))
+				||(CMLib.english().containsString(r.displayText(),desc))
+				||(CMLib.english().containsString(e.description(),desc)))))
 				{
 					dir=d; break;
 				}
@@ -605,7 +605,7 @@ public class MUDTracker extends Scriptable
 		}
 		return dir;
 	}
-	public static int findRoomDir(MOB mob, Room R)
+	public int findRoomDir(MOB mob, Room R)
 	{
 	    if((mob==null)||(R==null)) 
 	        return -1;
@@ -618,4 +618,5 @@ public class MUDTracker extends Scriptable
 		        return d;
 		return dir;
 	}
+    
 }

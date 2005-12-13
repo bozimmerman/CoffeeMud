@@ -1,6 +1,7 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -30,27 +31,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CoffeeFilter
+public class CoffeeFilter extends StdLibrary implements TelnetFilter
 {
-	private CoffeeFilter(){};
-	private final static String hexStr="0123456789ABCDEF";
-	private final static int HISHER=0;
-	private final static int HIMHER=1;
-	private final static int NAME=2;
-	private final static int NAMESELF=3;
-	private final static int HESHE=4;
-	private final static int ISARE=5;
-	private final static int HASHAVE=6;
-	private final static int YOUPOSS=7;
-	private final static int HIMHERSELF=8;
-	private final static int HISHERSELF=9;
-    private final static int SIRMADAM=10;
-    private final static int ISARE2=11;
-    private final static int NAMENOART=12;
-    
-	private static Hashtable tagTable=null;
+    public String ID(){return "CoffeeFilter";}
+    public Hashtable tagTable=null;
 	
-	public static Hashtable getTagTable()
+	public Hashtable getTagTable()
 	{
 		if(tagTable==null)
 		{
@@ -73,7 +59,7 @@ public class CoffeeFilter
 	}
 	
     
-	public static String simpleOutFilter(String msg)
+	public String simpleOutFilter(String msg)
 	{
 		if(msg==null) return null;
 		StringBuffer buf=new StringBuffer(msg);
@@ -118,7 +104,7 @@ public class CoffeeFilter
     
 	// no word-wrapping, text filtering or ('\','n') -> '\n' translations
 	// (it's not a member of the interface either so probably shouldn't be public)
-	public static String colorOnlyFilter(String msg, Session S)
+	public String colorOnlyFilter(String msg, Session S)
 	{
 		if(msg==null) return null;
 
@@ -255,7 +241,7 @@ public class CoffeeFilter
 	}
     
     
-    private static String getLastWord(StringBuffer buf, int lastSp, int lastSpace)
+    public String getLastWord(StringBuffer buf, int lastSp, int lastSpace)
     {
         String lastWord="";
         if(lastSp>lastSpace)
@@ -278,7 +264,7 @@ public class CoffeeFilter
         return lastWord;
     }
     
-	public static String fullOutFilter(Session S,
+	public String fullOutFilter(Session S,
 									   MOB mob,
 									   Environmental source,
 									   Environmental target,
@@ -346,7 +332,7 @@ public class CoffeeFilter
 							if((S.clientTelnetMode(Session.TELNET_MSP))
 							&&((source==null)
 							   ||(source==mob)
-							   ||(Sense.canBeHeardBy(source,mob))))
+							   ||(CMLib.flags().canBeHeardBy(source,mob))))
 							{
 								loop=y;
 								if(wrap>0)
@@ -535,7 +521,7 @@ public class CoffeeFilter
                                         if(!firstSdone) doSagain=true;
                                     }
 									else
-									if(((!Sense.canSee(mob))||(!Sense.canBeSeenBy(regarding,mob)))&&(regarding.Name().trim().length()>0))
+									if(((!CMLib.flags().canSee(mob))||(!CMLib.flags().canBeSeenBy(regarding,mob)))&&(regarding.Name().trim().length()>0))
 										replacement=((regarding instanceof MOB)?"someone":"something");
 									else
 										replacement=regarding.name();
@@ -552,7 +538,7 @@ public class CoffeeFilter
                                         if(!firstSdone) doSagain=true;
                                     }
                                     else
-                                    if(((!Sense.canSee(mob))||(!Sense.canBeSeenBy(regarding,mob)))&&(regarding.Name().trim().length()>0))
+                                    if(((!CMLib.flags().canSee(mob))||(!CMLib.flags().canBeSeenBy(regarding,mob)))&&(regarding.Name().trim().length()>0))
                                         replacement=((regarding instanceof MOB)?"someone":"something");
                                     else
                                         replacement=CMLib.english().cleanArticles(regarding.name());
@@ -572,7 +558,7 @@ public class CoffeeFilter
                                         if(!firstSdone) doSagain=true;
                                     }
 									else
-									if(((!Sense.canSee(mob))||(!Sense.canBeSeenBy(regarding,mob)))&&(regarding.Name().trim().length()>0))
+									if(((!CMLib.flags().canSee(mob))||(!CMLib.flags().canBeSeenBy(regarding,mob)))&&(regarding.Name().trim().length()>0))
 										replacement=((regarding instanceof MOB)?"someone":"something");
 									else
 									if(source==target)
@@ -589,7 +575,7 @@ public class CoffeeFilter
 									if(mob==regarding)
 										replacement="your";
 									else
-									if(((!Sense.canSee(mob))||(!Sense.canBeSeenBy(regarding,mob)))&&(regarding.Name().trim().length()>0))
+									if(((!CMLib.flags().canSee(mob))||(!CMLib.flags().canBeSeenBy(regarding,mob)))&&(regarding.Name().trim().length()>0))
 										replacement=((regarding instanceof MOB)?"someone's":"something's");
 									else
 										replacement=regarding.name()+"'s";
@@ -876,7 +862,7 @@ public class CoffeeFilter
 	}
 
 
-	public static StringBuffer simpleInFilter(StringBuffer input, boolean allowMXP)
+	public StringBuffer simpleInFilter(StringBuffer input, boolean allowMXP)
 	{
 		if(input==null) return null;
 
@@ -916,7 +902,7 @@ public class CoffeeFilter
 		return new StringBuffer(input.toString());
 	}
 
-	public static String fullInFilter(String input, boolean allowMXP)
+	public String fullInFilter(String input, boolean allowMXP)
 	{
 		if(input==null) return null;
 		StringBuffer buf=new StringBuffer(input);
@@ -937,7 +923,7 @@ public class CoffeeFilter
 		return simpleInFilter(buf,allowMXP).toString();
 	}
 	
-	public static String safetyFilter(String s)
+	public String safetyFilter(String s)
 	{
 		StringBuffer s1=new StringBuffer(s);
 		

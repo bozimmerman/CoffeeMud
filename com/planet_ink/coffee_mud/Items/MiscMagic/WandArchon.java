@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -99,7 +110,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 				if(message.toUpperCase().indexOf("LEVEL ALL UP")>0)
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
-					int destLevel=CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL);
+					int destLevel=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL);
 					if(destLevel==0) destLevel=30;
 					if(destLevel<=target.baseEnvStats().level())
 						destLevel=100;
@@ -115,7 +126,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 						||(target.charStats().getMyRace().expless()))
 							target.charStats().getCurrentClass().level(target);
 						else
-							MUDFight.postExperience(target,null,null,target.getExpNeededLevel()+1,false);
+							CMLib.combat().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
 					}
 				}
 				else
@@ -132,7 +143,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					||(target.charStats().getMyRace().expless()))
 						target.charStats().getCurrentClass().level(target);
 					else
-						MUDFight.postExperience(target,null,null,target.getExpNeededLevel()+1,false);
+						CMLib.combat().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
 					return;
 				}
 				else
@@ -149,7 +160,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					||(target.charStats().getMyRace().expless()))
 						target.charStats().getCurrentClass().unLevel(target);
 					else
-						MUDFight.postExperience(target,null,null,target.getExpNeededLevel()*-1,false);
+						CMLib.combat().postExperience(target,null,null,target.getExpNeededLevel()*-1,false);
 					return;
 				}
 				else
@@ -176,7 +187,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" wielded by <S-NAME> shoots forth magical green flames at <T-NAME>.");
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= 3;
-					MUDFight.postDamage(mob,target,null,(++flameDamage),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,(this.name()+" <DAMAGE> <T-NAME>!")+CommonStrings.msp("fireball.wav",30));
+					CMLib.combat().postDamage(mob,target,null,(++flameDamage),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,(this.name()+" <DAMAGE> <T-NAME>!")+CMProps.msp("fireball.wav",30));
 					return;
 				}
 			}

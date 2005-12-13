@@ -1,10 +1,21 @@
-package com.planet_ink.coffee_mud.system.database;
+package com.planet_ink.coffee_mud.core.database;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.sql.*;
 import java.util.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 /* 
    Copyright 2000-2005 Bo Zimmerman
 
@@ -24,7 +35,7 @@ public class QuestLoader
 {
 	public static void DBRead(MudHost myHost)
 	{
-		Quests.shutdown();
+		CMLib.quests().shutdown();
 		DBConnection D=null;
 		try
 		{
@@ -35,13 +46,13 @@ public class QuestLoader
 				String questName=DBConnections.getRes(R,"CMQUESID");
 				String questScript=DBConnections.getRes(R,"CMQSCRPT");
 				String questWinners=DBConnections.getRes(R,"CMQWINNS");
-				Quests Q=new Quests();
+				Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
 				Q.setScript(questScript);
 				Q.setWinners(questWinners);
 				if(Q.name().length()==0)
 					Q.setName(questName);
-				if((Q.name().length()>0)&&(Q.duration()>=0)&&(Quests.fetchQuest(Q.name())==null))
-					Quests.addQuest(Q);
+				if((Q.name().length()>0)&&(Q.duration()>=0)&&(CMLib.quests().fetchQuest(Q.name())==null))
+					CMLib.quests().addQuest(Q);
 			}
 		}
 		catch(SQLException sqle)

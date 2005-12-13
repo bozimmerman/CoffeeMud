@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Exits;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -43,15 +54,15 @@ public class GapExit extends StdExit
 		MOB mob=msg.source();
 		if(((msg.amITarget(this))||(msg.tool()==this))
 		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
-		&&(!Sense.isInFlight(mob))
-		&&(!Sense.isFalling(mob)))
+		&&(!CMLib.flags().isInFlight(mob))
+		&&(!CMLib.flags().isFalling(mob)))
 		{
 			int chance=(int)Math.round(Util.div(mobWeight(mob),mob.maxCarry())*(100.0-new Integer(3*mob.charStats().getStat(CharStats.STRENGTH)).doubleValue()));
-			if(Dice.rollPercentage()<chance)
+			if(CMLib.dice().rollPercentage()<chance)
 			{
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to jump the crevasse, but miss(es) the far ledge!");
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s)!!!!");
-				MUDFight.postDeath(null,mob,null);
+				CMLib.combat().postDeath(null,mob,null);
 				return false;
 			}
 		}
@@ -64,8 +75,8 @@ public class GapExit extends StdExit
 		MOB mob=msg.source();
 		if(((msg.amITarget(this))||(msg.tool()==this))
 		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
-		&&(!Sense.isInFlight(mob))
-		&&(!Sense.isFalling(mob)))
+		&&(!CMLib.flags().isInFlight(mob))
+		&&(!CMLib.flags().isFalling(mob)))
 			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> jump(s) the crevasse!");
 	}
 }

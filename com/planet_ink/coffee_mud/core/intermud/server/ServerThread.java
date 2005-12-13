@@ -1,3 +1,23 @@
+package com.planet_ink.coffee_mud.core.intermud.server;
+import com.planet_ink.coffee_mud.core.intermud.imc2.*;
+import com.planet_ink.coffee_mud.core.intermud.packets.*;
+import com.planet_ink.coffee_mud.core.intermud.persist.*;
+import com.planet_ink.coffee_mud.core.intermud.server.*;
+import com.planet_ink.coffee_mud.core.intermud.net.*;
+import com.planet_ink.coffee_mud.core.intermud.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 /**
  * imaginary.server.ServerThread
  * Copyright (c) 1996 George Reese
@@ -17,12 +37,6 @@
  * The actual thread that runs the mud.
  */
 
-package com.planet_ink.coffee_mud.system.intermud.server;
-import com.planet_ink.coffee_mud.system.intermud.net.ListenThread;
-import com.planet_ink.coffee_mud.utils.Log;
-import com.planet_ink.coffee_mud.system.intermud.packets.Intermud;
-import com.planet_ink.coffee_mud.system.intermud.packets.ImudServices;
-import com.planet_ink.coffee_mud.system.intermud.persist.PersistentPeer;
 
 import java.util.Date;
 import java.util.Enumeration;
@@ -139,7 +153,7 @@ public class ServerThread extends Thread {
 		
         try {
             Intermud.setup(intermuds,
-                           (PersistentPeer)Class.forName("com.planet_ink.coffee_mud.system.intermud.IMudPeer").newInstance());
+                           (PersistentPeer)Class.forName("com.planet_ink.coffee_mud.core.intermud.IMudPeer").newInstance());
         }
         catch( Exception e ) {
             Log.errOut("I3Server",e.getMessage());
@@ -217,7 +231,7 @@ public class ServerThread extends Thread {
                         break;
                     }
                     try {
-                        new_user = (ServerUser)copyObject("com.planet_ink.coffee_mud.system.intermud.IMudUser");
+                        new_user = (ServerUser)copyObject("com.planet_ink.coffee_mud.core.intermud.IMudUser");
                     }
                     catch( ObjectLoadException e ) {
                         continue;

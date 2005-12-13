@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.Items.MiscMagic.StdWand;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 
 /* 
@@ -74,7 +85,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 				if(message.toUpperCase().indexOf("LEVEL ALL UP")>0)
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
-					int destLevel=CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL);
+					int destLevel=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL);
 					if(destLevel==0) destLevel=30;
 					if(destLevel<=target.baseEnvStats().level())
 						destLevel=100;
@@ -90,7 +101,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 						||(target.charStats().getMyRace().expless()))
 							target.charStats().getCurrentClass().level(target);
 						else
-							MUDFight.postExperience(target,null,null,target.getExpNeededLevel()+1,false);
+							CMLib.combat().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
 					}
 				}
 				else
@@ -107,7 +118,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					||(target.charStats().getMyRace().expless()))
 						target.charStats().getCurrentClass().level(target);
 					else
-						MUDFight.postExperience(target,null,null,target.getExpNeededLevel()+1,false);
+						CMLib.combat().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
 					return;
 				}
 				else
@@ -124,7 +135,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					||(target.charStats().getMyRace().expless()))
 						target.charStats().getCurrentClass().unLevel(target);
 					else
-						MUDFight.postExperience(target,null,null,target.getExpNeededLevel()*-1,false);
+						CMLib.combat().postExperience(target,null,null,target.getExpNeededLevel()*-1,false);
 					return;
 				}
 				else
@@ -142,7 +153,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" wielded by <S-NAME> shoots forth magical green flames at <T-NAME>.");
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= 3;
-					MUDFight.postDamage(mob,target,null,(++flameDamage),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,(this.name()+" <DAMAGE> <T-NAME>!")+CommonStrings.msp("fireball.wav",30));
+					CMLib.combat().postDamage(mob,target,null,(++flameDamage),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,(this.name()+" <DAMAGE> <T-NAME>!")+CMProps.msp("fireball.wav",30));
 					return;
 				}
 			}
@@ -198,7 +209,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		&&(msg.target() instanceof MOB)
 		&&(!((MOB)msg.target()).amDead()))
 		{
-			FullMsg msg2=new FullMsg(msg.source(),msg.target(),new ArchonStaff(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
+			CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),new ArchonStaff(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(msg.source().location().okMessage(msg.source(),msg2))
 			{
 				msg.source().location().send(msg.source(), msg2);
@@ -207,7 +218,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= baseEnvStats().level();
 					if(!((MOB)msg.target()).amDead())
-						MUDFight.postDamage(msg.source(),(MOB)msg.target(),null,flameDamage,CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,name()+" shoots a flame which <DAMAGE> <T-NAME>!");
+						CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,flameDamage,CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,name()+" shoots a flame which <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

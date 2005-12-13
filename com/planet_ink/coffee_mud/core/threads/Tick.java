@@ -1,11 +1,23 @@
-package com.planet_ink.coffee_mud.system.threads;
+package com.planet_ink.coffee_mud.core.threads;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 import java.sql.*;
 import java.net.*;
 import java.util.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -44,7 +56,7 @@ public class Tick extends Thread implements TickableGroup
 	
 	private Vector tickers=new Vector();
 
-	public Enumeration tickers(){return ((Vector)tickers.clone()).elements();}
+	public Enumeration tickers(){return tickers.elements();}
 	public int numTickers(){return tickers.size();}
 	public TockClient fetchTicker(int i){
 		try{
@@ -136,10 +148,11 @@ public class Tick extends Thread implements TickableGroup
 				awake=true;
 				lastStart=System.currentTimeMillis();
 				lastClient=null;
-				if((CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
-                &&(!CMClass.ThreadEngine().isAllSuspended()))
+				if((CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+                &&(!CMLib.threads().isAllSuspended()))
 				{
-					for(Enumeration e=tickers();e.hasMoreElements();)
+                    
+					for(Enumeration e=((Vector)tickers.clone()).elements();e.hasMoreElements();)
 					{
 						TockClient client=(TockClient)e.nextElement();
 						lastClient=client;
@@ -149,7 +162,7 @@ public class Tick extends Thread implements TickableGroup
 							client.tickTotal++;
 						}
 						client.lastStart=System.currentTimeMillis();
-						if(tickTicker(client,CMClass.ThreadEngine().isAllSuspended()))
+						if(tickTicker(client,CMLib.threads().isAllSuspended()))
 							delTicker(client);
 						client.lastStop=System.currentTimeMillis();
 					}
@@ -161,8 +174,8 @@ public class Tick extends Thread implements TickableGroup
 			}
 			if(tickers.size()==0)
 			{
-				if(CMClass.ThreadEngine() instanceof ServiceEngine)
-					((ServiceEngine)CMClass.ThreadEngine()).delTickGroup(this);
+				if(CMLib.threads() instanceof ServiceEngine)
+					((ServiceEngine)CMLib.threads()).delTickGroup(this);
 				break;
 			}
 		}

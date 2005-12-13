@@ -1,8 +1,21 @@
-package com.planet_ink.coffee_mud.system.threads;
+package com.planet_ink.coffee_mud.core.threads;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.core.database.DBConnection;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -43,7 +56,7 @@ public class UtiliThread extends Thread
 		long itemKillTime=System.currentTimeMillis();
 		try
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 			    Room R=(Room)r.nextElement(); 
 			    
@@ -86,11 +99,11 @@ public class UtiliThread extends Thread
 	public void checkHealth()
 	{
 		long lastDateTime=System.currentTimeMillis();
-		lastDateTime-=(20*IQCalendar.MILI_MINUTE);
+		lastDateTime-=(20*TimeManager.MILI_MINUTE);
 		status="checking";
 		try
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				for(int m=0;m<R.numInhabitants();m++)
@@ -98,17 +111,17 @@ public class UtiliThread extends Thread
 					MOB mob=R.fetchInhabitant(m);
 					if((mob!=null)&&(mob.lastTickedDateTime()>0)&&(mob.lastTickedDateTime()<lastDateTime))
 					{
-						boolean ticked=CMClass.ThreadEngine().isTicking(mob,MudHost.TICK_MOB);
+						boolean ticked=CMLib.threads().isTicking(mob,MudHost.TICK_MOB);
 						boolean isDead=mob.amDead();
 						String wasFrom=((mob.getStartRoom()!=null)?mob.getStartRoom().roomID():"NULL");
 						if(!ticked)
 						{
-                            if(CMMap.getPlayer(mob.Name())==null)
-                                Log.errOut("UtiliThread",mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+IQCalendar.d2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
+                            if(CMLib.map().getPlayer(mob.Name())==null)
+                                Log.errOut("UtiliThread",mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
                             else
-                                Log.errOut("UtiliThread","Player "+mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+IQCalendar.d2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been put aside."));
+                                Log.errOut("UtiliThread","Player "+mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been put aside."));
 							status="destroying unticked mob "+mob.name();
-							if(CMMap.getPlayer(mob.Name())==null) mob.destroy();
+							if(CMLib.map().getPlayer(mob.Name())==null) mob.destroy();
 							R.delInhabitant(mob);
 							status="checking";
 						}
@@ -122,7 +135,7 @@ public class UtiliThread extends Thread
         DVector orderedDeaths=new DVector(3);
 		try
 		{
-			for(Enumeration v=CMClass.ThreadEngine().tickGroups();v.hasMoreElements();)
+			for(Enumeration v=CMLib.threads().tickGroups();v.hasMoreElements();)
 			{
 				Tick almostTock=(Tick)v.nextElement();
 				if((almostTock.awake)
@@ -132,18 +145,18 @@ public class UtiliThread extends Thread
 					if(client!=null)
 					{
 						if(client.clientObject==null)
-                            insertOrderDeathInOrder(orderedDeaths,0,"LOCKED GROUP "+almostTock.getCounter()+": NULL @"+new IQCalendar(client.lastStart).d2String()+", tickID "+client.tickID,almostTock);
+                            insertOrderDeathInOrder(orderedDeaths,0,"LOCKED GROUP "+almostTock.getCounter()+": NULL @"+CMLib.time().date2String(client.lastStart)+", tickID "+client.tickID,almostTock);
 						else
 						{
 							StringBuffer str=null;
 							Tickable obj=client.clientObject;
 							long code=client.clientObject.getTickStatus();
-							String codeWord=CMClass.ThreadEngine().getTickStatusSummary(client.clientObject);
+							String codeWord=CMLib.threads().getTickStatusSummary(client.clientObject);
                             String msg=null;
 							if(obj instanceof Environmental)
-								str=new StringBuffer("LOCKED GROUP "+almostTock.getCounter()+" : "+obj.name()+" ("+((Environmental)obj).ID()+") @"+new IQCalendar(client.lastStart).d2String()+", Status="+code+" ("+codeWord+"), tickID "+client.tickID);
+								str=new StringBuffer("LOCKED GROUP "+almostTock.getCounter()+" : "+obj.name()+" ("+((Environmental)obj).ID()+") @"+CMLib.time().date2String(client.lastStart)+", Status="+code+" ("+codeWord+"), tickID "+client.tickID);
 							else
-								str=new StringBuffer("LOCKED GROUP "+almostTock.getCounter()+": "+obj.name()+", Status="+code+" ("+codeWord+") @"+new IQCalendar(client.lastStart).d2String()+", tickID "+client.tickID);
+								str=new StringBuffer("LOCKED GROUP "+almostTock.getCounter()+": "+obj.name()+", Status="+code+" ("+codeWord+") @"+CMLib.time().date2String(client.lastStart)+", tickID "+client.tickID);
 	
 							if((obj instanceof MOB)&&(((MOB)obj).location()!=null))
 								msg=str.toString()+" in "+((MOB)obj).location().roomID();
@@ -175,22 +188,24 @@ public class UtiliThread extends Thread
 		{
 			Tick almostTock=(Tick)orderedDeaths.elementAt(x,3);
 			Vector objs=new Vector();
-			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
-				objs.addElement(e.nextElement());
+            try{
+    			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
+    				objs.addElement(e.nextElement());
+            }catch(NoSuchElementException e){}
 			almostTock.shutdown();
-			if(CMClass.ThreadEngine() instanceof ServiceEngine)
-				((ServiceEngine)CMClass.ThreadEngine()).delTickGroup(almostTock);
+			if(CMLib.threads() instanceof ServiceEngine)
+				((ServiceEngine)CMLib.threads()).delTickGroup(almostTock);
 			for(int i=0;i<objs.size();i++)
 			{
 				TockClient c=(TockClient)objs.elementAt(i);
-				CMClass.ThreadEngine().startTickDown(c.clientObject,c.tickID,c.reTickDown);
+				CMLib.threads().startTickDown(c.clientObject,c.tickID,c.reTickDown);
 			}
 		}
 
-		status="checking sessions.";
-		for(int s=0;s<Sessions.size();s++)
+		status="checking CMLib.sessions().";
+		for(int s=0;s<CMLib.sessions().size();s++)
 		{
-			Session S=Sessions.elementAt(s);
+			Session S=CMLib.sessions().elementAt(s);
 			long time=System.currentTimeMillis()-S.lastLoopTime();
 			if(time>0)
 			{
@@ -218,8 +233,8 @@ public class UtiliThread extends Thread
 						status="killing session ";
 						S.logoff();
 						S.logoff();
-						Sessions.removeElement(S);
-						status="checking sessions.";
+						CMLib.sessions().removeElement(S);
+						status="checking CMLib.sessions().";
 					}
 					else
 					if(time>check)
@@ -228,7 +243,7 @@ public class UtiliThread extends Thread
                         {
                             S.logoff();
                             S.logoff();
-                            Sessions.removeElement(S);
+                            CMLib.sessions().removeElement(S);
                         }
                         else
                         {
@@ -247,8 +262,8 @@ public class UtiliThread extends Thread
 					status="killing session ";
 					S.logoff();
 					S.logoff();
-					Sessions.removeElement(S);
-					status="checking sessions.";
+					CMLib.sessions().removeElement(S);
+					status="checking CMLib.sessions().";
 				}
 			}
 		}
@@ -272,7 +287,7 @@ public class UtiliThread extends Thread
         shutDown=false;
 		
 		// now start the thread
-		while(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+		while(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 		{ 
 			try{Thread.sleep(2000);}catch(Exception e){}
 		}
@@ -283,7 +298,7 @@ public class UtiliThread extends Thread
 		{
 			try
 			{
-                while(CMClass.ThreadEngine().isAllSuspended())
+                while(CMLib.threads().isAllSuspended())
                     try{Thread.sleep(2000);}catch(Exception e){}
 				if(!CMSecurity.isDisabled("UTILITHREAD"))
 				{
@@ -319,7 +334,7 @@ public class UtiliThread extends Thread
 
 		// force final time tick!
 		Vector timeObjects=new Vector();
-		for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+		for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 		{
 			Area A=((Area)e.nextElement());
 			if(!timeObjects.contains(A.getTimeObj()))

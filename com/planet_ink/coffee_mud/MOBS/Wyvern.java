@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.MOBS;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 /* 
    Copyright 2000-2005 Bo Zimmerman
 
@@ -32,7 +43,7 @@ public class Wyvern extends StdMOB
 		Username="a wyvern";
 		setDescription("A distant cousin to the dragon, a wyvern is 35-foot-long dark brown to gray body of the wyvern is half tail. Its leathery batlike wings are over 50 feet from tip to tip..");
 		setDisplayText("A mean looking wyvern is here.");
-		Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(2);
 
@@ -52,7 +63,7 @@ public class Wyvern extends StdMOB
 		baseEnvStats().setArmor(30);
         baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
 
-		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
         addBehavior(CMClass.getBehavior("Aggressive"));
 
@@ -84,8 +95,8 @@ public class Wyvern extends StdMOB
 	}
 	protected boolean sting()
 	{
-		if (Sense.aliveAwakeMobileUnbound(this,true)&&
-			(Sense.canHear(this)||Sense.canSee(this)||Sense.canSmell(this)))
+		if (CMLib.flags().aliveAwakeMobileUnbound(this,true)&&
+			(CMLib.flags().canHear(this)||CMLib.flags().canSee(this)||CMLib.flags().canSmell(this)))
 		{
 			MOB target = getVictim();
 			// ===== if it is less than three so roll for it
@@ -95,8 +106,8 @@ public class Wyvern extends StdMOB
 			if (roll<20)
 			{
                 // Sting was successful
- 				FullMsg msg=new FullMsg(this, target, null, CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON, "^F^<FIGHT^><S-NAME> sting(s) <T-NAMESELF>!^</FIGHT^>^?");
-                CMColor.fixSourceFightColor(msg);
+ 				CMMsg msg=CMClass.getMsg(this, target, null, CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON, "^F^<FIGHT^><S-NAME> sting(s) <T-NAMESELF>!^</FIGHT^>^?");
+                CMLib.color().fixSourceFightColor(msg);
 				if(location().okMessage(target,msg))
 				{
 					this.location().send(target,msg);

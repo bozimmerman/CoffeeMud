@@ -1,14 +1,22 @@
     package com.planet_ink.coffee_mud.application;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
     
     import java.net.*;
     import java.util.*;
     import java.sql.*;
     import java.io.*;
-    import com.planet_ink.coffee_mud.interfaces.*;
-    import com.planet_ink.coffee_mud.utils.DVector;
-    import com.planet_ink.coffee_mud.common.Resources;
-    import com.planet_ink.coffee_mud.utils.Util;
-    import com.planet_ink.coffee_mud.common.INI;;
     
     /* 
     Copyright 2000-2005 Bo Zimmerman
@@ -366,7 +374,7 @@ public class OffLine extends Thread implements MudHost
 
     public static void main(String a[])
     {
-        INI page=null;
+        CMProps page=null;
         
         String nameID="";
         String iniFile="coffeemud.ini";
@@ -393,7 +401,7 @@ public class OffLine extends Thread implements MudHost
         {
             while(true)
             {
-                page=INI.loadPropPage(iniFile);
+                page=CMProps.loadPropPage(iniFile);
                 if ((page==null)||(!page.loaded))
                 {
                     System.out.println("ERROR: Unable to read ini file: '"+iniFile+"'.");

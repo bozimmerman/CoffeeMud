@@ -1,8 +1,22 @@
-package com.planet_ink.coffee_mud.Shared;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+package com.planet_ink.coffee_mud.Common;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
+
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ScriptableObject;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -23,7 +37,7 @@ public class DefaultCharStats implements CharStats
 {
 
     public String ID(){return "DefaultCharStats";}
-    public CMObject newInstance(){return new DefaultCharStats();}
+    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCharStats();}}
 	// competency characteristics
 	protected int[] stats=new int[NUM_STATS];
 	protected int[] partials=null;
@@ -567,7 +581,7 @@ public class DefaultCharStats implements CharStats
 		if(abilityCode<CharStats.NUM_BASE_STATS)
 		{
 			setStat(CharStats.MAX_STRENGTH_ADJ+abilityCode,
-					value-CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT));
+					value-CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT));
 		}
 	}
 	public void setStat(int abilityCode, int value)

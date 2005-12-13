@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.MOBS;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /* 
    Copyright 2000-2005 Mike Rundell
@@ -79,7 +90,7 @@ public class Dragon extends StdMOB
 	{
 		// ===== set the parameter stuff		DragonAge() = ageValue;
 
-		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return;
 
         birthAge=ageValue;
@@ -120,17 +131,17 @@ public class Dragon extends StdMOB
 		// ===== set the mod based on the color
 		switch (DragonColor())
 		{
-			case WHITE:		PointMod = 1;	Factions.setAlignment(this,Faction.ALIGN_EVIL);	break;
-			case BLACK:		PointMod = 2;	Factions.setAlignment(this,Faction.ALIGN_EVIL);	break;
-			case BLUE:		PointMod = 3;	Factions.setAlignment(this,Faction.ALIGN_EVIL);	break;
-			case GREEN:		PointMod = 4;	Factions.setAlignment(this,Faction.ALIGN_EVIL);	break;
-			case RED:		PointMod = 5;	Factions.setAlignment(this,Faction.ALIGN_EVIL);	break;
-			case BRASS:		PointMod = 1;	Factions.setAlignment(this,Faction.ALIGN_GOOD);	break;
-			case COPPER:	PointMod = 2;	Factions.setAlignment(this,Faction.ALIGN_GOOD);	break;
-			case BRONZE:	PointMod = 3;	Factions.setAlignment(this,Faction.ALIGN_GOOD);	break;
-			case SILVER:	PointMod = 4;	Factions.setAlignment(this,Faction.ALIGN_GOOD);	break;
-			case GOLD:		PointMod = 5;	Factions.setAlignment(this,Faction.ALIGN_GOOD);	break;
-			default:		PointMod = 3;	Factions.setAlignment(this,Faction.ALIGN_NEUTRAL);	break;
+			case WHITE:		PointMod = 1;	CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);	break;
+			case BLACK:		PointMod = 2;	CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);	break;
+			case BLUE:		PointMod = 3;	CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);	break;
+			case GREEN:		PointMod = 4;	CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);	break;
+			case RED:		PointMod = 5;	CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);	break;
+			case BRASS:		PointMod = 1;	CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);	break;
+			case COPPER:	PointMod = 2;	CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);	break;
+			case BRONZE:	PointMod = 3;	CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);	break;
+			case SILVER:	PointMod = 4;	CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);	break;
+			case GOLD:		PointMod = 5;	CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);	break;
+			default:		PointMod = 3;	CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);	break;
 		}
 
 		baseState.setHitPoints(((7+PointMod) * 10 * DragonAge()));
@@ -176,7 +187,7 @@ public class Dragon extends StdMOB
 	private static int determineAge()
 	{
 		// ===== Get a percent chance
-		int iRoll = Dice.rollPercentage()+1;
+		int iRoll = CMLib.dice().rollPercentage()+1;
 
 		// ===== Determine the age based upon this
 		if (iRoll==1) return HATCHLING;
@@ -296,7 +307,7 @@ public class Dragon extends StdMOB
 			return true;
 		}
 
-		if(!Sense.canBreathe(this))
+		if(!CMLib.flags().canBreathe(this))
 		{
 			// ===== if you can't breathe, you can't breathe fire
 			return false;
@@ -377,7 +388,7 @@ public class Dragon extends StdMOB
 			// ===== do not attack yourself
 			if ((target!=null)&&(!target.ID().equals(ID())))
 			{
-				FullMsg Message = new FullMsg(this,
+				CMMsg Message = CMClass.getMsg(this,
 											  target,
 											  null,
 											  CMMsg.MSK_MALICIOUS_MOVE|AffectCode,
@@ -390,7 +401,7 @@ public class Dragon extends StdMOB
 					int damage=((short)Math.round(Util.div(Util.mul(Math.random(),7*DragonAge()),2.0)));
 					if(Message.value()<=0)
 						damage=((short)Math.round(Math.random()*7)*DragonAge());
-					MUDFight.postDamage(this,target,null,damage,CMMsg.MASK_GENERAL|AffectCode,WeaponType,"The blast <DAMAGE> <T-NAME>");
+					CMLib.combat().postDamage(this,target,null,damage,CMMsg.MASK_GENERAL|AffectCode,WeaponType,"The blast <DAMAGE> <T-NAME>");
 				}
 			}
 		}
@@ -400,9 +411,9 @@ public class Dragon extends StdMOB
 	protected boolean trySwallowWhole()
 	{
 		if(Stomach==null) return true;
-		if (Sense.aliveAwakeMobileUnbound(this,true)
+		if (CMLib.flags().aliveAwakeMobileUnbound(this,true)
 			&&(rangeToTarget()==0)
-			&&(Sense.canHear(this)||Sense.canSee(this)||Sense.canSmell(this)))
+			&&(CMLib.flags().canHear(this)||CMLib.flags().canSee(this)||CMLib.flags().canSmell(this)))
 		{
 			MOB TastyMorsel = getVictim();
 			if(TastyMorsel==null) return true;
@@ -416,7 +427,7 @@ public class Dragon extends StdMOB
 				{
 					// ===== The player has been eaten.
 					// ===== move the tasty morsel to the stomach
-					FullMsg EatMsg=new FullMsg(this,
+					CMMsg EatMsg=CMClass.getMsg(this,
 											   TastyMorsel,
 											   null,
 											   CMMsg.MSG_EAT,
@@ -427,7 +438,7 @@ public class Dragon extends StdMOB
 					{
 						location().send(TastyMorsel,EatMsg);
 						Stomach.bringMobHere(TastyMorsel,false);
-						FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+						CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
 						Stomach.send(TastyMorsel,enterMsg);
 					}
 				}
@@ -482,7 +493,7 @@ public class Dragon extends StdMOB
 			MOB TastyMorsel = Stomach.fetchInhabitant(x);
 			if (TastyMorsel != null)
 			{
-				FullMsg DigestMsg=new FullMsg(this,
+				CMMsg DigestMsg=CMClass.getMsg(this,
 										   TastyMorsel,
 										   null,
 										   CMMsg.MSG_OK_ACTION,
@@ -490,7 +501,7 @@ public class Dragon extends StdMOB
 				Stomach.send(this,DigestMsg);
 				int damage=((int)Math.round(Util.div(TastyMorsel.curState().getHitPoints(),2)));
 				if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
-				MUDFight.postDamage(this,TastyMorsel,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The stomach acid <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(this,TastyMorsel,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The stomach acid <DAMAGE> <T-NAME>!");
 			}
 		}
 		return true;

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core.http.macros;
+package com.planet_ink.coffee_mud.WebMacros;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -41,7 +41,7 @@ public class INIModify extends StdWebMacro
 		StringBuffer buf=new StringBuffer("");
 		for(int p=0;p<page.size();p++)
 			buf.append(((String)page.elementAt(p))+"\r\n");
-        new CMFile(CMProps.getVar(CMProps.SYSTEM_INIPATH),null,false).saveText(buf);
+        new CMFile(CMProps.getVar(CMProps.SYSTEM_INIPATH),null,false,true).saveText(buf);
 	}
 
 	public boolean modified(HashSet H, String s)

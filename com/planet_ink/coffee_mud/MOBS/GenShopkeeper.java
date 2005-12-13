@@ -1,9 +1,21 @@
 package com.planet_ink.coffee_mud.MOBS;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+
 /* 
    Copyright 2000-2005 Bo Zimmerman
 
@@ -42,23 +54,23 @@ public class GenShopkeeper extends StdShopKeeper
     public void setIgnoreMask(String factors){IgnoreMask=factors;}
 	public String text()
 	{
-		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
-			miscText=CMEncoder.compressString(CoffeeMaker.getPropertiesStr(this,false));
+		if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
+			miscText=CMLib.encoder().compressString(CMLib.coffeeMaker().getPropertiesStr(this,false));
 		else
-			miscText=CoffeeMaker.getPropertiesStr(this,false).getBytes();
+			miscText=CMLib.coffeeMaker().getPropertiesStr(this,false).getBytes();
 		return super.text();
 	}
 
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		CoffeeMaker.resetGenMOB(this,newText);
+		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
 	private static String[] MYCODES={"WHATISELL","PREJUDICE","BUDGET","DEVALRATE","INVRESETRATE","IGNOREMASK"};
 	public String getStat(String code)
 	{
-		if(CoffeeMaker.getGenMobCodeNum(code)>=0)
-			return CoffeeMaker.getGenMobStat(this,code);
+		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
+			return CMLib.coffeeMaker().getGenMobStat(this,code);
 		switch(getCodeNum(code))
 		{
 		case 0: return ""+whatIsSold();
@@ -72,8 +84,8 @@ public class GenShopkeeper extends StdShopKeeper
 	}
 	public void setStat(String code, String val)
 	{
-		if(CoffeeMaker.getGenMobCodeNum(code)>=0)
-			CoffeeMaker.setGenMobStat(this,code,val);
+		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
+			CMLib.coffeeMaker().setGenMobStat(this,code,val);
 		else
 		switch(getCodeNum(code))
 		{
@@ -94,7 +106,7 @@ public class GenShopkeeper extends StdShopKeeper
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] superCodes=CoffeeMaker.GENMOBCODES;
+		String[] superCodes=CMObjectBuilder.GENMOBCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)

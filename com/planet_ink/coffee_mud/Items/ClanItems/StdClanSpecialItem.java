@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Items.ClanItems;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -57,8 +68,8 @@ public class StdClanSpecialItem extends StdClanItem
 		&&(clanID().length()>0)
 		&&(((MOB)owner()).isMonster())
 		&&((((MOB)owner()).getClanID().equals(clanID()))
-		&&(Sense.aliveAwakeMobile((MOB)owner(),true))
-		&&(!Sense.isAnimalIntelligence((MOB)owner())))
+		&&(CMLib.flags().aliveAwakeMobile((MOB)owner(),true))
+		&&(!CMLib.flags().isAnimalIntelligence((MOB)owner())))
 		&&(B!=null))
 			B.executeMsg(owner(),msg);
 	}
@@ -82,8 +93,8 @@ public class StdClanSpecialItem extends StdClanItem
 		&&(clanID().length()>0)
 		&&(((MOB)owner()).isMonster())
 		&&((((MOB)owner()).getClanID().equals(clanID()))
-		&&(Sense.aliveAwakeMobileUnbound((MOB)owner(),true))
-		&&(!Sense.isAnimalIntelligence((MOB)owner()))))
+		&&(CMLib.flags().aliveAwakeMobileUnbound((MOB)owner(),true))
+		&&(!CMLib.flags().isAnimalIntelligence((MOB)owner()))))
 		{
 			switch(ciType())
 			{
@@ -93,9 +104,9 @@ public class StdClanSpecialItem extends StdClanItem
 					Room R=((MOB)owner()).location();
 					if(R!=null)
 					{
-						Item I=R.fetchItem(Dice.roll(1,R.numItems(),-1));
+						Item I=R.fetchItem(CMLib.dice().roll(1,R.numItems(),-1));
 						if((I!=null)&&(I.container()==null))
-							CommonMsgs.get(mob,null,I,false);
+							CMLib.commands().get(mob,null,I,false);
 					}
 					break;
 				}

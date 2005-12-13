@@ -1,11 +1,37 @@
-package com.planet_ink.coffee_mud.common;
+package com.planet_ink.coffee_mud.core;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.utils.*;
+/* 
+Copyright 2000-2005 Bo Zimmerman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 public class CMFile
 {
@@ -41,11 +67,15 @@ public class CMFile
     private File localFile=null;
     
     public CMFile(String filename, MOB user, boolean pleaseLogErrors)
-    { super(); buildCMFile(filename,user,pleaseLogErrors);}
+    { super(); buildCMFile(filename,user,pleaseLogErrors,false);}
+    public CMFile(String filename, MOB user, boolean pleaseLogErrors, boolean forceAllow)
+    { super(); buildCMFile(filename,user,pleaseLogErrors,forceAllow);}
     public CMFile (String currentPath, String filename, MOB user, boolean pleaseLogErrors)
-    { super(); buildCMFile(incorporateBaseDir(currentPath,filename),user,pleaseLogErrors); }
+    { super(); buildCMFile(incorporateBaseDir(currentPath,filename),user,pleaseLogErrors,false); }
+    public CMFile (String currentPath, String filename, MOB user, boolean pleaseLogErrors, boolean forceAllow)
+    { super(); buildCMFile(incorporateBaseDir(currentPath,filename),user,pleaseLogErrors,forceAllow); }
     
-    private void buildCMFile(String absolutePath, MOB user, boolean pleaseLogErrors)
+    private void buildCMFile(String absolutePath, MOB user, boolean pleaseLogErrors, boolean forceAllow)
     {
         accessor=user;
         localFile=null;
@@ -83,9 +113,9 @@ public class CMFile
                            ||doesExistAsPathInVFS(absolutePath);
         boolean allowedToTraverseAsDirectory=isADirectory
                                            &&((accessor==null)||CMSecurity.canTraverseDir(accessor,accessor.location(),absolutePath));
-        boolean allowedToWriteVFS=((accessor==null)||(CMSecurity.canAccessFile(accessor,accessor.location(),absolutePath,true)));
+        boolean allowedToWriteVFS=((forceAllow)||(accessor==null)||(CMSecurity.canAccessFile(accessor,accessor.location(),absolutePath,true)));
         boolean allowedToReadVFS=(doesFilenameExistInVFS(absolutePath)&&allowedToWriteVFS)||allowedToTraverseAsDirectory;
-        boolean allowedToWriteLocal=((accessor==null)||(CMSecurity.canAccessFile(accessor,accessor.location(),absolutePath,false)));
+        boolean allowedToWriteLocal=((forceAllow)||(accessor==null)||(CMSecurity.canAccessFile(accessor,accessor.location(),absolutePath,false)));
         boolean allowedToReadLocal=(localFile!=null)
                                     &&(localFile.exists())
                                     &&(allowedToWriteLocal||allowedToTraverseAsDirectory);
@@ -207,7 +237,7 @@ public class CMFile
         {
             Vector info=getVFSInfo(getVFSPathAndName());
             if((info==null)||(info.size()<1)) return false;
-            CMClass.DBEngine().DBDeleteVFSFile((String)info.elementAt(CMFile.VFS_INFO_FILENAME));
+            CMLib.database().DBDeleteVFSFile((String)info.elementAt(CMFile.VFS_INFO_FILENAME));
             getVFSDirectory().remove(info);
             return true;
         }
@@ -418,7 +448,7 @@ public class CMFile
             {
                 filename=(String)info.firstElement();
                 if(vfs!=null) vfs.removeElement(info);
-                CMClass.DBEngine().DBDeleteVFSFile(filename);
+                CMLib.database().DBDeleteVFSFile(filename);
             }
             if(vfsBits<0) vfsBits=0;
             vfsBits=Util.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
@@ -428,7 +458,7 @@ public class CMFile
             info.addElement(new Long(System.currentTimeMillis()));
             info.addElement(author());
             vfs.addElement(info);
-            CMClass.DBEngine().DBCreateVFSFile(filename,vfsBits,author(),O);
+            CMLib.database().DBCreateVFSFile(filename,vfsBits,author(),O);
             return true;
         }
         try
@@ -489,7 +519,7 @@ public class CMFile
             {
                 filename=(String)info.firstElement();
                 if(vfs!=null) vfs.removeElement(info);
-                CMClass.DBEngine().DBDeleteVFSFile(filename);
+                CMLib.database().DBDeleteVFSFile(filename);
             }
             if(vfsBits<0) vfsBits=0;
             vfsBits=Util.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
@@ -499,7 +529,7 @@ public class CMFile
             info.addElement(new Long(System.currentTimeMillis()));
             info.addElement(author());
             vfs.addElement(info);
-            CMClass.DBEngine().DBCreateVFSFile(filename,vfsBits,author(),O);
+            CMLib.database().DBCreateVFSFile(filename,vfsBits,author(),O);
             return true;
         }
         try
@@ -551,7 +581,7 @@ public class CMFile
             info.addElement(new Long(System.currentTimeMillis()));
             info.addElement(author());
             vfs.addElement(info);
-            CMClass.DBEngine().DBCreateVFSFile(filename,vfsBits,author(),new StringBuffer(""));
+            CMLib.database().DBCreateVFSFile(filename,vfsBits,author(),new StringBuffer(""));
             return true;
         }
         File F=new File(getIOReadableLocalPathAndName());
@@ -606,7 +636,7 @@ public class CMFile
             file=(Vector)e.nextElement();
             if(((String)file.firstElement()).equalsIgnoreCase(filename))
             {
-                Vector V=CMClass.DBEngine().DBReadVFSFile((String)file.firstElement());
+                Vector V=CMLib.database().DBReadVFSFile((String)file.firstElement());
                 if(V.size()>=CMFile.VFS_INFO_DATA)
                     return V.elementAt(CMFile.VFS_INFO_DATA);
             }
@@ -718,7 +748,7 @@ public class CMFile
     public static Vector getVFSDirectory()
     {
         if(vfs==null)
-            vfs=CMClass.DBEngine().DBReadVFSDirectory();
+            vfs=CMLib.database().DBReadVFSDirectory();
         return vfs;
     }
     

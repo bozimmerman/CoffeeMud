@@ -1,8 +1,19 @@
-package com.planet_ink.coffee_mud.system.http.macros.grinder;
+package com.planet_ink.coffee_mud.WebMacros.grinder;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -26,7 +37,7 @@ public class GrinderAreas
 		StringBuffer AreaList=new StringBuffer("");
 		boolean anywhere=(CMSecurity.isAllowedAnywhere(mob,"CMDROOMS")||CMSecurity.isAllowedAnywhere(mob,"CMDAREAS"));
 		boolean everywhere=(CMSecurity.isASysOp(mob)||CMSecurity.isAllowedEverywhere(mob,"CMDROOMS")||CMSecurity.isAllowedEverywhere(mob,"CMDAREAS"));
-		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			if(everywhere||(A.amISubOp(mob.Name())&&anywhere))
@@ -93,7 +104,7 @@ public class GrinderAreas
         Vector areasNeedingUpdates=new Vector();
 		String last=httpReq.getRequestParameter("AREA");
 		if((last==null)||(last.length()==0)) return "Old area name not defined!";
-		Area A=CMMap.getArea(last);
+		Area A=CMLib.map().getArea(last);
 		if(A==null) return "Old Area not defined!";
 		areasNeedingUpdates.addElement(A);
 
@@ -114,8 +125,8 @@ public class GrinderAreas
 			A=CMClass.getAreaType(className);
 			if(A==null)
 				return "The class you chose does not exist.  Choose another.";
-			CMMap.delArea(oldA);
-			CMMap.addArea(A);
+			CMLib.map().delArea(oldA);
+			CMLib.map().addArea(A);
 			A.setName(oldA.Name());
 			redoAllMyDamnRooms=true;
 		}
@@ -127,15 +138,15 @@ public class GrinderAreas
 		name=name.trim();
 		if(!name.equals(A.Name().trim()))
 		{
-			if(CMMap.getArea(name)!=null)
+			if(CMLib.map().getArea(name)!=null)
 				return "The name you chose is already in use.  Please enter another.";
 			allMyDamnRooms=new Vector();
 			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 				allMyDamnRooms.addElement(r.nextElement());
-			CMMap.delArea(A);
+			CMLib.map().delArea(A);
 			oldName=A.Name();
-			CMClass.DBEngine().DBDeleteArea(A);
-			A=CMClass.DBEngine().DBCreateArea(name,CMClass.className(A));
+			CMLib.database().DBDeleteArea(A);
+			A=CMLib.database().DBCreateArea(name,CMClass.className(A));
 			A.setName(name);
 			redoAllMyDamnRooms=true;
 			httpReq.addRequestParameters("AREA",A.Name());
@@ -175,22 +186,22 @@ public class GrinderAreas
 		// description
 		String desc=httpReq.getRequestParameter("DESCRIPTION");
 		if(desc==null)desc="";
-		A.setDescription(CoffeeFilter.safetyFilter(desc));
+		A.setDescription(CMLib.coffeeFilter().safetyFilter(desc));
 
 		// image
 		String img=httpReq.getRequestParameter("IMAGE");
 		if(img==null)img="";
-		A.setImage(CoffeeFilter.safetyFilter(img));
+		A.setImage(CMLib.coffeeFilter().safetyFilter(img));
 		
 		// author
 		String author=httpReq.getRequestParameter("AUTHOR");
 		if(author==null)author="";
-		A.setAuthorID(CoffeeFilter.safetyFilter(author));
+		A.setAuthorID(CMLib.coffeeFilter().safetyFilter(author));
 		
 		// currency
 		String currency=httpReq.getRequestParameter("CURRENCY");
 		if(currency==null)currency="";
-		A.setCurrency(CoffeeFilter.safetyFilter(currency));
+		A.setCurrency(CMLib.coffeeFilter().safetyFilter(currency));
 		
         // modify Child Area list
         String parents=httpReq.getRequestParameter("PARENT");
@@ -198,7 +209,7 @@ public class GrinderAreas
             A.removeParent(v);
         if((parents!=null)&&(parents.length()>0))
         {
-            Area parent=CMMap.getArea(parents);
+            Area parent=CMLib.map().getArea(parents);
             if(parent!=null)
 			{
                 if(A.canParent(parent))
@@ -213,7 +224,7 @@ public class GrinderAreas
             for(int i=1;;i++)
                 if(httpReq.isRequestParameter("PARENT"+(new Integer(i).toString())))
 				{
-                    parent=CMMap.getArea(httpReq.getRequestParameter("PARENT"+(new Integer(i).toString())));
+                    parent=CMLib.map().getArea(httpReq.getRequestParameter("PARENT"+(new Integer(i).toString())));
                     if(parent==null)
 						Log.errOut("Grinder", "Error - Area '"+httpReq.getRequestParameter("PARENT"+(new Integer(i).toString()))+"' not found by CMMap");
                     else
@@ -238,7 +249,7 @@ public class GrinderAreas
             A.removeChild(v);
         if((children!=null)&&(children.length()>0))
         {
-			Area child=CMMap.getArea(children);
+			Area child=CMLib.map().getArea(children);
 			if(child!=null)
 			{
 				if(A.canChild(child))
@@ -253,7 +264,7 @@ public class GrinderAreas
 			for(int i=1;;i++)
 			    if(httpReq.isRequestParameter("CHILDREN"+(new Integer(i).toString())))
 				{
-			        child=CMMap.getArea(httpReq.getRequestParameter("CHILDREN"+(new Integer(i).toString())));
+			        child=CMLib.map().getArea(httpReq.getRequestParameter("CHILDREN"+(new Integer(i).toString())));
 			        if(child==null)
 						Log.errOut("Grinder", "Error - Area '"+httpReq.getRequestParameter("CHILDREN"+(new Integer(i).toString()))+"' not found by CMMap");
 			        else
@@ -281,13 +292,13 @@ public class GrinderAreas
 		if(err.length()>0) return err;
 
 		if((redoAllMyDamnRooms)&&(allMyDamnRooms!=null))
-			CMMap.renameRooms(A,oldName,allMyDamnRooms);
+			CMLib.map().renameRooms(A,oldName,allMyDamnRooms);
 
 		for(int i=0;i<areasNeedingUpdates.size();i++) // will always include A
 		{
 		    Area A2=(Area)areasNeedingUpdates.elementAt(i);
-			CMClass.DBEngine().DBUpdateArea(A2.Name(),A2);
-            CoffeeMaker.addWeatherToAreaIfNecessary(A2);
+			CMLib.database().DBUpdateArea(A2.Name(),A2);
+            CMLib.coffeeMaker().addWeatherToAreaIfNecessary(A2);
 		}
 		return "";
 	}

@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Items.Basic;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -45,8 +56,8 @@ public class StdItem implements Item
 	protected Vector affects=null;
 	protected Vector behaviors=null;
 
-	protected EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
-	protected EnvStats baseEnvStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 
 	protected boolean destroyed=false;
 
@@ -70,7 +81,7 @@ public class StdItem implements Item
     public String image()
     {
         if(imageName==null) 
-            imageName=CommonStrings.getDefaultMXPImage(this);
+            imageName=CMProps.getDefaultMXPImage(this);
         return imageName;
     }
     public String rawImage()
@@ -110,7 +121,7 @@ public class StdItem implements Item
 			envStats().setDisposition(envStats().disposition()|EnvStats.IS_BONUS);
 		if((owner()!=null)
 		&&(owner() instanceof MOB)
-		&&(Sense.isHidden(this)))
+		&&(CMLib.flags().isHidden(this)))
 		   envStats().setDisposition((int)(envStats().disposition()&(EnvStats.ALLMASK-EnvStats.IS_HIDDEN)));
 	}
 
@@ -353,16 +364,16 @@ public class StdItem implements Item
 	{
 		if(affected instanceof Room)
 		{
-			if((Sense.isLightSource(this))&&(Sense.isInDark(affected)))
+			if((CMLib.flags().isLightSource(this))&&(CMLib.flags().isInDark(affected)))
 				affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
 		}
 		else
 		{
-			if(Sense.isLightSource(this))
+			if(CMLib.flags().isLightSource(this))
 			{
 				if(rawWornCode()!=Item.INVENTORY)
 					affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
-				if(Sense.isInDark(affected))
+				if(CMLib.flags().isInDark(affected))
 					affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
 			}
 			if((amWearingAt(Item.ON_MOUTH))&&(affected instanceof MOB))
@@ -492,8 +503,8 @@ public class StdItem implements Item
 		if((description==null)||(description.length==0))
 			return "";
 		else
-		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ITEMDCOMPRESS))
-			return CMEncoder.decompressString(description);
+		if(CMProps.getBoolVar(CMProps.SYSTEMB_ITEMDCOMPRESS))
+			return CMLib.encoder().decompressString(description);
 		else
 			return new String(description);
 	}
@@ -502,8 +513,8 @@ public class StdItem implements Item
 		if(newDescription.length()==0)
 			description=null;
 		else
-		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ITEMDCOMPRESS))
-			description=CMEncoder.compressString(newDescription);
+		if(CMProps.getBoolVar(CMProps.SYSTEMB_ITEMDCOMPRESS))
+			description=CMLib.encoder().compressString(newDescription);
 		else
 			description=newDescription.getBytes();
 	}
@@ -526,7 +537,7 @@ public class StdItem implements Item
 		myUses=newUses;
 	}
 
-	public boolean savable(){return Sense.canBeSaved(this);}
+	public boolean savable(){return CMLib.flags().canBeSaved(this);}
 
 	protected String dispossessionTimeLeftString()
 	{
@@ -546,15 +557,15 @@ public class StdItem implements Item
 			{
 				if((cantWearAt!=Item.HELD)&&(cantWearAt!=Item.WIELD))
 				{
-					if(!CommonMsgs.remove(mob,alreadyWearing,false))
+					if(!CMLib.commands().remove(mob,alreadyWearing,false))
 					{
-						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
+						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+CMLib.flags().wornLocation(cantWearAt)+".");
 						return false;
 					}
 					alreadyWearing=mob.fetchFirstWornItem(cantWearAt);
 					if((alreadyWearing!=null)&&(!canWear(mob,0)))
 					{
-						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
+						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+CMLib.flags().wornLocation(cantWearAt)+".");
 						return false;
 					}
 				}
@@ -566,7 +577,7 @@ public class StdItem implements Item
 					if(cantWearAt==Item.WIELD)
 						mob.tell("You are already wielding "+alreadyWearing.name()+".");
 					else
-						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
+						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+CMLib.flags().wornLocation(cantWearAt)+".");
 					return false;
 				}
 			}
@@ -627,7 +638,7 @@ public class StdItem implements Item
 				mob.tell(name()+" is too heavy to throw.");
 				return false;
 			}
-			if(!Sense.isDroppable(this))
+			if(!CMLib.flags().isDroppable(this))
 			{
 				mob.tell("You can't seem to let go of "+name()+".");
 				return false;
@@ -642,7 +653,7 @@ public class StdItem implements Item
 			return true;
 		else
 		if((Util.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
-		&&(!Sense.isGettable(this))
+		&&(!CMLib.flags().isGettable(this))
 		&&((displayText().length()==0)
 		   ||((msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
@@ -677,7 +688,7 @@ public class StdItem implements Item
 				return true;
 			break;
         case CMMsg.TYP_LIST:
-            if(CoffeeShops.getShopKeeper(this)!=null)
+            if(CMLib.coffeeShops().getShopKeeper(this)!=null)
                 return true;
             break;
 		case CMMsg.TYP_RELOAD:
@@ -711,7 +722,7 @@ public class StdItem implements Item
 					Item alreadyWearing=mob.fetchFirstWornItem(Item.HELD);
 					if(alreadyWearing!=null)
 					{
-						if((!CommonMsgs.remove(mob,alreadyWearing,false))
+						if((!CMLib.commands().remove(mob,alreadyWearing,false))
 						||(!canWear(mob,Item.HELD)))
 						{
 							mob.tell("Your hands are full.");
@@ -761,7 +772,7 @@ public class StdItem implements Item
 					Item alreadyWearing=mob.fetchFirstWornItem(Item.WIELD);
 					if(alreadyWearing!=null)
 					{
-						if(!CommonMsgs.remove(mob,alreadyWearing,false))
+						if(!CMLib.commands().remove(mob,alreadyWearing,false))
 						{
 							mob.tell("You are already wielding "+alreadyWearing.name()+".");
 							return false;
@@ -782,7 +793,7 @@ public class StdItem implements Item
 		        mob.tell("You'll need to put that down first.");
 		        return false;
 		    }
-			if(!Sense.isGettable(this))
+			if(!CMLib.flags().isGettable(this))
 			{
 				mob.tell("You can't move "+name()+".");
 				return false;
@@ -791,7 +802,7 @@ public class StdItem implements Item
 		case CMMsg.TYP_GET:
 			if((msg.tool()==null)||(msg.tool() instanceof MOB))
 			{
-				if((!Sense.canBeSeenBy(this,mob))
+				if((!CMLib.flags().canBeSeenBy(this,mob))
 				&&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0)
 				&&(amWearingAt(Item.INVENTORY)))
 				{
@@ -814,7 +825,7 @@ public class StdItem implements Item
                     mob.tell("You can't carry that many items.");
                     return false;
                 }
-				if(!Sense.isGettable(this))
+				if(!CMLib.flags().isGettable(this))
 				{
 					mob.tell("You can't get "+name()+".");
 					return false;
@@ -847,14 +858,14 @@ public class StdItem implements Item
 		case CMMsg.TYP_REMOVE:
 			if((msg.tool()==null)||(msg.tool() instanceof MOB))
 			{
-				if((!Sense.canBeSeenBy(this,mob))
+				if((!CMLib.flags().canBeSeenBy(this,mob))
 				   &&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0)
 				   &&(amWearingAt(Item.INVENTORY)))
 				{
 					mob.tell("You can't see that.");
 					return false;
 				}
-				if((!amWearingAt(Item.INVENTORY))&&(!Sense.isRemovable(this)))
+				if((!amWearingAt(Item.INVENTORY))&&(!CMLib.flags().isRemovable(this)))
 				{
 					if(amWearingAt(Item.WIELD)||amWearingAt(Item.HELD))
 					{
@@ -887,7 +898,7 @@ public class StdItem implements Item
 				mob.tell("You don't have that.");
 				return false;
 			}
-			if(!Sense.isDroppable(this))
+			if(!CMLib.flags().isDroppable(this))
 			{
 				mob.tell("You can't seem to let go of "+name()+".");
 				return false;
@@ -929,7 +940,7 @@ public class StdItem implements Item
 				return true;
 			break;
 		case CMMsg.TYP_WRITE:
-			if((Sense.isReadable(this))&&(!(this instanceof Scroll)))
+			if((CMLib.flags().isReadable(this))&&(!(this instanceof Scroll)))
 			{
 				if(msg.targetMessage().trim().length()==0)
 				{
@@ -971,7 +982,7 @@ public class StdItem implements Item
 		&&(mob!=null)
 		&&(msg.target()!=null))
 		{
-			Room R=CoffeeUtensils.roomLocation(msg.target());
+			Room R=CMLib.utensils().roomLocation(msg.target());
 			if(mob.isMine(this))
 			{
 				mob.delInventory(this);
@@ -996,7 +1007,7 @@ public class StdItem implements Item
 		case CMMsg.TYP_SNIFF:
 			{
 			    String s=null;
-				if(Sense.canSmell(mob))
+				if(CMLib.flags().canSmell(mob))
 				    s=EnvResource.RESOURCE_SMELLS[material()&EnvResource.RESOURCE_MASK].toLowerCase();
 				if((s!=null)&&(s.length()>0))
 				    mob.tell(mob,this,null,"<T-NAME> has a "+s+" smell.");
@@ -1006,7 +1017,7 @@ public class StdItem implements Item
         case CMMsg.TYP_EXAMINE:
 			if(!(this instanceof Container))
 			{
-				if(Sense.canBeSeenBy(this,mob))
+				if(CMLib.flags().canBeSeenBy(this,mob))
 				{
 				    StringBuffer response=new StringBuffer("");
 					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
@@ -1019,7 +1030,7 @@ public class StdItem implements Item
                     if(msg.targetMinor()==CMMsg.TYP_EXAMINE)
                         response.append(examineString(msg.source()));
                     if(!msg.source().isMonster())
-                        response.append(CommonStrings.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
+                        response.append(CMProps.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
 				    mob.tell(response.toString());
 				}
 				else
@@ -1029,9 +1040,9 @@ public class StdItem implements Item
 		case CMMsg.TYP_READ:
 			if((msg.targetMessage()==null)||(!msg.targetMessage().equals("CANCEL")))
 			{
-				if(Sense.canBeSeenBy(this,mob))
+				if(CMLib.flags().canBeSeenBy(this,mob))
 				{
-					if((Sense.isReadable(this))&&(readableText()!=null)&&(readableText().length()>0))
+					if((CMLib.flags().isReadable(this))&&(readableText()!=null)&&(readableText().length()>0))
 					{
 						if(readableText().startsWith("FILE=")
 							||readableText().startsWith("FILE="))
@@ -1083,7 +1094,7 @@ public class StdItem implements Item
 			if(!(this instanceof Container))
 			{
 				setContainer(null);
-				if(Sense.isHidden(this))
+				if(CMLib.flags().isHidden(this))
 					baseEnvStats().setDisposition(baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
 				if(mob.location().isContent(this))
 					mob.location().delItem(this);
@@ -1123,7 +1134,7 @@ public class StdItem implements Item
 			    ((Coins)this).putCoinsBack();
 			break;
 		case CMMsg.TYP_WRITE:
-			if(Sense.isReadable(this))
+			if(CMLib.flags().isReadable(this))
 				setReadableText((readableText()+" "+msg.targetMessage()).trim());
 			break;
 		case CMMsg.TYP_DEATH:
@@ -1192,11 +1203,11 @@ public class StdItem implements Item
             for(int l=0;l<Item.wornCodes.length;l++)
             {
                 int wornCode=1<<l;
-                if(Sense.wornLocation(wornCode).length()>0)
+                if(CMLib.flags().wornLocation(wornCode).length()>0)
                 {
                     if(((rawProperLocationBitmap()&wornCode)==wornCode))
                     {
-                        response.append(Util.capitalizeAndLower(Sense.wornLocation(wornCode))+" ");
+                        response.append(Util.capitalizeAndLower(CMLib.flags().wornLocation(wornCode))+" ");
                         if(rawLogicalAnd())
                             response.append("and ");
                         else
@@ -1372,7 +1383,7 @@ public class StdItem implements Item
 
 		// first one! so start ticking...
 		if(behaviors.size()==0)
-			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_ITEM_BEHAVIOR,1);
+			CMLib.threads().startTickDown(this,MudHost.TICK_ITEM_BEHAVIOR,1);
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
@@ -1381,7 +1392,7 @@ public class StdItem implements Item
 		if(behaviors==null) return;
 		behaviors.removeElement(to);
 		if(behaviors.size()==0)
-			CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_ITEM_BEHAVIOR);
+			CMLib.threads().deleteTick(this,MudHost.TICK_ITEM_BEHAVIOR);
 	}
 	public int numBehaviors()
 	{

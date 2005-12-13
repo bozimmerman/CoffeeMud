@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -123,7 +134,7 @@ public class GenSuperPill extends GenPill
 		{
 			mob.baseCharStats().setCurrentClass(CMClass.findCharClass(val));
 			if((!mob.isMonster())&&(mob.soulMate()==null))
-				CoffeeTables.bump(mob,CoffeeTables.STAT_CLASSCHANGE);
+				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_CLASSCHANGE);
 		}
 		if(Util.getParmPlus(readableText,"lev")!=0)
 			mob.baseCharStats().setClassLevel(mob.baseCharStats().getCurrentClass(),mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass())+Util.getParmPlus(readableText,"lev"));
@@ -157,9 +168,9 @@ public class GenSuperPill extends GenPill
 		mob.setTrains(mob.getTrains()+Util.getParmPlus(readableText,"trai"));
 		mob.setQuestPoint(mob.getQuestPoint()+Util.getParmPlus(readableText,"ques"));
 		int newMoney=Util.getParmPlus(readableText,"coin");
-		if(newMoney!=0) BeanCounter.setMoney(mob,BeanCounter.getMoney(mob)+newMoney);
+		if(newMoney!=0) CMLib.beanCounter().setMoney(mob,CMLib.beanCounter().getMoney(mob)+newMoney);
 		int exp=Util.getParmPlus(readableText,"expe");
-		if(exp!=0) MUDFight.postExperience(mob,null,null,exp,false);
+		if(exp!=0) CMLib.combat().postExperience(mob,null,null,exp,false);
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
@@ -180,7 +191,7 @@ public class GenSuperPill extends GenPill
 					super.executeMsg(myHost,msg);
 				}
 				else
-					msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),CMMsg.NO_EFFECT,null));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),CMMsg.NO_EFFECT,null));
 				break;
 			default:
 				super.executeMsg(myHost,msg);

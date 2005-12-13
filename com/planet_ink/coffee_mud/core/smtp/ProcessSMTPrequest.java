@@ -1,11 +1,22 @@
-package com.planet_ink.coffee_mud.system.smtp;
+package com.planet_ink.coffee_mud.core.smtp;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.net.*;
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.exceptions.*;
+
+import com.planet_ink.coffee_mud.core.exceptions.*;
 import java.io.*;
 
 /* 
@@ -25,7 +36,7 @@ import java.io.*;
 */
 public class ProcessSMTPrequest extends Thread
 {
-	private INI page;
+	private CMProps page;
 	private Socket sock;
 	private static long instanceCnt = 0;
 	private SMTPserver server=null;
@@ -38,7 +49,7 @@ public class ProcessSMTPrequest extends Thread
 
 	public ProcessSMTPrequest(Socket a_sock,
 							  SMTPserver a_Server,
-							  INI a_page)
+							  CMProps a_page)
 	{
 		super( "SMTPrq"+(instanceCnt++));
 		page = a_page;
@@ -61,7 +72,7 @@ public class ProcessSMTPrequest extends Thread
 			{
 				if(server.mailboxName().length()>0)
 				{
-					name=CMClass.DBEngine().DBEmailSearch(s);
+					name=CMLib.database().DBEmailSearch(s);
 					if(name!=null) return name;
 				}
 				return null;
@@ -72,7 +83,7 @@ public class ProcessSMTPrequest extends Thread
 		if(server.mailboxName().length()>0)
 		{
 			MOB M=CMClass.getMOB("StdMOB");
-			if(CMClass.DBEngine().DBUserSearch(M,name))
+			if(CMLib.database().DBUserSearch(M,name))
             {
                 String name2=M.Name();
                 M.destroy();
@@ -96,7 +107,7 @@ public class ProcessSMTPrequest extends Thread
 		{
 			sout = new DataOutputStream(sock.getOutputStream());
 			sin=new DataInputStream(sock.getInputStream());
-			sout.write(("220 ESMTP "+server.domainName()+" "+SMTPserver.ServerVersionString+"; "+new IQCalendar().d2String()+cr).getBytes());
+			sout.write(("220 ESMTP "+server.domainName()+" "+SMTPserver.ServerVersionString+"; "+CMLib.time().date2String(System.currentTimeMillis())+cr).getBytes());
 			boolean quitFlag=false;
 			boolean dataMode=false;
 			while(!quitFlag)
@@ -293,7 +304,7 @@ public class ProcessSMTPrequest extends Thread
 								||subject.toUpperCase().startsWith("MOTM")
 								||subject.toUpperCase().startsWith("MOTY"))
 								{
-									MOB M=CMMap.getLoadPlayer(from);
+									MOB M=CMLib.map().getLoadPlayer(from);
 									if((M==null)||(!CMSecurity.isAllowedAnywhere(M,"JOURNALS")))
 										subject=subject.substring(4);
 								}
@@ -312,7 +323,7 @@ public class ProcessSMTPrequest extends Thread
 										{
 											if(server.isASubscribeOnlyJournal(journal))
 											{
-												MOB M=CMMap.getLoadPlayer(from);
+												MOB M=CMLib.map().getLoadPlayer(from);
 												if((M==null)||(!CMSecurity.isAllowedAnywhere(M,"JOURNALS")))
 												{
 													replyData=("552 Mailbox '"+journal+"' only accepts subscribe/unsubscribe."+cr).getBytes();
@@ -332,19 +343,19 @@ public class ProcessSMTPrequest extends Thread
 											}
 										}
 										   
-										CMClass.DBEngine().DBWriteJournal(journal,
+										CMLib.database().DBWriteJournal(journal,
 																		  from,
 																		  "ALL",
-																		  CoffeeFilter.fullInFilter(subject,false),
-																		  CoffeeFilter.fullInFilter(fdat,false),-1);
+																		  CMLib.coffeeFilter().fullInFilter(subject,false),
+																		  CMLib.coffeeFilter().fullInFilter(fdat,false),-1);
 									}
 									else
 									{
-										CMClass.DBEngine().DBWriteJournal(server.mailboxName(),
+										CMLib.database().DBWriteJournal(server.mailboxName(),
 																		  from,
 																		  (String)to.elementAt(i),
-                                                                          CoffeeFilter.fullInFilter(subject,false),
-																		  CoffeeFilter.fullInFilter(finalData.toString(),false),-1);
+                                                                          CMLib.coffeeFilter().fullInFilter(subject,false),
+																		  CMLib.coffeeFilter().fullInFilter(finalData.toString(),false),-1);
 									}
 								}
 							}
@@ -726,9 +737,9 @@ public class ProcessSMTPrequest extends Thread
 											boolean jerror=false;
 											if(server.getJournalCriteria(name).length()>0)
 											{
-												MOB M=CMMap.getPlayer(from);
+												MOB M=CMLib.map().getPlayer(from);
 												if((M==null)
-												||(!MUDZapper.zapperCheck(server.getJournalCriteria(name),M)))
+												||(!CMLib.masking().maskCheck(server.getJournalCriteria(name),M)))
 												{
 													replyData=("552 User '"+from+"' may not send emails to '"+name+"'."+cr).getBytes();
 													jerror=true;
@@ -744,7 +755,7 @@ public class ProcessSMTPrequest extends Thread
 											}
 										}
 										else
-										if(CMClass.DBEngine().DBCountJournal(server.mailboxName(),null,name)>=server.getMaxMsgs())
+										if(CMLib.database().DBCountJournal(server.mailboxName(),null,name)>=server.getMaxMsgs())
 											replyData=("552 Mailbox '"+name+"' is full."+cr).getBytes();
 										else
 										{

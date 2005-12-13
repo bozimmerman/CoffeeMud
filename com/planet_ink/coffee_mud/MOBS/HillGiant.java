@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.MOBS;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 /* 
    Copyright 2000-2005 Bo Zimmerman
 
@@ -28,12 +39,12 @@ public class HillGiant extends StdMOB
 		Username="a Hill Giant";
 		setDescription("A tall humanoid standing about 16 feet tall and very smelly.");
 		setDisplayText("A Hill Giant glares at you.");
-		Factions.setAlignment(this,Faction.ALIGN_EVIL);
+		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(0);
-		baseEnvStats.setWeight(3500 + Dice.roll(1, 1000, 0));
+		baseEnvStats.setWeight(3500 + CMLib.dice().roll(1, 1000, 0));
 
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,6 + Dice.roll(1, 2, 0));
+		baseCharStats().setStat(CharStats.INTELLIGENCE,6 + CMLib.dice().roll(1, 2, 0));
 		baseCharStats().setStat(CharStats.STRENGTH,20);
 		baseCharStats().setStat(CharStats.DEXTERITY,13);
 		baseCharStats().setMyRace(CMClass.getRace("Giant"));
@@ -45,7 +56,7 @@ public class HillGiant extends StdMOB
 		baseEnvStats().setLevel(12);
 		baseEnvStats().setArmor(0);
 
-		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		addBehavior(CMClass.getBehavior("Aggressive"));
 

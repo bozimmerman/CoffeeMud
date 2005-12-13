@@ -1,7 +1,19 @@
-package com.planet_ink.coffee_mud.Shared;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.common.*;
+package com.planet_ink.coffee_mud.Common;
+import com.planet_ink.coffee_mud.core.database.DBInterface;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -35,7 +47,7 @@ public class DefaultCharState implements CharState
 	protected int annoyanceTicker=ANNOYANCE_DEFAULT_TICKS;
 
 	public DefaultCharState(){}
-    public CMObject newInstance(){return new DefaultCharState();}
+    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCharState();}}
     public void setAllValues(int def)
 	{
 		HitPoints=def;
@@ -205,7 +217,7 @@ public class DefaultCharState implements CharState
 		double manaGain=(man>2.0)?((man/80.0)*lvl)+(man/4.5)+2.0:1.0;
 		double moveGain=(str>1.0)?((str/40.0)*lvl)+(str/3.0)+5.0:1.0;
 
-		if(Sense.isSleeping(mob))
+		if(CMLib.flags().isSleeping(mob))
 		{
 			hpGain+=(hpGain/2.0);
 			manaGain+=(manaGain/2.0);
@@ -218,7 +230,7 @@ public class DefaultCharState implements CharState
 			}
 		}
 		else
-		if((Sense.isSitting(mob))||(mob.riding()!=null))
+		if((CMLib.flags().isSitting(mob))||(mob.riding()!=null))
 		{
 			hpGain+=(hpGain/4.0);
 			manaGain+=(manaGain/4.0);
@@ -232,10 +244,10 @@ public class DefaultCharState implements CharState
 		}
 		else
 		{
-			if(Sense.isFlying(mob))
+			if(CMLib.flags().isFlying(mob))
 				moveGain+=(moveGain/8.0);
 			else
-			if(Sense.isSwimming(mob))
+			if(CMLib.flags().isSwimming(mob))
 			{
 				hpGain-=(hpGain/2.0);
 				manaGain-=(manaGain/4.0);
@@ -244,9 +256,9 @@ public class DefaultCharState implements CharState
 		}
 
 		if((!mob.isInCombat())
-		&&(!Sense.isClimbing(mob)))
+		&&(!CMLib.flags().isClimbing(mob)))
 		{
-			if((hpGain>0)&&(!Sense.isGolem(mob)))
+			if((hpGain>0)&&(!CMLib.flags().isGolem(mob)))
 				adjHitPoints((int)Math.round(hpGain),maxState);
 			if(manaGain>0)
 				adjMana((int)Math.round(manaGain),maxState);
@@ -264,13 +276,13 @@ public class DefaultCharState implements CharState
 				int move=-mob.location().pointsPerMove(mob);
 				if((mob.movesSinceLastTick()>4)
 				&&(mob.riding()==null)
-				&&(!Sense.isInFlight(mob)))
+				&&(!CMLib.flags().isInFlight(mob)))
 					move=move-(mob.movesSinceLastTick()-4);
 				if(mob.envStats().weight()>mob.maxCarry())
 					move+=(int)Math.round(Util.mul(move,10.0*Util.div(mob.envStats().weight()-mob.maxCarry(),mob.maxCarry())));
 				adjMovement(move,maxState);
 			}
-			if((!Sense.isSleeping(mob))
+			if((!CMLib.flags().isSleeping(mob))
 			&&(!CMSecurity.isAllowed(mob,mob.location(),"IMMORT")))
 			{
 				int factor=mob.baseWeight()/500;
@@ -292,7 +304,7 @@ public class DefaultCharState implements CharState
 						mob.tell("YOU ARE DYING OF THIRST!");
 					if(hungry)
 						mob.tell("YOU ARE DYING OF HUNGER!");
-					MUDFight.postDeath(null,mob,null);
+					CMLib.combat().postDeath(null,mob,null);
 				}
 				else
 				if(ticksThirsty>DEATH_THIRST_TICKS-30)

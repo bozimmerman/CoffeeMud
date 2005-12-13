@@ -1,12 +1,26 @@
-package com.planet_ink.coffee_mud.system.intermud;
+package com.planet_ink.coffee_mud.core.intermud;
+import com.planet_ink.coffee_mud.core.intermud.packets.*;
+import com.planet_ink.coffee_mud.core.intermud.persist.*;
+import com.planet_ink.coffee_mud.core.intermud.server.*;
+import com.planet_ink.coffee_mud.core.intermud.net.*;
+import com.planet_ink.coffee_mud.core.intermud.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 import java.io.Serializable;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.system.intermud.packets.ImudServices;
-import com.planet_ink.coffee_mud.system.intermud.packets.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -115,9 +129,9 @@ public class IMudInterface implements ImudServices, Serializable
 
 	private MOB findSessMob(String mobName)
 	{
-		for(int s=0;s<Sessions.size();s++)
+		for(int s=0;s<CMLib.sessions().size();s++)
 		{
-			Session ses=Sessions.elementAt(s);
+			Session ses=CMLib.sessions().elementAt(s);
 			if((!ses.killFlag())&&(ses.mob()!=null)
 			&&(!ses.mob().amDead())
 			&&(ses.mob().Name().equalsIgnoreCase(mobName))
@@ -210,17 +224,17 @@ public class IMudInterface implements ImudServices, Serializable
 			{
 				ChannelPacket ck=(ChannelPacket)packet;
 				String channelName=ck.channel;
-				FullMsg msg=null;
+				CMMsg msg=null;
 
 				if((ck.sender_mud!=null)&&(ck.sender_mud.equalsIgnoreCase(getMudName())))
 				   return;
 				if((ck.channel==null)||(ck.channel.length()==0))
 					return;
-				int channelInt=ChannelSet.getChannelIndex(channelName);
+				int channelInt=CMLib.channels().getChannelIndex(channelName);
 				if(channelInt<0) return;
-				ck.message=fixColors(CommonStrings.applyFilter(ck.message,CommonStrings.SYSTEM_CHANNELFILTER));
+				ck.message=fixColors(CMProps.applyINIFilter(ck.message,CMProps.SYSTEM_CHANNELFILTER));
 				if(ck.message_target!=null)
-				    ck.message_target=fixColors(CommonStrings.applyFilter(ck.message_target,CommonStrings.SYSTEM_CHANNELFILTER));
+				    ck.message_target=fixColors(CMProps.applyINIFilter(ck.message_target,CMProps.SYSTEM_CHANNELFILTER));
                 MOB mob=CMClass.getMOB("StdMOB");
                 mob.setName(ck.sender_name+"@"+ck.sender_mud);
                 mob.setLocation(CMClass.getLocale("StdRoom"));
@@ -229,7 +243,7 @@ public class IMudInterface implements ImudServices, Serializable
 				if(ck.type==Packet.CHAN_TARGET)
 				{
 				    if((ck.target_mud!=null)&&(ck.target_mud.equalsIgnoreCase(getMudName())))
-				        targetMOB=CMMap.getLoadPlayer(ck.target_name);
+				        targetMOB=CMLib.map().getLoadPlayer(ck.target_name);
 				    if((ck.target_visible_name!=null)&&(ck.target_mud!=null)&&(targetMOB==null))
 				    {
                         killtargetmob=true;
@@ -238,32 +252,32 @@ public class IMudInterface implements ImudServices, Serializable
 						targetMOB.setLocation(CMClass.getLocale("StdRoom"));
 				    }
 					String msgs=socialFixIn(ck.message);
-					msgs=CommonStrings.applyFilter(msgs,CommonStrings.SYSTEM_EMOTEFILTER);
+					msgs=CMProps.applyINIFilter(msgs,CMProps.SYSTEM_EMOTEFILTER);
 					String targmsgs=socialFixIn(ck.message_target);
-					targmsgs=CommonStrings.applyFilter(targmsgs,CommonStrings.SYSTEM_EMOTEFILTER);
+					targmsgs=CMProps.applyINIFilter(targmsgs,CMProps.SYSTEM_EMOTEFILTER);
 					String str="^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^?^.";
 					String str2="^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+targmsgs+"^</CHANNEL^>^?^.";
-					msg=new FullMsg(mob,targetMOB,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str2,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
+					msg=CMClass.getMsg(mob,targetMOB,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str2,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 				}
 				else
 				if(ck.type==Packet.CHAN_EMOTE)
 				{
 					String msgs=socialFixIn(ck.message);
-					msgs=CommonStrings.applyFilter(msgs,CommonStrings.SYSTEM_EMOTEFILTER);
+					msgs=CMProps.applyINIFilter(msgs,CMProps.SYSTEM_EMOTEFILTER);
 					String str="^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^?^.";
-					msg=new FullMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
+					msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 				}
 				else
 				{
 					String str="^Q^<CHANNEL \""+channelName+"\"^>"+mob.name()+" "+channelName+"(S) '"+ck.message+"'^</CHANNEL^>^?^.";
-					msg=new FullMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
+					msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 				}
 
-				ChannelSet.channelQueUp(channelInt,msg);
-				for(int s=0;s<Sessions.size();s++)
+				CMLib.channels().channelQueUp(channelInt,msg);
+				for(int s=0;s<CMLib.sessions().size();s++)
 				{
-					Session ses=Sessions.elementAt(s);
-					if((ChannelSet.mayReadThisChannel(mob,false,ses,channelInt))
+					Session ses=CMLib.sessions().elementAt(s);
+					if((CMLib.channels().mayReadThisChannel(mob,false,ses,channelInt))
                     &&(ses.mob().location()!=null)
 					&&(ses.mob().location().okMessage(ses.mob(),msg)))
 						ses.mob().executeMsg(ses.mob(),msg);
@@ -278,7 +292,7 @@ public class IMudInterface implements ImudServices, Serializable
 				String stat="online";
 				MOB smob=findSessMob(lk.user_name);
 				if(smob==null)
-				for(Enumeration p=CMMap.players();p.hasMoreElements();)
+				for(Enumeration p=CMLib.map().players();p.hasMoreElements();)
 				{
 					MOB M=(MOB)p.nextElement();
 					if(M.Name().equalsIgnoreCase(lk.user_name))
@@ -291,7 +305,7 @@ public class IMudInterface implements ImudServices, Serializable
                 boolean killsmob=false;
 				if(smob==null)
 				{
-					if(CMClass.DBEngine().DBUserSearch(null,lk.user_name))
+					if(CMLib.database().DBUserSearch(null,lk.user_name))
 					{
 						stat="exists, but is not online";
 						smob=CMClass.getMOB("StdMOB");
@@ -301,7 +315,7 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 				if(smob!=null)
 				{
-                    if(Sense.isCloaked(smob))
+                    if(CMLib.flags().isCloaked(smob))
                         stat="exists, but is not online";
 					LocateReplyPacket lpk=new LocateReplyPacket(lk.sender_name,lk.sender_mud,smob.Name(),0,stat);
 					try{
@@ -374,13 +388,13 @@ public class IMudInterface implements ImudServices, Serializable
 				wkr.target_name=wk.sender_name;
 				wkr.target_mud=wk.sender_mud;
 				wkr.channel=wk.channel;
-				int channelInt=ChannelSet.getChannelIndex(wk.channel);
+				int channelInt=CMLib.channels().getChannelIndex(wk.channel);
 				Vector whoV=new Vector();
-				for(int s=0;s<Sessions.size();s++)
+				for(int s=0;s<CMLib.sessions().size();s++)
 				{
-					Session ses=Sessions.elementAt(s);
-					if((ChannelSet.mayReadThisChannel(ses.mob(),false,ses,channelInt))
-                    &&((ses.mob()==null)||(!Sense.isCloaked(ses.mob()))))
+					Session ses=CMLib.sessions().elementAt(s);
+					if((CMLib.channels().mayReadThisChannel(ses.mob(),false,ses,channelInt))
+                    &&((ses.mob()==null)||(!CMLib.flags().isCloaked(ses.mob()))))
 						whoV.addElement(ses.mob().name());
 				}
 				wkr.who=whoV;
@@ -397,16 +411,16 @@ public class IMudInterface implements ImudServices, Serializable
 				wkr.target_name=wk.sender_name;
 				wkr.target_mud=wk.sender_mud;
 				Vector whoV=new Vector();
-				for(int s=0;s<Sessions.size();s++)
+				for(int s=0;s<CMLib.sessions().size();s++)
 				{
-					Session ses=Sessions.elementAt(s);
+					Session ses=CMLib.sessions().elementAt(s);
 					MOB smob=ses.mob();
 					if((smob!=null)&&(smob.soulMate()!=null))
 						smob=smob.soulMate();
 					if((!ses.killFlag())&&(smob!=null)
 					&&(!smob.amDead())
-					&&(Sense.isInTheGame(smob,true))
-					&&(!Sense.isCloaked(smob)))
+					&&(CMLib.flags().isInTheGame(smob,true))
+					&&(!CMLib.flags().isCloaked(smob)))
 					{
 						Vector whoV2=new Vector();
 						whoV2.addElement(smob.name());
@@ -430,8 +444,8 @@ public class IMudInterface implements ImudServices, Serializable
 				MOB smob=findSessMob(tk.target_name);
 				if(smob!=null)
 				{
-					tk.message=fixColors(CommonStrings.applyFilter(tk.message,CommonStrings.SYSTEM_SAYFILTER));
-					CommonMsgs.say(mob,smob,tk.message,true,true);
+					tk.message=fixColors(CMProps.applyINIFilter(tk.message,CMProps.SYSTEM_SAYFILTER));
+					CMLib.commands().say(mob,smob,tk.message,true,true);
 				}
                 destroymob(mob);
 			}

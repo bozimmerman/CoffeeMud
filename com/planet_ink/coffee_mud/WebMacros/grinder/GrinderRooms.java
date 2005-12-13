@@ -1,10 +1,21 @@
-package com.planet_ink.coffee_mud.system.http.macros.grinder;
+package com.planet_ink.coffee_mud.WebMacros.grinder;
+import com.planet_ink.coffee_mud.WebMacros.RoomData;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.system.http.macros.RoomData;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -55,7 +66,7 @@ public class GrinderRooms
 		if((className==null)||(className.length()==0))
 			return "Please select a class type for this room.";
 
-		CoffeeUtensils.resetRoom(R);
+		CMLib.utensils().resetRoom(R);
 
 		if(!className.equalsIgnoreCase(CMClass.className(R)))
 		{
@@ -71,9 +82,7 @@ public class GrinderRooms
 					oldR.delEffect(A);
 				}
 			}
-			CMClass.ThreadEngine().deleteTick(oldR,-1);
-			CMMap.delRoom(oldR);
-			CMMap.addRoom(R);
+			CMLib.threads().deleteTick(oldR,-1);
 			R.setArea(oldR.getArea());
 			R.setRoomID(oldR.roomID());
 			for(int d=0;d<R.rawDoors().length;d++)
@@ -235,7 +244,7 @@ public class GrinderRooms
 		{
 		    try
 		    {
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R2=(Room)r.nextElement();
 					for(int d=0;d<R2.rawDoors().length;d++)
@@ -249,7 +258,7 @@ public class GrinderRooms
 		    }catch(NoSuchElementException e){}
 		    try
 		    {
-				for(Enumeration e=CMMap.players();e.hasMoreElements();)
+				for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
 				{
 					MOB M=(MOB)e.nextElement();
 					if(M.getStartRoom()==oldR)
@@ -259,13 +268,13 @@ public class GrinderRooms
 						M.setLocation(R);
 				}
 		    }catch(NoSuchElementException e){}
-			R.getArea().clearMaps();
 		}
 		R.getArea().fillInAreaRoom(R);
-		CMClass.DBEngine().DBUpdateRoom(R);
-		CMClass.DBEngine().DBUpdateMOBs(R);
-		CMClass.DBEngine().DBUpdateItems(R);
+		CMLib.database().DBUpdateRoom(R);
+		CMLib.database().DBUpdateMOBs(R);
+		CMLib.database().DBUpdateItems(R);
 		R.startItemRejuv();
+        oldR.destroyRoom();
 		return "";
 	}
 
@@ -273,7 +282,7 @@ public class GrinderRooms
 
 	public static String delRoom(Room R)
 	{
-		CoffeeUtensils.obliterateRoom(R);
+		CMLib.utensils().obliterateRoom(R);
 		return "";
 	}
 
@@ -282,7 +291,7 @@ public class GrinderRooms
 		Room newRoom=null;
 		if((copyThisOne)&&(linkTo!=null))
 		{
-			CoffeeUtensils.resetRoom(linkTo);
+			CMLib.utensils().resetRoom(linkTo);
 			newRoom=(Room)linkTo.copyOf();
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
@@ -296,20 +305,19 @@ public class GrinderRooms
 			newRoom.setDisplayText("Title of "+newRoom.roomID());
 			newRoom.setDescription("Description of "+newRoom.roomID());
 		}
-		newRoom.setRoomID(CMMap.getOpenRoomID(A.Name()));
+		newRoom.setRoomID(CMLib.map().getOpenRoomID(A.Name()));
 		newRoom.setArea(A);
 		if(linkTo!=null)
 		{
 			newRoom.rawDoors()[Directions.getOpDirectionCode(dir)]=linkTo;
 			newRoom.rawExits()[Directions.getOpDirectionCode(dir)]=CMClass.getExit("StdOpenDoorway");
 		}
-		CMClass.DBEngine().DBCreateRoom(newRoom,CMClass.className(newRoom));
-		CMClass.DBEngine().DBUpdateExits(newRoom);
+		CMLib.database().DBCreateRoom(newRoom,CMClass.className(newRoom));
+		CMLib.database().DBUpdateExits(newRoom);
 		if(newRoom.numInhabitants()>0)
-			CMClass.DBEngine().DBUpdateMOBs(newRoom);
+			CMLib.database().DBUpdateMOBs(newRoom);
 		if(newRoom.numItems()>0)
-			CMClass.DBEngine().DBUpdateItems(newRoom);
-		CMMap.addRoom(newRoom);
+			CMLib.database().DBUpdateItems(newRoom);
 		newRoom.getArea().fillInAreaRoom(newRoom);
 		return newRoom;
 	}
@@ -323,7 +331,7 @@ public class GrinderRooms
 		R.rawDoors()[dir]=newRoom;
 		if(R.rawExits()[dir]==null)
 			R.rawExits()[dir]=CMClass.getExit("StdOpenDoorway");
-		CMClass.DBEngine().DBUpdateExits(R);
+		CMLib.database().DBUpdateExits(R);
 		R.getArea().fillInAreaRoom(R);
 		return "";
 	}

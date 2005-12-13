@@ -1,5 +1,5 @@
-package com.planet_ink.coffee_mud.core.http.macros;
-import com.planet_ink.coffee_mud.core.http.macros.grinder.*;
+package com.planet_ink.coffee_mud.WebMacros;
+import com.planet_ink.coffee_mud.WebMacros.grinder.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -52,10 +52,7 @@ public class MUDGrinder extends StdWebMacro
 			Area A=CMLib.map().getArea(AREA);
 			if(A==null) return "";
 			if(A.properSize()==0)
-			{
 				GrinderRooms.createLonelyRoom(A,null,0,false);
-				A.clearMaps();
-			}
 			GrinderFlatMap map=null;
 			if((httpReq.getRequestParameter("MAPSTYLE")!=null)
 			&&(httpReq.getRequestParameter("MAPSTYLE").length()>0))
@@ -75,10 +72,7 @@ public class MUDGrinder extends StdWebMacro
 			Area A = CMLib.map().getArea(AREA);
 			if (A == null)  return "";
 			if (A.properSize() == 0) 
-			{
 				GrinderRooms.createLonelyRoom(A, null, 0, false);
-				A.clearMaps();
-			}
 			GrinderFlatMap map=null;
 			if((httpReq.getRequestParameter("MAPSTYLE")!=null)
 			&&(httpReq.getRequestParameter("MAPSTYLE").length()>0))

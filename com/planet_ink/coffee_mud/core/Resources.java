@@ -1,8 +1,18 @@
-package com.planet_ink.coffee_mud.common;
+package com.planet_ink.coffee_mud.core;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.MOB;
-import com.planet_ink.coffee_mud.interfaces.Room;
-import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 
@@ -103,7 +113,7 @@ public class Resources
 			if(!compress) return resources.elementAt(x,2);
 			if((((Boolean)resources.elementAt(x,3)).booleanValue())
             &&(resources.elementAt(x,2) instanceof byte[]))
-				return new StringBuffer(CMEncoder.decompressString((byte[])resources.elementAt(x,2)));
+				return new StringBuffer(CMLib.encoder().decompressString((byte[])resources.elementAt(x,2)));
 			return resources.elementAt(x,2);
 		}
 		return null;
@@ -121,7 +131,7 @@ public class Resources
 	{
 		if(!compress) return obj;
 		if(obj instanceof StringBuffer)
-			return CMEncoder.compressString(((StringBuffer)obj).toString());
+			return CMLib.encoder().compressString(((StringBuffer)obj).toString());
 		return obj;
 	}
 	

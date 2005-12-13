@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.MOBS;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 /* 
    Copyright 2000-2005 Bo Zimmerman
 
@@ -37,10 +48,10 @@ public class Doppleganger extends StdMOB
 		Username="a doppleganger";
 		setDescription("A formless biped creature, with wicked black eyes.");
 		setDisplayText("A formless biped stands here.");
-		setBaseEnvStats((EnvStats)CMClass.getShared("DefaultEnvStats"));
-		setBaseCharStats((CharStats)CMClass.getShared("DefaultCharStats"));
-		setBaseState((CharState)CMClass.getShared("DefaultCharState"));
-		Factions.setAlignment(this,Faction.ALIGN_EVIL);
+		setBaseEnvStats((EnvStats)CMClass.getCommon("DefaultEnvStats"));
+		setBaseCharStats((CharStats)CMClass.getCommon("DefaultCharStats"));
+		setBaseState((CharState)CMClass.getCommon("DefaultCharState"));
+		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(250);
 		baseEnvStats.setWeight(100 + Math.abs(randomizer.nextInt() % 101));
 
@@ -54,7 +65,7 @@ public class Doppleganger extends StdMOB
 		baseEnvStats().setLevel(6);
 		baseEnvStats().setArmor(20);
 
-		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		addBehavior(CMClass.getBehavior("Mobile"));
 		addBehavior(CMClass.getBehavior("MudChat"));

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -31,9 +32,10 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CoffeeUtensils
+public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 {
-	public static boolean hasASky(Room room)
+    public String ID(){return "CoffeeUtensils";}
+	public boolean hasASky(Room room)
 	{
 		if((room==null)
 		||(room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
@@ -42,7 +44,7 @@ public class CoffeeUtensils
 		return true;
 	}
 	
-	public static String niceCommaList(Vector V, boolean andTOrF)
+	public String niceCommaList(Vector V, boolean andTOrF)
 	{
 		String id="";
 		for(int v=0;v<V.size();v++)
@@ -66,7 +68,7 @@ public class CoffeeUtensils
 		return id;
 	}
 	
-    public static Environmental unbundle(Item I, int number)
+    public Environmental unbundle(Item I, int number)
     {
         if((I instanceof PackagedItems)
         &&(I.container()==null)
@@ -102,7 +104,7 @@ public class CoffeeUtensils
                 Environmental E=null;
                 for(int x=0;x<I.baseEnvStats().weight();x++)
                 {
-                    E=CoffeeUtensils.makeResource(I.material(),-1,true);
+                    E=makeResource(I.material(),-1,true);
                     if(E instanceof Item)
                     {
                         if((E instanceof Food)&&(I instanceof Food))
@@ -126,21 +128,21 @@ public class CoffeeUtensils
         return null;
     }
     
-	public static int getMaterialRelativeInt(String s)
+	public int getMaterialRelativeInt(String s)
 	{
 		for(int i=0;i<EnvResource.MATERIAL_DESCS.length;i++)
 			if(s.equalsIgnoreCase(EnvResource.MATERIAL_DESCS[i]))
 				return i;
 		return -1;
 	}
-    public static int getMaterialCode(String s)
+    public int getMaterialCode(String s)
     {
         for(int i=0;i<EnvResource.MATERIAL_DESCS.length;i++)
             if(s.equalsIgnoreCase(EnvResource.MATERIAL_DESCS[i]))
                 return i<<8;
         return -1;
     }
-	public static int getResourceCode(String s)
+	public int getResourceCode(String s)
 	{
 		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
 			if(s.equalsIgnoreCase(EnvResource.RESOURCE_DESCS[i]))
@@ -148,13 +150,13 @@ public class CoffeeUtensils
 		return -1;
 	}
 	
-	public static Law getTheLaw(Room R, MOB mob)
+	public Law getTheLaw(Room R, MOB mob)
 	{
-	    Behavior B=CoffeeUtensils.getLegalBehavior(R);
+	    Behavior B=getLegalBehavior(R);
 	    if(B!=null)
 	    {
 			Vector VB=new Vector();
-			Area A2=CoffeeUtensils.getLegalObject(R.getArea());
+			Area A2=getLegalObject(R.getArea());
 			VB.addElement(new Integer(Law.MOD_LEGALINFO));
 			B.modifyBehavior(A2,mob,VB);
 			return (Law)VB.firstElement();
@@ -162,7 +164,7 @@ public class CoffeeUtensils
 	    return null;
 	}
 	
-	public static Behavior getLegalBehavior(Area A)
+	public Behavior getLegalBehavior(Area A)
 	{
 		if(A==null) return null;
 		Vector V=CMLib.flags().flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
@@ -175,14 +177,14 @@ public class CoffeeUtensils
 		}
 		return B;
 	}
-	public static Behavior getLegalBehavior(Room R)
+	public Behavior getLegalBehavior(Room R)
 	{
 		if(R==null) return null;
 		Vector V=CMLib.flags().flaggedBehaviors(R,Behavior.FLAG_LEGALBEHAVIOR);
 		if(V.size()>0) return (Behavior)V.firstElement();
 		return getLegalBehavior(R.getArea());
 	}
-	public static Area getLegalObject(Area A)
+	public Area getLegalObject(Area A)
 	{
 		if(A==null) return null;
 		Vector V=CMLib.flags().flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
@@ -197,18 +199,18 @@ public class CoffeeUtensils
 		}
 		return A3;
 	}
-	public static Area getLegalObject(Room R)
+	public Area getLegalObject(Room R)
 	{
 		if(R==null) return null;
 		return getLegalObject(R.getArea());
 	}
 
-	public static int getRandomResourceOfMaterial(int material)
+	public int getRandomResourceOfMaterial(int material)
 	{
 		material=material&EnvResource.MATERIAL_MASK;
 		if((material<0)||(material>=EnvResource.MATERIAL_DESCS.length))
 			return -1;
-		int d=Dice.roll(1,EnvResource.RESOURCE_DATA.length,0);
+		int d=CMLib.dice().roll(1,EnvResource.RESOURCE_DATA.length,0);
 		while(d>0)
 		for(int i=0;i<EnvResource.RESOURCE_DATA.length;i++)
 			if((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)==material)
@@ -217,7 +219,7 @@ public class CoffeeUtensils
 		return -1;
 	}
 
-	public static Vector getAllUniqueTitles(Enumeration e, String owner, boolean includeRentals)
+	public Vector getAllUniqueTitles(Enumeration e, String owner, boolean includeRentals)
 	{
 	    Vector V=new Vector();
 	    HashSet roomsDone=new HashSet();
@@ -225,7 +227,7 @@ public class CoffeeUtensils
 	    for(;e.hasMoreElements();)
 	    {
 	        R=(Room)e.nextElement();
-	        LandTitle T=CoffeeUtensils.getLandTitle(R);
+	        LandTitle T=getLandTitle(R);
 	        if((T!=null)
 	        &&(!V.contains(T))
 	        &&(includeRentals||(!T.rentalProperty()))
@@ -252,7 +254,7 @@ public class CoffeeUtensils
 	    return V;
 	}
 	
-	public static Environmental makeResource(int myResource, int localeCode, boolean noAnimals)
+	public Environmental makeResource(int myResource, int localeCode, boolean noAnimals)
 	{
 		if(myResource<0)
 			return null;
@@ -281,7 +283,7 @@ public class CoffeeUtensils
 					return CMClass.getMOB("Sheep");
 				case EnvResource.RESOURCE_LEATHER:
 				case EnvResource.RESOURCE_HIDE:
-					switch(Dice.roll(1,10,0))
+					switch(CMLib.dice().roll(1,10,0))
 					{
 					case 1:
 					case 2:
@@ -299,7 +301,7 @@ public class CoffeeUtensils
 					return CMClass.getMOB("Pig");
 				case EnvResource.RESOURCE_FUR:
 				case EnvResource.RESOURCE_MEAT:
-					switch(Dice.roll(1,10,0))
+					switch(CMLib.dice().roll(1,10,0))
 					{
 					case 1:
 					case 2:
@@ -314,7 +316,7 @@ public class CoffeeUtensils
 					}
 					break;
 				case EnvResource.RESOURCE_SCALES:
-					switch(Dice.roll(1,10,0))
+					switch(CMLib.dice().roll(1,10,0))
 					{
 					case 1:
 					case 2:
@@ -332,7 +334,7 @@ public class CoffeeUtensils
 				case EnvResource.RESOURCE_EGGS:
 					return CMClass.getMOB("Chicken");
 				case EnvResource.RESOURCE_BEEF:
-					switch(Dice.roll(1,5,0))
+					switch(CMLib.dice().roll(1,5,0))
 					{
 					case 1:
 					case 2:
@@ -342,7 +344,7 @@ public class CoffeeUtensils
 					}
 					break;
 				case EnvResource.RESOURCE_FEATHERS:
-					switch(Dice.roll(1,4,0))
+					switch(CMLib.dice().roll(1,4,0))
 					{
 					case 1: return CMClass.getMOB("WildEagle");
 					case 2: return CMClass.getMOB("Falcon");
@@ -421,20 +423,20 @@ public class CoffeeUtensils
 		return null;
 	}
 	
-	public static String getFormattedDate(Environmental E)
+	public String getFormattedDate(Environmental E)
 	{
 	    String date=Util.padRight("Unknown",11);
 	    if(E!=null)
 	    {
 		    TimeClock C=(E instanceof Area)?((Area)E).getTimeObj():
-		        CoffeeUtensils.roomLocation(E).getArea().getTimeObj();
+		        roomLocation(E).getArea().getTimeObj();
 		    if(C!=null)
 		        date=Util.padRight(C.getDayOfMonth()+"-"+C.getMonth()+"-"+C.getYear(),11);
 	    }
 	    return date;
 	}
 
-	public static Item makeItemResource(int type)
+	public Item makeItemResource(int type)
 	{
 		Item I=null;
 		String name=EnvResource.RESOURCE_DESCS[type&EnvResource.RESOURCE_MASK].toLowerCase();
@@ -459,7 +461,7 @@ public class CoffeeUtensils
 		return I;
 	}
 
-	public static void outfit(MOB mob, Vector items)
+	public void outfit(MOB mob, Vector items)
 	{
 		if((mob==null)||(items==null)||(items.size()==0))
 			return;
@@ -478,7 +480,7 @@ public class CoffeeUtensils
 		}
 	}
 
-	public static Trap makeADeprecatedTrap(Environmental unlockThis)
+	public Trap makeADeprecatedTrap(Environmental unlockThis)
 	{
 		Trap theTrap=null;
 		int roll=(int)Math.round(Math.random()*100.0);
@@ -540,13 +542,13 @@ public class CoffeeUtensils
 	}
 
 
-	public static void setTrapped(Environmental myThang, boolean isTrapped)
+	public void setTrapped(Environmental myThang, boolean isTrapped)
 	{
 		Trap t=makeADeprecatedTrap(myThang);
 		t.setReset(50);
 		setTrapped(myThang,t,isTrapped);
 	}
-	public static void setTrapped(Environmental myThang, Trap theTrap, boolean isTrapped)
+	public void setTrapped(Environmental myThang, Trap theTrap, boolean isTrapped)
 	{
 		for(int a=0;a<myThang.numEffects();a++)
 		{
@@ -559,7 +561,7 @@ public class CoffeeUtensils
 			myThang.addEffect(theTrap);
 	}
 
-	public static Trap fetchMyTrap(Environmental myThang)
+	public Trap fetchMyTrap(Environmental myThang)
 	{
 		if(myThang==null) return null;
         Ability A=null;
@@ -571,7 +573,7 @@ public class CoffeeUtensils
 		}
 		return null;
 	}
-	public static boolean reachableItem(MOB mob, Environmental E)
+	public boolean reachableItem(MOB mob, Environmental E)
 	{
 		if((E==null)||(!(E instanceof Item)))
 			return true;
@@ -586,7 +588,7 @@ public class CoffeeUtensils
 		return false;
 	}
 
-	public static Room roomLocation(Environmental E)
+	public Room roomLocation(Environmental E)
 	{
 		if(E==null) return null;
 		if(E instanceof Room)
@@ -603,7 +605,7 @@ public class CoffeeUtensils
 		return null;
 	}
 
-    public static Area areaLocation(Object E)
+    public Area areaLocation(Object E)
     {
         if(E==null) return null;
         if(E instanceof Area)
@@ -623,7 +625,7 @@ public class CoffeeUtensils
         return null;
     }
     
-    public static double memoryUse ( Environmental E, int number )
+    public double memoryUse ( Environmental E, int number )
     {
 		double s=-1.0;
 		try
@@ -648,7 +650,7 @@ public class CoffeeUtensils
 		return s;
     }
 
-	public static void extinguish(MOB source, Environmental target, boolean mundane)
+	public void extinguish(MOB source, Environmental target, boolean mundane)
 	{
 		if(target instanceof Room)
 		{
@@ -694,7 +696,7 @@ public class CoffeeUtensils
 		}
 	}
 
-	public static void obliterateRoom(Room deadRoom)
+	public void obliterateRoom(Room deadRoom)
 	{
 		for(int a=deadRoom.numEffects()-1;a>=0;a--)
 		{
@@ -705,10 +707,9 @@ public class CoffeeUtensils
 				deadRoom.delEffect(A);
 			}
 		}
-		CMMap.delRoom(deadRoom);
 		try
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				boolean changes=false;
@@ -735,7 +736,7 @@ public class CoffeeUtensils
 			MOB mob2=deadRoom.fetchInhabitant(mb);
 			if(mob2!=null)
 			{
-				if((mob2.getStartRoom()!=deadRoom)&&(mob2.getStartRoom()!=null)&&(CMMap.getRoom(mob2.getStartRoom().roomID())!=null))
+				if((mob2.getStartRoom()!=deadRoom)&&(mob2.getStartRoom()!=null)&&(CMLib.map().getRoom(mob2.getStartRoom().roomID())!=null))
 					mob2.getStartRoom().bringMobHere(mob2,true);
 				else
 				{
@@ -760,7 +761,7 @@ public class CoffeeUtensils
 		CMLib.database().DBDeleteRoom(deadRoom);
 	}
 
-	public static void roomAffectFully(CMMsg msg, Room room, int dirCode)
+	public void roomAffectFully(CMMsg msg, Room room, int dirCode)
 	{
 		room.send(msg.source(),msg);
 		if((msg.target()==null)||(!(msg.target() instanceof Exit)))
@@ -774,23 +775,23 @@ public class CoffeeUtensils
 		Exit pair=room.getPairedExit(dirCode);
 		if(pair!=null)
 		{
-			FullMsg altMsg=null;
+			CMMsg altMsg=null;
 			if((msg.targetCode()==CMMsg.MSG_OPEN)&&(pair.isLocked()))
 			{
-				altMsg=new FullMsg(msg.source(),pair,msg.tool(),CMMsg.MSG_UNLOCK,null,CMMsg.MSG_UNLOCK,null,CMMsg.MSG_UNLOCK,null);
+				altMsg=CMClass.getMsg(msg.source(),pair,msg.tool(),CMMsg.MSG_UNLOCK,null,CMMsg.MSG_UNLOCK,null,CMMsg.MSG_UNLOCK,null);
 				pair.executeMsg(msg.source(),altMsg);
 			}
-			altMsg=new FullMsg(msg.source(),pair,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
+			altMsg=CMClass.getMsg(msg.source(),pair,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
 			pair.executeMsg(msg.source(),altMsg);
 		}
 	}
 
-	public static void obliteratePlayer(MOB deadMOB, boolean quiet)
+	public void obliteratePlayer(MOB deadMOB, boolean quiet)
 	{
-		if(CMMap.getPlayer(deadMOB.Name())!=null)
+		if(CMLib.map().getPlayer(deadMOB.Name())!=null)
 		{
-		   deadMOB=CMMap.getPlayer(deadMOB.Name());
-		   CMMap.delPlayer(deadMOB);
+		   deadMOB=CMLib.map().getPlayer(deadMOB.Name());
+		   CMLib.map().delPlayer(deadMOB);
 		}
 		for(int s=0;s<CMLib.sessions().size();s++)
 		{
@@ -798,12 +799,12 @@ public class CoffeeUtensils
 			if((!S.killFlag())&&(S.mob()!=null)&&(S.mob().Name().equals(deadMOB.Name())))
 			   deadMOB=S.mob();
 		}
-		FullMsg msg=new FullMsg(deadMOB,null,CMMsg.MSG_RETIRE,(quiet)?null:"A horrible death cry is heard throughout the land.");
+		CMMsg msg=CMClass.getMsg(deadMOB,null,CMMsg.MSG_RETIRE,(quiet)?null:"A horrible death cry is heard throughout the land.");
 		if(deadMOB.location()!=null)
 			deadMOB.location().send(deadMOB,msg);
 		try
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if((R!=null)&&(R!=deadMOB.location()))
@@ -812,7 +813,7 @@ public class CoffeeUtensils
 						R.sendOthers(deadMOB,msg);
 					else
 					{
-						CMMap.addPlayer(deadMOB);
+						CMLib.map().addPlayer(deadMOB);
 						return;
 					}
 				}
@@ -845,8 +846,8 @@ public class CoffeeUtensils
         deadMOB.destroy();
 	}
 
-	protected static CMMsg resetMsg=null;
-	public static void resetRoom(Room room)
+	public CMMsg resetMsg=null;
+	public void resetRoom(Room room)
 	{
 		if(room==null) return;
         if(Util.bset(room.baseEnvStats().sensesMask(),EnvStats.SENSE_ROOMSYNC))
@@ -854,9 +855,9 @@ public class CoffeeUtensils
         room.baseEnvStats().setSensesMask(room.baseEnvStats().sensesMask()|EnvStats.SENSE_ROOMSYNC);
 		boolean mobile=room.getMobility();
 		room.toggleMobility(false);
-		if(resetMsg==null) resetMsg=new FullMsg(CMClass.sampleMOB(),room,CMMsg.MSG_ROOMRESET,null);
+		if(resetMsg==null) resetMsg=CMClass.getMsg(CMClass.sampleMOB(),room,CMMsg.MSG_ROOMRESET,null);
 		room.executeMsg(room,resetMsg);
-		CoffeeUtensils.clearTheRoom(room);
+		clearTheRoom(room);
         Ability A=null;
         for(int a=room.numEffects()-1;a>=0;a--)
         {
@@ -870,7 +871,7 @@ public class CoffeeUtensils
             room.baseEnvStats().setSensesMask(room.baseEnvStats().sensesMask()-EnvStats.SENSE_ROOMSYNC);
 	}
     
-    public static void resetArea(Area area)
+    public void resetArea(Area area)
     {
         boolean mobile=area.getMobility();
         area.toggleMobility(false);
@@ -882,7 +883,7 @@ public class CoffeeUtensils
         area.fillInAreaRooms();
         area.toggleMobility(mobile);
     }
-    public static MOB getMobPossessingAnother(MOB mob)
+    public MOB getMobPossessingAnother(MOB mob)
     {
         if(mob==null) return null;
         Session S=null;
@@ -900,7 +901,7 @@ public class CoffeeUtensils
         return null;
     }
     
-	public static void clearTheRoom(Room room)
+	public void clearTheRoom(Room room)
 	{
 		for(int m=room.numInhabitants()-1;m>=0;m--)
 		{
@@ -923,7 +924,7 @@ public class CoffeeUtensils
 	}
 
 
-	public static void clearDebriAndRestart(Room room, int taskCode)
+	public void clearDebriAndRestart(Room room, int taskCode)
 	{
 		CMLib.threads().clearDebri(room,0);
 		if(taskCode<2)
@@ -935,15 +936,15 @@ public class CoffeeUtensils
 			CMLib.database().DBUpdateMOBs(room);
 	}
 
-	public static void obliterateArea(String areaName)
+	public void obliterateArea(String areaName)
 	{
-		Room foundOne=CMMap.getFirstRoom();
+		Room foundOne=(Room)CMLib.map().rooms().nextElement();
 		while(foundOne!=null)
 		{
 			foundOne=null;
 			try
 			{
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.getArea().Name().equalsIgnoreCase(areaName))
@@ -957,12 +958,12 @@ public class CoffeeUtensils
 				obliterateRoom(foundOne);
 		}
 
-		Area A=CMMap.getArea(areaName);
+		Area A=CMLib.map().getArea(areaName);
 		CMLib.database().DBDeleteArea(A);
-		CMMap.delArea(A);
+		CMLib.map().delArea(A);
 	}
 
-	public static LandTitle getLandTitle(Area area)
+	public LandTitle getLandTitle(Area area)
 	{
 		if(area==null) return null;
 		for(int a=0;a<area.numEffects();a++)
@@ -973,7 +974,7 @@ public class CoffeeUtensils
 		}
 		return null;
 	}
-	public static LandTitle getLandTitle(Room room)
+	public LandTitle getLandTitle(Room room)
 	{
 		if(room==null) return null;
 		LandTitle title=getLandTitle(room.getArea());
@@ -988,7 +989,7 @@ public class CoffeeUtensils
 		return null;
 	}
 
-	public static boolean doesHavePriviledgesHere(MOB mob, Room room)
+	public boolean doesHavePriviledgesHere(MOB mob, Room room)
 	{
 		LandTitle title=getLandTitle(room);
 		if(title==null) return false;
@@ -1004,7 +1005,7 @@ public class CoffeeUtensils
 		return false;
 	}
 	
-	public static boolean doesOwnThisProperty(String name, Room room)
+	public boolean doesOwnThisProperty(String name, Room room)
 	{
 		LandTitle title=getLandTitle(room);
 		if(title==null) return false;
@@ -1014,7 +1015,7 @@ public class CoffeeUtensils
 		return false;
 	}
 	
-	public static boolean doesOwnThisProperty(MOB mob, Room room)
+	public boolean doesOwnThisProperty(MOB mob, Room room)
 	{
 		LandTitle title=getLandTitle(room);
 		if(title==null) return false;
@@ -1025,7 +1026,7 @@ public class CoffeeUtensils
 		   return true;
 		if(title.landOwner().equals(mob.getClanID()))
 		{
-			Clan C=Clans.getClan(mob.getClanID());
+			Clan C=CMLib.clans().getClan(mob.getClanID());
 			if((C!=null)&&(C.allowedToDoThis(mob,Clan.FUNC_CLANPROPERTYOWNER)>=0))
 				return true;
 		}
@@ -1034,7 +1035,7 @@ public class CoffeeUtensils
 		return false;
 	}
 	
-	public static boolean armorCheck(MOB mob, int allowedArmorLevel)
+	public boolean armorCheck(MOB mob, int allowedArmorLevel)
 	{
 		if(allowedArmorLevel==CharClass.ARMOR_ANY) return true;
 
@@ -1114,7 +1115,7 @@ public class CoffeeUtensils
 	}
     
     
-    public static String wornList(long wornCode)
+    public String wornList(long wornCode)
     {
         StringBuffer buf=new StringBuffer("");
         for(int wornNum=0;wornNum<Item.wornLocation.length-1;wornNum++)
@@ -1127,7 +1128,7 @@ public class CoffeeUtensils
         return buff;
     }
     
-    public static int getWornCode(String name)
+    public int getWornCode(String name)
     {
         int wornNum=0;
         name=name.toLowerCase().trim();

@@ -1,4 +1,5 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -30,20 +31,21 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Dice
+public class Dice extends StdLibrary implements DiceLibrary
 {
-    private static Random randomizer = null;
+    public String ID(){return "Dice";}
+    private Random randomizer = null;
 
-    public static void seed()
+    public void seed()
     {
         randomizer = new Random(System.currentTimeMillis());
     }
 	
-	public static boolean normalizeAndRollLess(int score)
+	public boolean normalizeAndRollLess(int score)
 	{
 		return (rollPercentage()<normalizeBy5(score));
 	}
-	public static int normalizeBy5(int score)
+	public int normalizeBy5(int score)
 	{
 		if(score>95)
 			return 95;
@@ -53,7 +55,7 @@ public class Dice
 		return score;
 	}
 
-	public static int rollHP(int level, int code)
+	public int rollHP(int level, int code)
 	{
 		int mul=1;
 		if(code<0)
@@ -64,15 +66,15 @@ public class Dice
 		// old style
 		if(code<32768) return 10
 							  +(int)Math.round(Util.mul(level*level,0.85))
-							  +(Dice.roll(level,code,0)*mul);
+							  +(roll(level,code,0)*mul);
 		// new style
 		int r=code>>23;
 		int d=(code-(r<<23))>>15;
 		int p=(((code-(r<<23))-(d<<15)))*mul;
-		return Dice.roll(r,d,p);
+		return roll(r,d,p);
 	}
 	
-	public static int getHPCode(String str)
+	public int getHPCode(String str)
 	{
 		int i=str.indexOf("d");
 		if(i<0) return 11;
@@ -101,7 +103,7 @@ public class Dice
 		return getHPCode(roll,dice,plus);
 	}
 
-	public static int getHPCode(int roll, int dice, int plus)
+	public int getHPCode(int roll, int dice, int plus)
 	{
 		if(roll<=0) roll=1;
 		if(dice<=0) dice=0;
@@ -128,7 +130,7 @@ public class Dice
 		return 	(plus+(dice<<15)+(roll<<(23)))*mul;
 	}
 
-	public static int[] getHPBreakup(int level, int code)
+	public int[] getHPBreakup(int level, int code)
 	{
 		int mul=1;
 		if(code<0)
@@ -157,7 +159,7 @@ public class Dice
 		return stuff;
 	}
 	
-    public static int roll(int number, int die, int modifier)
+    public int roll(int number, int die, int modifier)
     {
         if (randomizer == null)
             seed();
@@ -172,7 +174,7 @@ public class Dice
         return total;
     }
 
-    public static int rollPercentage()
+    public int rollPercentage()
     {
         if (randomizer == null)
             seed();

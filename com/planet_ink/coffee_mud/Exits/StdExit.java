@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Exits;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -23,8 +34,8 @@ public class StdExit implements Exit
 {
 	public String ID(){	return "StdExit";}
 
-	protected EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
-	protected EnvStats baseEnvStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	protected boolean isOpen=true;
 	protected boolean isLocked=false;
 	protected String miscText="";
@@ -86,7 +97,7 @@ public class StdExit implements Exit
     public String image()
     {
         if(imageName==null) 
-            imageName=CommonStrings.getDefaultMXPImage(this);
+            imageName=CMProps.getDefaultMXPImage(this);
         return imageName;
     }
     public String rawImage()
@@ -162,7 +173,7 @@ public class StdExit implements Exit
 			Item I=room.fetchItem(i);
 			if((I!=null)
 			   &&(I instanceof Rideable)
-			   &&(Sense.canBeSeenBy(I,mob))
+			   &&(CMLib.flags().canBeSeenBy(I,mob))
 			   &&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_LADDER))
 				return (Rideable)I;
 		}
@@ -172,7 +183,7 @@ public class StdExit implements Exit
 	private void mountLadder(MOB mob, Rideable ladder)
 	{
 		String mountStr=ladder.mountString(CMMsg.TYP_MOUNT,mob);
-		FullMsg msg=new FullMsg(mob,ladder,null,CMMsg.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
+		CMMsg msg=CMClass.getMsg(mob,ladder,null,CMMsg.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
 		Room room=(Room)((Item)ladder).owner();
 		if(mob.location()==room) room=null;
 		if((mob.location().okMessage(mob,msg))
@@ -240,31 +251,31 @@ public class StdExit implements Exit
 		case CMMsg.TYP_ENTER:
 			if((hasADoor())&&(!isOpen())&&(mob.envStats().height()>=0))
 			{
-				if(!Sense.canBeSeenBy(this,mob))
+				if(!CMLib.flags().canBeSeenBy(this,mob))
 					mob.tell("You can't go that way.");
                 else
     				mob.tell("The "+doorName()+" is "+closeWordPastTense()+".");
 				return false;
 			}
-			if((Sense.isFlying(this))
-			&&(!Sense.isInFlight(mob))
-			&&(!Sense.isFalling(mob)))
+			if((CMLib.flags().isFlying(this))
+			&&(!CMLib.flags().isInFlight(mob))
+			&&(!CMLib.flags().isFalling(mob)))
 			{
 				mob.tell("You can't fly.");
 				return false;
 			}
-			if((Sense.isClimbing(this))
-			&&(!Sense.isFalling(this))
-			&&(!Sense.isClimbing(mob))
-			&&(!Sense.isInFlight(mob)))
+			if((CMLib.flags().isClimbing(this))
+			&&(!CMLib.flags().isFalling(this))
+			&&(!CMLib.flags().isClimbing(mob))
+			&&(!CMLib.flags().isInFlight(mob)))
 			{
 				Rideable ladder=null;
 				if(msg.target() instanceof Room)
 					ladder=findALadder(mob,(Room)msg.target());
 				if(ladder!=null)
 					mountLadder(mob,ladder);
-				if((!Sense.isClimbing(mob))
-				&&(!Sense.isFalling(mob)))
+				if((!CMLib.flags().isClimbing(mob))
+				&&(!CMLib.flags().isFalling(mob)))
 				{
 					mob.tell("You need to climb that way, if you know how.");
 					return false;
@@ -370,7 +381,7 @@ public class StdExit implements Exit
 						   ||((item.container().container()==null)
 							  &&(item.container() instanceof Container)
 							  &&((((Container)item.container()).containTypes()&Container.CONTAIN_KEYS)>0)))
-						&&(Sense.canBeSeenBy(item,mob)))
+						&&(CMLib.flags().canBeSeenBy(item,mob)))
 							return true;
 					}
 					mob.tell("You don't seem to have the key.");
@@ -397,26 +408,26 @@ public class StdExit implements Exit
 			if(room==null)
 				Say.append("^Z(null)^.^? ");
 			else
-				Say.append("^H("+CMMap.getExtendedRoomID(room)+")^? "+room.roomTitle()+Sense.colorCodes(room,mob)+" ");
+				Say.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.roomTitle()+CMLib.flags().colorCodes(room,mob)+" ");
 			Say.append("via ^H("+ID()+")^? "+(isOpen()?displayText():closedText()));
 		}
 		else
-		if(((Sense.canBeSeenBy(this,mob))||(isOpen()&&hasADoor()))
-		&&(Sense.isSeen(this)))
+		if(((CMLib.flags().canBeSeenBy(this,mob))||(isOpen()&&hasADoor()))
+		&&(CMLib.flags().isSeen(this)))
 			if(isOpen())
 			{
-				if((room!=null)&&(!Sense.canBeSeenBy(room,mob)))
+				if((room!=null)&&(!CMLib.flags().canBeSeenBy(room,mob)))
 					Say.append("darkness");
 				else
 				if(displayText().length()>0)
-					Say.append(displayText()+Sense.colorCodes(this,mob));
+					Say.append(displayText()+CMLib.flags().colorCodes(this,mob));
 				else
 				if(room!=null)
-					Say.append(room.roomTitle()+Sense.colorCodes(room,mob));
+					Say.append(room.roomTitle()+CMLib.flags().colorCodes(room,mob));
 			}
 			else
-			if((Sense.canBeSeenBy(this,mob))&&(closedText().trim().length()>0))
-				Say.append(closedText()+Sense.colorCodes(this,mob));
+			if((CMLib.flags().canBeSeenBy(this,mob))&&(closedText().trim().length()>0))
+				Say.append(closedText()+CMLib.flags().colorCodes(this,mob));
 		return Say;
 	}
 
@@ -425,8 +436,8 @@ public class StdExit implements Exit
         if((room!=null)
         &&(exit!=null)
         &&(exit.isOpen())
-        &&(Sense.canBeSeenBy(room,mob))
-        &&(Sense.canBeSeenBy(exit,mob)))
+        &&(CMLib.flags().canBeSeenBy(room,mob))
+        &&(CMLib.flags().canBeSeenBy(exit,mob)))
         {
             int domain=room.domainType();
             switch(domain)
@@ -468,7 +479,7 @@ public class StdExit implements Exit
 		{
 		case CMMsg.TYP_LOOK:
         case CMMsg.TYP_EXAMINE:
-			if(Sense.canBeSeenBy(this,mob))
+			if(CMLib.flags().canBeSeenBy(this,mob))
 			{
 				if(description().trim().length()>0)
 					mob.tell(description());
@@ -526,7 +537,7 @@ public class StdExit implements Exit
                                 if(E!=null) items.addElement(E);
                             }
                         }
-                        StringBuffer seenThatWay=CMLister.lister(msg.source(),items,true,"","",false,true);
+                        StringBuffer seenThatWay=CMLib.lister().lister(msg.source(),items,true,"","",false,true);
                         if(seenThatWay.length()>0)
                             mob.tell("Yonder, you can also see: "+seenThatWay.toString());
                     }
@@ -535,14 +546,14 @@ public class StdExit implements Exit
 					mob.tell("You don't see anything special.");
 				if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 					mob.tell("Misc   : "+text());
-                String image=CommonStrings.mxpImage(this," ALIGN=RIGHT H=70 W=70");
+                String image=CMProps.mxpImage(this," ALIGN=RIGHT H=70 W=70");
                 if((image!=null)&&(image.length()>0)) mob.tell(image);
 			}
 			else
 				mob.tell("You can't see that way!");
 			return;
 		case CMMsg.TYP_READ:
-			if(Sense.canBeSeenBy(this,mob))
+			if(CMLib.flags().canBeSeenBy(this,mob))
 			{
 				if((isReadable())&&(readableText()!=null)&&(readableText().length()>0))
 				{
@@ -571,7 +582,7 @@ public class StdExit implements Exit
 		case CMMsg.TYP_OPEN:
 			if((!hasADoor())||(isOpen())) return;
 			if(defaultsClosed()||defaultsLocked())
-				CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_EXIT_REOPEN,openDelayTicks());
+				CMLib.threads().startTickDown(this,MudHost.TICK_EXIT_REOPEN,openDelayTicks());
 			isLocked=false;
 			isOpen=true;
 			break;
@@ -765,7 +776,7 @@ public class StdExit implements Exit
 		}
 		// first one! so start ticking...
 		if(behaviors.size()==0)
-			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_EXIT_BEHAVIOR,1);
+			CMLib.threads().startTickDown(this,MudHost.TICK_EXIT_BEHAVIOR,1);
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
@@ -774,7 +785,7 @@ public class StdExit implements Exit
 		if(behaviors==null) return;
 		behaviors.removeElement(to);
 		if(behaviors.size()==0)
-			CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_EXIT_BEHAVIOR);
+			CMLib.threads().deleteTick(this,MudHost.TICK_EXIT_BEHAVIOR);
 	}
 
 	public int numBehaviors()

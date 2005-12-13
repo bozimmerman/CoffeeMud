@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core.interfaces;
+package com.planet_ink.coffee_mud.Common.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -182,7 +182,7 @@ public interface Clan extends Cloneable, Tickable
 	public int getSize();
 
 	public String getName();
-	public String ID();
+	public String clanID();
 	public void setName(String newName);
 	public int getType();
 	public String typeName();
@@ -253,4 +253,14 @@ public interface Clan extends Cloneable, Tickable
 	public void update();
 	public void destroyClan();
 	public void create();
+    
+    public static class ClanVote
+    {
+        public String voteStarter="";
+        public int voteStatus=0;
+        public long voteStarted=0;
+        public String matter="";
+        public int function=0;
+        public DVector votes=null;
+    }
 }

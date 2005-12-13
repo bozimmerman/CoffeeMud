@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.MOBS;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /* 
    Copyright 2000-2005 Lee H. Fox
@@ -55,7 +66,7 @@ public class Goblin extends StdMOB
 
 	public void setMOBSpecifics(int goblinType)
 	{
-        if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+        if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
             return;
         
 		if (goblinType < 0)
@@ -72,13 +83,13 @@ public class Goblin extends StdMOB
 		setMoney(randomizer.nextInt() % 15);
 		setWimpHitPoint(0);
 		baseEnvStats.setWeight(40 + Math.abs(randomizer.nextInt() % 30));
-		Factions.setAlignment(this,Faction.ALIGN_EVIL);
+		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		baseCharStats().setStat(CharStats.INTELLIGENCE,5 + Math.abs(randomizer.nextInt() % 6));
 		baseCharStats().setStat(CharStats.CHARISMA,2 + Math.abs(randomizer.nextInt() % 3));
 		baseEnvStats().setArmor(25 + Math.abs(randomizer.nextInt() % 20));
 		baseEnvStats().setLevel(1 + Math.abs(randomizer.nextInt() % 3));
 		baseEnvStats().setAbility(goblinType);
-		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		Weapon m=null;
 		Armor c=null;

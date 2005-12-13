@@ -1,8 +1,20 @@
 package com.planet_ink.coffee_mud.Locales;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 /* 
@@ -24,14 +36,14 @@ public class StdRoom
 	implements Room
 {
 	public String ID(){return "StdRoom";}
-	protected String myID="room#";
+	protected String myID="";
 	protected String name="the room";
 	protected String displayText="Standard Room";
 	protected String imageName=null;
 	protected byte[] description=null;
 	protected Area myArea=null;
-	protected EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
-	protected EnvStats baseEnvStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	public Exit[] exits=new Exit[Directions.NUM_DIRECTIONS];
 	public Room[] doors=new Room[Directions.NUM_DIRECTIONS];
 	protected Vector affects=null;
@@ -91,7 +103,7 @@ public class StdRoom
     public String image()
     {
         if(imageName==null) 
-            imageName=CommonStrings.getDefaultMXPImage(this);
+            imageName=CMProps.getDefaultMXPImage(this);
         return imageName;
     }
     public String rawImage()
@@ -208,11 +220,11 @@ public class StdRoom
 	}
 	public String description()
 	{
-		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ROOMDNOCACHE)
+		if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDNOCACHE)
 		&&((description==null)||(description.length==0))
 		&&(roomID().trim().length()>0))
 		{
-			String txt=CMClass.DBEngine().DBReadRoomDesc(roomID());
+			String txt=CMLib.database().DBReadRoomDesc(roomID());
 			if(txt==null)
 			{
 				Log.errOut("Unable to recover description for "+roomID()+".");
@@ -224,8 +236,8 @@ public class StdRoom
 		if((description==null)||(description.length==0))
 			return "";
 		else
-		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ROOMDCOMPRESS))
-			return CMEncoder.decompressString(description);
+		if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDCOMPRESS))
+			return CMLib.encoder().decompressString(description);
 		else
 			return new String(description);
 	}
@@ -234,23 +246,34 @@ public class StdRoom
 		if(newDescription.length()==0)
 			description=null;
 		else
-		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ROOMDCOMPRESS))
-			description=CMEncoder.compressString(newDescription);
+		if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDCOMPRESS))
+			description=CMLib.encoder().compressString(newDescription);
 		else
 			description=newDescription.getBytes();
 	}
 	public String text()
 	{
-		return CoffeeMaker.getPropertiesStr(this,true);
+		return CMLib.coffeeMaker().getPropertiesStr(this,true);
 	}
 	public void setMiscText(String newMiscText)
 	{
 		if(newMiscText.trim().length()>0)
-			CoffeeMaker.setPropertiesStr(this,newMiscText,true);
+			CMLib.coffeeMaker().setPropertiesStr(this,newMiscText,true);
 	}
 	public void setRoomID(String newID)
 	{
-		myID=newID;
+        if((myID!=null)&&(!myID.equals(newID)))
+        {
+            myID=newID;
+            if(myArea!=null)
+            { 
+                // force the re-sort
+                myArea.delRoom(this);
+                myArea.addRoom(this);
+            }
+        }
+        else
+            myID=newID;
 	}
 	public Area getArea()
 	{
@@ -259,7 +282,12 @@ public class StdRoom
 	}
 	public void setArea(Area newArea)
 	{
-		myArea=newArea;
+        if(newArea!=myArea)
+        {
+            if(myArea!=null) myArea.delRoom(this);
+            myArea=newArea;
+            if(myArea!=null) myArea.addRoom(this);
+        }
 	}
 
 	public void setGridParent(GridLocale room){gridParent=room;}
@@ -274,7 +302,7 @@ public class StdRoom
 		&&((domainType()&Room.INDOORS)==0)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR)
-		&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKYSIZE)>0))
+		&&(CMProps.getIntVar(CMProps.SYSTEMI_SKYSIZE)>0))
 		{
 			Exit o=CMClass.getExit("StdOpenDoorway");
 			GridLocale sky=(GridLocale)CMClass.getLocale("EndlessThinSky");
@@ -308,7 +336,6 @@ public class StdRoom
 				}
 			}
 			sky.clearGrid(null);
-			CMMap.addRoom(sky);
 		}
 	}
 
@@ -343,7 +370,7 @@ public class StdRoom
 	{
 		if(resourceFound!=0)
 		{
-			if(resourceFound<(System.currentTimeMillis()-(30*IQCalendar.MILI_MINUTE)))
+			if(resourceFound<(System.currentTimeMillis()-(30*TimeManager.MILI_MINUTE)))
 				setResource(-1);
 		}
 		if(myResource<0)
@@ -360,7 +387,7 @@ public class StdRoom
 					totalChance+=chance;
 				}
 				setResource(-1);
-				int theRoll=Dice.roll(1,totalChance,0);
+				int theRoll=CMLib.dice().roll(1,totalChance,0);
 				totalChance=0;
 				for(int i=0;i<resourceChoices().size();i++)
 				{
@@ -394,12 +421,12 @@ public class StdRoom
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_LEAVE:
-				if((!Sense.allowsMovement(this))||(!getMobility()))
+				if((!CMLib.flags().allowsMovement(this))||(!getMobility()))
 					return false;
 				break;
 			case CMMsg.TYP_FLEE:
 			case CMMsg.TYP_ENTER:
-				if((!Sense.allowsMovement(this))||(!getMobility()))
+				if((!CMLib.flags().allowsMovement(this))||(!getMobility()))
 					return false;
 				if(!mob.isMonster())
 					giveASky(0);
@@ -419,7 +446,7 @@ public class StdRoom
             case CMMsg.TYP_SELL:
             case CMMsg.TYP_VIEW:
             case CMMsg.TYP_VALUE:
-                if(CoffeeShops.getShopKeeper(this)==null)
+                if(CMLib.coffeeShops().getShopKeeper(this)==null)
                 {
                     mob.tell("You can't shop here.");
                     return false;
@@ -582,7 +609,7 @@ public class StdRoom
 			}
 			break;
 			case CMMsg.TYP_READ:
-				if(Sense.canBeSeenBy(this,mob))
+				if(CMLib.flags().canBeSeenBy(this,mob))
 					mob.tell("There is nothing written here.");
 				else
 					mob.tell("You can't see that!");
@@ -868,12 +895,12 @@ public class StdRoom
 				if(myArea!=null)
 					Say.append("^!Area  :^N("+myArea.Name()+")"+"\n\r");
 				Say.append("^!Locale:^N("+ID()+")"+"\n\r");
-				Say.append("^H("+CMMap.getExtendedRoomID(this)+")^N ");
+				Say.append("^H("+CMLib.map().getExtendedRoomID(this)+")^N ");
 			}
 		}
-		if(Sense.canBeSeenBy(this,mob))
+		if(CMLib.flags().canBeSeenBy(this,mob))
 		{
-			Say.append("^O^<RName^>" + roomTitle()+"^</RName^>"+Sense.colorCodes(this,mob)+"^L\n\r");
+			Say.append("^O^<RName^>" + roomTitle()+"^</RName^>"+CMLib.flags().colorCodes(this,mob)+"^L\n\r");
 			if((lookCode!=LOOK_BRIEFOK)||(!Util.bset(mob.getBitmap(),MOB.ATT_BRIEF)))
 			{
                 if(lookCode==LOOK_LONG)
@@ -888,7 +915,7 @@ public class StdRoom
                         if(item==null) continue;
                         if((item.container()==null)
                         &&(item.displayText().length()==0)
-                        &&(Sense.canBeSeenBy(item,mob)))
+                        &&(CMLib.flags().canBeSeenBy(item,mob)))
                         {
                             keyWords=Util.parse(item.name().toUpperCase());
                             for(int k=0;k<keyWords.size();k++)
@@ -926,7 +953,7 @@ public class StdRoom
                 else
     				Say.append("^L^<RDesc^>" + roomDescription()+"^</RDesc^>");
                 if((!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
-                    Say.append(CommonStrings.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
+                    Say.append(CMProps.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
                 if(compress)
                     Say.append("^N  ");
                 else
@@ -943,13 +970,13 @@ public class StdRoom
             
             if(item.container()==null)
             {
-                if(Sense.canBarelyBeSeenBy(item,mob))
+                if(CMLib.flags().canBarelyBeSeenBy(item,mob))
                     itemsInTheDarkness++;
 				viewItems.addElement(item);
             }
 		}
         
-        StringBuffer itemStr=CMLister.lister(mob,viewItems,false,"RItem"," \"*\"",lookCode==LOOK_LONG,compress);
+        StringBuffer itemStr=CMLib.lister().lister(mob,viewItems,false,"RItem"," \"*\"",lookCode==LOOK_LONG,compress);
         if(itemStr.length()>0)
     		Say.append(itemStr);
 
@@ -962,27 +989,27 @@ public class StdRoom
                if((mob2.displayText(mob).length()>0)
                ||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
                {
-    			   if(Sense.canBeSeenBy(mob2,mob))
+    			   if(CMLib.flags().canBeSeenBy(mob2,mob))
                    {
     					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
     						Say.append("^H("+CMClass.className(mob2)+")^N ");
     
                         if((!compress)&&(!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
-                            Say.append(CommonStrings.mxpImage(mob2," H=10 W=10",""," "));
+                            Say.append(CMProps.mxpImage(mob2," H=10 W=10",""," "));
     					Say.append("^M^<RMob \""+mob2.name()+"\"^>");
-                        if(compress) Say.append(Sense.colorCodes(mob2,mob)+"^M ");
+                        if(compress) Say.append(CMLib.flags().colorCodes(mob2,mob)+"^M ");
     					if(mob2.displayText(mob).length()>0)
     						Say.append(Util.endWithAPeriod(Util.capitalizeFirstLetter(mob2.displayText(mob))));
     					else
     						Say.append(Util.endWithAPeriod(Util.capitalizeFirstLetter(mob2.name())));
     					Say.append("^</RMob^>");
                         if(!compress)
-                            Say.append(Sense.colorCodes(mob2,mob)+"^N\n\r");
+                            Say.append(CMLib.flags().colorCodes(mob2,mob)+"^N\n\r");
                         else
                             Say.append("^N");
                    }
                    else
-                   if(Sense.canBarelyBeSeenBy(mob2,mob))
+                   if(CMLib.flags().canBarelyBeSeenBy(mob2,mob))
                        mobsInTheDarkness++;
                }
 			}
@@ -1152,7 +1179,7 @@ public class StdRoom
 
 	public void listExits(MOB mob)
 	{
-		if(!Sense.canSee(mob))
+		if(!CMLib.flags().canSee(mob))
 		{
 			mob.tell("You can't see anything!");
 			return;
@@ -1199,7 +1226,7 @@ public class StdRoom
 	}
 	public void listShortExits(MOB mob)
 	{
-		if(!Sense.canSee(mob)) return;
+		if(!CMLib.flags().canSee(mob)) return;
 		StringBuffer buf=new StringBuffer("^D[Exits: ");
 		for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
 		{
@@ -1265,8 +1292,8 @@ public class StdRoom
 
 	public void showHappens(int allCode, String allMessage)
 	{
-		MOB everywhereMOB=CMMap.god(this);
-		FullMsg msg=new FullMsg(everywhereMOB,null,null,allCode,allCode,allCode,allMessage);
+		MOB everywhereMOB=CMLib.map().god(this);
+		CMMsg msg=CMClass.getMsg(everywhereMOB,null,null,allCode,allCode,allCode,allMessage);
 		sendOthers(everywhereMOB,msg);
         everywhereMOB.destroy();
 	}
@@ -1277,7 +1304,7 @@ public class StdRoom
 		everywhereMOB.setBaseEnvStats(like.envStats());
 		everywhereMOB.setLocation(this);
 		everywhereMOB.recoverEnvStats();
-		FullMsg msg=new FullMsg(everywhereMOB,null,null,allCode,allCode,allCode,allMessage);
+		CMMsg msg=CMClass.getMsg(everywhereMOB,null,null,allCode,allCode,allCode,allMessage);
 		send(everywhereMOB,msg);
         everywhereMOB.destroy();
 	}
@@ -1286,7 +1313,7 @@ public class StdRoom
 					 int allCode,
 					 String allMessage)
 	{
-		FullMsg msg=new FullMsg(source,target,null,allCode,allCode,allCode,allMessage);
+		CMMsg msg=CMClass.getMsg(source,target,null,allCode,allCode,allCode,allMessage);
 		if((!Util.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
 			return false;
 		send(source,msg);
@@ -1298,7 +1325,7 @@ public class StdRoom
 					 int allCode,
 					 String allMessage)
 	{
-		FullMsg msg=new FullMsg(source,target,tool,allCode,allCode,allCode,allMessage);
+		CMMsg msg=CMClass.getMsg(source,target,tool,allCode,allCode,allCode,allMessage);
 		if((!Util.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
 			return false;
 		send(source,msg);
@@ -1309,7 +1336,7 @@ public class StdRoom
 						   int allCode,
 						   String allMessage)
 	{
-		FullMsg msg=new FullMsg(source,target,null,allCode,allCode,allCode,allMessage);
+		CMMsg msg=CMClass.getMsg(source,target,null,allCode,allCode,allCode,allMessage);
 		if((!Util.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
 			return false;
 		reallySend(source,msg);
@@ -1321,7 +1348,7 @@ public class StdRoom
 						   int allCode,
 						   String allMessage)
 	{
-		FullMsg msg=new FullMsg(source,target,tool,allCode,allCode,allCode,allMessage);
+		CMMsg msg=CMClass.getMsg(source,target,tool,allCode,allCode,allCode,allMessage);
 		if((!Util.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
 			return false;
 		reallySend(source,msg);
@@ -1332,7 +1359,7 @@ public class StdRoom
 						   int allCode,
 						   String allMessage)
 	{
-		FullMsg msg=new FullMsg(source,target,null,allCode,allCode,allCode,allMessage);
+		CMMsg msg=CMClass.getMsg(source,target,null,allCode,allCode,allCode,allMessage);
 		if((!Util.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
 			return false;
 		source.executeMsg(source,msg);
@@ -1344,7 +1371,7 @@ public class StdRoom
 						   int allCode,
 						   String allMessage)
 	{
-		FullMsg msg=new FullMsg(source,target,tool,allCode,allCode,allCode,allMessage);
+		CMMsg msg=CMClass.getMsg(source,target,tool,allCode,allCode,allCode,allMessage);
 		if((!Util.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
 			return false;
 		source.executeMsg(source,msg);
@@ -1385,11 +1412,10 @@ public class StdRoom
 		if(this instanceof GridLocale)
 			((GridLocale)this).clearGrid(null);
 		clearSky();
-		CMClass.ThreadEngine().deleteTick(this,-1);
-		CMMap.delRoom(this);
+		CMLib.threads().deleteTick(this,-1);
         imageName=null;
-        myArea=null;
-        baseEnvStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+        setArea(null);
+        baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
         envStats=baseEnvStats;
         exits=new Exit[Directions.NUM_DIRECTIONS];
         doors=new Room[Directions.NUM_DIRECTIONS];
@@ -1402,9 +1428,9 @@ public class StdRoom
 
 	public MOB fetchInhabitant(String inhabitantID)
 	{
-		MOB mob=(MOB)EnglishParser.fetchEnvironmental(inhabitants,inhabitantID,true);
+		MOB mob=(MOB)CMLib.english().fetchEnvironmental(inhabitants,inhabitantID,true);
 		if(mob==null)
-			mob=(MOB)EnglishParser.fetchEnvironmental(inhabitants,inhabitantID, false);
+			mob=(MOB)CMLib.english().fetchEnvironmental(inhabitants,inhabitantID, false);
 		return mob;
 	}
 	public void addInhabitant(MOB mob)
@@ -1463,14 +1489,14 @@ public class StdRoom
 
 	public Item fetchAnyItem(String itemID)
 	{
-		Item item=(Item)EnglishParser.fetchEnvironmental(contents,itemID,true);
-		if(item==null) item=(Item)EnglishParser.fetchEnvironmental(contents,itemID,false);
+		Item item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,true);
+		if(item==null) item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,false);
 		return item;
 	}
 	public Item fetchItem(Item goodLocation, String itemID)
 	{
-		Item item=EnglishParser.fetchAvailableItem(contents,itemID,goodLocation,Item.WORN_REQ_UNWORNONLY,true);
-		if(item==null) item=EnglishParser.fetchAvailableItem(contents,itemID,goodLocation,Item.WORN_REQ_UNWORNONLY,false);
+		Item item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Item.WORN_REQ_UNWORNONLY,true);
+		if(item==null) item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Item.WORN_REQ_UNWORNONLY,false);
 		return item;
 	}
 	public void addItem(Item item)
@@ -1485,7 +1511,7 @@ public class StdRoom
         if(survivalRLHours<=0)
             item.setDispossessionTime(0);
         else
-    		item.setDispossessionTime(System.currentTimeMillis()+Math.round(Util.mul(survivalRLHours,IQCalendar.MILI_HOUR)));
+    		item.setDispossessionTime(System.currentTimeMillis()+Math.round(Util.mul(survivalRLHours,TimeManager.MILI_HOUR)));
 	}
 	public void delItem(Item item)
 	{
@@ -1518,15 +1544,15 @@ public class StdRoom
 			found=mob.fetchCarried(goodLocation, thingName);
 		if((found==null)&&(!mineOnly))
 		{
-			if(found==null)	found=EnglishParser.fetchEnvironmental(exits,thingName,true);
-			if(found==null) found=EnglishParser.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,true);
-			if(found==null)	found=EnglishParser.fetchEnvironmental(exits,thingName,false);
-			if(found==null) found=EnglishParser.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,false);
-			if((found!=null)&&(Sense.canBeSeenBy(found,mob)))
+			if(found==null)	found=CMLib.english().fetchEnvironmental(exits,thingName,true);
+			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,true);
+			if(found==null)	found=CMLib.english().fetchEnvironmental(exits,thingName,false);
+			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,false);
+			if((found!=null)&&(CMLib.flags().canBeSeenBy(found,mob)))
 				return found;
-			while((found!=null)&&(!Sense.canBeSeenBy(found,mob)))
+			while((found!=null)&&(!CMLib.flags().canBeSeenBy(found,mob)))
 			{
-				String newThingName=EnglishParser.bumpDotNumber(thingName);
+				String newThingName=CMLib.english().bumpDotNumber(thingName);
 				if(!newThingName.equals(thingName))
 				{
 					thingName=newThingName;
@@ -1544,7 +1570,7 @@ public class StdRoom
 		&&(thingName.indexOf(".")<0))
 		{
 			Environmental visibleItem=null;
-			visibleItem=EnglishParser.fetchEnvironmental(exits,thingName,false);
+			visibleItem=CMLib.english().fetchEnvironmental(exits,thingName,false);
 			if(visibleItem==null)
 				visibleItem=fetchFromMOBRoomItemExit(null,null,thingName+".2",wornReqCode);
 			if(visibleItem!=null)
@@ -1562,8 +1588,8 @@ public class StdRoom
 		for(int e=0;e<exits.length;e++)
 		    if(exits[e]!=null)V.addElement(exits[e]);
 		V.addAll(inhabitants);
-		found=EnglishParser.fetchAvailable(V,thingName,goodLocation,wornReqCode,true);
-		if(found==null) found=EnglishParser.fetchAvailable(V,thingName,goodLocation,wornReqCode,false);
+		found=CMLib.english().fetchAvailable(V,thingName,goodLocation,wornReqCode,true);
+		if(found==null) found=CMLib.english().fetchAvailable(V,thingName,goodLocation,wornReqCode,false);
 
 		if((found!=null) // the smurfy well exception
 		&&(found instanceof Item)
@@ -1586,8 +1612,8 @@ public class StdRoom
 		V.addAll(contents);
 		for(int e=0;e<exits.length;e++)
 		    if(exits[e]!=null)V.addElement(exits[e]);
-		if(found==null)	found=EnglishParser.fetchAvailable(V,thingName,goodLocation,wornReqCode,true);
-		if(found==null) found=EnglishParser.fetchAvailable(V,thingName,goodLocation,wornReqCode,false);
+		if(found==null)	found=CMLib.english().fetchAvailable(V,thingName,goodLocation,wornReqCode,true);
+		if(found==null) found=CMLib.english().fetchAvailable(V,thingName,goodLocation,wornReqCode,false);
 		return found;
 	}
 
@@ -1601,11 +1627,11 @@ public class StdRoom
 		if((found==null)&&(!mineOnly))
 		{
 				found=fetchFromRoomFavorItems(goodLocation, thingName,wornReqCode);
-			if((found!=null)&&(Sense.canBeSeenBy(found,mob)))
+			if((found!=null)&&(CMLib.flags().canBeSeenBy(found,mob)))
 				return found;
-			while((found!=null)&&(!Sense.canBeSeenBy(found,mob)))
+			while((found!=null)&&(!CMLib.flags().canBeSeenBy(found,mob)))
 			{
-				String newThingName=EnglishParser.bumpDotNumber(thingName);
+				String newThingName=CMLib.english().bumpDotNumber(thingName);
 				if(!newThingName.equals(thingName))
 				{
 					thingName=newThingName;
@@ -1715,7 +1741,7 @@ public class StdRoom
 			   return;
 		}
 		if(behaviors.size()==0)
-			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_ROOM_BEHAVIOR,1);
+			CMLib.threads().startTickDown(this,MudHost.TICK_ROOM_BEHAVIOR,1);
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
@@ -1724,7 +1750,7 @@ public class StdRoom
 		if(behaviors==null) return;
 		behaviors.removeElement(to);
 		if(behaviors.size()==0)
-			CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_ROOM_BEHAVIOR);
+			CMLib.threads().deleteTick(this,MudHost.TICK_ROOM_BEHAVIOR);
 	}
 	public int numBehaviors()
 	{
@@ -1792,7 +1818,7 @@ public class StdRoom
 	    if(O==this) return true;
 	    if(O instanceof Room)
 	    {
-	        if(CMMap.getExtendedRoomID(this).equals(CMMap.getExtendedRoomID((Room)O)))
+	        if(CMLib.map().getExtendedRoomID(this).equals(CMLib.map().getExtendedRoomID((Room)O)))
 	            return true;
 	    }
 	    return false;

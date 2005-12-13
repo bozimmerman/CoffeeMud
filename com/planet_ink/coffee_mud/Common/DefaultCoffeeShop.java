@@ -24,8 +24,25 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 public class DefaultCoffeeShop implements CoffeeShop
 {
-    protected Vector baseInventory=new Vector(); // for Only Inventory situations
-    protected DVector storeInventory=new DVector(3);
+    public String ID(){return "DefaultCoffeeShop";}
+    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public CMObject copyOf()
+    {
+        try
+        {
+            Object O=this.clone();
+            ((DefaultCoffeeShop)O).cloneFix(this);
+            return (CMObject)O;
+        }
+        catch(CloneNotSupportedException e)
+        {
+            return new DefaultCoffeeShop();
+        }
+    }
+    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCoffeeShop();}}
+    
+    public Vector baseInventory=new Vector(); // for Only Inventory situations
+    public DVector storeInventory=new DVector(3);
     
     public void cloneFix(DefaultCoffeeShop E)
     {
@@ -73,9 +90,9 @@ public class DefaultCoffeeShop implements CoffeeShop
         return false;
     }
 
-    public Environmental addStoreInventory(Environmental thisThang, int whatISell, ShopKeeper shop)
+    public Environmental addStoreInventory(Environmental thisThang, ShopKeeper shop)
     {
-        return addStoreInventory(thisThang,1,-1,whatISell,shop);
+        return addStoreInventory(thisThang,1,-1,shop);
     }
 
     public int baseStockSize()
@@ -106,11 +123,10 @@ public class DefaultCoffeeShop implements CoffeeShop
     public Environmental addStoreInventory(Environmental thisThang, 
                                            int number, 
                                            int price,
-                                           int whatISell,
                                            ShopKeeper shop)
     {
         if(number<0) number=1;
-        if((whatISell==ShopKeeper.DEAL_INVENTORYONLY)&&(!inBaseInventory(thisThang)))
+        if((shop.whatIsSold()==ShopKeeper.DEAL_INVENTORYONLY)&&(!inBaseInventory(thisThang)))
             baseInventory.addElement(thisThang.copyOf());
         Environmental originalUncopiedThang=thisThang;
         if(thisThang instanceof InnKey)
@@ -387,7 +403,7 @@ public class DefaultCoffeeShop implements CoffeeShop
         return "";
     }
 
-    public void buildShopFromXML(String text, int whatISell, ShopKeeper shop)
+    public void buildShopFromXML(String text, ShopKeeper shop)
     {
         Vector V=new Vector();
         storeInventory=new DVector(3);
@@ -461,7 +477,7 @@ public class DefaultCoffeeShop implements CoffeeShop
             Item I=(Item)newOne;
             I.recoverEnvStats();
             V.addElement(I);
-            addStoreInventory(I,itemnum,val,whatISell,shop);
+            addStoreInventory(I,itemnum,val,shop);
         }
     }
 }

@@ -1,9 +1,18 @@
-package com.planet_ink.coffee_mud.system.threads;
+package com.planet_ink.coffee_mud.core.threads;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.Tickable;
-import com.planet_ink.coffee_mud.interfaces.Environmental;
-import com.planet_ink.coffee_mud.interfaces.Behavior;
-import com.planet_ink.coffee_mud.utils.Util;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman

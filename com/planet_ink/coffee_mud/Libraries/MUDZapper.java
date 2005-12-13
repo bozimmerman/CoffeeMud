@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -13,6 +13,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
+
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 
 /* 
@@ -30,13 +32,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class MUDZapper
+public class MUDZapper extends StdLibrary implements MaskingLibrary
 {
-	private MUDZapper(){}
-	
-	private static Hashtable zapCodes=new Hashtable();
+    public String ID(){return "MUDZapper";}
+	public Hashtable zapCodes=new Hashtable();
 
-	private static Hashtable getZapCodes()
+    public String rawMaskHelp(){return DEFAULT_MASK_HELP;}
+    
+    public Hashtable getMaskCodes()
 	{
 		if(zapCodes.size()==0)
 		{
@@ -158,112 +161,9 @@ public class MUDZapper
 		return zapCodes;
 	}
 
-	private static final String ZAP =
-        "+SYSOP (allow archons or area staff to bypass the rules)  <BR>"
-		+"-SYSOP (always <WORD> archons and area staff)  <BR>"
-		+"-PLAYER (<WORD> all players) <BR>"
-		+"-MOB (<WORD> all mobs/npcs)  <BR>"
-		+"-CLASS  (<WORD> all classes)  <BR>"
-		+"-BASECLASS  (<WORD> all base classes)  <BR>"
-		+"+thief +mage +ranger (create exceptions to -class and -baseclass) <BR>"
-		+"-thief -mage  -ranger (<WORD> only listed classes)<BR>"
-		+"-RACE (<WORD> all races)  <BR>"
-		+"+elf +dwarf +human +half +gnome (create exceptions to -race)  <BR>"
-		+"-elf -dwarf -human -half -gnome (<WORD> only listed races)  <BR>"
-		+"-RACECAT (<WORD> all racial categories)  <BR>"
-		+"+RACECAT (do not <WORD> all racial categories)  <BR>"
-		+"+elf +insect +humanoid +canine +gnome (create exceptions to -racecat)  <BR>"
-		+"-elf -insect -humanoid -canine -gnome (create exceptions to +racecat)  <BR>"
-		+"-ALIGNMENT (<WORD> all alignments)  <BR>"
-		+"+evil +good +neutral (create exceptions to -alignment)  <BR>"
-		+"-evil -good -neutral (<WORD> only listed alignments)  <BR>"
-		+"-GENDER (<WORD> all genders)  <BR>"
-		+"+male +female +neuter (create exceptions to -gender)  <BR>"
-		+"-male -female -neuter (<WORD> only listed genders)  <BR>"
-		+"-FACTION (<WORD> all faction and values, even a lack of faction) <BR>"
-		+"+myfactionrange +myotherfactionrange (create exceptions to -faction) <BR>"
-		+"-myfactionrange -myotherfactionrange (<WORD> only named faction range)<BR>"
-		+"-TATTOOS (<WORD> all tattoos, even a lack of a tatoo) <BR>"
-		+"+mytatto +thistattoo +anytattoo etc..  (create exceptions to -tattoos) <BR>"
-		+"+TATTOOS (do not <WORD> any or no tattoos) <BR>"
-		+"-mytattoo -anytatto, etc.. (create exceptions to +tattoos) <BR>"
-		+"-LEVEL (<WORD> all levels)  <BR>"
-		+"+=1 +>5 +>=7 +<13 +<=20 (create exceptions to -level using level ranges)  <BR>"
-		+"-=1 ->5 ->=7 -<13 -<=20 (<WORD> only listed levels range) <BR>"
-		+"-NAMES (<WORD> everyone) <BR>"
-		+"+bob \"+my name\" etc.. (create name exceptions to -names) <BR>"
-		+"+NAMES (do not <WORD> anyone who has a name) <BR>"
-		+"-bob \"-my name\" etc.. (create name exceptions to +names) <BR>"
-		+"-CLAN (<WORD> anyone, even no clan) <BR>"
-		+"+Killers \"+Holy Avengers\" etc.. (create clan exceptions to -clan) <BR>"
-		+"+CLAN (do not <WORD> anyone, even non clan people) <BR>"
-		+"-Killers \"-Holy Avengers\" etc.. (create clan exceptions to +clan) <BR>"
-		+"-DEITY (<WORD> anyone, even no deity) <BR>"
-		+"+Apollo \"+Grothon The Great\" etc.. (create deity exceptions to -deity) <BR>"
-		+"+DEITY (do not <WORD> anyone, even non deity worshipping people) <BR>"
-		+"-Apollo \"-rothon The Great\" etc.. (create deity exceptions to +deity) <BR>"
-		+"-ANYCLASS (<WORD> all multi-class combinations)  <BR>"
-		+"+thief +mage +ranger (exceptions -anyclass, allow any levels) <BR>"
-		+"+ANYCLASS (do not <WORD> all multi-class combinations)  <BR>"
-		+"-thief -mage -ranger (exceptions to +anyclass, disallow any levels) <BR>"
-		+"-STR X (<WORD> those with strength greater than X)  <BR>"
-		+"+STR X (<WORD> those with strength less than X)  <BR>"
-		+"-INT X (<WORD> those with intelligence greater than X)  <BR>"
-		+"+INT X (<WORD> those with intelligence less than X)  <BR>"
-		+"-WIS X (<WORD> those with wisdom greater than X)  <BR>"
-		+"+WIS X (<WORD> those with wisdom less than X)  <BR>"
-		+"-CON X (<WORD> those with constitution greater than X)  <BR>"
-		+"+CON X (<WORD> those with constitution less than X)  <BR>"
-		+"-CHA X (<WORD> those with charisma greater than X)  <BR>"
-		+"+CHA X (<WORD> those with charisma less than X)  <BR>"
-		+"-DEX X (<WORD> those with dexterity greater than X)  <BR>"
-		+"+DEX X (<WORD> those with dexterity less than X) <BR>"
-		+"-AREA (<WORD> in all areas) <BR>"
-		+"\"+my areaname\" etc.. (create exceptions to +area) <BR>"
-		+"+AREA (do not <WORD> any areas) <BR>"
-		+"\"-my areaname\" etc.. (create exceptions to -area) <BR>"
-		+"-ITEM \"+item name\" etc... (<WORD> only those with an item name) <BR>"
-        +"-WORN \"+item name\" etc... (<WORD> only those wearing item name) <BR>"
-		+"-EFFECTS (<WORD> anyone, even no effects) <BR>"
-		+"+Sleep \"+Wood Chopping\" etc.. (create name exceptions to -effects) <BR>"
-		+"+EFFECTS (do not <WORD> anyone, even non effected people) <BR>"
-		+"-Sleep \"-Wood Chopping\" etc.. (create name exceptions to +effects) <BR>"
-        +"-MATERIAL \"+WOODEN\" etc.. (<WORN> only items of added materials) <BR>"
-        +"+MATERIAL \"-WOODEN\" etc.. (Do not <WORN> items of subtracted materials) <BR>"
-        +"-RESOURCES \"+OAK\" etc.. (<WORN> only items of added resources) <BR>"
-        +"+RESOURCES \"-OAK\" etc.. (Do not <WORN> items of subtracted resources) <BR>"
-        +"-JAVACLASS \"+GENMOB\" etc.. (<WORN> only objects of added java class) <BR>"
-        +"+JAVACLASS \"-GENITEM\" etc.. (Do not <WORN> objs of subtracted classes) <BR>"
-        +"-RESOURCES \"+OAK\" etc.. (<WORN> only items of added resources) <BR>"
-        +"+RESOURCES \"-OAK\" etc.. (Do not <WORN> items of subtracted resources) <BR>"
-        +"-ABILITY X (<WORD> those with magical ability less than X)  <BR>"
-        +"+ABILITY X (<WORD> those with magical ability greater than X) <BR>"
-        +"-VALUE X (<WORD> those with value or money less than X)  <BR>"
-        +"+VALUE X (<WORD> those with value or money greater than X) <BR>"
-        +"-WEIGHT X (<WORD> those weighing less than X)  <BR>"
-        +"+WEIGHT X (<WORD> those weighing more than X) <BR>"
-        +"-ARMOR X (<WORD> those with armor bonus less than X)  <BR>"
-        +"+ARMOR X (<WORD> those with armor bonus more than X) <BR>"
-        +"-DAMAGE X (<WORD> those with damage bonus less than X)  <BR>"
-        +"+DAMAGE X (<WORD> those with damage bonus more than X) <BR>"
-        +"-ATTACK X (<WORD> those with attack bonus less than X)  <BR>"
-        +"+ATTACK X (<WORD> those with attack bonus more than X) <BR>"
-        +"-WORNON \"+TORSO\" etc.. (<WORN> only items wearable on added locs) <BR>"
-        +"+WORNON \"-NECK\" etc.. (Do not <WORN> items wearable on subtracted locs) <BR>"
-        +"-DISPOSITION \"+ISHIDDEN\" etc.. (<WORN> only with added dispositions) <BR>"
-        +"+DISPOSITION \"-ISHIDDEN\" etc.. (Do not <WORN> only with sub disp) <BR>"
-        +"-SENSES \"+CANSEEDARK\" etc.. (<WORN> only those with added sens.) <BR>"
-        +"+SENSES \"-CANSEEDARK\" etc.. (Do not <WORN> those with subtracted sens.) <BR>"
-        +"-HOUR X (<WORD> always, unless the hour is X)  <BR>"
-        +"+HOUR X (<WORD> those only when the hour is X) <BR>"
-        +"-SEASON FALL (<WORD> those only when season is FALL)  <BR>"
-        +"+SEASON SPRING (<WORD> those whenever the season is SPRING) <BR>"
-        +"-MONTH X (<WORD> those only when month number is X)  <BR>"
-        +"+MONTH X (<WORD> those whenever the month number is X)";
-
-	public static String zapperInstructions(String CR, String word)
+	public String maskHelp(String CR, String word)
 	{
-		String copy=new String(ZAP);
+		String copy=new String(rawMaskHelp());
 		if((CR!=null)&&(!CR.equalsIgnoreCase("<BR>")))
 			copy=Util.replaceAll(copy,"<BR>",CR);
 		if((word==null)||(word.length()==0))
@@ -273,8 +173,7 @@ public class MUDZapper
 		return copy;
 	}
 
-
-	public static boolean tattooCheck(Vector V, char plusMinus, int fromHere, MOB mob)
+	public boolean tattooCheck(Vector V, char plusMinus, int fromHere, MOB mob)
 	{
 		for(int v=0;v<mob.numTattoos();v++)
 		{
@@ -291,7 +190,7 @@ public class MUDZapper
 		return false;
 	}
 
-	private static boolean levelCheck(String text, char prevChar, int lastPlace, int lvl)
+	public boolean levelCheck(String text, char prevChar, int lastPlace, int lvl)
 	{
 		int x=0;
 		while(x>=0)
@@ -346,42 +245,42 @@ public class MUDZapper
 		return false;
 	}
 
-	public static Vector levelCompiledHelper(String str, char c, Vector entry)
+	public Vector levelCompiledHelper(String str, char c, Vector entry)
 	{
 		if(entry==null) entry=new Vector();
 		if(str.startsWith(c+">="))
 		{
-			entry.addElement(zapCodes.get("+LVLGE"));
+			entry.addElement(getMaskCodes().get("+LVLGE"));
 			entry.addElement(new Integer(Util.s_int(str.substring(3).trim())));
 		}
 		else
 		if(str.startsWith(c+"<="))
 		{
-			entry.addElement(zapCodes.get("+LVLLE"));
+			entry.addElement(getMaskCodes().get("+LVLLE"));
 			entry.addElement(new Integer(Util.s_int(str.substring(3).trim())));
 		}
 		else
 		if(str.startsWith(c+">"))
 		{
-			entry.addElement(zapCodes.get("+LVLGR"));
+			entry.addElement(getMaskCodes().get("+LVLGR"));
 			entry.addElement(new Integer(Util.s_int(str.substring(2).trim())));
 		}
 		else
 		if(str.startsWith(c+"<"))
 		{
-			entry.addElement(zapCodes.get("+LVLLT"));
+			entry.addElement(getMaskCodes().get("+LVLLT"));
 			entry.addElement(new Integer(Util.s_int(str.substring(2).trim())));
 		}
 		else
 		if(str.startsWith(c+"="))
 		{
-			entry.addElement(zapCodes.get("+LVLEQ"));
+			entry.addElement(getMaskCodes().get("+LVLEQ"));
 			entry.addElement(new Integer(Util.s_int(str.substring(2).trim())));
 		}
 		return entry;
 	}
 	
-	public static StringBuffer levelHelp(String str, char c, String append)
+	public StringBuffer levelHelp(String str, char c, String append)
 	{
 		if(str.startsWith(c+">="))
 			return new StringBuffer(append+"levels greater than or equal to "+str.substring(3).trim()+".  ");
@@ -401,37 +300,37 @@ public class MUDZapper
 	}
 	
 	
-	public static boolean fromHereEqual(Vector V, char plusMinus, int fromHere, String find)
+	public boolean fromHereEqual(Vector V, char plusMinus, int fromHere, String find)
 	{
 		for(int v=fromHere;v<V.size();v++)
 		{
 			String str=(String)V.elementAt(v);
 			if(str.length()==0) continue;
-			if(zapCodes.containsKey(str))
+			if(getMaskCodes().containsKey(str))
 				return false;
 			if(str.equalsIgnoreCase(plusMinus+find)) return true;
 		}
 		return false;
 	}
 
-	public static boolean factionCheck(Vector V, char plusMinus, int fromHere, MOB mob)
+	public boolean factionCheck(Vector V, char plusMinus, int fromHere, MOB mob)
 	{
 		for(int v=fromHere;v<V.size();v++)
 		{
 			String str=((String)V.elementAt(v)).toUpperCase();
 			if(str.length()>0)
 			{
-				if(zapCodes.containsKey(str))
+				if(getMaskCodes().containsKey(str))
 					return false;
 				if((str.charAt(0)==plusMinus)
-				&&(Factions.isFactionedThisWay(mob,str.substring(1))))
+				&&(CMLib.factions().isFactionedThisWay(mob,str.substring(1))))
 				    return true;
 			}
 		}
 		return false;
 	}
 
-	public static boolean nameCheck(Vector V, char plusMinus, int fromHere, Environmental E)
+	public boolean nameCheck(Vector V, char plusMinus, int fromHere, Environmental E)
 	{
         if(fromHereEqual(V,plusMinus,fromHere,E.name()))
             return true;
@@ -448,23 +347,23 @@ public class MUDZapper
 		return false;
 	}
 
-	public static boolean areaCheck(Vector V, char plusMinus, int fromHere, Environmental E)
+	public boolean areaCheck(Vector V, char plusMinus, int fromHere, Environmental E)
 	{
-        Room R=CoffeeUtensils.roomLocation(E);
+        Room R=CMLib.utensils().roomLocation(E);
         if(R==null) return false;
 		Area A=R.getArea();
 		if(A==null) return false;
 		return fromHereStartsWith(V,plusMinus,fromHere,A.name());
 	}
 
-	public static boolean itemCheck(Vector V, char plusMinus, int fromHere, MOB mob)
+	public boolean itemCheck(Vector V, char plusMinus, int fromHere, MOB mob)
 	{
 		if((mob==null)||(mob.location()==null)) return false;
 		for(int v=fromHere;v<V.size();v++)
 		{
 			String str=(String)V.elementAt(v);
 			if(str.length()==0) continue;
-			if(zapCodes.containsKey(str))
+			if(getMaskCodes().containsKey(str))
 				return false;
 			if(mob.fetchInventory(str)!=null)
 				return true;
@@ -472,7 +371,7 @@ public class MUDZapper
 		return false;
 	}
 	
-    public static boolean wornCheck(Vector V, char plusMinus, int fromHere, MOB mob)
+    public boolean wornCheck(Vector V, char plusMinus, int fromHere, MOB mob)
     {
         if((mob==null)||(mob.location()==null)) return false;
         Item I=null;
@@ -480,7 +379,7 @@ public class MUDZapper
         {
             String str=(String)V.elementAt(v);
             if(str.length()==0) continue;
-            if(zapCodes.containsKey(str))
+            if(getMaskCodes().containsKey(str))
                 return false;
             I=mob.fetchInventory(str);
             if((I!=null)&&(!I.amWearingAt(Item.INVENTORY)))
@@ -488,37 +387,37 @@ public class MUDZapper
         }
         return false;
     }
-	public static boolean fromHereStartsWith(Vector V, char plusMinus, int fromHere, String find)
+	public boolean fromHereStartsWith(Vector V, char plusMinus, int fromHere, String find)
 	{
 		for(int v=fromHere;v<V.size();v++)
 		{
 			String str=(String)V.elementAt(v);
 			if(str.length()==0) continue;
-			if(zapCodes.containsKey(str))
+			if(getMaskCodes().containsKey(str))
 				return false;
 			if(str.startsWith(plusMinus+find)) return true;
 		}
 		return false;
 	}
 
-    public static boolean fromHereEndsWith(Vector V, char plusMinus, int fromHere, String find)
+    public boolean fromHereEndsWith(Vector V, char plusMinus, int fromHere, String find)
     {
         for(int v=fromHere;v<V.size();v++)
         {
             String str=(String)V.elementAt(v);
             if(str.length()==0) continue;
-            if(zapCodes.containsKey(str))
+            if(getMaskCodes().containsKey(str))
                 return false;
             if((str.charAt(0)==plusMinus)&&str.endsWith(find))
                 return true;
         }
         return false;
     }
-	public static String zapperDesc(String text)
+	public String maskDesc(String text)
 	{
 		if(text.trim().length()==0) return "Anyone";
 		StringBuffer buf=new StringBuffer("");
-		getZapCodes();
+        Hashtable zapCodes=getMaskCodes();
 		Vector V=Util.parse(text.toUpperCase());
 		for(int v=0;v<V.size();v++)
 		{
@@ -709,7 +608,7 @@ public class MUDZapper
                                 break;
                             if(str2.startsWith("+"))
                             {
-                                int code=CoffeeUtensils.getMaterialCode(str2.substring(1));
+                                int code=CMLib.utensils().getMaterialCode(str2.substring(1));
                                 if(code>=0)
                                     buf.append(Util.capitalizeAndLower(EnvResource.MATERIAL_DESCS[code>>8])+", ");
                             }
@@ -729,7 +628,7 @@ public class MUDZapper
                                 break;
                             if(str2.startsWith("-"))
                             {
-                                int code=CoffeeUtensils.getMaterialCode(str2.substring(1));
+                                int code=CMLib.utensils().getMaterialCode(str2.substring(1));
                                 if(code>=0)
                                     buf.append(Util.capitalizeAndLower(EnvResource.MATERIAL_DESCS[code>>8])+", ");
                             }
@@ -749,7 +648,7 @@ public class MUDZapper
                                 break;
                             if(str2.startsWith("+"))
                             {
-                                int code=CoffeeUtensils.getWornCode(str2.substring(1));
+                                int code=CMLib.utensils().getWornCode(str2.substring(1));
                                 if(code>=0)
                                     buf.append(Item.wornLocation[code]+", ");
                             }
@@ -769,7 +668,7 @@ public class MUDZapper
                                 break;
                             if(str2.startsWith("-"))
                             {
-                                int code=CoffeeUtensils.getWornCode(str2.substring(1));
+                                int code=CMLib.utensils().getWornCode(str2.substring(1));
                                 if(code>=0)
                                     buf.append(Item.wornLocation[code]+", ");
                             }
@@ -789,7 +688,7 @@ public class MUDZapper
                                 break;
                             if(str2.startsWith("+"))
                             {
-                                int code=Sense.getSensesCode(str2.substring(1));
+                                int code=CMLib.flags().getSensesCode(str2.substring(1));
                                 if(code>=0)
                                     buf.append(EnvStats.sensesDesc[code]+", ");
                             }
@@ -809,7 +708,7 @@ public class MUDZapper
                                 break;
                             if(str2.startsWith("-"))
                             {
-                                int code=Sense.getSensesCode(str2.substring(1));
+                                int code=CMLib.flags().getSensesCode(str2.substring(1));
                                 if(code>=0)
                                     buf.append(EnvStats.sensesDesc[code]+", ");
                             }
@@ -947,7 +846,7 @@ public class MUDZapper
                                 break;
                             if(str2.startsWith("+"))
                             {
-                                int code=Sense.getDispositionCode(str2.substring(1));
+                                int code=CMLib.flags().getDispositionCode(str2.substring(1));
                                 if(code>=0)
                                     buf.append(EnvStats.dispositionsDesc[code]+", ");
                             }
@@ -967,7 +866,7 @@ public class MUDZapper
                                 break;
                             if(str2.startsWith("-"))
                             {
-                                int code=Sense.getDispositionCode(str2.substring(1));
+                                int code=CMLib.flags().getDispositionCode(str2.substring(1));
                                 if(code>=0)
                                     buf.append(EnvStats.dispositionsDesc[code]+", ");
                             }
@@ -987,7 +886,7 @@ public class MUDZapper
                                 break;
                             if(str2.startsWith("+"))
                             {
-                                int code=CoffeeUtensils.getResourceCode(str2.substring(1));
+                                int code=CMLib.utensils().getResourceCode(str2.substring(1));
                                 if(code>=0)
                                     buf.append(Util.capitalizeAndLower(EnvResource.RESOURCE_DESCS[code&EnvResource.RESOURCE_MASK])+", ");
                             }
@@ -1007,7 +906,7 @@ public class MUDZapper
                                 break;
                             if(str2.startsWith("-"))
                             {
-                                int code=CoffeeUtensils.getResourceCode(str2.substring(1));
+                                int code=CMLib.utensils().getResourceCode(str2.substring(1));
                                 if(code>=0)
                                     buf.append(Util.capitalizeAndLower(EnvResource.RESOURCE_DESCS[code&EnvResource.RESOURCE_MASK])+", ");
                             }
@@ -1364,9 +1263,9 @@ public class MUDZapper
 				        if(zapCodes.containsKey(str2))
 				            break;
 				        if((str2.startsWith("+"))
-				        &&(Factions.isRangeCodeName(str2.substring(1))))
+				        &&(CMLib.factions().isRangeCodeName(str2.substring(1))))
 				        {
-				            String desc=Factions.rangeDescription(str2.substring(1),"or ");
+				            String desc=CMLib.factions().rangeDescription(str2.substring(1),"or ");
 				            if(desc.length()>0) buf.append(desc+"; ");
 				        }
 				    }
@@ -1412,9 +1311,9 @@ public class MUDZapper
 					buf.append("Allows only Males and Females.  ");
 				buf.append(levelHelp(str,'-',"Disallows "));
 				if((str.startsWith("-"))
-		        &&(Factions.isRangeCodeName(str.substring(1))))
+		        &&(CMLib.factions().isRangeCodeName(str.substring(1))))
 				{
-		            String desc=Factions.rangeDescription(str.substring(1),"and ");
+		            String desc=CMLib.factions().rangeDescription(str.substring(1),"and ");
 		            if(desc.length()>0) buf.append("Disallows "+desc);
 				}
 			}
@@ -1424,11 +1323,11 @@ public class MUDZapper
 		return buf.toString();
 	}
 
-	public static Vector zapperCompile(String text)
+	public Vector maskCompile(String text)
 	{
 		Vector buf=new Vector();
 		if(text.trim().length()==0) return buf;
-		getZapCodes();
+        Hashtable zapCodes=getMaskCodes();
 		Vector V=Util.parse(text.toUpperCase());
 		for(int v=0;v<V.size();v++)
 		{
@@ -1603,7 +1502,7 @@ public class MUDZapper
                         }
                         else
 						if((str2.startsWith("+"))
-				        &&(Factions.isRangeCodeName(str2.substring(1))))
+				        &&(CMLib.factions().isRangeCodeName(str2.substring(1))))
 							entry.addElement(str2.substring(1).toUpperCase());
 					}
 					break;
@@ -1670,7 +1569,7 @@ public class MUDZapper
                             else
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
-                                int code=CoffeeUtensils.getMaterialCode(str2.substring(1));
+                                int code=CMLib.utensils().getMaterialCode(str2.substring(1));
                                 if(code>=0)
                                     entry.addElement(EnvResource.MATERIAL_DESCS[(code&EnvResource.MATERIAL_MASK)>>8]);
                             }
@@ -1694,7 +1593,7 @@ public class MUDZapper
                             else
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
-                                int code=CoffeeUtensils.getWornCode(str2.substring(1));
+                                int code=CMLib.utensils().getWornCode(str2.substring(1));
                                 if(code>=0) entry.addElement(new Integer(Util.pow(2,code-1)));
                             }
                         }
@@ -1717,7 +1616,7 @@ public class MUDZapper
                             else
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
-                                int code=Sense.getDispositionCode(str2.substring(1));
+                                int code=CMLib.flags().getDispositionCode(str2.substring(1));
                                 if(code>=0) entry.addElement(new Integer(Util.pow(2,code)));
                             }
                         }
@@ -1740,7 +1639,7 @@ public class MUDZapper
                             else
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
-                                int code=Sense.getSensesCode(str2.substring(1));
+                                int code=CMLib.flags().getSensesCode(str2.substring(1));
                                 if(code>=0) entry.addElement(new Integer(Util.pow(2,code)));
                             }
                         }
@@ -1811,7 +1710,7 @@ public class MUDZapper
                             else
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
-                                int code=CoffeeUtensils.getResourceCode(str2.substring(1));
+                                int code=CMLib.utensils().getResourceCode(str2.substring(1));
                                 if(code>=0)
                                     entry.addElement(EnvResource.RESOURCE_DESCS[(code&EnvResource.RESOURCE_MASK)]);
                             }
@@ -1955,7 +1854,7 @@ public class MUDZapper
 					entry.addElement("N");
 				}
 				if((str.startsWith("-"))
-		        &&(Factions.isRangeCodeName(str.substring(1))))
+		        &&(CMLib.factions().isRangeCodeName(str.substring(1))))
 				{
 					Vector entry=new Vector();
 					buf.addElement(entry);
@@ -1970,11 +1869,11 @@ public class MUDZapper
 		return buf;
 	}
 
-	public static boolean zapperCheckReal(Vector cset, Environmental E)
+	public boolean maskCheck(Vector cset, Environmental E)
 	{
 		if(E==null) return true;
 		if((cset==null)||(cset.size()==0)) return true;
-		getZapCodes();
+        getMaskCodes();
         MOB mob=(E instanceof MOB)?(MOB)E:null;
         Item item=(E instanceof Item)?(Item)E:null;
 		for(int c=0;c<cset.size();c++)
@@ -1998,7 +1897,7 @@ public class MUDZapper
 					return false;
 				break;
 			case 3: // -alignment
-				if(!V.contains(Sense.getAlignmentName(mob)))
+				if(!V.contains(CMLib.flags().getAlignmentName(mob)))
 					return false;
 				break;
 			case 4: // -gender
@@ -2178,7 +2077,7 @@ public class MUDZapper
                 break;
             case 73: // +HOUR
                 {
-                    Room R=CoffeeUtensils.roomLocation(E);
+                    Room R=CMLib.utensils().roomLocation(E);
                     if(R!=null)
                     for(int v=1;v<V.size();v++)
                         if(R.getArea().getTimeObj().getTimeOfDay()==((Integer)V.elementAt(v)).intValue())
@@ -2188,7 +2087,7 @@ public class MUDZapper
             case 74: // -HOUR
                 {
                     boolean found=false;
-                    Room R=CoffeeUtensils.roomLocation(E);
+                    Room R=CMLib.utensils().roomLocation(E);
                     if(R!=null)
                     for(int v=1;v<V.size();v++)
                         if(R.getArea().getTimeObj().getTimeOfDay()==((Integer)V.elementAt(v)).intValue())
@@ -2198,7 +2097,7 @@ public class MUDZapper
                 break;
             case 75: // +season
                 {
-                    Room R=CoffeeUtensils.roomLocation(E);
+                    Room R=CMLib.utensils().roomLocation(E);
                     if(R!=null)
                     for(int v=1;v<V.size();v++)
                         if(R.getArea().getTimeObj().getSeasonCode()==((Integer)V.elementAt(v)).intValue())
@@ -2208,7 +2107,7 @@ public class MUDZapper
             case 76: // -season
                 {
                     boolean found=false;
-                    Room R=CoffeeUtensils.roomLocation(E);
+                    Room R=CMLib.utensils().roomLocation(E);
                     if(R!=null)
                     for(int v=1;v<V.size();v++)
                         if(R.getArea().getTimeObj().getSeasonCode()==((Integer)V.elementAt(v)).intValue())
@@ -2218,7 +2117,7 @@ public class MUDZapper
                 break;
             case 77: // +month
                 {
-                    Room R=CoffeeUtensils.roomLocation(E);
+                    Room R=CMLib.utensils().roomLocation(E);
                     if(R!=null)
                     for(int v=1;v<V.size();v++)
                         if(R.getArea().getTimeObj().getMonth()==((Integer)V.elementAt(v)).intValue())
@@ -2228,7 +2127,7 @@ public class MUDZapper
             case 78: // -month
                 {
                     boolean found=false;
-                    Room R=CoffeeUtensils.roomLocation(E);
+                    Room R=CMLib.utensils().roomLocation(E);
                     if(R!=null)
                     for(int v=1;v<V.size();v++)
                         if(R.getArea().getTimeObj().getMonth()==((Integer)V.elementAt(v)).intValue())
@@ -2295,7 +2194,7 @@ public class MUDZapper
 				{
 			    	boolean found=false;
 			    	for(int v=1;v<V.size();v++)
-			    	    if(Factions.isFactionedThisWay(mob,(String)V.elementAt(v)))
+			    	    if(CMLib.factions().isFactionedThisWay(mob,(String)V.elementAt(v)))
 			    	    { found=true; break;}
 					if(!found) return false;
 				}
@@ -2303,7 +2202,7 @@ public class MUDZapper
 			case 47: // +faction
 				{
 			    	for(int v=1;v<V.size();v++)
-			    	    if(Factions.isFactionedThisWay(mob,(String)V.elementAt(v)))
+			    	    if(CMLib.factions().isFactionedThisWay(mob,(String)V.elementAt(v)))
 			    	        return false;
 				}
 				break;
@@ -2456,7 +2355,7 @@ public class MUDZapper
 			case 31: // -area
 				{
 					boolean found=false;
-                    Room R=CoffeeUtensils.roomLocation(E);
+                    Room R=CMLib.utensils().roomLocation(E);
                     if(R!=null)
 						for(int v=1;v<V.size();v++)
 							if(R.getArea().Name().equalsIgnoreCase((String)V.elementAt(v)))
@@ -2466,7 +2365,7 @@ public class MUDZapper
 				break;
 			case 32: // +area
             {
-                Room R=CoffeeUtensils.roomLocation(E);
+                Room R=CMLib.utensils().roomLocation(E);
 				if(R!=null)
 					for(int v=1;v<V.size();v++)
 						if(R.getArea().Name().equalsIgnoreCase((String)V.elementAt(v)))
@@ -2504,7 +2403,7 @@ public class MUDZapper
 					return false;
 				break;
 			case 35: // +alignment
-				if(V.contains(Sense.getAlignmentName(mob)))
+				if(V.contains(CMLib.flags().getAlignmentName(mob)))
 					return false;
 				break;
 			case 36: // +gender
@@ -2537,11 +2436,11 @@ public class MUDZapper
 		return true;
 	}
 	
-	public static boolean zapperCheck(String text, Environmental E)
+	public boolean maskCheck(String text, Environmental E)
 	{
 		if(E==null) return true;
 		if(text.trim().length()==0) return true;
-		getZapCodes();
+        Hashtable zapCodes=getMaskCodes();
 
         String mobClass=null;
         String mobRaceCat=null;
@@ -2568,7 +2467,7 @@ public class MUDZapper
     		if(mobRaceCat.length()>6) mobRaceCat=mobRaceCat.substring(0,6);
     		mobRace=mob.charStats().raceName().toUpperCase();
     		if(mobRace.length()>6) mobRace=mobRace.substring(0,6);
-    		mobAlign=Sense.getAlignmentName(mob).substring(0,3);
+    		mobAlign=CMLib.flags().getAlignmentName(mob).substring(0,3);
     		mobGender=mob.charStats().genderName().toUpperCase();
             classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
             if(CMSecurity.isASysOp(mob)
@@ -2932,7 +2831,7 @@ public class MUDZapper
                     break;
                 case 73: // +hour
                     {
-                        Room R=CoffeeUtensils.roomLocation(E);
+                        Room R=CMLib.utensils().roomLocation(E);
                         if((R!=null)
                         &&(fromHereEndsWith(V,'-',v+1,""+R.getArea().getTimeObj().getTimeOfDay())))
                             return false;
@@ -2941,7 +2840,7 @@ public class MUDZapper
                 case 74: // -hour
                     {
                         boolean found=false;
-                        Room R=CoffeeUtensils.roomLocation(E);
+                        Room R=CMLib.utensils().roomLocation(E);
                         if((R!=null)
                         &&(fromHereEndsWith(V,'+',v+1,""+R.getArea().getTimeObj().getTimeOfDay())))
                         { found=true;}
@@ -2950,7 +2849,7 @@ public class MUDZapper
                     break;
                 case 75: // +season
                     {
-                        Room R=CoffeeUtensils.roomLocation(E);
+                        Room R=CMLib.utensils().roomLocation(E);
                         if((R!=null)
                         &&((fromHereEndsWith(V,'-',v+1,""+R.getArea().getTimeObj().getSeasonCode()))
                             ||(fromHereEndsWith(V,'-',v+1,TimeClock.SEASON_DESCS[R.getArea().getTimeObj().getSeasonCode()]))))
@@ -2960,7 +2859,7 @@ public class MUDZapper
                 case 76: // -season
                     {
                         boolean found=false;
-                        Room R=CoffeeUtensils.roomLocation(E);
+                        Room R=CMLib.utensils().roomLocation(E);
                         if((R!=null)
                         &&((fromHereEndsWith(V,'+',v+1,""+R.getArea().getTimeObj().getSeasonCode()))
                             ||(fromHereEndsWith(V,'+',v+1,TimeClock.SEASON_DESCS[R.getArea().getTimeObj().getSeasonCode()]))))
@@ -2970,7 +2869,7 @@ public class MUDZapper
                     break;
                 case 77: // +month
                     {
-                        Room R=CoffeeUtensils.roomLocation(E);
+                        Room R=CMLib.utensils().roomLocation(E);
                         if((R!=null)
                         &&(fromHereEndsWith(V,'-',v+1,""+R.getArea().getTimeObj().getMonth())))
                             return false;
@@ -2979,7 +2878,7 @@ public class MUDZapper
                 case 78: // -month
                     {
                         boolean found=false;
-                        Room R=CoffeeUtensils.roomLocation(E);
+                        Room R=CMLib.utensils().roomLocation(E);
                         if((R!=null)
                         &&(fromHereEndsWith(V,'+',v+1,""+R.getArea().getTimeObj().getMonth())))
                         { found=true;}
@@ -3000,7 +2899,7 @@ public class MUDZapper
 			else
 			if(str.startsWith("-")
             &&(mob!=null)
-			&&(Factions.isFactionedThisWay(mob,str.substring(1))))
+			&&(CMLib.factions().isFactionedThisWay(mob,str.substring(1))))
 				return false;
             }
             catch(NullPointerException n){}

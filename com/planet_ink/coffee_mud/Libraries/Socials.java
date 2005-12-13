@@ -1,6 +1,7 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -35,13 +36,10 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Socials extends Scriptable
+public class Socials extends StdLibrary implements SocialsList
 {
-	private Socials() {};
-
-    private static final String filename=Resources.buildResourcePath("")+"socials.txt";
-    
-    private static Hashtable getSocialHash()
+    public String ID(){return "Socials";}
+    public Hashtable getSocialHash()
     {
         Hashtable soc=(Hashtable)Resources.getResource("PARSED: "+filename);
         if(soc==null)
@@ -149,22 +147,21 @@ public class Socials extends Scriptable
         }
         return soc;
     }
-	public static boolean isLoaded() { return Resources.getResource("PARSED: "+filename)!=null; }
-	public static void put(String name, Social S) { getSocialHash().put(name, S); }
-	public static void remove(String name) { getSocialHash().remove(name); }
-    public static void addSocial(Social S){ getSocialHash().put(S.name(),S);}
-    public static int num() {return getSocialHash().size();}
+	public boolean isLoaded() { return Resources.getResource("PARSED: "+filename)!=null; }
+	public void put(String name, Social S) { getSocialHash().put(name, S); }
+	public void remove(String name) { getSocialHash().remove(name); }
+    public void addSocial(Social S){ getSocialHash().put(S.name(),S);}
+    public int num() {return getSocialHash().size();}
 
-	public static void clearAllSocials()
+	public void clearAllSocials()
 	{
-        String filename=Resources.buildResourcePath("")+"socials.txt";
         Resources.removeResource("PARSED: "+filename);
 		Resources.removeResource("SOCIALS LIST");
 		Resources.removeResource("WEB SOCIALS TBL");
 	}
 
 
-    public static void modifySocialOthersCode(MOB mob, Social me, int showNumber, int showFlag)
+    public void modifySocialOthersCode(MOB mob, Social me, int showNumber, int showFlag)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -202,7 +199,7 @@ public class Socials extends Scriptable
             mob.session().println("(no change)");
     }
     
-    public static void modifySocialTargetCode(MOB mob, Social me, int showNumber, int showFlag)
+    public void modifySocialTargetCode(MOB mob, Social me, int showNumber, int showFlag)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -235,7 +232,7 @@ public class Socials extends Scriptable
             mob.session().println("(no change)");
     }
     
-    public static void modifySocialSourceCode(MOB mob, Social me, int showNumber, int showFlag)
+    public void modifySocialSourceCode(MOB mob, Social me, int showNumber, int showFlag)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -266,7 +263,7 @@ public class Socials extends Scriptable
     }
     
     
-	public static boolean modifySocialInterface(MOB mob, String socialString)
+	public boolean modifySocialInterface(MOB mob, String socialString)
 		throws IOException
 	{
         Vector socials=Util.parse(socialString);
@@ -277,7 +274,7 @@ public class Socials extends Scriptable
         }
         String name=((String)socials.firstElement()).toUpperCase().trim();
         String rest=socials.size()>1?Util.combine(socials,1):"";
-        socials=Socials.getAllSocialObjects((String)socials.firstElement());
+        socials=getAllSocialObjects((String)socials.firstElement());
         if((socials.size()==0)
         &&((mob.session()==null)
             ||(!mob.session().confirm("The social '"+name+"' does not exist.  Create it (y/N)? ","N"))))
@@ -403,7 +400,7 @@ public class Socials extends Scriptable
                         soc.setSourceCode(CMMsg.MSG_HANDS);
                         soc.setOthersCode(CMMsg.MSG_HANDS);
                     }
-                    Socials.addSocial(soc);
+                    addSocial(soc);
                     socials.add(soc);
                     resaveSocials=true;
                 }
@@ -445,7 +442,7 @@ public class Socials extends Scriptable
             }
             if((resaveSocials)&&(soc!=null))
             {
-                Socials.save(mob);
+                save(mob);
                 Log.sysOut("Socials",mob.Name()+" modified social "+soc.name()+".");
                 soc=null;
                 if(rest.length()>0)
@@ -455,7 +452,7 @@ public class Socials extends Scriptable
         return true;
 	}
 
-	public static Social FetchSocial(String name, boolean exactOnly)
+	public Social FetchSocial(String name, boolean exactOnly)
 	{
         Hashtable soc=getSocialHash();
 		Social thisOne=(Social)soc.get(name.toUpperCase());
@@ -470,7 +467,7 @@ public class Socials extends Scriptable
 		return null;
 	}
 
-	public static Social FetchSocial(Vector C, boolean exactOnly)
+	public Social FetchSocial(Vector C, boolean exactOnly)
 	{
 		if(C==null) return null;
 		if(C.size()==0) return null;
@@ -516,7 +513,7 @@ public class Socials extends Scriptable
 		return S;
 	}
 
-	public static Social enumSocial(int index)
+	public Social enumSocial(int index)
 	{
 		if((index<0)||(index>num())) return null;
 		int i=0;
@@ -529,9 +526,9 @@ public class Socials extends Scriptable
 		return null;
 	}
 
-	public static void save(MOB whom)
+	public void save(MOB whom)
 	{
-		if(!Socials.isLoaded()) return;
+		if(!isLoaded()) return;
         Hashtable soc=getSocialHash();
 		StringBuffer buf=new StringBuffer("");
 		Vector V=new Vector();
@@ -626,13 +623,14 @@ public class Socials extends Scriptable
 			buf.setCharAt(buf.length()-1,'\r');
 			buf.append('\n');
 		}
-        if(!new CMFile(filename,whom,false).saveText(buf))
+        // allowed is forced because this is already protected by SOCIALS security flag
+        if(!new CMFile(filename,whom,false,true).saveText(buf))
             Log.errOut("Socials","Unable to save socials.txt!");
 		Resources.removeResource("SOCIALS LIST");
 		Resources.removeResource("WEB SOCIALS TBL");
 	}
 
-    public static Vector getAllSocialObjects(String named)
+    public Vector getAllSocialObjects(String named)
     {
         Vector all=new Vector();
         Hashtable soc=getSocialHash();
@@ -651,7 +649,7 @@ public class Socials extends Scriptable
         return all;
     }
     
-	public static String getSocialsList()
+	public String getSocialsList()
 	{
 		StringBuffer socialsList=(StringBuffer)Resources.getResource("SOCIALS LIST");
 		if(socialsList!=null) return socialsList.toString();

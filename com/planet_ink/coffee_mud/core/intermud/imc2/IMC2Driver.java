@@ -29,15 +29,30 @@
  *
  */
 
-package com.planet_ink.coffee_mud.system.intermud.imc2;
+package com.planet_ink.coffee_mud.core.intermud.imc2;
 
-import java.util.*;
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.Socket;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.Command;
+import com.planet_ink.coffee_mud.Common.interfaces.CMMsg;
+import com.planet_ink.coffee_mud.Common.interfaces.Session;
+import com.planet_ink.coffee_mud.Locales.interfaces.Room;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
+import com.planet_ink.coffee_mud.core.CMClass;
+import com.planet_ink.coffee_mud.core.CMLib;
+import com.planet_ink.coffee_mud.core.CMProps;
+import com.planet_ink.coffee_mud.core.CMSecurity;
+import com.planet_ink.coffee_mud.core.Log;
+import com.planet_ink.coffee_mud.core.Util;
 
 public final class IMC2Driver extends Thread {
 
@@ -124,12 +139,12 @@ public final class IMC2Driver extends Thread {
     {
 		if(name.equalsIgnoreCase("all"))
 		{
-			for(int s=0;s<Sessions.size();s++)
-				Sessions.elementAt(s).println(text);
+			for(int s=0;s<CMLib.sessions().size();s++)
+				CMLib.sessions().elementAt(s).println(text);
 		}
 		else
 		{
-			MOB M=CMMap.getPlayer(name);
+			MOB M=CMLib.map().getPlayer(name);
 			if(M!=null) M.tell(text);
 		}
     }
@@ -367,11 +382,11 @@ public final class IMC2Driver extends Thread {
 		imc_name=loginName;
 		imc_log_on=1; // logging?
 		this_imcmud.autoconnect=true; 
-		imc_siteinfo.name=CommonStrings.getVar(CommonStrings.SYSTEM_MUDNAME);
+		imc_siteinfo.name=CMProps.getVar(CMProps.SYSTEM_MUDNAME);
 		imc_siteinfo.host=host;
-		imc_siteinfo.port=Util.s_int((String)Util.parse(CommonStrings.getVar(CommonStrings.SYSTEM_MUDPORTS)).elementAt(0));
+		imc_siteinfo.port=Util.s_int((String)Util.parse(CMProps.getVar(CMProps.SYSTEM_MUDPORTS)).elementAt(0));
 		imc_siteinfo.email=email;
-		imc_siteinfo.base="CoffeeMud v"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDVER);
+		imc_siteinfo.base="CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER);
 		imc_siteinfo.details="Custom Java-based Mud";
 		imc_siteinfo.www=web;
 		this_imcmud.hubname=hub;
@@ -490,7 +505,7 @@ public final class IMC2Driver extends Thread {
     }
     final public String do_imcinfo()
     {
-		String host=CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN).toLowerCase();
+		String host=CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase();
         return "IMC Statistics:\\n\\r\\n"+
 			"Site Name           :"+imc_siteinfo.name+"\\n\\r"+
 			"Site Host           :"+((host.length()>0)?host:sa.getLocalAddress().getHostName())+"\\n\\r"+
@@ -934,7 +949,7 @@ public final class IMC2Driver extends Thread {
 
 	final String update_wholist()
 	{
-		StringBuffer str=new StringBuffer("Players on "+CommonStrings.getVar(CommonStrings.SYSTEM_MUDNAME)+":\\n\\r");
+		StringBuffer str=new StringBuffer("Players on "+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+":\\n\\r");
 		Command C=CMClass.getCommand("Who");
 		Vector V=new Vector();
 		if(C!=null)
@@ -997,10 +1012,10 @@ public final class IMC2Driver extends Thread {
         out.to = sender;
         out.type = "whois-reply";
 
-		MOB M=CMMap.getPlayer(from.name);
+		MOB M=CMLib.map().getPlayer(from.name);
 		if(M==null) return;
         imc_addkey(out, "text", "imcpfind "+from.name+"@"+imc_name
-						+" is "+(Sense.isInTheGame(M,false) ? "online":"offline")+ ".");
+						+" is "+(CMLib.flags().isInTheGame(M,false) ? "online":"offline")+ ".");
 
         imc_send(out);
     }
@@ -1029,7 +1044,7 @@ public final class IMC2Driver extends Thread {
 		mob.setLocation(CMClass.getLocale("StdRoom"));
 		MOB smob=findSessMob(d.name);
 		if(smob!=null)
-			CommonMsgs.say(mob,smob,text,true,true);
+			CMLib.commands().say(mob,smob,text,true,true);
         Room R=mob.location();
         mob.destroy();
         if(R!=null) R.destroyRoom();
@@ -1037,9 +1052,9 @@ public final class IMC2Driver extends Thread {
 
 	private MOB findSessMob(String mobName)
 	{
-		for(int s=0;s<Sessions.size();s++)
+		for(int s=0;s<CMLib.sessions().size();s++)
 		{
-			Session ses=Sessions.elementAt(s);
+			Session ses=CMLib.sessions().elementAt(s);
 			if((!ses.killFlag())&&(ses.mob()!=null)
 			&&(!ses.mob().amDead())
 			&&(ses.mob().Name().equalsIgnoreCase(mobName))
@@ -1074,14 +1089,14 @@ public final class IMC2Driver extends Thread {
 			channel=st.nextToken();
 
 		String channelName=channel;
-		FullMsg msg=null;
+		CMMsg msg=null;
 		if(from.toUpperCase().endsWith(imc_name.toUpperCase()))
 		   return;
 		if(channelName.length()==0)
 			return;
 		channelName=read_channel_name(channelName);
 		if(channelName.length()==0) return;
-		int channelInt=ChannelSet.getChannelIndex(channelName);
+		int channelInt=CMLib.channels().getChannelIndex(channelName);
 		if(channelInt<0) return;
         MOB mob=CMClass.getMOB("StdMOB");
         mob.setName(from);
@@ -1095,13 +1110,13 @@ public final class IMC2Driver extends Thread {
 				str="^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+text+"^</CHANNEL^>^?^.";
 		}
 				
-		msg=new FullMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
+		msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 
-		ChannelSet.channelQueUp(channelInt,msg);
-		for(int s=0;s<Sessions.size();s++)
+		CMLib.channels().channelQueUp(channelInt,msg);
+		for(int s=0;s<CMLib.sessions().size();s++)
 		{
-			Session ses=Sessions.elementAt(s);
-			if((ChannelSet.mayReadThisChannel(mob,false,ses,channelInt))
+			Session ses=CMLib.sessions().elementAt(s);
+			if((CMLib.channels().mayReadThisChannel(mob,false,ses,channelInt))
             &&(ses.mob().location()!=null)
 			&&(ses.mob().location().okMessage(ses.mob(),msg)))
 				ses.mob().executeMsg(ses.mob(),msg);

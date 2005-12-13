@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Locales;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -48,12 +59,12 @@ public class InTheAir extends StdRoom
 		if((avg==0)&&(room.getRoomInDir(Directions.DOWN)==null)) return;
 		if((avg>0)&&(room.getRoomInDir(Directions.UP)==null)) return;
 
-		if(((E instanceof MOB)&&(!Sense.isInFlight(E)))
+		if(((E instanceof MOB)&&(!CMLib.flags().isInFlight(E)))
 		||((E instanceof Item)
                 &&(((Item)E).container()==null)
-                &&(!Sense.isFlying(((Item)E).ultimateContainer()))))
+                &&(!CMLib.flags().isFlying(((Item)E).ultimateContainer()))))
 		{
-			if(!Sense.isFalling(E))
+			if(!CMLib.flags().isFalling(E))
 			{
 				Ability falling=CMClass.getAbility("Falling");
 				if(falling!=null)
@@ -68,7 +79,7 @@ public class InTheAir extends StdRoom
 
 	public static void airAffects(Room room, CMMsg msg)
 	{
-		if(Sense.isSleeping(room)) return;
+		if(CMLib.flags().isSleeping(room)) return;
 		boolean foundReversed=false;
 		boolean foundNormal=false;
 		Vector needToFall=new Vector();
@@ -132,7 +143,7 @@ public class InTheAir extends StdRoom
 
 	public static boolean isOkAirAffect(Room room, CMMsg msg)
 	{
-		if(Sense.isSleeping(room))
+		if(CMLib.flags().isSleeping(room))
 			return true;
 		if((msg.sourceMinor()==CMMsg.TYP_SIT)&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
 		{
@@ -149,12 +160,12 @@ public class InTheAir extends StdRoom
 		&&(msg.amITarget(room)))
 		{
 			MOB mob=msg.source();
-			if((!Sense.isInFlight(mob))&&(!Sense.isFalling(mob)))
+			if((!CMLib.flags().isInFlight(mob))&&(!CMLib.flags().isFalling(mob)))
 			{
 				mob.tell("You can't fly.");
 				return false;
 			}
-			if(Dice.rollPercentage()>50)
+			if(CMLib.dice().rollPercentage()>50)
 			switch(room.getArea().getClimateObj().weatherType(room))
 			{
 			case Climate.WEATHER_BLIZZARD:

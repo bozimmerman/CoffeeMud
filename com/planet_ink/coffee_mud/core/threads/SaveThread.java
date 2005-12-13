@@ -1,11 +1,23 @@
-package com.planet_ink.coffee_mud.system.threads;
+package com.planet_ink.coffee_mud.core.threads;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
-import com.planet_ink.coffee_mud.exceptions.*;
+import com.planet_ink.coffee_mud.core.exceptions.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -43,10 +55,10 @@ public class SaveThread extends Thread
 		status="title sweeping";
 		try
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				LandTitle T=CoffeeUtensils.getLandTitle(R);
+				LandTitle T=CMLib.utensils().getLandTitle(R);
 				if(T!=null)
 				{
 					status="updating title in "+R.roomID();
@@ -62,25 +74,25 @@ public class SaveThread extends Thread
         status="command journal sweeping";
         try
         {
-            for(int j=0;j<ChannelSet.getNumCommandJournals();j++)
+            for(int j=0;j<CMLib.journals().getNumCommandJournals();j++)
             {
-                String num=(String)ChannelSet.getCommandJournalFlags(j).get("EXPIRE=");
+                String num=(String)CMLib.journals().getCommandJournalFlags(j).get("EXPIRE=");
                 if((num!=null)&&(Util.isNumber(num)))
                 {
-                    status="updating journal "+ChannelSet.getCommandJournalName(j);
-                    Vector items=CMClass.DBEngine().DBReadJournal("SYSTEM_"+ChannelSet.getCommandJournalName(j)+"S");
+                    status="updating journal "+CMLib.journals().getCommandJournalName(j);
+                    Vector items=CMLib.database().DBReadJournal("SYSTEM_"+CMLib.journals().getCommandJournalName(j)+"S");
                     if(items!=null)
                     for(int i=items.size()-1;i>=0;i--)
                     {
                         Vector entry=(Vector)items.elementAt(i);
                         long compdate=Util.s_long((String)entry.elementAt(6));
-                        compdate=compdate+Math.round(Util.mul(IQCalendar.MILI_DAY,Util.s_double(num)));
+                        compdate=compdate+Math.round(Util.mul(TimeManager.MILI_DAY,Util.s_double(num)));
                         if(System.currentTimeMillis()>compdate)
                         {
                             String from=(String)entry.elementAt(1);
                             String message=(String)entry.elementAt(5);
-                            Log.sysOut("SaveThread","Expired "+ChannelSet.getCommandJournalName(j)+" from "+from+": "+message);
-                            CMClass.DBEngine().DBDeleteJournal("SYSTEM_"+ChannelSet.getCommandJournalName(j)+"S",i);
+                            Log.sysOut("SaveThread","Expired "+CMLib.journals().getCommandJournalName(j)+" from "+from+": "+message);
+                            CMLib.database().DBDeleteJournal("SYSTEM_"+CMLib.journals().getCommandJournalName(j)+"S",i);
                         }
                     }
                     status="command journal sweeping";
@@ -98,21 +110,21 @@ public class SaveThread extends Thread
 	public int savePlayers()
 	{
 		int processed=0;
-		for(Enumeration p=CMMap.players();p.hasMoreElements();)
+		for(Enumeration p=CMLib.map().players();p.hasMoreElements();)
 		{
 			MOB mob=(MOB)p.nextElement();
 			if(!mob.isMonster())
 			{
 				status="just saving "+mob.Name();
-				CMClass.DBEngine().DBUpdatePlayerStatsOnly(mob);
+				CMLib.database().DBUpdatePlayerStatsOnly(mob);
 				if((mob.Name().length()==0)||(mob.playerStats()==null))
 					continue;
 				status="saving "+mob.Name()+", "+mob.inventorySize()+"items";
-                CMClass.DBEngine().DBUpdatePlayerItems(mob);
+                CMLib.database().DBUpdatePlayerItems(mob);
 				status="saving "+mob.Name()+", "+mob.numLearnedAbilities()+"abilities";
-                CMClass.DBEngine().DBUpdatePlayerAbilities(mob);
+                CMLib.database().DBUpdatePlayerAbilities(mob);
 				status="saving "+mob.numFollowers()+" followers of "+mob.Name();
-                CMClass.DBEngine().DBUpdateFollowers(mob);
+                CMLib.database().DBUpdateFollowers(mob);
 				mob.playerStats().setUpdated(System.currentTimeMillis());
 				processed++;
 			}
@@ -122,13 +134,13 @@ public class SaveThread extends Thread
 			   ||(mob.playerStats().lastUpdated()<mob.playerStats().lastDateTime())))
 			{
 				status="just saving "+mob.Name();
-                CMClass.DBEngine().DBUpdatePlayerStatsOnly(mob);
+                CMLib.database().DBUpdatePlayerStatsOnly(mob);
 				if((mob.Name().length()==0)||(mob.playerStats()==null))
 					continue;
 				status="just saving "+mob.Name()+", "+mob.inventorySize()+" items";
-                CMClass.DBEngine().DBUpdatePlayerItems(mob);
+                CMLib.database().DBUpdatePlayerItems(mob);
 				status="just saving "+mob.Name()+", "+mob.numLearnedAbilities()+" abilities";
-                CMClass.DBEngine().DBUpdatePlayerAbilities(mob);
+                CMLib.database().DBUpdatePlayerAbilities(mob);
 				mob.playerStats().setUpdated(System.currentTimeMillis());
 				processed++;
 			}
@@ -142,7 +154,7 @@ public class SaveThread extends Thread
 		long[] prePurgeLevels=new long[2001];
 		for(int i=0;i<levels.length;i++) levels[i]=0;
 		for(int i=0;i<prePurgeLevels.length;i++) prePurgeLevels[i]=0;
-		String mask=CommonStrings.getVar(CommonStrings.SYSTEM_AUTOPURGE);
+		String mask=CMProps.getVar(CMProps.SYSTEM_AUTOPURGE);
 		Vector maskV=Util.parseCommas(mask.trim(),false);
 		long purgePoint=0;
 		for(int mv=0;mv<maskV.size();mv++)
@@ -183,8 +195,8 @@ public class SaveThread extends Thread
 
 			if((start>=0)&&(finish<levels.length)&&(start<=finish))
 			{
-				long realVal=System.currentTimeMillis()-(val*IQCalendar.MILI_DAY);
-				purgePoint=realVal+(prepurge*IQCalendar.MILI_DAY);
+				long realVal=System.currentTimeMillis()-(val*TimeManager.MILI_DAY);
+				purgePoint=realVal+(prepurge*TimeManager.MILI_DAY);
 				for(int s=start;s<=finish;s++)
 				{
 					if(levels[s]==0) levels[s]=realVal;
@@ -193,7 +205,7 @@ public class SaveThread extends Thread
 			}
 		}
 		status="autopurge process";
-		Vector allUsers=CMClass.DBEngine().getUserList();
+		Vector allUsers=CMLib.database().getUserList();
 		Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 		if(protectedOnes==null) protectedOnes=new Vector();
 
@@ -219,7 +231,7 @@ public class SaveThread extends Thread
 			else
 				continue;
             if(CMSecurity.isDebugging("AUTOPURGE"))
-                Log.debugOut("SaveThread",name+" last on "+new IQCalendar(last).d2String()+" will be warned on "+new IQCalendar(warn).d2String()+" and purged on "+new IQCalendar(when).d2String());
+                Log.debugOut("SaveThread",name+" last on "+CMLib.time().date2String(last)+" will be warned on "+CMLib.time().date2String(warn)+" and purged on "+CMLib.time().date2String(when));
 	        if((last>when)&&(last<warn))
 			{
 				boolean protectedOne=false;
@@ -253,7 +265,7 @@ public class SaveThread extends Thread
 						}
 					if((foundWarning<0)||(foundWarning<when))
 					{
-						MOB M=CMMap.getLoadPlayer(name);
+						MOB M=CMLib.map().getLoadPlayer(name);
 						if((M!=null)&&(M.playerStats()!=null))
 						{
 							warnStr.append(M.name()+" "+M.playerStats().getEmail()+" "+System.currentTimeMillis()+"\n");
@@ -266,7 +278,7 @@ public class SaveThread extends Thread
 					}
                     else
                     if(CMSecurity.isDebugging("AUTOPURGE"))
-                        Log.debugOut("SaveThread",name+" has already been warned on "+new IQCalendar(foundWarning).d2String());
+                        Log.debugOut("SaveThread",name+" has already been warned on "+CMLib.time().date2String(foundWarning));
 				}
                 else
                 if(CMSecurity.isDebugging("AUTOPURGE"))
@@ -284,11 +296,11 @@ public class SaveThread extends Thread
                 }
 				if(!protectedOne)
 				{
-					MOB M=CMMap.getLoadPlayer(name);
+					MOB M=CMLib.map().getLoadPlayer(name);
 					if(M!=null)
 					{
-						CoffeeUtensils.obliteratePlayer(M,true);
-						Log.sysOut("SaveThread","AutoPurged user "+name+". Last logged in "+(new IQCalendar(last).d2String())+".");
+						CMLib.utensils().obliteratePlayer(M,true);
+						Log.sysOut("SaveThread","AutoPurged user "+name+". Last logged in "+(CMLib.time().date2String(last))+".");
 					}
 				}
                 else
@@ -311,7 +323,7 @@ public class SaveThread extends Thread
 		//  timeLeft is in millis
 		String from="AutoPurgeWarning";
 		String to=mob.Name();
-		String subj=CommonStrings.SYSTEM_MUDNAME+" Autopurge Warning: "+to;
+		String subj=CMProps.SYSTEM_MUDNAME+" Autopurge Warning: "+to;
 		String textTimeLeft="";
 		if(timeLeft>(1000*60*60*24*2))
 		{
@@ -325,13 +337,13 @@ public class SaveThread extends Thread
 		}
 		String msg="Your character, "+to+", is going to be autopurged by the system in "+textTimeLeft+".  If you would like to keep this character active, please re-login.  This is an automated message, please do not reply.";
 
-		SMTPclient SC=null;
+		SMTPLibrary.SMTPClient SC=null;
 		try
 		{
-		    if(CommonStrings.getVar(CommonStrings.SYSTEM_SMTPSERVERNAME).length()>0)
-				SC=new SMTPclient(CommonStrings.getVar(CommonStrings.SYSTEM_SMTPSERVERNAME),SMTPclient.DEFAULT_PORT);
+		    if(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME).length()>0)
+				SC=CMLib.smtp().getClient(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),SMTPLibrary.DEFAULT_PORT);
 		    else
-				SC=new SMTPclient(mob.playerStats().getEmail());
+				SC=CMLib.smtp().getClient(mob.playerStats().getEmail());
 		}
 		catch(BadEmailAddressException be)
 		{
@@ -344,7 +356,7 @@ public class SaveThread extends Thread
 		}
 
 		String replyTo="AutoPurge";
-		String domain=CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN).toLowerCase();
+		String domain=CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase();
 		try
 		{
 			SC.sendMessage(from+"@"+domain,
@@ -352,7 +364,7 @@ public class SaveThread extends Thread
 						   mob.playerStats().getEmail(),
 						   mob.playerStats().getEmail(),
 						   subj,
-						   CoffeeFilter.simpleOutFilter(msg));
+						   CMLib.coffeeFilter().simpleOutFilter(msg));
 		}
 		catch(java.io.IOException ioe)
 		{
@@ -371,18 +383,18 @@ public class SaveThread extends Thread
 		started=true;
         shutDown=false;
 
-		while(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+		while(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			try{Thread.sleep(1000);}catch(Exception e){}
 		while(true)
 		{
 			try
 			{
-                while(CMClass.ThreadEngine().isAllSuspended())
+                while(CMLib.threads().isAllSuspended())
                     try{Thread.sleep(2000);}catch(Exception e){}
 				if(!CMSecurity.isDisabled("SAVETHREAD"))
 				{
 					status="checking database health";
-					String ok=CMClass.DBEngine().errorStatus();
+					String ok=CMLib.database().errorStatus();
 					if((ok.length()!=0)&&(!ok.startsWith("OK")))
 						Log.errOut("Save Thread","DB: "+ok);
 					else
@@ -390,8 +402,8 @@ public class SaveThread extends Thread
 						itemSweep();
                         commandJournalSweep();
 						autoPurge();
-						CoffeeTables.bump(null,CoffeeTables.STAT_SPECIAL_NUMONLINE);
-						CoffeeTables.update();
+						CMLib.coffeeTables().bump(null,CoffeeTableRow.STAT_SPECIAL_NUMONLINE);
+						CMLib.coffeeTables().update();
 						lastStop=System.currentTimeMillis();
 						milliTotal+=(lastStop-lastStart);
 						tickTotal++;

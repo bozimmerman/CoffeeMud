@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Items.Basic.StdItem;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -46,7 +56,7 @@ public class StdBoffWeapon extends StdWeapon
 	public String hitString(int damageAmount)
 	{
 		String word="boff(s)";
-		switch(Dice.roll(1,7,-1))
+		switch(CMLib.dice().roll(1,7,-1))
 		{
 		case 0: word= "puff(s)"; break;
 		case 1: word= "boff(s)"; break;
@@ -56,15 +66,15 @@ public class StdBoffWeapon extends StdWeapon
 		case 5: word= "smoosh(es)"; break;
 		case 6: word= "kabloom(s)"; break;
 		}
-		boolean showDamn=CommonStrings.getVar(CommonStrings.SYSTEM_SHOWDAMAGE).equalsIgnoreCase("YES");
+		boolean showDamn=CMProps.getVar(CMProps.SYSTEM_SHOWDAMAGE).equalsIgnoreCase("YES");
 		switch(weaponClassification())
 		{
 		case Weapon.CLASS_RANGED:
-			return "<S-NAME> fire(s) "+name()+" at <T-NAMESELF> and "+word+((showDamn)?" ("+damageAmount+")":"")+" <T-HIM-HER>."+CommonStrings.msp("arrow.wav",20);
+			return "<S-NAME> fire(s) "+name()+" at <T-NAMESELF> and "+word+((showDamn)?" ("+damageAmount+")":"")+" <T-HIM-HER>."+CMProps.msp("arrow.wav",20);
 		case Weapon.CLASS_THROWN:
-			return "<S-NAME> throw(s) "+name()+" at <T-NAMESELF> and "+word+((showDamn)?" ("+damageAmount+")":"")+" <T-HIM-HER>."+CommonStrings.msp("arrow.wav",20);
+			return "<S-NAME> throw(s) "+name()+" at <T-NAMESELF> and "+word+((showDamn)?" ("+damageAmount+")":"")+" <T-HIM-HER>."+CMProps.msp("arrow.wav",20);
 		default:
-			return "<S-NAME> "+word+((showDamn)?" ("+damageAmount+")":"")+" <T-NAMESELF> with "+name()+"."+CommonStrings.msp("punch"+Dice.roll(1,7,0)+".wav",20);
+			return "<S-NAME> "+word+((showDamn)?" ("+damageAmount+")":"")+" <T-NAMESELF> with "+name()+"."+CMProps.msp("punch"+CMLib.dice().roll(1,7,0)+".wav",20);
 		}
 	}
 }

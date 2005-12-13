@@ -1,11 +1,21 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.Items.Basic.StdContainer;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
-import com.planet_ink.coffee_mud.system.*;
 
 /* 
     Copyright (c) 2005, Bo Zimmerman
@@ -55,9 +65,9 @@ public class HandOfCards extends StdContainer implements MiscMagic
         setDescription("");
         
         // uncomment below for added security
-        //Sense.setGettable(this,false);
-        //Sense.setDroppable(this,false);
-        //Sense.setRemovable(this,false);
+        //CMLib.flags().setGettable(this,false);
+        //CMLib.flags().setDroppable(this,false);
+        //CMLib.flags().setRemovable(this,false);
         baseEnvStats().setWeight(1);
         // capacity is 52 cards + 1 for the deck itself.
         setCapacity(53);
@@ -92,7 +102,7 @@ public class HandOfCards extends StdContainer implements MiscMagic
             return false;
         for(int i=0;i<V.size()*5;i++)
         {
-            Item I=(Item)V.elementAt(Dice.roll(1,V.size(),-1));
+            Item I=(Item)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
             I.setContainer(this);
             if(own instanceof MOB)
             {
@@ -553,7 +563,7 @@ public class HandOfCards extends StdContainer implements MiscMagic
                 // are capturing an event in mid-stride.  This event we have
                 // captured has not completed executing yet.
                 if(str.length()>0)
-                    msg.addTrailerMsg(new FullMsg(msg.source(),owner(),null,CMMsg.MSG_OK_VISUAL,"<T-NAME> <T-HAS-HAVE> the following cards shown: "+str.toString().substring(0,str.length()-2)+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+                    msg.addTrailerMsg(CMClass.getMsg(msg.source(),owner(),null,CMMsg.MSG_OK_VISUAL,"<T-NAME> <T-HAS-HAVE> the following cards shown: "+str.toString().substring(0,str.length()-2)+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
             }
         }
         super.executeMsg(host,msg);

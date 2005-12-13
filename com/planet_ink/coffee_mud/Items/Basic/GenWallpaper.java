@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Items.Basic;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -26,7 +37,7 @@ public class GenWallpaper implements Item
 	protected String 	name="some wallpaper";
 	protected byte[] 	description=null;
 	protected String	readableText="";
-	protected EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	protected boolean destroyed=false;
 	protected Environmental owner=null;
 
@@ -127,21 +138,21 @@ public class GenWallpaper implements Item
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public void setMiscText(String newText)
 	{
-		Vector V=XMLManager.parseAllXML(newText);
+		Vector V=CMLib.xml().parseAllXML(newText);
 		if(V!=null)
 		{
-			setName(XMLManager.getValFromPieces(V,"NAME"));
-			setDescription(XMLManager.getValFromPieces(V,"DESC"));
-			CoffeeMaker.setEnvFlags(this,Util.s_int(XMLManager.getValFromPieces(V,"FLAG")));
-			setReadableText(XMLManager.getValFromPieces(V,"READ"));
+			setName(CMLib.xml().getValFromPieces(V,"NAME"));
+			setDescription(CMLib.xml().getValFromPieces(V,"DESC"));
+			CMLib.coffeeMaker().setEnvFlags(this,Util.s_int(CMLib.xml().getValFromPieces(V,"FLAG")));
+			setReadableText(CMLib.xml().getValFromPieces(V,"READ"));
 		}
 	}
 	public String text()
 	{	StringBuffer text=new StringBuffer("");
-		text.append(XMLManager.convertXMLtoTag("NAME",Name()));
-		text.append(XMLManager.convertXMLtoTag("DESC",description()));
-		text.append(XMLManager.convertXMLtoTag("FLAG",CoffeeMaker.envFlags(this)));
-		text.append(XMLManager.convertXMLtoTag("READ",readableText()));
+		text.append(CMLib.xml().convertXMLtoTag("NAME",Name()));
+		text.append(CMLib.xml().convertXMLtoTag("DESC",description()));
+		text.append(CMLib.xml().convertXMLtoTag("FLAG",CMLib.coffeeMaker().envFlags(this)));
+		text.append(CMLib.xml().convertXMLtoTag("READ",readableText()));
 		return text.toString();
 	}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
@@ -163,8 +174,8 @@ public class GenWallpaper implements Item
 		if((description==null)||(description.length==0))
 			return "You see nothing special about "+name()+".";
 		else
-		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ITEMDCOMPRESS))
-			return CMEncoder.decompressString(description);
+		if(CMProps.getBoolVar(CMProps.SYSTEMB_ITEMDCOMPRESS))
+			return CMLib.encoder().decompressString(description);
 		else
 			return new String(description);
 	}
@@ -173,15 +184,15 @@ public class GenWallpaper implements Item
 		if(newDescription.length()==0)
 			description=null;
 		else
-		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ITEMDCOMPRESS))
-			description=CMEncoder.compressString(newDescription);
+		if(CMProps.getBoolVar(CMProps.SYSTEMB_ITEMDCOMPRESS))
+			description=CMLib.encoder().compressString(newDescription);
 		else
 			description=newDescription.getBytes();
 	}
 	public void setContainer(Item newContainer){}
 	public int usesRemaining(){return Integer.MAX_VALUE;}
 	public void setUsesRemaining(int newUses){}
-	public boolean savable(){return Sense.canBeSaved(this);}
+	public boolean savable(){return CMLib.flags().canBeSaved(this);}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		MOB mob=msg.source();
@@ -232,7 +243,7 @@ public class GenWallpaper implements Item
 		{
 		case CMMsg.TYP_LOOK:
         case CMMsg.TYP_EXAMINE:
-			if(Sense.canBeSeenBy(this,mob))
+			if(CMLib.flags().canBeSeenBy(this,mob))
 			{
 				if(description().length()==0)
 					mob.tell("You don't see anything special about "+this.name());
@@ -243,9 +254,9 @@ public class GenWallpaper implements Item
 				mob.tell("You can't see that!");
 			return;
 		case CMMsg.TYP_READ:
-			if(Sense.canBeSeenBy(this,mob))
+			if(CMLib.flags().canBeSeenBy(this,mob))
 			{
-				if((Sense.isReadable(this))&&(readableText()!=null)&&(readableText().length()>0))
+				if((CMLib.flags().isReadable(this))&&(readableText()!=null)&&(readableText().length()>0))
 				{
 					if(readableText().startsWith("FILE=")
 						||readableText().startsWith("FILE="))
@@ -322,7 +333,7 @@ public class GenWallpaper implements Item
 		case 0: return ID();
 		case 1: return name();
 		case 2: return description();
-		case 3: return ""+Sense.isReadable(this);
+		case 3: return ""+CMLib.flags().isReadable(this);
 		case 4: return readableText();
 		}
 		return "";
@@ -334,7 +345,7 @@ public class GenWallpaper implements Item
 		case 0: return;
 		case 1: setName(val); break;
 		case 2: setDescription(val); break;
-		case 3: Sense.setReadable(this,Util.s_bool(val));
+		case 3: CMLib.flags().setReadable(this,Util.s_bool(val));
 				break;
 		case 4: setReadableText(val); break;
 		}

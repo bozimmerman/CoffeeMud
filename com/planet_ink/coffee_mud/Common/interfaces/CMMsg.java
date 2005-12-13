@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core.interfaces;
+package com.planet_ink.coffee_mud.Common.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -29,7 +29,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface CMMsg extends Cloneable
+public interface CMMsg extends CMObject
 {
 	public int targetMajor();
 	public int targetMinor();
@@ -56,15 +56,23 @@ public interface CMMsg extends Cloneable
 	public Environmental tool();
 	public MOB source();
 
-	public CMMsg copyOf();
-
-
 	public boolean amITarget(Environmental thisOne);
 	public boolean amISource(MOB thisOne);
 
 	public int value();
 	public void setValue(int amount);
 
+    public void modify(MOB source, Environmental target, int newAllCode, String allMessage);
+    public void modify(MOB source, int newAllCode, String allMessage);
+    public void modify(MOB source, int newAllCode, String allMessage, int newValue);
+    public void modify(MOB source, Environmental target, Environmental tool, int newAllCode, String allMessage);
+    public void modify(MOB source,
+                       Environmental target,
+                       Environmental tool,
+                       int newSourceCode,
+                       String sourceMessage,
+                       String targetMessage,
+                       String othersMessage);
 	public void modify(MOB source,
 						Environmental target,
 						Environmental tool,
@@ -74,6 +82,13 @@ public interface CMMsg extends Cloneable
 						String targetMessage,
 						int newOthersCode,
 						String othersMessage);
+    public void modify(MOB source,
+               Environmental target,
+               Environmental tool,
+               int newSourceCode,
+               int newTargetCode,
+               int newOthersCode,
+               String Message);
 
 	public Vector trailerMsgs();
 	public void addTrailerMsg(CMMsg msg);

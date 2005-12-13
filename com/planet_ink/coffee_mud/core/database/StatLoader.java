@@ -1,10 +1,21 @@
-package com.planet_ink.coffee_mud.system.database;
+package com.planet_ink.coffee_mud.core.database;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.sql.*;
 import java.util.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -23,17 +34,17 @@ import com.planet_ink.coffee_mud.utils.*;
 */
 public class StatLoader
 {
-	public static CoffeeTables DBRead(long startTime)
+	public static CoffeeTableRow DBRead(long startTime)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
-			Log.debugOut("StatLoader","Reading content of Stat  "+new IQCalendar(startTime).d2String());
+			Log.debugOut("StatLoader","Reading content of Stat  "+CMLib.time().date2String(startTime));
 		DBConnection D=null;
-		CoffeeTables T=null;
+        CoffeeTableRow T=null;
 		try
 		{
 			D=DBConnector.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMSTAT WHERE CMSTRT="+startTime);
-			T=new CoffeeTables();
+			T=(CoffeeTableRow)CMClass.getCommon("DefaultCoffeeTableRow");
 			if(R.next())
 			{
 				long endTime=DBConnections.getLongRes(R,"CMENDT");
@@ -53,9 +64,9 @@ public class StatLoader
 	public static Vector DBReadAfter(long startTime)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
-			Log.debugOut("StatLoader","Reading content of Stats since "+new IQCalendar(startTime).d2String());
+			Log.debugOut("StatLoader","Reading content of Stats since "+CMLib.time().date2String(startTime));
 		DBConnection D=null;
-		CoffeeTables T=null;
+        CoffeeTableRow T=null;
 		Vector rows=new Vector();
 		try
 		{
@@ -63,7 +74,7 @@ public class StatLoader
 			ResultSet R=D.query("SELECT * FROM CMSTAT WHERE CMSTRT>"+startTime);
 			while(R.next())
 			{
-				T=new CoffeeTables();
+				T=(CoffeeTableRow)CMClass.getCommon("DefaultCoffeeTableRow");
 				long strTime=DBConnections.getLongRes(R,"CMSTRT");
 				long endTime=DBConnections.getLongRes(R,"CMENDT");
 				String data=DBConnections.getRes(R,"CMDATA");
@@ -83,7 +94,7 @@ public class StatLoader
 	public static void DBDelete(long startTime)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
-			Log.debugOut("StatLoader","Deleting Stat  "+new IQCalendar(startTime).d2String());
+			Log.debugOut("StatLoader","Deleting Stat  "+CMLib.time().date2String(startTime));
 		try
 		{
 			DBConnector.update("DELETE FROM CMSTAT WHERE CMSTRT="+startTime);
@@ -96,7 +107,7 @@ public class StatLoader
 	public static void DBUpdate(long startTime, String data)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
-			Log.debugOut("StatLoader","Updating Stat  "+new IQCalendar(startTime).d2String());
+			Log.debugOut("StatLoader","Updating Stat  "+CMLib.time().date2String(startTime));
 		try
 		{
 			DBConnector.update("UPDATE CMSTAT SET CMDATA='"+data+"' WHERE CMSTRT="+startTime);
@@ -109,7 +120,7 @@ public class StatLoader
 	public static void DBCreate(long startTime, long endTime, String data)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
-			Log.debugOut("StatLoader","Creating Stat  "+new IQCalendar(startTime).d2String());
+			Log.debugOut("StatLoader","Creating Stat  "+CMLib.time().date2String(startTime));
 		DBConnector.update(
 		 "INSERT INTO CMSTAT ("
 		 +"CMSTRT, "

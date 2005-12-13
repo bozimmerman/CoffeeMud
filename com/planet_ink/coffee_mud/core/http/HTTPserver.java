@@ -1,10 +1,21 @@
-package com.planet_ink.coffee_mud.system.http;
+package com.planet_ink.coffee_mud.core.http;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.net.*;
 import java.io.IOException;
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.interfaces.*;
+
 
 /* 
    Portions Copyright 2002 Jeff Kamenek
@@ -24,11 +35,11 @@ import com.planet_ink.coffee_mud.interfaces.*;
 */
 public class HTTPserver extends Thread implements MudHost
 {
-	public INI page=null;
+	public CMProps page=null;
 
 	public static final float HOST_VERSION_MAJOR=(float)1.0;
 	public static final float HOST_VERSION_MINOR=(float)0.3;
-	public static INI webCommon=null;
+	public static CMProps webCommon=null;
 
 	// this gets sent in HTTP response
 	//  also used by @WEBSERVERVERSION@
@@ -76,7 +87,7 @@ public class HTTPserver extends Thread implements MudHost
 	{
 		if (webCommon==null || !webCommon.loaded)
 		{
-			webCommon=new INI("web/common.ini");
+			webCommon=new CMProps ("web/common.ini");
 			if(!webCommon.loaded)
 				Log.errOut("HTTPserver","Unable to load common.ini!");
 		}
@@ -198,7 +209,7 @@ public class HTTPserver extends Thread implements MudHost
 		if (page==null || !page.loaded)
 		{
 			String fn = "web/" + getPartialName() + ".ini";
-			page=new INI(getCommonPropPage(), fn);
+			page=new CMProps(getCommonPropPage(), fn);
 			if(!page.loaded)
 			{
 				Log.errOut(getName(),"failed to load " + fn);
@@ -263,7 +274,7 @@ public class HTTPserver extends Thread implements MudHost
 			{
                 state=0;
 				sock=servsock.accept();
-                while(CMClass.ThreadEngine().isAllSuspended())
+                while(CMLib.threads().isAllSuspended())
                     Thread.sleep(1000);
                 state=1;
 				ProcessHTTPrequest W=new ProcessHTTPrequest(sock,this,page,isAdminServer);

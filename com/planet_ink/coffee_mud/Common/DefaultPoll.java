@@ -43,7 +43,7 @@ public class DefaultPoll implements Poll
         }
         catch(CloneNotSupportedException e)
         {
-            return new DefaultPoll();
+            return newInstance();
         }
     }
     public boolean loaded=false;

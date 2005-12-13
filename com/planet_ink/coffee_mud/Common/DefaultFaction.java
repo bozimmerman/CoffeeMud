@@ -1,4 +1,5 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Common;
+import com.planet_ink.coffee_mud.core.database.DBInterface;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -32,8 +33,12 @@ import java.lang.reflect.*;
  * <p>limitations under the License.
  */
 
-public class Faction implements MsgListener
+public class DefaultFaction implements Faction, MsgListener
 {
+    public String ID(){return "DefaultFaction";}
+    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultFaction();}}
+    public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
+    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public String ID="";
     public String name="";
     public String choiceIntro="";
@@ -58,35 +63,52 @@ public class Faction implements MsgListener
     public Vector abilityUsages=new Vector();
     public Vector choices=new Vector();
 
-    public final static int ALIGN_INDIFF=0;
-    public final static int ALIGN_EVIL=1;
-    public final static int ALIGN_NEUTRAL=2;
-    public final static int ALIGN_GOOD=3;
-    public final static String[] ALIGN_NAMES={"","EVIL","NEUTRAL","GOOD"};
-    public final static String[] EXPAFFECT_NAMES={"NONE","EXTREME","HIGHER","LOWER","FOLLOWHIGHER","FOLLOWLOWER"};
-    public final static int TAG_NAME=0;
-    public final static int TAG_MINIMUM=1;
-    public final static int TAG_MAXIMUM=2;
-    public final static int TAG_SCOREDISPLAY=3;
-    public final static int TAG_SPECIALREPORTED=4;
-    public final static int TAG_EDITALONE=5;
-    public final static int TAG_DEFAULT=6;
-    public final static int TAG_AUTODEFAULTS=7;
-    public final static int TAG_AUTOCHOICES=8;
-    public final static int TAG_CHOICEINTRO=9;
-    public final static int TAG_RATEMODIFIER=10;
-    public final static int TAG_EXPERIENCE=11;
-    public final static int TAG_RANGE_=12;
-    public final static int TAG_CHANGE_=13;
-    public final static int TAG_ABILITY_=14;
-    public final static int TAG_FACTOR_=15;
-    public final static int TAG_RELATION_=16;
-    public final static int TAG_SHOWINFACTIONSCMD=17;
-    public final static String[] ALL_TAGS={"NAME","MINIMUM","MAXIMUM","SCOREDISPLAY","SPECIALREPORTED","EDITALONE","DEFAULT",
-        "AUTODEFAULTS","AUTOCHOICES","CHOICEINTRO","RATEMODIFIER","EXPERIENCE","RANGE*","CHANGE*","ABILITY*","FACTOR*","RELATION*",
-        "SHOWINFACTIONSCMD"};
 
-    public Faction(String aname)
+    public String factionID(){return ID;}
+    public String name(){return name;}
+    public String choiceIntro(){return choiceIntro;}
+    public int minimum(){return minimum;}
+    public int middle(){return middle;}
+    public int difference(){return difference;}
+    public int maximum(){return maximum;}
+    public int highest(){return highest;}
+    public int lowest(){return lowest;}
+    public String experienceFlag(){return experienceFlag;}
+    public boolean showinscore(){return showinscore;}
+    public boolean showinspecialreported(){return showinspecialreported;}
+    public boolean showineditor(){return showineditor;}
+    public boolean showinfactionscommand(){return showinfactionscommand;}
+    public Vector ranges(){return ranges;}
+    public Vector defaults(){return defaults;}
+    public Vector autoDefaults(){return autoDefaults;}
+    public double rateModifier(){return rateModifier;}
+    public Hashtable Changes(){return  Changes;}
+    public Vector factors(){return  factors;}
+    public Hashtable relations(){return  relations;}
+    public Vector abilityUsages(){return  abilityUsages;}
+    public Vector choices(){return  choices;}
+    
+    public void setFactionID(String newStr){ID=newStr;}
+    public void setName(String newStr){name=newStr;}
+    public void setChoiceIntro(String newStr){choiceIntro=newStr;}
+    public void setMinimum(int newVal){minimum=newVal;}
+    public void setMiddle(int newVal){middle=newVal;}
+    public void setDifference(int newVal){difference=newVal;}
+    public void setMaximum(int newVal){maximum=newVal;}
+    public void setHighest(int newVal){highest=newVal;}
+    public void setLowest(int newVal){lowest=newVal;}
+    public void setExperienceFlag(String newStr){experienceFlag=newStr;}
+    public void setShowinscore(boolean truefalse){showinscore=truefalse;}
+    public void setShowinspecialreported(boolean truefalse){showinspecialreported=truefalse;}
+    public void setShowineditor(boolean truefalse){showineditor=truefalse;}
+    public void setShowinfactionscommand(boolean truefalse){showinfactionscommand=truefalse;}
+    public void setChoices(Vector v){choices=v;}
+    public void setAutoDefaults(Vector v){autoDefaults=v;}
+    public void setDefaults(Vector v){defaults=v;}
+    public void setRateModifier(double d){rateModifier=d;}
+    
+    public DefaultFaction(){super();}
+    public void initializeFaction(String aname)
     {
         ID=aname;
         name=aname;
@@ -97,11 +119,11 @@ public class Faction implements MsgListener
         lowest=0;
         difference=Util.abs(maximum-minimum);
         experienceFlag="EXTREME";
-        ranges.addElement(new Faction.FactionRange(this,"0;100;Sample Range;SAMPLE;"));
+        ranges.addElement(newRange("0;100;Sample Range;SAMPLE;"));
         defaults.addElement("0");
     }
 
-    public Faction(StringBuffer file, String fID) 
+    public void initializeFaction(StringBuffer file, String fID)
     {
         boolean debug = false;
         
@@ -145,15 +167,15 @@ public class Faction implements MsgListener
             if(debug) Log.sysOut("FACTIONS","  Words Found   :"+words);
             if(key.startsWith("RANGE"))
             {
-                FactionRange R=new FactionRange(this,words);
+                FactionRange R=newRange(words);
                 ranges.add(R);
-                if(R.low<lowest) lowest=R.low;
-                if(R.high>highest) highest=R.high;
+                if(R.low()<lowest) lowest=R.low();
+                if(R.high()>highest) highest=R.high();
             }
             if(key.startsWith("CHANGE"))
             {
-                FactionChangeEvent C=new FactionChangeEvent(words);
-                Changes.put(C.ID.toUpperCase(),C);
+                FactionChangeEvent C=newChangeEvent(words);
+                Changes.put(C.eventID().toUpperCase(),C);
             }
             if(key.startsWith("FACTOR"))
             {
@@ -177,26 +199,16 @@ public class Faction implements MsgListener
             }
             if(key.startsWith("ABILITY"))
             {
-                FactionAbilityUsage A=new FactionAbilityUsage(words);
+                FactionAbilityUsage A=newAbilityUsage(words);
                 abilityUsages.add(A);
             }
         }
     }
 
-    public static int isTag(String tag)
-    {
-        for(int i=0;i<ALL_TAGS.length;i++)
-            if(tag.equalsIgnoreCase(ALL_TAGS[i]))
-                return i;
-            else
-            if(ALL_TAGS[i].endsWith("*")&&tag.startsWith(ALL_TAGS[i].substring(0,ALL_TAGS[i].length()-1)))
-                return i;
-        return -1;
-    }
     
     public String getTagValue(String tag)
     {
-        int tagRef=isTag(tag);
+        int tagRef=CMLib.factions().isFactionTag(tag);
         if(tagRef<0) return "";
         int numCall=-1;
         if((tagRef<ALL_TAGS.length)&&(ALL_TAGS[tagRef].endsWith("*")))
@@ -270,7 +282,7 @@ public class Faction implements MsgListener
     
     public String getINIDef(String tag, String delimeter)
     {
-        int tagRef=isTag(tag);
+        int tagRef=CMLib.factions().isFactionTag(tag);
         if(tagRef<0)
             return "";
         String rawTagName=ALL_TAGS[tagRef];
@@ -331,11 +343,11 @@ public class Faction implements MsgListener
         for (Enumeration e=Changes.elements();e.hasMoreElements();) 
         {
             C= (FactionChangeEvent)e.nextElement();
-            if((key.classificationCode()&Ability.ALL_CODES)==C.IDclassFilter)
+            if((key.classificationCode()&Ability.ALL_CODES)==C.IDclassFilter())
                 return C;
-            if((key.classificationCode()&Ability.ALL_DOMAINS)==C.IDdomainFilter)
+            if((key.classificationCode()&Ability.ALL_DOMAINS)==C.IDdomainFilter())
                 return C;
-            if((C.IDflagFilter>0)&&(Util.bset(key.flags(),C.IDflagFilter))) 
+            if((C.IDflagFilter()>0)&&(Util.bset(key.flags(),C.IDflagFilter()))) 
                 return C;
         }
         return null;
@@ -353,7 +365,7 @@ public class Faction implements MsgListener
             for (int i = 0; i < ranges.size(); i++) 
             {
                 FactionRange R = (FactionRange) ranges.elementAt(i);
-                if ( (faction >= R.low) && (faction <= R.high))
+                if ( (faction >= R.low()) && (faction <= R.high()))
                     return R;
             }
         }
@@ -366,8 +378,8 @@ public class Faction implements MsgListener
             for (int i = 0; i < ranges.size(); i++) 
             {
                 FactionRange R = (FactionRange) ranges.elementAt(i);
-                if ( (faction >= R.low) && (faction <= R.high))
-                    return R.Name;
+                if ( (faction >= R.low()) && (faction <= R.high()))
+                    return R.name();
             }
         }
         return "";
@@ -452,11 +464,11 @@ public class Faction implements MsgListener
         for(int i=0;i<abilityUsages.size();i++) 
         {
             usage=(FactionAbilityUsage)abilityUsages.elementAt(i);
-            if((usage.possibleAbilityID&&usage.ID.equalsIgnoreCase(A.ID()))
-            ||(((usage.type<0)||((A.classificationCode()&Ability.ALL_CODES)==usage.type))
-                &&((usage.flag<0)||(Util.bset(A.flags(),usage.flag)))
-                &&((usage.notflag<0)||(!Util.bset(A.flags(),usage.notflag)))
-                &&((usage.domain<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain))))
+            if((usage.possibleAbilityID()&&usage.usageID().equalsIgnoreCase(A.ID()))
+            ||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_CODES)==usage.type()))
+                &&((usage.flag()<0)||(Util.bset(A.flags(),usage.flag())))
+                &&((usage.notflag()<0)||(!Util.bset(A.flags(),usage.notflag())))
+                &&((usage.domain()<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain()))))
                 return true;
         }
         return false;
@@ -468,14 +480,14 @@ public class Faction implements MsgListener
         for(int i=0;i<abilityUsages.size();i++) 
         {
             usage=(FactionAbilityUsage)abilityUsages.elementAt(i);
-            if((usage.possibleAbilityID&&usage.ID.equalsIgnoreCase(A.ID()))
-            ||(((usage.type<0)||((A.classificationCode()&Ability.ALL_CODES)==usage.type))
-                &&((usage.flag<0)||(Util.bset(A.flags(),usage.flag)))
-                &&((usage.notflag<0)||(!Util.bset(A.flags(),usage.notflag)))
-                &&((usage.domain<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain))))
+            if((usage.possibleAbilityID()&&usage.usageID().equalsIgnoreCase(A.ID()))
+            ||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_CODES)==usage.type()))
+                &&((usage.flag()<0)||(Util.bset(A.flags(),usage.flag())))
+                &&((usage.notflag()<0)||(!Util.bset(A.flags(),usage.notflag())))
+                &&((usage.domain()<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain()))))
             {
                 int faction=mob.fetchFaction(ID);
-                if((faction < usage.low) || (faction > usage.high)) 
+                if((faction < usage.low()) || (faction > usage.high())) 
                     return false;
             }
         }
@@ -570,7 +582,7 @@ public class Faction implements MsgListener
     {
         int sourceFaction= source.fetchFaction(ID);
         int targetFaction = sourceFaction * -1;
-        if((source==target)&&(!event.selfTargetOK)&&(!event.ID.equalsIgnoreCase("TIME")))
+        if((source==target)&&(!event.selfTargetOK())&&(!event.eventID().equalsIgnoreCase("TIME")))
             return;
         
         if(target!=null)
@@ -578,14 +590,14 @@ public class Faction implements MsgListener
             if(hasFaction(target))
 	            targetFaction=target.fetchFaction(ID);
             else
-            if(!event.outsiderTargetOK)
+            if(!event.outsiderTargetOK())
                 return;
         }
         else 
             target = source;
         
         double baseChangeAmount=100.0;
-        if((source!=target)&&(target!=null)&&(!event.just100))
+        if((source!=target)&&(target!=null)&&(!event.just100()))
         {
 	        int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
 	        int levelDiff=target.envStats().level()-source.envStats().level();
@@ -604,7 +616,7 @@ public class Faction implements MsgListener
 
         int factionAdj=1;
         int changeDir=0;
-        switch(event.direction) 
+        switch(event.direction()) 
         {
         case FactionChangeEvent.FACTION_MAXIMUM:
             factionAdj=maximum-sourceFaction;
@@ -656,17 +668,17 @@ public class Faction implements MsgListener
             
 	        // Pardon the completely random seeming 1.42 and 150.
 	        // They're the result of making graphs of scenarios and massaging the formula, nothing more or less.
-	        if((hasFaction(target))||(event.outsiderTargetOK))
+	        if((hasFaction(target))||(event.outsiderTargetOK()))
 	            factionAdj=changeDir*(int)Math.round(rateModifier*baseChangeAmount);
 	        else
 	            factionAdj=0;
-	        factionAdj*=event.factor;
+	        factionAdj*=event.factor();
 	        factionAdj=(int)Math.round(Util.mul(factionAdj,findFactor(source,(factionAdj>=0))));
         }
 
 		if(factionAdj==0) return;
 		
-        FullMsg FacMsg=new FullMsg(source,target,null,CMMsg.MASK_GENERAL|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,ID);
+        CMMsg FacMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_GENERAL|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,ID);
         FacMsg.setValue(factionAdj);
         if(source.location()!=null)
         {
@@ -681,7 +693,7 @@ public class Faction implements MsgListener
 	                for(Enumeration e=relations.keys();e.hasMoreElements();) 
 	                {
 	                    String relID=((String)e.nextElement());
-	                    FacMsg=new FullMsg(source,target,null,CMMsg.MASK_GENERAL|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,relID);
+	                    FacMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_GENERAL|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,relID);
 	                    FacMsg.setValue((int)Math.round(Util.mul(factionAdj, ((Double)relations.get(relID)).doubleValue())));
 	                    if(source.location().okMessage(source,FacMsg))
 	                        source.location().send(source, FacMsg);
@@ -704,22 +716,22 @@ public class Faction implements MsgListener
          for(int i=0;i<abilityUsages.size();i++) 
          {
              usage=(FactionAbilityUsage)abilityUsages.elementAt(i);
-             if((usage.possibleAbilityID&&usage.ID.equalsIgnoreCase(A.ID()))
-             ||(((usage.type<0)||((A.classificationCode()&Ability.ALL_CODES)==usage.type))
-                 &&((usage.flag<0)||(Util.bset(A.flags(),usage.flag)))
-                 &&((usage.notflag<0)||(!Util.bset(A.flags(),usage.notflag)))
-                 &&((usage.domain<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain))))
+             if((usage.possibleAbilityID()&&usage.usageID().equalsIgnoreCase(A.ID()))
+             ||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_CODES)==usage.type()))
+                 &&((usage.flag()<0)||(Util.bset(A.flags(),usage.flag())))
+                 &&((usage.notflag()<0)||(!Util.bset(A.flags(),usage.notflag())))
+                 &&((usage.domain()<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain()))))
              {
                 for(int r=0;r<ranges.size();r++)
                 { 
                      FactionRange R=(FactionRange)ranges.elementAt(r);
-                     if((((R.high<=usage.high)&&(R.high>=usage.low))
-                         ||((R.low>=usage.low))&&(R.low<=usage.high))
-                     &&(!namesAdded.contains(R.Name)))
+                     if((((R.high()<=usage.high())&&(R.high()>=usage.low()))
+                         ||((R.low()>=usage.low()))&&(R.low()<=usage.high()))
+                     &&(!namesAdded.contains(R.name())))
                      {
-                         namesAdded.add(R.Name);
+                         namesAdded.add(R.name());
                          if(rangeStr.length()>0) rangeStr.append(", "); 
-                         rangeStr.append(R.Name); 
+                         rangeStr.append(R.name()); 
                      }
                 }
              }
@@ -727,8 +739,27 @@ public class Faction implements MsgListener
          return rangeStr.toString(); 
     }
 	 
-    public static class FactionChangeEvent 
-    {
+     private static String _ALL_TYPES=null;
+     public String ALL_CHANGE_EVENT_TYPES()
+     {
+         StringBuffer ALL_TYPES=new StringBuffer("");
+         if(_ALL_TYPES!=null) return _ALL_TYPES;
+         for(int i=0;i<Faction.FactionChangeEvent.MISC_TRIGGERS.length;i++) 
+             ALL_TYPES.append(Faction.FactionChangeEvent.MISC_TRIGGERS[i]+", ");
+         for(int i=0;i<Ability.TYPE_DESCS.length;i++) 
+             ALL_TYPES.append(Ability.TYPE_DESCS[i]+", ");
+         for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
+             ALL_TYPES.append(Ability.DOMAIN_DESCS[i]+", ");
+         for(int i=0;i<Ability.FLAG_DESCS.length;i++) 
+             ALL_TYPES.append(Ability.FLAG_DESCS[i]+", ");
+         _ALL_TYPES=ALL_TYPES.toString()+" a valid Skill, Spell, Chant, etc. ID.";
+         return _ALL_TYPES;
+     }
+     
+     public Faction.FactionChangeEvent newChangeEvent(String key){return new DefaultFaction.DefaultFactionChangeEvent(key);}
+     public Faction.FactionChangeEvent newChangeEvent(){return new DefaultFaction.DefaultFactionChangeEvent();}
+     public static class DefaultFactionChangeEvent implements Faction.FactionChangeEvent
+     {
         public String ID="";
         public String flagCache="";
         public int IDclassFilter=-1;
@@ -740,6 +771,29 @@ public class Faction implements MsgListener
         public boolean outsiderTargetOK=false;
         public boolean selfTargetOK=false;
         public boolean just100=false;
+        
+        public String eventID(){return ID;}
+        public String flagCache(){return flagCache;}
+        public int IDclassFilter(){return IDclassFilter;}
+        public int IDflagFilter(){return IDflagFilter;}
+        public int IDdomainFilter(){return IDdomainFilter;}
+        public int direction(){return direction;}
+        public double factor(){return factor;}
+        public String zapper(){return zapper;}
+        public boolean outsiderTargetOK(){return outsiderTargetOK;}
+        public boolean selfTargetOK(){return selfTargetOK;}
+        public boolean just100(){return just100;}
+        public void setEventID(String newVal){ID=newVal;}
+        public void setFlagCache(String newVal){flagCache=newVal;}
+        public void setIDclassFilter(int newVal){IDclassFilter=newVal;}
+        public void setIDflagFilter(int newVal){IDflagFilter=newVal;}
+        public void setIDdomainFilter(int newVal){IDdomainFilter=newVal;}
+        public void setDirection(int newVal){direction=newVal;}
+        public void setFactor(double newVal){factor=newVal;}
+        public void setZapper(String newVal){zapper=newVal;}
+        public void setOutsiderTargetOK(boolean newVal){outsiderTargetOK=newVal;}
+        public void setSelfTargetOK(boolean newVal){selfTargetOK=newVal;}
+        public void setJust100(boolean newVal){just100=newVal;}
 
         public static final int FACTION_UP = 0;
         public static final int FACTION_DOWN = 1;
@@ -773,9 +827,9 @@ public class Faction implements MsgListener
             return ID+";"+FACTION_DIRECTIONS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+zapper;
         }
 
-        public FactionChangeEvent(){}
+        public DefaultFactionChangeEvent(){}
         
-        public FactionChangeEvent(String key) 
+        public DefaultFactionChangeEvent(String key) 
         {
             Vector v = Util.parseSemicolons(key,false);
             setFilterID((String)v.elementAt(0));
@@ -792,22 +846,6 @@ public class Faction implements MsgListener
                 zapper = (String)v.elementAt(4);
         }
         
-        private static String _ALL_TYPES=null;
-        public static String ALL_TYPES()
-        {
-            StringBuffer ALL_TYPES=new StringBuffer("");
-            if(_ALL_TYPES!=null) return _ALL_TYPES;
-            for(int i=0;i<MISC_TRIGGERS.length;i++) 
-                ALL_TYPES.append(MISC_TRIGGERS[i]+", ");
-            for(int i=0;i<Ability.TYPE_DESCS.length;i++) 
-                ALL_TYPES.append(Ability.TYPE_DESCS[i]+", ");
-            for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
-                ALL_TYPES.append(Ability.DOMAIN_DESCS[i]+", ");
-            for(int i=0;i<Ability.FLAG_DESCS.length;i++) 
-                ALL_TYPES.append(Ability.FLAG_DESCS[i]+", ");
-            _ALL_TYPES=ALL_TYPES.toString()+" a valid Skill, Spell, Chant, etc. ID.";
-            return _ALL_TYPES;
-        }
         public boolean setFilterID(String newID)
         {
             for(int i=0;i<MISC_TRIGGERS.length;i++) 
@@ -882,21 +920,9 @@ public class Faction implements MsgListener
         }
     }
 
-    public static int getAlignEquiv(String str)
-    {
-        if(str.equalsIgnoreCase(ALIGN_NAMES[Faction.ALIGN_GOOD])) 
-            return Faction.ALIGN_GOOD;
-        else 
-        if(str.equalsIgnoreCase(ALIGN_NAMES[Faction.ALIGN_NEUTRAL])) 
-            return Faction.ALIGN_NEUTRAL;
-        else 
-        if(str.equalsIgnoreCase(ALIGN_NAMES[Faction.ALIGN_EVIL])) 
-            return  Faction.ALIGN_EVIL;
-        else 
-            return  Faction.ALIGN_INDIFF;
-    }
     
-    public static class FactionRange 
+    public Faction.FactionRange newRange(String key){return new DefaultFaction.DefaultFactionRange(this,key);}
+    public static class DefaultFactionRange implements Faction.FactionRange
     {
         public String ID="";
         public int low;
@@ -906,7 +932,22 @@ public class Faction implements MsgListener
         public int AlignEquiv;
         public Faction myFaction=null;
 
-        public FactionRange(Faction F, String key) 
+        public String rangeID(){return ID;}
+        public int low(){return low;}
+        public int high(){return high;}
+        public String name(){return Name;}
+        public String codeName(){return CodeName;}
+        public int alignEquiv(){return AlignEquiv;}
+        public Faction myFaction(){return myFaction;}
+        
+        public void setRangeID(String newVal){ID=newVal;}
+        public void setLow(int newVal){low=newVal;}
+        public void setHigh(int newVal){high=newVal;}
+        public void setName(String newVal){Name=newVal;}
+        public void setCodeName(String newVal){CodeName=newVal;}
+        public void setAlignEquiv(int newVal){AlignEquiv=newVal;}
+        
+        public DefaultFactionRange(Faction F, String key) 
         {
             myFaction=F;
             Vector v = Util.parseSemicolons(key,false);
@@ -916,7 +957,7 @@ public class Faction implements MsgListener
             if(v.size()>3)
                 CodeName=(String)v.elementAt(3);
             if(v.size()>4) 
-                AlignEquiv = getAlignEquiv((String)v.elementAt(4));
+                AlignEquiv = CMLib.factions().getAlignEquiv((String)v.elementAt(4));
             else
                 AlignEquiv = Faction.ALIGN_INDIFF;
         }
@@ -932,7 +973,9 @@ public class Faction implements MsgListener
         }
     }
 
-    public static class FactionAbilityUsage 
+    public Faction.FactionAbilityUsage newAbilityUsage(String key){return new DefaultFaction.DefaultFactionAbilityUsage(key);}
+    public Faction.FactionAbilityUsage newAbilityUsage(){return new DefaultFaction.DefaultFactionAbilityUsage();}
+    public static class DefaultFactionAbilityUsage implements Faction.FactionAbilityUsage
     {
         public String ID="";
         public boolean possibleAbilityID=false;
@@ -943,8 +986,25 @@ public class Faction implements MsgListener
         public int high=0;
         public int notflag=-1;
 
-        public FactionAbilityUsage(){} 
-        public FactionAbilityUsage(String key) 
+        public String usageID(){return ID;}
+        public boolean possibleAbilityID(){return possibleAbilityID;}
+        public int type(){return type;}
+        public int domain(){return domain;}
+        public int flag(){return flag;}
+        public int low(){return low;}
+        public int high(){return high;}
+        public int notflag(){return notflag;}
+        public void setUsageID(String newVal){ID=newVal;}
+        public void setPossibleAbilityID(boolean truefalse){possibleAbilityID=truefalse;}
+        public void setType(int newVal){type=newVal;}
+        public void setDomain(int newVal){domain=newVal;}
+        public void setFlag(int newVal){flag=newVal;}
+        public void setLow(int newVal){low=newVal;}
+        public void setHigh(int newVal){high=newVal;}
+        public void setNotflag(int newVal){notflag=newVal;}
+        
+        public DefaultFactionAbilityUsage(){} 
+        public DefaultFactionAbilityUsage(String key) 
         {
             Vector v = Util.parseSemicolons(key,false);
             setAbilityFlag((String)v.firstElement());

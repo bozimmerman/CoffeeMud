@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core.interfaces;
+package com.planet_ink.coffee_mud.Common.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.Vector;
 
 /* 
@@ -105,4 +106,5 @@ public interface Quest extends Tickable
 	public int ticksRemaining();
 	public int minsRemaining();
 	public int waitRemaining();
+    
 }

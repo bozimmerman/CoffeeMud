@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -32,11 +33,11 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CommonMsgs
+public class CommonMsgs extends StdLibrary implements CommonCommands
 {
-	private CommonMsgs(){};
+    public String ID(){return "CommonMsgs";}
 
-	public static boolean doStandardCommand(MOB mob, String command, Vector parms)
+	public boolean doStandardCommand(MOB mob, String command, Vector parms)
 	{
 		try
 		{
@@ -51,7 +52,7 @@ public class CommonMsgs
 		return false;
 	}
 
-	public static StringBuffer getScore(MOB mob)
+	public StringBuffer getScore(MOB mob)
 	{
 		Vector V=new Vector();
 		doStandardCommand(mob,"Score",V);
@@ -59,7 +60,7 @@ public class CommonMsgs
 			return (StringBuffer)V.firstElement();
 		return new StringBuffer("");
 	}
-	public static StringBuffer getEquipment(MOB viewer, MOB mob)
+	public StringBuffer getEquipment(MOB viewer, MOB mob)
 	{
 		Vector V=new Vector();
 		V.addElement(viewer);
@@ -68,7 +69,7 @@ public class CommonMsgs
 			return (StringBuffer)V.elementAt(1);
 		return new StringBuffer("");
 	}
-	public static StringBuffer getInventory(MOB viewer, MOB mob)
+	public StringBuffer getInventory(MOB viewer, MOB mob)
 	{
 		Vector V=new Vector();
 		V.addElement(viewer);
@@ -78,7 +79,7 @@ public class CommonMsgs
 		return new StringBuffer("");
 	}
 	
-	public static void channel(MOB mob, 
+	public void channel(MOB mob, 
 							   String channelName, 
 							   String message, 
 							   boolean systemMsg)
@@ -87,14 +88,14 @@ public class CommonMsgs
 						  Util.makeVector(new Boolean(systemMsg),channelName,message));
 	}
 	
-	public static void channel(String channelName, 
+	public void channel(String channelName, 
 							   String clanID, 
 							   String message, 
 							   boolean systemMsg)
 	{
         MOB talker=CMClass.getMOB("StdMOB");
 		talker.setName("^?");
-		talker.setLocation(CMMap.getRandomRoom());
+		talker.setLocation(CMLib.map().getRandomRoom());
 		talker.baseEnvStats().setDisposition(EnvStats.IS_GOLEM);
         talker.envStats().setDisposition(EnvStats.IS_GOLEM);
 		talker.setClanID(clanID);
@@ -102,25 +103,25 @@ public class CommonMsgs
         talker.destroy();
 	}
 
-	public static boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimized)
+	public boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimized)
 	{
 		return doStandardCommand(mob,"Drop",Util.makeVector(dropThis,new Boolean(quiet),new Boolean(optimized)));
 	}
-	public static boolean get(MOB mob, Item container, Item getThis, boolean quiet)
+	public boolean get(MOB mob, Item container, Item getThis, boolean quiet)
 	{
 		if(container==null)
 			return doStandardCommand(mob,"Get",Util.makeVector(getThis,new Boolean(quiet)));
 		return doStandardCommand(mob,"Get",Util.makeVector(getThis,container,new Boolean(quiet)));
 	}
 	
-	public static boolean remove(MOB mob, Item item, boolean quiet)
+	public boolean remove(MOB mob, Item item, boolean quiet)
 	{
 		if(quiet)
 			return doStandardCommand(mob,"Remove",Util.makeVector("REMOVE",item,"QUIETLY"));
 		return doStandardCommand(mob,"Remove",Util.makeVector("REMOVE",item));
 	}
 	
-	public static void look(MOB mob, boolean quiet)
+	public void look(MOB mob, boolean quiet)
 	{
 		if(quiet)
 			doStandardCommand(mob,"Look",Util.makeVector("LOOK","UNOBTRUSIVELY"));
@@ -128,12 +129,12 @@ public class CommonMsgs
 			doStandardCommand(mob,"Look",Util.makeVector("LOOK"));
 	}
 
-	public static void flee(MOB mob, String whereTo)
+	public void flee(MOB mob, String whereTo)
 	{
 		doStandardCommand(mob,"Flee",Util.makeVector("FLEE",whereTo));
 	}
 
-	public static void sheath(MOB mob, boolean ifPossible)
+	public void sheath(MOB mob, boolean ifPossible)
 	{
 		if(ifPossible)
 			doStandardCommand(mob,"Sheath",Util.makeVector("SHEATH","IFPOSSIBLE"));
@@ -141,7 +142,7 @@ public class CommonMsgs
 			doStandardCommand(mob,"Sheath",Util.makeVector("SHEATH"));
 	}
 	
-	public static void draw(MOB mob, boolean doHold, boolean ifNecessary)
+	public void draw(MOB mob, boolean doHold, boolean ifNecessary)
 	{
 		if(ifNecessary)
 		{
@@ -154,7 +155,7 @@ public class CommonMsgs
 			doStandardCommand(mob,"Draw",Util.makeVector("DRAW"));
 	}
 	
-	public static void stand(MOB mob, boolean ifNecessary)
+	public void stand(MOB mob, boolean ifNecessary)
 	{
 		if(ifNecessary)
 			doStandardCommand(mob,"Stand",Util.makeVector("STAND","IFNECESSARY"));
@@ -162,7 +163,7 @@ public class CommonMsgs
 			doStandardCommand(mob,"Stand",Util.makeVector("STAND"));
 	}
 
-	public static void follow(MOB follower, MOB leader, boolean quiet)
+	public void follow(MOB follower, MOB leader, boolean quiet)
 	{
 		if(leader!=null)
 		{
@@ -180,7 +181,7 @@ public class CommonMsgs
 		}
 	}
 
-	public static void say(MOB mob,
+	public void say(MOB mob,
 						   MOB target,
 						   String text,
 						   boolean isPrivate,
@@ -208,7 +209,7 @@ public class CommonMsgs
 				else
 				{
 					boolean ignore=((target.playerStats()!=null)&&(target.playerStats().getIgnored().contains(mob.Name())));
-					FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_TELL,"^t^<TELL \""+target.name()+"\"^>You tell "+target.name()+" '"+text+"'^</TELL^>^?^.",CMMsg.MSG_TELL,"^t^<TELL \""+mob.Name()+"\"^>"+mob.Name()+" tell(s) you '"+text+"'^</TELL^>^?^.",CMMsg.NO_EFFECT,null);
+					CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_TELL,"^t^<TELL \""+target.name()+"\"^>You tell "+target.name()+" '"+text+"'^</TELL^>^?^.",CMMsg.MSG_TELL,"^t^<TELL \""+mob.Name()+"\"^>"+mob.Name()+" tell(s) you '"+text+"'^</TELL^>^?^.",CMMsg.NO_EFFECT,null);
 					if((mob.location().okMessage(mob,msg))
 					&&((ignore)||(target.okMessage(target,msg))))
 					{
@@ -242,7 +243,7 @@ public class CommonMsgs
 			}
 			else
 			{
-				FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+((target==null)?mob.name():target.name())+"\"^><S-NAME> say(s) '"+text+"'"+((target==null)?"^</SAY^>":" to <T-NAMESELF>.^</SAY^>^?"),CMMsg.MSG_SPEAK,"^T^<SAY \""+mob.name()+"\"^><S-NAME> say(s) '"+text+"'"+((target==null)?"^</SAY^>":" to <T-NAMESELF>.^</SAY^>^?"),CMMsg.NO_EFFECT,null);
+				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+((target==null)?mob.name():target.name())+"\"^><S-NAME> say(s) '"+text+"'"+((target==null)?"^</SAY^>":" to <T-NAMESELF>.^</SAY^>^?"),CMMsg.MSG_SPEAK,"^T^<SAY \""+mob.name()+"\"^><S-NAME> say(s) '"+text+"'"+((target==null)?"^</SAY^>":" to <T-NAMESELF>.^</SAY^>^?"),CMMsg.NO_EFFECT,null);
 				if(location.okMessage(mob,msg))
 					location.send(mob,msg);
 			}
@@ -251,7 +252,7 @@ public class CommonMsgs
 		if(!isPrivate)
 		{
 		    String str="<S-NAME> say(s) '"+text+"'"+((target==null)?"^</SAY^>":" to <T-NAMESELF>.^</SAY^>^?");
-			FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+((target==null)?mob.name():target.name())+"\"^>"+str,"^T^<SAY \""+mob.name()+"\"^>"+str,"^T^<SAY \""+mob.name()+"\"^>"+str);
+			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+((target==null)?mob.name():target.name())+"\"^>"+str,"^T^<SAY \""+mob.name()+"\"^>"+str,"^T^<SAY \""+mob.name()+"\"^>"+str);
 			if(location.okMessage(mob,msg))
 				location.send(mob,msg);
 		}

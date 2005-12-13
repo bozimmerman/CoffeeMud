@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -33,11 +34,10 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class MUDHelp
+public class MUDHelp extends StdLibrary implements HelpLibrary
 {
-	private MUDHelp(){};
-
-    public static StringBuffer getHelpText(String helpStr, MOB forMOB, boolean favorAHelp)
+    public String ID(){return "MUDHelp";}
+    public StringBuffer getHelpText(String helpStr, MOB forMOB, boolean favorAHelp)
     {
         if(helpStr.length()==0) return null;
         StringBuffer thisTag=null;
@@ -64,7 +64,7 @@ public class MUDHelp
         return thisTag;
     }
 
-	public static Vector getTopics(boolean archonHelp, boolean standardHelp)
+	public Vector getTopics(boolean archonHelp, boolean standardHelp)
 	{
         Vector reverseList=new Vector();
 		Properties rHelpFile=null;
@@ -100,7 +100,7 @@ public class MUDHelp
 		return reverseList;
 	}
 	
-	private static String getActualUsage(Ability A, int which, MOB forMOB)
+	public String getActualUsage(Ability A, int which, MOB forMOB)
 	{
         boolean destroymob=false;
 		if(forMOB==null)
@@ -125,7 +125,7 @@ public class MUDHelp
 		return ""+whichConsumed;
 	}
 
-	public static String fixHelp(String tag, String str, MOB forMOB)
+	public String fixHelp(String tag, String str, MOB forMOB)
 	{
 		if(str.startsWith("<ABILITY>"))
 		{
@@ -212,11 +212,11 @@ public class MUDHelp
 					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 					{
 						CharClass C=(CharClass)c.nextElement();
-						int lvl=CMAble.getQualifyingLevel(C.ID(),true,A.ID());
+						int lvl=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID());
 						if((!C.ID().equalsIgnoreCase("Archon"))
 						&&(lvl>=0)
 						&&(C.availabilityCode()!=0)
-						&&(!CMAble.getSecretSkill(C.ID(),true,A.ID())))
+						&&(!CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID())))
 							avail.addElement(C.name(lvl)+"("+lvl+")");
 					}
 					for(int c=0;c<avail.size();c++)
@@ -227,11 +227,11 @@ public class MUDHelp
 					}
 					if(type==Ability.PRAYER)
 					{
-					    for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
+					    for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
 					    {
 					        Faction F=(Faction)e.nextElement();
 					        if(F.usageFactors(A).length()>0)
-					            prepend.append("\n\r"+Util.capitalizeAndLower(F.name)+": "+F.usageFactors(A));
+					            prepend.append("\n\r"+Util.capitalizeAndLower(F.name())+": "+F.usageFactors(A));
 					    }
 					}
 					if(!A.isAutoInvoked())
@@ -335,7 +335,7 @@ public class MUDHelp
 		return str;
 	}
 
-	public static StringBuffer getHelpText(String helpStr, Properties rHelpFile, MOB forMOB)
+	public StringBuffer getHelpText(String helpStr, Properties rHelpFile, MOB forMOB)
 	{
 		helpStr=helpStr.toUpperCase().trim();
 		if(helpStr.indexOf(" ")>=0)
@@ -376,7 +376,7 @@ public class MUDHelp
 		{
 			String ahelpStr=helpStr.replaceAll("_"," ").trim();
 			boolean found=false;
-			for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+			for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 			{
 				Area A=(Area)e.nextElement();
 				if(A.name().equalsIgnoreCase(ahelpStr))
@@ -387,10 +387,10 @@ public class MUDHelp
 				}
 			}
 			if(!found)
-				for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+				for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 				{
 					Area A=(Area)e.nextElement();
-					if(EnglishParser.containsString(A.name(),ahelpStr))
+					if(CMLib.english().containsString(A.name(),ahelpStr))
 					{
 						helpStr=A.name();
 						break;
@@ -398,10 +398,10 @@ public class MUDHelp
 				}
 			if(!found)
 			{
-			    String currency=EnglishParser.matchAnyCurrencySet(ahelpStr);
+			    String currency=CMLib.english().matchAnyCurrencySet(ahelpStr);
 			    if(currency!=null)
 			    {
-			        double denom=EnglishParser.matchAnyDenomination(currency,ahelpStr);
+			        double denom=CMLib.english().matchAnyDenomination(currency,ahelpStr);
 			        if(denom>0.0)
 			        {
 			            Coins C=CMLib.beanCounter().makeCurrency(currency,denom,1);
@@ -427,14 +427,14 @@ public class MUDHelp
 		}
 		// the area exception
 		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
-			if(CMMap.getArea(helpStr.trim())!=null)
-				return CMMap.getArea(helpStr.trim()).getAreaStats();
+			if(CMLib.map().getArea(helpStr.trim())!=null)
+				return CMLib.map().getArea(helpStr.trim()).getAreaStats();
 		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
 			return null;
 		return new StringBuffer(fixHelp(helpStr,thisTag,forMOB));
 	}
 
-	public static StringBuffer getHelpList(String helpStr, 
+	public StringBuffer getHelpList(String helpStr, 
                                 	       Properties rHelpFile1, 
                                 	       Properties rHelpFile2, 
                                 	       MOB forMOB)
@@ -448,7 +448,7 @@ public class MUDHelp
 		{
 			String key=(String)e.nextElement();
             String prop=rHelpFile1.getProperty(key,"");
-			if((key.toUpperCase().indexOf(helpStr)>=0)||(EnglishParser.containsString(prop,helpStr)))
+			if((key.toUpperCase().indexOf(helpStr)>=0)||(CMLib.english().containsString(prop,helpStr)))
 			    matches.addElement(key.toUpperCase());
 		}
 		if(rHelpFile2!=null)
@@ -456,7 +456,7 @@ public class MUDHelp
 		{
             String key=(String)e.nextElement();
             String prop=rHelpFile1.getProperty(key,"");
-            if((key.toUpperCase().indexOf(helpStr)>=0)||(EnglishParser.containsString(prop,helpStr)))
+            if((key.toUpperCase().indexOf(helpStr)>=0)||(CMLib.english().containsString(prop,helpStr)))
 			    matches.addElement(key.toUpperCase());
 		}
 		if(matches.size()==0)
@@ -464,7 +464,7 @@ public class MUDHelp
 		return CMLib.lister().fourColumns(matches);
 	}
 	
-	public static Properties getArcHelpFile()
+	public Properties getArcHelpFile()
 	{
         try
         {
@@ -499,7 +499,7 @@ public class MUDHelp
     						if(y>(x+5))
     						{
     							String word=entry.substring(x+5,y).trim();
-    							entry=entry.substring(0,x)+MUDZapper.zapperInstructions("\n\r",word)+entry.substring(y+1);
+    							entry=entry.substring(0,x)+CMLib.masking().maskHelp("\n\r",word)+entry.substring(y+1);
     							arcHelpFile.remove(key);
     							arcHelpFile.put(key,entry);
     						}
@@ -517,7 +517,7 @@ public class MUDHelp
         return new Properties();
 	}
 
-	public static Properties getHelpFile()
+	public Properties getHelpFile()
 	{
         try
         {
@@ -551,7 +551,7 @@ public class MUDHelp
         return new Properties();
 	}
 	
-	public static void unloadHelpFile(MOB mob)
+	public void unloadHelpFile(MOB mob)
 	{
 		if(Resources.getResource("PLAYER TOPICS")!=null)
 			Resources.removeResource("PLAYER TOPICS");

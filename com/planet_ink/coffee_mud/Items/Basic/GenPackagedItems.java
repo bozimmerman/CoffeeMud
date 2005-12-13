@@ -1,9 +1,21 @@
 package com.planet_ink.coffee_mud.Items.Basic;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -44,7 +56,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
     public boolean packageMe(Item I, int number)
     {
         if(I==null) return false;
-        name=EnglishParser.cleanArticles(I.Name());
+        name=CMLib.english().cleanArticles(I.Name());
         displayText="";
         setDescription("The contents of the package appears as follows:\n\r"+I.description());
         baseEnvStats().setLevel(I.baseEnvStats().level());
@@ -54,8 +66,8 @@ public class GenPackagedItems extends GenItem implements PackagedItems
         setBaseValue(I.baseGoldValue()*number);
         StringBuffer itemstr=new StringBuffer("");
         itemstr.append("<PAKITEM>");
-        itemstr.append(XMLManager.convertXMLtoTag("PICLASS",CMClass.className(I)));
-        itemstr.append(XMLManager.convertXMLtoTag("PIDATA",CoffeeMaker.getPropertiesStr(I,true)));
+        itemstr.append(CMLib.xml().convertXMLtoTag("PICLASS",CMClass.className(I)));
+        itemstr.append(CMLib.xml().convertXMLtoTag("PIDATA",CMLib.coffeeMaker().getPropertiesStr(I,true)));
         itemstr.append("</PAKITEM>");
         setPackageText(itemstr.toString());
         setNumberOfItemsInPackage(number);
@@ -80,27 +92,27 @@ public class GenPackagedItems extends GenItem implements PackagedItems
     public Item getItem()
     {
         if(packageText().length()==0) return null;
-        Vector buf=XMLManager.parseAllXML(packageText());
+        Vector buf=CMLib.xml().parseAllXML(packageText());
         if(buf==null)
         {
             Log.errOut("Packaged","Error parsing 'PAKITEM'.");
             return null;
         }
-        XMLManager.XMLpiece iblk=XMLManager.getPieceFromPieces(buf,"PAKITEM");
+        XMLLibrary.XMLpiece iblk=CMLib.xml().getPieceFromPieces(buf,"PAKITEM");
         if((iblk==null)||(iblk.contents==null))
         {
             Log.errOut("Packaged","Error parsing 'PAKITEM'.");
             return null;
         }
-        String itemi=XMLManager.getValFromPieces(iblk.contents,"PICLASS");
+        String itemi=CMLib.xml().getValFromPieces(iblk.contents,"PICLASS");
         Environmental newOne=CMClass.getItem(itemi);
-        Vector idat=XMLManager.getRealContentsFromPieces(iblk.contents,"PIDATA");
+        Vector idat=CMLib.xml().getRealContentsFromPieces(iblk.contents,"PIDATA");
         if((idat==null)||(newOne==null)||(!(newOne instanceof Item)))
         {
             Log.errOut("Packaged","Error parsing 'PAKITEM' data.");
             return null;
         }
-        CoffeeMaker.setPropertiesStr(newOne,idat,true);
+        CMLib.coffeeMaker().setPropertiesStr(newOne,idat,true);
         return (Item)newOne;
     }
 
@@ -129,10 +141,10 @@ public class GenPackagedItems extends GenItem implements PackagedItems
         recoverEnvStats();
         return V;
     }
-    public String packageText(){ return CoffeeMaker.restoreAngleBrackets(readableText());}
+    public String packageText(){ return CMLib.coffeeMaker().restoreAngleBrackets(readableText());}
     public void setPackageText(String text)
     {
-        setReadableText(CoffeeMaker.parseOutAngleBrackets(text));
-        Sense.setReadable(this,false);
+        setReadableText(CMLib.coffeeMaker().parseOutAngleBrackets(text));
+        CMLib.flags().setReadable(this,false);
     }
 }

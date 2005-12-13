@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.core;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 
 import java.util.*;
@@ -31,11 +32,10 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CoffeeShops implements Cloneable
+public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 {
-    private CoffeeShops(){super();}
-    
-    public static ShopKeeper getShopKeeper(Environmental E)
+    public String ID(){return "CoffeeShops";}
+    public ShopKeeper getShopKeeper(Environmental E)
     {
         if(E==null) return null;
         if(E instanceof ShopKeeper) return (ShopKeeper)E;
@@ -67,7 +67,7 @@ public class CoffeeShops implements Cloneable
         return null;
     }
 
-    public static Vector getAllShopkeepers(Room here, MOB notMOB)
+    public Vector getAllShopkeepers(Room here, MOB notMOB)
     {
         Vector V=new Vector();
         if(here!=null)
@@ -88,7 +88,7 @@ public class CoffeeShops implements Cloneable
                 if((thisMOB!=null)
                 &&(thisMOB!=notMOB)
                 &&(getShopKeeper(thisMOB)!=null)
-                &&((notMOB==null)||(Sense.canBeSeenBy(thisMOB,notMOB))))
+                &&((notMOB==null)||(CMLib.flags().canBeSeenBy(thisMOB,notMOB))))
                     V.addElement(thisMOB);
             }
             for(int i=0;i<here.numItems();i++)
@@ -97,16 +97,16 @@ public class CoffeeShops implements Cloneable
                 if((thisItem!=null)
                 &&(thisItem!=notMOB)
                 &&(getShopKeeper(thisItem)!=null)
-                &&(!Sense.isGettable(thisItem))
+                &&(!CMLib.flags().isGettable(thisItem))
                 &&(thisItem.container()==null)
-                &&((notMOB==null)||(Sense.canBeSeenBy(thisItem,notMOB))))
+                &&((notMOB==null)||(CMLib.flags().canBeSeenBy(thisItem,notMOB))))
                     V.addElement(thisItem);
             }
         }
         return V;
     }
 
-    public static String getViewDescription(Environmental E)
+    public String getViewDescription(Environmental E)
     {
         StringBuffer str=new StringBuffer("");
         if(E==null) return str.toString();
@@ -130,11 +130,11 @@ public class CoffeeShops implements Cloneable
                 for(int l=0;l<Item.wornCodes.length;l++)
                 {
                     int wornCode=1<<l;
-                    if(Sense.wornLocation(wornCode).length()>0)
+                    if(CMLib.flags().wornLocation(wornCode).length()>0)
                     {
                         if(((I.rawProperLocationBitmap()&wornCode)==wornCode))
                         {
-                            str.append(Util.capitalizeAndLower(Sense.wornLocation(wornCode))+" ");
+                            str.append(Util.capitalizeAndLower(CMLib.flags().wornLocation(wornCode))+" ");
                             if(I.rawLogicalAnd())
                                 str.append("and ");
                             else
@@ -153,19 +153,19 @@ public class CoffeeShops implements Cloneable
         return str.toString();
     }
     
-    public static boolean shownInInventory(Environmental product, MOB buyer)
+    public boolean shownInInventory(Environmental product, MOB buyer)
     {
         if(!(product instanceof Item)) return true;
         if(((Item)product).container()!=null) return false;
         if(CMSecurity.isAllowed(buyer,buyer.location(),"CMDMOBS")) return true;
         if(((Item)product).envStats().level()>buyer.envStats().level()) return false;
-        if(!Sense.canBeSeenBy(product,buyer)) return false;
+        if(!CMLib.flags().canBeSeenBy(product,buyer)) return false;
         return true;
     }
     
-    private static double rawSpecificGoldPrice(Environmental product, 
-                                               int whatISell, 
-                                               double numberOfThem)
+    public double rawSpecificGoldPrice(Environmental product, 
+                                        int whatISell, 
+                                        double numberOfThem)
     {
         double price=0.0;
         if(product instanceof Item)
@@ -174,9 +174,9 @@ public class CoffeeShops implements Cloneable
         if(product instanceof Ability)
         {
             if(whatISell==ShopKeeper.DEAL_TRAINER)
-                price=CMAble.lowestQualifyingLevel(product.ID())*100;
+                price=CMLib.ableMapper().lowestQualifyingLevel(product.ID())*100;
             else
-                price=CMAble.lowestQualifyingLevel(product.ID())*75;
+                price=CMLib.ableMapper().lowestQualifyingLevel(product.ID())*75;
         }
         else
         if(product instanceof MOB)
@@ -204,11 +204,11 @@ public class CoffeeShops implements Cloneable
                 price=25.0*product.envStats().level();
         }
         else
-            price=CMAble.lowestQualifyingLevel(product.ID())*25;
+            price=CMLib.ableMapper().lowestQualifyingLevel(product.ID())*25;
         return price;
     }
     
-    private static double prejudiceValueFromPart(MOB customer, boolean sellTo, String part)
+    public double prejudiceValueFromPart(MOB customer, boolean sellTo, String part)
     {
         int x=part.indexOf("=");
         if(x<0) return 0.0;
@@ -224,7 +224,7 @@ public class CoffeeShops implements Cloneable
         double d=0.0;
         boolean yes=false;
         Vector VF=customer.fetchFactionRanges();
-        String align=Sense.getAlignmentName(customer);
+        String align=CMLib.flags().getAlignmentName(customer);
         String sex=customer.charStats().genderName();
         for(int v=0;v<V.size();v++)
         {
@@ -250,7 +250,7 @@ public class CoffeeShops implements Cloneable
 
     }
     
-    private static double prejudiceFactor(MOB customer, String factors, boolean sellTo)
+    public double prejudiceFactor(MOB customer, String factors, boolean sellTo)
     {
         factors=factors.toUpperCase();
         if(factors.length()==0) 
@@ -279,7 +279,7 @@ public class CoffeeShops implements Cloneable
         return 1.0;
     }
 
-    public static ShopKeeper.ShopPrice sellingPrice(MOB seller,
+    public ShopKeeper.ShopPrice sellingPrice(MOB seller,
                                                     MOB buyer,
                                                     Environmental product,
                                                     ShopKeeper shop,
@@ -300,7 +300,7 @@ public class CoffeeShops implements Cloneable
         if(stockPrice>=0)
             val.absoluteGoldPrice=new Integer(stockPrice).doubleValue();
         else
-            val.absoluteGoldPrice=CoffeeShops.rawSpecificGoldPrice(product,shop.whatIsSold(),number);
+            val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop.whatIsSold(),number);
 
         if(buyer==null) 
         {
@@ -309,7 +309,7 @@ public class CoffeeShops implements Cloneable
             return val;
         }
 
-        double prejudiceFactor=CoffeeShops.prejudiceFactor(buyer,shop.prejudiceFactors(),true);
+        double prejudiceFactor=prejudiceFactor(buyer,shop.prejudiceFactors(),true);
         val.absoluteGoldPrice=Util.mul(prejudiceFactor,val.absoluteGoldPrice);
 
         // the price is 200% at 0 charisma, and 100% at 30
@@ -329,7 +329,7 @@ public class CoffeeShops implements Cloneable
     }
 
     
-    private static double devalue(ShopKeeper shop, Environmental product)
+    public double devalue(ShopKeeper shop, Environmental product)
     {
         int num=shop.numberInStock(product);
         if(num<=0) return 0.0;
@@ -358,7 +358,7 @@ public class CoffeeShops implements Cloneable
         return rate;
     }
     
-    public static ShopKeeper.ShopPrice pawningPrice(MOB buyer,
+    public ShopKeeper.ShopPrice pawningPrice(MOB buyer,
                                                     Environmental product,
                                                     ShopKeeper shop)
     {
@@ -377,11 +377,11 @@ public class CoffeeShops implements Cloneable
         if(stockPrice>=0.0)
             val.absoluteGoldPrice=new Integer(stockPrice).doubleValue();
         else
-            val.absoluteGoldPrice=CoffeeShops.rawSpecificGoldPrice(product,shop.whatIsSold(),number);
+            val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop.whatIsSold(),number);
 
         if(buyer==null) return val;
 
-        double prejudiceFactor=CoffeeShops.prejudiceFactor(buyer,shop.prejudiceFactors(),true);
+        double prejudiceFactor=prejudiceFactor(buyer,shop.prejudiceFactors(),true);
         val.absoluteGoldPrice=Util.mul(prejudiceFactor,val.absoluteGoldPrice);
 
         //double halfPrice=Math.round(Util.div(val,2.0));
@@ -406,10 +406,10 @@ public class CoffeeShops implements Cloneable
     }
 
     
-    public static double getSalesTax(Room homeRoom, MOB seller)
+    public double getSalesTax(Room homeRoom, MOB seller)
     {
         if((seller==null)||(homeRoom==null)) return 0.0;
-        Law theLaw=CoffeeUtensils.getTheLaw(homeRoom,seller);
+        Law theLaw=CMLib.utensils().getTheLaw(homeRoom,seller);
         if(theLaw!=null)
         {
             String taxs=(String)theLaw.taxLaws().get("SALESTAX");
@@ -420,7 +420,7 @@ public class CoffeeShops implements Cloneable
         
     }
 
-    public static boolean standardSellEvaluation(MOB seller,
+    public boolean standardSellEvaluation(MOB seller,
                                                  MOB buyer,
                                                  Environmental product,
                                                  ShopKeeper shop,
@@ -451,28 +451,28 @@ public class CoffeeShops implements Cloneable
                     &&((product.envStats().level()>(medianLevel+rangeI))
                         ||(product.envStats().level()<(medianLevel-rangeI))))
                     {
-                        CommonMsgs.say(seller,buyer,"I'm sorry, that's out of my level range.",true,false);
+                        CMLib.commands().say(seller,buyer,"I'm sorry, that's out of my level range.",true,false);
                         return false;
                     }
                 }
             }
-            double yourValue=CoffeeShops.pawningPrice(buyer,product,shop).absoluteGoldPrice;
+            double yourValue=pawningPrice(buyer,product,shop).absoluteGoldPrice;
             if(yourValue<2)
             {
-                CommonMsgs.say(seller,buyer,"I'm not interested.",true,false);
+                CMLib.commands().say(seller,buyer,"I'm not interested.",true,false);
                 return false;
             }
             if((sellNotValue)&&(yourValue>maxToPay))
             {
                 if(yourValue>maxEverPaid)
-                    CommonMsgs.say(seller,buyer,"That's way out of my price range! Try AUCTIONing it.",true,false);
+                    CMLib.commands().say(seller,buyer,"That's way out of my price range! Try AUCTIONing it.",true,false);
                 else
-                    CommonMsgs.say(seller,buyer,"Sorry, I can't afford that right now.  Try back later.",true,false);
+                    CMLib.commands().say(seller,buyer,"Sorry, I can't afford that right now.  Try back later.",true,false);
                 return false;
             }
             if(product instanceof Ability)
             {
-                CommonMsgs.say(seller,buyer,"I'm not interested.",true,false);
+                CMLib.commands().say(seller,buyer,"I'm not interested.",true,false);
                 return false;
             }
             if((product instanceof Container)&&(((Container)product).hasALock()))
@@ -488,22 +488,22 @@ public class CoffeeShops implements Cloneable
                 }
                 if(!found)
                 {
-                    CommonMsgs.say(seller,buyer,"I won't buy that back unless you put the key in it.",true,false);
+                    CMLib.commands().say(seller,buyer,"I won't buy that back unless you put the key in it.",true,false);
                     return false;
                 }
             }
             if((product instanceof Item)&&(buyer.isMine(product)))
             {
-                FullMsg msg2=new FullMsg(buyer,product,CMMsg.MSG_DROP,null);
+                CMMsg msg2=CMClass.getMsg(buyer,product,CMMsg.MSG_DROP,null);
                 if(!buyer.location().okMessage(buyer,msg2))
                     return false;
             }
             return true;
         }
-        CommonMsgs.say(seller,buyer,"I'm sorry, I'm not buying those.",true,false);
+        CMLib.commands().say(seller,buyer,"I'm sorry, I'm not buying those.",true,false);
         return false;
     }
-    public static boolean standardBuyEvaluation(MOB seller,
+    public boolean standardBuyEvaluation(MOB seller,
                                                 MOB buyer,
                                                 Environmental product,
                                                 ShopKeeper shop,
@@ -514,21 +514,21 @@ public class CoffeeShops implements Cloneable
         {
             if(buyNotView)
             {
-                ShopKeeper.ShopPrice price=CoffeeShops.sellingPrice(seller,buyer,product,shop,true);
+                ShopKeeper.ShopPrice price=sellingPrice(seller,buyer,product,shop,true);
                 if((price.experiencePrice>0)&&(price.experiencePrice>buyer.getExperience()))
                 {
-                    CommonMsgs.say(seller,buyer,"You aren't experienced enough to buy "+product.name()+".",false,false);
+                    CMLib.commands().say(seller,buyer,"You aren't experienced enough to buy "+product.name()+".",false,false);
                     return false;
                 }
                 if((price.questPointPrice>0)&&(price.questPointPrice>buyer.getQuestPoint()))
                 {
-                    CommonMsgs.say(seller,buyer,"You don't have enough quest points to buy "+product.name()+".",false,false);
+                    CMLib.commands().say(seller,buyer,"You don't have enough quest points to buy "+product.name()+".",false,false);
                     return false;
                 }
                 if((price.absoluteGoldPrice>0.0)
                 &&(price.absoluteGoldPrice>CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(buyer,seller)))
                 {
-                    CommonMsgs.say(seller,buyer,"You can't afford to buy "+product.name()+".",false,false);
+                    CMLib.commands().say(seller,buyer,"You can't afford to buy "+product.name()+".",false,false);
                     return false;
                 }
             }
@@ -536,7 +536,7 @@ public class CoffeeShops implements Cloneable
             {
                 if(((Item)product).envStats().level()>buyer.envStats().level())
                 {
-                    CommonMsgs.say(seller,buyer,"That's too advanced for you, I'm afraid.",true,false);
+                    CMLib.commands().say(seller,buyer,"That's too advanced for you, I'm afraid.",true,false);
                     return false;
                 }
             }
@@ -544,15 +544,15 @@ public class CoffeeShops implements Cloneable
             &&((shop.whatIsSold()==ShopKeeper.DEAL_CLANDSELLER)||(shop.whatIsSold()==ShopKeeper.DEAL_CSHIPSELLER)))
             {
                 Clan C=null;
-                if(buyer.getClanID().length()>0)C=Clans.getClan(buyer.getClanID());
+                if(buyer.getClanID().length()>0)C=CMLib.clans().getClan(buyer.getClanID());
                 if(C==null)
                 {
-                    CommonMsgs.say(seller,buyer,"I only sell to clans.",true,false);
+                    CMLib.commands().say(seller,buyer,"I only sell to clans.",true,false);
                     return false;
                 }
-                if((C.allowedToDoThis(buyer,Clans.FUNC_CLANPROPERTYOWNER)<0)&&(!buyer.isMonster()))
+                if((C.allowedToDoThis(buyer,Clan.FUNC_CLANPROPERTYOWNER)<0)&&(!buyer.isMonster()))
                 {
-                    CommonMsgs.say(seller,buyer,"You are not authorized by your clan to handle property.",true,false);
+                    CMLib.commands().say(seller,buyer,"You are not authorized by your clan to handle property.",true,false);
                     return false;
                 }
             }
@@ -560,7 +560,7 @@ public class CoffeeShops implements Cloneable
             {
                 if(buyer.totalFollowers()>=buyer.maxFollowers())
                 {
-                    CommonMsgs.say(seller,buyer,"You can't accept any more followers.",true,false);
+                    CMLib.commands().say(seller,buyer,"You can't accept any more followers.",true,false);
                     return false;
                 }
                 if((CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF)>0)
@@ -603,25 +603,25 @@ public class CoffeeShops implements Cloneable
                         if(I==null) I=buyer.fetchFirstWornItem(Item.HELD);
                         if(I==null)
                         {
-                            CommonMsgs.say(seller,buyer,"You need to be wielding or holding the item you want this cast on.",true,false);
+                            CMLib.commands().say(seller,buyer,"You need to be wielding or holding the item you want this cast on.",true,false);
                             return false;
                         }
                     }
                     else
                     {
-                        CommonMsgs.say(seller,buyer,"I don't know how to sell that spell.",true,false);
+                        CMLib.commands().say(seller,buyer,"I don't know how to sell that spell.",true,false);
                         return false;
                     }
                 }
             }
             return true;
         }
-        CommonMsgs.say(seller,buyer,"I don't have that in stock.  Ask for my LIST.",true,false);
+        CMLib.commands().say(seller,buyer,"I don't have that in stock.  Ask for my LIST.",true,false);
         return false;
     }
     
     
-    public static String getListInventory(MOB seller, 
+    public String getListInventory(MOB seller, 
                                           MOB buyer, 
                                           Vector inventory,
                                           int limit,
@@ -706,7 +706,7 @@ public class CoffeeShops implements Cloneable
                 +"^T";
     }
     
-    public static String findInnRoom(InnKey key, String addThis, Room R)
+    public String findInnRoom(InnKey key, String addThis, Room R)
     {
         if(R==null) return null;
         String keyNum=key.getKey();
@@ -722,7 +722,7 @@ public class CoffeeShops implements Cloneable
         return null;
     }
     
-    public static MOB parseBuyingFor(MOB buyer, String message)
+    public MOB parseBuyingFor(MOB buyer, String message)
     {
         MOB mobFor=buyer;
         if((message!=null)&&(message.length()>0)&&(buyer.location()!=null))
@@ -740,7 +740,7 @@ public class CoffeeShops implements Cloneable
         return mobFor;
     }
     
-    public static double transactPawn(MOB shopkeeper,
+    public double transactPawn(MOB shopkeeper,
                                       MOB pawner,
                                       ShopKeeper shop,
                                       Environmental product)
@@ -755,7 +755,7 @@ public class CoffeeShops implements Cloneable
         }
         if((coreSoldItem!=null)&&(shop.doISellThis(coreSoldItem)))
         {
-            double val=CoffeeShops.pawningPrice(pawner,rawSoldItem,shop).absoluteGoldPrice;
+            double val=pawningPrice(pawner,rawSoldItem,shop).absoluteGoldPrice;
             String currency=CMLib.beanCounter().getCurrency(shopkeeper);
             if(!(shopkeeper instanceof ShopKeeper))
                 CMLib.beanCounter().subtractMoney(shopkeeper,currency,val);
@@ -811,7 +811,7 @@ public class CoffeeShops implements Cloneable
         return Double.MIN_VALUE;
     }
     
-    public static void transactMoneyOnly(MOB seller,
+    public void transactMoneyOnly(MOB seller,
                                          MOB buyer,
                                          ShopKeeper shop,
                                          Environmental product)
@@ -819,15 +819,15 @@ public class CoffeeShops implements Cloneable
         if((seller==null)||(seller.location()==null)||(buyer==null)||(shop==null)||(product==null))
             return;
         Room room=seller.location();
-        ShopKeeper.ShopPrice price=CoffeeShops.sellingPrice(seller,buyer,product,shop,true);
+        ShopKeeper.ShopPrice price=sellingPrice(seller,buyer,product,shop,true);
         if(price.absoluteGoldPrice>0.0) 
         {
             CMLib.beanCounter().subtractMoney(buyer,CMLib.beanCounter().getCurrency(seller),price.absoluteGoldPrice);
             double totalFunds=price.absoluteGoldPrice;
-            if(CoffeeShops.getSalesTax(seller.getStartRoom(),seller)!=0.0)
+            if(getSalesTax(seller.getStartRoom(),seller)!=0.0)
             {
-                Law theLaw=CoffeeUtensils.getTheLaw(room,seller);
-                Area A2=CoffeeUtensils.getLegalObject(room);
+                Law theLaw=CMLib.utensils().getTheLaw(room,seller);
+                Area A2=CMLib.utensils().getLegalObject(room);
                 if((theLaw!=null)&&(A2!=null))
                 {
                     Environmental[] Treas=theLaw.getTreasuryNSafe(A2);
@@ -835,7 +835,7 @@ public class CoffeeShops implements Cloneable
                     Item treasuryItem=(Item)Treas[1];
                     if(treasuryR!=null)
                     {
-                        double taxAmount=totalFunds-CoffeeShops.sellingPrice(seller,buyer,product,shop,false).absoluteGoldPrice;
+                        double taxAmount=totalFunds-sellingPrice(seller,buyer,product,shop,false).absoluteGoldPrice;
                         totalFunds-=taxAmount;
                         Coins COIN=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(seller),taxAmount,treasuryR,treasuryItem);
                         if(COIN!=null) COIN.putCoinsBack();
@@ -844,23 +844,23 @@ public class CoffeeShops implements Cloneable
             }
             if(seller.isMonster())
             {
-                LandTitle T=CoffeeUtensils.getLandTitle(seller.getStartRoom());
+                LandTitle T=CMLib.utensils().getLandTitle(seller.getStartRoom());
                 if((T!=null)&&(T.landOwner().length()>0))
                 {
                     CMLib.beanCounter().modifyLocalBankGold(seller.getStartRoom().getArea(),
                                                     T.landOwner(),
-                                                    CoffeeUtensils.getFormattedDate(buyer)+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(seller,totalFunds)+": Purchase: "+product.Name()+" from "+seller.Name(),
+                                                    CMLib.utensils().getFormattedDate(buyer)+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(seller,totalFunds)+": Purchase: "+product.Name()+" from "+seller.Name(),
                                                     CMLib.beanCounter().getCurrency(seller),
                                                     totalFunds);
                 }
             }
         }
         if(price.questPointPrice>0) buyer.setQuestPoint(buyer.getQuestPoint()-price.questPointPrice);
-        if(price.experiencePrice>0) MUDFight.postExperience(buyer,null,null,-price.experiencePrice,false);
+        if(price.experiencePrice>0) CMLib.combat().postExperience(buyer,null,null,-price.experiencePrice,false);
         buyer.recoverEnvStats();
     }
     
-    public static boolean purchaseItems(Item baseProduct,
+    public boolean purchaseItems(Item baseProduct,
                                         Vector products,
                                         MOB seller,
                                         MOB mobFor)
@@ -870,24 +870,24 @@ public class CoffeeShops implements Cloneable
         Room room=seller.location();
         for(int p=0;p<products.size();p++)
             room.addItemRefuse((Item)products.elementAt(p),Item.REFUSE_PLAYER_DROP);
-        FullMsg msg2=new FullMsg(mobFor,baseProduct,seller,CMMsg.MSG_GET,null);
+        CMMsg msg2=CMClass.getMsg(mobFor,baseProduct,seller,CMMsg.MSG_GET,null);
         if((baseProduct instanceof LandTitle)||(room.okMessage(mobFor,msg2)))
         {
             room.send(mobFor,msg2);
             if((baseProduct instanceof InnKey)&&(room!=null))
             {
                 InnKey item =(InnKey)baseProduct;
-                String buf=CoffeeShops.findInnRoom(item, "", room);
-                if(buf==null) buf=CoffeeShops.findInnRoom(item, "upstairs", room.getRoomInDir(Directions.UP));
-                if(buf==null) buf=CoffeeShops.findInnRoom(item, "downstairs", room.getRoomInDir(Directions.DOWN));
-                if(buf!=null) CommonMsgs.say(seller,mobFor,"Your room is "+buf+".",true,false);
+                String buf=findInnRoom(item, "", room);
+                if(buf==null) buf=findInnRoom(item, "upstairs", room.getRoomInDir(Directions.UP));
+                if(buf==null) buf=findInnRoom(item, "downstairs", room.getRoomInDir(Directions.DOWN));
+                if(buf!=null) CMLib.commands().say(seller,mobFor,"Your room is "+buf+".",true,false);
             }
             return true;
         }
         return false;
     }
     
-    public static boolean purchaseMOB(MOB product,
+    public boolean purchaseMOB(MOB product,
                                       MOB seller,
                                       ShopKeeper shop,
                                       MOB mobFor)
@@ -903,7 +903,7 @@ public class CoffeeShops implements Cloneable
             slaveA=product.fetchEffect("Skill_Enslave");
             if(slaveA!=null) slaveA.setMiscText("");
             else
-            if(!Sense.isAnimalIntelligence(product))
+            if(!CMLib.flags().isAnimalIntelligence(product))
             {
                 slaveA=CMClass.getAbility("Skill_Enslave");
                 if(slaveA!=null)
@@ -919,7 +919,7 @@ public class CoffeeShops implements Cloneable
             slaveA.setMiscText(mobFor.Name());
             product.text();
         }
-        CommonMsgs.follow(product,mobFor,false);
+        CMLib.commands().follow(product,mobFor,false);
         if(product.amFollowing()==null)
         {
             mobFor.tell("You cannot accept seem to accept this follower!");
@@ -928,7 +928,7 @@ public class CoffeeShops implements Cloneable
         return true;
     }
     
-    public static void purchaseAbility(Ability A, 
+    public void purchaseAbility(Ability A, 
                                        MOB seller,
                                        ShopKeeper shop,
                                        MOB mobFor)
@@ -987,7 +987,7 @@ public class CoffeeShops implements Cloneable
         }
     }
     
-    public static Vector addRealEstateTitles(Vector V, MOB buyer, int whatISell, Room myRoom)
+    public Vector addRealEstateTitles(Vector V, MOB buyer, int whatISell, Room myRoom)
     {
         if((myRoom==null)||(buyer==null)) return V;
         Area myArea=myRoom.getArea();
@@ -1004,11 +1004,11 @@ public class CoffeeShops implements Cloneable
             Hashtable titles=new Hashtable();
             if((whatISell==ShopKeeper.DEAL_CSHIPSELLER)||(whatISell==ShopKeeper.DEAL_SHIPSELLER))
             {
-                for(Enumeration r=CMMap.areas();r.hasMoreElements();)
+                for(Enumeration r=CMLib.map().areas();r.hasMoreElements();)
                 {
                     Area A=(Area)r.nextElement();
                     if((A instanceof SpaceShip)
-                    &&(Sense.isHidden(A)))
+                    &&(CMLib.flags().isHidden(A)))
                     {
                         boolean related=myArea.isChild(A)||A.isParent(myArea);
                         if(!related)
@@ -1020,7 +1020,7 @@ public class CoffeeShops implements Cloneable
                             }
                         if(related)
                         {
-                            LandTitle LT=CoffeeUtensils.getLandTitle(A);
+                            LandTitle LT=CMLib.utensils().getLandTitle(A);
                             if(LT!=null) titles.put(A,LT);
                         }
                     }
@@ -1030,7 +1030,7 @@ public class CoffeeShops implements Cloneable
             for(Enumeration r=myArea.getProperMap();r.hasMoreElements();)
             {
                 Room R=(Room)r.nextElement();
-                LandTitle A=CoffeeUtensils.getLandTitle(R);
+                LandTitle A=CMLib.utensils().getLandTitle(R);
                 if((A!=null)&&(R.roomID().length()>0))
                     titles.put(R,A);
             }
@@ -1077,7 +1077,7 @@ public class CoffeeShops implements Cloneable
                         continue;
                     Item I=CMClass.getItem("GenTitle");
                     if(R instanceof Room)
-                        ((LandTitle)I).setLandPropertyID(CMMap.getExtendedRoomID((Room)R));
+                        ((LandTitle)I).setLandPropertyID(CMLib.map().getExtendedRoomID((Room)R));
                     else
                         ((LandTitle)I).setLandPropertyID(R.Name());
                     if((((LandTitle)I).landOwner().length()>0)
@@ -1095,10 +1095,10 @@ public class CoffeeShops implements Cloneable
         return V;
     }
     
-    public static boolean ignoreIfNecessary(MOB mob, String ignoreMask, MOB whoIgnores)
+    public boolean ignoreIfNecessary(MOB mob, String ignoreMask, MOB whoIgnores)
     {
         if(ignoreMask.length()==0) ignoreMask=CMProps.getVar(CMProps.SYSTEM_IGNOREMASK);
-        if((ignoreMask.length()>0)&&(!MUDZapper.zapperCheck(ignoreMask,mob)))
+        if((ignoreMask.length()>0)&&(!CMLib.masking().maskCheck(ignoreMask,mob)))
         {
             mob.tell(whoIgnores,null,null,"<S-NAME> appear(s) to be ignoring you.");
             return false;
@@ -1107,7 +1107,7 @@ public class CoffeeShops implements Cloneable
     }
     
     
-    public static String storeKeeperString(int whatISell)
+    public String storeKeeperString(int whatISell)
     {
         switch(whatISell)
         {
@@ -1176,7 +1176,7 @@ public class CoffeeShops implements Cloneable
         }
     }
 
-    public static boolean doISellThis(Environmental thisThang, ShopKeeper shop)
+    public boolean doISellThis(Environmental thisThang, ShopKeeper shop)
     {
         if(thisThang instanceof PackagedItems)
             thisThang=((PackagedItems)thisThang).getItem();
@@ -1207,9 +1207,9 @@ public class CoffeeShops implements Cloneable
                     &&((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER)
                     &&(!(thisThang instanceof EnvResource)));
         case ShopKeeper.DEAL_PETS:
-            return ((thisThang instanceof MOB)&&(Sense.isAnimalIntelligence((MOB)thisThang)));
+            return ((thisThang instanceof MOB)&&(CMLib.flags().isAnimalIntelligence((MOB)thisThang)));
         case ShopKeeper.DEAL_SLAVES:
-            return ((thisThang instanceof MOB)&&(!Sense.isAnimalIntelligence((MOB)thisThang)));
+            return ((thisThang instanceof MOB)&&(!CMLib.flags().isAnimalIntelligence((MOB)thisThang)));
         case ShopKeeper.DEAL_INVENTORYONLY:
             return (shop.inBaseInventory(thisThang));
         case ShopKeeper.DEAL_INNKEEPER:

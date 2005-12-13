@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -63,7 +74,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 						mob.baseCharStats().setStat(CharStats.DEXTERITY,25);
 						mob.baseCharStats().setStat(CharStats.CHARISMA,25);
 						if((!mob.isMonster())&&(mob.soulMate()==null))
-							CoffeeTables.bump(mob,CoffeeTables.STAT_CLASSCHANGE);
+							CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_CLASSCHANGE);
 						mob.recoverCharStats();
 						if((!mob.charStats().getCurrentClass().leveless())
 						&&(!mob.charStats().getMyRace().leveless())
@@ -75,7 +86,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 							||(mob.charStats().getMyRace().expless()))
 								mob.charStats().getCurrentClass().level(mob);
 							else
-								MUDFight.postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+								CMLib.combat().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
 						}
 						mob.baseCharStats().setCurrentClass(newClass);
 						mob.baseCharStats().setClassLevel(mob.baseCharStats().getCurrentClass(),30);
@@ -86,9 +97,9 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 						mob.recoverMaxState();
 						mob.resetToMaxState();
 						mob.charStats().getCurrentClass().startCharacter(mob,true,false);
-						CoffeeUtensils.outfit(mob,mob.charStats().getCurrentClass().outfit());
+						CMLib.utensils().outfit(mob,mob.charStats().getCurrentClass().outfit());
 						mob.setSession(session);
-						CMClass.DBEngine().DBUpdatePlayer(mob);
+						CMLib.database().DBUpdatePlayer(mob);
 					}
 				}
 				mob.tell("The book vanishes out of your hands.");

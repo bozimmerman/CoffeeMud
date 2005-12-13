@@ -1,8 +1,22 @@
-package com.planet_ink.coffee_mud.system.database;
-import com.planet_ink.coffee_mud.interfaces.*;
+package com.planet_ink.coffee_mud.core.database;
+import com.planet_ink.coffee_mud.core.http.ProcessHTTPrequest;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 import java.io.IOException;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 /* 
    Copyright 2000-2005 Bo Zimmerman
 
@@ -20,6 +34,11 @@ import java.io.IOException;
 */
 public class DBInterface implements DatabaseEngine
 {
+    public String ID(){return "DBInterface";}
+    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DBInterface();}}
+    public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
+    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    
 	public void vassals(MOB mob, String liegeID)
 	{MOBloader.vassals(mob,liegeID);}
 	

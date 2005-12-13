@@ -1,6 +1,17 @@
-package com.planet_ink.coffee_mud.common;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.utils.*;
+package com.planet_ink.coffee_mud.core;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.File; // does some cmfile type stuff
 import java.util.*;
@@ -48,7 +59,7 @@ public class CMSecurity
 	{
 		if((zapCheck==null)||(zapCheck.trim().length()==0))
 			zapCheck="-ANYCLASS +Archon";
-		compiledSysop=MUDZapper.zapperCompile(zapCheck);
+		compiledSysop=CMLib.masking().maskCompile(zapCheck);
 	}
 
 	
@@ -92,7 +103,7 @@ public class CMSecurity
 	
 	public static boolean isASysOp(MOB mob)
 	{
-		return MUDZapper.zapperCheckReal(compiledSysop,mob);
+		return CMLib.masking().maskCheck(compiledSysop,mob);
 	}
 	
 	
@@ -414,7 +425,7 @@ public class CMSecurity
 				}
 			}
 		}
-		for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+		for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 		{
 			boolean subop=((Area)e.nextElement()).amISubOp(mob.Name());
 			if(!subop) continue;
@@ -481,7 +492,7 @@ public class CMSecurity
 					return true;
 			}
 		}
-		for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+		for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 		{
 			boolean subop=((Area)e.nextElement()).amISubOp(mob.Name());
 			if(!subop) continue;
@@ -513,7 +524,7 @@ public class CMSecurity
     
     public static void approveJScript(String approver, long hashCode)
     {
-        if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_JSCRIPTS)!=1)
+        if(CMProps.getIntVar(CMProps.SYSTEMI_JSCRIPTS)!=1)
             return;
         Hashtable approved=CMSecurity.getApprovedJScriptTable();
         if(approved.containsKey(new Long(hashCode)))
@@ -554,9 +565,9 @@ public class CMSecurity
     
     public static boolean isApprovedJScript(StringBuffer script)
     {
-        if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_JSCRIPTS)==2)
+        if(CMProps.getIntVar(CMProps.SYSTEMI_JSCRIPTS)==2)
             return true;
-        if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_JSCRIPTS)==0)
+        if(CMProps.getIntVar(CMProps.SYSTEMI_JSCRIPTS)==0)
             return false;
         Hashtable approved=CMSecurity.getApprovedJScriptTable();
         Long hashCode=new Long(script.toString().hashCode());

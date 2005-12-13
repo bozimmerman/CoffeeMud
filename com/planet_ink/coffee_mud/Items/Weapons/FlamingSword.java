@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -52,7 +63,7 @@ public class FlamingSword extends Longsword
 		&&(msg.target() instanceof MOB)
 		&&(!((MOB)msg.target()).amDead()))
 		{
-			FullMsg msg2=new FullMsg(msg.source(),msg.target(),new FlamingSword(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
+			CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),new FlamingSword(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(msg.source().location().okMessage(msg.source(),msg2))
 			{
 				msg.source().location().send(msg.source(), msg2);
@@ -60,7 +71,7 @@ public class FlamingSword extends Longsword
 				{
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= baseEnvStats().level();
-					MUDFight.postDamage(msg.source(),(MOB)msg.target(),null,flameDamage,CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,name()+" <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,flameDamage,CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,name()+" <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

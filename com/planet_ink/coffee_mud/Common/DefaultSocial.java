@@ -1,9 +1,20 @@
-package com.planet_ink.coffee_mud.Shared;
+package com.planet_ink.coffee_mud.Common;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 // requires nothing to load
 /* 
@@ -70,10 +81,10 @@ public class DefaultSocial implements Social
 		Environmental Target=target;
 		if(Target==null)
 			Target=mob.location().fetchFromRoomFavorMOBs(null,targetStr,Item.WORN_REQ_ANY);
-		if((Target!=null)&&(!Sense.canBeSeenBy(Target,mob)))
+		if((Target!=null)&&(!CMLib.flags().canBeSeenBy(Target,mob)))
 		   Target=null;
 
-        String mspFile=((MSPfile!=null)&&(MSPfile.length()>0))?CommonStrings.msp(MSPfile,10):"";
+        String mspFile=((MSPfile!=null)&&(MSPfile.length()>0))?CMProps.msp(MSPfile,10):"";
         
 		String You_see=You_see();
 		if((You_see!=null)&&(You_see.trim().length()==0)) 
@@ -92,20 +103,20 @@ public class DefaultSocial implements Social
         
 		if((Target==null)&&(targetable()))
 		{
-			FullMsg msg=new FullMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|sourceCode(),See_when_no_target,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|sourceCode(),See_when_no_target,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		if(Target==null)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|sourceCode(),(You_see==null)?null:You_see+mspFile,CMMsg.NO_EFFECT,null,othersCode(),(Third_party_sees==null)?null:Third_party_sees+mspFile);
+			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|sourceCode(),(You_see==null)?null:You_see+mspFile,CMMsg.NO_EFFECT,null,othersCode(),(Third_party_sees==null)?null:Third_party_sees+mspFile);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,Target,this,(auto?CMMsg.MASK_GENERAL:0)|sourceCode(),(You_see==null)?null:You_see+mspFile,targetCode(),(Target_sees==null)?null:Target_sees+mspFile,othersCode(),(Third_party_sees==null)?null:Third_party_sees+mspFile);
+			CMMsg msg=CMClass.getMsg(mob,Target,this,(auto?CMMsg.MASK_GENERAL:0)|sourceCode(),(You_see==null)?null:You_see+mspFile,targetCode(),(Target_sees==null)?null:Target_sees+mspFile,othersCode(),(Third_party_sees==null)?null:Third_party_sees+mspFile);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -115,7 +126,7 @@ public class DefaultSocial implements Social
 					if((name().toUpperCase().startsWith("SMILE"))
 					&&(mob.charStats().getStat(CharStats.CHARISMA)>=16)
 					&&(mob.charStats().getMyRace().ID().equals(tmob.charStats().getMyRace().ID()))
-					&&(Dice.rollPercentage()==1)
+					&&(CMLib.dice().rollPercentage()==1)
 					&&(mob.charStats().getStat(CharStats.GENDER)!=('N'))
 					&&(tmob.charStats().getStat(CharStats.GENDER)!=('N'))
 					&&(mob.charStats().getStat(CharStats.GENDER)!=tmob.charStats().getStat(CharStats.GENDER)))
@@ -148,19 +159,19 @@ public class DefaultSocial implements Social
 		    if(targetStr.indexOf("@")>0)
 		        targetMud=targetStr.substring(targetStr.indexOf("@")+1);
 		    else
-				Target=CMMap.getPlayer(targetStr);
+				Target=CMLib.map().getPlayer(targetStr);
 			
-			if(((Target==null)&&(makeTarget))||((targetMud.length()>0)&&((CMClass.I3Interface().i3online())&&(CMClass.I3Interface().isI3channel(channelName)))))
+			if(((Target==null)&&(makeTarget))||((targetMud.length()>0)&&((CMLib.intermud().i3online())&&(CMLib.intermud().isI3channel(channelName)))))
 			{
 				Target=CMClass.getMOB("StdMOB");
 				Target.setName(targetStr);
-				((MOB)Target).setLocation(CMMap.getRandomRoom());
+				((MOB)Target).setLocation(CMLib.map().getRandomRoom());
 			}
-			if((Target!=null)&&(!Sense.isSeen(Target)))
+			if((Target!=null)&&(!CMLib.flags().isSeen(Target)))
 			   Target=null;
 		}
 
-        String mspFile=((MSPfile!=null)&&(MSPfile.length()>0))?CommonStrings.msp(MSPfile,10):"";
+        String mspFile=((MSPfile!=null)&&(MSPfile.length()>0))?CMProps.msp(MSPfile,10):"";
         String You_see=You_see();
         if((You_see!=null)&&(You_see.trim().length()==0)) 
             You_see=null;
@@ -176,17 +187,17 @@ public class DefaultSocial implements Social
 		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0)) 
             See_when_no_target=null;
         
-		FullMsg msg=null;
+		CMMsg msg=null;
 		String str=makeTarget?"":"^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] ";
 		String end=makeTarget?"":"^</CHANNEL^>^?^.";
         if(end.length()==0) mspFile="";
 		if((Target==null)&&(targetable()))
-			msg=new FullMsg(mob,null,this,CMMsg.MASK_CHANNEL|sourceCode(),str+See_when_no_target+end,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_CHANNEL|sourceCode(),str+See_when_no_target+end,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		else
 		if(Target==null)
-			msg=new FullMsg(mob,null,this,CMMsg.MASK_CHANNEL|sourceCode(),str+You_see+end+mspFile,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str+Third_party_sees+end+mspFile);
+			msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_CHANNEL|sourceCode(),str+You_see+end+mspFile,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str+Third_party_sees+end+mspFile);
 		else
-			msg=new FullMsg(mob,Target,this,CMMsg.MASK_CHANNEL|sourceCode(),str+You_see+end+mspFile,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str+Target_sees+end+mspFile,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str+Third_party_sees+end+mspFile);
+			msg=CMClass.getMsg(mob,Target,this,CMMsg.MASK_CHANNEL|sourceCode(),str+You_see+end+mspFile,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str+Target_sees+end+mspFile,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str+Third_party_sees+end+mspFile);
 		return msg;
 	}
 
@@ -197,7 +208,7 @@ public class DefaultSocial implements Social
     public EnvStats stats=null;
 	public EnvStats envStats()
     {
-        if(stats==null) stats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+        if(stats==null) stats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
         return stats;
     }
 	public EnvStats baseEnvStats(){return envStats();}
