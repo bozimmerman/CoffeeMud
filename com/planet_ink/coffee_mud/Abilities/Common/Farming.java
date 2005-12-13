@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -67,7 +78,7 @@ public class Farming extends GatheringSkill
 			{
 				if((found!=null)&&(!isaborted))
 				{
-					int amount=Dice.roll(1,20,0)*(abilityCode());
+					int amount=CMLib.dice().roll(1,20,0)*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
 					room.showHappens(CMMsg.MSG_OK_VISUAL,amount+" pound"+s+" of "+foundShortName+" have grown here.");
@@ -136,7 +147,7 @@ public class Farming extends GatheringSkill
 		}
 		if(mob.isMonster()
         &&(!auto)
-		&&(!Sense.isAnimalIntelligence(mob))
+		&&(!CMLib.flags().isAnimalIntelligence(mob))
 		&&(commands.size()==0))
 		{
 			for(int i=0;i<mob.inventorySize();i++)
@@ -144,7 +155,7 @@ public class Farming extends GatheringSkill
 				Item I2=mob.fetchInventory(i);
 				if((I2!=null)
 				&&(I2 instanceof EnvResource)
-				&&(Sense.canBeSeenBy(I2,mob))
+				&&(CMLib.flags().canBeSeenBy(I2,mob))
 				&&(I2.container()==null)
 				&&(((I2.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION)
 					||(I2.material()==EnvResource.RESOURCE_COTTON)
@@ -201,7 +212,7 @@ public class Farming extends GatheringSkill
 			return false;
 		}
         String mineName=mine.name();
-        mine=(Item)CoffeeUtensils.unbundle(mine,-1);
+        mine=(Item)CMLib.utensils().unbundle(mine,-1);
         if(mine==null)
         {
             commonTell(mob,"'"+mineName+"' is not suitable for use as a seed crop.");
@@ -214,7 +225,7 @@ public class Farming extends GatheringSkill
 
 		if((profficiencyCheck(mob,0,auto))&&(isPotentialCrop(mob.location(),code)))
 		{
-			found=(Item)CoffeeUtensils.makeResource(code,mob.location().domainType(),false);
+			found=(Item)CMLib.utensils().makeResource(code,mob.location().domainType(),false);
 			if((found!=null)
 			&&(found.material()==EnvResource.RESOURCE_HERBS)
 			&&(mine!=null)
@@ -230,7 +241,7 @@ public class Farming extends GatheringSkill
 		mine.destroy();
 		int duration=45-mob.envStats().level();
 		if(duration<25) duration=25;
-		FullMsg msg=new FullMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) planting "+foundShortName+".");
+		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) planting "+foundShortName+".");
 		verb="planting "+foundShortName;
 		displayText="You are planting "+foundShortName;
 		room=mob.location();

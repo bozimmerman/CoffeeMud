@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -31,7 +42,7 @@ public class Spell_Flagportation extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
-	    Clan C=mob.getClanID().length()>0?Clans.getClan(mob.getClanID()):null;
+	    Clan C=mob.getClanID().length()>0?CMLib.clans().getClan(mob.getClanID()):null;
 	    if(C==null)
 	    {
 	        mob.tell("You must belong to a clan to use this spell.");
@@ -47,17 +58,17 @@ public class Spell_Flagportation extends Spell
 		Item I=null;
 		try
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				R=(Room)r.nextElement();
-				if(Sense.canAccess(mob,R))
+				if(CMLib.flags().canAccess(mob,R))
 				{
 				    for(int i=0;i<R.numItems();i++)
 				    {
 				        I=R.fetchItem(i);
 				        if((I!=null)
 				        &&(I instanceof ClanItem)
-				        &&(((ClanItem)I).clanID().equals(C.ID()))
+				        &&(((ClanItem)I).clanID().equals(C.clanID()))
 				        &&(((ClanItem)I).ciType()==ClanItem.CI_FLAG))
 				        {
 							candidates.addElement(R);
@@ -73,7 +84,7 @@ public class Spell_Flagportation extends Spell
 			return false;
 		}
 
-		if(Sense.isSitting(mob)||Sense.isSleeping(mob))
+		if(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob))
 		{
 			mob.tell("You need to stand up!");
 			return false;
@@ -83,8 +94,8 @@ public class Spell_Flagportation extends Spell
 		int tries=0;
 		while((tries<20)&&(newRoom==null))
 		{
-			newRoom=(Room)candidates.elementAt(Dice.roll(1,candidates.size(),-1));
-			FullMsg enterMsg=new FullMsg(mob,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
+			newRoom=(Room)candidates.elementAt(CMLib.dice().roll(1,candidates.size(),-1));
+			CMMsg enterMsg=CMClass.getMsg(mob,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
 			Session session=mob.session();
 			mob.setSession(null);
 			if(!newRoom.okMessage(mob,enterMsg))
@@ -107,14 +118,14 @@ public class Spell_Flagportation extends Spell
 		{
 			Room room=null;
 			int x=0;
-			while((room==null)||(room==newRoom)||(room.getArea()==newRoom.getArea())||((++x)>1000)||(room==mob.location())||(!Sense.canAccess(mob,room)))
-				room=CMMap.getRandomRoom();
+			while((room==null)||(room==newRoom)||(room.getArea()==newRoom.getArea())||((++x)>1000)||(room==mob.location())||(!CMLib.flags().canAccess(mob,room)))
+				room=CMLib.map().getRandomRoom();
 			if(room==null)
 				beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to invoke flagportating transportation, but fizzle(s) the spell.");
 			newRoom=room;
 		}
 
-		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MASK_MOVE|affectType(auto),"^S<S-NAME> invoke(s) a flagportating teleportation spell.^?");
+		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|affectType(auto),"^S<S-NAME> invoke(s) a flagportating teleportation spell.^?");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -125,20 +136,20 @@ public class Spell_Flagportation extends Spell
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB follower=(MOB)f.next();
-				FullMsg enterMsg=new FullMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke."+CommonStrings.msp("appear.wav",10));
-				FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
+				CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke."+CMProps.msp("appear.wav",10));
+				CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
 				if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 				{
 					if(follower.isInCombat())
 					{
-						CommonMsgs.flee(follower,("NOWHERE"));
+						CMLib.commands().flee(follower,("NOWHERE"));
 						follower.makePeace();
 					}
 					thisRoom.send(follower,leaveMsg);
 					newRoom.bringMobHere(follower,false);
 					newRoom.send(follower,enterMsg);
 					follower.tell("\n\r\n\r");
-					CommonMsgs.look(follower,true);
+					CMLib.commands().look(follower,true);
 				}
 			}
 		}

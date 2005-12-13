@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -20,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Write extends StdAbility
+public class Skill_Write extends StdSkill
 {
 	public String ID() { return "Skill_Write"; }
 	public String name(){ return "Write";}
@@ -31,8 +41,8 @@ public class Skill_Write extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	public int overrideMana(){return 0;}
-	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONTRAINCOST);}
-	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONPRACCOST);}
+	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONTRAINCOST);}
+	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONPRACCOST);}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -50,13 +60,13 @@ public class Skill_Write extends StdAbility
 		if(target==null)
 		{
 			target=mob.location().fetchItem(null,(String)commands.elementAt(0));
-			if((target!=null)&&(Sense.isGettable(target)))
+			if((target!=null)&&(CMLib.flags().isGettable(target)))
 			{
 				mob.tell("You don't have that.");
 				return false;
 			}
 		}
-		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
 			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
 			return false;
@@ -67,7 +77,7 @@ public class Skill_Write extends StdAbility
 		||((item.material()!=EnvResource.RESOURCE_PAPER)
 		   &&(item.material()!=EnvResource.RESOURCE_SILK)
 		   &&(item.material()!=EnvResource.RESOURCE_HEMP))
-		||((item!=null)&&(!Sense.isReadable(item))))
+		||((item!=null)&&(!CMLib.flags().isReadable(item))))
 		{
 			mob.tell("You can't write on that.");
 			return false;
@@ -92,7 +102,7 @@ public class Skill_Write extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.",CMMsg.MSG_WRITE,Util.combine(commands,1),CMMsg.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.",CMMsg.MSG_WRITE,Util.combine(commands,1),CMMsg.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

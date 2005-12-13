@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -21,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Arrest extends StdAbility
+public class Skill_Arrest extends StdSkill
 {
 	public String ID() { return "Skill_Arrest"; }
 	public String name(){ return "Arrest";}
@@ -36,7 +46,7 @@ public class Skill_Arrest extends StdAbility
 	public static Vector getWarrantsOf(MOB target, Area legalA)
 	{
 		Behavior B=null;
-		if(legalA!=null) B=CoffeeUtensils.getLegalBehavior(legalA);
+		if(legalA!=null) B=CMLib.utensils().getLegalBehavior(legalA);
 		Vector warrants=new Vector();
 		if(B!=null)
 		{
@@ -81,7 +91,7 @@ public class Skill_Arrest extends StdAbility
 		    return false;
 		}
 
-		if(Skill_Arrest.getWarrantsOf(target, CoffeeUtensils.getLegalObject(mob.location().getArea())).size()==0)
+		if(Skill_Arrest.getWarrantsOf(target, CMLib.utensils().getLegalObject(mob.location().getArea())).size()==0)
 		{
 		    mob.tell(target.name()+" has no warrants out here.");
 		    return false;
@@ -120,7 +130,7 @@ public class Skill_Arrest extends StdAbility
 				A.setAbilityCode(10);
 				A.invoke(mob,target,true,0);
 			}
-			if(Sense.isSleeping(target))
+			if(CMLib.flags().isSleeping(target))
 			{
 			    makePeace(mob.location(),mob,target);
 				A=target.fetchEffect("Skill_ArrestingSap");

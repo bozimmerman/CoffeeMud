@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -45,11 +56,11 @@ public class TrailTo extends StdCommand
 			confirm=true;
 		}
 		Vector set=new Vector();
-		MUDTracker.getRadiantRooms(R1,set,false,false,true,false,false,null,Integer.MAX_VALUE);
+		CMLib.tracking().getRadiantRooms(R1,set,false,false,true,false,false,null,Integer.MAX_VALUE);
 		if(where.equalsIgnoreCase("everyarea"))
 		{
 			StringBuffer str=new StringBuffer("");
-			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				str.append(Util.padRightPreserve(A.name(),30)+": "+trailTo(R1,set,A.name(),areaNames,confirm)+"\n\r");
@@ -63,7 +74,7 @@ public class TrailTo extends StdCommand
 			StringBuffer str=new StringBuffer("");
 			try
 			{
-				for(Enumeration a=CMMap.rooms();a.hasMoreElements();)
+				for(Enumeration a=CMLib.map().rooms();a.hasMoreElements();)
 				{
 					Room R=(Room)a.nextElement();
 					if((R!=R1)&&(R.roomID().length()>0))
@@ -91,9 +102,9 @@ public class TrailTo extends StdCommand
 	}
 	public String trailTo(Room R1, Vector set, String where, boolean areaNames, boolean confirm)
 	{
-		Room R2=CMMap.getRoom(where);
+		Room R2=CMLib.map().getRoom(where);
 		if(R2==null)
-			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				if(A.name().equalsIgnoreCase(where))
@@ -109,7 +120,7 @@ public class TrailTo extends StdCommand
 								lowest=Util.s_int(R.roomID().substring(x+1));
 						}
 						if(lowest<Integer.MAX_VALUE)
-							R2=CMMap.getRoom(A.name()+"#"+lowest);
+							R2=CMLib.map().getRoom(A.name()+"#"+lowest);
 					}
 					else
 					{
@@ -128,7 +139,7 @@ public class TrailTo extends StdCommand
 			}
 		if(R2==null) return "Unable to determine '"+where+"'.";
 		if(set.size()==0)
-			MUDTracker.getRadiantRooms(R1,set,false,false,true,false,false,R2,Integer.MAX_VALUE);
+			CMLib.tracking().getRadiantRooms(R1,set,false,false,true,false,false,R2,Integer.MAX_VALUE);
 		int foundAt=-1;
 		for(int i=0;i<set.size();i++)
 		{

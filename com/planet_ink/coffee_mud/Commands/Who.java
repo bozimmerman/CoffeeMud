@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -102,11 +113,11 @@ public class Who extends StdCommand
 		&&(mob!=null)
 		&&(mobName.startsWith("@")))
 		{
-			if((!(CMClass.I3Interface().i3online()))
-			&&(!CMClass.I3Interface().imc2online()))
+			if((!(CMLib.intermud().i3online()))
+			&&(!CMLib.intermud().imc2online()))
 				mob.tell("Intermud is unavailable.");
 			else
-				CMClass.I3Interface().i3who(mob,mobName.substring(1));
+				CMLib.intermud().i3who(mob,mobName.substring(1));
 			return false;
 		}
 		HashSet friends=null;
@@ -126,9 +137,9 @@ public class Who extends StdCommand
         ||mobName.equalsIgnoreCase("playerkill")))
         {
             friends=new HashSet();
-            for(int s=0;s<Sessions.size();s++)
+            for(int s=0;s<CMLib.sessions().size();s++)
             {
-                Session thisSession=Sessions.elementAt(s);
+                Session thisSession=CMLib.sessions().elementAt(s);
                 MOB mob2=thisSession.mob();
                 if((mob2!=null)&&(Util.bset(mob2.getBitmap(),MOB.ATT_PLAYERKILL)))
                     friends.add(mob2.Name());
@@ -136,9 +147,9 @@ public class Who extends StdCommand
         }
 
 		StringBuffer msg=new StringBuffer("");
-		for(int s=0;s<Sessions.size();s++)
+		for(int s=0;s<CMLib.sessions().size();s++)
 		{
-			Session thisSession=Sessions.elementAt(s);
+			Session thisSession=CMLib.sessions().elementAt(s);
 			MOB mob2=thisSession.mob();
 			if((mob2!=null)&&(mob2.soulMate()!=null))
 				mob2=mob2.soulMate();
@@ -148,7 +159,7 @@ public class Who extends StdCommand
 			&&((((mob2.envStats().disposition()&EnvStats.IS_CLOAKED)==0)
 				||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.envStats().level()>=mob2.envStats().level()))))
 			&&((friends==null)||(friends.contains(mob2.Name())||(friends.contains("All"))))
-			&&(Sense.isInTheGame(mob2,true))
+			&&(CMLib.flags().isInTheGame(mob2,true))
 			&&(mob2.envStats().level()>0))
 				msg.append(showWhoShort(mob2));
 		}

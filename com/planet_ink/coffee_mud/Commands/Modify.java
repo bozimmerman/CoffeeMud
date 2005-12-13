@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 import java.io.IOException;
@@ -185,7 +196,7 @@ public class Modify extends BaseGenerics
 		if(commands.size()==2)
 		{
 			int showFlag=-1;
-			if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+			if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 				showFlag=-999;
 			boolean ok=false;
 			Room oldRoom=(Room)mob.location().copyOf();
@@ -214,7 +225,7 @@ public class Modify extends BaseGenerics
 			}
 			if(!oldRoom.sameAs(mob.location()))
 			{
-				CMClass.DBEngine().DBUpdateRoom(mob.location());
+				CMLib.database().DBUpdateRoom(mob.location());
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
 				Log.sysOut("Rooms",mob.Name()+" modified room "+mob.location().roomID()+".");
 			}
@@ -230,8 +241,8 @@ public class Modify extends BaseGenerics
 		if(command.equalsIgnoreCase("AREA"))
 		{
 			if(commands.size()<4) { flunkCmd1(mob); return;}
-			Area A=CMMap.getArea(restStr);
-			String checkID=CMMap.getOpenRoomID(restStr);
+			Area A=CMLib.map().getArea(restStr);
+			String checkID=CMLib.map().getOpenRoomID(restStr);
 			boolean reid=false;
 			if(A==null)
 			{
@@ -247,14 +258,14 @@ public class Modify extends BaseGenerics
 							if(CMClass.getAreaType(areaType)==null)
 							{
 								mob.session().println("Invalid area type! Valid ones are:");
-								mob.session().println(CMLister.reallyList(CMClass.areaTypes(),-1,null).toString());
+								mob.session().println(CMLib.lister().reallyList(CMClass.areaTypes(),-1,null).toString());
 								areaType="";
 							}
 						}
 						if(areaType.length()==0) areaType="StdArea";
-						A=CMClass.DBEngine().DBCreateArea(restStr,areaType);
+						A=CMLib.database().DBCreateArea(restStr,areaType);
 						mob.location().setArea(A);
-                        CoffeeMaker.addWeatherToAreaIfNecessary(A);
+                        CMLib.coffeeMaker().addWeatherToAreaIfNecessary(A);
 						reid=true;
 					}
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"This entire area twitches.\n\r");
@@ -271,20 +282,18 @@ public class Modify extends BaseGenerics
 				if(!A.getProperMap().hasMoreElements())
 					reid=true;
 				else
-					CMClass.DBEngine().DBUpdateRoom(mob.location());
+					CMLib.database().DBUpdateRoom(mob.location());
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"This area twitches.\n\r");
 			}
 			
 			if(reid)
 			{
-				CMMap.delRoom(mob.location());
 				String oldID=mob.location().roomID();
 				mob.location().setRoomID(checkID);
-				CMClass.DBEngine().DBReCreate(mob.location(),oldID);
-				CMMap.addRoom(mob.location());
+				CMLib.database().DBReCreate(mob.location(),oldID);
 				try
 				{
-					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
 						for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
@@ -292,7 +301,7 @@ public class Modify extends BaseGenerics
 							Room thatRoom=R.rawDoors()[dir];
 							if(thatRoom==mob.location())
 							{
-								CMClass.DBEngine().DBUpdateExits(R);
+								CMLib.database().DBUpdateExits(R);
 								break;
 							}
 						}
@@ -305,7 +314,7 @@ public class Modify extends BaseGenerics
 		{
 			if(commands.size()<4) { flunkCmd1(mob); return;}
 			mob.location().setDisplayText(restStr);
-			CMClass.DBEngine().DBUpdateRoom(mob.location());
+			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
 		}
 		else
@@ -327,7 +336,7 @@ public class Modify extends BaseGenerics
 			if(commands.size()<4) { flunkCmd1(mob); return;}
 			((GridLocale)mob.location()).setXSize(Util.s_int(restStr));
 			((GridLocale)mob.location()).buildGrid();
-			CMClass.DBEngine().DBUpdateRoom(mob.location());
+			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
 		}
 		else
@@ -336,7 +345,7 @@ public class Modify extends BaseGenerics
 			if(commands.size()<4) { flunkCmd1(mob); return;}
 			((GridLocale)mob.location()).setYSize(Util.s_int(restStr));
 			((GridLocale)mob.location()).buildGrid();
-			CMClass.DBEngine().DBUpdateRoom(mob.location());
+			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
 		}
 		else
@@ -344,7 +353,7 @@ public class Modify extends BaseGenerics
 		{
 			if(commands.size()<4) { flunkCmd1(mob); return;}
 			mob.location().setDescription(restStr);
-			CMClass.DBEngine().DBUpdateRoom(mob.location());
+			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
 		}
 		else
@@ -352,7 +361,7 @@ public class Modify extends BaseGenerics
 		{
 			genAffects(mob,mob.location(),1,1);
 			mob.location().recoverEnvStats();
-			CMClass.DBEngine().DBUpdateRoom(mob.location());
+			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
 		}
 		else
@@ -360,7 +369,7 @@ public class Modify extends BaseGenerics
 		{
 			genBehaviors(mob,mob.location(),1,1);
 			mob.location().recoverEnvStats();
-			CMClass.DBEngine().DBUpdateRoom(mob.location());
+			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
 		}
 		else
@@ -388,7 +397,7 @@ public class Modify extends BaseGenerics
 		if(commands.size()==2)
 		{
 			int showFlag=-1;
-			if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+			if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 				showFlag=-999;
 			boolean ok=false;
 			while(!ok)
@@ -480,7 +489,7 @@ public class Modify extends BaseGenerics
 			else
 			if(command.equalsIgnoreCase("ADDSUB"))
 			{
-				if((commands.size()<4)||(!CMClass.DBEngine().DBUserSearch(null,restStr)))
+				if((commands.size()<4)||(!CMLib.database().DBUserSearch(null,restStr)))
 				{
 					mob.tell("Unknown or invalid username given.\n\r");
 					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
@@ -524,19 +533,18 @@ public class Modify extends BaseGenerics
 				{
 					Room R=(Room)r.nextElement();
 					if((R.roomID().startsWith(oldName+"#"))
-					&&(CMMap.getRoom(myArea.Name()+"#"+R.roomID().substring(oldName.length()+1))==null))
+					&&(CMLib.map().getRoom(myArea.Name()+"#"+R.roomID().substring(oldName.length()+1))==null))
 					{
 						String oldID=R.roomID();
 						R.setRoomID(myArea.Name()+"#"+R.roomID().substring(oldName.length()+1));
-						CMClass.DBEngine().DBReCreate(R,oldID);
+						CMLib.database().DBReCreate(R,oldID);
 					}
 					else
-						CMClass.DBEngine().DBUpdateRoom(R);
+						CMLib.database().DBUpdateRoom(R);
 				}
-				myArea.clearMaps();
 				try
 				{
-					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
 						boolean doIt=false;
@@ -547,7 +555,7 @@ public class Modify extends BaseGenerics
 							{ doIt=true; break;}
 						}
 						if(doIt)
-							CMClass.DBEngine().DBUpdateExits(R);
+							CMLib.database().DBUpdateExits(R);
 					}
 			    }catch(NoSuchElementException e){}
 			}
@@ -560,11 +568,11 @@ public class Modify extends BaseGenerics
 		mob.location().recoverRoomStats();
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
 		if(myArea.name().equals(oldName))
-			CMClass.DBEngine().DBUpdateArea(myArea.Name(),myArea);
+			CMLib.database().DBUpdateArea(myArea.Name(),myArea);
 		else
 		{
-			CMClass.DBEngine().DBUpdateArea(oldName,myArea);
-			CMMap.renameRooms(myArea,oldName,allMyDamnRooms);
+			CMLib.database().DBUpdateArea(oldName,myArea);
+			CMLib.map().renameRooms(myArea,oldName,allMyDamnRooms);
 		}
 		Log.sysOut("Rooms",mob.Name()+" modified area "+myArea.Name()+".");
 	}
@@ -631,7 +639,7 @@ public class Modify extends BaseGenerics
 		
 		try
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room room=(Room)r.nextElement();
 				for(int e2=0;e2<Directions.NUM_DIRECTIONS;e2++)
@@ -639,7 +647,7 @@ public class Modify extends BaseGenerics
 					Exit exit=room.rawExits()[e2];
 					if((exit!=null)&&(exit==thisExit))
 					{
-						CMClass.DBEngine().DBUpdateExits(room);
+						CMLib.database().DBUpdateExits(room);
 						room.getArea().fillInAreaRoom(room);
 						break;
 					}
@@ -677,8 +685,8 @@ public class Modify extends BaseGenerics
 			return false;
 		}
 		modifyGenRace(mob,R);
-		CMClass.DBEngine().DBDeleteRace(R.ID());
-		CMClass.DBEngine().DBCreateRace(R.ID(),R.racialParms());
+		CMLib.database().DBDeleteRace(R.ID());
+		CMLib.database().DBCreateRace(R.ID(),R.racialParms());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,R.name()+"'s everywhere shake under the transforming power!");
 		return true;
 	}
@@ -708,8 +716,8 @@ public class Modify extends BaseGenerics
 			return false;
 		}
 		modifyGenClass(mob,C);
-		CMClass.DBEngine().DBDeleteClass(C.ID());
-		CMClass.DBEngine().DBCreateClass(C.ID(),C.classParms());
+		CMLib.database().DBDeleteClass(C.ID());
+		CMLib.database().DBCreateClass(C.ID(),C.classParms());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,C.name()+"'s everywhere shake under the transforming power!");
 		return true;
 	}
@@ -737,13 +745,13 @@ public class Modify extends BaseGenerics
         String oldStuff=stuff;
         if(stuff.equals("NONE")) 
             stuff="";
-        if(Socials.FetchSocial((name+" "+stuff).trim(),false)==null)
+        if(CMLib.socials().FetchSocial((name+" "+stuff).trim(),false)==null)
         {
             mob.tell("The social '"+stuff+"' does not exist.");
             mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
             return;
         }
-		Socials.modifySocialInterface(mob,(name+" "+oldStuff).trim());
+		CMLib.socials().modifySocialInterface(mob,(name+" "+oldStuff).trim());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just fluxuated!");
 	}
 
@@ -758,21 +766,21 @@ public class Modify extends BaseGenerics
 		}
 
 		String mobID=Util.combine(commands,2);
-		MOB M=CMMap.getPlayer(mobID);
+		MOB M=CMLib.map().getPlayer(mobID);
 		if(M==null)
-			for(Enumeration p=CMMap.players();p.hasMoreElements();)
+			for(Enumeration p=CMLib.map().players();p.hasMoreElements();)
 			{
 				MOB mob2=(MOB)p.nextElement();
 				if(mob2.Name().equalsIgnoreCase(mobID))
 				{ M=mob2; break;}
 			}
 		MOB TM=CMClass.getMOB("StdMOB");
-		if((M==null)&&(CMClass.DBEngine().DBUserSearch(TM,mobID)))
+		if((M==null)&&(CMLib.database().DBUserSearch(TM,mobID)))
 		{
 			M=CMClass.getMOB("StdMOB");
 			M.setName(TM.Name());
-			CMClass.DBEngine().DBReadPlayer(M);
-			CMClass.DBEngine().DBReadFollowers(M,false);
+			CMLib.database().DBReadPlayer(M);
+			CMLib.database().DBReadFollowers(M,false);
 			if(M.playerStats()!=null)
 				M.playerStats().setUpdated(M.playerStats().lastDateTime());
 			M.recoverEnvStats();
@@ -937,7 +945,7 @@ public class Modify extends BaseGenerics
 			else
 			{
 				String name=Util.combine(commands,2);
-				Clan C=Clans.findClan(name);
+				Clan C=CMLib.clans().findClan(name);
 				if(C==null)
 					mob.tell("Clan '"+name+"' is unknown.  Try clanlist.");
 				else
@@ -985,7 +993,7 @@ public class Modify extends BaseGenerics
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"JSCRIPTS")) 
                 return errorOut(mob);
-            if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_JSCRIPTS)!=1)
+            if(CMProps.getIntVar(CMProps.SYSTEMI_JSCRIPTS)!=1)
             {
                 mob.tell("This command is only used when your Scriptable Javascripts require approval as specified in your coffeemud.ini file.");
                 return true;
@@ -1024,12 +1032,12 @@ public class Modify extends BaseGenerics
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"POLLS")) return errorOut(mob);
             String name=Util.combine(commands,2);
-            Polls P=null;
+            Poll P=null;
             if(Util.isInteger(name))
-                P=Polls.getPoll(Util.s_int(name)-1);
+                P=CMLib.polls().getPoll(Util.s_int(name)-1);
             else
             if(name.length()>0)
-                P=Polls.getPoll(name);
+                P=CMLib.polls().getPoll(name);
             if(P==null)
             {
                 mob.tell("POLL '"+name+"' not found. Try LIST POLLS.");
@@ -1054,10 +1062,10 @@ public class Modify extends BaseGenerics
                 Quest Q=null;
                 if(Util.isInteger(name))
                 {
-                    Q=Quests.fetchQuest(Util.s_int(name)-1);
+                    Q=CMLib.quests().fetchQuest(Util.s_int(name)-1);
                     if(Q!=null) name=Q.name();
                 }
-                if(Q==null) Q=Quests.fetchQuest(name);
+                if(Q==null) Q=CMLib.quests().fetchQuest(name);
 				if(Q==null)
 					mob.tell("Quest '"+name+"' is unknown.  Try list quests.");
 				else
@@ -1090,15 +1098,15 @@ public class Modify extends BaseGenerics
             else
             {
                 String name=Util.combine(commands,2);
-                Faction F=Factions.getFaction(name);
-                if(F==null) F=Factions.getFactionByName(name);
+                Faction F=CMLib.factions().getFaction(name);
+                if(F==null) F=CMLib.factions().getFactionByName(name);
                 if(F==null)
                     mob.tell("Faction '"+name+"' is unknown.  Try list factions.");
                 else
                 if(!mob.isMonster())
                 {
                     modifyFaction(mob,F);
-                    Log.sysOut("CreateEdit",mob.Name()+" modified Faction "+F.name+" ("+F.ID+").");
+                    Log.sysOut("CreateEdit",mob.Name()+" modified Faction "+F.name()+" ("+F.factionID()+").");
                 }
             }
         }
@@ -1144,7 +1152,7 @@ public class Modify extends BaseGenerics
 				if(!thang.isGeneric())
 				{
 					int showFlag=-1;
-					if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+					if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 						showFlag=-999;
 					boolean ok=false;
 					while(!ok)
@@ -1169,7 +1177,7 @@ public class Modify extends BaseGenerics
 					genMiscSet(mob,thang);
 				thang.recoverEnvStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
-                Log.sysOut("CreateEdit",mob.Name()+" modified item "+thang.Name()+" ("+thang.ID()+") in "+CMMap.getExtendedRoomID(mob.location())+".");
+                Log.sysOut("CreateEdit",mob.Name()+" modified item "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(mob.location())+".");
 			}
 			else
 			if((thang!=null)&&(thang instanceof MOB))
@@ -1179,7 +1187,7 @@ public class Modify extends BaseGenerics
 				if((!thang.isGeneric())&&(((MOB)thang).isMonster()))
 				{
 					int showFlag=-1;
-					if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+					if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 						showFlag=-999;
 					boolean ok=false;
 					while(!ok)
@@ -1198,7 +1206,7 @@ public class Modify extends BaseGenerics
 							ok=true;
 						}
 					}
-                    Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMMap.getExtendedRoomID(((MOB)thang).location())+".");
+                    Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(((MOB)thang).location())+".");
 				}
 				else
 				if(!((MOB)thang).isMonster())
@@ -1209,7 +1217,7 @@ public class Modify extends BaseGenerics
 				else
                 {
 					genMiscSet(mob,thang);
-                    Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMMap.getExtendedRoomID(((MOB)thang).location())+".");
+                    Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(((MOB)thang).location())+".");
                 }
 				thang.recoverEnvStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
@@ -1227,7 +1235,7 @@ public class Modify extends BaseGenerics
 					thang.recoverEnvStats();
 					try
 					{
-						for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 						{
 							Room room=(Room)r.nextElement();
 							for(int e2=0;e2<Directions.NUM_DIRECTIONS;e2++)
@@ -1235,7 +1243,7 @@ public class Modify extends BaseGenerics
 								Exit exit=room.rawExits()[e2];
 								if((exit!=null)&&(exit==thang))
 								{
-									CMClass.DBEngine().DBUpdateExits(room);
+									CMLib.database().DBUpdateExits(room);
 									break;
 								}
 							}
@@ -1251,7 +1259,7 @@ public class Modify extends BaseGenerics
 				}
 			}
 			else
-			if(Socials.FetchSocial(allWord,true)!=null)
+			if(CMLib.socials().FetchSocial(allWord,true)!=null)
 			{
 				commands.insertElementAt("SOCIAL",1);
 				execute(mob,commands);

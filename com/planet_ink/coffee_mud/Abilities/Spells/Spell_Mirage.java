@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -49,7 +60,7 @@ public class Spell_Mirage extends Spell
 	{
 		if(newRoom==null)
 		{
-			newRoom=CMMap.getRoom(text());
+			newRoom=CMLib.map().getRoom(text());
 			if(newRoom==null)
 			{
 				if(!(affected instanceof Room))
@@ -69,7 +80,7 @@ public class Spell_Mirage extends Spell
 		&&(room().fetchEffect(ID())==null)
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
-			FullMsg msg2=new FullMsg(msg.source(),room(),msg.tool(),
+			CMMsg msg2=CMClass.getMsg(msg.source(),room(),msg.tool(),
 						  msg.sourceCode(),msg.sourceMessage(),
 						  msg.targetCode(),msg.targetMessage(),
 						  msg.othersCode(),msg.othersMessage());
@@ -107,21 +118,21 @@ public class Spell_Mirage extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), auto?"":"^S<S-NAME> speak(s) and gesture(s) dramatically!^?");
+			CMMsg msg = CMClass.getMsg(mob, target, this, affectType(auto), auto?"":"^S<S-NAME> speak(s) and gesture(s) dramatically!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The appearance of this place changes...");
-				if(CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
+				if(CMLib.utensils().doesOwnThisProperty(mob,mob.location()))
 				{
 					Ability A=(Ability)copyOf();
 					A.setInvoker(mob);
 					newRoom=mob.location().getArea().getRandomProperRoom();
 					if((newRoom!=null)&&(newRoom.roomID().length()>0)&&(!(newRoom instanceof GridLocale)))
 					{
-						A.setMiscText(CMMap.getExtendedRoomID(newRoom));
+						A.setMiscText(CMLib.map().getExtendedRoomID(newRoom));
 						mob.location().addNonUninvokableEffect(A);
-						CMClass.DBEngine().DBUpdateRoom(mob.location());
+						CMLib.database().DBUpdateRoom(mob.location());
 					}
 				}
 				else

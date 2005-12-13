@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -63,10 +74,10 @@ public class Prayer_DailyBread extends Prayer
 			}
 		}
 		if((Bread!=null)&&(BreadContainer!=null))
-			CommonMsgs.get(target,BreadContainer,Bread,false);
+			CMLib.commands().get(target,BreadContainer,Bread,false);
 		if(Bread==null)
 		{
-			ShopKeeper SK=CoffeeShops.getShopKeeper(target);
+			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(target);
 			if(SK!=null)
 			{
 				Vector inv=SK.getStoreInventory();
@@ -88,15 +99,15 @@ public class Prayer_DailyBread extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to provide <S-HIS-HER> daily bread!^?");
-			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to provide <S-HIS-HER> daily bread!^?");
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
-					msg=new FullMsg(target,mob,Bread,CMMsg.MSG_GIVE,"<S-NAME> gladly donate(s) <O-NAME> to <T-NAMESELF>.");
+					msg=CMClass.getMsg(target,mob,Bread,CMMsg.MSG_GIVE,"<S-NAME> gladly donate(s) <O-NAME> to <T-NAMESELF>.");
 					if(mob.location().okMessage(mob,msg))
 						mob.location().send(mob,msg);
 				}

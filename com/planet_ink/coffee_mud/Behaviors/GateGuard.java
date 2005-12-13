@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -56,7 +67,7 @@ public class GateGuard extends StdBehavior
 
 	private int findGate(MOB mob)
 	{
-		if(!Sense.isInTheGame(mob,false))
+		if(!CMLib.flags().isInTheGame(mob,false))
 			return -1;
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
@@ -101,8 +112,8 @@ public class GateGuard extends StdBehavior
 			MOB M=room.fetchInhabitant(i);
 			if((M!=null)
 			&&(!M.isMonster())
-			&&(Sense.canBeSeenBy(M,mob))
-			&&(MUDZapper.zapperCheck(getParms(),M)))
+			&&(CMLib.flags().canBeSeenBy(M,mob))
+			&&(CMLib.masking().maskCheck(getParms(),M)))
 				num++;
 		}
 		return num;
@@ -118,12 +129,12 @@ public class GateGuard extends StdBehavior
 			&&(mob.location()!=null)
 			&&(mob.location()!=msg.source().location())
 			&&(!heardKnock)
-			&&(Sense.canHear(mob))
+			&&(CMLib.flags().canHear(mob))
 			&&(canFreelyBehaveNormal(host)))
 			{
 				int dir=findGate(mob);
 				if((dir>=0)
-				&&(MUDZapper.zapperCheck(getParms(),msg.source())))
+				&&(CMLib.masking().maskCheck(getParms(),msg.source())))
 				{
 					Exit e=mob.location().getExitInDir(dir);
 					if(msg.amITarget(e))
@@ -154,9 +165,9 @@ public class GateGuard extends StdBehavior
 				{
 					if(getMyKeyTo(mob,e)!=null)
 					{
-						FullMsg msg=new FullMsg(mob,e,CMMsg.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
+						CMMsg msg=CMClass.getMsg(mob,e,CMMsg.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
 						if(mob.location().okMessage(mob,msg))
-							CoffeeUtensils.roomAffectFully(msg,mob.location(),dir);
+							CMLib.utensils().roomAffectFully(msg,mob.location(),dir);
 					}
 				}
 			}
@@ -166,9 +177,9 @@ public class GateGuard extends StdBehavior
 				{
 					if(getMyKeyTo(mob,e)!=null)
 					{
-						FullMsg msg=new FullMsg(mob,e,CMMsg.MSG_UNLOCK,"<S-NAME> unlock(s) <T-NAME>.");
+						CMMsg msg=CMClass.getMsg(mob,e,CMMsg.MSG_UNLOCK,"<S-NAME> unlock(s) <T-NAME>.");
 						if(mob.location().okMessage(mob,msg))
-							CoffeeUtensils.roomAffectFully(msg,mob.location(),dir);
+							CMLib.utensils().roomAffectFully(msg,mob.location(),dir);
 					}
 				}
 				if((numPlayers>0)&&(!e.isOpen())&&(!e.isLocked()))
@@ -183,9 +194,9 @@ public class GateGuard extends StdBehavior
 				{
 					if(getMyKeyTo(mob,e)!=null)
 					{
-						FullMsg msg=new FullMsg(mob,e,CMMsg.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
+						CMMsg msg=CMClass.getMsg(mob,e,CMMsg.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
 						if(mob.location().okMessage(mob,msg))
-							CoffeeUtensils.roomAffectFully(msg,mob.location(),dir);
+							CMLib.utensils().roomAffectFully(msg,mob.location(),dir);
 					}
 				}
 			}

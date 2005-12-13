@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -32,7 +43,7 @@ public class Chant_SnatchLight extends Chant
 	public Room snatchLocation()
 	{
 		if((invoker!=null)
-		&&Sense.isInTheGame(invoker,false)
+		&&CMLib.flags().isInTheGame(invoker,false)
 		&&(invoker.fetchEffect(ID())!=null))
 		   return invoker.location();
 		return null;
@@ -41,7 +52,7 @@ public class Chant_SnatchLight extends Chant
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(CoffeeUtensils.roomLocation(affected)==snatchLocation())
+		if(CMLib.utensils().roomLocation(affected)==snatchLocation())
 		{
 			affectableStats.setDisposition(affectableStats.disposition() |  EnvStats.IS_DARK);
 			if(Util.bset(affectableStats.disposition(),EnvStats.IS_LIGHTSOURCE))
@@ -70,7 +81,7 @@ public class Chant_SnatchLight extends Chant
 			for(int m=0;m<R.numInhabitants();m++)
 			{
 				MOB M=R.fetchInhabitant(m);
-				if((M!=null)&&(Sense.isGlowing(M)||Sense.isLightSource(M))&&(M.fetchEffect(ID())==null))
+				if((M!=null)&&(CMLib.flags().isGlowing(M)||CMLib.flags().isLightSource(M))&&(M.fetchEffect(ID())==null))
 				{
 					Ability A=(Ability)copyOf();
 					A.setBorrowed(M,true);
@@ -80,7 +91,7 @@ public class Chant_SnatchLight extends Chant
 				for(int i=0;i<M.inventorySize();i++)
 				{
 					Item I=M.fetchInventory(i);
-					if((I!=null)&&(I.container()==null)&&(Sense.isGlowing(I)||Sense.isLightSource(I))&&(I.fetchEffect(ID())==null))
+					if((I!=null)&&(I.container()==null)&&(CMLib.flags().isGlowing(I)||CMLib.flags().isLightSource(I))&&(I.fetchEffect(ID())==null))
 					{
 						Ability A=(Ability)copyOf();
 						A.setBorrowed(I,true);
@@ -91,7 +102,7 @@ public class Chant_SnatchLight extends Chant
 			for(int i=0;i<R.numItems();i++)
 			{
 				Item I=R.fetchItem(i);
-				if((I!=null)&&(Sense.isGlowing(I)||Sense.isLightSource(I))&&(I.fetchEffect(ID())==null))
+				if((I!=null)&&(CMLib.flags().isGlowing(I)||CMLib.flags().isLightSource(I))&&(I.fetchEffect(ID())==null))
 				{
 					Ability A=(Ability)copyOf();
 					A.setBorrowed(I,true);
@@ -104,7 +115,7 @@ public class Chant_SnatchLight extends Chant
 		else
 		if(affected!=null)
 		{
-			Room R=CoffeeUtensils.roomLocation(affected);
+			Room R=CMLib.utensils().roomLocation(affected);
 			if((invoker==null)||(R!=invoker.location()))
 			{
 				unInvoke();
@@ -139,7 +150,7 @@ public class Chant_SnatchLight extends Chant
 						}
 					}
 				}
-				Room R=CoffeeUtensils.roomLocation(E);
+				Room R=CMLib.utensils().roomLocation(E);
 				if(R!=null) R.recoverRoomStats();
 			}
 			return;
@@ -186,7 +197,7 @@ public class Chant_SnatchLight extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<S-NAME> gain(s) an aura of light snatching!":"^S<S-NAME> chant(s), feeling <S-HIS-HER> body become a light snatcher!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<S-NAME> gain(s) an aura of light snatching!":"^S<S-NAME> chant(s), feeling <S-HIS-HER> body become a light snatcher!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

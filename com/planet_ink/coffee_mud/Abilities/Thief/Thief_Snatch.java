@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
-
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+
 
 import java.util.*;
 
@@ -82,15 +93,15 @@ public class Thief_Snatch extends StdAbility
 			levelDiff=levelDiff*6;
 		else
 			levelDiff=0;
-		boolean hit=(auto)||MUDFight.rollToHit(mob,mob.getVictim());
+		boolean hit=(auto)||CMLib.combat().rollToHit(mob,mob.getVictim());
 		boolean success=profficiencyCheck(mob,-levelDiff,auto)&&(hit);
 		if((success)
 		   &&(hisWeapon!=null)
 		   &&((hisWeapon.rawProperLocationBitmap()==Item.WIELD)
 			  ||(hisWeapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
 		{
-			FullMsg msg=new FullMsg(mob.getVictim(),hisWeapon,null,CMMsg.MSG_DROP,null);
-			FullMsg msg2=new FullMsg(mob,null,this,CMMsg.MSG_THIEF_ACT,null);
+			CMMsg msg=CMClass.getMsg(mob.getVictim(),hisWeapon,null,CMMsg.MSG_DROP,null);
+			CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.MSG_THIEF_ACT,null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob.getVictim(),msg);
@@ -98,10 +109,10 @@ public class Thief_Snatch extends StdAbility
 				mob.location().show(mob,mob.getVictim(),CMMsg.MSG_OK_VISUAL,"<S-NAME> disarm(s) <T-NAMESELF>!");
 				if(mob.location().isContent(hisWeapon))
 				{
-					CommonMsgs.get(mob,null,hisWeapon,true);
+					CMLib.commands().get(mob,null,hisWeapon,true);
 					if(mob.isMine(hisWeapon))
 					{
-						msg=new FullMsg(mob,hisWeapon,null,CMMsg.MSG_HOLD,"<S-NAME> snatch(es) the <T-NAME> out of mid-air!");
+						msg=CMClass.getMsg(mob,hisWeapon,null,CMMsg.MSG_HOLD,"<S-NAME> snatch(es) the <T-NAME> out of mid-air!");
 						if(mob.location().okMessage(mob,msg))
 							mob.location().send(mob,msg);
 					}

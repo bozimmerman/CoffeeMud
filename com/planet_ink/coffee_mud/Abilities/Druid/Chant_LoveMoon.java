@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -67,7 +78,7 @@ public class Chant_LoveMoon extends Chant
 					MOB M=mob.location().fetchInhabitant(i);
 					if((M!=null)
 					&&(M!=mob)
-					&&(Sense.canBeSeenBy(M,mob))
+					&&(CMLib.flags().canBeSeenBy(M,mob))
 					&&(M.charStats().getStat(CharStats.GENDER)!=mob.charStats().getStat(CharStats.GENDER))
 					&&(M.charStats().getStat(CharStats.GENDER)!='N')
 					&&(M.charStats().getSave(CharStats.CHARISMA)>14))
@@ -75,18 +86,18 @@ public class Chant_LoveMoon extends Chant
 				}
 				if(choices.size()>0)
 				{
-					MOB M=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
-					if(Dice.rollPercentage()==1)
+					MOB M=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+					if(CMLib.dice().rollPercentage()==1)
 					{
 						Item I=mob.fetchFirstWornItem(Item.ON_WAIST);
-						if(I!=null)	CommonMsgs.remove(mob,I,false);
+						if(I!=null)	CMLib.commands().remove(mob,I,false);
 						I=mob.fetchFirstWornItem(Item.ON_LEGS);
-						if(I!=null)	CommonMsgs.remove(mob,I,false);
+						if(I!=null)	CMLib.commands().remove(mob,I,false);
 						mob.doCommand(Util.parse("MATE "+M.name()));
 					}
 					else
-					if(Dice.rollPercentage()>10)
-						switch(Dice.roll(1,5,0))
+					if(CMLib.dice().rollPercentage()>10)
+						switch(CMLib.dice().roll(1,5,0))
 						{
 						case 1:
 							mob.tell("You feel strange urgings towards "+M.name()+".");
@@ -175,7 +186,7 @@ public class Chant_LoveMoon extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

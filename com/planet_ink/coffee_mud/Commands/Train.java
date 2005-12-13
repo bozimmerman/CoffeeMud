@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -31,7 +42,7 @@ public class Train extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("You have "+mob.getTrains()+" training sessions. Enter HELP TRAIN for more information.");
+			mob.tell("You have "+mob.getTrains()+" training CMLib.sessions(). Enter HELP TRAIN for more information.");
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -61,7 +72,7 @@ public class Train extends StdCommand
 			if(curStat<25)
 				trainsRequired=3;
 			
-			if(curStat>=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
+			if(curStat>=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 						 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+abilityCode)))
 			{
 				mob.tell("You cannot train that any further.");
@@ -71,7 +82,7 @@ public class Train extends StdCommand
         else
             abilityCode=-1;
 		CharClass theClass=null;
-		if((!CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("NO"))
+		if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
 		&&(abilityCode<0))
 		{
 			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
@@ -158,7 +169,7 @@ public class Train extends StdCommand
 				break;
 			}
 		}
-		if((teacher==null)||((teacher!=null)&&(!Sense.canBeSeenBy(teacher,mob))))
+		if((teacher==null)||((teacher!=null)&&(!CMLib.flags().canBeSeenBy(teacher,mob))))
 		{
 			mob.tell("That person doesn't seem to be here.");
 			return false;
@@ -178,15 +189,15 @@ public class Train extends StdCommand
 			mob.tell("You are refusing training at this time.");
 			return false;
 		}
-		if(Sense.isSleeping(mob)||Sense.isSitting(mob))
+		if(CMLib.flags().isSleeping(mob)||CMLib.flags().isSitting(mob))
 		{
 		    mob.tell("You need to stand up for your training.");
 		    return false;
 		}
-		if(Sense.isSleeping(teacher)||Sense.isSitting(teacher))
+		if(CMLib.flags().isSleeping(teacher)||CMLib.flags().isSitting(teacher))
 		{
-		    if(teacher.isMonster()) CommonMsgs.stand(teacher,true);
-			if(Sense.isSleeping(teacher)||Sense.isSitting(teacher))
+		    if(teacher.isMonster()) CMLib.commands().stand(teacher,true);
+			if(CMLib.flags().isSleeping(teacher)||CMLib.flags().isSitting(teacher))
 			{
 			    mob.tell(teacher.name()+" looks a bit too relaxed to train with you.");
 			    return false;
@@ -208,7 +219,7 @@ public class Train extends StdCommand
 		&&(!mob.charStats().getCurrentClass().baseClass().equals("Commoner"))
 		&&(teacher.charStats().getClassLevel(theClass)<1))
 	    {
-			if((!CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("MULTI")))
+			if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI")))
             {
                 CharClass C=CMClass.getCharClass(mob.charStats().getCurrentClass().baseClass());
                 String baseClassName=(C!=null)?C.name():mob.charStats().getCurrentClass().baseClass();
@@ -234,7 +245,7 @@ public class Train extends StdCommand
 			curStat=mob.baseCharStats().getStat(abilityCode);
 		}
 
-		FullMsg msg=new FullMsg(teacher,mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> train(s) with <T-NAMESELF>.");
+		CMMsg msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> train(s) with <T-NAMESELF>.");
 		if(!mob.location().okMessage(mob,msg))
 			return false;
 		mob.location().send(mob,msg);
@@ -315,7 +326,7 @@ public class Train extends StdCommand
 			mob.baseCharStats().getCurrentClass().endCharacter(mob);
 			mob.baseCharStats().setCurrentClass(theClass);
 			if((!mob.isMonster())&&(mob.soulMate()==null))
-				CoffeeTables.bump(mob,CoffeeTables.STAT_CLASSCHANGE);
+				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_CLASSCHANGE);
 			mob.recoverCharStats();
 			mob.charStats().getCurrentClass().startCharacter(mob,false,true);
 			break;

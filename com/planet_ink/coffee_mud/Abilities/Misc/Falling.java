@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Misc;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -80,13 +91,13 @@ public class Falling extends StdAbility
 		if(reversed()) return true;
 		unInvoke();
 		if(isAirRoom(mob.location()))
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> stop(s) falling."+CommonStrings.msp("splat.wav",50));
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> stop(s) falling."+CMProps.msp("splat.wav",50));
 		else
 		if(isWaterSurface(mob.location())||isUnderWater(mob.location()))
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the water."+CommonStrings.msp("splat.wav",50));
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the water."+CMProps.msp("splat.wav",50));
 		else
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the ground."+CommonStrings.msp("splat.wav",50));
-		MUDFight.postDamage(mob,mob,this,damageToTake,CMMsg.MSG_OK_VISUAL,-1,null);
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the ground."+CMProps.msp("splat.wav",50));
+		CMLib.combat().postDamage(mob,mob,this,damageToTake,CMMsg.MSG_OK_VISUAL,-1,null);
 		mob.delEffect(this);
 		return false;
 	}
@@ -115,7 +126,7 @@ public class Falling extends StdAbility
 			if(mob==null) return false;
 			if(mob.location()==null) return false;
 
-			if(Sense.isInFlight(mob))
+			if(CMLib.flags().isInFlight(mob))
 			{
 				damageToTake=0;
 				unInvoke();
@@ -134,10 +145,10 @@ public class Falling extends StdAbility
 				{
 					mob.tell("\n\r\n\rYOU ARE FALLING "+addStr.toUpperCase()+"!!\n\r\n\r");
 					if(!reversed())
-						damageToTake+=Dice.roll(1,6,0);
+						damageToTake+=CMLib.dice().roll(1,6,0);
 				}
 				temporarilyDisable=true;
-				MUDTracker.move(mob,direction,false,false);
+				CMLib.tracking().move(mob,direction,false,false);
 				temporarilyDisable=false;
 				if(!canFallFrom(mob.location(),direction))
 					return stopFalling(mob);
@@ -155,9 +166,9 @@ public class Falling extends StdAbility
 
 			if((room==null)
 			||((room!=null)&&(!room.isContent(item)))
-			||(!Sense.isGettable(item))
+			||(!CMLib.flags().isGettable(item))
             ||(item.container()!=null)
-			||(Sense.isInFlight(item.ultimateContainer()))
+			||(CMLib.flags().isInFlight(item.ultimateContainer()))
 			||(room.getRoomInDir(direction)==null))
 			{
 				unInvoke();
@@ -192,7 +203,7 @@ public class Falling extends StdAbility
 		if((affected!=null)&&(affected instanceof MOB))
 			if(msg.amISource((MOB)affected))
 			{
-				if(Sense.isInFlight(mob))
+				if(CMLib.flags().isInFlight(mob))
 				{
 					damageToTake=0;
 					unInvoke();
@@ -259,7 +270,7 @@ public class Falling extends StdAbility
 			F.makeLongLasting();
 			E.addEffect(F);
 			if(!(E instanceof MOB))
-				CMClass.ThreadEngine().startTickDown(F,MudHost.TICK_MOB,1);
+				CMLib.threads().startTickDown(F,MudHost.TICK_MOB,1);
 			E.recoverEnvStats();
 
 		}

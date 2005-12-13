@@ -1,13 +1,25 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import org.mozilla.javascript.*;
 
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -54,7 +66,7 @@ public class Scriptable extends StdBehavior
 
 	public boolean modifyBehavior(Environmental hostObj, MOB mob, Object O)
 	{
-		if(O instanceof Quests)
+		if(O instanceof Quest)
 		{
 		}
 		else
@@ -300,7 +312,7 @@ public class Scriptable extends StdBehavior
                 rawHost=varify(source,target,monster,primaryItem,secondaryItem,msg,rawHost);
             else
             if(E instanceof Room)
-                rawHost=CMMap.getExtendedRoomID((Room)E);
+                rawHost=CMLib.map().getExtendedRoomID((Room)E);
             else
                 rawHost=E.Name();
         }
@@ -570,31 +582,31 @@ public class Scriptable extends StdBehavior
 	private Room getRoom(String thisName, Room imHere)
 	{
 		if(thisName.length()==0) return null;
-		Room room=CMMap.getRoom(thisName);
+		Room room=CMLib.map().getRoom(thisName);
 		if((room!=null)&&(room.roomID().equalsIgnoreCase(thisName)))
 			return room;
 		Room inAreaRoom=null;
 		try
 		{
-            for(Enumeration p=CMMap.players();p.hasMoreElements();)
+            for(Enumeration p=CMLib.map().players();p.hasMoreElements();)
             {
                 MOB M=(MOB)p.nextElement();
                 if((M.Name().equalsIgnoreCase(thisName))
                 &&(M.location()!=null)
-                &&(Sense.isInTheGame(M,true)))
+                &&(CMLib.flags().isInTheGame(M,true)))
                     inAreaRoom=M.location();
             }
             if(inAreaRoom==null)
-            for(Enumeration p=CMMap.players();p.hasMoreElements();)
+            for(Enumeration p=CMLib.map().players();p.hasMoreElements();)
             {
                 MOB M=(MOB)p.nextElement();
                 if((M.name().equalsIgnoreCase(thisName))
                 &&(M.location()!=null)
-                &&(Sense.isInTheGame(M,true)))
+                &&(CMLib.flags().isInTheGame(M,true)))
                     inAreaRoom=M.location();
             }
             if(inAreaRoom==null)
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if((R.roomID().endsWith("#"+thisName))
@@ -611,10 +623,10 @@ public class Scriptable extends StdBehavior
 		if(room!=null) return room;
 		try
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(EnglishParser.containsString(R.displayText(),thisName))
+				if(CMLib.english().containsString(R.displayText(),thisName))
 				{
 					if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
 						inAreaRoom=R;
@@ -627,10 +639,10 @@ public class Scriptable extends StdBehavior
 		if(room!=null) return room;
 		try
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(EnglishParser.containsString(R.description(),thisName))
+				if(CMLib.english().containsString(R.description(),thisName))
 				{
 					if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
 						inAreaRoom=R;
@@ -643,7 +655,7 @@ public class Scriptable extends StdBehavior
 		if(room!=null) return room;
 		try
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if((R.fetchInhabitant(thisName)!=null)
@@ -665,9 +677,9 @@ public class Scriptable extends StdBehavior
 	{
 		if(scripted!=null)
 		{
-			Room R=CoffeeUtensils.roomLocation(scripted);
-			Log.errOut("Scriptable",scripted.name()+"/"+CMMap.getExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg);
-			if(R!=null) R.showHappens(CMMsg.MSG_OK_VISUAL,"Scriptable Error: "+scripted.name()+"/"+CMMap.getExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg);
+			Room R=CMLib.utensils().roomLocation(scripted);
+			Log.errOut("Scriptable",scripted.name()+"/"+CMLib.map().getExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg);
+			if(R!=null) R.showHappens(CMMsg.MSG_OK_VISUAL,"Scriptable Error: "+scripted.name()+"/"+CMLib.map().getExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg);
 		}
 		else
 			Log.errOut("Scriptable","*/*/"+cmdName+"/"+errType+"/"+errMsg);
@@ -741,9 +753,9 @@ public class Scriptable extends StdBehavior
 		if(monsters!=null) return monsters;
 		StringBuffer buf=new CMFile(filename,null,true).text();
 		String thangName="null";
-		Room R=CoffeeUtensils.roomLocation(scripted);
+		Room R=CMLib.utensils().roomLocation(scripted);
 		if(R!=null)
-		    thangName=scripted.name()+" at "+CMMap.getExtendedRoomID((Room)scripted);
+		    thangName=scripted.name()+" at "+CMLib.map().getExtendedRoomID((Room)scripted);
 		else
 		if(scripted!=null)
 		    thangName=scripted.name();
@@ -758,7 +770,7 @@ public class Scriptable extends StdBehavior
 			return null;
 		}
 		monsters=new Vector();
-		String error=CoffeeMaker.addMOBsFromXML(buf.toString(),monsters,null);
+		String error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),monsters,null);
 		if(error.length()>0)
 		{
 			scriptableError(scripted,"XMLLOAD","?","Error in XML file: '"+filename+"'");
@@ -780,9 +792,9 @@ public class Scriptable extends StdBehavior
 		if(items!=null) return items;
 		StringBuffer buf=new CMFile(filename,null,true).text();
 		String thangName="null";
-		Room R=CoffeeUtensils.roomLocation(scripted);
+		Room R=CMLib.utensils().roomLocation(scripted);
 		if(R!=null)
-		    thangName=scripted.name()+" at "+CMMap.getExtendedRoomID((Room)scripted);
+		    thangName=scripted.name()+" at "+CMLib.map().getExtendedRoomID((Room)scripted);
 		else
 		if(scripted!=null)
 		    thangName=scripted.name();
@@ -797,7 +809,7 @@ public class Scriptable extends StdBehavior
 			return null;
 		}
 		items=new Vector();
-		String error=CoffeeMaker.addItemsFromXML(buf.toString(),items,null);
+		String error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),items,null);
 		if(error.length()>0)
 		{
 			scriptableError(scripted,"XMLLOAD","?","Error in XML file: '"+filename+"'");
@@ -834,13 +846,13 @@ public class Scriptable extends StdBehavior
 					if(name.equalsIgnoreCase("ANY"))
 					{
 						if(V.size()>0)
-							areaThing=(Environmental)V.elementAt(Dice.roll(1,V.size(),-1));
+							areaThing=(Environmental)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 					}
 					else
 					{
-						areaThing=EnglishParser.fetchEnvironmental(V,name,true);
+						areaThing=CMLib.english().fetchEnvironmental(V,name,true);
 						if(areaThing==null)
-							areaThing=EnglishParser.fetchEnvironmental(V,name,false);
+							areaThing=CMLib.english().fetchEnvironmental(V,name,false);
 					}
 				}
 			}
@@ -850,7 +862,7 @@ public class Scriptable extends StdBehavior
 		{
 		    try
 		    {
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					Environmental E=null;
@@ -866,8 +878,8 @@ public class Scriptable extends StdBehavior
 							if(M!=null)
 							{
 								E=M.fetchInventory(thisName);
-								if((CoffeeShops.getShopKeeper(M)!=null)&&(E==null))
-									E=CoffeeShops.getShopKeeper(M).getStock(thisName,null);
+								if((CMLib.coffeeShops().getShopKeeper(M)!=null)&&(E==null))
+									E=CMLib.coffeeShops().getShopKeeper(M).getStock(thisName,null);
 							}
 						}
 					}
@@ -933,7 +945,7 @@ public class Scriptable extends StdBehavior
 					int i=0;
 					Exit E=null;
 					while(((++i)<100)||(E!=null))
-						E=lastKnownLocation.getExitInDir(Dice.roll(1,Directions.NUM_DIRECTIONS,-1));
+						E=lastKnownLocation.getExitInDir(CMLib.dice().roll(1,Directions.NUM_DIRECTIONS,-1));
 					return E;
 				}
 				return null;
@@ -1067,7 +1079,7 @@ public class Scriptable extends StdBehavior
 					for(int i=0;i<lastKnownLocation.numInhabitants();i++)
 					{
 						MOB M=lastKnownLocation.fetchInhabitant(i);
-						if((M!=null)&&(M!=monster)&&(Sense.canBeSeenBy(M,monster)))
+						if((M!=null)&&(M!=monster)&&(CMLib.flags().canBeSeenBy(M,monster)))
 						   str.append("\""+M.name()+"\" ");
 					}
 					middle=str.toString();
@@ -1080,7 +1092,7 @@ public class Scriptable extends StdBehavior
 					for(int i=0;i<lastKnownLocation.numItems();i++)
 					{
 						Item I=lastKnownLocation.fetchItem(i);
-						if((I!=null)&&(I.container()==null)&&(Sense.canBeSeenBy(I,monster)))
+						if((I!=null)&&(I.container()==null)&&(CMLib.flags().canBeSeenBy(I,monster)))
 						   str.append("\""+I.name()+"\" ");
 					}
 					middle=str.toString();
@@ -1119,7 +1131,7 @@ public class Scriptable extends StdBehavior
 						{
 							int num=Util.s_int(mid.substring(0,y));
 							mid=mid.substring(y+1).trim();
-							Quest Q=Quests.fetchQuest(mid);
+							Quest Q=CMLib.quests().fetchQuest(mid);
 							if(Q!=null)	middle=Q.getQuestItemName(num);
 						}
 						back=back.substring(x+1);
@@ -1138,7 +1150,7 @@ public class Scriptable extends StdBehavior
 						{
 							int num=Util.s_int(mid.substring(0,y));
 							mid=mid.substring(y+1).trim();
-							Quest Q=Quests.fetchQuest(mid);
+							Quest Q=CMLib.quests().fetchQuest(mid);
 							if(Q!=null)	middle=Q.getQuestMobName(num);
 						}
 						back=back.substring(x+1);
@@ -1177,7 +1189,7 @@ public class Scriptable extends StdBehavior
 						int i=0;
 						while(((++i)<100)||(E!=null))
 						{
-							dir=Dice.roll(1,Directions.NUM_DIRECTIONS,-1);
+							dir=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS,-1);
 							E=lastKnownLocation.getExitInDir(dir);
 						}
 					}
@@ -1486,7 +1498,7 @@ public class Scriptable extends StdBehavior
 			case 1: // rand
 			{
 				int arg=Util.s_int(evaluable.substring(y+1,z));
-				if(Dice.rollPercentage()<arg)
+				if(CMLib.dice().rollPercentage()<arg)
 					returnable=true;
 				else
 					returnable=false;
@@ -1515,7 +1527,7 @@ public class Scriptable extends StdBehavior
 				}
 				else
 				if(E instanceof Item)
-					returnable=EnglishParser.containsString(E.name(),arg2);
+					returnable=CMLib.english().containsString(E.name(),arg2);
 				else
 				if(E instanceof Room)
 				{
@@ -1553,7 +1565,7 @@ public class Scriptable extends StdBehavior
                         I=M.fetchInventory(i);
                         if(I==null) break;
                         if((item.equalsIgnoreCase("all"))
-                        ||(EnglishParser.containsString(I.Name(),item)))
+                        ||(CMLib.english().containsString(I.Name(),item)))
                             num++;
                     }
                     returnable=simpleEval(scripted,""+num,value,cmp,"HASNUM");
@@ -1561,7 +1573,7 @@ public class Scriptable extends StdBehavior
                 else
                 if(E instanceof Item)
                 {
-                    num=EnglishParser.containsString(E.name(),item)?1:0;
+                    num=CMLib.english().containsString(E.name(),item)?1:0;
                     returnable=simpleEval(scripted,""+num,value,cmp,"HASNUM");
                 }
                 else
@@ -1573,7 +1585,7 @@ public class Scriptable extends StdBehavior
                         I=R.fetchItem(i);
                         if(I==null) break;
                         if((item.equalsIgnoreCase("all"))
-                        ||(EnglishParser.containsString(I.Name(),item)))
+                        ||(CMLib.english().containsString(I.Name(),item)))
                             num++;
                     }
                     returnable=simpleEval(scripted,""+num,value,cmp,"HASNUM");
@@ -1618,7 +1630,7 @@ public class Scriptable extends StdBehavior
 					returnable=(((MOB)E).fetchWornItem(arg2)!=null);
 				else
 				if(E instanceof Item)
-					returnable=(EnglishParser.containsString(E.name(),arg2)&&(!((Item)E).amWearingAt(Item.INVENTORY)));
+					returnable=(CMLib.english().containsString(E.name(),arg2)&&(!((Item)E).amWearingAt(Item.INVENTORY)));
 				else
 					returnable=false;
 				break;
@@ -1650,7 +1662,7 @@ public class Scriptable extends StdBehavior
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
-					returnable=Sense.isGood(E);
+					returnable=CMLib.flags().isGood(E);
 				break;
 			}
 			case 8: // isevil
@@ -1660,7 +1672,7 @@ public class Scriptable extends StdBehavior
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
-					returnable=Sense.isEvil(E);
+					returnable=CMLib.flags().isEvil(E);
 				break;
 			}
 			case 9: // isneutral
@@ -1670,7 +1682,7 @@ public class Scriptable extends StdBehavior
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
-					returnable=Sense.isNeutral(E);
+					returnable=CMLib.flags().isNeutral(E);
 				break;
 			}
 			case 54: // isalive
@@ -1765,7 +1777,7 @@ public class Scriptable extends StdBehavior
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
-					returnable=Sense.flaggedAffects(E,Ability.FLAG_CHARMING).size()>0;
+					returnable=CMLib.flags().flaggedAffects(E,Ability.FLAG_CHARMING).size()>0;
 				break;
 			}
 			case 15: // isfollow
@@ -1821,7 +1833,7 @@ public class Scriptable extends StdBehavior
 				if(E==null)
 					returnable=false;
 				else
-					returnable=EnglishParser.containsString(E.name(),arg2);
+					returnable=CMLib.english().containsString(E.name(),arg2);
 				break;
 			}
 			case 56: // name
@@ -1845,7 +1857,7 @@ public class Scriptable extends StdBehavior
                 if(E==null)
                     returnable=false;
                 else
-                    returnable=simpleEvalStr(scripted,BeanCounter.getCurrency(E),arg3,arg2,"CURRENCY");
+                    returnable=simpleEvalStr(scripted,CMLib.beanCounter().getCurrency(E),arg3,arg2,"CURRENCY");
                 break;
             }
 			case 61: // strin
@@ -1933,7 +1945,7 @@ public class Scriptable extends StdBehavior
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=Util.getPastBitClean(evaluable.substring(y+1,z),0);
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
-				Quest Q=Quests.fetchQuest(arg2);
+				Quest Q=CMLib.quests().fetchQuest(arg2);
 				if(Q==null)
 					returnable=false;
 				else
@@ -1947,7 +1959,7 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=Util.getPastBitClean(evaluable.substring(y+1,z),0);
-				Quest Q=Quests.fetchQuest(arg2);
+				Quest Q=CMLib.quests().fetchQuest(arg2);
 				if(Q==null)
 					returnable=false;
 				else
@@ -1958,7 +1970,7 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=Util.getPastBitClean(evaluable.substring(y+1,z),0);
-				Quest Q=Quests.fetchQuest(arg2);
+				Quest Q=CMLib.quests().fetchQuest(arg2);
 				if(Q==null)
 					returnable=false;
 				else
@@ -1985,7 +1997,7 @@ public class Scriptable extends StdBehavior
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
-						if((M!=null)&&(EnglishParser.containsString(M.name(),arg1)))
+						if((M!=null)&&(CMLib.english().containsString(M.name(),arg1)))
 							num++;
 					}
 				}
@@ -2000,13 +2012,13 @@ public class Scriptable extends StdBehavior
 				int num=0;
 				try
 				{
-					for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+					for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 					{
 						Room R=(Room)e.nextElement();
 						for(int m=0;m<R.numInhabitants();m++)
 						{
 							MOB M=R.fetchInhabitant(m);
-							if((M!=null)&&(EnglishParser.containsString(M.name(),arg1)))
+							if((M!=null)&&(CMLib.english().containsString(M.name(),arg1)))
 								num++;
 						}
 					}
@@ -2043,7 +2055,7 @@ public class Scriptable extends StdBehavior
 				int num=0;
 				try
 				{
-					for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+					for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 					{
 						Room R=(Room)e.nextElement();
 						for(int m=0;m<R.numInhabitants();m++)
@@ -2061,7 +2073,7 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=Util.getPastBitClean(evaluable.substring(y+1,z),0);
-				Quest Q=Quests.fetchQuest(arg2);
+				Quest Q=CMLib.quests().fetchQuest(arg2);
 				if(Q==null)
 					returnable=false;
 				else
@@ -2185,8 +2197,8 @@ public class Scriptable extends StdBehavior
                             for(int i=0;i<lastKnownLocation.numInhabitants();i++)
                             {
                                 MOB M=lastKnownLocation.fetchInhabitant(i);
-                                if(EnglishParser.containsString(M.Name(),name)
-                                ||EnglishParser.containsString(M.displayText(),name))
+                                if(CMLib.english().containsString(M.Name(),name)
+                                ||CMLib.english().containsString(M.displayText(),name))
                                     num++;
                             }
                         }
@@ -2225,7 +2237,7 @@ public class Scriptable extends StdBehavior
                     if(E2 instanceof Area)
                         A=(Area)E2;
                     else
-                        A=CMMap.getArea(where);
+                        A=CMLib.map().getArea(where);
                     if(A==null)
                     {
                         scriptableError(scripted,"EXPLORED","Unknown Area",where);
@@ -2249,7 +2261,7 @@ public class Scriptable extends StdBehavior
                 String cmp=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2));
                 String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),3));
                 Environmental E=getArgumentItem(whom,source,monster,scripted,target,primaryItem,secondaryItem,msg);
-                Faction F=Factions.getFaction(arg1);
+                Faction F=CMLib.factions().getFaction(arg1);
                 if((E==null)||(!(E instanceof MOB)))
                 {
                     scriptableError(scripted,"FACTION","Unknown Code",whom);
@@ -2262,20 +2274,20 @@ public class Scriptable extends StdBehavior
                 }
                 MOB M=(MOB)E;
                 String value=null;
-                if(!M.hasFaction(F.ID))
+                if(!M.hasFaction(F.factionID()))
                     value="";
                 else
                 {
-                    int myfac=M.fetchFaction(F.ID);
+                    int myfac=M.fetchFaction(F.factionID());
                     if(Util.isNumber(arg2))
                         value=new Integer(myfac).toString();
                     else
                     {
-                        Faction.FactionRange FR=Factions.getRange(F.ID,myfac);
+                        Faction.FactionRange FR=CMLib.factions().getRange(F.factionID(),myfac);
                         if(FR==null) 
                             value="";
                         else 
-                            value=FR.Name;
+                            value=FR.name();
                     }
                 }
                 if(lastKnownLocation!=null)
@@ -2321,9 +2333,9 @@ public class Scriptable extends StdBehavior
 				if(which==null)
 					returnable=false;
 				else
-					returnable=(EnglishParser.containsString(which.name(),arg3)
-								||EnglishParser.containsString(which.Name(),arg3)
-								||EnglishParser.containsString(which.displayText(),arg3));
+					returnable=(CMLib.english().containsString(which.name(),arg3)
+								||CMLib.english().containsString(which.Name(),arg3)
+								||CMLib.english().containsString(which.displayText(),arg3));
 				break;
 			}
 			case 49: // hastattoo
@@ -2372,9 +2384,9 @@ public class Scriptable extends StdBehavior
 				if(which==null)
 					returnable=false;
 				else
-					returnable=(EnglishParser.containsString(which.name(),arg2)
-								||EnglishParser.containsString(which.Name(),arg2)
-								||EnglishParser.containsString(which.displayText(),arg2));
+					returnable=(CMLib.english().containsString(which.name(),arg2)
+								||CMLib.english().containsString(which.Name(),arg2)
+								||CMLib.english().containsString(which.displayText(),arg2));
 				break;
 			}
 			case 44: // roomitem
@@ -2397,9 +2409,9 @@ public class Scriptable extends StdBehavior
 				if(which==null)
 					returnable=false;
 				else
-					returnable=(EnglishParser.containsString(which.name(),arg2)
-								||EnglishParser.containsString(which.Name(),arg2)
-								||EnglishParser.containsString(which.displayText(),arg2));
+					returnable=(CMLib.english().containsString(which.name(),arg2)
+								||CMLib.english().containsString(which.Name(),arg2)
+								||CMLib.english().containsString(which.displayText(),arg2));
 				break;
 			}
 			case 36: // ishere
@@ -2427,14 +2439,14 @@ public class Scriptable extends StdBehavior
 					returnable=false;
 				else
 				{
-					Room R2=CoffeeUtensils.roomLocation(E);
+					Room R2=CMLib.utensils().roomLocation(E);
 					if((R==null)&&((arg2.length()==0)||(R2==null)))
 						returnable=true;
 					else
 					if((R==null)||(R2==null))
 						returnable=false;
 					else
-						returnable=simpleEvalStr(scripted,CMMap.getExtendedRoomID(R2),CMMap.getExtendedRoomID(R),comp,"INROOM");
+						returnable=simpleEvalStr(scripted,CMLib.map().getExtendedRoomID(R2),CMLib.map().getExtendedRoomID(R),comp,"INROOM");
 				}
 				break;
 			}
@@ -2591,11 +2603,11 @@ public class Scriptable extends StdBehavior
                     if(!found)
 					if(E instanceof MOB)
 					{
-						for(int i=0;i<CoffeeMaker.GENMOBCODES.length;i++)
+						for(int i=0;i<CMObjectBuilder.GENMOBCODES.length;i++)
 						{
-							if(CoffeeMaker.GENMOBCODES[i].equalsIgnoreCase(arg2))
+							if(CMObjectBuilder.GENMOBCODES[i].equalsIgnoreCase(arg2))
 							{
-								val=CoffeeMaker.getGenMobStat((MOB)E,CoffeeMaker.GENMOBCODES[i]);
+								val=CMLib.coffeeMaker().getGenMobStat((MOB)E,CMObjectBuilder.GENMOBCODES[i]);
 								found=true; break;
 							}
 						}
@@ -2630,11 +2642,11 @@ public class Scriptable extends StdBehavior
 					else
 					if(E instanceof Item)
 					{
-						for(int i=0;i<CoffeeMaker.GENITEMCODES.length;i++)
+						for(int i=0;i<CMObjectBuilder.GENITEMCODES.length;i++)
 						{
-							if(CoffeeMaker.GENITEMCODES[i].equalsIgnoreCase(arg2))
+							if(CMObjectBuilder.GENITEMCODES[i].equalsIgnoreCase(arg2))
 							{
-								val=CoffeeMaker.getGenItemStat((Item)E,CoffeeMaker.GENITEMCODES[i]);
+								val=CMLib.coffeeMaker().getGenItemStat((Item)E,CMObjectBuilder.GENITEMCODES[i]);
 								found=true; break;
 							}
 						}
@@ -2672,10 +2684,10 @@ public class Scriptable extends StdBehavior
 				else
 				{
 					String sex="STANDING";
-					if(Sense.isSleeping(E))
+					if(CMLib.flags().isSleeping(E))
 						sex="SLEEPING";
 					else
-					if(Sense.isSitting(E))
+					if(CMLib.flags().isSitting(E))
 						sex="SITTING";
 					if(arg2.equals("=="))
 						returnable=sex.startsWith(arg3);
@@ -2776,7 +2788,7 @@ public class Scriptable extends StdBehavior
 				    clanID=((MOB)E).getClanID();
 				else
 					clanID=varify(source,target,monster,primaryItem,secondaryItem,msg,arg1);
-				Clan C=Clans.findClan(clanID);
+				Clan C=CMLib.clans().findClan(clanID);
 				if(C!=null)
 				{
 				    int whichVar=-1;
@@ -2992,7 +3004,7 @@ public class Scriptable extends StdBehavior
 				{
 					int val1=0;
 					if(E instanceof MOB)
-						val1=(int)Math.round(BeanCounter.getTotalAbsoluteValue((MOB)E,BeanCounter.getCurrency(scripted)));
+						val1=(int)Math.round(CMLib.beanCounter().getTotalAbsoluteValue((MOB)E,CMLib.beanCounter().getCurrency(scripted)));
 					else
 					if(E instanceof Coins)
 						val1=(int)Math.round(((Coins)E).getTotalValue());
@@ -3021,7 +3033,7 @@ public class Scriptable extends StdBehavior
                     scriptableError(scripted,"VALUE","Syntax",evaluable);
                     break;
                 }
-                if(!BeanCounter.getAllCurrencies().contains(arg2.toUpperCase()))
+                if(!CMLib.beanCounter().getAllCurrencies().contains(arg2.toUpperCase()))
                 {
                     scriptableError(scripted,"VALUE","Syntax",arg2+" is not a valid designated currency.");
                     break;
@@ -3032,7 +3044,7 @@ public class Scriptable extends StdBehavior
                 {
                     int val1=0;
                     if(E instanceof MOB)
-                        val1=(int)Math.round(BeanCounter.getTotalAbsoluteValue((MOB)E,arg2.toUpperCase()));
+                        val1=(int)Math.round(CMLib.beanCounter().getTotalAbsoluteValue((MOB)E,arg2.toUpperCase()));
                     else
                     if(E instanceof Coins)
                     {
@@ -3166,7 +3178,7 @@ public class Scriptable extends StdBehavior
 			{
 				int arg1=Util.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase());
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
-				int arg3=Dice.roll(1,Util.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),1))),0);
+				int arg3=CMLib.dice().roll(1,Util.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),1))),0);
 				returnable=simpleEval(scripted,""+arg1,""+arg3,arg2,"RANDNUM");
 				break;
 			}
@@ -3174,7 +3186,7 @@ public class Scriptable extends StdBehavior
             {
                 int arg1=Util.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase());
                 String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
-                int arg3=Dice.roll(1,Util.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),1))),-1);
+                int arg3=CMLib.dice().roll(1,Util.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),1))),-1);
                 returnable=simpleEval(scripted,""+arg1,""+arg3,arg2,"RANDNUM");
                 break;
             }
@@ -3289,7 +3301,7 @@ public class Scriptable extends StdBehavior
 			{
 			case 1: // rand
 			{
-				results.append(Dice.rollPercentage());
+				results.append(CMLib.dice().rollPercentage());
 				break;
 			}
 			case 2: // has
@@ -3327,7 +3339,7 @@ public class Scriptable extends StdBehavior
 					}
 				}
 				if(choices.size()>0)
-					results.append(((Item)choices.elementAt(Dice.roll(1,choices.size(),-1))).name());
+					results.append(((Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).name());
 				break;
 			}
             case 74: // hasnum
@@ -3349,7 +3361,7 @@ public class Scriptable extends StdBehavior
                             I=M.fetchInventory(i);
                             if(I==null) break;
                             if((item.equalsIgnoreCase("all"))
-                            ||(EnglishParser.containsString(I.Name(),item)))
+                            ||(CMLib.english().containsString(I.Name(),item)))
                                 num++;
                         }
                         results.append(""+num);
@@ -3357,7 +3369,7 @@ public class Scriptable extends StdBehavior
                     else
                     if(E instanceof Item)
                     {
-                        num=EnglishParser.containsString(E.name(),item)?1:0;
+                        num=CMLib.english().containsString(E.name(),item)?1:0;
                         results.append(""+num);
                     }
                     else
@@ -3369,7 +3381,7 @@ public class Scriptable extends StdBehavior
                             I=R.fetchItem(i);
                             if(I==null) break;
                             if((item.equalsIgnoreCase("all"))
-                            ||(EnglishParser.containsString(I.Name(),item)))
+                            ||(CMLib.english().containsString(I.Name(),item)))
                                 num++;
                         }
                         results.append(""+num);
@@ -3402,7 +3414,7 @@ public class Scriptable extends StdBehavior
 						choices=((Container)E).getContents();
 				}
 				if(choices.size()>0)
-					results.append(((Item)choices.elementAt(Dice.roll(1,choices.size(),-1))).name());
+					results.append(((Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).name());
 				break;
 			}
 			case 4: // isnpc
@@ -3415,11 +3427,11 @@ public class Scriptable extends StdBehavior
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if((E!=null)&&((E instanceof MOB)))
 				{
-				    Faction.FactionRange FR=Factions.getRange(Factions.AlignID(),((MOB)E).fetchFaction(Factions.AlignID()));
+				    Faction.FactionRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),((MOB)E).fetchFaction(CMLib.factions().AlignID()));
 				    if(FR!=null)
-						results.append(FR.Name);
+						results.append(FR.name());
 				    else
-				        results.append(((MOB)E).fetchFaction(Factions.AlignID()));
+				        results.append(((MOB)E).fetchFaction(CMLib.factions().AlignID()));
 				}
 				break;
 			}
@@ -3428,7 +3440,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if((E!=null)&&((E instanceof MOB)))
-					results.append(Util.capitalizeAndLower(Sense.getAlignmentName(E)).toLowerCase());
+					results.append(Util.capitalizeAndLower(CMLib.flags().getAlignmentName(E)).toLowerCase());
 				break;
 			}
 			case 9: // isneutral
@@ -3436,7 +3448,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if((E!=null)&&((E instanceof MOB)))
-					results.append(((MOB)E).fetchFaction(Factions.AlignID()));
+					results.append(((MOB)E).fetchFaction(CMLib.factions().AlignID()));
 				break;
 			}
 			case 11: // isimmort
@@ -3582,7 +3594,7 @@ public class Scriptable extends StdBehavior
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if(E!=null)
 				{
-					Vector V=Sense.flaggedAffects(E,Ability.FLAG_CHARMING);
+					Vector V=CMLib.flags().flaggedAffects(E,Ability.FLAG_CHARMING);
 					for(int v=0;v<V.size();v++)
 						results.append((((Ability)V.elementAt(v)).name())+" ");
 				}
@@ -3617,7 +3629,7 @@ public class Scriptable extends StdBehavior
             {
                 String arg1=Util.cleanBit(evaluable.substring(y+1,z));
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
-                if(E!=null)results.append(BeanCounter.getCurrency(E));
+                if(E!=null)results.append(CMLib.beanCounter().getCurrency(E));
                 break;
             }
 			case 14: // affected
@@ -3627,11 +3639,11 @@ public class Scriptable extends StdBehavior
 				if(E instanceof MOB)
 				{
 					if(((MOB)E).numAllEffects()>0)
-						results.append(E.fetchEffect(Dice.roll(1,((MOB)E).numAllEffects(),-1)).name());
+						results.append(E.fetchEffect(CMLib.dice().roll(1,((MOB)E).numAllEffects(),-1)).name());
 				}
 				else
 				if(E.numEffects()>0)
-					results.append(E.fetchEffect(Dice.roll(1,E.numEffects(),-1)).name());
+					results.append(E.fetchEffect(CMLib.dice().roll(1,E.numEffects(),-1)).name());
 				break;
 			}
 			case 69: // isbehave
@@ -3665,7 +3677,7 @@ public class Scriptable extends StdBehavior
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
-						if((M!=null)&&(EnglishParser.containsString(M.name(),arg1)))
+						if((M!=null)&&(CMLib.english().containsString(M.name(),arg1)))
 							num++;
 					}
 				}
@@ -3678,13 +3690,13 @@ public class Scriptable extends StdBehavior
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.cleanBit(evaluable.substring(y+1,z)));
 				try
 				{
-					for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+					for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 					{
 						Room R=(Room)e.nextElement();
 						for(int m=0;m<R.numInhabitants();m++)
 						{
 							MOB M=R.fetchInhabitant(m);
-							if((M!=null)&&(EnglishParser.containsString(M.name(),arg1)))
+							if((M!=null)&&(CMLib.english().containsString(M.name(),arg1)))
 								num++;
 						}
 					}
@@ -3719,7 +3731,7 @@ public class Scriptable extends StdBehavior
 				MOB M=null;
 				try
 				{
-					for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+					for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 					{
 						R=(Room)e.nextElement();
 						for(int m=0;m<R.numInhabitants();m++)
@@ -3821,8 +3833,8 @@ public class Scriptable extends StdBehavior
                         for(int i=0;i<lastKnownLocation.numInhabitants();i++)
                         {
                             MOB M=lastKnownLocation.fetchInhabitant(i);
-                            if(EnglishParser.containsString(M.Name(),name)
-                            ||EnglishParser.containsString(M.displayText(),name))
+                            if(CMLib.english().containsString(M.Name(),name)
+                            ||CMLib.english().containsString(M.displayText(),name))
                                 num++;
                         }
                     }
@@ -3850,7 +3862,7 @@ public class Scriptable extends StdBehavior
                         if(E2 instanceof Area)
                             A=(Area)E2;
                         else
-                            A=CMMap.getArea(where);
+                            A=CMLib.map().getArea(where);
                     }
                     if((lastKnownLocation!=null)
                     &&((A!=null)||(where.equalsIgnoreCase("world"))))
@@ -3869,16 +3881,16 @@ public class Scriptable extends StdBehavior
                 String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
                 String arg2=Util.getPastBit(evaluable.substring(y+1,z),0);
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
-                Faction F=Factions.getFaction(arg2);
+                Faction F=CMLib.factions().getFaction(arg2);
                 if(F==null)
                     scriptableError(scripted,"FACTION","Unknown Faction",arg1);
                 else
-                if((E!=null)&&(E instanceof MOB)&&(((MOB)E).hasFaction(F.ID)))
+                if((E!=null)&&(E instanceof MOB)&&(((MOB)E).hasFaction(F.factionID())))
                 {
-                    int value=((MOB)E).fetchFaction(F.ID);
-                    Faction.FactionRange FR=Factions.getRange(F.ID,value);
+                    int value=((MOB)E).fetchFaction(F.factionID());
+                    Faction.FactionRange FR=CMLib.factions().getRange(F.factionID(),value);
                     if(FR!=null)
-                        results.append(FR.Name);
+                        results.append(FR.name());
                 }
                 break;
             }
@@ -3945,7 +3957,7 @@ public class Scriptable extends StdBehavior
 			case 17: // inroom
 			{
 				if(lastKnownLocation!=null)
-					results.append(CMMap.getExtendedRoomID(lastKnownLocation));
+					results.append(CMLib.map().getExtendedRoomID(lastKnownLocation));
 				break;
 			}
 			case 37: // inlocale
@@ -4038,11 +4050,11 @@ public class Scriptable extends StdBehavior
                     if(!found)
 					if(E instanceof MOB)
 					{
-						for(int i=0;i<CoffeeMaker.GENMOBCODES.length;i++)
+						for(int i=0;i<CMObjectBuilder.GENMOBCODES.length;i++)
 						{
-							if(CoffeeMaker.GENMOBCODES[i].equalsIgnoreCase(arg2))
+							if(CMObjectBuilder.GENMOBCODES[i].equalsIgnoreCase(arg2))
 							{
-								val=CoffeeMaker.getGenMobStat((MOB)E,CoffeeMaker.GENMOBCODES[i]);
+								val=CMLib.coffeeMaker().getGenMobStat((MOB)E,CMObjectBuilder.GENMOBCODES[i]);
 								found=true; break;
 							}
 						}
@@ -4077,11 +4089,11 @@ public class Scriptable extends StdBehavior
 					else
 					if(E instanceof Item)
 					{
-						for(int i=0;i<CoffeeMaker.GENITEMCODES.length;i++)
+						for(int i=0;i<CMObjectBuilder.GENITEMCODES.length;i++)
 						{
-							if(CoffeeMaker.GENITEMCODES[i].equalsIgnoreCase(arg2))
+							if(CMObjectBuilder.GENITEMCODES[i].equalsIgnoreCase(arg2))
 							{
-								val=CoffeeMaker.getGenItemStat((Item)E,CoffeeMaker.GENITEMCODES[i]);
+								val=CMLib.coffeeMaker().getGenItemStat((Item)E,CMObjectBuilder.GENITEMCODES[i]);
 								found=true; break;
 							}
 						}
@@ -4105,10 +4117,10 @@ public class Scriptable extends StdBehavior
 				if((E!=null)&&(E instanceof MOB))
 				{
 					String sex="STANDING";
-					if(Sense.isSleeping(E))
+					if(CMLib.flags().isSleeping(E))
 						sex="SLEEPING";
 					else
-					if(Sense.isSitting(E))
+					if(CMLib.flags().isSitting(E))
 						sex="SITTING";
 					results.append(sex);
 					break;
@@ -4133,7 +4145,7 @@ public class Scriptable extends StdBehavior
 				    clanID=((MOB)E).getClanID();
 				else
 					clanID=varify(source,target,monster,primaryItem,secondaryItem,msg,arg1);
-				Clan C=Clans.findClan(clanID);
+				Clan C=CMLib.clans().findClan(clanID);
 				if(C!=null)
 				{
 				    int whichVar=-1;
@@ -4268,7 +4280,7 @@ public class Scriptable extends StdBehavior
 				{
 					int val1=0;
 					if(E instanceof MOB)
-						val1=(int)Math.round(BeanCounter.getTotalAbsoluteValue((MOB)E,BeanCounter.getCurrency(scripted)));
+						val1=(int)Math.round(CMLib.beanCounter().getTotalAbsoluteValue((MOB)E,CMLib.beanCounter().getCurrency(scripted)));
 					else
 					if(E instanceof Coins)
 						val1=(int)Math.round(((Coins)E).getTotalValue());
@@ -4288,7 +4300,7 @@ public class Scriptable extends StdBehavior
             {
                 String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
                 String arg2=Util.getPastBitClean(evaluable.substring(y+1,z),0);
-                if(!BeanCounter.getAllCurrencies().contains(arg2.toUpperCase()))
+                if(!CMLib.beanCounter().getAllCurrencies().contains(arg2.toUpperCase()))
                 {
                     scriptableError(scripted,"VALUE","Syntax",arg2+" is not a valid designated currency.");
                     return results.toString();
@@ -4300,7 +4312,7 @@ public class Scriptable extends StdBehavior
                 {
                     int val1=0;
                     if(E instanceof MOB)
-                        val1=(int)Math.round(BeanCounter.getTotalAbsoluteValue((MOB)E,arg2));
+                        val1=(int)Math.round(CMLib.beanCounter().getTotalAbsoluteValue((MOB)E,arg2));
                     else
                     if(E instanceof Coins)
                     {
@@ -4377,14 +4389,14 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1String=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.cleanBit(evaluable.substring(y+1,z))).toUpperCase();
 				int arg1=Util.s_int(arg1String);
-				results.append(Dice.roll(1,arg1,0));
+				results.append(CMLib.dice().roll(1,arg1,0));
 				break;
 			}
             case 71: // randnum
             {
                 String arg1String=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.cleanBit(evaluable.substring(y+1,z))).toUpperCase();
                 int arg1=Util.s_int(arg1String);
-                results.append(Dice.roll(1,arg1,-1));
+                results.append(CMLib.dice().roll(1,arg1,-1));
                 break;
             }
 			default:
@@ -4413,7 +4425,7 @@ public class Scriptable extends StdBehavior
 			{
 				if((randMOB!=null)&&(randMOB!=monster))
 				   break;
-				randMOB=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),-1));
+				randMOB=room.fetchInhabitant(CMLib.dice().roll(1,room.numInhabitants(),-1));
 			}
 		}
 		return randMOB;
@@ -4469,12 +4481,12 @@ public class Scriptable extends StdBehavior
                     }
                     catch(Exception e)
                     {
-                        Log.errOut("Scriptable",scripted.name()+"/"+CMMap.getExtendedRoomID(lastKnownLocation)+"/JSCRIPT Error: "+e.getMessage());
+                        Log.errOut("Scriptable",scripted.name()+"/"+CMLib.map().getExtendedRoomID(lastKnownLocation)+"/JSCRIPT Error: "+e.getMessage());
                     }
                     Context.exit();
                 }
                 else
-                if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_JSCRIPTS)==1)
+                if(CMProps.getIntVar(CMProps.SYSTEMI_JSCRIPTS)==1)
                 {
                     if(lastKnownLocation!=null)
                         lastKnownLocation.showHappens(CMMsg.MSG_OK_ACTION,"A Javascript was not authorized.  Contact an Admin to use MODIFY JSCRIPT to authorize this script.");
@@ -4623,7 +4635,7 @@ public class Scriptable extends StdBehavior
             {
 				Environmental newTarget=getArgumentItem(Util.getPastBitClean(s,0),source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if((newTarget!=null)&&(newTarget instanceof MOB))
-					MUDFight.postDeath(monster,(MOB)newTarget,null);
+					CMLib.combat().postDeath(monster,(MOB)newTarget,null);
 				break;
 			}
 			case 16: // mpset
@@ -4692,18 +4704,18 @@ public class Scriptable extends StdBehavior
                     {
                         if(newTarget.getStatCodes()[i].equalsIgnoreCase(arg2))
                         {
-                            CoffeeMaker.setGenMobStat((MOB)newTarget,newTarget.getStatCodes()[i],arg3);
+                            CMLib.coffeeMaker().setGenMobStat((MOB)newTarget,newTarget.getStatCodes()[i],arg3);
                             found=true; break;
                         }
                     }
                     if(!found)
 					if(newTarget instanceof MOB)
 					{
-						for(int i=0;i<CoffeeMaker.GENMOBCODES.length;i++)
+						for(int i=0;i<CMObjectBuilder.GENMOBCODES.length;i++)
 						{
-							if(CoffeeMaker.GENMOBCODES[i].equalsIgnoreCase(arg2))
+							if(CMObjectBuilder.GENMOBCODES[i].equalsIgnoreCase(arg2))
 							{
-								CoffeeMaker.setGenMobStat((MOB)newTarget,CoffeeMaker.GENMOBCODES[i],arg3);
+								CMLib.coffeeMaker().setGenMobStat((MOB)newTarget,CMObjectBuilder.GENMOBCODES[i],arg3);
 								found=true;
 								break;
 							}
@@ -4749,11 +4761,11 @@ public class Scriptable extends StdBehavior
 					else
 					if(newTarget instanceof Item)
 					{
-						for(int i=0;i<CoffeeMaker.GENITEMCODES.length;i++)
+						for(int i=0;i<CMObjectBuilder.GENITEMCODES.length;i++)
 						{
-							if(CoffeeMaker.GENITEMCODES[i].equalsIgnoreCase(arg2))
+							if(CMObjectBuilder.GENITEMCODES[i].equalsIgnoreCase(arg2))
 							{
-								CoffeeMaker.setGenItemStat((Item)newTarget,CoffeeMaker.GENITEMCODES[i],arg3);
+								CMLib.coffeeMaker().setGenItemStat((Item)newTarget,CMObjectBuilder.GENITEMCODES[i],arg3);
 								found=true;
 								break;
 							}
@@ -4773,7 +4785,7 @@ public class Scriptable extends StdBehavior
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				int t=Util.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(s,1)));
 				if((t!=0)&&(newTarget!=null)&&(newTarget instanceof MOB))
-					MUDFight.postExperience((MOB)newTarget,null,null,t,false);
+					CMLib.combat().postExperience((MOB)newTarget,null,null,t,false);
 				break;
 			}
 			case 5: // mpmload
@@ -4805,12 +4817,12 @@ public class Scriptable extends StdBehavior
 				if(scripted instanceof MOB)
 				{
 					s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(7).trim());
-					long coins=EnglishParser.numPossibleGold(null,s);
+					long coins=CMLib.english().numPossibleGold(null,s);
 					if(coins>0)
 					{
-					    String currency=EnglishParser.numPossibleGoldCurrency(scripted,s);
-					    double denom=EnglishParser.numPossibleGoldDenomination(scripted,currency,s);
-					    Coins C=BeanCounter.makeCurrency(currency,denom,coins);
+					    String currency=CMLib.english().numPossibleGoldCurrency(scripted,s);
+					    double denom=CMLib.english().numPossibleGoldDenomination(scripted,currency,s);
+					    Coins C=CMLib.beanCounter().makeCurrency(currency,denom,coins);
 					    monster.addInventory(C);
 					    C.putCoinsBack();
 					}
@@ -4849,12 +4861,12 @@ public class Scriptable extends StdBehavior
 				if(lastKnownLocation!=null)
 				{
 					Vector Is=new Vector();
-					long coins=EnglishParser.numPossibleGold(null,s);
+					long coins=CMLib.english().numPossibleGold(null,s);
 					if(coins>0)
 					{
-					    String currency=EnglishParser.numPossibleGoldCurrency(monster,s);
-					    double denom=EnglishParser.numPossibleGoldDenomination(monster,currency,s);
-					    Coins C=BeanCounter.makeCurrency(currency,denom,coins);
+					    String currency=CMLib.english().numPossibleGoldCurrency(monster,s);
+					    double denom=CMLib.english().numPossibleGoldDenomination(monster,currency,s);
+					    Coins C=CMLib.beanCounter().makeCurrency(currency,denom,coins);
 					    Is.addElement(C);
 					}
 					else
@@ -4901,24 +4913,24 @@ public class Scriptable extends StdBehavior
                 if(arg.equalsIgnoreCase("area"))
                 {
                     if(lastKnownLocation!=null) 
-                        CoffeeUtensils.resetArea(lastKnownLocation.getArea());
+                        CMLib.utensils().resetArea(lastKnownLocation.getArea());
                 }
                 else
                 if(arg.equalsIgnoreCase("room"))
                 {
                     if(lastKnownLocation!=null) 
-                        CoffeeUtensils.resetRoom(lastKnownLocation);
+                        CMLib.utensils().resetRoom(lastKnownLocation);
                 }
                 else
                 {
-                    Room R=CMMap.getRoom(arg);
+                    Room R=CMLib.map().getRoom(arg);
                     if(R!=null) 
-                        CoffeeUtensils.resetRoom(R);
+                        CMLib.utensils().resetRoom(R);
                     else
                     {
-                        Area A=CMMap.findArea(arg);
+                        Area A=CMLib.map().findArea(arg);
                         if(A!=null)
-                            CoffeeUtensils.resetArea(A);
+                            CMLib.utensils().resetArea(A);
                         else
                             scriptableError(scripted,"MPRESET","Syntax","Unknown location: "+arg+" for "+scripted.Name());
                     }
@@ -5044,7 +5056,7 @@ public class Scriptable extends StdBehavior
                 if(parm.equalsIgnoreCase("world"))
                 {
                     lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
-                    for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+                    for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
                     {
                         Room R=(Room)e.nextElement();
                         if(R.numInhabitants()>0)
@@ -5063,13 +5075,13 @@ public class Scriptable extends StdBehavior
                     }
                 }
                 else
-                if(CMMap.getRoom(parm)!=null)
-                    CMMap.getRoom(parm).show(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
+                if(CMLib.map().getRoom(parm)!=null)
+                    CMLib.map().getRoom(parm).show(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
                 else
-                if(CMMap.findArea(parm)!=null)
+                if(CMLib.map().findArea(parm)!=null)
                 {
                     lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
-                    for(Enumeration e=CMMap.findArea(parm).getMetroMap();e.hasMoreElements();)
+                    for(Enumeration e=CMLib.map().findArea(parm).getMetroMap();e.hasMoreElements();)
                     {
                         Room R=(Room)e.nextElement();
                         if(R.numInhabitants()>0)
@@ -5194,26 +5206,26 @@ public class Scriptable extends StdBehavior
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg);
                 String faction=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
                 String range=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(s,2));
-                Faction F=Factions.getFaction(faction);
+                Faction F=CMLib.factions().getFaction(faction);
 				if((newTarget!=null)&&(F!=null)&&(newTarget instanceof MOB))
 				{
 					MOB themob=(MOB)newTarget;
                     if(Util.isInteger(range))
-                        themob.addFaction(F.ID,Util.s_int(range));
+                        themob.addFaction(F.factionID(),Util.s_int(range));
                     else
                     {
-                        Vector V=Factions.getRanges(F.ID);
+                        Vector V=CMLib.factions().getRanges(F.factionID());
                         Faction.FactionRange FR=null;
                         for(int v=0;v<V.size();v++)
                         {
                             Faction.FactionRange FR2=(Faction.FactionRange)V.elementAt(v);
-                            if(FR2.Name.equalsIgnoreCase(range))
+                            if(FR2.name().equalsIgnoreCase(range))
                             { FR=FR2; break;}
                         }
                         if(FR==null)
-                            scriptableError(scripted,"MPFACTION","RunTime",range+" is not a valid range for "+F.name+".");
+                            scriptableError(scripted,"MPFACTION","RunTime",range+" is not a valid range for "+F.name()+".");
                         else
-                            themob.addFaction(F.ID,FR.low+((FR.high-FR.low)/2));
+                            themob.addFaction(F.factionID(),FR.low()+((FR.high()-FR.low())/2));
                     }
 				}
 				break;
@@ -5264,7 +5276,7 @@ public class Scriptable extends StdBehavior
 					clanID=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				String clanvar=Util.getCleanBit(s,2);
 				String clanval=Util.getPastBitClean(s,2);
-				Clan C=Clans.getClan(clanID);
+				Clan C=CMLib.clans().getClan(clanID);
 				if(C!=null)
 				{
 				    int whichVar=-1;
@@ -5439,8 +5451,8 @@ public class Scriptable extends StdBehavior
 							}
                             if(findOne==null)
                             {
-                                findOne=CMMap.getPlayer(s);
-                                if((findOne!=null)&&(!Sense.isInTheGame(findOne,true)))
+                                findOne=CMLib.map().getPlayer(s);
+                                if((findOne!=null)&&(!CMLib.flags().isInTheGame(findOne,true)))
                                     findOne=null;
                                 if((findOne!=null)&&(findOne!=monster))
                                     V.addElement(findOne);
@@ -5469,20 +5481,20 @@ public class Scriptable extends StdBehavior
 						{
 							MOB follower=(MOB)V.elementAt(v);
 							Room thisRoom=follower.location();
-							FullMsg enterMsg=new FullMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke."+CommonStrings.msp("appear.wav",10));
-							FullMsg leaveMsg=new FullMsg(follower,thisRoom,null,CMMsg.MSG_LEAVE,"<S-NAME> disappear(s) in a puff of smoke.");
+							CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke."+CMProps.msp("appear.wav",10));
+							CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,null,CMMsg.MSG_LEAVE,"<S-NAME> disappear(s) in a puff of smoke.");
 							if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 							{
 								if(follower.isInCombat())
 								{
-									CommonMsgs.flee(follower,("NOWHERE"));
+									CMLib.commands().flee(follower,("NOWHERE"));
 									follower.makePeace();
 								}
 								thisRoom.send(follower,leaveMsg);
 								newRoom.bringMobHere(follower,false);
 								newRoom.send(follower,enterMsg);
 								follower.tell("\n\r\n\r");
-								CommonMsgs.look(follower,true);
+								CMLib.commands().look(follower,true);
 							}
 						}
 					}
@@ -5546,7 +5558,7 @@ public class Scriptable extends StdBehavior
 					    which=varify(source,target,monster,primaryItem,secondaryItem,msg,which);
 					else
 					if(E instanceof Room)
-					    which=CMMap.getExtendedRoomID((Room)E);
+					    which=CMLib.map().getExtendedRoomID((Room)E);
 					else
 						which=E.Name();
 				}
@@ -5567,7 +5579,7 @@ public class Scriptable extends StdBehavior
 					{
                         which=(String)V.elementAt(0,1);
 						arg2=((String)V.elementAt(0,2)).toUpperCase();
-                        CMClass.DBEngine().DBDeleteData(which,"SCRIPTABLEVARS",arg2);
+                        CMLib.database().DBDeleteData(which,"SCRIPTABLEVARS",arg2);
 						Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+which);
 						String val="";
 						if(H!=null)
@@ -5576,7 +5588,7 @@ public class Scriptable extends StdBehavior
 							if(val==null) val="";
 						}
                         if(val.length()>0)
-    						CMClass.DBEngine().DBCreateData(which,"SCRIPTABLEVARS",arg2,val);
+    						CMLib.database().DBCreateData(which,"SCRIPTABLEVARS",arg2,val);
 					}
 				}
 				break;
@@ -5591,9 +5603,9 @@ public class Scriptable extends StdBehavior
 					Vector V=null;
                     which=getVarHost(E,which,source,target,monster,primaryItem,secondaryItem,msg);
 					if(arg2.equals("*"))
-						V=CMClass.DBEngine().DBReadData(which,"SCRIPTABLEVARS");
+						V=CMLib.database().DBReadData(which,"SCRIPTABLEVARS");
 					else
-						V=CMClass.DBEngine().DBReadData(which,"SCRIPTABLEVARS",arg2);
+						V=CMLib.database().DBReadData(which,"SCRIPTABLEVARS",arg2);
                     if((V!=null)&&(V.size()>0))
                     {
                         V=(Vector)V.firstElement();
@@ -5662,11 +5674,11 @@ public class Scriptable extends StdBehavior
 						if(max<min) max=min;
 						if(min>0)
 						{
-							int dmg=(max==min)?min:Dice.roll(1,max-min,min);
+							int dmg=(max==min)?min:CMLib.dice().roll(1,max-min,min);
 							if((dmg>=E.curState().getHitPoints())&&(!arg4.equalsIgnoreCase("kill")))
 								dmg=E.curState().getHitPoints()-1;
 							if(dmg>0)
-								MUDFight.postDamage(E,E,null,dmg,CMMsg.MSG_OK_VISUAL,-1,null);
+								CMLib.combat().postDamage(E,E,null,dmg,CMMsg.MSG_OK_VISUAL,-1,null);
 						}
 					}
 					else
@@ -5678,7 +5690,7 @@ public class Scriptable extends StdBehavior
 						if(max<min) max=min;
 						if(min>0)
 						{
-							int dmg=(max==min)?min:Dice.roll(1,max-min,min);
+							int dmg=(max==min)?min:CMLib.dice().roll(1,max-min,min);
 							boolean destroy=false;
 							if(E.subjectToWearAndTear())
 							{
@@ -5729,7 +5741,7 @@ public class Scriptable extends StdBehavior
 			case 21: //MPENDQUEST
 			{
 				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(10).trim());
-				Quest Q=Quests.fetchQuest(s);
+				Quest Q=CMLib.quests().fetchQuest(s);
 				if(Q!=null) Q.stopQuest();
 				else
 					scriptableError(scripted,"MPENDQUEST","Unknown","Quest: "+s);
@@ -5738,7 +5750,7 @@ public class Scriptable extends StdBehavior
 			case 23: //MPSTARTQUEST
 			{
 				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(12).trim());
-				Quest Q=Quests.fetchQuest(s);
+				Quest Q=CMLib.quests().fetchQuest(s);
 				if(Q!=null) Q.startQuest();
 				else
 					scriptableError(scripted,"MPSTARTQUEST","Unknown","Quest: "+s);
@@ -5750,12 +5762,12 @@ public class Scriptable extends StdBehavior
 				MOB M=null;
 				if(lastKnownLocation!=null)
 					M=lastKnownLocation.fetchInhabitant(whoName);
-                if(M==null) M=CMMap.getPlayer(whoName);
+                if(M==null) M=CMLib.map().getPlayer(whoName);
 				if(M!=null) whoName=M.Name();
 				if(whoName.length()>0)
 				{
 					s=Util.getPastBitClean(s,1);
-					Quest Q=Quests.fetchQuest(s);
+					Quest Q=CMLib.quests().fetchQuest(s);
 					if(Q!=null) 
                         Q.declareWinner(whoName);
 					else
@@ -5988,10 +6000,10 @@ public class Scriptable extends StdBehavior
 				&&(!msg.amISource(eventMob))
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
 				&&canTrigger(1)
-				&&((!(affecting instanceof MOB))||Sense.canSenseMoving(msg.source(),(MOB)affecting)))
+				&&((!(affecting instanceof MOB))||CMLib.flags().canSenseMoving(msg.source(),(MOB)affecting)))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
-					if(Dice.rollPercentage()<prcnt)
+					if(CMLib.dice().rollPercentage()<prcnt)
 					{
 						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
 						return;
@@ -6005,7 +6017,7 @@ public class Scriptable extends StdBehavior
 				&&(canActAtAll(monster)))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
-					if(Dice.rollPercentage()<prcnt)
+					if(CMLib.dice().rollPercentage()<prcnt)
 					{
 						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
 						return;
@@ -6416,7 +6428,7 @@ public class Scriptable extends StdBehavior
 				&&(msg.amITarget(eventMob)||(!(affecting instanceof MOB)))
 				&&(!msg.amISource(monster))&&canTrigger(19)
 				&&(msg.tool() instanceof Coins)
-                &&(((Coins)msg.tool()).getCurrency().equals(BeanCounter.getCurrency(monster)))
+                &&(((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(monster)))
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					trigger=trigger.substring(10).trim();
@@ -6439,7 +6451,7 @@ public class Scriptable extends StdBehavior
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
-					if(Dice.rollPercentage()<prcnt)
+					if(CMLib.dice().rollPercentage()<prcnt)
 					{
 						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
 						return;
@@ -6453,7 +6465,7 @@ public class Scriptable extends StdBehavior
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
-					if(Dice.rollPercentage()<prcnt)
+					if(CMLib.dice().rollPercentage()<prcnt)
 					{
 						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
 						return;
@@ -6488,15 +6500,15 @@ public class Scriptable extends StdBehavior
             case 29: // login_prog
                 if(!registeredSpecialEvents.contains(new Integer(CMMsg.TYP_LOGIN)))
                 {
-                    CMMap.addGlobalHandler(affecting,CMMsg.TYP_LOGIN);
+                    CMLib.map().addGlobalHandler(affecting,CMMsg.TYP_LOGIN);
                     registeredSpecialEvents.add(new Integer(CMMsg.TYP_LOGIN));
                 }
                 if((msg.sourceMinor()==CMMsg.TYP_LOGIN)&&canTrigger(29)
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
-                &&(!Sense.isCloaked(msg.source())))
+                &&(!CMLib.flags().isCloaked(msg.source())))
                 {
                     int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
-                    if(Dice.rollPercentage()<prcnt)
+                    if(CMLib.dice().rollPercentage()<prcnt)
                     {
                         que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
                         return;
@@ -6506,15 +6518,15 @@ public class Scriptable extends StdBehavior
             case 32: // level_prog
                 if(!registeredSpecialEvents.contains(new Integer(CMMsg.TYP_LEVEL)))
                 {
-                    CMMap.addGlobalHandler(affecting,CMMsg.TYP_LEVEL);
+                    CMLib.map().addGlobalHandler(affecting,CMMsg.TYP_LEVEL);
                     registeredSpecialEvents.add(new Integer(CMMsg.TYP_LEVEL));
                 }
                 if((msg.sourceMinor()==CMMsg.TYP_LEVEL)&&canTrigger(32)
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
-                &&(!Sense.isCloaked(msg.source())))
+                &&(!CMLib.flags().isCloaked(msg.source())))
                 {
                     int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
-                    if(Dice.rollPercentage()<prcnt)
+                    if(CMLib.dice().rollPercentage()<prcnt)
                     {
                         que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
                         return;
@@ -6524,10 +6536,10 @@ public class Scriptable extends StdBehavior
             case 30: // logoff_prog
                 if((msg.sourceMinor()==CMMsg.TYP_QUIT)&&canTrigger(30)
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
-                &&(!Sense.isCloaked(msg.source())))
+                &&(!CMLib.flags().isCloaked(msg.source())))
                 {
                     int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
-                    if(Dice.rollPercentage()<prcnt)
+                    if(CMLib.dice().rollPercentage()<prcnt)
                     {
                         que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
                         return;
@@ -6543,7 +6555,7 @@ public class Scriptable extends StdBehavior
 					if(str==null) str=msg.targetMessage();
 					if(str==null) str=msg.sourceMessage();
 					if(str==null) break;
-					str=" "+CoffeeFilter.fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false).toUpperCase()+" ";
+					str=" "+CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false).toUpperCase()+" ";
                     str=Util.removeColors(str);
 					trigger=Util.getPastBit(trigger.trim(),0);
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
@@ -6586,7 +6598,7 @@ public class Scriptable extends StdBehavior
             case 33: // channel prog
                 if(!registeredSpecialEvents.contains(new Integer(CMMsg.TYP_CHANNEL)))
                 {
-                    CMMap.addGlobalHandler(affecting,CMMsg.TYP_CHANNEL);
+                    CMLib.map().addGlobalHandler(affecting,CMMsg.TYP_CHANNEL);
                     registeredSpecialEvents.add(new Integer(CMMsg.TYP_CHANNEL));
                 }
                 if(!msg.amISource(monster)
@@ -6597,13 +6609,13 @@ public class Scriptable extends StdBehavior
                     String channel=Util.getBit(trigger.trim(),1);
                     int channelInt=msg.othersMinor()-CMMsg.TYP_CHANNEL;
                     String str=null;
-                    if(channel.equalsIgnoreCase(ChannelSet.getChannelName(channelInt)))
+                    if(channel.equalsIgnoreCase(CMLib.channels().getChannelName(channelInt)))
                     {
                         str=msg.sourceMessage();
                         if(str==null) str=msg.othersMessage();
                         if(str==null) str=msg.targetMessage();
                         if(str==null) break;
-                        str=CoffeeFilter.fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false).toUpperCase().trim();
+                        str=CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false).toUpperCase().trim();
                         int dex=str.indexOf("["+channel+"]");
                         if(dex>0) 
                             str=str.substring(dex+2+channel.length()).trim();
@@ -6661,7 +6673,7 @@ public class Scriptable extends StdBehavior
                     if(str==null) str=msg.targetMessage();
                     if(str==null) str=msg.sourceMessage();
                     if(str==null) break;
-                    str=CoffeeFilter.fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false);
+                    str=CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false);
                     trigger=Util.getPastBit(trigger.trim(),0);
                     if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
                         doIt=str.equals(trigger.substring(1).trim());
@@ -6723,7 +6735,7 @@ public class Scriptable extends StdBehavior
 		else
 		if(ticking instanceof Environmental)
 		{
-            Room R=CoffeeUtensils.roomLocation((Environmental)ticking);
+            Room R=CMLib.utensils().roomLocation((Environmental)ticking);
             if(R!=null) lastKnownLocation=R;
 
 			if(backupMOB==null)
@@ -6763,7 +6775,7 @@ public class Scriptable extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-        if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+        if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
             return false;
         
 		MOB mob=getScriptableMOB(ticking);
@@ -6794,7 +6806,7 @@ public class Scriptable extends StdBehavior
 				if((!mob.amDead())&&canTrigger(5))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
-					if(Dice.rollPercentage()<prcnt)
+					if(CMLib.dice().rollPercentage()<prcnt)
 						execute(affecting,mob,mob,mob,defaultItem,null,script,null);
 				}
 				break;
@@ -6809,7 +6821,7 @@ public class Scriptable extends StdBehavior
 						int low=Util.s_int(Util.getCleanBit(trigger,1));
 						int high=Util.s_int(Util.getCleanBit(trigger,2));
 						if(high<low) high=low;
-						targetTick=Dice.roll(1,high-low+1,low-1);
+						targetTick=CMLib.dice().roll(1,high-low+1,low-1);
 						delayTargetTimes.put(new Integer(thisScriptIndex),new Integer(targetTick));
 					}
 					int delayProgCounter=0;
@@ -6830,7 +6842,7 @@ public class Scriptable extends StdBehavior
 				if((mob.isInCombat())&&(!mob.amDead())&&canTrigger(7))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
-					if(Dice.rollPercentage()<prcnt)
+					if(CMLib.dice().rollPercentage()<prcnt)
 						execute(affecting,mob.getVictim(),mob,mob,defaultItem,null,script,null);
 				}
 				else
@@ -6840,7 +6852,7 @@ public class Scriptable extends StdBehavior
 				&&(((MOB)((Item)ticking).owner()).isInCombat()))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
-					if(Dice.rollPercentage()<prcnt)
+					if(CMLib.dice().rollPercentage()<prcnt)
 					{
 					    MOB M=(MOB)((Item)ticking).owner();
 					    if(!M.amDead())
@@ -6935,7 +6947,7 @@ public class Scriptable extends StdBehavior
 			case 13: // questtimeprog
 				if(!oncesDone.contains(script)&&canTrigger(13))
 				{
-					Quest Q=Quests.fetchQuest(Util.getCleanBit(trigger,1));
+					Quest Q=CMLib.quests().fetchQuest(Util.getCleanBit(trigger,1));
 					if((Q!=null)&&(Q.running())&&(!Q.stopping()))
 					{
 						int time=Util.s_int(Util.getCleanBit(trigger,2));

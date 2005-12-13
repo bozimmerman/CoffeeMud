@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -48,7 +59,7 @@ public class Chant_AstralProjection extends Chant
 		}
 		super.unInvoke();
 		if(mob!=null)
-			CommonMsgs.stand(mob,true);
+			CMLib.commands().stand(mob,true);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -60,7 +71,7 @@ public class Chant_AstralProjection extends Chant
 		&&(tickDown!=Integer.MAX_VALUE)
 		&&(canBeUninvoked())
 		&&(tickDown==1))
-			MUDFight.postDeath(null,(MOB)affected,null);
+			CMLib.combat().postDeath(null,(MOB)affected,null);
 		return super.tick(ticking,tickID);
 	}
 
@@ -123,7 +134,7 @@ public class Chant_AstralProjection extends Chant
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) softly.^?");
+		CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) softly.^?");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -140,7 +151,7 @@ public class Chant_AstralProjection extends Chant
 				Item I=spirit.fetchInventory(0);
 				if(I!=null) I.destroy();
 			}
-			BeanCounter.clearZeroMoney(spirit,null);
+			CMLib.beanCounter().clearZeroMoney(spirit,null);
 			mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"^Z<S-NAME> go(es) limp!^.^?\n\r");
 			beneficialAffect(spirit,target,asLevel,0);
 			Ability A=CMClass.getAbility("Prop_AstralSpirit");

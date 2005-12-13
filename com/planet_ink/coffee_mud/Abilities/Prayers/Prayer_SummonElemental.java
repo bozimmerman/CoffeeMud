@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -76,13 +87,13 @@ public class Prayer_SummonElemental extends Prayer
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for elemental assistance.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for elemental assistance.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB myMonster = determineMonster(mob, mob.envStats().level());
 				if(myMonster.isInCombat()) myMonster.makePeace();
-				CommonMsgs.follow(myMonster,mob,true);
+				CMLib.commands().follow(myMonster,mob,true);
 				invoker=mob;
 				beneficialAffect(mob,myMonster,asLevel,0);
 				if(myMonster.amFollowing()!=mob)
@@ -104,7 +115,7 @@ public class Prayer_SummonElemental extends Prayer
 		Rideable ride=(Rideable)newMOB;
 		newMOB.baseEnvStats().setAbility(13);
 		newMOB.baseEnvStats().setLevel(level/2);
-		Factions.setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 		newMOB.baseEnvStats().setWeight(850);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseEnvStats().setDamage(caster.envStats().damage()/2);
@@ -119,7 +130,7 @@ public class Prayer_SummonElemental extends Prayer
 		for(int i=0;i<types.length;i++)
 			if(text().toUpperCase().indexOf(types[i])>=0)
 				type=i;
-		if(type<0) type=Dice.roll(1,types.length,-1);
+		if(type<0) type=CMLib.dice().roll(1,types.length,-1);
 		switch(type)
 		{
 		case 0:
@@ -160,7 +171,7 @@ public class Prayer_SummonElemental extends Prayer
 		newMOB.resetToMaxState();
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
-		BeanCounter.clearZeroMoney(newMOB,null);
+		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -85,9 +96,9 @@ public class Prayer_AuraIntolerance extends Prayer
 				||(((MOB)affected).getWorshipCharID().length()>0)&&(!M.getWorshipCharID().equals(((MOB)affected).getWorshipCharID()))))
 			{
 				if(M.getWorshipCharID().length()>0)
-					MUDFight.postDamage(((MOB)affected),M,this,3,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The intolerant aura around <S-NAME> <DAMAGE> <T-NAMESELF>!");
+					CMLib.combat().postDamage(((MOB)affected),M,this,3,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The intolerant aura around <S-NAME> <DAMAGE> <T-NAMESELF>!");
 				else
-					MUDFight.postDamage(((MOB)affected),M,this,1,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The intolerant aura around <S-NAME> <DAMAGE> <T-NAMESELF>!");
+					CMLib.combat().postDamage(((MOB)affected),M,this,1,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The intolerant aura around <S-NAME> <DAMAGE> <T-NAMESELF>!");
 			}
 		}
 		return true;
@@ -104,7 +115,7 @@ public class Prayer_AuraIntolerance extends Prayer
 			return false;
 		}
 		if((!auto)&&((mob.getWorshipCharID().length()==0)
-					 ||(CMMap.getDeity(mob.getWorshipCharID())==null)))
+					 ||(CMLib.map().getDeity(mob.getWorshipCharID())==null)))
 		{
 			mob.tell("You must worship a god to be intolerant.");
 			return false;
@@ -121,7 +132,7 @@ public class Prayer_AuraIntolerance extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for the aura of intolerance.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for the aura of intolerance.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

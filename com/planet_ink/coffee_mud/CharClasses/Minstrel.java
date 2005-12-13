@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.CharClasses;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -53,101 +64,101 @@ public class Minstrel extends StdCharClass
 		if(!loaded())
 		{
 			setLoaded(true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",false);
-			CMAble.addCharAbilityMapping(ID(),1,"InstrumentMaking",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"InstrumentMaking",false);
 
-			CMAble.addCharAbilityMapping(ID(),1,"Song_Nothing",100,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Play_Tempo",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Play_Break",100,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Play_Woods",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Song_Nothing",100,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Play_Tempo",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Play_Break",100,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Play_Woods",false);
 
-			CMAble.addCharAbilityMapping(ID(),2,"Skill_Dirt",true);
-			CMAble.addCharAbilityMapping(ID(),2,"Play_Flutes",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Play_Rhythm",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Skill_Dirt",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Play_Flutes",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Play_Rhythm",true);
 
-			CMAble.addCharAbilityMapping(ID(),3,"Play_Drums",false);
-			CMAble.addCharAbilityMapping(ID(),3,"Play_March",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Play_Drums",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Play_March",true);
 
-			CMAble.addCharAbilityMapping(ID(),4,"Ranger_FindWater",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Play_Harps",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Play_Background",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Ranger_FindWater",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Play_Harps",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Play_Background",true);
 
-			CMAble.addCharAbilityMapping(ID(),5,"Skill_TuneInstrument",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
-			CMAble.addCharAbilityMapping(ID(),5,"Play_Cymbals",false);
-			CMAble.addCharAbilityMapping(ID(),5,"Play_Melody",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_TuneInstrument",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Play_Cymbals",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Play_Melody",true);
 
-			CMAble.addCharAbilityMapping(ID(),6,"Thief_TrophyCount",false);
-			CMAble.addCharAbilityMapping(ID(),6,"Play_Guitars",false);
-			CMAble.addCharAbilityMapping(ID(),6,"Play_LoveSong",true);
-			CMAble.addCharAbilityMapping(ID(),6,"Song_Armor",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_TrophyCount",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Play_Guitars",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Play_LoveSong",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Song_Armor",false);
 
-			CMAble.addCharAbilityMapping(ID(),7,"Play_Clarinets",false);
-			CMAble.addCharAbilityMapping(ID(),7,"Play_Carol",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Play_Clarinets",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Play_Carol",true);
 
-			CMAble.addCharAbilityMapping(ID(),8,"Fighter_Rescue",false);
-			CMAble.addCharAbilityMapping(ID(),8,"Play_Violins",false);
-			CMAble.addCharAbilityMapping(ID(),8,"Play_Blues",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Fighter_Rescue",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Play_Violins",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Play_Blues",true);
 
-			CMAble.addCharAbilityMapping(ID(),9,"Skill_Dodge",true);
-			CMAble.addCharAbilityMapping(ID(),9,"Song_Serenity",false);
-			CMAble.addCharAbilityMapping(ID(),9,"Play_Oboes",false);
-			CMAble.addCharAbilityMapping(ID(),9,"Play_Ballad",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Dodge",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Song_Serenity",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Play_Oboes",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Play_Ballad",true);
 
-			CMAble.addCharAbilityMapping(ID(),10,"Skill_InstrumentBash",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Play_Horns",false);
-			CMAble.addCharAbilityMapping(ID(),10,"Play_Retreat",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_InstrumentBash",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Play_Horns",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Play_Retreat",true);
 
-			CMAble.addCharAbilityMapping(ID(),11,"Play_Charge",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Play_Charge",true);
 
-			CMAble.addCharAbilityMapping(ID(),12,"Thief_Listen",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Play_Xylophones",false);
-			CMAble.addCharAbilityMapping(ID(),12,"Play_Reveille",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_Listen",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Play_Xylophones",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Play_Reveille",true);
 
-			CMAble.addCharAbilityMapping(ID(),13,"Play_Symphony",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Play_Symphony",true);
 
-			CMAble.addCharAbilityMapping(ID(),14,"Skill_Parry",false);
-			CMAble.addCharAbilityMapping(ID(),14,"Play_Trumpets",false);
-			CMAble.addCharAbilityMapping(ID(),14,"Play_Dirge",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_Parry",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Play_Trumpets",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Play_Dirge",true);
 
-			CMAble.addCharAbilityMapping(ID(),15,"Play_Ditty",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Play_Ditty",true);
 
-			CMAble.addCharAbilityMapping(ID(),16,"Play_Pianos",false);
-			CMAble.addCharAbilityMapping(ID(),16,"Play_Solo",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Play_Pianos",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Play_Solo",true);
 
-			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
-			CMAble.addCharAbilityMapping(ID(),17,"Song_Quickness",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Song_Quickness",false);
 
-			CMAble.addCharAbilityMapping(ID(),18,"Skill_EscapeBonds",true);
-			CMAble.addCharAbilityMapping(ID(),18,"Play_Harmonicas",false);
-			CMAble.addCharAbilityMapping(ID(),18,"Play_Lullabies",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_EscapeBonds",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Play_Harmonicas",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Play_Lullabies",true);
 
-			CMAble.addCharAbilityMapping(ID(),19,"Song_Thanks",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Song_Thanks",false);
 
-			CMAble.addCharAbilityMapping(ID(),20,"Skill_Feint",true);
-			CMAble.addCharAbilityMapping(ID(),20,"Play_Tubas",false);
-			CMAble.addCharAbilityMapping(ID(),20,"Play_Accompaniment",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_Feint",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Play_Tubas",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Play_Accompaniment",true);
 
-			CMAble.addCharAbilityMapping(ID(),21,"Play_Spiritual",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Play_Spiritual",false);
 
-			CMAble.addCharAbilityMapping(ID(),22,"Paladin_Defend",false);
-			CMAble.addCharAbilityMapping(ID(),22,"Play_Organs",false);
-			CMAble.addCharAbilityMapping(ID(),22,"Play_Tribal",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Paladin_Defend",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Play_Organs",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Play_Tribal",false);
 
-			CMAble.addCharAbilityMapping(ID(),23,"Play_Harmony",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Play_Harmony",true);
 
-			CMAble.addCharAbilityMapping(ID(),24,"Play_Trombones",false);
-			CMAble.addCharAbilityMapping(ID(),24,"Play_Mystical",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Play_Trombones",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Play_Mystical",false);
 
-			CMAble.addCharAbilityMapping(ID(),25,"Play_Battlehymn",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Play_Battlehymn",true);
 
-			CMAble.addCharAbilityMapping(ID(),30,"Skill_Conduct",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Skill_Conduct",true);
 		}
 	}
 
@@ -158,7 +169,7 @@ public class Minstrel extends StdCharClass
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
 		{
-			Vector V=CMAble.getUpToLevelListings(ID(),
+			Vector V=CMLib.ableMapper().getUpToLevelListings(ID(),
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
@@ -167,8 +178,8 @@ public class Minstrel extends StdCharClass
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
-				&&(!CMAble.getDefaultGain(ID(),true,A.ID())))
-					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),true,A.ID()),CMAble.getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}
 		}
 	}

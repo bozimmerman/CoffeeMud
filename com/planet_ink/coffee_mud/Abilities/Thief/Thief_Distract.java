@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -55,7 +65,7 @@ public class Thief_Distract extends ThiefSkill
 		{
 			// preventing distracting player from doin anything else
 			if(msg.amISource(invoker)
-			&&(Dice.rollPercentage()>(mob.charStats().getStat(CharStats.WISDOM)*2))
+			&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.WISDOM)*2))
 			&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK))
 			{
 				invoker.location().show(invoker,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> distract(s) <T-NAME>.");
@@ -88,18 +98,18 @@ public class Thief_Distract extends ThiefSkill
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if((Sense.isSitting(mob)||Sense.isSleeping(mob)))
+		if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
 		{
 			mob.tell("You are on the floor!");
 			return false;
 		}
 
-        if(Sense.isSitting(mob))
+        if(CMLib.flags().isSitting(mob))
         {
             mob.tell("You need to stand up!");
             return false;
         }
-		if(!Sense.aliveAwakeMobileUnbound(mob,false))
+		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
@@ -117,7 +127,7 @@ public class Thief_Distract extends ThiefSkill
 		boolean success=profficiencyCheck(mob,-levelDiff,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,auto?"<T-NAME> seem(s) distracted!":"<S-NAME> distract(s) <T-NAMESELF>!");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,auto?"<T-NAME> seem(s) distracted!":"<S-NAME> distract(s) <T-NAMESELF>!");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

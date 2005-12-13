@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -21,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_Shrug extends StdAbility
+public class Fighter_Shrug extends FighterSkill
 {
 	public String ID() { return "Fighter_Shrug"; }
 	public String name(){ return "Shrug Off";}
@@ -41,7 +51,7 @@ public class Fighter_Shrug extends StdAbility
 		&&(msg.amITarget(affected))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(!msg.amISource((MOB)affected))
-		&&(Sense.aliveAwakeMobile((MOB)affected,true))
+		&&(CMLib.flags().aliveAwakeMobile((MOB)affected,true))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon))
 		{
@@ -82,7 +92,7 @@ public class Fighter_Shrug extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,auto?"<T-NAME> is braced for an attack!":"<S-NAME> brace(s) for an attack!");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,auto?"<T-NAME> is braced for an attack!":"<S-NAME> brace(s) for an attack!");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

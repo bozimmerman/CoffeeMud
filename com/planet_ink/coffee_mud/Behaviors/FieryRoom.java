@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /**
@@ -83,7 +94,7 @@ public class FieryRoom
                     }
                     if (reallyAffect) {
                         dealDamage(inhab);
-                        if (Dice.rollPercentage() > eqChance)
+                        if (CMLib.dice().rollPercentage() > eqChance)
                             eqRoast(inhab);
                     }
                 }
@@ -91,7 +102,7 @@ public class FieryRoom
                     if((!CMSecurity.isAllowed(inhab,inhab.location(),"ORDER"))
         		&&(!CMSecurity.isAllowed(inhab,inhab.location(),"CMDROOMS"))) {
                         dealDamage(inhab);
-                        if (Dice.rollPercentage() > eqChance)
+                        if (CMLib.dice().rollPercentage() > eqChance)
                             eqRoast(inhab);
                     }
                 }
@@ -104,7 +115,7 @@ public class FieryRoom
                 // The tick happened.  If NOT NoFireText, Do flame emotes
                 if(!noFireText) {
                     Room R = (Room) ticking;
-                    String pickedText=FireTexts[Dice.roll(1,FireTexts.length,0)-1];
+                    String pickedText=FireTexts[CMLib.dice().roll(1,FireTexts.length,0)-1];
                     R.showHappens(CMMsg.MSG_OK_ACTION,pickedText);
                 }
                 if (!noStop) {
@@ -124,7 +135,7 @@ public class FieryRoom
     }
 
     private void dealDamage(MOB mob) {
-        MUDFight.postDamage(mob, mob, null, directDamage, CMMsg.MASK_GENERAL | CMMsg.TYP_FIRE, Weapon.TYPE_BURNING,
+        CMLib.combat().postDamage(mob, mob, null, directDamage, CMMsg.MASK_GENERAL | CMMsg.TYP_FIRE, Weapon.TYPE_BURNING,
                             "The fire here <DAMAGE> <T-NAME>!");
     }
 
@@ -140,10 +151,10 @@ public class FieryRoom
                 case EnvResource.MATERIAL_ROCK:
                 case EnvResource.MATERIAL_UNKNOWN: {
                     // all these we'll make get hot and be dropped.
-                    int damage = Dice.roll(1, 6, 1);
-                    MUDFight.postDamage(mob, mob, null, damage, CMMsg.MASK_GENERAL | CMMsg.TYP_FIRE, Weapon.TYPE_BURNING, target.name() + " <DAMAGE> <T-NAME>!");
-                    if (Dice.rollPercentage() < mob.charStats().getStat(CharStats.STRENGTH)) {
-                        CommonMsgs.drop(mob, target, false, false);
+                    int damage = CMLib.dice().roll(1, 6, 1);
+                    CMLib.combat().postDamage(mob, mob, null, damage, CMMsg.MASK_GENERAL | CMMsg.TYP_FIRE, Weapon.TYPE_BURNING, target.name() + " <DAMAGE> <T-NAME>!");
+                    if (CMLib.dice().rollPercentage() < mob.charStats().getStat(CharStats.STRENGTH)) {
+                        CMLib.commands().drop(mob, target, false, false);
                     }
                     break;
                 }
@@ -163,7 +174,7 @@ public class FieryRoom
       for(int i=0;i<which.numItems();i++) {
         Item target=which.fetchItem(i);
         Ability burn = CMClass.getAbility("Burning");
-                    if((burn != null)&&(Dice.rollPercentage()>60)) {
+                    if((burn != null)&&(CMLib.dice().rollPercentage()>60)) {
                         which.showHappens(CMMsg.MSG_OK_ACTION, target.Name() + " begins to burn!");
                         target.addEffect(burn);
                         target.recoverEnvStats();
@@ -183,10 +194,10 @@ public class FieryRoom
                 great.addElement(I);
         }
         if (great.size() > 0)
-            target = (Item) great.elementAt(Dice.roll(1, great.size(), -1));
+            target = (Item) great.elementAt(CMLib.dice().roll(1, great.size(), -1));
         else
         if (good.size() > 0)
-            target = (Item) good.elementAt(Dice.roll(1, good.size(), -1));
+            target = (Item) good.elementAt(CMLib.dice().roll(1, good.size(), -1));
         return target;
     }
 }

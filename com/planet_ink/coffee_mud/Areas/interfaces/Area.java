@@ -1,4 +1,17 @@
-package com.planet_ink.coffee_mud.core.interfaces;
+package com.planet_ink.coffee_mud.Areas.interfaces;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /* 
@@ -76,6 +89,10 @@ public interface Area extends Environmental
 
 	public void fillInAreaRooms();
 	public void fillInAreaRoom(Room R);
+    public void addRoom(Room R);
+    public void delRoom(Room R);
+    public Room getRoom(String roomID);
+    public boolean isRoom(Room R);
 	public Enumeration getMetroMap();
 	public Enumeration getProperMap();
 	public int metroSize();
@@ -84,7 +101,7 @@ public interface Area extends Environmental
 	public int numberOfProperIDedRooms();
 	public Room getRandomMetroRoom();
 	public Room getRandomProperRoom();
-	public void clearMaps();
+	public void clearMetroCache();
 	
 	public void toggleMobility(boolean onoff);
 	public boolean getMobility();

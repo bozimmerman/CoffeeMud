@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -122,7 +133,7 @@ public class Druid_PlantForm extends StdAbility
 
 	public void setRaceName(MOB mob)
 	{
-		int classLevel=CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this);
+		int classLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this);
 		raceName=getRaceName(classLevel);
 		newRace=getRace(classLevel);
 	}
@@ -185,8 +196,8 @@ public class Druid_PlantForm extends StdAbility
 			return false;
 		}
 
-        int qualClassLevel=CMAble.qualifyingClassLevel(mob,this);
-        int classLevel=qualClassLevel-CMAble.qualifyingLevel(mob,this);
+        int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this);
+        int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
         if(qualClassLevel<0) classLevel=30;
 		String choice=Util.combine(commands,0);
 		if(choice.trim().length()>0)
@@ -201,7 +212,7 @@ public class Druid_PlantForm extends StdAbility
 					choices.addElement(s);
 					buf.append(s+"\n\r");
 				}
-				if(EnglishParser.containsString(s,choice))
+				if(CMLib.english().containsString(s,choice))
 				{
 					classLevel=i;
 					break;
@@ -223,7 +234,7 @@ public class Druid_PlantForm extends StdAbility
 
 		if((!appropriateToMyFactions(mob))&&(!auto))
 		{
-			if((Dice.rollPercentage()<50))
+			if((CMLib.dice().rollPercentage()<50))
 			{
 				mob.tell("Extreme emotions disrupt your change.");
 				return false;
@@ -236,7 +247,7 @@ public class Druid_PlantForm extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_OK_ACTION,null);
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_ACTION,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

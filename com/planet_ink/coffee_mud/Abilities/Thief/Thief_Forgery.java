@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -38,7 +48,7 @@ public class Thief_Forgery extends ThiefSkill
 			return false;
 		}
 		Item target=mob.fetchInventory(null,(String)commands.lastElement());
-		if((target==null)||(!Sense.canBeSeenBy(target,mob)))
+		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");
 			return false;
@@ -47,7 +57,7 @@ public class Thief_Forgery extends ThiefSkill
 
 		if((target==null)
 		   ||(!target.isGeneric())
-		   ||((!(target instanceof Scroll))&&(!Sense.isReadable(target))))
+		   ||((!(target instanceof Scroll))&&(!CMLib.flags().isReadable(target))))
 		{
 			mob.tell("You can't forge anything on that.");
 			return false;
@@ -64,11 +74,11 @@ public class Thief_Forgery extends ThiefSkill
 		String newDisplay="";
 		String newDescription="";
 		String newSecretIdentity="";
-		Room room=CMMap.getRoom(forgeWhat);
+		Room room=CMLib.map().getRoom(forgeWhat);
 		if(room!=null)
 		{
 			Item I=CMClass.getItem("StdTitle");
-			((LandTitle)I).setLandPropertyID(CMMap.getExtendedRoomID(room));
+			((LandTitle)I).setLandPropertyID(CMLib.map().getExtendedRoomID(room));
 			newName=I.name();
 			newDescription=I.description();
 			newDisplay=I.displayText();
@@ -107,12 +117,12 @@ public class Thief_Forgery extends ThiefSkill
 		}
 		if(newName.length()==0)
 		{
-		    DVector DV=BeanCounter.getCurrencySet(BeanCounter.getCurrency(mob));
+		    DVector DV=CMLib.beanCounter().getCurrencySet(CMLib.beanCounter().getCurrency(mob));
 			for(int i=0;i<DV.size();i++)
 			{
-				Item note=BeanCounter.makeBestCurrency(BeanCounter.getCurrency(mob),
+				Item note=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(mob),
 											        ((Double)DV.elementAt(i,1)).doubleValue());
-				if((note!=null)&&(EnglishParser.containsString(note.name(),forgeWhat)))
+				if((note!=null)&&(CMLib.english().containsString(note.name(),forgeWhat)))
 				{
 					newName=note.name();
 					newDisplay=note.displayText();
@@ -136,7 +146,7 @@ public class Thief_Forgery extends ThiefSkill
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> forge(s) "+forgeWhat+" on <T-NAMESELF>.");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> forge(s) "+forgeWhat+" on <T-NAMESELF>.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

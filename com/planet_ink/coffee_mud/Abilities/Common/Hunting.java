@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -53,7 +64,7 @@ public class Hunting extends CommonSkill
 		}
 		if(possibilities.size()>0)
 		{
-			int dir=((Integer)possibilities.elementAt(Dice.roll(1,possibilities.size(),-1))).intValue();
+			int dir=((Integer)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1))).intValue();
 			return activityRoom.getRoomInDir(dir);
 		}
 		return null;
@@ -76,8 +87,8 @@ public class Hunting extends CommonSkill
 		}
 		if(possibilities.size()>0)
 		{
-			int dir=((Integer)possibilities.elementAt(Dice.roll(1,possibilities.size(),-1))).intValue();
-			MUDTracker.move(found,dir,true,false);
+			int dir=((Integer)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1))).intValue();
+			CMLib.tracking().move(found,dir,true,false);
 		}
 	}
 
@@ -96,16 +107,16 @@ public class Hunting extends CommonSkill
 			else
 			if((found!=null)
 			&&(found.location()!=null)
-			&&(Sense.aliveAwakeMobile(found,true))
+			&&(CMLib.flags().aliveAwakeMobile(found,true))
 			&&(!found.isInCombat()))
 			{
 				if(found.location()==mob.location())
 				{
 					if((mob.isMonster())
-					&&(Sense.aliveAwakeMobile(mob,true))
-					&&(Sense.canBeSeenBy(found,mob))
+					&&(CMLib.flags().aliveAwakeMobile(mob,true))
+					&&(CMLib.flags().canBeSeenBy(found,mob))
 					&&(!mob.isInCombat()))
-						MUDFight.postAttack(mob,found,mob.fetchWieldedItem());
+						CMLib.combat().postAttack(mob,found,mob.fetchWieldedItem());
 					else
 						moveFound();
 				}
@@ -120,7 +131,7 @@ public class Hunting extends CommonSkill
 					displayText="You are hunting for "+found.name();
 					verb="hunting for "+found.name();
 					found.bringToLife(nearByRoom(),true);
-					BeanCounter.clearZeroMoney(found,null);
+					CMLib.beanCounter().clearZeroMoney(found,null);
 				}
 				else
 				{
@@ -137,16 +148,16 @@ public class Hunting extends CommonSkill
 			}
 			else
 			if(mob.isMonster()
-			&&(Dice.rollPercentage()>50)
-			&&(Sense.isMobile(mob))
-			&&(Sense.aliveAwakeMobile(mob,true))
-			&&(Sense.canSenseMoving(found,mob)))
+			&&(CMLib.dice().rollPercentage()>50)
+			&&(CMLib.flags().isMobile(mob))
+			&&(CMLib.flags().aliveAwakeMobile(mob,true))
+			&&(CMLib.flags().canSenseMoving(found,mob)))
 			{
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
 					Room R=mob.location().getRoomInDir(d);
 					if((R!=null)&&(R==found.location()))
-					{ MUDTracker.move(mob,d,false,false); break;}
+					{ CMLib.tracking().move(mob,d,false,false); break;}
 				}
 			}
 		}
@@ -198,7 +209,7 @@ public class Hunting extends CommonSkill
 		   ||(resourceType==EnvResource.RESOURCE_WOOL)
 		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER)))
 		{
-			found=(MOB)CoffeeUtensils.makeResource(resourceType,mob.location().domainType(),false);
+			found=(MOB)CMLib.utensils().makeResource(resourceType,mob.location().domainType(),false);
 			foundShortName="nothing";
 			if(found!=null)
 			{
@@ -210,7 +221,7 @@ public class Hunting extends CommonSkill
 			}
 		}
 		int duration=10+(mob.envStats().level()/4);
-		FullMsg msg=new FullMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) hunting.");
+		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) hunting.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

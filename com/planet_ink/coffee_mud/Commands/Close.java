@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -41,13 +52,13 @@ public class Close extends StdCommand
 		if(closeThis==null)
 			closeThis=mob.location().fetchFromMOBRoomItemExit(mob,null,whatToClose,Item.WORN_REQ_ANY);
 
-		if((closeThis==null)||(!Sense.canBeSeenBy(closeThis,mob)))
+		if((closeThis==null)||(!CMLib.flags().canBeSeenBy(closeThis,mob)))
 		{
 			mob.tell(getScr("Movement","youdontsee",whatToClose));
 			return false;
 		}
 		String closeWord=((closeThis==null)||(!(closeThis instanceof Exit)))?getScr("Movement","scloseword"):((Exit)closeThis).closeWord();
-		FullMsg msg=new FullMsg(mob,closeThis,null,CMMsg.MSG_CLOSE,getScr("Movement","scloses",closeWord)+CommonStrings.msp("dooropen.wav",10));
+		CMMsg msg=CMClass.getMsg(mob,closeThis,null,CMMsg.MSG_CLOSE,getScr("Movement","scloses",closeWord)+CMProps.msp("dooropen.wav",10));
 		if(closeThis instanceof Exit)
 		{
 			boolean open=((Exit)closeThis).isOpen();
@@ -66,7 +77,7 @@ public class Close extends StdCommand
 					Exit opE=mob.location().getPairedExit(dirCode);
 					if(opE!=null)
 					{
-						FullMsg altMsg=new FullMsg(msg.source(),opE,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
+						CMMsg altMsg=CMClass.getMsg(msg.source(),opE,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
 						opE.executeMsg(msg.source(),altMsg);
 					}
 					int opCode=Directions.getOpDirectionCode(dirCode);

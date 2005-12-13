@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Behaviors;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -306,7 +317,7 @@ public class Sounder extends StdBehavior
 		if(room==null) return;
 		Room oldLoc=emoter.location();
 		if(emoter.location()!=room) emoter.setLocation(room);
-		FullMsg msg=new FullMsg(emoter,null,CMMsg.MSG_EMOTE,emote);
+		CMMsg msg=CMClass.getMsg(emoter,null,CMMsg.MSG_EMOTE,emote);
 		if(room.okMessage(emoter,msg))
 		{
 			for(int i=0;i<room.numInhabitants();i++)
@@ -314,7 +325,7 @@ public class Sounder extends StdBehavior
 				MOB M=room.fetchInhabitant(i);
 				if((M!=null)
 				&&(!M.isMonster())
-				&&(Sense.canSenseMoving(emoter,M)))
+				&&(CMLib.flags().canSenseMoving(emoter,M)))
 					M.executeMsg(M,msg);
 			}
 		}
@@ -357,7 +368,7 @@ public class Sounder extends StdBehavior
 		}
 		else
 		{
-			if((ticking instanceof Item)&&(!Sense.isInTheGame((Item)ticking,false)))
+			if((ticking instanceof Item)&&(!CMLib.flags().isInTheGame((Item)ticking,false)))
 				return;
 			Room R=getBehaversRoom(ticking);
 			if(R!=null)
@@ -382,7 +393,7 @@ public class Sounder extends StdBehavior
 			tickReset();
 			for(int v=0;v<triggers.length;v++)
 			if((Util.bset(triggers[v],TICK_MASK))
-			&&(Dice.rollPercentage()<(triggers[v]&UNDER_MASK)))
+			&&(CMLib.dice().rollPercentage()<(triggers[v]&UNDER_MASK)))
 			{
 				doEmote(ticking,strings[v]);
 				break;
@@ -461,12 +472,12 @@ public class Sounder extends StdBehavior
 			{
 				if(Util.bset(triggers[v],ROOM_MASK))
 				{
-					FullMsg msg2=new FullMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,CMMsg.MSG_EMOTE,Util.replaceAll(strings[v],"$p",E.name()));
+					CMMsg msg2=CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,CMMsg.MSG_EMOTE,Util.replaceAll(strings[v],"$p",E.name()));
 					msg.addTrailerMsg(msg2);
 				}
 				else
 				{
-					FullMsg msg2=new FullMsg(msg.source(),null,null,CMMsg.MSG_EMOTE,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,Util.replaceAll(strings[v],"$p",E.name()));
+					CMMsg msg2=CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_EMOTE,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,Util.replaceAll(strings[v],"$p",E.name()));
 					msg.addTrailerMsg(msg2);
 				}
 			}

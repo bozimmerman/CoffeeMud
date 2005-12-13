@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -88,8 +99,8 @@ public class Score extends Affect
 			msg.append(classList.toString()+".\n\r");
 		}
 
-		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ACCOUNTEXPIRATION)&&(mob.playerStats()!=null))
-            msg.append("Your account is Registered and Active until: "+new IQCalendar(mob.playerStats().getAccountExpiration()).d2String()+"!\n\r");
+		if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION)&&(mob.playerStats()!=null))
+            msg.append("Your account is Registered and Active until: "+CMLib.time().date2String(mob.playerStats().getAccountExpiration())+"!\n\r");
 
 		String genderName="neuter";
 		if(mob.charStats().getStat(CharStats.GENDER)=='M') genderName="male";
@@ -116,18 +127,18 @@ public class Score extends Affect
 		msg.append(".\n\r");
 		if((mob.getClanID()!=null)&&(mob.getClanID().length()>0))
 		{
-			Clan C=Clans.getClan(mob.getClanID());
+			Clan C=CMLib.clans().getClan(mob.getClanID());
 			if(C!=null)
 			{
-				String role=Clans.getRoleName(C.getGovernment(),mob.getClanRole(),true,false);
+				String role=CMLib.clans().getRoleName(C.getGovernment(),mob.getClanRole(),true,false);
 				role=Util.startWithAorAn(role);
 				msg.append("You are "+role+" of the ^H"+mob.getClanID()+"^?^. Clan.\n\r");
 			}
 		}
         msg.append("\n\r^NYour stats are: \n\r^!");
-        int max=CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT);
+        int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
         CharStats CT=mob.charStats();
-        msg.append(CommonStrings.mxpImage(mob," ALIGN=RIGHT H=70 W=70"));
+        msg.append(CMProps.mxpImage(mob," ALIGN=RIGHT H=70 W=70"));
         msg.append("^N^!");
         msg.append(Util.padRight("^<HELP^>Strength^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.MAX_STRENGTH_ADJ))+"\n\r");
         msg.append(Util.padRight("^<HELP^>Intelligence^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.MAX_INTELLIGENCE_ADJ))+"\n\r");
@@ -157,8 +168,8 @@ public class Score extends Affect
 			&&(!mob.charStats().getCurrentClass().leveless())
 			&&(!mob.charStats().getMyRace().leveless()))
 			{
-				if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)>0)
-				&&(mob.baseEnvStats().level()>CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)))
+				if((CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)>0)
+				&&(mob.baseEnvStats().level()>CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)))
 					msg.append("You will not gain further levels through experience.\n\r");
 				else
 				if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
@@ -170,12 +181,12 @@ public class Score extends Affect
 		for(Enumeration e=mob.fetchFactions();e.hasMoreElements();)
 		{
 		    String factionID=(String)e.nextElement();
-		    Faction.FactionRange FR=Factions.getRange(factionID,mob.fetchFaction(factionID));
-		    if((FR!=null)&&(FR.myFaction.showinscore))
-	            msg.append("Your "+Util.padRight("^<HELP^>"+FR.myFaction.name+"^</HELP^> is",18)+": ^H"+FR.Name+"^?.\n\r");
+		    Faction.FactionRange FR=CMLib.factions().getRange(factionID,mob.fetchFaction(factionID));
+		    if((FR!=null)&&(FR.myFaction().showinscore()))
+	            msg.append("Your "+Util.padRight("^<HELP^>"+FR.myFaction().name()+"^</HELP^> is",18)+": ^H"+FR.name()+"^?.\n\r");
 		}
-		msg.append("Your ^<HELP^>armored defense^</HELP^> is: ^H"+CommonStrings.armorStr(adjustedArmor)+"^?.\n\r");
-		msg.append("Your ^<HELP^>combat prowess^</HELP^> is : ^H"+CommonStrings.fightingProwessStr(adjustedAttack)+"^?.\n\r");
+		msg.append("Your ^<HELP^>armored defense^</HELP^> is: ^H"+CMLib.combat().armorStr(adjustedArmor)+"^?.\n\r");
+		msg.append("Your ^<HELP^>combat prowess^</HELP^> is : ^H"+CMLib.combat().fightingProwessStr(adjustedAttack)+"^?.\n\r");
 		msg.append("Wimpy is set to ^!"+mob.getWimpHitPoint()+"^? hit points.\n\r");
 	    if((mob.playerStats()!=null)&&(mob.soulMate()==null)&&(mob.playerStats().getHygiene()>=PlayerStats.HYGIENE_DELIMIT))
 	    {
@@ -190,25 +201,25 @@ public class Score extends Affect
 	        else msg.append("^!Your stench is horrendous! Bathe dammit!.^?\n\r");
 	    }
 
-		if(Sense.isBound(mob))
+		if(CMLib.flags().isBound(mob))
 			msg.append("^!You are bound.^?\n\r");
 
-		if(Sense.isFalling(mob))
+		if(CMLib.flags().isFalling(mob))
 			msg.append("^!You are falling!!!^?\n\r");
 		else
-		if(Sense.isSleeping(mob))
+		if(CMLib.flags().isSleeping(mob))
 			msg.append("^!You are sleeping.^?\n\r");
 		else
-		if(Sense.isSitting(mob))
+		if(CMLib.flags().isSitting(mob))
 			msg.append("^!You are resting.^?\n\r");
 		else
-		if(Sense.isSwimming(mob))
+		if(CMLib.flags().isSwimming(mob))
 			msg.append("^!You are swimming.^?\n\r");
 		else
-		if(Sense.isClimbing(mob))
+		if(CMLib.flags().isClimbing(mob))
 			msg.append("^!You are climbing.^?\n\r");
 		else
-		if(Sense.isFlying(mob))
+		if(CMLib.flags().isFlying(mob))
 			msg.append("^!You are flying.^?\n\r");
 		else
 			msg.append("^!You are standing.^?\n\r");
@@ -216,11 +227,11 @@ public class Score extends Affect
 		if(mob.riding()!=null)
 			msg.append("^!You are "+mob.riding().stateString(mob)+" "+mob.riding().name()+".^?\n\r");
 
-		if(Sense.isInvisible(mob))
+		if(CMLib.flags().isInvisible(mob))
 			msg.append("^!You are invisible.^?\n\r");
-		if(Sense.isHidden(mob))
+		if(CMLib.flags().isHidden(mob))
 			msg.append("^!You are hidden.^?\n\r");
-		if(Sense.isSneaking(mob))
+		if(CMLib.flags().isSneaking(mob))
 			msg.append("^!You are sneaking.^?\n\r");
 		if(Util.bset(mob.getBitmap(),MOB.ATT_QUIET))
 			msg.append("^!You are in QUIET mode.^?\n\r");

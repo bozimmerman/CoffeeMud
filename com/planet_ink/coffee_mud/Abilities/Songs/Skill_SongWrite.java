@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
+
 import java.util.*;
 
 /* 
@@ -40,7 +50,7 @@ public class Skill_SongWrite extends BardSkill
 			return false;
 		}
 		Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Item.WORN_REQ_UNWORNONLY);
-		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
 			mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");
 			return false;
@@ -75,7 +85,7 @@ public class Skill_SongWrite extends BardSkill
 			mob.tell("You don't know how to write '"+spellName+"'.");
 			return false;
 		}
-		int numSpells=(CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this));
+		int numSpells=(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this));
 		if(numSpells<0) numSpells=0;
 		if(scroll.getSpells().size()>numSpells)
 		{
@@ -96,8 +106,8 @@ public class Skill_SongWrite extends BardSkill
 
 		if(!auto)mob.curState().setMana(0);
 
-		int experienceToLose=20*CMAble.lowestQualifyingLevel(scrollThis.ID());
-		MUDFight.postExperience(mob,null,null,-experienceToLose,false);
+		int experienceToLose=20*CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID());
+		CMLib.combat().postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -105,7 +115,7 @@ public class Skill_SongWrite extends BardSkill
 		if(success)
 		{
 			setMiscText(scrollThis.ID());
-			FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"^S<S-NAME> write(s) music onto <T-NAMESELF>, singing softly.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"^S<S-NAME> write(s) music onto <T-NAMESELF>, singing softly.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

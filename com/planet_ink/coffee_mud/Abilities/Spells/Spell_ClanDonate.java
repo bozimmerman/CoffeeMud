@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -45,14 +56,14 @@ public class Spell_ClanDonate extends Spell
 			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
-		Clan C=Clans.getClan(mob.getClanID());
-		clanDonateRoom=CMMap.getRoom(C.getDonation());
+		Clan C=CMLib.clans().getClan(mob.getClanID());
+		clanDonateRoom=CMLib.map().getRoom(C.getDonation());
 		if(clanDonateRoom==null)
 		{
 			mob.tell("Your clan does not have a donation home.");
 			return false;
 		}
-		if(!Sense.canAccess(mob,clanDonateRoom))
+		if(!CMLib.flags().canAccess(mob,clanDonateRoom))
 		{
 			mob.tell("This magic can not be used to donate from here.");
 			return false;
@@ -65,12 +76,12 @@ public class Spell_ClanDonate extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> invoke(s) a donation spell upon <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),"^S<S-NAME> invoke(s) a donation spell upon <T-NAMESELF>.^?");
 			if((mob.location().okMessage(mob,msg))
-            &&((target instanceof Coins)||(CommonMsgs.drop(mob,target,true,false))))
+            &&((target instanceof Coins)||(CMLib.commands().drop(mob,target,true,false))))
 			{
 				mob.location().send(mob,msg);
-                msg=new FullMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> appears!");
+                msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> appears!");
                 if(clanDonateRoom.okMessage(mob,msg))
                 {
                     mob.location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> vanishes!");

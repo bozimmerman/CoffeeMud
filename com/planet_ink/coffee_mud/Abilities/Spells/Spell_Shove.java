@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -68,7 +79,7 @@ public class Spell_Shove extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> get(s) shoved back!":"<S-NAME> incant(s) and shove(s) at <T-NAMESELF>.");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> get(s) shoved back!":"<S-NAME> incant(s) and shove(s) at <T-NAMESELF>.");
 			if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				if((msg.value()<=0)&&(target.location()==mob.location()))
@@ -77,15 +88,15 @@ public class Spell_Shove extends Spell
 					target.makePeace();
 					Room newRoom=mob.location().getRoomInDir(dir);
 					Room thisRoom=mob.location();
-					FullMsg enterMsg=new FullMsg(target,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> fly(s) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir))+".");
-					FullMsg leaveMsg=new FullMsg(target,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> <S-IS-ARE> shoved forcefully into the air and out "+Directions.getInDirectionName(dir)+".");
+					CMMsg enterMsg=CMClass.getMsg(target,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> fly(s) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir))+".");
+					CMMsg leaveMsg=CMClass.getMsg(target,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> <S-IS-ARE> shoved forcefully into the air and out "+Directions.getInDirectionName(dir)+".");
 					if(thisRoom.okMessage(target,leaveMsg)&&newRoom.okMessage(target,enterMsg))
 					{
 						thisRoom.send(target,leaveMsg);
 						newRoom.bringMobHere(target,false);
 						newRoom.send(target,enterMsg);
 						target.tell("\n\r\n\r");
-						CommonMsgs.look(target,true);
+						CMLib.commands().look(target,true);
 					}
 				}
 			}

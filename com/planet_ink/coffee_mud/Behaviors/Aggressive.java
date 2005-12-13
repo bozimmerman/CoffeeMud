@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -31,7 +42,7 @@ public class Aggressive extends StdBehavior
 
 	public boolean grantsAggressivenessTo(MOB M)
 	{
-		return MUDZapper.zapperCheck(getParms(),M);
+		return CMLib.masking().maskCheck(getParms(),M);
 	}
 
 	public void setParms(String newParms)
@@ -52,26 +63,26 @@ public class Aggressive extends StdBehavior
 		&&(monster.location()!=null)
 		&&(monster.location().isInhabitant(mob))
 		&&(monster.location().getArea().getMobility())
-		&&(!Sense.isATrackingMonster(mob))
-		&&(!Sense.isATrackingMonster(monster))
+		&&(!CMLib.flags().isATrackingMonster(mob))
+		&&(!CMLib.flags().isATrackingMonster(monster))
 		&&(canFreelyBehaveNormal(monster))
-		&&(Sense.canBeSeenBy(mob,monster))
+		&&(CMLib.flags().canBeSeenBy(mob,monster))
 		&&(!CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
 		&&(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")))
 		{
 			// special backstab sneak attack!
-			if(Sense.isHidden(monster))
+			if(CMLib.flags().isHidden(monster))
 			{
 				Ability A=monster.fetchAbility("Thief_BackStab");
 				if(A!=null)
 				{
-					A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob,0)*15));
+					A.setProfficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 					A.invoke(monster,mob,false,0);
 				}
 			}
 
 			// normal attack
-			MUDFight.postAttack(monster,mob,monster.fetchWieldedItem());
+			CMLib.combat().postAttack(monster,mob,monster.fetchWieldedItem());
 			return true;
 		}
 		return false;
@@ -87,7 +98,7 @@ public class Aggressive extends StdBehavior
 			if((mob!=null)&&(mob!=observer))
 			{
 				if((startItWith==null)
-				&&(MUDZapper.zapperCheck(zapStr,mob)))
+				&&(CMLib.masking().maskCheck(zapStr,mob)))
 					 startItWith=mob;
 			}
 		}

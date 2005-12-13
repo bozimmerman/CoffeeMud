@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -46,7 +57,7 @@ public class Song_Flight extends Song
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if((!auto)&&(!Sense.canSpeak(mob)))
+		if((!auto)&&(!CMLib.flags().canSpeak(mob)))
 		{
 			mob.tell("You can't sing!");
 			return false;
@@ -60,7 +71,7 @@ public class Song_Flight extends Song
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
 
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -81,9 +92,9 @@ public class Song_Flight extends Song
 						affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
 					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 
-					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+					if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 					{
-						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
+						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
 						if(mob.location().okMessage(mob,msg2))
 						{
 							mob.location().send(mob,msg2);
@@ -109,7 +120,7 @@ public class Song_Flight extends Song
 									mob.tell("Flee where?!");
 									return false;
 								}
-								MUDTracker.move(follower,directionCode,true,false);
+								CMLib.tracking().move(follower,directionCode,true,false);
 							}
 						}
 					}

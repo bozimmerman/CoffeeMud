@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -39,13 +50,13 @@ public class Prayer_Marry extends Prayer
 		String name1=(String)commands.lastElement();
 		String name2=Util.combine(commands,0,commands.size()-1);
 		MOB husband=mob.location().fetchInhabitant(name1);
-		if((husband==null)||(!Sense.canBeSeenBy(mob,husband)))
+		if((husband==null)||(!CMLib.flags().canBeSeenBy(mob,husband)))
 		{
 			mob.tell("You don't see "+name1+" here!");
 			return false;
 		}
 		MOB wife=mob.location().fetchInhabitant(name2);
-		if((wife==null)||(!Sense.canBeSeenBy(mob,wife)))
+		if((wife==null)||(!CMLib.flags().canBeSeenBy(mob,wife)))
 		{
 			mob.tell("You don't see "+name2+" here!");
 			return false;
@@ -86,7 +97,7 @@ public class Prayer_Marry extends Prayer
 			mob.tell(wife.name()+" must be a player to marry.");
 			return false;
 		}
-		CoffeeTables.bump(husband,CoffeeTables.STAT_BIRTHS);
+		CMLib.coffeeTables().bump(husband,CoffeeTableRow.STAT_BIRTHS);
 		Item I=husband.fetchWornItem("wedding band");
 		if(I==null)
 		{
@@ -121,17 +132,17 @@ public class Prayer_Marry extends Prayer
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to bless the holy union between "+husband.name()+" and "+wife.name()+".^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to bless the holy union between "+husband.name()+" and "+wife.name()+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				husband.setLiegeID(wife.Name());
 				wife.setLiegeID(husband.Name());
-				CoffeeTables.bump(husband,CoffeeTables.STAT_MARRIAGES);
-				CommonMsgs.say(mob,husband,"You may kiss your bride!",false,false);
-                Vector channels=ChannelSet.getFlaggedChannelNames("MARRIAGES");
+				CMLib.coffeeTables().bump(husband,CoffeeTableRow.STAT_MARRIAGES);
+				CMLib.commands().say(mob,husband,"You may kiss your bride!",false,false);
+                Vector channels=CMLib.channels().getFlaggedChannelNames("MARRIAGES");
                 for(int i=0;i<channels.size();i++)
-                    CommonMsgs.channel((String)channels.elementAt(i),husband.getClanID(),husband.name()+" and "+wife.name()+" were just joined in holy matrimony!",true);
+                    CMLib.commands().channel((String)channels.elementAt(i),husband.getClanID(),husband.name()+" and "+wife.name()+" were just joined in holy matrimony!",true);
              }
 		}
 		else

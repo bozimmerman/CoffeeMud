@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -120,7 +131,7 @@ public class Taxidermy extends CraftingSkill
 				if((PP.size()>1)&&(((String)PP.firstElement()).equalsIgnoreCase((String)commands.firstElement())))
 				{
 					commands.removeElementAt(0);
-					pose=(String)PP.elementAt(Dice.roll(1,PP.size()-1,0));
+					pose=(String)PP.elementAt(CMLib.dice().roll(1,PP.size()-1,0));
 					break;
 				}
 			}
@@ -129,7 +140,7 @@ public class Taxidermy extends CraftingSkill
 		verb="stuffing";
 		String str=Util.combine(commands,0);
 		Item I=mob.location().fetchItem(null,str);
-		if((I==null)||(!Sense.canBeSeenBy(I,mob)))
+		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
 			commonTell(mob,"You don't see anything called '"+str+"' here.");
 			return false;
@@ -191,7 +202,7 @@ public class Taxidermy extends CraftingSkill
 		displayText="You are stuffing "+I.name();
 		verb="stuffing "+I.name();
         playSound="scissor.wav";
-		FullMsg msg=new FullMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) stuffing "+I.name()+".");
+		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) stuffing "+I.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

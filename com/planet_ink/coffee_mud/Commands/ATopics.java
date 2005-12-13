@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -45,7 +56,7 @@ public class ATopics extends StdCommand
 
 			Collections.sort(reverseList);
 			topicBuffer=new StringBuffer(getScr("ATopics","htopics"));
-			topicBuffer.append(CMLister.fourColumns(reverseList,"HELP"));
+			topicBuffer.append(CMLib.lister().fourColumns(reverseList,"HELP"));
 			topicBuffer=new StringBuffer(topicBuffer.toString().replace('_',' '));
 			Resources.submitResource(resName,topicBuffer);
 		}
@@ -57,7 +68,7 @@ public class ATopics extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		Properties arcHelpFile=MUDHelp.getArcHelpFile();
+		Properties arcHelpFile=CMLib.help().getArcHelpFile();
 		if(arcHelpFile.size()==0)
 		{
 			if(mob!=null)

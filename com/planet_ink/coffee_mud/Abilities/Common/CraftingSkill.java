@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 
 import java.util.*;
@@ -191,8 +201,8 @@ public class CraftingSkill extends GatheringSkill
 			Item I=room.fetchItem(i);
 			if((I instanceof EnvResource)
 			&&(I.material()==resource)
-			&&(!Sense.isOnFire(I))
-			&&(!Sense.enchanted(I))
+			&&(!CMLib.flags().isOnFire(I))
+			&&(!CMLib.flags().enchanted(I))
 			&&(I.container()==null))
 				return I;
 		}
@@ -219,8 +229,8 @@ public class CraftingSkill extends GatheringSkill
 			if((I instanceof EnvResource)
 			&&((I.material()&EnvResource.MATERIAL_MASK)==material)
 			&&(I.material()!=mostMaterial)
-			&&(!Sense.isOnFire(I))
-			&&(!Sense.enchanted(I))
+			&&(!CMLib.flags().isOnFire(I))
+			&&(!CMLib.flags().enchanted(I))
 			&&(I.container()==null))
 			{
 				int num=findNumberOfResource(room,I.material());
@@ -384,7 +394,7 @@ public class CraftingSkill extends GatheringSkill
 
 	protected void randomRecipeFix(MOB mob, Vector recipes, Vector commands, int autoGeneration)
 	{
-		if(((mob.isMonster()&&(!Sense.isAnimalIntelligence(mob)))||(autoGeneration>0))
+		if(((mob.isMonster()&&(!CMLib.flags().isAnimalIntelligence(mob)))||(autoGeneration>0))
 		&&(commands.size()==0)
 		&&(recipes!=null)
 		&&(recipes.size()>0))
@@ -393,7 +403,7 @@ public class CraftingSkill extends GatheringSkill
             int maxtries=100;
             while((++tries)<maxtries)
             {
-    			Vector randomRecipe=(Vector)recipes.elementAt(Dice.roll(1,recipes.size(),-1));
+    			Vector randomRecipe=(Vector)recipes.elementAt(CMLib.dice().roll(1,recipes.size(),-1));
                 boolean proceed=true;
                 if((randomRecipe.size()>1))
                 {
@@ -482,8 +492,8 @@ public class CraftingSkill extends GatheringSkill
 			Item I=room.fetchItem(i);
 			if((I instanceof EnvResource)
 			&&(I.material()==resource)
-			&&(!Sense.isOnFire(I))
-			&&(!Sense.enchanted(I))
+			&&(!CMLib.flags().isOnFire(I))
+			&&(!CMLib.flags().enchanted(I))
 			&&(I.container()==null))
 				foundWood+=I.envStats().weight();
 		}
@@ -503,7 +513,7 @@ public class CraftingSkill extends GatheringSkill
 				if((I!=null)
 				&&(I.container()==contained)
 				&&(canMend(mob,I,true))
-				&&(Sense.canBeSeenBy(I,mob)))
+				&&(CMLib.flags().canBeSeenBy(I,mob)))
 					V.addElement(I);
 			}
 		}
@@ -517,7 +527,7 @@ public class CraftingSkill extends GatheringSkill
 				if((I!=null)
 				&&(I.container()==contained)
 				&&(canMend(mob,I,true))
-				&&(Sense.canBeSeenBy(I,mob))
+				&&(CMLib.flags().canBeSeenBy(I,mob))
 				&&((mob==from)||(!I.amWearingAt(Item.INVENTORY))))
 					V.addElement(I);
 			}
@@ -545,7 +555,7 @@ public class CraftingSkill extends GatheringSkill
 		else
 		{
 			scanning=mob.location().fetchInhabitant(rest);
-			if((scanning==null)||(!Sense.canBeSeenBy(scanning,mob)))
+			if((scanning==null)||(!CMLib.flags().canBeSeenBy(scanning,mob)))
 			{
 				commonTell(mob,"You don't see anyone called '"+rest+"' here.");
 				return false;
@@ -570,7 +580,7 @@ public class CraftingSkill extends GatheringSkill
 			Item I=(Item)allStuff.elementAt(i);
 			buf.append(Util.padRight(I.usesRemaining()+"%",5)+I.name());
 			if(!I.amWearingAt(Item.INVENTORY))
-				buf.append(" ("+Sense.wornLocation(I.rawWornCode())+")");
+				buf.append(" ("+CMLib.flags().wornLocation(I.rawWornCode())+")");
 			if(i<(allStuff.size()-1))
 				buf.append("\n\r");
 		}

@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Diseases;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -49,8 +59,8 @@ public class Disease_Cold extends Disease
 		MOB diseaser=invoker;
 		if(diseaser==null) diseaser=mob;
 		if((getTickDownRemaining()==1)
-		&&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_COLD))
-		&&(Dice.rollPercentage()<25-mob.charStats().getStat(CharStats.CONSTITUTION))
+		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.SAVE_COLD))
+		&&(CMLib.dice().rollPercentage()<25-mob.charStats().getStat(CharStats.CONSTITUTION))
 		&&(!mob.amDead())
 		&&(!mob.isMonster()))
 		{
@@ -65,8 +75,8 @@ public class Disease_Cold extends Disease
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());
 			if(mob.curState().getHitPoints()>((2*diseaser.envStats().level())+1))
 			{
-				int damage=Dice.roll(2,diseaser.envStats().level(),1);
-				MUDFight.postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
+				int damage=CMLib.dice().roll(2,diseaser.envStats().level(),1);
+				CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
 			}
 			catchIt(mob);
 			return true;

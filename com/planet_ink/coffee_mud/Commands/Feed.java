@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -39,7 +50,7 @@ public class Feed extends StdCommand
 		commands.removeElement(what);
 		String whom=Util.combine(commands,0);
 		MOB target=mob.location().fetchInhabitant(whom);
-		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
 			mob.tell("I don't see "+whom+" here.");
 			return false;
@@ -49,10 +60,10 @@ public class Feed extends StdCommand
 			mob.tell("Not while you are in combat!");
 			return false;
 		}
-		if(target.willFollowOrdersOf(mob)||(Sense.isBoundOrHeld(target)))
+		if(target.willFollowOrdersOf(mob)||(CMLib.flags().isBoundOrHeld(target)))
 		{
 			Item item=mob.fetchInventory(null,what);
-			if((item==null)||(!Sense.canBeSeenBy(item,mob)))
+			if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 			{
 				mob.tell("I don't see "+what+" here.");
 				return false;
@@ -72,30 +83,30 @@ public class Feed extends StdCommand
 				mob.tell("Not while "+target.name()+" is in combat!");
 				return false;
 			}
-			FullMsg msg=new FullMsg(mob,target,item,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> feed(s) "+item.name()+" to <T-NAMESELF>.");
+			CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> feed(s) "+item.name()+" to <T-NAMESELF>.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if((CommonMsgs.drop(mob,item,true,false))
+				if((CMLib.commands().drop(mob,item,true,false))
 				   &&(mob.location().isContent(item)))
 				{
-					msg=new FullMsg(target,item,CMMsg.MASK_GENERAL|CMMsg.MSG_GET,null);
+					msg=CMClass.getMsg(target,item,CMMsg.MASK_GENERAL|CMMsg.MSG_GET,null);
 					target.location().send(target,msg);
 					if(target.isMine(item))
 					{
 						if(item instanceof Food)
-							msg=new FullMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_EAT,CMMsg.MSG_EAT,CMMsg.MSG_EAT,null);
+							msg=CMClass.getMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_EAT,CMMsg.MSG_EAT,CMMsg.MSG_EAT,null);
 						else
-							msg=new FullMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_DRINK,CMMsg.MSG_DRINK,CMMsg.MSG_DRINK,null);
+							msg=CMClass.getMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_DRINK,CMMsg.MSG_DRINK,CMMsg.MSG_DRINK,null);
 						if(target.location().okMessage(target,msg))
 							target.location().send(target,msg);
 						if(target.isMine(item))
 						{
-							msg=new FullMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,CMMsg.MSG_DROP,CMMsg.MSG_DROP,null);
+							msg=CMClass.getMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,CMMsg.MSG_DROP,CMMsg.MSG_DROP,null);
 							if(mob.location().okMessage(mob,msg))
 							{
 								mob.location().send(mob,msg);
-								CommonMsgs.get(mob,null,item,true);
+								CMLib.commands().get(mob,null,item,true);
 							}
 						}
 					}

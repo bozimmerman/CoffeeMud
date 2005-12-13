@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -37,7 +48,7 @@ public class Put extends BaseItemParser
 		commands.removeElementAt(1);
 		commands.removeElementAt(0);
 
-		Vector items=EnglishParser.fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,true);
+		Vector items=CMLib.english().fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,true);
 		if(items.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else
@@ -46,7 +57,7 @@ public class Put extends BaseItemParser
 			Item I=(Item)items.elementAt(i);
 			if((items.size()==1)||(I instanceof Light))
 			{
-				FullMsg msg=new FullMsg(mob,I,null,CMMsg.MSG_EXTINGUISH,quiet?null:"<S-NAME> put(s) out <T-NAME>.");
+				CMMsg msg=CMClass.getMsg(mob,I,null,CMMsg.MSG_EXTINGUISH,quiet?null:"<S-NAME> put(s) out <T-NAME>.");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
@@ -91,8 +102,8 @@ public class Put extends BaseItemParser
 			return false;
 		}
 
-		Environmental container=EnglishParser.possibleContainer(mob,commands,false,Item.WORN_REQ_ANY);
-		if((container==null)||((container!=null)&&(!Sense.canBeSeenBy(container,mob))))
+		Environmental container=CMLib.english().possibleContainer(mob,commands,false,Item.WORN_REQ_ANY);
+		if((container==null)||((container!=null)&&(!CMLib.flags().canBeSeenBy(container,mob))))
 		{
 			mob.tell("I don't see a "+(String)commands.lastElement()+" here.");
 			return false;
@@ -101,7 +112,7 @@ public class Put extends BaseItemParser
 		int maxToPut=Integer.MAX_VALUE;
 		if((commands.size()>1)
 		&&(Util.s_int((String)commands.firstElement())>0)
-		&&(EnglishParser.numPossibleGold(mob,Util.combine(commands,0))==0))
+		&&(CMLib.english().numPossibleGold(mob,Util.combine(commands,0))==0))
 		{
 			maxToPut=Util.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
@@ -115,12 +126,12 @@ public class Put extends BaseItemParser
 		if(thingToPut.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(4);}
 		if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}
         boolean onlyGoldFlag=hasOnlyGoldInInventory(mob);
-        Item putThis=EnglishParser.bestPossibleGold(mob,null,thingToPut);
+        Item putThis=CMLib.english().bestPossibleGold(mob,null,thingToPut);
         if(putThis!=null)
         {
-            if(((Coins)putThis).getNumberOfCoins()<EnglishParser.numPossibleGold(mob,thingToPut))
+            if(((Coins)putThis).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,thingToPut))
                 return false;
-            if(Sense.canBeSeenBy(putThis,mob))
+            if(CMLib.flags().canBeSeenBy(putThis,mob))
                 V.addElement(putThis);
         }
         if(V.size()==0)
@@ -132,7 +143,7 @@ public class Put extends BaseItemParser
             else
             {
     			if(putThis==null) break;
-    			if((Sense.canBeSeenBy(putThis,mob))
+    			if((CMLib.flags().canBeSeenBy(putThis,mob))
     			&&(!V.contains(putThis)))
     				V.addElement(putThis);
             }
@@ -150,7 +161,7 @@ public class Put extends BaseItemParser
 		{
 			putThis=(Item)V.elementAt(i);
 			String putWord=(putThis instanceof Rideable)?((Rideable)putThis).putString(mob):"in";
-			FullMsg putMsg=new FullMsg(mob,container,putThis,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,"<S-NAME> put(s) <O-NAME> "+putWord+" <T-NAME>.");
+			CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,"<S-NAME> put(s) <O-NAME> "+putWord+" <T-NAME>.");
 			if(mob.location().okMessage(mob,putMsg))
 				mob.location().send(mob,putMsg);
 			if(putThis instanceof Coins)

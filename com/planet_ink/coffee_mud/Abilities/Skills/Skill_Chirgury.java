@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -22,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Chirgury extends StdAbility
+public class Skill_Chirgury extends StdSkill
 {
 	public String ID() { return "Skill_Chirgury"; }
 	public String name(){ return "Chirgury";}
@@ -79,7 +89,7 @@ public class Skill_Chirgury extends StdAbility
 		    mob.tell("A baby can not be removed from "+target.name()+".");
 		    return false;
 		}
-		if((target instanceof MOB)&&((!Sense.isBoundOrHeld(target))||(!Sense.isSleeping(target))))
+		if((target instanceof MOB)&&((!CMLib.flags().isBoundOrHeld(target))||(!CMLib.flags().isSleeping(target))))
 		{
 			mob.tell(((MOB)target).charStats().HeShe()+" must be bound, and asleep on an operating bed before you can perform chirgury.");
 			return false;
@@ -127,7 +137,7 @@ public class Skill_Chirgury extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),auto?"":"^S<S-NAME> carefully perform(s) chirgury upon <T-NAME>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),auto?"":"^S<S-NAME> carefully perform(s) chirgury upon <T-NAME>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -159,7 +169,7 @@ public class Skill_Chirgury extends StdAbility
 				        ((Drink)meat).setLiquidHeld(10);
 				        ((Drink)meat).setLiquidRemaining(10);
 				        if(target instanceof MOB)
-							MUDFight.postDamage(mob,(MOB)target,this,amt*3,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,"The bleeding <DAMAGE> <T-NAME>!");
+							CMLib.combat().postDamage(mob,(MOB)target,this,amt*3,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,"The bleeding <DAMAGE> <T-NAME>!");
 				    }
 				    meat.setName("the "+parts[partCode].toLowerCase()+" of "+target.Name());
 				    if((parts[partCode].endsWith("S"))&&(!parts[partCode].equalsIgnoreCase("PANCREAS")))
@@ -197,7 +207,7 @@ public class Skill_Chirgury extends StdAbility
 				        baby.setMobName(baby.Name());
 				        baby.setPlayerCorpse(false);
 				        baby.baseEnvStats().setWeight(1);
-				        baby.charStats().setStat(CharStats.GENDER,(Dice.rollPercentage()>50)?'F':'M');
+				        baby.charStats().setStat(CharStats.GENDER,(CMLib.dice().rollPercentage()>50)?'F':'M');
 				        for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 				            baby.charStats().setStat(i,1);
 				        for(int i=0;i<CharStats.NUM_BASE_STATS;i++)

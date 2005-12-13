@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Traps;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -82,16 +92,16 @@ public class Trap_SpikePit extends Trap_RoomPit
 		else
 		{
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor!");
-			int damage=Dice.roll(trapLevel(),6,1);
+			int damage=CMLib.dice().roll(trapLevel(),6,1);
 			if((daggerDamages!=null)&&(daggerDamages.size()>0))
 			{
 				for(int i=0;i<daggerDamages.size();i++)
-					damage+=Dice.roll(1,((Integer)daggerDamages.elementAt(i)).intValue(),0);
+					damage+=CMLib.dice().roll(1,((Integer)daggerDamages.elementAt(i)).intValue(),0);
 			}
 			else
-				damage+=Dice.roll(5,4,0);
-			MUDFight.postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"Spikes on the pit floor <DAMAGE> <T-NAME>!");
+				damage+=CMLib.dice().roll(5,4,0);
+			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"Spikes on the pit floor <DAMAGE> <T-NAME>!");
 		}
-		CommonMsgs.look(target,true);
+		CMLib.commands().look(target,true);
 	}
 }

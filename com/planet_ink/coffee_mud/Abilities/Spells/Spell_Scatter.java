@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -38,7 +49,7 @@ public class Spell_Scatter extends Spell
 	    if(((String)commands.lastElement()).equalsIgnoreCase("far"))
 	    {
 	        commands.removeElementAt(commands.size()-1);
-	        for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+	        for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 	            areas.addElement(e.nextElement());
 	    }
 	    else
@@ -66,10 +77,10 @@ public class Spell_Scatter extends Spell
 						goodPossibilities.addElement(item);
 				}
 				if(goodPossibilities.size()>0)
-					target=(Item)goodPossibilities.elementAt(Dice.roll(1,goodPossibilities.size(),-1));
+					target=(Item)goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
 				else
 				if(possibilities.size()>0)
-					target=(Item)possibilities.elementAt(Dice.roll(1,possibilities.size(),-1));
+					target=(Item)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
 			}
 			if(target==null)
 				return maliciousFizzle(mob,mobTarget,"<S-NAME> attempt(s) a scattering spell at <T-NAMESELF>, but nothing happens.");
@@ -80,7 +91,7 @@ public class Spell_Scatter extends Spell
 		    targets.addElement(target);
 		else
 		{
-			targets=EnglishParser.fetchItemList(mob,mob,null,commands,Item.WORN_REQ_ANY,true);
+			targets=CMLib.english().fetchItemList(mob,mob,null,commands,Item.WORN_REQ_ANY,true);
 			if(targets.size()==0)
 				mob.tell("You don't seem to be carrying that.");
 		}
@@ -103,7 +114,7 @@ public class Spell_Scatter extends Spell
 			    str=auto?"<S-NAME> is enveloped in a scattering field!":"^S<S-NAME> utter(s) a scattering spell!^?";
 		    else
 			    str=auto?"<T-NAME> is enveloped in a scattering field!":"^S<S-NAME> utter(s) a scattering spell, causing <T-NAMESELF> to resonate.^?";
-			FullMsg msg=new FullMsg(mob,mobTarget,this,affectType(auto),str);
+			CMMsg msg=CMClass.getMsg(mob,mobTarget,this,affectType(auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -112,8 +123,8 @@ public class Spell_Scatter extends Spell
 					for(int i=0;i<targets.size();i++)
 					{
 					    target=(Item)targets.elementAt(i);
-						msg=new FullMsg(mob,target,this,affectType(auto),null);
-						Room room=((Area)areas.elementAt(Dice.roll(1,areas.size(),-1))).getRandomMetroRoom();
+						msg=CMClass.getMsg(mob,target,this,affectType(auto),null);
+						Room room=((Area)areas.elementAt(CMLib.dice().roll(1,areas.size(),-1))).getRandomMetroRoom();
 						if(mob.location().okMessage(mob,msg))
 						{
 							mob.location().send(mob,msg);

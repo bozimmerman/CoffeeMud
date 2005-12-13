@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /**
@@ -57,14 +68,14 @@ public class MOBHunter extends ActiveTicker
 	{
 		MOB prey=null;
 		Vector rooms=new Vector();
-		MUDTracker.getRadiantRooms(mob.location(),rooms,true,true,true,true,true,null,radius);
+		CMLib.tracking().getRadiantRooms(mob.location(),rooms,true,true,true,true,true,null,radius);
 		for(int r=0;r<rooms.size();r++)
 		{
 			Room R=(Room)rooms.elementAt(r);
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				MOB M=R.fetchInhabitant(i);
-				if(MUDZapper.zapperCheck(getParms(),M))
+				if(CMLib.masking().maskCheck(getParms(),M))
 				{
 					prey=M;
 					break;

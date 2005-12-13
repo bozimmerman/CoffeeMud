@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.SuperPowers;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -51,7 +61,7 @@ public class Power_SuperClimb extends SuperPower
 			mob.tell("You can't climb that way.");
 			return false;
 		}
-		if(Sense.isSitting(mob)||Sense.isSleeping(mob))
+		if(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob))
 		{
 			mob.tell("You need to stand up first!");
 			return false;
@@ -60,7 +70,7 @@ public class Power_SuperClimb extends SuperPower
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,null);
+		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -72,11 +82,11 @@ public class Power_SuperClimb extends SuperPower
 				mob.recoverEnvStats();
 			}
 
-			MUDTracker.move(mob,dirCode,false,false);
+			CMLib.tracking().move(mob,dirCode,false,false);
 			mob.delEffect(this);
 			mob.recoverEnvStats();
 			if(!success)
-				mob.location().executeMsg(mob,new FullMsg(mob,mob.location(),CMMsg.MASK_MOVE|CMMsg.TYP_GENERAL,null));
+				mob.location().executeMsg(mob,CMClass.getMsg(mob,mob.location(),CMMsg.MASK_MOVE|CMMsg.TYP_GENERAL,null));
 		}
 		return success;
 	}

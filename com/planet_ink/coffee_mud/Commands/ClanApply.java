@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -36,27 +47,27 @@ public class ClanApply extends BaseClanner
 		{
 			if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
 			{
-				Clan C=Clans.findClan(qual);
+				Clan C=CMLib.clans().findClan(qual);
 				if(C!=null)
 				{
-					if(MUDZapper.zapperCheck(C.getAcceptanceSettings(),mob))
+					if(CMLib.masking().maskCheck(C.getAcceptanceSettings(),mob))
 					{
-                        if(MUDZapper.zapperCheck("-<"+CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANLEVEL),mob))
+                        if(CMLib.masking().maskCheck("-<"+CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL),mob))
                         {
-    						CMClass.DBEngine().DBUpdateClanMembership(mob.Name(), C.ID(), Clan.POS_APPLICANT);
-    						mob.setClanID(C.ID());
+    						CMLib.database().DBUpdateClanMembership(mob.Name(), C.clanID(), Clan.POS_APPLICANT);
+    						mob.setClanID(C.clanID());
     						mob.setClanRole(Clan.POS_APPLICANT);
-    						clanAnnounce(mob,getScr("ClanApply","new",C.typeName(),C.ID(),mob.Name()));
-    						mob.tell(getScr("ClanApply","membapplied",C.ID()));
+    						clanAnnounce(mob,getScr("ClanApply","new",C.typeName(),C.clanID(),mob.Name()));
+    						mob.tell(getScr("ClanApply","membapplied",C.clanID()));
                         }
                         else
                         {
-                            msg.append(getScr("ClanApply","leastlev",CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANLEVEL)+""));
+                            msg.append(getScr("ClanApply","leastlev",CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL)+""));
                         }
 					}
 					else
 					{
-						msg.append(getScr("ClanApply","nrq",C.ID()));
+						msg.append(getScr("ClanApply","nrq",C.clanID()));
 					}
 				}
 				else

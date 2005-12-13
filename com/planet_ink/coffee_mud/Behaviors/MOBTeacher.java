@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -66,17 +77,17 @@ public class MOBTeacher extends CombatAbilities
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
-			if((((stdCharClass&&(CMAble.lowestQualifyingLevel(A.ID())>0)))
-				||(CMAble.qualifiesByLevel(mob,A)&&(!CMAble.getSecretSkill(className,true,A.ID()))))
+			if((((stdCharClass&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)))
+				||(CMLib.ableMapper().qualifiesByLevel(mob,A)&&(!CMLib.ableMapper().getSecretSkill(className,true,A.ID()))))
 			&&((!noCommon)||((A.classificationCode()&Ability.ALL_CODES)!=Ability.COMMON_SKILL))
-			&&((!stdCharClass)||(!CMAble.classOnly("Archon",A.ID()))))
+			&&((!stdCharClass)||(!CMLib.ableMapper().classOnly("Archon",A.ID()))))
 				addAbility(mob,A,pct,myAbles);
 		}
 	}
 
 	public void addAbility(MOB mob, Ability A, int pct, Hashtable myAbles)
 	{
-		if(Dice.rollPercentage()<=pct)
+		if(CMLib.dice().rollPercentage()<=pct)
 		{
 			Ability A2=(Ability)myAbles.get(A.ID());
 			if(A2==null)
@@ -255,16 +266,16 @@ public class MOBTeacher extends CombatAbilities
 				if(s.endsWith("\"")) s=s.substring(0,s.length()-1);
 				if(s.trim().equalsIgnoreCase("LIST"))
 				{
-					CommonMsgs.say(monster,mob,"Try the QUALIFY command.",true,false);
+					CMLib.commands().say(monster,mob,"Try the QUALIFY command.",true,false);
 					return;
 				}
 				Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),monster);
 				if(myAbility==null)
 				{
 				    if(CMClass.findAbility(s.trim().toUpperCase())==null)
-						CommonMsgs.say(monster,mob,"I'm sorry, I've never heard of "+s,true,false);
+						CMLib.commands().say(monster,mob,"I'm sorry, I've never heard of "+s,true,false);
 				    else
-						CommonMsgs.say(monster,mob,"I'm sorry, I don't know "+s,true,false);
+						CMLib.commands().say(monster,mob,"I'm sorry, I don't know "+s,true,false);
 					return;
 				}
 				if(giveABonus)
@@ -276,7 +287,7 @@ public class MOBTeacher extends CombatAbilities
 
 				if(mob.fetchAbility(myAbility.ID())!=null)
 				{
-					CommonMsgs.say(monster,mob,"But you already know '"+myAbility.name()+"'.",true,false);
+					CMLib.commands().say(monster,mob,"But you already know '"+myAbility.name()+"'.",true,false);
 					return;
 				}
 				myAbility.setProfficiency(75);
@@ -284,10 +295,10 @@ public class MOBTeacher extends CombatAbilities
 					return;
 				if(!myAbility.canBeLearnedBy(monster,mob))
 					return;
-				FullMsg msg2=new FullMsg(monster,mob,null,CMMsg.MSG_SPEAK,null);
+				CMMsg msg2=CMClass.getMsg(monster,mob,null,CMMsg.MSG_SPEAK,null);
 				if(!monster.location().okMessage(monster,msg2))
 					return;
-				msg2=new FullMsg(monster,mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> teach(es) <T-NAMESELF> '"+myAbility.name()+"'.");
+				msg2=CMClass.getMsg(monster,mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> teach(es) <T-NAMESELF> '"+myAbility.name()+"'.");
 				if(!monster.location().okMessage(monster,msg2))
 					return;
 				myAbility.teach(monster,mob);

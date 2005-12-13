@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+import java.util.Vector;
 
-import java.util.*;
 
 
 /* 
@@ -64,9 +74,9 @@ public class Chant_DeathMoon extends Chant
 				MOB M=room.fetchInhabitant(i);
 				if((M!=null)&&(M!=invoker))
                 {
-					MUDFight.postDamage(invoker,M,this,Dice.roll(1,M.envStats().level(),0),CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The gaze of the death moon <DAMAGE> <T-NAME>!");
-                    if((!M.isInCombat())&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
-                        MUDFight.postAttack(M,invoker,M.fetchWieldedItem());
+					CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,M.envStats().level(),0),CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The gaze of the death moon <DAMAGE> <T-NAME>!");
+                    if((!M.isInCombat())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
+                        CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
                 }
 			}
 		}
@@ -114,7 +124,7 @@ public class Chant_DeathMoon extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -56,9 +67,9 @@ public class Thief_Surrender extends ThiefSkill
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		String localCurrency=BeanCounter.getCurrency(mob.getVictim());
-	    String costWords=BeanCounter.nameCurrencyShort(localCurrency,goldRequired);
-		if(success&&BeanCounter.getTotalAbsoluteValue(mob,localCurrency)>=goldRequired)
+		String localCurrency=CMLib.beanCounter().getCurrency(mob.getVictim());
+	    String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
+		if(success&&CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)>=goldRequired)
 		{
 			StringBuffer enemiesList=new StringBuffer("");
 			for(int v=0;v<theList.size();v++)
@@ -72,17 +83,17 @@ public class Thief_Surrender extends ThiefSkill
 				else
 					enemiesList.append(", "+vic.name());
 			}
-			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> surrender(s) to "+enemiesList.toString()+", paying "+costWords+".");
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> surrender(s) to "+enemiesList.toString()+", paying "+costWords+".");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				BeanCounter.subtractMoney(mob,localCurrency,goldRequired);
+				CMLib.beanCounter().subtractMoney(mob,localCurrency,goldRequired);
 				mob.recoverEnvStats();
 				mob.makePeace();
 				for(int v=0;v<theList.size();v++)
 				{
 					MOB vic=(MOB)theList.elementAt(v);
-					BeanCounter.addMoney(vic,localCurrency,Util.div(goldRequired,theList.size()));
+					CMLib.beanCounter().addMoney(vic,localCurrency,Util.div(goldRequired,theList.size()));
 					vic.recoverEnvStats();
 					vic.makePeace();
 				}

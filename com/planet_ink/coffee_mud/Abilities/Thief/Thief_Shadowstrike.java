@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -44,14 +54,14 @@ public class Thief_Shadowstrike extends ThiefSkill
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-        if(Sense.isSitting(mob))
+        if(CMLib.flags().isSitting(mob))
         {
             mob.tell("You need to stand up!");
             return false;
         }
-        if(!Sense.aliveAwakeMobileUnbound(mob,false))
+        if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
             return false;
-		if(Sense.canBeSeenBy(mob,target))
+		if(CMLib.flags().canBeSeenBy(mob,target))
 		{
 			mob.tell(target.name()+" is watching you too closely.");
 			return false;
@@ -71,14 +81,14 @@ public class Thief_Shadowstrike extends ThiefSkill
 		String str=auto?"":"<S-NAME> strike(s) <T-NAMESELF> from the shadows!";
 		int otherCode=success?code:CMMsg.NO_EFFECT;
 		String otherStr=success?str:null;
-		FullMsg msg=new FullMsg(mob,target,this,code,str,otherCode,otherStr,otherCode,otherStr);
+		CMMsg msg=CMClass.getMsg(mob,target,this,code,str,otherCode,otherStr,otherCode,otherStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 		    boolean alwaysInvis=Util.bset(mob.baseEnvStats().disposition(),EnvStats.IS_INVISIBLE);
 		    if(!alwaysInvis) mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()|EnvStats.IS_INVISIBLE);
 		    mob.recoverEnvStats();
 		    mob.location().send(mob,msg);
-		    MUDFight.postAttack(mob,target,w);
+		    CMLib.combat().postAttack(mob,target,w);
 		    if(!alwaysInvis) mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()-EnvStats.IS_INVISIBLE);
 		    mob.recoverEnvStats();
 			if(success)
@@ -93,7 +103,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 					if(hide!=null) hide.invoke(mob,null,false,asLevel);
 
 					mob.location().recoverRoomStats();
-					if(Sense.canBeSeenBy(mob,target))
+					if(CMLib.flags().canBeSeenBy(mob,target))
 					{
 						target.setVictim(oldVictim);
 						mob.setVictim(oldVictim2);

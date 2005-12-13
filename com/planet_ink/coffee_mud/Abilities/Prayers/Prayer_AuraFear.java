@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -36,7 +47,7 @@ public class Prayer_AuraFear extends Prayer
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		Room R=CoffeeUtensils.roomLocation(affected);
+		Room R=CMLib.utensils().roomLocation(affected);
 		Environmental E=affected;
 
 		super.unInvoke();
@@ -53,7 +64,7 @@ public class Prayer_AuraFear extends Prayer
 		if((--tickDown)>=0) 
 		    return super.tick(ticking,tickID);
 		tickDown=4;
-		Room R=CoffeeUtensils.roomLocation(affected);
+		Room R=CMLib.utensils().roomLocation(affected);
 		if(R==null)
 		    return super.tick(ticking,tickID);
 
@@ -76,7 +87,7 @@ public class Prayer_AuraFear extends Prayer
 			MOB blame=((invoker!=null)&&(invoker!=M))?invoker:M;
 			if((M!=null)&&((H==null)||(!H.contains(M))))
 			{
-			    if(Dice.rollPercentage()<M.charStats().getStat(CharStats.SAVE_MIND))
+			    if(CMLib.dice().rollPercentage()<M.charStats().getStat(CharStats.SAVE_MIND))
 		            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> shudder(s) at the sight of <O-NAME>.");
 			    else
 			    {
@@ -84,11 +95,11 @@ public class Prayer_AuraFear extends Prayer
 				    // sit and cringe, or flee if mobile
 				    if(M.isMonster())
 				    {
-				        if((!Sense.isMobile(M))||(!M.isInCombat()))
+				        if((!CMLib.flags().isMobile(M))||(!M.isInCombat()))
 				        {
 					        Command C=CMClass.getCommand("Sit");
 					        try{if(C!=null) C.execute(M,Util.makeVector("Sit"));}catch(Exception e){}
-					        if(Sense.isSitting(M))
+					        if(CMLib.flags().isSitting(M))
 					        {
 					            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,"<S-NAME> cringe(s) in fear at the sight of <O-NAME>.");
 					            Ability A=CMClass.getAbility("Spell_Fear");
@@ -105,7 +116,7 @@ public class Prayer_AuraFear extends Prayer
 					    else
 					    {
 				            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,"<S-NAME> scream(s) in fear at the sight of <O-NAME>.");
-				            MUDTracker.beMobile(M,false,true,false,false,null,null);
+				            CMLib.tracking().beMobile(M,false,true,false,false,null,null);
 					    }
 				    }
 				    else
@@ -119,7 +130,7 @@ public class Prayer_AuraFear extends Prayer
 					    else
 					    {
 				            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,"<S-NAME> scream(s) in fear at the sight of <O-NAME>.");
-				            MUDTracker.beMobile(M,false,true,false,false,null,null);
+				            CMLib.tracking().beMobile(M,false,true,false,false,null,null);
 				            if(M.location()==R)
 				            {
 					            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,"<S-NAME> cringe(s) in fear at the sight of <O-NAME>.");
@@ -156,7 +167,7 @@ public class Prayer_AuraFear extends Prayer
 		    int affectType=affectType(auto);
 		    if((mob==target)&&(Util.bset(affectType,CMMsg.MASK_MALICIOUS)))
 		        affectType=Util.unsetb(affectType,CMMsg.MASK_MALICIOUS);
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> "+prayWord(mob)+" for an aura of fear to surround <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> "+prayWord(mob)+" for an aura of fear to surround <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

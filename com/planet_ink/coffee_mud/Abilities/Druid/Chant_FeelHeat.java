@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -61,29 +72,29 @@ public class Chant_FeelHeat extends Chant
 			if(room!=null)
 			{
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_HEAT_WAVE)
-				&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_FIRE)))
+				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_FIRE)))
 				{
-					int damage=Dice.roll(1,8,0);
-					MUDFight.postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The scorching heat <DAMAGE> <T-NAME>!");
+					int damage=CMLib.dice().roll(1,8,0);
+					CMLib.combat().postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The scorching heat <DAMAGE> <T-NAME>!");
 				}
 				else
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_DUSTSTORM)
-				&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_FIRE)))
+				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_FIRE)))
 				{
-					int damage=Dice.roll(1,16,0);
-					MUDFight.postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning hot dust <DAMAGE> <T-NAME>!");
+					int damage=CMLib.dice().roll(1,16,0);
+					CMLib.combat().postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning hot dust <DAMAGE> <T-NAME>!");
 				}
 				else
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_DROUGHT)
-				&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_FIRE)))
+				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_FIRE)))
 				{
-					int damage=Dice.roll(1,8,0);
-					MUDFight.postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning dry heat <DAMAGE> <T-NAME>!");
+					int damage=CMLib.dice().roll(1,8,0);
+					CMLib.combat().postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning dry heat <DAMAGE> <T-NAME>!");
 				}
                 else
                     return true;
-                if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
-                    MUDFight.postAttack(M,invoker,M.fetchWieldedItem());
+                if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
+                    CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
 			}
 		}
 		return true;
@@ -129,7 +140,7 @@ public class Chant_FeelHeat extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.SlaveryLibrary;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
@@ -29,7 +40,7 @@ public class Spell_Geas extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int maxRange(){return 5;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	public EnglishParser.geasSteps STEPS=null;
+	public SlaveryLibrary.geasSteps STEPS=null;
 
 	public void unInvoke()
 	{
@@ -49,7 +60,7 @@ public class Spell_Geas extends Spell
 			&&(!mob.amDead())
 			&&(mob.location()!=null)
 			&&(mob.location()!=mob.getStartRoom()))
-				MUDTracker.wanderAway(mob,true,true);
+				CMLib.tracking().wanderAway(mob,true,true);
 		}
 	}
 
@@ -62,7 +73,7 @@ public class Spell_Geas extends Spell
 		if(msg.amITarget(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0))
-			MUDFight.postPanic(mob,msg);
+			CMLib.combat().postPanic(mob,msg);
 		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		&&(STEPS!=null)
 		&&(msg.sourceMessage()!=null)
@@ -99,7 +110,7 @@ public class Spell_Geas extends Spell
 		if(mob.isMonster())
 		{
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> sigh(s).");
-			CommonMsgs.say(mob,null,"You know, if I had any ambitions, I would put the geas on myself!",false,false);
+			CMLib.commands().say(mob,null,"You know, if I had any ambitions, I would put the geas on myself!",false,false);
 			return false;
 		}
 
@@ -126,11 +137,11 @@ public class Spell_Geas extends Spell
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> place(s) a powerful geas upon <T-NAMESELF>!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> place(s) a powerful geas upon <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				STEPS=EnglishParser.processRequest(mob,target,Util.combine(commands,0));
+				STEPS=CMLib.slavery().processRequest(mob,target,Util.combine(commands,0));
 				if((STEPS==null)||(STEPS.size()==0))
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) confused.");

@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -68,7 +79,7 @@ public class Fishing extends GatheringSkill
 				MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted)&&(!helping))
 				{
-					int amount=Dice.roll(1,5,0)*(abilityCode());
+					int amount=CMLib.dice().roll(1,5,0)*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
 					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to catch "+amount+" pound"+s+" of "+foundShortName+".");
@@ -78,7 +89,7 @@ public class Fishing extends GatheringSkill
 						mob.location().addItemRefuse(newFound,Item.REFUSE_PLAYER_DROP);
 						if((mob.riding()!=null)&&(mob.riding() instanceof Container))
 							newFound.setContainer((Container)mob.riding());
-						CommonMsgs.get(mob,null,newFound,true);
+						CMLib.commands().get(mob,null,newFound,true);
 					}
 				}
 			}
@@ -128,14 +139,14 @@ public class Fishing extends GatheringSkill
 		if((profficiencyCheck(mob,0,auto))
 		   &&(foundFish>0))
 		{
-			found=(Item)CoffeeUtensils.makeResource(foundFish,mob.location().domainType(),false);
+			found=(Item)CMLib.utensils().makeResource(foundFish,mob.location().domainType(),false);
 			foundShortName="nothing";
 			if(found!=null)
 				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 		}
 		int duration=35-mob.envStats().level();
 		if(duration<10) duration=10;
-		FullMsg msg=new FullMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) fishing.");
+		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) fishing.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -72,14 +83,14 @@ public class Prayer_Absorption extends Prayer
 		int tries=0;
 		while((absorbed==null)&&((++tries)<100))
 		{
-			absorbed=target.fetchAbility(Dice.roll(1,target.numAbilities(),-1));
+			absorbed=target.fetchAbility(CMLib.dice().roll(1,target.numAbilities(),-1));
 			if(mob.fetchAbility(absorbed.ID())!=null)
 				absorbed=null;
 			else
 			if(absorbed.isAutoInvoked())
 				absorbed=null;
 			else
-			if(CMAble.qualifyingLevel(mob,absorbed)>0)
+			if(CMLib.ableMapper().qualifyingLevel(mob,absorbed)>0)
 				absorbed=null;
 		}
 
@@ -94,7 +105,7 @@ public class Prayer_Absorption extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for some of <T-YOUPOSS> knowledge!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for some of <T-YOUPOSS> knowledge!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

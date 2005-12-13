@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -79,7 +90,7 @@ public class Chant_SummonAnimal extends Chant
 			mob.tell("You must be further outdoors to summon an animal.");
 			return false;
 		}
-		fromDir=((Integer)choices.elementAt(Dice.roll(1,choices.size(),-1))).intValue();
+		fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
 		Room newRoom=mob.location().getRoomInDir(fromDir);
 		int opDir=Directions.getOpDirectionCode(fromDir);
 
@@ -91,22 +102,22 @@ public class Chant_SummonAnimal extends Chant
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) and summon(s) a companion from the Java Plain.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) and summon(s) a companion from the Java Plain.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, adjustedLevel(mob,asLevel));
 				target.bringToLife(newRoom,true);
-				BeanCounter.clearZeroMoney(target,null);
+				CMLib.beanCounter().clearZeroMoney(target,null);
 				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				if(target.isInCombat()) target.makePeace();
-				MUDTracker.move(target,opDir,false,false);
+				CMLib.tracking().move(target,opDir,false,false);
 				if(target.location()==mob.location())
 				{
 					if(target.isInCombat()) target.makePeace();
-					CommonMsgs.follow(target,mob,true);
+					CMLib.commands().follow(target,mob,true);
 					beneficialAffect(mob,target,asLevel,0);
 					if(target.amFollowing()!=mob)
 						mob.tell(target.name()+" seems unwilling to follow you.");
@@ -131,7 +142,7 @@ public class Chant_SummonAnimal extends Chant
 
 		while(newMOB==null)
 		{
-			switch(Dice.rollPercentage())
+			switch(CMLib.dice().rollPercentage())
 			{
 			case 1: newMOB=CMClass.getMOB("BlackBear"); break;
 			case 2: newMOB=CMClass.getMOB("BrownBear"); break;

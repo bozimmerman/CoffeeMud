@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -66,7 +77,7 @@ public class ClanCrafting extends CraftingSkill
 					else
 					{
 						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
-						CommonMsgs.get(mob,null,building,true);
+						CMLib.commands().get(mob,null,building,true);
 					}
 				}
 				building=null;
@@ -86,7 +97,7 @@ public class ClanCrafting extends CraftingSkill
 			student.tell("You need to belong to a clan before you can learn "+name()+".");
 			return false;
 		}
-		Clan C=Clans.getClan(student.getClanID());
+		Clan C=CMLib.clans().getClan(student.getClanID());
 		if(C==null)
 		{
 			teacher.tell(student.name()+" is not a member of a clan.");
@@ -122,7 +133,7 @@ public class ClanCrafting extends CraftingSkill
 			mob.tell("You must be a member of a clan to use this skill.");
 			return false;
 		}
-		Clan C=Clans.getClan(mob.getClanID());
+		Clan C=CMLib.clans().getClan(mob.getClanID());
 		if(C==null)
 		{
 			mob.tell("You must be a member of a clan to use this skill.");
@@ -306,12 +317,12 @@ public class ClanCrafting extends CraftingSkill
 			if(((ClanItem)building).ciType()==ClanItem.CI_PROPAGANDA)
 			{
 				building.setMaterial(EnvResource.RESOURCE_PAPER);
-				Sense.setReadable(building,true);
+				CMLib.flags().setReadable(building,true);
 				building.setReadableText("Read the glorious propaganda of "+C.typeName()+" "+C.name().toLowerCase()+"! Join and fight for us today!");
 			}
 		}
 
-		if((Sense.isReadable(building))
+		if((CMLib.flags().isReadable(building))
 		&&((building.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN))
 			building.setMaterial(EnvResource.RESOURCE_PAPER);
 
@@ -371,7 +382,7 @@ public class ClanCrafting extends CraftingSkill
 			return true;
 		}
 
-		FullMsg msg=new FullMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		CMMsg msg=CMClass.getMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

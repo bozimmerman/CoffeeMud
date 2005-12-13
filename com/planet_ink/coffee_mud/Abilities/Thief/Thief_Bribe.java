@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -58,7 +69,7 @@ public class Thief_Bribe extends ThiefSkill
 			return false;
 		}
 
-		Object O=EnglishParser.findCommand(target,commands);
+		Object O=CMLib.english().findCommand(target,commands);
 		if(O instanceof Command)
 		{
 			if((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob)))
@@ -80,36 +91,36 @@ public class Thief_Bribe extends ThiefSkill
 			return false;
 
 		
-		double amountRequired=BeanCounter.getTotalAbsoluteNativeValue(target)
+		double amountRequired=CMLib.beanCounter().getTotalAbsoluteNativeValue(target)
 						+new Long(((100-(mob.charStats().getStat(CharStats.CHARISMA)*2)))*target.envStats().level()).doubleValue();
 
-		String currency=BeanCounter.getCurrency(target);
+		String currency=CMLib.beanCounter().getCurrency(target);
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		if((!success)||(BeanCounter.getTotalAbsoluteValue(mob,currency)<amountRequired))
+		if((!success)||(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)<amountRequired))
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to bribe <T-NAMESELF> to '"+Util.combine(commands,0)+"', but no deal is reached.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to bribe <T-NAMESELF> to '"+Util.combine(commands,0)+"', but no deal is reached.^?");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
-			if(BeanCounter.getTotalAbsoluteValue(mob,currency)<amountRequired)
+			if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)<amountRequired)
 			{
-			    String costWords=BeanCounter.nameCurrencyShort(currency,amountRequired);
+			    String costWords=CMLib.beanCounter().nameCurrencyShort(currency,amountRequired);
 				mob.tell(target.charStats().HeShe()+" requires "+costWords+" to do this.");
 			}
 			success=false;
 		}
 		else
 		{
-		    String costWords=BeanCounter.nameCurrencyShort(target,amountRequired);
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> bribe(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"' for "+costWords+".^?");
-			BeanCounter.subtractMoney(mob,currency,amountRequired);
+		    String costWords=CMLib.beanCounter().nameCurrencyShort(target,amountRequired);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> bribe(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"' for "+costWords+".^?");
+			CMLib.beanCounter().subtractMoney(mob,currency,amountRequired);
 			mob.recoverEnvStats();
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				target.doCommand(commands);
 			}
-			BeanCounter.addMoney(mob,currency,amountRequired);
+			CMLib.beanCounter().addMoney(mob,currency,amountRequired);
 			target.recoverEnvStats();
 		}
 		if(target==lastChecked)

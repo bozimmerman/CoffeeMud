@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -54,16 +65,16 @@ public class Thief_TagTurf extends ThiefSkill
 		if((msg.target()==affected)
 		&&(affected instanceof Room)
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
-		&&((Sense.canSeeHidden(msg.source()))||(msg.source().Name().equals(text()))))
+		&&((CMLib.flags().canSeeHidden(msg.source()))||(msg.source().Name().equals(text()))))
 		{
             if((msg.source().Name().equals(text()))
             ||((msg.source().getClanID().length()>0)&&(msg.source().getClanID().equals(text()))))
-				msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),null,
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,
 										CMMsg.MSG_OK_VISUAL,"This is your turf.",
 										CMMsg.NO_EFFECT,null,
 										CMMsg.NO_EFFECT,null));
 			else
-				msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),null,
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,
 										CMMsg.MSG_OK_VISUAL,"This turf has been claimed by "+text()+".",
 										CMMsg.NO_EFFECT,null,
 										CMMsg.NO_EFFECT,null));
@@ -99,9 +110,9 @@ public class Thief_TagTurf extends ThiefSkill
 			mob.tell("A place like this can't get your turf.");
 			return false;
 		}
-		if((!CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
-		&&(CoffeeUtensils.getLandTitle(mob.location())!=null)
-		&&(CoffeeUtensils.getLandTitle(mob.location()).landOwner().length()>0))
+		if((!CMLib.utensils().doesOwnThisProperty(mob,mob.location()))
+		&&(CMLib.utensils().getLandTitle(mob.location())!=null)
+		&&(CMLib.utensils().getLandTitle(mob.location()).landOwner().length()>0))
 		{
 			mob.tell("You can't tag anothers property!");
 			return false;
@@ -111,7 +122,7 @@ public class Thief_TagTurf extends ThiefSkill
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		FullMsg msg=new FullMsg(mob,null,this,auto?CMMsg.MASK_GENERAL:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> tag(s) this place as <S-HIS-HER> turf.");
+		CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_GENERAL:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> tag(s) this place as <S-HIS-HER> turf.");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> attempt(s) to tag this place, but can't get into it.");
 		else
@@ -122,7 +133,7 @@ public class Thief_TagTurf extends ThiefSkill
     			setMiscText(mob.getClanID());
             else
                 setMiscText(mob.Name());
-			beneficialAffect(mob,target,asLevel,(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDMONTH)));
+			beneficialAffect(mob,target,asLevel,(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)));
 		}
 		return success;
 	}

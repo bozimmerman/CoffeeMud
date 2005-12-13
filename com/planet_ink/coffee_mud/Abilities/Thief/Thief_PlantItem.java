@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -43,7 +53,7 @@ public class Thief_PlantItem extends ThiefSkill
 			return false;
 		}
 		MOB target=mob.location().fetchInhabitant((String)commands.lastElement());
-		if((target==null)||(!Sense.canBeSeenBy(target,mob)))
+		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+(String)commands.lastElement()+"' here.");
 			return false;
@@ -67,7 +77,7 @@ public class Thief_PlantItem extends ThiefSkill
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,item,CMMsg.MSG_GIVE,"<S-NAME> plant(s) <O-NAME> on <T-NAMESELF>.",CMMsg.MASK_GENERAL|CMMsg.MSG_GIVE,null,CMMsg.MASK_GENERAL|CMMsg.MSG_GIVE,null);
+			CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_GIVE,"<S-NAME> plant(s) <O-NAME> on <T-NAMESELF>.",CMMsg.MASK_GENERAL|CMMsg.MSG_GIVE,null,CMMsg.MASK_GENERAL|CMMsg.MSG_GIVE,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

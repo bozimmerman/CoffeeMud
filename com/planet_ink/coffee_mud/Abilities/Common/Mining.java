@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -73,10 +84,10 @@ public class Mining extends GatheringSkill
 				MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted))
 				{
-					int amount=Dice.roll(1,10,0);
+					int amount=CMLib.dice().roll(1,10,0);
 					if(((found.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK)
 					&&(found.material()!=EnvResource.RESOURCE_COAL))
-						amount=Dice.roll(1,85,0);
+						amount=CMLib.dice().roll(1,85,0);
 					amount=amount*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
@@ -85,7 +96,7 @@ public class Mining extends GatheringSkill
 					{
 						Item newFound=(Item)found.copyOf();
 						mob.location().addItemRefuse(newFound,Item.REFUSE_RESOURCE);
-						//CommonMsgs.get(mob,null,newFound,true);
+						//CMLib.commands().get(mob,null,newFound,true);
 					}
 				}
 			}
@@ -120,14 +131,14 @@ public class Mining extends GatheringSkill
 		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
 		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)))
 		{
-			found=(Item)CoffeeUtensils.makeResource(resourceType,mob.location().domainType(),false);
+			found=(Item)CMLib.utensils().makeResource(resourceType,mob.location().domainType(),false);
 			foundShortName="nothing";
 			if(found!=null)
 				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 		}
 		int duration=50-mob.envStats().level();
 		if(duration<15) duration=15;
-		FullMsg msg=new FullMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) mining.");
+		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) mining.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

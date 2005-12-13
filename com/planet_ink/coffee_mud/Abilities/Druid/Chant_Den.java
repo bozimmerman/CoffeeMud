@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
-import java.util.*;
+import java.util.Vector;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -97,7 +108,7 @@ public class Chant_Den extends Chant
 			mob.tell("This magic will not work here.");
 			return false;
 		}
-		int d=((Integer)dirChoices.elementAt(Dice.roll(1,dirChoices.size(),-1))).intValue();
+		int d=((Integer)dirChoices.elementAt(CMLib.dice().roll(1,dirChoices.size(),-1))).intValue();
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -115,7 +126,7 @@ public class Chant_Den extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, null, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) for a den!^?");
+			CMMsg msg = CMClass.getMsg(mob, null, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) for a den!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -128,7 +139,7 @@ public class Chant_Den extends Chant
 				mob.location().rawExits()[d]=CMClass.getExit("HiddenWalkway");
 				newRoom.rawDoors()[Directions.getOpDirectionCode(d)]=mob.location();
 				Ability A=CMClass.getAbility("Prop_RoomView");
-				A.setMiscText(CMMap.getExtendedRoomID(mob.location()));
+				A.setMiscText(CMLib.map().getExtendedRoomID(mob.location()));
 				Exit E=CMClass.getExit("Open");
 				E.addNonUninvokableEffect(A);
 				A=CMClass.getAbility("Prop_PeaceMaker");
@@ -144,7 +155,7 @@ public class Chant_Den extends Chant
 
 				newRoom.rawExits()[Directions.getOpDirectionCode(d)]=E;
 				newRoom.getArea().fillInAreaRoom(newRoom);
-				beneficialAffect(mob,mob.location(),asLevel,CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDMONTH));
+				beneficialAffect(mob,mob.location(),asLevel,CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH));
 			}
 		}
 		else

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -34,7 +45,7 @@ public class Beggar extends StdBehavior
 			return;
 		MOB mob=(MOB)oking;
 		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_GIVE))
-			msg.addTrailerMsg(new FullMsg(mob,msg.source(),CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?"));
+			msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?"));
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -52,42 +63,42 @@ public class Beggar extends StdBehavior
 		{
 			MOB mob2=mob.location().fetchInhabitant(i);
 			if((mob2!=null)
-			   &&(Sense.canBeSeenBy(mob2,mob))
+			   &&(CMLib.flags().canBeSeenBy(mob2,mob))
 			   &&(mob2!=mob)
 			   &&(!mobsHitUp.contains(mob2))
 			   &&(!mob2.isMonster()))
 			{
-				switch(Dice.roll(1,10,0))
+				switch(CMLib.dice().roll(1,10,0))
 				{
 				case 1:
-					CommonMsgs.say(mob,mob2,"A little something for a vet please?",false,false);
+					CMLib.commands().say(mob,mob2,"A little something for a vet please?",false,false);
 					break;
 				case 2:
-					CommonMsgs.say(mob,mob2,"Spare a gold piece "+((mob2.charStats().getStat(CharStats.GENDER)=='M')?"mister?":"madam?"),false,false);
+					CMLib.commands().say(mob,mob2,"Spare a gold piece "+((mob2.charStats().getStat(CharStats.GENDER)=='M')?"mister?":"madam?"),false,false);
 					break;
 				case 3:
-					CommonMsgs.say(mob,mob2,"Spare some change?",false,false);
+					CMLib.commands().say(mob,mob2,"Spare some change?",false,false);
 					break;
 				case 4:
-					CommonMsgs.say(mob,mob2,"Please "+((mob2.charStats().getStat(CharStats.GENDER)=='M')?"mister":"madam")+", a little something for an old "+((mob.charStats().getStat(CharStats.GENDER)=='M')?"man":"woman")+" down on "+mob.charStats().hisher()+" luck?",false,false);
+					CMLib.commands().say(mob,mob2,"Please "+((mob2.charStats().getStat(CharStats.GENDER)=='M')?"mister":"madam")+", a little something for an old "+((mob.charStats().getStat(CharStats.GENDER)=='M')?"man":"woman")+" down on "+mob.charStats().hisher()+" luck?",false,false);
 					break;
 				case 5:
-					CommonMsgs.say(mob,mob2,"Hey, I lost my 'Will Work For Food' sign.  Can you spare me the money to buy one?",false,false);
+					CMLib.commands().say(mob,mob2,"Hey, I lost my 'Will Work For Food' sign.  Can you spare me the money to buy one?",false,false);
 					break;
 				case 6:
-					CommonMsgs.say(mob,mob2,"Spread a little joy to an old fogie?",false,false);
+					CMLib.commands().say(mob,mob2,"Spread a little joy to an old fogie?",false,false);
 					break;
 				case 7:
-					CommonMsgs.say(mob,mob2,"Change?",false,false);
+					CMLib.commands().say(mob,mob2,"Change?",false,false);
 					break;
 				case 8:
-					CommonMsgs.say(mob,mob2,"Can you spare a little change?",false,false);
+					CMLib.commands().say(mob,mob2,"Can you spare a little change?",false,false);
 					break;
 				case 9:
-					CommonMsgs.say(mob,mob2,"Can you spare a little gold?",false,false);
+					CMLib.commands().say(mob,mob2,"Can you spare a little gold?",false,false);
 					break;
 				case 10:
-					CommonMsgs.say(mob,mob2,"Gold piece for a poor fogie down on "+mob.charStats().hisher()+" luck?",false,false);
+					CMLib.commands().say(mob,mob2,"Gold piece for a poor fogie down on "+mob.charStats().hisher()+" luck?",false,false);
 					break;
 				}
 				mobsHitUp.addElement(mob2);

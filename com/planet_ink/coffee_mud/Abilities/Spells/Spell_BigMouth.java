@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -42,7 +53,7 @@ public class Spell_BigMouth extends Spell
 		{
 			if(msg.target().envStats().weight()<(mob.envStats().weight()/3))
 			{
-				if((Stomach()!=null)&&(Stomach().numInhabitants()>(CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this))))
+				if((Stomach()!=null)&&(Stomach().numInhabitants()>(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this))))
 				{
 					mob.tell("Your stomach is too full.");
 					return false;
@@ -51,7 +62,7 @@ public class Spell_BigMouth extends Spell
 				if(msg.target() instanceof MOB)
 				{
 					MOB target=(MOB)msg.target();
-					boolean isHit=MUDFight.rollToHit(msg.source(),target);
+					boolean isHit=CMLib.combat().rollToHit(msg.source(),target);
 					if(!isHit)
 					{
 						mob.tell("You fail to eat "+target.name());
@@ -65,7 +76,7 @@ public class Spell_BigMouth extends Spell
 				if(!(msg.target() instanceof Item))
 					return super.okMessage(myHost,msg);
 				else
-				if((!Sense.isGettable((Item)msg.target()))||(msg.target().displayText().length()==0))
+				if((!CMLib.flags().isGettable((Item)msg.target()))||(msg.target().displayText().length()==0))
 				{
 					mob.tell("You can not eat "+msg.target().name());
 					return false;
@@ -105,7 +116,7 @@ public class Spell_BigMouth extends Spell
 			{
 				MOB TastyMorsel=(MOB)msg.target();
 				Stomach().bringMobHere(TastyMorsel,false);
-				FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,"<S-NAME> <S-IS-ARE> swallowed whole by "+mob.name()+"!",CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+				CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,"<S-NAME> <S-IS-ARE> swallowed whole by "+mob.name()+"!",CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
 				Stomach().send(TastyMorsel,enterMsg);
 			}
 			if((msg.target() instanceof Item)
@@ -126,7 +137,7 @@ public class Spell_BigMouth extends Spell
 		Room R=null;
 		if(affected instanceof MOB)
 			R=((MOB)affected).location();
-		if(R==null)R=CoffeeUtensils.roomLocation(affected);
+		if(R==null)R=CMLib.utensils().roomLocation(affected);
 		if(R!=null) lastKnownRoom=R;
 		return lastKnownRoom;
 	}
@@ -135,7 +146,7 @@ public class Spell_BigMouth extends Spell
 		if((myStomach==null)&&(affected!=null))
 		{
 			myStomach = CMClass.getLocale("StdRoom");
-			myStomach.setArea(CMMap.getRandomArea());
+			myStomach.setArea(CMLib.map().getRandomArea());
 			myStomach.setName("The Stomach of "+affected.name());
 			myStomach.setDescription("You are in the stomach of "+affected.name()+".  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been swallowed whole and are being digested.");
 		}
@@ -188,7 +199,7 @@ public class Spell_BigMouth extends Spell
 				MOB TastyMorsel = Stomach().fetchInhabitant(x);
 				if (TastyMorsel != null)
 				{
-					FullMsg DigestMsg=new FullMsg(mob,
+					CMMsg DigestMsg=CMClass.getMsg(mob,
 											   TastyMorsel,
 											   null,
 											   CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,
@@ -197,7 +208,7 @@ public class Spell_BigMouth extends Spell
 					Stomach().send(mob,DigestMsg);
 					int damage=(int)Math.round(Util.div(TastyMorsel.curState().getHitPoints(),2));
 					if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
-					MUDFight.postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
 				}
 			}
 		}
@@ -265,7 +276,7 @@ public class Spell_BigMouth extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a spell.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a spell.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.CharClasses;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -51,84 +62,84 @@ public class Monk extends StdCharClass
 		if(!loaded())
 		{
 			setLoaded(true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",25,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Axe",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Hammer",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Polearm",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Axe",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Hammer",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Polearm",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 
-			CMAble.addCharAbilityMapping(ID(),1,"Fighter_Kick",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Fighter_MonkeyPunch",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Thief_Hide",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Fighter_Kick",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Fighter_MonkeyPunch",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_Hide",false);
 			
-			CMAble.addCharAbilityMapping(ID(),2,"Skill_Climb",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Skill_Climb",false);
 			
-			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",true);
-			CMAble.addCharAbilityMapping(ID(),3,"Skill_TwoWeaponFighting",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Parry",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_TwoWeaponFighting",false);
 			
-			CMAble.addCharAbilityMapping(ID(),4,"Skill_Dodge",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Dodge",false);
 			
-			CMAble.addCharAbilityMapping(ID(),5,"Fighter_Rescue",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_Rescue",true);
 			
-			CMAble.addCharAbilityMapping(ID(),6,"Skill_Disarm",false);
-			CMAble.addCharAbilityMapping(ID(),6,"Thief_Sneak",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Disarm",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_Sneak",false);
 			
-			CMAble.addCharAbilityMapping(ID(),7,"Fighter_DeflectProjectile",true);
-			CMAble.addCharAbilityMapping(ID(),7,"Fighter_KnifeHand",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_DeflectProjectile",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_KnifeHand",false);
 			
-			CMAble.addCharAbilityMapping(ID(),8,"Skill_Trip",false);
-			CMAble.addCharAbilityMapping(ID(),8,"Fighter_AxKick",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Trip",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Fighter_AxKick",false);
 			
-			CMAble.addCharAbilityMapping(ID(),9,"Fighter_BackHand",true);
-			CMAble.addCharAbilityMapping(ID(),9,"Fighter_BodyToss",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Fighter_BackHand",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Fighter_BodyToss",false);
 			
-			CMAble.addCharAbilityMapping(ID(),10,"Fighter_BodyFlip",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_BodyFlip",false);
 			
-			CMAble.addCharAbilityMapping(ID(),11,"Fighter_BlindFighting",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_BlindFighting",true);
 			
-			CMAble.addCharAbilityMapping(ID(),12,"Fighter_CatchProjectile",false);
-			CMAble.addCharAbilityMapping(ID(),12,"Fighter_FlyingKick",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_CatchProjectile",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_FlyingKick",false);
 			
-			CMAble.addCharAbilityMapping(ID(),13,"Fighter_WeaponBreak",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Fighter_Pin",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_WeaponBreak",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_Pin",false);
 			
-/**/		CMAble.addCharAbilityMapping(ID(),14,"Skill_Dirt",false);
-			CMAble.addCharAbilityMapping(ID(),14,"Thief_Detection",false);
+/**/		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_Dirt",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Detection",false);
 			
-			CMAble.addCharAbilityMapping(ID(),15,"Fighter_Sweep",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Fighter_Cartwheel",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_Sweep",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_Cartwheel",false);
 			
-			CMAble.addCharAbilityMapping(ID(),16,"Fighter_SideKick",false);
-			CMAble.addCharAbilityMapping(ID(),16,"Fighter_BodyShield",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_SideKick",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_BodyShield",false);
 			
-			CMAble.addCharAbilityMapping(ID(),17,"Fighter_CircleParry",true);
-			CMAble.addCharAbilityMapping(ID(),17,"Fighter_KiStrike",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_CircleParry",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_KiStrike",false);
 			
-			CMAble.addCharAbilityMapping(ID(),18,"Skill_AttackHalf",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_AttackHalf",false);
 			
-			CMAble.addCharAbilityMapping(ID(),19,"Fighter_Tumble",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_Tumble",true);
 			
-			CMAble.addCharAbilityMapping(ID(),20,"Thief_Snatch",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_Snatch",false);
 			
-			CMAble.addCharAbilityMapping(ID(),21,"Fighter_Endurance",true);
-			CMAble.addCharAbilityMapping(ID(),21,"Fighter_Gouge",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_Endurance",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_Gouge",false);
 			
-			CMAble.addCharAbilityMapping(ID(),22,"Fighter_CircleTrip",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_CircleTrip",false);
 			
-			CMAble.addCharAbilityMapping(ID(),23,"Thief_Listen",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_Listen",true);
 			
-			CMAble.addCharAbilityMapping(ID(),24,"Fighter_LightningStrike",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_LightningStrike",false);
 			
-			CMAble.addCharAbilityMapping(ID(),25,"Fighter_ReturnProjectile",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_ReturnProjectile",true);
 			
-			CMAble.addCharAbilityMapping(ID(),30,"Fighter_AtemiStrike",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Fighter_AtemiStrike",true);
 		}
 	}
 
@@ -161,7 +172,7 @@ public class Monk extends StdCharClass
 		super.unLevel(mob);
 
 		int dexStat=mob.charStats().getStat(CharStats.DEXTERITY);
-		int maxDexStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
+		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.DEXTERITY));
 		if(dexStat>maxDexStat) dexStat=maxDexStat;
 		int attArmor=(int)Math.round(Util.div(dexStat,9.0));
@@ -193,7 +204,7 @@ public class Monk extends StdCharClass
 		super.affectEnvStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
-			if(Sense.isStanding((MOB)affected))
+			if(CMLib.flags().isStanding((MOB)affected))
 			{
 				MOB mob=(MOB)affected;
 				int attArmor=(((int)Math.round(Util.div(mob.charStats().getStat(CharStats.DEXTERITY),9.0)))+1)*(mob.charStats().getClassLevel(this)-1);
@@ -223,7 +234,7 @@ public class Monk extends StdCharClass
 	    if(CMSecurity.isDisabled("LEVELS")) return;
 		super.level(mob);
 		int dexStat=mob.charStats().getStat(CharStats.DEXTERITY);
-		int maxDexStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
+		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.DEXTERITY));
 		if(dexStat>maxDexStat) dexStat=maxDexStat;
 		int attArmor=((int)Math.round(Util.div(dexStat,9.0)))+1;
@@ -235,7 +246,7 @@ public class Monk extends StdCharClass
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
 		{
-			Vector V=CMAble.getUpToLevelListings(ID(),
+			Vector V=CMLib.ableMapper().getUpToLevelListings(ID(),
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
@@ -244,8 +255,8 @@ public class Monk extends StdCharClass
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_CODES)!=Ability.COMMON_SKILL)
-				&&(!CMAble.getDefaultGain(ID(),true,A.ID())))
-					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),true,A.ID()),CMAble.getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}
 		}
 	}

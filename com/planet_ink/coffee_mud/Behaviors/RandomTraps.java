@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -211,7 +222,7 @@ public class RandomTraps extends ActiveTicker
 		super.tick(ticking,tickID);
         tickStatus=Tickable.STATUS_MISC+0;
 		for(int i=maintained.size()-1;i>=0;i--)
-			if(CoffeeUtensils.fetchMyTrap((Environmental)maintained.elementAt(i))==null)
+			if(CMLib.utensils().fetchMyTrap((Environmental)maintained.elementAt(i))==null)
 				maintained.removeElementAt(i);
 		if(maintained.size()>=maxTraps)
         {
@@ -296,7 +307,7 @@ public class RandomTraps extends ActiveTicker
 					{
                         tickStatus=Tickable.STATUS_MISC+22;
 						Item I=R.fetchItem(i);
-						if((Sense.isGettable(I))
+						if((CMLib.flags().isGettable(I))
 						&&(!elligible.contains(I))
 						&&(!I.ID().endsWith("Wallpaper")))
 						{
@@ -336,7 +347,7 @@ public class RandomTraps extends ActiveTicker
 				{
                     tickStatus=Tickable.STATUS_MISC+29;
 					if((maintained.contains(elligible.elementAt(e)))
-					||(CoffeeUtensils.fetchMyTrap((Environmental)elligible.elementAt(e))!=null))
+					||(CMLib.utensils().fetchMyTrap((Environmental)elligible.elementAt(e))!=null))
 						elligible.removeElementAt(e);
                     tickStatus=Tickable.STATUS_MISC+30;
 				}
@@ -345,7 +356,7 @@ public class RandomTraps extends ActiveTicker
 					break;
 
                 tickStatus=Tickable.STATUS_MISC+31;
-				Environmental E=(Environmental)elligible.elementAt(Dice.roll(1,elligible.size(),-1));
+				Environmental E=(Environmental)elligible.elementAt(CMLib.dice().roll(1,elligible.size(),-1));
 
 				Vector elligibleTraps=new Vector();
 				for(int t=0;t<allTraps.size();t++)
@@ -356,14 +367,14 @@ public class RandomTraps extends ActiveTicker
 					break;
 
                 tickStatus=Tickable.STATUS_MISC+32;
-				Trap T=(Trap)elligibleTraps.elementAt(Dice.roll(1,elligibleTraps.size(),-1));
+				Trap T=(Trap)elligibleTraps.elementAt(CMLib.dice().roll(1,elligibleTraps.size(),-1));
 				T=(Trap)T.copyOf();
 				T.setProfficiency(100);
 				T.makeLongLasting();
 				T.setBorrowed(E,true);
 				/*
-					Room R=CoffeeUtensils.roomLocation(E);
-					String rname=(R!=null)?CMMap.getExtendedRoomID(R):"";
+					Room R=CMLib.utensils().roomLocation(E);
+					String rname=(R!=null)?CMLib.map().getExtendedRoomID(R):"";
 					if((E instanceof Exit)&&(ticking instanceof Area))
 					{
 						for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
@@ -371,7 +382,7 @@ public class RandomTraps extends ActiveTicker
 							Room R2=(Room)r.nextElement();
 							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 								if(R2.rawExits()[d]==E)
-								{ rname=CMMap.getExtendedRoomID(R2)+" "+Directions.getDirectionName(d); break;}
+								{ rname=CMLib.map().getExtendedRoomID(R2)+" "+Directions.getDirectionName(d); break;}
 							if(rname.length()>0) break;
 						}
 					}

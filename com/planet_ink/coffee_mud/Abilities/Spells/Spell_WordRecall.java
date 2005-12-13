@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -49,8 +59,8 @@ public class Spell_WordRecall extends Spell
             int AUTO=auto?CMMsg.MASK_GENERAL:0;
             Room recalledRoom=mob.location();
             Room recallRoom=mob.getStartRoom();
-            FullMsg msg=new FullMsg(mob,recalledRoom,this,affectType(auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,affectType(auto),auto?getScr(ID(),"recallgo1"):getScr(ID(),"recallgo2"));
-            FullMsg msg2=new FullMsg(mob,recallRoom,this,affectType(auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,affectType(auto),null);
+            CMMsg msg=CMClass.getMsg(mob,recalledRoom,this,affectType(auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,affectType(auto),auto?getScr(ID(),"recallgo1"):getScr(ID(),"recallgo2"));
+            CMMsg msg2=CMClass.getMsg(mob,recallRoom,this,affectType(auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,affectType(auto),null);
             if((recalledRoom.okMessage(mob,msg))&&(recallRoom.okMessage(mob,msg2)))
             {
                 recalledRoom.send(mob,msg);
@@ -61,7 +71,7 @@ public class Spell_WordRecall extends Spell
                 {
                     MOB follower=mob.fetchFollower(f);
                     
-                    msg=new FullMsg(follower,recalledRoom,this,affectType(auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,affectType(auto),auto?getScr(ID(),"recallgo1"):getScr(ID(),"recallgo3",mob.name()));
+                    msg=CMClass.getMsg(follower,recalledRoom,this,affectType(auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,affectType(auto),auto?getScr(ID(),"recallgo1"):getScr(ID(),"recallgo3",mob.name()));
                     if((follower!=null)
                     &&(follower.isMonster())
                     &&(!follower.isPossessing())
@@ -69,7 +79,7 @@ public class Spell_WordRecall extends Spell
                     &&(recalledRoom.isInhabitant(follower))
                     &&(recalledRoom.okMessage(follower,msg)))
                     {
-                        msg2=new FullMsg(follower,recallRoom,this,affectType(auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,affectType(auto),null);
+                        msg2=CMClass.getMsg(follower,recallRoom,this,affectType(auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,affectType(auto),null);
                         if(recallRoom.okMessage(follower,msg2))
                         {
                             recallRoom.send(follower,msg2);

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -188,7 +199,7 @@ public class Mobile extends ActiveTicker
                 if((A.canBeUninvoked())
                 &&(!A.isAutoInvoked())
                 &&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL)
-                &&(Dice.roll(1,10,0)>1))
+                &&(CMLib.dice().roll(1,10,0)>1))
                 {
                     tickDown=0;
                     return true;
@@ -197,7 +208,7 @@ public class Mobile extends ActiveTicker
             tickStatus=Tickable.STATUS_MISC2+16;
 			Room oldRoom=mob.location();
             altStatusTaker=new long[1];
-			MUDTracker.beMobile((MOB)ticking,dooropen,wander,false,objections!=null,altStatusTaker,objections);
+			CMLib.tracking().beMobile((MOB)ticking,dooropen,wander,false,objections!=null,altStatusTaker,objections);
             tickStatus=Tickable.STATUS_MISC2+17;
 			if(mob.location()==oldRoom)
 				tickDown=0;

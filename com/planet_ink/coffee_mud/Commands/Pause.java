@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 import java.io.IOException;
@@ -41,30 +52,30 @@ public class Pause extends StdCommand
         String cmd=Util.combine(commands,1);
         if(commands.size()<2)
         {
-            if(!CMClass.ThreadEngine().isAllSuspended())
+            if(!CMLib.threads().isAllSuspended())
             {
                 if(!CMSecurity.isAllowedEverywhere(mob,"PAUSE"))
                     mob.tell("You are not allowed to pause all threads.");
                 else
                 {
-                    CMClass.ThreadEngine().suspendAll();
+                    CMLib.threads().suspendAll();
                     mob.tell("All threads have been suspended. Enter PAUSE again to resume.");
                 }
             }
             else
             {
-                CMClass.ThreadEngine().resumeAll();
+                CMLib.threads().resumeAll();
                 mob.tell("All threads have been resumed.");
             }
         }
         else
         if(cmd.equalsIgnoreCase("RESUME"))
         {
-            if(!CMClass.ThreadEngine().isAllSuspended())
+            if(!CMLib.threads().isAllSuspended())
                 mob.tell("Threads are not currently suspended.");
             else
             {
-                CMClass.ThreadEngine().resumeAll();
+                CMLib.threads().resumeAll();
                 mob.tell("All threads have been resumed.");
             }
         }
@@ -81,14 +92,14 @@ public class Pause extends StdCommand
             if(E==null)
                 mob.tell("'"+cmd+"' is an unknown object here.");
             else
-            if(CMClass.ThreadEngine().isTicking(E,-1))
+            if(CMLib.threads().isTicking(E,-1))
             {
-                CMClass.ThreadEngine().suspendTicking(E,-1);
+                CMLib.threads().suspendTicking(E,-1);
                 mob.tell("Object"+E.name()+"' ticks have been suspended. Enter PAUSE "+cmd.toUpperCase()+" again to resume.");
             }
             else
             {
-                CMClass.ThreadEngine().resumeTicking(E,-1);
+                CMLib.threads().resumeTicking(E,-1);
                 mob.tell("Object"+E.name()+"' ticks have been resumed.");
             }
         }

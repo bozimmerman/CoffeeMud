@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -34,8 +45,8 @@ public class CommonSkill extends StdAbility
 	protected String displayText="(Doing something productive)";
 	public String displayText(){return displayText;}
 
-	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONTRAINCOST);}
-	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONPRACCOST);}
+	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONTRAINCOST);}
+	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONPRACCOST);}
 	protected int practicesToPractice(){return 1;}
 
 	protected boolean allowedWhileMounted(){return true;}
@@ -65,9 +76,9 @@ public class CommonSkill extends StdAbility
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==MudHost.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
-			if((mob.isInCombat())||(mob.location()!=activityRoom)||(!Sense.aliveAwakeMobileUnbound(mob,true)))
+			if((mob.isInCombat())||(mob.location()!=activityRoom)||(!CMLib.flags().aliveAwakeMobileUnbound(mob,true)))
 			{aborted=true; unInvoke(); return false;}
-            String sound=(playSound!=null)?CommonStrings.msp(playSound,10):"";
+            String sound=(playSound!=null)?CMProps.msp(playSound,10):"";
 			if(tickDown==4)
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> almost done "+verb+"."+sound);
 			else
@@ -112,7 +123,7 @@ public class CommonSkill extends StdAbility
 			if(str.startsWith("You")) str="I"+str.substring(3);
 			if(target!=null) str=Util.replaceAll(str,"<T-NAME>",target.name());
 			if(tool!=null)  str=Util.replaceAll(str,"<O-NAME>",tool.name());
-			CommonMsgs.say(mob,null,str,false,false);
+			CMLib.commands().say(mob,null,str,false,false);
 		}
 		else
 			mob.tell(mob,target,tool,str);
@@ -123,7 +134,7 @@ public class CommonSkill extends StdAbility
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
 		{
 			if(str.startsWith("You")) str="I"+str.substring(3);
-			CommonMsgs.say(mob,null,str,false,false);
+			CMLib.commands().say(mob,null,str,false,false);
 		}
 		else
 			mob.tell(str);
@@ -160,7 +171,7 @@ public class CommonSkill extends StdAbility
 		}
 		if(possibilities.size()==0)
 			return -1;
-		return ((Integer)(possibilities.elementAt(Dice.roll(1,possibilities.size(),-1)))).intValue();
+		return ((Integer)(possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1)))).intValue();
 	}
 
 	public Item getRequiredFire(MOB mob,int autoGenerate)
@@ -170,7 +181,7 @@ public class CommonSkill extends StdAbility
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			Item I2=mob.location().fetchItem(i);
-			if((I2!=null)&&(I2.container()==null)&&(Sense.isOnFire(I2)))
+			if((I2!=null)&&(I2.container()==null)&&(CMLib.flags().isOnFire(I2)))
 			{
 				fire=I2;
 				break;
@@ -205,8 +216,8 @@ public class CommonSkill extends StdAbility
 			if((otherMaterial>0)
 			&&(I instanceof EnvResource)
 			&&(I.container()==null)
-			&&(!Sense.isOnFire(I))
-			&&(!Sense.enchanted(I))
+			&&(!CMLib.flags().isOnFire(I))
+			&&(!CMLib.flags().enchanted(I))
 			&&(I.material()==otherMaterial))
 			{
                 if(I.baseEnvStats().weight()>1)
@@ -215,7 +226,7 @@ public class CommonSkill extends StdAbility
                     Environmental E=null;
                     for(int x=0;x<I.baseEnvStats().weight();x++)
                     {
-                        E=CoffeeUtensils.makeResource(otherMaterial,-1,true);
+                        E=CMLib.utensils().makeResource(otherMaterial,-1,true);
                         if(E instanceof Item)
                             room.addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
                     }
@@ -233,8 +244,8 @@ public class CommonSkill extends StdAbility
 			else
 			if((I instanceof EnvResource)
 			&&(I.container()==null)
-			&&(!Sense.isOnFire(I))
-			&&(!Sense.enchanted(I))
+			&&(!CMLib.flags().isOnFire(I))
+			&&(!CMLib.flags().enchanted(I))
 			&&(I.material()==finalMaterial))
 			{
 				if(I.baseEnvStats().weight()>howMuch)
@@ -243,7 +254,7 @@ public class CommonSkill extends StdAbility
                     Environmental E=null;
 					for(int x=0;x<I.baseEnvStats().weight();x++)
 					{
-						E=CoffeeUtensils.makeResource(finalMaterial,-1,true);
+						E=CMLib.utensils().makeResource(finalMaterial,-1,true);
 						if(E instanceof Item)
 							room.addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
 					}
@@ -278,7 +289,7 @@ public class CommonSkill extends StdAbility
 		if(usageType()==Ability.USAGE_NADA) return new int[3];
 
 		int consumed=25;
-		int diff=mob.envStats().level()-CMAble.qualifyingLevel(mob,this);
+		int diff=mob.envStats().level()-CMLib.ableMapper().qualifyingLevel(mob,this);
 		if(diff>0)
 		switch(diff)
 		{
@@ -304,12 +315,12 @@ public class CommonSkill extends StdAbility
 			return false;
 		}
 		
-		if(!Sense.canBeSeenBy(mob.location(),mob))
+		if(!CMLib.flags().canBeSeenBy(mob.location(),mob))
 		{
 			commonTell(mob,"<S-NAME> can't see to do that!");
 			return false;
 		}
-		if(Sense.isSitting(mob)||Sense.isSleeping(mob))
+		if(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob))
 		{
 			commonTell(mob,"You need to stand up!");
 			return false;
@@ -327,7 +338,7 @@ public class CommonSkill extends StdAbility
 		isAnAutoEffect=false;
 
 		// if you can't move, you can't do anything!
-		if(!Sense.aliveAwakeMobileUnbound(mob,false))
+		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
 
 		int[] consumed=usageCost(mob);

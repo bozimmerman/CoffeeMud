@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -61,17 +72,17 @@ public class Prayer_Bury extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"^S<T-NAME> bur(ys) <T-HIM-HERSELF>.^?":"^S<S-NAME> bur(ys) <T-NAMESELF> in the name of "+hisHerDiety(mob)+".^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"^S<T-NAME> bur(ys) <T-HIM-HERSELF>.^?":"^S<S-NAME> bur(ys) <T-NAMESELF> in the name of "+hisHerDiety(mob)+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(Sense.isNeutral(mob))
+				if(CMLib.flags().isNeutral(mob))
 				{
 					double exp=5.0;
-					int levelLimit=CommonStrings.getIntVar(CommonStrings.SYSTEMI_EXPRATE);
+					int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
 					int levelDiff=mob.envStats().level()-target.envStats().level();
 					if(levelDiff>levelLimit) exp=0.0;
-					MUDFight.postExperience(mob,null,null,(int)Math.round(exp),false);
+					CMLib.combat().postExperience(mob,null,null,(int)Math.round(exp),false);
 				}
                 target.destroy();
 				mob.location().recoverRoomStats();

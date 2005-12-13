@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -48,10 +59,10 @@ public class Spell_Shelter extends Spell
 				if(mob==null) break;
 				mob.tell("You return to your previous location.");
 
-				FullMsg enterMsg=new FullMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere!");
+				CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere!");
 				previousLocation.bringMobHere(mob,false);
 				previousLocation.send(mob,enterMsg);
-				CommonMsgs.look(mob,true);
+				CMLib.commands().look(mob,true);
 			}
 			shelter=null;
 			previousLocation=null;
@@ -86,7 +97,7 @@ public class Spell_Shelter extends Spell
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms, speak(s), and suddenly vanish(es)!^?");
+		CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms, speak(s), and suddenly vanish(es)!^?");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -101,13 +112,13 @@ public class Spell_Shelter extends Spell
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB follower=(MOB)f.next();
-				FullMsg enterMsg=new FullMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere.");
-				FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,affectType(auto),"<S-NAME> disappear(s) into oblivion.");
+				CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere.");
+				CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,affectType(auto),"<S-NAME> disappear(s) into oblivion.");
 				if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 				{
 					if(follower.isInCombat())
 					{
-						CommonMsgs.flee(follower,("NOWHERE"));
+						CMLib.commands().flee(follower,("NOWHERE"));
 						follower.makePeace();
 					}
 					thisRoom.send(follower,leaveMsg);
@@ -115,7 +126,7 @@ public class Spell_Shelter extends Spell
                     thisRoom.delInhabitant(follower);
 					newRoom.send(follower,enterMsg);
 					follower.tell("\n\r\n\r");
-					CommonMsgs.look(follower,true);
+					CMLib.commands().look(follower,true);
 					if(follower==mob)
 						beneficialAffect(mob,mob,asLevel,999999);
 				}

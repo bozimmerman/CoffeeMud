@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
-
-import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+
 
 import java.util.*;
 
@@ -136,7 +147,7 @@ public class Druid_PackCall extends StdAbility
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISE,auto?"":"^S<S-NAME> call(s) for help from <S-HIS-HER> pack!^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISE,auto?"":"^S<S-NAME> call(s) for help from <S-HIS-HER> pack!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -178,12 +189,12 @@ public class Druid_PackCall extends StdAbility
 					newMOB.recoverMaxState();
 					newMOB.resetToMaxState();
 					newMOB.bringToLife(mob.location(),true);
-					BeanCounter.clearZeroMoney(newMOB,null);
+					CMLib.beanCounter().clearZeroMoney(newMOB,null);
 					if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
 					newMOB.setStartRoom(null);
-					int dir=((Integer)choices.elementAt(Dice.roll(1,choices.size(),-1))).intValue();
+					int dir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
 					newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> arrive(s) "+Directions.getFromDirectionName(dir)+" and attack(s) "+victim.name()+"!");
-					CommonMsgs.follow(newMOB,mob,true);
+					CMLib.commands().follow(newMOB,mob,true);
 					if(newMOB.amFollowing()!=mob)
 					{
 						newMOB.destroy();

@@ -1,8 +1,17 @@
 package com.planet_ink.coffee_mud.Abilities;
-
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
@@ -40,8 +49,8 @@ public class StdAbility extends Scriptable implements Ability
 	public boolean putInCommandlist(){return true;}
 	public boolean isAutoInvoked(){return false;}
 	public boolean bubbleAffect(){return false;}
-	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLTRAINCOST);}
-	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST);}
+	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
+	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
 	protected int practicesToPractice(){return 1;}
 	public long flags(){return 0;}
 	public int usageType(){return USAGE_MANA;}
@@ -90,7 +99,7 @@ public class StdAbility extends Scriptable implements Ability
 	}
 	public int classificationCode(){ return Ability.SKILL; }
 
-	protected static final EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+	protected static final EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	public EnvStats envStats(){return envStats;}
 	public EnvStats baseEnvStats(){return envStats;}
 
@@ -146,7 +155,7 @@ public class StdAbility extends Scriptable implements Ability
 				((Room)affected).recoverRoomStats();
 			else
 				affected.recoverEnvStats();
-			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_MOB,1);
+			CMLib.threads().startTickDown(this,MudHost.TICK_MOB,1);
 		}
 		tickDown=tickTime;
 	}
@@ -155,18 +164,18 @@ public class StdAbility extends Scriptable implements Ability
 	{
 		return ((mob==null)
 				||(mob.isMonster())
-				||(CMAble.qualifiesByLevel(mob,this)));
+				||(CMLib.ableMapper().qualifiesByLevel(mob,this)));
 	}
 	
 	
 	public int adjustedLevel(MOB caster, int asLevel)
 	{
 		if(caster==null) return 1;
-		int lowestQualifyingLevel=CMAble.lowestQualifyingLevel(this.ID());
+		int lowestQualifyingLevel=CMLib.ableMapper().lowestQualifyingLevel(this.ID());
 		int adjLevel=lowestQualifyingLevel;
-		int qualifyingLevel=CMAble.qualifyingLevel(caster,this);
+		int qualifyingLevel=CMLib.ableMapper().qualifyingLevel(caster,this);
 		if((caster.isMonster())||(qualifyingLevel>=0))
-			adjLevel+=(CMAble.qualifyingClassLevel(caster,this)-qualifyingLevel);
+			adjLevel+=(CMLib.ableMapper().qualifyingClassLevel(caster,this)-qualifyingLevel);
 		else
 			adjLevel=caster.envStats().level()-lowestQualifyingLevel-25;
 		if(asLevel>0) adjLevel=asLevel;
@@ -237,7 +246,7 @@ public class StdAbility extends Scriptable implements Ability
 			targetName=target.name();
 
 		if((target==null)
-		||((givenTarget==null)&&(!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||(!target.isInCombat()))))
+		||((givenTarget==null)&&(!CMLib.flags().canBeSeenBy(target,mob))&&((!CMLib.flags().canBeHeardBy(target,mob))||(!target.isInCombat()))))
 		{
 			if(!quiet)
 			{
@@ -331,13 +340,13 @@ public class StdAbility extends Scriptable implements Ability
 		
 		if((target==null)
 		||((givenTarget==null)
-		   &&(!Sense.canBeSeenBy(target,mob))
-		   &&((!Sense.canBeHeardBy(target,mob))||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))
+		   &&(!CMLib.flags().canBeSeenBy(target,mob))
+		   &&((!CMLib.flags().canBeHeardBy(target,mob))||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))
 		{
 			if(targetName.trim().length()==0)
 				mob.tell("You don't see that here.");
 			else
-			if(!Sense.isSleeping(mob))
+			if(!CMLib.flags().isSleeping(mob))
 				mob.tell("You don't see '"+targetName+"' here.");
 			return null;
 		}
@@ -398,7 +407,7 @@ public class StdAbility extends Scriptable implements Ability
 		if((target==null)
 		||(!(target instanceof Item))
 		||((target!=null)
-		   &&((givenTarget==null)&&(!Sense.canBeSeenBy(target,mob)))))
+		   &&((givenTarget==null)&&(!CMLib.flags().canBeSeenBy(target,mob)))))
 		{
 			if(targetName.length()==0)
 				mob.tell("You need to be more specific.");
@@ -408,7 +417,7 @@ public class StdAbility extends Scriptable implements Ability
 				if(targetName.trim().length()==0)
 					mob.tell("You don't see that here.");
 				else
-				if(!Sense.isSleeping(mob))
+				if(!CMLib.flags().isSleeping(mob))
 					mob.tell("You don't see anything called '"+targetName+"' here.");
 			}
 			else
@@ -459,9 +468,9 @@ public class StdAbility extends Scriptable implements Ability
 		if(adjustment>=0)
 			pctChance+=adjustment;
 		else
-		if(Dice.rollPercentage()>(100+adjustment))
+		if(CMLib.dice().rollPercentage()>(100+adjustment))
 			return false;
-		return (Dice.rollPercentage()<pctChance);
+		return (CMLib.dice().rollPercentage()<pctChance);
 	}
 
 	public Environmental affecting()
@@ -594,7 +603,7 @@ public class StdAbility extends Scriptable implements Ability
 		for(int c=0;c<mob.charStats().numClasses();c++)
 		{
 			CharClass C=mob.charStats().getMyClass(c);
-			int qualifyingLevel=CMAble.getQualifyingLevel(C.ID(),true,ID());
+			int qualifyingLevel=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,ID());
 			int classLevel=mob.charStats().getClassLevel(C.ID());
 			if((qualifyingLevel>=0)&&(classLevel>=qualifyingLevel))
 			{
@@ -604,13 +613,13 @@ public class StdAbility extends Scriptable implements Ability
 		}
 		if(lowest==Integer.MAX_VALUE)
 		{
-			lowest=CMAble.lowestQualifyingLevel(ID());
+			lowest=CMLib.ableMapper().lowestQualifyingLevel(ID());
 			if(lowest<0) lowest=0;
 		}
 
-		int consumed=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANACOST);
+		int consumed=CMProps.getIntVar(CMProps.SYSTEMI_MANACOST);
 		if(consumed<0) consumed=50+lowest;
-		int minimum=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANAMINCOST);
+		int minimum=CMProps.getIntVar(CMProps.SYSTEMI_MANAMINCOST);
 		if(minimum<0){ minimum=lowest; if(minimum<5) minimum=5;}
 		if(diff>0) consumed=consumed - (consumed /10 * diff);
 		if(consumed<minimum) consumed=minimum;
@@ -624,7 +633,7 @@ public class StdAbility extends Scriptable implements Ability
 		Ability A=mob.fetchAbility(ID());
 		if((A==null)||(A.isBorrowed(mob))) return;
 
-        if(!mob.isMonster()) CoffeeTables.bump(this,CoffeeTables.STAT_SKILLUSE);
+        if(!mob.isMonster()) CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_SKILLUSE);
         
 		if((System.currentTimeMillis()
 		-((StdAbility)A).lastCastHelp)<300000)
@@ -637,8 +646,8 @@ public class StdAbility extends Scriptable implements Ability
 		{
 			if(((int)Math.round(Math.sqrt(new Integer(mob.charStats().getStat(CharStats.INTELLIGENCE)).doubleValue())*34.0*Math.random()))>=A.profficiency())
 			{
-			    int qualLevel=CMAble.qualifyingLevel(mob,A);
-			    if((qualLevel<0)||(qualLevel>30)||(Dice.rollPercentage()<(int)Math.round(100.0*Util.div(31-qualLevel,30+qualLevel))))
+			    int qualLevel=CMLib.ableMapper().qualifyingLevel(mob,A);
+			    if((qualLevel<0)||(qualLevel>30)||(CMLib.dice().rollPercentage()<(int)Math.round(100.0*Util.div(31-qualLevel,30+qualLevel))))
 			    {
 					// very important, since these can be autoinvoked affects (copies)!
 					A.setProfficiency(A.profficiency()+1);
@@ -673,11 +682,11 @@ public class StdAbility extends Scriptable implements Ability
 			isAnAutoEffect=false;
 
 			// if you can't move, you can't cast! Not even verbal!
-			if(!Sense.aliveAwakeMobile(mob,false))
+			if(!CMLib.flags().aliveAwakeMobile(mob,false))
 				return false;
 			
 			if(Util.bset(usageType(),Ability.USAGE_MOVEMENT)
-			   &&(Sense.isBound(mob)))
+			   &&(CMLib.flags().isBound(mob)))
 			{
 				mob.tell("You are bound!");
 				return false;
@@ -736,10 +745,10 @@ public class StdAbility extends Scriptable implements Ability
 
 	public HashSet properTargets(MOB mob, Environmental givenTarget, boolean auto)
 	{
-		HashSet h=MUDFight.properTargets(this,mob,auto);
+		HashSet h=CMLib.combat().properTargets(this,mob,auto);
 		if((givenTarget!=null)
         &&(givenTarget instanceof MOB)
-        &&(Sense.isInTheGame(givenTarget,true)))
+        &&(CMLib.flags().isInTheGame(givenTarget,true)))
 		{
 			if(h==null) h=new HashSet();
 			if(!h.contains(givenTarget))
@@ -759,7 +768,7 @@ public class StdAbility extends Scriptable implements Ability
 		if(mob.location()==null) return false;
 		if(additionAffectCheckCode>=0)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.NO_EFFECT,additionAffectCheckCode,CMMsg.NO_EFFECT,null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.NO_EFFECT,additionAffectCheckCode,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -779,8 +788,8 @@ public class StdAbility extends Scriptable implements Ability
 				if((target!=null)&&(asLevel<=0)&&(mob!=null))
 					tickAdjustmentFromStandard=(int)Math.round(Util.mul(tickAdjustmentFromStandard,Util.div(mob.envStats().level(),target.envStats().level())));
 
-				if(tickAdjustmentFromStandard>(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)))
-					tickAdjustmentFromStandard=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY));
+				if(tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)))
+					tickAdjustmentFromStandard=(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
 
 				if(tickAdjustmentFromStandard<2)
 					tickAdjustmentFromStandard=2;
@@ -796,7 +805,7 @@ public class StdAbility extends Scriptable implements Ability
 										String message)
 	{
 		// it didn't work, but tell everyone you tried.
-		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T"+message+"^?");
+		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T"+message+"^?");
 		if(mob.location()==null) return false;
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
@@ -809,7 +818,7 @@ public class StdAbility extends Scriptable implements Ability
 										  String message)
 	{
 		// it didn't work, but tell everyone you tried.
-		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,message);
+		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,message);
 		if(mob.location()==null) return false;
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
@@ -822,9 +831,9 @@ public class StdAbility extends Scriptable implements Ability
 									String message)
 	{
 		// it didn't work, but tell everyone you tried.
-		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|CMMsg.MASK_MALICIOUS,message);
+		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|CMMsg.MASK_MALICIOUS,message);
 		if(mob.location()==null) return false;
-        CMColor.fixSourceFightColor(msg);
+        CMLib.color().fixSourceFightColor(msg);
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 
@@ -847,8 +856,8 @@ public class StdAbility extends Scriptable implements Ability
 			if(tickAdjustmentFromStandard<=0)
 			{
 				tickAdjustmentFromStandard=(adjustedLevel(mob,asLevel)*7)+60;
-				if(tickAdjustmentFromStandard>(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)))
-					tickAdjustmentFromStandard=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY));
+				if(tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)))
+					tickAdjustmentFromStandard=(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
 				if(tickAdjustmentFromStandard<5)
 					tickAdjustmentFromStandard=5;
 			}
@@ -908,7 +917,7 @@ public class StdAbility extends Scriptable implements Ability
 			student.tell(teacher.name()+" is refusing to teach right now.");
 			return false;
 		}
-		if(Sense.isSleeping(teacher)||Sense.isSitting(teacher))
+		if(CMLib.flags().isSleeping(teacher)||CMLib.flags().isSitting(teacher))
 		{
 		    teacher.tell("You need to stand up to teach.");
 		    student.tell(teacher.name()+" needs to stand up to teach.");
@@ -1000,7 +1009,7 @@ public class StdAbility extends Scriptable implements Ability
 		if(student.getTrains()<trainsRequired())
 		{
 			teacher.tell(student.name()+" does not have enough training sessions to learn '"+name()+"'.");
-			student.tell("You do not have enough training sessions.");
+			student.tell("You do not have enough training CMLib.sessions().");
 			return false;
 		}
 		if((Util.bset(student.getBitmap(),MOB.ATT_NOTEACH))
@@ -1010,7 +1019,7 @@ public class StdAbility extends Scriptable implements Ability
 			student.tell("You are refusing training at this time.");
 			return false;
 		}
-		int qLevel=CMAble.qualifyingLevel(student,this);
+		int qLevel=CMLib.ableMapper().qualifyingLevel(student,this);
 		if(qLevel<0)
 		{
 			teacher.tell(student.name()+" is not the right class to learn '"+name()+"'.");
@@ -1018,7 +1027,7 @@ public class StdAbility extends Scriptable implements Ability
 			return false;
 		}
 		if((!student.charStats().getCurrentClass().leveless())
-		&&(!CMAble.qualifiesByLevel(student,this))
+		&&(!CMLib.ableMapper().qualifiesByLevel(student,this))
 		&&(!CMSecurity.isDisabled("LEVELS")))
 		{
 			teacher.tell(student.name()+" is not high enough level to learn '"+name()+"'.");
@@ -1068,7 +1077,7 @@ public class StdAbility extends Scriptable implements Ability
 		    return false;
 		}
 
-		if(Sense.isSleeping(student)||Sense.isSitting(student))
+		if(CMLib.flags().isSleeping(student)||CMLib.flags().isSitting(student))
 		{
 			student.tell("You need to stand up and be alert to learn.");
 		    teacher.tell(student.name()+" needs to stand up to be taught about that.");
@@ -1136,7 +1145,7 @@ public class StdAbility extends Scriptable implements Ability
 			student.tell(teacher.name()+" isn't profficient enough to teach you '"+name()+"'.");
 			return false;
 		}
-		if(Sense.isSleeping(student)||Sense.isSitting(student))
+		if(CMLib.flags().isSleeping(student)||CMLib.flags().isSitting(student))
 		{
 			student.tell("You need to stand up to practice.");
 		    teacher.tell(student.name()+" needs to stand up to practice that.");
@@ -1247,7 +1256,7 @@ public class StdAbility extends Scriptable implements Ability
         for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) 
         {
             String factionID=(String)e.nextElement();
-            Faction F=Factions.getFaction(factionID);
+            Faction F=CMLib.factions().getFaction(factionID);
             if((F!=null)&&F.hasUsage(this)) 
                 return F.canUse(mob,this);
         }

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -59,7 +70,7 @@ public class Spell_WallOfForce extends Spell
 			{
 				mob.tell("Malice neither escapes nor enters the wall of force.");
 				if(mob.isMonster())
-					CommonMsgs.remove(mob,(Item)msg.tool(),true);
+					CMLib.commands().remove(mob,(Item)msg.tool(),true);
 				return false;
 			}
 			if((msg.sourceMinor()==CMMsg.TYP_ADVANCE)
@@ -67,8 +78,8 @@ public class Spell_WallOfForce extends Spell
 			{
 				if(mob!=invoker)
                 {
-                    FullMsg msg2=new FullMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> attempt(s) to penetrate the wall of force and fail(s).^</FIGHT^>^?");
-                    CMColor.fixSourceFightColor(msg2);
+                    CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> attempt(s) to penetrate the wall of force and fail(s).^</FIGHT^>^?");
+                    CMLib.color().fixSourceFightColor(msg2);
 					if(mob.location().okMessage(mob,msg2))
                         mob.location().send(mob,msg2);
                 }
@@ -146,7 +157,7 @@ public class Spell_WallOfForce extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),auto?"An impenetrable wall of force appears!":"^S<S-NAME> conjur(s) up a impenetrable wall of force!^?");
+			CMMsg msg = CMClass.getMsg(mob, target, this,affectType(auto),auto?"An impenetrable wall of force appears!":"^S<S-NAME> conjur(s) up a impenetrable wall of force!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -155,7 +166,7 @@ public class Spell_WallOfForce extends Spell
 				I.setDisplayText("an impenetrable wall of force surrounds "+mob.name());
 				I.setDescription("It`s tough, that's for sure.");
 				I.setMaterial(EnvResource.RESOURCE_NOTHING);
-				Sense.setGettable(I,false);
+				CMLib.flags().setGettable(I,false);
 				I.recoverEnvStats();
 				mob.location().addItem(I);
 				theWall=I;

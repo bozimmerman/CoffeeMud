@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -34,14 +45,14 @@ public class Split extends StdCommand
 			return false;
 		}
 		String itemID=Util.combine(commands,1);
-		long numGold=EnglishParser.numPossibleGold(mob,itemID);
+		long numGold=CMLib.english().numPossibleGold(mob,itemID);
 		if(numGold<0)
 		{
 			mob.tell("Split how much?!?");
 			return false;
 		}
-		String currency=EnglishParser.numPossibleGoldCurrency(mob,itemID);
-		double denom=EnglishParser.numPossibleGoldDenomination(mob,currency,itemID);
+		String currency=CMLib.english().numPossibleGoldCurrency(mob,itemID);
+		double denom=CMLib.english().numPossibleGoldDenomination(mob,currency,itemID);
 
 		int num=0;
 		HashSet H=mob.getGroupMembers(new HashSet());
@@ -65,13 +76,13 @@ public class Split extends StdCommand
 
 		double totalAbsoluteValue=Util.mul(numGold,denom);
 		totalAbsoluteValue=Util.div(totalAbsoluteValue,num+1);
-		if((totalAbsoluteValue*num)>BeanCounter.getTotalAbsoluteValue(mob,currency))
+		if((totalAbsoluteValue*num)>CMLib.beanCounter().getTotalAbsoluteValue(mob,currency))
 		{
-			mob.tell("You don't have that much "+BeanCounter.getDenominationName(currency,denom)+".");
+			mob.tell("You don't have that much "+CMLib.beanCounter().getDenominationName(currency,denom)+".");
 			return false;
 		}
-		Vector V=BeanCounter.makeAllCurrency(currency,totalAbsoluteValue);
-		BeanCounter.subtractMoney(mob,totalAbsoluteValue*num);
+		Vector V=CMLib.beanCounter().makeAllCurrency(currency,totalAbsoluteValue);
+		CMLib.beanCounter().subtractMoney(mob,totalAbsoluteValue*num);
 		for(Iterator e=H.iterator();e.hasNext();)
 		{
 			MOB recipient=(MOB)e.next();
@@ -80,7 +91,7 @@ public class Split extends StdCommand
 			    Coins C=(Coins)V.elementAt(v);
 			    C=(Coins)C.copyOf();
 				mob.addInventory(C);
-				FullMsg newMsg=new FullMsg(mob,recipient,C,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+				CMMsg newMsg=CMClass.getMsg(mob,recipient,C,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 				if(mob.location().okMessage(mob,newMsg))
 					mob.location().send(mob,newMsg);
 				C.putCoinsBack();

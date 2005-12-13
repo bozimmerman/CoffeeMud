@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -37,19 +48,19 @@ public class Spell_ClanHome extends Spell
 			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
-		Clan C=Clans.getClan(mob.getClanID());
-		clanHomeRoom=CMMap.getRoom(C.getRecall());
+		Clan C=CMLib.clans().getClan(mob.getClanID());
+		clanHomeRoom=CMLib.map().getRoom(C.getRecall());
 		if(clanHomeRoom==null)
 		{
 			mob.tell("Your clan does not have a clan home.");
 			return false;
 		}
-		if(!Sense.canAccess(mob,clanHomeRoom))
+		if(!CMLib.flags().canAccess(mob,clanHomeRoom))
 		{
 			mob.tell("You can't use this magic to get there from here.");
 			return false;
 		}
-        if(!CoffeeUtensils.doesOwnThisProperty(mob.getClanID(),clanHomeRoom))
+        if(!CMLib.utensils().doesOwnThisProperty(mob.getClanID(),clanHomeRoom))
         {
             mob.tell("Your clan no longer owns that room.");
             return false;
@@ -62,7 +73,7 @@ public class Spell_ClanHome extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MASK_MOVE|affectType(auto),"^S<S-NAME> invoke(s) a teleportation spell.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|affectType(auto),"^S<S-NAME> invoke(s) a teleportation spell.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -73,20 +84,20 @@ public class Spell_ClanHome extends Spell
 				for(Iterator f=h.iterator();f.hasNext();)
 				{
 					MOB follower=(MOB)f.next();
-					FullMsg enterMsg=new FullMsg(follower,clanHomeRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of red smoke.");
-					FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of red smoke.");
+					CMMsg enterMsg=CMClass.getMsg(follower,clanHomeRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of red smoke.");
+					CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of red smoke.");
 					if(thisRoom.okMessage(follower,leaveMsg)&&clanHomeRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())
 						{
-							CommonMsgs.flee(follower,("NOWHERE"));
+							CMLib.commands().flee(follower,("NOWHERE"));
 							follower.makePeace();
 						}
 						thisRoom.send(follower,leaveMsg);
 						clanHomeRoom.bringMobHere(follower,false);
 						clanHomeRoom.send(follower,enterMsg);
 						follower.tell("\n\r\n\r");
-						CommonMsgs.look(follower,true);
+						CMLib.commands().look(follower,true);
 					}
 				}
 			}

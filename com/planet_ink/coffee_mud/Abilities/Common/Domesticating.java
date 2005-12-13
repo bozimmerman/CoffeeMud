@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -69,7 +80,7 @@ public class Domesticating extends CommonSkill
 							commonTell(mob,taming.name()+" is already domesticated.");
 						else
 						{
-							CommonMsgs.follow(taming,mob,true);
+							CMLib.commands().follow(taming,mob,true);
 							if(taming.amFollowing()==mob)
                                 mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT," manage(s) to domesticate "+taming.name()+".");
 						}
@@ -92,7 +103,7 @@ public class Domesticating extends CommonSkill
 			newName=Util.combine(commands,2);
 		}
 		MOB M=mob.location().fetchInhabitant(str);
-		if((M==null)||(!Sense.canBeSeenBy(M,mob)))
+		if((M==null)||(!CMLib.flags().canBeSeenBy(M,mob)))
 		{
 			commonTell(mob,"You don't see anyone called '"+str+"' here.");
 			return false;
@@ -105,7 +116,7 @@ public class Domesticating extends CommonSkill
 				commonTell(mob,"You can't domesticate "+M.name()+".");
 			return false;
 		}
-		if(!Sense.isAnimalIntelligence(M))
+		if(!CMLib.flags().isAnimalIntelligence(M))
 		{
 			if(newName!=null)
 				commonTell(mob,"You can't name "+M.name()+".");
@@ -150,7 +161,7 @@ public class Domesticating extends CommonSkill
 		messedUp=!profficiencyCheck(mob,-(levelDiff*5),auto);
 		int duration=35+levelDiff;
 		if(duration<10) duration=10;
-		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,
+		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,
 			(newName!=null)?"<S-NAME> name(s) "+M.name()+" '"+theName+"'.":"<S-NAME> start(s) domesticating "+M.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{

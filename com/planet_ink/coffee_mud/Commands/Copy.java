@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -78,7 +89,7 @@ public class Copy extends StdCommand
 		{
 		    try
 		    {
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					E=R.fetchInhabitant(name);
@@ -91,7 +102,7 @@ public class Copy extends StdCommand
 		{
 		    try
 		    {
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)
@@ -100,8 +111,8 @@ public class Copy extends StdCommand
 						if(mob2!=null)
 						{
 							E=mob2.fetchInventory(name);
-							if((E==null)&&(CoffeeShops.getShopKeeper(mob2)!=null))
-								E=CoffeeShops.getShopKeeper(mob2).getStock(name,null);
+							if((E==null)&&(CMLib.coffeeShops().getShopKeeper(mob2)!=null))
+								E=CMLib.coffeeShops().getShopKeeper(mob2).getStock(name,null);
 						}
 						if(E!=null) break;
 					}
@@ -199,16 +210,15 @@ public class Copy extends StdCommand
 				if(room.rawExits()[dirCode]==null)
 					room.rawExits()[dirCode]=CMClass.getExit("Open");
 				newRoom.rawExits()[Directions.getOpDirectionCode(dirCode)]=(Exit)(room.rawExits()[dirCode].copyOf());
-				newRoom.setRoomID(CMMap.getOpenRoomID(room.getArea().Name()));
+				newRoom.setRoomID(CMLib.map().getOpenRoomID(room.getArea().Name()));
 				newRoom.setArea(room.getArea());
-				CMClass.DBEngine().DBCreateRoom(newRoom,CMClass.className(newRoom));
-				CMClass.DBEngine().DBUpdateExits(newRoom);
-				CMClass.DBEngine().DBUpdateExits(room);
+				CMLib.database().DBCreateRoom(newRoom,CMClass.className(newRoom));
+				CMLib.database().DBUpdateExits(newRoom);
+				CMLib.database().DBUpdateExits(room);
 				if(newRoom.numInhabitants()>0)
-					CMClass.DBEngine().DBUpdateMOBs(newRoom);
+					CMLib.database().DBUpdateMOBs(newRoom);
 				if(newRoom.numItems()>0)
-					CMClass.DBEngine().DBUpdateItems(newRoom);
-				CMMap.addRoom(newRoom);
+					CMLib.database().DBUpdateItems(newRoom);
 				newRoom.getArea().fillInAreaRoom(newRoom);
 				if(i==0)
 				{

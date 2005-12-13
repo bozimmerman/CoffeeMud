@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -46,17 +57,17 @@ public class Spell_StinkingCloud extends Spell
 			else
 			if((!M.amDead())
             &&(M.location()!=null)
-            &&(Sense.canSmell(M)))
+            &&(CMLib.flags().canSmell(M)))
 			{
 				if((M.curState().getHunger()<=0))
-					MUDFight.postDamage(invoker,M,this,M.envStats().level(),CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) in the stinking cloud.");
+					CMLib.combat().postDamage(invoker,M,this,M.envStats().level(),CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) in the stinking cloud.");
 				else
 				{
-					MUDFight.postDamage(invoker,M,this,M.envStats().level(),CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) all over the place!");
+					CMLib.combat().postDamage(invoker,M,this,M.envStats().level(),CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) all over the place!");
 					M.curState().adjHunger(-500,M.maxState().maxHunger(M.baseWeight()));
 				}
-                if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
-                    MUDFight.postAttack(M,invoker,M.fetchWieldedItem());
+                if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
+                    CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
 			}
 			else
 				unInvoke();
@@ -71,11 +82,11 @@ public class Spell_StinkingCloud extends Spell
 		   &&(msg.amISource((MOB)affected)))
 		{
 			MOB mob=(MOB)affected;
-			if(Sense.canSmell(mob))
+			if(CMLib.flags().canSmell(mob))
 				switch(msg.sourceMinor())
 				{
 				case CMMsg.TYP_ADVANCE:
-					if(Dice.rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_GAS)))
+					if(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_GAS)))
 					{
 						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> double(s) over from the sickening gas.");
 						return false;
@@ -102,7 +113,7 @@ public class Spell_StinkingCloud extends Spell
 		else
 		if((msg.amITarget(affected))
 		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
-		&&(Sense.canSmell(msg.source())))
+		&&(CMLib.flags().canSmell(msg.source())))
 			msg.source().tell(msg.source(),affected,null,"<T-NAME> smell(s) nauseatingly stinky!");
 		super.executeMsg(myHost,msg);
 	}
@@ -132,7 +143,7 @@ public class Spell_StinkingCloud extends Spell
 			h.add(givenTarget);
 		}
 		else
-			h=MUDFight.properTargets(this,mob,auto);
+			h=CMLib.combat().properTargets(this,mob,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth casting this on.");
@@ -159,8 +170,8 @@ public class Spell_StinkingCloud extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_GAS|(auto?CMMsg.MASK_GENERAL:0),null);
+				CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),null);
+				CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_GAS|(auto?CMMsg.MASK_GENERAL:0),null);
 				if((mob.location().okMessage(mob,msg))
 				   &&(mob.location().okMessage(mob,msg2))
 				   &&(target.fetchEffect(this.ID())==null))

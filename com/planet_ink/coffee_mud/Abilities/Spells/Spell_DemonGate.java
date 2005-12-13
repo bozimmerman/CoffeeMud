@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -95,7 +106,7 @@ public class Spell_DemonGate extends Spell
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> open(s) the gates of the abyss, incanting angrily.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> open(s) the gates of the abyss, incanting angrily.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -107,7 +118,7 @@ public class Spell_DemonGate extends Spell
                     myMonster.setVictim(otherMonster);
                 }
                 else
-				if(Dice.rollPercentage()<10)
+				if(CMLib.dice().rollPercentage()<10)
                 {
 					myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> wrests itself from out of <T-YOUPOSS> control!^</FIGHT^>^?");
                     myMonster.setVictim(mob);
@@ -115,7 +126,7 @@ public class Spell_DemonGate extends Spell
 				else
 				{
 					myMonster.setVictim(mob.getVictim());
-					CommonMsgs.follow(myMonster,mob,true);
+					CMLib.commands().follow(myMonster,mob,true);
 					if(myMonster.amFollowing()!=mob)
 						mob.tell(myMonster.name()+" seems unwilling to follow you.");
 				}
@@ -135,7 +146,7 @@ public class Spell_DemonGate extends Spell
 		Rideable ride=(Rideable)newMOB;
 		newMOB.baseEnvStats().setAbility(43);
 		newMOB.baseEnvStats().setLevel(level+10);
-		Factions.setAlignment(newMOB,Faction.ALIGN_EVIL);
+		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
 		newMOB.baseEnvStats().setWeight(850);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setStat(CharStats.STRENGTH,25);
@@ -161,7 +172,7 @@ public class Spell_DemonGate extends Spell
 		newMOB.resetToMaxState();
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
-		BeanCounter.clearZeroMoney(newMOB,null);
+		CMLib.beanCounter().clearZeroMoney(newMOB,null);
         newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> tears through the fabric of reality and steps into this world!");
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);

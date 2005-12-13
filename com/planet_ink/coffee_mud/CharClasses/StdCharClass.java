@@ -1,10 +1,21 @@
 package com.planet_ink.coffee_mud.CharClasses;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /*
    Copyright 2000-2005 Bo Zimmerman
@@ -69,64 +80,64 @@ public class StdCharClass implements CharClass
 		if(!commonMapped)
 		{
 			commonMapped=true;
-			CMAble.addCharAbilityMapping("All",1,"Armorsmithing",false);
-			CMAble.addCharAbilityMapping("All",1,"Blacksmithing",false);
-			CMAble.addCharAbilityMapping("All",1,"Butchering",false);
-			CMAble.addCharAbilityMapping("All",1,"Carpentry",false);
-			CMAble.addCharAbilityMapping("All",1,"Chopping",false);
-			CMAble.addCharAbilityMapping("All",1,"ClanCrafting",false);
-			CMAble.addCharAbilityMapping("All",1,"Cobbling",false);
-			CMAble.addCharAbilityMapping("All",10,"Construction",false);
-			CMAble.addCharAbilityMapping("All",1,"Cooking",false);
-			CMAble.addCharAbilityMapping("All",1,"Baking",false);
-			CMAble.addCharAbilityMapping("All",1,"FoodPrep",false);
-			CMAble.addCharAbilityMapping("All",1,"Digging",false);
-			CMAble.addCharAbilityMapping("All",1,"Distilling",false);
-			CMAble.addCharAbilityMapping("All",1,"Drilling",false);
-			CMAble.addCharAbilityMapping("All",1,"Dyeing",false);
-			CMAble.addCharAbilityMapping("All",1,"Embroidering",false);
-			CMAble.addCharAbilityMapping("All",1,"Engraving",false);
-			CMAble.addCharAbilityMapping("All",10,"Farming",false);
-			CMAble.addCharAbilityMapping("All",1,"Costuming",false);
-			CMAble.addCharAbilityMapping("All",1,"FireBuilding",false);
-			CMAble.addCharAbilityMapping("All",1,"Fishing",false);
-			CMAble.addCharAbilityMapping("All",1,"Fletching",false);
-			CMAble.addCharAbilityMapping("All",1,"Foraging",false);
-			CMAble.addCharAbilityMapping("All",1,"GlassBlowing",false);
-			CMAble.addCharAbilityMapping("All",1,"Herbology",false);
-			CMAble.addCharAbilityMapping("All",1,"Hunting",false);
-			CMAble.addCharAbilityMapping("All",1,"JewelMaking",false);
-			CMAble.addCharAbilityMapping("All",1,"Lacquerring",false);
-			CMAble.addCharAbilityMapping("All",1,"LeatherWorking",false);
-			CMAble.addCharAbilityMapping("All",15,"LockSmith",false);
-			CMAble.addCharAbilityMapping("All",10,"Masonry",false);
-			CMAble.addCharAbilityMapping("All",30,"MasterTailoring",false);
-			CMAble.addCharAbilityMapping("All",30,"MasterCostuming",false);
-			CMAble.addCharAbilityMapping("All",30,"MasterLeatherWorking",false);
-			CMAble.addCharAbilityMapping("All",30,"MasterWeaponsmithing",false);
-			CMAble.addCharAbilityMapping("All",30,"MasterArmorsmithing",false);
-			CMAble.addCharAbilityMapping("All",20,"Merchant",false);
-			CMAble.addCharAbilityMapping("All",1,"Mining",false);
-			CMAble.addCharAbilityMapping("All",5,"Painting",false);
-			CMAble.addCharAbilityMapping("All",5,"PaperMaking",false);
-			CMAble.addCharAbilityMapping("All",1,"Pottery",false);
-			CMAble.addCharAbilityMapping("All",1,"ScrimShaw",false);
-			CMAble.addCharAbilityMapping("All",1,"Sculpting",false);
-			CMAble.addCharAbilityMapping("All",1,"Searching",false);
-			CMAble.addCharAbilityMapping("All",4,"Shipwright",false);
-			CMAble.addCharAbilityMapping("All",1,"Smelting",false);
-			CMAble.addCharAbilityMapping("All",1,"SmokeRings",false);
-			CMAble.addCharAbilityMapping("All",10,"Speculate",false);
-			CMAble.addCharAbilityMapping("All",1,"Tailoring",false);
-			CMAble.addCharAbilityMapping("All",20,"Taxidermy",false);
-			CMAble.addCharAbilityMapping("All",4,"Wainwrighting",false);
-			CMAble.addCharAbilityMapping("All",1,"Weaponsmithing",false);
-			CMAble.addCharAbilityMapping("All",1,"Weaving",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Armorsmithing",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Blacksmithing",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Butchering",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Carpentry",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Chopping",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"ClanCrafting",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Cobbling",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",10,"Construction",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Cooking",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Baking",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"FoodPrep",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Digging",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Distilling",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Drilling",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Dyeing",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Embroidering",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Engraving",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",10,"Farming",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Costuming",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"FireBuilding",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Fishing",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Fletching",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Foraging",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"GlassBlowing",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Herbology",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Hunting",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"JewelMaking",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Lacquerring",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"LeatherWorking",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",15,"LockSmith",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",10,"Masonry",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",30,"MasterTailoring",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",30,"MasterCostuming",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",30,"MasterLeatherWorking",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",30,"MasterWeaponsmithing",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",30,"MasterArmorsmithing",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",20,"Merchant",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Mining",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",5,"Painting",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",5,"PaperMaking",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Pottery",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"ScrimShaw",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Sculpting",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Searching",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",4,"Shipwright",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Smelting",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"SmokeRings",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",10,"Speculate",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Tailoring",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",20,"Taxidermy",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",4,"Wainwrighting",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Weaponsmithing",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Weaving",false);
 
 
-			CMAble.addCharAbilityMapping("Mage",1,"Alchemy",false);
-			CMAble.addCharAbilityMapping("Bard",10,"Alchemy",false);
-			CMAble.addCharAbilityMapping("Cleric",1,"Alchemy",false);
+			CMLib.ableMapper().addCharAbilityMapping("Mage",1,"Alchemy",false);
+			CMLib.ableMapper().addCharAbilityMapping("Bard",10,"Alchemy",false);
+			CMLib.ableMapper().addCharAbilityMapping("Cleric",1,"Alchemy",false);
 		}
 	}
 
@@ -173,7 +184,7 @@ public class StdCharClass implements CharClass
 					mob.tell("But you are already a "+name()+"!");
 				return false;
 			}
-			if((CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("NO"))
+			if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
 			&&(!mob.charStats().getCurrentClass().baseClass().equals("StdCharClass")))
 			{
 				if(!quiet)
@@ -181,7 +192,7 @@ public class StdCharClass implements CharClass
 				return false;
 			}
 			else
-			if((!CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("MULTI"))
+			if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
 			&&(!mob.charStats().getCurrentClass().baseClass().equals(baseClass()))
 			&&(!mob.charStats().getCurrentClass().baseClass().equals("StdCharClass"))
 			&&(!mob.charStats().getCurrentClass().baseClass().equals("Commoner")))
@@ -242,7 +253,7 @@ public class StdCharClass implements CharClass
 		for(int i=(mob.charStats().numClasses()-1);i>=0;i--) // last one is current
 		{
 			C=mob.charStats().getMyClass(i);
-			ql=CMAble.getQualifyingLevel(C.ID(),true,A.ID());
+			ql=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID());
 			if((C!=null)
 			&&(ql>0)
 			&&(ql<=mob.charStats().getClassLevel(C)))
@@ -262,8 +273,8 @@ public class StdCharClass implements CharClass
 		&&(!E.ID().equals("Skill_Recall"))
 		&&(((Ability)E).classificationCode()!=Ability.COMMON_SKILL)
 		&&(((Ability)E).classificationCode()!=Ability.LANGUAGE)
-		&&(!CoffeeUtensils.armorCheck(mob,allowedArmorLevel()))
-		&&(Dice.rollPercentage()>(mob.charStats().getStat(getAttackAttribute())*2)))
+		&&(!CMLib.utensils().armorCheck(mob,allowedArmorLevel()))
+		&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(getAttackAttribute())*2)))
 			return false;
 		return true;
 	}
@@ -274,7 +285,7 @@ public class StdCharClass implements CharClass
 		&&(mob.charStats().getCurrentClass()==this)
 		&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(new Integer(((Weapon)E).material()&EnvResource.MATERIAL_MASK))))
 			||((disallowedWeaponClasses(mob)!=null)&&(disallowedWeaponClasses(mob).contains(new Integer(((Weapon)E).weaponClassification())))))
-		&&(Dice.rollPercentage()>(mob.charStats().getStat(getAttackAttribute())*2))
+		&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(getAttackAttribute())*2))
 		&&(mob.fetchWieldedItem()!=null))
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+E.name()+".");
@@ -335,7 +346,7 @@ public class StdCharClass implements CharClass
             for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
             {
                 Ability A=(Ability)a.nextElement();
-                int lvl=CMAble.getQualifyingLevel(ID(),true,A.ID());
+                int lvl=CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID());
                 if((lvl>=0)
                 &&(!alreadyAble.containsKey(A.ID())))
                     giveMobAbility(mob,A,100,"",true,false);
@@ -347,10 +358,10 @@ public class StdCharClass implements CharClass
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
-			if((CMAble.getQualifyingLevel(ID(),true,A.ID())>0)
-			&&(CMAble.getQualifyingLevel(ID(),true,A.ID())<=mob.baseCharStats().getClassLevel(this))
-			&&(CMAble.getDefaultGain(ID(),true,A.ID())))
-				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),true,A.ID()),CMAble.getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
+			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<=mob.baseCharStats().getClassLevel(this))
+			&&(CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+				giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 		}
 	}
 	public void endCharacter(MOB mob)
@@ -413,7 +424,7 @@ public class StdCharClass implements CharClass
 	    &&(!msg.source().isMonster())
 		&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(new Integer(((Weapon)msg.target()).material()&EnvResource.MATERIAL_MASK))))
 			||((disallowedWeaponClasses(msg.source())!=null)&&(disallowedWeaponClasses(msg.source()).contains(new Integer(((Weapon)msg.target()).weaponClassification()))))))
-	        msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),null,CMMsg.TYP_OK_VISUAL,"<T-NAME> feel(s) a bit strange in your hands.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+	        msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.TYP_OK_VISUAL,"<T-NAME> feel(s) a bit strange in your hands.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 	}
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
@@ -425,7 +436,7 @@ public class StdCharClass implements CharClass
 	{
 		if(victim!=null)
 		{
-			int levelLimit=CommonStrings.getIntVar(CommonStrings.SYSTEMI_EXPRATE);
+			int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
 			int levelDiff=victim.envStats().level()-mob.envStats().level();
 
 			if(levelDiff<(-levelLimit) )
@@ -441,18 +452,18 @@ public class StdCharClass implements CharClass
 		}
 		if((mob.getLiegeID().length()>0)&&(amount>2))
 		{
-			MOB sire=CMMap.getPlayer(mob.getLiegeID());
-			if((sire!=null)&&(Sense.isInTheGame(sire,true)))
+			MOB sire=CMLib.map().getPlayer(mob.getLiegeID());
+			if((sire!=null)&&(CMLib.flags().isInTheGame(sire,true)))
 			{
 				int sireShare=(int)Math.round(Util.div(amount,10.0));
 				if(sireShare<=0) sireShare=1;
 				amount-=sireShare;
-				MUDFight.postExperience(sire,null," from "+mob.name(),sireShare,quiet);
+				CMLib.combat().postExperience(sire,null," from "+mob.name(),sireShare,quiet);
 			}
 		}
 		if((mob.getClanID().length()>0)&&(amount>2))
 		{
-			Clan C=Clans.getClan(mob.getClanID());
+			Clan C=CMLib.clans().getClan(mob.getClanID());
 			if(C!=null) amount=C.applyExpMods(amount);
 		}
 
@@ -479,13 +490,13 @@ public class StdCharClass implements CharClass
 		||(leveless())
 		||(mob.charStats().getMyRace().leveless()))
 		    return;
-		mob.tell("^ZYou have ****LOST A LEVEL****^.^N\n\r\n\r"+CommonStrings.msp("doh.wav",60));
+		mob.tell("^ZYou have ****LOST A LEVEL****^.^N\n\r\n\r"+CMProps.msp("doh.wav",60));
 		if(!mob.isMonster())
         {
-            Vector channels=ChannelSet.getFlaggedChannelNames("LOSTLEVELS");
-            if(!Sense.isCloaked(mob))
+            Vector channels=CMLib.channels().getFlaggedChannelNames("LOSTLEVELS");
+            if(!CMLib.flags().isCloaked(mob))
             for(int i=0;i<channels.size();i++)
-                CommonMsgs.channel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just lost a level.",true);
+                CMLib.commands().channel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just lost a level.",true);
         }
 
 		levelAdjuster(mob,-1);
@@ -542,10 +553,10 @@ public class StdCharClass implements CharClass
 		theNews.append("^HYou are now a "+mob.charStats().displayClassLevel(mob,false)+".^N\n\r");
 
 		int conStat=mob.charStats().getStat(CharStats.CONSTITUTION);
-		int maxConStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
+		int maxConStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.CONSTITUTION));
 		if(conStat>maxConStat) conStat=maxConStat;
-		int newHitPointGain=(int)Math.floor(Util.div(conStat,getHPDivisor())+Dice.roll(getHPDice(),getHPDie(),0));
+		int newHitPointGain=(int)Math.floor(Util.div(conStat,getHPDivisor())+CMLib.dice().roll(getHPDice(),getHPDie(),0));
 		if(newHitPointGain<=0)
 		{
 			if(conStat>=1)
@@ -562,7 +573,7 @@ public class StdCharClass implements CharClass
 		double lvlMul=1.0;//-Util.div(mob.envStats().level(),100.0);
 		if(lvlMul<0.1) lvlMul=.1;
 		int mvStat=mob.charStats().getStat(CharStats.STRENGTH);
-		int maxMvStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
+		int maxMvStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.STRENGTH));
 		if(mvStat>maxMvStat) mvStat=maxMvStat;
 		int mvGain=(int)Math.round(lvlMul*Util.mul(Util.div(mvStat,18.0),getMovementMultiplier()));
@@ -572,7 +583,7 @@ public class StdCharClass implements CharClass
 		theNews.append(mvGain+"^N move " + (mvGain!=1?"points":"point") + ", ^H");
 
 		int attStat=mob.charStats().getStat(getAttackAttribute());
-		int maxAttStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
+		int maxAttStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+getAttackAttribute()));
 		if(attStat>=maxAttStat) attStat=maxAttStat;
 		int attGain=(int)Math.round(Util.div(attStat,6.0))+getBonusAttackLevel();
@@ -585,15 +596,15 @@ public class StdCharClass implements CharClass
 		theNews.append(attGain+"^N attack " + (attGain!=1?"points":"point") + ", ^H");
 
 		int man2Stat=mob.charStats().getStat(getAttackAttribute());
-		int maxMan2Stat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
+		int maxMan2Stat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+getAttackAttribute()));
 		if(man2Stat>maxMan2Stat) man2Stat=maxMan2Stat;
 		
 		int manStat=mob.charStats().getStat(CharStats.INTELLIGENCE);
-		int maxManStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
+		int maxManStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.INTELLIGENCE));
 		if(manStat>maxManStat) manStat=maxManStat;
-		int manaGain=(int)Math.floor(Util.div(manStat,getManaDivisor())+Dice.roll(getManaDice(),getManaDie(),0));
+		int manaGain=(int)Math.floor(Util.div(manStat,getManaDivisor())+CMLib.dice().roll(getManaDice(),getManaDie(),0));
 		if(man2Stat>17) manaGain=manaGain+((man2Stat-17)/2);
 		manaGain=manaGain*adjuster;
 		
@@ -624,7 +635,7 @@ public class StdCharClass implements CharClass
 		mob.baseEnvStats().setArmor(getLevelArmor(mob));
 		mob.baseEnvStats().setDamage(getLevelDamage(mob));
 		mob.baseEnvStats().setAttackAdjustment(getLevelAttack(mob));
-		mob.setMoney(Dice.roll(1,level,0)+Dice.roll(1,10,0));
+		mob.setMoney(CMLib.dice().roll(1,level,0)+CMLib.dice().roll(1,10,0));
 		return mob;
 	}
 
@@ -633,18 +644,18 @@ public class StdCharClass implements CharClass
 		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return;
         if((mob.getLiegeID().length()>0)&&(amount>2))
         {
-			MOB sire=CMMap.getPlayer(mob.getLiegeID());
-			if((sire!=null)&&(Sense.isInTheGame(sire,true)))
+			MOB sire=CMLib.map().getPlayer(mob.getLiegeID());
+			if((sire!=null)&&(CMLib.flags().isInTheGame(sire,true)))
             {
                 int sireShare=(int)Math.round(Util.div(amount,10.0));
                 amount-=sireShare;
-				if(MUDFight.postExperience(sire,null,"",-sireShare,true))
+				if(CMLib.combat().postExperience(sire,null,"",-sireShare,true))
 					sire.tell("^N^!You lose ^H"+sireShare+"^N^! experience points from "+mob.Name()+".^N");
             }
         }
         if((mob.getClanID().length()>0)&&(amount>2))
         {
-            Clan C=Clans.getClan(mob.getClanID());
+            Clan C=CMLib.clans().getClan(mob.getClanID());
             if((C!=null)&&(C.getTaxes()>0.0))
             {
                 int clanshare=(int)Math.round(Util.mul(amount,C.getTaxes()));
@@ -668,23 +679,23 @@ public class StdCharClass implements CharClass
 		||(leveless())
 		||(mob.charStats().getMyRace().leveless()))
 	        return;
-        if(!CMMap.sendGlobalMessage(mob,CMMsg.TYP_LEVEL,new FullMsg(mob,CMMsg.MSG_LEVEL,null,mob.baseEnvStats().level()+1)))
+        if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LEVEL,CMClass.getMsg(mob,CMMsg.MSG_LEVEL,null,mob.baseEnvStats().level()+1)))
             return;
-		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CommonStrings.msp("level_gain.wav",60));
+		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CMProps.msp("level_gain.wav",60));
 		theNews.append(levelAdjuster(mob,1));
 		if(mob.playerStats()!=null)
 		{
             mob.playerStats().setLeveledDateTime(mob.baseEnvStats().level());
-            Vector channels=ChannelSet.getFlaggedChannelNames("DETAILEDLEVELS");
-            Vector channels2=ChannelSet.getFlaggedChannelNames("LEVELS");
-            if(!Sense.isCloaked(mob))
+            Vector channels=CMLib.channels().getFlaggedChannelNames("DETAILEDLEVELS");
+            Vector channels2=CMLib.channels().getFlaggedChannelNames("LEVELS");
+            if(!CMLib.flags().isCloaked(mob))
             for(int i=0;i<channels.size();i++)
-                CommonMsgs.channel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just gained a level at "+CMMap.getExtendedRoomID(mob.location())+".",true);
-            if(!Sense.isCloaked(mob))
+                CMLib.commands().channel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just gained a level at "+CMLib.map().getExtendedRoomID(mob.location())+".",true);
+            if(!CMLib.flags().isCloaked(mob))
             for(int i=0;i<channels2.size();i++)
-                CommonMsgs.channel((String)channels2.elementAt(i),mob.getClanID(),mob.Name()+" has just gained a level.",true);
+                CMLib.commands().channel((String)channels2.elementAt(i),mob.getClanID(),mob.Name()+" has just gained a level.",true);
 			if(mob.soulMate()==null)
-				CoffeeTables.bump(mob,CoffeeTables.STAT_LEVELSGAINED);
+				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LEVELSGAINED);
 		}
 
 		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
@@ -696,7 +707,7 @@ public class StdCharClass implements CharClass
 		int trainGain=1;
 		if(trainGain<=0)trainGain=1;
 		mob.setTrains(mob.getTrains()+trainGain);
-		theNews.append("and ^H"+trainGain+"^N training sessions.\n\r^N");
+		theNews.append("and ^H"+trainGain+"^N training CMLib.sessions().\n\r^N");
 
 		mob.tell(theNews.toString());
         HashSet oldAbilities=new HashSet();
@@ -710,7 +721,7 @@ public class StdCharClass implements CharClass
 		{
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)
-			&&(CMAble.qualifiesByLevel(mob,A)))
+			&&(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 				A.autoInvocation(mob);
 		}
         
@@ -795,7 +806,7 @@ public class StdCharClass implements CharClass
 			MOB mob=(MOB)i.next();
 			int myAmount=(int)Math.round(Util.mul(expAmount,Util.div(mob.envStats().level()*mob.envStats().level(),totalLevels)));
 			if(myAmount>100) myAmount=100;
-			MUDFight.postExperience(mob,killed,"",myAmount,false);
+			CMLib.combat().postExperience(mob,killed,"",myAmount,false);
 		}
 	}
 	public String classParms(){ return "";}

@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -60,19 +71,19 @@ public class Pull extends Go
 		String whatToOpen=Util.combine(commands,1);
 		if(openThis==null)
 			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen,Item.WORN_REQ_ANY);
-		if((openThis==null)||(!Sense.canBeSeenBy(openThis,mob)))
+		if((openThis==null)||(!CMLib.flags().canBeSeenBy(openThis,mob)))
 		{
 			mob.tell("You don't see '"+whatToOpen+"' here.");
 			return false;
 		}
-		FullMsg msg=new FullMsg(mob,openThis,E,CMMsg.MSG_PULL,"<S-NAME> pull(s) <T-NAME>"+dir+".");
+		CMMsg msg=CMClass.getMsg(mob,openThis,E,CMMsg.MSG_PULL,"<S-NAME> pull(s) <T-NAME>"+dir+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 		    if((dir.length()>0)&&(msg.tool() instanceof Room))
 		    {
 		        Room R=(Room)msg.tool();
-		        dirCode=MUDTracker.findRoomDir(mob,R);
+		        dirCode=CMLib.tracking().findRoomDir(mob,R);
 		        if((dirCode>=0)&&(super.move(mob,dirCode,false,false,false,false)))
 		        {
 			        if(openThis instanceof Item)

@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -28,21 +39,21 @@ public class BaseClanner extends StdCommand
 		int allowed=C.allowedToDoThis(mob,function);
 		if(allowed==1) return true;
 		if(allowed==-1) return false;
-		if(function==Clans.FUNC_CLANASSIGN)
+		if(function==Clan.FUNC_CLANASSIGN)
 		{
-			if(C.allowedToDoThis(mob,Clans.FUNC_CLANVOTEASSIGN)<=0)
+			if(C.allowedToDoThis(mob,Clan.FUNC_CLANVOTEASSIGN)<=0)
 			   return false;
 		}
 		else
-		if(C.allowedToDoThis(mob,Clans.FUNC_CLANVOTEOTHER)<=0)
+		if(C.allowedToDoThis(mob,Clan.FUNC_CLANVOTEOTHER)<=0)
 		   return false;
 		if(!voteIfNecessary) return true;
 		String matter=Util.combine(commands,0);
 		for(Enumeration e=C.votes();e.hasMoreElements();)
 		{
-			Clans.ClanVote CV=(Clans.ClanVote)e.nextElement();
+			Clan.ClanVote CV=(Clan.ClanVote)e.nextElement();
 			if((CV.voteStarter.equalsIgnoreCase(mob.Name()))
-			&&(CV.voteStatus==Clans.VSTAT_STARTED))
+			&&(CV.voteStatus==Clan.VSTAT_STARTED))
 			{
 				mob.tell(getScr("BaseClanner","alvote"));
 				return false;
@@ -60,7 +71,7 @@ public class BaseClanner extends StdCommand
 
 			if(mob.session().confirm(getScr("BaseClanner","msg1"),getScr("BaseClanner","yesno")))
 			{
-				Clans.ClanVote CV=new Clans.ClanVote();
+				Clan.ClanVote CV=new Clan.ClanVote();
 				CV.matter=matter;
 				CV.voteStarter=mob.Name();
 				CV.function=function;
@@ -72,19 +83,19 @@ public class BaseClanner extends StdCommand
 				switch(C.getGovernment())
 				{
 				case Clan.GVT_DEMOCRACY:
-					clanAnnounce(mob,getScr("BaseClanner","msg2",C.typeName(),C.ID()));
+					clanAnnounce(mob,getScr("BaseClanner","msg2",C.typeName(),C.clanID()));
 					break;
 				case Clan.GVT_DICTATORSHIP:
-					clanAnnounce(mob,getScr("BaseClanner","msg3",C.typeName(),C.ID()));
+					clanAnnounce(mob,getScr("BaseClanner","msg3",C.typeName(),C.clanID()));
 					break;
 				case Clan.GVT_OLIGARCHY:
-					clanAnnounce(mob,getScr("BaseClanner","msg4",C.typeName(),C.ID()));
+					clanAnnounce(mob,getScr("BaseClanner","msg4",C.typeName(),C.clanID()));
 					break;
 				case Clan.GVT_REPUBLIC:
 					if(function==Clan.FUNC_CLANASSIGN)
-						clanAnnounce(mob,getScr("BaseClanner","msg5",C.typeName(),C.ID()));
+						clanAnnounce(mob,getScr("BaseClanner","msg5",C.typeName(),C.clanID()));
 					else
-						clanAnnounce(mob,getScr("BaseClanner","msg6",C.typeName(),C.ID()));
+						clanAnnounce(mob,getScr("BaseClanner","msg6",C.typeName(),C.clanID()));
 					break;
 				}
 				mob.tell(getScr("BaseClanner","starvote"));
@@ -99,9 +110,9 @@ public class BaseClanner extends StdCommand
 
 	public static void clanAnnounce(MOB mob, String msg)
 	{
-        Vector channels=ChannelSet.getFlaggedChannelNames("CLANINFO");
+        Vector channels=CMLib.channels().getFlaggedChannelNames("CLANINFO");
         for(int i=0;i<channels.size();i++)
-            CommonMsgs.channel(mob,(String)channels.elementAt(i),msg,true);
+            CMLib.commands().channel(mob,(String)channels.elementAt(i),msg,true);
 	}
 
 	public static int getIntFromRole(int roleType)
@@ -121,9 +132,9 @@ public class BaseClanner extends StdCommand
 	}
 	public static int getRoleFromName(int government, String position)
 	{
-		if((government<0)||(government>=Clans.GVT_DESCS.length))
+		if((government<0)||(government>=Clan.GVT_DESCS.length))
 			government=0;
-		String[] roles=Clans.ROL_DESCS[government];
+		String[] roles=Clan.ROL_DESCS[government];
 		for(int i=0;i<roles.length;i++)
 			if(roles[i].startsWith(position.toUpperCase()))
 				return Util.pow(2,i-1);

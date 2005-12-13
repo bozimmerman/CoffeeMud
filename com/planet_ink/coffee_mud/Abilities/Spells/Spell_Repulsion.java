@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -70,7 +81,7 @@ public class Spell_Repulsion extends Spell
 		if(canBeUninvoked())
 		{
 			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the repulsion field.");
-			CommonMsgs.stand(mob,true);
+			CMLib.commands().stand(mob,true);
 		}
 	}
 
@@ -103,7 +114,7 @@ public class Spell_Repulsion extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
+				CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),null);
 				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);
@@ -114,8 +125,8 @@ public class Spell_Repulsion extends Spell
 						{
 							success=maliciousAffect(mob,target,asLevel,(mob.envStats().level()*10),-1);
 							int level=2;
-							if((CMAble.qualifyingClassLevel(mob,this)>0)&&((adjustedLevel(mob,asLevel)-CMAble.qualifyingClassLevel(mob,this))>10))
-								level+=((adjustedLevel(mob,asLevel)-CMAble.qualifyingClassLevel(mob,this))-10)/10;
+							if((CMLib.ableMapper().qualifyingClassLevel(mob,this)>0)&&((adjustedLevel(mob,asLevel)-CMLib.ableMapper().qualifyingClassLevel(mob,this))>10))
+								level+=((adjustedLevel(mob,asLevel)-CMLib.ableMapper().qualifyingClassLevel(mob,this))-10)/10;
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) repelled!");
 							if((target.getVictim()!=null)&&(target.rangeToTarget()>0))
 								target.setAtRange(target.rangeToTarget());

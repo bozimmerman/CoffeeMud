@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -56,10 +67,10 @@ public class Spell_MarkerPortal extends Spell
 		Room newRoom=null;
 		try
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(Sense.canAccess(mob,R))
+				if(CMLib.flags().canAccess(mob,R))
 				for(int a=0;a<R.numEffects();a++)
 				{
 					Ability A=R.fetchEffect(a);
@@ -115,8 +126,8 @@ public class Spell_MarkerPortal extends Spell
 		&&((newRoom.getRoomInDir(Directions.GATE)==null)
 		&&(newRoom.getExitInDir(Directions.GATE)==null)))
 		{
-			FullMsg msg=new FullMsg(mob,oldRoom,this,affectType(auto),"^S<S-NAME> conjur(s) a blinding, swirling portal here.^?");
-			FullMsg msg2=new FullMsg(mob,newRoom,this,affectType(auto),"A blinding, swirling portal appears here.");
+			CMMsg msg=CMClass.getMsg(mob,oldRoom,this,affectType(auto),"^S<S-NAME> conjur(s) a blinding, swirling portal here.^?");
+			CMMsg msg2=CMClass.getMsg(mob,newRoom,this,affectType(auto),"A blinding, swirling portal appears here.");
 			if((oldRoom.okMessage(mob,msg))&&(newRoom.okMessage(mob,msg2)))
 			{
 				oldRoom.send(mob,msg);

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -46,10 +57,10 @@ public class Spell_RogueLimb extends Spell
 			}
 			if((rogueLimb.amFollowing()!=null)
 			||(rogueLimb.getVictim()!=affected)
-			||(!Sense.aliveAwakeMobileUnbound(rogueLimb,true))
-			||(!Sense.aliveAwakeMobileUnbound((MOB)affected,true))
-			||(!Sense.isInTheGame(affected,false))
-			||(!Sense.isInTheGame(rogueLimb,false)))
+			||(!CMLib.flags().aliveAwakeMobileUnbound(rogueLimb,true))
+			||(!CMLib.flags().aliveAwakeMobileUnbound((MOB)affected,true))
+			||(!CMLib.flags().isInTheGame(affected,false))
+			||(!CMLib.flags().isInTheGame(rogueLimb,false)))
 				unInvoke();
 		}
 		else
@@ -66,10 +77,10 @@ public class Spell_RogueLimb extends Spell
 		   ||(rogueLimb==null))
 			return true;
 		if(msg.amITarget(rogueLimb)
-		&&(Sense.aliveAwakeMobileUnbound(rogueLimb,true))
-		&&(Sense.aliveAwakeMobileUnbound((MOB)affected,true))
+		&&(CMLib.flags().aliveAwakeMobileUnbound(rogueLimb,true))
+		&&(CMLib.flags().aliveAwakeMobileUnbound((MOB)affected,true))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
-			MUDFight.postDamage(rogueLimb,(MOB)affected,this,msg.value(),CMMsg.MASK_GENERAL|msg.sourceCode(),Weapon.TYPE_NATURAL,null);
+			CMLib.combat().postDamage(rogueLimb,(MOB)affected,this,msg.value(),CMMsg.MASK_GENERAL|msg.sourceCode(),Weapon.TYPE_NATURAL,null);
 		if(msg.amISource(rogueLimb)
 		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 		{
@@ -104,7 +115,7 @@ public class Spell_RogueLimb extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> lose(s) control of <T-HIS-HER> limb!":"^S<S-NAME> invoke(s) a powerful spell upon <T-NAMESELF>!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> lose(s) control of <T-HIS-HER> limb!":"^S<S-NAME> invoke(s) a powerful spell upon <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -122,7 +133,7 @@ public class Spell_RogueLimb extends Spell
 					if(limbs.size()==0)
 						limb="body part";
 					else
-						limb=(Race.BODYPARTSTR[((Integer)limbs.elementAt(Dice.roll(1,limbs.size(),-1))).intValue()]).toLowerCase();
+						limb=(Race.BODYPARTSTR[((Integer)limbs.elementAt(CMLib.dice().roll(1,limbs.size(),-1))).intValue()]).toLowerCase();
 					rogueLimb=CMClass.getMOB("GenMob");
 					rogueLimb.setName(target.name()+"'s "+limb);
 					rogueLimb.setDisplayText(rogueLimb.name()+" is misbehaving here.");
@@ -143,7 +154,7 @@ public class Spell_RogueLimb extends Spell
 					rogueLimb.recoverEnvStats();
 					rogueLimb.resetToMaxState();
 					rogueLimb.bringToLife(mob.location(),true);
-					BeanCounter.clearZeroMoney(rogueLimb,null);
+					CMLib.beanCounter().clearZeroMoney(rogueLimb,null);
 					rogueLimb.setVictim(target);
 					maliciousAffect(mob,target,asLevel,0,-1);
 					rogueLimb.setVictim(target);

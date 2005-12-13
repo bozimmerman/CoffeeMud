@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -51,33 +62,33 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 			if(invoker==null) invoker=mob;
 			if(mob.location()==null) return false;
 			ispoke=false;
-			switch(Dice.roll(1,12,0))
+			switch(CMLib.dice().roll(1,12,0))
 			{
-			case 1:	CommonMsgs.say(mob,null,"Repent, or "+godName+" will consume your soul!",false,false); break;
-			case 2:	CommonMsgs.say(mob,null,"We are all damned! Hope is forgotten!",false,false); break;
-			case 3:	CommonMsgs.say(mob,null,godName+" has damned us all!",false,false); break;
-			case 4:	CommonMsgs.say(mob,null,"Death is the only way out for us now!",false,false); break;
-			case 5:	CommonMsgs.say(mob,null,"The finger of "+godName+" will destroy all!",false,false); break;
-			case 6:	CommonMsgs.say(mob,null,"The waters will dry! The air will turn cold! Our bodies will fail! We are Lost!",false,false); break;
-			case 7:	CommonMsgs.say(mob,null,"Nothing can save you! Throw yourself on the mercy of "+godName+"!",false,false); break;
-			case 8:	CommonMsgs.say(mob,null,godName+" will show us no mercy!",false,false); break;
-			case 9:	CommonMsgs.say(mob,null,godName+" has spoken! We will all be destroyed!",false,false);
+			case 1:	CMLib.commands().say(mob,null,"Repent, or "+godName+" will consume your soul!",false,false); break;
+			case 2:	CMLib.commands().say(mob,null,"We are all damned! Hope is forgotten!",false,false); break;
+			case 3:	CMLib.commands().say(mob,null,godName+" has damned us all!",false,false); break;
+			case 4:	CMLib.commands().say(mob,null,"Death is the only way out for us now!",false,false); break;
+			case 5:	CMLib.commands().say(mob,null,"The finger of "+godName+" will destroy all!",false,false); break;
+			case 6:	CMLib.commands().say(mob,null,"The waters will dry! The air will turn cold! Our bodies will fail! We are Lost!",false,false); break;
+			case 7:	CMLib.commands().say(mob,null,"Nothing can save you! Throw yourself on the mercy of "+godName+"!",false,false); break;
+			case 8:	CMLib.commands().say(mob,null,godName+" will show us no mercy!",false,false); break;
+			case 9:	CMLib.commands().say(mob,null,godName+" has spoken! We will all be destroyed!",false,false);
 					break;
 			case 10:
 			case 11:
 			case 12:
-					CommonMsgs.say(mob,null,"Our doom is upon us! The end is near!",false,false);
+					CMLib.commands().say(mob,null,"Our doom is upon us! The end is near!",false,false);
 					break;
 			}
-			if((Sense.canSpeak(mob))&&(ispoke))
+			if((CMLib.flags().canSpeak(mob))&&(ispoke))
 			{
-				MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
+				MOB target=mob.location().fetchInhabitant(CMLib.dice().roll(1,mob.location().numInhabitants(),-1));
 				if((target!=null)
-				&&(Sense.canBeHeardBy(mob,target))
+				&&(CMLib.flags().canBeHeardBy(mob,target))
 				&&(target!=invoker)
 				&&(target!=mob)
 				&&(target.fetchEffect(ID())==null))
-					if(Dice.rollPercentage()>target.charStats().getSave(CharStats.SAVE_DISEASE))
+					if(CMLib.dice().rollPercentage()>target.charStats().getSave(CharStats.SAVE_DISEASE))
 					{
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
 						maliciousAffect(invoker,target,0,0,-1);
@@ -139,9 +150,9 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> inflict(s) an unholy disease upon <T-NAMESELF>.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_GENERAL:0),null);
-			FullMsg msg3=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> inflict(s) an unholy disease upon <T-NAMESELF>.^?");
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_GENERAL:0),null);
+			CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
 			if((mob.location().okMessage(mob,msg))
 			&&(mob.location().okMessage(mob,msg2))
 			&&(mob.location().okMessage(mob,msg3)))

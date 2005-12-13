@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -120,13 +131,13 @@ public class RandomTeleporter extends ActiveTicker
 			Room R=null;
 			while(((++tries)<250)&&(R==null))
 			{
-				R=CMMap.getRandomRoom();
-				if((!Sense.isInFlight(mob))
+				R=CMLib.map().getRandomRoom();
+				if((!CMLib.flags().isInFlight(mob))
 				&&((R.domainType()==Room.DOMAIN_INDOORS_AIR)
 				||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)))
 					R=null;
 				else
-				if((!Sense.isSwimming(mob))
+				if((!CMLib.flags().isSwimming(mob))
 				&&((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 				||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
 					R=null;
@@ -135,7 +146,7 @@ public class RandomTeleporter extends ActiveTicker
 					R=null;
 			}
 			Room oldRoom=mob.location();
-			MUDTracker.wanderAway(mob,true,false);
+			CMLib.tracking().wanderAway(mob,true,false);
 			R.bringMobHere(mob,true);
 			if(mob.location()==oldRoom)
 				tickDown=0;

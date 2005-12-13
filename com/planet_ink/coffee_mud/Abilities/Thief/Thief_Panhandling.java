@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -47,11 +58,11 @@ public class Thief_Panhandling extends ThiefSkill
 			&&(msg.targetMinor()==CMMsg.TYP_LEAVE))
 				unInvoke();
 			else
-			if((Sense.isStanding(mob))||(Sense.isSleeping(mob)))
+			if((CMLib.flags().isStanding(mob))||(CMLib.flags().isSleeping(mob)))
 				unInvoke();
 			else
 			if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_GIVE))
-				msg.addTrailerMsg(new FullMsg(mob,msg.source(),CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?"));
+				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?"));
 		}
 	}
 
@@ -70,55 +81,55 @@ public class Thief_Panhandling extends ThiefSkill
 			{
 				MOB mob2=mob.location().fetchInhabitant(i);
 				if((mob2!=null)
-				&&(Sense.canBeSeenBy(mob2,mob))
+				&&(CMLib.flags().canBeSeenBy(mob2,mob))
 				&&(mob2!=mob)
 				&&(!mobsHitUp.contains(mob2))
 				&&(profficiencyCheck(mob,0,false)))
 				{
-					switch(Dice.roll(1,10,0))
+					switch(CMLib.dice().roll(1,10,0))
 					{
 					case 1:
-						CommonMsgs.say(mob,mob2,"A little something for a vet please?",false,false);
+						CMLib.commands().say(mob,mob2,"A little something for a vet please?",false,false);
 						break;
 					case 2:
-						CommonMsgs.say(mob,mob2,"Spare a gold piece "+((mob2.charStats().getStat(CharStats.GENDER)=='M')?"mister?":"madam?"),false,false);
+						CMLib.commands().say(mob,mob2,"Spare a gold piece "+((mob2.charStats().getStat(CharStats.GENDER)=='M')?"mister?":"madam?"),false,false);
 						break;
 					case 3:
-						CommonMsgs.say(mob,mob2,"Spare some change?",false,false);
+						CMLib.commands().say(mob,mob2,"Spare some change?",false,false);
 						break;
 					case 4:
-						CommonMsgs.say(mob,mob2,"Please "+((mob2.charStats().getStat(CharStats.GENDER)=='M')?"mister":"madam")+", a little something for an poor soul down on "+mob.charStats().hisher()+" luck?",false,false);
+						CMLib.commands().say(mob,mob2,"Please "+((mob2.charStats().getStat(CharStats.GENDER)=='M')?"mister":"madam")+", a little something for an poor soul down on "+mob.charStats().hisher()+" luck?",false,false);
 						break;
 					case 5:
-						CommonMsgs.say(mob,mob2,"Hey, I lost my 'Will Work For Food' sign.  Can you spare me the money to buy one?",false,false);
+						CMLib.commands().say(mob,mob2,"Hey, I lost my 'Will Work For Food' sign.  Can you spare me the money to buy one?",false,false);
 						break;
 					case 6:
-						CommonMsgs.say(mob,mob2,"Spread a little joy to an poor soul?",false,false);
+						CMLib.commands().say(mob,mob2,"Spread a little joy to an poor soul?",false,false);
 						break;
 					case 7:
-						CommonMsgs.say(mob,mob2,"Change?",false,false);
+						CMLib.commands().say(mob,mob2,"Change?",false,false);
 						break;
 					case 8:
-						CommonMsgs.say(mob,mob2,"Can you spare a little change?",false,false);
+						CMLib.commands().say(mob,mob2,"Can you spare a little change?",false,false);
 						break;
 					case 9:
-						CommonMsgs.say(mob,mob2,"Can you spare a little gold?",false,false);
+						CMLib.commands().say(mob,mob2,"Can you spare a little gold?",false,false);
 						break;
 					case 10:
-						CommonMsgs.say(mob,mob2,"Gold piece for a poor soul down on "+mob.charStats().hisher()+" luck?",false,false);
+						CMLib.commands().say(mob,mob2,"Gold piece for a poor soul down on "+mob.charStats().hisher()+" luck?",false,false);
 						break;
 					}
-                    if(Dice.rollPercentage()>(mob2.charStats().getSave(CharStats.SAVE_JUSTICE)+(Sense.isGood(mob)?10:0)))
+                    if(CMLib.dice().rollPercentage()>(mob2.charStats().getSave(CharStats.SAVE_JUSTICE)+(CMLib.flags().isGood(mob)?10:0)))
 					{
-					    double total=BeanCounter.getTotalAbsoluteNativeValue(mob2);
+					    double total=CMLib.beanCounter().getTotalAbsoluteNativeValue(mob2);
 					    if(total>1.0)
 					    {
 						    total=total/20.0;
 						    if(total<1.0) total=1.0;
-							Coins C=BeanCounter.makeBestCurrency(mob2,total);
+							Coins C=CMLib.beanCounter().makeBestCurrency(mob2,total);
 							if(C!=null)
 							{
-								BeanCounter.subtractMoney(mob2,total);
+								CMLib.beanCounter().subtractMoney(mob2,total);
 								mob2.addInventory(C);
 								mob2.doCommand(Util.parse("GIVE \""+C.name()+"\" \""+mob.Name()+"\""));
 								if(!C.amDestroyed()) C.putCoinsBack();
@@ -130,7 +141,7 @@ public class Thief_Panhandling extends ThiefSkill
 					break;
 				}
 			}
-			if((mobsHitUp.size()>0)&&(Dice.rollPercentage()<10))
+			if((mobsHitUp.size()>0)&&(CMLib.dice().rollPercentage()<10))
 				mobsHitUp.removeElementAt(0);
 		}
 		return true;
@@ -162,7 +173,7 @@ public class Thief_Panhandling extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if(!Sense.isSitting(mob))
+		if(!CMLib.flags().isSitting(mob))
 		{
 			mob.tell("You must be sitting!");
 			return false;
@@ -175,7 +186,7 @@ public class Thief_Panhandling extends ThiefSkill
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		FullMsg msg=new FullMsg(mob,null,this,auto?CMMsg.MASK_GENERAL:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":"<S-NAME> start(s) panhandling.");
+		CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_GENERAL:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":"<S-NAME> start(s) panhandling.");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> can't seem to get <S-HIS-HER> panhandling act started.");
 		else

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -32,7 +43,7 @@ public class Prayer_MassFreedom extends Prayer
 		MOB newMOB=CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();
 
-		FullMsg msg=new FullMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
+		CMMsg msg=CMClass.getMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
 		for(int a=0;a<fromMe.numEffects();a++)
 		{
 			Ability A=fromMe.fetchEffect(a);
@@ -43,7 +54,7 @@ public class Prayer_MassFreedom extends Prayer
 					newMOB.recoverEnvStats();
 					A.affectEnvStats(newMOB,newMOB.envStats());
 					int clas=A.classificationCode()&Ability.ALL_CODES;
-					if((!Sense.aliveAwakeMobileUnbound(newMOB,true))
+					if((!CMLib.flags().aliveAwakeMobileUnbound(newMOB,true))
 					   ||(Util.bset(A.flags(),Ability.FLAG_BINDING))
 					   ||(!A.okMessage(newMOB,msg)))
 					if((A.invoker()==null)
@@ -68,7 +79,7 @@ public class Prayer_MassFreedom extends Prayer
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"A feeling of freedom flows through the air":"^S<S-NAME> "+prayWord(mob)+" for freedom, and the area begins to fill with divine glory.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"A feeling of freedom flows through the air":"^S<S-NAME> "+prayWord(mob)+" for freedom, and the area begins to fill with divine glory.^?");
 			Room room=mob.location();
 			if((room!=null)&&(room.okMessage(mob,msg)))
 			{
@@ -88,7 +99,7 @@ public class Prayer_MassFreedom extends Prayer
 						// what happened.
 						for(int a=offensiveAffects.size()-1;a>=0;a--)
 							((Ability)offensiveAffects.elementAt(a)).unInvoke();
-						if((!Sense.stillAffectedBy(target,offensiveAffects,false))&&(target.location()!=null))
+						if((!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))&&(target.location()!=null))
 							target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) less constricted.");
 					}
 				}

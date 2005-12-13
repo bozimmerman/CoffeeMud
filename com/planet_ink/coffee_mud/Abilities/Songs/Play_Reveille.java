@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -41,7 +52,7 @@ public class Play_Reveille extends Play
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) playing "+songOf()+" on "+instrumentName()+" again.^?";
 
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -65,16 +76,16 @@ public class Play_Reveille extends Play
 					// malicious songs must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
-					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+					if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 					{
-						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
+						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
 						if(R.okMessage(mob,msg2))
 						{
 							follower.location().send(follower,msg2);
-							if(Sense.isSleeping(follower))
+							if(CMLib.flags().isSleeping(follower))
 							{
 								follower.doCommand(Util.parse("WAKE"));
-								if(!Sense.isSleeping(follower))
+								if(!CMLib.flags().isSleeping(follower))
 								{
 									Ability A=CMClass.getAbility("Searching");
 									if(A!=null)	A.invoke(follower,null,true,asLevel);

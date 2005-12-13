@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -48,7 +59,7 @@ public class Song_Inebriation extends Song
 
 	public void show(MOB mob, int code, String text)
 	{
-		FullMsg msg=new FullMsg(mob,null,this,code,code,code,text);
+		CMMsg msg=CMClass.getMsg(mob,null,this,code,code,code,text);
 		if((mob.location()!=null)&&(mob.location().okMessage(mob,msg)))
 			mob.location().send(mob,msg);
 	}
@@ -61,12 +72,12 @@ public class Song_Inebriation extends Song
 		MOB mob=(MOB)affected;
 		if(mob==null) return true;
 		if(mob==invoker) return true;
-		if((Dice.rollPercentage()<25)&&(Sense.canMove(mob)))
+		if((CMLib.dice().rollPercentage()<25)&&(CMLib.flags().canMove(mob)))
 		{
-			if(Sense.isEvil(mob))
+			if(CMLib.flags().isEvil(mob))
 				show(mob,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around making ugly faces.");
 			else
-			if(!Sense.isGood(mob))
+			if(!CMLib.flags().isGood(mob))
 				show(mob,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around aimlessly.");
 			else
 				show(mob,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around trying to hug everyone.");
@@ -113,7 +124,7 @@ public class Song_Inebriation extends Song
 		if((!Util.bset(msg.targetMajor(),CMMsg.MASK_GENERAL))
 		&&(msg.targetMajor()>0))
 		{
-			MOB newTarget=msg.source().location().fetchInhabitant(Dice.roll(1,msg.source().location().numInhabitants(),-1));
+			MOB newTarget=msg.source().location().fetchInhabitant(CMLib.dice().roll(1,msg.source().location().numInhabitants(),-1));
 			if(newTarget!=null)
 				msg.modify(msg.source(),newTarget,msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
 		}

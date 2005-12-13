@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -41,7 +52,7 @@ public class Throw extends StdCommand
 		String what=Util.combine(commands,0);
 		Item item=mob.fetchWornItem(what);
 		if(item==null) item=mob.fetchInventory(null,what);
-		if((item==null)||(!Sense.canBeSeenBy(item,mob)))
+		if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 		{
 			mob.tell("You don't seem to have a '"+what+"'!");
 			return false;
@@ -78,7 +89,7 @@ public class Throw extends StdCommand
 				return false;
 			}
 		}
-		if((dir<0)&&((target==null)||((target!=mob.getVictim())&&(!Sense.canBeSeenBy(target,mob)))))
+		if((dir<0)&&((target==null)||((target!=mob.getVictim())&&(!CMLib.flags().canBeSeenBy(target,mob)))))
 		{
 			mob.tell("You can't target "+item.name()+" at '"+str+"'!");
 			return false;
@@ -86,7 +97,7 @@ public class Throw extends StdCommand
 
 		if(!(target instanceof Room))
 		{
-			FullMsg newMsg=new FullMsg(mob,item,null,CMMsg.MSG_REMOVE,null);
+			CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_REMOVE,null);
 			if(mob.location().okMessage(mob,newMsg))
 			{
 				mob.location().send(mob,newMsg);
@@ -107,15 +118,15 @@ public class Throw extends StdCommand
 							}
 					}
 				}
-				FullMsg msg=new FullMsg(mob,target,item,CMMsg.MSG_THROW,targetMsg,CMMsg.MSG_THROW,"<S-NAME> throw(s) <O-NAME> at <T-NAMESELF>.");
+				CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,targetMsg,CMMsg.MSG_THROW,"<S-NAME> throw(s) <O-NAME> at <T-NAMESELF>.");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,target,item,CMMsg.MSG_THROW,"<S-NAME> throw(s) <O-NAME> "+Directions.getInDirectionName(dir).toLowerCase()+".");
-			FullMsg msg2=new FullMsg(mob,target,item,CMMsg.MSG_THROW,"<O-NAME> fl(ys) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+".");
+			CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,"<S-NAME> throw(s) <O-NAME> "+Directions.getInDirectionName(dir).toLowerCase()+".");
+			CMMsg msg2=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,"<O-NAME> fl(ys) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+".");
 			if(mob.location().okMessage(mob,msg)&&((Room)target).okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg);

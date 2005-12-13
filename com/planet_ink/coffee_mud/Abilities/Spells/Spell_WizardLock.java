@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -40,7 +51,7 @@ public class Spell_WizardLock extends Spell
 		MOB mob=msg.source();
 		if(((!msg.amITarget(affected))&&(msg.tool()!=affected))
 		||(msg.source()==invoker())
-		||(CoffeeUtensils.doesHavePriviledgesHere(mob,msg.source().location()))&&(text().toUpperCase().indexOf("MALICIOUS")<0))
+		||(CMLib.utensils().doesHavePriviledgesHere(mob,msg.source().location()))&&(text().toUpperCase().indexOf("MALICIOUS")<0))
 			return true;
         
 		switch(msg.targetMinor())
@@ -136,7 +147,7 @@ public class Spell_WizardLock extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger at <T-NAMESELF>, incanting.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger at <T-NAMESELF>, incanting.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -149,7 +160,7 @@ public class Spell_WizardLock extends Spell
 					Room R2=null;
 					Ability lock=(Ability)copyOf();
 					lock.setMiscText("");
-					if(!CoffeeUtensils.doesHavePriviledgesHere(mob,R))
+					if(!CMLib.utensils().doesHavePriviledgesHere(mob,R))
 						for(int a=0;a<R.numEffects();a++)
 							if((R.fetchEffect(a) instanceof LandTitle)
 							   &&(((LandTitle)R.fetchEffect(a)).landOwner().length()>0))
@@ -157,11 +168,11 @@ public class Spell_WizardLock extends Spell
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 						if(R.getExitInDir(d)==target)
 						{ R2=R.getRoomInDir(d); break;}
-					if((CoffeeUtensils.doesOwnThisProperty(mob,R))
-					||((R2!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob,R2))))
+					if((CMLib.utensils().doesOwnThisProperty(mob,R))
+					||((R2!=null)&&(CMLib.utensils().doesOwnThisProperty(mob,R2))))
 					{
 						target.addNonUninvokableEffect((Ability)copyOf());
-						CMClass.DBEngine().DBUpdateExits(R);
+						CMLib.database().DBUpdateExits(R);
 					}
 					else
 						beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE/2);

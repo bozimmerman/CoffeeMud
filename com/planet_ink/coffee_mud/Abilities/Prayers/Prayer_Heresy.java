@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -35,7 +46,7 @@ public class Prayer_Heresy extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Behavior B=null;
-		if(mob.location()!=null) B=CoffeeUtensils.getLegalBehavior(mob.location());
+		if(mob.location()!=null) B=CMLib.utensils().getLegalBehavior(mob.location());
 
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -48,14 +59,14 @@ public class Prayer_Heresy extends Prayer
 		MOB oldVictim=mob.getVictim();
 		if((success)&&(B!=null))
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> accuse(s) <T-NAMESELF> of heresy"+againstTheGods(mob)+"!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> accuse(s) <T-NAMESELF> of heresy"+againstTheGods(mob)+"!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					MOB D=null;
-					if(mob.getWorshipCharID().length()>0) D=CMMap.getDeity(mob.getWorshipCharID());
+					if(mob.getWorshipCharID().length()>0) D=CMLib.map().getDeity(mob.getWorshipCharID());
 					Vector V=new Vector();
 					V.addElement(new Integer(Law.MOD_ADDWARRANT));
 					if(D==null)
@@ -68,8 +79,8 @@ public class Prayer_Heresy extends Prayer
 						V.addElement("heresy against the gods");//the crime
 					else
 						V.addElement("heresy against <T-NAME>");//the crime
-					int low=CMAble.lowestQualifyingLevel(ID());
-					int me=CMAble.qualifyingClassLevel(mob,this);
+					int low=CMLib.ableMapper().lowestQualifyingLevel(ID());
+					int me=CMLib.ableMapper().qualifyingClassLevel(mob,this);
 					int lvl=(me-low)/5;
 					if(lvl<0) lvl=0;
 					if(lvl>Law.ACTION_HIGHEST) lvl=Law.ACTION_HIGHEST;
@@ -78,7 +89,7 @@ public class Prayer_Heresy extends Prayer
 						V.addElement("Angering "+D.name()+" will bring doom upon us all!");
 					else
 						V.addElement("Angering the gods will bring doom upon us all!");
-					B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),target,V);
+					B.modifyBehavior(CMLib.utensils().getLegalObject(mob.location()),target,V);
 				}
 			}
 

@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Abilities.Misc;
-
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+
 import java.util.*;
 
 /* 
@@ -55,7 +66,7 @@ public class Dragonbreath extends StdAbility
 			mob.tell("There doesn't appear to be anyone here worth breathing on.");
 			return false;
 		}
-		if(!Sense.canBreathe(mob))
+		if(!CMLib.flags().canBreathe(mob))
 		{
 			mob.tell("You can't breathe!");
 			return false;
@@ -66,11 +77,11 @@ public class Dragonbreath extends StdAbility
 		{
 			int color=-1;
 			for(int i=0;i<DragonColors.length;i++)
-				if(EnglishParser.containsString(mob.Name(),DragonColors[i][0]))
+				if(CMLib.english().containsString(mob.Name(),DragonColors[i][0]))
 				{ color=i; break;}
 			if(color<0)
 			for(int i=0;i<DragonColors.length;i++)
-				if(EnglishParser.containsString(mob.displayText(),DragonColors[i][0]))
+				if(CMLib.english().containsString(mob.displayText(),DragonColors[i][0]))
 				{ color=i; break;}
 			if(color<0)
 				colorc='f';
@@ -82,7 +93,7 @@ public class Dragonbreath extends StdAbility
 			colorc=text().trim().toLowerCase().charAt(0);
 		else
 		{
-			int x=Dice.roll(1,5,-1);
+			int x=CMLib.dice().roll(1,5,-1);
 			colorc=("rlcag").substring(x,x+1).charAt(0);
 		}
 
@@ -110,21 +121,21 @@ public class Dragonbreath extends StdAbility
 				puffPhrase="<S-NAME> spark(s) a little from <S-HIS-HER> mouth.";
 				autoPhrase="A blast of lightning bursts erupt!";
 				stuffWord="bolt";
-				castPhrase="<S-NAME> shoot(s) numerous bursts of lightning from <S-HIS-HER> mouth!"+CommonStrings.msp("lightning.wav",40);
+				castPhrase="<S-NAME> shoot(s) numerous bursts of lightning from <S-HIS-HER> mouth!"+CMProps.msp("lightning.wav",40);
 				WeaponType=Weapon.TYPE_STRIKING;
 				break;
 		case 'c':
 				puffPhrase="<S-NAME> puff(s) cold air from <S-HIS-HER> mouth.";
 				autoPhrase="A blast of frozen air erupts!";
 				stuffWord="cold";
-				castPhrase="<S-NAME> blast(s) a frozen cone of frost from <S-HIS-HER> mouth!"+CommonStrings.msp("spelldam1.wav",40);
+				castPhrase="<S-NAME> blast(s) a frozen cone of frost from <S-HIS-HER> mouth!"+CMProps.msp("spelldam1.wav",40);
 				WeaponType=Weapon.TYPE_FROSTING;
 				break;
 		case 'a':
 				puffPhrase="<S-NAME> dribble(s) acid harmlessly from <S-HIS-HER> mouth.";
 				autoPhrase="A spray of acid erupts!";
 				stuffWord="acid";
-				castPhrase="<S-NAME> spray(s) acid from <S-HIS-HER> mouth!"+CommonStrings.msp("water.wav",40);
+				castPhrase="<S-NAME> spray(s) acid from <S-HIS-HER> mouth!"+CMProps.msp("water.wav",40);
 				WeaponType=Weapon.TYPE_MELTING;
 				break;
 		case 'g':
@@ -151,7 +162,7 @@ public class Dragonbreath extends StdAbility
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|strikeType|(auto?CMMsg.MASK_GENERAL:0),null);
+				CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|strikeType|(auto?CMMsg.MASK_GENERAL:0),null);
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -161,10 +172,10 @@ public class Dragonbreath extends StdAbility
 					int maxDie =  mob.envStats().level();
 					if (maxDie > 10)
 						maxDie = 10;
-					damage += Dice.roll(maxDie,6,1);
+					damage += CMLib.dice().roll(maxDie,6,1);
 					if(msg.value()>0)
 						damage = (int)Math.round(Util.div(damage,2.0));
-					MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|strikeType,WeaponType,"^F^<FIGHT^>The "+stuffWord+" <DAMAGE> <T-NAME>!^</FIGHT^>^?");
+					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|strikeType,WeaponType,"^F^<FIGHT^>The "+stuffWord+" <DAMAGE> <T-NAME>!^</FIGHT^>^?");
 				}
 			}
 		}

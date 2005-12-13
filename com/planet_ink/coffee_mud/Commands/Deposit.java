@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -28,8 +39,8 @@ public class Deposit extends BaseItemParser
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-        Environmental shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"Deposit how much with whom?");
-        ShopKeeper SHOP=CoffeeShops.getShopKeeper(shopkeeper);
+        Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Deposit how much with whom?");
+        ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 		if(shopkeeper==null) return false;
 		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice)))
 		{
@@ -42,24 +53,24 @@ public class Deposit extends BaseItemParser
 			return false;
 		}
 		String thisName=Util.combine(commands,0);
-		Item thisThang=EnglishParser.bestPossibleGold(mob,null,thisName);
+		Item thisThang=CMLib.english().bestPossibleGold(mob,null,thisName);
 		if(thisThang==null)
 		{
 			thisThang=mob.fetchCarried(null,thisName);
-			if((thisThang==null)||(!Sense.canBeSeenBy(thisThang,mob)))
+			if((thisThang==null)||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 			{
 				mob.tell("You don't seem to be carrying that.");
 				return false;
 			}
 		}
 		else
-	    if(((Coins)thisThang).getNumberOfCoins()<EnglishParser.numPossibleGold(mob,thisName))
+	    if(((Coins)thisThang).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,thisName))
 	        return false;
-		FullMsg newMsg=null;
+		CMMsg newMsg=null;
         if(SHOP instanceof Banker)
-            newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,"<S-NAME> deposit(s) <O-NAME> into <S-HIS-HER> account with <T-NAMESELF>.");
+            newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,"<S-NAME> deposit(s) <O-NAME> into <S-HIS-HER> account with <T-NAMESELF>.");
         else
-            newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,"<S-NAME> mail(s) <O-NAME>.");
+            newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,"<S-NAME> mail(s) <O-NAME>.");
 		if(mob.location().okMessage(mob,newMsg))
 			mob.location().send(mob,newMsg);
 		return false;

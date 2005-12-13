@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -59,7 +70,7 @@ public class Order extends StdCommand
 		{
 			MOB target=target=mob.location().fetchInhabitant(whomToOrder+addendumStr);
 			if(target==null) break;
-			if((Sense.canBeSeenBy(target,mob))
+			if((CMLib.flags().canBeSeenBy(target,mob))
 			&&(target!=mob)
 			&&(!V.contains(target)))
 				V.addElement(target);
@@ -80,8 +91,8 @@ public class Order extends StdCommand
 		if(V.size()==1)
 		{
 			target=(MOB)V.firstElement();
-			if((!Sense.canBeSeenBy(target,mob))
-			||(!Sense.canBeHeardBy(mob,target))
+			if((!CMLib.flags().canBeSeenBy(target,mob))
+			||(!CMLib.flags().canBeHeardBy(mob,target))
 			||(target.location()!=mob.location()))
 			{
 				mob.tell("'"+whomToOrder+"' doesn't seem to be listening.");
@@ -96,7 +107,7 @@ public class Order extends StdCommand
 
 		commands.removeElementAt(0);
 
-		Object O=EnglishParser.findCommand(mob,commands);
+		Object O=CMLib.english().findCommand(mob,commands);
 		String order=Util.combine(commands,0);
 		if(!CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
 		{
@@ -111,7 +122,7 @@ public class Order extends StdCommand
 		for(int v=0;v<V.size();v++)
 		{
 			target=(MOB)V.elementAt(v);
-			O=EnglishParser.findCommand(target,commands);
+			O=CMLib.english().findCommand(target,commands);
 			if(!CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
 			{
 				if((O instanceof Command)&&(!((Command)O).canBeOrdered()))
@@ -120,7 +131,7 @@ public class Order extends StdCommand
 					continue;
 				}
 				if(O instanceof Ability)
-					O=EnglishParser.getToEvoke(target,commands);
+					O=CMLib.english().getToEvoke(target,commands);
 				if(O instanceof Ability)
 				{
 					if(Util.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
@@ -130,8 +141,8 @@ public class Order extends StdCommand
 					}
 				}
 			}
-			if((!Sense.canBeSeenBy(target,mob))
-			||(!Sense.canBeHeardBy(mob,target))
+			if((!CMLib.flags().canBeSeenBy(target,mob))
+			||(!CMLib.flags().canBeHeardBy(mob,target))
 			||(target.location()!=mob.location()))
 				mob.tell("'"+whomToOrder+"' doesn't seem to be listening.");
 			else
@@ -139,7 +150,7 @@ public class Order extends StdCommand
 				mob.tell("You can't order '"+target.name()+"' around.");
 			else
 			{
-				FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T<S-NAME> order(s) <T-NAMESELF> to '"+order+"'^?.");
+				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T<S-NAME> order(s) <T-NAMESELF> to '"+order+"'^?.");
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);

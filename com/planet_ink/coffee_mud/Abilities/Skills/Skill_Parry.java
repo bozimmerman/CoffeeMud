@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -20,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Parry extends StdAbility
+public class Skill_Parry extends StdSkill
 {
 	public String ID() { return "Skill_Parry"; }
 	public String name(){ return "Parry";}
@@ -49,7 +59,7 @@ public class Skill_Parry extends StdAbility
 		MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
-		   &&(Sense.aliveAwakeMobileUnbound(mob,true))
+		   &&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 		   &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		   &&(!doneThisRound)
 		   &&(mob.rangeToTarget()==0))
@@ -62,7 +72,7 @@ public class Skill_Parry extends StdAbility
 				&&(attackerWeapon!=null)
 				&&(myWeapon instanceof Weapon)
 				&&(attackerWeapon instanceof Weapon)
-				&&(Sense.canBeSeenBy(msg.source(),mob))
+				&&(CMLib.flags().canBeSeenBy(msg.source(),mob))
 				&&(((Weapon)myWeapon).weaponClassification()!=Weapon.CLASS_FLAILED)
 				&&(((Weapon)myWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
 				&&(((Weapon)myWeapon).weaponClassification()!=Weapon.CLASS_THROWN)
@@ -72,7 +82,7 @@ public class Skill_Parry extends StdAbility
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
-					FullMsg msg2=new FullMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
+					CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
 					if((profficiencyCheck(null,mob.charStats().getStat(CharStats.DEXTERITY)-90,false))
 					&&(mob.location().okMessage(mob,msg2)))
 					{

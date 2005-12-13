@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Ranger;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -65,7 +76,7 @@ public class Ranger_Enemy1 extends StdAbility
 			choices.remove("Unique");
 			choices.remove("Unknown");
 			choices.remove(mob.charStats().getMyRace().racialCategory());
-			miscText=(String)choices.elementAt(Dice.roll(1,choices.size(),-1));
+			miscText=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 			for(int a=0;a<mob.numLearnedAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
@@ -91,7 +102,7 @@ public class Ranger_Enemy1 extends StdAbility
 		MOB victim=mob.getVictim();
 		if((victim!=null)&&(victim.charStats().getMyRace().racialCategory().equals(text())))
 		{
-			int level=1+CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this);
+			int level=1+CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this);
 			double damBonus=Util.mul(Util.div(profficiency(),100.0),level);
 			double attBonus=Util.mul(Util.div(profficiency(),100.0),3*level);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(attBonus));

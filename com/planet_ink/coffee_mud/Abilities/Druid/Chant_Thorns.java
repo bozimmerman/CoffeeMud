@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -63,17 +74,17 @@ public class Chant_Thorns extends Chant
 			   &&(msg.source().rangeToTarget()==0)
 			   &&(msg.targetMessage().length()>0))
 			{
-				if((Dice.rollPercentage()>(source.charStats().getStat(CharStats.DEXTERITY)*2)))
+				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.DEXTERITY)*2)))
 				{
-					FullMsg msg2=new FullMsg(source,mob,this,affectType(true),null);
+					CMMsg msg2=CMClass.getMsg(source,mob,this,affectType(true),null);
 					if(source.location().okMessage(source,msg2))
 					{
 						source.location().send(source,msg2);
 						if(invoker==null) invoker=source;
 						if(msg2.value()<=0)
 						{
-							int damage = Dice.roll(1,(int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/3.0),1);
-							MUDFight.postDamage(mob,source,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The thorns around <S-NAME> <DAMAGE> <T-NAME>!");
+							int damage = CMLib.dice().roll(1,(int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/3.0),1);
+							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The thorns around <S-NAME> <DAMAGE> <T-NAME>!");
 						}
 					}
 				}
@@ -116,7 +127,7 @@ public class Chant_Thorns extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")+"Long prickly thorns erupt all over <T-NAME>!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")+"Long prickly thorns erupt all over <T-NAME>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

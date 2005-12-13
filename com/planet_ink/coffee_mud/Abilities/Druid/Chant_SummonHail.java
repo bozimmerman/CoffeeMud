@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -61,14 +72,14 @@ public class Chant_SummonHail extends Chant
 
         if(success)
         {
-            FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"^JHailstones falling from the sky whack <T-NAME>.^?":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly a volley of hailstones assaults <T-HIM-HER>!^?")+CommonStrings.msp("hail.wav",40));
-            FullMsg msg2=new FullMsg(mob,target,this,verbalCastMask(auto)|CMMsg.TYP_WATER,null);
+            CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),(auto?"^JHailstones falling from the sky whack <T-NAME>.^?":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly a volley of hailstones assaults <T-HIM-HER>!^?")+CMProps.msp("hail.wav",40));
+            CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(auto)|CMMsg.TYP_WATER,null);
             if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
             {
                 mob.location().send(mob,msg);
                 mob.location().send(mob,msg2);
                 int maxDie =  (int)Math.round(new Integer(adjustedLevel(mob,asLevel)).doubleValue());
-                int damage = Dice.roll(maxDie,4,0);
+                int damage = CMLib.dice().roll(maxDie,4,0);
                 if((msg.value()>0)||(msg2.value()>0))
                     damage = (int)Math.round(Util.div(damage,2.0));
                 if(target.location()==mob.location())
@@ -88,7 +99,7 @@ public class Chant_SummonHail extends Chant
                     if((I!=null)&&(I.amWearingAt(Item.ON_HEAD)))
                         target.location().show(target,I,null,CMMsg.MSG_OK_ACTION,"Hailstones bounce harmlessly off <O-NAME> being worn by <S-NAME>.");
                     else
-                        MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_WATER,Weapon.TYPE_BASHING,"The hailstones <DAMAGE> <T-NAME>!");
+                        CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_WATER,Weapon.TYPE_BASHING,"The hailstones <DAMAGE> <T-NAME>!");
                 }
                 if(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_HAIL)
                 {

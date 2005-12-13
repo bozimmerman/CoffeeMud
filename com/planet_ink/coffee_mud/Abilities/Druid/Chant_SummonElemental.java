@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -72,14 +83,14 @@ public class Chant_SummonElemental extends Chant
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) and summon(s) help from another Plain.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) and summon(s) help from another Plain.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, mob.envStats().level());
 				target.addNonUninvokableEffect((Ability)this.copyOf());
 				if(target.isInCombat()) target.makePeace();
-				CommonMsgs.follow(target,mob,true);
+				CMLib.commands().follow(target,mob,true);
 				if(target.amFollowing()!=mob)
 					mob.tell(target.name()+" seems unwilling to follow you.");
 			}
@@ -94,14 +105,14 @@ public class Chant_SummonElemental extends Chant
 	{
 		MOB newMOB=CMClass.getMOB("GenMOB");
 		newMOB.baseEnvStats().setLevel(adjustedLevel(caster,0));
-		switch(Dice.roll(1,4,0))
+		switch(CMLib.dice().roll(1,4,0))
 		{
 		case 1:
 			newMOB.setName("a fire elemental");
 			newMOB.setDisplayText("a fire elemental is flaming nearby.");
 			newMOB.setDescription("A large beast, wreathed in flame, with sparkling eyes and a hot temper.");
 			newMOB.baseEnvStats().setDisposition(newMOB.baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE);
-			Factions.setAlignment(newMOB,Faction.ALIGN_EVIL);
+			CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("FireElemental"));
 			newMOB.addAbility(CMClass.getAbility("Firebreath"));
 			break;
@@ -109,7 +120,7 @@ public class Chant_SummonElemental extends Chant
 			newMOB.setName("an ice elemental");
 			newMOB.setDisplayText("an ice elemental is chilling out here.");
 			newMOB.setDescription("A large beast, made of ice, with crytaline eyes and a cold disposition.");
-			Factions.setAlignment(newMOB,Faction.ALIGN_GOOD);
+			CMLib.factions().setAlignment(newMOB,Faction.ALIGN_GOOD);
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("WaterElemental"));
 			newMOB.addAbility(CMClass.getAbility("Frostbreath"));
 			break;
@@ -117,7 +128,7 @@ public class Chant_SummonElemental extends Chant
 			newMOB.setName("an earth elemental");
 			newMOB.setDisplayText("an earth elemental looks right at home.");
 			newMOB.setDescription("A large beast, made of rock and dirt, with a hard stare.");
-			Factions.setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
+			CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("EarthElemental"));
 			newMOB.addAbility(CMClass.getAbility("Gasbreath"));
 			break;
@@ -125,7 +136,7 @@ public class Chant_SummonElemental extends Chant
 			newMOB.setName("an air elemental");
 			newMOB.setDisplayText("an air elemental blows right by.");
 			newMOB.setDescription("A large beast, made of swirling clouds and air.");
-			Factions.setAlignment(newMOB,Faction.ALIGN_GOOD);
+			CMLib.factions().setAlignment(newMOB,Faction.ALIGN_GOOD);
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("AirElemental"));
 			newMOB.addAbility(CMClass.getAbility("Lighteningbreath"));
 			break;
@@ -147,7 +158,7 @@ public class Chant_SummonElemental extends Chant
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
-		BeanCounter.clearZeroMoney(newMOB,null);
+		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		newMOB.setStartRoom(null);
 		newMOB.addNonUninvokableEffect(this);

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -50,7 +61,7 @@ public class Spell_TrueSight extends Spell
         &&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 		&&(msg.target()!=null)
 		&&(!msg.target().name().equals(msg.target().Name())))
-			msg.addTrailerMsg(new FullMsg(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,msg.target().name()+" is truely "+msg.target().Name()+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,msg.target().name()+" is truely "+msg.target().Name()+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 		return true;
 	}
 
@@ -88,7 +99,7 @@ public class Spell_TrueSight extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) true sight!":"^S<S-NAME> incant(s) softly, and gain(s) true sight!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) true sight!":"^S<S-NAME> incant(s) softly, and gain(s) true sight!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

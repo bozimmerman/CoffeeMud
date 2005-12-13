@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -94,7 +105,7 @@ public class Say extends StdCommand
 						target=null;
 				}
 
-				if((target!=null)&&(Sense.canBeSeenBy(target,mob)))
+				if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
 					commands.removeElementAt(1);
 				else
 					target=null;
@@ -112,14 +123,14 @@ public class Say extends StdCommand
 			mob.tell(theWord+" "+getScr("Say","saywhat"));
 			return false;
 		}
-		if(toFlag&&((target==null)||(!Sense.canBeSeenBy(target,mob))))
+		if(toFlag&&((target==null)||(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
 			mob.tell(getScr("Say","saysee",whom));
 			return false;
 		}
-		combinedCommands=CommonStrings.applyFilter(combinedCommands,CommonStrings.SYSTEM_SAYFILTER);
+		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.SYSTEM_SAYFILTER);
 
-		FullMsg msg=null;
+		CMMsg msg=null;
 		if((!theWord.equalsIgnoreCase(getScr("Say","saycmd2")))&&(target!=null))
 		    theWord+=getScr("Say","saysto");
 		else
@@ -127,9 +138,9 @@ public class Say extends StdCommand
 		String fromSelf="^T^<SAY \""+((target!=null)?target.name():mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
 		String toTarget="^T^<SAY \""+mob.name()+"\"^><S-NAME> "+theWord.toLowerCase()+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
 		if(target==null)
-			msg=new FullMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+mob.name()+"\"^><S-NAME> "+theWord.toLowerCase()+" '"+combinedCommands+"'^</SAY^>^?");
+			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+mob.name()+"\"^><S-NAME> "+theWord.toLowerCase()+" '"+combinedCommands+"'^</SAY^>^?");
 		else
-			msg=new FullMsg(mob,target,null,CMMsg.MSG_SPEAK,fromSelf,toTarget,fromSelf);
+			msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,fromSelf,toTarget,fromSelf);
 
 		if(mob.location().okMessage(mob,msg))
 		{
@@ -141,7 +152,7 @@ public class Say extends StdCommand
 					Exit E=mob.location().getExitInDir(d);
 					if((R!=null)&&(E!=null)&&(E.isOpen()))
 					{
-						msg=new FullMsg(mob,target,null,CMMsg.MSG_SPEAK,getScr("Say","yell1")+" "+combinedCommands+"' "+Directions.getInDirectionName(Directions.getOpDirectionCode(d))+"^?");
+						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,getScr("Say","yell1")+" "+combinedCommands+"' "+Directions.getInDirectionName(Directions.getOpDirectionCode(d))+"^?");
 						if(R.okMessage(mob,msg))
 							R.sendOthers(mob,msg);
 					}

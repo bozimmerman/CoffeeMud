@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -56,9 +67,9 @@ public class Thief_Peek extends ThiefSkill
 
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
 
-		boolean success=profficiencyCheck(mob,-(levelDiff*(!Sense.canBeSeenBy(mob,target)?0:10)),auto);
+		boolean success=profficiencyCheck(mob,-(levelDiff*(!CMLib.flags().canBeSeenBy(mob,target)?0:10)),auto);
 		int discoverChance=(int)Math.round(Util.div(target.charStats().getStat(CharStats.WISDOM),30.0))+(levelDiff*5);
-		if(!Sense.canBeSeenBy(mob,target))
+		if(!CMLib.flags().canBeSeenBy(mob,target))
 			discoverChance-=50;
 		if(discoverChance>95) discoverChance=95;
 		if(discoverChance<5) discoverChance=5;
@@ -66,9 +77,9 @@ public class Thief_Peek extends ThiefSkill
 
 		if(!success)
 		{
-			if(Dice.rollPercentage()<discoverChance)
+			if(CMLib.dice().rollPercentage()<discoverChance)
 			{
-				FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"Your peek attempt fails; <T-NAME> spots you!",CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> tries to peek at your inventory and fails!",CMMsg.NO_EFFECT,null);
+				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"Your peek attempt fails; <T-NAME> spots you!",CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> tries to peek at your inventory and fails!",CMMsg.NO_EFFECT,null);
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
@@ -81,15 +92,15 @@ public class Thief_Peek extends ThiefSkill
 		else
 		{
 			String str=null;
-			if(Dice.rollPercentage()<discoverChance)
+			if(CMLib.dice().rollPercentage()<discoverChance)
 				str=auto?"":"<S-NAME> peek(s) at your inventory.";
 
-			FullMsg msg=new FullMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT|CMMsg.MASK_EYES),auto?"":"<S-NAME> peek(s) at <T-NAME>s inventory.",CMMsg.MSG_LOOK,str,CMMsg.NO_EFFECT,null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT|CMMsg.MASK_EYES),auto?"":"<S-NAME> peek(s) at <T-NAME>s inventory.",CMMsg.MSG_LOOK,str,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
-				msg=new FullMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> peek(s) at <T-NAME>s inventory.",CMMsg.MSG_OK_VISUAL,str,(str==null)?CMMsg.NO_EFFECT:CMMsg.MSG_OK_VISUAL,str);
+				msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> peek(s) at <T-NAME>s inventory.",CMMsg.MSG_OK_VISUAL,str,(str==null)?CMMsg.NO_EFFECT:CMMsg.MSG_OK_VISUAL,str);
 				mob.location().send(mob,msg);
-				StringBuffer msg2=CommonMsgs.getInventory(mob,target);
+				StringBuffer msg2=CMLib.commands().getInventory(mob,target);
 				if(msg2.length()==0)
 					mob.tell(target.charStats().HeShe()+" is carrying:\n\rNothing!\n\r");
 				else

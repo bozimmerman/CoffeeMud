@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -39,7 +50,7 @@ public class Chant_AnimalSpy extends Chant
 		{
 			if(spy.amDead()
 			   ||(spy.amFollowing()!=invoker)
-			   ||(!Sense.isInTheGame(spy,false)))
+			   ||(!CMLib.flags().isInTheGame(spy,false)))
 				unInvoke();
 		}
 		return true;
@@ -77,7 +88,7 @@ public class Chant_AnimalSpy extends Chant
 			&&((invoker.location()!=spy.location())||(!(msg.target() instanceof Room))))
 			{
 				disable=true;
-				FullMsg newAffect=new FullMsg(invoker,msg.target(),msg.sourceMinor(),null);
+				CMMsg newAffect=CMClass.getMsg(invoker,msg.target(),msg.sourceMinor(),null);
 				msg.target().executeMsg(invoker,newAffect);
 			}
 			else
@@ -131,7 +142,7 @@ public class Chant_AnimalSpy extends Chant
 			newRoom=target.location();
 		else
 		if((target==null)
-		||(!Sense.isAnimalIntelligence(target))
+		||(!CMLib.flags().isAnimalIntelligence(target))
 		||(target.amFollowing()!=mob))
 		{
 			mob.tell("You have no animal follower named '"+mobName+"' here.");
@@ -145,8 +156,8 @@ public class Chant_AnimalSpy extends Chant
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>, invoking the a mystical connection.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,affectType(auto),null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>, invoking the a mystical connection.^?");
+			CMMsg msg2=CMClass.getMsg(mob,target,this,affectType(auto),null);
 			if((mob.location().okMessage(mob,msg))&&((newRoom==mob.location())||(newRoom.okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);

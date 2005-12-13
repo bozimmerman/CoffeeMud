@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -56,7 +67,7 @@ public class Prayer_DivinePerspective extends Prayer
 		&&((invoker.location()!=((MOB)affected).location())||(!(msg.target() instanceof Room))))
 		{
 			noRecurse=true;
-			FullMsg newAffect=new FullMsg(invoker,msg.target(),msg.sourceMinor(),null);
+			CMMsg newAffect=CMClass.getMsg(invoker,msg.target(),msg.sourceMinor(),null);
 			msg.target().executeMsg(msg.target(),newAffect);
 		}
 		else
@@ -76,12 +87,12 @@ public class Prayer_DivinePerspective extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.getWorshipCharID().length()==0)
-		||(CMMap.getDeity(mob.getWorshipCharID())==null))
+		||(CMLib.map().getDeity(mob.getWorshipCharID())==null))
 		{
 			mob.tell("You must worship a god to use this prayer.");
 			return false;
 		}
-		Deity target=CMMap.getDeity(mob.getWorshipCharID());
+		Deity target=CMLib.map().getDeity(mob.getWorshipCharID());
 		Room newRoom=target.location();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -92,8 +103,8 @@ public class Prayer_DivinePerspective extends Prayer
 		if(success)
 		{
 			mobName=target.Name();
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) the holy perspective of '"+mobName+"'.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,affectType(auto),null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) the holy perspective of '"+mobName+"'.^?");
+			CMMsg msg2=CMClass.getMsg(mob,target,this,affectType(auto),null);
 			if((mob.location().okMessage(mob,msg))&&((newRoom==mob.location())||(newRoom.okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);

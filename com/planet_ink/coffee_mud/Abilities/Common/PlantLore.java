@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -68,7 +79,7 @@ public class PlantLore extends CommonSkill
 					{
 						StringBuffer str=new StringBuffer("");
 						Vector V=new Vector();
-						MUDTracker.getRadiantRooms(room,V,true,true,false,true,false,null,2);
+						CMLib.tracking().getRadiantRooms(room,V,true,true,false,true,false,null,2);
 						for(int v=0;v<V.size();v++)
 						{
 							Room R=(Room)V.elementAt(v);
@@ -97,7 +108,7 @@ public class PlantLore extends CommonSkill
 									str.append("There looks like "+resourceStr.toLowerCase()+" "+Directions.getInDirectionName(isAdjacent)+".\n\r");
 								else
 								{
-									int d=MUDTracker.radiatesFromDir(R,V);
+									int d=CMLib.tracking().radiatesFromDir(R,V);
 									if(d>=0)
 									{
 										d=Directions.getOpDirectionCode(d);
@@ -128,7 +139,7 @@ public class PlantLore extends CommonSkill
 			success=true;
 		int duration=45-mob.envStats().level();
 		if(duration<5) duration=5;
-		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) observing the growth in this area.");
+		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) observing the growth in this area.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

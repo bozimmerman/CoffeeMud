@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.Abilities.Traps.Trap_Trap;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -38,7 +48,7 @@ public class Thief_Trap extends ThiefSkill
 	{
 		Trap theTrap=null;
 		Vector traps=new Vector();
-		int qualifyingClassLevel=CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this)+1;
+		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this)+1;
 		if(qualifyingClassLevel>maxLevel()) qualifyingClassLevel=maxLevel();
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
@@ -54,7 +64,7 @@ public class Thief_Trap extends ThiefSkill
 		    int cuts=0;
 		    while(((++cuts)<100)&&(theTrap==null))
 		    {
-				theTrap=(Trap)traps.elementAt(Dice.roll(1,traps.size(),-1));
+				theTrap=(Trap)traps.elementAt(CMLib.dice().roll(1,traps.size(),-1));
 				if(!theTrap.canSetTrapOn(mob,trapThis))
 				    theTrap=null;
 		    }
@@ -97,7 +107,7 @@ public class Thief_Trap extends ThiefSkill
 			for(int r=0;r<traps.size();r++)
 			{
 				Trap T=(Trap)traps.elementAt(r);
-				if(EnglishParser.containsString(T.name(),name))
+				if(CMLib.english().containsString(T.name(),name))
 					theTrap=T;
 			}
 			if(theTrap==null)
@@ -124,7 +134,7 @@ public class Thief_Trap extends ThiefSkill
 
 		boolean success=profficiencyCheck(mob,+((mob.envStats().level()
 											 -trapThis.envStats().level())*3),auto);
-		Trap theOldTrap=CoffeeUtensils.fetchMyTrap(trapThis);
+		Trap theOldTrap=CMLib.utensils().fetchMyTrap(trapThis);
 		if(theOldTrap!=null)
 		{
 			if(theOldTrap.disabled())
@@ -136,7 +146,7 @@ public class Thief_Trap extends ThiefSkill
 			}
 		}
 
-		FullMsg msg=new FullMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_GENERAL|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on <T-NAMESELF>."));
+		CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_GENERAL|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on <T-NAMESELF>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -145,7 +155,7 @@ public class Thief_Trap extends ThiefSkill
 				mob.tell("You have completed your task.");
 				boolean permanent=false;
 				if((trapThis instanceof Room)
-				&&(CoffeeUtensils.doesOwnThisProperty(mob,((Room)trapThis))))
+				&&(CMLib.utensils().doesOwnThisProperty(mob,((Room)trapThis))))
 					permanent=true;
 				else
 				if(trapThis instanceof Exit)
@@ -155,8 +165,8 @@ public class Thief_Trap extends ThiefSkill
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 						if(R.getExitInDir(d)==trapThis)
 						{ R2=R.getRoomInDir(d); break;}
-					if((CoffeeUtensils.doesOwnThisProperty(mob,R))
-					||((R2!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob,R2))))
+					if((CMLib.utensils().doesOwnThisProperty(mob,R))
+					||((R2!=null)&&(CMLib.utensils().doesOwnThisProperty(mob,R2))))
 						permanent=true;
 				}
 				if(permanent)
@@ -164,17 +174,17 @@ public class Thief_Trap extends ThiefSkill
 					Ability newTrap=(Ability)theTrap.copyOf();
 					newTrap.setInvoker(mob);
 					trapThis.addNonUninvokableEffect(newTrap);
-					CMClass.DBEngine().DBUpdateRoom(mob.location());
+					CMLib.database().DBUpdateRoom(mob.location());
 				}
 				else
 				if(theTrap!=null)
-					theTrap.setTrap(mob,trapThis,CMAble.qualifyingClassLevel(mob,this),adjustedLevel(mob,asLevel));
+					theTrap.setTrap(mob,trapThis,CMLib.ableMapper().qualifyingClassLevel(mob,this),adjustedLevel(mob,asLevel));
 			}
 			else
 			{
-				if((Dice.rollPercentage()>50)&&(theTrap!=null))
+				if((CMLib.dice().rollPercentage()>50)&&(theTrap!=null))
 				{
-					Trap T=theTrap.setTrap(mob,trapThis,CMAble.qualifyingClassLevel(mob,this),adjustedLevel(mob,asLevel));
+					Trap T=theTrap.setTrap(mob,trapThis,CMLib.ableMapper().qualifyingClassLevel(mob,this),adjustedLevel(mob,asLevel));
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) the trap on accident!");
 					T.spring(mob);
 				}

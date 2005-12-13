@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -31,10 +42,10 @@ public class Crawl extends Go
 		int direction=Directions.getGoodDirectionCode(Util.combine(commands,1));
 		if(direction>=0)
 		{
-			FullMsg msg=new FullMsg(mob,null,null,CMMsg.MSG_SIT,null);
-			if(Sense.isSitting(mob)||(mob.location().okMessage(mob,msg)))
+			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,null);
+			if(CMLib.flags().isSitting(mob)||(mob.location().okMessage(mob,msg)))
 			{
-				if(!Sense.isSitting(mob))
+				if(!CMLib.flags().isSitting(mob))
 					mob.location().send(mob,msg);
 				move(mob,direction,false,false,false);
 			}

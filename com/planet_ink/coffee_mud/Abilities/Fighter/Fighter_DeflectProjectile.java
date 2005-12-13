@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -21,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_DeflectProjectile extends StdAbility
+public class Fighter_DeflectProjectile extends FighterSkill
 {
 	public String ID() { return "Fighter_DeflectProjectile"; }
 	public String name(){ return "Deflect Projectile";}
@@ -45,7 +55,7 @@ public class Fighter_DeflectProjectile extends StdAbility
 		MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(!doneThisRound)
-		&&(Sense.aliveAwakeMobileUnbound(mob,true))
+		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
@@ -64,12 +74,12 @@ public class Fighter_DeflectProjectile extends StdAbility
 			&&(msg.source().isMine(w)))
 			{
 				if(!w.amWearingAt(Item.INVENTORY))
-					CommonMsgs.remove(msg.source(),w,true);
-				CommonMsgs.drop(msg.source(),w,true,false);
+					CMLib.commands().remove(msg.source(),w,true);
+				CMLib.commands().drop(msg.source(),w,true,false);
 				if(!mob.location().isContent(w))
 					return true;
 			}
-			FullMsg msg2=new FullMsg(mob,w,msg.source(),CMMsg.MSG_GET,"<S-NAME> deflect(s) the <T-NAME> shot by <O-NAME>!");
+			CMMsg msg2=CMClass.getMsg(mob,w,msg.source(),CMMsg.MSG_GET,"<S-NAME> deflect(s) the <T-NAME> shot by <O-NAME>!");
 			if(mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg2);

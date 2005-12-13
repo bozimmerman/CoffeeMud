@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -20,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_ScrollCopy extends StdAbility
+public class Skill_ScrollCopy extends StdSkill
 {
 	public String ID() { return "Skill_ScrollCopy"; }
 	public String name(){ return "Scroll Copy";}
@@ -40,7 +50,7 @@ public class Skill_ScrollCopy extends StdAbility
 			return false;
 		}
 		Item target=mob.fetchCarried(null,Util.combine(commands,1));
-		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
 			mob.tell("You don't see '"+Util.combine(commands,1)+"' here.");
 			return false;
@@ -63,7 +73,7 @@ public class Skill_ScrollCopy extends StdAbility
 		for(int a=0;a<theSpells.size();a++)
 		{
 			Ability A=(Ability)theSpells.elementAt(a);
-			if(EnglishParser.containsString(A.name(),((String)commands.elementAt(0))))
+			if(CMLib.english().containsString(A.name(),((String)commands.elementAt(0))))
 			{
 				thisSpell=A;
 				break;

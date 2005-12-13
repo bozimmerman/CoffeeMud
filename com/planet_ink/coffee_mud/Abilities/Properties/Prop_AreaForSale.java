@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -106,11 +117,11 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	public void updateTitle()
 	{
 		if(affected instanceof Area)
-			CMClass.DBEngine().DBUpdateArea(((Area)affected).name(),(Area)affected);
+			CMLib.database().DBUpdateArea(((Area)affected).name(),(Area)affected);
 		else
 		{
-			Area A=CMMap.getArea(landPropertyID());
-			if(A!=null) CMClass.DBEngine().DBUpdateArea(A.Name(),A);
+			Area A=CMLib.map().getArea(landPropertyID());
+			if(A!=null) CMLib.database().DBUpdateArea(A.Name(),A);
 		}
 	}
 
@@ -153,7 +164,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 						mobs.addElement(M);
 				}
 				if(!CMSecurity.isSaveFlag("NOPROPERTYMOBS"))
-					CMClass.DBEngine().DBUpdateTheseMOBs(R,mobs);
+					CMLib.database().DBUpdateTheseMOBs(R,mobs);
 			}
 			lastMobSave=System.currentTimeMillis();
 		}
@@ -166,7 +177,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		if(affected instanceof Area)
 			A=(Area)affected;
 		else
-			A=CMMap.getArea(landPropertyID());
+			A=CMLib.map().getArea(landPropertyID());
 		for(Enumeration e=A.getProperMap();e.hasMoreElements();)
 			V.addElement(e.nextElement());
 		return V;
@@ -176,7 +187,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	public void updateLot()
 	{
 		if(((System.currentTimeMillis()-lastCall)>360000)
-		&&(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED)))
+		&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
 		{
 			Vector V=getPropertyRooms();
 			for(int v=0;v<V.size();v++)
@@ -191,7 +202,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			if(affected instanceof Area)
 				A=(Area)affected;
 			else
-				A=CMMap.getArea(landPropertyID());
+				A=CMLib.map().getArea(landPropertyID());
 			if(lastDayDone!=A.getTimeObj().getDayOfMonth())
 			{
 			    Room R=(Room)affected;
@@ -200,7 +211,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			        if(Prop_RoomForSale.doRentalProperty(A,A.Name(),landOwner(),landPrice()))
 			        {
 			            setLandOwner("");
-						CMClass.DBEngine().DBUpdateArea(A.Name(),A);
+						CMLib.database().DBUpdateArea(A.Name(),A);
 			        }
 			}
 		}

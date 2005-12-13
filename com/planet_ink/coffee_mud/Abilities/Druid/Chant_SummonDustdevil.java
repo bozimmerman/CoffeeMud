@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -60,7 +71,7 @@ public class Chant_SummonDustdevil extends Chant
 						Item I=(Item)V.elementAt(i);
 						if((mob.maxCarry()>=mob.envStats().weight()+I.envStats().weight())
                         &&(mob.maxItems()>=(mob.inventorySize()+I.numberOfItems())))
-							CommonMsgs.get(mob,null,I,false);
+							CMLib.commands().get(mob,null,I,false);
 						else
 							giveUp=true;
 					}
@@ -75,7 +86,7 @@ public class Chant_SummonDustdevil extends Chant
 						}
 						for(int i=0;i<V.size();i++)
 						{
-							FullMsg msg=new FullMsg(mob,invoker,(Item)V.elementAt(i),CMMsg.MSG_GIVE,"<S-NAME> whirl(s) <O-NAME> to <T-NAMESELF>.");
+							CMMsg msg=CMClass.getMsg(mob,invoker,(Item)V.elementAt(i),CMMsg.MSG_GIVE,"<S-NAME> whirl(s) <O-NAME> to <T-NAMESELF>.");
 							if(mob.location().okMessage(mob,msg))
 								mob.location().send(mob,msg);
 							else
@@ -168,7 +179,7 @@ public class Chant_SummonDustdevil extends Chant
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) and summon(s) help from the air.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) and summon(s) help from the air.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -177,7 +188,7 @@ public class Chant_SummonDustdevil extends Chant
 				{
 					if(target.isInCombat()) target.makePeace();
 					beneficialAffect(mob,target,asLevel,0);
-					CommonMsgs.follow(target,mob,true);
+					CMLib.commands().follow(target,mob,true);
 					if(target.amFollowing()!=mob)
 						mob.tell(target.name()+" seems unwilling to follow you.");
 				}
@@ -199,7 +210,7 @@ public class Chant_SummonDustdevil extends Chant
 		newMOB.setName(name);
 		newMOB.setDisplayText(name+" whirls around here");
 		newMOB.setDescription("");
-		Factions.setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 		newMOB.baseEnvStats().setAbility(25);
 		newMOB.baseEnvStats().setWeight(caster.envStats().level()*caster.envStats().level());
 		newMOB.baseCharStats().setStat(CharStats.STRENGTH,caster.envStats().level());
@@ -219,7 +230,7 @@ public class Chant_SummonDustdevil extends Chant
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
-		BeanCounter.clearZeroMoney(newMOB,null);
+		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appear(s)!");
 		newMOB.setStartRoom(null);
 		return(newMOB);

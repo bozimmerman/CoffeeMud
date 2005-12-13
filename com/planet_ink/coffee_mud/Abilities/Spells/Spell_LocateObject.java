@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -77,7 +88,7 @@ public class Spell_LocateObject extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a divination, shouting '"+what+"'^?.");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a divination, shouting '"+what+"'^?.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -85,16 +96,16 @@ public class Spell_LocateObject extends Spell
 				HashSet areas=new HashSet();
 				HashSet areasTried=new HashSet();
 				Area A=null;
-				int numAreas=(int)Math.round(Util.mul(CMMap.numAreas(),0.90))+1;
-				if(numAreas>CMMap.numAreas()) numAreas=CMMap.numAreas();
+				int numAreas=(int)Math.round(Util.mul(CMLib.map().numAreas(),0.90))+1;
+				if(numAreas>CMLib.map().numAreas()) numAreas=CMLib.map().numAreas();
 				int tries=numAreas*numAreas;
 				while((areas.size()<numAreas)&&(((--tries)>0)))
 				{
-				    A=CMMap.getRandomArea();
+				    A=CMLib.map().getRandomArea();
 				    if((A!=null)&&(!areasTried.contains(A)))
 				    {
 				        areasTried.add(A);
-				        if(Sense.canAccess(mob,A))
+				        if(CMLib.flags().canAccess(mob,A))
 				            areas.add(A);
 				        else
 				            numAreas--;
@@ -110,10 +121,10 @@ public class Spell_LocateObject extends Spell
 					{
 					    room=(Room)r.nextElement();
 	
-						if(!Sense.canAccess(mob,room)) continue;
+						if(!CMLib.flags().canAccess(mob,room)) continue;
 	
 						item=room.fetchItem(null,what);
-						if((item!=null)&&(Sense.canBeLocated((Item)item)))
+						if((item!=null)&&(CMLib.flags().canBeLocated((Item)item)))
 						{
 							String str=item.name()+" is in a place called '"+room.roomTitle()+"'.";
 							itemsFound.addElement(str);
@@ -124,10 +135,10 @@ public class Spell_LocateObject extends Spell
 							if(inhab==null) break;
 	
 							item=inhab.fetchInventory(what);
-							if((item==null)&&(CoffeeShops.getShopKeeper(inhab)!=null))
-								item=CoffeeShops.getShopKeeper(inhab).getStock(what,mob);
+							if((item==null)&&(CMLib.coffeeShops().getShopKeeper(inhab)!=null))
+								item=CMLib.coffeeShops().getShopKeeper(inhab).getStock(what,mob);
 							if((item instanceof Item)
-							&&((Sense.canBeLocated((Item)item)))
+							&&((CMLib.flags().canBeLocated((Item)item)))
 							&&(item.envStats().level()>minLevel)
 							&&(item.envStats().level()<maxLevel))
 							{
@@ -143,7 +154,7 @@ public class Spell_LocateObject extends Spell
 				if(itemsFound.size()==0)
 					mob.tell("Your magic fails to focus on anything called '"+what+"'.");
 				else
-					mob.tell((String)itemsFound.elementAt(Dice.roll(1,itemsFound.size(),-1)));
+					mob.tell((String)itemsFound.elementAt(CMLib.dice().roll(1,itemsFound.size(),-1)));
 			}
 
 		}

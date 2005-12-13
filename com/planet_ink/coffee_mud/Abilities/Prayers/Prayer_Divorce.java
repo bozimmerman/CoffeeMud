@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -51,11 +62,11 @@ public class Prayer_Divorce extends Prayer
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> divorce(s) <T-NAMESELF> from "+target.getLiegeID()+".^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> divorce(s) <T-NAMESELF> from "+target.getLiegeID()+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				if((!target.isMonster())&&(target.soulMate()==null))
-					CoffeeTables.bump(target,CoffeeTables.STAT_DIVORCES);
+					CMLib.coffeeTables().bump(target,CoffeeTableRow.STAT_DIVORCES);
 				mob.location().send(mob,msg);
 				String maleName=target.Name();
 				String femaleName=target.getLiegeID();
@@ -64,22 +75,22 @@ public class Prayer_Divorce extends Prayer
 					femaleName=target.Name();
 					maleName=target.getLiegeID();
 				}
-                Vector channels=ChannelSet.getFlaggedChannelNames("DIVORCES");
+                Vector channels=CMLib.channels().getFlaggedChannelNames("DIVORCES");
                 for(int i=0;i<channels.size();i++)
-                    CommonMsgs.channel((String)channels.elementAt(i),mob.getClanID(),maleName+" and "+femaleName+" are now divorced.",true);
-				MOB M=CMMap.getPlayer(target.getLiegeID());
+                    CMLib.commands().channel((String)channels.elementAt(i),mob.getClanID(),maleName+" and "+femaleName+" are now divorced.",true);
+				MOB M=CMLib.map().getPlayer(target.getLiegeID());
 				if(M!=null) M.setLiegeID("");
 				target.setLiegeID("");
 				try
 				{
-					for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+					for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 					{
 						Room R=(Room)e.nextElement();
-						LandTitle T=CoffeeUtensils.getLandTitle(R);
+						LandTitle T=CMLib.utensils().getLandTitle(R);
 						if((T!=null)&&(T.landOwner().equals(maleName)))
 						{
 							T.setLandOwner(femaleName);
-							CMClass.DBEngine().DBUpdateRoom(R);
+							CMLib.database().DBUpdateRoom(R);
 						}
 						for(int i=0;i<R.numInhabitants();i++)
 						{

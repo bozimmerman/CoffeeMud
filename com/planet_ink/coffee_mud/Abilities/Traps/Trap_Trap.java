@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Traps;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -32,7 +43,7 @@ public class Trap_Trap extends StdAbility implements Trap
 	protected Room myPit=null;
 	protected Room myPitUp=null;
 	protected int reset=60; // 5 minute reset is standard
-	protected int trapType(){return Dice.roll(1,3,-1);}
+	protected int trapType(){return CMLib.dice().roll(1,3,-1);}
 
 	public Trap_Trap()
 	{
@@ -62,12 +73,12 @@ public class Trap_Trap extends StdAbility implements Trap
 		T.setInvoker(mob);
 		E.addEffect(T);
 		T.setBorrowed(E,true);
-		CMClass.ThreadEngine().startTickDown(T,MudHost.TICK_TRAP_DESTRUCTION,mob.envStats().level()*30);
+		CMLib.threads().startTickDown(T,MudHost.TICK_TRAP_DESTRUCTION,mob.envStats().level()*30);
 		return T;
 	}
 	public void gas(MOB mob)
 	{
-		if(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
+		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) a gas trap set in <T-NAME>.");
 		else
 		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in <T-NAME>!"))
@@ -79,48 +90,48 @@ public class Trap_Trap extends StdAbility implements Trap
 					MOB target=mob.location().fetchInhabitant(i);
 					if(target==null) break;
 
-					int dmg=Dice.roll(target.envStats().level(),10,1);
-					FullMsg msg=new FullMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_GAS,CMMsg.MSG_NOISYMOVEMENT,null);
+					int dmg=CMLib.dice().roll(target.envStats().level(),10,1);
+					CMMsg msg=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_GAS,CMMsg.MSG_NOISYMOVEMENT,null);
 					if(target.location().okMessage(target,msg))
 					{
 						target.location().send(target,msg);
 						if(msg.value()>0)
 							dmg=(int)Math.round(Util.div(dmg,2.0));
-						MUDFight.postDamage(invoker(),target,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>!");
+						CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>!");
 					}
 				}
 			}
 			else
 			{
 				MOB target=mob;
-				int dmg=Dice.roll(target.envStats().level(),10,1);
-				FullMsg msg=new FullMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_GAS,CMMsg.MSG_NOISYMOVEMENT,null);
+				int dmg=CMLib.dice().roll(target.envStats().level(),10,1);
+				CMMsg msg=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_GAS,CMMsg.MSG_NOISYMOVEMENT,null);
 				if(target.location().okMessage(target,msg))
 				{
 					target.location().send(target,msg);
 					if(msg.value()>0)
 						dmg=(int)Math.round(Util.div(dmg,2.0));
-					MUDFight.postDamage(invoker(),target,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"A sudden blast of gas <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"A sudden blast of gas <DAMAGE> <T-NAME>!");
 				}
 			}
 	}
 
 	public void needle(MOB mob)
 	{
-		if(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
+		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) a needle trap set in <T-NAME>.");
 		else
 		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a needle trap set in <T-NAME>!"))
 		{
 			MOB target=mob;
-			int dmg=Dice.roll(target.envStats().level(),5,1);
-			FullMsg msg=new FullMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,CMMsg.MSG_NOISYMOVEMENT,null);
+			int dmg=CMLib.dice().roll(target.envStats().level(),5,1);
+			CMMsg msg=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(target.location().okMessage(target,msg))
 			{
 				target.location().send(target,msg);
 				if(msg.value()>0)
 					dmg=(int)Math.round(Util.div(dmg,2.0));
-				MUDFight.postDamage(invoker(),target,this,dmg,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The needle <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The needle <DAMAGE> <T-NAME>!");
 
 				Ability P=CMClass.getAbility("Poison");
 				if(P!=null) P.invoke(invoker(),target,true,0);
@@ -130,14 +141,14 @@ public class Trap_Trap extends StdAbility implements Trap
 
 	public void blade(MOB mob)
 	{
-		if(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
+		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) a blade trap set in <T-NAME>.");
 		else
 		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a blade trap set in <T-NAME>!"))
 		{
 			MOB target=mob;
-			int dmg=Dice.roll(target.envStats().level(),2,0);
-			FullMsg msg=new FullMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,CMMsg.MSG_NOISYMOVEMENT,null);
+			int dmg=CMLib.dice().roll(target.envStats().level(),2,0);
+			CMMsg msg=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(target.location().okMessage(target,msg))
 			{
 				target.location().send(target,msg);
@@ -145,14 +156,14 @@ public class Trap_Trap extends StdAbility implements Trap
 					dmg=(int)Math.round(Util.div(dmg,2.0));
 				Ability P=CMClass.getAbility("Poison");
 				if(P!=null) P.invoke(invoker(),target,true,0);
-				MUDFight.postDamage(invoker(),target,this,dmg,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
 			}
 		}
 	}
 
 	public void victimOfSpell(MOB mob)
 	{
-		if(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
+		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) a magic trap set in <T-NAME>.");
 		else
 		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in <T-NAME>!"))
@@ -179,13 +190,13 @@ public class Trap_Trap extends StdAbility implements Trap
 
 	public void fallInPit(MOB mob)
 	{
-		if(Sense.isInFlight(mob))
+		if(CMLib.flags().isInFlight(mob))
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap door beneath <S-HIS-HER> feet! <S-NAME> pause(s) over it in flight.");
 			return;
 		}
 		else
-		if(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
+		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) a trap door beneath <S-HIS-HER> feet.");
 		else
 		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap door beneath <S-HIS-HER> feet! <S-NAME> fall(s) in!"))
@@ -209,8 +220,6 @@ public class Trap_Trap extends StdAbility implements Trap
 				myPitUp.recoverEnvStats();
 
 			}
-			CMMap.addRoom(myPit);
-			CMMap.addRoom(myPitUp);
 			myPitUp.rawExits()[Directions.UP]=CMClass.getExit("StdClosedDoorway");
 			myPitUp.rawDoors()[Directions.UP]=mob.location();
 			if((mob.location().getRoomInDir(Directions.DOWN)==null)
@@ -225,10 +234,10 @@ public class Trap_Trap extends StdAbility implements Trap
 			else
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
-				int damage=Dice.roll(mob.envStats().level(),3,1);
-				MUDFight.postDamage(invoker(),mob,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
+				int damage=CMLib.dice().roll(mob.envStats().level(),3,1);
+				CMLib.combat().postDamage(invoker(),mob,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
 			}
-			CommonMsgs.look(mob,true);
+			CMLib.commands().look(mob,true);
 		}
 	}
 
@@ -273,7 +282,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		}
 
 		if((getReset()>0)&&(getReset()<Integer.MAX_VALUE))
-			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_TRAP_RESET,getReset());
+			CMLib.threads().startTickDown(this,MudHost.TICK_TRAP_RESET,getReset());
 		else
 			unInvoke();
 	}

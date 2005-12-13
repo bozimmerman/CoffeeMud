@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -60,10 +71,10 @@ public class WaterCurrents extends ActiveTicker
 				if((M!=null)
 				&&(!M.isMonster())
 				&&(M.riding()==null)
-				&&(!Sense.isInFlight(M))
+				&&(!CMLib.flags().isInFlight(M))
 				&&((!(M instanceof Rideable))||(((Rideable)M).numRiders()==0))
 				&&(!M.isInCombat())
-                &&(!Sense.isMobile(M))
+                &&(!CMLib.flags().isMobile(M))
 				&&(!done.contains(M)))
                 {
                     todo.addElement(M);
@@ -82,8 +93,8 @@ public class WaterCurrents extends ActiveTicker
 				&&((!(I instanceof Rideable))
 				        ||(((Rideable)I).rideBasis()!=Rideable.RIDEABLE_WATER)
 				        ||(((Rideable)I).numRiders()==0))
-				&&(!Sense.isInFlight(I))
-                &&(!Sense.isMobile(I))
+				&&(!CMLib.flags().isInFlight(I))
+                &&(!CMLib.flags().isMobile(I))
 				&&(!done.contains(I)))
                 {
                     todo.addElement(I);
@@ -124,13 +135,13 @@ public class WaterCurrents extends ActiveTicker
 				    if(todo.elementAt(m) instanceof MOB)
 				    {
 						M=(MOB)todo.elementAt(m);
-                        FullMsg themsg=new FullMsg(M,M,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current.");
+                        CMMsg themsg=CMClass.getMsg(M,M,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current.");
                         if(R.okMessage(M,themsg))
 						{
                             R.send(M,themsg);
 							R2.bringMobHere(M,false);
 							R2.showOthers(M,null,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+" by the current.");
-							CommonMsgs.look(M,true);
+							CMLib.commands().look(M,true);
 						}
 				    }
 				    else
@@ -188,7 +199,7 @@ public class WaterCurrents extends ActiveTicker
 		return true;
 	}
 	protected static final String[] empty={};
-	protected static final EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+	protected static final EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	protected static final String[] CODES={"CLASS","TEXT"};
 	protected static final int[] cost=new int[3];
 	private class AWaterCurrent implements Ability, Cloneable

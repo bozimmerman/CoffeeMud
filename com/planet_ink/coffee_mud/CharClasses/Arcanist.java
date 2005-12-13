@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.CharClasses;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -40,96 +51,96 @@ public class Arcanist extends Thief
 		{
 			setLoaded(true);
 
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Apothecary",false);
-			CMAble.addCharAbilityMapping(ID(),1,"ThievesCant",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Apothecary",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ThievesCant",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Alchemy",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Spell_ReadMagic",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Alchemy",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_ReadMagic",true);
 
 			// clan magic
-			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqAcid",0,"",false,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqCold",0,"",false,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqElectric",0,"",false,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqFire",0,"",false,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqGas",0,"",false,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqMind",0,"",false,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqParalysis",0,"",false,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqPoison",0,"",false,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqWater",0,"",false,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqDisease",0,"",false,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_CEqAcid",0,"",false,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_CEqCold",0,"",false,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_CEqElectric",0,"",false,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_CEqFire",0,"",false,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_CEqGas",0,"",false,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_CEqMind",0,"",false,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_CEqParalysis",0,"",false,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_CEqPoison",0,"",false,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_CEqWater",0,"",false,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_CEqDisease",0,"",false,true);
 
-			CMAble.addCharAbilityMapping(ID(),2,"Thief_Hide",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Spell_Erase",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Hide",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Spell_Erase",false);
 
-			CMAble.addCharAbilityMapping(ID(),3,"Skill_WandUse",25,true);
-			CMAble.addCharAbilityMapping(ID(),3,"Spell_EnchantArrows",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_WandUse",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_EnchantArrows",false);
 
-			CMAble.addCharAbilityMapping(ID(),4,"Spell_ClarifyScroll",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Thief_Sneak",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Spell_ClarifyScroll",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Sneak",false);
 
-			CMAble.addCharAbilityMapping(ID(),5,"PaperMaking",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Skill_Revoke",false);
-			CMAble.addCharAbilityMapping(ID(),5,"Thief_DetectTraps",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"PaperMaking",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Revoke",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_DetectTraps",false);
 
-			CMAble.addCharAbilityMapping(ID(),6,"Skill_Dodge",false);
-			CMAble.addCharAbilityMapping(ID(),6,"Thief_Pick",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Dodge",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_Pick",false);
 
-			CMAble.addCharAbilityMapping(ID(),7,"Skill_Spellcraft",true);
-			CMAble.addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Spellcraft",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false);
 
-			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
-			CMAble.addCharAbilityMapping(ID(),8,"Thief_UsePoison",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_UsePoison",false);
 
-			CMAble.addCharAbilityMapping(ID(),9,"Skill_Parry",true);
-			CMAble.addCharAbilityMapping(ID(),9,"Thief_RemoveTraps",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Parry",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_RemoveTraps",false);
 
-			CMAble.addCharAbilityMapping(ID(),10,"Spell_RechargeWand",false);
-			CMAble.addCharAbilityMapping(ID(),10,"Spell_RepairingAura",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_RechargeWand",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_RepairingAura",false);
 
-			CMAble.addCharAbilityMapping(ID(),11,"Thief_Lore",false);
-			CMAble.addCharAbilityMapping(ID(),11,"Skill_Trip",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Lore",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Trip",true);
 
-			CMAble.addCharAbilityMapping(ID(),12,"Spell_Scribe",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Spell_Scribe",false);
 
-			CMAble.addCharAbilityMapping(ID(),13,"Spell_DisenchantWand",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Skill_Map",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_DisenchantWand",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Map",false);
 
-			CMAble.addCharAbilityMapping(ID(),14,"Fighter_RapidShot",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Fighter_RapidShot",false);
 
-			CMAble.addCharAbilityMapping(ID(),15,"Spell_EnchantWand",false);
-			CMAble.addCharAbilityMapping(ID(),15,"Skill_Bash",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_EnchantWand",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Bash",true);
 
-			CMAble.addCharAbilityMapping(ID(),16,"Spell_WardArea",false);
-			CMAble.addCharAbilityMapping(ID(),16,"Spell_DetectInvisible",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_WardArea",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_DetectInvisible",false);
 
-			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
-			CMAble.addCharAbilityMapping(ID(),17,"Thief_Shadow",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Shadow",true);
 
-			CMAble.addCharAbilityMapping(ID(),18,"Thief_Detection",false);
-			CMAble.addCharAbilityMapping(ID(),18,"Spell_Knock",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_Detection",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_Knock",false);
 
-			CMAble.addCharAbilityMapping(ID(),19,"Spell_Refit",true);
-			CMAble.addCharAbilityMapping(ID(),19,"Spell_LightenItem",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_Refit",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_LightenItem",false);
 
-			CMAble.addCharAbilityMapping(ID(),20,"Spell_EnchantArmor",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_EnchantArmor",false);
 
-			CMAble.addCharAbilityMapping(ID(),21,"Thief_Observation",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Observation",true);
 
-			CMAble.addCharAbilityMapping(ID(),22,"Spell_EnchantWeapon",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_EnchantWeapon",false);
 
-			CMAble.addCharAbilityMapping(ID(),23,"Spell_Mend",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_Mend",true);
 
-			CMAble.addCharAbilityMapping(ID(),24,"Spell_Disenchant",false);
-			CMAble.addCharAbilityMapping(ID(),24,"Spell_ComprehendLangs",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Spell_Disenchant",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Spell_ComprehendLangs",false);
 
-			CMAble.addCharAbilityMapping(ID(),25,"Spell_StoreSpell",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_StoreSpell",false);
 
-			CMAble.addCharAbilityMapping(ID(),30,"Spell_MagicItem",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_MagicItem",true);
 		}
 	}
 
@@ -217,7 +228,7 @@ public class Arcanist extends Thief
 					Ability A=((MOB)msg.target()).fetchAbility(msg.tool().text());
 					if((A!=null)
 					&&(mob.fetchAbility(A.ID())==null)
-					&&(CMAble.lowestQualifyingLevel(A.ID())<30))
+					&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<30))
 					{
 						Vector otherChoices=new Vector();
 						for(int a=0;a<mob.numLearnedAbilities();a++)
@@ -233,7 +244,7 @@ public class Arcanist extends Thief
 						A.setBorrowed(mob,true);
 						mob.addAbility(A);
 						if(otherChoices.size()>(mob.charStats().getClassLevel(this)/3))
-							mob.delAbility((Ability)otherChoices.elementAt(Dice.roll(1,otherChoices.size(),-1)));
+							mob.delAbility((Ability)otherChoices.elementAt(CMLib.dice().roll(1,otherChoices.size(),-1)));
 					}
 				}
 			}

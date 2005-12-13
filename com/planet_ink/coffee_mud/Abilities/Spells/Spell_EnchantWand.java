@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -37,7 +48,7 @@ public class Spell_EnchantWand extends Spell
 			return false;
 		}
 		Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Item.WORN_REQ_UNWORNONLY);
-		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
 			mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");
 			return false;
@@ -58,7 +69,7 @@ public class Spell_EnchantWand extends Spell
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)
 			&&(A instanceof Spell)
-			&&(A.isBorrowed(mob)||(CMAble.qualifiesByLevel(mob,A)))
+			&&(A.isBorrowed(mob)||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 			&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))
 			&&(!A.ID().equals(this.ID())))
 				wandThis=(Spell)A;
@@ -78,8 +89,8 @@ public class Spell_EnchantWand extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int experienceToLose=10*CMAble.lowestQualifyingLevel(wandThis.ID());
-		MUDFight.postExperience(mob,null,null,-experienceToLose,false);
+		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID());
+		CMLib.combat().postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -87,14 +98,14 @@ public class Spell_EnchantWand extends Spell
 		if(success)
 		{
 			setMiscText(wandThis.ID());
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				wand.setSpell((Ability)wandThis.copyOf());
 				if((wand.usesRemaining()==Integer.MAX_VALUE)||(wand.usesRemaining()<0))
 					wand.setUsesRemaining(0);
-				wand.baseEnvStats().setLevel(CMAble.lowestQualifyingLevel(wandThis.ID())+2);
+				wand.baseEnvStats().setLevel(CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())+2);
 				wand.setUsesRemaining(wand.usesRemaining()+5);
 				wand.text();
 				wand.recoverEnvStats();

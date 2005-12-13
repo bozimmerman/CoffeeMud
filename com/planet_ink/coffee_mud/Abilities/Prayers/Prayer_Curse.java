@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -75,35 +86,35 @@ public class Prayer_Curse extends Prayer
 					great.addElement(I);
 		}
 		if(great.size()>0)
-			target=(Item)great.elementAt(Dice.roll(1,great.size(),-1));
+			target=(Item)great.elementAt(CMLib.dice().roll(1,great.size(),-1));
 		else
 		if(good.size()>0)
-			target=(Item)good.elementAt(Dice.roll(1,good.size(),-1));
+			target=(Item)good.elementAt(CMLib.dice().roll(1,good.size(),-1));
 		return target;
 	}
 
 	public static void endLowerBlessings(Environmental target, int level)
 	{
-		Vector V=Sense.flaggedAffects(target,Ability.FLAG_BLESSING);
+		Vector V=CMLib.flags().flaggedAffects(target,Ability.FLAG_BLESSING);
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
-			if(CMAble.lowestQualifyingLevel(A.ID())<=level)
+			if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<=level)
 				A.unInvoke();
 		}
 	}
 	public static boolean isBlessed(Item item)
 	{
-		return Sense.flaggedAffects(item,Ability.FLAG_BLESSING).size()>0;
+		return CMLib.flags().flaggedAffects(item,Ability.FLAG_BLESSING).size()>0;
 	}
 
 	public static void endLowerCurses(Environmental target, int level)
 	{
-		Vector V=Sense.flaggedAffects(target,Ability.FLAG_CURSE);
+		Vector V=CMLib.flags().flaggedAffects(target,Ability.FLAG_CURSE);
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
-			if(CMAble.lowestQualifyingLevel(A.ID())<level)
+			if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<level)
 				A.unInvoke();
 		}
 	}
@@ -124,7 +135,7 @@ public class Prayer_Curse extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> <T-IS-ARE> cursed!":"^S<S-NAME> curse(s) <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> <T-IS-ARE> cursed!":"^S<S-NAME> curse(s) <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -133,10 +144,10 @@ public class Prayer_Curse extends Prayer
 					Item I=getSomething(mob,true);
 					if(I!=null)
 					{
-						endLowerBlessings(I,CMAble.lowestQualifyingLevel(ID()));
+						endLowerBlessings(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 						I.recoverEnvStats();
 					}
-					endLowerBlessings(target,CMAble.lowestQualifyingLevel(ID()));
+					endLowerBlessings(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 					target.recoverEnvStats();
 				}

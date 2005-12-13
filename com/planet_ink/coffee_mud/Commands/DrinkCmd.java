@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -43,7 +54,7 @@ public class DrinkCmd extends StdCommand
 			if((thisThang==null)
 			||((thisThang!=null)
 			   &&(!mob.isMine(thisThang))
-			   &&(!Sense.canBeSeenBy(thisThang,mob))))
+			   &&(!CMLib.flags().canBeSeenBy(thisThang,mob))))
 			{
 				mob.tell("You don't see '"+Util.combine(commands,0)+"' here.");
 				return false;
@@ -71,7 +82,7 @@ public class DrinkCmd extends StdCommand
 				}
 			}
 		}
-		FullMsg newMsg=new FullMsg(mob,thisThang,tool,CMMsg.MSG_DRINK,str+CommonStrings.msp("drink.wav",10));
+		CMMsg newMsg=CMClass.getMsg(mob,thisThang,tool,CMMsg.MSG_DRINK,str+CMProps.msp("drink.wav",10));
 		if(mob.location().okMessage(mob,newMsg))
 			mob.location().send(mob,newMsg);
 		return false;

@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Diseases;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -82,7 +92,7 @@ public class Disease_Lycanthropy extends Disease
 			MOB M=room.fetchInhabitant(i);
 			if((M!=null)
 			&&(M!=mob)
-			&&(!Sense.isEvil(M))
+			&&(!CMLib.flags().isEvil(M))
 			&&(mob.mayIFight(M))
 			&&(M.envStats().level()<(mob.envStats().level()+5)))
 				return M;
@@ -121,7 +131,7 @@ public class Disease_Lycanthropy extends Disease
 		if(mob.location()==null) return;
 		if(mob.isInCombat()) return;
 
-		if((Dice.rollPercentage()<15)
+		if((CMLib.dice().rollPercentage()<15)
 		&&((mob.location().domainType()&Room.INDOORS)>0))
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> howl(s) at the moon! ARROOOOOOOO!!!!");
 		// time to tick lycanthropically
@@ -129,7 +139,7 @@ public class Disease_Lycanthropy extends Disease
 		if(M!=null)
 		{
 			deathTrail=null;
-			MUDFight.postAttack(mob,M,mob.fetchWieldedItem());
+			CMLib.combat().postAttack(mob,M,mob.fetchWieldedItem());
 			return;
 		}
 		if((deathTrail!=null)&&(!deathTrail.contains(mob.location())))
@@ -139,14 +149,14 @@ public class Disease_Lycanthropy extends Disease
 			Vector rooms=new Vector();
 			if((findVictim(mob,mob.location(),rooms,0))&&(rooms.size()>0))
 			{
-				deathTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,true,true,true,true,true,50);
+				deathTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,true,true,true,true,true,50);
 				if(deathTrail!=null)
 					deathTrail.addElement(mob.location());
 			}
 		}
 		if(deathTrail!=null)
 		{
-			int nextDirection=MUDTracker.trackNextDirectionFromHere(deathTrail,mob.location(),true);
+			int nextDirection=CMLib.tracking().trackNextDirectionFromHere(deathTrail,mob.location(),true);
 			if((nextDirection==999)
 			||(nextDirection==-1))
 				deathTrail=null;
@@ -157,10 +167,10 @@ public class Disease_Lycanthropy extends Disease
 				if((nextRoom!=null)
 				&&((nextRoom.getArea()==mob.location().getArea()))||(!mob.isMonster()))
 				{
-					if(!MUDTracker.move(mob,nextDirection,false,false))
+					if(!CMLib.tracking().move(mob,nextDirection,false,false))
 						deathTrail=null;
 					else
-					if(Dice.rollPercentage()<15)
+					if(CMLib.dice().rollPercentage()<15)
 						mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> sniff(s) at the air.");
 
 				}

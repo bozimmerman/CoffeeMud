@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -28,7 +39,7 @@ public class Sell extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-        Environmental shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"Sell what to whom?");
+        Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Sell what to whom?");
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
@@ -55,7 +66,7 @@ public class Sell extends StdCommand
 		{
 			Item itemToDo=mob.fetchCarried(null,whatName+addendumStr);
 			if(itemToDo==null) break;
-			if((Sense.canBeSeenBy(itemToDo,mob))
+			if((CMLib.flags().canBeSeenBy(itemToDo,mob))
 			&&(!V.contains(itemToDo)))
 				V.addElement(itemToDo);
 			addendumStr="."+(++addendum);
@@ -68,7 +79,7 @@ public class Sell extends StdCommand
 		for(int v=0;v<V.size();v++)
 		{
 			Item thisThang=(Item)V.elementAt(v);
-			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_SELL,"<S-NAME> sell(s) <O-NAME> to <T-NAMESELF>.");
+			CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_SELL,"<S-NAME> sell(s) <O-NAME> to <T-NAMESELF>.");
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 		}

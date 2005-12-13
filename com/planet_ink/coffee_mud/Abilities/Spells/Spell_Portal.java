@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -57,7 +68,7 @@ public class Spell_Portal extends Spell
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
 		{
 			commands.clear();
-			commands.addElement(CMMap.getRandomRoom().displayText());
+			commands.addElement(CMLib.map().getRandomRoom().displayText());
 		}
 		if(commands.size()<1)
 		{
@@ -74,9 +85,9 @@ public class Spell_Portal extends Spell
 		int tries=0;
 		while(((++tries)<10000))
 		{
-			Room room=CMMap.getRandomRoom();
-			if((Sense.canAccess(mob,room))
-			&&(EnglishParser.containsString(room.displayText(),areaName)))
+			Room room=CMLib.map().getRandomRoom();
+			if((CMLib.flags().canAccess(mob,room))
+			&&(CMLib.english().containsString(room.displayText(),areaName)))
 			{
 			   newRoom=room;
 			   break;
@@ -86,12 +97,12 @@ public class Spell_Portal extends Spell
 		{
 		    try
 		    {
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room room=(Room)r.nextElement();
 		
-					if((Sense.canAccess(mob,room))
-					&&(EnglishParser.containsString(room.displayText(),areaName)))
+					if((CMLib.flags().canAccess(mob,room))
+					&&(CMLib.english().containsString(room.displayText(),areaName)))
 					{
 					   newRoom=room;
 					   break;
@@ -128,8 +139,8 @@ public class Spell_Portal extends Spell
 		&&((newRoom.getRoomInDir(Directions.GATE)==null)
 		&&(newRoom.getExitInDir(Directions.GATE)==null)))
 		{
-			FullMsg msg=new FullMsg(mob,mob.location(),this,affectType(auto),"^S<S-NAME> evoke(s) a blinding, swirling portal here.^?");
-			FullMsg msg2=new FullMsg(mob,newRoom,this,affectType(auto),"A blinding, swirling portal appears here.");
+			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,affectType(auto),"^S<S-NAME> evoke(s) a blinding, swirling portal here.^?");
+			CMMsg msg2=CMClass.getMsg(mob,newRoom,this,affectType(auto),"A blinding, swirling portal appears here.");
 			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
@@ -142,13 +153,13 @@ public class Spell_Portal extends Spell
 				e.setName("a swirling portal");
 				Ability A1=CMClass.getAbility("Prop_RoomView");
 				if(A1!=null){
-					A1.setMiscText(CMMap.getExtendedRoomID(newRoom));
+					A1.setMiscText(CMLib.map().getExtendedRoomID(newRoom));
 					e.addNonUninvokableEffect(A1);
 				}
 				Exit e2=(Exit)e.copyOf();
 				Ability A2=CMClass.getAbility("Prop_RoomView");
 				if(A2!=null){
-					A2.setMiscText(CMMap.getExtendedRoomID(mob.location()));
+					A2.setMiscText(CMLib.map().getExtendedRoomID(mob.location()));
 					e2.addNonUninvokableEffect(A2);
 				}
 				mob.location().rawDoors()[Directions.GATE]=newRoom;

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -57,7 +68,7 @@ public class Spell_Nightmare extends Spell
 					Item I=null;
 					MOB M=null;
 					if(R!=null)
-					switch(Dice.roll(1,10,0))
+					switch(CMLib.dice().roll(1,10,0))
 					{
 					case 1:
 						I=mob.fetchWieldedItem();
@@ -75,31 +86,31 @@ public class Spell_Nightmare extends Spell
 						mob.tell("You see your flesh melting away in large chunks.");
 						break;
 					case 5:
-						M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
+						M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
 						if(M!=null) mob.tell(mob,M,null,"<T-NAME> glare(s) at you, taking on a horrifying form.");
 						break;
 					case 6:
-						M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
+						M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
 						if(M!=null) mob.tell(mob,M,null,"<T-NAME> rip(s) open <T-HIS-HER> jaws and stuff(s) you in it.");
 						break;
 					case 7:
-						M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
+						M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
 						if(M!=null) mob.tell(mob,M,null,"<T-NAME> rip(s) up <T-HIS-HER> flesh in front of you.");
 						break;
 					case 8:
-						M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
+						M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
 						if(M!=null) mob.tell(mob,M,null,"<T-NAME> become(s) a horrifying image of terror.");
 						break;
 					case 9:
 						mob.tell(mob,null,null,"The nightmare consumes your mind, taking you into madness.");
 						break;
 					case 10:
-						M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
+						M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
 						if(M!=null) mob.tell(mob,M,null,"<T-NAME> <T-IS-ARE> trying to take control of your mind.");
 						break;
 					}
 					notAgainThisRound=true;
-					switch(Dice.roll(1,10,0))
+					switch(CMLib.dice().roll(1,10,0))
 					{
 					case 1:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
 						"<S-NAME> struggle(s) with an imaginary foe."); break;
@@ -175,8 +186,8 @@ public class Spell_Nightmare extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> whisper(s) to <T-NAMESELF>.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> whisper(s) to <T-NAMESELF>.^?");
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
 			if((mob.location().okMessage(mob,msg))||(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -39,13 +50,13 @@ public class Prayer_HolyWord extends Prayer
 		MOB mob=(MOB)affected;
 
 		if(mob==invoker) return;
-		if(Sense.isGood(mob))
+		if(CMLib.flags().isGood(mob))
 		{
 			affectableStats.setArmor(affectableStats.armor()-30);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+20);
 		}
 		else
-		if(Sense.isEvil(mob))
+		if(CMLib.flags().isEvil(mob))
 		{
 			affectableStats.setArmor(affectableStats.armor()+30);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-20);
@@ -75,7 +86,7 @@ public class Prayer_HolyWord extends Prayer
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		String str=(auto?"The holy word is spoken.":"^S<S-NAME> speak(s) the holy word"+ofDiety(mob)+" to <T-NAMESELF>.^?")+CommonStrings.msp("bless.wav",10);
+		String str=(auto?"The holy word is spoken.":"^S<S-NAME> speak(s) the holy word"+ofDiety(mob)+" to <T-NAMESELF>.^?")+CMProps.msp("bless.wav",10);
 		String missStr="<S-NAME> speak(s) the holy word"+ofDiety(mob)+", but nothing happens.";
 		Room room=mob.location();
 		if(room!=null)
@@ -86,7 +97,7 @@ public class Prayer_HolyWord extends Prayer
 
 			int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 			if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
-			if(Sense.isEvil(target))
+			if(CMLib.flags().isEvil(target))
 				affectType=affectType|CMMsg.MASK_MALICIOUS;
 
 			if(success)
@@ -95,26 +106,26 @@ public class Prayer_HolyWord extends Prayer
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,str);
+				CMMsg msg=CMClass.getMsg(mob,target,this,affectType,str);
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					if(msg.value()<=0)
 					{
-						if(Sense.canBeHeardBy(mob,target))
+						if(CMLib.flags().canBeHeardBy(mob,target))
 						{
 							str=null;
 							Item I=Prayer_Bless.getSomething(target,true);
 							while(I!=null)
 							{
-								FullMsg msg2=new FullMsg(target,I,null,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+								CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
 								target.location().send(target,msg2);
-								Prayer_Bless.endLowerCurses(I,CMAble.lowestQualifyingLevel(ID()));
+								Prayer_Bless.endLowerCurses(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 								I.recoverEnvStats();
 								I=Prayer_Bless.getSomething(target,true);
 							}
-							Prayer_Bless.endLowerBlessings(target,CMAble.lowestQualifyingLevel(ID()));
-							Prayer_Bless.endLowerCurses(target,CMAble.lowestQualifyingLevel(ID()));
+							Prayer_Bless.endLowerBlessings(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
+							Prayer_Bless.endLowerCurses(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 							beneficialAffect(mob,target,asLevel,0);
 							target.recoverEnvStats();
 						}

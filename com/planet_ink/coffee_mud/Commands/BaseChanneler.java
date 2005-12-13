@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -28,7 +39,7 @@ public class BaseChanneler extends StdCommand
 								 MOB sender)
 	{
         MOB M=ses.mob();
-		if(ChannelSet.mayReadThisChannel(sender,areareq,ses,channelInt)
+		if(CMLib.channels().mayReadThisChannel(sender,areareq,ses,channelInt)
         &&(M.location()!=null)
 		&&(M.location().okMessage(ses.mob(),msg)))
 		{
@@ -51,13 +62,13 @@ public class BaseChanneler extends StdCommand
 									 String message,
 									 boolean systemMsg)
 	{
-		int channelInt=ChannelSet.getChannelIndex(channelName);
+		int channelInt=CMLib.channels().getChannelIndex(channelName);
 		if(channelInt<0) return;
 		
-		message=CommonStrings.applyFilter(message,CommonStrings.SYSTEM_CHANNELFILTER);
+		message=CMProps.applyINIFilter(message,CMProps.SYSTEM_CHANNELFILTER);
 		
-        Vector flags=ChannelSet.getChannelFlags(channelInt);
-		channelName=ChannelSet.getChannelName(channelInt);
+        Vector flags=CMLib.channels().getChannelFlags(channelInt);
+		channelName=CMLib.channels().getChannelName(channelInt);
 
 		CMMsg msg=null;
 		if(systemMsg)
@@ -65,7 +76,7 @@ public class BaseChanneler extends StdCommand
 			String str="["+channelName+"] '"+message+"'^</CHANNEL^>^?^.";
 			if((!mob.name().startsWith("^"))||(mob.name().length()>2))
 				str=" "+str;
-			msg=new FullMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_GENERAL|CMMsg.MSG_SPEAK,"^Q^<CHANNEL \""+channelName+"\"^>"+str,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q^<CHANNEL \""+channelName+"\"^><S-NAME>"+str);
+			msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_GENERAL|CMMsg.MSG_SPEAK,"^Q^<CHANNEL \""+channelName+"\"^>"+str,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q^<CHANNEL \""+channelName+"\"^><S-NAME>"+str);
 		}
 		else
 		if((message.startsWith(":")||message.startsWith(","))
@@ -73,37 +84,37 @@ public class BaseChanneler extends StdCommand
 		{
 			String msgstr=message.substring(1);
 			Vector V=Util.parse(msgstr);
-			Social S=Socials.FetchSocial(V,true);
-			if(S==null) S=Socials.FetchSocial(V,false);
+			Social S=CMLib.socials().FetchSocial(V,true);
+			if(S==null) S=CMLib.socials().FetchSocial(V,false);
 			if(S!=null)
 				msg=S.makeChannelMsg(mob,channelInt,channelName,V,false);
 			else
 			{
-				msgstr=CommonStrings.applyFilter(msgstr,CommonStrings.SYSTEM_EMOTEFILTER);
+				msgstr=CMProps.applyINIFilter(msgstr,CMProps.SYSTEM_EMOTEFILTER);
                 if(msgstr.trim().startsWith("'")||msgstr.trim().startsWith("`"))
                     msgstr=msgstr.trim();
                 else
                     msgstr=" "+msgstr.trim();
 				String srcstr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+mob.name()+msgstr+"^</CHANNEL^>^?^.";
 				String reststr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] <S-NAME>"+msgstr+"^</CHANNEL^>^?^.";
-				msg=new FullMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_GENERAL|CMMsg.MSG_SPEAK,"^Q"+srcstr,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q"+reststr);
+				msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_GENERAL|CMMsg.MSG_SPEAK,"^Q"+srcstr,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q"+reststr);
 			}
 		}
 		else
-			msg=new FullMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_GENERAL|CMMsg.MSG_SPEAK,"^Q^<CHANNEL \""+channelName+"\"^>You "+channelName+" '"+message+"'^</CHANNEL^>^?^.",CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q^<CHANNEL \""+channelName+"\"^><S-NAME> "+channelName+"S '"+message+"'^</CHANNEL^>^?^.");
+			msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_GENERAL|CMMsg.MSG_SPEAK,"^Q^<CHANNEL \""+channelName+"\"^>You "+channelName+" '"+message+"'^</CHANNEL^>^?^.",CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q^<CHANNEL \""+channelName+"\"^><S-NAME> "+channelName+"S '"+message+"'^</CHANNEL^>^?^.");
 		if((mob.location()!=null)
 		&&((!mob.location().isInhabitant(mob))||(mob.location().okMessage(mob,msg))))
 		{
 			boolean areareq=flags.contains("SAMEAREA");
-			ChannelSet.channelQueUp(channelInt,msg);
-			for(int s=0;s<Sessions.size();s++)
+			CMLib.channels().channelQueUp(channelInt,msg);
+			for(int s=0;s<CMLib.sessions().size();s++)
 			{
-				Session ses=Sessions.elementAt(s);
+				Session ses=CMLib.sessions().elementAt(s);
 				channelTo(ses,areareq,channelInt,msg,mob);
 			}
 		}
-		if((CMClass.I3Interface().i3online()&&(CMClass.I3Interface().isI3channel(channelName)))
-		||(CMClass.I3Interface().imc2online()&&(CMClass.I3Interface().isIMC2channel(channelName))))
-			CMClass.I3Interface().i3channel(mob,channelName,message);
+		if((CMLib.intermud().i3online()&&(CMLib.intermud().isI3channel(channelName)))
+		||(CMLib.intermud().imc2online()&&(CMLib.intermud().isIMC2channel(channelName))))
+			CMLib.intermud().i3channel(mob,channelName,message);
 	}
 }

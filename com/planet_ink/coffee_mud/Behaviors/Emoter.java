@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -153,10 +164,10 @@ public class Emoter extends ActiveTicker
 		super.executeMsg(myHost,msg);
 		if((msg.amITarget(myHost))
 		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
-		&&(Sense.canSmell(msg.source()))
+		&&(CMLib.flags().canSmell(msg.source()))
 		&&(smells!=null))
 		{
-		    Vector emote=(Vector)smells.elementAt(Dice.roll(1,smells.size(),-1));
+		    Vector emote=(Vector)smells.elementAt(CMLib.dice().roll(1,smells.size(),-1));
 	        MOB emoter=null;
 			if(myHost instanceof Room)
 			{
@@ -175,7 +186,7 @@ public class Emoter extends ActiveTicker
                 }
 				else
 				{
-					if((myHost instanceof Item)&&(!Sense.isInTheGame(myHost,false)))
+					if((myHost instanceof Item)&&(!CMLib.flags().isInTheGame(myHost,false)))
 						return;
 					emoter=CMClass.getMOB("StdMOB");
 					emoter.setName(myHost.name());
@@ -195,19 +206,19 @@ public class Emoter extends ActiveTicker
 		if(room==null) return;
 		if(inroom.length()>0)
 		{
-		    String ID=CMMap.getExtendedRoomID(room);
+		    String ID=CMLib.map().getExtendedRoomID(room);
 		    if((ID.length()==0)
 		    ||((!inroom.equals(ID))&&(!inroom.endsWith(ID))&&(inroom.indexOf(ID+";")<0)))
 		        return;
 		}
-		FullMsg msg;
+		CMMsg msg;
 		Room oldLoc=emoter.location();
 		String str=(String)emote.elementAt(2);
 		if(emoter.location()!=room) emoter.setLocation(room);
         if(((Integer)emote.elementAt(0)).intValue()==EMOTE_SOCIAL)
         {
-            Social S=Socials.FetchSocial(str,true);
-            if(S==null) S=Socials.FetchSocial(str,false);
+            Social S=CMLib.socials().FetchSocial(str,true);
+            if(S==null) S=CMLib.socials().FetchSocial(str,false);
             if(S!=null) 
             {
                 S.invoke(emoter,Util.parse(str),emoteTo,false);
@@ -220,7 +231,7 @@ public class Emoter extends ActiveTicker
 		    emoteTo.tell(emoter,emoteTo,null,str);
 		    return;
 		}
-        msg=new FullMsg(emoter,null,CMMsg.MSG_EMOTE,str);
+        msg=CMClass.getMsg(emoter,null,CMMsg.MSG_EMOTE,str);
 		if(room.okMessage(emoter,msg))
 		for(int i=0;i<room.numInhabitants();i++)
 		{
@@ -229,13 +240,13 @@ public class Emoter extends ActiveTicker
 			switch(((Integer)emote.elementAt(0)).intValue())
 			{
 			case EMOTE_VISUAL:
-				if(Sense.canBeSeenBy(emoter,M))	M.executeMsg(M,msg);
+				if(CMLib.flags().canBeSeenBy(emoter,M))	M.executeMsg(M,msg);
 				break;
 			case EMOTE_SOUND:
-				if(Sense.canBeHeardBy(emoter,M)) M.executeMsg(M,msg);
+				if(CMLib.flags().canBeHeardBy(emoter,M)) M.executeMsg(M,msg);
 				break;
 			case EMOTE_SMELL:
-				if(Sense.canSmell(M)) M.executeMsg(M,msg);
+				if(CMLib.flags().canSmell(M)) M.executeMsg(M,msg);
 				break;
 			}
 		}
@@ -256,7 +267,7 @@ public class Emoter extends ActiveTicker
 					((Environmental)ticking).delBehavior(this);
 				return false;
 			}
-			Vector emote=(Vector)emotes.elementAt(Dice.roll(1,emotes.size(),-1));
+			Vector emote=(Vector)emotes.elementAt(CMLib.dice().roll(1,emotes.size(),-1));
 			MOB emoter=null;
 			if(ticking instanceof Area)
 			{
@@ -287,7 +298,7 @@ public class Emoter extends ActiveTicker
 			}
 			else
 			{
-				if((ticking instanceof Item)&&(!Sense.isInTheGame((Item)ticking,false)))
+				if((ticking instanceof Item)&&(!CMLib.flags().isInTheGame((Item)ticking,false)))
 					return true;
 
 				emoter=CMClass.getMOB("StdMOB");
@@ -298,7 +309,7 @@ public class Emoter extends ActiveTicker
 					name=((Environmental)ticking).name();
 				if(mob!=null)
 				{
-					if(!Sense.isInTheGame(mob,false))
+					if(!CMLib.flags().isInTheGame(mob,false))
 						emoter.setName(name+" carried by "+mob.name());
 					else
 						emoter=null;

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -105,9 +116,9 @@ public class Prop_HaveAdjuster extends Property
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		this.adjCharStats=(CharStats)CMClass.getShared("DefaultCharStats");
-		this.adjCharState=(CharState)CMClass.getShared("DefaultCharState");
-		this.adjEnvStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+		this.adjCharStats=(CharStats)CMClass.getCommon("DefaultCharStats");
+		this.adjCharState=(CharState)CMClass.getCommon("DefaultCharState");
+		this.adjEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
         this.mask=new Vector();
 		int gotit=setAdjustments(newText,adjEnvStats,adjCharStats,adjCharState,mask);
 		gotClass=((gotit&1)==1);
@@ -135,7 +146,7 @@ public class Prop_HaveAdjuster extends Property
         if((affected!=null)
         &&(affected instanceof Item)
         &&(!((Item)affected).amDestroyed())
-        &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob))))
+        &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob))))
             return true;
         return false;
     }
@@ -257,7 +268,7 @@ public class Prop_HaveAdjuster extends Property
 			}
 		}
         if(strs[1].length()>0)
-            id+="  Restrictions: "+MUDZapper.zapperDesc(strs[1]);
+            id+="  Restrictions: "+CMLib.masking().maskDesc(strs[1]);
 		return id;
 	}
 

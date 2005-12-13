@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -41,7 +52,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		newItem.setDisplayText(newItem.name()+" grows here.");
 		newItem.setDescription("");
 		newItem.baseEnvStats().setWeight(10000);
-		Sense.setGettable(newItem,false);
+		CMLib.flags().setGettable(newItem,false);
 		newItem.setMaterial(material);
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
@@ -71,7 +82,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 					dmg=dmg/2;
 				if(dmg>0)
 				{
-					if(MUDFight.postHealing(invoker,invoker,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,dmg,null))
+					if(CMLib.combat().postHealing(invoker,invoker,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,dmg,null))
 						invoker.tell("Your oak absorbs "+dmg+" points of your damage!");
 				}
 				hpRemaining-=dmg;
@@ -85,14 +96,14 @@ public class Chant_GrowOak extends Chant_SummonPlants
 			MOB M=PlantsLocation.fetchInhabitant(i);
 			if(M.fetchEffect("Chopping")!=null)
 			{
-				int dmg=Dice.roll(1,50,50);
+				int dmg=CMLib.dice().roll(1,50,50);
 				hpRemaining-=dmg;
 				if(invoker!=null) invoker.tell("Your oak is being chopped down!");
-				MUDFight.postDamage(invoker,invoker,null,dmg/2,CMMsg.MSG_OK_ACTION,Weapon.TYPE_SLASHING,"The chopping on your oak <DAMAGE> you!");
+				CMLib.combat().postDamage(invoker,invoker,null,dmg/2,CMMsg.MSG_OK_ACTION,Weapon.TYPE_SLASHING,"The chopping on your oak <DAMAGE> you!");
 				if(hpRemaining<0)
 				{
 					if(invoker!=null)
-						MUDFight.postDeath(invoker,null,null);
+						CMLib.combat().postDeath(invoker,null,null);
 					unInvoke();
 				}
 			}

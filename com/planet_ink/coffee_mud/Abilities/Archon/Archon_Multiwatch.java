@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Archon;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -146,7 +157,7 @@ public class Archon_Multiwatch extends ArchonSkill
 						MOB M=(MOB)V.elementAt(v);
 						if(M==mob) continue;
 						if(M.session()==null) continue;
-						if(!Sense.isInTheGame(M,true)) continue;
+						if(!CMLib.flags().isInTheGame(M,true)) continue;
 						String hisLastCmd=Util.combine(mob.session().previousCMD(),0);
 						Archon_Multiwatch A=(Archon_Multiwatch)M.fetchEffect(ID());
 						if(A!=null)
@@ -170,9 +181,9 @@ public class Archon_Multiwatch extends ArchonSkill
 			DATA.clear();
 			IPS.clear();
 			Hashtable ipes=new Hashtable();
-			for(int s=0;s<Sessions.size();s++)
+			for(int s=0;s<CMLib.sessions().size();s++)
 			{
-				Session S=Sessions.elementAt(s);
+				Session S=CMLib.sessions().elementAt(s);
 				if((S.getAddress().length()>0)
 				&&(S.mob()!=null))
 				{
@@ -241,8 +252,8 @@ public class Archon_Multiwatch extends ArchonSkill
 			for(int i=1;i<commands.size();i++)
 			{
 				String name=(String)commands.elementAt(i);
-				MOB M=CMMap.getPlayer(name);
-				if((M.session()!=null)&&(Sense.isInTheGame(M,true)))
+				MOB M=CMLib.map().getPlayer(name);
+				if((M.session()!=null)&&(CMLib.flags().isInTheGame(M,true)))
 					V.addElement(M);
 				else
 					mob.tell("'"+name+"' is not online.");

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -104,9 +115,9 @@ public class Spell_SummoningWard extends Spell
 			if(s.equalsIgnoreCase("here"))
 				target=mob.location();
 			else
-			if(EnglishParser.containsString(mob.location().ID(),s)
-			||EnglishParser.containsString(mob.location().name(),s)
-			||EnglishParser.containsString(mob.location().displayText(),s))
+			if(CMLib.english().containsString(mob.location().ID(),s)
+			||CMLib.english().containsString(mob.location().name(),s)
+			||CMLib.english().containsString(mob.location().displayText(),s))
 				target=mob.location();
 		}
 		if(target==null)
@@ -124,16 +135,16 @@ public class Spell_SummoningWard extends Spell
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> seem(s) magically protected.":"^S<S-NAME> invoke(s) a summoning ward upon <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> seem(s) magically protected.":"^S<S-NAME> invoke(s) a summoning ward upon <T-NAMESELF>.^?");
 			if(target instanceof Room) quality=MALICIOUS;
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if((target instanceof Room)
-				&&((CoffeeUtensils.doesOwnThisProperty(mob,((Room)target)))))
+				&&((CMLib.utensils().doesOwnThisProperty(mob,((Room)target)))))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());
-					CMClass.DBEngine().DBUpdateRoom((Room)target);
+					CMLib.database().DBUpdateRoom((Room)target);
 				}
 				else
 				{

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -50,10 +61,10 @@ public class Chant_WarpWood extends Chant
 						goodPossibilities.addElement(item);
 				}
 				if(goodPossibilities.size()>0)
-					target=(Item)goodPossibilities.elementAt(Dice.roll(1,goodPossibilities.size(),-1));
+					target=(Item)goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
 				else
 				if(possibilities.size()>0)
-					target=(Item)possibilities.elementAt(Dice.roll(1,possibilities.size(),-1));
+					target=(Item)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
 			}
 		}
 
@@ -73,8 +84,8 @@ public class Chant_WarpWood extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> starts warping!":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
-			FullMsg msg2=new FullMsg(mob,mobTarget,this,affectType(auto),null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> starts warping!":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
+			CMMsg msg2=CMClass.getMsg(mob,mobTarget,this,affectType(auto),null);
 			if((mob.location().okMessage(mob,msg))&&((mobTarget==null)||(mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
@@ -83,7 +94,7 @@ public class Chant_WarpWood extends Chant
 				if(msg.value()<=0)
 				{
 					int damage=100+mob.envStats().level()-target.envStats().level();
-					if(Sense.isABonusItems(target))
+					if(CMLib.flags().isABonusItems(target))
 						damage=(int)Math.round(Util.div(damage,2.0));
 					target.setUsesRemaining(target.usesRemaining()-damage);
 					if(mobTarget==null)

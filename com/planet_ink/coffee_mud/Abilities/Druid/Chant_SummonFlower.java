@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -40,14 +51,14 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 			Ability A=littlePlants.fetchEffect(ID());
 			if(A!=null)
 			{
-				CMClass.ThreadEngine().deleteTick(A,-1);
+				CMLib.threads().deleteTick(A,-1);
 				littlePlants.delEffect(A);
 				littlePlants.setSecretIdentity("");
 			}
 			if(littlePlants.fetchBehavior("Decay")==null)
 			{
 				Behavior B=CMClass.getBehavior("Decay");
-				B.setParms("min="+CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDMONTH)+" max="+CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDMONTH)+" chance=100");
+				B.setParms("min="+CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)+" max="+CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)+" chance=100");
 				littlePlants.addBehavior(B);
 				B.executeMsg(myHost,msg);
 			}
@@ -58,7 +69,7 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 	{
 		Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(EnvResource.RESOURCE_GREENS);
-		switch(Dice.roll(1,5,0))
+		switch(CMLib.dice().roll(1,5,0))
 		{
 		case 1:
 			newItem.setName("a red rose");
@@ -94,7 +105,7 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 		Chant_SummonFlower newChant=new Chant_SummonFlower();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
-		if(CoffeeUtensils.doesOwnThisProperty(mob,room))
+		if(CMLib.utensils().doesOwnThisProperty(mob,room))
 		{
 			newChant.setInvoker(mob);
 			newChant.setMiscText(mob.name());

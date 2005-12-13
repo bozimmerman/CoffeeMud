@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -22,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_Fragmentation extends StdAbility
+public class Fighter_Fragmentation extends FighterSkill
 {
 	public String ID() { return "Fighter_Fragmentation"; }
 	public String name(){ return "Fragmentation";}
@@ -53,9 +63,9 @@ public class Fighter_Fragmentation extends StdAbility
 		&&(msg.target() instanceof MOB)
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN))
 		{
-			if(Dice.rollPercentage()<25) helpProfficiency((MOB)affected);
-            FullMsg msg2=new FullMsg((MOB)msg.target(),msg.tool(),this,CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^><T-NAME> fragment(s) in <S-NAME>!^</FIGHT^>^?");
-            CMColor.fixSourceFightColor(msg2);
+			if(CMLib.dice().rollPercentage()<25) helpProfficiency((MOB)affected);
+            CMMsg msg2=CMClass.getMsg((MOB)msg.target(),msg.tool(),this,CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^><T-NAME> fragment(s) in <S-NAME>!^</FIGHT^>^?");
+            CMLib.color().fixSourceFightColor(msg2);
 			msg.addTrailerMsg(msg2);
 			msg.setValue(msg.value()+(2*(int)Math.round(Util.mul(msg.value(),Util.div(profficiency(),100.0)))));
 		}

@@ -1,10 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.Abilities.Misc.Amputation;
-import com.planet_ink.coffee_mud.Abilities.Misc.Injury;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -24,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_CalledStrike extends StdAbility
+public class Fighter_CalledStrike extends FighterSkill
 {
 	public String ID() { return "Fighter_CalledStrike"; }
 	public String name(){ return "Called Strike";}
@@ -50,9 +58,9 @@ public class Fighter_CalledStrike extends StdAbility
 	{
 		MOB mob=target;
 		if(mob==null) return false;
-		Amputation A=(Amputation)mob.fetchEffect("Amputation");
-		if(A==null)	A=new Amputation();
-		Amputation.amputate(mob,A,gone);
+		Amputator A=(Amputator)mob.fetchEffect("Amputation");
+		if(A==null)	A=(Amputator)CMClass.getAbility("Amputation");
+		A.amputate(mob,A,gone);
         if(mob.fetchEffect(A.ID())==null)
 			mob.addNonUninvokableEffect(A);
 		return true;
@@ -117,7 +125,7 @@ public class Fighter_CalledStrike extends StdAbility
 			String s=(String)commands.firstElement();
 			if(mob.location().fetchInhabitant(s)!=null)
 				target=mob.location().fetchInhabitant(s);
-			if((target!=null)&&(!Sense.canBeSeenBy(target,mob)))
+			if((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob)))
 			{
 				mob.tell("You can't see '"+s+"' here.");
 				return false;
@@ -138,8 +146,8 @@ public class Fighter_CalledStrike extends StdAbility
 			return false;
 		}
 
-		Amputation A=(Amputation)target.fetchEffect("Amputation");
-		if(A==null)	A=new Amputation();
+		Amputator A=(Amputator)target.fetchEffect("Amputation");
+		if(A==null)	A=(Amputator)CMClass.getAbility("Amputation");
 
 		Vector remainingLimbList=A.remainingLimbNameSet(target);
 		if(remainingLimbList.size()==0)
@@ -149,7 +157,7 @@ public class Fighter_CalledStrike extends StdAbility
 			return false;
 		}
 		if(mob.isMonster())
-			gone=(String)remainingLimbList.elementAt(Dice.roll(1,remainingLimbList.size(),-1));
+			gone=(String)remainingLimbList.elementAt(CMLib.dice().roll(1,remainingLimbList.size(),-1));
 		else
 		if(commands.size()<=0)
 		{
@@ -198,8 +206,8 @@ public class Fighter_CalledStrike extends StdAbility
 		boolean success=profficiencyCheck(mob,0,auto);
 		if((success)&&(gone.length()>0))
 		{
-            FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> call(s) '"+gone+"'!^</FIGHT^>^?");
-            CMColor.fixSourceFightColor(msg);
+            CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> call(s) '"+gone+"'!^</FIGHT^>^?");
+            CMLib.color().fixSourceFightColor(msg);
             if(mob.location().okMessage(mob,msg))
             {
                 mob.location().send(mob,msg);

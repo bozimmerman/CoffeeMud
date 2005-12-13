@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -21,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_Tumble extends StdAbility
+public class Fighter_Tumble extends FighterSkill
 {
 	public int hits=0;
 	public String ID() { return "Fighter_Tumble"; }
@@ -65,7 +75,7 @@ public class Fighter_Tumble extends StdAbility
 			&&(msg.tool() instanceof Weapon))
 			{
 				msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
-				msg.addTrailerMsg(new FullMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> tumble(s) around the attack from <T-NAME>."));
+				msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> tumble(s) around the attack from <T-NAME>."));
 				if((++hits)>=2)
 					unInvoke();
 			}
@@ -97,7 +107,7 @@ public class Fighter_Tumble extends StdAbility
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,auto?"<T-NAME> begin(s) tumbling around!":"<S-NAME> tumble(s) around!");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,auto?"<T-NAME> begin(s) tumbling around!":"<S-NAME> tumble(s) around!");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

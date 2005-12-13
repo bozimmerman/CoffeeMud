@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -109,17 +120,17 @@ public class Prayer extends StdAbility
 
 			int basis=0;
 			if(hq==0)
-				basis=Factions.getAlignPurity(mob.fetchFaction(Factions.AlignID()),Faction.ALIGN_EVIL);
+				basis=CMLib.factions().getAlignPurity(mob.fetchFaction(CMLib.factions().AlignID()),Faction.ALIGN_EVIL);
 			else
 			if(hq==1000)
-				basis=Factions.getAlignPurity(mob.fetchFaction(Factions.AlignID()),Faction.ALIGN_GOOD);
+				basis=CMLib.factions().getAlignPurity(mob.fetchFaction(CMLib.factions().AlignID()),Faction.ALIGN_GOOD);
 			else
 			{
-				basis=Factions.getAlignPurity(mob.fetchFaction(Factions.AlignID()),Faction.ALIGN_NEUTRAL);
+				basis=CMLib.factions().getAlignPurity(mob.fetchFaction(CMLib.factions().AlignID()),Faction.ALIGN_NEUTRAL);
 				basis-=10;
 			}
 
-			if(Dice.rollPercentage()>basis)
+			if(CMLib.dice().rollPercentage()>basis)
 				return true;
 
 			if(hq==0)
@@ -128,10 +139,10 @@ public class Prayer extends StdAbility
 			if(hq==1000)
 				mob.tell("The goodness of "+name()+" disrupts your prayer.");
 			else
-			if(Sense.isGood(mob))
+			if(CMLib.flags().isGood(mob))
 				mob.tell("The anti-good nature of "+name()+" disrupts your thought.");
 			else
-			if(Sense.isEvil(mob))
+			if(CMLib.flags().isEvil(mob))
 				mob.tell("The anti-evil nature of "+name()+" disrupts your thought.");
 			return false;
 		}

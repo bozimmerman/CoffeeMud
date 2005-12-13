@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -38,7 +49,7 @@ public class Spell_Dragonfire extends Spell
 			return false;
 		}
 		
-		if(!Sense.canBreathe(mob))
+		if(!CMLib.flags().canBreathe(mob))
 		{
 			mob.tell("You can't breathe!");
 			return false;
@@ -56,7 +67,7 @@ public class Spell_Dragonfire extends Spell
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,affectType(auto),(auto?"A blast of flames erupt!":"^S<S-NAME> blast(s) flames from <S-HIS-HER> mouth!^?")+CommonStrings.msp("fireball.wav",40)))
+			if(mob.location().show(mob,null,this,affectType(auto),(auto?"A blast of flames erupt!":"^S<S-NAME> blast(s) flames from <S-HIS-HER> mouth!^?")+CMProps.msp("fireball.wav",40)))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
@@ -65,8 +76,8 @@ public class Spell_Dragonfire extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_FIRE|(auto?CMMsg.MASK_GENERAL:0),null);
+				CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),null);
+				CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_FIRE|(auto?CMMsg.MASK_GENERAL:0),null);
 				if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 				{
 					mob.location().send(mob,msg);
@@ -74,10 +85,10 @@ public class Spell_Dragonfire extends Spell
 					invoker=mob;
 
 					int maxDie =  adjustedLevel(mob,asLevel);
-					int damage = Dice.roll(maxDie,6,maxDie);
+					int damage = CMLib.dice().roll(maxDie,6,maxDie);
 					if((msg.value()>0)||(msg2.value()>0))
 						damage = (int)Math.round(Util.div(damage,2.0));
-					MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The dragonfire <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The dragonfire <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -27,8 +38,8 @@ public class Scrapping extends CommonSkill
 	public String name(){ return "Scrapping";}
 	private static final String[] triggerStrings = {"SCRAP","SCRAPPING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLTRAINCOST);}
-	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST);}
+	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
+	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
 
 	private Item found=null;
 	private Item fire=null;
@@ -51,7 +62,7 @@ public class Scrapping extends CommonSkill
 		{
 			MOB mob=(MOB)affected;
 			if((found==null)
-			||((fire!=null)&&((!Sense.isOnFire(fire))
+			||((fire!=null)&&((!CMLib.flags().isOnFire(fire))
 							||(!mob.location().isContent(fire))
 							||(mob.isMine(fire)))))
 			{
@@ -83,7 +94,7 @@ public class Scrapping extends CommonSkill
 						{
 							Item newFound=(Item)found.copyOf();
 							mob.location().addItemRefuse(newFound,Item.REFUSE_PLAYER_DROP);
-							CommonMsgs.get(mob,null,newFound,true);
+							CMLib.commands().get(mob,null,newFound,true);
 						}
 					}
 				}
@@ -98,7 +109,7 @@ public class Scrapping extends CommonSkill
 		verb="scrapping";
 		String str=Util.combine(commands,0);
 		Item I=mob.location().fetchItem(null,str);
-		if((I==null)||(!Sense.canBeSeenBy(I,mob)))
+		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
 			commonTell(mob,"You don't see anything called '"+str+"' here.");
 			return false;
@@ -126,7 +137,7 @@ public class Scrapping extends CommonSkill
 			return false;
 		}
 		
-		if(Sense.enchanted(I))
+		if(CMLib.flags().enchanted(I))
 		{
 			commonTell(mob,I.name()+" is enchanted, and can't be scrapped.");
 			return false;
@@ -144,8 +155,8 @@ public class Scrapping extends CommonSkill
 			}
 		}
 
-		LandTitle t=CoffeeUtensils.getLandTitle(mob.location());
-		if((t!=null)&&(!CoffeeUtensils.doesHavePriviledgesHere(mob,mob.location())))
+		LandTitle t=CMLib.utensils().getLandTitle(mob.location());
+		if((t!=null)&&(!CMLib.utensils().doesHavePriviledgesHere(mob,mob.location())))
 		{
 			mob.tell("You are not allowed to scrap anything here.");
 			return false;
@@ -183,12 +194,12 @@ public class Scrapping extends CommonSkill
 		int duration=35-mob.envStats().level();
 		if(duration<10) duration=10;
 		messedUp=!profficiencyCheck(mob,0,auto);
-		found=CoffeeUtensils.makeItemResource(I.material());
+		found=CMLib.utensils().makeItemResource(I.material());
 		foundShortName="nothing";
         playSound="ripping.wav";
 		if(found!=null)
 			foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
-		FullMsg msg=new FullMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scrapping "+I.name()+".");
+		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scrapping "+I.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			for(int v=0;v<V.size();v++)

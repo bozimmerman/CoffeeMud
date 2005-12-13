@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -34,9 +45,9 @@ public class WizEmote extends StdCommand
 			String msg=Util.combine(commands,2);
             if(who.toUpperCase().equals("HERE"))
             {
-                for(int s=0;s<Sessions.size();s++)
+                for(int s=0;s<CMLib.sessions().size();s++)
                 {
-                    Session S=Sessions.elementAt(s);
+                    Session S=CMLib.sessions().elementAt(s);
                     if((S.mob()!=null)
                     &&(S.mob().location()==mob.location())
                     &&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE")))
@@ -44,12 +55,12 @@ public class WizEmote extends StdCommand
                 }
             }
             else
-            if(CMMap.getRoom(who)!=null)
+            if(CMLib.map().getRoom(who)!=null)
             {
-                Room R=CMMap.getRoom(who);
-                for(int s=0;s<Sessions.size();s++)
+                Room R=CMLib.map().getRoom(who);
+                for(int s=0;s<CMLib.sessions().size();s++)
                 {
-                    Session S=Sessions.elementAt(s);
+                    Session S=CMLib.sessions().elementAt(s);
                     if((S.mob()!=null)
                     &&(S.mob().location()==R)
                     &&(CMSecurity.isAllowed(mob,R,"WIZEMOTE")))
@@ -59,9 +70,9 @@ public class WizEmote extends StdCommand
             else
 			if(who.toUpperCase().equals("ALL"))
 			{
-				for(int s=0;s<Sessions.size();s++)
+				for(int s=0;s<CMLib.sessions().size();s++)
 				{
-					Session S=Sessions.elementAt(s);
+					Session S=CMLib.sessions().elementAt(s);
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
 					&&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE")))
@@ -71,14 +82,14 @@ public class WizEmote extends StdCommand
 			else
 			{
 				boolean found=false;
-				for(int s=0;s<Sessions.size();s++)
+				for(int s=0;s<CMLib.sessions().size();s++)
 				{
-					Session S=Sessions.elementAt(s);
+					Session S=CMLib.sessions().elementAt(s);
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
 					&&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE"))
-					&&(EnglishParser.containsString(S.mob().name(),who)
-						||EnglishParser.containsString(S.mob().location().getArea().name(),who)))
+					&&(CMLib.english().containsString(S.mob().name(),who)
+						||CMLib.english().containsString(S.mob().location().getArea().name(),who)))
 					{
 	  					S.stdPrintln("^w"+msg+"^?");
 						found=true;

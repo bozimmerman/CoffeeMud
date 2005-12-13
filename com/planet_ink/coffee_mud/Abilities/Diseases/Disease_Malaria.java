@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Diseases;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -31,7 +41,7 @@ public class Disease_Malaria extends Disease
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return new Long(9*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).intValue();}
+	protected int DISEASE_TICKS(){return new Long(9*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).intValue();}
 	protected int DISEASE_DELAY(){return 5;}
 	protected String DISEASE_DONE(){return "Your malaria clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with malaria.^?";}
@@ -51,12 +61,12 @@ public class Disease_Malaria extends Disease
 		MOB mob=(MOB)affected;
 		MOB diseaser=invoker;
 		if(diseaser==null) diseaser=mob;
-		if((!mob.amDead())&&((++tickUp)==CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)))
+		if((!mob.amDead())&&((++tickUp)==CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)))
 		{
 			tickUp=0;
 			conDown++;
-			if((Dice.rollPercentage()<20)
-			&&(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_DISEASE)))
+			if((CMLib.dice().rollPercentage()<20)
+			&&(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.SAVE_DISEASE)))
 			{
 				unInvoke();
 				return false;
@@ -66,10 +76,10 @@ public class Disease_Malaria extends Disease
 		{
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());
-			int damage=Dice.roll(2,diseaser.envStats().level()+1,1);
-			MUDFight.postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
+			int damage=CMLib.dice().roll(2,diseaser.envStats().level()+1,1);
+			CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
 			catchIt(mob);
-			if(Dice.rollPercentage()==1)
+			if(CMLib.dice().rollPercentage()==1)
 			{
 				Ability A=CMClass.getAbility("Disease_Fever");
 				if(A!=null) A.invoke(diseaser,mob,true,0);
@@ -92,7 +102,7 @@ public class Disease_Malaria extends Disease
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=affected;
             norecurse=true;
-			MUDFight.postDeath(diseaser,affected,null);
+			CMLib.combat().postDeath(diseaser,affected,null);
             norecurse=false;
 		}
 	}

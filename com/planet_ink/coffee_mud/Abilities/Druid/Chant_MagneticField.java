@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -40,7 +51,7 @@ public class Chant_MagneticField extends Chant
 				Item I=M.fetchInventory(i);
 				if((I!=null)
 				&&(I.container()==null)
-				&&(Sense.isMetal(I))
+				&&(CMLib.flags().isMetal(I))
 				&&(!I.amWearingAt(Item.INVENTORY))
 				&&(!I.amWearingAt(Item.HELD))
 				&&(!I.amWearingAt(Item.WIELD)))
@@ -71,14 +82,14 @@ public class Chant_MagneticField extends Chant
 		&&(affected instanceof MOB))
 		{
 			if((msg.target() instanceof Item)
-			&&(Sense.isMetal(msg.target()))
+			&&(CMLib.flags().isMetal(msg.target()))
 			&&(((MOB)affected).isMine(msg.target())))
 			{
 				msg.source().tell("The magnetic field around "+msg.target().name()+" prevents you from doing that.");
 				return false;
 			}
 			if((msg.tool() instanceof Item)
-			&&(Sense.isMetal(msg.tool()))
+			&&(CMLib.flags().isMetal(msg.tool()))
 			&&(((MOB)affected).isMine(msg.tool())))
 			{
 				msg.source().tell("The magnetic field around "+msg.tool().name()+" prevents you from doing that.");
@@ -100,7 +111,7 @@ public class Chant_MagneticField extends Chant
 		if(canBeUninvoked())
 		{
 			mob.tell("The magnetic field fades!");
-			CommonMsgs.stand(mob,true);
+			CMLib.commands().stand(mob,true);
 		}
 	}
 
@@ -130,7 +141,7 @@ public class Chant_MagneticField extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

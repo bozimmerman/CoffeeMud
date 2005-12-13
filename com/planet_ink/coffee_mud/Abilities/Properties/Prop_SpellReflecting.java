@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -72,7 +83,7 @@ public class Prop_SpellReflecting extends Property
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
-		&&(Dice.rollPercentage()<=chance)
+		&&(CMLib.dice().rollPercentage()<=chance)
 		&&(abilityCode()>0)
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 		{
@@ -92,8 +103,8 @@ public class Prop_SpellReflecting extends Property
 			if(msg.amISource(target)) return true;
 			if(target.location()==null) return true;
 
-			int lvl=CMAble.qualifyingLevel(msg.source(),((Ability)msg.tool()));
-			if(lvl<=0) lvl=CMAble.lowestQualifyingLevel(((Ability)msg.tool()).ID());
+			int lvl=CMLib.ableMapper().qualifyingLevel(msg.source(),((Ability)msg.tool()));
+			if(lvl<=0) lvl=CMLib.ableMapper().lowestQualifyingLevel(((Ability)msg.tool()).ID());
 			if(lvl<=0) lvl=1;
 			if((lvl<minLevel)||(lvl>maxLevel)) return true;
 

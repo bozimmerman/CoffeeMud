@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -77,8 +88,8 @@ public class Song extends StdAbility
 		if((invoker==null)
 		||(invoker.fetchEffect(ID())==null)
 		||(invoker.location()!=mob.location())
-		||(!Sense.aliveAwakeMobile(invoker,true))
-		||(!Sense.canBeHeardBy(invoker,mob)))
+		||(!CMLib.flags().aliveAwakeMobile(invoker,true))
+		||(!CMLib.flags().canBeHeardBy(invoker,mob)))
 		{
 			unsing(mob,null,false);
 			return false;
@@ -108,10 +119,10 @@ public class Song extends StdAbility
 		if((!auto)
 		&&(!mob.isMonster())
 		&&(!disregardsArmorCheck(mob))
-		&&(!CoffeeUtensils.armorCheck(mob,CharClass.ARMOR_LEATHER))
+		&&(!CMLib.utensils().armorCheck(mob,CharClass.ARMOR_LEATHER))
 		&&(mob.isMine(this))
 		&&(mob.location()!=null)
-		&&(Dice.rollPercentage()<50))
+		&&(CMLib.dice().rollPercentage()<50))
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> hit(s) a foul note on "+name()+" due to <S-HIS-HER> armor!");
 			return false;
@@ -120,7 +131,7 @@ public class Song extends StdAbility
 		if(skipStandardSongInvoke())
 			return true;
 
-		if((!auto)&&(!Sense.canSpeak(mob)))
+		if((!auto)&&(!CMLib.flags().canSpeak(mob)))
 		{
 			mob.tell("You can't sing!");
 			return false;
@@ -134,7 +145,7 @@ public class Song extends StdAbility
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
 
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -155,12 +166,12 @@ public class Song extends StdAbility
 					if((quality()==Ability.MALICIOUS)&&(follower!=mob))
 						affectType=affectType|CMMsg.MASK_MALICIOUS;
 
-					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+					if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 					{
-						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
-						FullMsg msg3=msg2;
+						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
+						CMMsg msg3=msg2;
 						if((mindAttack())&&(follower!=mob))
-							msg2=new FullMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+							msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
 						if((mob.location().okMessage(mob,msg2))&&(mob.location().okMessage(mob,msg3)))
 						{
 							follower.location().send(follower,msg2);

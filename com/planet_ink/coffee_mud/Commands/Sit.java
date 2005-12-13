@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -28,14 +39,14 @@ public class Sit extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(Sense.isSitting(mob))
+		if(CMLib.flags().isSitting(mob))
 		{
 			mob.tell(getScr("Movement","siterr1"));
 			return false;
 		}
 		if(commands.size()<=1)
 		{
-			FullMsg msg=new FullMsg(mob,null,null,CMMsg.MSG_SIT,getScr("Movement","sitdown"));
+			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,getScr("Movement","sitdown"));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -45,7 +56,7 @@ public class Sit extends StdCommand
 		if(possibleRideable.length()>0)
 		{
 			E=mob.location().fetchFromRoomFavorItems(null,possibleRideable,Item.WORN_REQ_UNWORNONLY);
-			if((E==null)||(!Sense.canBeSeenBy(E,mob)))
+			if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
 			{
 				mob.tell(getScr("Movement","youdontsee",possibleRideable));
 				return false;
@@ -61,7 +72,7 @@ public class Sit extends StdCommand
 			mountStr=getScr("Movement","sitmounton",((Rideable)E).mountString(CMMsg.TYP_SIT,mob));
 		else
 			mountStr=getScr("Movement","sitson");
-		FullMsg msg=new FullMsg(mob,E,null,CMMsg.MSG_SIT,mountStr);
+		CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SIT,mountStr);
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;

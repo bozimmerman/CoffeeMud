@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -29,7 +40,7 @@ public class Drop extends BaseItemParser
 
 	public static boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)
 	{
-		FullMsg msg=new FullMsg(mob,dropThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_DROP,quiet?null:"<S-NAME> drop(s) <T-NAME>.");
+		CMMsg msg=CMClass.getMsg(mob,dropThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_DROP,quiet?null:"<S-NAME> drop(s) <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -67,13 +78,13 @@ public class Drop extends BaseItemParser
         // uncommenting this allows dropping directly from containers
         // "drop all sack" will no longer drop all of your "sack", but will drop 
         // all of the contents of your 1.sack, leaving the sack in inventory.
-		//container=EnglishParser.possibleContainer(mob,commands,true,Item.WORN_REQ_UNWORNONLY);
+		//container=CMLib.english().possibleContainer(mob,commands,true,Item.WORN_REQ_UNWORNONLY);
 
 
 		int maxToDrop=Integer.MAX_VALUE;
 		if((commands.size()>1)
 		&&(Util.s_int((String)commands.firstElement())>0)
-		&&(EnglishParser.numPossibleGold(mob,Util.combine(commands,0))==0))
+		&&(CMLib.english().numPossibleGold(mob,Util.combine(commands,0))==0))
 		{
 			maxToDrop=Util.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
@@ -86,12 +97,12 @@ public class Drop extends BaseItemParser
 		int addendum=1;
 		String addendumStr="";
         boolean onlyGoldFlag=hasOnlyGoldInInventory(mob);
-        Item dropThis=EnglishParser.bestPossibleGold(mob,null,whatToDrop);
+        Item dropThis=CMLib.english().bestPossibleGold(mob,null,whatToDrop);
         if(dropThis!=null)
         {
-            if(((Coins)dropThis).getNumberOfCoins()<EnglishParser.numPossibleGold(mob,whatToDrop+addendumStr))
+            if(((Coins)dropThis).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,whatToDrop+addendumStr))
                 return false;
-            if(Sense.canBeSeenBy(dropThis,mob))
+            if(CMLib.flags().canBeSeenBy(dropThis,mob))
                 V.addElement(dropThis);
         }
         if(V.size()==0)
@@ -112,7 +123,7 @@ public class Drop extends BaseItemParser
 						mob.tell("You must remove that first.");
 						return false;
 					}
-					FullMsg newMsg=new FullMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
+					CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
 					if(mob.location().okMessage(mob,newMsg))
 						mob.location().send(mob,newMsg);
 					else
@@ -124,7 +135,7 @@ public class Drop extends BaseItemParser
             else
             {
     			if(dropThis==null) break;
-    			if((Sense.canBeSeenBy(dropThis,mob)||(dropThis instanceof Light))
+    			if((CMLib.flags().canBeSeenBy(dropThis,mob)||(dropThis instanceof Light))
     			&&(!V.contains(dropThis)))
     				V.addElement(dropThis);
             }

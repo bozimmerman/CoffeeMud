@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.SlaveryLibrary;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -23,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Skill_Enslave extends StdAbility
+public class Skill_Enslave extends StdSkill
 {
 	public String ID() { return "Skill_Enslave"; }
 	public String name(){ return "Enslave";}
@@ -35,7 +46,7 @@ public class Skill_Enslave extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	
 	private MOB myMaster=null;
-	private EnglishParser.geasSteps STEPS=null;
+	private SlaveryLibrary.geasSteps STEPS=null;
 	private int masterAnger=0;
 	private int speedDown=0;
 	private final static int HUNGERTICKMAX=4;
@@ -67,7 +78,7 @@ public class Skill_Enslave extends StdAbility
 		&&((msg.value())>0))
 		{
 		    masterAnger+=10;
-			MUDFight.postPanic(mob,msg);
+			CMLib.combat().postPanic(mob,msg);
 		}
 		else
 		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
@@ -89,7 +100,7 @@ public class Skill_Enslave extends StdAbility
 					        Vector V=Util.parse(response.toUpperCase());
 					        if(V.contains("STOP")||V.contains("CANCEL"))
 					        {
-					            CommonMsgs.say(mob,msg.source(),"Yes master.",false,false);
+					            CMLib.commands().say(mob,msg.source(),"Yes master.",false,false);
 					            return;
 					        }
 					    }
@@ -114,7 +125,7 @@ public class Skill_Enslave extends StdAbility
 						    String response=msg.sourceMessage().substring(start+1,end);
 						    if((response.toUpperCase().startsWith("I COMMAND YOU TO "))
 						    ||(response.toUpperCase().startsWith("I ORDER YOU TO ")))
-					            CommonMsgs.say(mob,msg.source(),"I don't take orders from you. ",false,false);
+					            CMLib.commands().say(mob,msg.source(),"I don't take orders from you. ",false,false);
 						}
 				    }
 				    else
@@ -131,21 +142,21 @@ public class Skill_Enslave extends StdAbility
 						        response=response.substring(("I ORDER YOU TO ").length());
 						    else
 						    {
-					            CommonMsgs.say(mob,msg.source(),"Master, please begin your instruction with the words 'I command you to '.  You can also tell me to 'stop' or 'cancel' any order you give.",false,false);
+					            CMLib.commands().say(mob,msg.source(),"Master, please begin your instruction with the words 'I command you to '.  You can also tell me to 'stop' or 'cancel' any order you give.",false,false);
 					            return;
 						    }
-							STEPS=EnglishParser.processRequest(msg.source(),mob,response);
+							STEPS=CMLib.slavery().processRequest(msg.source(),mob,response);
 							if((STEPS!=null)&&(STEPS.size()>0))
-					            CommonMsgs.say(mob,msg.source(),"Yes master.",false,false);
+					            CMLib.commands().say(mob,msg.source(),"Yes master.",false,false);
 							else
-					            CommonMsgs.say(mob,msg.source(),"Huh? Wuh?",false,false);
+					            CMLib.commands().say(mob,msg.source(),"Huh? Wuh?",false,false);
 						}
 					}
 		    	}
 			    else
 		        if((msg.tool() instanceof Ability)
 				&&(((Ability)msg.tool()).classificationCode()==Ability.LANGUAGE))
-		            CommonMsgs.say(mob,msg.source(),"I don't understand your words.",false,false);
+		            CMLib.commands().say(mob,msg.source(),"I don't understand your words.",false,false);
 			}
 		}
 		else
@@ -153,7 +164,7 @@ public class Skill_Enslave extends StdAbility
 		{
 			Room room=mob.location();
 			if((room!=lastRoom)
-			&&(CoffeeUtensils.doesHavePriviledgesHere(myMaster,room))
+			&&(CMLib.utensils().doesHavePriviledgesHere(myMaster,room))
 			&&(room.isInhabitant(mob)))
 			{
 				lastRoom=room;
@@ -188,9 +199,9 @@ public class Skill_Enslave extends StdAbility
 		    {
 		        hungerTickDown=HUNGERTICKMAX;
 		        mob.curState().expendEnergy(mob,mob.maxState(),false);
-		        if((!mob.isInCombat())&&(Dice.rollPercentage()==1)&&(Dice.rollPercentage()<(masterAnger/10)))
+		        if((!mob.isInCombat())&&(CMLib.dice().rollPercentage()==1)&&(CMLib.dice().rollPercentage()<(masterAnger/10)))
 		        {
-		            if(myMaster==null) myMaster=CMMap.getPlayer(text());
+		            if(myMaster==null) myMaster=CMLib.map().getPlayer(text());
 		            if((myMaster!=null)&&(mob.location().isInhabitant(myMaster)))
 		            {
 		                mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,"<S-NAME> rebel(s) against <T-NAMESELF>!");
@@ -203,13 +214,13 @@ public class Skill_Enslave extends StdAbility
 		                mob.recoverEnvStats();
 		                mob.resetToMaxState();
 		                mob.setFollowing(null);
-		                MUDFight.postAttack(mob,master,mob.fetchWieldedItem());
+		                CMLib.combat().postAttack(mob,master,mob.fetchWieldedItem());
 		            }
 		            else
-		            if(Dice.rollPercentage()<50)
+		            if(CMLib.dice().rollPercentage()<50)
 		            {
 		                mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,"<S-NAME> escape(s) <T-NAMESELF>!");
-		                MUDTracker.beMobile(mob,true,true,false,false,null,null);
+		                CMLib.tracking().beMobile(mob,true,true,false,false,null,null);
 		            }
 		        }
 	            if(mob.curState().getHunger()<=0)
@@ -222,7 +233,7 @@ public class Skill_Enslave extends StdAbility
 	                    { f=(Food)I; break;}
 	                }
 	                if(f==null)
-		                CommonMsgs.say(mob,null,"I am hungry.",false,false);  
+		                CMLib.commands().say(mob,null,"I am hungry.",false,false);  
 	                else
 	                {
 	                    Command C=CMClass.getCommand("Eat");
@@ -239,7 +250,7 @@ public class Skill_Enslave extends StdAbility
 	                    { d=(Drink)I; break;}
 	                }
 	                if(d==null)
-	                    CommonMsgs.say(mob,null,"I am thirsty.",false,false);
+	                    CMLib.commands().say(mob,null,"I am thirsty.",false,false);
 	                else
 	                {
 	                    Command C=CMClass.getCommand("Drink");
@@ -250,7 +261,7 @@ public class Skill_Enslave extends StdAbility
 			if(!mob.getLiegeID().equals(text()))
 			{
 			    mob.setLiegeID(text());
-	            if(myMaster==null) myMaster=CMMap.getPlayer(text());
+	            if(myMaster==null) myMaster=CMLib.map().getPlayer(text());
 	            if(myMaster!=null) mob.setClanID(myMaster.getClanID());
 			}
 		    if(STEPS!=null)
@@ -267,7 +278,7 @@ public class Skill_Enslave extends StdAbility
 					&&(!mob.amDead())
 					&&(mob.location()!=null)
 					&&(mob.location()!=mob.getStartRoom()))
-						MUDTracker.wanderAway(mob,true,true);
+						CMLib.tracking().wanderAway(mob,true,true);
 					unInvoke();
 					return !canBeUninvoked();
 				}
@@ -282,7 +293,7 @@ public class Skill_Enslave extends StdAbility
 		if(mob.isMonster())
 		{
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> sigh(s).");
-			CommonMsgs.say(mob,null,"You know, if I had any ambitions, I would enslave myself so I could do interesting things!",false,false);
+			CMLib.commands().say(mob,null,"You know, if I had any ambitions, I would enslave myself so I could do interesting things!",false,false);
 			return false;
 		}
 
@@ -299,7 +310,7 @@ public class Skill_Enslave extends StdAbility
 			return false;
 		}
 		
-		if((!Sense.isBoundOrHeld(target))&&(target.fetchEffect(ID())==null))
+		if((!CMLib.flags().isBoundOrHeld(target))&&(target.fetchEffect(ID())==null))
 		{
 		    mob.tell(target.name()+" must be bound first.");
 		    return false;
@@ -313,7 +324,7 @@ public class Skill_Enslave extends StdAbility
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISE,auto?"":"^S<S-NAME> enslave(s) <T-NAMESELF>!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISE,auto?"":"^S<S-NAME> enslave(s) <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

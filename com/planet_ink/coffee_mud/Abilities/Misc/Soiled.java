@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Misc;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -57,8 +68,8 @@ public class Soiled extends StdAbility
 				MOB following=((MOB)E).amFollowing();
 				if((following!=null)
 				&&(following.location()==mob.location())
-                &&(Sense.isInTheGame(E,true))
-			    &&(Sense.canBeSeenBy(mob,following)))
+                &&(CMLib.flags().isInTheGame(E,true))
+			    &&(CMLib.flags().canBeSeenBy(mob,following)))
 					following.tell(E.name()+" is longer soiled.");
 		    }
 		    else
@@ -98,7 +109,7 @@ public class Soiled extends StdAbility
 	    &&(msg.targetMinor()==CMMsg.TYP_SNIFF))
 	    {
 	        String smell=null;
-	        switch(Dice.roll(1,5,0))
+	        switch(CMLib.dice().roll(1,5,0))
 	        {
 		        case 1: smell="<T-NAME> is stinky!"; break;
 		        case 2: smell="<T-NAME> smells like poo."; break;
@@ -106,7 +117,7 @@ public class Soiled extends StdAbility
 		        case 4: smell="Whew! <T-NAME> stinks!"; break;
 		        case 5: smell="<T-NAME> must have let one go!"; break;
 	        }
-	        if((Sense.canSmell(msg.source()))&&(smell!=null))
+	        if((CMLib.flags().canSmell(msg.source()))&&(smell!=null))
 	            msg.source().tell(msg.source(),affected,null,smell);
 	    }
 	}
@@ -114,10 +125,10 @@ public class Soiled extends StdAbility
 	public boolean tick(Tickable ticking, int tickID)
 	{
 	    if(affected!=null)
-	    if(Dice.rollPercentage()==1)
+	    if(CMLib.dice().rollPercentage()==1)
 	    {
 	        Environmental E=affected;
-	        Room R=CoffeeUtensils.roomLocation(E);
+	        Room R=CMLib.utensils().roomLocation(E);
 	        if(R!=null)
 	        {
 	            MOB M=(E instanceof MOB)?(MOB)E:null;
@@ -139,7 +150,7 @@ public class Soiled extends StdAbility
 	                M.recoverCharStats();
 	            }
 	            String smell=null;
-	            switch(Dice.roll(1,5,0))
+	            switch(CMLib.dice().roll(1,5,0))
 	            {
 	            case 1: smell="<S-NAME> is stinky!"; break;
 	            case 2: smell="<S-NAME> smells like poo."; break;
@@ -149,12 +160,12 @@ public class Soiled extends StdAbility
 	            }
 	            if(smell!=null)
 	            {
-	                FullMsg msg=new FullMsg(M,null,null,CMMsg.TYP_EMOTE|CMMsg.MASK_GENERAL,smell);
+	                CMMsg msg=CMClass.getMsg(M,null,null,CMMsg.TYP_EMOTE|CMMsg.MASK_GENERAL,smell);
 	                if(R.okMessage(M,msg))
 		            for(int m=0;m<R.numInhabitants();m++)
 		            {
 		                MOB mob=R.fetchInhabitant(m);
-		                if(Sense.canSmell(mob))
+		                if(CMLib.flags().canSmell(mob))
 		                    mob.executeMsg(mob,msg);
 		            }
 	            }

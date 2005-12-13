@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.Vector;
 
@@ -92,7 +102,7 @@ public class Property implements Ability
 	public boolean isBorrowed(Environmental toMe){ return borrowed;	}
 	public void setBorrowed(Environmental toMe, boolean truefalse)	{ borrowed=truefalse; }
 
-	protected static final EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+	protected static final EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	public EnvStats envStats(){return envStats;}
 	public EnvStats baseEnvStats(){return envStats;}
     protected void finalize(){ CMClass.unbumpCounter(CMClass.OBJECT_ABILITY); }
@@ -234,7 +244,7 @@ public class Property implements Ability
         {
             String maskStr=newText.substring(maskindex+5).trim();
             if(maskStr.length()>0)
-                Util.addToVector(MUDZapper.zapperCompile(maskStr),mask);
+                Util.addToVector(CMLib.masking().maskCompile(maskStr),mask);
             newText=newText.substring(0,maskindex).trim();
         }
         return newText;

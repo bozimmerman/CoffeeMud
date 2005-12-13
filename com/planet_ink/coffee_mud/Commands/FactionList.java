@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /**
  * <p>Portions Copyright (c) 2003 Jeremy Vyska</p>
@@ -32,8 +43,8 @@ public class FactionList extends StdCommand
         boolean none=true;
         for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) {
             String name=(String)e.nextElement();
-            Faction F=Factions.getFaction(name);
-            if((F!=null)&&(F.showinfactionscommand))
+            Faction F=CMLib.factions().getFaction(name);
+            if((F!=null)&&(F.showinfactionscommand()))
             {
                 none=false;
                 msg.append(formatFactionLine(name,mob.fetchFaction(name)));
@@ -50,12 +61,12 @@ public class FactionList extends StdCommand
     public String formatFactionLine(String name,int faction) 
     {
         StringBuffer line=new StringBuffer();
-        line.append("  "+Util.padRight(Util.capitalizeAndLower(Factions.getName(name).toLowerCase()),21)+" ");
-        Faction.FactionRange FR=Factions.getRange(name,faction);
+        line.append("  "+Util.padRight(Util.capitalizeAndLower(CMLib.factions().getName(name).toLowerCase()),21)+" ");
+        Faction.FactionRange FR=CMLib.factions().getRange(name,faction);
         if(FR==null)
 	        line.append(Util.padRight(""+faction,17)+" ");
         else
-	        line.append(Util.padRight(FR.Name,17)+" ");
+	        line.append(Util.padRight(FR.name(),17)+" ");
         line.append("[");
         line.append(Util.padRight(calcRangeBar(name,faction),25));
         line.append("]\n\r");
@@ -65,7 +76,7 @@ public class FactionList extends StdCommand
     public String calcRangeBar(String factionID, int faction) 
     {
 		StringBuffer bar=new StringBuffer();
-        Double fill=new Double(Util.div(Factions.getRangePercent(factionID,faction),4));
+        Double fill=new Double(Util.div(CMLib.factions().getRangePercent(factionID,faction),4));
         for(int i=0;i<fill.intValue();i++) 
         {
             bar.append("*");

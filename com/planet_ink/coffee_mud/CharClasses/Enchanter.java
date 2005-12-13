@@ -1,6 +1,18 @@
 package com.planet_ink.coffee_mud.CharClasses;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -35,17 +47,17 @@ public class Enchanter extends SpecialistMage
 		if(!myAbilitiesLoaded)
 		{
 			myAbilitiesLoaded=true;
-			CMAble.addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
-			CMAble.addCharAbilityMapping(ID(),5,"Spell_Fatigue",25,true);
-			CMAble.addCharAbilityMapping(ID(),7,"Spell_ManaBurn",25,true);
-			CMAble.addCharAbilityMapping(ID(),10,"Spell_MindLight",25,"",false,true);
-			CMAble.addCharAbilityMapping(ID(),14,"Spell_Alarm",25,true);
-			CMAble.addCharAbilityMapping(ID(),16,"Spell_MindFog",25,true);
-			CMAble.addCharAbilityMapping(ID(),18,"Spell_Enthrall",25,true);
-			CMAble.addCharAbilityMapping(ID(),20,"Spell_Brainwash",0,"",false,true);
-			CMAble.addCharAbilityMapping(ID(),23,"Spell_LowerResists",25,true);
-			CMAble.addCharAbilityMapping(ID(),25,"Spell_RogueLimb",25,true);
-			CMAble.addCharAbilityMapping(ID(),30,"Spell_Permanency",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_Fatigue",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Spell_ManaBurn",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_MindLight",25,"",false,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_Alarm",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_MindFog",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_Enthrall",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_Brainwash",0,"",false,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_LowerResists",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_RogueLimb",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_Permanency",true);
 		}
 	}
 }

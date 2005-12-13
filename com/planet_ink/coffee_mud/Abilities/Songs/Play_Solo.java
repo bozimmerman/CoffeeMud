@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -43,7 +54,7 @@ public class Play_Solo extends Play
 			&&(((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SONG)))
 			{
 				MOB otherBard=msg.source();
-				if(((otherBard.envStats().level()+Dice.roll(1,30,0))>(myChar.envStats().level()+Dice.roll(1,20,0)))
+				if(((otherBard.envStats().level()+CMLib.dice().roll(1,30,0))>(myChar.envStats().level()+CMLib.dice().roll(1,20,0)))
 				&&(otherBard.location()!=null))
 				{
 					if(otherBard.location().show(otherBard,myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> upstage(s) <T-NAMESELF>, stopping <T-HIS-HER> solo!"))
@@ -75,7 +86,7 @@ public class Play_Solo extends Play
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) playing "+songOf()+" on "+instrumentName()+" again.^?";
 
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

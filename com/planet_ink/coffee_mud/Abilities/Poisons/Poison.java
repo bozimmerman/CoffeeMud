@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Poisons;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -44,7 +55,7 @@ public class Poison extends StdAbility
 	protected String POISON_AFFECT(){return "<S-NAME> cringe(s) as the poison courses through <S-HIS-HER> blood.";}
 	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> attempt(s) to poison <T-NAMESELF>!^</FIGHT^>^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
-	protected int POISON_DAMAGE(){return (invoker!=null)?Dice.roll(invoker().envStats().level(),3,1):0;}
+	protected int POISON_DAMAGE(){return (invoker!=null)?CMLib.dice().roll(invoker().envStats().level(),3,1):0;}
 	private boolean processing=false;
 
 	protected int poisonTick=3;
@@ -89,13 +100,13 @@ public class Poison extends StdAbility
 		{
 			poisonTick=POISON_DELAY();
 			if(POISON_AFFECT().length()>0)
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,POISON_AFFECT()+CommonStrings.msp("poisoned.wav",10));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,POISON_AFFECT()+CMProps.msp("poisoned.wav",10));
 			if(invoker==null) invoker=mob;
 			if(POISON_DAMAGE()!=0)
             {
-				MUDFight.postDamage(invoker,mob,this,POISON_DAMAGE(),CMMsg.MASK_GENERAL|CMMsg.TYP_POISON,-1,null);
-                if((!mob.isInCombat())&&(mob!=invoker)&&(mob.location()!=null)&&(mob.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,mob)))
-                    MUDFight.postAttack(mob,invoker,mob.fetchWieldedItem());
+				CMLib.combat().postDamage(invoker,mob,this,POISON_DAMAGE(),CMMsg.MASK_GENERAL|CMMsg.TYP_POISON,-1,null);
+                if((!mob.isInCombat())&&(mob!=invoker)&&(mob.location()!=null)&&(mob.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,mob)))
+                    CMLib.combat().postAttack(mob,invoker,mob.fetchWieldedItem());
             }
 		}
 		return true;
@@ -198,8 +209,8 @@ public class Poison extends StdAbility
 		if(success)
 		{
 			String str=auto?"":POISON_CAST();
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON|(auto?CMMsg.MASK_GENERAL:0),str);
-            CMColor.fixSourceFightColor(msg);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON|(auto?CMMsg.MASK_GENERAL:0),str);
+            CMLib.color().fixSourceFightColor(msg);
 			Room R=mob.location();
 			if((target instanceof MOB)&&(((MOB)target).location()!=null))
 				R=((MOB)target).location();

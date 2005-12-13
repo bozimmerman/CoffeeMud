@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -44,7 +55,7 @@ public class Chant_PlantConstriction extends Chant
 		{
 			MOB mob=(MOB)I.owner();
 			if((!mob.amDead())
-			&&(Sense.isInTheGame(mob,false)))
+			&&(CMLib.flags().isInTheGame(mob,false)))
 			{
 				mob.tell(I.name()+" loosens its grip on you and falls off.");
 				I.setRawWornCode(0);
@@ -64,8 +75,8 @@ public class Chant_PlantConstriction extends Chant
 			MOB mob=(MOB)I.owner();
 			if((!mob.amDead())
 			&&(mob.isMonster())
-			&&(Sense.isInTheGame(mob,false)))
-				CommonMsgs.remove(mob,I,false);
+			&&(CMLib.flags().isInTheGame(mob,false)))
+				CMLib.commands().remove(mob,I,false);
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -78,7 +89,7 @@ public class Chant_PlantConstriction extends Chant
 		&&(affected instanceof Item)
 		&&(((Item)affected).amWearingAt(Item.ON_LEGS)||((Item)affected).amWearingAt(Item.ON_ARMS)))
 		{
-			if(Dice.rollPercentage()>(msg.source().charStats().getStat(CharStats.STRENGTH)*4))
+			if(CMLib.dice().rollPercentage()>(msg.source().charStats().getStat(CharStats.STRENGTH)*4))
 			{
 				msg.source().location().show(msg.source(),affected,CMMsg.MSG_OK_VISUAL,"<S-NAME> struggle(s) to remove <T-NAME> and fail(s).");
 				return false;
@@ -145,12 +156,12 @@ public class Chant_PlantConstriction extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),auto?"":"^S<S-NAME> chant(s) at <T-NAME> while pointing at "+myPlant.name()+"!^?");
+			CMMsg msg = CMClass.getMsg(mob, target, this,affectType(auto),auto?"":"^S<S-NAME> chant(s) at <T-NAME> while pointing at "+myPlant.name()+"!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				target.giveItem(myPlant);
-				Long II=(Long)positionChoices.elementAt(Dice.roll(1,positionChoices.size(),-1));
+				Long II=(Long)positionChoices.elementAt(CMLib.dice().roll(1,positionChoices.size(),-1));
 				myPlant.setRawWornCode(II.longValue());
 				if(II.longValue()==Item.ON_ARMS)
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,myPlant.name()+" jumps up and wraps itself around <S-YOUPOSS> arms!");

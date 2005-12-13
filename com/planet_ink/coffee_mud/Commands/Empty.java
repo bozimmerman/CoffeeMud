@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -55,7 +66,7 @@ public class Empty extends BaseItemParser
 			if(s.equalsIgnoreCase("ground")) target=mob.location();
 			else
 			{
-				target=EnglishParser.possibleContainer(mob,commands,false,Item.WORN_REQ_UNWORNONLY);
+				target=CMLib.english().possibleContainer(mob,commands,false,Item.WORN_REQ_UNWORNONLY);
 				if(target==null) 
 					target=mob.location().fetchFromRoomFavorItems(null,s,Item.WORN_REQ_UNWORNONLY);
 				else
@@ -65,7 +76,7 @@ public class Empty extends BaseItemParser
 				commands.removeElementAt(commands.size()-1);
 		}
 		
-		if((target==null)||(!Sense.canBeSeenBy(target,mob)))
+		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("Empty it where?");
 			return false;
@@ -74,7 +85,7 @@ public class Empty extends BaseItemParser
 		int maxToDrop=Integer.MAX_VALUE;
 		if((commands.size()>1)
 		&&(Util.s_int((String)commands.firstElement())>0)
-		&&(EnglishParser.numPossibleGold(mob,Util.combine(commands,0))==0))
+		&&(CMLib.english().numPossibleGold(mob,Util.combine(commands,0))==0))
 		{
 			maxToDrop=Util.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
@@ -103,7 +114,7 @@ public class Empty extends BaseItemParser
 						mob.tell("You must remove that first.");
 						return false;
 					}
-					FullMsg newMsg=new FullMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
+					CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
 					if(mob.location().okMessage(mob,newMsg))
 						mob.location().send(mob,newMsg);
 					else
@@ -113,7 +124,7 @@ public class Empty extends BaseItemParser
 			if(dropThis==null) break;
 			if(dropThis instanceof Drink)
 				drink=(Drink)dropThis;
-			if((Sense.canBeSeenBy(dropThis,mob))
+			if((CMLib.flags().canBeSeenBy(dropThis,mob))
 			&&(dropThis instanceof Container)
 			&&(!V.contains(dropThis)))
 				V.addElement(dropThis);
@@ -161,7 +172,7 @@ public class Empty extends BaseItemParser
                         C.destroy();
                 }
             }
-			FullMsg msg=new FullMsg(mob,C,CMMsg.MSG_QUIETMOVEMENT,str);
+			CMMsg msg=CMClass.getMsg(mob,C,CMMsg.MSG_QUIETMOVEMENT,str);
 			if(skipMessage||(mob.location().okMessage(mob,msg)))
 			{
                 if(!skipMessage) mob.location().send(mob,msg);
@@ -177,7 +188,7 @@ public class Empty extends BaseItemParser
 						else
 						if(target instanceof Container)
 						{
-							FullMsg putMsg=new FullMsg(mob,target,I,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,null);
+							CMMsg putMsg=CMClass.getMsg(mob,target,I,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,null);
 							if(mob.location().okMessage(mob,putMsg))
 								mob.location().send(mob,putMsg);
 						}

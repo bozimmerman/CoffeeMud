@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -37,17 +48,17 @@ public class Prayer_MoralBalance extends Prayer
 
         
 		boolean success=profficiencyCheck(mob,0,auto);
-        FullMsg msg2=null;
+        CMMsg msg2=null;
         if((mob!=target)&&(!mob.getGroupMembers(new HashSet()).contains(target)))
-            msg2=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,"<T-NAME> does not seem to like <S-NAME> messing with <T-HIS-HER> head.");
+            msg2=CMClass.getMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,"<T-NAME> does not seem to like <S-NAME> messing with <T-HIS-HER> head.");
 
-		if((success)&&(Factions.getFaction(Factions.AlignID())!=null))
+		if((success)&&(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null))
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"<T-NAME> feel(s) completely different about the world.":"^S<S-NAME> "+prayWord(mob)+" to bring balance to <T-NAMESELF>!^?"));
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),(auto?"<T-NAME> feel(s) completely different about the world.":"^S<S-NAME> "+prayWord(mob)+" to bring balance to <T-NAMESELF>!^?"));
 			if((mob.location().okMessage(mob,msg))
             &&((msg2==null)||(mob.location().okMessage(mob,msg2))))
 			{
@@ -55,9 +66,9 @@ public class Prayer_MoralBalance extends Prayer
                 if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
 				{
 					target.tell("Your views on the world suddenly change.");
-                    Faction F=Factions.getFaction(Factions.AlignID());
+                    Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
                     if(F!=null)
-	                    target.addFaction(Factions.AlignID(),(int)Math.round(Util.div((F.maximum-F.minimum)-target.fetchFaction(Factions.AlignID()),2)));
+	                    target.addFaction(CMLib.factions().AlignID(),(int)Math.round(Util.div((F.maximum()-F.minimum())-target.fetchFaction(CMLib.factions().AlignID()),2)));
 				}
                 if(msg2!=null) mob.location().send(mob,msg2);
 			}

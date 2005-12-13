@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -37,7 +48,7 @@ public class Spell_WardArea extends Spell implements Trap
 	{
 		if(invoker()!=null) return invoker();
 		if(text().length()>0)
-			invoker=CMMap.getPlayer(text());
+			invoker=CMLib.map().getPlayer(text());
 		return invoker();
 	}
 
@@ -85,7 +96,7 @@ public class Spell_WardArea extends Spell implements Trap
 			return;
 		if((shooter==null)||(parameters==null))
 			return;
-		if(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
+		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) a magical ward trap.");
 		else
 		{
@@ -147,7 +158,7 @@ public class Spell_WardArea extends Spell implements Trap
 			return false;
 		}
 		commands.insertElementAt("CAST",0);
-		shooter=EnglishParser.getToEvoke(mob,commands);
+		shooter=CMLib.english().getToEvoke(mob,commands);
 		parameters=commands;
 		if((shooter==null)||((shooter.classificationCode()&Ability.ALL_CODES)!=Ability.SPELL))
 		{
@@ -176,7 +187,7 @@ public class Spell_WardArea extends Spell implements Trap
 		Environmental target = mob.location();
 		if((target.fetchEffect(this.ID())!=null)||(givenTarget!=null))
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"A ward trap has already been set here!");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"A ward trap has already been set here!");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -191,15 +202,15 @@ public class Spell_WardArea extends Spell implements Trap
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), auto?"":"^S<S-NAME> set(s) a magical trap.^?");
+			CMMsg msg = CMClass.getMsg(mob, target, this, affectType(auto), auto?"":"^S<S-NAME> set(s) a magical trap.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
-				if(CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
+				if(CMLib.utensils().doesOwnThisProperty(mob,mob.location()))
 				{
 					mob.location().addNonUninvokableEffect((Ability)copyOf());
-					CMClass.DBEngine().DBUpdateRoom(mob.location());
+					CMLib.database().DBUpdateRoom(mob.location());
 				}
 				else
 					beneficialAffect(mob,mob.location(),asLevel,9999);

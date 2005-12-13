@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -40,12 +51,12 @@ public class Serve extends StdCommand
 			mob.tell("You may not serve "+recipient.name()+".");
 			return false;
 		}
-		if((recipient==null)||((recipient!=null)&&(!Sense.canBeSeenBy(recipient,mob))))
+		if((recipient==null)||((recipient!=null)&&(!CMLib.flags().canBeSeenBy(recipient,mob))))
 		{
 			mob.tell("I don't see "+Util.combine(commands,0)+" here.");
 			return false;
 		}
-		FullMsg msg=new FullMsg(mob,recipient,null,CMMsg.MSG_SERVE,"<S-NAME> swear(s) fealty to <T-NAMESELF>.");
+		CMMsg msg=CMClass.getMsg(mob,recipient,null,CMMsg.MSG_SERVE,"<S-NAME> swear(s) fealty to <T-NAMESELF>.");
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;

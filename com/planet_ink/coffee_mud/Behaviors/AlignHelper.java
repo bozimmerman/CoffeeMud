@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -45,14 +56,14 @@ public class AlignHelper extends StdBehavior
 		if((source!=observer)
 		&&(target!=observer)
 		&&(source!=target)
-		&&(Sense.canBeSeenBy(source,observer))
-		&&(Sense.canBeSeenBy(target,observer))
+		&&(CMLib.flags().canBeSeenBy(source,observer))
+		&&(CMLib.flags().canBeSeenBy(target,observer))
 		&&(!BrotherHelper.isBrother(source,observer))
 		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
-	    &&( (Sense.isEvil(target)&&Sense.isEvil(observer))||(Sense.isNeutral(target)&&Sense.isNeutral(observer))||(Sense.isGood(target)&&Sense.isGood(observer))))
+	    &&( (CMLib.flags().isEvil(target)&&CMLib.flags().isEvil(observer))||(CMLib.flags().isNeutral(target)&&CMLib.flags().isNeutral(observer))||(CMLib.flags().isGood(target)&&CMLib.flags().isGood(observer))))
 		{
 			boolean yep=Aggressive.startFight(observer,source,true);
-			if(yep)	CommonMsgs.say(observer,null,Sense.getAlignmentName(observer)+" PEOPLE UNITE! CHARGE!",false,false);
+			if(yep)	CMLib.commands().say(observer,null,CMLib.flags().getAlignmentName(observer)+" PEOPLE UNITE! CHARGE!",false,false);
 		}
 	}
 }

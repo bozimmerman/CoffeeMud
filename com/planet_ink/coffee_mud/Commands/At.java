@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -34,20 +45,20 @@ public class At extends StdCommand
 		if(dirCode>=0)
 			room=mob.location().rawDoors()[dirCode];
 		if(room==null)
-			room = CMMap.getRoom(cmd.toString());
+			room = CMLib.map().getRoom(cmd.toString());
 		if(room==null)
 		{
 			if((cmd.charAt(0)=='#')&&(curRoom!=null))
 			{
 				cmd.insert(0,curRoom.getArea().Name());
-				room = CMMap.getRoom(cmd.toString());
+				room = CMLib.map().getRoom(cmd.toString());
 			}
 			else
 			{
                 String srchStr=cmd.toString();
-				for(int s=0;s<Sessions.size();s++)
+				for(int s=0;s<CMLib.sessions().size();s++)
 				{
-					Session thisSession=Sessions.elementAt(s);
+					Session thisSession=CMLib.sessions().elementAt(s);
 					if((thisSession.mob()!=null) && (!thisSession.killFlag())
 					&&(thisSession.mob().location()!=null)
 					&&(thisSession.mob().name().equalsIgnoreCase(srchStr)))
@@ -57,12 +68,12 @@ public class At extends StdCommand
 					}
 				}
 				if(room==null)
-					for(int s=0;s<Sessions.size();s++)
+					for(int s=0;s<CMLib.sessions().size();s++)
 					{
-						Session thisSession=Sessions.elementAt(s);
+						Session thisSession=CMLib.sessions().elementAt(s);
 						if((thisSession.mob()!=null)&&(!thisSession.killFlag())
 						&&(thisSession.mob().location()!=null)
-						&&(EnglishParser.containsString(thisSession.mob().name(),srchStr)))
+						&&(CMLib.english().containsString(thisSession.mob().name(),srchStr)))
 						{
 							room = thisSession.mob().location();
 							break;
@@ -74,7 +85,7 @@ public class At extends StdCommand
 					MOB target=null;
 					try
 					{
-						for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 						{
 							Room R=(Room)r.nextElement();
 							target=R.fetchInhabitant(srchStr);
@@ -85,13 +96,13 @@ public class At extends StdCommand
 				    catch(NoSuchElementException e){}
 					if(candidates.size()>0)
 					{
-						target=(MOB)candidates.elementAt(Dice.roll(1,candidates.size(),-1));
+						target=(MOB)candidates.elementAt(CMLib.dice().roll(1,candidates.size(),-1));
 						room=target.location();
 					}
 				}
                 if(room==null)
                 {
-                    for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+                    for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
                     {
                         Area A=(Area)a.nextElement();
                         if((A.Name().equalsIgnoreCase(srchStr))
@@ -106,10 +117,10 @@ public class At extends StdCommand
                 }
 				if(room==null)
 				{
-					for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+					for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 					{
 						Area A=(Area)a.nextElement();
-						if((EnglishParser.containsString(A.name(),srchStr))
+						if((CMLib.english().containsString(A.name(),srchStr))
 						&&(A.properSize()>0))
 						{
 							int tries=0;
@@ -122,10 +133,10 @@ public class At extends StdCommand
 				if(room==null)
 				{
 					String areaName=srchStr.toUpperCase();
-					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
-						if(EnglishParser.containsString(R.displayText(),areaName))
+						if(CMLib.english().containsString(R.displayText(),areaName))
 						{
 						   room=R;
 						   break;
@@ -135,10 +146,10 @@ public class At extends StdCommand
 					{
 					    try
 					    {
-							for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+							for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 							{
 								Room R=(Room)r.nextElement();
-								if(EnglishParser.containsString(R.description(),areaName))
+								if(CMLib.english().containsString(R.description(),areaName))
 								{
 								   room=R;
 								   break;
@@ -152,7 +163,7 @@ public class At extends StdCommand
 						Item target=null;
 						try
 						{
-							for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+							for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 							{
 								Room R=(Room)r.nextElement();
 								target=R.fetchItem(null,srchStr);
@@ -162,7 +173,7 @@ public class At extends StdCommand
 					    }catch(NoSuchElementException e){}
 						if(candidates.size()>0)
 						{
-							target=(Item)candidates.elementAt(Dice.roll(1,candidates.size(),-1));
+							target=(Item)candidates.elementAt(CMLib.dice().roll(1,candidates.size(),-1));
 							if(target.owner() instanceof Room)
 								room=(Room)target.owner();
 						}

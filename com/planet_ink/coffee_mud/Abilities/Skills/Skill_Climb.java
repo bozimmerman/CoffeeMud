@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -20,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Climb extends StdAbility
+public class Skill_Climb extends StdSkill
 {
 	public String ID() { return "Skill_Climb"; }
 	public String name(){ return "Climb";}
@@ -30,8 +40,8 @@ public class Skill_Climb extends StdAbility
 	private static final String[] triggerStrings = {"CLIMB"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONTRAINCOST);}
-	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONPRACCOST);}
+	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONTRAINCOST);}
+	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONPRACCOST);}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -54,7 +64,7 @@ public class Skill_Climb extends StdAbility
 			mob.tell("You can't climb that way.");
 			return false;
 		}
-		if(Sense.isSitting(mob)||Sense.isSleeping(mob))
+		if(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob))
 		{
 			mob.tell("You need to stand up first!");
 			return false;
@@ -63,7 +73,7 @@ public class Skill_Climb extends StdAbility
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,null);
+		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -75,11 +85,11 @@ public class Skill_Climb extends StdAbility
 				mob.recoverEnvStats();
 			}
 
-			MUDTracker.move(mob,dirCode,false,false);
+			CMLib.tracking().move(mob,dirCode,false,false);
 			mob.delEffect(this);
 			mob.recoverEnvStats();
 			if(!success)
-				mob.location().executeMsg(mob,new FullMsg(mob,mob.location(),CMMsg.MASK_MOVE|CMMsg.TYP_GENERAL,null));
+				mob.location().executeMsg(mob,CMClass.getMsg(mob,mob.location(),CMMsg.MASK_MOVE|CMMsg.TYP_GENERAL,null));
 		}
 		return success;
 	}

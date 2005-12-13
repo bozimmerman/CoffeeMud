@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -47,7 +57,7 @@ public class Skill_Slapstick extends BardSkill
 		{
 			if(auto) str="<T-NAME> is drained of mana!";
 			else
-			switch(Dice.roll(1,10,0))
+			switch(CMLib.dice().roll(1,10,0))
 			{
 			case 1:
 				str="<S-NAME> stand(s) on <S-HIS-HER> head and stick(s) <S-HIS-HER> tounge out at <T-NAMESELF>.";
@@ -80,7 +90,7 @@ public class Skill_Slapstick extends BardSkill
 				str="<S-NAME> do(es) a silly slapstick routine for <T-NAMESELF>.";
 				break;
 			}
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_SOUND|CMMsg.MASK_HANDS|CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),str);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_SOUND|CMMsg.MASK_HANDS|CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

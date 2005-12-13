@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -163,13 +174,13 @@ public class RandomMonsters extends ActiveTicker
 			monsters=(Vector)Resources.getResource("RANDOMMONSTERS-XML/"+filename.length()+"/"+filename.hashCode());
 			if(monsters!=null) return monsters;
 			monsters=new Vector();
-			String error=CoffeeMaker.addMOBsFromXML(filename.toString(),monsters,null);
+			String error=CMLib.coffeeMaker().addMOBsFromXML(filename.toString(),monsters,null);
 			String thangName="null";
 			if(thang instanceof Room)
-			    thangName=CMMap.getExtendedRoomID((Room)thang);
+			    thangName=CMLib.map().getExtendedRoomID((Room)thang);
 			else
 			if((thang instanceof MOB)&&(((MOB)thang).getStartRoom())!=null)
-			    thangName=CMMap.getExtendedRoomID(((MOB)thang).getStartRoom());
+			    thangName=CMLib.map().getExtendedRoomID(((MOB)thang).getStartRoom());
 			else
 			if(thang!=null)
 			    thangName=thang.name();
@@ -197,10 +208,10 @@ public class RandomMonsters extends ActiveTicker
 				StringBuffer buf=Resources.getFileResource(filename,true);
 				String thangName="null";
 				if(thang instanceof Room)
-				    thangName=CMMap.getExtendedRoomID((Room)thang);
+				    thangName=CMLib.map().getExtendedRoomID((Room)thang);
 				else
 				if((thang instanceof MOB)&&(((MOB)thang).getStartRoom())!=null)
-				    thangName=CMMap.getExtendedRoomID(((MOB)thang).getStartRoom());
+				    thangName=CMLib.map().getExtendedRoomID(((MOB)thang).getStartRoom());
 				else
 				if(thang!=null)
 				    thangName=thang.name();
@@ -216,7 +227,7 @@ public class RandomMonsters extends ActiveTicker
 					return null;
 				}
 				monsters=new Vector();
-				String error=CoffeeMaker.addMOBsFromXML(buf.toString(),monsters,null);
+				String error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),monsters,null);
 				if(error.length()>0)
 				{
 					Log.errOut("RandomMonsters","Error on import of: '"+filename+"' for '"+thangName+"': "+error+".");
@@ -240,7 +251,7 @@ public class RandomMonsters extends ActiveTicker
 		if(((R.domainType()&Room.DOMAIN_INDOORS_AIR)==Room.DOMAIN_INDOORS_AIR)
 		||((R.domainType()&Room.DOMAIN_OUTDOORS_AIR)==Room.DOMAIN_OUTDOORS_AIR))
 		{
-			if(!Sense.isInFlight(M))
+			if(!CMLib.flags().isInFlight(M))
 				return false;
 		}
 		return true;
@@ -249,7 +260,7 @@ public class RandomMonsters extends ActiveTicker
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if((!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+		if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 		||(CMSecurity.isDisabled("RANDOMMONSTERS")))
 			return true;
 		for(int i=maintained.size()-1;i>=0;i--)
@@ -273,7 +284,7 @@ public class RandomMonsters extends ActiveTicker
 			if(num>maxMonsters) num=maxMonsters;
 			while(maintained.size()<num)
 			{
-				MOB M=(MOB)monsters.elementAt(Dice.roll(1,monsters.size(),-1));
+				MOB M=(MOB)monsters.elementAt(CMLib.dice().roll(1,monsters.size(),-1));
 				if(M!=null)
 				{
 					M=(MOB)M.copyOf();
@@ -317,7 +328,7 @@ public class RandomMonsters extends ActiveTicker
 									map.addElement(R);
 							}
 							if(map.size()>0)
-								room=(Room)map.elementAt(Dice.roll(1,map.size(),-1));
+								room=(Room)map.elementAt(CMLib.dice().roll(1,map.size(),-1));
 						}
 						if((room!=null)&&(room instanceof GridLocale))
 							room=((GridLocale)room).getRandomChild();

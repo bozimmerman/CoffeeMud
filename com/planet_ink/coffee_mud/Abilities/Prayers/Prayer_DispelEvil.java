@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -38,21 +49,21 @@ public class Prayer_DispelEvil extends Prayer
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		if((success)&&(Sense.isEvil(target)))
+		if((success)&&(CMLib.flags().isEvil(target)))
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"The evil inside <T-NAME> exorcise(s)!":"^S<S-NAME> exorcise(s) the evil inside <T-NAMESELF>!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"The evil inside <T-NAME> exorcise(s)!":"^S<S-NAME> exorcise(s) the evil inside <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int harming=Dice.roll(3,adjustedLevel(mob,asLevel)+8,10);
+				int harming=CMLib.dice().roll(3,adjustedLevel(mob,asLevel)+8,10);
 				if(msg.value()>0)
 					harming=(int)Math.round(Util.div(harming,2.0));
-				if(Sense.isEvil(target))
-					MUDFight.postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The wicked spell <DAMAGE> <T-NAME>!");
+				if(CMLib.flags().isEvil(target))
+					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The wicked spell <DAMAGE> <T-NAME>!");
 			}
             else
                 return false;

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -104,12 +115,12 @@ public class GatheringSkill extends CommonSkill
 	    for(int i=0;i<R.numItems();i++)
 	    {
 	        Item I=R.fetchItem(i);
-			if(EnglishParser.containsString(I.Name(),name))
+			if(CMLib.english().containsString(I.Name(),name))
 			{
 			    foundAnyway=I;
 				if((I instanceof EnvResource)
-				&&(!Sense.isOnFire(I))
-				&&(!Sense.enchanted(I))
+				&&(!CMLib.flags().isOnFire(I))
+				&&(!CMLib.flags().enchanted(I))
 				&&(I.container()==null)
 				&&((I.material()==foundResource)||(maskV.contains(new Integer(I.material())))))
 				{
@@ -145,7 +156,7 @@ public class GatheringSkill extends CommonSkill
 	    }
 	    if(lowestNonZeroFoodNumber==Long.MAX_VALUE)
 	        lowestNonZeroFoodNumber=0;
-		Item I=(Item)CoffeeUtensils.makeResource(foundResource,mob.location().domainType(),true);
+		Item I=(Item)CMLib.utensils().makeResource(foundResource,mob.location().domainType(),true);
         if(I==null)
         {
             commonTell(mob,"You could not bundle "+name+" due to "+foundResource+" being an invalid resource code.  Bug it!");

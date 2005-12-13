@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -54,7 +65,7 @@ public class Chant_MeteorStrike extends Chant
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,affectType(auto),(auto?"A devastating meteor shower erupts!":"^S<S-NAME> chant(s) for a devastating meteor shower!^?")+CommonStrings.msp("meteor.wav",40)))
+			if(mob.location().show(mob,null,this,affectType(auto),(auto?"A devastating meteor shower erupts!":"^S<S-NAME> chant(s) for a devastating meteor shower!^?")+CMProps.msp("meteor.wav",40)))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
@@ -63,7 +74,7 @@ public class Chant_MeteorStrike extends Chant
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
+				CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),null);
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -71,11 +82,11 @@ public class Chant_MeteorStrike extends Chant
 
 					int damage = 0;
 					int maxDie=adjustedLevel(mob,asLevel);
-					damage = Dice.roll(maxDie,6,30);
+					damage = CMLib.dice().roll(maxDie,6,30);
 					if(msg.value()>0)
 						damage = (int)Math.round(Util.div(damage,2.0));
 					if(target.location()==mob.location())
-						MUDFight.postDamage(mob,target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_BASHING,"The meteors <DAMAGE> <T-NAME>!");
+						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_BASHING,"The meteors <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

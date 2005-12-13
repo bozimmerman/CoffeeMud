@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -59,7 +70,7 @@ public class DelayedTransporter extends ActiveTicker
 			else
 				myParms="";
 
-			if(CMMap.getRoom(thisRoom)!=null)
+			if(CMLib.map().getRoom(thisRoom)!=null)
 				destRoomNames.addElement(thisRoom);
 		}
 		parms=newParms;
@@ -83,10 +94,10 @@ public class DelayedTransporter extends ActiveTicker
 				}
 				boolean gone=false;
 				if(I.intValue()>=minTicks)
-					if((Dice.rollPercentage()<chance)||(I.intValue()>maxTicks))
+					if((CMLib.dice().rollPercentage()<chance)||(I.intValue()>maxTicks))
 					{
-						String roomName=(String)destRoomNames.elementAt(Dice.roll(1,destRoomNames.size(),-1));
-						Room otherRoom=CMMap.getRoom(roomName);
+						String roomName=(String)destRoomNames.elementAt(CMLib.dice().roll(1,destRoomNames.size(),-1));
+						Room otherRoom=CMLib.map().getRoom(roomName);
 						if(otherRoom==null)
 							inhab.tell("You are whisked nowhere at all, since '"+roomName+"' is nowhere to be found.");
 						else

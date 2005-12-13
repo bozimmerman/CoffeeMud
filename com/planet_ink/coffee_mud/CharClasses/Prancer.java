@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.CharClasses;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -54,86 +65,86 @@ public class Prancer extends StdCharClass
 		if(!loaded())
 		{
 			setLoaded(true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 
-			CMAble.addCharAbilityMapping(ID(),1,"Dance_Stop",100,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Dance_CanCan",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Dance_Stop",100,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Dance_CanCan",true);
 
-			CMAble.addCharAbilityMapping(ID(),2,"Thief_Lore",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Dance_Foxtrot",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Lore",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Dance_Foxtrot",true);
 
-			CMAble.addCharAbilityMapping(ID(),3,"Fighter_Kick",true);
-			CMAble.addCharAbilityMapping(ID(),3,"Skill_Climb",false);
-			CMAble.addCharAbilityMapping(ID(),3,"Dance_Tarantella",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Fighter_Kick",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Climb",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Dance_Tarantella",true);
 
-			CMAble.addCharAbilityMapping(ID(),4,"Thief_Appraise",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Dance_Waltz",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Appraise",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Dance_Waltz",true);
 
-			CMAble.addCharAbilityMapping(ID(),5,"Skill_Dodge",false);
-			CMAble.addCharAbilityMapping(ID(),5,"Dance_Salsa",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Dance_Grass",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Dodge",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Dance_Salsa",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Dance_Grass",true);
 
-			CMAble.addCharAbilityMapping(ID(),6,"Dance_Clog",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Dance_Clog",true);
 
-			CMAble.addCharAbilityMapping(ID(),7,"Thief_Distract",false);
-			CMAble.addCharAbilityMapping(ID(),7,"Dance_Capoeira",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Distract",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Dance_Capoeira",true);
 
-			CMAble.addCharAbilityMapping(ID(),8,"Dance_Tap",true);
-			CMAble.addCharAbilityMapping(ID(),8,"Dance_Swing",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Dance_Tap",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Dance_Swing",true);
 
-			CMAble.addCharAbilityMapping(ID(),9,"Skill_Disarm",false);
-			CMAble.addCharAbilityMapping(ID(),9,"Dance_Basse",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Disarm",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Dance_Basse",true);
 
-			CMAble.addCharAbilityMapping(ID(),10,"Fighter_BodyFlip",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Dance_Tango",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_BodyFlip",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Dance_Tango",true);
 
-			CMAble.addCharAbilityMapping(ID(),11,"Fighter_Spring",false);
-			CMAble.addCharAbilityMapping(ID(),11,"Dance_Polka",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_Spring",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Dance_Polka",true);
 
-			CMAble.addCharAbilityMapping(ID(),12,"Dance_RagsSharqi",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Dance_Manipuri",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Dance_RagsSharqi",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Dance_Manipuri",true);
 
-			CMAble.addCharAbilityMapping(ID(),13,"Skill_Trip",false);
-			CMAble.addCharAbilityMapping(ID(),13,"Dance_Cotillon",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Trip",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Dance_Cotillon",true);
 
-			CMAble.addCharAbilityMapping(ID(),14,"Skill_TwoWeaponFighting",false);
-			CMAble.addCharAbilityMapping(ID(),14,"Dance_Ballet",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_TwoWeaponFighting",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Dance_Ballet",true);
 
-			CMAble.addCharAbilityMapping(ID(),15,"Fighter_Tumble",false);
-			CMAble.addCharAbilityMapping(ID(),15,"Dance_Jitterbug",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_Tumble",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Dance_Jitterbug",true);
 
-			CMAble.addCharAbilityMapping(ID(),16,"Dance_Butoh",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Dance_Butoh",true);
 
-			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
-			CMAble.addCharAbilityMapping(ID(),17,"Dance_Courante",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Dance_Courante",true);
 
-			CMAble.addCharAbilityMapping(ID(),18,"Dance_Musette",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Dance_Musette",true);
 
-			CMAble.addCharAbilityMapping(ID(),19,"Fighter_Endurance",true);
-			CMAble.addCharAbilityMapping(ID(),19,"Fighter_Cartwheel",false);
-			CMAble.addCharAbilityMapping(ID(),19,"Dance_Swords",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_Endurance",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_Cartwheel",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Dance_Swords",true);
 
-			CMAble.addCharAbilityMapping(ID(),20,"Dance_Flamenco",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Dance_Flamenco",true);
 
-			CMAble.addCharAbilityMapping(ID(),21,"Fighter_Roll",false);
-			CMAble.addCharAbilityMapping(ID(),21,"Dance_Jingledress",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_Roll",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Dance_Jingledress",true);
 
-			CMAble.addCharAbilityMapping(ID(),22,"Dance_Morris",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Dance_Morris",true);
 
-			CMAble.addCharAbilityMapping(ID(),23,"Fighter_BlindFighting",false);
-			CMAble.addCharAbilityMapping(ID(),23,"Dance_Butterfly",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_BlindFighting",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Dance_Butterfly",true);
 
-			CMAble.addCharAbilityMapping(ID(),24,"Dance_Macabre",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Dance_Macabre",true);
 
-			CMAble.addCharAbilityMapping(ID(),25,"Fighter_CircleTrip",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Dance_War",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_CircleTrip",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Dance_War",true);
 
-			CMAble.addCharAbilityMapping(ID(),30,"Dance_Square",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Dance_Square",true);
 		}
 	}
 
@@ -184,7 +195,7 @@ public class Prancer extends StdCharClass
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
 		{
-			Vector V=CMAble.getUpToLevelListings(ID(),
+			Vector V=CMLib.ableMapper().getUpToLevelListings(ID(),
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
@@ -193,8 +204,8 @@ public class Prancer extends StdCharClass
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
-				&&(!CMAble.getDefaultGain(ID(),true,A.ID())))
-					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),true,A.ID()),CMAble.getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}
 		}
 	}
@@ -204,7 +215,7 @@ public class Prancer extends StdCharClass
 		super.affectEnvStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
-			if(Sense.isStanding((MOB)affected))
+			if(CMLib.flags().isStanding((MOB)affected))
 			{
 				MOB mob=(MOB)affected;
 				int attArmor=(((int)Math.round(Util.div(mob.charStats().getStat(CharStats.DEXTERITY),9.0)))+1)*(mob.charStats().getClassLevel(this)-1);
@@ -220,7 +231,7 @@ public class Prancer extends StdCharClass
 		super.unLevel(mob);
 
 		int dexStat=mob.charStats().getStat(CharStats.DEXTERITY);
-		int maxDexStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
+		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.DEXTERITY));
 		if(dexStat>maxDexStat) dexStat=maxDexStat;
 		int attArmor=(int)Math.round(Util.div(dexStat,9.0));
@@ -244,7 +255,7 @@ public class Prancer extends StdCharClass
 	        return;
 		super.level(mob);
 		int dexStat=mob.charStats().getStat(CharStats.DEXTERITY);
-		int maxDexStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
+		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.DEXTERITY));
 		if(dexStat>maxDexStat) dexStat=maxDexStat;
 		

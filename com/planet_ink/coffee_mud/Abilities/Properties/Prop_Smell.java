@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -118,7 +129,7 @@ public class Prop_Smell extends Property
 	                total+=pct&511;
 	        }
 	        if(total==0) return "";
-	        int draw=Dice.roll(1,total,0);
+	        int draw=CMLib.dice().roll(1,total,0);
 	        for(int i=0;i<smells.size();i++)
 	        {
 	            int pct=((Integer)smells.elementAt(i,2)).intValue();
@@ -141,30 +152,30 @@ public class Prop_Smell extends Property
 		super.executeMsg(myHost,msg);
 		if((msg.amITarget(affected))
 		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
-		&&(Sense.canSmell(msg.source())))
+		&&(CMLib.flags().canSmell(msg.source())))
 			msg.source().tell(msg.source(),affected,null,selectSmell(false));
 	}
 	
 	public void emoteHere(Room room, MOB emoter, String str)
 	{
-		FullMsg msg=new FullMsg(emoter,null,CMMsg.MSG_EMOTE,str);
+		CMMsg msg=CMClass.getMsg(emoter,null,CMMsg.MSG_EMOTE,str);
 		if(room.okMessage(emoter,msg))
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			MOB M=room.fetchInhabitant(i);
-			if((M!=null)&&(!M.isMonster())&&(Sense.canSmell(M))) 
+			if((M!=null)&&(!M.isMonster())&&(CMLib.flags().canSmell(M))) 
 		        M.executeMsg(M,msg);
 		}
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
-	    if((affected instanceof MOB)&&(Dice.rollPercentage()<=20))
+	    if((affected instanceof MOB)&&(CMLib.dice().rollPercentage()<=20))
 	    {
 	        String emote=selectSmell(true);
 	        if((emote!=null)&&(emote.length()>0))
 	        {
-		        Room room=CoffeeUtensils.roomLocation(affected);
+		        Room room=CMLib.utensils().roomLocation(affected);
 		        if(room!=null)
 		        {
 		            emoteHere(room,(MOB)affected,emote);

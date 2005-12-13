@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -22,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_JailKey extends StdAbility
+public class Skill_JailKey extends StdSkill
 {
 	public String ID() { return "Skill_JailKey"; }
 	public String name(){ return "Jail Key";}
@@ -54,8 +64,8 @@ public class Skill_JailKey extends StdAbility
 				V.addElement(new Integer(Law.MOD_ISJAILROOM));
 				V.addElement(unlockThat);
 				V.addElement(mob.location());
-				Area legalA=CoffeeUtensils.getLegalObject(mob.location());
-				if(legalA!=null) B=CoffeeUtensils.getLegalBehavior(legalA);
+				Area legalA=CMLib.utensils().getLegalObject(mob.location());
+				if(legalA!=null) B=CMLib.utensils().getLegalBehavior(legalA);
 				if(B==null) 
 				    unlockThis=null;
 				else
@@ -91,14 +101,14 @@ public class Skill_JailKey extends StdAbility
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) <S-HIS-HER> jailkey on "+unlockThis.name()+" and fail(s).");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+			CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				if(!unlockThis.isLocked())
-					msg=new FullMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,auto?unlockThis.name()+" vibrate(s) and click(s).":"<S-NAME> use(s) <S-HIS-HER> jailkey and relock(s) "+unlockThis.name()+".");
+					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,auto?unlockThis.name()+" vibrate(s) and click(s).":"<S-NAME> use(s) <S-HIS-HER> jailkey and relock(s) "+unlockThis.name()+".");
 				else
-					msg=new FullMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?unlockThis.name()+" vibrate(s) and click(s).":"<S-NAME> use(s) <S-HIS-HER> jailkey and unlock(s) "+unlockThis.name()+".");
-				CoffeeUtensils.roomAffectFully(msg,mob.location(),dirCode);
+					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?unlockThis.name()+" vibrate(s) and click(s).":"<S-NAME> use(s) <S-HIS-HER> jailkey and unlock(s) "+unlockThis.name()+".");
+				CMLib.utensils().roomAffectFully(msg,mob.location(),dirCode);
 			}
 		}
 

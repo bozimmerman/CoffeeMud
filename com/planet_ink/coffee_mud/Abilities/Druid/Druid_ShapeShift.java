@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -126,8 +137,8 @@ public class Druid_ShapeShift extends StdAbility
 
 	public void setRaceName(MOB mob)
 	{
-        int qualClassLevel=CMAble.qualifyingClassLevel(mob,this);
-		int classLevel=qualClassLevel-CMAble.qualifyingLevel(mob,this);
+        int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this);
+		int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
         if(qualClassLevel<0) classLevel=30;
 		raceName=getRaceName(classLevel,myRaceCode);
 		newRace=getRace(classLevel,myRaceCode);
@@ -209,9 +220,9 @@ public class Druid_ShapeShift extends StdAbility
 		{
 			if(mob.isMonster())
 			{
-				myRaceCode=Dice.roll(1,racesTaken.length,-1);
+				myRaceCode=CMLib.dice().roll(1,racesTaken.length,-1);
 				while(racesTaken[myRaceCode]>0)
-					myRaceCode=Dice.roll(1,racesTaken.length,-1);
+					myRaceCode=CMLib.dice().roll(1,racesTaken.length,-1);
 			}
 			else
 			if(mob.isInCombat())
@@ -255,8 +266,8 @@ public class Druid_ShapeShift extends StdAbility
 				for(int v=0;v<V.size();v++)
 				{
 					Ability A=(Ability)V.elementAt(v);
-					int lvl=CMAble.qualifyingLevel(mob,A);
-					if(lvl<=0) lvl=CMAble.lowestQualifyingLevel(A.ID());
+					int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
+					if(lvl<=0) lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 					if(lvl<sortByLevel)
 					{
 						sortByLevel=lvl;
@@ -281,9 +292,9 @@ public class Druid_ShapeShift extends StdAbility
 					else
 					{
 						list.append(Util.padLeft(""+(i+1),2)+") "+A.raceName+" ("+forms[A.myRaceCode]+")\n\r");
-						if(EnglishParser.containsString(A.raceName,parm))
+						if(CMLib.english().containsString(A.raceName,parm))
 							return A.invoke(mob,new Vector(),givenTarget,auto,asLevel);
-						if(EnglishParser.containsString(forms[A.myRaceCode],parm))
+						if(CMLib.english().containsString(forms[A.myRaceCode],parm))
 							return A.invoke(mob,new Vector(),givenTarget,auto,asLevel);
 					}
 				}
@@ -308,7 +319,7 @@ public class Druid_ShapeShift extends StdAbility
 
 		if((!appropriateToMyFactions(mob))&&(!auto))
 		{
-			if((Dice.rollPercentage()<50))
+			if((CMLib.dice().rollPercentage()<50))
 			{
 				mob.tell("Extreme emotions disrupt your change.");
 				return false;
@@ -321,7 +332,7 @@ public class Druid_ShapeShift extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_OK_ACTION,null);
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_ACTION,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

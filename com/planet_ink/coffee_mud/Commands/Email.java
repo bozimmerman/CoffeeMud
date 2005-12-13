@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -37,12 +48,12 @@ public class Email extends StdCommand
         if((commands!=null)
         &&(commands.size()>1)
         &&(commands.elementAt(1) instanceof String)
-        &&(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX).length()>0))
+        &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0))
         {
             String name=Util.combine(commands,1);
             if(name.equalsIgnoreCase("BOX"))
             {
-                Vector msgs=CMClass.DBEngine().DBReadJournal(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX));
+                Vector msgs=CMLib.database().DBReadJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX));
                 while((mob.session()!=null)&&(!mob.session().killFlag()))
                 {
                     Vector mymsgs=new Vector();
@@ -58,7 +69,7 @@ public class Email extends StdCommand
                             mymsgs.addElement(thismsg);
                             messages.append(Util.padRight(""+mymsgs.size(),4)
                                     +Util.padRight(((String)thismsg.elementAt(1)),16)
-                                    +Util.padRight(IQCalendar.d2String(Util.s_long((String)thismsg.elementAt(2))),21)
+                                    +Util.padRight(CMLib.time().date2String(Util.s_long((String)thismsg.elementAt(2))),21)
                                     +((String)thismsg.elementAt(4))
                                     +"\n\r");
                         }
@@ -85,7 +96,7 @@ public class Email extends StdCommand
                         String key=(String)thismsg.elementAt(0);
                         String from=(String)thismsg.elementAt(1);
                         String date=(String)thismsg.elementAt(2);
-                        date=IQCalendar.d2String(Util.s_long(date));
+                        date=CMLib.time().date2String(Util.s_long(date));
                         String subj=(String)thismsg.elementAt(4);
                         String message=(String)thismsg.elementAt(5);
                         messages=new StringBuffer("");
@@ -104,7 +115,7 @@ public class Email extends StdCommand
                             if((from.length()>0)
                             &&(!from.equals(mob.Name()))
                             &&(!from.equalsIgnoreCase("BOX"))
-                            &&(CMMap.getLoadPlayer(from)!=null))
+                            &&(CMLib.map().getLoadPlayer(from)!=null))
                                 execute(mob,Util.makeVector(getAccessWords()[0],from));
                             else
                                 mob.tell("You can not reply to this email.");
@@ -112,7 +123,7 @@ public class Email extends StdCommand
                         else
                         if(s.equalsIgnoreCase("D"))
                         {
-                            CMClass.DBEngine().DBDeleteJournal(key);
+                            CMLib.database().DBDeleteJournal(key);
                             msgs.remove(thismsg);
                             mob.tell("Deleted.");
                             break;
@@ -122,7 +133,7 @@ public class Email extends StdCommand
             }
             else
             {
-                MOB M=CMMap.getLoadPlayer(name);
+                MOB M=CMLib.map().getLoadPlayer(name);
                 if(M==null)
                 {
                     mob.tell("There is no player called '"+name+"' to send email to.  If you were trying to read your mail, try EMAIL BOX.  If you were trying to change your email address, just enter EMAIL without any parameters.");
@@ -138,10 +149,10 @@ public class Email extends StdCommand
                     if(!mob.session().confirm("Send email to '"+M.Name()+"', even though their AUTOFORWARD is turned off (y/N)?","N"))
                         return false;
                 }
-                if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_MAXMAILBOX)>0)
+                if(CMProps.getIntVar(CMProps.SYSTEMI_MAXMAILBOX)>0)
                 {
-                    int count=CMClass.DBEngine().DBCountJournal(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX),null,M.Name());
-                    if(count>=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MAXMAILBOX))
+                    int count=CMLib.database().DBCountJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),null,M.Name());
+                    if(count>=CMProps.getIntVar(CMProps.SYSTEMI_MAXMAILBOX))
                     {
                         mob.tell(M.Name()+"'s mailbox is full.");
                         return false;
@@ -159,8 +170,8 @@ public class Email extends StdCommand
                     mob.tell("Aborted");
                     return false;
                 }
-                message+="\n\r\n\rThis message was sent through the "+CommonStrings.getVar(CommonStrings.SYSTEM_MUDNAME)+" mail server at "+CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN)+", port"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDPORTS)+".  Please contact the administrators regarding any abuse of this system.\n\r";
-                CMClass.DBEngine().DBWriteJournal(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX),
+                message+="\n\r\n\rThis message was sent through the "+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+" mail server at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+", port"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".  Please contact the administrators regarding any abuse of this system.\n\r";
+                CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
                           mob.Name(),
                           M.Name(),
                           subject,
@@ -177,14 +188,14 @@ public class Email extends StdCommand
 			String change=mob.session().prompt("You currently have '"+pstats.getEmail()+"' set as the email address for this character.\n\rChange it (y/N)?","N");
 			if(change.toUpperCase().startsWith("N")) return false;
 		}
-        if((CommonStrings.getVar(CommonStrings.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
+        if((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
         &&(commands!=null)
-        &&(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX).length()>0))
+        &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0))
             mob.session().println("\n\r** Changing your email address will cause you to be logged off, and a new password to be generated and emailed to the new address. **\n\r");
 		String newEmail=mob.session().prompt("New E-mail Address:");
 		if(newEmail==null) return false;
 		newEmail=newEmail.trim();
-		if(!CommonStrings.getVar(CommonStrings.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"))
+		if(!CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"))
 		{
 			if(newEmail.length()<6) return false;
 			if(newEmail.indexOf("@")<0) return false;
@@ -195,21 +206,21 @@ public class Email extends StdCommand
 			if(!(newEmail.equalsIgnoreCase(confirmEmail))) return false;
 		}
         pstats.setEmail(newEmail);
-        CMClass.DBEngine().DBUpdateEmail(mob);
+        CMLib.database().DBUpdateEmail(mob);
         if((commands!=null)
-        &&(CommonStrings.getVar(CommonStrings.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
-        &&(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX).length()>0))
+        &&(CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
+        &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0))
         {
             String password="";
             for(int i=0;i<6;i++)
-                password+=(char)('a'+Dice.roll(1,26,-1));
+                password+=(char)('a'+CMLib.dice().roll(1,26,-1));
             pstats.setPassword(password);
-            CMClass.DBEngine().DBUpdatePassword(mob);
-            CMClass.DBEngine().DBWriteJournal(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX),
+            CMLib.database().DBUpdatePassword(mob);
+            CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
                       mob.Name(),
                       mob.Name(),
                       "Password for "+mob.Name(),
-                      "Your new password for "+mob.Name()+" is: "+pstats.password()+"\n\rYou can login by pointing your mud client at "+CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN)+" port(s):"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.",-1);
+                      "Your new password for "+mob.Name()+" is: "+pstats.password()+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.",-1);
             mob.tell("You will receive an email with your new password shortly.  Goodbye.");
             if(mob.session()!=null)
             {

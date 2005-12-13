@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -88,7 +98,7 @@ public class Skill_Disguise extends BardSkill
 		   return true;
 		MOB mob=(MOB)myHost;
 		if(msg.amITarget(mob)
-		&&(Sense.canBeSeenBy(mob,msg.source()))
+		&&(CMLib.flags().canBeSeenBy(mob,msg.source()))
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 		&&((values[0]!=null)||(values[4]!=null)))
 		{
@@ -112,7 +122,7 @@ public class Skill_Disguise extends BardSkill
 		   return;
 		MOB mob=(MOB)myHost;
 		if(msg.amITarget(this)
-		&&(Sense.canBeSeenBy(mob,msg.source()))
+		&&(CMLib.flags().canBeSeenBy(mob,msg.source()))
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 		&&((values[0]!=null)||(values[4]!=null)))
 		{
@@ -130,7 +140,7 @@ public class Skill_Disguise extends BardSkill
 				myDescription.append(mob.charStats().HeShe()+" is "+height+" inches tall and weighs "+weight+" pounds.\n\r");
 			myDescription.append(mob.healthText()+"\n\r\n\r");
 			myDescription.append(mob.description()+"\n\r\n\r");
-			myDescription.append(mob.charStats().HeShe()+" is wearing:\n\r"+CommonMsgs.getEquipment(msg.source(),mob));
+			myDescription.append(mob.charStats().HeShe()+" is wearing:\n\r"+CMLib.commands().getEquipment(msg.source(),mob));
 			msg.source().tell(myDescription.toString());
 		}
 	}
@@ -166,8 +176,8 @@ public class Skill_Disguise extends BardSkill
 			return false;
 
 		}
-		if((CMAble.qualifyingLevel(mob,this)>0)
-		   &&(CMAble.qualifyingClassLevel(mob,this)<levels[which]))
+		if((CMLib.ableMapper().qualifyingLevel(mob,this)>0)
+		   &&(CMLib.ableMapper().qualifyingClassLevel(mob,this)<levels[which]))
 		{
 			mob.tell("You must have "+levels[which]+" levels in this skill to use that disguise.");
 			return false;
@@ -248,7 +258,7 @@ public class Skill_Disguise extends BardSkill
 				return false;
 			}
 			else
-			if(CMClass.DBEngine().DBUserSearch(null,how))
+			if(CMLib.database().DBUserSearch(null,how))
 			{
 				mob.tell("You cannot disguise yourself as a player except through Mark Disguise.");
 				return false;
@@ -302,7 +312,7 @@ public class Skill_Disguise extends BardSkill
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),"<S-NAME> turn(s) away for a second.");
+			CMMsg msg=CMClass.getMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),"<S-NAME> turn(s) away for a second.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

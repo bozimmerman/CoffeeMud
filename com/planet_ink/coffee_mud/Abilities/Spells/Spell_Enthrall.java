@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -106,7 +117,7 @@ public class Spell_Enthrall extends Spell
 		if((affecting()==null)||(!(affecting() instanceof MOB)))
 			return false;
 		MOB mob=(MOB)affecting();
-		if((getCharmer()!=null)&&(!Sense.isInTheGame(getCharmer(),false)))
+		if((getCharmer()!=null)&&(!CMLib.flags().isInTheGame(getCharmer(),false)))
 			unInvoke();
 		else
 		if((affected==mob)
@@ -114,7 +125,7 @@ public class Spell_Enthrall extends Spell
 		&&((mob.amFollowing()==null)||(mob.amFollowing()!=getCharmer()))
 		&&(mob.location()!=null)
 		&&(mob.location().isInhabitant(getCharmer())))
-			CommonMsgs.follow(mob,getCharmer(),true);
+			CMLib.commands().follow(mob,getCharmer(),true);
 		return super.tick(ticking,tickID);
 	}
 
@@ -131,14 +142,14 @@ public class Spell_Enthrall extends Spell
 		{
 			mob.tell("Your free-will returns.");
 			if(mob.amFollowing()!=null)
-				CommonMsgs.follow(mob,null,false);
-			CommonMsgs.stand(mob,true);
+				CMLib.commands().follow(mob,null,false);
+			CMLib.commands().stand(mob,true);
 			if(mob.isMonster())
 			{
-				if(Dice.rollPercentage()>50)
+				if(CMLib.dice().rollPercentage()>50)
 				{
-					if(!Sense.isMobile(mob))
-						MUDTracker.wanderAway(mob,true,true);
+					if(!CMLib.flags().isMobile(mob))
+						CMLib.tracking().wanderAway(mob,true,true);
 				}
 				else
 				if((invoker!=null)&&(invoker!=mob))
@@ -157,7 +168,7 @@ public class Spell_Enthrall extends Spell
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 		if(levelDiff<0) levelDiff=0;
 
-		if(!Sense.canSpeak(mob))
+		if(!CMLib.flags().canSpeak(mob))
 		{
 			mob.tell("You can't speak!");
 			return false;
@@ -165,7 +176,7 @@ public class Spell_Enthrall extends Spell
 
 		// if they can't hear the sleep spell, it
 		// won't happen
-		if((!auto)&&(!Sense.canBeHeardBy(mob,target)))
+		if((!auto)&&(!CMLib.flags().canBeHeardBy(mob,target)))
 		{
 			mob.tell(target.charStats().HeShe()+" can't hear your words.");
 			return false;
@@ -188,7 +199,7 @@ public class Spell_Enthrall extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			String str=auto?"":"^S<S-NAME> smile(s) powerfully at <T-NAMESELF>.^?";
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_CAST_VERBAL_SPELL,str);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_VERBAL_SPELL,str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -198,8 +209,8 @@ public class Spell_Enthrall extends Spell
 					if(success)
 					{
 						if(target.isInCombat()) target.makePeace();
-						CommonMsgs.follow(target,mob,false);
-						MUDFight.makePeaceInGroup(mob);
+						CMLib.commands().follow(target,mob,false);
+						CMLib.combat().makePeaceInGroup(mob);
 						if(target.amFollowing()!=mob)
 							mob.tell(target.name()+" seems unwilling to follow you.");
 					}

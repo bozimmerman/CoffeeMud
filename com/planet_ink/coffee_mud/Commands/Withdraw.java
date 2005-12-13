@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -28,9 +39,9 @@ public class Withdraw extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		Environmental shopkeeper=EnglishParser.parseShopkeeper(mob,commands,"Withdraw what or how much from whom?");
+		Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Withdraw what or how much from whom?");
 		if(shopkeeper==null) return false;
-        ShopKeeper SHOP=CoffeeShops.getShopKeeper(shopkeeper);
+        ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice)))
 		{
 			mob.tell("You can not withdraw anything from "+shopkeeper.name()+".");
@@ -43,9 +54,9 @@ public class Withdraw extends StdCommand
 		}
 		String str=Util.combine(commands,0);
 		if(str.equalsIgnoreCase("all")) str=""+Integer.MAX_VALUE;
-	    long numCoins=EnglishParser.numPossibleGold(null,str);
-	    String currency=EnglishParser.numPossibleGoldCurrency(shopkeeper,str);
-	    double denomination=EnglishParser.numPossibleGoldDenomination(shopkeeper,currency,str);
+	    long numCoins=CMLib.english().numPossibleGold(null,str);
+	    String currency=CMLib.english().numPossibleGoldCurrency(shopkeeper,str);
+	    double denomination=CMLib.english().numPossibleGoldDenomination(shopkeeper,currency,str);
 		Item thisThang=null;
         if(SHOP instanceof Banker)
         {
@@ -58,7 +69,7 @@ public class Withdraw extends StdCommand
     		    }
 				thisThang=((Banker)SHOP).findDepositInventory(mob,""+Integer.MAX_VALUE);
 				if(thisThang instanceof Coins)
-				    thisThang=BeanCounter.makeCurrency(currency,denomination,numCoins);
+				    thisThang=CMLib.beanCounter().makeCurrency(currency,denomination,numCoins);
     		}
     		else
     			thisThang=((Banker)SHOP).findDepositInventory(mob,str);
@@ -67,12 +78,12 @@ public class Withdraw extends StdCommand
     		&&(((Banker)SHOP).whatIsSold()!=ShopKeeper.DEAL_CLANBANKER)
     		&&(mob.isMarriedToLiege()))
     		{
-    			MOB mob2=CMMap.getPlayer(mob.getLiegeID());
+    			MOB mob2=CMLib.map().getPlayer(mob.getLiegeID());
     			if(numCoins>0)
     			{
     				thisThang=((Banker)SHOP).findDepositInventory(mob2,""+Integer.MAX_VALUE);
     				if(thisThang instanceof Coins)
-    				    thisThang=BeanCounter.makeCurrency(currency,denomination,numCoins);
+    				    thisThang=CMLib.beanCounter().makeCurrency(currency,denomination,numCoins);
     				else
     			    {
     					mob.tell("Withdraw how much?");
@@ -91,12 +102,12 @@ public class Withdraw extends StdCommand
             &&(((PostOffice)SHOP).whatIsSold()!=ShopKeeper.DEAL_CLANPOSTMAN)
             &&(mob.isMarriedToLiege()))
             {
-                MOB mob2=CMMap.getPlayer(mob.getLiegeID());
+                MOB mob2=CMLib.map().getPlayer(mob.getLiegeID());
                 thisThang=((PostOffice)SHOP).findBoxContents(mob2,str);
             }
         }
 
-		if((thisThang==null)||(!Sense.canBeSeenBy(thisThang,mob)))
+		if((thisThang==null)||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 		{
 			mob.tell("That doesn't appear to be available.  Try LIST.");
 			return false;
@@ -104,7 +115,7 @@ public class Withdraw extends StdCommand
         String str2="<S-NAME> withdraw(s) <O-NAME> from <S-HIS-HER> account with "+shopkeeper.name()+".";
         if(SHOP instanceof PostOffice)
             str2="<S-NAME> withdraw(s) <O-NAME> from <S-HIS-HER> postal box with "+shopkeeper.name()+".";
-		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_WITHDRAW,str2);
+		CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_WITHDRAW,str2);
 		if(!mob.location().okMessage(mob,newMsg))
 			return false;
 		mob.location().send(mob,newMsg);

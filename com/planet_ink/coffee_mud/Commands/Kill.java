@@ -1,7 +1,19 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -38,7 +50,7 @@ public class Kill extends StdCommand
 				return false;
 			}
 			else
-			if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMBATSYSTEM)==MUDFight.COMBAT_DEFAULT)
+			if(CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)==CombatLibrary.COMBAT_DEFAULT)
 				return false;
 			else
 				target=mob.getVictim();
@@ -59,7 +71,7 @@ public class Kill extends StdCommand
 		if(target==null)
 		{
 			target=mob.location().fetchInhabitant(whomToKill);
-			if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+			if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 			{
 				mob.tell("I don't see '"+whomToKill+"' here.");
 				return false;
@@ -68,13 +80,13 @@ public class Kill extends StdCommand
 		
 		if(reallyKill)
 		{
-			FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> touch(es) <T-NAMESELF>.^</FIGHT^>^?");
-            CMColor.fixSourceFightColor(msg);
+			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> touch(es) <T-NAMESELF>.^</FIGHT^>^?");
+            CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				target.curState().setHitPoints(0);
-				MUDFight.postDeath(mob,target,null);
+				CMLib.combat().postDeath(mob,target,null);
 			}
 			return false;
 		}
@@ -83,13 +95,13 @@ public class Kill extends StdCommand
 		{
 			MOB oldVictim=mob.getVictim();
 			if(((oldVictim!=null)&&(oldVictim==target)
-			&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMBATSYSTEM)==MUDFight.COMBAT_DEFAULT)))
+			&&(CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)==CombatLibrary.COMBAT_DEFAULT)))
 			{
 				mob.tell("^f^<FIGHT^>You are already fighting "+mob.getVictim().name()+".^</FIGHT^>^?");
 				return false;
 			}
 			
-			if((mob.location().okMessage(mob,new FullMsg(mob,target,CMMsg.MSG_WEAPONATTACK,null)))
+			if((mob.location().okMessage(mob,CMClass.getMsg(mob,target,CMMsg.MSG_WEAPONATTACK,null)))
 			&&(oldVictim!=target))
 			{
 				if((target.getVictim()==oldVictim.getVictim())
@@ -119,10 +131,10 @@ public class Kill extends StdCommand
                 if((possibleOtherWeapon!=null)
                 &&(possibleOtherWeapon instanceof Weapon)
                 &&possibleOtherWeapon.fitsOn(Item.WIELD)
-                &&(Sense.canBeSeenBy(possibleOtherWeapon,mob))
-                &&(Sense.isRemovable(possibleOtherWeapon)))
+                &&(CMLib.flags().canBeSeenBy(possibleOtherWeapon,mob))
+                &&(CMLib.flags().isRemovable(possibleOtherWeapon)))
                 {
-                    CommonMsgs.remove(mob,possibleOtherWeapon,false);
+                    CMLib.commands().remove(mob,possibleOtherWeapon,false);
                     if(possibleOtherWeapon.amWearingAt(Item.INVENTORY))
                     {
                         Command C=CMClass.getCommand("Wield");
@@ -130,7 +142,7 @@ public class Kill extends StdCommand
                     }
                 }
             }
-			MUDFight.postAttack(mob,target,mob.fetchWieldedItem());
+			CMLib.combat().postAttack(mob,target,mob.fetchWieldedItem());
         }
 		return false;
 	}

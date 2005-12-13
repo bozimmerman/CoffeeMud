@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -21,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Bash extends StdAbility
+public class Skill_Bash extends StdSkill
 {
 	public String ID() { return "Skill_Bash"; }
 	public String name(){ return "Shield Bash";}
@@ -52,7 +62,7 @@ public class Skill_Bash extends StdAbility
 			return false;
 		}
 
-		if((Sense.isSitting(target)||Sense.isSleeping(target)))
+		if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 		{
 			mob.tell(target.name()+" must stand up first!");
 			return false;
@@ -67,8 +77,8 @@ public class Skill_Bash extends StdAbility
 		if(success)
 		{
 			str=auto?"<T-NAME> is bashed!":"^F^<FIGHT^><S-NAME> bash(es) <T-NAMESELF> with "+thisSheild.name()+"!^</FIGHT^>^?";
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),str);
-            CMColor.fixSourceFightColor(msg);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),str);
+            CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -79,7 +89,7 @@ public class Skill_Bash extends StdAbility
 					w.setDisplayText(thisSheild.displayText());
 					w.setDescription(thisSheild.description());
 					w.baseEnvStats().setDamage(thisSheild.envStats().level()+5);
-					if((MUDFight.postAttack(mob,target,w))
+					if((CMLib.combat().postAttack(mob,target,w))
 					&&(target.charStats().getBodyPart(Race.BODY_LEG)>0)
 					&&(target.envStats().weight()<(mob.envStats().weight()*2)))
 					{

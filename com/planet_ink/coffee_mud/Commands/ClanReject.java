@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -41,7 +52,7 @@ public class ClanReject extends BaseClanner
 				msg.append("You aren't even a member of a clan.");
 			else
 			{
-				C=Clans.getClan(mob.getClanID());
+				C=CMLib.clans().getClan(mob.getClanID());
 				if(C==null)
 				{
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
@@ -65,7 +76,7 @@ public class ClanReject extends BaseClanner
 					}
 					if(found)
 					{
-						MOB M=CMMap.getLoadPlayer(qual);
+						MOB M=CMLib.map().getLoadPlayer(qual);
 						if(M==null)
 						{
 							mob.tell(qual+" was not found.  Could not reject from "+C.typeName()+".");
@@ -75,9 +86,9 @@ public class ClanReject extends BaseClanner
 						{
 							M.setClanID("");
 							M.setClanRole(0);
-							CMClass.DBEngine().DBUpdateClanMembership(M.Name(), "", 0);
-							mob.tell(M.Name()+" has been denied acceptance to "+C.typeName()+" '"+C.ID()+"'.");
-							M.tell("You have been rejected as a member of "+C.typeName()+" '"+C.ID()+"'.");
+							CMLib.database().DBUpdateClanMembership(M.Name(), "", 0);
+							mob.tell(M.Name()+" has been denied acceptance to "+C.typeName()+" '"+C.clanID()+"'.");
+							M.tell("You have been rejected as a member of "+C.typeName()+" '"+C.clanID()+"'.");
 							return false;
 						}
 					}

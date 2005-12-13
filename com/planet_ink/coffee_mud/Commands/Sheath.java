@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -128,7 +139,7 @@ public class Sheath extends BaseItemParser
 		else
 		{
 			commands.insertElementAt("all",0);
-			Container container=(Container)EnglishParser.possibleContainer(mob,commands,false,Item.WORN_REQ_WORNONLY);
+			Container container=(Container)CMLib.english().possibleContainer(mob,commands,false,Item.WORN_REQ_WORNONLY);
 			String thingToPut=Util.combine(commands,0);
 			int addendum=1;
 			String addendumStr="";
@@ -143,7 +154,7 @@ public class Sheath extends BaseItemParser
 				   ||(putThis.amWearingAt(Item.HELD)))
 				   &&(putThis instanceof Weapon))
 				{
-					if(Sense.canBeSeenBy(putThis,mob)&&(!items.contains(putThis)))
+					if(CMLib.flags().canBeSeenBy(putThis,mob)&&(!items.contains(putThis)))
 					{
 						sheathable=putThis;
 						items.addElement(putThis);
@@ -189,9 +200,9 @@ public class Sheath extends BaseItemParser
 		{
 			Item putThis=(Item)items.elementAt(i);
 			Container container=(Container)containers.elementAt(i);
-			if(CommonMsgs.remove(mob,putThis,true))
+			if(CMLib.commands().remove(mob,putThis,true))
 			{
-				FullMsg putMsg=new FullMsg(mob,container,putThis,CMMsg.MSG_PUT,((quiet?null:"<S-NAME> sheath(s) <O-NAME> in <T-NAME>.")));
+				CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MSG_PUT,((quiet?null:"<S-NAME> sheath(s) <O-NAME> in <T-NAME>.")));
 				if(mob.location().okMessage(mob,putMsg))
 					mob.location().send(mob,putMsg);
 			}

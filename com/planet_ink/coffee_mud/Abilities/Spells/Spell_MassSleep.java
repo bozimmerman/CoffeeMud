@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -56,14 +67,14 @@ public class Spell_MassSleep extends Spell
 
 				// if they can't hear the sleep spell, it
 				// won't happen
-				if(Sense.canBeHeardBy(mob,target))
+				if(CMLib.flags().canBeHeardBy(mob,target))
 				{
 					// it worked, so build a copy of this ability,
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
 					MOB oldVictim=mob.getVictim();
-					FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
+					CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),null);
 					if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
 						mob.location().send(mob,msg);

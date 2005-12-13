@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -36,7 +47,7 @@ public class VeryAggressive extends Aggressive
 	}
 	public boolean grantsAggressivenessTo(MOB M)
 	{
-		return MUDZapper.zapperCheck(getParms(),M);
+		return CMLib.masking().maskCheck(getParms(),M);
 	}
 
 	public static void tickVeryAggressively(Tickable ticking,
@@ -48,7 +59,7 @@ public class VeryAggressive extends Aggressive
 		if(tickID!=MudHost.TICK_MOB) return;
 		if(!canFreelyBehaveNormal(ticking)) return;
 		MOB mob=(MOB)ticking;
-		if(Sense.isATrackingMonster(mob)) return;
+		if(CMLib.flags().isATrackingMonster(mob)) return;
 
 		// ridden things dont wander!
 		if(ticking instanceof Rideable)
@@ -56,11 +67,11 @@ public class VeryAggressive extends Aggressive
 				return;
 
 		if(((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location()))
-		||(!Sense.canTaste(mob)))
+		||(!CMLib.flags().canTaste(mob)))
 		   return;
 
 		// let's not do this 100%
-		if(Dice.rollPercentage()>15) return;
+		if(CMLib.dice().rollPercentage()>15) return;
 
 		Room thisRoom=mob.location();
 		for(int m=0;m<thisRoom.numInhabitants();m++)
@@ -88,8 +99,8 @@ public class VeryAggressive extends Aggressive
 						MOB inhab=room.fetchInhabitant(i);
 						if((inhab!=null)
 						&&((!inhab.isMonster())||(mobKiller))
-						&&(Sense.canSenseMoving(inhab,mob))
-						&&(MUDZapper.zapperCheck(zapStr,inhab))
+						&&(CMLib.flags().canSenseMoving(inhab,mob))
+						&&(CMLib.masking().maskCheck(zapStr,inhab))
 						&&((zapStr.length()>0)
 						||((inhab.envStats().level()<(mob.envStats().level()+15))
 						   &&(inhab.envStats().level()>(mob.envStats().level()-15)))))
@@ -105,7 +116,7 @@ public class VeryAggressive extends Aggressive
 		if((dirCode>=0)
 		&&(!CMSecurity.isDisabled("MOBILITY")))
 		{
-			MUDTracker.move(mob,dirCode,false,false);
+			CMLib.tracking().move(mob,dirCode,false,false);
 			pickAFight(mob,zapStr,mobKiller);
 		}
 	}

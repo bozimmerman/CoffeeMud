@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -45,12 +56,12 @@ public class Prayer_MassMobility extends Prayer
 		{
 			Ability A=(Ability)msg.tool();
 			MOB newMOB=CMClass.getMOB("StdMOB");
-			FullMsg msg2=new FullMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
+			CMMsg msg2=CMClass.getMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
 			newMOB.recoverEnvStats();
 			try
 			{
 				A.affectEnvStats(newMOB,newMOB.envStats());
-				if((!Sense.aliveAwakeMobileUnbound(newMOB,true))
+				if((!CMLib.flags().aliveAwakeMobileUnbound(newMOB,true))
 				   ||(Util.bset(A.flags(),Ability.FLAG_PARALYZING))
 				   ||(!A.okMessage(newMOB,msg2)))
 				{
@@ -99,7 +110,7 @@ public class Prayer_MassMobility extends Prayer
 		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 		if((success)&&(room!=null))
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> "+prayWord(mob)+" for an aura of mobility!^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> "+prayWord(mob)+" for an aura of mobility!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -112,7 +123,7 @@ public class Prayer_MassMobility extends Prayer
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					msg=new FullMsg(mob,target,this,affectType,"Mobility is invoked upon <T-NAME>.");
+					msg=CMClass.getMsg(mob,target,this,affectType,"Mobility is invoked upon <T-NAME>.");
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);

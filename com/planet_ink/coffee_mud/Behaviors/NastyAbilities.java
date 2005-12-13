@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -52,16 +63,16 @@ public class NastyAbilities extends ActiveTicker
 			if((Math.random()>aChance)||(mob.curState().getMana()<50))
 				return true;
 
-			MOB target=thisRoom.fetchInhabitant(Dice.roll(1,thisRoom.numInhabitants(),-1));
+			MOB target=thisRoom.fetchInhabitant(CMLib.dice().roll(1,thisRoom.numInhabitants(),-1));
 			int x=0;
 			while(((target==null)||(target.getVictim()==mob)||(target==mob)||(target.isMonster()))&&((++x)<10))
-				target=thisRoom.fetchInhabitant(Dice.roll(1,thisRoom.numInhabitants(),-1));
+				target=thisRoom.fetchInhabitant(CMLib.dice().roll(1,thisRoom.numInhabitants(),-1));
 
 			int tries=0;
 			Ability tryThisOne=null;
 			while((tryThisOne==null)&&(tries<100)&&((mob.numAbilities())>0))
 			{
-				tryThisOne=mob.fetchAbility(Dice.roll(1,mob.numAbilities(),-1));
+				tryThisOne=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
 				if((tryThisOne!=null)
 				   &&(mob.fetchEffect(tryThisOne.ID())==null)
 				   &&(tryThisOne.quality()==Ability.MALICIOUS))

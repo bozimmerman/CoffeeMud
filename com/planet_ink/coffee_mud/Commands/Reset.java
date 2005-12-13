@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -192,13 +203,13 @@ public class Reset extends StdCommand
 		String s=(String)commands.elementAt(0);
 		if(s.equalsIgnoreCase("room"))
 		{
-			CoffeeUtensils.resetRoom(mob.location());
+			CMLib.utensils().resetRoom(mob.location());
 			mob.tell("Done.");
 		}
 		else
 		if(s.equalsIgnoreCase("area"))
 		{
-			CoffeeUtensils.resetArea(mob.location().getArea());
+			CMLib.utensils().resetArea(mob.location().getArea());
 			mob.tell("Done.");
 		}
         else
@@ -214,18 +225,18 @@ public class Reset extends StdCommand
 				&&(!R.roomID().startsWith(A.Name())))
 				{
 					String oldID=R.roomID();
-					R.setRoomID(CMMap.getOpenRoomID(A.Name()));
-					CMClass.DBEngine().DBReCreate(R,oldID);
+					R.setRoomID(CMLib.map().getOpenRoomID(A.Name()));
+					CMLib.database().DBReCreate(R,oldID);
 					try
 					{
-						for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 						{
 							Room R2=(Room)r.nextElement();
 							if(R2!=R)
 							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 								if(R2.rawDoors()[d]==R)
 								{
-									CMClass.DBEngine().DBUpdateExits(R2);
+									CMLib.database().DBUpdateExits(R2);
 									break;
 								}
 						}
@@ -252,10 +263,10 @@ public class Reset extends StdCommand
         {
             Room R=null;
             LandTitle T=null;
-            for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+            for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
             {
                 R=(Room)e.nextElement();
-                T=CoffeeUtensils.getLandTitle(R);
+                T=CMLib.utensils().getLandTitle(R);
                 if((T!=null)
                 &&(T.landOwner().length()==0))
                 {
@@ -346,8 +357,8 @@ public class Reset extends StdCommand
 	                            thisVal+=lastVal;
 	                        R.getAgingChart()[x]=thisVal;
 	                    }
-	                    CMClass.DBEngine().DBDeleteRace(R.ID());
-	                    CMClass.DBEngine().DBCreateRace(R.ID(),R.racialParms());
+	                    CMLib.database().DBDeleteRace(R.ID());
+	                    CMLib.database().DBCreateRace(R.ID(),R.racialParms());
 		            }
 		        }
 		    }
@@ -360,7 +371,7 @@ public class Reset extends StdCommand
 				mob.tell("Which bank?");
 				return false;
 			}
-			Vector V=CMClass.DBEngine().DBReadJournal(bank);
+			Vector V=CMLib.database().DBReadJournal(bank);
 			for(int v=0;v<V.size();v++)
 			{
 				Vector V2=(Vector)V.elementAt(v);
@@ -370,9 +381,9 @@ public class Reset extends StdCommand
 				String data=((String)V2.elementAt(5));
 				if(ID.equalsIgnoreCase("COINS")) classID="COINS";
 				Item I=(Item)CMClass.getItem("GenItem").copyOf();
-				CMClass.DBEngine().DBCreateData(name,bank,""+I,classID+";"+data);
+				CMLib.database().DBCreateData(name,bank,""+I,classID+";"+data);
 			}
-			CMClass.DBEngine().DBDeleteJournal(bank,Integer.MAX_VALUE);
+			CMLib.database().DBDeleteJournal(bank,Integer.MAX_VALUE);
 			mob.tell(V.size()+" records done.");
 		}
 		else
@@ -397,7 +408,7 @@ public class Reset extends StdCommand
 			{
 			    try
 			    {
-					for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+					for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 						rooms.addElement(e.nextElement());
 			    }catch(NoSuchElementException nse){}
 			}
@@ -411,7 +422,7 @@ public class Reset extends StdCommand
 			{
 				Room R=(Room)r.nextElement();
 				R.getArea().toggleMobility(false);
-				CoffeeUtensils.resetRoom(R);
+				CMLib.utensils().resetRoom(R);
 				boolean somethingDone=false;
 				for(int m=0;m<R.numInhabitants();m++)
 				{
@@ -430,7 +441,7 @@ public class Reset extends StdCommand
 				if(somethingDone)
 				{
 					mob.tell("Room "+R.roomID()+" done.");
-					CMClass.DBEngine().DBUpdateMOBs(R);
+					CMLib.database().DBUpdateMOBs(R);
 				}
 				R.getArea().toggleMobility(true);
 			}
@@ -458,7 +469,7 @@ public class Reset extends StdCommand
 			{
 			    try
 			    {
-					for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+					for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 						rooms.addElement(e.nextElement());
 			    }catch(NoSuchElementException nse){}
 			}
@@ -472,7 +483,7 @@ public class Reset extends StdCommand
 			{
 				Room R=(Room)r.nextElement();
 				R.getArea().toggleMobility(false);
-				CoffeeUtensils.resetRoom(R);
+				CMLib.utensils().resetRoom(R);
 				boolean somethingDone=false;
 				for(int m=0;m<R.numInhabitants();m++)
 				{
@@ -488,7 +499,7 @@ public class Reset extends StdCommand
 					        if(B.getClass().getSuperclass().getName().endsWith("CombatAbilities"))
 					        {
 					            M.delBehavior(BB);
-					            mob.tell(M.name()+" in "+CMMap.getExtendedRoomID(R)+" was FIXED!");
+					            mob.tell(M.name()+" in "+CMLib.map().getExtendedRoomID(R)+" was FIXED!");
 								M.recoverEnvStats();
 								somethingDone=true;
 					        }
@@ -497,7 +508,7 @@ public class Reset extends StdCommand
 				}
 				if(somethingDone)
 				{
-					CMClass.DBEngine().DBUpdateMOBs(R);
+					CMLib.database().DBUpdateMOBs(R);
 				}
 				R.getArea().toggleMobility(true);
 			}
@@ -510,7 +521,7 @@ public class Reset extends StdCommand
 			mob.session().print("working...");
 			try
 			{
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					boolean changed=false;
@@ -528,7 +539,7 @@ public class Reset extends StdCommand
 					if(changed)
 					{
 						Log.sysOut("Reset","Groundly doors in "+R.roomID()+" fixed.");
-						CMClass.DBEngine().DBUpdateExits(R);
+						CMLib.database().DBUpdateExits(R);
 					}
 					mob.session().print(".");
 				}
@@ -540,7 +551,7 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
-			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				A.toggleMobility(false);
@@ -548,7 +559,7 @@ public class Reset extends StdCommand
 				{
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()==0) continue;
-					CoffeeUtensils.resetRoom(R);
+					CMLib.utensils().resetRoom(R);
 					boolean didSomething=false;
 					for(int i=0;i<R.numInhabitants();i++)
 					{
@@ -568,7 +579,7 @@ public class Reset extends StdCommand
 					}
 					mob.session().print(".");
 					if(didSomething)
-						CMClass.DBEngine().DBUpdateMOBs(R);
+						CMLib.database().DBUpdateMOBs(R);
 				}
 				A.toggleMobility(true);
 			}
@@ -579,7 +590,7 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
-			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				A.toggleMobility(false);
@@ -587,23 +598,23 @@ public class Reset extends StdCommand
 				{
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()==0) continue;
-					CoffeeUtensils.resetRoom(R);
+					CMLib.utensils().resetRoom(R);
 					boolean didSomething=false;
 					for(int i=0;i<R.numInhabitants();i++)
 					{
 						MOB M=R.fetchInhabitant(i);
 						if((M.isMonster())
 						&&(M.getStartRoom()==R)
-						&&(BeanCounter.getMoney(M)>(M.baseEnvStats().level()+1)))
+						&&(CMLib.beanCounter().getMoney(M)>(M.baseEnvStats().level()+1)))
 						{
-							BeanCounter.setMoney(M,Dice.roll(1,M.baseEnvStats().level(),0)+Dice.roll(1,10,0));
+							CMLib.beanCounter().setMoney(M,CMLib.dice().roll(1,M.baseEnvStats().level(),0)+CMLib.dice().roll(1,10,0));
 							Log.sysOut("Reset","Updated "+M.name()+" in room "+R.roomID()+".");
 							didSomething=true;
 						}
 					}
 					mob.session().print(".");
 					if(didSomething)
-						CMClass.DBEngine().DBUpdateMOBs(R);
+						CMLib.database().DBUpdateMOBs(R);
 				}
 				A.toggleMobility(true);
 			}
@@ -628,7 +639,7 @@ public class Reset extends StdCommand
 			}
 			
 			mob.session().print("working...");
-			for(Enumeration r=CMMap.areas();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().areas();r.hasMoreElements();)
 			{
 				Area A=(Area)r.nextElement();
 				boolean changed=false;
@@ -669,7 +680,7 @@ public class Reset extends StdCommand
 				}
 				if(changed)
 				{
-					CMClass.DBEngine().DBUpdateArea(A.Name(),A);
+					CMLib.database().DBUpdateArea(A.Name(),A);
 					mob.session().print(".");
 				}
 			}
@@ -680,7 +691,7 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
-			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				A.toggleMobility(false);
@@ -689,7 +700,7 @@ public class Reset extends StdCommand
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()>0)
 					{
-						CoffeeUtensils.resetRoom(R);
+						CMLib.utensils().resetRoom(R);
 						boolean changedMOBS=false;
 						boolean changedItems=false;
 						for(int i=0;i<R.numItems();i++)
@@ -701,7 +712,7 @@ public class Reset extends StdCommand
 							if(!M.isEligibleMonster()) continue;
 							for(int i=0;i<M.inventorySize();i++)
 								changedMOBS=changedMOBS||(rightImportMat(null,M.fetchInventory(i),false)>=0);
-							ShopKeeper SK=CoffeeShops.getShopKeeper(M);
+							ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 							if(SK!=null)
 							{
 								Vector V=SK.getStoreInventory();
@@ -726,9 +737,9 @@ public class Reset extends StdCommand
 							}
 						}
 						if(changedItems)
-							CMClass.DBEngine().DBUpdateItems(R);
+							CMLib.database().DBUpdateItems(R);
 						if(changedMOBS)
-							CMClass.DBEngine().DBUpdateMOBs(R);
+							CMLib.database().DBUpdateMOBs(R);
 						mob.session().print(".");
 					}
 				}
@@ -741,7 +752,7 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
-			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				A.toggleMobility(false);
@@ -750,7 +761,7 @@ public class Reset extends StdCommand
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()>0)
 					{
-						CoffeeUtensils.resetRoom(R);
+						CMLib.utensils().resetRoom(R);
 						boolean changedMOBS=false;
 						boolean changedItems=false;
 						for(int i=0;i<R.numItems();i++)
@@ -770,7 +781,7 @@ public class Reset extends StdCommand
 								if(itemFix(I))
 									changedMOBS=true;
 							}
-							ShopKeeper SK=CoffeeShops.getShopKeeper(M);
+							ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 							if(SK!=null)
 							{
 								Vector V=SK.getStoreInventory();
@@ -795,9 +806,9 @@ public class Reset extends StdCommand
 							}
 						}
 						if(changedItems)
-							CMClass.DBEngine().DBUpdateItems(R);
+							CMLib.database().DBUpdateItems(R);
 						if(changedMOBS)
-							CMClass.DBEngine().DBUpdateMOBs(R);
+							CMLib.database().DBUpdateMOBs(R);
 						mob.session().print(".");
 					}
 				}
@@ -810,7 +821,7 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
-			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				A.toggleMobility(false);
@@ -819,14 +830,14 @@ public class Reset extends StdCommand
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()>0)
 					{
-						CoffeeUtensils.resetRoom(R);
+						CMLib.utensils().resetRoom(R);
 						boolean changedItems=false;
 						for(int i=0;i<R.numItems();i++)
 						{
 
 						}
 						if(changedItems)
-							CMClass.DBEngine().DBUpdateItems(R);
+							CMLib.database().DBUpdateItems(R);
 						mob.session().print(".");
 					}
 				}
@@ -851,11 +862,11 @@ public class Reset extends StdCommand
             
             for(Enumeration a=rooms.elements();a.hasMoreElements();)
             {
-                Room R=CMMap.getRoom((String)a.nextElement());
+                Room R=CMLib.map().getRoom((String)a.nextElement());
                 R.getArea().toggleMobility(false);
                 if(R.roomID().length()>0)
                 {
-                    CoffeeUtensils.resetRoom(R);
+                    CMLib.utensils().resetRoom(R);
                     boolean changedItems=false;
                     boolean changedMobs=false;
                     for(int i=0;i<R.numItems();i++)
@@ -897,7 +908,7 @@ public class Reset extends StdCommand
                                 S.setSpellList(l);
                             }
                         }
-                        ShopKeeper SK=CoffeeShops.getShopKeeper(M);
+                        ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
                         if(SK!=null)
                         {
                             Vector V=SK.getStoreInventory();
@@ -934,11 +945,11 @@ public class Reset extends StdCommand
                         }
                     }
                     if(changedItems)
-                        CMClass.DBEngine().DBUpdateItems(R);
+                        CMLib.database().DBUpdateItems(R);
                     if(changedMobs)
-                        CMClass.DBEngine().DBUpdateMOBs(R);
-                    if(changedItems) Log.sysOut("Reset","Fixed a scroll in "+CMMap.getExtendedRoomID(R));
-                    if(changedMobs) Log.sysOut("Reset","Fixed a scroll mob in "+CMMap.getExtendedRoomID(R));
+                        CMLib.database().DBUpdateMOBs(R);
+                    if(changedItems) Log.sysOut("Reset","Fixed a scroll in "+CMLib.map().getExtendedRoomID(R));
+                    if(changedMobs) Log.sysOut("Reset","Fixed a scroll mob in "+CMLib.map().getExtendedRoomID(R));
                     mob.session().print(".");
                     R.getArea().toggleMobility(true);
                 }
@@ -947,20 +958,20 @@ public class Reset extends StdCommand
         }
         else
 		if(s.equalsIgnoreCase("clantick"))
-			Clans.tickAllClans();
+			CMLib.clans().tickAllClans();
 		else
         if(s.equalsIgnoreCase("autoweather"))
         {
             if(mob.session()!=null)
             {
                 mob.session().print(mob,null,null,"Modifying players...");
-                Vector V=CMClass.DBEngine().userList();
+                Vector V=CMLib.database().userList();
                 while(V.size()>0)
                 {
-                    MOB M=CMMap.getLoadPlayer((String)V.firstElement());
+                    MOB M=CMLib.map().getLoadPlayer((String)V.firstElement());
                     V.removeElementAt(0);
                     M.setBitmap(M.getBitmap()|MOB.ATT_AUTOWEATHER);
-                    CMClass.DBEngine().DBUpdatePlayerStatsOnly(M);
+                    CMLib.database().DBUpdatePlayerStatsOnly(M);
                 }
             }
         }
@@ -969,7 +980,7 @@ public class Reset extends StdCommand
 		{
 			// this is just utility code and will change frequently
 			Area A=mob.location().getArea();
-            CoffeeUtensils.resetArea(A);
+            CMLib.utensils().resetArea(A);
 			A.toggleMobility(false);
 			Hashtable rememberI=new Hashtable();
 			Hashtable rememberM=new Hashtable();
@@ -977,7 +988,7 @@ public class Reset extends StdCommand
 			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				CoffeeUtensils.resetRoom(R);
+				CMLib.utensils().resetRoom(R);
 				boolean somethingDone=false;
 				mob.tell(R.roomID()+"/"+R.name()+"/"+R.displayText()+"--------------------");
 				for(int i=R.numItems()-1;i>=0;i--)
@@ -996,7 +1007,7 @@ public class Reset extends StdCommand
 						somethingDone=true;
 				}
 				if(somethingDone)
-					CMClass.DBEngine().DBUpdateItems(R);
+					CMLib.database().DBUpdateItems(R);
 				somethingDone=false;
 				for(int m=0;m<R.numInhabitants();m++)
 				{
@@ -1090,7 +1101,7 @@ public class Reset extends StdCommand
 						if(returned>0)
 							somethingDone=true;
 					}
-					ShopKeeper SK=CoffeeShops.getShopKeeper(M);
+					ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 					if(SK!=null)
 					{
 						Vector V=SK.getStoreInventory();
@@ -1136,7 +1147,7 @@ public class Reset extends StdCommand
 					}
 				}
 				if(somethingDone)
-					CMClass.DBEngine().DBUpdateMOBs(R);
+					CMLib.database().DBUpdateMOBs(R);
 			}
 			}
 			catch(java.io.IOException e){}
@@ -1487,9 +1498,9 @@ public class Reset extends StdCommand
 				int mul=1;
 				if(A.quality()==Ability.MALICIOUS) mul=-1;
 				if(ID.indexOf("HAVE")>=0)
-					level+=(mul*CMAble.lowestQualifyingLevel(A.ID()));
+					level+=(mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 				else
-					level+=(mul*CMAble.lowestQualifyingLevel(A.ID())/2);
+					level+=(mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID())/2);
 			}
 		}
 		return level;

@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -20,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Haggle extends StdAbility
+public class Skill_Haggle extends StdSkill
 {
 	public String ID() { return "Skill_Haggle"; }
 	public String name(){ return "Haggle";}
@@ -50,7 +60,7 @@ public class Skill_Haggle extends StdAbility
 			return false;
 		}
 
-        Environmental shopkeeper=EnglishParser.parseShopkeeper(mob,commands,Util.capitalizeAndLower(cmd)+" what to whom?");
+        Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,Util.capitalizeAndLower(cmd)+" what to whom?");
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
@@ -64,7 +74,7 @@ public class Skill_Haggle extends StdAbility
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,shopkeeper,this,CMMsg.MSG_SPEAK,auto?"":"<S-NAME> haggle(s) with <T-NAMESELF>.");
+			CMMsg msg=CMClass.getMsg(mob,shopkeeper,this,CMMsg.MSG_SPEAK,auto?"":"<S-NAME> haggle(s) with <T-NAMESELF>.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

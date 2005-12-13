@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -57,14 +67,14 @@ public class Thief_Assassinate extends ThiefSkill
 			if(mob.location()==null) return false;
 			if(mob.location().isInhabitant(tracking))
 			{
-				if(Sense.isHidden(mob))
+				if(CMLib.flags().isHidden(mob))
 				{
 					Ability A=mob.fetchAbility("Thief_BackStab");
 					if(A!=null)
 						A.invoke(mob,tracking,false,0);
 				}
 				else
-					MUDFight.postAttack(mob,tracking,mob.fetchWieldedItem());
+					CMLib.combat().postAttack(mob,tracking,mob.fetchWieldedItem());
 				return false;
 			}
 
@@ -118,14 +128,14 @@ public class Thief_Assassinate extends ThiefSkill
 							{
 								int dir=nextDirection;
 								nextDirection=-2;
-								MUDTracker.move(mob,dir,false,false);
+								CMLib.tracking().move(mob,dir,false,false);
 							}
 						}
 						else
 						{
 							int dir=nextDirection;
 							nextDirection=-2;
-							MUDTracker.move(mob,dir,false,false);
+							CMLib.tracking().move(mob,dir,false,false);
 						}
 					}
 					else
@@ -149,23 +159,23 @@ public class Thief_Assassinate extends ThiefSkill
 		MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.amITarget(mob.location()))
-		&&(Sense.canBeSeenBy(mob.location(),mob))
+		&&(CMLib.flags().canBeSeenBy(mob.location(),mob))
 		&&(msg.targetMinor()==CMMsg.TYP_LOOK))
-			nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),true);
+			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!Sense.aliveAwakeMobileUnbound(mob,false))
+		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
 
-		if(!Sense.canBeSeenBy(mob.location(),mob))
+		if(!CMLib.flags().canBeSeenBy(mob.location(),mob))
 		{
 			mob.tell("You can't see anything to track!");
 			return false;
 		}
 
-		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);
+		Vector V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
 		for(int v=0;v<V.size();v++)	((Ability)V.elementAt(v)).unInvoke();
 		if(V.size()>0)
 		{
@@ -202,7 +212,7 @@ public class Thief_Assassinate extends ThiefSkill
 			MOB M=mob.location().fetchInhabitant(mobName);
 			if(M!=null)
 			{
-				MUDFight.postAttack(mob,M,mob.fetchWieldedItem());
+				CMLib.combat().postAttack(mob,M,mob.fetchWieldedItem());
 				return false;
 			}
 		}
@@ -218,10 +228,10 @@ public class Thief_Assassinate extends ThiefSkill
 		{
 		    try
 		    {
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if((Sense.canAccess(mob,R))&&(R.isInhabitant(tracking)))
+					if((CMLib.flags().canAccess(mob,R))&&(R.isInhabitant(tracking)))
 					{
 						rooms.addElement(R);
 						break;
@@ -246,10 +256,10 @@ public class Thief_Assassinate extends ThiefSkill
 			{
 			    try
 			    {
-					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
-						if((Sense.canAccess(mob,R))&&(R.fetchInhabitant(mobName)!=null))
+						if((CMLib.flags().canAccess(mob,R))&&(R.fetchInhabitant(mobName)!=null))
 							rooms.addElement(R);
 					}
 			    }catch(NoSuchElementException nse){}
@@ -257,7 +267,7 @@ public class Thief_Assassinate extends ThiefSkill
 		}
 
 		if(rooms.size()>0)
-			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,true,false,true,true,true,50);
+			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,true,false,true,true,true,50);
 
 		if((tracking==null)&&(theTrail!=null)&&(theTrail.size()>0))
 			tracking=((Room)theTrail.firstElement()).fetchInhabitant(mobName);
@@ -270,7 +280,7 @@ public class Thief_Assassinate extends ThiefSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,tracking,this,CMMsg.MSG_THIEF_ACT,mob.isMonster()?null:"<S-NAME> begin(s) to track <T-NAMESELF> for assassination.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			CMMsg msg=CMClass.getMsg(mob,tracking,this,CMMsg.MSG_THIEF_ACT,mob.isMonster()?null:"<S-NAME> begin(s) to track <T-NAMESELF> for assassination.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if((mob.location().okMessage(mob,msg))&&(tracking.okMessage(tracking,msg)))
 			{
 				mob.location().send(mob,msg);
@@ -281,7 +291,7 @@ public class Thief_Assassinate extends ThiefSkill
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverEnvStats();
-				newOne.nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),true);
+				newOne.nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
 			}
 		}
 		else

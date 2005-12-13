@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -44,7 +54,7 @@ public class Skill_Juggle extends BardSkill
 	public int maxJuggles()
 	{
 		if((affected!=null)&&(affected instanceof MOB))
-			return 5+(CMAble.qualifyingClassLevel((MOB)affected,this));
+			return 5+(CMLib.ableMapper().qualifyingClassLevel((MOB)affected,this));
 		return 5;
 	}
 
@@ -52,7 +62,7 @@ public class Skill_Juggle extends BardSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 			return (int)Math.round(affected.envStats().speed())
-				   +(CMAble.qualifyingClassLevel((MOB)affected,this)/5);
+				   +(CMLib.ableMapper().qualifyingClassLevel((MOB)affected,this)/5);
 		return 1;
 	}
 
@@ -96,7 +106,7 @@ public class Skill_Juggle extends BardSkill
 		&&(msg.target() instanceof Item)
 		&&(juggles.contains(msg.target()))
 		&&(affected instanceof MOB)
-		&&(Dice.rollPercentage()<90)
+		&&(CMLib.dice().rollPercentage()<90)
 		&&(msg.source()!=affected))
 		{
 			msg.source().tell(msg.source(),msg.target(),null,"<T-NAME> is moving too fast for you to grab it.");
@@ -180,7 +190,7 @@ public class Skill_Juggle extends BardSkill
 				else
 				{
 					unJuggle(I);
-					CommonMsgs.drop(M,I,false,false);
+					CMLib.commands().drop(M,I,false,false);
 					break;
 				}
 			}
@@ -280,10 +290,10 @@ public class Skill_Juggle extends BardSkill
 						int maxAttacks=maxAttacks();
 						for(int i=0;((i<maxAttacks)&&(copy.size()>0));i++)
 						{
-							Item I=(Item)copy.elementAt(Dice.roll(1,copy.size(),-1));
+							Item I=(Item)copy.elementAt(CMLib.dice().roll(1,copy.size(),-1));
 							I.unWear();
 							mob.giveItem(I);
-							if((mob.isMine(I))&&(CommonMsgs.drop(mob,I,true,false)))
+							if((mob.isMine(I))&&(CMLib.commands().drop(mob,I,true,false)))
 							{
 								Weapon w=CMClass.getWeapon("StdWeapon");
 								w.setName(I.name());
@@ -297,10 +307,10 @@ public class Skill_Juggle extends BardSkill
 									w.setWeaponType(((Weapon)I).weaponType());
 								else
 									w.setWeaponType(Weapon.TYPE_BASHING);
-								w.baseEnvStats().setDamage(Dice.roll(1,adjustedLevel(mob,0),0));
+								w.baseEnvStats().setDamage(CMLib.dice().roll(1,adjustedLevel(mob,0),0));
 								w.baseEnvStats().setWeight(I.baseEnvStats().weight());
 								w.recoverEnvStats();
-								MUDFight.postAttack(mob,mob.getVictim(),w);
+								CMLib.combat().postAttack(mob,mob.getVictim(),w);
 								w.destroy();
 							}
 							else
@@ -377,11 +387,11 @@ public class Skill_Juggle extends BardSkill
 					continue;
 				}
 				else
-				if(!CommonMsgs.remove(mob,juggleThis,true))
+				if(!CMLib.commands().remove(mob,juggleThis,true))
 					return false;
 			}
 			if(juggleThis==null) break;
-			if((Sense.canBeSeenBy(juggleThis,mob))
+			if((CMLib.flags().canBeSeenBy(juggleThis,mob))
 			&&((A==null)||(!A.juggles.contains(juggleThis)))
 			&&(!V.contains(juggleThis)))
 				V.addElement(juggleThis);
@@ -413,7 +423,7 @@ public class Skill_Juggle extends BardSkill
 			for(int i=0;i<V.size();i++)
 			{
 				Item I=(Item)V.elementAt(i);
-				FullMsg msg=new FullMsg(mob,I,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) juggling <T-NAMESELF>.");
+				CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) juggling <T-NAMESELF>.");
 				if((A.juggles.size()<A.maxJuggles())
 				&&(mob.location().okMessage(mob,msg)))
 				{

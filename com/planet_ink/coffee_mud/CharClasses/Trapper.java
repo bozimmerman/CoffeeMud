@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.CharClasses;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -34,88 +45,88 @@ public class Trapper extends Thief
 		if(!loaded())
 		{
 			setLoaded(true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Apothecary",false);
-			CMAble.addCharAbilityMapping(ID(),1,"ThievesCant",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Apothecary",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ThievesCant",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",50,false);
-			CMAble.addCharAbilityMapping(ID(),1,"Taxidermy",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Carpentry",0,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Wainwrighting",0,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Thief_Caltrops",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",50,false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Taxidermy",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Carpentry",0,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Wainwrighting",0,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_Caltrops",false);
 
-			CMAble.addCharAbilityMapping(ID(),2,"Thief_Hide",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Thief_TrophyCount",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Hide",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_TrophyCount",false);
 
-			CMAble.addCharAbilityMapping(ID(),3,"Thief_AvoidTraps",true);
-			CMAble.addCharAbilityMapping(ID(),3,"Thief_IdentifyBombs",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_AvoidTraps",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_IdentifyBombs",false);
 
-			CMAble.addCharAbilityMapping(ID(),4,"Thief_DetectTraps",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_DetectTraps",false);
 
-			CMAble.addCharAbilityMapping(ID(),5,"Thief_StrategicRetreat",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Ranger_FindWater",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_StrategicRetreat",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Ranger_FindWater",false);
 
-			CMAble.addCharAbilityMapping(ID(),6,"Thief_Sneak",false);
-			CMAble.addCharAbilityMapping(ID(),6,"Skill_Dodge",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_Sneak",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Dodge",false);
 
-			CMAble.addCharAbilityMapping(ID(),7,"Thief_UsePoison",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_UsePoison",true);
 
-			CMAble.addCharAbilityMapping(ID(),8,"Thief_RemoveTraps",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_RemoveTraps",false);
 
-			CMAble.addCharAbilityMapping(ID(),9,"Thief_SneakAttack",false);
-			CMAble.addCharAbilityMapping(ID(),9,"Thief_Listen",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_SneakAttack",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_Listen",true);
 
-			CMAble.addCharAbilityMapping(ID(),10,"Thief_Trap",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_Trap",true);
 
-			CMAble.addCharAbilityMapping(ID(),11,"Fighter_TrueShot",false);
-			CMAble.addCharAbilityMapping(ID(),11,"Skill_Parry",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_TrueShot",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Parry",true);
 
-			CMAble.addCharAbilityMapping(ID(),12,"Ranger_Track",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Ranger_Track",false);
 
-			CMAble.addCharAbilityMapping(ID(),13,"Thief_Sap",false);
-			CMAble.addCharAbilityMapping(ID(),13,"Thief_Observation",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Sap",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Observation",true);
 
-			CMAble.addCharAbilityMapping(ID(),14,"Thief_Lure",false);
-			CMAble.addCharAbilityMapping(ID(),14,"Thief_Plant",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Lure",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Plant",false);
 
-			CMAble.addCharAbilityMapping(ID(),15,"Thief_BackStab",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Spell_ReadMagic",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_BackStab",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_ReadMagic",false);
 
-			CMAble.addCharAbilityMapping(ID(),16,"Fighter_CoverDefence",false);
-			CMAble.addCharAbilityMapping(ID(),16,"Thief_Bind",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_CoverDefence",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_Bind",false);
 
-			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",true);
-			CMAble.addCharAbilityMapping(ID(),17,"Thief_MakeBomb",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_MakeBomb",false);
 
-			CMAble.addCharAbilityMapping(ID(),18,"Thief_Detection",false);
-			CMAble.addCharAbilityMapping(ID(),18,"AnimalTaming",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_Detection",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"AnimalTaming",false);
 
-			CMAble.addCharAbilityMapping(ID(),19,"Thief_RunningFight",false);
-			CMAble.addCharAbilityMapping(ID(),20,"CageBuilding",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_RunningFight",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"CageBuilding",25,true);
 
-			CMAble.addCharAbilityMapping(ID(),20,"Thief_SetAlarm",false);
-			CMAble.addCharAbilityMapping(ID(),20,"Fighter_Pin",false);
-			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_SetAlarm",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Fighter_Pin",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Scrapping",false);
 
-			CMAble.addCharAbilityMapping(ID(),21,"Skill_Cage",true);
-			CMAble.addCharAbilityMapping(ID(),21,"Domesticating",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_Cage",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Domesticating",false);
 
-			CMAble.addCharAbilityMapping(ID(),22,"Thief_Snipe",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_Snipe",false);
 
-			CMAble.addCharAbilityMapping(ID(),23,"AnimalTrading",false);
-			CMAble.addCharAbilityMapping(ID(),22,"Thief_Shadow",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"AnimalTrading",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_Shadow",true);
 
-			CMAble.addCharAbilityMapping(ID(),24,"AnimalTraining",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"AnimalTraining",false);
 
-			CMAble.addCharAbilityMapping(ID(),25,"Thief_TrapImmunity",true);
-			CMAble.addCharAbilityMapping(ID(),25,"Thief_Kamikaze",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Thief_TrapImmunity",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Thief_Kamikaze",true);
 
-			CMAble.addCharAbilityMapping(ID(),30,"Thief_DeathTrap",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_DeathTrap",true);
 		}
 	}
 	public String otherLimitations(){return "Sneak and Hide attempts will fail outside of the wild.";}
@@ -133,7 +144,7 @@ public class Trapper extends Thief
 			if((((myChar.location().domainType()&Room.INDOORS)>0))
 			||(myChar.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))
 			{
-				if(CMAble.lowestQualifyingClassRace(myChar,(Ability)msg.tool())==this)
+				if(CMLib.ableMapper().lowestQualifyingClassRace(myChar,(Ability)msg.tool())==this)
 				{
 					if(msg.tool().ID().equalsIgnoreCase("Thief_Hide"))
 					{

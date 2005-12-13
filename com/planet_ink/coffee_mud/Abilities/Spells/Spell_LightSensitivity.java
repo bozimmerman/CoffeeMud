@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -34,7 +45,7 @@ public class Spell_LightSensitivity extends Spell
 		super.affectEnvStats(affected,affectableStats);
 		if(!(affected instanceof MOB)) return;
 		if(((MOB)affected).location()==null) return;
-		if(Sense.isInDark(((MOB)affected).location()))
+		if(CMLib.flags().isInDark(((MOB)affected).location()))
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
 		else
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
@@ -83,13 +94,13 @@ public class Spell_LightSensitivity extends Spell
 			// what happened.
 			invoker=mob;
 			String autoStr="A flashing light blazes in the eyes of <T-NAME>!";
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?autoStr:"^SYou invoke a sensitive light into <T-NAME>s eyes.^?",affectType(auto),auto?autoStr:"^S<S-NAME> invoke(s) a sensitive light into your eyes.^?",CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?autoStr:"^S<S-NAME> invokes a sensitive light into <T-NAME>s eyes.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?autoStr:"^SYou invoke a sensitive light into <T-NAME>s eyes.^?",affectType(auto),auto?autoStr:"^S<S-NAME> invoke(s) a sensitive light into your eyes.^?",CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?autoStr:"^S<S-NAME> invokes a sensitive light into <T-NAME>s eyes.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					if(Sense.isInDark(mob.location()))
+					if(CMLib.flags().isInDark(mob.location()))
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) extremely sensitive to light.");
 					else
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) blinded by the light.");

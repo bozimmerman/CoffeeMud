@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -56,8 +67,8 @@ public class Chant_PlantWall extends Chant
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
 			&&(msg.tool().maxRange()>0))
 			{
-                FullMsg msg2=new FullMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> fire(s) at the plant wall with "+msg.tool().name()+".^</FIGHT^>^?");
-                CMColor.fixSourceFightColor(msg2);
+                CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> fire(s) at the plant wall with "+msg.tool().name()+".^</FIGHT^>^?");
+                CMLib.color().fixSourceFightColor(msg2);
                 if(mob.location().okMessage(mob,msg2))
                 {
                     mob.location().send(mob,msg2);
@@ -76,8 +87,8 @@ public class Chant_PlantWall extends Chant
 				Item w=mob.fetchWieldedItem();
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
-                FullMsg msg2=new FullMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the plant wall with "+w.name()+".^?");
-                CMColor.fixSourceFightColor(msg2);
+                CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the plant wall with "+w.name()+".^?");
+                CMLib.color().fixSourceFightColor(msg2);
                 if(mob.location().okMessage(mob,msg2))
                 {
                     mob.location().send(mob,msg2);
@@ -97,8 +108,8 @@ public class Chant_PlantWall extends Chant
 			&&(msg.tool() instanceof Ability)
 			&&(msg.tool().maxRange()>0))
 			{
-                FullMsg msg2=new FullMsg(mob,null,msg.tool(),CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^>The plant wall absorbs <O-NAME> from <S-NAME>.^</FIGHT^>^?");
-                CMColor.fixSourceFightColor(msg2);
+                CMMsg msg2=CMClass.getMsg(mob,null,msg.tool(),CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^>The plant wall absorbs <O-NAME> from <S-NAME>.^</FIGHT^>^?");
+                CMLib.color().fixSourceFightColor(msg2);
                 if(mob.location().okMessage(mob,msg2))
                     mob.location().send(mob,msg2);
                 return false;
@@ -180,7 +191,7 @@ public class Chant_PlantWall extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),auto?"A plant wall appears!":"^S<S-NAME> chant(s) for a plant wall!^?");
+			CMMsg msg = CMClass.getMsg(mob, target, this,affectType(auto),auto?"A plant wall appears!":"^S<S-NAME> chant(s) for a plant wall!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -190,7 +201,7 @@ public class Chant_PlantWall extends Chant
 				I.setDisplayText("a writhing plant wall has grown here");
 				I.setDescription("The wall is thick and stringy.");
 				I.setMaterial(EnvResource.RESOURCE_GREENS);
-				Sense.setGettable(I,false);
+				CMLib.flags().setGettable(I,false);
 				I.recoverEnvStats();
 				mob.location().addItem(I);
 				theWall=I;

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -28,7 +39,7 @@ public class Prop_RideZapper extends Prop_HaveZapper
 
 	public String accountForYourself()
 	{
-		return "Mounting restricted as follows: "+MUDZapper.zapperDesc(miscText);
+		return "Mounting restricted as follows: "+CMLib.masking().maskDesc(miscText);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -46,7 +57,7 @@ public class Prop_RideZapper extends Prop_HaveZapper
 		case CMMsg.TYP_SLEEP:
 		case CMMsg.TYP_MOUNT:
 		case CMMsg.TYP_ENTER:
-			if((!MUDZapper.zapperCheck(text(),mob))&&(didHappen(100)))
+			if((!CMLib.masking().maskCheck(text(),mob))&&(didHappen(100)))
 			{
 				mob.location().show(mob,null,affected,CMMsg.MSG_OK_VISUAL,Util.getParmStr(text(),"MESSAGE","<O-NAME> zaps <S-NAME>, making <S-HIM-HER> jump up!"));
 				return false;

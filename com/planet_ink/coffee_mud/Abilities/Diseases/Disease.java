@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Diseases;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -59,7 +70,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 			if(target instanceof MOB)
 			{
 				MOB targetMOB=(MOB)target;
-				if((Dice.rollPercentage()>targetMOB.charStats().getSave(CharStats.SAVE_DISEASE))
+				if((CMLib.dice().rollPercentage()>targetMOB.charStats().getSave(CharStats.SAVE_DISEASE))
 				&&(targetMOB.location()!=null))
 				{
 					MOB following=targetMOB.amFollowing();
@@ -82,7 +93,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 	{
 		if(mob==null) return false;
 		if(mob.location()==null) return false;
-		MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
+		MOB target=mob.location().fetchInhabitant(CMLib.dice().roll(1,mob.location().numInhabitants(),-1));
 		return catchIt(mob,target);
 	}
 
@@ -126,7 +137,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 			&&(msg.target()!=null)
 			&&(msg.target() instanceof MOB)
 			&&(msg.target()!=msg.source())
-			&&(Dice.rollPercentage()>(((MOB)msg.target()).charStats().getSave(CharStats.SAVE_DISEASE)+70)))
+			&&(CMLib.dice().rollPercentage()>(((MOB)msg.target()).charStats().getSave(CharStats.SAVE_DISEASE)+70)))
 				catchIt(mob,msg.target());
 			else
 			if((Util.bset(abilityCode(),DiseaseAffect.SPREAD_CONTACT))
@@ -205,7 +216,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 		{
 			MOB mvictim=mob.getVictim();
 			MOB tvictim=target.getVictim();
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_HANDS|(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MASK_MALICIOUS|CMMsg.TYP_DISEASE,"");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_HANDS|(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MASK_MALICIOUS|CMMsg.TYP_DISEASE,"");
 			Room R=target.location();
 			if((R!=null)&&(R.okMessage(target,msg)))
 			{

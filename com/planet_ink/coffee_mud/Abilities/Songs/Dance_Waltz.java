@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -34,12 +45,12 @@ public class Dance_Waltz extends Dance
 		if(statadd==null)
 		{
 			statadd=new int[CharStats.NUM_BASE_STATS];
-			int classLevel=CMAble.qualifyingClassLevel(invoker(),this);
+			int classLevel=CMLib.ableMapper().qualifyingClassLevel(invoker(),this);
 			classLevel=(classLevel+1)/9;
 			classLevel++;
 
 			for(int i=0;i<classLevel;i++)
-				statadd[Dice.roll(1,CharStats.NUM_BASE_STATS,-1)]+=3;
+				statadd[CMLib.dice().roll(1,CharStats.NUM_BASE_STATS,-1)]+=3;
 		}
 		for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 			affectedStats.setStat(i,affectedStats.getStat(i)+statadd[i]);

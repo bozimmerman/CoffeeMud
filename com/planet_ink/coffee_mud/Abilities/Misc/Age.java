@@ -1,8 +1,20 @@
 package com.planet_ink.coffee_mud.Abilities.Misc;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -37,7 +49,7 @@ public class Age extends StdAbility
 		long start=Util.s_long(text());
 		if(start<Integer.MAX_VALUE)
 		    return "";
-		long days=((System.currentTimeMillis()-start)/MudHost.TICK_TIME)/CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY); // down to days;
+		long days=((System.currentTimeMillis()-start)/MudHost.TICK_TIME)/CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY); // down to days;
 		long months=days/CMClass.globalClock().getDaysInMonth();
 		long years=months/CMClass.globalClock().getMonthsInYear();
 		if(days<1)
@@ -71,7 +83,7 @@ public class Age extends StdAbility
 		norecurse=true;
 
 		if(divisor==0.0)
-		    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
+		    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
 		
 		int ellapsed=(int)Math.round(Math.floor(Util.div(Util.div(System.currentTimeMillis()-l,MudHost.TICK_TIME),divisor)));
 		if((affected instanceof Item)&&(affected instanceof CagedAnimal))
@@ -83,7 +95,7 @@ public class Age extends StdAbility
 			        myRace=M.baseCharStats().getMyRace();
 		        else
 		        {
-		            Room R=CoffeeUtensils.roomLocation(affected);
+		            Room R=CMLib.utensils().roomLocation(affected);
 		            if(R!=null)
 		                R.showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" died.");
 		            ((Item)affected).destroy();
@@ -92,7 +104,7 @@ public class Age extends StdAbility
 		    }
 			if(ellapsed>=myRace.getAgingChart()[1])
 			{
-				Room R=CoffeeUtensils.roomLocation(affected);
+				Room R=CMLib.utensils().roomLocation(affected);
 				if(R!=null)
 				{
 					Item I=(Item)affected;
@@ -100,7 +112,7 @@ public class Age extends StdAbility
 					if(I.owner() instanceof MOB)
 					{
 						following=((MOB)I.owner());
-						if(!Sense.isInTheGame(following,true))
+						if(!CMLib.flags().isInTheGame(following,true))
 						{
 							norecurse=false;
 							return;
@@ -141,7 +153,7 @@ public class Age extends StdAbility
 							STAT.setMiscText("CHA=10 CON=7 DEX=3 INT=3 STR=2 WIS=2");
 						babe.text();
 						babe.bringToLife(R,true);
-						BeanCounter.clearZeroMoney(babe,null);
+						CMLib.beanCounter().clearZeroMoney(babe,null);
 						babe.setFollowing(following);
 						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!");
 						I.destroy();
@@ -164,7 +176,7 @@ public class Age extends StdAbility
 			if((ellapsed>=myRace.getAgingChart()[2])
 			&&(((MOB)affected).fetchBehavior("MudChat")==null))
 			{
-				Room R=CoffeeUtensils.roomLocation(affected);
+				Room R=CMLib.utensils().roomLocation(affected);
 				if(R!=null)
 				{
 					MOB babe=(MOB)affected;
@@ -202,13 +214,13 @@ public class Age extends StdAbility
 			&&(((MOB)affected).fetchBehavior("MudChat")!=null)
 			&&(((MOB)affected).charStats().getStat(CharStats.INTELLIGENCE)>1))
 			{
-				Room R=CoffeeUtensils.roomLocation(affected);
-				if((R!=null)&&(affected.Name().indexOf(" ")<0)&&(!CMClass.DBEngine().DBUserSearch(null,affected.Name())))
+				Room R=CMLib.utensils().roomLocation(affected);
+				if((R!=null)&&(affected.Name().indexOf(" ")<0)&&(!CMLib.database().DBUserSearch(null,affected.Name())))
 				{
 					MOB babe=(MOB)affected;
 					MOB liege=null;
 					if(babe.getLiegeID().length()>0)
-						liege=CMMap.getLoadPlayer(babe.getLiegeID());
+						liege=CMLib.map().getLoadPlayer(babe.getLiegeID());
 					if(liege==null) liege=babe.amFollowing();
 					MOB newMan=CMClass.getMOB("StdMOB");
 					newMan.setAgeHours(babe.getAgeHours());
@@ -225,9 +237,9 @@ public class Age extends StdAbility
 					newMan.setFollowing(null);
 					newMan.setLiegeID(babe.getLiegeID());
 					newMan.setLocation(babe.location());
-					BeanCounter.setMoney(newMan,BeanCounter.getMoney(babe));
+					CMLib.beanCounter().setMoney(newMan,CMLib.beanCounter().getMoney(babe));
 					newMan.setName(babe.Name());
-					newMan.setPlayerStats((PlayerStats)CMClass.getShared("DefaultPlayerStats"));
+					newMan.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 					newMan.setPractices(babe.getPractices());
 					newMan.setQuestPoint(babe.getQuestPoint());
 					newMan.setStartRoom(babe.getStartRoom());
@@ -241,9 +253,9 @@ public class Age extends StdAbility
 					if(newMan.playerStats().getBirthday()==null)
 					    newMan.baseCharStats().setStat(CharStats.AGE,newMan.playerStats().initializeBirthday(ellapsed*15,newMan.baseCharStats().getMyRace()));
 					newMan.baseCharStats().setStat(CharStats.AGE,ellapsed);
-					newMan.baseState().setHitPoints(CommonStrings.getIntVar(CommonStrings.SYSTEMI_STARTHP));
-					newMan.baseState().setMana(CommonStrings.getIntVar(CommonStrings.SYSTEMI_STARTMANA));
-					newMan.baseState().setMovement(CommonStrings.getIntVar(CommonStrings.SYSTEMI_STARTMOVE));
+					newMan.baseState().setHitPoints(CMProps.getIntVar(CMProps.SYSTEMI_STARTHP));
+					newMan.baseState().setMana(CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA));
+					newMan.baseState().setMovement(CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE));
 					newMan.baseCharStats().getMyRace().setHeightWeight(newMan.baseEnvStats(),(char)newMan.baseCharStats().getStat(CharStats.GENDER));
 					newMan.baseCharStats().getMyRace().reRoll(newMan,newMan.baseCharStats());
 					newMan.baseCharStats().getMyRace().startRacing(newMan,false);
@@ -252,8 +264,8 @@ public class Age extends StdAbility
 					newMan.baseCharStats().getCurrentClass().startCharacter(newMan,false,false);
 					for(int i=0;i<babe.inventorySize();i++)
 						newMan.giveItem(babe.fetchInventory(i));
-					CoffeeUtensils.outfit(newMan,newMan.baseCharStats().getMyRace().outfit());
-					CoffeeUtensils.outfit(newMan,newMan.baseCharStats().getCurrentClass().outfit());
+					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getMyRace().outfit());
+					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getCurrentClass().outfit());
 					for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 						newMan.baseCharStats().setStat(i,newMan.baseCharStats().getStat(i)+1);
 					for(int i=CharStats.MAX_STRENGTH_ADJ;i<CharStats.MAX_STRENGTH_ADJ+CharStats.NUM_BASE_STATS;i++)
@@ -264,15 +276,15 @@ public class Age extends StdAbility
 					newMan.recoverEnvStats();
 					newMan.recoverMaxState();
 					newMan.resetToMaxState();
-					CMClass.DBEngine().DBCreateCharacter(newMan);
-					if(CMMap.getPlayer(newMan.Name())==null)
-						CMMap.addPlayer(newMan);
+					CMLib.database().DBCreateCharacter(newMan);
+					if(CMLib.map().getPlayer(newMan.Name())==null)
+						CMLib.map().addPlayer(newMan);
 
 					newMan.playerStats().setLastIP(liege.session().getAddress());
 					Log.sysOut("Age","Created user: "+newMan.Name());
-					for(int s=0;s<Sessions.size();s++)
+					for(int s=0;s<CMLib.sessions().size();s++)
 					{
-						Session S=Sessions.elementAt(s);
+						Session S=CMLib.sessions().elementAt(s);
 						if((S!=null)
 						&&(S.mob()!=null)
 						&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
@@ -281,20 +293,20 @@ public class Age extends StdAbility
 							S.mob().tell("^X"+newMan.Name()+" has just been created.^.^?");
 					}
                     
-                    Vector channels=ChannelSet.getFlaggedChannelNames("NEWPLAYERS");
+                    Vector channels=CMLib.channels().getFlaggedChannelNames("NEWPLAYERS");
                     for(int i=0;i<channels.size();i++)
-                        CommonMsgs.channel((String)channels.elementAt(i),newMan.getClanID(),newMan.Name()+" has just been created.",true);
+                        CMLib.commands().channel((String)channels.elementAt(i),newMan.getClanID(),newMan.Name()+" has just been created.",true);
                     
 					if(liege!=babe.amFollowing())
 						babe.amFollowing().tell(newMan.Name()+" has just grown up! "+Util.capitalizeAndLower(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
 					liege.tell(newMan.Name()+" has just grown up! "+Util.capitalizeAndLower(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
-					CMClass.DBEngine().DBUpdatePlayer(newMan);
+					CMLib.database().DBUpdatePlayer(newMan);
 					newMan.removeFromGame(false);
 					babe.setFollowing(null);
 					babe.destroy();
 					MOB fol=newMan.amFollowing();
 					newMan.setFollowing(null);
-					CMClass.DBEngine().DBUpdateFollowers(liege);
+					CMLib.database().DBUpdateFollowers(liege);
 					newMan.setFollowing(fol);
 				}
 				else
@@ -302,7 +314,7 @@ public class Age extends StdAbility
 					MOB babe=(MOB)affected;
 					MOB liege=null;
 					if(babe.getLiegeID().length()>0)
-						liege=CMMap.getLoadPlayer(babe.getLiegeID());
+						liege=CMLib.map().getLoadPlayer(babe.getLiegeID());
 					if(liege==null) liege=babe.amFollowing();
 					if(babe.Name().indexOf(" ")>0)
 					{
@@ -349,7 +361,7 @@ public class Age extends StdAbility
 				{ if(!B.getParms().equalsIgnoreCase(happyBabyEmoter)) B.setParms(happyBabyEmoter);}
 			}
 		}
-		if(((System.currentTimeMillis()-lastSoiling)>(IQCalendar.MILI_MINUTE*30))&&(Dice.rollPercentage()<10))
+		if(((System.currentTimeMillis()-lastSoiling)>(TimeManager.MILI_MINUTE*30))&&(CMLib.dice().rollPercentage()<10))
 		{
 		    if(lastSoiling==0)
 			    lastSoiling=System.currentTimeMillis();
@@ -363,7 +375,7 @@ public class Age extends StdAbility
 			        mob=(MOB)affected;
 				    if(myRace==null) myRace=((MOB)affected).charStats().getMyRace();
 					if(divisor==0.0)
-					    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
+					    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
 					long l=Util.s_long(text());
 					if((l>0)&&(l<Integer.MAX_VALUE))
 					{
@@ -404,7 +416,7 @@ public class Age extends StdAbility
 		else
 		{
 			if(divisor==0.0)
-			    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
+			    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
 			affected.baseCharStats().setStat(CharStats.AGE,(int)Math.round(Math.floor(Util.div(Util.div(System.currentTimeMillis()-l,MudHost.TICK_TIME),divisor))));
 			affectableStats.setStat(CharStats.AGE,affected.baseCharStats().getStat(CharStats.AGE));
 		}

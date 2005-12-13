@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -29,9 +40,9 @@ public class Prop_ReqRaces extends Property
 	public boolean passesMuster(MOB mob)
 	{
 		if(mob==null) return false;
-		if(Sense.isATrackingMonster(mob))
+		if(CMLib.flags().isATrackingMonster(mob))
 			return true;
-		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
+		if(CMLib.flags().isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
 
 		int x=text().toUpperCase().indexOf("ALL");
@@ -51,7 +62,7 @@ public class Prop_ReqRaces extends Property
 		   &&(msg.target()!=null)
 		   &&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
 			  ||((msg.target() instanceof Rideable)&&(msg.targetMinor()==CMMsg.TYP_SIT)))
-		   &&(!Sense.isFalling(msg.source()))
+		   &&(!CMLib.flags().isFalling(msg.source()))
 		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
 			HashSet H=new HashSet();

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -32,8 +43,8 @@ public class Prop_RoomView extends Property
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((newRoom==null)||(!CMMap.getExtendedRoomID(newRoom).equalsIgnoreCase(text().trim())))
-			newRoom=CMMap.getRoom(text());
+		if((newRoom==null)||(!CMLib.map().getExtendedRoomID(newRoom).equalsIgnoreCase(text().trim())))
+			newRoom=CMLib.map().getRoom(text());
 		if(newRoom==null) return super.okMessage(myHost,msg);
 
 		if((affected!=null)
@@ -42,7 +53,7 @@ public class Prop_RoomView extends Property
 		&&(newRoom.fetchEffect(ID())==null)
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
-			FullMsg msg2=new FullMsg(msg.source(),newRoom,msg.tool(),
+			CMMsg msg2=CMClass.getMsg(msg.source(),newRoom,msg.tool(),
 						  msg.sourceCode(),msg.sourceMessage(),
 						  msg.targetCode(),msg.targetMessage(),
 						  msg.othersCode(),msg.othersMessage());

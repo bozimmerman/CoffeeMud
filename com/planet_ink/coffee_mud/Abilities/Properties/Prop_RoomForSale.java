@@ -1,8 +1,20 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -111,17 +123,17 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	public void updateTitle()
 	{
 		if(affected instanceof Room)
-			CMClass.DBEngine().DBUpdateRoom((Room)affected);
+			CMLib.database().DBUpdateRoom((Room)affected);
 		else
 		{
-			Room R=CMMap.getRoom(landPropertyID());
-			if(R!=null) CMClass.DBEngine().DBUpdateRoom(R);
+			Room R=CMLib.map().getRoom(landPropertyID());
+			if(R!=null) CMLib.database().DBUpdateRoom(R);
 		}
 	}
 
 	public String landPropertyID(){
 		if((affected!=null)&&(affected instanceof Room))
-			return CMMap.getExtendedRoomID(((Room)affected));
+			return CMLib.map().getExtendedRoomID(((Room)affected));
 		return "";
 	}
 
@@ -136,7 +148,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	        M=R.fetchInhabitant(i);
 	        if((M.getStartRoom()==R)
 	        &&(M.isMonster())
-	        &&(CoffeeShops.getShopKeeper(M)!=null))
+	        &&(CMLib.coffeeShops().getShopKeeper(M)!=null))
 	            return true;
 	    }
 	    return false;
@@ -155,31 +167,31 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		    &&(msg.othersMessage()!=null)
 		    &&(msg.othersMessage().length()>0)
 		    &&(!shopkeeperMobPresent(msg.source().location()))
-			&&(!CoffeeUtensils.doesHavePriviledgesHere(msg.source(),msg.source().location())))
+			&&(!CMLib.utensils().doesHavePriviledgesHere(msg.source(),msg.source().location())))
 		    {
 			    Room R=msg.source().location();
-				Behavior B=CoffeeUtensils.getLegalBehavior(R);
+				Behavior B=CMLib.utensils().getLegalBehavior(R);
 				if(B!=null)
 				{
 				    for(int m=0;m<R.numInhabitants();m++)
 				    {
 				        MOB M=R.fetchInhabitant(m);
-				        if(CoffeeUtensils.doesHavePriviledgesHere(M,R))
+				        if(CMLib.utensils().doesHavePriviledgesHere(M,R))
 				            return true;
 				    }
 					Vector V=new Vector();
 					V.addElement(new Integer(Law.MOD_CRIMEACCUSE));
 					MOB D=null;
-				    Clan C=Clans.getClan(A.landOwner());
+				    Clan C=CMLib.clans().getClan(A.landOwner());
 				    if(C!=null)
 				        D=C.getResponsibleMember();
 				    else
-				        D=CMMap.getLoadPlayer(A.landOwner());
+				        D=CMLib.map().getLoadPlayer(A.landOwner());
 				    if(D==null) return true;
 					V.addElement(D);//victim first
 					V.addElement("PROPERTYROB");
 					V.addElement("THIEF_ROBBERY");
-					B.modifyBehavior(CoffeeUtensils.getLegalObject(R),msg.source(),V);
+					B.modifyBehavior(CMLib.utensils().getLegalObject(R),msg.source(),V);
 				}
 		    }
 			return true;
@@ -208,7 +220,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 						mobs.addElement(M);
 				}
 				if(!CMSecurity.isSaveFlag("NOPROPERTYMOBS"))
-					CMClass.DBEngine().DBUpdateTheseMOBs(R,mobs);
+					CMLib.database().DBUpdateTheseMOBs(R,mobs);
 			}
 		}
 	}
@@ -228,7 +240,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		while(x>=0)
 		{
 			R.setDescription(R.description().substring(0,x));
-			CMClass.DBEngine().DBUpdateRoom(R);
+			CMLib.database().DBUpdateRoom(R);
             x=R.description().indexOf(otherStr);
 		}
 		if(R.description().indexOf(theStr.trim())<0)
@@ -239,18 +251,18 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				R.setDescription("");
 			}
 			R.setDescription(R.description()+theStr);
-			CMClass.DBEngine().DBUpdateRoom(R);
+			CMLib.database().DBUpdateRoom(R);
         }
 		Item I=R.fetchItem(null,"$id$");
 		if((I==null)||(!I.ID().equals("GenWallpaper")))
 		{
 			I=CMClass.getItem("GenWallpaper");
-			Sense.setReadable(I,true);
+			CMLib.flags().setReadable(I,true);
 			I.setName("id");
-			I.setReadableText("This room is "+CMMap.getExtendedRoomID(R));
-			I.setDescription("This room is "+CMMap.getExtendedRoomID(R));
+			I.setReadableText("This room is "+CMLib.map().getExtendedRoomID(R));
+			I.setDescription("This room is "+CMLib.map().getExtendedRoomID(R));
 			R.addItem(I);
-			CMClass.DBEngine().DBUpdateItems(R);
+			CMLib.database().DBUpdateItems(R);
 		}
 	}
 
@@ -261,7 +273,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			V.addElement(affected);
 		else
 		{
-			Room R=CMMap.getRoom(landPropertyID());
+			Room R=CMLib.map().getRoom(landPropertyID());
 			if(R!=null) V.addElement(R);
 		}
 		return V;
@@ -293,7 +305,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
     				if(I.dispossessionTime()==0)
     				{
     					long now=System.currentTimeMillis();
-    					now+=(IQCalendar.MILI_HOUR*Item.REFUSE_PLAYER_DROP);
+    					now+=(TimeManager.MILI_HOUR*Item.REFUSE_PLAYER_DROP);
     					I.setDispossessionTime(now);
     				}
     				if((I.envStats().rejuv()!=Integer.MAX_VALUE)
@@ -332,7 +344,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
                         {
                             E.setKeyName("");
                             E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
-                            CMClass.DBEngine().DBUpdateExits(R2);
+                            CMLib.database().DBUpdateExits(R2);
                             R2.getArea().fillInAreaRoom(R2);
                         }
                     }
@@ -340,20 +352,20 @@ public class Prop_RoomForSale extends Property implements LandTitle
             }
             if(updateExits)
             {
-                CMClass.DBEngine().DBUpdateExits(R);
+                CMLib.database().DBUpdateExits(R);
                 R.getArea().fillInAreaRoom(R);
             }
             if(updateItems)
-                CMClass.DBEngine().DBUpdateItems(R);
+                CMLib.database().DBUpdateItems(R);
             if(updateRoom)
-                CMClass.DBEngine().DBUpdateRoom(R);
+                CMLib.database().DBUpdateRoom(R);
 			colorForSale(R,T.rentalProperty(),resetRoomName);
 			return -1;
 		}
 		if(lastNumItems<0)
 		{
-			if((!CMClass.DBEngine().DBUserSearch(null,T.landOwner()))
-			&&(Clans.getClan(T.landOwner())==null))
+			if((!CMLib.database().DBUserSearch(null,T.landOwner()))
+			&&(CMLib.clans().getClan(T.landOwner())==null))
 			{
 				T.setLandOwner("");
 				T.updateLot();
@@ -365,13 +377,13 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		if(x>=0)
 		{
 			R.setDescription(R.description().substring(0,x));
-			CMClass.DBEngine().DBUpdateRoom(R);
+			CMLib.database().DBUpdateRoom(R);
 		}
 		x=R.description().indexOf(RENTSTR);
 		if(x>=0)
 		{
 			R.setDescription(R.description().substring(0,x));
-			CMClass.DBEngine().DBUpdateRoom(R);
+			CMLib.database().DBUpdateRoom(R);
 		}
 		
 		// this works on the priciple that
@@ -403,13 +415,13 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		lastNumItems=R.numItems();
 		if((!CMSecurity.isSaveFlag("NOPROPERTYITEMS"))
 		&&(updateItems))
-			CMClass.DBEngine().DBUpdateItems(R);
+			CMLib.database().DBUpdateItems(R);
 		return lastNumItems;
 	}
 
 	public static boolean doRentalProperty(Area A, String ID, String owner, int rent)
 	{
-	    if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+	    if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 	        return false;
 	    int month=A.getTimeObj().getMonth();
 	    int day=A.getTimeObj().getDayOfMonth();
@@ -419,7 +431,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	    if(O instanceof Vector)
 	        V=(Vector)O;
 	    else
-	        V=CMClass.DBEngine().DBReadData(owner,"RENTAL INFO");
+	        V=CMLib.database().DBReadData(owner,"RENTAL INFO");
 	    if(V==null)
 	        V=new Vector();
 	    if(V.size()==0)
@@ -429,7 +441,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	        V.addElement("RENTAL INFO");
 	        V.addElement("RENTAL INFO/"+owner);
 	        V.addElement(ID+"|~>|"+day+" "+month+" "+year+"|~;|");
-	        CMClass.DBEngine().DBCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,(String)V.lastElement());
+	        CMLib.database().DBCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,(String)V.lastElement());
 	        Vector V2=new Vector();
 	        V2.addElement(V);
 	        Resources.submitResource("RENTAL INFO/"+owner,V2);
@@ -467,10 +479,10 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			                        needsToPay=true;
 			                    if(needsToPay)
 			                    {
-			                        if(BeanCounter.modifyLocalBankGold(A,
+			                        if(CMLib.beanCounter().modifyLocalBankGold(A,
 			                                owner,
-			                                CoffeeUtensils.getFormattedDate(A)+":Withdrawl of "+rent+": Rent for "+ID,
-			                                BeanCounter.getCurrency(A),
+			                                CMLib.utensils().getFormattedDate(A)+":Withdrawl of "+rent+": Rent for "+ID,
+			                                CMLib.beanCounter().getCurrency(A),
 			                                new Integer(-rent).doubleValue()))
 			                        {
 			                            lastMonth++;
@@ -499,8 +511,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		        }
 		        if(changesMade)
 		        {
-			        CMClass.DBEngine().DBDeleteData(owner,"RENTAL INFO","RENTAL INFO/"+owner);
-			        CMClass.DBEngine().DBCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,reparse.toString());
+			        CMLib.database().DBDeleteData(owner,"RENTAL INFO","RENTAL INFO/"+owner);
+			        CMLib.database().DBCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,reparse.toString());
 				    V=new Vector();
 			        V.addElement(owner);
 			        V.addElement("RENTAL INFO");
@@ -525,14 +537,14 @@ public class Prop_RoomForSale extends Property implements LandTitle
             Room R=(Room)affected;
 			lastItemNums=updateLotWithThisData(R,this,false,scheduleReset,lastItemNums);
 			if((lastDayDone!=R.getArea().getTimeObj().getDayOfMonth())
-			&&(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED)))
+			&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
 			{
 			    lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
 			    if((landOwner().length()>0)&&rentalProperty()&&(R.roomID().length()>0))
 			        if(doRentalProperty(R.getArea(),R.roomID(),landOwner(),landPrice()))
 			        {
 			            setLandOwner("");
-						CMClass.DBEngine().DBUpdateRoom(R);
+						CMLib.database().DBUpdateRoom(R);
 						lastItemNums=updateLotWithThisData(R,this,false,scheduleReset,lastItemNums);
 			        }
 			}

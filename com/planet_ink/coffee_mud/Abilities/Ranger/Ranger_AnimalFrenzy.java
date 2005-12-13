@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Ranger;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -40,7 +51,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 			return false;
 		if(invoker==null)
 		{
-			if(Sense.isAnimalIntelligence((MOB)affected)
+			if(CMLib.flags().isAnimalIntelligence((MOB)affected)
 			&&(((MOB)affected).isMonster()))
 				return true;
 			invoker=(MOB)affected;
@@ -58,7 +69,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 				if((!rangersGroup.contains(mob))
 				&&(mob!=invoker)
 				&&(mob.location()==invoker.location())
-				&&(Sense.isAnimalIntelligence(mob)))
+				&&(CMLib.flags().isAnimalIntelligence(mob)))
 				{
 					rangersGroup.addElement(mob);
 					mob.addNonUninvokableEffect((Ability)this.copyOf());
@@ -82,7 +93,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 				{
 				}
 			}
-			if((Dice.rollPercentage()==1)
+			if((CMLib.dice().rollPercentage()==1)
 			   &&(invoker.isInCombat())
 			   &&(rangersGroup.size()>0))
 				helpProfficiency(invoker);

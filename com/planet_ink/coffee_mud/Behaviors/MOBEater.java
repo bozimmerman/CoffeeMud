@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -121,9 +132,9 @@ public class MOBEater extends ActiveTicker
 	protected boolean trySwallowWhole(MOB mob)
 	{
 		if(Stomach==null) return true;
-		if (Sense.aliveAwakeMobile(mob,true)
+		if (CMLib.flags().aliveAwakeMobile(mob,true)
 			&&(mob.rangeToTarget()==0)
-			&&(Sense.canHear(mob)||Sense.canSee(mob)||Sense.canSmell(mob)))
+			&&(CMLib.flags().canHear(mob)||CMLib.flags().canSee(mob)||CMLib.flags().canSmell(mob)))
 		{
 			MOB TastyMorsel = mob.getVictim();
 			if(TastyMorsel==null) return true;
@@ -131,7 +142,7 @@ public class MOBEater extends ActiveTicker
 			{
 				// ===== The player has been eaten.
 				// ===== move the tasty morsel to the stomach
-				FullMsg EatMsg=new FullMsg(mob,
+				CMMsg EatMsg=CMClass.getMsg(mob,
 										   TastyMorsel,
 										   null,
 										   CMMsg.MSG_OK_ACTION,
@@ -140,7 +151,7 @@ public class MOBEater extends ActiveTicker
 				{
 					mob.location().send(TastyMorsel,EatMsg);
 					Stomach.bringMobHere(TastyMorsel,false);
-					FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+					CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
 					Stomach.send(TastyMorsel,enterMsg);
 				}
 			}
@@ -159,7 +170,7 @@ public class MOBEater extends ActiveTicker
 			MOB TastyMorsel = Stomach.fetchInhabitant(x);
 			if (TastyMorsel != null)
 			{
-				FullMsg DigestMsg=new FullMsg(mob,
+				CMMsg DigestMsg=CMClass.getMsg(mob,
 										   TastyMorsel,
 										   null,
 										   CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,
@@ -168,7 +179,7 @@ public class MOBEater extends ActiveTicker
 				Stomach.send(mob,DigestMsg);
 				int damage=(int)Math.round(Util.div(TastyMorsel.curState().getHitPoints(),2));
 				if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
-				MUDFight.postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
 			}
 		}
 		return true;

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -62,22 +73,22 @@ public class Prayer_Tithe extends Prayer
 			{
 				invoker().tell(msg.source().name()+" tithes.");
 			    String currency=((Coins)msg.target()).getCurrency();
-				BeanCounter.addMoney(invoker(),currency,Util.mul(((Coins)msg.target()).getDenomination(),(num/10)));
+				CMLib.beanCounter().addMoney(invoker(),currency,Util.mul(((Coins)msg.target()).getDenomination(),(num/10)));
 			}
 		}
 		if((msg.sourceMinor()==CMMsg.TYP_BUY)
 		&&(msg.amITarget(affected))
 		&&(msg.tool()!=null))
 		{
-			ShopKeeper SK=CoffeeShops.getShopKeeper(affected);
+			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(affected);
 			if(SK.doIHaveThisInStock("$"+msg.tool().Name()+"$",msg.source()))
 			{
-			    ShopKeeper.ShopPrice price=CoffeeShops.sellingPrice((MOB)affected,msg.source(),msg.tool(),SK,true);
-				if((price.absoluteGoldPrice>0.0)&&(price.absoluteGoldPrice<=BeanCounter.getTotalAbsoluteShopKeepersValue(msg.source(),invoker())))
+			    ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice((MOB)affected,msg.source(),msg.tool(),SK,true);
+				if((price.absoluteGoldPrice>0.0)&&(price.absoluteGoldPrice<=CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),invoker())))
 					if(invoker()!=msg.target())
 					{
 						invoker().tell(msg.source().name()+" tithes.");
-						BeanCounter.addMoney(invoker(),Util.div(price.absoluteGoldPrice,10.0));
+						CMLib.beanCounter().addMoney(invoker(),Util.div(price.absoluteGoldPrice,10.0));
 					}
 			}
 		}
@@ -100,8 +111,8 @@ public class Prayer_Tithe extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) filled with a need to tithe!":"^S<S-NAME> "+prayWord(mob)+" for <T-YOUPOSS> need to tithe!^?");
-			FullMsg msg3=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) filled with a need to tithe!":"^S<S-NAME> "+prayWord(mob)+" for <T-YOUPOSS> need to tithe!^?");
+			CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg3)))
 			{
 				mob.location().send(mob,msg);

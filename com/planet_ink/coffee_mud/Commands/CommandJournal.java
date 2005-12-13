@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -28,7 +39,7 @@ public class CommandJournal extends StdCommand
     public String[] getAccessWords()
     {
         if(access!=null) return access;
-        access=ChannelSet.getCommandJournalNames();
+        access=CMLib.journals().getCommandJournalNames();
         return access;
     }
     
@@ -54,7 +65,7 @@ public class CommandJournal extends StdCommand
             mob.tell(getScr("CommandJournal","featdis"));
         else
         {
-            Vector journal=CMClass.DBEngine().DBReadJournal(journalID);
+            Vector journal=CMLib.database().DBReadJournal(journalID);
             int size=0;
             if(journal!=null) size=journal.size();
             if(size<=0)
@@ -67,7 +78,7 @@ public class CommandJournal extends StdCommand
                 else
                 while(count<=size)
                 {
-                    FullMsg msg=new FullMsg(mob,journalItem,null,CMMsg.MSG_READ,null,CMMsg.MSG_READ,""+count,CMMsg.MSG_READ,null);
+                    CMMsg msg=CMClass.getMsg(mob,journalItem,null,CMMsg.MSG_READ,null,CMMsg.MSG_READ,""+count,CMMsg.MSG_READ,null);
                     msg.setValue(1);
                     journalItem.executeMsg(mob,msg);
                     if(msg.value()==0)
@@ -94,19 +105,19 @@ public class CommandJournal extends StdCommand
         String journalWord=null;
         int journalNum=-1;
         if(journalWord==null)
-        for(int i=0;i<ChannelSet.getNumCommandJournals();i++)
-            if(ChannelSet.getCommandJournalName(i).equals(((String)commands.firstElement()).toUpperCase().trim()))
+        for(int i=0;i<CMLib.journals().getNumCommandJournals();i++)
+            if(CMLib.journals().getCommandJournalName(i).equals(((String)commands.firstElement()).toUpperCase().trim()))
             {
                 journalNum=i;
-                journalWord=ChannelSet.getCommandJournalName(i).toUpperCase().trim();
+                journalWord=CMLib.journals().getCommandJournalName(i).toUpperCase().trim();
                 break;
             }
         if(journalWord==null)
-        for(int i=0;i<ChannelSet.getNumCommandJournals();i++)
-            if(ChannelSet.getCommandJournalName(i).startsWith(((String)commands.firstElement()).toUpperCase().trim()))
+        for(int i=0;i<CMLib.journals().getNumCommandJournals();i++)
+            if(CMLib.journals().getCommandJournalName(i).startsWith(((String)commands.firstElement()).toUpperCase().trim()))
             {
                 journalNum=i;
-                journalWord=ChannelSet.getCommandJournalName(i).toUpperCase().trim();
+                journalWord=CMLib.journals().getCommandJournalName(i).toUpperCase().trim();
                 break;
             }
         if(journalWord==null)
@@ -114,7 +125,7 @@ public class CommandJournal extends StdCommand
             mob.tell("!!!!!");
             return false;
         }
-        if((journalNum>=0)&&(!MUDZapper.zapperCheck(ChannelSet.getChannelMask(journalNum),mob)))
+        if((journalNum>=0)&&(!CMLib.masking().maskCheck(CMLib.channels().getChannelMask(journalNum),mob)))
         {
             mob.tell(getScr("CommandJournal","notava"));
             return false;
@@ -124,15 +135,15 @@ public class CommandJournal extends StdCommand
             if(!review(mob,"SYSTEM_"+journalWord+"S",journalWord.toLowerCase()+"s",commands,journalWord))
             {
                 String prePend="";
-                if((journalNum>=0)&&(ChannelSet.getCommandJournalFlags(journalNum).containsKey("ADDROOM")))
-                    prePend="(^<LSTROOMID^>"+CMMap.getExtendedRoomID(mob.location())+"^</LSTROOMID^>) ";
-                CMClass.DBEngine().DBWriteJournal("SYSTEM_"+journalWord+"S",mob.Name(),"ALL",
+                if((journalNum>=0)&&(CMLib.journals().getCommandJournalFlags(journalNum).containsKey("ADDROOM")))
+                    prePend="(^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(mob.location())+"^</LSTROOMID^>) ";
+                CMLib.database().DBWriteJournal("SYSTEM_"+journalWord+"S",mob.Name(),"ALL",
                         journalWord+": "+Util.padRight(Util.combine(commands,1),15),
                         prePend+Util.combine(commands,1),
                         -1);
                 mob.tell(getScr("CommandJournal","thankyou",journalWord.toLowerCase()));
-                if((journalNum>=0)&&(ChannelSet.getCommandJournalFlags(journalNum).get("CHANNEL=")!=null))
-                    CommonMsgs.channel(((String)ChannelSet.getCommandJournalFlags(journalNum).get("CHANNEL=")).toUpperCase().trim(),"",getScr("CommandJournal","customline",mob.Name(),journalWord,Util.combine(commands,1)),true);
+                if((journalNum>=0)&&(CMLib.journals().getCommandJournalFlags(journalNum).get("CHANNEL=")!=null))
+                    CMLib.commands().channel(((String)CMLib.journals().getCommandJournalFlags(journalNum).get("CHANNEL=")).toUpperCase().trim(),"",getScr("CommandJournal","customline",mob.Name(),journalWord,Util.combine(commands,1)),true);
             }
         }
         else

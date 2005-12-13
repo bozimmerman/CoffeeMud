@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -66,16 +77,16 @@ public class Prayer_DivineFavor extends Prayer
         if((affected instanceof MOB)
         &&(((MOB)affected).isInCombat())
         &&(!struckDownToday)
-        &&(Dice.roll(1,1000,0)==1)
+        &&(CMLib.dice().roll(1,1000,0)==1)
         &&(((MOB)affected).getWorshipCharID().length()>0)
         &&(!((MOB)affected).getVictim().getWorshipCharID().equals(((MOB)affected).getWorshipCharID())))
         {
-            MOB deityM=CMMap.getDeity(((MOB)affected).getWorshipCharID());
+            MOB deityM=CMLib.map().getDeity(((MOB)affected).getWorshipCharID());
             if(deityM!=null)
             {
                 struckDownToday=true;
                 ((MOB)affected).location().showOthers(deityM,((MOB)affected).getVictim(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> strike(s) down <T-NAME> with all of <T-HIS-HER> divine fury!");
-                MUDFight.postDeath(deityM,((MOB)affected).getVictim(),null);
+                CMLib.combat().postDeath(deityM,((MOB)affected).getVictim(),null);
             }
         }
         return true;
@@ -102,7 +113,7 @@ public class Prayer_DivineFavor extends Prayer
             // and add it to the affects list of the
             // affected MOB.  Then tell everyone else
             // what happened.
-            FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) divinely favored.":"^S<S-NAME> "+prayWord(mob)+" for divine favor.^?");
+            CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) divinely favored.":"^S<S-NAME> "+prayWord(mob)+" for divine favor.^?");
             if(mob.location().okMessage(mob,msg))
             {
                 mob.location().send(mob,msg);

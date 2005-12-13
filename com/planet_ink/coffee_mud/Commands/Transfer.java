@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -56,9 +67,9 @@ public class Transfer extends At
 				allFlag=true;
 			}
 			if(!allFlag)
-				for(int s=0;s<Sessions.size();s++)
+				for(int s=0;s<CMLib.sessions().size();s++)
 				{
-					Session S=Sessions.elementAt(s);
+					Session S=CMLib.sessions().elementAt(s);
 					MOB M=S.mob();
 					if((M!=null)&&(M.Name().equalsIgnoreCase(mobname)))
 						V.addElement(M);
@@ -83,7 +94,7 @@ public class Transfer extends At
 			{
 			    try
 			    {
-					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
 						MOB M=null;
@@ -130,7 +141,7 @@ public class Transfer extends At
 				if(mob.playerStats().tranPoofIn().length()>0)
 					room.showOthers(mob,M,CMMsg.MSG_OK_VISUAL,mob.playerStats().tranPoofIn());
 				if(!M.isMonster())
-					CommonMsgs.look(M,true);
+					CMLib.commands().look(M,true);
 			}
 		}
 		if(mob.playerStats().tranPoofOut().length()==0)

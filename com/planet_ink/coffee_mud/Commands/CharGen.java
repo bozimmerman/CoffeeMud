@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -29,7 +40,7 @@ public class CharGen extends StdCommand
 	private MOB levelMOBup(int level, CharClass C)
 	{
 		MOB mob=CMClass.getMOB("StdMOB");
-		Factions.setAlignment(mob,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(mob,Faction.ALIGN_NEUTRAL);
 		mob.setName(getScr("CharGen","stdmobname"));
 		mob.baseCharStats().setMyRace(CMClass.getRace("Human"));
 		mob.baseCharStats().setStat(CharStats.GENDER,'M');
@@ -48,14 +59,14 @@ public class CharGen extends StdCommand
 		mob.baseState().setMovement(100);
 		mob.baseState().setMana(100);
 		mob.baseCharStats().getMyRace().startRacing(mob,false);
-		CoffeeUtensils.outfit(mob,mob.baseCharStats().getMyRace().outfit());
+		CMLib.utensils().outfit(mob,mob.baseCharStats().getMyRace().outfit());
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
 		mob.resetToMaxState();
 		mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
 
-		int max=CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT);
+		int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
 		for(int lvl=1;lvl<level;lvl++)
 		{
 			switch(lvl % 6)
@@ -89,7 +100,7 @@ public class CharGen extends StdCommand
 			if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
 				mob.charStats().getCurrentClass().level(mob);
 			else
-				MUDFight.postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+				CMLib.combat().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
 			mob.recoverEnvStats();
 			mob.recoverCharStats();
 			mob.recoverMaxState();
@@ -240,7 +251,7 @@ public class CharGen extends StdCommand
 
 		if(avgMob!=null)
 		{
-			StringBuffer msg=CommonMsgs.getScore(avgMob);
+			StringBuffer msg=CMLib.commands().getScore(avgMob);
 			if(!mob.isMonster())
 				mob.session().wraplessPrintln(msg.toString());
 		}

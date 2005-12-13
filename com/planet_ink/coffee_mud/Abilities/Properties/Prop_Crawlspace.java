@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -39,7 +50,7 @@ public class Prop_Crawlspace extends Property
 			case CMMsg.TYP_FLEE:
 				if(((msg.amITarget(affected))||(msg.tool()==affected))
 				&&(msg.source().envStats().height()>12)
-				&&(!Sense.isSitting(msg.source())))
+				&&(!CMLib.flags().isSitting(msg.source())))
 				{
 					if(msg.source().envStats().height()>120)
 					{
@@ -54,7 +65,7 @@ public class Prop_Crawlspace extends Property
 				if((affected instanceof Room)
 				&&(msg.source().envStats().height()>12))
 				{
-			        if(Sense.isSleeping(msg.source()))
+			        if(CMLib.flags().isSleeping(msg.source()))
 					{
 			            MOB mob=msg.source();
 			            int oldDisposition = mob.baseEnvStats().disposition();

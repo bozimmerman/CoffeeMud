@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -39,18 +50,18 @@ public class ChanWho extends StdCommand
 		if(x>0)
 		{
 			mud=channel.substring(x+1);
-			int channelInt=ChannelSet.getChannelIndex(channel.substring(0,x).toUpperCase());
-			channel=ChannelSet.getChannelName(channelInt).toUpperCase();
+			int channelInt=CMLib.channels().getChannelIndex(channel.substring(0,x).toUpperCase());
+			channel=CMLib.channels().getChannelName(channelInt).toUpperCase();
 			if((channel.length()==0)||(channelInt<0))
 			{
 				mob.tell(getScr("ChanWho","validname"));
 				return false;
 			}
-			CMClass.I3Interface().i3chanwho(mob,channel,mud);
+			CMLib.intermud().i3chanwho(mob,channel,mud);
 			return false;
 		}
-		int channelInt=ChannelSet.getChannelIndex(channel.toUpperCase());
-		channel=ChannelSet.getChannelName(channelInt);
+		int channelInt=CMLib.channels().getChannelIndex(channel.toUpperCase());
+		channel=CMLib.channels().getChannelName(channelInt);
 		if(channelInt<0)
 		{
 			mob.tell(getScr("ChanWho","validname"));
@@ -58,16 +69,16 @@ public class ChanWho extends StdCommand
 		}
 		String head=new String("^x"+getScr("ChanWho","listening")+" "+channel+":^?^.^N\n\r");
 		StringBuffer buf=new StringBuffer("");
-        boolean areareq=ChannelSet.getChannelFlags(channelInt).contains("SAMEAREA");
-		for(int s=0;s<Sessions.size();s++)
+        boolean areareq=CMLib.channels().getChannelFlags(channelInt).contains("SAMEAREA");
+		for(int s=0;s<CMLib.sessions().size();s++)
 		{
-			Session ses=Sessions.elementAt(s);
+			Session ses=CMLib.sessions().elementAt(s);
 			MOB mob2=ses.mob();
 			if((mob2!=null)&&(mob2.soulMate()!=null))
 				mob2=mob2.soulMate();
-			if((ChannelSet.mayReadThisChannel(mob,areareq,ses,channelInt))
+			if((CMLib.channels().mayReadThisChannel(mob,areareq,ses,channelInt))
 			&&(mob2!=null)
-			&&(Sense.isInTheGame(mob2,true))
+			&&(CMLib.flags().isInTheGame(mob2,true))
 			&&((((mob2.envStats().disposition()&EnvStats.IS_CLOAKED)==0)
 					||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.envStats().level()>=mob2.envStats().level())))))
 					buf.append("^x[^?^.^N"+Util.padRight(mob2.name(),20)+"^x]^?^.^N\n\r");

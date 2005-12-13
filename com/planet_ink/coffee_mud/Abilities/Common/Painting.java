@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -85,7 +96,7 @@ public class Painting extends CommonSkill
 		Item I=null;
 		if(str.equalsIgnoreCase("wall"))
 		{
-			if(!CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
+			if(!CMLib.utensils().doesOwnThisProperty(mob,mob.location()))
 			{
 				commonTell(mob,"You need the owners permission to paint the walls here.");
 				return false;
@@ -94,7 +105,7 @@ public class Painting extends CommonSkill
 		else
 		{
 			I=mob.location().fetchItem(null,str);
-			if((I==null)||(!Sense.canBeSeenBy(I,mob)))
+			if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 			{
 				commonTell(mob,"You don't see any canvases called '"+str+"' sitting here.");
 				return false;
@@ -126,7 +137,7 @@ public class Painting extends CommonSkill
 					I=mob.location().fetchItem(i);
 					if((I!=null)
 					&&(I.displayText().length()==0)
-					&&(!Sense.isGettable(I))
+					&&(!CMLib.flags().isGettable(I))
 					&&((" "+I.name().toUpperCase()+" ").indexOf(vstr)>=0))
 					{
 						if(S.confirm("'"+I.name()+"' already shares one of these key words ('"+vstr.trim().toLowerCase()+"').  Would you like to destroy it (y/N)? ","N"))
@@ -157,7 +168,7 @@ public class Painting extends CommonSkill
 			building.setDisplayText("a painting of "+name+" is here.");
 			building.setDescription(desc);
 			building.baseEnvStats().setWeight(I.baseEnvStats().weight());
-			building.setBaseValue(I.baseGoldValue()*(Dice.roll(1,5,0)));
+			building.setBaseValue(I.baseGoldValue()*(CMLib.dice().roll(1,5,0)));
 			building.setMaterial(I.material());
 			building.baseEnvStats().setLevel(I.baseEnvStats().level());
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
@@ -174,7 +185,7 @@ public class Painting extends CommonSkill
 		completion=completion-mob.envStats().level()+5;
 		if(completion<10) completion=10;
 
-		FullMsg msg=new FullMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		CMMsg msg=CMClass.getMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

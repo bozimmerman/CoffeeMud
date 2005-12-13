@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -251,7 +262,7 @@ public class Merge extends StdCommand
 		{
 			if(mob.session()!=null)
 				mob.session().rawPrint("Unpacking mobs from file: '"+filename+"'...");
-			String error=CoffeeMaker.addMOBsFromXML(buf.toString(),things,mob.session());
+			String error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),things,mob.session());
 			if(mob.session()!=null)	mob.session().rawPrintln("!");
 			if(error.length()>0)
 			{
@@ -266,7 +277,7 @@ public class Merge extends StdCommand
 		{
 			if(mob.session()!=null)
 				mob.session().rawPrint("Unpacking items from file: '"+filename+"'...");
-			String error=CoffeeMaker.addItemsFromXML(buf.toString(),things,mob.session());
+			String error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),things,mob.session());
 			if(mob.session()!=null)	mob.session().rawPrintln("!");
 			if(error.length()>0)
 			{
@@ -363,7 +374,7 @@ public class Merge extends StdCommand
 			return false;
 		}
 		if(placesToDo.size()==0)
-		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			if(A.getProperMap().hasMoreElements()
@@ -411,7 +422,7 @@ public class Merge extends StdCommand
 			if(R.roomID().length()==0) continue;
 			boolean oldMobility=R.getArea().getMobility();
 			R.getArea().toggleMobility(false);
-			CoffeeUtensils.resetRoom(R);
+			CMLib.utensils().resetRoom(R);
 			boolean savemobs=false;
 			boolean saveitems=false;
 			if(aremobs)
@@ -443,9 +454,9 @@ public class Merge extends StdCommand
 							if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore,noisy)))
 								savemobs=true;
 						}
-						if(CoffeeShops.getShopKeeper(M)!=null)
+						if(CMLib.coffeeShops().getShopKeeper(M)!=null)
 						{
-							Vector V=CoffeeShops.getShopKeeper(M).getStoreInventory();
+							Vector V=CMLib.coffeeShops().getShopKeeper(M).getStoreInventory();
 							for(int i=0;i<V.size();i++)
 							{
 								if(V.elementAt(i) instanceof Item)
@@ -459,8 +470,8 @@ public class Merge extends StdCommand
 					}
 				}
 			}
-			if(saveitems) CMClass.DBEngine().DBUpdateItems(R);
-			if(savemobs) CMClass.DBEngine().DBUpdateMOBs(R);
+			if(saveitems) CMLib.database().DBUpdateItems(R);
+			if(savemobs) CMLib.database().DBUpdateMOBs(R);
 			if(mob.session()!=null)	mob.session().rawPrint(".");
 			R.getArea().toggleMobility(oldMobility);
 		}

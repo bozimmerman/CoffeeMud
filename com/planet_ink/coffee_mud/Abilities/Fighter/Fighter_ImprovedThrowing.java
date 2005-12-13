@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -21,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_ImprovedThrowing extends StdAbility
+public class Fighter_ImprovedThrowing extends FighterSkill
 {
 	public String ID() { return "Fighter_ImprovedThrowing"; }
 	public String name(){ return "Improved Throwing";}
@@ -43,7 +53,7 @@ public class Fighter_ImprovedThrowing extends StdAbility
 		&&(msg.value()>0)
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN))
 		{
-			if(Dice.rollPercentage()<25) helpProfficiency((MOB)affected);
+			if(CMLib.dice().rollPercentage()<25) helpProfficiency((MOB)affected);
 			msg.setValue(msg.value()+(int)Math.round(Util.mul(msg.value(),Util.div(profficiency(),100.0))));
 		}
 		return super.okMessage(myHost,msg);

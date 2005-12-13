@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -40,13 +51,13 @@ public class Chant_SweetScent extends Chant
 			{
 				Room room=(Room)I.owner();
 				Vector rooms=new Vector();
-				MUDTracker.getRadiantRooms(room,rooms,true,false,false,false,false,null,10);
+				CMLib.tracking().getRadiantRooms(room,rooms,true,false,false,false,false,null,10);
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					MOB M=room.fetchInhabitant(i);
 					if((M!=null)
-					&&(Sense.isAnimalIntelligence(M))
-					&&(Sense.canSmell(M)))
+					&&(CMLib.flags().isAnimalIntelligence(M))
+					&&(CMLib.flags().canSmell(M)))
 						M.tell(M,I,null,"<T-NAME> smell(s) absolutely intoxicating!");
 				}
 				for(int r=0;r<rooms.size();r++)
@@ -54,21 +65,21 @@ public class Chant_SweetScent extends Chant
 					Room R=(Room)rooms.elementAt(r);
 					if(R!=room)
 					{
-						int dir=MUDTracker.radiatesFromDir(R,rooms);
+						int dir=CMLib.tracking().radiatesFromDir(R,rooms);
 						if(dir>=0)
 						{
 							for(int i=0;i<R.numInhabitants();i++)
 							{
 								MOB M=R.fetchInhabitant(i);
 								if((M!=null)
-								&&(Sense.isAnimalIntelligence(M))
+								&&(CMLib.flags().isAnimalIntelligence(M))
 								&&(!M.isInCombat())
-								&&((!M.isMonster())||(Sense.isMobile(M)))
-								&&(Sense.canSmell(M)))
+								&&((!M.isMonster())||(CMLib.flags().isMobile(M)))
+								&&(CMLib.flags().canSmell(M)))
 								{
 									M.tell(M,null,null,"You smell something irresistable "+Directions.getInDirectionName(dir)+".");
-									if(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_MIND))
-										MUDTracker.move(M,dir,false,false);
+									if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_MIND))
+										CMLib.tracking().move(M,dir,false,false);
 								}
 							}
 						}
@@ -85,7 +96,7 @@ public class Chant_SweetScent extends Chant
 		super.executeMsg(myHost,msg);
 		if((msg.amITarget(affected))
 		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
-		&&(Sense.canSmell(msg.source())))
+		&&(CMLib.flags().canSmell(msg.source())))
 			msg.source().tell(msg.source(),affected,null,"<T-NAME> smell(s) absolutely intoxicating!");
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -118,7 +129,7 @@ public class Chant_SweetScent extends Chant
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

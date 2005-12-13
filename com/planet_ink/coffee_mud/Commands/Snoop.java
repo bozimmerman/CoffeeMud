@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -29,9 +40,9 @@ public class Snoop extends StdCommand
 	private Vector snoopingOn(Session S)
 	{
 		Vector V=new Vector();
-		for(int s=0;s<Sessions.size();s++)
-			if(Sessions.elementAt(s).amBeingSnoopedBy(S))
-				V.addElement(Sessions.elementAt(s));
+		for(int s=0;s<CMLib.sessions().size();s++)
+			if(CMLib.sessions().elementAt(s).amBeingSnoopedBy(S))
+				V.addElement(CMLib.sessions().elementAt(s));
 		return V;
 	}
 	
@@ -42,9 +53,9 @@ public class Snoop extends StdCommand
 		commands.removeElementAt(0);
 		if(mob.session()==null) return false;
 		boolean doneSomething=false;
-		for(int s=0;s<Sessions.size();s++)
+		for(int s=0;s<CMLib.sessions().size();s++)
 		{
-			Session S=Sessions.elementAt(s);
+			Session S=CMLib.sessions().elementAt(s);
 			if(S.amBeingSnoopedBy(mob.session()))
 			{
 				if(S.mob()!=null)
@@ -63,10 +74,10 @@ public class Snoop extends StdCommand
 		}
 		String whom=Util.combine(commands,0);
 		Session SnoopOn=null;
-		for(int s=0;s<Sessions.size();s++)
+		for(int s=0;s<CMLib.sessions().size();s++)
 		{
-			Session S=Sessions.elementAt(s);
-			if((S.mob()!=null)&&(EnglishParser.containsString(S.mob().name(),whom)))
+			Session S=CMLib.sessions().elementAt(s);
+			if((S.mob()!=null)&&(CMLib.english().containsString(S.mob().name(),whom)))
 			{
 				if(S==mob.session())
 				{
@@ -81,7 +92,7 @@ public class Snoop extends StdCommand
 		if(SnoopOn==null)
 			mob.tell("You can't find anyone to snoop on by that name.");
 		else
-        if(!Sense.isInTheGame(SnoopOn.mob(),true))
+        if(!CMLib.flags().isInTheGame(SnoopOn.mob(),true))
             mob.tell(SnoopOn.mob().Name()+" is not yet fully in the game.");
         else
 		if(CMSecurity.isASysOp(SnoopOn.mob())&&(!CMSecurity.isASysOp(mob)))

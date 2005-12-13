@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -35,22 +46,22 @@ public class Compare extends StdCommand
 		}
 		commands.removeElementAt(0);
 		Item compareThis=mob.fetchInventory(null,(String)commands.elementAt(0));
-		if((compareThis==null)||((compareThis!=null)&&(!Sense.canBeSeenBy(compareThis,mob))))
+		if((compareThis==null)||((compareThis!=null)&&(!CMLib.flags().canBeSeenBy(compareThis,mob))))
 		{
-            Vector V=CoffeeShops.getAllShopkeepers(mob.location(),mob);
+            Vector V=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
             if(V.size()>0) 
 			{
                 for(int i=0;i<V.size();i++) 
 				{
                     Environmental shopkeeper=(Environmental)V.elementAt(i);
-                    Environmental itemToDo=CoffeeShops.getShopKeeper(shopkeeper).getStock((String)commands.elementAt(0),mob);
+                    Environmental itemToDo=CMLib.coffeeShops().getShopKeeper(shopkeeper).getStock((String)commands.elementAt(0),mob);
                     if((itemToDo==null)||(!(itemToDo instanceof Item))) 
 					{
                         continue; // next shopkeeper
                     }
                     compareThis=(Item)itemToDo;
                 }
-                if((compareThis==null)||((compareThis!=null)&&(!Sense.canBeSeenBy(compareThis,mob)))) 
+                if((compareThis==null)||((compareThis!=null)&&(!CMLib.flags().canBeSeenBy(compareThis,mob)))) 
 				{
                     mob.tell(getScr("Compare","donthave",( (String) commands.elementAt(0))));
                     return false;
@@ -92,7 +103,7 @@ public class Compare extends StdCommand
 				}
 			}
 			if(toThis==null) toThis=possible;
-			if((toThis==null)||((toThis!=null)&&(!Sense.canBeSeenBy(toThis,mob))))
+			if((toThis==null)||((toThis!=null)&&(!CMLib.flags().canBeSeenBy(toThis,mob))))
 			{
 				mob.tell(getScr("Compare","compwhath",compareThis.name()));
 				return false;
@@ -100,7 +111,7 @@ public class Compare extends StdCommand
 		}
 		else
 			toThis=mob.fetchInventory(null,Util.combine(commands,1));
-		if((toThis==null)||((toThis!=null)&&(!Sense.canBeSeenBy(toThis,mob))))
+		if((toThis==null)||((toThis!=null)&&(!CMLib.flags().canBeSeenBy(toThis,mob))))
 		{
 			mob.tell(getScr("Compare","donthave",((String)commands.elementAt(1))));
 			return false;

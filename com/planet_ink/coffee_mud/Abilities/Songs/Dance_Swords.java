@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -111,22 +122,22 @@ public class Dance_Swords extends Dance
 		&&(invoker()!=null)
 		&&(invoker().location().isContent((Item)affected))
 		&&(invoker().fetchEffect(ID())!=null)
-		&&(Sense.aliveAwakeMobile(invoker(),true)))
+		&&(CMLib.flags().aliveAwakeMobile(invoker(),true)))
 		{
 			if(invoker().isInCombat())
 			{
-				boolean isHit=(MUDFight.rollToHit(invoker().adjustedAttackBonus(invoker().getVictim())+((Item)affected).envStats().attackAdjustment(), invoker().getVictim().adjustedArmor()));
+				boolean isHit=(CMLib.combat().rollToHit(invoker().adjustedAttackBonus(invoker().getVictim())+((Item)affected).envStats().attackAdjustment(), invoker().getVictim().adjustedArmor()));
 				if((!isHit)||(!(affected instanceof Weapon)))
 					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else
-					MUDFight.postDamage(invoker(),invoker().getVictim(),affected,
-											Dice.roll(1,affected.envStats().damage(),5),
+					CMLib.combat().postDamage(invoker(),invoker().getVictim(),affected,
+											CMLib.dice().roll(1,affected.envStats().damage(),5),
 											CMMsg.MASK_GENERAL|CMMsg.TYP_WEAPONATTACK,
 											((Weapon)affected).weaponType(),affected.name()+" attacks and <DAMAGE> <T-NAME>!");
 			}
 			else
-			if(Dice.rollPercentage()>75)
-			switch(Dice.roll(1,5,0))
+			if(CMLib.dice().rollPercentage()>75)
+			switch(CMLib.dice().roll(1,5,0))
 			{
 			case 1:
 				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" twiches a bit.");
@@ -161,7 +172,7 @@ public class Dance_Swords extends Dance
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if((!auto)&&(!Sense.aliveAwakeMobile(mob,false)))
+		if((!auto)&&(!CMLib.flags().aliveAwakeMobile(mob,false)))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -172,7 +183,7 @@ public class Dance_Swords extends Dance
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+danceOf()+" over again.^?";
 
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -186,9 +197,9 @@ public class Dance_Swords extends Dance
 				int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 				if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 
-				if((Sense.canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+				if((CMLib.flags().canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 				{
-					FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
+					CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
 					if(mob.location().okMessage(mob,msg2))
 					{
 						follower.location().send(follower,msg2);

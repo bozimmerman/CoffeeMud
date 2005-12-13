@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -20,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Track extends StdAbility
+public class Skill_Track extends StdSkill
 {
 	public String ID() { return "Skill_Track"; }
 	public String name(){ return "Tracking";}
@@ -92,20 +102,20 @@ public class Skill_Track extends StdAbility
 						{
 							if((nextExit.hasALock())&&(nextExit.isLocked()))
 							{
-								FullMsg msg=new FullMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+								CMMsg msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 								if(oldRoom.okMessage(mob,msg))
 								{
 									relock=true;
-									msg=new FullMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
-									CoffeeUtensils.roomAffectFully(msg,oldRoom,nextDirection);
+									msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
+									CMLib.utensils().roomAffectFully(msg,oldRoom,nextDirection);
 								}
 							}
-							FullMsg msg=new FullMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+							CMMsg msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 							if(oldRoom.okMessage(mob,msg))
 							{
 								reclose=true;
-								msg=new FullMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+nextExit.openWord()+"(s) <T-NAMESELF>.");
-								CoffeeUtensils.roomAffectFully(msg,oldRoom,nextDirection);
+								msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+nextExit.openWord()+"(s) <T-NAMESELF>.");
+								CMLib.utensils().roomAffectFully(msg,oldRoom,nextDirection);
 							}
 						}
 						if(!nextExit.isOpen())
@@ -114,7 +124,7 @@ public class Skill_Track extends StdAbility
 						{
 							int dir=nextDirection;
 							nextDirection=-2;
-							MUDTracker.move(mob,dir,false,false);
+							CMLib.tracking().move(mob,dir,false,false);
 							if((reclose)&&(mob.location()==nextRoom))
 							{
 								Exit opExit=nextRoom.getExitInDir(opDirection);
@@ -122,19 +132,19 @@ public class Skill_Track extends StdAbility
 								&&(opExit.hasADoor())
 								&&(opExit.isOpen()))
 								{
-									FullMsg msg=new FullMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+									CMMsg msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 									if(nextRoom.okMessage(mob,msg))
 									{
-										msg=new FullMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+nextExit.closeWord()+"(s) <T-NAMESELF>.");
-										CoffeeUtensils.roomAffectFully(msg,nextRoom,opDirection);
+										msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+nextExit.closeWord()+"(s) <T-NAMESELF>.");
+										CMLib.utensils().roomAffectFully(msg,nextRoom,opDirection);
 									}
 									if((opExit.hasALock())&&(relock))
 									{
-										msg=new FullMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+										msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 										if(nextRoom.okMessage(mob,msg))
 										{
-											msg=new FullMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
-											CoffeeUtensils.roomAffectFully(msg,nextRoom,opDirection);
+											msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
+											CMLib.utensils().roomAffectFully(msg,nextRoom,opDirection);
 										}
 									}
 								}
@@ -163,13 +173,13 @@ public class Skill_Track extends StdAbility
 		if((msg.amISource(mob))
 		&&(msg.amITarget(mob.location()))
 		&&(msg.targetMinor()==CMMsg.TYP_LOOK))
-			nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),false);
+			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),false);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 	    tickStatus=Tickable.STATUS_MISC6;
-		if((!Sense.aliveAwakeMobile(mob,false))||(mob.location()==null))
+		if((!CMLib.flags().aliveAwakeMobile(mob,false))||(mob.location()==null))
 		{
 		    tickStatus=Tickable.STATUS_NOT;
 			return false;
@@ -177,7 +187,7 @@ public class Skill_Track extends StdAbility
 	    tickStatus=Tickable.STATUS_MISC6+1;
 		Room thisRoom=mob.location();
 
-		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);
+		Vector V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
 		for(int v=0;v<V.size();v++)	
 		    ((Ability)V.elementAt(v)).unInvoke();
 		if(V.size()>0)
@@ -237,10 +247,10 @@ public class Skill_Track extends StdAbility
 		}
 
 		if(givenTarget==null)
-			givenTarget=CMMap.getRoom(mobName);
+			givenTarget=CMLib.map().getRoom(mobName);
 
 		if(givenTarget==null)
-			givenTarget=CMMap.getArea(mobName);
+			givenTarget=CMLib.map().getArea(mobName);
 
 	    tickStatus=Tickable.STATUS_MISC6+4;
 		if((givenTarget==null)
@@ -263,7 +273,7 @@ public class Skill_Track extends StdAbility
 		else
 		if(mobName.length()>0)
 		{
-			Room R=CMMap.getRoom(mobName);
+			Room R=CMLib.map().getRoom(mobName);
 			if(R!=null) rooms.addElement(R);
 		}
 
@@ -286,7 +296,7 @@ public class Skill_Track extends StdAbility
 		{
 		    try
 		    {
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.fetchInhabitant(mobName)!=null)
@@ -302,13 +312,13 @@ public class Skill_Track extends StdAbility
 			theTrail=null;
 		    tickStatus=Tickable.STATUS_MISC6+8;
 			if((cacheCode==1)&&(rooms.size()==1))
-				theTrail=(Vector)cachedPaths.get(CMMap.getExtendedRoomID(thisRoom)+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()));
+				theTrail=(Vector)cachedPaths.get(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID((Room)rooms.firstElement()));
 		    tickStatus=Tickable.STATUS_MISC6+9;
 			if(theTrail==null)
-				theTrail=MUDTracker.findBastardTheBestWay(thisRoom,rooms,false,false,!(allowAir||allowWater),!allowAir,!allowWater,radius);
+				theTrail=CMLib.tracking().findBastardTheBestWay(thisRoom,rooms,false,false,!(allowAir||allowWater),!allowAir,!allowWater,radius);
 		    tickStatus=Tickable.STATUS_MISC6+10;
 			if((cacheCode==1)&&(rooms.size()==1)&&(theTrail!=null))
-				cachedPaths.put(CMMap.getExtendedRoomID(thisRoom)+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()),theTrail);
+				cachedPaths.put(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID((Room)rooms.firstElement()),theTrail);
 		}
 
 	    tickStatus=Tickable.STATUS_MISC6+11;
@@ -320,7 +330,7 @@ public class Skill_Track extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,mob.isMonster()?null:"<S-NAME> begin(s) to track.");
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,mob.isMonster()?null:"<S-NAME> begin(s) to track.");
 			if(thisRoom.okMessage(mob,msg))
 			{
 			    tickStatus=Tickable.STATUS_MISC6+12;
@@ -331,7 +341,7 @@ public class Skill_Track extends StdAbility
 					mob.addEffect(newOne);
 				mob.recoverEnvStats();
 			    tickStatus=Tickable.STATUS_MISC6+13;
-				newOne.nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,thisRoom,false);
+				newOne.nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,thisRoom,false);
 			}
 		    tickStatus=Tickable.STATUS_MISC6+14;
 		}

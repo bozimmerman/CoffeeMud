@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -61,7 +72,7 @@ public class Chant_SpeedAging extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,type,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -130,8 +141,8 @@ public class Chant_SpeedAging extends Chant
 					long start=Util.s_long(A.text());
 					long age=System.currentTimeMillis()-start;
 					age=age+(age/10);
-					if(age<(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*MudHost.TICK_TIME))
-						age=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*MudHost.TICK_TIME);
+					if(age<(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*MudHost.TICK_TIME))
+						age=(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*MudHost.TICK_TIME);
 					A.setMiscText(""+(start-age));
 					if(target instanceof MOB)
 						mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> age(s) a bit.");

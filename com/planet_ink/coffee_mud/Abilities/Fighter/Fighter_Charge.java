@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -22,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_Charge extends StdAbility
+public class Fighter_Charge extends FighterSkill
 {
 	public String ID() { return "Fighter_Charge"; }
 	public String name(){ return "Charge";}
@@ -75,7 +85,7 @@ public class Fighter_Charge extends StdAbility
 			mob.tell("You can not charge while in melee!");
 			return false;
 		}
-		if((Sense.isSitting(mob))||(mob.riding()!=null))
+		if((CMLib.flags().isSitting(mob))||(mob.riding()!=null))
 		{
 			mob.tell("You must be on your feet to charge!");
 			return false;
@@ -96,8 +106,8 @@ public class Fighter_Charge extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,"^F^<FIGHT^><S-NAME> charge(s) at <T-NAMESELF>!^</FIGHT^>^?");
-            CMColor.fixSourceFightColor(msg);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,"^F^<FIGHT^><S-NAME> charge(s) at <T-NAMESELF>!^</FIGHT^>^?");
+            CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -110,7 +120,7 @@ public class Fighter_Charge extends StdAbility
 					if(notInCombat)
 					{
 						done=true;
-						MUDFight.postAttack(mob,target,mob.fetchWieldedItem());
+						CMLib.combat().postAttack(mob,target,mob.fetchWieldedItem());
 					}
 					else
 						done=false;

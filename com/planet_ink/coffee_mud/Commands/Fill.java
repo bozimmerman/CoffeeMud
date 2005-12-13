@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -47,7 +58,7 @@ public class Fill extends BaseItemParser
 		{
 			String thingToFillFrom=(String)commands.lastElement();
 			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Item.WORN_REQ_ANY);
-			if((fillFromThis==null)||((fillFromThis!=null)&&(!Sense.canBeSeenBy(fillFromThis,mob))))
+			if((fillFromThis==null)||((fillFromThis!=null)&&(!CMLib.flags().canBeSeenBy(fillFromThis,mob))))
 			{
 				mob.tell("I don't see "+thingToFillFrom+" here.");
 				return false;
@@ -58,7 +69,7 @@ public class Fill extends BaseItemParser
 		int maxToFill=Integer.MAX_VALUE;
 		if((commands.size()>1)
 		&&(Util.s_int((String)commands.firstElement())>0)
-		&&(EnglishParser.numPossibleGold(mob,Util.combine(commands,0))==0))
+		&&(CMLib.english().numPossibleGold(mob,Util.combine(commands,0))==0))
 		{
 			maxToFill=Util.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
@@ -75,7 +86,7 @@ public class Fill extends BaseItemParser
 		{
 			Item fillThis=mob.fetchInventory(null,thingToFill+addendumStr);
 			if(fillThis==null) break;
-			if((Sense.canBeSeenBy(fillThis,mob))
+			if((CMLib.flags().canBeSeenBy(fillThis,mob))
 			&&(!V.contains(fillThis)))
 				V.addElement(fillThis);
 			addendumStr="."+(++addendum);
@@ -87,10 +98,10 @@ public class Fill extends BaseItemParser
 		for(int i=0;i<V.size();i++)
 		{
 			Environmental fillThis=(Environmental)V.elementAt(i);
-			FullMsg fillMsg=new FullMsg(mob,fillThis,fillFromThis,CMMsg.MSG_FILL,"<S-NAME> fill(s) <T-NAME> from <O-NAME>.");
+			CMMsg fillMsg=CMClass.getMsg(mob,fillThis,fillFromThis,CMMsg.MSG_FILL,"<S-NAME> fill(s) <T-NAME> from <O-NAME>.");
 			if((!mob.isMine(fillThis))&&(fillThis instanceof Item))
 			{
-				if(CommonMsgs.get(mob,null,(Item)fillThis,false))
+				if(CMLib.commands().get(mob,null,(Item)fillThis,false))
 					if(mob.location().okMessage(mob,fillMsg))
 						mob.location().send(mob,fillMsg);
 			}

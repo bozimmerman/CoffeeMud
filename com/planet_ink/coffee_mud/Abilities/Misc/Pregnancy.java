@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Abilities.Misc;
-
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+
 
 import java.util.*;
 
@@ -38,7 +49,7 @@ public class Pregnancy extends StdAbility
 			int y=text().indexOf("/",x+1);
 			if(y<0) return "";
 			long start=Util.s_long(text().substring(0,x));
-			long divisor=MudHost.TICK_TIME*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
+			long divisor=MudHost.TICK_TIME*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 			long days=(System.currentTimeMillis()-start)/divisor; // down to days;
 			long months=days/CMClass.globalClock().getDaysInMonth();
 			if(days<1)
@@ -67,10 +78,10 @@ public class Pregnancy extends StdAbility
 	{
 		if((msg.target()==affected)
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
-		&&(Sense.canBeSeenBy(affected,msg.source()))
+		&&(CMLib.flags().canBeSeenBy(affected,msg.source()))
 		&&(affected instanceof MOB)
 		&&((daysRemaining>0)&&(monthsRemaining<=3)))
-			msg.addTrailerMsg(new FullMsg(msg.source(),null,null,
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
 										  CMMsg.MSG_OK_VISUAL,"\n\r"+affected.name()+" is obviously with child.\n\r",
 										  CMMsg.NO_EFFECT,null,
 										  CMMsg.NO_EFFECT,null));
@@ -89,7 +100,7 @@ public class Pregnancy extends StdAbility
 		GR.setStat("MHEIGHT",""+((race1.shortestMale()+race2.shortestMale())/2));
 		GR.setStat("FHEIGHT",""+((race1.shortestFemale()+race2.shortestFemale())/2));
 		GR.setStat("VHEIGHT",""+((race1.heightVariance()+race2.heightVariance())/2));
-		GR.setStat("PLAYER",""+CommonStrings.getIntVar(CommonStrings.SYSTEMI_MUDTHEME));
+		GR.setStat("PLAYER",""+CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME));
 		GR.setStat("LEAVE",nonHuman.leaveStr());
 		GR.setStat("ARRIVE",nonHuman.arriveStr());
 		GR.setStat("HEALTHRACE","Human");
@@ -108,7 +119,7 @@ public class Pregnancy extends StdAbility
 			else
 				GR.bodyMask()[i]=race1.bodyMask()[i];
 
-		EnvStats RS=(EnvStats)CMClass.getShared("DefaultEnvStats");
+		EnvStats RS=(EnvStats)CMClass.getCommon("DefaultEnvStats");
         RS.setAllValues(0);
 		race1.affectEnvStats(babe,RS);
 		race2.affectEnvStats(babe,RS);
@@ -120,14 +131,14 @@ public class Pregnancy extends StdAbility
 		RS.setSpeed(RS.speed()/2.0);
 		RS.setWeight(RS.weight()/2);
 		RS.setRejuv(0);
-		GR.setStat("ESTATS",CoffeeMaker.getEnvStatsStr(RS));
+		GR.setStat("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(RS));
 
-        CharStats S1=(CharStats)CMClass.getShared("DefaultCharStats"); S1.setAllValues(0);
-        CharStats S2=(CharStats)CMClass.getShared("DefaultCharStats"); S2.setAllValues(10);
-        CharStats S3=(CharStats)CMClass.getShared("DefaultCharStats"); S3.setAllValues(0);
-        CharStats S4=(CharStats)CMClass.getShared("DefaultCharStats"); S4.setAllValues(10);
-        CharStats SETSTAT=(CharStats)CMClass.getShared("DefaultCharStats"); SETSTAT.setAllValues(0);
-        CharStats ADJSTAT=(CharStats)CMClass.getShared("DefaultCharStats"); ADJSTAT.setAllValues(0);
+        CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats"); S1.setAllValues(0);
+        CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats"); S2.setAllValues(10);
+        CharStats S3=(CharStats)CMClass.getCommon("DefaultCharStats"); S3.setAllValues(0);
+        CharStats S4=(CharStats)CMClass.getCommon("DefaultCharStats"); S4.setAllValues(10);
+        CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); SETSTAT.setAllValues(0);
+        CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); ADJSTAT.setAllValues(0);
 		race1.affectCharStats(babe,S1);
 		race1.affectCharStats(babe,S2);
 		race2.affectCharStats(babe,S3);
@@ -152,10 +163,10 @@ public class Pregnancy extends StdAbility
 			if((i!=CharStats.GENDER)&&(i!=CharStats.AGE))
 				ADJSTAT.setStat(i,(S1.getStat(i)+S3.getStat(i))/2);
 		}
-		GR.setStat("ASTATS",CoffeeMaker.getCharStatsStr(ADJSTAT));
-		GR.setStat("CSTATS",CoffeeMaker.getCharStatsStr(SETSTAT));
+		GR.setStat("ASTATS",CMLib.coffeeMaker().getCharStatsStr(ADJSTAT));
+		GR.setStat("CSTATS",CMLib.coffeeMaker().getCharStatsStr(SETSTAT));
 
-        CharState CS=(CharState)CMClass.getShared("DefaultCharState"); CS.setAllValues(0);
+        CharState CS=(CharState)CMClass.getCommon("DefaultCharState"); CS.setAllValues(0);
 		race1.affectCharState(babe,CS);
 		race2.affectCharState(babe,CS);
 		CS.setFatigue(CS.getFatigue()/2);
@@ -164,9 +175,9 @@ public class Pregnancy extends StdAbility
 		CS.setMana(CS.getMana()/2);
 		CS.setMovement(CS.getMovement()/2);
 		CS.setThirst(CS.getThirst()/2);
-		GR.setStat("ASTATE",CoffeeMaker.getCharStateStr(CS));
+		GR.setStat("ASTATE",CMLib.coffeeMaker().getCharStateStr(CS));
 
-        CharState STARTCS=(CharState)CMClass.getShared("DefaultCharState"); STARTCS.setAllValues(0);
+        CharState STARTCS=(CharState)CMClass.getCommon("DefaultCharState"); STARTCS.setAllValues(0);
 		race1.affectCharState(babe,STARTCS);
 		race2.affectCharState(babe,STARTCS);
 		CS.setFatigue(STARTCS.getFatigue()/2);
@@ -175,7 +186,7 @@ public class Pregnancy extends StdAbility
 		CS.setMana(STARTCS.getMana()/2);
 		CS.setMovement(STARTCS.getMovement()/2);
 		CS.setThirst(STARTCS.getThirst()/2);
-		GR.setStat("STARTASTATE",CoffeeMaker.getCharStateStr(STARTCS));
+		GR.setStat("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(STARTCS));
 
 		GR.setStat("DISFLAGS",""+(Util.s_int(race1.getStat("DISFLAGS"))|Util.s_int(race2.getStat("DISFLAGS"))));
 
@@ -197,8 +208,8 @@ public class Pregnancy extends StdAbility
 
 		race1.racialAbilities(null);
 		race2.racialAbilities(null);
-		Vector data1=CMAble.getUpToLevelListings(race1.ID(),Integer.MAX_VALUE,true,false);
-		Vector data2=CMAble.getUpToLevelListings(race2.ID(),Integer.MAX_VALUE,true,false);
+		Vector data1=CMLib.ableMapper().getUpToLevelListings(race1.ID(),Integer.MAX_VALUE,true,false);
+		Vector data2=CMLib.ableMapper().getUpToLevelListings(race2.ID(),Integer.MAX_VALUE,true,false);
 		// kill half of them.
 		for(int i=1;i<data1.size();i++)
 			data1.removeElementAt(i);
@@ -212,16 +223,16 @@ public class Pregnancy extends StdAbility
 		for(int i=0;i<data1.size();i++)
 		{
 			GR.setStat("GETRABLE"+i,(String)data1.elementAt(i));
-			GR.setStat("GETRABLELVL"+i,""+CMAble.getQualifyingLevel(race1.ID(),false,(String)data1.elementAt(i)));
-			GR.setStat("GETRABLEQUAL"+i,""+(!CMAble.getDefaultGain(race1.ID(),false,(String)data1.elementAt(i))));
-			GR.setStat("GETRABLEPROF"+i,""+CMAble.getDefaultProfficiency(race1.ID(),false,(String)data1.elementAt(i)));
+			GR.setStat("GETRABLELVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,(String)data1.elementAt(i)));
+			GR.setStat("GETRABLEQUAL"+i,""+(!CMLib.ableMapper().getDefaultGain(race1.ID(),false,(String)data1.elementAt(i))));
+			GR.setStat("GETRABLEPROF"+i,""+CMLib.ableMapper().getDefaultProfficiency(race1.ID(),false,(String)data1.elementAt(i)));
 		}
 		for(int i=0;i<data2.size();i++)
 		{
 			GR.setStat("GETRABLE"+(i+data1.size()),(String)data2.elementAt(i));
-			GR.setStat("GETRABLELVL"+(i+data1.size()),""+CMAble.getQualifyingLevel(race2.ID(),false,(String)data2.elementAt(i)));
-			GR.setStat("GETRABLEQUAL"+(i+data1.size()),""+(!CMAble.getDefaultGain(race2.ID(),false,(String)data2.elementAt(i))));
-			GR.setStat("GETRABLEPROF"+(i+data1.size()),""+CMAble.getDefaultProfficiency(race2.ID(),false,(String)data2.elementAt(i)));
+			GR.setStat("GETRABLELVL"+(i+data1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,(String)data2.elementAt(i)));
+			GR.setStat("GETRABLEQUAL"+(i+data1.size()),""+(!CMLib.ableMapper().getDefaultGain(race2.ID(),false,(String)data2.elementAt(i))));
+			GR.setStat("GETRABLEPROF"+(i+data1.size()),""+CMLib.ableMapper().getDefaultProfficiency(race2.ID(),false,(String)data2.elementAt(i)));
 		}
 
 		data1=race1.racialEffects(null);
@@ -239,18 +250,18 @@ public class Pregnancy extends StdAbility
 		for(int i=0;i<data1.size();i++)
 		{
 			GR.setStat("GETREFF"+i,(String)data1.elementAt(i));
-			GR.setStat("GETREFFLVL"+i,""+CMAble.getQualifyingLevel(race1.ID(),false,(String)data1.elementAt(i)));
-			GR.setStat("GETREFFPARM"+i,""+CMAble.getDefaultProfficiency(race1.ID(),false,(String)data1.elementAt(i)));
+			GR.setStat("GETREFFLVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,(String)data1.elementAt(i)));
+			GR.setStat("GETREFFPARM"+i,""+CMLib.ableMapper().getDefaultProfficiency(race1.ID(),false,(String)data1.elementAt(i)));
 		}
 		for(int i=0;i<data2.size();i++)
 		{
 			GR.setStat("GETREFF"+(i+data1.size()),(String)data2.elementAt(i));
-			GR.setStat("GETREFFLVL"+(i+data1.size()),""+CMAble.getQualifyingLevel(race2.ID(),false,(String)data2.elementAt(i)));
-			GR.setStat("GETREFFPARM"+(i+data1.size()),""+CMAble.getDefaultProfficiency(race2.ID(),false,(String)data2.elementAt(i)));
+			GR.setStat("GETREFFLVL"+(i+data1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,(String)data2.elementAt(i)));
+			GR.setStat("GETREFFPARM"+(i+data1.size()),""+CMLib.ableMapper().getDefaultProfficiency(race2.ID(),false,(String)data2.elementAt(i)));
 		}
 
 		CMClass.addRace(GR);
-		CMClass.DBEngine().DBCreateRace(GR.ID(),GR.racialParms());
+		CMLib.database().DBCreateRace(GR.ID(),GR.racialParms());
 		return GR;
 	}
 
@@ -326,7 +337,7 @@ public class Pregnancy extends StdAbility
 		if((tickID==MudHost.TICK_MOB)
 		&&(affected!=null)
 		&&(affected instanceof MOB)
-		&&(Sense.isInTheGame(affected,true)))
+		&&(CMLib.flags().isInTheGame(affected,true)))
 		{
 			MOB mob=(MOB)affected;
 			int x=text().indexOf("/");
@@ -337,14 +348,14 @@ public class Pregnancy extends StdAbility
 				{
 					int z=text().indexOf("/",y+1);
 					long end=Util.s_long(text().substring(x+1,y));
-					long divisor=MudHost.TICK_TIME*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
+					long divisor=MudHost.TICK_TIME*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 					daysRemaining=(end-System.currentTimeMillis())/divisor; // down to days
 					monthsRemaining=daysRemaining/CMClass.globalClock().getDaysInMonth(); // down to months
 					if(daysRemaining<7) // BIRTH!
 					{
-						if(Sense.isSleeping(mob))
+						if(CMLib.flags().isSleeping(mob))
 							mob.enqueCommand(Util.parse("WAKE"),0);
-						if((Dice.rollPercentage()>50)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)>5))
+						if((CMLib.dice().rollPercentage()>50)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)>5))
 							mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> moan(s) and scream(s) in labor pain!!");
 						ticksInLabor++;
 						if(ticksInLabor>=45)
@@ -353,7 +364,7 @@ public class Pregnancy extends StdAbility
 							String race1=mob.baseCharStats().getMyRace().ID();
 							char gender='F';
 							String sondat="daughter";
-							if(Dice.rollPercentage()>50){
+							if(CMLib.dice().rollPercentage()>50){
 								gender='M';
 								sondat="son";
 							}
@@ -368,7 +379,7 @@ public class Pregnancy extends StdAbility
 							mob.curState().setMovement(0);
 							mob.curState().setHitPoints(mob.curState().getHitPoints()/2);
 							mob.location().show(mob,null,CMMsg.MSG_NOISE,"***** "+mob.name().toUpperCase()+" GIVE(S) BIRTH ******");
-							if(Dice.rollPercentage()>5)
+							if(CMLib.dice().rollPercentage()>5)
 							{
 								Ability A=mob.fetchEffect(ID());
 								while(A!=null){
@@ -388,12 +399,12 @@ public class Pregnancy extends StdAbility
 							if(R==null) R=mob.baseCharStats().getMyRace();
 							String name="a baby "+((gender=='M')?"boy":"girl")+" "+R.name().toLowerCase();
 							babe.setName(name);
-							Factions.setAlignment(babe,Faction.ALIGN_GOOD);
+							CMLib.factions().setAlignment(babe,Faction.ALIGN_GOOD);
 							babe.setClanID(mob.getClanID());
 							babe.setLiegeID(mob.getLiegeID());
 							babe.setDescription(desc);
 							babe.setDisplayText(name+" is here");
-							BeanCounter.clearZeroMoney(babe,null);
+							CMLib.beanCounter().clearZeroMoney(babe,null);
 							babe.baseCharStats().setMyRace(R);
 							babe.baseCharStats().setStat(CharStats.CHARISMA,10);
 							babe.baseCharStats().setStat(CharStats.CONSTITUTION,6);
@@ -408,7 +419,7 @@ public class Pregnancy extends StdAbility
 							babe.baseState().setHitPoints(1);
 							babe.baseState().setMana(0);
 							babe.baseState().setMovement(0);
-							if(Dice.rollPercentage()>50)
+							if(CMLib.dice().rollPercentage()>50)
 							{
 							    Ability A=mob.fetchEffect("Allergies");
 							    if(A!=null)
@@ -450,16 +461,16 @@ public class Pregnancy extends StdAbility
 							I.text();
 							if((!mob.isMonster())&&(mob.soulMate()==null))
 							{
-								CoffeeTables.bump(mob,CoffeeTables.STAT_BIRTHS);
-								if((Dice.rollPercentage()<20)&&(mob.fetchEffect("Disease_Depression")==null))
+								CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_BIRTHS);
+								if((CMLib.dice().rollPercentage()<20)&&(mob.fetchEffect("Disease_Depression")==null))
 								{
 								    Ability A=CMClass.getAbility("Diease_Depression");
 								    if(A!=null) A.invoke(mob,mob,true,0);
 								}
 							}
-                            Vector channels=ChannelSet.getFlaggedChannelNames("BIRTHS");
+                            Vector channels=CMLib.channels().getFlaggedChannelNames("BIRTHS");
                             for(int i=0;i<channels.size();i++)
-                                CommonMsgs.channel(mob,(String)channels.elementAt(i),mob.name()+" has just given birth to "+I.name()+"!",true);
+                                CMLib.commands().channel(mob,(String)channels.elementAt(i),mob.name()+" has just given birth to "+I.name()+"!",true);
 						}
 						else
 							mob.tell("You are in labor!!");
@@ -469,19 +480,19 @@ public class Pregnancy extends StdAbility
 					{
 						// pregnant folk get fatigued more often.
 						mob.curState().adjFatigue(monthsRemaining*100,mob.maxState());
-						if((monthsRemaining<=1)&&(Dice.rollPercentage()==1))
+						if((monthsRemaining<=1)&&(CMLib.dice().rollPercentage()==1))
 						{
-							if(Sense.isSleeping(mob))
+							if(CMLib.flags().isSleeping(mob))
 								mob.enqueCommand(Util.parse("WAKE"),0);
 							mob.tell("Oh! You had a contraction!");
 						}
 						else
-						if((monthsRemaining<=3)&&(Dice.rollPercentage()==1)&&(Dice.rollPercentage()==1))
+						if((monthsRemaining<=3)&&(CMLib.dice().rollPercentage()==1)&&(CMLib.dice().rollPercentage()==1))
 							mob.tell("You feel a kick in your gut.");
 						else
-						if((monthsRemaining>8)&&(mob.location()!=null)&&(mob.location().getArea().getTimeObj().getTimeOfDay()<2)&&(Dice.rollPercentage()==1))
+						if((monthsRemaining>8)&&(mob.location()!=null)&&(mob.location().getArea().getTimeObj().getTimeOfDay()<2)&&(CMLib.dice().rollPercentage()==1))
 						{
-							if(Dice.rollPercentage()>25)
+							if(CMLib.dice().rollPercentage()>25)
 								mob.tell("You feel really sick this morning.");
 							else
 								mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"**BLEH** <S-NAME> just threw up.");
@@ -502,7 +513,7 @@ public class Pregnancy extends StdAbility
 		boolean success=profficiencyCheck(mob,0,auto);
 		long start=System.currentTimeMillis();
 		Race R=mob.charStats().getMyRace();
-		long tickspermudmonth=CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
+		long tickspermudmonth=CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 		tickspermudmonth=tickspermudmonth*CMClass.globalClock().getDaysInMonth();
 		int birthmonths=(int)Math.round(Util.mul((R.getAgingChart()[1]-R.getAgingChart()[0])*CMClass.globalClock().getMonthsInYear(),0.8335));
 		if(birthmonths<=0) birthmonths=5;
@@ -520,9 +531,9 @@ public class Pregnancy extends StdAbility
 			if(mob.location().show(mob,target,this,CMMsg.TYP_GENERAL,auto?null:"<S-NAME> imgregnate(s) <T-NAMESELF>."))
 			{
 				setMiscText(start+"/"+end+"/"+mob.Name()+"/"+mob.charStats().getMyRace().ID());
-                Vector channels=ChannelSet.getFlaggedChannelNames("CONCEPTIONS");
+                Vector channels=CMLib.channels().getFlaggedChannelNames("CONCEPTIONS");
                 for(int i=0;i<channels.size();i++)
-                    CommonMsgs.channel((String)channels.elementAt(i),mob.getClanID(),target.name()+" is now in a 'family way'.",true);
+                    CMLib.commands().channel((String)channels.elementAt(i),mob.getClanID(),target.name()+" is now in a 'family way'.",true);
                 target.addNonUninvokableEffect((Ability)copyOf());
 			}
 		}

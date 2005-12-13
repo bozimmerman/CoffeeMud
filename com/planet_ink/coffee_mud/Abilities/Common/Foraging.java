@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -79,8 +90,8 @@ public class Foraging extends GatheringSkill
 				if((found!=null)&&(!aborted))
 				{
 					int amount=((found.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_CLOTH)?
-							   (Dice.roll(1,30,0)*(abilityCode())):
-							   (Dice.roll(1,5,0)*(abilityCode()));
+							   (CMLib.dice().roll(1,30,0)*(abilityCode())):
+							   (CMLib.dice().roll(1,5,0)*(abilityCode()));
 					String s="s";
 					if(amount==1) s="";
 					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to gather "+amount+" pound"+s+" of "+foundShortName+".");
@@ -88,7 +99,7 @@ public class Foraging extends GatheringSkill
 					{
 						Item newFound=(Item)found.copyOf();
 						mob.location().addItemRefuse(newFound,Item.REFUSE_PLAYER_DROP);
-						CommonMsgs.get(mob,null,newFound,true);
+						CMLib.commands().get(mob,null,newFound,true);
 					}
 				}
 			}
@@ -120,14 +131,14 @@ public class Foraging extends GatheringSkill
 			  ||(resourceType==EnvResource.RESOURCE_SILK)
 			  ||(resourceType==EnvResource.RESOURCE_COTTON)))
 		{
-			found=(Item)CoffeeUtensils.makeResource(resourceType,mob.location().domainType(),false);
+			found=(Item)CMLib.utensils().makeResource(resourceType,mob.location().domainType(),false);
 			foundShortName="nothing";
 			if(found!=null)
 				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 		}
 		int duration=35-mob.envStats().level();
 		if(duration<10) duration=10;
-		FullMsg msg=new FullMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) foraging.");
+		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) foraging.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			// herb/locale customisation for jeremy
@@ -158,7 +169,7 @@ public class Foraging extends GatheringSkill
 							else
 								total+=10;
 						}
-						int choice=Dice.roll(1,total,-1);
+						int choice=CMLib.dice().roll(1,total,-1);
 						total=0;
 						for(int i=0;i<V.size();i++)
 						{

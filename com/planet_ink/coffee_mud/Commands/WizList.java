@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -34,8 +45,8 @@ public class WizList extends StdCommand
 		head.append(Util.padRight("Lvl",4)+" ");
 		head.append(Util.padRight("Last",18)+" ");
 		head.append("] Archon Character Name^.^?\n\r");
-		mob.tell("^x["+Util.centerPreserve("The Archons of "+CommonStrings.getVar(CommonStrings.SYSTEM_MUDNAME),head.length()-10)+"]^.^?");
-		Vector allUsers=CMClass.DBEngine().getUserList();
+		mob.tell("^x["+Util.centerPreserve("The Archons of "+CMProps.getVar(CMProps.SYSTEM_MUDNAME),head.length()-10)+"]^.^?");
+		Vector allUsers=CMLib.database().getUserList();
         CharClass C=CMClass.getCharClass("Archon");
 		for(int u=0;u<allUsers.size();u++)
 		{
@@ -48,7 +59,7 @@ public class WizList extends StdCommand
     				head.append(Util.padRight((String)U.elementAt(3),4)+" ");
                 else
                     head.append(Util.padRight("    ",4)+" ");
-				head.append(Util.padRight(IQCalendar.d2String(Util.s_long((String)U.elementAt(5))),18)+" ");
+				head.append(Util.padRight(CMLib.time().date2String(Util.s_long((String)U.elementAt(5))),18)+" ");
 				head.append("] "+Util.padRight((String)U.elementAt(0),25));
 				head.append("\n\r");
 			}

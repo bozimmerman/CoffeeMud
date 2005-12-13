@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -49,7 +60,7 @@ public class Chant_Drifting extends Chant
 				return false;
 			}
 			else
-			if((!Sense.isFalling(mob))
+			if((!CMLib.flags().isFalling(mob))
 			&&(msg.sourceMinor()==CMMsg.TYP_ENTER)
 			&&(msg.target() instanceof Room)
 			&&(mob.location()!=null)
@@ -69,7 +80,7 @@ public class Chant_Drifting extends Chant
 			return false;
 		if((affected instanceof MOB)
 		&&(tickID==MudHost.TICK_MOB)
-		&&(!Sense.isFalling(affected))
+		&&(!CMLib.flags().isFalling(affected))
 		&&(((MOB)affected).riding()==null)
 		&&(((MOB)affected).location()!=null)
 		&&((((MOB)affected).location().domainType()&Room.INDOORS)==0))
@@ -86,7 +97,7 @@ public class Chant_Drifting extends Chant
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if((affected.fetchEffect("Falling")==null)&&(!Sense.isFalling(affected)))
+		if((affected.fetchEffect("Falling")==null)&&(!CMLib.flags().isFalling(affected)))
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 	}
 
@@ -106,7 +117,7 @@ public class Chant_Drifting extends Chant
 			Ability A=mob.fetchEffect("Falling");
 			if(A!=null) A.unInvoke();
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) back down.");
-			CommonMsgs.stand(mob,true);
+			CMLib.commands().stand(mob,true);
 		}
 	}
 
@@ -132,7 +143,7 @@ public class Chant_Drifting extends Chant
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) <S-HIM-HERSELF> off the ground.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) <S-HIM-HERSELF> off the ground.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

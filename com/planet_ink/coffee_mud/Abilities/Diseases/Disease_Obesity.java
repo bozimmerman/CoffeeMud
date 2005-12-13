@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Abilities.Diseases;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Vector;
 
-import com.planet_ink.coffee_mud.common.FullMsg;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -98,7 +109,7 @@ public class Disease_Obesity extends Disease
 	        &&((lastLoss<0)||((System.currentTimeMillis()-lastLoss)>30000)))
 	        {
 	            lastLoss=System.currentTimeMillis();
-	            int change=Dice.roll(1,5,0);
+	            int change=CMLib.dice().roll(1,5,0);
 	            int fat=amountOfFat();
 	            if(fat>=0)
 	            {
@@ -121,7 +132,7 @@ public class Disease_Obesity extends Disease
 		&&(msg.target()!=null)
 		&&(msg.source().curState().getHunger()>=msg.source().maxState().maxHunger(msg.source().baseWeight())))
 		{
-		    setFatAmountChange(Dice.roll(1,5,0));
+		    setFatAmountChange(CMLib.dice().roll(1,5,0));
 		    msg.source().recoverEnvStats();
 		    msg.source().recoverCharStats();
 		    msg.source().recoverMaxState();
@@ -129,7 +140,7 @@ public class Disease_Obesity extends Disease
 		else
 		if((msg.target()==affected)
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
-		&&(Sense.canBeSeenBy(affected,msg.source()))
+		&&(CMLib.flags().canBeSeenBy(affected,msg.source()))
 		&&(affected instanceof MOB))
 		{
 		    int amount=amountOfFat();
@@ -144,7 +155,7 @@ public class Disease_Obesity extends Disease
 			    str="obese";
 		    else
 			    str="morbidly obese";
-			msg.addTrailerMsg(new FullMsg(msg.source(),null,null,
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
 										  CMMsg.MSG_OK_VISUAL,"\n\r"+affected.name()+" is "+str+".\n\r",
 										  CMMsg.NO_EFFECT,null,
 										  CMMsg.NO_EFFECT,null));
@@ -160,7 +171,7 @@ public class Disease_Obesity extends Disease
 		if(super.invoke(mob,commands,givenTarget,auto,asLevel))
 		{
 		    Ability A=target.fetchEffect(ID());
-		    if(A!=null) A.setMiscText(""+Dice.roll(1,5,0));
+		    if(A!=null) A.setMiscText(""+CMLib.dice().roll(1,5,0));
 			return true;
 		}
 		return false;

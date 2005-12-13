@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -66,11 +77,11 @@ public class Chant_WindGust extends Chant
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet.");
+				CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet.");
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
-					CommonMsgs.stand(mob,true);
+					CMLib.commands().stand(mob,true);
 				}
 			}
 			else
@@ -98,7 +109,7 @@ public class Chant_WindGust extends Chant
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,affectType(auto),(auto?"^JA horrendous wind gust blows through here.^?":"^S<S-NAME> chant(s) at <S-HIS-HER> enemies.^?")+CommonStrings.msp("wind.wav",40)))
+			if(mob.location().show(mob,null,this,affectType(auto),(auto?"^JA horrendous wind gust blows through here.^?":"^S<S-NAME> chant(s) at <S-HIS-HER> enemies.^?")+CMProps.msp("wind.wav",40)))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
@@ -107,7 +118,7 @@ public class Chant_WindGust extends Chant
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"<T-NAME> get(s) blown back!");
+				CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),"<T-NAME> get(s) blown back!");
 				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 				{
 					if((msg.value()<=0)&&(target.location()==mob.location()))
@@ -124,8 +135,8 @@ public class Chant_WindGust extends Chant
 						if(target.rangeToTarget()>target.location().maxRange())
 							target.setAtRange(target.location().maxRange());
 						mob.location().send(mob,msg);
-						if((!Sense.isInFlight(target))
-						&&(Dice.rollPercentage()>(((target.charStats().getStat(CharStats.DEXTERITY)*2)+target.envStats().level()))-(5*howLong))
+						if((!CMLib.flags().isInFlight(target))
+						&&(CMLib.dice().rollPercentage()>(((target.charStats().getStat(CharStats.DEXTERITY)*2)+target.envStats().level()))-(5*howLong))
 						&&(target.charStats().getBodyPart(Race.BODY_LEG)>0))
 						{
 							mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) down!");

@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Diseases;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -31,8 +41,8 @@ public class Disease_Lyme extends Disease
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return new Long(9*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).intValue();}
-	protected int DISEASE_DELAY(){return new Long(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).intValue();}
+	protected int DISEASE_TICKS(){return new Long(9*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).intValue();}
+	protected int DISEASE_DELAY(){return new Long(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).intValue();}
 	protected String DISEASE_DONE(){return "Your lyme disease goes away.";}
 	protected String DISEASE_START(){return "^G<S-NAME> get(s) lyme disease!^?";}
 	protected String DISEASE_AFFECT(){return "";}
@@ -55,7 +65,7 @@ public class Disease_Lyme extends Disease
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&(mob.fetchAbility(msg.tool().ID())==msg.tool())
-		&&(Dice.rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_MIND)+25)))
+		&&(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_MIND)+25)))
 		{
 			mob.tell("Your headaches make you forget "+msg.tool().name()+"!");
 			return false;
@@ -76,13 +86,13 @@ public class Disease_Lyme extends Disease
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=mob;
 			Ability A=null;
-			if(Dice.rollPercentage()>50)
+			if(CMLib.dice().rollPercentage()>50)
 				A=CMClass.getAbility("Disease_Fever");
 			else
-			if(Dice.rollPercentage()>50)
+			if(CMLib.dice().rollPercentage()>50)
 				A=CMClass.getAbility("Disease_Amnesia");
 			else
-			if(Dice.rollPercentage()>50)
+			if(CMLib.dice().rollPercentage()>50)
 				A=CMClass.getAbility("Disease_Arthritis");
 			else
 				A=CMClass.getAbility("Disease_Fever");
@@ -95,7 +105,7 @@ public class Disease_Lyme extends Disease
 		{
 			days++;
 			diseaseTick=DISEASE_DELAY();
-			if(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_DISEASE))
+			if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.SAVE_DISEASE))
 			{
 				unInvoke();
 				return false;

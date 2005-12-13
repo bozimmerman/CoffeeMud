@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
+
 import java.util.*;
 
 
@@ -84,9 +94,9 @@ public class Prayer_HuntEvil extends Prayer
 		MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.amITarget(mob.location()))
-		&&(Sense.canBeSeenBy(mob.location(),mob))
+		&&(CMLib.flags().canBeSeenBy(mob.location(),mob))
 		&&(msg.targetMinor()==CMMsg.TYP_LOOK))
-			nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),false);
+			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),false);
 	}
 
 	protected MOB gameHere(Room room)
@@ -95,7 +105,7 @@ public class Prayer_HuntEvil extends Prayer
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			MOB mob=room.fetchInhabitant(i);
-			if(Sense.isEvil(mob))
+			if(CMLib.flags().isEvil(mob))
 				return mob;
 		}
 		return null;
@@ -108,7 +118,7 @@ public class Prayer_HuntEvil extends Prayer
 			mob.tell("You are already trying to hunt "+word()+".");
 			return false;
 		}
-		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);
+		Vector V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
 		for(int v=0;v<V.size();v++)	((Ability)V.elementAt(v)).unInvoke();
 
 		theTrail=null;
@@ -148,7 +158,7 @@ public class Prayer_HuntEvil extends Prayer
 		{
 			for(int i=0;i<1000;i++)
 			{
-				Room R=CMMap.getRandomRoom();
+				Room R=CMLib.map().getRandomRoom();
 				if((gameHere(R)!=null)&&(!rooms.contains(R)))
 				{
 					rooms.addElement(R);
@@ -159,10 +169,10 @@ public class Prayer_HuntEvil extends Prayer
 			{
 			    try
 			    {
-					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
-						if(Sense.canAccess(mob,R))
+						if(CMLib.flags().canAccess(mob,R))
 							if(gameHere(R)!=null)
 								rooms.addElement(R);
 					}
@@ -171,7 +181,7 @@ public class Prayer_HuntEvil extends Prayer
 		}
 
 		if(rooms.size()>0)
-			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,false,false,false,false,false,50);
+			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,false,false,false,false,false,50);
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))
@@ -184,7 +194,7 @@ public class Prayer_HuntEvil extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> "+prayWord(mob)+" for the trail to "+word()+".^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),"^S<S-NAME> "+prayWord(mob)+" for the trail to "+word()+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -193,7 +203,7 @@ public class Prayer_HuntEvil extends Prayer
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverEnvStats();
-				newOne.nextDirection=MUDTracker.trackNextDirectionFromHere(newOne.theTrail,mob.location(),false);
+				newOne.nextDirection=CMLib.tracking().trackNextDirectionFromHere(newOne.theTrail,mob.location(),false);
 			}
 		}
 		else

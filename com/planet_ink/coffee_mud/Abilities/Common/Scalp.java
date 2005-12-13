@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -94,7 +105,7 @@ public class Scalp extends CommonSkill
 		body=null;
 		Item I=null;
 		if((mob.isMonster()
-		&&(!Sense.isAnimalIntelligence(mob)))
+		&&(!CMLib.flags().isAnimalIntelligence(mob)))
 		&&(commands.size()==0))
 		{
 			for(int i=0;i<mob.location().numItems();i++)
@@ -102,7 +113,7 @@ public class Scalp extends CommonSkill
 				Item I2=mob.location().fetchItem(i);
 				if((I2!=null)
 				&&(I2 instanceof DeadBody)
-				&&(Sense.canBeSeenBy(I2,mob))
+				&&(CMLib.flags().canBeSeenBy(I2,mob))
 				&&(I2.container()==null))
 				{
 					I=I2;
@@ -131,7 +142,7 @@ public class Scalp extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		failed=!profficiencyCheck(mob,0,auto);
-		FullMsg msg=new FullMsg(mob,I,this,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scalping <T-NAME>.");
+		CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scalping <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

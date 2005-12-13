@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.CharClasses;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -40,98 +51,98 @@ public class Shaman extends Cleric
 		if(!loaded())
 		{
 			setLoaded(true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Revoke",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Convert",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Prayer_Marry",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Prayer_Annul",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Convert",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Marry",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Annul",false);
 
-			CMAble.addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Prayer_CureLight",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Prayer_CauseLight",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_CureLight",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_CauseLight",false);
 
-			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseGood",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseLife",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseGood",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseLife",true);
 
-			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Bury",false);
-            CMAble.addCharAbilityMapping(ID(),3,"Prayer_MinorInfusion",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Bury",false);
+            CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_MinorInfusion",false);
 
-			CMAble.addCharAbilityMapping(ID(),4,"Prayer_FortifyFood",true);
-			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtGood",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_FortifyFood",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtGood",false);
 
-			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",false);
-			CMAble.addCharAbilityMapping(ID(),5,"Prayer_Deafness",false);
-			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CreateFood",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_Deafness",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CreateFood",true);
 
-			CMAble.addCharAbilityMapping(ID(),6,"Prayer_CreateWater",true);
-			CMAble.addCharAbilityMapping(ID(),6,"Prayer_EarthMud",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CreateWater",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_EarthMud",false);
 
-			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Curse",false);
-			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Bless",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Curse",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Bless",false);
 
-			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Paralyze",false);
-			CMAble.addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Paralyze",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",true);
 
-			CMAble.addCharAbilityMapping(ID(),9,"Prayer_Earthshield",false);
-            CMAble.addCharAbilityMapping(ID(),9,"Prayer_ModerateInfusion",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_Earthshield",false);
+            CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_ModerateInfusion",false);
 
-			CMAble.addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",false);
-			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",false);
 
-			CMAble.addCharAbilityMapping(ID(),11,"Prayer_RemovePoison",false);
-			CMAble.addCharAbilityMapping(ID(),11,"Prayer_Poison",false);
-			CMAble.addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_RemovePoison",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_Poison",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",true);
 
-			CMAble.addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Prayer_Sober",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_Sober",false);
 
-			CMAble.addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Prayer_Sanctum",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_Sanctum",false);
 
-			CMAble.addCharAbilityMapping(ID(),14,"Prayer_Fertilize",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_Fertilize",false);
 
-			CMAble.addCharAbilityMapping(ID(),15,"Prayer_Rockskin",false);
-			CMAble.addCharAbilityMapping(ID(),15,"Prayer_GuardianHearth",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_Rockskin",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_GuardianHearth",false);
 
-			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Tremor",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Tremor",false);
 
-			CMAble.addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
-            CMAble.addCharAbilityMapping(ID(),17,"Prayer_MajorInfusion",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
+            CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_MajorInfusion",false);
 
-			CMAble.addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",false);
-			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindsight",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Blindsight",false);
 
-			CMAble.addCharAbilityMapping(ID(),18,"Prayer_BladeBarrier",false);
-			CMAble.addCharAbilityMapping(ID(),18,"Prayer_ProtectElements",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_BladeBarrier",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_ProtectElements",true);
 
-			CMAble.addCharAbilityMapping(ID(),19,"Prayer_RockFlesh",false);
-			CMAble.addCharAbilityMapping(ID(),19,"Prayer_FleshRock",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_RockFlesh",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_FleshRock",false);
 
-			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassMobility",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassMobility",true);
 
-			CMAble.addCharAbilityMapping(ID(),21,"Prayer_DrunkenStupor",false);
-			CMAble.addCharAbilityMapping(ID(),21,"Prayer_MoralBalance",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_DrunkenStupor",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_MoralBalance",false);
 
-			CMAble.addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
 
-			CMAble.addCharAbilityMapping(ID(),23,"Prayer_LinkedHealth",true);
-			CMAble.addCharAbilityMapping(ID(),23,"Skill_Meditation",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_LinkedHealth",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_Meditation",false);
 
-			CMAble.addCharAbilityMapping(ID(),24,"Prayer_Nullification",false);
-			CMAble.addCharAbilityMapping(ID(),24,"Prayer_NeutralizeLand",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_Nullification",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_NeutralizeLand",false);
 
-			CMAble.addCharAbilityMapping(ID(),25,"Prayer_SummonElemental",0,"EARTH",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Prayer_AcidHealing",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_SummonElemental",0,"EARTH",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_AcidHealing",false);
 			
-			CMAble.addCharAbilityMapping(ID(),30,"Prayer_HolyDay",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_HolyDay",true);
 		}
 	}
 

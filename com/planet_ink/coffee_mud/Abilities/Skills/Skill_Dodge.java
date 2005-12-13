@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -20,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Dodge extends StdAbility
+public class Skill_Dodge extends StdSkill
 {
 	public String ID() { return "Skill_Dodge"; }
 	public String name(){ return "Dodge";}
@@ -49,14 +59,14 @@ public class Skill_Dodge extends StdAbility
 
 		if(msg.amITarget(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
-		&&(Sense.aliveAwakeMobile(mob,true))
+		&&(CMLib.flags().aliveAwakeMobile(mob,true))
 		&&(msg.source().rangeToTarget()==0)
 		&&((msg.tool()==null)
 			||((msg.tool() instanceof Weapon)
 			  &&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_RANGED)
 			  &&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_THROWN))))
 		{
-			FullMsg msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> dodge(s) the attack by <T-NAME>!");
+			CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> dodge(s) the attack by <T-NAME>!");
 			if((profficiencyCheck(null,mob.charStats().getStat(CharStats.DEXTERITY)-93,false))
 			&&(msg.source().getVictim()==mob)
 		    &&(!doneThisRound)

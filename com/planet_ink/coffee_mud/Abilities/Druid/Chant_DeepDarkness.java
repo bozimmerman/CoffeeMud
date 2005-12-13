@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
-import java.util.*;
+import java.util.Vector;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -66,9 +77,9 @@ public class Chant_DeepDarkness extends Chant
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(Sense.isGlowing(affected))
+		if(CMLib.flags().isGlowing(affected))
 			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_GLOWING);
-		if(Sense.isLightSource(affected))
+		if(CMLib.flags().isLightSource(affected))
 			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_LIGHTSOURCE);
 		affectableStats.setDisposition(affectableStats.disposition() |  EnvStats.IS_DARK);
 	}
@@ -101,7 +112,7 @@ public class Chant_DeepDarkness extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), (auto?"D":"^S<S-NAME> chant(s) deeply and d")+"arkness descends.^?");
+			CMMsg msg = CMClass.getMsg(mob, target, this, affectType(auto), (auto?"D":"^S<S-NAME> chant(s) deeply and d")+"arkness descends.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

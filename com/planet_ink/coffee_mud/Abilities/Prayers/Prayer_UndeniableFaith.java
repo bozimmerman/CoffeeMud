@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -52,18 +63,18 @@ public class Prayer_UndeniableFaith extends Prayer
 			if((!M.getWorshipCharID().equals(godName))
 			&&(godName.length()>0))
 			{
-				Deity D=CMMap.getDeity(godName);
+				Deity D=CMLib.map().getDeity(godName);
 				if(M.getWorshipCharID().length()>0)
 				{
-					Deity D2=CMMap.getDeity(M.getWorshipCharID());
+					Deity D2=CMLib.map().getDeity(M.getWorshipCharID());
 					if(D2!=null)
 					{
-						FullMsg msg2=new FullMsg(M,D2,this,CMMsg.MSG_REBUKE,null);
+						CMMsg msg2=CMClass.getMsg(M,D2,this,CMMsg.MSG_REBUKE,null);
 						if(M.location().okMessage(M,msg2))
 							M.location().send(M,msg2);
 					}
 				}
-				FullMsg msg2=new FullMsg(M,D,this,CMMsg.MSG_SERVE,null);
+				CMMsg msg2=CMClass.getMsg(M,D,this,CMMsg.MSG_SERVE,null);
 				if(M.location().okMessage(M,msg2))
 				{
 					M.location().send(M,msg2);
@@ -94,19 +105,19 @@ public class Prayer_UndeniableFaith extends Prayer
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if((mob.getWorshipCharID().length()==0)
-		||(CMMap.getDeity(mob.getWorshipCharID())==null))
+		||(CMLib.map().getDeity(mob.getWorshipCharID())==null))
 		{
 			if(!auto) mob.tell("You must worship a god to use this prayer.");
 			return false;
 		}
-		Deity D=CMMap.getDeity(mob.getWorshipCharID());
+		Deity D=CMLib.map().getDeity(mob.getWorshipCharID());
 		if((target.getWorshipCharID().length()>0)
-		&&(CMMap.getDeity(target.getWorshipCharID())!=null))
+		&&(CMLib.map().getDeity(target.getWorshipCharID())!=null))
 		{
 			if(!auto) mob.tell(target.name()+" worships "+target.getWorshipCharID()+", and may not be converted with this prayer.");
 			return false;
 		}
-		if((Sense.isAnimalIntelligence(target)||Sense.isGolem(target)||(D==null)))
+		if((CMLib.flags().isAnimalIntelligence(target)||CMLib.flags().isGolem(target)||(D==null)))
 		{
 			if(!auto) mob.tell(target.name()+" can not be converted with this prayer.");
 			return false;
@@ -141,9 +152,9 @@ public class Prayer_UndeniableFaith extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,type,auto?"":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to BELIEVE!^?");
-			FullMsg msg2=new FullMsg(target,D,this,CMMsg.MSG_SERVE,"<S-NAME> BELIEVE(S) !!!");
-			FullMsg msg3=new FullMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|mal|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to BELIEVE!^?");
+			CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_SERVE,"<S-NAME> BELIEVE(S) !!!");
+			CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|mal|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
 			if((mob.location().okMessage(mob,msg))
 			&&(mob.location().okMessage(mob,msg3))
 			&&(mob.location().okMessage(mob,msg2)))
@@ -155,9 +166,9 @@ public class Prayer_UndeniableFaith extends Prayer
 					target.location().send(target,msg2);
 					target.setWorshipCharID(godName);
 					if(mob!=target)
-						MUDFight.postExperience(mob,target,null,25,false);
+						CMLib.combat().postExperience(mob,target,null,25,false);
 					godName=mob.getWorshipCharID();
-					beneficialAffect(mob,target,asLevel,CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDMONTH));
+					beneficialAffect(mob,target,asLevel,CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH));
 					convertStack.addElement(target,new Long(System.currentTimeMillis()));
 				}
 			}

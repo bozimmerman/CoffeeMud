@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 import java.util.*;
 import java.io.IOException;
@@ -86,7 +97,7 @@ public class Destroy extends BaseItemParser
 		}
 
 		MOB deadMOB=CMClass.getMOB("StdMOB");
-		boolean found=CMClass.DBEngine().DBUserSearch(deadMOB,Util.combine(commands,2));
+		boolean found=CMLib.database().DBUserSearch(deadMOB,Util.combine(commands,2));
 
 		if(!found)
 		{
@@ -98,7 +109,7 @@ public class Destroy extends BaseItemParser
 
 		if(mob.session().confirm("This will complete OBLITERATE the user '"+deadMOB.Name()+"' forever.  Are you SURE?! (y/N)?","N"))
 		{
-			CoffeeUtensils.obliteratePlayer(deadMOB,false);
+			CMLib.utensils().obliteratePlayer(deadMOB,false);
 			mob.tell("The user '"+Util.combine(commands,2)+"' is no more!\n\r");
 			Log.sysOut("Mobs",mob.Name()+" destroyed user "+deadMOB.Name()+".");
             deadMOB.destroy();
@@ -134,7 +145,7 @@ public class Destroy extends BaseItemParser
 		int direction=Directions.getGoodDirectionCode(roomdir);
 		Room deadRoom=null;
 		if(!thecmd.equalsIgnoreCase("UNLINK"))
-			deadRoom=CMMap.getRoom(roomdir);
+			deadRoom=CMLib.map().getRoom(roomdir);
 		if((deadRoom==null)&&(direction<0))
 		{
 			if(thecmd.equalsIgnoreCase("UNLINK"))
@@ -169,7 +180,7 @@ public class Destroy extends BaseItemParser
 
 			if(!confirmed)
 				if(!mob.session().confirm("You are fixing permanantly destroy Room \""+deadRoom.roomID()+"\".  Are you ABSOLUTELY SURE (y/N)","N")) return;
-			CoffeeUtensils.obliterateRoom(deadRoom);
+			CMLib.utensils().obliterateRoom(deadRoom);
 			mob.tell("The sound of massive destruction rings in your ears.");
 			mob.location().showOthers(mob,null,CMMsg.MSG_NOISE,"The sound of massive destruction rings in your ears.");
 			Log.sysOut("Rooms",mob.Name()+" destroyed room "+deadRoom.roomID()+".");
@@ -193,14 +204,14 @@ public class Destroy extends BaseItemParser
 				int myY=GL.getChildY(mob.location());
 				for(int v=0;v<outer.size();v++)
 				{
-					CMMap.CrossExit CE=(CMMap.CrossExit)outer.elementAt(v);
+					WorldMap.CrossExit CE=(WorldMap.CrossExit)outer.elementAt(v);
 					if((CE.out)
 					&&(CE.x==myX)
 					&&(CE.y==myY)
 					&&(CE.dir==direction))
 					   GL.delOuterExit(CE);
 				}
-				CMClass.DBEngine().DBUpdateExits(GL);
+				CMLib.database().DBUpdateExits(GL);
 				mob.location().rawDoors()[direction]=null;
 				mob.location().rawExits()[direction]=null;
 			}
@@ -208,7 +219,7 @@ public class Destroy extends BaseItemParser
 			{
 				mob.location().rawDoors()[direction]=null;
 				mob.location().rawExits()[direction]=null;
-				CMClass.DBEngine().DBUpdateExits(mob.location());
+				CMLib.database().DBUpdateExits(mob.location());
 			}
 			if(unRoom instanceof GridLocale)
 			{
@@ -216,13 +227,13 @@ public class Destroy extends BaseItemParser
 				Vector outer=GL.outerExits();
 				for(int v=0;v<outer.size();v++)
 				{
-					CMMap.CrossExit CE=(CMMap.CrossExit)outer.elementAt(v);
+					WorldMap.CrossExit CE=(WorldMap.CrossExit)outer.elementAt(v);
 					if((!CE.out)
 					&&(CE.dir==direction)
-					&&(CE.destRoomID.equalsIgnoreCase(CMMap.getExtendedRoomID(mob.location()))))
+					&&(CE.destRoomID.equalsIgnoreCase(CMLib.map().getExtendedRoomID(mob.location()))))
 					   GL.delOuterExit(CE);
 				}
-				CMClass.DBEngine().DBUpdateExits(GL);
+				CMLib.database().DBUpdateExits(GL);
 			}
 			mob.location().getArea().fillInAreaRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A wall of inhibition falls "+Directions.getInDirectionName(direction)+".");
@@ -260,7 +271,7 @@ public class Destroy extends BaseItemParser
 
 		}
 		mob.location().rawExits()[direction]=null;
-		CMClass.DBEngine().DBUpdateExits(mob.location());
+		CMLib.database().DBUpdateExits(mob.location());
 		mob.location().getArea().fillInAreaRoom(mob.location());
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();
@@ -351,13 +362,13 @@ public class Destroy extends BaseItemParser
 		}
 
 		String areaName=Util.combine(commands,2);
-		if(CMMap.getArea(areaName)==null)
+		if(CMLib.map().getArea(areaName)==null)
 		{
 			mob.tell("There is no such area as '"+areaName+"'");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
 			return;
 		}
-		Area A=CMMap.getArea(areaName);
+		Area A=CMLib.map().getArea(areaName);
 		Room R=A.getRandomProperRoom();
 		if((R!=null)&&(!CMSecurity.isAllowed(mob,R,"CMDAREAS")))
 		{
@@ -376,7 +387,7 @@ public class Destroy extends BaseItemParser
 			}
 			confirmed=true;
 		}
-		CoffeeUtensils.obliterateArea(areaName);
+		CMLib.utensils().obliterateArea(areaName);
 		if(confirmed)
 		{
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A thunderous boom of destruction is heard in the distance.");
@@ -409,7 +420,7 @@ public class Destroy extends BaseItemParser
 		}
 		try
 		{
-			for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+			for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 			{
 				Room room=(Room)e.nextElement();
 				for(int i=0;i<room.numInhabitants();i++)
@@ -425,7 +436,7 @@ public class Destroy extends BaseItemParser
 			}
 	    }catch(NoSuchElementException e){}
 		CMClass.delRace(R);
-		CMClass.DBEngine().DBDeleteRace(R.ID());
+		CMLib.database().DBDeleteRace(R.ID());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just decreased!");
 		return true;
 	}
@@ -454,7 +465,7 @@ public class Destroy extends BaseItemParser
 			return false;
 		}
 		CMClass.delCharClass(C);
-		CMClass.DBEngine().DBDeleteClass(C.ID());
+		CMLib.database().DBDeleteClass(C.ID());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The employment of the world just decreased!");
 		return true;
 	}
@@ -482,7 +493,7 @@ public class Destroy extends BaseItemParser
 			}
 		}
 
-		Social soc2=Socials.FetchSocial(Util.combine(commands,2).toUpperCase(),true);
+		Social soc2=CMLib.socials().FetchSocial(Util.combine(commands,2).toUpperCase(),true);
 		if(soc2==null)
 		{
 			mob.tell("but fail to specify an EXISTING SOCIAL!\n\r");
@@ -491,9 +502,9 @@ public class Destroy extends BaseItemParser
 		}
 		if(mob.session().confirm("Are you sure you want to delete that social (y/N)? ","N"))
 		{
-			Socials.remove(soc2.name());
+			CMLib.socials().remove(soc2.name());
 			Resources.removeResource("SOCIALS LIST");
-			Socials.save(mob);
+			CMLib.socials().save(mob);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just decreased!");
             Log.sysOut("SysopSocials",mob.Name()+" destroyed social "+soc2.name()+".");
 		}
@@ -520,7 +531,7 @@ public class Destroy extends BaseItemParser
 		default:
 			return false;
 		}
-		FullMsg msg=new FullMsg(mob,dropThis,null,CMMsg.MSG_NOISYMOVEMENT,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MASK_GENERAL|CMMsg.MSG_DEATH,CMMsg.MSG_NOISYMOVEMENT,msgstr);
+		CMMsg msg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_NOISYMOVEMENT,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MASK_GENERAL|CMMsg.MSG_DEATH,CMMsg.MSG_NOISYMOVEMENT,msgstr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -598,7 +609,7 @@ public class Destroy extends BaseItemParser
 						}
 						else
 						{
-							FullMsg newMsg=new FullMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
+							CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
 							if(mob.location().okMessage(mob,newMsg))
 								mob.location().send(mob,newMsg);
 							else
@@ -607,7 +618,7 @@ public class Destroy extends BaseItemParser
 					}
 				}
 				if(dropThis==null) break;
-				if((Sense.canBeSeenBy(dropThis,mob))
+				if((CMLib.flags().canBeSeenBy(dropThis,mob))
 				&&(!V.contains(dropThis)))
 					V.addElement(dropThis);
 				addendumStr="."+(++addendum);
@@ -641,13 +652,13 @@ public class Destroy extends BaseItemParser
 		{
 			commandType=((String)commands.elementAt(1)).toUpperCase();
 		}
-        for(int i=0;i<ChannelSet.getNumCommandJournals();i++)
+        for(int i=0;i<CMLib.journals().getNumCommandJournals();i++)
         {
-            if((ChannelSet.getCommandJournalName(i).equals(commandType))
-            &&(CMSecurity.isAllowed(mob,mob.location(),ChannelSet.getCommandJournalName(i))
-                ||CMSecurity.isAllowed(mob,mob.location(),"KILL"+ChannelSet.getCommandJournalName(i)+"S")))
+            if((CMLib.journals().getCommandJournalName(i).equals(commandType))
+            &&(CMSecurity.isAllowed(mob,mob.location(),CMLib.journals().getCommandJournalName(i))
+                ||CMSecurity.isAllowed(mob,mob.location(),"KILL"+CMLib.journals().getCommandJournalName(i)+"S")))
             {
-                String nam=ChannelSet.getCommandJournalName(i);
+                String nam=CMLib.journals().getCommandJournalName(i);
                 int which=-1;
                 if(commands.size()>2)
                     which=Util.s_int((String)commands.elementAt(2));
@@ -655,7 +666,7 @@ public class Destroy extends BaseItemParser
                     mob.tell("Please enter a valid "+nam.toLowerCase()+" number to delete.  Use LIST "+nam+"S for more information.");
                 else
                 {
-                    CMClass.DBEngine().DBDeleteJournal("SYSTEM_"+nam+"S",which-1);
+                    CMLib.database().DBDeleteJournal("SYSTEM_"+nam+"S",which-1);
                     mob.tell(nam.toLowerCase()+" deletion submitted.");
                     
                 }
@@ -764,7 +775,7 @@ public class Destroy extends BaseItemParser
                 mob.tell("Destroy which journal? Try List Journal");
                 return errorOut(mob);
             }
-            Vector V=CMClass.DBEngine().DBReadJournal(null);
+            Vector V=CMLib.database().DBReadJournal(null);
             String name=Util.combine(commands,2);
             int which=-1;
             for(int v=0;v<V.size();v++)
@@ -785,9 +796,9 @@ public class Destroy extends BaseItemParser
             if(which<0)
                 mob.tell("Please enter a valid journal name to delete.  Use List Journals for more information.");
             else
-            if(mob.session().confirm("This will destroy all "+CMClass.DBEngine().DBCountJournal(name,null,null)+" messages.  Are you SURE (y/N)? ","N"))
+            if(mob.session().confirm("This will destroy all "+CMLib.database().DBCountJournal(name,null,null)+" messages.  Are you SURE (y/N)? ","N"))
             {
-                CMClass.DBEngine().DBDeleteJournal(name,Integer.MAX_VALUE);
+                CMLib.database().DBDeleteJournal(name,Integer.MAX_VALUE);
                 mob.tell("It is done.");
             }
         }
@@ -801,25 +812,25 @@ public class Destroy extends BaseItemParser
             else
             {
                 String name=Util.combine(commands,2);
-                Faction F=Factions.getFaction(name);
-                if(F==null) F=Factions.getFactionByName(name);
+                Faction F=CMLib.factions().getFaction(name);
+                if(F==null) F=CMLib.factions().getFactionByName(name);
                 if(F==null)
                     mob.tell("Faction '"+name+"' is unknown.  Try list factions.");
                 else
-                if((!mob.isMonster())&&(mob.session().confirm("Destroy file '"+F.ID+"' -- this could have unexpected consequences in the future -- (N/y)? ","N")))
+                if((!mob.isMonster())&&(mob.session().confirm("Destroy file '"+F.factionID()+"' -- this could have unexpected consequences in the future -- (N/y)? ","N")))
                 {
                     try
                     {
-                        java.io.File F2=new java.io.File("resources/"+F.ID);
+                        java.io.File F2=new java.io.File("resources/"+F.factionID());
                         if(F2.exists()) F2.delete();
-                        Log.sysOut("CreateEdit",mob.Name()+" destroyed Faction "+F.name+" ("+F.ID+").");
-                        mob.tell("Faction File '"+F.ID+"' deleted.");
-                        Resources.removeResource(F.ID);
+                        Log.sysOut("CreateEdit",mob.Name()+" destroyed Faction "+F.name()+" ("+F.factionID()+").");
+                        mob.tell("Faction File '"+F.factionID()+"' deleted.");
+                        Resources.removeResource(F.factionID());
                     }
                     catch(Exception e)
                     {
                         Log.errOut("CreateEdit",e);
-                        mob.tell("Faction File '"+F.ID+"' could NOT be deleted.");
+                        mob.tell("Faction File '"+F.factionID()+"' could NOT be deleted.");
                     }
                 }
             }
@@ -836,12 +847,12 @@ public class Destroy extends BaseItemParser
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"POLLS")) return errorOut(mob);
             String name=Util.combine(commands,2);
-            Polls P=null;
+            Poll P=null;
             if(Util.isInteger(name))
-                P=Polls.getPoll(Util.s_int(name)-1);
+                P=CMLib.polls().getPoll(Util.s_int(name)-1);
             else
             if(name.length()>0)
-                P=Polls.getPoll(name);
+                P=CMLib.polls().getPoll(name);
             if(P==null)
             {
                 mob.tell("POLL '"+name+"' not found. Try LIST POLLS.");
@@ -871,17 +882,17 @@ public class Destroy extends BaseItemParser
                 Quest Q=null;
                 if(Util.isInteger(name))
                 {
-                    Q=Quests.fetchQuest(Util.s_int(name)-1);
+                    Q=CMLib.quests().fetchQuest(Util.s_int(name)-1);
                     if(Q!=null) name=Q.name();
                 }
-                if(Q==null) Q=Quests.fetchQuest(name);
+                if(Q==null) Q=CMLib.quests().fetchQuest(name);
 				if(Q==null)
 					mob.tell("Quest '"+name+"' is unknown.  Try list quests.");
 				else
 				{
                     if(Q.running()&&(!Q.stopping())) Q.stopQuest();
 					mob.tell("Quest '"+Q.name()+"' is destroyed!");
-					Quests.delQuest(Q);
+					CMLib.quests().delQuest(Q);
 				}
 			}
 		}
@@ -895,7 +906,7 @@ public class Destroy extends BaseItemParser
 			else
 			{
 				String name=Util.combine(commands,2);
-				Clan C=Clans.findClan(name);
+				Clan C=CMLib.clans().findClan(name);
 				if(C==null)
 					mob.tell("Clan '"+name+"' is unknown.  Try clanlist.");
 				else
@@ -933,7 +944,7 @@ public class Destroy extends BaseItemParser
 				{
 				    try
 				    {
-						for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 						{
 							Room room=(Room)r.nextElement();
 							if(room.roomID().equalsIgnoreCase(allWord))
@@ -969,7 +980,7 @@ public class Destroy extends BaseItemParser
 						execute(mob,commands);
 					}
 					else
-					if(Socials.FetchSocial(allWord,true)!=null)
+					if(CMLib.socials().FetchSocial(allWord,true)!=null)
 					{
 						commands.insertElementAt("SOCIAL",1);
 						execute(mob,commands);

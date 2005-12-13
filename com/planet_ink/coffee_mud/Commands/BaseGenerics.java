@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 import java.io.ByteArrayInputStream;
@@ -89,9 +100,9 @@ public class BaseGenerics extends StdCommand
         if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
             E.setKillerPlayer(Boolean.valueOf(newName.toLowerCase()).booleanValue());
         else mob.tell(getScr("BaseGenerics","nochange"));
-        mob.tell(getScr("BaseGenerics","deadmobtod",IQCalendar.d2String(E.timeOfDeath())));
+        mob.tell(getScr("BaseGenerics","deadmobtod",CMLib.time().date2String(E.timeOfDeath())));
         newName=mob.session().prompt(getScr("BaseGenerics","entvaluenew"),"");
-        if(newName.length()>0) E.setTimeOfDeath(IQCalendar.string2Millis(newName));
+        if(newName.length()>0) E.setTimeOfDeath(CMLib.time().string2Millis(newName));
         else mob.tell(getScr("BaseGenerics","nochange"));
         mob.tell(getScr("BaseGenerics","deadmoblastmsg",E.lastMessage()));
         newName=mob.session().prompt(getScr("BaseGenerics","entvaluenew"),"");
@@ -164,9 +175,9 @@ public class BaseGenerics extends StdCommand
 		    if(newName.equalsIgnoreCase("default"))
 		        A.setCurrency("");
 		    else
-		    if((newName.indexOf("=")<0)&&(!BeanCounter.getAllCurrencies().contains(newName.trim().toUpperCase())))
+		    if((newName.indexOf("=")<0)&&(!CMLib.beanCounter().getAllCurrencies().contains(newName.trim().toUpperCase())))
 		    {
-		        Vector V=BeanCounter.getAllCurrencies();
+		        Vector V=CMLib.beanCounter().getAllCurrencies();
 		        mob.tell(getScr("BaseGenerics","currencyerr",newName.trim().toUpperCase(),Util.toStringList(V)));
 		    }
 		    else
@@ -310,11 +321,11 @@ public class BaseGenerics extends StdCommand
 		if(((showFlag<=0)||(showFlag==showNumber))
 		   &&(!E.isMonster())
 		   &&(E.getClanID().length()>0)
-		   &&(Clans.getClan(E.getClanID())!=null))
+		   &&(CMLib.clans().getClan(E.getClanID())!=null))
 		{
 
-			Clan C=Clans.getClan(E.getClanID());
-			mob.tell(getScr("BaseGenerics","clanrole",showNumber+"",Clans.getRoleName(C.getGovernment(),E.getClanRole(),true,false)));
+			Clan C=CMLib.clans().getClan(E.getClanID());
+			mob.tell(getScr("BaseGenerics","clanrole",showNumber+"",CMLib.clans().getRoleName(C.getGovernment(),E.getClanRole(),true,false)));
 			if((showFlag==showNumber)||(showFlag<=-999))
 			{
 				String newName=mob.session().prompt(getScr("BaseGenerics","enternewone"),"");
@@ -380,9 +391,7 @@ public class BaseGenerics extends StdCommand
             if(B!=null)
                 oldBehavsNEffects.addElement(B);
         }
-		CMClass.ThreadEngine().deleteTick(oldR,-1);
-		CMMap.delRoom(oldR);
-		CMMap.addRoom(R);
+		CMLib.threads().deleteTick(oldR,-1);
 		R.setArea(oldR.getArea());
 		R.setRoomID(oldR.roomID());
 		for(int d=0;d<R.rawDoors().length;d++)
@@ -461,7 +470,7 @@ public class BaseGenerics extends StdCommand
 
 		try
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R2=(Room)r.nextElement();
 				for(int d=0;d<R2.rawDoors().length;d++)
@@ -475,7 +484,7 @@ public class BaseGenerics extends StdCommand
 	    }catch(NoSuchElementException e){}
 	    try
 	    {
-			for(Enumeration e=CMMap.players();e.hasMoreElements();)
+			for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
 			{
 				MOB M=(MOB)e.nextElement();
 				if(M.getStartRoom()==oldR)
@@ -485,7 +494,6 @@ public class BaseGenerics extends StdCommand
 					M.setLocation(R);
 			}
 	    }catch(NoSuchElementException e){}
-		R.getArea().clearMaps();
 		R.getArea().fillInAreaRoom(R);
         for(int i=0;i<oldBehavsNEffects.size();i++)
         {
@@ -494,9 +502,10 @@ public class BaseGenerics extends StdCommand
             else
                 R.addNonUninvokableEffect((Ability)oldBehavsNEffects.elementAt(i));
         }
-		CMClass.DBEngine().DBUpdateRoom(R);
-		CMClass.DBEngine().DBUpdateMOBs(R);
-		CMClass.DBEngine().DBUpdateItems(R);
+		CMLib.database().DBUpdateRoom(R);
+		CMLib.database().DBUpdateMOBs(R);
+		CMLib.database().DBUpdateItems(R);
+        oldR.destroyRoom();
 		R.startItemRejuv();
 		return R;
 	}
@@ -513,7 +522,7 @@ public class BaseGenerics extends StdCommand
 			newName=mob.session().prompt(getScr("BaseGenerics","enter2"),"");
 			if(newName.trim().equals("?"))
 			{
-				mob.tell(CMLister.reallyList2Cols(CMClass.locales(),-1,null).toString()+"\n\r");
+				mob.tell(CMLib.lister().reallyList2Cols(CMClass.locales(),-1,null).toString()+"\n\r");
 				newName="";
 			}
 			else
@@ -562,7 +571,7 @@ public class BaseGenerics extends StdCommand
 		if((newName.length()>0)&&(E.playerStats()!=null))
 		{
 			E.playerStats().setPassword(newName);
-			CMClass.DBEngine().DBUpdatePassword(E);
+			CMLib.database().DBUpdatePassword(E);
 		}
 		else
 			mob.tell(getScr("BaseGenerics","nochange"));
@@ -680,7 +689,7 @@ public class BaseGenerics extends StdCommand
 					mob.tell(getScr("BaseGenerics","staffrem"));
 				}
 				else
-				if(CMClass.DBEngine().DBUserSearch(null,newName))
+				if(CMLib.database().DBUserSearch(null,newName))
 				{
 					A.addSubOp(newName);
 					mob.tell(getScr("BaseGenerics","ataffadd"));
@@ -703,7 +712,7 @@ public class BaseGenerics extends StdCommand
 		    newArea=mob.session().prompt(getScr("BaseGenerics","arearem"),"");
 		    if(newArea.length()>0)
 		    {
-		        Area lookedUp=CMMap.getArea(newArea);
+		        Area lookedUp=CMLib.map().getArea(newArea);
 		        if(lookedUp!=null)
 		        {
 		            if (lookedUp.isChild(A))
@@ -746,7 +755,7 @@ public class BaseGenerics extends StdCommand
             newArea=mob.session().prompt(getScr("BaseGenerics","arearem"),"");
             if(newArea.length()>0)
             {
-                Area lookedUp=CMMap.getArea(newArea);
+                Area lookedUp=CMLib.map().getArea(newArea);
                 if(lookedUp!=null)
                 {
                     if (lookedUp.isParent(A))
@@ -843,17 +852,17 @@ public class BaseGenerics extends StdCommand
 		 ||(E instanceof Container)
 		 ||(E instanceof Ammunition)
 		 ||(E instanceof Key))
-			Sense.setReadable(E,false);
+			CMLib.flags().setReadable(E,false);
 		else
 		if((CMClass.className(E).endsWith("Readable"))
 		||(E instanceof Recipe)
-		||(E instanceof com.planet_ink.coffee_mud.interfaces.Map))
-			Sense.setReadable(E,true);
+		||(E instanceof com.planet_ink.coffee_mud.Items.interfaces.Map))
+			CMLib.flags().setReadable(E,true);
 		else
 		if((showFlag!=showNumber)&&(showFlag>-999))
-			mob.tell(getScr("BaseGenerics","itemread",showNumber+"",Sense.isReadable(E)+""));
+			mob.tell(getScr("BaseGenerics","itemread",showNumber+"",CMLib.flags().isReadable(E)+""));
 		else
-			Sense.setReadable(E,genGenericPrompt(mob,showNumber+getScr("BaseGenerics","msgitemr"),Sense.isReadable(E)));
+			CMLib.flags().setReadable(E,genGenericPrompt(mob,showNumber+getScr("BaseGenerics","msgitemr"),CMLib.flags().isReadable(E)));
 	}
 
 	public static void genReadable2(MOB mob, Item E, int showNumber, int showFlag)
@@ -861,7 +870,7 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 
-		if((Sense.isReadable(E))
+		if((CMLib.flags().isReadable(E))
 		 ||(E instanceof SpellHolder)
 		 ||(E instanceof Ammunition)
 		 ||(E instanceof Recipe)
@@ -903,7 +912,7 @@ public class BaseGenerics extends StdCommand
 					ok=true;
 				}
 				else
-				if(E instanceof com.planet_ink.coffee_mud.interfaces.Map)
+				if(E instanceof com.planet_ink.coffee_mud.Items.interfaces.Map)
 				{
 					mob.tell(getScr("BaseGenerics","assmaparea",showNumber+"",E.readableText()));
 					ok=true;
@@ -932,7 +941,7 @@ public class BaseGenerics extends StdCommand
 					else
 					{
 						if(newName.equalsIgnoreCase("?"))
-							mob.tell(CMLister.reallyList(CMClass.abilities(),-1).toString());
+							mob.tell(CMLib.lister().reallyList(CMClass.abilities(),-1).toString());
 						else
 						if(E instanceof Wand)
 						{
@@ -1081,9 +1090,9 @@ public class BaseGenerics extends StdCommand
 			c=mob.session().choose(getScr("BaseGenerics","msgabcde"),"ABCDE\n","\n").toUpperCase();
 			switch(Character.toUpperCase(c.charAt(0)))
 			{
-			case 'A': Sense.setGettable(E,(Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET))); break;
-			case 'B': Sense.setDroppable(E,(Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP))); break;
-			case 'C': Sense.setRemovable(E,(Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE))); break;
+			case 'A': CMLib.flags().setGettable(E,(Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET))); break;
+			case 'B': CMLib.flags().setDroppable(E,(Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP))); break;
+			case 'C': CMLib.flags().setRemovable(E,(Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE))); break;
 			case 'D': if((E.baseEnvStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)>0)
 						  E.baseEnvStats().setSensesMask(E.baseEnvStats().sensesMask()-EnvStats.SENSE_UNLOCATABLE);
 					  else
@@ -1583,8 +1592,8 @@ public class BaseGenerics extends StdCommand
 		if((E instanceof Exit)&&(!(E instanceof Item)))
 			modifyGenExit(mob,(Exit)E);
 		else
-		if(E instanceof com.planet_ink.coffee_mud.interfaces.Map)
-			modifyGenMap(mob,(com.planet_ink.coffee_mud.interfaces.Map)E);
+		if(E instanceof com.planet_ink.coffee_mud.Items.interfaces.Map)
+			modifyGenMap(mob,(com.planet_ink.coffee_mud.Items.interfaces.Map)E);
 		else
 		if(E instanceof Armor)
 			modifyGenArmor(mob,(Armor)E);
@@ -1696,12 +1705,12 @@ public class BaseGenerics extends StdCommand
 		mob.tell(getScr("BaseGenerics","landplotid",showNumber+"",E.landPropertyID()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newText="?!?!";
-		while((newText.length()>0)&&(CMMap.getRoom(newText)==null))
+		while((newText.length()>0)&&(CMLib.map().getRoom(newText)==null))
 		{
 			newText=mob.session().prompt(getScr("BaseGenerics","newprpid"),"");
 			if((newText.length()==0)
-			&&(CMMap.getRoom(newText)==null)
-			&&(CMMap.getArea(newText)==null))
+			&&(CMLib.map().getRoom(newText)==null)
+			&&(CMLib.map().getArea(newText)==null))
 				mob.tell(getScr("BaseGenerics","roomiderror"));
 		}
 		if(newText.length()>0)
@@ -1724,7 +1733,7 @@ public class BaseGenerics extends StdCommand
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(getScr("BaseGenerics","moneydata",showNumber+"",E.getNumberOfCoins()+"",BeanCounter.getDenominationName(E.getCurrency(),E.getDenomination())));
+		mob.tell(getScr("BaseGenerics","moneydata",showNumber+"",E.getNumberOfCoins()+"",CMLib.beanCounter().getDenominationName(E.getCurrency(),E.getDenomination())));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean gocontinue=true;
 		while(gocontinue)
@@ -1744,9 +1753,9 @@ public class BaseGenerics extends StdCommand
 			if((oldCurrency.length()==0)||(oldCurrency.equalsIgnoreCase(E.getCurrency())))
 			    mob.tell(getScr("BaseGenerics","nochange"));
 			else
-			if(!BeanCounter.getAllCurrencies().contains(oldCurrency))
+			if(!CMLib.beanCounter().getAllCurrencies().contains(oldCurrency))
 			{
-			    Vector V=BeanCounter.getAllCurrencies();
+			    Vector V=CMLib.beanCounter().getAllCurrencies();
 			    for(int v=0;v<V.size();v++)
 			        if(((String)V.elementAt(v)).length()==0)
 			            V.setElementAt("Default",v);
@@ -1761,12 +1770,12 @@ public class BaseGenerics extends StdCommand
 		{
 		    gocontinue=false;
 		    String newDenom=mob.session().prompt(getScr("BaseGenerics","entde"),""+E.getDenomination()).trim().toUpperCase();
-			DVector DV=BeanCounter.getCurrencySet(E.getCurrency());
+			DVector DV=CMLib.beanCounter().getCurrencySet(E.getCurrency());
 			if((newDenom.length()>0)
 			&&(!Util.isDouble(newDenom))
 			&&(!newDenom.equalsIgnoreCase("?")))
 			{
-			    double denom=EnglishParser.matchAnyDenomination(E.getCurrency(),newDenom);
+			    double denom=CMLib.english().matchAnyDenomination(E.getCurrency(),newDenom);
 			    if(denom>0.0) newDenom=""+denom;
 			}
 		    if((newDenom.length()==0)
@@ -1965,9 +1974,9 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(getScr("BaseGenerics","moneycounter",showNumber+"",BeanCounter.getMoney(E)+""));
+		mob.tell(getScr("BaseGenerics","moneycounter",showNumber+"",CMLib.beanCounter().getMoney(E)+""));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		BeanCounter.setMoney(E,getNumericData(mob,getScr("BaseGenerics","entvaluenew"),BeanCounter.getMoney(E)));
+		CMLib.beanCounter().setMoney(E,getNumericData(mob,getScr("BaseGenerics","entvaluenew"),CMLib.beanCounter().getMoney(E)));
 	}
 
 	public static void genWeaponAmmo(MOB mob, Weapon E, int showNumber, int showFlag)
@@ -2166,33 +2175,33 @@ public class BaseGenerics extends StdCommand
     {
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		if(F==null) return;
-		Faction.FactionRange myFR=Factions.getRange(F.ID,E.fetchFaction(F.ID));
-		mob.tell(showNumber+". "+F.name+": "+((myFR!=null)?myFR.Name:"UNDEFINED")+" ("+E.fetchFaction(F.ID)+")");
+		Faction.FactionRange myFR=CMLib.factions().getRange(F.factionID(),E.fetchFaction(F.factionID()));
+		mob.tell(showNumber+". "+F.name()+": "+((myFR!=null)?myFR.name():"UNDEFINED")+" ("+E.fetchFaction(F.factionID())+")");
 	    if((showFlag!=showNumber)&&(showFlag>-999)) return;
-	    if(F.ranges!=null)
-	    for(int v=0;v<F.ranges.size();v++)
+	    if(F.ranges()!=null)
+	    for(int v=0;v<F.ranges().size();v++)
 	    {
-	        Faction.FactionRange FR=(Faction.FactionRange)F.ranges.elementAt(v);
-	        mob.tell(Util.padRight(FR.Name,20)+": "+FR.low+" - "+FR.high+")");
+	        Faction.FactionRange FR=(Faction.FactionRange)F.ranges().elementAt(v);
+	        mob.tell(Util.padRight(FR.name(),20)+": "+FR.low()+" - "+FR.high()+")");
 	    }
 		String newOne=mob.session().prompt(getScr("BaseGenerics","entvaluenew"));
 		if(Util.isInteger(newOne))
 		{
-		    E.addFaction(F.ID,Util.s_int(newOne));
+		    E.addFaction(F.factionID(),Util.s_int(newOne));
 	        return;
 		}
-	    for(int v=0;v<F.ranges.size();v++)
+	    for(int v=0;v<F.ranges().size();v++)
 	    {
-	        Faction.FactionRange FR=(Faction.FactionRange)F.ranges.elementAt(v);
-	        if(FR.Name.toUpperCase().startsWith(newOne.toUpperCase()))
+	        Faction.FactionRange FR=(Faction.FactionRange)F.ranges().elementAt(v);
+	        if(FR.name().toUpperCase().startsWith(newOne.toUpperCase()))
 	        {
-	            if(FR.low==F.lowest)
-	                E.addFaction(F.ID,FR.low);
+	            if(FR.low()==F.lowest())
+	                E.addFaction(F.factionID(),FR.low());
 	            else
-	            if(FR.high==F.highest)
-	                E.addFaction(F.ID,FR.high);
+	            if(FR.high()==F.highest())
+	                E.addFaction(F.factionID(),FR.high());
 	            else
-	                E.addFaction(F.ID,FR.low+((FR.high-FR.low)/2));
+	                E.addFaction(F.factionID(),FR.low()+((FR.high()-FR.low())/2));
 	            return;
 	        }
 	    }
@@ -2210,24 +2219,24 @@ public class BaseGenerics extends StdCommand
 		    newFact=mob.session().prompt(getScr("BaseGenerics","factionmsg"),"");
 		    if(newFact.length()>0)
 		    {
-		        Faction lookedUp=Factions.getFactionByName(newFact);
-		        if(lookedUp==null) Factions.getFaction(newFact);
+		        Faction lookedUp=CMLib.factions().getFactionByName(newFact);
+		        if(lookedUp==null) CMLib.factions().getFaction(newFact);
 		        if(lookedUp!=null)
 		        {
-		            if (E.fetchFaction(lookedUp.ID)!=Integer.MAX_VALUE)
+		            if (E.fetchFaction(lookedUp.factionID())!=Integer.MAX_VALUE)
 		            {
 		                // this mob already has this faction, they must want it removed
-		                E.removeFaction(lookedUp.ID);
-		                mob.tell(getScr("BaseGenerics","factionrem",lookedUp.name  ));
+		                E.removeFaction(lookedUp.factionID());
+		                mob.tell(getScr("BaseGenerics","factionrem",lookedUp.name()  ));
 		            }
 		            else
 		            {
 						int value =new Integer(mob.session().prompt(getScr("BaseGenerics","howmuchf",lookedUp.findDefault(E)+""),
 						           new Integer(lookedUp.findDefault(E)).toString())).intValue();
-			            if(value<lookedUp.minimum) value=lookedUp.minimum;
-					    if(value>lookedUp.maximum) value=lookedUp.maximum;
-		                E.addFaction(lookedUp.ID,value);
-		                mob.tell(getScr("BaseGenerics","factionadd",lookedUp.name ));
+			            if(value<lookedUp.minimum()) value=lookedUp.minimum();
+					    if(value>lookedUp.maximum()) value=lookedUp.maximum();
+		                E.addFaction(lookedUp.factionID(),value);
+		                mob.tell(getScr("BaseGenerics","factionadd",lookedUp.name() ));
 		            }
 		         }
 		         else
@@ -2336,7 +2345,7 @@ public class BaseGenerics extends StdCommand
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			raceID=mob.session().prompt(getScr("BaseGenerics","entnewrace"),"").trim();
 			if(raceID.equalsIgnoreCase("?"))
-				mob.tell(CMLister.reallyList(CMClass.races(),-1).toString());
+				mob.tell(CMLib.lister().reallyList(CMClass.races(),-1).toString());
 			else
 			if(raceID.length()==0)
 				mob.tell(getScr("BaseGenerics","nochange"));
@@ -2372,7 +2381,7 @@ public class BaseGenerics extends StdCommand
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			classID=mob.session().prompt(getScr("BaseGenerics","entclassar"),"").trim();
 			if(classID.equalsIgnoreCase("?"))
-				mob.tell(CMLister.reallyList(CMClass.charClasses(),-1).toString());
+				mob.tell(CMLib.lister().reallyList(CMClass.charClasses(),-1).toString());
 			else
 			if(classID.length()==0)
 				mob.tell(getScr("BaseGenerics","nochange"));
@@ -2643,7 +2652,7 @@ public class BaseGenerics extends StdCommand
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
-					mob.tell(CMLister.reallyList(CMClass.behaviors(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(CMClass.behaviors(),-1).toString());
 				else
 				{
 					Behavior chosenOne=null;
@@ -2725,7 +2734,7 @@ public class BaseGenerics extends StdCommand
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
-					mob.tell(CMLister.reallyList(CMClass.abilities(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(CMClass.abilities(),-1).toString());
 				else
 				{
 					Ability chosenOne=null;
@@ -2896,14 +2905,14 @@ public class BaseGenerics extends StdCommand
 			{
 				if(itemstr.equalsIgnoreCase("?"))
 				{
-					mob.tell(CMLister.reallyList(CMClass.abilities(),-1).toString());
-					mob.tell(CMLister.reallyList(CMClass.armor(),-1).toString());
-					mob.tell(CMLister.reallyList(CMClass.weapons(),-1).toString());
-					mob.tell(CMLister.reallyList(CMClass.miscMagic(),-1).toString());
-					mob.tell(CMLister.reallyList(CMClass.miscTech(),-1).toString());
-					mob.tell(CMLister.reallyList(CMClass.clanItems(),-1).toString());
-					mob.tell(CMLister.reallyList(CMClass.items(),-1).toString());
-					mob.tell(CMLister.reallyList(CMClass.mobTypes(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(CMClass.abilities(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(CMClass.armor(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(CMClass.weapons(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(CMClass.miscMagic(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(CMClass.miscTech(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(CMClass.clanItems(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(CMClass.items(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(CMClass.mobTypes(),-1).toString());
 					mob.tell(getScr("BaseGenerics","msgitemground"));
 					mob.tell(getScr("BaseGenerics","msgmobsroom"));
 				}
@@ -3071,7 +3080,7 @@ public class BaseGenerics extends StdCommand
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
-					mob.tell(CMLister.reallyList(CMClass.abilities(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(CMClass.abilities(),-1).toString());
 				else
 				{
 					Ability chosenOne=null;
@@ -3188,7 +3197,7 @@ public class BaseGenerics extends StdCommand
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
-					mob.tell(CMLister.reallyList(CMClass.abilities(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(CMClass.abilities(),-1).toString());
 				else
 				{
 					Ability chosenOne=null;
@@ -3256,7 +3265,7 @@ public class BaseGenerics extends StdCommand
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
-					mob.tell(CMLister.reallyList(CMClass.abilities(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(CMClass.abilities(),-1).toString());
 				else
 				{
 					Ability chosenOne=null;
@@ -3324,7 +3333,7 @@ public class BaseGenerics extends StdCommand
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
-					mob.tell(CMLister.reallyList(CMClass.abilities(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(CMClass.abilities(),-1).toString());
 				else
 				{
 					Ability chosenOne=null;
@@ -3445,9 +3454,9 @@ public class BaseGenerics extends StdCommand
 			for(int l=0;l<Item.wornCodes.length;l++)
 			{
 				long wornCode=1<<l;
-				if((Sense.wornLocation(wornCode).length()>0)
+				if((CMLib.flags().wornLocation(wornCode).length()>0)
 				&&(((E.rawProperLocationBitmap()&wornCode)==wornCode)))
-					buf.append(Sense.wornLocation(wornCode)+" ");
+					buf.append(CMLib.flags().wornLocation(wornCode)+" ");
 			}
 			mob.tell(buf.toString());
 			return;
@@ -3463,9 +3472,9 @@ public class BaseGenerics extends StdCommand
 			for(int l=0;l<Item.wornCodes.length;l++)
 			{
 				long wornCode=1<<l;
-				if(Sense.wornLocation(wornCode).length()>0)
+				if(CMLib.flags().wornLocation(wornCode).length()>0)
 				{
-					String header=(l+2)+": ("+Sense.wornLocation(wornCode)+") : "+(((E.rawProperLocationBitmap()&wornCode)==wornCode)?"YES":"NO");
+					String header=(l+2)+": ("+CMLib.flags().wornLocation(wornCode)+") : "+(((E.rawProperLocationBitmap()&wornCode)==wornCode)?"YES":"NO");
 					mob.tell(header);
 				}
 			}
@@ -3567,14 +3576,14 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". "+FieldDisp+": '"+MUDZapper.zapperDesc(E.getStat(Field))+"'.");
+		mob.tell(showNumber+". "+FieldDisp+": '"+CMLib.masking().maskDesc(E.getStat(Field))+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName="?";
 		while(newName.equals("?"))
 		{
 			newName=mob.session().prompt(getScr("BaseGenerics","entermask"),"");
 			if(newName.equals("?"))
-				mob.tell(MUDZapper.zapperInstructions("\n",getScr("BaseGenerics","allows")));
+				mob.tell(CMLib.masking().maskHelp("\n",getScr("BaseGenerics","allows")));
 		}
 		if((newName.length()>0)&&(!newName.equals("?")))
 			E.setStat(Field,newName);
@@ -3855,9 +3864,9 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-        EnvStats S=(EnvStats)CMClass.getShared("DefaultEnvStats");
+        EnvStats S=(EnvStats)CMClass.getCommon("DefaultEnvStats");
         S.setAllValues(0);
-		CoffeeMaker.setEnvStats(S,R.getStat("ESTATS"));
+		CMLib.coffeeMaker().setEnvStats(S,R.getStat("ESTATS"));
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<S.getCodes().length;i++)
 			if(Util.s_int(S.getStat(S.getCodes()[i]))!=0)
@@ -3914,7 +3923,7 @@ public class BaseGenerics extends StdCommand
 					if(zereoed)
 						R.setStat("ESTATS","");
 					else
-						R.setStat("ESTATS",CoffeeMaker.getEnvStatsStr(S));
+						R.setStat("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(S));
 				}
 			}
 		}
@@ -3930,8 +3939,8 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		CharState S=(CharState)CMClass.getShared("DefaultCharState"); S.setAllValues(0);
-		CoffeeMaker.setCharState(S,R.getStat(field));
+		CharState S=(CharState)CMClass.getCommon("DefaultCharState"); S.setAllValues(0);
+		CMLib.coffeeMaker().setCharState(S,R.getStat(field));
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<S.getCodes().length;i++)
 			if(Util.s_int(S.getStat(S.getCodes()[i]))!=0)
@@ -3967,7 +3976,7 @@ public class BaseGenerics extends StdCommand
 					if(zereoed)
 						R.setStat(field,"");
 					else
-						R.setStat(field,CoffeeMaker.getCharStateStr(S));
+						R.setStat(field,CMLib.coffeeMaker().getCharStateStr(S));
 				}
 				else
 					mob.tell(getScr("BaseGenerics","nochange"));
@@ -3980,8 +3989,8 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-        CharStats S=(CharStats)CMClass.getShared("DefaultCharStats"); S.setAllValues(0);
-		CoffeeMaker.setCharStats(S,R.getStat(Field));
+        CharStats S=(CharStats)CMClass.getCommon("DefaultCharStats"); S.setAllValues(0);
+		CMLib.coffeeMaker().setCharStats(S,R.getStat(Field));
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<CharStats.TRAITS.length;i++)
 			if(S.getStat(i)!=0)
@@ -4017,7 +4026,7 @@ public class BaseGenerics extends StdCommand
 					if(zereoed)
 						R.setStat(Field,"");
 					else
-						R.setStat(Field,CoffeeMaker.getCharStatsStr(S));
+						R.setStat(Field,CMLib.coffeeMaker().getCharStatsStr(S));
 				}
 				else
 					mob.tell(getScr("BaseGenerics","nochange"));
@@ -4031,9 +4040,9 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-        EnvStats S=(EnvStats)CMClass.getShared("DefaultEnvStats");
+        EnvStats S=(EnvStats)CMClass.getCommon("DefaultEnvStats");
         S.setAllValues(0);
-		CoffeeMaker.setEnvStats(S,R.getStat("ESTATS"));
+		CMLib.coffeeMaker().setEnvStats(S,R.getStat("ESTATS"));
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<S.getCodes().length;i++)
 			if(Util.s_int(S.getStat(S.getCodes()[i]))!=0)
@@ -4090,7 +4099,7 @@ public class BaseGenerics extends StdCommand
 					if(zereoed)
 						R.setStat("ESTATS","");
 					else
-						R.setStat("ESTATS",CoffeeMaker.getEnvStatsStr(S));
+						R.setStat("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(S));
 				}
 			}
 		}
@@ -4106,8 +4115,8 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-        CharState S=(CharState)CMClass.getShared("DefaultCharState"); S.setAllValues(0);
-		CoffeeMaker.setCharState(S,R.getStat(field));
+        CharState S=(CharState)CMClass.getCommon("DefaultCharState"); S.setAllValues(0);
+		CMLib.coffeeMaker().setCharState(S,R.getStat(field));
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<S.getCodes().length;i++)
 			if(Util.s_int(S.getStat(S.getCodes()[i]))!=0)
@@ -4143,7 +4152,7 @@ public class BaseGenerics extends StdCommand
 					if(zereoed)
 						R.setStat(field,"");
 					else
-						R.setStat(field,CoffeeMaker.getCharStateStr(S));
+						R.setStat(field,CMLib.coffeeMaker().getCharStateStr(S));
 				}
 				else
 					mob.tell(getScr("BaseGenerics","nochange"));
@@ -4156,8 +4165,8 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-        CharStats S=(CharStats)CMClass.getShared("DefaultCharStats"); S.setAllValues(0);
-		CoffeeMaker.setCharStats(S,R.getStat(Field));
+        CharStats S=(CharStats)CMClass.getCommon("DefaultCharStats"); S.setAllValues(0);
+		CMLib.coffeeMaker().setCharStats(S,R.getStat(Field));
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<CharStats.TRAITS.length;i++)
 			if(S.getStat(i)!=0)
@@ -4193,7 +4202,7 @@ public class BaseGenerics extends StdCommand
 					if(zereoed)
 						R.setStat(Field,"");
 					else
-						R.setStat(Field,CoffeeMaker.getCharStatsStr(S));
+						R.setStat(Field,CMLib.coffeeMaker().getCharStatsStr(S));
 				}
 				else
 					mob.tell(getScr("BaseGenerics","nochange"));
@@ -4231,7 +4240,7 @@ public class BaseGenerics extends StdCommand
 			{
 				int partNum=-1;
 				for(int i=0;i<V.size();i++)
-					if(EnglishParser.containsString(((Item)V.elementAt(i)).name(),newName))
+					if(CMLib.english().containsString(((Item)V.elementAt(i)).name(),newName))
 					{ partNum=i; break;}
 				boolean updateList=false;
 				if(partNum<0)
@@ -4303,7 +4312,7 @@ public class BaseGenerics extends StdCommand
 			{
 				int partNum=-1;
 				for(int i=0;i<V.size();i++)
-					if(EnglishParser.containsString(((Item)V.elementAt(i)).name(),newName))
+					if(CMLib.english().containsString(((Item)V.elementAt(i)).name(),newName))
 					{ partNum=i; break;}
 				boolean updateList=false;
 				if(partNum<0)
@@ -4375,7 +4384,7 @@ public class BaseGenerics extends StdCommand
 			{
 				int partNum=-1;
 				for(int i=0;i<V.size();i++)
-					if(EnglishParser.containsString(((Item)V.elementAt(i)).name(),newName))
+					if(CMLib.english().containsString(((Item)V.elementAt(i)).name(),newName))
 					{ partNum=i; break;}
 				boolean updateList=false;
 				if(partNum<0)
@@ -4614,13 +4623,13 @@ public class BaseGenerics extends StdCommand
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			String newName=mob.session().prompt(getScr("BaseGenerics","abname"),"");
 			if(newName.equalsIgnoreCase("?"))
-				mob.tell(CMLister.reallyList(CMClass.abilities(),-1).toString());
+				mob.tell(CMLib.lister().reallyList(CMClass.abilities(),-1).toString());
 			else
 			if(newName.length()>0)
 			{
 				int partNum=-1;
 				for(int i=0;i<ables.size();i++)
-					if(EnglishParser.containsString(((Ability)ables.elementAt(i)).ID(),newName))
+					if(CMLib.english().containsString(((Ability)ables.elementAt(i)).ID(),newName))
 					{ partNum=i; break;}
 				boolean updateList=false;
 				if(partNum<0)
@@ -4708,13 +4717,13 @@ public class BaseGenerics extends StdCommand
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			String newName=mob.session().prompt(getScr("BaseGenerics","effaddrem"),"");
 			if(newName.equalsIgnoreCase("?"))
-				mob.tell(CMLister.reallyList(CMClass.abilities(),-1).toString());
+				mob.tell(CMLib.lister().reallyList(CMClass.abilities(),-1).toString());
 			else
 			if(newName.length()>0)
 			{
 				int partNum=-1;
 				for(int i=0;i<ables.size();i++)
-					if(EnglishParser.containsString(((Ability)ables.elementAt(i)).ID(),newName))
+					if(CMLib.english().containsString(((Ability)ables.elementAt(i)).ID(),newName))
 					{ partNum=i; break;}
 				boolean updateList=false;
 				if(partNum<0)
@@ -4791,13 +4800,13 @@ public class BaseGenerics extends StdCommand
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			String newName=mob.session().prompt(getScr("BaseGenerics","abname"),"");
 			if(newName.equalsIgnoreCase("?"))
-				mob.tell(CMLister.reallyList(CMClass.abilities(),-1).toString());
+				mob.tell(CMLib.lister().reallyList(CMClass.abilities(),-1).toString());
 			else
 			if(newName.length()>0)
 			{
 				int partNum=-1;
 				for(int i=0;i<ables.size();i++)
-					if(EnglishParser.containsString(((Ability)ables.elementAt(i)).ID(),newName))
+					if(CMLib.english().containsString(((Ability)ables.elementAt(i)).ID(),newName))
 					{ partNum=i; break;}
 				boolean updateList=false;
 				if(partNum<0)
@@ -4887,13 +4896,13 @@ public class BaseGenerics extends StdCommand
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			String newName=mob.session().prompt(getScr("BaseGenerics","abname"),"");
 			if(newName.equalsIgnoreCase("?"))
-				mob.tell(CMLister.reallyList(CMClass.abilities(),-1).toString());
+				mob.tell(CMLib.lister().reallyList(CMClass.abilities(),-1).toString());
 			else
 			if(newName.length()>0)
 			{
 				int partNum=-1;
 				for(int i=0;i<ables.size();i++)
-					if(EnglishParser.containsString(((Ability)ables.elementAt(i)).ID(),newName))
+					if(CMLib.english().containsString(((Ability)ables.elementAt(i)).ID(),newName))
 					{ partNum=i; break;}
 				boolean updateList=false;
 				if(partNum<0)
@@ -4948,7 +4957,7 @@ public class BaseGenerics extends StdCommand
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
 		while(!ok)
 		{
@@ -5050,30 +5059,30 @@ public class BaseGenerics extends StdCommand
             return;
         boolean ok=false;
         int showFlag=-1;
-        if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+        if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
         while(!ok)
         {
             int showNumber=0;
             // name
-            me.name=EnglishParser.promptText(mob,me.name,++showNumber,showFlag,getScr("BaseGenerics","namename"));
+            me.setName(CMLib.english().promptText(mob,me.name(),++showNumber,showFlag,getScr("BaseGenerics","namename")));
 
             // ranges
             ++showNumber;
-            if(me.ranges.size()==0)
-                me.ranges.addElement(new Faction.FactionRange(me,"0;100;Sample Range;SAMPLE;"));
+            if(me.ranges().size()==0)
+                me.ranges().addElement(me.newRange("0;100;Sample Range;SAMPLE;"));
             while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 StringBuffer list=new StringBuffer(getScr("BaseGenerics","faction",showNumber+""));
                 list.append(Util.padRight("   Name",21)+Util.padRight("Min",11)+Util.padRight("Max",11)+Util.padRight("Code",16)+Util.padRight("Align",6)+"\n\r");
-                for(int r=0;r<me.ranges.size();r++)
+                for(int r=0;r<me.ranges().size();r++)
                 {
-                    Faction.FactionRange FR=(Faction.FactionRange)me.ranges.elementAt(r);
-                    list.append(Util.padRight("   "+FR.Name,20)+" ");
-                    list.append(Util.padRight(""+FR.low,10)+" ");
-                    list.append(Util.padRight(""+FR.high,10)+" ");
-                    list.append(Util.padRight(FR.CodeName,15)+" ");
-                    list.append(Util.padRight(Faction.ALIGN_NAMES[FR.AlignEquiv],5)+"\n\r");
+                    Faction.FactionRange FR=(Faction.FactionRange)me.ranges().elementAt(r);
+                    list.append(Util.padRight("   "+FR.name(),20)+" ");
+                    list.append(Util.padRight(""+FR.low(),10)+" ");
+                    list.append(Util.padRight(""+FR.high(),10)+" ");
+                    list.append(Util.padRight(FR.codeName(),15)+" ");
+                    list.append(Util.padRight(Faction.ALIGN_NAMES[FR.alignEquiv()],5)+"\n\r");
                 }
                 mob.tell(list.toString());
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
@@ -5081,58 +5090,58 @@ public class BaseGenerics extends StdCommand
                 if(which.length()==0)
                     break;
                 Faction.FactionRange FR=null;
-                for(int r=0;r<me.ranges.size();r++)
+                for(int r=0;r<me.ranges().size();r++)
                 {
-                    if(((Faction.FactionRange)me.ranges.elementAt(r)).Name.equalsIgnoreCase(which))
-                        FR=(Faction.FactionRange)me.ranges.elementAt(r);
+                    if(((Faction.FactionRange)me.ranges().elementAt(r)).name().equalsIgnoreCase(which))
+                        FR=(Faction.FactionRange)me.ranges().elementAt(r);
                 }
                 if(FR==null)
                 {
                     if(mob.session().confirm(getScr("BaseGenerics","cnrange",which)+" ","N"))
                     {
-                        FR=new Faction.FactionRange(me,"0;100;"+which+";CHANGEMYCODENAME;");
-                        me.ranges.addElement(FR);
+                        FR=me.newRange("0;100;"+which+";CHANGEMYCODENAME;");
+                        me.ranges().addElement(FR);
                     }
                 }
                 else
                 if(mob.session().choose(getScr("BaseGenerics","moddelran")+" ","MD","M").toUpperCase().startsWith("D"))
                 {
-                    me.ranges.remove(FR);
+                    me.ranges().remove(FR);
                     mob.tell(getScr("BaseGenerics","rangedeleted"));
                     FR=null;
                 }
                 if(FR!=null)
                 {
-                    String newName=mob.session().prompt(getScr("BaseGenerics","entnamefr",FR.Name,FR.Name));
+                    String newName=mob.session().prompt(getScr("BaseGenerics","entnamefr",FR.name(),FR.name()));
                     boolean error99=false;
                     if(newName.length()==0)
                         error99=true;
                     else
-                    for(int r=0;r<me.ranges.size();r++)
+                    for(int r=0;r<me.ranges().size();r++)
                     {
-                        Faction.FactionRange FR3=(Faction.FactionRange)me.ranges.elementAt(r);
-                        if(FR3.Name.equalsIgnoreCase(FR.Name)&&(FR3!=FR))
+                        Faction.FactionRange FR3=(Faction.FactionRange)me.ranges().elementAt(r);
+                        if(FR3.name().equalsIgnoreCase(FR.name())&&(FR3!=FR))
                         { mob.tell(getScr("BaseGenerics","alreadyrange")); error99=true; break;}
                     }
                     if(error99)
                         mob.tell(getScr("BaseGenerics","nochange"));
                     else
-                        FR.Name=newName;
-                    newName=mob.session().prompt(getScr("BaseGenerics","lowendrange",FR.low+""),""+FR.low);
+                        FR.setName(newName);
+                    newName=mob.session().prompt(getScr("BaseGenerics","lowendrange",FR.low()+""),""+FR.low());
                     if(!Util.isInteger(newName))
                         mob.tell(getScr("BaseGenerics","nochange"));
                     else
-                        FR.low=Util.s_int(newName);
-                    newName=mob.session().prompt(getScr("BaseGenerics","highendrange",FR.high+""),""+FR.high);
-                    if((!Util.isInteger(newName))||(Util.s_int(newName)<FR.low))
+                        FR.setLow(Util.s_int(newName));
+                    newName=mob.session().prompt(getScr("BaseGenerics","highendrange",FR.high()+""),""+FR.high());
+                    if((!Util.isInteger(newName))||(Util.s_int(newName)<FR.low()))
                         mob.tell(getScr("BaseGenerics","nochange"));
                     else
-                        FR.high=Util.s_int(newName);
-                    newName=mob.session().prompt(getScr("BaseGenerics","codename",FR.CodeName),""+FR.CodeName);
+                        FR.setHigh(Util.s_int(newName));
+                    newName=mob.session().prompt(getScr("BaseGenerics","codename",FR.codeName()),""+FR.codeName());
                     if(newName.trim().length()==0)
                         mob.tell(getScr("BaseGenerics","nochange"));
                     else
-                        FR.CodeName=newName.toUpperCase().trim();
+                        FR.setCodeName(newName.toUpperCase().trim());
                     StringBuffer prompt=new StringBuffer(getScr("BaseGenerics","virtuename"));
                     StringBuffer choices=new StringBuffer("");
                     for(int r=0;r<Faction.ALIGN_NAMES.length;r++)
@@ -5143,43 +5152,43 @@ public class BaseGenerics extends StdCommand
                         else
                             prompt.append(r+") "+Faction.ALIGN_NAMES[r].toLowerCase()+"\n\r");
                     }
-                    FR.AlignEquiv=Util.s_int(mob.session().choose(prompt.toString()+getScr("BaseGenerics","enteralign")+" ",choices.toString(),""+FR.AlignEquiv));
+                    FR.setAlignEquiv(Util.s_int(mob.session().choose(prompt.toString()+getScr("BaseGenerics","enteralign")+" ",choices.toString(),""+FR.alignEquiv())));
                 }
             }
 
 
             // show in score
-            me.showinscore=EnglishParser.promptBool(mob,me.showinscore,++showNumber,showFlag,getScr("BaseGenerics","shosco"));
+            me.setShowinscore(CMLib.english().promptBool(mob,me.showinscore(),++showNumber,showFlag,getScr("BaseGenerics","shosco")));
 
             // show in factions
-            me.showinfactionscommand=EnglishParser.promptBool(mob,me.showinfactionscommand,++showNumber,showFlag,getScr("BaseGenerics","shofcmd"));
+            me.setShowinfactionscommand(CMLib.english().promptBool(mob,me.showinfactionscommand(),++showNumber,showFlag,getScr("BaseGenerics","shofcmd")));
 
             // show in special reports
             boolean alreadyReporter=false;
-            for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
+            for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
             {
                 Faction F2=(Faction)e.nextElement();
-                if(F2.showinspecialreported) alreadyReporter=true;
+                if(F2.showinspecialreported()) alreadyReporter=true;
             }
             if(!alreadyReporter)
-                me.showinspecialreported=EnglishParser.promptBool(mob,me.showinspecialreported,++showNumber,showFlag,getScr("BaseGenerics","shorep"));
+                me.setShowinspecialreported(CMLib.english().promptBool(mob,me.showinspecialreported(),++showNumber,showFlag,getScr("BaseGenerics","shorep")));
 
             // show in editor
-            me.showineditor=EnglishParser.promptBool(mob,me.showineditor,++showNumber,showFlag,getScr("BaseGenerics","shomed"));
+            me.setShowineditor(CMLib.english().promptBool(mob,me.showineditor(),++showNumber,showFlag,getScr("BaseGenerics","shomed")));
 
             // auto defaults
             boolean error=true;
-            me.autoDefaults=Util.parseSemicolons(EnglishParser.promptText(mob,Util.toSemicolonList(me.autoDefaults),++showNumber,showFlag,getScr("BaseGenerics","zappermasksmsg2")),true);
+            me.setAutoDefaults(Util.parseSemicolons(CMLib.english().promptText(mob,Util.toSemicolonList(me.autoDefaults()),++showNumber,showFlag,getScr("BaseGenerics","zappermasksmsg2")),true));
 
             // non-auto defaults
             error=true;
-            if(me.defaults.size()==0)
-                me.defaults.addElement("0");
+            if(me.defaults().size()==0)
+                me.defaults().addElement("0");
             ++showNumber;
             while(error&&(mob.session()!=null)&&(!mob.session().killFlag()))
             {
                 error=false;
-                String newDefaults=EnglishParser.promptText(mob,Util.toSemicolonList(me.defaults),showNumber,showFlag,getScr("BaseGenerics","zappermasksmsg2"));
+                String newDefaults=CMLib.english().promptText(mob,Util.toSemicolonList(me.defaults()),showNumber,showFlag,getScr("BaseGenerics","zappermasksmsg2"));
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
                 Vector V=Util.parseSemicolons(newDefaults,true);
                 if(V.size()==0)
@@ -5187,20 +5196,20 @@ public class BaseGenerics extends StdCommand
                     mob.tell(getScr("BaseGenerics","fielderr"));
                     error=true;
                 }
-                me.defaults=Util.parseSemicolons(newDefaults,true);
+                me.setDefaults(Util.parseSemicolons(newDefaults,true));
             }
 
             // choices and choice intro
-            me.choices=Util.parseSemicolons(EnglishParser.promptText(mob,Util.toSemicolonList(me.choices),++showNumber,showFlag,getScr("BaseGenerics","newplayervchoices")),true);
-            if(me.choices.size()>0)
-                me.choiceIntro=EnglishParser.promptText(mob,me.choiceIntro,++showNumber,showFlag,getScr("BaseGenerics","introtxt"));
+            me.setChoices(Util.parseSemicolons(CMLib.english().promptText(mob,Util.toSemicolonList(me.choices()),++showNumber,showFlag,getScr("BaseGenerics","newplayervchoices")),true));
+            if(me.choices().size()>0)
+                me.setChoiceIntro(CMLib.english().promptText(mob,me.choiceIntro(),++showNumber,showFlag,getScr("BaseGenerics","introtxt")));
 
             // rate modifier
-            String newModifier=EnglishParser.promptText(mob,Math.round(me.rateModifier*100.0)+"%",++showNumber,showFlag,getScr("BaseGenerics","ratemod"));
+            String newModifier=CMLib.english().promptText(mob,Math.round(me.rateModifier()*100.0)+"%",++showNumber,showFlag,getScr("BaseGenerics","ratemod"));
             if(newModifier.endsWith("%"))
                 newModifier=newModifier.substring(0,newModifier.length()-1);
             if(Util.isNumber(newModifier))
-                me.rateModifier=Util.s_double(newModifier)/100.0;
+                me.setRateModifier(Util.s_double(newModifier)/100.0);
 
             // experience flag
             boolean error2=true;
@@ -5212,18 +5221,18 @@ public class BaseGenerics extends StdCommand
                 int myval=-1;
                 for(int i=0;i<Faction.EXPAFFECT_NAMES.length;i++)
                 {
-                    if(me.experienceFlag.equalsIgnoreCase(Faction.EXPAFFECT_NAMES[i]))
+                    if(me.experienceFlag().equalsIgnoreCase(Faction.EXPAFFECT_NAMES[i]))
                         myval=i;
                     nextPrompt.append("  "+(i+1)+") "+Util.capitalizeAndLower(Faction.EXPAFFECT_NAMES[i].toLowerCase())+"\n\r");
                 }
-                if(myval<0){ me.experienceFlag="NONE"; myval=0;}
+                if(myval<0){ me.setExperienceFlag("NONE"); myval=0;}
                 if((showFlag!=showNumber)&&(showFlag>-999))
                 {
                     mob.tell(getScr("BaseGenerics","affectexp",showNumber+"",Faction.EXPAFFECT_NAMES[myval]));
                     break;
                 }
                 String prompt=getScr("BaseGenerics","afexp")+" "+Faction.EXPAFFECT_NAMES[myval]+nextPrompt.toString()+getScr("BaseGenerics","selvaluen")+" ";
-                int mynewval=EnglishParser.promptInteger(mob,myval+1,showNumber,showFlag,prompt);
+                int mynewval=CMLib.english().promptInteger(mob,myval+1,showNumber,showFlag,prompt);
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
                 if((mynewval<=0)||(mynewval>Faction.EXPAFFECT_NAMES.length))
                 {
@@ -5231,7 +5240,7 @@ public class BaseGenerics extends StdCommand
                     error2=true;
                 }
                 else
-                    me.experienceFlag=Faction.EXPAFFECT_NAMES[mynewval-1];
+                    me.setExperienceFlag(Faction.EXPAFFECT_NAMES[mynewval-1]);
             }
 
             // factors by mask
@@ -5241,11 +5250,11 @@ public class BaseGenerics extends StdCommand
                 StringBuffer list=new StringBuffer(getScr("BaseGenerics","factionmod",showNumber+""));
                 list.append("    #) "+Util.padRight("Zapper Mask",31)+Util.padRight("Loss",6)+Util.padRight("Gain",6)+"\n\r");
                 StringBuffer choices=new StringBuffer("");
-                for(int r=0;r<me.factors.size();r++)
+                for(int r=0;r<me.factors().size();r++)
                 {
-                    Vector factor=(Vector)me.factors.elementAt(r);
+                    Vector factor=(Vector)me.factors().elementAt(r);
                     if(factor.size()!=3)
-                        me.factors.removeElement(factor);
+                        me.factors().removeElement(factor);
                     else
                     {
                         choices.append(((char)('A'+r)));
@@ -5261,16 +5270,16 @@ public class BaseGenerics extends StdCommand
                 int factorNum=choices.toString().indexOf(which);
                 if((which.length()!=1)
                 ||((!which.equalsIgnoreCase("0"))
-                    &&((factorNum<0)||(factorNum>=me.factors.size()))))
+                    &&((factorNum<0)||(factorNum>=me.factors().size()))))
                     break;
                 Vector factor=null;
                 if(!which.equalsIgnoreCase("0"))
                 {
-                    factor=(Vector)me.factors.elementAt(factorNum);
+                    factor=(Vector)me.factors().elementAt(factorNum);
                     if(factor!=null)
                         if(mob.session().choose(getScr("BaseGenerics","moddelran")+" ","MD","M").toUpperCase().startsWith("D"))
                         {
-                            me.factors.remove(factor);
+                            me.factors().remove(factor);
                             mob.tell(getScr("BaseGenerics","factordel"));
                             factor=null;
                         }
@@ -5281,7 +5290,7 @@ public class BaseGenerics extends StdCommand
                     factor.addElement("1.0");
                     factor.addElement("1.0");
                     factor.addElement("");
-                    me.factors.addElement(factor);
+                    me.factors().addElement(factor);
                 }
                 if(factor!=null)
                 {
@@ -5303,12 +5312,12 @@ public class BaseGenerics extends StdCommand
                         mob.tell(getScr("BaseGenerics","nochange"));
                     else
                         newLow=Util.s_double(newName)/100.0;
-                    me.factors.removeElement(factor);
+                    me.factors().removeElement(factor);
                     factor=new Vector();
                     factor.addElement(""+newHigh);
                     factor.addElement(""+newLow);
                     factor.addElement(""+mask);
-                    me.factors.addElement(factor);
+                    me.factors().addElement(factor);
                 }
             }
 
@@ -5318,14 +5327,14 @@ public class BaseGenerics extends StdCommand
             {
                 StringBuffer list=new StringBuffer(getScr("BaseGenerics","crossrelati",showNumber+""));
                 list.append(getScr("BaseGenerics","percchange",Util.padRight("Faction",31)));
-                for(Enumeration e=me.relations.keys();e.hasMoreElements();)
+                for(Enumeration e=me.relations().keys();e.hasMoreElements();)
                 {
                     String key=(String)e.nextElement();
-                    Double value=(Double)me.relations.get(key);
-                    Faction F=Factions.getFaction(key);
+                    Double value=(Double)me.relations().get(key);
+                    Faction F=CMLib.factions().getFaction(key);
                     if(F!=null)
                     {
-                        list.append("    "+Util.padRight(F.name,31)+" ");
+                        list.append("    "+Util.padRight(F.name(),31)+" ");
                         long lval=Math.round(value.doubleValue()*100.0);
                         list.append(lval+"%");
                         list.append("\n\r");
@@ -5337,44 +5346,44 @@ public class BaseGenerics extends StdCommand
                 if(which.length()==0)
                     break;
                 Faction theF=null;
-                for(Enumeration e=me.relations.keys();e.hasMoreElements();)
+                for(Enumeration e=me.relations().keys();e.hasMoreElements();)
                 {
                     String key=(String)e.nextElement();
-                    Faction F=Factions.getFaction(key);
-                    if((F!=null)&&(F.name.equalsIgnoreCase(which)))
+                    Faction F=CMLib.factions().getFaction(key);
+                    if((F!=null)&&(F.name().equalsIgnoreCase(which)))
                         theF=F;
                 }
                 if(theF==null)
                 {
-                    Faction possibleF=Factions.getFaction(which);
-                    if(possibleF==null) possibleF=Factions.getFactionByName(which);
+                    Faction possibleF=CMLib.factions().getFaction(which);
+                    if(possibleF==null) possibleF=CMLib.factions().getFactionByName(which);
                     if(possibleF==null)
                         mob.tell(getScr("BaseGenerics","errfaction",which));
                     else
-                    if(mob.session().confirm(getScr("BaseGenerics","cnf",possibleF.name),"N"))
+                    if(mob.session().confirm(getScr("BaseGenerics","cnf",possibleF.name()),"N"))
                     {
                         theF=possibleF;
-                        me.relations.put(theF.ID,new Double(1.0));
+                        me.relations().put(theF.factionID(),new Double(1.0));
                     }
                 }
                 else
                 if(mob.session().choose(getScr("BaseGenerics","moddelrel")+" ","MD","M").toUpperCase().startsWith("D"))
                 {
-                    me.relations.remove(theF.ID);
+                    me.relations().remove(theF.factionID());
                     mob.tell(getScr("BaseGenerics","reldel"));
                     theF=null;
                 }
                 if(theF!=null)
                 {
-                    long amount=Math.round(((Double)me.relations.get(theF.ID)).doubleValue()*100.0);
+                    long amount=Math.round(((Double)me.relations().get(theF.factionID())).doubleValue()*100.0);
                     String newName=mob.session().prompt(getScr("BaseGenerics","relamount",amount+""),""+amount+"%");
                     if(newName.endsWith("%")) newName=newName.substring(0,newName.length()-1);
                     if(!Util.isInteger(newName))
                         mob.tell(getScr("BaseGenerics","nochange"));
                     else
                         amount=Util.s_long(newName);
-                    me.relations.remove(theF.ID);
-                    me.relations.put(theF.ID,new Double(amount/100.0));
+                    me.relations().remove(theF.factionID());
+                    me.relations().put(theF.factionID(),new Double(amount/100.0));
                 }
             }
 
@@ -5388,17 +5397,17 @@ public class BaseGenerics extends StdCommand
                         +" "+Util.padRight("Factor",10)
                         +" "+Util.padRight("Flags",20)
                         +" Mask\n\r");
-                for(Enumeration e=me.Changes.elements();e.hasMoreElements();)
+                for(Enumeration e=me.Changes().elements();e.hasMoreElements();)
                 {
                     Faction.FactionChangeEvent CE=(Faction.FactionChangeEvent)e.nextElement();
                     if(CE!=null)
                     {
                         list.append("    ");
-                        list.append(Util.padRight(CE.ID,15)+" ");
-                        list.append(Util.padRight(Faction.FactionChangeEvent.FACTION_DIRECTIONS[CE.direction],10)+" ");
-                        list.append(Util.padRight(Math.round(CE.factor*100.0)+"%",10)+" ");
-                        list.append(Util.padRight(CE.flagCache,20)+" ");
-                        list.append(CE.zapper+"\n\r");
+                        list.append(Util.padRight(CE.eventID(),15)+" ");
+                        list.append(Util.padRight(Faction.FactionChangeEvent.FACTION_DIRECTIONS[CE.direction()],10)+" ");
+                        list.append(Util.padRight(Math.round(CE.factor()*100.0)+"%",10)+" ");
+                        list.append(Util.padRight(CE.flagCache(),20)+" ");
+                        list.append(CE.zapper()+"\n\r");
                     }
                 }
                 mob.tell(list.toString());
@@ -5408,13 +5417,13 @@ public class BaseGenerics extends StdCommand
                 if(which.length()==0) break;
                 if(which.equalsIgnoreCase("?"))
                 {
-                    mob.tell(getScr("BaseGenerics","validtrigg",Faction.FactionChangeEvent.ALL_TYPES()));
+                    mob.tell(getScr("BaseGenerics","validtrigg",me.ALL_CHANGE_EVENT_TYPES()));
                     continue;
                 }
-                Faction.FactionChangeEvent CE=(Faction.FactionChangeEvent)me.Changes.get(which);
+                Faction.FactionChangeEvent CE=(Faction.FactionChangeEvent)me.Changes().get(which);
                 if(CE==null)
                 {
-                    CE=new Faction.FactionChangeEvent();
+                    CE=me.newChangeEvent();
                     if(!CE.setFilterID(which))
                     {
                         mob.tell(getScr("BaseGenerics","iderr"));
@@ -5427,12 +5436,12 @@ public class BaseGenerics extends StdCommand
                         break;
                     }
                     else
-                        me.Changes.put(CE.ID.toUpperCase(),CE);
+                        me.Changes().put(CE.eventID().toUpperCase(),CE);
                 }
                 else
                 if(mob.session().choose(getScr("BaseGenerics","moddeltrig")+" ","MD","M").toUpperCase().startsWith("D"))
                 {
-                    me.Changes.remove(CE.ID);
+                    me.Changes().remove(CE.eventID());
                     mob.tell(getScr("BaseGenerics","trigrem"));
                     CE=null;
                 }
@@ -5446,39 +5455,39 @@ public class BaseGenerics extends StdCommand
                         directions.append(((char)('A'+i))+") "+Faction.FactionChangeEvent.FACTION_DIRECTIONS[i]+"\n\r");
                         cmds.append((char)('A'+i));
                     }
-                    String str=mob.session().choose(directions+getScr("BaseGenerics","selnewdir")+Faction.FactionChangeEvent.FACTION_DIRECTIONS[CE.direction]+"): ",cmds.toString()+"\n\r","");
+                    String str=mob.session().choose(directions+getScr("BaseGenerics","selnewdir")+Faction.FactionChangeEvent.FACTION_DIRECTIONS[CE.direction()]+"): ",cmds.toString()+"\n\r","");
                     if((str.length()==0)||str.equals("\n")||str.equals("\r")||(cmds.toString().indexOf(str.charAt(0))<0))
                         mob.tell(getScr("BaseGenerics","nochange"));
                     else
-                        CE.direction=(cmds.toString().indexOf(str.charAt(0)));
+                        CE.setDirection((cmds.toString().indexOf(str.charAt(0))));
                 }
                 if(CE!=null)
                 {
-                    if(CE.factor==0.0) CE.factor=1.0;
-                    int amount=(int)Math.round(CE.factor*100.0);
+                    if(CE.factor()==0.0) CE.setFactor(1.0);
+                    int amount=(int)Math.round(CE.factor()*100.0);
                     String newName=mob.session().prompt(getScr("BaseGenerics","amountfactor",amount+""),""+amount+"%");
                     if(newName.endsWith("%")) newName=newName.substring(0,newName.length()-1);
                     if(!Util.isInteger(newName))
                         mob.tell(getScr("BaseGenerics","nochange"));
                     else
-                        CE.factor=new Double(Util.s_int(newName)/100.0).doubleValue();
+                        CE.setFactor(new Double(Util.s_int(newName)/100.0).doubleValue());
                 }
                 if(CE!=null)
                 {
                     mob.tell(getScr("BaseGenerics","validflags",Util.toStringList(Faction.FactionChangeEvent.VALID_FLAGS)));
-                    String newFlags=mob.session().prompt(getScr("BaseGenerics","newflags",CE.flagCache,CE.flagCache));
-                    if((newFlags.length()==0)||(newFlags.equals(CE.flagCache)))
+                    String newFlags=mob.session().prompt(getScr("BaseGenerics","newflags",CE.flagCache(),CE.flagCache()));
+                    if((newFlags.length()==0)||(newFlags.equals(CE.flagCache())))
                         mob.tell(getScr("BaseGenerics","nochange"));
                     else
                         CE.setFlags(newFlags);
                 }
                 if(CE!=null)
                 {
-                    String newFlags=mob.session().prompt(getScr("BaseGenerics","zappermsg",CE.zapper,CE.zapper));
-                    if((newFlags.length()==0)||(newFlags.equals(CE.zapper)))
+                    String newFlags=mob.session().prompt(getScr("BaseGenerics","zappermsg",CE.zapper(),CE.zapper()));
+                    if((newFlags.length()==0)||(newFlags.equals(CE.zapper())))
                         mob.tell(getScr("BaseGenerics","nochange"));
                     else
-                        CE.zapper=newFlags;
+                        CE.setZapper(newFlags);
                 }
             }
 
@@ -5495,15 +5504,15 @@ public class BaseGenerics extends StdCommand
                         +"\n\r");
                 int num=0;
                 StringBuffer choices=new StringBuffer("0\n\r");
-                for(Enumeration e=me.abilityUsages.elements();e.hasMoreElements();)
+                for(Enumeration e=me.abilityUsages().elements();e.hasMoreElements();)
                 {
                     Faction.FactionAbilityUsage CA=(Faction.FactionAbilityUsage)e.nextElement();
                     if(CA!=null)
                     {
                         list.append("    "+((char)('A'+num)+") "));
-                        list.append(Util.padRight(CA.ID,40)+" ");
-                        list.append(Util.padRight(CA.low+"",10)+" ");
-                        list.append(Util.padRight(CA.high+"",10)+" ");
+                        list.append(Util.padRight(CA.usageID(),40)+" ");
+                        list.append(Util.padRight(CA.low()+"",10)+" ");
+                        list.append(Util.padRight(CA.high()+"",10)+" ");
                         list.append("\n\r");
                         choices.append((char)('A'+num));
                         num++;
@@ -5519,9 +5528,9 @@ public class BaseGenerics extends StdCommand
                 if(!which.equalsIgnoreCase("0"))
                 {
                     num=(which.charAt(0)-'A');
-                    if((num<0)||(num>=me.abilityUsages.size()))
+                    if((num<0)||(num>=me.abilityUsages().size()))
                         break;
-                    CA=(Faction.FactionAbilityUsage)me.abilityUsages.elementAt(num);
+                    CA=(Faction.FactionAbilityUsage)me.abilityUsages().elementAt(num);
                     if(CA==null)
                     {
                         mob.tell(getScr("BaseGenerics","allowancerr"));
@@ -5529,7 +5538,7 @@ public class BaseGenerics extends StdCommand
                     }
                     if(mob.session().choose(getScr("BaseGenerics","moddelall")+" ","MD","M").toUpperCase().startsWith("D"))
                     {
-                        me.abilityUsages.remove(CA);
+                        me.abilityUsages().remove(CA);
                         mob.tell(getScr("BaseGenerics","alldel"));
                         CA=null;
                     }
@@ -5542,15 +5551,15 @@ public class BaseGenerics extends StdCommand
                 }
                 else
                 {
-                    CA=new Faction.FactionAbilityUsage();
-                    me.abilityUsages.addElement(CA);
+                    CA=me.newAbilityUsage();
+                    me.abilityUsages().addElement(CA);
                 }
                 if(CA!=null)
                 {
                     boolean cont=false;
                     while((!cont)&&(!mob.session().killFlag()))
                     {
-                        String newFlags=mob.session().prompt(getScr("BaseGenerics","abdmasks",CA.ID,CA.ID));
+                        String newFlags=mob.session().prompt(getScr("BaseGenerics","abdmasks",CA.usageID(),CA.usageID()));
                         if(newFlags.equalsIgnoreCase("?"))
                         {
                             StringBuffer vals=new StringBuffer(getScr("BaseGenerics","validmasks"));
@@ -5567,7 +5576,7 @@ public class BaseGenerics extends StdCommand
                         else
                         {
                             cont=true;
-                            if((newFlags.length()==0)||(newFlags.equals(CA.ID)))
+                            if((newFlags.length()==0)||(newFlags.equals(CA.usageID())))
                                 mob.tell(getScr("BaseGenerics","nochange"));
                             else
                             {
@@ -5584,39 +5593,39 @@ public class BaseGenerics extends StdCommand
                             }
                         }
                     }
-                    String newName=mob.session().prompt(getScr("BaseGenerics","minvalueab",CA.low+""),""+CA.low);
-                    if((!Util.isInteger(newName))||(CA.low==Util.s_int(newName)))
+                    String newName=mob.session().prompt(getScr("BaseGenerics","minvalueab",CA.low()+""),""+CA.low());
+                    if((!Util.isInteger(newName))||(CA.low()==Util.s_int(newName)))
                         mob.tell(getScr("BaseGenerics","nochange"));
                     else
-                        CA.low=Util.s_int(newName);
-                    newName=mob.session().prompt(getScr("BaseGenerics","maxvalueab",CA.high+""),""+CA.high);
-                    if((!Util.isInteger(newName))||(CA.high==Util.s_int(newName)))
+                        CA.setLow(Util.s_int(newName));
+                    newName=mob.session().prompt(getScr("BaseGenerics","maxvalueab",CA.high()+""),""+CA.high());
+                    if((!Util.isInteger(newName))||(CA.high()==Util.s_int(newName)))
                         mob.tell(getScr("BaseGenerics","nochange"));
                     else
-                        CA.high=Util.s_int(newName);
-                    if(CA.high<CA.low) CA.high=CA.low;
+                        CA.setHigh(Util.s_int(newName));
+                    if(CA.high()<CA.low()) CA.setHigh(CA.low());
                 }
             }
 
             // calculate new max/min
-            me.minimum=Integer.MAX_VALUE;
-            me.maximum=Integer.MIN_VALUE;
-            for(int r=0;r<me.ranges.size();r++)
+            me.setMinimum(Integer.MAX_VALUE);
+            me.setMaximum(Integer.MIN_VALUE);
+            for(int r=0;r<me.ranges().size();r++)
             {
-                Faction.FactionRange FR=(Faction.FactionRange)me.ranges.elementAt(r);
-                if(FR.high>me.maximum) me.maximum=FR.high;
-                if(FR.low<me.minimum) me.minimum=FR.low;
+                Faction.FactionRange FR=(Faction.FactionRange)me.ranges().elementAt(r);
+                if(FR.high()>me.maximum()) me.setMaximum(FR.high());
+                if(FR.low()<me.minimum()) me.setMinimum(FR.low());
             }
-            if(me.minimum==Integer.MAX_VALUE) me.minimum=Integer.MIN_VALUE;
-            if(me.maximum==Integer.MIN_VALUE) me.maximum=Integer.MAX_VALUE;
-            if(me.maximum<me.minimum)
+            if(me.minimum()==Integer.MAX_VALUE) me.setMinimum(Integer.MIN_VALUE);
+            if(me.maximum()==Integer.MIN_VALUE) me.setMaximum(Integer.MAX_VALUE);
+            if(me.maximum()<me.minimum())
             {
-                int oldMin=me.minimum;
-                me.minimum=me.maximum;
-                me.maximum=oldMin;
+                int oldMin=me.minimum();
+                me.setMinimum(me.maximum());
+                me.setMaximum(oldMin);
             }
-            me.middle=me.minimum+(int)Math.round(Util.div(me.maximum-me.minimum,2.0));
-            me.difference=Util.abs(me.maximum-me.minimum);
+            me.setMiddle(me.minimum()+(int)Math.round(Util.div(me.maximum()-me.minimum(),2.0)));
+            me.setDifference(Util.abs(me.maximum()-me.minimum()));
 
 
 
@@ -5629,9 +5638,9 @@ public class BaseGenerics extends StdCommand
                 ok=true;
             }
         }
-        if((me.ID.length()>0)&&(Factions.getFaction(me.ID)!=null))
+        if((me.factionID().length()>0)&&(CMLib.factions().getFaction(me.factionID())!=null))
         {
-            Vector oldV=Resources.getFileLineVector(Resources.getFileResource(me.ID,true));
+            Vector oldV=Resources.getFileLineVector(Resources.getFileResource(me.factionID(),true));
             if(oldV.size()<10)
             {
 
@@ -5644,7 +5653,7 @@ public class BaseGenerics extends StdCommand
                 if(!(s.trim().startsWith("#")||s.trim().length()==0||(s.indexOf("=")<0)))
                 {
                     String tag=s.substring(0,s.indexOf("=")).trim().toUpperCase();
-                    int tagRef=Faction.isTag(tag);
+                    int tagRef=CMLib.factions().isFactionTag(tag);
                     if(tagRef>=0) defined[tagRef]=true;
                 }
             }
@@ -5677,14 +5686,14 @@ public class BaseGenerics extends StdCommand
                         for(;first>=0;first--)
                             if(!Character.isLetterOrDigit(s.charAt(first)))
                                 break;
-                        first=Faction.isTag(s.substring(first).trim().toUpperCase());
+                        first=CMLib.factions().isFactionTag(s.substring(first).trim().toUpperCase());
                         if(first>=0) lastCommented=first;
                     }
                 }
                 else
                 {
                     String tag=s.substring(0,s.indexOf("=")).trim().toUpperCase();
-                    int tagRef=Faction.isTag(tag);
+                    int tagRef=CMLib.factions().isFactionTag(tag);
                     if(tagRef<0)
                         buf.append(s+CR);
                     else
@@ -5697,10 +5706,10 @@ public class BaseGenerics extends StdCommand
             }
             if((lastCommented>=0)&&(!done[lastCommented]))
                 buf.append(me.getINIDef(Faction.ALL_TAGS[lastCommented],CR)+CR);
-            Resources.removeResource(me.ID);
-            Resources.submitResource(me.ID,buf);
-            if(!Resources.saveFileResource(me.ID))
-                mob.tell(getScr("BaseGenerics","factionfilereadonly",me.ID));
+            Resources.removeResource(me.factionID());
+            Resources.submitResource(me.factionID(),buf);
+            if(!Resources.saveFileResource(me.factionID()))
+                mob.tell(getScr("BaseGenerics","factionfilereadonly",me.factionID()));
         }
     }
 
@@ -5711,7 +5720,7 @@ public class BaseGenerics extends StdCommand
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
 		while(!ok)
 		{
@@ -5758,7 +5767,7 @@ public class BaseGenerics extends StdCommand
 	{
 		boolean ok=false;
 		int showFlag=-1;
-		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
 		while(!ok)
 		{
@@ -5778,7 +5787,7 @@ public class BaseGenerics extends StdCommand
 				    genPanelType(mob,(ShipComponent.ShipPanel)me,++showNumber,showFlag);
 			}
             if(me instanceof PackagedItems)
-                ((PackagedItems)me).setNumberOfItemsInPackage(EnglishParser.promptInteger(mob,((PackagedItems)me).numberOfItemsInPackage(),++showNumber,showFlag,getScr("BaseGenerics","numpackaged")));
+                ((PackagedItems)me).setNumberOfItemsInPackage(CMLib.english().promptInteger(mob,((PackagedItems)me).numberOfItemsInPackage(),++showNumber,showFlag,getScr("BaseGenerics","numpackaged")));
 			genGettable(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
@@ -5824,7 +5833,7 @@ public class BaseGenerics extends StdCommand
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
 		while(!ok)
 		{
@@ -5870,7 +5879,7 @@ public class BaseGenerics extends StdCommand
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
 		while(!ok)
 		{
@@ -5896,7 +5905,7 @@ public class BaseGenerics extends StdCommand
 			if(me instanceof Container)
 				genCapacity(mob,(Container)me,++showNumber,showFlag);
 			if(me instanceof Perfume)
-				((Perfume)me).setSmellList(EnglishParser.promptText(mob,((Perfume)me).getSmellList(),++showNumber,showFlag,getScr("BaseGenerics","smelllist")));
+				((Perfume)me).setSmellList(CMLib.english().promptText(mob,((Perfume)me).getSmellList(),++showNumber,showFlag,getScr("BaseGenerics","smelllist")));
 			genImage(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
@@ -5922,7 +5931,7 @@ public class BaseGenerics extends StdCommand
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
 		while(!ok)
 		{
@@ -5949,14 +5958,14 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
-	public static void modifyGenMap(MOB mob, com.planet_ink.coffee_mud.interfaces.Map me)
+	public static void modifyGenMap(MOB mob, com.planet_ink.coffee_mud.Items.interfaces.Map me)
 		throws IOException
 	{
 		if(mob.isMonster())
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
 		while(!ok)
 		{
@@ -6001,7 +6010,7 @@ public class BaseGenerics extends StdCommand
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
 		while(!ok)
 		{
@@ -6069,7 +6078,7 @@ public class BaseGenerics extends StdCommand
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
 		while(!ok)
 		{
@@ -6131,7 +6140,7 @@ public class BaseGenerics extends StdCommand
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
 		while(!ok)
 		{
@@ -6187,7 +6196,7 @@ public class BaseGenerics extends StdCommand
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
 		while(!ok)
 		{
@@ -6234,7 +6243,7 @@ public class BaseGenerics extends StdCommand
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
 		while(!ok)
 		{
@@ -6281,7 +6290,7 @@ public class BaseGenerics extends StdCommand
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
 		while(!ok)
 		{
@@ -6296,12 +6305,12 @@ public class BaseGenerics extends StdCommand
 			genRejuv(mob,me,++showNumber,showFlag);
 			genRace(mob,me,++showNumber,showFlag);
 			Faction F=null;
-			for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
+			for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
 			{
 			    F=(Faction)e.nextElement();
 			    if((!F.hasFaction(me))&&(F.findAutoDefault(me)!=Integer.MAX_VALUE))
-			        mob.addFaction(F.ID,F.findAutoDefault(me));
-			    if(F.showineditor)
+			        mob.addFaction(F.factionID(),F.findAutoDefault(me));
+			    if(F.showineditor())
 				    genSpecialFaction(mob,me,++showNumber,showFlag,F);
 			}
 			genGender(mob,me,++showNumber,showFlag);
@@ -6373,14 +6382,14 @@ public class BaseGenerics extends StdCommand
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
 		String oldName=me.Name();
 		while(!ok)
 		{
 			int showNumber=0;
 			genName(mob,me,++showNumber,showFlag);
-			while((!me.Name().equals(oldName))&&(CMClass.DBEngine().DBUserSearch(null,me.Name())))
+			while((!me.Name().equals(oldName))&&(CMLib.database().DBUserSearch(null,me.Name())))
 			{
 				mob.tell(getScr("BaseGenerics","namealused"));
 				genName(mob,me,showNumber,showFlag);
@@ -6393,12 +6402,12 @@ public class BaseGenerics extends StdCommand
 			genCharClass(mob,me,++showNumber,showFlag);
 			genCharStats(mob,me,++showNumber,showFlag);
 			Faction F=null;
-			for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
+			for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
 			{
 			    F=(Faction)e.nextElement();
 			    if((!F.hasFaction(me))&&(F.findAutoDefault(me)!=Integer.MAX_VALUE))
-			        mob.addFaction(F.ID,F.findAutoDefault(me));
-			    if(F.showineditor)
+			        mob.addFaction(F.factionID(),F.findAutoDefault(me));
+			    if(F.showineditor())
 				    genSpecialFaction(mob,me,++showNumber,showFlag,F);
 			}
 			genGender(mob,me,++showNumber,showFlag);
@@ -6410,9 +6419,9 @@ public class BaseGenerics extends StdCommand
 			genArmor(mob,me,++showNumber,showFlag);
 			genHitPoints(mob,me,++showNumber,showFlag);
 			genMoney(mob,me,++showNumber,showFlag);
-            me.setTrains(EnglishParser.promptInteger(mob,me.getTrains(),++showNumber,showFlag,getScr("BaseGenerics","trpoints")));
-            me.setPractices(EnglishParser.promptInteger(mob,me.getPractices(),++showNumber,showFlag,getScr("BaseGenerics","practicep")));
-            me.setQuestPoint(EnglishParser.promptInteger(mob,me.getQuestPoint(),++showNumber,showFlag,getScr("BaseGenerics","questpoints")));
+            me.setTrains(CMLib.english().promptInteger(mob,me.getTrains(),++showNumber,showFlag,getScr("BaseGenerics","trpoints")));
+            me.setPractices(CMLib.english().promptInteger(mob,me.getPractices(),++showNumber,showFlag,getScr("BaseGenerics","practicep")));
+            me.setQuestPoint(CMLib.english().promptInteger(mob,me.getQuestPoint(),++showNumber,showFlag,getScr("BaseGenerics","questpoints")));
 			genAbilities(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
@@ -6445,11 +6454,11 @@ public class BaseGenerics extends StdCommand
 				{
 					MOB fakeMe=(MOB)me.copyOf();
 					fakeMe.setName(oldName);
-					CMClass.DBEngine().DBDeleteMOB(fakeMe);
-					CMClass.DBEngine().DBCreateCharacter(me);
+					CMLib.database().DBDeleteMOB(fakeMe);
+					CMLib.database().DBCreateCharacter(me);
 				}
-				CMClass.DBEngine().DBUpdatePlayer(me);
-				CMClass.DBEngine().DBUpdateFollowers(me);
+				CMLib.database().DBUpdatePlayer(me);
+				CMLib.database().DBUpdateFollowers(me);
 			}
 		}
 	}
@@ -6464,7 +6473,7 @@ public class BaseGenerics extends StdCommand
 		MOB mme=(MOB)me;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
 		while(!ok)
 		{
@@ -6481,12 +6490,12 @@ public class BaseGenerics extends StdCommand
 			genHeight(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
 			Faction F=null;
-			for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
+			for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
 			{
 			    F=(Faction)e.nextElement();
 			    if((!F.hasFaction((MOB)me))&&(F.findAutoDefault((MOB)me)!=Integer.MAX_VALUE))
-			        mob.addFaction(F.ID,F.findAutoDefault((MOB)me));
-			    if(F.showineditor)
+			        mob.addFaction(F.factionID(),F.findAutoDefault((MOB)me));
+			    if(F.showineditor())
 				    genSpecialFaction(mob,(MOB)me,++showNumber,showFlag,F);
 			}
 			genGender(mob,mme,++showNumber,showFlag);
@@ -6516,12 +6525,12 @@ public class BaseGenerics extends StdCommand
 			else
             if(me instanceof PostOffice)
             {
-                ((PostOffice)me).setPostalChain(EnglishParser.promptText(mob,((PostOffice)me).postalChain(),++showNumber,showFlag,getScr("BaseGenerics","postalchainl")));
-                ((PostOffice)me).setFeeForNewBox(EnglishParser.promptDouble(mob,((PostOffice)me).feeForNewBox(),++showNumber,showFlag,getScr("BaseGenerics","feebox")));
-                ((PostOffice)me).setMinimumPostage(EnglishParser.promptDouble(mob,((PostOffice)me).minimumPostage(),++showNumber,showFlag,getScr("BaseGenerics","minpostcost")));
-                ((PostOffice)me).setPostagePerPound(EnglishParser.promptDouble(mob,((PostOffice)me).postagePerPound(),++showNumber,showFlag,getScr("BaseGenerics","poundcost")));
-                ((PostOffice)me).setHoldFeePerPound(EnglishParser.promptDouble(mob,((PostOffice)me).holdFeePerPound(),++showNumber,showFlag,getScr("BaseGenerics","feepound")));
-                ((PostOffice)me).setMaxMudMonthsHeld(EnglishParser.promptInteger(mob,((PostOffice)me).maxMudMonthsHeld(),++showNumber,showFlag,getScr("BaseGenerics","monthsmac")));
+                ((PostOffice)me).setPostalChain(CMLib.english().promptText(mob,((PostOffice)me).postalChain(),++showNumber,showFlag,getScr("BaseGenerics","postalchainl")));
+                ((PostOffice)me).setFeeForNewBox(CMLib.english().promptDouble(mob,((PostOffice)me).feeForNewBox(),++showNumber,showFlag,getScr("BaseGenerics","feebox")));
+                ((PostOffice)me).setMinimumPostage(CMLib.english().promptDouble(mob,((PostOffice)me).minimumPostage(),++showNumber,showFlag,getScr("BaseGenerics","minpostcost")));
+                ((PostOffice)me).setPostagePerPound(CMLib.english().promptDouble(mob,((PostOffice)me).postagePerPound(),++showNumber,showFlag,getScr("BaseGenerics","poundcost")));
+                ((PostOffice)me).setHoldFeePerPound(CMLib.english().promptDouble(mob,((PostOffice)me).holdFeePerPound(),++showNumber,showFlag,getScr("BaseGenerics","feepound")));
+                ((PostOffice)me).setMaxMudMonthsHeld(CMLib.english().promptInteger(mob,((PostOffice)me).maxMudMonthsHeld(),++showNumber,showFlag,getScr("BaseGenerics","monthsmac")));
             }
             else
 			{

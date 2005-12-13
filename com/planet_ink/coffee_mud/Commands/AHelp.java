@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -30,7 +41,7 @@ public class AHelp extends StdCommand
 		throws java.io.IOException
 	{
 		String helpStr=Util.combine(commands,1);
-		if(MUDHelp.getArcHelpFile().size()==0)
+		if(CMLib.help().getArcHelpFile().size()==0)
 		{
 			mob.tell(getScr("Ahelp","aerr"));
 			return false;
@@ -56,7 +67,7 @@ public class AHelp extends StdCommand
 					if(V.size()>0)
 					{
 					    theRest.append(getScr("Ahelp","Properties"));
-						theRest.append(CMLister.fourColumns(V));
+						theRest.append(CMLib.lister().fourColumns(V));
 					}
 
 					V.clear();
@@ -69,7 +80,7 @@ public class AHelp extends StdCommand
 					if(V.size()>0)
 					{
 					    theRest.append(getScr("Ahelp","Diseases"));
-						theRest.append(CMLister.fourColumns(V));
+						theRest.append(CMLib.lister().fourColumns(V));
 					}
 
 					V.clear();
@@ -82,7 +93,7 @@ public class AHelp extends StdCommand
 					if(V.size()>0)
 					{
 					    theRest.append(getScr("Ahelp","Poisons"));
-						theRest.append(CMLister.fourColumns(V));
+						theRest.append(CMLib.lister().fourColumns(V));
 					}
 
 					V.clear();
@@ -95,7 +106,7 @@ public class AHelp extends StdCommand
 					if(V.size()>0)
 					{
 					    theRest.append(getScr("Ahelp","SuperPowers"));
-						theRest.append(CMLister.fourColumns(V));
+						theRest.append(CMLib.lister().fourColumns(V));
 					}
 
 					V.clear();
@@ -108,7 +119,7 @@ public class AHelp extends StdCommand
 					if(V.size()>0)
 					{
 					    theRest.append(getScr("Ahelp","EDeeds"));
-						theRest.append(CMLister.fourColumns(V));
+						theRest.append(CMLib.lister().fourColumns(V));
 					}
 
 					V.clear();
@@ -120,7 +131,7 @@ public class AHelp extends StdCommand
 					if(V.size()>0)
 					{
 					    theRest.append(getScr("Ahelp","Behavior"));
-						theRest.append(CMLister.fourColumns(V));
+						theRest.append(CMLib.lister().fourColumns(V));
 					}
 					Resources.submitResource("arc_help.therest",theRest);
 				}
@@ -129,7 +140,7 @@ public class AHelp extends StdCommand
 			}
 		}
 		else
-			thisTag=MUDHelp.getHelpText(helpStr,MUDHelp.getArcHelpFile(),mob);
+			thisTag=CMLib.help().getHelpText(helpStr,CMLib.help().getArcHelpFile(),mob);
 		if(thisTag==null)
 		{
 			mob.tell(getScr("Ahelp","ahelp",helpStr));

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -114,7 +125,7 @@ public class LockSmith extends CraftingSkill
                                         ((Key)building).setKey(keyCode);
     								((Exit)workingOn).setKeyName(((Key)building).getKey());
                                 }
-    							CMClass.DBEngine().DBUpdateExits(mob.location());
+    							CMLib.database().DBUpdateExits(mob.location());
     							if((exit2!=null)
 							    &&(!boltlock)
 							    &&(exit2.hasADoor())
@@ -125,7 +136,7 @@ public class LockSmith extends CraftingSkill
     								exit2.setDoorsNLocks(true,false,true,!delock,!delock,!delock);
     								if(building instanceof Key)
     									exit2.setKeyName(((Key)building).getKey());
-    								CMClass.DBEngine().DBUpdateExits(room2);
+    								CMLib.database().DBUpdateExits(room2);
     							}
                             }
 						}
@@ -196,7 +207,7 @@ public class LockSmith extends CraftingSkill
 		else
 			workingOn=mob.location().getExitInDir(dir);
 
-		if((workingOn==null)||(!Sense.canBeSeenBy(workingOn,mob)))
+		if((workingOn==null)||(!CMLib.flags().canBeSeenBy(workingOn,mob)))
 		{
 			commonTell(mob,"You don't see a '"+recipeName+"' here.");
 			return false;
@@ -222,9 +233,9 @@ public class LockSmith extends CraftingSkill
             }
 
 			Room otherRoom=(dir>=0)?mob.location().getRoomInDir(dir):null;
-			if((!CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
+			if((!CMLib.utensils().doesOwnThisProperty(mob,mob.location()))
             &&((otherRoom==null)
-                ||(!CoffeeUtensils.doesOwnThisProperty(mob,otherRoom))))
+                ||(!CMLib.utensils().doesOwnThisProperty(mob,otherRoom))))
 			{
 				commonTell(mob,"You'll need the permission of the owner to do that.");
 				return false;
@@ -314,7 +325,7 @@ public class LockSmith extends CraftingSkill
 		messedUp=!profficiencyCheck(mob,profficiencyAddition*5,auto);
 		if(completion<8) completion=8;
 
-		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

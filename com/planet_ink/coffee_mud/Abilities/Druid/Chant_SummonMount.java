@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -99,7 +109,7 @@ public class Chant_SummonMount extends Chant
 			mob.tell("You must be further outdoors to summon a mount.");
 			return false;
 		}
-		fromDir=((Integer)choices.elementAt(Dice.roll(1,choices.size(),-1))).intValue();
+		fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
 		Room newRoom=mob.location().getRoomInDir(fromDir);
 		int opDir=Directions.getOpDirectionCode(fromDir);
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -110,22 +120,22 @@ public class Chant_SummonMount extends Chant
 		if((success)&&(newRoom!=null))
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) humbly for a mount.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) humbly for a mount.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, adjustedLevel(mob,asLevel));
 				target.bringToLife(newRoom,true);
-				BeanCounter.clearZeroMoney(target,null);
+				CMLib.beanCounter().clearZeroMoney(target,null);
 				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				if(target.isInCombat()) target.makePeace();
-				MUDTracker.move(target,opDir,false,false);
+				CMLib.tracking().move(target,opDir,false,false);
 				if(target.location()==mob.location())
 				{
 					if(target.isInCombat()) target.makePeace();
-					CommonMsgs.follow(target,mob,true);
+					CMLib.commands().follow(target,mob,true);
 					if(target.amFollowing()!=mob)
 						mob.tell(target.name()+" seems unwilling to follow you.");
 				}
@@ -147,7 +157,7 @@ public class Chant_SummonMount extends Chant
 		newMOB.baseEnvStats().setAbility(11);
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseEnvStats().setWeight(500);
-		Factions.setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Horse"));
 		newMOB.baseCharStats().setStat(CharStats.GENDER,'M');

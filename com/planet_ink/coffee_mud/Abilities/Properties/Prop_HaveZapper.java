@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -29,7 +40,7 @@ public class Prop_HaveZapper extends Property
 
 	public String accountForYourself()
 	{
-		return "Ownership restricted as follows: "+MUDZapper.zapperDesc(text());
+		return "Ownership restricted as follows: "+CMLib.masking().maskDesc(text());
 	}
 
     public boolean didHappen(int defaultPct)
@@ -37,7 +48,7 @@ public class Prop_HaveZapper extends Property
         int x=text().indexOf("%");
         if(x<0)
         {
-            if(Dice.rollPercentage()<=defaultPct)
+            if(CMLib.dice().rollPercentage()<=defaultPct)
                 return true;
             return false;
         }
@@ -51,7 +62,7 @@ public class Prop_HaveZapper extends Property
                 x=-1;
             mul=mul*10;
         }
-        if(Dice.rollPercentage()<=tot)
+        if(CMLib.dice().rollPercentage()<=tot)
             return true;
         return false;
     }
@@ -74,7 +85,7 @@ public class Prop_HaveZapper extends Property
 		case CMMsg.TYP_WIELD:
 			break;
 		case CMMsg.TYP_GET:
-			if((!MUDZapper.zapperCheck(text(),mob))&&(didHappen(100)))
+			if((!CMLib.masking().maskCheck(text(),mob))&&(didHappen(100)))
 			{
 				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and flies out of <S-HIS-HER> hands!"));
 				return false;
@@ -82,7 +93,7 @@ public class Prop_HaveZapper extends Property
 			break;
 		case CMMsg.TYP_EAT:
 		case CMMsg.TYP_DRINK:
-			if((!MUDZapper.zapperCheck(text(),mob))&&(didHappen(100)))
+			if((!CMLib.masking().maskCheck(text(),mob))&&(didHappen(100)))
 			{
 				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out <S-HIS-HER> mouth!"));
 				return false;

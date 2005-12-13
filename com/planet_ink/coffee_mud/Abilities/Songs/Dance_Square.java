@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -45,8 +56,8 @@ public class Dance_Square extends Dance
 				MOB M=(MOB)affected;
 				if(!cmd.toUpperCase().startsWith("FOL"))
 				{
-					if(Sense.canBeHeardBy(invoker(),M)
-					&&Sense.canBeSeenBy(invoker(),M)
+					if(CMLib.flags().canBeHeardBy(invoker(),M)
+					&&CMLib.flags().canBeSeenBy(invoker(),M)
 					&&(M.location()==invoker().location()))
 						M.enqueCommand(Util.parse(cmd),0);
 				}
@@ -61,7 +72,7 @@ public class Dance_Square extends Dance
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if((!auto)&&(!Sense.aliveAwakeMobile(mob,false)))
+		if((!auto)&&(!CMLib.flags().aliveAwakeMobile(mob,false)))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -72,7 +83,7 @@ public class Dance_Square extends Dance
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+danceOf()+" over again.^?";
 
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -92,13 +103,13 @@ public class Dance_Square extends Dance
 						affectType=affectType|CMMsg.MASK_MALICIOUS;
 					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 
-					if((Sense.canBeSeenBy(invoker,follower)
+					if((CMLib.flags().canBeSeenBy(invoker,follower)
 						&&(follower.fetchEffect(this.ID())==null)))
 					{
-						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
-						FullMsg msg3=msg2;
+						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
+						CMMsg msg3=msg2;
 						if((!friends.contains(follower))&&(follower!=mob))
-							msg2=new FullMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+							msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
 						if((mob.location().okMessage(mob,msg2))&&(mob.location().okMessage(mob,msg3)))
 						{
 							follower.location().send(follower,msg2);

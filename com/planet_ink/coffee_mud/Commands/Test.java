@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -82,11 +93,11 @@ public class Test extends StdCommand
         Item I=CMClass.getWeapon("Dagger");
         mob.curState().setHitPoints(mob.maxState().getHitPoints());
         int curHitPoints=mob.curState().getHitPoints();
-        MUDFight.postDamage(mob,mob,I,5,CMMsg.MSG_WEAPONATTACK,Weapon.TYPE_PIERCING,"<S-NAME> <DAMAGE> <T-NAME>");
+        CMLib.combat().postDamage(mob,mob,I,5,CMMsg.MSG_WEAPONATTACK,Weapon.TYPE_PIERCING,"<S-NAME> <DAMAGE> <T-NAME>");
         if(mob.curState().getHitPoints()<curHitPoints-3)
             return false;
         curHitPoints=mob.curState().getHitPoints();
-        Factions.setAlignmentOldRange(mob,0);
+        CMLib.factions().setAlignmentOldRange(mob,0);
         Ability A=CMClass.getAbility("Prayer_DispelEvil");
         A.invoke(mob,mob,true,1);
         if(mob.curState().getHitPoints()<curHitPoints)
@@ -202,7 +213,7 @@ public class Test extends StdCommand
                 int x=startDate.indexOf("-");
                 int mudmonth=Util.s_int(startDate.substring(0,x));
                 int mudday=Util.s_int(startDate.substring(x+1));
-                TimeClock C=(TimeClock)CMClass.getShared("DefaultTimeClock");
+                TimeClock C=(TimeClock)CMClass.getCommon("DefaultTimeClock");
                 TimeClock NOW=mob.location().getArea().getTimeObj();
                 C.setMonth(mudmonth);
                 C.setDayOfMonth(mudday);
@@ -222,7 +233,7 @@ public class Test extends StdCommand
             
             Ability A2=null;
             Item I=null;
-            FullMsg msg=null;
+            CMMsg msg=null;
             Command C=null;
             Item IS[]=new Item[2];
             Room R=mob.location();
@@ -441,9 +452,9 @@ public class Test extends StdCommand
                 A2.setMiscText((HereSpellCast).text());
                 R2.addNonUninvokableEffect(A2);
                 R2.recoverRoomStats();
-                MUDTracker.move(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
                 if(!effectCheck(mobs[0])){ mob.tell("Error7-1"); return false;}
-                MUDTracker.move(mobs[0],Directions.DOWN,false,false);
+                CMLib.tracking().move(mobs[0],Directions.DOWN,false,false);
                 if(effectCheck(mobs[0])){ mob.tell("Error7-2"); return false;}
                 
                 reset(mobs,backups,R,IS,R2);
@@ -453,12 +464,12 @@ public class Test extends StdCommand
                 A2.setMiscText((HereSpellCast).text());
                 R2.addNonUninvokableEffect(A2);
                 R2.recoverRoomStats();
-                MUDTracker.move(mobs[0],Directions.UP,false,false);
-                MUDTracker.move(mobs[1],Directions.UP,false,false);
+                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().move(mobs[1],Directions.UP,false,false);
                 if(!effectCheck(mobs[0])){ mob.tell("Error7-3"); return false;}
                 if(effectCheck(mobs[1])){ mob.tell("Error7-4"); return false;}
-                MUDTracker.move(mobs[0],Directions.DOWN,false,false);
-                MUDTracker.move(mobs[1],Directions.DOWN,false,false);
+                CMLib.tracking().move(mobs[0],Directions.DOWN,false,false);
+                CMLib.tracking().move(mobs[1],Directions.DOWN,false,false);
                 if(effectCheck(mobs[0])){ mob.tell("Error7-5"); return false;}
                 if(effectCheck(mobs[1])){ mob.tell("Error7-6"); return false;}
                 
@@ -469,12 +480,12 @@ public class Test extends StdCommand
                 A2.setMiscText((HereSpellCast).text());
                 R2.addNonUninvokableEffect(A2);
                 R2.recoverRoomStats();
-                MUDTracker.move(mobs[0],Directions.UP,false,false);
-                MUDTracker.move(mobs[1],Directions.UP,false,false);
+                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().move(mobs[1],Directions.UP,false,false);
                 if(!effectCheck(mobs[0])){ mob.tell("Error7-7"); return false;}
                 if(effectCheck(mobs[1])){ mob.tell("Error7-8"); return false;}
-                MUDTracker.move(mobs[0],Directions.DOWN,false,false);
-                MUDTracker.move(mobs[1],Directions.DOWN,false,false);
+                CMLib.tracking().move(mobs[0],Directions.DOWN,false,false);
+                CMLib.tracking().move(mobs[1],Directions.DOWN,false,false);
                 if(effectCheck(mobs[0])){ mob.tell("Error7-9"); return false;}
                 if(effectCheck(mobs[1])){ mob.tell("Error7-10"); return false;}
             }
@@ -487,9 +498,9 @@ public class Test extends StdCommand
                 mob.tell("Test#8-1: "+SpellAdder.accountForYourself());
                 R2.addNonUninvokableEffect(SpellAdder);
                 R2.recoverRoomStats();
-                MUDTracker.move(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
                 if(!effectCheck(mobs[0])){ mob.tell("Error8-1"); return false;}
-                MUDTracker.move(mobs[0],Directions.DOWN,false,false);
+                CMLib.tracking().move(mobs[0],Directions.DOWN,false,false);
                 if(effectCheck(mobs[0])){ mob.tell("Error8-2"); return false;}
             }
             if((what.equalsIgnoreCase("all_properties"))
@@ -560,7 +571,7 @@ public class Test extends StdCommand
                 if(effectCheck(mobs[0])){ mob.tell("Error11-2"); return false;}
                 for(int i=0;i<100;i++)
                 {
-                    MUDFight.postAttack(mobs[0],mobs[1],mobs[0].fetchWieldedItem());
+                    CMLib.combat().postAttack(mobs[0],mobs[1],mobs[0].fetchWieldedItem());
                     if(effectCheck(mobs[1]))
                         break;
                 }
@@ -575,7 +586,7 @@ public class Test extends StdCommand
                 if(effectCheck(mobs[0])){ mob.tell("Error11-5"); return false;}
                 for(int i=0;i<100;i++)
                 {
-                    MUDFight.postAttack(mobs[0],mobs[1],mobs[0].fetchWieldedItem());
+                    CMLib.combat().postAttack(mobs[0],mobs[1],mobs[0].fetchWieldedItem());
                     if(effectCheck(mobs[1]))
                         break;
                 }
@@ -590,7 +601,7 @@ public class Test extends StdCommand
                 if(effectCheck(mobs[0])){ mob.tell("Error11-8"); return false;}
                 for(int i=0;i<100;i++)
                 {
-                    MUDFight.postAttack(mobs[0],mobs[1],mobs[0].fetchWieldedItem());
+                    CMLib.combat().postAttack(mobs[0],mobs[1],mobs[0].fetchWieldedItem());
                     if(effectCheck(mobs[1]))
                         break;
                 }
@@ -605,8 +616,8 @@ public class Test extends StdCommand
                 HaveZapper.setMiscText("-RACE +Dwarf");
                 mob.tell("Test#12-1: "+HaveZapper.accountForYourself());
                 IS=giveTo(CMClass.getWeapon("Sword"),HaveZapper,mobs[0],mobs[1],2);
-                CommonMsgs.get(mobs[0],null,IS[0],false);
-                CommonMsgs.get(mobs[1],null,IS[1],false);
+                CMLib.commands().get(mobs[0],null,IS[0],false);
+                CMLib.commands().get(mobs[1],null,IS[1],false);
                 if(!mobs[0].isMine(IS[0])){ mob.tell("Error12-1"); return false;}
                 if(mobs[1].isMine(IS[1])){ mob.tell("Error12-2"); return false;}
             }
@@ -618,9 +629,9 @@ public class Test extends StdCommand
                 RideZapper.setMiscText("-RACE +Dwarf");
                 mob.tell("Test#13-1: "+RideZapper.accountForYourself());
                 IS=giveTo(CMClass.getItem("Boat"),RideZapper,mobs[0],mobs[1],3);
-                msg=new FullMsg(mobs[0],IS[0],null,CMMsg.MSG_MOUNT,"<S-NAME> mount(s) <T-NAMESELF>.");
+                msg=CMClass.getMsg(mobs[0],IS[0],null,CMMsg.MSG_MOUNT,"<S-NAME> mount(s) <T-NAMESELF>.");
                 if(R.okMessage(mobs[0],msg)) R.send(mobs[0],msg);
-                msg=new FullMsg(mobs[1],IS[1],null,CMMsg.MSG_MOUNT,"<S-NAME> mount(s) <T-NAMESELF>.");
+                msg=CMClass.getMsg(mobs[1],IS[1],null,CMMsg.MSG_MOUNT,"<S-NAME> mount(s) <T-NAMESELF>.");
                 if(R.okMessage(mobs[1],msg)) R.send(mobs[1],msg);
                 if(mobs[0].riding()!=IS[0]){ mob.tell("Error13-1"); return false;}
                 if(mobs[1].riding()==IS[1]){ mob.tell("Error13-2"); return false;}
@@ -633,9 +644,9 @@ public class Test extends StdCommand
                 WearZapper.setMiscText("-RACE +Dwarf");
                 mob.tell("Test#14-1: "+WearZapper.accountForYourself());
                 IS=giveTo(CMClass.getWeapon("Sword"),WearZapper,mobs[0],mobs[1],0);
-                msg=new FullMsg(mobs[0],IS[0],null,CMMsg.MSG_WIELD,"<S-NAME> wield(s) <T-NAMESELF>.");
+                msg=CMClass.getMsg(mobs[0],IS[0],null,CMMsg.MSG_WIELD,"<S-NAME> wield(s) <T-NAMESELF>.");
                 if(R.okMessage(mobs[0],msg)) R.send(mobs[0],msg);
-                msg=new FullMsg(mobs[1],IS[1],null,CMMsg.MSG_WIELD,"<S-NAME> wield(s) <T-NAMESELF>.");
+                msg=CMClass.getMsg(mobs[1],IS[1],null,CMMsg.MSG_WIELD,"<S-NAME> wield(s) <T-NAMESELF>.");
                 if(R.okMessage(mobs[1],msg)) R.send(mobs[1],msg);
                 if(IS[0].amWearingAt(Item.INVENTORY)){ mob.tell("Error14-1"); return false;}
                 if(!IS[1].amWearingAt(Item.INVENTORY)){ mob.tell("Error14-2"); return false;}
@@ -858,10 +869,10 @@ public class Test extends StdCommand
                 R2.addNonUninvokableEffect(A2);
                 R2.recoverRoomStats();
                 if(isAnyAdjusted(mobs[0])){ mob.tell("Error22-0"); return false;}
-                MUDTracker.move(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
                 R2.recoverRoomStats();
                 if(!isAllAdjusted(mobs[0])){ mob.tell("Error22-1"); return false;}
-                MUDTracker.move(mobs[0],Directions.DOWN,false,false);
+                CMLib.tracking().move(mobs[0],Directions.DOWN,false,false);
                 R2.recoverRoomStats();
                 if(isAnyAdjusted(mobs[0])){ mob.tell("Error22-2"); return false;}
                 
@@ -872,13 +883,13 @@ public class Test extends StdCommand
                 A2.setMiscText((HereAdjuster).text());
                 R2.addNonUninvokableEffect(A2);
                 R2.recoverRoomStats();
-                MUDTracker.move(mobs[0],Directions.UP,false,false);
-                MUDTracker.move(mobs[1],Directions.UP,false,false);
+                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().move(mobs[1],Directions.UP,false,false);
                 R2.recoverRoomStats();
                 if(!isAllAdjusted(mobs[0])){ mob.tell("Error22-3"); return false;}
                 if(isAnyAdjusted(mobs[1])){ mob.tell("Error22-4"); return false;}
-                MUDTracker.move(mobs[0],Directions.DOWN,false,false);
-                MUDTracker.move(mobs[1],Directions.DOWN,false,false);
+                CMLib.tracking().move(mobs[0],Directions.DOWN,false,false);
+                CMLib.tracking().move(mobs[1],Directions.DOWN,false,false);
                 R2.recoverRoomStats();
                 if(isAnyAdjusted(mobs[0])){ mob.tell("Error22-5"); return false;}
                 if(isAnyAdjusted(mobs[1])){ mob.tell("Error22-6"); return false;}
@@ -890,20 +901,20 @@ public class Test extends StdCommand
                 A2.setMiscText((HereAdjuster).text());
                 R2.addNonUninvokableEffect(A2);
                 R2.recoverRoomStats();
-                MUDTracker.move(mobs[0],Directions.UP,false,false);
-                MUDTracker.move(mobs[1],Directions.UP,false,false);
+                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().move(mobs[1],Directions.UP,false,false);
                 R2.recoverRoomStats();
                 if(!isAllAdjusted(mobs[0])){ mob.tell("Error22-7"); return false;}
                 if(isAnyAdjusted(mobs[1])){ mob.tell("Error22-8"); return false;}
-                MUDTracker.move(mobs[0],Directions.DOWN,false,false);
-                MUDTracker.move(mobs[1],Directions.DOWN,false,false);
+                CMLib.tracking().move(mobs[0],Directions.DOWN,false,false);
+                CMLib.tracking().move(mobs[1],Directions.DOWN,false,false);
                 R2.recoverRoomStats();
                 if(isAnyAdjusted(mobs[0])){ mob.tell("Error22-9"); return false;}
                 if(isAnyAdjusted(mobs[1])){ mob.tell("Error22-10"); return false;}
             }
             
             reset(mobs,backups,R,IS,R2);
-            CoffeeUtensils.clearTheRoom(R2);
+            CMLib.utensils().clearTheRoom(R2);
             R2.destroyRoom();
             R.rawDoors()[Directions.UP]=upRoom;
             R.rawExits()[Directions.UP]=upExit;

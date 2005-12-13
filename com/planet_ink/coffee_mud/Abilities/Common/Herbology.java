@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 
 import java.util.*;
@@ -54,7 +65,7 @@ public class Herbology extends CommonSkill
 				    Vector herbList=Resources.getFileLineVector(Resources.getFileResource("skills/herbology.txt",true));
 					String herb=null;
                     while((herbList.size()>2)&&((herb==null)||(herb.trim().length()==0)))
-                        herb=((String)herbList.elementAt(Dice.roll(1,herbList.size(),-1))).trim().toLowerCase();
+                        herb=((String)herbList.elementAt(CMLib.dice().roll(1,herbList.size(),-1))).trim().toLowerCase();
 					
 					if(found.rawSecretIdentity().length()>0)
 					{	
@@ -87,7 +98,7 @@ public class Herbology extends CommonSkill
 			return false;
 		}
 		Item target=mob.fetchCarried(null,Util.combine(commands,0));
-		if((target==null)||(!Sense.canBeSeenBy(target,mob)))
+		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			commonTell(mob,"You don't seem to have a '"+((String)commands.firstElement())+"'.");
 			return false;
@@ -112,7 +123,7 @@ public class Herbology extends CommonSkill
 		if(!profficiencyCheck(mob,0,auto)) messedUp=true;
 		int duration=10-(mob.envStats().level()/3);
 		if(duration<2) duration=2;
-		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stud(ys) "+target.name()+".");
+		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stud(ys) "+target.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

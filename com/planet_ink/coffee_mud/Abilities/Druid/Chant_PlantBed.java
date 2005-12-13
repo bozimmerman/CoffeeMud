@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -34,7 +45,7 @@ public class Chant_PlantBed extends Chant
 		super.unInvoke();
 		if(peaPod!=null)
 		{
-			Room R=CoffeeUtensils.roomLocation(peaPod);
+			Room R=CMLib.utensils().roomLocation(peaPod);
 			if(R!=null)
 				R.showHappens(CMMsg.MSG_OK_VISUAL,"A pea-pod shrivels up!");
 			Rideable RI=(Rideable)peaPod;
@@ -66,7 +77,7 @@ public class Chant_PlantBed extends Chant
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -80,7 +91,7 @@ public class Chant_PlantBed extends Chant
 				newItem.setMaterial(EnvResource.RESOURCE_HEMP);
 				newItem.baseEnvStats().setWeight(1000);
 				newItem.setBaseValue(0);
-				Sense.setGettable(newItem,false);
+				CMLib.flags().setGettable(newItem,false);
 				Ability A=CMClass.getAbility("Prop_RideResister");
 				A.setMiscText("disease poison");
 				newItem.addNonUninvokableEffect(A);

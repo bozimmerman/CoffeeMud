@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -184,9 +195,7 @@ public class Masonry extends CraftingSkill
 									M.setLocation(R);
 								}
 							}
-							CMClass.ThreadEngine().deleteTick(room,-1);
-							CMMap.delRoom(room);
-							CMMap.addRoom(R);
+							CMLib.threads().deleteTick(room,-1);
 							for(int d=0;d<R.rawDoors().length;d++)
 							{
 								if((R.rawDoors()[d]==null)
@@ -203,7 +212,7 @@ public class Masonry extends CraftingSkill
 							R.startItemRejuv();
 							try
 							{
-								for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+								for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 								{
 									Room R2=(Room)r.nextElement();
 									for(int d=0;d<R2.rawDoors().length;d++)
@@ -217,7 +226,7 @@ public class Masonry extends CraftingSkill
 						    }catch(NoSuchElementException e){}
 						    try
 						    {
-								for(Enumeration e=CMMap.players();e.hasMoreElements();)
+								for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
 								{
 									MOB M=(MOB)e.nextElement();
 									if(M.getStartRoom()==room)
@@ -230,7 +239,7 @@ public class Masonry extends CraftingSkill
 							if(doingCode==BUILD_POOL)
 							{
 								Room R2=CMClass.getLocale("UnderWater");
-								R2.setRoomID(CMMap.getOpenRoomID(R.getArea().ID()));
+								R2.setRoomID(CMLib.map().getOpenRoomID(R.getArea().ID()));
 								R2.setDisplayText("Under the water");
 								R2.setDescription("You are swimming around under the water.");
 								R2.setArea(R.getArea());
@@ -238,22 +247,22 @@ public class Masonry extends CraftingSkill
 								R2.rawExits()[Directions.UP]=CMClass.getExit("Open");
 								R.rawDoors()[Directions.DOWN]=R2;
 								R.rawExits()[Directions.DOWN]=CMClass.getExit("Open");
-								LandTitle title=CoffeeUtensils.getLandTitle(R);
-								if((title!=null)&&(CoffeeUtensils.getLandTitle(R2)==null))
+								LandTitle title=CMLib.utensils().getLandTitle(R);
+								if((title!=null)&&(CMLib.utensils().getLandTitle(R2)==null))
 								{
 									LandTitle A2=(LandTitle)title.newInstance();
 									A2.setLandPrice(title.landPrice());
 									R2.addNonUninvokableEffect((Ability)A2);
 									break;
 								}
-								CMClass.DBEngine().DBCreateRoom(R2,R2.ID());
-								CMClass.DBEngine().DBUpdateExits(R2);
+								CMLib.database().DBCreateRoom(R2,R2.ID());
+								CMLib.database().DBUpdateExits(R2);
 							}
 
-							R.getArea().clearMaps();
 							R.getArea().fillInAreaRoom(R);
-							CMClass.DBEngine().DBUpdateRoom(R);
-							CMClass.DBEngine().DBUpdateExits(R);
+							CMLib.database().DBUpdateRoom(R);
+							CMLib.database().DBUpdateExits(R);
+                            room.destroyRoom();
 						}
 						break;
 					case BUILD_PORTCULIS:
@@ -272,9 +281,9 @@ public class Masonry extends CraftingSkill
 							if(room.rawDoors()[dir]!=null)
 							{
 								room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=x2;
-								CMClass.DBEngine().DBUpdateExits(room.rawDoors()[dir]);
+								CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
 							}
-							CMClass.DBEngine().DBUpdateExits(room);
+							CMLib.database().DBUpdateExits(room);
 						}
 						break;
 					case BUILD_ARCH:
@@ -289,9 +298,9 @@ public class Masonry extends CraftingSkill
 							if(room.rawDoors()[dir]!=null)
 							{
 								room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=x2;
-								CMClass.DBEngine().DBUpdateExits(room.rawDoors()[dir]);
+								CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
 							}
-							CMClass.DBEngine().DBUpdateExits(room);
+							CMLib.database().DBUpdateExits(room);
 						}
 						break;
 					case BUILD_WALL:
@@ -300,15 +309,15 @@ public class Masonry extends CraftingSkill
 							if(room.rawDoors()[dir]!=null)
 							{
 								room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=null;
-								CMClass.DBEngine().DBUpdateExits(room.rawDoors()[dir]);
+								CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
 							}
-							CMClass.DBEngine().DBUpdateExits(room);
+							CMLib.database().DBUpdateExits(room);
 						}
 						break;
 					case BUILD_TITLE:
 						{
 							room.setDisplayText(designTitle);
-							CMClass.DBEngine().DBUpdateRoom(room);
+							CMLib.database().DBUpdateRoom(room);
 						}
 						break;
 					case BUILD_DESC:
@@ -322,12 +331,12 @@ public class Masonry extends CraftingSkill
 									room.rawExits()[workingOn]=E;
 								}
 								E.setDescription(designDescription);
-								CMClass.DBEngine().DBUpdateExits(room);
+								CMLib.database().DBUpdateExits(room);
 							}
 							else
 							{
 								room.setDescription(designDescription);
-								CMClass.DBEngine().DBUpdateRoom(room);
+								CMLib.database().DBUpdateRoom(room);
 							}
 						}
 						break;
@@ -350,7 +359,7 @@ public class Masonry extends CraftingSkill
 								}
 								Ability A=CMClass.getAbility("Prop_Crawlspace");
 								if(A!=null) E.addNonUninvokableEffect(A);
-								CMClass.DBEngine().DBUpdateExits(room);
+								CMLib.database().DBUpdateExits(room);
 							}
 						}
 						break;
@@ -370,11 +379,11 @@ public class Masonry extends CraftingSkill
 									Ability A=CMClass.getAbility("Prop_RoomView");
 									if(A!=null)
 									{
-										A.setMiscText(CMMap.getExtendedRoomID(R2));
+										A.setMiscText(CMLib.map().getExtendedRoomID(R2));
 										E.addNonUninvokableEffect(A);
 									}
 								}
-								CMClass.DBEngine().DBUpdateExits(room);
+								CMLib.database().DBUpdateExits(room);
 							}
 						}
 						break;
@@ -393,7 +402,7 @@ public class Masonry extends CraftingSkill
 										R2.rawDoors()[Directions.UP]=null;
 										R2.rawExits()[Directions.UP]=null;
 									}
-									CoffeeUtensils.obliterateRoom(R2);
+									CMLib.utensils().obliterateRoom(R2);
 									room.rawDoors()[Directions.DOWN]=null;
 									room.rawExits()[Directions.DOWN]=null;
 								}
@@ -427,9 +436,7 @@ public class Masonry extends CraftingSkill
 										M.setLocation(R);
 									}
 								}
-								CMClass.ThreadEngine().deleteTick(room,-1);
-								CMMap.delRoom(room);
-								CMMap.addRoom(R);
+								CMLib.threads().deleteTick(room,-1);
 								for(int d=0;d<R.rawDoors().length;d++)
 									R.rawDoors()[d]=room.rawDoors()[d];
 								for(int d=0;d<R.rawExits().length;d++)
@@ -437,7 +444,7 @@ public class Masonry extends CraftingSkill
 								R.startItemRejuv();
 								try
 								{
-									for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+									for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 									{
 										Room R3=(Room)r.nextElement();
 										for(int d=0;d<R3.rawDoors().length;d++)
@@ -449,10 +456,10 @@ public class Masonry extends CraftingSkill
 											}
 									}
 							    }catch(NoSuchElementException e){}
-								R.getArea().clearMaps();
 								R.getArea().fillInAreaRoom(R);
-								CMClass.DBEngine().DBUpdateRoom(R);
-								CMClass.DBEngine().DBUpdateExits(R);
+								CMLib.database().DBUpdateRoom(R);
+								CMLib.database().DBUpdateExits(R);
+                                room.destroyRoom();
 							}
 							else
 							{
@@ -460,9 +467,9 @@ public class Masonry extends CraftingSkill
 								if(room.rawDoors()[dir]!=null)
 								{
 									room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=CMClass.getExit("Open");
-									CMClass.DBEngine().DBUpdateExits(room.rawDoors()[dir]);
+									CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
 								}
-								CMClass.DBEngine().DBUpdateExits(room);
+								CMLib.database().DBUpdateExits(room);
 							}
 						}
 						break;
@@ -538,7 +545,7 @@ public class Masonry extends CraftingSkill
 			helping=true;
 			verb="helping "+targetMOB.name()+" with "+helpingAbility.verb;
 			startStr="<S-NAME> start(s) "+verb;
-			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr+".");
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr+".");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -596,7 +603,7 @@ public class Masonry extends CraftingSkill
         if(doingCode==BUILD_WALL)
         {
             Room nextRoom=mob.location().getRoomInDir(dir);
-            if((nextRoom!=null)&&(CoffeeUtensils.getLandTitle(nextRoom)==null))
+            if((nextRoom!=null)&&(CMLib.utensils().getLandTitle(nextRoom)==null))
             {
                 commonTell(mob,"You can not build a wall blocking off the main entrance!");
                 return false;
@@ -679,7 +686,7 @@ public class Masonry extends CraftingSkill
 			woodRequired=idata[0][FOUND_AMT];
 		}
 
-		boolean canBuild=CoffeeUtensils.doesOwnThisProperty(mob,mob.location());
+		boolean canBuild=CMLib.utensils().doesOwnThisProperty(mob,mob.location());
 		if(!canBuild)
 		{
 			if((dir>=0)
@@ -687,7 +694,7 @@ public class Masonry extends CraftingSkill
 			{
 				Room R=mob.location().getRoomInDir(dir);
 				if((R!=null)
-				&&(CoffeeUtensils.doesOwnThisProperty(mob,R)))
+				&&(CMLib.utensils().doesOwnThisProperty(mob,R)))
 					canBuild=true;
 			}
 		}
@@ -768,7 +775,7 @@ public class Masonry extends CraftingSkill
         playSound="stone.wav";
 		if(completion<15) completion=15;
 
-		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr+".");
+		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

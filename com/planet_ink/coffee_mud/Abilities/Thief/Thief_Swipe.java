@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -88,26 +99,26 @@ public class Thief_Swipe extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		String currency=BeanCounter.getCurrency(target);
+		String currency=CMLib.beanCounter().getCurrency(target);
 		int discoverChance=(target.charStats().getStat(CharStats.WISDOM)*5)-(levelDiff*3);
 		int times=timesPicked(target);
 		if(times>5) discoverChance-=(20*(times-5));
-		if(!Sense.canBeSeenBy(mob,target))
+		if(!CMLib.flags().canBeSeenBy(mob,target))
 			discoverChance+=50;
 		if(discoverChance>95) discoverChance=95;
 		if(discoverChance<5) discoverChance=5;
 
 		if(levelDiff>0)
-			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?5:15));
+			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?5:15));
 		else
-			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?1:2));
+			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?1:2));
 		boolean success=profficiencyCheck(mob,levelDiff,auto);
 
 		if(!success)
 		{
-			if(Dice.rollPercentage()>discoverChance)
+			if(CMLib.dice().rollPercentage()>discoverChance)
 			{
-				FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the swipe; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to pick your pocket and fails!",CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> tries to pick <T-NAME>'s pocket and fails!");
+				CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the swipe; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to pick your pocket and fails!",CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> tries to pick <T-NAME>'s pocket and fails!");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
@@ -120,11 +131,11 @@ public class Thief_Swipe extends ThiefSkill
 			if(levelDiff>0) pct=0.15;
 			if(levelDiff>5) pct=0.10;
 			if(levelDiff>10) pct=0.05;
-			double goldTaken=BeanCounter.getTotalAbsoluteNativeValue(target)*pct*Math.random();
-			if(goldTaken<new Integer(CMAble.qualifyingClassLevel(mob,this)).doubleValue())
-				goldTaken=new Integer(CMAble.qualifyingClassLevel(mob,this)).doubleValue();
-			if(goldTaken>BeanCounter.getTotalAbsoluteNativeValue(target)) goldTaken=BeanCounter.getTotalAbsoluteNativeValue(target);
-			String goldTakenStr=BeanCounter.nameCurrencyShort(target,goldTaken);
+			double goldTaken=CMLib.beanCounter().getTotalAbsoluteNativeValue(target)*pct*Math.random();
+			if(goldTaken<new Integer(CMLib.ableMapper().qualifyingClassLevel(mob,this)).doubleValue())
+				goldTaken=new Integer(CMLib.ableMapper().qualifyingClassLevel(mob,this)).doubleValue();
+			if(goldTaken>CMLib.beanCounter().getTotalAbsoluteNativeValue(target)) goldTaken=CMLib.beanCounter().getTotalAbsoluteNativeValue(target);
+			String goldTakenStr=CMLib.beanCounter().nameCurrencyShort(target,goldTaken);
 			
 			String str=null;
 			int code=CMMsg.MSG_THIEF_ACT;
@@ -140,7 +151,7 @@ public class Thief_Swipe extends ThiefSkill
 			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;
 			int hisCode=CMMsg.MSG_THIEF_ACT;
-			if(Dice.rollPercentage()<discoverChance)
+			if(CMLib.dice().rollPercentage()<discoverChance)
 				hisStr=null;
 			else
 			{
@@ -148,7 +159,7 @@ public class Thief_Swipe extends ThiefSkill
 				hisCode=hisCode|((target.mayIFight(mob))?CMMsg.MASK_MALICIOUS:0);
 			}
 
-			FullMsg msg=new FullMsg(mob,target,this,code,str,hisCode,hisStr,CMMsg.NO_EFFECT,null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,code,str,hisCode,hisStr,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -163,16 +174,16 @@ public class Thief_Swipe extends ThiefSkill
 				else
 				if(((hisStr==null)||mob.isMonster())
 				&&(!alreadyFighting)
-				&&(Dice.rollPercentage()>goldTaken))
+				&&(CMLib.dice().rollPercentage()>goldTaken))
 				{
 					if(target.getVictim()==mob)
 						target.makePeace();
 					if(mob.getVictim()==target)
 						mob.makePeace();
 				}
-				BeanCounter.addMoney(mob,currency,goldTaken);
+				CMLib.beanCounter().addMoney(mob,currency,goldTaken);
 				mob.recoverEnvStats();
-				BeanCounter.subtractMoney(target,currency,goldTaken);
+				CMLib.beanCounter().subtractMoney(target,currency,goldTaken);
 				target.recoverEnvStats();
 			}
 		}

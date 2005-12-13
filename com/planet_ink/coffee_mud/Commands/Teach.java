@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -37,7 +48,7 @@ public class Teach extends StdCommand
 
 
 		MOB student=mob.location().fetchInhabitant((String)commands.elementAt(0));
-		if((student==null)||((student!=null)&&(!Sense.canBeSeenBy(student,mob))))
+		if((student==null)||((student!=null)&&(!CMLib.flags().canBeSeenBy(student,mob))))
 		{
 			mob.tell(getScr("AbilityEvoker","teacherr2"));
 			return false;
@@ -68,10 +79,10 @@ public class Teach extends StdCommand
 		}
 		if((student.session()!=null)&&(!student.session().confirm(mob.Name()+" wants to teach you "+myAbility.name()+".  Is this Ok (y/N)?","N")))
 			return false;
-		FullMsg msg=new FullMsg(mob,student,null,CMMsg.MSG_SPEAK,null);
+		CMMsg msg=CMClass.getMsg(mob,student,null,CMMsg.MSG_SPEAK,null);
 		if(!mob.location().okMessage(mob,msg))
 			return false;
-		msg=new FullMsg(mob,student,null,CMMsg.MSG_TEACH,getScr("AbilityEvoker","teaches",myAbility.name()));
+		msg=CMClass.getMsg(mob,student,null,CMMsg.MSG_TEACH,getScr("AbilityEvoker","teaches",myAbility.name()));
 		if(!mob.location().okMessage(mob,msg))
 			return false;
 		myAbility.teach(mob,student);

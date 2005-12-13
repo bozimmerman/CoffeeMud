@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -32,8 +43,8 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		if(theRoom==null) return true;
 
 		if((theRoom.roomID().length()>0)
-		&&((CoffeeUtensils.getLandTitle(theRoom)==null)
-			||(CoffeeUtensils.getLandTitle(theRoom).landOwner().length()>0)))
+		&&((CMLib.utensils().getLandTitle(theRoom)==null)
+			||(CMLib.utensils().getLandTitle(theRoom).landOwner().length()>0)))
 			return false;
 
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -42,7 +53,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			if((R!=null)
 			   &&(R!=fromRoom)
 			   &&(R.roomID().length()>0)
-			   &&((CoffeeUtensils.getLandTitle(R)==null)||(CoffeeUtensils.getLandTitle(R).landOwner().length()>0)))
+			   &&((CMLib.utensils().getLandTitle(R)==null)||(CMLib.utensils().getLandTitle(R).landOwner().length()>0)))
 				return false;
 		}
 		return true;
@@ -69,7 +80,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					R.rawDoors()[d]=null;
 					R.rawExits()[d]=null;
 					updateExits=true;
-					CoffeeUtensils.obliterateRoom(R2);
+					CMLib.utensils().obliterateRoom(R2);
 				}
                 else
                 if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
@@ -84,7 +95,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
                         {
                             E.setKeyName("");
                             E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
-                            CMClass.DBEngine().DBUpdateExits(R2);
+                            CMLib.database().DBUpdateExits(R2);
                             R2.getArea().fillInAreaRoom(R2);
                         }
                     }
@@ -92,12 +103,12 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			}
 			if(!foundOne)
 			{
-				CoffeeUtensils.obliterateRoom(R);
+				CMLib.utensils().obliterateRoom(R);
 				return;
 			}
 			if(updateExits)
 			{
-				CMClass.DBEngine().DBUpdateExits(R);
+				CMLib.database().DBUpdateExits(R);
 				R.getArea().fillInAreaRoom(R);
 			}
 		}
@@ -110,10 +121,10 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				if(R2==null)
 				{
 					R2=CMClass.getLocale(CMClass.className(R));
-					R2.setRoomID(CMMap.getOpenRoomID(R.getArea().Name()));
+					R2.setRoomID(CMLib.map().getOpenRoomID(R.getArea().Name()));
 					R2.setArea(R.getArea());
-					LandTitle newTitle=CoffeeUtensils.getLandTitle(R);
-					if((newTitle!=null)&&(CoffeeUtensils.getLandTitle(R2)==null))
+					LandTitle newTitle=CMLib.utensils().getLandTitle(R);
+					if((newTitle!=null)&&(CMLib.utensils().getLandTitle(R2)==null))
 					{
 						newTitle=(LandTitle)((Ability)newTitle).copyOf();
 						newTitle.setLandOwner("");
@@ -126,16 +137,15 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					R2.rawExits()[Directions.getOpDirectionCode(d)]=CMClass.getExit("Open");
 					updateExits=true;
 
-					CMClass.DBEngine().DBCreateRoom(R2,CMClass.className(R2));
-					CMMap.addRoom(R2);
+					CMLib.database().DBCreateRoom(R2,CMClass.className(R2));
 					colorForSale(R2,newTitle.rentalProperty(),true);
 					R2.getArea().fillInAreaRoom(R2);
-					CMClass.DBEngine().DBUpdateExits(R2);
+					CMLib.database().DBUpdateExits(R2);
 				}
 			}
 			if(updateExits)
 			{
-				CMClass.DBEngine().DBUpdateExits(R);
+				CMLib.database().DBUpdateExits(R);
 				R.getArea().fillInAreaRoom(R);
 			}
 		}

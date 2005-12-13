@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -22,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_Behead extends StdAbility
+public class Fighter_Behead extends FighterSkill
 {
 	public String ID() { return "Fighter_Behead"; }
 	public String name(){ return "Behead";}
@@ -47,13 +58,13 @@ public class Fighter_Behead extends StdAbility
 		}
 	    
 		Behavior B=null;
-		if(mob.location()!=null) B=CoffeeUtensils.getLegalBehavior(mob.location());
+		if(mob.location()!=null) B=CMLib.utensils().getLegalBehavior(mob.location());
 		Vector warrants=new Vector();
 		if(B!=null)
 		{
 			warrants.addElement(new Integer(Law.MOD_GETWARRANTSOF));
 			warrants.addElement(target.Name());
-			if(!B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),target,warrants))
+			if(!B.modifyBehavior(CMLib.utensils().getLegalObject(mob.location()),target,warrants))
 				warrants.clear();
 		}
 		if(warrants.size()==0)
@@ -82,7 +93,7 @@ public class Fighter_Behead extends StdAbility
 				mob.tell("You are too far away to try that!");
 				return false;
 			}
-			if(!Sense.isBoundOrHeld(target))
+			if(!CMLib.flags().isBoundOrHeld(target))
 			{
 				mob.tell(target.charStats().HeShe()+" is not bound and would resist.");
 				return false;
@@ -97,18 +108,18 @@ public class Fighter_Behead extends StdAbility
 			levelDiff=levelDiff*3;
 		else
 			levelDiff=0;
-		boolean hit=(auto)||MUDFight.rollToHit(mob,target);
+		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		boolean success=profficiencyCheck(mob,0,auto)&&(hit);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				target.curState().setHitPoints(1);
 				Ability A2=target.fetchEffect("Injury");
 				if(A2!=null) A2.setMiscText(mob.Name()+"/head");
-				MUDFight.postDamage(mob,target,ww,Integer.MAX_VALUE/2,CMMsg.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"^F^<FIGHT^><S-NAME> rear(s) back and behead(s) <T-NAME>!^</FIGHT^>^?"+CommonStrings.msp("decap.wav",30));
+				CMLib.combat().postDamage(mob,target,ww,Integer.MAX_VALUE/2,CMMsg.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"^F^<FIGHT^><S-NAME> rear(s) back and behead(s) <T-NAME>!^</FIGHT^>^?"+CMProps.msp("decap.wav",30));
 				mob.location().recoverRoomStats();
 				Item limb=CMClass.getItem("GenLimb");
 				limb.setName(target.Name()+"`s head");

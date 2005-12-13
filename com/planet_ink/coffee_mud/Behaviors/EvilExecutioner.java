@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -38,7 +49,7 @@ public class EvilExecutioner  extends StdBehavior
     public boolean grantsAggressivenessTo(MOB M)
     {
         if(M==null) return false;
-        if(Sense.isBoundOrHeld(M)) return false;
+        if(CMLib.flags().isBoundOrHeld(M)) return false;
         if((!M.isMonster())&&(!doPlayers)) 
             return false;
         for(int b=0;b<M.numBehaviors();b++)
@@ -47,7 +58,7 @@ public class EvilExecutioner  extends StdBehavior
             if((B!=null)&&(B.grantsAggressivenessTo(M)))
                 return true;
         }
-        return ((Sense.isGood(M))||(M.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Paladin")));
+        return ((CMLib.flags().isGood(M))||(M.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Paladin")));
     }
 
     /** this method defines how this thing responds
@@ -70,7 +81,7 @@ public class EvilExecutioner  extends StdBehavior
             source.setFollowing(null);
             boolean yep=Aggressive.startFight(observer,source,true);
             if(yep)
-                CommonMsgs.say(observer,null,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!",false,false);
+                CMLib.commands().say(observer,null,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!",false,false);
             else
             if(oldFollowing!=null)
                 source.setFollowing(oldFollowing);

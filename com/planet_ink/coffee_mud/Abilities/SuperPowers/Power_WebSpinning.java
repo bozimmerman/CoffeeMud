@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.SuperPowers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -70,7 +81,7 @@ public class Power_WebSpinning extends SuperPower
 		    if(msg.target()==affected)
 		    {
 		        if(msg.targetMinor()==CMMsg.TYP_GET)
-		            msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),null,CMMsg.MSG_OK_VISUAL,"<T-NAME> is covered in sticky webbing!",null,null));
+		            msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.MSG_OK_VISUAL,"<T-NAME> is covered in sticky webbing!",null,null));
 		        else
 		        if((msg.targetMinor()==CMMsg.TYP_DROP)
 		        &&(((Item)affected).owner()==msg.source()))
@@ -107,7 +118,7 @@ public class Power_WebSpinning extends SuperPower
 		{
 			if(!mob.amDead())
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the web.");
-			CommonMsgs.stand(mob,true);
+			CMLib.commands().stand(mob,true);
 		}
 	}
 
@@ -127,14 +138,14 @@ public class Power_WebSpinning extends SuperPower
 
 		if(success)
 		{
-		    FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,(auto?"":"^S<S-NAME> shoot(s) and spin(s) a web at <T-NAMESELF>!^?")+CommonStrings.msp("web.wav",40));
+		    CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,(auto?"":"^S<S-NAME> shoot(s) and spin(s) a web at <T-NAMESELF>!^?")+CMProps.msp("web.wav",40));
 			if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					amountRemaining=160;
-					if(CoffeeUtensils.roomLocation(target)==mob.location())
+					if(CMLib.utensils().roomLocation(target)==mob.location())
 					{
 						success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
 						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> become(s) stuck in a mass of web!");

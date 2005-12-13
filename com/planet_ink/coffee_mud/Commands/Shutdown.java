@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -48,8 +59,8 @@ public class Shutdown extends StdCommand
 		&&(!mob.session().confirm("Are you fully aware of the consequences of this act (y/N)?","N")))
 			return false;
 		
-		for(int s=0;s<Sessions.size();s++)
-			Sessions.elementAt(s).colorOnlyPrintln("\n\r\n\r^x"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDNAME)+" is now shutting down!^.^?\n\r");
+		for(int s=0;s<CMLib.sessions().size();s++)
+			CMLib.sessions().elementAt(s).colorOnlyPrintln("\n\r\n\r^x"+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+" is now shutting down!^.^?\n\r");
 
 		if(keepItDown)
 			Log.errOut("CommandProcessor",mob.Name()+" starts system shutdown...");

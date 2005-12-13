@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Archon;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -110,16 +121,12 @@ public class Archon_Banish extends ArchonSkill
 		if(canBeUninvoked())
 			mob.tell("You are released from banishment!");
 		mob.getStartRoom().bringMobHere(mob,true);
-		if(prison!=null)
-		{
-			CMMap.delRoom(prison);
-			prison=null;
-		}
+		if(prison!=null){ prison.destroyRoom(); prison=null;}
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-	        Room myPrison = CMMap.getRoom(Util.combine(commands,1));
+	        Room myPrison = CMLib.map().getRoom(Util.combine(commands,1));
 		if(myPrison != null && !"".equals(myPrison.roomID()))
 			while(commands.size() > 1)
 			{
@@ -146,8 +153,8 @@ public class Archon_Banish extends ArchonSkill
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> is banished!":"^F<S-NAME> banish(es) <T-NAMESELF>.^?");
-            CMColor.fixSourceFightColor(msg);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> is banished!":"^F<S-NAME> banish(es) <T-NAMESELF>.^?");
+            CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE/2);
@@ -175,19 +182,17 @@ public class Archon_Banish extends ArchonSkill
                         Ability A2=CMClass.getAbility("Prop_HereSpellCast");
                         if(A2!=null) A2.setMiscText("Spell_Hungerless;Spell_Thirstless");
                         if(A2!=null) A.addNonUninvokableEffect(A2);
-						CMMap.addRoom(A.prison);
 					}
-					CommonMsgs.look(target,true);
+					CMLib.commands().look(target,true);
 					for(int d=0;d<Directions.DIRECTIONS_BASE.length;d++)
 					{
 						A.prison.rawExits()[Directions.DIRECTIONS_BASE[d]]=CMClass.getExit("Open");
 						A.prison.rawDoors()[Directions.DIRECTIONS_BASE[d]]=A.prison;
 					}
-					CMMap.addRoom(A.prison);
 					A.prison.bringMobHere(target,false);
 					mob.location().send(mob,msg);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> banished to " + A.prison.displayText() + "!");
-                    Log.sysOut("Banish",mob.name()+" banished "+target.name()+" to "+CMMap.getExtendedRoomID(A.prison)+".");
+                    Log.sysOut("Banish",mob.name()+" banished "+target.name()+" to "+CMLib.map().getExtendedRoomID(A.prison)+".");
 				}
 				
 			}

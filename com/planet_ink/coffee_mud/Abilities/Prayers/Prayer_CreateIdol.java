@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -79,7 +90,7 @@ public class Prayer_CreateIdol extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if((mob.getWorshipCharID().length()==0)||(CMMap.getDeity(mob.getWorshipCharID())==null))
+		if((mob.getWorshipCharID().length()==0)||(CMLib.map().getDeity(mob.getWorshipCharID())==null))
 		{
 			mob.tell("You must worship a god to use this prayer.");
 			return false;
@@ -101,7 +112,7 @@ public class Prayer_CreateIdol extends Prayer
 				if((V!=null)&&(V.size()>0))
 				for(int v=0;v<V.size()*10;v++)
 				{
-					int rsc=((Integer)V.elementAt(Dice.roll(1,V.size(),-1))).intValue();
+					int rsc=((Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1))).intValue();
 					if(((rsc&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK)
 						||((rsc&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)
 						||((rsc&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL))
@@ -117,7 +128,7 @@ public class Prayer_CreateIdol extends Prayer
 		boolean success=profficiencyCheck(mob,0,auto);
 		if((success)&&(material>0))
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for an idol.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for an idol.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -130,8 +141,8 @@ public class Prayer_CreateIdol extends Prayer
 				newItem.baseEnvStats().setWeight(10);
 				newItem.setMaterial(material);
 				newItem.recoverEnvStats();
-				Sense.setRemovable(newItem,false);
-				Sense.setDroppable(newItem,false);
+				CMLib.flags().setRemovable(newItem,false);
+				CMLib.flags().setDroppable(newItem,false);
 				newItem.addNonUninvokableEffect((Ability)copyOf());
 				mob.location().addItemRefuse(newItem,Item.REFUSE_RESOURCE);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" grows out of the ground.");

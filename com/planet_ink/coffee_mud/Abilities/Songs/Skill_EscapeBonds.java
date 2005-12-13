@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -36,7 +46,7 @@ public class Skill_EscapeBonds extends BardSkill
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
-		if(!Sense.isBound(mob))
+		if(!CMLib.flags().isBound(mob))
 			unInvoke();
 		else
 			stats.setStat(CharStats.STRENGTH,stats.getStat(CharStats.STRENGTH)+stats.getStat(CharStats.DEXTERITY)+mob.envStats().level());
@@ -44,7 +54,7 @@ public class Skill_EscapeBonds extends BardSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!Sense.isBound(mob))
+		if(!CMLib.flags().isBound(mob))
 		{
 			mob.tell("You don't seem to be bound by anything you can escape!");
 			return false;
@@ -57,7 +67,7 @@ public class Skill_EscapeBonds extends BardSkill
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_GENERAL:0),"<S-NAME> attempt(s) to escape <S-HIS-HER> bonds.");
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_GENERAL:0),"<S-NAME> attempt(s) to escape <S-HIS-HER> bonds.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.addEffect(this);

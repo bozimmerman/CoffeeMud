@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -81,8 +92,8 @@ public class Prayer_HolyDay extends Prayer
 		{
 			Behavior B=null;
 			if(msg.source().location()!=null) 
-			    B=CoffeeUtensils.getLegalBehavior(msg.source().location());
-			if((B!=null)&&(B).modifyBehavior(CoffeeUtensils.getLegalObject(msg.source().location()),msg.source(),new Integer(Law.MOD_CONTROLPOINTS)))
+			    B=CMLib.utensils().getLegalBehavior(msg.source().location());
+			if((B!=null)&&(B).modifyBehavior(CMLib.utensils().getLegalObject(msg.source().location()),msg.source(),new Integer(Law.MOD_CONTROLPOINTS)))
 			{
 				msg.source().tell("There can be no conquest on the holy day of "+godName+".");
 				return false;
@@ -122,7 +133,7 @@ public class Prayer_HolyDay extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for a holy day.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for a holy day.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -130,11 +141,11 @@ public class Prayer_HolyDay extends Prayer
 				{
 					Room R=(Room)e.nextElement();
 					godName=mob.getWorshipCharID();
-					if((godName.length()==0)||(CMMap.getDeity(godName)==null))
+					if((godName.length()==0)||(CMLib.map().getDeity(godName)==null))
 						godName="the gods";
 					R.showHappens(CMMsg.MSG_OK_VISUAL,"A holy day of "+godName+" has begun!");
 				}
-				beneficialAffect(mob,target,asLevel,CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY));
+				beneficialAffect(mob,target,asLevel,CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
 			}
 		}
 		else

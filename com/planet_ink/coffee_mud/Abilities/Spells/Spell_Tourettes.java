@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -65,15 +76,15 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 			plagueDown=4;
 			if(invoker==null) invoker=mob;
 
-			MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
+			MOB target=mob.location().fetchInhabitant(CMLib.dice().roll(1,mob.location().numInhabitants(),-1));
 			if((target!=null)
 			&&(!mob.amDead())
 			&&(target.charStats().getStat(CharStats.INTELLIGENCE)>5)
-			&&(Sense.canSpeak(mob))
-			&&(Sense.canBeHeardBy(target,mob)))
+			&&(CMLib.flags().canSpeak(mob))
+			&&(CMLib.flags().canBeHeardBy(target,mob)))
 			{
 				String say="Penis wrinkle!";
-				switch(Dice.roll(1,30,0))
+				switch(CMLib.dice().roll(1,30,0))
 				{
 				case 1: say="You are a very bad "+target.charStats().displayClassName()+"!"; break;
 				case 2: say="I think all "+target.charStats().raceName()+"s are stupid!"; break;
@@ -106,10 +117,10 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 				case 29: say="Ugly head!"; break;
 				case 30: say="Goop"+((target.charStats().getStat(CharStats.GENDER)=='M')?"boy":"girl")+"!";  break;
 				}
-				CommonMsgs.say(mob,target,say,false,false);
+				CMLib.commands().say(mob,target,say,false,false);
 				if((target!=invoker)&&(target!=mob)&&(target.fetchEffect(ID())==null))
 				{
-					if(Dice.rollPercentage()>target.charStats().getSave(CharStats.SAVE_DISEASE))
+					if(CMLib.dice().rollPercentage()>target.charStats().getSave(CharStats.SAVE_DISEASE))
 					{
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) different somehow...");
 						maliciousAffect(invoker,target,0,0,-1);
@@ -150,8 +161,8 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> incant(s) rudely to <T-NAMESELF>.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_GENERAL:0),null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> incant(s) rudely to <T-NAMESELF>.^?");
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_GENERAL:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

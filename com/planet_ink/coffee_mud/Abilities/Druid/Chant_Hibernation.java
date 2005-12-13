@@ -1,9 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.system.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -100,17 +109,17 @@ public class Chant_Hibernation extends Chant
 		if(!profficiencyCheck(null,0,false)) return true;
 
 		if((!mob.isInCombat())
-		&&(Sense.isSleeping(mob)))
+		&&(CMLib.flags().isSleeping(mob)))
 		{
 			roundsHibernating++;
 			double man=new Integer((mob.charStats().getStat(CharStats.INTELLIGENCE)+mob.charStats().getStat(CharStats.WISDOM))).doubleValue();
 			mob.curState().adjMana((int)Math.round((man*.1)+(mob.envStats().level()/2)),mob.maxState());
 			mob.curState().setHunger(oldState.getHunger());
 			mob.curState().setThirst(oldState.getThirst());
-			if(!Sense.isGolem(mob))
+			if(!CMLib.flags().isGolem(mob))
 			{
 				double hp=new Integer(mob.charStats().getStat(CharStats.CONSTITUTION)).doubleValue();
-				MUDFight.postHealing(mob,mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,(int)Math.round((hp*.1)+(mob.envStats().level()/2)),null);
+				CMLib.combat().postHealing(mob,mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,(int)Math.round((hp*.1)+(mob.envStats().level()/2)),null);
 			}
 			double move=new Integer(mob.charStats().getStat(CharStats.STRENGTH)).doubleValue();
 			mob.curState().adjMovement((int)Math.round((move*.1)+(mob.envStats().level()/2)),mob.maxState());
@@ -130,7 +139,7 @@ public class Chant_Hibernation extends Chant
 			mob.tell("You can't hibernate while in combat!");
 			return false;
 		}
-		if(!Sense.isSitting(mob))
+		if(!CMLib.flags().isSitting(mob))
 		{
 			mob.tell("You must be in a sitting, restful position to hibernate.");
 			return false;
@@ -144,7 +153,7 @@ public class Chant_Hibernation extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_SLEEP|CMMsg.MASK_MAGIC,"<S-NAME> begin(s) to hibernate...");
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_SLEEP|CMMsg.MASK_MAGIC,"<S-NAME> begin(s) to hibernate...");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

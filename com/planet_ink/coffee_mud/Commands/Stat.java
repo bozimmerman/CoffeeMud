@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -48,14 +59,14 @@ public class Stat extends BaseAbleLister
 
 	public boolean showTableStats(MOB mob, int days, int scale, String rest)
 	{
-		IQCalendar ENDQ=new IQCalendar(System.currentTimeMillis());
+		Calendar ENDQ=Calendar.getInstance();
 		ENDQ.add(Calendar.DATE,-days);
 		ENDQ.set(Calendar.HOUR_OF_DAY,23);
 		ENDQ.set(Calendar.MINUTE,59);
 		ENDQ.set(Calendar.SECOND,59);
 		ENDQ.set(Calendar.MILLISECOND,999);
-		CoffeeTables.update();
-		Vector V=CMClass.DBEngine().DBReadStats(ENDQ.getTimeInMillis()-1);
+		CMLib.coffeeTables().update();
+		Vector V=CMLib.database().DBReadStats(ENDQ.getTimeInMillis()-1);
 		if(V.size()==0){ mob.tell("No Stats?!"); return false;}
 		StringBuffer table=new StringBuffer("");
         boolean skillUse=false;
@@ -64,7 +75,7 @@ public class Stat extends BaseAbleLister
             skillUse=true;
             rest=rest.substring("SKILLUSE".length()).trim();
         }
-		table.append("^xStatistics since "+ENDQ.d2String()+":^.^N\n\r\n\r");
+		table.append("^xStatistics since "+CMLib.time().date2String(ENDQ.getTimeInMillis())+":^.^N\n\r\n\r");
         if(skillUse)
             table.append(Util.padRight("Skill",25)+Util.padRight("Uses",10)+Util.padRight("Skill",25)+Util.padRight("Uses",10)+"\n\r");
         else
@@ -80,7 +91,7 @@ public class Stat extends BaseAbleLister
     					 +Util.padRight("PURG",5)
     					 +Util.padRight("MARR",5)+"\n\r");
 		table.append(Util.repeat("-",75)+"\n\r");
-		IQCalendar C=new IQCalendar(System.currentTimeMillis());
+		Calendar C=Calendar.getInstance();
 		C.set(Calendar.HOUR_OF_DAY,23);
 		C.set(Calendar.MINUTE,59);
 		C.set(Calendar.SECOND,59);
@@ -95,11 +106,12 @@ public class Stat extends BaseAbleLister
             Vector allSkills=new Vector();
             for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
                 allSkills.addElement(e.nextElement());
-            long[][] totals=new long[allSkills.size()][CoffeeTables.STAT_TOTAL];
+            long[][] totals=new long[allSkills.size()][CoffeeTableRow.STAT_TOTAL];
             while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
             {
                 lastCur=curTime;
-                IQCalendar C2=new IQCalendar(curTime);
+                Calendar C2=Calendar.getInstance();
+                C.setTimeInMillis(curTime);
                 C2.add(Calendar.DATE,-(scale));
                 curTime=C2.getTimeInMillis();
                 C2.set(Calendar.HOUR_OF_DAY,23);
@@ -110,7 +122,7 @@ public class Stat extends BaseAbleLister
                 Vector set=new Vector();
                 for(int v=V.size()-1;v>=0;v--)
                 {
-                    CoffeeTables T=(CoffeeTables)V.elementAt(v);
+                    CoffeeTableRow T=(CoffeeTableRow)V.elementAt(v);
                     if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
                     {
                         set.addElement(T);
@@ -119,7 +131,7 @@ public class Stat extends BaseAbleLister
                 }
                 for(int s=0;s<set.size();s++)
                 {
-                    CoffeeTables T=(CoffeeTables)set.elementAt(s);
+                    CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
                     for(int x=0;x<allSkills.size();x++)
                         T.totalUp("A"+((Ability)allSkills.elementAt(x)).ID().toUpperCase(),totals[x]);
                 }
@@ -129,12 +141,12 @@ public class Stat extends BaseAbleLister
             for(int x=0;x<allSkills.size();x++)
             {
                 Ability A=(Ability)allSkills.elementAt(x);
-                if((CharC==null)||(CMAble.getQualifyingLevel(CharC.ID(),true,A.ID())<0))
+                if((CharC==null)||(CMLib.ableMapper().getQualifyingLevel(CharC.ID(),true,A.ID())<0))
                     continue;
-                if(totals[x][CoffeeTables.STAT_SKILLUSE]>0)
+                if(totals[x][CoffeeTableRow.STAT_SKILLUSE]>0)
                 {
                     table.append(Util.padRight(""+A.ID(),25)
-                            +Util.centerPreserve(""+totals[x][CoffeeTables.STAT_SKILLUSE],10));
+                            +Util.centerPreserve(""+totals[x][CoffeeTableRow.STAT_SKILLUSE],10));
                     if(cr) table.append("\n\r");
                     cr=!cr;
                 }
@@ -142,11 +154,11 @@ public class Stat extends BaseAbleLister
                 if(x<allSkills.size())
                 {
                     A=(Ability)allSkills.elementAt(x);
-                    if(totals[x][CoffeeTables.STAT_SKILLUSE]>0)
+                    if(totals[x][CoffeeTableRow.STAT_SKILLUSE]>0)
                     {
                         
                         table.append(Util.padRight(""+A.ID(),25)
-                                +Util.centerPreserve(""+totals[x][CoffeeTables.STAT_SKILLUSE],10));
+                                +Util.centerPreserve(""+totals[x][CoffeeTableRow.STAT_SKILLUSE],10));
                         if(cr) table.append("\n\r");
                         cr=!cr;
                     }
@@ -158,7 +170,8 @@ public class Stat extends BaseAbleLister
 		while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
 		{
 			lastCur=curTime;
-			IQCalendar C2=new IQCalendar(curTime);
+            Calendar C2=Calendar.getInstance();
+            C.setTimeInMillis(curTime);
 			C2.add(Calendar.DATE,-(scale));
 			curTime=C2.getTimeInMillis();
 			C2.set(Calendar.HOUR_OF_DAY,23);
@@ -169,39 +182,39 @@ public class Stat extends BaseAbleLister
 			Vector set=new Vector();
 			for(int v=V.size()-1;v>=0;v--)
 			{
-				CoffeeTables T=(CoffeeTables)V.elementAt(v);
+				CoffeeTableRow T=(CoffeeTableRow)V.elementAt(v);
 				if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
 				{
 					set.addElement(T);
 					V.removeElementAt(v);
 				}
 			}
-			long[] totals=new long[CoffeeTables.STAT_TOTAL];
+			long[] totals=new long[CoffeeTableRow.STAT_TOTAL];
 			long highestOnline=0;
 			long numberOnlineTotal=0;
 			long numberOnlineCounter=0;
 			for(int s=0;s<set.size();s++)
 			{
-				CoffeeTables T=(CoffeeTables)set.elementAt(s);
+				CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
 				T.totalUp(code,totals);
 				if(T.highestOnline()>highestOnline) highestOnline=T.highestOnline();
 				numberOnlineTotal+=T.numberOnlineTotal();
 				numberOnlineCounter+=T.numberOnlineCounter();
 			}
-			totals[CoffeeTables.STAT_TICKSONLINE]=(totals[CoffeeTables.STAT_TICKSONLINE]*MudHost.TICK_TIME)/scale/(1000*60);
+			totals[CoffeeTableRow.STAT_TICKSONLINE]=(totals[CoffeeTableRow.STAT_TICKSONLINE]*MudHost.TICK_TIME)/scale/(1000*60);
 			double avgOnline=(numberOnlineCounter>0)?Util.div(numberOnlineTotal,numberOnlineCounter):0.0;
 			avgOnline=Util.div(Math.round(avgOnline*10.0),10.0);
-			table.append(Util.padRight(new IQCalendar(curTime+1).d2DString()+" - "+new IQCalendar(lastCur-1).d2DString(),25)
-						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_LOGINS],5)
+			table.append(Util.padRight(CMLib.time().date2DateString(curTime+1)+" - "+CMLib.time().date2DateString(lastCur-1),25)
+						 +Util.centerPreserve(""+totals[CoffeeTableRow.STAT_LOGINS],5)
 						 +Util.centerPreserve(""+highestOnline,5)
 						 +Util.centerPreserve(""+avgOnline,5)
-						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_TICKSONLINE],5)
-						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_NEWPLAYERS],5)
-						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_DEATHS],5)
-						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_PKDEATHS],5)
-						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_CLASSCHANGE],5)
-						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_PURGES],5)
-						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_MARRIAGES],5)+"\n\r");
+						 +Util.centerPreserve(""+totals[CoffeeTableRow.STAT_TICKSONLINE],5)
+						 +Util.centerPreserve(""+totals[CoffeeTableRow.STAT_NEWPLAYERS],5)
+						 +Util.centerPreserve(""+totals[CoffeeTableRow.STAT_DEATHS],5)
+						 +Util.centerPreserve(""+totals[CoffeeTableRow.STAT_PKDEATHS],5)
+						 +Util.centerPreserve(""+totals[CoffeeTableRow.STAT_CLASSCHANGE],5)
+						 +Util.centerPreserve(""+totals[CoffeeTableRow.STAT_PURGES],5)
+						 +Util.centerPreserve(""+totals[CoffeeTableRow.STAT_MARRIAGES],5)+"\n\r");
             if(scale==0) break;
         }
 		mob.tell(table.toString());
@@ -292,7 +305,7 @@ public class Stat extends BaseAbleLister
 		{
 		    try
 		    {
-				Enumeration r=CMMap.rooms();
+				Enumeration r=CMLib.map().rooms();
 				for(;r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
@@ -309,7 +322,7 @@ public class Stat extends BaseAbleLister
 		    }catch(NoSuchElementException nse){}
 		}
 		if(target==null)
-			target=CMMap.getLoadPlayer(MOBname);
+			target=CMLib.map().getLoadPlayer(MOBname);
 		if(target==null)
 		{
 			mob.tell("You can't stat '"+MOBname+"'  -- he doesn't exist.");
@@ -326,17 +339,17 @@ public class Stat extends BaseAbleLister
 		}
 		else
 		if(ableTypes==-2)
-			str=CommonMsgs.getEquipment(mob,target);
+			str=CMLib.commands().getEquipment(mob,target);
 		else
 		if(ableTypes==-3)
-			str=CommonMsgs.getInventory(mob,target);
+			str=CMLib.commands().getInventory(mob,target);
 		else
 		if(ableTypes==-4)
 		{
 			str.append("Quests won:");
-			for(int q=0;q<Quests.numQuests();q++)
+			for(int q=0;q<CMLib.quests().numQuests();q++)
 			{
-				Quests Q=Quests.fetchQuest(q);
+				Quest Q=CMLib.quests().fetchQuest(q);
 				if(Q.wasWinner(target.Name()))
 					str.append(" "+Q.name()+",");
 			}
@@ -353,7 +366,7 @@ public class Stat extends BaseAbleLister
 			str.append("\n\r");
 		}
 		else
-			str=CommonMsgs.getScore(target);
+			str=CMLib.commands().getScore(target);
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(str.toString());
 		return false;

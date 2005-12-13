@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -80,37 +91,37 @@ public class Chant_FeelCold extends Chant
 			{
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_WINDY)
 				&&((room.getArea().climateType()&Area.CLIMASK_COLD)>0)
-				&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_COLD)))
-					MUDFight.postDamage(invoker,M,null,1,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The cold biting wind <DAMAGE> <T-NAME>!");
+				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_COLD)))
+					CMLib.combat().postDamage(invoker,M,null,1,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The cold biting wind <DAMAGE> <T-NAME>!");
 				else
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_WINTER_COLD)
-				&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_COLD)))
-					MUDFight.postDamage(invoker,M,null,1,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The biting cold <DAMAGE> <T-NAME>!");
+				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_COLD)))
+					CMLib.combat().postDamage(invoker,M,null,1,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The biting cold <DAMAGE> <T-NAME>!");
 				else
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_SNOW)
-				&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_COLD)))
+				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_COLD)))
 				{
-					int damage=Dice.roll(1,8,0);
-					MUDFight.postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The blistering snow <DAMAGE> <T-NAME>!");
+					int damage=CMLib.dice().roll(1,8,0);
+					CMLib.combat().postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The blistering snow <DAMAGE> <T-NAME>!");
 				}
 				else
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_BLIZZARD)
-				&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_COLD)))
+				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_COLD)))
 				{
-					int damage=Dice.roll(1,16,0);
-					MUDFight.postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The blizzard <DAMAGE> <T-NAME>!");
+					int damage=CMLib.dice().roll(1,16,0);
+					CMLib.combat().postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The blizzard <DAMAGE> <T-NAME>!");
 				}
 				else
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_HAIL)
-				&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_COLD)))
+				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_COLD)))
 				{
-					int damage=Dice.roll(1,8,0);
-					MUDFight.postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The biting hail <DAMAGE> <T-NAME>!");
+					int damage=CMLib.dice().roll(1,8,0);
+					CMLib.combat().postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The biting hail <DAMAGE> <T-NAME>!");
 				}
                 else
                     return true;
-                if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,M)))
-                    MUDFight.postAttack(M,invoker,M.fetchWieldedItem());
+                if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
+                    CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
 			}
 		}
 		return true;
@@ -137,7 +148,7 @@ public class Chant_FeelCold extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

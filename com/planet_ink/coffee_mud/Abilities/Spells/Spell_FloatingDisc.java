@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -51,7 +62,7 @@ public class Spell_FloatingDisc extends Spell
 				item.unWear();
 			}
 			if(wasntMine)
-				CommonMsgs.drop(mob,item,true,false);
+				CMLib.commands().drop(mob,item,true,false);
 			wasntMine=false;
 
 			item.recoverEnvStats();
@@ -79,7 +90,7 @@ public class Spell_FloatingDisc extends Spell
 		Environmental target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 		if((!(target instanceof Item))
-		||(!Sense.isGettable(((Item)target))))
+		||(!CMLib.flags().isGettable(((Item)target))))
 		{
 			mob.tell("You cannot float "+target.name()+"!");
 			return false;
@@ -110,7 +121,7 @@ public class Spell_FloatingDisc extends Spell
 					mob.addInventory((Item)target);
 				}
 				else
-				if(!CommonMsgs.get(mob,null,(Item)target,true))
+				if(!CMLib.commands().get(mob,null,(Item)target,true))
 				{
 					target.delEffect(this);
 					target.recoverEnvStats();
@@ -119,7 +130,7 @@ public class Spell_FloatingDisc extends Spell
 				target.delEffect(this);
 				target.recoverEnvStats();
 			}
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> begin(s) to float around.":"^S<S-NAME> invoke(s) a floating disc underneath <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> begin(s) to float around.":"^S<S-NAME> invoke(s) a floating disc underneath <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

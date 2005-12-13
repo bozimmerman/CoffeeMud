@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -45,7 +56,7 @@ public class Prop_EnterAdjuster extends Property
 		if((affected!=null)
 		&&(((msg.targetMinor()==CMMsg.TYP_ENTER)&&((affected instanceof Room)||(affected instanceof Exit)))
 		   ||((msg.targetMinor()==CMMsg.TYP_SIT)&&(affected==msg.target())&&(affected instanceof Rideable)))
-        &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,msg.source()))))
+        &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,msg.source()))))
         {
             MOB mob=msg.source();
             String[] strs=separateMask(text());
@@ -57,7 +68,7 @@ public class Prop_EnterAdjuster extends Property
                 if((thisOne.length()>0)&&(!thisOne.equals(";")))
                 {
                     Ability A=CMClass.getAbility(thisOne);
-                    if((A!=null)&&(!CMAble.classOnly("Archon",A.ID())))
+                    if((A!=null)&&(!CMLib.ableMapper().classOnly("Archon",A.ID())))
                     {
                         A=(Ability)A.copyOf();
                         theSpells.addElement(A);
@@ -127,9 +138,9 @@ public class Prop_EnterAdjuster extends Property
             mob.setTrains(mob.getTrains()+Util.getParmPlus(strs[0],"trai"));
             mob.setQuestPoint(mob.getQuestPoint()+Util.getParmPlus(strs[0],"ques"));
             int newMoney=Util.getParmPlus(strs[0],"coin");
-            if(newMoney!=0) BeanCounter.setMoney(mob,BeanCounter.getMoney(mob)+newMoney);
+            if(newMoney!=0) CMLib.beanCounter().setMoney(mob,CMLib.beanCounter().getMoney(mob)+newMoney);
             int exp=Util.getParmPlus(strs[0],"expe");
-            if(exp>0) MUDFight.postExperience(mob,null,null,exp,false);
+            if(exp>0) CMLib.combat().postExperience(mob,null,null,exp,false);
             mob.recoverCharStats();
             mob.recoverEnvStats();
             mob.recoverMaxState();

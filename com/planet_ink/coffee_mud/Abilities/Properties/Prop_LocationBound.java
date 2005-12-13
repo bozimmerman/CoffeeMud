@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -35,7 +46,7 @@ public class Prop_LocationBound extends Property
 	        ||((affected instanceof Item)&&(msg.source()==((Item)affected).owner()))))
 		{
 		    Room whereTo=(Room)msg.target();
-	        Room R=CoffeeUtensils.roomLocation(affected);
+	        Room R=CMLib.utensils().roomLocation(affected);
 	        if((whereTo==null)||(R==null))
 	            return true;
 	        
@@ -73,7 +84,7 @@ public class Prop_LocationBound extends Property
 		    }
 		    else
 		    {
-		        Room tR=CMMap.getRoom(text());
+		        Room tR=CMLib.map().getRoom(text());
 		        if((tR!=null)&&(whereTo!=tR))
 		        {
 			        if(R!=tR)
@@ -99,7 +110,7 @@ public class Prop_LocationBound extends Property
 			        }
 			        return false;
 		        }
-	            Area A=CMMap.getArea(text());
+	            Area A=CMLib.map().getArea(text());
 	            if((A!=null)&&(!A.inMetroArea(whereTo.getArea())))
 	            {
 			        if(!A.inMetroArea(R.getArea()))

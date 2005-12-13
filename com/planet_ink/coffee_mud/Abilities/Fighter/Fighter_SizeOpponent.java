@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -21,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_SizeOpponent extends StdAbility
+public class Fighter_SizeOpponent extends FighterSkill
 {
 	public String ID() { return "Fighter_SizeOpponent"; }
 	public String name(){ return "Opponent Knowledge";}
@@ -49,14 +59,14 @@ public class Fighter_SizeOpponent extends StdAbility
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_LOOK|(auto?CMMsg.MASK_GENERAL:0),"<S-NAME> size(s) up <T-NAMESELF> with <S-HIS-HER> eyes.");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_LOOK|(auto?CMMsg.MASK_GENERAL:0),"<S-NAME> size(s) up <T-NAMESELF> with <S-HIS-HER> eyes.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				int adjustedAttack=target.adjustedAttackBonus(mob);
 				int adjustedArmor=(-target.adjustedArmor())+50;
 				StringBuffer buf=new StringBuffer(target.name()+" looks to have "+target.curState().getHitPoints()+" out of "+target.maxState().getHitPoints()+" hit points.\n\r");
-				buf.append(target.charStats().HeShe()+" looks like "+target.charStats().heshe()+" is "+CommonStrings.fightingProwessStr(adjustedAttack)+" and is "+CommonStrings.armorStr(adjustedArmor)+".");
+				buf.append(target.charStats().HeShe()+" looks like "+target.charStats().heshe()+" is "+CMLib.combat().fightingProwessStr(adjustedAttack)+" and is "+CMLib.combat().armorStr(adjustedArmor)+".");
 				mob.tell(buf.toString());
 			}
 		}

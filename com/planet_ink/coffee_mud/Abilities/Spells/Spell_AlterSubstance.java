@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -65,7 +76,7 @@ public class Spell_AlterSubstance extends Spell
 		int newMaterial=-1;
 		for(int m=0;m<EnvResource.MATERIAL_DESCS.length;m++)
 		{
-			if(EnglishParser.containsString(EnvResource.MATERIAL_DESCS[m],material))
+			if(CMLib.english().containsString(EnvResource.MATERIAL_DESCS[m],material))
 			{
 				for(int r=0;r<EnvResource.RESOURCE_DESCS.length;r++)
 				{
@@ -88,7 +99,7 @@ public class Spell_AlterSubstance extends Spell
 		if(newMaterial<0)
 		for(int r=0;r<EnvResource.RESOURCE_DESCS.length;r++)
 		{
-			if(EnglishParser.containsString(EnvResource.RESOURCE_DESCS[r],material))
+			if(CMLib.english().containsString(EnvResource.RESOURCE_DESCS[r],material))
 			{
 				newMaterial=EnvResource.RESOURCE_DATA[r][0];
 				material=EnvResource.RESOURCE_DESCS[r];
@@ -108,7 +119,7 @@ public class Spell_AlterSubstance extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -46,10 +57,10 @@ public class ObjectGuardian extends StdBehavior
 			return true;
 
 		if((mob!=monster)
-		&&(((msg.sourceMinor()==CMMsg.TYP_THROW)&&(monster.location()==CoffeeUtensils.roomLocation(msg.target())))
+		&&(((msg.sourceMinor()==CMMsg.TYP_THROW)&&(monster.location()==CMLib.utensils().roomLocation(msg.target())))
 		||(msg.sourceMinor()==CMMsg.TYP_DROP)))
 		{
-			FullMsg msgs=new FullMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> drop that.");
+			CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> drop that.");
 			if(monster.location().okMessage(monster,msgs))
 			{
 				monster.location().send(monster,msgs);
@@ -59,7 +70,7 @@ public class ObjectGuardian extends StdBehavior
 		else
 		if((mob!=monster)&&(msg.sourceMinor()==CMMsg.TYP_GET))
 		{
-			FullMsg msgs=new FullMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> touch that.");
+			CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> touch that.");
 			if(monster.location().okMessage(monster,msgs))
 			{
 				monster.location().send(monster,msgs);

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -77,7 +88,7 @@ public class Chant_SummonTornado extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, null, this, affectType(auto), ((auto?"^JA":"^S<S-NAME> chant(s) to the sky and a")+" tornado touches down!^?")+CommonStrings.msp("tornado.wav",40));
+			CMMsg msg = CMClass.getMsg(mob, null, this, affectType(auto), ((auto?"^JA":"^S<S-NAME> chant(s) to the sky and a")+" tornado touches down!^?")+CMProps.msp("tornado.wav",40));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -85,7 +96,7 @@ public class Chant_SummonTornado extends Chant
 				for(int i=0;i<mob.location().numItems();i++)
 				{
 					Item I=mob.location().fetchItem(i);
-					if((I!=null)&&(I.container()==null)&&(Sense.isGettable(I)))
+					if((I!=null)&&(I.container()==null)&&(CMLib.flags().isGettable(I)))
 						stuff.addElement(I);
 				}
 				HashSet H=properTargets(mob,givenTarget,true);
@@ -107,9 +118,9 @@ public class Chant_SummonTornado extends Chant
 				else
 				while(stuff.size()>0)
 				{
-					Object O=stuff.elementAt(Dice.roll(1,stuff.size(),-1));
+					Object O=stuff.elementAt(CMLib.dice().roll(1,stuff.size(),-1));
 					stuff.removeElement(O);
-					Room R=(Room)availableRooms.elementAt(Dice.roll(1,availableRooms.size(),-1));
+					Room R=(Room)availableRooms.elementAt(CMLib.dice().roll(1,availableRooms.size(),-1));
 					if(O instanceof Item)
 					{
 						Item I=(Item)O;
@@ -161,9 +172,9 @@ public class Chant_SummonTornado extends Chant
 					if(O instanceof MOB)
 					{
 						MOB M=(MOB)O;
-						msg=new FullMsg(M,mob.location(),null,CMMsg.MSG_LEAVE|CMMsg.MASK_GENERAL,CMMsg.MSG_LEAVE,CMMsg.NO_EFFECT,null);
-						FullMsg msg2=new FullMsg(mob,M,this,affectType(auto),null);
-						FullMsg msg3=new FullMsg(mob,M,this,verbalCastMask(auto)|CMMsg.TYP_JUSTICE,null);
+						msg=CMClass.getMsg(M,mob.location(),null,CMMsg.MSG_LEAVE|CMMsg.MASK_GENERAL,CMMsg.MSG_LEAVE,CMMsg.NO_EFFECT,null);
+						CMMsg msg2=CMClass.getMsg(mob,M,this,affectType(auto),null);
+						CMMsg msg3=CMClass.getMsg(mob,M,this,verbalCastMask(auto)|CMMsg.TYP_JUSTICE,null);
 						if((mob.location().okMessage(M,msg))
 						&&(mob.location().okMessage(mob,msg2))
 						&&(mob.location().okMessage(mob,msg3)))
@@ -178,10 +189,10 @@ public class Chant_SummonTornado extends Chant
 								R.bringMobHere(M,false);
 							}
 							int maxDie=(int)Math.round(Util.div(adjustedLevel(mob,asLevel),2.0));
-							int damage = Dice.roll(maxDie,7,1);
+							int damage = CMLib.dice().roll(maxDie,7,1);
 							if((msg.value()>0)||(msg2.value()>0))
 								damage = (int)Math.round(Util.div(damage,2.0));
-							MUDFight.postDamage(mob,M,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_WEAPONATTACK,Weapon.TYPE_BASHING,"The tornado <DAMAGE> <T-NAME>!");
+							CMLib.combat().postDamage(mob,M,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_WEAPONATTACK,Weapon.TYPE_BASHING,"The tornado <DAMAGE> <T-NAME>!");
 							//if(R!=mob.location()) M.tell("Wait a minute! Where are you?");
 						}
 					}

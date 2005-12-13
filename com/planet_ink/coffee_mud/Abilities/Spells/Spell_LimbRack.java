@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.Abilities.Misc.Amputation;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -44,7 +54,7 @@ public class Spell_LimbRack extends Spell
 	        String str=(text().equalsIgnoreCase("ARMSONLY"))?
 		        "<S-NAME> <S-IS-ARE> having <S-HIS-HER> arms pulled from <S-HIS-HER> body!"
 		        :"<S-NAME> <S-IS-ARE> having <S-HIS-HER> arms and legs pulled from <S-HIS-HER> body!";
-	        MUDFight.postDamage(invoker,mob,this,mob.maxState().getHitPoints()/10,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_BURSTING,str);
+	        CMLib.combat().postDamage(invoker,mob,this,mob.maxState().getHitPoints()/10,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_BURSTING,str);
 	    }
 	    
 	    return true;
@@ -64,10 +74,10 @@ public class Spell_LimbRack extends Spell
 			        mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> has <S-HIS-HER> arms TORN OFF!");
 		        else
 			        mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> has <S-HIS-HER> arms and legs TORN OFF!");
-                Amputation A=(Amputation)mob.fetchEffect("Amputation");
-                if(A==null) A=new Amputation();
+                Amputator A=(Amputator)mob.fetchEffect("Amputation");
+                if(A==null) A=(Amputator)CMClass.getAbility("Amputation");
                 for(int i=0;i<limbsToRemove.size();i++)
-                    Amputation.amputate(mob,A,(String)limbsToRemove.elementAt(i));
+                    A.amputate(mob,A,(String)limbsToRemove.elementAt(i));
                 if(mob.fetchEffect(A.ID())==null)
                     mob.addNonUninvokableEffect(A);
 		    }
@@ -81,8 +91,8 @@ public class Spell_LimbRack extends Spell
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		Amputation A=(Amputation)target.fetchEffect("Amputation");
-		if(A==null)	A=new Amputation();
+		Amputator A=(Amputator)target.fetchEffect("Amputation");
+		if(A==null)	A=(Amputator)CMClass.getAbility("Amputation");
 		Vector remainingLimbList=A.remainingLimbNameSet(target);
 		for(int i=remainingLimbList.size()-1;i>=0;i--)
 		{
@@ -116,7 +126,7 @@ public class Spell_LimbRack extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"!":"^S<S-NAME> invoke(s) a stretching spell upon <T-NAMESELF>"));
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),(auto?"!":"^S<S-NAME> invoke(s) a stretching spell upon <T-NAMESELF>"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

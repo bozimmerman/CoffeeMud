@@ -1,8 +1,20 @@
 package com.planet_ink.coffee_mud.Abilities.Misc;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -36,7 +48,7 @@ public class Addictions extends StdAbility
     public boolean canBeUninvoked(){return false;}
     private Item puffCredit=null;
     
-    private boolean craving(){return (System.currentTimeMillis()-lastFix)>IQCalendar.MILI_HOUR;}
+    private boolean craving(){return (System.currentTimeMillis()-lastFix)>TimeManager.MILI_HOUR;}
     
     public boolean tick(Tickable ticking, int tickID)
     {
@@ -44,10 +56,10 @@ public class Addictions extends StdAbility
             return false;
         
         if((craving())
-        &&(Dice.rollPercentage()<=((System.currentTimeMillis()-lastFix)/IQCalendar.MILI_HOUR))
+        &&(CMLib.dice().rollPercentage()<=((System.currentTimeMillis()-lastFix)/TimeManager.MILI_HOUR))
         &&(ticking instanceof MOB))
         {
-            if((System.currentTimeMillis()-lastFix)>IQCalendar.MILI_DAY)
+            if((System.currentTimeMillis()-lastFix)>TimeManager.MILI_DAY)
             {
                 ((MOB)ticking).tell("You've managed to kick your addiction.");
                 return false;
@@ -57,7 +69,7 @@ public class Addictions extends StdAbility
                 ||puffCredit.amWearingAt(Item.INVENTORY)
                 ||puffCredit.owner()!=(MOB)affected))
                 puffCredit=null;
-            switch(Dice.roll(1,7,0))
+            switch(CMLib.dice().roll(1,7,0))
             {
             case 1: ((MOB)ticking).tell("Man, you could sure use some "+text()+"."); break;
             case 2: ((MOB)ticking).tell("Wouldn't some "+text()+" be great right about now?"); break;
@@ -82,7 +94,7 @@ public class Addictions extends StdAbility
             &&(msg.target() instanceof Container)
             &&(Util.bset(((Item)msg.target()).rawProperLocationBitmap(),Item.ON_MOUTH))
             &&(((Container)msg.target()).getContents().size()>0)
-            &&(EnglishParser.containsString(((Environmental)((Container)msg.target()).getContents().firstElement()).Name(),text())))
+            &&(CMLib.english().containsString(((Environmental)((Container)msg.target()).getContents().firstElement()).Name(),text())))
                 puffCredit=(Item)msg.target();
         }
         return true;
@@ -97,7 +109,7 @@ public class Addictions extends StdAbility
                 if(((msg.targetMinor()==CMMsg.TYP_EAT)||(msg.targetMinor()==CMMsg.TYP_DRINK))
                 &&((msg.target() instanceof Food)||(msg.target() instanceof Drink))
                 &&(msg.target() instanceof Item)
-                &&(EnglishParser.containsString(msg.target().Name(),text())))
+                &&(CMLib.english().containsString(msg.target().Name(),text())))
                     lastFix=System.currentTimeMillis();
                 if((msg.amISource((MOB)affected))
                 &&(msg.targetMinor()==CMMsg.TYP_HANDS)
@@ -106,7 +118,7 @@ public class Addictions extends StdAbility
                 &&(msg.target()==msg.tool())
                 &&(((Light)msg.target()).amWearingAt(Item.ON_MOUTH))
                 &&(((Light)msg.target()).isLit())
-                &&((puffCredit!=null)||EnglishParser.containsString(msg.target().Name(),text())))
+                &&((puffCredit!=null)||CMLib.english().containsString(msg.target().Name(),text())))
                     lastFix=System.currentTimeMillis();
             }
         }
@@ -134,7 +146,7 @@ public class Addictions extends StdAbility
                 addiction=addiction.substring(3);
             if(addiction.toUpperCase().startsWith("SOME "))
                 addiction=addiction.substring(5);
-            FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"");
+            CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"");
             if(mob.location()!=null)
             {
                 if(mob.location().okMessage(mob,msg))

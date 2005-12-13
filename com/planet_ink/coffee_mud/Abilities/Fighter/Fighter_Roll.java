@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -21,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_Roll extends StdAbility
+public class Fighter_Roll extends FighterSkill
 {
 	int regain=-1;
 	public String ID() { return "Fighter_Roll"; }
@@ -46,7 +56,7 @@ public class Fighter_Roll extends StdAbility
 
 		MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
-		&&(Sense.aliveAwakeMobile(mob,true))
+		&&(CMLib.flags().aliveAwakeMobile(mob,true))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0)
 		&&(msg.tool()!=null)
@@ -82,7 +92,7 @@ public class Fighter_Roll extends StdAbility
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(regain>0))
 		{
-			msg.addTrailerMsg(new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> roll(s) with the hit."));
+			msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> roll(s) with the hit."));
 			helpProfficiency(mob);
 			regain=-1;
 		}

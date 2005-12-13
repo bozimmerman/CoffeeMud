@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -170,17 +181,17 @@ public class AnimalTraining extends CommonSkill
 		taming=null;
 		if(M!=null)
 		{
-			if(!Sense.canBeSeenBy(M,mob))
+			if(!CMLib.flags().canBeSeenBy(M,mob))
 			{
 				commonTell(mob,"You don't see anyone called '"+str+"' here.");
 				return false;
 			}
-			if((!M.isMonster())||(!Sense.isAnimalIntelligence(M)))
+			if((!M.isMonster())||(!CMLib.flags().isAnimalIntelligence(M)))
 			{
 				commonTell(mob,"You can't train "+M.name()+".");
 				return false;
 			}
-			if((Sense.canMove(M))&&(!Sense.isBoundOrHeld(M)))
+			if((CMLib.flags().canMove(M))&&(!CMLib.flags().isBoundOrHeld(M)))
 			{
 				commonTell(mob,M.name()+" doesn't seem willing to cooperate.");
 				return false;
@@ -216,7 +227,7 @@ public class AnimalTraining extends CommonSkill
 				return false;
 			}
 			taming=mob.location().fetchItem(cage,Util.combine(commands,0));
-			if((taming==null)||(!Sense.canBeSeenBy(taming,mob))||(!(taming instanceof CagedAnimal)))
+			if((taming==null)||(!CMLib.flags().canBeSeenBy(taming,mob))||(!(taming instanceof CagedAnimal)))
 			{
 				commonTell(mob,"You don't see any creatures in "+cage.name()+" called '"+Util.combine(commands,0)+"'.");
 				return false;
@@ -237,7 +248,7 @@ public class AnimalTraining extends CommonSkill
 		int duration=35+taming.envStats().level()-mob.envStats().level();
 		if(duration<10) duration=10;
 		verb="training "+M.name();
-		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) training "+M.name()+".");
+		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) training "+M.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

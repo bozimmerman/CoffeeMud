@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -71,12 +82,12 @@ public class Follower extends ActiveTicker
 
 			if((direction<0)
 			&&(msg.amITarget(((MOB)affecting).location()))
-			&&(Sense.canBeSeenBy(mob,(MOB)affecting))
+			&&(CMLib.flags().canBeSeenBy(mob,(MOB)affecting))
 			&&(msg.othersMessage()!=null)
 			&&((msg.targetMinor()==CMMsg.TYP_LEAVE)
 			 ||(msg.targetMinor()==CMMsg.TYP_FLEE))
-			&&(MUDZapper.zapperCheck(getParms(),mob))
-			&&(Dice.rollPercentage()<chance))
+			&&(CMLib.masking().maskCheck(getParms(),mob))
+			&&(CMLib.dice().rollPercentage()<chance))
 			{
 				String directionWent=msg.othersMessage();
 				int x=directionWent.lastIndexOf(" ");
@@ -106,7 +117,7 @@ public class Follower extends ActiveTicker
 				&&(M!=ticking)
 				&&(!CMSecurity.isAllowed(M,room,"CMDMOBS"))
 				&&(!CMSecurity.isAllowed(M,room,"CMDROOMS"))
-				&&(MUDZapper.zapperCheck(getParms(),M)))
+				&&(CMLib.masking().maskCheck(getParms(),M)))
 					return M;
 			}
 		}
@@ -133,19 +144,19 @@ public class Follower extends ActiveTicker
 		
 		if((ticking instanceof Item)
 		&&((lastOwner==null)
-		   ||((!inventory)&&(!Sense.isInTheGame(lastOwner,false)))))
+		   ||((!inventory)&&(!CMLib.flags().isInTheGame(lastOwner,false)))))
 		{
 			Item I=(Item)ticking;
 			if((I.owner()!=null)
 			&&(I.owner() instanceof MOB)
-			&&(MUDZapper.zapperCheck(getParms(),I.owner()))
+			&&(CMLib.masking().maskCheck(getParms(),I.owner()))
 			&&(!CMSecurity.isAllowed((MOB)I.owner(),((MOB)I.owner()).location(),"CMDMOBS"))
 			&&(!CMSecurity.isAllowed((MOB)I.owner(),((MOB)I.owner()).location(),"CMDROOMS")))
 				lastOwner=(MOB)I.owner();
 			else
 			if(!inventory)
 			{
-				MOB M=pickRandomMOBHere(I,CoffeeUtensils.roomLocation(I));
+				MOB M=pickRandomMOBHere(I,CMLib.utensils().roomLocation(I));
 				if(M!=null) lastOwner=M;
 			}
 		}
@@ -167,7 +178,7 @@ public class Follower extends ActiveTicker
 				{
 					MOB M=pickRandomMOBHere(mob,room);
 					if(M!=null)
-						CommonMsgs.follow(mob,M,false);
+						CMLib.commands().follow(mob,M,false);
 				}
 			}
 			else
@@ -198,7 +209,7 @@ public class Follower extends ActiveTicker
 						move=false;
 				}
 				if(move)
-					MUDTracker.move(mob,direction,false,false);
+					CMLib.tracking().move(mob,direction,false,false);
 				direction=-1;
 			}
 		}
@@ -210,14 +221,14 @@ public class Follower extends ActiveTicker
 			Item I=(Item)ticking;
 			if(I.container()!=null) I.setContainer(null);
 			
-			Room R=CoffeeUtensils.roomLocation(I);
+			Room R=CMLib.utensils().roomLocation(I);
 			if(R==null)	return true;
 			
 			if(R!=lastOwner.location())
 				lastOwner.location().bringItemHere(I,0);
 			if((inventory)&&(R.isInhabitant(lastOwner)))
 			{
-				CommonMsgs.get(lastOwner,null,I,true);
+				CMLib.commands().get(lastOwner,null,I,true);
 				if(!lastOwner.isMine(I))
 				{
 					lastOwner.giveItem(I);

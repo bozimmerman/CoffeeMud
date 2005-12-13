@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -34,8 +45,8 @@ public class Mageness extends CombatAbilities
 			while((addThis==null)&&((++tries)<10))
 			{
 				addThis=CMClass.randomAbility();
-				if((CMAble.qualifyingLevel(mob,addThis)<0)
-				||(!CMAble.qualifiesByLevel(mob,addThis))
+				if((CMLib.ableMapper().qualifyingLevel(mob,addThis)<0)
+				||(!CMLib.ableMapper().qualifiesByLevel(mob,addThis))
 				||(((addThis.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)&&(!addThis.appropriateToMyFactions(mob)))
 				||(mob.fetchAbility(addThis.ID())!=null)
 				||((addThis.quality()!=Ability.MALICIOUS)

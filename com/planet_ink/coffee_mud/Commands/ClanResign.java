@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -38,7 +49,7 @@ public class ClanResign extends BaseClanner
 		else
 		if(!mob.isMonster())
 		{
-			Clan C=Clans.getClan(mob.getClanID());
+			Clan C=CMLib.clans().getClan(mob.getClanID());
 			try
 			{
 				String check=mob.session().prompt("Are you absolutely SURE (y/N)?","N");
@@ -46,16 +57,16 @@ public class ClanResign extends BaseClanner
 				{
 					if(C!=null)
 						clanAnnounce(mob,new String("Member resigned from "+C.typeName()+" "+C.name()+": "+mob.Name()));
-					CMClass.DBEngine().DBUpdateClanMembership(mob.Name(), "", 0);
+					CMLib.database().DBUpdateClanMembership(mob.Name(), "", 0);
 					mob.setClanID("");
 					mob.setClanRole(0);
 					if(C!=null)
 					{
 						C.updateClanPrivileges(mob);
-						CMClass.DBEngine().DBUpdateClanMembership(mob.Name(),"",0);
+						CMLib.database().DBUpdateClanMembership(mob.Name(),"",0);
 					}
 					else
-						CMClass.DBEngine().DBUpdateClanMembership(mob.Name(),"",0);
+						CMLib.database().DBUpdateClanMembership(mob.Name(),"",0);
 				}
 				else
 				{

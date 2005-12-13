@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -28,7 +39,7 @@ public class ItemRefitter extends StdBehavior
 	private int cost(Item item)
 	{
 		int cost=item.envStats().level()*100;
-		if(Sense.isABonusItems(item))
+		if(CMLib.flags().isABonusItems(item))
 			cost+=(item.envStats().level()*100);
 		return cost;
 	}
@@ -52,19 +63,19 @@ public class ItemRefitter extends StdBehavior
 			int cost=cost(tool);
 			if(!(tool instanceof Armor))
 			{
-				CommonMsgs.say(observer,source,"I'm sorry, I can't refit that.",true,false);
+				CMLib.commands().say(observer,source,"I'm sorry, I can't refit that.",true,false);
 				return false;
 			}
 
 			if(tool.baseEnvStats().height()==0)
 			{
-				CommonMsgs.say(observer,source,"This already looks your size!",true,false);
+				CMLib.commands().say(observer,source,"This already looks your size!",true,false);
 				return false;
 			}
-			if(BeanCounter.getTotalAbsoluteShopKeepersValue(msg.source(),observer)<new Integer(cost).doubleValue())
+			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<new Integer(cost).doubleValue())
 			{
-			    String costStr=BeanCounter.nameCurrencyShort(observer,new Integer(cost).doubleValue());
-				CommonMsgs.say(observer,source,"You'll need "+costStr+" for me to refit that.",true,false);
+			    String costStr=CMLib.beanCounter().nameCurrencyShort(observer,new Integer(cost).doubleValue());
+				CMLib.commands().say(observer,source,"You'll need "+costStr+" for me to refit that.",true,false);
 				return false;
 			}
 			return true;
@@ -91,17 +102,17 @@ public class ItemRefitter extends StdBehavior
 		&&(msg.tool() instanceof Armor))
 		{
 			int cost=cost((Item)msg.tool());
-			BeanCounter.subtractMoney(source,BeanCounter.getCurrency(observer),new Integer(cost).doubleValue());
-			String costStr=BeanCounter.nameCurrencyLong(observer,new Integer(cost).doubleValue());
+			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),new Integer(cost).doubleValue());
+			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,new Integer(cost).doubleValue());
 			source.recoverEnvStats();
 			((Item)msg.tool()).baseEnvStats().setHeight(0);
 			((Item)msg.tool()).recoverEnvStats();
 
-			FullMsg newMsg=new FullMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF> and charges <T-NAMESELF> "+costStr+".");
+			CMMsg newMsg=CMClass.getMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF> and charges <T-NAMESELF> "+costStr+".");
 			msg.addTrailerMsg(newMsg);
-			newMsg=new FullMsg(observer,source,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'There she is, a perfect fit!  Thanks for your business' to <T-NAMESELF>.^?");
+			newMsg=CMClass.getMsg(observer,source,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'There she is, a perfect fit!  Thanks for your business' to <T-NAMESELF>.^?");
 			msg.addTrailerMsg(newMsg);
-			newMsg=new FullMsg(observer,msg.tool(),null,CMMsg.MSG_DROP,null);
+			newMsg=CMClass.getMsg(observer,msg.tool(),null,CMMsg.MSG_DROP,null);
 			msg.addTrailerMsg(newMsg);
 		}
 	}

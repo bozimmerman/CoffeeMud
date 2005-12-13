@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -21,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Trip extends StdAbility
+public class Skill_Trip extends StdSkill
 {
 	boolean doneTicking=false;
 	public String ID() { return "Skill_Trip"; }
@@ -72,11 +82,11 @@ public class Skill_Trip extends StdAbility
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet.");
+				CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet.");
 				if(mob.location().okMessage(mob,msg)&&(!mob.amDead()))
 				{
 					mob.location().send(mob,msg);
-					CommonMsgs.stand(mob,true);
+					CMLib.commands().stand(mob,true);
 				}
 			}
 			else
@@ -89,13 +99,13 @@ public class Skill_Trip extends StdAbility
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if((Sense.isSitting(target)||Sense.isSleeping(target)))
+		if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 		{
 			mob.tell(target,null,null,"<S-NAME> is already on the floor!");
 			return false;
 		}
 
-		if((!Sense.aliveAwakeMobile(mob,true)||(Sense.isSitting(mob))))
+		if((!CMLib.flags().aliveAwakeMobile(mob,true)||(CMLib.flags().isSitting(mob))))
 		{
 			mob.tell("You need to stand up!");
 			return false;
@@ -110,7 +120,7 @@ public class Skill_Trip extends StdAbility
 			mob.tell("You can't trip someone "+target.riding().stateString(target)+" "+target.riding().name()+"!");
 			return false;
 		}
-		if(Sense.isInFlight(target))
+		if(CMLib.flags().isInFlight(target))
 		{
 			mob.tell(target.name()+" is flying and can't be tripped!");
 			return false;
@@ -129,8 +139,8 @@ public class Skill_Trip extends StdAbility
 		success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> trip(s)!":"^F^<FIGHT^><S-NAME> trip(s) <T-NAMESELF>!^</FIGHT^>^?");
-            CMColor.fixSourceFightColor(msg);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> trip(s)!":"^F^<FIGHT^><S-NAME> trip(s) <T-NAMESELF>!^</FIGHT^>^?");
+            CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

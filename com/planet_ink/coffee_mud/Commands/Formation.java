@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -30,8 +41,8 @@ public class Formation extends StdCommand
 		throws java.io.IOException
 	{
 		commands.removeElementAt(0);
-	    MOB leader=MUDFight.getFollowedLeader(mob);
-		Vector[] done=MUDFight.getFormation(mob);
+	    MOB leader=CMLib.combat().getFollowedLeader(mob);
+		Vector[] done=CMLib.combat().getFormation(mob);
 		if(commands.size()==0)
 		{
 			StringBuffer str=new StringBuffer("");
@@ -62,8 +73,8 @@ public class Formation extends StdCommand
 			commands.removeElementAt(commands.size()-1);
 			String name=Util.combine(commands,0);
 			MOB who=null;
-			if(EnglishParser.containsString(mob.name(),name)
-			   ||EnglishParser.containsString(mob.Name(),name))
+			if(CMLib.english().containsString(mob.name(),name)
+			   ||CMLib.english().containsString(mob.Name(),name))
 			{
 				mob.tell("You can not move your own position.  You are always the leader of your party.");
 				return false;
@@ -72,8 +83,8 @@ public class Formation extends StdCommand
 			{
 				MOB M=mob.fetchFollower(f);
 				if(M==null) continue;
-				if(EnglishParser.containsString(M.name(),name)
-				   ||EnglishParser.containsString(M.Name(),name))
+				if(CMLib.english().containsString(M.name(),name)
+				   ||CMLib.english().containsString(M.Name(),name))
 				{who=M; break;}
 			}
 			if(who==null)

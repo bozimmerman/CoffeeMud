@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -53,7 +64,7 @@ public class Play_Dirge extends Play
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) playing "+songOf()+" on "+instrumentName()+" again.^?";
 
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -67,14 +78,14 @@ public class Play_Dirge extends Play
 					MOB follower=(MOB)f.next();
 
 					double exp=10.0;
-					int levelLimit=CommonStrings.getIntVar(CommonStrings.SYSTEMI_EXPRATE);
+					int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
 					int levelDiff=follower.envStats().level()-target.envStats().level();
 					if(levelDiff>levelLimit) exp=0.0;
 					int expGained=(int)Math.round(exp);
 
 					// malicious songs must not affect the invoker!
-					if(Sense.canBeHeardBy(invoker,follower)&&(expGained>0))
-						MUDFight.postExperience(follower,null,null,expGained,false);
+					if(CMLib.flags().canBeHeardBy(invoker,follower)&&(expGained>0))
+						CMLib.combat().postExperience(follower,null,null,expGained,false);
 				}
 				mob.location().recoverRoomStats();
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" fades away.");

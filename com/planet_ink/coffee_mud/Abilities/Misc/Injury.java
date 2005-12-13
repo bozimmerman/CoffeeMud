@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Abilities.Misc;
-
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+
 
 import java.util.*;
 
@@ -114,7 +125,7 @@ public class Injury extends StdAbility
 		            int tries=100;
 		            while((pct>0)&&((--tries)>0)&&(choicesToHeal.size()>0))
 		            {
-		                int which=Dice.roll(1,choicesToHeal.size(),-1);
+		                int which=CMLib.dice().roll(1,choicesToHeal.size(),-1);
 		                int[] choice=(int[])choicesToHeal.elementAt(which);
 		                if(choice[0]<injuries.length)
 		                {
@@ -176,8 +187,8 @@ public class Injury extends StdAbility
 	    &&(msg.targetMessage()!=null)
         &&(msg.targetMessage().indexOf("<DAMAGE>")>=0)
         &&(text().startsWith(msg.source().Name()+"/")
-	       ||((CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTHP)>=(int)Math.round(Util.div(((MOB)affected).curState().getHitPoints(),((MOB)affected).maxState().getHitPoints())*100.0))
-	        &&(Dice.rollPercentage()<=CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTCHANCE)))))
+	       ||((CMProps.getIntVar(CMProps.SYSTEMI_INJPCTHP)>=(int)Math.round(Util.div(((MOB)affected).curState().getHitPoints(),((MOB)affected).maxState().getHitPoints())*100.0))
+	        &&(CMLib.dice().rollPercentage()<=CMProps.getIntVar(CMProps.SYSTEMI_INJPCTCHANCE)))))
 	    {
 	        MOB mob=(MOB)affected;
 	        Amputation A=(Amputation)mob.fetchEffect("Amputation");
@@ -208,7 +219,7 @@ public class Injury extends StdAbility
 				}
 				if(total>0)
 				{
-				    int randomRoll=Dice.roll(1,total,-1);
+				    int randomRoll=CMLib.dice().roll(1,total,-1);
 				    int chosenOne=-1;
 					if((lastMsg!=null)
 					&&(lastLoc!=null)
@@ -234,7 +245,7 @@ public class Injury extends StdAbility
 					    }
 					}
 					int BodyPct=(int)Math.round(Util.div(msg.value(),mob.maxState().getHitPoints())*100.0);
-					int LimbPct=BodyPct*CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJMULTIPLIER);
+					int LimbPct=BodyPct*CMProps.getIntVar(CMProps.SYSTEMI_INJMULTIPLIER);
 					if(LimbPct<1) LimbPct=1;
 					int bodyLoc=-1;
 					for(int i=0;i<Race.BODY_PARTS;i++)
@@ -275,10 +286,10 @@ public class Injury extends StdAbility
 					            O[1]=new Integer(100);
 					        if((((Integer)O[1]).intValue()>=100)
 							||((BodyPct>5)
-								&&((msg.tool() instanceof Electronics)||(BodyPct>=CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTHPAMP)))))
+								&&((msg.tool() instanceof Electronics)||(BodyPct>=CMProps.getIntVar(CMProps.SYSTEMI_INJPCTHPAMP)))))
 							{
-							    boolean proceed=(Dice.rollPercentage()<=CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTCHANCEAMP))
-                                                &&(mob.envStats().level()>=CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJMINLEVEL));
+							    boolean proceed=(CMLib.dice().rollPercentage()<=CMProps.getIntVar(CMProps.SYSTEMI_INJPCTCHANCEAMP))
+                                                &&(mob.envStats().level()>=CMProps.getIntVar(CMProps.SYSTEMI_INJMINLEVEL));
 							    if(msg.tool() instanceof Weapon)
 								{
 									switch(((Weapon)msg.tool()).weaponType())
@@ -296,7 +307,7 @@ public class Injury extends StdAbility
 						            bodyVec.removeElement(O);
 						            if(bodyVec.size()==0)
 						                injuries[bodyLoc]=null;
-						            Amputation.amputate(mob,A,((String)O[0]).toLowerCase());
+						            A.amputate(mob,A,((String)O[0]).toLowerCase());
 						            if(mob.fetchEffect(A.ID())==null)
 						                mob.addNonUninvokableEffect(A);
 			                    }

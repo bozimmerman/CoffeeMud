@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -42,20 +53,20 @@ public class Spell_FindFamiliar extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		MUDFight.postExperience(mob,null,null,-100,false);
+		CMLib.combat().postExperience(mob,null,null,-100,false);
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> call(s) for a familiar.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> call(s) for a familiar.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, mob.envStats().level());
 				if(target.isInCombat()) target.makePeace();
-				CommonMsgs.follow(target,mob,true);
+				CMLib.commands().follow(target,mob,true);
 				invoker=mob;
 				if(target.amFollowing()!=mob)
 					mob.tell(target.name()+" seems unwilling to follow you.");
@@ -75,7 +86,7 @@ public class Spell_FindFamiliar extends Spell
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setStat(CharStats.GENDER,'M');
-		int choice=Dice.roll(1,9,-1);
+		int choice=CMLib.dice().roll(1,9,-1);
 		switch(choice)
 		{
 		case 0:
@@ -150,7 +161,7 @@ public class Spell_FindFamiliar extends Spell
 		newMOB.baseEnvStats().setSpeed(newMOB.baseCharStats().getCurrentClass().getLevelSpeed(newMOB));
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
-		Factions.setAlignment(newMOB,Faction.ALIGN_GOOD);
+		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_GOOD);
 		newMOB.setStartRoom(null);
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();
@@ -161,7 +172,7 @@ public class Spell_FindFamiliar extends Spell
 		newMOB.addNonUninvokableEffect(A);
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
-		BeanCounter.clearZeroMoney(newMOB,null);
+		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
 		return(newMOB);

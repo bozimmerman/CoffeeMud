@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.Abilities.Traps.Trap_Trap;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -61,7 +71,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		if((msg.amITarget(affected))&&(msg.targetMinor()==CMMsg.TYP_OPEN))
 		{
 			if((!msg.amISource(invoker())
-			&&(Dice.rollPercentage()>msg.source().charStats().getStat(CharStats.SAVE_TRAPS))))
+			&&(CMLib.dice().rollPercentage()>msg.source().charStats().getStat(CharStats.SAVE_TRAPS))))
 				spring(msg.source());
 		}
 	}
@@ -75,8 +85,8 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		if(sprung)
 		{
 			Vector rooms=new Vector();
-			MUDTracker.getRadiantRooms(room1,rooms,true,true,false,false,false,null,10);
-			MUDTracker.getRadiantRooms(room2,rooms,true,true,false,false,false,null,10);
+			CMLib.tracking().getRadiantRooms(room1,rooms,true,true,false,false,false,null,10);
+			CMLib.tracking().getRadiantRooms(room2,rooms,true,true,false,false,false,null,10);
 			Vector mobsDone=new Vector();
 			room1.showHappens(CMMsg.MSG_NOISE,"A horrible alarm is going off here.");
 			room2.showHappens(CMMsg.MSG_NOISE,"A horrible alarm is going off here.");
@@ -85,7 +95,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 				Room R=(Room)rooms.elementAt(r);
 				if((R!=room1)&&(R!=room2))
 				{
-					int dir=MUDTracker.radiatesFromDir(R,rooms);
+					int dir=CMLib.tracking().radiatesFromDir(R,rooms);
 					if(dir>=0)
 					{
 						R.showHappens(CMMsg.MSG_NOISE,"You hear a loud alarm "+Directions.getInDirectionName(dir)+".");
@@ -95,14 +105,14 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 							if((M!=null)
 							&&(M.isMonster())
 							&&(!M.isInCombat())
-							&&(Sense.isMobile(M))
+							&&(CMLib.flags().isMobile(M))
 							&&(!mobsDone.contains(M))
-							&&(Sense.canHear(M))
-							&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_MIND))
-							&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_TRAPS)))
+							&&(CMLib.flags().canHear(M))
+							&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_MIND))
+							&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_TRAPS)))
 							{
 								mobsDone.addElement(M);
-								MUDTracker.move(M,dir,false,false);
+								CMLib.tracking().move(M,dir,false,false);
 							}
 						}
 					}
@@ -131,7 +141,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		FullMsg msg=new FullMsg(mob,alarmThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_GENERAL|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?alarmThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on "+alarmThis.name()+"."));
+		CMMsg msg=CMClass.getMsg(mob,alarmThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_GENERAL|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?alarmThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on "+alarmThis.name()+"."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			invoker=mob;
@@ -146,7 +156,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 			}
 			else
 			{
-				if(Dice.rollPercentage()>50)
+				if(CMLib.dice().rollPercentage()>50)
 				{
 					beneficialAffect(mob,alarmThis,asLevel,0);
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) the alarm on accident!");

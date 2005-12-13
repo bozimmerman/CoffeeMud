@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Languages;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -33,8 +44,8 @@ public class Language extends StdAbility
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_LANGTRAINCOST);}
-	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_LANGPRACCOST);}
+	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_LANGTRAINCOST);}
+	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_LANGPRACCOST);}
 	public int classificationCode(){return Ability.LANGUAGE;}
 
 	private static Hashtable emptyHash=new Hashtable();
@@ -73,14 +84,14 @@ public class Language extends StdAbility
 	{
 		if(translationHash().containsKey(word.toUpperCase()))
 			return fixCase(word,(String)translationHash().get(word.toUpperCase()));
-		MOB M=CMMap.getPlayer(word);
+		MOB M=CMLib.map().getPlayer(word);
 		if(M!=null) return word;
 		if(translationVector().size()>0)
 		{
 			String[] choices=null;
 			try{ choices=(String[])translationVector().elementAt(word.length()-1);}catch(Exception e){}
 			if(choices==null) choices=(String[])translationVector().lastElement();
-			return choices[Dice.roll(1,choices.length,-1)];
+			return choices[CMLib.dice().roll(1,choices.length,-1)];
 		}
 		return word;
 	}
@@ -122,14 +133,14 @@ public class Language extends StdAbility
 		StringBuffer w=new StringBuffer(words);
 		while(numToMess>0)
 		{
-			int x=Dice.roll(1,words.length(),-1);
+			int x=CMLib.dice().roll(1,words.length(),-1);
 			char c=words.charAt(x);
 			if(Character.isLetter(c))
 			{
 				if(vowels.indexOf(c)>=0)
-					w.setCharAt(x,fixCase(c,vowels.charAt(Dice.roll(1,vowels.length(),-1))));
+					w.setCharAt(x,fixCase(c,vowels.charAt(CMLib.dice().roll(1,vowels.length(),-1))));
 				else
-					w.setCharAt(x,fixCase(c,consonants.charAt(Dice.roll(1,consonants.length(),-1))));
+					w.setCharAt(x,fixCase(c,consonants.charAt(CMLib.dice().roll(1,consonants.length(),-1))));
 				numToMess--;
 			}
 		}
@@ -205,7 +216,7 @@ public class Language extends StdAbility
 							  subStitute(msg.targetMessage(),str),
 							  msg.othersCode(),
 							  subStitute(msg.othersMessage(),str));
-                if(Sense.aliveAwakeMobile((MOB)affected,true))
+                if(CMLib.flags().aliveAwakeMobile((MOB)affected,true))
     				helpProfficiency((MOB)affected);
 			}
 		}
@@ -215,7 +226,7 @@ public class Language extends StdAbility
         &&(msg.source()==affected)
         &&(beingSpoken())
         &&(msg.target() instanceof Item)
-        &&(Sense.isReadable((Item)msg.target()))
+        &&(CMLib.flags().isReadable((Item)msg.target()))
         &&(msg.targetMessage()!=null)
         &&(msg.targetMessage().length()>0))
         {
@@ -278,17 +289,17 @@ public class Language extends StdAbility
 				if(numToMess>0)
 					str=messChars(str,numToMess);
 				if(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
-					msg.addTrailerMsg(new FullMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),this.subStitute(msg.othersMessage(),str)+" (translated from "+ID()+")"));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),this.subStitute(msg.othersMessage(),str)+" (translated from "+ID()+")"));
 				else
 				if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
-					msg.addTrailerMsg(new FullMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,this.subStitute(msg.targetMessage(),str)+" (translated from "+ID()+")"));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,this.subStitute(msg.targetMessage(),str)+" (translated from "+ID()+")"));
 				else
 				if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf("'")>0))
 				{
 					String otherMes=msg.othersMessage();
 					if(msg.target()!=null)
-						otherMes=CoffeeFilter.fullOutFilter(((MOB)affected).session(),(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-					msg.addTrailerMsg(new FullMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,this.subStitute(otherMes,str)+" (translated from "+ID()+")"));
+						otherMes=CMLib.coffeeFilter().fullOutFilter(((MOB)affected).session(),(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,this.subStitute(otherMes,str)+" (translated from "+ID()+")"));
 				}
 			}
 		}
@@ -298,7 +309,7 @@ public class Language extends StdAbility
         &&(beingSpoken())
         &&(msg.target() instanceof Item)
         &&(msg.sourceMinor()==CMMsg.TYP_WRITE)
-        &&(Sense.isReadable((Item)msg.target()))
+        &&(CMLib.flags().isReadable((Item)msg.target()))
         &&(msg.targetMessage()!=null)
         &&(msg.targetMessage().length()>0))
         {
@@ -321,8 +332,8 @@ public class Language extends StdAbility
         &&(msg.targetMinor()==CMMsg.TYP_READ)
         &&((msg.targetMessage()==null)||(!msg.targetMessage().equals("CANCEL")))
         &&(!(affected instanceof LandTitle))
-        &&(Sense.canBeSeenBy(this,msg.source()))
-        &&((Sense.isReadable((Item)affected))
+        &&(CMLib.flags().canBeSeenBy(this,msg.source()))
+        &&((CMLib.flags().isReadable((Item)affected))
         &&(((Item)affected).readableText()!=null)
         &&(((Item)affected).readableText().length()>0)))
         {

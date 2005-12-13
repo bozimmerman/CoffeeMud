@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Paladin;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -40,7 +51,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 			MOB mob=(MOB)affected;
 			if((building==null)
 			||(fire==null)
-			||(!Sense.isOnFire(fire))
+			||(!CMLib.flags().isOnFire(fire))
 			||(!mob.location().isContent(fire))
 			||(mob.isMine(fire)))
 			{
@@ -100,7 +111,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			Item I2=mob.location().fetchItem(i);
-			if((I2!=null)&&(I2.container()==null)&&(Sense.isOnFire(I2)))
+			if((I2!=null)&&(I2.container()==null)&&(CMLib.flags().isOnFire(I2)))
 			{
 				fire=I2;
 				break;
@@ -127,7 +138,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 			return false;
 		destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,auto?1:0);
 		building=CMClass.getWeapon("GenWeapon");
-		completion=50-CMAble.qualifyingClassLevel(mob,this);
+		completion=50-CMLib.ableMapper().qualifyingClassLevel(mob,this);
 		String itemName="the Holy Avenger";
 		building.setName(itemName);
 		String startStr="<S-NAME> start(s) crafting "+building.name()+".";
@@ -142,8 +153,8 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		building.baseEnvStats().setLevel(mob.envStats().level());
 		building.baseEnvStats().setAbility(5);
 
-		int highestAttack=(CMAble.qualifyingClassLevel(mob,this)/2);
-		int highestDamage=CMAble.qualifyingClassLevel(mob,this);
+		int highestAttack=(CMLib.ableMapper().qualifyingClassLevel(mob,this)/2);
+		int highestDamage=CMLib.ableMapper().qualifyingClassLevel(mob,this);
 		Weapon w=(Weapon)building;
 		w.setWeaponClassification(Weapon.CLASS_SWORD);
 		w.setWeaponType(Weapon.TYPE_SLASHING);
@@ -161,7 +172,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 
 		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<6) completion=6;
-		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

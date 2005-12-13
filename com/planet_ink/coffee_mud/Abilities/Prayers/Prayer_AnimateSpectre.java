@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -70,7 +81,7 @@ public class Prayer_AnimateSpectre extends Prayer
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to animate <T-NAMESELF> as a spectre.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to animate <T-NAMESELF> as a spectre.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -93,7 +104,7 @@ public class Prayer_AnimateSpectre extends Prayer
 				newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
 				newMOB.baseEnvStats().setDisposition(EnvStats.IS_FLYING);
 				newMOB.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK);
-				Factions.setAlignment(newMOB,Faction.ALIGN_EVIL);
+				CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
 				newMOB.baseState().setHitPoints(15*newMOB.baseEnvStats().level());
 				newMOB.baseState().setMovement(newMOB.baseCharStats().getCurrentClass().getLevelMove(newMOB));
 				newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
@@ -110,7 +121,7 @@ public class Prayer_AnimateSpectre extends Prayer
 				newMOB.addBehavior(B);
 				newMOB.text();
 				newMOB.bringToLife(mob.location(),true);
-				BeanCounter.clearZeroMoney(newMOB,null);
+				CMLib.beanCounter().clearZeroMoney(newMOB,null);
 				newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				int it=0;
 				while(it<newMOB.location().numItems())
@@ -118,11 +129,11 @@ public class Prayer_AnimateSpectre extends Prayer
 					Item item=newMOB.location().fetchItem(it);
 					if((item!=null)&&(item.container()==body))
 					{
-						FullMsg msg2=new FullMsg(newMOB,body,item,CMMsg.MSG_GET,null);
+						CMMsg msg2=CMClass.getMsg(newMOB,body,item,CMMsg.MSG_GET,null);
 						newMOB.location().send(newMOB,msg2);
-						FullMsg msg4=new FullMsg(newMOB,item,null,CMMsg.MSG_GET,null);
+						CMMsg msg4=CMClass.getMsg(newMOB,item,null,CMMsg.MSG_GET,null);
 						newMOB.location().send(newMOB,msg4);
-						FullMsg msg3=new FullMsg(newMOB,item,null,CMMsg.MSG_WEAR,null);
+						CMMsg msg3=CMClass.getMsg(newMOB,item,null,CMMsg.MSG_WEAR,null);
 						newMOB.location().send(newMOB,msg3);
 						if(!newMOB.isMine(item))
 							it++;

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -77,14 +88,14 @@ public class Prop_TicketTaker extends Property
 				case CMMsg.TYP_ENTER:
 				case CMMsg.TYP_SLEEP:
 				{
-					String currency=BeanCounter.getCurrency(affected);
+					String currency=CMLib.beanCounter().getCurrency(affected);
 					if(currency.length()==0)
-					    currency=BeanCounter.getCurrency(mob);
-					if(BeanCounter.getTotalAbsoluteValue(mob,currency)>=cost())
+					    currency=CMLib.beanCounter().getCurrency(mob);
+					if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)>=cost())
 					{
-					    String costStr=BeanCounter.nameCurrencyShort(currency,cost());
+					    String costStr=CMLib.beanCounter().nameCurrencyShort(currency,cost());
 						mob.location().show(mob,myHost,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> give(s) "+costStr+" to <T-NAME>.");
-						BeanCounter.subtractMoney(mob,currency,cost());
+						CMLib.beanCounter().subtractMoney(mob,currency,cost());
 					}
 				}
 				break;
@@ -111,14 +122,14 @@ public class Prop_TicketTaker extends Property
 				case CMMsg.TYP_ENTER:
 				case CMMsg.TYP_SLEEP:
 				{
-					String currency=BeanCounter.getCurrency(affected);
+					String currency=CMLib.beanCounter().getCurrency(affected);
 					if(currency.length()==0)
-					    currency=BeanCounter.getCurrency(mob);
-					if(BeanCounter.getTotalAbsoluteValue(mob,currency)<cost())
+					    currency=CMLib.beanCounter().getCurrency(mob);
+					if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)<cost())
 					{
-					    String costStr=BeanCounter.nameCurrencyLong(currency,cost());
+					    String costStr=CMLib.beanCounter().nameCurrencyLong(currency,cost());
 						if(myHost instanceof MOB)
-							CommonMsgs.say((MOB)myHost,mob,"You'll need "+costStr+" to board.",false,false);
+							CMLib.commands().say((MOB)myHost,mob,"You'll need "+costStr+" to board.",false,false);
 						else
 							mob.tell("You'll need "+costStr+" to board.");
 						return false;

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -47,7 +58,7 @@ public class Spell_SummonCompanion extends Spell
             if((M!=mob)&&(M.location()!=mob.location())&&(M.location()!=null))
             { 
                 allHere=false;
-                if((Sense.canAccess(mob,M.location())))
+                if((CMLib.flags().canAccess(mob,M.location())))
                 {
                     target=M;
                     oldRoom=M.location(); 
@@ -75,15 +86,15 @@ public class Spell_SummonCompanion extends Spell
         
         if(success)
         {
-            FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MOVE|affectType(auto),auto?"":"^S<S-NAME> summon(s) <S-HIS-HER> companion in a mighty cry!^?");
+            CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|affectType(auto),auto?"":"^S<S-NAME> summon(s) <S-HIS-HER> companion in a mighty cry!^?");
             if((mob.location().okMessage(mob,msg))&&(oldRoom.okMessage(mob,msg)))
             {
                 mob.location().send(mob,msg);
 
                 MOB follower=target;
                 Room newRoom=mob.location();
-                FullMsg enterMsg=new FullMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,("<S-NAME> appear(s) in a burst of light.")+CommonStrings.msp("appear.wav",10));
-                FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl created by "+mob.name()+".");
+                CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,("<S-NAME> appear(s) in a burst of light.")+CMProps.msp("appear.wav",10));
+                CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl created by "+mob.name()+".");
                 if(oldRoom.okMessage(follower,leaveMsg))
                 {
                     if(newRoom.okMessage(follower,enterMsg))
@@ -93,7 +104,7 @@ public class Spell_SummonCompanion extends Spell
                         newRoom.bringMobHere(follower,false);
                         newRoom.send(follower,enterMsg);
                         follower.tell("\n\r\n\r");
-                        CommonMsgs.look(follower,true);
+                        CMLib.commands().look(follower,true);
                     }
                     else
                         mob.tell("Some powerful magic stifles the spell.");

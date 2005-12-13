@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
+
 import java.util.*;
 
 /* 
@@ -42,7 +52,7 @@ public class Skill_FireBreathing extends BardSkill
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item I=mob.fetchInventory(i);
-			if((Sense.isOnFire(I))
+			if((CMLib.flags().isOnFire(I))
 			&&(!I.amWearingAt(Item.INVENTORY))
 			&&(I.container()==null))
 			{
@@ -71,19 +81,19 @@ public class Skill_FireBreathing extends BardSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_GENERAL:0),(auto?"Suddenly flames come up and attack <T-HIM-HER>!^?":((fireSource!=null)?"^S<S-NAME> hold(s) "+fireSource.name()+" up and puff(s) fire at <T-NAMESELF>!^?":"<S-NAME> breath(es) fire at <T-NAMESELF>!^?"))+CommonStrings.msp("fireball.wav",40));
-			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_FIRE|(auto?CMMsg.MASK_GENERAL:0),null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_GENERAL:0),(auto?"Suddenly flames come up and attack <T-HIM-HER>!^?":((fireSource!=null)?"^S<S-NAME> hold(s) "+fireSource.name()+" up and puff(s) fire at <T-NAMESELF>!^?":"<S-NAME> breath(es) fire at <T-NAMESELF>!^?"))+CMProps.msp("fireball.wav",40));
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_FIRE|(auto?CMMsg.MASK_GENERAL:0),null);
 			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
                 int numDice = (int)Math.round(Util.div(adjustedLevel(mob,asLevel),2.0))+1;
-				int damage = Dice.roll(3, numDice, 0);
+				int damage = CMLib.dice().roll(3, numDice, 0);
 				if(msg2.value()>0)
 					damage = (int)Math.round(Util.div(damage,2.0));
 
 				if(target.location()==mob.location())
-					MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flames <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flames <DAMAGE> <T-NAME>!");
 			}
 			fireSource.destroy();
 		}

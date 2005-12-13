@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -70,7 +81,7 @@ public class Chant_TremorSense extends Chant
 		{
 			if((msg.target()==affected)
 			&&(msg.targetMinor()==CMMsg.TYP_ENTER)
-			&&(!Sense.isInFlight(msg.source()))
+			&&(!CMLib.flags().isInFlight(msg.source()))
 			&&(invoker!=null)
 			&&(invoker.location()!=null))
 			{
@@ -78,7 +89,7 @@ public class Chant_TremorSense extends Chant
 					invoker.tell("You feel footsteps around you.");
 				else
 				{
-					int dir=MUDTracker.radiatesFromDir((Room)affected,rooms);
+					int dir=CMLib.tracking().radiatesFromDir((Room)affected,rooms);
 					if(dir>=0)
 						invoker.tell("You feel footsteps "+Directions.getInDirectionName(dir));
 				}
@@ -92,7 +103,7 @@ public class Chant_TremorSense extends Chant
 					invoker.tell("You feel a ferocious rumble.");
 				else
 				{
-					int dir=MUDTracker.radiatesFromDir((Room)affected,rooms);
+					int dir=CMLib.tracking().radiatesFromDir((Room)affected,rooms);
 					if(dir>=0)
 						invoker.tell("You feel a ferocious rumble "+Directions.getInDirectionName(dir));
 				}
@@ -112,7 +123,7 @@ public class Chant_TremorSense extends Chant
 			return false;
 		}
 
-		if((!Sense.isSitting(mob))||(mob.riding()!=null))
+		if((!CMLib.flags().isSitting(mob))||(mob.riding()!=null))
 		{
 			mob.tell("You must be sitting on the ground for this chant to work.");
 			return false;
@@ -129,12 +140,12 @@ public class Chant_TremorSense extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")+"<T-NAME> gain(s) a sense of the earth!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")+"<T-NAME> gain(s) a sense of the earth!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				rooms=new Vector();
-				MUDTracker.getRadiantRooms(mob.location(),rooms,false,false,true,true,true,null,5);
+				CMLib.tracking().getRadiantRooms(mob.location(),rooms,false,false,true,true,true,null,5);
 				for(int r=0;r<rooms.size();r++)
 				{
 					Room R=(Room)rooms.elementAt(r);

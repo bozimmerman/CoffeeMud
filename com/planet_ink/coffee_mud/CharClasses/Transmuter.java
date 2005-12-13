@@ -1,6 +1,18 @@
 package com.planet_ink.coffee_mud.CharClasses;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -35,18 +47,18 @@ public class Transmuter extends SpecialistMage
 		if(!myAbilitiesLoaded)
 		{
 			myAbilitiesLoaded=true;
-			CMAble.addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
-			CMAble.addCharAbilityMapping(ID(),3,"Spell_CauseStink",25,true);
-			CMAble.addCharAbilityMapping(ID(),8,"Spell_MassWaterbreath",25,true);
-			CMAble.addCharAbilityMapping(ID(),10,"Spell_Misstep",0,"",false,true);
-			CMAble.addCharAbilityMapping(ID(),14,"Spell_Sonar",25,true);
-			CMAble.addCharAbilityMapping(ID(),17,"Spell_Grow",25,true);
-			CMAble.addCharAbilityMapping(ID(),21,"Spell_Toadstool",25,true);
-			CMAble.addCharAbilityMapping(ID(),22,"Spell_AddLimb",25,true);
-			CMAble.addCharAbilityMapping(ID(),23,"Spell_Transformation",25,true);
-			CMAble.addCharAbilityMapping(ID(),24,"Spell_BigMouth",25,true);
-			CMAble.addCharAbilityMapping(ID(),25,"Spell_MassFly",25,true);
-			CMAble.addCharAbilityMapping(ID(),30,"Spell_Clone",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_CauseStink",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Spell_MassWaterbreath",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_Misstep",0,"",false,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_Sonar",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_Grow",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Spell_Toadstool",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_AddLimb",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_Transformation",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Spell_BigMouth",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_MassFly",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_Clone",25,true);
 		}
 	}
 }

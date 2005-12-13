@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
+
 import java.util.*;
 
 /* 
@@ -21,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Cage extends StdAbility
+public class Skill_Cage extends StdSkill
 {
 	public String ID() { return "Skill_Cage"; }
 	public String name(){ return "Cage";}
@@ -68,12 +78,12 @@ public class Skill_Cage extends StdAbility
 		{
 			boolean ok=false;
 			if((target.isMonster())
-			&&(Sense.isAnimalIntelligence(target)))
+			&&(CMLib.flags().isAnimalIntelligence(target)))
 			{
-				if(Sense.isSleeping(target)
-				||(!Sense.canMove(target))
+				if(CMLib.flags().isSleeping(target)
+				||(!CMLib.flags().canMove(target))
 				||((target.amFollowing()==mob))
-				||(Sense.isBoundOrHeld(target)))
+				||(CMLib.flags().isBoundOrHeld(target)))
 					ok=true;
 			}
 			if(!ok)
@@ -107,7 +117,7 @@ public class Skill_Cage extends StdAbility
 		CagedAnimal caged=(CagedAnimal)CMClass.getItem("GenCaged");
 		if((success)&&(caged.cageMe(target)))
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -121,7 +131,7 @@ public class Skill_Cage extends StdAbility
 				}
 				else
 					mob.addInventory((Item)caged);
-				FullMsg putMsg=new FullMsg(mob,cage,(Item)caged,CMMsg.MSG_PUT,"<S-NAME> cage(s) <O-NAME> in <T-NAME>.");
+				CMMsg putMsg=CMClass.getMsg(mob,cage,(Item)caged,CMMsg.MSG_PUT,"<S-NAME> cage(s) <O-NAME> in <T-NAME>.");
 				if(mob.location().okMessage(mob,putMsg))
 				{
 					mob.location().send(mob,putMsg);

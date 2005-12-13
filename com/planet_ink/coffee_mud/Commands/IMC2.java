@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -35,7 +46,7 @@ public class IMC2 extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!(CMClass.I3Interface().imc2online()))
+		if(!(CMLib.intermud().imc2online()))
 		{
 			mob.tell("IMC2 is unavailable.");
 			return false;
@@ -47,20 +58,20 @@ public class IMC2 extends StdCommand
 			return false;
 		}
 		String str=(String)commands.firstElement();
-		if(!(CMClass.I3Interface().imc2online()))
+		if(!(CMLib.intermud().imc2online()))
 			mob.tell("IMC2 is unavailable.");
 		else
 		if(str.equalsIgnoreCase("list"))
-			CMClass.I3Interface().giveIMC2MudList(mob);
+			CMLib.intermud().giveIMC2MudList(mob);
 		else
 		if(str.equalsIgnoreCase("locate"))
-			CMClass.I3Interface().i3locate(mob,Util.combine(commands,1));
+			CMLib.intermud().i3locate(mob,Util.combine(commands,1));
 		else
 		if(str.equalsIgnoreCase("channels"))
-			CMClass.I3Interface().giveIMC2ChannelsList(mob);
+			CMLib.intermud().giveIMC2ChannelsList(mob);
 		else
 		if(str.equalsIgnoreCase("info"))
-			CMClass.I3Interface().imc2mudInfo(mob,Util.combine(commands,1));
+			CMLib.intermud().imc2mudInfo(mob,Util.combine(commands,1));
 		else
 			IMC2Error(mob);
 

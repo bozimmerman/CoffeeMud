@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -66,16 +77,16 @@ public class Spell_ElementalStorm extends Spell
 			int numMissiles=types.length;
 			for(int i=0;i<numMissiles;i++)
 			{
-				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(i==0)?((auto?"An elemental storm assaults <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, evoking an elemental storm!^?")+CommonStrings.msp("spelldam1.wav",40)):null);
+				CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),(i==0)?((auto?"An elemental storm assaults <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, evoking an elemental storm!^?")+CMProps.msp("spelldam1.wav",40)):null);
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					if(msg.value()<=0)
 					{
 						int damage = 0;
-						damage += Dice.roll(1,3,0);
+						damage += CMLib.dice().roll(1,3,0);
 						if(target.location()==mob.location())
-							MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|types[i],dames[i],"^S"+ds[i]+" <DAMAGE> <T-NAME>!^?");
+							CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|types[i],dames[i],"^S"+ds[i]+" <DAMAGE> <T-NAME>!^?");
 					}
 				}
 				if(target.amDead())

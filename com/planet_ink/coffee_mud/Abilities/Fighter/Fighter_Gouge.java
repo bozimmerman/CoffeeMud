@@ -1,9 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.Abilities.Misc.Amputation;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -23,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_Gouge extends StdAbility
+public class Fighter_Gouge extends FighterSkill
 {
 	boolean doneTicking=false;
 	public String ID() { return "Fighter_Gouge"; }
@@ -112,18 +121,18 @@ public class Fighter_Gouge extends StdAbility
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		boolean hit=(auto)||MUDFight.rollToHit(mob,target);;
+		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);;
 		if((success)&&(hit))
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"":"^F^<FIGHT^><S-NAME> gouge(s) at <T-YOUPOSS> eyes!^</FIGHT^>^?");
-            CMColor.fixSourceFightColor(msg);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"":"^F^<FIGHT^><S-NAME> gouge(s) at <T-YOUPOSS> eyes!^</FIGHT^>^?");
+            CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> blinded!");
 				maliciousAffect(mob,target,asLevel,5,-1);
-                Amputation A=(Amputation)target.fetchEffect("Amputation");
-                if(A==null) A=new Amputation();
+                Amputator A=(Amputator)target.fetchEffect("Amputation");
+                if(A==null) A=(Amputator)CMClass.getAbility("Amputation");
                 Vector remainingLimbList=A.remainingLimbNameSet(target);
                 String gone=null;
                 for(int i=0;i<remainingLimbList.size();i++)
@@ -138,7 +147,7 @@ public class Fighter_Gouge extends StdAbility
                     if(A2!=null)
                     {
                         A2.setMiscText(mob.Name()+"/"+gone);
-                        FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSG_DAMAGE,"<DAMAGE> <T-NAME>");
+                        CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_DAMAGE,"<DAMAGE> <T-NAME>");
                         msg2.setValue(target.maxState().getHitPoints()/20);
                         if(!A2.invoke(mob,Util.makeVector(msg2),target,true,0))
                         {

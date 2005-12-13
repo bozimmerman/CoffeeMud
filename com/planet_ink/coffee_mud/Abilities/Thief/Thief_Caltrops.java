@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.Abilities.Traps.Trap_Trap;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -47,10 +57,10 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	public boolean sprung(){return false;}
 	public void spring(MOB mob)
 	{
-		if((!invoker().mayIFight(mob))||(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS)))
+		if((!invoker().mayIFight(mob))||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS)))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) some caltrops on the floor.");
 		else
-			MUDFight.postDamage(invoker(),mob,null,Dice.roll(1,5,0),CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,Weapon.TYPE_PIERCING,"The caltrops on the ground <DAMAGE> <T-NAME>.");
+			CMLib.combat().postDamage(invoker(),mob,null,CMLib.dice().roll(1,5,0),CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,Weapon.TYPE_PIERCING,"The caltrops on the ground <DAMAGE> <T-NAME>.");
 		// does not set sprung flag -- as this trap never goes out of use
 	}
 

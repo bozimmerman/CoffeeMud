@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -22,10 +33,10 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Prayer_MajorSalubrity extends Prayer
+public class Prayer_MajorInfusion extends Prayer
 {
-    public String ID() { return "Prayer_MajorSalubrity"; }
-    public String name(){ return "Major Salubrity";}
+    public String ID() { return "Prayer_MajorInfusion"; }
+    public String name(){ return "Major Infusion";}
     public int quality(){ return BENEFICIAL_OTHERS;}
     public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
     protected long minCastWaitTime(){return MudHost.TICK_TIME/2;}
@@ -46,11 +57,11 @@ public class Prayer_MajorSalubrity extends Prayer
             // and add it to the affects list of the
             // affected MOB.  Then tell everyone else
             // what happened.
-            FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A soft yellow glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+", delivering a strong touch of salubrity to <T-NAMESELF>.^?");
+            CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"A soft yellow glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+", delivering a strong touch of infusion to <T-NAMESELF>.^?");
             if(mob.location().okMessage(mob,msg))
             {
                 mob.location().send(mob,msg);
-                int healing=Dice.roll(10,adjustedLevel(mob,asLevel),50);
+                int healing=CMLib.dice().roll(10,adjustedLevel(mob,asLevel),50);
                 target.curState().adjMana(healing,target.maxState());
                 target.tell("You feel restored!");
                 lastCastHelp=System.currentTimeMillis();

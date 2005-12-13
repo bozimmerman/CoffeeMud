@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Poisons;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
+
 import java.util.*;
 
 
@@ -42,11 +52,11 @@ public class Poison_Firebreather extends Poison_Liquor
 
 		MOB mob=(MOB)affected;
 		Room room=mob.location();
-		if((Dice.rollPercentage()<drunkness)&&(Sense.aliveAwakeMobile(mob,true))&&(room!=null))
+		if((CMLib.dice().rollPercentage()<drunkness)&&(CMLib.flags().aliveAwakeMobile(mob,true))&&(room!=null))
 		{
-			if(Dice.rollPercentage()<40)
+			if(CMLib.dice().rollPercentage()<40)
 			{
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> belch(es) fire!"+CommonStrings.msp("fireball.wav",20));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> belch(es) fire!"+CMProps.msp("fireball.wav",20));
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					MOB target=room.fetchInhabitant(i);
@@ -55,7 +65,7 @@ public class Poison_Firebreather extends Poison_Liquor
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,null);
+					CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,null);
 					if((mob!=target)&&(mob.mayPhysicallyAttack(target))&&(room.okMessage(mob,msg)))
 					{
 						room.send(mob,msg);
@@ -65,10 +75,10 @@ public class Poison_Firebreather extends Poison_Liquor
 						int maxDie =  mob.envStats().level();
 						if (maxDie > 10)
 							maxDie = 10;
-						damage += Dice.roll(maxDie,6,1);
+						damage += CMLib.dice().roll(maxDie,6,1);
 						if(msg.value()>0)
 							damage = (int)Math.round(Util.div(damage,2.0));
-						MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"^F^<FIGHT^>The fire <DAMAGE> <T-NAME>!^</FIGHT^>^?");
+						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"^F^<FIGHT^>The fire <DAMAGE> <T-NAME>!^</FIGHT^>^?");
 					}
 				}
 			}

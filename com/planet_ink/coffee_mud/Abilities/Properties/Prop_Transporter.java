@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -84,15 +95,15 @@ public class Prop_Transporter extends Property
 		   &&(msg.amITarget(affected)||(msg.tool()==affected))
 		   &&(text().length()>0))
 		{
-			Room otherRoom=CMMap.getRoom(text());
+			Room otherRoom=CMLib.map().getRoom(text());
 			if(otherRoom==null)
 				msg.source().tell("You are whisked nowhere at all, since '"+text()+"' is nowhere to be found.");
 			else
 			{
 				otherRoom.bringMobHere(msg.source(),true);
-				CommonMsgs.look(msg.source(),true);
+				CMLib.commands().look(msg.source(),true);
 				if(affected instanceof Rideable)
-					msg.addTrailerMsg(new FullMsg(msg.source(),affected,CMMsg.TYP_DISMOUNT,null));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,CMMsg.TYP_DISMOUNT,null));
 			}
 
 		}

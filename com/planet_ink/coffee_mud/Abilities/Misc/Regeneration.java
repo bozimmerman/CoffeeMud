@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Abilities.Misc;
-
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+
 import java.util.*;
 
 
@@ -89,7 +100,7 @@ public class Regeneration extends StdAbility
 					int x=text.indexOf(Weapon.typeDescription[((Weapon)msg.tool()).weaponType()]);
 					if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
 						hurts=true;
-					if(Sense.isABonusItems(msg.tool()))
+					if(CMLib.flags().isABonusItems(msg.tool()))
 					{
 						x=text.indexOf("MAGIC");
 						if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
@@ -167,7 +178,7 @@ public class Regeneration extends StdAbility
 		if(success)
 		{
 			String str=auto?"":"<S-NAME> lay(s) regenerative magic upon <T-NAMESELF>.";
-			FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,str);
+			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,str);
 			if(target.location().okMessage(target,msg))
 			{
 			    target.location().send(target,msg);

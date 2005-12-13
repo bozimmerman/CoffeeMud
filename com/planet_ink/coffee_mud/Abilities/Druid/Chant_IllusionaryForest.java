@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -52,7 +63,7 @@ public class Chant_IllusionaryForest extends Chant
 		&&(newRoom().fetchEffect(ID())==null)
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
-			FullMsg msg2=new FullMsg(msg.source(),newRoom(),msg.tool(),
+			CMMsg msg2=CMClass.getMsg(msg.source(),newRoom(),msg.tool(),
 						  msg.sourceCode(),msg.sourceMessage(),
 						  msg.targetCode(),msg.targetMessage(),
 						  msg.othersCode(),msg.othersMessage());
@@ -69,7 +80,7 @@ public class Chant_IllusionaryForest extends Chant
 	{
 		if(newRoom!=null) return newRoom;
 		newRoom=CMClass.getLocale("Woods");
-		switch(Dice.roll(1,10,0))
+		switch(CMLib.dice().roll(1,10,0))
 		{
 		case 1:
 			newRoom.setDisplayText("Forest glade");
@@ -134,15 +145,15 @@ public class Chant_IllusionaryForest extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			newRoom();
-			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) dramatically!^?");
+			CMMsg msg = CMClass.getMsg(mob, target, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) dramatically!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The appearance of this place changes...");
-				if(CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
+				if(CMLib.utensils().doesOwnThisProperty(mob,mob.location()))
 				{
 					mob.location().addNonUninvokableEffect((Ability)copyOf());
-					CMClass.DBEngine().DBUpdateRoom(mob.location());
+					CMLib.database().DBUpdateRoom(mob.location());
 				}
 				else
 					beneficialAffect(mob,mob.location(),asLevel,0);

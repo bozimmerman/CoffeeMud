@@ -1,6 +1,17 @@
 package com.planet_ink.coffee_mud.Abilities.Diseases;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -51,7 +62,7 @@ public class Disease_Amnesia extends Disease
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&(mob.fetchAbility(msg.tool().ID())==msg.tool())
-		&&(Dice.rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_MIND)+10)))
+		&&(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_MIND)+10)))
 		{
 			mob.tell("You can't remember "+msg.tool().name()+"!");
 			return false;

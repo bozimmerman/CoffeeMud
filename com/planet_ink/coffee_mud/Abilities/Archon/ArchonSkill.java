@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Archon;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -58,7 +69,7 @@ public class ArchonSkill extends StdAbility
 		{
 		    try
 		    {
-				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+				for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 				{
 					Room R=(Room)e.nextElement();
 					if(R!=mob.location())
@@ -70,8 +81,8 @@ public class ArchonSkill extends StdAbility
 
 		if((target==null)||((playerOnly)&&(target.isMonster())))
 		{
-			if(CMClass.DBEngine().DBUserSearch(null,targetName))
-				target=CMMap.getLoadPlayer(targetName);
+			if(CMLib.database().DBUserSearch(null,targetName))
+				target=CMLib.map().getLoadPlayer(targetName);
 		}
 		
 		if((target!=null)&&((!playerOnly)||(!target.isMonster())))
@@ -79,7 +90,7 @@ public class ArchonSkill extends StdAbility
 
 		
 		if(((target==null)||((playerOnly)&&(target.isMonster())))
-		||((givenTarget==null)&&(!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||(!target.isInCombat()))))
+		||((givenTarget==null)&&(!CMLib.flags().canBeSeenBy(target,mob))&&((!CMLib.flags().canBeHeardBy(target,mob))||(!target.isInCombat()))))
 		{
 			if(!quiet)
 			{

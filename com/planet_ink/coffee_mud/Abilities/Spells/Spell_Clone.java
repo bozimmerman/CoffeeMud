@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -62,7 +73,7 @@ public class Spell_Clone extends Spell
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> incant(s), feeling <S-HIS-HER> body split in two.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> incant(s), feeling <S-HIS-HER> body split in two.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -70,9 +81,9 @@ public class Spell_Clone extends Spell
 				Behavior B=CMClass.getBehavior("CombatAbilities");
 				myMonster.addBehavior(B);
 				B.startBehavior(myMonster);
-				if(Dice.rollPercentage()<50)
+				if(CMLib.dice().rollPercentage()<50)
 				{
-					if(Sense.isGood(mob))
+					if(CMLib.flags().isGood(mob))
 					{
 						B=CMClass.getBehavior("MobileGoodGuardian");
 						myMonster.addBehavior(B);
@@ -80,7 +91,7 @@ public class Spell_Clone extends Spell
 						myMonster.copyFactions(mob);
 					}
 					else
-                    if(Sense.isEvil(mob))
+                    if(CMLib.flags().isEvil(mob))
 					{
 						B=CMClass.getBehavior("MobileAggressive");
 						myMonster.addBehavior(B);
@@ -105,7 +116,7 @@ public class Spell_Clone extends Spell
 					myMonster.addBehavior(B);
 					B.startBehavior(myMonster);
 					myMonster.setVictim(mob.getVictim());
-					CommonMsgs.follow(myMonster,mob,true);
+					CMLib.commands().follow(myMonster,mob,true);
 					if(myMonster.amFollowing()!=mob)
 						mob.tell(myMonster.name()+" seems unwilling to follow you.");
 				}
@@ -154,7 +165,7 @@ public class Spell_Clone extends Spell
 			newMOB.delBehavior(B);
 		}
 		newMOB.bringToLife(caster.location(),true);
-		BeanCounter.clearZeroMoney(newMOB,null);
+		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);

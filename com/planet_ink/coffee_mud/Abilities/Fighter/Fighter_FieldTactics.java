@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -21,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_FieldTactics extends StdAbility
+public class Fighter_FieldTactics extends FighterSkill
 {
 	public String ID() { return "Fighter_FieldTactics"; }
 	public String name(){ return "Field Tactics";}
@@ -66,11 +76,11 @@ public class Fighter_FieldTactics extends StdAbility
 	public boolean hiding(Environmental mob)
 	{
 		if(!(mob instanceof MOB)) return false;
-		return Sense.isSitting(mob)&&(((MOB)mob).riding()==null);
+		return CMLib.flags().isSitting(mob)&&(((MOB)mob).riding()==null);
 	}
 	public boolean hiding(MOB mob)
 	{
-		return Sense.isSitting(mob)&&(mob.riding()==null);
+		return CMLib.flags().isSitting(mob)&&(mob.riding()==null);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -84,7 +94,7 @@ public class Fighter_FieldTactics extends StdAbility
 		&&(msg.tool() instanceof Weapon)
 		&&(msg.value()>0))
 		{
-			if(Dice.rollPercentage()<5) helpProfficiency((MOB)affected);
+			if(CMLib.dice().rollPercentage()<5) helpProfficiency((MOB)affected);
 			msg.setValue(msg.value()+(int)Math.round(Util.mul(msg.value(),Util.div(profficiency(),400.0))));
 		}
 		else

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Misc;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -42,7 +53,7 @@ public class WingFlying extends StdAbility
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 
-		if((!Sense.isSleeping(affected))&&(flying))
+		if((!CMLib.flags().isSleeping(affected))&&(flying))
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 		else
 			affectableStats.setDisposition(Util.unsetb(affectableStats.disposition(),EnvStats.IS_FLYING));
@@ -58,7 +69,7 @@ public class WingFlying extends StdAbility
 			return false;
 		}
 
-		boolean wasFlying=Sense.isFlying(target);
+		boolean wasFlying=CMLib.flags().isFlying(target);
 		Ability A=target.fetchEffect(ID());
 		if(A!=null) A.unInvoke();
 		target.recoverEnvStats();
@@ -85,7 +96,7 @@ public class WingFlying extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(target.location().okMessage(target,msg))
 			{
 				target.location().send(target,msg);

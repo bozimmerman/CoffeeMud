@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -49,11 +60,11 @@ public class Qualify extends BaseAbleLister
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
-			int level=CMAble.qualifyingLevel(able,A);
-			if((CMAble.qualifiesByLevel(able,A))
-			&&(!CMAble.getSecretSkill(able,A.ID()))
+			int level=CMLib.ableMapper().qualifyingLevel(able,A);
+			if((CMLib.ableMapper().qualifiesByLevel(able,A))
+			&&(!CMLib.ableMapper().getSecretSkill(able,A.ID()))
 			&&(level>highestLevel)
-			&&(level<(CMAble.qualifyingClassLevel(able,A)+1))
+			&&(level<(CMLib.ableMapper().qualifyingClassLevel(able,A)+1))
 			&&(able.fetchAbility(A.ID())==null)
 			&&(ofTypes.contains(new Integer(A.classificationCode()&mask))))
 				highestLevel=level;
@@ -65,9 +76,9 @@ public class Qualify extends BaseAbleLister
 			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
-				if((CMAble.qualifiesByLevel(able,A))
-				   &&(CMAble.qualifyingLevel(able,A)==l)
-				   &&(!CMAble.getSecretSkill(able,A.ID()))
+				if((CMLib.ableMapper().qualifiesByLevel(able,A))
+				   &&(CMLib.ableMapper().qualifyingLevel(able,A)==l)
+				   &&(!CMLib.ableMapper().getSecretSkill(able,A.ID()))
 				   &&(able.fetchAbility(A.ID())==null)
 				   &&(ofTypes.contains(new Integer(A.classificationCode()&mask))))
 				{
@@ -138,7 +149,7 @@ public class Qualify extends BaseAbleLister
 			}
 		}
 		boolean classesFound=false;
-		if((!CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("NO"))
+		if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
 		&&(mob!=null)
 		&&((qual.length()==0)
 			||(qual.equalsIgnoreCase("CLASS"))
@@ -150,7 +161,7 @@ public class Qualify extends BaseAbleLister
 			{
 				CharClass C=(CharClass)c.nextElement();
 				StringBuffer thisLine=new StringBuffer("");
-				if(CommonStrings.isTheme(C.availabilityCode())
+				if(CMProps.isTheme(C.availabilityCode())
 				&&(mob.charStats().getCurrentClass()!=C)
 				&&(C.qualifiesForThisClass(mob,true)))
 				{

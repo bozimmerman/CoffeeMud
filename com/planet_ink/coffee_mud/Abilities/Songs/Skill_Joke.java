@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -38,7 +48,7 @@ public class Skill_Joke extends BardSkill
 
 		// if they can't hear the sleep spell, it
 		// won't happen
-		if((!auto)&&(!Sense.canBeHeardBy(mob,target)))
+		if((!auto)&&(!CMLib.flags().canBeHeardBy(mob,target)))
 		{
 			mob.tell(target.charStats().HeShe()+" can't hear your words.");
 			return false;
@@ -61,11 +71,11 @@ public class Skill_Joke extends BardSkill
 				String[] de=new String[5];
 				for (int cnt=1; cnt<4; cnt++)
 				{
-					ob[cnt] = (String)insulto.elementAt(Dice.roll(1,insulto.size(),-1));
-					de[cnt] = (String)insultd.elementAt(Dice.roll(1,insultd.size(),-1));
+					ob[cnt] = (String)insulto.elementAt(CMLib.dice().roll(1,insulto.size(),-1));
+					de[cnt] = (String)insultd.elementAt(CMLib.dice().roll(1,insultd.size(),-1));
 				}
 				String joke=null;
-				switch(Dice.roll(1,7,0))
+				switch(CMLib.dice().roll(1,7,0))
 				{
 				case 1:
 					joke=  "Q: What do you get if you cross a "+ob[1]+" with a "+ob[2]+"?\n\r"
@@ -101,11 +111,11 @@ public class Skill_Joke extends BardSkill
 				}
 				str="<S-NAME> joke(s) to <T-NAMESELF>:\n\r"+joke;
 			}
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK|(auto?CMMsg.MASK_GENERAL:0),str);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK|(auto?CMMsg.MASK_GENERAL:0),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(Dice.rollPercentage()<25)
+				if(CMLib.dice().rollPercentage()<25)
 				{
 					Ability A=CMClass.getAbility("Spell_Laughter");
 					A.invoke(mob,target,true,asLevel);

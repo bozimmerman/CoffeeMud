@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -22,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_Spring extends StdAbility
+public class Fighter_Spring extends FighterSkill
 {
 	public String ID() { return "Fighter_Spring"; }
 	public String name(){ return "Spring Attack";}
@@ -71,21 +81,21 @@ public class Fighter_Spring extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MUDFight.postAttack(mob,target,mob.fetchWieldedItem());
+				CMLib.combat().postAttack(mob,target,mob.fetchWieldedItem());
 				if(mob.getVictim()==target)
 				{
-					msg=new FullMsg(mob,target,this,CMMsg.MSG_RETREAT,"^F^<FIGHT^><S-NAME> spring(s) back!^</FIGHT^>^?");
-                    CMColor.fixSourceFightColor(msg);
+					msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_RETREAT,"^F^<FIGHT^><S-NAME> spring(s) back!^</FIGHT^>^?");
+                    CMLib.color().fixSourceFightColor(msg);
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
 						if(mob.rangeToTarget()<mob.location().maxRange())
 						{
-							msg=new FullMsg(mob,target,this,CMMsg.MSG_RETREAT,null);
+							msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_RETREAT,null);
 							if(mob.location().okMessage(mob,msg))
 								mob.location().send(mob,msg);
 						}

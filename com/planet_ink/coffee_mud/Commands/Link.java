@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -47,7 +58,7 @@ public class Link extends StdCommand
 
 		Room thisRoom=null;
 		String RoomID=(String)commands.elementAt(1);
-		thisRoom=CMMap.getRoom(RoomID);
+		thisRoom=CMLib.map().getRoom(RoomID);
 		if(thisRoom==null)
 		{
 			mob.tell("Room \""+RoomID+"\" is unknown.  Try again.");
@@ -60,7 +71,7 @@ public class Link extends StdCommand
 
 		mob.location().recoverRoomStats();
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly a portal opens up in the landscape.\n\r");
-		Log.sysOut("Link",mob.Name()+" linked "+CMMap.getExtendedRoomID(mob.location())+" to room "+CMMap.getExtendedRoomID(thisRoom)+".");
+		Log.sysOut("Link",mob.Name()+" linked "+CMLib.map().getExtendedRoomID(mob.location())+" to room "+CMLib.map().getExtendedRoomID(thisRoom)+".");
 		return false;
 	}
 	
@@ -81,7 +92,7 @@ public class Link extends StdCommand
 		if(opRoom!=null)
 			mob.location().rawDoors()[direction]=null;
 		
-		CMMap.CrossExit CE=null;
+		WorldMap.CrossExit CE=null;
 		GridLocale hereGL=(mob.location().getGridParent()!=null)?mob.location().getGridParent():null;
 		int hereX=(hereGL!=null)?hereGL.getChildX(mob.location()):-1;
 		int hereY=(hereGL!=null)?hereGL.getChildY(mob.location()):-1;
@@ -94,13 +105,13 @@ public class Link extends StdCommand
 		{
 			for(int v=0;v<hereSet.size();v++)
 			{
-				CE=(CMMap.CrossExit)hereSet.elementAt(v);
+				CE=(WorldMap.CrossExit)hereSet.elementAt(v);
 				if((CE.out)
 				&&(CE.dir==direction)
 				&&(CE.x==hereX)&&(CE.y==hereY))
 				   hereGL.delOuterExit(CE);
 			}
-			CE=CMMap.CrossExit.make(hereX,hereY,direction,CMMap.getExtendedRoomID(room),true);
+			CE=WorldMap.CrossExit.make(hereX,hereY,direction,CMLib.map().getExtendedRoomID(room),true);
 			hereGL.addOuterExit(CE);
 		}
 		
@@ -119,13 +130,13 @@ public class Link extends StdCommand
 		{
 			for(int v=0;v<thereSet.size();v++)
 			{
-				CE=(CMMap.CrossExit)thereSet.elementAt(v);
+				CE=(WorldMap.CrossExit)thereSet.elementAt(v);
 				if((!CE.out)
 				&&(CE.dir==direction)
-				&&(CE.destRoomID.equals(CMMap.getExtendedRoomID(mob.location()))))
+				&&(CE.destRoomID.equals(CMLib.map().getExtendedRoomID(mob.location()))))
 				   thereGL.delOuterExit(CE);
 			}
-			CE=CMMap.CrossExit.make(thereX,thereY,direction,CMMap.getExtendedRoomID(mob.location()),false);
+			CE=WorldMap.CrossExit.make(thereX,thereY,direction,CMLib.map().getExtendedRoomID(mob.location()),false);
 			thereGL.addOuterExit(CE);
 			
 			if((room.rawDoors()[opDir]==null)
@@ -134,26 +145,26 @@ public class Link extends StdCommand
 			{
 				for(int v=0;v<thereSet.size();v++)
 				{
-					CE=(CMMap.CrossExit)thereSet.elementAt(v);
+					CE=(WorldMap.CrossExit)thereSet.elementAt(v);
 					if((CE.out)
 					&&(CE.dir==opDir)
 					&&(CE.x==thereX)&&(CE.y==thereY))
 					   thereGL.delOuterExit(CE);
 				}
-				CE=CMMap.CrossExit.make(thereX,thereY,opDir,CMMap.getExtendedRoomID(mob.location()),true);
+				CE=WorldMap.CrossExit.make(thereX,thereY,opDir,CMLib.map().getExtendedRoomID(mob.location()),true);
 				thereGL.addOuterExit(CE);
 				if(hereGL!=null)
 				{
 					room.rawDoors()[opDir]=hereGL;
 					for(int v=0;v<hereSet.size();v++)
 					{
-						CE=(CMMap.CrossExit)hereSet.elementAt(v);
+						CE=(WorldMap.CrossExit)hereSet.elementAt(v);
 						if((!CE.out)
 						&&(CE.dir==opDir)
-						&&(CE.destRoomID.equals(CMMap.getExtendedRoomID(room))))
+						&&(CE.destRoomID.equals(CMLib.map().getExtendedRoomID(room))))
 						   hereGL.delOuterExit(CE);
 					}
-					CE=CMMap.CrossExit.make(hereX,hereY,opDir,CMMap.getExtendedRoomID(room),false);
+					CE=WorldMap.CrossExit.make(hereX,hereY,opDir,CMLib.map().getExtendedRoomID(room),false);
 					hereGL.addOuterExit(CE);
 				}
 				else
@@ -169,13 +180,13 @@ public class Link extends StdCommand
 				room.rawDoors()[opDir]=hereGL;
 				for(int v=0;v<hereSet.size();v++)
 				{
-					CE=(CMMap.CrossExit)hereSet.elementAt(v);
+					CE=(WorldMap.CrossExit)hereSet.elementAt(v);
 					if((!CE.out)
 					&&(CE.dir==opDir)
 					&&(CE.destRoomID.equals(room.roomID())))
 					   hereGL.delOuterExit(CE);
 				}
-				CE=CMMap.CrossExit.make(hereX,hereY,opDir,CMMap.getExtendedRoomID(room),false);
+				CE=WorldMap.CrossExit.make(hereX,hereY,opDir,CMLib.map().getExtendedRoomID(room),false);
 				hereGL.addOuterExit(CE);
 			}
 			else
@@ -183,13 +194,13 @@ public class Link extends StdCommand
 			room.rawExits()[opDir]=thisExit;
 		}
 		if(hereGL!=null)
-			CMClass.DBEngine().DBUpdateExits(hereGL);
+			CMLib.database().DBUpdateExits(hereGL);
 		else
-			CMClass.DBEngine().DBUpdateExits(mob.location());
+			CMLib.database().DBUpdateExits(mob.location());
 		if(thereGL!=null)
-			CMClass.DBEngine().DBUpdateExits(thereGL);
+			CMLib.database().DBUpdateExits(thereGL);
 		else
-			CMClass.DBEngine().DBUpdateExits(room);
+			CMLib.database().DBUpdateExits(room);
 	}
 
 	

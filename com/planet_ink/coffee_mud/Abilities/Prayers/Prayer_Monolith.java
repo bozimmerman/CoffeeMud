@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -62,8 +73,8 @@ public class Prayer_Monolith extends Prayer
 					if(w==null) w=mob.myNaturalWeapon();
 					if(w==null) return false;
 					Room room=mob.location();
-                    FullMsg msg2=new FullMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the monolith of ice with "+w.name()+".^</FIGHT^>^?");
-                    CMColor.fixSourceFightColor(msg2);
+                    CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the monolith of ice with "+w.name()+".^</FIGHT^>^?");
+                    CMLib.color().fixSourceFightColor(msg2);
                     if(room.okMessage(mob,msg2))
                     {
                         room.send(mob,msg2);
@@ -78,7 +89,7 @@ public class Prayer_Monolith extends Prayer
     							&&(M.rangeToTarget()>0)
     							&&(M.rangeToTarget()<3)
     							&&(!M.amDead()))
-    								MUDFight.postDamage(invoker,M,this,Dice.roll(M.envStats().level()/2,6,0),CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
+    								CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(M.envStats().level()/2,6,0),CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
     						}
     					    mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The monolith of ice shatters!!!");
     						((Item)affected).destroy();
@@ -108,11 +119,11 @@ public class Prayer_Monolith extends Prayer
 				M.setName("The monolith of air");
 				M.setVictim(mob);
 				M.setAtRange(mob.rangeToTarget());
-				MUDFight.postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
+				CMLib.combat().postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
 				M.setLocation(null);
 				M.setVictim(null);
 				if(mob.isMonster())
-					CommonMsgs.remove(mob,(Weapon)msg.tool(),true);
+					CMLib.commands().remove(mob,(Weapon)msg.tool(),true);
                 M.destroy();
 				return false;
 			}
@@ -211,8 +222,8 @@ public class Prayer_Monolith extends Prayer
 						&&(mob.getVictim()==invoker)
 						&&(mob.rangeToTarget()==1))
 						{
-							int damage = Dice.roll((int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/4.0),6,1);
-							MUDFight.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The monolith of fire flares and <DAMAGE> <T-NAME>!");
+							int damage = CMLib.dice().roll((int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/4.0),6,1);
+							CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The monolith of fire flares and <DAMAGE> <T-NAME>!");
 						}
 					}
 				}
@@ -259,7 +270,7 @@ public class Prayer_Monolith extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			wallType=Dice.roll(1,4,-1);
+			wallType=CMLib.dice().roll(1,4,-1);
 			String text=text().toUpperCase().trim();
 			if((text.indexOf("STONE")>=0)||(text.indexOf("EARTH")>=0))
 				wallType=TYP_EARTH;
@@ -307,11 +318,11 @@ public class Prayer_Monolith extends Prayer
 				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE);
 				break;
 			}
-			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),auto?I.name()+" appears!":"^S<S-NAME> "+prayForWord(mob)+" to construct "+I.name()+"!^?");
+			CMMsg msg = CMClass.getMsg(mob, target, this,affectType(auto),auto?I.name()+" appears!":"^S<S-NAME> "+prayForWord(mob)+" to construct "+I.name()+"!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Sense.setGettable(I,false);
+				CMLib.flags().setGettable(I,false);
 				I.recoverEnvStats();
 				mob.location().addItem(I);
 				theWall=I;

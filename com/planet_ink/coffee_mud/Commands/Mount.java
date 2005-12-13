@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -63,12 +74,12 @@ public class Mount extends StdCommand
 			    MOB M=mob.location().fetchInhabitant((String)commands.firstElement());
 			    if(M!=null)
 			    {
-			        if(!Sense.canBeSeenBy(M,mob))
+			        if(!CMLib.flags().canBeSeenBy(M,mob))
 			        {
 			            mob.tell("You don't see "+((String)commands.firstElement())+" here.");
 			            return false;
 			        }
-			        if((!Sense.isBoundOrHeld(M))&&(!M.willFollowOrdersOf(mob)))
+			        if((!CMLib.flags().isBoundOrHeld(M))&&(!M.willFollowOrdersOf(mob)))
 			        {
 			            mob.tell("Only the bound or servants can be mounted unwillingly.");
 			            return false;
@@ -79,12 +90,12 @@ public class Mount extends StdCommand
 			    }
 			}
 		}
-		recipient=EnglishParser.fetchEnvironmental(possRecipients,Util.combine(commands,0),true);
+		recipient=CMLib.english().fetchEnvironmental(possRecipients,Util.combine(commands,0),true);
 		if(recipient==null)
-			recipient=EnglishParser.fetchEnvironmental(possRecipients,Util.combine(commands,0),false);
+			recipient=CMLib.english().fetchEnvironmental(possRecipients,Util.combine(commands,0),false);
 		if(recipient==null)
 			recipient=mob.location().fetchFromRoomFavorMOBs(null,Util.combine(commands,0),Item.WORN_REQ_UNWORNONLY);
-		if((recipient==null)||((recipient!=null)&&(!Sense.canBeSeenBy(recipient,mob))))
+		if((recipient==null)||((recipient!=null)&&(!CMLib.flags().canBeSeenBy(recipient,mob))))
 		{
 			mob.tell(getScr("Movement","youdontsee",Util.combine(commands,0)));
 			return false;
@@ -104,7 +115,7 @@ public class Mount extends StdCommand
 			else
 				mountStr=getScr("Movement","mounts");
 		}
-		FullMsg msg=new FullMsg(mob,recipient,RI,CMMsg.MSG_MOUNT,mountStr);
+		CMMsg msg=CMClass.getMsg(mob,recipient,RI,CMMsg.MSG_MOUNT,mountStr);
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;

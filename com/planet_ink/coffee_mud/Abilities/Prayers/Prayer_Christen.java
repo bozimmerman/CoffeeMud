@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -60,7 +71,7 @@ public class Prayer_Christen extends Prayer
 
 		name=Util.capitalizeAndLower(name);
 
-		if(CMClass.DBEngine().DBUserSearch(null,name))
+		if(CMLib.database().DBUserSearch(null,name))
 		{
 			mob.tell("That name is already taken.  Please choose another.");
 			return false;
@@ -77,7 +88,7 @@ public class Prayer_Christen extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> becomes "+name+".":"^S<S-NAME> christen(s) <T-NAMESELF> '"+name+"'.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> becomes "+name+".":"^S<S-NAME> christen(s) <T-NAMESELF> '"+name+"'.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -88,9 +99,9 @@ public class Prayer_Christen extends Prayer
 				txt=Util.replaceFirst(txt,"<NAME>"+oldName+"</NAME>","<NAME>"+name+"</NAME>");
 				txt=Util.replaceFirst(txt,"<DISP>"+oldName,"<DISP>"+name);
 				((CagedAnimal)target).setCageText(txt);
-                Vector channels=ChannelSet.getFlaggedChannelNames("CHRISTENINGS");
+                Vector channels=CMLib.channels().getFlaggedChannelNames("CHRISTENINGS");
                 for(int i=0;i<channels.size();i++)
-                    CommonMsgs.channel((String)channels.elementAt(i),mob.getClanID(),target.name()+" was just christened.",true);
+                    CMLib.commands().channel((String)channels.elementAt(i),mob.getClanID(),target.name()+" was just christened.",true);
 			}
 		}
 		else

@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -50,7 +61,7 @@ public class ClanDeclare extends BaseClanner
 			}
 			else
 			{
-				C=Clans.getClan(mob.getClanID());
+				C=CMLib.clans().getClan(mob.getClanID());
 				if(C==null)
 				{
 					mob.tell(getScr("ClanDeclare","nolonger",mob.getClanID()));
@@ -67,7 +78,7 @@ public class ClanDeclare extends BaseClanner
 						mob.tell(getScr("ClanDeclare","notvrel",rel));
 						return false;
 					}
-					Clan C2=Clans.findClan(clan);
+					Clan C2=CMLib.clans().findClan(clan);
 					if(C2==null)
 					{
 						mob.tell(getScr("ClanDeclare","notvclan",clan));
@@ -78,16 +89,16 @@ public class ClanDeclare extends BaseClanner
 						mob.tell(getScr("ClanDeclare","cantdothat"));
 						return false;
 					}
-					if(C.getClanRelations(C2.ID())==newRole)
+					if(C.getClanRelations(C2.clanID())==newRole)
 					{
-						mob.tell(getScr("ClanDeclare","alreadystate",C2.ID()));
+						mob.tell(getScr("ClanDeclare","alreadystate",C2.clanID()));
 						return false;
 
 					}
-					long last=C.getLastRelationChange(C2.ID());
-					if(last>(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDMONTH)*MudHost.TICK_TIME))
+					long last=C.getLastRelationChange(C2.clanID());
+					if(last>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)*MudHost.TICK_TIME))
 					{
-						last=last+(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDMONTH)*MudHost.TICK_TIME);
+						last=last+(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)*MudHost.TICK_TIME);
 						if(System.currentTimeMillis()<last)
 						{
 							mob.tell(getScr("ClanDeclare","waitforrel"));
@@ -96,8 +107,8 @@ public class ClanDeclare extends BaseClanner
 					}
 					if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDECLARE,true))
 					{
-						clanAnnounce(mob,getScr("ClanDeclare","declared",C.typeName(),C.ID(),Util.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase()),C2.name()));
-						C.setClanRelations(C2.ID(),newRole,System.currentTimeMillis());
+						clanAnnounce(mob,getScr("ClanDeclare","declared",C.typeName(),C.clanID(),Util.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase()),C2.name()));
+						C.setClanRelations(C2.clanID(),newRole,System.currentTimeMillis());
 						C.update();
 						return false;
 					}

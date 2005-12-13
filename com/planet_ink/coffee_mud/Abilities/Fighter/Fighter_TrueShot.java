@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -21,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_TrueShot extends StdAbility
+public class Fighter_TrueShot extends FighterSkill
 {
 	public String ID() { return "Fighter_TrueShot"; }
 	public String name(){ return "True Shot";}
@@ -61,7 +71,7 @@ public class Fighter_TrueShot extends StdAbility
 		if((msg.amISource(mob))
 		&&(gettingBonus)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
-		&&(Dice.rollPercentage()>95)
+		&&(CMLib.dice().rollPercentage()>95)
 		&&(mob.isInCombat())
 		&&(!mob.amDead())
 		&&(msg.target() instanceof MOB))

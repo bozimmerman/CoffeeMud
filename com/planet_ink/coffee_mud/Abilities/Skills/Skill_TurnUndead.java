@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -20,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_TurnUndead extends StdAbility
+public class Skill_TurnUndead extends StdSkill
 {
 	public String ID() { return "Skill_TurnUndead"; }
 	public String name(){ return "Turn Undead";}
@@ -44,7 +54,7 @@ public class Skill_TurnUndead extends StdAbility
 			return false;
 		}
 
-		if(Sense.isEvil(mob))
+		if(CMLib.flags().isEvil(mob))
 		{
 			mob.tell("Only the riteous may turn the undead.");
 			return false;
@@ -65,7 +75,7 @@ public class Skill_TurnUndead extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> turn(s) away.":"^S<S-NAME> turn(s) <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> turn(s) away.":"^S<S-NAME> turn(s) <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -74,12 +84,12 @@ public class Skill_TurnUndead extends StdAbility
 					if((mob.envStats().level()-target.envStats().level())>6)
 					{
 						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> wither(s)"+(auto?".":" under <S-HIS-HER> holy power!"));
-						MUDFight.postDamage(mob,target,this,target.curState().getHitPoints(),CMMsg.MSG_OK_VISUAL,-1,null);
+						CMLib.combat().postDamage(mob,target,this,target.curState().getHitPoints(),CMMsg.MSG_OK_VISUAL,-1,null);
 					}
 					else
 					{
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shake(s) in fear!");
-						CommonMsgs.flee(target,"");
+						CMLib.commands().flee(target,"");
 					}
 					invoker=mob;
 				}

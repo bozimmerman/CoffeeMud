@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -37,7 +48,7 @@ public class Prayer_BirdsEye extends Prayer
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for a birds eye view.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for a birds eye view.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -45,14 +56,14 @@ public class Prayer_BirdsEye extends Prayer
 				if(I!=null)
 				{
 					Vector set=new Vector();
-					MUDTracker.getRadiantRooms(mob.location(),set,false,false,true,true,false,null,2);
+					CMLib.tracking().getRadiantRooms(mob.location(),set,false,false,true,true,false,null,2);
 					StringBuffer str=new StringBuffer("");
 					for(int i=0;i<set.size();i++)
-						str.append(CMMap.getExtendedRoomID((Room)set.elementAt(i))+";");
+						str.append(CMLib.map().getExtendedRoomID((Room)set.elementAt(i))+";");
 					I.setReadableText(str.toString());
 					I.setName("");
 					I.baseEnvStats().setDisposition(EnvStats.IS_GLOWING);
-					msg=new FullMsg(mob,I,CMMsg.MSG_READ,"");
+					msg=CMClass.getMsg(mob,I,CMMsg.MSG_READ,"");
 					mob.addInventory(I);
 					mob.location().send(mob,msg);
 					I.destroy();

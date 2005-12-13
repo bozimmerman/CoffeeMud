@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -82,7 +93,7 @@ public class Thief_Sap extends ThiefSkill
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> regain(s) consciousness.");
-				CommonMsgs.stand(mob,true);
+				CMLib.commands().stand(mob,true);
 			}
 			else
 				mob.tell("You regain consciousness.");
@@ -104,7 +115,7 @@ public class Thief_Sap extends ThiefSkill
 				return false;
 			}
 
-			if(Sense.canBeSeenBy(mob,target))
+			if(CMLib.flags().canBeSeenBy(mob,target))
 			{
 				mob.tell(target.name()+" is watching you way too closely.");
 				return false;
@@ -130,7 +141,7 @@ public class Thief_Sap extends ThiefSkill
 		else
 			levelDiff=0;
 		// now see if it worked
-		boolean hit=(auto)||MUDFight.rollToHit(mob,target);
+		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		boolean success=profficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STRENGTH)-mob.charStats().getStat(CharStats.STRENGTH)))),auto)&&(hit);
 		if(success)
 		{
@@ -139,8 +150,8 @@ public class Thief_Sap extends ThiefSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_THIEF_ACT|CMMsg.MASK_SOUND|CMMsg.MSK_MALICIOUS_MOVE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> hit(s) the floor!":"^F^<FIGHT^><S-NAME> sneak(s) up behind <T-NAMESELF> and knock(s) <T-HIM-HER> out!^</FIGHT^>^?");
-            CMColor.fixSourceFightColor(msg);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT|CMMsg.MASK_SOUND|CMMsg.MSK_MALICIOUS_MOVE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> hit(s) the floor!":"^F^<FIGHT^><S-NAME> sneak(s) up behind <T-NAMESELF> and knock(s) <T-HIM-HER> out!^</FIGHT^>^?");
+            CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

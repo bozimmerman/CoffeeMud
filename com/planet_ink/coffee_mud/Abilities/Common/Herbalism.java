@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -28,8 +39,8 @@ public class Herbalism extends CraftingSkill
 	public String name(){ return "Herbalism";}
 	private static final String[] triggerStrings = {"HERBALISM","HERBREW","HBREW"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLTRAINCOST);}
-	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST);}
+	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
+	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
 
 	private Item building=null;
 	String oldName="";
@@ -208,8 +219,8 @@ public class Herbalism extends CraftingSkill
 			int experienceToLose=10;
 			if((theSpell.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
 			{
-				experienceToLose+=CMAble.qualifyingLevel(mob,theSpell)*10;
-				experienceToLose-=CMAble.qualifyingClassLevel(mob,theSpell)*5;
+				experienceToLose+=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*10;
+				experienceToLose-=CMLib.ableMapper().qualifyingClassLevel(mob,theSpell)*5;
 			}
 
 			Vector V=((Container)building).getContents();
@@ -223,7 +234,7 @@ public class Herbalism extends CraftingSkill
 					for(int v=0;v<V.size();v++)
 					{
 						Item I=(Item)V.elementAt(v);
-						if(EnglishParser.containsString(I.Name(),ingredient)
+						if(CMLib.english().containsString(I.Name(),ingredient)
 						||(EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK].equalsIgnoreCase(ingredient)))
 						{ ok=true; break;}
 					}
@@ -243,7 +254,7 @@ public class Herbalism extends CraftingSkill
 				{
 					String ingredient=((String)recipe.elementAt(i)).trim();
 					if(ingredient.length()>0)
-						if(EnglishParser.containsString(I.Name(),ingredient)
+						if(CMLib.english().containsString(I.Name(),ingredient)
 						||(EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK].equalsIgnoreCase(ingredient)))
 						{ ok=true; break;}
 				}
@@ -259,7 +270,7 @@ public class Herbalism extends CraftingSkill
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 
-			MUDFight.postExperience(mob,null,null,-experienceToLose,false);
+			CMLib.combat().postExperience(mob,null,null,-experienceToLose,false);
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
 			oldName=building.name();
 			building.destroy();
@@ -275,7 +286,7 @@ public class Herbalism extends CraftingSkill
 			building.text();
             playSound="hotspring.wav";
 
-			int completion=CMAble.qualifyingLevel(mob,theSpell)*5;
+			int completion=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
 			if(completion<10) completion=10;
 
 			messedUp=!profficiencyCheck(mob,0,auto);
@@ -285,7 +296,7 @@ public class Herbalism extends CraftingSkill
 				return true;
 			}
 
-			FullMsg msg=new FullMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,null);
+			CMMsg msg=CMClass.getMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

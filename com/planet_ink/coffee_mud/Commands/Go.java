@@ -1,7 +1,19 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -197,17 +209,17 @@ public class Go extends StdCommand
 		if(flee)
 			leaveCode=generalMask|CMMsg.MSG_FLEE;
 
-		FullMsg enterMsg=null;
-		FullMsg leaveMsg=null;
+		CMMsg enterMsg=null;
+		CMMsg leaveMsg=null;
 		if((mob.riding()!=null)&&(mob.riding().mobileRideBasis()))
 		{
-			enterMsg=new FullMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,getScr("Movement","sridesin",mob.riding().name(),otherDirectionName));
-			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?getScr("Movement","youflee",directionName):null),leaveCode,null,leaveCode,((flee)?getScr("Movement","sfleeswith",mob.riding().name(),directionName):getScr("Movement","srides",mob.riding().name(),directionName)));
+			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,getScr("Movement","sridesin",mob.riding().name(),otherDirectionName));
+			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?getScr("Movement","youflee",directionName):null),leaveCode,null,leaveCode,((flee)?getScr("Movement","sfleeswith",mob.riding().name(),directionName):getScr("Movement","srides",mob.riding().name(),directionName)));
 		}
 		else
 		{
-			enterMsg=new FullMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,getScr("Movement","senter",Sense.dispositionString(mob,Sense.flag_arrives),otherDirectionName));
-			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?getScr("Movement","youflee",directionName):null),leaveCode,null,leaveCode,((flee)?getScr("Movement","sflees",directionName):getScr("Movement","sleaves",Sense.dispositionString(mob,Sense.flag_leaves),directionName)));
+			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,getScr("Movement","senter",CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_arrives),otherDirectionName));
+			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?getScr("Movement","youflee",directionName):null),leaveCode,null,leaveCode,((flee)?getScr("Movement","sflees",directionName):getScr("Movement","sleaves",CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_leaves),directionName)));
 		}
 		boolean gotoAllowed=CMSecurity.isAllowed(mob,destRoom,"GOTO");
 		if((exit==null)&&(!gotoAllowed))
@@ -250,7 +262,7 @@ public class Go extends StdCommand
 			}
 			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.riding()==null)&&(mob.location()!=null))
 			    mob.playerStats().adjHygiene(mob.location().pointsPerMove(mob));
-			long minMoveTime=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINMOVETIME);
+			long minMoveTime=CMProps.getIntVar(CMProps.SYSTEMI_MINMOVETIME);
 			if((minMoveTime>0)&&(!flee))
 			{
 				minMoveTime-=Math.round((mob.envStats().speed()-1.0)*100.0);
@@ -290,7 +302,7 @@ public class Go extends StdCommand
 
 		if(!nolook)
         {
-			CommonMsgs.look(mob,true);
+			CMLib.commands().look(mob,true);
             if((!mob.isMonster())
             &&(Util.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER))
             &&(thisRoom!=null)
@@ -315,7 +327,7 @@ public class Go extends StdCommand
 				&&((follower.location()==thisRoom)||(follower.location()==destRoom)))
 				{
 					if((follower.location()==thisRoom)
-					&&(Sense.aliveAwakeMobile(follower,true))
+					&&(CMLib.flags().aliveAwakeMobile(follower,true))
 					&&(!Util.bset(follower.getBitmap(),MOB.ATT_AUTOGUARD)))
 					{
 						follower.tell(getScr("Movement","youfollow",mob.name(),Directions.getDirectionName(directionCode)));

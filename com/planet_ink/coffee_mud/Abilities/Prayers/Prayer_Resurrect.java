@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -50,12 +61,12 @@ public class Prayer_Resurrect extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,body,this,affectType(auto),auto?"<T-NAME> is resurrected!":"^S<S-NAME> resurrect(s) <T-NAMESELF>!^?");
+			CMMsg msg=CMClass.getMsg(mob,body,this,affectType(auto),auto?"<T-NAME> is resurrected!":"^S<S-NAME> resurrect(s) <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				invoker=mob;
 				mob.location().send(mob,msg);
-				MOB rejuvedMOB=CMMap.getPlayer(((DeadBody)body).mobName());
+				MOB rejuvedMOB=CMLib.map().getPlayer(((DeadBody)body).mobName());
 				if(rejuvedMOB!=null)
 				{
 					rejuvedMOB.tell("You are being resurrected.");
@@ -75,9 +86,9 @@ public class Prayer_Resurrect extends Prayer
 						Item item=rejuvedMOB.location().fetchItem(it);
 						if((item!=null)&&(item.container()==body))
 						{
-							FullMsg msg2=new FullMsg(rejuvedMOB,body,item,CMMsg.MSG_GET,null);
+							CMMsg msg2=CMClass.getMsg(rejuvedMOB,body,item,CMMsg.MSG_GET,null);
 							rejuvedMOB.location().send(rejuvedMOB,msg2);
-							FullMsg msg3=new FullMsg(rejuvedMOB,item,null,CMMsg.MSG_GET,null);
+							CMMsg msg3=CMClass.getMsg(rejuvedMOB,item,null,CMMsg.MSG_GET,null);
 							rejuvedMOB.location().send(rejuvedMOB,msg3);
 							it=0;
 						}
@@ -87,7 +98,7 @@ public class Prayer_Resurrect extends Prayer
 					body.destroy();
 					rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
 					mob.location().recoverRoomStats();
-					Vector whatsToDo=Util.parse(CommonStrings.getVar(CommonStrings.SYSTEM_PLAYERDEATH));
+					Vector whatsToDo=Util.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
 					for(int w=0;w<whatsToDo.size();w++)
 					{
 						String whatToDo=(String)whatsToDo.elementAt(w);
@@ -104,7 +115,7 @@ public class Prayer_Resurrect extends Prayer
 						{
 							int expLost=Util.s_int(whatToDo)/2;
 							rejuvedMOB.tell("^*You regain "+expLost+" experience points.^?^.");
-							MUDFight.postExperience(rejuvedMOB,null,null,expLost,false);
+							CMLib.combat().postExperience(rejuvedMOB,null,null,expLost,false);
 						}
 						else
 						if(whatToDo.length()<3)
@@ -113,7 +124,7 @@ public class Prayer_Resurrect extends Prayer
 						{
 							int expLost=(100*rejuvedMOB.envStats().level())/2;
 							rejuvedMOB.tell("^*You regain "+expLost+" experience points.^?^.");
-							MUDFight.postExperience(rejuvedMOB,null,null,expLost,false);
+							CMLib.combat().postExperience(rejuvedMOB,null,null,expLost,false);
 						}
 					}
 				}

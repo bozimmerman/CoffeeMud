@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -82,7 +93,7 @@ public class Examine extends StdCommand
                     if(dirCode>=0)
                         name=Directions.getDirectionName(dirCode);
                 }
-                FullMsg msg=new FullMsg(mob,thisThang,null,CMMsg.MSG_EXAMINE,textMsg+name+" closely.");
+                CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EXAMINE,textMsg+name+" closely.");
                 if(mob.location().okMessage(mob,msg))
                     mob.location().send(mob,msg);
                 if((thisThang instanceof Room)&&(Util.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS)))
@@ -93,11 +104,11 @@ public class Examine extends StdCommand
         }
         else
         {
-            FullMsg msg=new FullMsg(mob,mob.location(),null,CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"at you."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."));
+            CMMsg msg=CMClass.getMsg(mob,mob.location(),null,CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"at you."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."));
             if(mob.location().okMessage(mob,msg))
                 mob.location().send(mob,msg);
             if((Util.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))
-            &&(Sense.canBeSeenBy(mob.location(),mob)))
+            &&(CMLib.flags().canBeSeenBy(mob.location(),mob)))
                 mob.location().listExits(mob);
         }
         return false;

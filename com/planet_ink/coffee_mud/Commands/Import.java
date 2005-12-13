@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 import java.io.IOException;
@@ -310,7 +321,7 @@ public class Import extends StdCommand
 				if(areaName.indexOf(colors[s1][0])>=0)
 					areaName=Util.replaceAll(areaName,colors[s1][0],colors[s1][1]);
 		}
-		return Util.removeColors(CoffeeFilter.safetyFilter(areaName));
+		return Util.removeColors(CMLib.coffeeFilter().safetyFilter(areaName));
 	}
 	
 	private static String getAreaAuthor(Vector V)
@@ -1567,7 +1578,7 @@ public class Import extends StdCommand
 			if(useThisOne!=null)
 			{
 				if(okString)
-					useThisOne.addElement(CoffeeFilter.safetyFilter((String)buf.elementAt(0)));
+					useThisOne.addElement(CMLib.coffeeFilter().safetyFilter((String)buf.elementAt(0)));
 				buf.removeElementAt(0);
 			}
 			else
@@ -1819,10 +1830,10 @@ public class Import extends StdCommand
 			if(!mobID.equals(OfThisID))
 				continue;
 
-			String simpleName=CoffeeFilter.safetyFilter(eatLineSquiggle(objV));
-			String mobName=CoffeeFilter.safetyFilter(eatLineSquiggle(objV));
-			String mobDisplay=CoffeeFilter.safetyFilter(eatLineSquiggle(objV));
-			String mobDescription=CoffeeFilter.safetyFilter(eatLineSquiggle(objV));
+			String simpleName=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
+			String mobName=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
+			String mobDisplay=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
+			String mobDescription=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
 			Race R=null;
 			boolean circleFormat=false;
 			if(nextLine(objV).endsWith("~"))
@@ -1914,7 +1925,7 @@ public class Import extends StdCommand
 			if(!mobDescription.trim().equalsIgnoreCase("OLDSTYLE"))
 				M.setDescription(mobDescription);
 			aliFlag=(int)Math.round(Util.div(aliFlag,2));
-			Factions.setAlignmentOldRange(M,500+aliFlag);
+			CMLib.factions().setAlignmentOldRange(M,500+aliFlag);
 			M.setStartRoom(putInRoom);
 			M.setLocation(putInRoom);
 			M.baseCharStats().setMyRace(R);
@@ -1990,7 +2001,7 @@ public class Import extends StdCommand
 			}
 			if(Util.isSet(affFlag,6))
 			{
-				if(Sense.isEvil(M))
+				if(CMLib.flags().isEvil(M))
 				   M.addNonUninvokableEffect(CMClass.getAbility("Prayer_UnholyWord"));
 				else
 				   M.addNonUninvokableEffect(CMClass.getAbility("Prayer_HolyWord"));
@@ -2104,7 +2115,7 @@ public class Import extends StdCommand
 						sexCode=2;
 					else
 					if(Util.getCleanBit(codeStr4,2).toUpperCase().equals("EITHER"))
-						sexCode=(Dice.rollPercentage()>50)?1:2;
+						sexCode=(CMLib.dice().rollPercentage()>50)?1:2;
 					else
 						sexCode=3;
 
@@ -2126,7 +2137,7 @@ public class Import extends StdCommand
 					positionCode=Util.s_int(Util.getCleanBit(codeStr4,0));
 					sexCode=Util.s_int(Util.getCleanBit(codeStr4,2));
 				}
-				if(Dice.rollPercentage()>75)
+				if(CMLib.dice().rollPercentage()>75)
 					M.addBehavior(CMClass.getBehavior("MudChat"));
 			}
 			else
@@ -2148,7 +2159,7 @@ public class Import extends StdCommand
 			if(circleFormat)
 				M.setMoney(Util.s_int(Util.getCleanBit(codeStr4,3)));
 			else
-				M.setMoney(Dice.roll(1,M.baseEnvStats().level(),0)+Dice.roll(1,10,0));
+				M.setMoney(CMLib.dice().roll(1,M.baseEnvStats().level(),0)+CMLib.dice().roll(1,10,0));
 			M.baseEnvStats().setWeight(50);
 
 			switch(positionCode)
@@ -2782,12 +2793,12 @@ public class Import extends StdCommand
 			if(!objectID.equals(OfThisID))
 				continue;
 
-			String simpleName=CoffeeFilter.safetyFilter(eatLineSquiggle(objV));
-			String objectName=CoffeeFilter.safetyFilter(eatLineSquiggle(objV));
-			String objectDisplay=CoffeeFilter.safetyFilter(eatLineSquiggle(objV));
+			String simpleName=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
+			String objectName=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
+			String objectDisplay=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
 			String objectDescription="";
 			if((nextLine(objV).indexOf("~")>=0)||((nextLine(objV).length()>0)&&(!Character.isDigit(nextLine(objV).charAt(0)))))
-				objectDescription=CoffeeFilter.safetyFilter(eatLineSquiggle(objV));
+				objectDescription=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
 			String codeStr1=eatNextLine(objV);
 			String codeStr2=eatNextLine(objV);
 			String codeStr3=eatNextLine(objV);
@@ -2960,9 +2971,9 @@ public class Import extends StdCommand
 						I=CMClass.getStdItem("GenReadable");
 					 break;
 			case 14: I=CMClass.getStdItem("GenItem"); break;
-			case 15: if(EnglishParser.containsString(objectName,"belt")
-					 ||EnglishParser.containsString(objectName,"bandolier")
-					 ||EnglishParser.containsString(objectName,"sheath"))
+			case 15: if(CMLib.english().containsString(objectName,"belt")
+					 ||CMLib.english().containsString(objectName,"bandolier")
+					 ||CMLib.english().containsString(objectName,"sheath"))
 						I=CMClass.getArmor("GenArmor");
 					 else
 						I=CMClass.getStdItem("GenContainer");
@@ -3071,7 +3082,7 @@ public class Import extends StdCommand
 			case 23: I=CMClass.getStdItem("GenCorpse"); break;
 			case 24: I=CMClass.getStdItem("GenCorpse"); break;
 			case 25: I=CMClass.getStdItem("GenWater");
-					 Sense.setGettable(I,false);
+					 CMLib.flags().setGettable(I,false);
 					 ((Drink)I).setLiquidHeld(Integer.MAX_VALUE-5000);
 					 ((Drink)I).setLiquidRemaining(((Drink)I).liquidHeld());
 					 break;
@@ -3090,7 +3101,7 @@ public class Import extends StdCommand
 						 if(R!=null) 
 							 I.setReadableText(R.roomID());
 						 else
-						 for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+						 for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 						 {
 							 R=(Room)e.nextElement();
 							 if(R.roomID().endsWith("#"+str4))
@@ -3114,7 +3125,7 @@ public class Import extends StdCommand
 			}
 
 			if(!Util.isSet(wearFlag,0))
-				Sense.setGettable(I,false);
+				CMLib.flags().setGettable(I,false);
 			if(Util.isSet(wearFlag,1))
 				I.setRawProperLocationBitmap(Item.ON_LEFT_FINGER|Item.ON_RIGHT_FINGER|I.rawProperLocationBitmap());
 			if(Util.isSet(wearFlag,2))
@@ -3163,12 +3174,12 @@ public class Import extends StdCommand
 				{
 					long wear=I.rawProperLocationBitmap();
 					boolean bool=I.rawLogicalAnd();
-					boolean gettable=Sense.isGettable(I);
+					boolean gettable=CMLib.flags().isGettable(I);
 					I=CMClass.getArmor("GenArmor");
 					I.setRawProperLocationBitmap(wear);
 					I.setRawLogicalAnd(bool);
 					I.baseEnvStats().setArmor(0);
-					Sense.setGettable(I,gettable);
+					CMLib.flags().setGettable(I,gettable);
 				}
 			}
 
@@ -3229,18 +3240,18 @@ public class Import extends StdCommand
 
 			if((I instanceof Armor)&&(((Armor)I).containTypes()==Container.CONTAIN_ANYTHING))
 			{
-				if(EnglishParser.containsString(objectName,"belt")
-				||EnglishParser.containsString(objectName,"bandolier")
-				||EnglishParser.containsString(objectName,"sheath"))
+				if(CMLib.english().containsString(objectName,"belt")
+				||CMLib.english().containsString(objectName,"bandolier")
+				||CMLib.english().containsString(objectName,"sheath"))
 				{
 					((Armor)I).setContainTypes(Container.CONTAIN_ONEHANDWEAPONS);
 					if(((Armor)I).capacity()-I.baseEnvStats().weight()<30)
 						((Armor)I).setCapacity(I.baseEnvStats().weight()+30);
 				}
 				else
-				if(EnglishParser.containsString(objectName,"boot")
-				||EnglishParser.containsString(objectName,"bracer")
-				||EnglishParser.containsString(objectName,"sheath"))
+				if(CMLib.english().containsString(objectName,"boot")
+				||CMLib.english().containsString(objectName,"bracer")
+				||CMLib.english().containsString(objectName,"sheath"))
 				{
 					((Armor)I).setContainTypes(Container.CONTAIN_DAGGERS);
 					if(((Armor)I).capacity()-I.baseEnvStats().weight()<10)
@@ -3265,7 +3276,7 @@ public class Import extends StdCommand
 				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_BONUS);
 
 			if(Util.isSet(extraFlag,7))
-				Sense.setDroppable(I,false);
+				CMLib.flags().setDroppable(I,false);
 
 			if(Util.isSet(extraFlag,8))
 				I.addNonUninvokableEffect(CMClass.getAbility("Prayer_Bless"));
@@ -3285,12 +3296,12 @@ public class Import extends StdCommand
 				I.addNonUninvokableEffect(prop_WearZapper);
 
 			if(Util.isSet(extraFlag,12))
-				Sense.setRemovable(I,false);
+				CMLib.flags().setRemovable(I,false);
 
 			//if(extraFlag&4096)==4096) coffeemud doesn't support rotting cargo
 
 			if(Util.isSet(extraFlag,14))
-				Sense.setGettable(I,false);
+				CMLib.flags().setGettable(I,false);
 
 			//if(extraFlag&16384)==16384) coffeemud doesn't support rotting cargo
 
@@ -3345,7 +3356,7 @@ public class Import extends StdCommand
 					}
 					if(!squiggleFound)
 						objV.addElement("~");
-					String desc=CoffeeFilter.safetyFilter(eatLineSquiggle(objV));
+					String desc=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
 					I.setDescription(I.description()+desc);
 					if(I.ID().equals("GenReadable"))
 						I.setReadableText(fixReadableContent(I.description()));
@@ -3727,9 +3738,9 @@ public class Import extends StdCommand
 			if(doneRooms.containsKey(roomID))
 				return (Room)doneRooms.get(roomID);
 		}
-		Room R=CMMap.getRoom(roomID);
+		Room R=CMLib.map().getRoom(roomID);
 		if(R!=null) return R;
-		return CMMap.getRoom(areaName+"#"+roomID);
+		return CMLib.map().getRoom(areaName+"#"+roomID);
 	}
 
 	public static void importCustomFiles(MOB mob, Hashtable files, HashSet customBother, boolean noPrompt)
@@ -3774,7 +3785,7 @@ public class Import extends StdCommand
 						if(!mob.session().confirm("Custom Race '"+R.ID()+"' found, import (Y/n)?","Y"))
 							continue;
 					CMClass.addRace(R);
-					CMClass.DBEngine().DBCreateRace(R.ID(),R.racialParms());
+					CMLib.database().DBCreateRace(R.ID(),R.racialParms());
 				}
 				else
 				if(!R2.isGeneric())
@@ -3783,7 +3794,7 @@ public class Import extends StdCommand
 						if(!mob.session().confirm("Custom Race '"+R.ID()+"' found which would override your standard race.  Import anyway (Y/n)?","Y"))
 							continue;
 					CMClass.addRace(R);
-					CMClass.DBEngine().DBCreateRace(R.ID(),R.racialParms());
+					CMLib.database().DBCreateRace(R.ID(),R.racialParms());
 				}
 			}
 			else
@@ -3800,7 +3811,7 @@ public class Import extends StdCommand
 						if(!mob.session().confirm("Custom Char Class '"+C.ID()+"' found, import (Y/n)?","Y"))
 							continue;
 					CMClass.addCharClass(C);
-					CMClass.DBEngine().DBCreateClass(C.ID(),C.classParms());
+					CMLib.database().DBCreateClass(C.ID(),C.classParms());
 				}
 				else
 				if(!C2.isGeneric())
@@ -3809,7 +3820,7 @@ public class Import extends StdCommand
 						if(!mob.session().confirm("Custom Char Class '"+C.ID()+"' found which would override your standard class.  Import anyway (Y/n)?","Y"))
 							continue;
 					CMClass.addCharClass(C);
-					CMClass.DBEngine().DBCreateClass(C.ID(),C.classParms());
+					CMLib.database().DBCreateClass(C.ID(),C.classParms());
 				}
 			}
 		}
@@ -3823,7 +3834,7 @@ public class Import extends StdCommand
 		}
 	    try
 	    {
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(!R.getArea().Name().equalsIgnoreCase(areaName))
@@ -3840,7 +3851,7 @@ public class Import extends StdCommand
 			Room foundOne=null;
 			try
 			{
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.getArea().Name().equalsIgnoreCase(areaName))
@@ -3852,13 +3863,13 @@ public class Import extends StdCommand
 		    }catch(NoSuchElementException e){}
 			if(foundOne==null)
 				break;
-			CoffeeUtensils.obliterateRoom(foundOne);
+			CMLib.utensils().obliterateRoom(foundOne);
 		}
-		Area A1=CMMap.getArea(areaName);
+		Area A1=CMLib.map().getArea(areaName);
 		if(A1!=null)
 		{
-			CMClass.DBEngine().DBDeleteArea(A1);
-			CMMap.delArea(A1);
+			CMLib.database().DBDeleteArea(A1);
+			CMLib.map().delArea(A1);
 		}
 		return true;
 	}
@@ -3980,7 +3991,7 @@ public class Import extends StdCommand
 				Vector areas=new Vector();
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking area(s) from file: '"+areaFileName+"'...");
-				String error=CoffeeMaker.fillAreasVectorFromXML(buf.toString(),areas,custom,externalFiles);
+				String error=CMLib.coffeeMaker().fillAreasVectorFromXML(buf.toString(),areas,custom,externalFiles);
 				if(error.length()==0) Import.importCustomObjects(mob,custom,customBotherChecker,!prompt);
 				if(error.length()==0) Import.importCustomFiles(mob,externalFiles,customBotherChecker,!prompt);
 				if(error.length()>0) return false;
@@ -3994,7 +4005,7 @@ public class Import extends StdCommand
 					if(mob.session()!=null)
 						mob.session().rawPrint("Unpacking area #"+(a+1)+"/"+num+"...");
 					Vector area=(Vector)areas.firstElement();
-					error=CoffeeMaker.unpackAreaFromXML(area,mob.session(),true);
+					error=CMLib.coffeeMaker().unpackAreaFromXML(area,mob.session(),true);
 					if(mob.session()!=null)
 						mob.session().rawPrintln("!");
 					if(error.startsWith("Area Exists: "))
@@ -4008,7 +4019,7 @@ public class Import extends StdCommand
 							{
 							    try
 							    {
-									for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+									for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 									{
 										Room R=(Room)r.nextElement();
 										if((R!=null)&&(!R.getArea().Name().equalsIgnoreCase(areaName)))
@@ -4054,11 +4065,11 @@ public class Import extends StdCommand
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking area from file: '"+areaFileName+"'...");
 				Vector areaD=new Vector();
-				String error=CoffeeMaker.fillAreaAndCustomVectorFromXML(buf.toString(),areaD,custom,externalFiles);
+				String error=CMLib.coffeeMaker().fillAreaAndCustomVectorFromXML(buf.toString(),areaD,custom,externalFiles);
 				if(error.length()==0) Import.importCustomObjects(mob,custom,customBotherChecker,!prompt);
 				if(error.length()==0) Import.importCustomFiles(mob,externalFiles,customBotherChecker,!prompt);
 				if(error.length()==0)
-					error=CoffeeMaker.unpackAreaFromXML(areaD,mob.session(),true);
+					error=CMLib.coffeeMaker().unpackAreaFromXML(areaD,mob.session(),true);
 				if(mob.session()!=null)
 					mob.session().rawPrintln("!");
 				if(error.startsWith("Area Exists: "))
@@ -4075,7 +4086,7 @@ public class Import extends StdCommand
 						return false;
 					if(mob.session()!=null)
 						mob.session().rawPrint("Unpacking area from file: '"+areaFileName+"'...");
-					error=CoffeeMaker.unpackAreaFromXML(buf.toString(),mob.session(),true);
+					error=CMLib.coffeeMaker().unpackAreaFromXML(buf.toString(),mob.session(),true);
 					if(mob.session()!=null)
 						mob.session().rawPrintln("!");
 				}
@@ -4099,20 +4110,20 @@ public class Import extends StdCommand
 				}
 				buf=new CMFile(areaFileName,mob,true).textUnformatted();
 				mob.tell("Unpacking room from file: '"+areaFileName+"'...");
-				String error=CoffeeMaker.fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
+				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt);
 				if(error.length()==0) Import.importCustomFiles(mob,externalFiles,customBotherChecker,!prompt);
 				if(error.length()==0)
-					error=CoffeeMaker.unpackRoomFromXML(buf.toString(),true);
+					error=CMLib.coffeeMaker().unpackRoomFromXML(buf.toString(),true);
 				if(error.startsWith("Room Exists: "))
 				{
-					Room R=CMMap.getRoom(error.substring(13).trim());
+					Room R=CMLib.map().getRoom(error.substring(13).trim());
 					if(R!=null)
 					{
 						reLinkTable=new Vector();
 						try
 						{
-							for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+							for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 							{
 								Room R2=(Room)r.nextElement();
 								if(R2!=R)
@@ -4124,9 +4135,9 @@ public class Import extends StdCommand
 								}
 							}
 					    }catch(NoSuchElementException e){}
-						CoffeeUtensils.obliterateRoom(R);
+						CMLib.utensils().obliterateRoom(R);
 					}
-					error=CoffeeMaker.unpackRoomFromXML(buf.toString(),true);
+					error=CMLib.coffeeMaker().unpackRoomFromXML(buf.toString(),true);
 				}
 				if(error.length()>0)
 				{
@@ -4150,11 +4161,11 @@ public class Import extends StdCommand
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking mobs from file: '"+areaFileName+"'...");
 				Vector mobs=new Vector();
-				String error=CoffeeMaker.fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
+				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
 				if(error.length()==0) Import.importCustomObjects(mob,custom,customBotherChecker,!prompt);
 				if(error.length()==0) Import.importCustomFiles(mob,externalFiles,customBotherChecker,!prompt);
 				if(error.length()==0)
-					error=CoffeeMaker.addMOBsFromXML(buf.toString(),mobs,mob.session());
+					error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),mobs,mob.session());
 				if(mob.session()!=null)	mob.session().rawPrintln("!");
 				if(error.length()>0)
 				{
@@ -4186,11 +4197,11 @@ public class Import extends StdCommand
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking players from file: '"+areaFileName+"'...");
 				Vector mobs=new Vector();
-				String error=CoffeeMaker.fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
+				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
 				if(error.length()==0) Import.importCustomObjects(mob,custom,customBotherChecker,!prompt);
 				if(error.length()==0) Import.importCustomFiles(mob,externalFiles,customBotherChecker,!prompt);
 				if(error.length()==0)
-					error=CoffeeMaker.addPLAYERsFromXML(buf.toString(),mobs,mob.session());
+					error=CMLib.coffeeMaker().addPLAYERsFromXML(buf.toString(),mobs,mob.session());
 				if(mob.session()!=null)	
 					mob.session().rawPrintln("!");
 				if(error.length()>0)
@@ -4225,7 +4236,7 @@ public class Import extends StdCommand
                         if(!found)
                             continue;
                     }
-					if(CMClass.DBEngine().DBUserSearch(null,M.Name()))
+					if(CMLib.database().DBUserSearch(null,M.Name()))
 					{
 						if(!prompt)
 						{
@@ -4236,29 +4247,29 @@ public class Import extends StdCommand
 						if(!mob.session().confirm("Player: \""+M.Name()+"\" exists, obliterate first?","Y"))
 							continue;
 						else
-							CoffeeUtensils.obliteratePlayer(CMMap.getLoadPlayer(M.Name()),false);
+							CMLib.utensils().obliteratePlayer(CMLib.map().getLoadPlayer(M.Name()),false);
 					}
 					if(M.playerStats()!=null)
 						M.playerStats().setUpdated(System.currentTimeMillis());
-					CMClass.DBEngine().DBCreateCharacter(M);
-					CMMap.addPlayer(M);
+					CMLib.database().DBCreateCharacter(M);
+					CMLib.map().addPlayer(M);
 					Log.sysOut("Import","Imported user: "+M.Name());
-					for(int s=0;s<Sessions.size();s++)
+					for(int s=0;s<CMLib.sessions().size();s++)
 					{
-						Session S=Sessions.elementAt(s);
+						Session S=CMLib.sessions().elementAt(s);
 						if((S!=null)
 						&&(S.mob()!=null)
-						&&((!Sense.isCloaked(M))||(CMSecurity.isASysOp(S.mob())))
+						&&((!CMLib.flags().isCloaked(M))||(CMSecurity.isASysOp(S.mob())))
 						&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
 						&&(S.mob().playerStats()!=null)
 						&&((S.mob().playerStats().getFriends().contains(M.Name())||S.mob().playerStats().getFriends().contains("All"))))
 							S.mob().tell("^X"+M.Name()+" has just been created.^.^?");
 					}
-                    Vector channels=ChannelSet.getFlaggedChannelNames("NEWPLAYERS");
+                    Vector channels=CMLib.channels().getFlaggedChannelNames("NEWPLAYERS");
                     for(int i=0;i<channels.size();i++)
-                        CommonMsgs.channel((String)channels.elementAt(i),M.getClanID(),M.Name()+" has just been created.",true);
+                        CMLib.commands().channel((String)channels.elementAt(i),M.getClanID(),M.Name()+" has just been created.",true);
 					if(M.getStartRoom()==null)
-						M.setStartRoom(CMMap.getStartRoom(M));
+						M.setStartRoom(CMLib.map().getStartRoom(M));
 					if(M.location()==null)
 						M.setLocation(mob.location());
 					if(M.playerStats().getBirthday()==null)
@@ -4266,7 +4277,7 @@ public class Import extends StdCommand
 					    M.baseCharStats().setStat(CharStats.AGE,M.playerStats().initializeBirthday((int)Math.round(Util.div(M.getAgeHours(),60.0)),M.baseCharStats().getMyRace()));
 					    M.recoverCharStats();
 					}
-					CMClass.DBEngine().DBUpdatePlayer(M);
+					CMLib.database().DBUpdatePlayer(M);
 					M.removeFromGame(false);
 				}
 				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
@@ -4285,11 +4296,11 @@ public class Import extends StdCommand
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking items from file: '"+areaFileName+"'...");
 				Vector items=new Vector();
-				String error=CoffeeMaker.fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
+				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
 				if(error.length()==0) Import.importCustomObjects(mob,custom,customBotherChecker,!prompt);
 				if(error.length()==0) Import.importCustomFiles(mob,externalFiles,customBotherChecker,!prompt);
 				if(error.length()==0)
-					error=CoffeeMaker.addItemsFromXML(buf.toString(),items,mob.session());
+					error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),items,mob.session());
 				if(mob.session()!=null)	mob.session().rawPrintln("!");
 				if(error.length()>0)
 				{
@@ -4334,15 +4345,15 @@ public class Import extends StdCommand
 					int x=word.indexOf(" ");
 					if(x>0) word=word.substring(0,x).trim();
 
-					Social S1=Socials.FetchSocial(word,true);
-					Social S2=Socials.FetchSocial(word+" <T-NAME>",true);
-					Social S3=Socials.FetchSocial(word+" SELF",true);
+					Social S1=CMLib.socials().FetchSocial(word,true);
+					Social S2=CMLib.socials().FetchSocial(word+" <T-NAME>",true);
+					Social S3=CMLib.socials().FetchSocial(word+" SELF",true);
 					boolean changing=true;
 					if((S1==null)||(!S1.name().toUpperCase().equals(word)))
 					{
-						S1=(Social)CMClass.getShared("DefaultSocial");
+						S1=(Social)CMClass.getCommon("DefaultSocial");
 						S1.setName(word);
-						Socials.addSocial(S1);
+						CMLib.socials().addSocial(S1);
 						changing=false;
 					}
 
@@ -4373,9 +4384,9 @@ public class Import extends StdCommand
 					if(str.startsWith("#")) continue;
 					if(S2==null)
 					{
-						S2=(Social)CMClass.getShared("DefaultSocial");
+						S2=(Social)CMClass.getCommon("DefaultSocial");
 						S2.setName(word+" <T-NAME>");
-						Socials.addSocial(S2);
+						CMLib.socials().addSocial(S2);
 						changing=false;
 					}
 
@@ -4425,9 +4436,9 @@ public class Import extends StdCommand
 					if(str.startsWith("#")) continue;
 					if(S3==null)
 					{
-						S3=(Social)CMClass.getShared("DefaultSocial");
+						S3=(Social)CMClass.getCommon("DefaultSocial");
 						S3.setName(word+" SELF");
-						Socials.addSocial(S3);
+						CMLib.socials().addSocial(S3);
 						changing=false;
 					}
 
@@ -4455,7 +4466,7 @@ public class Import extends StdCommand
 			if(didSocials)
 			{
 				Log.sysOut("Import",mob.Name()+" imported socials from "+areaFileName);
-				Socials.save(mob);
+				CMLib.socials().save(mob);
 			}
 		}
 		catch(Exception e)
@@ -4505,7 +4516,7 @@ public class Import extends StdCommand
 			boolean exists=false;
 			try
 			{
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.getArea().Name().equalsIgnoreCase(areaName))
@@ -4554,12 +4565,12 @@ public class Import extends StdCommand
 				else
 					continue;
 
-				Area A=CMMap.getArea(areaName);
+				Area A=CMLib.map().getArea(areaName);
 				if(A==null)
 				{
-					A=CMClass.DBEngine().DBCreateArea(areaName,"StdArea");
+					A=CMLib.database().DBCreateArea(areaName,"StdArea");
 					A.setAuthorID(areaAuthor);
-					CMClass.DBEngine().DBUpdateArea(areaName,A);
+					CMLib.database().DBUpdateArea(areaName,A);
 				}
 				else
 					A.toggleMobility(false);
@@ -4579,8 +4590,8 @@ public class Import extends StdCommand
 				}
 				else
 				{
-					R.setDisplayText(CoffeeFilter.safetyFilter(eatLineSquiggle(roomV)));
-					R.setDescription(CoffeeFilter.safetyFilter(eatLineSquiggle(roomV)));
+					R.setDisplayText(CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV)));
+					R.setDescription(CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV)));
 				}
 				R.setArea(A);
 				String codeLine=eatNextLine(roomV);
@@ -4765,7 +4776,6 @@ public class Import extends StdCommand
 					R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoChannel"));
 
 				roomV.insertElementAt(R.roomID(),0);
-				CMMap.addRoom(R);
 				newRooms.addElement(R);
 				if(plainRoomID.startsWith("#"))
 					doneRooms.put(plainRoomID.substring(1),R);
@@ -4801,13 +4811,13 @@ public class Import extends StdCommand
 					else
 					if(nextLine.toUpperCase().startsWith("E"))
 					{
-						String nameString=CoffeeFilter.safetyFilter(eatLineSquiggle(roomV));
-						String descString=CoffeeFilter.safetyFilter(eatLineSquiggle(roomV));
+						String nameString=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
+						String descString=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
 						Item I=null;
 						if(hasReadableContent(nameString))
 						{
 							I=CMClass.getStdItem("GenWallpaper");
-							Sense.setReadable(I,true);
+							CMLib.flags().setReadable(I,true);
 							I.setReadableText(fixReadableContent(descString));
 						}
 						else
@@ -4821,8 +4831,8 @@ public class Import extends StdCommand
 					if(nextLine.toUpperCase().startsWith("D"))
 					{
 						int dirCode=Util.s_int(Util.getCleanBit(nextLine,0).substring(1).trim());
-						String descStr=CoffeeFilter.safetyFilter(eatLineSquiggle(roomV));
-						String nameStr=CoffeeFilter.safetyFilter(eatLineSquiggle(roomV));
+						String descStr=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
+						String nameStr=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
 						String codeStr=eatLine(roomV);
 						if(dirCode<Directions.NUM_DIRECTIONS)
 						switch(dirCode)
@@ -4943,7 +4953,7 @@ public class Import extends StdCommand
 						{
 						    try
 						    {
-								for(Enumeration r2=CMMap.rooms();r2.hasMoreElements();)
+								for(Enumeration r2=CMLib.map().rooms();r2.hasMoreElements();)
 								{
 									Room R2=(Room)r2.nextElement();
 									if((R2.roomID().endsWith("#"+linkRoomID))&&(R2!=R))
@@ -4966,7 +4976,7 @@ public class Import extends StdCommand
 										linkRoom=R2;
 										if(opExit!=null) opExit.setTemporaryDoorLink("");
 										if((!doneRooms.containsValue(linkRoom))&&(!doneRooms.contains(linkRoom)))
-											CMClass.DBEngine().DBUpdateExits(linkRoom);
+											CMLib.database().DBUpdateExits(linkRoom);
 										break;
 									}
 								}
@@ -5114,7 +5124,7 @@ public class Import extends StdCommand
 									((ShopKeeper)M).addStoreInventory(CMClass.getStdItem("OilFlask"),num*2,-1);
 								else
 								if(((I.ID().equals("GenReadable"))
-								||(I instanceof com.planet_ink.coffee_mud.interfaces.Map))
+								||(I instanceof com.planet_ink.coffee_mud.Items.interfaces.Map))
 								&&(!((ShopKeeper)M).doIHaveThisInStock("Parchment",null)))
 								{
 									((ShopKeeper)M).setWhatIsSold(ShopKeeper.DEAL_INVENTORYONLY);
@@ -5259,7 +5269,7 @@ public class Import extends StdCommand
 						else
 						{
 							R.addItem(I);
-							if(Sense.isGettable(I))
+							if(CMLib.flags().isGettable(I))
 							{
 								int rejuv=(int)Math.round(Util.div((long)60000,MudHost.TICK_TIME)*4.0);
 								I.baseEnvStats().setRejuv(rejuv*I.baseEnvStats().level());
@@ -5306,7 +5316,7 @@ public class Import extends StdCommand
 						Room RR=(Room)C.owner();
 						RR.addItem(I);
 						I.setContainer(C);
-						if(Sense.isGettable(I))
+						if(CMLib.flags().isGettable(I))
 							I.baseEnvStats().setRejuv(1000);
 						I.recoverEnvStats();
 						if(I instanceof Container)
@@ -5513,7 +5523,7 @@ public class Import extends StdCommand
 						sourceRoom.rawDoors()[direction]=destRoom;
 						if(((!doneRooms.containsValue(sourceRoom)))
 						&&((nextLink.length()==0)||(!nextLink.startsWith(sourceRoomID+"/"))))
-							CMClass.DBEngine().DBUpdateExits(sourceRoom);
+							CMLib.database().DBUpdateExits(sourceRoom);
 					}
 				}
 
@@ -5546,7 +5556,7 @@ public class Import extends StdCommand
 		for(Enumeration e=doneRooms.elements();e.hasMoreElements();)
 		{
 			Room saveRoom=(Room)e.nextElement();
-			CMClass.DBEngine().DBCreateRoom(saveRoom,CMClass.className(saveRoom));
+			CMLib.database().DBCreateRoom(saveRoom,CMClass.className(saveRoom));
 			// final exit clean-up optomization
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
@@ -5567,10 +5577,10 @@ public class Import extends StdCommand
 					saveRoom.rawExits()[d]=E2;
 				}
 			}
-			CMClass.DBEngine().DBUpdateExits(saveRoom);
-			CMClass.DBEngine().DBUpdateMOBs(saveRoom);
-			CMClass.DBEngine().DBUpdateItems(saveRoom);
-			CoffeeUtensils.clearDebriAndRestart(saveRoom,0);
+			CMLib.database().DBUpdateExits(saveRoom);
+			CMLib.database().DBUpdateMOBs(saveRoom);
+			CMLib.database().DBUpdateItems(saveRoom);
+			CMLib.utensils().clearDebriAndRestart(saveRoom,0);
 			saveRoom.recoverRoomStats();
 			mob.session().print(".");
 		}
@@ -5612,7 +5622,7 @@ public class Import extends StdCommand
 					{
 						R1.rawDoors()[dir]=TR;
 						if(RE!=null) RE.setTemporaryDoorLink("");
-						CMClass.DBEngine().DBUpdateExits(R1);
+						CMLib.database().DBUpdateExits(R1);
 					}
 				}
 			}
@@ -5624,7 +5634,7 @@ public class Import extends StdCommand
 			saveRoom.getArea().toggleMobility(true);
 		}
 		if(doneRooms.elements().hasMoreElements())
-			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 				((Area)a.nextElement()).fillInAreaRooms();
 		mob.session().println("done!");
 		return false;

@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Behaviors;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -90,13 +101,13 @@ public class PuddleMaker extends StdBehavior
 		{
 			Item I=R.fetchItem(i);
 			if((I instanceof Drink)
-			   &&(!Sense.isGettable(I))
+			   &&(!CMLib.flags().isGettable(I))
 			   &&((I.name().toLowerCase().indexOf("puddle")>=0)
 				  ||(I.name().toLowerCase().indexOf("snow")>=0)))
 					return;
 		}
 		Item I=CMClass.getItem("GenLiquidResource");
-		Sense.setGettable(I,false);
+		CMLib.flags().setGettable(I,false);
 		((Drink)I).setLiquidHeld(100);
 		((Drink)I).setLiquidRemaining(100);
 		((Drink)I).setLiquidType(EnvResource.RESOURCE_FRESHWATER);
@@ -133,7 +144,7 @@ public class PuddleMaker extends StdBehavior
 				Area A=R.getArea();
 				if((!anyWetWeather(A.getClimateObj().weatherType(R)))
 				&&(!dryWeather(A.getClimateObj().weatherType(R)))
-				&&(Dice.rollPercentage()<pct()))
+				&&(CMLib.dice().rollPercentage()<pct()))
 					makePuddle(R,lastWeather,A.getClimateObj().weatherType(R));
 			}
 			else
@@ -149,7 +160,7 @@ public class PuddleMaker extends StdBehavior
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-						&&(Dice.rollPercentage()<pct()))
+						&&(CMLib.dice().rollPercentage()<pct()))
 							makePuddle(R,lastWeather,A.getClimateObj().weatherType(null));
 					}
 			}

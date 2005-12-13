@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -44,16 +55,16 @@ public class Undress extends StdCommand
 		commands.removeElement(what);
 		String whom=Util.combine(commands,0);
 		MOB target=mob.location().fetchInhabitant(whom);
-		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
 			mob.tell("I don't see "+whom+" here.");
 			return false;
 		}
-		if(target.willFollowOrdersOf(mob)||(Sense.isBoundOrHeld(target)))
+		if(target.willFollowOrdersOf(mob)||(CMLib.flags().isBoundOrHeld(target)))
 		{
 			Item item=target.fetchInventory(null,what);
 			if((item==null)
-			   ||(!Sense.canBeSeenBy(item,mob))
+			   ||(!CMLib.flags().canBeSeenBy(item,mob))
 			   ||(item.amWearingAt(Item.INVENTORY)))
 			{
 				mob.tell(target.name()+" doesn't seem to be equipped with '"+what+"'.");
@@ -64,18 +75,18 @@ public class Undress extends StdCommand
 				mob.tell("Not while "+target.name()+" is in combat!");
 				return false;
 			}
-			FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,null);
+			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
-				msg=new FullMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_REMOVE,CMMsg.MSG_REMOVE,CMMsg.MSG_REMOVE,null);
+				msg=CMClass.getMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_REMOVE,CMMsg.MSG_REMOVE,CMMsg.MSG_REMOVE,null);
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
-					msg=new FullMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,CMMsg.MSG_DROP,CMMsg.MSG_DROP,null);
+					msg=CMClass.getMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,CMMsg.MSG_DROP,CMMsg.MSG_DROP,null);
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
-						if(CommonMsgs.get(mob,null,item,true))
+						if(CMLib.commands().get(mob,null,item,true))
 							mob.location().show(mob,target,item,CMMsg.MASK_GENERAL|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> take(s) <O-NAME> off <T-NAMESELF>.");
 					}
 					else

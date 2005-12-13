@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.SuperPowers;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -41,10 +52,10 @@ public class Power_OctoArms extends SuperPower
 		{
 			MOB mob=(MOB)affected;
 			if((mob.isInCombat())
-			&&(Sense.aliveAwakeMobileUnbound(mob,true))
+			&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 			&&(mob.charStats().getBodyPart(Race.BODY_ARM)>2))
 			{
-				if(Dice.rollPercentage()>95)
+				if(CMLib.dice().rollPercentage()>95)
 					helpProfficiency(mob);
 				int arms=mob.charStats().getBodyPart(Race.BODY_ARM)-2;
 				Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
@@ -54,7 +65,7 @@ public class Power_OctoArms extends SuperPower
 				naturalWeapon.baseEnvStats().setDamage(mob.baseEnvStats().damage());
 				naturalWeapon.recoverEnvStats();
 				for(int i=0;i<arms;i++)
-					MUDFight.postAttack(mob,mob.getVictim(),naturalWeapon);
+					CMLib.combat().postAttack(mob,mob.getVictim(),naturalWeapon);
 			}
 		}
 		return true;

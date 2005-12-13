@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -36,10 +47,10 @@ public class Spell_Cogniportive extends Spell
 		// check mobs worn items first!
 	    try
 	    {
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(Sense.canAccess(mob,R))
+				if(CMLib.flags().canAccess(mob,R))
 				{
 					for(int s=0;s<R.numInhabitants();s++)
 					{
@@ -49,7 +60,7 @@ public class Spell_Cogniportive extends Spell
 						&&(!(M instanceof ShopKeeper))
 						&&(M.fetchInventory(me.Name())!=null)
 						&&(!M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
-							return CMMap.getExtendedRoomID(M.getStartRoom());
+							return CMLib.map().getExtendedRoomID(M.getStartRoom());
 					}
 				}
 			}
@@ -57,19 +68,19 @@ public class Spell_Cogniportive extends Spell
 	    try
 	    {
 			// check shopkeepers second!
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(Sense.canAccess(mob,R))
+				if(CMLib.flags().canAccess(mob,R))
 				{
 					for(int s=0;s<R.numInhabitants();s++)
 					{
 						MOB M=R.fetchInhabitant(s);
-						if((M!=null)&&(CoffeeShops.getShopKeeper(M)!=null))
+						if((M!=null)&&(CMLib.coffeeShops().getShopKeeper(M)!=null))
 						{
-							ShopKeeper S=CoffeeShops.getShopKeeper(M);
+							ShopKeeper S=CMLib.coffeeShops().getShopKeeper(M);
 							if(S.doIHaveThisInStock(me.Name(),null))
-								return CMMap.getExtendedRoomID(M.getStartRoom());
+								return CMLib.map().getExtendedRoomID(M.getStartRoom());
 						}
 					}
 				}
@@ -78,10 +89,10 @@ public class Spell_Cogniportive extends Spell
 	    try
 	    {
 			// check mobs inventory items third!
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(Sense.canAccess(mob,R))
+				if(CMLib.flags().canAccess(mob,R))
 				{
 					for(int s=0;s<R.numInhabitants();s++)
 					{
@@ -91,7 +102,7 @@ public class Spell_Cogniportive extends Spell
 						&&(!(M instanceof ShopKeeper))
 						&&(M.fetchInventory(me.Name())!=null)
 						&&(M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
-							return CMMap.getExtendedRoomID(M.getStartRoom());
+							return CMLib.map().getExtendedRoomID(M.getStartRoom());
 					}
 				}
 			}
@@ -99,11 +110,11 @@ public class Spell_Cogniportive extends Spell
 	    try
 	    {
 			// check room stuff last
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if((Sense.canAccess(mob,R))&&(R.fetchItem(null,me.Name())!=null))
-				   return CMMap.getExtendedRoomID(R);
+				if((CMLib.flags().canAccess(mob,R))&&(R.fetchItem(null,me.Name())!=null))
+				   return CMLib.map().getExtendedRoomID(R);
 			}
 	    }catch(NoSuchElementException nse){}
 		return "";
@@ -120,8 +131,8 @@ public class Spell_Cogniportive extends Spell
 		{
 			if(text().length()==0)
 				setMiscText(establishHome(mob,me));
-			Room home=CMMap.getRoom(text());
-			if((home==null)||(!Sense.canAccess(mob,home)))
+			Room home=CMLib.map().getRoom(text());
+			if((home==null)||(!CMLib.flags().canAccess(mob,home)))
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Strange fizzled sparks fly from "+me.name()+".");
 			else
 			{
@@ -132,20 +143,20 @@ public class Spell_Cogniportive extends Spell
 				for(Iterator f=h.iterator();f.hasNext();)
 				{
 					MOB follower=(MOB)f.next();
-					FullMsg enterMsg=new FullMsg(follower,home,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke.");
-					FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
+					CMMsg enterMsg=CMClass.getMsg(follower,home,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke.");
+					CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
 					if(thisRoom.okMessage(follower,leaveMsg)&&home.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())
 						{
-							CommonMsgs.flee(follower,("NOWHERE"));
+							CMLib.commands().flee(follower,("NOWHERE"));
 							follower.makePeace();
 						}
 						thisRoom.send(follower,leaveMsg);
 						home.bringMobHere(follower,false);
 						home.send(follower,enterMsg);
 						follower.tell("\n\r\n\r");
-						CommonMsgs.look(follower,true);
+						CMLib.commands().look(follower,true);
 					}
 				}
 			}
@@ -178,9 +189,9 @@ public class Spell_Cogniportive extends Spell
 				String str=(String)V.firstElement();
 				if(!str.equalsIgnoreCase("HOME")) break;
 				str=Util.combine(V,1);
-				if(EnglishParser.containsString(affected.name(),str)
-				||EnglishParser.containsString(affected.displayText(),str))
-					msg.addTrailerMsg(new FullMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WAND_USE,msg.sourceMessage(),CMMsg.NO_EFFECT,null));
+				if(CMLib.english().containsString(affected.name(),str)
+				||CMLib.english().containsString(affected.displayText(),str))
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WAND_USE,msg.sourceMessage(),CMMsg.NO_EFFECT,null));
 			}
 			break;
 		default:
@@ -214,7 +225,7 @@ public class Spell_Cogniportive extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MOVE|affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

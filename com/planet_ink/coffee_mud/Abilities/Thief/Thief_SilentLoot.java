@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -38,7 +49,7 @@ public class Thief_SilentLoot extends ThiefSkill
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 			&&(msg.source()!=affected)
-			&&(Sense.canBeSeenBy(msg.source(),(MOB)affected))
+			&&(CMLib.flags().canBeSeenBy(msg.source(),(MOB)affected))
 			&&(msg.source().location()==((MOB)affected).location())
 			&&((msg.source().inventorySize())>0))
 			{
@@ -53,11 +64,11 @@ public class Thief_SilentLoot extends ThiefSkill
 					mob.location().addItemRefuse(item,Item.REFUSE_MONSTER_EQ);
 					MOB victim=mob.getVictim();
 					mob.setVictim(null);
-					FullMsg msg2=new FullMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,"You silently autoloot "+item.name()+" from the corpse of "+msg.source().name(),CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
+					CMMsg msg2=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,"You silently autoloot "+item.name()+" from the corpse of "+msg.source().name(),CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
 					if(mob.location().okMessage(mob,msg2))
 					{
 						mob.location().send(mob,msg2);
-						CommonMsgs.get(mob,null,item,true);
+						CMLib.commands().get(mob,null,item,true);
 					}
 					if(victim!=null) mob.setVictim(victim);
 				}

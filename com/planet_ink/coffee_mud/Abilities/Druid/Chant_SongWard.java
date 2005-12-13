@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -57,7 +68,7 @@ public class Chant_SongWard extends Chant
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SONG)
 		&&(invoker!=null)
 		&&(!mob.amDead())
-		&&(Dice.rollPercentage()<35))
+		&&(CMLib.dice().rollPercentage()<35))
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The ward around <S-NAME> inhibits "+msg.tool().name()+"!");
 			return false;
@@ -84,7 +95,7 @@ public class Chant_SongWard extends Chant
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> <T-IS-ARE> protected from songs.":"^S<S-NAME> chant(s) for a ward against songs around <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> <T-IS-ARE> protected from songs.":"^S<S-NAME> chant(s) for a ward against songs around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

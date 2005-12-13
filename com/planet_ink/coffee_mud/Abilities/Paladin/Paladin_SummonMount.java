@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Paladin;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -85,7 +96,7 @@ public class Paladin_SummonMount extends StdAbility
 			mob.tell("You must be outdoors to call your mount.");
 			return false;
 		}
-		if((!auto)&&(!(Sense.isGood(mob))))
+		if((!auto)&&(!(CMLib.flags().isGood(mob))))
 		{
 			mob.tell("Your alignment has alienated you from your god.");
 			return false;
@@ -109,7 +120,7 @@ public class Paladin_SummonMount extends StdAbility
 			mob.tell("You must be further outdoors to call your mount.");
 			return false;
 		}
-		fromDir=((Integer)choices.elementAt(Dice.roll(1,choices.size(),-1))).intValue();
+		fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
 		Room newRoom=mob.location().getRoomInDir(fromDir);
 		int opDir=Directions.getOpDirectionCode(fromDir);
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -120,22 +131,22 @@ public class Paladin_SummonMount extends StdAbility
 		if((success)&&(newRoom!=null))
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> call(s) for <S-HIS-HER> loyal steed.");
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> call(s) for <S-HIS-HER> loyal steed.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, adjustedLevel(mob,asLevel));
 				target.bringToLife(newRoom,true);
-				BeanCounter.clearZeroMoney(target,null);
+				CMLib.beanCounter().clearZeroMoney(target,null);
 				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				if(target.isInCombat()) target.makePeace();
-				MUDTracker.move(target,opDir,false,false);
+				CMLib.tracking().move(target,opDir,false,false);
 				if(target.location()==mob.location())
 				{
 					if(target.isInCombat()) target.makePeace();
-					CommonMsgs.follow(target,mob,true);
+					CMLib.commands().follow(target,mob,true);
 					if(target.amFollowing()!=mob)
 						mob.tell(target.name()+" seems unwilling to follow you.");
 				}
@@ -157,7 +168,7 @@ public class Paladin_SummonMount extends StdAbility
 		newMOB.baseEnvStats().setAbility(11);
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseEnvStats().setWeight(500);
-		Factions.setAlignment(newMOB,Faction.ALIGN_GOOD);
+		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_GOOD);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Horse"));
 		newMOB.baseCharStats().setStat(CharStats.GENDER,'M');

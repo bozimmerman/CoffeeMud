@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -21,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Disarm extends StdAbility
+public class Skill_Disarm extends StdSkill
 {
 	public String ID() { return "Skill_Disarm"; }
 	public String name(){ return "Disarm";}
@@ -69,7 +79,7 @@ public class Skill_Disarm extends StdAbility
 			levelDiff=levelDiff*5;
 		else
 			levelDiff=0;
-		boolean hit=(auto)||MUDFight.rollToHit(mob,victim);
+		boolean hit=(auto)||CMLib.combat().rollToHit(mob,victim);
 		boolean success=profficiencyCheck(mob,-levelDiff,auto)&&(hit);
 		if((success)&&(hisWeapon!=null)
 		   &&((hisWeapon.fitsOn(Item.WIELD))
@@ -77,7 +87,7 @@ public class Skill_Disarm extends StdAbility
 		{
 			if(mob.location().show(mob,victim,this,CMMsg.MSG_NOISYMOVEMENT,null))
 			{
-				FullMsg msg=new FullMsg(victim,hisWeapon,null,CMMsg.MSG_DROP,null);
+				CMMsg msg=CMClass.getMsg(victim,hisWeapon,null,CMMsg.MSG_DROP,null);
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(victim,msg);

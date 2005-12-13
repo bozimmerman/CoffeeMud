@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Behaviors;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -89,14 +100,14 @@ public class WeatherAffects extends PuddleMaker
     
 	public Area area(Environmental host)
 	{
-		Area A=(host instanceof Area)?(Area)host:CoffeeUtensils.roomLocation(host).getArea();
+		Area A=(host instanceof Area)?(Area)host:CMLib.utensils().roomLocation(host).getArea();
 		return A;
 	}
 	
 	public int weather(Environmental host, Room room)
 	{
 		if(room==null) return 0;
-		Area A=(host instanceof Area)?(Area)host:CoffeeUtensils.roomLocation(host).getArea();
+		Area A=(host instanceof Area)?(Area)host:CMLib.utensils().roomLocation(host).getArea();
 		if(A!=null) return A.getClimateObj().weatherType(room);
 		return 0;
 	}
@@ -128,7 +139,7 @@ public class WeatherAffects extends PuddleMaker
             case Climate.WEATHER_BLIZZARD:
             case Climate.WEATHER_DUSTSTORM:
             {
-				if((Dice.rollPercentage()<windsheer)
+				if((CMLib.dice().rollPercentage()<windsheer)
 				&&(msg.source().location()!=null))
 				{
 					msg.source().location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_ACTION,"^WThe strong wind blows <S-YOUPOSS> attack against <T-NAMESELF> with <O-NAME> off target.^?");
@@ -147,22 +158,22 @@ public class WeatherAffects extends PuddleMaker
             {
                 case Climate.WEATHER_BLIZZARD:
                 case Climate.WEATHER_SNOW:
-                    if(Dice.rollPercentage()<snowSlipChance)
+                    if(CMLib.dice().rollPercentage()<snowSlipChance)
                         what="cold wet";
                     break;
                 case Climate.WEATHER_RAIN:
                 case Climate.WEATHER_THUNDERSTORM:
-                    if(Dice.rollPercentage()<rainSlipChance)
+                    if(CMLib.dice().rollPercentage()<rainSlipChance)
                         what="slippery wet";
                     break;
                 case Climate.WEATHER_SLEET:
-                    if(Dice.rollPercentage()<sleetSlipChance)
+                    if(CMLib.dice().rollPercentage()<sleetSlipChance)
                         what="icy";
                     break;
             }
             if((what!=null)
-            &&(!Sense.isInFlight(msg.source()))
-            &&(Dice.rollPercentage()>((msg.source().charStats().getStat(CharStats.DEXTERITY)*3)+25)))
+            &&(!CMLib.flags().isInFlight(msg.source()))
+            &&(CMLib.dice().rollPercentage()>((msg.source().charStats().getStat(CharStats.DEXTERITY)*3)+25)))
             {
                 int oldDisposition=msg.source().baseEnvStats().disposition();
                 oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
@@ -188,7 +199,7 @@ public class WeatherAffects extends PuddleMaker
         int realLastWeather=super.lastWeather;
         if(!super.tick(ticking,tickID))
             return false;
-        Area A=CoffeeUtensils.areaLocation(ticking);
+        Area A=CMLib.utensils().areaLocation(ticking);
         if(A==null) return false;
         Climate C=A.getClimateObj();
         if(C==null) return false;
@@ -199,20 +210,20 @@ public class WeatherAffects extends PuddleMaker
         &&(coldWeather(C.weatherType(null)))
         &&(lastWeather!=C.weatherType(null))
         &&(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER)
-        &&(Dice.rollPercentage()<freezeOverChance))
+        &&(CMLib.dice().rollPercentage()<freezeOverChance))
         {
             if(ticking instanceof Room)
             {
                 Room R=(Room)ticking;
                 if((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-                &&(Dice.rollPercentage()<freezeOverChance)
+                &&(CMLib.dice().rollPercentage()<freezeOverChance)
                 &&(R instanceof Drink)
                 &&(((Drink)R).liquidType()==EnvResource.RESOURCE_FRESHWATER))
                 {
                     Ability A2=CMClass.getAbility("Spell_IceSheet");
                     if(A2!=null)
                     {
-                        MOB mob=CMMap.god(R);
+                        MOB mob=CMLib.map().god(R);
                         A2.invoke(mob,R,true,0);
                         mob.destroy();
                     }
@@ -223,12 +234,12 @@ public class WeatherAffects extends PuddleMaker
             {
                 Room R=(Room)e.nextElement();
                 if((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-                &&(Dice.rollPercentage()<freezeOverChance))
+                &&(CMLib.dice().rollPercentage()<freezeOverChance))
                 {
                     Ability A2=CMClass.getAbility("Spell_IceSheet");
                     if(A2!=null)
                     {
-                        MOB mob=CMMap.god(R);
+                        MOB mob=CMLib.map().god(R);
                         A2.invoke(mob,R,true,0);
                         mob.destroy();
                     }
@@ -249,13 +260,13 @@ public class WeatherAffects extends PuddleMaker
                 for(Enumeration r=A.getProperMap();r.hasMoreElements();)
                 {
                     Room R=(Room)r.nextElement();
-                    if(CoffeeUtensils.hasASky(R))
+                    if(CMLib.utensils().hasASky(R))
                         for(int i=0;i<R.numInhabitants();i++)
                         {
                             MOB mob=R.fetchInhabitant(i);
                             if((mob!=null)
                             &&(!mob.isMonster())
-                            &&(Sense.aliveAwakeMobile(mob,true))
+                            &&(CMLib.flags().aliveAwakeMobile(mob,true))
                             &&(Util.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER)))
                                 mob.tell(C.getWeatherDescription(A));
                         }
@@ -300,9 +311,9 @@ public class WeatherAffects extends PuddleMaker
                 break;
             }
 
-            for(int s=0;s<Sessions.size();s++)
+            for(int s=0;s<CMLib.sessions().size();s++)
             {
-                Session S=Sessions.elementAt(s);
+                Session S=CMLib.sessions().elementAt(s);
                 if((S.mob()==null)
                 ||(S.mob().location()==null)
                 ||(S.mob().location().getArea()!=A)
@@ -330,7 +341,7 @@ public class WeatherAffects extends PuddleMaker
                     if(frostBiteChance>0) frostBiteChance=frostBiteChance+(int)Math.round(Util.mul(frostBiteChance,0.25));
                 }
                 int save=(M.charStats().getStat(CharStats.SAVE_COLD)+M.charStats().getStat(CharStats.SAVE_WATER))/2;
-                if((Dice.rollPercentage()<(coldChance-save))
+                if((CMLib.dice().rollPercentage()<(coldChance-save))
                 &&((C.weatherType(M.location())!=Climate.WEATHER_CLEAR)))
                 {
                     long coveredPlaces=0;
@@ -352,13 +363,13 @@ public class WeatherAffects extends PuddleMaker
                     if(coveredPlaces!=ALL_COVERED_CODE)
                     {
                         Ability COLD=CMClass.getAbility("Disease_Cold");
-                        if(Dice.rollPercentage()<(fluChance+(((M.location().domainConditions()&Room.CONDITION_WET)>0)?10:0)))
+                        if(CMLib.dice().rollPercentage()<(fluChance+(((M.location().domainConditions()&Room.CONDITION_WET)>0)?10:0)))
                             COLD=CMClass.getAbility("Disease_Flu");
                         if((COLD!=null)&&(M.fetchEffect(COLD.ID())==null))
                             COLD.invoke(M,M,true,0);
                     }
                 }
-                if((Dice.rollPercentage()<(frostBiteChance-save))
+                if((CMLib.dice().rollPercentage()<(frostBiteChance-save))
                 &&((C.weatherType(M.location())!=Climate.WEATHER_CLEAR)))
                 {
                     long unfrostedPlaces=0;
@@ -383,7 +394,7 @@ public class WeatherAffects extends PuddleMaker
                     }
                 }
                 if((heatExhaustionChance>0)
-                &&(Dice.rollPercentage()<(heatExhaustionChance-M.charStats().getStat(CharStats.SAVE_FIRE)))
+                &&(CMLib.dice().rollPercentage()<(heatExhaustionChance-M.charStats().getStat(CharStats.SAVE_FIRE)))
                 &&(C.weatherType(M.location())!=Climate.WEATHER_CLEAR))
                 {
                     Ability COLD=CMClass.getAbility("Disease_HeatExhaustion");
@@ -395,9 +406,9 @@ public class WeatherAffects extends PuddleMaker
         if((rumbleDown--)==1)
         {
             resetRumbleTicks();
-            for(int s=0;s<Sessions.size();s++)
+            for(int s=0;s<CMLib.sessions().size();s++)
             {
-                Session S=Sessions.elementAt(s);
+                Session S=CMLib.sessions().elementAt(s);
                 if((S.mob()==null)
                 ||(S.mob().location()==null)
                 ||(S.mob().location().getArea()!=A)
@@ -412,17 +423,17 @@ public class WeatherAffects extends PuddleMaker
                     case Climate.WEATHER_THUNDERSTORM:
                     {
                         if(C.weatherType(R)!=Climate.WEATHER_THUNDERSTORM)
-                            S.mob().tell("^JA thunderous rumble and CRACK of lightning can be heard.^?"+CommonStrings.msp("thunder.wav",40));
+                            S.mob().tell("^JA thunderous rumble and CRACK of lightning can be heard.^?"+CMProps.msp("thunder.wav",40));
                         else
                         if(R.getArea().getTimeObj().getTODCode()==TimeClock.TIME_DAY)
-                            S.mob().tell("^JA thunderous rumble and CRACK of lightning can be heard as the pounding rain soaks you.^?"+CommonStrings.msp("thunderandrain.wav",40));
+                            S.mob().tell("^JA thunderous rumble and CRACK of lightning can be heard as the pounding rain soaks you.^?"+CMProps.msp("thunderandrain.wav",40));
                         else
-                            S.mob().tell("^JA bolt of lightning streaks across the sky as the pounding rain soaks you!^?"+CommonStrings.msp("thunderandrain.wav",40));
+                            S.mob().tell("^JA bolt of lightning streaks across the sky as the pounding rain soaks you!^?"+CMProps.msp("thunderandrain.wav",40));
                         break;
                     }
                     case Climate.WEATHER_BLIZZARD:
                         if(C.weatherType(R)==Climate.WEATHER_BLIZZARD)
-                            S.mob().tell("^JSwirling clouds of snow buffet you.^?"+CommonStrings.msp("blizzard.wav",40));
+                            S.mob().tell("^JSwirling clouds of snow buffet you.^?"+CMProps.msp("blizzard.wav",40));
                         break;
                     case Climate.WEATHER_SNOW:
                         if(C.weatherType(R)==Climate.WEATHER_SNOW)
@@ -430,23 +441,23 @@ public class WeatherAffects extends PuddleMaker
                         break;
                     case Climate.WEATHER_DUSTSTORM:
                         if(C.weatherType(R)==Climate.WEATHER_DUSTSTORM)
-                            S.mob().tell("^JSwirling clouds of dust assault you.^?"+CommonStrings.msp("windy.wav",40));
+                            S.mob().tell("^JSwirling clouds of dust assault you.^?"+CMProps.msp("windy.wav",40));
                         break;
                     case Climate.WEATHER_HAIL:
                         if(C.weatherType(R)==Climate.WEATHER_HAIL)
-                            S.mob().tell("^JYou are being pelleted by hail! Ouch!^?"+CommonStrings.msp("hail.wav",40));
+                            S.mob().tell("^JYou are being pelleted by hail! Ouch!^?"+CMProps.msp("hail.wav",40));
                         break;
                     case Climate.WEATHER_RAIN:
                         if(C.weatherType(R)==Climate.WEATHER_RAIN)
-                            S.mob().tell("^JThe rain is soaking you!^?"+CommonStrings.msp("rainlong.wav",40));
+                            S.mob().tell("^JThe rain is soaking you!^?"+CMProps.msp("rainlong.wav",40));
                         break;
                     case Climate.WEATHER_SLEET:
                         if(C.weatherType(R)==Climate.WEATHER_SLEET)
-                            S.mob().tell("^JCold and blistering sleet is soaking you numb!^?"+CommonStrings.msp("rain.wav",40));
+                            S.mob().tell("^JCold and blistering sleet is soaking you numb!^?"+CMProps.msp("rain.wav",40));
                         break;
                     case Climate.WEATHER_WINDY:
                         if(C.weatherType(R)==Climate.WEATHER_WINDY)
-                            S.mob().tell("^JThe wind gusts around you.^?"+CommonStrings.msp("wind.wav",40));
+                            S.mob().tell("^JThe wind gusts around you.^?"+CMProps.msp("wind.wav",40));
                         break;
                     }
                 }
@@ -458,9 +469,9 @@ public class WeatherAffects extends PuddleMaker
             if(C.weatherType(null)==Climate.WEATHER_THUNDERSTORM)
             {
                 boolean playerAround=false;
-                for(int s=0;s<Sessions.size();s++)
+                for(int s=0;s<CMLib.sessions().size();s++)
                 {
-                    Session S=Sessions.elementAt(s);
+                    Session S=CMLib.sessions().elementAt(s);
                     if((S.mob()==null)
                     ||(S.mob().location()==null)
                     ||(S.mob().location().getArea()!=A)
@@ -472,7 +483,7 @@ public class WeatherAffects extends PuddleMaker
                 if(playerAround)
                 {
                     Room R=A.getRandomProperRoom();
-                    MOB M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
+                    MOB M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
                     if(M!=null)
                     {
                         Ability A2=CMClass.getAbility("Chant_SummonLightning");
@@ -491,9 +502,9 @@ public class WeatherAffects extends PuddleMaker
                         if((R2!=R)&&(R2.numInhabitants()>0))
                             if((A.getTimeObj().getTODCode()==TimeClock.TIME_DAY)
                             ||(C.weatherType(R2)!=Climate.WEATHER_THUNDERSTORM))
-                                R2.showHappens(CMMsg.MSG_OK_ACTION,"^JA thunderous rumble and crack of lightning can be heard.^?"+CommonStrings.msp("thunder2.wav",40));
+                                R2.showHappens(CMMsg.MSG_OK_ACTION,"^JA thunderous rumble and crack of lightning can be heard.^?"+CMProps.msp("thunder2.wav",40));
                             else
-                                R2.showHappens(CMMsg.MSG_OK_ACTION,"^JYou hear a thunderous rumble as a bolt of lightning streaks across the sky!^?"+CommonStrings.msp("thunder3.wav",40));
+                                R2.showHappens(CMMsg.MSG_OK_ACTION,"^JYou hear a thunderous rumble as a bolt of lightning streaks across the sky!^?"+CMProps.msp("thunder3.wav",40));
                     }
                 }
             }
@@ -505,9 +516,9 @@ public class WeatherAffects extends PuddleMaker
             ||(C.weatherType(null)==Climate.WEATHER_WINDY))
             {
                 boolean playerAround=false;
-                for(int s=0;s<Sessions.size();s++)
+                for(int s=0;s<CMLib.sessions().size();s++)
                 {
-                    Session S=Sessions.elementAt(s);
+                    Session S=CMLib.sessions().elementAt(s);
                     if((S.mob()==null)
                     ||(S.mob().location()==null)
                     ||(S.mob().location().getArea()!=A)
@@ -519,14 +530,14 @@ public class WeatherAffects extends PuddleMaker
                 if(playerAround)
                 {
                     Room R=A.getRandomProperRoom();
-                    MOB M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
+                    MOB M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
                     if(M!=null)
                     {
                         Ability A2=CMClass.getAbility("Chant_SummonTornado");
                         if(A2!=null)
                         {
                             A2.setMiscText("RENDER MUNDANE"); 
-                            MOB mob=CMMap.god(R);
+                            MOB mob=CMLib.map().god(R);
                             A2.invoke(mob,null,true,0);
                             mob.destroy();
                         }
@@ -540,9 +551,9 @@ public class WeatherAffects extends PuddleMaker
                         if((R2!=R)&&(R2.numInhabitants()>0))
                             if((A.getTimeObj().getTODCode()==TimeClock.TIME_DAY)
                             ||(C.weatherType(R2)!=Climate.WEATHER_THUNDERSTORM))
-                                R2.showHappens(CMMsg.MSG_OK_ACTION,"^JThe terrible rumble of a tornado can be heard.^?"+CommonStrings.msp("tornado.wav",40));
+                                R2.showHappens(CMMsg.MSG_OK_ACTION,"^JThe terrible rumble of a tornado can be heard.^?"+CMProps.msp("tornado.wav",40));
                             else
-                                R2.showHappens(CMMsg.MSG_OK_ACTION,"^JA huge and terrible tornado touches down somewhere near by.^?"+CommonStrings.msp("tornado.wav",40));
+                                R2.showHappens(CMMsg.MSG_OK_ACTION,"^JA huge and terrible tornado touches down somewhere near by.^?"+CMProps.msp("tornado.wav",40));
                     }
                 }
             }
@@ -554,9 +565,9 @@ public class WeatherAffects extends PuddleMaker
             {
                 Vector choices=new Vector();
                 Room R=null;
-                for(int s=0;s<Sessions.size();s++)
+                for(int s=0;s<CMLib.sessions().size();s++)
                 {
-                    Session S=Sessions.elementAt(s);
+                    Session S=CMLib.sessions().elementAt(s);
                     if((S.mob()==null)
                     ||(S.mob().location()==null)
                     ||(S.mob().location().getArea()!=A)
@@ -569,9 +580,9 @@ public class WeatherAffects extends PuddleMaker
                 }
                 if(choices.size()>0)
                 {
-                    R=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
-                    MOB M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
-                    if((M!=null)&&(!Sense.isSleeping(M)))
+                    R=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+                    MOB M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
+                    if((M!=null)&&(!CMLib.flags().isSleeping(M)))
                     {
                         Ability A2=CMClass.getAbility("Skill_Dirt");
                         if(A2!=null) A2.invoke(M,M,true,0);
@@ -586,9 +597,9 @@ public class WeatherAffects extends PuddleMaker
             {
                 Vector choices=new Vector();
                 Room R=null;
-                for(int s=0;s<Sessions.size();s++)
+                for(int s=0;s<CMLib.sessions().size();s++)
                 {
-                    Session S=Sessions.elementAt(s);
+                    Session S=CMLib.sessions().elementAt(s);
                     if((S.mob()==null)
                     ||(S.mob().location()==null)
                     ||(S.mob().location().getArea()!=A)
@@ -601,8 +612,8 @@ public class WeatherAffects extends PuddleMaker
                 }
                 if(choices.size()>0)
                 {
-                    R=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
-                    MOB M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
+                    R=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+                    MOB M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
                     Ability A2=CMClass.getAbility("Chant_SummonHail");
                     if(A2!=null)
                     {
@@ -613,9 +624,9 @@ public class WeatherAffects extends PuddleMaker
             }
         }
         if((C.weatherType(null)==Climate.WEATHER_DROUGHT)
-        &&(Dice.rollPercentage()<droughtFireChance))
+        &&(CMLib.dice().rollPercentage()<droughtFireChance))
         {
-            Room R=CoffeeUtensils.roomLocation((Environmental)ticking);
+            Room R=CMLib.utensils().roomLocation((Environmental)ticking);
             if((R==null)&&(ticking instanceof Area))
                 R=((Area)ticking).getRandomProperRoom();
             if((R!=null)
@@ -625,8 +636,8 @@ public class WeatherAffects extends PuddleMaker
             &&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
             &&((R.domainConditions()&Room.CONDITION_WET)==0))
             {
-                Item I=R.fetchItem(Dice.roll(1,R.numItems(),-1));
-                if((I!=null)&&(Sense.isGettable(I)))
+                Item I=R.fetchItem(CMLib.dice().roll(1,R.numItems(),-1));
+                if((I!=null)&&(CMLib.flags().isGettable(I)))
                 switch(I.material()&EnvResource.MATERIAL_MASK)
                 {
                 case EnvResource.MATERIAL_CLOTH:
@@ -636,8 +647,8 @@ public class WeatherAffects extends PuddleMaker
                 case EnvResource.MATERIAL_WOODEN:
                 {
                     Ability A2=CMClass.getAbility("Burning");
-                    MOB mob=CMMap.god(R);
-                    R.showHappens(CMMsg.MSG_OK_VISUAL,I.Name()+" spontaneously combusts in the seering heat!"+CommonStrings.msp("fire.wav",40));
+                    MOB mob=CMLib.map().god(R);
+                    R.showHappens(CMMsg.MSG_OK_VISUAL,I.Name()+" spontaneously combusts in the seering heat!"+CMProps.msp("fire.wav",40));
                     A2.invoke(mob,I,true,0);
                     mob.destroy();
                 }
@@ -654,9 +665,9 @@ public class WeatherAffects extends PuddleMaker
             {
                 Vector choices=new Vector();
                 Room R=null;
-                for(int s=0;s<Sessions.size();s++)
+                for(int s=0;s<CMLib.sessions().size();s++)
                 {
-                    Session S=Sessions.elementAt(s);
+                    Session S=CMLib.sessions().elementAt(s);
                     if((S.mob()==null)
                     ||(S.mob().location()==null)
                     ||(S.mob().location().getArea()!=A)
@@ -671,8 +682,8 @@ public class WeatherAffects extends PuddleMaker
                 }
                 if(choices.size()>0)
                 {
-                    R=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
-                    MOB M=CMMap.god(R);
+                    R=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+                    MOB M=CMLib.map().god(R);
                     Ability A2=CMClass.getAbility("Chant_WindGust");
                     if(A2!=null)
                     {
@@ -686,9 +697,9 @@ public class WeatherAffects extends PuddleMaker
         if((rustDown--)==1)
         {
             resetRustTicks();
-            for(int s=0;s<Sessions.size();s++)
+            for(int s=0;s<CMLib.sessions().size();s++)
             {
-                Session S=Sessions.elementAt(s);
+                Session S=CMLib.sessions().elementAt(s);
                 if((S.mob()==null)
                 ||(S.mob().location()==null)
                 ||(S.mob().location().getArea()!=A)
@@ -727,7 +738,7 @@ public class WeatherAffects extends PuddleMaker
                 }
                 if((R.domainConditions()&Room.CONDITION_WET)>0) 
                     rustChance+=2;
-                if(Dice.rollPercentage()<rustChance)
+                if(CMLib.dice().rollPercentage()<rustChance)
                 {
                     int weatherType=C.weatherType(R);
                     Vector rustThese=new Vector();
@@ -738,7 +749,7 @@ public class WeatherAffects extends PuddleMaker
                         if((!I.amWearingAt(Item.INVENTORY))
                         &&(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL))
                         &&(I.subjectToWearAndTear())
-                        &&((Dice.rollPercentage()>I.envStats().ability()*25)))
+                        &&((CMLib.dice().rollPercentage()>I.envStats().ability()*25)))
                             rustThese.addElement(I);
                         else
                         if(I.amWearingAt(Item.ABOUT_BODY)
@@ -749,7 +760,7 @@ public class WeatherAffects extends PuddleMaker
                     for(int i=0;i<rustThese.size();i++)
                     {
                         Item I=(Item)rustThese.elementAt(i);
-                        FullMsg msg=new FullMsg(M,I,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WATER,(weatherType!=0)?"<T-NAME> rusts.":"<T-NAME> rusts in the water.",CMMsg.TYP_WATER,null,CMMsg.NO_EFFECT,null);
+                        CMMsg msg=CMClass.getMsg(M,I,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WATER,(weatherType!=0)?"<T-NAME> rusts.":"<T-NAME> rusts in the water.",CMMsg.TYP_WATER,null,CMMsg.NO_EFFECT,null);
                         if(R.okMessage(M,msg))
                         {
                             R.send(M,msg);
@@ -758,7 +769,7 @@ public class WeatherAffects extends PuddleMaker
                                 I.setUsesRemaining(I.usesRemaining()-1);
                                 if(I.usesRemaining()<=0)
                                 {
-                                    msg=new FullMsg(M,null,null,CMMsg.MSG_OK_VISUAL,I.name()+" is destroyed!",null,I.name()+" carried by "+M.name()+" is destroyed!");
+                                    msg=CMClass.getMsg(M,null,null,CMMsg.MSG_OK_VISUAL,I.name()+" is destroyed!",null,I.name()+" carried by "+M.name()+" is destroyed!");
                                     if(R.okMessage(M,msg))
                                         R.send(M,msg);
                                     I.destroy();

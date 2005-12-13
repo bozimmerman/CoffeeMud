@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.CharClasses;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -49,82 +60,82 @@ public class Charlatan extends StdCharClass
 		if(!loaded())
 		{
 			setLoaded(true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Song_Nothing",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Song_Nothing",true);
 
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Haggle",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Haggle",true);
 
-			CMAble.addCharAbilityMapping(ID(),2,"Thief_Swipe",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Swipe",false);
 
-			CMAble.addCharAbilityMapping(ID(),3,"Skill_Disguise",true);
-			CMAble.addCharAbilityMapping(ID(),3,"Skill_Climb",false);
-			CMAble.addCharAbilityMapping(ID(),3,"Skill_WandUse",false);
-			CMAble.addCharAbilityMapping(ID(),3,"Thief_Hide",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Disguise",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Climb",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_WandUse",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Hide",false);
 
-			CMAble.addCharAbilityMapping(ID(),4,"Thief_Mark",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Song_Charm",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Mark",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Song_Charm",true);
 
-			CMAble.addCharAbilityMapping(ID(),5,"Fighter_Rescue",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_Rescue",false);
 
-			CMAble.addCharAbilityMapping(ID(),6,"Skill_Songcraft",true);
-			CMAble.addCharAbilityMapping(ID(),6,"Spell_ReadMagic",false);
-			CMAble.addCharAbilityMapping(ID(),6,"Song_Detection",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Songcraft",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Spell_ReadMagic",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Song_Detection",false);
 
-			CMAble.addCharAbilityMapping(ID(),7,"Skill_Imitation",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Imitation",true);
 
-			CMAble.addCharAbilityMapping(ID(),8,"Thief_Distract",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_Distract",false);
 
-			CMAble.addCharAbilityMapping(ID(),9,"Skill_Warrants",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Warrants",false);
 
-			CMAble.addCharAbilityMapping(ID(),10,"Skill_Dodge",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_Dodge",false);
 
-			CMAble.addCharAbilityMapping(ID(),11,"Skill_FalseArrest",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Song_Comprehension",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_FalseArrest",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Song_Comprehension",true);
 
-			CMAble.addCharAbilityMapping(ID(),12,"Skill_Spellcraft",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Ranger_Track",false);
-			CMAble.addCharAbilityMapping(ID(),12,"Spell_MagicMissile",false);
-			CMAble.addCharAbilityMapping(ID(),12,"Song_Rage",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_Spellcraft",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Ranger_Track",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Spell_MagicMissile",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Song_Rage",false);
 
-			CMAble.addCharAbilityMapping(ID(),13,"Skill_Map",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Skill_Trip",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Map",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Trip",false);
 
-			CMAble.addCharAbilityMapping(ID(),14,"Thief_AnalyzeMark",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_AnalyzeMark",true);
 
-			CMAble.addCharAbilityMapping(ID(),15,"Skill_Chantcraft",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Song_Protection",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Chant_SummonPlants",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Chantcraft",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Song_Protection",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_SummonPlants",false);
 
-			CMAble.addCharAbilityMapping(ID(),16,"Skill_Shuffle",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_Shuffle",false);
 
-			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
 
-			CMAble.addCharAbilityMapping(ID(),18,"Skill_Prayercraft",true);
-			CMAble.addCharAbilityMapping(ID(),18,"Prayer_CureLight",false);
-			CMAble.addCharAbilityMapping(ID(),18,"Song_Mana",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_Prayercraft",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_CureLight",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Song_Mana",false);
 
-			CMAble.addCharAbilityMapping(ID(),19,"Song_Knowledge",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Song_Knowledge",true);
 
-			CMAble.addCharAbilityMapping(ID(),20,"Thief_Detection",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_Detection",true);
 
-			CMAble.addCharAbilityMapping(ID(),21,"Song_Thanks",true);
-			CMAble.addCharAbilityMapping(ID(),21,"Spell_LocateObject",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Song_Thanks",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Spell_LocateObject",false);
 
-			CMAble.addCharAbilityMapping(ID(),22,"Skill_Parry",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_Parry",false);
 
-			CMAble.addCharAbilityMapping(ID(),23,"Thief_Con",true);
-			CMAble.addCharAbilityMapping(ID(),23,"Song_Strength",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_Con",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Song_Strength",false);
 
-			CMAble.addCharAbilityMapping(ID(),24,"Song_Disgust",true);
-			CMAble.addCharAbilityMapping(ID(),24,"Thief_FrameMark",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Song_Disgust",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_FrameMark",false);
 
-			CMAble.addCharAbilityMapping(ID(),25,"Skill_MarkDisguise",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_MarkDisguise",true);
 
 			// 30 -- cheaper skills
 		}
@@ -180,7 +191,7 @@ public class Charlatan extends StdCharClass
 			&&(msg.tool() instanceof Ability)
 			&&(myChar.isMine(msg.tool()))
 			&&(myChar.charStats().getClassLevel(this)>=30)
-			&&(CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())<1))
+			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,msg.tool().ID())<1))
 			{
 				Ability A=((Ability)msg.tool());
 				if(Util.bset(A.usageType(),Ability.USAGE_MANA))
@@ -198,7 +209,7 @@ public class Charlatan extends StdCharClass
 			   &&(msg.tool() instanceof Ability)
 			   &&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
 			   &&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_DIVINATION)
-			   &&(Dice.roll(1,100,0)<(myChar.charStats().getClassLevel(this)*4)))
+			   &&(CMLib.dice().roll(1,100,0)<(myChar.charStats().getClassLevel(this)*4)))
 			{
 				myChar.location().show(msg.source(),myChar,CMMsg.MSG_OK_ACTION,"<T-NAME> fool(s) <S-NAMESELF>, causing <S-HIM-HER> to fizzle "+msg.tool().name()+".");
 				return false;
@@ -221,8 +232,8 @@ public class Charlatan extends StdCharClass
 			for(int a=0;a<mob.numLearnedAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
-				if((CMAble.qualifyingLevel(mob,A)<=0)
-				&&((CMAble.lowestQualifyingLevel(A.ID())==classLevel)||(CMAble.lowestQualifyingLevel(A.ID())==classLevel-1)))
+				if((CMLib.ableMapper().qualifyingLevel(mob,A)<=0)
+				&&((CMLib.ableMapper().lowestQualifyingLevel(A.ID())==classLevel)||(CMLib.ableMapper().lowestQualifyingLevel(A.ID())==classLevel-1)))
 					return;
 			}
 			// now only give one, for current level, respecting alignment!
@@ -230,26 +241,26 @@ public class Charlatan extends StdCharClass
 			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
-				int lql=CMAble.lowestQualifyingLevel(A.ID());
-				if((CMAble.qualifyingLevel(mob,A)<=0)
+				int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+				if((CMLib.ableMapper().qualifyingLevel(mob,A)<=0)
 				&&(mob.fetchAbility(A.ID())==null)
 				&&(lql<25)
 				&&(lql>0)
 				&&((lql==classLevel)
 				   ||(lql==classLevel-1)
 				   ||(classLevel>=25))
-				&&(!CMAble.getSecretSkill(A.ID()))
-				&&(!CMAble.classOnly("Archon",A.ID()))
-				&&(CMAble.qualifiesByAnyCharClass(A.ID())))
+				&&(!CMLib.ableMapper().getSecretSkill(A.ID()))
+				&&(!CMLib.ableMapper().classOnly("Archon",A.ID()))
+				&&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID())))
 					choices.addElement(A);
 			}
 			if(choices.size()==0) return;
-			Ability A=(Ability)choices.elementAt(Dice.roll(1,choices.size(),-1));
+			Ability A=(Ability)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 			if(A!=null)	giveMobAbility(mob,A,0,"",isBorrowedClass);
 		}
 		else
 		{
-			Vector V=CMAble.getUpToLevelListings(ID(),
+			Vector V=CMLib.ableMapper().getUpToLevelListings(ID(),
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
@@ -258,8 +269,8 @@ public class Charlatan extends StdCharClass
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_CODES)!=Ability.COMMON_SKILL)
-				&&(!CMAble.getDefaultGain(ID(),true,A.ID())))
-					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),true,A.ID()),CMAble.getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}
 		}
 	}
@@ -287,7 +298,7 @@ public class Charlatan extends StdCharClass
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)
 			&&(!V.contains(A))
-			&&(CMAble.qualifyingLevel(mob,A)<=0))
+			&&(CMLib.ableMapper().qualifyingLevel(mob,A)<=0))
 				able=A;
 		}
 		if(able!=null)

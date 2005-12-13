@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -63,8 +74,8 @@ public class Spell_IceSheet extends Spell
 				else
 				if((Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
 				{
-					if((!Sense.isInFlight(mob))
-					&&(Dice.rollPercentage()>((msg.source().charStats().getStat(CharStats.DEXTERITY)*3)+25)))
+					if((!CMLib.flags().isInFlight(mob))
+					&&(CMLib.dice().rollPercentage()>((msg.source().charStats().getStat(CharStats.DEXTERITY)*3)+25)))
 					{
 						int oldDisposition=mob.baseEnvStats().disposition();
 						oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
@@ -89,7 +100,7 @@ public class Spell_IceSheet extends Spell
 		{
 			MOB mob=msg.source();
 			Room room=(Room)affected;
-			msg.addTrailerMsg(new FullMsg(mob,room,null,CMMsg.MSG_OK_VISUAL,"\n\r<T-NAME> is covered in ice.",null,null));
+			msg.addTrailerMsg(CMClass.getMsg(mob,room,null,CMMsg.MSG_OK_VISUAL,"\n\r<T-NAME> is covered in ice.",null,null));
 		}
 	}
 	
@@ -135,7 +146,7 @@ public class Spell_IceSheet extends Spell
 			||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
 				msgStr="the water freezes over!";
 			if(auto)msgStr=Character.toUpperCase(msgStr.charAt(0))+msgStr.substring(1);
-			FullMsg msg = new FullMsg(mob, target, this, affectType(auto),(auto?"":"^S<S-NAME> speak(s) and gesture(s) and ")+msgStr+"^?");
+			CMMsg msg = CMClass.getMsg(mob, target, this, affectType(auto),(auto?"":"^S<S-NAME> speak(s) and gesture(s) and ")+msgStr+"^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

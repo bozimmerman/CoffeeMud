@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -65,7 +76,7 @@ public class Prop_ItemTransporter extends Property
 			nextDestination=null;
 			try
 			{
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room room=(Room)r.nextElement();
 					Ability A=room.fetchEffect("Prop_ItemTransReceiver");
@@ -106,7 +117,7 @@ public class Prop_ItemTransporter extends Property
 		}
 		if(possibilities.size()>0)
 		{
-			Environmental E=(Environmental)possibilities.elementAt(Dice.roll(1,possibilities.size(),-1));
+			Environmental E=(Environmental)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
 			nextDestination=null;
 			if(E instanceof Room)
 				roomDestination=(Room)E;
@@ -156,7 +167,7 @@ public class Prop_ItemTransporter extends Property
 			&&(msg.target() instanceof Item))
 		||((affected instanceof Room)
 			&&(msg.sourceMinor()==CMMsg.TYP_THROW)
-		    &&(affected==CoffeeUtensils.roomLocation(msg.target()))
+		    &&(affected==CMLib.utensils().roomLocation(msg.target()))
 			&&(msg.tool() instanceof Item)))
 		{
 			if(!setDestination())

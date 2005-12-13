@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -33,12 +44,12 @@ public class ClanMorgueSet extends BaseClanner
 
 		Room R=mob.location();
 		if(skipChecks)
-			R=CMMap.getRoom(Util.combine(commands,1));
+			R=CMLib.map().getRoom(Util.combine(commands,1));
 		else
 		{
 			commands.clear();
 			commands.addElement("clanmorgueeset");
-			commands.addElement(CMMap.getExtendedRoomID(R));
+			commands.addElement(CMLib.map().getExtendedRoomID(R));
 		}
 
 		if((mob.getClanID()==null)||(R==null)||(mob.getClanID().equalsIgnoreCase("")))
@@ -46,7 +57,7 @@ public class ClanMorgueSet extends BaseClanner
 			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
-		Clan C=Clans.getClan(mob.getClanID());
+		Clan C=CMLib.clans().getClan(mob.getClanID());
 		if(C==null)
 		{
 			mob.tell("There is no longer a clan called "+mob.getClanID()+".");
@@ -59,17 +70,17 @@ public class ClanMorgueSet extends BaseClanner
 		}
 		if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,false))
 		{
-			if(!CoffeeUtensils.doesOwnThisProperty(C.ID(),R))
+			if(!CMLib.utensils().doesOwnThisProperty(C.clanID(),R))
 			{
 				mob.tell("Your "+C.typeName()+" does not own this room.");
 				return false;
 			}
 			if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,true))
 			{
-				C.setMorgue(CMMap.getExtendedRoomID(R));
+				C.setMorgue(CMLib.map().getExtendedRoomID(R));
 				C.update();
 				mob.tell("Your "+C.typeName()+" morgue is now set to "+R.roomTitle()+".");
-				clanAnnounce(mob, "The morgue of "+C.typeName()+" "+C.ID()+" is now set to "+R.roomTitle()+".");
+				clanAnnounce(mob, "The morgue of "+C.typeName()+" "+C.clanID()+" is now set to "+R.roomTitle()+".");
 				return true;
 			}
 		}

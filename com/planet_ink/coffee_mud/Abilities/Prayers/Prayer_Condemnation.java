@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -34,7 +45,7 @@ public class Prayer_Condemnation extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Behavior B=null;
-		if(mob.location()!=null) B=CoffeeUtensils.getLegalBehavior(mob.location());
+		if(mob.location()!=null) B=CMLib.utensils().getLegalBehavior(mob.location());
 
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -42,7 +53,7 @@ public class Prayer_Condemnation extends Prayer
 		if(B!=null)
 		{
 			warrants.addElement(new Integer(Law.MOD_GETWARRANTSOF));
-			if(!B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),target,warrants))
+			if(!B.modifyBehavior(CMLib.utensils().getLegalObject(mob.location()),target,warrants))
 				warrants.clear();
 		}
 
@@ -53,7 +64,7 @@ public class Prayer_Condemnation extends Prayer
 
 		if((success)&&(warrants.size()>0))
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to condemn <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to condemn <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

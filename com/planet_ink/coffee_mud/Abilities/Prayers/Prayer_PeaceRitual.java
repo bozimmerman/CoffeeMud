@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -41,9 +52,9 @@ public class Prayer_PeaceRitual extends Prayer
 			return false;
 
 		MOB mob=(MOB)affected;
-        Vector channels=ChannelSet.getFlaggedChannelNames("CLANINFO");
+        Vector channels=CMLib.channels().getFlaggedChannelNames("CLANINFO");
         for(int i=0;i<channels.size();i++)
-    		CommonMsgs.channel((String)channels.elementAt(i),clan2,mob.name()+" located in '"+mob.location().displayText()+" is performing a peace ritual on behalf of "+clan2+".",false);
+    		CMLib.commands().channel((String)channels.elementAt(i),clan2,mob.name()+" located in '"+mob.location().displayText()+" is performing a peace ritual on behalf of "+clan2+".",false);
 		return super.tick(ticking,tickID);
 	}
 
@@ -85,23 +96,23 @@ public class Prayer_PeaceRitual extends Prayer
 
 		if((canBeUninvoked())&&(clan1.length()>0)&&(clan2.length()>0))
 		{
-			Clan C1=Clans.getClan(clan1);
-			Clan C2=Clans.getClan(clan2);
+			Clan C1=CMLib.clans().getClan(clan1);
+			Clan C2=CMLib.clans().getClan(clan2);
 			if((C1!=null)&&(C2!=null))
 			{
-				if(C1.getClanRelations(C2.ID())==Clan.REL_WAR)
+				if(C1.getClanRelations(C2.clanID())==Clan.REL_WAR)
 				{
-					C1.setClanRelations(C2.ID(),Clan.REL_HOSTILE,System.currentTimeMillis());
+					C1.setClanRelations(C2.clanID(),Clan.REL_HOSTILE,System.currentTimeMillis());
 					C1.update();
 				}
-				if(C2.getClanRelations(C1.ID())==Clan.REL_WAR)
+				if(C2.getClanRelations(C1.clanID())==Clan.REL_WAR)
 				{
-					C2.setClanRelations(C1.ID(),Clan.REL_HOSTILE,System.currentTimeMillis());
+					C2.setClanRelations(C1.clanID(),Clan.REL_HOSTILE,System.currentTimeMillis());
 					C2.update();
 				}
-                Vector channels=ChannelSet.getFlaggedChannelNames("CLANINFO");
+                Vector channels=CMLib.channels().getFlaggedChannelNames("CLANINFO");
                 for(int i=0;i<channels.size();i++)
-                    CommonMsgs.channel((String)channels.elementAt(i),"ALL","There is now peace between "+C1.name()+" and "+C2.name()+".",false);
+                    CMLib.commands().channel((String)channels.elementAt(i),"ALL","There is now peace between "+C1.name()+" and "+C2.name()+".",false);
 			}
 		}
 	}
@@ -115,29 +126,29 @@ public class Prayer_PeaceRitual extends Prayer
             mob.tell(mob,target,null,"<T-NAME> <T-IS-ARE> already affected by "+name()+".");
 			return false;
 		}
-		if((mob.getClanID().length()==0)||(Clans.getClan(mob.getClanID())==null))
+		if((mob.getClanID().length()==0)||(CMLib.clans().getClan(mob.getClanID())==null))
 		{
 			mob.tell("You must belong to a clan to use this prayer.");
 			return false;
 		}
-		Clan myClan=Clans.getClan(mob.getClanID());
-		clan1=myClan.ID();
+		Clan myClan=CMLib.clans().getClan(mob.getClanID());
+		clan1=myClan.clanID();
 		if(commands.size()<1)
 		{
 			mob.tell("You must specify the clan you wish to see peace with.");
 			return false;
 		}
 		clan2=Util.combine(commands,0);
-		Clan otherClan=Clans.findClan(clan2);
+		Clan otherClan=CMLib.clans().findClan(clan2);
 		if((otherClan==null)
 		||((myClan.getClanRelations(clan2)!=Clan.REL_WAR)&&(otherClan.getClanRelations(clan1)!=Clan.REL_WAR)))
 		{
 			mob.tell("Your "+myClan.typeName()+" is not at war with "+clan2+"!");
 			return false;
 		}
-		clan2=otherClan.ID();
+		clan2=otherClan.clanID();
 		boolean found=false;
-		for(Enumeration e=CMMap.players();e.hasMoreElements();)
+		for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
 		{
 			MOB M=(MOB)e.nextElement();
 			if(M.getClanID().equals(clan2))
@@ -160,7 +171,7 @@ public class Prayer_PeaceRitual extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> begin(s) a peace ritual.":"^S<S-NAME> "+prayWord(mob)+" for peace between "+myClan.name()+" and "+otherClan.name()+".^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> begin(s) a peace ritual.":"^S<S-NAME> "+prayWord(mob)+" for peace between "+myClan.name()+" and "+otherClan.name()+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

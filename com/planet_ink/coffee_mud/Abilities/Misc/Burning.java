@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Misc;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -61,7 +72,7 @@ public class Burning extends StdAbility
                 unInvokeChance=10;
                 break;
             }
-            if(Dice.rollPercentage()<unInvokeChance)
+            if(CMLib.dice().rollPercentage()<unInvokeChance)
             {
                 Room R=((Room)(((Item)affected).owner()));
                 if(R.numInhabitants()>0)
@@ -128,7 +139,7 @@ public class Burning extends StdAbility
 					case EnvResource.MATERIAL_UNKNOWN:
 						break;
 					default:
-					    if(Sense.isABonusItems(affected))
+					    if(CMLib.flags().isABonusItems(affected))
 					    {
 							if(invoker==null)
 							{
@@ -141,7 +152,7 @@ public class Burning extends StdAbility
 					        for(int i=0;i<room.numInhabitants();i++)
 					        {
 					            MOB target=room.fetchInhabitant(i);
-								MUDFight.postDamage(invoker(),target,null,Dice.roll(affected.envStats().level(),5,1),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The blast <DAMAGE> <T-NAME>!");
+								CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(affected.envStats().level(),5,1),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The blast <DAMAGE> <T-NAME>!");
 					        }
 							((Item)affected).destroy();
 					    }
@@ -193,7 +204,7 @@ public class Burning extends StdAbility
 		{
 			Item I=(Item)affected;
 			if(!ouch((MOB)I.owner()))
-				CommonMsgs.drop((MOB)I.owner(),I,false,false);
+				CMLib.commands().drop((MOB)I.owner(),I,false,false);
 			if(I.subjectToWearAndTear())
 			{
 				if((I.usesRemaining()<1000)
@@ -208,7 +219,7 @@ public class Burning extends StdAbility
 
 	public boolean ouch(MOB mob)
 	{
-		if(Dice.rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_FIRE)-50))
+		if(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_FIRE)-50))
 		{
 			if(affected instanceof Item)
 			switch(((Item)affected).material()&EnvResource.MATERIAL_MASK)
@@ -226,7 +237,7 @@ public class Burning extends StdAbility
 				mob.tell("Ouch!! "+Util.capitalizeAndLower(affected.name())+" is on fire!");
 				break;
 			}
-			MUDFight.postDamage(invoker,mob,this,Dice.roll(1,5,5),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,null);
+			CMLib.combat().postDamage(invoker,mob,this,CMLib.dice().roll(1,5,5),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,null);
 			return false;
 		}
 		return true;
@@ -281,7 +292,7 @@ public class Burning extends StdAbility
 			if((C instanceof Drink)
 			   &&(((Drink)C).containsDrink()))
 			{
-				msg.addTrailerMsg(new FullMsg(invoker,null,CMMsg.MSG_OK_VISUAL,I.name()+" is extinguished."));
+				msg.addTrailerMsg(CMClass.getMsg(invoker,null,CMMsg.MSG_OK_VISUAL,I.name()+" is extinguished."));
 				I.delEffect(this);
 			}
 		}
@@ -303,7 +314,7 @@ public class Burning extends StdAbility
 				return false;
 			if((mob!=null)&&(mob.location()!=null))
 			{
-				FullMsg msg=new FullMsg(mob,target,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,null);
+				CMMsg msg=CMClass.getMsg(mob,target,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,null);
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}

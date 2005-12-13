@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -111,7 +122,7 @@ public class Chant_Treehouse extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, null, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) for a treehouse!^?");
+			CMMsg msg = CMClass.getMsg(mob, null, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) for a treehouse!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -125,7 +136,7 @@ public class Chant_Treehouse extends Chant
 				mob.location().rawExits()[Directions.UP]=CMClass.getExit("ClimbableExit");
 				newRoom.rawDoors()[Directions.DOWN]=mob.location();
 				Ability A=CMClass.getAbility("Prop_RoomView");
-				A.setMiscText(CMMap.getExtendedRoomID(mob.location()));
+				A.setMiscText(CMLib.map().getExtendedRoomID(mob.location()));
 				Exit E=CMClass.getExit("ClimbableExit");
 				E.addNonUninvokableEffect(A);
 				A=CMClass.getAbility("Prop_PeaceMaker");
@@ -151,7 +162,7 @@ public class Chant_Treehouse extends Chant
 					{
 						newRoom.rawDoors()[d]=R;
 						A=CMClass.getAbility("Prop_RoomView");
-						A.setMiscText(CMMap.getExtendedRoomID(R));
+						A.setMiscText(CMLib.map().getExtendedRoomID(R));
 						E=CMClass.getExit("Impassable");
 						E.addNonUninvokableEffect(A);
 						newRoom.rawExits()[d]=E;

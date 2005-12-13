@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -56,7 +67,7 @@ public class Prayer_BladeBarrier extends Prayer
 			return;
 		if(msg.target()==invoker)
 		{
-			if((Dice.rollPercentage()>60+msg.source().charStats().getStat(CharStats.DEXTERITY))
+			if((CMLib.dice().rollPercentage()>60+msg.source().charStats().getStat(CharStats.DEXTERITY))
 			&&(msg.source().rangeToTarget()==0)
 			&&((lastMessage==null)||(!lastMessage.startsWith("The blade barrier around")))
 			&&((Util.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
@@ -64,15 +75,15 @@ public class Prayer_BladeBarrier extends Prayer
 			{
 				int level=(int)Math.round(Util.div(invoker.envStats().level(),6.0));
 				if(level>5) level=5;
-				int damage=Dice.roll(2,level,0);
-				StringBuffer hitWord=new StringBuffer(CommonStrings.standardHitWord(-1,damage));
+				int damage=CMLib.dice().roll(2,level,0);
+				StringBuffer hitWord=new StringBuffer(CMLib.combat().standardHitWord(-1,damage));
 				if(hitWord.charAt(hitWord.length()-1)==')')
 					hitWord.deleteCharAt(hitWord.length()-1);
 				if(hitWord.charAt(hitWord.length()-2)=='(')
 					hitWord.deleteCharAt(hitWord.length()-2);
 				if(hitWord.charAt(hitWord.length()-3)=='(')
 					hitWord.deleteCharAt(hitWord.length()-3);
-				MUDFight.postDamage((MOB)msg.target(),msg.source(),this,damage,CMMsg.MSG_OK_ACTION,Weapon.TYPE_SLASHING,"The blade barrier around <S-NAME> slices and <DAMAGE> <T-NAME>.");
+				CMLib.combat().postDamage((MOB)msg.target(),msg.source(),this,damage,CMMsg.MSG_OK_ACTION,Weapon.TYPE_SLASHING,"The blade barrier around <S-NAME> slices and <DAMAGE> <T-NAME>.");
 				lastMessage="The blade barrier around";
 			}
 			else
@@ -116,7 +127,7 @@ public class Prayer_BladeBarrier extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> "+prayWord(mob)+" for divine protection!  ")+"A barrier of blades begin to spin around <T-NAME>!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> "+prayWord(mob)+" for divine protection!  ")+"A barrier of blades begin to spin around <T-NAME>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

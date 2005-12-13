@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -21,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_WeaponCatch extends StdAbility
+public class Fighter_WeaponCatch extends FighterSkill
 {
 	public String ID() { return "Fighter_WeaponCatch"; }
 	public String name(){ return "Weapon Catch";}
@@ -42,13 +52,13 @@ public class Fighter_WeaponCatch extends StdAbility
 		MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
-		&&(Sense.aliveAwakeMobileUnbound(mob,true))
+		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 		&&(msg.tool() instanceof Ability)
 		&&(msg.tool().ID().equals("Skill_Disarm"))
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,0,false))
 		&&(mob.rangeToTarget()==0))
 		{
-			FullMsg msg2=new FullMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,
+			CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,
                     "<T-NAME> disarm <S-NAMESELF>, but <S-NAME> catch the weapon!",
                     "<T-NAME> disarms <S-NAMESELF>, but <S-NAME> catches the weapon!",
                     "<T-NAME> disarms <S-NAMESELF>, but <S-NAME> catches the weapon!"

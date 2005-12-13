@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -54,7 +65,7 @@ public class Chant_WarningWinds extends Chant
 		{
 			lastRoom=((MOB)affected).location();
 			Vector V=new Vector();
-			MUDTracker.getRadiantRooms(lastRoom,V,true,false,false,false,false,null,2);
+			CMLib.tracking().getRadiantRooms(lastRoom,V,true,false,false,false,false,null,2);
 			boolean fighting=false;
 			boolean enemy=false;
 			for(int r=0;r<V.size();r++)
@@ -86,7 +97,7 @@ public class Chant_WarningWinds extends Chant
 					}
 					if(enemy||fighting)
 					{
-						int dir=MUDTracker.radiatesFromDir(R,V);
+						int dir=CMLib.tracking().radiatesFromDir(R,V);
 						if(dir>=0)
 						{
 							String far="far ";
@@ -131,7 +142,7 @@ public class Chant_WarningWinds extends Chant
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) a sense of the winds!":"^S<S-NAME> chant(s) for a sense of the winds!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) a sense of the winds!":"^S<S-NAME> chant(s) for a sense of the winds!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				lastRoom=null;

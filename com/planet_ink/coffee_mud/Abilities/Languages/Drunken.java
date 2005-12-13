@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Languages;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -31,7 +41,7 @@ public class Drunken extends Language
 	{
 		super();
 		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("Archon",1,ID(),false);}
+					CMLib.ableMapper().addCharAbilityMapping("Archon",1,ID(),false);}
 	}
 
 	public Vector translationVector()
@@ -72,31 +82,31 @@ public class Drunken extends Language
 		StringBuffer sbw=new StringBuffer(word);
 		Vector V=getSChoices(sbw);
 		if(V.size()>0)
-			sbw.insert(((Integer)V.elementAt(Dice.roll(1,V.size(),-1))).intValue()+1,'h');
-		if(Dice.rollPercentage()<50)
+			sbw.insert(((Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1))).intValue()+1,'h');
+		if(CMLib.dice().rollPercentage()<50)
 			return fixCase(word,sbw.toString());
 
 		V=getVChoices(sbw);
 		if(V.size()>0)
-		switch(Dice.roll(1,3,0))
+		switch(CMLib.dice().roll(1,3,0))
 		{
 		case 1:
 			{
-				int x=((Integer)V.elementAt(Dice.roll(1,V.size(),-1))).intValue();
-				for(int i=0;i<Dice.roll(1,5,0);i++)
+				int x=((Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1))).intValue();
+				for(int i=0;i<CMLib.dice().roll(1,5,0);i++)
 					sbw.insert(x+1,sbw.charAt(x));
 				break;
 			}
 		case 2:
 			{
-				int x=((Integer)V.elementAt(Dice.roll(1,V.size(),-1))).intValue();
-				for(int i=0;i<Dice.roll(1,5,0);i++)
+				int x=((Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1))).intValue();
+				for(int i=0;i<CMLib.dice().roll(1,5,0);i++)
 					sbw.insert(x+1,"-"+sbw.charAt(x));
 				break;
 			}
 		case 3:
 			{
-				int x=((Integer)V.elementAt(Dice.roll(1,V.size(),-1))).intValue();
+				int x=((Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1))).intValue();
 				sbw.insert(x+1,"sh");
 				break;
 			}

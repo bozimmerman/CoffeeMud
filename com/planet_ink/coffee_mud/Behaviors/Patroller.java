@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -190,7 +201,7 @@ public class Patroller extends ActiveTicker
 			int direction=Directions.getGoodDirectionCode(nxt);
 			if(direction<0)
 			{
-				if(CMMap.getExtendedRoomID(thisRoom).toUpperCase().endsWith(nxt.toUpperCase()))
+				if(CMLib.map().getExtendedRoomID(thisRoom).toUpperCase().endsWith(nxt.toUpperCase()))
 				{
 				    correction=null;
 				    step++;
@@ -203,7 +214,7 @@ public class Patroller extends ActiveTicker
 				{
 					Room R=thisRoom.getRoomInDir(d);
 					if((R!=null)
-					&&(CMMap.getExtendedRoomID(R).toUpperCase().endsWith(nxt.toUpperCase())))
+					&&(CMLib.map().getExtendedRoomID(R).toUpperCase().endsWith(nxt.toUpperCase())))
 					{
 					    correction=null;
 						thatRoom=R;
@@ -219,15 +230,15 @@ public class Patroller extends ActiveTicker
 		    tickStatus=Tickable.STATUS_MISC+5;
 			if((direction<0)||(thatRoom==null))
 			{
-			    Room R=CMMap.getRoom(nxt);
-			    if(R==null) R=CMMap.getRoom(thisRoom.getArea()+nxt);
-			    if(R==null) R=CMMap.getRoom(thisRoom.getArea()+"#"+nxt);
+			    Room R=CMLib.map().getRoom(nxt);
+			    if(R==null) R=CMLib.map().getRoom(thisRoom.getArea()+nxt);
+			    if(R==null) R=CMLib.map().getRoom(thisRoom.getArea()+"#"+nxt);
 			    if(R!=null)
 			    {
-			        boolean airOk=(Sense.isFlying((Environmental)ticking)
+			        boolean airOk=(CMLib.flags().isFlying((Environmental)ticking)
 			            ||((ticking instanceof Rider)&&(((Rider)ticking).riding()!=null)&&(((Rider)ticking).riding().rideBasis()==Rideable.RIDEABLE_AIR))
 				        ||((ticking instanceof Rideable)&&(((Rideable)ticking).rideBasis()==Rideable.RIDEABLE_AIR)));
-			        boolean waterOk=(Sense.isSwimming((Environmental)ticking)
+			        boolean waterOk=(CMLib.flags().isSwimming((Environmental)ticking)
 				            ||((ticking instanceof Rider)&&(((Rider)ticking).riding()!=null)&&(((Rider)ticking).riding().rideBasis()==Rideable.RIDEABLE_WATER))
 					        ||((ticking instanceof Rideable)&&(((Rideable)ticking).rideBasis()==Rideable.RIDEABLE_WATER)));
 			        
@@ -256,7 +267,7 @@ public class Patroller extends ActiveTicker
 			        direction=-1;
 			        if(correction!=null)
 			        {
-			            direction=MUDTracker.trackNextDirectionFromHere(correction,thisRoom,ticking instanceof Item);
+			            direction=CMLib.tracking().trackNextDirectionFromHere(correction,thisRoom,ticking instanceof Item);
 			            if(direction<0) 
 			                correction=null;
 			            else
@@ -265,7 +276,7 @@ public class Patroller extends ActiveTicker
 				    tickStatus=Tickable.STATUS_MISC+8;
 					if((direction<0)||(thatRoom==null))
 			        {
-			            correction=MUDTracker.findBastardTheBestWay(thisRoom,
+			            correction=CMLib.tracking().findBastardTheBestWay(thisRoom,
 			                    	Util.makeVector(R),
 			                    	ticking instanceof Item,
 			                    	false,
@@ -275,7 +286,7 @@ public class Patroller extends ActiveTicker
 			                    	diameter);
 					    tickStatus=Tickable.STATUS_MISC+9;
 			            if(correction!=null)
-				            direction=MUDTracker.trackNextDirectionFromHere(correction,thisRoom,ticking instanceof Item);
+				            direction=CMLib.tracking().trackNextDirectionFromHere(correction,thisRoom,ticking instanceof Item);
 			            else
 			                direction=-1;
 					    tickStatus=Tickable.STATUS_MISC+10;
@@ -338,8 +349,8 @@ public class Patroller extends ActiveTicker
 						    tickStatus=Tickable.STATUS_MISC+16;
 							MOB mob=(MOB)R;
                             mob.setRiding((Rideable)ticking);
-							FullMsg enterMsg=new FullMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
-							FullMsg leaveMsg=new FullMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
+							CMMsg enterMsg=CMClass.getMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
+							CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
 							rideFlag=true;
 							if((E!=null)&&(!E.okMessage(mob,enterMsg)))
 							{	
@@ -384,7 +395,7 @@ public class Patroller extends ActiveTicker
 					for(int i=0;i<riders.size();i++)
 					{
 						Rider R=(Rider)riders.elementAt(i);
-						if(CoffeeUtensils.roomLocation(R)!=thatRoom)
+						if(CMLib.utensils().roomLocation(R)!=thatRoom)
 							if((((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_SIT)
 							&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_TABLE)
 							&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_ENTERIN)
@@ -395,7 +406,7 @@ public class Patroller extends ActiveTicker
 								{
 									thatRoom.bringMobHere((MOB)R,true);
                                     ((MOB)R).setRiding((Rideable)ticking);
-									CommonMsgs.look((MOB)R,true);
+									CMLib.commands().look((MOB)R,true);
 								}
 								else
 								if(R instanceof Item)
@@ -422,18 +433,18 @@ public class Patroller extends ActiveTicker
 				{
 					if((E.hasALock())&&(E.isLocked()))
 					{
-						FullMsg msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+						CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 						if(mob.location().okMessage(mob,msg))
 						{
-							msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
-							CoffeeUtensils.roomAffectFully(msg,thisRoom,direction);
+							msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
+							CMLib.utensils().roomAffectFully(msg,thisRoom,direction);
 						}
 					}
-					FullMsg msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+					CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 					if(mob.location().okMessage(mob,msg))
 					{
-						msg=new FullMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+E.openWord()+"(s) <T-NAMESELF>.");
-						CoffeeUtensils.roomAffectFully(msg,thisRoom,direction);
+						msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+E.openWord()+"(s) <T-NAMESELF>.");
+						CMLib.utensils().roomAffectFully(msg,thisRoom,direction);
 					}
 				}
 				if(!E.isOpen())
@@ -450,10 +461,10 @@ public class Patroller extends ActiveTicker
 					V.add(Directions.getDirectionName(direction));
 					if(A.profficiency()<50)
 					{
-						A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob,0)*15));
+						A.setProfficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 						Ability A2=mob.fetchAbility("Thief_Hide");
 						if(A2!=null)
-							A2.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob,0)*15));
+							A2.setProfficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 					}
 					CharState oldState=(CharState)mob.curState().copyOf();
 					A.invoke(mob,V,null,false,0);
@@ -463,7 +474,7 @@ public class Patroller extends ActiveTicker
 				else
 				{
 					rideFlag=true;
-					MUDTracker.move(mob,direction,false,false);
+					CMLib.tracking().move(mob,direction,false,false);
 					rideFlag=false;
 				}
 

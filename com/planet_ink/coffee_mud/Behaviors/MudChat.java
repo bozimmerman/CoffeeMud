@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -235,7 +246,7 @@ public class MudChat extends StdBehavior
 			total+=Util.s_int(((String)responses.elementAt(x)).substring(0,1));
 
 		String selection=null;
-		int select=Dice.roll(1,total,0);
+		int select=CMLib.dice().roll(1,total,0);
 		for(int x=1;x<responses.size();x++)
 		{
 			select-=Util.s_int(((String)responses.elementAt(x)).substring(0,1));
@@ -397,9 +408,9 @@ public class MudChat extends StdBehavior
 		MOB monster=(MOB)affecting;
 		if((!msg.amISource(monster))
 		&&(!mob.isMonster())
-		&&(Sense.canBeHeardBy(mob,monster))
-		&&(Sense.canBeSeenBy(mob,monster))
-		&&(Sense.canBeSeenBy(monster,mob))
+		&&(CMLib.flags().canBeHeardBy(mob,monster))
+		&&(CMLib.flags().canBeSeenBy(mob,monster))
+		&&(CMLib.flags().canBeSeenBy(monster,mob))
 		&&(!mob.isInCombat())
 		&&(!monster.isInCombat()))
 		{
@@ -412,7 +423,7 @@ public class MudChat extends StdBehavior
 			   ||((mob.location()==monster.location())
 				  &&(talkDown<=0)
 				  &&(mob.location().numPCInhabitants()==1)))
-			&&(Sense.canBeHeardBy(mob,monster))
+			&&(CMLib.flags().canBeHeardBy(mob,monster))
 			&&(myChatGroup!=null)
 			&&(lastReactedTo!=msg.source())
 			&&(msg.sourceMessage()!=null)
@@ -445,15 +456,15 @@ public class MudChat extends StdBehavior
 			}
 			else
 			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-			&&(Sense.canBeHeardBy(mob,monster))
-			&&(Sense.canBeSeenBy(mob,monster))
+			&&(CMLib.flags().canBeHeardBy(mob,monster))
+			&&(CMLib.flags().canBeSeenBy(mob,monster))
 			&&(mob.isMonster())
 			&&(msg.source()!=monster))
 			   talkDown=TALK_WAIT_DELAY;
 			else
-			if((Sense.canBeHeardBy(mob,monster))
-			&&(Sense.canBeSeenBy(mob,monster))
-			&&(Sense.canBeSeenBy(monster,mob))
+			if((CMLib.flags().canBeHeardBy(mob,monster))
+			&&(CMLib.flags().canBeSeenBy(mob,monster))
+			&&(CMLib.flags().canBeSeenBy(monster,mob))
 			&&(talkDown<=0)
 			&&(lastReactedTo!=msg.source())
 			&&(myChatGroup!=null))

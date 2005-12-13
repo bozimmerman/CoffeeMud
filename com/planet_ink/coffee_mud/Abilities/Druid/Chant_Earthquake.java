@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -77,11 +88,11 @@ public class Chant_Earthquake extends Chant
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking.");
+				CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking.");
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
-					CommonMsgs.stand(mob,true);
+					CMLib.commands().stand(mob,true);
 				}
 			}
 			else
@@ -110,7 +121,7 @@ public class Chant_Earthquake extends Chant
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,affectType(auto),(auto?"":"^S<S-NAME> chant(s) thunderously.^?")+CommonStrings.msp("earthquake.wav",40)))
+			if(mob.location().show(mob,null,this,affectType(auto),(auto?"":"^S<S-NAME> chant(s) thunderously.^?")+CMProps.msp("earthquake.wav",40)))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
@@ -119,8 +130,8 @@ public class Chant_Earthquake extends Chant
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				if(Sense.isInFlight(target))
+				CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),null);
+				if(CMLib.flags().isInFlight(target))
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected.");
 				else
 				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
@@ -134,7 +145,7 @@ public class Chant_Earthquake extends Chant
 							if(success)
 							{
 								if(target.location()==mob.location())
-									MUDFight.postDamage(mob,target,this,20,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,-1,"The ground underneath <T-NAME> shakes as <T-NAME> fall(s) to the ground!!");
+									CMLib.combat().postDamage(mob,target,this,20,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,-1,"The ground underneath <T-NAME> shakes as <T-NAME> fall(s) to the ground!!");
 							}
 						}
 						else

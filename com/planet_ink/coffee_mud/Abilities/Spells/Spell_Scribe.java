@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -38,7 +49,7 @@ public class Spell_Scribe extends Spell
 			return false;
 		}
 		Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Item.WORN_REQ_UNWORNONLY);
-		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
 			mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");
 			return false;
@@ -68,13 +79,13 @@ public class Spell_Scribe extends Spell
 			mob.tell("You don't know how to scribe '"+spellName+"'.");
 			return false;
 		}
-		if(CMAble.lowestQualifyingLevel(scrollThis.ID())>24)
+		if(CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID())>24)
 		{
 			mob.tell("That spell is too powerful to scribe.");
 			return false;
 		}
 		
-		int numSpells=(CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this));
+		int numSpells=(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this));
 		if(numSpells<0) numSpells=0;
 		if(scroll.getSpells().size()>numSpells)
 		{
@@ -93,8 +104,8 @@ public class Spell_Scribe extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int experienceToLose=10*CMAble.lowestQualifyingLevel(scrollThis.ID());
-		MUDFight.postExperience(mob,null,null,-experienceToLose,false);
+		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID());
+		CMLib.combat().postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -102,7 +113,7 @@ public class Spell_Scribe extends Spell
 		if(success)
 		{
 			setMiscText(scrollThis.ID());
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

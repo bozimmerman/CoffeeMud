@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.SuperPowers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -36,7 +47,7 @@ public class Power_TrapSense extends SuperPower
 	public String trapCheck(Environmental E)
 	{
 		if(E!=null)
-		if(CoffeeUtensils.fetchMyTrap(E)!=null)
+		if(CMLib.utensils().fetchMyTrap(E)!=null)
 			return E.name()+" is trapped.\n\r";
 		return "";
 	}
@@ -45,7 +56,7 @@ public class Power_TrapSense extends SuperPower
 	{
 		StringBuffer msg=new StringBuffer("");
 		if(E==null) return msg.toString();
-		if((E instanceof Room)&&(Sense.canBeSeenBy(E,mob)))
+		if((E instanceof Room)&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
 			msg.append(trapCheck(E));
 			Room R=(Room)E;
@@ -73,7 +84,7 @@ public class Power_TrapSense extends SuperPower
 			}
 		}
 		else
-		if((E instanceof Container)&&(Sense.canBeSeenBy(E,mob)))
+		if((E instanceof Container)&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
 			Container C=(Container)E;
 			Vector V=C.getContents();
@@ -82,13 +93,13 @@ public class Power_TrapSense extends SuperPower
 					msg.append(C.name()+" contains something trapped.\n");
 		}
 		else
-		if((E instanceof Item)&&(Sense.canBeSeenBy(E,mob)))
+		if((E instanceof Item)&&(CMLib.flags().canBeSeenBy(E,mob)))
 			msg.append(trapCheck(E));
 		else
-		if((E instanceof Exit)&&(Sense.canBeSeenBy(E,mob)))
+		if((E instanceof Exit)&&(CMLib.flags().canBeSeenBy(E,mob)))
 			msg.append(trapCheck(E));
 		else
-		if((E instanceof MOB)&&(Sense.canBeSeenBy(E,mob)))
+		if((E instanceof MOB)&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
 			for(int i=0;i<((MOB)E).inventorySize();i++)
 			{
@@ -96,9 +107,9 @@ public class Power_TrapSense extends SuperPower
 				if(trapCheck(I).length()>0)
 					return E.name()+" is carrying something trapped.\n";
 			}
-			if(CoffeeShops.getShopKeeper(E)!=null)
+			if(CMLib.coffeeShops().getShopKeeper(E)!=null)
 			{
-				Vector V=CoffeeShops.getShopKeeper(E).getStoreInventory();
+				Vector V=CMLib.coffeeShops().getShopKeeper(E).getStoreInventory();
 				for(int v=0;v<V.size();v++)
 				{
 					Environmental E2=(Environmental)V.elementAt(v);

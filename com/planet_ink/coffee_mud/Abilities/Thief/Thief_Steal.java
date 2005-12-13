@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -72,7 +83,7 @@ public class Thief_Steal extends ThiefSkill
 
 		MOB target=mob.location().fetchInhabitant(Util.combine(commands,1));
 		if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) target=(MOB)givenTarget;
-		if((target==null)||(target.amDead())||(!Sense.canBeSeenBy(target,mob)))
+		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+Util.combine(commands,1)+"' here.");
 			return false;
@@ -102,22 +113,22 @@ public class Thief_Steal extends ThiefSkill
 		int discoverChance=(target.charStats().getStat(CharStats.WISDOM)*5)-(levelDiff*5);
 		int times=timesPicked(target);
 		if(times>5) discoverChance-=(20*(times-5));
-		if(!Sense.canBeSeenBy(mob,target))
+		if(!CMLib.flags().canBeSeenBy(mob,target))
 			discoverChance+=50;
 		if(discoverChance>95) discoverChance=95;
 		if(discoverChance<5) discoverChance=5;
 
 		if(levelDiff>0)
-			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?5:15));
+			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?5:15));
 		else
-			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?1:2));
+			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?1:2));
 		boolean success=profficiencyCheck(mob,levelDiff,auto);
 
 		if(!success)
 		{
-			if(Dice.rollPercentage()>discoverChance)
+			if(CMLib.dice().rollPercentage()>discoverChance)
 			{
-				FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to steal; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from <T-NAME> and fails!");
+				CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to steal; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from <T-NAME> and fails!");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
@@ -140,7 +151,7 @@ public class Thief_Steal extends ThiefSkill
 			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;
 			int hisCode=CMMsg.MSG_THIEF_ACT;
-			if(Dice.rollPercentage()<discoverChance)
+			if(CMLib.dice().rollPercentage()<discoverChance)
 				hisStr=null;
 			else
 			{
@@ -148,7 +159,7 @@ public class Thief_Steal extends ThiefSkill
 				hisCode=hisCode|((target.mayIFight(mob))?CMMsg.MASK_MALICIOUS:0);
 			}
 
-			FullMsg msg=new FullMsg(mob,target,this,code,str,hisCode,hisStr,CMMsg.NO_EFFECT,null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,code,str,hisCode,hisStr,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -163,18 +174,18 @@ public class Thief_Steal extends ThiefSkill
 				else
 				if(((hisStr==null)||mob.isMonster())
 				&&(!alreadyFighting)
-				&&((stolen==null)||(Dice.rollPercentage()>stolen.envStats().level())))
+				&&((stolen==null)||(CMLib.dice().rollPercentage()>stolen.envStats().level())))
 				{
 					if(target.getVictim()==mob)
 						target.makePeace();
 					if(mob.getVictim()==target)
 						mob.makePeace();
 				}
-				msg=new FullMsg(target,stolen,null,CMMsg.MSG_DROP,CMMsg.MSG_DROP,CMMsg.MSG_NOISE,null);
+				msg=CMClass.getMsg(target,stolen,null,CMMsg.MSG_DROP,CMMsg.MSG_DROP,CMMsg.MSG_NOISE,null);
 				if(target.location().okMessage(target,msg))
 				{
 					target.location().send(mob,msg);
-					msg=new FullMsg(mob,stolen,null,CMMsg.MSG_GET,CMMsg.MSG_GET,CMMsg.MSG_NOISE,null);
+					msg=CMClass.getMsg(mob,stolen,null,CMMsg.MSG_GET,CMMsg.MSG_GET,CMMsg.MSG_NOISE,null);
 					if(mob.location().okMessage(mob,msg))
 						mob.location().send(mob,msg);
 				}

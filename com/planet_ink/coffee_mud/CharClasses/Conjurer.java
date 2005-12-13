@@ -1,6 +1,18 @@
 package com.planet_ink.coffee_mud.CharClasses;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -35,16 +47,16 @@ public class Conjurer extends SpecialistMage
 		if(!myAbilitiesLoaded)
 		{
 			myAbilitiesLoaded=true;
-			CMAble.addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
-			CMAble.addCharAbilityMapping(ID(),8,"Spell_SummonMarker",25,true);
-			CMAble.addCharAbilityMapping(ID(),11,"Spell_Scatter",25,true);
-			CMAble.addCharAbilityMapping(ID(),13,"Spell_WaterCannon",25,true);
-            CMAble.addCharAbilityMapping(ID(),15,"Spell_WordRecall",0,true);
-			CMAble.addCharAbilityMapping(ID(),18,"Spell_MarkerSummoning",25,true);
-			CMAble.addCharAbilityMapping(ID(),20,"Spell_MarkerPortal",25,true);
-			CMAble.addCharAbilityMapping(ID(),23,"Spell_ConjureNexus",25,true);
-			CMAble.addCharAbilityMapping(ID(),25,"Spell_FlamingEnsnarement",25,true);
-			CMAble.addCharAbilityMapping(ID(),30,"Spell_SummonArmy",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Spell_SummonMarker",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_Scatter",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_WaterCannon",25,true);
+            CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_WordRecall",0,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_MarkerSummoning",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_MarkerPortal",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_ConjureNexus",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_FlamingEnsnarement",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_SummonArmy",25,true);
 		}
 	}
 }

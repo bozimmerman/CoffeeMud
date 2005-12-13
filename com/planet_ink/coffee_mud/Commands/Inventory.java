@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -36,7 +47,7 @@ public class Inventory extends StdCommand
 		Hashtable moneyItems=new Hashtable();
 		Vector V=null;
 		int insertAt=-1;
-		BeanCounter.getTotalAbsoluteNativeValue(mob);
+		CMLib.beanCounter().getTotalAbsoluteNativeValue(mob);
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item thisItem=mob.fetchInventory(i);
@@ -44,7 +55,7 @@ public class Inventory extends StdCommand
 			&&(thisItem.container()==null)
 			&&(thisItem.amWearingAt(Item.INVENTORY)))
 			{
-				if(Sense.canBeSeenBy(thisItem,seer))
+				if(CMLib.flags().canBeSeenBy(thisItem,seer))
 					foundAndSeen=true;
                 else
                     foundButUnseen=true;
@@ -85,7 +96,7 @@ public class Inventory extends StdCommand
 			Item I=(V.size()>0)?(Item)V.firstElement():null;
 			while(I!=null)
 			{
-				I=(Item)EnglishParser.fetchEnvironmental(V,mask,false);
+				I=(Item)CMLib.english().fetchEnvironmental(V,mask,false);
 				if(I!=null)
 				{
 					viewItems.addElement(I);
@@ -104,7 +115,7 @@ public class Inventory extends StdCommand
 		else
 		{
 			if(viewItems.size()>0)
-				msg.append(CMLister.lister(seer,viewItems,true,"MItem","",false,Util.bset(seer.getBitmap(),MOB.ATT_COMPRESS)));
+				msg.append(CMLib.lister().lister(seer,viewItems,true,"MItem","",false,Util.bset(seer.getBitmap(),MOB.ATT_COMPRESS)));
             if(foundButUnseen)
                 msg.append("(stuff you can't see right now)");
                 
@@ -125,7 +136,7 @@ public class Inventory extends StdCommand
                             totalValue+=((Coins)I).getTotalValue();
 				        msg.append(I.name());
 				    }
-                    msg.append(" ^N("+BeanCounter.abbreviatedPrice(key,totalValue)+")");
+                    msg.append(" ^N("+CMLib.beanCounter().abbreviatedPrice(key,totalValue)+")");
 				    if(e.hasMoreElements()) msg.append("\n\r");
 				}
 			}

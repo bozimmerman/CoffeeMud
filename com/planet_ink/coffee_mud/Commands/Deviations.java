@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -43,7 +54,7 @@ public class Deviations extends StdCommand
 		str.append(Util.padRight("Speed",5)+" ");
 		str.append(Util.padRight("Rejuv",5)+" ");
 		if(useFaction!=null)
-		    str.append(Util.padRight(useFaction.name,7)+" ");
+		    str.append(Util.padRight(useFaction.name(),7)+" ");
 		str.append(Util.padRight("Worn",5));
 		str.append("\n\r");
 		return str.toString();
@@ -98,7 +109,7 @@ public class Deviations extends StdCommand
 						&&((I instanceof Armor)||(I instanceof Weapon)))
 							check.addElement(I);
 					}
-					ShopKeeper sk=CoffeeShops.getShopKeeper(M);
+					ShopKeeper sk=CMLib.coffeeShops().getShopKeeper(M);
 					if(sk!=null)
 					{
 						Vector V=sk.getBaseInventory();
@@ -145,10 +156,10 @@ public class Deviations extends StdCommand
 			return new StringBuffer("You must also specify a mob or item name, or the word room, or the word area.");
 
 		Faction useFaction=null;
-		for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
+		for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
 		{
 		    Faction F=(Faction)e.nextElement();
-		    if(F.showinspecialreported) useFaction=F;
+		    if(F.showinspecialreported()) useFaction=F;
 		        
 		}
 		String where=((String)V.elementAt(1)).toLowerCase();
@@ -196,7 +207,7 @@ public class Deviations extends StdCommand
 				Weapon W=null;
 				if(I instanceof Weapon)
 					W=(Weapon)I;
-				Hashtable vals=CoffeeMaker.timsItemAdjustments(
+				Hashtable vals=CMLib.coffeeMaker().timsItemAdjustments(
 								I,I.envStats().level(),I.material(),I.baseEnvStats().weight(),
 								I.rawLogicalAnd()?2:1,
 								(W==null)?0:W.weaponClassification(),
@@ -249,7 +260,7 @@ public class Deviations extends StdCommand
 												(int)Math.round(M.baseCharStats().getCurrentClass().getLevelSpeed(M))),5)+" ");
 				mobResults.append(Util.padRight(""+((M.envStats().rejuv()==Integer.MAX_VALUE)?" MAX":""+M.envStats().rejuv()) ,5)+" ");
 				if(useFaction!=null) 
-				    mobResults.append(Util.padRight(""+(M.fetchFaction(useFaction.ID)==Integer.MAX_VALUE?"N/A":""+M.fetchFaction(useFaction.ID)),7)+" ");
+				    mobResults.append(Util.padRight(""+(M.fetchFaction(useFaction.factionID())==Integer.MAX_VALUE?"N/A":""+M.fetchFaction(useFaction.factionID())),7)+" ");
 				int reallyWornCount = 0;
 				for(int j=0;j<M.inventorySize();j++)
 				{

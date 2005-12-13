@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Diseases;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -30,7 +41,7 @@ public class Disease_Anthrax extends Disease
 	public boolean putInCommandlist(){return false;}
 	public int difficultyLevel(){return 2;}
 
-	protected int DISEASE_TICKS(){return new Long(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*10).intValue();}
+	protected int DISEASE_TICKS(){return new Long(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*10).intValue();}
 	protected int DISEASE_DELAY(){return 15;}
 	protected int lastHP=Integer.MAX_VALUE;
 	protected String DISEASE_DONE(){return "Your anthrax wounds clear up.";}
@@ -54,10 +65,10 @@ public class Disease_Anthrax extends Disease
 		{
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,DISEASE_AFFECT());
-			int damage=Dice.roll(1,6,0);
+			int damage=CMLib.dice().roll(1,6,0);
 			if(damage>1)
             {
-				MUDFight.postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
+				CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
             }
 			if((--conTickDown)<=0)
 			{
@@ -82,7 +93,7 @@ public class Disease_Anthrax extends Disease
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=affected;
             norecurse=true;
-            MUDFight.postDeath(diseaser,affected,null);
+            CMLib.combat().postDeath(diseaser,affected,null);
             norecurse=false;
 		}
 	}

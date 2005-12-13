@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.Abilities.Traps.Trap_Trap;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -36,7 +46,7 @@ public class Thief_MakeBomb extends ThiefSkill
 	{
 		Trap theTrap=null;
 		Vector traps=new Vector();
-		int qualifyingClassLevel=CMAble.qualifyingClassLevel(mob,this);
+		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this);
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
@@ -47,7 +57,7 @@ public class Thief_MakeBomb extends ThiefSkill
 		}
 		Environmental trapThis=givenTarget;
 		if(trapThis!=null)
-			theTrap=(Trap)traps.elementAt(Dice.roll(1,traps.size(),-1));
+			theTrap=(Trap)traps.elementAt(CMLib.dice().roll(1,traps.size(),-1));
 		else
 		if(Util.combine(commands,0).equalsIgnoreCase("list"))
 		{
@@ -73,7 +83,7 @@ public class Thief_MakeBomb extends ThiefSkill
 			for(int r=0;r<traps.size();r++)
 			{
 				Trap T=(Trap)traps.elementAt(r);
-				if(EnglishParser.containsString(T.name(),name))
+				if(CMLib.english().containsString(T.name(),name))
 					theTrap=T;
 			}
 			if(theTrap==null)
@@ -93,7 +103,7 @@ public class Thief_MakeBomb extends ThiefSkill
 
 		boolean success=profficiencyCheck(mob,+((mob.envStats().level()
 											 -trapThis.envStats().level())*3),auto);
-		Trap theOldTrap=CoffeeUtensils.fetchMyTrap(trapThis);
+		Trap theOldTrap=CMLib.utensils().fetchMyTrap(trapThis);
 		if(theOldTrap!=null)
 		{
 			if(theOldTrap.disabled())
@@ -105,20 +115,20 @@ public class Thief_MakeBomb extends ThiefSkill
 			}
 		}
 
-		FullMsg msg=new FullMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_GENERAL|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to make a bomb out of <T-NAMESELF>."));
+		CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_GENERAL|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to make a bomb out of <T-NAMESELF>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if(success)
 			{
 				mob.tell("You have completed your task.");
-				theTrap.setTrap(mob,trapThis,CMAble.qualifyingClassLevel(mob,this),adjustedLevel(mob,asLevel));
+				theTrap.setTrap(mob,trapThis,CMLib.ableMapper().qualifyingClassLevel(mob,this),adjustedLevel(mob,asLevel));
 			}
 			else
 			{
-				if(Dice.rollPercentage()>50)
+				if(CMLib.dice().rollPercentage()>50)
 				{
-					Trap T=theTrap.setTrap(mob,trapThis,CMAble.qualifyingClassLevel(mob,this),adjustedLevel(mob,asLevel));
+					Trap T=theTrap.setTrap(mob,trapThis,CMLib.ableMapper().qualifyingClassLevel(mob,this),adjustedLevel(mob,asLevel));
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> set(s) the bomb off on accident!");
 					T.spring(mob);
 				}

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -49,7 +60,7 @@ public class Thief_Squatting extends ThiefSkill
 				unInvoke();
 			}
 			else
-			if((Sense.isStanding(mob))||(mob.location()!=room))
+			if((CMLib.flags().isStanding(mob))||(mob.location()!=room))
 			{
 				failed=true;
 				unInvoke();
@@ -68,7 +79,7 @@ public class Thief_Squatting extends ThiefSkill
 
 		if((canBeUninvoked())&&(mob.location()!=null))
 		{
-			if((failed)||(!Sense.isSitting(mob))||(room==null)||(title==null)||(mob.location()!=room))
+			if((failed)||(!CMLib.flags().isSitting(mob))||(room==null)||(title==null)||(mob.location()!=room))
 				mob.tell("You are no longer squatting.");
 			else
 			if(title.landOwner().length()>0)
@@ -104,12 +115,12 @@ public class Thief_Squatting extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if(CoffeeUtensils.doesHavePriviledgesHere(mob,mob.location()))
+		if(CMLib.utensils().doesHavePriviledgesHere(mob,mob.location()))
 		{
 			mob.tell("This is your place already!");
 			return false;
 		}
-		LandTitle T=CoffeeUtensils.getLandTitle(mob.location());
+		LandTitle T=CMLib.utensils().getLandTitle(mob.location());
 		boolean confirmed=false;
 		for(int r=0;r<mob.location().numEffects();r++)
 			if(mob.location().fetchEffect(r)==T)
@@ -124,7 +135,7 @@ public class Thief_Squatting extends ThiefSkill
 			mob.tell("You cannot squat on an area for sale.");
 			return false;
 		}
-		if(!Sense.isSitting(mob))
+		if(!CMLib.flags().isSitting(mob))
 		{
 			mob.tell("You must be sitting!");
 			return false;
@@ -132,7 +143,7 @@ public class Thief_Squatting extends ThiefSkill
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		FullMsg msg=new FullMsg(mob,null,this,auto?CMMsg.MASK_GENERAL:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":"<S-NAME> start(s) squatting.");
+		CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_GENERAL:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":"<S-NAME> start(s) squatting.");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> can't seem to get comfortable here.");
 		else
@@ -142,7 +153,7 @@ public class Thief_Squatting extends ThiefSkill
 			failed=false;
 			room=mob.location();
 			title=T;
-			beneficialAffect(mob,target,asLevel,(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDMONTH)));
+			beneficialAffect(mob,target,asLevel,(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)));
 		}
 		return success;
 	}

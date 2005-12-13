@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -46,7 +57,7 @@ public class Take extends BaseItemParser
 			}
 
 			MOB victim=mob.location().fetchInhabitant((String)commands.lastElement());
-			if((victim==null)||((victim!=null)&&(!Sense.canBeSeenBy(victim,mob))))
+			if((victim==null)||((victim!=null)&&(!CMLib.flags().canBeSeenBy(victim,mob))))
 			{
 				mob.tell("I don't see anyone called "+(String)commands.lastElement()+" here.");
 				return false;
@@ -62,7 +73,7 @@ public class Take extends BaseItemParser
 
 			int maxToGive=Integer.MAX_VALUE;
 			if((commands.size()>1)
-			&&(EnglishParser.numPossibleGold(victim,Util.combine(commands,0))==0)
+			&&(CMLib.english().numPossibleGold(victim,Util.combine(commands,0))==0)
 			&&(Util.s_int((String)commands.firstElement())>0))
 			{
 				maxToGive=Util.s_int((String)commands.firstElement());
@@ -99,11 +110,11 @@ public class Take extends BaseItemParser
 			
 			do
 			{
-				Environmental giveThis=EnglishParser.bestPossibleGold(victim,null,thingToGive);
+				Environmental giveThis=CMLib.english().bestPossibleGold(victim,null,thingToGive);
 				
 				if(giveThis!=null)
 				{
-				    if(((Coins)giveThis).getNumberOfCoins()<EnglishParser.numPossibleGold(victim,thingToGive))
+				    if(((Coins)giveThis).getNumberOfCoins()<CMLib.english().numPossibleGold(victim,thingToGive))
 				        return false;
 					allFlag=false;
 				}
@@ -131,7 +142,7 @@ public class Take extends BaseItemParser
 			for(int i=0;i<V.size();i++)
 			{
 				Item giveThis=(Item)V.elementAt(i);
-				FullMsg newMsg=new FullMsg(victim,mob,giveThis,CMMsg.MASK_GENERAL|CMMsg.MSG_GIVE,"<T-NAME> take(s) <O-NAME> from <S-NAMESELF>.");
+				CMMsg newMsg=CMClass.getMsg(victim,mob,giveThis,CMMsg.MASK_GENERAL|CMMsg.MSG_GIVE,"<T-NAME> take(s) <O-NAME> from <S-NAMESELF>.");
 				if(victim.location().okMessage(victim,newMsg))
 					victim.location().send(victim,newMsg);
 				if(!mob.isMine(giveThis)) mob.giveItem(giveThis);

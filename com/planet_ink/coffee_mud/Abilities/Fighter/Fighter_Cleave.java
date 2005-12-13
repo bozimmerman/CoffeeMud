@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -22,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_Cleave extends StdAbility
+public class Fighter_Cleave extends FighterSkill
 {
 	public String ID() { return "Fighter_Cleave"; }
 	public String name(){ return "Cleave";}
@@ -54,12 +64,12 @@ public class Fighter_Cleave extends StdAbility
 		{
 			Item w=mob.fetchWieldedItem();
 			if(w==null) w=mob.myNaturalWeapon();
-            FullMsg msg=new FullMsg(mob,nextTarget,this,CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> CLEAVE(S) INTO <T-NAME>!!^</FIGHT^>^?");
-            CMColor.fixSourceFightColor(msg);
+            CMMsg msg=CMClass.getMsg(mob,nextTarget,this,CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> CLEAVE(S) INTO <T-NAME>!!^</FIGHT^>^?");
+            CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
                 mob.location().send(mob,msg);
-				MUDFight.postAttack(mob,nextTarget,w);
+				CMLib.combat().postAttack(mob,nextTarget,w);
 				helpProfficiency(mob);
 			}
 		}
@@ -92,7 +102,7 @@ public class Fighter_Cleave extends StdAbility
 			if((damAmount>victim.curState().getHitPoints())
 			&&(w.weaponType()==Weapon.TYPE_SLASHING)
 			&&(w.weaponClassification()!=Weapon.CLASS_NATURAL)
-			&&(Sense.aliveAwakeMobileUnbound(mob,true))
+			&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 			&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,0,false)))
 			{
 				nextTarget=null;

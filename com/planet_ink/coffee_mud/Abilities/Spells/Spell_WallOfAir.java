@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -58,11 +69,11 @@ public class Spell_WallOfAir extends Spell
 			M.setName("The wall of air");
 			M.setVictim(mob);
 			M.setAtRange(mob.rangeToTarget());
-			MUDFight.postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
+			CMLib.combat().postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
 			M.setLocation(null);
 			M.setVictim(null);
 			if(mob.isMonster())
-				CommonMsgs.remove(mob,(Item)msg.tool(),true);
+				CMLib.commands().remove(mob,(Item)msg.tool(),true);
             M.destroy();
 			return false;
 		}
@@ -138,7 +149,7 @@ public class Spell_WallOfAir extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),auto?"An swirling wall of air appears!":"^S<S-NAME> conjur(s) up a swirling wall of air!^?");
+			CMMsg msg = CMClass.getMsg(mob, target, this,affectType(auto),auto?"An swirling wall of air appears!":"^S<S-NAME> conjur(s) up a swirling wall of air!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -147,7 +158,7 @@ public class Spell_WallOfAir extends Spell
 				I.setDisplayText("");
 				I.setDescription("The air is swirling dangerously.");
 				I.setMaterial(EnvResource.RESOURCE_NOTHING);
-				Sense.setGettable(I,false);
+				CMLib.flags().setGettable(I,false);
 				I.recoverEnvStats();
 				mob.location().addItem(I);
 				theWall=I;

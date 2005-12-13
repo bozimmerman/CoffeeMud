@@ -1,10 +1,22 @@
 package com.planet_ink.coffee_mud.CharClasses;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.DefaultTimeClock;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.Races.GenRace;
-import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -122,7 +134,7 @@ public class GenCharClass extends StdCharClass
 	{
 	}
 
-    public CMObject newInstance(){return new GenCharClass();}
+    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new GenCharClass();}}
 	public CMObject copyOf()
 	{
 		GenCharClass E=new GenCharClass();
@@ -139,7 +151,7 @@ public class GenCharClass extends StdCharClass
 			return false;
 		if((!mob.isMonster())&&(mob.baseEnvStats().level()>0))
 		{
-			if(!MUDZapper.zapperCheck(qualifications,mob))
+			if(!CMLib.masking().maskCheck(qualifications,mob))
 			{
 				if(!quiet)
 					mob.tell("You must meet the following qualifications to be a "+name()+":\n"+statQualifications());
@@ -148,7 +160,7 @@ public class GenCharClass extends StdCharClass
 		}
 		return true;
 	}
-	public String statQualifications(){return MUDZapper.zapperDesc(qualifications);}
+	public String statQualifications(){return CMLib.masking().maskDesc(qualifications);}
 
 	/** some general statistics about such an item
 	 * see class "EnvStats" for more information. */
@@ -197,46 +209,46 @@ public class GenCharClass extends StdCharClass
 		str.append("<CCLASS><ID>"+ID()+"</ID>");
         for(int i=0;i<names.length;i++)
         {
-    		str.append(XMLManager.convertXMLtoTag("NAME"+i,names[i]));
-            str.append(XMLManager.convertXMLtoTag("NAMELEVEL"+i,nameLevels[i].intValue()));
+    		str.append(CMLib.xml().convertXMLtoTag("NAME"+i,names[i]));
+            str.append(CMLib.xml().convertXMLtoTag("NAMELEVEL"+i,nameLevels[i].intValue()));
         }
-		str.append(XMLManager.convertXMLtoTag("BASE",baseClass()));
-		str.append(XMLManager.convertXMLtoTag("HPDIV",""+hpDivisor));
-		str.append(XMLManager.convertXMLtoTag("HPDICE",""+hpDice));
-		str.append(XMLManager.convertXMLtoTag("HPDIE",""+hpDie));
-		str.append(XMLManager.convertXMLtoTag("LVLPRAC",""+bonusPracLevel));
-		str.append(XMLManager.convertXMLtoTag("MANADIV",""+manaDivisor));
-		str.append(XMLManager.convertXMLtoTag("MANADICE",""+manaDice));
-		str.append(XMLManager.convertXMLtoTag("MANADIE",""+manaDie));
-		str.append(XMLManager.convertXMLtoTag("LVLATT",""+bonusAttackLevel));
-		str.append(XMLManager.convertXMLtoTag("ATTATT",""+attackAttribute));
-		str.append(XMLManager.convertXMLtoTag("FSTPRAC",""+pracsFirstLevel));
-		str.append(XMLManager.convertXMLtoTag("FSTTRAN",""+trainsFirstLevel));
-		str.append(XMLManager.convertXMLtoTag("LVLDAM",""+levelsPerBonusDamage));
-		str.append(XMLManager.convertXMLtoTag("LVLMOVE",""+movementMultiplier));
-		str.append(XMLManager.convertXMLtoTag("ARMOR",""+allowedArmorLevel));
-		//str.append(XMLManager.convertXMLtoTag("STRWEAP",weaponLimitations));
-		//str.append(XMLManager.convertXMLtoTag("STRARM",armorLimitations));
-		str.append(XMLManager.convertXMLtoTag("STRLMT",otherLimitations));
-		str.append(XMLManager.convertXMLtoTag("STRBON",otherBonuses));
-		str.append(XMLManager.convertXMLtoTag("QUAL",qualifications));
-		str.append(XMLManager.convertXMLtoTag("PLAYER",""+selectability));
+		str.append(CMLib.xml().convertXMLtoTag("BASE",baseClass()));
+		str.append(CMLib.xml().convertXMLtoTag("HPDIV",""+hpDivisor));
+		str.append(CMLib.xml().convertXMLtoTag("HPDICE",""+hpDice));
+		str.append(CMLib.xml().convertXMLtoTag("HPDIE",""+hpDie));
+		str.append(CMLib.xml().convertXMLtoTag("LVLPRAC",""+bonusPracLevel));
+		str.append(CMLib.xml().convertXMLtoTag("MANADIV",""+manaDivisor));
+		str.append(CMLib.xml().convertXMLtoTag("MANADICE",""+manaDice));
+		str.append(CMLib.xml().convertXMLtoTag("MANADIE",""+manaDie));
+		str.append(CMLib.xml().convertXMLtoTag("LVLATT",""+bonusAttackLevel));
+		str.append(CMLib.xml().convertXMLtoTag("ATTATT",""+attackAttribute));
+		str.append(CMLib.xml().convertXMLtoTag("FSTPRAC",""+pracsFirstLevel));
+		str.append(CMLib.xml().convertXMLtoTag("FSTTRAN",""+trainsFirstLevel));
+		str.append(CMLib.xml().convertXMLtoTag("LVLDAM",""+levelsPerBonusDamage));
+		str.append(CMLib.xml().convertXMLtoTag("LVLMOVE",""+movementMultiplier));
+		str.append(CMLib.xml().convertXMLtoTag("ARMOR",""+allowedArmorLevel));
+		//str.append(CMLib.xml().convertXMLtoTag("STRWEAP",weaponLimitations));
+		//str.append(CMLib.xml().convertXMLtoTag("STRARM",armorLimitations));
+		str.append(CMLib.xml().convertXMLtoTag("STRLMT",otherLimitations));
+		str.append(CMLib.xml().convertXMLtoTag("STRBON",otherBonuses));
+		str.append(CMLib.xml().convertXMLtoTag("QUAL",qualifications));
+		str.append(CMLib.xml().convertXMLtoTag("PLAYER",""+selectability));
 		if(adjEStats==null) str.append("<ESTATS/>");
 		else
-			str.append(XMLManager.convertXMLtoTag("ESTATS",CoffeeMaker.getEnvStatsStr(adjEStats)));
+			str.append(CMLib.xml().convertXMLtoTag("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(adjEStats)));
 		if(adjStats==null) str.append("<ASTATS/>");
 		else
-			str.append(XMLManager.convertXMLtoTag("ASTATS",CoffeeMaker.getCharStatsStr(adjStats)));
+			str.append(CMLib.xml().convertXMLtoTag("ASTATS",CMLib.coffeeMaker().getCharStatsStr(adjStats)));
 		if(setStats==null) str.append("<CSTATS/>");
 		else
-			str.append(XMLManager.convertXMLtoTag("CSTATS",CoffeeMaker.getCharStatsStr(setStats)));
+			str.append(CMLib.xml().convertXMLtoTag("CSTATS",CMLib.coffeeMaker().getCharStatsStr(setStats)));
 		if(adjState==null) str.append("<ASTATE/>");
 		else
-			str.append(XMLManager.convertXMLtoTag("ASTATE",CoffeeMaker.getCharStateStr(adjState)));
+			str.append(CMLib.xml().convertXMLtoTag("ASTATE",CMLib.coffeeMaker().getCharStateStr(adjState)));
 		if(startAdjState==null) str.append("<STARTASTATE/>");
 		else
-			str.append(XMLManager.convertXMLtoTag("STARTASTATE",CoffeeMaker.getCharStateStr(startAdjState)));
-		str.append(XMLManager.convertXMLtoTag("DISFLAGS",""+disableFlags));
+			str.append(CMLib.xml().convertXMLtoTag("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(startAdjState)));
+		str.append(CMLib.xml().convertXMLtoTag("DISFLAGS",""+disableFlags));
 		
 		DVector ables=getAbleSet();
 		if((ables==null)||(ables.size()==0))
@@ -266,7 +278,7 @@ public class GenCharClass extends StdCharClass
 			for(Iterator i=disallowedWeaponSet.iterator();i.hasNext();)
 			{
 				Integer I=(Integer)i.next();
-				str.append(XMLManager.convertXMLtoTag("WCLASS",""+I.intValue()));
+				str.append(CMLib.xml().convertXMLtoTag("WCLASS",""+I.intValue()));
 			}
 			str.append("</NOWEAPS>");
 		}
@@ -278,8 +290,8 @@ public class GenCharClass extends StdCharClass
 			{
 				Item I=(Item)outfit().elementAt(i);
 				str.append("<OFTITEM>");
-				str.append(XMLManager.convertXMLtoTag("OFCLASS",CMClass.className(I)));
-				str.append(XMLManager.convertXMLtoTag("OFDATA",CoffeeMaker.parseOutAngleBrackets(I.text())));
+				str.append(CMLib.xml().convertXMLtoTag("OFCLASS",CMClass.className(I)));
+				str.append(CMLib.xml().convertXMLtoTag("OFDATA",CMLib.coffeeMaker().parseOutAngleBrackets(I.text())));
 				str.append("</OFTITEM>");
 			}
 			str.append("</OUTFIT>");
@@ -287,8 +299,8 @@ public class GenCharClass extends StdCharClass
         for(int i=0;i<securityGroups.length;i++)
         if(i<securityGroupLevels.length)
         {
-            str.append(XMLManager.convertXMLtoTag("SSET"+i,Util.combineWithQuotes(securityGroups[i],0)));
-            str.append(XMLManager.convertXMLtoTag("SSETLEVEL"+i,securityGroupLevels[i].intValue()));
+            str.append(CMLib.xml().convertXMLtoTag("SSET"+i,Util.combineWithQuotes(securityGroups[i],0)));
+            str.append(CMLib.xml().convertXMLtoTag("SSETLEVEL"+i,securityGroupLevels[i].intValue()));
         }
         
 		str.append("</CCLASS>");
@@ -297,18 +309,18 @@ public class GenCharClass extends StdCharClass
 	public void setClassParms(String parms)
 	{
 		if(parms.trim().length()==0) return;
-		Vector xml=XMLManager.parseAllXML(parms);
+		Vector xml=CMLib.xml().parseAllXML(parms);
 		if(xml==null)
 		{
 			Log.errOut("GenCharClass","Unable to parse: "+parms);
 			return;
 		}
-		Vector classData=XMLManager.getRealContentsFromPieces(xml,"CCLASS");
+		Vector classData=CMLib.xml().getRealContentsFromPieces(xml,"CCLASS");
 		if(classData==null){	Log.errOut("GenCharClass","Unable to get CCLASS data."); return;}
-        String classID=XMLManager.getValFromPieces(classData,"ID");
+        String classID=CMLib.xml().getValFromPieces(classData,"ID");
 		if(classID.length()==0) return;
 		ID=classID;
-        String singleName=XMLManager.getValFromPieces(classData,"NAME");
+        String singleName=CMLib.xml().getValFromPieces(classData,"NAME");
         if((singleName!=null)&&(singleName.length()>0))
         {
             names=new String[1];
@@ -324,8 +336,8 @@ public class GenCharClass extends StdCharClass
             int lastLevel=-1;
             while(true)
             {
-                String name=XMLManager.getValFromPieces(classData,"NAME"+index);
-                int level=XMLManager.getIntFromPieces(classData,"NAMELEVEL"+index);
+                String name=CMLib.xml().getValFromPieces(classData,"NAME"+index);
+                int level=CMLib.xml().getIntFromPieces(classData,"NAMELEVEL"+index);
                 if((name.length()==0)||(level<=lastLevel))
                     break;
                 nameSet.addElement(name);
@@ -341,79 +353,79 @@ public class GenCharClass extends StdCharClass
                 nameLevels[i]=(Integer)levelSet.elementAt(i);
             }
         }
-		String base=XMLManager.getValFromPieces(classData,"BASE");
+		String base=CMLib.xml().getValFromPieces(classData,"BASE");
 		if((base==null)||(base.length()==0))
 			return;
 		baseClass=base;
-		hpDivisor=XMLManager.getIntFromPieces(classData,"HPDIV");
+		hpDivisor=CMLib.xml().getIntFromPieces(classData,"HPDIV");
 		if(hpDivisor==0) hpDivisor=3;
-		hpDice=XMLManager.getIntFromPieces(classData,"HPDICE");
-		hpDie=XMLManager.getIntFromPieces(classData,"HPDIE");
-		bonusPracLevel=XMLManager.getIntFromPieces(classData,"LVLPRAC");
-		manaDivisor=XMLManager.getIntFromPieces(classData,"MANADIV");
+		hpDice=CMLib.xml().getIntFromPieces(classData,"HPDICE");
+		hpDie=CMLib.xml().getIntFromPieces(classData,"HPDIE");
+		bonusPracLevel=CMLib.xml().getIntFromPieces(classData,"LVLPRAC");
+		manaDivisor=CMLib.xml().getIntFromPieces(classData,"MANADIV");
 		if(manaDivisor==0) manaDivisor=3;
-		manaDice=XMLManager.getIntFromPieces(classData,"MANADICE");
-		manaDie=XMLManager.getIntFromPieces(classData,"MANADIE");
-		bonusAttackLevel=XMLManager.getIntFromPieces(classData,"LVLATT");
-		attackAttribute=XMLManager.getIntFromPieces(classData,"ATTATT");
-		trainsFirstLevel=XMLManager.getIntFromPieces(classData,"FSTTRAN");
-		pracsFirstLevel=XMLManager.getIntFromPieces(classData,"FSTPRAC");
-		levelsPerBonusDamage=XMLManager.getIntFromPieces(classData,"LVLDAM");
-		movementMultiplier=XMLManager.getIntFromPieces(classData,"LVLMOVE");
-		allowedArmorLevel=XMLManager.getIntFromPieces(classData,"ARMOR");
-		//weaponLimitations=XMLManager.getValFromPieces(classData,"STRWEAP");
-		//armorLimitations=XMLManager.getValFromPieces(classData,"STRARM");
-		otherLimitations=XMLManager.getValFromPieces(classData,"STRLMT");
-		otherBonuses=XMLManager.getValFromPieces(classData,"STRBON");
-		qualifications=XMLManager.getValFromPieces(classData,"QUAL");
-		String s=XMLManager.getValFromPieces(classData,"PLAYER");
+		manaDice=CMLib.xml().getIntFromPieces(classData,"MANADICE");
+		manaDie=CMLib.xml().getIntFromPieces(classData,"MANADIE");
+		bonusAttackLevel=CMLib.xml().getIntFromPieces(classData,"LVLATT");
+		attackAttribute=CMLib.xml().getIntFromPieces(classData,"ATTATT");
+		trainsFirstLevel=CMLib.xml().getIntFromPieces(classData,"FSTTRAN");
+		pracsFirstLevel=CMLib.xml().getIntFromPieces(classData,"FSTPRAC");
+		levelsPerBonusDamage=CMLib.xml().getIntFromPieces(classData,"LVLDAM");
+		movementMultiplier=CMLib.xml().getIntFromPieces(classData,"LVLMOVE");
+		allowedArmorLevel=CMLib.xml().getIntFromPieces(classData,"ARMOR");
+		//weaponLimitations=CMLib.xml().getValFromPieces(classData,"STRWEAP");
+		//armorLimitations=CMLib.xml().getValFromPieces(classData,"STRARM");
+		otherLimitations=CMLib.xml().getValFromPieces(classData,"STRLMT");
+		otherBonuses=CMLib.xml().getValFromPieces(classData,"STRBON");
+		qualifications=CMLib.xml().getValFromPieces(classData,"QUAL");
+		String s=CMLib.xml().getValFromPieces(classData,"PLAYER");
 		if(Util.isNumber(s))
 		    selectability=Util.s_int(s);
 		else
 			selectability=Util.s_bool(s)?Area.THEME_FANTASY:0;
 		adjEStats=null;
-		String eStats=XMLManager.getValFromPieces(classData,"ESTATS");
-		if(eStats.length()>0){ adjEStats=(EnvStats)CMClass.getShared("DefaultEnvStats"); CoffeeMaker.setEnvStats(adjEStats,eStats);}
+		String eStats=CMLib.xml().getValFromPieces(classData,"ESTATS");
+		if(eStats.length()>0){ adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); CMLib.coffeeMaker().setEnvStats(adjEStats,eStats);}
 		adjStats=null;
-		String aStats=XMLManager.getValFromPieces(classData,"ASTATS");
-		if(aStats.length()>0){ adjStats=(CharStats)CMClass.getShared("DefaultCharStats"); CoffeeMaker.setCharStats(adjStats,aStats);}
+		String aStats=CMLib.xml().getValFromPieces(classData,"ASTATS");
+		if(aStats.length()>0){ adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); CMLib.coffeeMaker().setCharStats(adjStats,aStats);}
 		setStats=null;
-		String cStats=XMLManager.getValFromPieces(classData,"CSTATS");
-		if(cStats.length()>0){ setStats=(CharStats)CMClass.getShared("DefaultCharStats"); CoffeeMaker.setCharStats(setStats,cStats);}
+		String cStats=CMLib.xml().getValFromPieces(classData,"CSTATS");
+		if(cStats.length()>0){ setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); CMLib.coffeeMaker().setCharStats(setStats,cStats);}
 		adjState=null;
-		String aState=XMLManager.getValFromPieces(classData,"ASTATE");
-		if(aState.length()>0){ adjState=(CharState)CMClass.getShared("DefaultCharState"); CoffeeMaker.setCharState(adjState,aState);}
+		String aState=CMLib.xml().getValFromPieces(classData,"ASTATE");
+		if(aState.length()>0){ adjState=(CharState)CMClass.getCommon("DefaultCharState"); CMLib.coffeeMaker().setCharState(adjState,aState);}
 		startAdjState=null;
-		disableFlags=XMLManager.getIntFromPieces(classData,"DISFLAGS");
-		String saState=XMLManager.getValFromPieces(classData,"STARTASTATE");
-		if(saState.length()>0){ startAdjState=(CharState)CMClass.getShared("DefaultCharState"); startAdjState.setAllValues(0); CoffeeMaker.setCharState(startAdjState,saState);}
+		disableFlags=CMLib.xml().getIntFromPieces(classData,"DISFLAGS");
+		String saState=CMLib.xml().getValFromPieces(classData,"STARTASTATE");
+		if(saState.length()>0){ startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,saState);}
 
-		Vector xV=XMLManager.getRealContentsFromPieces(classData,"CABILITIES");
-		CMAble.delCharMappings(ID());
+		Vector xV=CMLib.xml().getRealContentsFromPieces(classData,"CABILITIES");
+		CMLib.ableMapper().delCharMappings(ID());
 		if((xV!=null)&&(xV.size()>0))
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)xV.elementAt(x);
+				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.elementAt(x);
 				if((!iblk.tag.equalsIgnoreCase("CABILITY"))||(iblk.contents==null))
 					continue;
-				CMAble.addCharAbilityMapping(ID(),
-											 XMLManager.getIntFromPieces(iblk.contents,"CALEVEL"),
-											 XMLManager.getValFromPieces(iblk.contents,"CACLASS"),
-											 XMLManager.getIntFromPieces(iblk.contents,"CAPROFF"),
-											 XMLManager.getValFromPieces(iblk.contents,"CAPARM"),
-											 XMLManager.getBoolFromPieces(iblk.contents,"CAAGAIN"),
-											 XMLManager.getBoolFromPieces(iblk.contents,"CASECR"));
+				CMLib.ableMapper().addCharAbilityMapping(ID(),
+											 CMLib.xml().getIntFromPieces(iblk.contents,"CALEVEL"),
+											 CMLib.xml().getValFromPieces(iblk.contents,"CACLASS"),
+											 CMLib.xml().getIntFromPieces(iblk.contents,"CAPROFF"),
+											 CMLib.xml().getValFromPieces(iblk.contents,"CAPARM"),
+											 CMLib.xml().getBoolFromPieces(iblk.contents,"CAAGAIN"),
+											 CMLib.xml().getBoolFromPieces(iblk.contents,"CASECR"));
 			}
 		
 		// now WEAPON RESTRICTIONS!
-		xV=XMLManager.getRealContentsFromPieces(classData,"NOWEAPS");
+		xV=CMLib.xml().getRealContentsFromPieces(classData,"NOWEAPS");
 		disallowedWeaponSet=null;
 		if((xV!=null)&&(xV.size()>0))
 		{
 			disallowedWeaponSet=new HashSet();
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)xV.elementAt(x);
+				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.elementAt(x);
 				if((!iblk.tag.equalsIgnoreCase("WCLASS"))||(iblk.contents==null))
 					continue;
 				disallowedWeaponSet.add(new Integer(Util.s_int(iblk.value)));
@@ -421,19 +433,19 @@ public class GenCharClass extends StdCharClass
 		}
 		
 		// now OUTFIT!
-		Vector oV=XMLManager.getRealContentsFromPieces(classData,"OUTFIT");
+		Vector oV=CMLib.xml().getRealContentsFromPieces(classData,"OUTFIT");
 		outfitChoices=null;
 		if((oV!=null)&&(oV.size()>0))
 		{
 			outfitChoices=new Vector();
 			for(int x=0;x<oV.size();x++)
 			{
-				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)oV.elementAt(x);
+				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)oV.elementAt(x);
 				if((!iblk.tag.equalsIgnoreCase("OFTITEM"))||(iblk.contents==null))
 					continue;
-				Item newOne=CMClass.getItem(XMLManager.getValFromPieces(iblk.contents,"OFCLASS"));
-				String idat=XMLManager.getValFromPieces(iblk.contents,"OFDATA");
-				newOne.setMiscText(CoffeeMaker.restoreAngleBrackets(idat));
+				Item newOne=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"OFCLASS"));
+				String idat=CMLib.xml().getValFromPieces(iblk.contents,"OFDATA");
+				newOne.setMiscText(CMLib.coffeeMaker().restoreAngleBrackets(idat));
 				newOne.recoverEnvStats();
 				outfitChoices.addElement(newOne);
 			}
@@ -446,8 +458,8 @@ public class GenCharClass extends StdCharClass
         int lastLevel=-1;
         while(true)
         {
-            String groups=XMLManager.getValFromPieces(classData,"SSET"+index);
-            int groupLevel=XMLManager.getIntFromPieces(classData,"SSETLEVEL"+index);
+            String groups=CMLib.xml().getValFromPieces(classData,"SSET"+index);
+            int groupLevel=CMLib.xml().getIntFromPieces(classData,"SSETLEVEL"+index);
             if((groups.length()==0)||(groupLevel<=lastLevel))
                 break;
             groupSet.addElement(Util.parse(groups.toUpperCase()));
@@ -468,16 +480,16 @@ public class GenCharClass extends StdCharClass
 	protected DVector getAbleSet()
 	{
 		DVector VA=new DVector(6);
-		Vector V=CMAble.getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
+		Vector V=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
 		for(int v=0;v<V.size();v++)
 		{
 			String AID=(String)V.elementAt(v);
 			VA.addElement(AID,
-						  ""+CMAble.getQualifyingLevel(ID(),true,AID),
-						  ""+CMAble.getDefaultProfficiency(ID(),true,AID),
-						  ""+CMAble.getDefaultGain(ID(),true,AID),
-						  ""+CMAble.getSecretSkill(ID(),true,AID),
-						  ""+CMAble.getDefaultParm(ID(),true,AID));
+						  ""+CMLib.ableMapper().getQualifyingLevel(ID(),true,AID),
+						  ""+CMLib.ableMapper().getDefaultProfficiency(ID(),true,AID),
+						  ""+CMLib.ableMapper().getDefaultGain(ID(),true,AID),
+						  ""+CMLib.ableMapper().getSecretSkill(ID(),true,AID),
+						  ""+CMLib.ableMapper().getDefaultParm(ID(),true,AID));
 		}
 		return VA;
 	}
@@ -526,10 +538,10 @@ public class GenCharClass extends StdCharClass
 		case 17: return otherBonuses;
 		case 18: return qualifications;
 		case 19: return ""+selectability;
-		case 20: return (adjEStats==null)?"":CoffeeMaker.getEnvStatsStr(adjEStats);
-		case 21: return (adjStats==null)?"":CoffeeMaker.getCharStatsStr(adjStats);
-		case 22: return (setStats==null)?"":CoffeeMaker.getCharStatsStr(setStats);
-		case 23: return (adjState==null)?"":CoffeeMaker.getCharStateStr(adjState);
+		case 20: return (adjEStats==null)?"":CMLib.coffeeMaker().getEnvStatsStr(adjEStats);
+		case 21: return (adjStats==null)?"":CMLib.coffeeMaker().getCharStatsStr(adjStats);
+		case 22: return (setStats==null)?"":CMLib.coffeeMaker().getCharStatsStr(setStats);
+		case 23: return (adjState==null)?"":CMLib.coffeeMaker().getCharStateStr(adjState);
 		case 24: return ""+getAbleSet().size();
 		case 25: return (String)getAbleSet().elementAt(num,1);
 		case 26: return (String)getAbleSet().elementAt(num,2);
@@ -546,7 +558,7 @@ public class GenCharClass extends StdCharClass
 		case 37: return ""+manaDice;
 		case 38: return ""+manaDie;
 		case 39: return ""+disableFlags; 
-		case 40: return (startAdjState==null)?"":CoffeeMaker.getCharStateStr(startAdjState);
+		case 40: return (startAdjState==null)?"":CMLib.coffeeMaker().getCharStateStr(startAdjState);
         case 41: return ""+names.length; 
         case 42: if(num<nameLevels.length) 
                     return ""+nameLevels[num].intValue();
@@ -597,17 +609,17 @@ public class GenCharClass extends StdCharClass
 		case 17: otherBonuses=val;break;
 		case 18: qualifications=val;break;
 		case 19: selectability=Util.s_int(val); break;
-		case 20: adjEStats=null;if(val.length()>0){adjEStats=(EnvStats)CMClass.getShared("DefaultEnvStats"); adjEStats.setAllValues(0); CoffeeMaker.setEnvStats(adjEStats,val);}break;
-		case 21: adjStats=null;if(val.length()>0){adjStats=(CharStats)CMClass.getShared("DefaultCharStats"); adjStats.setAllValues(0); CoffeeMaker.setCharStats(adjStats,val);}break;
-		case 22: setStats=null;if(val.length()>0){setStats=(CharStats)CMClass.getShared("DefaultCharStats"); setStats.setAllValues(0); CoffeeMaker.setCharStats(setStats,val);}break;
-		case 23: adjState=null;if(val.length()>0){adjState=(CharState)CMClass.getShared("DefaultCharState"); adjState.setAllValues(0); CoffeeMaker.setCharState(adjState,val);}break;
-		case 24: CMAble.delCharMappings(ID()); break;
+		case 20: adjEStats=null;if(val.length()>0){adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); adjEStats.setAllValues(0); CMLib.coffeeMaker().setEnvStats(adjEStats,val);}break;
+		case 21: adjStats=null;if(val.length()>0){adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(adjStats,val);}break;
+		case 22: setStats=null;if(val.length()>0){setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(setStats,val);}break;
+		case 23: adjState=null;if(val.length()>0){adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0); CMLib.coffeeMaker().setCharState(adjState,val);}break;
+		case 24: CMLib.ableMapper().delCharMappings(ID()); break;
 		case 25: tempables[0]=val; break;
 		case 26: tempables[1]=val; break;
 		case 27: tempables[2]=val; break;
 		case 28: tempables[3]=val; break;
 		case 29: tempables[4]=val; break;
-		case 30: CMAble.addCharAbilityMapping(ID(),
+		case 30: CMLib.ableMapper().addCharAbilityMapping(ID(),
 											  Util.s_int(tempables[1]),
 											  tempables[0],
 											  Util.s_int(tempables[2]),
@@ -650,7 +662,7 @@ public class GenCharClass extends StdCharClass
 		case 37: manaDice=Util.s_int(val); break;
 		case 38: manaDie=Util.s_int(val); break;
 		case 39: disableFlags=Util.s_int(val); break;
-		case 40: startAdjState=null;if(val.length()>0){startAdjState=(CharState)CMClass.getShared("DefaultCharState"); startAdjState.setAllValues(0); CoffeeMaker.setCharState(startAdjState,val);}break;
+		case 40: startAdjState=null;if(val.length()>0){startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,val);}break;
         case 41: num=Util.s_int(val);
                  if(num>0)
                  {

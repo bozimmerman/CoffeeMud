@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -39,8 +50,8 @@ public class Consider extends StdCommand
 		int mob2Hp=mob2.baseState().getHitPoints();
 		int mob1Hp=mob1.baseState().getHitPoints();
 
-		double mob2HitRound=(((Util.div(Dice.normalizeBy5((int)Math.round(50.0*mob2Attack/mob1Armor)),100.0))*Util.div(mob2Dmg,2.0))+1.0)*Util.mul(mob2.envStats().speed(),1.0);
-		double mob1HitRound=(((Util.div(Dice.normalizeBy5((int)Math.round(50.0*mob1Attack/mob2Armor)),100.0))*Util.div(mob1Dmg,2.0))+1.0)*Util.mul(mob1.envStats().speed(),1.0);
+		double mob2HitRound=(((Util.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob2Attack/mob1Armor)),100.0))*Util.div(mob2Dmg,2.0))+1.0)*Util.mul(mob2.envStats().speed(),1.0);
+		double mob1HitRound=(((Util.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob1Attack/mob2Armor)),100.0))*Util.div(mob1Dmg,2.0))+1.0)*Util.mul(mob1.envStats().speed(),1.0);
 		double mob2SurvivalRounds=Util.div(mob2Hp,mob1HitRound);
 		double mob1SurvivalRounds=Util.div(mob1Hp,mob2HitRound);
 
@@ -68,7 +79,7 @@ public class Consider extends StdCommand
     		commands.removeElementAt(0);
     		String targetName=Util.combine(commands,0);
     		target=mob.location().fetchInhabitant(targetName);
-    		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+    		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
     		{
     			mob.tell("I don't see '"+targetName+"' here.");
     			return false;

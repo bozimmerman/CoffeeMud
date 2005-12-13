@@ -1,9 +1,21 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -51,10 +63,10 @@ public class Thief_KillLog extends ThiefSkill
 		{
 			String[] one=(String[])e.nextElement();
 			str.append("<MOB>");
-			str.append(XMLManager.convertXMLtoTag("NAME",one[0]));
-			str.append(XMLManager.convertXMLtoTag("LEVEL",one[1]));
-			str.append(XMLManager.convertXMLtoTag("TOTAL",one[2]));
-			str.append(XMLManager.convertXMLtoTag("KILLS",one[3]));
+			str.append(CMLib.xml().convertXMLtoTag("NAME",one[0]));
+			str.append(CMLib.xml().convertXMLtoTag("LEVEL",one[1]));
+			str.append(CMLib.xml().convertXMLtoTag("TOTAL",one[2]));
+			str.append(CMLib.xml().convertXMLtoTag("KILLS",one[3]));
 			str.append("</MOB>");
 		}
 		str.append("</MOBS>");
@@ -93,19 +105,19 @@ public class Thief_KillLog extends ThiefSkill
 		theList.clear();
 		if((str.trim().length()>0)&&(str.trim().startsWith("<MOBS>")))
 		{
-			Vector buf=XMLManager.parseAllXML(str);
-			Vector V=XMLManager.getRealContentsFromPieces(buf,"MOBS");
+			Vector buf=CMLib.xml().parseAllXML(str);
+			Vector V=CMLib.xml().getRealContentsFromPieces(buf,"MOBS");
 			if(V!=null)
 			for(int i=0;i<V.size();i++)
 			{
-				XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
+				XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)V.elementAt(i);
 				if(ablk.tag.equalsIgnoreCase("MOB"))
 				{
 					String[] one=new String[4];
-					one[0]=XMLManager.getValFromPieces(ablk.contents,"NAME");
-					one[1]=XMLManager.getValFromPieces(ablk.contents,"LEVEL");
-					one[2]=XMLManager.getValFromPieces(ablk.contents,"TOTAL");
-					one[3]=XMLManager.getValFromPieces(ablk.contents,"KILLS");
+					one[0]=CMLib.xml().getValFromPieces(ablk.contents,"NAME");
+					one[1]=CMLib.xml().getValFromPieces(ablk.contents,"LEVEL");
+					one[2]=CMLib.xml().getValFromPieces(ablk.contents,"TOTAL");
+					one[3]=CMLib.xml().getValFromPieces(ablk.contents,"KILLS");
 					theList.put(one[0],one);
 				}
 			}

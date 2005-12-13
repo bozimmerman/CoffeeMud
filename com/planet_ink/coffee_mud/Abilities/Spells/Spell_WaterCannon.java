@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -60,8 +71,8 @@ public class Spell_WaterCannon extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"<S-NAME> incant(s) at <T-NAMESELF> and geyser of water blasts towards <T-HIM-HER>.");
-			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_WATER|(auto?CMMsg.MASK_GENERAL:0),null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),"<S-NAME> incant(s) at <T-NAMESELF> and geyser of water blasts towards <T-HIM-HER>.");
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_WATER|(auto?CMMsg.MASK_GENERAL:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
@@ -69,18 +80,18 @@ public class Spell_WaterCannon extends Spell
 
 				int damage = 0;
 				int maxDie=(int)Math.round(Util.div(adjustedLevel(mob,asLevel),2.0));
-				damage += Dice.roll(maxDie,8,15);
+				damage += CMLib.dice().roll(maxDie,8,15);
 				mob.location().send(mob,msg2);
 				if((msg2.value()>0)||(msg.value()>0))
 					damage = (int)Math.round(Util.div(damage,2.0));
 
 				if(target.location()==mob.location())
-					MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_WATER,Weapon.TYPE_BASHING,"The water blast <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_WATER,Weapon.TYPE_BASHING,"The water blast <DAMAGE> <T-NAME>!");
 
-				int percentage = Dice.roll(1, 100, 0);
+				int percentage = CMLib.dice().roll(1, 100, 0);
 				if(percentage < 10)
 				{
-      				FullMsg msg3=new FullMsg(mob,target,this,affectType(auto),"<T-NAME> is knocked down by the water cannon.");
+      				CMMsg msg3=CMClass.getMsg(mob,target,this,affectType(auto),"<T-NAME> is knocked down by the water cannon.");
 					if(mob.location().okMessage(mob,msg3))
 					{
 					   mob.location().send(mob, msg3);

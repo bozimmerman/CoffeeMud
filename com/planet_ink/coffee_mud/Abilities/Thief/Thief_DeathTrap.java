@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.Abilities.Traps.Trap_Trap;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -50,14 +60,14 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		Trap T=(Trap)copyOf();
 		T.setInvoker(mob);
 		E.addEffect(T);
-		CMClass.ThreadEngine().startTickDown(T,MudHost.TICK_TRAP_DESTRUCTION,new Long(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).intValue());
+		CMLib.threads().startTickDown(T,MudHost.TICK_TRAP_DESTRUCTION,new Long(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).intValue());
 		return T;
 	}
 
 	public void spring(MOB M)
 	{
-		if((!sprung)&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_TRAPS)))
-			MUDFight.postDeath(invoker(),M,null);
+		if((!sprung)&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_TRAPS)))
+			CMLib.combat().postDeath(invoker(),M,null);
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -68,8 +78,8 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		&&(!sprung)
 		&&(invoker()!=null)
 		&&(invoker().mayIFight(msg.source()))
-		&&(Dice.rollPercentage()>msg.source().charStats().getSave(CharStats.SAVE_TRAPS)))
-			MUDFight.postDeath(invoker(),msg.source(),msg);
+		&&(CMLib.dice().rollPercentage()>msg.source().charStats().getSave(CharStats.SAVE_TRAPS)))
+			CMLib.combat().postDeath(invoker(),msg.source(),msg);
 		super.executeMsg(myHost,msg);
 	}
 
@@ -84,7 +94,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 			if((I instanceof EnvResource)
 			&&((I.material()&EnvResource.MATERIAL_MASK)==material)
 			&&(I.material()!=mostMaterial)
-			&&(!Sense.isOnFire(I))
+			&&(!CMLib.flags().isOnFire(I))
 			&&(I.container()==null))
 			{
 				int num=findNumberOfResource(room,I.material());
@@ -107,7 +117,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 			Item I=room.fetchItem(i);
 			if((I instanceof EnvResource)
 			&&(I.material()==resource)
-			&&(!Sense.isOnFire(I))
+			&&(!CMLib.flags().isOnFire(I))
 			&&(I.container()==null))
 				foundWood++;
 		}
@@ -163,20 +173,20 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		FullMsg msg=new FullMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_GENERAL|CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap here."));
+		CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_GENERAL|CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap here."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if(success)
 			{
 				mob.tell("You have set the trap.");
-				setTrap(mob,trapThis,mob.charStats().getClassLevel(mob.charStats().getCurrentClass()),(CMAble.qualifyingClassLevel(mob,this)-CMAble.lowestQualifyingLevel(ID()))+1);
+				setTrap(mob,trapThis,mob.charStats().getClassLevel(mob.charStats().getCurrentClass()),(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().lowestQualifyingLevel(ID()))+1);
 			}
 			else
 			{
-				if(Dice.rollPercentage()>50)
+				if(CMLib.dice().rollPercentage()>50)
 				{
-					Trap T=setTrap(mob,trapThis,mob.charStats().getClassLevel(mob.charStats().getCurrentClass()),(CMAble.qualifyingClassLevel(mob,this)-CMAble.lowestQualifyingLevel(ID()))+1);
+					Trap T=setTrap(mob,trapThis,mob.charStats().getClassLevel(mob.charStats().getCurrentClass()),(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().lowestQualifyingLevel(ID()))+1);
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) the trap on accident!");
 					T.spring(mob);
 				}

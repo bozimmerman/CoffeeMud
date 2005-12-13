@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -50,7 +61,7 @@ public class Spell_DetectMagic extends Spell
 		&&(msg.target()!=null)
 		&&(msg.amISource((MOB)affected))
 		&&((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE))
-		&&(Sense.canBeSeenBy(msg.target(),(MOB)affected)))
+		&&(CMLib.flags().canBeSeenBy(msg.target(),(MOB)affected)))
 		{
 			String msg2=null;
 			for(int a=0;a<msg.target().numEffects();a++)
@@ -70,11 +81,11 @@ public class Spell_DetectMagic extends Spell
 						msg2+=" "+A.name();
 				}
 			}
-			if((msg2==null)&&(Sense.isABonusItems(msg.target())))
+			if((msg2==null)&&(CMLib.flags().isABonusItems(msg.target())))
 				msg2=msg.target().name()+" is enchanted";
 			if(msg2!=null)
 			{
-				FullMsg msg3=new FullMsg(msg.source(),msg.target(),this,
+				CMMsg msg3=CMClass.getMsg(msg.source(),msg.target(),this,
 										CMMsg.MSG_OK_VISUAL,msg2+".",
 										CMMsg.NO_EFFECT,null,
 										CMMsg.NO_EFFECT,null);
@@ -109,7 +120,7 @@ public class Spell_DetectMagic extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) sparkling eyes!":"^S<S-NAME> incant(s) softly, and gain(s) sparkling eyes!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) sparkling eyes!":"^S<S-NAME> incant(s) softly, and gain(s) sparkling eyes!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

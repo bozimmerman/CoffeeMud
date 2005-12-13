@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Traps;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -58,7 +69,7 @@ public class StdTrap extends StdAbility implements Trap
 		if(!canBeUninvoked())
 		{
 			tickDown=getReset();
-			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_TRAP_RESET,1);
+			CMLib.threads().startTickDown(this,MudHost.TICK_TRAP_RESET,1);
 		}
 		else
 			unInvoke();
@@ -112,7 +123,7 @@ public class StdTrap extends StdAbility implements Trap
 			tickDown=getReset();
 			sprung=false;
 			disabled=false;
-			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_TRAP_RESET,1);
+			CMLib.threads().startTickDown(this,MudHost.TICK_TRAP_RESET,1);
 		}
 	}
 
@@ -243,7 +254,7 @@ public class StdTrap extends StdAbility implements Trap
 		T.setBorrowed(E,true);
 		E.addEffect(T);
 		if(!isABomb())
-			CMClass.ThreadEngine().startTickDown(T,MudHost.TICK_TRAP_DESTRUCTION,baseDestructTime(qualifyingClassLevel));
+			CMLib.threads().startTickDown(T,MudHost.TICK_TRAP_DESTRUCTION,baseDestructTime(qualifyingClassLevel));
 		return T;
 	}
 
@@ -302,7 +313,7 @@ public class StdTrap extends StdAbility implements Trap
 		disabled=false;
 		tickDown=getReset();
 		if(!isABomb())
-			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_TRAP_RESET,1);
+			CMLib.threads().startTickDown(this,MudHost.TICK_TRAP_RESET,1);
 	}
 
 	protected Item findFirstResource(Room room, String other)
@@ -321,7 +332,7 @@ public class StdTrap extends StdAbility implements Trap
 			Item I=room.fetchItem(i);
 			if((I instanceof EnvResource)
 			&&(I.material()==resource)
-			&&(!Sense.isOnFire(I))
+			&&(!CMLib.flags().isOnFire(I))
 			&&(I.container()==null))
 				return I;
 		}
@@ -348,7 +359,7 @@ public class StdTrap extends StdAbility implements Trap
 			if((I instanceof EnvResource)
 			&&((I.material()&EnvResource.MATERIAL_MASK)==material)
 			&&(I.material()!=mostMaterial)
-			&&(!Sense.isOnFire(I))
+			&&(!CMLib.flags().isOnFire(I))
 			&&(I.container()==null))
 			{
 				int num=findNumberOfResource(room,I.material());
@@ -384,7 +395,7 @@ public class StdTrap extends StdAbility implements Trap
 			Item I=room.fetchItem(i);
 			if((I instanceof EnvResource)
 			&&(I.material()==resource)
-			&&(!Sense.isOnFire(I))
+			&&(!CMLib.flags().isOnFire(I))
 			&&(I.container()==null))
 				foundWood++;
 		}

@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -21,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_CoupDeGrace extends StdAbility
+public class Fighter_CoupDeGrace extends FighterSkill
 {
 	public String ID() { return "Fighter_CoupDeGrace"; }
 	public String name(){ return "Coup de Grace";}
@@ -67,7 +77,7 @@ public class Fighter_CoupDeGrace extends StdAbility
 				mob.tell("You don't have the energy to try it.");
 				return false;
 			}
-			if(!Sense.isSleeping(mob.getVictim()))
+			if(!CMLib.flags().isSleeping(mob.getVictim()))
 			{
 				mob.tell(mob.getVictim().charStats().HeShe()+" is not prone!");
 				return false;
@@ -86,23 +96,23 @@ public class Fighter_CoupDeGrace extends StdAbility
 			levelDiff=0;
 		mob.curState().adjMovement(-150,mob.maxState());
 		int chance=(-levelDiff)+(-(target.charStats().getStat(CharStats.CONSTITUTION)*2));
-		boolean hit=(auto)||MUDFight.rollToHit(mob,target);
+		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		boolean success=profficiencyCheck(mob,chance,auto)&&(hit);
 		if((success)&&((dmg<50)||(dmg<(target.maxState().getHitPoints()/4))))
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				target.curState().setHitPoints(0);
-				MUDFight.postDamage(mob,target,ww,dmg,CMMsg.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"^F^<FIGHT^><S-NAME> rear(s) back and Coup de Graces <T-NAME>!^</FIGHT^>^?"+CommonStrings.msp("decap.wav",30));
+				CMLib.combat().postDamage(mob,target,ww,dmg,CMMsg.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"^F^<FIGHT^><S-NAME> rear(s) back and Coup de Graces <T-NAME>!^</FIGHT^>^?"+CMProps.msp("decap.wav",30));
 				mob.location().recoverRoomStats();
 			}
 		}
 		else
 		{
 			String str=auto?"":"<S-NAME> attempt(s) a Coup de Grace and fail(s)!";
-			FullMsg msg=new FullMsg(mob,target,null,CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,str);
+			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,str);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

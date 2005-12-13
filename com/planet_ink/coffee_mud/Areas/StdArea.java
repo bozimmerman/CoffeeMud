@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Areas;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -29,7 +40,7 @@ public class StdArea implements Area
 	protected String imageName="";
 	protected int techLevel=0;
 	protected int climateID=Area.CLIMASK_NORMAL;
-	protected Vector properRooms=null;
+	protected Vector properRooms=new Vector();
 	protected Vector metroRooms=null;
 	protected boolean mobility=true;
 	protected long tickStatus=Tickable.STATUS_NOT;
@@ -41,8 +52,8 @@ public class StdArea implements Area
     protected Vector childrenToLoad=new Vector();
     protected Vector parentsToLoad=new Vector();
 
-	protected EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
-	protected EnvStats baseEnvStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	protected String author="";
 	public void setAuthorID(String authorID){author=authorID;}
 	public String getAuthorID(){return author;}
@@ -51,15 +62,15 @@ public class StdArea implements Area
 	{
         if(currency.length()>0)
         {
-            BeanCounter.unloadCurrencySet(currency);
+            CMLib.beanCounter().unloadCurrencySet(currency);
             currency=newCurrency;
-            for(Enumeration e=CMMap.areas();e.hasMoreElements();)
-                BeanCounter.getCurrencySet(((Area)e.nextElement()).getCurrency());
+            for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+                CMLib.beanCounter().getCurrencySet(((Area)e.nextElement()).getCurrency());
         }
         else
         {
             currency=newCurrency;
-            BeanCounter.getCurrencySet(currency);
+            CMLib.beanCounter().getCurrencySet(currency);
         }
 	}
 	public String getCurrency(){return currency;}
@@ -67,7 +78,7 @@ public class StdArea implements Area
 	protected Vector affects=new Vector();
 	protected Vector behaviors=new Vector();
 	protected Vector subOps=new Vector();
-	protected Climate climateObj=(Climate)CMClass.getShared("DefaultClimate");
+	protected Climate climateObj=(Climate)CMClass.getCommon("DefaultClimate");
 	public void setClimateObj(Climate obj){climateObj=obj;}
 	public Climate getClimateObj()
 	{
@@ -224,13 +235,13 @@ public class StdArea implements Area
 
 	public String text()
 	{
-		return CoffeeMaker.getPropertiesStr(this,true);
+		return CMLib.coffeeMaker().getPropertiesStr(this,true);
 	}
 	public void setMiscText(String newMiscText)
 	{
 		miscText="";
 		if(newMiscText.trim().length()>0)
-			CoffeeMaker.setPropertiesStr(this,newMiscText,true);
+			CMLib.coffeeMaker().setPropertiesStr(this,newMiscText,true);
 	}
 
 	public String description()
@@ -254,7 +265,7 @@ public class StdArea implements Area
 			if((A!=null)&&(!A.okMessage(this,msg)))
 				return false;
 		}
-		if((!mobility)||(!Sense.allowsMovement(this)))
+		if((!mobility)||(!CMLib.flags().allowsMovement(this)))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
@@ -365,7 +376,7 @@ public class StdArea implements Area
 		if(start)
 		{
 			stopTicking=false;
-			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_AREA,1);
+			CMLib.threads().startTickDown(this,MudHost.TICK_AREA,1);
 		}
 		else
 			stopTicking=true;
@@ -417,7 +428,7 @@ public class StdArea implements Area
 			affectableStats.setSensesMask(affectableStats.sensesMask()|envStats().sensesMask());
 		int disposition=envStats().disposition()
 			&((Integer.MAX_VALUE-(EnvStats.IS_SLEEPING|EnvStats.IS_HIDDEN)));
-		if((affected instanceof Room)&&(CoffeeUtensils.hasASky((Room)affected)))
+		if((affected instanceof Room)&&(CMLib.utensils().hasASky((Room)affected)))
 		{
 			if((getClimateObj().weatherType((Room)affected)==Climate.WEATHER_BLIZZARD)
 			   ||(getClimateObj().weatherType((Room)affected)==Climate.WEATHER_DUSTSTORM)
@@ -511,14 +522,12 @@ public class StdArea implements Area
 					((GridLocale)R).buildGrid();
 			}
 		}
-		clearMaps();
 		for(Enumeration r=getProperMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			R.clearSky();
 			R.giveASky(0);
 		}
-		clearMaps();
 	}
 
 	public void fillInAreaRoom(Room R)
@@ -560,14 +569,14 @@ public class StdArea implements Area
 
 	public int[] getAreaIStats()
 	{
-		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return null;
 		getAreaStats();
 		return statData;
 	}
 	public StringBuffer getAreaStats()
 	{
-		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return new StringBuffer("");
 		StringBuffer s=(StringBuffer)Resources.getResource("HELP_"+Name().toUpperCase());
 		if(s!=null) return s;
@@ -579,10 +588,10 @@ public class StdArea implements Area
 		Vector levelRanges=new Vector();
 		Vector alignRanges=new Vector();
 		Faction theFaction=null;
-		for(Enumeration e=Factions.factionSet.elements();e.hasMoreElements();)
+		for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
 		{
 		    Faction F=(Faction)e.nextElement();
-		    if(F.showinspecialreported)
+		    if(F.showinspecialreported())
 		        theFaction=F;
 		}
 		statData=new int[Area.AREASTAT_NUMBER];
@@ -609,14 +618,14 @@ public class StdArea implements Area
 				{
 					int lvl=mob.baseEnvStats().level();
 					levelRanges.addElement(new Integer(lvl));
-					if((theFaction!=null)&&(mob.fetchFaction(theFaction.ID)!=Integer.MAX_VALUE))
+					if((theFaction!=null)&&(mob.fetchFaction(theFaction.factionID())!=Integer.MAX_VALUE))
 					{
-					    alignRanges.addElement(new Integer(mob.fetchFaction(theFaction.ID)));
-					    totalAlignments+=mob.fetchFaction(theFaction.ID);
+					    alignRanges.addElement(new Integer(mob.fetchFaction(theFaction.factionID())));
+					    totalAlignments+=mob.fetchFaction(theFaction.factionID());
 					}
 					statData[Area.AREASTAT_POPULATION]++;
 					statData[Area.AREASTAT_TOTLEVEL]+=lvl;
-					if(!Sense.isAnimalIntelligence(mob))
+					if(!CMLib.flags().isAnimalIntelligence(mob))
 						statData[Area.AREASTAT_INTLEVEL]+=lvl;
 					if(lvl<statData[Area.AREASTAT_MINLEVEL])
 						statData[Area.AREASTAT_MINLEVEL]=lvl;
@@ -640,17 +649,17 @@ public class StdArea implements Area
 			statData[Area.AREASTAT_AVGLEVEL]=(int)Math.round(Util.div(statData[Area.AREASTAT_TOTLEVEL],statData[Area.AREASTAT_POPULATION]));
 			statData[Area.AREASTAT_AVGALIGN]=(int)Math.round(new Long(totalAlignments).doubleValue()/new Integer(statData[Area.AREASTAT_POPULATION]).doubleValue());
 			s.append("Population     : "+statData[Area.AREASTAT_POPULATION]+"\n\r");
-			Behavior B=CoffeeUtensils.getLegalBehavior(this);
+			Behavior B=CMLib.utensils().getLegalBehavior(this);
 			if(B!=null)
 			{
-			    Area A2=CoffeeUtensils.getLegalObject(this);
+			    Area A2=CMLib.utensils().getLegalObject(this);
 				Vector V=new Vector();
 				V.addElement(new Integer(Law.MOD_RULINGCLAN));
 				if(B.modifyBehavior(A2,CMClass.sampleMOB(),V)
 				&&(V.size()>0)
 				&&(V.firstElement() instanceof String))
 				{
-					Clan C=Clans.getClan(((String)V.firstElement()));
+					Clan C=CMLib.clans().getClan(((String)V.firstElement()));
 					if(C!=null)
 						s.append("Controlled by  : "+C.typeName()+" "+C.name()+"\n\r");
 				}
@@ -658,8 +667,8 @@ public class StdArea implements Area
 			s.append("Level range    : "+statData[Area.AREASTAT_MINLEVEL]+" to "+statData[Area.AREASTAT_MAXLEVEL]+"\n\r");
 			s.append("Average level  : "+statData[Area.AREASTAT_AVGLEVEL]+"\n\r");
 			s.append("Median level   : "+statData[Area.AREASTAT_MEDLEVEL]+"\n\r");
-			if(theFaction!=null) s.append("Avg. "+Util.padRight(theFaction.name,10)+": "+theFaction.fetchRangeName(statData[Area.AREASTAT_AVGALIGN])+"\n\r");
-			if(theFaction!=null) s.append("Med. "+Util.padRight(theFaction.name,10)+": "+theFaction.fetchRangeName(statData[Area.AREASTAT_MEDALIGN])+"\n\r");
+			if(theFaction!=null) s.append("Avg. "+Util.padRight(theFaction.name(),10)+": "+theFaction.fetchRangeName(statData[Area.AREASTAT_AVGALIGN])+"\n\r");
+			if(theFaction!=null) s.append("Med. "+Util.padRight(theFaction.name(),10)+": "+theFaction.fetchRangeName(statData[Area.AREASTAT_MEDALIGN])+"\n\r");
 		}
 		Resources.submitResource("HELP_"+Name().toUpperCase(),s);
 		return s;
@@ -685,28 +694,104 @@ public class StdArea implements Area
 		return null;
 	}
 
-	public void clearMaps()
+    public void clearMetroCache()
 	{
-		synchronized(this)
+		synchronized(properRooms)
 		{
-			properRooms=null;
-			metroRooms=null;
+            metroRooms=null;
 		}
+        try{
+            for(Enumeration e=getParents();e.hasMoreElements();)
+                ((Area)e.nextElement()).clearMetroCache();
+        } catch(NoSuchElementException e){}
 	}
 
 	public int properSize()
 	{
-		synchronized(this)
+		synchronized(properRooms)
 		{
-			if(properRooms!=null)
-				return properRooms.size();
-			makeProperMap();
 			return properRooms.size();
 		}
 	}
+    public void addRoom(Room R)
+    {
+        if(R==null) return;
+        if(R.getArea()!=this)
+        {
+            R.setArea(this);
+            return;
+        }
+        synchronized(properRooms)
+        {
+            if(!properRooms.contains(R))
+            {
+                Room R2=null;
+                for(int i=0;i<properRooms.size();i++)
+                {
+                    R2=(Room)properRooms.elementAt(i);
+                    if(R2.roomID().compareToIgnoreCase(R.roomID())>=0)
+                    {
+                        if(R2.ID().compareToIgnoreCase(R.roomID())==0)
+                            properRooms.setElementAt(R,i);
+                        else
+                            properRooms.insertElementAt(R,i);
+                        clearMetroCache();
+                        return;
+                    }
+                }
+                properRooms.addElement(R);
+                clearMetroCache();
+            }
+        }
+    }
+    
+    public boolean isRoom(Room R)
+    {
+        if(R==null) return false;
+        synchronized(properRooms)
+        {
+            return properRooms.contains(R);
+        }
+    }
+    public void delRoom(Room R)
+    {
+        if(R==null) return;
+        if(R instanceof GridLocale)
+            ((GridLocale)R).clearGrid(null);
+        synchronized(properRooms)
+        {
+            if(properRooms.contains(R))
+            {
+                properRooms.removeElement(R);
+                clearMetroCache();
+            }
+        }
+    }
+    
+    public Room getRoom(String roomID)
+    {
+        if(properRooms.size()==0) return null;
+        int start=0;
+        int end=properRooms.size()-1;
+        while(start<=end)
+        {
+            int mid=(end+start)/2;
+            int comp=((Room)properRooms.elementAt(mid)).roomID().compareToIgnoreCase(roomID);
+            if(comp==0)
+                return (Room)properRooms.elementAt(mid);
+            else
+            if(comp>0)
+                end=mid-1;
+            else
+                start=mid+1;
+
+        }
+        return null;
+    }
+    
 	public int metroSize()
 	{
-		synchronized(this)
+		synchronized(properRooms)
 		{
 			if(metroRooms!=null)
 				return metroRooms.size();
@@ -730,74 +815,50 @@ public class StdArea implements Area
 	}
 	public Room getRandomProperRoom()
 	{
-		synchronized(this)
+		synchronized(properRooms)
 		{
-			if(properRooms==null) makeProperMap();
 			if(properSize()==0) return null;
-			return (Room)properRooms.elementAt(Dice.roll(1,properRooms.size(),-1));
+			return (Room)properRooms.elementAt(CMLib.dice().roll(1,properRooms.size(),-1));
 		}
 	}
 	public Room getRandomMetroRoom()
 	{
-		synchronized(this)
+		synchronized(properRooms)
 		{
 			if(metroRooms==null) makeMetroMap();
 			if(metroSize()==0) return null;
-			return (Room)metroRooms.elementAt(Dice.roll(1,metroRooms.size(),-1));
+			return (Room)metroRooms.elementAt(CMLib.dice().roll(1,metroRooms.size(),-1));
 		}
 	}
 
 	public Enumeration getProperMap()
 	{
-		synchronized(this)
+		synchronized(properRooms)
 		{
-			if(properRooms!=null) return properRooms.elements();
-			makeProperMap();
 			return properRooms.elements();
 		}
 	}
 	public Enumeration getMetroMap()
 	{
-		synchronized(this)
+		synchronized(properRooms)
 		{
 			if(metroRooms!=null) return metroRooms.elements();
 			makeMetroMap();
 			return metroRooms.elements();
 		}
 	}
-	private void makeProperMap()
-	{
-		synchronized(this)
-		{
-			if(properRooms!=null) return;
-			Vector myMap=new Vector();
-			try
-			{
-                Room R=null;
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-				{
-					R=(Room)r.nextElement();
-					if(R.getArea()==this)
-						myMap.addElement(R);
-				}
-		    }catch(NoSuchElementException nse){}
-			properRooms=myMap;
-		}
-	}
 
 	private void makeMetroMap()
 	{
-		synchronized(this)
+		synchronized(properRooms)
 		{
 			if(metroRooms!=null) return;
-			if(properRooms==null)
-				makeProperMap();
-			if(getNumChildren()<=0)
-			{
-				metroRooms=properRooms;
-				return;
-			}
-			Vector myMap=(Vector)properRooms.clone();
+            if(getNumChildren()<=0)
+            {
+                metroRooms=properRooms;
+                return;
+            }
+            Vector myMap=(Vector)properRooms.clone();
 			for(int i=0;i<getNumChildren();i++)
 			{
 				Area A=getChild(i);
@@ -825,7 +886,7 @@ public class StdArea implements Area
 	        children=new Vector();
 	        for(int i=0;i<childrenToLoad.size();i++)
 			{
-	          Area A=CMMap.getArea((String)childrenToLoad.elementAt(i));
+	          Area A=CMLib.map().getArea((String)childrenToLoad.elementAt(i));
 	          if(A==null)
 	            continue;
 			children.addElement(A);
@@ -918,7 +979,7 @@ public class StdArea implements Area
 	        if (parents == null) {
 	                parents = new Vector();
 	                for (int i = 0; i < parentsToLoad.size(); i++) {
-	                        Area A = CMMap.getArea( (String) parentsToLoad.elementAt(i));
+	                        Area A = CMLib.map().getArea( (String) parentsToLoad.elementAt(i));
 	                        if (A == null)
 	                                continue;
 	                        parents.addElement(A);

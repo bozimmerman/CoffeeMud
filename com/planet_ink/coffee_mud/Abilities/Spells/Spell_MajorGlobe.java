@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -61,10 +72,10 @@ public class Spell_MajorGlobe extends Spell
 			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
 			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.CHANT))
 		&&(!mob.amDead())
-		&&(CMAble.lowestQualifyingLevel(msg.tool().ID())<=15)
+		&&(CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID())<=15)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))
 		{
-			amountAbsorbed+=CMAble.lowestQualifyingLevel(msg.tool().ID());
+			amountAbsorbed+=CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID());
 			mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The globe around <S-NAME> absorbs the "+msg.tool().name()+" from <T-NAME>!");
 			return false;
 		}
@@ -85,7 +96,7 @@ public class Spell_MajorGlobe extends Spell
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"A great anti-magic field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) a great anti-magic globe of protection around <T-NAMESELF>.^?"));
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),(auto?"A great anti-magic field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) a great anti-magic globe of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				amountAbsorbed=0;

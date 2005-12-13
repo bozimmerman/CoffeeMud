@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -76,7 +87,7 @@ public class Prop_AbsorbDamage extends Property
 			if((x<0)&&(msg.tool() instanceof Weapon))
 			{
 				x=text.indexOf(Weapon.typeDescription[((Weapon)msg.tool()).weaponType()]);
-				if(x<0) x=(Sense.isABonusItems(msg.tool()))?text.indexOf("MAGIC"):-1;
+				if(x<0) x=(CMLib.flags().isABonusItems(msg.tool()))?text.indexOf("MAGIC"):-1;
 				if(x<0) x=text.indexOf(EnvResource.RESOURCE_DESCS[((Weapon)msg.tool()).material()&EnvResource.RESOURCE_MASK]);
 				if(x>0)
 				{

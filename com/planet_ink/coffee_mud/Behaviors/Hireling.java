@@ -1,8 +1,20 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -76,7 +88,7 @@ public class Hireling extends StdBehavior
 	{
 		workingFor="";
 		onTheJobUntil=0;
-		CommonMsgs.follow(observer,null,false);
+		CMLib.commands().follow(observer,null,false);
 		observer.setFollowing(null);
 		int direction=-1;
 		for(int d=0;d<Directions.DIRECTIONS_BASE.length;d++)
@@ -90,7 +102,7 @@ public class Hireling extends StdBehavior
 				direction=Directions.DIRECTIONS_BASE[d];
             }
 		if(direction>=0)
-			MUDTracker.move(observer,direction,false,false);
+			CMLib.tracking().move(observer,direction,false,false);
 		if(observer.getStartRoom()!=null)
 			observer.getStartRoom().bringMobHere(observer,false);
 	}
@@ -105,7 +117,7 @@ public class Hireling extends StdBehavior
 		{
 			Double D=(Double)partials.get(workingFor);
 			partials.remove(workingFor);
-			CommonMsgs.stand(observer,true);
+			CMLib.commands().stand(observer,true);
 			if(!canActAtAll(observer))
 			{
 				workingFor="";
@@ -128,14 +140,14 @@ public class Hireling extends StdBehavior
 			if(additional<=0)
 			{
 				if(talkTo!=null)
-					CommonMsgs.say(observer,talkTo,"Your time is up.  Goodbye!",true,false);
+					CMLib.commands().say(observer,talkTo,"Your time is up.  Goodbye!",true,false);
 				allDone(observer);
 			}
 			else
 			{
 				if(talkTo!=null)
-					CommonMsgs.say(observer,talkTo,"Your base time is up, but you've paid for "+additional+" more minutes, so I'll hang around.",true,false);
-				onTheJobUntil+=(additional*IQCalendar.MILI_MINUTE);
+					CMLib.commands().say(observer,talkTo,"Your base time is up, but you've paid for "+additional+" more minutes, so I'll hang around.",true,false);
+				onTheJobUntil+=(additional*TimeManager.MILI_MINUTE);
 			}
 		}
 		else
@@ -147,7 +159,7 @@ public class Hireling extends StdBehavior
 			MOB talkTo=observer.location().fetchInhabitant(workingFor);
 			if(talkTo!=null)
 			{
-				CommonMsgs.follow(observer,talkTo,false);
+				CMLib.commands().follow(observer,talkTo,false);
 				observer.setFollowing(talkTo);
 			}
 		}
@@ -167,14 +179,14 @@ public class Hireling extends StdBehavior
 			&&(msg.tool() != null)
 			&&(msg.tool() instanceof Coins))
 			{
-				if(!MUDZapper.zapperCheck(zapper(),source))
+				if(!CMLib.masking().maskCheck(zapper(),source))
 				{
-					CommonMsgs.say(observer,null,"I wouldn't work for the likes of you.",false,false);
+					CMLib.commands().say(observer,null,"I wouldn't work for the likes of you.",false,false);
 					return false;
 				}
-				if(!((Coins)msg.tool()).getCurrency().equals(BeanCounter.getCurrency(observer)))
+				if(!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(observer)))
 				{
-					CommonMsgs.say(observer,null,"I'm sorry, I only deal in "+BeanCounter.getDenominationName(BeanCounter.getCurrency(observer))+".",false,false);
+					CMLib.commands().say(observer,null,"I'm sorry, I only deal in "+CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(observer))+".",false,false);
 					return false;
 				}
 			}
@@ -186,7 +198,7 @@ public class Hireling extends StdBehavior
 			{
 				if((msg.target() instanceof MOB)
 				&&(!CMSecurity.isAllowed(((MOB)msg.target()),source.location(),"CMDROOMS")))
-					CommonMsgs.say(observer,null,"I don't think so.",false,false);
+					CMLib.commands().say(observer,null,"I don't think so.",false,false);
 				return false;
 			}
 		}
@@ -216,14 +228,14 @@ public class Hireling extends StdBehavior
 			if(((msg.sourceMessage().toUpperCase().indexOf(" HIRE")>0)
 				||(msg.sourceMessage().toUpperCase().indexOf("'HIRE")>0))
 			&&(onTheJobUntil==0))
-				CommonMsgs.say(observer,null,"I'm for hire.  Just give me "+BeanCounter.nameCurrencyShort(observer,price())+" and I'll work for you.",false,false);
+				CMLib.commands().say(observer,null,"I'm for hire.  Just give me "+CMLib.beanCounter().nameCurrencyShort(observer,price())+" and I'll work for you.",false,false);
 			else
 			if(((msg.sourceMessage().toUpperCase().indexOf(" FIRED")>0))
 			&&((workingFor!=null)&&(msg.source().Name().equals(workingFor)))
 			&&(msg.amITarget(observer))
 			&&(onTheJobUntil!=0))
 			{
-				CommonMsgs.say(observer,msg.source(),"Suit yourself.  Goodbye.",false,false);
+				CMLib.commands().say(observer,msg.source(),"Suit yourself.  Goodbye.",false,false);
 				allDone(observer);
 			}
 			else
@@ -234,11 +246,11 @@ public class Hireling extends StdBehavior
 				{
 					Ability A = observer.fetchAbility(a);
 					if(A.profficiency() == 0)
-						A.setProfficiency(50 + observer.envStats().level() - CMAble.lowestQualifyingLevel(A.ID()));
+						A.setProfficiency(50 + observer.envStats().level() - CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 					skills.append(", " + A.name());
 				}
 				if(skills.length()>2)
-					CommonMsgs.say(observer, source, "My skills include: " + skills.substring(2) + ".",false,false);
+					CMLib.commands().say(observer, source, "My skills include: " + skills.substring(2) + ".",false,false);
 			}
 		}
 		else
@@ -259,12 +271,12 @@ public class Hireling extends StdBehavior
 				if(onTheJobUntil!=0)
 				{
 					if(workingFor.equals(source.Name()))
-						CommonMsgs.say(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
+						CMLib.commands().say(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
 					else
-						CommonMsgs.say(observer,source,"Sorry, I'm on the job right now.  Give me "+BeanCounter.nameCurrencyShort(observer,(price()-given))+" more later on and I'll work.",true,false);
+						CMLib.commands().say(observer,source,"Sorry, I'm on the job right now.  Give me "+CMLib.beanCounter().nameCurrencyShort(observer,(price()-given))+" more later on and I'll work.",true,false);
 				}
 				else
-					CommonMsgs.say(observer,source,"My price is "+BeanCounter.nameCurrencyShort(observer,price())+".  Give me "+BeanCounter.nameCurrencyShort(observer,(price()-given))+" more and I'll work.",true,false);
+					CMLib.commands().say(observer,source,"My price is "+CMLib.beanCounter().nameCurrencyShort(observer,price())+".  Give me "+CMLib.beanCounter().nameCurrencyShort(observer,(price()-given))+" more and I'll work.",true,false);
 				partials.put(msg.source().Name(),new Double(given));
 			}
 			else
@@ -272,9 +284,9 @@ public class Hireling extends StdBehavior
 				if(onTheJobUntil!=0)
 				{
 					if(workingFor.equals(source.Name()))
-						CommonMsgs.say(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
+						CMLib.commands().say(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
 					else
-						CommonMsgs.say(observer,source,"Sorry, I'm on the job right now.  Give me 1 more coin later on and I'll work.",true,false);
+						CMLib.commands().say(observer,source,"Sorry, I'm on the job right now.  Give me 1 more coin later on and I'll work.",true,false);
 					partials.put(msg.source().Name(),new Double(given));
 				}
 				else
@@ -286,15 +298,15 @@ public class Hireling extends StdBehavior
 					{
 						Ability A=observer.fetchAbility(a);
 						if(A.profficiency()==0)
-							A.setProfficiency(50+observer.envStats().level()-CMAble.lowestQualifyingLevel(A.ID()));
+							A.setProfficiency(50+observer.envStats().level()-CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 						skills.append(", "+A.name());
 					}
 					workingFor=source.Name();
 					onTheJobUntil=System.currentTimeMillis();
-					onTheJobUntil+=(minutes()*IQCalendar.MILI_MINUTE);
-					CommonMsgs.follow(observer,source,false);
+					onTheJobUntil+=(minutes()*TimeManager.MILI_MINUTE);
+					CMLib.commands().follow(observer,source,false);
 					observer.setFollowing(source);
-					CommonMsgs.say(observer,source,"Ok.  You've got me for at least "+minutes()+" minutes.  My skills include: "+skills.substring(2)+".  I'll follow you.  Just ORDER me to do what you want.",true,false);
+					CMLib.commands().say(observer,source,"Ok.  You've got me for at least "+minutes()+" minutes.  My skills include: "+skills.substring(2)+".  I'll follow you.  Just ORDER me to do what you want.",true,false);
 				}
 			}
 		}

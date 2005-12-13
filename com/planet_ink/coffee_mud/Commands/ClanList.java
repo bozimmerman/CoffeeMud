@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -28,7 +39,7 @@ public class ClanList extends BaseClanner
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-	    boolean trophySystemActive=Clans.trophySystemActive();
+	    boolean trophySystemActive=CMLib.clans().trophySystemActive();
 		StringBuffer head=new StringBuffer("");
 		head.append("^x[");
 		head.append(Util.padRight("Clan Name",24)+" | ");
@@ -39,19 +50,19 @@ public class ClanList extends BaseClanner
 			head.append(" | "+Util.padRight("Trophies",8));
 		head.append("]^.^? \n\r");
 		StringBuffer msg=new StringBuffer("");
-		for(Enumeration e=Clans.clans();e.hasMoreElements();)
+		for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
 		{
-			Clan thisClan=(Clans)e.nextElement();
+			Clan thisClan=(Clan)e.nextElement();
 			msg.append(" ");
-			msg.append(Util.padRight("^<CLAN^>"+Util.removeColors(thisClan.ID())+"^</CLAN^>",24)+"   ");
+			msg.append(Util.padRight("^<CLAN^>"+Util.removeColors(thisClan.clanID())+"^</CLAN^>",24)+"   ");
 			msg.append(Util.padRight(thisClan.typeName(),13)+"   ");
 			boolean war=false;
-			for(Enumeration e2=Clans.clans();e2.hasMoreElements();)
+			for(Enumeration e2=CMLib.clans().clans();e2.hasMoreElements();)
 			{
 				Clan C=(Clan)e2.nextElement();
 				if((C!=thisClan)
-				&&((thisClan.getClanRelations(C.ID())==Clan.REL_WAR)
-					||(C.getClanRelations(thisClan.ID())==Clan.REL_WAR)))
+				&&((thisClan.getClanRelations(C.clanID())==Clan.REL_WAR)
+					||(C.getClanRelations(thisClan.clanID())==Clan.REL_WAR)))
 				{ war=true; break;}
 			}
 			String status=(war)?"At War":"Active";

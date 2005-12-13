@@ -1,10 +1,21 @@
 package com.planet_ink.coffee_mud.CharClasses;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /*
    Copyright 2000-2005 Bo Zimmerman
@@ -54,105 +65,105 @@ public class Beastmaster extends StdCharClass
 		if(!loaded())
 		{
 			setLoaded(true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",0,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",100,false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",100,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",0,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",100,false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",100,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
 
-			CMAble.addCharAbilityMapping(ID(),1,"Druid_DruidicPass",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Chant_BestowName",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Druid_ShapeShift",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Chant_HardenSkin",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Chant_SensePregnancy",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_WildernessLore",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_DruidicPass",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_BestowName",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_ShapeShift",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_HardenSkin",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SensePregnancy",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WildernessLore",false);
 
-			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Kick",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Chant_SensePoison",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Chant_LocateAnimals",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_Kick",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chant_SensePoison",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chant_LocateAnimals",true);
 
-			CMAble.addCharAbilityMapping(ID(),3,"Chant_Farsight",false);
-			CMAble.addCharAbilityMapping(ID(),3,"Chant_SenseAge",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_Farsight",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_SenseAge",false);
 
-			CMAble.addCharAbilityMapping(ID(),4,"Skill_Dodge",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Chant_CalmAnimal",true);
-			CMAble.addCharAbilityMapping(ID(),4,"Chant_EelShock",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Dodge",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_CalmAnimal",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_EelShock",false);
 
-			CMAble.addCharAbilityMapping(ID(),5,"Chant_Hunger",false);
-			CMAble.addCharAbilityMapping(ID(),5,"Chant_Yearning",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_Hunger",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_Yearning",false);
 
-			CMAble.addCharAbilityMapping(ID(),6,"Druid_ShapeShift2",true);
-			CMAble.addCharAbilityMapping(ID(),6,"Fighter_Cleave",false);
-			CMAble.addCharAbilityMapping(ID(),6,"Chant_VenomWard",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Druid_ShapeShift2",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Fighter_Cleave",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_VenomWard",false);
 
-			CMAble.addCharAbilityMapping(ID(),7,"Druid_Bite",false);
-			CMAble.addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false);
-			CMAble.addCharAbilityMapping(ID(),7,"Chant_AnimalFriendship",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Druid_Bite",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_AnimalFriendship",true);
 
-			CMAble.addCharAbilityMapping(ID(),8,"Skill_Trip",true);
-			CMAble.addCharAbilityMapping(ID(),8,"Chant_FurCoat",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Trip",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_FurCoat",false);
 
-			CMAble.addCharAbilityMapping(ID(),9,"Skill_Disarm",false);
-			CMAble.addCharAbilityMapping(ID(),9,"Chant_Camelback",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Disarm",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_Camelback",false);
 
-			CMAble.addCharAbilityMapping(ID(),10,"Fighter_Intimidate",false);
-			CMAble.addCharAbilityMapping(ID(),10,"Chant_CharmAnimal",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Chant_EnhanceBody",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_Intimidate",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_CharmAnimal",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_EnhanceBody",false);
 
-			CMAble.addCharAbilityMapping(ID(),11,"Druid_ShapeShift3",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Chant_CheetahBurst",false);
-			CMAble.addCharAbilityMapping(ID(),11,"Chant_Fertility",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Druid_ShapeShift3",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_CheetahBurst",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_Fertility",false);
 
-			CMAble.addCharAbilityMapping(ID(),12,"Skill_Attack2",false);
-			CMAble.addCharAbilityMapping(ID(),12,"Fighter_Pin",false);
-			CMAble.addCharAbilityMapping(ID(),12,"Chant_BreatheWater",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Chant_BullStrength",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_Attack2",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_Pin",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_BreatheWater",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_BullStrength",false);
 
-			CMAble.addCharAbilityMapping(ID(),13,"Thief_Bind",false);
-			CMAble.addCharAbilityMapping(ID(),13,"Chant_SummonAnimal",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Bind",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_SummonAnimal",true);
 
-			CMAble.addCharAbilityMapping(ID(),14,"Chant_Bury",false);
-			CMAble.addCharAbilityMapping(ID(),14,"Chant_CatsGrace",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_Bury",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_CatsGrace",false);
 
-			CMAble.addCharAbilityMapping(ID(),15,"AnimalTraining",false);
-			CMAble.addCharAbilityMapping(ID(),15,"Fighter_BlindFighting",false);
-			CMAble.addCharAbilityMapping(ID(),15,"Chant_Hawkeye",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"AnimalTraining",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_BlindFighting",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_Hawkeye",true);
 
-			CMAble.addCharAbilityMapping(ID(),16,"Druid_ShapeShift4",true);
-			CMAble.addCharAbilityMapping(ID(),16,"Chant_AnimalSpy",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Druid_ShapeShift4",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_AnimalSpy",false);
 
-			CMAble.addCharAbilityMapping(ID(),17,"Chant_Plague",false);
-			CMAble.addCharAbilityMapping(ID(),17,"Chant_SpeedBirth",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_Plague",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_SpeedBirth",false);
 
-			CMAble.addCharAbilityMapping(ID(),18,"Chant_Hibernation",true);
-			CMAble.addCharAbilityMapping(ID(),18,"Chant_AntTrain",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_Hibernation",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_AntTrain",false);
 
-			CMAble.addCharAbilityMapping(ID(),19,"Chant_Bloodhound",true);
-			CMAble.addCharAbilityMapping(ID(),20,"Chant_SpeedAging",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_Bloodhound",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_SpeedAging",false);
 
-			CMAble.addCharAbilityMapping(ID(),20,"Chant_SoaringEagle",false);
-			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);
-			CMAble.addCharAbilityMapping(ID(),20,"Chant_AnimalGrowth",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_SoaringEagle",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Scrapping",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_AnimalGrowth",false);
 
-			CMAble.addCharAbilityMapping(ID(),21,"Druid_ShapeShift5",true);
-			CMAble.addCharAbilityMapping(ID(),21,"Fighter_Berzerk",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Druid_ShapeShift5",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_Berzerk",false);
 
-			CMAble.addCharAbilityMapping(ID(),22,"Skill_AttackHalf",false);
-			CMAble.addCharAbilityMapping(ID(),22,"Chant_NeutralizePoison",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_AttackHalf",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_NeutralizePoison",true);
 
-			CMAble.addCharAbilityMapping(ID(),23,"Chant_UnicornsHealth",false);
-			CMAble.addCharAbilityMapping(ID(),23,"Chant_FindMate",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_UnicornsHealth",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_FindMate",false);
 
-			CMAble.addCharAbilityMapping(ID(),24,"Thief_Ambush",false);
-			CMAble.addCharAbilityMapping(ID(),24,"Chant_SummonFear",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Ambush",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_SummonFear",true);
 
-			CMAble.addCharAbilityMapping(ID(),25,"Druid_Rend",true);
-			CMAble.addCharAbilityMapping(ID(),25,"Chant_Crossbreed",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Chant_Dragonsight",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Druid_Rend",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_Crossbreed",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_Dragonsight",false);
 
-			CMAble.addCharAbilityMapping(ID(),30,"Druid_PackCall",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Druid_PackCall",true);
 		}
 	}
 
@@ -201,7 +212,7 @@ public class Beastmaster extends StdCharClass
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
 		&&(myChar.isMine(msg.tool()))
 		&&(isQualifyingAuthority(myChar,(Ability)msg.tool()))
-		&&(Dice.rollPercentage()<50))
+		&&(CMLib.dice().rollPercentage()<50))
 		{
 			if(((Ability)msg.tool()).appropriateToMyFactions(myChar))
 				return true;
@@ -219,7 +230,7 @@ public class Beastmaster extends StdCharClass
 		if((mob!=null)
         &&(mob!=killed)
 		&&(!mob.amDead())
-		&&((!mob.isMonster())||(!Sense.isAnimalIntelligence(mob)))
+		&&((!mob.isMonster())||(!CMLib.flags().isAnimalIntelligence(mob)))
 		&&((mob.getVictim()==killed)
 		 ||(followers.contains(mob))
 		 ||(mob==killer)))
@@ -243,7 +254,7 @@ public class Beastmaster extends StdCharClass
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
 		{
-			Vector V=CMAble.getUpToLevelListings(ID(),
+			Vector V=CMLib.ableMapper().getUpToLevelListings(ID(),
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
@@ -252,8 +263,8 @@ public class Beastmaster extends StdCharClass
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
-				&&(!CMAble.getDefaultGain(ID(),true,A.ID())))
-					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),true,A.ID()),CMAble.getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}
 		}
 	}

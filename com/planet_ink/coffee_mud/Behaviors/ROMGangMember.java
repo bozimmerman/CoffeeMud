@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -60,7 +71,7 @@ public class ROMGangMember extends StdBehavior
 		if(weapon==null) weapon=observer.myNaturalWeapon();
 
 		/* say something, then raise hell */
-		switch (Dice.roll(1,7,-1))
+		switch (CMLib.dice().roll(1,7,-1))
 		{
 		case 0:
 			observer.location().show(observer,null,CMMsg.MSG_SPEAK,"^T<S-NAME> yell(s) 'I've been looking for you, punk!'^?");
@@ -85,7 +96,7 @@ public class ROMGangMember extends StdBehavior
 			break;
 		}
 
-		MUDFight.postAttack(observer,victim,weapon);
+		CMLib.combat().postAttack(observer,victim,weapon);
 	}
 
 
@@ -98,7 +109,7 @@ public class ROMGangMember extends StdBehavior
 		tickTock--;
 		if(tickTock<=0)
 		{
-			tickTock=Dice.roll(1,10,0);
+			tickTock=CMLib.dice().roll(1,10,0);
 			pickAFight(mob);
 		}
 		return true;

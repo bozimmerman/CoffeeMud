@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -77,15 +88,15 @@ public class Prayer_CurseMetal extends Prayer
 			Item item=mob.fetchInventory(i);
 			if((item!=null)
 			   &&(!item.amWearingAt(Item.INVENTORY))
-			   &&(Sense.isMetal(item))
+			   &&(CMLib.flags().isMetal(item))
 			   &&(item.container()==null)
 			   &&(!mob.amDead()))
 			{
-				int damage=Dice.roll(1,6,1);
-				MUDFight.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
-				if(Dice.rollPercentage()<mob.charStats().getStat(CharStats.STRENGTH))
+				int damage=CMLib.dice().roll(1,6,1);
+				CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
+				if(CMLib.dice().rollPercentage()<mob.charStats().getStat(CharStats.STRENGTH))
 				{
-					CommonMsgs.drop(mob,item,false,false);
+					CMLib.commands().drop(mob,item,false,false);
 					if(!mob.isMine(item))
 					{
 						item.addEffect((Ability)this.copyOf());
@@ -95,8 +106,8 @@ public class Prayer_CurseMetal extends Prayer
 				}
 			}
 		}
-        if((!mob.isInCombat())&&(mob!=invoker)&&(mob.location().isInhabitant(invoker))&&(Sense.canBeSeenBy(invoker,mob)))
-            MUDFight.postAttack(mob,invoker,mob.fetchWieldedItem());
+        if((!mob.isInCombat())&&(mob!=invoker)&&(mob.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,mob)))
+            CMLib.combat().postAttack(mob,invoker,mob.fetchWieldedItem());
 		return true;
 	}
 
@@ -151,7 +162,7 @@ public class Prayer_CurseMetal extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to curse <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to curse <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

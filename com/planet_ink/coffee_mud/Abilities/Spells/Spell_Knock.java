@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -93,7 +104,7 @@ public class Spell_Knock extends Spell
 		else
 		{
 
-			FullMsg msg=new FullMsg(mob,openThis,null,affectType(auto),(auto?openThis.name()+" begin(s) to glow!":"^S<S-NAME> point(s) at <T-NAMESELF>.^?")+CommonStrings.msp("knock.wav",10));
+			CMMsg msg=CMClass.getMsg(mob,openThis,null,affectType(auto),(auto?openThis.name()+" begin(s) to glow!":"^S<S-NAME> point(s) at <T-NAMESELF>.^?")+CMProps.msp("knock.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -107,10 +118,10 @@ public class Spell_Knock extends Spell
 						break;
 					}
 				}
-				msg=new FullMsg(mob,openThis,null,CMMsg.MSG_UNLOCK,null);
-				CoffeeUtensils.roomAffectFully(msg,mob.location(),dirCode);
-				msg=new FullMsg(mob,openThis,null,CMMsg.MSG_OPEN,"<T-NAME> opens.");
-				CoffeeUtensils.roomAffectFully(msg,mob.location(),dirCode);
+				msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_UNLOCK,null);
+				CMLib.utensils().roomAffectFully(msg,mob.location(),dirCode);
+				msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_OPEN,"<T-NAME> opens.");
+				CMLib.utensils().roomAffectFully(msg,mob.location(),dirCode);
 			}
 		}
 

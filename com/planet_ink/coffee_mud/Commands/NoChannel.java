@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -33,25 +44,25 @@ public class NoChannel extends StdCommand
 		String channelName=((String)commands.elementAt(0)).toUpperCase().trim().substring(2);
 		commands.removeElementAt(0);
 		int channelNum=-1;
-		for(int c=0;c<ChannelSet.getNumChannels();c++)
+		for(int c=0;c<CMLib.channels().getNumChannels();c++)
 		{
-			if(ChannelSet.getChannelName(c).equalsIgnoreCase(channelName))
+			if(CMLib.channels().getChannelName(c).equalsIgnoreCase(channelName))
 			{
 				channelNum=c;
-				channelName=ChannelSet.getChannelName(c);
+				channelName=CMLib.channels().getChannelName(c);
 			}
 		}
         if(channelNum<0)
-        for(int c=0;c<ChannelSet.getNumChannels();c++)
+        for(int c=0;c<CMLib.channels().getNumChannels();c++)
         {
-            if(ChannelSet.getChannelName(c).toUpperCase().startsWith(channelName))
+            if(CMLib.channels().getChannelName(c).toUpperCase().startsWith(channelName))
             {
                 channelNum=c;
-                channelName=ChannelSet.getChannelName(c);
+                channelName=CMLib.channels().getChannelName(c);
             }
         }
 		if((channelNum<0)
-		||(!MUDZapper.zapperCheck(ChannelSet.getChannelMask(channelNum),mob)))
+		||(!CMLib.masking().maskCheck(CMLib.channels().getChannelMask(channelNum),mob)))
 		{
 			mob.tell("This channel is not available to you.");
 			return false;

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Misc;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -82,7 +93,7 @@ public class Sinking extends StdAbility
 			&&(msg.target() instanceof Room)
 			&&((((Room)msg.target()).domainType()==Room.DOMAIN_INDOORS_AIR)
 			   ||(((Room)msg.target()).domainType()==Room.DOMAIN_OUTDOORS_AIR))
-			&&(!Sense.isFlying(msg.source())))
+			&&(!CMLib.flags().isFlying(msg.source())))
 			{
 				msg.source().tell("You can't seem to get there from here.");
 				return false;
@@ -131,8 +142,8 @@ public class Sinking extends StdAbility
 			if(mob.location()==null) return false;
 
 			if(isUnderWater(mob.location())
-			||(Sense.isWaterWorthy(mob))
-			||(Sense.isInFlight(mob))
+			||(CMLib.flags().isWaterWorthy(mob))
+			||(CMLib.flags().isInFlight(mob))
 			||(mob.envStats().weight()<1))
 				return stopSinking(mob);
 			else
@@ -157,7 +168,7 @@ public class Sinking extends StdAbility
                 isTreading=false;
                 mob.recoverEnvStats();
 				mob.tell("\n\r\n\rYOU ARE SINKING "+addStr.toUpperCase()+"!!\n\r\n\r");
-				MUDTracker.move(mob,direction,false,false);
+				CMLib.tracking().move(mob,direction,false,false);
 				if(!canSinkFrom(mob.location(),direction))
 				{
 					return stopSinking(mob);
@@ -176,9 +187,9 @@ public class Sinking extends StdAbility
 
 			if((room==null)
 			||((room!=null)&&(!room.isContent(item)))
-			||(!Sense.isGettable(item))
-			||Sense.isInFlight(item.ultimateContainer())
-			||(Sense.isWaterWorthy(item.ultimateContainer()))
+			||(!CMLib.flags().isGettable(item))
+			||CMLib.flags().isInFlight(item.ultimateContainer())
+			||(CMLib.flags().isWaterWorthy(item.ultimateContainer()))
 			||(item.envStats().weight()<1))
 			{
 				unInvoke();
@@ -222,8 +233,8 @@ public class Sinking extends StdAbility
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if((!Sense.isWaterWorthy(affected))
-		&&(!Sense.isInFlight(affected))
+		if((!CMLib.flags().isWaterWorthy(affected))
+		&&(!CMLib.flags().isInFlight(affected))
         &&(!isTreading)
 		&&(affected.envStats().weight()>=1))
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FALLING);
@@ -254,7 +265,7 @@ public class Sinking extends StdAbility
 			F.setBorrowed(E,true);
 			F.makeLongLasting();
 			if(!(E instanceof MOB))
-				CMClass.ThreadEngine().startTickDown(F,MudHost.TICK_MOB,1);
+				CMLib.threads().startTickDown(F,MudHost.TICK_MOB,1);
 			E.recoverEnvStats();
 		}
 		return true;

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -72,18 +83,18 @@ public class Chant_Hippieness extends Chant
 			Room R=mob.location();
 			if((!mouthed)&&(R!=null)&&(R.numItems()>0))
 			{
-				Item I=R.fetchItem(Dice.roll(1,R.numItems(),-1));
+				Item I=R.fetchItem(CMLib.dice().roll(1,R.numItems(),-1));
 				if((I!=null)&&(I.fitsOn(Item.ON_MOUTH)))
-					CommonMsgs.get(mob,I.container(),I,false);
+					CMLib.commands().get(mob,I.container(),I,false);
 			}
 
 			if(mob.inventorySize()>0)
 			{
-				Item I=mob.fetchInventory(Dice.roll(1,mob.inventorySize(),-1));
+				Item I=mob.fetchInventory(CMLib.dice().roll(1,mob.inventorySize(),-1));
 				if(mouthed)
 				{
 					if((I!=null)&&(!I.amWearingAt(Item.INVENTORY))&&(!I.amWearingAt(Item.ON_MOUTH)))
-						CommonMsgs.remove(mob,I,false);
+						CMLib.commands().remove(mob,I,false);
 				}
 				else
 				if((I!=null)&&(I instanceof Light)&&(I.fitsOn(Item.ON_MOUTH)))
@@ -111,7 +122,7 @@ public class Chant_Hippieness extends Chant
 				}
 				else
 				if((I!=null)&&(!I.amWearingAt(Item.INVENTORY))&&(!I.amWearingAt(Item.ON_MOUTH)))
-					CommonMsgs.remove(mob,I,false);
+					CMLib.commands().remove(mob,I,false);
 			}
 		}
 		return true;
@@ -137,7 +148,7 @@ public class Chant_Hippieness extends Chant
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		if(Sense.isAnimalIntelligence(target))
+		if(CMLib.flags().isAnimalIntelligence(target))
 		{
 			mob.tell(target.name()+" is not smart enough to be a hippy.");
 			return false;
@@ -159,8 +170,8 @@ public class Chant_Hippieness extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,(target.isMonster()?0:CMMsg.MASK_MALICIOUS)|affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>!^?");
-			FullMsg msg2=new FullMsg(mob,target,this,(target.isMonster()?0:CMMsg.MASK_MALICIOUS)|CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_GENERAL:0),null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,(target.isMonster()?0:CMMsg.MASK_MALICIOUS)|affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>!^?");
+			CMMsg msg2=CMClass.getMsg(mob,target,this,(target.isMonster()?0:CMMsg.MASK_MALICIOUS)|CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_GENERAL:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
@@ -169,7 +180,7 @@ public class Chant_Hippieness extends Chant
 				{
 					oldClan=target.getClanID();
 					target.setClanID("");
-					CommonMsgs.say(target,null,"Far out...",false,false);
+					CMLib.commands().say(target,null,"Far out...",false,false);
 					maliciousAffect(mob,target,asLevel,0,verbalCastMask(auto)|CMMsg.TYP_MIND);
 				}
 			}

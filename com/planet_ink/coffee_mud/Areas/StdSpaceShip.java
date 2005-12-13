@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Areas;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -43,13 +54,13 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	{
 		if(climateObj==null)
 		{
-			climateObj=(Climate)CMClass.getShared("DefaultClimate");
+			climateObj=(Climate)CMClass.getCommon("DefaultClimate");
 			climateObj.setCurrentWeatherType(Climate.WEATHER_CLEAR);
 			climateObj.setNextWeatherType(Climate.WEATHER_CLEAR);
 		}
 		return climateObj;
 	}
-	protected TimeClock localClock=(TimeClock)CMClass.getShared("DefaultTimeClock");
+	protected TimeClock localClock=(TimeClock)CMClass.getCommon("DefaultTimeClock");
 	public TimeClock getTimeObj(){return localClock;}
 	public void setTimeObj(TimeClock obj){localClock=obj;}
 	protected String currency="";
@@ -71,17 +82,16 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	protected Room dock=null;
 	protected String description="";
 	protected String miscText="";
-	protected Vector myRooms=null;
+	protected Vector myRooms=new Vector();
 	protected boolean mobility=true;
 	protected long tickStatus=Tickable.STATUS_NOT;
-	private Boolean roomSemaphore=new Boolean(true);
 	private int[] statData=null;
 	protected String author=""; // will be used for owner, I guess.
 	public void setAuthorID(String authorID){author=authorID;}
 	public String getAuthorID(){return author;}
 
-	protected EnvStats envStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
-	protected EnvStats baseEnvStats=(EnvStats)CMClass.getShared("DefaultEnvStats");
+	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 
 	protected Vector affects=new Vector();
 	protected Vector behaviors=new Vector();
@@ -180,7 +190,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 			if(A!=null)
 				affects.addElement(A.copyOf());
 		}
-		setTimeObj((TimeClock)CMClass.getShared("DefaultTimeClock"));
+		setTimeObj((TimeClock)CMClass.getCommon("DefaultTimeClock"));
 	}
 	public CMObject copyOf()
 	{
@@ -204,13 +214,13 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 
 	public String text()
 	{
-		return CoffeeMaker.getPropertiesStr(this,true);
+		return CMLib.coffeeMaker().getPropertiesStr(this,true);
 	}
 	public void setMiscText(String newMiscText)
 	{
 		miscText="";
 		if(newMiscText.trim().length()>0)
-			CoffeeMaker.setPropertiesStr(this,newMiscText,true);
+			CMLib.coffeeMaker().setPropertiesStr(this,newMiscText,true);
 	}
 
 	public String description()
@@ -232,7 +242,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 			if((A!=null)&&(!A.okMessage(this,msg)))
 				return false;
 		}
-		if((!mobility)||(!Sense.allowsMovement(this)))
+		if((!mobility)||(!CMLib.flags().allowsMovement(this)))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
@@ -287,7 +297,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		if(start)
 		{
 			stopTicking=false;
-			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_AREA,1);
+			CMLib.threads().startTickDown(this,MudHost.TICK_AREA,1);
 		}
 		else
 			stopTicking=true;
@@ -416,7 +426,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 
 	public void fillInAreaRooms()
 	{
-		clearMaps();
+		clearMetroCache();
 	}
 
 	public boolean inMetroArea(Area A)
@@ -473,12 +483,12 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 			portal.setName(Name());
 			portal.setDisplayText(Name());
 			portal.setDescription(description());
-			portal.setReadableText(CMMap.getExtendedRoomID(R));
-			Sense.setGettable(portal,false);
+			portal.setReadableText(CMLib.map().getExtendedRoomID(R));
+			CMLib.flags().setGettable(portal,false);
 			R.addItem(portal);
 			portal.setDispossessionTime(0);
 			dock=R;
-			CMMap.delObjectInSpace(this);
+			CMLib.map().delObjectInSpace(this);
 			R.recoverRoomStats();
 		}
 	}
@@ -504,7 +514,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		dock=null;
 		if(toSpace)
 		{
-			CMMap.addObjectToSpace(this);
+			CMLib.map().addObjectToSpace(this);
 		}
 	}
 
@@ -534,7 +544,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 
 	public int[] getAreaIStats()
 	{
-		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return null;
 		getAreaStats();
 		return statData;
@@ -561,16 +571,95 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		return null;
 	}
 
-	public void clearMaps(){}
+    public void clearMetroCache()
+    {
+        try{
+            for(Enumeration e=getParents();e.hasMoreElements();)
+                ((Area)e.nextElement()).clearMetroCache();
+        } catch(NoSuchElementException e){}
+    }
+    public void addRoom(Room R)
+    {
+        if(R==null) return;
+        if(R.getArea()!=this)
+        {
+            R.setArea(this);
+            return;
+        }
+        synchronized(myRooms)
+        {
+            if(!myRooms.contains(R))
+            {
+                Room R2=null;
+                for(int i=0;i<myRooms.size();i++)
+                {
+                    R2=(Room)myRooms.elementAt(i);
+                    if(R2.roomID().compareToIgnoreCase(R.roomID())>=0)
+                    {
+                        if(R2.ID().compareToIgnoreCase(R.roomID())==0)
+                            myRooms.setElementAt(R,i);
+                        else
+                            myRooms.insertElementAt(R,i);
+                        clearMetroCache();
+                        return;
+                    }
+                }
+                myRooms.addElement(R);
+                clearMetroCache();
+            }
+        }
+    }
+    
+    public void delRoom(Room R)
+    {
+        if(R==null) return;
+        if(R instanceof GridLocale)
+            ((GridLocale)R).clearGrid(null);
+        synchronized(myRooms)
+        {
+            if(myRooms.contains(R))
+            {
+                myRooms.removeElement(R);
+                clearMetroCache();
+            }
+        }
+    }
+    
+    public boolean isRoom(Room R)
+    {
+        if(R==null) return false;
+        synchronized(myRooms)
+        {
+            return myRooms.contains(R);
+        }
+    }
+    
+    public Room getRoom(String roomID)
+    {
+        if(myRooms.size()==0) return null;
+        int start=0;
+        int end=myRooms.size()-1;
+        while(start<=end)
+        {
+            int mid=(end+start)/2;
+            int comp=((Room)myRooms.elementAt(mid)).roomID().compareToIgnoreCase(roomID);
+            if(comp==0)
+                return (Room)myRooms.elementAt(mid);
+            else
+            if(comp>0)
+                end=mid-1;
+            else
+                start=mid+1;
+
+        }
+        return null;
+    }
 
 	public int metroSize(){return properSize();}
 	public int properSize()
 	{
-		synchronized(roomSemaphore)
+		synchronized(myRooms)
 		{
-			if(myRooms!=null)
-				return myRooms.size();
-			makeProperMap();
 			return myRooms.size();
 		}
 	}
@@ -591,39 +680,18 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public Room getRandomMetroRoom(){return getRandomProperRoom();}
 	public Room getRandomProperRoom()
 	{
-		synchronized(roomSemaphore)
+		synchronized(myRooms)
 		{
-			if(myRooms==null) makeProperMap();
 			if(properSize()==0) return null;
-			return (Room)myRooms.elementAt(Dice.roll(1,properSize(),-1));
+			return (Room)myRooms.elementAt(CMLib.dice().roll(1,properSize(),-1));
 		}
 	}
 	public Enumeration getMetroMap(){return getProperMap();}
 	public Enumeration getProperMap()
 	{
-		synchronized(roomSemaphore)
+		synchronized(myRooms)
 		{
-			if(myRooms!=null) return myRooms.elements();
-			makeProperMap();
 			return myRooms.elements();
-		}
-	}
-	private void makeProperMap()
-	{
-		synchronized(roomSemaphore)
-		{
-			if(myRooms!=null) return;
-			Vector myMap=new Vector();
-			try
-			{
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					if(R.getArea()==this)
-						myMap.addElement(R);
-				}
-		    }catch(NoSuchElementException nse){}
-			myRooms=myMap;
 		}
 	}
 	public Vector getSubOpVectorList(){	return new Vector();}
@@ -649,7 +717,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	        if (parents == null) {
 	                parents = new Vector();
 	                for (int i = 0; i < parentsToLoad.size(); i++) {
-	                        Area A = CMMap.getArea( (String) parentsToLoad.elementAt(i));
+	                        Area A = CMLib.map().getArea( (String) parentsToLoad.elementAt(i));
 	                        if (A == null)
 	                                continue;
 	                        parents.addElement(A);

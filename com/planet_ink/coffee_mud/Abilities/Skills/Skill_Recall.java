@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -20,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Recall extends StdAbility
+public class Skill_Recall extends StdSkill
 {
 	public String ID() { return "Skill_Recall"; }
 	public String name(){ return "Recall";}
@@ -41,12 +51,12 @@ public class Skill_Recall extends StdAbility
 		{
 			Room recalledRoom=mob.location();
 			Room recallRoom=mob.getStartRoom();
-			FullMsg msg=new FullMsg(mob,recalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?getScr("Skills","recallgo1"):getScr("Skills","recallgo2"));
-			FullMsg msg2=new FullMsg(mob,recallRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
+			CMMsg msg=CMClass.getMsg(mob,recalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?getScr("Skills","recallgo1"):getScr("Skills","recallgo2"));
+			CMMsg msg2=CMClass.getMsg(mob,recallRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
 			if((recalledRoom.okMessage(mob,msg))&&(recallRoom.okMessage(mob,msg2)))
 			{
 				if(mob.isInCombat())
-					CommonMsgs.flee(mob,"NOWHERE");
+					CMLib.commands().flee(mob,"NOWHERE");
 				recalledRoom.send(mob,msg);
 				recallRoom.send(mob,msg2);
 				if(recalledRoom.isInhabitant(mob))
@@ -55,7 +65,7 @@ public class Skill_Recall extends StdAbility
 				{
 					MOB follower=mob.fetchFollower(f);
 					
-					msg=new FullMsg(follower,recalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?getScr("Skills","recallgo1"):getScr("Skills","recallgo3",mob.name()));
+					msg=CMClass.getMsg(follower,recalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?getScr("Skills","recallgo1"):getScr("Skills","recallgo3",mob.name()));
 					if((follower!=null)
 					&&(follower.isMonster())
 					&&(!follower.isPossessing())
@@ -63,11 +73,11 @@ public class Skill_Recall extends StdAbility
 					&&(recalledRoom.isInhabitant(follower))
 					&&(recalledRoom.okMessage(follower,msg)))
 					{
-						msg2=new FullMsg(follower,recallRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
+						msg2=CMClass.getMsg(follower,recallRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
 						if(recallRoom.okMessage(follower,msg2))
 						{
 							if(follower.isInCombat())
-								CommonMsgs.flee(follower,("NOWHERE"));
+								CMLib.commands().flee(follower,("NOWHERE"));
 							recallRoom.send(follower,msg2);
 							if(recalledRoom.isInhabitant(follower))
 								recallRoom.bringMobHere(follower,false);

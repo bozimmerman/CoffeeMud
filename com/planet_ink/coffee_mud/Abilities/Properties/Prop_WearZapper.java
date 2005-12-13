@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -29,7 +40,7 @@ public class Prop_WearZapper extends Prop_HaveZapper
 
 	public String accountForYourself()
 	{
-		return "Wearing restricted as follows: "+MUDZapper.zapperDesc(miscText);
+		return "Wearing restricted as follows: "+CMLib.masking().maskDesc(miscText);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -46,21 +57,21 @@ public class Prop_WearZapper extends Prop_HaveZapper
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_HOLD:
-			if((!MUDZapper.zapperCheck(text(),mob))&&(didHappen(100)))
+			if((!CMLib.masking().maskCheck(text(),mob))&&(didHappen(100)))
 			{
 				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out of <S-HIS-HER> hands!"));
 				return false;
 			}
 			break;
 		case CMMsg.TYP_WEAR:
-			if((!MUDZapper.zapperCheck(text(),mob))&&(didHappen(100)))
+			if((!CMLib.masking().maskCheck(text(),mob))&&(didHappen(100)))
 			{
 				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out of <S-HIS-HER> hands!"));
 				return false;
 			}
 			break;
 		case CMMsg.TYP_WIELD:
-			if((!MUDZapper.zapperCheck(text(),mob))&&(didHappen(100)))
+			if((!CMLib.masking().maskCheck(text(),mob))&&(didHappen(100)))
 			{
 				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out of <S-HIS-HER> hands!"));
 				return false;

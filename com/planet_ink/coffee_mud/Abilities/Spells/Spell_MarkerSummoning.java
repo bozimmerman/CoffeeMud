@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -33,10 +44,10 @@ public class Spell_MarkerSummoning extends Spell
 		Room oldRoom=null;
 		try
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(Sense.canAccess(mob,R))
+				if(CMLib.flags().canAccess(mob,R))
 				for(int a=0;a<R.numEffects();a++)
 				{
 					Ability A=R.fetchEffect(a);
@@ -86,15 +97,15 @@ public class Spell_MarkerSummoning extends Spell
 
 		if((success)&&(inhabs.size()>0))
 		{
-			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MASK_MOVE|affectType(auto),auto?"":"^S<S-NAME> summon(s) the power of <S-HIS-HER> marker energy!^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|affectType(auto),auto?"":"^S<S-NAME> summon(s) the power of <S-HIS-HER> marker energy!^?");
 			if((mob.location().okMessage(mob,msg))&&(oldRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
 				for(int i=0;i<inhabs.size();i++)
 				{
 					MOB follower=(MOB)inhabs.elementAt(i);
-					FullMsg enterMsg=new FullMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appear(s) in a burst of light.");
-					FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl.");
+					CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appear(s) in a burst of light.");
+					CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl.");
 					if(oldRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{
 						follower.makePeace();
@@ -102,7 +113,7 @@ public class Spell_MarkerSummoning extends Spell
 						newRoom.bringMobHere(follower,false);
 						newRoom.send(follower,enterMsg);
 						follower.tell("\n\r\n\r");
-						CommonMsgs.look(follower,true);
+						CMLib.commands().look(follower,true);
 					}
 				}
 				Vector items=new Vector();

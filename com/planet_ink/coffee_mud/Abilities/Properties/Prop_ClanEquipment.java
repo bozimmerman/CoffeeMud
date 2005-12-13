@@ -1,8 +1,20 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /**
@@ -45,7 +57,7 @@ public class Prop_ClanEquipment extends Property
 	public static final String[] words = {
 	    "ZAP", "ZAP", "ZAP", "ZOT", "ZIT", "ZEK", "ZOM", "ZUP", "ZET", "ZYT",
 	    "ZVP", "ZOP", "ZYV", "ZAL"};
-	protected String secretWord = words[Dice.roll(1, words.length, 0) - 1];
+	protected String secretWord = words[CMLib.dice().roll(1, words.length, 0) - 1];
 
 	public String accountForYourself()
 	{
@@ -101,7 +113,7 @@ public class Prop_ClanEquipment extends Property
 		secretWord = getWandWord(text); // try to randomize the spell word a little
 
 		// Armor
-		this.EQadjCharStats = (CharStats)CMClass.getShared("DefaultCharStats");
+		this.EQadjCharStats = (CharStats)CMClass.getCommon("DefaultCharStats");
 		initAdjustments(EQadjCharStats);
 
 		if (type.equalsIgnoreCase("PARALYSIS")) {
@@ -244,9 +256,9 @@ public class Prop_ClanEquipment extends Property
 					{
 						mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL,
 						                    me.name() + " glows brightly.");
-						int flameDamage = Dice.roll(1, 6, 0);
+						int flameDamage = CMLib.dice().roll(1, 6, 0);
 						flameDamage *= PowerLevel;
-						MUDFight.postDamage(mob,target,null,flameDamage, CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL|TypeOfEffect, WeaponType,
+						CMLib.combat().postDamage(mob,target,null,flameDamage, CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL|TypeOfEffect, WeaponType,
 												   "^F^<FIGHT^>The magic of " +clanName+" <DAMAGE>"+
 						                           " <T-NAME>!^</FIGHT^>^?");
 						wandUse.helpProfficiency(mob);
@@ -303,10 +315,10 @@ public class Prop_ClanEquipment extends Property
 	{
 		super.executeMsg(myHost, msg);
 		
-		if(((System.currentTimeMillis()-LastChecked)>IQCalendar.MILI_HOUR)
+		if(((System.currentTimeMillis()-LastChecked)>TimeManager.MILI_HOUR)
 		&&(affected!=null))
 		{
-		    if((clanName!=null)&&(clanName.length()>0)&&(Clans.getClan(clanName)==null))
+		    if((clanName!=null)&&(clanName.length()>0)&&(CMLib.clans().getClan(clanName)==null))
 			    affected.delEffect(this);
 		    LastChecked=System.currentTimeMillis();
 		}
@@ -347,13 +359,13 @@ public class Prop_ClanEquipment extends Property
 		  && (TypeOfEffect < 1000)
 		  && (! ( (MOB) msg.target()).amDead()))
 		{
-			double flameDamage = new Integer(Dice.roll(1, 6, 0)).doubleValue();
+			double flameDamage = new Integer(CMLib.dice().roll(1, 6, 0)).doubleValue();
 			for(int i=0;i<PowerLevel;i++)
 				flameDamage=flameDamage*1.5;
 			String str="^F^<FIGHT^>The magic of " +
 			             clanName +
 			            " <DAMAGE> <T-NAME>!^</FIGHT^>^?";
-			MUDFight.postDamage(msg.source(),(MOB)msg.target(),null,(int)Math.round(flameDamage),
+			CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,(int)Math.round(flameDamage),
 								CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL|TypeOfEffect,
 								WeaponType,
 								str);
@@ -369,7 +381,7 @@ public class Prop_ClanEquipment extends Property
 		    && (affected instanceof Shield)
 		    && (TypeOfEffect < 1000))
 		{
-			if ( (Dice.rollPercentage() >
+			if ( (CMLib.dice().rollPercentage() >
 			      32 + msg.source().charStats().getStat(CharStats.DEXTERITY))
 			    && (msg.source().rangeToTarget() == 0)
 			    &&
@@ -377,16 +389,16 @@ public class Prop_ClanEquipment extends Property
 			    && ( (Util.bset(msg.targetMajor(), CMMsg.MASK_HANDS))
 			        || (Util.bset(msg.targetMajor(), CMMsg.MASK_MOVE))))
 			{
-				FullMsg msg2 = new FullMsg(mob, source, this,
+				CMMsg msg2 = CMClass.getMsg(mob, source, this,
 				                          CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL, null);
 				if (source.location().okMessage(source, msg2))
 				{
 					source.location().send(source, msg2);
 					if (msg2.value()<=0)
 					{
-					    int damage = Dice.roll(1, 3, 0);
+					    int damage = CMLib.dice().roll(1, 3, 0);
 					    damage *= PowerLevel;
-					    MUDFight.postDamage(mob, source, this, damage,
+					    CMLib.combat().postDamage(mob, source, this, damage,
 					                            CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL| TypeOfEffect
 												, WeaponType,
 					                            "^F^<FIGHT^>The magic of " +
@@ -411,7 +423,7 @@ public class Prop_ClanEquipment extends Property
 			  break;
 			case CMMsg.TYP_SPEAK:
 			  if (msg.sourceMinor() == CMMsg.TYP_SPEAK)
-			    msg.addTrailerMsg(new FullMsg(msg.source(), this,
+			    msg.addTrailerMsg(CMClass.getMsg(msg.source(), this,
 			                                     msg.target(), CMMsg.NO_EFFECT, null,
 			                                     CMMsg.MASK_GENERAL |
 			                                     CMMsg.TYP_WAND_USE,

@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -22,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_WeaponBreak extends StdAbility
+public class Fighter_WeaponBreak extends FighterSkill
 {
 	public String ID() { return "Fighter_WeaponBreak"; }
 	public String name(){ return "Weapon Break";}
@@ -70,18 +80,18 @@ public class Fighter_WeaponBreak extends StdAbility
 			levelDiff=0;
 		Item hisWeapon=mob.getVictim().fetchWieldedItem();
 		int chance=(-levelDiff)+(-(mob.getVictim().charStats().getStat(CharStats.DEXTERITY)*2));
-		boolean hit=(auto)||MUDFight.rollToHit(mob,mob.getVictim());
+		boolean hit=(auto)||CMLib.combat().rollToHit(mob,mob.getVictim());
 		boolean success=profficiencyCheck(mob,chance,auto)&&(hit);
 		if((success)
 		   &&(hisWeapon!=null)
 		   &&(hisWeapon.envStats().ability()==0)
-		   &&(!Sense.isABonusItems(hisWeapon))
+		   &&(!CMLib.flags().isABonusItems(hisWeapon))
 		&&((hisWeapon.rawProperLocationBitmap()==Item.WIELD)
 		   ||(hisWeapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
 		{
 			String str=auto?hisWeapon.name()+" break(s) in <T-HIS-HER> hands!":"<S-NAME> disarm(s) <T-NAMESELF> and destroy(s) "+hisWeapon.name()+"!";
 			hisWeapon.unWear();
-			FullMsg msg=new FullMsg(mob,mob.getVictim(),this,CMMsg.MSG_NOISYMOVEMENT,str);
+			CMMsg msg=CMClass.getMsg(mob,mob.getVictim(),this,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				hisWeapon.destroy();

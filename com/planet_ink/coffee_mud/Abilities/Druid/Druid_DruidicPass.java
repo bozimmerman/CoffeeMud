@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
-
-import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+
 import java.util.*;
 
 /* 
@@ -69,7 +80,7 @@ public class Druid_DruidicPass extends StdAbility
 		Exit exit=mob.location().getExitInDir(dirCode);
 		Room room=mob.location().getRoomInDir(dirCode);
 
-		if((exit==null)||(room==null)||((exit!=null)&&(!Sense.canBeSeenBy(exit,mob))))
+		if((exit==null)||(room==null)||((exit!=null)&&(!CMLib.flags().canBeSeenBy(exit,mob))))
 		{
 			mob.tell("You can't see anywhere to pass that way.");
 			return false;
@@ -85,7 +96,7 @@ public class Druid_DruidicPass extends StdAbility
 		if(!success)
 		{
 			if(exit.isOpen())
-				MUDTracker.move(mob,dirCode,false,false);
+				CMLib.tracking().move(mob,dirCode,false,false);
 			else
 				beneficialVisualFizzle(mob,null,"<S-NAME> walk(s) "+Directions.getDirectionName(dirCode)+", but go(es) no further.");
 		}
@@ -98,13 +109,13 @@ public class Druid_DruidicPass extends StdAbility
 				mob.recoverEnvStats();
 			}
 
-			MUDTracker.move(mob,dirCode,false,false);
+			CMLib.tracking().move(mob,dirCode,false,false);
 			mob.delEffect(this);
 			mob.recoverEnvStats();
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,null,CMMsg.MSG_QUIETMOVEMENT|CMMsg.MASK_MAGIC,null);
+			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_QUIETMOVEMENT|CMMsg.MASK_MAGIC,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -119,7 +130,7 @@ public class Druid_DruidicPass extends StdAbility
 					mob.addEffect(this);
 					mob.recoverEnvStats();
 				}
-				MUDTracker.move(mob,dirCode,false,false);
+				CMLib.tracking().move(mob,dirCode,false,false);
 				mob.delEffect(this);
 				mob.recoverEnvStats();
 				exit.setDoorsNLocks(exit.hasADoor(),open,exit.defaultsClosed(),exit.hasALock(),locked,exit.defaultsLocked());

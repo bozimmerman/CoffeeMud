@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -44,10 +55,10 @@ public class Spell_KnowOrigin extends Spell
 			try
 			{
 				// check mobs worn items first!
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if(Sense.canAccess(mob,R))
+					if(CMLib.flags().canAccess(mob,R))
 					{
 						for(int s=0;s<R.numInhabitants();s++)
 						{
@@ -65,17 +76,17 @@ public class Spell_KnowOrigin extends Spell
 		    try
 		    {
 				// check shopkeepers second!
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if(Sense.canAccess(mob,R))
+					if(CMLib.flags().canAccess(mob,R))
 					{
 						for(int s=0;s<R.numInhabitants();s++)
 						{
 							MOB M=R.fetchInhabitant(s);
-							if((M!=null)&&(CoffeeShops.getShopKeeper(M)!=null))
+							if((M!=null)&&(CMLib.coffeeShops().getShopKeeper(M)!=null))
 							{
-								ShopKeeper S=CoffeeShops.getShopKeeper(M);
+								ShopKeeper S=CMLib.coffeeShops().getShopKeeper(M);
 								if(S.doIHaveThisInStock(me.Name(),null))
 									return M.getStartRoom();
 							}
@@ -86,7 +97,7 @@ public class Spell_KnowOrigin extends Spell
 		    try
 		    {
 				// check mobs inventory items third!
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R!=null)
@@ -107,10 +118,10 @@ public class Spell_KnowOrigin extends Spell
 		    try
 		    {
 				// check room stuff last
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if((Sense.canAccess(mob,R))&&(R.fetchItem(null,me.Name())!=null))
+					if((CMLib.flags().canAccess(mob,R))&&(R.fetchItem(null,me.Name())!=null))
 					   return R;
 				}
 		    }catch(NoSuchElementException nse){}
@@ -130,7 +141,7 @@ public class Spell_KnowOrigin extends Spell
 		boolean success=profficiencyCheck(mob,0,auto);
 		if((success)&&(R!=null))
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s), divining the origin of <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s), divining the origin of <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

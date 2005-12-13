@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.SuperPowers;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -63,7 +74,7 @@ public class Power_OctoGrapple extends SuperPower
 				{
 					if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against the grappling arms."))
 					{
-					    if(Dice.rollPercentage()<mob.charStats().getStat(CharStats.STRENGTH))
+					    if(CMLib.dice().rollPercentage()<mob.charStats().getStat(CharStats.STRENGTH))
 					    {
 					        unInvoke();
 					        if((mob.fetchEffect(ID())==null)&&(invoker!=null)&&(invoker!=mob))
@@ -107,7 +118,7 @@ public class Power_OctoGrapple extends SuperPower
 
 		if(canBeUninvoked())
 		{
-			if((!mob.amDead())&&(Sense.isInTheGame(mob,false)))
+			if((!mob.amDead())&&(CMLib.flags().isInTheGame(mob,false)))
 			{
 				if(mob==invoker)
 				{
@@ -123,7 +134,7 @@ public class Power_OctoGrapple extends SuperPower
 					else
 						mob.tell("You are released from the grapple.");
 				}
-				CommonMsgs.stand(mob,true);
+				CMLib.commands().stand(mob,true);
 			}
 		}
 	}
@@ -154,7 +165,7 @@ public class Power_OctoGrapple extends SuperPower
 		else
 			levelDiff=0;
 		// now see if it worked
-		boolean hit=(auto)||MUDFight.rollToHit(mob,target);
+		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		boolean success=profficiencyCheck(mob,(-levelDiff)+(-(((target.charStats().getStat(CharStats.STRENGTH)-mob.charStats().getStat(CharStats.STRENGTH))*5))),auto)&&(hit);
 		success=success&&(target.charStats().getBodyPart(Race.BODY_ARM)>2);
 		if(success)
@@ -164,8 +175,8 @@ public class Power_OctoGrapple extends SuperPower
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> get(s) grappled!":"^F^<FIGHT^><S-NAME> grab(s) <T-NAMESELF> with <S-HIS-HER> huge metallic arms!^</FIGHT^>^?");
-            CMColor.fixSourceFightColor(msg);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> get(s) grappled!":"^F^<FIGHT^><S-NAME> grab(s) <T-NAMESELF> with <S-HIS-HER> huge metallic arms!^</FIGHT^>^?");
+            CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

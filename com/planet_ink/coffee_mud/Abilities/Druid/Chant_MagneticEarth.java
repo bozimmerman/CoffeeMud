@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -59,7 +70,7 @@ public class Chant_MagneticEarth extends Chant
 					for(int i=0;i<toGo.size();i++)
 					{
 						Item I=(Item)toGo.elementAt(i);
-						if(CommonMsgs.drop(M,I,true,true))
+						if(CMLib.commands().drop(M,I,true,true))
 						{
 							didSomething=true;
 							R.show(M,I,CMMsg.MSG_OK_VISUAL,"<T-NAME> is pulled away from <S-NAME> to the magnetic ground!");
@@ -84,8 +95,8 @@ public class Chant_MagneticEarth extends Chant
 		&&(affected instanceof Room))
 		{
 			checked=true;
-			if(!CMClass.ThreadEngine().isTicking(this,-1))
-				CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_SPELL_AFFECT,1);
+			if(!CMLib.threads().isTicking(this,-1))
+				CMLib.threads().startTickDown(this,MudHost.TICK_SPELL_AFFECT,1);
 		}
 		super.executeMsg(host,msg);
 	}
@@ -119,7 +130,7 @@ public class Chant_MagneticEarth extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

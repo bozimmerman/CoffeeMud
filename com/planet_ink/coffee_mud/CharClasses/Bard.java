@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.CharClasses;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -52,67 +63,67 @@ public class Bard extends StdCharClass
 		if(!loaded())
 		{
 			setLoaded(true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Song_Detection",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Song_Nothing",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Haggle",true);
-			CMAble.addCharAbilityMapping(ID(),2,"Song_Seeing",true);
-			CMAble.addCharAbilityMapping(ID(),2,"Thief_Lore",false);
-			CMAble.addCharAbilityMapping(ID(),3,"Skill_Climb",false);
-			CMAble.addCharAbilityMapping(ID(),3,"Skill_WandUse",false);
-			CMAble.addCharAbilityMapping(ID(),3,"Thief_Hide",false);
-			CMAble.addCharAbilityMapping(ID(),3,"Song_Valor",true);
-			CMAble.addCharAbilityMapping(ID(),4,"Song_Charm",true);
-			CMAble.addCharAbilityMapping(ID(),4,"Thief_Appraise",false);
-			CMAble.addCharAbilityMapping(ID(),5,"Song_Armor",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Song_Babble",true);
-			CMAble.addCharAbilityMapping(ID(),6,"Song_Clumsiness",true);
-			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
-			CMAble.addCharAbilityMapping(ID(),7,"Song_Rage",true);
-			CMAble.addCharAbilityMapping(ID(),8,"Song_Mute",true);
-			CMAble.addCharAbilityMapping(ID(),8,"Thief_Distract",false);
-			CMAble.addCharAbilityMapping(ID(),9,"Thief_Peek",false);
-			CMAble.addCharAbilityMapping(ID(),9,"Song_Serenity",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Song_Revelation",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Song_Friendship",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Unbinding",false);
-			CMAble.addCharAbilityMapping(ID(),11,"Song_Inebriation",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Song_Comprehension",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Song_Health",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Song_Mercy",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Skill_Trip",false);
-			CMAble.addCharAbilityMapping(ID(),13,"Skill_Map",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Song_Silence",true);
-			CMAble.addCharAbilityMapping(ID(),14,"Song_Dexterity",true);
-			CMAble.addCharAbilityMapping(ID(),14,"Skill_TwoWeaponFighting",false);
-			CMAble.addCharAbilityMapping(ID(),15,"Thief_DetectTraps",false);
-			CMAble.addCharAbilityMapping(ID(),15,"Song_Protection",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Skill_SongWrite",false);
-			CMAble.addCharAbilityMapping(ID(),16,"Spell_ReadMagic",false);
-			CMAble.addCharAbilityMapping(ID(),16,"Song_Mana",true);
-			CMAble.addCharAbilityMapping(ID(),17,"Song_Quickness",true);
-			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
-			CMAble.addCharAbilityMapping(ID(),18,"Song_Lethargy",true);
-			CMAble.addCharAbilityMapping(ID(),18,"Song_Flight",true);
-			CMAble.addCharAbilityMapping(ID(),19,"Song_Knowledge",true);
-			CMAble.addCharAbilityMapping(ID(),19,"Thief_Swipe",false);
-			CMAble.addCharAbilityMapping(ID(),20,"Song_Blasting",true);
-			CMAble.addCharAbilityMapping(ID(),21,"Song_Strength",true);
-			CMAble.addCharAbilityMapping(ID(),21,"Song_Thanks",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Song_Lullibye",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Song_Distraction",true);
-			CMAble.addCharAbilityMapping(ID(),23,"Song_Flying",true);
-			CMAble.addCharAbilityMapping(ID(),23,"Thief_Steal",false);
-			CMAble.addCharAbilityMapping(ID(),24,"Song_Death",true);
-			CMAble.addCharAbilityMapping(ID(),24,"Song_Disgust",true);
-			CMAble.addCharAbilityMapping(ID(),25,"Song_Rebirth",true);
-			CMAble.addCharAbilityMapping(ID(),30,"Song_Ode",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Song_Detection",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Song_Nothing",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Haggle",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Song_Seeing",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Lore",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Climb",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_WandUse",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Hide",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Song_Valor",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Song_Charm",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Appraise",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Song_Armor",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Song_Babble",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Song_Clumsiness",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Song_Rage",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Song_Mute",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_Distract",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_Peek",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Song_Serenity",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Song_Revelation",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Song_Friendship",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Unbinding",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Song_Inebriation",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Song_Comprehension",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Song_Health",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Song_Mercy",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Trip",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Map",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Song_Silence",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Song_Dexterity",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_TwoWeaponFighting",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_DetectTraps",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Song_Protection",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_SongWrite",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_ReadMagic",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Song_Mana",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Song_Quickness",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Song_Lethargy",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Song_Flight",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Song_Knowledge",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Swipe",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Song_Blasting",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Song_Strength",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Song_Thanks",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Song_Lullibye",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Song_Distraction",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Song_Flying",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_Steal",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Song_Death",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Song_Disgust",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Song_Rebirth",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Song_Ode",true);
 		}
 	}
 
@@ -153,7 +164,7 @@ public class Bard extends StdCharClass
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
 		{
-			Vector V=CMAble.getUpToLevelListings(ID(),
+			Vector V=CMLib.ableMapper().getUpToLevelListings(ID(),
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
@@ -162,8 +173,8 @@ public class Bard extends StdCharClass
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
-				&&(!CMAble.getDefaultGain(ID(),true,A.ID())))
-					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),true,A.ID()),CMAble.getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}
 		}
 	}

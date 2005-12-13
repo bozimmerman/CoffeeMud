@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -47,12 +58,12 @@ public class Spell_Torture extends Spell
 	{
 		if((text().length()>0)&&(!text().equalsIgnoreCase("HITONLY")))
         {
-		    for(int s=0;s<Sessions.size();s++)
-		        Sessions.elementAt(s).println(text());
+		    for(int s=0;s<CMLib.sessions().size();s++)
+		        CMLib.sessions().elementAt(s).println(text());
 		    setMiscText("");
 		    return;
         }
-        int roll=Dice.roll(1,16,0);
+        int roll=CMLib.dice().roll(1,16,0);
         boolean someoneelse=false;
         for(int i=0;i<mob.location().numInhabitants();i++)
         {
@@ -61,7 +72,7 @@ public class Spell_Torture extends Spell
                 someoneelse=true;
         }
         if(!someoneelse)
-            roll=Dice.roll(1,10,0);
+            roll=CMLib.dice().roll(1,10,0);
         else
         switch(roll)
         {
@@ -70,23 +81,23 @@ public class Spell_Torture extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_SPEAK,
 				"<S-NAME> admits that "+mob.getLiegeID()+" is <S-HIS-HER> liege.");
 			else
-	            roll=Dice.roll(1,10,0);
+	            roll=CMLib.dice().roll(1,10,0);
 			break;
 	    case 12:
 	    {
 			if(mob.getClanID().length()==0)
-			    roll=Dice.roll(1,10,0);
+			    roll=CMLib.dice().roll(1,10,0);
 			else
 			{
-		        Clan C=Clans.getClan(mob.getClanID());
+		        Clan C=CMLib.clans().getClan(mob.getClanID());
 				if(C==null)
-				    roll=Dice.roll(1,10,0);
+				    roll=CMLib.dice().roll(1,10,0);
 				else
 				{
 				    DVector V=C.getMemberList();
-				    String name=(String)V.elementAt(Dice.roll(1,V.size(),-1),1);
+				    String name=(String)V.elementAt(CMLib.dice().roll(1,V.size(),-1),1);
 				    if(name.equals(mob.Name()))
-				        roll=Dice.roll(1,10,0);
+				        roll=CMLib.dice().roll(1,10,0);
 				    else
 						mob.location().show(mob,null,CMMsg.MSG_SPEAK,
 						"<S-NAME> mutters that "+name+" is a part of his clan, called "+mob.getClanID()+".");
@@ -96,12 +107,12 @@ public class Spell_Torture extends Spell
 	    }
         case 13:
 			if(mob.getClanID().length()==0)
-			    roll=Dice.roll(1,10,0);
+			    roll=CMLib.dice().roll(1,10,0);
 			else
 			{
-		        Clan C=Clans.getClan(mob.getClanID());
+		        Clan C=CMLib.clans().getClan(mob.getClanID());
 				if(C==null)
-				    roll=Dice.roll(1,10,0);
+				    roll=CMLib.dice().roll(1,10,0);
 				else
 					mob.location().show(mob,null,CMMsg.MSG_SPEAK,
 					"<S-NAME> mutters that "+mob.getClanID()+" has "+C.getExp()+" experience points.");
@@ -125,10 +136,10 @@ public class Spell_Torture extends Spell
         }
         case 16:
 			if(mob.numAbilities()<1)
-			    roll=Dice.roll(1,10,0);
+			    roll=CMLib.dice().roll(1,10,0);
 			else
 			{
-	           Ability A=mob.fetchAbility(Dice.roll(1,mob.numAbilities(),-1));
+	           Ability A=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
 				mob.location().show(mob,null,CMMsg.MSG_SPEAK,
 				"<S-NAME> admit(s) that <S-HE-SHE> knows "+A.name()+" at "+A.profficiency()+"%.");
 	        }
@@ -200,8 +211,8 @@ public class Spell_Torture extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> whisper(s) a torturous spell to <T-NAMESELF>.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> whisper(s) a torturous spell to <T-NAMESELF>.^?");
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
 			if((mob.location().okMessage(mob,msg))||(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

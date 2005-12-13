@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -42,16 +53,16 @@ public class Prop_PeaceMaker extends Property
 				if(affected instanceof MOB)
 				{
 					MOB mob=(MOB)affected;
-					if((Sense.aliveAwakeMobileUnbound(mob,true))
+					if((CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 					&&(!mob.isInCombat()))
 					{
 						String t="No fighting!";
 						if(text().length()>0)
 						{
 							Vector V=Util.parseSemicolons(text(),true);
-							t=(String)V.elementAt(Dice.roll(1,V.size(),-1));
+							t=(String)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 						}
-						CommonMsgs.say(mob,msg.source(),t,false,false);
+						CMLib.commands().say(mob,msg.source(),t,false,false);
 					}
 					else
 						return super.okMessage(myHost,msg);
@@ -62,7 +73,7 @@ public class Prop_PeaceMaker extends Property
 					if(text().length()>0)
 					{
 						Vector V=Util.parseSemicolons(text(),true);
-						t=(String)V.elementAt(Dice.roll(1,V.size(),-1));
+						t=(String)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 					}
 					msg.source().tell(t);
 				}

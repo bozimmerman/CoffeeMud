@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -60,14 +71,14 @@ public class Spell_SummonArmy extends Spell
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> summon(s) help from the Java Plain.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> summon(s) help from the Java Plain.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				String[] choices={"Dog","Orc","Tiger","Troll","Chimp","BrownBear","Goblin","LargeBat","GiantScorpion","Rattlesnake","Ogre"};
 				for(int i=0;i<mob.envStats().level()/3;i++)
 				{
-					MOB newMOB=CMClass.getMOB(choices[Dice.roll(1,choices.length,-1)]);
+					MOB newMOB=CMClass.getMOB(choices[CMLib.dice().roll(1,choices.length,-1)]);
 					newMOB.setLocation(mob.location());
 					newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 					newMOB.recoverCharStats();
@@ -75,11 +86,11 @@ public class Spell_SummonArmy extends Spell
 					newMOB.recoverMaxState();
 					newMOB.resetToMaxState();
 					newMOB.bringToLife(mob.location(),true);
-					BeanCounter.clearZeroMoney(newMOB,null);
+					CMLib.beanCounter().clearZeroMoney(newMOB,null);
 					newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 					newMOB.setStartRoom(null);
 					newMOB.setVictim(mob.getVictim());
-					CommonMsgs.follow(newMOB,mob,true);
+					CMLib.commands().follow(newMOB,mob,true);
 					if(newMOB.amFollowing()!=mob)
 						newMOB.setFollowing(mob);
 					if(newMOB.getVictim()!=null)

@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
-import java.util.*;
+import java.util.Vector;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -50,7 +61,7 @@ public class Chant_ControlFire extends Chant
 		for(int i=0;i<target.inventorySize();i++)
 		{
 			Item I=target.fetchInventory(i);
-			if((Sense.isOnFire(I))&&(I.container()==null))
+			if((CMLib.flags().isOnFire(I))&&(I.container()==null))
 			{
 				fireSource=I;
 				break;
@@ -61,7 +72,7 @@ public class Chant_ControlFire extends Chant
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			Item I=mob.location().fetchItem(i);
-			if((Sense.isOnFire(I))&&(I.container()==null))
+			if((CMLib.flags().isOnFire(I))&&(I.container()==null))
 			{
 				fireSource=I;
 				break;
@@ -74,19 +85,19 @@ public class Chant_ControlFire extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"Suddenly "+fireSource.name()+" flares up and attacks <T-HIM-HER>!^?":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly "+fireSource.name()+" flares up and attacks <T-HIM-HER>!^?")+CommonStrings.msp("fireball.wav",40));
-			FullMsg msg2=new FullMsg(mob,target,this,verbalCastMask(auto)|CMMsg.TYP_FIRE,null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),(auto?"Suddenly "+fireSource.name()+" flares up and attacks <T-HIM-HER>!^?":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly "+fireSource.name()+" flares up and attacks <T-HIM-HER>!^?")+CMProps.msp("fireball.wav",40));
+			CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(auto)|CMMsg.TYP_FIRE,null);
 			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
                 int numDice = (int)Math.round(Util.div(adjustedLevel(mob,asLevel),2.0))+1;
-				int damage = Dice.roll(numDice, 6, 20);
+				int damage = CMLib.dice().roll(numDice, 6, 20);
 				if((msg.value()>0)||(msg2.value()>0))
 					damage = (int)Math.round(Util.div(damage,2.0));
 
 				if(target.location()==mob.location())
-					MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flames <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flames <DAMAGE> <T-NAME>!");
 			}
 			fireSource.destroy();
 		}

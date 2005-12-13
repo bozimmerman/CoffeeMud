@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -63,7 +73,7 @@ public class Skill_Buffoonery extends BardSkill
 			return false;
 		}
 		Item I=mob.fetchInventory(null,(String)commands.lastElement());
-		if((I==null)||(!Sense.canBeSeenBy(I,mob)))
+		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
 			mob.tell("You don't seem to have '"+((String)commands.lastElement())+"'.");
 			return false;
@@ -92,7 +102,7 @@ public class Skill_Buffoonery extends BardSkill
 				V.addElement(I2);
 		}
 		if(V.size()>0)
-			targetItem=(Item)V.elementAt(Dice.roll(1,V.size(),-1));
+			targetItem=(Item)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 		else
 		if(!freePosition(target))
 		{
@@ -107,13 +117,13 @@ public class Skill_Buffoonery extends BardSkill
 
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(levelDiff>0)
-			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?5:15));
+			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?5:15));
 		else
-			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?1:2));
+			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?1:2));
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,(CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_DELICATE|CMMsg.MASK_MALICIOUS)|(auto?CMMsg.MASK_GENERAL:0),auto?"":"<S-NAME> do(es) buffoonery to <T-NAMESELF>.");			if(mob.location().okMessage(mob,msg))
+			CMMsg msg=CMClass.getMsg(mob,target,this,(CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_DELICATE|CMMsg.MASK_MALICIOUS)|(auto?CMMsg.MASK_GENERAL:0),auto?"":"<S-NAME> do(es) buffoonery to <T-NAMESELF>.");			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				long position=-1;
@@ -134,7 +144,7 @@ public class Skill_Buffoonery extends BardSkill
 					&&((I instanceof Weapon)||(!(I instanceof Armor))))
 						position=Item.WIELD;
 					else
-						position=((Long)free.elementAt(Dice.roll(1,free.size(),-1))).longValue();
+						position=((Long)free.elementAt(CMLib.dice().roll(1,free.size(),-1))).longValue();
 				}
 				if(position>=0)
 				{

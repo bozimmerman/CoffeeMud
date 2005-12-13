@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -46,10 +57,10 @@ public class ItemIdentifier extends StdBehavior
 		&&(msg.tool() instanceof Item))
 		{
 			int cost=cost((Item)msg.tool());
-			if(BeanCounter.getTotalAbsoluteShopKeepersValue(msg.source(),observer)<new Integer(cost).doubleValue())
+			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<new Integer(cost).doubleValue())
 			{
-			    String costStr=BeanCounter.nameCurrencyShort(observer,new Integer(cost).doubleValue());
-				CommonMsgs.say(observer,source,"You'll need "+costStr+" for me to identify that.",true,false);
+			    String costStr=CMLib.beanCounter().nameCurrencyShort(observer,new Integer(cost).doubleValue());
+				CMLib.commands().say(observer,source,"You'll need "+costStr+" for me to identify that.",true,false);
 				return false;
 			}
 			return true;
@@ -76,12 +87,12 @@ public class ItemIdentifier extends StdBehavior
 		&&(msg.tool() instanceof Item))
 		{
 			int cost=cost((Item)msg.tool());
-			BeanCounter.subtractMoney(source,BeanCounter.getCurrency(observer),new Integer(cost).doubleValue());
-			String costStr=BeanCounter.nameCurrencyLong(observer,new Integer(cost).doubleValue());
+			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),new Integer(cost).doubleValue());
+			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,new Integer(cost).doubleValue());
 			source.recoverEnvStats();
-			FullMsg newMsg=new FullMsg(msg.source(),observer,null,CMMsg.MSG_OK_ACTION,"<S-NAME> give(s) "+costStr+" to <T-NAMESELF>.");
+			CMMsg newMsg=CMClass.getMsg(msg.source(),observer,null,CMMsg.MSG_OK_ACTION,"<S-NAME> give(s) "+costStr+" to <T-NAMESELF>.");
 			msg.addTrailerMsg(newMsg);
-			newMsg=new FullMsg(observer,msg.tool(),null,CMMsg.MSG_EXAMINE,"<S-NAME> examine(s) <T-NAME> very closely.");
+			newMsg=CMClass.getMsg(observer,msg.tool(),null,CMMsg.MSG_EXAMINE,"<S-NAME> examine(s) <T-NAME> very closely.");
 			msg.addTrailerMsg(newMsg);
 			StringBuffer up=new StringBuffer(msg.tool().name()+" is made of "+EnvResource.RESOURCE_DESCS[((Item)msg.tool()).material()&EnvResource.RESOURCE_MASK].toLowerCase()+".\n\r");
 			if((msg.tool() instanceof Armor)&&(msg.tool().envStats().height()>0))
@@ -98,11 +109,11 @@ public class ItemIdentifier extends StdBehavior
 				up.append("It does "+Weapon.typeDescription[w.weaponType()].toLowerCase()+" damage.\n\r");
 			}
 			up.append(((Item)msg.tool()).secretIdentity());
-			newMsg=new FullMsg(observer,null,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) '"+up.toString()+"'^?.");
+			newMsg=CMClass.getMsg(observer,null,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) '"+up.toString()+"'^?.");
 			msg.addTrailerMsg(newMsg);
-			newMsg=new FullMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+			newMsg=CMClass.getMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 			msg.addTrailerMsg(newMsg);
-			newMsg=new FullMsg(observer,msg.tool(),null,CMMsg.MSG_DROP,null);
+			newMsg=CMClass.getMsg(observer,msg.tool(),null,CMMsg.MSG_DROP,null);
 			msg.addTrailerMsg(newMsg);
 		}
 	}

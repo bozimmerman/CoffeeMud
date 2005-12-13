@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -33,12 +44,12 @@ public class ClanCreate extends BaseClanner
 		{
 			if(!mob.isMonster())
 			{
-				int cost=CommonStrings.getIntVar(CommonStrings.SYSTEMI_CLANCOST);
+				int cost=CMProps.getIntVar(CMProps.SYSTEMI_CLANCOST);
 				if(cost>0)
 				{
-					if(BeanCounter.getTotalAbsoluteNativeValue(mob)<new Integer(cost).doubleValue())
+					if(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)<new Integer(cost).doubleValue())
 					{
-						mob.tell(getScr("ClanCreate","cantafford",BeanCounter.nameCurrencyShort(mob,cost)));
+						mob.tell(getScr("ClanCreate","cantafford",CMLib.beanCounter().nameCurrencyShort(mob,cost)));
 						return false;
 					}
 				}
@@ -55,13 +66,13 @@ public class ClanCreate extends BaseClanner
                             mob.tell(getScr("ClanCreate","shorter"));
                             return false;
                         }
-						Clan C=Clans.findClan(doubleCheck);
-						if((CMClass.DBEngine().DBUserSearch(null,doubleCheck))
+						Clan C=CMLib.clans().findClan(doubleCheck);
+						if((CMLib.database().DBUserSearch(null,doubleCheck))
 						||(doubleCheck.equalsIgnoreCase("All")))
 							msg.append(getScr("ClanCreate","notava"));
 						else
 						if(C!=null)
-							msg.append(getScr("ClanCreate","alexist",C.ID()));
+							msg.append(getScr("ClanCreate","alexist",C.clanID()));
 						else
 						{
 							if(mob.session().confirm(getScr("ClanCreate","iscorrect",doubleCheck), getScr("ClanCreate","noword")))
@@ -83,16 +94,16 @@ public class ClanCreate extends BaseClanner
 								}
 
 								if(cost>0)
-									BeanCounter.subtractMoney(mob,cost);
+									CMLib.beanCounter().subtractMoney(mob,cost);
 
-								Clan newClan=Clans.getClanType(Clan.TYPE_CLAN);
+								Clan newClan=CMLib.clans().getClanType(Clan.TYPE_CLAN);
 								newClan.setName(doubleCheck);
 								newClan.setGovernment(govtType);
 								newClan.setStatus(Clan.CLANSTATUS_PENDING);
 								newClan.create();
-								CMClass.DBEngine().DBUpdateClanMembership(mob.Name(),newClan.getName(),newClan.getTopRank());
+								CMLib.database().DBUpdateClanMembership(mob.Name(),newClan.getName(),newClan.getTopRank());
 								newClan.updateClanPrivileges(mob);
-								clanAnnounce(mob, getScr("ClanCreate","cison",newClan.typeName(),newClan.ID()));
+								clanAnnounce(mob, getScr("ClanCreate","cison",newClan.typeName(),newClan.clanID()));
 							}
 						}
 					}

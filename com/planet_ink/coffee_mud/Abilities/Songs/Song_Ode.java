@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -111,7 +122,7 @@ public class Song_Ode extends Song
 				Integer which=null;
 				while((which==null)||(V2.contains(which)))
 				{
-					Integer w=(Integer)V.elementAt(Dice.roll(1,V.size(),-1));
+					Integer w=(Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 					if(counts[w.intValue()]==counts[ref.intValue()])
 						which=w;
 				}
@@ -221,7 +232,7 @@ public class Song_Ode extends Song
 		if((whom!=null)
 		&&(song==null)
 		&&(msg.amISource(whom))
-		&&(Sense.canBeSeenBy(whom,invoker())))
+		&&(CMLib.flags().canBeSeenBy(whom,invoker())))
 		{
 			if(trail==null) trail=new StringBuffer("");
 			ensureCmds();
@@ -240,8 +251,8 @@ public class Song_Ode extends Song
 		{
 			if((whom==null)
 			   ||(whom.location()!=invoker.location())
-			   ||(Sense.isSleeping(invoker))
-			   ||(!Sense.canBeSeenBy(whom,invoker)))
+			   ||(CMLib.flags().isSleeping(invoker))
+			   ||(!CMLib.flags().canBeSeenBy(whom,invoker)))
 			{
 				unsing(mob,null,false);
 				return false;
@@ -249,13 +260,13 @@ public class Song_Ode extends Song
 		}
 
 		if((whom!=null)&&(song!=null)&&(affected==invoker())
-		   &&(Dice.rollPercentage()<10))
+		   &&(CMLib.dice().rollPercentage()<10))
 		{
 			Hashtable H=getSongBenefits(song);
 			Vector V=new Vector();
 			for(Enumeration e=H.keys();e.hasMoreElements();)
 				V.addElement(e.nextElement());
-			Integer I=(Integer)V.elementAt(Dice.roll(1,V.size(),-1));
+			Integer I=(Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 			String[] chk=stuff[I.intValue()];
 			invoker().location().show(invoker(),null,whom,CMMsg.MSG_SPEAK,"<S-NAME> sing(s) '"+chk[3]+"'.");
 		}
@@ -337,7 +348,7 @@ public class Song_Ode extends Song
 			if((A!=null)&&(A.whom!=null)&&(A.song==null))
 			{
 				String str="^S<S-NAME> finish(es) composing the "+A.songOf()+".^?";
-				FullMsg msg=new FullMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);
+				CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -361,14 +372,14 @@ public class Song_Ode extends Song
 		for(Enumeration e=H.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
-			if(EnglishParser.containsString(key,name))
+			if(CMLib.english().containsString(key,name))
 			{
 				name=key;
 				song=(String)H.get(name);
 				benefits=null;
 				whom=mob.location().fetchInhabitant(name);
 				if((whom==null)||(!whom.name().equals(name)))
-					whom=CMMap.getPlayer(name);
+					whom=CMLib.map().getPlayer(name);
 				if((whom==null)||(!whom.name().equals(name)))
 				{
 					whom=CMClass.getMOB("StdMOB");
@@ -393,7 +404,7 @@ public class Song_Ode extends Song
 			unsing(mob,mob,false);
 			whom=target;
 			String str="^S<S-NAME> begin(s) to compose an "+songOf()+".^?";
-			FullMsg msg=new FullMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);
+			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

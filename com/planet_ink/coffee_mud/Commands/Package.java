@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -42,7 +53,7 @@ public class Package extends BaseItemParser
         int maxToGet=Integer.MAX_VALUE;
         if((commands.size()>1)
         &&(Util.s_int((String)commands.firstElement())>0)
-        &&(EnglishParser.numPossibleGold(null,Util.combine(commands,0))==0))
+        &&(CMLib.english().numPossibleGold(null,Util.combine(commands,0))==0))
         {
             maxToGet=Util.s_int((String)commands.firstElement());
             commands.setElementAt("all",0);
@@ -61,8 +72,8 @@ public class Package extends BaseItemParser
                 getThis=mob.location().fetchFromRoomFavorItems(null,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
             if(getThis==null) break;
             if((getThis instanceof Item)
-            &&(Sense.canBeSeenBy(getThis,mob))
-            &&((!allFlag)||Sense.isGettable(((Item)getThis))||(getThis.displayText().length()>0))
+            &&(CMLib.flags().canBeSeenBy(getThis,mob))
+            &&((!allFlag)||CMLib.flags().isGettable(((Item)getThis))||(getThis.displayText().length()>0))
             &&(!V.contains(getThis)))
                 V.addElement(getThis);
             addendumStr="."+(++addendum);
@@ -96,8 +107,8 @@ public class Package extends BaseItemParser
             if((!mob.isMine(getThis))&&(!Get.get(mob,null,getThis,true,"get",true)))
                 return false;
         }
-        String name=EnglishParser.cleanArticles(getThis.name());
-        FullMsg msg=new FullMsg(mob,getThis,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> package(s) up "+V.size()+" <T-NAMENOART>(s).");
+        String name=CMLib.english().cleanArticles(getThis.name());
+        CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> package(s) up "+V.size()+" <T-NAMENOART>(s).");
         if(mob.location().okMessage(mob,msg))
         {
             mob.location().send(mob,msg);

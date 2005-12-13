@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -70,7 +81,7 @@ public class FireBuilding extends CommonSkill
         for(int i=0;i<R.numItems();i++)
         {
             Item I2=R.fetchItem(i);
-            if((I2!=null)&&(I2.container()==null)&&(Sense.isOnFire(I2)))
+            if((I2!=null)&&(I2.container()==null)&&(CMLib.flags().isOnFire(I2)))
                 return true;
         }
         return false;
@@ -87,7 +98,7 @@ public class FireBuilding extends CommonSkill
             &&(I2 instanceof EnvResource)
             &&(((I2.material()&EnvResource.RESOURCE_MASK)==material)
                 ||(((I2.material())&EnvResource.MATERIAL_MASK)==material))
-            &&(!Sense.enchanted(I2)))
+            &&(!CMLib.flags().enchanted(I2)))
                 here.addElement(I2);
         }
         return here;
@@ -96,7 +107,7 @@ public class FireBuilding extends CommonSkill
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.isMonster()
-		&&(!Sense.isAnimalIntelligence(mob)))
+		&&(!CMLib.flags().isAnimalIntelligence(mob)))
 		&&(commands.size()==0))
         {
             if((!fireHere(mob.location()))
@@ -159,7 +170,7 @@ public class FireBuilding extends CommonSkill
 					commonTell(mob,l.name()+" is already lit!");
 					return false;
 				}
-				if(Sense.isGettable(lighting))
+				if(CMLib.flags().isGettable(lighting))
 					commonTell(mob,"Just hold this item to light it.");
 				else
 				{
@@ -171,14 +182,14 @@ public class FireBuilding extends CommonSkill
 			}
 			if(!(lighting instanceof EnvResource))
 			{
-				LandTitle t=CoffeeUtensils.getLandTitle(mob.location());
-				if((t!=null)&&(!CoffeeUtensils.doesHavePriviledgesHere(mob,mob.location())))
+				LandTitle t=CMLib.utensils().getLandTitle(mob.location());
+				if((t!=null)&&(!CMLib.utensils().doesHavePriviledgesHere(mob,mob.location())))
 				{
 					mob.tell("You are not allowed to burn anything here.");
 					return false;
 				}
 			}
-			durationOfBurn=Sense.burnStatus(lighting);
+			durationOfBurn=CMLib.flags().burnStatus(lighting);
 			if(durationOfBurn<0)
 			{
 				commonTell(mob,"You need to cook that, if you can.");
@@ -224,7 +235,7 @@ public class FireBuilding extends CommonSkill
 		durationOfBurn=durationOfBurn*abilityCode();
 		if(completion<4) completion=4;
 
-		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> start(s) building a fire.");
+		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> start(s) building a fire.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

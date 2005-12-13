@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -62,7 +73,7 @@ public class Spell_SummonEnemy extends Spell
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> conjur(s) the dark shadow of a living creature...^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> conjur(s) the dark shadow of a living creature...^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -91,18 +102,18 @@ public class Spell_SummonEnemy extends Spell
 		int tries=10000000;
 		while((monster==null)&&((--tries)>0))
 		{
-			Room room=CMMap.getRandomRoom();
-			if((room!=null)&&Sense.canAccess(caster,room)&&(room.numInhabitants()>0))
+			Room room=CMLib.map().getRandomRoom();
+			if((room!=null)&&CMLib.flags().canAccess(caster,room)&&(room.numInhabitants()>0))
 			{
-				MOB mob=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),-1));
+				MOB mob=room.fetchInhabitant(CMLib.dice().roll(1,room.numInhabitants(),-1));
 				if((mob!=null)
 				&&(!(mob instanceof Deity))
 				&&(mob.envStats().level()>=level)
 				&&(mob.charStats()!=null)
 				&&(mob.charStats().getMyRace()!=null)
-				&&(CommonStrings.isTheme(mob.charStats().getMyRace().availabilityCode()))
+				&&(CMProps.isTheme(mob.charStats().getMyRace().availabilityCode()))
 				&&(Util.bset(mob.charStats().getMyRace().availabilityCode(),Area.THEME_SKILLONLYMASK))
-                &&( (Sense.isGood(caster)&&Sense.isEvil(mob)) || (Sense.isEvil(caster)&&Sense.isGood(mob))))
+                &&( (CMLib.flags().isGood(caster)&&CMLib.flags().isEvil(mob)) || (CMLib.flags().isEvil(caster)&&CMLib.flags().isGood(mob))))
         			monster=mob;
 			}
 		}
@@ -115,7 +126,7 @@ public class Spell_SummonEnemy extends Spell
 		monster.resetToMaxState();
 		monster.text();
 		monster.bringToLife(caster.location(),true);
-		BeanCounter.clearZeroMoney(monster,null);
+		CMLib.beanCounter().clearZeroMoney(monster,null);
 		monster.location().showOthers(monster,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
 		monster.setStartRoom(null);

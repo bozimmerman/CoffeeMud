@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Abilities.Misc;
-
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+
 
 import java.util.*;
 
@@ -23,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Amputation extends StdAbility
+public class Amputation extends StdAbility implements Amputator
 {
 	public String ID() { return "Amputation"; }
 	public String name(){ return "Amputation";}
@@ -87,12 +98,12 @@ public class Amputation extends StdAbility
 	{
 		if((msg.target()==affected)
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
-		&&(Sense.canBeSeenBy(affected,msg.source()))
+		&&(CMLib.flags().canBeSeenBy(affected,msg.source()))
 		&&(affected instanceof MOB))
 		{
-			String s=CoffeeUtensils.niceCommaList(missingLimbNameSet(),true);
+			String s=CMLib.utensils().niceCommaList(missingLimbNameSet(),true);
 			if(s.length()>0)
-				msg.addTrailerMsg(new FullMsg(msg.source(),null,null,
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
 											  CMMsg.MSG_OK_VISUAL,"\n\r"+affected.name()+" is missing "+((MOB)affected).charStats().hisher()+" "+s+".\n\r",
 											  CMMsg.NO_EFFECT,null,
 											  CMMsg.NO_EFFECT,null));
@@ -195,7 +206,7 @@ public class Amputation extends StdAbility
 		if(target!=null)
 			targetName=target.name();
 
-		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||(!target.isInCombat()))))
+		if((target==null)||((!CMLib.flags().canBeSeenBy(target,mob))&&((!CMLib.flags().canBeHeardBy(target,mob))||(!target.isInCombat()))))
 		{
 			if(!quiet)
 			{
@@ -275,7 +286,7 @@ public class Amputation extends StdAbility
 // Addition by Tulath, 4/10/04.
 // Reason:  Easy single limb amputation removal
 // ****************************************************************************
-	public static void unamputate(Environmental target, Amputation A, String gone)
+	public void unamputate(Environmental target, Amputator A, String gone)
 	{
 		if (target != null)
 		{
@@ -332,7 +343,7 @@ public class Amputation extends StdAbility
 		return AL;
 	}
 
-	public static Item amputate(Environmental target, Amputation A, String gone)
+	public Item amputate(Environmental target, Amputator A, String gone)
 	{
 		if(A==null) return null;
 		Race R=null;
@@ -464,13 +475,13 @@ public class Amputation extends StdAbility
 		if(!auto)
 		{
 			Behavior B=null;
-			if(mob.location()!=null) B=CoffeeUtensils.getLegalBehavior(mob.location());
+			if(mob.location()!=null) B=CMLib.utensils().getLegalBehavior(mob.location());
 			Vector warrants=new Vector();
 			if(B!=null)
 			{
 				warrants.addElement(new Integer(Law.MOD_GETWARRANTSOF));
 				warrants.addElement(target.Name());
-				if(!B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),target,warrants))
+				if(!B.modifyBehavior(CMLib.utensils().getLegalObject(mob.location()),target,warrants))
 					warrants.clear();
 			}
 			if(warrants.size()==0)
@@ -496,7 +507,7 @@ public class Amputation extends StdAbility
 				mob.tell("You are too far away to try that!");
 				return false;
 			}
-			if((!Sense.isBoundOrHeld(target))||(!Sense.isSleeping(target)))
+			if((!CMLib.flags().isBoundOrHeld(target))||(!CMLib.flags().isSleeping(target)))
 			{
 				mob.tell(target.charStats().HeShe()+" must be bound, and asleep on an operating bed before you can amputate.");
 				return false;
@@ -525,7 +536,7 @@ public class Amputation extends StdAbility
 			if(choice.length()>0)
 			{
 				for(int i=0;i<VN.size();i++)
-					if(EnglishParser.containsString((String)VN.elementAt(i),choice))
+					if(CMLib.english().containsString((String)VN.elementAt(i),choice))
 					{ gone=(String)VN.elementAt(i); break;}
 				if(gone==null)
 				{
@@ -536,11 +547,11 @@ public class Amputation extends StdAbility
 			}
 
 			if(gone==null)
-				gone=(String)VN.elementAt(Dice.roll(1,VN.size(),-1));
+				gone=(String)VN.elementAt(CMLib.dice().roll(1,VN.size(),-1));
 
 			String str=auto?"":"^F^<FIGHT^><S-NAME> amputate <T-NAMESELF>'s "+gone+"!^</FIGHT^>^?";
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),str);
-            CMColor.fixSourceFightColor(msg);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),str);
+            CMLib.color().fixSourceFightColor(msg);
 			if(target.location().okMessage(target,msg))
 			{
 				MOB vic=target.getVictim();

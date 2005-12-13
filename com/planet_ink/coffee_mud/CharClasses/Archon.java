@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.CharClasses;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -38,27 +49,27 @@ public class Archon extends StdCharClass
 		if(!loaded())
 		{
 			setLoaded(true);
-			CMAble.addCharAbilityMapping(ID(),1,"AnimalTaming",false);
-			CMAble.addCharAbilityMapping(ID(),1,"AnimalTrading",false);
-			CMAble.addCharAbilityMapping(ID(),1,"AnimalTraining",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Domesticating",false);
-			CMAble.addCharAbilityMapping(ID(),1,"InstrumentMaking",false);
-			CMAble.addCharAbilityMapping(ID(),20,"PlantLore",false);
-			CMAble.addCharAbilityMapping(ID(),10,"Scrapping",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"AnimalTaming",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"AnimalTrading",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"AnimalTraining",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Domesticating",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"InstrumentMaking",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"PlantLore",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Scrapping",false);
 			
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Resistance",100,"",true,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Archon_Multiwatch",100,"",true,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Archon_Wrath",100,"",true,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Archon_Hush",100,"",true,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Archon_Banish",100,"",true,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Archon_Metacraft",100,"",true,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Amputation",100,"",true,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Chant_AlterTime",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Chant_MoveSky",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Resistance",100,"",true,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Multiwatch",100,"",true,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Wrath",100,"",true,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Hush",100,"",true,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Banish",100,"",true,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Metacraft",100,"",true,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Amputation",100,"",true,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_AlterTime",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_MoveSky",true);
 			
 			// temporarily here until we find a place for them
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Enslave",false);
-			CMAble.addCharAbilityMapping(ID(),1,"SlaveTrading",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Enslave",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SlaveTrading",false);
 		}
 	}
 

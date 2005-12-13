@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -43,10 +54,10 @@ public class Chant_GroveWalk extends Chant
 		boolean hereok=false;
 		try
 		{
-			for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+			for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 			{
 				Room R=(Room)e.nextElement();
-				if(Sense.canAccess(mob,R))
+				if(CMLib.flags().canAccess(mob,R))
 					for(int i=0;i<R.numItems();i++)
 					{
 						Item I=R.fetchItem(i);
@@ -54,7 +65,7 @@ public class Chant_GroveWalk extends Chant
 						{
 							if(R==mob.location())
 								hereok=true;
-							if(EnglishParser.containsString(R.displayText(),areaName))
+							if(CMLib.english().containsString(R.displayText(),areaName))
 							   newRoom=R;
 							break;
 						}
@@ -80,7 +91,7 @@ public class Chant_GroveWalk extends Chant
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,newRoom,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) and walk(s) around.^?");
+			CMMsg msg=CMClass.getMsg(mob,newRoom,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) and walk(s) around.^?");
 			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
@@ -91,20 +102,20 @@ public class Chant_GroveWalk extends Chant
 				for(Iterator f=h.iterator();f.hasNext();)
 				{
 					MOB follower=(MOB)f.next();
-					FullMsg enterMsg=new FullMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> emerge(s) from around the stones.");
-					FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) around the stones.");
+					CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> emerge(s) from around the stones.");
+					CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) around the stones.");
 					if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())
 						{
-							CommonMsgs.flee(follower,("NOWHERE"));
+							CMLib.commands().flee(follower,("NOWHERE"));
 							follower.makePeace();
 						}
 						thisRoom.send(follower,leaveMsg);
 						newRoom.bringMobHere(follower,false);
 						newRoom.send(follower,enterMsg);
 						follower.tell("\n\r\n\r");
-						CommonMsgs.look(follower,true);
+						CMLib.commands().look(follower,true);
 					}
 				}
 			}

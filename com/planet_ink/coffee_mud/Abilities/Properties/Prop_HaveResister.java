@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -55,7 +66,7 @@ public class Prop_HaveResister extends Property
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		adjCharStats=(CharStats)CMClass.getShared("DefaultCharStats");
+		adjCharStats=(CharStats)CMClass.getCommon("DefaultCharStats");
         ignoreCharStats=true;
         for(int i=0;i<stats.length;i++)
         {
@@ -70,7 +81,7 @@ public class Prop_HaveResister extends Property
         {
             maskString=newText.substring(maskindex+5).trim();
             if(maskString.length()>0)
-                Util.addToVector(MUDZapper.zapperCompile(maskString),mask);
+                Util.addToVector(CMLib.masking().maskCompile(maskString),mask);
             parmString=newText.substring(0,maskindex).trim();
         }
 	}
@@ -86,7 +97,7 @@ public class Prop_HaveResister extends Property
 		ensureStarted();
         if((!ignoreCharStats)
         &&(canResist(affectedMOB))
-        &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,affectedMOB))))
+        &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,affectedMOB))))
             for(int i=0;i<stats.length;i++)
                 affectedStats.setStat(((Integer)stats[i][0]).intValue(),affectedStats.getStat(((Integer)stats[i][0]).intValue())+adjCharStats.getStat(((Integer)stats[i][0]).intValue()));
 		super.affectCharStats(affectedMOB,affectedStats);
@@ -99,7 +110,7 @@ public class Prop_HaveResister extends Property
 		if(prot==0) return false;
 		if(prot<5) prot=5;
 		if(prot>95) prot=95;
-		if(Dice.rollPercentage()<prot)
+		if(CMLib.dice().rollPercentage()<prot)
 			return true;
 		return false;
 	}
@@ -143,7 +154,7 @@ public class Prop_HaveResister extends Property
 		{
 			if(checkProtection("weapons"))
             {
-                if((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob)))
+                if((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob)))
     				msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection("weapons"),100.0))));
             }
 			else
@@ -151,15 +162,15 @@ public class Prop_HaveResister extends Property
 				Weapon W=(Weapon)msg.tool();
 				if((W.weaponType()==Weapon.TYPE_BASHING)
                 &&(checkProtection("blunt"))
-                &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob))))
+                &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob))))
 					msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection("blunt"),100.0))));
 				if((W.weaponType()==Weapon.TYPE_PIERCING)
                 &&(checkProtection("pierce"))
-                &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob))))
+                &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob))))
 					msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection("pierce"),100.0))));
 			    if((W.weaponType()==Weapon.TYPE_SLASHING)
                 &&(checkProtection("slash"))
-                &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob))))
+                &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob))))
 			    	msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection("slash"),100.0))));
 			}
 			return;
@@ -182,7 +193,7 @@ public class Prop_HaveResister extends Property
 				if(Util.bset(A.flags(),Ability.FLAG_TRANSPORTING))
 				{
 					if((checkProtection("teleport"))
-                    &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob))))
+                    &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob))))
 					{
 						msg.source().tell("You can't seem to fixate on '"+mob.name()+"'.");
 						return false;
@@ -194,7 +205,7 @@ public class Prop_HaveResister extends Property
 				&&(!Util.bset(A.flags(),Ability.FLAG_UNHOLY)))
 				{
 					if((checkProtection("holy"))
-                    &&((mask.size()==0)||(MUDZapper.zapperCheckReal(mask,mob))))
+                    &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob))))
 					{
 						mob.location().show(msg.source(),mob,CMMsg.MSG_OK_VISUAL,"Holy energies from <S-NAME> are repelled from <T-NAME>.");
 						return false;
@@ -209,7 +220,7 @@ public class Prop_HaveResister extends Property
     {
         String id=parmString+".";
         if(maskString.length()>0)
-            id+="  Restrictions: "+MUDZapper.zapperDesc(maskString)+".";
+            id+="  Restrictions: "+CMLib.masking().maskDesc(maskString)+".";
         return id;
     }
     

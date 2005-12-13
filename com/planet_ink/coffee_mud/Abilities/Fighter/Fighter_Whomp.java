@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -22,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_Whomp extends StdAbility
+public class Fighter_Whomp extends FighterSkill
 {
 	public String ID() { return "Fighter_Whomp"; }
 	public String name(){ return "Whomp";}
@@ -87,7 +97,7 @@ public class Fighter_Whomp extends StdAbility
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> seem(s) less drowsy.");
 				else
 					mob.tell("You feel less drowsy.");
-				CommonMsgs.stand(mob,true);
+				CMLib.commands().stand(mob,true);
 			}
 		}
 	}
@@ -104,9 +114,9 @@ public class Fighter_Whomp extends StdAbility
 			mob.tell("You are too far away from your target to whomp!");
 			return false;
 		}
-		if((!auto)&&(mob.charStats().getStat(CharStats.STRENGTH)<CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)))
+		if((!auto)&&(mob.charStats().getStat(CharStats.STRENGTH)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)))
 		{
-			mob.tell("You need at least an "+CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)+" strength to do that.");
+			mob.tell("You need at least an "+CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+" strength to do that.");
 			return false;
 		}
 
@@ -129,7 +139,7 @@ public class Fighter_Whomp extends StdAbility
 		else
 			levelDiff=0;
 		// now see if it worked
-		boolean hit=(auto)||MUDFight.rollToHit(mob,target);
+		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		boolean success=profficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STRENGTH)-mob.charStats().getStat(CharStats.STRENGTH)))),auto)&&(hit);
 		if(success)
 		{
@@ -138,8 +148,8 @@ public class Fighter_Whomp extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),(auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> knock(s) <T-NAMESELF> to the floor!^?"+CommonStrings.msp("bashed2.wav",30)));
-            CMColor.fixSourceFightColor(msg);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),(auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> knock(s) <T-NAMESELF> to the floor!^?"+CMProps.msp("bashed2.wav",30)));
+            CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

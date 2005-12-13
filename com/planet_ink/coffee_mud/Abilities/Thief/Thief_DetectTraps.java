@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.Abilities.Traps.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -55,7 +65,7 @@ public class Thief_DetectTraps extends ThiefSkill
 
 		boolean success=profficiencyCheck(mob,+((mob.envStats().level()
 											 -unlockThis.envStats().level())*3),auto);
-		Trap theTrap=CoffeeUtensils.fetchMyTrap(unlockThis);
+		Trap theTrap=CMLib.utensils().fetchMyTrap(unlockThis);
 		if(unlockThis instanceof Exit)
 		{
 			if(dirCode<0)
@@ -66,8 +76,8 @@ public class Thief_DetectTraps extends ThiefSkill
 				Exit exit=mob.location().getReverseExit(dirCode);
 				Trap opTrap=null;
 				Trap roomTrap=null;
-				if(nextRoom!=null) roomTrap=CoffeeUtensils.fetchMyTrap(nextRoom);
-				if(exit!=null) opTrap=CoffeeUtensils.fetchMyTrap(exit);
+				if(nextRoom!=null) roomTrap=CMLib.utensils().fetchMyTrap(nextRoom);
+				if(exit!=null) opTrap=CMLib.utensils().fetchMyTrap(exit);
 				if((theTrap!=null)&&(opTrap!=null))
 				{
 					if((theTrap.disabled())&&(!opTrap.disabled()))
@@ -84,7 +94,7 @@ public class Thief_DetectTraps extends ThiefSkill
 				}
 			}
 		}
-		FullMsg msg=new FullMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,auto?"":"<S-NAME> look(s) "+unlockThis.name()+" over very carefully.");
+		CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,auto?"":"<S-NAME> look(s) "+unlockThis.name()+" over very carefully.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

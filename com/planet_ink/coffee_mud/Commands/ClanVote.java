@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -31,19 +42,19 @@ public class ClanVote extends BaseClanner
 		StringBuffer msg=new StringBuffer("");
 		if((mob.getClanID()==null)
 		||(mob.getClanID().equalsIgnoreCase(""))
-		||(Clans.getClan(mob.getClanID())==null))
+		||(CMLib.clans().getClan(mob.getClanID())==null))
 		{
 			msg.append("You aren't even a member of a clan.");
 		}
 		else
 		if(!mob.isMonster())
 		{
-			Clan C=Clans.getClan(mob.getClanID());
+			Clan C=CMLib.clans().getClan(mob.getClanID());
 			if(C==null) return false;
 			Vector votesForYou=new Vector();
 			for(Enumeration e=C.votes();e.hasMoreElements();)
 			{
-				Clans.ClanVote CV=(Clans.ClanVote)e.nextElement();
+				Clan.ClanVote CV=(Clan.ClanVote)e.nextElement();
 				if(((CV.function==Clan.FUNC_CLANASSIGN)&&(C.allowedToDoThis(mob,Clan.FUNC_CLANVOTEASSIGN)>=0))
 				||((CV.function!=Clan.FUNC_CLANASSIGN)&&(C.allowedToDoThis(mob,Clan.FUNC_CLANVOTEOTHER)>=0)))
 					votesForYou.addElement(CV);
@@ -59,7 +70,7 @@ public class ClanVote extends BaseClanner
 							   +"Command to execute\n\r");
 					for(int v=0;v<votesForYou.size();v++)
 					{
-						Clans.ClanVote CV=(Clans.ClanVote)votesForYou.elementAt(v);
+						Clan.ClanVote CV=(Clan.ClanVote)votesForYou.elementAt(v);
 						boolean ivoted=((CV.votes!=null)&&(CV.votes.contains(mob.Name())));
 						int votesCast=(CV.votes!=null)?CV.votes.size():0;
 						msg.append((ivoted?"*":" ")
@@ -73,9 +84,9 @@ public class ClanVote extends BaseClanner
 			else
 			{
 				int which=Util.s_int(Util.combine(commands,1))-1;
-				Clans.ClanVote CV=null;
+				Clan.ClanVote CV=null;
 				if((which>=0)&&(which<votesForYou.size()))
-					CV=(Clans.ClanVote)votesForYou.elementAt(which);
+					CV=(Clan.ClanVote)votesForYou.elementAt(which);
 				if(CV==null)
 					msg.append("That vote does not exist.  Use CLANVOTE to see a list.");
 				else
@@ -96,9 +107,9 @@ public class ClanVote extends BaseClanner
 					msg.append("Vote       : "+(which+1)+"\n\r");
 					msg.append("Started by : "+CV.voteStarter+"\n\r");
 					if(CV.voteStatus==Clan.VSTAT_STARTED)
-						msg.append("Started on : "+IQCalendar.d2String(CV.voteStarted)+"\n\r");
+						msg.append("Started on : "+CMLib.time().date2String(CV.voteStarted)+"\n\r");
 					else
-						msg.append("Ended on   : "+IQCalendar.d2String(CV.voteStarted)+"\n\r");
+						msg.append("Ended on   : "+CMLib.time().date2String(CV.voteStarted)+"\n\r");
 					msg.append("Status     : "+Clan.VSTAT_DESCS[CV.voteStatus]+"\n\r");
 					switch(CV.voteStatus)
 					{
@@ -156,7 +167,7 @@ public class ClanVote extends BaseClanner
 								&&(mob.session().confirm("This will cancel this entire vote, are you sure (N/y)?","N")))
 								{
 									C.delVote(CV);
-									clanAnnounce(mob,"A prior vote for "+C.typeName()+" "+C.ID()+" has been deleted.");
+									clanAnnounce(mob,"A prior vote for "+C.typeName()+" "+C.clanID()+" has been deleted.");
 									msg.append("The vote has been deleted.");
 									updateVote=true;
 								}
@@ -173,15 +184,15 @@ public class ClanVote extends BaseClanner
 							{
 								CV.voteStatus=Clan.VSTAT_PASSED;
 								MOB mob2=CMClass.getMOB("StdMOB");
-								mob2.setName(C.ID());
-								mob2.setClanID(C.ID());
+								mob2.setName(C.clanID());
+								mob2.setClanID(C.clanID());
 								mob2.setClanRole(Clan.POS_BOSS);
 								mob2.baseEnvStats().setLevel(1000);
 								if(mob2.location()==null)
 								{
 									mob2.setLocation(mob2.getStartRoom());
 									if(mob2.location()==null)
-										mob2.setLocation(CMMap.getRandomRoom());
+										mob2.setLocation(CMLib.map().getRandomRoom());
 								}
 								Vector V=Util.parse(CV.matter);
 								mob2.doCommand(V);

@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -44,11 +55,11 @@ public class Flee extends Go
         boolean XPloss=true;
         if(mob.getVictim()!=null)
         {
-            HashSet H=MUDFight.allCombatants(mob);
+            HashSet H=CMLib.combat().allCombatants(mob);
             for(Iterator i=H.iterator();i.hasNext();)
             {
                 MOB M=(MOB)i.next();
-                if(Sense.aliveAwakeMobileUnbound(M,true))
+                if(CMLib.flags().aliveAwakeMobileUnbound(M,true))
                 {
                     XPloss=true;
                     break;
@@ -81,7 +92,7 @@ public class Flee extends Go
 					directions.removeElement(new Integer(Directions.UP));
 				if(directions.size()>0)
 				{
-					directionCode=((Integer)directions.elementAt(Dice.roll(1,directions.size(),-1))).intValue();
+					directionCode=((Integer)directions.elementAt(CMLib.dice().roll(1,directions.size(),-1))).intValue();
 					direction=Directions.getDirectionName(directionCode);
 				}
 			}
@@ -97,7 +108,7 @@ public class Flee extends Go
 		if(XPloss&&(mob.getVictim()!=null))
 		{
 			MOB victim=mob.getVictim();
-			String whatToDo=CommonStrings.getVar(CommonStrings.SYSTEM_PLAYERFLEE);
+			String whatToDo=CMProps.getVar(CMProps.SYSTEM_PLAYERFLEE);
 			if(whatToDo==null) return false;
 			if(whatToDo.startsWith("UNL"))
 			{
@@ -111,10 +122,10 @@ public class Flee extends Go
 			else
 			if(whatToDo.startsWith("PUR"))
 			{
-				MOB deadMOB=CMMap.getLoadPlayer(mob.Name());
+				MOB deadMOB=CMLib.map().getLoadPlayer(mob.Name());
 				if(deadMOB!=null)
 				{
-					CoffeeUtensils.obliteratePlayer(deadMOB,false);
+					CMLib.utensils().obliteratePlayer(deadMOB,false);
 					return false;
 				}
 			}
@@ -123,7 +134,7 @@ public class Flee extends Go
             {
                 if(mob.numLearnedAbilities()>0)
                 {
-                    Ability A=mob.fetchAbility(Dice.roll(1,mob.numLearnedAbilities(),-1));
+                    Ability A=mob.fetchAbility(CMLib.dice().roll(1,mob.numLearnedAbilities(),-1));
                     if(A!=null)
                     {
                         mob.tell(getScr("Movement","loseskill",A.Name()));
@@ -152,7 +163,7 @@ public class Flee extends Go
 			if(XPloss&&(lostExperience>0))
 			{
 				mob.tell(getScr("Movement","fleeexp",""+lostExperience));
-				MUDFight.postExperience(mob,null,null,-lostExperience,false);
+				CMLib.combat().postExperience(mob,null,null,-lostExperience,false);
 			}
 		}
 		return false;

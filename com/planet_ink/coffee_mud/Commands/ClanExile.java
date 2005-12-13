@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -42,13 +53,13 @@ public class ClanExile extends BaseClanner
 			}
 			else
 			{
-				C=Clans.getClan(mob.getClanID());
+				C=CMLib.clans().getClan(mob.getClanID());
 				if(C==null)
 				{
 					mob.tell(getScr("ClanExile","nolonger",mob.getClanID()));
 					return false;
 				}
-				if(skipChecks||goForward(mob,C,commands,Clans.FUNC_CLANEXILE,false))
+				if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANEXILE,false))
 				{
 					DVector apps=C.getMemberList();
 					if(apps.size()<1)
@@ -65,20 +76,20 @@ public class ClanExile extends BaseClanner
 					}
 					if(found)
 					{
-						MOB M=CMMap.getLoadPlayer(qual);
+						MOB M=CMLib.map().getLoadPlayer(qual);
 						if(M==null)
 						{
 							mob.tell(getScr("ClanExile","clannotfound",qual,C.typeName()));
 							return false;
 						}
-						if(skipChecks||goForward(mob,C,commands,Clans.FUNC_CLANEXILE,true))
+						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANEXILE,true))
 						{
 							clanAnnounce(mob,getScr("ClanExile","msgex",C.typeName(),C.name(),M.Name()));
-							CMClass.DBEngine().DBUpdateClanMembership(qual, "", 0);
+							CMLib.database().DBUpdateClanMembership(qual, "", 0);
 							M.setClanID("");
 							M.setClanRole(0);
-							mob.tell(getScr("ClanExile","exiled",M.Name(),C.typeName(),C.ID()));
-							M.tell(getScr("ClanExile","youexiled",C.typeName(),C.ID()));
+							mob.tell(getScr("ClanExile","exiled",M.Name(),C.typeName(),C.clanID()));
+							M.tell(getScr("ClanExile","youexiled",C.typeName(),C.clanID()));
 							C.updateClanPrivileges(M);
 							return false;
 						}

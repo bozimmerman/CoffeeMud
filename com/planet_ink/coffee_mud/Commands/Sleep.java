@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -28,21 +39,21 @@ public class Sleep extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(Sense.isSleeping(mob))
+		if(CMLib.flags().isSleeping(mob))
 		{
 			mob.tell(getScr("Movement","sleeperr1"));
 			return false;
 		}
 		if(commands.size()<=1)
 		{
-			FullMsg msg=new FullMsg(mob,null,null,CMMsg.MSG_SLEEP,getScr("Movement","sleep"));
+			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SLEEP,getScr("Movement","sleep"));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
 		String possibleRideable=Util.combine(commands,1);
 		Environmental E=mob.location().fetchFromRoomFavorItems(null,possibleRideable,Item.WORN_REQ_UNWORNONLY);
-		if((E==null)||(!Sense.canBeSeenBy(E,mob)))
+		if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
 		{
 			mob.tell(getScr("Movement","youdontsee",possibleRideable));
 			return false;
@@ -53,14 +64,14 @@ public class Sleep extends StdCommand
 		else
 			mountStr=getScr("Movement","sleepson");
 		String sourceMountStr=null;
-		if(!Sense.canBeSeenBy(E,mob))
+		if(!CMLib.flags().canBeSeenBy(E,mob))
 			sourceMountStr=mountStr;
 		else
 		{
 			sourceMountStr=Util.replaceAll(mountStr,"<T-NAME>",E.name());
 			sourceMountStr=Util.replaceAll(sourceMountStr,"<T-NAMESELF>",E.name());
 		}
-		FullMsg msg=new FullMsg(mob,E,null,CMMsg.MSG_SLEEP,sourceMountStr,mountStr,mountStr);
+		CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SLEEP,sourceMountStr,mountStr,mountStr);
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;

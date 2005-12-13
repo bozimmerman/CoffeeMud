@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -52,7 +63,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
-			if((!invoker().mayIFight(target))||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
+			if((!invoker().mayIFight(target))||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) some agressive plants!");
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> <S-IS-ARE> assaulted by the plants!"))
@@ -64,7 +75,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 						them.removeElement(choices[i]);
 				if(them.size()>0)
 				{
-					String s=(String)them.elementAt(Dice.roll(1,them.size(),-1));
+					String s=(String)them.elementAt(CMLib.dice().roll(1,them.size(),-1));
 					Ability A=CMClass.getAbility(s);
 					A.invoke(target,target,true,0);
 				}
@@ -126,7 +137,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"This area seems to writh with malicious plants.":"^S<S-NAME> chant(s), stirring the plant life into maliciousness.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"This area seems to writh with malicious plants.":"^S<S-NAME> chant(s), stirring the plant life into maliciousness.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

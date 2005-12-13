@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 import java.io.IOException;
@@ -81,14 +92,14 @@ public class Create extends BaseGenerics
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly a portal opens up "+Directions.getInDirectionName(direction)+".\n\r");
-		CMClass.DBEngine().DBUpdateExits(mob.location());
+		CMLib.database().DBUpdateExits(mob.location());
 		if((reverseExit!=null)&&(opExit!=null)&&(opRoom!=null))
 		{
 			int revDirCode=Directions.getOpDirectionCode(direction);
 			if(opRoom.rawExits()[revDirCode]==reverseExit)
 			{
 				opRoom.rawExits()[revDirCode]=(Exit)thisExit.copyOf();
-				CMClass.DBEngine().DBUpdateExits(opRoom);
+				CMLib.database().DBUpdateExits(opRoom);
 			}
 		}
 		else
@@ -98,7 +109,7 @@ public class Create extends BaseGenerics
 			if((opRoom.rawExits()[revDirCode]==null)&&(opRoom.rawDoors()[revDirCode]==mob.location()))
 			{
 				opRoom.rawExits()[revDirCode]=(Exit)thisExit.copyOf();
-				CMClass.DBEngine().DBUpdateExits(opRoom);
+				CMLib.database().DBUpdateExits(opRoom);
 			}
 		}
 		mob.location().getArea().fillInAreaRoom(mob.location());
@@ -141,13 +152,13 @@ public class Create extends BaseGenerics
 			}
 		}
 		Item newItem=CMClass.getItem(itemID);
-		if((newItem==null)&&(EnglishParser.numPossibleGold(null,itemID)>0))
+		if((newItem==null)&&(CMLib.english().numPossibleGold(null,itemID)>0))
 		{
-		    long numCoins=EnglishParser.numPossibleGold(null,itemID);
-		    String currency=EnglishParser.numPossibleGoldCurrency(mob,itemID);
-		    double denom=EnglishParser.numPossibleGoldDenomination(mob,currency,itemID);
+		    long numCoins=CMLib.english().numPossibleGold(null,itemID);
+		    String currency=CMLib.english().numPossibleGoldCurrency(mob,itemID);
+		    double denom=CMLib.english().numPossibleGoldDenomination(mob,currency,itemID);
 		    if((numCoins>0)&&(denom>0.0))
-			    newItem=BeanCounter.makeCurrency(currency,denom,numCoins);
+			    newItem=CMLib.beanCounter().makeCurrency(currency,denom,numCoins);
 		}
 
 		if(newItem==null)
@@ -218,11 +229,10 @@ public class Create extends BaseGenerics
 			return;
 		}
 		thisRoom.setArea(mob.location().getArea());
-		thisRoom.setRoomID(CMMap.getOpenRoomID(mob.location().getArea().Name()));
+		thisRoom.setRoomID(CMLib.map().getOpenRoomID(mob.location().getArea().Name()));
 		thisRoom.setDisplayText(CMClass.className(thisRoom)+"-"+thisRoom.roomID());
 		thisRoom.setDescription("");
-		CMClass.DBEngine().DBCreateRoom(thisRoom,Locale);
-		CMMap.addRoom(thisRoom);
+		CMLib.database().DBCreateRoom(thisRoom,Locale);
 
 		if(thisRoom==null)
 		{
@@ -231,7 +241,7 @@ public class Create extends BaseGenerics
 			return;
 		}
 
-		CMMap.createNewExit(mob.location(),thisRoom,direction);
+		CMLib.map().createNewExit(mob.location(),thisRoom,direction);
 
 		mob.location().recoverRoomStats();
 		thisRoom.recoverRoomStats();
@@ -309,7 +319,7 @@ public class Create extends BaseGenerics
 		GR.setRacialParms("<RACE><ID>"+Util.capitalizeAndLower(raceID)+"</ID><NAME>"+Util.capitalizeAndLower(raceID)+"</NAME></RACE>");
 		CMClass.addRace(GR);
 		modifyGenRace(mob,GR);
-		CMClass.DBEngine().DBCreateRace(GR.ID(),GR.racialParms());
+		CMLib.database().DBCreateRace(GR.ID(),GR.racialParms());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just increased!");
 	}
 
@@ -323,7 +333,7 @@ public class Create extends BaseGenerics
 			return;
 		}
 		String areaName=Util.combine(commands,2);
-		Area A=CMMap.getArea(areaName);
+		Area A=CMLib.map().getArea(areaName);
 		if(A!=null)
 		{
 			mob.tell("An area with the name '"+A.name()+"' already exists!");
@@ -338,24 +348,23 @@ public class Create extends BaseGenerics
 			if(CMClass.getAreaType(areaType)==null)
 			{
 				mob.session().println("Invalid area type! Valid ones are:");
-				mob.session().println(CMLister.reallyList(CMClass.areaTypes(),-1,null).toString());
+				mob.session().println(CMLib.lister().reallyList(CMClass.areaTypes(),-1,null).toString());
 				areaType="";
 			}
 		}
 		if(areaType.length()==0) areaType="StdArea";
-		A=CMClass.DBEngine().DBCreateArea(areaName,areaType);
+		A=CMLib.database().DBCreateArea(areaName,areaType);
 		A.setName(areaName);
 		Room R=CMClass.getLocale("StdRoom");
 		R.setArea(A);
-		R.setRoomID(CMMap.getOpenRoomID(A.Name()));
+		R.setRoomID(CMLib.map().getOpenRoomID(A.Name()));
 		R.setDisplayText(CMClass.className(R)+"-"+R.roomID());
 		R.setDescription("");
-		CMClass.DBEngine().DBCreateRoom(R,R.ID());
-		CMMap.addRoom(R);
+		CMLib.database().DBCreateRoom(R,R.ID());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The size of the world just increased!");
 		mob.tell("You are now at "+R.roomID()+".");
 		R.bringMobHere(mob,true);
-        CoffeeMaker.addWeatherToAreaIfNecessary(A);
+        CMLib.coffeeMaker().addWeatherToAreaIfNecessary(A);
 	}
 
 	public void classes(MOB mob, Vector commands)
@@ -385,7 +394,7 @@ public class Create extends BaseGenerics
 		CR.setClassParms("<CCLASS><ID>"+Util.capitalizeAndLower(classD)+"</ID><NAME>"+Util.capitalizeAndLower(classD)+"</NAME></CCLASS>");
 		CMClass.addCharClass(CR);
 		modifyGenClass(mob,CR);
-		CMClass.DBEngine().DBCreateClass(CR.ID(),CR.classParms());
+		CMLib.database().DBCreateClass(CR.ID(),CR.classParms());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The employment of the world just increased!");
 	}
 
@@ -402,13 +411,13 @@ public class Create extends BaseGenerics
 			return;
 		}
         String stuff=Util.combine(commands,2);
-        if(Socials.FetchSocial(stuff,false)!=null)
+        if(CMLib.socials().FetchSocial(stuff,false)!=null)
         {
             mob.tell("The social '"+stuff+"' already exists.");
             mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
             return;
         }
-		Socials.modifySocialInterface(mob,stuff);
+		CMLib.socials().modifySocialInterface(mob,stuff);
 	}
 
 	public boolean errorOut(MOB mob)
@@ -488,8 +497,8 @@ public class Create extends BaseGenerics
             else
             {
                 String name=Util.combine(commands,2);
-                Faction F=Factions.getFaction(name);
-                if(F==null) F=Factions.getFactionByName(name);
+                Faction F=CMLib.factions().getFaction(name);
+                if(F==null) F=CMLib.factions().getFactionByName(name);
                 if(F!=null)
                     mob.tell("Faction '"+name+"' already exists.  Try another.");
                 else
@@ -503,9 +512,10 @@ public class Create extends BaseGenerics
                     }
                     Resources.submitResource(name,template);
                     Resources.saveFileResource(name,null,template);
-                    F=new Faction(template,name);
+                    F=(Faction)CMClass.getCommon("DefaultFaction");
+                    F.initializeFaction(template,name);
                     modifyFaction(mob,F);
-                    Log.sysOut("CreateEdit",mob.Name()+" created Faction "+F.name+" ("+F.ID+").");
+                    Log.sysOut("CreateEdit",mob.Name()+" created Faction "+F.name()+" ("+F.factionID()+").");
                 }
             }
         }
@@ -521,10 +531,10 @@ public class Create extends BaseGenerics
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"POLLS")) return errorOut(mob);
             mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-            Polls P=new Polls();
-            while(Polls.getPoll(P.getName())!=null)
+            Poll P=(Poll)CMClass.getCommon("DefaultPoll");
+            while(CMLib.polls().getPoll(P.getName())!=null)
                 P.setName(P.getName()+"!");
-            P.setFlags(Polls.FLAG_ACTIVE);
+            P.setFlags(Poll.FLAG_ACTIVE);
             P.dbcreate();
             P.modifyVote(mob);
             mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^SThe world has grown more uncertain.^?");
@@ -540,19 +550,19 @@ public class Create extends BaseGenerics
 			else
 			{
 				String script=Util.combine(commands,2);
-				Quest Q=new Quests();
+				Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
 				Q.setScript(script);
 				if((Q.name().trim().length()==0)||(Q.duration()<0))
 					mob.tell("You must specify a VALID quest string.  This one contained errors.  Try AHELP QUESTS.");
 				else
-				if((Quests.fetchQuest(Q.name())!=null)
+				if((CMLib.quests().fetchQuest(Q.name())!=null)
                 &&((mob.isMonster())
                     ||(!mob.session().confirm("That quest is already loaded.  Load a duplicate (N/y)? ","N"))))
                         return false;
 				else
 				{
 					mob.tell("Quest '"+Q.name()+"' added.");
-					Quests.addQuest(Q);
+					CMLib.quests().addQuest(Q);
 				}
 			}
 		}
@@ -564,7 +574,7 @@ public class Create extends BaseGenerics
 				lastWord=(String)commands.lastElement();
 			Environmental E=null;
 			E=CMClass.getItem(allWord);
-			if(((E!=null)&&(E instanceof Item))||(EnglishParser.numPossibleGold(null,allWord)>0))
+			if(((E!=null)&&(E instanceof Item))||(CMLib.english().numPossibleGold(null,allWord)>0))
 			{
 				commands.insertElementAt("ITEM",1);
 				execute(mob,commands);

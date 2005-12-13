@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -114,7 +125,7 @@ public class CombatAbilities extends StdBehavior
 			Ability newOne=mob.fetchAbility(a);
 			if((newOne!=null)&&(!oldAbilities.contains(newOne)))
 			{
-				if(!CMAble.qualifiesByLevel(mob,newOne))
+				if(!CMLib.ableMapper().qualifiesByLevel(mob,newOne))
 				{
 					mob.delAbility(newOne);
 					mob.delEffect(mob.fetchEffect(newOne.ID()));
@@ -158,7 +169,7 @@ public class CombatAbilities extends StdBehavior
 
 		while((tryThisOne==null)&&(tries<100)&&((mob.numAbilities())>0))
 		{
-			tryThisOne=mob.fetchAbility(Dice.roll(1,mob.numAbilities(),-1));
+			tryThisOne=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
 
 			if((tryThisOne==null)
 			||(tryThisOne.isAutoInvoked())
@@ -177,17 +188,17 @@ public class CombatAbilities extends StdBehavior
 				case COMBAT_RANDOM:
 					break;
 				case COMBAT_DEFENSIVE:
-					if(Dice.rollPercentage()>5)
+					if(CMLib.dice().rollPercentage()>5)
 						tryThisOne=null;
 					break;
 				case COMBAT_OFFENSIVE:
 					break;
 				case COMBAT_MIXEDOFFENSIVE:
-					if(Dice.rollPercentage()>75)
+					if(CMLib.dice().rollPercentage()>75)
 						tryThisOne=null;
 					break;
 				case COMBAT_MIXEDDEFENSIVE:
-					if(Dice.rollPercentage()>25)
+					if(CMLib.dice().rollPercentage()>25)
 						tryThisOne=null;
 					break;
 				}
@@ -201,15 +212,15 @@ public class CombatAbilities extends StdBehavior
 				case COMBAT_DEFENSIVE:
 					break;
 				case COMBAT_OFFENSIVE:
-					if(Dice.rollPercentage()>5)
+					if(CMLib.dice().rollPercentage()>5)
 						tryThisOne=null;
 					break;
 				case COMBAT_MIXEDOFFENSIVE:
-					if(Dice.rollPercentage()>25)
+					if(CMLib.dice().rollPercentage()>25)
 						tryThisOne=null;
 					break;
 				case COMBAT_MIXEDDEFENSIVE:
-					if(Dice.rollPercentage()>75)
+					if(CMLib.dice().rollPercentage()>75)
 						tryThisOne=null;
 					break;
 				}
@@ -227,8 +238,8 @@ public class CombatAbilities extends StdBehavior
 				if((Math.random()>Util.div(mob.curState().getMana(), mob.maxState().getMana()))
                 ||(mob.curState().getMana() < tryThisOne.usageCost(mob)[0]))
 				{
-                   if((Dice.rollPercentage()>30)
-				   ||(CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANACONSUMETIME)<=0)
+                   if((CMLib.dice().rollPercentage()>30)
+				   ||(CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMETIME)<=0)
 				   ||((mob.amFollowing()!=null)&&(!mob.amFollowing().isMonster())))
                         return true;
 				   mob.curState().adjMana(tryThisOne.usageCost(mob)[0],mob.maxState());
@@ -252,7 +263,7 @@ public class CombatAbilities extends StdBehavior
 			if(tryThisOne.quality()!=Ability.MALICIOUS)
 				victim=mob;
 
-			tryThisOne.setProfficiency(Dice.roll(1,70,mob.baseEnvStats().level()));
+			tryThisOne.setProfficiency(CMLib.dice().roll(1,70,mob.baseEnvStats().level()));
 			Vector V=new Vector();
 			V.addElement(victim.name());
 			if(tryThisOne.invoke(mob,V,victim,false,0))
@@ -261,7 +272,7 @@ public class CombatAbilities extends StdBehavior
 		if((wandThis)
 		&&(victim.location()!=null)
 		&&(!victim.amDead())
-		&&(Dice.rollPercentage()<25)
+		&&(CMLib.dice().rollPercentage()<25)
 		&&(mob.fetchAbility("Skill_WandUse")!=null))
 		{
 			Ability A=mob.fetchAbility("Skill_WandUse");

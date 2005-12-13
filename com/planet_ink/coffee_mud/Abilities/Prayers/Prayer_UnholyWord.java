@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -39,13 +50,13 @@ public class Prayer_UnholyWord extends Prayer
 
 		if(mob==invoker) return;
 
-		if(Sense.isEvil(mob))
+		if(CMLib.flags().isEvil(mob))
 		{
 			affectableStats.setArmor(affectableStats.armor()-30);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+20);
 		}
 		else
-		if(Sense.isGood(mob))
+		if(CMLib.flags().isGood(mob))
 		{
 			affectableStats.setArmor(affectableStats.armor()+30);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-20);
@@ -82,7 +93,7 @@ public class Prayer_UnholyWord extends Prayer
 			if(target==null) break;
 			int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 			if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
-			if(Sense.isGood(target))
+			if(CMLib.flags().isGood(target))
 				affectType=affectType|CMMsg.MASK_MALICIOUS;
 
 			if(success)
@@ -91,21 +102,21 @@ public class Prayer_UnholyWord extends Prayer
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,str);
+				CMMsg msg=CMClass.getMsg(mob,target,this,affectType,str);
 				if(room.okMessage(mob,msg))
 				{
 					room.send(mob,msg);
 					if(msg.value()<=0)
 					{
-						if(Sense.canBeHeardBy(mob,target))
+						if(CMLib.flags().canBeHeardBy(mob,target))
 						{
 							Item I=Prayer_Curse.getSomething(mob,true);
 							if(I!=null)
 							{
-								Prayer_Curse.endLowerBlessings(I,CMAble.lowestQualifyingLevel(ID()));
+								Prayer_Curse.endLowerBlessings(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 								I.recoverEnvStats();
 							}
-							Prayer_Curse.endLowerBlessings(target,CMAble.lowestQualifyingLevel(ID()));
+							Prayer_Curse.endLowerBlessings(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 							beneficialAffect(mob,target,asLevel,0);
 							target.recoverEnvStats();
 						}

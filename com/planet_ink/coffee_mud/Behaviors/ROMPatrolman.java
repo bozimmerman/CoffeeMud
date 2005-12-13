@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -57,7 +68,7 @@ public class ROMPatrolman extends StdBehavior
 		if(weapon==null) weapon=observer.myNaturalWeapon();
 		boolean makePeace=false;
 		boolean fight=false;
-		switch(Dice.roll(1,7,-1))
+		switch(CMLib.dice().roll(1,7,-1))
 		{
 		case 0:
 			observer.location().show(observer,null,CMMsg.MSG_SPEAK,"^T<S-NAME> yell(s) 'All roit! All roit! break it up!'^?");
@@ -97,10 +108,10 @@ public class ROMPatrolman extends StdBehavior
 				&&(inhab.isInCombat())
 				&&(inhab.getVictim().isInCombat())
 				&&((observer.envStats().level()>(inhab.envStats().level()+5))
-				&&(!Sense.isEvil(observer))))
+				&&(!CMLib.flags().isEvil(observer))))
 				{
 					String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().name();
-					FullMsg msgs=new FullMsg(observer,inhab,CMMsg.MSG_NOISYMOVEMENT,msg);
+					CMMsg msgs=CMClass.getMsg(observer,inhab,CMMsg.MSG_NOISYMOVEMENT,msg);
 					if(observer.location().okMessage(observer,msgs))
 					{
 						inhab.getVictim().makePeace();
@@ -111,7 +122,7 @@ public class ROMPatrolman extends StdBehavior
 		}
 		else
 		if(fight)
-			MUDFight.postAttack(observer,victim,weapon);
+			CMLib.combat().postAttack(observer,victim,weapon);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -123,7 +134,7 @@ public class ROMPatrolman extends StdBehavior
 		tickTock--;
 		if(tickTock<=0)
 		{
-			tickTock=Dice.roll(1,3,0);
+			tickTock=CMLib.dice().roll(1,3,0);
 			keepPeace(mob);
 		}
 		return true;

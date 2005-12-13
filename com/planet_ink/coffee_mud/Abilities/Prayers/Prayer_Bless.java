@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -80,44 +91,44 @@ public class Prayer_Bless extends Prayer
 					great.addElement(I);
 		}
 		if(great.size()>0)
-			target=(Item)great.elementAt(Dice.roll(1,great.size(),-1));
+			target=(Item)great.elementAt(CMLib.dice().roll(1,great.size(),-1));
 		else
 		if(good.size()>0)
-			target=(Item)good.elementAt(Dice.roll(1,good.size(),-1));
+			target=(Item)good.elementAt(CMLib.dice().roll(1,good.size(),-1));
 		return target;
 	}
 
 	public static void endLowerBlessings(Environmental target, int level)
 	{
-		Vector V=Sense.flaggedAffects(target,Ability.FLAG_BLESSING);
+		Vector V=CMLib.flags().flaggedAffects(target,Ability.FLAG_BLESSING);
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
-			if(CMAble.lowestQualifyingLevel(A.ID())<level)
+			if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<level)
 				A.unInvoke();
 		}
 	}
 	public static void endLowerCurses(Environmental target, int level)
 	{
-		Vector V=Sense.flaggedAffects(target,Ability.FLAG_CURSE);
+		Vector V=CMLib.flags().flaggedAffects(target,Ability.FLAG_CURSE);
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
-			if(CMAble.lowestQualifyingLevel(A.ID())<=level)
+			if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<=level)
 				A.unInvoke();
 		}
 	}
 
 	public static boolean isCursed(Item item)
 	{
-	    if(Sense.isSeen(item))
+	    if(CMLib.flags().isSeen(item))
 	    {
-			if(!Sense.isRemovable(item))
+			if(!CMLib.flags().isRemovable(item))
 				return true;
-			if(!Sense.isDroppable(item))
+			if(!CMLib.flags().isDroppable(item))
 				return true;
 	    }
-		return Sense.flaggedAffects(item,Ability.FLAG_CURSE).size()>0;
+		return CMLib.flags().flaggedAffects(item,Ability.FLAG_CURSE).size()>0;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -136,20 +147,20 @@ public class Prayer_Bless extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"<T-NAME> appear(s) blessed!":"^S<S-NAME> bless(es) <T-NAMESELF>"+inTheNameOf(mob)+".^?")+CommonStrings.msp("bless.wav",10));
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),(auto?"<T-NAME> appear(s) blessed!":"^S<S-NAME> bless(es) <T-NAMESELF>"+inTheNameOf(mob)+".^?")+CMProps.msp("bless.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Item I=getSomething(target,true);
 				while(I!=null)
 				{
-					FullMsg msg2=new FullMsg(target,I,null,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+					CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
 					target.location().send(target,msg2);
-					endLowerCurses(I,CMAble.lowestQualifyingLevel(ID()));
+					endLowerCurses(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 					I.recoverEnvStats();
 					I=getSomething(target,true);
 				}
-				endLowerCurses(target,CMAble.lowestQualifyingLevel(ID()));
+				endLowerCurses(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 				beneficialAffect(mob,target,asLevel,0);
 				target.recoverEnvStats();
 				target.location().recoverRoomStats();

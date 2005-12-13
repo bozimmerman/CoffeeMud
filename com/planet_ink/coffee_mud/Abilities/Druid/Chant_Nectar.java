@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -40,7 +51,7 @@ public class Chant_Nectar extends Chant
 		else
 		{
 			Item littleSpring=(Item)affected;
-			Room SpringLocation=CoffeeUtensils.roomLocation(littleSpring);
+			Room SpringLocation=CMLib.utensils().roomLocation(littleSpring);
 			if(canBeUninvoked())
 				SpringLocation.showHappens(CMMsg.MSG_OK_VISUAL,littleSpring.name()+" dries up.");
 			super.unInvoke();
@@ -59,7 +70,7 @@ public class Chant_Nectar extends Chant
 		if(affected==null) return false;
 		if(!(affected instanceof Item)) return false;
 		Item littleSpring=(Item)affected;
-		Room R=CoffeeUtensils.roomLocation(affected);
+		Room R=CMLib.utensils().roomLocation(affected);
 		if(R==null) return false;
 		if(lastNum!=R.numInhabitants())
 		{
@@ -67,12 +78,12 @@ public class Chant_Nectar extends Chant
 			return true;
 		}
 		if(lastNum<1) return true;
-		MOB M=R.fetchInhabitant(Dice.roll(1,lastNum,-1));
+		MOB M=R.fetchInhabitant(CMLib.dice().roll(1,lastNum,-1));
 		if(M==null) return true;
 		if(drank==null) drank=new Vector();
 		if(drank.contains(M)) return true;
 		drank.addElement(M);
-		if(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_MIND))
+		if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_MIND))
 		{
 			Vector commands=new Vector();
 			commands.addElement("DRINK");
@@ -92,11 +103,11 @@ public class Chant_Nectar extends Chant
 			case CMMsg.TYP_DRINK:
 				{
 					MOB M=msg.source();
-					int hp=Dice.roll(1,M.charStats().getStat(CharStats.CONSTITUTION),0);
-					MUDFight.postHealing(M,M,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,hp,null);
-					int mana=Dice.roll(1,((M.charStats().getStat(CharStats.WISDOM)+M.charStats().getStat(CharStats.INTELLIGENCE))/2),0);
+					int hp=CMLib.dice().roll(1,M.charStats().getStat(CharStats.CONSTITUTION),0);
+					CMLib.combat().postHealing(M,M,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,hp,null);
+					int mana=CMLib.dice().roll(1,((M.charStats().getStat(CharStats.WISDOM)+M.charStats().getStat(CharStats.INTELLIGENCE))/2),0);
 					M.curState().adjMana(mana,M.maxState());
-					int move=Dice.roll(1,((M.charStats().getStat(CharStats.WISDOM)+M.charStats().getStat(CharStats.INTELLIGENCE))/2),0);
+					int move=CMLib.dice().roll(1,((M.charStats().getStat(CharStats.WISDOM)+M.charStats().getStat(CharStats.INTELLIGENCE))/2),0);
 					M.curState().adjMovement(move,M.maxState());
 				}
 				break;
@@ -135,7 +146,7 @@ public class Chant_Nectar extends Chant
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) for nectar.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) for nectar.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

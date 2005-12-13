@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -43,7 +54,7 @@ public class ClanAccept extends BaseClanner
 			}
 			else
 			{
-				C=Clans.getClan(mob.getClanID());
+				C=CMLib.clans().getClan(mob.getClanID());
 				if(C==null)
 				{
 					mob.tell(getScr("ClanAccept","nolonger",mob.getClanID()));
@@ -67,7 +78,7 @@ public class ClanAccept extends BaseClanner
 					}
 					if(found)
 					{
-						MOB M=CMMap.getLoadPlayer(qual);
+						MOB M=CMLib.map().getLoadPlayer(qual);
 						if(M==null)
 						{
 							mob.tell(getScr("ClanAccept","notfound",qual,C.typeName()));
@@ -78,9 +89,9 @@ public class ClanAccept extends BaseClanner
 							clanAnnounce(mob,getScr("ClanAccept","newmember",C.typeName(),C.name(),M.Name()));
 							M.setClanID(mob.getClanID());
 							M.setClanRole(Clan.POS_MEMBER);
-							CMClass.DBEngine().DBUpdateClanMembership(qual, mob.getClanID(), Clan.POS_MEMBER);
-							mob.tell(getScr("ClanAccept","hasaccepted",M.Name(),C.typeName(),C.ID()));
-							M.tell(getScr("ClanAccept","hasaccepyou",mob.Name(),C.typeName(),C.ID()));
+							CMLib.database().DBUpdateClanMembership(qual, mob.getClanID(), Clan.POS_MEMBER);
+							mob.tell(getScr("ClanAccept","hasaccepted",M.Name(),C.typeName(),C.clanID()));
+							M.tell(getScr("ClanAccept","hasaccepyou",mob.Name(),C.typeName(),C.clanID()));
 							C.updateClanPrivileges(M);
 							return false;
 						}

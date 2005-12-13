@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Misc;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -64,9 +75,9 @@ public class Allergies extends StdAbility
 	    {
 	        allergicCheckDown=0;
 	        MOB mob=(MOB)affected;
-	        if((Sense.aliveAwakeMobile(mob,true))&&(Sense.isInTheGame(mob,true)))
+	        if((CMLib.flags().aliveAwakeMobile(mob,true))&&(CMLib.flags().isInTheGame(mob,true)))
 	        {
-	            Room R=CoffeeUtensils.roomLocation(mob);
+	            Room R=CMLib.utensils().roomLocation(mob);
 	            if(raceAllergies.size()>0)
 	            {
 		            MOB M=null;
@@ -91,7 +102,7 @@ public class Allergies extends StdAbility
 		            }
 		            if(R.numInhabitants()>0)
 		            {
-			            MOB M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
+			            MOB M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
 			            if(M!=null)
 			            for(int i=0;i<M.inventorySize();i++)
 			            {
@@ -187,12 +198,12 @@ public class Allergies extends StdAbility
                 allergies=choice.toUpperCase();
 	        else
 	        for(int i=0;i<allChoices.size();i++)
-	            if((Dice.roll(1,allChoices.size(),0)==1)
+	            if((CMLib.dice().roll(1,allChoices.size(),0)==1)
 	            &&(!(((String)allChoices.elementAt(i)).equalsIgnoreCase(mob.charStats().getMyRace().ID().toUpperCase()))))
 	                allergies+=" "+(String)allChoices.elementAt(i);
 	        if(allergies.length()==0) return false;
 	        
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"");
 			if(target.location()!=null)
 			{
 				if(target.location().okMessage(target,msg))

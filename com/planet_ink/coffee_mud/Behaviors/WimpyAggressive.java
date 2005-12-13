@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -31,8 +42,8 @@ public class WimpyAggressive extends Aggressive
 
 	public boolean grantsAggressivenessTo(MOB M)
 	{
-		return ((M!=null)&&(Sense.isSleeping(M)))&&
-			MUDZapper.zapperCheck(getParms(),M);
+		return ((M!=null)&&(CMLib.flags().isSleeping(M)))&&
+			CMLib.masking().maskCheck(getParms(),M);
 	}
 	public void setParms(String newParms)
 	{
@@ -47,7 +58,7 @@ public class WimpyAggressive extends Aggressive
 		for(int i=0;i<observer.location().numInhabitants();i++)
 		{
 			MOB mob=observer.location().fetchInhabitant(i);
-			if((mob!=null)&&(mob!=observer)&&(Sense.isSleeping(mob)))
+			if((mob!=null)&&(mob!=observer)&&(CMLib.flags().isSleeping(mob)))
 			{
 				startFight(observer,mob,mobKiller);
 				if(observer.isInCombat()) break;

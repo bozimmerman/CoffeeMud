@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -44,12 +55,12 @@ public class Chant_PoisonousVine extends Chant_SummonVine
 		newMOB.setName(name);
 		newMOB.setDisplayText(name+" looks enraged!");
 		newMOB.setDescription("");
-		Factions.setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 		Ability A=CMClass.getAbility("Fighter_Rescue");
 		A.setProfficiency(100);
 		newMOB.addAbility(A);
 		A=null;
-		int classlevel=CMAble.qualifyingClassLevel(caster,this)-CMAble.qualifyingLevel(caster,this);
+		int classlevel=CMLib.ableMapper().qualifyingClassLevel(caster,this)-CMLib.ableMapper().qualifyingLevel(caster,this);
 		switch(classlevel/5)
 		{
 		case 0:	A=CMClass.getAbility("Poison_BeeSting"); break;
@@ -78,7 +89,7 @@ public class Chant_PoisonousVine extends Chant_SummonVine
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
-		BeanCounter.clearZeroMoney(newMOB,null);
+		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		//if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking "+victim.name()+"!");
 		newMOB.setStartRoom(null);

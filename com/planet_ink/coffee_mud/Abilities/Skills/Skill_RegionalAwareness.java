@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -20,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_RegionalAwareness extends StdAbility
+public class Skill_RegionalAwareness extends StdSkill
 {
 	public String ID() { return "Skill_RegionalAwareness"; }
 	public String name(){ return "Regional Awareness";}
@@ -31,8 +41,8 @@ public class Skill_RegionalAwareness extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	public int overrideMana(){return 0;}
-	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONTRAINCOST);}
-	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONPRACCOST);}
+	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONTRAINCOST);}
+	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONPRACCOST);}
 
     public char roomColor(Room room)
     {
@@ -92,7 +102,7 @@ public class Skill_RegionalAwareness extends StdAbility
 		}
 		
         if((!auto)
-        &&(!Sense.canBeSeenBy(mob.location(),mob)))
+        &&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
         {
             mob.tell("You need to be able to see your surroundings to do that.");
             return false;
@@ -104,7 +114,7 @@ public class Skill_RegionalAwareness extends StdAbility
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_LOOK,"<S-NAME> peer(s) at the horizon with a distant expression.");
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_LOOK,"<S-NAME> peer(s) at the horizon with a distant expression.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -117,7 +127,7 @@ public class Skill_RegionalAwareness extends StdAbility
 				Room[][] rmap=new Room[diameter][diameter];
 				Vector rooms=new Vector();
 				HashSet closedPaths=new HashSet();
-				MUDTracker.getRadiantRooms(mob.location(),rooms,true,false,true,true,false,null,diameter);
+				CMLib.tracking().getRadiantRooms(mob.location(),rooms,true,false,true,true,false,null,diameter);
 				rmap[diameter/2][diameter/2]=mob.location();
 				map[diameter/2][diameter/2]='*';
 				for(int i=0;i<rooms.size();i++)

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -49,7 +60,7 @@ public class Prayer_Anger extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"A feeling of anger descends":"^S<S-NAME> rage(s) for anger.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"A feeling of anger descends":"^S<S-NAME> rage(s) for anger.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -62,7 +73,7 @@ public class Prayer_Anger extends Prayer
 						MOB target=null;
 						while((tries<100)&&(target==null))
 						{
-							target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
+							target=mob.location().fetchInhabitant(CMLib.dice().roll(1,mob.location().numInhabitants(),-1));
 							if(target!=null)
 							{
 								if(target==inhab) target=null;
@@ -70,7 +81,7 @@ public class Prayer_Anger extends Prayer
 							}
 							tries++;
 						}
-						FullMsg amsg=new FullMsg(mob,inhab,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+						CMMsg amsg=CMClass.getMsg(mob,inhab,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
 						if((target!=null)&&(mob.location().okMessage(mob,amsg)))
 						{
 							inhab.tell("You feel angry.");

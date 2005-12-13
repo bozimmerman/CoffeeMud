@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -61,8 +71,8 @@ public class Thief_Arsonry extends ThiefSkill
 				if((I!=null)
 				&&(I.container()==null)
 				&&(I.displayText().length()==0)
-				&&(Sense.isGettable(I))
-				&&(Sense.burnStatus(I)>0))
+				&&(CMLib.flags().isGettable(I))
+				&&(CMLib.flags().burnStatus(I)>0))
 					choices.addElement(I);
 			}
 			if(choices.size()==0)
@@ -70,7 +80,7 @@ public class Thief_Arsonry extends ThiefSkill
 				mob.tell("There's nothing that way you can burn!");
 				return false;
 			}
-			target=(Item)choices.elementAt(Dice.roll(1,choices.size(),-1));
+			target=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 			targetRoom=room;
 		}
 		else
@@ -84,7 +94,7 @@ public class Thief_Arsonry extends ThiefSkill
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item I=mob.fetchInventory(i);
-			if((I!=null)&&(Sense.isOnFire(I))&&(Sense.canBeSeenBy(I,mob)))
+			if((I!=null)&&(CMLib.flags().isOnFire(I))&&(CMLib.flags().canBeSeenBy(I,mob)))
 			{ proceed=true; break;}
 		}
 		if(!proceed)
@@ -100,14 +110,14 @@ public class Thief_Arsonry extends ThiefSkill
 		boolean success=profficiencyCheck(mob,-levelDiff,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> commit(s) arsonry against <T-NAME>.");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> commit(s) arsonry against <T-NAME>.");
 			if((mob.location().okMessage(mob,msg))
 			&&((targetRoom==mob.location())||(targetRoom.okMessage(mob,msg))))
 			{
 				mob.location().send(mob,msg);
 				if(targetRoom!=mob.location()) targetRoom.sendOthers(mob,msg);
 				Ability B=CMClass.getAbility("Burning");
-				B.setProfficiency(Sense.burnStatus(target));
+				B.setProfficiency(CMLib.flags().burnStatus(target));
 				B.invoke(mob,target,true,asLevel);
 			}
 		}

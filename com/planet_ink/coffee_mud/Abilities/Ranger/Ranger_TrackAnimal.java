@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Ranger;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -79,7 +90,7 @@ public class Ranger_TrackAnimal extends StdAbility
 					{
 						int dir=nextDirection;
 						nextDirection=-2;
-						MUDTracker.move(mob,dir,false,false);
+						CMLib.tracking().move(mob,dir,false,false);
 					}
 					else
 						unInvoke();
@@ -102,9 +113,9 @@ public class Ranger_TrackAnimal extends StdAbility
 		MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.amITarget(mob.location()))
-		&&(Sense.canBeSeenBy(mob.location(),mob))
+		&&(CMLib.flags().canBeSeenBy(mob.location(),mob))
 		&&(msg.targetMinor()==CMMsg.TYP_LOOK))
-			nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),true);
+			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
 	public MOB animalHere(Room room)
@@ -114,7 +125,7 @@ public class Ranger_TrackAnimal extends StdAbility
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			MOB mob=room.fetchInhabitant(i);
-			if(Sense.isAnimalIntelligence(mob))
+			if(CMLib.flags().isAnimalIntelligence(mob))
 				return mob;
 		}
 		return null;
@@ -123,16 +134,16 @@ public class Ranger_TrackAnimal extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!Sense.aliveAwakeMobile(mob,false))
+		if(!CMLib.flags().aliveAwakeMobile(mob,false))
 			return false;
 
-		if(!Sense.canBeSeenBy(mob.location(),mob))
+		if(!CMLib.flags().canBeSeenBy(mob.location(),mob))
 		{
 			mob.tell("You can't see anything to track!");
 			return false;
 		}
 
-		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);
+		Vector V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
 		for(int v=0;v<V.size();v++)	((Ability)V.elementAt(v)).unInvoke();
 		if(V.size()>0)
 		{
@@ -166,10 +177,10 @@ public class Ranger_TrackAnimal extends StdAbility
 		{
 		    try
 		    {
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if(Sense.canAccess(mob,R))
+					if(CMLib.flags().canAccess(mob,R))
 						if(animalHere(R)!=null)
 							rooms.addElement(R);
 				}
@@ -177,7 +188,7 @@ public class Ranger_TrackAnimal extends StdAbility
 		}
 
 		if(rooms.size()>0)
-			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,true,false,true,true,true,75);
+			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,true,false,true,true,true,75);
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))
@@ -190,7 +201,7 @@ public class Ranger_TrackAnimal extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> begin(s) to track <T-NAMESELF>.",null,"<S-NAME> begin(s) to track <T-NAMESELF>.");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> begin(s) to track <T-NAMESELF>.",null,"<S-NAME> begin(s) to track <T-NAMESELF>.");
 			if((mob.location().okMessage(mob,msg))&&(target.okMessage(target,msg)))
 			{
 				mob.location().send(mob,msg);
@@ -201,7 +212,7 @@ public class Ranger_TrackAnimal extends StdAbility
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverEnvStats();
-				newOne.nextDirection=MUDTracker.trackNextDirectionFromHere(newOne.theTrail,mob.location(),true);
+				newOne.nextDirection=CMLib.tracking().trackNextDirectionFromHere(newOne.theTrail,mob.location(),true);
 			}
 		}
 		else

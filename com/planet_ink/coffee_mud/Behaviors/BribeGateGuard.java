@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -50,7 +61,7 @@ public class BribeGateGuard extends StdBehavior
 
 	private int findGate(MOB mob)
 	{
-		if (!Sense.isInTheGame(mob,false))
+		if (!CMLib.flags().isInTheGame(mob,false))
 			return -1;
 		for (int d = 0; d < Directions.NUM_DIRECTIONS; d++)
 		{
@@ -93,7 +104,7 @@ public class BribeGateGuard extends StdBehavior
 		// make a note in the journal
 		double newNum = given.getTotalValue();
 		newNum += getBalance(mob);
-		Coins item = BeanCounter.makeBestCurrency(BeanCounter.getCurrency(gateGuard),newNum);
+		Coins item = CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(gateGuard),newNum);
 		delBalance(mob);
 		if(item!=null) writeBalance(item, mob);
 	}
@@ -113,7 +124,7 @@ public class BribeGateGuard extends StdBehavior
 		// return the balance in int form
 		if(surviveReboot)
 		{
-			Vector V =CMClass.DBEngine().DBReadJournal(gates());
+			Vector V =CMLib.database().DBReadJournal(gates());
 			Vector mine = new Vector();
 			for (int v = 0; v < V.size(); v++)
 			{
@@ -132,7 +143,7 @@ public class BribeGateGuard extends StdBehavior
 					Coins item = (Coins) CMClass.getItem("StdCoins");
 					if (item != null)
 					{
-						CoffeeMaker.setPropertiesStr(item, ( (String) V2.elementAt(5)), true);
+						CMLib.coffeeMaker().setPropertiesStr(item, ( (String) V2.elementAt(5)), true);
 						item.recoverEnvStats();
 						item.text();
 					}
@@ -167,8 +178,8 @@ public class BribeGateGuard extends StdBehavior
 		newNum -= charge;
 		if (newNum > 0)
 		{
-		    item.setCurrency(BeanCounter.getCurrency(gateGuard));
-		    item.setDenomination(BeanCounter.getLowestDenomination(BeanCounter.getCurrency(gateGuard)));
+		    item.setCurrency(CMLib.beanCounter().getCurrency(gateGuard));
+		    item.setDenomination(CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(gateGuard)));
 			item.setNumberOfCoins(Math.round(newNum/item.getDenomination()));
 			delBalance(mob);
 			writeBalance(item, mob);
@@ -184,7 +195,7 @@ public class BribeGateGuard extends StdBehavior
 		// kill the journal entries for that mob
 		if(surviveReboot)
 		{
-			Vector V = CMClass.DBEngine().DBReadJournal(gates());
+			Vector V = CMLib.database().DBReadJournal(gates());
 			Vector mine = new Vector();
 			for (int v = 0; v < V.size(); v++)
 			{
@@ -198,7 +209,7 @@ public class BribeGateGuard extends StdBehavior
 				Vector V2 = (Vector) mine.elementAt(v);
 				String fullName = ( (String) V2.elementAt(4));
 				if (fullName.equals("COINS")) {
-				  CMClass.DBEngine().DBDeleteJournal( ( (String) V2.elementAt(0)),
+				  CMLib.database().DBDeleteJournal( ( (String) V2.elementAt(0)),
 				                               Integer.MAX_VALUE);
 				}
 			}
@@ -218,8 +229,8 @@ public class BribeGateGuard extends StdBehavior
 		// write an entry for that mob
 		if(surviveReboot)
 		{
-			CMClass.DBEngine().DBWriteJournal(gates(), mob.Name(), CMClass.className(balance),
-			                            "COINS", CoffeeMaker.getPropertiesStr(balance, true),
+			CMLib.database().DBWriteJournal(gates(), mob.Name(), CMClass.className(balance),
+			                            "COINS", CMLib.coffeeMaker().getPropertiesStr(balance, true),
 			                            -1);
 		}
 		else
@@ -293,7 +304,7 @@ public class BribeGateGuard extends StdBehavior
 	{
 		if (!super.okMessage(oking, msg)) {
 		  if (debug) {
-		    //CommonMsgs.say( (MOB) oking, msg.source(),
+		    //CMLib.commands().say( (MOB) oking, msg.source(),
 		    //                      "super FALSE", true, true);
 		  }
 		  return false;
@@ -303,7 +314,7 @@ public class BribeGateGuard extends StdBehavior
 		  return true;
 		}
 		MOB monster = (MOB) oking;
-	    String currency=BeanCounter.getCurrency(monster);
+	    String currency=CMLib.beanCounter().getCurrency(monster);
 		if (msg.amITarget(monster)
 	    && (!msg.amISource(monster))
 	    && (msg.targetMinor() == CMMsg.TYP_GIVE)
@@ -311,20 +322,20 @@ public class BribeGateGuard extends StdBehavior
 	    && (msg.tool()instanceof Coins)
 	    && (!((Coins)msg.tool()).getCurrency().equals(currency)))
 		{
-		    double denomination=BeanCounter.getLowestDenomination(currency);
-		    CommonMsgs.say(monster,mob,"I only accept "+BeanCounter.getDenominationName(currency,denomination)+".",false,false);
+		    double denomination=CMLib.beanCounter().getLowestDenomination(currency);
+		    CMLib.commands().say(monster,mob,"I only accept "+CMLib.beanCounter().getDenominationName(currency,denomination)+".",false,false);
 		    return false;
 		}
 		if (msg.target() == null) {
 		  if (debug) {
-		    //CommonMsgs.say( (MOB) oking, msg.source(),
+		    //CMLib.commands().say( (MOB) oking, msg.source(),
 		    //                      "Effect Target null", true, true);
 		  }
 		  return true;
 		}
-		if (!Sense.canBeSeenBy(msg.source(), monster)) {
+		if (!CMLib.flags().canBeSeenBy(msg.source(), monster)) {
 		  if (debug) {
-		    CommonMsgs.say( (MOB) oking, msg.source(),
+		    CMLib.commands().say( (MOB) oking, msg.source(),
 		                          "can't be seen", true, true);
 		  }
 		  return true;
@@ -332,7 +343,7 @@ public class BribeGateGuard extends StdBehavior
 		if (mob.location() == monster.location()) {
 		  if (msg.target()instanceof Exit) {
 		    if (debug) {
-		      CommonMsgs.say( (MOB) oking, msg.source(),
+		      CMLib.commands().say( (MOB) oking, msg.source(),
 		                            "okAffect triggered.  Not Charging " + price() +
 		                            " from balance " + getBalance(msg.source()) +
 		                            ".", true, true);
@@ -341,43 +352,43 @@ public class BribeGateGuard extends StdBehavior
 		      if ( (msg.targetMinor() != CMMsg.TYP_CLOSE)){
 		          //|| (msg.target() instanceof Room) ) {
 		        if (debug) {
-		          CommonMsgs.say( (MOB) oking, msg.source(),
+		          CMLib.commands().say( (MOB) oking, msg.source(),
 		                                "Close or Leave", true, true);
 		        }
 		        if (checkBalance(price(), mob)) {
 		          return true;
 		        }
-    	          FullMsg msgs = new FullMsg(monster, mob, CMMsg.MSG_NOISYMOVEMENT,
+    	          CMMsg msgs = CMClass.getMsg(monster, mob, CMMsg.MSG_NOISYMOVEMENT,
     	              "<S-NAME> won't let <T-NAME> through there.");
     	          if (monster.location().okMessage(monster, msgs)) {
     	            monster.location().send(monster, msgs);
-    	            double denomination=BeanCounter.getLowestDenomination(currency);
-    	            String thePrice=BeanCounter.getDenominationName(currency,denomination,Math.round(price()/denomination));
-    	            CommonMsgs.say(monster, mob,
+    	            double denomination=CMLib.beanCounter().getLowestDenomination(currency);
+    	            String thePrice=CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(price()/denomination));
+    	            CMLib.commands().say(monster, mob,
     	                "I'll let you through here if you pay the fee of "+thePrice+".", true, false);
     	            if (debug) // debugging
-    	              CommonMsgs.say(monster, mob,
+    	              CMLib.commands().say(monster, mob,
     	                                    "I'm telling you this from okAffect", true, false);
     	            return false;
     	          }
     	          if (debug) // debugging
-    	            CommonMsgs.say(monster, mob,
+    	            CMLib.commands().say(monster, mob,
     	                                  "I'm telling you this from okAffect (2)", true, false);
     	        return false;
 		      }
 		      if (msg.target() instanceof Room) {
 		        if (debug) // debugging
-		          CommonMsgs.say(monster, mob,
+		          CMLib.commands().say(monster, mob,
 		                                "I'm telling you this from okAffect (3)", true, false);
 		      }
 		      if (debug) {
-		        CommonMsgs.say( (MOB) oking, msg.source(),
+		        CMLib.commands().say( (MOB) oking, msg.source(),
 		                              "tarMin " + msg.targetMinor() + " ? " +
 		                              CMMsg.TYP_CLOSE, true, true);
-		        CommonMsgs.say( (MOB) oking, msg.source(),
+		        CMLib.commands().say( (MOB) oking, msg.source(),
 		                              "srcMin " + msg.sourceMinor() + " ? " +
 		                              CMMsg.TYP_LEAVE, true, true);
-		        CommonMsgs.say( (MOB) oking, msg.source(),
+		        CMLib.commands().say( (MOB) oking, msg.source(),
 		                              "source Monster? " +
 		                              msg.source().isMonster(), true, true);
 		      }
@@ -388,14 +399,14 @@ public class BribeGateGuard extends StdBehavior
 		  }
 		}
 		if (debug) {
-		  //CommonMsgs.say((MOB)oking,msg.source(),"okAffect triggered.  WRONG LOCATION TO FIRE.", true,true);
+		  //CMLib.commands().say((MOB)oking,msg.source(),"okAffect triggered.  WRONG LOCATION TO FIRE.", true,true);
 		}
 		if ( (mob.location() == monster.location())
 		    && (mob != monster)
 		    && (msg.target() != null)
 		    && (!BrotherHelper.isBrother(mob, monster))
-		    && (Sense.canSenseMoving(mob, monster))
-		    && (!MUDZapper.zapperCheck(getParms(), mob))) {
+		    && (CMLib.flags().canSenseMoving(mob, monster))
+		    && (!CMLib.masking().maskCheck(getParms(), mob))) {
 		  if ( (msg.tool() != null)
 		     && (msg.target()instanceof Room)
 		     && (msg.tool()instanceof Exit)) {
@@ -416,7 +427,7 @@ public class BribeGateGuard extends StdBehavior
 		MOB observer = (MOB) affecting;
 		if ( (msg.sourceMinor() == CMMsg.TYP_ENTER)
 		    && (!msg.amISource(observer))
-		    && (Sense.canSenseMoving(msg.source(), observer))
+		    && (CMLib.flags().canSenseMoving(msg.source(), observer))
 		    && (!msg.source().isMonster())) {
 		  // check if the msg.source() has paid enough.  if so, time to react
 		  if (checkBalance(price(), source)) {
@@ -437,7 +448,7 @@ public class BribeGateGuard extends StdBehavior
 		        charge(price(), observer, source);
 		        if(debug)
 		        {
-		          CommonMsgs.say(observer,source,"Charging " + price() + ", balance " + getBalance(source) + ".", true,true);
+		          CMLib.commands().say(observer,source,"Charging " + price() + ", balance " + getBalance(source) + ".", true,true);
 		        }
 		      }
 		    }
@@ -456,19 +467,19 @@ public class BribeGateGuard extends StdBehavior
 		    && (msg.tool()instanceof Coins)) 
 		{
 		  payment( (Coins) msg.tool(), observer, msg.source());
-		  CommonMsgs.say(observer, source, "Thank you very much.", true, false);
+		  CMLib.commands().say(observer, source, "Thank you very much.", true, false);
 		  if(getBalance(source) > price())
 		  {
-		      String currency=BeanCounter.getCurrency(observer);
-		      double denomination=BeanCounter.getLowestDenomination(currency);
+		      String currency=CMLib.beanCounter().getCurrency(observer);
+		      double denomination=CMLib.beanCounter().getLowestDenomination(currency);
 		      long diff=Math.round((getBalance(source) - price())/denomination);
-		      String difference=BeanCounter.getDenominationName(currency,denomination,diff);
-		    CommonMsgs.say(observer, source,
+		      String difference=CMLib.beanCounter().getDenominationName(currency,denomination,diff);
+		    CMLib.commands().say(observer, source,
 		                          "I'll hang on to the additional "+difference+" for you", true, false);
 		    paidPlayers.addElement(source);
 		    toldAlready.put(source.Name(),new Boolean(false));
 		    if (debug)  // debugging
-		      CommonMsgs.say(observer, source,
+		      CMLib.commands().say(observer, source,
 		                            "I'm telling you this from execute", true, false);
 		    try {
 		      if (dir >= 0)
@@ -494,11 +505,11 @@ public class BribeGateGuard extends StdBehavior
 		  else
 		  if(getBalance(source) < price())
 		  {
-		    FullMsg msg2=new FullMsg(observer,null,msg.tool(),CMMsg.MSG_EMOTE,"^E<S-NAME> look(s) carefully at <O-NAME>.^?");
+		    CMMsg msg2=CMClass.getMsg(observer,null,msg.tool(),CMMsg.MSG_EMOTE,"^E<S-NAME> look(s) carefully at <O-NAME>.^?");
 		    msg.addTrailerMsg(msg2);
-		    msg2=new FullMsg(observer,null,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'I'm afraid that this is insufficient.'^?.");
+		    msg2=CMClass.getMsg(observer,null,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'I'm afraid that this is insufficient.'^?.");
 		    msg.addTrailerMsg(msg2);
-		    msg2=new FullMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+		    msg2=CMClass.getMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 		    msg.addTrailerMsg(msg2);
 		    charge(( (Coins) msg.tool()).value(), observer, msg.source());
 		  }
@@ -518,7 +529,7 @@ public class BribeGateGuard extends StdBehavior
 		MOB mob = (MOB) ticking;
 		dir = findGate(mob);
 		if (dir < 0) {
-		  CommonMsgs.say(mob, null,
+		  CMLib.commands().say(mob, null,
 		                        "I'd shut the gate, but there isn't one...", false, false);
 		  return true;
 		}
@@ -530,10 +541,10 @@ public class BribeGateGuard extends StdBehavior
 		      Boolean B = (Boolean) toldAlready.get(M.Name());
 		      if (!B.booleanValue())
 		      {
-		          String currency=BeanCounter.getCurrency(mob);
-		          double denomination=BeanCounter.getLowestDenomination(currency);
-		          String balanceStr=BeanCounter.getDenominationName(currency,denomination,Math.round(getBalance(M)/denomination));
-		        CommonMsgs.say(mob, M,
+		          String currency=CMLib.beanCounter().getCurrency(mob);
+		          double denomination=CMLib.beanCounter().getLowestDenomination(currency);
+		          String balanceStr=CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(getBalance(M)/denomination));
+		        CMLib.commands().say(mob, M,
 		                              "We still have record that you gave us " +
 		                              balanceStr +
 		                              " before if you're heading through", true, false);
@@ -547,15 +558,15 @@ public class BribeGateGuard extends StdBehavior
 		    else {
 		      if(toldAlready.containsKey(M.Name()))
 		         continue;
-	          String currency=BeanCounter.getCurrency(mob);
-	          double denomination=BeanCounter.getLowestDenomination(currency);
-	          String priceStr=BeanCounter.getDenominationName(currency,denomination,Math.round(price()/denomination));
-		      CommonMsgs.say(mob, M,
+	          String currency=CMLib.beanCounter().getCurrency(mob);
+	          double denomination=CMLib.beanCounter().getLowestDenomination(currency);
+	          String priceStr=CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(price()/denomination));
+		      CMLib.commands().say(mob, M,
 		          "I'll let you through here if you pay the fee of " + priceStr +
 		          ".", true, false);
 		      toldAlready.put(M.Name(), new Boolean(true));
 		      if (debug)  // debugging
-		        CommonMsgs.say(mob, M,
+		        CMLib.commands().say(mob, M,
 		                              "I'm telling you this from tick", true, false);
 		    }
 		  }
@@ -565,10 +576,10 @@ public class BribeGateGuard extends StdBehavior
 		if (nightTime) {
 		  if ( (!e.isLocked()) && (e.hasALock())) {
 		    if (getMyKeyTo(mob, e) != null) {
-		      FullMsg msg = new FullMsg(mob, e, CMMsg.MSG_LOCK,
+		      CMMsg msg = CMClass.getMsg(mob, e, CMMsg.MSG_LOCK,
 		                                "<S-NAME> lock(s) <T-NAME>.");
 		      if (mob.location().okMessage(mob, msg)) {
-		        CoffeeUtensils.roomAffectFully(msg, mob.location(), dir);
+		        CMLib.utensils().roomAffectFully(msg, mob.location(), dir);
 		      }
 		    }
 		  }
@@ -576,10 +587,10 @@ public class BribeGateGuard extends StdBehavior
 		else
 		if (e.isLocked()) {
 		  if (getMyKeyTo(mob, e) != null) {
-		    FullMsg msg = new FullMsg(mob, e, CMMsg.MSG_UNLOCK,
+		    CMMsg msg = CMClass.getMsg(mob, e, CMMsg.MSG_UNLOCK,
 		                              "<S-NAME> unlock(s) <T-NAME>.");
 		    if (mob.location().okMessage(mob, msg)) {
-		      CoffeeUtensils.roomAffectFully(msg, mob.location(), dir);
+		      CMLib.utensils().roomAffectFully(msg, mob.location(), dir);
 		    }
 		  }
 		}

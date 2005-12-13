@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -29,7 +40,7 @@ public class Equipment extends StdCommand
 	public static StringBuffer getEquipment(MOB seer, MOB mob, boolean allPlaces)
 	{
 		StringBuffer msg=new StringBuffer("");
-		if(Sense.isSleeping(seer))
+		if(CMLib.flags().isSleeping(seer))
 			return new StringBuffer("(nothing you can see right now)");
 
 	    int numTattsDone=0;
@@ -40,14 +51,14 @@ public class Equipment extends StdCommand
 	    Item thisItem=null;
 	    String tat=null;
 	    int numWears=0;
-        boolean paragraphView=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)>1)
-                            ||((seer!=mob)&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)>0))
+        boolean paragraphView=(CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)>1)
+                            ||((seer!=mob)&&(CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)>0))
                             ||Util.bset(seer.getBitmap(),MOB.ATT_COMPRESS);
 		for(int l=0;l<Item.wornOrder.length;l++)
 		{
 		    found=0;
 			wornCode=Item.wornOrder[l];
-			wornName=Sense.wornLocation(wornCode);
+			wornName=CMLib.flags().wornLocation(wornCode);
             if(paragraphView)
     			header=" ^!";
             else
@@ -61,7 +72,7 @@ public class Equipment extends StdCommand
 				if((thisItem.container()==null)&&(thisItem.amWearingAt(wornCode)))
 				{
 					found++;
-					if(Sense.canBeSeenBy(thisItem,seer))
+					if(CMLib.flags().canBeSeenBy(thisItem,seer))
 					{
                         if(paragraphView)
                         {
@@ -71,27 +82,27 @@ public class Equipment extends StdCommand
                             {
                                 if(msg.length()==0) msg.append("nothing.");
                                 if(mob==seer)
-                                    msg.append("\n\rHolding ^<EItem^>"+name+"^</EItem^>"+Sense.colorCodes(thisItem,seer)+"^N");
+                                    msg.append("\n\rHolding ^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer)+"^N");
                                 else
                                     msg.append("\n\r" + mob.charStats().HeShe() + " is holding " +
-                                             name + Sense.colorCodes(thisItem, seer) + "^N.");                  
+                                             name + CMLib.flags().colorCodes(thisItem, seer) + "^N.");                  
                             }
                             else
                             if(wornCode==Item.WIELD)
                             {
                                 if(msg.length()==0) msg.append("nothing.");
                                 if(mob==seer)
-                                    msg.append("\n\rWielding ^<EItem^>"+name+"^</EItem^>"+Sense.colorCodes(thisItem,seer)+"^N.");
+                                    msg.append("\n\rWielding ^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer)+"^N.");
                                 else
                                     msg.append("\n\r" + mob.charStats().HeShe() + " is wielding " +
-                                             name + Sense.colorCodes(thisItem, seer) + "^N.");
+                                             name + CMLib.flags().colorCodes(thisItem, seer) + "^N.");
                             }
                             else
                             {
                                 if(mob==seer)
-                                    msg.append(header+"^<EItem^>"+name+"^</EItem^>"+Sense.colorCodes(thisItem,seer)+"^N,");
+                                    msg.append(header+"^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer)+"^N,");
                                 else
-                                    msg.append(header+name+Sense.colorCodes(thisItem,seer)+"^N,");
+                                    msg.append(header+name+CMLib.flags().colorCodes(thisItem,seer)+"^N,");
                             }
                         }
                         else
@@ -99,14 +110,14 @@ public class Equipment extends StdCommand
                             String name=thisItem.name();
                             if(name.length()>53) name=name.substring(0,50)+"...";
     						if(mob==seer)
-    							msg.append(header+"^<EItem^>"+name+"^</EItem^>"+Sense.colorCodes(thisItem,seer)+"^?\n\r");
+    							msg.append(header+"^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer)+"^?\n\r");
     						else
-    							msg.append(header+name+Sense.colorCodes(thisItem,seer)+"^?\n\r");
+    							msg.append(header+name+CMLib.flags().colorCodes(thisItem,seer)+"^?\n\r");
                         }
 					}
 					else
 					if(seer==mob)
-						msg.append(header+"(something you can`t see)"+Sense.colorCodes(thisItem,seer)+"^?\n\r");
+						msg.append(header+"(something you can`t see)"+CMLib.flags().colorCodes(thisItem,seer)+"^?\n\r");
 				}
 			}
 			numWears=mob.getWearPositions(wornCode);
@@ -170,7 +181,7 @@ public class Equipment extends StdCommand
 		}
 		if(!mob.isMonster())
 		{
-            boolean paragraphView=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EQVIEW)==2);
+            boolean paragraphView=(CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)==2);
             if(paragraphView)
             {
     			if((commands.size()>1)&&(Util.combine(commands,1).equalsIgnoreCase("long")))

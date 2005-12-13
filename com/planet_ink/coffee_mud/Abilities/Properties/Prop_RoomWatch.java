@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -38,7 +49,7 @@ public class Prop_RoomWatch extends Property
 			newRooms=new Vector();
 			for(int v=0;v<V.size();v++)
 			{
-				Room R=CMMap.getRoom((String)V.elementAt(v));
+				Room R=CMLib.map().getRoom((String)V.elementAt(v));
 				if(R!=null) newRooms.addElement(R);
 			}
 		}
@@ -53,7 +64,7 @@ public class Prop_RoomWatch extends Property
 				Room R=(Room)newRooms.elementAt(r);
 				if((R!=null)&&(R.fetchEffect(ID())==null))
 				{
-					FullMsg msg2=new FullMsg(msg.source(),msg.target(),msg.tool(),
+					CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),msg.tool(),
 								  CMMsg.NO_EFFECT,null,
 								  CMMsg.NO_EFFECT,null,
 								  msg.othersCode(),msg.othersMessage());
@@ -62,9 +73,9 @@ public class Prop_RoomWatch extends Property
 					{
 						MOB M=R.fetchInhabitant(i);
 						if((M!=null)
-						&&(Sense.canSee(M))
-						&&(Sense.canBeSeenBy(R,M))
-						&&(Sense.canBeSeenBy(msg2.source(),M)))
+						&&(CMLib.flags().canSee(M))
+						&&(CMLib.flags().canBeSeenBy(R,M))
+						&&(CMLib.flags().canBeSeenBy(msg2.source(),M)))
 							M.executeMsg(M,msg2);
 					}
 				}

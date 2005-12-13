@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -64,7 +75,7 @@ public class Chant_ExplosiveDecompression extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) loudly.  A ball of fire forms around <S-NAME>.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) loudly.  A ball of fire forms around <S-NAME>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -76,19 +87,19 @@ public class Chant_ExplosiveDecompression extends Chant
 						MOB M=target.fetchInhabitant(i);
 						if((M!=null)&&(M!=mob))
 						{
-							FullMsg msg2=new FullMsg(mob,M,this,verbalCastMask(auto)|CMMsg.TYP_FIRE,null);
+							CMMsg msg2=CMClass.getMsg(mob,M,this,verbalCastMask(auto)|CMMsg.TYP_FIRE,null);
 							if(mob.location().okMessage(mob,msg2))
 							{
 								mob.location().send(mob,msg2);
 								invoker=mob;
 							    int numDice = adjustedLevel(mob,asLevel);
-								int damage = Dice.roll(numDice, 10, 50);
+								int damage = CMLib.dice().roll(numDice, 10, 50);
 								if(msg2.value()>0)
 									damage = (int)Math.round(Util.div(damage,2.0));
-								MUDFight.postDamage(mob,M,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flaming blast <DAMAGE> <T-NAME>!");
+								CMLib.combat().postDamage(mob,M,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flaming blast <DAMAGE> <T-NAME>!");
 							}
 							if((M.charStats().getBodyPart(Race.BODY_FOOT)>0)
-							&&(!Sense.isFlying(M))&&(Sense.isStanding(M)))
+							&&(!CMLib.flags().isFlying(M))&&(CMLib.flags().isStanding(M)))
 								mob.location().show(M,null,CMMsg.MASK_GENERAL|CMMsg.TYP_SIT,"<S-NAME> <S-IS-ARE> blown off <S-HIS-HER> feet!");
 						}
 					}

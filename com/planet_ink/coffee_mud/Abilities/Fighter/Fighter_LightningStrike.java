@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -22,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_LightningStrike extends StdAbility
+public class Fighter_LightningStrike extends FighterSkill
 {
 	public String ID() { return "Fighter_LightningStrike"; }
 	public String name(){ return "Lightning Strike";}
@@ -87,7 +97,7 @@ public class Fighter_LightningStrike extends StdAbility
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> seem(s) less drowsy.");
 				else
 					mob.tell("You feel less drowsy.");
-				CommonMsgs.stand(mob,true);
+				CMLib.commands().stand(mob,true);
 			}
 		}
 	}
@@ -116,9 +126,9 @@ public class Fighter_LightningStrike extends StdAbility
 			mob.tell("You are too far away from your target to strike!");
 			return false;
 		}
-		if((!auto)&&(mob.charStats().getStat(CharStats.DEXTERITY)<CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)))
+		if((!auto)&&(mob.charStats().getStat(CharStats.DEXTERITY)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)))
 		{
-			mob.tell("You need at least an "+CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)+" dexterity to do that.");
+			mob.tell("You need at least an "+CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+" dexterity to do that.");
 			return false;
 		}
 
@@ -155,14 +165,14 @@ public class Fighter_LightningStrike extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"":"^F^<FIGHT^><S-NAME> unleash(es) a flurry of lightning strikes against <T-NAMESELF>!^</FIGHT^>^?");
-            CMColor.fixSourceFightColor(msg);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"":"^F^<FIGHT^><S-NAME> unleash(es) a flurry of lightning strikes against <T-NAMESELF>!^</FIGHT^>^?");
+            CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				for(int i=0;i<CMAble.qualifyingClassLevel(mob,this);i++)
+				for(int i=0;i<CMLib.ableMapper().qualifyingClassLevel(mob,this);i++)
 					if((!target.amDead())&&(!anyWeapons(mob)))
-						MUDFight.postAttack(mob,target,null);
+						CMLib.combat().postAttack(mob,target,null);
 				if(!anyWeapons(mob))
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> collapse(s) in exhaustion.");

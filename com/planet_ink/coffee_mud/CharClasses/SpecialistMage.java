@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.CharClasses;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -39,24 +50,24 @@ public class SpecialistMage extends Mage
 			Ability A=(Ability)a.nextElement();
 			if(A!=null)
 			{
-				int level=CMAble.getQualifyingLevel(ID(),true,A.ID());
-				if((!CMAble.getDefaultGain(baseClass(),true,A.ID()))
+				int level=CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID());
+				if((!CMLib.ableMapper().getDefaultGain(baseClass(),true,A.ID()))
 				&&(level>0)
 				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 				{
-					boolean secret=CMAble.getSecretSkill(ID(),true,A.ID());
+					boolean secret=CMLib.ableMapper().getSecretSkill(ID(),true,A.ID());
 					if((A.classificationCode()&Ability.ALL_DOMAINS)==opposed())
 					{
-						if(CMAble.getDefaultGain(baseClass(),true,A.ID()))
-							CMAble.addCharAbilityMapping(ID(),level,A.ID(),0,"",false,secret);
+						if(CMLib.ableMapper().getDefaultGain(baseClass(),true,A.ID()))
+							CMLib.ableMapper().addCharAbilityMapping(ID(),level,A.ID(),0,"",false,secret);
 						else
-							CMAble.delCharAbilityMapping(ID(),A.ID());
+							CMLib.ableMapper().delCharAbilityMapping(ID(),A.ID());
 					}
 					else
 					if((A.classificationCode()&Ability.ALL_DOMAINS)==domain()&&(!secret))
-						CMAble.addCharAbilityMapping(ID(),level,A.ID(),25,true);
+						CMLib.ableMapper().addCharAbilityMapping(ID(),level,A.ID(),25,true);
 					else
-						CMAble.addCharAbilityMapping(ID(),level,A.ID(),0,"",false,secret);
+						CMLib.ableMapper().addCharAbilityMapping(ID(),level,A.ID(),0,"",false,secret);
 				}
 			}
 		}
@@ -91,9 +102,9 @@ public class SpecialistMage extends Mage
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 			&&(domain==opposed())
-			&&(!CMAble.getDefaultGain(ID(),true,msg.tool().ID())))
+			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,msg.tool().ID())))
 			{
-				if(Dice.rollPercentage()>
+				if(CMLib.dice().rollPercentage()>
 				   (myChar.charStats().getStat(CharStats.INTELLIGENCE)*((myChar.charStats().getCurrentClass()==this)?1:2)))
 				{
 					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fizzle(s) a spell.");

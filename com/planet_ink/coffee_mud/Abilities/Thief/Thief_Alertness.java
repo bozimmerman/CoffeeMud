@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -41,7 +52,7 @@ public class Thief_Alertness extends ThiefSkill
 		{
 
 			MOB mob=(MOB)affected;
-			if(!Sense.aliveAwakeMobile(mob,true))
+			if(!CMLib.flags().aliveAwakeMobile(mob,true))
 			{ unInvoke(); return false;}
 			if(mob.location()!=room)
 			{
@@ -51,7 +62,7 @@ public class Thief_Alertness extends ThiefSkill
 				{
 					Item I=room.fetchItem(i);
 					if((I!=null)
-					&&(Sense.canBeSeenBy(I,mob))
+					&&(CMLib.flags().canBeSeenBy(I,mob))
 					&&(I.displayText().length()==0))
 					{
 						if(choices==null) choices=new Vector();
@@ -60,7 +71,7 @@ public class Thief_Alertness extends ThiefSkill
 				}
 				if(choices!=null)
 				{
-					Item I=(Item)choices.elementAt(Dice.roll(1,choices.size(),-1));
+					Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 					mob.tell(I.name()+": "+I.description());
 				}
 			}
@@ -92,7 +103,7 @@ public class Thief_Alertness extends ThiefSkill
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		FullMsg msg=new FullMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_EYES),auto?"<T-NAME> become(s) alert.":"<S-NAME> become(s) suddenly alert.");
+		CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_EYES),auto?"<T-NAME> become(s) alert.":"<S-NAME> become(s) suddenly alert.");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to look alert, but become(s) distracted.");
 		else

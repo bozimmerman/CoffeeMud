@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -81,9 +92,9 @@ public class Chant_Treeform extends Chant
 			item.setDescription(mob.description());
 			item.setDisplayText(mob.displayText());
 			item.setMaterial(EnvResource.RESOURCE_WOOD);
-			Sense.setGettable(item,false);
+			CMLib.flags().setGettable(item,false);
 			item.envStats().setWeight(2000);
-			FullMsg msg2=new FullMsg(msg.source(),item,msg.targetCode(),null);
+			CMMsg msg2=CMClass.getMsg(msg.source(),item,msg.targetCode(),null);
 			if(!okMessage(msg.source(),msg2))
 				return false;
 		}
@@ -145,7 +156,7 @@ public class Chant_Treeform extends Chant
 				mob.curState().setHunger(0);
 				mob.curState().setThirst(0);
 			}
-			CommonMsgs.stand(mob,true);
+			CMLib.commands().stand(mob,true);
 		}
 	}
 
@@ -186,14 +197,14 @@ public class Chant_Treeform extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					target.makePeace();
-					CommonMsgs.stand(target,true);
+					CMLib.commands().stand(target,true);
 					oldState=(CharState)target.curState().copyOf();
 					success=beneficialAffect(mob,target,asLevel,mob.envStats().level()*50);
 					if(success)

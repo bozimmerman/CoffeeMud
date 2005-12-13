@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.Abilities.Thief.Thief_Mark;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -87,7 +98,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),"<S-NAME> turn(s) away for a second.");
+			CMMsg msg=CMClass.getMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),"<S-NAME> turn(s) away for a second.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -100,10 +111,10 @@ public class Skill_MarkDisguise extends Skill_Disguise
 				A.values[4]=""+target.envStats().height();
 				A.values[5]=target.name();
 				A.values[6]=target.charStats().displayClassName();
-				if(Sense.isGood(target))
+				if(CMLib.flags().isGood(target))
 					A.values[7]="good";
 				else
-				if(Sense.isEvil(target))
+				if(CMLib.flags().isEvil(target))
 					A.values[7]="evil";
 
 				mob.recoverCharStats();

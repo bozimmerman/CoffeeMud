@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -54,7 +65,7 @@ public class CorpseEater extends ActiveTicker
 			mob.recoverCharStats();
 			mob.recoverEnvStats();
 			int level=mob.baseEnvStats().level();
-			mob.baseState().setHitPoints(Dice.rollHP(level,mob.baseEnvStats().ability()));
+			mob.baseState().setHitPoints(CMLib.dice().rollHP(level,mob.baseEnvStats().ability()));
 			mob.baseState().setMana(mob.baseCharStats().getCurrentClass().getLevelMana(mob));
 			mob.baseState().setMovement(mob.baseCharStats().getCurrentClass().getLevelMove(mob));
 			mob.recoverMaxState();
@@ -75,7 +86,7 @@ public class CorpseEater extends ActiveTicker
 			for(int i=0;i<thisRoom.numItems();i++)
 			{
 				Item I=thisRoom.fetchItem(i);
-				if((I!=null)&&(I instanceof DeadBody)&&(Sense.canBeSeenBy(I,mob)||Sense.canSmell(mob)))
+				if((I!=null)&&(I instanceof DeadBody)&&(CMLib.flags().canBeSeenBy(I,mob)||CMLib.flags().canSmell(mob)))
 				{
 					if(getParms().length()>0)
 					{
@@ -89,7 +100,7 @@ public class CorpseEater extends ActiveTicker
                         ||(getParms().toUpperCase().indexOf("-MOB")>=0))
                             continue;
                         MOB mob2=makeMOBfromCorpse((DeadBody)I,null);
-						if(!MUDZapper.zapperCheck(getParms(),mob2))
+						if(!CMLib.masking().maskCheck(getParms(),mob2))
                         {
                             mob2.destroy();
 							continue;

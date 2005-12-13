@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -49,7 +60,7 @@ public class Spell_DetectWater extends Spell
 		{
 			if(((I instanceof Drink))
 			&&(((Drink)I).containsDrink())
-			&&(Sense.canBeSeenBy(I,mob)))
+			&&(CMLib.flags().canBeSeenBy(I,mob)))
 				msg.append(I.name()+" contains some sort of liquid.\n\r");
 		}
 		else
@@ -62,7 +73,7 @@ public class Spell_DetectWater extends Spell
 	{
 		StringBuffer msg=new StringBuffer("");
 		if(E==null) return msg.toString();
-		if((E instanceof Room)&&(Sense.canBeSeenBy(E,mob)))
+		if((E instanceof Room)&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
 			Room room=(Room)E;
 			if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
@@ -99,13 +110,13 @@ public class Spell_DetectWater extends Spell
 			}
 		}
 		else
-		if((E instanceof Item)&&(Sense.canBeSeenBy(E,mob)))
+		if((E instanceof Item)&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
 			waterCheck(mob,(Item)E,container,msg);
 			msg.append(waterHere(mob,((Item)E).owner(),(Item)E));
 		}
 		else
-		if((E instanceof MOB)&&(Sense.canBeSeenBy(E,mob)))
+		if((E instanceof MOB)&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
 			for(int i=0;i<((MOB)E).inventorySize();i++)
 			{
@@ -115,10 +126,10 @@ public class Spell_DetectWater extends Spell
 				if(msg2.length()>0)
 					return E.name()+" is carrying some liquids.";
 			}
-			if(CoffeeShops.getShopKeeper(E)!=null)
+			if(CMLib.coffeeShops().getShopKeeper(E)!=null)
 			{
 				StringBuffer msg2=new StringBuffer("");
-				Vector V=CoffeeShops.getShopKeeper(E).getStoreInventory();
+				Vector V=CMLib.coffeeShops().getShopKeeper(E).getStoreInventory();
 				for(int v=0;v<V.size();v++)
 				{
 					Environmental E2=(Environmental)V.elementAt(v);
@@ -219,7 +230,7 @@ public class Spell_DetectWater extends Spell
 			&&(waterHere((MOB)affected,msg.target(),null).length()>0)
 			&&(msg.source()!=msg.target()))
 			{
-				FullMsg msg2=new FullMsg(msg.source(),msg.target(),this,CMMsg.MSG_LOOK,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,null);
+				CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MSG_LOOK,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,null);
 				msg.addTrailerMsg(msg2);
 			}
 		}
@@ -244,7 +255,7 @@ public class Spell_DetectWater extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) liquid sensitivities!":"^S<S-NAME> incant(s) softly, and gain(s) liquid sensitivities!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) liquid sensitivities!":"^S<S-NAME> incant(s) softly, and gain(s) liquid sensitivities!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

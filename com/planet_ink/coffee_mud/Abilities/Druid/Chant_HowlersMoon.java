@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -47,7 +58,7 @@ public class Chant_HowlersMoon extends Chant
 
 		MOB mob=(MOB)affected;
 		if(mob.amFollowing()==null)
-			MUDTracker.wanderAway(mob,true,false);
+			CMLib.tracking().wanderAway(mob,true,false);
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null)&&(mob.amFollowing()==null))
 		{
@@ -84,28 +95,28 @@ public class Chant_HowlersMoon extends Chant
 				Vector choices=fillChoices(room);
 				if(choices.size()==0)
 					return true;
-				fromDir=((Integer)choices.elementAt(Dice.roll(1,choices.size(),-1))).intValue();
+				fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
 			}
 			if(fromDir>=0)
 			{
 				ticksTicked=0;
-				int level=CMAble.lowestQualifyingLevel(ID())+5;
+				int level=CMLib.ableMapper().lowestQualifyingLevel(ID())+5;
 				if(invoker()!=null) level=invoker().envStats().level()+5;
 				MOB target = determineMonster(invoker(),level);
 				Room newRoom=room.getRoomInDir(fromDir);
 				int opDir=Directions.getOpDirectionCode(fromDir);
 				target.bringToLife(newRoom,true);
-				BeanCounter.clearZeroMoney(target,null);
+				CMLib.beanCounter().clearZeroMoney(target,null);
 				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
-				MUDTracker.move(target,opDir,false,false);
+				CMLib.tracking().move(target,opDir,false,false);
 				if(target.location()==room)
 				{
-					int d=Dice.rollPercentage();
+					int d=CMLib.dice().rollPercentage();
 					if((d<33)&&(invoker()!=null)&&(invoker().location()==room))
 					{
-						CommonMsgs.follow(target,invoker(),true);
+						CMLib.commands().follow(target,invoker(),true);
 						beneficialAffect(invoker(),target,0,0);
 						if(target.amFollowing()!=invoker())
 							target.setVictim(invoker());
@@ -181,7 +192,7 @@ public class Chant_HowlersMoon extends Chant
 			mob.tell("You must be further outdoors to summon an animal.");
 			return false;
 		}
-		fromDir=((Integer)choices.elementAt(Dice.roll(1,choices.size(),-1))).intValue();
+		fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -198,7 +209,7 @@ public class Chant_HowlersMoon extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -221,7 +232,7 @@ public class Chant_HowlersMoon extends Chant
 		MOB newMOB=CMClass.getMOB("GenMob");
 		newMOB.baseEnvStats().setAbility(0);
 		newMOB.baseEnvStats().setLevel(level);
-		Factions.setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 		newMOB.baseEnvStats().setWeight(350);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Wolf"));

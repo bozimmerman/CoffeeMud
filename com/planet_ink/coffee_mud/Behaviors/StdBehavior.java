@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -150,7 +161,7 @@ public class StdBehavior implements Behavior
 		MOB monster=(MOB)affecting;
 		if(monster.amDead()) return false;
 		if(monster.location()==null) return false;
-		if(!Sense.aliveAwakeMobile(monster,true)) return false;
+		if(!CMLib.flags().aliveAwakeMobile(monster,true)) return false;
 		return true;
 	}
 
@@ -162,7 +173,7 @@ public class StdBehavior implements Behavior
 		MOB monster=(MOB)affecting;
 		if(!canActAtAll(monster))
 			return false;
-		if(!Sense.isInTheGame(monster,false)) return false;
+		if(!CMLib.flags().isInTheGame(monster,false)) return false;
 		if(monster.isInCombat()) return false;
 		if(monster.amFollowing()!=null)  return false;
 		if(monster.curState().getHitPoints()<((int)Math.round(monster.maxState().getHitPoints()/2.0)))

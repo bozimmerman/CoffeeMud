@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 import java.util.regex.*;
 
@@ -217,7 +228,7 @@ public class GModify extends StdCommand
         if(checkedOut)
         {
             if(changes.size()==0)
-                mob.tell("Matched on "+E.name()+" from "+CMMap.getExtendedRoomID(CoffeeUtensils.roomLocation(E))+".");
+                mob.tell("Matched on "+E.name()+" from "+CMLib.map().getExtendedRoomID(CMLib.utensils().roomLocation(E))+".");
             else
             for(int i=0;i<changes.size();i++)
             {
@@ -505,7 +516,7 @@ public class GModify extends StdCommand
             return false;
         }
         if(placesToDo.size()==0)
-        for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+        for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
         {
             Area A=(Area)a.nextElement();
             if(A.getProperMap().hasMoreElements()
@@ -557,9 +568,9 @@ public class GModify extends StdCommand
             boolean oldMobility=R.getArea().getMobility();
             R.getArea().toggleMobility(false);
             if(changes.size()==0)
-                R=CoffeeMaker.makeNewRoomContent(R);
+                R=CMLib.coffeeMaker().makeNewRoomContent(R);
             else
-                CoffeeUtensils.resetRoom(R);
+                CMLib.utensils().resetRoom(R);
             if(R==null) continue;
             boolean savemobs=false;
             boolean saveitems=false;
@@ -581,9 +592,9 @@ public class GModify extends StdCommand
                     if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
                         savemobs=true;
                 }
-                if(CoffeeShops.getShopKeeper(M)!=null)
+                if(CMLib.coffeeShops().getShopKeeper(M)!=null)
                 {
-                    Vector V=CoffeeShops.getShopKeeper(M).getStoreInventory();
+                    Vector V=CMLib.coffeeShops().getShopKeeper(M).getStoreInventory();
                     for(int i=0;i<V.size();i++)
                     {
                         if(V.elementAt(i) instanceof Item)
@@ -595,8 +606,8 @@ public class GModify extends StdCommand
                     }
                 }
             }
-            if(saveitems) CMClass.DBEngine().DBUpdateItems(R);
-            if(savemobs) CMClass.DBEngine().DBUpdateMOBs(R);
+            if(saveitems) CMLib.database().DBUpdateItems(R);
+            if(savemobs) CMLib.database().DBUpdateMOBs(R);
             if((mob.session()!=null)&&(changes.size()>0)) 
                 mob.session().rawPrint(".");
             R.getArea().toggleMobility(oldMobility);

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -45,7 +56,7 @@ public class Thief_SlipItem extends ThiefSkill
 		String itemToSteal=(String)commands.elementAt(0);
 
 		MOB target=mob.location().fetchInhabitant(Util.combine(commands,1));
-		if((target==null)||(target.amDead())||(!Sense.canBeSeenBy(target,mob)))
+		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+Util.combine(commands,1)+"' here.");
 			return false;
@@ -66,7 +77,7 @@ public class Thief_SlipItem extends ThiefSkill
 			return false;
 
 		Item stolen=target.fetchWornItem(itemToSteal);
-		if((stolen==null)||(!Sense.canBeSeenBy(stolen,mob)))
+		if((stolen==null)||(!CMLib.flags().canBeSeenBy(stolen,mob)))
 		{
 			mob.tell(target.name()+" doesn't seem to be wearing '"+itemToSteal+"'.");
 			return false;
@@ -78,22 +89,22 @@ public class Thief_SlipItem extends ThiefSkill
 		}
 
 		int discoverChance=(target.charStats().getStat(CharStats.WISDOM)*5)-(levelDiff*5);
-		if(!Sense.canBeSeenBy(mob,target))
+		if(!CMLib.flags().canBeSeenBy(mob,target))
 			discoverChance+=50;
 		if(discoverChance>95) discoverChance=95;
 		if(discoverChance<5) discoverChance=5;
 
 		if(levelDiff>0)
-			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?5:15));
+			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?5:15));
 		else
-			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?1:2));
+			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?1:2));
 		boolean success=profficiencyCheck(mob,levelDiff,auto);
 
 		if(!success)
 		{
-			if(Dice.rollPercentage()>discoverChance)
+			if(CMLib.dice().rollPercentage()>discoverChance)
 			{
-				FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to slip "+stolen.name()+" off <T-NAME>; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to slip "+stolen.name()+" off you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to slip "+stolen.name()+" off <T-NAME> and fails!");
+				CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to slip "+stolen.name()+" off <T-NAME>; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to slip "+stolen.name()+" off you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to slip "+stolen.name()+" off <T-NAME> and fails!");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
@@ -112,12 +123,12 @@ public class Thief_SlipItem extends ThiefSkill
 			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;
 			int hisCode=CMMsg.MSG_THIEF_ACT;
-			if(Dice.rollPercentage()<discoverChance)
+			if(CMLib.dice().rollPercentage()<discoverChance)
 				hisStr=null;
 			else
 				hisCode=hisCode|((target.mayIFight(mob))?CMMsg.MASK_MALICIOUS:0);
 
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,str,hisCode,hisStr,CMMsg.NO_EFFECT,null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,str,hisCode,hisStr,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -132,12 +143,12 @@ public class Thief_SlipItem extends ThiefSkill
 				else
 				if(((hisStr==null)||mob.isMonster())
 				&&(!alreadyFighting)
-				&&((stolen==null)||(Dice.rollPercentage()>stolen.envStats().level())))
+				&&((stolen==null)||(CMLib.dice().rollPercentage()>stolen.envStats().level())))
 				{
 					if(target.getVictim()==mob)
 						target.makePeace();
 				}
-				msg=new FullMsg(target,stolen,null,CMMsg.MSG_REMOVE,CMMsg.MSG_REMOVE,CMMsg.MSG_NOISE,null);
+				msg=CMClass.getMsg(target,stolen,null,CMMsg.MSG_REMOVE,CMMsg.MSG_REMOVE,CMMsg.MSG_NOISE,null);
 				if(target.location().okMessage(target,msg))
 					target.location().send(mob,msg);
 			}

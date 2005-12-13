@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -121,7 +132,7 @@ public class ProtectedCitizens extends ActiveTicker
 
 		if((!mob.isMonster())
 		||(!mob.isInCombat())
-		||(!Sense.aliveAwakeMobileUnbound(mob,true))
+		||(!CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 		||(mob.location()==null))
 		{
 			if(assisters.containsKey(mob))
@@ -129,7 +140,7 @@ public class ProtectedCitizens extends ActiveTicker
 			return false;
 		}
 
-		if(!MUDZapper.zapperCheck(getProtectedZapper(),mob))
+		if(!CMLib.masking().maskCheck(getProtectedZapper(),mob))
 			return false;
 
 		int assistance=0;
@@ -144,7 +155,7 @@ public class ProtectedCitizens extends ActiveTicker
 		if(assistance>=maxAssistance)
 			return true;
 
-		String claim=getClaims()[Dice.roll(1,getClaims().length,-1)].trim();
+		String claim=getClaims()[CMLib.dice().roll(1,getClaims().length,-1)].trim();
 		if(claim.startsWith(","))
 			mob.doCommand(Util.parse("EMOTE \""+claim.substring(1).trim()+"\""));
 		else
@@ -158,7 +169,7 @@ public class ProtectedCitizens extends ActiveTicker
 			assMOBS=new Vector();
 			assisters.put(mob,assMOBS);
 		}
-		MUDTracker.getRadiantRooms(thisRoom,rooms,true,true,false,false,false,null,radius);
+		CMLib.tracking().getRadiantRooms(thisRoom,rooms,true,true,false,false,false,null,radius);
 		for(int a=0;a<assMOBS.size();a++)
 		{
 			MOB M=(MOB)assMOBS.elementAt(a);
@@ -166,20 +177,20 @@ public class ProtectedCitizens extends ActiveTicker
 			&&(M.mayIFight(mob.getVictim()))
 			&&(M!=mob.getVictim())
 			&&(M.location()!=null)
-			&&(Sense.aliveAwakeMobileUnbound(M,true)
+			&&(CMLib.flags().aliveAwakeMobileUnbound(M,true)
 			&&(!M.isInCombat())
 			&&(!BrotherHelper.isBrother(mob.getVictim(),M))
 			&&(BrotherHelper.canFreelyBehaveNormal(M))
 			&&(M.fetchEffect("Skill_Track")==null)
-			&&(Sense.canHear(M))))
+			&&(CMLib.flags().canHear(M))))
 			{
 				if(M.location()==thisRoom)
-					MUDFight.postAttack(M,mob.getVictim(),M.fetchWieldedItem());
+					CMLib.combat().postAttack(M,mob.getVictim(),M.fetchWieldedItem());
 				else
 				{
-					int dir=MUDTracker.radiatesFromDir(M.location(),rooms);
+					int dir=CMLib.tracking().radiatesFromDir(M.location(),rooms);
 					if(dir>=0)
-						MUDTracker.move(M,dir,false,false);
+						CMLib.tracking().move(M,dir,false,false);
 				}
 				assistance++;
 			}
@@ -198,15 +209,15 @@ public class ProtectedCitizens extends ActiveTicker
 					if((M!=null)
 					&&(M.mayIFight(mob.getVictim()))
 					&&(M!=mob.getVictim())
-					&&(Sense.aliveAwakeMobileUnbound(M,true)
+					&&(CMLib.flags().aliveAwakeMobileUnbound(M,true)
 					&&(!M.isInCombat())
-					&&((Sense.isMobile(M))||(M.location()==thisRoom))
+					&&((CMLib.flags().isMobile(M))||(M.location()==thisRoom))
 					&&(!assMOBS.contains(M))
 					&&(BrotherHelper.canFreelyBehaveNormal(M))
 					&&(!BrotherHelper.isBrother(mob.getVictim(),M))
-					&&(MUDZapper.zapperCheck(getCityguardZapper(),M))
+					&&(CMLib.masking().maskCheck(getCityguardZapper(),M))
 					&&(M.fetchEffect("Skill_Track")==null)
-					&&(Sense.canHear(M))))
+					&&(CMLib.flags().canHear(M))))
 					{
 						boolean notAllowed=false;
 						for(Enumeration a=assisters.elements();a.hasMoreElements();)
@@ -219,12 +230,12 @@ public class ProtectedCitizens extends ActiveTicker
 						{
 							assMOBS.addElement(M);
 							if(M.location()==thisRoom)
-								MUDFight.postAttack(M,mob.getVictim(),M.fetchWieldedItem());
+								CMLib.combat().postAttack(M,mob.getVictim(),M.fetchWieldedItem());
 							else
 							{
-								int dir=MUDTracker.radiatesFromDir(M.location(),rooms);
+								int dir=CMLib.tracking().radiatesFromDir(M.location(),rooms);
 								if(dir>=0)
-									MUDTracker.move(M,dir,false,false);
+									CMLib.tracking().move(M,dir,false,false);
 							}
 							assistance++;
 						}

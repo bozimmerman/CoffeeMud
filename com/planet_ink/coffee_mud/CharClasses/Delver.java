@@ -1,10 +1,21 @@
 package com.planet_ink.coffee_mud.CharClasses;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /*
    Copyright 2000-2005 Bo Zimmerman
@@ -54,91 +65,91 @@ public class Delver extends StdCharClass
 		if(!loaded())
 		{
 			setLoaded(true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",0,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",50,false);
-			CMAble.addCharAbilityMapping(ID(),1,"Fishing",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",100,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_WildernessLore",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Chant_SummonFungus",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Chant_SummonPool",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",0,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",50,false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Fishing",50,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",100,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WildernessLore",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonFungus",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonPool",50,true);
 
-			CMAble.addCharAbilityMapping(ID(),2,"Chant_Tether",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Chant_SummonWater",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chant_Tether",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chant_SummonWater",false);
 
-			CMAble.addCharAbilityMapping(ID(),3,"Chant_CaveFishing",true);
-			CMAble.addCharAbilityMapping(ID(),3,"Chant_Darkvision",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_CaveFishing",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_Darkvision",false);
 
-			CMAble.addCharAbilityMapping(ID(),4,"Chant_Boulderbash",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Chant_SenseMetal",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_Boulderbash",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_SenseMetal",false);
 
-			CMAble.addCharAbilityMapping(ID(),5,"Skill_WandUse",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Chant_StrikeBarren",false);
-			CMAble.addCharAbilityMapping(ID(),5,"Chant_DeepDarkness",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_WandUse",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_StrikeBarren",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_DeepDarkness",false);
 
-			CMAble.addCharAbilityMapping(ID(),6,"Chant_Mold",false);
-			CMAble.addCharAbilityMapping(ID(),6,"Chant_MagneticField",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_Mold",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_MagneticField",false);
 
-			CMAble.addCharAbilityMapping(ID(),7,"Chant_EndureRust",true);
-			CMAble.addCharAbilityMapping(ID(),7,"Chant_Brittle",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_EndureRust",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_Brittle",false);
 
-			CMAble.addCharAbilityMapping(ID(),8,"Chant_FodderSignal",false);
-			CMAble.addCharAbilityMapping(ID(),8,"Chant_Den",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_FodderSignal",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_Den",false);
 
-			CMAble.addCharAbilityMapping(ID(),9,"Chant_Rockfeet",false);
-			CMAble.addCharAbilityMapping(ID(),9,"Chant_Earthpocket",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_Rockfeet",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_Earthpocket",true);
 
-			CMAble.addCharAbilityMapping(ID(),10,"Chant_CrystalGrowth",false);
-			CMAble.addCharAbilityMapping(ID(),10,"Druid_GolemForm",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_CrystalGrowth",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Druid_GolemForm",false);
 
-			CMAble.addCharAbilityMapping(ID(),11,"Chant_CaveIn",false);
-			CMAble.addCharAbilityMapping(ID(),11,"Chant_PlantPass",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_CaveIn",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_PlantPass",true);
 
-			CMAble.addCharAbilityMapping(ID(),12,"Chant_Rockthought",false);
-			CMAble.addCharAbilityMapping(ID(),12,"Chant_SnatchLight",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_Rockthought",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_SnatchLight",false);
 
-			CMAble.addCharAbilityMapping(ID(),13,"Chant_Drifting",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Chant_DistantFungalGrowth",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_Drifting",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_DistantFungalGrowth",false);
 
-			CMAble.addCharAbilityMapping(ID(),14,"Chant_Stonewalking",false);
-			CMAble.addCharAbilityMapping(ID(),14,"Chant_Bury",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_Stonewalking",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_Bury",false);
 
-			CMAble.addCharAbilityMapping(ID(),15,"Chant_FungalBloom",false);
-			CMAble.addCharAbilityMapping(ID(),15,"Chant_SacredEarth",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_FungalBloom",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_SacredEarth",true);
 
-			CMAble.addCharAbilityMapping(ID(),16,"Chant_BrownMold",false);
-			CMAble.addCharAbilityMapping(ID(),16,"Chant_SenseOres",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_BrownMold",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_SenseOres",false);
 
-			CMAble.addCharAbilityMapping(ID(),17,"Chant_MagneticEarth",false);
-			CMAble.addCharAbilityMapping(ID(),17,"Chant_Earthquake",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_MagneticEarth",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_Earthquake",true);
 
-			CMAble.addCharAbilityMapping(ID(),18,"Chant_Labyrinth",false);
-			CMAble.addCharAbilityMapping(ID(),18,"Chant_FungusFeet",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_Labyrinth",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_FungusFeet",false);
 
-			CMAble.addCharAbilityMapping(ID(),19,"Chant_RustCurse",false);
-			CMAble.addCharAbilityMapping(ID(),19,"Chant_TremorSense",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_RustCurse",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_TremorSense",true);
 
-			CMAble.addCharAbilityMapping(ID(),20,"Chant_StoneFriend",false);
-			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_StoneFriend",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Scrapping",false);
 
-			CMAble.addCharAbilityMapping(ID(),21,"Chant_Worms",false);
-			CMAble.addCharAbilityMapping(ID(),21,"Chant_SenseGems",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_Worms",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_SenseGems",true);
 
-			CMAble.addCharAbilityMapping(ID(),22,"Chant_Unbreakable",false);
-			CMAble.addCharAbilityMapping(ID(),22,"Chant_Homeopathy",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_Unbreakable",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_Homeopathy",false);
 
-			CMAble.addCharAbilityMapping(ID(),23,"Chant_FindOre",true);
-			CMAble.addCharAbilityMapping(ID(),23,"Chant_MassFungalGrowth",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_FindOre",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_MassFungalGrowth",false);
 
-			CMAble.addCharAbilityMapping(ID(),24,"Chant_FindGem",false);
-			CMAble.addCharAbilityMapping(ID(),24,"Chant_VolcanicChasm",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_FindGem",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_VolcanicChasm",false);
 
-			CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonRockGolem",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Chant_MetalMold",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_SummonRockGolem",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_MetalMold",true);
 
-			CMAble.addCharAbilityMapping(ID(),30,"Chant_ExplosiveDecompression",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_ExplosiveDecompression",false);
 		}
 	}
 
@@ -158,7 +169,7 @@ public class Delver extends StdCharClass
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
 		&&(myChar.isMine(msg.tool()))
 		&&(isQualifyingAuthority(myChar,(Ability)msg.tool()))
-		&&(Dice.rollPercentage()<50))
+		&&(CMLib.dice().rollPercentage()<50))
 		{
 			if(((Ability)msg.tool()).appropriateToMyFactions(myChar))
 				return true;
@@ -230,7 +241,7 @@ public class Delver extends StdCharClass
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
 		{
-			Vector V=CMAble.getUpToLevelListings(ID(),
+			Vector V=CMLib.ableMapper().getUpToLevelListings(ID(),
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
@@ -239,8 +250,8 @@ public class Delver extends StdCharClass
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
-				&&(!CMAble.getDefaultGain(ID(),true,A.ID())))
-					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),true,A.ID()),CMAble.getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProfficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}
 		}
 	}

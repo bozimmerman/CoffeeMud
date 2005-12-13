@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -28,7 +39,7 @@ public class Read extends StdCommand
 
 	public void read(MOB mob, Environmental thisThang, String theRest)
 	{
-		if((thisThang==null)||((!(thisThang instanceof Item)&&(!(thisThang instanceof Exit))))||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
+		if((thisThang==null)||((!(thisThang instanceof Item)&&(!(thisThang instanceof Exit))))||((thisThang!=null)&&(!CMLib.flags().canBeSeenBy(thisThang,mob))))
 		{
 			mob.tell("You don't seem to have that.");
 			return;
@@ -36,7 +47,7 @@ public class Read extends StdCommand
 		if(thisThang instanceof Item)
 		{
 			Item thisItem=(Item)thisThang;
-			if((Sense.isGettable(thisItem))&&(!mob.isMine(thisItem)))
+			if((CMLib.flags().isGettable(thisItem))&&(!mob.isMine(thisItem)))
 			{
 				mob.tell("You don't seem to be carrying that.");
 				return;
@@ -46,7 +57,7 @@ public class Read extends StdCommand
 		String soMsg=(mob.isMine(thisThang)?srcMsg:null);
 		String tMsg=theRest;
 		if((tMsg.trim().length()==0)||(thisThang instanceof MOB)) tMsg=soMsg;
-		FullMsg newMsg=new FullMsg(mob,thisThang,null,CMMsg.MSG_READ,srcMsg,CMMsg.MSG_READ,tMsg,CMMsg.MSG_READ,soMsg);
+		CMMsg newMsg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_READ,srcMsg,CMMsg.MSG_READ,tMsg,CMMsg.MSG_READ,soMsg);
 		if(mob.location().okMessage(mob,newMsg))
 			mob.location().send(mob,newMsg);
 

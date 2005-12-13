@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -68,34 +79,34 @@ public class Prayer_Revival extends Prayer
 						}
 					}
 					else
-					if(Dice.rollPercentage()<10)
+					if(CMLib.dice().rollPercentage()<10)
 						inhabs.addElement(M);
 				}
 			}
-			Deity D=CMMap.getDeity(mob.getWorshipCharID());
-			if((D!=null)&&(Dice.rollPercentage()<50))
-			switch(Dice.roll(1,13,0))
+			Deity D=CMLib.map().getDeity(mob.getWorshipCharID());
+			if((D!=null)&&(CMLib.dice().rollPercentage()<50))
+			switch(CMLib.dice().roll(1,13,0))
 			{
-			case 1:	CommonMsgs.say(mob,null,D.name()+" is great! Shout "+Util.capitalizeAndLower(D.charStats().hisher())+" praises!",false,false); break;
-			case 2:	CommonMsgs.say(mob,null,"Can I hear an AMEN?!",false,false); break;
-			case 3:	CommonMsgs.say(mob,null,"Praise "+D.name()+"!",false,false); break;
-			case 4:	CommonMsgs.say(mob,null,"Halleluyah! "+D.name()+" is great!",false,false); break;
-			case 5:	CommonMsgs.say(mob,null,"Let's hear it for "+D.name()+"!",false,false); break;
-			case 6:	CommonMsgs.say(mob,null,"Exalt the name of "+D.name()+"!",false,false); break;
+			case 1:	CMLib.commands().say(mob,null,D.name()+" is great! Shout "+Util.capitalizeAndLower(D.charStats().hisher())+" praises!",false,false); break;
+			case 2:	CMLib.commands().say(mob,null,"Can I hear an AMEN?!",false,false); break;
+			case 3:	CMLib.commands().say(mob,null,"Praise "+D.name()+"!",false,false); break;
+			case 4:	CMLib.commands().say(mob,null,"Halleluyah! "+D.name()+" is great!",false,false); break;
+			case 5:	CMLib.commands().say(mob,null,"Let's hear it for "+D.name()+"!",false,false); break;
+			case 6:	CMLib.commands().say(mob,null,"Exalt the name of "+D.name()+"!",false,false); break;
 			case 7:	if(clerics.size()>1)
 					{
-						MOB M=(MOB)clerics.elementAt(Dice.roll(1,clerics.size(),-1));
+						MOB M=(MOB)clerics.elementAt(CMLib.dice().roll(1,clerics.size(),-1));
 						if(M!=mob)
-							CommonMsgs.say(mob,null,"Preach it "+M.name()+"!",false,false);
+							CMLib.commands().say(mob,null,"Preach it "+M.name()+"!",false,false);
 						else
-							CommonMsgs.say(mob,null,"I LOVE "+D.name()+"!",false,false);
+							CMLib.commands().say(mob,null,"I LOVE "+D.name()+"!",false,false);
 					}
 					else
-						CommonMsgs.say(mob,null,"I LOVE "+D.name()+"!",false,false);
+						CMLib.commands().say(mob,null,"I LOVE "+D.name()+"!",false,false);
 					break;
-			case 8:	CommonMsgs.say(mob,null,"Holy is the name of "+D.name()+"!",false,false); break;
-			case 9:	CommonMsgs.say(mob,null,"Do you BELIEVE?!? I BELIEVE!!!",false,false); break;
-			case 10: CommonMsgs.say(mob,null,"Halleluyah!",false,false); break;
+			case 8:	CMLib.commands().say(mob,null,"Holy is the name of "+D.name()+"!",false,false); break;
+			case 9:	CMLib.commands().say(mob,null,"Do you BELIEVE?!? I BELIEVE!!!",false,false); break;
+			case 10: CMLib.commands().say(mob,null,"Halleluyah!",false,false); break;
 			case 11: mob.enqueCommand(Util.parse("EMOTE do(es) a spirit-filled dance!"),0); break;
 			case 12: mob.enqueCommand(Util.parse("EMOTE wave(s) <S-HIS-HER> hands in the air!"),0);  break;
 			case 13: mob.enqueCommand(Util.parse("EMOTE catch(es) the spirit of "+D.name()+"!"),0); break;
@@ -104,7 +115,7 @@ public class Prayer_Revival extends Prayer
 			{
 				levels=levels/clerics.size();
 				levels=levels+((clerics.size()-3)*5);
-				MOB M=(MOB)inhabs.elementAt(Dice.roll(1,inhabs.size(),-1));
+				MOB M=(MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
 				if((M!=null)&&(levels>=M.envStats().level()))
 				{
 					MOB vic1=mob.getVictim();
@@ -126,7 +137,7 @@ public class Prayer_Revival extends Prayer
 									{
 										MOB M2=(MOB)clerics.elementAt(c);
 										if(M2!=mob)
-											MUDFight.postExperience(M2,M,null,25,false);
+											CMLib.combat().postExperience(M2,M,null,25,false);
 									}
 								}
 							}
@@ -145,7 +156,7 @@ public class Prayer_Revival extends Prayer
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		if((target.getWorshipCharID().length()==0)
-		||(CMMap.getDeity(target.getWorshipCharID())==null))
+		||(CMLib.map().getDeity(target.getWorshipCharID())==null))
 		{
 			target.tell("You must worship a god to use this prayer.");
 			return false;
@@ -162,7 +173,7 @@ public class Prayer_Revival extends Prayer
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> start(s) a revival!":"^S<S-NAME> "+prayWord(mob)+" for successful revival, and then start(s) MOVING!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> start(s) a revival!":"^S<S-NAME> "+prayWord(mob)+" for successful revival, and then start(s) MOVING!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

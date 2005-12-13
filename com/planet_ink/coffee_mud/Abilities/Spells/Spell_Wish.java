@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -64,7 +75,7 @@ public class Spell_Wish extends Spell
 	public void wishDrain(MOB mob, int expLoss, boolean conLoss)
 	{
 		if(mob==null) return;
-		MUDFight.postExperience(mob,null,null,-expLoss,false);
+		CMLib.combat().postExperience(mob,null,null,-expLoss,false);
 		if(conLoss)
 		{
 			mob.tell("Your wish drains you of "+(expLoss)+" experience points and a point of constitution.");
@@ -72,7 +83,7 @@ public class Spell_Wish extends Spell
 			mob.baseCharStats().setStat(CharStats.MAX_CONSTITUTION_ADJ,mob.baseCharStats().getStat(CharStats.MAX_CONSTITUTION_ADJ)-1);
 			mob.recoverCharStats();
 			if(mob.charStats().getStat(CharStats.CONSTITUTION)<1)
-				MUDFight.postDeath(mob,mob,null);
+				CMLib.combat().postDeath(mob,mob,null);
 		}
 		else
 			mob.tell("Your wish drains "+(expLoss)+" experience points.");
@@ -89,7 +100,7 @@ public class Spell_Wish extends Spell
 		if(mob.isMonster())
 		{
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> sigh(s).");
-			CommonMsgs.say(mob,null,"My wishes never seem to come true.",false,false);
+			CMLib.commands().say(mob,null,"My wishes never seem to come true.",false,false);
 			return false;
 		}
 
@@ -110,11 +121,11 @@ public class Spell_Wish extends Spell
 			return false;
 
 		int baseLoss=25;
-		FullMsg msg=new FullMsg(mob,null,this,affectType(auto),"^S<S-NAME> wish(es) for '"+myWish+"'!!^?");
+		CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),"^S<S-NAME> wish(es) for '"+myWish+"'!!^?");
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(!success)
 		{
-			MUDFight.postExperience(mob,null,null,-baseLoss,false);
+			CMLib.combat().postExperience(mob,null,null,-baseLoss,false);
 			beneficialWordsFizzle(mob,null,"<S-NAME> wish(es) for '"+myWish+"', but the spell fizzles.");
 			return false;
 		}
@@ -138,7 +149,7 @@ public class Spell_Wish extends Spell
 			myWish=" "+myWish+" ";
 			if(wishV.size()==0)
 			{
-				MUDFight.postExperience(mob,null,null,-baseLoss,false);
+				CMLib.combat().postExperience(mob,null,null,-baseLoss,false);
 				beneficialWordsFizzle(mob,null,"<S-NAME> make(s) a wish comes true! Nothing happens!");
 				return false;
 			}
@@ -173,11 +184,11 @@ public class Spell_Wish extends Spell
 			if((goldCheck.size()>1)
 			&&(Util.isNumber((String)goldCheck.firstElement()))
 			&&(Util.s_int((String)goldCheck.firstElement())>0)
-			&&(EnglishParser.matchAnyCurrencySet(Util.combine(goldCheck,1))!=null))
+			&&(CMLib.english().matchAnyCurrencySet(Util.combine(goldCheck,1))!=null))
 			{
 				Coins newItem=(Coins)CMClass.getItem("StdCoins");
-				newItem.setCurrency(EnglishParser.matchAnyCurrencySet(Util.combine(goldCheck,1)));
-				newItem.setDenomination(EnglishParser.matchAnyDenomination(newItem.getCurrency(),Util.combine(goldCheck,1)));
+				newItem.setCurrency(CMLib.english().matchAnyCurrencySet(Util.combine(goldCheck,1)));
+				newItem.setDenomination(CMLib.english().matchAnyDenomination(newItem.getCurrency(),Util.combine(goldCheck,1)));
 				newItem.setNumberOfCoins(Util.s_long((String)goldCheck.firstElement()));
 				newItem.setContainer(null);
 				newItem.wearAt(0);
@@ -198,10 +209,10 @@ public class Spell_Wish extends Spell
 			foundThang=maybeAdd(E,thangsFound,foundThang);
 			try
 			{
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room room=(Room)r.nextElement();
-					if(Sense.canAccess(mob,room))
+					if(CMLib.flags().canAccess(mob,room))
 					{
 						E=room.fetchFromRoomFavorMOBs(null,objectWish,Item.WORN_REQ_UNWORNONLY);
 						foundThang=maybeAdd(E,thangsFound,foundThang);
@@ -210,10 +221,10 @@ public class Spell_Wish extends Spell
 		    }catch(NoSuchElementException nse){}
 		    try
 		    {
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room room=(Room)r.nextElement();
-					if(Sense.canAccess(mob,room))
+					if(CMLib.flags().canAccess(mob,room))
 					for(int m=0;m<room.numInhabitants();m++)
 					{
 						MOB mob2=room.fetchInhabitant(m);
@@ -221,9 +232,9 @@ public class Spell_Wish extends Spell
 						{
 							E=mob2.fetchInventory(objectWish);
 							foundThang=maybeAdd(E,thangsFound,foundThang);
-							if(CoffeeShops.getShopKeeper(mob2)!=null)
+							if(CMLib.coffeeShops().getShopKeeper(mob2)!=null)
 							{
-								E=CoffeeShops.getShopKeeper(mob2).getStock(objectWish,mob);
+								E=CMLib.coffeeShops().getShopKeeper(mob2).getStock(objectWish,mob);
 								foundThang=maybeAdd(E,thangsFound,foundThang);
 							}
 						}
@@ -367,7 +378,7 @@ public class Spell_Wish extends Spell
 				{
 					int exp=mob.getExperience();
 					//int hp=((MOB)target).curState().getHitPoints();
-					MUDFight.postDeath(mob,(MOB)target,null);
+					CMLib.combat().postDeath(mob,(MOB)target,null);
 					if((!CMSecurity.isDisabled("EXPERIENCE"))
 					&&!mob.charStats().getCurrentClass().expless()
 					&&!mob.charStats().getMyRace().expless()
@@ -455,11 +466,11 @@ public class Spell_Wish extends Spell
 				{
 				    try
 				    {
-						for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 						{
 							Room room=(Room)r.nextElement();
-							if(Sense.canAccess(mob,room))
-							if(EnglishParser.containsString(room.displayText(),locationWish.trim()))
+							if(CMLib.flags().canAccess(mob,room))
+							if(CMLib.english().containsString(room.displayText(),locationWish.trim()))
 							{
 							   newRoom=room;
 							   break;
@@ -593,15 +604,15 @@ public class Spell_Wish extends Spell
 				   amount=Util.s_int(wsh.substring(x).trim());
 				if(target!=mob)
 				{
-					MUDFight.postExperience(mob,null,null,-(amount*4),false);
+					CMLib.combat().postExperience(mob,null,null,-(amount*4),false);
 					mob.tell("Your wish has drained you of "+(amount*4)+" experience points.");
 				}
 				else
 				{
-					MUDFight.postExperience(mob,null,null,-amount,false);
+					CMLib.combat().postExperience(mob,null,null,-amount,false);
 					mob.tell("Your wish has drained you of "+amount+" experience points.");
 				}
-				MUDFight.postExperience((MOB)target,null,null,amount,false);
+				CMLib.combat().postExperience((MOB)target,null,null,amount,false);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" gains experience!");
 				return true;
 			}
@@ -688,7 +699,7 @@ public class Spell_Wish extends Spell
 					int newLevel=target.baseEnvStats().level()+level;
 					if(target instanceof MOB)
 					{
-					    if(((newLevel>CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL))
+					    if(((newLevel>CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL))
 					            ||(((MOB)target).charStats().getCurrentClass().leveless())
 					            ||(((MOB)target).charStats().getMyRace().leveless()))
 					    &&(newLevel>target.baseEnvStats().level()))
@@ -849,7 +860,7 @@ public class Spell_Wish extends Spell
 					mob.tell(str.toString()+"\n\r");
 					((MOB)target).baseCharStats().setCurrentClass(C);
 					if((!((MOB)target).isMonster())&&(((MOB)target).soulMate()==null))
-						CoffeeTables.bump(target,CoffeeTables.STAT_CLASSCHANGE);
+						CMLib.coffeeTables().bump(target,CoffeeTableRow.STAT_CLASSCHANGE);
 					((MOB)target).baseCharStats().getCurrentClass().startCharacter((MOB)target,false,true);
 					((MOB)target).recoverCharStats();
 					((MOB)target).recoverEnvStats();
@@ -878,18 +889,18 @@ public class Spell_Wish extends Spell
 					MOB tm=(MOB)target;
 					Ability A=CMClass.findAbility(myWish.substring(code).trim());
 					if((A!=null)
-					&&(CMAble.lowestQualifyingLevel(A.ID())>0))
+					&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0))
 					{
-						if(CMAble.lowestQualifyingLevel(A.ID())>=25)
+						if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>=25)
 						{
-							MUDFight.postExperience(mob,null,null,-baseLoss,false);
+							CMLib.combat().postExperience(mob,null,null,-baseLoss,false);
 							mob.tell("Your wish has drained you of "+baseLoss+" experience points, but that is beyond your wishing ability.");
 							return false;
 						}
 						if(tm.fetchAbility(A.ID())!=null)
 						{
 							A=tm.fetchAbility(A.ID());
-							MUDFight.postExperience(mob,null,null,-baseLoss,false);
+							CMLib.combat().postExperience(mob,null,null,-baseLoss,false);
 							mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 						}
 						else
@@ -913,7 +924,7 @@ public class Spell_Wish extends Spell
 			int foundAttribute=-1;
 			for(int attributes=0;attributes<CharStats.TRAITS.length;attributes++)
 			{
-				if(EnglishParser.containsString(myWish,CharStats.TRAITS[attributes]))
+				if(CMLib.english().containsString(myWish,CharStats.TRAITS[attributes]))
 				{	foundAttribute=attributes; break;}
 			}
 			if(myWish.indexOf("STRONG")>=0)
@@ -1056,7 +1067,7 @@ public class Spell_Wish extends Spell
 				return true;
 			}
 
-			MUDFight.postExperience(mob,null,null,-baseLoss,false);
+			CMLib.combat().postExperience(mob,null,null,-baseLoss,false);
 			Log.sysOut("Wish",mob.Name()+" unsuccessfully wished for '"+Util.combine(commands,0)+"'");
 			mob.tell("Your attempted wish has cost you "+baseLoss+" experience points, but it did not come true.  You might try rewording your wish next time.");
 			return false;

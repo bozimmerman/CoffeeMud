@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -46,7 +57,7 @@ public class Thiefness extends CombatAbilities
 		if(!(ticking instanceof MOB)) return true;
 		MOB mob=(MOB)ticking;
 		if((--tickDown)<=0)
-		if((Dice.rollPercentage()<10)&&(mob.location()!=null))
+		if((CMLib.dice().rollPercentage()<10)&&(mob.location()!=null))
 		{
 			tickDown=2;
 			MOB victim=null;
@@ -59,7 +70,7 @@ public class Thiefness extends CombatAbilities
 				if((potentialVictim!=null)
 				   &&(potentialVictim!=mob)
 				   &&(!potentialVictim.isMonster())
-				   &&(Sense.canBeSeenBy(potentialVictim,mob)))
+				   &&(CMLib.flags().canBeSeenBy(potentialVictim,mob)))
 					victim=potentialVictim;
 			}
 			if((victim!=null)
@@ -67,7 +78,7 @@ public class Thiefness extends CombatAbilities
 			&&(!CMSecurity.isAllowed(victim,victim.location(),"ORDER")))
 			{
 				Vector V=new Vector();
-				Ability A=mob.fetchAbility((Dice.rollPercentage()>50)?(mob.isInCombat()?"Thief_Mug":"Thief_Steal"):"Thief_Swipe");
+				Ability A=mob.fetchAbility((CMLib.dice().rollPercentage()>50)?(mob.isInCombat()?"Thief_Mug":"Thief_Steal"):"Thief_Swipe");
 				if(A!=null)
 				{
 					if(!A.ID().equalsIgnoreCase("Thief_Swipe"))
@@ -78,7 +89,7 @@ public class Thiefness extends CombatAbilities
 							Item potentialI=victim.fetchInventory(i);
 							if((potentialI!=null)
 							&&(potentialI.amWearingAt(Item.INVENTORY))
-							&&(Sense.canBeSeenBy(potentialI,mob)))
+							&&(CMLib.flags().canBeSeenBy(potentialI,mob)))
 								I=potentialI;
 						}
 						if(I!=null)
@@ -86,7 +97,7 @@ public class Thiefness extends CombatAbilities
 					}
 					if(!A.ID().equalsIgnoreCase("Thief_Mug"))
 						V.addElement(victim.name());
-					A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob,0)*15));
+					A.setProfficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 					A.invoke(mob,V,null,false,0);
 				}
 			}

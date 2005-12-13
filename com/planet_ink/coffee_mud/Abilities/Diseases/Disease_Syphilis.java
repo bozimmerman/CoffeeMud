@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Diseases;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -33,7 +43,7 @@ public class Disease_Syphilis extends Disease
 	public boolean putInCommandlist(){return false;}
 
 	protected int DISEASE_TICKS(){return 99999;}
-	protected int DISEASE_DELAY(){return new Long(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).intValue();}
+	protected int DISEASE_DELAY(){return new Long(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).intValue();}
 	protected String DISEASE_DONE(){return "Your syphilis clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> get(s) some uncomfortable red sores on <S-HIS-HER> privates.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIS-HER> privates.";}
@@ -53,12 +63,12 @@ public class Disease_Syphilis extends Disease
 		{
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());
-			if(Dice.rollPercentage()>50)
+			if(CMLib.dice().rollPercentage()>50)
 				conDown++;
-			if(Dice.rollPercentage()<10)
+			if(CMLib.dice().rollPercentage()<10)
 			{
 				Ability A=null;
-				if(Dice.rollPercentage()>50)
+				if(CMLib.dice().rollPercentage()>50)
 					A=CMClass.getAbility("Disease_Cold");
 				else
 					A=CMClass.getAbility("Disease_Fever");
@@ -81,7 +91,7 @@ public class Disease_Syphilis extends Disease
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=affected;
             norecurse=true;
-            MUDFight.postDeath(diseaser,affected,null);
+            CMLib.combat().postDeath(diseaser,affected,null);
             norecurse=false;
 		}
 	}

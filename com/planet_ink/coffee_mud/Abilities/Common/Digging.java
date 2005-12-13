@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -76,10 +87,10 @@ public class Digging extends GatheringSkill
 				if((found!=null)&&(!aborted))
 				{
 					int amount=1;
-					if(Dice.rollPercentage()>90)
+					if(CMLib.dice().rollPercentage()>90)
 						amount++;
 					if((found.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PRECIOUS)
-						amount=Dice.roll(1,55,0);
+						amount=CMLib.dice().roll(1,55,0);
 					amount=amount*(abilityCode());
 					String s="s";
 					if((amount==1)||(foundShortName.endsWith("s"))) s="";
@@ -88,7 +99,7 @@ public class Digging extends GatheringSkill
 					{
 						Item newFound=(Item)found.copyOf();
 						mob.location().addItemRefuse(newFound,Item.REFUSE_RESOURCE);
-						//CommonMsgs.get(mob,null,newFound,true);
+						//CMLib.commands().get(mob,null,newFound,true);
 					}
 				}
 			}
@@ -122,7 +133,7 @@ public class Digging extends GatheringSkill
 		   ||(resourceType==EnvResource.RESOURCE_SAND)
 		   ||(resourceType==EnvResource.RESOURCE_STONE)))
 		{
-			found=(Item)CoffeeUtensils.makeResource(resourceType,mob.location().domainType(),false);
+			found=(Item)CMLib.utensils().makeResource(resourceType,mob.location().domainType(),false);
 			foundShortName="nothing";
 			if(found!=null)
 				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
@@ -130,7 +141,7 @@ public class Digging extends GatheringSkill
 		
 		int duration=60-mob.envStats().level();
 		if(duration<25) duration=25;
-		FullMsg msg=new FullMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) digging.");
+		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) digging.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

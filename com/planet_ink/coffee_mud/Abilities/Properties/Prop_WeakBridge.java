@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -50,7 +61,7 @@ public class Prop_WeakBridge extends Property
 		&&((msg.amITarget(affected))||(msg.tool()==affected)))
 		{
 			MOB mob=msg.source();
-			if(Sense.isInFlight(mob)) return true;
+			if(CMLib.flags().isInFlight(mob)) return true;
 			if(!bridgeIsUp)
 			{
 				mob.tell("The bridge appears to be out.");
@@ -69,7 +80,7 @@ public class Prop_WeakBridge extends Property
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				MOB M=room.fetchInhabitant(i);
-				if((M!=null)&&(M!=mob)&&(!Sense.isInFlight(M)))
+				if((M!=null)&&(M!=mob)&&(!CMLib.flags().isInFlight(M)))
 					weight+=M.envStats().weight();
 			}
 		}
@@ -81,28 +92,28 @@ public class Prop_WeakBridge extends Property
 	{
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&((msg.amITarget(affected))||(msg.tool()==affected))
-		&&(!Sense.isFalling(msg.source())))
+		&&(!CMLib.flags().isFalling(msg.source())))
 		{
 			MOB mob=msg.source();
-			if(Sense.isInFlight(mob)) return;
+			if(CMLib.flags().isInFlight(mob)) return;
 			if(bridgeIsUp)
 			{
 				if((weight(mob)>max)
-				&&(Dice.rollPercentage()<chance))
+				&&(CMLib.dice().rollPercentage()<chance))
 				{
 					synchronized(mobsToKill)
 					{
 						if(!mobsToKill.contains(mob))
 						{
 							mobsToKill.addElement(mob);
-							if(!Sense.isFalling(mob))
+							if(!CMLib.flags().isFalling(mob))
 							{
 								Ability falling=CMClass.getAbility("Falling");
 								falling.setProfficiency(0);
 								falling.setAffectedOne(msg.target());
 								falling.invoke(null,null,mob,true,0);
 							}
-							CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_SPELL_AFFECT,1);
+							CMLib.threads().startTickDown(this,MudHost.TICK_SPELL_AFFECT,1);
 						}
 					}
 				}
@@ -136,7 +147,7 @@ public class Prop_WeakBridge extends Property
 						{
 							MOB M=room.fetchInhabitant(i);
 							if((M!=null)
-							&&(!Sense.isInFlight(M))
+							&&(!CMLib.flags().isInFlight(M))
 							&&(!V.contains(M)))
 								V.addElement(M);
 						}
@@ -145,7 +156,7 @@ public class Prop_WeakBridge extends Property
 					{
 						MOB mob=(MOB)V.elementAt(i);
 						if((mob.location()!=null)
-						&&(!Sense.isInFlight(mob)))
+						&&(!CMLib.flags().isInFlight(mob)))
 						{
 							if((affected instanceof Room)
 							&&((((Room)affected).domainType()==Room.DOMAIN_INDOORS_AIR)
@@ -155,7 +166,7 @@ public class Prop_WeakBridge extends Property
 							&&(((Room)affected).getExitInDir(Directions.DOWN).isOpen()))
 							{
 								mob.tell("The bridge breaks under your weight!");
-								if((!Sense.isFalling(mob))
+								if((!CMLib.flags().isFalling(mob))
 								&&(mob.location()==affected))
 								{
 									Ability falling=CMClass.getAbility("Falling");
@@ -174,14 +185,14 @@ public class Prop_WeakBridge extends Property
 					}
 					if(affected instanceof Room)
 						((Room)affected).recoverEnvStats();
-					CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_SPELL_AFFECT);
-					CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_SPELL_AFFECT,ticksDown);
+					CMLib.threads().deleteTick(this,MudHost.TICK_SPELL_AFFECT);
+					CMLib.threads().startTickDown(this,MudHost.TICK_SPELL_AFFECT,ticksDown);
 				}
 			}
 			else
 			{
 				bridgeIsUp=true;
-				CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_SPELL_AFFECT);
+				CMLib.threads().deleteTick(this,MudHost.TICK_SPELL_AFFECT);
 				if(affected instanceof Room)
 					((Room)affected).recoverEnvStats();
 			}

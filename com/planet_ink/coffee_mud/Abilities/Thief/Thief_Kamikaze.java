@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -44,12 +55,12 @@ public class Thief_Kamikaze extends ThiefSkill
 				Item I=mob.fetchInventory(i);
 				if((I!=null)&&(I.container()==null))
 				{
-					Trap T=CoffeeUtensils.fetchMyTrap(I);
+					Trap T=CMLib.utensils().fetchMyTrap(I);
 					if((T!=null)&&(T.isABomb()))
 					{
 						if(!I.amWearingAt(Item.INVENTORY))
-							CommonMsgs.remove(mob,I,true);
-						CommonMsgs.drop(mob,I,false,false);
+							CMLib.commands().remove(mob,I,true);
+						CMLib.commands().drop(mob,I,false,false);
 						if(I.owner() instanceof Room)
 						{
 							Room R=(Room)I.owner();
@@ -83,10 +94,10 @@ public class Thief_Kamikaze extends ThiefSkill
 		if((canBeUninvoked())&&(!mob.amDead())&&(mob.location()!=null))
 		{
 			if(mob.amFollowing()!=null)
-				CommonMsgs.follow(mob,null,false);
-			CommonMsgs.stand(mob,true);
-			if((mob.isMonster())&&(!Sense.isMobile(mob)))
-				MUDTracker.wanderAway(mob,true,true);
+				CMLib.commands().follow(mob,null,false);
+			CMLib.commands().stand(mob,true);
+			if((mob.isMonster())&&(!CMLib.flags().isMobile(mob)))
+				CMLib.tracking().wanderAway(mob,true,true);
 		}
 	}
 
@@ -119,9 +130,9 @@ public class Thief_Kamikaze extends ThiefSkill
 			return false;
 
 		double goldRequired=new Integer((Math.round((100-(mob.charStats().getStat(CharStats.CHARISMA)*2)))*target.envStats().level())).doubleValue();
-		String localCurrency=BeanCounter.getCurrency(target);
-	    String costWords=BeanCounter.nameCurrencyShort(localCurrency,goldRequired);
-		if(BeanCounter.getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
+		String localCurrency=CMLib.beanCounter().getCurrency(target);
+	    String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
+		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{
 			mob.tell(target.charStats().HeShe()+" requires "+costWords+" to do this.");
 			return false;
@@ -133,7 +144,7 @@ public class Thief_Kamikaze extends ThiefSkill
 			Item I=target.fetchInventory(i);
 			if((I!=null)&&(I.container()==null))
 			{
-				Trap T=CoffeeUtensils.fetchMyTrap(I);
+				Trap T=CMLib.utensils().fetchMyTrap(I);
 				if((T!=null)&&(T.isABomb()))
 				{
 					bombFound=T;
@@ -151,20 +162,20 @@ public class Thief_Kamikaze extends ThiefSkill
 
 		if(!success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to convince <T-NAMESELF> to kamikaze "+s+", but no deal is reached.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to convince <T-NAMESELF> to kamikaze "+s+", but no deal is reached.^?");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> pay(s) <T-NAMESELF> to Kamikaze "+s+" for "+costWords+".^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> pay(s) <T-NAMESELF> to Kamikaze "+s+" for "+costWords+".^?");
 			
-			BeanCounter.subtractMoney(mob,localCurrency,goldRequired);
+			CMLib.beanCounter().subtractMoney(mob,localCurrency,goldRequired);
 			mob.recoverEnvStats();
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				BeanCounter.addMoney(target,localCurrency,goldRequired);
+				CMLib.beanCounter().addMoney(target,localCurrency,goldRequired);
 				target.recoverEnvStats();
 				beneficialAffect(mob,target,asLevel,2);
 				bombFound.activateBomb();

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -50,7 +61,7 @@ public class Spell_GravitySlam extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>!^?"));
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -58,7 +69,7 @@ public class Spell_GravitySlam extends Spell
 
 				int damage = 0;
 				int maxDie =  adjustedLevel(mob,asLevel);
-				if(!Sense.isInFlight(target))
+				if(!CMLib.flags().isInFlight(target))
 					maxDie=maxDie/2;
 				Room R=mob.location();
 				if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
@@ -68,16 +79,16 @@ public class Spell_GravitySlam extends Spell
 				||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 					maxDie=maxDie/4;
 
-				damage += Dice.roll(10,6,maxDie*2);
+				damage += CMLib.dice().roll(10,6,maxDie*2);
 				if(msg.value()>0)
 					damage = (int)Math.round(Util.div(damage,2.0));
-				if(!Sense.isInFlight(target))
+				if(!CMLib.flags().isInFlight(target))
 					mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> is hurled up into the air and **SLAMMED** back down!");
 				else
 					mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> is hurled even higher into the air and **SLAMMED** back down!");
 
 				if(target.location()==mob.location())
-					MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,"The fall <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,"The fall <DAMAGE> <T-NAME>!");
 			}
 		}
 		else

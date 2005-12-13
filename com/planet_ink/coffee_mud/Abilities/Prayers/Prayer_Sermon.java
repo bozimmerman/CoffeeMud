@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -52,10 +63,10 @@ public class Prayer_Sermon extends Prayer
 		if(canBeUninvoked())
 		{
 			if(mob.amFollowing()!=null)
-				CommonMsgs.follow(mob,null,false);
-			CommonMsgs.stand(mob,true);
-			if((mob.isMonster())&&(!Sense.isMobile(mob)))
-				MUDTracker.wanderAway(mob,true,true);
+				CMLib.commands().follow(mob,null,false);
+			CMLib.commands().stand(mob,true);
+			if((mob.isMonster())&&(!CMLib.flags().isMobile(mob)))
+				CMLib.tracking().wanderAway(mob,true,true);
 		}
 	}
 
@@ -111,7 +122,7 @@ public class Prayer_Sermon extends Prayer
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
 			MOB M=mob.location().fetchInhabitant(i);
-			if((M!=null)&&(Sense.canBeSeenBy(M,mob))&&(M!=mob)
+			if((M!=null)&&(CMLib.flags().canBeSeenBy(M,mob))&&(M!=mob)
 			&&(M.charStats().getStat(CharStats.INTELLIGENCE)>4))
 				h.put(M,M);
 		}
@@ -138,13 +149,13 @@ public class Prayer_Sermon extends Prayer
 			{
 				MOB target=(MOB)f.nextElement();
 
-				if((Sense.canBeHeardBy(mob,target))&&(mob.mayIFight(target)))
+				if((CMLib.flags().canBeHeardBy(mob,target))&&(mob.mayIFight(target)))
 				{
 					// it worked, so build a copy of this ability,
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
+					CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),null);
 					if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
 						mob.location().send(mob,msg);
@@ -154,7 +165,7 @@ public class Prayer_Sermon extends Prayer
 							if(target.getVictim()==mob)
 								target.makePeace();
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> begin(s) nodding and shouting praises to "+hisHerDiety(mob)+".");
-							CommonMsgs.follow(target,mob,true);
+							CMLib.commands().follow(target,mob,true);
 						}
 					}
 				}

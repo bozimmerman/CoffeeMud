@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
+
 import java.util.*;
 
 
@@ -115,9 +125,9 @@ public class Chant_FindPlant extends Chant
 		MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.amITarget(mob.location()))
-		&&(Sense.canBeSeenBy(mob.location(),mob))
+		&&(CMLib.flags().canBeSeenBy(mob.location(),mob))
 		&&(msg.targetMinor()==CMMsg.TYP_LOOK))
-			nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),false);
+			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),false);
 	}
 
 	public String itsHere(MOB mob, Room R)
@@ -139,7 +149,7 @@ public class Chant_FindPlant extends Chant
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already trying to "+name());
 			return false;
 		}
-		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);
+		Vector V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
 		for(int v=0;v<V.size();v++)	((Ability)V.elementAt(v)).unInvoke();
 
         if((commands.size()==0)&&(text().length()>0))
@@ -211,8 +221,8 @@ public class Chant_FindPlant extends Chant
 		{
 			for(int i=0;i<1000;i++)
 			{
-				Room R=CMMap.getRandomRoom();
-				if(Sense.canAccess(mob,R))
+				Room R=CMLib.map().getRandomRoom();
+				if(CMLib.flags().canAccess(mob,R))
 				if((itsHere(target,R).length()>0)&&(!rooms.contains(R)))
 				{
 					rooms.addElement(R);
@@ -223,10 +233,10 @@ public class Chant_FindPlant extends Chant
 			{
 			    try
 			    {
-					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
-						if(Sense.canAccess(mob,R))
+						if(CMLib.flags().canAccess(mob,R))
 							if(itsHere(target,R).length()>0)
 								rooms.addElement(R);
 					}
@@ -235,11 +245,11 @@ public class Chant_FindPlant extends Chant
 		}
 
 		if(rooms.size()>0)
-			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,false,false,true,true,true,50);
+			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,false,false,true,true,true,50);
 
 		if((success)&&(theTrail!=null))
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> begin(s) to "+name().toLowerCase()+"s!":"^S<S-NAME> chant(s) for "+lookingFor+".^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> begin(s) to "+name().toLowerCase()+"s!":"^S<S-NAME> chant(s) for "+lookingFor+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -247,7 +257,7 @@ public class Chant_FindPlant extends Chant
 				if(target.fetchEffect(newOne.ID())==null)
 					target.addEffect(newOne);
 				target.recoverEnvStats();
-				newOne.nextDirection=MUDTracker.trackNextDirectionFromHere(newOne.theTrail,target.location(),false);
+				newOne.nextDirection=CMLib.tracking().trackNextDirectionFromHere(newOne.theTrail,target.location(),false);
 			}
 		}
 		else

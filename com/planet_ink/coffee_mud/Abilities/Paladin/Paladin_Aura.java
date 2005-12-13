@@ -1,8 +1,21 @@
 package com.planet_ink.coffee_mud.Abilities.Paladin;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -41,10 +54,10 @@ public class Paladin_Aura extends Paladin
 			try
 			{
 				MOB mob=(MOB)paladinsGroup.elementAt(i);
-				if(( Sense.isEvil(mob) )&&(pass))
+				if(( CMLib.flags().isEvil(mob) )&&(pass))
 				{
 					int damage=(int)Math.round(Util.div(mob.envStats().level(),3.0));
-					MUDFight.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe aura around <S-NAME> <DAMAGE> <T-NAME>!^?");
+					CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe aura around <S-NAME> <DAMAGE> <T-NAME>!^?");
 				}
 			}
 			catch(java.lang.ArrayIndexOutOfBoundsException e)
@@ -58,7 +71,7 @@ public class Paladin_Aura extends Paladin
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if((invoker==null)||(!(Sense.isGood(invoker))))
+		if((invoker==null)||(!(CMLib.flags().isGood(invoker))))
 			return true;
 		if(affected==null) return true;
 		if(!(affected instanceof MOB)) return true;

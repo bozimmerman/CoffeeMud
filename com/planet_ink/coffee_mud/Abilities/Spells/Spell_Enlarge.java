@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -39,14 +50,14 @@ public class Spell_Enlarge extends Spell
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((canBeUninvoked())&&(affected instanceof Item)&&(Sense.isInTheGame(affected,true)))
+		if((canBeUninvoked())&&(affected instanceof Item)&&(CMLib.flags().isInTheGame(affected,true)))
 		{
 			Item I=(Item)affected;
 			if(I.owner() instanceof MOB)
 				((MOB)I.owner()).tell(I.name()+" in your inventory shrinks back to size.");
 			else
 			{
-				Room R=CoffeeUtensils.roomLocation(I);
+				Room R=CMLib.utensils().roomLocation(I);
 				if(R!=null)
 					R.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" shrinks back to normal size.");
 			}
@@ -77,7 +88,7 @@ public class Spell_Enlarge extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

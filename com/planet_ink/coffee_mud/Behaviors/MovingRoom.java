@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -102,50 +113,50 @@ public class MovingRoom extends ActiveTicker
 	private void parseMovingXML(String roomToParse)
 	{
 		Vector V = new Vector();
-		String theFullBlock=XMLManager.returnXMLBlock(roomToParse, roomInfos.elementAt(0).toString().toUpperCase());
-		String theStopsBlock=XMLManager.returnXMLBlock(theFullBlock, "STOPS");
-		String theNormalDirBlock=XMLManager.returnXMLBlock(theFullBlock, "NORMALDIRECTION");
-		String theReverseDirBlock=XMLManager.returnXMLBlock(theFullBlock, "REVERSEDIRECTION");
-		String theDescriptionsBlock=XMLManager.returnXMLBlock(theFullBlock, "ROOMDESCRIPTIONS");
+		String theFullBlock=CMLib.xml().returnXMLBlock(roomToParse, roomInfos.elementAt(0).toString().toUpperCase());
+		String theStopsBlock=CMLib.xml().returnXMLBlock(theFullBlock, "STOPS");
+		String theNormalDirBlock=CMLib.xml().returnXMLBlock(theFullBlock, "NORMALDIRECTION");
+		String theReverseDirBlock=CMLib.xml().returnXMLBlock(theFullBlock, "REVERSEDIRECTION");
+		String theDescriptionsBlock=CMLib.xml().returnXMLBlock(theFullBlock, "ROOMDESCRIPTIONS");
 		int x=1;
-		String thisone=XMLManager.returnXMLValue(theStopsBlock, "STOP1");
+		String thisone=CMLib.xml().returnXMLValue(theStopsBlock, "STOP1");
 		while (thisone!="")
 		{
 			++x;
 			listOfRooms.addElement(thisone);
-			thisone=XMLManager.returnXMLValue(theStopsBlock, "STOP"+x);
+			thisone=CMLib.xml().returnXMLValue(theStopsBlock, "STOP"+x);
 		}
-		V.addElement(XMLManager.returnXMLValue(theNormalDirBlock, "TRAVELDIRECTION"));
-		V.addElement(XMLManager.returnXMLValue(theNormalDirBlock, "DOORSDIRECTION"));
-		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theNormalDirBlock, "INSIDE"), "ARRIVALINFO"));
-		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theNormalDirBlock, "INSIDE"), "DEPARTINFO"));
-		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theNormalDirBlock, "OUTSIDE"), "ARRIVALINFO"));
-		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theNormalDirBlock, "OUTSIDE"), "DEPARTINFO"));
+		V.addElement(CMLib.xml().returnXMLValue(theNormalDirBlock, "TRAVELDIRECTION"));
+		V.addElement(CMLib.xml().returnXMLValue(theNormalDirBlock, "DOORSDIRECTION"));
+		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theNormalDirBlock, "INSIDE"), "ARRIVALINFO"));
+		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theNormalDirBlock, "INSIDE"), "DEPARTINFO"));
+		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theNormalDirBlock, "OUTSIDE"), "ARRIVALINFO"));
+		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theNormalDirBlock, "OUTSIDE"), "DEPARTINFO"));
 		messageInfo.addElement(new Vector(V));
 		V.removeAllElements();
-		V.addElement(XMLManager.returnXMLValue(theReverseDirBlock, "TRAVELDIRECTION"));
-		V.addElement(XMLManager.returnXMLValue(theReverseDirBlock, "DOORSDIRECTION"));
-		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theReverseDirBlock, "INSIDE"), "ARRIVALINFO"));
-		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theReverseDirBlock, "INSIDE"), "DEPARTINFO"));
-		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theReverseDirBlock, "OUTSIDE"), "ARRIVALINFO"));
-		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theReverseDirBlock, "OUTSIDE"), "DEPARTINFO"));
+		V.addElement(CMLib.xml().returnXMLValue(theReverseDirBlock, "TRAVELDIRECTION"));
+		V.addElement(CMLib.xml().returnXMLValue(theReverseDirBlock, "DOORSDIRECTION"));
+		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theReverseDirBlock, "INSIDE"), "ARRIVALINFO"));
+		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theReverseDirBlock, "INSIDE"), "DEPARTINFO"));
+		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theReverseDirBlock, "OUTSIDE"), "ARRIVALINFO"));
+		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theReverseDirBlock, "OUTSIDE"), "DEPARTINFO"));
 		messageInfo.addElement(new Vector(V));
 		V.removeAllElements();
-		String theNormalDescBlock = (XMLManager.returnXMLBlock(theDescriptionsBlock, "NORMALDIRECTION"));
-		String theReverseDescBlock = (XMLManager.returnXMLBlock(theDescriptionsBlock, "REVERSEDIRECTION"));
-		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theNormalDescBlock, "INSIDE"), "DOOROPENED"));
-		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theNormalDescBlock, "INSIDE"), "DOORCLOSED"));
-		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theNormalDescBlock, "OUTSIDE"), "DOOROPENED"));
-		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theNormalDescBlock, "OUTSIDE"), "DOORCLOSED"));
-		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theReverseDescBlock, "INSIDE"), "DOOROPENED"));
-		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theReverseDescBlock, "INSIDE"), "DOORCLOSED"));
-		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theReverseDescBlock, "OUTSIDE"), "DOOROPENED"));
-		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theReverseDescBlock, "OUTSIDE"), "DOORCLOSED"));
+		String theNormalDescBlock = (CMLib.xml().returnXMLBlock(theDescriptionsBlock, "NORMALDIRECTION"));
+		String theReverseDescBlock = (CMLib.xml().returnXMLBlock(theDescriptionsBlock, "REVERSEDIRECTION"));
+		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theNormalDescBlock, "INSIDE"), "DOOROPENED"));
+		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theNormalDescBlock, "INSIDE"), "DOORCLOSED"));
+		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theNormalDescBlock, "OUTSIDE"), "DOOROPENED"));
+		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theNormalDescBlock, "OUTSIDE"), "DOORCLOSED"));
+		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theReverseDescBlock, "INSIDE"), "DOOROPENED"));
+		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theReverseDescBlock, "INSIDE"), "DOORCLOSED"));
+		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theReverseDescBlock, "OUTSIDE"), "DOOROPENED"));
+		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theReverseDescBlock, "OUTSIDE"), "DOORCLOSED"));
 		messageInfo.addElement(new Vector(V));
 		V.removeAllElements();
-		mapInfo.addElement(XMLManager.returnXMLValue(theFullBlock, "ROOMPRINTNAME"));
-		mapInfo.addElement(XMLManager.returnXMLValue(theFullBlock, "LINEPRINTNAME"));
-		mapInfo.addElement(XMLManager.returnXMLValue(theFullBlock, "DISPLOC"));
+		mapInfo.addElement(CMLib.xml().returnXMLValue(theFullBlock, "ROOMPRINTNAME"));
+		mapInfo.addElement(CMLib.xml().returnXMLValue(theFullBlock, "LINEPRINTNAME"));
+		mapInfo.addElement(CMLib.xml().returnXMLValue(theFullBlock, "DISPLOC"));
 	}
 	private String fixOutputString(String incoming, Room busstopRoom)
 	{
@@ -161,7 +172,7 @@ public class MovingRoom extends ActiveTicker
 		if (incoming.indexOf("$traveldir")>0)
 		{
 			i = incoming.indexOf("$traveldir");
-			int pos=listOfRooms.indexOf(CMMap.getExtendedRoomID(busstopRoom));
+			int pos=listOfRooms.indexOf(CMLib.map().getExtendedRoomID(busstopRoom));
 			boolean revDirName=false;
 			if (((pos==0)||(pos==listOfRooms.size()-1))&&(currentStatus==1))
 				revDirName=true;
@@ -258,10 +269,10 @@ public class MovingRoom extends ActiveTicker
             String nextStopS=(String)listOfRooms.elementAt(nextStop);
 		    if(ticking instanceof Room)
 			{
-                Room currentStopRoom = CMMap.getRoom(currentStopS);
+                Room currentStopRoom = CMLib.map().getRoom(currentStopS);
 				if (currentStopRoom == null)
 					currentStopRoom=getBehaversRoom(ticking);
-                Room nextStopRoom =CMMap.getRoom(nextStopS);
+                Room nextStopRoom =CMLib.map().getRoom(nextStopS);
 				if (nextStopRoom == null)
 					nextStopRoom=getBehaversRoom(ticking);
 				if (currentStatus==0)
@@ -290,8 +301,8 @@ public class MovingRoom extends ActiveTicker
 								subwayRoom.rawDoors()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]=null;
 								subwayRoom.rawExits()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]=null;
 							}
-							CMClass.DBEngine().DBUpdateExits(subwayRoom);
-							CMClass.DBEngine().DBUpdateExits(currentStopRoom);
+							CMLib.database().DBUpdateExits(subwayRoom);
+							CMLib.database().DBUpdateExits(currentStopRoom);
 							subwayRoom.getArea().fillInAreaRoom(subwayRoom);
 							nextStopRoom.getArea().fillInAreaRoom(currentStopRoom);
 							removeStubs(subwayRoom,currentStopRoom);
@@ -333,8 +344,8 @@ public class MovingRoom extends ActiveTicker
 								subwayRoom.rawDoors()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]=null;
 								subwayRoom.rawExits()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]=null;
 							}
-							CMClass.DBEngine().DBUpdateExits(subwayRoom);
-							CMClass.DBEngine().DBUpdateExits(currentStopRoom);
+							CMLib.database().DBUpdateExits(subwayRoom);
+							CMLib.database().DBUpdateExits(currentStopRoom);
 							subwayRoom.getArea().fillInAreaRoom(subwayRoom);
 							nextStopRoom.getArea().fillInAreaRoom(currentStopRoom);
 							removeStubs(subwayRoom,currentStopRoom);
@@ -368,8 +379,8 @@ public class MovingRoom extends ActiveTicker
 							subwayRoom.rawExits()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]=thisNewExit;
 							nextStopRoom.rawDoors()[Directions.getOpDirectionCode(reverseVec.elementAt(1).toString())]=subwayRoom;
 							nextStopRoom.rawExits()[Directions.getOpDirectionCode(reverseVec.elementAt(1).toString())]=thisNewExit;
-							CMClass.DBEngine().DBUpdateExits(subwayRoom);
-							CMClass.DBEngine().DBUpdateExits(nextStopRoom);
+							CMLib.database().DBUpdateExits(subwayRoom);
+							CMLib.database().DBUpdateExits(nextStopRoom);
 							subwayRoom.getArea().fillInAreaRoom(subwayRoom);
 							nextStopRoom.getArea().fillInAreaRoom(nextStopRoom);
 							removeStubs(subwayRoom,nextStopRoom);
@@ -400,8 +411,8 @@ public class MovingRoom extends ActiveTicker
 							subwayRoom.rawExits()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]=thisNewExit;
 							nextStopRoom.rawDoors()[Directions.getOpDirectionCode(normalVec.elementAt(1).toString())]=subwayRoom;
 							nextStopRoom.rawExits()[Directions.getOpDirectionCode(normalVec.elementAt(1).toString())]=thisNewExit;
-							CMClass.DBEngine().DBUpdateExits(subwayRoom);
-							CMClass.DBEngine().DBUpdateExits(nextStopRoom);
+							CMLib.database().DBUpdateExits(subwayRoom);
+							CMLib.database().DBUpdateExits(nextStopRoom);
 							subwayRoom.getArea().fillInAreaRoom(subwayRoom);
 							nextStopRoom.getArea().fillInAreaRoom(nextStopRoom);
 							removeStubs(subwayRoom,nextStopRoom);

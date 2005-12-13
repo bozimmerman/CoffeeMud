@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -40,28 +51,28 @@ public class Thief_SilentGold extends ThiefSkill
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 			&&(msg.source()!=affected)
-			&&(Sense.canBeSeenBy(msg.source(),(MOB)affected))
+			&&(CMLib.flags().canBeSeenBy(msg.source(),(MOB)affected))
 			&&(msg!=lastMsg)
 			&&(msg.source().location()==((MOB)affected).location()))
 			{
 			    lastMsg=msg;
-			    double money=BeanCounter.getTotalAbsoluteNativeValue(msg.source());
+			    double money=CMLib.beanCounter().getTotalAbsoluteNativeValue(msg.source());
 				if((money/10.0)>0.0)
 				{
-					Coins C=BeanCounter.makeBestCurrency(msg.source(),money/10.0);
+					Coins C=CMLib.beanCounter().makeBestCurrency(msg.source(),money/10.0);
 					if((C!=null)&&(C.getNumberOfCoins()>0))
 					{
-					    BeanCounter.subtractMoney(msg.source(),C.getTotalValue());
+					    CMLib.beanCounter().subtractMoney(msg.source(),C.getTotalValue());
 						MOB mob=(MOB)affected;
 						mob.location().addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
 						mob.location().recoverRoomStats();
 						MOB victim=mob.getVictim();
 						mob.setVictim(null);
-						FullMsg msg2=new FullMsg(mob,C,this,CMMsg.MSG_THIEF_ACT,"You silently loot "+C.name()+" from the corpse of "+msg.source().name(),CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
+						CMMsg msg2=CMClass.getMsg(mob,C,this,CMMsg.MSG_THIEF_ACT,"You silently loot "+C.name()+" from the corpse of "+msg.source().name(),CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
 						if(mob.location().okMessage(mob,msg2))
 						{
 							mob.location().send(mob,msg2);
-							CommonMsgs.get(mob,null,C,true);
+							CMLib.commands().get(mob,null,C,true);
 						}
 						if(victim!=null) mob.setVictim(victim);
 					}

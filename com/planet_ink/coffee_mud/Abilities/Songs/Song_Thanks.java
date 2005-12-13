@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -40,50 +51,50 @@ public class Song_Thanks extends Song
 		if(invoker==null) return true;
 		if(mob.location()!=invoker.location()) return true;
 		//if(!mob.isMonster()) return true;
-		if((Dice.rollPercentage()<6)
-		   &&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_MIND))
-		   &&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_MAGIC))
-		   &&(Sense.canMove(mob))
-		   &&(Sense.canBeSeenBy(invoker,mob))
-		   &&(BeanCounter.getTotalAbsoluteNativeValue(mob)>1.0))
+		if((CMLib.dice().rollPercentage()<6)
+		   &&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.SAVE_MIND))
+		   &&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.SAVE_MAGIC))
+		   &&(CMLib.flags().canMove(mob))
+		   &&(CMLib.flags().canBeSeenBy(invoker,mob))
+		   &&(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)>1.0))
 		{
-			switch(Dice.roll(1,10,0))
+			switch(CMLib.dice().roll(1,10,0))
 			{
 			case 1:
-				CommonMsgs.say(mob,invoker,"Thank you "+invoker.name()+"!",false,false);
+				CMLib.commands().say(mob,invoker,"Thank you "+invoker.name()+"!",false,false);
 				break;
 			case 2:
-				CommonMsgs.say(mob,invoker,"Thanks for being you, "+invoker.name()+"!",false,false);
+				CMLib.commands().say(mob,invoker,"Thanks for being you, "+invoker.name()+"!",false,false);
 				break;
 			case 3:
-				CommonMsgs.say(mob,invoker,"Thanks "+invoker.name()+"!",false,false);
+				CMLib.commands().say(mob,invoker,"Thanks "+invoker.name()+"!",false,false);
 				break;
 			case 4:
-				CommonMsgs.say(mob,invoker,"You are great, "+invoker.name()+"!  Thanks!",false,false);
+				CMLib.commands().say(mob,invoker,"You are great, "+invoker.name()+"!  Thanks!",false,false);
 				break;
 			case 5:
-				CommonMsgs.say(mob,invoker,"I appreciate you, "+invoker.name()+"!",false,false);
+				CMLib.commands().say(mob,invoker,"I appreciate you, "+invoker.name()+"!",false,false);
 				break;
 			case 6:
-				CommonMsgs.say(mob,invoker,"Keep it up, "+invoker.name()+"! Thanks!",false,false);
+				CMLib.commands().say(mob,invoker,"Keep it up, "+invoker.name()+"! Thanks!",false,false);
 				break;
 			case 7:
-				CommonMsgs.say(mob,invoker,"Thanks a lot, "+invoker.name()+"!",false,false);
+				CMLib.commands().say(mob,invoker,"Thanks a lot, "+invoker.name()+"!",false,false);
 				break;
 			case 8:
-				CommonMsgs.say(mob,invoker,"Thank you dearly, "+invoker.name()+"!",false,false);
+				CMLib.commands().say(mob,invoker,"Thank you dearly, "+invoker.name()+"!",false,false);
 				break;
 			case 9:
-				CommonMsgs.say(mob,invoker,"Thank you always, "+invoker.name()+"!",false,false);
+				CMLib.commands().say(mob,invoker,"Thank you always, "+invoker.name()+"!",false,false);
 				break;
 			case 10:
-				CommonMsgs.say(mob,invoker,"You're the best, "+invoker.name()+"! Thanks!",false,false);
+				CMLib.commands().say(mob,invoker,"You're the best, "+invoker.name()+"! Thanks!",false,false);
 				break;
 			}
-			Coins C=BeanCounter.makeBestCurrency(mob,1.0);
+			Coins C=CMLib.beanCounter().makeBestCurrency(mob,1.0);
 			if(C!=null)
 			{
-				BeanCounter.subtractMoney(mob,1.0);
+				CMLib.beanCounter().subtractMoney(mob,1.0);
 				mob.addInventory(C);
 				mob.doCommand(Util.parse("GIVE \""+C.name()+"\" \""+invoker.name()+"\""));
 				if(!C.amDestroyed()) C.putCoinsBack();
@@ -96,7 +107,7 @@ public class Song_Thanks extends Song
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if((!auto)&&(!Sense.canSpeak(mob)))
+		if((!auto)&&(!CMLib.flags().canSpeak(mob)))
 		{
 			mob.tell("You can't sing!");
 			return false;
@@ -110,7 +121,7 @@ public class Song_Thanks extends Song
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
 
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -129,10 +140,10 @@ public class Song_Thanks extends Song
 					int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 
-					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+					if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 					{
-						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
-						FullMsg msg3=msg2;
+						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
+						CMMsg msg3=msg2;
 						if((mob.location().okMessage(mob,msg2))&&(mob.location().okMessage(mob,msg3)))
 						{
 							follower.location().send(follower,msg2);

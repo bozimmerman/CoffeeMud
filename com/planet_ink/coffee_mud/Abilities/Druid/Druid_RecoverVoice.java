@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
-
-import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+
 import java.util.*;
 
 /* 
@@ -46,7 +57,7 @@ public class Druid_RecoverVoice extends StdAbility
 			{
 				newMOB.recoverEnvStats();
 				A.affectEnvStats(newMOB,newMOB.envStats());
-				if((!Sense.canSpeak(newMOB))
+				if((!CMLib.flags().canSpeak(newMOB))
 				&&((A.invoker()==null)
 				   ||((A.invoker()!=null)
 					  &&(A.invoker().envStats().level()<=caster.envStats().level()+10))))
@@ -68,7 +79,7 @@ public class Druid_RecoverVoice extends StdAbility
 			mob.tell("You failed in your vocal meditation.");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,null,CMMsg.TYP_GENERAL|CMMsg.MASK_GENERAL|CMMsg.MASK_MAGIC,null);
+			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.TYP_GENERAL|CMMsg.MASK_GENERAL|CMMsg.MASK_MAGIC,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				for(int a=offensiveAffects.size()-1;a>=0;a--)

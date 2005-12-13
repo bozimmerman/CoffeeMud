@@ -1,9 +1,20 @@
 package com.planet_ink.coffee_mud.CharClasses;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -52,76 +63,76 @@ public class Apprentice extends StdCharClass
 		if(!loaded())
 		{
 			setLoaded(true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",25,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",true);
-			CMAble.addCharAbilityMapping(ID(),1,"ClanCrafting",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",25,true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ClanCrafting",false);
 			
-			CMAble.addCharAbilityMapping(ID(),1,"SmokeRings",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SmokeRings",false);
 			
-			CMAble.addCharAbilityMapping(ID(),2,"Butchering",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Chopping",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Digging",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Drilling",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Fishing",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Foraging",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Hunting",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Mining",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Butchering",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chopping",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Digging",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Drilling",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fishing",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Foraging",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Hunting",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Mining",false);
 			
-			CMAble.addCharAbilityMapping(ID(),3,"FireBuilding",false);
-			CMAble.addCharAbilityMapping(ID(),3,"Searching",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"FireBuilding",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Searching",false);
 			
-			CMAble.addCharAbilityMapping(ID(),4,"Blacksmithing",false);
-			CMAble.addCharAbilityMapping(ID(),4,"CageBuilding",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Carpentry",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Cooking",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Baking",false);
-			CMAble.addCharAbilityMapping(ID(),4,"FoodPrep",false);
-			CMAble.addCharAbilityMapping(ID(),4,"LeatherWorking",false);
-			CMAble.addCharAbilityMapping(ID(),4,"GlassBlowing",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Pottery",false);
-			CMAble.addCharAbilityMapping(ID(),4,"JewelMaking",false);
-			CMAble.addCharAbilityMapping(ID(),4,"ScrimShaw",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Sculpting",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Tailoring",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Weaving",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Blacksmithing",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"CageBuilding",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Carpentry",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Cooking",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Baking",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"FoodPrep",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"LeatherWorking",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"GlassBlowing",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Pottery",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"JewelMaking",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"ScrimShaw",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Sculpting",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Tailoring",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Weaving",false);
 			
-			CMAble.addCharAbilityMapping(ID(),5,"Dyeing",false);
-			CMAble.addCharAbilityMapping(ID(),5,"Embroidering",false);
-			CMAble.addCharAbilityMapping(ID(),5,"Engraving",false);
-			CMAble.addCharAbilityMapping(ID(),5,"Lacquerring",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Dyeing",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Embroidering",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Engraving",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Lacquerring",false);
 			
-			CMAble.addCharAbilityMapping(ID(),6,"Shipwright",false);
-			CMAble.addCharAbilityMapping(ID(),6,"Wainwrighting",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Shipwright",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Wainwrighting",false);
 			
-			CMAble.addCharAbilityMapping(ID(),8,"PaperMaking",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"PaperMaking",false);
 			
-			CMAble.addCharAbilityMapping(ID(),10,"Farming",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Farming",false);
 			
-			CMAble.addCharAbilityMapping(ID(),11,"LockSmith",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"LockSmith",false);
 			
-			CMAble.addCharAbilityMapping(ID(),12,"Distilling",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Distilling",false);
 			
-			CMAble.addCharAbilityMapping(ID(),13,"Speculate",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Speculate",false);
 			
-			CMAble.addCharAbilityMapping(ID(),14,"Smelting",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Smelting",false);
 			
-			CMAble.addCharAbilityMapping(ID(),15,"Taxidermy",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Taxidermy",false);
 			
-			CMAble.addCharAbilityMapping(ID(),17,"Armorsmithing",false);
-			CMAble.addCharAbilityMapping(ID(),18,"Fletching",false);
-			CMAble.addCharAbilityMapping(ID(),19,"Weaponsmithing",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Armorsmithing",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Fletching",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Weaponsmithing",false);
 			
-			CMAble.addCharAbilityMapping(ID(),20,"Merchant",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Merchant",false);
 			
-			CMAble.addCharAbilityMapping(ID(),22,"Construction",false);
-			CMAble.addCharAbilityMapping(ID(),22,"Masonry",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Construction",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Masonry",false);
 			
-			CMAble.addCharAbilityMapping(ID(),23,"Painting",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Painting",false);
 			
-			CMAble.addCharAbilityMapping(ID(),25,"Scrapping",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Scrapping",false);
 		}
 	}
 

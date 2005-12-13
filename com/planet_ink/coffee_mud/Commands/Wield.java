@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -45,7 +56,7 @@ public class Wield extends BaseItemParser
                     items.addElement(commands.elementAt(i));
         }
         else
-            items=EnglishParser.fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,false);
+            items=CMLib.english().fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,false);
 		if(items.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else
@@ -53,7 +64,7 @@ public class Wield extends BaseItemParser
 			if((items.size()==1)||(((Item)items.elementAt(i)).canWear(mob,Item.WIELD)))
 			{
 				Item item=(Item)items.elementAt(i);
-				FullMsg newMsg=new FullMsg(mob,item,null,CMMsg.MSG_WIELD,"<S-NAME> wield(s) <T-NAME>.");
+				CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_WIELD,"<S-NAME> wield(s) <T-NAME>.");
 				if(mob.location().okMessage(mob,newMsg))
 					mob.location().send(mob,newMsg);
 			}

@@ -1,9 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.system.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -21,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Meditation extends StdAbility
+public class Skill_Meditation extends StdSkill
 {
 	public String ID() { return "Skill_Meditation"; }
 	public String name(){ return "Meditation";}
@@ -67,12 +76,12 @@ public class Skill_Meditation extends StdAbility
 		&&((Util.bset(msg.sourceCode(),CMMsg.MASK_MOVE))||(Util.bset(msg.sourceCode(),CMMsg.MASK_HANDS))||(Util.bset(msg.sourceCode(),CMMsg.MASK_MOUTH))))
 			unInvoke();
 		if(Util.bset(msg.othersCode(),CMMsg.MASK_SOUND)
-		   &&(Sense.canBeHeardBy(msg.source(),mob)))
+		   &&(CMLib.flags().canBeHeardBy(msg.source(),mob)))
 		{
 			if(!msg.amISource(mob))
-				msg.addTrailerMsg(new FullMsg(mob,null,null,CMMsg.TYP_GENERAL|CMMsg.MASK_HANDS,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,"Your meditation is interrupted by the noise."));
+				msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.TYP_GENERAL|CMMsg.MASK_HANDS,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,"Your meditation is interrupted by the noise."));
 			else
-				msg.addTrailerMsg(new FullMsg(mob,null,null,CMMsg.TYP_GENERAL|CMMsg.MASK_HANDS,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,"Your meditation is interrupted."));
+				msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.TYP_GENERAL|CMMsg.MASK_HANDS,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,"Your meditation is interrupted."));
 		}
 		return;
 	}
@@ -96,7 +105,7 @@ public class Skill_Meditation extends StdAbility
 		}
 
 		if((!mob.isInCombat())
-		&&(Sense.isSitting(mob)))
+		&&(CMLib.flags().isSitting(mob)))
 		{
 			double man=new Integer((mob.charStats().getStat(CharStats.INTELLIGENCE)+mob.charStats().getStat(CharStats.WISDOM))).doubleValue();
 			mob.curState().adjMana((int)Math.round((man*.1)+(mob.envStats().level()/2)),mob.maxState());
@@ -117,7 +126,7 @@ public class Skill_Meditation extends StdAbility
 			mob.tell("You can't meditate while in combat!");
 			return false;
 		}
-		if(!Sense.isSitting(mob))
+		if(!CMLib.flags().isSitting(mob))
 		{
 			mob.tell("You must be in a sitting, restful position to meditate.");
 			return false;
@@ -136,7 +145,7 @@ public class Skill_Meditation extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|(auto?CMMsg.MASK_GENERAL:0),auto?"":"<S-NAME> begin(s) to meditate...");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|(auto?CMMsg.MASK_GENERAL:0),auto?"":"<S-NAME> begin(s) to meditate...");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

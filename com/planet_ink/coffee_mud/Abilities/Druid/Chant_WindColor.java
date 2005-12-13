@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -105,20 +116,20 @@ public class Chant_WindColor extends Chant
 				else
 				if(I.envStats().level()>(mob.envStats().level()-15))
 				{ if (levelCode<0) levelCode=0;}
-				if(Sense.isHidden(I))
+				if(CMLib.flags().isHidden(I))
 				{ done++; colors[5]++;}
-				if(Sense.isInvisible(I))
+				if(CMLib.flags().isInvisible(I))
 				{ done++; colors[6]++;}
 				if((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
 				{ done++; colors[7]++;}
-				if(Sense.isMetal(I)
+				if(CMLib.flags().isMetal(I)
 				||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK))
 				{ done++; colors[4]++;}
-				if(CoffeeUtensils.fetchMyTrap(I)!=null)
+				if(CMLib.utensils().fetchMyTrap(I)!=null)
 				{ done++; colors[8]++;}
-				if(Sense.isGood(I)){done++; colors[2]++;}
+				if(CMLib.flags().isGood(I)){done++; colors[2]++;}
 				else
-				if(Sense.isEvil(I)){done++; colors[1]++;}
+				if(CMLib.flags().isEvil(I)){done++; colors[1]++;}
 				if(done>1)
 				{
 					if(sourceCode>=0) sourceCode=1;
@@ -153,9 +164,9 @@ public class Chant_WindColor extends Chant
 				if((M.charStats().getMyRace().ID().equals("StoneGolem"))
 				||(M.charStats().getMyRace().ID().equals("MetalGolem")))
 				{ done++; colors[4]++;}
-				if(Sense.isHidden(M))
+				if(CMLib.flags().isHidden(M))
 				{ done++; colors[5]++;}
-				if(Sense.isInvisible(M))
+				if(CMLib.flags().isInvisible(M))
 				{ done++; colors[6]++;}
 				if(M.charStats().getMyRace().ID().equals("WoodGolem"))
 				{ done++; colors[7]++;}
@@ -164,11 +175,11 @@ public class Chant_WindColor extends Chant
 					if(sourceCode>=0) sourceCode=1;
 					else sourceCode=0;
 				}
-				if(Sense.isGood(M)) colors[2]++;
+				if(CMLib.flags().isGood(M)) colors[2]++;
 				else
-				if(Sense.isEvil(M)) colors[1]++;
+				if(CMLib.flags().isEvil(M)) colors[1]++;
 				else
-				if((!Sense.isGood(M))&&(!Sense.isEvil(M))) colors[3]++;
+				if((!CMLib.flags().isGood(M))&&(!CMLib.flags().isEvil(M))) colors[3]++;
 			}
 		}
 		if(colors==null) return "";
@@ -291,7 +302,7 @@ public class Chant_WindColor extends Chant
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) visions of the winds!":"^S<S-NAME> chant(s) for visions on the wind!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) visions of the winds!":"^S<S-NAME> chant(s) for visions on the wind!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				lastRoom=null;

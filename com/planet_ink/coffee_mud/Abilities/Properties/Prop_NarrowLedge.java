@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -47,7 +58,7 @@ public class Prop_NarrowLedge extends Property
 		{
 			synchronized(mobsToKill)
 			{
-				CMClass.ThreadEngine().deleteTick(this,MudHost.TICK_SPELL_AFFECT);
+				CMLib.threads().deleteTick(this,MudHost.TICK_SPELL_AFFECT);
 				Vector V=((Vector)mobsToKill.clone());
 				mobsToKill.clear();
 				for(int v=0;v<V.size();v++)
@@ -80,11 +91,11 @@ public class Prop_NarrowLedge extends Property
 	{
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&((msg.amITarget(affected))||(msg.tool()==affected))
-		&&(!Sense.isFalling(msg.source())))
+		&&(!CMLib.flags().isFalling(msg.source())))
 		{
 			MOB mob=msg.source();
-			if((!Sense.isInFlight(mob))
-			&&(Dice.roll(1,check,-mob.charStats().getStat(CharStats.DEXTERITY))>0))
+			if((!CMLib.flags().isInFlight(mob))
+			&&(CMLib.dice().roll(1,check,-mob.charStats().getStat(CharStats.DEXTERITY))>0))
 			{
 				synchronized(mobsToKill)
 				{
@@ -95,7 +106,7 @@ public class Prop_NarrowLedge extends Property
 						falling.setProfficiency(0);
 						falling.setAffectedOne(msg.target());
 						falling.invoke(null,null,mob,true,0);
-						CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_SPELL_AFFECT,1);
+						CMLib.threads().startTickDown(this,MudHost.TICK_SPELL_AFFECT,1);
 					}
 				}
 			}

@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -45,7 +56,7 @@ public class Spell_Grease extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
-        FullMsg msg2 = null;
+        CMMsg msg2 = null;
         Item weapon = null;
 
 		MOB mob=(MOB)affected;
@@ -61,23 +72,23 @@ public class Spell_Grease extends Spell
 			case CMMsg.TYP_FLEE:
 				if(invoker()!=null)
 				{
-					if(Dice.rollPercentage()>(mob.charStats().getStat(CharStats.DEXTERITY)*4))
+					if(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.DEXTERITY)*4))
 					{
                         int greaseEffect = (int) Math.round(Math.random()*3);
                         switch(greaseEffect)
                         {
                             case SIT:
-						        msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease!");
+						        msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease!");
 						        mob.envStats().setDisposition(mob.envStats().disposition() | EnvStats.IS_SITTING);
 								if(mob.location().okMessage(mob,msg2))
 							        mob.location().send(mob,msg2);
 						        return false;
                             case FUMBLE_WEAPON:
                                 weapon = mob.fetchWieldedItem();
-								if((weapon!=null)&&(Dice.rollPercentage()>(mob.charStats().getStat(CharStats.DEXTERITY)*5))
+								if((weapon!=null)&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.DEXTERITY)*5))
 								&&((weapon.rawProperLocationBitmap()==Item.WIELD)||(weapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
                                 {
-									msg2=new FullMsg(mob,weapon,null,CMMsg.MSG_DROP,"<S-NAME> can't hold onto <S-HIS-HER> weapon since it's covered with grease.");
+									msg2=CMClass.getMsg(mob,weapon,null,CMMsg.MSG_DROP,"<S-NAME> can't hold onto <S-HIS-HER> weapon since it's covered with grease.");
 									weapon.unWear();
 									if(mob.location().okMessage(mob,msg2))
 										mob.location().send(mob,msg2);
@@ -86,17 +97,17 @@ public class Spell_Grease extends Spell
                             case BOTH:
                                 weapon = mob.fetchWieldedItem();
                                 if(weapon != null)
-						            msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease and lose(s) <S-HIS-HER> weapon.");
+						            msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease and lose(s) <S-HIS-HER> weapon.");
                                 else
-						            msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) in the grease and fall(s) down.");
+						            msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) in the grease and fall(s) down.");
 								if(mob.location().okMessage(mob,msg2))
 								{
 									mob.envStats().setDisposition(mob.envStats().disposition() | EnvStats.IS_SITTING);
 									mob.location().send(mob,msg2);
-									if((weapon!=null)&&(Dice.rollPercentage()>(mob.charStats().getStat(CharStats.DEXTERITY)*4))
+									if((weapon!=null)&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.DEXTERITY)*4))
 									&&((weapon.rawProperLocationBitmap()==Item.WIELD)||(weapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
 									{
-										msg2=new FullMsg(mob,weapon,null,CMMsg.MSG_DROP,"<S-NAME> can't hold onto <S-HIS-HER> weapon since it's covered with grease.");
+										msg2=CMClass.getMsg(mob,weapon,null,CMMsg.MSG_DROP,"<S-NAME> can't hold onto <S-HIS-HER> weapon since it's covered with grease.");
 										weapon.unWear();
 										if(mob.location().okMessage(mob,msg2))
 											mob.location().send(mob,msg2);
@@ -104,7 +115,7 @@ public class Spell_Grease extends Spell
 								}
 						        return false;
                             default:
-						        msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease!");
+						        msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease!");
 								if(mob.location().okMessage(mob,msg2))
 								{
 									mob.envStats().setDisposition(mob.envStats().disposition() | EnvStats.IS_SITTING);
@@ -159,11 +170,11 @@ public class Spell_Grease extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke a spell at <T-NAME>s feet..^?",CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":"^S<S-NAME> invoke(s) a spell at your feet.^?",affectType(auto),auto?"":"^S<S-NAME> invokes a spell at <T-NAME>s feet.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke a spell at <T-NAME>s feet..^?",CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":"^S<S-NAME> invoke(s) a spell at your feet.^?",affectType(auto),auto?"":"^S<S-NAME> invokes a spell at <T-NAME>s feet.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(Sense.isInFlight(target))
+				if(CMLib.flags().isInFlight(target))
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected.");
 				else
 				if(msg.value()<=0)

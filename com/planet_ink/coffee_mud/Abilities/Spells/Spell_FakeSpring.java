@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -33,7 +44,7 @@ public class Spell_FakeSpring extends Spell
 		super.unInvoke();
 		if((canBeUninvoked())&&(spring!=null))
 		{
-			Room SpringLocation=CoffeeUtensils.roomLocation(spring);
+			Room SpringLocation=CMLib.utensils().roomLocation(spring);
 			spring.destroy();
 			SpringLocation.recoverRoomStats();
 		}
@@ -72,7 +83,7 @@ public class Spell_FakeSpring extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a spell dramatically.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a spell dramatically.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -91,12 +102,12 @@ public class Spell_FakeSpring extends Spell
 				W.setDisplayText(newItem.displayText());
 				W.setDescription(newItem.description());
 				W.baseEnvStats().setWeight(newItem.baseEnvStats().weight());
-				Sense.setGettable(((Item)W),false);
+				CMLib.flags().setGettable(((Item)W),false);
 				W.setThirstQuenched(0);
 				W.recoverEnvStats();
 				mob.location().addItem((Item)W);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
-				if(CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
+				if(CMLib.utensils().doesOwnThisProperty(mob,mob.location()))
 				{
 					Ability A=(Ability)copyOf();
 					A.setInvoker(mob);

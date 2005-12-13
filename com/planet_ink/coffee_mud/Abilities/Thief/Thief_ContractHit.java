@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -65,7 +75,7 @@ public class Thief_ContractHit extends ThiefSkill
 			{
 
 				hitting=true;
-				int num=Dice.roll(1,3,3);
+				int num=CMLib.dice().roll(1,3,3);
 				int level=mob.envStats().level();
 				if(level>invoker.envStats().level()) level=invoker.envStats().level();
 				CharClass C=CMClass.getCharClass("StdCharClass");
@@ -81,7 +91,7 @@ public class Thief_ContractHit extends ThiefSkill
 					M.baseEnvStats().setRejuv(0);
 					M.baseState().setMana(C.getLevelMana(M));
 					M.baseState().setMovement(C.getLevelMana(M));
-					M.baseState().setHitPoints((10*level)+Dice.roll(level,baseEnvStats().ability(),1));
+					M.baseState().setHitPoints((10*level)+CMLib.dice().roll(level,baseEnvStats().ability(),1));
 					Behavior B=CMClass.getBehavior("Thiefness");
 					B.setParms("Assassin");
 					M.addBehavior(B);
@@ -108,8 +118,8 @@ public class Thief_ContractHit extends ThiefSkill
 					MOB M=(MOB)hitmen.elementAt(i);
 					if((!M.amDead())
 					   &&(M.location()!=null)
-					   &&(Sense.isInTheGame(M,false))
-					   &&(Sense.aliveAwakeMobileUnbound(M,true)))
+					   &&(CMLib.flags().isInTheGame(M,false))
+					   &&(CMLib.flags().aliveAwakeMobileUnbound(M,true)))
 					{
 						anyLeft=true;
 						M.isInCombat();
@@ -167,10 +177,10 @@ public class Thief_ContractHit extends ThiefSkill
 		Vector V=new Vector();
 		try
 		{
-			for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+			for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 			{
 				Room R=(Room)e.nextElement();
-				if(Sense.canAccess(mob,R))
+				if(CMLib.flags().canAccess(mob,R))
 				{
 					MOB M=R.fetchInhabitant(Util.combine(commands,0));
 					if(M!=null)
@@ -180,7 +190,7 @@ public class Thief_ContractHit extends ThiefSkill
 	    }catch(NoSuchElementException nse){}
 		MOB target=null;
 		if(V.size()>0)
-			target=(MOB)V.elementAt(Dice.roll(1,V.size(),-1));
+			target=(MOB)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 		if(target==null)
 		{
 			mob.tell("You've never heard of '"+Util.combine(commands,0)+"'.");
@@ -200,10 +210,10 @@ public class Thief_ContractHit extends ThiefSkill
 		int level=target.envStats().level();
 		if(level>mob.envStats().level()) level=mob.envStats().level();
 		double goldRequired=new Integer(100*level).doubleValue();
-		String localCurrency=BeanCounter.getCurrency(mob.location());
-		if(BeanCounter.getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
+		String localCurrency=CMLib.beanCounter().getCurrency(mob.location());
+		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{
-		    String costWords=BeanCounter.nameCurrencyShort(localCurrency,goldRequired);
+		    String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
 			mob.tell("You'll need at least "+costWords+" to put a hit out on "+target.name()+".");
 			return false;
 		}
@@ -215,12 +225,12 @@ public class Thief_ContractHit extends ThiefSkill
 		if(levelDiff>0) levelDiff=0;
 		boolean success=profficiencyCheck(mob,levelDiff,auto);
 
-		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,"<S-NAME> whisper(s) to a dark figure stepping out of the shadows.  The person nods and slips away.");
+		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,"<S-NAME> whisper(s) to a dark figure stepping out of the shadows.  The person nods and slips away.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 
-			BeanCounter.subtractMoney(mob,localCurrency,goldRequired);
+			CMLib.beanCounter().subtractMoney(mob,localCurrency,goldRequired);
 			if(success)
 				maliciousAffect(mob,target,asLevel,target.envStats().level()+10,0);
 		}

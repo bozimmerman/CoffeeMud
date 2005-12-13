@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -40,7 +51,7 @@ public class Spell_AnalyzeDweomer extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> analyze(s) the nature of <T-NAMESELF> carefully.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> analyze(s) the nature of <T-NAMESELF> carefully.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -55,9 +66,9 @@ public class Spell_AnalyzeDweomer extends Spell
                     for(int l=0;l<Item.wornCodes.length;l++)
                     {
                         long wornCode=1<<l;
-                        if((Sense.wornLocation(wornCode).length()>0)
+                        if((CMLib.flags().wornLocation(wornCode).length()>0)
                         &&(((target.rawProperLocationBitmap()&wornCode)==wornCode)))
-                            str.append(Sense.wornLocation(wornCode).toLowerCase()+" ");
+                            str.append(CMLib.flags().wornLocation(wornCode).toLowerCase()+" ");
                     }
                     str.append(".  ");
                 }
@@ -75,7 +86,7 @@ public class Spell_AnalyzeDweomer extends Spell
 					str.append("It is a magic potion.  ");
 				if(target instanceof Light)
 					str.append("It is a light source.  ");
-				if(target instanceof com.planet_ink.coffee_mud.interfaces.Map)
+				if(target instanceof com.planet_ink.coffee_mud.Items.interfaces.Map)
 					str.append("It is a map.  ");
 				if(target instanceof MiscMagic)
 					str.append("It has a magical aura.  ");
@@ -92,7 +103,7 @@ public class Spell_AnalyzeDweomer extends Spell
 					str.append("It is a key.  ");
 				if(target instanceof LandTitle)
 					str.append("It is a property title.  ");
-				if(Sense.isReadable(target))
+				if(CMLib.flags().isReadable(target))
 					str.append("It is readable.  ");
 				if(target instanceof DeadBody)
 					str.append("It is a corpse of a "+((DeadBody)target).charStats().getMyRace().name()+".  ");
@@ -108,7 +119,7 @@ public class Spell_AnalyzeDweomer extends Spell
 				}
 				str.append("It is made of "+EnvResource.RESOURCE_DESCS[target.material()&EnvResource.RESOURCE_MASK].toLowerCase()+".  ");
 				if(mob.isMonster())
-					CommonMsgs.say(mob,null,str.toString().trim(),false,false);
+					CMLib.commands().say(mob,null,str.toString().trim(),false,false);
 				else
 					mob.tell(str.toString().trim());
 			}

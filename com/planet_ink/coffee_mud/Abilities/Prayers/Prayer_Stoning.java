@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -53,13 +64,13 @@ public class Prayer_Stoning extends Prayer
 			    MOB M=(MOB)cits.elementAt(i);
 			    if((M.location()!=mob.location())||(mob.amDead()))
 			    {
-			        MUDTracker.wanderAway(M,true,false);
+			        CMLib.tracking().wanderAway(M,true,false);
 			        M.destroy();
 			        M.setLocation(null);
 			    }
 			    else
 			    {
-			        if(Dice.rollPercentage()>=50)
+			        if(CMLib.dice().rollPercentage()>=50)
 			        {
 				        int dmg=mob.maxState().getHitPoints()/20;
 				        if(dmg<1) dmg=1;
@@ -69,7 +80,7 @@ public class Prayer_Stoning extends Prayer
 				            W.baseEnvStats().setDamage(dmg);
 				            W.envStats().setDamage(dmg);
 				        }
-				        MUDFight.postDamage(M,mob,W,dmg,CMMsg.MSG_WEAPONATTACK|CMMsg.TYP_GENERAL,Weapon.TYPE_BASHING,"<S-NAME> stone(s) <T-NAMESELF>!");
+				        CMLib.combat().postDamage(M,mob,W,dmg,CMMsg.MSG_WEAPONATTACK|CMMsg.TYP_GENERAL,Weapon.TYPE_BASHING,"<S-NAME> stone(s) <T-NAMESELF>!");
 			        }
 			        else
 			            R.show(M,mob,null,CMMsg.TYP_SPEAK,"<S-NAME> shout(s) obscenities at <T-NAMESELF>.");
@@ -86,7 +97,7 @@ public class Prayer_Stoning extends Prayer
 	            Room R2=CMClass.getLocale("StdRoom");
 	            cits.addElement(M);
 	            M.bringToLife(R2,true);
-	            MUDTracker.wanderIn(M,R);
+	            CMLib.tracking().wanderIn(M,R);
                 R2.destroyRoom();
 			}
 		}
@@ -98,13 +109,13 @@ public class Prayer_Stoning extends Prayer
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		Behavior B=null;
-		if(mob.location()!=null) B=CoffeeUtensils.getLegalBehavior(mob.location());
+		if(mob.location()!=null) B=CMLib.utensils().getLegalBehavior(mob.location());
 		Vector warrants=new Vector();
 		if(B!=null)
 		{
 			warrants.addElement(new Integer(Law.MOD_GETWARRANTSOF));
 			warrants.addElement(target.Name());
-			if(!B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),target,warrants))
+			if(!B.modifyBehavior(CMLib.utensils().getLegalObject(mob.location()),target,warrants))
 				warrants.clear();
 		}
 		if(warrants.size()==0)
@@ -113,7 +124,7 @@ public class Prayer_Stoning extends Prayer
 		    return false;
 		}
 		
-		if((!auto)&&(!Sense.isBoundOrHeld(target)))
+		if((!auto)&&(!CMLib.flags().isBoundOrHeld(target)))
 		{
 			mob.tell(target.name()+" must be bound first.");
 			return false;
@@ -129,7 +140,7 @@ public class Prayer_Stoning extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> call(s) for the stoning of <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> call(s) for the stoning of <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

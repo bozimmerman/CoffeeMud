@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -34,13 +45,13 @@ public class ClanQual extends BaseClanner
 		StringBuffer msg=new StringBuffer("");
 		if((mob.getClanID()==null)
 		||(mob.getClanID().equalsIgnoreCase(""))
-		||(Clans.getClan(mob.getClanID())==null))
+		||(CMLib.clans().getClan(mob.getClanID())==null))
 		{
 			msg.append("You aren't even a member of a clan.");
 		}
 		else
 		{
-			Clan C=Clans.getClan(mob.getClanID());
+			Clan C=CMLib.clans().getClan(mob.getClanID());
 			if((!skipChecks)&&(!goForward(mob,C,commands,Clan.FUNC_CLANPREMISE,false)))
 			{
 				msg.append("You aren't in the right position to set the qualifications to your "+C.typeName()+".");
@@ -59,11 +70,11 @@ public class ClanQual extends BaseClanner
 							premise=mob.session().prompt("Describe your "+C.typeName()+"'s Qualification Code (?)\n\r: ","");
 
 						if(premise.equals("?"))
-							mob.tell(MUDZapper.zapperInstructions("\n\r","disallow"));
+							mob.tell(CMLib.masking().maskHelp("\n\r","disallow"));
 						else
 						if(premise.length()>0)
 						{
-							mob.tell("Your qualifications will be as follows: "+MUDZapper.zapperDesc(premise)+"\n\r");
+							mob.tell("Your qualifications will be as follows: "+CMLib.masking().maskDesc(premise)+"\n\r");
 							if((mob.session()!=null)&&(mob.session().confirm("Is this correct (Y/n)?","Y")))
 							{
 								commands.addElement(premise);
@@ -71,7 +82,7 @@ public class ClanQual extends BaseClanner
 								{
 									C.setAcceptanceSettings(premise);
 									C.update();
-									clanAnnounce(mob,"The qualifications of "+C.typeName()+" "+C.ID()+" have been changed.");
+									clanAnnounce(mob,"The qualifications of "+C.typeName()+" "+C.clanID()+" have been changed.");
 									return false;
 								}
 							}

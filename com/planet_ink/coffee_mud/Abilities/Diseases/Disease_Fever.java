@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Diseases;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -49,16 +59,16 @@ public class Disease_Fever extends Disease
 		MOB mob=(MOB)affected;
 		if(mob.isInCombat())
 		{
-			MOB newvictim=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
+			MOB newvictim=mob.location().fetchInhabitant(CMLib.dice().roll(1,mob.location().numInhabitants(),-1));
 			if(newvictim!=mob) mob.setVictim(newvictim);
 		}
 		else
-		if(Sense.aliveAwakeMobile(mob,false)
-		&&(Sense.canSee(mob))
+		if(CMLib.flags().aliveAwakeMobile(mob,false)
+		&&(CMLib.flags().canSee(mob))
 		&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
-			switch(Dice.roll(1,10,0))
+			switch(CMLib.dice().roll(1,10,0))
 			{
 			case 1: mob.tell("You think you just saw your mother swim by."); break;
 			case 2: mob.tell("A pink elephant just attacked you!"); break;

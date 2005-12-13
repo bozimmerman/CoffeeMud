@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -71,11 +82,11 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 				choices.addElement(A);
 		}
 		if(choices.size()==0) return true;
-		MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
-		Ability thisOne=(Ability)choices.elementAt(Dice.roll(1,choices.size(),-1));
+		MOB target=mob.location().fetchInhabitant(CMLib.dice().roll(1,mob.location().numInhabitants(),-1));
+		Ability thisOne=(Ability)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 		if((target==null)||(thisOne==null)||(target.fetchEffect(ID())!=null))
 			return true;
-		if(Dice.rollPercentage()>(target.charStats().getSave(CharStats.SAVE_DISEASE)))
+		if(CMLib.dice().rollPercentage()>(target.charStats().getSave(CharStats.SAVE_DISEASE)))
 		{
 			((Ability)this.copyOf()).invoke(target,target,true,0);
 			if(target.fetchEffect(ID())!=null)
@@ -103,8 +114,8 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> become(s) contagious!":"^S<S-NAME> "+prayWord(mob)+" for a contagion to inflict <T-NAMESELF>.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.TYP_DISEASE|CMMsg.MASK_MALICIOUS,null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> become(s) contagious!":"^S<S-NAME> "+prayWord(mob)+" for a contagion to inflict <T-NAMESELF>.^?");
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.TYP_DISEASE|CMMsg.MASK_MALICIOUS,null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

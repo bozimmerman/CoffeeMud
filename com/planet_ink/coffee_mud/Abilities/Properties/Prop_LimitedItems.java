@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -39,7 +50,7 @@ public class Prop_LimitedItems extends Property
 
 	private void countIfNecessary(Item I)
 	{
-		if(Sense.isInTheGame(I,false))
+		if(CMLib.flags().isInTheGame(I,false))
 		{
 			int max=Util.s_int(text());
 			Vector myInstances=null;
@@ -83,7 +94,7 @@ public class Prop_LimitedItems extends Property
 	{
 		super.executeMsg(host,msg);
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
-		&&(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+		&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 		&&(affected instanceof Item)
 		&&((!(((Item)affected).owner() instanceof MOB))
 		   ||((MOB)((Item)affected).owner()).playerStats()==null))
@@ -97,7 +108,7 @@ public class Prop_LimitedItems extends Property
 		if((!(E instanceof Item))||(((Item)E).owner()==null))
 			return;
 		
-		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return;
 		
 		if(norecurse) return;
@@ -111,10 +122,10 @@ public class Prop_LimitedItems extends Property
 			{
 				playersLoaded[0]=true;
 				Log.sysOut("Prop_LimitedItems","Checking player inventories");
-				Vector V=CMClass.DBEngine().getUserList();
+				Vector V=CMLib.database().getUserList();
 				for(int v=0;v<V.size();v++)
 				{
-					MOB M=CMMap.getLoadPlayer((String)((Vector)V.elementAt(v)).firstElement());
+					MOB M=CMLib.map().getLoadPlayer((String)((Vector)V.elementAt(v)).firstElement());
 					if((M!=null)&&(M.location()!=null)&&(M.location().isInhabitant(M)))
 						Log.sysOut("Prop_LimitedItems",M.name()+" is in the Game!!!");
 				}

@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -21,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_ShieldBlock extends StdAbility
+public class Fighter_ShieldBlock extends FighterSkill
 {
 	public int hits=0;
 	public String ID() { return "Fighter_ShieldBlock"; }
@@ -43,14 +53,14 @@ public class Fighter_ShieldBlock extends StdAbility
 
 		if(msg.amITarget(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
-		&&(Sense.aliveAwakeMobileUnbound(mob,true))
+		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&(profficiencyCheck(null,mob.charStats().getStat(CharStats.DEXTERITY)-90,false))
 		&&(mob.fetchFirstWornItem(Item.HELD) instanceof Shield)
 		&&(msg.source().getVictim()==mob))
 		{
-			FullMsg msg2=new FullMsg(msg.source(),mob,mob.fetchFirstWornItem(Item.HELD),CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> block(s) <S-YOUPOSS> attack with <O-NAME>!");
+			CMMsg msg2=CMClass.getMsg(msg.source(),mob,mob.fetchFirstWornItem(Item.HELD),CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> block(s) <S-YOUPOSS> attack with <O-NAME>!");
 			if(mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg2);

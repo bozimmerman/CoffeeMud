@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -54,7 +65,7 @@ public class Prayer_Gateway extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((auto||mob.isMonster())&&(commands.size()==0))
-			commands.addElement(CMMap.getRandomRoom().displayText());
+			commands.addElement(CMLib.map().getRandomRoom().displayText());
 		if(commands.size()<1)
 		{
 			mob.tell("Pray for a gateway to where?");
@@ -69,11 +80,11 @@ public class Prayer_Gateway extends Prayer
 		String areaName=Util.combine(commands,0).trim().toUpperCase();
 		try
 		{
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(Sense.canAccess(mob,R))
-					if(EnglishParser.containsString(R.displayText(),areaName))
+				if(CMLib.flags().canAccess(mob,R))
+					if(CMLib.english().containsString(R.displayText(),areaName))
 					{
 					   newRoom=R;
 					   break;
@@ -109,8 +120,8 @@ public class Prayer_Gateway extends Prayer
 		&&((newRoom.getRoomInDir(Directions.GATE)==null)
 		&&(newRoom.getExitInDir(Directions.GATE)==null)))
 		{
-			FullMsg msg=new FullMsg(mob,mob.location(),this,affectType(auto),"^S<S-NAME> "+prayWord(mob)+" for a blinding, divine gateway here.^?");
-			FullMsg msg2=new FullMsg(mob,newRoom,this,affectType(auto),"A blinding, divine gateway appears here.");
+			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,affectType(auto),"^S<S-NAME> "+prayWord(mob)+" for a blinding, divine gateway here.^?");
+			CMMsg msg2=CMClass.getMsg(mob,newRoom,this,affectType(auto),"A blinding, divine gateway appears here.");
 			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Diseases;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -33,7 +43,7 @@ public class Disease_Gonorrhea extends Disease
 	public int difficultyLevel(){return 1;}
 
 	protected int DISEASE_TICKS(){return 99999;}
-	protected int DISEASE_DELAY(){return new Long(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).intValue();}
+	protected int DISEASE_DELAY(){return new Long(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).intValue();}
 	protected String DISEASE_DONE(){return "Your gonorrhea clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> squeeze(s) <S-HIS-HER> privates uncomfortably.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> squeeze(s) <S-HIS-HER> privates uncomfortably.";}
@@ -46,10 +56,10 @@ public class Disease_Gonorrhea extends Disease
 		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
-		if((Dice.rollPercentage()==1)
-		&&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_COLD))
+		if((CMLib.dice().rollPercentage()==1)
+		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.SAVE_COLD))
 		&&(!mob.amDead())
-		&&(Dice.rollPercentage()<25-mob.charStats().getStat(CharStats.CONSTITUTION)))
+		&&(CMLib.dice().rollPercentage()<25-mob.charStats().getStat(CharStats.CONSTITUTION)))
 		{
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=mob;

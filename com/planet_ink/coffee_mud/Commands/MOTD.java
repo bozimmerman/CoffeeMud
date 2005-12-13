@@ -1,10 +1,20 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.exceptions.HTTPRedirectException;
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -43,11 +53,11 @@ public class MOTD extends StdCommand
 				if(msg.length()>0)
 				{
 					if(msg.startsWith("<cmvp>"))
-						msg=new String(CMClass.httpUtils().doVirtualPage(msg.substring(6).getBytes()));
+						msg=new String(CMLib.httpUtils().doVirtualPage(msg.substring(6).getBytes()));
 				    buf.append(msg+"\n\r--------------------------------------\n\r");
 				}
 		
-				Vector journal=CMClass.DBEngine().DBReadJournal("CoffeeMud News");
+				Vector journal=CMLib.database().DBReadJournal("CoffeeMud News");
 				for(int which=0;which<journal.size();which++)
 				{
 					Vector entry=(Vector)journal.elementAt(which);
@@ -62,15 +72,15 @@ public class MOTD extends StdCommand
 					&&(to.equals("ALL")||mineAble))
 					{
 						if(message.startsWith("<cmvp>"))
-							message=new String(CMClass.httpUtils().doVirtualPage(message.substring(6).getBytes()));
-						buf.append("\n\rNews: "+IQCalendar.d2String(last)+"\n\r"+"FROM: "+Util.padRight(from,15)+"\n\rTO  : "+Util.padRight(to,15)+"\n\rSUBJ: "+subject+"\n\r"+message);
+							message=new String(CMLib.httpUtils().doVirtualPage(message.substring(6).getBytes()));
+						buf.append("\n\rNews: "+CMLib.time().date2String(last)+"\n\r"+"FROM: "+Util.padRight(from,15)+"\n\rTO  : "+Util.padRight(to,15)+"\n\rSUBJ: "+subject+"\n\r"+message);
 						buf.append("\n\r--------------------------------------\n\r");
 					}
 				}
                 Vector postalChains=new Vector();
                 Vector postalBranches=new Vector();
                 PostOffice P=null;
-                for(Enumeration e=CMMap.postOffices();e.hasMoreElements();)
+                for(Enumeration e=CMLib.map().postOffices();e.hasMoreElements();)
                 {
                     P=(PostOffice)e.nextElement();
                     if(!postalChains.contains(P.postalChain()))
@@ -80,7 +90,7 @@ public class MOTD extends StdCommand
                 }
                 if((postalChains.size()>0)&&(P!=null))
                 {
-                    Vector V=CMClass.DBEngine().DBReadData(mob.Name(),postalChains);
+                    Vector V=CMLib.database().DBReadData(mob.Name(),postalChains);
                     Hashtable res=getPostalResults(V,mob.playerStats().lastDateTime());
                     for(Enumeration e=res.keys();e.hasMoreElements();)
                     {
@@ -92,10 +102,10 @@ public class MOTD extends StdCommand
                     Clan C=null;
                     if(mob.getClanID().length()>0)
                     {
-                        C=Clans.getClan(mob.getClanID());
+                        C=CMLib.clans().getClan(mob.getClanID());
                         if((C!=null)&&(C.allowedToDoThis(mob,Clan.FUNC_CLANWITHDRAW)>=0))
                         {
-                            V=CMClass.DBEngine().DBReadData(C.name(),postalChains);
+                            V=CMLib.database().DBReadData(C.name(),postalChains);
                             if(V.size()>0)
                                 res=getPostalResults(V,mob.playerStats().lastDateTime());
                         }
@@ -112,11 +122,11 @@ public class MOTD extends StdCommand
                 }
                 
                 Vector myEchoableCommandJournals=new Vector();
-                for(int cj=0;cj<ChannelSet.getNumCommandJournals();cj++)
+                for(int cj=0;cj<CMLib.journals().getNumCommandJournals();cj++)
                 {
-                    if((ChannelSet.getCommandJournalFlags(cj).get("ADMINECHO")!=null)
-                    &&((CMSecurity.isAllowed(mob,mob.location(),ChannelSet.getCommandJournalName(cj)))
-                            ||CMSecurity.isAllowed(mob,mob.location(),"KILL"+ChannelSet.getCommandJournalName(cj)+"S")
+                    if((CMLib.journals().getCommandJournalFlags(cj).get("ADMINECHO")!=null)
+                    &&((CMSecurity.isAllowed(mob,mob.location(),CMLib.journals().getCommandJournalName(cj)))
+                            ||CMSecurity.isAllowed(mob,mob.location(),"KILL"+CMLib.journals().getCommandJournalName(cj)+"S")
                             ||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")))
                         myEchoableCommandJournals.addElement(new Integer(cj));
                 }
@@ -124,7 +134,7 @@ public class MOTD extends StdCommand
                 for(int cj=0;cj<myEchoableCommandJournals.size();cj++)
                 {
                     Integer CJ=(Integer)myEchoableCommandJournals.elementAt(cj);
-                    Vector items=CMClass.DBEngine().DBReadJournal("SYSTEM_"+ChannelSet.getCommandJournalName(CJ.intValue())+"S");
+                    Vector items=CMLib.database().DBReadJournal("SYSTEM_"+CMLib.journals().getCommandJournalName(CJ.intValue())+"S");
                     if(items!=null)
                     for(int i=0;i<items.size();i++)
                     {
@@ -134,7 +144,7 @@ public class MOTD extends StdCommand
                         long compdate=Util.s_long((String)entry.elementAt(6));
                         if(compdate>mob.playerStats().lastDateTime())
                         {
-                            buf.append("\n\rNEW "+ChannelSet.getCommandJournalName(CJ.intValue())+" from "+from+": "+message+"\n\r");
+                            buf.append("\n\rNEW "+CMLib.journals().getCommandJournalName(CJ.intValue())+" from "+from+": "+message+"\n\r");
                             CJseparator=true;
                         }
                     }
@@ -143,9 +153,9 @@ public class MOTD extends StdCommand
                     buf.append("\n\r--------------------------------------\n\r");
                 
                 if((!Util.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
-                &&(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX).length()>0))
+                &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0))
                 {
-                    Vector msgs=CMClass.DBEngine().DBReadJournal(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX));
+                    Vector msgs=CMLib.database().DBReadJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX));
                     int mymsgs=0;
                     for(int num=0;num<msgs.size();num++)
                     {
@@ -210,7 +220,7 @@ public class MOTD extends StdCommand
             int x=branch.indexOf(";");
             if(x<0) continue;
             branch=branch.substring(0,x);
-            P=CMMap.getPostOffice(chain,branch);
+            P=CMLib.map().getPostOffice(chain,branch);
             if(P==null) continue;
             Vector pieces=P.parsePostalItemData((String)letter.elementAt(3));
             int[] ct=(int[])results.get(P);

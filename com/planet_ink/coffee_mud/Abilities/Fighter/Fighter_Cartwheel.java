@@ -1,8 +1,17 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /* 
@@ -21,7 +30,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_Cartwheel extends StdAbility
+public class Fighter_Cartwheel extends FighterSkill
 {
 	public String ID() { return "Fighter_Cartwheel"; }
 	public String name(){ return "Cartwheel";}
@@ -68,14 +77,14 @@ public class Fighter_Cartwheel extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,victim,this,CMMsg.MSG_RETREAT,"<S-NAME> cartwheel(s) away from <T-NAMESELF>!");
+			CMMsg msg=CMClass.getMsg(mob,victim,this,CMMsg.MSG_RETREAT,"<S-NAME> cartwheel(s) away from <T-NAMESELF>!");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				int tries=10;
 				while(((--tries)>=0)&&(mob.rangeToTarget()<mob.location().maxRange()))
 				{
-					msg=new FullMsg(mob,victim,this,CMMsg.MSG_RETREAT,null);
+					msg=CMClass.getMsg(mob,victim,this,CMMsg.MSG_RETREAT,null);
 					if(mob.location().okMessage(mob,msg))
 						mob.location().send(mob,msg);
 				}

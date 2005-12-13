@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -100,7 +111,7 @@ public class Chant_PlantMaze extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, null, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) amazingly!^?");
+			CMMsg msg = CMClass.getMsg(mob, null, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) amazingly!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -161,8 +172,8 @@ public class Chant_PlantMaze extends Chant
 					MOB follower=(MOB)everyone.elementAt(m);
 					if(follower==null) continue;
 					Room newerRoom=((GridLocale)newRoom).getRandomChild();
-					FullMsg enterMsg=new FullMsg(follower,newerRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of "+thePlants.name()+".");
-					FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,affectType(auto),"<S-NAME> disappear(s) into "+thePlants.name()+".");
+					CMMsg enterMsg=CMClass.getMsg(follower,newerRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of "+thePlants.name()+".");
+					CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,affectType(auto),"<S-NAME> disappear(s) into "+thePlants.name()+".");
 					if(oldRoom.okMessage(follower,leaveMsg)&&newerRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())
@@ -171,7 +182,7 @@ public class Chant_PlantMaze extends Chant
 						newerRoom.bringMobHere(follower,false);
 						newerRoom.send(follower,enterMsg);
 						follower.tell("\n\r\n\r");
-						CommonMsgs.look(follower,true);
+						CMLib.commands().look(follower,true);
 					}
 				}
 			}

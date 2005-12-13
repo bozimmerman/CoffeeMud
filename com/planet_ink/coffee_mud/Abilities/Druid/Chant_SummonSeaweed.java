@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -34,7 +45,7 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 	{
 		Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(EnvResource.RESOURCE_SEAWEED);
-		switch(Dice.roll(1,5,0))
+		switch(CMLib.dice().roll(1,5,0))
 		{
 		case 1:
 			newItem.setName("some algae");
@@ -71,7 +82,7 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 		Chant_SummonSeaweed newChant=new Chant_SummonSeaweed();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
-		if(CoffeeUtensils.doesOwnThisProperty(mob,room))
+		if(CMLib.utensils().doesOwnThisProperty(mob,room))
 		{
 			newChant.setInvoker(mob);
 			newChant.setMiscText(mob.name());

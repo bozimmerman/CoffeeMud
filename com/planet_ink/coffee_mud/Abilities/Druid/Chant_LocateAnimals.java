@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
+
 import java.util.*;
 
 
@@ -84,9 +94,9 @@ public class Chant_LocateAnimals extends Chant
 		MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.amITarget(mob.location()))
-		&&(Sense.canBeSeenBy(mob.location(),mob))
+		&&(CMLib.flags().canBeSeenBy(mob.location(),mob))
 		&&(msg.targetMinor()==CMMsg.TYP_LOOK))
-			nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),false);
+			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),false);
 	}
 
 	public MOB animalHere(Room room)
@@ -95,7 +105,7 @@ public class Chant_LocateAnimals extends Chant
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			MOB mob=room.fetchInhabitant(i);
-			if(Sense.isAnimalIntelligence(mob))
+			if(CMLib.flags().isAnimalIntelligence(mob))
 				return mob;
 		}
 		return null;
@@ -108,7 +118,7 @@ public class Chant_LocateAnimals extends Chant
 			mob.tell("You are already trying to locate animals.");
 			return false;
 		}
-		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);
+		Vector V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
 		for(int v=0;v<V.size();v++)	((Ability)V.elementAt(v)).unInvoke();
 
 		theTrail=null;
@@ -137,20 +147,20 @@ public class Chant_LocateAnimals extends Chant
 		{
 		    try
 		    {
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if(Sense.canAccess(mob,R))
+					if(CMLib.flags().canAccess(mob,R))
 						if(animalHere(R)!=null)
 							rooms.addElement(R);
 				}
 		    }catch(NoSuchElementException e){}
 		}
 		while(rooms.size()>10)
-		    rooms.removeElementAt(Dice.roll(1,rooms.size(),-1));
+		    rooms.removeElementAt(CMLib.dice().roll(1,rooms.size(),-1));
 
 		if(rooms.size()>0)
-			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,false,false,false,false,false,50);
+			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,false,false,false,false,false,50);
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))
@@ -163,7 +173,7 @@ public class Chant_LocateAnimals extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> chant(s) for the animals.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),"^S<S-NAME> chant(s) for the animals.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -173,7 +183,7 @@ public class Chant_LocateAnimals extends Chant
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverEnvStats();
-				newOne.nextDirection=MUDTracker.trackNextDirectionFromHere(newOne.theTrail,mob.location(),false);
+				newOne.nextDirection=CMLib.tracking().trackNextDirectionFromHere(newOne.theTrail,mob.location(),false);
 			}
 		}
 		else

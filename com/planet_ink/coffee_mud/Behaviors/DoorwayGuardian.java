@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -79,8 +90,8 @@ public class DoorwayGuardian extends StdBehavior
 		&&(mob!=monster)
 		&&(msg.target()!=null)
 		&&(!BrotherHelper.isBrother(mob,monster))
-		&&(!MUDZapper.zapperCheck(getParms(),mob))
-        &&(Sense.canSenseMoving(mob,monster)||(getParms().toUpperCase().indexOf("NOSNEAK")>=0)))
+		&&(!CMLib.masking().maskCheck(getParms(),mob))
+        &&(CMLib.flags().canSenseMoving(mob,monster)||(getParms().toUpperCase().indexOf("NOSNEAK")>=0)))
 		{
 			if(msg.target() instanceof Exit)
 			{
@@ -94,7 +105,7 @@ public class DoorwayGuardian extends StdBehavior
 				if((msg.targetMinor()!=CMMsg.TYP_CLOSE)
 				&&(msg.targetMinor()!=CMMsg.TYP_LOCK))
 				{
-					FullMsg msgs=new FullMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,getWords());
+					CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,getWords());
 					if(monster.location().okMessage(monster,msgs))
 					{
 						monster.location().send(monster,msgs);
@@ -114,7 +125,7 @@ public class DoorwayGuardian extends StdBehavior
 				&&(texit[1]!=exit))
 					return true;
 
-				FullMsg msgs=new FullMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,getWords());
+				CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,getWords());
 				if(monster.location().okMessage(monster,msgs))
 				{
 					monster.location().send(monster,msgs);

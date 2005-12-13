@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /*
@@ -44,7 +55,7 @@ public class GoodGuardian extends StdBehavior
 				if((BrotherHelper.isBrother(inhab,observer))&&(victim==null))
 					victim=inhab.getVictim();
 
-				if((Sense.isEvil(inhab))
+				if((CMLib.flags().isEvil(inhab))
 				||(inhab.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief")))
 					victim=inhab;
 			}
@@ -65,7 +76,7 @@ public class GoodGuardian extends StdBehavior
             &&(victim.getVictim().isInCombat()))
 			{
 				boolean yep=Aggressive.startFight(observer,victim,true);
-				if(yep)	CommonMsgs.say(observer,null,"PROTECT THE INNOCENT!",false,false);
+				if(yep)	CMLib.commands().say(observer,null,"PROTECT THE INNOCENT!",false,false);
 			}
 		}
 		else
@@ -80,7 +91,7 @@ public class GoodGuardian extends StdBehavior
 				&&((observer.envStats().level()>(inhab.envStats().level()+5))))
 				{
 					String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().name();
-					FullMsg msgs=new FullMsg(observer,inhab,CMMsg.MSG_NOISYMOVEMENT,msg);
+					CMMsg msgs=CMClass.getMsg(observer,inhab,CMMsg.MSG_NOISYMOVEMENT,msg);
 					if(observer.location().okMessage(observer,msgs))
 					{
 						observer.location().send(observer,msgs);

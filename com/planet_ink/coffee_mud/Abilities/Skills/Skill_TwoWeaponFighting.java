@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -21,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_TwoWeaponFighting extends StdAbility
+public class Skill_TwoWeaponFighting extends StdSkill
 {
 	public String ID() { return "Skill_TwoWeaponFighting"; }
 	public String name(){ return "Two Weapon Fighting";}
@@ -102,7 +112,7 @@ public class Skill_TwoWeaponFighting extends StdAbility
 			if(mob.isInCombat())
 			{
 				if(Util.bset(mob.getBitmap(),MOB.ATT_AUTODRAW))
-					CommonMsgs.draw(mob,true,true);
+					CMLib.commands().draw(mob,true,true);
 
 				Item primaryWeapon=getFirstWeapon(mob);
 				Item weapon=getSecondWeapon(mob);
@@ -111,21 +121,21 @@ public class Skill_TwoWeaponFighting extends StdAbility
 				&&(mob.rangeToTarget()>=0)
 				&&(mob.rangeToTarget()>=weapon.minRange())
 				&&(mob.rangeToTarget()<=weapon.maxRange())
-				&&(Sense.aliveAwakeMobileUnbound(mob,true))
+				&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				&&(!mob.amDead())
 				&&(mob.curState().getHitPoints()>0)
-				&&(Sense.isStanding(mob))
+				&&(CMLib.flags().isStanding(mob))
 				&&(profficiencyCheck(mob,0,false))
 				&&(!mob.getVictim().amDead()))
 				{
 					primaryWeapon.setRawWornCode(Item.HELD);
 					weapon.setRawWornCode(Item.WIELD);
 					mob.recoverEnvStats();
-					MUDFight.postAttack(mob,mob.getVictim(),weapon);
+					CMLib.combat().postAttack(mob,mob.getVictim(),weapon);
 					weapon.setRawWornCode(Item.HELD);
 					primaryWeapon.setRawWornCode(Item.WIELD);
 					mob.recoverEnvStats();
-					if(Dice.rollPercentage()==1)
+					if(CMLib.dice().rollPercentage()==1)
 						helpProfficiency(mob);
 				}
 			}

@@ -1,9 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -22,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_PointBlank extends StdAbility
+public class Fighter_PointBlank extends FighterSkill
 {
 	public String ID() { return "Fighter_PointBlank"; }
 	public String name(){ return "Point Blank Shot";}
@@ -103,7 +113,7 @@ public class Fighter_PointBlank extends StdAbility
 			&&(((Weapon)w).ammunitionType().length()>0)
 			&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))
 			{
-				if((Dice.rollPercentage()==1)&&(Dice.rollPercentage()<10))
+				if((CMLib.dice().rollPercentage()==1)&&(CMLib.dice().rollPercentage()<10))
 					helpProfficiency(mob);
 				if(!qualifiedWeapons.contains(w))
 				{

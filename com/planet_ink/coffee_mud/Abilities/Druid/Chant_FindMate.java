@@ -1,8 +1,18 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -61,9 +71,9 @@ public class Chant_FindMate extends Chant
 					mob.tell("You peer longingly at "+mate.name()+".");
 
 					Item I=mob.fetchFirstWornItem(Item.ON_WAIST);
-					if(I!=null)	CommonMsgs.remove(mob,I,false);
+					if(I!=null)	CMLib.commands().remove(mob,I,false);
 					I=mob.fetchFirstWornItem(Item.ON_LEGS);
-					if(I!=null)	CommonMsgs.remove(mob,I,false);
+					if(I!=null)	CMLib.commands().remove(mob,I,false);
 
 					if((mob.fetchFirstWornItem(Item.ON_WAIST)!=null)
 					||(mob.fetchFirstWornItem(Item.ON_LEGS)!=null))
@@ -98,7 +108,7 @@ public class Chant_FindMate extends Chant
 				{
 					int dir=nextDirection;
 					nextDirection=-2;
-					MUDTracker.move(mob,dir,false,false);
+					CMLib.tracking().move(mob,dir,false,false);
 				}
 				else
 					unInvoke();
@@ -117,9 +127,9 @@ public class Chant_FindMate extends Chant
 		MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.amITarget(mob.location()))
-		&&(Sense.canBeSeenBy(mob.location(),mob))
+		&&(CMLib.flags().canBeSeenBy(mob.location(),mob))
 		&&(msg.targetMinor()==CMMsg.TYP_LOOK))
-			nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),true);
+			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
 	public boolean isSuitableMate(MOB mate, MOB forMe)
@@ -138,7 +148,7 @@ public class Chant_FindMate extends Chant
 		   ||(merace.equals(materace)))
 		&&(mate.numWearingHere(Item.ON_LEGS)==0)
 		&&(mate.numWearingHere(Item.ON_WAIST)==0)
-		&&(Sense.canBeSeenBy(mate,forMe)))
+		&&(CMLib.flags().canBeSeenBy(mate,forMe)))
 			return true;
 		return false;
 	}
@@ -154,7 +164,7 @@ public class Chant_FindMate extends Chant
 			return false;
 		}
 
-		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);
+		Vector V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
 		for(int v=0;v<V.size();v++)	((Ability)V.elementAt(v)).unInvoke();
 		if(V.size()>0)
 		{
@@ -184,10 +194,10 @@ public class Chant_FindMate extends Chant
 		{
 		    try
 		    {
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if(Sense.canAccess(mob,R))
+					if(CMLib.flags().canAccess(mob,R))
 						for(int i=0;i<R.numInhabitants();i++)
 						{
 							MOB M=R.fetchInhabitant(i);
@@ -199,7 +209,7 @@ public class Chant_FindMate extends Chant
 		}
 
 		if(rooms.size()>0)
-			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,true,false,true,true,true,50);
+			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,true,false,true,true,true,50);
 
 		if((success)&&(theTrail!=null)&&(target!=null))
 		{
@@ -209,7 +219,7 @@ public class Chant_FindMate extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?null:"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?null:"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -219,7 +229,7 @@ public class Chant_FindMate extends Chant
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> yearn(s) for a mate!");
 					A.makeLongLasting();
-					A.nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),true);
+					A.nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
 					target.recoverEnvStats();
 				}
 			}

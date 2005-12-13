@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 
 import java.util.*;
 
@@ -48,7 +59,7 @@ public class Prop_SpellAdder extends Property
         {
             maskString=newText.substring(maskindex+5).trim();
             if(maskString.length()>0)
-                Util.addToVector(MUDZapper.zapperCompile(maskString),mask);
+                Util.addToVector(CMLib.masking().maskCompile(maskString),mask);
             parmString=newText.substring(0,maskindex).trim();
         }
 	}
@@ -74,7 +85,7 @@ public class Prop_SpellAdder extends Property
 			}
 
 			Ability A=CMClass.getAbility(thisOne);
-			if((A!=null)&&(!CMAble.classOnly("Archon",A.ID())))
+			if((A!=null)&&(!CMLib.ableMapper().classOnly("Archon",A.ID())))
 			{
 				A=(Ability)A.copyOf();
 				A.setMiscText(parm);
@@ -94,7 +105,7 @@ public class Prop_SpellAdder extends Property
 			}
 		}
 		Ability A=CMClass.getAbility(names);
-		if((A!=null)&&(!CMAble.classOnly("Archon",A.ID())))
+		if((A!=null)&&(!CMLib.ableMapper().classOnly("Archon",A.ID())))
 		{
 			A=(Ability)A.copyOf();
 			A.setMiscText(parm);
@@ -108,7 +119,7 @@ public class Prop_SpellAdder extends Property
 		int x=parmString.indexOf("%");
 		if(x<0)
 		{
-			if(Dice.rollPercentage()<=defaultPct)
+			if(CMLib.dice().rollPercentage()<=defaultPct)
 				return true;
 			return false;
 		}
@@ -122,7 +133,7 @@ public class Prop_SpellAdder extends Property
 				x=-1;
 			mul=mul*10;
 		}
-		if(Dice.rollPercentage()<=tot)
+		if(CMLib.dice().rollPercentage()<=tot)
 			return true;
 		return false;
 	}
@@ -147,7 +158,7 @@ public class Prop_SpellAdder extends Property
 			return (MOB)((Item)target).owner();
         if(trickMOB==null)
             trickMOB=CMClass.getMOB("StdMOB");
-        Room R=CoffeeUtensils.roomLocation(target);
+        Room R=CMLib.utensils().roomLocation(target);
         trickMOB.setLocation((R==null)?CMClass.getLocale("StdRoom"):R);
 		return trickMOB;
 	}
@@ -158,7 +169,7 @@ public class Prop_SpellAdder extends Property
         if((target==null)
         ||(V.size()==0)
         ||((mask.size()>0)
-            &&(!MUDZapper.zapperCheckReal(mask,qualifiedMOB(source)))))
+            &&(!CMLib.masking().maskCheck(mask,qualifiedMOB(source)))))
             return false;
         
 		for(int v=0;v<V.size();v++)
@@ -273,7 +284,7 @@ public class Prop_SpellAdder extends Property
         if(spellList.size()>0)
             id=pre+id+post;
         if(maskString.length()>0)
-            id+="  Restrictions: "+MUDZapper.zapperDesc(maskString);
+            id+="  Restrictions: "+CMLib.masking().maskDesc(maskString);
         return id;
     }
 }

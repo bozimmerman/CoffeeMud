@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -32,8 +43,8 @@ public class Save extends StdCommand
 		{
 		    if(!mob.isMonster())
 		    {
-				CMClass.DBEngine().DBUpdatePlayer(mob);
-				CMClass.DBEngine().DBUpdateFollowers(mob);
+				CMLib.database().DBUpdatePlayer(mob);
+				CMLib.database().DBUpdateFollowers(mob);
 				mob.tell("Your player record has been updated.");
 		    }
 		    return false;
@@ -51,14 +62,14 @@ public class Save extends StdCommand
 				mob.tell("You are not allowed to save players.");
 				return false;
 			}
-			for(int s=0;s<Sessions.size();s++)
+			for(int s=0;s<CMLib.sessions().size();s++)
 			{
-				Session session=Sessions.elementAt(s);
+				Session session=CMLib.sessions().elementAt(s);
 				MOB M=session.mob();
 				if(M!=null)
 				{
-					CMClass.DBEngine().DBUpdatePlayer(M);
-					CMClass.DBEngine().DBUpdateFollowers(M);
+					CMLib.database().DBUpdatePlayer(M);
+					CMLib.database().DBUpdateFollowers(M);
 				}
 			}
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes everyone.\n\r");
@@ -77,7 +88,7 @@ public class Save extends StdCommand
 				{
 					Area A=mob.location().getArea();
 					for(Enumeration e=A.getProperMap();e.hasMoreElements();)
-						CoffeeUtensils.clearDebriAndRestart((Room)e.nextElement(),1);
+						CMLib.utensils().clearDebriAndRestart((Room)e.nextElement(),1);
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 				}
 				else
@@ -85,7 +96,7 @@ public class Save extends StdCommand
 			}
 			else
 			{
-				CoffeeUtensils.clearDebriAndRestart(mob.location(),1);
+				CMLib.utensils().clearDebriAndRestart(mob.location(),1);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the room.\n\r");
 			}
 			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
@@ -104,7 +115,7 @@ public class Save extends StdCommand
 				{
 					Area A=mob.location().getArea();
 					for(Enumeration e=A.getProperMap();e.hasMoreElements();)
-						CoffeeUtensils.clearDebriAndRestart((Room)e.nextElement(),0);
+						CMLib.utensils().clearDebriAndRestart((Room)e.nextElement(),0);
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 				}
 				else
@@ -112,7 +123,7 @@ public class Save extends StdCommand
 			}
 			else
 			{
-				CoffeeUtensils.clearDebriAndRestart(mob.location(),0);
+				CMLib.utensils().clearDebriAndRestart(mob.location(),0);
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the room.\n\r");
 			}
 			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
@@ -131,7 +142,7 @@ public class Save extends StdCommand
 				{
 					Area A=mob.location().getArea();
 					for(Enumeration e=A.getProperMap();e.hasMoreElements();)
-						CoffeeUtensils.clearDebriAndRestart((Room)e.nextElement(),2);
+						CMLib.utensils().clearDebriAndRestart((Room)e.nextElement(),2);
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 				}
 				else 
@@ -140,7 +151,7 @@ public class Save extends StdCommand
 			}
 			else
 			{
-				CoffeeUtensils.clearDebriAndRestart(mob.location(),2);
+				CMLib.utensils().clearDebriAndRestart(mob.location(),2);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the room.\n\r");
 			}
 			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
@@ -153,7 +164,7 @@ public class Save extends StdCommand
 				mob.tell("You are not allowed to save the contents here.");
 				return false;
 			}
-			Quests.save();
+			CMLib.quests().save();
 			mob.tell("Quest list saved.");
 		}
 		else

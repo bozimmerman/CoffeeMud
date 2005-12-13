@@ -1,8 +1,19 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+
 import com.sun.rsasign.c;
 
 import java.util.*;
@@ -103,13 +114,13 @@ public class MoneyChanger extends StdBehavior
 		{
 			if(!(msg.tool() instanceof Coins))
 			{
-				CommonMsgs.say(observer,source,"I'm sorry, I can only accept money.",true,false);
+				CMLib.commands().say(observer,source,"I'm sorry, I can only accept money.",true,false);
 				return false;
 			}
 			else
 			if(((rates.size()>0)&&(!rates.containsKey(((Coins)msg.tool()).getCurrency().toUpperCase()))))
 			{
-				CommonMsgs.say(observer,source,"I'm sorry, I don't accept that kind of currency.",true,false);
+				CMLib.commands().say(observer,source,"I'm sorry, I don't accept that kind of currency.",true,false);
 				return false;
 			}
 			double value=((Coins)msg.tool()).getTotalValue();
@@ -117,15 +128,15 @@ public class MoneyChanger extends StdBehavior
 			String currency=((Coins)msg.tool()).getCurrency().toUpperCase();
 			if((rates.size()>0)&&(rates.containsKey(currency)))
 			    takeCut=((Double)rates.get(currency)).doubleValue();
-			double amountToTake=BeanCounter.abbreviatedRePrice(observer,value*takeCut);
-			if((amountToTake>0.0)&&(amountToTake<BeanCounter.getLowestDenomination(BeanCounter.getCurrency(observer))))
-			    amountToTake=BeanCounter.getLowestDenomination(BeanCounter.getCurrency(observer));
+			double amountToTake=CMLib.beanCounter().abbreviatedRePrice(observer,value*takeCut);
+			if((amountToTake>0.0)&&(amountToTake<CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer))))
+			    amountToTake=CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer));
 			value-=amountToTake;
 			observer.recoverEnvStats();
-			Coins C=BeanCounter.makeBestCurrency(observer,value);
+			Coins C=CMLib.beanCounter().makeBestCurrency(observer,value);
 			if((value<=0)||(C==null))
 			{
-				CommonMsgs.say(observer,source,"I'm sorry, I can not change such a small amount.",true,false);
+				CMLib.commands().say(observer,source,"I'm sorry, I can not change such a small amount.",true,false);
 				return false;
 			}
 		}
@@ -145,8 +156,8 @@ public class MoneyChanger extends StdBehavior
 
 		if((source!=observer)
 		&&(msg.amITarget(observer))
-		&&(Sense.canBeSeenBy(source,observer))
-		&&(Sense.canBeSeenBy(observer,source))
+		&&(CMLib.flags().canBeSeenBy(source,observer))
+		&&(CMLib.flags().canBeSeenBy(observer,source))
         &&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(msg.tool() instanceof Coins))
 		{
@@ -155,16 +166,16 @@ public class MoneyChanger extends StdBehavior
 			String currency=((Coins)msg.tool()).getCurrency().toUpperCase();
 			if((rates.size()>0)&&(rates.containsKey(currency)))
 			    takeCut=((Double)rates.get(currency)).doubleValue();
-			double amountToTake=BeanCounter.abbreviatedRePrice(observer,value*takeCut);
-			if((amountToTake>0.0)&&(amountToTake<BeanCounter.getLowestDenomination(BeanCounter.getCurrency(observer))))
-			    amountToTake=BeanCounter.getLowestDenomination(BeanCounter.getCurrency(observer));
+			double amountToTake=CMLib.beanCounter().abbreviatedRePrice(observer,value*takeCut);
+			if((amountToTake>0.0)&&(amountToTake<CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer))))
+			    amountToTake=CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer));
 			value-=amountToTake;
 			observer.recoverEnvStats();
-            Coins C=BeanCounter.makeBestCurrency(observer,value);
+            Coins C=CMLib.beanCounter().makeBestCurrency(observer,value);
 			if((value>0.0)&&(C!=null))
 			{
                 // this message will actually end up triggering the hand-over.
-				FullMsg newMsg=new FullMsg(observer,source,C,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
+				CMMsg newMsg=CMClass.getMsg(observer,source,C,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
                 C.setOwner(observer);
                 long num=C.getNumberOfCoins();
                 String curr=C.getCurrency();
@@ -176,7 +187,7 @@ public class MoneyChanger extends StdBehavior
 				msg.addTrailerMsg(newMsg);
 			}
 			else
-				CommonMsgs.say(observer,source,"Gee, thanks. :)",true,false);
+				CMLib.commands().say(observer,source,"Gee, thanks. :)",true,false);
             ((Coins)msg.tool()).destroy();
 		}
         else
@@ -187,6 +198,6 @@ public class MoneyChanger extends StdBehavior
         &&(((Coins)msg.tool()).amDestroyed())
         &&(!msg.source().isMine(msg.tool()))
         &&(!((MOB)msg.target()).isMine(msg.tool())))
-            BeanCounter.giveSomeoneMoney(msg.source(),(MOB)msg.target(),((Coins)msg.tool()).getTotalValue());
+            CMLib.beanCounter().giveSomeoneMoney(msg.source(),(MOB)msg.target(),((Coins)msg.tool()).getTotalValue());
 	}
 }

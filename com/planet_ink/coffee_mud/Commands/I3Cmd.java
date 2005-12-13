@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -37,7 +48,7 @@ public class I3Cmd extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!(CMClass.I3Interface().i3online()))
+		if(!(CMLib.intermud().i3online()))
 		{
 			mob.tell("I3 is unavailable.");
 			return false;
@@ -49,11 +60,11 @@ public class I3Cmd extends StdCommand
 			return false;
 		}
 		String str=(String)commands.firstElement();
-		if(!(CMClass.I3Interface().i3online()))
+		if(!(CMLib.intermud().i3online()))
 			mob.tell("I3 is unavailable.");
 		else
 		if(str.equalsIgnoreCase("list"))
-			CMClass.I3Interface().giveI3MudList(mob);
+			CMLib.intermud().giveI3MudList(mob);
 		else
 		if(str.equalsIgnoreCase("add"))
 		{
@@ -63,11 +74,11 @@ public class I3Cmd extends StdCommand
 				mob.tell("You did not specify a channel name!");
 				return false;
 			}
-			CMClass.I3Interface().i3channelAdd(mob,Util.combine(commands,1));
+			CMLib.intermud().i3channelAdd(mob,Util.combine(commands,1));
 		}
 		else
 		if(str.equalsIgnoreCase("channels"))
-			CMClass.I3Interface().giveI3ChannelsList(mob);
+			CMLib.intermud().giveI3ChannelsList(mob);
 		else
 		if(str.equalsIgnoreCase("delete"))
 		{
@@ -77,7 +88,7 @@ public class I3Cmd extends StdCommand
 				mob.tell("You did not specify a channel name!");
 				return false;
 			}
-			CMClass.I3Interface().i3channelRemove(mob,Util.combine(commands,1));
+			CMLib.intermud().i3channelRemove(mob,Util.combine(commands,1));
 		}
 		else
 		if(str.equalsIgnoreCase("listen"))
@@ -88,7 +99,7 @@ public class I3Cmd extends StdCommand
 				mob.tell("You did not specify a channel name!");
 				return false;
 			}
-			CMClass.I3Interface().i3channelListen(mob,Util.combine(commands,1));
+			CMLib.intermud().i3channelListen(mob,Util.combine(commands,1));
 		}
 		else
 		if(str.equalsIgnoreCase("locate"))
@@ -98,7 +109,7 @@ public class I3Cmd extends StdCommand
 				mob.tell("You did not specify a name!");
 				return false;
 			}
-			CMClass.I3Interface().i3locate(mob,Util.combine(commands,1));
+			CMLib.intermud().i3locate(mob,Util.combine(commands,1));
 		}
 		else
 		if(str.equalsIgnoreCase("silence"))
@@ -109,11 +120,11 @@ public class I3Cmd extends StdCommand
 				mob.tell("You did not specify a channel name!");
 				return false;
 			}
-			CMClass.I3Interface().i3channelSilence(mob,Util.combine(commands,1));
+			CMLib.intermud().i3channelSilence(mob,Util.combine(commands,1));
 		}
 		else
 		if(str.equalsIgnoreCase("info"))
-			CMClass.I3Interface().i3mudInfo(mob,Util.combine(commands,1));
+			CMLib.intermud().i3mudInfo(mob,Util.combine(commands,1));
 		else
 			i3Error(mob);
 

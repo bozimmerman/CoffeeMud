@@ -1,7 +1,18 @@
 package com.planet_ink.coffee_mud.Commands;
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -48,12 +59,12 @@ public class Get extends BaseItemParser
 		}
 		if(!getThis.amWearingAt(Item.INVENTORY))
 		{
-			FullMsg msg=new FullMsg(mob,getThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_REMOVE,null);
+			CMMsg msg=CMClass.getMsg(mob,getThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_REMOVE,null);
 			if(!mob.location().okMessage(mob,msg))
 				return false;
 			mob.location().send(mob,msg);
 		}
-		FullMsg msg=new FullMsg(mob,target,tool,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_GET,quiet?null:"<S-NAME> "+getWord+"(s) "+theWhat+".");
+		CMMsg msg=CMClass.getMsg(mob,target,tool,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_GET,quiet?null:"<S-NAME> "+getWord+"(s) "+theWhat+".");
 		if(!mob.location().okMessage(mob,msg))
 			return false;
 		mob.location().send(mob,msg);
@@ -61,7 +72,7 @@ public class Get extends BaseItemParser
 		// the item deserves to be the target of the GET.
 		if(!mob.isMine(target))
 		{
-			msg=new FullMsg(mob,getThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_GET,null);
+			msg=CMClass.getMsg(mob,getThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_GET,null);
 			if(!mob.location().okMessage(mob,msg))
 				return false;
 			mob.location().send(mob,msg);
@@ -109,13 +120,13 @@ public class Get extends BaseItemParser
 		if(commands.size()>0)
 			containerName=(String)commands.lastElement();
 		Vector containerCommands=(Vector)commands.clone();
-		Vector containers=EnglishParser.possibleContainers(mob,commands,Item.WORN_REQ_ANY,true);
+		Vector containers=CMLib.english().possibleContainers(mob,commands,Item.WORN_REQ_ANY,true);
 		int c=0;
 
 		int maxToGet=Integer.MAX_VALUE;
 		if((commands.size()>1)
 		&&(Util.s_int((String)commands.firstElement())>0)
-		&&(EnglishParser.numPossibleGold(null,Util.combine(commands,0))==0))
+		&&(CMLib.english().numPossibleGold(null,Util.combine(commands,0))==0))
 		{
 			maxToGet=Util.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
@@ -145,7 +156,7 @@ public class Get extends BaseItemParser
                         return false;
                     }
 				    if(fromWhat instanceof Item)
-					    toWhat=CoffeeUtensils.unbundle((Item)fromWhat,maxToGet);
+					    toWhat=CMLib.utensils().unbundle((Item)fromWhat,maxToGet);
 				    if(toWhat==null)
 				    {
 				        mob.tell("You can't get anything from "+fromWhat.name()+".");
@@ -178,14 +189,14 @@ public class Get extends BaseItemParser
 				else
 				{
 					if(!allFlag)
-						getThis=EnglishParser.possibleRoomGold(mob,mob.location(),container,whatToGet);
+						getThis=CMLib.english().possibleRoomGold(mob,mob.location(),container,whatToGet);
 					if(getThis==null)
 						getThis=mob.location().fetchFromRoomFavorItems(container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
 				}
 				if(getThis==null) break;
 				if((getThis instanceof Item)
-				&&((Sense.canBeSeenBy(getThis,mob)||(getThis instanceof Light)))
-				&&((!allFlag)||Sense.isGettable(((Item)getThis))||(getThis.displayText().length()>0))
+				&&((CMLib.flags().canBeSeenBy(getThis,mob)||(getThis instanceof Light)))
+				&&((!allFlag)||CMLib.flags().isGettable(((Item)getThis))||(getThis.displayText().length()>0))
 				&&(!V.contains(getThis)))
 					V.addElement(getThis);
 				addendumStr="."+(++addendum);
@@ -220,7 +231,7 @@ public class Get extends BaseItemParser
 				mob.tell("You don't see anything here.");
 			else
 			{
-			    Vector V=EnglishParser.possibleContainers(mob,containerCommands,Item.WORN_REQ_ANY,false);
+			    Vector V=CMLib.english().possibleContainers(mob,containerCommands,Item.WORN_REQ_ANY,false);
 			    if(V.size()==0)
 					mob.tell("You don't see '"+containerName+"' here.");
 				else
