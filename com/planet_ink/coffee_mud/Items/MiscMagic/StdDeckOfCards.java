@@ -47,9 +47,9 @@ import java.util.*;
     once a game is over easier.  It also has methods to keep track of
     one or more Hands, each of which must be attributed to a player.
 */
-public class StdDeckOfCards extends StdHandOfCards
+public class DeckOfCards extends HandOfCards
 {
-	public String ID(){	return "StdDeckOfCards";}
+	public String ID(){	return "DeckOfCards";}
     
     // a flag to tell us whether the deck instance
     // has already been filled with cards.  
@@ -86,7 +86,7 @@ public class StdDeckOfCards extends StdHandOfCards
     // the value.  
     protected PlayingCard makePlayingCard(int cardBitCode)
     {
-        Item I=CMClass.getItem("StdPlayingCard");
+        Item I=CMClass.getItem("PlayingCard");
         I.baseEnvStats().setAbility(cardBitCode);
         I.recoverEnvStats();
         I.setContainer(this);
