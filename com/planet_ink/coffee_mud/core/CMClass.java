@@ -16,6 +16,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 import java.lang.reflect.Modifier;
+import org.mozilla.javascript.*;
+import org.mozilla.javascript.optimizer.*;
 
 
 /* 
@@ -637,7 +639,7 @@ public class CMClass extends ClassLoader
 	{
 		StringBuffer objPathBuf=new StringBuffer(filePath);
 		String objPath=objPathBuf.toString();
-
+        
 		Class ancestorCl=null;
 		if (ancestor != null && ancestor.length() != 0)
 		{
@@ -817,179 +819,188 @@ public class CMClass extends ClassLoader
     
     public static boolean loadClasses(CMProps page)
     {
-        String prefix="com/planet_ink/coffee_mud/";
-        libraries=loadVectorListToObj(prefix+"Libraries/",page.getStr("LIBRARY"),ancestor("LIBRARY"));
-        if(libraries.size()==0) return false;
-        CMLib.registerLibraries(libraries.elements());
-        if(CMLib.unregistered().length()>0)
+        try
         {
-            Log.errOut("CMClass","Fatal Error: libraries are unregistered: "+CMLib.unregistered().substring(0,CMLib.unregistered().length()-2));
-            return false;
-        }
-        
-        common=loadHashListToObj(prefix+"Common/",page.getStr("COMMON"),ancestor("COMMON"));
-        if(common.size()==0) return false;
-        
-        webMacros=CMClass.loadHashListToObj(prefix+"WebMacros/", "%DEFAULT%",ancestor("WEBMACROS"));
-        Log.sysOut("MUD","WebMacros loaded  : "+webMacros.size());
-        for(Enumeration e=webMacros.keys();e.hasMoreElements();)
-        {
-            String key=(String)e.nextElement();
-            if(key.length()>longestWebMacro) 
-                longestWebMacro=key.length();
-        }
-        
-        races=loadVectorListToObj(prefix+"Races/",page.getStr("RACES"),ancestor("RACE"));
-        Log.sysOut("MUD","Races loaded      : "+races.size());
-        if(races.size()==0) return false;
-
-        charClasses=loadVectorListToObj(prefix+"CharClasses/",page.getStr("CHARCLASSES"),ancestor("CHARCLASS"));
-        Log.sysOut("MUD","Classes loaded    : "+charClasses.size());
-        if(charClasses.size()==0) return false;
-
-        MOBs=loadVectorListToObj(prefix+"MOBS/",page.getStr("MOBS"),ancestor("MOB"));
-        Log.sysOut("MUD","MOB Types loaded  : "+MOBs.size());
-        if(MOBs.size()==0) return false;
-
-        exits=loadVectorListToObj(prefix+"Exits/",page.getStr("EXITS"),ancestor("EXIT"));
-        Log.sysOut("MUD","Exit Types loaded : "+exits.size());
-        if(exits.size()==0) return false;
-
-        areaTypes=loadVectorListToObj(prefix+"Areas/",page.getStr("AREAS"),ancestor("AREA"));
-        Log.sysOut("MUD","Area Types loaded : "+areaTypes.size());
-        if(areaTypes.size()==0) return false;
-
-        locales=loadVectorListToObj(prefix+"Locales/",page.getStr("LOCALES"),ancestor("LOCALE"));
-        Log.sysOut("MUD","Locales loaded    : "+locales.size());
-        if(locales.size()==0) return false;
-
-        abilities=loadVectorListToObj(prefix+"Abilities/",page.getStr("ABILITIES"),ancestor("ABILITY"));
-        if(abilities.size()==0) return false;
-
-        if((page.getStr("ABILITIES")!=null)
-        &&(page.getStr("ABILITIES").toUpperCase().indexOf("%DEFAULT%")>=0))
-        {
-            Vector tempV;
-            int size=0;
-            tempV=loadVectorListToObj(prefix+"Abilities/Fighter/","%DEFAULT%",ancestor("ABILITY"));
-            size=tempV.size();
-            addV(tempV,abilities);
-
-            tempV=loadVectorListToObj(prefix+"Abilities/Ranger/","%DEFAULT%",ancestor("ABILITY"));
-            size+=tempV.size();
-            addV(tempV,abilities);
-
-            tempV=loadVectorListToObj(prefix+"Abilities/Paladin/","%DEFAULT%",ancestor("ABILITY"));
-            size+=tempV.size();
-            addV(tempV,abilities);
-
-            size+=tempV.size();
-            if(size>0) Log.sysOut("MUD","Fighter Skills    : "+size);
-            addV(tempV,abilities);
-
-            tempV=loadVectorListToObj(prefix+"Abilities/Druid/","%DEFAULT%",ancestor("ABILITY"));
-            if(tempV.size()>0) Log.sysOut("MUD","Chants loaded     : "+tempV.size());
-            addV(tempV,abilities);
-
-            tempV=loadVectorListToObj(prefix+"Abilities/Languages/","%DEFAULT%",ancestor("ABILITY"));
-            if(tempV.size()>0) Log.sysOut("MUD","Languages loaded  : "+tempV.size());
-            addV(tempV,abilities);
-
-            tempV=loadVectorListToObj(prefix+"Abilities/Properties/","%DEFAULT%",ancestor("ABILITY"));
-            size=tempV.size();
-            addV(tempV,abilities);
-
-            tempV=loadVectorListToObj(prefix+"Abilities/Diseases/","%DEFAULT%",ancestor("ABILITY"));
-            size+=tempV.size();
-            addV(tempV,abilities);
-
-            tempV=loadVectorListToObj(prefix+"Abilities/Poisons/","%DEFAULT%",ancestor("ABILITY"));
-            size+=tempV.size();
-            addV(tempV,abilities);
-
-            tempV=loadVectorListToObj(prefix+"Abilities/Misc/","%DEFAULT%",ancestor("ABILITY"));
-            size+=tempV.size();
-            Log.sysOut("MUD","Properties loaded : "+size);
-            addV(tempV,abilities);
-
-            tempV=loadVectorListToObj(prefix+"Abilities/Prayers/","%DEFAULT%",ancestor("ABILITY"));
-            Log.sysOut("MUD","Prayers loaded    : "+tempV.size());
-            addV(tempV,abilities);
-
-            tempV=loadVectorListToObj(prefix+"Abilities/Archon/","%DEFAULT%",ancestor("ABILITY"));
-            size+=tempV.size();
-            addV(tempV,abilities);
-
-            tempV=loadVectorListToObj(prefix+"Abilities/Skills/","%DEFAULT%",ancestor("ABILITY"));
-            size=tempV.size();
-            addV(tempV,abilities);
-
-            tempV=loadVectorListToObj(prefix+"Abilities/Thief/","%DEFAULT%",ancestor("ABILITY"));
-            size+=tempV.size();
-            addV(tempV,abilities);
-
-            tempV=loadVectorListToObj(prefix+"Abilities/Common/","%DEFAULT%",ancestor("ABILITY"));
-            size+=tempV.size();
-            addV(tempV,abilities);
-
-            tempV=loadVectorListToObj(prefix+"Abilities/Specializations/","%DEFAULT%",ancestor("ABILITY"));
-            size+=tempV.size();
-            addV(tempV,abilities);
-            if(size>0) Log.sysOut("MUD","Skills loaded     : "+size);
-
-            tempV=loadVectorListToObj(prefix+"Abilities/Songs/","%DEFAULT%",ancestor("ABILITY"));
-            if(tempV.size()>0) Log.sysOut("MUD","Songs loaded      : "+tempV.size());
-            addV(tempV,abilities);
-
-            tempV=loadVectorListToObj(prefix+"Abilities/Spells/","%DEFAULT%",ancestor("ABILITY"));
-            if(tempV.size()>0) Log.sysOut("MUD","Spells loaded     : "+tempV.size());
-            addV(tempV,abilities);
-
-            tempV=loadVectorListToObj(prefix+"Abilities/SuperPowers/","%DEFAULT%",ancestor("ABILITY"));
-            size=tempV.size();
-            addV(tempV,abilities);
-            tempV=loadVectorListToObj(prefix+"Abilities/EvilDeeds/","%DEFAULT%",ancestor("ABILITY"));
-            size+=tempV.size();
-            addV(tempV,abilities);
-            if(size>0) Log.sysOut("MUD","Heroics loaded    : "+size);
+            String prefix="com/planet_ink/coffee_mud/";
+            libraries=loadVectorListToObj(prefix+"Libraries/",page.getStr("LIBRARY"),ancestor("LIBRARY"));
+            if(libraries.size()==0) return false;
+            CMLib.registerLibraries(libraries.elements());
+            if(CMLib.unregistered().length()>0)
+            {
+                Log.errOut("CMClass","Fatal Error: libraries are unregistered: "+CMLib.unregistered().substring(0,CMLib.unregistered().length()-2));
+                return false;
+            }
             
-            tempV=loadVectorListToObj(prefix+"Abilities/Traps/","%DEFAULT%",ancestor("ABILITY"));
-            if(tempV.size()>0) Log.sysOut("MUD","Traps loaded      : "+tempV.size());
-            addV(tempV,abilities);
-            abilities=new Vector(new TreeSet(abilities));
+            common=loadHashListToObj(prefix+"Common/",page.getStr("COMMON"),ancestor("COMMON"));
+            if(common.size()==0) return false;
+            
+            webMacros=CMClass.loadHashListToObj(prefix+"WebMacros/", "%DEFAULT%",ancestor("WEBMACROS"));
+            Log.sysOut("MUD","WebMacros loaded  : "+webMacros.size());
+            for(Enumeration e=webMacros.keys();e.hasMoreElements();)
+            {
+                String key=(String)e.nextElement();
+                if(key.length()>longestWebMacro) 
+                    longestWebMacro=key.length();
+            }
+            
+            races=loadVectorListToObj(prefix+"Races/",page.getStr("RACES"),ancestor("RACE"));
+            Log.sysOut("MUD","Races loaded      : "+races.size());
+            if(races.size()==0) return false;
+    
+            charClasses=loadVectorListToObj(prefix+"CharClasses/",page.getStr("CHARCLASSES"),ancestor("CHARCLASS"));
+            Log.sysOut("MUD","Classes loaded    : "+charClasses.size());
+            if(charClasses.size()==0) return false;
+    
+            MOBs=loadVectorListToObj(prefix+"MOBS/",page.getStr("MOBS"),ancestor("MOB"));
+            Log.sysOut("MUD","MOB Types loaded  : "+MOBs.size());
+            if(MOBs.size()==0) return false;
+    
+            exits=loadVectorListToObj(prefix+"Exits/",page.getStr("EXITS"),ancestor("EXIT"));
+            Log.sysOut("MUD","Exit Types loaded : "+exits.size());
+            if(exits.size()==0) return false;
+    
+            areaTypes=loadVectorListToObj(prefix+"Areas/",page.getStr("AREAS"),ancestor("AREA"));
+            Log.sysOut("MUD","Area Types loaded : "+areaTypes.size());
+            if(areaTypes.size()==0) return false;
+    
+            locales=loadVectorListToObj(prefix+"Locales/",page.getStr("LOCALES"),ancestor("LOCALE"));
+            Log.sysOut("MUD","Locales loaded    : "+locales.size());
+            if(locales.size()==0) return false;
+    
+            abilities=loadVectorListToObj(prefix+"Abilities/",page.getStr("ABILITIES"),ancestor("ABILITY"));
+            if(abilities.size()==0) return false;
+    
+            if((page.getStr("ABILITIES")!=null)
+            &&(page.getStr("ABILITIES").toUpperCase().indexOf("%DEFAULT%")>=0))
+            {
+                Vector tempV;
+                int size=0;
+                tempV=loadVectorListToObj(prefix+"Abilities/Fighter/","%DEFAULT%",ancestor("ABILITY"));
+                size=tempV.size();
+                addV(tempV,abilities);
+    
+                tempV=loadVectorListToObj(prefix+"Abilities/Ranger/","%DEFAULT%",ancestor("ABILITY"));
+                size+=tempV.size();
+                addV(tempV,abilities);
+    
+                tempV=loadVectorListToObj(prefix+"Abilities/Paladin/","%DEFAULT%",ancestor("ABILITY"));
+                size+=tempV.size();
+                addV(tempV,abilities);
+    
+                size+=tempV.size();
+                if(size>0) Log.sysOut("MUD","Fighter Skills    : "+size);
+                addV(tempV,abilities);
+    
+                tempV=loadVectorListToObj(prefix+"Abilities/Druid/","%DEFAULT%",ancestor("ABILITY"));
+                if(tempV.size()>0) Log.sysOut("MUD","Chants loaded     : "+tempV.size());
+                addV(tempV,abilities);
+    
+                tempV=loadVectorListToObj(prefix+"Abilities/Languages/","%DEFAULT%",ancestor("ABILITY"));
+                if(tempV.size()>0) Log.sysOut("MUD","Languages loaded  : "+tempV.size());
+                addV(tempV,abilities);
+    
+                tempV=loadVectorListToObj(prefix+"Abilities/Properties/","%DEFAULT%",ancestor("ABILITY"));
+                size=tempV.size();
+                addV(tempV,abilities);
+    
+                tempV=loadVectorListToObj(prefix+"Abilities/Diseases/","%DEFAULT%",ancestor("ABILITY"));
+                size+=tempV.size();
+                addV(tempV,abilities);
+    
+                tempV=loadVectorListToObj(prefix+"Abilities/Poisons/","%DEFAULT%",ancestor("ABILITY"));
+                size+=tempV.size();
+                addV(tempV,abilities);
+    
+                tempV=loadVectorListToObj(prefix+"Abilities/Misc/","%DEFAULT%",ancestor("ABILITY"));
+                size+=tempV.size();
+                Log.sysOut("MUD","Properties loaded : "+size);
+                addV(tempV,abilities);
+    
+                tempV=loadVectorListToObj(prefix+"Abilities/Prayers/","%DEFAULT%",ancestor("ABILITY"));
+                Log.sysOut("MUD","Prayers loaded    : "+tempV.size());
+                addV(tempV,abilities);
+    
+                tempV=loadVectorListToObj(prefix+"Abilities/Archon/","%DEFAULT%",ancestor("ABILITY"));
+                size+=tempV.size();
+                addV(tempV,abilities);
+    
+                tempV=loadVectorListToObj(prefix+"Abilities/Skills/","%DEFAULT%",ancestor("ABILITY"));
+                size=tempV.size();
+                addV(tempV,abilities);
+    
+                tempV=loadVectorListToObj(prefix+"Abilities/Thief/","%DEFAULT%",ancestor("ABILITY"));
+                size+=tempV.size();
+                addV(tempV,abilities);
+    
+                tempV=loadVectorListToObj(prefix+"Abilities/Common/","%DEFAULT%",ancestor("ABILITY"));
+                size+=tempV.size();
+                addV(tempV,abilities);
+    
+                tempV=loadVectorListToObj(prefix+"Abilities/Specializations/","%DEFAULT%",ancestor("ABILITY"));
+                size+=tempV.size();
+                addV(tempV,abilities);
+                if(size>0) Log.sysOut("MUD","Skills loaded     : "+size);
+    
+                tempV=loadVectorListToObj(prefix+"Abilities/Songs/","%DEFAULT%",ancestor("ABILITY"));
+                if(tempV.size()>0) Log.sysOut("MUD","Songs loaded      : "+tempV.size());
+                addV(tempV,abilities);
+    
+                tempV=loadVectorListToObj(prefix+"Abilities/Spells/","%DEFAULT%",ancestor("ABILITY"));
+                if(tempV.size()>0) Log.sysOut("MUD","Spells loaded     : "+tempV.size());
+                addV(tempV,abilities);
+    
+                tempV=loadVectorListToObj(prefix+"Abilities/SuperPowers/","%DEFAULT%",ancestor("ABILITY"));
+                size=tempV.size();
+                addV(tempV,abilities);
+                tempV=loadVectorListToObj(prefix+"Abilities/EvilDeeds/","%DEFAULT%",ancestor("ABILITY"));
+                size+=tempV.size();
+                addV(tempV,abilities);
+                if(size>0) Log.sysOut("MUD","Heroics loaded    : "+size);
+                
+                tempV=loadVectorListToObj(prefix+"Abilities/Traps/","%DEFAULT%",ancestor("ABILITY"));
+                if(tempV.size()>0) Log.sysOut("MUD","Traps loaded      : "+tempV.size());
+                addV(tempV,abilities);
+                abilities=new Vector(new TreeSet(abilities));
+            }
+    
+            items=loadVectorListToObj(prefix+"Items/Basic/",page.getStr("ITEMS"),ancestor("ITEM"));
+            if(items.size()>0) Log.sysOut("MUD","Basic Items loaded: "+items.size());
+    
+            weapons=loadVectorListToObj(prefix+"Items/Weapons/",page.getStr("WEAPONS"),ancestor("WEAPON"));
+            if(weapons.size()>0) Log.sysOut("MUD","Weapons loaded    : "+weapons.size());
+    
+            armor=loadVectorListToObj(prefix+"Items/Armor/",page.getStr("ARMOR"),ancestor("ARMOR"));
+            if(armor.size()>0) Log.sysOut("MUD","Armor loaded      : "+armor.size());
+    
+            miscMagic=loadVectorListToObj(prefix+"Items/MiscMagic/",page.getStr("MISCMAGIC"),ancestor("MISCMAGIC"));
+            if(miscMagic.size()>0) Log.sysOut("MUD","Magic Items loaded: "+miscMagic.size());
+    
+            clanItems=loadVectorListToObj(prefix+"Items/ClanItems/",page.getStr("CLANITEMS"),ancestor("CLANITEMS"));
+            if(clanItems.size()>0) Log.sysOut("MUD","Clan Items loaded : "+clanItems.size());
+    
+            miscTech=loadVectorListToObj(prefix+"Items/MiscTech/",page.getStr("MISCTECH"),ancestor("MISCTECH"));
+            if(miscTech.size()>0) Log.sysOut("MUD","Electronics loaded: "+miscTech.size());
+            Vector tempV=loadVectorListToObj(prefix+"Items/Software/",page.getStr("SOFTWARE"),"com.planet_ink.coffee_mud.Items.interfaces.Software");
+            if(tempV.size()>0) addV(tempV,miscTech);
+            miscTech=new Vector(new TreeSet(miscTech));
+    
+            if((items.size()+weapons.size()+armor.size()+miscTech.size()+miscMagic.size()+clanItems.size())==0)
+                return false;
+    
+            behaviors=loadVectorListToObj(prefix+"Behaviors/",page.getStr("BEHAVIORS"),ancestor("BEHAVIOR"));
+            Log.sysOut("MUD","Behaviors loaded  : "+behaviors.size());
+            if(behaviors.size()==0) return false;
+    
+            commands=loadVectorListToObj(prefix+"Commands/",page.getStr("COMMANDS"),ancestor("COMMAND"));
+            Log.sysOut("MUD","Commands loaded   : "+commands.size());
+            if(commands.size()==0) return false;
         }
-
-        items=loadVectorListToObj(prefix+"Items/Basic/",page.getStr("ITEMS"),ancestor("ITEM"));
-        if(items.size()>0) Log.sysOut("MUD","Basic Items loaded: "+items.size());
-
-        weapons=loadVectorListToObj(prefix+"Items/Weapons/",page.getStr("WEAPONS"),ancestor("WEAPON"));
-        if(weapons.size()>0) Log.sysOut("MUD","Weapons loaded    : "+weapons.size());
-
-        armor=loadVectorListToObj(prefix+"Items/Armor/",page.getStr("ARMOR"),ancestor("ARMOR"));
-        if(armor.size()>0) Log.sysOut("MUD","Armor loaded      : "+armor.size());
-
-        miscMagic=loadVectorListToObj(prefix+"Items/MiscMagic/",page.getStr("MISCMAGIC"),ancestor("MISCMAGIC"));
-        if(miscMagic.size()>0) Log.sysOut("MUD","Magic Items loaded: "+miscMagic.size());
-
-        clanItems=loadVectorListToObj(prefix+"Items/ClanItems/",page.getStr("CLANITEMS"),ancestor("CLANITEMS"));
-        if(clanItems.size()>0) Log.sysOut("MUD","Clan Items loaded : "+clanItems.size());
-
-        miscTech=loadVectorListToObj(prefix+"Items/MiscTech/",page.getStr("MISCTECH"),ancestor("MISCTECH"));
-        if(miscTech.size()>0) Log.sysOut("MUD","Electronics loaded: "+miscTech.size());
-        Vector tempV=loadVectorListToObj(prefix+"Items/Software/",page.getStr("SOFTWARE"),"com.planet_ink.coffee_mud.Items.interfaces.Software");
-        if(tempV.size()>0) addV(tempV,miscTech);
-        miscTech=new Vector(new TreeSet(miscTech));
-
-        if((items.size()+weapons.size()+armor.size()+miscTech.size()+miscMagic.size()+clanItems.size())==0)
+        catch(Throwable t)
+        {
+            t.printStackTrace();
             return false;
-
-        behaviors=loadVectorListToObj(prefix+"Behaviors/",page.getStr("BEHAVIORS"),ancestor("BEHAVIOR"));
-        Log.sysOut("MUD","Behaviors loaded  : "+behaviors.size());
-        if(behaviors.size()==0) return false;
-
-        commands=loadVectorListToObj(prefix+"Commands/",page.getStr("COMMANDS"),ancestor("COMMAND"));
-        Log.sysOut("MUD","Commands loaded   : "+commands.size());
-        if(commands.size()==0) return false;
+        }
+        
         for(int c=0;c<commands.size();c++)
         {
             Command C=(Command)commands.elementAt(c);
