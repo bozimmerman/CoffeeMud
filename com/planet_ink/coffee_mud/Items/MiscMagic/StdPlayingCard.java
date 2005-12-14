@@ -49,10 +49,13 @@ import java.util.*;
     The card with automatically set its own name and display text based on
     the encoding.  
 */
-public class PlayingCard extends StdItem implements MiscMagic, PlayingCards
+public class PlayingCard extends StdItem implements MiscMagic
 {
 	public String ID(){	return "PlayingCard";}
 	private int oldAbility=0;
+    
+    public static int[] suits={0,16,32,48};
+    public static int[] cards={2,3,4,5,6,7,8,9,10,11,12,13,14};
     
 	public PlayingCard()
 	{
