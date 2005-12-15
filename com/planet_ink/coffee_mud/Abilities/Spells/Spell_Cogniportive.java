@@ -79,7 +79,7 @@ public class Spell_Cogniportive extends Spell
 						if((M!=null)&&(CMLib.coffeeShops().getShopKeeper(M)!=null))
 						{
 							ShopKeeper S=CMLib.coffeeShops().getShopKeeper(M);
-							if(S.doIHaveThisInStock(me.Name(),null))
+							if(S.getShop().doIHaveThisInStock(me.Name(),null,S.whatIsSold(),M.getStartRoom()))
 								return CMLib.map().getExtendedRoomID(M.getStartRoom());
 						}
 					}

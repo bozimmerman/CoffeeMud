@@ -171,17 +171,9 @@ public class DefaultClan implements Clan
         for(Enumeration e=controlledAreas.elements();e.hasMoreElements();)
         {
             Area A=(Area)e.nextElement();
-            Behavior B=CMLib.utensils().getLegalBehavior(A);
+            LegalBehavior B=CMLib.utensils().getLegalBehavior(A);
             if(B!=null)
-            {
-                Area A2=CMLib.utensils().getLegalObject(A);
-                Vector V=new Vector();
-                V.addElement(new Integer(Law.MOD_CONTROLPOINTS));
-                if((B.modifyBehavior(A2,CMClass.sampleMOB(),V))
-                &&(V.size()==1)
-                &&(V.firstElement() instanceof Integer))
-                    points+=((Integer)V.firstElement()).longValue();
-            }
+                points+=B.controlPoints();
         }
         return points;
     }
@@ -192,18 +184,12 @@ public class DefaultClan implements Clan
         for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
         {
             Area A=(Area)e.nextElement();
-            Behavior B=CMLib.utensils().getLegalBehavior(A);
+            LegalBehavior B=CMLib.utensils().getLegalBehavior(A);
             if(B!=null)
             {
-                Vector V=new Vector();
-                V.addElement(new Integer(Law.MOD_RULINGCLAN));
+                String controller=B.rulingClan();
                 Area A2=CMLib.utensils().getLegalObject(A);
-                boolean response=B.modifyBehavior(A2,CMClass.sampleMOB(),V);
-                if(response
-                &&(!done.contains(A2))
-                &&(V.size()==1)
-                &&(V.firstElement() instanceof String)
-                &&(((String)V.firstElement()).equals(ID())))
+                if(controller.equals(ID())&&(!done.contains(A2)))
                     done.addElement(A2);
             }
         }

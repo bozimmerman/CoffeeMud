@@ -37,7 +37,7 @@ public class MobData extends StdWebMacro
 
 	public static int getShopCardinality(ShopKeeper E, Environmental O)
 	{
-		Vector V=E.getStoreInventory();
+		Vector V=E.getShop().getStoreInventory();
 		for(int i=0;i<V.size();i++)
 			if(O==(V.elementAt(i)))
 				return i;
@@ -378,7 +378,7 @@ public class MobData extends StdWebMacro
 				String MATCHING=httpReq.getRequestParameter("SHP"+num);
 				String theparm=httpReq.getRequestParameter("SDATA"+num);
 				String theprice=httpReq.getRequestParameter("SPRIC"+num);
-				Vector inventory=E.getStoreInventory();
+				Vector inventory=E.getShop().getStoreInventory();
 				while((MATCHING!=null)&&(theparm!=null))
 				{
 					if(MATCHING==null)
@@ -436,7 +436,7 @@ public class MobData extends StdWebMacro
 			}
 			else
 			{
-				Vector V=E.getStoreInventory();
+				Vector V=E.getShop().getStoreInventory();
 				Vector itemClasses=new Vector();
 				Vector mobClasses=new Vector();
 				for(int b=0;b<V.size();b++)
@@ -445,8 +445,8 @@ public class MobData extends StdWebMacro
 					if(O instanceof Item) itemClasses.addElement(O);
 					if(O instanceof MOB) mobClasses.addElement(O);
 					theclasses.addElement(O);
-					theparms.addElement(""+E.numberInStock(O));
-					theprices.addElement(""+E.stockPrice(O));
+					theparms.addElement(""+E.getShop().numberInStock(O));
+					theprices.addElement(""+E.getShop().stockPrice(O));
 				}
 				RoomData.contributeItems(itemClasses);
 				RoomData.contributeMOBs(mobClasses);
@@ -460,7 +460,7 @@ public class MobData extends StdWebMacro
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=SHP"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
-				if(E.getStoreInventory().contains(O))
+				if(E.getShop().getStoreInventory().contains(O))
 					str.append("<OPTION SELECTED VALUE=\""+(getShopCardinality(E,O)+1)+"\">"+O.Name()+" ("+O.ID()+")");
 				else
 				if(RoomData.items.contains(O))

@@ -516,7 +516,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                                             ((String)V2.elementAt(DATA_CHAIN)),
                                             ((String)V2.elementAt(DATA_KEY)));
                                     if(I!=null)
-                                        addStoreInventory(I);
+                                        getShop().addStoreInventory(I,this);
                                 }
                             }
                         }

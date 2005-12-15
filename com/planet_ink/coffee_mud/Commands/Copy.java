@@ -77,6 +77,7 @@ public class Copy extends StdCommand
 			}
 		}
 		Environmental E=null;
+        ShopKeeper SK=null;
 		int dirCode=Directions.getGoodDirectionCode(name);
 		if(dirCode>=0)
 			E=mob.location();
@@ -111,8 +112,9 @@ public class Copy extends StdCommand
 						if(mob2!=null)
 						{
 							E=mob2.fetchInventory(name);
-							if((E==null)&&(CMLib.coffeeShops().getShopKeeper(mob2)!=null))
-								E=CMLib.coffeeShops().getShopKeeper(mob2).getStock(name,null);
+                            SK=CMLib.coffeeShops().getShopKeeper(mob2);
+							if((E==null)&&(mob2!=null))
+								E=SK.getShop().getStock(name,null,SK.whatIsSold(),mob2.getStartRoom());
 						}
 						if(E!=null) break;
 					}

@@ -47,9 +47,9 @@ import java.util.*;
     once a game is over easier.  It also has methods to keep track of
     one or more Hands, each of which must be attributed to a player.
 */
-public class DeckOfCards extends HandOfCards
+public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 {
-	public String ID(){	return "DeckOfCards";}
+	public String ID(){	return "StdDeckOfCards";}
     
     // a flag to tell us whether the deck instance
     // has already been filled with cards.  
@@ -68,7 +68,7 @@ public class DeckOfCards extends HandOfCards
     
     // the constructor for this class doesn't do much except set
     // some of the display properties of the deck container
-	public DeckOfCards()
+	public StdDeckOfCards()
 	{
 		super();
 		name="A deck of cards";
@@ -86,7 +86,7 @@ public class DeckOfCards extends HandOfCards
     // the value.  
     protected PlayingCard makePlayingCard(int cardBitCode)
     {
-        Item I=CMClass.getItem("PlayingCard");
+        Item I=CMClass.getItem("StdPlayingCard");
         I.baseEnvStats().setAbility(cardBitCode);
         I.recoverEnvStats();
         I.setContainer(this);
@@ -126,9 +126,9 @@ public class DeckOfCards extends HandOfCards
     // This static method creates a new deck of cards container,
     // gives it to the given owner object (mob or room), and 
     // then populates the deck container with all appropriate cards.
-    public static DeckOfCards createDeck(Environmental owner)
+    public DeckOfCards createDeck(Environmental owner)
     {
-        DeckOfCards deck=new DeckOfCards();
+        StdDeckOfCards deck=new StdDeckOfCards();
         if(owner instanceof MOB)
         {
             if(deck.owner==null)
@@ -217,7 +217,10 @@ public class DeckOfCards extends HandOfCards
         if(player==null) return null;
         if(hands.contains(player))
             return (HandOfCards)hands.elementAt(hands.indexOf(player),2);
-        if(cards==null) cards=HandOfCards.createEmptyHand(player);
+        if(cards==null)
+        {
+            cards=((HandOfCards)CMClass.getMiscMagic("StdHandOfCards")).createEmptyHand(player);
+        }
         hands.addElement(player,cards);
         return cards;
     }

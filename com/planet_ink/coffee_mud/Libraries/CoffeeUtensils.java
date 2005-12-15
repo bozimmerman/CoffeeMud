@@ -152,24 +152,21 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	
 	public Law getTheLaw(Room R, MOB mob)
 	{
-	    Behavior B=getLegalBehavior(R);
+        LegalBehavior B=getLegalBehavior(R);
 	    if(B!=null)
 	    {
-			Vector VB=new Vector();
 			Area A2=getLegalObject(R.getArea());
-			VB.addElement(new Integer(Law.MOD_LEGALINFO));
-			B.modifyBehavior(A2,mob,VB);
-			return (Law)VB.firstElement();
+            return B.legalInfo(A2);
 	    }
 	    return null;
 	}
 	
-	public Behavior getLegalBehavior(Area A)
+	public LegalBehavior getLegalBehavior(Area A)
 	{
 		if(A==null) return null;
 		Vector V=CMLib.flags().flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
-		if(V.size()>0) return (Behavior)V.firstElement();
-	    Behavior B=null;
+		if(V.size()>0) return (LegalBehavior)V.firstElement();
+        LegalBehavior B=null;
 		for(Enumeration e=A.getParents();e.hasMoreElements();)
 		{
 		    B=getLegalBehavior((Area)e.nextElement());
@@ -177,11 +174,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return B;
 	}
-	public Behavior getLegalBehavior(Room R)
+	public LegalBehavior getLegalBehavior(Room R)
 	{
 		if(R==null) return null;
 		Vector V=CMLib.flags().flaggedBehaviors(R,Behavior.FLAG_LEGALBEHAVIOR);
-		if(V.size()>0) return (Behavior)V.firstElement();
+		if(V.size()>0) return (LegalBehavior)V.firstElement();
 		return getLegalBehavior(R.getArea());
 	}
 	public Area getLegalObject(Area A)
@@ -602,8 +599,27 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		else
 		if((E instanceof Item)&&(((Item)E).owner() instanceof MOB))
 		   return ((MOB)((Item)E).owner()).location();
+        else
+        if(E instanceof Ability)
+            return roomLocation(((Ability)E).affecting());
 		return null;
 	}
+    public Room roomStart(Environmental E)
+    {
+        if(E ==null) return null;
+        if(E instanceof MOB) return ((MOB)E).getStartRoom();
+        if(E instanceof Item)
+        {
+            if(((Item)E).owner() instanceof MOB)
+                return ((MOB)((Item)E).owner()).getStartRoom();
+            if(CMLib.flags().isGettable((Item)E))
+                return null;
+        }
+        if(E instanceof Ability)
+            return roomStart(((Ability)E).affecting());
+        if(E instanceof Area) return ((Area)E).getRandomProperRoom();
+        return CMLib.utensils().roomLocation(E);
+    }
 
     public Area areaLocation(Object E)
     {

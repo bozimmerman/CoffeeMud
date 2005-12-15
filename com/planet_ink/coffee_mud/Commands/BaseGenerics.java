@@ -2871,10 +2871,10 @@ public class BaseGenerics extends StdCommand
 			E.setWhatIsSold(newValue);
             if(reexamine)
             {
-                Vector V=E.getStoreInventory();
+                Vector V=E.getShop().getStoreInventory();
                 for(int b=0;b<V.size();b++)
                     if(!E.doISellThis((Environmental)V.elementAt(b)))
-                        E.delAllStoreInventory((Environmental)V.elementAt(b));
+                        E.getShop().delAllStoreInventory((Environmental)V.elementAt(b),E.whatIsSold());
             }
 		}
 	}
@@ -2887,14 +2887,14 @@ public class BaseGenerics extends StdCommand
 		while(itemstr.length()>0)
 		{
 			String inventorystr="";
-			Vector V=E.getStoreInventory();
+			Vector V=E.getShop().getStoreInventory();
 			for(int b=0;b<V.size();b++)
 			{
 				Environmental E2=(Environmental)V.elementAt(b);
 				if(E2.isGeneric())
-					inventorystr+=E2.name()+" ("+E.numberInStock(E2)+"), ";
+					inventorystr+=E2.name()+" ("+E.getShop().numberInStock(E2)+"), ";
 				else
-					inventorystr+=CMClass.className(E2)+" ("+E.numberInStock(E2)+"), ";
+					inventorystr+=CMClass.className(E2)+" ("+E.getShop().numberInStock(E2)+"), ";
 			}
 			if(inventorystr.length()>0)
 				inventorystr=inventorystr.substring(0,inventorystr.length()-2);
@@ -2918,11 +2918,11 @@ public class BaseGenerics extends StdCommand
 				}
 				else
 				{
-					Environmental item=E.getStock(itemstr,null);
+					Environmental item=E.getShop().getStock(itemstr,null,E.whatIsSold(),null);
 					if(item!=null)
 					{
 						mob.tell(getScr("BaseGenerics","itemidrem",item.ID()));
-						E.delAllStoreInventory((Environmental)item.copyOf());
+						E.getShop().delAllStoreInventory((Environmental)item.copyOf(),E.whatIsSold());
 					}
 					else
 					{
@@ -2957,7 +2957,7 @@ public class BaseGenerics extends StdCommand
 							{
 								boolean alreadyHasIt=false;
 
-								if(E.doIHaveThisInStock(item.Name(),null))
+								if(E.getShop().doIHaveThisInStock(item.Name(),null,E.whatIsSold(),null))
 								   alreadyHasIt=true;
 
 								if(!alreadyHasIt)
@@ -2967,7 +2967,7 @@ public class BaseGenerics extends StdCommand
 									if(!(item instanceof Ability))
 										num=Util.s_int(mob.session().prompt(getScr("BaseGenerics","howman"),""));
 									int price=Util.s_int(mob.session().prompt(getScr("BaseGenerics","atwprice"),""));
-									E.addStoreInventory(item,num,price);
+									E.getShop().addStoreInventory(item,num,price,E);
 								}
 							}
 						}

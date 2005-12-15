@@ -38,7 +38,7 @@ public class Prayer_DrunkenStupor extends Prayer
 	public String name(){ return "Drunken Stupor";}
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public String displayText(){ return "(Drunken Stupod)";}
+	public String displayText(){ return "(Drunken Stupor)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Ability inebriation=null;

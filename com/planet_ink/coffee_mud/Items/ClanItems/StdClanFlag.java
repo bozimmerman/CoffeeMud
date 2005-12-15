@@ -59,28 +59,6 @@ public class StdClanFlag extends StdItem implements ClanItem
 	public String clanID(){return myClan;}
 	public void setClanID(String ID){myClan=ID;}
 
-	public String getClanInfoAt(Room R, MOB mob, int code)
-	{
-		if(R==null)
-		{
-			if(mob==null) return "";
-			R=mob.location();
-		}
-		Behavior B=CMLib.utensils().getLegalBehavior(R);
-		if(B!=null)
-		{
-			Vector V=new Vector();
-			V.addElement(new Integer(code));
-			if((B.modifyBehavior(CMLib.utensils().getLegalObject(R),mob,V))
-			&&(V.size()>0)
-			&&(V.firstElement() instanceof String))
-				return ((String)V.firstElement());
-		}
-		return "";
-	}
-
-
-
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 	    if((System.currentTimeMillis()-lastClanCheck)>TimeManager.MILI_HOUR)
@@ -104,7 +82,8 @@ public class StdClanFlag extends StdItem implements ClanItem
 				else
 				if((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 				{
-					String s=getClanInfoAt(null,msg.source(),Law.MOD_WARINFO);
+                    LegalBehavior B=CMLib.utensils().getLegalBehavior(msg.source().location());
+                    String s=B.conquestInfo(CMLib.utensils().getLegalObject(msg.source().location()));
 					if(s.length()>0)
 						msg.source().tell(s);
 					else
@@ -146,7 +125,9 @@ public class StdClanFlag extends StdItem implements ClanItem
 								return false;
 							}
 						}
-						String rulingClan=getClanInfoAt(R,msg.source(),Law.MOD_RULINGCLAN);
+                        String rulingClan="";
+                        LegalBehavior B=CMLib.utensils().getLegalBehavior(R);
+                        if(B!=null) rulingClan=B.rulingClan();
 						if(!rulingClan.equals(msg.source().getClanID()))
 						{
 							msg.source().tell("You must conquer this area to take the clan flag.");
@@ -160,7 +141,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 					Room R=msg.source().location();
 					LandTitle T=null;
 					Area A=null;
-					Behavior B=null;
+                    LegalBehavior B=null;
 					if(R!=null)
 					{
 						A=R.getArea();
@@ -171,17 +152,12 @@ public class StdClanFlag extends StdItem implements ClanItem
 					   &&((!T.landOwner().equals(msg.source().getLiegeID()))||(!msg.source().isMarriedToLiege()))
 					   &&(!T.landOwner().equals(msg.source().Name()))))
 					{
-						if(A!=null) B=CMLib.utensils().getLegalBehavior(A);
-						boolean ok=false;
-						if(B!=null)
-						{
-							Vector V=new Vector();
-							V.addElement(new Integer(Law.MOD_RULINGCLAN));
-							if((B.modifyBehavior(CMLib.utensils().getLegalObject(A),msg.source(),V))
-							&&(V.size()>0)
-							&&(V.firstElement() instanceof String))
-								ok=true;
-						}
+                        boolean ok=false;
+						if(A!=null) 
+                        {
+                            B=CMLib.utensils().getLegalBehavior(R);
+                            if(B!=null) ok=B.controlPoints()>0;
+                        }
 						if(!ok)
 						{
 							msg.source().tell("You can not place a flag here, this place is controlled by the Archons.");
@@ -218,7 +194,8 @@ public class StdClanFlag extends StdItem implements ClanItem
 			&&(msg.amITarget(this))
 			&&(msg.targetMinor()==CMMsg.TYP_DROP))
 			{
-				String rulingClan=getClanInfoAt(null,msg.source(),Law.MOD_RULINGCLAN);
+                LegalBehavior B=CMLib.utensils().getLegalBehavior(msg.source().location());
+				String rulingClan=(B!=null)?B.rulingClan():"";
 				if(rulingClan.length()==0)
 					msg.source().tell("Area '"+msg.source().location().getArea().name()+"' is presently neutral.");
 				else

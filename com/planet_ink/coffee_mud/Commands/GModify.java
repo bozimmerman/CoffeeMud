@@ -594,7 +594,7 @@ public class GModify extends StdCommand
                 }
                 if(CMLib.coffeeShops().getShopKeeper(M)!=null)
                 {
-                    Vector V=CMLib.coffeeShops().getShopKeeper(M).getStoreInventory();
+                    Vector V=CMLib.coffeeShops().getShopKeeper(M).getShop().getStoreInventory();
                     for(int i=0;i<V.size();i++)
                     {
                         if(V.elementAt(i) instanceof Item)

@@ -124,7 +124,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 			}
 			if(CMLib.coffeeShops().getShopKeeper(E)!=null)
 			{
-				Vector V=CMLib.coffeeShops().getShopKeeper(E).getStoreInventory();
+				Vector V=CMLib.coffeeShops().getShopKeeper(E).getShop().getStoreInventory();
 				for(int v=0;v<V.size();v++)
 				{
 					Environmental E2=(Environmental)V.elementAt(v);

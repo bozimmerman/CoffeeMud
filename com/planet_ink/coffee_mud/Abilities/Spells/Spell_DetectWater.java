@@ -129,7 +129,7 @@ public class Spell_DetectWater extends Spell
 			if(CMLib.coffeeShops().getShopKeeper(E)!=null)
 			{
 				StringBuffer msg2=new StringBuffer("");
-				Vector V=CMLib.coffeeShops().getShopKeeper(E).getStoreInventory();
+				Vector V=CMLib.coffeeShops().getShopKeeper(E).getShop().getStoreInventory();
 				for(int v=0;v<V.size();v++)
 				{
 					Environmental E2=(Environmental)V.elementAt(v);

@@ -206,6 +206,7 @@ public class Spell_Wish extends Spell
 			Vector thangsFound=new Vector();
 			Environmental foundThang=null;
 			Environmental E=mob.location().fetchFromRoomFavorItems(null,objectWish,Item.WORN_REQ_UNWORNONLY);
+            ShopKeeper SK=null;
 			foundThang=maybeAdd(E,thangsFound,foundThang);
 			try
 			{
@@ -232,9 +233,10 @@ public class Spell_Wish extends Spell
 						{
 							E=mob2.fetchInventory(objectWish);
 							foundThang=maybeAdd(E,thangsFound,foundThang);
-							if(CMLib.coffeeShops().getShopKeeper(mob2)!=null)
+                            SK=CMLib.coffeeShops().getShopKeeper(mob2);
+							if(SK!=null)
 							{
-								E=CMLib.coffeeShops().getShopKeeper(mob2).getStock(objectWish,mob);
+								E=SK.getShop().getStock(objectWish,mob,SK.whatIsSold(),mob2.getStartRoom());
 								foundThang=maybeAdd(E,thangsFound,foundThang);
 							}
 						}

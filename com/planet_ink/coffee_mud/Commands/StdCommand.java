@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdCommand extends Scriptable implements Command
+public class StdCommand extends ForeignScriptable implements Command
 {
 	public StdCommand(){}
     protected String ID=null;

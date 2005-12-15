@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Behaviors.interfaces;
+package com.planet_ink.coffee_mud.Common.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -28,7 +28,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface LegalWarrant
+public interface LegalWarrant extends CMObject
 {
 	public void setArrestingOfficer(Area legalArea, MOB mob);
 	public MOB criminal();

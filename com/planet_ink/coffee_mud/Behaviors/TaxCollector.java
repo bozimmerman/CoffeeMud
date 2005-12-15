@@ -75,24 +75,16 @@ public class TaxCollector extends StdBehavior
 	                owed[OWE_BACKTAXES]+=new Integer(T.backTaxes()).doubleValue();
 	        }
 	    }
-        Behavior B=CMLib.utensils().getLegalBehavior(M.location());
+        LegalBehavior B=CMLib.utensils().getLegalBehavior(M.location());
         if(B!=null)
         {
             Area A2=CMLib.utensils().getLegalObject(M.location());
-            if(A2!=null)
-            {
-                Vector V=Util.makeVector(new Integer(Law.MOD_FINESOWED));
-                if((B.modifyBehavior(A2,M,V))&&(V.firstElement() instanceof Double))
-                    owed[OWE_FINES]=((Double)V.firstElement()).doubleValue();
-            }
+            if(A2!=null) owed[OWE_FINES]=B.finesOwed(M);
             if((A2!=null)
-            &&(!B.modifyBehavior(A2,M,new Integer(Law.MOD_ISOFFICER)))
-            &&(!B.modifyBehavior(A2,M,new Integer(Law.MOD_ISJUDGE))))
+            &&(!B.isAnyOfficer(A2,M))
+            &&(!B.isJudge(A2,M)))
             {
-                Vector VB=new Vector();
-                VB.addElement(new Integer(Law.MOD_LEGALINFO));
-                B.modifyBehavior(A2,M,VB);
-                Law theLaw=(Law)VB.firstElement();
+                Law theLaw=B.legalInfo(A2);
                 if(theLaw!=null)
                 {
                     double cittax=Util.s_double((String)theLaw.taxLaws().get("CITTAX"));
@@ -140,20 +132,20 @@ public class TaxCollector extends StdBehavior
 				
                 if(owed[OWE_FINES]>0)
                 {
-                    Behavior B=CMLib.utensils().getLegalBehavior(msg.source().location());
+                    LegalBehavior B=CMLib.utensils().getLegalBehavior(msg.source().location());
                     Area A2=CMLib.utensils().getLegalObject(msg.source().location());
                     if((B!=null)&&(A2!=null))
                     {
                         if(paidAmount>=owed[OWE_FINES])
                         {
                             paidAmount-=owed[OWE_FINES];
-                            B.modifyBehavior(A2,msg.source(),Util.makeVector(new Integer(Law.MOD_FINESOWED),new Double(0.0)));
+                            B.modifyAssessedFines(0.0,msg.source());
                         }
                         else
                         {
                             owed[OWE_FINES]-=paidAmount;
                             paidAmount=0;
-                            B.modifyBehavior(A2,msg.source(),Util.makeVector(new Integer(Law.MOD_FINESOWED),new Double(owed[OWE_FINES])));
+                            B.modifyAssessedFines(owed[OWE_FINES],msg.source());
                         }
                     }
                 }
@@ -194,14 +186,11 @@ public class TaxCollector extends StdBehavior
 				}
 				if((paidBackTaxes)&&(numBackTaxesUnpaid==0)&&(mob.location()!=null))
 				{
-				    Behavior B=CMLib.utensils().getLegalBehavior(mob.location().getArea());
+                    LegalBehavior B=CMLib.utensils().getLegalBehavior(mob.location().getArea());
 				    if((B!=null)&&(!msg.source().isMonster()))
 				    {
-						Vector VB=new Vector();
 						Area A2=CMLib.utensils().getLegalObject(mob.location().getArea());
-						VB.addElement(new Integer(Law.MOD_CRIMEAQUIT));
-						VB.addElement("TAXEVASION");
-						B.modifyBehavior(A2,msg.source(),VB);
+                        B.aquit(A2,msg.source(),Util.makeVector("TAXEVASION"));
 				    }
 				}
 				
@@ -322,7 +311,7 @@ public class TaxCollector extends StdBehavior
 				if((demandDex>=0)
 				&&((System.currentTimeMillis()-((Long)demanded.elementAt(demandDex,2)).longValue())>waitTime))
 				{
-                    Behavior B=CMLib.utensils().getLegalBehavior(R.getArea());
+                    LegalBehavior B=CMLib.utensils().getLegalBehavior(R.getArea());
                     if(M.isMonster()
                     &&(M.getStartRoom()!=null)
                     &&(CMLib.utensils().getLandTitle(M.getStartRoom())==null))
@@ -330,12 +319,7 @@ public class TaxCollector extends StdBehavior
                     else
 				    if(B!=null)
 				    {
-						Vector VB=new Vector();
-						Area A2=CMLib.utensils().getLegalObject(R.getArea());
-						VB.addElement(new Integer(Law.MOD_CRIMEACCUSE));
-						VB.addElement(mob);
-						VB.addElement("TAXEVASION");
-						B.modifyBehavior(A2,M,VB);
+                        B.accuse(CMLib.utensils().getLegalObject(R),M,mob,Util.makeVector("TAXEVASION"));
 						CMLib.commands().say(mob,M,"Can't pay huh?  Well, you'll be hearing from the law -- THAT's for sure!",false,false);
 				    }
 				    else

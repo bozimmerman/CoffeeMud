@@ -77,7 +77,7 @@ public class JRun extends StdCommand
         return false;
     }
     
-    protected class JScriptWindow extends ScriptableObject
+    protected static class JScriptWindow extends ScriptableObject
     {
         public String getClassName(){ return "window";}
         static final long serialVersionUID=43;

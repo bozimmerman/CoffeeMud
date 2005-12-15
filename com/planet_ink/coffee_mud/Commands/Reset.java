@@ -715,7 +715,7 @@ public class Reset extends StdCommand
 							ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 							if(SK!=null)
 							{
-								Vector V=SK.getStoreInventory();
+								Vector V=SK.getShop().getStoreInventory();
 								for(int i=V.size()-1;i>=0;i--)
 								{
 									Environmental E=(Environmental)V.elementAt(i);
@@ -727,10 +727,10 @@ public class Reset extends StdCommand
 										changedMOBS=changedMOBS||didSomething;
 										if(didSomething)
 										{
-											int numInStock=SK.numberInStock(I);
-											int stockPrice=SK.stockPrice(I);
-											SK.delAllStoreInventory(I);
-											SK.addStoreInventory(I,numInStock,stockPrice);
+											int numInStock=SK.getShop().numberInStock(I);
+											int stockPrice=SK.getShop().stockPrice(I);
+											SK.getShop().delAllStoreInventory(I,SK.whatIsSold());
+											SK.getShop().addStoreInventory(I,numInStock,stockPrice,SK);
 										}
 									}
 								}
@@ -784,7 +784,7 @@ public class Reset extends StdCommand
 							ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 							if(SK!=null)
 							{
-								Vector V=SK.getStoreInventory();
+								Vector V=SK.getShop().getStoreInventory();
 								for(int i=V.size()-1;i>=0;i--)
 								{
 									Environmental E=(Environmental)V.elementAt(i);
@@ -796,10 +796,10 @@ public class Reset extends StdCommand
 										changedMOBS=changedMOBS||didSomething;
 										if(didSomething)
 										{
-											int numInStock=SK.numberInStock(I);
-											int stockPrice=SK.stockPrice(I);
-											SK.delAllStoreInventory(I);
-											SK.addStoreInventory(I,numInStock,stockPrice);
+											int numInStock=SK.getShop().numberInStock(I);
+											int stockPrice=SK.getShop().stockPrice(I);
+											SK.getShop().delAllStoreInventory(I,SK.whatIsSold());
+											SK.getShop().addStoreInventory(I,numInStock,stockPrice,SK);
 										}
 									}
 								}
@@ -911,7 +911,7 @@ public class Reset extends StdCommand
                         ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
                         if(SK!=null)
                         {
-                            Vector V=SK.getStoreInventory();
+                            Vector V=SK.getShop().getStoreInventory();
                             for(int i=V.size()-1;i>=0;i--)
                             {
                                 Environmental E=(Environmental)V.elementAt(i);
@@ -935,10 +935,10 @@ public class Reset extends StdCommand
                                     changedMobs=changedMobs||didSomething;
                                     if(didSomething)
                                     {
-                                        int numInStock=SK.numberInStock(I);
-                                        int stockPrice=SK.stockPrice(I);
-                                        SK.delAllStoreInventory(I);
-                                        SK.addStoreInventory(I,numInStock,stockPrice);
+                                        int numInStock=SK.getShop().numberInStock(I);
+                                        int stockPrice=SK.getShop().stockPrice(I);
+                                        SK.getShop().delAllStoreInventory(I,SK.whatIsSold());
+                                        SK.getShop().addStoreInventory(I,numInStock,stockPrice,SK);
                                     }
                                 }
                             }
@@ -1104,7 +1104,7 @@ public class Reset extends StdCommand
 					ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 					if(SK!=null)
 					{
-						Vector V=SK.getStoreInventory();
+						Vector V=SK.getShop().getStoreInventory();
 						for(int i=V.size()-1;i>=0;i--)
 						{
 							Environmental E=(Environmental)V.elementAt(i);
@@ -1114,7 +1114,7 @@ public class Reset extends StdCommand
 								int returned=resetAreaOramaManaI(mob,I,rememberI," - ");
 								if(returned<0)
 								{
-									SK.delAllStoreInventory(I);
+									SK.getShop().delAllStoreInventory(I,SK.whatIsSold());
 									somethingDone=true;
 									mob.tell("   deleted");
 								}
@@ -1122,10 +1122,10 @@ public class Reset extends StdCommand
 								if(returned>0)
 								{
 									somethingDone=true;
-									int numInStock=SK.numberInStock(I);
-									int stockPrice=SK.stockPrice(I);
-									SK.delAllStoreInventory(I);
-									SK.addStoreInventory(I,numInStock,stockPrice);
+									int numInStock=SK.getShop().numberInStock(I);
+									int stockPrice=SK.getShop().stockPrice(I);
+									SK.getShop().delAllStoreInventory(I,SK.whatIsSold());
+									SK.getShop().addStoreInventory(I,numInStock,stockPrice,SK);
 								}
 							}
 						}

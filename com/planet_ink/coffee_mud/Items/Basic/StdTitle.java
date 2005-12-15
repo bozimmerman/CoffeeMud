@@ -233,7 +233,7 @@ public class StdTitle extends StdItem implements LandTitle
 				        CMLib.commands().say((MOB)msg.target(),msg.source(),str,false,false);
 			        else
 			            ((MOB)msg.target()).tell(str+" You might want to tell the customer.");
-                    if(SK!=null) SK.removeStock(Name(),msg.source());
+                    if(SK!=null) SK.getShop().removeStock(Name(),msg.source(),SK.whatIsSold(),CMLib.utensils().roomStart(msg.target()));
 			        destroy();
 			        return false;
 			    }
@@ -259,7 +259,7 @@ public class StdTitle extends StdItem implements LandTitle
 		        else
 		            ((MOB)msg.target()).tell(str+" You might want to tell the customer.");
 				ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(msg.target());
-				if(SK!=null) SK.removeStock(msg.tool().Name(),msg.source());
+				if(SK!=null) SK.getShop().removeStock(msg.tool().Name(),msg.source(),SK.whatIsSold(),CMLib.utensils().roomStart(msg.target()));
                 destroy();
 		        return false;
 			}
@@ -347,14 +347,11 @@ public class StdTitle extends StdItem implements LandTitle
 			    if((allRooms!=null)&&(allRooms.size()>0))
 			    {
 			        Room R=(Room)allRooms.firstElement();
-				    Behavior B=CMLib.utensils().getLegalBehavior(R);
+                    LegalBehavior B=CMLib.utensils().getLegalBehavior(R);
 				    if(B!=null)
 				    {
-						Vector VB=new Vector();
 						Area A2=CMLib.utensils().getLegalObject(R);
-						VB.addElement(new Integer(Law.MOD_LEGALINFO));
-						B.modifyBehavior(A2,(MOB)msg.target(),VB);
-						Law theLaw=(Law)VB.firstElement();
+						Law theLaw=B.legalInfo(A2);
 						String taxs=(String)theLaw.taxLaws().get("PROPERTYTAX");
 						if((taxs!=null)&&(taxs.length()==0)&&(Util.s_double(taxs)>0.0))
 						    msg.source().tell("A property tax of "+Util.s_double(taxs)+"% of "+A.landPrice()+" will be paid monthly out of your bank account.");

@@ -507,8 +507,8 @@ public class GrinderMobs
 			&&(httpReq.isRequestParameter("SHP1")))
 			{
 				ShopKeeper K=(ShopKeeper)M;
-				Vector inventory=K.getStoreInventory();
-				K.clearStoreInventory();
+				Vector inventory=K.getShop().getStoreInventory();
+				K.getShop().clearStoreInventory();
 
 				int num=1;
 				String MATCHING=httpReq.getRequestParameter("SHP"+num);
@@ -523,7 +523,7 @@ public class GrinderMobs
 					{
 						Environmental O=(Environmental)inventory.elementAt(Util.s_int(MATCHING)-1);
 						if(O!=null)
-							K.addStoreInventory(O,Util.s_int(theparm),Util.s_int(theprice));
+							K.getShop().addStoreInventory(O,Util.s_int(theparm),Util.s_int(theprice),K);
 					}
 					else
 					if(MATCHING.indexOf("@")>0)
@@ -538,7 +538,7 @@ public class GrinderMobs
 						if(O==null)
 							O=RoomData.getItemFromAnywhere(null,MATCHING);
 						if(O!=null)
-							K.addStoreInventory((Environmental)O.copyOf(),Util.s_int(theparm),Util.s_int(theprice));
+							K.getShop().addStoreInventory((Environmental)O.copyOf(),Util.s_int(theparm),Util.s_int(theprice),K);
 					}
 					else
 					{
@@ -559,7 +559,7 @@ public class GrinderMobs
 						if(O==null)
 							O=RoomData.getItemFromAnywhere(null,MATCHING);
 						if(O!=null)
-							K.addStoreInventory((Environmental)O.copyOf(),Util.s_int(theparm),Util.s_int(theprice));
+							K.getShop().addStoreInventory((Environmental)O.copyOf(),Util.s_int(theparm),Util.s_int(theprice),K);
 					}
 					num++;
 					MATCHING=httpReq.getRequestParameter("SHP"+num);

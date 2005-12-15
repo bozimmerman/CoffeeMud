@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.MOBS.interfaces;
+package com.planet_ink.coffee_mud.core.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -77,26 +77,12 @@ public interface ShopKeeper extends Environmental
 	    "VEGETABLES","HIDES","LUMBER","METALS","ROCKS",
 		"CLAN BANKER", "INN KEEPER", "SHIP SELLER", 
         "CLAN SHIP SELLER", "SLAVES", "POSTMAN", "CLAN POSTMAN"};
-	
+
+    public CoffeeShop getShop();
 	public int whatIsSold();
 	public void setWhatIsSold(int newSellCode);
-	public Environmental addStoreInventory(Environmental thisThang);
-    public Environmental addStoreInventory(Environmental thisThang, int number, int price);
-	public int baseStockSize();
-	public int totalStockSize();
-	public Vector getStoreInventory();
-	public Vector getBaseInventory();
-    public boolean inBaseInventory(Environmental thisThang);
 	public String storeKeeperString();
-	public Vector removeSellableProduct(String named, MOB mob);
-	public void clearStoreInventory();
-	public void delAllStoreInventory(Environmental thisThang);
 	public boolean doISellThis(Environmental thisThang);
-	public boolean doIHaveThisInStock(String name, MOB mob);
-	public int numberInStock(Environmental likeThis);
-	public int stockPrice(Environmental likeThis);
-	public Environmental getStock(String name, MOB mob);
-	public Environmental removeStock(String name, MOB mob);
 	public String prejudiceFactors();
 	public void setPrejudiceFactors(String factors);
     public String ignoreMask();
@@ -107,5 +93,4 @@ public interface ShopKeeper extends Environmental
 	public void setDevalueRate(String factors);
 	public int invResetRate();
 	public void setInvResetRate(int ticks);
-	
 }

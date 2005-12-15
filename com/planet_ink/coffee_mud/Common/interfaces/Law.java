@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Behaviors.interfaces;
+package com.planet_ink.coffee_mud.Common.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface Law
+public interface Law extends CMObject
 {
 	public static final int ACTION_WARN=0;
 	public static final int ACTION_THREATEN=1;
@@ -116,27 +116,6 @@ public interface Law
 	public final static int MSG_RESIST=11;
 	public final static int MSG_TOTAL=12;
 	
-	public final static int MOD_FRAME = 0;
-	public final static int MOD_ARREST = 1;
-	public final static int MOD_WARRANTINFO = 2;
-	public final static int MOD_LEGALINFO = 3;
-	public final static int MOD_LEGALTEXT = 4;
-	public final static int MOD_ISELLIGOFFICER = 5;
-	public final static int MOD_HASWARRANT = 6;
-	public final static int MOD_ISOFFICER = 7;
-	public final static int MOD_ISJUDGE = 8;
-	public final static int MOD_SETNEWLAW=9;
-	public final static int MOD_RULINGCLAN=10;
-	public final static int MOD_WARINFO=11;
-	public final static int MOD_CONTROLPOINTS=12;
-	public final static int MOD_GETWARRANTSOF=13;
-	public final static int MOD_ADDWARRANT=14;
-	public final static int MOD_DELWARRANT=15;
-	public final static int MOD_CRIMEACCUSE=16;
-	public final static int MOD_CRIMEAQUIT=17;
-	public final static int MOD_ISJAILROOM=18;
-    public final static int MOD_FINESOWED=19;
-	
 	public static final String defaultLaw=
 		"OFFICERS=@\n"+
 		"JUDGE=@\n"+
@@ -203,6 +182,7 @@ public interface Law
 		"POISON_FIREBREATHER=!home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n"+
 		"POISON_LIQUOR=!home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n";
 	
+        public void initialize(LegalBehavior details, Properties laws, boolean modifiableNames, boolean modifiableLaws);
 		public void changeStates(LegalWarrant W, int state);
 		public Vector otherCrimes();
 		public Vector otherBits();

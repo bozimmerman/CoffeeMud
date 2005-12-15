@@ -65,7 +65,7 @@ public class Thief_FrameMark extends ThiefSkill
 			return false;
 		}
 
-		Behavior B=null;
+        LegalBehavior B=null;
 		if(mob.location()!=null) B=CMLib.utensils().getLegalBehavior(mob.location());
 		if((B==null)
 		||(!B.modifyBehavior(CMLib.utensils().getLegalObject(mob.location()),mob,new Integer(6))))
@@ -95,10 +95,7 @@ public class Thief_FrameMark extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			Vector V=new Vector();
-			V.addElement(new Integer(Law.MOD_FRAME));
-			V.addElement(target);
-			B.modifyBehavior(CMLib.utensils().getLegalObject(mob.location()),mob,V);
+            B.frame(CMLib.utensils().getLegalObject(mob.location()),mob,target);
 		}
 		return success;
 	}

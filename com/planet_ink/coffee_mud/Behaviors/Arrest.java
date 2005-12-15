@@ -35,7 +35,7 @@ import java.io.ByteArrayOutputStream;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Arrest extends StdBehavior
+public class Arrest extends StdBehavior implements LegalBehavior
 {
 	public String ID(){return "Arrest";}
 	public long flags(){return Behavior.FLAG_LEGALBEHAVIOR;}
@@ -43,957 +43,302 @@ public class Arrest extends StdBehavior
 
 	protected boolean loadAttempt=false;
 
-	protected static final long ONE_REAL_DAY=(long)1000*60*60*24;
-	protected static final long EXPIRATION_MILLIS=ONE_REAL_DAY*7; // 7 real days
 	protected String getLawParms(){ return getParms();}
     protected Hashtable finesAssessed=new Hashtable();
 
-	protected class ArrestWarrant implements Cloneable, LegalWarrant
-	{
-		private MOB criminal=null;
-		private MOB victim=null;
-		private MOB witness=null;
-		private MOB arrestingOfficer=null;
-		private Room jail=null;
-		private Room releaseRoom=null;
-		private String crime="";
-        private DVector actionParms=new DVector(2);
-		private int actionCode=-1;
-		private int jailTime=0;
-		private int state=0;
-		private int offenses=0;
-		private long lastOffense=0;
-		private long travelAttemptTime=0;
-		private String warnMsg=null;
-		public void setArrestingOfficer(Area legalArea, MOB mob)
-		{
-			if((arrestingOfficer!=null)
-			&&(arrestingOfficer.getStartRoom()!=null)
-			&&(arrestingOfficer.location()!=null)
-			&&(legalArea!=null)
-			&&(arrestingOfficer.getStartRoom().getArea()!=arrestingOfficer.location().getArea())
-			&&(!legalArea.inMetroArea(arrestingOfficer.location().getArea())))
-				CMLib.tracking().wanderAway(arrestingOfficer,true,true);
-			if((mob==null)&&(arrestingOfficer!=null))
-				stopTracking(arrestingOfficer);
-			arrestingOfficer=mob;
-		}
-		public MOB criminal(){ return criminal;}
-		public MOB victim()	{ return victim;}
-		public MOB witness(){ return witness;}
-		public MOB arrestingOfficer(){ return arrestingOfficer;}
-		public Room jail(){ return jail;}
-		public Room releaseRoom(){ return releaseRoom;}
-		public String crime(){ return crime;}
-		public int actionCode(){ return actionCode;}
-        public String getActionParm(int code)
-        {
-            int index=actionParms.indexOf(new Integer(code));
-            if(index<0) return "";
-            return (String)actionParms.elementAt(index,2);
-        }
-        public void addActionParm(int code, String parm)
-        {
-            int index=actionParms.indexOf(new Integer(code));
-            if(index>=0)
-                actionParms.removeElementAt(index);
-            actionParms.addElement(new Integer(code),parm);
-        }
-		public int jailTime(){ return jailTime;}
-		public int state(){ return state;}
-		public int offenses(){ return offenses;}
-		public long lastOffense(){ return lastOffense;}
-		public long travelAttemptTime(){ return travelAttemptTime;}
-		public String warnMsg(){ return warnMsg;}
-		public void setCriminal(MOB mob){ criminal=mob;}
-		public void setVictim(MOB mob){ victim=mob;}
-		public void setWitness(MOB mob){ witness=mob;}
-		public void setJail(Room R){ jail=R;}
-		public void setReleaseRoom(Room R){ releaseRoom=R;}
-		public void setCrime(String newcrime){ crime=newcrime;}
-		public void setActionCode(int code){ actionCode=code;}
-		public void setJailTime(int time){ jailTime=time;}
-		public void setState(int newstate){ state=newstate;}
-		public void setOffenses(int num){ offenses=num;}
-		public void setLastOffense(long last){ lastOffense=last;}
-		public void setTravelAttemptTime(long time){ travelAttemptTime=time;}
-		public void setWarnMsg(String msg){ warnMsg=msg;}
-	}
-
-	protected class Laws implements Law
-	{
-		private boolean namesModifiable=false;
-		private boolean lawsModifiable=false;
-
-		private Vector otherCrimes=new Vector();
-		private Vector otherBits=new Vector();
-		private Vector bannedSubstances=new Vector();
-		private Vector bannedBits=new Vector();
-		private Hashtable abilityCrimes=new Hashtable();
-		private Hashtable basicCrimes=new Hashtable();
-		private Hashtable taxLaws=new Hashtable();
-
-		private Vector chitChat=new Vector();
-		private Vector chitChat2=new Vector();
-        private Vector chitChat3=new Vector();
-		private Vector jailRooms=new Vector();
-		private Vector releaseRooms=new Vector();
-		private Vector officerNames=new Vector();
-		private Vector judgeNames=new Vector();
-		private String[] messages=new String[Law.MSG_TOTAL];
-
-		private boolean activated=true;
-
-		private Vector oldWarrants=new Vector();
-		private Vector warrants=new Vector();
-
-		private boolean arrestMobs=false;
-
-		private Properties theLaws=null;
-		private int lastMonthChecked=-1;
-
-		private String[] paroleMessages=new String[4];
-		private Integer[] paroleTimes=new Integer[4];
-
-		private String[] jailMessages=new String[4];
-		private Integer[] jailTimes=new Integer[4];
-		public Laws(){}
-
-		public Laws(Properties laws,
-					boolean modifiableNames,
-					boolean modifiableLaws)
-		{
-			namesModifiable=modifiableNames;
-			lawsModifiable=modifiableLaws;
-			resetLaw(laws);
-		}
-
-		public Vector otherCrimes()	{ return otherCrimes;}
-		public Vector otherBits() { return otherBits;}
-		public Vector bannedSubstances() { return bannedSubstances;}
-		public Vector bannedBits() { return bannedBits;}
-		public Hashtable abilityCrimes(){ return abilityCrimes;}
-		public Hashtable basicCrimes(){ return basicCrimes;}
-		public Hashtable taxLaws(){return taxLaws;}
-
-		public boolean hasModifiableNames(){return namesModifiable;}
-		public boolean hasModifiableLaws(){return lawsModifiable;}
-
-		public Vector chitChat(){ return chitChat;}
-		public Vector chitChat2(){ return chitChat2;}
-        public Vector chitChat3(){ return chitChat3;}
-		public Vector jailRooms(){ return jailRooms;}
-		public Vector releaseRooms(){ return releaseRooms;}
-		public Vector officerNames(){ return officerNames;}
-		public Vector judgeNames(){ return judgeNames;}
-		public String[] messages(){ return messages;}
-
-		public Vector oldWarrants(){ return oldWarrants;}
-		public Vector warrants(){ return warrants;}
-
-		public boolean arrestMobs(){ return arrestMobs;}
-
-		public String[] paroleMessages(){ return paroleMessages;}
-		public Integer[] paroleTimes(){ return paroleTimes;}
-
-		public String[] jailMessages(){ return jailMessages;}
-		public Integer[] jailTimes(){ return jailTimes;}
-
-
-		public void changeStates(LegalWarrant W, int state)
-		{
-			if((W==null)||(W.criminal()==null)) return;
-			if(warrants.contains(W))
-				for(int w=0;w<warrants.size();w++)
-				{
-					LegalWarrant W2=(LegalWarrant)warrants.elementAt(w);
-					if(W2.criminal()==W.criminal())
-						W2.setState(state);
-				}
-		}
-
-		public Environmental[] getTreasuryNSafe(Area A)
-		{
-            Room treasuryR=null;
-            Item container=null;
-	        String tres=(String)taxLaws().get("TREASURY");
-	        if((tres!=null)&&(tres.length()>0))
-	        {
-				Vector V=Util.parseSemicolons(tres,false);
-				if(V.size()>0)
-				{
-				    Room R=null;
-					String room=(String)V.firstElement();
-					String item="";
-					if(V.size()>1) item=Util.combine(V,1);
-					if(!room.equalsIgnoreCase("*"))
-					{
-						treasuryR=CMLib.map().getRoom(room);
-						if(treasuryR!=null)
-					        container=treasuryR.fetchAnyItem(item);
-					}
-					else
-					if(item.length()>0)
-					for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
-					{
-					    R=(Room)e.nextElement();
-					    if(R.fetchAnyItem(item) instanceof Container)
-					    {
-					        container=R.fetchAnyItem(item);
-					        treasuryR=R;
-					        break;
-				        }
-					}
-					if((room.length()>0)&&(treasuryR==null))
-					    treasuryR=A.getRandomMetroRoom();
-				}
-	        }
-	        Environmental[] ES=new Environmental[2];
-	        ES[0]=treasuryR;
-	        ES[1]=container;
-	        return ES;
-		}
-
-		public void propertyTaxTick(Area A, boolean debugging)
-		{
-		    if(lastMonthChecked!=A.getTimeObj().getMonth())
-		    {
-		        lastMonthChecked=A.getTimeObj().getMonth();
-		        double tax=Util.s_double((String)taxLaws.get("PROPERTYTAX"));
-		        if(tax==0.0) return;
-		        tax=Util.div(tax,100.0);
-			    Vector titles=CMLib.utensils().getAllUniqueTitles(A.getMetroMap(),"*",false);
-			    Hashtable owners=new Hashtable();
-			    for(Enumeration e=titles.elements();e.hasMoreElements();)
-			    {
-			        LandTitle T=(LandTitle)e.nextElement();
-			        Vector D=(Vector)owners.get(T.landOwner());
-			        if(D==null)
-			        {
-			            D=new Vector();
-			            owners.put(T.landOwner(),D);
-			        }
-			        D.addElement(T);
-			    }
-			    titles=null;
-			    Environmental[] Treas=getTreasuryNSafe(A);
-                Room treasuryR=(Room)Treas[0];
-                Item container=(Item)Treas[1];
-		        String[] evasionBits=(String[])taxLaws().get("TAXEVASION");
-
-			    for(Enumeration e=owners.keys();e.hasMoreElements();)
-			    {
-			        String owner=(String)e.nextElement();
-			        MOB responsibleMob=null;
-				    Clan C=CMLib.clans().getClan(owner);
-				    if(C!=null)
-				        responsibleMob=C.getResponsibleMember();
-				    else
-				        responsibleMob=CMLib.map().getLoadPlayer(owner);
-			        Vector particulars=(Vector)owners.get(owner);
-
-			        double totalValue=0;
-			        double paid=0;
-			        double owed=0;
-			        StringBuffer properties=new StringBuffer("");
-			        LandTitle T=null;
-			        Vector propertyRooms=null;
-
-			        for(int p=0;p<particulars.size();p++)
-			        {
-			            if(p>0) properties.append(", ");
-			            T=((LandTitle)particulars.elementAt(p));
-						propertyRooms=T.getPropertyRooms();
-						if((propertyRooms.size()<2)
-						||(CMLib.map().getArea(T.landPropertyID())!=null))
-						    properties.append(T.landPropertyID());
-						else
-						    properties.append("around "+CMLib.map().getExtendedRoomID((Room)propertyRooms.firstElement()));
-			            totalValue+=new Integer(T.landPrice()).doubleValue();
-			            if(T.backTaxes()>0)
-			            {
-			                totalValue+=new Integer(T.backTaxes()).doubleValue();
-			                owed+=new Integer(T.backTaxes()).doubleValue();
-			            }
-			        }
-			        owed+=Util.mul(totalValue,tax);
-
-			        if(owed>0)
-			        for(int p=0;p<particulars.size();p++)
-			        {
-			            T=((LandTitle)particulars.elementAt(p));
-			            if(T.backTaxes()<0)
-			            {
-			                if((-T.backTaxes())>=owed)
-			                {
-			                    paid+=owed;
-			                    T.setBackTaxes((int)Math.round(new Integer(T.backTaxes()).doubleValue()+owed));
-					            T.updateTitle();
-			                    break;
-			                }
-			                paid+=new Integer(-T.backTaxes()).doubleValue();
-			                T.setBackTaxes(0);
-				            T.updateTitle();
-			            }
-			        }
-			        if(owed>0)
-			        {
-			            owed-=paid;
-			            if((owed>0)&&(!CMLib.beanCounter().modifyLocalBankGold(A,
-					                    owner,
-					                    CMLib.utensils().getFormattedDate(A)+": Withdrawl of "+owed+": Taxes on property: "+properties.toString(),
-					                    CMLib.beanCounter().getCurrency(A),
-					                   -owed)))
-			            {
-			                boolean owesButNotConfiscated=false;
-					        for(int p=0;p<particulars.size();p++)
-					        {
-					            T=(LandTitle)particulars.elementAt(p);
-						        double owedOnThisLand=Util.mul(T.landPrice(),tax);
-						        owedOnThisLand-=(paid/particulars.size());
-						        if(owedOnThisLand>0)
-						        {
-					                T.setBackTaxes((int)Math.round(new Integer(T.backTaxes()).doubleValue()+owedOnThisLand));
-							        if((T.landPrice()/T.backTaxes())<4)
-							        {
-							            if(CMLib.clans().getClan(T.landOwner())!=null)
-                                        {
-                                            Vector channels=CMLib.channels().getFlaggedChannelNames("CLANINFO");
-                                            for(int i=0;i<channels.size();i++)
-                                                CMLib.commands().channel((String)channels.elementAt(i),T.landOwner(),T.landOwner()+" has lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.",false);
-                                        }
-							            else
-							            if(CMLib.map().getPlayer(T.landOwner())!=null)
-							                CMLib.map().getPlayer(T.landOwner()).tell("You have lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.");
-							            T.setLandOwner("");
-							            T.updateTitle();
-							        }
-							        else
-							        {
-							            owesButNotConfiscated=true;
-							            T.updateTitle();
-							        }
-						        }
-					        }
-					        if((owesButNotConfiscated)
-					        &&(evasionBits!=null)
-					        &&(evasionBits[Law.BIT_CRIMENAME].length()>0)
-					        &&(responsibleMob!=null))
-								fillOutWarrant(responsibleMob,
-											   this,
-											   A,
-											   null,
-											   evasionBits[Law.BIT_CRIMELOCS],
-											   evasionBits[Law.BIT_CRIMEFLAGS],
-											   evasionBits[Law.BIT_CRIMENAME],
-											   evasionBits[Law.BIT_SENTENCE],
-											   evasionBits[Law.BIT_WARNMSG]);
-			            }
-			            else
-			            {
-					        for(int p=0;p<particulars.size();p++)
-					        {
-					            T=(LandTitle)particulars.elementAt(p);
-					            if(T.backTaxes()>0)
-					            {
-					                T.setBackTaxes(0);
-					                T.updateTitle();
-					            }
-					        }
-	        				if(owed<0) owed=0;
-				            if((treasuryR!=null)&&((owed+paid)>0))
-				            {
-				                Vector V=CMLib.beanCounter().makeAllCurrency(CMLib.beanCounter().getCurrency(A),owed+paid);
-				                for(int v=0;v<V.size();v++)
-				                {
-				                    Coins COIN=(Coins)V.elementAt(v);
-			        				COIN.setContainer(container);
-			        				treasuryR.addItem(COIN);
-			        				COIN.putCoinsBack();
-				                }
-				            }
-					        if((evasionBits!=null)
-					        &&(evasionBits[Law.BIT_CRIMENAME].length()>0)
-					        &&(responsibleMob!=null))
-					            while(getWarrant(responsibleMob,evasionBits[Law.BIT_CRIMENAME],true,debugging)!=null);
-			            }
-			        }
-			    }
-
-		    }
-		}
-
-		public String getMessage(int which)
-		{
-			if((which>=0)&&(which<messages.length)&&(messages[which]!=null))
-			   return messages[which];
-			return "";
-		}
-		public String paroleMessages(int which)
-		{
-			if((which>=0)
-			&&(which<paroleMessages.length)
-			&&(paroleMessages[which]!=null))
-			   return paroleMessages[which];
-			return "";
-		}
-		public int paroleTimes(int which)
-		{
-			if((which>=0)
-			&&(which<paroleTimes.length)
-			&&(paroleTimes[which]!=null))
-			   return paroleTimes[which].intValue();
-			return 0;
-		}
-		public String jailMessages(int which)
-		{
-			if((which>=0)
-			&&(which<jailMessages.length)
-			&&(jailMessages[which]!=null))
-			   return jailMessages[which];
-			return "";
-		}
-		public int jailTimes(int which)
-		{
-			if((which>=0)
-			&&(which<jailTimes.length)
-			&&(jailTimes[which]!=null))
-			   return jailTimes[which].intValue();
-			return 0;
-		}
-
-		public String getInternalStr(String msg)
-		{
-			if((theLaws!=null)&&(theLaws.get(msg)!=null))
-				return (String)theLaws.get(msg);
-			return "";
-		}
-		public void setInternalStr(String tag, String value)
-		{
-			if(theLaws!=null)
-			{
-				if(theLaws.get(tag)!=null)
-					theLaws.remove(tag);
-				theLaws.put(tag,value);
-			}
-		}
-		public boolean lawIsActivated(){ return activated;}
-
-		public void resetLaw()
-		{
-			if(theLaws!=null)
-				resetLaw(theLaws);
-		}
-		private void resetLaw(Properties laws)
-		{
-			theLaws=laws;
-			activated=(!getInternalStr("ACTIVATED").equalsIgnoreCase("FALSE"));
-			officerNames=Util.parse(getInternalStr("OFFICERS"));
-			chitChat=Util.parse(getInternalStr("CHITCHAT"));
-			chitChat2=Util.parse(getInternalStr("CHITCHAT2"));
-            chitChat3=Util.parse(getInternalStr("CHITCHAT3"));
-			judgeNames=Util.parse(getInternalStr("JUDGE"));
-
-			arrestMobs=getInternalStr("ARRESTMOBS").equalsIgnoreCase("true");
-
-			messages=new String[Law.MSG_TOTAL];
-			messages[Law.MSG_PREVOFF]=getInternalStr("PREVOFFMSG");
-			messages[Law.MSG_WARNING]=getInternalStr("WARNINGMSG");
-			messages[Law.MSG_THREAT]=getInternalStr("THREATMSG");
-			messages[Law.MSG_EXECUTE]=getInternalStr("EXECUTEMSG");
-			messages[Law.MSG_PROTECTEDMASK]=getInternalStr("PROTECTED");
-			messages[Law.MSG_TRESPASSERMASK]=getInternalStr("TRESPASSERS");
-			messages[Law.MSG_RESISTFIGHT]=getInternalStr("RESISTFIGHTMSG");
-			messages[Law.MSG_NORESIST]=getInternalStr("NORESISTMSG");
-			messages[Law.MSG_RESISTWARN]=getInternalStr("RESISTWARNMSG");
-			messages[Law.MSG_PAROLEDISMISS]=getInternalStr("PAROLEDISMISS");
-			messages[Law.MSG_RESIST]=getInternalStr("RESISTMSG");
-			messages[Law.MSG_LAWFREE]=getInternalStr("LAWFREE");
-
-			paroleMessages[0]=getInternalStr("PAROLE1MSG");
-			paroleMessages[1]=getInternalStr("PAROLE2MSG");
-			paroleMessages[2]=getInternalStr("PAROLE3MSG");
-			paroleMessages[3]=getInternalStr("PAROLE4MSG");
-			paroleTimes[0]=new Integer(Util.s_int(getInternalStr("PAROLE1TIME")));
-			paroleTimes[1]=new Integer(Util.s_int(getInternalStr("PAROLE2TIME")));
-			paroleTimes[2]=new Integer(Util.s_int(getInternalStr("PAROLE3TIME")));
-			paroleTimes[3]=new Integer(Util.s_int(getInternalStr("PAROLE4TIME")));
-
-			jailMessages[0]=getInternalStr("JAIL1MSG");
-			jailMessages[1]=getInternalStr("JAIL2MSG");
-			jailMessages[2]=getInternalStr("JAIL3MSG");
-			jailMessages[3]=getInternalStr("JAIL4MSG");
-			jailTimes[0]=new Integer(Util.s_int(getInternalStr("JAIL1TIME")));
-			jailTimes[1]=new Integer(Util.s_int(getInternalStr("JAIL2TIME")));
-			jailTimes[2]=new Integer(Util.s_int(getInternalStr("JAIL3TIME")));
-			jailTimes[3]=new Integer(Util.s_int(getInternalStr("JAIL4TIME")));
-
-			jailRooms=Util.parseSemicolons(getInternalStr("JAIL"),true);
-			releaseRooms=Util.parseSemicolons(getInternalStr("RELEASEROOM"),true);
-
-			taxLaws.clear();
-			String taxLaw=getInternalStr("PROPERTYTAX");
-			if(taxLaw.length()>0) taxLaws.put("PROPERTYTAX",taxLaw);
-			taxLaw=getInternalStr("TAXEVASION");
-			if(taxLaw.length()>0) taxLaws.put("TAXEVASION",getInternalBits(taxLaw));
-			taxLaw=getInternalStr("TREASURY");
-			if(taxLaw.length()>0) taxLaws.put("TREASURY",taxLaw);
-			taxLaw=getInternalStr("SALESTAX");
-			if(taxLaw.length()>0) taxLaws.put("SALESTAX",taxLaw);
-			taxLaw=getInternalStr("CITTAX");
-			if(taxLaw.length()>0) taxLaws.put("CITTAX",taxLaw);
-
-			basicCrimes.clear();
-			String basicLaw=getInternalStr("MURDER");
-			if(basicLaw.length()>0) basicCrimes.put("MURDER",getInternalBits(basicLaw));
-			basicLaw=getInternalStr("RESISTINGARREST");
-			if(basicLaw.length()>0) basicCrimes.put("RESISTINGARREST",getInternalBits(basicLaw));
-			basicLaw=getInternalStr("NUDITY");
-			if(basicLaw.length()>0) basicCrimes.put("NUDITY",getInternalBits(basicLaw));
-			basicLaw=getInternalStr("ASSAULT");
-			if(basicLaw.length()>0) basicCrimes.put("ASSAULT",getInternalBits(basicLaw));
-			basicLaw=getInternalStr("ARMED");
-			if(basicLaw.length()>0) basicCrimes.put("ARMED",getInternalBits(basicLaw));
-			basicLaw=getInternalStr("TRESPASSING");
-			if(basicLaw.length()>0) basicCrimes.put("TRESPASSING",getInternalBits(basicLaw));
-			basicLaw=getInternalStr("PROPERTYROB");
-			if(basicLaw.length()>0) basicCrimes.put("PROPERTYROB",getInternalBits(basicLaw));
-
-			abilityCrimes.clear();
-			otherCrimes.clear();
-			otherBits.clear();
-			bannedSubstances.clear();
-			bannedBits.clear();
-			for(Enumeration e=laws.keys();e.hasMoreElements();)
-			{
-				String key=(String)e.nextElement();
-				String words=(String)laws.get(key);
-				int x=words.indexOf(";");
-				if(x>=0)
-				{
-					if(key.startsWith("CRIME"))
-					{
-						otherCrimes.addElement(Util.parse(words.substring(0,x)));
-						String[] bits=new String[Law.BIT_NUMBITS];
-						Vector parsed=Util.parseSemicolons(words.substring(x+1),false);
-						for(int i=0;i<Law.BIT_NUMBITS;i++)
-							if(i<parsed.size())
-								bits[i]=(String)parsed.elementAt(i);
-							else
-								bits[i]="";
-						otherBits.addElement(bits);
-					}
-					else
-					if(key.startsWith("BANNED"))
-					{
-						bannedSubstances.addElement(Util.parse(words.substring(0,x)));
-						String[] bits=new String[Law.BIT_NUMBITS];
-						Vector parsed=Util.parseSemicolons(words.substring(x+1),false);
-						for(int i=0;i<Law.BIT_NUMBITS;i++)
-							if(i<parsed.size())
-								bits[i]=(String)parsed.elementAt(i);
-							else
-								bits[i]="";
-						bannedBits.addElement(bits);
-					}
-					else
-					if((key.startsWith("$")&&(CMClass.getAbility(key.substring(1))!=null))
-					||(CMClass.getAbility(key)!=null))
-						abilityCrimes.put(key.toUpperCase(),getInternalBits(words));
-				}
-			}
-		}
-
-		public String rawLawString()
-		{
-			if(theLaws!=null)
-			{
-				ByteArrayOutputStream out=new ByteArrayOutputStream();
-				try{ theLaws.store(out,"");}catch(IOException e){}
-				String s=Util.replaceAll(out.toString(),"\n\r","~");
-				s=Util.replaceAll(s,"\r\n","~");
-				s=Util.replaceAll(s,"\n","~");
-				s=Util.replaceAll(s,"\r","~");
-				s=Util.replaceAll(s,"'","`");
-				return s;
-			}
-			return "";
-		}
-
-		private String[] getInternalBits(String bitStr)
-		{
-			String[] bits=new String[Law.BIT_NUMBITS];
-			Vector parsed=Util.parseSemicolons(bitStr,false);
-			for(int i=0;i<Law.BIT_NUMBITS;i++)
-				if(i<parsed.size())
-					bits[i]=(String)parsed.elementAt(i);
-				else
-					bits[i]="";
-			return bits;
-		}
-
-		public LegalWarrant getWarrant(MOB criminal, 
-								        String crime, 
-								        boolean pull,
-								        boolean debugging)
-		{
-			LegalWarrant W=null;
-			for(int i=0;i<warrants.size();i++)
-			{
-				LegalWarrant W2=(LegalWarrant)warrants.elementAt(i);
-				if((W2.criminal()==criminal)
-				&&(W2.crime().equals(crime))
-				&&(isStillACrime(W2,debugging)))
-				{
-					W=W2;
-					if(pull) warrants.removeElement(W2);
-					break;
-				}
-			}
-			return W;
-		}
-
-		public LegalWarrant getWarrant(MOB mob, int which)
-		{
-			int one=0;
-			for(int i=0;i<warrants.size();i++)
-			{
-				LegalWarrant W=(LegalWarrant)warrants.elementAt(i);
-				if(W.criminal()==mob)
-				{
-					if(which==one)
-						return W;
-					one++;
-				}
-			}
-			return null;
-		}
-
-		public LegalWarrant getOldWarrant(MOB criminal, String crime, boolean pull)
-		{
-			LegalWarrant W=null;
-			for(int i=0;i<oldWarrants.size();i++)
-			{
-				LegalWarrant W2=(LegalWarrant)oldWarrants.elementAt(i);
-				if((W2.criminal()==criminal)&&(W2.crime().equals(crime)))
-				{
-					W=W2;
-					if(pull) oldWarrants.removeElement(W2);
-					break;
-				}
-			}
-			return W;
-		}
-
-	}
-
-
-	// here are the codes for interacting with this behavior
-	// see Law.java for info
-	public boolean modifyBehavior(Environmental hostObj,
-								  MOB mob,
-								  Object O)
-	{
-	    boolean debugging=CMSecurity.isDebugging("ARREST");
-		if((mob!=null)
-		&&(mob.location()!=null)
-		&&(hostObj!=null)
-		&&(hostObj instanceof Area))
-		{
-			Law laws=getLaws(hostObj,false);
-			Integer I=null;
-			Vector V=null;
-			if(O instanceof Integer)
-				I=(Integer)O;
-			else
-			if(O instanceof Vector)
-			{
-				V=(Vector)O;
-				if(V.size()==0)
-					return false;
-				I=(Integer)V.firstElement();
-			}
-			else
-				return false;
-
-			switch(I.intValue())
-			{
-			case Law.MOD_FRAME: // frame
-				if(V.size()>0)
-				{
-					MOB framed=(MOB)V.elementAt(1);
-					LegalWarrant W=null;
-					if(laws!=null)
-						for(int i=0;(W=laws.getWarrant(mob,i))!=null;i++)
-							if(W.criminal()==mob)
-								W.setCriminal(framed);
-					return true;
-				}
-				break;
-			case Law.MOD_ARREST: //arrest
-				if(V.size()>0)
-				{
-					MOB officer=(MOB)V.elementAt(1);
-					LegalWarrant W=(laws!=null)?laws.getWarrant(mob,0):null;
-					if(W!=null)
-					{
-						if((W.arrestingOfficer()==null)||(W.arrestingOfficer().location()!=mob.location()))
-						{
-							W.setArrestingOfficer((Area)hostObj,officer);
-							CMLib.commands().say(W.arrestingOfficer(),W.criminal(),"You are under arrest "+restOfCharges(laws,W.criminal())+"! Sit down on the ground immediately!",false,false);
-							W.setState(Law.STATE_ARRESTING);
-							return true;
-						}
-						return false;
-					}
-					return false;
-				}
-				break;
-			case Law.MOD_WARRANTINFO: // warrant info
-				{
-					V.clear();
-					if(laws!=null)
-						for(int i=0;i<laws.warrants().size();i++)
-						{
-							LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
-							if(isStillACrime(W,debugging))
-							{
-								Vector V2=new Vector();
-								V2.addElement(W.criminal().name());
-								if(W.victim()==null) V2.addElement("");
-								else V2.addElement(W.victim().name());
-								if(W.witness()==null) V2.addElement("");
-								else V2.addElement(W.witness().name());
-								V2.addElement(fixCharge(W));
-								V.addElement(V2);
-							}
-						}
-				}
-				return true;
-			case Law.MOD_LEGALINFO: // legal info
-				{
-					V.clear();
-					if(laws!=null) V.addElement(laws);
-				}
-				break;
-			case Law.MOD_LEGALTEXT: // legal text
-				break;
-			case Law.MOD_ISELLIGOFFICER: // is an elligible officer
-				if((mob.isMonster())
-				&&(mob.location()!=null)
-				&&(laws!=null)
-				&&(isElligibleOfficer(laws,mob,mob.location().getArea())))
-					return true;
-				return false;
-			case Law.MOD_HASWARRANT: // has a warrant out
-				return (laws!=null)?((laws.getWarrant(mob,0))!=null):false;
-			case Law.MOD_ISOFFICER: // is a officer
-				if((mob.isMonster())
-				&&(mob.location()!=null)
-				&&(laws!=null)
-				&&(isAnyKindOfOfficer(laws,mob)))
-					return true;
-				return false;
-			case Law.MOD_ISJUDGE: // is a judge
-				if((mob.isMonster())
-				&&(mob.location()!=null)
-				&&(laws!=null)
-				&&(isTheJudge(laws,mob)))
-					return true;
-				return false;
-            case Law.MOD_FINESOWED: //fines owed
-            {
-                Double D=(Double)finesAssessed.get(mob);
-                if(D!=null)
+    public boolean frame(Area myArea, MOB accused, MOB framed)
+    {
+        if(!theLawIsEnabled()) return false;
+        Law laws=getLaws(myArea,false);
+        LegalWarrant W=null;
+        if(laws!=null)
+            for(int i=0;(W=laws.getWarrant(accused,i))!=null;i++)
+                if(W.criminal()==accused)
                 {
-                    if((V.size()>1)&&(V.elementAt(1) instanceof Double)) 
-                    {
-                        finesAssessed.remove(mob);
-                        if(((Double)V.elementAt(1)).doubleValue()>0)
-                            finesAssessed.put(mob,V.elementAt(1));
-                    }
-                    else
-                    {
-                        V.clear();
-                        V.addElement(D);
-                    }
+                    W.setCriminal(framed);
                     return true;
                 }
-                return false;
+        return false;
+    }
+    public boolean arrest(Area myArea, MOB officer, MOB accused)
+    {
+        if(!theLawIsEnabled()) return false;
+        Law laws=getLaws(myArea,false);
+        LegalWarrant W=(laws!=null)?laws.getWarrant(accused,0):null;
+        if((W!=null)&&((W.arrestingOfficer()==null)||(W.arrestingOfficer().location()!=accused.location())))
+        {
+            W.setArrestingOfficer(myArea,officer);
+            CMLib.commands().say(W.arrestingOfficer(),W.criminal(),"You are under arrest "+restOfCharges(laws,W.criminal())+"! Sit down on the ground immediately!",false,false);
+            W.setState(Law.STATE_ARRESTING);
+            return true;
+        }
+        return false;
+    }
+    public Vector warrantInfo(Area myArea)
+    {
+        Vector V=new Vector();
+        if(!theLawIsEnabled()) return V;
+        Law laws=getLaws(myArea,false);
+        boolean debugging=CMSecurity.isDebugging("ARREST");
+        if(laws!=null)
+            for(int i=0;i<laws.warrants().size();i++)
+            {
+                LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
+                if(isStillACrime(W,debugging))
+                {
+                    Vector V2=new Vector();
+                    V2.addElement(W.criminal().name());
+                    if(W.victim()==null) V2.addElement("");
+                    else V2.addElement(W.victim().name());
+                    if(W.witness()==null) V2.addElement("");
+                    else V2.addElement(W.witness().name());
+                    V2.addElement(fixCharge(W));
+                    V.addElement(V2);
+                }
             }
-			case Law.MOD_SETNEWLAW:
-				if(laws!=null)
-				{
-					laws.resetLaw();
-					if(getLawParms().equalsIgnoreCase("custom")
-					&&(hostObj!=null))
-					{
-						CMLib.database().DBDeleteData(hostObj.Name(),"ARREST",hostObj.Name()+"/ARREST");
-						CMLib.database().DBCreateData(hostObj.Name(),"ARREST",hostObj.Name()+"/ARREST",laws.rawLawString());
-					}
-				}
-				break;
-			case Law.MOD_RULINGCLAN:
-				if(V!=null){V.clear();V.addElement("");}
-				return false;
-			case Law.MOD_WARINFO:
-				if(V!=null){V.clear();V.addElement("");}
-				return false;
-			case Law.MOD_CONTROLPOINTS:
-				if(V!=null){V.clear();V.addElement(new Integer(0));}
-				return false;
-			case Law.MOD_GETWARRANTSOF:
-				if(laws!=null)
-				{
-					boolean didSomething=false;
-					if((V!=null)&&(V.size()>1)&&(V.elementAt(1) instanceof String))
-					{
-						String name=(String)V.elementAt(1);
-						V.clear();
-						for(int i=0;i<laws.warrants().size();i++)
-						{
-							LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
-							if((isStillACrime(W,debugging))
-							&&(CMLib.english().containsString(W.criminal().name(),name)))
-							{
-								didSomething=true;
-								W.setLastOffense(System.currentTimeMillis()+EXPIRATION_MILLIS+10);
-								V.addElement(W);
-							}
-						}
-					}
-					else
-					{
-						V.clear();
-						for(int i=0;i<laws.warrants().size();i++)
-						{
-							LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
-							if((isStillACrime(W,debugging))&&(W.criminal()==mob))
-							{
-								didSomething=true;
-								V.addElement(W);
-							}
-						}
-					}
-					return didSomething;
-				}
-				return false;
-			case Law.MOD_ADDWARRANT:
-				if((laws!=null)&&(V!=null)&&(V.elementAt(1) instanceof LegalWarrant))
-				{
-					laws.warrants().addElement(V.elementAt(1));
-					return true;
-				}
-				else
-				if((laws!=null)&&(V!=null)&&(V.size()>5))
-				{
-					MOB victim=(MOB)V.elementAt(1);
-					String crimeLocs=(String)V.elementAt(2);
-					String crimeFlags=(String)V.elementAt(3);
-					String crime=(String)V.elementAt(4);
-					String sentence=(String)V.elementAt(5);
-					String warnMsg=(String)V.elementAt(6);
-					return fillOutWarrant(mob,laws,(Area)hostObj,victim,crimeLocs,crimeFlags,crime,sentence,warnMsg);
-				}
-				return false;
-			case Law.MOD_DELWARRANT:
-				if((laws!=null)&&(V!=null)&&(V.elementAt(1) instanceof LegalWarrant))
-				{
-					laws.warrants().removeElement(V.elementAt(1));
-					return true;
-				}
-				return false;
-			case Law.MOD_CRIMEAQUIT:
-				if((laws!=null)
-		        &&(V!=null)
-		        &&(V.size()>2)
-		        &&(V.elementAt(1) instanceof MOB))
-				{
-					String[] info=null;
-					for(int v=1;v<V.size();v++)
-					{
-						String brokenLaw=(String)V.elementAt(v);
-						if((laws.basicCrimes().containsKey(brokenLaw))&&(laws.basicCrimes().get(brokenLaw) instanceof String[]))
-						{   info=(String[])laws.basicCrimes().get(brokenLaw);   break; }
-						else
-						if((laws.taxLaws().containsKey(brokenLaw))&&(laws.taxLaws().get(brokenLaw) instanceof String[]))
-						{   info=(String[])laws.taxLaws().get(brokenLaw);   break; }
-						else
-						if((laws.abilityCrimes().containsKey(brokenLaw))&&(laws.abilityCrimes().get(brokenLaw) instanceof String[]))
-						{   info=(String[])laws.abilityCrimes().get(brokenLaw);   break; }
-					}
-					if(info==null) return false;
-					for(int i=0;i<laws.warrants().size();i++)
-					{
-						LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
-						if((isStillACrime(W,debugging))
-						&&(W.criminal()==mob)
-						&&(W.crime().equalsIgnoreCase(info[Law.BIT_CRIMENAME])))
-						{
-							laws.warrants().removeElement(V.elementAt(1));
-							return true;
-						}
-					}
-				}
-			    return false;
-			case Law.MOD_ISJAILROOM:
-				if((laws!=null)
-		        &&(V!=null)
-		        &&(V.size()>1)
-		        &&(hostObj instanceof Area)
-		        &&(V.elementAt(1) instanceof Room))
-				{
-				    Vector rooms=getRooms((Area)hostObj,laws.jailRooms());
-				    boolean answer=false;
-				    for(int i=1;i<V.size();i++)
-					    answer=answer||rooms.contains(V.elementAt(i));
-				    return answer;
-				}
-			    return false;
-			case Law.MOD_CRIMEACCUSE:
-				if((laws!=null)
-		        &&(V!=null)
-		        &&(V.size()>2)
-		        &&(V.elementAt(1) instanceof MOB))
-				{
-					MOB victim=(MOB)V.elementAt(1);
-					String[] info=null;
-					for(int v=2;v<V.size();v++)
-					{
-						String brokenLaw=(String)V.elementAt(v);
-						if((laws.basicCrimes().containsKey(brokenLaw))&&(laws.basicCrimes().get(brokenLaw) instanceof String[]))
-						    info=(String[])laws.basicCrimes().get(brokenLaw);
-						else
-						if((laws.taxLaws().containsKey(brokenLaw))&&(laws.taxLaws().get(brokenLaw) instanceof String[]))
-						    info=(String[])laws.taxLaws().get(brokenLaw);
-						else
-						if((laws.abilityCrimes().containsKey(brokenLaw))&&(laws.abilityCrimes().get(brokenLaw) instanceof String[]))
-						    info=(String[])laws.abilityCrimes().get(brokenLaw);
-						if(info!=null)
-						{
-						    if((info[Law.BIT_CRIMENAME]!=null)
-						    &&(info[Law.BIT_CRIMENAME].length()>0))
-						        break;
-						    info=null;
-						}
-					}
-					if(info==null) return false;
-					fillOutWarrant(mob,
-									laws,
-									(Area)hostObj,
-									(victim==mob)?null:victim,
-									info[Law.BIT_CRIMELOCS],
-									info[Law.BIT_CRIMEFLAGS],
-									info[Law.BIT_CRIMENAME],
-									info[Law.BIT_SENTENCE],
-									info[Law.BIT_WARNMSG]);
-					return true;
-				}
-			    return false;
-			}
-		}
-		return super.modifyBehavior(hostObj,mob,O);
-	}
+        return V;
+    }
+    
+    public Law legalInfo(Area myArea)
+    {
+        if(!theLawIsEnabled()) return null;
+        return getLaws(myArea,false);
+    }
+    public boolean isElligibleOfficer(Area myArea, MOB mob)
+    {
+        if(!theLawIsEnabled()) return false;
+        Law laws=getLaws(myArea,false);
+        if((mob.isMonster())
+        &&(mob.location()!=null)
+        &&(laws!=null)
+        &&(isElligibleOfficer(laws,mob,mob.location().getArea())))
+            return true;
+        return false;
+    }
+    public boolean hasWarrant(Area myArea, MOB accused)
+    {
+        if(!theLawIsEnabled()) return false;
+        Law laws=getLaws(myArea,false);
+        return (laws!=null)?((laws.getWarrant(accused,0))!=null):false;
+    }
+    public boolean isAnyOfficer(Area myArea, MOB mob)
+    {
+        if(!theLawIsEnabled()) return false;
+        Law laws=getLaws(myArea,false);
+        if((mob.isMonster())
+        &&(mob.location()!=null)
+        &&(laws!=null)
+        &&(isAnyKindOfOfficer(laws,mob)))
+            return true;
+        return false;
+    }
+    public boolean isJudge(Area myArea, MOB mob)
+    {
+        if(!theLawIsEnabled()) return false;
+        Law laws=getLaws(myArea,false);
+        if((mob.isMonster())
+        &&(mob.location()!=null)
+        &&(laws!=null)
+        &&(isTheJudge(laws,mob)))
+            return true;
+        return false;
+    }
+    public void modifyAssessedFines(double d, MOB mob)
+    {
+        Double D=(Double)finesAssessed.get(mob);
+        if(D!=null) finesAssessed.remove(mob);
+        if(d>0) finesAssessed.put(mob,new Double(d));
+    }
+        
+    public double finesOwed(MOB mob)
+    {
+        if(!theLawIsEnabled()) return 0.0;
+        Double D=(Double)finesAssessed.get(mob);
+        if(D!=null) return D.doubleValue();
+        return 0.0;
+    }
+    
+    public boolean updateLaw(Area myArea)
+    {
+        if(!theLawIsEnabled()) return false;
+        Law laws=getLaws(myArea,false);
+        if(laws!=null)
+        {
+            laws.resetLaw();
+            if(getLawParms().equalsIgnoreCase("custom")
+            &&(myArea!=null))
+            {
+                CMLib.database().DBDeleteData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST");
+                CMLib.database().DBCreateData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST",laws.rawLawString());
+                return true;
+            }
+        }
+        return false;
+    }
+    public String rulingClan()
+    {
+        return "";
+    }
+    public String conquestInfo(Area myArea)
+    {
+        return "";
+    }
+    public int controlPoints()
+    {
+        return 0;
+    }
+    public Vector getWarrantsOf(Area myArea, String name)
+    {
+        Vector V=new Vector();
+        if(!theLawIsEnabled()) return V;
+        Law laws=getLaws(myArea,false);
+        boolean debugging=CMSecurity.isDebugging("ARREST");
+        for(int i=0;i<laws.warrants().size();i++)
+        {
+            LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
+            if((isStillACrime(W,debugging))
+            &&(CMLib.english().containsString(W.criminal().name(),name)))
+            {
+                W.setLastOffense(System.currentTimeMillis()+EXPIRATION_MILLIS+10);
+                V.addElement(W);
+            }
+        }
+        return V;
+    }
+    public Vector getWarrantsOf(Area myArea, MOB accused)
+    {
+        Vector V=new Vector();
+        if(!theLawIsEnabled()) return V;
+        Law laws=getLaws(myArea,false);
+        boolean debugging=CMSecurity.isDebugging("ARREST");
+        for(int i=0;i<laws.warrants().size();i++)
+        {
+            LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
+            if((isStillACrime(W,debugging))&&(W.criminal()==accused))
+                V.addElement(W);
+        }
+        return V;
+    }
+    
+    public boolean addWarrant(Area myArea, LegalWarrant W)
+    {
+        if(!theLawIsEnabled()) return false;
+        Law laws=getLaws(myArea,false);
+        if((laws!=null)&&(!laws.warrants().contains(W)))
+        {
+            laws.warrants().addElement(W);
+            return true;
+        }
+        return false;
+    }
+    public boolean addWarrant(Area myArea, MOB accused, MOB victim, String crimeLocs, String crimeFlags, String crime, String sentence, String warnMsg)
+    {
+        if(!theLawIsEnabled()) return false;
+        Law laws=getLaws(myArea,false);
+        if(laws!=null)
+            return fillOutWarrant(accused,laws,myArea,victim,crimeLocs,crimeFlags,crime,sentence,warnMsg);
+        return false;
+    }
+    public boolean deleteWarrant(Area myArea, LegalWarrant W)
+    {
+        if(!theLawIsEnabled()) return false;
+        Law laws=getLaws(myArea,false);
+        if((laws!=null)&&(laws.warrants().contains(W)))
+        {
+            laws.warrants().removeElement(W);
+            return true;
+        }
+        return false;
+    }
+    public boolean aquit(Area myArea, MOB accused, Vector lawStrings)
+    {
+        if(!theLawIsEnabled()) return false;
+        Law laws=getLaws(myArea,false);
+        if(laws!=null)
+        {
+            boolean debugging=CMSecurity.isDebugging("ARREST");
+            String[] info=null;
+            for(int v=0;v<lawStrings.size();v++)
+            {
+                String brokenLaw=(String)lawStrings.elementAt(v);
+                if((laws.basicCrimes().containsKey(brokenLaw))&&(laws.basicCrimes().get(brokenLaw) instanceof String[]))
+                {   info=(String[])laws.basicCrimes().get(brokenLaw);   break; }
+                else
+                if((laws.taxLaws().containsKey(brokenLaw))&&(laws.taxLaws().get(brokenLaw) instanceof String[]))
+                {   info=(String[])laws.taxLaws().get(brokenLaw);   break; }
+                else
+                if((laws.abilityCrimes().containsKey(brokenLaw))&&(laws.abilityCrimes().get(brokenLaw) instanceof String[]))
+                {   info=(String[])laws.abilityCrimes().get(brokenLaw);   break; }
+            }
+            if(info==null) return false;
+            for(int i=0;i<laws.warrants().size();i++)
+            {
+                LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
+                if((isStillACrime(W,debugging))
+                &&(W.criminal()==accused)
+                &&(W.crime().equalsIgnoreCase(info[Law.BIT_CRIMENAME])))
+                {
+                    laws.warrants().removeElement(W);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean isJailRoom(Area myArea, Vector jails)
+    {
+        if(!theLawIsEnabled()) return false;
+        Law laws=getLaws(myArea,false);
+        if(laws!=null)
+        {
+            Vector rooms=getRooms(myArea,laws.jailRooms());
+            boolean answer=false;
+            for(int i=0;i<jails.size();i++)
+                answer=answer||rooms.contains(jails.elementAt(i));
+            return answer;
+        }
+        return false;
+    }
+    public boolean accuse(Area myArea, MOB accused, MOB victim, Vector lawStrings)
+    {
+        if(!theLawIsEnabled()) return false;
+        Law laws=getLaws(myArea,false);
+        if(laws!=null)
+        {
+            String[] info=null;
+            for(int v=0;v<lawStrings.size();v++)
+            {
+                String brokenLaw=(String)lawStrings.elementAt(v);
+                if((laws.basicCrimes().containsKey(brokenLaw))&&(laws.basicCrimes().get(brokenLaw) instanceof String[]))
+                    info=(String[])laws.basicCrimes().get(brokenLaw);
+                else
+                if((laws.taxLaws().containsKey(brokenLaw))&&(laws.taxLaws().get(brokenLaw) instanceof String[]))
+                    info=(String[])laws.taxLaws().get(brokenLaw);
+                else
+                if((laws.abilityCrimes().containsKey(brokenLaw))&&(laws.abilityCrimes().get(brokenLaw) instanceof String[]))
+                    info=(String[])laws.abilityCrimes().get(brokenLaw);
+                if(info!=null)
+                {
+                    if((info[Law.BIT_CRIMENAME]!=null)
+                    &&(info[Law.BIT_CRIMENAME].length()>0))
+                        break;
+                    info=null;
+                }
+            }
+            if(info==null) return false;
+            fillOutWarrant(accused,
+                            laws,
+                            myArea,
+                            (victim==accused)?null:victim,
+                            info[Law.BIT_CRIMELOCS],
+                            info[Law.BIT_CRIMEFLAGS],
+                            info[Law.BIT_CRIMENAME],
+                            info[Law.BIT_SENTENCE],
+                            info[Law.BIT_WARNMSG]);
+            return true;
+        }
+        return false;
+    }
 
 	public void setParms(String newParms)
 	{
@@ -1071,10 +416,11 @@ public class Arrest extends StdBehavior
 					Log.errOut("Arrest","Unable to load: "+lawName+", legal system inoperable.");
 					loadAttempt=true;
 				}
-				return new Laws();
+				return (Law)CMClass.getCommon("DefaultLawSet");
 			}
 			loadAttempt=true;
-			laws=new Laws(lawprops,modifiableNames,modifiableLaw);
+            laws=(Law)CMClass.getCommon("DefaultLawSet");
+			laws.initialize(this,lawprops,modifiableNames,modifiableLaw);
 			if(lawName.equalsIgnoreCase("custom")&&(what!=null))
 				Resources.submitResource("LEGAL-"+what.name(),laws);
 			else
@@ -1505,7 +851,7 @@ public class Arrest extends StdBehavior
 
 	public boolean trackTheJudge(MOB officer, Area myArea, Law laws)
 	{
-		stopTracking(officer);
+		CMLib.tracking().stopTracking(officer);
 		Ability A=CMClass.getAbility("Skill_Track");
 		if(A!=null)
 		{
@@ -1517,13 +863,6 @@ public class Arrest extends StdBehavior
 			}
 		}
 		return false;
-	}
-
-	public void stopTracking(MOB officer)
-	{
-		Vector V=CMLib.flags().flaggedAffects(officer,Ability.FLAG_TRACKING);
-		for(int v=0;v<V.size();v++)
-		{ ((Ability)V.elementAt(v)).unInvoke(); officer.delEffect((Ability)V.elementAt(v));}
 	}
 
 	public Room getReleaseRoom(Law laws, Area myArea, MOB criminal, LegalWarrant W)
@@ -1847,14 +1186,14 @@ public class Arrest extends StdBehavior
 	}
 
 	public boolean fillOutWarrant(MOB mob,
-								Law laws,
-								Area myArea,
-								Environmental target,
-								String crimeLocs,
-								String crimeFlags,
-								String crime,
-								String sentence,
-								String warnMsg)
+								  Law laws,
+								  Area myArea,
+								  Environmental target,
+								  String crimeLocs,
+								  String crimeFlags,
+								  String crime,
+								  String sentence,
+								  String warnMsg)
 	{
 		if(mob.amDead())
 		{
@@ -2056,7 +1395,7 @@ public class Arrest extends StdBehavior
 			}
 		}
 		if(W==null) W=laws.getOldWarrant(mob,crime,true);
-		if(W==null) W=new ArrestWarrant();
+		if(W==null) W=(LegalWarrant)CMClass.getCommon("DefaultArrestWarrant");
 
 		// fill out the warrant!
 		W.setCriminal(mob);
@@ -2235,7 +1574,7 @@ public class Arrest extends StdBehavior
             if(info==null) info=(String[])laws.abilityCrimes().get(CMLib.flags().getAbilityType((Ability)msg.tool()));
             if(info==null) info=(String[])laws.abilityCrimes().get(CMLib.flags().getAbilityDomain((Ability)msg.tool()));
 			fillOutWarrant(msg.source(),
-						   laws,
+						    laws,
 							myArea,
 							msg.target(),
 							info[Law.BIT_CRIMELOCS],
@@ -3030,7 +2369,7 @@ public class Arrest extends StdBehavior
 							W.criminal().makePeace();
 							makePeace(officer.location());
 							CMLib.commands().stand(W.criminal(),true);
-							stopTracking(officer);
+							CMLib.tracking().stopTracking(officer);
 							A=CMClass.getAbility("Skill_Track");
 							if(A!=null)
 							{
@@ -3101,7 +2440,7 @@ public class Arrest extends StdBehavior
                             W.criminal().makePeace();
                             makePeace(officer.location());
                             CMLib.commands().stand(W.criminal(),true);
-                            stopTracking(officer);
+                            CMLib.tracking().stopTracking(officer);
                             A=CMClass.getAbility("Skill_Track");
                             if(A!=null)
                             {
@@ -3242,7 +2581,7 @@ public class Arrest extends StdBehavior
 							Ability A=CMClass.getAbility("Skill_Track");
 							if(A!=null)
 							{
-								stopTracking(officer);
+								CMLib.tracking().stopTracking(officer);
 								A.setAbilityCode(1); // tells track to cache the path
 								A.invoke(officer,Util.parse(CMLib.map().getExtendedRoomID(W.jail())),W.jail(),true,0);
 							}
@@ -3308,7 +2647,7 @@ public class Arrest extends StdBehavior
                             Ability A=CMClass.getAbility("Skill_Track");
                             if(A!=null)
                             {
-                                stopTracking(officer);
+                                CMLib.tracking().stopTracking(officer);
                                 A.setAbilityCode(1); // tells track to cache the path
                                 A.invoke(officer,Util.parse(CMLib.map().getExtendedRoomID(W.jail())),W.jail(),true,0);
                             }
@@ -3380,7 +2719,7 @@ public class Arrest extends StdBehavior
 							W.setReleaseRoom(getReleaseRoom(laws,myArea,W.criminal(),W));
 							W.criminal().makePeace();
 							makePeace(officer.location());
-							stopTracking(officer);
+							CMLib.tracking().stopTracking(officer);
 							Ability A=CMClass.getAbility("Skill_Track");
 							if(A!=null)
 							{
@@ -3429,7 +2768,7 @@ public class Arrest extends StdBehavior
 										officer.curState().setMovement(20);
 									if(W.arrestingOfficer().fetchEffect("Skill_Track")==null)
 									{
-										stopTracking(officer);
+										CMLib.tracking().stopTracking(officer);
 										Ability A=CMClass.getAbility("Skill_Track");
 										if(A!=null)	A.invoke(officer,Util.parse(CMLib.map().getExtendedRoomID(W.releaseRoom())),W.releaseRoom(),true,0);
 										if(W.arrestingOfficer().fetchEffect("Skill_Track")==null)

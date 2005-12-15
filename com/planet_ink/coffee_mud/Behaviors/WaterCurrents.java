@@ -202,7 +202,7 @@ public class WaterCurrents extends ActiveTicker
 	protected static final EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	protected static final String[] CODES={"CLASS","TEXT"};
 	protected static final int[] cost=new int[3];
-	private class AWaterCurrent implements Ability, Cloneable
+	private static class AWaterCurrent implements Ability, Cloneable
 	{
         public AWaterCurrent()
         {

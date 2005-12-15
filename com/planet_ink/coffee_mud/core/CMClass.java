@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.sun.rsasign.c;
 
 import java.util.*;
 import java.lang.reflect.Modifier;
@@ -38,6 +39,8 @@ import org.mozilla.javascript.optimizer.*;
 public class CMClass extends ClassLoader
 {
     private static CMClass loader=new CMClass();
+    private Hashtable classes=new Hashtable();
+    
     private static TimeClock globalClock=null;
     private static Hashtable common=new Hashtable();
 	private static Vector races=new Vector();
@@ -254,6 +257,8 @@ public class CMClass extends ClassLoader
 
 	public static boolean delClass(Object O)
 	{
+        if(loader.classes.containsKey(O.getClass().getName()))
+            loader.classes.remove(O.getClass().getName());
 		if(races.contains(O)){ races.removeElement(O); return true;}
 		if(charClasses.contains(O)){ charClasses.removeElement(O); return true;}
 		if(MOBs.contains(O)){ MOBs.removeElement(O); return true;}
@@ -324,7 +329,7 @@ public class CMClass extends ClassLoader
 		}
 		if(set==null) return false;
 
-		loadListToObj(set,path,"",(path.indexOf('/')>0),OBJECT_ANCESTORS[code]);
+		loadListToObj(set,path,OBJECT_ANCESTORS[code]);
 
         if(set instanceof Vector)
         {
@@ -615,9 +620,9 @@ public class CMClass extends ClassLoader
 		if(path.length()>0)
 		{
 			if(path.equalsIgnoreCase("%default%"))
-				loadListToObj(o,filePath,"",false, ancester);
+				loadListToObj(o,filePath, ancester);
 			else
-				loadListToObj(o,path,"",true, ancester);
+				loadListToObj(o,path,ancester);
 		}
 	}
 
@@ -635,135 +640,101 @@ public class CMClass extends ClassLoader
 		loadObjectListToObj(v,filePath,auxPath,ancester);
 		return new Vector(new TreeSet(v));
 	}
-	public static boolean loadListToObj(Object toThis, String filePath, String packageName, boolean aux, String ancestor)
-	{
-		StringBuffer objPathBuf=new StringBuffer(filePath);
-		String objPath=objPathBuf.toString();
-        
-		Class ancestorCl=null;
-		if (ancestor != null && ancestor.length() != 0)
-		{
-			try
-			{
-				ancestorCl = Class.forName(ancestor);
-			}
-			catch (ClassNotFoundException e)
-			{
-				Log.sysOut("CMClass","WARNING: Couldn't load ancestor class: "+ancestor);
-				ancestorCl = null;
-			}
-		}
 
-		int x=0;
-		if(!aux)
-		while((x=objPath.indexOf('/'))>=0)
-		{
-			objPathBuf.setCharAt(x,'.');
-			objPath=objPathBuf.toString();
-		}
-		CMFile directory=new CMFile(filePath,null,true);
-		Vector fileList=new Vector();
-		if((directory.canRead())&&(directory.isDirectory()))
-		{
-			String[] list=directory.list();
-			for(int l=0;l<list.length;l++)
-				fileList.addElement(list[l]);
-		}
-		else
-		if(directory.canRead()&&(directory.isFile()))
-		{
-			String fileName=filePath;
-			int e=fileName.lastIndexOf('/');
-			if(e>0)
-			{
-				fileName=fileName.substring(e+1);
-				filePath=filePath.substring(0,e);
-			}
-			if(objPath.toUpperCase().endsWith(".CLASS"))
-			{
-				objPath=objPath.substring(0,objPath.length()-6);
-				e=objPath.lastIndexOf('/');
-				if(e>0)	objPath=objPath.substring(0,e+1);
-			}
-			fileList.addElement(fileName);
-		}
-		else
-		if(!aux)
-		{
-			fileList.addElement(objPath);
-			objPath="";
-		}
-		for(int l=0;l<fileList.size();l++)
-		{
-			String item=(String)fileList.elementAt(l);
-			if((item!=null)&&(item.length()>0))
-			{
-				if(item.toUpperCase().endsWith(".CLASS")&&(item.indexOf("$")<0))
-				{
-					String itemName=item.substring(0,item.length()-6);
-					try
-					{
-						Object O=null;
-						if(aux)
-						{
-                            CMFile CF=new CMFile(objPath+item,null,true);
-                            byte[] data=CF.raw();
-                            if(data.length==0) throw new java.io.IOException("File "+objPath+item+" not readable!");
-							Class C=loader.defineClass(packageName+itemName, data, 0, data.length);
-							loader.resolveClass(C);
-							if (!checkAncestry(C,ancestorCl))
-								O=null;
-							else
-								O=C.newInstance();
-						}
-						else
-						{
-							Class C=Class.forName(objPath+itemName);
-							if (!checkAncestry(C,ancestorCl))
+	public static boolean loadListToObj(Object toThis, String filePath, String ancestor)
+	{ 
+        Class ancestorCl=null;
+        if (ancestor != null && ancestor.length() != 0)
+        {
+            try
+            {
+                ancestorCl = Class.forName(ancestor);
+            }
+            catch (ClassNotFoundException e)
+            {
+                Log.sysOut("CMClass","WARNING: Couldn't load ancestor class: "+ancestor);
+                ancestorCl = null;
+            }
+        }
+
+        CMFile file=new CMFile(filePath,null,true);
+        Vector fileList=new Vector();
+        if(file.canRead())
+        {
+            if(file.isDirectory())
+            {
+                CMFile[] list=file.listFiles();
+                for(int l=0;l<list.length;l++)
+                    if((list[l].getName().indexOf("$")<0)&&(list[l].getName().toUpperCase().endsWith(".CLASS")))
+                        fileList.addElement(list[l].getVFSPathAndName());
+                for(int l=0;l<list.length;l++)
+                    if(list[l].getName().toUpperCase().endsWith(".JS"))
+                        fileList.addElement(list[l].getVFSPathAndName());
+            }
+            else
+            {
+                fileList.addElement(file.getVFSPathAndName());
+            }
+        }
+        else
+        {
+            Log.errOut("CMClass","Unable to access path "+file.getVFSPathAndName());
+            return false;
+        }
+        for(int l=0;l<fileList.size();l++)
+        {
+            String item=(String)fileList.elementAt(l);
+            if(item.startsWith("/")) item=item.substring(1);
+            try
+            {
+                Object O=null;
+                String packageName=item.replace('/','.');
+                if(packageName.toUpperCase().endsWith(".CLASS"))
+                    packageName=packageName.substring(0,packageName.length()-6);
+                Class C=loader.loadClass(packageName,true);
+                if(C!=null)
+                {
+                    if(!checkAncestry(C,ancestorCl))
+                        Log.sysOut("CMClass","WARNING: class failed ancestral check: "+packageName);
+                    O=C.newInstance();
+                }
+                if(O!=null)
+                {
+                    String itemName=O.getClass().getName();
+                    int x=itemName.lastIndexOf(".");
+                    if(x>=0) itemName=itemName.substring(x+1);
+                    if(toThis instanceof Hashtable)
+                    {
+                        Hashtable H=(Hashtable)toThis;
+                        if(H.containsKey(itemName.trim().toUpperCase()))
+                            H.remove(itemName.trim().toUpperCase());
+                        H.put(itemName.trim().toUpperCase(),O);
+                    }
+                    else
+                    if(toThis instanceof Vector)
+                    {
+                        Vector V=(Vector)toThis;
+                        boolean doNotAdd=false;
+                        for(int v=0;v<V.size();v++)
+                            if(className(V.elementAt(v)).equals(itemName))
                             {
-                                Log.sysOut("CMClass","WARNING: class failed ancestral check: "+objPath+itemName);
-								O=null;
+                                V.setElementAt(O,v);
+                                doNotAdd=true;
+                                break;
                             }
-							else
-								O=C.newInstance();
-						}
-						if(O!=null)
-						{
-							if(toThis instanceof Hashtable)
-							{
-								Hashtable H=(Hashtable)toThis;
-								if(H.containsKey(itemName.trim().toUpperCase()))
-									H.remove(itemName.trim().toUpperCase());
-								H.put(itemName.trim().toUpperCase(),O);
-							}
-							else
-							if(toThis instanceof Vector)
-							{
-								Vector V=(Vector)toThis;
-								boolean doNotAdd=false;
-								for(int v=0;v<V.size();v++)
-									if(className(V.elementAt(v)).equals(itemName))
-									{
-										V.setElementAt(O,v);
-										doNotAdd=true;
-										break;
-									}
-								if(!doNotAdd)
-									V.addElement(O);
-							}
-						}
-					}
-					catch(Exception e)
-					{
-						Log.errOut("CMCLASS",e);
-						if((!item.endsWith("Child"))&&(!item.endsWith("Room")))
-							Log.sysOut("CMClass","Couldn't load: "+objPath+item);
-					}
-				}
-			}
-		}
-		return true;
-	}
+                        if(!doNotAdd)
+                            V.addElement(O);
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                Log.errOut("CMClass",e);
+                return false;
+            }
+        }
+        return true;
+    }
 
 	public static String className(Object O)
 	{
@@ -815,6 +786,101 @@ public class CMClass extends ClassLoader
             if(globalClock!=null) globalClock.setLoadName("GLOBAL");
         }
         return globalClock;
+    }
+    
+    /**
+     * This is a simple version for external clients since they
+     * will always want the class resolved before it is returned
+     * to them.
+     */
+    public Class loadClass(String className) throws ClassNotFoundException {
+        return (loadClass(className, true));
+    }
+
+    
+    public Class finishDefineClass(String className, byte[] classData, boolean resolveIt)
+        throws ClassFormatError 
+    {
+        Class result=defineClass(className, classData, 0, classData.length);
+        if (result==null){throw new ClassFormatError();}
+        if (resolveIt){resolveClass(result);}
+        classes.put(result.getName(), result);
+        return result;
+    }
+    
+    /**
+     * This is the required version of loadClass which is called
+     * both from loadClass above and from the internal function
+     * FindClassFromClass.
+     */
+    public synchronized Class loadClass(String className, boolean resolveIt)
+        throws ClassNotFoundException 
+    {
+        Class result = (Class)classes.get(className);
+        if (result!=null) return result;
+
+        try{return super.findSystemClass(className); } catch (ClassNotFoundException e){}
+
+        String pathName=className.replace('.','/');
+        /* Try to load it from our repository */
+        CMFile CF=new CMFile(pathName,null,true);
+        byte[] classData=CF.raw();
+        if((classData==null)||(classData.length==0))
+            throw new ClassNotFoundException("File "+pathName+" not readable!");
+        if(CF.getName().toUpperCase().endsWith(".JS"))
+        {
+            String name=CF.getName().substring(0,CF.getName().length()-3);
+            StringBuffer str=CF.textVersion(classData);
+            if((str==null)||(str.length()==0))
+                new ClassNotFoundException("JavaScript file "+pathName+" not readable!");
+            Vector V=Resources.getFileLineVector(str);
+            Class extendsClass=null;
+            Vector implementsClasses=new Vector();
+            for(int v=0;v<V.size();v++)
+            {
+                if((extendsClass==null)&&((String)V.elementAt(v)).trim().toUpperCase().startsWith("//EXTENDS "))
+                {
+                    String extendName=((String)V.elementAt(v)).trim().substring(10).trim();
+                    try{extendsClass=loader.loadClass(extendName);}
+                    catch(ClassNotFoundException e)
+                    {
+                        Log.errOut("CMClass","Could not load "+CF.getName()+" from "+className+" because "+extendName+" is an invalid extension.");
+                        throw e;
+                    }
+                }
+                if(((String)V.elementAt(v)).toUpperCase().startsWith("//IMPLEMENTS "))
+                {
+                    String extendName=((String)V.elementAt(v)).substring(13).trim();
+                    Class C=null;
+                    try{C=loader.loadClass(extendName);}catch(ClassNotFoundException e){continue;}
+                    implementsClasses.addElement(C);
+                }
+            }
+            CompilerEnvirons ce = new CompilerEnvirons(); 
+            Context X=Context.enter();
+            ce.initFromContext(X); 
+            ClassCompiler cc = new ClassCompiler(ce); 
+            if(extendsClass==null)
+                Log.errOut("CMClass","Warning: "+CF.getVFSPathAndName()+" does not extend any class!");
+            else
+                cc.setTargetExtends(extendsClass);
+            Class mainClass=null;
+            if(implementsClasses.size()>0)
+            {
+                Class[] CS=new Class[implementsClasses.size()];
+                for(int i=0;i<implementsClasses.size();i++) CS[i]=(Class)implementsClasses.elementAt(i);
+                cc.setTargetImplements(CS);
+            }
+            Object[] objs = cc.compileToClassFiles(str.toString(), "script", 1, name);
+            for (int i=0;i<objs.length;i+=2)
+            {
+                Class C=finishDefineClass((String)objs[i],(byte[])objs[i+1],resolveIt);
+                if(mainClass==null) mainClass=C;
+            }
+            Context.exit();
+            return mainClass;
+        }
+        return finishDefineClass(className,classData,resolveIt);
     }
     
     public static boolean loadClasses(CMProps page)

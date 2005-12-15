@@ -46,7 +46,7 @@ public class Thief_SenseLaw extends ThiefSkill
 	protected Room oldroom=null;
 	protected String lastReport="";
 
-	public Vector getLawMen(Environmental legalObject, Room room, Behavior B)
+	public Vector getLawMen(Area legalObject, Room room, LegalBehavior B)
 	{
 		if(room==null) return empty;
 		if(room.numInhabitants()==0) return empty;
@@ -55,7 +55,7 @@ public class Thief_SenseLaw extends ThiefSkill
 		for(int m=0;m<room.numInhabitants();m++)
 		{
 			MOB M=room.fetchInhabitant(m);
-			if((M!=null)&&(M.isMonster())&&(B.modifyBehavior(legalObject,M,new Integer(Law.MOD_ISELLIGOFFICER))))
+			if((M!=null)&&(M.isMonster())&&(B.isElligibleOfficer(legalObject,M)))
 				V.addElement(M);
 		}
 		return V;
@@ -68,7 +68,7 @@ public class Thief_SenseLaw extends ThiefSkill
 			MOB mob=(MOB)affected;
 			if((mob.location()!=null)&&(!mob.isMonster()))
 			{
-				Behavior B=CMLib.utensils().getLegalBehavior(mob.location());
+                LegalBehavior B=CMLib.utensils().getLegalBehavior(mob.location());
 				if(B==null)
 					return super.tick(ticking,tickID);
 				StringBuffer buf=new StringBuffer("");

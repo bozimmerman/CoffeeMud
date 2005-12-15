@@ -2432,7 +2432,7 @@ public class StdMOB implements MOB
 					}
 					if(isInCombat())
 					{
-                       if((!isMonster())&&(!msg.source().isMonster()))
+                        if((!isMonster())&&(!msg.source().isMonster()))
                             msg.source().session().setLastPKFight();
 						if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 						{

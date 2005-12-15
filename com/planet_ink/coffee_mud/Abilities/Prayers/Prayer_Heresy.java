@@ -45,7 +45,7 @@ public class Prayer_Heresy extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Behavior B=null;
+        LegalBehavior B=null;
 		if(mob.location()!=null) B=CMLib.utensils().getLegalBehavior(mob.location());
 
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -67,29 +67,25 @@ public class Prayer_Heresy extends Prayer
 				{
 					MOB D=null;
 					if(mob.getWorshipCharID().length()>0) D=CMLib.map().getDeity(mob.getWorshipCharID());
-					Vector V=new Vector();
-					V.addElement(new Integer(Law.MOD_ADDWARRANT));
+                    String crime="heresy against <T-NAME>";
+                    String desc=null;
 					if(D==null)
-						V.addElement(D);//victim first
-					else
-						V.addElement(target);//victim first
-					V.addElement("");//crime locs
-					V.addElement("!witness");//crime flags
-					if(D==null)
-						V.addElement("heresy against the gods");//the crime
-					else
-						V.addElement("heresy against <T-NAME>");//the crime
+                    { 
+                        D=target; 
+                        crime="heresy against the gods";
+                        desc="Angering the gods will bring doom upon us all!";
+                    }
+                    else
+                        desc="Angering "+D.name()+" will bring doom upon us all!";
+                    String crimeLocs="";
+                    String crimeFlags="!witness";
 					int low=CMLib.ableMapper().lowestQualifyingLevel(ID());
 					int me=CMLib.ableMapper().qualifyingClassLevel(mob,this);
 					int lvl=(me-low)/5;
 					if(lvl<0) lvl=0;
 					if(lvl>Law.ACTION_HIGHEST) lvl=Law.ACTION_HIGHEST;
-					V.addElement(Law.ACTION_DESCS[lvl]);//sentence
-					if(D!=null)
-						V.addElement("Angering "+D.name()+" will bring doom upon us all!");
-					else
-						V.addElement("Angering the gods will bring doom upon us all!");
-					B.modifyBehavior(CMLib.utensils().getLegalObject(mob.location()),target,V);
+                    String sentence=Law.ACTION_DESCS[lvl];
+					B.addWarrant(CMLib.utensils().getLegalObject(mob.location()),target,D,crimeLocs,crimeFlags,crime,sentence,desc);
 				}
 			}
 

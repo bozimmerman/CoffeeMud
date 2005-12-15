@@ -1382,7 +1382,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		return "[400 -- error occurred processing request]";
 	}
 
-    protected class JScriptablePage extends ScriptableObject
+    protected static class JScriptablePage extends ScriptableObject
     {
         public String getClassName(){ return "page";}
         static final long serialVersionUID=44;

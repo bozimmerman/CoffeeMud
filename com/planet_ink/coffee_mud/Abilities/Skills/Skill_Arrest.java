@@ -45,16 +45,12 @@ public class Skill_Arrest extends StdSkill
 
 	public static Vector getWarrantsOf(MOB target, Area legalA)
 	{
-		Behavior B=null;
+        LegalBehavior B=null;
 		if(legalA!=null) B=CMLib.utensils().getLegalBehavior(legalA);
 		Vector warrants=new Vector();
 		if(B!=null)
-		{
-			warrants.addElement(new Integer(Law.MOD_GETWARRANTSOF));
-			warrants.addElement(target.Name());
-			if(!B.modifyBehavior(legalA,target,warrants))
-				warrants.clear();
-			else
+        {
+            warrants=B.getWarrantsOf(legalA,target);
 			for(int i=warrants.size()-1;i>=0;i--)
 			{
 			    LegalWarrant W=(LegalWarrant)warrants.elementAt(i);

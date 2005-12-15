@@ -59,100 +59,54 @@ public class Conquerable extends Arrest
 	private int fightDown=0;
 	private static final int FIGHTFREQ=2;
 
-	// here are the codes for interacting with this behavior
-	// see Law.java for info
-	public boolean modifyBehavior(Environmental hostObj,
-								  MOB mob,
-								  Object O)
-	{
-		if((mob!=null)
-		&&(mob.location()!=null)
-		&&(hostObj!=null)
-		&&(hostObj instanceof Area))
-		{
-
-			getLaws(hostObj,false);
-			Integer I=null;
-			Vector V=null;
-			if(O instanceof Integer)
-				I=(Integer)O;
-			else
-			if(O instanceof Vector)
-			{
-				V=(Vector)O;
-				if(V.size()==0)
-					return false;
-				I=(Integer)V.firstElement();
-			}
-			else
-				return false;
-			switch(I.intValue())
-			{
-			case Law.MOD_RULINGCLAN:
-				if(V!=null)
-				{
-					V.clear();
-					V.addElement(holdingClan);
-				}
-				return true;
-			case Law.MOD_CONTROLPOINTS:
-				if(V!=null)
-				{
-					V.clear();
-					if(totalControlPoints>=0)
-						V.addElement(new Integer(totalControlPoints));
-					else
-						V.addElement(new Integer(0));
-				}
-				return true;
-			case Law.MOD_WARINFO:
-				if(V!=null)
-				{
-					V.clear();
-					StringBuffer str=new StringBuffer("");
-					if((holdingClan.length()==0)||(totalControlPoints<0))
-						str.append("Area '"+((Area)hostObj).name()+"' is not currently controlled by any clan.\n\r");
-					else
-					{
-						Clan C=CMLib.clans().getClan(holdingClan);
-						if(C!=null)
-                        {
-							str.append("Area '"+((Area)hostObj).name()+"' is currently controlled by "+C.typeName()+" "+C.name()+".\n\r");
-                            int pts=calcItemControlPoints((Area)hostObj);
-                            int chance=calcRevoltChance((Area)hostObj);
-                            str.append(C.name()+" has handed out clan items here for "+pts+" loyalty points.\n\r");
-                            str.append("There is currently a "+chance+"% chance of revolt here.\n\r");
-                        }
-						else
-						{
-                            if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest",holdingClan+" has laid waste to "+myArea.name()+".");
-							endClanRule();
-							str.append("This area is laid waste by "+holdingClan+".\n\r");
-						}
-					}
-					str.append("This area requires "+totalControlPoints+" points to control.\n\r");
-					if(clanControlPoints.size()==0)
-						str.append("There are no control points won at present by any clan.\n\r");
-					synchronized(clanControlPoints)
-					{
-						for(int i=0;i<clanControlPoints.size();i++)
-						{
-							String clanID=(String)clanControlPoints.elementAt(i,1);
-							int[] ic=(int[])clanControlPoints.elementAt(i,2);
-							Clan C=CMLib.clans().getClan(clanID);
-							if(C!=null)
-								str.append(C.typeName()+" "+C.name()+" has "+ic[0]+" control points.\n\r");
-						}
-					}
-					V.addElement(str.toString());
-				}
-				return true;
-			default:
-				break;
-			}
-		}
-		return super.modifyBehavior(hostObj,mob,O);
-	}
+    public String rulingClan()
+    {
+        return holdingClan;
+    }
+    public String conquestInfo(Area myArea)
+    {
+        StringBuffer str=new StringBuffer("");
+        if((holdingClan.length()==0)||(totalControlPoints<0))
+            str.append("Area '"+myArea.name()+"' is not currently controlled by any clan.\n\r");
+        else
+        {
+            Clan C=CMLib.clans().getClan(holdingClan);
+            if(C!=null)
+            {
+                str.append("Area '"+myArea.name()+"' is currently controlled by "+C.typeName()+" "+C.name()+".\n\r");
+                int pts=calcItemControlPoints(myArea);
+                int chance=calcRevoltChance(myArea);
+                str.append(C.name()+" has handed out clan items here for "+pts+" loyalty points.\n\r");
+                str.append("There is currently a "+chance+"% chance of revolt here.\n\r");
+            }
+            else
+            {
+                if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest",holdingClan+" has laid waste to "+myArea.name()+".");
+                endClanRule();
+                str.append("This area is laid waste by "+holdingClan+".\n\r");
+            }
+        }
+        str.append("This area requires "+totalControlPoints+" points to control.\n\r");
+        if(clanControlPoints.size()==0)
+            str.append("There are no control points won at present by any clan.\n\r");
+        synchronized(clanControlPoints)
+        {
+            for(int i=0;i<clanControlPoints.size();i++)
+            {
+                String clanID=(String)clanControlPoints.elementAt(i,1);
+                int[] ic=(int[])clanControlPoints.elementAt(i,2);
+                Clan C=CMLib.clans().getClan(clanID);
+                if(C!=null)
+                    str.append(C.typeName()+" "+C.name()+" has "+ic[0]+" control points.\n\r");
+            }
+        }
+        return str.toString();
+    }
+    public int controlPoints()
+    {
+        if(totalControlPoints>=0) return totalControlPoints;
+        return 0;
+    }
 
 	public void setParms(String newParms)
 	{

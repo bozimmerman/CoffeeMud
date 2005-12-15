@@ -59,7 +59,7 @@ public class Unload extends StdCommand
 				String name=(String)commands.elementAt(0);
 				Object O=CMClass.getClass(name);
 				if((O==null)||(!CMClass.delClass(O)))
-					mob.tell("Class '"+name+"' was not found in the library.");
+					mob.tell("Class '"+name+"' was not found in the class loader.");
 				else
 					mob.tell("Class '"+name+"' was unloaded.");
 			}

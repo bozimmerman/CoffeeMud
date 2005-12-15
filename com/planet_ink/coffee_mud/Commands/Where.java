@@ -320,7 +320,7 @@ public class Where extends StdCommand
 											}
 										}
 										ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
-										Vector V=(SK!=null)?SK.getStoreInventory():null;
+										Vector V=(SK!=null)?SK.getShop().getStoreInventory():null;
 										if(V!=null)
 										for(int i=0;i<V.size();i++)
 										{

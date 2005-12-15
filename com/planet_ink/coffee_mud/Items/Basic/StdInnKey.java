@@ -61,7 +61,7 @@ public class StdInnKey extends StdKey implements InnKey
 				removeFromOwnerContainer();
 			if(myShopkeeper!=null)
 			{
-				myShopkeeper.addStoreInventory(this); // makes a copy
+				myShopkeeper.getShop().addStoreInventory(this,myShopkeeper); // makes a copy
 				destroy();
 			}
 			return false;
@@ -74,7 +74,7 @@ public class StdInnKey extends StdKey implements InnKey
 		if(myShopkeeper==null)
 		{
 			myShopkeeper=sk;
-			int y=sk.numberInStock(this);
+			int y=sk.getShop().numberInStock(this);
 			setName("key to room "+(y+1));
 			setDescription("The key goes to room "+(y+1)+", but will expire soon, so you better use it quickly! Give the key to your innkeeper, "+sk.name()+", when you leave.");
 			setMiscText("INN"+(y+1));
@@ -91,7 +91,7 @@ public class StdInnKey extends StdKey implements InnKey
 		&&(msg.tool()==this))
 		{
 			CMLib.threads().deleteTick(this,MudHost.TICK_ITEM_BOUNCEBACK);
-			myShopkeeper.addStoreInventory(this); //makes a copy
+			myShopkeeper.getShop().addStoreInventory(this,myShopkeeper); //makes a copy
 			destroy();
 		}
 	}

@@ -46,7 +46,10 @@ public class Merchant extends CommonSkill implements ShopKeeper
     protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ROOMS|Ability.CAN_EXITS|Ability.CAN_AREAS|Ability.CAN_ITEMS;}
     protected int canTargetCode(){return 0;}
 
+    
     protected CoffeeShop shop=(CoffeeShop)CMClass.getCommon("DefaultCoffeeShop");
+    public CoffeeShop getShop(){return shop;}
+    
 	public Merchant()
 	{
 		super();
@@ -83,31 +86,6 @@ public class Merchant extends CommonSkill implements ShopKeeper
     private int whatIsSold=ShopKeeper.DEAL_ANYTHING;
 	public int whatIsSold(){return whatIsSold;}
 	public void setWhatIsSold(int newSellCode){whatIsSold=newSellCode;}
-    public boolean inBaseInventory(Environmental thisThang)
-    { return shop.inBaseInventory(thisThang);}
-    public Environmental addStoreInventory(Environmental thisThang)
-    { return shop.addStoreInventory(thisThang,1,-1,this);}
-    public int baseStockSize(){return shop.baseStockSize();}
-    public int totalStockSize(){return shop.totalStockSize();}
-    public void clearStoreInventory(){shop.clearStoreInventory(); setMiscText("");}
-    public Vector getStoreInventory(){return shop.getStoreInventory();}
-    public Vector getBaseInventory(){return shop.getBaseInventory();}
-    public Environmental addStoreInventory(Environmental thisThang, int number, int price)
-    { return shop.addStoreInventory(thisThang,number,price,this);}
-    public void delAllStoreInventory(Environmental thisThang)
-    { shop.delAllStoreInventory(thisThang,whatIsSold());}
-    public boolean doIHaveThisInStock(String name, MOB mob)
-    { return shop.doIHaveThisInStock(name,mob,whatIsSold(),null);}
-    public int stockPrice(Environmental likeThis)
-    { return shop.stockPrice(likeThis);}
-    public int numberInStock(Environmental likeThis)
-    { return shop.numberInStock(likeThis);}
-    public Environmental getStock(String name, MOB mob)
-    { return shop.getStock(name,mob,whatIsSold(),null);}
-    public Environmental removeStock(String name, MOB mob)
-    { return shop.removeStock(name,mob,whatIsSold(),null);}
-    public Vector removeSellableProduct(String named, MOB mob)
-    { return shop.removeSellableProduct(named,mob,whatIsSold(),null);}
     public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(whatIsSold());}
     public boolean doISellThis(Environmental thisThang){return CMLib.coffeeShops().doISellThis(thisThang,this);}
     private String prejudice="";
@@ -215,11 +193,11 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		else
 		if(msg.amISource(merchantM)&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 		{
-			Item I=(Item)removeStock("all",merchantM);
+			Item I=(Item)getShop().removeStock("all",merchantM,whatIsSold(),merchantM.getStartRoom());
 			while(I!=null)
 			{
                 merchantM.addInventory(I);
-				I=(Item)removeStock("all",merchantM);
+				I=(Item)getShop().removeStock("all",merchantM,whatIsSold(),merchantM.getStartRoom());
 			}
             merchantM.recoverEnvStats();
 		}
@@ -237,7 +215,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
         &&((doISellThis(tool))||(whatIsSold()==DEAL_INVENTORYONLY)))
         {
             CMLib.commands().say(merchantM,source,"OK, I will now sell "+tool.name()+".",false,false);
-            addStoreInventory(tool,1,-1);
+            getShop().addStoreInventory(tool,1,-1,this);
             if(affected instanceof Area)
                 CMLib.database().DBUpdateArea(affected.Name(),(Area)affected);
             else
@@ -293,7 +271,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
                 break;
 			case CMMsg.TYP_VIEW:
 				super.executeMsg(myHost,msg);
-				if((msg.tool()!=null)&&(doIHaveThisInStock(msg.tool().Name(),mob)))
+				if((msg.tool()!=null)&&(getShop().doIHaveThisInStock(msg.tool().Name(),mob,whatIsSold(),merchantM.getStartRoom())))
 					CMLib.commands().say(merchantM,msg.source(),"Interested in "+msg.tool().name()+"? Here is some information for you:\n\rLevel "+msg.tool().envStats().level()+"\n\rDescription: "+msg.tool().description(),true,false);
 				break;
             case CMMsg.TYP_SELL: // sell TO -- this is a shopkeeper purchasing from a player
@@ -307,10 +285,10 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				super.executeMsg(myHost,msg);
                 MOB mobFor=CMLib.coffeeShops().parseBuyingFor(msg.source(),msg.targetMessage());
                 if((msg.tool()!=null)
-                &&(doIHaveThisInStock("$"+msg.tool().Name()+"$",mobFor))
+                &&(getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",mobFor,whatIsSold(),merchantM.getStartRoom()))
                 &&(merchantM.location()!=null))
                 {
-                    Vector products=removeSellableProduct("$"+msg.tool().Name()+"$",mobFor);
+                    Vector products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor,whatIsSold(),merchantM.getStartRoom());
                     if(products.size()==0) break;
                     Environmental product=(Environmental)products.firstElement();
                     
@@ -339,7 +317,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			case CMMsg.TYP_LIST:
 			{
 				super.executeMsg(myHost,msg);
-                Vector inventory=getStoreInventory();
+                Vector inventory=getShop().getStoreInventory();
                 String s=CMLib.coffeeShops().getListInventory(merchantM,mob,inventory,0,this);
                 if(s.length()>0)
                     mob.tell(s);
@@ -394,7 +372,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				return false;
 			}
 			String itemName=Util.combine(commands,1);
-			Item I=(Item)removeStock(itemName,mob);
+			Item I=(Item)getShop().removeStock(itemName,mob,whatIsSold(),mob.getStartRoom());
 			if(I==null)
 			{
 				commonTell(mob,"'"+itemName+"' is not on the list.");
@@ -404,9 +382,9 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			while(I!=null)
 			{
 				mob.addInventory(I);
-				I=(Item)removeStock(itemName,mob);
+				I=(Item)getShop().removeStock(itemName,mob,whatIsSold(),mob.getStartRoom());
 			}
-			delAllStoreInventory(I);
+            getShop().delAllStoreInventory(I,whatIsSold());
 			mob.recoverCharStats();
 			mob.recoverEnvStats();
 			mob.recoverMaxState();
@@ -468,7 +446,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			return false;
 		}
 
-		if((numberInStock(target)<=0)&&(val<=0))
+		if((getShop().numberInStock(target)<=0)&&(val<=0))
 		{
 			commonTell(mob,"You failed to specify a price for '"+itemName+"'.");
 			return false;
@@ -491,9 +469,9 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			{
 				Item I=(Item)V.elementAt(i);
 				if(val<=0)
-					addStoreInventory(I);
+                    getShop().addStoreInventory(I,this);
 				else
-					addStoreInventory(I,1,(int)Math.round(val));
+                    getShop().addStoreInventory(I,1,(int)Math.round(val),this);
 				mob.delInventory(I);
 			}
 		}

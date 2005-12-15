@@ -39,8 +39,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	public String name(){ return "Putting a room up for sale";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 
-	private final static String SALESTR=" This lot is for sale (look id).";
-	private final static String RENTSTR=" This lot (look id) is for rent on a monthly basis.";
+    public final static String SALESTR=" This lot is for sale (look id).";
+    public final static String RENTSTR=" This lot (look id) is for rent on a monthly basis.";
 	protected int lastItemNums=-1;
 	protected int lastDayDone=-1;
     protected boolean scheduleReset=false;
@@ -170,7 +170,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			&&(!CMLib.utensils().doesHavePriviledgesHere(msg.source(),msg.source().location())))
 		    {
 			    Room R=msg.source().location();
-				Behavior B=CMLib.utensils().getLegalBehavior(R);
+                LegalBehavior B=CMLib.utensils().getLegalBehavior(R);
 				if(B!=null)
 				{
 				    for(int m=0;m<R.numInhabitants();m++)
@@ -179,8 +179,6 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				        if(CMLib.utensils().doesHavePriviledgesHere(M,R))
 				            return true;
 				    }
-					Vector V=new Vector();
-					V.addElement(new Integer(Law.MOD_CRIMEACCUSE));
 					MOB D=null;
 				    Clan C=CMLib.clans().getClan(A.landOwner());
 				    if(C!=null)
@@ -188,10 +186,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				    else
 				        D=CMLib.map().getLoadPlayer(A.landOwner());
 				    if(D==null) return true;
-					V.addElement(D);//victim first
-					V.addElement("PROPERTYROB");
-					V.addElement("THIEF_ROBBERY");
-					B.modifyBehavior(CMLib.utensils().getLegalObject(R),msg.source(),V);
+                    B.accuse(CMLib.utensils().getLegalObject(R),msg.source(),D,Util.makeVector("PROPERTYROB","THIEF_ROBBERY"));
 				}
 		    }
 			return true;

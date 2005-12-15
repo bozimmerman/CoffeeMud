@@ -80,7 +80,7 @@ public class Prayer_DailyBread extends Prayer
 			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(target);
 			if(SK!=null)
 			{
-				Vector inv=SK.getStoreInventory();
+				Vector inv=SK.getShop().getStoreInventory();
 				for(int i=0;i<inv.size();i++)
 				{
 					Item I=(Item)inv.elementAt(i);

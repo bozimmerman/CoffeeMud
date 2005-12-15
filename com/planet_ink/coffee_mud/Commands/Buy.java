@@ -83,11 +83,12 @@ public class Buy extends StdCommand
 		int addendum=1;
 		do
 		{
-			Environmental itemToDo=CMLib.coffeeShops().getShopKeeper(shopkeeper).getStock(whatName,mob);
+            ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
+			Environmental itemToDo=SK.getShop().getStock(whatName,mob,SK.whatIsSold(),CMLib.utensils().roomStart(shopkeeper));
 			if(itemToDo==null) break;
 			if(CMLib.flags().canBeSeenBy(itemToDo,mob))
 				V.addElement(itemToDo);
-			if(addendum>=CMLib.coffeeShops().getShopKeeper(shopkeeper).numberInStock(itemToDo))
+			if(addendum>=CMLib.coffeeShops().getShopKeeper(shopkeeper).getShop().numberInStock(itemToDo))
 				break;
 			++addendum;
 		}

@@ -35,18 +35,9 @@ public class StdTimeZone extends StdArea
 	public String ID(){	return "StdTimeZone";}
 	public CMObject copyOf()
 	{
-		try
-		{
-		    StdTimeZone E=(StdTimeZone)this.clone();
-            CMClass.bumpCounter(CMClass.OBJECT_AREA);
-			E.cloneFix(this);
-			E.setTimeObj((TimeClock)CMClass.getCommon("DefaultTimeClock"));
-			return E;
-		}
-		catch(CloneNotSupportedException e)
-		{
-			return this.newInstance();
-		}
+        CMObject O=super.copyOf();
+        if(O instanceof Area) ((Area)O).setTimeObj((TimeClock)CMClass.getCommon("DefaultTimeClock"));
+        return O;
 	}
 	protected TimeClock myClock=(TimeClock)CMClass.getCommon("DefaultTimeClock");
 	public TimeClock getTimeObj(){return myClock;}

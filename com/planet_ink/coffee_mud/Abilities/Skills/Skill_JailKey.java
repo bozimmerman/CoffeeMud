@@ -59,17 +59,14 @@ public class Skill_JailKey extends StdSkill
 			if(unlockThat==null) unlockThis=null;
 			if(unlockThis!=null)
 			{
-				Behavior B=null;
-				Vector V=new Vector();
-				V.addElement(new Integer(Law.MOD_ISJAILROOM));
-				V.addElement(unlockThat);
-				V.addElement(mob.location());
+                LegalBehavior B=null;
+                
 				Area legalA=CMLib.utensils().getLegalObject(mob.location());
 				if(legalA!=null) B=CMLib.utensils().getLegalBehavior(legalA);
 				if(B==null) 
 				    unlockThis=null;
 				else
-				if(!B.modifyBehavior(legalA,mob,V))
+				if(!B.isJailRoom(legalA,Util.makeVector(mob.location())));
 				    unlockThis=null;
 			}
 		}

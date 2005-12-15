@@ -1182,7 +1182,7 @@ public class StdDeity extends StdMOB implements Deity
 	private static final int CONNECT_AND=0;
 	private static final int CONNECT_OR=1;
 
-	private class DeityTrigger
+	private static class DeityTrigger
 	{
 		public int triggerCode=TRIGGER_SAY;
 		public int previousConnect=CONNECT_AND;

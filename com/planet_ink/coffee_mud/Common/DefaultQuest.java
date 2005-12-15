@@ -64,8 +64,19 @@ public class DefaultQuest implements Quest, Tickable
     // the unique name of the quest
     public String name(){return name;}
     public void setName(String newName){name=newName;}
-    public CMObject newInstance(){return this;}
-    public CMObject copyOf(){return this;}
+    public CMObject copyOf()
+    {
+        try
+        {
+            Object O=this.clone();
+            return (CMObject)O;
+        }
+        catch(CloneNotSupportedException e)
+        {
+            return newInstance();
+        }
+    }
+    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultQuest();}}
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
     // the unique name of the quest
@@ -1314,8 +1325,8 @@ public class DefaultQuest implements Quest, Tickable
                 if(E instanceof MOB)
                 {
                     MOB M=(MOB)E;
-                    Behavior B=((MOB)E).fetchBehavior("Scriptable");
-                    if(B!=null) B.modifyBehavior(E,M,"endquest "+name());
+                    ScriptingEngine B=(ScriptingEngine)((MOB)E).fetchBehavior("Scriptable");
+                    if(B!=null) B.endQuest(E,M,name());
                     CMLib.tracking().wanderAway(M,true,false);
                     Room R=M.getStartRoom();
                     if(R!=null)
@@ -1349,8 +1360,8 @@ public class DefaultQuest implements Quest, Tickable
                 {
                     Behavior B=E.fetchBehavior(((Behavior)O).ID());
                     if(B==null) continue;
-                    if((E instanceof MOB)&&(B.ID().equals("Scriptable")))
-                        B.modifyBehavior(E,(MOB)E,"endquest "+name());
+                    if((E instanceof MOB)&&(B instanceof ScriptingEngine))
+                        ((ScriptingEngine)B).modifyBehavior(E,(MOB)E,name());
                     if((V.size()>2)&&(V.elementAt(2) instanceof String))
                         B.setParms((String)V.elementAt(2));
                     else
@@ -1773,7 +1784,7 @@ public class DefaultQuest implements Quest, Tickable
         }
         return script;
     }
-    protected class JScriptQuest extends ScriptableObject
+    protected static class JScriptQuest extends ScriptableObject
     {
         public String getClassName(){ return "quest";}
         static final long serialVersionUID=45;
@@ -1784,7 +1795,7 @@ public class DefaultQuest implements Quest, Tickable
         public JScriptQuest(Quest Q, QuestState S){quest=Q; state=S;}
         public String toJavaString(Object O){return Context.toString(O);}
     }
-    protected class QuestState
+    protected static class QuestState
     {
         public Vector loadedMobs=new Vector();
         public Vector loadedItems=new Vector();

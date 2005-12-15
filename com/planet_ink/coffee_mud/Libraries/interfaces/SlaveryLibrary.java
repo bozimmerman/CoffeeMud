@@ -345,9 +345,9 @@ public interface SlaveryLibrary extends CMObject
                             }
                         }
                         ShopKeeper sk=CMLib.coffeeShops().getShopKeeper(M);
-                        if((!item.equals("coins"))&&(sk!=null)&&(sk.getStock(item,me)!=null))
+                        if((!item.equals("coins"))&&(sk!=null)&&(sk.getShop().getStock(item,me,sk.whatIsSold(),M.getStartRoom())!=null))
                         {
-                            Environmental E=sk.getStock(item,me);
+                            Environmental E=sk.getShop().getStock(item,me,sk.whatIsSold(),M.getStartRoom());
                             if((E!=null)&&(E instanceof Item))
                             {
                                 double price=CMLib.coffeeShops().sellingPrice(M,me,E,sk,true).absoluteGoldPrice;

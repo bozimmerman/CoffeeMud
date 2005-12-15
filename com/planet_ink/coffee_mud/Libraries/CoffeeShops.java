@@ -288,7 +288,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         double number=1.0;
         ShopKeeper.ShopPrice val=new ShopKeeper.ShopPrice();
         if(product==null) return val;
-        int stockPrice=shop.stockPrice(product);
+        int stockPrice=shop.getShop().stockPrice(product);
         if(stockPrice<=-100)
         {
             if(stockPrice<=-1000)
@@ -331,7 +331,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     
     public double devalue(ShopKeeper shop, Environmental product)
     {
-        int num=shop.numberInStock(product);
+        int num=shop.getShop().numberInStock(product);
         if(num<=0) return 0.0;
         double resourceRate=0.0;
         double itemRate=0.0;
@@ -371,7 +371,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         ShopKeeper.ShopPrice val=new ShopKeeper.ShopPrice();
         if(product==null) 
             return val;
-        int stockPrice=shop.stockPrice(product);
+        int stockPrice=shop.getShop().stockPrice(product);
         if(stockPrice<=-100) return val;
 
         if(stockPrice>=0.0)
@@ -510,7 +510,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                                                 boolean buyNotView)
     {
         if((product!=null)
-        &&(shop.doIHaveThisInStock("$"+product.Name()+"$",buyer)))
+        &&(shop.getShop().doIHaveThisInStock("$"+product.Name()+"$",buyer,shop.whatIsSold(),(seller!=null)?seller.getStartRoom():null)))
         {
             if(buyNotView)
             {
@@ -772,7 +772,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 if(V!=null)
                 for(int v=0;v<V.size();v++)
                     ((Item)V.elementAt(v)).removeFromOwnerContainer();
-                shop.addStoreInventory(coreSoldItem,number,-1);
+                shop.getShop().addStoreInventory(coreSoldItem,number,-1,shop);
                 if(V!=null)
                 for(int v=0;v<V.size();v++)
                 {
@@ -780,7 +780,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     if(!shop.doISellThis(item2)||(item2 instanceof Key))
                         item2.destroy();
                     else
-                        shop.addStoreInventory(item2,1,-1);
+                        shop.getShop().addStoreInventory(item2,1,-1,shop);
                 }
             }
             else
@@ -792,7 +792,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 if(A!=null) A.setMiscText("");
                 newMOB.setLiegeID("");
                 newMOB.setClanID("");
-                shop.addStoreInventory(newMOB);
+                shop.getShop().addStoreInventory(newMOB,shop);
                 ((MOB)product).setFollowing(null);
                 if((((MOB)product).baseEnvStats().rejuv()>0)
                 &&(((MOB)product).baseEnvStats().rejuv()<Integer.MAX_VALUE)
@@ -1211,7 +1211,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         case ShopKeeper.DEAL_SLAVES:
             return ((thisThang instanceof MOB)&&(!CMLib.flags().isAnimalIntelligence((MOB)thisThang)));
         case ShopKeeper.DEAL_INVENTORYONLY:
-            return (shop.inBaseInventory(thisThang));
+            return (shop.getShop().inBaseInventory(thisThang));
         case ShopKeeper.DEAL_INNKEEPER:
             return thisThang instanceof InnKey;
         case ShopKeeper.DEAL_JEWELLER:

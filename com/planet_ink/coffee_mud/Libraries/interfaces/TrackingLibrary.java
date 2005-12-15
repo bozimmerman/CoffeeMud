@@ -47,6 +47,7 @@ public interface TrackingLibrary extends CMObject
                                         boolean noWater,
                                         int maxRadius);
     public int trackNextDirectionFromHere(Vector theTrail, Room location, boolean openOnly);
+    public void stopTracking(MOB mob);
     public int radiatesFromDir(Room room, Vector rooms);
     public void getRadiantRooms(Room room,
                                 Vector rooms,

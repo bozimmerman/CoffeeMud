@@ -318,7 +318,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							{
 								Item I=(Item)V.elementAt(v);
 								if(!(I instanceof Coins))
-									addStoreInventory(I);
+                                    getShop().addStoreInventory(I,this);
 							}
 							delAllDeposits(name);
 						}

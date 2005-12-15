@@ -81,7 +81,7 @@ public class TimsItemTable extends StdWebMacro
 						break;
 					if(!(M instanceof ShopKeeper)) continue;
 					ShopKeeper S=(ShopKeeper)M;
-					Vector V2=S.getStoreInventory();
+					Vector V2=S.getShop().getStoreInventory();
 					for(int v=0;v<V2.size();v++)
 					{
 						if((endTime>0)&&(System.currentTimeMillis()>endTime))

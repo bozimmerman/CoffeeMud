@@ -57,12 +57,12 @@ public class Skill_FalseArrest extends BardSkill
 			return false;
 		}
 
-		Behavior B=null;
+        LegalBehavior B=null;
 		Area A2=null;
 		if(mob.location()!=null)
 		{
 			B=CMLib.utensils().getLegalBehavior(mob.location());
-			if((B==null)||(!B.modifyBehavior(CMLib.utensils().getLegalObject(mob.location()),target,new Integer(Law.MOD_HASWARRANT))))
+			if((B==null)||(!B.hasWarrant(CMLib.utensils().getLegalObject(mob.location()),target)))
 				B=null;
 			else
 				A2=CMLib.utensils().getLegalObject(mob.location());
@@ -76,7 +76,7 @@ public class Skill_FalseArrest extends BardSkill
 			{
 				B=CMLib.utensils().getLegalBehavior(A);
 				if((B!=null)
-				&&(B.modifyBehavior(CMLib.utensils().getLegalObject(A),target,new Integer(Law.MOD_HASWARRANT))))
+				&&(B.hasWarrant(CMLib.utensils().getLegalObject(A),target)))
 				{
 					A2=CMLib.utensils().getLegalObject(A);
 					break;
@@ -106,10 +106,7 @@ public class Skill_FalseArrest extends BardSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			Vector V=new Vector();
-			V.addElement(new Integer(Law.MOD_ARREST));
-			V.addElement(mob);
-			if(!B.modifyBehavior(A2,target,V))
+			if(!B.arrest(A2,mob,target))
 			{
 				mob.tell("You are not able to arrest "+target.name()+" at this time.");
 				return false;

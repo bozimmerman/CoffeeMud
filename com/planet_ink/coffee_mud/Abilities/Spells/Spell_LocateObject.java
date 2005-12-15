@@ -114,6 +114,7 @@ public class Spell_LocateObject extends Spell
 				MOB inhab=null;
 				Environmental item=null;
 				Room room=null;
+                ShopKeeper SK=null;
 				for(Iterator a=areas.iterator();a.hasNext();)
 				{
 				    A=(Area)a.next();
@@ -135,8 +136,9 @@ public class Spell_LocateObject extends Spell
 							if(inhab==null) break;
 	
 							item=inhab.fetchInventory(what);
-							if((item==null)&&(CMLib.coffeeShops().getShopKeeper(inhab)!=null))
-								item=CMLib.coffeeShops().getShopKeeper(inhab).getStock(what,mob);
+                            SK=CMLib.coffeeShops().getShopKeeper(inhab);
+							if((item==null)&&(SK!=null))
+								item=SK.getShop().getStock(what,mob,SK.whatIsSold(),inhab.getStartRoom());
 							if((item instanceof Item)
 							&&((CMLib.flags().canBeLocated((Item)item)))
 							&&(item.envStats().level()>minLevel)

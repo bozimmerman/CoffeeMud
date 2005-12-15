@@ -30,7 +30,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class StdAbility extends Scriptable implements Ability
+public class StdAbility extends ForeignScriptable implements Ability
 {
 	public String ID() { return "StdAbility"; }
 	public String Name(){return name();}

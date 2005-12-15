@@ -344,34 +344,6 @@ public class CMMap extends StdLibrary implements WorldMap
 		return R;
 	}
 
-    private class AreaEnumerator implements Enumeration
-    {
-        private Enumeration curAreaEnumeration=null;
-        private Enumeration curRoomEnumeration=null;
-        
-        public boolean hasMoreElements()
-        {
-            if(curAreaEnumeration==null) curAreaEnumeration=areas();
-            while((curRoomEnumeration==null)||(!curRoomEnumeration.hasMoreElements()))
-            {
-                if(!curAreaEnumeration.hasMoreElements()) return false;
-                curRoomEnumeration=((Area)curAreaEnumeration.nextElement()).getProperMap();
-            }
-            return curRoomEnumeration.hasMoreElements();
-        }
-        public Object nextElement()
-        {
-            if(curAreaEnumeration==null) curAreaEnumeration=areas();
-            while((curRoomEnumeration==null)||(!curRoomEnumeration.hasMoreElements()))
-            {
-                if(!curAreaEnumeration.hasMoreElements()) return null;
-                curRoomEnumeration=((Area)curAreaEnumeration.nextElement()).getProperMap();
-            }
-            return curRoomEnumeration.nextElement();
-        }
-        
-    }
-    
 	public int numDeities() { return deitiesList.size(); }
 	public void addDeity(Deity newOne)
 	{
@@ -688,5 +660,32 @@ public class CMMap extends StdLibrary implements WorldMap
         ||(R.getArea()==null))
             return false;
         return false;
+    }
+    public static class AreaEnumerator implements Enumeration
+    {
+        private Enumeration curAreaEnumeration=null;
+        private Enumeration curRoomEnumeration=null;
+        
+        public boolean hasMoreElements()
+        {
+            if(curAreaEnumeration==null) curAreaEnumeration=CMLib.map().areas();
+            while((curRoomEnumeration==null)||(!curRoomEnumeration.hasMoreElements()))
+            {
+                if(!curAreaEnumeration.hasMoreElements()) return false;
+                curRoomEnumeration=((Area)curAreaEnumeration.nextElement()).getProperMap();
+            }
+            return curRoomEnumeration.hasMoreElements();
+        }
+        public Object nextElement()
+        {
+            if(curAreaEnumeration==null) curAreaEnumeration=CMLib.map().areas();
+            while((curRoomEnumeration==null)||(!curRoomEnumeration.hasMoreElements()))
+            {
+                if(!curAreaEnumeration.hasMoreElements()) return null;
+                curRoomEnumeration=((Area)curAreaEnumeration.nextElement()).getProperMap();
+            }
+            return curRoomEnumeration.nextElement();
+        }
+        
     }
 }

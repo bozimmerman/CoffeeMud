@@ -57,16 +57,11 @@ public class Fighter_Behead extends FighterSkill
 		    return false;
 		}
 	    
-		Behavior B=null;
+        LegalBehavior B=null;
 		if(mob.location()!=null) B=CMLib.utensils().getLegalBehavior(mob.location());
 		Vector warrants=new Vector();
 		if(B!=null)
-		{
-			warrants.addElement(new Integer(Law.MOD_GETWARRANTSOF));
-			warrants.addElement(target.Name());
-			if(!B.modifyBehavior(CMLib.utensils().getLegalObject(mob.location()),target,warrants))
-				warrants.clear();
-		}
+            warrants=B.getWarrantsOf(CMLib.utensils().getLegalObject(mob.location()),target);
 		if(warrants.size()==0)
 		{
 		    mob.tell("You are not allowed to behead "+target.Name()+" at this time.");

@@ -33,21 +33,6 @@ import java.util.*;
 public class StdPlanet extends StdTimeZone implements SpaceObject
 {
 	public String ID(){	return "StdPlanet";}
-	public CMObject copyOf()
-	{
-		try
-		{
-			StdPlanet E=(StdPlanet)this.clone();
-            CMClass.bumpCounter(CMClass.OBJECT_AREA);
-			E.cloneFix(this);
-			E.setTimeObj((TimeClock)CMClass.getCommon("DefaultTimeClock"));
-			return E;
-		}
-		catch(CloneNotSupportedException e)
-		{
-			return this.newInstance();
-		}
-	}
 	public long[] coordinates=new long[3];
 	public long[] coordinates(){return coordinates;}
 	public void setCoords(long[] coords){coordinates=coords;}

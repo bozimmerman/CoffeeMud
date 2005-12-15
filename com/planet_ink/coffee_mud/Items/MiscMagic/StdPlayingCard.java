@@ -49,15 +49,12 @@ import java.util.*;
     The card with automatically set its own name and display text based on
     the encoding.  
 */
-public class PlayingCard extends StdItem implements MiscMagic
+public class StdPlayingCard extends StdItem implements MiscMagic, PlayingCard
 {
-	public String ID(){	return "PlayingCard";}
+	public String ID(){	return "StdPlayingCard";}
 	private int oldAbility=0;
     
-    public static int[] suits={0,16,32,48};
-    public static int[] cards={2,3,4,5,6,7,8,9,10,11,12,13,14};
-    
-	public PlayingCard()
+	public StdPlayingCard()
 	{
 		super();
 		name="A card";
@@ -113,7 +110,7 @@ public class PlayingCard extends StdItem implements MiscMagic
     // passed to this method.  Since this method is static,
     // it may be called as a utility function and does not
     // necessarily represent THIS card object.
-    public static String getCardValueLongDescription(int value)
+    public String getCardValueLongDescription(int value)
     {
         value=value&(1+2+4+8);
         switch(value)
@@ -141,7 +138,7 @@ public class PlayingCard extends StdItem implements MiscMagic
     // number cards and words otherwise. Since this method is static,
     // it may be called as a utility function and does not
     // necessarily represent THIS card object.
-    public static String getCardValueShortDescription(int value)
+    public String getCardValueShortDescription(int value)
     {
         value=value&(1+2+4+8);
         switch(value)
@@ -160,7 +157,7 @@ public class PlayingCard extends StdItem implements MiscMagic
     // of the suit passed to this method. Since this method is static,
     // it may be called as a utility function and does not
     // necessarily represent THIS card object.
-    public static String getSuitDescription(int suit)
+    public String getSuitDescription(int suit)
     {
         suit=suit&(16+32);
         switch(suit)

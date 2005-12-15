@@ -1448,7 +1448,7 @@ public class DefaultSession extends Thread implements Session
 		status=Session.STATUS_LOGOUTFINAL;
 	}
     
-    private class loginLogoutThread extends Thread implements Tickable
+    private static class loginLogoutThread extends Thread implements Tickable
     {
         public String name(){return (theMOB==null)?"Dead LLThread":"LLThread for "+theMOB.Name();}
         public boolean tick(Tickable ticking, int tickID){return false;}

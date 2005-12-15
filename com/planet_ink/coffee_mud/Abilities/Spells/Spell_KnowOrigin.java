@@ -87,7 +87,7 @@ public class Spell_KnowOrigin extends Spell
 							if((M!=null)&&(CMLib.coffeeShops().getShopKeeper(M)!=null))
 							{
 								ShopKeeper S=CMLib.coffeeShops().getShopKeeper(M);
-								if(S.doIHaveThisInStock(me.Name(),null))
+								if(S.getShop().doIHaveThisInStock(me.Name(),null,S.whatIsSold(),M.getStartRoom()))
 									return M.getStartRoom();
 							}
 						}

@@ -74,17 +74,15 @@ public class StdLawBook extends StdItem
 			if(!mob.isMonster())
 			{
 				Area A=CMLib.map().getArea(readableText());
-				Behavior B=CMLib.utensils().getLegalBehavior(A);
+                LegalBehavior B=CMLib.utensils().getLegalBehavior(A);
 				if(B==null)
 				{
 					msg.source().tell("The pages appear blank, and damaged.");
 					return;
 				}
-				Vector VB=new Vector();
+                
 				Area A2=CMLib.utensils().getLegalObject(A);
-				VB.addElement(new Integer(Law.MOD_LEGALINFO));
-				B.modifyBehavior(A2,mob,VB);
-				Law theLaw=(Law)VB.firstElement();
+                Law theLaw=B.legalInfo(A2);
 
 				int which=-1;
 				if(Util.s_long(msg.targetMessage())>0)
@@ -93,21 +91,14 @@ public class StdLawBook extends StdItem
 				boolean allowedToModify=(CMSecurity.isAllowed(mob,mob.location(),"ABOVELAW"));
 				if(A.getMetroMap().hasMoreElements())
 					allowedToModify=(CMSecurity.isAllowed(mob,((Room)A.getMetroMap().nextElement()),"ABOVELAW"));
-				Vector V=new Vector();
-				V.addElement(new Integer(Law.MOD_RULINGCLAN));
+                String rulingClan=(B!=null)?B.rulingClan():"";
 				if((!allowedToModify)
-				&&(B.modifyBehavior(A2,mob,V))
-				&&(V.size()==1)
-				&&(V.firstElement() instanceof String))
+				&&(rulingClan.length()>0)
+                &&(mob.getClanID().equals(rulingClan)))
 				{
-					String clanID=(String)V.elementAt(0);
-					if((clanID.length()>0)
-					&&(mob.getClanID().equals(clanID)))
-					{
-						Clan C=CMLib.clans().getClan(clanID);
-						if((C!=null)&&(C.allowedToDoThis(mob,Clan.FUNC_CLANCANORDERCONQUERED)==1))
-							allowedToModify=true;
-					}
+					Clan C=CMLib.clans().getClan(rulingClan);
+					if((C!=null)&&(C.allowedToDoThis(mob,Clan.FUNC_CLANCANORDERCONQUERED)==1))
+						allowedToModify=true;
 				}
 
 				if((allowedToModify)&&(!theLaw.lawIsActivated()))
@@ -193,14 +184,14 @@ public class StdLawBook extends StdItem
 	}
 
 	public void changeTheLaw(Environmental A,
-							 Behavior B,
+							 LegalBehavior B,
 							 MOB mob,
 							 Law theLaw,
 							 String tag,
 							 String newValue)
 	{
 		theLaw.setInternalStr(tag,newValue);
-		B.modifyBehavior(A,mob,new Integer(Law.MOD_SETNEWLAW));
+        if(A instanceof Area) B.updateLaw((Area)A);
 	}
 
 	public String shortLawDesc(String[] bits)
@@ -235,7 +226,7 @@ public class StdLawBook extends StdItem
 		{"A crime ONLY if perpetrator is NOT in combat.","!combat"}
 	};
 
-	public String[] modifyLaw(Area A, Behavior B, Law theLaw, MOB mob, String[] oldLaw)
+	public String[] modifyLaw(Area A, LegalBehavior B, Law theLaw, MOB mob, String[] oldLaw)
 		throws IOException
 	{
 		if(mob.session()==null) return oldLaw;
@@ -530,7 +521,7 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doIllegalEmotation(Area A, Behavior B, Law theLaw, MOB mob)
+	public void doIllegalEmotation(Area A, LegalBehavior B, Law theLaw, MOB mob)
 		throws IOException
 	{
 		if(mob.session()==null) return;
@@ -619,7 +610,7 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doBannedSubstances(Area A, Behavior B, Law theLaw, MOB mob)
+	public void doBannedSubstances(Area A, LegalBehavior B, Law theLaw, MOB mob)
 	throws IOException
 	{
 		if(mob.session()==null) return;
@@ -721,7 +712,7 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doIllegalSkill(Area A, Behavior B, Law theLaw, MOB mob)
+	public void doIllegalSkill(Area A, LegalBehavior B, Law theLaw, MOB mob)
 		throws IOException
 	{
 		if(mob.session()==null) return;
@@ -838,7 +829,7 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doTaxLaw(Area A, Behavior B, Law theLaw, MOB mob)
+	public void doTaxLaw(Area A, LegalBehavior B, Law theLaw, MOB mob)
 	throws IOException
 	{
 		if(mob.session()==null) return;
@@ -944,7 +935,7 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doIllegalInfluence(Area A, Behavior B, Law theLaw, MOB mob)
+	public void doIllegalInfluence(Area A, LegalBehavior B, Law theLaw, MOB mob)
 		throws IOException
 	{
 		if(mob.session()==null) return;
@@ -1060,7 +1051,7 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doBasicLaw(Area A, Behavior B, Law theLaw, MOB mob)
+	public void doBasicLaw(Area A, LegalBehavior B, Law theLaw, MOB mob)
 		throws IOException
 	{
 		if(mob.session()==null) return;
@@ -1115,7 +1106,7 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doParoleAndRelease(Area A, Behavior B, Law theLaw, MOB mob)
+	public void doParoleAndRelease(Area A, LegalBehavior B, Law theLaw, MOB mob)
 		throws IOException
 	{
 		if(mob.session()==null) return;
@@ -1203,7 +1194,7 @@ public class StdLawBook extends StdItem
 	}
 
 
-	public void doJailPolicy(Area A, Behavior B, Law theLaw, MOB mob)
+	public void doJailPolicy(Area A, LegalBehavior B, Law theLaw, MOB mob)
 		throws IOException
 	{
 		if(mob.session()==null) return;
@@ -1291,7 +1282,7 @@ public class StdLawBook extends StdItem
 	}
 
 
-	public void doTresspassingLaw(Area A, Behavior B, Law theLaw, MOB mob)
+	public void doTresspassingLaw(Area A, LegalBehavior B, Law theLaw, MOB mob)
 		throws IOException
 	{
 		if(mob.session()==null) return;
@@ -1344,7 +1335,7 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doVictimsOfCrime(Area A, Behavior B, Law theLaw, MOB mob)
+	public void doVictimsOfCrime(Area A, LegalBehavior B, Law theLaw, MOB mob)
 		throws IOException
 	{
 		if(mob.session()==null) return;
@@ -1369,8 +1360,8 @@ public class StdLawBook extends StdItem
 	}
 
 	public void doOfficersAndJudges(Area A, 
-							        Behavior B,
-							        Environmental legalO,
+							        LegalBehavior B,
+							        Area legalO,
 							        Law theLaw, 
 							        MOB mob)
 		throws IOException
@@ -1389,10 +1380,10 @@ public class StdLawBook extends StdItem
 				{
 					Room R2=M.getStartRoom();
 					if(R==null) R=M.location();
-					if(B.modifyBehavior(legalO,M,new Integer(Law.MOD_ISOFFICER)))
+					if(B.isAnyOfficer(legalO,M))
 						duhOfficers.append(M.name()+" from room '"+R2.displayText()+"'\n\r");
 					else
-					if(B.modifyBehavior(legalO,M,new Integer(Law.MOD_ISJUDGE)))
+                    if(B.isJudge(legalO,M))
 						duhJudge=M.name()+" from room '"+R2.displayText()+"'\n\r";
 				}
 			}

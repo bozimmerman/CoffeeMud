@@ -77,32 +77,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
             shop=(CoffeeShop)((StdShopKeeper)E).shop.copyOf();
 	}
     
-    
-    public boolean inBaseInventory(Environmental thisThang)
-	{ return shop.inBaseInventory(thisThang);}
-	public Environmental addStoreInventory(Environmental thisThang)
-	{ return shop.addStoreInventory(thisThang,1,-1,this);}
-	public int baseStockSize(){return shop.baseStockSize();}
-	public int totalStockSize(){return shop.totalStockSize();}
-	public void clearStoreInventory(){shop.clearStoreInventory();}
-	public Vector getStoreInventory(){return shop.getStoreInventory();}
-	public Vector getBaseInventory(){return shop.getBaseInventory();}
-	public Environmental addStoreInventory(Environmental thisThang, int number, int price)
-	{ return shop.addStoreInventory(thisThang,number,price,this);}
-	public void delAllStoreInventory(Environmental thisThang)
-	{ shop.delAllStoreInventory(thisThang,whatIsSold());}
-    public boolean doIHaveThisInStock(String name, MOB mob)
-    { return shop.doIHaveThisInStock(name,mob,whatIsSold(),getStartRoom());}
-    public int stockPrice(Environmental likeThis)
-    { return shop.stockPrice(likeThis);}
-    public int numberInStock(Environmental likeThis)
-    { return shop.numberInStock(likeThis);}
-    public Environmental getStock(String name, MOB mob)
-    { return shop.getStock(name,mob,whatIsSold(),getStartRoom());}
-    public Environmental removeStock(String name, MOB mob)
-    { return shop.removeStock(name,mob,whatIsSold(),getStartRoom());}
-    public Vector removeSellableProduct(String named, MOB mob)
-    { return shop.removeSellableProduct(named,mob,whatIsSold(),getStartRoom());}
+    public CoffeeShop getShop(){return shop;}
     
 
     protected int processVariableEquipment()
@@ -121,7 +96,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
             {
                 Environmental E=(Environmental)rivals.elementAt(r);
                 if(CMLib.dice().rollPercentage()>E.baseEnvStats().rejuv())
-                    delAllStoreInventory(E);
+                    getShop().delAllStoreInventory(E,whatIsSold());
                 else
                 {
                     E.baseEnvStats().setRejuv(0);
@@ -269,7 +244,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				&&((doISellThis(msg.tool()))||(whatISell==DEAL_INVENTORYONLY)))
                 {
                     CMLib.commands().say(this,msg.source(),"Yes, I will now sell "+msg.tool().name()+".",false,false);
-                    addStoreInventory(msg.tool(),1,-1);
+                    getShop().addStoreInventory(msg.tool(),1,-1,this);
                     if(isGeneric()) text();
 					return;
 				}
@@ -296,7 +271,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
             }
 			case CMMsg.TYP_VIEW:
 				super.executeMsg(myHost,msg);
-				if((msg.tool()!=null)&&(doIHaveThisInStock("$"+msg.tool().Name()+"$",mob)))
+				if((msg.tool()!=null)&&(getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",mob,whatIsSold(),getStartRoom())))
 					CMLib.commands().say(this,msg.source(),CMLib.coffeeShops().getViewDescription(msg.tool()),true,false);
 				break;
 			case CMMsg.TYP_BUY: // buy-from -- this is a player buying from a shopkeeper
@@ -304,10 +279,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				super.executeMsg(myHost,msg);
                 MOB mobFor=CMLib.coffeeShops().parseBuyingFor(msg.source(),msg.targetMessage());
 				if((msg.tool()!=null)
-				&&(doIHaveThisInStock("$"+msg.tool().Name()+"$",mobFor))
+				&&(getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",mobFor,whatIsSold(),getStartRoom()))
 				&&(location()!=null))
 				{
-					Vector products=removeSellableProduct("$"+msg.tool().Name()+"$",mobFor);
+					Vector products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor,whatIsSold(),getStartRoom());
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
                     
@@ -341,7 +316,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_LIST:
 				{
 					super.executeMsg(myHost,msg);
-					Vector inventory=getStoreInventory();
+					Vector inventory=getShop().getStoreInventory();
 					inventory=CMLib.coffeeShops().addRealEstateTitles(inventory,mob,whatIsSold(),getStartRoom());
                     int limit=Util.getParmInt(prejudiceFactors(),"LIMIT",0);
                     String s=CMLib.coffeeShops().getListInventory(this,mob,inventory,limit,this);

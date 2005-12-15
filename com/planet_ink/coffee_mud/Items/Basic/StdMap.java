@@ -53,7 +53,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 
 
 
-	protected class MapRoom
+	protected static class MapRoom
 	{
 		Room r=null;
 		int x=0;

@@ -649,17 +649,13 @@ public class StdArea implements Area
 			statData[Area.AREASTAT_AVGLEVEL]=(int)Math.round(Util.div(statData[Area.AREASTAT_TOTLEVEL],statData[Area.AREASTAT_POPULATION]));
 			statData[Area.AREASTAT_AVGALIGN]=(int)Math.round(new Long(totalAlignments).doubleValue()/new Integer(statData[Area.AREASTAT_POPULATION]).doubleValue());
 			s.append("Population     : "+statData[Area.AREASTAT_POPULATION]+"\n\r");
-			Behavior B=CMLib.utensils().getLegalBehavior(this);
+            LegalBehavior B=CMLib.utensils().getLegalBehavior(this);
 			if(B!=null)
 			{
-			    Area A2=CMLib.utensils().getLegalObject(this);
-				Vector V=new Vector();
-				V.addElement(new Integer(Law.MOD_RULINGCLAN));
-				if(B.modifyBehavior(A2,CMClass.sampleMOB(),V)
-				&&(V.size()>0)
-				&&(V.firstElement() instanceof String))
+                String ruler=B.rulingClan();
+                if(ruler.length()>0)
 				{
-					Clan C=CMLib.clans().getClan(((String)V.firstElement()));
+					Clan C=CMLib.clans().getClan(ruler);
 					if(C!=null)
 						s.append("Controlled by  : "+C.typeName()+" "+C.name()+"\n\r");
 				}
@@ -731,7 +727,7 @@ public class StdArea implements Area
                     R2=(Room)properRooms.elementAt(i);
                     if(R2.roomID().compareToIgnoreCase(R.roomID())>=0)
                     {
-                        if(R2.ID().compareToIgnoreCase(R.roomID())==0)
+                        if(R2.roomID().compareToIgnoreCase(R.roomID())==0)
                             properRooms.setElementAt(R,i);
                         else
                             properRooms.insertElementAt(R,i);

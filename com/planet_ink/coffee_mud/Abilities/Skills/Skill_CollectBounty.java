@@ -49,16 +49,12 @@ public class Skill_CollectBounty extends StdSkill
 	}
 	public Vector getWarrantsOf(MOB target, Area legalA)
 	{
-		Behavior B=null;
+        LegalBehavior B=null;
 		if(legalA!=null) B=CMLib.utensils().getLegalBehavior(legalA);
 		Vector warrants=new Vector();
 		if(B!=null)
 		{
-			warrants.addElement(new Integer(Law.MOD_GETWARRANTSOF));
-			warrants.addElement(target.Name());
-			if(!B.modifyBehavior(legalA,target,warrants))
-				warrants.clear();
-			else
+            warrants=B.getWarrantsOf(legalA,target);
 			for(int i=warrants.size()-1;i>=0;i--)
 			{
 			    LegalWarrant W=(LegalWarrant)warrants.elementAt(i);
@@ -71,7 +67,7 @@ public class Skill_CollectBounty extends StdSkill
 	
 	public MOB findElligibleOfficer(Area myArea, Area legalA)
 	{
-		Behavior B=null;
+        LegalBehavior B=null;
 		if(legalA!=null) B=CMLib.utensils().getLegalBehavior(legalA);
 		if((B!=null)&&(myArea!=null))
 		{
@@ -81,13 +77,8 @@ public class Skill_CollectBounty extends StdSkill
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 				    MOB M=R.fetchInhabitant(i);
-				    if(M!=null)
-				    {
-				        Vector V=new Vector();
-				        V.addElement(new Integer(Law.MOD_ISELLIGOFFICER));
-				        if(B.modifyBehavior(legalA,M,V))
-				            return M;
-				    }
+				    if((M!=null)&&(B.isElligibleOfficer(legalA,M)))
+			            return M;
 				}
 		    }
 		    if(legalA!=myArea)
@@ -97,13 +88,8 @@ public class Skill_CollectBounty extends StdSkill
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 				    MOB M=R.fetchInhabitant(i);
-				    if(M!=null)
-				    {
-				        Vector V=new Vector();
-				        V.addElement(new Integer(Law.MOD_ISELLIGOFFICER));
-				        if(B.modifyBehavior(legalA,M,V))
-				            return M;
-				    }
+                    if((M!=null)&&(B.isElligibleOfficer(legalA,M)))
+			            return M;
 				}
 		    }
 		}
@@ -112,20 +98,15 @@ public class Skill_CollectBounty extends StdSkill
 	
 	public MOB getJudgeIfHere(MOB mob, MOB target, Room R)
 	{
-		Behavior B=null;
+        LegalBehavior B=null;
 		if(R!=null) B=CMLib.utensils().getLegalBehavior(R);
 		Area legalA=CMLib.utensils().getLegalObject(R);
 		if((B!=null)&&(R!=null))
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 			    MOB M=R.fetchInhabitant(i);
-			    if((M!=null)&&(M!=mob)&&(M!=target))
-			    {
-			        Vector V=new Vector();
-			        V.addElement(new Integer(Law.MOD_ISJUDGE));
-			        if(B.modifyBehavior(legalA,M,V))
-			            return M;
-			    }
+			    if((M!=null)&&(M!=mob)&&(M!=target)&&(B.isJudge(legalA,M)))
+		            return M;
 			}
 		return null;
 	}

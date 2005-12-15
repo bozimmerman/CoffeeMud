@@ -46,9 +46,9 @@ import java.util.*;
     to anyone who LOOKS at a person holding a hand with such
     cars.
 */
-public class HandOfCards extends StdContainer implements MiscMagic
+public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCards
 {
-    public String ID(){ return "HandOfCards";}
+    public String ID(){ return "StdHandOfCards";}
     
     // if this hand or deck is owned by a mob or a room, then
     // than mob or room suffices as a container.  Otherwise,
@@ -57,7 +57,7 @@ public class HandOfCards extends StdContainer implements MiscMagic
     
     // the constructor for this class doesn't do much except set
     // some of the display properties of the deck container
-    public HandOfCards()
+    public StdHandOfCards()
     {
         super();
         setName("a hand of cards");
@@ -320,17 +320,17 @@ public class HandOfCards extends StdContainer implements MiscMagic
     // add the new hand to the inventory of the given 
     // hand-holder.  Either way, it will return the 
     // empty hand object.
-    public static HandOfCards createEmptyHand(Environmental player)
+    public HandOfCards createEmptyHand(Environmental player)
     {
         // calling this method without the intention
         // of putting a card inside is counter-productive.
         // the other methods should automatically create and
         // destroy the hands as cards are dealt and returned
         // to the deck respectively!
-        HandOfCards hand=(HandOfCards)CMClass.getMiscMagic("HandOfCards");
+        HandOfCards hand=(HandOfCards)CMClass.getMiscMagic("StdHandOfCards");
         if(player instanceof MOB)
         {
-            if(hand.owner==null)
+            if(hand.owner()==null)
                 ((MOB)player).addInventory(hand);
             else
                 ((MOB)player).giveItem(hand);
@@ -341,7 +341,7 @@ public class HandOfCards extends StdContainer implements MiscMagic
         else
         if(player instanceof Room)
         {
-            if(hand.owner==null)
+            if(hand.owner()==null)
                 ((Room)player).addItem(hand);
             else
                 ((Room)player).addItemRefuse(hand,0);

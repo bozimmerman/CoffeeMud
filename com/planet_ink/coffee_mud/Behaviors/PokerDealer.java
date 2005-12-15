@@ -1,7 +1,5 @@
 package com.planet_ink.coffee_mud.Behaviors;
-import com.planet_ink.coffee_mud.Items.MiscMagic.HandOfCards;
-import com.planet_ink.coffee_mud.Items.MiscMagic.DeckOfCards;
-import com.planet_ink.coffee_mud.Items.MiscMagic.PlayingCard;
+import com.planet_ink.coffee_mud.Items.interfaces.PlayingCard;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -98,7 +96,12 @@ public class PokerDealer extends StdBehavior
     
     // our deck, which will handle hands and other
     // conveniences.
-    private DeckOfCards theDeck=DeckOfCards.createDeck(null);
+    private DeckOfCards myDeck=null;
+    private synchronized DeckOfCards theDeck()
+    {
+        if(myDeck==null) myDeck=((DeckOfCards)CMClass.getMiscMagic("StdDeckOfCards")).createDeck(null);
+        return myDeck;
+    }
     
     // equates for the gameRules variable below
     public static final int GAME_STRAIGHTPOKER=0;
@@ -587,10 +590,10 @@ public class PokerDealer extends StdBehavior
                         DVector scores=new DVector(2);
                         for(int i=0;i<10000;i++)
                         {
-                            DeckOfCards deck2=DeckOfCards.createDeck(null);
+                            DeckOfCards deck2=((DeckOfCards)CMClass.getMiscMagic("StdDeckOfCards")).createDeck(null);
                             deck2.shuffleDeck();
                             deck2.shuffleDeck();
-                            HandOfCards hand=HandOfCards.createEmptyHand(null);
+                            HandOfCards hand=((HandOfCards)CMClass.getMiscMagic("StdHandOfCards")).createEmptyHand(null);
                             for(int ii=0;ii<numCards;ii++)
                                 hand.addCard(deck2.getTopCardFromDeck());
                             int score=determineHand(hand);
@@ -659,7 +662,7 @@ public class PokerDealer extends StdBehavior
                         {
                             msg.addTrailerMsg(makeMessage(host,speaker,CMMsg.MSG_OK_ACTION,"The dealer gathers up <T-YOUPOSS> cards."));
                             nextPlayerNextState(host);
-                            theDeck.removePlayerHand(speaker);
+                            theDeck().removePlayerHand(speaker);
                             pot.removeElement(speaker);
                             break;
                         }
@@ -744,7 +747,7 @@ public class PokerDealer extends StdBehavior
                     // now we parse their words, and see if every word is a number,
                     // and whether every number is between 1-5
                     Vector parsed=Util.parse(textOfSay);
-                    HandOfCards hand=theDeck.getPlayerHand(msg.source());
+                    HandOfCards hand=theDeck().getPlayerHand(msg.source());
                     boolean numbersOK=(hand!=null)&&(parsed.size()>0);
                     if(hand!=null)
                     for(int i=0;i<parsed.size();i++)
@@ -777,7 +780,7 @@ public class PokerDealer extends StdBehavior
                             // everything is still good, so lets officially get those
                             // cards out of the players hand and back in the deck
                             for(int i=0;i<removed.size();i++)
-                                theDeck.addCard((PlayingCard)removed.elementAt(i));
+                                theDeck().addCard((PlayingCard)removed.elementAt(i));
                             // now we deal the player new ones.
                             dealToPlayer(host,whoseTurn,removed.size(),0);
                             nextPlayerNextState(host);
@@ -1023,7 +1026,7 @@ public class PokerDealer extends StdBehavior
         for(int p=0;p<pot.size();p++)
         {
             MOB mob=(MOB)pot.elementAt(p,1);
-            HandOfCards hand=theDeck.getPlayerHand(mob);
+            HandOfCards hand=theDeck().getPlayerHand(mob);
             if(hand==null) continue;
             
             // if only the face cards count, we will pull them out,
@@ -1031,7 +1034,7 @@ public class PokerDealer extends StdBehavior
             // and use their score
             if(faceUpOnly)
             {
-                HandOfCards faceUpHand=HandOfCards.createEmptyHand(null);
+                HandOfCards faceUpHand=((HandOfCards)CMClass.getMiscMagic("StdHandOfCards")).createEmptyHand(null);
                 Vector handContents=hand.getContents();
                 for(int h=0;h<handContents.size();h++)
                 {
@@ -1069,20 +1072,21 @@ public class PokerDealer extends StdBehavior
     // the given hand.
     private String describeHand(int score)
     {
+        PlayingCard PC=(PlayingCard)CMClass.getItem("StdPlayingCard");
         if((score&HAND_MASK)==HAND_5OFAKIND)
         {
             score-=HAND_5OFAKIND;
-            return "Five of a Kind of "+PlayingCard.getCardValueLongDescription(score)+"s";
+            return "Five of a Kind of "+PC.getCardValueLongDescription(score)+"s";
         }
         if((score&HAND_MASK)==HAND_ROYALFLUSH)
         {
             score-=HAND_ROYALFLUSH;
-            return "a Royal Flush of "+PlayingCard.getSuitDescription(score);
+            return "a Royal Flush of "+PC.getSuitDescription(score);
         }
         if((score&HAND_MASK)==HAND_STRAIGHTFLUSH)
         {
             score-=HAND_STRAIGHTFLUSH;
-            return "a Straight Flush of "+PlayingCard.getSuitDescription(score)+", "+PlayingCard.getCardValueLongDescription(score)+" high";
+            return "a Straight Flush of "+PC.getSuitDescription(score)+", "+PC.getCardValueLongDescription(score)+" high";
         }
         if((score&HAND_MASK)==HAND_4OFAKIND)
         {
@@ -1090,7 +1094,7 @@ public class PokerDealer extends StdBehavior
             int base=(score&((1+2+4+8)<<15));
             score=score-base;
             base=base>>15;
-            return "Four of a Kind of "+PlayingCard.getCardValueLongDescription(base)+"s, with a "+PlayingCard.getCardValueLongDescription(score)+" high card";
+            return "Four of a Kind of "+PC.getCardValueLongDescription(base)+"s, with a "+PC.getCardValueLongDescription(score)+" high card";
         }
         if((score&HAND_MASK)==HAND_FULLHOUSE)
         {
@@ -1098,7 +1102,7 @@ public class PokerDealer extends StdBehavior
             int base=(score&((1+2+4+8)<<15));
             score=score-base;
             base=base>>15;
-            return "a Full House: "+PlayingCard.getCardValueLongDescription(base)+"s over "+PlayingCard.getCardValueLongDescription(score)+"s";
+            return "a Full House: "+PC.getCardValueLongDescription(base)+"s over "+PC.getCardValueLongDescription(score)+"s";
         }
         if((score&HAND_MASK)==HAND_FLUSH)
         {
@@ -1106,21 +1110,21 @@ public class PokerDealer extends StdBehavior
             int suit=(score&((16+32)<<13));
             score=score-suit;
             suit=suit>>13;
-            StringBuffer str=new StringBuffer("a "+PlayingCard.getSuitDescription(suit)+" Flush: ");
+            StringBuffer str=new StringBuffer("a "+PC.getSuitDescription(suit)+" Flush: ");
             for(int i=0;i<4;i++)
             {
                 int value=(score&(1+2+4+8));
                 score-=value;
                 score=score>>4;
                 if(value>0)
-                    str.append(PlayingCard.getCardValueLongDescription(value)+" ");
+                    str.append(PC.getCardValueLongDescription(value)+" ");
             }
             return str.toString().trim()+" high";
         }
         if((score&HAND_MASK)==HAND_STRAIGHT)
         {
             score-=HAND_STRAIGHT;
-            return "a Straight, "+PlayingCard.getCardValueLongDescription(score)+" high";
+            return "a Straight, "+PC.getCardValueLongDescription(score)+" high";
         }
         if((score&HAND_MASK)==HAND_3OFAKIND)
         {
@@ -1135,9 +1139,9 @@ public class PokerDealer extends StdBehavior
                 score-=value;
                 score=score>>4;
                 if(value>0)
-                    str.append(PlayingCard.getCardValueLongDescription(value)+" ");
+                    str.append(PC.getCardValueLongDescription(value)+" ");
             }
-            String hand="Three of a Kind of "+PlayingCard.getCardValueLongDescription(combo)+"s";
+            String hand="Three of a Kind of "+PC.getCardValueLongDescription(combo)+"s";
             if(str.length()>0)
                 return  hand+", with "+str.toString().trim()+" high";
             return hand;
@@ -1158,9 +1162,9 @@ public class PokerDealer extends StdBehavior
                 score-=value;
                 score=score>>4;
                 if(value>0)
-                    str.append(PlayingCard.getCardValueLongDescription(value)+" ");
+                    str.append(PC.getCardValueLongDescription(value)+" ");
             }
-            String hand="Two Pair, "+PlayingCard.getCardValueLongDescription(combo1)+"s and "+PlayingCard.getCardValueLongDescription(combo2)+"s";
+            String hand="Two Pair, "+PC.getCardValueLongDescription(combo1)+"s and "+PC.getCardValueLongDescription(combo2)+"s";
             if(str.length()>0)
                 return  hand+", with "+str.toString().trim()+" high";
             return hand;
@@ -1178,9 +1182,9 @@ public class PokerDealer extends StdBehavior
                 score-=value;
                 score=score>>4;
                 if(value>0)
-                    str.append(PlayingCard.getCardValueLongDescription(value)+" ");
+                    str.append(PC.getCardValueLongDescription(value)+" ");
             }
-            String hand="a Pair of "+PlayingCard.getCardValueLongDescription(combo)+"s";
+            String hand="a Pair of "+PC.getCardValueLongDescription(combo)+"s";
             if(str.length()>0)
                 return  hand+", with "+str.toString().trim()+" high";
             return hand;
@@ -1195,7 +1199,7 @@ public class PokerDealer extends StdBehavior
                 score-=value;
                 score=score>>4;
                 if(value>0)
-                    str.append(PlayingCard.getCardValueLongDescription(value)+" ");
+                    str.append(PC.getCardValueLongDescription(value)+" ");
             }
             return  str.toString().trim()+" high";
         }
@@ -1207,7 +1211,7 @@ public class PokerDealer extends StdBehavior
     private void endTheGame(Environmental host)
     {
         timer=0;
-        theDeck.resetDeckBackTo52Cards();
+        theDeck().resetDeckBackTo52Cards();
         pot.clear();
         gameState=STATE_WAITING_FOR_ANTIS|STATEMASK_NEED_ANOUNCEMENT;
         roundOfPlay=0;
@@ -1273,14 +1277,14 @@ public class PokerDealer extends StdBehavior
     {
         if(player==null) return;
         Room R=CMLib.utensils().roomLocation(host);
-        HandOfCards hand=theDeck.getPlayerHand(player);
+        HandOfCards hand=theDeck().getPlayerHand(player);
         if(hand!=null)
         {
             // first deal any "down cards"
             int actuallyDealtDown=0;
             for(int i=0;i<numberOfCards-numberFaceUp;i++)
             {
-                PlayingCard card=theDeck.getTopCardFromDeck();
+                PlayingCard card=theDeck().getTopCardFromDeck();
                 int handSize=hand.numberOfCards();
                 if(card!=null)
                 {
@@ -1294,7 +1298,7 @@ public class PokerDealer extends StdBehavior
             StringBuffer dealtUp=new StringBuffer("");
             for(int i=0;i<numberFaceUp;i++)
             {
-                PlayingCard card=theDeck.getTopCardFromDeck();
+                PlayingCard card=theDeck().getTopCardFromDeck();
                 int handSize=hand.numberOfCards();
                 if(card!=null)
                 {
@@ -1385,7 +1389,7 @@ public class PokerDealer extends StdBehavior
             if(!R.isInhabitant(mob))
             {
                 communicate(host,null,"Oops.. we lost "+mob.name()+".",null);
-                theDeck.removePlayerHand(mob);
+                theDeck().removePlayerHand(mob);
                 pot.removeElement(mob);
             }
         }
@@ -1607,14 +1611,14 @@ public class PokerDealer extends StdBehavior
                     communicate(host,null,"OK! Antis are all in! Lets play some "+GAME_DESCS[gameRules]+"!",null);
                     
                     // lets shuffle a few times first.
-                    theDeck.shuffleDeck();
-                    theDeck.shuffleDeck();
+                    theDeck().shuffleDeck();
+                    theDeck().shuffleDeck();
                     
                     // now we create all the hands
                     for(int p=0;p<pot.size();p++)
                     {
                         MOB mob=(MOB)pot.elementAt(p,1);
-                        theDeck.addPlayerHand(mob,null);
+                        theDeck().addPlayerHand(mob,null);
                     }
                     
                     // and then we deal.
@@ -1657,7 +1661,7 @@ public class PokerDealer extends StdBehavior
                     {
                         communicate(host,whoseTurn,msg+"  "+whoseTurn.name()+" folds.",null);
                         nextPlayerNextState(host);
-                        theDeck.removePlayerHand(whoseTurn);
+                        theDeck().removePlayerHand(whoseTurn);
                         pot.removeElement(whoseTurn);
                     }
                     else

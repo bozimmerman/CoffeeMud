@@ -51,7 +51,15 @@ public class QuestLoader
 				Q.setWinners(questWinners);
 				if(Q.name().length()==0)
 					Q.setName(questName);
-				if((Q.name().length()>0)&&(Q.duration()>=0)&&(CMLib.quests().fetchQuest(Q.name())==null))
+				if(Q.name().length()==0)
+                    Log.sysOut("QuestLoader","Unable to load Quest '"+questName+"' due to blank name.");
+                else
+                if(Q.duration()<=0)
+                    Log.sysOut("QuestLoader","Unable to load Quest '"+questName+"' due to duration "+Q.duration()+".");
+                else
+                if(CMLib.quests().fetchQuest(Q.name())!=null)
+                    Log.sysOut("QuestLoader","Unable to load Quest '"+questName+"' due to it already being loaded.");
+                else
 					CMLib.quests().addQuest(Q);
 			}
 		}

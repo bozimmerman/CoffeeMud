@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 
@@ -243,13 +244,20 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 	}
 
+    public void stopTracking(MOB mob)
+    {
+        Vector V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
+        for(int v=0;v<V.size();v++)
+        { ((Ability)V.elementAt(v)).unInvoke(); mob.delEffect((Ability)V.elementAt(v));}
+    }
+
 	public boolean beMobile(MOB mob,
-								   boolean dooropen,
-								   boolean wander,
-								   boolean roomprefer, 
-                                   boolean roomobject,
-                                   long[] status,
-                                   Vector rooms)
+						    boolean dooropen,
+						    boolean wander,
+						    boolean roomprefer, 
+                            boolean roomobject,
+                            long[] status,
+                            Vector rooms)
 	{
         if(status!=null)status[0]=Tickable.STATUS_MISC7+0;
         

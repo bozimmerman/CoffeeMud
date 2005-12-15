@@ -40,8 +40,8 @@ public interface CMMiscUtils extends CMObject
     public int getMaterialCode(String s);
     public int getResourceCode(String s);
     public Law getTheLaw(Room R, MOB mob);
-    public Behavior getLegalBehavior(Area A);
-    public Behavior getLegalBehavior(Room R);
+    public LegalBehavior getLegalBehavior(Area A);
+    public LegalBehavior getLegalBehavior(Room R);
     public Area getLegalObject(Area A);
     public Area getLegalObject(Room R);
     public int getRandomResourceOfMaterial(int material);
@@ -56,6 +56,7 @@ public interface CMMiscUtils extends CMObject
     public Trap fetchMyTrap(Environmental myThang);
     public boolean reachableItem(MOB mob, Environmental E);
     public Room roomLocation(Environmental E);
+    public Room roomStart(Environmental E);
     public Area areaLocation(Object E);
     public double memoryUse ( Environmental E, int number );
     public void extinguish(MOB source, Environmental target, boolean mundane);

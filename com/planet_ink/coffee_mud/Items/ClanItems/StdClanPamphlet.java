@@ -69,17 +69,8 @@ public class StdClanPamphlet extends StdClanItem
             if((((MOB)owner()).getClanID().length()>0)
 			||(((--tradeTime)<=0)))
 			{
-				Behavior B=CMLib.utensils().getLegalBehavior(R);
-				if(B!=null)
-				{
-					Vector V=new Vector();
-					V.addElement(new Integer(Law.MOD_RULINGCLAN));
-					rulingClan="";
-					if((B.modifyBehavior(CMLib.utensils().getLegalObject(R),(MOB)owner(),V))
-					&&(V.size()>0)
-					&&(V.firstElement() instanceof String))
-						rulingClan=(String)V.firstElement();
-				}
+                LegalBehavior B=CMLib.utensils().getLegalBehavior(R);
+                if(B!=null) rulingClan=B.rulingClan();
 			}
 			if((rulingClan!=null)&&(rulingClan.length()>0)
             &&(!rulingClan.equals(clanID()))

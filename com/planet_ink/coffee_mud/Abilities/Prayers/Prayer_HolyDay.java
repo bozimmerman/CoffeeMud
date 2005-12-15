@@ -90,10 +90,10 @@ public class Prayer_HolyDay extends Prayer
 			||(Util.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)))
 		&&(msg.source().getClanID().length()>0))
 		{
-			Behavior B=null;
+            LegalBehavior B=null;
 			if(msg.source().location()!=null) 
 			    B=CMLib.utensils().getLegalBehavior(msg.source().location());
-			if((B!=null)&&(B).modifyBehavior(CMLib.utensils().getLegalObject(msg.source().location()),msg.source(),new Integer(Law.MOD_CONTROLPOINTS)))
+			if((B!=null)&&(B.controlPoints()>0))
 			{
 				msg.source().tell("There can be no conquest on the holy day of "+godName+".");
 				return false;

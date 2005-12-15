@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 
-public class StdLibrary extends Scriptable implements CMObject
+public class StdLibrary extends ForeignScriptable implements CMObject
 {
     public String ID(){return "StdLibrary";}
     public CMObject newInstance()
