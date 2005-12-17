@@ -40,14 +40,14 @@ public class AutoGold extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOGOLD))
+		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOGOLD))
 		{
-			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOGOLD));
+			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOGOLD));
 			mob.tell(getScr("AutoGold","turnoff"));
 		}
 		else
 		{
-			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTOGOLD));
+			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOGOLD));
 			mob.tell(getScr("AutoGold","turnon"));
 		}
 		return false;

@@ -490,12 +490,12 @@ public class Masonry extends CraftingSkill
 		String str=(String)commands.elementAt(0);
 		if(("LIST").startsWith(str.toUpperCase()))
 		{
-			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Stone required\n\r");
+			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",20)+" Stone required\n\r");
 			for(int r=0;r<data.length;r++)
 			{
 				if((r!=BUILD_MONUMENT)||(mob.charStats().getCurrentClass().baseClass().equals("Druid")))
                 {
-					buf.append(Util.padRight(data[r][DAT_NAME],20)+" "+data[r][DAT_WOOD]);
+					buf.append(CMStrings.padRight(data[r][DAT_NAME],20)+" "+data[r][DAT_WOOD]);
                     if(doingCode==BUILD_PORTCULIS)
                         buf.append(" metal");
                     buf.append("\n\r");
@@ -570,7 +570,7 @@ public class Masonry extends CraftingSkill
 		   dir=-1;
 		else
 		if(((dir<0)||(dir>3))
-		&&(Util.s_int(data[doingCode][DAT_REQDIR])==1))
+		&&(CMath.s_int(data[doingCode][DAT_REQDIR])==1))
 		{
 			commonTell(mob,"A valid direction in which to build must also be specified.");
 			return false;
@@ -585,7 +585,7 @@ public class Masonry extends CraftingSkill
 		}
 
 
-		int woodRequired=Util.s_int(data[doingCode][DAT_WOOD]);
+		int woodRequired=CMath.s_int(data[doingCode][DAT_WOOD]);
 		if(((mob.location().domainType()&Room.INDOORS)==0)
 		&&(data[doingCode][DAT_ROOF].equals("1")))
 		{
@@ -612,7 +612,7 @@ public class Masonry extends CraftingSkill
         
 		if(doingCode==BUILD_TITLE)
 		{
-			String title=Util.combine(commands,1);
+			String title=CMParms.combine(commands,1);
 			if(title.length()==0)
 			{
 				commonTell(mob,"A title must be specified.");
@@ -656,7 +656,7 @@ public class Masonry extends CraftingSkill
 			}
 			else
 				commands.removeElementAt(1);
-			designDescription=Util.combine(commands,1);
+			designDescription=CMParms.combine(commands,1);
 		}
 		else
 		if((doingCode==BUILD_WINDOW)||(doingCode==BUILD_CRAWLWAY))

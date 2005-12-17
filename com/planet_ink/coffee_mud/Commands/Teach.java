@@ -56,7 +56,7 @@ public class Teach extends StdCommand
 		commands.removeElementAt(0);
 
 
-		String abilityName=Util.combine(commands,0);
+		String abilityName=CMParms.combine(commands,0);
 		Ability realAbility=CMClass.findAbility(abilityName,student.charStats());
 		Ability myAbility=null;
 		if(realAbility!=null)

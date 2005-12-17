@@ -165,11 +165,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
 		String copy=new String(rawMaskHelp());
 		if((CR!=null)&&(!CR.equalsIgnoreCase("<BR>")))
-			copy=Util.replaceAll(copy,"<BR>",CR);
+			copy=CMStrings.replaceAll(copy,"<BR>",CR);
 		if((word==null)||(word.length()==0))
-			copy=Util.replaceAll(copy,"<WORD>","disallow");
+			copy=CMStrings.replaceAll(copy,"<WORD>","disallow");
 		else
-			copy=Util.replaceAll(copy,"<WORD>",word);
+			copy=CMStrings.replaceAll(copy,"<WORD>",word);
 		return copy;
 	}
 
@@ -182,7 +182,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			&&(tattoo.length()>0)
 			&&(Character.isDigit(tattoo.charAt(0)))
 			&&(tattoo.indexOf(" ")>0)
-			&&(Util.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
+			&&(CMath.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
 			   tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
 			if(fromHereStartsWith(V,plusMinus,fromHere,tattoo))
 				return true;
@@ -227,7 +227,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 					if(cmpString.length()>0)
 					{
-						int cmpLevel=Util.s_int(cmpString);
+						int cmpLevel=CMath.s_int(cmpString);
 						if((cmpLevel==lvl)&&(andEqual))
 							found=true;
 						else
@@ -251,31 +251,31 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		if(str.startsWith(c+">="))
 		{
 			entry.addElement(getMaskCodes().get("+LVLGE"));
-			entry.addElement(new Integer(Util.s_int(str.substring(3).trim())));
+			entry.addElement(new Integer(CMath.s_int(str.substring(3).trim())));
 		}
 		else
 		if(str.startsWith(c+"<="))
 		{
 			entry.addElement(getMaskCodes().get("+LVLLE"));
-			entry.addElement(new Integer(Util.s_int(str.substring(3).trim())));
+			entry.addElement(new Integer(CMath.s_int(str.substring(3).trim())));
 		}
 		else
 		if(str.startsWith(c+">"))
 		{
 			entry.addElement(getMaskCodes().get("+LVLGR"));
-			entry.addElement(new Integer(Util.s_int(str.substring(2).trim())));
+			entry.addElement(new Integer(CMath.s_int(str.substring(2).trim())));
 		}
 		else
 		if(str.startsWith(c+"<"))
 		{
 			entry.addElement(getMaskCodes().get("+LVLLT"));
-			entry.addElement(new Integer(Util.s_int(str.substring(2).trim())));
+			entry.addElement(new Integer(CMath.s_int(str.substring(2).trim())));
 		}
 		else
 		if(str.startsWith(c+"="))
 		{
 			entry.addElement(getMaskCodes().get("+LVLEQ"));
-			entry.addElement(new Integer(Util.s_int(str.substring(2).trim())));
+			entry.addElement(new Integer(CMath.s_int(str.substring(2).trim())));
 		}
 		return entry;
 	}
@@ -334,13 +334,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
         if(fromHereEqual(V,plusMinus,fromHere,E.name()))
             return true;
-		Vector names=Util.parse(E.name().toUpperCase());
+		Vector names=CMParms.parse(E.name().toUpperCase());
 		for(int v=0;v<names.size();v++)
 			if(fromHereEqual(V,plusMinus,fromHere,(String)names.elementAt(v)))
 				return true;
         if(fromHereEqual(V,plusMinus,fromHere,E.displayText()))
             return true;
-		names=Util.parse(E.displayText().toUpperCase());
+		names=CMParms.parse(E.displayText().toUpperCase());
 		for(int v=0;v<names.size();v++)
 			if(fromHereEqual(V,plusMinus,fromHere,(String)names.elementAt(v)))
 				return true;
@@ -418,7 +418,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		if(text.trim().length()==0) return "Anyone";
 		StringBuffer buf=new StringBuffer("");
         Hashtable zapCodes=getMaskCodes();
-		Vector V=Util.parse(text.toUpperCase());
+		Vector V=CMParms.parse(text.toUpperCase());
 		for(int v=0;v<V.size();v++)
 		{
 			String str=(String)V.elementAt(v);
@@ -432,7 +432,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 					{
 						CharClass C=(CharClass)c.nextElement();
-						if(fromHereStartsWith(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))
+						if(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim()))
 							buf.append(C.name()+", ");
 					}
 					if(buf.toString().endsWith(", "))
@@ -447,7 +447,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						{
 							CharClass C=(CharClass)c.nextElement();
 							if((C.ID().equals(C.baseClass()))
-							&&(fromHereStartsWith(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim())))
+							&&(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim())))
 								buf.append(C.name()+" types, ");
 						}
 						if(buf.toString().endsWith(", "))
@@ -610,7 +610,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.utensils().getMaterialCode(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(Util.capitalizeAndLower(EnvResource.MATERIAL_DESCS[code>>8])+", ");
+                                    buf.append(CMStrings.capitalizeAndLower(EnvResource.MATERIAL_DESCS[code>>8])+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -630,7 +630,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.utensils().getMaterialCode(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(Util.capitalizeAndLower(EnvResource.MATERIAL_DESCS[code>>8])+", ");
+                                    buf.append(CMStrings.capitalizeAndLower(EnvResource.MATERIAL_DESCS[code>>8])+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -727,7 +727,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
-                                buf.append(Util.s_int(str2.substring(1).trim())+", ");
+                                buf.append(CMath.s_int(str2.substring(1).trim())+", ");
                         }
                         if(buf.toString().endsWith(", "))
                             buf=new StringBuffer(buf.substring(0,buf.length()-2));
@@ -743,7 +743,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
-                                buf.append(Util.s_int(str2.substring(1).trim())+", ");
+                                buf.append(CMath.s_int(str2.substring(1).trim())+", ");
                         }
                         if(buf.toString().endsWith(", "))
                             buf=new StringBuffer(buf.substring(0,buf.length()-2));
@@ -759,9 +759,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
-                                if(Util.isInteger(str2.substring(1).trim()))
+                                if(CMath.isInteger(str2.substring(1).trim()))
                                 {
-                                    int season=Util.s_int(str2.substring(1).trim());
+                                    int season=CMath.s_int(str2.substring(1).trim());
                                     if((season>=0)&&(season<TimeClock.SEASON_DESCS.length))
                                         buf.append(TimeClock.SEASON_DESCS[season]+", ");
                                 }
@@ -786,9 +786,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
-                                if(Util.isInteger(str2.substring(1).trim()))
+                                if(CMath.isInteger(str2.substring(1).trim()))
                                 {
-                                    int season=Util.s_int(str2.substring(1).trim());
+                                    int season=CMath.s_int(str2.substring(1).trim());
                                     if((season>=0)&&(season<TimeClock.SEASON_DESCS.length))
                                         buf.append(TimeClock.SEASON_DESCS[season]+", ");
                                 }
@@ -813,7 +813,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
-                                buf.append(Util.s_int(str2.substring(1).trim())+", ");
+                                buf.append(CMath.s_int(str2.substring(1).trim())+", ");
                         }
                         if(buf.toString().endsWith(", "))
                             buf=new StringBuffer(buf.substring(0,buf.length()-2));
@@ -829,7 +829,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
-                                buf.append(Util.s_int(str2.substring(1).trim())+", ");
+                                buf.append(CMath.s_int(str2.substring(1).trim())+", ");
                         }
                         if(buf.toString().endsWith(", "))
                             buf=new StringBuffer(buf.substring(0,buf.length()-2));
@@ -888,7 +888,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.utensils().getResourceCode(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(Util.capitalizeAndLower(EnvResource.RESOURCE_DESCS[code&EnvResource.RESOURCE_MASK])+", ");
+                                    buf.append(CMStrings.capitalizeAndLower(EnvResource.RESOURCE_DESCS[code&EnvResource.RESOURCE_MASK])+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -908,7 +908,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.utensils().getResourceCode(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(Util.capitalizeAndLower(EnvResource.RESOURCE_DESCS[code&EnvResource.RESOURCE_MASK])+", ");
+                                    buf.append(CMStrings.capitalizeAndLower(EnvResource.RESOURCE_DESCS[code&EnvResource.RESOURCE_MASK])+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -1040,7 +1040,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
-							if(fromHereStartsWith(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))
+							if(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim()))
 								buf.append(C.name()+", ");
 						}
 						if(buf.toString().endsWith(", "))
@@ -1054,7 +1054,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
-							if(fromHereStartsWith(V,'-',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))
+							if(fromHereStartsWith(V,'-',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim()))
 								buf.append(C.name()+", ");
 						}
 						if(buf.toString().endsWith(", "))
@@ -1063,99 +1063,99 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 					break;
 				case 19: // +str
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append("Requires a strength of at least "+val+".");
 					break;
 				case 20: // +int
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append("Requires a intelligence of at least "+val+".");
 					break;
 				case 21: // +wis
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append("Requires a wisdom of at least "+val+".");
 					break;
 				case 22: // +dex
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append("Requires a dexterity of at least "+val+".");
 					break;
 				case 23: // +con
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append("Requires a constitution of at least "+val+".");
 					break;
 				case 24: // +cha
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append("Requires a charisma of at least "+val+".");
 					break;
 				case 25: // -str
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append("Requires a strength of at most "+val+".");
 					break;
 				case 26: // -int
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append("Requires a intelligence of at most "+val+".");
 					break;
 				case 27: // -wis
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append("Requires a wisdom of at most "+val+".");
 					break;
 				case 28: // -dex
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append("Requires a dexterity of at most "+val+".");
 					break;
 				case 29: // -con
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append("Requires a constitution of at most "+val+".");
 					break;
 				case 30: // -cha
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append("Requires a charisma of at most "+val+".");
 					break;
                 case 55: // +able
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     buf.append("Requires a magic/ability of at most "+val+".");
                     break;
                 case 56: // -able
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     buf.append("Requires a magic/ability of at least "+val+".");
                     break;
                 case 59: // +value
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     buf.append("Requires a value of at most "+val+".");
                     break;
                 case 60: // -value
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     buf.append("Requires a value of at least "+val+".");
                     break;
                 case 61: // +weight
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     buf.append("Requires a weight/encumbrance of at most "+val+".");
                     break;
                 case 62: // -weight
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     buf.append("Requires a weight/encumbrance of at least "+val+".");
                     break;
                 case 63: // +armor
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     buf.append("Requires a armor rating of at most "+val+".");
                     break;
                 case 64: // -armor
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     buf.append("Requires a armor rating of at least "+val+".");
                     break;
                 case 65: // +damage
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     buf.append("Requires a damage ability of at most "+val+".");
                     break;
                 case 66: // -damage
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     buf.append("Requires a damage ability of at least "+val+".");
                     break;
                 case 67: // +attack
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     buf.append("Requires an attack bonus of at most "+val+".");
                     break;
                 case 68: // -attack
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     buf.append("Requires an attack bonus of at least "+val+".");
                     break;
 				case 31: // +Area
@@ -1282,7 +1282,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 				{
 					CharClass C=(CharClass)c.nextElement();
-					if(str.startsWith("-"+Util.padRight(C.name(),4).toUpperCase().trim()))
+					if(str.startsWith("-"+CMStrings.padRight(C.name(),4).toUpperCase().trim()))
 						buf.append("Disallows "+C.name()+".  ");
 				}
 				Vector cats=new Vector();
@@ -1328,7 +1328,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		Vector buf=new Vector();
 		if(text.trim().length()==0) return buf;
         Hashtable zapCodes=getMaskCodes();
-		Vector V=Util.parse(text.toUpperCase());
+		Vector V=CMParms.parse(text.toUpperCase());
 		for(int v=0;v<V.size();v++)
 		{
 			String str=(String)V.elementAt(v);
@@ -1344,7 +1344,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
-							if(fromHereStartsWith(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))
+							if(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim()))
 								entry.addElement(C.name());
 						}
 					}
@@ -1358,7 +1358,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						{
 							CharClass C=(CharClass)c.nextElement();
 							if((C.ID().equals(C.baseClass())
-							&&(fromHereStartsWith(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))))
+							&&(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim()))))
 								entry.addElement(C.baseClass());
 						}
 					}
@@ -1594,7 +1594,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
                                 int code=CMLib.utensils().getWornCode(str2.substring(1));
-                                if(code>=0) entry.addElement(new Integer(Util.pow(2,code-1)));
+                                if(code>=0) entry.addElement(new Integer(CMath.pow(2,code-1)));
                             }
                         }
                     }
@@ -1617,7 +1617,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
                                 int code=CMLib.flags().getDispositionCode(str2.substring(1));
-                                if(code>=0) entry.addElement(new Integer(Util.pow(2,code)));
+                                if(code>=0) entry.addElement(new Integer(CMath.pow(2,code)));
                             }
                         }
                     }
@@ -1640,7 +1640,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
                                 int code=CMLib.flags().getSensesCode(str2.substring(1));
-                                if(code>=0) entry.addElement(new Integer(Util.pow(2,code)));
+                                if(code>=0) entry.addElement(new Integer(CMath.pow(2,code)));
                             }
                         }
                     }
@@ -1662,8 +1662,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             else
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
-                                if(Util.isInteger(str2.substring(1).trim()))
-                                    entry.addElement(new Integer(Util.s_int(str2.substring(1).trim())));
+                                if(CMath.isInteger(str2.substring(1).trim()))
+                                    entry.addElement(new Integer(CMath.s_int(str2.substring(1).trim())));
                                 else
                                 if(CMClass.globalClock().determineSeason(str2.substring(1).trim())>=0)
                                     entry.addElement(new Integer(CMClass.globalClock().determineSeason(str2.substring(1).trim())));
@@ -1689,7 +1689,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             }
                             else
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
-                                entry.addElement(new Integer(Util.s_int(str2.substring(1).trim())));
+                                entry.addElement(new Integer(CMath.s_int(str2.substring(1).trim())));
                         }
                     }
                     break;
@@ -1733,7 +1733,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
-							if(fromHereStartsWith(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))
+							if(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim()))
 								entry.addElement(C.name());
 						}
 					}
@@ -1746,7 +1746,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
-							if(fromHereStartsWith(V,'-',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))
+							if(fromHereStartsWith(V,'-',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim()))
 								entry.addElement(C.name());
 						}
 					}
@@ -1776,7 +1776,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 67: // +attack
                 case 68: // -attack
 					{
-						val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+						val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 						Vector entry=new Vector();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get(str));
@@ -1789,7 +1789,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 				{
 					CharClass C=(CharClass)c.nextElement();
-					if(str.startsWith("-"+Util.padRight(C.name(),4).toUpperCase().trim()))
+					if(str.startsWith("-"+CMStrings.padRight(C.name(),4).toUpperCase().trim()))
 					{
 						Vector entry=new Vector();
 						buf.addElement(entry);
@@ -2448,7 +2448,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         String mobAlign=null;
         String mobGender=null;
         int classLevel=-1;
-        Vector V=Util.parse(text.toUpperCase());
+        Vector V=CMParms.parse(text.toUpperCase());
         MOB mob=(E instanceof MOB)?(MOB)E:null;
         Item item=(E instanceof Item)?(Item)E:null;
         String clanID=null;
@@ -2456,7 +2456,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         if(mob!=null)
         {
             if(mob.charStats()==null) return true;
-            mobClass=Util.padRight(mob.charStats().displayClassName(),4).toUpperCase().trim();
+            mobClass=CMStrings.padRight(mob.charStats().displayClassName(),4).toUpperCase().trim();
             mobRaceCat=mob.charStats().getMyRace().racialCategory().toUpperCase();
     		if(!mob.charStats().getMyRace().name().equals(mob.charStats().raceName()))
     		{
@@ -2494,7 +2494,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					if(!fromHereStartsWith(V,'+',v+1,mobClass)) return false;
 					break;
 				case 1: // -baseclass
-					if((!fromHereStartsWith(V,'+',v+1,Util.padRight(mob.charStats().getCurrentClass().baseClass(),4).toUpperCase().trim()))
+					if((!fromHereStartsWith(V,'+',v+1,CMStrings.padRight(mob.charStats().getCurrentClass().baseClass(),4).toUpperCase().trim()))
 					&&(!fromHereStartsWith(V,'+',v+1,mobClass))) return false;
 					break;
 				case 2: // -Race
@@ -2508,10 +2508,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					if(!fromHereStartsWith(V,'+',v+1,mobGender)) return false;
 					break;
 				case 5: // -Levels
-					if(!levelCheck(Util.combine(V,v+1),'+',0,level)) return false;
+					if(!levelCheck(CMParms.combine(V,v+1),'+',0,level)) return false;
 					break;
 				case 6: // -ClassLevels
-					if(!levelCheck(Util.combine(V,v+1),'+',0,classLevel)) return false;
+					if(!levelCheck(CMParms.combine(V,v+1),'+',0,classLevel)) return false;
 					break;
 				case 7: // -tattoos
 					if(!tattooCheck(V,'+',v+1,mob)) return false;
@@ -2594,90 +2594,90 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					{
 						boolean found=false;
 						for(int c=0;c<mob.charStats().numClasses();c++)
-							if((fromHereStartsWith(V,'+',v+1,Util.padRight(mob.charStats().getMyClass(c).name(),4).toUpperCase().trim()))
-                            ||(fromHereStartsWith(V,'+',v+1,Util.padRight(mob.charStats().getMyClass(c).name(mob.charStats().getClassLevel(mob.charStats().getMyClass(c))),4).toUpperCase().trim())))
+							if((fromHereStartsWith(V,'+',v+1,CMStrings.padRight(mob.charStats().getMyClass(c).name(),4).toUpperCase().trim()))
+                            ||(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(mob.charStats().getMyClass(c).name(mob.charStats().getClassLevel(mob.charStats().getMyClass(c))),4).toUpperCase().trim())))
 								found=true;
 						if(!found) return false;
 					}
 					break;
 				case 18: // +anyclass
 					for(int c=0;c<mob.charStats().numClasses();c++)
-						if((fromHereStartsWith(V,'-',v+1,Util.padRight(mob.charStats().getMyClass(c).name(),4).toUpperCase().trim()))
-                        ||(fromHereStartsWith(V,'-',v+1,Util.padRight(mob.charStats().getMyClass(c).name(mob.charStats().getClassLevel(mob.charStats().getMyClass(c))),4).toUpperCase().trim())))
+						if((fromHereStartsWith(V,'-',v+1,CMStrings.padRight(mob.charStats().getMyClass(c).name(),4).toUpperCase().trim()))
+                        ||(fromHereStartsWith(V,'-',v+1,CMStrings.padRight(mob.charStats().getMyClass(c).name(mob.charStats().getClassLevel(mob.charStats().getMyClass(c))),4).toUpperCase().trim())))
 							return false;
 					break;
 				case 19: // +str
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.STRENGTH)<val)
 						return false;
 					break;
 				case 20: // +int
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.INTELLIGENCE)<val)
 						return false;
 					break;
 				case 21: // +wis
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.WISDOM)<val)
 						return false;
 					break;
 				case 22: // +dex
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.DEXTERITY)<val)
 						return false;
 					break;
 				case 23: // +con
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.CONSTITUTION)<val)
 						return false;
 					break;
 				case 24: // +cha
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.CHARISMA)<val)
 						return false;
 					break;
 				case 25: // -str
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.STRENGTH)>val)
 						return false;
 					break;
 				case 26: // -int
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.INTELLIGENCE)>val)
 						return false;
 					break;
 				case 27: // -wis
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.WISDOM)>val)
 						return false;
 					break;
 				case 28: // -dex
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.DEXTERITY)>val)
 						return false;
 					break;
 				case 29: // -con
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.CONSTITUTION)>val)
 						return false;
 					break;
 				case 30: // -cha
-					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					if(mob.charStats().getStat(CharStats.CHARISMA)>val)
 						return false;
 					break;
                 case 55: // +able
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     if(E.envStats().ability()>val)
                         return false;
                     break;
                 case 56: // -able
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     if(E.envStats().ability()<val)
                         return false;
                     break;
                 case 59: // +value
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     if((mob!=null)&&(CMLib.beanCounter().getTotalAbsoluteValueAllCurrencies(mob)>val))
                         return false;
                     else
@@ -2685,7 +2685,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         return false;
                     break;
                 case 60: // -value
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     if((mob!=null)&&(CMLib.beanCounter().getTotalAbsoluteValueAllCurrencies(mob)<val))
                         return false;
                     else
@@ -2693,42 +2693,42 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         return false;
                     break;
                 case 61: // +weight
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     if(E.envStats().weight()>val)
                         return false;
                     break;
                 case 62: // -weight
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     if(E.envStats().weight()<val)
                         return false;
                     break;
                 case 63: // +armor
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     if(E.envStats().armor()>val)
                         return false;
                     break;
                 case 64: // -armor
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     if(E.envStats().armor()<val)
                         return false;
                     break;
                 case 65: // +damage
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     if(E.envStats().damage()>val)
                         return false;
                     break;
                 case 66: // -damage
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     if(E.envStats().damage()<val)
                         return false;
                     break;
                 case 67: // +attack
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     if(E.envStats().attackAdjustment()>val)
                         return false;
                     break;
                 case 68: // -attack
-                    val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     if(E.envStats().attackAdjustment()<val)
                         return false;
                     break;
@@ -2799,7 +2799,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     break;
                 case 69: // +disposition
                     for(int i=0;i<EnvStats.dispositionsNames.length;i++)
-                        if((Util.isSet(E.envStats().disposition(),i))
+                        if((CMath.isSet(E.envStats().disposition(),i))
                         &&(fromHereEndsWith(V,'-',v+1,EnvStats.dispositionsNames[i])))
                             return false;
                     break;
@@ -2807,7 +2807,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     {
                         boolean found=false;
                         for(int i=0;i<EnvStats.dispositionsNames.length;i++)
-                            if((Util.isSet(E.envStats().disposition(),i))
+                            if((CMath.isSet(E.envStats().disposition(),i))
                             &&(fromHereEndsWith(V,'+',v+1,EnvStats.dispositionsNames[i])))
                             { found=true; break;}
                         if(!found) return false;
@@ -2815,7 +2815,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     break;
                 case 71: // +senses
                     for(int i=0;i<EnvStats.sensesNames.length;i++)
-                        if((Util.isSet(E.envStats().sensesMask(),i))
+                        if((CMath.isSet(E.envStats().sensesMask(),i))
                         &&(fromHereEndsWith(V,'-',v+1,EnvStats.sensesNames[i])))
                             return false;
                     break;
@@ -2823,7 +2823,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     {
                         boolean found=false;
                         for(int i=0;i<EnvStats.sensesNames.length;i++)
-                            if((Util.isSet(E.envStats().sensesMask(),i))
+                            if((CMath.isSet(E.envStats().sensesMask(),i))
                             &&(fromHereEndsWith(V,'+',v+1,EnvStats.sensesNames[i])))
                             { found=true; break;}
                         if(!found) return false;
@@ -2833,7 +2833,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     {
                         Room R=CMLib.utensils().roomLocation(E);
                         if((R!=null)
-                        &&(fromHereEndsWith(V,'-',v+1,""+R.getArea().getTimeObj().getTimeOfDay())))
+                        &&(fromHereEqual(V,'-',v+1,""+R.getArea().getTimeObj().getTimeOfDay())))
                             return false;
                         break;
                     }
@@ -2842,7 +2842,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         boolean found=false;
                         Room R=CMLib.utensils().roomLocation(E);
                         if((R!=null)
-                        &&(fromHereEndsWith(V,'+',v+1,""+R.getArea().getTimeObj().getTimeOfDay())))
+                        &&(fromHereEqual(V,'+',v+1,""+R.getArea().getTimeObj().getTimeOfDay())))
                         { found=true;}
                         if(!found) return false;
                     }
@@ -2851,7 +2851,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     {
                         Room R=CMLib.utensils().roomLocation(E);
                         if((R!=null)
-                        &&((fromHereEndsWith(V,'-',v+1,""+R.getArea().getTimeObj().getSeasonCode()))
+                        &&((fromHereEqual(V,'-',v+1,""+R.getArea().getTimeObj().getSeasonCode()))
                             ||(fromHereEndsWith(V,'-',v+1,TimeClock.SEASON_DESCS[R.getArea().getTimeObj().getSeasonCode()]))))
                             return false;
                         break;
@@ -2861,7 +2861,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         boolean found=false;
                         Room R=CMLib.utensils().roomLocation(E);
                         if((R!=null)
-                        &&((fromHereEndsWith(V,'+',v+1,""+R.getArea().getTimeObj().getSeasonCode()))
+                        &&((fromHereEqual(V,'+',v+1,""+R.getArea().getTimeObj().getSeasonCode()))
                             ||(fromHereEndsWith(V,'+',v+1,TimeClock.SEASON_DESCS[R.getArea().getTimeObj().getSeasonCode()]))))
                             { found=true;}
                         if(!found) return false;
@@ -2871,7 +2871,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     {
                         Room R=CMLib.utensils().roomLocation(E);
                         if((R!=null)
-                        &&(fromHereEndsWith(V,'-',v+1,""+R.getArea().getTimeObj().getMonth())))
+                        &&(fromHereEqual(V,'-',v+1,""+R.getArea().getTimeObj().getMonth())))
                             return false;
                         break;
                     }
@@ -2880,7 +2880,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         boolean found=false;
                         Room R=CMLib.utensils().roomLocation(E);
                         if((R!=null)
-                        &&(fromHereEndsWith(V,'+',v+1,""+R.getArea().getTimeObj().getMonth())))
+                        &&(fromHereEqual(V,'+',v+1,""+R.getArea().getTimeObj().getMonth())))
                         { found=true;}
                         if(!found) return false;
                     }

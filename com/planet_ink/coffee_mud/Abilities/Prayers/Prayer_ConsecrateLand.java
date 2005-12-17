@@ -51,8 +51,8 @@ public class Prayer_ConsecrateLand extends Prayer
 		if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(msg.tool() instanceof Ability)
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
-		&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
-		&&(!Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY)))
+		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
+		&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY)))
 		{
 			msg.source().tell("This place is blocking unholy magic!");
 			return false;

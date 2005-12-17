@@ -122,7 +122,7 @@ public class Engraving extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		writing=Util.combine(commands,0);
+		writing=CMParms.combine(commands,0);
 		verb="engraving on "+target.name();
 		displayText="You are "+verb;
 		found=target;

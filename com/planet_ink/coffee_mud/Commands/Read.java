@@ -74,21 +74,21 @@ public class Read extends StdCommand
 		commands.removeElementAt(0);
 		if(commands.firstElement() instanceof Environmental)
 		{
-			read(mob,(Environmental)commands.firstElement(),Util.combine(commands,1));
+			read(mob,(Environmental)commands.firstElement(),CMParms.combine(commands,1));
 			return false;
 		}
 
-		int dir=Directions.getGoodDirectionCode(Util.combine(commands,0));
+		int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
 		Environmental thisThang=null;
 		if(dir>=0)	thisThang=mob.location().getExitInDir(dir);
 		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Item.WORN_REQ_ANY);
 		String theRest=null;
 		if(thisThang==null)
-			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,Util.combine(commands,0),Item.WORN_REQ_ANY);
+			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,CMParms.combine(commands,0),Item.WORN_REQ_ANY);
 		else
 		{
 			commands.removeElementAt(commands.size()-1);
-			theRest=Util.combine(commands,0);
+			theRest=CMParms.combine(commands,0);
 		}
 		read(mob,thisThang, theRest);
 		return false;

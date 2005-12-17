@@ -398,7 +398,7 @@ public class Dragon extends StdMOB
 				if (room.okMessage(this,Message))
 				{
 					room.send(this,Message);
-					int damage=((short)Math.round(Util.div(Util.mul(Math.random(),7*DragonAge()),2.0)));
+					int damage=((short)Math.round(CMath.div(CMath.mul(Math.random(),7*DragonAge()),2.0)));
 					if(Message.value()<=0)
 						damage=((short)Math.round(Math.random()*7)*DragonAge());
 					CMLib.combat().postDamage(this,target,null,damage,CMMsg.MASK_GENERAL|AffectCode,WeaponType,"The blast <DAMAGE> <T-NAME>");
@@ -499,7 +499,7 @@ public class Dragon extends StdMOB
 										   CMMsg.MSG_OK_ACTION,
 										   "<S-NAME> digest(s) <T-NAMESELF>!!");
 				Stomach.send(this,DigestMsg);
-				int damage=((int)Math.round(Util.div(TastyMorsel.curState().getHitPoints(),2)));
+				int damage=((int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),2)));
 				if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
 				CMLib.combat().postDamage(this,TastyMorsel,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The stomach acid <DAMAGE> <T-NAME>!");
 			}

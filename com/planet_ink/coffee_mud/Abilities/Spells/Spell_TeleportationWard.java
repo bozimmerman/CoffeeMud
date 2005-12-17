@@ -70,7 +70,7 @@ public class Spell_TeleportationWard extends Spell
 			&&(mob.location()!=msg.source().location())
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
-			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING))
+			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING))
 			&&(!mob.amDead()))
 			{
                 Ability A=(Ability)msg.tool();
@@ -92,8 +92,8 @@ public class Spell_TeleportationWard extends Spell
 			&&(msg.source().location()!=null)
 			&&(msg.sourceMinor()!=CMMsg.TYP_LEAVE))
 			{
-				boolean summon=Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
-				boolean teleport=Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
+				boolean summon=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
+				boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
 				boolean shere=(msg.source().location()==affected)
 						||((affected instanceof Area)&&(((Area)affected).inMetroArea(msg.source().location().getArea())));
 				if((!shere)&&(!summon)&&(teleport)&&(!CMLib.utensils().doesHavePriviledgesHere(msg.source(),R)))
@@ -114,7 +114,7 @@ public class Spell_TeleportationWard extends Spell
 		Environmental target=null;
 		if(commands.size()>0)
 		{
-			String s=Util.combine(commands,0);
+			String s=CMParms.combine(commands,0);
 			if(s.equalsIgnoreCase("room"))
 				target=mob.location();
 			else

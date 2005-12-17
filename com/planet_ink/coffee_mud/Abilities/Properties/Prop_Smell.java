@@ -73,7 +73,7 @@ public class Prop_Smell extends Property
 	public DVector getSmells()
 	{
 	    if(smells!=null) return smells;
-	    Vector allsmells=Util.parseSemicolons(text(),true);
+	    Vector allsmells=CMParms.parseSemicolons(text(),true);
 	    smells=new DVector(3);
 	    for(int i=0;i<allsmells.size();i++)
 	    {
@@ -82,18 +82,18 @@ public class Prop_Smell extends Property
 	        {
 	            int pct=100;
 	            int ticks=-1;
-	            Vector parsedSmell=Util.parse(smell);
+	            Vector parsedSmell=CMParms.parse(smell);
 	            for(int ii=parsedSmell.size()-1;ii>=0;ii--)
 	            {
 	                String s=((String)parsedSmell.elementAt(ii)).toUpperCase();
 	                if(s.startsWith("TICKS="))
 	                {
-	                    ticks=Util.s_int(s.substring(6).trim());
+	                    ticks=CMath.s_int(s.substring(6).trim());
 	                    parsedSmell.removeElementAt(ii);
 	                }
 	                if(s.startsWith("CHANCE="))
 	                {
-	                    pct=(pct&(FLAG_BROADCAST+FLAG_EMOTE))+Util.s_int(s.substring(5).trim());
+	                    pct=(pct&(FLAG_BROADCAST+FLAG_EMOTE))+CMath.s_int(s.substring(5).trim());
 	                    parsedSmell.removeElementAt(ii);
 	                }
 	                if(s.equals("EMOTE"))
@@ -107,7 +107,7 @@ public class Prop_Smell extends Property
 	                    parsedSmell.removeElementAt(ii);
 	                }
 	            }
-	            String finalSmell=Util.combine(parsedSmell,0).trim();
+	            String finalSmell=CMParms.combine(parsedSmell,0).trim();
 	            if(finalSmell.length()>0)
 	                smells.addElement(finalSmell,new Integer(pct),new Integer(ticks));
 	        }
@@ -125,7 +125,7 @@ public class Prop_Smell extends Property
 	        for(int i=0;i<smells.size();i++)
 	        {
 	            int pct=((Integer)smells.elementAt(i,2)).intValue();
-	            if((!emoteOnly)||(Util.bset(pct,FLAG_EMOTE)))
+	            if((!emoteOnly)||(CMath.bset(pct,FLAG_EMOTE)))
 	                total+=pct&511;
 	        }
 	        if(total==0) return "";
@@ -133,12 +133,12 @@ public class Prop_Smell extends Property
 	        for(int i=0;i<smells.size();i++)
 	        {
 	            int pct=((Integer)smells.elementAt(i,2)).intValue();
-	            if((!emoteOnly)||(Util.bset(pct,FLAG_EMOTE)))
+	            if((!emoteOnly)||(CMath.bset(pct,FLAG_EMOTE)))
 	            {
 	                draw-=pct&511;
 	                if(draw<=0)
 	                {
-	            	    lastWasBroadcast=Util.bset(pct,FLAG_BROADCAST);
+	            	    lastWasBroadcast=CMath.bset(pct,FLAG_BROADCAST);
 	                    return (String)smells.elementAt(i,1);
 	                }
 	            }
@@ -224,9 +224,9 @@ public class Prop_Smell extends Property
 		            Integer ticks=(Integer)sm.elementAt(i,3);
 		            if(ticks.intValue()>0)
 		                newText.append("TICKS="+ticks+" ");
-		            if(Util.bset(pct.intValue(),FLAG_EMOTE))
+		            if(CMath.bset(pct.intValue(),FLAG_EMOTE))
 				        newText.append("EMOTE ");
-		            if(Util.bset(pct.intValue(),FLAG_BROADCAST))
+		            if(CMath.bset(pct.intValue(),FLAG_BROADCAST))
 				        newText.append("BROADCAST ");
 		            if((pct.intValue()&511)!=100)
 				        newText.append("CHANCE="+(pct.intValue()&511)+" ");

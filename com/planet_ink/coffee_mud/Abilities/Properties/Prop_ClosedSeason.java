@@ -46,7 +46,7 @@ public class Prop_ClosedSeason extends Property
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
-		closedV=Util.parse(text.toUpperCase());
+		closedV=CMParms.parse(text.toUpperCase());
 	}
 
 	public void executeMsg(Environmental E, CMMsg msg)
@@ -66,7 +66,7 @@ public class Prop_ClosedSeason extends Property
 		{
 			if(closedV.contains(Room.variationCodes[i][0]))
 			{
-				int num=Util.s_int(Room.variationCodes[i][1].substring(1));
+				int num=CMath.s_int(Room.variationCodes[i][1].substring(1));
 				switch(Room.variationCodes[i][1].charAt(0))
 				{
 				case 'W':

@@ -200,7 +200,7 @@ public class StdExit implements Exit
 		if(closeWord().length()==0)
 			return "closed";
 		else
-		if(Util.isVowel(closeWord().charAt(closeWord().length()-1)))
+		if(CMStrings.isVowel(closeWord().charAt(closeWord().length()-1)))
 			return closeWord()+"d";
 		else
 			return closeWord()+"ed";
@@ -211,7 +211,7 @@ public class StdExit implements Exit
 		if(openWord().length()==0)
 			return "opened";
 		else
-		if(Util.isVowel(closeWord().charAt(closeWord().length()-1)))
+		if(CMStrings.isVowel(closeWord().charAt(closeWord().length()-1)))
 			return openWord()+"d";
 		else
 			return openWord()+"ed";
@@ -403,7 +403,7 @@ public class StdExit implements Exit
 	public StringBuffer viewableText(MOB mob, Room room)
 	{
 		StringBuffer Say=new StringBuffer("");
-		if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+		if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 		{
 			if(room==null)
 				Say.append("^Z(null)^.^? ");
@@ -544,7 +544,7 @@ public class StdExit implements Exit
 				}
 				else
 					mob.tell("You don't see anything special.");
-				if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+				if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 					mob.tell("Misc   : "+text());
                 String image=CMProps.mxpImage(this," ALIGN=RIGHT H=70 W=70");
                 if((image!=null)&&(image.length()>0)) mob.tell(image);

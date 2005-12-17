@@ -47,7 +47,7 @@ public class Thief_Arsonry extends ThiefSkill
 			mob.tell("What or which direction is that which would you like to set on fire?");
 			return false;
 		}
-		String str=Util.combine(commands,0);
+		String str=CMParms.combine(commands,0);
 		int dir=Directions.getGoodDirectionCode(str);
 		Room targetRoom=null;
 		Environmental target=null;

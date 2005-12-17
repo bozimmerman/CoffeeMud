@@ -39,7 +39,7 @@ public class Tell extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if((!mob.isMonster())&&Util.bset(mob.getBitmap(),MOB.ATT_QUIET))
+		if((!mob.isMonster())&&CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
 		{
 			mob.tell("You have QUIET mode on.  You must turn it off first.");
 			return false;
@@ -53,7 +53,7 @@ public class Tell extends StdCommand
 		commands.removeElementAt(0);
 		
 		if(((String)commands.firstElement()).equalsIgnoreCase("last")
-		   &&(Util.isNumber(Util.combine(commands,1)))
+		   &&(CMath.isNumber(CMParms.combine(commands,1)))
 		   &&(mob.playerStats()!=null))
 		{
 			Vector V=mob.playerStats().getTellStack();
@@ -61,7 +61,7 @@ public class Tell extends StdCommand
 				mob.tell("No telling.");
 			else
 			{
-				int num=Util.s_int(Util.combine(commands,1));
+				int num=CMath.s_int(CMParms.combine(commands,1));
 				if(num>V.size()) num=V.size();
 				for(int i=V.size()-num;i<V.size();i++)
 					mob.tell((String)V.elementAt(i));
@@ -102,7 +102,7 @@ public class Tell extends StdCommand
 			if(s.indexOf(" ")>=0)
 				commands.setElementAt("\""+s+"\"",i);
 		}
-		String combinedCommands=Util.combine(commands,1);
+		String combinedCommands=CMParms.combine(commands,1);
 		if(combinedCommands.equals(""))
 		{
 			mob.tell("Tell them what?");
@@ -125,7 +125,7 @@ public class Tell extends StdCommand
 			return false;
 		}
 		
-		if(Util.bset(target.getBitmap(),MOB.ATT_QUIET))
+		if(CMath.bset(target.getBitmap(),MOB.ATT_QUIET))
 		{
 			mob.tell("That person can not hear you.");
 			return false;

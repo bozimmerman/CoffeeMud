@@ -59,7 +59,7 @@ public class NastyAbilities extends ActiveTicker
 			Room thisRoom=mob.location();
 			if(thisRoom==null) return true;
 
-			double aChance=Util.div(mob.curState().getMana(),mob.maxState().getMana());
+			double aChance=CMath.div(mob.curState().getMana(),mob.maxState().getMana());
 			if((Math.random()>aChance)||(mob.curState().getMana()<50))
 				return true;
 

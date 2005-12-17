@@ -30,6 +30,10 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Directions
 {
+    private Directions(){super();}
+    private static Directions inst=new Directions();
+    public static Directions instance(){return inst;}
+    
 	public static int NUM_DIRECTIONS=7;
 	
 	public static final int NORTH=0;
@@ -160,8 +164,8 @@ public class Directions
 	    theDir=theDir.toUpperCase();
 	    for(int i=0;i<DIRECTIONS_FULL_CHART.length;i++)
 	        if((DIRECTIONS_FULL_CHART[i][0].startsWith(theDir))
-	        &&(Util.s_int(DIRECTIONS_FULL_CHART[i][1])<NUM_DIRECTIONS))
-	            return Util.s_int(DIRECTIONS_FULL_CHART[i][1]); 
+	        &&(CMath.s_int(DIRECTIONS_FULL_CHART[i][1])<NUM_DIRECTIONS))
+	            return CMath.s_int(DIRECTIONS_FULL_CHART[i][1]); 
 		return -1;
 	}
 	

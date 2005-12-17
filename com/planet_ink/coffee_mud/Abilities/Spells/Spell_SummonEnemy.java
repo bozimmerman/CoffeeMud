@@ -112,7 +112,7 @@ public class Spell_SummonEnemy extends Spell
 				&&(mob.charStats()!=null)
 				&&(mob.charStats().getMyRace()!=null)
 				&&(CMProps.isTheme(mob.charStats().getMyRace().availabilityCode()))
-				&&(Util.bset(mob.charStats().getMyRace().availabilityCode(),Area.THEME_SKILLONLYMASK))
+				&&(CMath.bset(mob.charStats().getMyRace().availabilityCode(),Area.THEME_SKILLONLYMASK))
                 &&( (CMLib.flags().isGood(caster)&&CMLib.flags().isEvil(mob)) || (CMLib.flags().isEvil(caster)&&CMLib.flags().isGood(mob))))
         			monster=mob;
 			}

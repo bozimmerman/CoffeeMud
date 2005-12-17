@@ -51,7 +51,7 @@ public class Sleep extends StdCommand
 				mob.location().send(mob,msg);
 			return false;
 		}
-		String possibleRideable=Util.combine(commands,1);
+		String possibleRideable=CMParms.combine(commands,1);
 		Environmental E=mob.location().fetchFromRoomFavorItems(null,possibleRideable,Item.WORN_REQ_UNWORNONLY);
 		if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
 		{
@@ -68,8 +68,8 @@ public class Sleep extends StdCommand
 			sourceMountStr=mountStr;
 		else
 		{
-			sourceMountStr=Util.replaceAll(mountStr,"<T-NAME>",E.name());
-			sourceMountStr=Util.replaceAll(sourceMountStr,"<T-NAMESELF>",E.name());
+			sourceMountStr=CMStrings.replaceAll(mountStr,"<T-NAME>",E.name());
+			sourceMountStr=CMStrings.replaceAll(sourceMountStr,"<T-NAMESELF>",E.name());
 		}
 		CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SLEEP,sourceMountStr,mountStr,mountStr);
 		if(mob.location().okMessage(mob,msg))

@@ -130,9 +130,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	
 	public long getDistanceFrom(SpaceObject O1, SpaceObject O2)
 	{
-		return Math.round(Math.sqrt(Util.mul((O1.coordinates()[0]-O2.coordinates()[0]),(O1.coordinates()[0]-O2.coordinates()[0]))
-									+Util.mul((O1.coordinates()[1]-O2.coordinates()[1]),(O1.coordinates()[1]-O2.coordinates()[1]))
-									+Util.mul((O1.coordinates()[2]-O2.coordinates()[2]),(O1.coordinates()[2]-O2.coordinates()[2]))));
+		return Math.round(Math.sqrt(CMath.mul((O1.coordinates()[0]-O2.coordinates()[0]),(O1.coordinates()[0]-O2.coordinates()[0]))
+									+CMath.mul((O1.coordinates()[1]-O2.coordinates()[1]),(O1.coordinates()[1]-O2.coordinates()[1]))
+									+CMath.mul((O1.coordinates()[2]-O2.coordinates()[2]),(O1.coordinates()[2]-O2.coordinates()[2]))));
 	}
 	public double[] getDirection(SpaceObject FROM, SpaceObject TO)
 	{
@@ -150,9 +150,9 @@ public class CMMap extends StdLibrary implements WorldMap
 		double x1=Math.cos(Math.toRadians(O.direction()[0]))*Math.sin(Math.toRadians(O.direction()[1]));
 		double y1=Math.sin(Math.toRadians(O.direction()[0]))*Math.sin(Math.toRadians(O.direction()[1]));
 		double z1=Math.cos(O.direction()[1]);
-		O.coordinates()[0]=O.coordinates()[0]+Math.round(Util.mul(O.velocity(),x1));
-		O.coordinates()[1]=O.coordinates()[1]+Math.round(Util.mul(O.velocity(),y1));
-		O.coordinates()[2]=O.coordinates()[2]+Math.round(Util.mul(O.velocity(),z1));
+		O.coordinates()[0]=O.coordinates()[0]+Math.round(CMath.mul(O.velocity(),x1));
+		O.coordinates()[1]=O.coordinates()[1]+Math.round(CMath.mul(O.velocity(),y1));
+		O.coordinates()[2]=O.coordinates()[2]+Math.round(CMath.mul(O.velocity(),z1));
 	}
 	
 	public long getRelativeVelocity(SpaceObject O1, SpaceObject O2)
@@ -208,7 +208,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				if((R.getArea().Name().equals(AreaID))
 				&&(R.roomID().startsWith(AreaID+"#")))
 				{
-					int newnum=Util.s_int(R.roomID().substring(AreaID.length()+1));
+					int newnum=CMath.s_int(R.roomID().substring(AreaID.length()+1));
 					if(newnum>=highest)	highest=newnum;
 					if(newnum<=lowest) lowest=newnum;
 					allNums.put(new Integer(newnum),R);
@@ -656,7 +656,7 @@ public class CMMap extends StdLibrary implements WorldMap
     public boolean explored(Room R, Vector areas)
     {
         if((R==null) 
-        ||(Util.bset(R.envStats().sensesMask(),EnvStats.SENSE_ROOMUNEXPLORABLE))
+        ||(CMath.bset(R.envStats().sensesMask(),EnvStats.SENSE_ROOMUNEXPLORABLE))
         ||(R.getArea()==null))
             return false;
         return false;

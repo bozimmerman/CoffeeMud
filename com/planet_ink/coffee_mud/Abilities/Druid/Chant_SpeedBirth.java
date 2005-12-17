@@ -59,8 +59,8 @@ public class Chant_SpeedBirth extends Chant
 				int y=A.text().indexOf("/",x+1);
 				if(y>x)
 				{
-					start=Util.s_long(A.text().substring(0,x));
-					end=Util.s_long(A.text().substring(x+1,y));
+					start=CMath.s_long(A.text().substring(0,x));
+					end=CMath.s_long(A.text().substring(x+1,y));
 					remain=end-System.currentTimeMillis();
 					long divisor=MudHost.TICK_TIME*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 					days=remain/divisor; // down to days;

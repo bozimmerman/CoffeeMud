@@ -202,7 +202,7 @@ public class JewelMaking extends CraftingSkill
 			int toggleTop=2;
 			StringBuffer buf=new StringBuffer("");
 			for(int r=0;r<toggleTop;r++)
-				buf.append(Util.padRight("Item",27)+" Lvl "+Util.padRight("Metal",5)+" ");
+				buf.append(CMStrings.padRight("Item",27)+" Lvl "+CMStrings.padRight("Metal",5)+" ");
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -210,11 +210,11 @@ public class JewelMaking extends CraftingSkill
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
-					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
+					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
+					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
 					if(level<=mob.envStats().level())
 					{
-						buf.append(Util.padRight(item,27)+" "+Util.padRight(""+level,3)+" "+Util.padRight(""+wood,5)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight(item,27)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(""+wood,5)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -228,7 +228,7 @@ public class JewelMaking extends CraftingSkill
 			String word=str.toLowerCase();
 			if(commands.size()<3)
 			{
-				commonTell(mob,Util.capitalizeAndLower(word)+" what jewel onto what item?");
+				commonTell(mob,CMStrings.capitalizeAndLower(word)+" what jewel onto what item?");
 				return false;
 			}
 			fire=getRequiredFire(mob,autoGenerate);
@@ -238,7 +238,7 @@ public class JewelMaking extends CraftingSkill
 			messedUp=false;
 			if(fire==null) return false;
 			String jewel=(String)commands.elementAt(1);
-			String rest=Util.combine(commands,2);
+			String rest=CMParms.combine(commands,2);
 			Environmental jewelE=mob.location().fetchFromMOBRoomFavorsItems(mob,null,jewel,Item.WORN_REQ_UNWORNONLY);
 			Environmental thangE=mob.location().fetchFromMOBRoomFavorsItems(mob,null,rest,Item.WORN_REQ_UNWORNONLY);
 			if((jewelE==null)||(!CMLib.flags().canBeSeenBy(jewelE,mob)))
@@ -267,15 +267,15 @@ public class JewelMaking extends CraftingSkill
 			String materialName=EnvResource.RESOURCE_DESCS[jewelI.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 			if(word.equals("encrust"))
 			{
-				beingDone.addElement(Util.capitalizeAndLower(building.name())+" is encrusted with bits of "+materialName+".");
+				beingDone.addElement(CMStrings.capitalizeAndLower(building.name())+" is encrusted with bits of "+materialName+".");
 				startStr="<S-NAME> start(s) encrusting "+building.name()+" with "+materialName+".";
 				displayText="You are encrusting "+building.name()+" with "+materialName;
 				verb="encrusting "+building.name()+" with bits of "+materialName;
 			}
 			else
 			{
-				materialName=Util.startWithAorAn(materialName).toLowerCase();
-				beingDone.addElement(Util.capitalizeAndLower(building.name())+" has "+materialName+" mounted on it.");
+				materialName=CMStrings.startWithAorAn(materialName).toLowerCase();
+				beingDone.addElement(CMStrings.capitalizeAndLower(building.name())+" has "+materialName+" mounted on it.");
 				startStr="<S-NAME> start(s) mounting "+materialName+" onto "+building.name()+".";
 				displayText="You are mounting "+materialName+" onto "+building.name();
 				verb="mounting "+materialName+" onto "+building.name();
@@ -304,7 +304,7 @@ public class JewelMaking extends CraftingSkill
 			messedUp=false;
 			fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
-			Vector newCommands=Util.parse(Util.combine(commands,1));
+			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
 			if(!canMend(mob, building,false)) return false;
 			mending=true;
@@ -323,7 +323,7 @@ public class JewelMaking extends CraftingSkill
 			messedUp=false;
 			fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
-			Vector newCommands=Util.parse(Util.combine(commands,1));
+			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
 			if(building==null) return false;
 			if(!canWhat(mob,building,"refit",false))
@@ -348,12 +348,12 @@ public class JewelMaking extends CraftingSkill
 			refitting=false;
 			messedUp=false;
 			int amount=-1;
-			if((commands.size()>1)&&(Util.isNumber((String)commands.lastElement())))
+			if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
 			{
-				amount=Util.s_int((String)commands.lastElement());
+				amount=CMath.s_int((String)commands.lastElement());
 				commands.removeElementAt(commands.size()-1);
 			}
-			String recipeName=Util.combine(commands,0);
+			String recipeName=CMParms.combine(commands,0);
 			Vector foundRecipe=null;
 			Vector matches=matchingRecipeNames(recipes,recipeName,true);
 			for(int r=0;r<matches.size();r++)
@@ -361,7 +361,7 @@ public class JewelMaking extends CraftingSkill
 				Vector V=(Vector)matches.elementAt(r);
 				if(V.size()>0)
 				{
-					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
+					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
                     if((autoGenerate>0)||(level<=mob.envStats().level()))
 					{
 						foundRecipe=V;
@@ -383,7 +383,7 @@ public class JewelMaking extends CraftingSkill
 			}
 			else
 				fireRequired=false;
-			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
+			int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			if(amount>woodRequired) woodRequired=amount;
 			String otherRequired=(String)foundRecipe.elementAt(RCP_EXTRAREQ);
 			int[] pm={EnvResource.MATERIAL_MITHRIL,EnvResource.MATERIAL_METAL};
@@ -403,7 +403,7 @@ public class JewelMaking extends CraftingSkill
 				commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			completion=Util.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+			completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 			String itemName=null;
 			if((otherRequired!=null)&&(otherRequired.length()>0)&&(otherRequired.equalsIgnoreCase("PRECIOUS")))
 				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[1][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
@@ -412,7 +412,7 @@ public class JewelMaking extends CraftingSkill
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
-				itemName=Util.startWithAorAn(itemName);
+				itemName=CMStrings.startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) making "+building.name()+".";
 			displayText="You are making "+building.name();
@@ -427,7 +427,7 @@ public class JewelMaking extends CraftingSkill
 			else
 				building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
-			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_VALUE])));
+			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_VALUE])));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			if(data[1][FOUND_CODE]==0)
 				building.setMaterial(data[0][FOUND_CODE]);
@@ -436,9 +436,9 @@ public class JewelMaking extends CraftingSkill
 				building.setMaterial(data[1][FOUND_CODE]);
 				building.setBaseValue(building.baseGoldValue()+EnvResource.RESOURCE_DATA[data[1][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_VALUE]);
 			}
-			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
-			//int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
-			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
+			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+			//int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+			int armordmg=CMath.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			addSpells(building,spell);
 			if(building instanceof Armor)
@@ -450,21 +450,21 @@ public class JewelMaking extends CraftingSkill
 					String WO=Item.wornLocation[wo].toUpperCase();
 					if(misctype.equalsIgnoreCase(WO))
 					{
-						((Armor)building).setRawProperLocationBitmap(Util.pow(2,wo-1));
+						((Armor)building).setRawProperLocationBitmap(CMath.pow(2,wo-1));
 						((Armor)building).setRawLogicalAnd(false);
 					}
 					else
 					if((misctype.toUpperCase().indexOf(WO+"||")>=0)
 					||(misctype.toUpperCase().endsWith("||"+WO)))
 					{
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
+						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
 						((Armor)building).setRawLogicalAnd(false);
 					}
 					else
 					if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
 					||(misctype.toUpperCase().endsWith("&&"+WO)))
 					{
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
+						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
 						((Armor)building).setRawLogicalAnd(true);
 					}
 				}

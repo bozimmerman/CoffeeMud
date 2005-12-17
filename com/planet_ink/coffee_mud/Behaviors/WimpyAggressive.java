@@ -48,7 +48,7 @@ public class WimpyAggressive extends Aggressive
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		tickWait=Util.getParmInt(newParms,"delay",0);
+		tickWait=CMParms.getParmInt(newParms,"delay",0);
 		tickDown=tickWait;
 	}
 

@@ -130,9 +130,9 @@ public class CMColor extends StdLibrary implements ColorLibrary
     public CMMsg fixSourceFightColor(CMMsg msg)
     {
         if(msg.sourceMessage()!=null)
-            msg.setSourceMessage(Util.replaceAll(msg.sourceMessage(),"^F","^f"));
+            msg.setSourceMessage(CMStrings.replaceAll(msg.sourceMessage(),"^F","^f"));
         if(msg.targetMessage()!=null)
-            msg.setTargetMessage(Util.replaceAll(msg.targetMessage(),"^F","^e"));
+            msg.setTargetMessage(CMStrings.replaceAll(msg.targetMessage(),"^F","^e"));
         return msg;
     }
     
@@ -182,7 +182,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
             htlookup[COLORCODE_MOVES]=HTTAG_LIGHTCYAN;
             htlookup[COLORCODE_UNEXPDIRECTION]=mixHTMLCodes(HTTAG_CYAN,HTTAG_BGBLUE);
             htlookup[COLORCODE_UNEXPDOORDESC]=HTTAG_LIGHTBLUE;
-            Vector schemeSettings=Util.parseCommas(CMProps.getVar(CMProps.SYSTEM_COLORSCHEME),true);
+            Vector schemeSettings=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_COLORSCHEME),true);
             for(int i=0;i<schemeSettings.size();i++)
             {
                 String s=(String)schemeSettings.elementAt(i);
@@ -288,7 +288,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			clookup[COLORCODE_MOVES]=COLOR_LIGHTCYAN;
             clookup[COLORCODE_UNEXPDIRECTION]=mixColorCodes(COLOR_CYAN,COLOR_BGBLUE);
             clookup[COLORCODE_UNEXPDOORDESC]=COLOR_LIGHTBLUE;
-			Vector schemeSettings=Util.parseCommas(CMProps.getVar(CMProps.SYSTEM_COLORSCHEME),true);
+			Vector schemeSettings=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_COLORSCHEME),true);
 			for(int i=0;i<schemeSettings.size();i++)
 			{
 			    String s=(String)schemeSettings.elementAt(i);

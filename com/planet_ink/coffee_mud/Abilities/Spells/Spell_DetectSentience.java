@@ -55,8 +55,8 @@ public class Spell_DetectSentience extends Spell
 			{
 				mob.location().send(mob,msg);
 				StringBuffer lines=new StringBuffer("^x");
-				lines.append(Util.padRight("Name",17)+"| ");
-				lines.append(Util.padRight("Location",17)+"^.^N\n\r");
+				lines.append(CMStrings.padRight("Name",17)+"| ");
+				lines.append(CMStrings.padRight("Location",17)+"^.^N\n\r");
 				for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
@@ -65,7 +65,7 @@ public class Spell_DetectSentience extends Spell
 						MOB M=R.fetchInhabitant(m);
 						if((M!=null)&&(M.charStats().getStat(CharStats.INTELLIGENCE)>=2))
 						{
-							lines.append("^!"+Util.padRight(M.name(),17)+"^?| ");
+							lines.append("^!"+CMStrings.padRight(M.name(),17)+"^?| ");
 							lines.append(R.roomTitle());
 							lines.append("\n\r");
 						}

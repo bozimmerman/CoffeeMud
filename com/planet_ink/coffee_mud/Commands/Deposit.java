@@ -52,7 +52,7 @@ public class Deposit extends BaseItemParser
 			mob.tell("Deposit what or how much?");
 			return false;
 		}
-		String thisName=Util.combine(commands,0);
+		String thisName=CMParms.combine(commands,0);
 		Item thisThang=CMLib.english().bestPossibleGold(mob,null,thisName);
 		if(thisThang==null)
 		{

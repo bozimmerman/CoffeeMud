@@ -51,7 +51,7 @@ public class Sit extends StdCommand
 				mob.location().send(mob,msg);
 			return false;
 		}
-		String possibleRideable=Util.combine(commands,1);
+		String possibleRideable=CMParms.combine(commands,1);
 		Environmental E=null;
 		if(possibleRideable.length()>0)
 		{

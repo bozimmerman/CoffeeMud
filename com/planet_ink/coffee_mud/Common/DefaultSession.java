@@ -240,12 +240,12 @@ public class DefaultSession extends Thread implements Session
     
     public void initTelnetMode(int mobbitmap)
     {
-        setServerTelnetMode(TELNET_ANSI,Util.bset(mobbitmap,MOB.ATT_ANSI));
-        setClientTelnetMode(TELNET_ANSI,Util.bset(mobbitmap,MOB.ATT_ANSI));
+        setServerTelnetMode(TELNET_ANSI,CMath.bset(mobbitmap,MOB.ATT_ANSI));
+        setClientTelnetMode(TELNET_ANSI,CMath.bset(mobbitmap,MOB.ATT_ANSI));
         boolean changedSomething=false;
-        if(Util.bset(mobbitmap,MOB.ATT_MXP)!=clientTelnetMode(TELNET_MXP))
+        if(CMath.bset(mobbitmap,MOB.ATT_MXP)!=clientTelnetMode(TELNET_MXP))
         { changeTelnetMode(TELNET_MXP,!clientTelnetMode(TELNET_MXP)); changedSomething=true;}
-        if(Util.bset(mobbitmap,MOB.ATT_SOUND)!=clientTelnetMode(TELNET_MSP))
+        if(CMath.bset(mobbitmap,MOB.ATT_SOUND)!=clientTelnetMode(TELNET_MSP))
         { changeTelnetMode(TELNET_MSP,!clientTelnetMode(TELNET_MSP)); changedSomething=true;}
         try{if(changedSomething) blockingIn(500);}catch(Exception e){}
     }
@@ -314,7 +314,7 @@ public class DefaultSession extends Thread implements Session
     public String afkMessage()
     {
         if(mob==null) return "";
-        if((afkMessage==null)||(Util.removeColors(afkMessage).trim().length()==0))
+        if((afkMessage==null)||(CMStrings.removeColors(afkMessage).trim().length()==0))
             return mob.name()+" is AFK at the moment.";
         return afkMessage;
     }
@@ -676,8 +676,8 @@ public class DefaultSession extends Thread implements Session
         // everything else is effectively EATEN
         if(!esc.endsWith("z")) return;
         esc=esc.substring(0,esc.length()-1);
-        if(!Util.isNumber(esc)) return;
-        int escNum=Util.s_int(esc);
+        if(!CMath.isNumber(esc)) return;
+        int escNum=CMath.s_int(esc);
         // only LINE-based mxp escape sequences are respected
         if(escNum>3) return;
         sock.setSoTimeout(30000);
@@ -699,7 +699,7 @@ public class DefaultSession extends Thread implements Session
             String tag=l.substring(tagStart+1,tagEnd).trim();
             l=l.substring(tagEnd+1).trim();
             // now we have a tag, and its parameters (space delimited)
-            Vector parts=Util.parseSpaces(tag,true);
+            Vector parts=CMParms.parseSpaces(tag,true);
             if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Got secure MXP tag: "+tag);
             if(parts.size()>1)
             {
@@ -725,9 +725,9 @@ public class DefaultSession extends Thread implements Session
                     MOB M=CMLib.map().getLoadPlayer((String)parts.elementAt(1));
                     if((M!=null)&&(M.playerStats().password().equalsIgnoreCase((String)parts.elementAt(2)))&&(CMSecurity.isASysOp(M)))
                     {
-                        boolean keepDown=parts.size()>3?Util.s_bool((String)parts.elementAt(3)):true;
-                        String externalCmd=(parts.size()>4)?Util.combine(parts,4):null;
-                        Vector cmd=Util.makeVector("SHUTDOWN","NOPROMPT");
+                        boolean keepDown=parts.size()>3?CMath.s_bool((String)parts.elementAt(3)):true;
+                        String externalCmd=(parts.size()>4)?CMParms.combine(parts,4):null;
+                        Vector cmd=CMParms.makeVector("SHUTDOWN","NOPROMPT");
                         if(!keepDown)
                         {
                             cmd.add("RESTART");
@@ -1170,7 +1170,7 @@ public class DefaultSession extends Thread implements Session
 								  buf.append(mob().location().getArea().name());
 							  c++; break; }
 				case 't': {	  if(mob().location()!=null)
-								  buf.append(Util.capitalizeAndLower(TimeClock.TOD_DESC[mob().location().getArea().getTimeObj().getTODCode()].toLowerCase()));
+								  buf.append(CMStrings.capitalizeAndLower(TimeClock.TOD_DESC[mob().location().getArea().getTimeObj().getTODCode()].toLowerCase()));
 							  c++; break;
 						  }
 				case 'T': {	  if(mob().location()!=null)
@@ -1246,7 +1246,7 @@ public class DefaultSession extends Thread implements Session
 				status=Session.STATUS_LOGIN;
 				Command C=CMClass.getCommand("FrontLogin");
 				String input=null;
-                Vector tryV=Util.makeVector(""+tries);
+                Vector tryV=CMParms.makeVector(""+tries);
 				if((C!=null)&&(C.execute(mob,tryV)))
 				{
 					status=Session.STATUS_LOGIN2;
@@ -1280,7 +1280,7 @@ public class DefaultSession extends Thread implements Session
 						{
 							lastKeystroke=System.currentTimeMillis();
 							setAfkFlag(false);
-							CMDS=Util.parse(input);
+							CMDS=CMParms.parse(input);
 							if(CMDS.size()>0)
 							{
 								waiting=false;
@@ -1291,12 +1291,12 @@ public class DefaultSession extends Thread implements Session
                                 if(alias.length()>0)
                                 {
                                     CMDS.removeElementAt(0);
-                                    Vector all_stuff=Util.parseSquiggleDelimited(alias,true);
+                                    Vector all_stuff=CMParms.parseSquiggleDelimited(alias,true);
                                     for(int a=0;a<all_stuff.size();a++)
                                     {
                                         Vector THIS_CMDS=(Vector)CMDS.clone();
                                         ALL_CMDS.addElement(THIS_CMDS);
-                                        Vector preCommands=Util.parse((String)all_stuff.elementAt(a));
+                                        Vector preCommands=CMParms.parse((String)all_stuff.elementAt(a));
                                         for(int v=preCommands.size()-1;v>=0;v--)
                                             THIS_CMDS.insertElementAt(preCommands.elementAt(v),0);
                                     }
@@ -1315,7 +1315,7 @@ public class DefaultSession extends Thread implements Session
     										((Session)snoops.elementAt(s)).rawPrintln(input);
     								
     								lastStart=System.currentTimeMillis();
-                                    if(echoOn) rawPrintln(Util.combineWithQuotes(CMDS,0));
+                                    if(echoOn) rawPrintln(CMParms.combineWithQuotes(CMDS,0));
     								mob.enqueCommand(CMDS,0);
     								lastStop=System.currentTimeMillis();
                                 }

@@ -67,10 +67,10 @@ public class Chant_Earthpocket extends Chant
 	{
 		if((msg.source()!=affected)
 		&&((msg.target()==pocket)||(msg.tool()==pocket))
-		&&(Util.bset(msg.sourceCode(),CMMsg.MASK_HANDS)
-		   ||Util.bset(msg.sourceCode(),CMMsg.MASK_MOVE)
-		   ||Util.bset(msg.sourceCode(),CMMsg.MASK_DELICATE)
-		   ||Util.bset(msg.sourceCode(),CMMsg.MASK_MOUTH)))
+		&&(CMath.bset(msg.sourceCode(),CMMsg.MASK_HANDS)
+		   ||CMath.bset(msg.sourceCode(),CMMsg.MASK_MOVE)
+		   ||CMath.bset(msg.sourceCode(),CMMsg.MASK_DELICATE)
+		   ||CMath.bset(msg.sourceCode(),CMMsg.MASK_MOUTH)))
 		{
 			msg.source().tell("The dark pocket draws away from you, preventing your action.");
 			return false;
@@ -105,7 +105,7 @@ public class Chant_Earthpocket extends Chant
 				{
 					if(((MOB)affected).location().domainType()==Room.DOMAIN_INDOORS_CAVE)
 					{
-						if(Util.bset(pocket.baseEnvStats().disposition(),EnvStats.IS_NOT_SEEN))
+						if(CMath.bset(pocket.baseEnvStats().disposition(),EnvStats.IS_NOT_SEEN))
 						{
 							pocket.baseEnvStats().setDisposition(pocket.baseEnvStats().disposition()-EnvStats.IS_NOT_SEEN);
 							pocket.recoverEnvStats();
@@ -113,14 +113,14 @@ public class Chant_Earthpocket extends Chant
 						((MOB)affected).location().bringItemHere(pocket,0);
 					}
 					else
-					if(!Util.bset(pocket.baseEnvStats().disposition(),EnvStats.IS_NOT_SEEN))
+					if(!CMath.bset(pocket.baseEnvStats().disposition(),EnvStats.IS_NOT_SEEN))
 					{
 						pocket.baseEnvStats().setDisposition(pocket.baseEnvStats().disposition()|EnvStats.IS_NOT_SEEN);
 						pocket.recoverEnvStats();
 					}
 				}
 				else
-				if(!Util.bset(pocket.baseEnvStats().disposition(),EnvStats.IS_NOT_SEEN))
+				if(!CMath.bset(pocket.baseEnvStats().disposition(),EnvStats.IS_NOT_SEEN))
 				{
 					pocket.baseEnvStats().setDisposition(pocket.baseEnvStats().disposition()|EnvStats.IS_NOT_SEEN);
 					pocket.recoverEnvStats();

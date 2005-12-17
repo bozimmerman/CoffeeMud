@@ -45,7 +45,7 @@ public class Prop_NoSummon extends Property
 		&&(msg.source().location()!=null)
 		&&((msg.source().location()==affected)
 		   ||((affected instanceof Area)&&(((Area)affected).inMetroArea(msg.source().location().getArea()))))
-		&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING)))
+		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING)))
 		{
             Ability A=(Ability)msg.tool();
             if(((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)

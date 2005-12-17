@@ -97,7 +97,7 @@ public class Prayer_CallUndead extends Prayer
                 Ability A=CMClass.getAbility("Skill_Track");
                 if(A!=null)
                 {
-                    A.invoke(follower,Util.parse("\""+CMLib.map().getExtendedRoomID(newRoom)+"\""),newRoom,true,0);
+                    A.invoke(follower,CMParms.parse("\""+CMLib.map().getExtendedRoomID(newRoom)+"\""),newRoom,true,0);
                     return true;
                 }
             }

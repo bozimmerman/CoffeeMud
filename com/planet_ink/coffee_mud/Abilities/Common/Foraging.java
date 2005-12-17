@@ -164,8 +164,8 @@ public class Foraging extends GatheringSkill
 						{
 							String s=(String)V.elementAt(i);
 							int x=s.indexOf(" ");
-							if((x>=0)&&(Util.isNumber(s.substring(0,x).trim())))
-								total+=Util.s_int(s.substring(0,x).trim());
+							if((x>=0)&&(CMath.isNumber(s.substring(0,x).trim())))
+								total+=CMath.s_int(s.substring(0,x).trim());
 							else
 								total+=10;
 						}
@@ -175,9 +175,9 @@ public class Foraging extends GatheringSkill
 						{
 							String s=(String)V.elementAt(i);
 							int x=s.indexOf(" ");
-							if((x>=0)&&(Util.isNumber(s.substring(0,x).trim())))
+							if((x>=0)&&(CMath.isNumber(s.substring(0,x).trim())))
 							{
-								total+=Util.s_int(s.substring(0,x).trim());
+								total+=CMath.s_int(s.substring(0,x).trim());
 								if(choice<=total)
 								{
 									found.setSecretIdentity(s.substring(x+1).trim());

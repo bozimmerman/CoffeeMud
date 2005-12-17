@@ -53,19 +53,17 @@ public interface ScriptingEngine extends Behavior
     public boolean endQuest(Environmental hostObj, MOB mob, String quest);
     public static class ScriptableResponse
     {
-        int tickDelay=0;
-        Environmental h=null;
-        MOB s=null;
-        Environmental t=null;
-        MOB m=null;
-        Item pi=null;
-        Item si=null;
-        Vector scr;
-        String message=null;
-        ScriptingEngine myObj=null;
+        private int tickDelay=0;
+        public Environmental h=null;
+        public MOB s=null;
+        public Environmental t=null;
+        public MOB m=null;
+        public Item pi=null;
+        public Item si=null;
+        public Vector scr;
+        public String message=null;
 
-        public ScriptableResponse(ScriptingEngine obj,
-                                  Environmental host,
+        public ScriptableResponse(Environmental host,
                                   MOB source,
                                   Environmental target,
                                   MOB monster,
@@ -75,7 +73,6 @@ public interface ScriptingEngine extends Behavior
                                   int ticks,
                                   String msg)
         {
-            myObj=obj;
             h=host;
             s=source;
             t=target;
@@ -86,16 +83,8 @@ public interface ScriptingEngine extends Behavior
             tickDelay=ticks;
             message=msg;
         }
-        
-        public boolean tickOrGo()
-        {
-            if((--tickDelay)<=0)
-            {
-                myObj.execute(h,s,t,m,pi,si,scr,message);
-                return true;
-            }
-            return false;
-        }
+
+        public boolean checkTimeToExecute() { return ((--tickDelay)<=0); }
     }
     
     public static final String[] progs={

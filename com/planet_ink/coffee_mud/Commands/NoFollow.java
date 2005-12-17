@@ -48,15 +48,15 @@ public class NoFollow extends Follow
 				return false;
 			}
 		}
-		if(!Util.bset(mob.getBitmap(),MOB.ATT_NOFOLLOW))
+		if(!CMath.bset(mob.getBitmap(),MOB.ATT_NOFOLLOW))
 		{
-			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_NOFOLLOW));
+			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_NOFOLLOW));
 			unfollow(mob,false);
 			mob.tell("You are no longer accepting followers.");
 		}
 		else
 		{
-			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_NOFOLLOW));
+			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_NOFOLLOW));
 			mob.tell("You are now accepting followers.");
 		}
 		return false;

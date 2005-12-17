@@ -50,19 +50,19 @@ public class Chant_SpeedAging extends Chant
 
 	    int type=affectType(auto);
 	    if((target instanceof MOB)
-	    &&(Util.bset(type,CMMsg.MASK_MALICIOUS))
+	    &&(CMath.bset(type,CMMsg.MASK_MALICIOUS))
 	    &&(((MOB)target).charStats().getStat(CharStats.AGE)>0))
 	    {
 	        MOB mobt=(MOB)target;
 	        if(mobt.charStats().ageCategory()<=Race.AGE_CHILD)
-		        type=Util.unsetb(type,CMMsg.MASK_MALICIOUS);
+		        type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
 	        else
 	        if((mobt.getLiegeID().equals(mob.Name()))||(mobt.amFollowing()==mob))
-		        type=Util.unsetb(type,CMMsg.MASK_MALICIOUS);
+		        type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
 	        else
 	        if((mobt.charStats().ageCategory()<=Race.AGE_MATURE)
 	        &&(mobt.getLiegeID().length()>0))
-		        type=Util.unsetb(type,CMMsg.MASK_MALICIOUS);
+		        type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
 	    }
 	            
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -119,10 +119,10 @@ public class Chant_SpeedAging extends Chant
 					else
 					if(M.playerStats().getBirthday()!=null)
 					{
-					    double aging=Util.mul(M.baseCharStats().getStat(CharStats.AGE),.10);
+					    double aging=CMath.mul(M.baseCharStats().getStat(CharStats.AGE),.10);
 					    int years=(int)Math.round(Math.floor(aging));
 					    int monthsInYear=CMClass.globalClock().getMonthsInYear();
-					    int months=(int)Math.round(Util.mul(aging-Math.floor(aging),monthsInYear));
+					    int months=(int)Math.round(CMath.mul(aging-Math.floor(aging),monthsInYear));
 					    M.playerStats().getBirthday()[2]-=years;
 					    M.playerStats().getBirthday()[1]-=months;
 					    if(M.playerStats().getBirthday()[1]<1)
@@ -138,7 +138,7 @@ public class Chant_SpeedAging extends Chant
 				}
 				else
 				{
-					long start=Util.s_long(A.text());
+					long start=CMath.s_long(A.text());
 					long age=System.currentTimeMillis()-start;
 					age=age+(age/10);
 					if(age<(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*MudHost.TICK_TIME))
@@ -153,7 +153,7 @@ public class Chant_SpeedAging extends Chant
 			}
 		}
 		else
-		if(Util.bset(type,CMMsg.MASK_MALICIOUS))
+		if(CMath.bset(type,CMMsg.MASK_MALICIOUS))
 			return maliciousFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades.");
 		else
 			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades.");

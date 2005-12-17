@@ -56,7 +56,7 @@ public class Look extends StdCommand
 			else
 			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("to")))
 			   commands.removeElementAt(1);
-			String ID=Util.combine(commands,1);
+			String ID=CMParms.combine(commands,1);
 			
 			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2)))
 			{
@@ -73,7 +73,7 @@ public class Look extends StdCommand
 			&&(((String)commands.elementAt(1)).equalsIgnoreCase("in")))
 			{
 				commands.removeElementAt(1);
-				String ID2=Util.combine(commands,1);
+				String ID2=CMParms.combine(commands,1);
 				thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID2,Item.WORN_REQ_ANY);
 				if((thisThang!=null)&&((!(thisThang instanceof Container))||(((Container)thisThang).capacity()==0)))
 				{
@@ -116,7 +116,7 @@ public class Look extends StdCommand
 				CMMsg msg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK,textMsg+name+".");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
-				if((thisThang instanceof Room)&&(Util.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS)))
+				if((thisThang instanceof Room)&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS)))
 					((Room)thisThang).listExits(mob);
 			}
 			else
@@ -134,7 +134,7 @@ public class Look extends StdCommand
 			CMMsg msg=CMClass.getMsg(mob,mob.location(),null,CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"at you."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
-			if((Util.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))
+			if((CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))
 			&&(CMLib.flags().canBeSeenBy(mob.location(),mob)))
 				mob.location().listExits(mob);
 		}

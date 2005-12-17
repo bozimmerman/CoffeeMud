@@ -118,26 +118,26 @@ public class JournalLoader
 				if(to.equalsIgnoreCase("all"))
 				{
 					Long l2=(Long)H.get("ALL");
-					if((l2==null)||(l2.longValue()<Util.s_long(compdate)))
+					if((l2==null)||(l2.longValue()<CMath.s_long(compdate)))
 					{
 						if(H.containsKey("ALL")) H.remove("ALL");
-						H.put("ALL",new Long(Util.s_long(compdate)));
+						H.put("ALL",new Long(CMath.s_long(compdate)));
 					}
 				}
 				else
 				{
 					Long l2=(Long)H.get(to);
-					if((l2==null)||(l2.longValue()<Util.s_long(compdate)))
+					if((l2==null)||(l2.longValue()<CMath.s_long(compdate)))
 					{
 						if(H.containsKey(to)) H.remove(to);
-						H.put(to,new Long(Util.s_long(compdate)));
+						H.put(to,new Long(CMath.s_long(compdate)));
 					}
 					String from=(String)V2.elementAt(1);
 					l2=(Long)H.get(from); // from
-					if((l2==null)||(l2.longValue()<Util.s_long(compdate)))
+					if((l2==null)||(l2.longValue()<CMath.s_long(compdate)))
 					{
 						if(H.containsKey(from)) H.remove(from);
-						H.put(from,new Long(Util.s_long(compdate)));
+						H.put(from,new Long(CMath.s_long(compdate)));
 					}
 				}
 			}
@@ -207,7 +207,7 @@ public class JournalLoader
 						char c=subject.toUpperCase().charAt(3);
 						subject=subject.substring(4);
 						entry.setElementAt(subject,4);
-						long last=Util.s_long((String)entry.elementAt(2));
+						long last=CMath.s_long((String)entry.elementAt(2));
 						if(c=='D') last=last+TimeManager.MILI_DAY;
 						else
 						if(c=='M') last=last+TimeManager.MILI_MONTH;
@@ -239,9 +239,9 @@ public class JournalLoader
 					String datestr=(String)entry.elementAt(2);
 					long date=0;
 					if(datestr.indexOf("/")>=0)
-						date=Util.s_long(datestr.substring(0,datestr.indexOf("/")));
+						date=CMath.s_long(datestr.substring(0,datestr.indexOf("/")));
 					else
-						date=Util.s_long(datestr);
+						date=CMath.s_long(datestr);
 					
 					if(date<byDate)
 					{

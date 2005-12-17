@@ -589,9 +589,9 @@ public class ProcessSMTPrequest extends Thread
 							if(parmparms.trim().length()>0)
                             {
                                 if((parmparms.trim().toUpperCase().startsWith("SIZE="))
-                                ||(!Util.isNumber(parmparms.trim().toUpperCase().substring(5))))
+                                ||(!CMath.isNumber(parmparms.trim().toUpperCase().substring(5))))
                                 {
-                                    int size=Util.s_int(parmparms.trim().toUpperCase().substring(5));
+                                    int size=CMath.s_int(parmparms.trim().toUpperCase().substring(5));
                                     if(size>server.getMaxMsgSize())
                                         replyData=("552 String exceeds size limit. But you were nice to tell me!"+cr).getBytes();
                                 }
@@ -704,9 +704,9 @@ public class ProcessSMTPrequest extends Thread
 								if(parmparms.trim().length()>0)
                                 {
                                     if((parmparms.trim().toUpperCase().startsWith("SIZE="))
-                                    ||(!Util.isNumber(parmparms.trim().toUpperCase().substring(5))))
+                                    ||(!CMath.isNumber(parmparms.trim().toUpperCase().substring(5))))
                                     {
-                                        int size=Util.s_int(parmparms.trim().toUpperCase().substring(5));
+                                        int size=CMath.s_int(parmparms.trim().toUpperCase().substring(5));
                                         if(size>server.getMaxMsgSize())
                                             replyData=("552 String exceeds size limit. But you were nice to tell me!"+cr).getBytes();
                                     }

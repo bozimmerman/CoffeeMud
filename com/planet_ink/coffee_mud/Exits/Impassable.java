@@ -46,7 +46,7 @@ public class Impassable extends GenExit
 		if((!msg.amITarget(this))&&(msg.tool()!=this))
 			return true;
 		else
-		if(Util.bset(msg.targetMajor(),CMMsg.MASK_MOVE))
+		if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE))
 		{
 			mob.tell("You can't go that way.");
 			return false;

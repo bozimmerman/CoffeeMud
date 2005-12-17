@@ -39,7 +39,7 @@ public class ClanDetails extends BaseClanner
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String qual=Util.combine(commands,1).toUpperCase();
+		String qual=CMParms.combine(commands,1).toUpperCase();
 		if(qual.length()==0) qual=mob.getClanID();
 		StringBuffer msg=new StringBuffer("");
 		if(qual.length()>0)

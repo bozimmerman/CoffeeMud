@@ -68,14 +68,14 @@ public class Fill extends BaseItemParser
 
 		int maxToFill=Integer.MAX_VALUE;
 		if((commands.size()>1)
-		&&(Util.s_int((String)commands.firstElement())>0)
-		&&(CMLib.english().numPossibleGold(mob,Util.combine(commands,0))==0))
+		&&(CMath.s_int((String)commands.firstElement())>0)
+		&&(CMLib.english().numPossibleGold(mob,CMParms.combine(commands,0))==0))
 		{
-			maxToFill=Util.s_int((String)commands.firstElement());
+			maxToFill=CMath.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
 		}
 
-		String thingToFill=Util.combine(commands,0);
+		String thingToFill=CMParms.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
 		Vector V=new Vector();

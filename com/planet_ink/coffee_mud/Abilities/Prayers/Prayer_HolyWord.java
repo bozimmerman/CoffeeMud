@@ -130,7 +130,7 @@ public class Prayer_HolyWord extends Prayer
 							target.recoverEnvStats();
 						}
 						else
-						if(Util.bset(affectType,CMMsg.MASK_MALICIOUS))
+						if(CMath.bset(affectType,CMMsg.MASK_MALICIOUS))
 							maliciousFizzle(mob,target,"<T-NAME> did not hear the word!");
 						else
 							beneficialWordsFizzle(mob,target,"<T-NAME> did not hear the word!");
@@ -140,7 +140,7 @@ public class Prayer_HolyWord extends Prayer
 			}
 			else
 			{
-				if(Util.bset(affectType,CMMsg.MASK_MALICIOUS))
+				if(CMath.bset(affectType,CMMsg.MASK_MALICIOUS))
 					maliciousFizzle(mob,target,missStr);
 				else
 					beneficialWordsFizzle(mob,target,missStr);

@@ -353,8 +353,8 @@ public class StdTitle extends StdItem implements LandTitle
 						Area A2=CMLib.utensils().getLegalObject(R);
 						Law theLaw=B.legalInfo(A2);
 						String taxs=(String)theLaw.taxLaws().get("PROPERTYTAX");
-						if((taxs!=null)&&(taxs.length()==0)&&(Util.s_double(taxs)>0.0))
-						    msg.source().tell("A property tax of "+Util.s_double(taxs)+"% of "+A.landPrice()+" will be paid monthly out of your bank account.");
+						if((taxs!=null)&&(taxs.length()==0)&&(CMath.s_double(taxs)>0.0))
+						    msg.source().tell("A property tax of "+CMath.s_double(taxs)+"% of "+A.landPrice()+" will be paid monthly out of your bank account.");
 				    }
 			    }
 			}
@@ -390,15 +390,15 @@ public class StdTitle extends StdItem implements LandTitle
 							else
 							if(n.length()!=0)
 							{
-								String nn=Util.replaceAll(AREA.Name(),"UNNAMED",Util.capitalizeFirstLetter(n.toLowerCase()));
+								String nn=CMStrings.replaceAll(AREA.Name(),"UNNAMED",CMStrings.capitalizeFirstLetter(n.toLowerCase()));
 								if(CMLib.database().DBUserSearch(null,nn))
 									msg.source().tell("That name is already taken.  Please enter a different one.");
 								else
 								if(msg.source().session().confirm("If the name '"+nn+"' correct (y/N)?","N",60000))
 								{
-									name=Util.replaceAll(name,"UNNAMED",Util.capitalizeFirstLetter(n.toLowerCase()));
-									displayText=Util.replaceAll(displayText,"UNNAMED",Util.capitalizeFirstLetter(n.toLowerCase()));
-									setDescription(Util.replaceAll(description(),"UNNAMED",Util.capitalizeFirstLetter(n.toLowerCase())));
+									name=CMStrings.replaceAll(name,"UNNAMED",CMStrings.capitalizeFirstLetter(n.toLowerCase()));
+									displayText=CMStrings.replaceAll(displayText,"UNNAMED",CMStrings.capitalizeFirstLetter(n.toLowerCase()));
+									setDescription(CMStrings.replaceAll(description(),"UNNAMED",CMStrings.capitalizeFirstLetter(n.toLowerCase())));
 									newName=nn;
 								}
 								else

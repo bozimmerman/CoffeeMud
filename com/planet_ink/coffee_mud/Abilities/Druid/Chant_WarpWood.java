@@ -95,7 +95,7 @@ public class Chant_WarpWood extends Chant
 				{
 					int damage=100+mob.envStats().level()-target.envStats().level();
 					if(CMLib.flags().isABonusItems(target))
-						damage=(int)Math.round(Util.div(damage,2.0));
+						damage=(int)Math.round(CMath.div(damage,2.0));
 					target.setUsesRemaining(target.usesRemaining()-damage);
 					if(mobTarget==null)
 						mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> begin(s) to twist and warp!");

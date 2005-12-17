@@ -42,7 +42,7 @@ public class Spell_Summon extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
-		String areaName=Util.combine(commands,0).trim().toUpperCase();
+		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 		if((commands.size()<1)&&(!auto))
 		{
 			mob.tell("Summon whom?");
@@ -86,7 +86,7 @@ public class Spell_Summon extends Spell
 
 		if(oldRoom==null)
 		{
-			mob.tell("You can't seem to fixate on '"+Util.combine(commands,0)+"', perhaps they don't exist?");
+			mob.tell("You can't seem to fixate on '"+CMParms.combine(commands,0)+"', perhaps they don't exist?");
 			return false;
 		}
 

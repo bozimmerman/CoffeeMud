@@ -225,7 +225,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public Item findDepositInventory(String mob, String likeThis)
 	{
 		Vector V=getDepositInventory(mob);
-		if(Util.s_int(likeThis)>0)
+		if(CMath.s_int(likeThis)>0)
 			for(int v=0;v<V.size();v++)
 			{
 				Vector V2=(Vector)V.elementAt(v);
@@ -309,9 +309,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 						}
 						double newBalance=0.0;
 						if(coinItem!=null) newBalance=coinItem.getTotalValue();
-						newBalance+=Util.mul(newBalance,coinInterest);
+						newBalance+=CMath.mul(newBalance,coinInterest);
 						if(totalValue>0)
-							newBalance+=Util.mul(totalValue,itemInterest);
+							newBalance+=CMath.mul(totalValue,itemInterest);
 						if(newBalance<0)
 						{
 							for(int v=0;v<V.size();v++)
@@ -366,7 +366,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		{
 			Item I=(Item)V.elementAt(v);
 			if(I instanceof Coins) continue;
-			min+=Util.div(I.value(),2.0);
+			min+=CMath.div(I.value(),2.0);
 		}
 		return min;
 	}
@@ -517,7 +517,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					{
 						Vector V2=getDepositedItems(mob.getLiegeID());
 						if((V2!=null)&&(V2.size()>0))
-							Util.addToVector(V2,V);
+							CMParms.addToVector(V2,V);
 					}
 				}
 
@@ -534,7 +534,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					{
 						otherThanCoins=true;
 						String col=null;
-						col="["+Util.padRight(I.name(),34)+"] ";
+						col="["+CMStrings.padRight(I.name(),34)+"] ";
 						if((++colNum)>2)
 						{
 							str.append("\n\r");
@@ -563,13 +563,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 				}
 				if(coinInterest!=0.0)
 				{
-					double cci=Util.mul(Math.abs(coinInterest),100.0);
+					double cci=CMath.mul(Math.abs(coinInterest),100.0);
 					String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
 					str.append("\n\rThey "+ci+"weekly on money deposited here.");
 				}
 				if(itemInterest!=0.0)
 				{
-					double cci=Util.mul(Math.abs(itemInterest),100.0);
+					double cci=CMath.mul(Math.abs(itemInterest),100.0);
 					String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
 					str.append("\n\rThey "+ci+"weekly on items deposited here.");
 				}
@@ -627,7 +627,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						mob.tell(mob.charStats().HeShe()+" doesn't look interested.");
 						return false;
 					}
-					double minbalance=minBalance(mob)+Util.div(((Item)msg.tool()).value(),2.0);
+					double minbalance=minBalance(mob)+CMath.div(((Item)msg.tool()).value(),2.0);
 					if(balance<minbalance)
 					{
 						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
@@ -768,13 +768,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 						str.append("You don't have an account with us, I'm afraid.");
 					if(coinInterest!=0.0)
 					{
-						double cci=Util.mul(Math.abs(coinInterest),100.0);
+						double cci=CMath.mul(Math.abs(coinInterest),100.0);
 						String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
 						str.append("\n\rWe "+ci+"weekly on money deposited here.");
 					}
 					if(itemInterest!=0.0)
 					{
-						double cci=Util.mul(Math.abs(itemInterest),100.0);
+						double cci=CMath.mul(Math.abs(itemInterest),100.0);
 						String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
 						str.append("\n\rWe "+ci+"weekly on items kept with us.");
 					}

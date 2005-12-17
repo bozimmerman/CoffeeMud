@@ -121,7 +121,7 @@ public class Prayer_UnholyWord extends Prayer
 							target.recoverEnvStats();
 						}
 						else
-						if(Util.bset(affectType,CMMsg.MASK_MALICIOUS))
+						if(CMath.bset(affectType,CMMsg.MASK_MALICIOUS))
 							maliciousFizzle(mob,target,"<T-NAME> did not hear the unholy word!");
 						else
 							beneficialWordsFizzle(mob,target,"<T-NAME> did not hear the unholy word!");
@@ -130,7 +130,7 @@ public class Prayer_UnholyWord extends Prayer
 			}
 			else
 			{
-				if(Util.bset(affectType,CMMsg.MASK_MALICIOUS))
+				if(CMath.bset(affectType,CMMsg.MASK_MALICIOUS))
 					maliciousFizzle(mob,target,"<S-NAME> attempt(s) to speak the unholy word to <T-NAMESELF>, but flub(s) it.");
 				else
 					beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to speak the unholy word to <T-NAMESELF>, but flub(s) it.");

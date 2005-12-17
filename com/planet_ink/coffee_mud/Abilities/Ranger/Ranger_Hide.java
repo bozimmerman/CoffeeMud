@@ -59,12 +59,12 @@ public class Ranger_Hide extends StdAbility
 		if(msg.amISource(mob))
 		{
 
-			if(((Util.bset(msg.sourceMajor(),CMMsg.MASK_SOUND)
+			if(((CMath.bset(msg.sourceMajor(),CMMsg.MASK_SOUND)
 				 ||(msg.sourceMinor()==CMMsg.TYP_SPEAK)
 				 ||(msg.sourceMinor()==CMMsg.TYP_ENTER)
 				 ||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
 				 ||(msg.sourceMinor()==CMMsg.TYP_RECALL)))
-			 &&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			 &&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
 			 &&(msg.sourceMinor()!=CMMsg.TYP_LOOK)
              &&(msg.sourceMinor()!=CMMsg.TYP_EXAMINE)
 			 &&(msg.sourceMajor()>0))

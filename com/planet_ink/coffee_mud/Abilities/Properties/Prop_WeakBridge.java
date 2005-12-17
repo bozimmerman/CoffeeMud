@@ -50,9 +50,9 @@ public class Prop_WeakBridge extends Property
 	{
         mobsToKill=new Vector();
 		super.setMiscText(newText);
-		max=Util.getParmInt(newText,"max",400);
-		chance=Util.getParmInt(newText,"chance",75);
-		ticksDown=Util.getParmInt(newText,"down",300);
+		max=CMParms.getParmInt(newText,"max",400);
+		chance=CMParms.getParmInt(newText,"chance",75);
+		ticksDown=CMParms.getParmInt(newText,"down",300);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

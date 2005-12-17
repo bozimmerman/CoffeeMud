@@ -422,13 +422,13 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	
 	public String getFormattedDate(Environmental E)
 	{
-	    String date=Util.padRight("Unknown",11);
+	    String date=CMStrings.padRight("Unknown",11);
 	    if(E!=null)
 	    {
 		    TimeClock C=(E instanceof Area)?((Area)E).getTimeObj():
 		        roomLocation(E).getArea().getTimeObj();
 		    if(C!=null)
-		        date=Util.padRight(C.getDayOfMonth()+"-"+C.getMonth()+"-"+C.getYear(),11);
+		        date=CMStrings.padRight(C.getDayOfMonth()+"-"+C.getMonth()+"-"+C.getYear(),11);
 	    }
 	    return date;
 	}
@@ -688,8 +688,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			Ability A=target.fetchEffect(a);
 			if((A!=null)&&((!mundane)||((A.classificationCode()&Ability.ALL_CODES)==Ability.PROPERTY)))
 			{
-				if((Util.bset(A.flags(),Ability.FLAG_HEATING)&&(!mundane))
-				||(Util.bset(A.flags(),Ability.FLAG_BURNING))
+				if((CMath.bset(A.flags(),Ability.FLAG_HEATING)&&(!mundane))
+				||(CMath.bset(A.flags(),Ability.FLAG_BURNING))
 				||((A.ID().equalsIgnoreCase("Spell_SummonElemental")&&A.text().toUpperCase().indexOf("FIRE")>=0)))
 					A.unInvoke();
 			}
@@ -866,7 +866,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	public void resetRoom(Room room)
 	{
 		if(room==null) return;
-        if(Util.bset(room.baseEnvStats().sensesMask(),EnvStats.SENSE_ROOMSYNC))
+        if(CMath.bset(room.baseEnvStats().sensesMask(),EnvStats.SENSE_ROOMSYNC))
             return;
         room.baseEnvStats().setSensesMask(room.baseEnvStats().sensesMask()|EnvStats.SENSE_ROOMSYNC);
 		boolean mobile=room.getMobility();
@@ -883,7 +883,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         }
 		CMLib.database().DBReadContent(room,null);
 		room.toggleMobility(mobile);
-        if(Util.bset(room.baseEnvStats().sensesMask(),EnvStats.SENSE_ROOMSYNC))
+        if(CMath.bset(room.baseEnvStats().sensesMask(),EnvStats.SENSE_ROOMSYNC))
             room.baseEnvStats().setSensesMask(room.baseEnvStats().sensesMask()-EnvStats.SENSE_ROOMSYNC);
 	}
     
@@ -1136,7 +1136,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         StringBuffer buf=new StringBuffer("");
         for(int wornNum=0;wornNum<Item.wornLocation.length-1;wornNum++)
         {
-            if(Util.isSet(wornCode,wornNum))
+            if(CMath.isSet(wornCode,wornNum))
                 buf.append(Item.wornLocation[wornNum+1]+", ");
         }
         String buff=buf.toString();

@@ -249,9 +249,9 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 			||(msg.sourceMinor()==CMMsg.TYP_FLEE))
 				return false;
 		}
-		if((Util.bset(msg.sourceCode(),CMMsg.MASK_MAGIC))
-		||(Util.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
-		||(Util.bset(msg.othersCode(),CMMsg.MASK_MAGIC)))
+		if((CMath.bset(msg.sourceCode(),CMMsg.MASK_MAGIC))
+		||(CMath.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
+		||(CMath.bset(msg.othersCode(),CMMsg.MASK_MAGIC)))
 		{
 			Room room=null;
 			if((msg.target()!=null)
@@ -733,7 +733,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
         {
             A=(Area)e.nextElement();
             V.addElement(A);
-            Util.addToVector(A.getParentsRecurse(),V);
+            CMParms.addToVector(A.getParentsRecurse(),V);
         }
         return V;
     }
@@ -819,10 +819,10 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		switch(getCodeNum(code))
 		{
 		case 0: return;
-		case 1: setClimateType(Util.s_int(val)); break;
+		case 1: setClimateType(CMath.s_int(val)); break;
 		case 2: setDescription(val); break;
 		case 3: setMiscText(val); break;
-		case 4: setTechLevel(Util.s_int(val)); break;
+		case 4: setTechLevel(CMath.s_int(val)); break;
 		}
 	}
 	public boolean sameAs(Environmental E)

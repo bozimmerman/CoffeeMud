@@ -59,9 +59,9 @@ public class Chant_CaveIn extends Chant
 			MOB mob=(MOB)affected;
 			if(msg.sourceMinor()==CMMsg.TYP_STAND)
 				return false;
-			if((!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
-			&&((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
+			if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
 			{
 				mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) to get out from under the rocks.");
 				amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)*4);
@@ -89,7 +89,7 @@ public class Chant_CaveIn extends Chant
 		Environmental target=null;
 		if((commands.size()>0)&&(givenTarget==null))
 		{
-			int dir=Directions.getGoodDirectionCode(Util.combine(commands,0));
+			int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
 			if((dir>=0)&&(dir!=Directions.UP)&&(mob.location().getExitInDir(dir)!=null))
 				target=mob.location().getExitInDir(dir);
 		}
@@ -132,7 +132,7 @@ public class Chant_CaveIn extends Chant
 					int maxDie =  (int)Math.round(new Integer(adjustedLevel(mob,asLevel)).doubleValue()/3.0);
 					int damage = CMLib.dice().roll(maxDie,3,maxDie);
 					if(msg.value()>0)
-						damage = (int)Math.round(Util.div(damage,1.5));
+						damage = (int)Math.round(CMath.div(damage,1.5));
 					if(((MOB)target).location()==mob.location())
 						CMLib.combat().postDamage(mob,(MOB)target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_BASHING,"The falling rubble <DAMAGE> <T-NAME>!");
 				}

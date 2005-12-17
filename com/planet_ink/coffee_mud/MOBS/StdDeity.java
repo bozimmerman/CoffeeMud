@@ -184,7 +184,7 @@ public class StdDeity extends StdMOB implements Deity
 			case TRIGGER_PUTMATERIAL:
 				{
 					String material="something";
-					int t=Util.s_int(DT.parm1);
+					int t=CMath.s_int(DT.parm1);
 					if(((t&EnvResource.RESOURCE_MASK)==0)
 					&&((t>>8)<EnvResource.MATERIAL_MASK))
 						material=EnvResource.MATERIAL_DESCS[t>>8].toLowerCase();
@@ -198,7 +198,7 @@ public class StdDeity extends StdMOB implements Deity
 			case TRIGGER_BURNMATERIAL:
 				{
 					String material="something";
-					int t=Util.s_int(DT.parm1);
+					int t=CMath.s_int(DT.parm1);
 					if(((t&EnvResource.RESOURCE_MASK)==0)
 					&&((t>>8)<EnvResource.MATERIAL_MASK))
 						material=EnvResource.MATERIAL_DESCS[t>>8].toLowerCase();
@@ -559,11 +559,11 @@ public class StdDeity extends StdMOB implements Deity
 					break;
 				case TRIGGER_TIME:
 					if((msg.source().location()!=null)
-					&&(msg.source().location().getArea().getTimeObj().getTimeOfDay()==Util.s_int(DT.parm1)))
+					&&(msg.source().location().getArea().getTimeObj().getTimeOfDay()==CMath.s_int(DT.parm1)))
 					   yup=true;
 					break;
 				case TRIGGER_RANDOM:
-					if(CMLib.dice().rollPercentage()<=Util.s_int(DT.parm1))
+					if(CMLib.dice().rollPercentage()<=CMath.s_int(DT.parm1))
 					   yup=true;
 					break;
 				case TRIGGER_CHECK:
@@ -610,7 +610,7 @@ public class StdDeity extends StdMOB implements Deity
 				case TRIGGER_PUTVALUE:
 					if((msg.tool()!=null)
 					&&(msg.tool() instanceof Item)
-					&&(((Item)msg.tool()).baseGoldValue()>=Util.s_int(DT.parm1))
+					&&(((Item)msg.tool()).baseGoldValue()>=CMath.s_int(DT.parm1))
 					&&(msg.target()!=null)
 					&&(msg.target() instanceof Container)
 					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
@@ -619,8 +619,8 @@ public class StdDeity extends StdMOB implements Deity
 				case TRIGGER_PUTMATERIAL:
 					if((msg.tool()!=null)
 					&&(msg.tool() instanceof Item)
-					&&(((((Item)msg.tool()).material()&EnvResource.RESOURCE_MASK)==Util.s_int(DT.parm1))
-						||((((Item)msg.tool()).material()&EnvResource.MATERIAL_MASK)==Util.s_int(DT.parm1)))
+					&&(((((Item)msg.tool()).material()&EnvResource.RESOURCE_MASK)==CMath.s_int(DT.parm1))
+						||((((Item)msg.tool()).material()&EnvResource.MATERIAL_MASK)==CMath.s_int(DT.parm1)))
 					&&(msg.target()!=null)
 					&&(msg.target() instanceof Container)
 					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
@@ -629,14 +629,14 @@ public class StdDeity extends StdMOB implements Deity
 				case TRIGGER_BURNMATERIAL:
 					if((msg.target()!=null)
 					&&(msg.target() instanceof Item)
-					&&(((((Item)msg.target()).material()&EnvResource.RESOURCE_MASK)==Util.s_int(DT.parm1))
-						||((((Item)msg.target()).material()&EnvResource.MATERIAL_MASK)==Util.s_int(DT.parm1))))
+					&&(((((Item)msg.target()).material()&EnvResource.RESOURCE_MASK)==CMath.s_int(DT.parm1))
+						||((((Item)msg.target()).material()&EnvResource.MATERIAL_MASK)==CMath.s_int(DT.parm1))))
 							yup=true;
 					break;
 				case TRIGGER_BURNVALUE:
 					if((msg.target()!=null)
 					&&(msg.target() instanceof Item)
-					&&(((Item)msg.target()).baseGoldValue()>=Util.s_int(DT.parm1)))
+					&&(((Item)msg.target()).baseGoldValue()>=CMath.s_int(DT.parm1)))
 						yup=true;
 					break;
 				case TRIGGER_SITTING:
@@ -920,7 +920,7 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			if(trig.length()>0)
 			{
-				Vector V=Util.parse(trig);
+				Vector V=CMParms.parse(trig);
 				if(V.size()>1)
 				{
 					String cmd=(String)V.firstElement();
@@ -929,13 +929,13 @@ public class StdDeity extends StdMOB implements Deity
 					if(cmd.equals("SAY"))
 					{
 						DT.triggerCode=TRIGGER_SAY;
-						DT.parm1=Util.combine(V,1);
+						DT.parm1=CMParms.combine(V,1);
 					}
 					else
 					if(cmd.equals("TIME"))
 					{
 						DT.triggerCode=TRIGGER_TIME;
-						DT.parm1=""+Util.s_int(Util.combine(V,1));
+						DT.parm1=""+CMath.s_int(CMParms.combine(V,1));
 					}
 					else
 					if((cmd.equals("PUTTHING"))||(cmd.equals("PUT")))
@@ -946,14 +946,14 @@ public class StdDeity extends StdMOB implements Deity
 							Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
 							break;
 						}
-						DT.parm1=Util.combine(V,1,V.size()-2);
+						DT.parm1=CMParms.combine(V,1,V.size()-2);
 						DT.parm2=(String)V.lastElement();
 					}
 					else
 					if(cmd.equals("BURNTHING"))
 					{
 						DT.triggerCode=TRIGGER_BURNTHING;
-						DT.parm1=Util.combine(V,1);
+						DT.parm1=CMParms.combine(V,1);
 					}
 					else
 					if(cmd.equals("PUTVALUE"))
@@ -964,8 +964,8 @@ public class StdDeity extends StdMOB implements Deity
 							Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
 							break;
 						}
-						DT.parm1=""+Util.s_int((String)V.elementAt(1));
-						DT.parm2=Util.combine(V,2);
+						DT.parm1=""+CMath.s_int((String)V.elementAt(1));
+						DT.parm2=CMParms.combine(V,2);
 					}
 					else
 					if(cmd.equals("BURNVALUE"))
@@ -976,13 +976,13 @@ public class StdDeity extends StdMOB implements Deity
 							Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
 							break;
 						}
-						DT.parm1=""+Util.s_int(Util.combine(V,1));
+						DT.parm1=""+CMath.s_int(CMParms.combine(V,1));
 					}
 					else
 					if((cmd.equals("BURNMATERIAL"))||(cmd.equals("BURN")))
 					{
 						DT.triggerCode=TRIGGER_BURNMATERIAL;
-						DT.parm1=Util.combine(V,1);
+						DT.parm1=CMParms.combine(V,1);
 						boolean found=false;
 						for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
 						{
@@ -1017,7 +1017,7 @@ public class StdDeity extends StdMOB implements Deity
 							break;
 						}
 						DT.parm1=(String)V.elementAt(1);
-						DT.parm2=Util.combine(V,2);
+						DT.parm2=CMParms.combine(V,2);
 						boolean found=false;
 						for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
 						{
@@ -1046,49 +1046,49 @@ public class StdDeity extends StdMOB implements Deity
 					if(cmd.equals("EAT"))
 					{
 						DT.triggerCode=TRIGGER_EAT;
-						DT.parm1=Util.combine(V,1);
+						DT.parm1=CMParms.combine(V,1);
 					}
 					else
 					if(cmd.equals("READ"))
 					{
 						DT.triggerCode=TRIGGER_READING;
-						DT.parm1=Util.combine(V,1);
+						DT.parm1=CMParms.combine(V,1);
 					}
 					else
 					if(cmd.equals("RANDOM"))
 					{
 						DT.triggerCode=TRIGGER_RANDOM;
-						DT.parm1=Util.combine(V,1);
+						DT.parm1=CMParms.combine(V,1);
 					}
 					else
 					if(cmd.equals("CHECK"))
 					{
 						DT.triggerCode=TRIGGER_CHECK;
-						DT.parm1=Util.combine(V,1);
+						DT.parm1=CMParms.combine(V,1);
 					}
 					else
 					if(cmd.equals("DRINK"))
 					{
 						DT.triggerCode=TRIGGER_DRINK;
-						DT.parm1=Util.combine(V,1);
+						DT.parm1=CMParms.combine(V,1);
 					}
 					else
 					if(cmd.equals("INROOM"))
 					{
 						DT.triggerCode=TRIGGER_INROOM;
-						DT.parm1=Util.combine(V,1);
+						DT.parm1=CMParms.combine(V,1);
 					}
 					else
 					if(cmd.equals("RIDING"))
 					{
 						DT.triggerCode=TRIGGER_RIDING;
-						DT.parm1=Util.combine(V,1);
+						DT.parm1=CMParms.combine(V,1);
 					}
 					else
 					if(cmd.equals("CAST"))
 					{
 						DT.triggerCode=TRIGGER_CAST;
-						DT.parm1=Util.combine(V,1);
+						DT.parm1=CMParms.combine(V,1);
 						if(CMClass.findAbility(DT.parm1)==null)
 						{
 							Log.errOut("StdDeity",Name()+"- Illegal SPELL in: "+trig);
@@ -1099,7 +1099,7 @@ public class StdDeity extends StdMOB implements Deity
 					if(cmd.equals("EMOTE"))
 					{
 						DT.triggerCode=TRIGGER_EMOTE;
-						DT.parm1=Util.combine(V,1);
+						DT.parm1=CMParms.combine(V,1);
 					}
 					else
 					if(cmd.startsWith("SIT"))

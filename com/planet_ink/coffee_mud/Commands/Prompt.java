@@ -47,7 +47,7 @@ public class Prompt extends StdCommand
 			mob.session().rawPrintln("Your prompt is currently set at:\n\r"+pstats.getPrompt());
 		else
 		{
-			String str=Util.combine(commands,1);
+			String str=CMParms.combine(commands,1);
 			if(("DEFAULT").startsWith(str.toUpperCase()))
 				pstats.setPrompt("");
 			else

@@ -93,7 +93,7 @@ public class Chant_LoveMoon extends Chant
 						if(I!=null)	CMLib.commands().remove(mob,I,false);
 						I=mob.fetchFirstWornItem(Item.ON_LEGS);
 						if(I!=null)	CMLib.commands().remove(mob,I,false);
-						mob.doCommand(Util.parse("MATE "+M.name()));
+						mob.doCommand(CMParms.parse("MATE "+M.name()));
 					}
 					else
 					if(CMLib.dice().rollPercentage()>10)
@@ -163,7 +163,7 @@ public class Chant_LoveMoon extends Chant
 		{
 			Ability A=target.fetchEffect(a);
 			if((A!=null)
-			&&(Util.bset(A.flags(),Ability.FLAG_MOONCHANGING)))
+			&&(CMath.bset(A.flags(),Ability.FLAG_MOONCHANGING)))
 			{
 				mob.tell("The moon is already under "+A.name()+", and can not be changed until this magic is gone.");
 				return false;

@@ -188,10 +188,10 @@ public class Chant_SummonTornado extends Chant
 								mob.location().show(M,null,null,CMMsg.MSG_OK_ACTION,"The tornado picks <S-NAME> up and whisks <S-HIM-HER> away.");
 								R.bringMobHere(M,false);
 							}
-							int maxDie=(int)Math.round(Util.div(adjustedLevel(mob,asLevel),2.0));
+							int maxDie=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel),2.0));
 							int damage = CMLib.dice().roll(maxDie,7,1);
 							if((msg.value()>0)||(msg2.value()>0))
-								damage = (int)Math.round(Util.div(damage,2.0));
+								damage = (int)Math.round(CMath.div(damage,2.0));
 							CMLib.combat().postDamage(mob,M,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_WEAPONATTACK,Weapon.TYPE_BASHING,"The tornado <DAMAGE> <T-NAME>!");
 							//if(R!=mob.location()) M.tell("Wait a minute! Where are you?");
 						}

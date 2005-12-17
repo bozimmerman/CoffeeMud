@@ -63,7 +63,7 @@ public class Spell_IceSheet extends Spell
 		if(msg.source().location()==room)
 		{
 			MOB mob=msg.source();
-			if(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
 			{
 				if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 				||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER))
@@ -72,7 +72,7 @@ public class Spell_IceSheet extends Spell
 					return false;
 				}
 				else
-				if((Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
+				if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
 				{
 					if((!CMLib.flags().isInFlight(mob))
 					&&(CMLib.dice().rollPercentage()>((msg.source().charStats().getStat(CharStats.DEXTERITY)*3)+25)))

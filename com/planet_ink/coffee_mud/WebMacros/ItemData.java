@@ -162,17 +162,17 @@ public class ItemData extends StdWebMacro
 		boolean changedLevel=(httpReq.isRequestParameter("CHANGEDLEVEL"))&&(httpReq.getRequestParameter("CHANGEDLEVEL")).equals("true");
 		if((changedLevel)&&(I.isGeneric()))
 		{
-			int level=Util.s_int(httpReq.getRequestParameter("LEVEL"));
-			int material=Util.s_int(httpReq.getRequestParameter("MATERIALS"));
-			int weight=Util.s_int(httpReq.getRequestParameter("WEIGHT"));
+			int level=CMath.s_int(httpReq.getRequestParameter("LEVEL"));
+			int material=CMath.s_int(httpReq.getRequestParameter("MATERIALS"));
+			int weight=CMath.s_int(httpReq.getRequestParameter("WEIGHT"));
 			int hands=1;
 			if(httpReq.isRequestParameter("ISTWOHANDED")&&(httpReq.getRequestParameter("ISTWOHANDED").equalsIgnoreCase("on")))
 			   hands=2;
 			Hashtable vals=null;
 			if(I instanceof Weapon)
 			{
-				int wclass=Util.s_int(httpReq.getRequestParameter("WEAPONCLASS"));
-				int reach=Util.s_int(httpReq.getRequestParameter("MINRANGE"));
+				int wclass=CMath.s_int(httpReq.getRequestParameter("WEAPONCLASS"));
+				int reach=CMath.s_int(httpReq.getRequestParameter("MINRANGE"));
 
 				vals=CMLib.coffeeMaker().timsItemAdjustments(I,
 													level,
@@ -188,10 +188,10 @@ public class ItemData extends StdWebMacro
 				long worndata=I.rawProperLocationBitmap();
 				if(httpReq.isRequestParameter("WORNDATA"))
 				{
-					worndata=Util.s_int(httpReq.getRequestParameter("WORNDATA"));
+					worndata=CMath.s_int(httpReq.getRequestParameter("WORNDATA"));
 					for(int i=1;;i++)
 						if(httpReq.isRequestParameter("WORNDATA"+(new Integer(i).toString())))
-							worndata=worndata|Util.s_int(httpReq.getRequestParameter("WORNDATA"+(new Integer(i).toString())));
+							worndata=worndata|CMath.s_int(httpReq.getRequestParameter("WORNDATA"+(new Integer(i).toString())));
 						else
 							break;
 				}
@@ -302,7 +302,7 @@ public class ItemData extends StdWebMacro
 					for(int r=0;r<sortedResources.size();r++)
 					{
 						str.append("<OPTION VALUE=\""+((Long)sortedResources.elementAt(r,1)).longValue()+"\"");
-						if(((Long)sortedResources.elementAt(r,1)).intValue()==Util.s_int(old))
+						if(((Long)sortedResources.elementAt(r,1)).intValue()==CMath.s_int(old))
 							str.append(" SELECTED");
 						str.append(">"+((String)sortedResources.elementAt(r,2)));
 					}
@@ -352,17 +352,17 @@ public class ItemData extends StdWebMacro
 					long climate=I.rawProperLocationBitmap();
 					if(httpReq.isRequestParameter("WORNDATA"))
 					{
-						climate=Util.s_int(httpReq.getRequestParameter("WORNDATA"));
+						climate=CMath.s_int(httpReq.getRequestParameter("WORNDATA"));
 						for(int i=1;;i++)
 							if(httpReq.isRequestParameter("WORNDATA"+(new Integer(i).toString())))
-								climate=climate|Util.s_int(httpReq.getRequestParameter("WORNDATA"+(new Integer(i).toString())));
+								climate=climate|CMath.s_int(httpReq.getRequestParameter("WORNDATA"+(new Integer(i).toString())));
 							else
 								break;
 					}
 					for(int i=1;i<Item.wornLocation.length;i++)
 					{
 						String climstr=Item.wornLocation[i];
-						int mask=Util.pow(2,i-1);
+						int mask=CMath.pow(2,i-1);
 						str.append("<OPTION VALUE="+mask);
 						if((climate&mask)>0) str.append(" SELECTED");
 						str.append(">"+climstr);
@@ -382,7 +382,7 @@ public class ItemData extends StdWebMacro
 					for(int r=0;r<Weapon.typeDescription.length;r++)
 					{
 						str.append("<OPTION VALUE=\""+r+"\"");
-						if(r==Util.s_int(old))
+						if(r==CMath.s_int(old))
 							str.append(" SELECTED");
 						str.append(">"+Weapon.typeDescription[r]);
 					}
@@ -393,7 +393,7 @@ public class ItemData extends StdWebMacro
 					for(int r=0;r<Weapon.classifictionDescription.length;r++)
 					{
 						str.append("<OPTION VALUE=\""+r+"\"");
-						if(r==Util.s_int(old))
+						if(r==CMath.s_int(old))
 							str.append(" SELECTED");
 						str.append(">"+Weapon.classifictionDescription[r]);
 					}
@@ -420,7 +420,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 29: // is gettable
 					if(firstTime)
-						old=(!Util.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET))?"checked":"";
+						old=(!CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET))?"checked":"";
 					else
 					if(old.equals("on"))
 						old="checked";
@@ -428,7 +428,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 30: // is removable
 					if(firstTime)
-						old=(!Util.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE))?"checked":"";
+						old=(!CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE))?"checked":"";
 					else
 					if(old.equals("on"))
 						old="checked";
@@ -436,7 +436,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 31: // is droppable
 					if(firstTime)
-						old=(!Util.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP))?"checked":"";
+						old=(!CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP))?"checked":"";
 					else
 					if(old.equals("on"))
 						old="checked";
@@ -518,7 +518,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 41: // is readable
 					if(firstTime)
-						old=(Util.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE))?"checked":"";
+						old=(CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE))?"checked":"";
 					else
 					if(old.equals("on"))
 						old="checked";
@@ -541,7 +541,7 @@ public class ItemData extends StdWebMacro
 						if((EnvResource.RESOURCE_DATA[r][0]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)
 						{
 							str.append("<OPTION VALUE=\""+EnvResource.RESOURCE_DATA[r][0]+"\"");
-							if(r==Util.s_int(old))
+							if(r==CMath.s_int(old))
 								str.append(" SELECTED");
 							str.append(">"+EnvResource.RESOURCE_DESCS[r]);
 						}
@@ -586,7 +586,7 @@ public class ItemData extends StdWebMacro
 					for(int r=0;r<Rideable.RIDEABLE_DESCS.length;r++)
 					{
 						str.append("<OPTION VALUE=\""+r+"\"");
-						if(r==Util.s_int(old))
+						if(r==CMath.s_int(old))
 							str.append(" SELECTED");
 						str.append(">"+Rideable.RIDEABLE_DESCS[r]);
 					}
@@ -718,11 +718,11 @@ public class ItemData extends StdWebMacro
 						long contains=((Container)I).containTypes();
 						if(httpReq.isRequestParameter("CONTENTTYPES"))
 						{
-							contains=Util.s_long(httpReq.getRequestParameter("CONTENTTYPES"));
+							contains=CMath.s_long(httpReq.getRequestParameter("CONTENTTYPES"));
 							if(contains>0)
 							for(int i=1;;i++)
 								if(httpReq.isRequestParameter("CONTENTTYPES"+(new Integer(i).toString())))
-									contains=contains|Util.s_int(httpReq.getRequestParameter("CONTENTTYPES"+(new Integer(i).toString())));
+									contains=contains|CMath.s_int(httpReq.getRequestParameter("CONTENTTYPES"+(new Integer(i).toString())));
 								else
 									break;
 						}
@@ -732,7 +732,7 @@ public class ItemData extends StdWebMacro
 						for(int i=1;i<Container.CONTAIN_DESCS.length;i++)
 						{
 							String constr=Container.CONTAIN_DESCS[i];
-							int mask=Util.pow(2,i-1);
+							int mask=CMath.pow(2,i-1);
 							str.append("<OPTION VALUE="+mask);
 							if((contains&mask)>0) str.append(" SELECTED");
 							str.append(">"+constr);
@@ -748,7 +748,7 @@ public class ItemData extends StdWebMacro
 					for(int r=0;r<MusicalInstrument.TYPE_DESC.length;r++)
 					{
 						str.append("<OPTION VALUE=\""+r+"\"");
-						if(r==Util.s_int(old))
+						if(r==CMath.s_int(old))
 							str.append(" SELECTED");
 						str.append(">"+MusicalInstrument.TYPE_DESC[r]);
 					}
@@ -823,7 +823,7 @@ public class ItemData extends StdWebMacro
 					for(int i=0;i<cs.size();i++)
 					{
 					    str.append("<OPTION VALUE=\""+((Double)cs.elementAt(i,1)).doubleValue()+"\"");
-					    if(((Double)cs.elementAt(i,1)).doubleValue()==Util.s_double(old))
+					    if(((Double)cs.elementAt(i,1)).doubleValue()==CMath.s_double(old))
 					        str.append(" SELECTED");
 					    str.append(">"+((String)cs.elementAt(i,2)));
 					}
@@ -841,7 +841,7 @@ public class ItemData extends StdWebMacro
 					{
 					 	A=(Ability)e.nextElement();
 					 	if(((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL)
-					 	&&(Util.bset(A.flags(),Ability.FLAG_CRAFTING)))
+					 	&&(CMath.bset(A.flags(),Ability.FLAG_CRAFTING)))
 					 	{
 						 	str.append("<OPTION VALUE=\""+A.ID()+"\"");
 						 	if(A.ID().equalsIgnoreCase(old))
@@ -853,7 +853,7 @@ public class ItemData extends StdWebMacro
 				}
 				case 83: // recipedata
 					if((firstTime)&&(I instanceof Recipe))
-						old=Util.replaceAll(((Recipe)I).getRecipeCodeLine(),"\t",",");
+						old=CMStrings.replaceAll(((Recipe)I).getRecipeCodeLine(),"\t",",");
 					str.append(old);
 					break;
 				}

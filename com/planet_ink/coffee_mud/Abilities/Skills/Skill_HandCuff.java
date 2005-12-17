@@ -103,9 +103,9 @@ public class Skill_HandCuff extends StdSkill
 			if(msg.sourceMinor()==CMMsg.TYP_ENTER)
 				return true;
 			else
-			if((!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
-			&&((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
+			if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against <S-HIS-HER> cuffs.");
 				amountRemaining-=mob.charStats().getStat(CharStats.STRENGTH);
@@ -148,9 +148,9 @@ public class Skill_HandCuff extends StdSkill
 			if(!mob.amDead())
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> released from the handcuffs.");
 			if(!oldAssist)
-				mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
+				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
 			if(oldGuard)
-				mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
+				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
 			CMLib.commands().stand(mob,true);
 		}
 	}
@@ -216,21 +216,21 @@ public class Skill_HandCuff extends StdSkill
 						success=maliciousAffect(mob,target,asLevel,Integer.MAX_VALUE-1000,-1);
 						if(success)
 						{
-							oldAssist=Util.bset(target.getBitmap(),MOB.ATT_AUTOASSIST);
+							oldAssist=CMath.bset(target.getBitmap(),MOB.ATT_AUTOASSIST);
 							if(!oldAssist)
-								target.setBitmap(Util.setb(target.getBitmap(),MOB.ATT_AUTOASSIST));
-							oldGuard=Util.bset(target.getBitmap(),MOB.ATT_AUTOASSIST);
+								target.setBitmap(CMath.setb(target.getBitmap(),MOB.ATT_AUTOASSIST));
+							oldGuard=CMath.bset(target.getBitmap(),MOB.ATT_AUTOASSIST);
 							if(oldGuard)
-								target.setBitmap(Util.unsetb(target.getBitmap(),MOB.ATT_AUTOGUARD));
-							boolean oldNOFOL=Util.bset(target.getBitmap(),MOB.ATT_NOFOLLOW);
+								target.setBitmap(CMath.unsetb(target.getBitmap(),MOB.ATT_AUTOGUARD));
+							boolean oldNOFOL=CMath.bset(target.getBitmap(),MOB.ATT_NOFOLLOW);
 							if(target.numFollowers()>0)
-								CMLib.commands().doStandardCommand(target,"NoFollow",Util.makeVector("UNFOLLOW","QUIETLY"));
-							target.setBitmap(Util.unsetb(target.getBitmap(),MOB.ATT_NOFOLLOW));
+								CMLib.commands().doStandardCommand(target,"NoFollow",CMParms.makeVector("UNFOLLOW","QUIETLY"));
+							target.setBitmap(CMath.unsetb(target.getBitmap(),MOB.ATT_NOFOLLOW));
 							CMLib.commands().follow(target,mob,true);
 							if(oldNOFOL)
-								target.setBitmap(Util.setb(target.getBitmap(),MOB.ATT_NOFOLLOW));
+								target.setBitmap(CMath.setb(target.getBitmap(),MOB.ATT_NOFOLLOW));
 							else
-								target.setBitmap(Util.unsetb(target.getBitmap(),MOB.ATT_NOFOLLOW));
+								target.setBitmap(CMath.unsetb(target.getBitmap(),MOB.ATT_NOFOLLOW));
 							target.setFollowing(mob);
 						}
 					}

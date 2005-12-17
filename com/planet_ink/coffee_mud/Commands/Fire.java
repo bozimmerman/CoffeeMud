@@ -40,7 +40,7 @@ public class Fire extends StdCommand
 		throws java.io.IOException
 	{
 		String rest="ALL";
-		if(commands.size()>1) rest=Util.combine(commands,1);
+		if(commands.size()>1) rest=CMParms.combine(commands,1);
 
 		Environmental target=mob.location().fetchFromRoomFavorMOBs(null,rest,Item.WORN_REQ_ANY);
 		if((target!=null)&&(!target.name().equalsIgnoreCase(rest))&&(rest.length()<4))

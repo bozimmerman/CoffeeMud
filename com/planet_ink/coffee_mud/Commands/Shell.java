@@ -105,7 +105,7 @@ public class Shell extends StdCommand
         {
         case 0: // directory
         {
-            CMFile[] dirs=CMFile.getFileList(pwd,Util.combine(commands,1),mob);
+            CMFile[] dirs=CMFile.getFileList(pwd,CMParms.combine(commands,1),mob);
             if(dirs==null)
             {
                 mob.tell("^xError: invalid directory!^N");
@@ -125,9 +125,9 @@ public class Shell extends StdCommand
                         msg.append("^R+");
                     else
                         msg.append("^r-");
-                    msg.append("^y"+Util.padRight(entry.getName(),25));
-                    msg.append("^w"+Util.padRight(CMLib.time().date2String(entry.lastModified()),20));
-                    msg.append("^w"+Util.padRight(entry.author(),20));
+                    msg.append("^y"+CMStrings.padRight(entry.getName(),25));
+                    msg.append("^w"+CMStrings.padRight(CMLib.time().date2String(entry.lastModified()),20));
+                    msg.append("^w"+CMStrings.padRight(entry.author(),20));
                     msg.append("\n\r");
                 }
             }
@@ -144,9 +144,9 @@ public class Shell extends StdCommand
                         msg.append("^R+");
                     else
                         msg.append("^r-");
-                    msg.append("^w"+Util.padRight(entry.getName(),25));
-                    msg.append("^w"+Util.padRight(CMLib.time().date2String(entry.lastModified()),20));
-                    msg.append("^w"+Util.padRight(entry.author(),20));
+                    msg.append("^w"+CMStrings.padRight(entry.getName(),25));
+                    msg.append("^w"+CMStrings.padRight(CMLib.time().date2String(entry.lastModified()),20));
+                    msg.append("^w"+CMStrings.padRight(entry.author(),20));
                     msg.append("\n\r");
                 }
             }
@@ -164,7 +164,7 @@ public class Shell extends StdCommand
                 return false;
             }
             String source=(String)commands.elementAt(1);
-            String target=Util.combine(commands,2);
+            String target=CMParms.combine(commands,2);
             CMFile[] dirs=CMFile.getFileList(pwd,source,mob);
             if(dirs==null)
             {
@@ -221,11 +221,11 @@ public class Shell extends StdCommand
         }
         case 2: // cd
         {
-            CMFile newDir=new CMFile(pwd,Util.combine(commands,1),mob,false);
+            CMFile newDir=new CMFile(pwd,CMParms.combine(commands,1),mob,false);
             String changeTo=newDir.getVFSPathAndName();
             if(!newDir.exists())
             {
-                mob.tell("^xError: Directory '"+Util.combine(commands,1)+"' does not exist.^N");
+                mob.tell("^xError: Directory '"+CMParms.combine(commands,1)+"' does not exist.^N");
                 return false;
             }
             if((!newDir.canRead())||(!newDir.isDirectory()))
@@ -241,7 +241,7 @@ public class Shell extends StdCommand
         }
         case 3: // delete
         {
-            CMFile[] dirs=CMFile.getFileList(pwd,Util.combine(commands,1),mob);
+            CMFile[] dirs=CMFile.getFileList(pwd,CMParms.combine(commands,1),mob);
             if(dirs==null)
             {
                 mob.tell("^xError: invalid filename!^N");
@@ -276,7 +276,7 @@ public class Shell extends StdCommand
         }
         case 4: // type
         {
-            CMFile[] dirs=CMFile.getFileList(pwd,Util.combine(commands,1),mob);
+            CMFile[] dirs=CMFile.getFileList(pwd,CMParms.combine(commands,1),mob);
             if(dirs==null)
             {
                 mob.tell("^xError: invalid filename!^N");
@@ -310,7 +310,7 @@ public class Shell extends StdCommand
         }
         case 5: // makedirectory
         {
-            CMFile CF=new CMFile(pwd,Util.combine(commands,1),mob,false);
+            CMFile CF=new CMFile(pwd,CMParms.combine(commands,1),mob,false);
             if(CF.exists())
             {
                 mob.tell("^xError: file already exists!^N");

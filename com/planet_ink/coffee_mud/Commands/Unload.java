@@ -39,7 +39,7 @@ public class Unload extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String str=Util.combine(commands,1);
+		String str=CMParms.combine(commands,1);
 		if(str.length()==0)
 		{
 			mob.tell("UNLOAD what?");
@@ -80,7 +80,7 @@ public class Unload extends StdCommand
         // Faction Unloading
         if(((String)commands.elementAt(1)).equalsIgnoreCase("FACTION"))
         {
-            String which=Util.combine(commands,2);
+            String which=CMParms.combine(commands,2);
             if(which.length()==0) {
                 // No factions specified.  That's fine, they must mean ALL FACTIONS!!! hahahahaha
                 CMLib.factions().removeFaction(null);

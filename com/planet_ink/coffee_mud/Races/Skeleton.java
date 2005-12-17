@@ -51,7 +51,7 @@ public class Skeleton extends Undead
 				||(((Weapon)msg.tool()).weaponType()==Weapon.TYPE_SLASHING))
 			&&(!mob.amDead()))
 			{
-				int recovery=(int)Math.round(Util.div((msg.value()),2.0));
+				int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
 				msg.setValue(recovery);
 			}
 		}

@@ -84,7 +84,7 @@ public class Spell_PassDoor extends Spell
 			if(theDir>=0)
 				commands.addElement(Directions.getDirectionName(theDir));
 		}
-		String whatToOpen=Util.combine(commands,0);
+		String whatToOpen=CMParms.combine(commands,0);
 		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(!auto)
 		{

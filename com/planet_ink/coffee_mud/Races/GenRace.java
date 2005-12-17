@@ -206,7 +206,7 @@ public class GenRace extends StdRace
 		str.append(CMLib.xml().convertXMLtoTag("HEALTHRACE",(healthBuddy!=null)?healthBuddy.ID():""));
 		str.append(CMLib.xml().convertXMLtoTag("ARRIVE",arriveStr()));
 		str.append(CMLib.xml().convertXMLtoTag("LEAVE",leaveStr()));
-		str.append(CMLib.xml().convertXMLtoTag("AGING",Util.toStringList(getAgingChart())));
+		str.append(CMLib.xml().convertXMLtoTag("AGING",CMParms.toStringList(getAgingChart())));
 		if(adjEStats==null) str.append("<ESTATS/>");
 		else
 			str.append(CMLib.xml().convertXMLtoTag("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(adjEStats)));
@@ -325,7 +325,7 @@ public class GenRace extends StdRace
 			return;
 		}
 		Vector raceData=CMLib.xml().getRealContentsFromPieces(xml,"RACE");
-		if(raceData==null){	Log.errOut("GenRace","Unable to get RACE data: ("+parms.length()+"): "+Util.padRight(parms,30)+"."); return;}
+		if(raceData==null){	Log.errOut("GenRace","Unable to get RACE data: ("+parms.length()+"): "+CMStrings.padRight(parms,30)+"."); return;}
 		String id=CMLib.xml().getValFromPieces(raceData,"ID");
 		if(id.length()==0)
 		{
@@ -363,7 +363,7 @@ public class GenRace extends StdRace
 			if(playerval.startsWith("F")) 
 				availability=0;
 			else
-			switch(Util.s_int(playerval))
+			switch(CMath.s_int(playerval))
 			{
 			case 0: availability=Area.THEME_FANTASY; break;
 			case 1: availability=Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK; break;
@@ -371,17 +371,17 @@ public class GenRace extends StdRace
 			}
 		}
 		String avail=CMLib.xml().getValFromPieces(raceData,"AVAIL").trim().toUpperCase();
-		if((avail!=null)&&(avail.length()>0)&&(Util.isNumber(avail)))
-		    availability=Util.s_int(avail);
+		if((avail!=null)&&(avail.length()>0)&&(CMath.isNumber(avail)))
+		    availability=CMath.s_int(avail);
 		destroyBodyAfterUse=CMLib.xml().getBoolFromPieces(raceData,"DESTROYBODY");
 		leaveStr=CMLib.xml().getValFromPieces(raceData,"LEAVE");
 		arriveStr=CMLib.xml().getValFromPieces(raceData,"ARRIVE");
 		healthBuddy=CMClass.getRace(CMLib.xml().getValFromPieces(raceData,"HEALTHRACE"));
 		String body=CMLib.xml().getValFromPieces(raceData,"BODY");
-		Vector V=Util.parseSemicolons(body,false);
+		Vector V=CMParms.parseSemicolons(body,false);
 		for(int v=0;v<V.size();v++)
 			if(v<bodyMask().length)
-				bodyMask()[v]=Util.s_int((String)V.elementAt(v));
+				bodyMask()[v]=CMath.s_int((String)V.elementAt(v));
 		adjEStats=null;
 		String eStats=CMLib.xml().getValFromPieces(raceData,"ESTATS");
 		if(eStats.length()>0){ adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); CMLib.coffeeMaker().setEnvStats(adjEStats,eStats);}
@@ -399,9 +399,9 @@ public class GenRace extends StdRace
 		String saState=CMLib.xml().getValFromPieces(raceData,"STARTASTATE");
 		if(saState.length()>0){ startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,saState);}
 		String aging=CMLib.xml().getValFromPieces(raceData,"AGING");
-		Vector aV=Util.parseCommas(aging,true);
+		Vector aV=CMParms.parseCommas(aging,true);
 		for(int v=0;v<aV.size();v++)
-		    getAgingChart()[v]=Util.s_int((String)aV.elementAt(v));
+		    getAgingChart()[v]=CMath.s_int((String)aV.elementAt(v));
 
 		// now RESOURCES!
 		Vector xV=CMLib.xml().getRealContentsFromPieces(raceData,"RESOURCES");
@@ -532,7 +532,7 @@ public class GenRace extends StdRace
 		int mul=1;
 		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
 		{
-			num=(Util.s_int(""+code.charAt(code.length()-1))*mul)+num;
+			num=(CMath.s_int(""+code.charAt(code.length()-1))*mul)+num;
 			mul=mul*10;
 			code=code.substring(0,code.length()-1);
 		}
@@ -583,7 +583,7 @@ public class GenRace extends StdRace
 		case 36: return (racialEffectNames==null)?"":(""+racialEffectNames[num]);
 		case 37: return (racialEffectParms==null)?"0":(""+racialEffectParms[num]);
 		case 38: return (racialEffectLevels==null)?"0":(""+racialEffectLevels[num]);
-		case 39: return Util.toStringList(getAgingChart());
+		case 39: return CMParms.toStringList(getAgingChart());
 		case 40: return ""+disableFlags; 
 		case 41: return (startAdjState==null)?"":CMLib.coffeeMaker().getCharStateStr(startAdjState);
 		}
@@ -609,7 +609,7 @@ public class GenRace extends StdRace
 		int num=0;
 		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
 		{
-			num=(num*10)+Util.s_int(""+code.charAt(code.length()-1));
+			num=(num*10)+CMath.s_int(""+code.charAt(code.length()-1));
 			code=code.substring(0,code.length()-1);
 		}
 		switch(getCodeNum(code))
@@ -617,29 +617,29 @@ public class GenRace extends StdRace
 		case 0: ID=val; break;
 		case 1: name=val; break;
 		case 2: racialCategory=val; break;
-		case 3: forbiddenWornBits=Util.s_long(val); break;
-		case 4: weightVariance=Util.s_int(val); break;
-		case 5: lightestWeight=Util.s_int(val); break;
-		case 6: heightVariance=Util.s_int(val); break;
-		case 7: shortestFemale=Util.s_int(val); break;
-		case 8: shortestMale=Util.s_int(val); break;
-		case 9: availability=Util.s_int(val); break;
+		case 3: forbiddenWornBits=CMath.s_long(val); break;
+		case 4: weightVariance=CMath.s_int(val); break;
+		case 5: lightestWeight=CMath.s_int(val); break;
+		case 6: heightVariance=CMath.s_int(val); break;
+		case 7: shortestFemale=CMath.s_int(val); break;
+		case 8: shortestMale=CMath.s_int(val); break;
+		case 9: availability=CMath.s_int(val); break;
 		case 10: leaveStr=val;break;
 		case 11: arriveStr=val;break;
 		case 12: healthBuddy=CMClass.getRace(val); break;
 		case 13: 
 		{
-			Vector V=Util.parseSemicolons(val,false);
+			Vector V=CMParms.parseSemicolons(val,false);
 			for(int v=0;v<V.size();v++)
 				if(v<bodyMask().length)
-					bodyMask()[v]=Util.s_int((String)V.elementAt(v));
+					bodyMask()[v]=CMath.s_int((String)V.elementAt(v));
 			break;
 		}
 		case 14: adjEStats=null;if(val.length()>0){adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); adjEStats.setAllValues(0); CMLib.coffeeMaker().setEnvStats(adjEStats,val);}break;
 		case 15: adjStats=null;if(val.length()>0){adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(adjStats,val);}break;
 		case 16: setStats=null;if(val.length()>0){setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(setStats,val);}break;
 		case 17: adjState=null;if(val.length()>0){adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0); CMLib.coffeeMaker().setCharState(adjState,val);}break;
-		case 18: if(Util.s_int(val)==0) resourceChoices=null; break;
+		case 18: if(CMath.s_int(val)==0) resourceChoices=null; break;
 		case 19: {   if(resourceChoices==null) resourceChoices=new Vector();
 					 if(num>=resourceChoices.size())
 						resourceChoices.addElement(CMClass.getItem(val));
@@ -664,17 +664,17 @@ public class GenRace extends StdRace
 				 }
 				 break;
 		case 23: racialAbilityMap=null;
-				 if(Util.s_int(val)==0){
+				 if(CMath.s_int(val)==0){
 					 racialAbilityNames=null; 
 					 racialAbilityProfficiencies=null; 
 					 racialAbilityQuals=null; 
 					 racialAbilityLevels=null; 
 				 }
 				 else{
-					 racialAbilityNames=new String[Util.s_int(val)];
-					 racialAbilityProfficiencies=new int[Util.s_int(val)];
-					 racialAbilityQuals=new boolean[Util.s_int(val)];
-					 racialAbilityLevels=new int[Util.s_int(val)];
+					 racialAbilityNames=new String[CMath.s_int(val)];
+					 racialAbilityProfficiencies=new int[CMath.s_int(val)];
+					 racialAbilityQuals=new boolean[CMath.s_int(val)];
+					 racialAbilityLevels=new int[CMath.s_int(val)];
 				 }
 				 break;
 		case 24: {   if(racialAbilityNames==null) racialAbilityNames=new String[num+1];
@@ -682,24 +682,24 @@ public class GenRace extends StdRace
 					 break;
 				 }
 		case 25: {   if(racialAbilityProfficiencies==null) racialAbilityProfficiencies=new int[num+1];
-				     racialAbilityProfficiencies[num]=Util.s_int(val);
+				     racialAbilityProfficiencies[num]=CMath.s_int(val);
 					 break;
 				 }
 		case 26: {   if(racialAbilityQuals==null) racialAbilityQuals=new boolean[num+1];
-				     racialAbilityQuals[num]=Util.s_bool(val);
+				     racialAbilityQuals[num]=CMath.s_bool(val);
 					 break;
 				 }
 		case 27: {   if(racialAbilityLevels==null) racialAbilityLevels=new int[num+1];
-				     racialAbilityLevels[num]=Util.s_int(val);
+				     racialAbilityLevels[num]=CMath.s_int(val);
 					 break;
 				 }
-		case 28: if(Util.s_int(val)==0){
+		case 28: if(CMath.s_int(val)==0){
 					 culturalAbilityNames=null; 
 					 culturalAbilityProfficiencies=null;
 				 }
 				 else{
-					 culturalAbilityNames=new String[Util.s_int(val)];
-					 culturalAbilityProfficiencies=new int[Util.s_int(val)];
+					 culturalAbilityNames=new String[CMath.s_int(val)];
+					 culturalAbilityProfficiencies=new int[CMath.s_int(val)];
 				 }
 				 break;
 		case 29: {   if(culturalAbilityNames==null) culturalAbilityNames=new String[num+1];
@@ -707,10 +707,10 @@ public class GenRace extends StdRace
 					 break;
 				 }
 		case 30: {   if(culturalAbilityProfficiencies==null) culturalAbilityProfficiencies=new int[num+1];
-				     culturalAbilityProfficiencies[num]=Util.s_int(val);
+				     culturalAbilityProfficiencies[num]=CMath.s_int(val);
 					 break;
 				 }
-		case 31: if(Util.s_int(val)==0) outfitChoices=null; break;
+		case 31: if(CMath.s_int(val)==0) outfitChoices=null; break;
 		case 32: {   if(outfitChoices==null) outfitChoices=new Vector();
 					 if(num>=outfitChoices.size())
 						outfitChoices.addElement(CMClass.getItem(val));
@@ -726,17 +726,17 @@ public class GenRace extends StdRace
 					 }
 					 break;
 				 }
-		case 34: destroyBodyAfterUse=Util.s_bool(val); break;
+		case 34: destroyBodyAfterUse=CMath.s_bool(val); break;
 		case 35: racialEffectMap=null;
-				 if(Util.s_int(val)==0){
+				 if(CMath.s_int(val)==0){
 					 racialEffectNames=null; 
 					 racialEffectParms=null; 
 					 racialEffectLevels=null; 
 				 }
 				 else{
-					 racialEffectNames=new String[Util.s_int(val)];
-					 racialEffectParms=new String[Util.s_int(val)];
-					 racialEffectLevels=new int[Util.s_int(val)];
+					 racialEffectNames=new String[CMath.s_int(val)];
+					 racialEffectParms=new String[CMath.s_int(val)];
+					 racialEffectLevels=new int[CMath.s_int(val)];
 				 }
 				 break;
 		case 36: {   if(racialEffectNames==null) racialEffectNames=new String[num+1];
@@ -748,16 +748,16 @@ public class GenRace extends StdRace
 					 break;
 				 }
 		case 38: {   if(racialEffectLevels==null) racialEffectLevels=new int[num+1];
-				     racialEffectLevels[num]=Util.s_int(val);
+				     racialEffectLevels[num]=CMath.s_int(val);
 					 break;
 				 }
 		case 39: {
-					Vector aV=Util.parseCommas(val,true);
+					Vector aV=CMParms.parseCommas(val,true);
 					for(int v=0;v<aV.size();v++)
-					    getAgingChart()[v]=Util.s_int((String)aV.elementAt(v));
+					    getAgingChart()[v]=CMath.s_int((String)aV.elementAt(v));
 		    		break;
 				 }
-		case 40: disableFlags=Util.s_int(val); break;
+		case 40: disableFlags=CMath.s_int(val); break;
 		case 41: startAdjState=null;if(val.length()>0){startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,val);}break;
 		}
 	}

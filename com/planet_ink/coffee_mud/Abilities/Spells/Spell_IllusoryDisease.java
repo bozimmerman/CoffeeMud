@@ -45,7 +45,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,(int)Math.round(Util.div(affectableStats.getStat(CharStats.STRENGTH),2.0)));
+		affectableStats.setStat(CharStats.STRENGTH,(int)Math.round(CMath.div(affectableStats.getStat(CharStats.STRENGTH),2.0)));
 	}
 
 	public int abilityCode(){return 0;}

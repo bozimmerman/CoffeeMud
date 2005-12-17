@@ -112,7 +112,7 @@ public class Spell_Polymorph extends Spell
 				if(msg.value()<=0)
 				{
 					newRace=null;
-					while((newRace==null)||(newRace.ID().equals("StdRace"))||(!Util.bset(newRace.availabilityCode(),Area.THEME_FANTASY)))
+					while((newRace==null)||(newRace.ID().equals("StdRace"))||(!CMath.bset(newRace.availabilityCode(),Area.THEME_FANTASY)))
 						newRace=CMClass.randomRace();
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) a "+newRace.name()+"!");
 					success=beneficialAffect(mob,target,asLevel,0);

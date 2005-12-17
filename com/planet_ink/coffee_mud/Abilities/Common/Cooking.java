@@ -195,8 +195,8 @@ public class Cooking extends CraftingSkill
 			if((((I.material()&EnvResource.MATERIAL_VEGETATION)>0)
 				||((I.material()&EnvResource.MATERIAL_LIQUID)>0)
 				||((I.material()&EnvResource.MATERIAL_FLESH)>0))
-				&&(Util.parse(I.name()).size()>0))
-					ing=((String)Util.parse(I.name()).lastElement()).toUpperCase();
+				&&(CMParms.parse(I.name()).size()>0))
+					ing=((String)CMParms.parse(I.name()).lastElement()).toUpperCase();
 			else
 				ing=I.name();
 			Integer INT=(Integer)h.get(ing+"/"+I.Name().toUpperCase());
@@ -233,7 +233,7 @@ public class Cooking extends CraftingSkill
 				if(ingredient.length()>0)
 				{
 					int amount=1;
-					if(vr<Vr.size()-1)amount=Util.s_int((String)Vr.elementAt(vr+1));
+					if(vr<Vr.size()-1)amount=CMath.s_int((String)Vr.elementAt(vr+1));
 					if(amount==0) amount=1;
 					if(amount<0) amount=amount*-1;
 					if(ingredient.equalsIgnoreCase("water"))
@@ -331,7 +331,7 @@ public class Cooking extends CraftingSkill
 			if(ingredient.length()>0)
 			{
 				int amount=1;
-				if(vr<Vr.size()-1)amount=Util.s_int((String)Vr.elementAt(vr+1));
+				if(vr<Vr.size()-1)amount=CMath.s_int((String)Vr.elementAt(vr+1));
 				boolean found=false;
 				for(Enumeration e=oldContents.keys();e.hasMoreElements();)
 				{
@@ -381,9 +381,9 @@ public class Cooking extends CraftingSkill
 			givenTarget=null;
 		}
 		randomRecipeFix(mob,allRecipes,commands,autoGenerate);
-		if(Util.combine(commands,0).equalsIgnoreCase("list"))
+		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(Util.padRight("^xRecipe",20)+"^.^? ^wIngredients required^N\n\r");
+			StringBuffer buf=new StringBuffer(CMStrings.padRight("^xRecipe",20)+"^.^? ^wIngredients required^N\n\r");
 			for(int r=0;r<allRecipes.size();r++)
 			{
 				Vector Vr=(Vector)allRecipes.elementAt(r);
@@ -391,17 +391,17 @@ public class Cooking extends CraftingSkill
 				{
 					String item=(String)Vr.elementAt(RCP_FINALFOOD);
 					if(item.length()==0) continue;
-					int level=Util.s_int((String)Vr.elementAt(RCP_LEVEL));
+					int level=CMath.s_int((String)Vr.elementAt(RCP_LEVEL));
 					if(level<=mob.envStats().level())
 					{
-						buf.append("^c"+Util.padRight(Util.capitalizeAndLower(replacePercent(item,"")),20)+"^w ");
+						buf.append("^c"+CMStrings.padRight(CMStrings.capitalizeAndLower(replacePercent(item,"")),20)+"^w ");
 						for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 						{
 							String ingredient=(String)Vr.elementAt(vr);
 							if(ingredient.length()>0)
 							{
 								int amount=1;
-								if(vr<Vr.size()-1)amount=Util.s_int((String)Vr.elementAt(vr+1));
+								if(vr<Vr.size()-1)amount=CMath.s_int((String)Vr.elementAt(vr+1));
 								if(amount==0) amount=1;
 								if(amount<0) amount=amount*-1;
 								if(ingredient.equalsIgnoreCase("water"))
@@ -533,8 +533,8 @@ public class Cooking extends CraftingSkill
 			String recipeName=replacePercent((String)Vr.elementAt(RCP_FINALFOOD),((String)Vr.elementAt(RCP_MAININGR)).toLowerCase());
 			if(counts.size()==1)
 			{
-				if(Util.s_int((String)Vr.elementAt(RCP_LEVEL))>mob.envStats().level())
-					complaints.addElement("If you are trying to make "+recipeName+", you need to wait until you are level "+Util.s_int((String)Vr.elementAt(RCP_LEVEL))+".");
+				if(CMath.s_int((String)Vr.elementAt(RCP_LEVEL))>mob.envStats().level())
+					complaints.addElement("If you are trying to make "+recipeName+", you need to wait until you are level "+CMath.s_int((String)Vr.elementAt(RCP_LEVEL))+".");
 				else
 				{
 					finalRecipe=Vr;

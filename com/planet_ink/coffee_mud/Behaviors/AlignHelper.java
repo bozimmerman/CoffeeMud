@@ -59,7 +59,7 @@ public class AlignHelper extends StdBehavior
 		&&(CMLib.flags().canBeSeenBy(source,observer))
 		&&(CMLib.flags().canBeSeenBy(target,observer))
 		&&(!BrotherHelper.isBrother(source,observer))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 	    &&( (CMLib.flags().isEvil(target)&&CMLib.flags().isEvil(observer))||(CMLib.flags().isNeutral(target)&&CMLib.flags().isNeutral(observer))||(CMLib.flags().isGood(target)&&CMLib.flags().isGood(observer))))
 		{
 			boolean yep=Aggressive.startFight(observer,source,true);

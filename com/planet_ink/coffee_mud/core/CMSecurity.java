@@ -33,7 +33,10 @@ import java.util.*;
 */
 public class CMSecurity
 {
-	private CMSecurity(){}
+	private CMSecurity(){super();}
+    private static CMSecurity inst=new CMSecurity();
+    public static CMSecurity instance(){return inst;}
+    
 	private static final long startTime=System.currentTimeMillis();
 	private static Hashtable groups=new Hashtable();
 	private static Vector compiledSysop=null;
@@ -98,7 +101,7 @@ public class CMSecurity
 	}
 	public static void addGroup(String name, String set)
 	{
-		addGroup(name,Util.parseCommas(set,true));
+		addGroup(name,CMParms.parseCommas(set,true));
 	}
 	
 	public static boolean isASysOp(MOB mob)
@@ -126,7 +129,7 @@ public class CMSecurity
         if(mob.playerStats().getSecurityGroups().size()==0)
             return false;
         Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
-        Util.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
+        CMParms.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
         if(V.size()==0) return false;
         boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
         for(int v=0;v<V.size();v++)
@@ -203,7 +206,7 @@ public class CMSecurity
         String areaPath=("AREA "+path).trim();
         String pathSlash=path+"/";
         Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
-        Util.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
+        CMParms.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
         if(V.size()==0) return false;
         boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
         for(int v=0;v<V.size();v++)
@@ -262,7 +265,7 @@ public class CMSecurity
         path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
         if(path.equals("/")||path.equals(".")) path="";
         Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
-        Util.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
+        CMParms.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
         if(V.size()==0) return false;
         boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
         for(int v=0;v<V.size();v++)
@@ -347,7 +350,7 @@ public class CMSecurity
 		if(mob==null) return false;
 		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
 		Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
-        Util.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
+        CMParms.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
 		if(V.size()==0) return false;
 		
 		boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
@@ -379,7 +382,7 @@ public class CMSecurity
 		if(mob==null) return false;
 		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
         Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
-        Util.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
+        CMParms.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
 		if(V.size()==0) return false;
 		
 		boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
@@ -406,7 +409,7 @@ public class CMSecurity
 		if(mob==null) return false;
 		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
         Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
-        Util.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
+        CMParms.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
 		if(V.size()==0) return false;
 		
 		for(int v=0;v<V.size();v++)
@@ -455,7 +458,7 @@ public class CMSecurity
 		if(mob==null) return false;
 		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
         Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
-        Util.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
+        CMParms.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
 		if(V.size()==0) return false;
 		
 		for(int v=0;v<V.size();v++)
@@ -477,7 +480,7 @@ public class CMSecurity
 		if(mob==null) return false;
 		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return false;
         Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
-        Util.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
+        CMParms.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
 		if(V.size()==0) return false;
 		
 		for(int v=0;v<V.size();v++)
@@ -556,7 +559,7 @@ public class CMSecurity
                     String s=(String)jscripts.elementAt(i);
                     int x=s.indexOf("=");
                     if(x>0)
-                        approved.put(new Long(Util.s_long(s.substring(0,x))),s.substring(x+1));
+                        approved.put(new Long(CMath.s_long(s.substring(0,x))),s.substring(x+1));
                 }
             }
         }
@@ -582,7 +585,7 @@ public class CMSecurity
 	
 	public static void setDebugVars(String vars)
 	{
-		Vector V=Util.parseCommas(vars.toUpperCase(),true);
+		Vector V=CMParms.parseCommas(vars.toUpperCase(),true);
 		dbgVars.clear();
 		for(int v=0;v<V.size();v++)
 			dbgVars.add(((String)V.elementAt(v)).trim());
@@ -590,7 +593,7 @@ public class CMSecurity
 	
 	public static void setDisableVars(String vars)
 	{
-		Vector V=Util.parseCommas(vars.toUpperCase(),true);
+		Vector V=CMParms.parseCommas(vars.toUpperCase(),true);
 		disVars.clear();
 		for(int v=0;v<V.size();v++)
 			disVars.add(V.elementAt(v));
@@ -605,7 +608,7 @@ public class CMSecurity
 	}
 	public static void setSaveFlags(String flags)
 	{
-		Vector V=Util.parseCommas(flags.toUpperCase(),true);
+		Vector V=CMParms.parseCommas(flags.toUpperCase(),true);
 		saveFlags.clear();
 		for(int v=0;v<V.size();v++)
 		    saveFlags.add(V.elementAt(v));

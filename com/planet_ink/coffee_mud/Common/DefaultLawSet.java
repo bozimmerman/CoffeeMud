@@ -148,13 +148,13 @@ public class DefaultLawSet implements Law
         String tres=(String)taxLaws().get("TREASURY");
         if((tres!=null)&&(tres.length()>0))
         {
-            Vector V=Util.parseSemicolons(tres,false);
+            Vector V=CMParms.parseSemicolons(tres,false);
             if(V.size()>0)
             {
                 Room R=null;
                 String room=(String)V.firstElement();
                 String item="";
-                if(V.size()>1) item=Util.combine(V,1);
+                if(V.size()>1) item=CMParms.combine(V,1);
                 if(!room.equalsIgnoreCase("*"))
                 {
                     treasuryR=CMLib.map().getRoom(room);
@@ -188,9 +188,9 @@ public class DefaultLawSet implements Law
         if(lastMonthChecked!=A.getTimeObj().getMonth())
         {
             lastMonthChecked=A.getTimeObj().getMonth();
-            double tax=Util.s_double((String)taxLaws.get("PROPERTYTAX"));
+            double tax=CMath.s_double((String)taxLaws.get("PROPERTYTAX"));
             if(tax==0.0) return;
-            tax=Util.div(tax,100.0);
+            tax=CMath.div(tax,100.0);
             Vector titles=CMLib.utensils().getAllUniqueTitles(A.getMetroMap(),"*",false);
             Hashtable owners=new Hashtable();
             for(Enumeration e=titles.elements();e.hasMoreElements();)
@@ -245,7 +245,7 @@ public class DefaultLawSet implements Law
                         owed+=new Integer(T.backTaxes()).doubleValue();
                     }
                 }
-                owed+=Util.mul(totalValue,tax);
+                owed+=CMath.mul(totalValue,tax);
 
                 if(owed>0)
                 for(int p=0;p<particulars.size();p++)
@@ -278,7 +278,7 @@ public class DefaultLawSet implements Law
                         for(int p=0;p<particulars.size();p++)
                         {
                             T=(LandTitle)particulars.elementAt(p);
-                            double owedOnThisLand=Util.mul(T.landPrice(),tax);
+                            double owedOnThisLand=CMath.mul(T.landPrice(),tax);
                             owedOnThisLand-=(paid/particulars.size());
                             if(owedOnThisLand>0)
                             {
@@ -417,11 +417,11 @@ public class DefaultLawSet implements Law
     {
         theLaws=laws;
         activated=(!getInternalStr("ACTIVATED").equalsIgnoreCase("FALSE"));
-        officerNames=Util.parse(getInternalStr("OFFICERS"));
-        chitChat=Util.parse(getInternalStr("CHITCHAT"));
-        chitChat2=Util.parse(getInternalStr("CHITCHAT2"));
-        chitChat3=Util.parse(getInternalStr("CHITCHAT3"));
-        judgeNames=Util.parse(getInternalStr("JUDGE"));
+        officerNames=CMParms.parse(getInternalStr("OFFICERS"));
+        chitChat=CMParms.parse(getInternalStr("CHITCHAT"));
+        chitChat2=CMParms.parse(getInternalStr("CHITCHAT2"));
+        chitChat3=CMParms.parse(getInternalStr("CHITCHAT3"));
+        judgeNames=CMParms.parse(getInternalStr("JUDGE"));
 
         arrestMobs=getInternalStr("ARRESTMOBS").equalsIgnoreCase("true");
 
@@ -443,22 +443,22 @@ public class DefaultLawSet implements Law
         paroleMessages[1]=getInternalStr("PAROLE2MSG");
         paroleMessages[2]=getInternalStr("PAROLE3MSG");
         paroleMessages[3]=getInternalStr("PAROLE4MSG");
-        paroleTimes[0]=new Integer(Util.s_int(getInternalStr("PAROLE1TIME")));
-        paroleTimes[1]=new Integer(Util.s_int(getInternalStr("PAROLE2TIME")));
-        paroleTimes[2]=new Integer(Util.s_int(getInternalStr("PAROLE3TIME")));
-        paroleTimes[3]=new Integer(Util.s_int(getInternalStr("PAROLE4TIME")));
+        paroleTimes[0]=new Integer(CMath.s_int(getInternalStr("PAROLE1TIME")));
+        paroleTimes[1]=new Integer(CMath.s_int(getInternalStr("PAROLE2TIME")));
+        paroleTimes[2]=new Integer(CMath.s_int(getInternalStr("PAROLE3TIME")));
+        paroleTimes[3]=new Integer(CMath.s_int(getInternalStr("PAROLE4TIME")));
 
         jailMessages[0]=getInternalStr("JAIL1MSG");
         jailMessages[1]=getInternalStr("JAIL2MSG");
         jailMessages[2]=getInternalStr("JAIL3MSG");
         jailMessages[3]=getInternalStr("JAIL4MSG");
-        jailTimes[0]=new Integer(Util.s_int(getInternalStr("JAIL1TIME")));
-        jailTimes[1]=new Integer(Util.s_int(getInternalStr("JAIL2TIME")));
-        jailTimes[2]=new Integer(Util.s_int(getInternalStr("JAIL3TIME")));
-        jailTimes[3]=new Integer(Util.s_int(getInternalStr("JAIL4TIME")));
+        jailTimes[0]=new Integer(CMath.s_int(getInternalStr("JAIL1TIME")));
+        jailTimes[1]=new Integer(CMath.s_int(getInternalStr("JAIL2TIME")));
+        jailTimes[2]=new Integer(CMath.s_int(getInternalStr("JAIL3TIME")));
+        jailTimes[3]=new Integer(CMath.s_int(getInternalStr("JAIL4TIME")));
 
-        jailRooms=Util.parseSemicolons(getInternalStr("JAIL"),true);
-        releaseRooms=Util.parseSemicolons(getInternalStr("RELEASEROOM"),true);
+        jailRooms=CMParms.parseSemicolons(getInternalStr("JAIL"),true);
+        releaseRooms=CMParms.parseSemicolons(getInternalStr("RELEASEROOM"),true);
 
         taxLaws.clear();
         String taxLaw=getInternalStr("PROPERTYTAX");
@@ -502,9 +502,9 @@ public class DefaultLawSet implements Law
             {
                 if(key.startsWith("CRIME"))
                 {
-                    otherCrimes.addElement(Util.parse(words.substring(0,x)));
+                    otherCrimes.addElement(CMParms.parse(words.substring(0,x)));
                     String[] bits=new String[Law.BIT_NUMBITS];
-                    Vector parsed=Util.parseSemicolons(words.substring(x+1),false);
+                    Vector parsed=CMParms.parseSemicolons(words.substring(x+1),false);
                     for(int i=0;i<Law.BIT_NUMBITS;i++)
                         if(i<parsed.size())
                             bits[i]=(String)parsed.elementAt(i);
@@ -515,9 +515,9 @@ public class DefaultLawSet implements Law
                 else
                 if(key.startsWith("BANNED"))
                 {
-                    bannedSubstances.addElement(Util.parse(words.substring(0,x)));
+                    bannedSubstances.addElement(CMParms.parse(words.substring(0,x)));
                     String[] bits=new String[Law.BIT_NUMBITS];
-                    Vector parsed=Util.parseSemicolons(words.substring(x+1),false);
+                    Vector parsed=CMParms.parseSemicolons(words.substring(x+1),false);
                     for(int i=0;i<Law.BIT_NUMBITS;i++)
                         if(i<parsed.size())
                             bits[i]=(String)parsed.elementAt(i);
@@ -539,11 +539,11 @@ public class DefaultLawSet implements Law
         {
             ByteArrayOutputStream out=new ByteArrayOutputStream();
             try{ theLaws.store(out,"");}catch(IOException e){}
-            String s=Util.replaceAll(out.toString(),"\n\r","~");
-            s=Util.replaceAll(s,"\r\n","~");
-            s=Util.replaceAll(s,"\n","~");
-            s=Util.replaceAll(s,"\r","~");
-            s=Util.replaceAll(s,"'","`");
+            String s=CMStrings.replaceAll(out.toString(),"\n\r","~");
+            s=CMStrings.replaceAll(s,"\r\n","~");
+            s=CMStrings.replaceAll(s,"\n","~");
+            s=CMStrings.replaceAll(s,"\r","~");
+            s=CMStrings.replaceAll(s,"'","`");
             return s;
         }
         return "";
@@ -552,7 +552,7 @@ public class DefaultLawSet implements Law
     private String[] getInternalBits(String bitStr)
     {
         String[] bits=new String[Law.BIT_NUMBITS];
-        Vector parsed=Util.parseSemicolons(bitStr,false);
+        Vector parsed=CMParms.parseSemicolons(bitStr,false);
         for(int i=0;i<Law.BIT_NUMBITS;i++)
             if(i<parsed.size())
                 bits[i]=(String)parsed.elementAt(i);

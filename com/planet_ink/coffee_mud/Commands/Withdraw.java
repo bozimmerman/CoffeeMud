@@ -52,7 +52,7 @@ public class Withdraw extends StdCommand
 			mob.tell("Withdraw what or how much?");
 			return false;
 		}
-		String str=Util.combine(commands,0);
+		String str=CMParms.combine(commands,0);
 		if(str.equalsIgnoreCase("all")) str=""+Integer.MAX_VALUE;
 	    long numCoins=CMLib.english().numPossibleGold(null,str);
 	    String currency=CMLib.english().numPossibleGoldCurrency(shopkeeper,str);

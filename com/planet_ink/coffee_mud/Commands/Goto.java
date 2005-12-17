@@ -46,7 +46,7 @@ public class Goto extends At
 			return false;
 		}
 		commands.removeElementAt(0);
-		StringBuffer cmd = new StringBuffer(Util.combine(commands,0));
+		StringBuffer cmd = new StringBuffer(CMParms.combine(commands,0));
 		Room curRoom=mob.location();
 		room=findRoomLiberally(mob,cmd);
 

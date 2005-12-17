@@ -63,9 +63,9 @@ public class Chant_PeaceMoon extends Chant
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(affected instanceof Room)
-		if((Util.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
-		||(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
-		||(Util.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)))
+		if((CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
+		||(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		||(CMath.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)))
 		{
 			if((msg.source()!=null)
 			   &&(msg.target()!=null)
@@ -131,7 +131,7 @@ public class Chant_PeaceMoon extends Chant
 		{
 			Ability A=target.fetchEffect(a);
 			if((A!=null)
-			&&(Util.bset(A.flags(),Ability.FLAG_MOONCHANGING)))
+			&&(CMath.bset(A.flags(),Ability.FLAG_MOONCHANGING)))
 			{
 				mob.tell("The moon is already under "+A.name()+", and can not be changed until this magic is gone.");
 				return false;

@@ -94,7 +94,7 @@ public class Train extends StdCommand
 		        ||(C.name(classLevel).toUpperCase().startsWith(abilityName.toUpperCase())))
 				{
                     if((C.qualifiesForThisClass(mob,false))
-                    &&(!Util.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+                    &&(!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK)))
 					{
 						abilityCode=106;
 						theClass=C;
@@ -103,7 +103,7 @@ public class Train extends StdCommand
 				}
                 else
                 if((C.qualifiesForThisClass(mob,true))
-                &&(!Util.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+                &&(!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK)))
                     thingsToTrainFor.append(C.name()+", ");
 			}
 		}
@@ -179,12 +179,12 @@ public class Train extends StdCommand
 			mob.tell("You cannot train with yourself!");
 			return false;
 		}
-		if(Util.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
+		if(CMath.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
 		{
 			mob.tell(teacher.name()+" is refusing to teach right now.");
 			return false;
 		}
-		if(Util.bset(mob.getBitmap(),MOB.ATT_NOTEACH))
+		if(CMath.bset(mob.getBitmap(),MOB.ATT_NOTEACH))
 		{
 			mob.tell("You are refusing training at this time.");
 			return false;

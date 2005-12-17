@@ -120,7 +120,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			if(invResetTickDown==0)
 			{
 				invResetTickDown=invResetRate();
-				if(invResetTickDown==0) invResetTickDown=Util.s_int(CMProps.getVar(CMProps.SYSTEM_INVRESETRATE));
+				if(invResetTickDown==0) invResetTickDown=CMath.s_int(CMProps.getVar(CMProps.SYSTEM_INVRESETRATE));
 				if(invResetTickDown==0) invResetTickDown=Integer.MAX_VALUE;
 			}
 			else
@@ -128,7 +128,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
                 shop.emptyAllShelves();
 				invResetTickDown=invResetRate();
-				if(invResetTickDown==0) invResetTickDown=Util.s_int(CMProps.getVar(CMProps.SYSTEM_INVRESETRATE));
+				if(invResetTickDown==0) invResetTickDown=CMath.s_int(CMProps.getVar(CMProps.SYSTEM_INVRESETRATE));
 				if(invResetTickDown==0) invResetTickDown=Integer.MAX_VALUE;
 				if(miscText!=null)
 				{
@@ -152,14 +152,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				budgetRemaining=Long.MAX_VALUE/2;
 				String s=budget();
 				if(s.length()==0) s=CMProps.getVar(CMProps.SYSTEM_BUDGET);
-				Vector V=Util.parse(s.trim().toUpperCase());
+				Vector V=CMParms.parse(s.trim().toUpperCase());
 				if(V.size()>0)
 				{
 					if(((String)V.firstElement()).equals("0"))
 						budgetRemaining=0;
 					else
 					{
-						budgetRemaining=Util.s_long((String)V.firstElement());
+						budgetRemaining=CMath.s_long((String)V.firstElement());
 						if(budgetRemaining==0)
 							budgetRemaining=Long.MAX_VALUE/2;
 					}
@@ -263,7 +263,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
                     budgetRemaining=budgetRemaining-Math.round(paid);
 					if(mySession!=null)
 						mySession.stdPrintln(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
-					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+					if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 						mob.location().recoverRoomStats();
                     if(isGeneric()) text();
 				}
@@ -308,7 +308,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 
 					if(mySession!=null)
 						mySession.stdPrintln(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
-					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+					if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 						mob.location().recoverRoomStats();
 				}
 				break;
@@ -318,7 +318,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					super.executeMsg(myHost,msg);
 					Vector inventory=getShop().getStoreInventory();
 					inventory=CMLib.coffeeShops().addRealEstateTitles(inventory,mob,whatIsSold(),getStartRoom());
-                    int limit=Util.getParmInt(prejudiceFactors(),"LIMIT",0);
+                    int limit=CMParms.getParmInt(prejudiceFactors(),"LIMIT",0);
                     String s=CMLib.coffeeShops().getListInventory(this,mob,inventory,limit,this);
 					if(s.length()>0)
 						mob.tell(s);

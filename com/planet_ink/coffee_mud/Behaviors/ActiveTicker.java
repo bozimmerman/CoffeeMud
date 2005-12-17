@@ -51,9 +51,9 @@ public class ActiveTicker extends StdBehavior
 	public void setParms(String newParms)
 	{
 		parms=newParms;
-		minTicks=Util.getParmInt(parms,"min",minTicks);
-		maxTicks=Util.getParmInt(parms,"max",maxTicks);
-		chance=Util.getParmInt(parms,"chance",chance);
+		minTicks=CMParms.getParmInt(parms,"min",minTicks);
+		maxTicks=CMParms.getParmInt(parms,"max",maxTicks);
+		chance=CMParms.getParmInt(parms,"chance",chance);
 		tickReset();
 	}
 

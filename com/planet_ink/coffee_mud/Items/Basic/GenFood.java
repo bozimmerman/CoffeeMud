@@ -85,7 +85,7 @@ public class GenFood extends StdFood
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setNourishment(Util.s_int(val)); break;
+		case 0: setNourishment(CMath.s_int(val)); break;
 		}
 	}
 	protected int getCodeNum(String code){

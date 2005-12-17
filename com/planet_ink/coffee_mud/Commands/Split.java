@@ -44,7 +44,7 @@ public class Split extends StdCommand
 			mob.tell("Split how much?");
 			return false;
 		}
-		String itemID=Util.combine(commands,1);
+		String itemID=CMParms.combine(commands,1);
 		long numGold=CMLib.english().numPossibleGold(mob,itemID);
 		if(numGold<0)
 		{
@@ -74,8 +74,8 @@ public class Split extends StdCommand
 			return false;
 		}
 
-		double totalAbsoluteValue=Util.mul(numGold,denom);
-		totalAbsoluteValue=Util.div(totalAbsoluteValue,num+1);
+		double totalAbsoluteValue=CMath.mul(numGold,denom);
+		totalAbsoluteValue=CMath.div(totalAbsoluteValue,num+1);
 		if((totalAbsoluteValue*num)>CMLib.beanCounter().getTotalAbsoluteValue(mob,currency))
 		{
 			mob.tell("You don't have that much "+CMLib.beanCounter().getDenominationName(currency,denom)+".");

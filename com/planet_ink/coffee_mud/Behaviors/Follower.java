@@ -55,7 +55,7 @@ public class Follower extends ActiveTicker
 		maxTicks=0;
 		chance=100;
         super.setParms(newParms);
-		Vector V=Util.parse(newParms.toUpperCase());
+		Vector V=CMParms.parse(newParms.toUpperCase());
 		realFollow=V.contains("GROUP");
 		inventory=V.contains("INVENTORY")||V.contains("INV");
     }

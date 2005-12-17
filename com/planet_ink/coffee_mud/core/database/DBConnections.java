@@ -625,7 +625,7 @@ public class DBConnections
 				{
 					DBConnection DB=null;
 					String retrySQL=queueLine.substring(0,firstTab);
-					int oldAttempts=Util.s_int(queueLine.substring(secondTab+5));
+					int oldAttempts=CMath.s_int(queueLine.substring(secondTab+5));
 					if(oldAttempts>20)
 					{
 						Log.errOut("DBConnections","Giving up on :"+retrySQL);

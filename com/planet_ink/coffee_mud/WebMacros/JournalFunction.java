@@ -88,7 +88,7 @@ public class JournalFunction extends StdWebMacro
 		}
 		String lastlast=httpReq.getRequestParameter("JOURNALMESSAGE");
 		int num=0;
-		if(lastlast!=null) num=Util.s_int(lastlast);
+		if(lastlast!=null) num=CMath.s_int(lastlast);
 		if((num<0)||(num>=info.size()))
 			return "Function not performed -- illegal journal message specified.";
 		String to= ((String)((Vector)info.elementAt(num)).elementAt(3));

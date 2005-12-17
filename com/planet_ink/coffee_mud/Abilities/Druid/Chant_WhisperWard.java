@@ -150,7 +150,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 		}
 
 		Environmental target;
-		String itemName=Util.combine(commands,0,commands.size()-1);
+		String itemName=CMParms.combine(commands,0,commands.size()-1);
 		if(itemName.equalsIgnoreCase("room"))
 			target=mob.location();
 		else

@@ -76,12 +76,12 @@ public class SpecialistMage extends Mage
 	public int availabilityCode(){return 0;}
 	public String otherBonuses()
 	{
-		String chosen=Util.capitalizeAndLower(Ability.DOMAIN_DESCS[domain()>>5]);
+		String chosen=CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[domain()>>5]);
 		return "At 5th level, receives 2%/lvl bonus damage from "+chosen+".  At 10th level, receives double duration on your "+chosen+" magic, and half duration from malicious "+chosen+" magic.";
 	}
 	public String otherLimitations()
 	{
-		String opposed=Util.capitalizeAndLower(Ability.DOMAIN_DESCS[opposed()>>5]);
+		String opposed=CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[opposed()>>5]);
 		return "Unable to cast "+opposed+" spells.  Receives 2%/lvl penalty damage from "+opposed+".  Receives double duration from malicious "+opposed+" magic, half duration on other "+opposed+" effects.";
 	}
 
@@ -117,7 +117,7 @@ public class SpecialistMage extends Mage
 			{
                 int classLevel=myChar.charStats().getClassLevel(this);
                 if(classLevel>30) classLevel=30;
-				int recovery=(int)Math.round(Util.mul(msg.value(),Util.mul(0.02,classLevel)));
+				int recovery=(int)Math.round(CMath.mul(msg.value(),CMath.mul(0.02,classLevel)));
 				msg.setValue(msg.value()-recovery);
 			}
 		}
@@ -130,13 +130,13 @@ public class SpecialistMage extends Mage
 			if((domain==domain())
 			&&(myChar.charStats().getClassLevel(this)>=5))
 			{
-				int recovery=(int)Math.round(Util.div((msg.value()),1.0+Util.mul(0.02,myChar.charStats().getClassLevel(this))));
+				int recovery=(int)Math.round(CMath.div((msg.value()),1.0+CMath.mul(0.02,myChar.charStats().getClassLevel(this))));
 				msg.setValue(msg.value()-recovery);
 			}
 			else
 			if(domain==opposed())
 			{
-				int recovery=(int)Math.round(Util.mul((msg.value()),1.0+Util.mul(0.02,30-myChar.charStats().getClassLevel(this))));
+				int recovery=(int)Math.round(CMath.mul((msg.value()),1.0+CMath.mul(0.02,30-myChar.charStats().getClassLevel(this))));
 				msg.setValue(msg.value()-recovery);
 			}
 		}

@@ -71,7 +71,7 @@ public class Spell_CombatPrecognition extends Spell
 			}
 			else
 			if((msg.value()<=0)
-			   &&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+			   &&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			   &&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,mob.charStats().getStat(CharStats.DEXTERITY)-50,false)))
 			{
 				String tool=null;
@@ -81,7 +81,7 @@ public class Spell_CombatPrecognition extends Spell
 				switch(msg.targetMinor())
 				{
 				case CMMsg.TYP_JUSTICE:
-					if((Util.bset(msg.targetCode(),CMMsg.MASK_MOVE))
+					if((CMath.bset(msg.targetCode(),CMMsg.MASK_MOVE))
 					&&(tool!=null))
 						msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"physical":tool)+" from <T-NAME>.");
 					break;

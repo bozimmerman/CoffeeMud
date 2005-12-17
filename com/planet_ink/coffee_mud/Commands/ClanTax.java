@@ -62,22 +62,22 @@ public class ClanTax extends BaseClanner
 				{
 					double newRate=0.0;
 					if((skipChecks)&&(commands.size()>1))
-						newRate=Util.div(Util.s_int(Util.combine(commands,1)),100);
+						newRate=CMath.div(CMath.s_int(CMParms.combine(commands,1)),100);
 					else
 					if(mob.session()!=null)
 					{
 						String t=null;
-						if((commands.size()<=1)||(!Util.isNumber(Util.combine(commands,1))))
+						if((commands.size()<=1)||(!CMath.isNumber(CMParms.combine(commands,1))))
 							t=mob.session().prompt("Enter your "+C.typeName()+"'s new tax rate (0-100)\n\r: ","");
 						else
-							t=Util.combine(commands,1);
+							t=CMParms.combine(commands,1);
 						if(t.length()==0) return false;
-						int intt=Util.s_int(t);
+						int intt=CMath.s_int(t);
 						if((intt<0)||(intt>100)) return false;
 						commands.clear();
 						commands.addElement("clantax");
 						commands.addElement(t);
-						newRate=Util.div(Util.s_int(t),100);
+						newRate=CMath.div(CMath.s_int(t),100);
 					}
 					if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANTAX,true))
 					{

@@ -60,7 +60,7 @@ public class After extends StdCommand implements Tickable
 		if(((String)commands.elementAt(0)).equalsIgnoreCase("every"))
 		{ every=true; commands.removeElementAt(0);}
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
-		long time=Util.s_long((String)commands.elementAt(0));
+		long time=CMath.s_long((String)commands.elementAt(0));
 		if(time==0) { mob.tell(getScr("After","timerr")+afterErr); return false;}
 		commands.removeElementAt(0);
 		if(commands.size()==0){ mob.tell(afterErr); return false;}

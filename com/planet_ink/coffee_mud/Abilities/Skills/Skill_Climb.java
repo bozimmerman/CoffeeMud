@@ -52,7 +52,7 @@ public class Skill_Climb extends StdSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		int dirCode=Directions.getDirectionCode(Util.combine(commands,0));
+		int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
 		if(dirCode<0)
 		{
 			mob.tell("Climb where?");

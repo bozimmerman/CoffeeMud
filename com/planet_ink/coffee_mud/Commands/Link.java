@@ -48,7 +48,7 @@ public class Link extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return false;
 		}
-		int direction=Directions.getGoodDirectionCode(Util.combine(commands,2));
+		int direction=Directions.getGoodDirectionCode(CMParms.combine(commands,2));
 		if(direction<0)
 		{
 			mob.tell("You have failed to specify a direction.  Try "+Directions.DIRECTIONS_DESC+".\n\r");

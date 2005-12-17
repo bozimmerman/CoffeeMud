@@ -40,7 +40,7 @@ public class Spells extends BaseAbleLister
 		throws java.io.IOException
 	{
 		int lvl=parseOutLevel(commands);
-		String qual=Util.combine(commands,1).toUpperCase();
+		String qual=CMParms.combine(commands,1).toUpperCase();
 		int domain=-1;
 		String domainName="Arcane";
 		if(qual.length()>0)

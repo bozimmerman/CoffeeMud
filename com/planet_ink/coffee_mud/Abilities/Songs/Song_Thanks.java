@@ -96,7 +96,7 @@ public class Song_Thanks extends Song
 			{
 				CMLib.beanCounter().subtractMoney(mob,1.0);
 				mob.addInventory(C);
-				mob.doCommand(Util.parse("GIVE \""+C.name()+"\" \""+invoker.name()+"\""));
+				mob.doCommand(CMParms.parse("GIVE \""+C.name()+"\" \""+invoker.name()+"\""));
 				if(!C.amDestroyed()) C.putCoinsBack();
 			}
 		}

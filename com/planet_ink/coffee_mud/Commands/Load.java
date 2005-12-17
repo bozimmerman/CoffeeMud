@@ -45,7 +45,7 @@ public class Load extends StdCommand
 			return false;
 		}
 		String what=(String)commands.elementAt(1);
-		String name=Util.combine(commands,2);
+		String name=CMParms.combine(commands,2);
         if(what.equalsIgnoreCase("FACTION"))
         {
             Faction F=CMLib.factions().getFaction(name);
@@ -68,9 +68,9 @@ public class Load extends StdCommand
 			mob.tell("'"+what+"' is not a valid class type.");
 		else
 		if(CMClass.loadClass(what,name))
-			mob.tell(Util.capitalizeAndLower(what)+" "+name+" was loaded.");
+			mob.tell(CMStrings.capitalizeAndLower(what)+" "+name+" was loaded.");
 		else
-			mob.tell(Util.capitalizeAndLower(what)+" "+name+" was not loaded.");
+			mob.tell(CMStrings.capitalizeAndLower(what)+" "+name+" was not loaded.");
 
 		return false;
 	}

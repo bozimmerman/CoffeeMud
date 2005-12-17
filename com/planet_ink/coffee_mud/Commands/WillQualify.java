@@ -63,9 +63,9 @@ public class WillQualify extends BaseAbleLister{
 					Ability A=CMClass.getAbility(cimable.abilityName);
 					if(A!=null)
                     {
-    					thisLine.append("^N[^H" + Util.padRight("" + l, 3) + "^?] "
-    					        + Util.padRight("^<HELP^>"+A.name()+"^</HELP^>", 19) + " "
-    					        + Util.padRight(A.requirements()+(cimable.autoGain?" *":""), (col == 2) ? 12 : 13));
+    					thisLine.append("^N[^H" + CMStrings.padRight("" + l, 3) + "^?] "
+    					        + CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>", 19) + " "
+    					        + CMStrings.padRight(A.requirements()+(cimable.autoGain?" *":""), (col == 2) ? 12 : 13));
                     }
 				}
 			}
@@ -88,18 +88,18 @@ public class WillQualify extends BaseAbleLister{
 	{
 		StringBuffer msg=new StringBuffer("");
 		String willQualErr = "Specify level and class:  WILLQUALIFY [LEVEL] ([CLASS NAME]).";
-		if((commands.size()<2)||((commands.size()>1)&&(!Util.isNumber((String)commands.elementAt(1)))))
+		if((commands.size()<2)||((commands.size()>1)&&(!CMath.isNumber((String)commands.elementAt(1)))))
 		{
 			mob.tell(willQualErr); 
 			return false;
 		}
 		// # is param 1, class name is param 2+
-		int level=Util.s_int((String)commands.elementAt(1));
+		int level=CMath.s_int((String)commands.elementAt(1));
 		if (level > 0) 
 		{
 			
 			String className=mob.charStats().getCurrentClass().ID();
-			if(commands.size()>2) className=Util.combine(commands,2);
+			if(commands.size()>2) className=CMParms.combine(commands,2);
 			CharClass C=CMClass.findCharClass(className);
 			if (C == null) 
 			{

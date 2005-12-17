@@ -51,7 +51,7 @@ public class Spell_StoreSpell extends Spell
 			Environmental target=null;
 			if((mob.location()!=null))
 				target=afftarget;
-			String name=Util.removeColors(me.name().toUpperCase());
+			String name=CMStrings.removeColors(me.name().toUpperCase());
 			if(name.startsWith("A ")) name=name.substring(2).trim();
 			if(name.startsWith("AN ")) name=name.substring(3).trim();
 			if(name.startsWith("THE ")) name=name.substring(4).trim();
@@ -67,7 +67,7 @@ public class Spell_StoreSpell extends Spell
 				int charges=0;
 				Ability A=null;
 				if(x>0){
-					charges=Util.s_int(text().substring(x+1));
+					charges=CMath.s_int(text().substring(x+1));
 					A=CMClass.getAbility(text().substring(0,x));
 				}
 				if(A==null)
@@ -136,7 +136,7 @@ public class Spell_StoreSpell extends Spell
 
 		commands.removeElementAt(commands.size()-1);
 
-		String spellName=Util.combine(commands,0).trim();
+		String spellName=CMParms.combine(commands,0).trim();
 		Spell wandThis=null;
 		for(int a=0;a<mob.numAbilities();a++)
 		{
@@ -172,7 +172,7 @@ public class Spell_StoreSpell extends Spell
 		}
 		int charges=0;
 		int x=A.text().indexOf("/");
-		if(x>=0) charges=Util.s_int(A.text().substring(x+1));
+		if(x>=0) charges=CMath.s_int(A.text().substring(x+1));
 		overridemana=-1;
 		int mana=usageCost(mob)[0]+wandThis.usageCost(mob)[0];
 		if(mana>mob.maxState().getMana())

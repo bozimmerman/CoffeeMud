@@ -51,7 +51,7 @@ public class Song_Dexterity extends Song
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		amount=Util.s_int(Util.combine(commands,0));
+		amount=CMath.s_int(CMParms.combine(commands,0));
 
 		if(amount<=0)
 		{

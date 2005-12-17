@@ -90,14 +90,14 @@ public class Mount extends StdCommand
 			    }
 			}
 		}
-		recipient=CMLib.english().fetchEnvironmental(possRecipients,Util.combine(commands,0),true);
+		recipient=CMLib.english().fetchEnvironmental(possRecipients,CMParms.combine(commands,0),true);
 		if(recipient==null)
-			recipient=CMLib.english().fetchEnvironmental(possRecipients,Util.combine(commands,0),false);
+			recipient=CMLib.english().fetchEnvironmental(possRecipients,CMParms.combine(commands,0),false);
 		if(recipient==null)
-			recipient=mob.location().fetchFromRoomFavorMOBs(null,Util.combine(commands,0),Item.WORN_REQ_UNWORNONLY);
+			recipient=mob.location().fetchFromRoomFavorMOBs(null,CMParms.combine(commands,0),Item.WORN_REQ_UNWORNONLY);
 		if((recipient==null)||((recipient!=null)&&(!CMLib.flags().canBeSeenBy(recipient,mob))))
 		{
-			mob.tell(getScr("Movement","youdontsee",Util.combine(commands,0)));
+			mob.tell(getScr("Movement","youdontsee",CMParms.combine(commands,0)));
 			return false;
 		}
 		String mountStr=null;

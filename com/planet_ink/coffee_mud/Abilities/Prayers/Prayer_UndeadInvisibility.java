@@ -60,7 +60,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
-        &&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+        &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&((msg.amITarget(affected))))
 		{
 			MOB target=(MOB)msg.target();

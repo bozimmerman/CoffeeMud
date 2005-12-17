@@ -50,7 +50,7 @@ public class ScriptableEverymob extends StdBehavior
     private Enumeration determineRooms(Environmental forMe)
     {
         if(forMe instanceof Room)
-            return Util.makeVector(forMe).elements();
+            return CMParms.makeVector(forMe).elements();
         else
         if(forMe instanceof Area)
             return ((Area)forMe).getMetroMap();

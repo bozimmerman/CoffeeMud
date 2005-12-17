@@ -96,7 +96,7 @@ public class Trap_Trap extends StdAbility implements Trap
 					{
 						target.location().send(target,msg);
 						if(msg.value()>0)
-							dmg=(int)Math.round(Util.div(dmg,2.0));
+							dmg=(int)Math.round(CMath.div(dmg,2.0));
 						CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>!");
 					}
 				}
@@ -110,7 +110,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				{
 					target.location().send(target,msg);
 					if(msg.value()>0)
-						dmg=(int)Math.round(Util.div(dmg,2.0));
+						dmg=(int)Math.round(CMath.div(dmg,2.0));
 					CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"A sudden blast of gas <DAMAGE> <T-NAME>!");
 				}
 			}
@@ -130,7 +130,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			{
 				target.location().send(target,msg);
 				if(msg.value()>0)
-					dmg=(int)Math.round(Util.div(dmg,2.0));
+					dmg=(int)Math.round(CMath.div(dmg,2.0));
 				CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The needle <DAMAGE> <T-NAME>!");
 
 				Ability P=CMClass.getAbility("Poison");
@@ -153,7 +153,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			{
 				target.location().send(target,msg);
 				if(msg.value()>0)
-					dmg=(int)Math.round(Util.div(dmg,2.0));
+					dmg=(int)Math.round(CMath.div(dmg,2.0));
 				Ability P=CMClass.getAbility("Poison");
 				if(P!=null) P.invoke(invoker(),target,true,0);
 				CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
@@ -174,7 +174,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			V.addElement(mob.name());
 			if(x>0)
 			{
-				V=Util.parse(spell.substring(x+1));
+				V=CMParms.parse(spell.substring(x+1));
 				V.insertElementAt(mob.name(),0);
 				spell=spell.substring(0,x);
 			}

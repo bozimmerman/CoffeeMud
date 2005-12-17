@@ -280,7 +280,7 @@ public class UtiliThread extends Thread
 		lastStart=System.currentTimeMillis();
 		if(started)
 		{
-			System.out.println("DUPLICATE UTILITHREAD RUNNING!!");
+			Log.errOut("UtiliThread","DUPLICATE UTILITHREAD RUNNING!!");
 			return;
 		}
 		started=true;

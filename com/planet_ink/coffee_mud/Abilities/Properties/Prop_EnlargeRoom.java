@@ -43,8 +43,8 @@ public class Prop_EnlargeRoom extends Property
 	private double dval(String s)
 	{
 		if(s.indexOf(".")>=0)
-			return Util.s_double(s);
-		return new Integer(Util.s_int(s)).doubleValue();
+			return CMath.s_double(s);
+		return new Integer(CMath.s_int(s)).doubleValue();
 	}
 
 	private int ival(String s)
@@ -66,10 +66,10 @@ public class Prop_EnlargeRoom extends Property
 				affectableStats.setWeight(weight-ival(text().substring(1).trim()));
 				break;
 			case '*':
-				affectableStats.setWeight((int)Math.round(Util.mul(weight,dval(text().substring(1).trim()))));
+				affectableStats.setWeight((int)Math.round(CMath.mul(weight,dval(text().substring(1).trim()))));
 				break;
 			case '/':
-				affectableStats.setWeight((int)Math.round(Util.div(weight,dval(text().substring(1).trim()))));
+				affectableStats.setWeight((int)Math.round(CMath.div(weight,dval(text().substring(1).trim()))));
 				break;
 			default:
 				affectableStats.setWeight(ival(text()));

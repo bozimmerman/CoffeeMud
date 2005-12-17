@@ -48,8 +48,8 @@ public class Chant_ClearMoon extends Chant
 		{
 			Ability A=E.fetchEffect(a);
 			if((A!=null)
-			&&(Util.bset(A.flags(),Ability.FLAG_MOONCHANGING)
-			   ||Util.bset(A.flags(),Ability.FLAG_MOONSUMMONING)))
+			&&(CMath.bset(A.flags(),Ability.FLAG_MOONCHANGING)
+			   ||CMath.bset(A.flags(),Ability.FLAG_MOONSUMMONING)))
 				A.unInvoke();
 		}
 	}

@@ -42,17 +42,17 @@ public class AutoGuard extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if((!Util.bset(mob.getBitmap(),MOB.ATT_AUTOGUARD))
+		if((!CMath.bset(mob.getBitmap(),MOB.ATT_AUTOGUARD))
 		   ||((commands.size()>0)&&(((String)commands.firstElement()).toUpperCase().startsWith("G"))))
 		{
-			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
+			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
 			mob.tell(getScr("AutoGuard","guardon"));
 			if(mob.isMonster())
 				CMLib.commands().say(mob,null,getScr("AutoGuard","guardonmsg"),false,false);
 		}
 		else
 		{
-			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
+			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
 			mob.tell(getScr("AutoGuard","guardoff"));
 			if(mob.isMonster())
 				CMLib.commands().say(mob,null,getScr("AutoGuard","followglead"),false,false);

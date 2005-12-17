@@ -78,7 +78,7 @@ public class Chant_GrowClub extends Chant
 				mob.location().send(mob,msg);
 				Weapon newItem=CMClass.getWeapon("GenWeapon");
 				newItem.setName(EnvResource.RESOURCE_DESCS[material&EnvResource.RESOURCE_MASK].toLowerCase()+" club");
-				newItem.setName(Util.startWithAorAn(newItem.Name()));
+				newItem.setName(CMStrings.startWithAorAn(newItem.Name()));
 				newItem.setDisplayText(newItem.name()+" sits here");
 				newItem.setDescription("It looks like the limb of a tree.");
 				newItem.setMaterial(material);

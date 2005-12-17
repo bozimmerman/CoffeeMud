@@ -184,11 +184,11 @@ public class Spell_Cogniportive extends Spell
 				x=msgStr.lastIndexOf("'");
 				if(x<0) break;
 				msgStr=msgStr.substring(0,x);
-				Vector V=Util.parse(msgStr);
+				Vector V=CMParms.parse(msgStr);
 				if(V.size()<2) break;
 				String str=(String)V.firstElement();
 				if(!str.equalsIgnoreCase("HOME")) break;
-				str=Util.combine(V,1);
+				str=CMParms.combine(V,1);
 				if(CMLib.english().containsString(affected.name(),str)
 				||CMLib.english().containsString(affected.displayText(),str))
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WAND_USE,msg.sourceMessage(),CMMsg.NO_EFFECT,null));
@@ -205,7 +205,7 @@ public class Spell_Cogniportive extends Spell
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null)
 		{
-			String str=Util.combine(commands,0).toUpperCase();
+			String str=CMParms.combine(commands,0).toUpperCase();
 			if(str.equals("MONEY")||str.equals("GOLD")||str.equals("COINS"))
 				mob.tell("You can't cast this spell on coins!");
 			return false;

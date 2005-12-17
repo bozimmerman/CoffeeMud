@@ -44,7 +44,7 @@ public class Prop_TicketTaker extends Property
 	}
 
 	private double cost(){
-		int amount=Util.s_int(text());
+		int amount=CMath.s_int(text());
 		if(amount==0) amount=10;
 		return new Integer(amount).doubleValue();
 	}

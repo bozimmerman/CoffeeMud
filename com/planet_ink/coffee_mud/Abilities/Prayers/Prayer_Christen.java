@@ -69,7 +69,7 @@ public class Prayer_Christen extends Prayer
 			return false;
 		}
 
-		name=Util.capitalizeAndLower(name);
+		name=CMStrings.capitalizeAndLower(name);
 
 		if(CMLib.database().DBUserSearch(null,name))
 		{
@@ -96,8 +96,8 @@ public class Prayer_Christen extends Prayer
 				target.setName(name);
 				target.setDisplayText(name+" is here.");
 				String txt=((CagedAnimal)target).cageText();
-				txt=Util.replaceFirst(txt,"<NAME>"+oldName+"</NAME>","<NAME>"+name+"</NAME>");
-				txt=Util.replaceFirst(txt,"<DISP>"+oldName,"<DISP>"+name);
+				txt=CMStrings.replaceFirst(txt,"<NAME>"+oldName+"</NAME>","<NAME>"+name+"</NAME>");
+				txt=CMStrings.replaceFirst(txt,"<DISP>"+oldName,"<DISP>"+name);
 				((CagedAnimal)target).setCageText(txt);
                 Vector channels=CMLib.channels().getFlaggedChannelNames("CHRISTENINGS");
                 for(int i=0;i<channels.size();i++)

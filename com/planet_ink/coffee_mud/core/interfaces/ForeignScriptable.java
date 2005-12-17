@@ -18,7 +18,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public abstract class Scriptable
+public abstract class ForeignScriptable
 {
 	public static String getScr(String which, String num)
 	{
@@ -32,7 +32,7 @@ public abstract class Scriptable
 	{
 		String msg=getScr(which,num);
 		if(msg.length()>0)
-			msg=Util.replaceAll(msg,"@x1",replaceX);
+			msg=CMStrings.replaceAll(msg,"@x1",replaceX);
 		return msg;
 	}
 	public static String getScr(String which, String num, String replaceX, String replaceX2)
@@ -40,8 +40,8 @@ public abstract class Scriptable
 		String msg=getScr(which,num);
 		if(msg.length()>0)
 		{
-			msg=Util.replaceAll(msg,"@x1",replaceX);
-			msg=Util.replaceAll(msg,"@x2",replaceX2);
+			msg=CMStrings.replaceAll(msg,"@x1",replaceX);
+			msg=CMStrings.replaceAll(msg,"@x2",replaceX2);
 		}
 		return msg;
 	}
@@ -55,9 +55,9 @@ public abstract class Scriptable
 		String msg=getScr(which,num);
 		if(msg.length()>0)
 		{
-			msg=Util.replaceAll(msg,"@x1",replaceX);
-			msg=Util.replaceAll(msg,"@x2",replaceX2);
-			msg=Util.replaceAll(msg,"@x3",replaceX3);
+			msg=CMStrings.replaceAll(msg,"@x1",replaceX);
+			msg=CMStrings.replaceAll(msg,"@x2",replaceX2);
+			msg=CMStrings.replaceAll(msg,"@x3",replaceX3);
 		}
 		return msg;
 	}
@@ -73,10 +73,10 @@ public abstract class Scriptable
         String msg=getScr(which,num);
         if(msg.length()>0)
         {
-            msg=Util.replaceAll(msg,"@x1",replaceX);
-            msg=Util.replaceAll(msg,"@x2",replaceX2);
-            msg=Util.replaceAll(msg,"@x3",replaceX3);
-            msg=Util.replaceAll(msg,"@x4",replaceX4);
+            msg=CMStrings.replaceAll(msg,"@x1",replaceX);
+            msg=CMStrings.replaceAll(msg,"@x2",replaceX2);
+            msg=CMStrings.replaceAll(msg,"@x3",replaceX3);
+            msg=CMStrings.replaceAll(msg,"@x4",replaceX4);
         }
         return msg;
     }
@@ -92,11 +92,11 @@ public abstract class Scriptable
         String msg=getScr(which,num);
         if(msg.length()>0)
         {
-            msg=Util.replaceAll(msg,"@x1",replaceX);
-            msg=Util.replaceAll(msg,"@x2",replaceX2);
-            msg=Util.replaceAll(msg,"@x3",replaceX3);
-            msg=Util.replaceAll(msg,"@x4",replaceX4);
-            msg=Util.replaceAll(msg,"@x5",replaceX5);
+            msg=CMStrings.replaceAll(msg,"@x1",replaceX);
+            msg=CMStrings.replaceAll(msg,"@x2",replaceX2);
+            msg=CMStrings.replaceAll(msg,"@x3",replaceX3);
+            msg=CMStrings.replaceAll(msg,"@x4",replaceX4);
+            msg=CMStrings.replaceAll(msg,"@x5",replaceX5);
         }
         return msg;
     }
@@ -112,12 +112,12 @@ public abstract class Scriptable
         String msg=getScr(which,num);
         if(msg.length()>0)
         {
-            msg=Util.replaceAll(msg,"@x1",replaceX);
-            msg=Util.replaceAll(msg,"@x2",replaceX2);
-            msg=Util.replaceAll(msg,"@x3",replaceX3);
-            msg=Util.replaceAll(msg,"@x4",replaceX4);
-            msg=Util.replaceAll(msg,"@x5",replaceX5);
-            msg=Util.replaceAll(msg,"@x6",replaceX6);
+            msg=CMStrings.replaceAll(msg,"@x1",replaceX);
+            msg=CMStrings.replaceAll(msg,"@x2",replaceX2);
+            msg=CMStrings.replaceAll(msg,"@x3",replaceX3);
+            msg=CMStrings.replaceAll(msg,"@x4",replaceX4);
+            msg=CMStrings.replaceAll(msg,"@x5",replaceX5);
+            msg=CMStrings.replaceAll(msg,"@x6",replaceX6);
         }
         return msg;
     }

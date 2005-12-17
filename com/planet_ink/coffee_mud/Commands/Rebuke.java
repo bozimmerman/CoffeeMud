@@ -44,7 +44,7 @@ public class Rebuke extends StdCommand
 			mob.tell("Rebuke whom?");
 			return false;
 		}
-		String str=Util.combine(commands,1);
+		String str=CMParms.combine(commands,1);
 		MOB target=mob.location().fetchInhabitant(str);
 		if((target==null)&&(mob.getWorshipCharID().length()>0)
 		&&(CMLib.english().containsString(mob.getWorshipCharID(),str)))
@@ -55,7 +55,7 @@ public class Rebuke extends StdCommand
 		
 		if(target==null)
 		{
-			mob.tell("You don't see anybody called '"+Util.combine(commands,1)+"' or you aren't serving '"+Util.combine(commands,1)+"'.");
+			mob.tell("You don't see anybody called '"+CMParms.combine(commands,1)+"' or you aren't serving '"+CMParms.combine(commands,1)+"'.");
 			return false;
 		}
 

@@ -61,13 +61,13 @@ public class Spell_FreeMovement extends Spell
 
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&(!mob.amDead()))
 		{
 			Ability A=(Ability)msg.tool();
-			if(Util.bset(A.flags(),Ability.FLAG_PARALYZING))
+			if(CMath.bset(A.flags(),Ability.FLAG_PARALYZING))
 			{
 				msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.name()+"."));
 				return false;
@@ -79,7 +79,7 @@ public class Spell_FreeMovement extends Spell
 			{
 				A.affectEnvStats(newMOB,newMOB.envStats());
 				if((!CMLib.flags().aliveAwakeMobileUnbound(newMOB,true))
-				   ||(Util.bset(A.flags(),Ability.FLAG_PARALYZING))
+				   ||(CMath.bset(A.flags(),Ability.FLAG_PARALYZING))
 				   ||(!A.okMessage(newMOB,msg2)))
 				{
 					msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.name()+"."));

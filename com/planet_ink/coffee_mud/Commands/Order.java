@@ -53,7 +53,7 @@ public class Order extends StdCommand
 		}
 		if((!CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
 		&&(!mob.isMonster())
-		&&(Util.bset(mob.getBitmap(),MOB.ATT_AUTOASSIST)))
+		&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOASSIST)))
 		{
 			mob.tell("You may not order someone around with AUTOASSIST off.");
 			return false;
@@ -108,7 +108,7 @@ public class Order extends StdCommand
 		commands.removeElementAt(0);
 
 		Object O=CMLib.english().findCommand(mob,commands);
-		String order=Util.combine(commands,0);
+		String order=CMParms.combine(commands,0);
 		if(!CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
 		{
 			if((O instanceof Command)&&(!((Command)O).canBeOrdered()))
@@ -134,7 +134,7 @@ public class Order extends StdCommand
 					O=CMLib.english().getToEvoke(target,commands);
 				if(O instanceof Ability)
 				{
-					if(Util.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
+					if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
 					{
 						mob.tell("You can't order "+target.name()+" to '"+order+"'.");
 						continue;

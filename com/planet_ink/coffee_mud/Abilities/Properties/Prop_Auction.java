@@ -152,7 +152,7 @@ public class Prop_Auction extends Property
 						}
 					}
 					if(M!=null)
-						M.doCommand(Util.parse("AUCTION CLOSE"));
+						M.doCommand(CMParms.parse("AUCTION CLOSE"));
 					setInvoker(null);
 				}
 				return false;
@@ -171,11 +171,11 @@ public class Prop_Auction extends Property
 		{
 			setInvoker(mob);
 			auctioning=target;
-			String sb=Util.combine(commands,0);
+			String sb=CMParms.combine(commands,0);
 		    currency=CMLib.english().numPossibleGoldCurrency(mob,sb);
 		    double denomination=CMLib.english().numPossibleGoldDenomination(mob,currency,sb);
 		    long num=CMLib.english().numPossibleGold(mob,sb);
-		    bid=Util.mul(denomination,num);
+		    bid=CMath.mul(denomination,num);
 			highBid=bid-1;
 			auctionStart=System.currentTimeMillis();
 			setAbilityCode(STATE_START);
@@ -192,7 +192,7 @@ public class Prop_Auction extends Property
 			String myCurrency=CMLib.beanCounter().getCurrency(mob);
 			if(commands!=null)
 			{ 
-			    sb=Util.combine(commands,0);
+			    sb=CMParms.combine(commands,0);
 			    if(sb.length()>0)
 			    {
 				    myCurrency=CMLib.english().numPossibleGoldCurrency(mob,sb);
@@ -200,7 +200,7 @@ public class Prop_Auction extends Property
 				    {
 					    double denomination=CMLib.english().numPossibleGoldDenomination(mob,currency,sb);
 					    long num=CMLib.english().numPossibleGold(mob,sb);
-					    b=Util.mul(denomination,num);
+					    b=CMath.mul(denomination,num);
 					    bwords=CMLib.beanCounter().getDenominationName(myCurrency,denomination,num);
 				    }
 				    else

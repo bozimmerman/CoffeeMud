@@ -115,7 +115,7 @@ public class Herbalism extends CraftingSkill
 		if(pos.equalsIgnoreCase("list"))
 		{
 			StringBuffer buf=new StringBuffer("Potions you know how to brew:\n\r");
-			buf.append(Util.padRight("Chant",20)+" "+Util.padRight("Level",5)+" Ingredients\n\r");
+			buf.append(CMStrings.padRight("Chant",20)+" "+CMStrings.padRight("Level",5)+" Ingredients\n\r");
 			boolean fillUsage=(usage.size()==0);
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -123,13 +123,13 @@ public class Herbalism extends CraftingSkill
 				if(V.size()>0)
 				{
 					String spell=(String)V.elementAt(0);
-					int level=Util.s_int((String)V.elementAt(1));
+					int level=CMath.s_int((String)V.elementAt(1));
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(level>=0)
 					&&(mob.envStats().level()>=level))
 					{
-						buf.append(Util.padRight(A.name(),20)+" "+Util.padRight(""+level,5)+" ");
+						buf.append(CMStrings.padRight(A.name(),20)+" "+CMStrings.padRight(""+level,5)+" ");
 						for(int i=2;i<V.size();i++)
 						{
 							String s=((String)V.elementAt(i)).toLowerCase();
@@ -168,7 +168,7 @@ public class Herbalism extends CraftingSkill
 		}
 		else
 		{
-			building=getTarget(mob,null,givenTarget,Util.parse(pos),Item.WORN_REQ_UNWORNONLY);
+			building=getTarget(mob,null,givenTarget,CMParms.parse(pos),Item.WORN_REQ_UNWORNONLY);
 			commands.remove(pos);
 			if(building==null) return false;
 			if(!mob.isMine(building))
@@ -191,7 +191,7 @@ public class Herbalism extends CraftingSkill
 				commonTell(mob,"The "+building.name()+" contains no liquid base.  Water is probably fine.");
 				return false;
 			}
-			String recipeName=Util.combine(commands,0);
+			String recipeName=CMParms.combine(commands,0);
 			theSpell=null;
 			Vector recipe=null;
 			for(int r=0;r<recipes.size();r++)
@@ -200,7 +200,7 @@ public class Herbalism extends CraftingSkill
 				if(V.size()>0)
 				{
 					String spell=(String)V.elementAt(0);
-					int level=Util.s_int((String)V.elementAt(1));
+					int level=CMath.s_int((String)V.elementAt(1));
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(mob.envStats().level()>=level)

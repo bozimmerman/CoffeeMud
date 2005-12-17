@@ -50,7 +50,7 @@ public class Dance_Jitterbug extends Dance
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(Util.div(affectableStats.getStat(CharStats.DEXTERITY),3.0)));
+		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(CMath.div(affectableStats.getStat(CharStats.DEXTERITY),3.0)));
 		affectableStats.setStat(CharStats.SAVE_ACID,affectableStats.getStat(CharStats.SAVE_ACID)+(invoker.charStats().getStat(CharStats.CHARISMA)*4));
 		affectableStats.setStat(CharStats.SAVE_COLD,affectableStats.getStat(CharStats.SAVE_COLD)+(invoker.charStats().getStat(CharStats.CHARISMA)*4));
 		affectableStats.setStat(CharStats.SAVE_ELECTRIC,affectableStats.getStat(CharStats.SAVE_ELECTRIC)+(invoker.charStats().getStat(CharStats.CHARISMA)*4));

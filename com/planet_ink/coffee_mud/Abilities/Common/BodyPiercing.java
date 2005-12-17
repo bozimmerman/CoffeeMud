@@ -87,9 +87,9 @@ public class BodyPiercing extends CommonSkill
 			return false;
 		}
 		String name=(String)commands.firstElement();
-		String part=Util.combine(commands,1);
+		String part=CMParms.combine(commands,1);
 		
-		MOB target=super.getTarget(mob,Util.makeVector(name),givenTarget);
+		MOB target=super.getTarget(mob,CMParms.makeVector(name),givenTarget);
 		if(target==null) return false;
 		
 		int partNum=-1;
@@ -112,7 +112,7 @@ public class BodyPiercing extends CommonSkill
 				    {
 				        if(piercables[ii][iii].startsWith(part.toLowerCase()))
 				        {    partNum=i; fullPartName=piercables[ii][iii];}
-					    allParts.append(", "+Util.capitalizeAndLower(piercables[ii][iii]));
+					    allParts.append(", "+CMStrings.capitalizeAndLower(piercables[ii][iii]));
 				    }
 				    break;
 			    }

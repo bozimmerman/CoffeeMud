@@ -93,7 +93,7 @@ public class Prop_ReqLevels extends Property
                 }
                 if(cmpString.length()>0)
                 {
-                    int cmpLevel=Util.s_int(cmpString);
+                    int cmpLevel=CMath.s_int(cmpString);
                     if((cmpLevel==lvl)&&(andEqual))
                         found=true;
                     else

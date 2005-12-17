@@ -57,7 +57,7 @@ public class Ignore extends StdCommand
 		else
 		if(((String)commands.elementAt(1)).equalsIgnoreCase("ADD"))
 		{
-			String name=Util.combine(commands,2);
+			String name=CMParms.combine(commands,2);
 			if(name.length()==0)
 			{
 				mob.tell("Add whom?");
@@ -83,7 +83,7 @@ public class Ignore extends StdCommand
 		else
 		if(((String)commands.elementAt(1)).equalsIgnoreCase("REMOVE"))
 		{
-			String name=Util.combine(commands,2);
+			String name=CMParms.combine(commands,2);
 			if(name.length()==0)
 			{
 				mob.tell("Remove whom?");

@@ -131,7 +131,7 @@ public class Create extends BaseGenerics
 			return;
 		}
 
-		String itemID=Util.combine(commands,2);
+		String itemID=CMParms.combine(commands,2);
 		Environmental dest=mob.location();
 		int x=itemID.indexOf("@");
 		if(x>0)
@@ -301,7 +301,7 @@ public class Create extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String raceID=Util.combine(commands,2);
+		String raceID=CMParms.combine(commands,2);
 		Race R=CMClass.getRace(raceID);
 		if((R!=null)&&(R.isGeneric()))
 		{
@@ -316,7 +316,7 @@ public class Create extends BaseGenerics
 			return;
 		}
 		Race GR=(Race)CMClass.getRace("GenRace").copyOf();
-		GR.setRacialParms("<RACE><ID>"+Util.capitalizeAndLower(raceID)+"</ID><NAME>"+Util.capitalizeAndLower(raceID)+"</NAME></RACE>");
+		GR.setRacialParms("<RACE><ID>"+CMStrings.capitalizeAndLower(raceID)+"</ID><NAME>"+CMStrings.capitalizeAndLower(raceID)+"</NAME></RACE>");
 		CMClass.addRace(GR);
 		modifyGenRace(mob,GR);
 		CMLib.database().DBCreateRace(GR.ID(),GR.racialParms());
@@ -332,7 +332,7 @@ public class Create extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String areaName=Util.combine(commands,2);
+		String areaName=CMParms.combine(commands,2);
 		Area A=CMLib.map().getArea(areaName);
 		if(A!=null)
 		{
@@ -376,7 +376,7 @@ public class Create extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		String classD=Util.combine(commands,2);
+		String classD=CMParms.combine(commands,2);
 		CharClass C=CMClass.getCharClass(classD);
 		if((C!=null)&&(C.isGeneric()))
 		{
@@ -391,7 +391,7 @@ public class Create extends BaseGenerics
 			return;
 		}
 		CharClass CR=(CharClass)CMClass.getCharClass("GenCharClass").copyOf();
-		CR.setClassParms("<CCLASS><ID>"+Util.capitalizeAndLower(classD)+"</ID><NAME>"+Util.capitalizeAndLower(classD)+"</NAME></CCLASS>");
+		CR.setClassParms("<CCLASS><ID>"+CMStrings.capitalizeAndLower(classD)+"</ID><NAME>"+CMStrings.capitalizeAndLower(classD)+"</NAME></CCLASS>");
 		CMClass.addCharClass(CR);
 		modifyGenClass(mob,CR);
 		CMLib.database().DBCreateClass(CR.ID(),CR.classParms());
@@ -410,7 +410,7 @@ public class Create extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-        String stuff=Util.combine(commands,2);
+        String stuff=CMParms.combine(commands,2);
         if(CMLib.socials().FetchSocial(stuff,false)!=null)
         {
             mob.tell("The social '"+stuff+"' already exists.");
@@ -492,11 +492,11 @@ public class Create extends BaseGenerics
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"CMDFACTIONS")) return errorOut(mob);
             mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-            if((commands.size()<3)||(Util.combine(commands,2).indexOf(".")<0))
+            if((commands.size()<3)||(CMParms.combine(commands,2).indexOf(".")<0))
                 mob.tell("Create which faction?  You must give a filename with an extension.");
             else
             {
-                String name=Util.combine(commands,2);
+                String name=CMParms.combine(commands,2);
                 Faction F=CMLib.factions().getFaction(name);
                 if(F==null) F=CMLib.factions().getFactionByName(name);
                 if(F!=null)
@@ -549,7 +549,7 @@ public class Create extends BaseGenerics
 				mob.tell("You must specify a valid quest string.  Try AHELP QUESTS.");
 			else
 			{
-				String script=Util.combine(commands,2);
+				String script=CMParms.combine(commands,2);
 				Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
 				Q.setScript(script);
 				if((Q.name().trim().length()==0)||(Q.duration()<0))
@@ -568,7 +568,7 @@ public class Create extends BaseGenerics
 		}
 		else
 		{
-			String allWord=Util.combine(commands,1);
+			String allWord=CMParms.combine(commands,1);
 			String lastWord=null;
 			if(commands.size()>2)
 				lastWord=(String)commands.lastElement();
@@ -591,7 +591,7 @@ public class Create extends BaseGenerics
 				if((lastWord!=null)&&(Directions.getGoodDirectionCode(lastWord)>=0))
 				{
 					commands.removeElementAt(commands.size()-1);
-					allWord=Util.combine(commands,1);
+					allWord=CMParms.combine(commands,1);
 
 					E=CMClass.getLocale(allWord);
 					if(E==null)

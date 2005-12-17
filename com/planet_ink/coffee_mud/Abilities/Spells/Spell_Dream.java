@@ -68,7 +68,7 @@ public class Spell_Dream extends Spell
 							{
 								msg=CMClass.getMsg(mob,inhab,this,affectType(auto),null);
 								if(R.okMessage(mob,msg))
-									inhab.tell("You dream "+Util.combine(commands,0)+".");
+									inhab.tell("You dream "+CMParms.combine(commands,0)+".");
 							}
 						}
 					}

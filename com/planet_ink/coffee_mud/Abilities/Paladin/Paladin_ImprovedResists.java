@@ -41,7 +41,7 @@ public class Paladin_ImprovedResists extends Paladin
 		super.affectCharStats(affected,affectableStats);
 		if((affected!=null)&&(CMLib.flags().isGood(affected)))
 		{
-			int amount=(int)Math.round(Util.mul(Util.div(profficiency(),100.0),affected.envStats().level()));
+			int amount=(int)Math.round(CMath.mul(CMath.div(profficiency(),100.0),affected.envStats().level()));
 			affectableStats.setStat(CharStats.SAVE_ACID,affectableStats.getStat(CharStats.SAVE_ACID)+amount);
 			affectableStats.setStat(CharStats.SAVE_COLD,affectableStats.getStat(CharStats.SAVE_COLD)+amount);
 			affectableStats.setStat(CharStats.SAVE_ELECTRIC,affectableStats.getStat(CharStats.SAVE_ELECTRIC)+amount);

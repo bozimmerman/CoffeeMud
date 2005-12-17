@@ -52,7 +52,7 @@ public class ArchonSkill extends StdAbility
 		MOB target=super.getTarget(mob,commands,givenTarget,true,alreadyAffOk);
 		if(target!=null) return target;
 		
-		String targetName=Util.combine(commands,0);
+		String targetName=CMParms.combine(commands,0);
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else

@@ -177,7 +177,7 @@ public class Amputation extends StdAbility implements Amputator
 
 	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget, boolean quiet)
 	{
-		String targetName=Util.combine(commands,0);
+		String targetName=CMParms.combine(commands,0);
 		MOB target=null;
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
@@ -233,7 +233,7 @@ public class Amputation extends StdAbility implements Amputator
 		if(affected==null) return missingLimbs;
 		if((!(affected instanceof MOB))&&(!(affected instanceof DeadBody)))
 		   return missingLimbs;
-		missingLimbs=Util.parseSemicolons(text(),true);
+		missingLimbs=CMParms.parseSemicolons(text(),true);
 		amputations=new int[Race.BODY_PARTS];
 		for(int v=0;v<missingLimbs.size();v++)
 		{
@@ -455,13 +455,13 @@ public class Amputation extends StdAbility implements Amputator
 		{
 			if((commands.size()>0)&&(((String)commands.firstElement()).equals(givenTarget.name())))
 				commands.removeElementAt(0);
-			choice=Util.combine(commands,0);
+			choice=CMParms.combine(commands,0);
 			commands.clear();
 		}
 		else
 		if(commands.size()>1)
 		{
-			choice=Util.combine(commands,1);
+			choice=CMParms.combine(commands,1);
 			while(commands.size()>1)
 			    commands.removeElementAt(1);
 		}

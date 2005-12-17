@@ -65,8 +65,8 @@ public class ClanVote extends BaseClanner
 					msg.append("Your "+C.typeName()+" does not have anything up for your vote.");
 				else
 				{
-					msg.append(" "+Util.padRight("#",3)
-							   +Util.padRight("Status",15)
+					msg.append(" "+CMStrings.padRight("#",3)
+							   +CMStrings.padRight("Status",15)
 							   +"Command to execute\n\r");
 					for(int v=0;v<votesForYou.size();v++)
 					{
@@ -74,16 +74,16 @@ public class ClanVote extends BaseClanner
 						boolean ivoted=((CV.votes!=null)&&(CV.votes.contains(mob.Name())));
 						int votesCast=(CV.votes!=null)?CV.votes.size():0;
 						msg.append((ivoted?"*":" ")
-								  +Util.padRight(""+(v+1),3)
-								  +Util.padRight(((CV.voteStatus==Clan.VSTAT_STARTED)?(votesCast+" votes cast"):(Clan.VSTAT_DESCS[CV.voteStatus])),15)
-								  +Util.padRight(CV.matter,55)+"\n\r");
+								  +CMStrings.padRight(""+(v+1),3)
+								  +CMStrings.padRight(((CV.voteStatus==Clan.VSTAT_STARTED)?(votesCast+" votes cast"):(Clan.VSTAT_DESCS[CV.voteStatus])),15)
+								  +CMStrings.padRight(CV.matter,55)+"\n\r");
 					}
 					msg.append("\n\rEnter CLANVOTE [#] to see details or place your vote.");
 				}
 			}
 			else
 			{
-				int which=Util.s_int(Util.combine(commands,1))-1;
+				int which=CMath.s_int(CMParms.combine(commands,1))-1;
 				Clan.ClanVote CV=null;
 				if((which>=0)&&(which<votesForYou.size()))
 					CV=(Clan.ClanVote)votesForYou.elementAt(which);
@@ -194,7 +194,7 @@ public class ClanVote extends BaseClanner
 									if(mob2.location()==null)
 										mob2.setLocation(CMLib.map().getRandomRoom());
 								}
-								Vector V=Util.parse(CV.matter);
+								Vector V=CMParms.parse(CV.matter);
 								mob2.doCommand(V);
                                 mob2.destroy();
 							}

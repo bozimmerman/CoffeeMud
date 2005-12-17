@@ -39,9 +39,9 @@ public class Who extends StdCommand
 	
 	protected static final String shortHead=
 		 "^x["
-		+Util.padRight("Race",12)+" "
-		+Util.padRight("Class",12)+" "
-		+Util.padRight("Level",7)
+		+CMStrings.padRight("Race",12)+" "
+		+CMStrings.padRight("Class",12)+" "
+		+CMStrings.padRight("Level",7)
 		+"] Character name^.^N\n\r";
 		 
 	
@@ -52,9 +52,9 @@ public class Who extends StdCommand
 		if(!CMSecurity.isDisabled("RACES"))
 		{
 		    if(who.charStats().getCurrentClass().raceless())
-				msg.append(Util.padRight(" ",12)+" ");
+				msg.append(CMStrings.padRight(" ",12)+" ");
 		    else
-				msg.append(Util.padRight(who.charStats().raceName(),12)+" ");
+				msg.append(CMStrings.padRight(who.charStats().raceName(),12)+" ");
 		}
 		String levelStr=who.charStats().displayClassLevel(who,true).trim();
 		int x=levelStr.lastIndexOf(" ");
@@ -62,20 +62,20 @@ public class Who extends StdCommand
 		if(!CMSecurity.isDisabled("CLASSES"))
 		{
 		    if(who.charStats().getMyRace().classless())
-				msg.append(Util.padRight(" ",12)+" ");
+				msg.append(CMStrings.padRight(" ",12)+" ");
 		    else
-				msg.append(Util.padRight(who.charStats().displayClassName(),12)+" ");
+				msg.append(CMStrings.padRight(who.charStats().displayClassName(),12)+" ");
 		}
 		if(!CMSecurity.isDisabled("LEVELS"))
 		{
 		    if(who.charStats().getMyRace().leveless()
 		    ||who.charStats().getCurrentClass().leveless())
-				msg.append(Util.padRight(" ",7));
+				msg.append(CMStrings.padRight(" ",7));
 		    else
-				msg.append(Util.padRight(levelStr,7));
+				msg.append(CMStrings.padRight(levelStr,7));
 		}
 		String name=null;
-		if(Util.bset(who.envStats().disposition(),EnvStats.IS_CLOAKED))
+		if(CMath.bset(who.envStats().disposition(),EnvStats.IS_CLOAKED))
 			name="("+(who.Name().equals(who.name())?who.titledName():who.name())+")";
 		else
 			name=(who.Name().equals(who.name())?who.titledName():who.name());
@@ -100,7 +100,7 @@ public class Who extends StdCommand
 			}
 			name=name+(" (idle: "+s+")");
 		}
-		msg.append("] "+Util.padRight(name,40));
+		msg.append("] "+CMStrings.padRight(name,40));
 		msg.append("\n\r");
 		return msg;
 	}
@@ -108,7 +108,7 @@ public class Who extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String mobName=Util.combine(commands,1);
+		String mobName=CMParms.combine(commands,1);
 		if((mobName!=null)
 		&&(mob!=null)
 		&&(mobName.startsWith("@")))
@@ -141,7 +141,7 @@ public class Who extends StdCommand
             {
                 Session thisSession=CMLib.sessions().elementAt(s);
                 MOB mob2=thisSession.mob();
-                if((mob2!=null)&&(Util.bset(mob2.getBitmap(),MOB.ATT_PLAYERKILL)))
+                if((mob2!=null)&&(CMath.bset(mob2.getBitmap(),MOB.ATT_PLAYERKILL)))
                     friends.add(mob2.Name());
             }
         }
@@ -170,11 +170,11 @@ public class Who extends StdCommand
 			StringBuffer head=new StringBuffer("");
 			head.append("^x[");
 			if(!CMSecurity.isDisabled("RACES"))
-				head.append(Util.padRight("Race",12)+" ");
+				head.append(CMStrings.padRight("Race",12)+" ");
 			if(!CMSecurity.isDisabled("CLASSES"))
-				head.append(Util.padRight("Class",12)+" ");
+				head.append(CMStrings.padRight("Class",12)+" ");
 			if(!CMSecurity.isDisabled("LEVELS"))
-				head.append(Util.padRight("Level",7));
+				head.append(CMStrings.padRight("Level",7));
 			head.append("] Character name^.^N\n\r");
 			if(mob!=null)
 				mob.tell(head.toString()+msg.toString());

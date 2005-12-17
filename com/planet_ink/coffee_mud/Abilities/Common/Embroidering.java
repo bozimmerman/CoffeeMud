@@ -116,7 +116,7 @@ public class Embroidering extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		writing=Util.combine(commands,0);
+		writing=CMParms.combine(commands,0);
 		verb="embroidering on "+target.name();
 		displayText="You are "+verb;
 		found=target;

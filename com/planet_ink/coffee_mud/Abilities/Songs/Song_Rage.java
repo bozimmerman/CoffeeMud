@@ -41,8 +41,8 @@ public class Song_Rage extends Song
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
 		if(affected==invoker) return;
-		affectableStats.setDamage(affectableStats.damage()+(int)Math.round(Util.div(affectableStats.damage(),2.0)));
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(Util.div(affectableStats.attackAdjustment(),6.0)));
+		affectableStats.setDamage(affectableStats.damage()+(int)Math.round(CMath.div(affectableStats.damage(),2.0)));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(CMath.div(affectableStats.attackAdjustment(),6.0)));
 		affectableStats.setArmor(affectableStats.armor()+20);
 	}
 

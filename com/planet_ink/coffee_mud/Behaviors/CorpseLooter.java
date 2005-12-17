@@ -44,7 +44,7 @@ public class CorpseLooter extends StdBehavior
 
 		if(tickID!=MudHost.TICK_MOB) return true;
 		if(--tickTock>0) return true;
-		((MOB)ticking).setBitmap(Util.setb(((MOB)ticking).getBitmap(),MOB.ATT_AUTOLOOT));
+		((MOB)ticking).setBitmap(CMath.setb(((MOB)ticking).getBitmap(),MOB.ATT_AUTOLOOT));
 		if((++tickTocker)==100) tickTocker=99;
 		tickTock=tickTocker;
 		return true;

@@ -111,8 +111,8 @@ public class Conquerable extends Arrest
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		journalName=Util.getParmStr(newParms,"JOURNAL","");
-		allowLaw=Util.getParmStr(newParms,"LAW","FALSE").toUpperCase().startsWith("T");
+		journalName=CMParms.getParmStr(newParms,"JOURNAL","");
+		allowLaw=CMParms.getParmStr(newParms,"LAW","FALSE").toUpperCase().startsWith("T");
 		loadAttempt=false;
         clanItems=new Vector();
         clanControlPoints=new DVector(2);
@@ -256,9 +256,9 @@ public class Conquerable extends Arrest
     {
         if(totalControlPoints<=0) return 0;
         int itemControlPoints=calcItemControlPoints(A);
-        int totalNeeded=(int)Math.round(Util.mul(0.05,totalControlPoints));
+        int totalNeeded=(int)Math.round(CMath.mul(0.05,totalControlPoints));
         if(totalNeeded<=0) totalNeeded=1;
-        int chance=(int)Math.round(50.0-(Util.mul(50.0,Util.div(itemControlPoints,totalNeeded))));
+        int chance=(int)Math.round(50.0-(CMath.mul(50.0,CMath.div(itemControlPoints,totalNeeded))));
         if(chance<=0) return 0;
         return chance;
         
@@ -522,10 +522,11 @@ public class Conquerable extends Arrest
 		{
 			if((msg.source().isMonster())
 			&&(msg.target() instanceof MOB)
-			&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+			&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			&&(!((MOB)msg.target()).isInCombat())
 			&&(msg.source().getVictim()!=msg.target())
-			&&(((MOB)msg.target()).getClanID().equals(holdingClan)))
+			&&(((MOB)msg.target()).getClanID().equals(holdingClan))
+            &&(!CMLib.flags().isAnimalIntelligence(msg.source())))
 			{
 				MOB target=(MOB)msg.target();
 				msg.source().tell(target.name()+" is a fellow "+holdingClan+" member, and you must respect "+target.charStats().himher()+".");
@@ -549,7 +550,7 @@ public class Conquerable extends Arrest
 		&&(msg.source().getClanID().length()>0)
 		&&(msg.target() instanceof MOB)
 		&&(((MOB)msg.target()).amFollowing()==msg.source())
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(!((MOB)msg.target()).isInCombat())
 		&&(msg.source().getVictim()!=msg.target())
 		&&(((MOB)msg.target()).getClanID().equals(holdingClan))
@@ -569,7 +570,7 @@ public class Conquerable extends Arrest
 			Clan C=CMLib.clans().getClan(holdingClan);
 			if(C.getTaxes()!=0)
 			{
-				int value=(int)Math.round(Util.mul(msg.value(),C.getTaxes()));
+				int value=(int)Math.round(CMath.mul(msg.value(),C.getTaxes()));
 				if(value>0)
 				{
 					msg.setValue(msg.value()-value);
@@ -806,7 +807,7 @@ public class Conquerable extends Arrest
 			}
 			else
 			if((holdingClan.length()>0)
-			&&(Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)
+			&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)
 			&&(msg.source().isMonster())
 			&&(msg.source().getStartRoom()!=null)
 			&&(((Area)myHost).inMetroArea(msg.source().getStartRoom().getArea()))

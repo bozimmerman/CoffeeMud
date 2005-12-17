@@ -41,9 +41,9 @@ public class ANSI extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			if(!Util.bset(mob.getBitmap(),MOB.ATT_ANSI))
+			if(!CMath.bset(mob.getBitmap(),MOB.ATT_ANSI))
 			{
-				mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_ANSI));
+				mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_ANSI));
 				mob.tell(getScr("ANSI","enabled"));
 			}
 			else

@@ -39,7 +39,7 @@ public class Deities extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String str=Util.combine(commands,1).toUpperCase();
+		String str=CMParms.combine(commands,1).toUpperCase();
 		StringBuffer msg=new StringBuffer("");
 		if(str.length()==0)
 			msg.append(getScr("Deities","knowmsg"));
@@ -78,7 +78,7 @@ public class Deities extends StdCommand
 			{
 				col++;
 				if(col>4){ msg.append("\n\r"); col=0;}
-				msg.append(Util.padRight("^H"+D.name()+"^?",18));
+				msg.append(CMStrings.padRight("^H"+D.name()+"^?",18));
 			}
 		}
 		if(str.length()==0)

@@ -51,8 +51,8 @@ public class Thief_Flay extends ThiefSkill
 	    &&msg.amISource((MOB)affected)
 	    &&(msg.targetMinor()==CMMsg.TYP_WEAR)
 	    &&(msg.target() instanceof Item)
-	    &&((Util.bset(((Item)msg.target()).rawProperLocationBitmap(),Item.ON_BACK))
-        ||(Util.bset(((Item)msg.target()).rawProperLocationBitmap(),Item.ON_TORSO))))
+	    &&((CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Item.ON_BACK))
+        ||(CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Item.ON_TORSO))))
 	    {
 	        msg.source().tell("The flayed marks on your back make wearing that too painful.");
 	        return false;

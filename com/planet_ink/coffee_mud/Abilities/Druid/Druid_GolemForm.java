@@ -79,7 +79,7 @@ public class Druid_GolemForm extends StdAbility
 		if((newRace!=null)&&(affected instanceof MOB))
 		{
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
-			affectableStats.setName(Util.startWithAorAn(raceName.toLowerCase()));
+			affectableStats.setName(CMStrings.startWithAorAn(raceName.toLowerCase()));
 			int oldAdd=affectableStats.weight()-affected.baseEnvStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
@@ -221,7 +221,7 @@ public class Druid_GolemForm extends StdAbility
         int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this);
         int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
         if(qualClassLevel<0) classLevel=30;
-		String choice=Util.combine(commands,0);
+		String choice=CMParms.combine(commands,0);
 		if(choice.trim().length()>0)
 		{
 			StringBuffer buf=new StringBuffer("Golem Forms:\n\r");
@@ -275,7 +275,7 @@ public class Druid_GolemForm extends StdAbility
 				newRace=getRace(classLevel);
 				raceLevel=getRaceLevel(classLevel);
 				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE);
-				raceName=Util.capitalizeAndLower(Util.startWithAorAn(raceName.toLowerCase()));
+				raceName=CMStrings.capitalizeAndLower(CMStrings.startWithAorAn(raceName.toLowerCase()));
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
 				mob.confirmWearability();
 			}

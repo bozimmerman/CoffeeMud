@@ -65,7 +65,7 @@ public class StdPerfume extends StdDrink implements Perfume
 		return list.toString();
 	}
 	public void setSmellList(String list)
-	{smellList=Util.parseSemicolons(list,true);}
+	{smellList=CMParms.parseSemicolons(list,true);}
 	
 	public void wearIfAble(MOB mob, Perfume me)
 	{

@@ -243,13 +243,13 @@ public class MudChat extends StdBehavior
 	{
 		int total=0;
 		for(int x=1;x<responses.size();x++)
-			total+=Util.s_int(((String)responses.elementAt(x)).substring(0,1));
+			total+=CMath.s_int(((String)responses.elementAt(x)).substring(0,1));
 
 		String selection=null;
 		int select=CMLib.dice().roll(1,total,0);
 		for(int x=1;x<responses.size();x++)
 		{
-			select-=Util.s_int(((String)responses.elementAt(x)).substring(0,1));
+			select-=CMath.s_int(((String)responses.elementAt(x)).substring(0,1));
 			if(select<=0)
 			{
 				selection=(String)responses.elementAt(x);
@@ -259,7 +259,7 @@ public class MudChat extends StdBehavior
 
 		if(selection!=null)
 		{
-			Vector selections=Util.parseSquiggleDelimited(selection.substring(1).trim(),true);
+			Vector selections=CMParms.parseSquiggleDelimited(selection.substring(1).trim(),true);
 			for(int v=0;v<selections.size();v++)
 			{
 				String finalCommand=(String)selections.elementAt(v);
@@ -270,7 +270,7 @@ public class MudChat extends StdBehavior
 				{
 					finalCommand="emote "+finalCommand.substring(1).trim();
 					if(source!=null)
-						finalCommand=Util.replaceAll(finalCommand," her "," "+source.charStats().hisher()+" ");
+						finalCommand=CMStrings.replaceAll(finalCommand," her "," "+source.charStats().hisher()+" ");
 				}
 				else
 				if(finalCommand.startsWith("!"))
@@ -283,20 +283,20 @@ public class MudChat extends StdBehavior
 					finalCommand="sayto \""+target.name()+"\" "+finalCommand.trim();
 
 				if(finalCommand.indexOf("$r")>=0)
-					finalCommand=Util.replaceAll(finalCommand,"$r",rest);
+					finalCommand=CMStrings.replaceAll(finalCommand,"$r",rest);
 				if((target!=null)&&(finalCommand.indexOf("$t")>=0))
-					finalCommand=Util.replaceAll(finalCommand,"$t",target.name());
+					finalCommand=CMStrings.replaceAll(finalCommand,"$t",target.name());
 				if((source!=null)&&(finalCommand.indexOf("$n")>=0))
-					finalCommand=Util.replaceAll(finalCommand,"$n",source.name());
+					finalCommand=CMStrings.replaceAll(finalCommand,"$n",source.name());
 				if(finalCommand.indexOf("$$")>=0)
-					finalCommand=Util.replaceAll(finalCommand,"$$","$");
+					finalCommand=CMStrings.replaceAll(finalCommand,"$$","$");
 
-				Vector V=Util.parse(finalCommand);
+				Vector V=CMParms.parse(finalCommand);
 				V.insertElementAt(new Integer(RESPONSE_DELAY),0);
 				for(int f=0;f<responseQue.size();f++)
 				{
 					Vector V1=(Vector)responseQue.elementAt(f);
-					if(Util.combine(V1,1).equalsIgnoreCase(finalCommand))
+					if(CMParms.combine(V1,1).equalsIgnoreCase(finalCommand))
 					{
 						V=null;
 						break;

@@ -42,7 +42,7 @@ public class WizEmote extends StdCommand
 		if(commands.size()>2)
 		{
 			String who=(String)commands.elementAt(1);
-			String msg=Util.combine(commands,2);
+			String msg=CMParms.combine(commands,2);
             if(who.toUpperCase().equals("HERE"))
             {
                 for(int s=0;s<CMLib.sessions().size();s++)

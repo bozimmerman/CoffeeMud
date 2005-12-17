@@ -128,17 +128,17 @@ public class Wainwrighting extends CraftingSkill
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(Util.padRight("Item",16)+" Lvl Wood required\n\r");
+			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",16)+" Lvl Wood required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
-					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
+					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
+					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
 					if(level<=mob.envStats().level())
-						buf.append(Util.padRight(item,16)+" "+Util.padRight(""+level,3)+" "+wood+"\n\r");
+						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,3)+" "+wood+"\n\r");
 				}
 			}
 			commonTell(mob,buf.toString());
@@ -148,12 +148,12 @@ public class Wainwrighting extends CraftingSkill
 		key=null;
 		messedUp=false;
 		int amount=-1;
-		if((commands.size()>1)&&(Util.isNumber((String)commands.lastElement())))
+		if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
 		{
-			amount=Util.s_int((String)commands.lastElement());
+			amount=CMath.s_int((String)commands.lastElement());
 			commands.removeElementAt(commands.size()-1);
 		}
-		String recipeName=Util.combine(commands,0);
+		String recipeName=CMParms.combine(commands,0);
 		Vector foundRecipe=null;
 		Vector matches=matchingRecipeNames(recipes,recipeName,true);
 		for(int r=0;r<matches.size();r++)
@@ -161,7 +161,7 @@ public class Wainwrighting extends CraftingSkill
 			Vector V=(Vector)matches.elementAt(r);
 			if(V.size()>0)
 			{
-				int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
+				int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
                 if((autoGenerate>0)||(level<=mob.envStats().level()))
 				{
 					foundRecipe=V;
@@ -174,7 +174,7 @@ public class Wainwrighting extends CraftingSkill
 			commonTell(mob,"You don't know how to build a '"+recipeName+"'.  Try \"list\" as your parameter for a list.");
 			return false;
 		}
-		int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
+		int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 		if(amount>woodRequired) woodRequired=amount;
 		int[] pm={EnvResource.MATERIAL_WOODEN};
 		String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
@@ -195,12 +195,12 @@ public class Wainwrighting extends CraftingSkill
 			commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 			return false;
 		}
-		completion=Util.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
 		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;
 		else
-			itemName=Util.startWithAorAn(itemName);
+			itemName=CMStrings.startWithAorAn(itemName);
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) building "+building.name()+".";
 		displayText="You are building "+building.name();
@@ -209,13 +209,13 @@ public class Wainwrighting extends CraftingSkill
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);
-		building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
+		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 		building.setMaterial(data[0][FOUND_CODE]);
-		building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+		building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
-		int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
-		int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
-		int riders=Util.s_int((String)foundRecipe.elementAt(RCP_NUMRIDERS));
+		int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+		int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
+		int riders=CMath.s_int((String)foundRecipe.elementAt(RCP_NUMRIDERS));
 		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 		addSpells(building,spell);
 		key=null;

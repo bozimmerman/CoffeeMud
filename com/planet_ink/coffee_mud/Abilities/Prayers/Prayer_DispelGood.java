@@ -61,7 +61,7 @@ public class Prayer_DispelGood extends Prayer
 				mob.location().send(mob,msg);
 				int harming=CMLib.dice().roll(3,adjustedLevel(mob,asLevel)+8,10);
 				if(msg.value()>0)
-					harming=(int)Math.round(Util.div(harming,2.0));
+					harming=(int)Math.round(CMath.div(harming,2.0));
 				if(CMLib.flags().isGood(target))
 				{
 					if(target.location()==mob.location())

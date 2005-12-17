@@ -204,7 +204,7 @@ public class StdMOB implements MOB
 	{
 	    if((playerStats==null)||(playerStats.getTitles().size()==0))
 	        return name();
-	    return Util.replaceAll((String)playerStats.getTitles().firstElement(),"*",Name());
+	    return CMStrings.replaceAll((String)playerStats.getTitles().firstElement(),"*",Name());
 	}
 
 	public String image()
@@ -326,7 +326,7 @@ public class StdMOB implements MOB
 		envStats=(EnvStats)baseEnvStats.copyOf();
 		if(location()!=null)
 			location().affectEnvStats(this,envStats);
-		envStats().setWeight(envStats().weight()+(int)Math.round(Util.div(getMoney(),100.0)));
+		envStats().setWeight(envStats().weight()+(int)Math.round(CMath.div(getMoney(),100.0)));
 		if(riding()!=null) riding().affectEnvStats(this,envStats);
 		if(getMyDeity()!=null) getMyDeity().affectEnvStats(this,envStats);
 		if(charStats!=null)
@@ -387,7 +387,7 @@ public class StdMOB implements MOB
     }
 	public int maxFollowers()
 	{
-		return ((int)Math.round(Util.div(charStats().getStat(CharStats.CHARISMA),4.0))+1);
+		return ((int)Math.round(CMath.div(charStats().getStat(CharStats.CHARISMA),4.0))+1);
 	}
 	public int totalFollowers()
 	{
@@ -749,18 +749,18 @@ public class StdMOB implements MOB
 			return false;
 		if(CMLib.clans().isCommonClanRelations(getClanID(),mob.getClanID(),Clan.REL_WAR))
 			return true;
-		if(Util.bset(getBitmap(),MOB.ATT_PLAYERKILL))
+		if(CMath.bset(getBitmap(),MOB.ATT_PLAYERKILL))
 		{
 			if(CMSecurity.isAllowed(this,location(),"PKILL")
-			||(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
+			||(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
 				return true;
 			return false;
 		}
 		else
-		if(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
+		if(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
 		{
 			if(CMSecurity.isAllowed(this,location(),"PKILL")
-			||(Util.bset(getBitmap(),MOB.ATT_PLAYERKILL)))
+			||(CMath.bset(getBitmap(),MOB.ATT_PLAYERKILL)))
 				return true;
 			return false;
 		}
@@ -787,7 +787,7 @@ public class StdMOB implements MOB
 		if(mob==null)
 			return (int)Math.round(att);
 	    int diff=envStats().level()-mob.envStats().level();
-		return (diff*Util.abs(diff))
+		return (diff*CMath.abs(diff))
 			   +(int)Math.round(att);
 	}
 
@@ -1199,7 +1199,7 @@ public class StdMOB implements MOB
 		}
 		catch(java.io.IOException io)
 		{
-			Log.errOut("StdMOB",Util.toStringList(commands));
+			Log.errOut("StdMOB",CMParms.toStringList(commands));
 			if((io!=null)&&(io.getMessage()!=null))
 				Log.errOut("StdMOB",io.getMessage());
 			else
@@ -1208,7 +1208,7 @@ public class StdMOB implements MOB
 		}
 		catch(Exception e)
 		{
-			Log.errOut("StdMOB",Util.toStringList(commands));
+			Log.errOut("StdMOB",CMParms.toStringList(commands));
 			Log.errOut("StdMOB",e);
 			tell("Oops!");
 		}
@@ -1383,7 +1383,7 @@ public class StdMOB implements MOB
 				return false;
 			}
 
-			if(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
 			{
 				int srcMajor=msg.sourceMajor();
 
@@ -1393,7 +1393,7 @@ public class StdMOB implements MOB
 					return false;
 				}
 
-				if(Util.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
+				if(CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
 				{
 					if((msg.target()!=this)&&(msg.target()!=null)&&(msg.target() instanceof MOB))
 					{
@@ -1416,7 +1416,7 @@ public class StdMOB implements MOB
 				}
 
 
-				if(Util.bset(srcMajor,CMMsg.MASK_EYES))
+				if(CMath.bset(srcMajor,CMMsg.MASK_EYES))
 				{
 					if(CMLib.flags().isSleeping(this))
 					{
@@ -1433,11 +1433,11 @@ public class StdMOB implements MOB
 							return false;
 						}
 				}
-				if(Util.bset(srcMajor,CMMsg.MASK_MOUTH))
+				if(CMath.bset(srcMajor,CMMsg.MASK_MOUTH))
 				{
 					if(!CMLib.flags().aliveAwakeMobile(this,false))
 						return false;
-					if(Util.bset(srcMajor,CMMsg.MASK_SOUND))
+					if(CMath.bset(srcMajor,CMMsg.MASK_SOUND))
 					{
 						if((msg.tool()==null)
 						||(!(msg.tool() instanceof Ability))
@@ -1475,7 +1475,7 @@ public class StdMOB implements MOB
 						}
 					}
 				}
-				if(Util.bset(srcMajor,CMMsg.MASK_HANDS))
+				if(CMath.bset(srcMajor,CMMsg.MASK_HANDS))
 				{
 					if((!CMLib.flags().canBeSeenBy(msg.target(),this))
 					&&(!(isMine(msg.target())&&(msg.target() instanceof Item)))
@@ -1500,7 +1500,7 @@ public class StdMOB implements MOB
 					}
 				}
 
-				if(Util.bset(srcMajor,CMMsg.MASK_MOVE))
+				if(CMath.bset(srcMajor,CMMsg.MASK_MOVE))
 				{
 					boolean sitting=CMLib.flags().isSitting(this);
 					if((sitting)
@@ -1613,7 +1613,7 @@ public class StdMOB implements MOB
 					}
 					break;
 				case CMMsg.TYP_LEAVE:
-					if((isInCombat())&&(location()!=null)&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC)))
+					if((isInCombat())&&(location()!=null)&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC)))
 						for(int i=0;i<location().numInhabitants();i++)
 						{
 							MOB M=location().fetchInhabitant(i);
@@ -1640,7 +1640,7 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_SELL:
 				case CMMsg.TYP_VIEW:
 				case CMMsg.TYP_READ:
-					if(isInCombat()&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC)))
+					if(isInCombat()&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC)))
 					{
 						tell("Not while you are fighting!");
 						return false;
@@ -1733,7 +1733,7 @@ public class StdMOB implements MOB
 		&&(msg.amISource(this))
 		&&(msg.target()!=null)
 		&&(msg.target()!=this)
-		&&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&(msg.target() instanceof MOB)
 		&&(location()!=null)
 		&&(location()==((MOB)msg.target()).location()))
@@ -1824,10 +1824,10 @@ public class StdMOB implements MOB
 		{
 			if((amDead())||(location()==null))
 				return false;
-			if(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+			if(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			{
 				if((msg.amISource(this))
-				&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+				&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
 				&&((msg.tool()==null)||(!(msg.tool() instanceof Ability))||(!((Ability)msg.tool()).isNowAnAutoEffect())))
 				{
 					mob.tell("You like yourself too much.");
@@ -1962,7 +1962,7 @@ public class StdMOB implements MOB
 					msg.source().tell(name()+" is unable to accept that from you.");
 					return false;
 				}
-				if((!CMLib.flags().canBeSeenBy(msg.tool(),this))&&(!Util.bset(msg.targetCode(),CMMsg.MASK_GENERAL)))
+				if((!CMLib.flags().canBeSeenBy(msg.tool(),this))&&(!CMath.bset(msg.targetCode(),CMMsg.MASK_GENERAL)))
 				{
 					mob.tell(name()+" can't see what you are giving.");
 					return false;
@@ -2038,7 +2038,7 @@ public class StdMOB implements MOB
 
     private String relativeCharStatTest(CharStats C, String weakword, String strongword, int stat)
     {
-        double d=Util.div(C.getStat(stat),charStats.getStat(stat));
+        double d=CMath.div(C.getStat(stat),charStats.getStat(stat));
         String prepend="";
         if((d<=0.5)||(d>=3.0)) prepend="much ";
         if(d>=1.6) return name()+" appears "+prepend+weakword+" than the average "+charStats.raceName()+".\n\r";
@@ -2051,7 +2051,7 @@ public class StdMOB implements MOB
         if(CMLib.flags().canBeSeenBy(this,viewer))
         {
             StringBuffer myDescription=new StringBuffer("");
-            if(Util.bset(viewer.getBitmap(),MOB.ATT_SYSOPMSGS))
+            if(CMath.bset(viewer.getBitmap(),MOB.ATT_SYSOPMSGS))
                 myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc : "+text()+"\n\r"+description()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().roomID())+"\n\r");
             if(!isMonster())
             {
@@ -2061,7 +2061,7 @@ public class StdMOB implements MOB
                 &&(!charStats().getCurrentClass().leveless())
                 &&(!charStats().getMyRace().leveless())
                 &&(!CMSecurity.isDisabled("LEVELS")))
-                    levelStr=Util.startWithAorAn(charStats().displayClassLevel(this,false));
+                    levelStr=CMStrings.startWithAorAn(charStats().displayClassLevel(this,false));
                 else
                 if((!CMSecurity.isDisabled("LEVELS"))
                 &&(!charStats().getCurrentClass().leveless())
@@ -2070,7 +2070,7 @@ public class StdMOB implements MOB
                 else
                 if((!CMSecurity.isDisabled("CLASSES"))
                 &&(!charStats().getMyRace().classless()))
-                    levelStr=Util.startWithAorAn(charStats().displayClassName());
+                    levelStr=CMStrings.startWithAorAn(charStats().displayClassName());
                 if((!CMSecurity.isDisabled("RACES"))
                 &&(!charStats.getCurrentClass().raceless()))
                 {
@@ -2119,7 +2119,7 @@ public class StdMOB implements MOB
             if(longlook)
             {
                 Command C=CMClass.getCommand("Consider");
-                try{if(C!=null)C.execute(viewer,Util.makeVector(this));}catch(java.io.IOException e){}
+                try{if(C!=null)C.execute(viewer,CMParms.makeVector(this));}catch(java.io.IOException e){}
             }
         }
     }
@@ -2194,12 +2194,12 @@ public class StdMOB implements MOB
 						&&(isInCombat()))
 							CMLib.combat().postPanic(this,msg);
 						else
-						if((CMProps.getIntVar(CMProps.SYSTEMI_INJPCTHP)>=(int)Math.round(Util.div(curState().getHitPoints(),maxState().getHitPoints())*100.0))
+						if((CMProps.getIntVar(CMProps.SYSTEMI_INJPCTHP)>=(int)Math.round(CMath.div(curState().getHitPoints(),maxState().getHitPoints())*100.0))
 						&&(!CMLib.flags().isGolem(this))
 						&&(fetchEffect("Injury")==null))
 						{
 						    Ability A=CMClass.getAbility("Injury");
-						    if(A!=null) A.invoke(this,Util.makeVector(msg),this,true,0);
+						    if(A!=null) A.invoke(this,CMParms.makeVector(msg),this,true,0);
 						}
 					}
 				}
@@ -2212,10 +2212,10 @@ public class StdMOB implements MOB
 		// now go on to source activities
 		if((msg.sourceCode()!=CMMsg.NO_EFFECT)&&(msg.amISource(this)))
 		{
-			if(Util.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
+			if(CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
 				if((msg.target() instanceof MOB)
 				&&(getVictim()!=msg.target())
-				&&((!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+				&&((!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 					||(!(msg.tool() instanceof DiseaseAffect))))
 				{
 					establishRange(this,(MOB)msg.target(),msg.tool());
@@ -2241,7 +2241,7 @@ public class StdMOB implements MOB
 																	 victim,
 																	 msg.targetMessage(),
 																	 msg.value(),
-																	 Util.s_bool(msg.othersMessage()));
+																	 CMath.s_bool(msg.othersMessage()));
 					else
 						charStats().getCurrentClass().loseExperience(this,-msg.value());
 				}
@@ -2419,12 +2419,12 @@ public class StdMOB implements MOB
 			&&(msg.targetMinor()!=CMMsg.TYP_DAMAGE))
 			{
 				// but there might still be a few more...
-				if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+				if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 				&&(!amDead))
 				{
 					if((!isInCombat())
 					&&(location().isInhabitant(msg.source()))
-					&&((!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+					&&((!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 						||(!(msg.tool() instanceof DiseaseAffect))))
 					{
 						establishRange(this,msg.source(),msg.tool());
@@ -2476,18 +2476,18 @@ public class StdMOB implements MOB
 				&&(!isMarriedToLiege())))
 					setLiegeID("");
 				else
-				if(Util.bset(targetMajor,CMMsg.MASK_CHANNEL))
+				if(CMath.bset(targetMajor,CMMsg.MASK_CHANNEL))
 				{
 			        int channelCode=((msg.targetCode()-CMMsg.MASK_CHANNEL)-CMMsg.TYP_CHANNEL);
 					if((playerStats()!=null)
-					&&(!Util.bset(getBitmap(),MOB.ATT_QUIET))
-					&&(!Util.isSet(playerStats().getChannelMask(),channelCode)))
+					&&(!CMath.bset(getBitmap(),MOB.ATT_QUIET))
+					&&(!CMath.isSet(playerStats().getChannelMask(),channelCode)))
 						tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
 				}
 			}
 
 			// now do the says
-			if((Util.bset(targetMajor,CMMsg.MASK_SOUND))
+			if((CMath.bset(targetMajor,CMMsg.MASK_SOUND))
 			&&(canhearsrc)&&(!asleep))
 			{
 				if((msg.targetMinor()==CMMsg.TYP_SPEAK)
@@ -2497,22 +2497,22 @@ public class StdMOB implements MOB
 				tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
 			}
 			else
-			if((Util.bset(targetMajor,CMMsg.MASK_GENERAL))
+			if((CMath.bset(targetMajor,CMMsg.MASK_GENERAL))
 			||(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			||(msg.targetMinor()==CMMsg.TYP_HEALING))
 				tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
 			else
-			if((Util.bset(targetMajor,CMMsg.MASK_EYES))
+			if((CMath.bset(targetMajor,CMMsg.MASK_EYES))
 			&&((!asleep)&&(canseesrc)))
 				tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
 			else
-			if(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+			if(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 				tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
 			else
-			if(((Util.bset(targetMajor,CMMsg.MASK_HANDS))
-				||(Util.bset(targetMajor,CMMsg.MASK_MOVE))
-				||((Util.bset(targetMajor,CMMsg.MASK_MOUTH))
-				   &&(!Util.bset(targetMajor,CMMsg.MASK_SOUND))))
+			if(((CMath.bset(targetMajor,CMMsg.MASK_HANDS))
+				||(CMath.bset(targetMajor,CMMsg.MASK_MOVE))
+				||((CMath.bset(targetMajor,CMMsg.MASK_MOUTH))
+				   &&(!CMath.bset(targetMajor,CMMsg.MASK_SOUND))))
 			&&(!asleep)&&((canhearsrc)||(canseesrc)))
 				tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
 		}
@@ -2524,9 +2524,9 @@ public class StdMOB implements MOB
 			int othersMajor=msg.othersMajor();
 			int othersMinor=msg.othersMinor();
 
-			if(Util.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)
+			if(CMath.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)
 			&&(msg.target() instanceof MOB)
-			&&((!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+			&&((!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 				||(!(msg.tool() instanceof DiseaseAffect))))
 				fightingFollowers((MOB)msg.target(),msg.source());
 
@@ -2539,32 +2539,32 @@ public class StdMOB implements MOB
 					tell(msg.source(),msg.target(),msg.tool(),msg.othersMessage());
 			}
 			else
-			if(Util.bset(othersMajor,CMMsg.MASK_CHANNEL))
+			if(CMath.bset(othersMajor,CMMsg.MASK_CHANNEL))
 			{
 		        int channelCode=((msg.othersCode()-CMMsg.MASK_CHANNEL)-CMMsg.TYP_CHANNEL);
 				if((playerStats()!=null)
-				&&(!Util.bset(getBitmap(),MOB.ATT_QUIET))
-				&&(!Util.isSet(playerStats().getChannelMask(),channelCode)))
+				&&(!CMath.bset(getBitmap(),MOB.ATT_QUIET))
+				&&(!CMath.isSet(playerStats().getChannelMask(),channelCode)))
 					tell(msg.source(),msg.target(),msg.tool(),msg.othersMessage());
 			}
 			else
-			if((Util.bset(othersMajor,CMMsg.MASK_SOUND))
+			if((CMath.bset(othersMajor,CMMsg.MASK_SOUND))
 			&&(!asleep)
 			&&(canhearsrc))
 			{
 				tell(msg.source(),msg.target(),msg.tool(),msg.othersMessage());
 			}
 			else
-			if(((Util.bset(othersMajor,CMMsg.MASK_EYES))
-			||(Util.bset(othersMajor,CMMsg.MASK_HANDS))
-			||(Util.bset(othersMajor,CMMsg.MASK_GENERAL)))
+			if(((CMath.bset(othersMajor,CMMsg.MASK_EYES))
+			||(CMath.bset(othersMajor,CMMsg.MASK_HANDS))
+			||(CMath.bset(othersMajor,CMMsg.MASK_GENERAL)))
 			&&((!asleep)&&(canseesrc)))
 			{
 				tell(msg.source(),msg.target(),msg.tool(),msg.othersMessage());
 			}
 			else
-			if(((Util.bset(othersMajor,CMMsg.MASK_MOVE))
-				||((Util.bset(othersMajor,CMMsg.MASK_MOUTH))&&(!Util.bset(othersMajor,CMMsg.MASK_SOUND))))
+			if(((CMath.bset(othersMajor,CMMsg.MASK_MOVE))
+				||((CMath.bset(othersMajor,CMMsg.MASK_MOUTH))&&(!CMath.bset(othersMajor,CMMsg.MASK_SOUND))))
 			&&(!asleep)
 			&&((canseesrc)||(canhearsrc)))
 				tell(msg.source(),msg.target(),msg.tool(),msg.othersMessage());
@@ -2781,7 +2781,7 @@ public class StdMOB implements MOB
 				if((!CMLib.flags().canBreathe(this))&&(!CMLib.flags().isGolem(this)))
 				{
 					location().show(this,this,CMMsg.MSG_OK_VISUAL,("^Z<S-NAME> can't breathe!^.^?")+CMProps.msp("choke.wav",10));
-					CMLib.combat().postDamage(this,this,null,(int)Math.round(Util.mul(Math.random(),baseEnvStats().level()+2)),CMMsg.MSG_OK_VISUAL,-1,null);
+					CMLib.combat().postDamage(this,this,null,(int)Math.round(CMath.mul(Math.random(),baseEnvStats().level()+2)),CMMsg.MSG_OK_VISUAL,-1,null);
 				}
 				if(isInCombat())
 				{
@@ -2789,7 +2789,7 @@ public class StdMOB implements MOB
 					peaceTime=0;
 					Item weapon=fetchWieldedItem();
 
-					if((Util.bset(getBitmap(),MOB.ATT_AUTODRAW))&&(weapon==null))
+					if((CMath.bset(getBitmap(),MOB.ATT_AUTODRAW))&&(weapon==null))
 					{
 						CMLib.commands().draw(this,false,true);
 						weapon=fetchWieldedItem();
@@ -2811,7 +2811,7 @@ public class StdMOB implements MOB
 							numAttacks--;
 						}
 					
-					int folrange=(Util.bset(getBitmap(),MOB.ATT_AUTOMELEE)
+					int folrange=(CMath.bset(getBitmap(),MOB.ATT_AUTOMELEE)
 									&&(amFollowing()!=null)
 								    &&(amFollowing().getVictim()==victim)
 								    &&(amFollowing().rangeToTarget()>=0)
@@ -2828,7 +2828,7 @@ public class StdMOB implements MOB
 							{
 								if((weapon!=null)&&(weapon.amWearingAt(Item.INVENTORY)))
 									weapon=this.fetchWieldedItem();
-								if((!Util.bset(getBitmap(),MOB.ATT_AUTOMELEE)))
+								if((!CMath.bset(getBitmap(),MOB.ATT_AUTOMELEE)))
 									CMLib.combat().postAttack(this,victim,weapon);
 								else
 								{
@@ -2919,7 +2919,7 @@ public class StdMOB implements MOB
 				{
 					speeder=0.0;
 					peaceTime+=MudHost.TICK_TIME;
-					if(Util.bset(getBitmap(),MOB.ATT_AUTODRAW)
+					if(CMath.bset(getBitmap(),MOB.ATT_AUTODRAW)
 					&&(peaceTime>=SHEATH_TIME)
 					&&(CMLib.flags().aliveAwakeMobileUnbound(this,true)))
 						CMLib.commands().sheath(this,true);
@@ -3123,10 +3123,10 @@ public class StdMOB implements MOB
 						if((tattoo.length()>0)
 						&&(Character.isDigit(tattoo.charAt(0)))
 						&&(tattoo.indexOf(" ")>0)
-						&&(Util.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
+						&&(CMath.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
 						{
 							String tat=tattoo.substring(tattoo.indexOf(" ")+1).trim();
-							int num=Util.s_int(tattoo.substring(0,tattoo.indexOf(" ")));
+							int num=CMath.s_int(tattoo.substring(0,tattoo.indexOf(" ")));
 							if(num==1)
 							{
 								tattoos.removeElementAt(t);
@@ -3608,7 +3608,7 @@ public class StdMOB implements MOB
 				return null;
 			if((Character.isDigit(of.charAt(0)))
 			&&(of.indexOf(" ")>0)
-			&&(Util.isNumber(of.substring(0,of.indexOf(" ")))))
+			&&(CMath.isNumber(of.substring(0,of.indexOf(" ")))))
 				of=of.substring(of.indexOf(" ")+1).trim();
 			else
 				of=of.trim();
@@ -3621,7 +3621,7 @@ public class StdMOB implements MOB
 				else
 				if((Character.isDigit(s.charAt(0)))
 				&&(s.indexOf(" ")>0)
-				&&(Util.isNumber(s.substring(0,s.indexOf(" "))))
+				&&(CMath.isNumber(s.substring(0,s.indexOf(" "))))
 				&&(of.equalsIgnoreCase(s.substring(s.indexOf(" ")+1).trim())))
 					return fetchTattoo(i);
 			}
@@ -3899,7 +3899,7 @@ public class StdMOB implements MOB
 		if((target==this)||(source==this)) return;
 		if((target.location()!=location())||(target.location()!=source.location()))
 			return;
-		if((Util.bset(getBitmap(),MOB.ATT_AUTOASSIST))) return;
+		if((CMath.bset(getBitmap(),MOB.ATT_AUTOASSIST))) return;
 		if(isInCombat()) return;
 
 		if((amFollowing()==target)
@@ -3935,8 +3935,8 @@ public class StdMOB implements MOB
 		switch(getCodeNum(code))
 		{
 		case 0: return;
-		case 1: baseEnvStats().setLevel(Util.s_int(val)); break;
-		case 2: baseEnvStats().setAbility(Util.s_int(val)); break;
+		case 1: baseEnvStats().setLevel(CMath.s_int(val)); break;
+		case 2: baseEnvStats().setAbility(CMath.s_int(val)); break;
 		case 3: setMiscText(val); break;
 		}
 	}

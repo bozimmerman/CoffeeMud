@@ -39,7 +39,7 @@ public class LogViewer extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		String s=Log.getLog().toString();
-		s=Util.replaceAll(s,"\n\r","\n");
+		s=CMStrings.replaceAll(s,"\n\r","\n");
         return clearWebMacros("<PRE>"+s+"</PRE>");
 	}
 }

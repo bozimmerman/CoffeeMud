@@ -120,7 +120,7 @@ public class Spell_Phantasm extends Spell
 			mob.tell("You must specify the type of creature to create a phantasm of!");
 			return false;
 		}
-		String type=Util.capitalizeAndLower(Util.combine(commands,0));
+		String type=CMStrings.capitalizeAndLower(CMParms.combine(commands,0));
 		Race R=CMClass.getRace(type);
 		if(R==null)
 		{

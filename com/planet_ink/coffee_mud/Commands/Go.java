@@ -304,7 +304,7 @@ public class Go extends StdCommand
         {
 			CMLib.commands().look(mob,true);
             if((!mob.isMonster())
-            &&(Util.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER))
+            &&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER))
             &&(thisRoom!=null)
             &&(((Room)enterMsg.target())!=null)
             &&((thisRoom.domainType()&Room.INDOORS)>0)
@@ -328,7 +328,7 @@ public class Go extends StdCommand
 				{
 					if((follower.location()==thisRoom)
 					&&(CMLib.flags().aliveAwakeMobile(follower,true))
-					&&(!Util.bset(follower.getBitmap(),MOB.ATT_AUTOGUARD)))
+					&&(!CMath.bset(follower.getBitmap(),MOB.ATT_AUTOGUARD)))
 					{
 						follower.tell(getScr("Movement","youfollow",mob.name(),Directions.getDirectionName(directionCode)));
 						if(!move(follower,directionCode,false,false,false,false))
@@ -375,8 +375,8 @@ public class Go extends StdCommand
 
 		}
 
-		int direction=Directions.getGoodDirectionCode(Util.combine(commands,1));
-		if((direction<0)&&(mob.location().fetchFromRoomFavorItems(null,Util.combine(commands,1),Item.WORN_REQ_UNWORNONLY) instanceof Rideable))
+		int direction=Directions.getGoodDirectionCode(CMParms.combine(commands,1));
+		if((direction<0)&&(mob.location().fetchFromRoomFavorItems(null,CMParms.combine(commands,1),Item.WORN_REQ_UNWORNONLY) instanceof Rideable))
 		{
 			Command C=CMClass.getCommand("Enter");
 			return C.execute(mob,commands);
@@ -392,18 +392,18 @@ public class Go extends StdCommand
 				{
 					int num=1;
 					String s=(String)commands.elementAt(v);
-					if(Util.s_int(s)>0)
+					if(CMath.s_int(s)>0)
 					{
-						num=Util.s_int(s);
+						num=CMath.s_int(s);
 						v++;
 						if(v<commands.size())
 							s=(String)commands.elementAt(v);
 					}
 					else
 					if(("NSEWUDnsewud".indexOf(s.charAt(s.length()-1))>=0)
-					&&(Util.s_int(s.substring(0,s.length()-1))>0))
+					&&(CMath.s_int(s.substring(0,s.length()-1))>0))
 					{
-						num=Util.s_int(s.substring(0,s.length()-1));
+						num=CMath.s_int(s.substring(0,s.length()-1));
 						s=s.substring(s.length()-1);
 					}
 
@@ -430,7 +430,7 @@ public class Go extends StdCommand
 						break;
 				}
 			if(!doneAnything)
-				mob.tell(Util.capitalizeAndLower(doing)+" "+getScr("Movement","goerr"));
+				mob.tell(CMStrings.capitalizeAndLower(doing)+" "+getScr("Movement","goerr"));
 		}
 		return false;
 	}

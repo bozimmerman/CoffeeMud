@@ -53,7 +53,7 @@ public class Spell_WeaknessGas extends Spell
 		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		   &&(msg.sourceMinor()==CMMsg.TYP_GAS))
 		{
-			int recovery=(int)Math.round(Util.mul((msg.value()),1.5));
+			int recovery=(int)Math.round(CMath.mul((msg.value()),1.5));
 			msg.setValue(msg.value()+recovery);
 		}
 		return true;

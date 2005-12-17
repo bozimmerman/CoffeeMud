@@ -63,7 +63,7 @@ public class RandomTeleporter extends ActiveTicker
 		super.setParms(newParms);
 		nowander=false;
 		restrictedLocales=null;
-		Vector V=Util.parse(newParms);
+		Vector V=CMParms.parse(newParms);
 		for(int v=0;v<V.size();v++)
 		{
 			String s=(String)V.elementAt(v);

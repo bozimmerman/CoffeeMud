@@ -128,7 +128,7 @@ public class Chant_ManicMoon extends Chant
 		{
 			Ability A=target.fetchEffect(a);
 			if((A!=null)
-			&&(Util.bset(A.flags(),Ability.FLAG_MOONCHANGING)))
+			&&(CMath.bset(A.flags(),Ability.FLAG_MOONCHANGING)))
 			{
 				mob.tell("The moon is already under "+A.name()+", and can not be changed until this magic is gone.");
 				return false;

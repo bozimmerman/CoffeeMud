@@ -69,7 +69,7 @@ public class Skill_SongWrite extends BardSkill
 		commands.removeElementAt(commands.size()-1);
 		Scroll scroll=(Scroll)target;
 
-		String spellName=Util.combine(commands,0).trim();
+		String spellName=CMParms.combine(commands,0).trim();
 		Song scrollThis=null;
 		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{

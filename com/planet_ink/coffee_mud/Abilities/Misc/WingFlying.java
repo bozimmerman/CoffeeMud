@@ -56,7 +56,7 @@ public class WingFlying extends StdAbility
 		if((!CMLib.flags().isSleeping(affected))&&(flying))
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 		else
-			affectableStats.setDisposition(Util.unsetb(affectableStats.disposition(),EnvStats.IS_FLYING));
+			affectableStats.setDisposition(CMath.unsetb(affectableStats.disposition(),EnvStats.IS_FLYING));
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

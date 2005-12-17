@@ -69,7 +69,7 @@ public class Druid_DruidicPass extends StdAbility
 			mob.tell("You must be in the wild to perform the Druidic Pass.");
 			return false;
 		}
-		String whatToOpen=Util.combine(commands,0);
+		String whatToOpen=CMParms.combine(commands,0);
 		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode<0)
 		{

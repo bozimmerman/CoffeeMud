@@ -68,7 +68,7 @@ public class Prayer_MoralBalance extends Prayer
 					target.tell("Your views on the world suddenly change.");
                     Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
                     if(F!=null)
-	                    target.addFaction(CMLib.factions().AlignID(),(int)Math.round(Util.div((F.maximum()-F.minimum())-target.fetchFaction(CMLib.factions().AlignID()),2)));
+	                    target.addFaction(CMLib.factions().AlignID(),(int)Math.round(CMath.div((F.maximum()-F.minimum())-target.fetchFaction(CMLib.factions().AlignID()),2)));
 				}
                 if(msg2!=null) mob.location().send(mob,msg2);
 			}

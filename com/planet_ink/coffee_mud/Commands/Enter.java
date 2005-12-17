@@ -44,7 +44,7 @@ public class Enter extends Go
 			mob.tell(getScr("Movement","entererr1"));
 			return false;
 		}
-		String enterWhat=Util.combine(commands,1).toUpperCase();
+		String enterWhat=CMParms.combine(commands,1).toUpperCase();
 		int dir=CMLib.tracking().findExitDir(mob,mob.location(),enterWhat);
 		if(dir<0)
 		{

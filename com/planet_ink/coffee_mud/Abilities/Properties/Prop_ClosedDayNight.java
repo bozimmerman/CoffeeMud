@@ -54,7 +54,7 @@ public class Prop_ClosedDayNight extends Property
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
-		Vector V=Util.parse(text);
+		Vector V=CMParms.parse(text);
 		dayFlag=false;
 		doneToday=false;
 		lockupFlag=false;
@@ -86,8 +86,8 @@ public class Prop_ClosedDayNight extends Property
 				int x=s.indexOf("-");
 				if(x>=0)
 				{
-					openTime=Util.s_int(s.substring(0,x));
-					closeTime=Util.s_int(s.substring(x+1));
+					openTime=CMath.s_int(s.substring(0,x));
+					closeTime=CMath.s_int(s.substring(x+1));
 				}
 			}
 			else
@@ -261,10 +261,10 @@ public class Prop_ClosedDayNight extends Property
 				}
 
 				if(sleepFlag)
-					mob.doCommand(Util.parse("SLEEP"));
+					mob.doCommand(CMParms.parse("SLEEP"));
 				else
 				if(sitFlag)
-					mob.doCommand(Util.parse("SIT"));
+					mob.doCommand(CMParms.parse("SIT"));
 				lastClosed=1;
 			}
 			else

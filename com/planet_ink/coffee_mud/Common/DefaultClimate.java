@@ -554,7 +554,7 @@ public class DefaultClimate implements Climate
 			return base*2;
 		case Climate.WEATHER_RAIN:
 		case Climate.WEATHER_THUNDERSTORM:
-			return (int)Math.round(Math.floor(Util.div(base,2)));
+			return (int)Math.round(Math.floor(CMath.div(base,2)));
 		case Climate.WEATHER_BLIZZARD:
 		case Climate.WEATHER_CLEAR:
 		case Climate.WEATHER_CLOUDY:

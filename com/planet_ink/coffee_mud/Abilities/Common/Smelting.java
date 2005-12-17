@@ -118,18 +118,18 @@ public class Smelting extends CraftingSkill
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Lvl "+Util.padRight("Metal #1",16)+" Metal #2\n\r");
+			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",20)+" Lvl "+CMStrings.padRight("Metal #1",16)+" Metal #2\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
-					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
+					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					String metal1=((String)V.elementAt(RCP_METALONE)).toLowerCase();
 					String metal2=((String)V.elementAt(RCP_METALTWO)).toLowerCase();
 					if(level<=mob.envStats().level())
-						buf.append(Util.padRight(item,20)+" "+Util.padRight(""+level,3)+" "+Util.padRight(metal1,16)+" "+metal2+"\n\r");
+						buf.append(CMStrings.padRight(item,20)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(metal1,16)+" "+metal2+"\n\r");
 				}
 			}
 			commonTell(mob,buf.toString());
@@ -139,13 +139,13 @@ public class Smelting extends CraftingSkill
 		if(fire==null) return false;
 		building=null;
 		messedUp=false;
-		String recipeName=Util.combine(commands,0);
+		String recipeName=CMParms.combine(commands,0);
 		int maxAmount=0;
-		if((commands.size()>1)&&(Util.isNumber((String)commands.lastElement())))
+		if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
 		{
-			maxAmount=Util.s_int((String)commands.lastElement());
+			maxAmount=CMath.s_int((String)commands.lastElement());
 			commands.removeElementAt(commands.size()-1);
-			recipeName=Util.combine(commands,0);
+			recipeName=CMParms.combine(commands,0);
 		}
 		Vector foundRecipe=null;
 		Vector matches=matchingRecipeNames(recipes,recipeName,true);
@@ -154,7 +154,7 @@ public class Smelting extends CraftingSkill
 			Vector V=(Vector)matches.elementAt(r);
 			if(V.size()>0)
 			{
-				int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
+				int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
                 if(level<=mob.envStats().level())
 				{
 					foundRecipe=V;
@@ -207,7 +207,7 @@ public class Smelting extends CraftingSkill
 		if((maxAmount>0)&&(amountMaking>maxAmount)) amountMaking=maxAmount;
 		destroyResources(mob.location(),amountMaking,EnvResource.RESOURCE_DATA[resourceCode1][0],0,null,0);
 		destroyResources(mob.location(),amountMaking,EnvResource.RESOURCE_DATA[resourceCode2][0],0,null,0);
-		completion=Util.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		amountMaking+=amountMaking;
 		building=(Item)CMLib.utensils().makeResource(EnvResource.RESOURCE_DATA[doneResourceCode][0],-1,false);
 		startStr="<S-NAME> start(s) smelting "+doneResourceDesc.toLowerCase()+".";

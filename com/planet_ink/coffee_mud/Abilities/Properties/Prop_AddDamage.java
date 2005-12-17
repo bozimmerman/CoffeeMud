@@ -69,7 +69,7 @@ public class Prop_AddDamage extends Property
 				if((CharStats.affectTypeMap[i]==msg.sourceMinor())
 				&&((msg.tool()==null)||(i!=CharStats.SAVE_MAGIC)))
 				{
-					Vector V=Util.parse(CharStats.TRAITS[i]);
+					Vector V=CMParms.parse(CharStats.TRAITS[i]);
 					if(((String)V.lastElement()).equals("SAVE"))
 						x=text.indexOf((String)V.firstElement());
 					else
@@ -107,13 +107,13 @@ public class Prop_AddDamage extends Property
 							lvl=lvl.substring(lvl.indexOf(" "));
 						if((text.charAt(x-1)=='-')&&(immune>=0))
 						{
-							if(msg.tool().envStats().level()>=Util.s_int(lvl))
+							if(msg.tool().envStats().level()>=CMath.s_int(lvl))
 								immune=-1;
 						}
 						else
 						if(text.charAt(x-1)!='-')
 						{
-							if(msg.tool().envStats().level()<Util.s_int(lvl))
+							if(msg.tool().envStats().level()<CMath.s_int(lvl))
 								immune=x;
 						}
 					}
@@ -161,9 +161,9 @@ public class Prop_AddDamage extends Property
 					x=text.indexOf(" ");
 					if(x>0) text=text.substring(0,x).trim();
 					if(text.endsWith("%"))
-						msg.setValue(msg.value()+(int)Math.round(Util.mul(msg.value(),Util.div(Util.s_int(text.substring(0,text.length()-1)),100.0))));
+						msg.setValue(msg.value()+(int)Math.round(CMath.mul(msg.value(),CMath.div(CMath.s_int(text.substring(0,text.length()-1)),100.0))));
 					else
-						msg.setValue(msg.value()+Util.s_int(text));
+						msg.setValue(msg.value()+CMath.s_int(text));
 					if(msg.value()<0) msg.setValue(0);
 				}
 			}

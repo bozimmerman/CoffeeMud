@@ -69,8 +69,8 @@ public class GenPotion extends StdPotion
 	public int liquidType(){
 		if((material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)
 			return material();
-		if(Util.s_int(readableText)==0) return EnvResource.RESOURCE_DRINKABLE;
-		return Util.s_int(readableText);
+		if(CMath.s_int(readableText)==0) return EnvResource.RESOURCE_DRINKABLE;
+		return CMath.s_int(readableText);
 	}
 	public void setLiquidType(int newLiquidType){readableText=""+newLiquidType;}
 
@@ -105,13 +105,13 @@ public class GenPotion extends StdPotion
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setLidsNLocks(hasALid(),isOpen(),Util.s_bool(val),false); break;
-		case 1: setLidsNLocks(Util.s_bool(val),isOpen(),hasALock(),false); break;
-		case 2: setCapacity(Util.s_int(val)); break;
-		case 3: setContainTypes(Util.s_long(val)); break;
-		case 4: setThirstQuenched(Util.s_int(val)); break;
-		case 5: setLiquidHeld(Util.s_int(val)); break;
-		case 6: setLiquidType(Util.s_int(val)); break;
+		case 0: setLidsNLocks(hasALid(),isOpen(),CMath.s_bool(val),false); break;
+		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
+		case 2: setCapacity(CMath.s_int(val)); break;
+		case 3: setContainTypes(CMath.s_long(val)); break;
+		case 4: setThirstQuenched(CMath.s_int(val)); break;
+		case 5: setLiquidHeld(CMath.s_int(val)); break;
+		case 6: setLiquidType(CMath.s_int(val)); break;
 		}
 	}
 	protected int getCodeNum(String code){

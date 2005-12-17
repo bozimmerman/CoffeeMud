@@ -66,7 +66,7 @@ public class QuestData extends StdWebMacro
 			if(parms.containsKey("SCRIPT"))
 			{
 				String script=Q.script();
-				script=Util.replaceAll(script,";","\n");
+				script=CMStrings.replaceAll(script,";","\n");
                 return clearWebMacros(script);
 			}
 		}

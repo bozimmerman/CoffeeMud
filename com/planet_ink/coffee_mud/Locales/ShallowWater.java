@@ -62,7 +62,7 @@ public class ShallowWater extends StdRoom implements Drink
 	{
 		super.executeMsg(myHost,msg);
 		if((msg.source().playerStats()!=null)
-		&&(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))
+		&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))
 		&&(msg.source().soulMate()==null)
 		&&(msg.source().playerStats().getHygiene()>100)
 		&&(msg.source().riding()==null))

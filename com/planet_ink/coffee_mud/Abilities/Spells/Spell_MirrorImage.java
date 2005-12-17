@@ -86,10 +86,10 @@ public class Spell_MirrorImage extends Spell
 		if(msg.amISource(mob))
 		{
 			if((
-				(Util.bset(msg.othersCode(),CMMsg.MASK_EYES))
-				||(Util.bset(msg.othersCode(),CMMsg.MASK_MOVE))
-				||(Util.bset(msg.othersCode(),CMMsg.MASK_MOUTH))
-				||(Util.bset(msg.othersCode(),CMMsg.MASK_HANDS)))
+				(CMath.bset(msg.othersCode(),CMMsg.MASK_EYES))
+				||(CMath.bset(msg.othersCode(),CMMsg.MASK_MOVE))
+				||(CMath.bset(msg.othersCode(),CMMsg.MASK_MOUTH))
+				||(CMath.bset(msg.othersCode(),CMMsg.MASK_HANDS)))
 			&&(msg.othersMessage()!=null)
 			&&(msg.targetMinor()!=CMMsg.TYP_DAMAGE)
 			&&(msg.othersMessage().length()>0))
@@ -107,15 +107,15 @@ public class Spell_MirrorImage extends Spell
 		&&((CMLib.flags().canBeSeenBy(mob,msg.source()))&&(mob.displayText(msg.source()).length()>0)))
 		{
 			StringBuffer Say=new StringBuffer("");
-            boolean compress=Util.bset(msg.source().getBitmap(),MOB.ATT_COMPRESS);
+            boolean compress=CMath.bset(msg.source().getBitmap(),MOB.ATT_COMPRESS);
 			for(int i=0;i<numberOfImages;i++)
 			{
 				Say.append("^M");
                 if(compress) Say.append(CMLib.flags().colorCodes(mob,mob)+"^M ");
                 if(mob.displayText(msg.source()).length()>0)
-                    Say.append(Util.endWithAPeriod(Util.capitalizeFirstLetter(mob.displayText(msg.source()))));
+                    Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob.displayText(msg.source()))));
                 else
-                    Say.append(Util.endWithAPeriod(Util.capitalizeFirstLetter(mob.name())));
+                    Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob.name())));
                 if(!compress)
                     Say.append(CMLib.flags().colorCodes(mob,msg.source())+"^N\n\r");
                 else
@@ -180,7 +180,7 @@ public class Spell_MirrorImage extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			numberOfImages = CMLib.dice().roll(1,(int)(Math.round(Util.div(adjustedLevel(mob,asLevel),3.0))),2);
+			numberOfImages = CMLib.dice().roll(1,(int)(Math.round(CMath.div(adjustedLevel(mob,asLevel),3.0))),2);
 			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),(auto?"A spell forms around":"^S<S-NAME> incant(s) the reflective spell of")+" <T-NAME>, and suddenly " + numberOfImages + " copies appear.^?");
 			if(mob.location().okMessage(mob,msg))
 			{

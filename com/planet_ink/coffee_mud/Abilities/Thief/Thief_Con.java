@@ -109,13 +109,13 @@ public class Thief_Con extends ThiefSkill
 
 		if(!success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to con <T-NAMESELF> into '"+Util.combine(commands,0)+"', but <S-IS-ARE> unsuccessful.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to con <T-NAMESELF> into '"+CMParms.combine(commands,0)+"', but <S-IS-ARE> unsuccessful.^?");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> con(s) <T-NAMESELF> into '"+Util.combine(commands,0)+"'.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> con(s) <T-NAMESELF> into '"+CMParms.combine(commands,0)+"'.^?");
 			mob.recoverEnvStats();
 			if(mob.location().okMessage(mob,msg))
 			{

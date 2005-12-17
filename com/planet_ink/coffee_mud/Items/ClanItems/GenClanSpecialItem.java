@@ -84,7 +84,7 @@ public class GenClanSpecialItem extends StdClanSpecialItem
 		switch(getCodeNum(code))
 		{
 		case 0: setClanID(val); break;
-		case 1: setCIType(Util.s_int(val)); break;
+		case 1: setCIType(CMath.s_int(val)); break;
 		}
 	}
 	protected int getCodeNum(String code){

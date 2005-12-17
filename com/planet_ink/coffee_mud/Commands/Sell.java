@@ -49,13 +49,13 @@ public class Sell extends StdCommand
 
 		int maxToDo=Integer.MAX_VALUE;
 		if((commands.size()>1)
-		&&(Util.s_int((String)commands.firstElement())>0))
+		&&(CMath.s_int((String)commands.firstElement())>0))
 		{
-			maxToDo=Util.s_int((String)commands.firstElement());
+			maxToDo=CMath.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
 		}
 
-		String whatName=Util.combine(commands,0);
+		String whatName=CMParms.combine(commands,0);
 		Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}

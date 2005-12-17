@@ -131,7 +131,7 @@ public class Score extends Affect
 			if(C!=null)
 			{
 				String role=CMLib.clans().getRoleName(C.getGovernment(),mob.getClanRole(),true,false);
-				role=Util.startWithAorAn(role);
+				role=CMStrings.startWithAorAn(role);
 				msg.append("You are "+role+" of the ^H"+mob.getClanID()+"^?^. Clan.\n\r");
 			}
 		}
@@ -140,12 +140,12 @@ public class Score extends Affect
         CharStats CT=mob.charStats();
         msg.append(CMProps.mxpImage(mob," ALIGN=RIGHT H=70 W=70"));
         msg.append("^N^!");
-        msg.append(Util.padRight("^<HELP^>Strength^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.MAX_STRENGTH_ADJ))+"\n\r");
-        msg.append(Util.padRight("^<HELP^>Intelligence^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.MAX_INTELLIGENCE_ADJ))+"\n\r");
-        msg.append(Util.padRight("^<HELP^>Dexterity^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.DEXTERITY)),2)+"/"+(max+CT.getStat(CharStats.MAX_DEXTERITY_ADJ))+"\n\r");
-        msg.append(Util.padRight("^<HELP^>Wisdom^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.WISDOM)),2)+"/"+(max+CT.getStat(CharStats.MAX_WISDOM_ADJ))+"\n\r");
-        msg.append(Util.padRight("^<HELP^>Constitution^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.CONSTITUTION)),2)+"/"+(max+CT.getStat(CharStats.MAX_CONSTITUTION_ADJ))+"\n\r");
-        msg.append(Util.padRight("^<HELP^>Charisma^</HELP^>",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.CHARISMA)),2)+"/"+(max+CT.getStat(CharStats.MAX_CHARISMA_ADJ))+"\n\r");
+        msg.append(CMStrings.padRight("^<HELP^>Strength^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.MAX_STRENGTH_ADJ))+"\n\r");
+        msg.append(CMStrings.padRight("^<HELP^>Intelligence^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.MAX_INTELLIGENCE_ADJ))+"\n\r");
+        msg.append(CMStrings.padRight("^<HELP^>Dexterity^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.DEXTERITY)),2)+"/"+(max+CT.getStat(CharStats.MAX_DEXTERITY_ADJ))+"\n\r");
+        msg.append(CMStrings.padRight("^<HELP^>Wisdom^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.WISDOM)),2)+"/"+(max+CT.getStat(CharStats.MAX_WISDOM_ADJ))+"\n\r");
+        msg.append(CMStrings.padRight("^<HELP^>Constitution^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.CONSTITUTION)),2)+"/"+(max+CT.getStat(CharStats.MAX_CONSTITUTION_ADJ))+"\n\r");
+        msg.append(CMStrings.padRight("^<HELP^>Charisma^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.CHARISMA)),2)+"/"+(max+CT.getStat(CharStats.MAX_CHARISMA_ADJ))+"\n\r");
         msg.append("^?\n\r");
 		msg.append("You have ^H"+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+"^? ^<HELP^>hit points^</HELP^>, ^H");
 		msg.append(mob.curState().getMana()+"/"+mob.maxState().getMana()+"^? ^<HELP^>mana^</HELP^>, and ^H");
@@ -163,7 +163,7 @@ public class Score extends Affect
 		&&!mob.charStats().getCurrentClass().expless()
 		&&!mob.charStats().getMyRace().expless())
 		{
-			msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>, and have been online for ^!"+Math.round(Util.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
+			msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>, and have been online for ^!"+Math.round(CMath.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
 			if((!CMSecurity.isDisabled("LEVELS"))
 			&&(!mob.charStats().getCurrentClass().leveless())
 			&&(!mob.charStats().getMyRace().leveless()))
@@ -183,7 +183,7 @@ public class Score extends Affect
 		    String factionID=(String)e.nextElement();
 		    Faction.FactionRange FR=CMLib.factions().getRange(factionID,mob.fetchFaction(factionID));
 		    if((FR!=null)&&(FR.myFaction().showinscore()))
-	            msg.append("Your "+Util.padRight("^<HELP^>"+FR.myFaction().name()+"^</HELP^> is",18)+": ^H"+FR.name()+"^?.\n\r");
+	            msg.append("Your "+CMStrings.padRight("^<HELP^>"+FR.myFaction().name()+"^</HELP^> is",18)+": ^H"+FR.name()+"^?.\n\r");
 		}
 		msg.append("Your ^<HELP^>armored defense^</HELP^> is: ^H"+CMLib.combat().armorStr(adjustedArmor)+"^?.\n\r");
 		msg.append("Your ^<HELP^>combat prowess^</HELP^> is : ^H"+CMLib.combat().fightingProwessStr(adjustedAttack)+"^?.\n\r");
@@ -233,7 +233,7 @@ public class Score extends Affect
 			msg.append("^!You are hidden.^?\n\r");
 		if(CMLib.flags().isSneaking(mob))
 			msg.append("^!You are sneaking.^?\n\r");
-		if(Util.bset(mob.getBitmap(),MOB.ATT_QUIET))
+		if(CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
 			msg.append("^!You are in QUIET mode.^?\n\r");
 		
 		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)

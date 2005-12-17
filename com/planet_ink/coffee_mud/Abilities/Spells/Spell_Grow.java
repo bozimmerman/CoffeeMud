@@ -46,8 +46,8 @@ public class Spell_Grow extends Spell
 		super.affectEnvStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
-			double aff=1.0 + Util.mul(0.1,(invoker().envStats().level()));
-			affectableStats.setHeight((int)Math.round(Util.mul(affectableStats.height(),aff)));
+			double aff=1.0 + CMath.mul(0.1,(invoker().envStats().level()));
+			affectableStats.setHeight((int)Math.round(CMath.mul(affectableStats.height(),aff)));
 		}
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -96,9 +96,9 @@ public class Spell_Grow extends Spell
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) to an enormous size!");
 				oldWeight=target.baseEnvStats().weight();
-				double aff=1.0 + Util.mul(0.1,(target.envStats().level()));
+				double aff=1.0 + CMath.mul(0.1,(target.envStats().level()));
 				aff=aff*aff;
-				target.baseEnvStats().setWeight((int)Math.round(Util.mul(target.baseEnvStats().weight(),aff)));
+				target.baseEnvStats().setWeight((int)Math.round(CMath.mul(target.baseEnvStats().weight(),aff)));
 				beneficialAffect(mob,target,asLevel,0);
 				target.confirmWearability();
 			}

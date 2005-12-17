@@ -39,14 +39,14 @@ public class Quiet extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!Util.bset(mob.getBitmap(),MOB.ATT_QUIET))
+		if(!CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
 		{
-			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_QUIET));
+			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_QUIET));
 			mob.tell("Quiet mode is now on.  You will no longer receive channel messages or tells.");
 		}
 		else
 		{
-			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_QUIET));
+			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_QUIET));
 			mob.tell("Quiet mode is now off.  You may now receive channel messages and tells.");
 		}
 		return false;

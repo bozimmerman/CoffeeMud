@@ -238,7 +238,7 @@ public class Poison_Alcohol extends Poison
 			&&(drunkness>=5)
 			&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-			   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
+			   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
 			{
 				Ability A=CMClass.getAbility("Drunken");
 				if(A!=null)
@@ -251,7 +251,7 @@ public class Poison_Alcohol extends Poison
 				}
 			}
 			else
-			if((!Util.bset(msg.targetMajor(),CMMsg.MASK_GENERAL))
+			if((!CMath.bset(msg.targetMajor(),CMMsg.MASK_GENERAL))
 			&&(CMLib.dice().rollPercentage()<(drunkness*20))
 			&&(msg.targetMajor()>0))
 			{

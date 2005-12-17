@@ -65,7 +65,7 @@ public class Deactivate extends BaseItemParser
 		if(item==null)
 			mob.tell(getScr("Deactivate","cantde",E.name()));
 		
-		String rest=Util.combine(commands,0);
+		String rest=CMParms.combine(commands,0);
 		CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.MSG_DEACTIVATE,rest,CMMsg.MSG_DEACTIVATE,null);
 		if(mob.location().okMessage(mob,newMsg))
 			mob.location().send(mob,newMsg);

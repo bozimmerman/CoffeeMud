@@ -131,6 +131,6 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     public String[] getCommandJournalNames()
     {
         if(commandJournalNames.size()==0) return null;
-        return Util.toStringArray(commandJournalNames);
+        return CMParms.toStringArray(commandJournalNames);
     }
 }

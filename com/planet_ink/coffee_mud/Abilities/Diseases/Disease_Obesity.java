@@ -68,8 +68,8 @@ public class Disease_Obesity extends Disease
 	
 	private int amountOfFat()
 	{
-	    if((fatAmount<0)&&(Util.isNumber(text()))) 
-	        fatAmount=Util.s_int(text());
+	    if((fatAmount<0)&&(CMath.isNumber(text()))) 
+	        fatAmount=CMath.s_int(text());
         if(fatAmount<0) fatAmount=0;
 	    if(fatAmount>=0) return fatAmount;
 	    return 1;
@@ -89,14 +89,14 @@ public class Disease_Obesity extends Disease
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 	    super.affectEnvStats(affected,affectableStats);
-	    affectableStats.setWeight(affectableStats.weight()+(int)Math.round(Util.mul(affectableStats.weight(),Util.div(Util.s_int(text()),100.0))));
+	    affectableStats.setWeight(affectableStats.weight()+(int)Math.round(CMath.mul(affectableStats.weight(),CMath.div(CMath.s_int(text()),100.0))));
 	}
 	
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 	    super.affectCharState(affected,affectableState);
 	    int oldMovement=affectableState.getMovement();
-	    affectableState.setMovement(affectableState.getMovement()-(int)Math.round(Util.mul(affectableState.getMovement(),Util.div(Util.s_int(text()),100.0))));
+	    affectableState.setMovement(affectableState.getMovement()-(int)Math.round(CMath.mul(affectableState.getMovement(),CMath.div(CMath.s_int(text()),100.0))));
 	    if((affectableState.getMovement()<20)&&(oldMovement>20)) affectableState.setMovement(20);
 	}
 	

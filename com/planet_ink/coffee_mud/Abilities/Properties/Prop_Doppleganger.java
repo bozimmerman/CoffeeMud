@@ -46,8 +46,8 @@ public class Prop_Doppleganger extends Property
     public void setMiscText(String text)
     {
         super.setMiscText(text);
-        maxLevel=Util.getParmInt(text,"MAX",Integer.MAX_VALUE);
-        minLevel=Util.getParmInt(text,"MIN",Integer.MIN_VALUE);
+        maxLevel=CMParms.getParmInt(text,"MAX",Integer.MAX_VALUE);
+        minLevel=CMParms.getParmInt(text,"MIN",Integer.MIN_VALUE);
     }
     
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -86,7 +86,7 @@ public class Prop_Doppleganger extends Property
 				}
 				if(num>0)
 				{
-					int level=(total/num)+Util.s_int(text());
+					int level=(total/num)+CMath.s_int(text());
 					if(level<minLevel) level=minLevel;
                     if(level>maxLevel) level=maxLevel;
 					if(level!=mob.baseEnvStats().level())
@@ -96,7 +96,7 @@ public class Prop_Doppleganger extends Property
 						mob.baseEnvStats().setArmor(C.getLevelArmor(mob));
 						mob.baseEnvStats().setAttackAdjustment(C.getLevelAttack(mob));
 						mob.baseEnvStats().setDamage(C.getLevelDamage(mob));
-						mob.baseEnvStats().setSpeed(1.0+(Util.div(level,100)*4.0));
+						mob.baseEnvStats().setSpeed(1.0+(CMath.div(level,100)*4.0));
 						mob.baseState().setHitPoints(CMLib.dice().rollHP(level,11));
 						mob.baseState().setMana(C.getLevelMana(mob));
 						mob.baseState().setMovement(C.getLevelMove(mob));

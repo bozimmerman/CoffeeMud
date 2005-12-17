@@ -71,7 +71,7 @@ public class Spell_BurningHands extends Spell
 				int maxDie =  adjustedLevel(mob,asLevel);
 				damage += CMLib.dice().roll(1,maxDie,15);
 				if((msg2.value()>0)||(msg.value()>0))
-					damage = (int)Math.round(Util.div(damage,2.0));
+					damage = (int)Math.round(CMath.div(damage,2.0));
 				if(target.location()==mob.location())
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flaming hands <DAMAGE> <T-NAME>!");
 			}

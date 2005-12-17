@@ -159,7 +159,7 @@ public class Chant_FindPlant extends Chant
 			mob.tell("Find which "+lookingFor+"?  Use 'CHANT \""+name()+"\" LIST' for a list.");
 			return false;
 		}
-		String s=Util.combine(commands,0);
+		String s=CMParms.combine(commands,0);
 		if(s.equalsIgnoreCase("LIST"))
 		{
 			StringBuffer msg=new StringBuffer("You may search for any of the following: ");

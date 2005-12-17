@@ -235,7 +235,7 @@ public class MobData extends StdWebMacro
 					{
 						theclasses.addElement(facti);
 						String t=theparm;
-						t=Util.replaceAll(t,"\"","&quot;");
+						t=CMStrings.replaceAll(t,"\"","&quot;");
 						theparms.addElement(t);
 					}
 					num++;
@@ -268,16 +268,16 @@ public class MobData extends StdWebMacro
 				str.append("</TD><TD WIDTH=50%>");
 				str.append("<SELECT NAME=FACTDATA"+(i+1)+">");
 				if(theparm.length()==0) theparm=""+F.findDefault(E);
-				Faction.FactionRange FR=CMLib.factions().getRange(F.factionID(),Util.s_int(theparm));
+				Faction.FactionRange FR=CMLib.factions().getRange(F.factionID(),CMath.s_int(theparm));
 				if(FR==null)
-					str.append("<OPTION VALUE=\""+Util.s_int(theparm)+"\">"+Util.s_int(theparm));
+					str.append("<OPTION VALUE=\""+CMath.s_int(theparm)+"\">"+CMath.s_int(theparm));
 				for(int r=0;r<F.ranges().size();r++)
 				{
 				    Faction.FactionRange FR2=(Faction.FactionRange)F.ranges().elementAt(r);
 				    int value=FR2.low()+(FR2.high()-FR2.low());
 				    if(FR2.low()==F.lowest()) value=FR2.low();
 				    if(FR2.high()==F.highest()) value=FR2.high();
-				    if(FR2==FR) value=Util.s_int(theparm);
+				    if(FR2==FR) value=CMath.s_int(theparm);
 					str.append("<OPTION VALUE=\""+value+"\"");
 					if(FR2==FR) str.append(" SELECTED");
 					str.append(">"+FR2.name());
@@ -384,9 +384,9 @@ public class MobData extends StdWebMacro
 					if(MATCHING==null)
 						break;
 					else
-					if(Util.isNumber(MATCHING))
+					if(CMath.isNumber(MATCHING))
 					{
-						Environmental O=(Environmental)inventory.elementAt(Util.s_int(MATCHING)-1);
+						Environmental O=(Environmental)inventory.elementAt(CMath.s_int(MATCHING)-1);
 						if(O!=null)
 							theclasses.addElement(O);
 					}
@@ -579,7 +579,7 @@ public class MobData extends StdWebMacro
 
 		if(((changedLevel)||(changedClass))&&(M.isGeneric()))
 		{
-			M.baseCharStats().getCurrentClass().fillOutMOB(M,Util.s_int(firstTime?"0":httpReq.getRequestParameter("LEVEL")));
+			M.baseCharStats().getCurrentClass().fillOutMOB(M,CMath.s_int(firstTime?"0":httpReq.getRequestParameter("LEVEL")));
 			httpReq.addRequestParameters("REJUV",""+M.baseEnvStats().rejuv());
 			httpReq.addRequestParameters("ARMOR",""+M.baseEnvStats().armor());
 			httpReq.addRequestParameters("DAMAGE",""+M.baseEnvStats().damage());
@@ -740,7 +740,7 @@ public class MobData extends StdWebMacro
 					    str.append("<OPTION VALUE="+Faction.ALIGN_NAMES[v]);
 					    if(old.equalsIgnoreCase(Faction.ALIGN_NAMES[v]))
 					        str.append(" SELECTED");
-					    str.append(">"+Util.capitalizeAndLower(Faction.ALIGN_NAMES[v].toLowerCase()));
+					    str.append(">"+CMStrings.capitalizeAndLower(Faction.ALIGN_NAMES[v].toLowerCase()));
 					}
 			    }
 				break;
@@ -761,7 +761,7 @@ public class MobData extends StdWebMacro
 				for(int r=0;r<Rideable.RIDEABLE_DESCS.length;r++)
 				{
 					str.append("<OPTION VALUE=\""+r+"\"");
-					if(r==Util.s_int(old))
+					if(r==CMath.s_int(old))
 						str.append(" SELECTED");
 					str.append(">"+Rideable.RIDEABLE_DESCS[r]);
 				}
@@ -781,12 +781,12 @@ public class MobData extends StdWebMacro
 				{
 					int r=ShopKeeper.DEAL_BANKER;
 					str.append("<OPTION VALUE=\""+r+"\"");
-					if(r==Util.s_int(old))
+					if(r==CMath.s_int(old))
 						str.append(" SELECTED");
 					str.append(">"+ShopKeeper.SOLDCODES[r]);
 					r=ShopKeeper.DEAL_CLANBANKER;
 					str.append("<OPTION VALUE=\""+r+"\"");
-					if(r==Util.s_int(old))
+					if(r==CMath.s_int(old))
 						str.append(" SELECTED");
 					str.append(">"+ShopKeeper.SOLDCODES[r]);
 				}
@@ -796,7 +796,7 @@ public class MobData extends StdWebMacro
 					if((r!=ShopKeeper.DEAL_CLANBANKER)&&(r!=ShopKeeper.DEAL_BANKER))
 					{
 						str.append("<OPTION VALUE=\""+r+"\"");
-						if(r==Util.s_int(old))
+						if(r==CMath.s_int(old))
 							str.append(" SELECTED");
 						str.append(">"+ShopKeeper.SOLDCODES[r]);
 					}

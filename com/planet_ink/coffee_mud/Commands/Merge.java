@@ -51,7 +51,7 @@ public class Merge extends StdCommand
 	public static void setStat(Environmental E, String stat, String value)
 	{
 		if((stat!=null)&&(stat.length()>0)&&(stat.equalsIgnoreCase("REJUV")))
-			E.baseEnvStats().setRejuv(Util.s_int(value));
+			E.baseEnvStats().setRejuv(CMath.s_int(value));
 		else
 			E.setStat(stat,value);
 	}
@@ -86,8 +86,8 @@ public class Merge extends StdCommand
 		for(int v=0;v<changes.size();v++)
 			if(efields.contains(changes.elementAt(v)))
 				efields.removeElement(changes.elementAt(v));
-		if(noisy) mergedebugtell(mob,"AllMy-"+Util.toStringList(allMyFields));
-		if(noisy) mergedebugtell(mob,"efields-"+Util.toStringList(efields));
+		if(noisy) mergedebugtell(mob,"AllMy-"+CMParms.toStringList(allMyFields));
+		if(noisy) mergedebugtell(mob,"efields-"+CMParms.toStringList(efields));
 		for(int t=0;t<things.size();t++)
 		{
 			Environmental E2=(Environmental)things.elementAt(t);
@@ -106,7 +106,7 @@ public class Merge extends StdCommand
 					fieldsToCheck=(Vector)efields.clone();
 
 				boolean checkedOut=fieldsToCheck.size()>0;
-				if(noisy) mergedebugtell(mob,"fieldsToCheck-"+Util.toStringList(fieldsToCheck));
+				if(noisy) mergedebugtell(mob,"fieldsToCheck-"+CMParms.toStringList(fieldsToCheck));
 				if(checkedOut)
 				for(int i=0;i<fieldsToCheck.size();i++)
 				{
@@ -127,7 +127,7 @@ public class Merge extends StdCommand
 							if(allMyFields.contains(changes.elementAt(v)))
 								fieldsToChange.addElement(changes.elementAt(v));
 					}
-					if(noisy) mergedebugtell(mob,"fieldsToChange-"+Util.toStringList(fieldsToChange));
+					if(noisy) mergedebugtell(mob,"fieldsToChange-"+CMParms.toStringList(fieldsToChange));
 					for(int i=0;i<fieldsToChange.size();i++)
 					{
 						String field=(String)fieldsToChange.elementAt(i);
@@ -135,7 +135,7 @@ public class Merge extends StdCommand
 						if(!getStat(E,field).equals(getStat(E2,field)))
 						{
 							setStat(E,field,getStat(E2,field));
-							Log.sysOut("Merge","The "+Util.capitalizeAndLower(field)+" field on "+E.Name()+" in "+room.roomID()+" was changed to "+getStat(E2,field)+".");
+							Log.sysOut("Merge","The "+CMStrings.capitalizeAndLower(field)+" field on "+E.Name()+" in "+room.roomID()+" was changed to "+getStat(E2,field)+".");
 							didAnything=true;
 						}
 					}
@@ -410,9 +410,9 @@ public class Merge extends StdCommand
 			mob.session().rawPrint("Merging and saving...");
 		if(noisy) mergedebugtell(mob,"Rooms to do: "+placesToDo.size());
 		if(noisy) mergedebugtell(mob,"Things loaded: "+things.size());
-		if(noisy) mergedebugtell(mob,"On fields="+Util.toStringList(onfields));
-		if(noisy) mergedebugtell(mob,"Ignore fields="+Util.toStringList(ignore));
-		if(noisy) mergedebugtell(mob,"Change fields="+Util.toStringList(changes));
+		if(noisy) mergedebugtell(mob,"On fields="+CMParms.toStringList(onfields));
+		if(noisy) mergedebugtell(mob,"Ignore fields="+CMParms.toStringList(ignore));
+		if(noisy) mergedebugtell(mob,"Change fields="+CMParms.toStringList(changes));
 		Log.sysOut("Import",mob.Name()+" merge '"+filename+"'.");
 		for(int r=0;r<placesToDo.size();r++)
 		{

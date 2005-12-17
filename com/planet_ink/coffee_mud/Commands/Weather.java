@@ -48,7 +48,7 @@ public class Weather extends StdCommand
 			{
 				Area A=(Area)a.nextElement();
 				if(CMLib.flags().canAccess(mob,A))
-					tellMe.append(Util.padRight(A.name(),20)+": "+A.getClimateObj().weatherDescription(room)+"\n\r");
+					tellMe.append(CMStrings.padRight(A.name(),20)+": "+A.getClimateObj().weatherDescription(room)+"\n\r");
 			}
 			mob.tell(tellMe.toString());
 			return false;

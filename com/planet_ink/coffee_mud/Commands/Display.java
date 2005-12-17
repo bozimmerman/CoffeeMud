@@ -64,13 +64,13 @@ public class Display extends BaseItemParser
 
 		int maxToGive=Integer.MAX_VALUE;
 		if((commands.size()>1)
-		&&(Util.s_int((String)commands.firstElement())>0))
+		&&(CMath.s_int((String)commands.firstElement())>0))
 		{
-			maxToGive=Util.s_int((String)commands.firstElement());
+			maxToGive=CMath.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
 		}
 
-		String thingToGive=Util.combine(commands,0);
+		String thingToGive=CMParms.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
 		Vector V=new Vector();

@@ -119,7 +119,7 @@ public class Stone extends StdRace
 		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
 		&&(myHost instanceof MOB)
 		&&(msg.amITarget(myHost))
-        &&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL)))
+        &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL)))
 		{
 			MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
@@ -141,7 +141,7 @@ public class Stone extends StdRace
 
 	public String healthText(MOB mob)
 	{
-		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name() + "^r is almost broken!^N";

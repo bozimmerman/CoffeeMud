@@ -47,7 +47,7 @@ public class ClanAssign extends BaseClanner
 			return false;
 		}
 		String qual=((String)commands.elementAt(1)).toUpperCase();
-		String pos=Util.combine(commands,2).toUpperCase();
+		String pos=CMParms.combine(commands,2).toUpperCase();
 		StringBuffer msg=new StringBuffer("");
 		Clan C=null;
 		boolean found=false;
@@ -79,7 +79,7 @@ public class ClanAssign extends BaseClanner
 						mob.tell(getScr("ClanAssign","notvrole",pos));
 						return false;
 					}
-					qual=Util.capitalizeAndLower(qual);
+					qual=CMStrings.capitalizeAndLower(qual);
 					for(int q=0;q<apps.size();q++)
 					{
 						if(((String)apps.elementAt(q,1)).equalsIgnoreCase(qual))
@@ -152,8 +152,8 @@ public class ClanAssign extends BaseClanner
 							M.setClanRole(newPos);
 							C.updateClanPrivileges(M);
 							CMLib.database().DBUpdateClanMembership(M.Name(), C.clanID(), newPos);
-							mob.tell(getScr("ClanAssign","assigned",M.Name(),C.typeName(),C.clanID(),Util.startWithAorAn(CMLib.clans().getRoleName(C.getGovernment(),newPos,false,false))));
-							M.tell(getScr("ClanAssign","youassigned",Util.startWithAorAn(CMLib.clans().getRoleName(C.getGovernment(),newPos,false,false)),C.typeName(),C.clanID()));
+							mob.tell(getScr("ClanAssign","assigned",M.Name(),C.typeName(),C.clanID(),CMStrings.startWithAorAn(CMLib.clans().getRoleName(C.getGovernment(),newPos,false,false))));
+							M.tell(getScr("ClanAssign","youassigned",CMStrings.startWithAorAn(CMLib.clans().getRoleName(C.getGovernment(),newPos,false,false)),C.typeName(),C.clanID()));
 							return false;
 						}
 					}

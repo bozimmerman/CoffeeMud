@@ -48,8 +48,8 @@ public class Prop_NarrowLedge extends Property
 	{
         mobsToKill=new Vector();
 		super.setMiscText(newText);
-		check=Util.getParmInt(newText,"check",16);
-		name=Util.getParmStr(newText,"name","the narrow ledge");
+		check=CMParms.getParmInt(newText,"check",16);
+		name=CMParms.getParmStr(newText,"name","the narrow ledge");
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

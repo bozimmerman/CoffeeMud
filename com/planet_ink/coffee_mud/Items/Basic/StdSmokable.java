@@ -266,7 +266,7 @@ public class StdSmokable extends StdContainer implements Light
 		&&(msg.source()!=null))
 		{
 			msg.source().recoverEnvStats();
-			if(!Util.bset(msg.sourceCode(),CMMsg.MASK_OPTIMIZE))
+			if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_OPTIMIZE))
 			{
 				if(msg.source().location()!=null)
 					msg.source().location().recoverRoomStats();
@@ -285,7 +285,7 @@ public class StdSmokable extends StdContainer implements Light
 			case CMMsg.TYP_REMOVE:
 				if(msg.source()!=null)
 				{
-					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+					if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					{
 						msg.source().recoverEnvStats();
 						if(msg.source().location()!=null)

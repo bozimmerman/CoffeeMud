@@ -47,8 +47,8 @@ public class Emoter extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		expires=Util.getParmInt(parms,"expires",0);
-	    inroom=Util.getParmStr(parms,"inroom","").toUpperCase();
+		expires=CMParms.getParmInt(parms,"expires",0);
+	    inroom=CMParms.getParmStr(parms,"inroom","").toUpperCase();
 		emotes=null;
 	}
 
@@ -118,7 +118,7 @@ public class Emoter extends ActiveTicker
 		if(x>0)
 		{
 			String oldParms=newParms.substring(0,x);
-			setEmoteTypes(Util.parse(oldParms),false);
+			setEmoteTypes(CMParms.parse(oldParms),false);
 			newParms=newParms.substring(x+1);
 		}
 		int defaultType=emoteType;
@@ -137,11 +137,11 @@ public class Emoter extends ActiveTicker
 			}
 			if(thisEmote.trim().length()>0)
 			{
-				Vector V=Util.parse(thisEmote);
+				Vector V=CMParms.parse(thisEmote);
 				emoteType=defaultType;
 				broadcast=defaultBroadcast;
 				setEmoteTypes(V,true);
-				thisEmote=Util.combine(V,0);
+				thisEmote=CMParms.combine(V,0);
 				if(thisEmote.length()>0)
 				{
 					thisEmoteV.addElement(new Integer(emoteType));
@@ -221,7 +221,7 @@ public class Emoter extends ActiveTicker
             if(S==null) S=CMLib.socials().FetchSocial(str,false);
             if(S!=null) 
             {
-                S.invoke(emoter,Util.parse(str),emoteTo,false);
+                S.invoke(emoter,CMParms.parse(str),emoteTo,false);
                 return;
             }
         }

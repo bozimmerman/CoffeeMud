@@ -92,7 +92,7 @@ public class GenCoins extends GenItem implements Coins
 	    denomination=valuePerCoin; 
 	    setDynamicMaterial();
 	}
-	public double getTotalValue(){return Util.mul(getDenomination(),getNumberOfCoins());}
+	public double getTotalValue(){return CMath.mul(getDenomination(),getNumberOfCoins());}
 	public String getCurrency(){return currency;}
 	public void setCurrency(String named){currency=named; setDynamicMaterial();}
 
@@ -182,9 +182,9 @@ public class GenCoins extends GenItem implements Coins
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setNumberOfCoins(Util.s_int(val)); break;
+		case 0: setNumberOfCoins(CMath.s_int(val)); break;
 		case 1: setCurrency(val); break;
-		case 2: setDenomination(Util.s_double(val)); break;
+		case 2: setDenomination(CMath.s_double(val)); break;
 		}
 	}
 	protected int getCodeNum(String code){

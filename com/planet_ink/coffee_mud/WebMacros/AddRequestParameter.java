@@ -49,10 +49,10 @@ public class AddRequestParameter extends StdWebMacro
 				String val=(String)parms.get(key);
 				if(val==null) val="";
 				if((val.equals("++")&&(httpReq.isRequestParameter(key))))
-					val=""+(Util.s_int(httpReq.getRequestParameter(key))+1);
+					val=""+(CMath.s_int(httpReq.getRequestParameter(key))+1);
 				else
 				if((val.equals("--")&&(httpReq.isRequestParameter(key))))
-					val=""+(Util.s_int(httpReq.getRequestParameter(key))-1);
+					val=""+(CMath.s_int(httpReq.getRequestParameter(key))-1);
 			
 				httpReq.addRequestParameters(key,val);
 			}

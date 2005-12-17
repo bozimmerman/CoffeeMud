@@ -142,7 +142,7 @@ public class Ranger_Track extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		String mobName=Util.combine(commands,0);
+		String mobName=CMParms.combine(commands,0);
 		if(mobName.length()==0)
 		{
 			mob.tell("Track whom?");

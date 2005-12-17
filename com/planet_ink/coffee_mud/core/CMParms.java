@@ -19,6 +19,8 @@ import java.util.*;
 public class CMParms
 {
     private CMParms(){super();}
+    private static CMParms inst=new CMParms();
+    public static CMParms instance(){return inst;}
 
     public static String combine(Vector commands, int startAt, int endAt)
     {

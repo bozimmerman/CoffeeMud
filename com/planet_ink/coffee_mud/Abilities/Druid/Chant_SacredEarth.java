@@ -60,7 +60,7 @@ public class Chant_SacredEarth extends Chant
 			return false;
 
 		if((msg.tool() instanceof Ability)
-		&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_GATHERING)))
+		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_GATHERING)))
 		{
 			msg.source().tell("The sacred earth will not allow you to violate it.");
 			return false;
@@ -71,7 +71,7 @@ public class Chant_SacredEarth extends Chant
 		&&((((MOB)msg.target()).charStats().getMyRace().racialCategory().equals("Vegetation"))
 		||(((MOB)msg.target()).charStats().getMyRace().racialCategory().equals("Earth Elemental"))))
 		{
-			int recovery=(int)Math.round(Util.div((msg.value()),2.0));
+			int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
 			msg.setValue(msg.value()-recovery);
 		}
 		return true;

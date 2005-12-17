@@ -65,7 +65,7 @@ public class Activate extends BaseItemParser
 		if(item==null)
 			mob.tell(getScr("Activate","actcant",E.name())+"'.");
 
-		String rest=Util.combine(commands,0);
+		String rest=CMParms.combine(commands,0);
 		CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_ACTIVATE,null,CMMsg.MSG_ACTIVATE,rest,CMMsg.MSG_ACTIVATE,null);
 		if(mob.location().okMessage(mob,newMsg))
 			mob.location().send(mob,newMsg);

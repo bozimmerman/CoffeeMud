@@ -269,7 +269,7 @@ public class BribeGateGuard extends StdBehavior
 			      while ( (x < text.length()) && (Character.isDigit(text.charAt(x)))) {
 			        x++;
 			      }
-			      return Util.s_int(text.substring(0, x));
+			      return CMath.s_int(text.substring(0, x));
 			    }
 			  }
 			  x = -1;
@@ -483,9 +483,9 @@ public class BribeGateGuard extends StdBehavior
 		                            "I'm telling you this from execute", true, false);
 		    try {
 		      if (dir >= 0)
-		        observer.doCommand(Util.parse("OPEN " +
+		        observer.doCommand(CMParms.parse("OPEN " +
 		                                          Directions.getDirectionName(dir)));
-		      observer.doCommand(Util.parse("BOW " + source.Name()));
+		      observer.doCommand(CMParms.parse("BOW " + source.Name()));
 		    }
 		    catch (Exception e1) {}
 		  }
@@ -496,9 +496,9 @@ public class BribeGateGuard extends StdBehavior
 		    toldAlready.put(source.Name(),new Boolean(false));
 		    try {
 		      if (dir >= 0)
-		        observer.doCommand(Util.parse("OPEN " +
+		        observer.doCommand(CMParms.parse("OPEN " +
 		                                          Directions.getDirectionName(dir)));
-		      observer.doCommand(Util.parse("BOW " + source.Name()));
+		      observer.doCommand(CMParms.parse("BOW " + source.Name()));
 		    }
 		    catch (Exception e1) {}
 		  }
@@ -551,7 +551,7 @@ public class BribeGateGuard extends StdBehavior
 		      }
 		      toldAlready.put(M.Name(), new Boolean(true));
 		    if (dir >= 0)
-				mob.doCommand(Util.parse("OPEN " +
+				mob.doCommand(CMParms.parse("OPEN " +
 				                Directions.
 				                getDirectionName(dir)));
 		    }
@@ -598,7 +598,7 @@ public class BribeGateGuard extends StdBehavior
 		if (tickTock > 2) {
 		  tickTock = 0;
 		  if ( (e.isOpen()) && (paidPlayers.isEmpty())) {
-		      mob.doCommand(Util.parse("CLOSE " +
+		      mob.doCommand(CMParms.parse("CLOSE " +
 		                                        Directions.getDirectionName(dir)));
 		  }
 		}

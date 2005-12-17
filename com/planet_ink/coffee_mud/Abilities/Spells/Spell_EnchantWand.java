@@ -62,7 +62,7 @@ public class Spell_EnchantWand extends Spell
 		commands.removeElementAt(commands.size()-1);
 		Wand wand=(Wand)target;
 
-		String spellName=Util.combine(commands,0).trim();
+		String spellName=CMParms.combine(commands,0).trim();
 		Spell wandThis=null;
 		for(int a=0;a<mob.numAbilities();a++)
 		{

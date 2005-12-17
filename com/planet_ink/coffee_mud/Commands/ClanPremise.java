@@ -62,7 +62,7 @@ public class ClanPremise extends BaseClanner
 				{
 					String premise="";
 					if((skipChecks)&&(commands.size()>1))
-						premise=Util.combine(commands,1);
+						premise=CMParms.combine(commands,1);
 					else
 					if(mob.session()!=null)
 						premise=mob.session().prompt("Describe your "+C.typeName()+"'s Premise\n\r: ","");

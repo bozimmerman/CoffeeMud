@@ -125,10 +125,10 @@ public class Get extends BaseItemParser
 
 		int maxToGet=Integer.MAX_VALUE;
 		if((commands.size()>1)
-		&&(Util.s_int((String)commands.firstElement())>0)
-		&&(CMLib.english().numPossibleGold(null,Util.combine(commands,0))==0))
+		&&(CMath.s_int((String)commands.firstElement())>0)
+		&&(CMLib.english().numPossibleGold(null,CMParms.combine(commands,0))==0))
 		{
-			maxToGet=Util.s_int((String)commands.firstElement());
+			maxToGet=CMath.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
 			if(containers.size()==0)
 			{
@@ -138,7 +138,7 @@ public class Get extends BaseItemParser
 				    {	fromDex=i; break;}
 				if(fromDex>0)
 				{
-				    String fromWhatName=Util.combine(commands,fromDex+1);
+				    String fromWhatName=CMParms.combine(commands,fromDex+1);
 				    while(commands.size()>fromDex)
 				        commands.removeElementAt(fromDex);
 				    Environmental fromWhat=mob.location().fetchFromMOBRoomFavorsItems(mob,null,fromWhatName,Item.WORN_REQ_UNWORNONLY);
@@ -168,7 +168,7 @@ public class Get extends BaseItemParser
 			}
 		}
 
-		String whatToGet=Util.combine(commands,0);
+		String whatToGet=CMParms.combine(commands,0);
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
 		if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}

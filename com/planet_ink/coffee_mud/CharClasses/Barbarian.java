@@ -182,7 +182,7 @@ public class Barbarian extends StdCharClass
 		}
 		else
 		if((msg.amITarget(myChar))
-		   &&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		   &&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		   &&(msg.tool()!=null)
 		   &&(msg.tool() instanceof Ability)
 		   &&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ENCHANTMENT))

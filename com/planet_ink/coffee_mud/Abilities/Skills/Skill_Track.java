@@ -216,9 +216,9 @@ public class Skill_Track extends StdSkill
 	    boolean allowWater=true;
 	    if((commands.size()>1)
 	    &&(((String)commands.lastElement()).toUpperCase().startsWith("RADIUS="))
-	    &&(Util.isInteger(((String)commands.lastElement()).substring(7))))
+	    &&(CMath.isInteger(((String)commands.lastElement()).substring(7))))
 	    {
-	        radius=Util.s_int(((String)commands.lastElement()).substring(7));
+	        radius=CMath.s_int(((String)commands.lastElement()).substring(7));
 	        commands.removeElementAt(commands.size()-1);
 	    }
 	    if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("LANDONLY")))
@@ -238,7 +238,7 @@ public class Skill_Track extends StdSkill
 	        commands.removeElementAt(commands.size()-1);
 	    }
 	    
-		String mobName=Util.combine(commands,0);
+		String mobName=CMParms.combine(commands,0);
 		if((givenTarget==null)&&(mobName.length()==0))
 		{
 			mob.tell("Track whom?");

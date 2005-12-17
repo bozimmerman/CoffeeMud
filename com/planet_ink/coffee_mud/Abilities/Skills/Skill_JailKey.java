@@ -49,7 +49,7 @@ public class Skill_JailKey extends StdSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		String whatTounlock=Util.combine(commands,0);
+		String whatTounlock=CMParms.combine(commands,0);
 		Exit unlockThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
 		if((dirCode>=0)&&(mob.location()!=null))
@@ -66,7 +66,7 @@ public class Skill_JailKey extends StdSkill
 				if(B==null) 
 				    unlockThis=null;
 				else
-				if(!B.isJailRoom(legalA,Util.makeVector(mob.location())));
+				if(!B.isJailRoom(legalA,CMParms.makeVector(mob.location())));
 				    unlockThis=null;
 			}
 		}

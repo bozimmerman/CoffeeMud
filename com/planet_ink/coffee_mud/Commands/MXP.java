@@ -43,7 +43,7 @@ public class MXP extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			if((!Util.bset(mob.getBitmap(),MOB.ATT_MXP))
+			if((!CMath.bset(mob.getBitmap(),MOB.ATT_MXP))
             ||(!mob.session().clientTelnetMode(Session.TELNET_MXP)))
 			{
                 mob.session().changeTelnetMode(Session.TELNET_MXP,true);
@@ -53,7 +53,7 @@ public class MXP extends StdCommand
                 }
                 if(mob.session().serverTelnetMode(Session.TELNET_MXP))
                 {
-					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_MXP));
+					mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_MXP));
 					StringBuffer mxpText=Resources.getFileResource("text/mxp.txt",true);
 			        if(mxpText!=null)
 			            mob.session().rawPrintln("\033[6z\n\r"+mxpText.toString()+"\n\r");

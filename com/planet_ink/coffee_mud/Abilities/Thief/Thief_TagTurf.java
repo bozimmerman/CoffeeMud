@@ -93,7 +93,7 @@ public class Thief_TagTurf extends ThiefSkill
 		if(A!=null)
 		{
             if((A.text().equals(mob.Name())||((mob.getClanID().length()>0)&&(mob.getClanID().equals(A.text()))))
-            &&(Util.combine(commands,0).equalsIgnoreCase("UNTAG")))
+            &&(CMParms.combine(commands,0).equalsIgnoreCase("UNTAG")))
             {
                 A.unInvoke();
                 target.delEffect(A);

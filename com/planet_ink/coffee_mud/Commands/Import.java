@@ -319,9 +319,9 @@ public class Import extends StdCommand
 		{
 			for(int s1=0;s1<colors.length;s1++)
 				if(areaName.indexOf(colors[s1][0])>=0)
-					areaName=Util.replaceAll(areaName,colors[s1][0],colors[s1][1]);
+					areaName=CMStrings.replaceAll(areaName,colors[s1][0],colors[s1][1]);
 		}
-		return Util.removeColors(CMLib.coffeeFilter().safetyFilter(areaName));
+		return CMStrings.removeColors(CMLib.coffeeFilter().safetyFilter(areaName));
 	}
 	
 	private static String getAreaAuthor(Vector V)
@@ -354,8 +354,8 @@ public class Import extends StdCommand
 				s=s.substring(5).trim();
 				if(s.endsWith("~"))
 					s=s.substring(0,s.length()-1).trim();
-				if(Util.parse(s).size()>0)
-					s=(String)Util.parse(s).lastElement();
+				if(CMParms.parse(s).size()>0)
+					s=(String)CMParms.parse(s).lastElement();
 				if((s.length()==0)||(s.toUpperCase().equalsIgnoreCase("NONE")))
 					continue;
 				return s;
@@ -374,8 +374,8 @@ public class Import extends StdCommand
 					x=s.indexOf(" ");
 					if((x>1)
 					&&(s.substring(0,x).trim().toUpperCase().equals("THE"))
-					&&(Util.parse(s).size()>0))
-						s=(String)Util.parse(s).lastElement();
+					&&(CMParms.parse(s).size()>0))
+						s=(String)CMParms.parse(s).lastElement();
 					else
 					if(x>1) 
 						s=s.substring(0,x).trim();
@@ -406,10 +406,10 @@ public class Import extends StdCommand
 					if(x>0) s=s.substring(x+1).trim();
 				}
 				else
-				if((Util.parse(s).size()>2)
-				&&(Util.isNumber((String)Util.parse(s).elementAt(0)))
-				&&(Util.isNumber((String)Util.parse(s).elementAt(1))))
-					s=(String)Util.parse(s).elementAt(2);
+				if((CMParms.parse(s).size()>2)
+				&&(CMath.isNumber((String)CMParms.parse(s).elementAt(0)))
+				&&(CMath.isNumber((String)CMParms.parse(s).elementAt(1))))
+					s=(String)CMParms.parse(s).elementAt(2);
 				if(s.endsWith("~"))
 					s=s.substring(0,s.length()-1).trim();
 				int x=s.indexOf(" ");
@@ -428,8 +428,8 @@ public class Import extends StdCommand
 				x=s.indexOf(" ");
 				if((x>1)
 				&&(s.substring(0,x).trim().toUpperCase().equals("THE"))
-				&&(Util.parse(s).size()>0))
-					s=(String)Util.parse(s).lastElement();
+				&&(CMParms.parse(s).size()>0))
+					s=(String)CMParms.parse(s).lastElement();
 				else
 				if(x>1) 
 					s=s.substring(0,x).trim();
@@ -447,8 +447,8 @@ public class Import extends StdCommand
 				x=s.indexOf(" ");
 				if((x>1)
 				&&(s.substring(0,x).trim().toUpperCase().equals("THE"))
-				&&(Util.parse(s).size()>0))
-					s=(String)Util.parse(s).lastElement();
+				&&(CMParms.parse(s).size()>0))
+					s=(String)CMParms.parse(s).lastElement();
 				else
 				if(x>1) 
 					s=s.substring(0,x).trim();
@@ -608,11 +608,11 @@ public class Import extends StdCommand
 
 	private static int getBitMask(String str, int which)
 	{
-		String s=Util.getCleanBit(str,which);
+		String s=CMParms.getCleanBit(str,which);
 		if(s.length()==0)
 			return 0;
 		int x=s.indexOf("|");
-		if((x<0)&&(s.length()>0)&&(Util.s_int(s)==0))
+		if((x<0)&&(s.length()>0)&&(CMath.s_int(s)==0))
 		{
 			boolean otherStyle=true;
 			int num=0;
@@ -636,12 +636,12 @@ public class Import extends StdCommand
 		int num=0;
 		while(x>0)
 		{
-			num=num|Util.s_int(s.substring(0,x));
+			num=num|CMath.s_int(s.substring(0,x));
 			s=s.substring(x+1);
 			x=s.indexOf("|");
 		}
 
-		return (num|Util.s_int(s));
+		return (num|CMath.s_int(s));
 	}
 
 	private static String trimSpacesOnly(String s)
@@ -673,7 +673,7 @@ public class Import extends StdCommand
 		if(s.endsWith("~"))
 			s=s.substring(0,s.length()-1);
 
-		if(s.indexOf("^")>=0)	s=Util.replaceAll(s,"^","^^");
+		if(s.indexOf("^")>=0)	s=CMStrings.replaceAll(s,"^","^^");
 
 		if((s.indexOf(""+((char)27))>=0)
 		||(s.indexOf("&")>=0)
@@ -683,7 +683,7 @@ public class Import extends StdCommand
 		{
 			for(int s1=0;s1<colors.length;s1++)
 				if(s.indexOf(colors[s1][0])>=0)
-					s=Util.replaceAll(s,colors[s1][0],colors[s1][1]);
+					s=CMStrings.replaceAll(s,colors[s1][0],colors[s1][1]);
 		}
 
 		int x=s.indexOf("@eng");
@@ -1443,7 +1443,7 @@ public class Import extends StdCommand
 			default:
 				return 0;
 			}
-		return Util.s_int(str.toString());
+		return CMath.s_int(str.toString());
 	}
 
 	private static void readBlocks(Vector buf,
@@ -1615,11 +1615,11 @@ public class Import extends StdCommand
 		if(str1.startsWith("'")) str1=str1.substring(1);
 		for(int wt=0;wt<weaponTypes.length;wt++)
 			if(str1.startsWith(weaponTypes[wt][0]))
-			{ val1=Util.s_int(weaponTypes[wt][1]); break;}
+			{ val1=CMath.s_int(weaponTypes[wt][1]); break;}
 		if(val1==0)
 			for(int wt=0;wt<weaponTypes.length;wt++)
 				if(name.toLowerCase().indexOf(weaponTypes[wt][0])>=0)
-				{ val1=Util.s_int(weaponTypes[wt][1]); break;}
+				{ val1=CMath.s_int(weaponTypes[wt][1]); break;}
 		if((name.toUpperCase().endsWith("HAMMER"))&&(val1==4))
 			val1=11;
 		switch(val1)
@@ -1751,7 +1751,7 @@ public class Import extends StdCommand
 	{
 		int i=str.indexOf("d");
 		if(i<0) return 11;
-		int roll=Util.s_int(str.substring(0,i).trim());
+		int roll=CMath.s_int(str.substring(0,i).trim());
 		str=str.substring(i+1).trim();
 
 		i=str.indexOf("+");
@@ -1761,17 +1761,17 @@ public class Import extends StdCommand
 		{
 			i=str.indexOf("-");
 			if(i<0)
-				dice=Util.s_int(str.trim());
+				dice=CMath.s_int(str.trim());
 			else
 			{
-				dice=Util.s_int(str.substring(0,i).trim());
-				plus=Util.s_int(str.substring(i));
+				dice=CMath.s_int(str.substring(0,i).trim());
+				plus=CMath.s_int(str.substring(i));
 			}
 		}
 		else
 		{
-			dice=Util.s_int(str.substring(0,i).trim());
-			plus=Util.s_int(str.substring(i+1));
+			dice=CMath.s_int(str.substring(0,i).trim());
+			plus=CMath.s_int(str.substring(i+1));
 		}
 		return (roll*dice)+plus;
 	}
@@ -1860,10 +1860,10 @@ public class Import extends StdCommand
 
 			if((!mobID.startsWith("#"))
 			||((mobName.length()==0)
-			&&((Util.numBits(codeStr1)<3)
-			||(Util.numBits(codeStr1)>4)
-			||(Util.numBits(codeStr2)<2)
-			||(Util.numBits(codeStr3)<2))))
+			&&((CMParms.numBits(codeStr1)<3)
+			||(CMParms.numBits(codeStr1)>4)
+			||(CMParms.numBits(codeStr2)<2)
+			||(CMParms.numBits(codeStr3)<2))))
 			{
 				returnAnError(mob,"Malformed mob! Aborting this mob "+mobID+", display="+mobDisplay+", simple="+simpleName+", name="+mobName+", codeStr1="+codeStr1+", codeStr2="+codeStr2+", codeStr3="+codeStr3+"!");
 				continue;
@@ -1872,10 +1872,10 @@ public class Import extends StdCommand
 				mobName="Unknown";
 			int actFlag=getBitMask(codeStr1,0);
 			int affFlag=getBitMask(codeStr1,1);
-			int aliFlag=Util.s_int(Util.getBit(codeStr1,2));
+			int aliFlag=CMath.s_int(CMParms.getBit(codeStr1,2));
 			MOB M=CMClass.getMOB("GenMob");
 			String checkName=mobName.trim().toUpperCase();
-			if(Util.isSet(actFlag,14)
+			if(CMath.isSet(actFlag,14)
 			||(checkName.indexOf("GHOUL")>=0)
 			||(checkName.indexOf("GHAST")>=0)
 			||(checkName.indexOf("SKELETON")>=0)
@@ -1895,10 +1895,10 @@ public class Import extends StdCommand
 				if(("#"+s).startsWith(OfThisID+" ")||("#"+s).startsWith(OfThisID+"\t")||("#"+s).startsWith(OfThisID+"	"))
 				{
 					M=CMClass.getMOB("GenShopkeeper");
-					int i1=Util.s_int(Util.getBit(s,1));
-					int i2=Util.s_int(Util.getBit(s,2));
-					int i3=Util.s_int(Util.getBit(s,3));
-					//int i4=Util.s_int(Util.getBit(s,4));
+					int i1=CMath.s_int(CMParms.getBit(s,1));
+					int i2=CMath.s_int(CMParms.getBit(s,2));
+					int i3=CMath.s_int(CMParms.getBit(s,3));
+					//int i4=CMath.s_int(CMParms.getBit(s,4));
 					int whatIsell=ShopKeeper.DEAL_INVENTORYONLY;
 					if((i1>4)&&(i1<8)&&(i2>4)&&(i2<8)&&(i3>4)&&(i3<8))
 						whatIsell=ShopKeeper.DEAL_WEAPONS;
@@ -1924,44 +1924,44 @@ public class Import extends StdCommand
 			M.setDisplayText(mobDisplay);
 			if(!mobDescription.trim().equalsIgnoreCase("OLDSTYLE"))
 				M.setDescription(mobDescription);
-			aliFlag=(int)Math.round(Util.div(aliFlag,2));
+			aliFlag=(int)Math.round(CMath.div(aliFlag,2));
 			CMLib.factions().setAlignmentOldRange(M,500+aliFlag);
 			M.setStartRoom(putInRoom);
 			M.setLocation(putInRoom);
 			M.baseCharStats().setMyRace(R);
 
 			Behavior behavior=CMClass.getBehavior("Mobile");
-			if(Util.isSet(actFlag,5))
+			if(CMath.isSet(actFlag,5))
 				behavior=CMClass.getBehavior("MobileAggressive");
-			//if(!Util.isSet(actFlag,6))
+			//if(!CMath.isSet(actFlag,6))
 			//	behavior.setParms("WANDER");
-			if(!Util.isSet(actFlag,1))
+			if(!CMath.isSet(actFlag,1))
 				M.addBehavior(behavior);
-			if(Util.isSet(actFlag,2))
+			if(CMath.isSet(actFlag,2))
 				M.addBehavior(CMClass.getBehavior("Scavenger"));
-			if(Util.isSet(actFlag,4))
+			if(CMath.isSet(actFlag,4))
 				M.addNonUninvokableEffect(CMClass.getAbility("Prop_Invisibility"));
-			if(Util.isSet(actFlag,5)&&Util.isSet(actFlag,1))
+			if(CMath.isSet(actFlag,5)&&CMath.isSet(actFlag,1))
 				M.addBehavior(CMClass.getBehavior("Aggressive"));
 			M.setWimpHitPoint(0);
-			if(Util.isSet(actFlag,7)) // this needs to be adjusted further down!
+			if(CMath.isSet(actFlag,7)) // this needs to be adjusted further down!
 				M.setWimpHitPoint(2);
-			//if(Util.isSet(actFlag,8)) // not really supported properly
+			//if(CMath.isSet(actFlag,8)) // not really supported properly
 			//	M.addNonUninvokableEffect(CMClass.getAbility("Prop_SafePet"));
 
-			if(Util.isSet(actFlag,9))
+			if(CMath.isSet(actFlag,9))
 				M.addNonUninvokableEffect(CMClass.getAbility("Prop_StatTrainer"));
-			if(Util.isSet(actFlag,10))
+			if(CMath.isSet(actFlag,10))
 				M.addBehavior(CMClass.getBehavior("MOBTeacher"));
 
-			if(Util.isSet(actFlag,11))
+			if(CMath.isSet(actFlag,11))
 				M.addBehavior(CMClass.getBehavior("Fighterness"));
-			if(Util.isSet(actFlag,12))
+			if(CMath.isSet(actFlag,12))
 				M.addBehavior(CMClass.getBehavior("Mageness"));
-			if(Util.isSet(actFlag,13))
+			if(CMath.isSet(actFlag,13))
 				M.addBehavior(CMClass.getBehavior("Mageness"));
 
-			if(Util.isSet(actFlag,14))
+			if(CMath.isSet(actFlag,14))
 			{
 				R=M.baseCharStats().getMyRace();
 				if(R.ID().equals("Human")||R.ID().equals("StdRace"))
@@ -1971,35 +1971,35 @@ public class Import extends StdCommand
 				}
 			}
 
-			if(Util.isSet(actFlag,16))
+			if(CMath.isSet(actFlag,16))
 				M.addBehavior(CMClass.getBehavior("Clericness"));
-			if(Util.isSet(actFlag,17))
+			if(CMath.isSet(actFlag,17))
 				M.addBehavior(CMClass.getBehavior("Mageness"));
-			if(Util.isSet(actFlag,18))
+			if(CMath.isSet(actFlag,18))
 				M.addBehavior(CMClass.getBehavior("Thiefness"));
-			if(Util.isSet(actFlag,19))
+			if(CMath.isSet(actFlag,19))
 				M.addBehavior(CMClass.getBehavior("Fighterness"));
-			if(Util.isSet(actFlag,26))
+			if(CMath.isSet(actFlag,26))
 				M.addBehavior(CMClass.getBehavior("Healer"));
-			if(Util.isSet(actFlag,27))
+			if(CMath.isSet(actFlag,27))
 				M.addBehavior(CMClass.getBehavior("MOBTeacher"));
 
-			if(Util.isSet(affFlag,0))
+			if(CMath.isSet(affFlag,0))
 				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_NOT_SEE);
-			if(Util.isSet(affFlag,1))
+			if(CMath.isSet(affFlag,1))
 				M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|EnvStats.IS_INVISIBLE);
-			if(Util.isSet(affFlag,2))
+			if(CMath.isSet(affFlag,2))
 				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_EVIL);
-			if(Util.isSet(affFlag,3))
+			if(CMath.isSet(affFlag,3))
 				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_INVISIBLE);
-			if(Util.isSet(affFlag,4))
+			if(CMath.isSet(affFlag,4))
 				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_BONUS);
-			if(Util.isSet(affFlag,5))
+			if(CMath.isSet(affFlag,5))
 			{
 				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_HIDDEN);
 				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_SNEAKERS);
 			}
-			if(Util.isSet(affFlag,6))
+			if(CMath.isSet(affFlag,6))
 			{
 				if(CMLib.flags().isEvil(M))
 				   M.addNonUninvokableEffect(CMClass.getAbility("Prayer_UnholyWord"));
@@ -2008,16 +2008,16 @@ public class Import extends StdCommand
 				M.addNonUninvokableEffect(CMClass.getAbility("Prayer_Sanctuary"));
 			}
 			else
-			if(Util.isSet(affFlag,7))
+			if(CMath.isSet(affFlag,7))
 				M.addNonUninvokableEffect(CMClass.getAbility("Prayer_Sanctuary"));
 
-			if(Util.isSet(affFlag,8))
+			if(CMath.isSet(affFlag,8))
 				M.addNonUninvokableEffect(CMClass.getAbility("Spell_FaerieFire"));
-			if(Util.isSet(affFlag,9))
+			if(CMath.isSet(affFlag,9))
 				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_INFRARED);
-			if(Util.isSet(affFlag,10))
+			if(CMath.isSet(affFlag,10))
 				M.addNonUninvokableEffect(CMClass.getAbility("Prayer_Curse"));
-			if(Util.isSet(affFlag,11))
+			if(CMath.isSet(affFlag,11))
 			{
 				for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 				{
@@ -2027,59 +2027,59 @@ public class Import extends StdCommand
 				}
 			}
 
-			//if(Util.isSet(affFlag,12)) really dumb
+			//if(CMath.isSet(affFlag,12)) really dumb
 			//  M.addNonUninvokableEffect(new Poison());
 
-			if(Util.isSet(affFlag,13))
+			if(CMath.isSet(affFlag,13))
 				M.addNonUninvokableEffect(CMClass.getAbility("Prayer_ProtEvil"));
 
-			if(Util.isSet(affFlag,14))
+			if(CMath.isSet(affFlag,14))
 				M.addNonUninvokableEffect(CMClass.getAbility("Prayer_ProtGood"));
 
-			if(Util.isSet(affFlag,15))
+			if(CMath.isSet(affFlag,15))
 			{
 				Ability A=(Ability)CMClass.getAbility("Thief_Sneak").copyOf();
 				A.setProfficiency(100);
 				M.addAbility(A);
 			}
 
-			if(Util.isSet(affFlag,16))
+			if(CMath.isSet(affFlag,16))
 				M.addNonUninvokableEffect(CMClass.getAbility("Prop_Hidden"));
 
-			if(Util.isSet(affFlag,17))
+			if(CMath.isSet(affFlag,17))
 				M.addNonUninvokableEffect(CMClass.getAbility("Spell_Sleep"));
 
-			if(Util.isSet(affFlag,18))
+			if(CMath.isSet(affFlag,18))
 				M.addNonUninvokableEffect(CMClass.getAbility("Spell_Charm"));
 
-			if(Util.isSet(affFlag,20))
+			if(CMath.isSet(affFlag,20))
 				M.addNonUninvokableEffect(CMClass.getAbility("Spell_PassDoor"));
 
-			if(Util.isSet(affFlag,21))
+			if(CMath.isSet(affFlag,21))
 				M.addNonUninvokableEffect(CMClass.getAbility("Spell_Haste"));
 
-			//if(Util.isSet(affFlag,22)) no effect anyway
+			//if(CMath.isSet(affFlag,22)) no effect anyway
 			//	M.addNonUninvokableEffect(new Prayer_Calm());
 
-			if(Util.isSet(affFlag,23))
+			if(CMath.isSet(affFlag,23))
 				M.addNonUninvokableEffect(CMClass.getAbility("Prayer_Plague"));
 
-			if(Util.isSet(affFlag,24))
+			if(CMath.isSet(affFlag,24))
 				M.addNonUninvokableEffect(CMClass.getAbility("Spell_Weaken"));
 
-			if(Util.isSet(affFlag,25))
+			if(CMath.isSet(affFlag,25))
 				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
 
-			if(Util.isSet(affFlag,26))
+			if(CMath.isSet(affFlag,26))
 				M.addNonUninvokableEffect(CMClass.getAbility("Fighter_Berzerk"));
 
-			if(Util.isSet(affFlag,27))
+			if(CMath.isSet(affFlag,27))
 				M.addAbility(CMClass.getAbility("Skill_Swim"));
 
-			if(Util.isSet(affFlag,28))
+			if(CMath.isSet(affFlag,28))
 				M.addNonUninvokableEffect(CMClass.getAbility("Regeneration"));
 
-			if(Util.isSet(affFlag,29))
+			if(CMath.isSet(affFlag,29))
 			{
 				M.addNonUninvokableEffect(CMClass.getAbility("Regeneration"));
 				M.addNonUninvokableEffect(CMClass.getAbility("Spell_Slow"));
@@ -2088,54 +2088,54 @@ public class Import extends StdCommand
 			// start ROM type
 			int positionCode=8;
 			int sexCode=1;
-			if(Util.numBits(codeStr2)>=4)
+			if(CMParms.numBits(codeStr2)>=4)
 			{
-				M.baseEnvStats().setLevel(Util.s_int(Util.getCleanBit(codeStr2,0)));
+				M.baseEnvStats().setLevel(CMath.s_int(CMParms.getCleanBit(codeStr2,0)));
 				if(M.baseEnvStats().level()==0)
 					M.baseEnvStats().setLevel(1);
 				int baseHP=11;
 				if(circleFormat)
-					baseHP=getDRoll(Util.getCleanBit(codeStr2,2));
+					baseHP=getDRoll(CMParms.getCleanBit(codeStr2,2));
 				else
-					baseHP=getDRoll(Util.getCleanBit(codeStr2,3));
+					baseHP=getDRoll(CMParms.getCleanBit(codeStr2,3));
 				baseHP=baseHP-10;
-				baseHP=baseHP-((int)Math.round(Util.mul(M.baseEnvStats().level()*M.baseEnvStats().level(),0.85)));
+				baseHP=baseHP-((int)Math.round(CMath.mul(M.baseEnvStats().level()*M.baseEnvStats().level(),0.85)));
 				baseHP=baseHP/M.baseEnvStats().level();
 				M.baseEnvStats().setAbility(baseHP);
 
 				if(circleFormat)
 				{
-					if(Util.isNumber(Util.getCleanBit(codeStr4,2)))
-						sexCode=Util.s_int(Util.getCleanBit(codeStr4,2));
+					if(CMath.isNumber(CMParms.getCleanBit(codeStr4,2)))
+						sexCode=CMath.s_int(CMParms.getCleanBit(codeStr4,2));
 					else
-					if(Util.getCleanBit(codeStr4,2).toUpperCase().equals("MALE"))
+					if(CMParms.getCleanBit(codeStr4,2).toUpperCase().equals("MALE"))
 						sexCode=1;
 					else
-					if(Util.getCleanBit(codeStr4,2).toUpperCase().equals("FEMALE"))
+					if(CMParms.getCleanBit(codeStr4,2).toUpperCase().equals("FEMALE"))
 						sexCode=2;
 					else
-					if(Util.getCleanBit(codeStr4,2).toUpperCase().equals("EITHER"))
+					if(CMParms.getCleanBit(codeStr4,2).toUpperCase().equals("EITHER"))
 						sexCode=(CMLib.dice().rollPercentage()>50)?1:2;
 					else
 						sexCode=3;
 
-					if(Util.isNumber(Util.getCleanBit(codeStr4,0)))
-						positionCode=Util.s_int(Util.getCleanBit(codeStr4,2));
+					if(CMath.isNumber(CMParms.getCleanBit(codeStr4,0)))
+						positionCode=CMath.s_int(CMParms.getCleanBit(codeStr4,2));
 					else
-					if(Util.getCleanBit(codeStr4,0).trim().startsWith("STAND"))
+					if(CMParms.getCleanBit(codeStr4,0).trim().startsWith("STAND"))
 						positionCode=8;
 					else
-					if(Util.getCleanBit(codeStr4,0).trim().startsWith("SIT"))
+					if(CMParms.getCleanBit(codeStr4,0).trim().startsWith("SIT"))
 						positionCode=5;
 					else
-					if(Util.getCleanBit(codeStr4,0).trim().startsWith("SLEEP"))
+					if(CMParms.getCleanBit(codeStr4,0).trim().startsWith("SLEEP"))
 						positionCode=1;
 
 				}
 				else
 				{
-					positionCode=Util.s_int(Util.getCleanBit(codeStr4,0));
-					sexCode=Util.s_int(Util.getCleanBit(codeStr4,2));
+					positionCode=CMath.s_int(CMParms.getCleanBit(codeStr4,0));
+					sexCode=CMath.s_int(CMParms.getCleanBit(codeStr4,2));
 				}
 				if(CMLib.dice().rollPercentage()>75)
 					M.addBehavior(CMClass.getBehavior("MudChat"));
@@ -2143,21 +2143,21 @@ public class Import extends StdCommand
 			else
 			{
 				M.baseEnvStats().setAbility(11);
-				int baseLevel=Util.s_int(Util.getCleanBit(codeStr2,0));
+				int baseLevel=CMath.s_int(CMParms.getCleanBit(codeStr2,0));
 				while(baseLevel>25)
-					baseLevel=(int)Math.round(Util.div(baseLevel,2.0));
+					baseLevel=(int)Math.round(CMath.div(baseLevel,2.0));
 			}
 
 			if(M.baseEnvStats().level()==0)
 				M.baseEnvStats().setLevel(1);
 			if(M.getWimpHitPoint()==2)
-				M.setWimpHitPoint(((int)Math.round(Util.div(M.baseEnvStats().level()*(11+M.baseEnvStats().ability()),8.0)))+1);
+				M.setWimpHitPoint(((int)Math.round(CMath.div(M.baseEnvStats().level()*(11+M.baseEnvStats().ability()),8.0)))+1);
 
 			M.baseEnvStats().setArmor(CMClass.getCharClass("StdCharClass").getLevelArmor(M));
 			M.baseEnvStats().setAttackAdjustment(CMClass.getCharClass("StdCharClass").getLevelAttack(M));
 			M.baseEnvStats().setDamage(CMClass.getCharClass("StdCharClass").getLevelDamage(M));
 			if(circleFormat)
-				M.setMoney(Util.s_int(Util.getCleanBit(codeStr4,3)));
+				M.setMoney(CMath.s_int(CMParms.getCleanBit(codeStr4,3)));
 			else
 				M.setMoney(CMLib.dice().roll(1,M.baseEnvStats().level(),0)+CMLib.dice().roll(1,10,0));
 			M.baseEnvStats().setWeight(50);
@@ -2190,7 +2190,7 @@ public class Import extends StdCommand
 				int off=getBitMask(codeStr3,0);
 				int imm=getBitMask(codeStr3,1);
 				int res=getBitMask(codeStr3,2);
-				int size=Util.s_int(Util.getCleanBit(codeStr5,2));
+				int size=CMath.s_int(CMParms.getCleanBit(codeStr5,2));
 				switch(size)
 				{
 				case 0: M.baseEnvStats().setWeight(1); break;
@@ -2203,47 +2203,47 @@ public class Import extends StdCommand
 				// ignore the above, coffeemud does it better!
 				int numAbiles=M.numLearnedAbilities();
 				M.baseCharStats().getMyRace().startRacing(M,false);
-				//if(Util.isSet(off,0)) // no area killers in coffeemud
-				//if(Util.isSet(off,1)) // no circling in coffeemud
+				//if(CMath.isSet(off,0)) // no area killers in coffeemud
+				//if(CMath.isSet(off,1)) // no circling in coffeemud
 
-				if(Util.isSet(off,2)) // bash them off their feet?
+				if(CMath.isSet(off,2)) // bash them off their feet?
 					M.addAbility(CMClass.getAbility("Skill_Trip"));
-				if(Util.isSet(off,3))
+				if(CMath.isSet(off,3))
 					M.addAbility(CMClass.getAbility("Fighter_Berzerk"));
-				if(Util.isSet(off,4))
+				if(CMath.isSet(off,4))
 					M.addAbility(CMClass.getAbility("Skill_Disarm"));
-				if(Util.isSet(off,5))
+				if(CMath.isSet(off,5))
 					M.addAbility(CMClass.getAbility("Skill_Dodge"));
-				//if(Util.isSet(off,6)) is missing
-				if(Util.isSet(off,7))
+				//if(CMath.isSet(off,6)) is missing
+				if(CMath.isSet(off,7))
 					M.baseEnvStats().setSpeed(M.baseEnvStats().speed()+1);
-				if(Util.isSet(off,8))
+				if(CMath.isSet(off,8))
 					M.addAbility(CMClass.getAbility("Fighter_Kick"));
-				if(Util.isSet(off,9))
+				if(CMath.isSet(off,9))
 					M.addAbility(CMClass.getAbility("Skill_Dirt"));
-				if(Util.isSet(off,10))
+				if(CMath.isSet(off,10))
 					M.addAbility(CMClass.getAbility("Skill_Parry"));
-				//if(Util.isSet(off,11)) rescue is irrelevant
-				//if(Util.isSet(off,12)) is missing
-				if(Util.isSet(off,13))
+				//if(CMath.isSet(off,11)) rescue is irrelevant
+				//if(CMath.isSet(off,12)) is missing
+				if(CMath.isSet(off,13))
 					M.addAbility(CMClass.getAbility("Skill_Trip"));
-				if(Util.isSet(off,14))
+				if(CMath.isSet(off,14))
 					M.addAbility(CMClass.getAbility("Fighter_Whomp"));
-				if(Util.isSet(off,15))
+				if(CMath.isSet(off,15))
 					M.addBehavior(CMClass.getBehavior("MOBHelper"));
-				if(Util.isSet(off,16))
+				if(CMath.isSet(off,16))
 					M.addBehavior(CMClass.getBehavior("AlignHelper"));
-				if(Util.isSet(off,17))
+				if(CMath.isSet(off,17))
 					M.addBehavior(CMClass.getBehavior("RaceHelper"));
-				if(Util.isSet(off,18))
+				if(CMath.isSet(off,18))
 					M.addBehavior(CMClass.getBehavior("PlayerHelper"));
-				if(Util.isSet(off,19))
+				if(CMath.isSet(off,19))
 				{
 					Behavior guardian=CMClass.getBehavior("GoodGuardian");
 					for(int b=M.numBehaviors()-1;b>=0;b--)
 					{
 						Behavior B=M.fetchBehavior(b);
-						if((B!=null)&&(Util.bset(B.flags(),Behavior.FLAG_MOBILITY)))
+						if((B!=null)&&(CMath.bset(B.flags(),Behavior.FLAG_MOBILITY)))
 						{
 							if(guardian.ID().equals("GoodGuardian"))
 								guardian=CMClass.getBehavior("MobileGoodGuardian");
@@ -2255,54 +2255,54 @@ public class Import extends StdCommand
 					M.addBehavior(guardian);
 					M.addBehavior(CMClass.getBehavior("AntiVagrant"));
 				}
-				if(Util.isSet(off,20))
+				if(CMath.isSet(off,20))
 					M.addBehavior(CMClass.getBehavior("BrotherHelper"));
-				//if(Util.isSet(off,21)) is missing
-				if(Util.isSet(off,22))
+				//if(CMath.isSet(off,21)) is missing
+				if(CMath.isSet(off,22))
 					M.addAbility(CMClass.getAbility("Fighter_Sweep"));
 
 				if((M.numAbilities())>numAbiles)
 					M.addBehavior(CMClass.getBehavior("CombatAbilities"));
 
 				Ability resist=CMClass.getAbility("Prop_Resistance");
-				if((Util.isSet(res,0))||(Util.isSet(imm,0)))
+				if((CMath.isSet(res,0))||(CMath.isSet(imm,0)))
 					resist.setMiscText(resist.text()+" teleport");
-				if((Util.isSet(res,1))||(Util.isSet(imm,1)))
+				if((CMath.isSet(res,1))||(CMath.isSet(imm,1)))
 					resist.setMiscText(resist.text()+" mind");
-				if((Util.isSet(res,2))||(Util.isSet(imm,2)))
+				if((CMath.isSet(res,2))||(CMath.isSet(imm,2)))
 					resist.setMiscText(resist.text()+" magic");
-				if((Util.isSet(res,3))||(Util.isSet(imm,3)))
+				if((CMath.isSet(res,3))||(CMath.isSet(imm,3)))
 					resist.setMiscText(resist.text()+" weapons");
-				if((Util.isSet(res,4))||(Util.isSet(imm,4)))
+				if((CMath.isSet(res,4))||(CMath.isSet(imm,4)))
 					resist.setMiscText(resist.text()+" blunt");
-				if((Util.isSet(res,5))||(Util.isSet(imm,5)))
+				if((CMath.isSet(res,5))||(CMath.isSet(imm,5)))
 					resist.setMiscText(resist.text()+" pierce");
-				if((Util.isSet(res,6))||(Util.isSet(imm,6)))
+				if((CMath.isSet(res,6))||(CMath.isSet(imm,6)))
 					resist.setMiscText(resist.text()+" slash");
-				if((Util.isSet(res,7))||(Util.isSet(imm,7)))
+				if((CMath.isSet(res,7))||(CMath.isSet(imm,7)))
 					resist.setMiscText(resist.text()+" fire");
-				if((Util.isSet(res,8))||(Util.isSet(imm,8)))
+				if((CMath.isSet(res,8))||(CMath.isSet(imm,8)))
 					resist.setMiscText(resist.text()+" cold");
-				if((Util.isSet(res,9))||(Util.isSet(imm,9)))
+				if((CMath.isSet(res,9))||(CMath.isSet(imm,9)))
 					resist.setMiscText(resist.text()+" elec");
-				if((Util.isSet(res,10))||(Util.isSet(imm,10)))
+				if((CMath.isSet(res,10))||(CMath.isSet(imm,10)))
 					resist.setMiscText(resist.text()+" acid");
-				if((Util.isSet(res,11))||(Util.isSet(imm,11)))
+				if((CMath.isSet(res,11))||(CMath.isSet(imm,11)))
 					resist.setMiscText(resist.text()+" poison");
-				if((Util.isSet(res,12))||(Util.isSet(imm,12)))
+				if((CMath.isSet(res,12))||(CMath.isSet(imm,12)))
 					resist.setMiscText(resist.text()+" evil");
-				if((Util.isSet(res,13))||(Util.isSet(imm,13)))
+				if((CMath.isSet(res,13))||(CMath.isSet(imm,13)))
 					resist.setMiscText(resist.text()+" holy");
-				if(Util.isSet(res,14))
+				if(CMath.isSet(res,14))
 					M.addNonUninvokableEffect(CMClass.getAbility("Spell_ResistMagicMissiles"));
-				if((Util.isSet(res,15))||(Util.isSet(imm,15)))
+				if((CMath.isSet(res,15))||(CMath.isSet(imm,15)))
 					resist.setMiscText(resist.text()+" mind");
-				if((Util.isSet(res,16))||(Util.isSet(imm,16)))
+				if((CMath.isSet(res,16))||(CMath.isSet(imm,16)))
 					resist.setMiscText(resist.text()+" disease");
-				if((Util.isSet(res,17))||(Util.isSet(imm,17)))
+				if((CMath.isSet(res,17))||(CMath.isSet(imm,17)))
 					resist.setMiscText(resist.text()+" water gas");
-				//if(Util.isSet(res,18)) no light resistance
-				//if(Util.isSet(res,18)) no sound resistance
+				//if(CMath.isSet(res,18)) no light resistance
+				//if(CMath.isSet(res,18)) no sound resistance
 				if(resist.text().length()>0)
 				{
 					resist.setMiscText(resist.text()+" "+(10+M.baseEnvStats().level())+"%");
@@ -2359,7 +2359,7 @@ public class Import extends StdCommand
 			{
 				String s=(String)mobProgData.elementAt(mp);
 				String rest=null;
-				if(s.startsWith("#")&&(s.length()>1)&&(Util.isNumber(""+s.charAt(1))))
+				if(s.startsWith("#")&&(s.length()>1)&&(CMath.isNumber(""+s.charAt(1))))
 				{
 					s="M "+s.substring(1);
 					rest="";
@@ -2377,11 +2377,11 @@ public class Import extends StdCommand
 				}
 				if(s.startsWith("M "))
 				{
-					String MOBID=Util.getBit(s,1);
+					String MOBID=CMParms.getBit(s,1);
 					if(!("#"+MOBID).equals(OfThisID))
 						continue;
 
-					String mobprg=Util.getBit(s,2).toUpperCase().trim();
+					String mobprg=CMParms.getBit(s,2).toUpperCase().trim();
 					if(mobprg.equals("JANITOR.PRG"))
 						M.addBehavior(CMClass.getBehavior("Scavenger"));
 					else
@@ -2480,11 +2480,11 @@ public class Import extends StdCommand
 				String s=(String)specialData.elementAt(mp);
 				if(s.startsWith("M "))
 				{
-					String MOBID=Util.getBit(s,1);
+					String MOBID=CMParms.getBit(s,1);
 					if(!("#"+MOBID).equals(OfThisID))
 						continue;
 
-					String special=Util.getBit(s,2).toUpperCase().trim();
+					String special=CMParms.getBit(s,2).toUpperCase().trim();
 					if((special.equals("SPEC_CAST_MAGE"))
 					||(special.equals("SPEC_WANDERER")))
 						M.addBehavior(CMClass.getBehavior("Mageness"));
@@ -2805,9 +2805,9 @@ public class Import extends StdCommand
 
 			if((!objectID.startsWith("#"))
 			||((objectName.length()==0)
-			&&((Util.numBits(codeStr1)<3)
-			||(Util.numBits(codeStr1)>4)
-			||(Util.numBits(codeStr2)<4)
+			&&((CMParms.numBits(codeStr1)<3)
+			||(CMParms.numBits(codeStr1)>4)
+			||(CMParms.numBits(codeStr2)<4)
 			||(codeStr3.length()==0))))
 			{
 				returnAnError(mob,"Malformed object! Aborting this object "+objectID+", display="+objectDisplay+", simple="+simpleName+", name="+objectName+", codeStr1="+codeStr1+", codeStr2="+codeStr2+", codeStr3="+codeStr3+", area="+areaName);
@@ -2816,10 +2816,10 @@ public class Import extends StdCommand
 			if(objectName.length()==0)
 				objectName="Unknown";
 			boolean circleForm=false;
-			String obj=Util.getBit(codeStr1,0);
+			String obj=CMParms.getBit(codeStr1,0);
 			if((obj.trim().length()>1)&&(Character.isLetter(obj.charAt(0))))
 				circleForm=true;
-			int objType=Util.s_int(obj);
+			int objType=CMath.s_int(obj);
 			final String[][] itemTypes={
 			{ "light","1"},
 			{ "scroll","2"},
@@ -2861,7 +2861,7 @@ public class Import extends StdCommand
 				for(int it=0;it<itemTypes.length;it++)
 					if(obj.equalsIgnoreCase(itemTypes[it][0]))
 					{
-						objType=Util.s_int(itemTypes[it][1]);
+						objType=CMath.s_int(itemTypes[it][1]);
 						break;
 					}
 			}
@@ -2885,7 +2885,7 @@ public class Import extends StdCommand
 			boolean forgiveZeroes=false;
 			if((codeStr2.indexOf("~")>=0)&&(codeStr2.lastIndexOf("~")>codeStr2.indexOf("~")))
 			{
-				Vector V=Util.parseSquiggles(codeStr2);
+				Vector V=CMParms.parseSquiggles(codeStr2);
 				if(V.size()==4)
 				{
 					forgiveZeroes=true;
@@ -2900,10 +2900,10 @@ public class Import extends StdCommand
 			}
 
 
-			String str1=Util.getBit(codeStr2,0);
-			String str2=Util.getBit(codeStr2,1);
-			String str3=Util.getBit(codeStr2,2);
-			String str4=Util.getBit(codeStr2,3);
+			String str1=CMParms.getBit(codeStr2,0);
+			String str2=CMParms.getBit(codeStr2,1);
+			String str3=CMParms.getBit(codeStr2,2);
+			String str4=CMParms.getBit(codeStr2,3);
 			int val1=getBitMask(codeStr2,0);
 			int val2=getBitMask(codeStr2,1);
 			int val3=getBitMask(codeStr2,2);
@@ -2951,7 +2951,7 @@ public class Import extends StdCommand
 						I=CMClass.getArmor("GenShield");
 					else
 						I=CMClass.getArmor("GenArmor");
-					I.baseEnvStats().setArmor((int)Math.round(Util.div((val1+val2+val3+val4+1),4.0)+1));
+					I.baseEnvStats().setArmor((int)Math.round(CMath.div((val1+val2+val3+val4+1),4.0)+1));
 					adjuster=CMClass.getAbility("Prop_WearAdjuster");
 					break;
 			case 10: I=CMClass.getMiscMagic("GenPotion");
@@ -3124,41 +3124,41 @@ public class Import extends StdCommand
 					break;
 			}
 
-			if(!Util.isSet(wearFlag,0))
+			if(!CMath.isSet(wearFlag,0))
 				CMLib.flags().setGettable(I,false);
-			if(Util.isSet(wearFlag,1))
+			if(CMath.isSet(wearFlag,1))
 				I.setRawProperLocationBitmap(Item.ON_LEFT_FINGER|Item.ON_RIGHT_FINGER|I.rawProperLocationBitmap());
-			if(Util.isSet(wearFlag,2))
+			if(CMath.isSet(wearFlag,2))
 				I.setRawProperLocationBitmap(Item.ON_NECK|I.rawProperLocationBitmap());
-			if(Util.isSet(wearFlag,3))
+			if(CMath.isSet(wearFlag,3))
 				I.setRawProperLocationBitmap(Item.ON_TORSO|I.rawProperLocationBitmap());
-			if(Util.isSet(wearFlag,4))
+			if(CMath.isSet(wearFlag,4))
 				I.setRawProperLocationBitmap(Item.ON_HEAD|I.rawProperLocationBitmap());
-			if(Util.isSet(wearFlag,5))
+			if(CMath.isSet(wearFlag,5))
 				I.setRawProperLocationBitmap(Item.ON_LEGS|I.rawProperLocationBitmap());
-			if(Util.isSet(wearFlag,6))
+			if(CMath.isSet(wearFlag,6))
 				I.setRawProperLocationBitmap(Item.ON_FEET|I.rawProperLocationBitmap());
-			if(Util.isSet(wearFlag,7))
+			if(CMath.isSet(wearFlag,7))
 				I.setRawProperLocationBitmap(Item.ON_HANDS|I.rawProperLocationBitmap());
-			if(Util.isSet(wearFlag,8))
+			if(CMath.isSet(wearFlag,8))
 				I.setRawProperLocationBitmap(Item.ON_ARMS|I.rawProperLocationBitmap());
-			if(Util.isSet(wearFlag,9))
+			if(CMath.isSet(wearFlag,9))
 				I.setRawProperLocationBitmap(Item.HELD|I.rawProperLocationBitmap());
-			if(Util.isSet(wearFlag,10))
+			if(CMath.isSet(wearFlag,10))
 				I.setRawProperLocationBitmap(Item.ABOUT_BODY|I.rawProperLocationBitmap());
-			if(Util.isSet(wearFlag,11))
+			if(CMath.isSet(wearFlag,11))
 				I.setRawProperLocationBitmap(Item.ON_WAIST|I.rawProperLocationBitmap());
-			if(Util.isSet(wearFlag,12))
+			if(CMath.isSet(wearFlag,12))
 				I.setRawProperLocationBitmap(Item.ON_LEFT_WRIST|Item.ON_RIGHT_WRIST|I.rawProperLocationBitmap());
-			if(Util.isSet(wearFlag,13))
+			if(CMath.isSet(wearFlag,13))
 				I.setRawProperLocationBitmap(Item.WIELD|Item.HELD|I.rawProperLocationBitmap());
-			if(Util.isSet(wearFlag,14))
+			if(CMath.isSet(wearFlag,14))
 				I.setRawProperLocationBitmap(Item.HELD|I.rawProperLocationBitmap());
-			if(Util.isSet(wearFlag,15))
+			if(CMath.isSet(wearFlag,15))
 				I.setRawLogicalAnd(true);
-			if(Util.isSet(wearFlag,17))
+			if(CMath.isSet(wearFlag,17))
 				I.setRawProperLocationBitmap(Item.ON_EARS|I.rawProperLocationBitmap());
-			if(Util.isSet(wearFlag,18)) // ankles
+			if(CMath.isSet(wearFlag,18)) // ankles
 				I.setRawProperLocationBitmap(Item.ON_FEET|I.rawProperLocationBitmap());
 
 			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -3190,18 +3190,18 @@ public class Import extends StdCommand
 				resister=CMClass.getAbility("Prop_WearResister");
 				caster=CMClass.getAbility("Prop_WearSpellCast");
 			}
-			if(Util.numBits(codeStr3)>2)
+			if(CMParms.numBits(codeStr3)>2)
 			{
-				I.baseEnvStats().setLevel(Util.s_int(Util.getCleanBit(codeStr3,0)));
-				I.baseEnvStats().setWeight(Util.s_int(Util.getCleanBit(codeStr3,1)) / 10);
+				I.baseEnvStats().setLevel(CMath.s_int(CMParms.getCleanBit(codeStr3,0)));
+				I.baseEnvStats().setWeight(CMath.s_int(CMParms.getCleanBit(codeStr3,1)) / 10);
 				if(I.baseEnvStats().weight()<1) I.baseEnvStats().setWeight(1);
 				if(I instanceof Rideable)
-					I.baseEnvStats().setWeight(Util.s_int(Util.getCleanBit(codeStr3,1)) * 10);
-				I.setBaseValue(Util.s_int(Util.getCleanBit(codeStr3,2)));
+					I.baseEnvStats().setWeight(CMath.s_int(CMParms.getCleanBit(codeStr3,1)) * 10);
+				I.setBaseValue(CMath.s_int(CMParms.getCleanBit(codeStr3,2)));
 			}
 			else
 			{
-				I.baseEnvStats().setLevel(Util.s_int(codeStr3));
+				I.baseEnvStats().setLevel(CMath.s_int(codeStr3));
 			}
 
 
@@ -3221,7 +3221,7 @@ public class Import extends StdCommand
 			for(int ot=0;ot<objDescs.length;ot++)
 				if(objectDescription.equalsIgnoreCase(objDescs[ot][0]))
 				{
-					I.setMaterial(Util.s_int(objDescs[ot][1]));
+					I.setMaterial(CMath.s_int(objDescs[ot][1]));
 					materialchange=true;
 					break;
 				}
@@ -3259,66 +3259,66 @@ public class Import extends StdCommand
 				}
 			}
 			
-			if(Util.isSet(extraFlag,0))
+			if(CMath.isSet(extraFlag,0))
 				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_GLOWING);
 
 			//if((extraFlag&2)==2) coffeemud has no hummers
-			if(Util.isSet(extraFlag,2))
+			if(CMath.isSet(extraFlag,2))
 				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_DARK);
 
-			if(Util.isSet(extraFlag,4))
+			if(CMath.isSet(extraFlag,4))
 				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_EVIL);
 
-			if(Util.isSet(extraFlag,5))
+			if(CMath.isSet(extraFlag,5))
 				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_INVISIBLE);
 
-			if(Util.isSet(extraFlag,6))
+			if(CMath.isSet(extraFlag,6))
 				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_BONUS);
 
-			if(Util.isSet(extraFlag,7))
+			if(CMath.isSet(extraFlag,7))
 				CMLib.flags().setDroppable(I,false);
 
-			if(Util.isSet(extraFlag,8))
+			if(CMath.isSet(extraFlag,8))
 				I.addNonUninvokableEffect(CMClass.getAbility("Prayer_Bless"));
 
 			Ability prop_WearZapper = CMClass.getAbility("Prop_WearZapper");
 
-			if(Util.isSet(extraFlag,9))
+			if(CMath.isSet(extraFlag,9))
 				prop_WearZapper.setMiscText(prop_WearZapper.text()+" -good");
 
-			if(Util.isSet(extraFlag,10))
+			if(CMath.isSet(extraFlag,10))
 				prop_WearZapper.setMiscText(prop_WearZapper.text()+" -evil");
 
-			if(Util.isSet(extraFlag,11))
+			if(CMath.isSet(extraFlag,11))
 				prop_WearZapper.setMiscText(prop_WearZapper.text()+" -neutral");
 
 			if(prop_WearZapper.text().length()>0)
 				I.addNonUninvokableEffect(prop_WearZapper);
 
-			if(Util.isSet(extraFlag,12))
+			if(CMath.isSet(extraFlag,12))
 				CMLib.flags().setRemovable(I,false);
 
 			//if(extraFlag&4096)==4096) coffeemud doesn't support rotting cargo
 
-			if(Util.isSet(extraFlag,14))
+			if(CMath.isSet(extraFlag,14))
 				CMLib.flags().setGettable(I,false);
 
 			//if(extraFlag&16384)==16384) coffeemud doesn't support rotting cargo
 
-			if(Util.isSet(extraFlag,16))
+			if(CMath.isSet(extraFlag,16))
 				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_INVISIBLE);
 
-			if(Util.isSet(extraFlag,17))
+			if(CMath.isSet(extraFlag,17))
 				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_GOOD);
 
-			if(Util.isSet(extraFlag,18))
+			if(CMath.isSet(extraFlag,18))
 				if((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
 					I.setMaterial(EnvResource.RESOURCE_GLASS);
 
-			if(Util.isSet(extraFlag,20))
+			if(CMath.isSet(extraFlag,20))
 				I.baseEnvStats().setSensesMask(I.baseEnvStats().sensesMask()|EnvStats.SENSE_UNLOCATABLE);
 
-			//if(Util.isSet(extraFlag,22))
+			//if(CMath.isSet(extraFlag,22))
 			//nothing is unidentifiable
 
 			// now all those funny tags
@@ -3388,12 +3388,12 @@ public class Import extends StdCommand
 				{
 					eatNextLine(objV);
 					String codesLine=eatNextLine(objV);
-					if(Util.numBits(codesLine)!=2)
+					if(CMParms.numBits(codesLine)!=2)
 						returnAnError(mob,"Malformed 'A' code for item "+objectID+", "+I.Name()+": "+codesLine+", area="+areaName);
 					else
 					{
-						int num=Util.s_int(Util.getCleanBit(codesLine,0));
-						int val=Util.s_int(Util.getCleanBit(codesLine,1));
+						int num=CMath.s_int(CMParms.getCleanBit(codesLine,0));
+						int val=CMath.s_int(CMParms.getCleanBit(codesLine,1));
 						switch(num)
 						{
 						case 1:
@@ -3486,11 +3486,11 @@ public class Import extends StdCommand
 				{
 					eatNextLine(objV);
 					String codesLine=eatNextLine(objV);
-					if(Util.numBits(codesLine)!=4)
+					if(CMParms.numBits(codesLine)!=4)
 						returnAnError(mob,"Malformed 'F' code for item "+objectID+", "+I.Name()+": "+codesLine+", area="+areaName);
 					else
 					{
-						String codeType=Util.getBit(codesLine,0);
+						String codeType=CMParms.getBit(codesLine,0);
 						if(codeType.equals("V"))
 						{
 							int res=getBitMask(codesLine,3);
@@ -3516,10 +3516,10 @@ public class Import extends StdCommand
 								" gas"};
 							for(int rei=0;rei<resistances.length;rei++)
 							{
-								if((Util.isSet(res,rei))&&(resistances[rei].length()>0))
+								if((CMath.isSet(res,rei))&&(resistances[rei].length()>0))
 									resister.setMiscText(resister.text()+resistances[rei]+" -25%");
 								else
-								if((Util.isSet(imm,rei))&&(resistances[rei].length()>0))
+								if((CMath.isSet(imm,rei))&&(resistances[rei].length()>0))
 									resister.setMiscText(resister.text()+resistances[rei]+" -100%");
 							}
 
@@ -3530,68 +3530,68 @@ public class Import extends StdCommand
 							int dis=0;
 							int sense=0;
 							int codeBits=getBitMask(codesLine,3);
-							if(Util.isSet(codeBits,0))
+							if(CMath.isSet(codeBits,0))
 								sense=sense|EnvStats.CAN_NOT_SEE;
-							if(Util.isSet(codeBits,1))
+							if(CMath.isSet(codeBits,1))
 								dis=dis|EnvStats.IS_INVISIBLE;
-							if(Util.isSet(codeBits,2))
+							if(CMath.isSet(codeBits,2))
 								sense=sense|EnvStats.CAN_SEE_EVIL;
-							if(Util.isSet(codeBits,3))
+							if(CMath.isSet(codeBits,3))
 								sense=sense|EnvStats.CAN_SEE_INVISIBLE;
-							if(Util.isSet(codeBits,4))
+							if(CMath.isSet(codeBits,4))
 								sense=sense|EnvStats.CAN_SEE_BONUS;
-							if(Util.isSet(codeBits,5))
+							if(CMath.isSet(codeBits,5))
 								sense=sense|EnvStats.CAN_SEE_HIDDEN|EnvStats.CAN_SEE_SNEAKERS;
-							if(Util.isSet(codeBits,6))
+							if(CMath.isSet(codeBits,6))
 								caster.setMiscText(caster.text()+("Spell_IronGrip")+";");
-							if(Util.isSet(codeBits,7))
+							if(CMath.isSet(codeBits,7))
 								caster.setMiscText(caster.text()+("Prayer_Sanctuary")+";");
-							if(Util.isSet(codeBits,8))
+							if(CMath.isSet(codeBits,8))
 								caster.setMiscText(caster.text()+("Spell_FaerieFire")+";");
-							if(Util.isSet(codeBits,9))
+							if(CMath.isSet(codeBits,9))
 								sense=sense|EnvStats.CAN_SEE_INFRARED;
-							if(Util.isSet(codeBits,10))
+							if(CMath.isSet(codeBits,10))
 								caster.setMiscText(caster.text()+("Prayer_Curse")+";");
-							if(Util.isSet(codeBits,11))
+							if(CMath.isSet(codeBits,11))
 								caster.setMiscText(caster.text()+"Specialization_Weapon;");
-							if(Util.isSet(codeBits,12))
+							if(CMath.isSet(codeBits,12))
 								caster.setMiscText(caster.text()+("Poison")+";");
-							if(Util.isSet(codeBits,13))
+							if(CMath.isSet(codeBits,13))
 								caster.setMiscText(caster.text()+("Prayer_ProtEvil")+";");
-							if(Util.isSet(codeBits,14))
+							if(CMath.isSet(codeBits,14))
 								caster.setMiscText(caster.text()+("Prayer_ProtGood")+";");
-							if(Util.isSet(codeBits,15))
+							if(CMath.isSet(codeBits,15))
 								dis=dis|EnvStats.IS_SNEAKING;
-							if(Util.isSet(codeBits,16))
+							if(CMath.isSet(codeBits,16))
 								caster.setMiscText(caster.text()+("Skill_Hide")+";");
-							if(Util.isSet(codeBits,17))
+							if(CMath.isSet(codeBits,17))
 							{
 								dis=dis|EnvStats.IS_SLEEPING;
 								caster.setMiscText(caster.text()+("Spell_Sleep")+";");
 							}
-							//if(Util.isSet(codeBits,18)) item cannot charm you
+							//if(CMath.isSet(codeBits,18)) item cannot charm you
 							//	caster.setMiscText(caster.text()+(new Poison().ID())+";");
-							if(Util.isSet(codeBits,19))
+							if(CMath.isSet(codeBits,19))
 								dis=dis|EnvStats.IS_FLYING;
-							if(Util.isSet(codeBits,20))
+							if(CMath.isSet(codeBits,20))
 								caster.setMiscText(caster.text()+("Spell_PassDoor")+";");
-							if(Util.isSet(codeBits,21))
+							if(CMath.isSet(codeBits,21))
 								caster.setMiscText(caster.text()+("Spell_Haste")+";");
-							if(Util.isSet(codeBits,22))
+							if(CMath.isSet(codeBits,22))
 								caster.setMiscText(caster.text()+("Prayer_Calm")+";");
-							if(Util.isSet(codeBits,23))
+							if(CMath.isSet(codeBits,23))
 								caster.setMiscText(caster.text()+("Prayer_Plague")+";");
-							if(Util.isSet(codeBits,24))
+							if(CMath.isSet(codeBits,24))
 								caster.setMiscText(caster.text()+("Spell_Awe")+";");
-							if(Util.isSet(codeBits,25))
+							if(CMath.isSet(codeBits,25))
 								sense=sense|EnvStats.CAN_SEE_DARK;
-							if(Util.isSet(codeBits,26))
+							if(CMath.isSet(codeBits,26))
 								caster.setMiscText(caster.text()+("Fighter_Berzerk")+";");
-							if(Util.isSet(codeBits,27))
+							if(CMath.isSet(codeBits,27))
 								caster.setMiscText(caster.text()+("Regeneration")+";");
-							if(Util.isSet(codeBits,28))
+							if(CMath.isSet(codeBits,28))
 								sense=sense|EnvStats.CAN_SEE_GOOD;
-							if(Util.isSet(codeBits,29))
+							if(CMath.isSet(codeBits,29))
 								caster.setMiscText(caster.text()+("Spell_Slow")+";");
 							if(sense>0)
 								adjuster.setMiscText(adjuster.text()+" sen+"+sense);
@@ -3623,17 +3623,17 @@ public class Import extends StdCommand
 								" gas"};
 							for(int rei=0;rei<resistances.length;rei++)
 							{
-								if((Util.isSet(res,rei))&&(resistances[rei].length()>0))
+								if((CMath.isSet(res,rei))&&(resistances[rei].length()>0))
 									resister.setMiscText(resister.text()+resistances[rei]+" 25%");
 								else
-								if((Util.isSet(imm,rei))&&(resistances[rei].length()>0))
+								if((CMath.isSet(imm,rei))&&(resistances[rei].length()>0))
 									resister.setMiscText(resister.text()+resistances[rei]+" 100%");
 							}
 
-							if(Util.isSet(res,14))
+							if(CMath.isSet(res,14))
 								caster.setMiscText(caster.text()+"Spell_ResistMagicMissiles;");
-							//if(Util.isSet(res,18)) no light resistance
-							//if(Util.isSet(res,18)) no sound resistance
+							//if(CMath.isSet(res,18)) no light resistance
+							//if(CMath.isSet(res,18)) no sound resistance
 						}
 
 
@@ -3668,8 +3668,8 @@ public class Import extends StdCommand
 				else
 				if((forgiveZeroes)
 				&&(codeLine.length()>0)
-				&&(Util.isNumber(""+codeLine.charAt(0)))
-				&&(Util.numBits(codeLine)>1))
+				&&(CMath.isNumber(""+codeLine.charAt(0)))
+				&&(CMParms.numBits(codeLine)>1))
 				{
 					eatNextLine(objV);
 					// eos support
@@ -3713,15 +3713,15 @@ public class Import extends StdCommand
 	public static String socialFix(String str)
 	{
 
-		str=Util.replaceAll(str,"$n","<S-NAME>");
-		str=Util.replaceAll(str,"$N","<T-NAMESELF>");
-		str=Util.replaceAll(str,"$m","<S-HIM-HER>");
-		str=Util.replaceAll(str,"$M","<T-HIM-HER>");
-		str=Util.replaceAll(str,"$s","<S-HIS-HER>");
-		str=Util.replaceAll(str,"$S","<T-HIS-HER>");
-		str=Util.replaceAll(str,"$e","<S-HE-SHE>");
-		str=Util.replaceAll(str,"$E","<T-HE-SHE>");
-		str=Util.replaceAll(str,"`","\'");
+		str=CMStrings.replaceAll(str,"$n","<S-NAME>");
+		str=CMStrings.replaceAll(str,"$N","<T-NAMESELF>");
+		str=CMStrings.replaceAll(str,"$m","<S-HIM-HER>");
+		str=CMStrings.replaceAll(str,"$M","<T-HIM-HER>");
+		str=CMStrings.replaceAll(str,"$s","<S-HIS-HER>");
+		str=CMStrings.replaceAll(str,"$S","<T-HIS-HER>");
+		str=CMStrings.replaceAll(str,"$e","<S-HE-SHE>");
+		str=CMStrings.replaceAll(str,"$E","<T-HE-SHE>");
+		str=CMStrings.replaceAll(str,"`","\'");
 		if(str.equals("$")) return "";
 		return str.trim();
 	}
@@ -4260,7 +4260,7 @@ public class Import extends StdCommand
 						if((S!=null)
 						&&(S.mob()!=null)
 						&&((!CMLib.flags().isCloaked(M))||(CMSecurity.isASysOp(S.mob())))
-						&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
+						&&(CMath.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
 						&&(S.mob().playerStats()!=null)
 						&&((S.mob().playerStats().getFriends().contains(M.Name())||S.mob().playerStats().getFriends().contains("All"))))
 							S.mob().tell("^X"+M.Name()+" has just been created.^.^?");
@@ -4274,7 +4274,7 @@ public class Import extends StdCommand
 						M.setLocation(mob.location());
 					if(M.playerStats().getBirthday()==null)
 					{
-					    M.baseCharStats().setStat(CharStats.AGE,M.playerStats().initializeBirthday((int)Math.round(Util.div(M.getAgeHours(),60.0)),M.baseCharStats().getMyRace()));
+					    M.baseCharStats().setStat(CharStats.AGE,M.playerStats().initializeBirthday((int)Math.round(CMath.div(M.getAgeHours(),60.0)),M.baseCharStats().getMyRace()));
 					    M.recoverCharStats();
 					}
 					CMLib.database().DBUpdatePlayer(M);
@@ -4597,10 +4597,10 @@ public class Import extends StdCommand
 				String codeLine=eatNextLine(roomV);
 				if((!R.roomID().startsWith("#"))
 				||(R.displayText().length()==0)
-				||(Util.numBits(codeLine)<2)
-				||(Util.numBits(codeLine)>3))
+				||(CMParms.numBits(codeLine)<2)
+				||(CMParms.numBits(codeLine)>3))
 				{
-					returnAnError(mob,"Malformed room! Aborting this room "+R.roomID()+", display="+R.displayText()+", description="+R.description()+", numBits="+Util.numBits(codeLine)+", area="+areaName);
+					returnAnError(mob,"Malformed room! Aborting this room "+R.roomID()+", display="+R.displayText()+", description="+R.description()+", numBits="+CMParms.numBits(codeLine)+", area="+areaName);
 					continue;
 				}
                 
@@ -4620,15 +4620,15 @@ public class Import extends StdCommand
 				{ "air",		"9"},
 				{ "desert",		"10"}};
 
-				if(Util.numBits(codeLine)==3)
+				if(CMParms.numBits(codeLine)==3)
 				{
 					codeBits=sectorType;
-					String secType=Util.getBit(codeLine,2);
+					String secType=CMParms.getBit(codeLine,2);
 					sectorType=getBitMask(codeLine,2);
 					for(int st=0;st<secTypes.length;st++)
 						if(secType.equalsIgnoreCase(secTypes[st][0]))
 						{
-							sectorType=Util.s_int(secTypes[st][1]);
+							sectorType=CMath.s_int(secTypes[st][1]);
 							break;
 						}
 				}
@@ -4692,36 +4692,36 @@ public class Import extends StdCommand
 				Ability prop_RoomLevels=CMClass.getAbility("Prop_ReqLevels");
 
 
-				if(Util.isSet(codeBits,21)) // underwater room
+				if(CMath.isSet(codeBits,21)) // underwater room
 					R=changeRoomClass(R,"UnderWater");
 
-				//if(Util.isSet(codeBits,1)) //BANKS are forked up in the ROM files, who knows WHAT this is...
+				//if(CMath.isSet(codeBits,1)) //BANKS are forked up in the ROM files, who knows WHAT this is...
 
-				if(Util.isSet(codeBits,0)) // dark room
+				if(CMath.isSet(codeBits,0)) // dark room
 					R.addNonUninvokableEffect(CMClass.getAbility("Prop_RoomDark"));
 
-				if(Util.isSet(codeBits,2)) // no mobs room
+				if(CMath.isSet(codeBits,2)) // no mobs room
 					R.addNonUninvokableEffect(CMClass.getAbility("Prop_ReqNoMOB"));
 
-				if(Util.isSet(codeBits,4)) // no summon out room
+				if(CMath.isSet(codeBits,4)) // no summon out room
 					R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoSummon"));
 
-				if(Util.isSet(codeBits,9)) // two people only room
+				if(CMath.isSet(codeBits,9)) // two people only room
 				{
 					prop_RoomCapacity.setMiscText("2");
 					if(R.fetchEffect(prop_RoomCapacity.ID())==null)
 						R.addNonUninvokableEffect(prop_RoomCapacity);
 				}
-				if(Util.isSet(codeBits,10)) // no fighting
+				if(CMath.isSet(codeBits,10)) // no fighting
 					R.addNonUninvokableEffect(CMClass.getAbility("Prop_PeaceMaker"));
 
-				if(Util.isSet(codeBits,11)) // solitaire room
+				if(CMath.isSet(codeBits,11)) // solitaire room
 				{
 					prop_RoomCapacity.setMiscText("1");
 					if(R.fetchEffect(prop_RoomCapacity.ID())==null)
 						R.addNonUninvokableEffect(prop_RoomCapacity);
 				}
-				if(Util.isSet(codeBits,12))
+				if(CMath.isSet(codeBits,12))
 					petShops.put(R,R);
 				else
 				if((lastRoom!=null)&&(petShops.get(lastRoom)!=null)&&(petShops.get(lastRoom)==lastRoom))
@@ -4730,49 +4730,49 @@ public class Import extends StdCommand
 					petShops.put(R,lastRoom); // now ready to plop stuff!
 				}
 
-				if(Util.isSet(codeBits,13))
+				if(CMath.isSet(codeBits,13))
 					R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
 
-				if(Util.isSet(codeBits,14))
+				if(CMath.isSet(codeBits,14))
 				{
 					prop_RoomLevels.setMiscText("SYSOP");
 					if(R.fetchEffect(prop_RoomLevels.ID())==null)
 						R.addNonUninvokableEffect(prop_RoomLevels);
 				}
-				if(Util.isSet(codeBits,15))
+				if(CMath.isSet(codeBits,15))
 				{
 					prop_RoomLevels.setMiscText(">=93");
 					if(R.fetchEffect(prop_RoomLevels.ID())==null)
 						R.addNonUninvokableEffect(prop_RoomLevels);
 				}
-				if(Util.isSet(codeBits,16))
+				if(CMath.isSet(codeBits,16))
 				{
 					prop_RoomLevels.setMiscText(">=91");
 					if(R.fetchEffect(prop_RoomLevels.ID())==null)
 						R.addNonUninvokableEffect(prop_RoomLevels);
 				}
-				if(Util.isSet(codeBits,17))
+				if(CMath.isSet(codeBits,17))
 				{
 					prop_RoomLevels.setMiscText("<=5");
 					if(R.fetchEffect(prop_RoomLevels.ID())==null)
 						R.addNonUninvokableEffect(prop_RoomLevels);
 				}
 
-				if(Util.isSet(codeBits,18))
+				if(CMath.isSet(codeBits,18))
 				{
 					R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoSummon"));
 					R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoCharm"));
 				}
 
-				if(Util.isSet(codeBits,19))
+				if(CMath.isSet(codeBits,19))
 					R.addNonUninvokableEffect(CMClass.getAbility("Prop_reqPKill"));
 
-				if(Util.isSet(codeBits,20))
+				if(CMath.isSet(codeBits,20))
 					R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
 
-				// if(Util.isSet(codeBits,23)) No "dirt" in CoffeeMud, so this doesn't matter
+				// if(CMath.isSet(codeBits,23)) No "dirt" in CoffeeMud, so this doesn't matter
 
-				if(Util.isSet(codeBits,24))
+				if(CMath.isSet(codeBits,24))
 					R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoChannel"));
 
 				roomV.insertElementAt(R.roomID(),0);
@@ -4830,7 +4830,7 @@ public class Import extends StdCommand
 					else
 					if(nextLine.toUpperCase().startsWith("D"))
 					{
-						int dirCode=Util.s_int(Util.getCleanBit(nextLine,0).substring(1).trim());
+						int dirCode=CMath.s_int(CMParms.getCleanBit(nextLine,0).substring(1).trim());
 						String descStr=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
 						String nameStr=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
 						String codeStr=eatLine(roomV);
@@ -4872,7 +4872,7 @@ public class Import extends StdCommand
 							returnAnError(mob,"Room: "+R.roomID()+", Unknown direction code: "+dirCode+", aborting exit, area="+areaName);
 							continue;
 						}
-						if(Util.numBits(codeStr)!=3)
+						if(CMParms.numBits(codeStr)!=3)
 						{
 							returnAnError(mob,"Room: "+R.roomID()+", Malformed exit codeStr "+codeStr+".  Aborting exit, area="+areaName);
 							continue;
@@ -4882,9 +4882,9 @@ public class Import extends StdCommand
 							returnAnError(mob,"Room: "+R.roomID()+", Redundant exit codeStr "+nextLine+"/"+codeStr+", dircode="+dirCode+".  Aborting exit, area="+areaName);
 							continue;
 						}
-						int exitFlag=( Util.s_int(Util.getCleanBit(codeStr,0)) & 31);
-						int doorState=Util.s_int(Util.getCleanBit(codeStr,1));
-						int linkRoomID=Util.s_int(Util.getCleanBit(codeStr,2));
+						int exitFlag=( CMath.s_int(CMParms.getCleanBit(codeStr,0)) & 31);
+						int doorState=CMath.s_int(CMParms.getCleanBit(codeStr,1));
+						int linkRoomID=CMath.s_int(CMParms.getCleanBit(codeStr,2));
 						Exit E=CMClass.getExit("GenExit");
 						Room linkRoom=findRoomSomewhere(""+linkRoomID,areaName,doneRooms);
 						if(linkRoomID>=0)
@@ -4922,7 +4922,7 @@ public class Import extends StdCommand
 											 hasLock,defaultsLocked,defaultsLocked);
 						}
 						E.setDisplayText(descStr);
-						String name=Util.getCleanBit(nameStr,0).trim();
+						String name=CMParms.getCleanBit(nameStr,0).trim();
 						if(name.equalsIgnoreCase("SECRET"))
 						{
 							name="secret door";
@@ -4931,7 +4931,7 @@ public class Import extends StdCommand
 						}
 
 						if(name.length()>0)
-							E.setName(Util.startWithAorAn(name));
+							E.setName(CMStrings.startWithAorAn(name));
 						else
 						{
 							if(E.hasADoor())
@@ -5068,8 +5068,8 @@ public class Import extends StdCommand
 				else
 				if(s.startsWith("M "))
 				{
-					String mobID=Util.getCleanBit(s,2);
-					String roomID=Util.getCleanBit(s,4);
+					String mobID=CMParms.getCleanBit(s,2);
+					String roomID=CMParms.getCleanBit(s,4);
 					R=findRoomSomewhere(roomID,areaName,doneRooms);
 					if(R==null)
 					{
@@ -5080,7 +5080,7 @@ public class Import extends StdCommand
 					}
 					else
 					{
-						M=getMOB("#"+mobID,R,mob,Util.copyVector(mobData),Util.copyVector(mobProgData),Util.copyVector(specialData),Util.copyVector(shopData),doneMOBS,areaFileName);
+						M=getMOB("#"+mobID,R,mob,CMParms.copyVector(mobData),CMParms.copyVector(mobProgData),CMParms.copyVector(specialData),CMParms.copyVector(shopData),doneMOBS,areaFileName);
 						if(M==null)
 						{
 							if(multiArea)
@@ -5104,8 +5104,8 @@ public class Import extends StdCommand
 					}
 					else
 					{
-						String itemID=Util.getCleanBit(s,2);
-						Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems,doneRooms);
+						String itemID=CMParms.getCleanBit(s,2);
+						Item I=getItem("#"+itemID,mob,areaName,CMParms.copyVector(objectData),CMParms.copyVector(objProgData),doneItems,doneRooms);
 						if(I==null)
 						{
 							if(multiArea) nextResetData.addElement(s);
@@ -5117,7 +5117,7 @@ public class Import extends StdCommand
 							I.recoverEnvStats();
 							if(M instanceof ShopKeeper)
 							{
-								int num=Util.s_int(Util.getCleanBit(s,3));
+								int num=CMath.s_int(CMParms.getCleanBit(s,3));
 								if(num<0) num=100;
 								((ShopKeeper)M).getShop().addStoreInventory(I,num,-1,((ShopKeeper)M));
 								if((I instanceof Light)&&(!((ShopKeeper)M).getShop().doIHaveThisInStock("OilFlask",null,((ShopKeeper)M).whatIsSold(),M.getStartRoom())))
@@ -5166,8 +5166,8 @@ public class Import extends StdCommand
 				else
 				if(s.startsWith("EC "))
 				{
-					String roomID=Util.getCleanBit(s,1);
-					String mobID=Util.getCleanBit(s,2);
+					String roomID=CMParms.getCleanBit(s,1);
+					String mobID=CMParms.getCleanBit(s,2);
 					int x=roomID.lastIndexOf("#");
 					if(x>=0) roomID=roomID.substring(x);
 					Room R2=findRoomSomewhere(roomID,areaName,doneRooms);
@@ -5183,8 +5183,8 @@ public class Import extends StdCommand
 					}
 					else
 					{
-						String itemID=Util.getCleanBit(s,5);
-						Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems,doneRooms);
+						String itemID=CMParms.getCleanBit(s,5);
+						Item I=getItem("#"+itemID,mob,areaName,CMParms.copyVector(objectData),CMParms.copyVector(objProgData),doneItems,doneRooms);
 						if(I==null)
 						{
 							if(multiArea)
@@ -5217,8 +5217,8 @@ public class Import extends StdCommand
 					}
 					else
 					{
-						String itemID=Util.getCleanBit(s,2);
-						Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems,doneRooms);
+						String itemID=CMParms.getCleanBit(s,2);
+						Item I=getItem("#"+itemID,mob,areaName,CMParms.copyVector(objectData),CMParms.copyVector(objProgData),doneItems,doneRooms);
 						if(I==null)
 						{
 							if(multiArea)
@@ -5248,8 +5248,8 @@ public class Import extends StdCommand
 				else
 				if(s.startsWith("O "))
 				{
-					String itemID=Util.getCleanBit(s,2);
-					String roomID=Util.getCleanBit(s,4);
+					String itemID=CMParms.getCleanBit(s,2);
+					String roomID=CMParms.getCleanBit(s,4);
 					R=findRoomSomewhere(roomID,areaName,doneRooms);
 					if(R==null)
 					{
@@ -5259,7 +5259,7 @@ public class Import extends StdCommand
 					}
 					else
 					{
-						Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems,doneRooms);
+						Item I=getItem("#"+itemID,mob,areaName,CMParms.copyVector(objectData),CMParms.copyVector(objProgData),doneItems,doneRooms);
 						if(I==null)
 						{
 							if(multiArea) nextResetData.addElement(s);
@@ -5271,7 +5271,7 @@ public class Import extends StdCommand
 							R.addItem(I);
 							if(CMLib.flags().isGettable(I))
 							{
-								int rejuv=(int)Math.round(Util.div((long)60000,MudHost.TICK_TIME)*4.0);
+								int rejuv=(int)Math.round(CMath.div((long)60000,MudHost.TICK_TIME)*4.0);
 								I.baseEnvStats().setRejuv(rejuv*I.baseEnvStats().level());
 							}
 							I.recoverEnvStats();
@@ -5286,9 +5286,9 @@ public class Import extends StdCommand
 				else
 				if(s.startsWith("P "))
 				{
-					String itemID=Util.getCleanBit(s,2);
-					String containerID=Util.getCleanBit(s,4);
-					Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems,doneRooms);
+					String itemID=CMParms.getCleanBit(s,2);
+					String containerID=CMParms.getCleanBit(s,4);
+					Item I=getItem("#"+itemID,mob,areaName,CMParms.copyVector(objectData),CMParms.copyVector(objProgData),doneItems,doneRooms);
 					Container C=(Container)containerHash.get(containerID);
 					if(I==null)
 					{
@@ -5337,7 +5337,7 @@ public class Import extends StdCommand
 				else
 				if(s.startsWith("D "))
 				{
-					String roomID=Util.getCleanBit(s,2);
+					String roomID=CMParms.getCleanBit(s,2);
 					int dirCode=getBitMask(s,3);
 					R=findRoomSomewhere(roomID,areaName,doneRooms);
 					if(R==null)
@@ -5512,7 +5512,7 @@ public class Import extends StdCommand
 					int s1=link.indexOf("/");
 					int s2=link.lastIndexOf("/");
 					String sourceRoomID=link.substring(0,s1);
-					int direction=Util.s_int(link.substring(s1+1,s2));
+					int direction=CMath.s_int(link.substring(s1+1,s2));
 					String destRoomID=link.substring(s2+1);
 					Room sourceRoom=findRoomSomewhere(sourceRoomID,areaName,doneRooms);
 					Room destRoom=findRoomSomewhere(destRoomID,areaName,doneRooms);
@@ -5606,7 +5606,7 @@ public class Import extends StdCommand
 				Room R1=findRoomSomewhere(roomID,"NOAREA",doneRooms);
 				if(R1!=null)
 				{
-					int dir=Util.s_int(dirID);
+					int dir=CMath.s_int(dirID);
 					Room RR=null;
 					Exit RE=null;
 					if(dir<Directions.NUM_DIRECTIONS)

@@ -39,7 +39,7 @@ public class Hire extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String rest=Util.combine(commands,1);
+		String rest=CMParms.combine(commands,1);
 		Environmental target=mob.location().fetchFromRoomFavorMOBs(null,rest,Item.WORN_REQ_ANY);
 		if((target!=null)&&(!target.name().equalsIgnoreCase(rest))&&(rest.length()<4))
 		   target=null;

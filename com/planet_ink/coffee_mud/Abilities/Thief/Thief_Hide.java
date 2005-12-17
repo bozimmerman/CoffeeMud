@@ -65,7 +65,7 @@ public class Thief_Hide extends ThiefSkill
 				||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
 				||(msg.sourceMinor()==CMMsg.TYP_FLEE)
 				||(msg.sourceMinor()==CMMsg.TYP_RECALL))
-			&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
 			&&(msg.sourceMajor()>0))
 			{
 				unInvoke();
@@ -73,12 +73,12 @@ public class Thief_Hide extends ThiefSkill
 			}
 			else
 			if((abilityCode()==0)
-			&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
 			&&(msg.othersMinor()!=CMMsg.TYP_LOOK)
 			&&(msg.othersMinor()!=CMMsg.TYP_EXAMINE)
 			&&(msg.othersMajor()>0))
 			{
-				if(Util.bset(msg.othersMajor(),CMMsg.MASK_SOUND))
+				if(CMath.bset(msg.othersMajor(),CMMsg.MASK_SOUND))
 				{
 					unInvoke();
 					mob.recoverEnvStats();

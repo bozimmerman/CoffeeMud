@@ -56,7 +56,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			&&(!Character.isWhitespace(s.charAt(index))))
 			    break;
 		}
-		int price=Util.s_int(s.substring(index+1).trim());
+		int price=CMath.s_int(s.substring(index+1).trim());
 			    
 		if(price<=0) price=100000;
 		return price;
@@ -89,8 +89,8 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		if(text().indexOf("/")<0) return 0;
 		int x=text().indexOf("TAX",text().indexOf("/"));
 		if(x<0) return 0;
-		String s=(String)Util.parse(text().substring(x+3)).firstElement();
-		return Util.s_int(s.substring(0,s.length()-1));
+		String s=(String)CMParms.parse(text().substring(x+3)).firstElement();
+		return CMath.s_int(s.substring(0,s.length()-1));
     }
 	public void setBackTaxes(int tax)
 	{	

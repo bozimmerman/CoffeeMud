@@ -62,7 +62,7 @@ public class QuestPoint extends StdItem
 				setContainer(null);
 				if(!mob.isMine(this))
 					mob.setQuestPoint(mob.getQuestPoint()+1);
-				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();
                 destroy();
 				return;

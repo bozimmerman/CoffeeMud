@@ -97,7 +97,7 @@ public class Thief_Comprehension extends ThiefSkill
 		&&(!msg.amISource((MOB)affected))
 		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-		   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
+		   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
 		&&(msg.tool() !=null)
 		&&(msg.sourceMessage()!=null)
 		&&(msg.tool() instanceof Ability)
@@ -107,7 +107,7 @@ public class Thief_Comprehension extends ThiefSkill
 			String str=this.getMsgFromAffect(msg.sourceMessage());
 			if(str!=null)
 			{
-				if(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
+				if(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
 					queue.addElement(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),this.subStitute(msg.othersMessage(),str)+" (translated from "+ID()+")"));
 				else
 				if(msg.amITarget(affected)&&(msg.targetMessage()!=null))

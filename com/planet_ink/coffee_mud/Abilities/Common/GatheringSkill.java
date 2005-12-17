@@ -91,12 +91,12 @@ public class GatheringSkill extends CommonSkill
 	public boolean bundle(MOB mob, Vector what)
 	{
 	    if((what.size()<3)
-	    ||(!Util.isNumber((String)what.elementAt(1))))
+	    ||(!CMath.isNumber((String)what.elementAt(1))))
 	    {
 	        commonTell(mob,"You must specify an amount to bundle, followed by what resource to bundle.");
 	        return false;
 	    }
-	    int amount=Util.s_int((String)what.elementAt(1));
+	    int amount=CMath.s_int((String)what.elementAt(1));
 	    if(amount<=0)
 	    {
 	        commonTell(mob,amount+" is not an appropriate amount.");
@@ -105,7 +105,7 @@ public class GatheringSkill extends CommonSkill
 	    int numHere=0;
 	    Room R=mob.location();
 	    if(R==null) return false;
-	    String name=Util.combine(what,2);
+	    String name=CMParms.combine(what,2);
 	    int foundResource=-1;
 	    Item foundAnyway=null;
 	    Vector maskV=myresources();

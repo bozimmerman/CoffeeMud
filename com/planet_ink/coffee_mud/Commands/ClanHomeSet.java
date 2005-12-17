@@ -45,7 +45,7 @@ public class ClanHomeSet extends BaseClanner
 
 		Room R=mob.location();
 		if(skipChecks)
-			R=CMLib.map().getRoom(Util.combine(commands,1));
+			R=CMLib.map().getRoom(CMParms.combine(commands,1));
 		else
 		{
 			commands.clear();

@@ -51,7 +51,7 @@ public class SlaveTrading extends CommonSkill
 			return false;
 		}
 
-		String str=Util.combine(commands,0);
+		String str=CMParms.combine(commands,0);
 		MOB M=mob.location().fetchInhabitant(str);
 		if(M!=null)
 		{

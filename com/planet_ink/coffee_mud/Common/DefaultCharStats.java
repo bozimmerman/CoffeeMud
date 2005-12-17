@@ -97,11 +97,11 @@ public class DefaultCharStats implements CharStats
 			String theLevel=levels.substring(0,x).trim();
 			levels=levels.substring(x+1);
 			if(theLevel.length()>0)
-				MyLevels.addElement(new Integer(Util.s_int(theLevel)));
+				MyLevels.addElement(new Integer(CMath.s_int(theLevel)));
 			x=levels.indexOf(";");
 		}
 		if(levels.trim().length()>0)
-			MyLevels.addElement(new Integer(Util.s_int(levels)));
+			MyLevels.addElement(new Integer(CMath.s_int(levels)));
 		Integer[] myNewLevels=new Integer[MyLevels.size()];
 		for(int i=0;i<MyLevels.size();i++)
 			myNewLevels[i]=(Integer)MyLevels.elementAt(i);
@@ -193,12 +193,12 @@ public class DefaultCharStats implements CharStats
 	}
 	public void setSaves(String str)
 	{
-		Vector V=Util.parseSemicolons(str,false);
+		Vector V=CMParms.parseSemicolons(str,false);
 		for(int x=CharStats.NUM_SAVE_START;x<CharStats.NUM_STATS;x++)
 		{
 			int vnum=x-CharStats.NUM_SAVE_START;
 			if((vnum<V.size())&&(vnum>=0))
-				stats[x]=Util.s_int((String)V.elementAt(vnum));
+				stats[x]=CMath.s_int((String)V.elementAt(vnum));
 		}
 	}
 	public void setRaceName(String newRaceName){raceName=newRaceName;}
@@ -381,12 +381,12 @@ public class DefaultCharStats implements CharStats
 	
 	public void setBodyPartStrAfterRace(String str)
 	{
-		Vector V=Util.parseSemicolons(str,true);
+		Vector V=CMParms.parseSemicolons(str,true);
 		bodyAlterations=null;
 		for(int i=0;i<getMyRace().bodyMask().length;i++)
 		{
 			if(V.size()<=i) break;
-			int val=Util.s_int((String)V.elementAt(i));
+			int val=CMath.s_int((String)V.elementAt(i));
 			int num=getMyRace().bodyMask()[i];
 			if(num!=val) alterBodypart(i,val-num);
 		}
@@ -422,9 +422,9 @@ public class DefaultCharStats implements CharStats
 		int[] chart=getMyRace().getAgingChart();
 		int diff=chart[Race.AGE_ANCIENT]-chart[Race.AGE_VENERABLE];
 		age=age-chart[Race.AGE_ANCIENT];
-		int num=(diff>0)?(int)Math.abs(Math.floor(Util.div(age,diff))):0;
+		int num=(diff>0)?(int)Math.abs(Math.floor(CMath.div(age,diff))):0;
 		if(num<=0) return Race.AGE_DESCS[cat];
-		return Race.AGE_DESCS[cat]+" "+Util.convertToRoman(num);
+		return Race.AGE_DESCS[cat]+" "+CMath.convertToRoman(num);
 	}
 	
 	public int getSave(int which)
@@ -432,25 +432,25 @@ public class DefaultCharStats implements CharStats
 		switch(which)
 		{
 		case SAVE_PARALYSIS:
-			return getStat(SAVE_PARALYSIS)+(int)Math.round(Util.div(getStat(CONSTITUTION)+getStat(STRENGTH),2.0));
+			return getStat(SAVE_PARALYSIS)+(int)Math.round(CMath.div(getStat(CONSTITUTION)+getStat(STRENGTH),2.0));
 		case SAVE_FIRE:
-			return getStat(SAVE_FIRE)+(int)Math.round(Util.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
+			return getStat(SAVE_FIRE)+(int)Math.round(CMath.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
 		case SAVE_COLD:
-			return getStat(SAVE_COLD)+(int)Math.round(Util.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
+			return getStat(SAVE_COLD)+(int)Math.round(CMath.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
 		case SAVE_WATER:
-			return getStat(SAVE_WATER)+(int)Math.round(Util.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
+			return getStat(SAVE_WATER)+(int)Math.round(CMath.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
 		case SAVE_GAS:
-			return getStat(SAVE_GAS)+(int)Math.round(Util.div(getStat(CONSTITUTION)+getStat(STRENGTH),2.0));
+			return getStat(SAVE_GAS)+(int)Math.round(CMath.div(getStat(CONSTITUTION)+getStat(STRENGTH),2.0));
 		case SAVE_MIND:
-			return getStat(SAVE_MIND)+(int)Math.round(Util.div(getStat(WISDOM)+getStat(INTELLIGENCE)+getStat(CHARISMA),3.0));
+			return getStat(SAVE_MIND)+(int)Math.round(CMath.div(getStat(WISDOM)+getStat(INTELLIGENCE)+getStat(CHARISMA),3.0));
 		case SAVE_GENERAL:
 			return getStat(SAVE_GENERAL)+getStat(CONSTITUTION);
 		case SAVE_JUSTICE:
 			return getStat(SAVE_JUSTICE)+getStat(CHARISMA);
 		case SAVE_ACID:
-			return getStat(SAVE_ACID)+(int)Math.round(Util.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
+			return getStat(SAVE_ACID)+(int)Math.round(CMath.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
 		case SAVE_ELECTRIC:
-			return getStat(SAVE_ELECTRIC)+(int)Math.round(Util.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
+			return getStat(SAVE_ELECTRIC)+(int)Math.round(CMath.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
 		case SAVE_POISON:
 			return getStat(SAVE_POISON)+getStat(CONSTITUTION);
 		case SAVE_UNDEAD:

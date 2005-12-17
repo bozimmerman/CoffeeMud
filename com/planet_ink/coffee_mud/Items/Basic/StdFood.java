@@ -108,7 +108,7 @@ public class StdFood extends StdItem implements Food
 				if(full)
 					mob.tell("You are full.");
 				this.destroy();
-				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();
 				break;
 			default:

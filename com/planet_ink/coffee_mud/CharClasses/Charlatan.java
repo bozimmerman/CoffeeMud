@@ -194,11 +194,11 @@ public class Charlatan extends StdCharClass
 			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,msg.tool().ID())<1))
 			{
 				Ability A=((Ability)msg.tool());
-				if(Util.bset(A.usageType(),Ability.USAGE_MANA))
+				if(CMath.bset(A.usageType(),Ability.USAGE_MANA))
 					myChar.curState().adjMana(A.usageCost(myChar)[Ability.USAGE_MANAINDEX]/4,myChar.maxState());
-				if(Util.bset(A.usageType(),Ability.USAGE_MOVEMENT))
+				if(CMath.bset(A.usageType(),Ability.USAGE_MOVEMENT))
 					myChar.curState().adjMovement(A.usageCost(myChar)[Ability.USAGE_MOVEMENTINDEX]/4,myChar.maxState());
-				if(Util.bset(A.usageType(),Ability.USAGE_HITPOINTS))
+				if(CMath.bset(A.usageType(),Ability.USAGE_HITPOINTS))
 					myChar.curState().adjMovement(A.usageCost(myChar)[Ability.USAGE_HITPOINTSINDEX]/4,myChar.maxState());
 			}
 		}

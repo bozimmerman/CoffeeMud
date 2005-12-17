@@ -92,7 +92,7 @@ public class Skill_Imitation extends BardSkill
 			if(target==null) target=mob.fetchInventory(null,(String)commands.lastElement());
 			if(target!=null) commands.removeElementAt(commands.size()-1);
 		}
-		String cmd=(commands.size()>0)?Util.combine(commands,0).toUpperCase():"";
+		String cmd=(commands.size()>0)?CMParms.combine(commands,0).toUpperCase():"";
 		StringBuffer str=new StringBuffer("");
 		String found=null;
 		for(Enumeration e=immitations.keys();e.hasMoreElements();)

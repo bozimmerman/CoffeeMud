@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
+import java.io.File;
 import java.io.IOException;
 
 /*
@@ -62,18 +63,9 @@ public class FileGrabber
 		webServer = a_webServer;
 	}
 
-	// static functions
-	
-	public static String fixFileName(String fn)
-	{
-		if (sep == '/')
-			return fn;
-		return fn.replace('/',sep);
-	}
-
 	public static String fixDirName(String fn)
 	{
-		fn = fixFileName(fn);
+		fn = fn.replace(File.separatorChar,'/');
 		if (fn.endsWith(sepStr))
 		{
 			if (fn.length() > 1)
@@ -93,9 +85,8 @@ public class FileGrabber
 	// form is stored
 	private boolean addPermittedDirectory(String virtPath, String actPath)
 	{
-		if (!virtPath.endsWith("/"))
-			virtPath += "/";
-	
+        virtPath=virtPath.replace(File.separatorChar,'/');
+		if (!virtPath.endsWith("/")) virtPath += "/";
 	
 		String cn;
 		try
@@ -108,7 +99,7 @@ public class FileGrabber
 			if (!f.isDirectory())
 				throw new IOException("path '" + f.getVFSPathAndName() + "' is not a directory!");
 
-			cn = virtPath+CMFile.vfsifyFilename(f.getCanonicalPath());
+			cn = CMFile.vfsifyFilename(f.getCanonicalPath());
 		
 			if (!cn.endsWith(sepStr))
 				cn += sep;
@@ -119,11 +110,8 @@ public class FileGrabber
 			return false;
 		}	
 
-		
-//		permittedDirectories.addElement( cn.toLowerCase() );
+		cn=cn.replace(File.separatorChar,'/');
 		virtualDirectories.put( virtPath, cn );
-//Log.errOut(webServer.getName(), "dbg: added " + virtPath +" , "+actPath+"=="+cn);
-
 		return true;
 	}
 	
@@ -131,7 +119,6 @@ public class FileGrabber
 
 	public boolean setBaseDirectory(String basePath)
 	{
-//		baseDir = fixDirName(pathName);
 		return addPermittedDirectory("/",fixDirName(basePath));
 	}
 	
@@ -143,9 +130,8 @@ public class FileGrabber
 	public GrabbedFile grabFile(String fn)
 	{
 		GrabbedFile gf = new GrabbedFile();
-		if (!fn.startsWith("/"))
-			fn = '/' + fn;
-
+        fn=fn.replace(File.separatorChar,'/');
+		if (!fn.startsWith("/")) fn = '/' + fn;
 		
 		String baseDir = "";
 		String fn2="";
@@ -155,14 +141,18 @@ public class FileGrabber
 			{
 
 				String searchPath = fn;
-				if (!searchPath.endsWith("/"))
-					searchPath += '/';
+                String ssp=null;
+                int x=0;
+				if (!searchPath.endsWith("/")) searchPath += '/';
 				while (searchPath.length() > 1 && !virtualDirectories.containsKey(searchPath))
 				{
-					fn2 = searchPath.substring(searchPath.lastIndexOf('/',searchPath.lastIndexOf('/')-1)) + fn2;
-
-					searchPath = searchPath.substring(0,searchPath.lastIndexOf('/',
-						searchPath.lastIndexOf('/')-1)+1);
+                    x=searchPath.lastIndexOf('/',searchPath.lastIndexOf('/')-1);
+                    ssp=searchPath.substring(x);
+                    if(fn2.startsWith("/")&&(ssp.endsWith("/"))) 
+    					fn2 = searchPath.substring(x) + fn2.substring(1);
+                    else
+                        fn2 = searchPath.substring(x) + fn2;
+					searchPath = searchPath.substring(0,x+1);
 				}
 				baseDir = (String)virtualDirectories.get(searchPath);
 				if (baseDir == null)
@@ -179,18 +169,16 @@ public class FileGrabber
 			}
 
 
-			String filename = fixFileName(fn2);
+			String filename = fn2.replace(File.separatorChar,'/');
 
 			try
 			{
-				String fullFilename = new String(baseDir + filename);
-//Log.errOut(webServer.getName(), "qqq: " + filename + "  " + fullFilename);
-				
-//				if (!filename.startsWith(sepStr))
-//					fullFilenameBuf.append(sepStr);
-//				fullFilenameBuf.append(filename);
-	
-//				gf.file = new File(fullFilenameBuf.toString());
+                String fullFilename=null;
+                if(filename.startsWith("/")&&baseDir.endsWith("/"))
+                    fullFilename = new String(baseDir.substring(0,baseDir.length()-1) + filename);
+                else
+                    fullFilename=baseDir+filename;
+                if(fullFilename.endsWith("/")) fullFilename=fullFilename.substring(0,fullFilename.length()-1);
 				gf.file = new CMFile(fullFilename,null,true);
 			}
 			catch (Exception e)
@@ -202,7 +190,6 @@ public class FileGrabber
 			
 			if (gf.file == null)	//?
 			{
-//pointless - it's null already!				gf.file = null;
 				gf.state = GrabbedFile.STATE_NOT_FOUND;
 				return gf;
 			}
@@ -210,25 +197,12 @@ public class FileGrabber
 
 
 			String canonName = baseDir+CMFile.vfsifyFilename(gf.file.getCanonicalPath());
-///			boolean foundPath = false;
 
 			if (gf.file.isDirectory())
 			{
 				if (!canonName.endsWith(sepStr))
 					canonName += sep;
 			}
-/*
-			for (int i=0; i<permittedDirectories.size(); ++i)
-			{
-//				if ( canonName.toLowerCase().startsWith((String)permittedDirectories.elementAt(i)) )
-				if ( canonName.startsWith((String)permittedDirectories.elementAt(i)) )
-				{
-					foundPath = true;
-					break;
-				}
-			}
-			if (!foundPath)
-*/
 			if (!canonName.startsWith(baseDir))
 			{
 				Log.errOut(webServer.getName(), "ALERT: attempt to access '" + fn +"'");
@@ -236,8 +210,6 @@ public class FileGrabber
 				gf.state = GrabbedFile.STATE_SECURITY_VIOLATION;
 				return gf;
 			}
-			
-			
 			if (!gf.file.exists())
 			{
 				gf.file = null;

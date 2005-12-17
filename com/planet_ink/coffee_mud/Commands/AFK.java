@@ -44,7 +44,7 @@ public class AFK extends StdCommand
 			mob.session().setAfkFlag(false);
 		else
         {
-            mob.session().setAFKMessage(Util.combine(commands,1));
+            mob.session().setAFKMessage(CMParms.combine(commands,1));
 			mob.session().setAfkFlag(true);
         }
 		return false;

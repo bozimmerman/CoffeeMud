@@ -186,19 +186,19 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					switch(type)
 					{
 					case Ability.SPELL:
-						prepend.append(Util.padRight("Spell",9));
+						prepend.append(CMStrings.padRight("Spell",9));
 						break;
 					case Ability.PRAYER:
-						prepend.append(Util.padRight("Prayer",9));
+						prepend.append(CMStrings.padRight("Prayer",9));
 						break;
 					case Ability.CHANT:
-						prepend.append(Util.padRight("Chant",9));
+						prepend.append(CMStrings.padRight("Chant",9));
 						break;
 					case Ability.SONG:
-						prepend.append(Util.padRight("Song",9));
+						prepend.append(CMStrings.padRight("Song",9));
 						break;
 					default:
-						prepend.append(Util.padRight("Skill",9));
+						prepend.append(CMStrings.padRight("Skill",9));
 						break;
 					}
 					prepend.append(": "+A.name());
@@ -206,7 +206,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					{
 						prepend.append("\n\rSchool   : ");
 						int school=(A.classificationCode()&Ability.ALL_DOMAINS)>>5;
-						prepend.append(Util.capitalizeAndLower(Ability.DOMAIN_DESCS[school]));
+						prepend.append(CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[school]));
 					}
 					Vector avail=new Vector();
 					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
@@ -231,7 +231,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					    {
 					        Faction F=(Faction)e.nextElement();
 					        if(F.usageFactors(A).length()>0)
-					            prepend.append("\n\r"+Util.capitalizeAndLower(F.name())+": "+F.usageFactors(A));
+					            prepend.append("\n\r"+CMStrings.capitalizeAndLower(F.name())+": "+F.usageFactors(A));
 					    }
 					}
 					if(!A.isAutoInvoked())
@@ -239,11 +239,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						prepend.append("\n\rUse Cost : ");
 						if(A.usageType()==Ability.USAGE_NADA)
 							prepend.append("None");
-						if(Util.bset(A.usageType(),Ability.USAGE_MANA))
+						if(CMath.bset(A.usageType(),Ability.USAGE_MANA))
 							prepend.append("Mana ("+getActualUsage(A,Ability.USAGE_MANA,forMOB)+") ");
-						if(Util.bset(A.usageType(),Ability.USAGE_MOVEMENT))
+						if(CMath.bset(A.usageType(),Ability.USAGE_MOVEMENT))
 							prepend.append("Movement ("+getActualUsage(A,Ability.USAGE_MOVEMENT,forMOB)+") ");
-						if(Util.bset(A.usageType(),Ability.USAGE_HITPOINTS))
+						if(CMath.bset(A.usageType(),Ability.USAGE_HITPOINTS))
 							prepend.append("Hit Points ("+getActualUsage(A,Ability.USAGE_HITPOINTS,forMOB)+") ");
 						prepend.append("\n\rQuality  : ");
 						switch(A.quality())

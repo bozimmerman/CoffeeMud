@@ -53,7 +53,7 @@ public class Shutdown extends StdCommand
 			{ noPrompt=true; commands.removeElementAt(i); }
 		}
 		if((!keepItDown)&&(commands.size()>1))
-			externalCommand=Util.combine(commands,1);
+			externalCommand=CMParms.combine(commands,1);
 
 		if((!noPrompt)
 		&&(!mob.session().confirm("Are you fully aware of the consequences of this act (y/N)?","N")))

@@ -39,15 +39,15 @@ public class Prop_NoPKill extends Property
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(((Util.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
-		||(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
-		||(Util.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)))
+		if(((CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
+		||(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		||(CMath.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)))
 			&&(msg.target()!=null)
 			&&(msg.target() instanceof MOB)
 		    &&(!((MOB)msg.target()).isMonster())
 		    &&(!msg.source().isMonster()))
 		{
-			if(Util.s_int(text())==0)
+			if(CMath.s_int(text())==0)
 			{
 				msg.source().tell("Player killing is forbidden here.");
 				msg.source().setVictim(null);
@@ -55,9 +55,9 @@ public class Prop_NoPKill extends Property
 			}
 			int levelDiff=msg.source().envStats().level()-((MOB)msg.target()).envStats().level();
 			if(levelDiff<0) levelDiff=levelDiff*-1;
-			if(levelDiff>Util.s_int(text()))
+			if(levelDiff>CMath.s_int(text()))
 			{
-				msg.source().tell("Player killing is forbidden for characters whose level difference is greater than "+Util.s_int(text())+".");
+				msg.source().tell("Player killing is forbidden for characters whose level difference is greater than "+CMath.s_int(text())+".");
 				msg.source().setVictim(null);
 				return false;
 			}

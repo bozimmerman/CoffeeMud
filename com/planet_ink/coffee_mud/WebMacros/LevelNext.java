@@ -47,7 +47,7 @@ public class LevelNext extends StdWebMacro
 		if((last==null)||(last.length()>0))
 		{
 			int level=0;
-			if(last!=null) level=Util.s_int(last);
+			if(last!=null) level=CMath.s_int(last);
 			level++;
 			if(level<=30)
 			{

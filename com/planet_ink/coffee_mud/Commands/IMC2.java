@@ -65,13 +65,13 @@ public class IMC2 extends StdCommand
 			CMLib.intermud().giveIMC2MudList(mob);
 		else
 		if(str.equalsIgnoreCase("locate"))
-			CMLib.intermud().i3locate(mob,Util.combine(commands,1));
+			CMLib.intermud().i3locate(mob,CMParms.combine(commands,1));
 		else
 		if(str.equalsIgnoreCase("channels"))
 			CMLib.intermud().giveIMC2ChannelsList(mob);
 		else
 		if(str.equalsIgnoreCase("info"))
-			CMLib.intermud().imc2mudInfo(mob,Util.combine(commands,1));
+			CMLib.intermud().imc2mudInfo(mob,CMParms.combine(commands,1));
 		else
 			IMC2Error(mob);
 

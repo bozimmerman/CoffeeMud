@@ -77,7 +77,7 @@ public class Spell_Spellbinding extends Spell
 		{
 			ByteArrayOutputStream bytes=new ByteArrayOutputStream();
 			new ObjectOutputStream(bytes).writeObject(spellbindings);
-			return Util.toSemicolonList(bytes.toByteArray())+";";
+			return CMParms.toSemicolonList(bytes.toByteArray())+";";
 		}
 		catch(Exception e)
 		{
@@ -94,7 +94,7 @@ public class Spell_Spellbinding extends Spell
 		{
 			try
 			{
-				ByteArrayInputStream bytes=new ByteArrayInputStream(Util.fromByteList(text));
+				ByteArrayInputStream bytes=new ByteArrayInputStream(CMParms.fromByteList(text));
 				spellbindings=(DVector)new ObjectInputStream(bytes).readObject();
 			}
 			catch(Exception e)
@@ -144,7 +144,7 @@ public class Spell_Spellbinding extends Spell
 						int curMana=msg.source().curState().getMana();
 						msg.source().curState().setMana(1000);
 						if(msg.target()!=null)
-							A.invoke(msg.source(),Util.parse(msg.target().Name()),null,false,0);
+							A.invoke(msg.source(),CMParms.parse(msg.target().Name()),null,false,0);
 						else
 							A.invoke(msg.source(),new Vector(),null,false,0);
 						msg.source().curState().setMana(curMana);
@@ -176,7 +176,7 @@ public class Spell_Spellbinding extends Spell
 		}
 		String key=(String)commands.elementAt(0);
 		commands.removeElementAt(0);
-		String combined=Util.combine(commands,0);
+		String combined=CMParms.combine(commands,0);
 		DVector V=new DVector(2);
 		Ability A=mob.fetchAbility(combined);
 		if(A!=null)

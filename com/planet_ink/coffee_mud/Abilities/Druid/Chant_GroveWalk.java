@@ -47,7 +47,7 @@ public class Chant_GroveWalk extends Chant
 			mob.tell("You must specify the name of the location of another grove where there is a druidic monument.");
 			return false;
 		}
-		String areaName=Util.combine(commands,0).trim().toUpperCase();
+		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 
 
 		Room newRoom=null;
@@ -80,7 +80,7 @@ public class Chant_GroveWalk extends Chant
 		}
 		if(newRoom==null)
 		{
-			mob.tell("You can't seem to fixate on a place called '"+Util.combine(commands,0)+"', perhaps it is not a grove?");
+			mob.tell("You can't seem to fixate on a place called '"+CMParms.combine(commands,0)+"', perhaps it is not a grove?");
 			return false;
 		}
 

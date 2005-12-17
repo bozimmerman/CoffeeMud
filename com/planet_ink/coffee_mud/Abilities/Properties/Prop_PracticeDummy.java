@@ -76,7 +76,7 @@ public class Prop_PracticeDummy extends Property
 			    return false;
 			}
 			else
-			if(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+			if(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			{
 				if(unkillable)
 					msg.source().curState().setHitPoints(99999);

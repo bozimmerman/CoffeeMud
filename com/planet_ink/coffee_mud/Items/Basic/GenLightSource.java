@@ -51,7 +51,7 @@ public class GenLightSource extends LightSource
 
 
 	public void setDuration(int duration){readableText=""+duration;}
-	public int getDuration(){return Util.s_int(readableText);}
+	public int getDuration(){return CMath.s_int(readableText);}
 	
 	public boolean isGeneric(){return true;}
 

@@ -65,7 +65,7 @@ public class Spell_Ventriloquate extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_SPEAK,"^T<T-NAME> say(s) '"+Util.combine(commands,1)+"'^?.");
+				mob.location().show(mob,target,CMMsg.MSG_SPEAK,"^T<T-NAME> say(s) '"+CMParms.combine(commands,1)+"'^?.");
 			}
 
 		}

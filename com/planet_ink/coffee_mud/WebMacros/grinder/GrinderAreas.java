@@ -155,10 +155,10 @@ public class GrinderAreas
 		// climate
 		if(httpReq.isRequestParameter("CLIMATE"))
 		{
-			int climate=Util.s_int(httpReq.getRequestParameter("CLIMATE"));
+			int climate=CMath.s_int(httpReq.getRequestParameter("CLIMATE"));
 			for(int i=1;;i++)
 				if(httpReq.isRequestParameter("CLIMATE"+(new Integer(i).toString())))
-					climate=climate|Util.s_int(httpReq.getRequestParameter("CLIMATE"+(new Integer(i).toString())));
+					climate=climate|CMath.s_int(httpReq.getRequestParameter("CLIMATE"+(new Integer(i).toString())));
 				else
 					break;
 			A.setClimateType(climate);
@@ -166,7 +166,7 @@ public class GrinderAreas
 
 		// tech level
 		if(httpReq.isRequestParameter("TECHLEVEL"))
-			A.setClimateType(Util.s_int(httpReq.getRequestParameter("TECHLEVEL")));
+			A.setClimateType(CMath.s_int(httpReq.getRequestParameter("TECHLEVEL")));
 
 		// modify subop list
 		String subOps=httpReq.getRequestParameter("SUBOPS");

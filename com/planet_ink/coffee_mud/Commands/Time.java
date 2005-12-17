@@ -42,7 +42,7 @@ public class Time extends StdCommand
 	private String numAppendage(int num)
 	{
 	    String strn=""+num;
-		switch(Util.s_int(""+(strn).charAt(strn.length()-1)))
+		switch(CMath.s_int(""+(strn).charAt(strn.length()-1)))
 		{
 		case 1: return "st";
 		case 2: return "nd";
@@ -79,7 +79,7 @@ public class Time extends StdCommand
 			timeDesc.append("the "+bday+numAppendage(bday));
 			timeDesc.append(" day of "+C.getMonthNames()[bmonth-1]);
 			if(C.getYearNames().length>0)
-				timeDesc.append(", "+Util.replaceAll(C.getYearNames()[year%C.getYearNames().length],"#",""+year));
+				timeDesc.append(", "+CMStrings.replaceAll(C.getYearNames()[year%C.getYearNames().length],"#",""+year));
 			mob.tell("Your next birthday is "+timeDesc.toString()+".");
 		}
 		return false;

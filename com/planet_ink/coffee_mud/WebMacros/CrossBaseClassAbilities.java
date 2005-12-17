@@ -101,7 +101,7 @@ public class CrossBaseClassAbilities extends StdWebMacro
 				{
 					Integer I=(Integer)levelssum.elementAt(i);
 					Integer I2=(Integer)numberare.elementAt(i);
-					double avg=Util.div(I.intValue(),I2.intValue());
+					double avg=CMath.div(I.intValue(),I2.intValue());
 					if(avg<lowAvg)
 					{
 						lowAvg=avg;

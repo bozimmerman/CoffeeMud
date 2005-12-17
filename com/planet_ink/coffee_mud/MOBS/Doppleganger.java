@@ -104,7 +104,7 @@ public class Doppleganger extends StdMOB
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if((msg.amITarget(this))&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)))
+		if((msg.amITarget(this))&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)))
 		{
 			if(mimicing!=null)
 			{

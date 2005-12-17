@@ -57,7 +57,7 @@ public class PlayerList extends StdWebMacro
 				if ( CMSecurity.isASysOp(m) )
 					s.append("Archon");
 				s.append("\">");
-				s.append(Util.removeColors(m.Name().equals(m.name())?m.titledName():m.name()));
+				s.append(CMStrings.removeColors(m.Name().equals(m.name())?m.titledName():m.name()));
 				s.append(" ");
 				if (m.charStats().getMyRace()!= null && m.charStats().raceName()!=null
 					&& m.charStats().raceName().length() > 0

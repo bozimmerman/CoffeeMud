@@ -90,7 +90,7 @@ public class Thief_Mark extends ThiefSkill
 				MOB M=mob.location().fetchInhabitant(text().substring(0,x));
 				if(M!=null)
 					mark=M;
-				ticks=Util.s_int(text().substring(x+1));
+				ticks=CMath.s_int(text().substring(x+1));
 			}
 			else
 			if(mob.location().isInhabitant(mark)

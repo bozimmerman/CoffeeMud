@@ -41,7 +41,7 @@ public class ClanExile extends BaseClanner
 	{
 		boolean skipChecks=mob.Name().equals(mob.getClanID());
 		commands.setElementAt("clanexile",0);
-		String qual=Util.combine(commands,1).toUpperCase();
+		String qual=CMParms.combine(commands,1).toUpperCase();
 		StringBuffer msg=new StringBuffer("");
 		Clan C=null;
 		boolean found=false;

@@ -82,9 +82,9 @@ public class DefaultClan implements Clan
             else
             {
                 lastClanKillRecord=(String)((Vector)V.firstElement()).elementAt(3);
-                V=Util.parseSemicolons(lastClanKillRecord,true);
+                V=CMParms.parseSemicolons(lastClanKillRecord,true);
                 for(int v=0;v<V.size();v++)
-                    clanKills.addElement(new Long(Util.s_long((String)V.elementAt(v))));
+                    clanKills.addElement(new Long(CMath.s_long((String)V.elementAt(v))));
             }
         }
     }
@@ -427,11 +427,11 @@ public class DefaultClan implements Clan
                   +"-----------------------------------------------------------------\n\r"
                   +getPremise()+"\n\r"
                   +"-----------------------------------------------------------------\n\r"
-                  +"^xType            :^.^N "+Util.capitalizeAndLower(GVT_DESCS[getGovernment()])+"\n\r"
+                  +"^xType            :^.^N "+CMStrings.capitalizeAndLower(GVT_DESCS[getGovernment()])+"\n\r"
                   +"^xQualifications  :^.^N "+((getAcceptanceSettings().length()==0)?"Anyone may apply":CMLib.masking().maskDesc(getAcceptanceSettings()))+"\n\r");
         msg.append("^xExp. Tax Rate   :^.^N "+((int)Math.round(getTaxes()*100))+"%\n\r");
         if((mob.getClanID().equalsIgnoreCase(ID()))
-        ||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
+        ||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
         {
             msg.append("^xExperience Pts. :^.^N "+getExp()+"\n\r");
             if(getMorgue().length()>0)
@@ -448,43 +448,43 @@ public class DefaultClan implements Clan
             }
             msg.append("^xExperience Pts. :^.^N "+getExp()+"\n\r");
         }
-        msg.append("^x"+Util.padRight(CMLib.clans().getRoleName(getGovernment(),POS_BOSS,true,true),16)+":^.^N "+crewList(POS_BOSS)+"\n\r"
-                  +"^x"+Util.padRight(CMLib.clans().getRoleName(getGovernment(),POS_LEADER,true,true),16)+":^.^N "+crewList(POS_LEADER)+"\n\r"
-                  +"^x"+Util.padRight(CMLib.clans().getRoleName(getGovernment(),POS_TREASURER,true,true),16)+":^.^N "+crewList(POS_TREASURER)+"\n\r"
-                  +"^x"+Util.padRight(CMLib.clans().getRoleName(getGovernment(),POS_ENCHANTER,true,true),16)+":^.^N "+crewList(POS_ENCHANTER)+"\n\r"
-                  +"^x"+Util.padRight(CMLib.clans().getRoleName(getGovernment(),POS_STAFF,true,true),16)+":^.^N "+crewList(POS_STAFF)+"\n\r"
+        msg.append("^x"+CMStrings.padRight(CMLib.clans().getRoleName(getGovernment(),POS_BOSS,true,true),16)+":^.^N "+crewList(POS_BOSS)+"\n\r"
+                  +"^x"+CMStrings.padRight(CMLib.clans().getRoleName(getGovernment(),POS_LEADER,true,true),16)+":^.^N "+crewList(POS_LEADER)+"\n\r"
+                  +"^x"+CMStrings.padRight(CMLib.clans().getRoleName(getGovernment(),POS_TREASURER,true,true),16)+":^.^N "+crewList(POS_TREASURER)+"\n\r"
+                  +"^x"+CMStrings.padRight(CMLib.clans().getRoleName(getGovernment(),POS_ENCHANTER,true,true),16)+":^.^N "+crewList(POS_ENCHANTER)+"\n\r"
+                  +"^x"+CMStrings.padRight(CMLib.clans().getRoleName(getGovernment(),POS_STAFF,true,true),16)+":^.^N "+crewList(POS_STAFF)+"\n\r"
                   +"^xTotal Members   :^.^N "+getSize()+"\n\r");
         if(CMLib.clans().numClans()>1)
         {
             msg.append("-----------------------------------------------------------------\n\r");
-            msg.append("^x"+Util.padRight("Clan Relations",16)+":^.^N \n\r");
+            msg.append("^x"+CMStrings.padRight("Clan Relations",16)+":^.^N \n\r");
             for(Enumeration e=CMLib.clans().allClans();e.hasMoreElements();)
             {
                 Clan C=(Clan)e.nextElement();
                 if(C!=this)
                 {
-                    msg.append("^x"+Util.padRight(C.name(),16)+":^.^N ");
-                    msg.append(Util.capitalizeAndLower(REL_DESCS[getClanRelations(C.clanID())]));
+                    msg.append("^x"+CMStrings.padRight(C.name(),16)+":^.^N ");
+                    msg.append(CMStrings.capitalizeAndLower(REL_DESCS[getClanRelations(C.clanID())]));
                     int orel=C.getClanRelations(ID());
                     if(orel!=REL_NEUTRAL)
-                        msg.append(" (<-"+Util.capitalizeAndLower(REL_DESCS[orel])+")");
+                        msg.append(" (<-"+CMStrings.capitalizeAndLower(REL_DESCS[orel])+")");
                     msg.append("\n\r");
                 }
             }
         }
         if((mob.getClanID().equalsIgnoreCase(ID()))
-        ||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
+        ||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
         {
             if(mob.getClanID().equalsIgnoreCase(ID()))
                 updateClanPrivileges(mob);
             msg.append("-----------------------------------------------------------------\n\r"
-                      +"^x"+Util.padRight(CMLib.clans().getRoleName(getGovernment(),POS_MEMBER,true,true),16)
+                      +"^x"+CMStrings.padRight(CMLib.clans().getRoleName(getGovernment(),POS_MEMBER,true,true),16)
                       +":^.^N "+crewList(POS_MEMBER)+"\n\r");
             if((allowedToDoThis(mob,FUNC_CLANACCEPT)>=0)
-            ||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
+            ||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
             {
                 msg.append("-----------------------------------------------------------------\n\r"
-                        +"^x"+Util.padRight(CMLib.clans().getRoleName(getGovernment(),POS_APPLICANT,true,true),16)+":^.^N "+crewList(POS_APPLICANT)+"\n\r");
+                        +"^x"+CMStrings.padRight(CMLib.clans().getRoleName(getGovernment(),POS_APPLICANT,true,true),16)+":^.^N "+crewList(POS_APPLICANT)+"\n\r");
             }
         }
         Vector control=new Vector();
@@ -505,7 +505,7 @@ public class DefaultClan implements Clan
                     msg.append("\n\r");
                     col=1;
                 }
-                msg.append(Util.padRight((String)control.elementAt(i),23)+"^N");
+                msg.append(CMStrings.padRight((String)control.elementAt(i),23)+"^N");
             }
             msg.append("\n\r");
         }
@@ -514,7 +514,7 @@ public class DefaultClan implements Clan
             msg.append("-----------------------------------------------------------------\n\r");
             msg.append("^xTrophies awarded:^.^N\n\r");
             for(int i=0;i<TROPHY_DESCS.length;i++)
-                if((TROPHY_DESCS[i].length()>0)&&(Util.bset(getTrophies(),i)))
+                if((TROPHY_DESCS[i].length()>0)&&(CMath.bset(getTrophies(),i)))
                 {
                     msg.append(TROPHY_DESCS[i]+" ");
                     switch(i){
@@ -554,7 +554,7 @@ public class DefaultClan implements Clan
         {
         case TYPE_CLAN:
             if((getGovernment()>=0)&&(getGovernment()<GVT_DESCS.length))
-                return Util.capitalizeAndLower(GVT_DESCS[getGovernment()].toLowerCase());
+                return CMStrings.capitalizeAndLower(GVT_DESCS[getGovernment()].toLowerCase());
         }
         return "Clan";
     }
@@ -987,20 +987,20 @@ public class DefaultClan implements Clan
                 switch(getGovernment())
                 {
                 case GVT_DEMOCRACY:
-                    data=Util.parseCommas(CMProps.getVar(CMProps.SYSTEM_CLANVOTED),false);
+                    data=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_CLANVOTED),false);
                     break;
                 case GVT_OLIGARCHY:
-                    data=Util.parseCommas(CMProps.getVar(CMProps.SYSTEM_CLANVOTEO),false);
+                    data=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_CLANVOTEO),false);
                     break;
                 case GVT_REPUBLIC:
-                    data=Util.parseCommas(CMProps.getVar(CMProps.SYSTEM_CLANVOTER),false);
+                    data=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_CLANVOTER),false);
                     break;
                 default:
                     data=new Vector();
                     break;
                 }
                 long duration=54;
-                if(data.size()>0) duration=Util.s_long((String)data.firstElement());
+                if(data.size()>0) duration=CMath.s_long((String)data.firstElement());
                 if(duration<=0) duration=54;
                 duration=duration*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*MudHost.TICK_TIME;
                 for(Enumeration e=votes();e.hasMoreElements();)
@@ -1008,8 +1008,8 @@ public class DefaultClan implements Clan
                     ClanVote CV=(ClanVote)e.nextElement();
                     int numVotes=getNumVoters(CV.function);
                     int quorum=50;
-                    if(data.size()>1) quorum=Util.s_int((String)data.lastElement());
-                    quorum=(int)Math.round(Util.mul(Util.div(quorum,100.0),numVotes));
+                    if(data.size()>1) quorum=CMath.s_int((String)data.lastElement());
+                    quorum=(int)Math.round(CMath.mul(CMath.div(quorum,100.0),numVotes));
                     if(quorum<2) quorum=2;
                     if(numVotes==1) quorum=1;
                     long endsOn=CV.voteStarted+duration;
@@ -1053,7 +1053,7 @@ public class DefaultClan implements Clan
                                         if(mob.location()==null)
                                             mob.setLocation(CMLib.map().getRandomRoom());
                                     }
-                                    Vector V=Util.parse(CV.matter);
+                                    Vector V=CMParms.parse(CV.matter);
                                     mob.doCommand(V);
                                     mob.destroy();
                                 }
@@ -1087,14 +1087,14 @@ public class DefaultClan implements Clan
                     }
                     if(winner==this)
                     {
-                        if((!Util.bset(getTrophies(),TROPHY_EXP))&&(getExp()>0))
+                        if((!CMath.bset(getTrophies(),TROPHY_EXP))&&(getExp()>0))
                         {
                             setTrophies(getTrophies()|TROPHY_EXP);
                             CMLib.clans().clanAnnounceAll("The "+typeName()+" "+name()+" has been awarded the trophy for "+TROPHY_DESCS[TROPHY_EXP]+".");
                         }
                     }
                     else
-                    if(Util.bset(getTrophies(),TROPHY_EXP))
+                    if(CMath.bset(getTrophies(),TROPHY_EXP))
                     {
                         setTrophies(getTrophies()-TROPHY_EXP);
                         clanAnnounce("The "+typeName()+" "+name()+" has lost control of the trophy for "+TROPHY_DESCS[TROPHY_EXP]+".");
@@ -1113,7 +1113,7 @@ public class DefaultClan implements Clan
                     }
                     if(winner==this)
                     {
-                        if((!Util.bset(getTrophies(),TROPHY_PK))
+                        if((!CMath.bset(getTrophies(),TROPHY_PK))
                         &&(getCurrentClanKills()>0))
                         {
                             setTrophies(getTrophies()|TROPHY_PK);
@@ -1121,7 +1121,7 @@ public class DefaultClan implements Clan
                         }
                     }
                     else
-                    if(Util.bset(getTrophies(),TROPHY_PK))
+                    if(CMath.bset(getTrophies(),TROPHY_PK))
                     {
                         setTrophies(getTrophies()-TROPHY_PK);
                         clanAnnounce("The "+typeName()+" "+name()+" has lost control of the trophy for "+TROPHY_DESCS[TROPHY_PK]+".");
@@ -1158,14 +1158,14 @@ public class DefaultClan implements Clan
                     &&(CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA).length()>0)
                     &&(mostClansControlled>0))
                     {
-                        if(!Util.bset(getTrophies(),TROPHY_AREA))
+                        if(!CMath.bset(getTrophies(),TROPHY_AREA))
                         {
                             setTrophies(getTrophies()|TROPHY_AREA);
                             CMLib.clans().clanAnnounceAll("The "+typeName()+" "+name()+" has been awarded the trophy for "+TROPHY_DESCS[TROPHY_AREA]+".");
                         }
                     }
                     else
-                    if(Util.bset(getTrophies(),TROPHY_AREA))
+                    if(CMath.bset(getTrophies(),TROPHY_AREA))
                     {
                         setTrophies(getTrophies()-TROPHY_AREA);
                         clanAnnounce("The "+typeName()+" "+name()+" has lost control of the trophy for "+TROPHY_DESCS[TROPHY_AREA]+".");
@@ -1174,14 +1174,14 @@ public class DefaultClan implements Clan
                     &&(CMProps.getVar(CMProps.SYSTEM_CLANTROPCP).length()>0)
                     &&(mostControlPoints>0))
                     {
-                        if(!Util.bset(getTrophies(),TROPHY_CONTROL))
+                        if(!CMath.bset(getTrophies(),TROPHY_CONTROL))
                         {
                             setTrophies(getTrophies()|TROPHY_CONTROL);
                             CMLib.clans().clanAnnounceAll("The "+typeName()+" "+name()+" has been awarded the trophy for "+TROPHY_DESCS[TROPHY_CONTROL]+".");
                         }
                     }
                     else
-                    if(Util.bset(getTrophies(),TROPHY_CONTROL))
+                    if(CMath.bset(getTrophies(),TROPHY_CONTROL))
                     {
                         setTrophies(getTrophies()-TROPHY_CONTROL);
                         clanAnnounce("The "+typeName()+" "+name()+" has lost control of the trophy for "+TROPHY_DESCS[TROPHY_CONTROL]+".");
@@ -1209,7 +1209,7 @@ public class DefaultClan implements Clan
         boolean changed=false;
         if((getTaxes()>0.0)&&(exp>1))
         {
-            int clanshare=(int)Math.round(Util.mul(exp,getTaxes()));
+            int clanshare=(int)Math.round(CMath.mul(exp,getTaxes()));
             if(clanshare>0)
             {
                 exp-=clanshare;
@@ -1219,7 +1219,7 @@ public class DefaultClan implements Clan
         }
         for(int i=0;i<TROPHY_DESCS_SHORT.length;i++)
             if((TROPHY_DESCS_SHORT[i].length()>0)
-            &&(Util.bset(getTrophies(),i)))
+            &&(CMath.bset(getTrophies(),i)))
             {
                 String awardStr=null;
                 switch(i)
@@ -1233,17 +1233,17 @@ public class DefaultClan implements Clan
                 {
                     int amount=0;
                     double pct=0.0;
-                    Vector V=Util.parse(awardStr);
+                    Vector V=CMParms.parse(awardStr);
                     if(V.size()>=2)
                     {
                         String type=((String)V.lastElement()).toUpperCase();
                         String amt=(String)V.firstElement();
                         if(amt.endsWith("%"))
-                            pct=Util.div(Util.s_int(amt.substring(0,amt.length()-1)),100.0);
+                            pct=CMath.div(CMath.s_int(amt.substring(0,amt.length()-1)),100.0);
                         else
-                            amount=Util.s_int(amt);
+                            amount=CMath.s_int(amt);
                         if("EXPERIENCE".startsWith(type))
-                            exp+=((int)Math.round(Util.mul(exp,pct)))+amount;
+                            exp+=((int)Math.round(CMath.mul(exp,pct)))+amount;
                     }
                 }
             }

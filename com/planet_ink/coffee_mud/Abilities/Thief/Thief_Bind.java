@@ -67,9 +67,9 @@ public class Thief_Bind extends ThiefSkill
 		// from trying to do ANYTHING except sleep
 		if(msg.amISource(mob))
 		{
-			if((!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
-			&&((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
+			if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
 			{
 				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against "+ropeName+" binding <S-HIM-HER>."))
 				{
@@ -167,7 +167,7 @@ public class Thief_Bind extends ThiefSkill
 						maxRange=0;
 						double prof=0.0;
 						Ability A=mob.fetchAbility("Specialization_Ranged");
-						if(A!=null) prof=Util.div(A.profficiency(),20);
+						if(A!=null) prof=CMath.div(A.profficiency(),20);
 						amountRemaining=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level())*((int)Math.round(5.0+prof));
 					}
 					else

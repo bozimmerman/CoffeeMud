@@ -170,7 +170,7 @@ public class Prayer_Vampirism extends Prayer
 					CMLib.commands().get(M,null,(Item)D,false);
 					if(M.isMine(D))
 					{
-						M.doCommand(Util.parse("DRINK "+D.Name()));
+						M.doCommand(CMParms.parse("DRINK "+D.Name()));
 						if(M.isMine(D))
 							((Item)D).destroy();
 					}
@@ -181,7 +181,7 @@ public class Prayer_Vampirism extends Prayer
 				if(B!=null)
 				{
 					Ability A=CMClass.getAbility("Butchering");
-					if(A!=null) A.invoke(M,Util.parse(B.Name()),B,true,0);
+					if(A!=null) A.invoke(M,CMParms.parse(B.Name()),B,true,0);
 				}
 				else
 				if(CMLib.dice().rollPercentage()<10)

@@ -60,7 +60,7 @@ public class StdCageRideable extends StdRideable
 			if(CMLib.flags().canBeSeenBy(this,mob))
 			{
 				StringBuffer buf=new StringBuffer("");
-				if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+				if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 					buf.append(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()
 							       +"\n\rUses  :"+usesRemaining()
 							       +"\n\rHeight: "+baseEnvStats().height()
@@ -71,9 +71,9 @@ public class StdCageRideable extends StdRideable
 				else
 					buf.append(description()+"\n\r");
 				//if(msg.source().charStats().getStat(CharStats.INTELLIGENCE)>=10)
-			    //    buf.append(Util.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_NOUNDESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase()+".\n\r");
+			    //    buf.append(CMStrings.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_NOUNDESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase()+".\n\r");
 				if((isOpen)&&((capacity>0)||(getContents().size()>0)))
-					buf.append(name()+" contains:^<!ENTITY container \""+name()+"\"^>"+(Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)?" ":"\n\r"));
+					buf.append(name()+" contains:^<!ENTITY container \""+name()+"\"^>"+(CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS)?" ":"\n\r"));
 				Vector newItems=new Vector();
 
 				if(owner instanceof MOB)
@@ -85,7 +85,7 @@ public class StdCageRideable extends StdRideable
 						if((item!=null)&&(item.container()==this))
 							newItems.addElement(item);
 					}
-					buf.append(CMLib.lister().lister(mob,newItems,true,"CMItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
+					buf.append(CMLib.lister().lister(mob,newItems,true,"CMItem","",false,CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
 				}
 				else
 				if(owner instanceof Room)
@@ -98,7 +98,7 @@ public class StdCageRideable extends StdRideable
 						if((item!=null)&&(item.container()==this))
 							newItems.addElement(item);
 					}
-					buf.append(CMLib.lister().lister(mob,newItems,true,"CRItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
+					buf.append(CMLib.lister().lister(mob,newItems,true,"CRItem","",false,CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
 				}
                 if(!mob.isMonster())
                     buf.append(CMProps.mxpImage(this," ALIGN=RIGHT H=70 W=70"));

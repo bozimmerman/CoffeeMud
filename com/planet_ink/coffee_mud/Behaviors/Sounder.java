@@ -61,7 +61,7 @@ public class Sounder extends StdBehavior
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		Vector emote=Util.parseSemicolons(newParms,true);
+		Vector emote=CMParms.parseSemicolons(newParms,true);
 		triggers=new int[emote.size()];
 		strings=new String[emote.size()];
 
@@ -69,25 +69,25 @@ public class Sounder extends StdBehavior
 		{
 			String s=(String)emote.firstElement();
 			minTicks=23;
-			minTicks=Util.getParmInt(newParms,"min",minTicks);
+			minTicks=CMParms.getParmInt(newParms,"min",minTicks);
 			maxTicks=23;
-			maxTicks=Util.getParmInt(newParms,"max",maxTicks);
+			maxTicks=CMParms.getParmInt(newParms,"max",maxTicks);
 			if((minTicks!=23)||(maxTicks!=23))
 				emote.removeElementAt(0);
 			for(int v=0;v<emote.size();v++)
 			{
 				s=((String)emote.elementAt(v)).trim();
-				s=Util.replaceAll(s,"$n","<S-NAME>");
-				s=Util.replaceAll(s,"$e","<S-HE-SHE>");
-				s=Util.replaceAll(s,"$s","<S-HIS-HER>");
+				s=CMStrings.replaceAll(s,"$n","<S-NAME>");
+				s=CMStrings.replaceAll(s,"$e","<S-HE-SHE>");
+				s=CMStrings.replaceAll(s,"$s","<S-HIS-HER>");
 				if(s.toUpperCase().startsWith("SOUND "))
 				{
 					s=s.substring(6).trim();
 					int x=s.indexOf(" ");
 					if(x<0) continue;
 					String y=s.substring(0,x);
-					if(!Util.isNumber(y)) continue;
-					triggers[v]=TICK_MASK+Util.s_int(y);
+					if(!CMath.isNumber(y)) continue;
+					triggers[v]=TICK_MASK+CMath.s_int(y);
 					s="^E"+s.substring(x+1).trim()+"^?";
 					strings[v]=s;
 				}
@@ -336,7 +336,7 @@ public class Sounder extends StdBehavior
 	public void doEmote(Tickable ticking, String emote)
 	{
 		MOB emoter=null;
-		emote=Util.replaceAll(emote,"$p",ticking.name());
+		emote=CMStrings.replaceAll(emote,"$p",ticking.name());
 		if(ticking instanceof Area)
 		{
 			emoter=CMClass.getMOB("StdMOB");
@@ -392,7 +392,7 @@ public class Sounder extends StdBehavior
 		{
 			tickReset();
 			for(int v=0;v<triggers.length;v++)
-			if((Util.bset(triggers[v],TICK_MASK))
+			if((CMath.bset(triggers[v],TICK_MASK))
 			&&(CMLib.dice().rollPercentage()<(triggers[v]&UNDER_MASK)))
 			{
 				doEmote(ticking,strings[v]);
@@ -468,16 +468,16 @@ public class Sounder extends StdBehavior
 								||(canFreelyBehaveNormal(E))))
 		for(int v=0;v<triggers.length;v++)
 			if(((triggers[v]&UNDER_MASK)==lookFor)
-			&&(!Util.bset(triggers[v],TICK_MASK)))
+			&&(!CMath.bset(triggers[v],TICK_MASK)))
 			{
-				if(Util.bset(triggers[v],ROOM_MASK))
+				if(CMath.bset(triggers[v],ROOM_MASK))
 				{
-					CMMsg msg2=CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,CMMsg.MSG_EMOTE,Util.replaceAll(strings[v],"$p",E.name()));
+					CMMsg msg2=CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,CMMsg.MSG_EMOTE,CMStrings.replaceAll(strings[v],"$p",E.name()));
 					msg.addTrailerMsg(msg2);
 				}
 				else
 				{
-					CMMsg msg2=CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_EMOTE,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,Util.replaceAll(strings[v],"$p",E.name()));
+					CMMsg msg2=CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_EMOTE,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,CMStrings.replaceAll(strings[v],"$p",E.name()));
 					msg.addTrailerMsg(msg2);
 				}
 			}

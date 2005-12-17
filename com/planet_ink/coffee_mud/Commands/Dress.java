@@ -52,7 +52,7 @@ public class Dress extends StdCommand
 		commands.removeElementAt(0);
 		String what=(String)commands.lastElement();
 		commands.removeElement(what);
-		String whom=Util.combine(commands,0);
+		String whom=CMParms.combine(commands,0);
 		MOB target=mob.location().fetchInhabitant(whom);
 		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{

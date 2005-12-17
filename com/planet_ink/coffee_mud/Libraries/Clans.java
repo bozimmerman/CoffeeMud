@@ -112,7 +112,7 @@ public class Clans extends StdLibrary implements ClanManager
         for(Enumeration e=all.elements();e.hasMoreElements();)
         {
             C=(Clan)e.nextElement();
-            if(CMLib.english().containsString(Util.removeColors(C.name()),id))
+            if(CMLib.english().containsString(CMStrings.removeColors(C.name()),id))
                 return C;
         }
         return null;
@@ -124,7 +124,7 @@ public class Clans extends StdLibrary implements ClanManager
         for(Enumeration e=all.elements();e.hasMoreElements();)
         {
             C=(Clan)e.nextElement();
-            if(CMLib.english().containsString(Util.removeColors(C.name()),id))
+            if(CMLib.english().containsString(CMStrings.removeColors(C.name()),id))
                 return C;
         }
         return null;
@@ -158,7 +158,7 @@ public class Clans extends StdLibrary implements ClanManager
 		roleName.append(roles[getRoleOrder(role)].toLowerCase());
 		if(titleCase)
 		{
-			String titled=Util.capitalizeAndLower(roleName.toString());
+			String titled=CMStrings.capitalizeAndLower(roleName.toString());
 			roleName.setLength(0);
 			roleName.append(titled);
 		}
@@ -237,7 +237,7 @@ public class Clans extends StdLibrary implements ClanManager
 	    if(prizeStr.length()==0) return "None";
         if(prizeStr.length()>0)
         {
-            Vector V=Util.parse(prizeStr);
+            Vector V=CMParms.parse(prizeStr);
             if(V.size()>=2)
             {
                 String type=((String)V.lastElement()).toUpperCase();

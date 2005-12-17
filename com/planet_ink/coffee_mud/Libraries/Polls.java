@@ -115,7 +115,7 @@ public class Polls extends StdLibrary implements PollManager
             P=(Poll)V.elementAt(v);
             if((P.loaded())||(P.dbloadbyname()))
             {
-                if((P.mayIVote(mob))&&(login)&&(Util.bset(P.getFlags(),Poll.FLAG_NOTATLOGIN)))
+                if((P.mayIVote(mob))&&(login)&&(CMath.bset(P.getFlags(),Poll.FLAG_NOTATLOGIN)))
                     list[1].addElement(P);
                 else
                 if(P.mayIVote(mob))

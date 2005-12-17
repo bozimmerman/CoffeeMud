@@ -80,8 +80,8 @@ public class Spell_IceStorm extends Spell
 					int numDice = adjustedLevel(mob,asLevel)/4;
 					int damage = CMLib.dice().roll(numDice, 15, 10);
 					if((msg.value()>0)||(msg2.value()>0))
-						damage = (int)Math.round(Util.div(damage,2.0));
-					damage = (int)Math.round(Util.div(damage,2.0));
+						damage = (int)Math.round(CMath.div(damage,2.0));
+					damage = (int)Math.round(CMath.div(damage,2.0));
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The freezing blast <DAMAGE> <T-NAME>!");
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The lumps of hail <DAMAGE> <T-NAME>!"+CMProps.msp("hail.wav",40));
 				}

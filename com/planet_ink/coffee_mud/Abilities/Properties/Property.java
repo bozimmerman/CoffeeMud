@@ -244,7 +244,7 @@ public class Property implements Ability
         {
             String maskStr=newText.substring(maskindex+5).trim();
             if(maskStr.length()>0)
-                Util.addToVector(CMLib.masking().maskCompile(maskStr),mask);
+                CMParms.addToVector(CMLib.masking().maskCompile(maskStr),mask);
             newText=newText.substring(0,maskindex).trim();
         }
         return newText;

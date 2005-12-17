@@ -71,26 +71,26 @@ public class Mime extends ActiveTicker
 		//String src=msg.sourceMessage();
 		String trg=msg.targetMessage();
 		String oth=msg.othersMessage();
-		//if(src!=null) src=Util.replaceAll(src,"<S-NAME>",ticking.name());
-		//if(src!=null) src=Util.replaceAll(src,"You ",ticking.name()+" ");
-		//if(src!=null) src=Util.replaceAll(src,"Your ",ticking.name()+"`s ");
-		if(trg!=null) trg=Util.replaceAll(trg,"<S-NAME>",ticking.name());
-		if(oth!=null) oth=Util.replaceAll(oth,"<S-NAME>",ticking.name());
-		//if(src!=null) src=Util.replaceAll(src,"<S-HIM-HERSELF>","itself");
-		if(trg!=null) trg=Util.replaceAll(trg,"<S-HIM-HERSELF>","itself");
-		if(oth!=null) oth=Util.replaceAll(oth,"<S-HIM-HERSELF>","itself");
-		//if(src!=null) src=Util.replaceAll(src,"<S-HIS-HERSELF>","itself");
-		if(trg!=null) trg=Util.replaceAll(trg,"<S-HIS-HERSELF>","itself");
-		if(oth!=null) oth=Util.replaceAll(oth,"<S-HIS-HERSELF>","itself");
-		//if(src!=null) src=Util.replaceAll(src,"<S-HIM-HER>","it");
-		if(trg!=null) trg=Util.replaceAll(trg,"<S-HIM-HER>","it");
-		if(oth!=null) oth=Util.replaceAll(oth,"<S-HIM-HER>","it");
-		//if(src!=null) src=Util.replaceAll(src,"<S-HE-SHE>","it");
-		if(trg!=null) trg=Util.replaceAll(trg,"<S-HE-SHE>","it");
-		if(oth!=null) oth=Util.replaceAll(oth,"<S-HE-SHE>","it");
-		//if(src!=null) src=Util.replaceAll(src,"<S-HIS-HER>","its");
-		if(trg!=null) trg=Util.replaceAll(trg,"<S-HIS-HER>","its");
-		if(oth!=null) oth=Util.replaceAll(oth,"<S-HIS-HER>","its");
+		//if(src!=null) src=CMStrings.replaceAll(src,"<S-NAME>",ticking.name());
+		//if(src!=null) src=CMStrings.replaceAll(src,"You ",ticking.name()+" ");
+		//if(src!=null) src=CMStrings.replaceAll(src,"Your ",ticking.name()+"`s ");
+		if(trg!=null) trg=CMStrings.replaceAll(trg,"<S-NAME>",ticking.name());
+		if(oth!=null) oth=CMStrings.replaceAll(oth,"<S-NAME>",ticking.name());
+		//if(src!=null) src=CMStrings.replaceAll(src,"<S-HIM-HERSELF>","itself");
+		if(trg!=null) trg=CMStrings.replaceAll(trg,"<S-HIM-HERSELF>","itself");
+		if(oth!=null) oth=CMStrings.replaceAll(oth,"<S-HIM-HERSELF>","itself");
+		//if(src!=null) src=CMStrings.replaceAll(src,"<S-HIS-HERSELF>","itself");
+		if(trg!=null) trg=CMStrings.replaceAll(trg,"<S-HIS-HERSELF>","itself");
+		if(oth!=null) oth=CMStrings.replaceAll(oth,"<S-HIS-HERSELF>","itself");
+		//if(src!=null) src=CMStrings.replaceAll(src,"<S-HIM-HER>","it");
+		if(trg!=null) trg=CMStrings.replaceAll(trg,"<S-HIM-HER>","it");
+		if(oth!=null) oth=CMStrings.replaceAll(oth,"<S-HIM-HER>","it");
+		//if(src!=null) src=CMStrings.replaceAll(src,"<S-HE-SHE>","it");
+		if(trg!=null) trg=CMStrings.replaceAll(trg,"<S-HE-SHE>","it");
+		if(oth!=null) oth=CMStrings.replaceAll(oth,"<S-HE-SHE>","it");
+		//if(src!=null) src=CMStrings.replaceAll(src,"<S-HIS-HER>","its");
+		if(trg!=null) trg=CMStrings.replaceAll(trg,"<S-HIS-HER>","its");
+		if(oth!=null) oth=CMStrings.replaceAll(oth,"<S-HIS-HER>","its");
 		msg.modify(sMOB,sMOB,msg.tool(),
 				   msg.sourceCode(),oth,
 				   msg.targetCode(),trg,

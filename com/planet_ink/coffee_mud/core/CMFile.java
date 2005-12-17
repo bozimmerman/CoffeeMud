@@ -144,42 +144,42 @@ public class CMFile
     public boolean canRead()
     {
         if(!exists()) return false;
-        if(Util.bset(vfsBits,CMFile.VFS_MASK_ISLOCAL))
+        if(CMath.bset(vfsBits,CMFile.VFS_MASK_ISLOCAL))
         {
-            if(Util.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL))
+            if(CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL))
                 return false;
         }
         else
         {
-            if(Util.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS))
+            if(CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS))
                 return false;
         }
         return true;
     }
     public boolean canWrite()
     {
-        if(Util.bset(vfsBits,CMFile.VFS_MASK_ISLOCAL))
+        if(CMath.bset(vfsBits,CMFile.VFS_MASK_ISLOCAL))
         {
-            if(Util.bset(vfsBits,CMFile.VFS_MASK_NOWRITELOCAL))
+            if(CMath.bset(vfsBits,CMFile.VFS_MASK_NOWRITELOCAL))
                 return false;
         }
         else
         {
-            if(Util.bset(vfsBits,CMFile.VFS_MASK_NOWRITEVFS))
+            if(CMath.bset(vfsBits,CMFile.VFS_MASK_NOWRITEVFS))
                 return false;
         }
         return true;
     }
     
-    public boolean isDirectory(){return exists()&&Util.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY);}
-    public boolean exists(){ return !(Util.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS)&&Util.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL));}
-    public boolean isFile(){return canRead()&&(!Util.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY));}
+    public boolean isDirectory(){return exists()&&CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY);}
+    public boolean exists(){ return !(CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS)&&CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL));}
+    public boolean isFile(){return canRead()&&(!CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY));}
     public long lastModified(){return modifiedDateTime;}
     public String author(){return ((author!=null))?author:"unknown";}
-    public boolean isLocalFile(){return Util.bset(vfsBits,CMFile.VFS_MASK_ISLOCAL);}
-    public boolean isVFSFile(){return (!Util.bset(vfsBits,CMFile.VFS_MASK_ISLOCAL));}
-    public boolean canVFSEquiv(){return (!Util.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS));}
-    public boolean canLocalEquiv(){return (!Util.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL));}
+    public boolean isLocalFile(){return CMath.bset(vfsBits,CMFile.VFS_MASK_ISLOCAL);}
+    public boolean isVFSFile(){return (!CMath.bset(vfsBits,CMFile.VFS_MASK_ISLOCAL));}
+    public boolean canVFSEquiv(){return (!CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS));}
+    public boolean canLocalEquiv(){return (!CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL));}
     public String getName(){return name;}
     public String getAbsolutePath(){return "/"+getVFSPathAndName();}
     public String getCanonicalPath(){return getVFSPathAndName();}
@@ -415,7 +415,7 @@ public class CMFile
             Log.errOut("CMFile","Unable to save file '"+getVFSPathAndName()+"': No Data.");
             return false;
         }
-        if((Util.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY))
+        if((CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY))
         ||(!canWrite()))
         {
             Log.errOut("CMFile","Access error saving file '"+getVFSPathAndName()+"'.");
@@ -451,7 +451,7 @@ public class CMFile
                 CMLib.database().DBDeleteVFSFile(filename);
             }
             if(vfsBits<0) vfsBits=0;
-            vfsBits=Util.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
+            vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
             info=new Vector();
             info.addElement(filename);
             info.addElement(new Integer(vfsBits&VFS_MASK_MASKSAVABLE));
@@ -475,7 +475,7 @@ public class CMFile
                 FW.flush();
                 FW.close();
             }
-            vfsBits=Util.unsetb(vfsBits,CMFile.VFS_MASK_NOREADLOCAL);
+            vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADLOCAL);
             return true;
         }
         catch(IOException e)
@@ -492,7 +492,7 @@ public class CMFile
             Log.errOut("CMFile","Unable to save file '"+getVFSPathAndName()+"': No Data.");
             return false;
         }
-        if((Util.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY))
+        if((CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY))
         ||(!canWrite()))
         {
             Log.errOut("CMFile","Access error saving file '"+getVFSPathAndName()+"'.");
@@ -522,7 +522,7 @@ public class CMFile
                 CMLib.database().DBDeleteVFSFile(filename);
             }
             if(vfsBits<0) vfsBits=0;
-            vfsBits=Util.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
+            vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
             info=new Vector();
             info.addElement(filename);
             info.addElement(new Integer(vfsBits&VFS_MASK_MASKSAVABLE));
@@ -538,7 +538,7 @@ public class CMFile
             FileWriter FW=new FileWriter(F);
             FW.write(saveBufNormalize(O).toString());
             FW.close();
-            vfsBits=Util.unsetb(vfsBits,CMFile.VFS_MASK_NOREADLOCAL);
+            vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADLOCAL);
             return true;
         }
         catch(IOException e)
@@ -572,8 +572,8 @@ public class CMFile
                 return false;
             }
             if(vfsBits<0) vfsBits=0;
-            vfsBits=Util.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
-            vfsBits=Util.unsetb(vfsBits,CMFile.VFS_MASK_NOWRITEVFS);
+            vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
+            vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOWRITEVFS);
             vfsBits=vfsBits|CMFile.VFS_MASK_DIRECTORY;
             info=new Vector();
             info.addElement(filename);
@@ -592,9 +592,9 @@ public class CMFile
         }
         if(F.mkdir())
         {
-            vfsBits=Util.unsetb(vfsBits,CMFile.VFS_MASK_NOREADLOCAL);
+            vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADLOCAL);
             vfsBits=vfsBits|CMFile.VFS_MASK_DIRECTORY;
-            vfsBits=Util.unsetb(vfsBits,CMFile.VFS_MASK_NOWRITELOCAL);
+            vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOWRITELOCAL);
             return true;
         }
         return false;

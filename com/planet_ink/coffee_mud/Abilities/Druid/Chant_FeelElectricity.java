@@ -94,7 +94,7 @@ public class Chant_FeelElectricity extends Chant
 		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		   &&(msg.sourceMinor()==CMMsg.TYP_ELECTRIC))
 		{
-			int recovery=(int)Math.round(Util.mul((msg.value()),2.0));
+			int recovery=(int)Math.round(CMath.mul((msg.value()),2.0));
 			msg.setValue(msg.value()+recovery);
 		}
 		return true;

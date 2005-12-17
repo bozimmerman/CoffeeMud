@@ -52,8 +52,8 @@ public class Fighter_Tumble extends FighterSkill
 		   invoker=(MOB)affected;
 		if(invoker!=null)
 		{
-			affectableStats.setDamage(affectableStats.damage()-(int)Math.round(Util.div(affectableStats.damage(),2.0)));
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(Util.div(affectableStats.attackAdjustment(),2.0)));
+			affectableStats.setDamage(affectableStats.damage()-(int)Math.round(CMath.div(affectableStats.damage(),2.0)));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(CMath.div(affectableStats.attackAdjustment(),2.0)));
 		}
 	}
 

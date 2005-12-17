@@ -49,7 +49,7 @@ public class Throw extends StdCommand
 		commands.removeElementAt(0);
 		String str=(String)commands.lastElement();
 		commands.removeElement(str);
-		String what=Util.combine(commands,0);
+		String what=CMParms.combine(commands,0);
 		Item item=mob.fetchWornItem(what);
 		if(item==null) item=mob.fetchInventory(null,what);
 		if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))

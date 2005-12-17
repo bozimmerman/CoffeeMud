@@ -65,7 +65,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 		}
 		// old style
 		if(code<32768) return 10
-							  +(int)Math.round(Util.mul(level*level,0.85))
+							  +(int)Math.round(CMath.mul(level*level,0.85))
 							  +(roll(level,code,0)*mul);
 		// new style
 		int r=code>>23;
@@ -78,7 +78,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 	{
 		int i=str.indexOf("d");
 		if(i<0) return 11;
-		int roll=Util.s_int(str.substring(0,i).trim());
+		int roll=CMath.s_int(str.substring(0,i).trim());
 		str=str.substring(i+1).trim();
 
 		i=str.indexOf("+");
@@ -88,17 +88,17 @@ public class Dice extends StdLibrary implements DiceLibrary
 		{
 			i=str.indexOf("-");
 			if(i<0)
-				dice=Util.s_int(str.trim());
+				dice=CMath.s_int(str.trim());
 			else
 			{
-				dice=Util.s_int(str.substring(0,i).trim());
-				plus=Util.s_int(str.substring(i));
+				dice=CMath.s_int(str.substring(0,i).trim());
+				plus=CMath.s_int(str.substring(i));
 			}
 		}
 		else
 		{
-			dice=Util.s_int(str.substring(0,i).trim());
-			plus=Util.s_int(str.substring(i+1));
+			dice=CMath.s_int(str.substring(0,i).trim());
+			plus=CMath.s_int(str.substring(i+1));
 		}
 		return getHPCode(roll,dice,plus);
 	}
@@ -144,7 +144,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 		{
 			stuff[0]=level;
 			stuff[1]=(code*mul);
-			stuff[2]=(int)Math.round(Util.mul(level*level,0.85));
+			stuff[2]=(int)Math.round(CMath.mul(level*level,0.85));
 		}
 		else
 		{

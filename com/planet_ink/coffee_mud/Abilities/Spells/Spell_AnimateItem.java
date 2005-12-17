@@ -62,7 +62,7 @@ public class Spell_AnimateItem extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> "+Util.combine(commands,1)+".");
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> "+CMParms.combine(commands,1)+".");
 			}
 		}
 		else

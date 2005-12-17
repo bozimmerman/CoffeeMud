@@ -61,8 +61,8 @@ public class JRun extends StdCommand
         {
             JScriptWindow scope = new JScriptWindow(mob,commands);
             cx.initStandardObjects(scope);
-            String[] names = { "mob", "numParms", "getParm", "getParms", "toJavaString"};
-            scope.defineFunctionProperties(names, JScriptWindow.class,
+            scope.defineFunctionProperties(JScriptWindow.makeFunctionNames(), 
+                                           JScriptWindow.class,
                                            ScriptableObject.DONTENUM);
             cx.evaluateString(scope, ft.toString(),"<cmd>", 1, null);
         }
@@ -77,23 +77,24 @@ public class JRun extends StdCommand
         return false;
     }
     
-    protected static class JScriptWindow extends ScriptableObject
+    protected static class JScriptWindow extends CMLib
     {
-        public String getClassName(){ return "window";}
-        static final long serialVersionUID=43;
+        public String getClassName(){ return "JScriptWindow";}
+        static final long serialVersionUID=45;
         MOB s=null;
         Vector v=null;
         public MOB mob(){return s;}
         public int numParms(){return (v==null)?0:v.size();}
-        public String toJavaString(Object O){return Context.toString(O);}
         public String getParm(int i)
         {
             if(v==null) return "";
             if((i<0)||(i>=v.size())) return "";
             return (String)v.elementAt(i);
         }
-        public String getParms(){return (v==null)?"":Util.combineWithQuotes(v,0);}
+        private static String[] names = { "mob", "numParms", "getParm", "getParms"};
+        public String getParms(){return (v==null)?"":CMParms.combineWithQuotes(v,0);}
         public JScriptWindow(MOB executor, Vector parms){s=executor; v=parms;}
+        public static String[] makeFunctionNames(){return makeFunctionNames(names);}
     }
     
     public int ticksToExecute(){return 0;}

@@ -285,7 +285,7 @@ public class Arcanist extends Thief
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.SAVE_MAGIC,affectableStats.getStat(CharStats.SAVE_MAGIC)+(affectableStats.getClassLevel(this)));
-		if(Util.bset(affected.baseEnvStats().disposition(),EnvStats.IS_BONUS))
+		if(CMath.bset(affected.baseEnvStats().disposition(),EnvStats.IS_BONUS))
 			affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)+30);
 	}
 }

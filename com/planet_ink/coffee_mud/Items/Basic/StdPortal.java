@@ -89,7 +89,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 			{
 				if(msg.sourceMessage().indexOf(mountString(CMMsg.TYP_SIT,msg.source()))>0)
 				{
-					Vector V=Util.parseSemicolons(readableText(),true);
+					Vector V=CMParms.parseSemicolons(readableText(),true);
 					if(V.size()==0)
 					{
 						msg.source().tell("This portal is broken.. nowhere to go!");
@@ -140,7 +140,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 				if(msg.sourceMessage().indexOf(mountString(CMMsg.TYP_SIT,msg.source()))>0)
 				{
 					Room thisRoom=msg.source().location();
-					Vector V=Util.parseSemicolons(readableText(),true);
+					Vector V=CMParms.parseSemicolons(readableText(),true);
 					Room R=null;
 					if(V.size()>0)
 						R=CMLib.map().getRoom((String)V.elementAt(CMLib.dice().roll(1,V.size(),-1)));
@@ -187,13 +187,13 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	
 	public StringBuffer viewableText(MOB mob, Room myRoom)
 	{
-		Vector V=Util.parseSemicolons(readableText(),true);
+		Vector V=CMParms.parseSemicolons(readableText(),true);
 		Room room=myRoom;
 		if(V.size()>0)
 		    room=CMLib.map().getRoom((String)V.elementAt(CMLib.dice().roll(1,V.size(),-1)));
 		if(room==null) return empty;
 		StringBuffer Say=new StringBuffer("");
-		if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+		if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 		{
 			if(room==null)
 				Say.append("^Z(null)^.^? ");

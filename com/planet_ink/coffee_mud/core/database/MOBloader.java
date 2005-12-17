@@ -54,35 +54,35 @@ public class MOBloader
 				mob.setName(username);
 				pstats.setPassword(password);
 				stats.setMyClasses(DBConnections.getRes(R,"CMCLAS"));
-				stats.setStat(CharStats.STRENGTH,Util.s_int(DBConnections.getRes(R,"CMSTRE")));
+				stats.setStat(CharStats.STRENGTH,CMath.s_int(DBConnections.getRes(R,"CMSTRE")));
 				stats.setMyRace(CMClass.getRace(DBConnections.getRes(R,"CMRACE")));
-				stats.setStat(CharStats.DEXTERITY,Util.s_int(DBConnections.getRes(R,"CMDEXT")));
-				stats.setStat(CharStats.CONSTITUTION,Util.s_int(DBConnections.getRes(R,"CMCONS")));
+				stats.setStat(CharStats.DEXTERITY,CMath.s_int(DBConnections.getRes(R,"CMDEXT")));
+				stats.setStat(CharStats.CONSTITUTION,CMath.s_int(DBConnections.getRes(R,"CMCONS")));
 				stats.setStat(CharStats.GENDER,DBConnections.getRes(R,"CMGEND").charAt(0));
-				stats.setStat(CharStats.WISDOM,Util.s_int(DBConnections.getRes(R,"CMWISD")));
-				stats.setStat(CharStats.INTELLIGENCE,Util.s_int(DBConnections.getRes(R,"CMINTE")));
-				stats.setStat(CharStats.CHARISMA,Util.s_int(DBConnections.getRes(R,"CMCHAR")));
-				state.setHitPoints(Util.s_int(DBConnections.getRes(R,"CMHITP")));
+				stats.setStat(CharStats.WISDOM,CMath.s_int(DBConnections.getRes(R,"CMWISD")));
+				stats.setStat(CharStats.INTELLIGENCE,CMath.s_int(DBConnections.getRes(R,"CMINTE")));
+				stats.setStat(CharStats.CHARISMA,CMath.s_int(DBConnections.getRes(R,"CMCHAR")));
+				state.setHitPoints(CMath.s_int(DBConnections.getRes(R,"CMHITP")));
 				stats.setMyLevels(DBConnections.getRes(R,"CMLEVL"));
 				int level=0;
 				for(int i=0;i<mob.baseCharStats().numClasses();i++)
 					level+=stats.getClassLevel(mob.baseCharStats().getMyClass(i));
 				mob.baseEnvStats().setLevel(level);
-				state.setMana(Util.s_int(DBConnections.getRes(R,"CMMANA")));
-				state.setMovement(Util.s_int(DBConnections.getRes(R,"CMMOVE")));
+				state.setMana(CMath.s_int(DBConnections.getRes(R,"CMMANA")));
+				state.setMovement(CMath.s_int(DBConnections.getRes(R,"CMMOVE")));
 				mob.setDescription(DBConnections.getRes(R,"CMDESC"));
-				int align=(Util.s_int(DBConnections.getRes(R,"CMALIG")));
+				int align=(CMath.s_int(DBConnections.getRes(R,"CMALIG")));
 				if((CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)&&(align>=0))
 				    CMLib.factions().setAlignmentOldRange(mob,align);
-				mob.setExperience(Util.s_int(DBConnections.getRes(R,"CMEXPE")));
-				mob.setExpNextLevel(Util.s_int(DBConnections.getRes(R,"CMEXLV")));
+				mob.setExperience(CMath.s_int(DBConnections.getRes(R,"CMEXPE")));
+				mob.setExpNextLevel(CMath.s_int(DBConnections.getRes(R,"CMEXLV")));
 				mob.setWorshipCharID(DBConnections.getRes(R,"CMWORS"));
-				mob.setPractices(Util.s_int(DBConnections.getRes(R,"CMPRAC")));
-				mob.setTrains(Util.s_int(DBConnections.getRes(R,"CMTRAI")));
-				mob.setAgeHours(Util.s_long(DBConnections.getRes(R,"CMAGEH")));
-				mob.setMoney(Util.s_int(DBConnections.getRes(R,"CMGOLD")));
-				mob.setWimpHitPoint(Util.s_int(DBConnections.getRes(R,"CMWIMP")));
-				mob.setQuestPoint(Util.s_int(DBConnections.getRes(R,"CMQUES")));
+				mob.setPractices(CMath.s_int(DBConnections.getRes(R,"CMPRAC")));
+				mob.setTrains(CMath.s_int(DBConnections.getRes(R,"CMTRAI")));
+				mob.setAgeHours(CMath.s_long(DBConnections.getRes(R,"CMAGEH")));
+				mob.setMoney(CMath.s_int(DBConnections.getRes(R,"CMGOLD")));
+				mob.setWimpHitPoint(CMath.s_int(DBConnections.getRes(R,"CMWIMP")));
+				mob.setQuestPoint(CMath.s_int(DBConnections.getRes(R,"CMQUES")));
 				String roomID=DBConnections.getRes(R,"CMROID");
 				if(roomID==null) roomID="";
 				int x=roomID.indexOf("||");
@@ -92,12 +92,12 @@ public class MOBloader
 					roomID=roomID.substring(0,x);
 				}
 				mob.setStartRoom(CMLib.map().getRoom(roomID));
-				pstats.setLastDateTime(Util.s_long(DBConnections.getRes(R,"CMDATE")));
+				pstats.setLastDateTime(CMath.s_long(DBConnections.getRes(R,"CMDATE")));
 				pstats.setChannelMask((int)DBConnections.getLongRes(R,"CMCHAN"));
-				mob.baseEnvStats().setAttackAdjustment(Util.s_int(DBConnections.getRes(R,"CMATTA")));
-				mob.baseEnvStats().setArmor(Util.s_int(DBConnections.getRes(R,"CMAMOR")));
-				mob.baseEnvStats().setDamage(Util.s_int(DBConnections.getRes(R,"CMDAMG")));
-				mob.setBitmap(Util.s_int(DBConnections.getRes(R,"CMBTMP")));
+				mob.baseEnvStats().setAttackAdjustment(CMath.s_int(DBConnections.getRes(R,"CMATTA")));
+				mob.baseEnvStats().setArmor(CMath.s_int(DBConnections.getRes(R,"CMAMOR")));
+				mob.baseEnvStats().setDamage(CMath.s_int(DBConnections.getRes(R,"CMDAMG")));
+				mob.setBitmap(CMath.s_int(DBConnections.getRes(R,"CMBTMP")));
 				mob.setLiegeID(DBConnections.getRes(R,"CMLEIG"));
 				mob.baseEnvStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
 				mob.baseEnvStats().setWeight((int)DBConnections.getLongRes(R,"CMWEIT"));
@@ -112,15 +112,15 @@ public class MOBloader
 				String buf=DBConnections.getRes(R,"CMPFIL");
 				pstats.setXML(buf);
 				stats.setSaves(DBConnections.getRes(R,"CMSAVE"));
-				Vector V9=Util.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
+				Vector V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
 				while(mob.numTattoos()>0)mob.delTattoo(mob.fetchTattoo(0));
 				for(int v=0;v<V9.size();v++) mob.addTattoo((String)V9.elementAt(v));
 
-				V9=Util.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
+				V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
 				while(mob.numEducations()>0)mob.delEducation(mob.fetchEducation(0));
 				for(int v=0;v<V9.size();v++) mob.addEducation((String)V9.elementAt(v));
 				if(pstats.getBirthday()==null)
-				    stats.setStat(CharStats.AGE,pstats.initializeBirthday((int)Math.round(Util.div(mob.getAgeHours(),60.0)),stats.getMyRace()));
+				    stats.setStat(CharStats.AGE,pstats.initializeBirthday((int)Math.round(CMath.div(mob.getAgeHours(),60.0)),stats.getMyRace()));
 				mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
 				Vector CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
 				CMLib.coffeeMaker().setFactionFromXML(mob,CleanXML);
@@ -349,11 +349,11 @@ public class MOBloader
 					int level=0;
 					while(x>=0)
 					{
-						level+=Util.s_int(lvl.substring(0,x));
+						level+=CMath.s_int(lvl.substring(0,x));
 						lvl=lvl.substring(x+1);
 						x=lvl.indexOf(";");
 					}
-					if(lvl.length()>0) level+=Util.s_int(lvl);
+					if(lvl.length()>0) level+=CMath.s_int(lvl);
 					thisUser.addElement(new Integer(level).toString());
 					thisUser.addElement(DBConnections.getRes(R,"CMAGEH"));
 					MOB M=CMLib.map().getPlayer((String)thisUser.firstElement());
@@ -384,10 +384,10 @@ public class MOBloader
 			ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMLEIG='"+liegeID+"'");
 			StringBuffer head=new StringBuffer("");
 			head.append("[");
-			head.append(Util.padRight("Race",8)+" ");
-			head.append(Util.padRight("Class",10)+" ");
-			head.append(Util.padRight("Lvl",4)+" ");
-			head.append(Util.padRight("Exp/Lvl",17));
+			head.append(CMStrings.padRight("Race",8)+" ");
+			head.append(CMStrings.padRight("Class",10)+" ");
+			head.append(CMStrings.padRight("Lvl",4)+" ");
+			head.append(CMStrings.padRight("Exp/Lvl",17));
 			head.append("] Character name\n\r");
 			HashSet done=new HashSet();
 			if(R!=null)
@@ -408,19 +408,19 @@ public class MOBloader
 					int level=0;
 					while(x>=0)
 					{
-						level+=Util.s_int(lvl.substring(0,x));
+						level+=CMath.s_int(lvl.substring(0,x));
 						lvl=lvl.substring(x+1);
 						x=lvl.indexOf(";");
 					}
-					if(lvl.length()>0) level+=Util.s_int(lvl);
-					int exp=Util.s_int(DBConnections.getRes(R,"CMEXPE"));
-					int exlv=Util.s_int(DBConnections.getRes(R,"CMEXLV"));
+					if(lvl.length()>0) level+=CMath.s_int(lvl);
+					int exp=CMath.s_int(DBConnections.getRes(R,"CMEXPE"));
+					int exlv=CMath.s_int(DBConnections.getRes(R,"CMEXLV"));
 					head.append("[");
-					head.append(Util.padRight(race,8)+" ");
-					head.append(Util.padRight(cclass,10)+" ");
-					head.append(Util.padRight(Integer.toString(level),4)+" ");
-					head.append(Util.padRight(exp+"/"+exlv,17));
-					head.append("] "+Util.padRight(username,15));
+					head.append(CMStrings.padRight(race,8)+" ");
+					head.append(CMStrings.padRight(cclass,10)+" ");
+					head.append(CMStrings.padRight(Integer.toString(level),4)+" ");
+					head.append(CMStrings.padRight(exp+"/"+exlv,17));
+					head.append("] "+CMStrings.padRight(username,15));
 					head.append("\n\r");
 				}
 			}
@@ -431,11 +431,11 @@ public class MOBloader
 				&&(!done.contains(M.Name())))
 				{
 					head.append("[");
-					head.append(Util.padRight(M.charStats().getMyRace().name(),8)+" ");
-					head.append(Util.padRight(M.charStats().getCurrentClass().name(M.charStats().getCurrentClassLevel()),10)+" ");
-					head.append(Util.padRight(""+M.envStats().level(),4)+" ");
-					head.append(Util.padRight(M.getExperience()+"/"+M.getExpNextLevel(),17));
-					head.append("] "+Util.padRight(M.name(),15));
+					head.append(CMStrings.padRight(M.charStats().getMyRace().name(),8)+" ");
+					head.append(CMStrings.padRight(M.charStats().getCurrentClass().name(M.charStats().getCurrentClassLevel()),10)+" ");
+					head.append(CMStrings.padRight(""+M.envStats().level(),4)+" ");
+					head.append(CMStrings.padRight(M.getExperience()+"/"+M.getExpNextLevel(),17));
+					head.append("] "+CMStrings.padRight(M.name(),15));
 					head.append("\n\r");
 				}
 			}
@@ -521,7 +521,7 @@ public class MOBloader
 			while(R.next())
 			{
 				String username=DBConnector.getRes(R,"CMUSERID");
-				long lastDateTime=Util.s_long(DBConnections.getRes(R,"CMDATE"));
+				long lastDateTime=CMath.s_long(DBConnections.getRes(R,"CMDATE"));
 				int role=(int)DBConnector.getLongRes(R,"CMCLRO");
 				members.addElement(username);
 				roles.addElement(new Integer(role));
@@ -934,7 +934,7 @@ public class MOBloader
                         // Acct Exp Code
                         String buf=DBConnections.getRes(R,"CMPFIL");
                         if(CMLib.xml().returnXMLValue(buf,"ACCTEXP").length()>0)
-                            mob.playerStats().setAccountExpiration(Util.s_long(CMLib.xml().returnXMLValue(buf,"ACCTEXP")));
+                            mob.playerStats().setAccountExpiration(CMath.s_long(CMLib.xml().returnXMLValue(buf,"ACCTEXP")));
                         else
                         {
                             Calendar C=Calendar.getInstance();
@@ -976,7 +976,7 @@ public class MOBloader
 			while(R.next())
 			{
 				//String username=DBConnector.getRes(R,"CMUSERID");
-				int btmp=Util.s_int(DBConnector.getRes(R,"CMBTMP"));
+				int btmp=CMath.s_int(DBConnector.getRes(R,"CMBTMP"));
 				String temail=DBConnector.getRes(R,"CMEMAL");
 				R.close();
 				DBConnector.DBDone(D);

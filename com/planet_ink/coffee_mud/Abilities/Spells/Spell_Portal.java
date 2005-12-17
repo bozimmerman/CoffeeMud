@@ -81,7 +81,7 @@ public class Spell_Portal extends Spell
 			mob.tell("A portal cannot be created here.");
 			return false;
 		}
-		String areaName=Util.combine(commands,0).trim().toUpperCase();
+		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 		int tries=0;
 		while(((++tries)<10000))
 		{
@@ -113,7 +113,7 @@ public class Spell_Portal extends Spell
 
 		if(newRoom==null)
 		{
-			mob.tell("You don't know of an place called '"+Util.combine(commands,0)+"'.");
+			mob.tell("You don't know of an place called '"+CMParms.combine(commands,0)+"'.");
 			return false;
 		}
 

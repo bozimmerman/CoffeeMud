@@ -66,7 +66,7 @@ public class Spell_Delay extends Spell
 			{
 				shooter.invoke(newCaster,parameters,null,true,0);
 			}
-			catch(Exception e){Log.errOut("DELAY/"+Util.combine(parameters,0),e);}
+			catch(Exception e){Log.errOut("DELAY/"+CMParms.combine(parameters,0),e);}
 			newCaster.setLocation(null);
 			newCaster.destroy();
 		}

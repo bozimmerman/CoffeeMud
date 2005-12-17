@@ -52,11 +52,11 @@ public class Thief_Racketeer extends ThiefSkill
 			mob.tell("Get protection money from whom?");
 			return false;
 		}
-		MOB target=mob.location().fetchInhabitant(Util.combine(commands,0));
+		MOB target=mob.location().fetchInhabitant(CMParms.combine(commands,0));
 		if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) target=(MOB)givenTarget;
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+Util.combine(commands,1)+"' here.");
+			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
 			return false;
 		}
 		if((CMLib.coffeeShops().getShopKeeper(target)==null)

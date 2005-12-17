@@ -46,15 +46,15 @@ public class Prop_ReqPKill extends Property
 		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
 			if((!msg.source().isMonster())
-			   &&(!Util.bset(msg.source().getBitmap(),MOB.ATT_PLAYERKILL)))
+			   &&(!CMath.bset(msg.source().getBitmap(),MOB.ATT_PLAYERKILL)))
 			{
 				msg.source().tell("You must have your playerkill flag set to enter here.");
 				return false;
 			}
 		}
 		if((!msg.source().isMonster())
-		&&(!Util.bset(msg.source().getBitmap(),MOB.ATT_PLAYERKILL)))
-			msg.source().setBitmap(Util.setb(msg.source().getBitmap(),MOB.ATT_PLAYERKILL));
+		&&(!CMath.bset(msg.source().getBitmap(),MOB.ATT_PLAYERKILL)))
+			msg.source().setBitmap(CMath.setb(msg.source().getBitmap(),MOB.ATT_PLAYERKILL));
 		return super.okMessage(myHost,msg);
 	}
 }

@@ -59,21 +59,21 @@ public class Prop_WearZapper extends Prop_HaveZapper
 		case CMMsg.TYP_HOLD:
 			if((!CMLib.masking().maskCheck(text(),mob))&&(didHappen(100)))
 			{
-				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out of <S-HIS-HER> hands!"));
+				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,CMParms.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out of <S-HIS-HER> hands!"));
 				return false;
 			}
 			break;
 		case CMMsg.TYP_WEAR:
 			if((!CMLib.masking().maskCheck(text(),mob))&&(didHappen(100)))
 			{
-				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out of <S-HIS-HER> hands!"));
+				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,CMParms.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out of <S-HIS-HER> hands!"));
 				return false;
 			}
 			break;
 		case CMMsg.TYP_WIELD:
 			if((!CMLib.masking().maskCheck(text(),mob))&&(didHappen(100)))
 			{
-				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out of <S-HIS-HER> hands!"));
+				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,CMParms.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out of <S-HIS-HER> hands!"));
 				return false;
 			}
 			break;

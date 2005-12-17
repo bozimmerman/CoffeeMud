@@ -39,7 +39,7 @@ public class ChanWho extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String channel=Util.combine(commands,1);
+		String channel=CMParms.combine(commands,1);
 		if((channel==null)||(channel.length()==0))
 		{
 			mob.tell(getScr("ChanWho","specname"));
@@ -81,7 +81,7 @@ public class ChanWho extends StdCommand
 			&&(CMLib.flags().isInTheGame(mob2,true))
 			&&((((mob2.envStats().disposition()&EnvStats.IS_CLOAKED)==0)
 					||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.envStats().level()>=mob2.envStats().level())))))
-					buf.append("^x[^?^.^N"+Util.padRight(mob2.name(),20)+"^x]^?^.^N\n\r");
+					buf.append("^x[^?^.^N"+CMStrings.padRight(mob2.name(),20)+"^x]^?^.^N\n\r");
 		}
 		if(buf.length()==0)
 			mob.tell(getScr("ChanWho","nobody",head));

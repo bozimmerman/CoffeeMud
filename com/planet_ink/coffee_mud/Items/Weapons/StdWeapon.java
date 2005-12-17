@@ -88,7 +88,7 @@ public class StdWeapon extends StdItem implements Weapon
 	{
 		super.recoverEnvStats();
 		if((subjectToWearAndTear())&&(usesRemaining()<100))
-			envStats().setDamage(((int)Math.round(Util.mul(envStats().damage(),Util.div(usesRemaining(),100)))));
+			envStats().setDamage(((int)Math.round(CMath.mul(envStats().damage(),CMath.div(usesRemaining(),100)))));
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -345,13 +345,13 @@ public class StdWeapon extends StdItem implements Weapon
 	}
 	public int minRange()
 	{
-		if(Util.bset(envStats().sensesMask(),EnvStats.SENSE_ITEMNOMINRANGE))
+		if(CMath.bset(envStats().sensesMask(),EnvStats.SENSE_ITEMNOMINRANGE))
 			return 0;
 		return minRange;
 	}
 	public int maxRange()
 	{
-		if(Util.bset(envStats().sensesMask(),EnvStats.SENSE_ITEMNOMAXRANGE))
+		if(CMath.bset(envStats().sensesMask(),EnvStats.SENSE_ITEMNOMAXRANGE))
 			return 100;
 		return maxRange;
 	}
@@ -386,7 +386,7 @@ public class StdWeapon extends StdItem implements Weapon
 	public int value()
 	{
 		if((subjectToWearAndTear())&&(usesRemaining()<1000))
-			return (int)Math.round(Util.mul(super.value(),Util.div(usesRemaining(),100)));
+			return (int)Math.round(CMath.mul(super.value(),CMath.div(usesRemaining(),100)));
 		return super.value();
 	}
 	public boolean subjectToWearAndTear()

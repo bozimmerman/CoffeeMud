@@ -40,7 +40,7 @@ public class AHelp extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String helpStr=Util.combine(commands,1);
+		String helpStr=CMParms.combine(commands,1);
 		if(CMLib.help().getArcHelpFile().size()==0)
 		{
 			mob.tell(getScr("Ahelp","aerr"));

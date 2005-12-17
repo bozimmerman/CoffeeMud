@@ -72,7 +72,7 @@ public class Snoop extends StdCommand
 				mob.tell("Snoop on whom?");
 			return false;
 		}
-		String whom=Util.combine(commands,0);
+		String whom=CMParms.combine(commands,0);
 		Session SnoopOn=null;
 		for(int s=0;s<CMLib.sessions().size();s++)
 		{

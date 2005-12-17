@@ -383,7 +383,7 @@ public class OffLine extends Thread implements MudHost
             for(int i=0;i<a.length;i++)
                 nameID+=" "+a[i];
             nameID=nameID.trim();
-            Vector V=Util.paramParse(nameID);
+            Vector V=CMParms.paramParse(nameID);
             for(int v=0;v<V.size();v++)
             {
                 String s=(String)V.elementAt(v);
@@ -394,7 +394,7 @@ public class OffLine extends Thread implements MudHost
                     v--;
                 }
             }
-            nameID=Util.combine(V,0);
+            nameID=CMParms.combine(V,0);
         }
         if(nameID.length()==0) nameID="Unnamed CoffeeMud";
         try
@@ -425,7 +425,7 @@ public class OffLine extends Thread implements MudHost
                     {
                         OffLine mud=new OffLine();
                         mud.acceptConnections=false;
-                        mud.port=Util.s_int(ports.substring(0,pdex));
+                        mud.port=CMath.s_int(ports.substring(0,pdex));
                         ports=ports.substring(pdex+1);
                         mud.start();
                         mudThreads.addElement(mud);
@@ -433,7 +433,7 @@ public class OffLine extends Thread implements MudHost
                     }
                     OffLine mud=new OffLine();
                     mud.acceptConnections=false;
-                    mud.port=Util.s_int(ports);
+                    mud.port=CMath.s_int(ports);
                     mud.start();
                     mudThreads.addElement(mud);
                 }

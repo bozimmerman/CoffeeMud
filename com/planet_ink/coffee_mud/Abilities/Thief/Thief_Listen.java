@@ -88,7 +88,7 @@ public class Thief_Listen extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		String whom=Util.combine(commands,0);
+		String whom=CMParms.combine(commands,0);
 		int dirCode=Directions.getGoodDirectionCode(whom);
 		if(!CMLib.flags().canHear(mob))
 		{

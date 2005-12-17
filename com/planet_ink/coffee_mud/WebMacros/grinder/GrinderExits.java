@@ -90,7 +90,7 @@ public class GrinderExits
 				E.setDescription(old); 
 				break;
 			case 4: // level
-				E.baseEnvStats().setLevel(Util.s_int(old));	
+				E.baseEnvStats().setLevel(CMath.s_int(old));	
 				break;
 			case 5: // levelrestricted;
 				break;

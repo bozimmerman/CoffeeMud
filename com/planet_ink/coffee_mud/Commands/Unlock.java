@@ -39,7 +39,7 @@ public class Unlock extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String whatTounlock=Util.combine(commands,1);
+		String whatTounlock=CMParms.combine(commands,1);
 		if(whatTounlock.length()==0)
 		{
 			mob.tell(getScr("Movement","unlockerr1"));

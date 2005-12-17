@@ -54,24 +54,24 @@ public class Prop_Retainable extends Property
 		int x=text.indexOf(";");
 		if(x<0)
 		{
-			price=Util.s_int(text);
+			price=CMath.s_int(text);
 			last=0;
 			periodic=0;
 		}
 		else
 		{
-			price=Util.s_int(text.substring(0,x));
+			price=CMath.s_int(text.substring(0,x));
 			text=text.substring(x+1);
 			x=text.indexOf(";");
 			if(x<0)
 			{
-				periodic=Util.s_int(text);
+				periodic=CMath.s_int(text);
 				last=0;
 			}
 			else
 			{
-				periodic=Util.s_int(text.substring(0,x));
-				last=Util.s_long(text.substring(x+1));
+				periodic=CMath.s_int(text.substring(0,x));
+				last=CMath.s_long(text.substring(x+1));
 			}
 		}
 	}

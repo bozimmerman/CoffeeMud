@@ -89,11 +89,11 @@ public class GenShopkeeper extends StdShopKeeper
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setWhatIsSold(Util.s_int(val)); break;
+		case 0: setWhatIsSold(CMath.s_int(val)); break;
 		case 1: setPrejudiceFactors(val); break;
 		case 2: setBudget(val); break;
 		case 3: setDevalueRate(val); break;
-		case 4: setInvResetRate(Util.s_int(val)); break;
+		case 4: setInvResetRate(CMath.s_int(val)); break;
         case 5: setIgnoreMask(val); break;
 		}
 	}

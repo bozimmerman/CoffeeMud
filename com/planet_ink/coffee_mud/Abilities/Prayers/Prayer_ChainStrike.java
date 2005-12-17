@@ -109,11 +109,11 @@ public class Prayer_ChainStrike extends Prayer
 
 						int dmg=damage;
 						if((msg.value()>0)||(msg2.value()>0))
-							dmg = (int)Math.round(Util.div(dmg,2.0));
+							dmg = (int)Math.round(CMath.div(dmg,2.0));
 						if(target.location()==mob.location())
 						{
 							CMLib.combat().postDamage(mob,target,this,dmg,CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The strike <DAMAGE> <T-NAME>!");
-							damage = (int)Math.round(Util.div(damage,2.0));
+							damage = (int)Math.round(CMath.div(damage,2.0));
 							if(damage<5){ damage=0; break;}
 						}
 					}

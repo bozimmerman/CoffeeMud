@@ -276,13 +276,13 @@ public class GrinderMobs
 				M.setDescription(old);
 				break;
 			case 4: // level
-				M.baseEnvStats().setLevel(Util.s_int(old));
+				M.baseEnvStats().setLevel(CMath.s_int(old));
 				break;
 			case 5: // ability;
-				M.baseEnvStats().setAbility(Util.s_int(old));
+				M.baseEnvStats().setAbility(CMath.s_int(old));
 				break;
 			case 6: // rejuv;
-				M.baseEnvStats().setRejuv(Util.s_int(old));
+				M.baseEnvStats().setRejuv(CMath.s_int(old));
 				break;
 			case 7: // misctext
 				if(!M.isGeneric())
@@ -295,24 +295,24 @@ public class GrinderMobs
 				M.baseCharStats().setStat(CharStats.GENDER,old.charAt(0));
 				break;
 			case 10: // height
-				M.baseEnvStats().setHeight(Util.s_int(old));
+				M.baseEnvStats().setHeight(CMath.s_int(old));
 				break;
 			case 11: // weight;
-				M.baseEnvStats().setWeight(Util.s_int(old));
+				M.baseEnvStats().setWeight(CMath.s_int(old));
 				break;
 			case 12: // speed
-				double d=Util.s_double(old);
+				double d=CMath.s_double(old);
 				if(d==0.0) d=1.0;
 				M.baseEnvStats().setSpeed(d);
 				break;
 			case 13: // attack
-				M.baseEnvStats().setAttackAdjustment(Util.s_int(old));
+				M.baseEnvStats().setAttackAdjustment(CMath.s_int(old));
 				break;
 			case 14: // damage
-				M.baseEnvStats().setDamage(Util.s_int(old));
+				M.baseEnvStats().setDamage(CMath.s_int(old));
 				break;
 			case 15: // armor
-				M.baseEnvStats().setArmor(Util.s_int(old));
+				M.baseEnvStats().setArmor(CMath.s_int(old));
 				break;
 			case 16: // alignment
 			    for(int v=0;v<Faction.ALIGN_NAMES.length;v++)
@@ -320,23 +320,23 @@ public class GrinderMobs
 			            CMLib.factions().setAlignment(M,v);
 				break;
 			case 17: // money
-				CMLib.beanCounter().setMoney(M,Util.s_int(old));
+				CMLib.beanCounter().setMoney(M,CMath.s_int(old));
 				break;
 			case 18: // is rideable
 				break;
 			case 19: // rideable type
 				if(M instanceof Rideable)
-					((Rideable)M).setRideBasis(Util.s_int(old));
+					((Rideable)M).setRideBasis(CMath.s_int(old));
 				break;
 			case 20: // mobs held
 				if(M instanceof Rideable)
-					((Rideable)M).setRiderCapacity(Util.s_int(old));
+					((Rideable)M).setRiderCapacity(CMath.s_int(old));
 				break;
 			case 21: // is shopkeeper
 				break;
 			case 22: // shopkeeper type
 				if(M instanceof ShopKeeper)
-					((ShopKeeper)M).setWhatIsSold(Util.s_int(old));
+					((ShopKeeper)M).setWhatIsSold(CMath.s_int(old));
 				break;
 			case 23: // is generic
 				break;
@@ -344,11 +344,11 @@ public class GrinderMobs
 				break;
 			case 25: // coin interest
 				if(M instanceof Banker)
-					((Banker)M).setCoinInterest(Util.s_double(old));
+					((Banker)M).setCoinInterest(CMath.s_double(old));
 				break;
 			case 26: // item interest
 				if(M instanceof Banker)
-					((Banker)M).setItemInterest(Util.s_double(old));
+					((Banker)M).setItemInterest(CMath.s_double(old));
 				break;
 			case 27: // bank name
 				if(M instanceof Banker)
@@ -399,7 +399,7 @@ public class GrinderMobs
 				break;
 			case 40: // tattoos
 				{
-					Vector V=Util.parseSemicolons(old,true);
+					Vector V=CMParms.parseSemicolons(old,true);
 					while(M.numTattoos()>0) M.delTattoo(M.fetchTattoo(0));
 					for(int v=0;v<V.size();v++)
 						M.addTattoo((String)V.elementAt(v));
@@ -407,7 +407,7 @@ public class GrinderMobs
 				break;
 			case 41: // educations
 				{
-					Vector V=Util.parseSemicolons(old,true);
+					Vector V=CMParms.parseSemicolons(old,true);
 					while(M.numEducations()>0) M.delEducation(M.fetchEducation(0));
 					for(int v=0;v<V.size();v++)
 						M.addEducation((String)V.elementAt(v));
@@ -423,7 +423,7 @@ public class GrinderMobs
 				break;
 			case 44: // inventory reset rate
 				if(M instanceof ShopKeeper)
-					((ShopKeeper)M).setInvResetRate(Util.s_int(old));
+					((ShopKeeper)M).setInvResetRate(CMath.s_int(old));
 				break;
 			case 45: // image
 			    M.setImage(old);
@@ -436,23 +436,23 @@ public class GrinderMobs
                 break;
             case 48: // minimum postage
                 if(M instanceof PostOffice)
-                    ((PostOffice)M).setMinimumPostage(Util.s_double(old));
+                    ((PostOffice)M).setMinimumPostage(CMath.s_double(old));
                 break;
             case 49: // postage per pound after first
                 if(M instanceof PostOffice)
-                    ((PostOffice)M).setPostagePerPound(Util.s_double(old));
+                    ((PostOffice)M).setPostagePerPound(CMath.s_double(old));
                 break;
             case 50: // holding fee per pound per month
                 if(M instanceof PostOffice)
-                    ((PostOffice)M).setHoldFeePerPound(Util.s_double(old));
+                    ((PostOffice)M).setHoldFeePerPound(CMath.s_double(old));
                 break;
             case 51: // new box fee
                 if(M instanceof PostOffice)
-                    ((PostOffice)M).setFeeForNewBox(Util.s_double(old));
+                    ((PostOffice)M).setFeeForNewBox(CMath.s_double(old));
                 break;
             case 52: // maximum months held
                 if(M instanceof PostOffice)
-                    ((PostOffice)M).setMaxMudMonthsHeld(Util.s_int(old));
+                    ((PostOffice)M).setMaxMudMonthsHeld(CMath.s_int(old));
                 break;
             case 53: // shopkeeper ignore mask
                 if(M instanceof ShopKeeper)
@@ -493,7 +493,7 @@ public class GrinderMobs
 					Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
 					if(I2!=null)
 					{
-						if(Util.isNumber(MATCHING))
+						if(CMath.isNumber(MATCHING))
 							happilyAddItem(I2,M);
 						else
 							happilyAddItem((Item)I2.copyOf(),M);
@@ -519,11 +519,11 @@ public class GrinderMobs
 					if(MATCHING==null)
 						break;
 					else
-					if(Util.isNumber(MATCHING))
+					if(CMath.isNumber(MATCHING))
 					{
-						Environmental O=(Environmental)inventory.elementAt(Util.s_int(MATCHING)-1);
+						Environmental O=(Environmental)inventory.elementAt(CMath.s_int(MATCHING)-1);
 						if(O!=null)
-							K.getShop().addStoreInventory(O,Util.s_int(theparm),Util.s_int(theprice),K);
+							K.getShop().addStoreInventory(O,CMath.s_int(theparm),CMath.s_int(theprice),K);
 					}
 					else
 					if(MATCHING.indexOf("@")>0)
@@ -538,7 +538,7 @@ public class GrinderMobs
 						if(O==null)
 							O=RoomData.getItemFromAnywhere(null,MATCHING);
 						if(O!=null)
-							K.getShop().addStoreInventory((Environmental)O.copyOf(),Util.s_int(theparm),Util.s_int(theprice),K);
+							K.getShop().addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice),K);
 					}
 					else
 					{
@@ -559,7 +559,7 @@ public class GrinderMobs
 						if(O==null)
 							O=RoomData.getItemFromAnywhere(null,MATCHING);
 						if(O!=null)
-							K.getShop().addStoreInventory((Environmental)O.copyOf(),Util.s_int(theparm),Util.s_int(theprice),K);
+							K.getShop().addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice),K);
 					}
 					num++;
 					MATCHING=httpReq.getRequestParameter("SHP"+num);

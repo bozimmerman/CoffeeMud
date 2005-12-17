@@ -110,7 +110,7 @@ public interface SlaveryLibrary extends CMObject
                     if(!sg.botherIfAble(ss.substring(1)))
                     {
                         sg.step=STEP_EVAL;
-                        move(Util.s_int(""+ss.charAt(0)));
+                        move(CMath.s_int(""+ss.charAt(0)));
                     }
                     else
                         sg.step=STEP_INT1;
@@ -223,7 +223,7 @@ public interface SlaveryLibrary extends CMObject
                 if(response.trim().length()==0)
                     return false;
                 bothering=null;
-                que.insertElementAt(Util.parse("find150 \""+response+"\""),0);
+                que.insertElementAt(CMParms.parse("find150 \""+response+"\""),0);
                 step=STEP_EVAL;
                 return true;
             }
@@ -250,12 +250,12 @@ public interface SlaveryLibrary extends CMObject
                 Log.debugOut("GEAS","STEP-"+s);
             if(s.equalsIgnoreCase("itemfind"))
             {
-                String item=Util.combine(cur,1);
+                String item=CMParms.combine(cur,1);
                 if(CMSecurity.isDebugging("GEAS"))
                     Log.debugOut("GEAS","ITEMFIND: "+item);
-                if((Util.isNumber(item)&&(Util.s_int(item)>0)))
+                if((CMath.isNumber(item)&&(CMath.s_int(item)>0)))
                 {
-                    if(CMLib.beanCounter().getTotalAbsoluteNativeValue(me)>=new Integer(Util.s_int(item)).doubleValue())
+                    if(CMLib.beanCounter().getTotalAbsoluteNativeValue(me)>=new Integer(CMath.s_int(item)).doubleValue())
                     {
                         step=STEP_EVAL;
                         que.removeElementAt(0);
@@ -353,12 +353,12 @@ public interface SlaveryLibrary extends CMObject
                                 double price=CMLib.coffeeShops().sellingPrice(M,me,E,sk,true).absoluteGoldPrice;
                                 if(price<=CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(me,M))
                                 {
-                                    me.enqueCommand(Util.parse("BUY \""+E.name()+"\""),0);
+                                    me.enqueCommand(CMParms.parse("BUY \""+E.name()+"\""),0);
                                     step=STEP_EVAL;
                                     return "HOLD";
                                 }
                                 price=price-CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(me,M);
-                                que.insertElementAt(Util.parse("itemfind "+CMLib.beanCounter().nameCurrencyShort(M,price)),0);
+                                que.insertElementAt(CMParms.parse("itemfind "+CMLib.beanCounter().nameCurrencyShort(M,price)),0);
                                 CMLib.commands().say(me,null,"Damn, I need "+CMLib.beanCounter().nameCurrencyShort(M,price)+".",false,false);
                                 step=STEP_EVAL;
                                 return "HOLD";
@@ -370,12 +370,12 @@ public interface SlaveryLibrary extends CMObject
                 if((bothering!=null)&&(step>STEP_EVAL)&&(step<=STEP_INT4)&&(!bothering.isMonster()))
                 {   step++; return "HOLD";}
                 step=STEP_EVAL;
-                return "0Can you tell me where to find "+Util.combine(cur,1)+"?";
+                return "0Can you tell me where to find "+CMParms.combine(cur,1)+"?";
             }
             else
             if(s.equalsIgnoreCase("mobfind"))
             {
-                String name=Util.combine(cur,1);
+                String name=CMParms.combine(cur,1);
                 if(CMSecurity.isDebugging("GEAS"))
                     Log.debugOut("GEAS","MOBFIND: "+name);
                 if(name.equalsIgnoreCase("you")) name=me.name();
@@ -415,7 +415,7 @@ public interface SlaveryLibrary extends CMObject
             else
             if(s.toLowerCase().startsWith("find"))
             {
-                String name=Util.combine(cur,1);
+                String name=CMParms.combine(cur,1);
                 if(CMSecurity.isDebugging("GEAS"))
                     Log.debugOut("GEAS","FIND: "+name);
                 if(name.equalsIgnoreCase("you")) name=me.name();
@@ -426,11 +426,11 @@ public interface SlaveryLibrary extends CMObject
                     if(name.equals("myself")) name=you.name();
                     if(name.equals("my")) name=you.name();
                 }
-                int dirCode=Directions.getGoodDirectionCode((String)Util.parse(name).firstElement());
+                int dirCode=Directions.getGoodDirectionCode((String)CMParms.parse(name).firstElement());
                 if((dirCode>=0)&&(me.location()!=null)&&(me.location().getRoomInDir(dirCode)!=null))
                 {
-                    if(Util.parse(name).size()>1)
-                        cur.setElementAt(Util.combine(Util.parse(name),1),1);
+                    if(CMParms.parse(name).size()>1)
+                        cur.setElementAt(CMParms.combine(CMParms.parse(name),1),1);
                     step=STEP_EVAL;
                     CMLib.tracking().move(me,dirCode,false,false);
                     return "HOLD";
@@ -459,9 +459,9 @@ public interface SlaveryLibrary extends CMObject
                     CMLib.commands().get(me,null,I,false);
                     return "HOLD";
                 }
-                if((s.length()>4)&&(Util.isNumber(s.substring(4))))
+                if((s.length()>4)&&(CMath.isNumber(s.substring(4))))
                 {
-                    int x=Util.s_int(s.substring(4));
+                    int x=CMath.s_int(s.substring(4));
                     if((--x)<0)
                     {
                         que.removeElementAt(0);
@@ -483,12 +483,12 @@ public interface SlaveryLibrary extends CMObject
             if(s.equalsIgnoreCase("wanderquery"))
             {
                 if(CMSecurity.isDebugging("GEAS"))
-                    Log.debugOut("GEAS","WANDERQUERY: "+Util.combine(cur,1));
+                    Log.debugOut("GEAS","WANDERQUERY: "+CMParms.combine(cur,1));
                 // if asked someone something, give them time to respond.
                 if((bothering!=null)&&(step>STEP_EVAL)&&(step<=STEP_INT4)&&(!bothering.isMonster()))
                 {   step++; return "HOLD";}
                 step=STEP_EVAL;
-                return "Can you help me "+Util.combine(cur,1)+"?";
+                return "Can you help me "+CMParms.combine(cur,1)+"?";
             }
             else
             {

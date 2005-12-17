@@ -242,11 +242,11 @@ public class SkyWatcher extends StdCharClass
 			   &&(room.getArea().getTimeObj().getMoonPhase()<moonfactors.length))
 			{
 				affectableState.setMovement(affectableState.getMovement()
-											+(int)Math.round(Util.mul(Util.div(affectableState.getMovement(),8.0),moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
+											+(int)Math.round(CMath.mul(CMath.div(affectableState.getMovement(),8.0),moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
 				affectableState.setHitPoints(affectableState.getHitPoints()
-											+(int)Math.round(Util.mul(Util.div(affectableState.getHitPoints(),8.0),moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
+											+(int)Math.round(CMath.mul(CMath.div(affectableState.getHitPoints(),8.0),moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
 				affectableState.setMana(affectableState.getMana()
-											-(int)Math.round(Util.mul(Util.div(affectableState.getMana(),4.0),moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
+											-(int)Math.round(CMath.mul(CMath.div(affectableState.getMana(),4.0),moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
 			}
 		}
 	}
@@ -261,9 +261,9 @@ public class SkyWatcher extends StdCharClass
 			if((classLevel>=5)&&(room.getArea().getTimeObj().getMoonPhase()<moonfactors.length))
 			{
 				affectableStats.setArmor(affectableStats.armor() // - is good
-										 -(int)Math.round(Util.mul(classLevel,moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
+										 -(int)Math.round(CMath.mul(classLevel,moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() // - is bad
-										 -(int)Math.round(Util.mul(classLevel,moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
+										 -(int)Math.round(CMath.mul(classLevel,moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
 			}
 		}
 	}
@@ -304,7 +304,7 @@ public class SkyWatcher extends StdCharClass
 									 int duration)
 	{
 		if(myChar==null) return duration;
-		if(Util.bset(skill.flags(),Ability.FLAG_CRAFTING)
+		if(CMath.bset(skill.flags(),Ability.FLAG_CRAFTING)
 		&&(myChar.charStats().getCurrentClass()==this)
 		&&(!skill.ID().equals("FoodPrep"))
 		&&(!skill.ID().equals("Cooking"))

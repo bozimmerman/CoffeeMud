@@ -122,10 +122,10 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		HashSet h=new HashSet();
 		if((str==null)||(str.length()==0)) return h;
-		str=Util.replaceAll(str,"<FRIENDS>","");
-		str=Util.replaceAll(str,"<IGNORED>","");
-		str=Util.replaceAll(str,"</FRIENDS>","");
-		str=Util.replaceAll(str,"</IGNORED>","");
+		str=CMStrings.replaceAll(str,"<FRIENDS>","");
+		str=CMStrings.replaceAll(str,"<IGNORED>","");
+		str=CMStrings.replaceAll(str,"</FRIENDS>","");
+		str=CMStrings.replaceAll(str,"</IGNORED>","");
 		int x=str.indexOf(";");
 		while(x>=0)
 		{
@@ -289,7 +289,7 @@ public class DefaultPlayerStats implements PlayerStats
 			+getTitleXML()
             +getAliasXML()
 			+"<ACCTEXP>"+accountExpiration+"</ACCTEXP>"
-			+((birthday!=null)?"<BIRTHDAY>"+Util.toStringList(birthday)+"</BIRTHDAY>":"")
+			+((birthday!=null)?"<BIRTHDAY>"+CMParms.toStringList(birthday)+"</BIRTHDAY>":"")
 			+((poofin.length()>0)?"<POOFIN>"+poofin+"</POOFIN>":"")
 			+((poofout.length()>0)?"<POOFOUT>"+poofout+"</POOFOUT>":"")
             +((announceMsg.length()>0)?"<ANNOUNCE>"+announceMsg+"</ANNOUNCE>":"")
@@ -304,7 +304,7 @@ public class DefaultPlayerStats implements PlayerStats
 		friends=getHashFrom(CMLib.xml().returnXMLValue(str,"FRIENDS"));
 		ignored=getHashFrom(CMLib.xml().returnXMLValue(str,"IGNORED"));
         if(CMLib.xml().returnXMLValue(str,"ACCTEXP").length()>0)
-            setAccountExpiration(Util.s_long(CMLib.xml().returnXMLValue(str,"ACCTEXP")));
+            setAccountExpiration(CMath.s_long(CMLib.xml().returnXMLValue(str,"ACCTEXP")));
         else
         {
             Calendar C=Calendar.getInstance();
@@ -312,15 +312,15 @@ public class DefaultPlayerStats implements PlayerStats
             setAccountExpiration(C.getTimeInMillis());
         }
 		String oldWrap=CMLib.xml().returnXMLValue(str,"WRAP");
-		if(Util.isInteger(oldWrap)) wrap=Util.s_int(oldWrap);
+		if(CMath.isInteger(oldWrap)) wrap=CMath.s_int(oldWrap);
 		setSecurityGroupStr(CMLib.xml().returnXMLValue(str,"SECGRPS"));
 		String bday=CMLib.xml().returnXMLValue(str,"BIRTHDAY");
 		if((bday!=null)&&(bday.length()>0))
 		{
-		    Vector V=Util.parseCommas(bday,true);
+		    Vector V=CMParms.parseCommas(bday,true);
 		    birthday=new int[3];
 		    for(int v=0;v<V.size();v++)
-		        birthday[v]=Util.s_int((String)V.elementAt(v));
+		        birthday[v]=CMath.s_int((String)V.elementAt(v));
 		}
 		titles.clear();
 		int t=-1;
@@ -360,17 +360,17 @@ public class DefaultPlayerStats implements PlayerStats
         levelDateTimes.clear();
         if(dates.length()>0)
         {
-            Vector sets=Util.parseSemicolons(dates,true);
+            Vector sets=CMParms.parseSemicolons(dates,true);
             for(int ss=0;ss<sets.size();ss++)
             {
                 String sStr=(String)sets.elementAt(ss);
-                Vector twin=Util.parseCommas(sStr,true);
+                Vector twin=CMParms.parseCommas(sStr,true);
                 if(twin.size()!=2) continue;
-                if(Util.s_int((String)twin.firstElement())>=lastNum)
+                if(CMath.s_int((String)twin.firstElement())>=lastNum)
                 {
-                    levelDateTimes.addElement(new Integer(Util.s_int((String)twin.firstElement())),
-                                              new Long(Util.s_long((String)twin.lastElement())));
-                    lastNum=Util.s_int((String)twin.firstElement());
+                    levelDateTimes.addElement(new Integer(CMath.s_int((String)twin.firstElement())),
+                                              new Long(CMath.s_long((String)twin.lastElement())));
+                    lastNum=CMath.s_int((String)twin.firstElement());
                 }
             }
         }
@@ -448,7 +448,7 @@ public class DefaultPlayerStats implements PlayerStats
     {
         if((!CMSecurity.isDisabled("ROOMVISITS"))
         &&(R!=null)
-        &&(!Util.bset(R.envStats().sensesMask(),EnvStats.SENSE_ROOMUNEXPLORABLE)))
+        &&(!CMath.bset(R.envStats().sensesMask(),EnvStats.SENSE_ROOMUNEXPLORABLE)))
             roomSet().add(CMLib.map().getExtendedRoomID(R));
     }
     public boolean hasVisited(Room R)
@@ -475,12 +475,12 @@ public class DefaultPlayerStats implements PlayerStats
                 }
             }
             if(totalRooms==0) return 100;
-            double pct=Util.div(totalVisits,totalRooms);
+            double pct=CMath.div(totalVisits,totalRooms);
             return (int)Math.round(100.0*pct);
         }
         int numRooms=A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS];
         if(numRooms<=0) return 100;
-        double pct=Util.div(roomSet().roomCount(A.Name()),numRooms);
+        double pct=CMath.div(roomSet().roomCount(A.Name()),numRooms);
         return (int)Math.round(100.0*pct);
     }
     

@@ -51,8 +51,8 @@ public class Decay extends ActiveTicker
 	{
 		super.setParms(newParms);
 		activated=false;
-		tickDown=Util.getParmInt(parms,"remain",tickDown);
-		answer=Util.getParmStr(parms,"answer"," vanishes!");
+		tickDown=CMParms.getParmInt(parms,"remain",tickDown);
+		answer=CMParms.getParmStr(parms,"answer"," vanishes!");
 		if(newParms.toUpperCase().indexOf("NOTRIGGER")>=0)
 			activated=true;
 	}

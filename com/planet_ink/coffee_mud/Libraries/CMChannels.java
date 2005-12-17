@@ -112,7 +112,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		&&(CMLib.masking().maskCheck(getChannelMask(i),M))
 		&&((!areaReq)
 		   ||(M.location().getArea()==sender.location().getArea()))
-		&&(!Util.isSet(M.playerStats().getChannelMask(),i)))
+		&&(!CMath.isSet(M.playerStats().getChannelMask(),i)))
 			return true;
 		return false;
 	}
@@ -153,7 +153,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		&&(CMLib.masking().maskCheck(getChannelMask(i),M))
 		&&((!areaReq)
 		   ||(M.location().getArea()==sender.location().getArea()))
-		&&(!Util.isSet(M.playerStats().getChannelMask(),i)))
+		&&(!CMath.isSet(M.playerStats().getChannelMask(),i)))
 			return true;
 		return false;
 	}
@@ -171,7 +171,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
 		if(((zapCheckOnly)||((!M.amDead())&&(M.location()!=null)))
 		&&(CMLib.masking().maskCheck(getChannelMask(i),M))
-		&&(!Util.isSet(M.playerStats().getChannelMask(),i)))
+		&&(!CMath.isSet(M.playerStats().getChannelMask(),i)))
 			return true;
 		return false;
 	}
@@ -250,7 +250,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				array[num][0]=iname.trim();
 				array[num][1]=name.trim();
 				array[num][2]=mask;
-                array[num][3]=Util.combine(flags,0);
+                array[num][3]=CMParms.combine(flags,0);
 				num++;
 			}
 		}
@@ -271,7 +271,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				array[num][0]=iname.trim();
 				array[num][1]=name.trim();
 				array[num][2]=mask;
-                array[num][3]=Util.combine(flags,0);
+                array[num][3]=CMParms.combine(flags,0);
 				num++;
 			}
 		}
@@ -280,7 +280,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public String[] getChannelNames()
 	{
 		if(channelNames.size()==0) return null;
-		return Util.toStringArray(channelNames);
+		return CMParms.toStringArray(channelNames);
 	}
 	
 	public Vector clearInvalidSnoopers(Session mySession, int channelCode)
@@ -315,7 +315,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
     public String parseOutFlags(String mask, Vector flags)
     {
-        Vector V=Util.parse(mask);
+        Vector V=CMParms.parse(mask);
         for(int v=V.size()-1;v>=0;v--)
         {
             String s=((String)V.elementAt(v)).toUpperCase();
@@ -327,7 +327,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
                 break;
             }
         }
-        return Util.combine(V,0);
+        return CMParms.combine(V,0);
     }
     
 	public int loadChannels(String list, String ilist, String imc2list)

@@ -341,7 +341,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		if(srchStr.equalsIgnoreCase("all")) return true;
 		if(srchStr.equalsIgnoreCase(toSrchStr)) return true;
-        if(Util.stripPunctuation(srchStr).trim().equalsIgnoreCase(Util.stripPunctuation(toSrchStr).trim())) 
+        if(CMStrings.stripPunctuation(srchStr).trim().equalsIgnoreCase(CMStrings.stripPunctuation(toSrchStr).trim())) 
             return true;
         boolean topOnly=false;
         if(srchStr.startsWith("$")&&(srchStr.length()>1))
@@ -453,14 +453,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(dot>0)
 		{
 			String sub=srchStr.substring(dot+1);
-			occurrance=Util.s_int(sub);
+			occurrance=CMath.s_int(sub);
 			if(occurrance>0)
 				srchStr=srchStr.substring(0,dot);
 			else
 			{
 				dot=srchStr.indexOf(".");
 				sub=srchStr.substring(0,dot);
-				occurrance=Util.s_int(sub);
+				occurrance=CMath.s_int(sub);
 				if(occurrance>0)
 					srchStr=srchStr.substring(dot+1);
 				else
@@ -817,7 +817,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
                 if(error.length()>0) mob.tell(error);
 				return null;
 			}
-            String what=Util.combine(commands,0);
+            String what=CMParms.combine(commands,0);
             Environmental shopkeeper=fetchEnvironmental(V,what,false);
             if((shopkeeper==null)&&(what.equals("shop")||what.equals("the shop")))
                 for(int v=0;v<V.size();v++)
@@ -858,13 +858,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		
 		int maxToItem=Integer.MAX_VALUE;
 		if((commands.size()>1)
-		&&(Util.s_int((String)commands.firstElement())>0))
+		&&(CMath.s_int((String)commands.firstElement())>0))
 		{
-			maxToItem=Util.s_int((String)commands.firstElement());
+			maxToItem=CMath.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
 		}
 		
-		String name=Util.combine(commands,0);
+		String name=CMParms.combine(commands,0);
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(name.toUpperCase().startsWith("ALL.")){ allFlag=true; name="ALL "+name.substring(4);}
 		if(name.toUpperCase().endsWith(".ALL")){ allFlag=true; name="ALL "+name.substring(0,name.length()-4);}
@@ -900,9 +900,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
 			itemID=itemID.substring(10);
-		if(Util.isInteger(itemID))
+		if(CMath.isInteger(itemID))
 		{
-            long num=Util.s_long(itemID);
+            long num=CMath.s_long(itemID);
 		    if(mine instanceof MOB)
 		    {
 		        Vector V=CMLib.beanCounter().getStandardCurrency((MOB)mine,CMLib.beanCounter().getCurrency(mine));
@@ -914,23 +914,23 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		            if(((Coins)V.elementAt(v)).getNumberOfCoins()>=num)
 		                return num;
 		    }
-		    return Util.s_long(itemID);
+		    return CMath.s_long(itemID);
 		}
-	    Vector V=Util.parse(itemID);
+	    Vector V=CMParms.parse(itemID);
 	    if((V.size()>1)
-	    &&((Util.isInteger((String)V.firstElement()))
-        &&(matchAnyCurrencySet(Util.combine(V,1))!=null)))
-	        return Util.s_long((String)V.firstElement());
+	    &&((CMath.isInteger((String)V.firstElement()))
+        &&(matchAnyCurrencySet(CMParms.combine(V,1))!=null)))
+	        return CMath.s_long((String)V.firstElement());
 	    else
 	    if((V.size()>1)&&(((String)V.firstElement()).equalsIgnoreCase("all")))
 	    {
-	        String currency=matchAnyCurrencySet(Util.combine(V,1));
+	        String currency=matchAnyCurrencySet(CMParms.combine(V,1));
 	        if(currency!=null)
 	        {
 	            if(mine instanceof MOB)
 	            {
 		            Vector V2=CMLib.beanCounter().getStandardCurrency((MOB)mine,currency);
-		            double denomination=matchAnyDenomination(currency,Util.combine(V,1));
+		            double denomination=matchAnyDenomination(currency,CMParms.combine(V,1));
 		            Coins C=null;
 		            for(int v2=0;v2<V2.size();v2++)
 		            {
@@ -943,7 +943,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	        }
 	    }
 	    else
-	    if((V.size()>0)&&(matchAnyCurrencySet(Util.combine(V,0))!=null))
+	    if((V.size()>0)&&(matchAnyCurrencySet(CMParms.combine(V,0))!=null))
 	        return 1;
 		return 0;
 	}
@@ -951,9 +951,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
 			itemID=itemID.substring(10);
-		if(Util.isInteger(itemID))
+		if(CMath.isInteger(itemID))
 		{
-		    long num=Util.s_long(itemID);
+		    long num=CMath.s_long(itemID);
             if(mine instanceof MOB)
             {
     	        Vector V=CMLib.beanCounter().getStandardCurrency((MOB)mine,CMLib.beanCounter().getCurrency(mine));
@@ -967,15 +967,15 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             }
             return CMLib.beanCounter().getCurrency(mine);
 		}
-	    Vector V=Util.parse(itemID);
-	    if((V.size()>1)&&(Util.isInteger((String)V.firstElement())))
-	        return matchAnyCurrencySet(Util.combine(V,1));
+	    Vector V=CMParms.parse(itemID);
+	    if((V.size()>1)&&(CMath.isInteger((String)V.firstElement())))
+	        return matchAnyCurrencySet(CMParms.combine(V,1));
 	    else
 	    if((V.size()>1)&&(((String)V.firstElement()).equalsIgnoreCase("all")))
-	        return matchAnyCurrencySet(Util.combine(V,1));
+	        return matchAnyCurrencySet(CMParms.combine(V,1));
 	    else
 	    if(V.size()>0)
-	        return matchAnyCurrencySet(Util.combine(V,0));
+	        return matchAnyCurrencySet(CMParms.combine(V,0));
 		return CMLib.beanCounter().getCurrency(mine);
 	}
     
@@ -984,9 +984,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
 			itemID=itemID.substring(10);
-		if(Util.isInteger(itemID))
+		if(CMath.isInteger(itemID))
 		{
-		    long num=Util.s_long(itemID);
+		    long num=CMath.s_long(itemID);
             if(mine instanceof MOB)
             {
     	        Vector V=CMLib.beanCounter().getStandardCurrency((MOB)mine,currency);
@@ -996,15 +996,15 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             }
 		    return CMLib.beanCounter().getLowestDenomination(currency);
 		}
-	    Vector V=Util.parse(itemID);
-	    if((V.size()>1)&&(Util.isInteger((String)V.firstElement())))
-	        return matchAnyDenomination(currency,Util.combine(V,1));
+	    Vector V=CMParms.parse(itemID);
+	    if((V.size()>1)&&(CMath.isInteger((String)V.firstElement())))
+	        return matchAnyDenomination(currency,CMParms.combine(V,1));
 	    else
 	    if((V.size()>1)&&(((String)V.firstElement()).equalsIgnoreCase("all")))
-	        return matchAnyDenomination(currency,Util.combine(V,1));
+	        return matchAnyDenomination(currency,CMParms.combine(V,1));
 	    else
 	    if(V.size()>0)
-	        return matchAnyDenomination(currency,Util.combine(V,0));
+	        return matchAnyDenomination(currency,CMParms.combine(V,0));
 		return 0;
 	}
 	
@@ -1053,19 +1053,19 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
 			itemID=itemID.substring(10);
 		long gold=0;
-		if(Util.isInteger(itemID))
+		if(CMath.isInteger(itemID))
 		{
-		    gold=Util.s_long(itemID);
+		    gold=CMath.s_long(itemID);
 		    itemID="";
 		}
 		else
 		{
-		    Vector V=Util.parse(itemID);
-		    if((V.size()>1)&&(Util.isInteger((String)V.firstElement())))
-		        gold=Util.s_long((String)V.firstElement());
+		    Vector V=CMParms.parse(itemID);
+		    if((V.size()>1)&&(CMath.isInteger((String)V.firstElement())))
+		        gold=CMath.s_long((String)V.firstElement());
 		    else
 		        return null;
-		    itemID=Util.combine(V,1);
+		    itemID=CMParms.combine(V,1);
 		}
 		if(gold>0)
 		{
@@ -1102,9 +1102,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		long gold=0;
 		double denomination=0.0;
 		String currency=CMLib.beanCounter().getCurrency(mob);
-		if(Util.isInteger(itemID))
+		if(CMath.isInteger(itemID))
 		{
-		    gold=Util.s_long(itemID);
+		    gold=CMath.s_long(itemID);
 	        Vector V=CMLib.beanCounter().getStandardCurrency(mob,CMLib.beanCounter().getCurrency(mob));
 	        boolean skipNextCheck=false;
 	        for(int v=0;v<V.size();v++)
@@ -1128,18 +1128,18 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		else
 		{
-		    Vector V=Util.parse(itemID);
+		    Vector V=CMParms.parse(itemID);
 		    if(V.size()<1) return null;
-		    if((!Util.isInteger((String)V.firstElement()))
+		    if((!CMath.isInteger((String)V.firstElement()))
 		    &&(!((String)V.firstElement()).equalsIgnoreCase("all")))
 		        V.insertElementAt("1",0);
-		    Item I=mob.fetchInventory(container,Util.combine(V,1));
+		    Item I=mob.fetchInventory(container,CMParms.combine(V,1));
 		    if(I instanceof Coins)
 		    {
 		        if(((String)V.firstElement()).equalsIgnoreCase("all"))
 		            gold=((Coins)I).getNumberOfCoins();
 		        else
-			        gold=Util.s_long((String)V.firstElement());
+			        gold=CMath.s_long((String)V.firstElement());
 		        currency=((Coins)I).getCurrency();
 		        denomination=((Coins)I).getDenomination();
 		    }
@@ -1150,7 +1150,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			if(CMLib.beanCounter().getNumberOfCoins(mob,currency,denomination)>=gold)
 			{
-			    CMLib.beanCounter().subtractMoney(mob,currency,denomination,Util.mul(denomination,gold));
+			    CMLib.beanCounter().subtractMoney(mob,currency,denomination,CMath.mul(denomination,gold));
 			    Coins C=(Coins)CMClass.getItem("StdCoins");
 			    C.setCurrency(currency);
 			    C.setDenomination(denomination);
@@ -1183,12 +1183,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			    containerDex=i+1;
 			    if(((containerDex+1)<commands.size())
 			    &&((((String)commands.elementAt(containerDex)).equalsIgnoreCase("all"))
-			    ||(Util.s_int((String)commands.elementAt(containerDex))>0)))
+			    ||(CMath.s_int((String)commands.elementAt(containerDex))>0)))
 			        containerDex++;
 			    break;
 			}
 		
-		String possibleContainerID=Util.combine(commands,containerDex);
+		String possibleContainerID=CMParms.combine(commands,containerDex);
 		    
 		boolean allFlag=false;
 		String preWord="";
@@ -1199,9 +1199,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			preWord=(String)commands.elementAt(containerDex-1);
 
 		int maxContained=Integer.MAX_VALUE;
-		if(Util.s_int(preWord)>0)
+		if(CMath.s_int(preWord)>0)
 		{
-			maxContained=Util.s_int(preWord);
+			maxContained=CMath.s_int(preWord);
 			commands.setElementAt("all",containerDex-1);
 			containerDex--;
 			preWord="all";
@@ -1252,7 +1252,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		for(int i=commands.size()-2;i>=1;i--)
 		    if(((String)commands.elementAt(i)).equalsIgnoreCase("from"))
 		    { fromDex=i; containerDex=i+1;  break;}
-		String possibleContainerID=Util.combine(commands,containerDex);
+		String possibleContainerID=CMParms.combine(commands,containerDex);
 		
 		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,wornReqCode);
 		if((thisThang!=null)
@@ -1320,8 +1320,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
         String newName=mob.session().prompt("Enter a new value:","");
-        if(Util.isNumber(newName))
-            return Util.s_double(newName);
+        if(CMath.isNumber(newName))
+            return CMath.s_double(newName);
         mob.tell("(no change)");
         return oldVal;
     }
@@ -1333,9 +1333,30 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
         String newName=mob.session().prompt("Enter a new value:","");
-        if(Util.isInteger(newName))
-            return Util.s_int(newName);
+        if(CMath.isInteger(newName))
+            return CMath.s_int(newName);
         mob.tell("(no change)");
         return oldVal;
     }
+    
+    public String returnTime(long millis, long ticks)
+    {
+        String avg="";
+        if(ticks>0)
+            avg=", Average="+(millis/ticks)+"ms";
+        if(millis<1000) return millis+"ms"+avg;
+        long seconds=millis/1000;
+        millis-=(seconds*1000);
+        if(seconds<60) return seconds+"s "+millis+"ms"+avg;
+        long minutes=seconds/60;
+        seconds-=(minutes*60);
+        if(minutes<60) return minutes+"m "+seconds+"s "+millis+"ms"+avg;
+        long hours=minutes/60;
+        minutes-=(hours*60);
+        if(hours<24) return hours+"h "+minutes+"m "+seconds+"s "+millis+"ms"+avg;
+        long days=hours/24;
+        hours-=(days*24);
+        return days+"d "+hours+"h "+minutes+"m "+seconds+"s "+millis+"ms"+avg;
+    }
+    
 }

@@ -43,31 +43,31 @@ public class ListSessions extends StdCommand
 	{
 		String sort="";
 		if((commands!=null)&&(commands.size()>1))
-			sort=Util.combine(commands,1).trim().toUpperCase();
+			sort=CMParms.combine(commands,1).trim().toUpperCase();
 		StringBuffer lines=new StringBuffer("\n\r^x");
-		lines.append(Util.padRight("Status",9)+"| ");
-		lines.append(Util.padRight("Valid",5)+"| ");
-		lines.append(Util.padRight("Name",17)+"| ");
-		lines.append(Util.padRight("IP",17)+"| ");
-		lines.append(Util.padRight("Idle",17)+"^.^N\n\r");
+		lines.append(CMStrings.padRight("Status",9)+"| ");
+		lines.append(CMStrings.padRight("Valid",5)+"| ");
+		lines.append(CMStrings.padRight("Name",17)+"| ");
+		lines.append(CMStrings.padRight("IP",17)+"| ");
+		lines.append(CMStrings.padRight("Idle",17)+"^.^N\n\r");
 		Vector broken=new Vector();
 		for(int s=0;s<CMLib.sessions().size();s++)
 		{
 			Session thisSession=CMLib.sessions().elementAt(s);
 			String[] set=new String[5];
-			set[0]=(thisSession.killFlag()?"^H":"")+Util.padRight(Session.statusStr[thisSession.getStatus()],9)+(thisSession.killFlag()?"^?":"")+"| ";
+			set[0]=(thisSession.killFlag()?"^H":"")+CMStrings.padRight(Session.statusStr[thisSession.getStatus()],9)+(thisSession.killFlag()?"^?":"")+"| ";
 			if (thisSession.mob() != null)
 			{
-				set[1]=Util.padRight(((thisSession.mob().session()==thisSession)?"Yes":"^HNO!^?"),5)+"| ";
-				set[2]="^!"+Util.padRight("^<LSTUSER^>"+thisSession.mob().Name()+"^</LSTUSER^>",17)+"^?| ";
+				set[1]=CMStrings.padRight(((thisSession.mob().session()==thisSession)?"Yes":"^HNO!^?"),5)+"| ";
+				set[2]="^!"+CMStrings.padRight("^<LSTUSER^>"+thisSession.mob().Name()+"^</LSTUSER^>",17)+"^?| ";
 			}
 			else
 			{
-				set[1]=Util.padRight("N/A",5)+"| ";
-				set[2]=Util.padRight("NAMELESS",17)+"| ";
+				set[1]=CMStrings.padRight("N/A",5)+"| ";
+				set[2]=CMStrings.padRight("NAMELESS",17)+"| ";
 			}
-			set[3]=Util.padRight(thisSession.getAddress(),17)+"| ";
-			set[4]=Util.padRight((thisSession.getIdleMillis()+""),17);
+			set[3]=CMStrings.padRight(thisSession.getAddress(),17)+"| ";
+			set[4]=CMStrings.padRight((thisSession.getIdleMillis()+""),17);
 			broken.addElement(set);
 		}
 		Vector sorted=null;

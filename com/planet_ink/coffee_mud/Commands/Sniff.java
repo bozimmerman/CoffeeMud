@@ -53,7 +53,7 @@ public class Sniff extends StdCommand
 		{
 			Environmental thisThang=null;
 			
-			String ID=Util.combine(commands,1);
+			String ID=CMParms.combine(commands,1);
 			if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
 				thisThang=mob;
 			

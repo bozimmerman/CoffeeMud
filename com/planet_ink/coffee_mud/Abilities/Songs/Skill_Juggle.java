@@ -342,7 +342,7 @@ public class Skill_Juggle extends BardSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		String whatToJuggle=Util.combine(commands,0);
+		String whatToJuggle=CMParms.combine(commands,0);
 		Skill_Juggle A=(Skill_Juggle)mob.fetchEffect("Skill_Juggle");
 		if(whatToJuggle.length()==0)
 		{
@@ -364,9 +364,9 @@ public class Skill_Juggle extends BardSkill
 
 		int maxToJuggle=Integer.MAX_VALUE;
 		if((commands.size()>1)
-		&&(Util.s_int((String)commands.firstElement())>0))
+		&&(CMath.s_int((String)commands.firstElement())>0))
 		{
-			maxToJuggle=Util.s_int((String)commands.firstElement());
+			maxToJuggle=CMath.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
 		}
 

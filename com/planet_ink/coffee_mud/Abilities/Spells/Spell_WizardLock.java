@@ -98,7 +98,7 @@ public class Spell_WizardLock extends Spell
 			mob.tell("Wizard Lock what?.");
 			return false;
 		}
-		String targetName=Util.combine(commands,0);
+		String targetName=CMParms.combine(commands,0);
 
 		Environmental target=null;
 		int dirCode=Directions.getGoodDirectionCode(targetName);

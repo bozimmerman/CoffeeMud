@@ -19,6 +19,9 @@ import java.util.*;
 public class CMath
 {
     private CMath(){super();}
+    private static CMath inst=new CMath();
+    public static CMath instance(){return inst;}
+    
     
     public static long absDiff(long x, long y)
     {

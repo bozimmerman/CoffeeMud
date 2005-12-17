@@ -99,14 +99,14 @@ public class GenPostman extends StdPostman
         else
         switch(getCodeNum(code))
         {
-        case 0: setWhatIsSold(Util.s_int(val)); break;
+        case 0: setWhatIsSold(CMath.s_int(val)); break;
         case 1: setPrejudiceFactors(val); break;
         case 2: setPostalChain(val); break;
-        case 3: setMinimumPostage(Util.s_double(val)); break;
-        case 4: setPostagePerPound(Util.s_double(val)); break;
-        case 5: setHoldFeePerPound(Util.s_double(val)); break;
-        case 6: setFeeForNewBox(Util.s_double(val)); break;
-        case 7: setMaxMudMonthsHeld(Util.s_int(val)); break;
+        case 3: setMinimumPostage(CMath.s_double(val)); break;
+        case 4: setPostagePerPound(CMath.s_double(val)); break;
+        case 5: setHoldFeePerPound(CMath.s_double(val)); break;
+        case 6: setFeeForNewBox(CMath.s_double(val)); break;
+        case 7: setMaxMudMonthsHeld(CMath.s_int(val)); break;
         case 8: setIgnoreMask(val); break;
         }
     }

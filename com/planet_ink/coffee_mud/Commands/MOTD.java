@@ -43,8 +43,8 @@ public class MOTD extends StdCommand
 		if((commands!=null)
 		&&(commands.size()>1)
 		&&(mob.playerStats()!=null)
-		&&(Util.combine(commands,1).equalsIgnoreCase("AGAIN")
-		   ||Util.combine(commands,1).equalsIgnoreCase("NEW")))
+		&&(CMParms.combine(commands,1).equalsIgnoreCase("AGAIN")
+		   ||CMParms.combine(commands,1).equalsIgnoreCase("NEW")))
 		{
 			StringBuffer buf=new StringBuffer("");
 			try
@@ -62,18 +62,18 @@ public class MOTD extends StdCommand
 				{
 					Vector entry=(Vector)journal.elementAt(which);
 					String from=(String)entry.elementAt(1);
-					long last=Util.s_long((String)entry.elementAt(2));
+					long last=CMath.s_long((String)entry.elementAt(2));
 					String to=(String)entry.elementAt(3);
 					String subject=(String)entry.elementAt(4);
 					String message=(String)entry.elementAt(5);
-					long compdate=Util.s_long((String)entry.elementAt(6));
+					long compdate=CMath.s_long((String)entry.elementAt(6));
 					boolean mineAble=to.equalsIgnoreCase(mob.Name())||from.equalsIgnoreCase(mob.Name());
 					if((compdate>mob.playerStats().lastDateTime())
 					&&(to.equals("ALL")||mineAble))
 					{
 						if(message.startsWith("<cmvp>"))
 							message=new String(CMLib.httpUtils().doVirtualPage(message.substring(6).getBytes()));
-						buf.append("\n\rNews: "+CMLib.time().date2String(last)+"\n\r"+"FROM: "+Util.padRight(from,15)+"\n\rTO  : "+Util.padRight(to,15)+"\n\rSUBJ: "+subject+"\n\r"+message);
+						buf.append("\n\rNews: "+CMLib.time().date2String(last)+"\n\r"+"FROM: "+CMStrings.padRight(from,15)+"\n\rTO  : "+CMStrings.padRight(to,15)+"\n\rSUBJ: "+subject+"\n\r"+message);
 						buf.append("\n\r--------------------------------------\n\r");
 					}
 				}
@@ -141,7 +141,7 @@ public class MOTD extends StdCommand
                         Vector entry=(Vector)items.elementAt(i);
                         String from=(String)entry.elementAt(1);
                         String message=(String)entry.elementAt(5);
-                        long compdate=Util.s_long((String)entry.elementAt(6));
+                        long compdate=CMath.s_long((String)entry.elementAt(6));
                         if(compdate>mob.playerStats().lastDateTime())
                         {
                             buf.append("\n\rNEW "+CMLib.journals().getCommandJournalName(CJ.intValue())+" from "+from+": "+message+"\n\r");
@@ -152,7 +152,7 @@ public class MOTD extends StdCommand
                 if(CJseparator)
                     buf.append("\n\r--------------------------------------\n\r");
                 
-                if((!Util.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
+                if((!CMath.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
                 &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0))
                 {
                     Vector msgs=CMLib.database().DBReadJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX));
@@ -172,21 +172,21 @@ public class MOTD extends StdCommand
                     if(buf.length()>0)
                         mob.session().wraplessPrintln("\n\r--------------------------------------\n\r"+buf.toString());
                     else
-                    if(Util.combine(commands,1).equalsIgnoreCase("AGAIN"))
+                    if(CMParms.combine(commands,1).equalsIgnoreCase("AGAIN"))
                         mob.session().println("No MOTD to re-read.");
 			}
 			catch(HTTPRedirectException e){}
 			return false;
 		}
 		
-		if(Util.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE))
+		if(CMath.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE))
 		{
-			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
+			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
 			mob.tell("The daily message has been turned on.");
 		}
 		else
 		{
-			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
+			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
 			mob.tell("The daily message has been turned off.");
 		}
 		mob.tell("Enter MOTD AGAIN to see the message over again.");
@@ -230,7 +230,7 @@ public class MOTD extends StdCommand
                 results.put(P,ct);
             }
             ct[1]++;
-            if(Util.s_long((String)pieces.elementAt(PostOffice.PIECE_TIME))>newTimeDate)
+            if(CMath.s_long((String)pieces.elementAt(PostOffice.PIECE_TIME))>newTimeDate)
                 ct[0]++;
         }
         return results;

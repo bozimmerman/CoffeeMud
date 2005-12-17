@@ -68,7 +68,7 @@ public class Prayer_PeaceRitual extends Prayer
 
 		if((msg.target()==invoker)
 		&&(msg.source()!=invoker)
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)))
+		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)))
 		{
 			msg.source().location().show(invoker,null,CMMsg.MSG_OK_VISUAL,"The peace ritual is disrupted!");
 			clan1="";
@@ -138,7 +138,7 @@ public class Prayer_PeaceRitual extends Prayer
 			mob.tell("You must specify the clan you wish to see peace with.");
 			return false;
 		}
-		clan2=Util.combine(commands,0);
+		clan2=CMParms.combine(commands,0);
 		Clan otherClan=CMLib.clans().findClan(clan2);
 		if((otherClan==null)
 		||((myClan.getClanRelations(clan2)!=Clan.REL_WAR)&&(otherClan.getClanRelations(clan1)!=Clan.REL_WAR)))

@@ -48,10 +48,10 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
         {
             fpmap=new Object[pmap.length];
             for(int p=0;p<pmap.length;p++)
-                fpmap[p]=Util.toStringArray(Util.parse(pmap[p][0]));
+                fpmap[p]=CMParms.toStringArray(CMParms.parse(pmap[p][0]));
         }
         String[] chk=null;
-        String[] req=Util.toStringArray(prereq);
+        String[] req=CMParms.toStringArray(prereq);
         boolean reject=false;
         int ci=0,ri=0;
         Object[] commands=new Object[req.length];
@@ -59,7 +59,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
         for(int i=0;i<req.length;i++)
         {
             socials[i]=CMLib.socials().FetchSocial(req[i],true);
-            commands[i]=CMLib.english().findCommand(mob,Util.makeVector(req[i].toUpperCase()));
+            commands[i]=CMLib.english().findCommand(mob,CMParms.makeVector(req[i].toUpperCase()));
         }
         for(int p=0;p<fpmap.length;p++)
         {
@@ -167,13 +167,13 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 
     public geasSteps processRequest(MOB you, MOB me, String req)
     {
-        Vector REQ=Util.parse(req.toLowerCase().trim());
+        Vector REQ=CMParms.parse(req.toLowerCase().trim());
         for(int v=0;v<REQ.size();v++)
             REQ.setElementAt(cleanWord((String)REQ.elementAt(v)),v);
         Vector poss=findMatch(me,REQ);
         if(poss.size()==0)
         {
-            req=Util.combine(REQ,0);
+            req=CMParms.combine(REQ,0);
             boolean doneSomething=true;
             boolean didAnything=false;
             while(doneSomething)
@@ -189,7 +189,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
             }
             if(didAnything)
             {
-                REQ=Util.parse(req);
+                REQ=CMParms.parse(req);
                 poss=findMatch(me,REQ);
             }
         }
@@ -208,12 +208,12 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
             {
                 geasStep g=new geasStep(geasSteps);
                 Hashtable map=(Hashtable)poss.elementAt(i);
-                Vector all=Util.parseSemicolons((String)map.get("INSTR"),true);
+                Vector all=CMParms.parseSemicolons((String)map.get("INSTR"),true);
                 if(CMSecurity.isDebugging("GEAS"))
-                    Log.debugOut("GEAS",Util.toStringList(all));
+                    Log.debugOut("GEAS",CMParms.toStringList(all));
                 g.que=new Vector();
                 for(int a=0;a<all.size();a++)
-                    g.que.addElement(Util.parse((String)all.elementAt(a)));
+                    g.que.addElement(CMParms.parse((String)all.elementAt(a)));
                 if(you!=null)   map.put("%c",you.name());
                 map.put("%n",me.name());
                 for(int q=0;q<g.que.size();q++)

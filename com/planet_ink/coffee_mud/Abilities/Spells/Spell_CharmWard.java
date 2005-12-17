@@ -69,7 +69,7 @@ public class Spell_CharmWard extends Spell
 			&&(!msg.amISource(mob))
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
-			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING))
+			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING))
 			&&(!mob.amDead()))
 			{
                 Ability A=(Ability)msg.tool();
@@ -87,7 +87,7 @@ public class Spell_CharmWard extends Spell
 			Room R=(Room)affected;
 			if((msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
-			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))
+			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))
 			{
 				if((msg.source().location()!=null)&&(msg.source().location()!=R))
 					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
@@ -104,7 +104,7 @@ public class Spell_CharmWard extends Spell
 		Environmental target=null;
 		if(commands.size()>0)
 		{
-			String s=Util.combine(commands,0);
+			String s=CMParms.combine(commands,0);
 			if(s.equalsIgnoreCase("room"))
 				target=mob.location();
 			else

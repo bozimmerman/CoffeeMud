@@ -92,7 +92,7 @@ public class Song_Lullibye extends Song
 			return true;
 
 
-		if((!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+		if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
 		&&(msg.targetMinor()==CMMsg.TYP_STAND)&&(asleep))
 			return false;
 		return true;

@@ -79,7 +79,7 @@ public class Turtle extends StdRace
 	}
 	public String healthText(MOB mob)
 	{
-		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name() + "^r is facing a slow death!^N";

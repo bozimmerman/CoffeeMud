@@ -49,7 +49,7 @@ public class Pause extends StdCommand
         throws java.io.IOException
     {
         
-        String cmd=Util.combine(commands,1);
+        String cmd=CMParms.combine(commands,1);
         if(commands.size()<2)
         {
             if(!CMLib.threads().isAllSuspended())

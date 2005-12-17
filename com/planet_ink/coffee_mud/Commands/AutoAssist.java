@@ -41,14 +41,14 @@ public class AutoAssist extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOASSIST))
+		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOASSIST))
 		{
-			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
+			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
 			mob.tell(getScr("AutoAssist","turnon"));
 		}
 		else
 		{
-			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
+			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
 			mob.tell(getScr("AutoAssist","turnoff"));
 		}
 		return false;

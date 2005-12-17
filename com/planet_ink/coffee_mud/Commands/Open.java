@@ -39,7 +39,7 @@ public class Open extends BaseItemParser
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String whatToOpen=Util.combine(commands,1);
+		String whatToOpen=CMParms.combine(commands,1);
 		if(whatToOpen.length()==0)
 		{
 			mob.tell(getScr("Movement","openerr1"));

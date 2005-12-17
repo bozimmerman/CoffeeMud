@@ -177,19 +177,19 @@ public class IMudInterface implements ImudServices, Serializable
 	public String socialFixIn(String str)
 	{
 
-		str=Util.replaceAll(str,"$N","<S-NAME>");
-		str=Util.replaceAll(str,"$n","<S-NAME>");
-		str=Util.replaceAll(str,"$T","<T-NAMESELF>");
-		str=Util.replaceAll(str,"$t","<T-NAMESELF>");
-		str=Util.replaceAll(str,"$O","<T-NAMESELF>");
-		str=Util.replaceAll(str,"$o","<T-NAMESELF>");
-		str=Util.replaceAll(str,"$m","<S-HIM-HER>");
-		str=Util.replaceAll(str,"$M","<T-HIM-HER>");
-		str=Util.replaceAll(str,"$s","<S-HIS-HER>");
-		str=Util.replaceAll(str,"$S","<T-HIS-HER>");
-		str=Util.replaceAll(str,"$e","<S-HE-SHE>");
-		str=Util.replaceAll(str,"$E","<T-HE-SHE>");
-		str=Util.replaceAll(str,"`","\'");
+		str=CMStrings.replaceAll(str,"$N","<S-NAME>");
+		str=CMStrings.replaceAll(str,"$n","<S-NAME>");
+		str=CMStrings.replaceAll(str,"$T","<T-NAMESELF>");
+		str=CMStrings.replaceAll(str,"$t","<T-NAMESELF>");
+		str=CMStrings.replaceAll(str,"$O","<T-NAMESELF>");
+		str=CMStrings.replaceAll(str,"$o","<T-NAMESELF>");
+		str=CMStrings.replaceAll(str,"$m","<S-HIM-HER>");
+		str=CMStrings.replaceAll(str,"$M","<T-HIM-HER>");
+		str=CMStrings.replaceAll(str,"$s","<S-HIS-HER>");
+		str=CMStrings.replaceAll(str,"$S","<T-HIS-HER>");
+		str=CMStrings.replaceAll(str,"$e","<S-HE-SHE>");
+		str=CMStrings.replaceAll(str,"$E","<T-HE-SHE>");
+		str=CMStrings.replaceAll(str,"`","\'");
 		if(str.equals("$")) return "";
 		return str.trim();
 	}
@@ -352,7 +352,7 @@ public class IMudInterface implements ImudServices, Serializable
 						if(V2.elementAt(1) instanceof Integer)
 							idle = ((Integer)V2.elementAt(1)).intValue();
 						String xtra = fixColors((String)V2.elementAt(2));
-						buf.append("["+Util.padRight(nom,20)+"] "+xtra+" ("+idle+")\n\r");
+						buf.append("["+CMStrings.padRight(nom,20)+"] "+xtra+" ("+idle+")\n\r");
 					}
 					smob.session().wraplessPrintln(buf.toString());
 					break;
@@ -373,7 +373,7 @@ public class IMudInterface implements ImudServices, Serializable
 					for(int v=0;v<V.size();v++)
 					{
 						String nom = fixColors((String)V.elementAt(v));
-						buf.append("["+Util.padRight(nom,20)+"]\n\r");
+						buf.append("["+CMStrings.padRight(nom,20)+"]\n\r");
 					}
 					smob.session().wraplessPrintln(buf.toString());
 					smob.session().setPromptFlag(true);

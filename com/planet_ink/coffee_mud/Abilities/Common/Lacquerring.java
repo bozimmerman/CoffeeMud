@@ -57,7 +57,7 @@ public class Lacquerring extends CommonSkill
 			if((start>=0)&&(start<(end-3))) name=name.substring(0,start)+name.substring(end+3);
 		}
 		colorWord="^"+colorWord.charAt(0)+colorWord+"^?";
-		Vector V=Util.parse(name);
+		Vector V=CMParms.parse(name);
 		for(int v=0;v<V.size();v++)
 		{
 			String word=(String)V.elementAt(v);
@@ -69,11 +69,11 @@ public class Lacquerring extends CommonSkill
 			   )
 			{
 				V.insertElementAt(colorWord,v+1);
-				return Util.combine(V,0);
+				return CMParms.combine(V,0);
 			}
 		}
 		V.insertElementAt(colorWord,0);
-		return Util.combine(V,0);
+		return CMParms.combine(V,0);
 	}
 
 	public void unInvoke()
@@ -136,7 +136,7 @@ public class Lacquerring extends CommonSkill
 			return false;
 		}
 
-		writing=Util.combine(commands,0).toLowerCase();
+		writing=CMParms.combine(commands,0).toLowerCase();
 		boolean darkFlag=false;
 		if(writing.startsWith("dark "))
 		{
@@ -153,7 +153,7 @@ public class Lacquerring extends CommonSkill
 		verb="lacquering "+target.name()+" "+writing;
 		displayText="You are "+verb;
 		found=target;
-		if(darkFlag) writing=Util.capitalizeAndLower(writing);
+		if(darkFlag) writing=CMStrings.capitalizeAndLower(writing);
 		if(!profficiencyCheck(mob,0,auto)) writing="";
 		int duration=60-mob.envStats().level();
 		if(duration<12) duration=12;

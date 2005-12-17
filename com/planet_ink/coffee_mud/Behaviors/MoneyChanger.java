@@ -77,9 +77,9 @@ public class MoneyChanger extends StdBehavior
 						while((x<newParm.length())
 						&&((Character.isDigit(newParm.charAt(x)))||(newParm.charAt(x)=='.')))
 							x++;
-						double val=Util.s_double(newParm.substring(0,x));
+						double val=CMath.s_double(newParm.substring(0,x));
 						if(newParm.substring(0,x).indexOf(".")<0)
-							val= new Long(Util.s_long(newParm.substring(0,x))).doubleValue();
+							val= new Long(CMath.s_long(newParm.substring(0,x))).doubleValue();
 						if(x<newParm.length())
 							newParm=newParm.substring(x+1);
 						else

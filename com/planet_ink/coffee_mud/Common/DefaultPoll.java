@@ -209,13 +209,13 @@ public class DefaultPoll implements Poll
     public boolean mayIVote(MOB mob)
     {
         if(mob==null) return false;
-        if(!Util.bset(bitmap,FLAG_ACTIVE))
+        if(!CMath.bset(bitmap,FLAG_ACTIVE))
             return false;
         if(!CMLib.masking().maskCheck(qualZapper,mob))
             return false;
         if((expiration>0)&&(System.currentTimeMillis()>expiration))
         {
-            bitmap=Util.unsetb(bitmap,FLAG_ACTIVE);
+            bitmap=CMath.unsetb(bitmap,FLAG_ACTIVE);
             dbupdateall(name);
             return false;
         }
@@ -228,14 +228,14 @@ public class DefaultPoll implements Poll
         if(mob==null) return false;
         if(!CMLib.masking().maskCheck(qualZapper,mob))
             return false;
-        if(Util.bset(bitmap,FLAG_HIDERESULTS)&&(!CMSecurity.isAllowedAnywhere(mob,"POLLS")))
+        if(CMath.bset(bitmap,FLAG_HIDERESULTS)&&(!CMSecurity.isAllowedAnywhere(mob,"POLLS")))
             return false;
-        if(Util.bset(bitmap,FLAG_PREVIEWRESULTS))
+        if(CMath.bset(bitmap,FLAG_PREVIEWRESULTS))
             return true;
         if((expiration>0)
         &&(System.currentTimeMillis()<expiration))
             return false;
-        if((getMyVote(mob)==null)&&(!Util.bset(bitmap,FLAG_ABSTAIN))) 
+        if((getMyVote(mob)==null)&&(!CMath.bset(bitmap,FLAG_ABSTAIN))) 
             return false;
         return true;
     }
@@ -258,9 +258,9 @@ public class DefaultPoll implements Poll
             for(int o=0;o<options.size();o++)
             {
                 PO=(PollOption)options.elementAt(o);
-                present.append("^H"+Util.padLeft(""+(o+1),2)+": ^N"+PO.text+"\n\r");
+                present.append("^H"+CMStrings.padLeft(""+(o+1),2)+": ^N"+PO.text+"\n\r");
             }
-            if(Util.bset(bitmap,FLAG_ABSTAIN))
+            if(CMath.bset(bitmap,FLAG_ABSTAIN))
                 present.append("^H  : ^NPress ENTER to abstain from voting.^?\n\r");
             
             mob.tell(present.toString());
@@ -269,14 +269,14 @@ public class DefaultPoll implements Poll
             {
                 
                 String s=mob.session().prompt("Please make your selection (1-"+options.size()+"): ");
-                if((s.length()==0)&&(Util.bset(bitmap,FLAG_ABSTAIN)))
+                if((s.length()==0)&&(CMath.bset(bitmap,FLAG_ABSTAIN)))
                     break;
-                if(Util.isInteger(s)&&(Util.s_int(s)>=1)&&(Util.s_int(s)<=options.size()))
-                    choice=Util.s_int(s);
+                if(CMath.isInteger(s)&&(CMath.s_int(s)>=1)&&(CMath.s_int(s)<=options.size()))
+                    choice=CMath.s_int(s);
             }
             PollResult R=new PollResult();
             R.user=mob.Name();
-            if(Util.bset(bitmap,FLAG_VOTEBYIP))
+            if(CMath.bset(bitmap,FLAG_VOTEBYIP))
                 R.ip=mob.session().getAddress();
             R.answer=""+choice;
             addVoteResult(R);
@@ -308,18 +308,18 @@ public class DefaultPoll implements Poll
             if(subject.length()>250) subject=subject.substring(0,250);
             if(author.length()==0) author=mob.Name();
             qualZapper=CMLib.english().promptText(mob,qualZapper,++showNumber,showFlag,"Qual. Mask",true);
-            bitmap=(CMLib.english().promptBool(mob,Util.bset(bitmap,FLAG_ACTIVE),++showNumber,showFlag,"Poll Active"))?
-                Util.setb(bitmap,FLAG_ACTIVE):Util.unsetb(bitmap,FLAG_ACTIVE);
-            bitmap=(CMLib.english().promptBool(mob,Util.bset(bitmap,FLAG_PREVIEWRESULTS),++showNumber,showFlag,"Preview Results"))?
-                    Util.setb(bitmap,FLAG_PREVIEWRESULTS):Util.unsetb(bitmap,FLAG_PREVIEWRESULTS);
-            bitmap=(CMLib.english().promptBool(mob,Util.bset(bitmap,FLAG_ABSTAIN),++showNumber,showFlag,"Allow Abstention"))?
-                    Util.setb(bitmap,FLAG_ABSTAIN):Util.unsetb(bitmap,FLAG_ABSTAIN);
-            bitmap=(CMLib.english().promptBool(mob,Util.bset(bitmap,FLAG_VOTEBYIP),++showNumber,showFlag,"Use IP Addresses"))?
-                    Util.setb(bitmap,FLAG_VOTEBYIP):Util.unsetb(bitmap,FLAG_VOTEBYIP);
-            bitmap=(CMLib.english().promptBool(mob,Util.bset(bitmap,FLAG_HIDERESULTS),++showNumber,showFlag,"Hide Results"))?
-                    Util.setb(bitmap,FLAG_HIDERESULTS):Util.unsetb(bitmap,FLAG_HIDERESULTS);
-            bitmap=(CMLib.english().promptBool(mob,Util.bset(bitmap,FLAG_NOTATLOGIN),++showNumber,showFlag,"POLL CMD only"))?
-                    Util.setb(bitmap,FLAG_NOTATLOGIN):Util.unsetb(bitmap,FLAG_NOTATLOGIN);
+            bitmap=(CMLib.english().promptBool(mob,CMath.bset(bitmap,FLAG_ACTIVE),++showNumber,showFlag,"Poll Active"))?
+                CMath.setb(bitmap,FLAG_ACTIVE):CMath.unsetb(bitmap,FLAG_ACTIVE);
+            bitmap=(CMLib.english().promptBool(mob,CMath.bset(bitmap,FLAG_PREVIEWRESULTS),++showNumber,showFlag,"Preview Results"))?
+                    CMath.setb(bitmap,FLAG_PREVIEWRESULTS):CMath.unsetb(bitmap,FLAG_PREVIEWRESULTS);
+            bitmap=(CMLib.english().promptBool(mob,CMath.bset(bitmap,FLAG_ABSTAIN),++showNumber,showFlag,"Allow Abstention"))?
+                    CMath.setb(bitmap,FLAG_ABSTAIN):CMath.unsetb(bitmap,FLAG_ABSTAIN);
+            bitmap=(CMLib.english().promptBool(mob,CMath.bset(bitmap,FLAG_VOTEBYIP),++showNumber,showFlag,"Use IP Addresses"))?
+                    CMath.setb(bitmap,FLAG_VOTEBYIP):CMath.unsetb(bitmap,FLAG_VOTEBYIP);
+            bitmap=(CMLib.english().promptBool(mob,CMath.bset(bitmap,FLAG_HIDERESULTS),++showNumber,showFlag,"Hide Results"))?
+                    CMath.setb(bitmap,FLAG_HIDERESULTS):CMath.unsetb(bitmap,FLAG_HIDERESULTS);
+            bitmap=(CMLib.english().promptBool(mob,CMath.bset(bitmap,FLAG_NOTATLOGIN),++showNumber,showFlag,"POLL CMD only"))?
+                    CMath.setb(bitmap,FLAG_NOTATLOGIN):CMath.unsetb(bitmap,FLAG_NOTATLOGIN);
             String expirationDate="NA";
             if(expiration>0) expirationDate=CMLib.time().date2String(expiration);
             
@@ -350,7 +350,7 @@ public class DefaultPoll implements Poll
             }
             if(showFlag<-900){ ok=true; break;}
             if(showFlag>0){ showFlag=-1; continue;}
-            showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+            showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
             if(showFlag<=0)
             {
                 showFlag=-1;
@@ -374,14 +374,14 @@ public class DefaultPoll implements Poll
             return;
         }
         int total=0;
-        int[] votes=new int[options.size()+(Util.bset(bitmap,FLAG_ABSTAIN)?1:0)];
+        int[] votes=new int[options.size()+(CMath.bset(bitmap,FLAG_ABSTAIN)?1:0)];
         PollResult R=null;
         int choice=0;
         for(int r=0;r<results.size();r++)
         {
             R=(PollResult)results.elementAt(r);
-            choice=Util.s_int(R.answer);
-            if(((choice<=0)&&Util.bset(bitmap,FLAG_ABSTAIN))
+            choice=CMath.s_int(R.answer);
+            if(((choice<=0)&&CMath.bset(bitmap,FLAG_ABSTAIN))
             ||((choice>=0)&&(choice<=options.size())))
             {
                 total++;
@@ -397,14 +397,14 @@ public class DefaultPoll implements Poll
             O=(PollOption)options.elementAt(o);
             int pct=0;
             if(total>0)
-                pct=(int)Math.round(Util.div(votes[o],total)*100.0);
-            present.append(Util.padRight("^H"+(o+1),2)+": ^N"+O.text+" ^O(Votes: "+votes[o]+" - "+pct+"%)^N\n\r");
+                pct=(int)Math.round(CMath.div(votes[o],total)*100.0);
+            present.append(CMStrings.padRight("^H"+(o+1),2)+": ^N"+O.text+" ^O(Votes: "+votes[o]+" - "+pct+"%)^N\n\r");
         }
-        if(Util.bset(bitmap,FLAG_ABSTAIN))
+        if(CMath.bset(bitmap,FLAG_ABSTAIN))
         {
             int pct=0;
             if(total>0)
-                pct=(int)Math.round(Util.div(votes[votes.length-1],total)*100.0);
+                pct=(int)Math.round(CMath.div(votes[votes.length-1],total)*100.0);
             present.append("    ^NAbstentions ^O("+votes[votes.length-1]+" - "+pct+"%)^N\n\r");
         }
         mob.tell(present.toString());

@@ -77,7 +77,7 @@ public class SaveThread extends Thread
             for(int j=0;j<CMLib.journals().getNumCommandJournals();j++)
             {
                 String num=(String)CMLib.journals().getCommandJournalFlags(j).get("EXPIRE=");
-                if((num!=null)&&(Util.isNumber(num)))
+                if((num!=null)&&(CMath.isNumber(num)))
                 {
                     status="updating journal "+CMLib.journals().getCommandJournalName(j);
                     Vector items=CMLib.database().DBReadJournal("SYSTEM_"+CMLib.journals().getCommandJournalName(j)+"S");
@@ -85,8 +85,8 @@ public class SaveThread extends Thread
                     for(int i=items.size()-1;i>=0;i--)
                     {
                         Vector entry=(Vector)items.elementAt(i);
-                        long compdate=Util.s_long((String)entry.elementAt(6));
-                        compdate=compdate+Math.round(Util.mul(TimeManager.MILI_DAY,Util.s_double(num)));
+                        long compdate=CMath.s_long((String)entry.elementAt(6));
+                        compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
                         if(System.currentTimeMillis()>compdate)
                         {
                             String from=(String)entry.elementAt(1);
@@ -155,43 +155,43 @@ public class SaveThread extends Thread
 		for(int i=0;i<levels.length;i++) levels[i]=0;
 		for(int i=0;i<prePurgeLevels.length;i++) prePurgeLevels[i]=0;
 		String mask=CMProps.getVar(CMProps.SYSTEM_AUTOPURGE);
-		Vector maskV=Util.parseCommas(mask.trim(),false);
+		Vector maskV=CMParms.parseCommas(mask.trim(),false);
 		long purgePoint=0;
 		for(int mv=0;mv<maskV.size();mv++)
 		{
-			Vector V=Util.parse(((String)maskV.elementAt(mv)).trim());
+			Vector V=CMParms.parse(((String)maskV.elementAt(mv)).trim());
 			if(V.size()<2) continue;
-			long val=Util.s_long((String)V.elementAt(1));
+			long val=CMath.s_long((String)V.elementAt(1));
 			if(val<=0) continue;
 			long prepurge=0;
 			if(V.size()>2)
-			    prepurge=Util.s_long((String)V.elementAt(2));
+			    prepurge=CMath.s_long((String)V.elementAt(2));
 			String cond=((String)V.firstElement()).trim();
 			int start=0;
 			int finish=levels.length-1;
 			if(cond.startsWith("<="))
-				finish=Util.s_int(cond.substring(2).trim());
+				finish=CMath.s_int(cond.substring(2).trim());
 			else
 			if(cond.startsWith(">="))
-				start=Util.s_int(cond.substring(2).trim());
+				start=CMath.s_int(cond.substring(2).trim());
 			else
 			if(cond.startsWith("=="))
 			{
-				start=Util.s_int(cond.substring(2).trim());
+				start=CMath.s_int(cond.substring(2).trim());
 				finish=start;
 			}
 			else
 			if(cond.startsWith("="))
 			{
-				start=Util.s_int(cond.substring(1).trim());
+				start=CMath.s_int(cond.substring(1).trim());
 				finish=start;
 			}
 			else
 			if(cond.startsWith(">"))
-				start=Util.s_int(cond.substring(1).trim())+1;
+				start=CMath.s_int(cond.substring(1).trim())+1;
 			else
 			if(cond.startsWith("<"))
-				finish=Util.s_int(cond.substring(1).trim())-1;
+				finish=CMath.s_int(cond.substring(1).trim())-1;
 
 			if((start>=0)&&(finish<levels.length)&&(start<=finish))
 			{
@@ -213,8 +213,8 @@ public class SaveThread extends Thread
 		{
 			Vector user=(Vector)allUsers.elementAt(u);
 			String name=(String)user.elementAt(0);
-			int level=Util.s_int((String)user.elementAt(3));
-			long last=Util.s_long((String)user.elementAt(5));
+			int level=CMath.s_int((String)user.elementAt(3));
+			long last=CMath.s_long((String)user.elementAt(5));
 			long when=Long.MAX_VALUE;
 			long warn=Long.MAX_VALUE;
 			if(level>levels.length) 
@@ -258,7 +258,7 @@ public class SaveThread extends Thread
 								if(B.toUpperCase().startsWith(name.toUpperCase()+" "))
 								{
 									int lastSpace=B.lastIndexOf(" ");
-									foundWarning=Util.s_long(B.substring(lastSpace+1).trim());
+									foundWarning=CMath.s_long(B.substring(lastSpace+1).trim());
 								}
 								warnStr.append(B+"\n");
 							}
@@ -327,12 +327,12 @@ public class SaveThread extends Thread
 		String textTimeLeft="";
 		if(timeLeft>(1000*60*60*24*2))
 		{
-			int days=new Double(Util.div((double)timeLeft,1000*60*60*24)).intValue();
+			int days=new Double(CMath.div((double)timeLeft,1000*60*60*24)).intValue();
 			textTimeLeft = days + " days";
 		}
 		else
 		{
-			int hours=new Double(Util.div((double)timeLeft,1000*60*60)).intValue();
+			int hours=new Double(CMath.div((double)timeLeft,1000*60*60)).intValue();
 			textTimeLeft = hours + " hours";
 		}
 		String msg="Your character, "+to+", is going to be autopurged by the system in "+textTimeLeft+".  If you would like to keep this character active, please re-login.  This is an automated message, please do not reply.";
@@ -377,7 +377,7 @@ public class SaveThread extends Thread
 		lastStart=System.currentTimeMillis();
 		if(started)
 		{
-			System.out.println("DUPLICATE SAVETHREAD RUNNING!!");
+            Log.errOut("SaveThread","DUPLICATE SAVETHREAD RUNNING!!");
 			return;
 		}
 		started=true;

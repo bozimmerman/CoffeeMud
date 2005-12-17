@@ -63,7 +63,7 @@ public class Chant_Hippieness extends Chant
 		&&(msg.tool() instanceof Ability)
 		&&(!msg.tool().ID().equals("FoodPrep"))
 		&&(!msg.tool().ID().equals("Cooking"))
-		&&((Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CRAFTING))
+		&&((CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CRAFTING))
 		   ||((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL)))
 		{
 			msg.source().tell("No, man... work is so bourgeois...");
@@ -118,7 +118,7 @@ public class Chant_Hippieness extends Chant
 							smoke.setContainer(I);
 						}
 					}
-					mob.doCommand(Util.parse("WEAR \""+I.Name()+"\""));
+					mob.doCommand(CMParms.parse("WEAR \""+I.Name()+"\""));
 				}
 				else
 				if((I!=null)&&(!I.amWearingAt(Item.INVENTORY))&&(!I.amWearingAt(Item.ON_MOUTH)))

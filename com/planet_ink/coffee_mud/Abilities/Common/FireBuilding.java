@@ -125,7 +125,7 @@ public class FireBuilding extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		String name=Util.combine(commands,0);
+		String name=CMParms.combine(commands,0);
 		int profficiencyAdjustment=0;
 		int completion=6;
 		if(name.equalsIgnoreCase("fire"))

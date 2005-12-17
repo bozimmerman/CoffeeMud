@@ -130,7 +130,7 @@ public class WaterSurface extends StdRoom implements Drink
 		&&(msg.sourceMinor()!=CMMsg.TYP_RECALL)
 		&&((msg.targetMinor()==CMMsg.TYP_ENTER)
 		   ||(!(msg.tool() instanceof Ability))
-		   ||(!Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
+		   ||(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
 		&&(!CMLib.flags().isFalling(msg.source()))
         &&(!CMLib.flags().isInFlight(msg.source()))
 		&&(!CMLib.flags().isWaterWorthy(msg.source())))
@@ -150,7 +150,7 @@ public class WaterSurface extends StdRoom implements Drink
 			}
 			else
 			if(CMLib.flags().isSwimming(mob))
-				if(mob.envStats().weight()>Math.round(Util.mul(mob.maxCarry(),0.50)))
+				if(mob.envStats().weight()>Math.round(CMath.mul(mob.maxCarry(),0.50)))
 				{
 					mob.tell("You are too encumbered to swim.");
 					return -1;

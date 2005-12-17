@@ -94,7 +94,7 @@ public class AbilityPlayerNext extends StdWebMacro
 				else
 				{
 					String levelName=httpReq.getRequestParameter("LEVEL");
-					if((levelName!=null)&&(levelName.length()>0)&&(Util.s_int(levelName)!=level))
+					if((levelName!=null)&&(levelName.length()>0)&&(CMath.s_int(levelName)!=level))
 						okToShow=false;
 				}
 			}
@@ -106,7 +106,7 @@ public class AbilityPlayerNext extends StdWebMacro
 				else
 				{
 					String levelName=httpReq.getRequestParameter("LEVEL");
-					if((levelName!=null)&&(levelName.length()>0)&&(Util.s_int(levelName)!=level))
+					if((levelName!=null)&&(levelName.length()>0)&&(CMath.s_int(levelName)!=level))
 						okToShow=false;
 				}
 			}

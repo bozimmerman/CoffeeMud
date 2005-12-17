@@ -191,7 +191,7 @@ public class Armorsmithing extends CraftingSkill
 			int toggler=1;
 			int toggleTop=2;
 			for(int r=0;r<toggleTop;r++)
-				buf.append(Util.padRight("Item",29)+" Lvl "+Util.padRight("Amt",3)+" ");
+				buf.append(CMStrings.padRight("Item",29)+" Lvl "+CMStrings.padRight("Amt",3)+" ");
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -199,11 +199,11 @@ public class Armorsmithing extends CraftingSkill
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
-					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
+					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
+					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
 					if(level<=mob.envStats().level())
 					{
-						buf.append(Util.padRight(item,29)+" "+Util.padRight(""+level,3)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight(item,29)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -222,7 +222,7 @@ public class Armorsmithing extends CraftingSkill
 			messedUp=false;
 			fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
-			Vector newCommands=Util.parse(Util.combine(commands,1));
+			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
 			if(!canMend(mob, building,false)) return false;
 			mending=true;
@@ -241,7 +241,7 @@ public class Armorsmithing extends CraftingSkill
 			messedUp=false;
 			fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
-			Vector newCommands=Util.parse(Util.combine(commands,1));
+			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
 			if(building==null) return false;
 			if(((building.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)
@@ -275,13 +275,13 @@ public class Armorsmithing extends CraftingSkill
 			fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
 			int amount=-1;
-			if((commands.size()>1)&&(Util.isNumber((String)commands.lastElement())))
+			if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
 			{
-				amount=Util.s_int((String)commands.lastElement());
+				amount=CMath.s_int((String)commands.lastElement());
 				commands.removeElementAt(commands.size()-1);
 			}
 
-			String recipeName=Util.combine(commands,0);
+			String recipeName=CMParms.combine(commands,0);
 			Vector foundRecipe=null;
 			Vector matches=matchingRecipeNames(recipes,recipeName,true);
 			for(int r=0;r<matches.size();r++)
@@ -289,7 +289,7 @@ public class Armorsmithing extends CraftingSkill
 				Vector V=(Vector)matches.elementAt(r);
 				if(V.size()>0)
 				{
-					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
+					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					if((autoGenerate>0)||(level<=mob.envStats().level()))
 					{
 						foundRecipe=V;
@@ -302,7 +302,7 @@ public class Armorsmithing extends CraftingSkill
 				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"armorsmith list\" for a list.");
 				return false;
 			}
-			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
+			int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			if(amount>woodRequired) woodRequired=amount;
 			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
 			int[] pm={EnvResource.MATERIAL_METAL,EnvResource.MATERIAL_MITHRIL};
@@ -324,12 +324,12 @@ public class Armorsmithing extends CraftingSkill
 				commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			completion=Util.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+			completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			if(itemName.endsWith("s"))
 				itemName="some "+itemName;
 			else
-				itemName=Util.startWithAorAn(itemName);
+				itemName=CMStrings.startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) smithing "+building.name()+".";
 			displayText="You are smithing "+building.name();
@@ -338,14 +338,14 @@ public class Armorsmithing extends CraftingSkill
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
-			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
+			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
 			int hardness=EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][3]-6;
-			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
+			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
 			if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
-			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
-			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
-			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
+			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+			int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
+			int armordmg=CMath.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			if(bundling) building.setBaseValue(lostValue);
@@ -360,7 +360,7 @@ public class Armorsmithing extends CraftingSkill
 					if(misctype.equalsIgnoreCase(WO))
 					{
 						hardBonus+=Item.wornWeights[wo];
-						((Armor)building).setRawProperLocationBitmap(Util.pow(2,wo-1));
+						((Armor)building).setRawProperLocationBitmap(CMath.pow(2,wo-1));
 						((Armor)building).setRawLogicalAnd(false);
 					}
 					else
@@ -369,7 +369,7 @@ public class Armorsmithing extends CraftingSkill
 					{
 						if(hardBonus==0.0)
 							hardBonus+=Item.wornWeights[wo];
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
+						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
 						((Armor)building).setRawLogicalAnd(false);
 					}
 					else
@@ -377,11 +377,11 @@ public class Armorsmithing extends CraftingSkill
 					||(misctype.toUpperCase().endsWith("&&"+WO)))
 					{
 						hardBonus+=Item.wornWeights[wo];
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
+						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
 						((Armor)building).setRawLogicalAnd(true);
 					}
 				}
-				int hardPoints=(int)Math.round(Util.mul(hardBonus,hardness));
+				int hardPoints=(int)Math.round(CMath.mul(hardBonus,hardness));
 				((Armor)building).baseEnvStats().setArmor(armordmg+hardPoints+(abilityCode()-1));
 			}
 			if(building instanceof Container)

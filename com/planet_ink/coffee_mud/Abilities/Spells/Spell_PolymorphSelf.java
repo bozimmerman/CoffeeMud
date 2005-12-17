@@ -89,9 +89,9 @@ public class Spell_PolymorphSelf extends Spell
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
 		{
 			commands.clear();
-			Vector V=Util.denumerate(CMClass.races());
+			Vector V=CMParms.denumerate(CMClass.races());
 			for(int v=V.size()-1;v>=0;v--)
-				if(!Util.bset(((Race)V.elementAt(v)).availabilityCode(),Area.THEME_FANTASY))
+				if(!CMath.bset(((Race)V.elementAt(v)).availabilityCode(),Area.THEME_FANTASY))
 					V.removeElementAt(v);
 			if(V.size()>0)
 				commands.addElement(((Race)V.elementAt(CMLib.dice().roll(1,V.size(),-1))).name());
@@ -101,12 +101,12 @@ public class Spell_PolymorphSelf extends Spell
 			mob.tell("You need to specify what to turn yourself into!");
 			return false;
 		}
-		String race=Util.combine(commands,0);
+		String race=CMParms.combine(commands,0);
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		Race R=CMClass.getRace(race);
-		if((R==null)||(!Util.bset(R.availabilityCode(),Area.THEME_FANTASY)))
+		if((R==null)||(!CMath.bset(R.availabilityCode(),Area.THEME_FANTASY)))
 		{
 			mob.tell("You can't turn yourself into a '"+race+"'!");
 			return false;

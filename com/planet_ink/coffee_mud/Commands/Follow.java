@@ -123,7 +123,7 @@ public class Follow extends StdCommand
 			return false;
 		}
 
-		String whomToFollow=Util.combine(commands,1);
+		String whomToFollow=CMParms.combine(commands,1);
 		if((whomToFollow.equalsIgnoreCase("self")||whomToFollow.equalsIgnoreCase("me"))
 		   ||(mob.name().toUpperCase().startsWith(whomToFollow)))
 		{
@@ -141,7 +141,7 @@ public class Follow extends StdCommand
 			mob.tell("You cannot follow '"+target.name()+"'.");
 			return false;
 		}
-		if(Util.bset(target.getBitmap(),MOB.ATT_NOFOLLOW))
+		if(CMath.bset(target.getBitmap(),MOB.ATT_NOFOLLOW))
 		{
 			mob.tell(target.name()+" is not accepting followers.");
 			return false;

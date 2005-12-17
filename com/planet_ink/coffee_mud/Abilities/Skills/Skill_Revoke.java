@@ -46,7 +46,7 @@ public class Skill_Revoke extends StdSkill
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
-		String whatToRevoke=Util.combine(commands,0);
+		String whatToRevoke=CMParms.combine(commands,0);
 
 		Environmental target=null;
 		if((whatToRevoke.length()==0)

@@ -45,7 +45,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		String whatTounlock=Util.combine(commands,0);
+		String whatTounlock=CMParms.combine(commands,0);
 		Environmental unlockThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
 		Room nextRoom=null;

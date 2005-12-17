@@ -51,11 +51,11 @@ public class Prop_SpellReflecting extends Property
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		minLevel=Util.getParmInt(newText,"min",minLevel);
-		maxLevel=Util.getParmInt(newText,"max",maxLevel);
-		chance=Util.getParmInt(newText,"chance",chance);
-		fade=Util.getParmInt(newText,"fade",fade);
-		remaining=Util.getParmInt(newText,"remain",remaining);
+		minLevel=CMParms.getParmInt(newText,"min",minLevel);
+		maxLevel=CMParms.getParmInt(newText,"max",maxLevel);
+		chance=CMParms.getParmInt(newText,"chance",chance);
+		fade=CMParms.getParmInt(newText,"fade",fade);
+		remaining=CMParms.getParmInt(newText,"remain",remaining);
 		setAbilityCode(remaining);
 	}
 
@@ -68,7 +68,7 @@ public class Prop_SpellReflecting extends Property
 			long time=System.currentTimeMillis()-lastFade;
 			if(time>5*60000)
 			{
-				double div=Util.div(time,(long)5*60000);
+				double div=CMath.div(time,(long)5*60000);
 				if(div>1.0)
 				{
 					setAbilityCode(abilityCode()+(int)Math.round(div));
@@ -79,7 +79,7 @@ public class Prop_SpellReflecting extends Property
 			}
 		}
 
-		if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)

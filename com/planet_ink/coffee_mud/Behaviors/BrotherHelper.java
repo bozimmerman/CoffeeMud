@@ -74,7 +74,7 @@ public class BrotherHelper extends StdBehavior
 		&&(source!=target)
 		&&(CMLib.flags().canBeSeenBy(source,observer))
 		&&(CMLib.flags().canBeSeenBy(target,observer))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(isBrother(target,observer))
 		&&(!isBrother(source,observer))
 		&&(R!=null))
@@ -86,7 +86,7 @@ public class BrotherHelper extends StdBehavior
 				if((M!=null)&&(M.getVictim()==source))
 					numInFray++;
 			}
-			int numAllowed=Util.s_int(getParms());
+			int numAllowed=CMath.s_int(getParms());
 			boolean yep=true;
 			if((numAllowed==0)||(numInFray<numAllowed))
 				yep=Aggressive.startFight(observer,source,true);

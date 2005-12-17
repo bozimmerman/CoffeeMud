@@ -66,8 +66,8 @@ public class Fighter_Roll extends FighterSkill
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,-85+mob.charStats().getStat(CharStats.DEXTERITY),false)))
 		{
 			doneThisRound=true;
-			double pctRecovery=(Util.div(profficiency(),100.0)*Math.random());
-			regain=(int)Math.round(Util.mul((msg.value()),pctRecovery));
+			double pctRecovery=(CMath.div(profficiency(),100.0)*Math.random());
+			regain=(int)Math.round(CMath.mul((msg.value()),pctRecovery));
 			msg.setValue(msg.value()-regain);
 		}
 		return true;

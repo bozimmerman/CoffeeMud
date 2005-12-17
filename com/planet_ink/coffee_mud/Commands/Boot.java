@@ -46,7 +46,7 @@ public class Boot extends StdCommand
 			mob.tell(getScr("Boot","bootwho"));
 			return false;
 		}
-		String whom=Util.combine(commands,0);
+		String whom=CMParms.combine(commands,0);
 		boolean boot=false;
 		for(int s=0;s<CMLib.sessions().size();s++)
 		{

@@ -91,7 +91,7 @@ public class Spell_FakeArmor extends Spell
 			}
 			for(int i=0;i<choices2.length;i++)
 			{
-				if(choices2[i].equalsIgnoreCase(Util.combine(commands,1)))
+				if(choices2[i].equalsIgnoreCase(CMParms.combine(commands,1)))
 					choice2=i;
 			}
 		}

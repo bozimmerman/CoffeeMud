@@ -57,7 +57,7 @@ public class Play_Retreat extends Play
 	{
 
 		directionCode=-1;
-		String where=Util.combine(commands,0);
+		String where=CMParms.combine(commands,0);
 		if(!where.equals("NOWHERE"))
 		{
 			if(where.length()==0)

@@ -463,9 +463,9 @@ the CoffeeMud object packages, you will need to make use of the Packages
 object&nbsp;to reference external packages.&nbsp; So long as the imported 
 objects are in your CoffeeMud classpath, they can be accessed and used.&nbsp; 
 For instance, either of these will let you use the CoffeeMud 
-pow(x,y)&nbsp;function in Util.java:</FONT></P>
+pow(x,y)&nbsp;function in CMParms.java:</FONT></P>
 <P align=left><FONT face="Courier New" size=2>var 
-value=Packages.com.planet_ink.coffee_mud.core.Util.pow(2,4);</FONT></P>
+value=Packages.com.planet_ink.coffee_mud.core.CMath.pow(2,4);</FONT></P>
 <P align=left><FONT size=4>Depending 
 upon the context from which your script runs (the Scriptable behavior, JRun 
 command,&nbsp;the Quest engine, or&nbsp;the http/web server), certain other 
@@ -566,7 +566,7 @@ Security module whether this mob, at this location, is authorized to perform
 functions designated by the "IMMORT" security code.</FONT></P><pre>	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String parameters=Util.combine(commands,1);
+		String parameters=CMParms.combine(commands,1);
 		if(parameters.length()==0)
 			mob.tell("Nothing done.");
 		else
@@ -2501,7 +2501,7 @@ cannot wield weapons anyway, it is important to give them some big piercing
 claws.</FONT></P><pre>	  
 public String healthText(MOB mob) 
 {
-	double pct=(Util.div(mob.curState().getHitPoints(),
+	double pct=(CMath.div(mob.curState().getHitPoints(),
 			     mob.maxState().getHitPoints())); 
 	if(pct&lt;.10) 
 		return "^r" + mob.name()+"^ris raging in bloody pain!^N"; 
@@ -2928,7 +2928,7 @@ secretIdentity defined for the item.</FONT></P><PRE><P align=left><FONT size=4><
          return true;
       MOB mob=(MOB)affected;
 
-      if((msg.amISource(mob))&amp;&amp;(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
+      if((msg.amISource(mob))&amp;&amp;(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
       {
          if((msg.tool()!=null)&amp;&amp;(msg.tool().ID().equalsIgnoreCase("Skill_Revoke")))
             return super.okMessage(myHost,msg);
@@ -2940,10 +2940,10 @@ secretIdentity defined for the item.</FONT></P><PRE><P align=left><FONT size=4><
             return false;
          }
          else
-         if((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-         ||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH)))
+         if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+         ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH)))
          {
-            if(Util.bset(msg.sourceMajor(),CMMsg.MASK_SOUND))
+            if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_SOUND))
                mob.tell("You are unable to make sounds in this incorporeal form.");
             else
                mob.tell("You are unable to do that this incorporeal form.");
@@ -2953,7 +2953,7 @@ secretIdentity defined for the item.</FONT></P><PRE><P align=left><FONT size=4><
       }
       else
       if((msg.amITarget(mob))&amp;&amp;(!msg.amISource(mob))
-         &amp;&amp;(!Util.bset(msg.targetMajor(),CMMsg.MASK_GENERAL)))
+         &amp;&amp;(!CMath.bset(msg.targetMajor(),CMMsg.MASK_GENERAL)))
       {
          mob.tell(mob.name()+" doesn't seem to be here.");
          return false;
@@ -3627,7 +3627,7 @@ public class Chant_AlterTime extends Chant
          if(mob.location().okMessage(mob,msg))
          {
             mob.location().send(mob,msg);
-            int x=Util.s_int(text());
+            int x=CMath.s_int(text());
             while(x==0)   x=Dice.roll(1,3,-2);
             if(x&gt;0)
                mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Time moves forwards!");

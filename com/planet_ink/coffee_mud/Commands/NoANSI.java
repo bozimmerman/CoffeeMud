@@ -41,9 +41,9 @@ public class NoANSI extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			if(Util.bset(mob.getBitmap(),MOB.ATT_ANSI))
+			if(CMath.bset(mob.getBitmap(),MOB.ATT_ANSI))
 			{
-				mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_ANSI));
+				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_ANSI));
 				mob.tell("ANSI colour disabled.\n\r");
 			}
 			else

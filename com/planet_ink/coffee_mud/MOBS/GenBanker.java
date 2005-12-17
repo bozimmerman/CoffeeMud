@@ -93,11 +93,11 @@ public class GenBanker extends StdBanker
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setWhatIsSold(Util.s_int(val)); break;
+		case 0: setWhatIsSold(CMath.s_int(val)); break;
 		case 1: setPrejudiceFactors(val); break;
 		case 2: setBankChain(val); break;
-		case 3: setCoinInterest(Util.s_double(val)); break;
-		case 4: setItemInterest(Util.s_double(val)); break;
+		case 3: setCoinInterest(CMath.s_double(val)); break;
+		case 4: setItemInterest(CMath.s_double(val)); break;
         case 5: setIgnoreMask(val); break;
 		}
 	}

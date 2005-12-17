@@ -78,7 +78,7 @@ public class Specialization_Weapon extends StdAbility
 			 ||(((Weapon)myWeapon).weaponClassification()==secondWeaponType)))
 			{
 				activated=true;
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(15.0*(Util.div(profficiency(),100.0))));
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(15.0*(CMath.div(profficiency(),100.0))));
 			}
 		}
 	}

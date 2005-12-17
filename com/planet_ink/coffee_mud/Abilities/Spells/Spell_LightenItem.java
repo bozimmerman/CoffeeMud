@@ -74,7 +74,7 @@ public class Spell_LightenItem extends Spell
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null)
 		{
-			String str=Util.combine(commands,0).toUpperCase();
+			String str=CMParms.combine(commands,0).toUpperCase();
 			if(str.equals("MONEY")||str.equals("GOLD")||str.equals("COINS"))
 				mob.tell("You can't cast this spell on your own coins.");
 			return false;

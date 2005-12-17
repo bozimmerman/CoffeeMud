@@ -45,8 +45,8 @@ public class Prop_StatTrainer extends Property
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		if((!noteach)&&(Util.bset(affectedMOB.getBitmap(),MOB.ATT_NOTEACH)))
-			affectedMOB.setBitmap(Util.unsetb(affectedMOB.getBitmap(),MOB.ATT_NOTEACH));
+		if((!noteach)&&(CMath.bset(affectedMOB.getBitmap(),MOB.ATT_NOTEACH)))
+			affectedMOB.setBitmap(CMath.unsetb(affectedMOB.getBitmap(),MOB.ATT_NOTEACH));
 		for(int i=0;i<stats.length;i++)
 			affectableStats.setStat(i,stats[i]);
 	}
@@ -58,12 +58,12 @@ public class Prop_StatTrainer extends Property
 			if(newMiscText.toUpperCase().indexOf("NOTEACH")>=0)
 				noteach=true;
 			stats=new int[CharStats.NUM_BASE_STATS];
-			stats[CharStats.STRENGTH]=Util.getParmInt(newMiscText,"STR",25);
-			stats[CharStats.INTELLIGENCE]=Util.getParmInt(newMiscText,"INT",25);
-			stats[CharStats.WISDOM]=Util.getParmInt(newMiscText,"WIS",25);
-			stats[CharStats.CONSTITUTION]=Util.getParmInt(newMiscText,"CON",25);
-			stats[CharStats.CHARISMA]=Util.getParmInt(newMiscText,"CHA",25);
-			stats[CharStats.DEXTERITY]=Util.getParmInt(newMiscText,"DEX",25);
+			stats[CharStats.STRENGTH]=CMParms.getParmInt(newMiscText,"STR",25);
+			stats[CharStats.INTELLIGENCE]=CMParms.getParmInt(newMiscText,"INT",25);
+			stats[CharStats.WISDOM]=CMParms.getParmInt(newMiscText,"WIS",25);
+			stats[CharStats.CONSTITUTION]=CMParms.getParmInt(newMiscText,"CON",25);
+			stats[CharStats.CHARISMA]=CMParms.getParmInt(newMiscText,"CHA",25);
+			stats[CharStats.DEXTERITY]=CMParms.getParmInt(newMiscText,"DEX",25);
 		}
 	}
 

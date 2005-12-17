@@ -36,6 +36,10 @@ import java.io.ByteArrayInputStream;
 */
 public class CMProps extends Properties
 {
+    private CMProps(){super();}
+    private static CMProps inst=new CMProps();
+    public static CMProps instance(){return inst;}
+    
 	public static final long serialVersionUID=0;
     public static final int SYSTEM_PKILL=0;
     public static final int SYSTEM_MULTICLASS=1;
@@ -198,7 +202,7 @@ public class CMProps extends Properties
     {
         if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
         if(val==null) val="0";
-        sysInts[varNum]=new Integer(Util.s_int(val));
+        sysInts[varNum]=new Integer(CMath.s_int(val));
     }
 
     public static void setVar(int varNum, String val, boolean upperFy)
@@ -224,7 +228,7 @@ public class CMProps extends Properties
             {
                 int x=val.indexOf("-");
                 if(x>0)
-                    pkillLevelDiff=Util.s_int(val.substring(x+1));
+                    pkillLevelDiff=CMath.s_int(val.substring(x+1));
             }
             break;
         }
@@ -287,11 +291,11 @@ public class CMProps extends Properties
         setVar(SYSTEM_DEVALUERATE,page.getStr("DEVALUERATE"));
         setVar(SYSTEM_INVRESETRATE,page.getStr("INVRESETRATE"));
         setVar(SYSTEM_EMOTEFILTER,page.getStr("EMOTEFILTER"));
-        emoteFilter=Util.parse((page.getStr("EMOTEFILTER")).toUpperCase());
+        emoteFilter=CMParms.parse((page.getStr("EMOTEFILTER")).toUpperCase());
         setVar(SYSTEM_SAYFILTER,page.getStr("SAYFILTER"));
-        sayFilter=Util.parse((page.getStr("SAYFILTER")).toUpperCase());
+        sayFilter=CMParms.parse((page.getStr("SAYFILTER")).toUpperCase());
         setVar(SYSTEM_CHANNELFILTER,page.getStr("CHANNELFILTER"));
-        channelFilter=Util.parse((page.getStr("CHANNELFILTER")).toUpperCase());
+        channelFilter=CMParms.parse((page.getStr("CHANNELFILTER")).toUpperCase());
         setVar(SYSTEM_CLANTROPAREA,page.getStr("CLANTROPAREA"));
         setVar(SYSTEM_CLANTROPCP,page.getStr("CLANTROPCP"));
         setVar(SYSTEM_CLANTROPEXP,page.getStr("CLANTROPEXP"));
@@ -311,7 +315,7 @@ public class CMProps extends Properties
         if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("SPELLLEVEL"))
             setIntVar(SYSTEMI_MANACONSUMEAMT,-200);
         else
-            setIntVar(SYSTEMI_MANACONSUMEAMT,Util.s_int(page.getStr("MANACONSUMEAMT").trim()));
+            setIntVar(SYSTEMI_MANACONSUMEAMT,CMath.s_int(page.getStr("MANACONSUMEAMT").trim()));
         String s=page.getStr("COMBATSYSTEM");
         if(s.equalsIgnoreCase("queue"))
             setIntVar(SYSTEMI_COMBATSYSTEM,1);
@@ -360,30 +364,30 @@ public class CMProps extends Properties
         setIntVar(SYSTEMI_MAXNEWPERIP,page.getStr("MAXNEWPERIP"));
         setIntVar(SYSTEMI_JSCRIPTS,page.getStr("JSCRIPTS"));
         
-        Vector V=Util.parseCommas(page.getStr("INJURYSYSTEM"),true);
+        Vector V=CMParms.parseCommas(page.getStr("INJURYSYSTEM"),true);
         
-        if(V.size()>0) setIntVar(SYSTEMI_INJPCTCHANCE,Util.s_int((String)V.elementAt(0)));
+        if(V.size()>0) setIntVar(SYSTEMI_INJPCTCHANCE,CMath.s_int((String)V.elementAt(0)));
         else setIntVar(SYSTEMI_INJPCTCHANCE,100);
-        if(V.size()>1) setIntVar(SYSTEMI_INJPCTHP,Util.s_int((String)V.elementAt(1)));
+        if(V.size()>1) setIntVar(SYSTEMI_INJPCTHP,CMath.s_int((String)V.elementAt(1)));
         else setIntVar(SYSTEMI_INJPCTHP,40);
-        if(V.size()>2) setIntVar(SYSTEMI_INJPCTHPAMP,Util.s_int((String)V.elementAt(2)));
+        if(V.size()>2) setIntVar(SYSTEMI_INJPCTHPAMP,CMath.s_int((String)V.elementAt(2)));
         else setIntVar(SYSTEMI_INJPCTHPAMP,10);
-        if(V.size()>3) setIntVar(SYSTEMI_INJPCTCHANCEAMP,Util.s_int((String)V.elementAt(3)));
+        if(V.size()>3) setIntVar(SYSTEMI_INJPCTCHANCEAMP,CMath.s_int((String)V.elementAt(3)));
         else setIntVar(SYSTEMI_INJPCTCHANCEAMP,100);
-        if(V.size()>4) setIntVar(SYSTEMI_INJMULTIPLIER,Util.s_int((String)V.elementAt(4)));
+        if(V.size()>4) setIntVar(SYSTEMI_INJMULTIPLIER,CMath.s_int((String)V.elementAt(4)));
         else setIntVar(SYSTEMI_INJMULTIPLIER,4);
-        if(V.size()>5) setIntVar(SYSTEMI_INJMINLEVEL,Util.s_int((String)V.elementAt(5)));
+        if(V.size()>5) setIntVar(SYSTEMI_INJMINLEVEL,CMath.s_int((String)V.elementAt(5)));
         else setIntVar(SYSTEMI_INJMINLEVEL,10);
         
         String stateVar=page.getStr("STARTHP");
-        if((stateVar.length()>0)&&(Util.isNumber(stateVar)))
-            setIntVar(SYSTEMI_STARTHP,Util.s_int(stateVar));
+        if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
+            setIntVar(SYSTEMI_STARTHP,CMath.s_int(stateVar));
         stateVar=page.getStr("STARTMANA");
-        if((stateVar.length()>0)&&(Util.isNumber(stateVar)))
-            setIntVar(SYSTEMI_STARTMANA,Util.s_int(stateVar));
+        if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
+            setIntVar(SYSTEMI_STARTMANA,CMath.s_int(stateVar));
         stateVar=page.getStr("STARTMOVE");
-        if((stateVar.length()>0)&&(Util.isNumber(stateVar)))
-            setIntVar(SYSTEMI_STARTMOVE,Util.s_int(stateVar));
+        if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
+            setIntVar(SYSTEMI_STARTMOVE,CMath.s_int(stateVar));
 
         Directions.ReInitialize(page.getInt("DIRECTIONS"));
 
@@ -558,7 +562,7 @@ public class CMProps extends Properties
         {
             image=getHashedMXPImage(H,"ROOM_"+((Room)O).ID().toUpperCase());
             if(image==null)
-                if(Util.bset(((Room)O).domainType(),Room.INDOORS))
+                if(CMath.bset(((Room)O).domainType(),Room.INDOORS))
                     image=getHashedMXPImage(H,"LOCALE_INDOOR_"+Room.indoorDomainDescs[((Room)O).domainType()-Room.INDOORS]);
                 else
                     image=getHashedMXPImage(H,"LOCALE_"+Room.outdoorDomainDescs[((Room)O).domainType()]);
@@ -734,7 +738,7 @@ public class CMProps extends Properties
             {"TORSO","FEET","LEGS","HANDS","ARMS","HEAD","EARS","EYES","MOUTH",
              "NECK","FINGERS","WRIST","BACK","WAIST","BODY","FLOATER","HELD","WIELDED"};
             for(int i=0;i<bits.length;i++)
-                if(Util.bset(A.rawProperLocationBitmap(),bits[i]))
+                if(CMath.bset(A.rawProperLocationBitmap(),bits[i]))
                 {
                     image=getHashedMXPImage(H,"ARMOR_"+bitdesc[i]);
                     break;

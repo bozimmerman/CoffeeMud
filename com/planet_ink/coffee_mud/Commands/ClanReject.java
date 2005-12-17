@@ -42,7 +42,7 @@ public class ClanReject extends BaseClanner
 		boolean skipChecks=mob.Name().equals(mob.getClanID());
 		commands.setElementAt("clanreject",0);
 
-		String qual=Util.combine(commands,1).toUpperCase();
+		String qual=CMParms.combine(commands,1).toUpperCase();
 		StringBuffer msg=new StringBuffer("");
 		Clan C=null;
 		boolean found=false;
@@ -66,7 +66,7 @@ public class ClanReject extends BaseClanner
 						mob.tell("There are no applicants to your "+C.typeName()+".");
 						return false;
 					}
-					qual=Util.capitalizeAndLower(qual);
+					qual=CMStrings.capitalizeAndLower(qual);
 					for(int q=0;q<apps.size();q++)
 					{
 						if(((String)apps.elementAt(q,1)).equalsIgnoreCase(qual))

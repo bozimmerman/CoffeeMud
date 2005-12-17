@@ -69,8 +69,8 @@ public class Spell_Anchor extends Spell
 		&&((affected==null)
 			||((affected instanceof Item)&&(!((Item)affected).amWearingAt(Item.INVENTORY))&&(msg.amITarget(((Item)affected).owner())))
 			||((affected instanceof MOB)&&(msg.amITarget(affected))))
-		&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING)
-		   ||Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
+		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING)
+		   ||CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
 		{
 			Room roomS=null;
 			Room roomD=null;

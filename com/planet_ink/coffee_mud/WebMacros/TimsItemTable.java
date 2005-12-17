@@ -40,7 +40,7 @@ public class TimsItemTable extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		long endTime=System.currentTimeMillis()+(1000*60*10);
-		int min=Util.s_int((httpReq.getRequestParameter("MIN")));
+		int min=CMath.s_int((httpReq.getRequestParameter("MIN")));
 		if(min>0)
 			endTime=System.currentTimeMillis()+(1000*60*((long)min));
 		
@@ -133,15 +133,15 @@ public class TimsItemTable extends StdWebMacro
 		int diff=tlvl-lvl; if(diff<0) diff=diff*-1;
 		row.append("<TD>"+diff+"</TD>");
 		int pct=0;
-		if((lvl<0)&&(tlvl>=0)) pct=(int)Math.round(Util.div(tlvl+(lvl*-1),1)*100.0);
+		if((lvl<0)&&(tlvl>=0)) pct=(int)Math.round(CMath.div(tlvl+(lvl*-1),1)*100.0);
 		else
-		if((tlvl<=0)&&(lvl>0)) pct=(int)Math.round(Util.div((tlvl-lvl),-1)*100.0);
+		if((tlvl<=0)&&(lvl>0)) pct=(int)Math.round(CMath.div((tlvl-lvl),-1)*100.0);
 		else
-		if((tlvl<0)&&(lvl==0)) pct=(int)Math.round(Util.div(tlvl,-1)*100.0);
+		if((tlvl<0)&&(lvl==0)) pct=(int)Math.round(CMath.div(tlvl,-1)*100.0);
 		else
-		if(lvl==0) pct=(int)Math.round(Util.div(tlvl,1)*100.0);
+		if(lvl==0) pct=(int)Math.round(CMath.div(tlvl,1)*100.0);
 		else
-			pct=(int)Math.round(Util.div(tlvl,lvl)*100.0);
+			pct=(int)Math.round(CMath.div(tlvl,lvl)*100.0);
 		row.append("<TD>"+pct+"%</TD>");
 		
 		if(!(I instanceof Weapon))
@@ -177,9 +177,9 @@ public class TimsItemTable extends StdWebMacro
 		int otherArm=0;
 		if(ADJ!=null)
 		{
-			otherArm=Util.getParmPlus(ADJ.text(),"arm")*-1;
-			otherAtt=Util.getParmPlus(ADJ.text(),"att");
-			otherDam=Util.getParmPlus(ADJ.text(),"dam");
+			otherArm=CMParms.getParmPlus(ADJ.text(),"arm")*-1;
+			otherAtt=CMParms.getParmPlus(ADJ.text(),"att");
+			otherDam=CMParms.getParmPlus(ADJ.text(),"dam");
 		}
 		int curArmor=savedI.baseEnvStats().armor()+otherArm;
 		double curAttack=new Integer(savedI.baseEnvStats().attackAdjustment()+otherAtt).doubleValue();
@@ -197,7 +197,7 @@ public class TimsItemTable extends StdWebMacro
 			double weightpts=0;
 			for(int i=0;i<Item.wornWeights.length-1;i++)
 			{
-				if(Util.isSet(worndata,i))
+				if(CMath.isSet(worndata,i))
 				{
 					weightpts+=Item.wornWeights[i+1];
 					if(!I.rawLogicalAnd()) break;
@@ -227,7 +227,7 @@ public class TimsItemTable extends StdWebMacro
 				useArray=clothPoints;
 				break;
 			}
-			int which=(int)Math.round(Util.div(curArmor,weightpts)+1);
+			int which=(int)Math.round(CMath.div(curArmor,weightpts)+1);
 			if(which<0) which=0;
 			if(which>=useArray.length)
 				which=useArray.length-1;
@@ -264,10 +264,10 @@ public class TimsItemTable extends StdWebMacro
 		if(ADJ!=null)
 		{
 			String newText=ADJ.text();
-			int ab=Util.getParmPlus(newText,"abi");
-			int arm=Util.getParmPlus(newText,"arm")*-1;
-			int att=Util.getParmPlus(newText,"att");
-			int dam=Util.getParmPlus(newText,"dam");
+			int ab=CMParms.getParmPlus(newText,"abi");
+			int arm=CMParms.getParmPlus(newText,"arm")*-1;
+			int att=CMParms.getParmPlus(newText,"att");
+			int dam=CMParms.getParmPlus(newText,"dam");
 			if(savedI instanceof Weapon)
 				level+=(arm*2);
 			else
@@ -279,22 +279,22 @@ public class TimsItemTable extends StdWebMacro
 			level+=ab*5;
 			
 			
-			int dis=Util.getParmPlus(newText,"dis");
+			int dis=CMParms.getParmPlus(newText,"dis");
 			if(dis!=0) level+=5;
-			int sen=Util.getParmPlus(newText,"sen");
+			int sen=CMParms.getParmPlus(newText,"sen");
 			if(sen!=0) level+=5;
-			level+=(int)Math.round(5.0*Util.getParmDoublePlus(newText,"spe"));
+			level+=(int)Math.round(5.0*CMParms.getParmDoublePlus(newText,"spe"));
 			for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 			{
-				int stat=Util.getParmPlus(newText,CharStats.TRAITS[i].substring(0,3).toLowerCase());
-				int max=Util.getParmPlus(newText,("max"+(CharStats.TRAITS[i].substring(0,3).toLowerCase())));
+				int stat=CMParms.getParmPlus(newText,CharStats.TRAITS[i].substring(0,3).toLowerCase());
+				int max=CMParms.getParmPlus(newText,("max"+(CharStats.TRAITS[i].substring(0,3).toLowerCase())));
 				level+=(stat*5);
 				level+=(max*5);
 			}
 
-			int hit=Util.getParmPlus(newText,"hit");
-			int man=Util.getParmPlus(newText,"man");
-			int mv=Util.getParmPlus(newText,"mov");
+			int hit=CMParms.getParmPlus(newText,"hit");
+			int man=CMParms.getParmPlus(newText,"man");
+			int mv=CMParms.getParmPlus(newText,"mov");
 			level+=(hit/5);
 			level+=(man/5);
 			level+=(mv/5);

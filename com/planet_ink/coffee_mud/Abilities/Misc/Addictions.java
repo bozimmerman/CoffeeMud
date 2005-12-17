@@ -92,7 +92,7 @@ public class Addictions extends StdAbility
             &&(msg.targetMinor()==CMMsg.TYP_WEAR)
             &&(msg.target() instanceof Light)
             &&(msg.target() instanceof Container)
-            &&(Util.bset(((Item)msg.target()).rawProperLocationBitmap(),Item.ON_MOUTH))
+            &&(CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Item.ON_MOUTH))
             &&(((Container)msg.target()).getContents().size()>0)
             &&(CMLib.english().containsString(((Environmental)((Container)msg.target()).getContents().firstElement()).Name(),text())))
                 puffCredit=(Item)msg.target();

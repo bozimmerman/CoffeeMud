@@ -42,7 +42,7 @@ public class MobileAggressive extends Mobile
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		tickWait=Util.getParmInt(newParms,"delay",0);
+		tickWait=CMParms.getParmInt(newParms,"delay",0);
 		tickDown=tickWait;
 	}
 	public boolean grantsAggressivenessTo(MOB M)

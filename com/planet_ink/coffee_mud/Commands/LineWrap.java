@@ -49,10 +49,10 @@ public class LineWrap extends StdCommand
 			mob.tell("Change your line wrap to what? Your current line wrap setting is: "+wrap+". Enter a number larger than 10 or 'disable'.");
 			return false;
 		}
-		String newWrap=Util.combine(commands,1);
+		String newWrap=CMParms.combine(commands,1);
 		int newVal=mob.playerStats().getWrap();
-		if((Util.isInteger(newWrap))&&(Util.s_int(newWrap)>10))
-		    newVal=Util.s_int(newWrap);
+		if((CMath.isInteger(newWrap))&&(CMath.s_int(newWrap)>10))
+		    newVal=CMath.s_int(newWrap);
 		else
 		if("DISABLED".startsWith(newWrap.toUpperCase()))
 		    newVal=0;

@@ -39,7 +39,7 @@ public class Possess extends StdCommand
 
 	public MOB getTarget(MOB mob, Vector commands, boolean quiet)
 	{
-		String targetName=Util.combine(commands,0);
+		String targetName=CMParms.combine(commands,0);
 		MOB target=null;
 		if(targetName.length()>0)
 		{
@@ -83,7 +83,7 @@ public class Possess extends StdCommand
 			return false;
 		}
 		commands.removeElementAt(0);
-		String MOBname=Util.combine(commands,0);
+		String MOBname=CMParms.combine(commands,0);
 		MOB target=getTarget(mob,commands,true);
 		if((target==null)||((target!=null)&&(!target.isMonster())))
 			target=mob.location().fetchInhabitant(MOBname);

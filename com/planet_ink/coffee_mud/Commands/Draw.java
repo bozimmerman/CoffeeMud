@@ -141,7 +141,7 @@ public class Draw extends Get
 			commands.insertElementAt("all",0);
 			containers=CMLib.english().possibleContainers(mob,commands,Item.WORN_REQ_WORNONLY,true);
 			if(containers.size()==0) containers=sheaths;
-			whatToGet=Util.combine(commands,0);
+			whatToGet=CMParms.combine(commands,0);
 			allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 			if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
 			if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}

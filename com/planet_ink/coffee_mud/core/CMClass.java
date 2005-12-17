@@ -40,6 +40,7 @@ public class CMClass extends ClassLoader
 {
     private static CMClass loader=new CMClass();
     private Hashtable classes=new Hashtable();
+    public static CMClass instance(){return loader;}
     
     private static TimeClock globalClock=null;
     private static Hashtable common=new Hashtable();
@@ -159,7 +160,7 @@ public class CMClass extends ClassLoader
         StringBuffer str=new StringBuffer("");
         for(int i=0;i<OBJECT_TOTAL;i++)
             if(OBJECT_CREATIONS[i]>0)
-                str.append(Util.padRight(OBJECT_DESCS[i],12)+": Created: "+OBJECT_CREATIONS[i]+", Destroyed: "+OBJECT_DESTRUCTIONS[i]+", Remaining: "+(OBJECT_CREATIONS[i]-OBJECT_DESTRUCTIONS[i])+"\n");
+                str.append(CMStrings.padRight(OBJECT_DESCS[i],12)+": Created: "+OBJECT_CREATIONS[i]+", Destroyed: "+OBJECT_DESTRUCTIONS[i]+", Remaining: "+(OBJECT_CREATIONS[i]-OBJECT_DESTRUCTIONS[i])+"\n");
         return str.toString();
     }
 	public static void addAllItemClassNames(Vector V, boolean NonArchon, boolean NonGeneric)
@@ -856,8 +857,11 @@ public class CMClass extends ClassLoader
                     implementsClasses.addElement(C);
                 }
             }
+            CMLib lib=new CMLib();
+            lib.defineFunctionProperties(CMLib.makeFunctionNames(), CMLib.class, ScriptableObject.DONTENUM);
             CompilerEnvirons ce = new CompilerEnvirons(); 
             Context X=Context.enter();
+            X.initStandardObjects(lib);
             ce.initFromContext(X); 
             ClassCompiler cc = new ClassCompiler(ce); 
             if(extendsClass==null)

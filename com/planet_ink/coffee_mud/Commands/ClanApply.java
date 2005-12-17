@@ -40,7 +40,7 @@ public class ClanApply extends BaseClanner
 		throws java.io.IOException
 	{
 		commands.setElementAt("clanapply",0);
-		String qual=Util.combine(commands,1).toUpperCase();
+		String qual=CMParms.combine(commands,1).toUpperCase();
 		if(mob.isMonster()) return false;
 		StringBuffer msg=new StringBuffer("");
 		if(qual.length()>0)

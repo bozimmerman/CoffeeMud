@@ -39,14 +39,14 @@ public class Compress extends StdCommand
     public boolean execute(MOB mob, Vector commands)
         throws java.io.IOException
     {
-        if(Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS))
+        if(CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS))
         {
-            mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_COMPRESS));
+            mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_COMPRESS));
             mob.tell(getScr("Compress","off"));
         }
         else
         {
-            mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_COMPRESS));
+            mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_COMPRESS));
             mob.tell(getScr("Compress","on"));
         }
         return false;

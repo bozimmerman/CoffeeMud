@@ -68,7 +68,7 @@ public class Spell_ManaShield extends Spell
         if((msg.amITarget(mob))
            &&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
         {
-            int recovery=(int)Math.round(Util.mul((msg.value()),protection()));
+            int recovery=(int)Math.round(CMath.mul((msg.value()),protection()));
             if(recovery>mob.curState().getMana())
                 recovery=mob.curState().getMana();
             if(recovery>0)
@@ -108,7 +108,7 @@ public class Spell_ManaShield extends Spell
             if(mob.location().okMessage(mob,msg))
             {
                 mob.location().send(mob,msg);
-                mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,Util.capitalizeAndLower(adjective()).trim()+" protective aura of mana surrounds <T-NAME>.");
+                mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,CMStrings.capitalizeAndLower(adjective()).trim()+" protective aura of mana surrounds <T-NAME>.");
                 beneficialAffect(mob,target,asLevel,0);
             }
         }

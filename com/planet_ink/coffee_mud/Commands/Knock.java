@@ -44,7 +44,7 @@ public class Knock extends StdCommand
 			mob.tell(getScr("Movement","knockerr1"));
 			return false;
 		}
-		String knockWhat=Util.combine(commands,1).toUpperCase();
+		String knockWhat=CMParms.combine(commands,1).toUpperCase();
 		int dir=CMLib.tracking().findExitDir(mob,mob.location(),knockWhat);
 		if(dir<0)
 		{

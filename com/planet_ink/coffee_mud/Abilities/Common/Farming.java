@@ -182,20 +182,20 @@ public class Farming extends GatheringSkill
 		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
 		{
 			String str=EnvResource.RESOURCE_DESCS[i];
-			if((str.toUpperCase().equalsIgnoreCase(Util.combine(commands,0)))
+			if((str.toUpperCase().equalsIgnoreCase(CMParms.combine(commands,0)))
 			&&(((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION)
 			  ||(EnvResource.RESOURCE_DATA[i][0]==EnvResource.RESOURCE_COTTON)
 			  ||(EnvResource.RESOURCE_DATA[i][0]==EnvResource.RESOURCE_HEMP)
 			  ||((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)))
 			{
 				code=EnvResource.RESOURCE_DATA[i][0];
-				foundShortName=Util.capitalizeAndLower(str);
+				foundShortName=CMStrings.capitalizeAndLower(str);
 				break;
 			}
 		}
 		if(code<0)
 		{
-			commonTell(mob,"You don't know how to plant "+Util.combine(commands,0));
+			commonTell(mob,"You don't know how to plant "+CMParms.combine(commands,0));
 			return false;
 		}
 

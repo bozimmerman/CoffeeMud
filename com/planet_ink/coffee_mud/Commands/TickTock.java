@@ -39,7 +39,7 @@ public class TickTock extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		int h=Util.s_int(Util.combine(commands,1));
+		int h=CMath.s_int(CMParms.combine(commands,1));
 		if(h==0) h=1;
 		mob.tell("..tick..tock..");
 		mob.location().getArea().getTimeObj().tickTock(h);

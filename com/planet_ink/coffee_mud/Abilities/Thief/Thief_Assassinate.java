@@ -203,7 +203,7 @@ public class Thief_Assassinate extends ThiefSkill
 			if(givenTarget!=null)
 				mobName=givenTarget.name();
 			else
-				mobName=Util.combine(commands,0);
+				mobName=CMParms.combine(commands,0);
 			if(mobName.length()==0)
 			{
 				mob.tell("Assassinate whom?");

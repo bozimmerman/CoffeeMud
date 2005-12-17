@@ -48,7 +48,7 @@ public class Chant_PlantPass extends Chant
 			mob.tell("You must specify the name of the location of one of your plants.  Use your 'My Plants' skill if necessary.");
 			return false;
 		}
-		String areaName=Util.combine(commands,0).trim().toUpperCase();
+		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 
 		Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
 		if(myPlant==null)
@@ -70,7 +70,7 @@ public class Chant_PlantPass extends Chant
 		}
 		if(newRoom==null)
 		{
-			mob.tell("You can't seem to fixate on a place called '"+Util.combine(commands,0)+"', perhaps you have nothing growing there?");
+			mob.tell("You can't seem to fixate on a place called '"+CMParms.combine(commands,0)+"', perhaps you have nothing growing there?");
 			return false;
 		}
 

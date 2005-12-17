@@ -92,7 +92,7 @@ public class Announce extends StdCommand
 		{
             if(cmd.equalsIgnoreCase(getScr("Announce","cmdm")))
             {
-                String s=Util.combine(commands,1);
+                String s=CMParms.combine(commands,1);
                 if(mob.playerStats()!=null)
                     mob.playerStats().setAnnounceMessage(s);
                 mob.tell("Your announce message has been changed.");
@@ -103,9 +103,9 @@ public class Announce extends StdCommand
 			{
                 String text=null;
                 if(cmd.equalsIgnoreCase(getScr("Announce","cmdt")))
-                    text=Util.combine(commands,2);
+                    text=CMParms.combine(commands,2);
                 else
-                    text=Util.combine(commands,1);
+                    text=CMParms.combine(commands,1);
                     
 				for(int s=0;s<CMLib.sessions().size();s++)
 				{
@@ -127,7 +127,7 @@ public class Announce extends StdCommand
 					&&(CMSecurity.isAllowed(mob,S.mob().location(),"ANNOUNCE"))
 					&&(CMLib.english().containsString(S.mob().name(),(String)commands.elementAt(1))))
 					{
-						sendAnnounce(Util.combine(commands,2),S);
+						sendAnnounce(CMParms.combine(commands,2),S);
 						found=true;
 						break;
 					}

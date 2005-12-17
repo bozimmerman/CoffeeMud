@@ -100,7 +100,7 @@ public class DefaultTimeClock implements TimeClock
         timeDesc.append("the "+getDayOfMonth()+numAppendage(getDayOfMonth()));
         timeDesc.append(" day of "+getMonthNames()[getMonth()-1]);
         if(getYearNames().length>0)
-            timeDesc.append(", "+Util.replaceAll(getYearNames()[getYear()%getYearNames().length],"#",""+getYear()));
+            timeDesc.append(", "+CMStrings.replaceAll(getYearNames()[getYear()%getYearNames().length],"#",""+getYear()));
         return timeDesc.toString();
     }
     
@@ -116,28 +116,28 @@ public class DefaultTimeClock implements TimeClock
     
     public void initializeINIClock(CMProps page)
     {
-        if(Util.s_int(page.getStr("HOURSINDAY"))>0)
-            setHoursInDay(Util.s_int(page.getStr("HOURSINDAY")));
+        if(CMath.s_int(page.getStr("HOURSINDAY"))>0)
+            setHoursInDay(CMath.s_int(page.getStr("HOURSINDAY")));
 
-        if(Util.s_int(page.getStr("DAYSINMONTH"))>0)
-            setDaysInMonth(Util.s_int(page.getStr("DAYSINMONTH")));
+        if(CMath.s_int(page.getStr("DAYSINMONTH"))>0)
+            setDaysInMonth(CMath.s_int(page.getStr("DAYSINMONTH")));
 
         String monthsInYear=page.getStr("MONTHSINYEAR");
         if(monthsInYear.trim().length()>0)
-            setMonthsInYear(Util.toStringArray(Util.parseCommas(monthsInYear,true)));
+            setMonthsInYear(CMParms.toStringArray(CMParms.parseCommas(monthsInYear,true)));
 
-        setDaysInWeek(Util.toStringArray(Util.parseCommas(page.getStr("DAYSINWEEK"),true)));
+        setDaysInWeek(CMParms.toStringArray(CMParms.parseCommas(page.getStr("DAYSINWEEK"),true)));
 
         if(page.containsKey("YEARDESC"))
-            setYearNames(Util.toStringArray(Util.parseCommas(page.getStr("YEARDESC"),true)));
+            setYearNames(CMParms.toStringArray(CMParms.parseCommas(page.getStr("YEARDESC"),true)));
 
         if(page.containsKey("DAWNHR")&&page.containsKey("DAYHR")
                 &&page.containsKey("DUSKHR")&&page.containsKey("NIGHTHR"))
         setDawnToDusk(
-                        Util.s_int(page.getStr("DAWNHR")),
-                        Util.s_int(page.getStr("DAYHR")),
-                        Util.s_int(page.getStr("DUSKHR")),
-                        Util.s_int(page.getStr("NIGHTHR")));
+                        CMath.s_int(page.getStr("DAWNHR")),
+                        CMath.s_int(page.getStr("DAYHR")),
+                        CMath.s_int(page.getStr("DUSKHR")),
+                        CMath.s_int(page.getStr("NIGHTHR")));
 
         CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY,""+((MudHost.TIME_MILIS_PER_MUDHOUR*CMClass.globalClock().getHoursInDay()/MudHost.TICK_TIME)));
         CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH,""+((MudHost.TIME_MILIS_PER_MUDHOUR*CMClass.globalClock().getHoursInDay()*CMClass.globalClock().getDaysInMonth()/MudHost.TICK_TIME)));
@@ -161,7 +161,7 @@ public class DefaultTimeClock implements TimeClock
 		timeDesc.append("the "+getDayOfMonth()+numAppendage(getDayOfMonth()));
 		timeDesc.append(" day of "+getMonthNames()[getMonth()-1]);
 		if(getYearNames().length>0)
-			timeDesc.append(", "+Util.replaceAll(getYearNames()[getYear()%getYearNames().length],"#",""+getYear()));
+			timeDesc.append(", "+CMStrings.replaceAll(getYearNames()[getYear()%getYearNames().length],"#",""+getYear()));
 		timeDesc.append(".\n\rIt is "+(TimeClock.SEASON_DESCS[getSeasonCode()]).toLowerCase()+".");
 		if((CMLib.flags().canSee(mob))
 		&&(getTODCode()==TimeClock.TIME_NIGHT)
@@ -193,7 +193,7 @@ public class DefaultTimeClock implements TimeClock
 	{
 	    String strn=""+num;
         if((num<11)||(num>13))
-		switch(Util.s_int(""+(strn).charAt(strn.length()-1)))
+		switch(CMath.s_int(""+(strn).charAt(strn.length()-1)))
 		{
 		case 1: return "st";
 		case 2: return "nd";
@@ -206,7 +206,7 @@ public class DefaultTimeClock implements TimeClock
 	public void setYear(int y){year=y;}
 
 	public int getSeasonCode(){
-	    int div=(int)Math.round(Math.floor(Util.div(getMonthsInYear(),4.0)));
+	    int div=(int)Math.round(Math.floor(CMath.div(getMonthsInYear(),4.0)));
 	    if(month<div) return TimeClock.SEASON_WINTER;
 	    if(month<(div*2)) return TimeClock.SEASON_SPRING;
 	    if(month<(div*3)) return TimeClock.SEASON_SUMMER;
@@ -214,7 +214,7 @@ public class DefaultTimeClock implements TimeClock
 	}
 	public int getMonth(){return month;}
 	public void setMonth(int m){month=m;}
-	public int getMoonPhase(){return (int)Math.round(Math.floor(Util.mul(Util.div(getDayOfMonth(),getDaysInMonth()),8.0)));}
+	public int getMoonPhase(){return (int)Math.round(Math.floor(CMath.mul(CMath.div(getDayOfMonth(),getDaysInMonth()),8.0)));}
 
 	public int getDayOfMonth(){return day;}
 	public void setDayOfMonth(int d){day=d;}
@@ -393,13 +393,13 @@ public class DefaultTimeClock implements TimeClock
 			CMLib.database().DBCreateData(loadName,"TIMECLOCK","TIMECLOCK/"+loadName,
 			"<DAY>"+getDayOfMonth()+"</DAY><MONTH>"+getMonth()+"</MONTH><YEAR>"+getYear()+"</YEAR>"
 			+"<HOURS>"+getHoursInDay()+"</HOURS><DAYS>"+getDaysInMonth()+"</DAYS>"
-			+"<MONTHS>"+Util.toStringList(getMonthNames())+"</MONTHS>"
+			+"<MONTHS>"+CMParms.toStringList(getMonthNames())+"</MONTHS>"
 			+"<DAWNHR>"+getDawnToDusk()[TIME_DAWN]+"</DAWNHR>"
 			+"<DAYHR>"+getDawnToDusk()[TIME_DAY]+"</DAYHR>"
 			+"<DUSKHR>"+getDawnToDusk()[TIME_DUSK]+"</DUSKHR>"
 			+"<NIGHTHR>"+getDawnToDusk()[TIME_NIGHT]+"</NIGHTHR>"
-			+"<WEEK>"+Util.toStringList(getWeekNames())+"</WEEK>"
-			+"<YEARS>"+Util.toStringList(getYearNames())+"</YEARS>"
+			+"<WEEK>"+CMParms.toStringList(getWeekNames())+"</WEEK>"
+			+"<YEARS>"+CMParms.toStringList(getYearNames())+"</YEARS>"
 			);
 		}
 	}
@@ -444,13 +444,13 @@ public class DefaultTimeClock implements TimeClock
 					{
 						setHoursInDay(CMLib.xml().getIntFromPieces(V,"HOURS"));
 						setDaysInMonth(CMLib.xml().getIntFromPieces(V,"DAYS"));
-						setMonthsInYear(Util.toStringArray(Util.parseCommas(CMLib.xml().getValFromPieces(V,"MONTHS"),true)));
+						setMonthsInYear(CMParms.toStringArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"MONTHS"),true)));
 						setDawnToDusk(CMLib.xml().getIntFromPieces(V,"DAWNHR"),
 									  CMLib.xml().getIntFromPieces(V,"DAYHR"),
 									  CMLib.xml().getIntFromPieces(V,"DUSKHR"),
 									  CMLib.xml().getIntFromPieces(V,"NIGHTHR"));
-						setDaysInWeek(Util.toStringArray(Util.parseCommas(CMLib.xml().getValFromPieces(V,"WEEK"),true)));
-						setYearNames(Util.toStringArray(Util.parseCommas(CMLib.xml().getValFromPieces(V,"YEARS"),true)));
+						setDaysInWeek(CMParms.toStringArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"WEEK"),true)));
+						setYearNames(CMParms.toStringArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"YEARS"),true)));
 					}
 				}
 			}

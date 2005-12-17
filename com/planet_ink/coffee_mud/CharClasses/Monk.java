@@ -175,7 +175,7 @@ public class Monk extends StdCharClass
 		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.DEXTERITY));
 		if(dexStat>maxDexStat) dexStat=maxDexStat;
-		int attArmor=(int)Math.round(Util.div(dexStat,9.0));
+		int attArmor=(int)Math.round(CMath.div(dexStat,9.0));
 		attArmor=attArmor*-1;
 		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
 		mob.envStats().setArmor(mob.envStats().armor()-attArmor);
@@ -207,7 +207,7 @@ public class Monk extends StdCharClass
 			if(CMLib.flags().isStanding((MOB)affected))
 			{
 				MOB mob=(MOB)affected;
-				int attArmor=(((int)Math.round(Util.div(mob.charStats().getStat(CharStats.DEXTERITY),9.0)))+1)*(mob.charStats().getClassLevel(this)-1);
+				int attArmor=(((int)Math.round(CMath.div(mob.charStats().getStat(CharStats.DEXTERITY),9.0)))+1)*(mob.charStats().getClassLevel(this)-1);
 				affectableStats.setArmor(affectableStats.armor()-attArmor);
 			}
 			if(!anyWeapons((MOB)affected))
@@ -237,7 +237,7 @@ public class Monk extends StdCharClass
 		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.DEXTERITY));
 		if(dexStat>maxDexStat) dexStat=maxDexStat;
-		int attArmor=((int)Math.round(Util.div(dexStat,9.0)))+1;
+		int attArmor=((int)Math.round(CMath.div(dexStat,9.0)))+1;
 		mob.tell("^NYour stealthiness grants you a defensive bonus of ^H"+attArmor+"^?.^N");
 	}
 

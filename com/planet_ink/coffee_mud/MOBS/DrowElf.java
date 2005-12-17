@@ -60,7 +60,7 @@ public class DrowElf extends StdMOB
 		setDisplayText("The drow is armored in black chain mail and carrying a nice arsenal of weapons");
 
 		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
-		setMoney((int)Math.round(Util.div((50 * baseEnvStats().level()),(randomizer.nextInt() % 10 + 1))));
+		setMoney((int)Math.round(CMath.div((50 * baseEnvStats().level()),(randomizer.nextInt() % 10 + 1))));
 		baseEnvStats.setWeight(70 + Math.abs(randomizer.nextInt() % 20));
 
 		setWimpHitPoint(5);

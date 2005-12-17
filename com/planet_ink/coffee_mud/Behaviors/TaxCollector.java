@@ -51,8 +51,8 @@ public class TaxCollector extends StdBehavior
 		super.setParms(newParms);
 		demanded=null;
 		paid=null;
-		waitTime=Util.getParmInt(newParms,"WAIT",1000*60*2);
-		graceTime=Util.getParmInt(newParms,"GRACE",1000*60*60);
+		waitTime=CMParms.getParmInt(newParms,"WAIT",1000*60*2);
+		graceTime=CMParms.getParmInt(newParms,"GRACE",1000*60*60);
 	}
     
     public final static int OWE_TOTAL=0;
@@ -87,14 +87,14 @@ public class TaxCollector extends StdBehavior
                 Law theLaw=B.legalInfo(A2);
                 if(theLaw!=null)
                 {
-                    double cittax=Util.s_double((String)theLaw.taxLaws().get("CITTAX"));
+                    double cittax=CMath.s_double((String)theLaw.taxLaws().get("CITTAX"));
                     if(cittax>0.0)
-                        owed[OWE_CITIZENTAX]=Util.mul(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(M,collector),Util.div(cittax,100.0));
+                        owed[OWE_CITIZENTAX]=CMath.mul(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(M,collector),CMath.div(cittax,100.0));
                 }
             }
         }
 		else
-			owed[OWE_CITIZENTAX]=Util.div(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(M,collector),10.0);
+			owed[OWE_CITIZENTAX]=CMath.div(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(M,collector),10.0);
 		owed[OWE_TOTAL]=owed[OWE_CITIZENTAX]+owed[OWE_BACKTAXES]+owed[OWE_FINES];
 		return owed;
 	}
@@ -190,7 +190,7 @@ public class TaxCollector extends StdBehavior
 				    if((B!=null)&&(!msg.source().isMonster()))
 				    {
 						Area A2=CMLib.utensils().getLegalObject(mob.location().getArea());
-                        B.aquit(A2,msg.source(),Util.makeVector("TAXEVASION"));
+                        B.aquit(A2,msg.source(),CMParms.makeVector("TAXEVASION"));
 				    }
 				}
 				
@@ -201,9 +201,9 @@ public class TaxCollector extends StdBehavior
 				    if(((T.landOwner().equals(msg.source().Name())))
 				    &&(paidAmount>0))
 				    {
-			            T.setBackTaxes(T.backTaxes()-(int)Math.round(Util.div(paidAmount,numProperties)));
+			            T.setBackTaxes(T.backTaxes()-(int)Math.round(CMath.div(paidAmount,numProperties)));
 			            T.updateTitle();
-			            paidAmount-=Util.div(paidAmount,numProperties);
+			            paidAmount-=CMath.div(paidAmount,numProperties);
 				    }
 				}
 				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_SPEAK,"<S-NAME> says 'Very good.  Your taxes are paid in full.' to <T-NAMESELF>."));
@@ -273,7 +273,7 @@ public class TaxCollector extends StdBehavior
 				String taxs=(String)theLaw.taxLaws().get("PROPERTYTAX");
 				LandTitle T=null;
 				peopleWhoOwe.clear();
-				if((taxs!=null)&&(taxs.length()>0)&&(Util.s_double(taxs)>0))
+				if((taxs!=null)&&(taxs.length()>0)&&(CMath.s_double(taxs)>0))
 				{
 				    taxableProperties=CMLib.utensils().getAllUniqueTitles(A2.getMetroMap(),"*",false);
 				    for(int v=0;v<taxableProperties.size();v++)
@@ -319,7 +319,7 @@ public class TaxCollector extends StdBehavior
                     else
 				    if(B!=null)
 				    {
-                        B.accuse(CMLib.utensils().getLegalObject(R),M,mob,Util.makeVector("TAXEVASION"));
+                        B.accuse(CMLib.utensils().getLegalObject(R),M,mob,CMParms.makeVector("TAXEVASION"));
 						CMLib.commands().say(mob,M,"Can't pay huh?  Well, you'll be hearing from the law -- THAT's for sure!",false,false);
 				    }
 				    else
@@ -336,11 +336,11 @@ public class TaxCollector extends StdBehavior
 				    String currency=CMLib.beanCounter().getCurrency(mob);
 				    double denomination=CMLib.beanCounter().getLowestDenomination(currency);
 				    if(owe[OWE_CITIZENTAX]>0)
-				    	say.append("You owe "+CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(Util.div(owe[OWE_CITIZENTAX],denomination)))+" in local taxes. ");
+				    	say.append("You owe "+CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(CMath.div(owe[OWE_CITIZENTAX],denomination)))+" in local taxes. ");
 				    if(owe[OWE_BACKTAXES]>0)
-				    	say.append("You owe "+CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(Util.div(owe[OWE_BACKTAXES],denomination)))+" in back property taxes");
+				    	say.append("You owe "+CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(CMath.div(owe[OWE_BACKTAXES],denomination)))+" in back property taxes");
                     if(owe[OWE_FINES]>0)
-                        say.append("You owe "+CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(Util.div(owe[OWE_FINES],denomination)))+" in fines");
+                        say.append("You owe "+CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(CMath.div(owe[OWE_FINES],denomination)))+" in fines");
 				    if(say.length()>0)
 				    {
 						CMLib.commands().say(mob,M,say.toString()+".  You must pay me immediately or face the consequences.",false,false);

@@ -76,10 +76,10 @@ public class Spell_MeteorStorm extends Spell
 					invoker=mob;
 
 					int damage = 0;
-					int maxDie=(int)Math.round(Util.div(adjustedLevel(mob,asLevel),3.0));
+					int maxDie=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel),3.0));
 					damage = CMLib.dice().roll(maxDie,6,maxDie);
 					if(msg.value()<=0)
-						damage = (int)Math.round(Util.div(damage,2.0));
+						damage = (int)Math.round(CMath.div(damage,2.0));
 					if(target.location()==mob.location())
 						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_BASHING,"The meteors <DAMAGE> <T-NAME>!");
 				}

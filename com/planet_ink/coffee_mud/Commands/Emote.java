@@ -44,7 +44,7 @@ public class Emote extends StdCommand
 			mob.tell(getScr("Emote","emoteerr"));
 			return false;
 		}
-		String combinedCommands=Util.combine(commands,1);
+		String combinedCommands=CMParms.combine(commands,1);
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.SYSTEM_EMOTEFILTER);
         if(combinedCommands.trim().startsWith("'")||combinedCommands.trim().startsWith("`"))
             combinedCommands=combinedCommands.trim();

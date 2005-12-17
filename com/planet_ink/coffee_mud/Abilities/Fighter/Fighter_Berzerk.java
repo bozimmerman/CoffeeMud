@@ -53,8 +53,8 @@ public class Fighter_Berzerk extends FighterSkill
 		   invoker=(MOB)affected;
 		if(invoker!=null)
 		{
-			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(Util.div(affectableStats.damage(),4.0)));
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(Util.div(affectableStats.attackAdjustment(),4.0)));
+			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(CMath.div(affectableStats.damage(),4.0)));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(CMath.div(affectableStats.attackAdjustment(),4.0)));
 			affectableStats.setArmor(affectableStats.armor()+20);
 		}
 	}
@@ -114,7 +114,7 @@ public class Fighter_Berzerk extends FighterSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				hpAdjustment=(int)Math.round(Util.div(target.maxState().getHitPoints(),5.0));
+				hpAdjustment=(int)Math.round(CMath.div(target.maxState().getHitPoints(),5.0));
 				beneficialAffect(mob,target,asLevel,0);
 				target.curState().setHitPoints(target.curState().getHitPoints()+hpAdjustment);
 				target.recoverMaxState();

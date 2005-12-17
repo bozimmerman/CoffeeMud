@@ -111,14 +111,14 @@ public class Put extends BaseItemParser
 
 		int maxToPut=Integer.MAX_VALUE;
 		if((commands.size()>1)
-		&&(Util.s_int((String)commands.firstElement())>0)
-		&&(CMLib.english().numPossibleGold(mob,Util.combine(commands,0))==0))
+		&&(CMath.s_int((String)commands.firstElement())>0)
+		&&(CMLib.english().numPossibleGold(mob,CMParms.combine(commands,0))==0))
 		{
-			maxToPut=Util.s_int((String)commands.firstElement());
+			maxToPut=CMath.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
 		}
 
-		String thingToPut=Util.combine(commands,0);
+		String thingToPut=CMParms.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
 		Vector V=new Vector();

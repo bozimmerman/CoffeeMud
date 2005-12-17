@@ -209,7 +209,7 @@ public class Falling extends StdAbility
 					unInvoke();
 					return true;
 				}
-				if(Util.bset(msg.targetMajor(),CMMsg.MASK_MOVE))
+				if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE))
 				{
 					msg.source().tell("You are too busy falling to do that right now.");
 					return false;
@@ -231,7 +231,7 @@ public class Falling extends StdAbility
 			else
 			if((msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
-			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
+			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
 			{
 				damageToTake=0;
 				unInvoke();

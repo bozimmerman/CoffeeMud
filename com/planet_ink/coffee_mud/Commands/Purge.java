@@ -53,7 +53,7 @@ public class Purge extends BaseItemParser
 			return false;
 		}
 
-		String mobID=Util.combine(commands,2);
+		String mobID=CMParms.combine(commands,2);
 		boolean allFlag=((String)commands.elementAt(2)).equalsIgnoreCase("all");
 		if(mobID.toUpperCase().startsWith("ALL.")){ allFlag=true; mobID="ALL "+mobID.substring(4);}
 		if(mobID.toUpperCase().endsWith(".ALL")){ allFlag=true; mobID="ALL "+mobID.substring(0,mobID.length()-4);}
@@ -93,7 +93,7 @@ public class Purge extends BaseItemParser
 			return false;
 		}
 		
-		String itemID=Util.combine(commands,2);
+		String itemID=CMParms.combine(commands,2);
 		MOB srchMob=mob;
 		Room srchRoom=mob.location();
 		int x=itemID.indexOf("@");
@@ -168,7 +168,7 @@ public class Purge extends BaseItemParser
 		}
 		else
 		{
-			String allWord=Util.combine(commands,1);
+			String allWord=CMParms.combine(commands,1);
 			Environmental thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Item.WORN_REQ_ANY);
 			if((thang!=null)&&(thang instanceof Item))
 			{

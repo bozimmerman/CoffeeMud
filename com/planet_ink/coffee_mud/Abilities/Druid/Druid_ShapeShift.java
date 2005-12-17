@@ -89,7 +89,7 @@ public class Druid_ShapeShift extends StdAbility
 	public void setMiscText(String newText)
 	{
 		if(newText.length()>0)
-			myRaceCode=Util.s_int(newText);
+			myRaceCode=CMath.s_int(newText);
 		super.setMiscText(newText);
 	}
 
@@ -98,16 +98,16 @@ public class Druid_ShapeShift extends StdAbility
 		super.affectEnvStats(affected,affectableStats);
 		if((newRace!=null)&&(affected instanceof MOB))
 		{
-			affectableStats.setName(Util.startWithAorAn(raceName.toLowerCase()));
+			affectableStats.setName(CMStrings.startWithAorAn(raceName.toLowerCase()));
 			int oldAdd=affectableStats.weight()-affected.baseEnvStats().weight();
 			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.GENDER));
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+
-												(int)Math.round(Util.mul(affectableStats.level(),attadj[getRaceCode()])));
+												(int)Math.round(CMath.mul(affectableStats.level(),attadj[getRaceCode()])));
 			affectableStats.setArmor(affectableStats.armor()+
-									(int)Math.round(Util.mul(affectableStats.level(),armadj[getRaceCode()])));
+									(int)Math.round(CMath.mul(affectableStats.level(),armadj[getRaceCode()])));
 			affectableStats.setDamage(affectableStats.damage()+
-									(int)Math.round(Util.mul(affectableStats.level(),dmgadj[getRaceCode()])));
+									(int)Math.round(CMath.mul(affectableStats.level(),dmgadj[getRaceCode()])));
 		}
 	}
 
@@ -238,13 +238,13 @@ public class Druid_ShapeShift extends StdAbility
 				{
 					if(racesTaken[i]==0)
 					{
-						str.append(Util.padLeft(""+(i+1),2)+") "+forms[i]+"\n\r");
+						str.append(CMStrings.padLeft(""+(i+1),2)+") "+forms[i]+"\n\r");
 						choices.append(""+(i+1));
 					}
 				}
 				str.append("Please select: ");
 				String choice=mob.session().choose(str.toString(),choices.toString(),"");
-				myRaceCode=Util.s_int(choice)-1;
+				myRaceCode=CMath.s_int(choice)-1;
 				}catch(Exception e){};
 			}
 		}
@@ -278,7 +278,7 @@ public class Druid_ShapeShift extends StdAbility
 				allShapeshifts.addElement(choice);
 				V.removeElement(choice);
 			}
-			String parm=Util.combine(commands,0);
+			String parm=CMParms.combine(commands,0);
 			StringBuffer list=new StringBuffer("");
 			for(int i=0;i<allShapeshifts.size();i++)
 			{
@@ -288,10 +288,10 @@ public class Druid_ShapeShift extends StdAbility
 					if((A.raceName==null)||(A.raceName.length()==0))
 						A.setRaceName(mob);
 					if((A.raceName==null)||(A.raceName.length()==0))
-						list.append(Util.padLeft(""+(i+1),2)+") Not yet chosen.\n\r");
+						list.append(CMStrings.padLeft(""+(i+1),2)+") Not yet chosen.\n\r");
 					else
 					{
-						list.append(Util.padLeft(""+(i+1),2)+") "+A.raceName+" ("+forms[A.myRaceCode]+")\n\r");
+						list.append(CMStrings.padLeft(""+(i+1),2)+") "+A.raceName+" ("+forms[A.myRaceCode]+")\n\r");
 						if(CMLib.english().containsString(A.raceName,parm))
 							return A.invoke(mob,new Vector(),givenTarget,auto,asLevel);
 						if(CMLib.english().containsString(forms[A.myRaceCode],parm))
@@ -299,7 +299,7 @@ public class Druid_ShapeShift extends StdAbility
 					}
 				}
 			}
-			int iparm=Util.s_int(parm);
+			int iparm=CMath.s_int(parm);
 			if(iparm>0)
 			{
 				if(iparm<=allShapeshifts.size())
@@ -338,7 +338,7 @@ public class Druid_ShapeShift extends StdAbility
 				mob.location().send(mob,msg);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
 				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE);
-				raceName=Util.capitalizeAndLower(Util.startWithAorAn(raceName.toLowerCase()));
+				raceName=CMStrings.capitalizeAndLower(CMStrings.startWithAorAn(raceName.toLowerCase()));
 				mob.confirmWearability();
 			}
 		}

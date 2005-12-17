@@ -59,7 +59,7 @@ public class Guard extends StdBehavior
 		&&(CMLib.flags().canBeSeenBy(source,observer))
 		&&(CMLib.flags().canBeSeenBy(target,observer))
 		&&(!BrotherHelper.isBrother(source,observer))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)))
+		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)))
 			Aggressive.startFight(observer,source,true);
 	}
 }

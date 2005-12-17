@@ -47,7 +47,7 @@ public class Prayer_Wave extends Prayer
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
-		int dir=Directions.getGoodDirectionCode(Util.combine(commands,0));
+		int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
 		if(dir<0)
 		{
 			mob.tell("Wash your opponents which direction?");

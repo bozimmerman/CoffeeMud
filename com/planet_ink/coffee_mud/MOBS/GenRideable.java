@@ -83,8 +83,8 @@ public class GenRideable extends StdRideable
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setRideBasis(Util.s_int(val)); break;
-		case 1: setRiderCapacity(Util.s_int(val)); break;
+		case 0: setRideBasis(CMath.s_int(val)); break;
+		case 1: setRiderCapacity(CMath.s_int(val)); break;
 		}
 	}
 	protected int getCodeNum(String code){

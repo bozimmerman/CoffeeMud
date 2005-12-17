@@ -164,7 +164,7 @@ public class StdRace implements Race
 					int[] chart=getAgingChart();
 					int diff=chart[Race.AGE_ANCIENT]-chart[Race.AGE_VENERABLE];
 					int age=baseStats.getStat(CharStats.AGE)-chart[Race.AGE_ANCIENT];
-					int num=(diff>0)?(int)Math.abs(Math.floor(Util.div(age,diff)))-1:1;
+					int num=(diff>0)?(int)Math.abs(Math.floor(CMath.div(age,diff)))-1:1;
 					if(num==0) num=1;
 				    charStats.setStat(CharStats.SAVE_MIND,charStats.getStat(CharStats.SAVE_MIND)+20+(5*num));
 				    charStats.setStat(CharStats.SAVE_UNDEAD,charStats.getStat(CharStats.SAVE_UNDEAD)-50+15+(5*num));
@@ -190,7 +190,7 @@ public class StdRace implements Race
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&(myHost instanceof MOB)
-		&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))
+		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))
 		{
 			msg.source().location().show(msg.source(),myHost,CMMsg.MSG_OK_VISUAL,"<T-NAME> seem(s) unaffected by the charm magic from <S-NAMESELF>.");
 			return false;
@@ -387,8 +387,8 @@ public class StdRace implements Race
 		{
 			if(weightModifier>0)
 			{
-				double variance=Util.div(weightModifier,weightVariance());
-				heightModifier=(int)Math.round(Util.mul(heightVariance(),variance));
+				double variance=CMath.div(weightModifier,weightVariance());
+				heightModifier=(int)Math.round(CMath.mul(heightVariance(),variance));
 			}
 			else
 				heightModifier=CMLib.dice().roll(1,heightVariance(),0);
@@ -473,7 +473,7 @@ public class StdRace implements Race
 		Body.baseEnvStats().setWeight(mob.baseEnvStats().weight());
 		Body.setPlayerCorpse(!mob.isMonster());
         Body.setTimeOfDeath(System.currentTimeMillis());
-		Body.setMobPKFlag(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL));
+		Body.setMobPKFlag(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL));
 		Body.setName("the body of "+mob.Name());
 		Body.setMobName(mob.Name());
 		Body.setMobDescription(mob.description());
@@ -487,8 +487,8 @@ public class StdRace implements Race
 			Ability A=mob.fetchEffect(i);
 			if((A!=null)&&(A instanceof DiseaseAffect))
 			{
-				if((Util.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONSUMPTION))
-				||(Util.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONTACT)))
+				if((CMath.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONSUMPTION))
+				||(CMath.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONTACT)))
 					Body.addNonUninvokableEffect((Ability)A.copyOf());
 			}
 		}

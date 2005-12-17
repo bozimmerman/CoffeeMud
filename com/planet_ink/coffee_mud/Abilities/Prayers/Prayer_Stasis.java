@@ -92,7 +92,7 @@ public class Prayer_Stasis extends Prayer
 		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 			msg.setValue(0);
 		else
-		if((msg.amITarget(mob))&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)))
+		if((msg.amITarget(mob))&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)))
 		{
 			msg.source().tell(msg.source(),mob,null,"The statis field around <T-NAME> protect(s) <T-HIM-HER>.");
 			return false;

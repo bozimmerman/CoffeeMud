@@ -119,7 +119,7 @@ public class Spell_Geas extends Spell
 			mob.tell("You need to specify a target creature, and a geas to place on them.");
 			return false;
 		}
-		Vector name=Util.parse((String)commands.elementAt(0));
+		Vector name=CMParms.parse((String)commands.elementAt(0));
 		commands.remove(commands.firstElement());
 		MOB target=getTarget(mob,name,givenTarget);
 		if(target==null) return false;
@@ -141,13 +141,13 @@ public class Spell_Geas extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				STEPS=CMLib.slavery().processRequest(mob,target,Util.combine(commands,0));
+				STEPS=CMLib.slavery().processRequest(mob,target,CMParms.combine(commands,0));
 				if((STEPS==null)||(STEPS.size()==0))
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) confused.");
 					return false;
 				}
-				setMiscText(Util.combine(commands,0));
+				setMiscText(CMParms.combine(commands,0));
 				if(maliciousAffect(mob,target,asLevel,500,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0)))
 				{
 					target.makePeace();

@@ -68,7 +68,7 @@ public class Prayer_Sanctuary extends Prayer
 		if((msg.amITarget(mob))
 		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
-			int recovery=(int)Math.round(Util.div((msg.value()),2.0));
+			int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
 			msg.setValue(recovery);
 		}
 		return true;

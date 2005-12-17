@@ -70,7 +70,7 @@ public class Spell_Daydream extends Spell
 							{
 								msg=CMClass.getMsg(mob,inhab,this,affectType(auto),null);
 								if(R.okMessage(mob,msg))
-									inhab.tell("You daydream "+Util.combine(commands,0)+".");
+									inhab.tell("You daydream "+CMParms.combine(commands,0)+".");
 							}
 						}
 					}

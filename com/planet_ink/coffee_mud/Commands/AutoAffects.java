@@ -49,7 +49,7 @@ public class AutoAffects extends StdCommand
             &&(thisAffect.isAutoInvoked()))
             {
                 if(((++colnum)>2)||(disp.length()>25)){ msg.append("\n\r"); colnum=0;}
-                msg.append("^S"+Util.padRightPreserve("^<HELPNAME NAME='"+thisAffect.Name()+"'^>"+disp+"^</HELPNAME^>",25));
+                msg.append("^S"+CMStrings.padRightPreserve("^<HELPNAME NAME='"+thisAffect.Name()+"'^>"+disp+"^</HELPNAME^>",25));
                 if(disp.length()>25) colnum=99;
             }
         }

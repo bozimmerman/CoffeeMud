@@ -38,8 +38,8 @@ public class FrontLogin extends StdCommand
 	private static boolean classOkForMe(MOB mob, CharClass thisClass, int theme)
 	{
 		if((CMProps.isTheme(thisClass.availabilityCode()))
-		   &&(Util.bset(thisClass.availabilityCode(),theme))
-           &&(!Util.bset(thisClass.availabilityCode(),Area.THEME_SKILLONLYMASK))
+		   &&(CMath.bset(thisClass.availabilityCode(),theme))
+           &&(!CMath.bset(thisClass.availabilityCode(),Area.THEME_SKILLONLYMASK))
 		   &&((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
 			  ||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
 			  ||(thisClass.baseClass().equals(thisClass.ID())
@@ -73,7 +73,7 @@ public class FrontLogin extends StdCommand
 		if(login.trim().indexOf(" ")>=0) return false;
 
 		login=login.toUpperCase().trim();
-		Vector V=Util.parse(login);
+		Vector V=CMParms.parse(login);
 		for(int v=V.size()-1;v>=0;v--)
 		{
 			String str=(String)V.elementAt(v);
@@ -86,7 +86,7 @@ public class FrontLogin extends StdCommand
 			if((" YOU SHIT FUCK CUNT ALL FAGGOT ASSHOLE ARSEHOLE PUSSY COCK SLUT BITCH DAMN CRAP GOD JESUS CHRIST NOBODY SOMEBODY MESSIAH ADMIN SYSOP ").indexOf(" "+str+" ")>=0)
 				return false;
 		}
-		Vector V2=Util.parseCommas(CMProps.getVar(CMProps.SYSTEM_BADNAMES),true);
+		Vector V2=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_BADNAMES),true);
 		for(int v2=0;v2<V2.size();v2++)
 		{
 			String str2=(String)V2.elementAt(v2);
@@ -154,7 +154,7 @@ public class FrontLogin extends StdCommand
         if(S==null) return;
         
         S.initTelnetMode(mob.getBitmap());
-        if(Util.bset(mob.getBitmap(),MOB.ATT_MXP))
+        if(CMath.bset(mob.getBitmap(),MOB.ATT_MXP))
         {
             if(S.clientTelnetMode(Session.TELNET_MXP))
             {
@@ -172,7 +172,7 @@ public class FrontLogin extends StdCommand
             S.setClientTelnetMode(Session.TELNET_MXP,false);
         }
         
-        if(Util.bset(mob.getBitmap(),MOB.ATT_SOUND))
+        if(CMath.bset(mob.getBitmap(),MOB.ATT_SOUND))
         {
             if(!S.clientTelnetMode(Session.TELNET_MSP))
                 mob.tell("MSP sounds have been disabled for this session.");
@@ -193,11 +193,11 @@ public class FrontLogin extends StdCommand
         
 		if((mob.session()==null)
 		||(mob.isMonster())
-		||(Util.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE)))
+		||(CMath.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE)))
 			return;
 
 		C=CMClass.getCommand("MOTD");
-		try{ C.execute(mob,Util.parse("MOTD NEW"));}catch(Exception e){}
+		try{ C.execute(mob,CMParms.parse("MOTD NEW"));}catch(Exception e){}
 	}
 
     public boolean checkExpiration(MOB mob)
@@ -228,8 +228,8 @@ public class FrontLogin extends StdCommand
 		int attempt=0;
 		if(commands!=null)
 	    for(int i=0;i<commands.size();i++)
-	        if(Util.isInteger((String)commands.elementAt(i)))
-			    attempt=Util.s_int((String)commands.elementAt(i));
+	        if(CMath.isInteger((String)commands.elementAt(i)))
+			    attempt=CMath.s_int((String)commands.elementAt(i));
 	        else
 	        if(((String)commands.elementAt(i)).equalsIgnoreCase("LAST"))
 	            attempt=Integer.MAX_VALUE;
@@ -356,7 +356,7 @@ public class FrontLogin extends StdCommand
                     {
                         Command C=CMClass.getCommand("WizInv");
                         if((C!=null)&&(C.securityCheck(mob)||C.securityCheck(mob)))
-                            C.execute(mob,Util.makeVector("WIZINV"));
+                            C.execute(mob,CMParms.makeVector("WIZINV"));
                     }
 					showTheNews(mob);
 					mob.bringToLife(mob.location(),false);
@@ -386,7 +386,7 @@ public class FrontLogin extends StdCommand
                     {
                         Command C=CMClass.getCommand("WizInv");
                         if((C!=null)&&(C.securityCheck(mob)||C.securityCheck(mob)))
-                            C.execute(mob,Util.makeVector("WIZINV"));
+                            C.execute(mob,CMParms.makeVector("WIZINV"));
                     }
 					showTheNews(mob);
 					mob.bringToLife(mob.location(),true);
@@ -403,16 +403,16 @@ public class FrontLogin extends StdCommand
                     &&(S.mob()!=null)
                     &&(S.mob()!=mob)
                     &&((!CMLib.flags().isCloaked(mob))||(CMSecurity.isASysOp(S.mob())))
-                    &&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
+                    &&(CMath.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
                     &&(S.mob().playerStats()!=null)
                     &&((S.mob().playerStats().getFriends().contains(mob.Name())||S.mob().playerStats().getFriends().contains("All"))))
                         S.mob().tell("^X"+mob.Name()+" has logged on.^.^?");
                 }
 				if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ALWAYS"))
-				&&(!Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
+				&&(!CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
 					mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
 				if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("NEVER"))
-				&&(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
+				&&(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
 					mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
                 Vector channels=CMLib.channels().getFlaggedChannelNames("LOGINS");
                 if(!CMLib.flags().isCloaked(mob))
@@ -465,7 +465,7 @@ public class FrontLogin extends StdCommand
 			else
 			if(CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME)==0)
 			{
-				mob.session().print("\n\r'"+Util.capitalizeAndLower(login)+"' does not exist.\n\rThis server is not accepting new accounts.\n\r\n\r");
+				mob.session().print("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rThis server is not accepting new accounts.\n\r\n\r");
 				mob.setName("");
 				mob.setPlayerStats(null);
 			}
@@ -479,9 +479,9 @@ public class FrontLogin extends StdCommand
                 mob.setPlayerStats(null);
             }
             else
-			if(mob.session().confirm("\n\r'"+Util.capitalizeAndLower(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
+			if(mob.session().confirm("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
 			{
-				login=Util.capitalizeAndLower(login.trim());
+				login=CMStrings.capitalizeAndLower(login.trim());
 				mob.session().println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"newchar.txt",null,true).text().toString());
                 
                 boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))&&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0));
@@ -527,7 +527,7 @@ public class FrontLogin extends StdCommand
 
 				mob.setBitmap(MOB.ATT_AUTOEXITS|MOB.ATT_AUTOWEATHER);
 				if(mob.session().confirm("\n\rDo you want ANSI colors (Y/n)?","Y"))
-					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_ANSI));
+					mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_ANSI));
                 if(mob.session().clientTelnetMode(Session.TELNET_MSP))
                     mob.setBitmap(mob.getBitmap()|MOB.ATT_SOUND);
                 if(mob.session().clientTelnetMode(Session.TELNET_MXP))
@@ -546,9 +546,9 @@ public class FrontLogin extends StdCommand
 					    theme=-1;
 				        String choices="";
 				        String selections="";
-						if(Util.bset(themeCode,Area.THEME_FANTASY)){ choices+="F"; selections+="/F";}
-						if(Util.bset(themeCode,Area.THEME_HEROIC)){ choices+="H"; selections+="/H";}
-						if(Util.bset(themeCode,Area.THEME_TECHNOLOGY)){ choices+="T"; selections+="/T";}
+						if(CMath.bset(themeCode,Area.THEME_FANTASY)){ choices+="F"; selections+="/F";}
+						if(CMath.bset(themeCode,Area.THEME_HEROIC)){ choices+="H"; selections+="/H";}
+						if(CMath.bset(themeCode,Area.THEME_TECHNOLOGY)){ choices+="T"; selections+="/T";}
 						if(choices.length()==0)
 						{
 						    choices="F";
@@ -581,8 +581,8 @@ public class FrontLogin extends StdCommand
                     R=CMClass.getRace(R.ID());
                     doneRaces.add(R.ID());
 					if((CMProps.isTheme(R.availabilityCode()))
-					&&(!Util.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK))
-					&&(Util.bset(R.availabilityCode(),theme)))
+					&&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK))
+					&&(CMath.bset(R.availabilityCode(),theme)))
 					{
 						if (!tmpFirst)
 							listOfRaces.append(", ");
@@ -610,8 +610,8 @@ public class FrontLogin extends StdCommand
 					{
 						newRace=CMClass.getRace(raceStr);
 						if((newRace!=null)&&((!CMProps.isTheme(newRace.availabilityCode()))
-												||(!Util.bset(newRace.availabilityCode(),theme))
-						        				||(Util.bset(newRace.availabilityCode(),Area.THEME_SKILLONLYMASK))))
+												||(!CMath.bset(newRace.availabilityCode(),theme))
+						        				||(CMath.bset(newRace.availabilityCode(),Area.THEME_SKILLONLYMASK))))
 							newRace=null;
 						if(newRace==null)
 							for(Enumeration r=CMClass.races();r.hasMoreElements();)
@@ -619,8 +619,8 @@ public class FrontLogin extends StdCommand
 								Race R=(Race)r.nextElement();
 								if((R.name().equalsIgnoreCase(raceStr))
 								&&(CMProps.isTheme(R.availabilityCode()))
-								&&(Util.bset(R.availabilityCode(),theme))
-								&&(!Util.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+								&&(CMath.bset(R.availabilityCode(),theme))
+								&&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
 								{
 									newRace=R;
 									break;
@@ -632,8 +632,8 @@ public class FrontLogin extends StdCommand
 								Race R=(Race)r.nextElement();
 								if((R.name().toUpperCase().startsWith(raceStr.toUpperCase()))
 						        &&(CMProps.isTheme(R.availabilityCode()))
-								&&(Util.bset(R.availabilityCode(),theme))
-						        &&(!Util.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+								&&(CMath.bset(R.availabilityCode(),theme))
+						        &&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
 								{
 									newRace=R;
 									break;
@@ -697,13 +697,13 @@ public class FrontLogin extends StdCommand
                         int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
                         StringBuffer statstr=new StringBuffer("Your current stats are: \n\r");
                         CharStats CT=mob.charStats();
-                        statstr.append(Util.padRight("Strength",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.MAX_STRENGTH_ADJ))+"\n\r");
-                        statstr.append(Util.padRight("Intelligence",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.MAX_INTELLIGENCE_ADJ))+"\n\r");
-                        statstr.append(Util.padRight("Dexterity",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.DEXTERITY)),2)+"/"+(max+CT.getStat(CharStats.MAX_DEXTERITY_ADJ))+"\n\r");
-                        statstr.append(Util.padRight("Wisdom",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.WISDOM)),2)+"/"+(max+CT.getStat(CharStats.MAX_WISDOM_ADJ))+"\n\r");
-                        statstr.append(Util.padRight("Constitution",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.CONSTITUTION)),2)+"/"+(max+CT.getStat(CharStats.MAX_CONSTITUTION_ADJ))+"\n\r");
-                        statstr.append(Util.padRight("Charisma",15)+": "+Util.padRight(Integer.toString(CT.getStat(CharStats.CHARISMA)),2)+"/"+(max+CT.getStat(CharStats.MAX_CHARISMA_ADJ))+"\n\r");
-                        statstr.append(Util.padRight("TOTAL POINTS",15)+": "+CMProps.getIntVar(CMProps.SYSTEMI_MAXSTAT)+"/"+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)*6));
+                        statstr.append(CMStrings.padRight("Strength",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.MAX_STRENGTH_ADJ))+"\n\r");
+                        statstr.append(CMStrings.padRight("Intelligence",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.MAX_INTELLIGENCE_ADJ))+"\n\r");
+                        statstr.append(CMStrings.padRight("Dexterity",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.DEXTERITY)),2)+"/"+(max+CT.getStat(CharStats.MAX_DEXTERITY_ADJ))+"\n\r");
+                        statstr.append(CMStrings.padRight("Wisdom",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.WISDOM)),2)+"/"+(max+CT.getStat(CharStats.MAX_WISDOM_ADJ))+"\n\r");
+                        statstr.append(CMStrings.padRight("Constitution",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.CONSTITUTION)),2)+"/"+(max+CT.getStat(CharStats.MAX_CONSTITUTION_ADJ))+"\n\r");
+                        statstr.append(CMStrings.padRight("Charisma",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.CHARISMA)),2)+"/"+(max+CT.getStat(CharStats.MAX_CHARISMA_ADJ))+"\n\r");
+                        statstr.append(CMStrings.padRight("TOTAL POINTS",15)+": "+CMProps.getIntVar(CMProps.SYSTEMI_MAXSTAT)+"/"+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)*6));
                         mob.session().println(statstr.toString());
 						if(!CMSecurity.isDisabled("CLASSES")
 						&&!mob.baseCharStats().getMyRace().classless())
@@ -903,16 +903,16 @@ public class FrontLogin extends StdCommand
 					if((S!=null)
 					&&(S.mob()!=null)
 					&&((!CMLib.flags().isCloaked(mob))||(CMSecurity.isASysOp(S.mob())))
-					&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
+					&&(CMath.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
 					&&(S.mob().playerStats()!=null)
 					&&((S.mob().playerStats().getFriends().contains(mob.Name())||S.mob().playerStats().getFriends().contains("All"))))
 						S.mob().tell("^X"+mob.Name()+" has just been created.^.^?");
 				}
 				if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ALWAYS"))
-				&&(!Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
+				&&(!CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
 					mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
 				if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("NEVER"))
-				&&(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
+				&&(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
 					mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
 				CMLib.database().DBUpdatePlayer(mob);
                 Vector channels=CMLib.channels().getFlaggedChannelNames("NEWPLAYERS");

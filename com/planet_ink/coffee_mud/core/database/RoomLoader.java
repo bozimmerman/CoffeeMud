@@ -49,7 +49,7 @@ public class RoomLoader
                 CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Counting Areas");
             ResultSet R=D.query("SELECT * FROM CMAREA"+((areaID==null)?"":" WHERE CMAREA='"+areaID+"'"));
             recordCount=DBConnector.getRecordCount(D,R);
-            updateBreak=Util.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
+            updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
             while(R.next())
             {
                 currentRecordPos=R.getRow();
@@ -95,7 +95,7 @@ public class RoomLoader
                 CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Counting Rooms");
             ResultSet R=D.query("SELECT * FROM CMROOM"+((roomID==null)?"":" WHERE CMROID='"+roomID+"'"));
             recordCount=DBConnector.getRecordCount(D,R);
-            updateBreak=Util.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
+            updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
             while(R.next())
             {
                 currentRecordPos=R.getRow();
@@ -153,7 +153,7 @@ public class RoomLoader
             Room thisRoom=null;
             Room newRoom=null;
             recordCount=DBConnector.getRecordCount(D,R);
-            updateBreak=Util.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
+            updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
             while(R.next())
             {
                 currentRecordPos=R.getRow();
@@ -177,15 +177,15 @@ public class RoomLoader
                     else
                     if(direction>255)
                     {
-                        Vector CEs=Util.parseSemicolons(exitMiscText.trim(),true);
+                        Vector CEs=CMParms.parseSemicolons(exitMiscText.trim(),true);
                         for(int ces=0;ces<CEs.size();ces++)
                         {
-                            Vector SCE=Util.parse(((String)CEs.elementAt(ces)).trim());
+                            Vector SCE=CMParms.parse(((String)CEs.elementAt(ces)).trim());
                             WorldMap.CrossExit CE=new WorldMap.CrossExit();
                             if(SCE.size()<3) continue;
-                            CE.x=Util.s_int((String)SCE.elementAt(0));
-                            CE.y=Util.s_int((String)SCE.elementAt(1));
-                            int codeddir=Util.s_int((String)SCE.elementAt(2));
+                            CE.x=CMath.s_int((String)SCE.elementAt(0));
+                            CE.y=CMath.s_int((String)SCE.elementAt(1));
+                            int codeddir=CMath.s_int((String)SCE.elementAt(2));
                             if(SCE.size()>=4)
                                 CE.destRoomID=newRoom.roomID()+(String)SCE.elementAt(3);
                             else
@@ -376,7 +376,7 @@ public class RoomLoader
 				CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Counting Items");
 			ResultSet R=D.query("SELECT * FROM CMROIT"+((thisRoom==null)?"":" WHERE CMROID='"+thisRoom.roomID()+"'"));
 			if(setStatus) recordCount=DBConnector.getRecordCount(D,R);
-			updateBreak=Util.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
+			updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 			while(R.next())
 			{
 				currentRecordPos=R.getRow();
@@ -437,7 +437,7 @@ public class RoomLoader
 				CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Counting MOBS");
 			ResultSet R=D.query("SELECT * FROM CMROCH"+((thisRoom==null)?"":" WHERE CMROID='"+thisRoom.roomID()+"'"));
 			if(setStatus) recordCount=DBConnector.getRecordCount(D,R);
-			updateBreak=Util.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
+			updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 			while(R.next())
 			{
 				currentRecordPos=R.getRow();
@@ -498,7 +498,7 @@ public class RoomLoader
 			rooms.put(thisRoom.roomID(),thisRoom);
 		}
 		recordCount=rooms.size();
-		updateBreak=Util.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
+		updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 		currentRecordPos=0;
 		for(Enumeration e=rooms.elements();e.hasMoreElements();)
 		{

@@ -59,7 +59,7 @@ public class Prop_SpellAdder extends Property
         {
             maskString=newText.substring(maskindex+5).trim();
             if(maskString.length()>0)
-                Util.addToVector(CMLib.masking().maskCompile(maskString),mask);
+                CMParms.addToVector(CMLib.masking().maskCompile(maskString),mask);
             parmString=newText.substring(0,maskindex).trim();
         }
 	}
@@ -128,7 +128,7 @@ public class Prop_SpellAdder extends Property
 		while((--x)>=0)
 		{
 			if(Character.isDigit(parmString.charAt(x)))
-				tot+=Util.s_int(""+parmString.charAt(x))*mul;
+				tot+=CMath.s_int(""+parmString.charAt(x))*mul;
 			else
 				x=-1;
 			mul=mul*10;
@@ -186,12 +186,12 @@ public class Prop_SpellAdder extends Property
 					int x=t.indexOf("/");
 					if(x<0)
 					{
-						V2=Util.parse(t);
+						V2=CMParms.parse(t);
 						A.setMiscText("");
 					}
 					else
 					{
-						V2=Util.parse(t.substring(0,x));
+						V2=CMParms.parse(t.substring(0,x));
 						A.setMiscText(t.substring(x+1));
 					}
 				}

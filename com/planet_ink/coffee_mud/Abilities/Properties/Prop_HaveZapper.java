@@ -57,7 +57,7 @@ public class Prop_HaveZapper extends Property
         while((--x)>=0)
         {
             if(Character.isDigit(text().charAt(x)))
-                tot+=Util.s_int(""+text().charAt(x))*mul;
+                tot+=CMath.s_int(""+text().charAt(x))*mul;
             else
                 x=-1;
             mul=mul*10;
@@ -87,7 +87,7 @@ public class Prop_HaveZapper extends Property
 		case CMMsg.TYP_GET:
 			if((!CMLib.masking().maskCheck(text(),mob))&&(didHappen(100)))
 			{
-				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and flies out of <S-HIS-HER> hands!"));
+				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,CMParms.getParmStr(text(),"MESSAGE","<O-NAME> flashes and flies out of <S-HIS-HER> hands!"));
 				return false;
 			}
 			break;
@@ -95,7 +95,7 @@ public class Prop_HaveZapper extends Property
 		case CMMsg.TYP_DRINK:
 			if((!CMLib.masking().maskCheck(text(),mob))&&(didHappen(100)))
 			{
-				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out <S-HIS-HER> mouth!"));
+				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,CMParms.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out <S-HIS-HER> mouth!"));
 				return false;
 			}
 			break;

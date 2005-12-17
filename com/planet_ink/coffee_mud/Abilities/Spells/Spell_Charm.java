@@ -80,12 +80,12 @@ public class Spell_Charm extends Spell
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
 		if((msg.amITarget(mob))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(msg.amISource(mob.amFollowing())))
 			unInvoke();
 		else
 		if((msg.amISource(mob))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(msg.amITarget(mob.amFollowing())))
 		{
 			mob.tell("You like "+mob.amFollowing().charStats().himher()+" too much.");

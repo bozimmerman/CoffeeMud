@@ -63,7 +63,7 @@ public class Spell_Scribe extends Spell
 		commands.removeElementAt(commands.size()-1);
 		Scroll scroll=(Scroll)target;
 
-		String spellName=Util.combine(commands,0).trim();
+		String spellName=CMParms.combine(commands,0).trim();
 		Spell scrollThis=null;
 		for(int a=0;a<mob.numAbilities();a++)
 		{

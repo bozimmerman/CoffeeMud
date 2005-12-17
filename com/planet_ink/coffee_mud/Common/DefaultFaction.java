@@ -117,7 +117,7 @@ public class DefaultFaction implements Faction, MsgListener
         maximum=100;
         highest=100;
         lowest=0;
-        difference=Util.abs(maximum-minimum);
+        difference=CMath.abs(maximum-minimum);
         experienceFlag="EXTREME";
         ranges.addElement(newRange("0;100;Sample Range;SAMPLE;"));
         defaults.addElement("0");
@@ -139,8 +139,8 @@ public class DefaultFaction implements Faction, MsgListener
             minimum=maximum;
             maximum=alignProp.getInt("MINIMUM");
         }
-        middle=minimum+(int)Math.round(Util.div(maximum-minimum,2.0));
-        difference=Util.abs(maximum-minimum);
+        middle=minimum+(int)Math.round(CMath.div(maximum-minimum,2.0));
+        difference=CMath.abs(maximum-minimum);
         experienceFlag=alignProp.getStr("EXPERIENCE").toUpperCase().trim();
         if(experienceFlag.length()==0) experienceFlag="NONE";
         rateModifier=alignProp.getDouble("RATEMODIFIER");
@@ -148,9 +148,9 @@ public class DefaultFaction implements Faction, MsgListener
         showinfactionscommand=alignProp.getBoolean("SHOWINFACTIONSCMD");
         showinspecialreported=alignProp.getBoolean("SPECIALREPORTED");
         showineditor=alignProp.getBoolean("EDITALONE");
-        defaults =Util.parseSemicolons(alignProp.getStr("DEFAULT"),true);
-        autoDefaults =Util.parseSemicolons(alignProp.getStr("AUTODEFAULTS"),true);
-        choices =Util.parseSemicolons(alignProp.getStr("AUTOCHOICES"),true);
+        defaults =CMParms.parseSemicolons(alignProp.getStr("DEFAULT"),true);
+        autoDefaults =CMParms.parseSemicolons(alignProp.getStr("AUTODEFAULTS"),true);
+        choices =CMParms.parseSemicolons(alignProp.getStr("AUTOCHOICES"),true);
         ranges=new Vector();
         Changes=new Hashtable();
         factors=new Vector();
@@ -179,19 +179,19 @@ public class DefaultFaction implements Faction, MsgListener
             }
             if(key.startsWith("FACTOR"))
             {
-                Vector factor=Util.parseSemicolons(words,false);
+                Vector factor=CMParms.parseSemicolons(words,false);
                 factors.add(factor);
             }
             if(key.startsWith("RELATION"))
             {
-                Vector v=Util.parse(words);
+                Vector v=CMParms.parse(words);
                 if(v.size()>=2)
                 {
                     String who=(String)v.elementAt(0);
                     double factor;
                     String amt=((String)v.elementAt(1)).trim();
                     if(amt.endsWith("%"))
-                        factor=Util.div(Util.s_int(amt.substring(0,amt.length()-1)),100.0);
+                        factor=CMath.div(CMath.s_int(amt.substring(0,amt.length()-1)),100.0);
                     else
                         factor=1;
                     relations.put(who,new Double(factor));
@@ -212,8 +212,8 @@ public class DefaultFaction implements Faction, MsgListener
         if(tagRef<0) return "";
         int numCall=-1;
         if((tagRef<ALL_TAGS.length)&&(ALL_TAGS[tagRef].endsWith("*")))
-            if(Util.isInteger(tag.substring(ALL_TAGS[tagRef].length()-1)))
-                numCall=Util.s_int(tag.substring(ALL_TAGS[tagRef].length()-1));
+            if(CMath.isInteger(tag.substring(ALL_TAGS[tagRef].length()-1)))
+                numCall=CMath.s_int(tag.substring(ALL_TAGS[tagRef].length()-1));
         switch(tagRef)
         {
         case TAG_NAME: return name;
@@ -223,10 +223,10 @@ public class DefaultFaction implements Faction, MsgListener
         case TAG_SHOWINFACTIONSCMD: return Boolean.toString(showinfactionscommand).toUpperCase();
         case TAG_SPECIALREPORTED: return Boolean.toString(showinspecialreported).toUpperCase();
         case TAG_EDITALONE: return Boolean.toString(showineditor).toUpperCase();
-        case TAG_DEFAULT: return Util.toSemicolonList(defaults);
-        case TAG_AUTODEFAULTS: return Util.toSemicolonList(autoDefaults);
+        case TAG_DEFAULT: return CMParms.toSemicolonList(defaults);
+        case TAG_AUTODEFAULTS: return CMParms.toSemicolonList(autoDefaults);
         case TAG_CHOICEINTRO: return choiceIntro;
-        case TAG_AUTOCHOICES: return Util.toSemicolonList(choices);
+        case TAG_AUTOCHOICES: return CMParms.toSemicolonList(choices);
         case TAG_RATEMODIFIER: return ""+rateModifier;
         case TAG_EXPERIENCE: return ""+experienceFlag;
         case TAG_RANGE_:
@@ -259,7 +259,7 @@ public class DefaultFaction implements Faction, MsgListener
         {
             if((numCall<0)||(numCall>=factors.size()))
                 return ""+factors.size();
-            return Util.toSemicolonList((Vector)factors.elementAt(numCall));
+            return CMParms.toSemicolonList((Vector)factors.elementAt(numCall));
         }
         case TAG_RELATION_:
         {
@@ -288,7 +288,7 @@ public class DefaultFaction implements Faction, MsgListener
         String rawTagName=ALL_TAGS[tagRef];
         if(ALL_TAGS[tagRef].endsWith("*"))
         {
-            int number=Util.s_int(getTagValue(rawTagName));
+            int number=CMath.s_int(getTagValue(rawTagName));
             StringBuffer str=new StringBuffer("");
             for(int i=0;i<number;i++)
             {
@@ -314,16 +314,16 @@ public class DefaultFaction implements Faction, MsgListener
         {
             for(int i=0;i<choices.size();i++) 
             {
-                if(Util.isInteger((String)choices.elementAt(i)))
-                    mine.addElement(new Integer(Util.s_int((String)choices.elementAt(i))));
+                if(CMath.isInteger((String)choices.elementAt(i)))
+                    mine.addElement(new Integer(CMath.s_int((String)choices.elementAt(i))));
                 else
                 if(CMLib.masking().maskCheck((String)choices.elementAt(i), mob)) 
                 {
-                    Vector v=Util.parse((String)choices.elementAt(i));
+                    Vector v=CMParms.parse((String)choices.elementAt(i));
                     for(int j=0;j<v.size();j++) 
                     {
-                        if(Util.isInteger((String)v.elementAt(j)))
-                            mine.addElement(new Integer(Util.s_int((String)v.elementAt(j))));
+                        if(CMath.isInteger((String)v.elementAt(j)))
+                            mine.addElement(new Integer(CMath.s_int((String)v.elementAt(j))));
                     }
                 }
             }
@@ -347,7 +347,7 @@ public class DefaultFaction implements Faction, MsgListener
                 return C;
             if((key.classificationCode()&Ability.ALL_DOMAINS)==C.IDdomainFilter())
                 return C;
-            if((C.IDflagFilter()>0)&&(Util.bset(key.flags(),C.IDflagFilter()))) 
+            if((C.IDflagFilter()>0)&&(CMath.bset(key.flags(),C.IDflagFilter()))) 
                 return C;
         }
         return null;
@@ -387,14 +387,14 @@ public class DefaultFaction implements Faction, MsgListener
 
     public int asPercent(int faction) 
     {
-        return (int)Math.round(Util.mul(Util.div(faction-minimum,(maximum-minimum)),100));
+        return (int)Math.round(CMath.mul(CMath.div(faction-minimum,(maximum-minimum)),100));
     }
 
     public int asPercentFromAvg(int faction) 
     {
         // =(( (B2+A2) / 2 ) - C2) / (B2-A2) * 100
         // C = current, A = min, B = Max
-        return (int)Math.round(Util.mul(Util.div(((maximum+minimum)/2)-faction,maximum-minimum),100));
+        return (int)Math.round(CMath.mul(CMath.div(((maximum+minimum)/2)-faction,maximum-minimum),100));
     }
 
     public int randomFaction() 
@@ -411,17 +411,17 @@ public class DefaultFaction implements Faction, MsgListener
             {
                 if(CMLib.masking().maskCheck((String)defaults.elementAt(i), mob)) 
                 {
-                    Vector v=Util.parse((String)defaults.elementAt(i));
+                    Vector v=CMParms.parse((String)defaults.elementAt(i));
                     for(int j=0;j<v.size();j++) 
                     {
-                        if(Util.isNumber((String)v.elementAt(j)))
-                            return Util.s_int((String)v.elementAt(j));
+                        if(CMath.isNumber((String)v.elementAt(j)))
+                            return CMath.s_int((String)v.elementAt(j));
                     }
                 }
                 else
                 {
-                    if(Util.isNumber((String)defaults.elementAt(i)))
-                         return Util.s_int((String)defaults.elementAt(i));
+                    if(CMath.isNumber((String)defaults.elementAt(i)))
+                         return CMath.s_int((String)defaults.elementAt(i));
                 }
             }
         }
@@ -436,17 +436,17 @@ public class DefaultFaction implements Faction, MsgListener
             {
                 if(CMLib.masking().maskCheck((String)autoDefaults.elementAt(i), mob)) 
                 {
-                    Vector v=Util.parse((String)autoDefaults.elementAt(i));
+                    Vector v=CMParms.parse((String)autoDefaults.elementAt(i));
                     for(int j=0;j<v.size();j++) 
                     {
-                        if(Util.isNumber((String)v.elementAt(j)))
-                            return Util.s_int((String)v.elementAt(j));
+                        if(CMath.isNumber((String)v.elementAt(j)))
+                            return CMath.s_int((String)v.elementAt(j));
                     }
                 }
                 else
                 {
-                    if(Util.isNumber((String)autoDefaults.elementAt(i)))
-                         return Util.s_int((String)autoDefaults.elementAt(i));
+                    if(CMath.isNumber((String)autoDefaults.elementAt(i)))
+                         return CMath.s_int((String)autoDefaults.elementAt(i));
                 }
             }
         }
@@ -466,8 +466,8 @@ public class DefaultFaction implements Faction, MsgListener
             usage=(FactionAbilityUsage)abilityUsages.elementAt(i);
             if((usage.possibleAbilityID()&&usage.usageID().equalsIgnoreCase(A.ID()))
             ||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_CODES)==usage.type()))
-                &&((usage.flag()<0)||(Util.bset(A.flags(),usage.flag())))
-                &&((usage.notflag()<0)||(!Util.bset(A.flags(),usage.notflag())))
+                &&((usage.flag()<0)||(CMath.bset(A.flags(),usage.flag())))
+                &&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
                 &&((usage.domain()<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain()))))
                 return true;
         }
@@ -482,8 +482,8 @@ public class DefaultFaction implements Faction, MsgListener
             usage=(FactionAbilityUsage)abilityUsages.elementAt(i);
             if((usage.possibleAbilityID()&&usage.usageID().equalsIgnoreCase(A.ID()))
             ||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_CODES)==usage.type()))
-                &&((usage.flag()<0)||(Util.bset(A.flags(),usage.flag())))
-                &&((usage.notflag()<0)||(!Util.bset(A.flags(),usage.notflag())))
+                &&((usage.flag()<0)||(CMath.bset(A.flags(),usage.flag())))
+                &&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
                 &&((usage.domain()<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain()))))
             {
                 int faction=mob.fetchFaction(ID);
@@ -503,8 +503,8 @@ public class DefaultFaction implements Faction, MsgListener
             &&(CMLib.masking().maskCheck(((String)factor.elementAt(2)),mob))) 
             {
                  if(gain)
-                     return Util.s_double(((String)factor.elementAt(1)));
-                 return Util.s_double(((String)factor.elementAt(0)));
+                     return CMath.s_double(((String)factor.elementAt(1)));
+                 return CMath.s_double(((String)factor.elementAt(0)));
              }
         }
         return 1.0;
@@ -556,21 +556,21 @@ public class DefaultFaction implements Faction, MsgListener
             MOB vic=(MOB)msg.target();
 
             if(experienceFlag.equals("HIGHER"))
-                msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * Util.div(Math.abs(killer.fetchFaction(ID)-minimum),(maximum - minimum)))));
+                msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * CMath.div(Math.abs(killer.fetchFaction(ID)-minimum),(maximum - minimum)))));
             else
             if(experienceFlag.equals("LOWER"))
-                msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * Util.div(Math.abs(maximum-killer.fetchFaction(ID)),(maximum - minimum)))));
+                msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * CMath.div(Math.abs(maximum-killer.fetchFaction(ID)),(maximum - minimum)))));
             else
             if(vic.fetchFaction(ID)!=Integer.MAX_VALUE)
             {
                 if(experienceFlag.equals("EXTREME"))
-	                msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * Util.div(Math.abs(vic.fetchFaction(ID) - killer.fetchFaction(ID)),(maximum - minimum)))));
+	                msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * CMath.div(Math.abs(vic.fetchFaction(ID) - killer.fetchFaction(ID)),(maximum - minimum)))));
                 else
                 if(experienceFlag.equals("FOLLOWHIGHER"))
-	                msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * Util.div(Math.abs(vic.fetchFaction(ID)-minimum),(maximum - minimum)))));
+	                msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * CMath.div(Math.abs(vic.fetchFaction(ID)-minimum),(maximum - minimum)))));
                 else
                 if(experienceFlag.equals("FOLLOWLOWER"))
-	                msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * Util.div(Math.abs(maximum-vic.fetchFaction(ID)),(maximum - minimum)))));
+	                msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * CMath.div(Math.abs(maximum-vic.fetchFaction(ID)),(maximum - minimum)))));
                 if(msg.value()<=0) 
                     msg.setValue(0);
             }
@@ -607,10 +607,10 @@ public class DefaultFaction implements Faction, MsgListener
 	        else
 	        if(levelLimit>0)
 	        {
-	            double levelFactor=Util.div(levelDiff,levelLimit);
+	            double levelFactor=CMath.div(levelDiff,levelLimit);
 	            if(levelFactor>new Integer(levelLimit).doubleValue())
 	                levelFactor=new Integer(levelLimit).doubleValue();
-	            baseChangeAmount=baseChangeAmount+Util.mul(levelFactor,100);
+	            baseChangeAmount=baseChangeAmount+CMath.mul(levelFactor,100);
 	        }
         }
 
@@ -634,7 +634,7 @@ public class DefaultFaction implements Faction, MsgListener
 	        if(source!=target)
 	        {
 	            changeDir=targetFaction>=0?-1:1;
-	            baseChangeAmount=Util.div(baseChangeAmount,2.0)+(int)Math.round(Util.div(baseChangeAmount,2.0)*Math.abs(new Integer(sourceFaction-targetFaction).doubleValue()/Math.abs(new Integer(difference).doubleValue())));
+	            baseChangeAmount=CMath.div(baseChangeAmount,2.0)+(int)Math.round(CMath.div(baseChangeAmount,2.0)*Math.abs(new Integer(sourceFaction-targetFaction).doubleValue()/Math.abs(new Integer(difference).doubleValue())));
 	        }
 	        else
 	            factionAdj=0;
@@ -673,7 +673,7 @@ public class DefaultFaction implements Faction, MsgListener
 	        else
 	            factionAdj=0;
 	        factionAdj*=event.factor();
-	        factionAdj=(int)Math.round(Util.mul(factionAdj,findFactor(source,(factionAdj>=0))));
+	        factionAdj=(int)Math.round(CMath.mul(factionAdj,findFactor(source,(factionAdj>=0))));
         }
 
 		if(factionAdj==0) return;
@@ -694,7 +694,7 @@ public class DefaultFaction implements Faction, MsgListener
 	                {
 	                    String relID=((String)e.nextElement());
 	                    FacMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_GENERAL|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,relID);
-	                    FacMsg.setValue((int)Math.round(Util.mul(factionAdj, ((Double)relations.get(relID)).doubleValue())));
+	                    FacMsg.setValue((int)Math.round(CMath.mul(factionAdj, ((Double)relations.get(relID)).doubleValue())));
 	                    if(source.location().okMessage(source,FacMsg))
 	                        source.location().send(source, FacMsg);
 	                }
@@ -718,8 +718,8 @@ public class DefaultFaction implements Faction, MsgListener
              usage=(FactionAbilityUsage)abilityUsages.elementAt(i);
              if((usage.possibleAbilityID()&&usage.usageID().equalsIgnoreCase(A.ID()))
              ||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_CODES)==usage.type()))
-                 &&((usage.flag()<0)||(Util.bset(A.flags(),usage.flag())))
-                 &&((usage.notflag()<0)||(!Util.bset(A.flags(),usage.notflag())))
+                 &&((usage.flag()<0)||(CMath.bset(A.flags(),usage.flag())))
+                 &&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
                  &&((usage.domain()<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain()))))
              {
                 for(int r=0;r<ranges.size();r++)
@@ -831,12 +831,12 @@ public class DefaultFaction implements Faction, MsgListener
         
         public DefaultFactionChangeEvent(String key) 
         {
-            Vector v = Util.parseSemicolons(key,false);
+            Vector v = CMParms.parseSemicolons(key,false);
             setFilterID((String)v.elementAt(0));
             setDirection((String)v.elementAt(1));
             String amt=((String)v.elementAt(2)).trim();
             if(amt.endsWith("%"))
-                factor=Util.div(Util.s_int(amt.substring(0,amt.length()-1)),100.0);
+                factor=CMath.div(CMath.s_int(amt.substring(0,amt.length()-1)),100.0);
             else
                 factor=1.0;
             
@@ -859,7 +859,7 @@ public class DefaultFaction implements Faction, MsgListener
                 {    IDdomainFilter=i<<5;  ID=newID;return true;}
             for(int i=0;i< Ability.FLAG_DESCS.length;i++)
                 if(Ability.FLAG_DESCS[i].equalsIgnoreCase(newID))
-                { IDflagFilter=Util.pow(2,i);  ID=newID; return true;}
+                { IDflagFilter=CMath.pow(2,i);  ID=newID; return true;}
             if(CMClass.getAbility(newID)!=null)
             { ID=newID; return true;}
             return false;
@@ -908,7 +908,7 @@ public class DefaultFaction implements Faction, MsgListener
         public void setFlags(String newFlagCache)
         {
             flagCache=newFlagCache.toUpperCase().trim();
-            Vector flags=Util.parse(flagCache);
+            Vector flags=CMParms.parse(flagCache);
             if(flags.contains("OUTSIDER")) outsiderTargetOK=true;
             if(flags.contains("SELFOK")) selfTargetOK=true;
             if(flags.contains("JUST100")) just100=true;
@@ -950,10 +950,10 @@ public class DefaultFaction implements Faction, MsgListener
         public DefaultFactionRange(Faction F, String key) 
         {
             myFaction=F;
-            Vector v = Util.parseSemicolons(key,false);
+            Vector v = CMParms.parseSemicolons(key,false);
             Name = (String) v.elementAt(2);
-            low = Util.s_int( (String) v.elementAt(0));
-            high = Util.s_int( (String) v.elementAt(1));
+            low = CMath.s_int( (String) v.elementAt(0));
+            high = CMath.s_int( (String) v.elementAt(1));
             if(v.size()>3)
                 CodeName=(String)v.elementAt(3);
             if(v.size()>4) 
@@ -1006,10 +1006,10 @@ public class DefaultFaction implements Faction, MsgListener
         public DefaultFactionAbilityUsage(){} 
         public DefaultFactionAbilityUsage(String key) 
         {
-            Vector v = Util.parseSemicolons(key,false);
+            Vector v = CMParms.parseSemicolons(key,false);
             setAbilityFlag((String)v.firstElement());
-            low = Util.s_int( (String) v.elementAt(1));
-            high = Util.s_int( (String) v.elementAt(2));
+            low = CMath.s_int( (String) v.elementAt(1));
+            high = CMath.s_int( (String) v.elementAt(2));
         }
         public String toString()
         {
@@ -1018,7 +1018,7 @@ public class DefaultFaction implements Faction, MsgListener
         public Vector setAbilityFlag(String str)
         {
             ID=str;
-            Vector flags=Util.parse(ID);
+            Vector flags=CMParms.parse(ID);
             Vector unknowns=new Vector();
             for(int f=0;f<flags.size();f++)
             {
@@ -1047,12 +1047,12 @@ public class DefaultFaction implements Faction, MsgListener
                         if(not)
                         {
                             if(notflag<0) notflag=0;
-                            notflag=notflag|Util.pow(2,i);
+                            notflag=notflag|CMath.pow(2,i);
                         }
                         else
                         {
                             if(flag<0) flag=0;
-                            flag=flag|Util.pow(2,i);
+                            flag=flag|CMath.pow(2,i);
                         }
                     }
                 if(!known)

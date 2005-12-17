@@ -95,12 +95,12 @@ public class Domesticating extends CommonSkill
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		taming=null;
-		String str=Util.combine(commands,0);
+		String str=CMParms.combine(commands,0);
 		String newName=null;
 		if((commands.size()>2)&&(((String)commands.firstElement()).equalsIgnoreCase("name")))
 		{
 			str=(String)commands.elementAt(1);
-			newName=Util.combine(commands,2);
+			newName=CMParms.combine(commands,2);
 		}
 		MOB M=mob.location().fetchInhabitant(str);
 		if((M==null)||(!CMLib.flags().canBeSeenBy(M,mob)))

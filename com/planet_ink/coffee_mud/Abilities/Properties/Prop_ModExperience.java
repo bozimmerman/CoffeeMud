@@ -45,8 +45,8 @@ public class Prop_ModExperience extends Property
 	public int translateAmount(int amount, String val)
 	{
 		if(val.endsWith("%"))
-			return (int)Math.round(Util.mul(amount,Util.div(Util.s_int(val.substring(0,val.length()-1)),100)));
-		return Util.s_int(val);
+			return (int)Math.round(CMath.mul(amount,CMath.div(CMath.s_int(val.substring(0,val.length()-1)),100)));
+		return CMath.s_int(val);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -91,7 +91,7 @@ public class Prop_ModExperience extends Property
 				msg.setValue(msg.value()*translateAmount(msg.value(),s.substring(1)));
 			else
 			if(s.startsWith("/"))
-				msg.setValue((int)Math.round(Util.div(msg.value(),translateAmount(msg.value(),s.substring(1)))));
+				msg.setValue((int)Math.round(CMath.div(msg.value(),translateAmount(msg.value(),s.substring(1)))));
 			else
 				msg.setValue(translateAmount(msg.value(),s));
 		}

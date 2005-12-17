@@ -82,7 +82,7 @@ six={"jedanast","delalime","veralim","dvanast","bahone","zahedon","prasad","tren
 		&&(msg.tool()==null)
 		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-		   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
+		   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
 		{
 			msg.modify(msg.source(),msg.target(),msg.tool(),
 					   msg.sourceCode(),tup(msg.sourceMessage()),

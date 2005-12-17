@@ -55,7 +55,7 @@ public class Skill_Stability extends BardSkill
 		&&(msg.tool() instanceof Ability)
 		&&(msg.amITarget(affected))
 		&&(((Ability)msg.tool()).quality()==Ability.MALICIOUS)
-		&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING))
+		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING))
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,-40,false)))
 		{
 			Room roomS=null;

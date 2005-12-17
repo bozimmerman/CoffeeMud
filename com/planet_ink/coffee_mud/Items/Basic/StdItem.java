@@ -652,7 +652,7 @@ public class StdItem implements Item
 		if(msg.targetCode()==CMMsg.NO_EFFECT)
 			return true;
 		else
-		if((Util.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
+		if((CMath.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
 		&&(!CMLib.flags().isGettable(this))
 		&&((displayText().length()==0)
 		   ||((msg.tool()!=null)
@@ -988,7 +988,7 @@ public class StdItem implements Item
 				mob.delInventory(this);
 				if(!R.isContent(this))
 					R.addItemRefuse(this,Item.REFUSE_PLAYER_DROP);
-				if(!Util.bset(msg.sourceCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_OPTIMIZE))
 				{
 					R.recoverRoomStats();
 					if(mob.location()!=R)
@@ -1020,7 +1020,7 @@ public class StdItem implements Item
 				if(CMLib.flags().canBeSeenBy(this,mob))
 				{
 				    StringBuffer response=new StringBuffer("");
-					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+					if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 						response.append(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight:"+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rTime  : "+dispossessionTimeLeftString()+"\n\r"+description()+"\n\r"+"\n\rMisc  :'"+text());
 					else
 					if(description().length()==0)
@@ -1101,11 +1101,11 @@ public class StdItem implements Item
 				if(!mob.isMine(this))
 				{
 					mob.addInventory(this);
-					if(Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+					if(CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 						mob.envStats().setWeight(mob.envStats().weight()+envStats().weight());
 				}
 				unWear();
-				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();
 				if(this instanceof Coins)
 				    ((Coins)this).putCoinsBack();
@@ -1115,7 +1115,7 @@ public class StdItem implements Item
 			if(!(this instanceof Container))
 			{
 				unWear();
-				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();
 			}
 			break;
@@ -1125,7 +1125,7 @@ public class StdItem implements Item
 				mob.delInventory(this);
 				if(!mob.location().isContent(this))
 					mob.location().addItemRefuse(this,Item.REFUSE_PLAYER_DROP);
-				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();
 			}
 			unWear();
@@ -1151,13 +1151,13 @@ public class StdItem implements Item
         String level=null;
         if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<10))
         {
-            int l=(int)Math.round(Math.floor(Util.div(envStats().level(),10.0)));
+            int l=(int)Math.round(Math.floor(CMath.div(envStats().level(),10.0)));
             level=(l*10)+"-"+((l*10)+9);
         }
         else
         if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<18))
         {
-            int l=(int)Math.round(Math.floor(Util.div(envStats().level(),5.0)));
+            int l=(int)Math.round(Math.floor(CMath.div(envStats().level(),5.0)));
             level=(l*5)+"-"+((l*5)+4);
         }
         else
@@ -1174,25 +1174,25 @@ public class StdItem implements Item
         String weight=null;
         if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<10))
         {
-            double l=Math.floor(Util.div(envStats().level(),divider));
-            weight=(int)Math.round(Util.mul(l,divider))+"-"+(int)Math.round(Util.mul(l,divider)+(divider-1.0));
+            double l=Math.floor(CMath.div(envStats().level(),divider));
+            weight=(int)Math.round(CMath.mul(l,divider))+"-"+(int)Math.round(CMath.mul(l,divider)+(divider-1.0));
         }
         else
         if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<18))
         {
             divider=divider/2.0;
-            double l=Math.floor(Util.div(envStats().level(),divider));
-            weight=(int)Math.round(Util.mul(l,divider))+"-"+(int)Math.round(Util.mul(l,divider)+(divider-1.0));
+            double l=Math.floor(CMath.div(envStats().level(),divider));
+            weight=(int)Math.round(CMath.mul(l,divider))+"-"+(int)Math.round(CMath.mul(l,divider)+(divider-1.0));
         }
         else
             weight=""+envStats().weight();
-        response.append("\n\r"+Util.capitalizeFirstLetter(name())+" is a level "+level+" item, and weighs "+weight+" pounds.  ");
+        response.append("\n\r"+CMStrings.capitalizeFirstLetter(name())+" is a level "+level+" item, and weighs "+weight+" pounds.  ");
         if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<10))
             response.append("It is mostly made of a kind of "+EnvResource.MATERIAL_NOUNDESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase()+".  ");
         else
             response.append("It is mostly made of "+EnvResource.RESOURCE_DESCS[(material()&EnvResource.RESOURCE_MASK)].toLowerCase()+".  ");
         if((this instanceof Weapon)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)>10))
-            response.append("It is a "+Util.capitalizeAndLower(Weapon.classifictionDescription[((Weapon)this).weaponClassification()])+" class weapon that does "+Util.capitalizeAndLower(Weapon.typeDescription[((Weapon)this).weaponType()])+" damage.  ");
+            response.append("It is a "+CMStrings.capitalizeAndLower(Weapon.classifictionDescription[((Weapon)this).weaponClassification()])+" class weapon that does "+CMStrings.capitalizeAndLower(Weapon.typeDescription[((Weapon)this).weaponType()])+" damage.  ");
         else
         if((this instanceof Armor)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)>10))
         {
@@ -1207,7 +1207,7 @@ public class StdItem implements Item
                 {
                     if(((rawProperLocationBitmap()&wornCode)==wornCode))
                     {
-                        response.append(Util.capitalizeAndLower(CMLib.flags().wornLocation(wornCode))+" ");
+                        response.append(CMStrings.capitalizeAndLower(CMLib.flags().wornLocation(wornCode))+" ");
                         if(rawLogicalAnd())
                             response.append("and ");
                         else
@@ -1453,9 +1453,9 @@ public class StdItem implements Item
 		switch(getCodeNum(code))
 		{
 		case 0: return;
-		case 1: setUsesRemaining(Util.s_int(val)); break;
-		case 2: baseEnvStats().setLevel(Util.s_int(val)); break;
-		case 3: baseEnvStats().setAbility(Util.s_int(val)); break;
+		case 1: setUsesRemaining(CMath.s_int(val)); break;
+		case 2: baseEnvStats().setLevel(CMath.s_int(val)); break;
+		case 3: baseEnvStats().setAbility(CMath.s_int(val)); break;
 		case 4: setMiscText(val); break;
 		}
 	}

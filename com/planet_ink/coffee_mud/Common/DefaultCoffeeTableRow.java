@@ -63,7 +63,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
         {
             String s=(String)e.nextElement();
             long[] l=(long[])stats.get(s);
-            data.append(CMLib.xml().convertXMLtoTag(s,Util.toStringList(l)));
+            data.append(CMLib.xml().convertXMLtoTag(s,CMParms.toStringList(l)));
         }
         data.append("</STATS>");
         return data.toString();
@@ -169,7 +169,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
             for(int s=0;s<X.contents.size();s++)
             {
                 XMLLibrary.XMLpiece S=(XMLLibrary.XMLpiece)X.contents.elementAt(s);
-                long[] l=Util.toLongArray(Util.parseCommas(S.value,true));
+                long[] l=CMParms.toLongArray(CMParms.parseCommas(S.value,true));
                 if(l.length<STAT_TOTAL)
                 {
                     long[] l2=new long[STAT_TOTAL];

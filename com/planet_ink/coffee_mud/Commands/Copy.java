@@ -50,13 +50,13 @@ public class Copy extends StdCommand
 		int number=1;
 		if(commands.size()>1)
 		{
-			number=Util.s_int((String)commands.firstElement());
+			number=CMath.s_int((String)commands.firstElement());
 			if(number<1)
 				number=1;
 			else
 				commands.removeElementAt(0);
 		}
-		String name=Util.combine(commands,0);
+		String name=CMParms.combine(commands,0);
 		Environmental dest=mob.location();
 		int x=name.indexOf("@");
 		if(x>0)

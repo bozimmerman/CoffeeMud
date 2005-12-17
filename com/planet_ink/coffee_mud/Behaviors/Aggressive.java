@@ -48,7 +48,7 @@ public class Aggressive extends StdBehavior
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		tickWait=Util.getParmInt(newParms,"delay",0);
+		tickWait=CMParms.getParmInt(newParms,"delay",0);
 		tickDown=tickWait;
 	}
 
@@ -80,7 +80,6 @@ public class Aggressive extends StdBehavior
 					A.invoke(monster,mob,false,0);
 				}
 			}
-
 			// normal attack
 			CMLib.combat().postAttack(monster,mob,monster.fetchWieldedItem());
 			return true;
@@ -90,21 +89,16 @@ public class Aggressive extends StdBehavior
 	public static boolean pickAFight(MOB observer, String zapStr, boolean mobKiller)
 	{
 		if(!canFreelyBehaveNormal(observer)) return false;
-		MOB startItWith=null;
 		if(observer.location().getArea().getMobility())
 		for(int i=0;i<observer.location().numInhabitants();i++)
 		{
 			MOB mob=observer.location().fetchInhabitant(i);
-			if((mob!=null)&&(mob!=observer))
-			{
-				if((startItWith==null)
-				&&(CMLib.masking().maskCheck(zapStr,mob)))
-					 startItWith=mob;
-			}
+			if((mob!=null)
+            &&(mob!=observer)
+            &&(CMLib.masking().maskCheck(zapStr,mob))
+            &&(startFight(observer,mob,mobKiller)))			
+                return true;
 		}
-		if((startItWith!=null)
-		&&(startFight(observer,startItWith,mobKiller)))
-			return true;
 		return false;
 	}
 

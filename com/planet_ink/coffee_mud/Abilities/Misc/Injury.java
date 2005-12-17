@@ -120,7 +120,7 @@ public class Injury extends StdAbility
 	            }
 	            else
 	            {
-		            int pct=(int)Math.round(Util.div(mob.curState().getHitPoints()-lastHP,mob.maxState().getHitPoints())*100.0);
+		            int pct=(int)Math.round(CMath.div(mob.curState().getHitPoints()-lastHP,mob.maxState().getHitPoints())*100.0);
 		            if(pct<=0) pct=1;
 		            int tries=100;
 		            while((pct>0)&&((--tries)>0)&&(choicesToHeal.size()>0))
@@ -187,7 +187,7 @@ public class Injury extends StdAbility
 	    &&(msg.targetMessage()!=null)
         &&(msg.targetMessage().indexOf("<DAMAGE>")>=0)
         &&(text().startsWith(msg.source().Name()+"/")
-	       ||((CMProps.getIntVar(CMProps.SYSTEMI_INJPCTHP)>=(int)Math.round(Util.div(((MOB)affected).curState().getHitPoints(),((MOB)affected).maxState().getHitPoints())*100.0))
+	       ||((CMProps.getIntVar(CMProps.SYSTEMI_INJPCTHP)>=(int)Math.round(CMath.div(((MOB)affected).curState().getHitPoints(),((MOB)affected).maxState().getHitPoints())*100.0))
 	        &&(CMLib.dice().rollPercentage()<=CMProps.getIntVar(CMProps.SYSTEMI_INJPCTCHANCE)))))
 	    {
 	        MOB mob=(MOB)affected;
@@ -244,7 +244,7 @@ public class Injury extends StdAbility
 					            break;
 					    }
 					}
-					int BodyPct=(int)Math.round(Util.div(msg.value(),mob.maxState().getHitPoints())*100.0);
+					int BodyPct=(int)Math.round(CMath.div(msg.value(),mob.maxState().getHitPoints())*100.0);
 					int LimbPct=BodyPct*CMProps.getIntVar(CMProps.SYSTEMI_INJMULTIPLIER);
 					if(LimbPct<1) LimbPct=1;
 					int bodyLoc=-1;

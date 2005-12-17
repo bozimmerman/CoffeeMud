@@ -46,7 +46,7 @@ public class GateGuard extends StdBehavior
 		super.setParms(parm);
 		keepLocked=false;
 		allnight=false;
-		Vector V=Util.parse(parm);
+		Vector V=CMParms.parse(parm);
 		for(int v=0;v<V.size();v++)
 		{
 			if(((String)V.elementAt(v)).equalsIgnoreCase("keeplocked"))
@@ -184,11 +184,11 @@ public class GateGuard extends StdBehavior
 				}
 				if((numPlayers>0)&&(!e.isOpen())&&(!e.isLocked()))
 				{
-					mob.doCommand(Util.parse("OPEN "+Directions.getDirectionName(dir)));
+					mob.doCommand(CMParms.parse("OPEN "+Directions.getDirectionName(dir)));
 				}
 				if((numPlayers==0)&&(e.isOpen()))
 				{
-					mob.doCommand(Util.parse("CLOSE "+Directions.getDirectionName(dir)));
+					mob.doCommand(CMParms.parse("CLOSE "+Directions.getDirectionName(dir)));
 				}
 				if((numPlayers==0)&&(!e.isOpen())&&(!e.isLocked())&&(e.hasALock())&&(keepLocked))
 				{

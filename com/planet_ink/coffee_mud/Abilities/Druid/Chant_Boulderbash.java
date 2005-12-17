@@ -79,7 +79,7 @@ public class Chant_Boulderbash extends Chant
 				int maxDie =  (int)Math.round(new Integer(adjustedLevel(mob,asLevel)).doubleValue());
 				int damage = CMLib.dice().roll(maxDie,6,maxDie);
 				if((msg.value()>0)||(msg2.value()>0))
-					damage = (int)Math.round(Util.div(damage,1.5));
+					damage = (int)Math.round(CMath.div(damage,1.5));
 				if(target.location()==mob.location())
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_BASHING,"The boulder <DAMAGE> <T-NAME>!");
 			}

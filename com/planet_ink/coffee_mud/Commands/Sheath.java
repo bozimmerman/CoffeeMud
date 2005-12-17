@@ -140,7 +140,7 @@ public class Sheath extends BaseItemParser
 		{
 			commands.insertElementAt("all",0);
 			Container container=(Container)CMLib.english().possibleContainer(mob,commands,false,Item.WORN_REQ_WORNONLY);
-			String thingToPut=Util.combine(commands,0);
+			String thingToPut=CMParms.combine(commands,0);
 			int addendum=1;
 			String addendumStr="";
 			boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;

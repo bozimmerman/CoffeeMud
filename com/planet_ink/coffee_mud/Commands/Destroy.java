@@ -54,7 +54,7 @@ public class Destroy extends BaseItemParser
 			return false;
 		}
 
-		String mobID=Util.combine(commands,2);
+		String mobID=CMParms.combine(commands,2);
 		boolean allFlag=((String)commands.elementAt(2)).equalsIgnoreCase("all");
 		if(mobID.toUpperCase().startsWith("ALL.")){ allFlag=true; mobID="ALL "+mobID.substring(4);}
 		if(mobID.toUpperCase().endsWith(".ALL")){ allFlag=true; mobID="ALL "+mobID.substring(0,mobID.length()-4);}
@@ -97,11 +97,11 @@ public class Destroy extends BaseItemParser
 		}
 
 		MOB deadMOB=CMClass.getMOB("StdMOB");
-		boolean found=CMLib.database().DBUserSearch(deadMOB,Util.combine(commands,2));
+		boolean found=CMLib.database().DBUserSearch(deadMOB,CMParms.combine(commands,2));
 
 		if(!found)
 		{
-			mob.tell("The user '"+Util.combine(commands,2)+"' does not exist!\n\r");
+			mob.tell("The user '"+CMParms.combine(commands,2)+"' does not exist!\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
             deadMOB.destroy();
 			return false;
@@ -110,7 +110,7 @@ public class Destroy extends BaseItemParser
 		if(mob.session().confirm("This will complete OBLITERATE the user '"+deadMOB.Name()+"' forever.  Are you SURE?! (y/N)?","N"))
 		{
 			CMLib.utensils().obliteratePlayer(deadMOB,false);
-			mob.tell("The user '"+Util.combine(commands,2)+"' is no more!\n\r");
+			mob.tell("The user '"+CMParms.combine(commands,2)+"' is no more!\n\r");
 			Log.sysOut("Mobs",mob.Name()+" destroyed user "+deadMOB.Name()+".");
             deadMOB.destroy();
 			return true;
@@ -141,7 +141,7 @@ public class Destroy extends BaseItemParser
 				confirmed=true;
 			}
 		}
-		String roomdir=Util.combine(commands,2);
+		String roomdir=CMParms.combine(commands,2);
 		int direction=Directions.getGoodDirectionCode(roomdir);
 		Room deadRoom=null;
 		if(!thecmd.equalsIgnoreCase("UNLINK"))
@@ -288,7 +288,7 @@ public class Destroy extends BaseItemParser
 			return false;
 		}
 		
-		String itemID=Util.combine(commands,2);
+		String itemID=CMParms.combine(commands,2);
 		MOB srchMob=mob;
 		Room srchRoom=mob.location();
 		int x=itemID.indexOf("@");
@@ -361,7 +361,7 @@ public class Destroy extends BaseItemParser
 			}
 		}
 
-		String areaName=Util.combine(commands,2);
+		String areaName=CMParms.combine(commands,2);
 		if(CMLib.map().getArea(areaName)==null)
 		{
 			mob.tell("There is no such area as '"+areaName+"'");
@@ -404,7 +404,7 @@ public class Destroy extends BaseItemParser
 			return false;
 		}
 
-		String raceID=Util.combine(commands,2);
+		String raceID=CMParms.combine(commands,2);
 		Race R=CMClass.getRace(raceID);
 		if(R==null)
 		{
@@ -450,7 +450,7 @@ public class Destroy extends BaseItemParser
 			return false;
 		}
 
-		String classID=Util.combine(commands,2);
+		String classID=CMParms.combine(commands,2);
 		CharClass C=CMClass.getCharClass(classID);
 		if(C==null)
 		{
@@ -482,7 +482,7 @@ public class Destroy extends BaseItemParser
 		else
 		if(commands.size()>3)
 		{
-			String therest=Util.combine(commands,3);
+			String therest=CMParms.combine(commands,3);
 			if(!((therest.equalsIgnoreCase("<T-NAME>")
                     ||therest.equalsIgnoreCase("SELF")
                     ||therest.equalsIgnoreCase("ALL"))))
@@ -493,7 +493,7 @@ public class Destroy extends BaseItemParser
 			}
 		}
 
-		Social soc2=CMLib.socials().FetchSocial(Util.combine(commands,2).toUpperCase(),true);
+		Social soc2=CMLib.socials().FetchSocial(CMParms.combine(commands,2).toUpperCase(),true);
 		if(soc2==null)
 		{
 			mob.tell("but fail to specify an EXISTING SOCIAL!\n\r");
@@ -558,7 +558,7 @@ public class Destroy extends BaseItemParser
 				mob.tell("Destroy what?");
 				return false;
 			}
-			if(mob.location().fetchInhabitant(Util.combine(commands,0))!=null)
+			if(mob.location().fetchInhabitant(CMParms.combine(commands,0))!=null)
 			{
 				Command C=CMClass.getCommand("Kill");
 				commands.insertElementAt("KILL",0);
@@ -570,13 +570,13 @@ public class Destroy extends BaseItemParser
 			int maxToDrop=Integer.MAX_VALUE;
 			
 			if((commands.size()>1)
-			&&(Util.s_int((String)commands.firstElement())>0))
+			&&(CMath.s_int((String)commands.firstElement())>0))
 			{
-				maxToDrop=Util.s_int((String)commands.firstElement());
+				maxToDrop=CMath.s_int((String)commands.firstElement());
 				commands.setElementAt("all",0);
 			}
 
-			String whatToDrop=Util.combine(commands,0);
+			String whatToDrop=CMParms.combine(commands,0);
 			boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 			if(whatToDrop.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(4);}
 			if(whatToDrop.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);}
@@ -661,7 +661,7 @@ public class Destroy extends BaseItemParser
                 String nam=CMLib.journals().getCommandJournalName(i);
                 int which=-1;
                 if(commands.size()>2)
-                    which=Util.s_int((String)commands.elementAt(2));
+                    which=CMath.s_int((String)commands.elementAt(2));
                 if(which<=0)
                     mob.tell("Please enter a valid "+nam.toLowerCase()+" number to delete.  Use LIST "+nam+"S for more information.");
                 else
@@ -732,7 +732,7 @@ public class Destroy extends BaseItemParser
 			if(!CMSecurity.isAllowed(mob,mob.location(),"NOPURGE")) return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
-				which=Util.s_int((String)commands.elementAt(2));
+				which=CMath.s_int((String)commands.elementAt(2));
 			if(which<=0)
 				mob.tell("Please enter a valid player number to delete.  Use List nopurge for more information.");
 			else
@@ -757,7 +757,7 @@ public class Destroy extends BaseItemParser
 			if(!CMSecurity.isAllowed(mob,mob.location(),"BAN")) return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
-				which=Util.s_int((String)commands.elementAt(2));
+				which=CMath.s_int((String)commands.elementAt(2));
 			if(which<=0)
 				mob.tell("Please enter a valid ban number to delete.  Use List Banned for more information.");
 			else
@@ -776,7 +776,7 @@ public class Destroy extends BaseItemParser
                 return errorOut(mob);
             }
             Vector V=CMLib.database().DBReadJournal(null);
-            String name=Util.combine(commands,2);
+            String name=CMParms.combine(commands,2);
             int which=-1;
             for(int v=0;v<V.size();v++)
                 if(((String)V.elementAt(v)).equalsIgnoreCase(name))
@@ -811,7 +811,7 @@ public class Destroy extends BaseItemParser
                 mob.tell("Destroy which faction?  Use list factions.");
             else
             {
-                String name=Util.combine(commands,2);
+                String name=CMParms.combine(commands,2);
                 Faction F=CMLib.factions().getFaction(name);
                 if(F==null) F=CMLib.factions().getFactionByName(name);
                 if(F==null)
@@ -846,10 +846,10 @@ public class Destroy extends BaseItemParser
         if(commandType.equals("POLL"))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"POLLS")) return errorOut(mob);
-            String name=Util.combine(commands,2);
+            String name=CMParms.combine(commands,2);
             Poll P=null;
-            if(Util.isInteger(name))
-                P=CMLib.polls().getPoll(Util.s_int(name)-1);
+            if(CMath.isInteger(name))
+                P=CMLib.polls().getPoll(CMath.s_int(name)-1);
             else
             if(name.length()>0)
                 P=CMLib.polls().getPoll(name);
@@ -878,11 +878,11 @@ public class Destroy extends BaseItemParser
 				mob.tell("Destroy which quest?  Use list quests.");
 			else
 			{
-				String name=Util.combine(commands,2);
+				String name=CMParms.combine(commands,2);
                 Quest Q=null;
-                if(Util.isInteger(name))
+                if(CMath.isInteger(name))
                 {
-                    Q=CMLib.quests().fetchQuest(Util.s_int(name)-1);
+                    Q=CMLib.quests().fetchQuest(CMath.s_int(name)-1);
                     if(Q!=null) name=Q.name();
                 }
                 if(Q==null) Q=CMLib.quests().fetchQuest(name);
@@ -905,7 +905,7 @@ public class Destroy extends BaseItemParser
 				mob.tell("Destroy which clan?  Use clanlist.");
 			else
 			{
-				String name=Util.combine(commands,2);
+				String name=CMParms.combine(commands,2);
 				Clan C=CMLib.clans().findClan(name);
 				if(C==null)
 					mob.tell("Clan '"+name+"' is unknown.  Try clanlist.");
@@ -919,7 +919,7 @@ public class Destroy extends BaseItemParser
 		}
 		else
 		{
-			String allWord=Util.combine(commands,1);
+			String allWord=CMParms.combine(commands,1);
 			Environmental thang=mob.location().fetchFromRoomFavorItems(null,allWord,Item.WORN_REQ_ANY);
 			if(thang==null)
 			    thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Item.WORN_REQ_ANY);

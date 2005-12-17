@@ -52,7 +52,7 @@ public class Spell_LocateObject extends Spell
 		String s=(String)commands.lastElement();
 		boolean levelAdjust=false;
 		while((commands.size()>1)
-		&&((Util.s_int(s)>0)
+		&&((CMath.s_int(s)>0)
 			||(s.startsWith(">"))
 			||(s.startsWith("<"))))
 			{
@@ -66,7 +66,7 @@ public class Spell_LocateObject extends Spell
 				else
 				if(s.startsWith("<"))
 					s=s.substring(1);
-				int levelFind=Util.s_int(s);
+				int levelFind=CMath.s_int(s);
 
 				if(lt)
 					maxLevel=levelFind;
@@ -79,7 +79,7 @@ public class Spell_LocateObject extends Spell
 				else
 					s="";
 			}
-		String what=Util.combine(commands,0);
+		String what=CMParms.combine(commands,0);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -96,7 +96,7 @@ public class Spell_LocateObject extends Spell
 				HashSet areas=new HashSet();
 				HashSet areasTried=new HashSet();
 				Area A=null;
-				int numAreas=(int)Math.round(Util.mul(CMLib.map().numAreas(),0.90))+1;
+				int numAreas=(int)Math.round(CMath.mul(CMLib.map().numAreas(),0.90))+1;
 				if(numAreas>CMLib.map().numAreas()) numAreas=CMLib.map().numAreas();
 				int tries=numAreas*numAreas;
 				while((areas.size()<numAreas)&&(((--tries)>0)))

@@ -46,7 +46,7 @@ public class Prop_WeaponImmunity extends Property
 	{
 	    super.setMiscText(newValue);
 	    flags=new Hashtable();
-	    Vector V=Util.parse(newValue.toUpperCase());
+	    Vector V=CMParms.parse(newValue.toUpperCase());
 	    Object c=null;
 	    String s=null;
 	    for(int v=0;v<V.size();v++)
@@ -94,7 +94,7 @@ public class Prop_WeaponImmunity extends Property
 				if((CharStats.affectTypeMap[i]==msg.sourceMinor())
 				&&(i!=CharStats.SAVE_MAGIC))
 				{
-					Vector V=Util.parse(CharStats.TRAITS[i]);
+					Vector V=CMParms.parse(CharStats.TRAITS[i]);
 					if(((String)V.lastElement()).equals("SAVE"))
 					    foundPlusMinus=(Character)flags.get(V.firstElement());
 					else
@@ -134,13 +134,13 @@ public class Prop_WeaponImmunity extends Property
 						lvl=lvl.substring(2).trim();
 						if((foundPlusMinus.charValue()=='-')&&(immune))
 						{
-							if(msg.tool().envStats().level()>=Util.s_int(lvl))
+							if(msg.tool().envStats().level()>=CMath.s_int(lvl))
 								immune=false;
 						}
 						else
 						if(foundPlusMinus.charValue()!='-')
 						{
-							if(msg.tool().envStats().level()<Util.s_int(lvl))
+							if(msg.tool().envStats().level()<CMath.s_int(lvl))
 								immune=true;
 						}
 					}

@@ -63,15 +63,15 @@ public class Prop_ReqCapacity extends Property
 		if(txt.length()==0)
 			peopleCap=2;
 		else
-		if(Util.isNumber(txt))
-			peopleCap=Util.s_int(txt);
+		if(CMath.isNumber(txt))
+			peopleCap=CMath.s_int(txt);
 		else
 		{
-			peopleCap=Util.getParmInt(txt,"people",peopleCap);
-            playerCap=Util.getParmInt(txt,"players",playerCap);
-            mobCap=Util.getParmInt(txt,"mobs",mobCap);
-			itemCap=Util.getParmInt(txt,"items",itemCap);
-			maxWeight=Util.getParmInt(txt,"weight",maxWeight);
+			peopleCap=CMParms.getParmInt(txt,"people",peopleCap);
+            playerCap=CMParms.getParmInt(txt,"players",playerCap);
+            mobCap=CMParms.getParmInt(txt,"mobs",mobCap);
+			itemCap=CMParms.getParmInt(txt,"items",itemCap);
+			maxWeight=CMParms.getParmInt(txt,"weight",maxWeight);
 		}
 	}
 

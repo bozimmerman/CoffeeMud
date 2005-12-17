@@ -60,7 +60,7 @@ public class ClassRaceNext extends StdWebMacro
 			Race R=(Race)r.nextElement();
 			mob.baseCharStats().setMyRace(R);
 			mob.recoverCharStats();
-			if(((CMProps.isTheme(R.availabilityCode())&&(!Util.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+			if(((CMProps.isTheme(R.availabilityCode())&&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
 				||(parms.containsKey("ALL")))
 		    &&(C.qualifiesForThisClass(mob,true)))
 			{

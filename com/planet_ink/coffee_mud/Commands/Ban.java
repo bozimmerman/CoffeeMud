@@ -40,7 +40,7 @@ public class Ban extends StdCommand
 		throws java.io.IOException
 	{
 		commands.removeElementAt(0);
-		String banMe=Util.combine(commands,0);
+		String banMe=CMParms.combine(commands,0);
 		if(banMe.length()==0)
 		{
 			mob.tell(getScr("Ban","banerr"));

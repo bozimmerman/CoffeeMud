@@ -47,14 +47,14 @@ public class Autoforward extends StdCommand
 			mob.tell(getScr("Autoforward","nota"));
 			return false;
 		}
-		if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
+		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
 		{
-			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
+			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
 			mob.tell(getScr("Autoforward","turnon"));
 		}
 		else
 		{
-			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
+			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
 			mob.tell(getScr("Autoforward","turnoff"));
 		}
 		return false;

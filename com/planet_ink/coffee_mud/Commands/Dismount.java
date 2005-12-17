@@ -53,10 +53,10 @@ public class Dismount extends StdCommand
 		}
 		else
 		{
-			Environmental E=mob.location().fetchFromRoomFavorItems(null,Util.combine(commands,0),Item.WORN_REQ_ANY);
+			Environmental E=mob.location().fetchFromRoomFavorItems(null,CMParms.combine(commands,0),Item.WORN_REQ_ANY);
 			if((E==null)||(!(E instanceof Rider)))
 			{
-				mob.tell(getScr("Movement","dismounterr2",Util.combine(commands,0)));
+				mob.tell(getScr("Movement","dismounterr2",CMParms.combine(commands,0)));
 				return false;
 			}
 			Rider RI=(Rider)E;

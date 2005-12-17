@@ -119,7 +119,7 @@ public class Thief_Kamikaze extends ThiefSkill
 			return false;
 		}
 
-		if((s.length()==0)||(Util.parse(s).size()==0))
+		if((s.length()==0)||(CMParms.parse(s).size()==0))
 		{
 			mob.tell("Send "+target.charStats().himher()+" which direction?");
 			return false;

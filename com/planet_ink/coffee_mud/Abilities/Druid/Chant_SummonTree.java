@@ -45,7 +45,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 	{
 		int code=material&EnvResource.RESOURCE_MASK;
 		Item newItem=CMClass.getStdItem("GenItem");
-		String name=Util.startWithAorAn(EnvResource.RESOURCE_DESCS[code].toLowerCase()+" tree");
+		String name=CMStrings.startWithAorAn(EnvResource.RESOURCE_DESCS[code].toLowerCase()+" tree");
 		newItem.setName(name);
 		newItem.setDisplayText(newItem.name()+" grows here.");
 		newItem.setDescription("");

@@ -41,11 +41,11 @@ public class WizList extends StdCommand
 	{
 		StringBuffer head=new StringBuffer("");
 		head.append("^x[");
-		head.append(Util.padRight("Race",8)+" ");
-		head.append(Util.padRight("Lvl",4)+" ");
-		head.append(Util.padRight("Last",18)+" ");
+		head.append(CMStrings.padRight("Race",8)+" ");
+		head.append(CMStrings.padRight("Lvl",4)+" ");
+		head.append(CMStrings.padRight("Last",18)+" ");
 		head.append("] Archon Character Name^.^?\n\r");
-		mob.tell("^x["+Util.centerPreserve("The Archons of "+CMProps.getVar(CMProps.SYSTEM_MUDNAME),head.length()-10)+"]^.^?");
+		mob.tell("^x["+CMStrings.centerPreserve("The Archons of "+CMProps.getVar(CMProps.SYSTEM_MUDNAME),head.length()-10)+"]^.^?");
 		Vector allUsers=CMLib.database().getUserList();
         CharClass C=CMClass.getCharClass("Archon");
 		for(int u=0;u<allUsers.size();u++)
@@ -54,13 +54,13 @@ public class WizList extends StdCommand
 			if(((String)U.elementAt(1)).equals("Archon"))
 			{
 				head.append("[");
-				head.append(Util.padRight((String)U.elementAt(2),8)+" ");
+				head.append(CMStrings.padRight((String)U.elementAt(2),8)+" ");
                 if((C==null)||(!C.leveless()))
-    				head.append(Util.padRight((String)U.elementAt(3),4)+" ");
+    				head.append(CMStrings.padRight((String)U.elementAt(3),4)+" ");
                 else
-                    head.append(Util.padRight("    ",4)+" ");
-				head.append(Util.padRight(CMLib.time().date2String(Util.s_long((String)U.elementAt(5))),18)+" ");
-				head.append("] "+Util.padRight((String)U.elementAt(0),25));
+                    head.append(CMStrings.padRight("    ",4)+" ");
+				head.append(CMStrings.padRight(CMLib.time().date2String(CMath.s_long((String)U.elementAt(5))),18)+" ");
+				head.append("] "+CMStrings.padRight((String)U.elementAt(0),25));
 				head.append("\n\r");
 			}
 		}

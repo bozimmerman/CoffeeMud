@@ -40,7 +40,7 @@ public class TrailTo extends StdCommand
 
 	public String trailTo(Room R1, Vector commands)
 	{
-		String where=Util.combine(commands,1);
+		String where=CMParms.combine(commands,1);
 		if(where.length()==0) return "Trail to where? Try a Room ID, 'everyroom', or 'everyarea'.  You can also use the 'areanames' and 'confirm!' flags.";
 		if(R1==null) return "Where are you?";
 		boolean confirm=false;
@@ -63,7 +63,7 @@ public class TrailTo extends StdCommand
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
-				str.append(Util.padRightPreserve(A.name(),30)+": "+trailTo(R1,set,A.name(),areaNames,confirm)+"\n\r");
+				str.append(CMStrings.padRightPreserve(A.name(),30)+": "+trailTo(R1,set,A.name(),areaNames,confirm)+"\n\r");
 			}
 			if(confirm) Log.rawSysOut(str.toString());
 			return str.toString();
@@ -78,7 +78,7 @@ public class TrailTo extends StdCommand
 				{
 					Room R=(Room)a.nextElement();
 					if((R!=R1)&&(R.roomID().length()>0))
-						str.append(Util.padRightPreserve(R.roomID(),30)+": "+trailTo(R1,set,R.roomID(),areaNames,confirm)+"\n\r");
+						str.append(CMStrings.padRightPreserve(R.roomID(),30)+": "+trailTo(R1,set,R.roomID(),areaNames,confirm)+"\n\r");
 				}
 		    }catch(NoSuchElementException nse){}
 			if(confirm) Log.rawSysOut(str.toString());
@@ -86,7 +86,7 @@ public class TrailTo extends StdCommand
 		}
 		else
 		{
-			String str=Util.padRightPreserve(where,30)+": "+trailTo(R1,set,where,areaNames,confirm);
+			String str=CMStrings.padRightPreserve(where,30)+": "+trailTo(R1,set,where,areaNames,confirm);
 			if(confirm) Log.rawSysOut(str);
 			return str;
 		}
@@ -116,8 +116,8 @@ public class TrailTo extends StdCommand
 						{
 							Room R=(Room)r.nextElement();
 							int x=R.roomID().indexOf("#");
-							if((x>=0)&&(Util.s_int(R.roomID().substring(x+1))<lowest))
-								lowest=Util.s_int(R.roomID().substring(x+1));
+							if((x>=0)&&(CMath.s_int(R.roomID().substring(x+1))<lowest))
+								lowest=CMath.s_int(R.roomID().substring(x+1));
 						}
 						if(lowest<Integer.MAX_VALUE)
 							R2=CMLib.map().getRoom(A.name()+"#"+lowest);
@@ -181,7 +181,7 @@ public class TrailTo extends StdCommand
 			theDirTrail.addElement(new Character(Directions.getDirectionName(getRoomDirection(R,RA,empty)).charAt(0)).toString()+" ");
 		}
 		StringBuffer theTrail=new StringBuffer("");
-		if(confirm)	theTrail.append("\n\r"+Util.padRight("Trail",30)+": ");
+		if(confirm)	theTrail.append("\n\r"+CMStrings.padRight("Trail",30)+": ");
 		char lastDir='\0';
 		int lastNum=0;
 		while(theDirTrail.size()>0)
@@ -224,13 +224,13 @@ public class TrailTo extends StdCommand
 				}
 			}
 			Room R=(Room)trailV.elementAt(1);
-			theTrail.append("\n\r"+Util.padRight("From",30)+": "+Directions.getDirectionName(getRoomDirection(R,R2,empty))+" <- "+R.roomID());
-			theTrail.append("\n\r"+Util.padRight("Room",30)+": "+R.displayText()+"/"+R.description());
+			theTrail.append("\n\r"+CMStrings.padRight("From",30)+": "+Directions.getDirectionName(getRoomDirection(R,R2,empty))+" <- "+R.roomID());
+			theTrail.append("\n\r"+CMStrings.padRight("Room",30)+": "+R.displayText()+"/"+R.description());
 			theTrail.append("\n\r\n\r");
 		}
         if((areaNames)&&(areasDone.size()>0))
         {
-            theTrail.append("\n\r"+Util.padRight("Areas",30)+":");
+            theTrail.append("\n\r"+CMStrings.padRight("Areas",30)+":");
             for(Iterator i=areasDone.iterator();i.hasNext();)
             {
                 Area A=(Area)i.next();

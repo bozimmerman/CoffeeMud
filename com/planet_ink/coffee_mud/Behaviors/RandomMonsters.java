@@ -80,7 +80,7 @@ public class RandomMonsters extends ActiveTicker
 				extraX=xtra.indexOf(";");
 				if(extraX>=0) extraParms=xtra.substring(extraX+1);
 			}
-			Vector V=Util.parse(extraParms);
+			Vector V=CMParms.parse(extraParms);
 			for(int v=0;v<V.size();v++)
 			{
 				String s=(String)V.elementAt(v);
@@ -133,8 +133,8 @@ public class RandomMonsters extends ActiveTicker
 			}
 		}
 		super.setParms(oldParms);
-		minMonsters=Util.getParmInt(oldParms,"minmonsters",1);
-		maxMonsters=Util.getParmInt(oldParms,"maxmonsters",1);
+		minMonsters=CMParms.getParmInt(oldParms,"minmonsters",1);
+		maxMonsters=CMParms.getParmInt(oldParms,"maxmonsters",1);
 		parms=newParms;
 		alreadyTriedLoad=false;
 		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))

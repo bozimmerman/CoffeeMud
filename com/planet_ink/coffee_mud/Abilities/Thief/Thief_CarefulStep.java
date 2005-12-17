@@ -46,7 +46,7 @@ public class Thief_CarefulStep extends ThiefSkill
 
     public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
-        String dir=Util.combine(commands,0);
+        String dir=CMParms.combine(commands,0);
         if(commands.size()>0) dir=(String)commands.lastElement();
         int dirCode=Directions.getGoodDirectionCode(dir);
         if(dirCode<0)
@@ -74,7 +74,7 @@ public class Thief_CarefulStep extends ThiefSkill
     }
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		String dir=Util.combine(commands,0);
+		String dir=CMParms.combine(commands,0);
 		if(commands.size()>0) dir=(String)commands.lastElement();
 		int dirCode=Directions.getGoodDirectionCode(dir);
         if(!preInvoke(mob,commands,givenTarget,auto,asLevel))

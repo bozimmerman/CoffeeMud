@@ -86,7 +86,7 @@ public class Spell_ComprehendLangs extends Spell
 			else
 			if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-			   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
+			   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
 			&&(msg.sourceMessage()!=null)
 			&&(((Ability)msg.tool()).classificationCode()==Ability.LANGUAGE)
 			&&(((MOB)affected).fetchEffect(msg.tool().ID())==null))
@@ -94,7 +94,7 @@ public class Spell_ComprehendLangs extends Spell
 				String str=this.getMsgFromAffect(msg.sourceMessage());
 				if(str!=null)
 				{
-					if(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
+					if(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
 						msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),this.subStitute(msg.othersMessage(),str)+" (translated from "+msg.tool().name()+")"));
 					else
 					if(msg.amITarget(affected)&&(msg.targetMessage()!=null))

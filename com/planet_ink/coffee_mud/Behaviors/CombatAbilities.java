@@ -64,7 +64,7 @@ public class CombatAbilities extends StdBehavior
 			}
 			return;
 	    }
-	    Vector V=Util.parse(theParms.trim());
+	    Vector V=CMParms.parse(theParms.trim());
 	    Vector classes=new Vector();
 	    for(int v=0;v<V.size();v++)
 	    {
@@ -93,7 +93,7 @@ public class CombatAbilities extends StdBehavior
 
 	protected String getParmsMinusCombatMode()
 	{
-		Vector V=Util.parse(getParms());
+		Vector V=CMParms.parse(getParms());
 		for(int v=V.size()-1;v>=0;v--)
 		{
 			String s=((String)V.elementAt(v)).toUpperCase();
@@ -104,7 +104,7 @@ public class CombatAbilities extends StdBehavior
 					V.removeElementAt(v);
 				}
 		}
-		return Util.combine(V,0);
+		return CMParms.combine(V,0);
 	}
 
 	protected void newCharacter(MOB mob)
@@ -233,9 +233,9 @@ public class CombatAbilities extends StdBehavior
 		boolean wandThis=true;
 		if(tryThisOne!=null)
 		{
-			if(Util.bset(tryThisOne.usageType(),Ability.USAGE_MANA))
+			if(CMath.bset(tryThisOne.usageType(),Ability.USAGE_MANA))
 			{
-				if((Math.random()>Util.div(mob.curState().getMana(), mob.maxState().getMana()))
+				if((Math.random()>CMath.div(mob.curState().getMana(), mob.maxState().getMana()))
                 ||(mob.curState().getMana() < tryThisOne.usageCost(mob)[0]))
 				{
                    if((CMLib.dice().rollPercentage()>30)
@@ -246,16 +246,16 @@ public class CombatAbilities extends StdBehavior
 				}
 				mob.curState().adjMana(5,mob.maxState());
 			}
-			if(Util.bset(tryThisOne.usageType(),Ability.USAGE_MOVEMENT))
+			if(CMath.bset(tryThisOne.usageType(),Ability.USAGE_MOVEMENT))
 			{
-				if((Math.random()>Util.div(mob.curState().getMovement(),mob.maxState().getMovement()))
+				if((Math.random()>CMath.div(mob.curState().getMovement(),mob.maxState().getMovement()))
 				||(mob.curState().getMovement()<tryThisOne.usageCost(mob)[1]))
 					return true;
 				mob.curState().adjMovement(5,mob.maxState());
 			}
-			if(Util.bset(tryThisOne.usageType(),Ability.USAGE_HITPOINTS))
+			if(CMath.bset(tryThisOne.usageType(),Ability.USAGE_HITPOINTS))
 			{
-				if((Math.random()>Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))
+				if((Math.random()>CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))
 				   ||(mob.curState().getHitPoints()<tryThisOne.usageCost(mob)[2]))
 					return true;
 			}

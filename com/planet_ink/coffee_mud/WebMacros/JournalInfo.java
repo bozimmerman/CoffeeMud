@@ -57,7 +57,7 @@ public class JournalInfo extends StdWebMacro
 			return ""+info.size();
 		String lastlast=httpReq.getRequestParameter("JOURNALMESSAGE");
 		int num=0;
-		if(lastlast!=null) num=Util.s_int(lastlast);
+		if(lastlast!=null) num=CMath.s_int(lastlast);
 		if((num<0)||(num>=info.size()))	return " @break@";
 		
 		if(M==null)
@@ -73,7 +73,7 @@ public class JournalInfo extends StdWebMacro
                 return clearWebMacros(((String)((Vector)info.elementAt(num)).elementAt(1)));
 			else
 			if(parms.containsKey("DATE"))
-				return CMLib.time().date2String(Util.s_long((String)((Vector)info.elementAt(num)).elementAt(2)));
+				return CMLib.time().date2String(CMath.s_long((String)((Vector)info.elementAt(num)).elementAt(2)));
 			else
 			if(parms.containsKey("TO"))
                 return clearWebMacros(to);
@@ -84,8 +84,8 @@ public class JournalInfo extends StdWebMacro
 			if(parms.containsKey("MESSAGE"))
 			{
 				String s=((String)((Vector)info.elementAt(num)).elementAt(5));
-				s=Util.replaceAll(s,"%0D","<BR>");
-                s=Util.replaceAll(s,"\n","<BR>");
+				s=CMStrings.replaceAll(s,"%0D","<BR>");
+                s=CMStrings.replaceAll(s,"\n","<BR>");
                 return clearWebMacros(s);
 			}
             if(parms.containsKey("EMAILALLOWED"))

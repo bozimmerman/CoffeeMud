@@ -123,15 +123,15 @@ public class Spell_AlterSubstance extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				material=Util.capitalizeAndLower(material);
+				material=CMStrings.capitalizeAndLower(material);
 				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> change(s) into "+material+"!");
 				oldMaterial=target.material();
 				target.setMaterial(newMaterial);
 				String oldResourceName=EnvResource.RESOURCE_DESCS[oldMaterial&EnvResource.RESOURCE_MASK];
 				String oldMaterialName=EnvResource.MATERIAL_DESCS[(oldMaterial&EnvResource.MATERIAL_MASK)>>8];
 				String oldName=target.name().toUpperCase();
-				oldName=Util.replaceAll(oldName,oldResourceName,material);
-				oldName=Util.replaceAll(oldName,oldMaterialName,material);
+				oldName=CMStrings.replaceAll(oldName,oldResourceName,material);
+				oldName=CMStrings.replaceAll(oldName,oldMaterialName,material);
 				if(oldName.indexOf(material)<0)
 				{
 					int x=oldName.lastIndexOf(" ");
@@ -140,7 +140,7 @@ public class Spell_AlterSubstance extends Spell
 					else
 						oldName=oldName.substring(0,x)+" "+material+oldName.substring(x);
 				}
-				newName=Util.capitalizeAndLower(oldName);
+				newName=CMStrings.capitalizeAndLower(oldName);
 				beneficialAffect(mob,target,asLevel,100);
 			}
 

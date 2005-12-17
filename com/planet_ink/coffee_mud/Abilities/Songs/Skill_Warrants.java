@@ -67,13 +67,13 @@ public class Skill_Warrants extends BardSkill
 					return false;
 				}
 				StringBuffer buf=new StringBuffer("");
-				buf.append(Util.padRight("Name",14)+" "+Util.padRight("Victim",14)+" "+Util.padRight("Witness",14)+" Crime\n\r");
+				buf.append(CMStrings.padRight("Name",14)+" "+CMStrings.padRight("Victim",14)+" "+CMStrings.padRight("Witness",14)+" Crime\n\r");
 				for(int v=0;v<V.size();v++)
 				{
 					Vector V2=(Vector)V.elementAt(v);
-					buf.append(Util.padRight((String)V2.elementAt(0),14)+" ");
-					buf.append(Util.padRight((String)V2.elementAt(1),14)+" ");
-					buf.append(Util.padRight((String)V2.elementAt(2),14)+" ");
+					buf.append(CMStrings.padRight((String)V2.elementAt(0),14)+" ");
+					buf.append(CMStrings.padRight((String)V2.elementAt(1),14)+" ");
+					buf.append(CMStrings.padRight((String)V2.elementAt(2),14)+" ");
 					buf.append(((String)V2.elementAt(3))+"\n\r");
 				}
 				if(!mob.isMonster()) mob.session().rawPrintln(buf.toString());

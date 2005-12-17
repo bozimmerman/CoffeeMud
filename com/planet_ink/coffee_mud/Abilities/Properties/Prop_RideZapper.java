@@ -59,7 +59,7 @@ public class Prop_RideZapper extends Prop_HaveZapper
 		case CMMsg.TYP_ENTER:
 			if((!CMLib.masking().maskCheck(text(),mob))&&(didHappen(100)))
 			{
-				mob.location().show(mob,null,affected,CMMsg.MSG_OK_VISUAL,Util.getParmStr(text(),"MESSAGE","<O-NAME> zaps <S-NAME>, making <S-HIM-HER> jump up!"));
+				mob.location().show(mob,null,affected,CMMsg.MSG_OK_VISUAL,CMParms.getParmStr(text(),"MESSAGE","<O-NAME> zaps <S-NAME>, making <S-HIM-HER> jump up!"));
 				return false;
 			}
 			break;

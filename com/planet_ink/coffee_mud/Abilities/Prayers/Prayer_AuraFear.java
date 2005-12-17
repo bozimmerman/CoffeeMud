@@ -98,7 +98,7 @@ public class Prayer_AuraFear extends Prayer
 				        if((!CMLib.flags().isMobile(M))||(!M.isInCombat()))
 				        {
 					        Command C=CMClass.getCommand("Sit");
-					        try{if(C!=null) C.execute(M,Util.makeVector("Sit"));}catch(Exception e){}
+					        try{if(C!=null) C.execute(M,CMParms.makeVector("Sit"));}catch(Exception e){}
 					        if(CMLib.flags().isSitting(M))
 					        {
 					            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,"<S-NAME> cringe(s) in fear at the sight of <O-NAME>.");
@@ -111,7 +111,7 @@ public class Prayer_AuraFear extends Prayer
 					    {
 				            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,"<S-NAME> scream(s) in fear at the sight of <O-NAME>.");
 					        Command C=CMClass.getCommand("Flee");
-					        try{if(C!=null) C.execute(M,Util.makeVector("Flee"));}catch(Exception e){}
+					        try{if(C!=null) C.execute(M,CMParms.makeVector("Flee"));}catch(Exception e){}
 					    }
 					    else
 					    {
@@ -125,7 +125,7 @@ public class Prayer_AuraFear extends Prayer
 					    {
 				            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,"<S-NAME> scream(s) in fear at the sight of <O-NAME>.");
 					        Command C=CMClass.getCommand("Flee");
-					        try{if(C!=null) C.execute(M,Util.makeVector("Flee"));}catch(Exception e){}
+					        try{if(C!=null) C.execute(M,CMParms.makeVector("Flee"));}catch(Exception e){}
 					    }
 					    else
 					    {
@@ -165,8 +165,8 @@ public class Prayer_AuraFear extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 		    int affectType=affectType(auto);
-		    if((mob==target)&&(Util.bset(affectType,CMMsg.MASK_MALICIOUS)))
-		        affectType=Util.unsetb(affectType,CMMsg.MASK_MALICIOUS);
+		    if((mob==target)&&(CMath.bset(affectType,CMMsg.MASK_MALICIOUS)))
+		        affectType=CMath.unsetb(affectType,CMMsg.MASK_MALICIOUS);
 			CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> "+prayWord(mob)+" for an aura of fear to surround <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{

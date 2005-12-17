@@ -118,16 +118,16 @@ public class DefaultEnvStats implements EnvStats
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code)){
-		case 0: setSensesMask(Util.s_int(val)); break;
-		case 1: setDisposition(Util.s_int(val)); break;
-		case 2: setLevel(Util.s_int(val)); break;
-		case 3: setAbility(Util.s_int(val)); break;
-		case 4: setRejuv(Util.s_int(val)); break;
-		case 5: setWeight(Util.s_int(val)); break;
-		case 6: setHeight(Util.s_int(val)); break;
-		case 7: setArmor(Util.s_int(val)); break;
-		case 8: setDamage(Util.s_int(val)); break;
-		case 9: setAttackAdjustment(Util.s_int(val)); break;
+		case 0: setSensesMask(CMath.s_int(val)); break;
+		case 1: setDisposition(CMath.s_int(val)); break;
+		case 2: setLevel(CMath.s_int(val)); break;
+		case 3: setAbility(CMath.s_int(val)); break;
+		case 4: setRejuv(CMath.s_int(val)); break;
+		case 5: setWeight(CMath.s_int(val)); break;
+		case 6: setHeight(CMath.s_int(val)); break;
+		case 7: setArmor(CMath.s_int(val)); break;
+		case 8: setDamage(CMath.s_int(val)); break;
+		case 9: setAttackAdjustment(CMath.s_int(val)); break;
 		}
 	}
 	public String getStat(String code)

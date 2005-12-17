@@ -47,7 +47,7 @@ public class ColorSet extends StdCommand
 			for(int ii=0;ii<ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS.length;ii++)
 				if(what.charAt(1)==ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii].charAt(0))
 				{
-					buf.append("^"+ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]+Util.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
+					buf.append("^"+ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
 					break;
 				}
 		    if(what.indexOf("|")>0)
@@ -87,7 +87,7 @@ public class ColorSet extends StdCommand
 		if(pstats==null) return false;
 		String[] clookup=(String[])mob.session().clookup().clone();
 		if((commands.size()>1)
-		   &&("DEFAULT".startsWith(Util.combine(commands,1).toUpperCase())))
+		   &&("DEFAULT".startsWith(CMParms.combine(commands,1).toUpperCase())))
 		{
 			pstats.setColorStr("");
 			mob.tell("Your colors have been changed back to default.");
@@ -117,13 +117,13 @@ public class ColorSet extends StdCommand
 			StringBuffer buf=new StringBuffer("");
 			for(int i=0;i<theSet.length;i++)
 			{
-				buf.append("\n\r^H"+Util.padLeft(""+(i+1),2)+"^N) "+Util.padRight(theSet[i][0],20)+": ");
+				buf.append("\n\r^H"+CMStrings.padLeft(""+(i+1),2)+"^N) "+CMStrings.padRight(theSet[i][0],20)+": ");
 				buf.append(colorDescription(clookup[theSet[i][1].charAt(0)]));
 				buf.append("^N");
 			}
 			mob.session().println(buf.toString());
 			numToChange=mob.session().prompt("Enter Number or RETURN: ","");
-			int num=Util.s_int(numToChange);
+			int num=CMath.s_int(numToChange);
 			if(numToChange.length()==0) break;
 			if((num<=0)||(num>theSet.length))
 				mob.tell("That is not a valid entry!");
@@ -131,7 +131,7 @@ public class ColorSet extends StdCommand
 			{
 				num--;
 				buf=new StringBuffer("");
-				buf.append("\n\r\n\r^c"+Util.padLeft(""+(num+1),2)+"^N) "+Util.padRight(theSet[num][0],20)+": ");
+				buf.append("\n\r\n\r^c"+CMStrings.padLeft(""+(num+1),2)+"^N) "+CMStrings.padRight(theSet[num][0],20)+": ");
 				buf.append(colorDescription(clookup[theSet[num][1].charAt(0)]));
 				boolean changes=false;
 				if(theSet[num][1].charAt(0)!='Q')
@@ -140,7 +140,7 @@ public class ColorSet extends StdCommand
 					for(int ii=0;ii<ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS.length;ii++)
 					{
 					    if(ii>0) buf.append(", ");
-						buf.append("^"+ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[ii]+Util.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
+						buf.append("^"+ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[ii]+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
 					}
 					mob.session().println(buf.toString()+"^N");
 					int colorNum=pickColor(mob,ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS,"Enter Name of New Color: ");
@@ -161,9 +161,9 @@ public class ColorSet extends StdCommand
 						{
 						    if(first)first=false; else buf.append(", ");
 						    if(ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]==ColorLibrary.COLOR_BLACK)
-								buf.append("^"+ColorLibrary.COLOR_WHITE+Util.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
+								buf.append("^"+ColorLibrary.COLOR_WHITE+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
 						    else
-								buf.append("^"+ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]+Util.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
+								buf.append("^"+ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
 						}
 					buf.append("^N\n\rAvailable Foreground Colors: ");
 					first=true;
@@ -171,7 +171,7 @@ public class ColorSet extends StdCommand
 					    if(Character.isLowerCase(ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[ii].charAt(0)))
 						{
 						    if(first)first=false; else buf.append(", ");
-							buf.append("^"+ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[ii]+Util.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
+							buf.append("^"+ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[ii]+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
 						}
 					mob.session().println(buf.toString()+"^N");
 					int colorNum1=pickColor(mob,ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS,"Enter Name of Background Color: ");

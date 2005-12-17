@@ -75,14 +75,14 @@ public class Spell_Youth extends Spell
 					{
 						int diff=chart[Race.AGE_ANCIENT]-chart[Race.AGE_VENERABLE];
 						age=age-chart[Race.AGE_ANCIENT];
-						int num=(diff>0)?(int)Math.abs(Math.floor(Util.div(age,diff))):0;
+						int num=(diff>0)?(int)Math.abs(Math.floor(CMath.div(age,diff))):0;
 						if(num<=0)
-						    age=(int)Math.round(Util.div(chart[cat]+chart[cat-1],2.0));
+						    age=(int)Math.round(CMath.div(chart[cat]+chart[cat-1],2.0));
 						else
 						    age=target.baseCharStats().getStat(CharStats.AGE)-diff;
 					}
 					else
-					    age=(int)Math.round(Util.div(chart[cat]+chart[cat-1],2.0));
+					    age=(int)Math.round(CMath.div(chart[cat]+chart[cat-1],2.0));
 					if(target.playerStats()!=null)
 					{
 					    TimeClock C=CMClass.globalClock();

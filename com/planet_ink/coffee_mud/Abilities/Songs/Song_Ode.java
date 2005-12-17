@@ -82,19 +82,19 @@ public class Song_Ode extends Song
 			int x=t.indexOf(";");
 			while(x>=0)
 			{
-				int q=Util.s_int(t.substring(0,x));
+				int q=CMath.s_int(t.substring(0,x));
 				t=t.substring(x+1);
 				if(q>=0)
 					for(int i=0;i<stuff.length;i++)
 					{
-						if(Util.s_int(stuff[i][0])==q)
+						if(CMath.s_int(stuff[i][0])==q)
 							counts[i]++;
 					}
 				x=t.indexOf(";");
 			}
 			int wa=-1;
 			for(int i=0;i<stuff.length;i++)
-				if(Util.s_int(stuff[i][0])==CMMsg.TYP_WEAPONATTACK)
+				if(CMath.s_int(stuff[i][0])==CMMsg.TYP_WEAPONATTACK)
 				{ wa=i; break;}
 
 			if(wa>=0) counts[wa]=counts[wa]/25;
@@ -174,7 +174,7 @@ public class Song_Ode extends Song
 					int ticks=((Integer)H.get(I)).intValue();
 					if(ticks>50) ticks=50;
 					if(ticks<=0) ticks=1;
-					int stat=Util.s_int(chk[2]);
+					int stat=CMath.s_int(chk[2]);
 					if(stat<CharStats.NUM_BASE_STATS)
 						if(ticks>5) ticks=5;
 					affectableStats.setStat(stat,affectableStats.getStat(stat)+ticks);
@@ -287,12 +287,12 @@ public class Song_Ode extends Song
 		int x=s.indexOf(";");
 		while(x>=0)
 		{
-			int code=Util.s_int(s.substring(0,x));
+			int code=CMath.s_int(s.substring(0,x));
 			s=s.substring(x+1);
 			x=s.indexOf(";");
 			if(x>=0)
 			{
-				int tick=Util.s_int(s.substring(0,x));
+				int tick=CMath.s_int(s.substring(0,x));
 				s=s.substring(x+1);
 				benefits.put(new Integer(code),new Integer(tick));
 			}
@@ -368,7 +368,7 @@ public class Song_Ode extends Song
 				mob.tell("You presently have odes written about: "+str.toString().trim()+".");
 			return false;
 		}
-		String name=Util.combine(commands,0);
+		String name=CMParms.combine(commands,0);
 		for(Enumeration e=H.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();

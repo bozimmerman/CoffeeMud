@@ -81,7 +81,7 @@ public class Fighter_Kick extends FighterSkill
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()>0)
-					damage = (int)Math.round(Util.div(damage,2.0));
+					damage = (int)Math.round(CMath.div(damage,2.0));
 				CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISYMOVEMENT,Weapon.TYPE_BASHING,"^F^<FIGHT^><S-NAME> <DAMAGE> <T-NAME> with a ferocious KICK!^</FIGHT^>^?"+CMProps.msp("bashed1.wav",30));
 			}
 		}

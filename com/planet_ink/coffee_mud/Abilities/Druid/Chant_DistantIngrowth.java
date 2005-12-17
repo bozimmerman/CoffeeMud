@@ -49,7 +49,7 @@ public class Chant_DistantIngrowth extends Chant
 			return false;
 		}
 
-		String areaName=Util.combine(commands,0).trim().toUpperCase();
+		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 		Room anyRoom=null;
 		Room newRoom=null;
 		try
@@ -74,7 +74,7 @@ public class Chant_DistantIngrowth extends Chant
 		if(newRoom==null)
 		{
 			if(anyRoom==null)
-				mob.tell("You don't know of an place called '"+Util.combine(commands,0)+"'.");
+				mob.tell("You don't know of an place called '"+CMParms.combine(commands,0)+"'.");
 			else
 			if(anyRoom.domainType()==Room.DOMAIN_INDOORS_CAVE)
 				mob.tell("There IS such a place, but its in a cave where fungus rule, so your magic would fail.");

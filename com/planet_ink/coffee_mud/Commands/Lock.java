@@ -39,7 +39,7 @@ public class Lock extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String whatTolock=Util.combine(commands,1);
+		String whatTolock=CMParms.combine(commands,1);
 		if(whatTolock.length()==0)
 		{
 			mob.tell(getScr("Movement","lockerr1"));

@@ -57,13 +57,13 @@ public class Kill extends StdCommand
 		}
 		
 		boolean reallyKill=false;
-		String whomToKill=Util.combine(commands,1);
+		String whomToKill=CMParms.combine(commands,1);
 		if(CMSecurity.isAllowed(mob,mob.location(),"KILLDEAD")&&(!mob.isMonster()))
 		{
 			if(((String)commands.lastElement()).equalsIgnoreCase("DEAD"))
 			{
 				commands.removeElementAt(commands.size()-1);
-				whomToKill=Util.combine(commands,1);
+				whomToKill=CMParms.combine(commands,1);
 				reallyKill=true;
 			}
 		}
@@ -138,7 +138,7 @@ public class Kill extends StdCommand
                     if(possibleOtherWeapon.amWearingAt(Item.INVENTORY))
                     {
                         Command C=CMClass.getCommand("Wield");
-                        if(C!=null) C.execute(mob,Util.makeVector("WIELD",possibleOtherWeapon));
+                        if(C!=null) C.execute(mob,CMParms.makeVector("WIELD",possibleOtherWeapon));
                     }
                 }
             }

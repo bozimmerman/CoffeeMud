@@ -115,7 +115,7 @@ public class Inventory extends StdCommand
 		else
 		{
 			if(viewItems.size()>0)
-				msg.append(CMLib.lister().lister(seer,viewItems,true,"MItem","",false,Util.bset(seer.getBitmap(),MOB.ATT_COMPRESS)));
+				msg.append(CMLib.lister().lister(seer,viewItems,true,"MItem","",false,CMath.bset(seer.getBitmap(),MOB.ATT_COMPRESS)));
             if(foundButUnseen)
                 msg.append("(stuff you can't see right now)");
                 
@@ -153,7 +153,7 @@ public class Inventory extends StdCommand
 			commands.addElement(getInventory((MOB)commands.firstElement(),mob,null));
 			return true;
 		}
-		StringBuffer msg=getInventory(mob,mob,Util.combine(commands,1));
+		StringBuffer msg=getInventory(mob,mob,CMParms.combine(commands,1));
 		if(msg.length()==0)
 			mob.tell("^HYou are carrying:\n\r^!Nothing!^?\n\r");
 		else

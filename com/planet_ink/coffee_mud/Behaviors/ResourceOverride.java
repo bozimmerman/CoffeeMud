@@ -48,13 +48,13 @@ public class ResourceOverride extends StdBehavior
 		||(R.myResource()!=lastResourceSet)
 		||(R.myResource()<0))
 		{
-			Vector V=Util.parse(getParms());
+			Vector V=CMParms.parse(getParms());
 			if(V.size()==0) return true;
 			// first try for a real one
 			int code=-1;
 			String which=((String)V.elementAt(CMLib.dice().roll(1,V.size(),-1))).toUpperCase().trim();
-			if((Util.s_int(which)>0)||(which.equalsIgnoreCase("0")))
-			   code=Util.s_int(which);
+			if((CMath.s_int(which)>0)||(which.equalsIgnoreCase("0")))
+			   code=CMath.s_int(which);
 
 			if(code<0)
 			for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
@@ -68,7 +68,7 @@ public class ResourceOverride extends StdBehavior
 				if(EnvResource.MATERIAL_DESCS[i].equalsIgnoreCase(which))
 					for(int i2=0;i2<EnvResource.RESOURCE_DESCS.length;i2++)
 					{
-						if(Util.isSet((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK),i))
+						if(CMath.isSet((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK),i))
 						{ code=EnvResource.RESOURCE_DATA[i][0]; break;}
 					}
 			}
@@ -84,7 +84,7 @@ public class ResourceOverride extends StdBehavior
 				if(EnvResource.MATERIAL_DESCS[i].startsWith(which))
 					for(int i2=0;i2<EnvResource.RESOURCE_DESCS.length;i2++)
 					{
-						if(Util.isSet((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK),i))
+						if(CMath.isSet((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK),i))
 						{ code=EnvResource.RESOURCE_DATA[i][0]; break;}
 					}
 			}

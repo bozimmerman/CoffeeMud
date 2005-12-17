@@ -83,7 +83,7 @@ public class BaseChanneler extends StdCommand
 		   &&(message.trim().length()>3))
 		{
 			String msgstr=message.substring(1);
-			Vector V=Util.parse(msgstr);
+			Vector V=CMParms.parse(msgstr);
 			Social S=CMLib.socials().FetchSocial(V,true);
 			if(S==null) S=CMLib.socials().FetchSocial(V,false);
 			if(S!=null)

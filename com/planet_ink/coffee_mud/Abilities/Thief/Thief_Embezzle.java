@@ -52,12 +52,12 @@ public class Thief_Embezzle extends ThiefSkill
 			mob.tell("Embezzle money from whose accounts?");
 			return false;
 		}
-		MOB target=mob.location().fetchInhabitant(Util.combine(commands,0));
+		MOB target=mob.location().fetchInhabitant(CMParms.combine(commands,0));
 		if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+Util.combine(commands,1)+"' here.");
+			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
 			return false;
 		}
 		if(!(target instanceof Banker))

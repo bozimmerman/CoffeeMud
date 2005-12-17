@@ -89,7 +89,7 @@ public class Skill_Write extends StdSkill
 			return false;
 		}
 
-		if(Util.combine(commands,1).toUpperCase().startsWith("FILE="))
+		if(CMParms.combine(commands,1).toUpperCase().startsWith("FILE="))
 		{
 			mob.tell("You can't write that.");
 			return false;
@@ -102,7 +102,7 @@ public class Skill_Write extends StdSkill
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.",CMMsg.MSG_WRITE,Util.combine(commands,1),CMMsg.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.",CMMsg.MSG_WRITE,CMParms.combine(commands,1),CMMsg.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

@@ -89,7 +89,7 @@ public class Thief_KillLog extends ThiefSkill
 				theList.put(mark.Name(),set);
 			}
 			set[1]=""+mark.envStats().level();
-			set[3]=new Integer(Util.s_int(set[3])+1).toString();
+			set[3]=new Integer(CMath.s_int(set[3])+1).toString();
 			mark=null;
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -145,7 +145,7 @@ public class Thief_KillLog extends ThiefSkill
 					theList.put(mark.Name(),set);
 				}
 				set[1]=""+mark.envStats().level();
-				set[2]=new Integer(Util.s_int(set[2])+1).toString();
+				set[2]=new Integer(CMath.s_int(set[2])+1).toString();
 				if((affected!=null)&&(affected instanceof MOB))
 				{
 					Ability A=((MOB)affected).fetchAbility(ID());
@@ -163,7 +163,7 @@ public class Thief_KillLog extends ThiefSkill
 		if(profficiencyCheck(mob,0,auto))
 		{
 			StringBuffer str=new StringBuffer("");
-			str.append(Util.padRight("Name",20)+Util.padRight("Level",6)+"Kill Pct.\n\r");
+			str.append(CMStrings.padRight("Name",20)+CMStrings.padRight("Level",6)+"Kill Pct.\n\r");
 			Vector order=new Vector();
 			int lowLevel=Integer.MIN_VALUE;
 			String[] addOne=null;
@@ -174,10 +174,10 @@ public class Thief_KillLog extends ThiefSkill
 				for(Enumeration e=theList.elements();e.hasMoreElements();)
 				{
 					String[] one=(String[])e.nextElement();
-					if((Util.s_int(one[1])>=lowLevel)
+					if((CMath.s_int(one[1])>=lowLevel)
 					&&(!order.contains(one)))
 					{
-						lowLevel=Util.s_int(one[1]);
+						lowLevel=CMath.s_int(one[1]);
 						addOne=one;
 					}
 				}
@@ -189,11 +189,11 @@ public class Thief_KillLog extends ThiefSkill
 			{
 				String[] one=(String[])order.elementAt(i);
 				int pct=0;
-				int total=Util.s_int(one[2]);
-				int kills=Util.s_int(one[3]);
+				int total=CMath.s_int(one[2]);
+				int kills=CMath.s_int(one[3]);
 				if(total>0)
-					pct=(int)Math.round((Util.div(kills,total)*100.0));
-				str.append(Util.padRight(one[0],20)+Util.padRight(one[1],6)+pct+"%\n\r");
+					pct=(int)Math.round((CMath.div(kills,total)*100.0));
+				str.append(CMStrings.padRight(one[0],20)+CMStrings.padRight(one[1],6)+pct+"%\n\r");
 			}
 			if(mob.session()!=null)
 				mob.session().rawPrintln(str.toString());

@@ -59,7 +59,7 @@ public class Spell_Knock extends Spell
 				commands.addElement(Directions.getDirectionName(theDir));
 		}
 
-		String whatToOpen=Util.combine(commands,0);
+		String whatToOpen=CMParms.combine(commands,0);
 		Environmental openThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode>=0)

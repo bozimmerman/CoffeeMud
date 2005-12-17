@@ -62,7 +62,7 @@ public class ChannelBackLogNext extends StdWebMacro
 			    Vector que=CMLib.channels().getChannelQue(channelInt);
 				while(true)
 				{
-				    int num=Util.s_int(last);
+				    int num=CMath.s_int(last);
 				    last=""+(num+1);
 					httpReq.addRequestParameters("CHANNELBACKLOG",last);
 					if((num<0)||(num>=que.size()))
@@ -85,7 +85,7 @@ public class ChannelBackLogNext extends StdWebMacro
 					    str=msg.othersMessage();
 					else
 					    str="";
-					str=Util.removeColors(str);
+					str=CMStrings.removeColors(str);
 					if(CMLib.channels().mayReadThisChannel(msg.source(),areareq,mob,channelInt,true))
 						return clearWebMacros(CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,msg.source(),msg.target(),msg.tool(),str,false));
 				}

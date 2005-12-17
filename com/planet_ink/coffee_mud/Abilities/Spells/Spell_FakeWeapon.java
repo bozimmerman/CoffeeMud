@@ -63,7 +63,7 @@ public class Spell_FakeWeapon extends Spell
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		String weaponName=Util.combine(commands,0);
+		String weaponName=CMParms.combine(commands,0);
 		String[] choices={"sword","dagger","mace","staff","axe","hammer", "flail"};
 		int choice=-1;
 		for(int i=0;i<choices.length;i++)

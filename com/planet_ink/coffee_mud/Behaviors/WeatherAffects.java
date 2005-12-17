@@ -70,13 +70,13 @@ public class WeatherAffects extends PuddleMaker
 	public void setParms(String newParms)
 	{
 		parms=newParms;
-		puddlepct=Util.getParmInt(parms,"puddlepct",50);
-		windsheer=Util.getParmInt(parms,"windsheer",10);
-        rainSlipChance=Util.getParmInt(parms,"rainslipchance",1);
-        snowSlipChance=Util.getParmInt(parms,"snowslipchance",5);
-        sleetSlipChance=Util.getParmInt(parms,"sleetslipchance",10);
-        freezeOverChance=Util.getParmInt(parms,"iceoverchance",50);
-        droughtFireChance=Util.getParmInt(parms,"droughtfirechance",1);
+		puddlepct=CMParms.getParmInt(parms,"puddlepct",50);
+		windsheer=CMParms.getParmInt(parms,"windsheer",10);
+        rainSlipChance=CMParms.getParmInt(parms,"rainslipchance",1);
+        snowSlipChance=CMParms.getParmInt(parms,"snowslipchance",5);
+        sleetSlipChance=CMParms.getParmInt(parms,"sleetslipchance",10);
+        freezeOverChance=CMParms.getParmInt(parms,"iceoverchance",50);
+        droughtFireChance=CMParms.getParmInt(parms,"droughtfirechance",1);
         resetBotherTicks();
         resetDiseaseTicks();
         resetRustTicks();
@@ -88,15 +88,15 @@ public class WeatherAffects extends PuddleMaker
         resetDustTicks();
 	}
 	
-    private void resetBotherTicks(){botherDown=Util.getParmInt(parms,"botherticks",Climate.WEATHER_TICK_DOWN/3);}
-    private void resetDiseaseTicks(){diseaseDown=Util.getParmInt(parms,"diseaseticks",Climate.WEATHER_TICK_DOWN);}
-    private void resetRustTicks(){rustDown=Util.getParmInt(parms,"rustticks",30);}
-    private void resetLightningTicks(){lightningDown=Util.getParmInt(parms,"lightningticks",Climate.WEATHER_TICK_DOWN*4);}
-    private void resetRumbleTicks(){rumbleDown=Util.getParmInt(parms,"rumbleticks",Climate.WEATHER_TICK_DOWN/4);}
-    private void resetGustTicks(){gustDown=Util.getParmInt(parms,"gustticks",Climate.WEATHER_TICK_DOWN);}
-    private void resetTornadoTicks(){tornadoDown=Util.getParmInt(parms,"tornadoticks",Climate.WEATHER_TICK_DOWN*10);}
-    private void resetHailTicks(){hailDown=Util.getParmInt(parms,"hailticks",Climate.WEATHER_TICK_DOWN/2);}
-    private void resetDustTicks(){dustDown=Util.getParmInt(parms,"dustticks",50);}
+    private void resetBotherTicks(){botherDown=CMParms.getParmInt(parms,"botherticks",Climate.WEATHER_TICK_DOWN/3);}
+    private void resetDiseaseTicks(){diseaseDown=CMParms.getParmInt(parms,"diseaseticks",Climate.WEATHER_TICK_DOWN);}
+    private void resetRustTicks(){rustDown=CMParms.getParmInt(parms,"rustticks",30);}
+    private void resetLightningTicks(){lightningDown=CMParms.getParmInt(parms,"lightningticks",Climate.WEATHER_TICK_DOWN*4);}
+    private void resetRumbleTicks(){rumbleDown=CMParms.getParmInt(parms,"rumbleticks",Climate.WEATHER_TICK_DOWN/4);}
+    private void resetGustTicks(){gustDown=CMParms.getParmInt(parms,"gustticks",Climate.WEATHER_TICK_DOWN);}
+    private void resetTornadoTicks(){tornadoDown=CMParms.getParmInt(parms,"tornadoticks",Climate.WEATHER_TICK_DOWN*10);}
+    private void resetHailTicks(){hailDown=CMParms.getParmInt(parms,"hailticks",Climate.WEATHER_TICK_DOWN/2);}
+    private void resetDustTicks(){dustDown=CMParms.getParmInt(parms,"dustticks",50);}
     
 	public Area area(Environmental host)
 	{
@@ -150,7 +150,7 @@ public class WeatherAffects extends PuddleMaker
             }
 		}
         // then try to handle slippage in wet weather
-        if(((Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
+        if(((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
         &&(msg.source().location()!=null))
         {
             String what=null;
@@ -267,7 +267,7 @@ public class WeatherAffects extends PuddleMaker
                             if((mob!=null)
                             &&(!mob.isMonster())
                             &&(CMLib.flags().aliveAwakeMobile(mob,true))
-                            &&(Util.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER)))
+                            &&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER)))
                                 mob.tell(C.getWeatherDescription(A));
                         }
                 }
@@ -328,7 +328,7 @@ public class WeatherAffects extends PuddleMaker
                 {
                     if(coldChance>0) coldChance+=10;
                     if(coldChance>0) fluChance+=5; // yes, cold is related this way to flu
-                    if(frostBiteChance>0) frostBiteChance=frostBiteChance+(int)Math.round(Util.mul(frostBiteChance,0.5));
+                    if(frostBiteChance>0) frostBiteChance=frostBiteChance+(int)Math.round(CMath.mul(frostBiteChance,0.5));
                 }
                 if((R.domainConditions()&Room.CONDITION_HOT)>0) 
                 {
@@ -338,7 +338,7 @@ public class WeatherAffects extends PuddleMaker
                 {
                     if(coldChance>0) coldChance+=5;
                     if(heatExhaustionChance>5) heatExhaustionChance-=5;
-                    if(frostBiteChance>0) frostBiteChance=frostBiteChance+(int)Math.round(Util.mul(frostBiteChance,0.25));
+                    if(frostBiteChance>0) frostBiteChance=frostBiteChance+(int)Math.round(CMath.mul(frostBiteChance,0.25));
                 }
                 int save=(M.charStats().getStat(CharStats.SAVE_COLD)+M.charStats().getStat(CharStats.SAVE_WATER))/2;
                 if((CMLib.dice().rollPercentage()<(coldChance-save))
@@ -413,7 +413,7 @@ public class WeatherAffects extends PuddleMaker
                 ||(S.mob().location()==null)
                 ||(S.mob().location().getArea()!=A)
                 ||(S.mob().isMonster())
-                ||(!Util.bset(S.mob().getBitmap(),MOB.ATT_AUTOWEATHER)))
+                ||(!CMath.bset(S.mob().getBitmap(),MOB.ATT_AUTOWEATHER)))
                     continue;
                 Room R=S.mob().location();
                 if(R!=null)

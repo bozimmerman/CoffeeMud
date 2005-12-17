@@ -122,9 +122,9 @@ public class Druid_MyPlants extends StdAbility
 						Item I=myPlant(R,mob,0);
 						while(I!=null)
 						{
-							yourPlants.append(Util.padRight(""+(++plantNum),3)+" ");
-							yourPlants.append(Util.padRight(I.name(),20)+" ");
-							yourPlants.append(Util.padRight(R.roomTitle(),40));
+							yourPlants.append(CMStrings.padRight(""+(++plantNum),3)+" ");
+							yourPlants.append(CMStrings.padRight(I.name(),20)+" ");
+							yourPlants.append(CMStrings.padRight(R.roomTitle(),40));
 							yourPlants.append("\n\r");
 							I=myPlant(R,mob,++i);
 						}

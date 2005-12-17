@@ -89,13 +89,13 @@ public class TemporaryImmunity extends StdAbility
 		else
 		{
 			set.clear();
-			Vector V=Util.parseSemicolons(str,true);
+			Vector V=CMParms.parseSemicolons(str,true);
 			for(int v=0;v<V.size();v++)
 			{
 				String s=(String)V.elementAt(v);
 				int x=s.indexOf("/");
 				if(x>0)
-					set.addElement(s.substring(0,x),new Long(Util.s_long(s.substring(x+1))));
+					set.addElement(s.substring(0,x),new Long(CMath.s_long(s.substring(x+1))));
 			}
 		}
 	}
@@ -109,7 +109,7 @@ public class TemporaryImmunity extends StdAbility
 		if((msg.amITarget(mob))
 		&&(!mob.amDead())
 		&&(msg.tool() instanceof Ability)
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(set.contains(msg.tool().ID())))
 		{
             if(msg.source()!=msg.target())

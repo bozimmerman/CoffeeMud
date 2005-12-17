@@ -98,7 +98,7 @@ public class Prayer_Resurrect extends Prayer
 					body.destroy();
 					rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
 					mob.location().recoverRoomStats();
-					Vector whatsToDo=Util.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
+					Vector whatsToDo=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
 					for(int w=0;w<whatsToDo.size();w++)
 					{
 						String whatToDo=(String)whatsToDo.elementAt(w);
@@ -111,9 +111,9 @@ public class Prayer_Resurrect extends Prayer
 						if(whatToDo.startsWith("PUR"))
 						{}
 						else
-						if((whatToDo.trim().equals("0"))||(Util.s_int(whatToDo)>0))
+						if((whatToDo.trim().equals("0"))||(CMath.s_int(whatToDo)>0))
 						{
-							int expLost=Util.s_int(whatToDo)/2;
+							int expLost=CMath.s_int(whatToDo)/2;
 							rejuvedMOB.tell("^*You regain "+expLost+" experience points.^?^.");
 							CMLib.combat().postExperience(rejuvedMOB,null,null,expLost,false);
 						}

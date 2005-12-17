@@ -157,7 +157,7 @@ public class StdArmor extends StdContainer implements Armor
 			{
 				long wcode=rawProperLocationBitmap();
 
-				if(Util.bset(wcode,Item.HELD))
+				if(CMath.bset(wcode,Item.HELD))
 					wcode=wcode-Item.HELD;
 				if(wcode==Item.FLOATING_NEARBY) devianceAllowed=-1;
 				else
@@ -560,7 +560,7 @@ public class StdArmor extends StdContainer implements Armor
 	public int value()
 	{
 		if(usesRemaining()<1000)
-			return (int)Math.round(Util.mul(super.value(),Util.div(usesRemaining(),100)));
+			return (int)Math.round(CMath.mul(super.value(),CMath.div(usesRemaining(),100)));
 		return super.value();
 	}
 	public boolean subjectToWearAndTear()

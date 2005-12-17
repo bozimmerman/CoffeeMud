@@ -71,7 +71,7 @@ public class Formation extends StdCommand
 			if("FRONT".startsWith(row.toUpperCase()))
 				row="0";
 			commands.removeElementAt(commands.size()-1);
-			String name=Util.combine(commands,0);
+			String name=CMParms.combine(commands,0);
 			MOB who=null;
 			if(CMLib.english().containsString(mob.name(),name)
 			   ||CMLib.english().containsString(mob.Name(),name))
@@ -92,7 +92,7 @@ public class Formation extends StdCommand
 				mob.tell("There is noone following you called "+name+".");
 				return false;
 			}
-			if((!Util.isNumber(row))||(Util.s_int(row)<0))
+			if((!CMath.isNumber(row))||(CMath.s_int(row)<0))
 				mob.tell("'"+row+"' is not a valid row in which to put "+who.name()+".  Try number greater than 0.");
 			else
 			{
@@ -106,12 +106,12 @@ public class Formation extends StdCommand
 				if(leaderRow<0)
 					mob.tell("You do not exist.");
 				else
-				if(Util.s_int(row)<leaderRow)
+				if(CMath.s_int(row)<leaderRow)
 					mob.tell("You can not place "+who.name()+" behind your own position, which is "+leaderRow+".");
 				else
 				{
-					mob.addFollower(who,Util.s_int(row)-leaderRow);
-					mob.tell("You have positioned "+who.name()+" to row "+Util.s_int(row));
+					mob.addFollower(who,CMath.s_int(row)-leaderRow);
+					mob.tell("You have positioned "+who.name()+" to row "+CMath.s_int(row));
 				}
 			}
 		}

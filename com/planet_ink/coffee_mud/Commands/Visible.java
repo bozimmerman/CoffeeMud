@@ -74,7 +74,7 @@ public class Visible extends StdCommand
             if((C!=null)&&(C.securityCheck(mob)))
             {
                 didSomething=true;
-                C.execute(mob,Util.makeVector("WIZINV","OFF"));
+                C.execute(mob,CMParms.makeVector("WIZINV","OFF"));
             }
         }
         Vector V=returnOffensiveAffects(mob);

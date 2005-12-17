@@ -45,7 +45,7 @@ public class Auction extends Channel
 		int channelInt=CMLib.channels().getChannelIndex(getScr("Auction","cmd"));
 		int channelNum=CMLib.channels().getChannelCodeNumber(getScr("Auction","cmd"));
 
-		if(Util.isSet(pstats.getChannelMask(),channelInt))
+		if(CMath.isSet(pstats.getChannelMask(),channelInt))
 		{
 			pstats.setChannelMask(pstats.getChannelMask()&(pstats.getChannelMask()-channelNum));
 			mob.tell(getScr("Auction","turnon"));
@@ -91,7 +91,7 @@ public class Auction extends Channel
 			else
 				V.addElement("0");
 
-			String s=Util.combine(commands,1);
+			String s=CMParms.combine(commands,1);
 			Environmental E=mob.fetchInventory(null,s);
 			if((E==null)||(E instanceof MOB))
 			{

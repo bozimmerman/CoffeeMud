@@ -120,10 +120,10 @@ public class PlayerData extends StdWebMacro
 				str.append(", ");
 				break;
 		case 10: if(M.maxCarry()==Integer.MAX_VALUE) str.append("N/A, "); else str.append(M.maxCarry()+", "); break;
-		case 11: str.append(Util.capitalizeAndLower(CMLib.combat().fightingProwessStr(M.adjustedAttackBonus(null)))+", "); break;
-		case 12: str.append(Util.capitalizeAndLower(CMLib.combat().armorStr((-M.adjustedArmor())+50))+", "); break;
+		case 11: str.append(CMStrings.capitalizeAndLower(CMLib.combat().fightingProwessStr(M.adjustedAttackBonus(null)))+", "); break;
+		case 12: str.append(CMStrings.capitalizeAndLower(CMLib.combat().armorStr((-M.adjustedArmor())+50))+", "); break;
 		case 13: str.append(M.adjustedDamage(null,null)+", "); break;
-		case 14: str.append(Math.round(Util.div(M.getAgeHours(),60.0))+", "); break;
+		case 14: str.append(Math.round(CMath.div(M.getAgeHours(),60.0))+", "); break;
 		case 15: str.append(M.getPractices()+", "); break;
 		case 16: str.append(M.getExperience()+", "); break;
 		case 17: if(M.getExpNeededLevel()==Integer.MAX_VALUE)
@@ -176,7 +176,7 @@ public class PlayerData extends StdWebMacro
 			break;
 		case 32: str.append(M.baseEnvStats().weight()+", "); break;
 		case 33: str.append(M.envStats().weight()+", "); break;
-		case 34: str.append(Util.capitalizeAndLower(M.baseCharStats().genderName())+", "); break;
+		case 34: str.append(CMStrings.capitalizeAndLower(M.baseCharStats().genderName())+", "); break;
 		case 35: if(M.playerStats()!=null)
 					 str.append(M.playerStats().lastDateTime()+", ");
 				 break;
@@ -242,7 +242,7 @@ public class PlayerData extends StdWebMacro
 			{
 				if(parms.containsKey(MOB.AUTODESC[i]))
 				{
-					boolean set=Util.isSet(M.getBitmap(),i);
+					boolean set=CMath.isSet(M.getBitmap(),i);
 					if(MOB.AUTOREV[i]) set=!set;
 					str.append((set?"ON":"OFF")+",");
 				}
@@ -253,10 +253,10 @@ public class PlayerData extends StdWebMacro
 				if(!stat.equalsIgnoreCase("GENDER"))
 				{
 					if(stat.endsWith(" SAVE"))
-						stat=((String)Util.parse(stat).firstElement());
+						stat=((String)CMParms.parse(stat).firstElement());
 					else
 					if(stat.startsWith("SAVE "))
-						stat=((String)Util.parse(stat).lastElement());
+						stat=((String)CMParms.parse(stat).lastElement());
 					CharStats C=M.charStats();
 					if(parms.containsKey("BASE"+stat))
 					{

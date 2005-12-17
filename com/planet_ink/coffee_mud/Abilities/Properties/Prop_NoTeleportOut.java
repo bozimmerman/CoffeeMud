@@ -47,8 +47,8 @@ public class Prop_NoTeleportOut extends Property
 		{
 			boolean shere=(msg.source().location()==affected)
 				||((affected instanceof Area)&&(((Area)affected).inMetroArea(msg.source().location().getArea())));
-			boolean summon=Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
-			boolean teleport=Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
+			boolean summon=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
+			boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
 			if(((shere)&&(!summon)&&(teleport))
 			   ||((!shere)&&(summon)))
 			{

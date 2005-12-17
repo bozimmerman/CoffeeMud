@@ -46,7 +46,7 @@ public class Prop_NoChannel extends Property
     public void setMiscText(String newText)
     {
         super.setMiscText(newText);
-        channels=Util.parseSemicolons(newText.toUpperCase(),true);
+        channels=CMParms.parseSemicolons(newText.toUpperCase(),true);
         int x=channels.indexOf("SENDOK");
         sendOK=(x>=0);
         if(sendOK) channels.removeElementAt(x);

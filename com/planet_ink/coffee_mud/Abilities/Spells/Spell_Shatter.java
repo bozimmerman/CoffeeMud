@@ -94,7 +94,7 @@ public class Spell_Shatter extends Spell
 				{
 					int damage=100+mob.envStats().level()-target.envStats().level();
 					if(CMLib.flags().isABonusItems(target))
-						damage=(int)Math.round(Util.div(damage,2.0));
+						damage=(int)Math.round(CMath.div(damage,2.0));
 					switch(target.material()&EnvResource.MATERIAL_MASK)
 					{
 					case EnvResource.MATERIAL_PAPER:
@@ -103,14 +103,14 @@ public class Spell_Shatter extends Spell
 					case EnvResource.MATERIAL_PLASTIC:
 					case EnvResource.MATERIAL_LEATHER:
 					case EnvResource.MATERIAL_FLESH:
-						damage=(int)Math.round(Util.div(damage,3.0));
+						damage=(int)Math.round(CMath.div(damage,3.0));
 						break;
 					case EnvResource.MATERIAL_WOODEN:
-						damage=(int)Math.round(Util.div(damage,1.5));
+						damage=(int)Math.round(CMath.div(damage,1.5));
 						break;
 					case EnvResource.MATERIAL_GLASS:
 					case EnvResource.MATERIAL_ROCK:
-						damage=(int)Math.round(Util.mul(damage,2.0));
+						damage=(int)Math.round(CMath.mul(damage,2.0));
 						break;
 					case EnvResource.MATERIAL_PRECIOUS:
 						break;

@@ -48,7 +48,7 @@ public class OutFit extends StdCommand
 		if(R!=null)
 			CMLib.utensils().outfit(mob,R.outfit());
 		Command C2=CMClass.getCommand("Equipment");
-		if(C2!=null) C2.execute(mob,Util.parse("EQUIPMENT"));
+		if(C2!=null) C2.execute(mob,CMParms.parse("EQUIPMENT"));
 		return false;
 	}
 	public int ticksToExecute(){return 1;}

@@ -108,7 +108,7 @@ public class Song_Inebriation extends Song
 		&&(msg.tool()==null)
 		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-		   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
+		   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
 		{
 			Ability A=CMClass.getAbility("Drunken");
 			if(A!=null)
@@ -121,7 +121,7 @@ public class Song_Inebriation extends Song
 			}
 		}
 		else
-		if((!Util.bset(msg.targetMajor(),CMMsg.MASK_GENERAL))
+		if((!CMath.bset(msg.targetMajor(),CMMsg.MASK_GENERAL))
 		&&(msg.targetMajor()>0))
 		{
 			MOB newTarget=msg.source().location().fetchInhabitant(CMLib.dice().roll(1,msg.source().location().numInhabitants(),-1));

@@ -213,7 +213,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 
 	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget, boolean quiet, boolean alreadyAffOk)
 	{
-		String targetName=Util.combine(commands,0);
+		String targetName=CMParms.combine(commands,0);
 		MOB target=null;
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
@@ -293,7 +293,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 									  boolean checkOthersInventory,
 									  boolean alreadyAffOk)
 	{
-		String targetName=Util.combine(commands,0);
+		String targetName=CMParms.combine(commands,0);
 		Environmental target=null;
 		if(givenTarget!=null)
 			target=givenTarget;
@@ -387,7 +387,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 	{ return getTarget(mob,location,givenTarget,null,commands,wornReqCode);}
 	public Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, Vector commands, int wornReqCode)
 	{
-		String targetName=Util.combine(commands,0);
+		String targetName=CMParms.combine(commands,0);
 
 		Environmental target=null;
 		if((givenTarget!=null)&&(givenTarget instanceof Item))
@@ -532,9 +532,9 @@ public class StdAbility extends ForeignScriptable implements Ability
 	protected int[] buildCostArray(MOB mob, int consumed)
 	{
 		int[] usageCosts=new int[3];
-		boolean useMana=Util.bset(usageType(),Ability.USAGE_MANA);
-		boolean useMoves=Util.bset(usageType(),Ability.USAGE_MOVEMENT);
-		boolean useHits=Util.bset(usageType(),Ability.USAGE_HITPOINTS);
+		boolean useMana=CMath.bset(usageType(),Ability.USAGE_MANA);
+		boolean useMoves=CMath.bset(usageType(),Ability.USAGE_MOVEMENT);
+		boolean useHits=CMath.bset(usageType(),Ability.USAGE_HITPOINTS);
 		int divider=1;
 		if((useMana)&&(useMoves)&&(useHits)) divider=3;
 		else
@@ -555,7 +555,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			}
 			else
 			if(consumed>(Integer.MAX_VALUE-100))
-				usageCosts[0]=(int)Math.round(Util.mul(mob.maxState().getMana(),Util.div((Integer.MAX_VALUE-consumed),100.0)));
+				usageCosts[0]=(int)Math.round(CMath.mul(mob.maxState().getMana(),CMath.div((Integer.MAX_VALUE-consumed),100.0)));
 		}
 		if(useMoves){
 			usageCosts[1]=consumed/divider;
@@ -568,7 +568,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			}
 			else
 			if(consumed>(Integer.MAX_VALUE-100))
-				usageCosts[0]=(int)Math.round(Util.mul(mob.maxState().getMovement(),Util.div((Integer.MAX_VALUE-consumed),100.0)));
+				usageCosts[0]=(int)Math.round(CMath.mul(mob.maxState().getMovement(),CMath.div((Integer.MAX_VALUE-consumed),100.0)));
 		}
 		if(useHits){
 			usageCosts[2]=consumed/divider;
@@ -581,7 +581,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			}
 			else
 			if(consumed>(Integer.MAX_VALUE-100))
-				usageCosts[0]=(int)Math.round(Util.mul(mob.maxState().getHitPoints(),Util.div((Integer.MAX_VALUE-consumed),100.0)));
+				usageCosts[0]=(int)Math.round(CMath.mul(mob.maxState().getHitPoints(),CMath.div((Integer.MAX_VALUE-consumed),100.0)));
 		}
 		return usageCosts;
 	}
@@ -647,13 +647,13 @@ public class StdAbility extends ForeignScriptable implements Ability
 			if(((int)Math.round(Math.sqrt(new Integer(mob.charStats().getStat(CharStats.INTELLIGENCE)).doubleValue())*34.0*Math.random()))>=A.profficiency())
 			{
 			    int qualLevel=CMLib.ableMapper().qualifyingLevel(mob,A);
-			    if((qualLevel<0)||(qualLevel>30)||(CMLib.dice().rollPercentage()<(int)Math.round(100.0*Util.div(31-qualLevel,30+qualLevel))))
+			    if((qualLevel<0)||(qualLevel>30)||(CMLib.dice().rollPercentage()<(int)Math.round(100.0*CMath.div(31-qualLevel,30+qualLevel))))
 			    {
 					// very important, since these can be autoinvoked affects (copies)!
 					A.setProfficiency(A.profficiency()+1);
 					if((this!=A)&&(profficiency()<100))
 						setProfficiency(profficiency()+1);
-					if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOIMPROVE))
+					if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOIMPROVE))
 						mob.tell("You become better at "+A.name()+".");
 					((StdAbility)A).lastCastHelp=System.currentTimeMillis();
 			    }
@@ -685,7 +685,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			if(!CMLib.flags().aliveAwakeMobile(mob,false))
 				return false;
 			
-			if(Util.bset(usageType(),Ability.USAGE_MOVEMENT)
+			if(CMath.bset(usageType(),Ability.USAGE_MOVEMENT)
 			   &&(CMLib.flags().isBound(mob)))
 			{
 				mob.tell("You are bound!");
@@ -786,7 +786,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			{
 				tickAdjustmentFromStandard=(adjustedLevel(mob,asLevel)*2)+25;
 				if((target!=null)&&(asLevel<=0)&&(mob!=null))
-					tickAdjustmentFromStandard=(int)Math.round(Util.mul(tickAdjustmentFromStandard,Util.div(mob.envStats().level(),target.envStats().level())));
+					tickAdjustmentFromStandard=(int)Math.round(CMath.mul(tickAdjustmentFromStandard,CMath.div(mob.envStats().level(),target.envStats().level())));
 
 				if(tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)))
 					tickAdjustmentFromStandard=(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
@@ -911,7 +911,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 
 	public boolean canBeTaughtBy(MOB teacher, MOB student)
 	{
-		if(Util.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
+		if(CMath.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
 		{
 			teacher.tell("You are refusing to teach right now.");
 			student.tell(teacher.name()+" is refusing to teach right now.");
@@ -1012,7 +1012,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			student.tell("You do not have enough training CMLib.sessions().");
 			return false;
 		}
-		if((Util.bset(student.getBitmap(),MOB.ATT_NOTEACH))
+		if((CMath.bset(student.getBitmap(),MOB.ATT_NOTEACH))
 		&&((!student.isMonster())||(!student.willFollowOrdersOf(teacher))))
 		{
 			teacher.tell(student.name()+" is refusing training at this time.");
@@ -1095,13 +1095,13 @@ public class StdAbility extends ForeignScriptable implements Ability
 			return false;
 		}
 
-		if(Util.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
+		if(CMath.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
 		{
 			teacher.tell("You are refusing to teach right now.");
 			student.tell(teacher.name()+" is refusing to teach right now.");
 			return false;
 		}
-		if((Util.bset(student.getBitmap(),MOB.ATT_NOTEACH))
+		if((CMath.bset(student.getBitmap(),MOB.ATT_NOTEACH))
 		&&((!student.isMonster())||(!student.willFollowOrdersOf(teacher))))
 		{
 			teacher.tell(student.name()+" is refusing training at this time.");
@@ -1173,7 +1173,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			student.setPractices(student.getPractices()-practicesRequired());
 			student.setTrains(student.getTrains()-trainsRequired());
 			Ability newAbility=(Ability)newInstance();
-			newAbility.setProfficiency((int)Math.round(Util.mul(profficiency(),((Util.div(teacher.charStats().getStat(CharStats.WISDOM)+student.charStats().getStat(CharStats.INTELLIGENCE),100.0))))));
+			newAbility.setProfficiency((int)Math.round(CMath.mul(profficiency(),((CMath.div(teacher.charStats().getStat(CharStats.WISDOM)+student.charStats().getStat(CharStats.INTELLIGENCE),100.0))))));
 			if(newAbility.profficiency()>75)
 				newAbility.setProfficiency(75);
 			student.addAbility(newAbility);
@@ -1192,7 +1192,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			if(yourAbility.profficiency()<75)
 			{
 				student.setPractices(student.getPractices()-practicesToPractice());
-				yourAbility.setProfficiency(yourAbility.profficiency()+(int)Math.round(25.0*(Util.div(teacher.charStats().getStat(CharStats.WISDOM)+student.charStats().getStat(CharStats.INTELLIGENCE),36.0))));
+				yourAbility.setProfficiency(yourAbility.profficiency()+(int)Math.round(25.0*(CMath.div(teacher.charStats().getStat(CharStats.WISDOM)+student.charStats().getStat(CharStats.INTELLIGENCE),36.0))));
 				if(yourAbility.profficiency()>75)
 					yourAbility.setProfficiency(75);
 			}

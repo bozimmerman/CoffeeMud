@@ -50,12 +50,12 @@ public class Consider extends StdCommand
 		int mob2Hp=mob2.baseState().getHitPoints();
 		int mob1Hp=mob1.baseState().getHitPoints();
 
-		double mob2HitRound=(((Util.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob2Attack/mob1Armor)),100.0))*Util.div(mob2Dmg,2.0))+1.0)*Util.mul(mob2.envStats().speed(),1.0);
-		double mob1HitRound=(((Util.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob1Attack/mob2Armor)),100.0))*Util.div(mob1Dmg,2.0))+1.0)*Util.mul(mob1.envStats().speed(),1.0);
-		double mob2SurvivalRounds=Util.div(mob2Hp,mob1HitRound);
-		double mob1SurvivalRounds=Util.div(mob1Hp,mob2HitRound);
+		double mob2HitRound=(((CMath.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob2Attack/mob1Armor)),100.0))*CMath.div(mob2Dmg,2.0))+1.0)*CMath.mul(mob2.envStats().speed(),1.0);
+		double mob1HitRound=(((CMath.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob1Attack/mob2Armor)),100.0))*CMath.div(mob1Dmg,2.0))+1.0)*CMath.mul(mob1.envStats().speed(),1.0);
+		double mob2SurvivalRounds=CMath.div(mob2Hp,mob1HitRound);
+		double mob1SurvivalRounds=CMath.div(mob1Hp,mob2HitRound);
 
-		//int levelDiff=(int)Math.round(Util.div((mob1SurvivalRounds-mob2SurvivalRounds),1));
+		//int levelDiff=(int)Math.round(CMath.div((mob1SurvivalRounds-mob2SurvivalRounds),1));
 		double levelDiff=(mob1SurvivalRounds-mob2SurvivalRounds)/2;
 		int levelDiffed=(int)Math.round(Math.sqrt(Math.abs(levelDiff)));
 
@@ -77,7 +77,7 @@ public class Consider extends StdCommand
     			return false;
     		}
     		commands.removeElementAt(0);
-    		String targetName=Util.combine(commands,0);
+    		String targetName=CMParms.combine(commands,0);
     		target=mob.location().fetchInhabitant(targetName);
     		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
     		{

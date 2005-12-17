@@ -73,7 +73,7 @@ public class Commands extends StdCommand
 			{
 			    String s=(String)i.next();
 				if(++col>3){ commandList.append("\n\r"); col=0;}
-				commandList.append(Util.padRight("^<HELP^>"+s+"^</HELP^>",19));
+				commandList.append(CMStrings.padRight("^<HELP^>"+s+"^</HELP^>",19));
 			}
 			commandList.append("\n\r\n\rEnter HELP 'COMMAND' for more information on these commands.\n\r");
 			mob.session().colorOnlyPrintln("^HComplete commands list:^?\n\r"+commandList.toString(),23);

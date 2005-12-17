@@ -76,4 +76,5 @@ public interface EnglishParsing extends CMObject
         throws IOException;
     public int promptInteger(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp)
         throws IOException;
+    public String returnTime(long millis, long ticks);
 }

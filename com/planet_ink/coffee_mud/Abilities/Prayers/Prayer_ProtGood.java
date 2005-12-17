@@ -52,7 +52,7 @@ public class Prayer_ProtGood extends Prayer
 
 		if(CMLib.flags().isGood(mob))
 		{
-			int damage=(int)Math.round(Util.div(mob.envStats().level(),3.0));
+			int damage=(int)Math.round(CMath.div(mob.envStats().level(),3.0));
 			CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"<T-HIS-HER> protective aura <DAMAGE> <T-NAME>!");
 		}
 		return super.tick(ticking,tickID);
@@ -68,12 +68,12 @@ public class Prayer_ProtGood extends Prayer
 
 		if(msg.target()==invoker)
 		{
-			if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+			if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
-			&&(!Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))
-			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
+			&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))
+			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
 			{
 				msg.source().location().show(invoker,null,CMMsg.MSG_OK_VISUAL,"The unholy field around <S-NAME> protect(s) <S-HIM-HER> from the goodly magic attack of "+msg.source().name()+".");
 				return false;

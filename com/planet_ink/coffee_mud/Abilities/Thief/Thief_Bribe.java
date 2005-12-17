@@ -99,7 +99,7 @@ public class Thief_Bribe extends ThiefSkill
 
 		if((!success)||(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)<amountRequired))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to bribe <T-NAMESELF> to '"+Util.combine(commands,0)+"', but no deal is reached.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to bribe <T-NAMESELF> to '"+CMParms.combine(commands,0)+"', but no deal is reached.^?");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)<amountRequired)
@@ -112,7 +112,7 @@ public class Thief_Bribe extends ThiefSkill
 		else
 		{
 		    String costWords=CMLib.beanCounter().nameCurrencyShort(target,amountRequired);
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> bribe(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"' for "+costWords+".^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> bribe(s) <T-NAMESELF> to '"+CMParms.combine(commands,0)+"' for "+costWords+".^?");
 			CMLib.beanCounter().subtractMoney(mob,currency,amountRequired);
 			mob.recoverEnvStats();
 			if(mob.location().okMessage(mob,msg))

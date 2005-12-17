@@ -54,13 +54,13 @@ public class Expire extends StdCommand
                 return false;
             }
             long timeLeft=player.playerStats().getAccountExpiration()-System.currentTimeMillis();
-            mob.tell("Player '"+player.Name()+"' currently has "+(Util.returnTime(timeLeft,0))+" left.");
+            mob.tell("Player '"+player.Name()+"' currently has "+(CMLib.english().returnTime(timeLeft,0))+" left.");
             return false;
         }
         else 
         {
             String playerName=(String)commands.elementAt(0);
-            long days=Util.s_long((String)commands.elementAt(1))*1000*60*60*24;
+            long days=CMath.s_long((String)commands.elementAt(1))*1000*60*60*24;
             MOB player=CMLib.map().getLoadPlayer(playerName);
             if((player==null)||(player.playerStats()==null)) 
             {
@@ -68,7 +68,7 @@ public class Expire extends StdCommand
                 return false;
             }
             player.playerStats().setAccountExpiration(days+System.currentTimeMillis());
-            mob.tell("Player '"+player.Name()+"' now has "+(Util.returnTime(player.playerStats().getAccountExpiration()-System.currentTimeMillis(),0))+" days left.");
+            mob.tell("Player '"+player.Name()+"' now has "+(CMLib.english().returnTime(player.playerStats().getAccountExpiration()-System.currentTimeMillis(),0))+" days left.");
             return false;
         }
     }

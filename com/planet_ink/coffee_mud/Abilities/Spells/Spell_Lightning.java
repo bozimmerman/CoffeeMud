@@ -70,7 +70,7 @@ public class Spell_Lightning extends Spell
 				int maxDie =  (int)Math.round(new Integer(adjustedLevel(mob,asLevel)).doubleValue()/3.0);
 				int damage = CMLib.dice().roll(maxDie,10,maxDie);
 				if((msg.value()>0)||(msg2.value()>0))
-					damage = (int)Math.round(Util.div(damage,2.0));
+					damage = (int)Math.round(CMath.div(damage,2.0));
 
 				if(target.location()==mob.location())
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The bolt <DAMAGE> <T-NAME>!");

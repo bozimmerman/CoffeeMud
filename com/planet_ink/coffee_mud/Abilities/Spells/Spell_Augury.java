@@ -56,7 +56,7 @@ public class Spell_Augury extends Spell
 			mob.tell("Divine the fate of which direction?");
 			return false;
 		}
-		String targetName=Util.combine(commands,0);
+		String targetName=CMParms.combine(commands,0);
 
 		Exit exit=null;
 		Exit opExit=null;

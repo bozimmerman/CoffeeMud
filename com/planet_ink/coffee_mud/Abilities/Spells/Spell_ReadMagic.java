@@ -61,7 +61,7 @@ public class Spell_ReadMagic extends Spell
 		{
 			Ability thisNewOne=(Ability)this.copyOf();
 			mob.addEffect(thisNewOne);
-			CMLib.commands().doStandardCommand(mob,"Read",Util.makeVector("READ",target));
+			CMLib.commands().doStandardCommand(mob,"Read",CMParms.makeVector("READ",target));
 			mob.delEffect(thisNewOne);
 		}
 		else

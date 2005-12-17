@@ -104,7 +104,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 			    Race R=target.charStats().getMyRace();
 			    for(int i=0;i<Item.wornOrder.length;i++)
 			    {
-			        if((!Util.bset(R.forbiddenWornBits(),Item.wornOrder[i]))
+			        if((!CMath.bset(R.forbiddenWornBits(),Item.wornOrder[i]))
 			        &&(Item.wornOrder[i]!=Item.FLOATING_NEARBY)
 			        &&(Item.wornOrder[i]!=Item.ON_EYES)
 			        &&(Item.wornOrder[i]!=Item.ON_MOUTH))
@@ -114,7 +114,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 			    {
 			        if((target.charStats().getBodyPart(i)<=0)
 			        &&(Race.BODY_WEARGRID[i][1]>0))
-			            wearCode=Util.unsetb(wearCode,Race.BODY_WEARGRID[i][0]);
+			            wearCode=CMath.unsetb(wearCode,Race.BODY_WEARGRID[i][0]);
 			    }
 				I.setRawProperLocationBitmap(wearCode);
 			    I.setRawWornCode(wearCode);

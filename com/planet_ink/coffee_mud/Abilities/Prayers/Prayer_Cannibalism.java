@@ -136,7 +136,7 @@ public class Prayer_Cannibalism extends Prayer
 					CMLib.commands().get(M,null,F,false);
 					if(M.isMine(F))
 					{
-						M.doCommand(Util.parse("EAT "+F.Name()));
+						M.doCommand(CMParms.parse("EAT "+F.Name()));
 						if(M.isMine(F))
 							((Item)F).destroy();
 					}
@@ -147,7 +147,7 @@ public class Prayer_Cannibalism extends Prayer
 				if(B!=null)
 				{
 					Ability A=CMClass.getAbility("Butchering");
-					if(A!=null) A.invoke(M,Util.parse(B.Name()),B,true,0);
+					if(A!=null) A.invoke(M,CMParms.parse(B.Name()),B,true,0);
 				}
 				else
 				if(CMLib.dice().rollPercentage()<10)

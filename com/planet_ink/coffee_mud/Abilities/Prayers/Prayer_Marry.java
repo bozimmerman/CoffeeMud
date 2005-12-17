@@ -48,7 +48,7 @@ public class Prayer_Marry extends Prayer
 			return false;
 		}
 		String name1=(String)commands.lastElement();
-		String name2=Util.combine(commands,0,commands.size()-1);
+		String name2=CMParms.combine(commands,0,commands.size()-1);
 		MOB husband=mob.location().fetchInhabitant(name1);
 		if((husband==null)||(!CMLib.flags().canBeSeenBy(mob,husband)))
 		{

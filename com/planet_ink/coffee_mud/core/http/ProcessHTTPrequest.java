@@ -162,7 +162,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			{
 				int err=400;
 				if(command.length()>1)
-					err=Util.s_int(command.substring(1));
+					err=CMath.s_int(command.substring(1));
 				switch(err)
 				{
 				case 200: status=S_200; break;
@@ -693,8 +693,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
                                     String script=s.substring(i+l,v);
                                     JScriptablePage scope = new JScriptablePage(this);
                                     cx.initStandardObjects(scope);
-                                    String[] names = { "request", "write", "toJavaString"};
-                                    scope.defineFunctionProperties(names, JScriptablePage.class,
+                                    scope.defineFunctionProperties(JScriptablePage.makeFunctionNames(), 
+                                                                   JScriptablePage.class,
                                                                    ScriptableObject.DONTENUM);
                                     cx.evaluateString(scope, script,"<cmd>", 1, null);
                                     s.replace(i,v+l+1,scope.getBuffer());
@@ -1225,7 +1225,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			{
 				String str=(String)O;
 				if(str.toLowerCase().startsWith("content-length: "))
-					return Util.s_int(str.substring(16).trim());
+					return CMath.s_int(str.substring(16).trim());
 			}
 		}
 		return -1;
@@ -1382,17 +1382,18 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		return "[400 -- error occurred processing request]";
 	}
 
-    protected static class JScriptablePage extends ScriptableObject
+    protected static class JScriptablePage extends CMLib
     {
-        public String getClassName(){ return "page";}
-        static final long serialVersionUID=44;
+        public String getClassName(){ return "JScriptablePage";}
+        static final long serialVersionUID=43;
         StringBuffer buf=new StringBuffer("");
         public void write(Object O){buf.append( Context.toString(O));}
-        public String toJavaString(Object O){return Context.toString(O);}
         public String getBuffer(){return buf.toString();}
         ExternalHTTPRequests req=null;
         public ExternalHTTPRequests request(){return req;}
         public JScriptablePage(ExternalHTTPRequests requests){req=requests;}
+        private static String[] names = { "request", "write"};
+        public static String[] makeFunctionNames(){return makeFunctionNames(names);}
     }
     
 	public String ServerVersionString(){return HTTPserver.ServerVersionString;}

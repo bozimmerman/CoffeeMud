@@ -54,10 +54,10 @@ public class AbilityNext extends StdWebMacro
 		String flagString=httpReq.getRequestParameter("FLAGS");
 		if((flagString!=null)&&(flagString.length()>0))
 		{
-		    Vector V=Util.parseSquiggles(flagString.toUpperCase());
+		    Vector V=CMParms.parseSquiggles(flagString.toUpperCase());
 		    for(int i=0;i<Ability.FLAG_DESCS.length;i++)
 		        if(V.contains(Ability.FLAG_DESCS[i]))
-		            flags=flags|(Util.pow(2,i));
+		            flags=flags|(CMath.pow(2,i));
 		}
 		
 		String lastID="";
@@ -82,7 +82,7 @@ public class AbilityNext extends StdWebMacro
 				else
 				{
 					String levelName=httpReq.getRequestParameter("LEVEL");
-					if((levelName!=null)&&(levelName.length()>0)&&(Util.s_int(levelName)!=level))
+					if((levelName!=null)&&(levelName.length()>0)&&(CMath.s_int(levelName)!=level))
 						okToShow=false;
 				}
 			}
@@ -100,7 +100,7 @@ public class AbilityNext extends StdWebMacro
 				else
 				{
 					String levelName=httpReq.getRequestParameter("LEVEL");
-					if((levelName!=null)&&(levelName.length()>0)&&(Util.s_int(levelName)!=level))
+					if((levelName!=null)&&(levelName.length()>0)&&(CMath.s_int(levelName)!=level))
 						okToShow=false;
 				}
 			}

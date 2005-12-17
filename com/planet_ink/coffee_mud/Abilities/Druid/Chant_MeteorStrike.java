@@ -84,7 +84,7 @@ public class Chant_MeteorStrike extends Chant
 					int maxDie=adjustedLevel(mob,asLevel);
 					damage = CMLib.dice().roll(maxDie,6,30);
 					if(msg.value()>0)
-						damage = (int)Math.round(Util.div(damage,2.0));
+						damage = (int)Math.round(CMath.div(damage,2.0));
 					if(target.location()==mob.location())
 						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_BASHING,"The meteors <DAMAGE> <T-NAME>!");
 				}

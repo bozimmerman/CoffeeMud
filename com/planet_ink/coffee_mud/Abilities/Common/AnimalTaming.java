@@ -132,7 +132,7 @@ public class AnimalTaming extends CommonSkill
 		verb="taming";
 		taming=null;
 		Item cage=null;
-		String str=Util.combine(commands,0);
+		String str=CMParms.combine(commands,0);
 		MOB M=mob.location().fetchInhabitant(str);
 		taming=null;
 		if(M!=null)
@@ -183,10 +183,10 @@ public class AnimalTaming extends CommonSkill
 				commonTell(mob,"You don't see anyone called '"+str+"' here.");
 				return false;
 			}
-			taming=mob.location().fetchItem(cage,Util.combine(commands,0));
+			taming=mob.location().fetchItem(cage,CMParms.combine(commands,0));
 			if((taming==null)||(!CMLib.flags().canBeSeenBy(taming,mob))||(!(taming instanceof CagedAnimal)))
 			{
-				commonTell(mob,"You don't see any creatures in "+cage.name()+" called '"+Util.combine(commands,0)+"'.");
+				commonTell(mob,"You don't see any creatures in "+cage.name()+" called '"+CMParms.combine(commands,0)+"'.");
 				return false;
 			}
 			M=((CagedAnimal)taming).unCageMe();

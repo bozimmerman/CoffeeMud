@@ -119,7 +119,7 @@ public class Transfer extends At
 			return false;
 		}
 
-		StringBuffer cmd = new StringBuffer(Util.combine(commands,1));
+		StringBuffer cmd = new StringBuffer(CMParms.combine(commands,1));
 		if(cmd.toString().equalsIgnoreCase("here")||cmd.toString().equalsIgnoreCase("."))
 			room=mob.location();
 		else

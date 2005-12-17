@@ -79,7 +79,7 @@ public class Thief_TrophyCount extends ThiefSkill
 					set[1]="0";
 					theList.put(R.name(),set);
 				}
-				set[1]=new Integer(Util.s_int(set[1])+1).toString();
+				set[1]=new Integer(CMath.s_int(set[1])+1).toString();
 				if((affected!=null)&&(affected instanceof MOB))
 				{
 					Ability A=((MOB)affected).fetchAbility(ID());
@@ -119,12 +119,12 @@ public class Thief_TrophyCount extends ThiefSkill
 		if(profficiencyCheck(mob,0,auto))
 		{
 			StringBuffer str=new StringBuffer("");
-			str.append(Util.padRight("Name",20)+"Kills\n\r");
+			str.append(CMStrings.padRight("Name",20)+"Kills\n\r");
 			for(Enumeration e=theList.elements();e.hasMoreElements();)
 			{
 				String[] one=(String[])e.nextElement();
-				int kills=Util.s_int(one[1]);
-				str.append(Util.padRight(one[0],20)+kills+"\n\r");
+				int kills=CMath.s_int(one[1]);
+				str.append(CMStrings.padRight(one[0],20)+kills+"\n\r");
 			}
 			if(mob.session()!=null)
 				mob.session().rawPrintln(str.toString());

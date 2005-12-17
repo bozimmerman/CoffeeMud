@@ -262,13 +262,13 @@ public class Cleric extends StdCharClass
 
 	protected int holyQuality(Ability A)
 	{
-		if(Util.bset(A.flags(),Ability.FLAG_HOLY))
+		if(CMath.bset(A.flags(),Ability.FLAG_HOLY))
 		{
-			if(!Util.bset(A.flags(),Ability.FLAG_UNHOLY))
+			if(!CMath.bset(A.flags(),Ability.FLAG_UNHOLY))
 				return 1000;
 		}
 		else
-		if(Util.bset(A.flags(),Ability.FLAG_UNHOLY))
+		if(CMath.bset(A.flags(),Ability.FLAG_UNHOLY))
 			return 0;
 		return 500;
 	}

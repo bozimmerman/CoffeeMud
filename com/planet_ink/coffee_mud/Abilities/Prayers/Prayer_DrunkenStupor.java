@@ -90,7 +90,7 @@ public class Prayer_DrunkenStupor extends Prayer
 			return true;
 		if(msg.source().location()==null)
 			return true;
-		if((!Util.bset(msg.targetMajor(),CMMsg.MASK_GENERAL))
+		if((!CMath.bset(msg.targetMajor(),CMMsg.MASK_GENERAL))
 		&&(msg.targetMajor()>0))
 		{
 			if((msg.target() !=null)

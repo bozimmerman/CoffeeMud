@@ -91,7 +91,7 @@ public class PuddleMaker extends StdBehavior
 	{
 		int pct=50;
 		if(getParms().length()>0)
-			pct=Util.s_int(getParms());
+			pct=CMath.s_int(getParms());
 		return pct;
 	}
 

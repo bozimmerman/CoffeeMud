@@ -144,7 +144,7 @@ public class Archon_Multiwatch extends ArchonSkill
 			if((mob.session()!=null)&&(mob.session().previousCMD()!=null))
 			{
 				if((lastCommand!=null)
-				&&(!Util.combine(mob.session().previousCMD(),0).equals(lastCommand)))
+				&&(!CMParms.combine(mob.session().previousCMD(),0).equals(lastCommand)))
 				{
 					data[DATA_TYPEDCOMMAND]++;
 					Vector V=null;
@@ -158,7 +158,7 @@ public class Archon_Multiwatch extends ArchonSkill
 						if(M==mob) continue;
 						if(M.session()==null) continue;
 						if(!CMLib.flags().isInTheGame(M,true)) continue;
-						String hisLastCmd=Util.combine(mob.session().previousCMD(),0);
+						String hisLastCmd=CMParms.combine(mob.session().previousCMD(),0);
 						Archon_Multiwatch A=(Archon_Multiwatch)M.fetchEffect(ID());
 						if(A!=null)
 						{
@@ -168,7 +168,7 @@ public class Archon_Multiwatch extends ArchonSkill
 						}
 					}
 				}
-				lastCommand=Util.combine(mob.session().previousCMD(),0);
+				lastCommand=CMParms.combine(mob.session().previousCMD(),0);
 			}
 		}
 		return true;
@@ -176,7 +176,7 @@ public class Archon_Multiwatch extends ArchonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(Util.combine(commands,0).equalsIgnoreCase("auto"))
+		if(CMParms.combine(commands,0).equalsIgnoreCase("auto"))
 		{
 			DATA.clear();
 			IPS.clear();
@@ -223,7 +223,7 @@ public class Archon_Multiwatch extends ArchonSkill
 			return true;
 		}
 		else
-		if(Util.combine(commands,0).equalsIgnoreCase("stop"))
+		if(CMParms.combine(commands,0).equalsIgnoreCase("stop"))
 		{
 			if((DATA.size()==0)&&(IPS.size()==0))
 			{
@@ -291,26 +291,26 @@ public class Archon_Multiwatch extends ArchonSkill
 					if(data!=null) sync+=data[DATA_SYNCHROFOUND];
 				}
 				report.append("^x"+key+"^?^., Syncs: "+sync+"\n\r");
-				report.append(Util.padRight("Name",25)
-							  +Util.padRight("Speech",15)
-							  +Util.padRight("Socials",15)
-							  +Util.padRight("CMD",10)
-							  +Util.padRight("ORDERS",10)
+				report.append(CMStrings.padRight("Name",25)
+							  +CMStrings.padRight("Speech",15)
+							  +CMStrings.padRight("Socials",15)
+							  +CMStrings.padRight("CMD",10)
+							  +CMStrings.padRight("ORDERS",10)
 							  +"\n\r");
 				for(int v=0;v<V.size();v++)
 				{
 					MOB M=(MOB)V.elementAt(v);
 					int data[]=(int[])DATA.get(M);
 					if(data==null) data=new int[DATA_TOTAL];
-					report.append(Util.padRight(M.Name(),25));
-					report.append(Util.padRight(data[DATA_GOODSPEECH]
+					report.append(CMStrings.padRight(M.Name(),25));
+					report.append(CMStrings.padRight(data[DATA_GOODSPEECH]
 												+"/"+data[DATA_DIRSPEECH]
 												+"/"+data[DATA_ANYSPEECH],15));
-					report.append(Util.padRight(data[DATA_GOODSOCIAL]
+					report.append(CMStrings.padRight(data[DATA_GOODSOCIAL]
 												+"/"+data[DATA_DIRSOCIAL]
 												+"/"+data[DATA_ANYSOCIAL],15));
-					report.append(Util.padRight(data[DATA_TYPEDCOMMAND]+"",10));
-					report.append(Util.padRight(data[DATA_ORDER]+"",10));
+					report.append(CMStrings.padRight(data[DATA_TYPEDCOMMAND]+"",10));
+					report.append(CMStrings.padRight(data[DATA_ORDER]+"",10));
 					report.append("\n\r");
 				}
 				report.append("\n\r");

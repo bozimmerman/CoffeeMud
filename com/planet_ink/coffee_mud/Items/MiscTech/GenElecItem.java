@@ -83,8 +83,8 @@ public class GenElecItem extends StdElecItem
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setFuelType(Util.s_int(val)); break;
-		case 1: setPowerCapacity(Util.s_long(val)); break;
+		case 0: setFuelType(CMath.s_int(val)); break;
+		case 1: setPowerCapacity(CMath.s_long(val)); break;
 		}
 	}
 	protected int getCodeNum(String code){

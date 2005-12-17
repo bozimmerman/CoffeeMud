@@ -47,7 +47,7 @@ public class Restring extends BaseGenerics
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String allWord=Util.combine(commands,1);
+		String allWord=CMParms.combine(commands,1);
 		int x=allWord.indexOf("@");
 		MOB srchMob=mob;
 		Room srchRoom=mob.location();
@@ -98,7 +98,7 @@ public class Restring extends BaseGenerics
 					genDescription(mob,thang,++showNumber,showFlag);
 					if(showFlag<-900){ ok=true; break;}
 					if(showFlag>0){ showFlag=-1; continue;}
-					showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+					showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
 					if(showFlag<=0)
 					{
 						showFlag=-1;

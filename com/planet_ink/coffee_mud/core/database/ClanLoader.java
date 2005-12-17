@@ -55,16 +55,16 @@ public class ClanLoader
 			{
 				currentRecordPos=R.getRow();
 				String name=DBConnections.getRes(R,"CMCLID");
-				C=CMLib.clans().getClanType(Util.s_int(DBConnections.getRes(R,"CMTYPE")));
+				C=CMLib.clans().getClanType(CMath.s_int(DBConnections.getRes(R,"CMTYPE")));
 				C.setName(name);
 				C.setPremise(DBConnections.getRes(R,"CMDESC"));
 				C.setAcceptanceSettings(DBConnections.getRes(R,"CMACPT"));
 				C.setPolitics(DBConnections.getRes(R,"CMPOLI"));
 				C.setRecall(DBConnections.getRes(R,"CMRCLL"));
 				C.setDonation(DBConnections.getRes(R,"CMDNAT"));
-				C.setStatus(Util.s_int(DBConnections.getRes(R, "CMSTAT")));
+				C.setStatus(CMath.s_int(DBConnections.getRes(R, "CMSTAT")));
 				C.setMorgue(DBConnections.getRes(R,"CMMORG"));
-				C.setTrophies(Util.s_int(DBConnections.getRes(R, "CMTROP")));
+				C.setTrophies(CMath.s_int(DBConnections.getRes(R, "CMTROP")));
 				CMLib.clans().addClan(C);
 		        updateBootStatus("Clans");
 			}

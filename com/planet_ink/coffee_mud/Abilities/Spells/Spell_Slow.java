@@ -43,7 +43,7 @@ public class Spell_Slow extends Spell
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSpeed(Util.div(affectableStats.speed(),2.0));
+		affectableStats.setSpeed(CMath.div(affectableStats.speed(),2.0));
 	}
 
 

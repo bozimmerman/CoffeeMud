@@ -59,13 +59,13 @@ public class Thief_MakeBomb extends ThiefSkill
 		if(trapThis!=null)
 			theTrap=(Trap)traps.elementAt(CMLib.dice().roll(1,traps.size(),-1));
 		else
-		if(Util.combine(commands,0).equalsIgnoreCase("list"))
+		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(Util.padRight("Bomb Name",15)+" Requires\n\r");
+			StringBuffer buf=new StringBuffer(CMStrings.padRight("Bomb Name",15)+" Requires\n\r");
 			for(int r=0;r<traps.size();r++)
 			{
 				Trap T=(Trap)traps.elementAt(r);
-				buf.append(Util.padRight(T.name(),15)+" ");
+				buf.append(CMStrings.padRight(T.name(),15)+" ");
 				buf.append(T.requiresToSet()+"\n\r");
 			}
 			if(mob.session()!=null) mob.session().rawPrintln(buf.toString());

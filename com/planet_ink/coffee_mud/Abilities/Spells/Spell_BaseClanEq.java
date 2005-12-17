@@ -104,7 +104,7 @@ public class Spell_BaseClanEq extends Spell
 		    return false;
 		}
 		// Add clan power check start
-		int points=Util.s_int((String)commands.elementAt(1));
+		int points=CMath.s_int((String)commands.elementAt(1));
 		if(points<=0)
 		{
 			mob.tell("You need to use at least 1 enchantment point.");

@@ -128,7 +128,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				String str=Util.combine(commands,0);
+				String str=CMParms.combine(commands,0);
 				CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,str,CMMsg.MSG_OK_VISUAL,"You see some smoke signals in the distance.");
 				for(Enumeration e=mob.location().getArea().getProperMap();e.hasMoreElements();)
 				{

@@ -50,14 +50,14 @@ public class FieryRoom
 
     public void setParms(String newParms) {
         super.setParms(newParms);
-        newDisplay = Util.getParmStr(newParms, "Title", "A Charred Ruin");
-        newDesc = Util.getParmStr(newParms, "Description", "Whatever was once here is now nothing more than ash.");
-        directDamage = Util.getParmInt(newParms, "damage", 10);
+        newDisplay = CMParms.getParmStr(newParms, "Title", "A Charred Ruin");
+        newDesc = CMParms.getParmStr(newParms, "Description", "Whatever was once here is now nothing more than ash.");
+        directDamage = CMParms.getParmInt(newParms, "damage", 10);
         if (newParms.toUpperCase().indexOf("NOSTOP") > 0) noStop = true;
         if (newParms.toUpperCase().indexOf("NONPC") > 0) noNpc = true;
         if (newParms.toUpperCase().indexOf("NOFIRETEXT") > 0) noFireText = true;
-        eqChance = Util.getParmInt(newParms, "eqchance", 0);
-        burnTicks = Util.getParmInt(newParms, "burnticks", 12);
+        eqChance = CMParms.getParmInt(newParms, "eqchance", 0);
+        burnTicks = CMParms.getParmInt(newParms, "burnticks", 12);
         setFireTexts();
     }
 

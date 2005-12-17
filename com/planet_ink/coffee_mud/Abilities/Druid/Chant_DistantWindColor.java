@@ -49,7 +49,7 @@ public class Chant_DistantWindColor extends Chant
 			return false;
 		}
 
-		String areaName=Util.combine(commands,0).trim().toUpperCase();
+		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 		Room anyRoom=null;
 		Room newRoom=null;
 		try
@@ -75,7 +75,7 @@ public class Chant_DistantWindColor extends Chant
 		if(newRoom==null)
 		{
 			if(anyRoom==null)
-				mob.tell("You don't know of an place called '"+Util.combine(commands,0)+"'.");
+				mob.tell("You don't know of an place called '"+CMParms.combine(commands,0)+"'.");
 			else
 			if((anyRoom.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(anyRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))

@@ -45,7 +45,7 @@ public class Spell_DistantVision extends Spell
 			mob.tell("Divine a vision of where?");
 			return false;
 		}
-		String areaName=Util.combine(commands,0).trim().toUpperCase();
+		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 		Room thisRoom=null;
 		try
 		{
@@ -63,7 +63,7 @@ public class Spell_DistantVision extends Spell
 
 		if(thisRoom==null)
 		{
-			mob.tell("You can't seem to fixate on a place called '"+Util.combine(commands,0)+"'.");
+			mob.tell("You can't seem to fixate on a place called '"+CMParms.combine(commands,0)+"'.");
 			return false;
 		}
 

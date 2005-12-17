@@ -61,7 +61,7 @@ public class Spell_ChantShield extends Spell
 
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)

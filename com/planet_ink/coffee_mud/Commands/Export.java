@@ -159,7 +159,7 @@ public class Export extends StdCommand
 				mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump, or 'EMAIL' to send to your email address.");
 				return false;
 			}
-			fileName=Util.combine(commands,0);
+			fileName=CMParms.combine(commands,0);
 			if(fileName.equalsIgnoreCase("screen"))
 				fileNameCode=0;
 			else

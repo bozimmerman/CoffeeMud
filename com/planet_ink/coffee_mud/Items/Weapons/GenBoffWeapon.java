@@ -95,12 +95,12 @@ public class GenBoffWeapon extends StdBoffWeapon
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setRanges(Util.s_int(val),maxRange()); break;
-		case 1: setRanges(minRange(),Util.s_int(val)); break;
-		case 2: setWeaponType(Util.s_int(val)); break;
-		case 3: setWeaponClassification(Util.s_int(val)); break;
+		case 0: setRanges(CMath.s_int(val),maxRange()); break;
+		case 1: setRanges(minRange(),CMath.s_int(val)); break;
+		case 2: setWeaponType(CMath.s_int(val)); break;
+		case 3: setWeaponClassification(CMath.s_int(val)); break;
 		case 4: setAmmunitionType(val); break;
-		case 5: setAmmoCapacity(Util.s_int(val)); break;
+		case 5: setAmmoCapacity(CMath.s_int(val)); break;
 		}
 	}
 	protected int getCodeNum(String code){

@@ -61,14 +61,14 @@ public class FactionList extends StdCommand
     public String formatFactionLine(String name,int faction) 
     {
         StringBuffer line=new StringBuffer();
-        line.append("  "+Util.padRight(Util.capitalizeAndLower(CMLib.factions().getName(name).toLowerCase()),21)+" ");
+        line.append("  "+CMStrings.padRight(CMStrings.capitalizeAndLower(CMLib.factions().getName(name).toLowerCase()),21)+" ");
         Faction.FactionRange FR=CMLib.factions().getRange(name,faction);
         if(FR==null)
-	        line.append(Util.padRight(""+faction,17)+" ");
+	        line.append(CMStrings.padRight(""+faction,17)+" ");
         else
-	        line.append(Util.padRight(FR.name(),17)+" ");
+	        line.append(CMStrings.padRight(FR.name(),17)+" ");
         line.append("[");
-        line.append(Util.padRight(calcRangeBar(name,faction),25));
+        line.append(CMStrings.padRight(calcRangeBar(name,faction),25));
         line.append("]\n\r");
         return line.toString();
     }
@@ -76,7 +76,7 @@ public class FactionList extends StdCommand
     public String calcRangeBar(String factionID, int faction) 
     {
 		StringBuffer bar=new StringBuffer();
-        Double fill=new Double(Util.div(CMLib.factions().getRangePercent(factionID,faction),4));
+        Double fill=new Double(CMath.div(CMLib.factions().getRangePercent(factionID,faction),4));
         for(int i=0;i<fill.intValue();i++) 
         {
             bar.append("*");

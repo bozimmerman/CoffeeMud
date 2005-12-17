@@ -73,7 +73,7 @@ public class Prayer_Tithe extends Prayer
 			{
 				invoker().tell(msg.source().name()+" tithes.");
 			    String currency=((Coins)msg.target()).getCurrency();
-				CMLib.beanCounter().addMoney(invoker(),currency,Util.mul(((Coins)msg.target()).getDenomination(),(num/10)));
+				CMLib.beanCounter().addMoney(invoker(),currency,CMath.mul(((Coins)msg.target()).getDenomination(),(num/10)));
 			}
 		}
 		if((msg.sourceMinor()==CMMsg.TYP_BUY)
@@ -88,7 +88,7 @@ public class Prayer_Tithe extends Prayer
 					if(invoker()!=msg.target())
 					{
 						invoker().tell(msg.source().name()+" tithes.");
-						CMLib.beanCounter().addMoney(invoker(),Util.div(price.absoluteGoldPrice,10.0));
+						CMLib.beanCounter().addMoney(invoker(),CMath.div(price.absoluteGoldPrice,10.0));
 					}
 			}
 		}

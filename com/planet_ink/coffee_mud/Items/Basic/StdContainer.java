@@ -339,7 +339,7 @@ public class StdContainer extends StdItem implements Container
 				{
 					setContainer(null);
 					mob.giveItem(this);
-					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+					if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 						mob.location().recoverRoomStats();
 					else
 						mob.envStats().setWeight(mob.envStats().weight()+recursiveWeight(this));
@@ -348,7 +348,7 @@ public class StdContainer extends StdItem implements Container
 				{
 					setContainer(null);
 					unWear();
-					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+					if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 						mob.location().recoverRoomStats();
 				}
 				break;
@@ -358,7 +358,7 @@ public class StdContainer extends StdItem implements Container
 				{
 					Item newitem=(Item)msg.tool();
 					newitem.setContainer(this);
-					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+					if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 						mob.location().recoverRoomStats();
 				}
 				break;
@@ -367,7 +367,7 @@ public class StdContainer extends StdItem implements Container
 				{
 					setContainer(null);
 					recursiveDropMOB(mob,mob.location(),this,this instanceof DeadBody);
-					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+					if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 						mob.location().recoverRoomStats();
 				}
 				break;
@@ -376,7 +376,7 @@ public class StdContainer extends StdItem implements Container
 				if(CMLib.flags().canBeSeenBy(this,mob))
 				{
 					StringBuffer buf=new StringBuffer("");
-					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+					if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 						buf.append(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight: "+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rDeath : "+dispossessionTimeLeftString()+"\n\r"+description()+"'\n\rKey  : "+keyName()+"\n\rMisc  :'"+text());
 					else
 						buf.append(description()+"\n\r");
@@ -384,7 +384,7 @@ public class StdContainer extends StdItem implements Container
                         buf.append(examineString(msg.source()));
 					if((isOpen)&&((capacity>0)||(getContents().size()>0)))
 					{
-						buf.append(name()+" contains:^<!ENTITY container \""+name()+"\"^>"+(Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)?" ":"\n\r"));
+						buf.append(name()+" contains:^<!ENTITY container \""+name()+"\"^>"+(CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS)?" ":"\n\r"));
 						Vector newItems=new Vector();
 						if((this instanceof Drink)&&(((Drink)this).liquidRemaining()>0))
 						{
@@ -411,7 +411,7 @@ public class StdContainer extends StdItem implements Container
 								if((item!=null)&&(item.container()==this))
 									newItems.addElement(item);
 							}
-							buf.append(CMLib.lister().lister(mob,newItems,true,"CMItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
+							buf.append(CMLib.lister().lister(mob,newItems,true,"CMItem","",false,CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
 						}
 						else
 						if(owner instanceof Room)
@@ -424,7 +424,7 @@ public class StdContainer extends StdItem implements Container
 								if((item!=null)&&(item.container()==this))
 									newItems.addElement(item);
 							}
-							buf.append(CMLib.lister().lister(mob,newItems,true,"CRItem","",false,Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
+							buf.append(CMLib.lister().lister(mob,newItems,true,"CRItem","",false,CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
 						}
 					}
 					else
@@ -471,7 +471,7 @@ public class StdContainer extends StdItem implements Container
 			if(R!=null)
 			{
 				recursiveDropMOB(msg.source(),R,this,this instanceof DeadBody);
-				if(!Util.bset(msg.sourceCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_OPTIMIZE))
 				{
 					msg.source().location().recoverRoomStats();
 					if(msg.source().location()!=R)
@@ -517,8 +517,8 @@ public class StdContainer extends StdItem implements Container
 		if (!(E instanceof Item)) return false;
 		if(containType==0) return true;
 		for(int i=0;i<20;i++)
-			if(Util.isSet((int)containType,i))
-				switch(Util.pow(2,i))
+			if(CMath.isSet((int)containType,i))
+				switch(CMath.pow(2,i))
 				{
 				case CONTAIN_LIQUID:
 					if((((Item)E).material()&EnvResource.MATERIAL_LIQUID)>0)

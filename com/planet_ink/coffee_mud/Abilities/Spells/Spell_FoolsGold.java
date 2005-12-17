@@ -61,12 +61,12 @@ public class Spell_FoolsGold extends Spell
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if((commands.size()==0)||(Util.s_int(Util.combine(commands,0))==0))
+		if((commands.size()==0)||(CMath.s_int(CMParms.combine(commands,0))==0))
 		{
 			mob.tell("You must specify how big of a pile of gold to create.");
 			return false;
 		}
-		int amount=Util.s_int(Util.combine(commands,0));
+		int amount=CMath.s_int(CMParms.combine(commands,0));
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

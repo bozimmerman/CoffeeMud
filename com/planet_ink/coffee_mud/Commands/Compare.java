@@ -75,10 +75,10 @@ public class Compare extends StdCommand
             }
 		}
 		long compareThisCode = compareThis.rawProperLocationBitmap();
-		if(Util.bset(compareThisCode,Item.HELD)
-		&&(!Util.bset(compareThisCode,Item.WIELD))
+		if(CMath.bset(compareThisCode,Item.HELD)
+		&&(!CMath.bset(compareThisCode,Item.WIELD))
 		&&(compareThisCode!=Item.HELD))
-			compareThisCode=Util.unsetb(compareThisCode,Item.HELD);
+			compareThisCode=CMath.unsetb(compareThisCode,Item.HELD);
 		Item toThis=null;
 		if(commands.size()==1)
 		{
@@ -91,10 +91,10 @@ public class Compare extends StdCommand
 				&&(I.rawLogicalAnd()==compareThis.rawLogicalAnd()))
 				{
 					long compareThatCode = I.rawProperLocationBitmap();
-					if(Util.bset(compareThatCode,Item.HELD)
-					&&(!Util.bset(compareThatCode,Item.WIELD))
+					if(CMath.bset(compareThatCode,Item.HELD)
+					&&(!CMath.bset(compareThatCode,Item.WIELD))
 					&&(compareThatCode!=Item.HELD))
-						compareThatCode=Util.unsetb(compareThatCode,Item.HELD);
+						compareThatCode=CMath.unsetb(compareThatCode,Item.HELD);
 					if(compareThisCode==compareThatCode)
 					{
 						if(!I.amWearingAt(Item.INVENTORY))
@@ -111,7 +111,7 @@ public class Compare extends StdCommand
 			}
 		}
 		else
-			toThis=mob.fetchInventory(null,Util.combine(commands,1));
+			toThis=mob.fetchInventory(null,CMParms.combine(commands,1));
 		if((toThis==null)||((toThis!=null)&&(!CMLib.flags().canBeSeenBy(toThis,mob))))
 		{
 			mob.tell(getScr("Compare","donthave",((String)commands.elementAt(1))));
@@ -122,7 +122,7 @@ public class Compare extends StdCommand
 		{
 			int cDmg=compareThis.baseEnvStats().damage();
 			int tDmg=toThis.baseEnvStats().damage();
-			cDmg+=(int)Math.round(Util.div(compareThis.baseEnvStats().attackAdjustment()-toThis.baseEnvStats().attackAdjustment(),100.0)*cDmg);
+			cDmg+=(int)Math.round(CMath.div(compareThis.baseEnvStats().attackAdjustment()-toThis.baseEnvStats().attackAdjustment(),100.0)*cDmg);
 
 			if(cDmg==tDmg)
 				mob.tell(getScr("Compare","lokksame",compareThis.name(),toThis.name()));

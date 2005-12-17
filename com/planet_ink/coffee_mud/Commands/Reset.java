@@ -57,7 +57,7 @@ public class Reset extends StdCommand
 						W.setAmmoCapacity(0);
 						W.setUsesRemaining(100);
 						str=mob.session().prompt(lead+I.Name()+" new weapon type: ");
-						W.setWeaponType(Util.s_int(str));
+						W.setWeaponType(CMath.s_int(str));
 					}
 					else
 						W.setAmmunitionType(str.trim());
@@ -142,7 +142,7 @@ public class Reset extends StdCommand
 				{
 					if(Import.objDescs[i][0].equals(s))
 					{
-						rightMat=Util.s_int(Import.objDescs[i][1]);
+						rightMat=CMath.s_int(Import.objDescs[i][1]);
 						break;
 					}
 				}
@@ -366,7 +366,7 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("bankdata"))
 		{
-			String bank=Util.combine(commands,1);
+			String bank=CMParms.combine(commands,1);
 			if(bank.length()==0){
 				mob.tell("Which bank?");
 				return false;
@@ -649,14 +649,14 @@ public class Reset extends StdCommand
 					if(B==null)
 					{
 						B=(Behavior)((Behavior)O).copyOf();
-						B.setParms(Util.combine(commands,2));
+						B.setParms(CMParms.combine(commands,2));
 						A.addBehavior(B);
 						changed=true;
 					}
 					else
-					if(!B.getParms().equals(Util.combine(commands,2)))
+					if(!B.getParms().equals(CMParms.combine(commands,2)))
 					{
-						B.setParms(Util.combine(commands,2));
+						B.setParms(CMParms.combine(commands,2));
 						changed=true;
 					}
 				}
@@ -667,14 +667,14 @@ public class Reset extends StdCommand
 					if(B==null)
 					{
 						B=(Ability)((Ability)O).copyOf();
-						B.setMiscText(Util.combine(commands,2));
+						B.setMiscText(CMParms.combine(commands,2));
 						A.addNonUninvokableEffect(B);
 						changed=true;
 					}
 					else
-					if(!B.text().equals(Util.combine(commands,2)))
+					if(!B.text().equals(CMParms.combine(commands,2)))
 					{
-						B.setMiscText(Util.combine(commands,2));
+						B.setMiscText(CMParms.combine(commands,2));
 						changed=true;
 					}
 				}
@@ -1279,7 +1279,7 @@ public class Reset extends StdCommand
 			int a=ADJ.text().toUpperCase().indexOf("DAMAGE+");
 			int a2=ADJ.text().toUpperCase().indexOf(" ",a+4);
 			if(a2<0) a2=ADJ.text().length();
-			int num=Util.s_int(ADJ.text().substring(a+7,a2));
+			int num=CMath.s_int(ADJ.text().substring(a+7,a2));
 			if(num>W.baseEnvStats().damage())
 			{
 				fixdam=false;
@@ -1291,7 +1291,7 @@ public class Reset extends StdCommand
 			int a=ADJ.text().toUpperCase().indexOf("ATTACK+");
 			int a2=ADJ.text().toUpperCase().indexOf(" ",a+4);
 			if(a2<0) a2=ADJ.text().length();
-			int num=Util.s_int(ADJ.text().substring(a+7,a2));
+			int num=CMath.s_int(ADJ.text().substring(a+7,a2));
 			if(num>W.baseEnvStats().attackAdjustment())
 			{
 				fixatt=false;
@@ -1312,7 +1312,7 @@ public class Reset extends StdCommand
 			int a=ADJ.text().toUpperCase().indexOf("ARMOR-");
 			int a2=ADJ.text().toUpperCase().indexOf(" ",a+4);
 			if(a2<0) a2=ADJ.text().length();
-			int num=Util.s_int(ADJ.text().substring(a+6,a2));
+			int num=CMath.s_int(ADJ.text().substring(a+6,a2));
 			if(num>A.baseEnvStats().armor())
 			{
 				fixit=false;
@@ -1340,9 +1340,9 @@ public class Reset extends StdCommand
 			if(spaceafter>plusminus)
 			{
 				String number=s.substring(plusminus+1,spaceafter).trim();
-				if(Util.isNumber(number))
+				if(CMath.isNumber(number))
 				{
-					int num=Util.s_int(number);
+					int num=CMath.s_int(number);
 					int spacebefore=s.lastIndexOf(" ",plusminus);
 					if(spacebefore<0) spacebefore=0;
 					if(spacebefore<plusminus)
@@ -1411,9 +1411,9 @@ public class Reset extends StdCommand
 		int otherArm=0;
 		if(ADJ!=null)
 		{
-			otherArm=Util.getParmPlus(ADJ.text(),"arm")*-1;
-			otherAtt=Util.getParmPlus(ADJ.text(),"att");
-			otherDam=Util.getParmPlus(ADJ.text(),"dam");
+			otherArm=CMParms.getParmPlus(ADJ.text(),"arm")*-1;
+			otherAtt=CMParms.getParmPlus(ADJ.text(),"att");
+			otherDam=CMParms.getParmPlus(ADJ.text(),"dam");
 		}
 		int curArmor=I.baseEnvStats().armor()+otherArm;
 		double curAttack=new Integer(I.baseEnvStats().attackAdjustment()+otherAtt).doubleValue();
@@ -1431,7 +1431,7 @@ public class Reset extends StdCommand
 			double weightpts=0;
 			for(int i=0;i<Item.wornWeights.length-1;i++)
 			{
-				if(Util.isSet(worndata,i))
+				if(CMath.isSet(worndata,i))
 				{
 					weightpts+=Item.wornWeights[i+1];
 					if(!I.rawLogicalAnd()) break;
@@ -1461,7 +1461,7 @@ public class Reset extends StdCommand
 				useArray=clothPoints;
 				break;
 			}
-			int which=(int)Math.round(Util.div(curArmor,weightpts)+1);
+			int which=(int)Math.round(CMath.div(curArmor,weightpts)+1);
 			if(which<0) which=0;
 			if(which>=useArray.length)
 				which=useArray.length-1;
@@ -1511,10 +1511,10 @@ public class Reset extends StdCommand
 		if(ADJ!=null)
 		{
 			String newText=ADJ.text();
-			int ab=Util.getParmPlus(newText,"abi");
-			int arm=Util.getParmPlus(newText,"arm")*-1;
-			int att=Util.getParmPlus(newText,"att");
-			int dam=Util.getParmPlus(newText,"dam");
+			int ab=CMParms.getParmPlus(newText,"abi");
+			int arm=CMParms.getParmPlus(newText,"arm")*-1;
+			int att=CMParms.getParmPlus(newText,"att");
+			int dam=CMParms.getParmPlus(newText,"dam");
 			if(savedI instanceof Weapon)
 				level+=(arm*2);
 			else
@@ -1526,22 +1526,22 @@ public class Reset extends StdCommand
 			level+=ab*5;
 			
 			
-			int dis=Util.getParmPlus(newText,"dis");
+			int dis=CMParms.getParmPlus(newText,"dis");
 			if(dis!=0) level+=5;
-			int sen=Util.getParmPlus(newText,"sen");
+			int sen=CMParms.getParmPlus(newText,"sen");
 			if(sen!=0) level+=5;
-			level+=(int)Math.round(5.0*Util.getParmDoublePlus(newText,"spe"));
+			level+=(int)Math.round(5.0*CMParms.getParmDoublePlus(newText,"spe"));
 			for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 			{
-				int stat=Util.getParmPlus(newText,CharStats.TRAITS[i].substring(0,3).toLowerCase());
-				int max=Util.getParmPlus(newText,("max"+(CharStats.TRAITS[i].substring(0,3).toLowerCase())));
+				int stat=CMParms.getParmPlus(newText,CharStats.TRAITS[i].substring(0,3).toLowerCase());
+				int max=CMParms.getParmPlus(newText,("max"+(CharStats.TRAITS[i].substring(0,3).toLowerCase())));
 				level+=(stat*5);
 				level+=(max*5);
 			}
 
-			int hit=Util.getParmPlus(newText,"hit");
-			int man=Util.getParmPlus(newText,"man");
-			int mv=Util.getParmPlus(newText,"mov");
+			int hit=CMParms.getParmPlus(newText,"hit");
+			int man=CMParms.getParmPlus(newText,"man");
+			int mv=CMParms.getParmPlus(newText,"mov");
 			level+=(hit/5);
 			level+=(man/5);
 			level+=(mv/5);

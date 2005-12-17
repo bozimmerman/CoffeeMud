@@ -59,7 +59,7 @@ public class Thief_Mug extends ThiefSkill
 			mob.tell("Mug what from "+target.name()+"?");
 			return false;
 		}
-		String itemToSteal=Util.combine(commands,0);
+		String itemToSteal=CMParms.combine(commands,0);
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

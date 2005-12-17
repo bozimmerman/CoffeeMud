@@ -64,8 +64,8 @@ public class Fighter_CritStrike extends FighterSkill
 		&&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_THROWN)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,(-90)+mob.charStats().getStat(CharStats.STRENGTH),false)))
 		{
-			double pctRecovery=(Util.div(profficiency(),100.0)*Math.random());
-			int bonus=(int)Math.round(Util.mul((msg.value()),pctRecovery));
+			double pctRecovery=(CMath.div(profficiency(),100.0)*Math.random());
+			int bonus=(int)Math.round(CMath.mul((msg.value()),pctRecovery));
 			msg.setValue(msg.value()+bonus);
 			helpProfficiency(mob);
 		}

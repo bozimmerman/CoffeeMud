@@ -44,7 +44,7 @@ public class Spell_EnchantArrows extends Spell
 
 	public void affectEnvStats(Environmental host, EnvStats affectableStats)
 	{
-        affectableStats.setAbility(affectableStats.ability()+Util.s_int(text()));
+        affectableStats.setAbility(affectableStats.ability()+CMath.s_int(text()));
         affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BONUS);
 	}
 	
@@ -73,13 +73,13 @@ public class Spell_EnchantArrows extends Spell
 			{
 				mob.location().send(mob,msg);
 				Ability A=target.fetchEffect(ID());
-				if((A!=null)&&(Util.s_int(A.text())>2))
+				if((A!=null)&&(CMath.s_int(A.text())>2))
 					mob.tell("You are not able to enchant "+target.name()+" further.");
 				else
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> glows!");
 					if(A==null){ A=(Ability)copyOf(); target.addNonUninvokableEffect(A);}
-					A.setMiscText(""+(Util.s_int(A.text())+1));
+					A.setMiscText(""+(CMath.s_int(A.text())+1));
 					target.recoverEnvStats();
 					mob.recoverEnvStats();
 				}

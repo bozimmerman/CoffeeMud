@@ -46,12 +46,12 @@ public class Prayer_FeedTheDead extends Prayer
 		int amount=100;
 		if(!auto)
 		{
-			if((commands.size()==0)||(!Util.isNumber((String)commands.lastElement())))
+			if((commands.size()==0)||(!CMath.isNumber((String)commands.lastElement())))
 			{
 				mob.tell("Feed how much experience?");
 				return false;
 			}
-			amount=Util.s_int((String)commands.lastElement());
+			amount=CMath.s_int((String)commands.lastElement());
 			if((amount<=0)||((amount>mob.getExperience())
 			&&(!CMSecurity.isDisabled("EXPERIENCE"))
 			&&!mob.charStats().getCurrentClass().expless()

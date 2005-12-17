@@ -49,7 +49,7 @@ public class ClanDeclare extends BaseClanner
 		}
 		String rel=((String)commands.lastElement()).toUpperCase();
 		commands.removeElementAt(commands.size()-1);
-		String clan=Util.combine(commands,1).toUpperCase();
+		String clan=CMParms.combine(commands,1).toUpperCase();
 		commands.addElement(rel);
 		StringBuffer msg=new StringBuffer("");
 		Clan C=null;
@@ -107,7 +107,7 @@ public class ClanDeclare extends BaseClanner
 					}
 					if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDECLARE,true))
 					{
-						clanAnnounce(mob,getScr("ClanDeclare","declared",C.typeName(),C.clanID(),Util.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase()),C2.name()));
+						clanAnnounce(mob,getScr("ClanDeclare","declared",C.typeName(),C.clanID(),CMStrings.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase()),C2.name()));
 						C.setClanRelations(C2.clanID(),newRole,System.currentTimeMillis());
 						C.update();
 						return false;

@@ -49,10 +49,10 @@ public class Skill_ScrollCopy extends StdSkill
 			mob.tell("Copy what from what?");
 			return false;
 		}
-		Item target=mob.fetchCarried(null,Util.combine(commands,1));
+		Item target=mob.fetchCarried(null,CMParms.combine(commands,1));
 		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
-			mob.tell("You don't see '"+Util.combine(commands,1)+"' here.");
+			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
 			return false;
 		}
 

@@ -41,21 +41,21 @@ public class CMLister extends StdLibrary implements ListingLibrary
                                         boolean longLook)
     {
         if(useName)
-            return Util.capitalizeFirstLetter(item.name());
+            return CMStrings.capitalizeFirstLetter(item.name());
         else
         if((longLook)&&(item instanceof Item)&&(((Item)item).container()!=null))
-            return Util.capitalizeFirstLetter("     "+item.name());
+            return CMStrings.capitalizeFirstLetter("     "+item.name());
         else
         if(!item.name().equals(item.Name()))
-            return Util.capitalizeFirstLetter(item.name()+" is here.");
+            return CMStrings.capitalizeFirstLetter(item.name()+" is here.");
         else
         if(item instanceof MOB)
-            return Util.capitalizeFirstLetter(((MOB)item).displayText(viewer));
+            return CMStrings.capitalizeFirstLetter(((MOB)item).displayText(viewer));
         else
         if(item.displayText().length()>0)
-            return Util.capitalizeFirstLetter(item.displayText());
+            return CMStrings.capitalizeFirstLetter(item.displayText());
         else
-            return Util.capitalizeFirstLetter(item.name());
+            return CMStrings.capitalizeFirstLetter(item.name());
     }
     
     public int getReps(Environmental item, 
@@ -99,10 +99,10 @@ public class CMLister extends StdLibrary implements ListingLibrary
         if(reps==0) say.append("      ");
         else
         if(reps>=99)
-            say.append("("+Util.padLeftPreserve(""+(reps+1),3)+") ");
+            say.append("("+CMStrings.padLeftPreserve(""+(reps+1),3)+") ");
         else
         if(reps>0)
-            say.append(" ("+Util.padLeftPreserve(""+(reps+1),2)+") ");
+            say.append(" ("+CMStrings.padLeftPreserve(""+(reps+1),2)+") ");
     }
     
     public StringBuffer lister(MOB mob, 
@@ -123,11 +123,11 @@ public class CMLister extends StdLibrary implements ListingLibrary
             int reps=getReps(item,things,mob,useName,longLook);
 			if(CMLib.flags().canBeSeenBy(item,mob)
 			&&((item.displayText().length()>0)
-			    ||Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)
+			    ||CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)
 				||useName))
 			{
                 appendReps(reps,say,compress);
-				if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+				if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 					say.append("^H("+CMClass.className(item)+")^N ");
                 if((!compress)&&(!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
                     say.append(CMProps.mxpImage(item," H=10 W=10",""," "));
@@ -136,12 +136,12 @@ public class CMLister extends StdLibrary implements ListingLibrary
 				if(tag!=null)
 				{
 				    if(nameTagParm)
-					    say.append("^<"+tag+Util.replaceAll(tagParm,"*",item.name())+"^>");
+					    say.append("^<"+tag+CMStrings.replaceAll(tagParm,"*",item.name())+"^>");
 				    else
 				        say.append("^<"+tag+tagParm+"^>");
 				}
                 if(compress) say.append(CMLib.flags().colorCodes(item,mob)+"^I");
-                say.append(Util.endWithAPeriod(itemSeenString(mob,item,useName,longLook)));
+                say.append(CMStrings.endWithAPeriod(itemSeenString(mob,item,useName,longLook)));
 				if(tag!=null)
 				    say.append("^</"+tag+"^>");
 				if(!compress) 
@@ -165,7 +165,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
                         int reps2=getReps(item2,V,mob,useName,false);
                         if(CMLib.flags().canBeSeenBy(item2,mob)
                         &&((item2.displayText().length()>0)
-                            ||Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)
+                            ||CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)
                             ||(useName)))
                         {
                             if(!compress) say.append("      ");
@@ -174,7 +174,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
                                 say.append(CMProps.mxpImage(item," H=10 W=10",""," "));
                             say.append("^I");
                             if(compress)say.append(CMLib.flags().colorCodes(item2,mob)+"^I");
-                            say.append(Util.endWithAPeriod(itemSeenString(mob,item2,useName,longLook)));
+                            say.append(CMStrings.endWithAPeriod(itemSeenString(mob,item2,useName,longLook)));
                             if(!compress) 
                                 say.append(CMLib.flags().colorCodes(item2,mob)+"^N\n\r");
                             else
@@ -260,7 +260,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 					lines.append("\n\r");
 					column=1;
 				}
-				lines.append(Util.padRight(list,24)+" ");
+				lines.append(CMStrings.padRight(list,24)+" ");
 			}
 		}
 		lines.append("\n\r");
@@ -310,7 +310,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 					lines.append("\n\r");
 					column=1;
 				}
-				lines.append(Util.padRight(list,24)+" ");
+				lines.append(CMStrings.padRight(list,24)+" ");
 			}
 		}
 		lines.append("\n\r");
@@ -355,7 +355,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 					lines.append("\n\r");
 					column=1;
 				}
-				lines.append(Util.padRight(list,37)+" ");
+				lines.append(CMStrings.padRight(list,37)+" ");
 			}
 		}
 		lines.append("\n\r");
@@ -381,11 +381,11 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		        s="^<"+tag+"^>"+s+"^</"+tag+"^>";
 			if(s.length()>18)
 			{
-				topicBuffer.append(Util.padRight(s,(18*2)+1)+" ");
+				topicBuffer.append(CMStrings.padRight(s,(18*2)+1)+" ");
 				++col;
 			}
 			else
-				topicBuffer.append(Util.padRight(s,18)+" ");
+				topicBuffer.append(CMStrings.padRight(s,18)+" ");
 		}
 		return topicBuffer;
 	}

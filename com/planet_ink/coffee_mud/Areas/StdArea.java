@@ -161,7 +161,7 @@ public class StdArea implements Area
 	}
 	public void setSubOpList(String list)
 	{
-		subOps=Util.parseSemicolons(list,true);
+		subOps=CMParms.parseSemicolons(list,true);
 	}
 	public void addSubOp(String username){subOps.addElement(username);}
 	public void delSubOp(String username)
@@ -277,11 +277,11 @@ public class StdArea implements Area
 			if(!((Area)parents.elementAt(i)).okMessage(myHost,msg))
 				return false;
 
-		if((getTechLevel()>0)&&(!Util.bset(getTechLevel(),Area.THEME_FANTASY)))
+		if((getTechLevel()>0)&&(!CMath.bset(getTechLevel(),Area.THEME_FANTASY)))
 		{
-			if((Util.bset(msg.sourceCode(),CMMsg.MASK_MAGIC))
-			||(Util.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
-			||(Util.bset(msg.othersCode(),CMMsg.MASK_MAGIC)))
+			if((CMath.bset(msg.sourceCode(),CMMsg.MASK_MAGIC))
+			||(CMath.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
+			||(CMath.bset(msg.othersCode(),CMMsg.MASK_MAGIC)))
 			{
 				Room room=null;
 				if((msg.target()!=null)
@@ -304,7 +304,7 @@ public class StdArea implements Area
 			}
 		}
 		else
-		if((getTechLevel()>0)&&(!Util.bset(getTechLevel(),Area.THEME_TECHNOLOGY)))
+		if((getTechLevel()>0)&&(!CMath.bset(getTechLevel(),Area.THEME_TECHNOLOGY)))
 		{
 			if((msg.tool()!=null)
 			&&(msg.tool() instanceof Electronics))
@@ -644,9 +644,9 @@ public class StdArea implements Area
 		{
 			Collections.sort(levelRanges);
 			Collections.sort(alignRanges);
-			statData[Area.AREASTAT_MEDLEVEL]=((Integer)levelRanges.elementAt((int)Math.round(Math.floor(Util.div(levelRanges.size(),2.0))))).intValue();
-			statData[Area.AREASTAT_MEDALIGN]=((Integer)alignRanges.elementAt((int)Math.round(Math.floor(Util.div(alignRanges.size(),2.0))))).intValue();
-			statData[Area.AREASTAT_AVGLEVEL]=(int)Math.round(Util.div(statData[Area.AREASTAT_TOTLEVEL],statData[Area.AREASTAT_POPULATION]));
+			statData[Area.AREASTAT_MEDLEVEL]=((Integer)levelRanges.elementAt((int)Math.round(Math.floor(CMath.div(levelRanges.size(),2.0))))).intValue();
+			statData[Area.AREASTAT_MEDALIGN]=((Integer)alignRanges.elementAt((int)Math.round(Math.floor(CMath.div(alignRanges.size(),2.0))))).intValue();
+			statData[Area.AREASTAT_AVGLEVEL]=(int)Math.round(CMath.div(statData[Area.AREASTAT_TOTLEVEL],statData[Area.AREASTAT_POPULATION]));
 			statData[Area.AREASTAT_AVGALIGN]=(int)Math.round(new Long(totalAlignments).doubleValue()/new Integer(statData[Area.AREASTAT_POPULATION]).doubleValue());
 			s.append("Population     : "+statData[Area.AREASTAT_POPULATION]+"\n\r");
             LegalBehavior B=CMLib.utensils().getLegalBehavior(this);
@@ -663,8 +663,8 @@ public class StdArea implements Area
 			s.append("Level range    : "+statData[Area.AREASTAT_MINLEVEL]+" to "+statData[Area.AREASTAT_MAXLEVEL]+"\n\r");
 			s.append("Average level  : "+statData[Area.AREASTAT_AVGLEVEL]+"\n\r");
 			s.append("Median level   : "+statData[Area.AREASTAT_MEDLEVEL]+"\n\r");
-			if(theFaction!=null) s.append("Avg. "+Util.padRight(theFaction.name(),10)+": "+theFaction.fetchRangeName(statData[Area.AREASTAT_AVGALIGN])+"\n\r");
-			if(theFaction!=null) s.append("Med. "+Util.padRight(theFaction.name(),10)+": "+theFaction.fetchRangeName(statData[Area.AREASTAT_MEDALIGN])+"\n\r");
+			if(theFaction!=null) s.append("Avg. "+CMStrings.padRight(theFaction.name(),10)+": "+theFaction.fetchRangeName(statData[Area.AREASTAT_AVGALIGN])+"\n\r");
+			if(theFaction!=null) s.append("Med. "+CMStrings.padRight(theFaction.name(),10)+": "+theFaction.fetchRangeName(statData[Area.AREASTAT_MEDALIGN])+"\n\r");
 		}
 		Resources.submitResource("HELP_"+Name().toUpperCase(),s);
 		return s;
@@ -991,7 +991,7 @@ public class StdArea implements Area
         {
             A=(Area)e.nextElement();
             V.addElement(A);
-            Util.addToVector(A.getParentsRecurse(),V);
+            CMParms.addToVector(A.getParentsRecurse(),V);
         }
         return V;
     }
@@ -1104,10 +1104,10 @@ public class StdArea implements Area
 		switch(getCodeNum(code))
 		{
 		case 0: return;
-		case 1: setClimateType(Util.s_int(val)); break;
+		case 1: setClimateType(CMath.s_int(val)); break;
 		case 2: setDescription(val); break;
 		case 3: setMiscText(val); break;
-		case 4: setTechLevel(Util.s_int(val)); break;
+		case 4: setTechLevel(CMath.s_int(val)); break;
 		}
 	}
 	public boolean sameAs(Environmental E)

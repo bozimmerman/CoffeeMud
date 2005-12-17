@@ -113,10 +113,10 @@ public class GrinderRooms
 		{
 			String x=httpReq.getRequestParameter("XGRID");
 			if(x==null)x="";
-			((GridLocale)R).setXSize(Util.s_int(x));
+			((GridLocale)R).setXSize(CMath.s_int(x));
 			String y=httpReq.getRequestParameter("YGRID");
 			if(y==null)y="";
-			((GridLocale)R).setYSize(Util.s_int(y));
+			((GridLocale)R).setYSize(CMath.s_int(y));
 			((GridLocale)R).clearGrid(null);
 		}
 

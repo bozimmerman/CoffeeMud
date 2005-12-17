@@ -89,7 +89,7 @@ public class StdCoins extends StdItem implements Coins
 	    denomination=valuePerCoin;
 	    setMiscText(getCurrency()+"/"+valuePerCoin);
 	}
-	public double getTotalValue(){return Util.mul(getDenomination(),getNumberOfCoins());}
+	public double getTotalValue(){return CMath.mul(getDenomination(),getNumberOfCoins());}
 	public String getCurrency(){ return currency;}
 	public void setCurrency(String named)
 	{
@@ -104,7 +104,7 @@ public class StdCoins extends StdItem implements Coins
 	    if(x>=0)
 	    {
 	        currency=text.substring(0,x);
-	        denomination=Util.s_double(text.substring(x+1));
+	        denomination=CMath.s_double(text.substring(x+1));
 	        setDynamicMaterial();
 	    }
 	    else

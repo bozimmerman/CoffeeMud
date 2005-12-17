@@ -174,7 +174,7 @@ public class DrowWizard extends DrowElf
 		boolean retval = super.okMessage(myHost,msg);
 
 		if((msg.amITarget(this))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
 		{
             if(CMLib.dice().rollPercentage() <= magicResistance)

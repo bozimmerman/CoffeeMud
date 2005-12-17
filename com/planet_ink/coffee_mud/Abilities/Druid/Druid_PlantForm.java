@@ -74,7 +74,7 @@ public class Druid_PlantForm extends StdAbility
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
-        &&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+        &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&((msg.amITarget(affected))))
 		{
 			MOB target=(MOB)msg.target();
@@ -100,7 +100,7 @@ public class Druid_PlantForm extends StdAbility
 		super.affectEnvStats(affected,affectableStats);
 		if((newRace!=null)&&(affected instanceof MOB))
 		{
-			affectableStats.setName(Util.startWithAorAn(raceName.toLowerCase()));
+			affectableStats.setName(CMStrings.startWithAorAn(raceName.toLowerCase()));
 			int oldAdd=affectableStats.weight()-affected.baseEnvStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
@@ -199,7 +199,7 @@ public class Druid_PlantForm extends StdAbility
         int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this);
         int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
         if(qualClassLevel<0) classLevel=30;
-		String choice=Util.combine(commands,0);
+		String choice=CMParms.combine(commands,0);
 		if(choice.trim().length()>0)
 		{
 			StringBuffer buf=new StringBuffer("Plant Forms:\n\r");
@@ -252,7 +252,7 @@ public class Druid_PlantForm extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE);
-				raceName=Util.capitalizeAndLower(Util.startWithAorAn(raceName.toLowerCase()));
+				raceName=CMStrings.capitalizeAndLower(CMStrings.startWithAorAn(raceName.toLowerCase()));
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
 				mob.confirmWearability();
 			}

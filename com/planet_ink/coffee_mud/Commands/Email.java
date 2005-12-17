@@ -50,15 +50,15 @@ public class Email extends StdCommand
         &&(commands.elementAt(1) instanceof String)
         &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0))
         {
-            String name=Util.combine(commands,1);
+            String name=CMParms.combine(commands,1);
             if(name.equalsIgnoreCase("BOX"))
             {
                 Vector msgs=CMLib.database().DBReadJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX));
                 while((mob.session()!=null)&&(!mob.session().killFlag()))
                 {
                     Vector mymsgs=new Vector();
-                    StringBuffer messages=new StringBuffer("^X"+Util.padCenter(mob.Name()+"'s MailBox",48)+"^?^.\n\r");
-                    messages.append("^X### "+Util.padRight("From",15)+" "+Util.padRight("Date",20)+" Subject^?^.\n\r");
+                    StringBuffer messages=new StringBuffer("^X"+CMStrings.padCenter(mob.Name()+"'s MailBox",48)+"^?^.\n\r");
+                    messages.append("^X### "+CMStrings.padRight("From",15)+" "+CMStrings.padRight("Date",20)+" Subject^?^.\n\r");
                     for(int num=0;num<msgs.size();num++)
                     {
                         Vector thismsg=(Vector)msgs.elementAt(num);
@@ -67,16 +67,16 @@ public class Email extends StdCommand
                         ||to.equalsIgnoreCase(mob.Name()))
                         {
                             mymsgs.addElement(thismsg);
-                            messages.append(Util.padRight(""+mymsgs.size(),4)
-                                    +Util.padRight(((String)thismsg.elementAt(1)),16)
-                                    +Util.padRight(CMLib.time().date2String(Util.s_long((String)thismsg.elementAt(2))),21)
+                            messages.append(CMStrings.padRight(""+mymsgs.size(),4)
+                                    +CMStrings.padRight(((String)thismsg.elementAt(1)),16)
+                                    +CMStrings.padRight(CMLib.time().date2String(CMath.s_long((String)thismsg.elementAt(2))),21)
                                     +((String)thismsg.elementAt(4))
                                     +"\n\r");
                         }
                     }
                     if(mymsgs.size()==0)
                     {
-                        if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
+                        if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
                             mob.tell("You have no email waiting, but then, it's probably been forwarded to you already.");
                         else
                             mob.tell("You have no email waiting.");
@@ -84,9 +84,9 @@ public class Email extends StdCommand
                     }
                     mob.tell(messages.toString());
                     String s=mob.session().prompt("Enter a message #","");
-                    if((!Util.isInteger(s))||(mob.session().killFlag()))
+                    if((!CMath.isInteger(s))||(mob.session().killFlag()))
                         return false;
-                    int num=Util.s_int(s);
+                    int num=CMath.s_int(s);
                     if((num<=0)||(num>mymsgs.size()))
                         mob.tell("That is not a valid number.");
                     else
@@ -96,7 +96,7 @@ public class Email extends StdCommand
                         String key=(String)thismsg.elementAt(0);
                         String from=(String)thismsg.elementAt(1);
                         String date=(String)thismsg.elementAt(2);
-                        date=CMLib.time().date2String(Util.s_long(date));
+                        date=CMLib.time().date2String(CMath.s_long(date));
                         String subj=(String)thismsg.elementAt(4);
                         String message=(String)thismsg.elementAt(5);
                         messages=new StringBuffer("");
@@ -116,7 +116,7 @@ public class Email extends StdCommand
                             &&(!from.equals(mob.Name()))
                             &&(!from.equalsIgnoreCase("BOX"))
                             &&(CMLib.map().getLoadPlayer(from)!=null))
-                                execute(mob,Util.makeVector(getAccessWords()[0],from));
+                                execute(mob,CMParms.makeVector(getAccessWords()[0],from));
                             else
                                 mob.tell("You can not reply to this email.");
                         }
@@ -139,7 +139,7 @@ public class Email extends StdCommand
                     mob.tell("There is no player called '"+name+"' to send email to.  If you were trying to read your mail, try EMAIL BOX.  If you were trying to change your email address, just enter EMAIL without any parameters.");
                     return false;
                 }
-                if(!Util.bset(M.getBitmap(),MOB.ATT_AUTOFORWARD))
+                if(!CMath.bset(M.getBitmap(),MOB.ATT_AUTOFORWARD))
                 {
                     if(!mob.session().confirm("Send email to '"+M.Name()+"' (Y/n)?","Y"))
                         return false;

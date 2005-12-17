@@ -98,7 +98,7 @@ public class Chant_Blight extends Chant
 		&&(msg.target() instanceof MOB)
 		&&(((MOB)msg.target()).charStats().getMyRace().racialCategory().equals("Vegetation")))
 		{
-			int recovery=(int)Math.round(Util.div((msg.value()),2.0));
+			int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
 			msg.setValue(msg.value()+recovery);
 		}
 		return true;

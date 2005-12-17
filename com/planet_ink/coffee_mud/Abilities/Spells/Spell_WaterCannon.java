@@ -79,11 +79,11 @@ public class Spell_WaterCannon extends Spell
 				invoker=mob;
 
 				int damage = 0;
-				int maxDie=(int)Math.round(Util.div(adjustedLevel(mob,asLevel),2.0));
+				int maxDie=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel),2.0));
 				damage += CMLib.dice().roll(maxDie,8,15);
 				mob.location().send(mob,msg2);
 				if((msg2.value()>0)||(msg.value()>0))
-					damage = (int)Math.round(Util.div(damage,2.0));
+					damage = (int)Math.round(CMath.div(damage,2.0));
 
 				if(target.location()==mob.location())
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_WATER,Weapon.TYPE_BASHING,"The water blast <DAMAGE> <T-NAME>!");

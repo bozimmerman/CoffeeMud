@@ -51,7 +51,7 @@ public class Archon_Metacraft extends CraftingSkill
 				Ability A=(Ability)e.nextElement();
 				if(((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL)
 				&&((" Cooking Baking FoodPrep Apothecary ").indexOf(A.ID())<0)
-				&&(Util.bset(A.flags(),Ability.FLAG_CRAFTING)))
+				&&(CMath.bset(A.flags(),Ability.FLAG_CRAFTING)))
 					V.addElement(A.copyOf());
 			}
 			while(V.size()>0)
@@ -96,7 +96,7 @@ public class Archon_Metacraft extends CraftingSkill
 			return false;
 		}
 		Ability skill=null;
-		String recipe=Util.combine(commands,0);
+		String recipe=CMParms.combine(commands,0);
 		for(int i=0;i<craftingSkills.size();i++)
 		{
 			skill=(Ability)craftingSkills.elementAt(i);

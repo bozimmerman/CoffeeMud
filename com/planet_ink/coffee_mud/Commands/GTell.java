@@ -39,7 +39,7 @@ public class GTell extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String text=Util.combine(commands,1);
+		String text=CMParms.combine(commands,1);
 		if(text.length()==0)
 		{
 			mob.tell("Tell the group what?");
@@ -49,7 +49,7 @@ public class GTell extends StdCommand
 		
 		if((commands.size()>2)
 		&&((((String)commands.elementAt(1)).equalsIgnoreCase("last"))
-		&&(Util.isNumber(Util.combine(commands,2))))
+		&&(CMath.isNumber(CMParms.combine(commands,2))))
 		&&(mob.playerStats()!=null))
 		{
 			Vector V=mob.playerStats().getGTellStack();
@@ -57,7 +57,7 @@ public class GTell extends StdCommand
 				mob.tell("No telling.");
 			else
 			{
-				int num=Util.s_int(Util.combine(commands,2));
+				int num=CMath.s_int(CMParms.combine(commands,2));
 				if(num>V.size()) num=V.size();
 				for(int i=V.size()-num;i<V.size();i++)
 					mob.tell((String)V.elementAt(i));
@@ -78,7 +78,7 @@ public class GTell extends StdCommand
 			&&(target.okMessage(target,msg)))
 			{
 				if(target.playerStats()!=null)
-					target.playerStats().addGTellStack(CMLib.coffeeFilter().fullOutFilter(target.session(),target,mob,target,null,Util.removeColors(msg.sourceMessage()),false));
+					target.playerStats().addGTellStack(CMLib.coffeeFilter().fullOutFilter(target.session(),target,mob,target,null,CMStrings.removeColors(msg.sourceMessage()),false));
 				target.executeMsg(target,msg);
 				if(msg.trailerMsgs()!=null)
 				{

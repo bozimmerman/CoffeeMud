@@ -246,7 +246,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
         String lastWord="";
         if(lastSp>lastSpace)
         {
-            lastWord=Util.removeColors(buf.substring(lastSpace,lastSp)).trim().toUpperCase();
+            lastWord=CMStrings.removeColors(buf.substring(lastSpace,lastSp)).trim().toUpperCase();
             while((lastWord.length()>0)&&(!Character.isLetterOrDigit(lastWord.charAt(0))))
                   lastWord=lastWord.substring(1);
             while((lastWord.length()>0)&&(!Character.isLetterOrDigit(lastWord.charAt(lastWord.length()-1))))
@@ -259,7 +259,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
         {
             for(int i=(lastSpace-1);((i>=0)&&(!Character.isLetterOrDigit(buf.charAt(i))));i--)
                 lastWord=buf.charAt(i)+lastWord;
-            lastWord=Util.removeColors(lastWord).trim().toUpperCase();
+            lastWord=CMStrings.removeColors(lastWord).trim().toUpperCase();
         }
         return lastWord;
     }
@@ -416,7 +416,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
                             ||doSagain)
 							{
 								if(c2=='Y')
-									buf.replace(loop,lastParen+1,Util.sameCase("y",buf.charAt(loop+1)));
+									buf.replace(loop,lastParen+1,CMStrings.sameCase("y",buf.charAt(loop+1)));
 								else
 									buf.delete(loop,lastParen+1);
 								doSagain=true;
@@ -425,7 +425,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							else
 							{
 								if(c2=='Y')
-									buf.replace(loop,lastParen+1,Util.sameCase("ies",buf.charAt(loop+1)));
+									buf.replace(loop,lastParen+1,CMStrings.sameCase("ies",buf.charAt(loop+1)));
 								else
 								{
 									buf.deleteCharAt(lastParen);

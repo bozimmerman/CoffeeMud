@@ -50,11 +50,11 @@ public class Song_Distraction extends Song
 		// from trying to do ANYTHING except sleep
 		if(msg.amISource(mob))
 		{
-			if((!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
 			&&(mob.isInCombat())
 			&&(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_MIND)+50))
-			&&((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
+			&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appear(s) distracted by the singing.");
 				return false;

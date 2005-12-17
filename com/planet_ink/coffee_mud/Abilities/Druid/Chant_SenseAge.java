@@ -72,7 +72,7 @@ public class Chant_SenseAge extends Chant
 					if(M.baseCharStats().getStat(CharStats.AGE)<=0)
 						mob.tell("You can't determine how old "+target.name()+" is with this magic.");
 					else
-						mob.tell(target.name()+" is "+Util.startWithAorAn(M.baseCharStats().ageName().toLowerCase())+" "+M.baseCharStats().raceName()+", aged "+M.baseCharStats().getStat(CharStats.AGE)+" years.");
+						mob.tell(target.name()+" is "+CMStrings.startWithAorAn(M.baseCharStats().ageName().toLowerCase())+" "+M.baseCharStats().raceName()+", aged "+M.baseCharStats().getStat(CharStats.AGE)+" years.");
 				}
 				else
 				{

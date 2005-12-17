@@ -145,7 +145,7 @@ public class Prayer_UndeniableFaith extends Prayer
 		boolean success=profficiencyCheck(mob,-(levelDiff*25),auto);
 		int type=affectType(auto);
 		int mal=CMMsg.MASK_MALICIOUS;
-		if(auto){ type=Util.unsetb(type,CMMsg.MASK_MALICIOUS); mal=0;}
+		if(auto){ type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS); mal=0;}
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

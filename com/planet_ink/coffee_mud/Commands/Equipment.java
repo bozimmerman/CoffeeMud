@@ -53,7 +53,7 @@ public class Equipment extends StdCommand
 	    int numWears=0;
         boolean paragraphView=(CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)>1)
                             ||((seer!=mob)&&(CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)>0))
-                            ||Util.bset(seer.getBitmap(),MOB.ATT_COMPRESS);
+                            ||CMath.bset(seer.getBitmap(),MOB.ATT_COMPRESS);
 		for(int l=0;l<Item.wornOrder.length;l++)
 		{
 		    found=0;
@@ -64,7 +64,7 @@ public class Equipment extends StdCommand
             else
             {
                 header="^N(^H"+wornName+"^?)";
-                header+=Util.SPACES.substring(0,26-header.length())+": ^!";
+                header+=CMStrings.SPACES.substring(0,26-header.length())+": ^!";
             }
 			for(int i=0;i<mob.inventorySize();i++)
 			{
@@ -139,7 +139,7 @@ public class Equipment extends StdCommand
                         }
                         else
                         {
-    				        tat=Util.capitalizeAndLower(tat.substring(wornName.length()+1).toLowerCase());
+    				        tat=CMStrings.capitalizeAndLower(tat.substring(wornName.length()+1).toLowerCase());
                             if(tat.length()>53) tat=tat.substring(0,50)+"...";
                             msg.append(header+tat+"^?\n\r");
                         }
@@ -184,13 +184,13 @@ public class Equipment extends StdCommand
             boolean paragraphView=(CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)==2);
             if(paragraphView)
             {
-    			if((commands.size()>1)&&(Util.combine(commands,1).equalsIgnoreCase("long")))
+    			if((commands.size()>1)&&(CMParms.combine(commands,1).equalsIgnoreCase("long")))
     				mob.session().wraplessPrintln("You are wearing "+getEquipment(mob,mob,true));
     			else
     				mob.session().wraplessPrintln("You are wearing "+getEquipment(mob,mob,false));
             }
             else
-            if((commands.size()>1)&&(Util.combine(commands,1).equalsIgnoreCase("long")))
+            if((commands.size()>1)&&(CMParms.combine(commands,1).equalsIgnoreCase("long")))
                 mob.session().wraplessPrintln("You are wearing:\n\r"+getEquipment(mob,mob,true));
             else
                 mob.session().wraplessPrintln("You are wearing:\n\r"+getEquipment(mob,mob,false));

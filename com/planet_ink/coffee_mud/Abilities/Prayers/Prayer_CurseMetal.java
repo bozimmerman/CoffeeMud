@@ -58,7 +58,7 @@ public class Prayer_CurseMetal extends Prayer
 		if(!(affected instanceof Item)) return true;
 		if(!msg.amITarget(affected)) return true;
 
-		if(Util.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
+		if(CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
 		{
 			msg.source().tell(affected.name()+" is filled with unholy heat!");
 			return false;

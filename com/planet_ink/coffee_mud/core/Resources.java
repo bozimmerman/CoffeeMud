@@ -34,6 +34,10 @@ import java.util.*;
 */
 public class Resources
 {
+    private Resources(){super();}
+    private static Resources inst=new Resources();
+    public static Resources instance(){return inst;}
+    
 	private static boolean compress=false;
 	private static DVector resources=new DVector(3);
     

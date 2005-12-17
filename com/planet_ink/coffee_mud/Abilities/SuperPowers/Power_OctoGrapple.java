@@ -62,13 +62,13 @@ public class Power_OctoGrapple extends SuperPower
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
 		if((msg.amISource(mob))
-		&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
 		&&(mob!=invoker))
 		{
-			if((Util.bset(msg.sourceMajor(),CMMsg.MASK_EYES))
-			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH))
-			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
+			if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_EYES))
+			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH))
+			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
 			{
 				if(msg.sourceMessage()!=null)
 				{

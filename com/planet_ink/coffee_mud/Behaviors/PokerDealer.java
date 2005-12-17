@@ -122,15 +122,15 @@ public class PokerDealer extends StdBehavior
     public void setParms(String newParms)
     {
         super.setParms(newParms);
-        String str=Util.getParmStr(newParms,"GAME","0");
-        if(Util.isInteger(str)&&(Util.s_int(str)>=0)&&(Util.s_int(str)<GAME_DESCS.length))
-            gameRules=Util.s_int(str);
+        String str=CMParms.getParmStr(newParms,"GAME","0");
+        if(CMath.isInteger(str)&&(CMath.s_int(str)>=0)&&(CMath.s_int(str)<GAME_DESCS.length))
+            gameRules=CMath.s_int(str);
         else
         for(int i=0;i<GAME_DESCS.length;i++)
             if(str.equalsIgnoreCase(GAME_DESCS[i]))
                 gameRules=i;
-        anti=Util.getParmDouble(newParms,"ANTI",1.0);
-        minPlayers=Util.getParmInt(newParms,"MINPLAYERS",2);
+        anti=CMParms.getParmDouble(newParms,"ANTI",1.0);
+        minPlayers=CMParms.getParmInt(newParms,"MINPLAYERS",2);
     }
     
     // the game that is being played.  Depending on behavior parameters,
@@ -746,14 +746,14 @@ public class PokerDealer extends StdBehavior
                 {
                     // now we parse their words, and see if every word is a number,
                     // and whether every number is between 1-5
-                    Vector parsed=Util.parse(textOfSay);
+                    Vector parsed=CMParms.parse(textOfSay);
                     HandOfCards hand=theDeck().getPlayerHand(msg.source());
                     boolean numbersOK=(hand!=null)&&(parsed.size()>0);
                     if(hand!=null)
                     for(int i=0;i<parsed.size();i++)
-                        if((!Util.isInteger((String)parsed.elementAt(i)))
-                        ||(Util.s_int((String)parsed.elementAt(i))<=0)
-                        ||(Util.s_int((String)parsed.elementAt(i))>hand.numberOfCards()))
+                        if((!CMath.isInteger((String)parsed.elementAt(i)))
+                        ||(CMath.s_int((String)parsed.elementAt(i))<=0)
+                        ||(CMath.s_int((String)parsed.elementAt(i))>hand.numberOfCards()))
                         { numbersOK=false; break;}
                     
                     // if it checks out, we remove the specified cards,
@@ -764,8 +764,8 @@ public class PokerDealer extends StdBehavior
                         Vector removed=new Vector();
                         // make a list of cards to remove
                         for(int i=0;i<parsed.size();i++)
-                            if(!removed.contains(cards.elementAt(Util.s_int((String)parsed.elementAt(i))-1)))
-                                removed.addElement(cards.elementAt(Util.s_int((String)parsed.elementAt(i))-1));
+                            if(!removed.contains(cards.elementAt(CMath.s_int((String)parsed.elementAt(i))-1)))
+                                removed.addElement(cards.elementAt(CMath.s_int((String)parsed.elementAt(i))-1));
                         // remove them from our cards list
                         for(int i=0;i<removed.size();i++)
                             cards.removeElement(removed.elementAt(i));

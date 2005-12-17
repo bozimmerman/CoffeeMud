@@ -17,6 +17,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.lang.reflect.Modifier;
 
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ScriptableObject;
+
 
 /* 
    Copyright 2000-2005 Bo Zimmerman
@@ -33,8 +36,13 @@ import java.lang.reflect.Modifier;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CMLib
+public class CMLib extends ScriptableObject
 {
+    public CMLib(){super();}
+    static final long serialVersionUID=42;
+    public String getClassName(){return "CMLib";}
+    private static CMLib inst=new CMLib();
+    public static CMLib instance(){return inst;}
     
     public static final int LIBRARY_DATABASE=0;
     public static final int LIBRARY_THREADS=1;
@@ -75,6 +83,48 @@ public class CMLib
 
     private static final CMObject[] libraries=new CMObject[LIBRARY_TOTAL];
     private static boolean[] registered=new boolean[LIBRARY_TOTAL];
+    
+    private static String[] funcs={
+        "math","parms","strings","classes","security","directions","log",
+        "resources","props","libraries","newFile","toJavaString",
+        "database","threads","intermud","httpUtils","lister","beanCounter",
+        "coffeeShops","combat","help","tracking","masking","channels","commands",
+        "english","slavery","journals","coffeeMaker","coffeeFilter","sessions",
+        "flags","xml","socials","utensils","coffeeTables","map","quests","ableMapper",
+        "encoder","smtp","dice","factions","clans","polls","time","color"
+    };
+    
+    
+    public static String[] makeFunctionNames(){return funcs;}
+    public static String[] makeFunctionNames(String[] add)
+    {
+        String[] newNames=new String[funcs.length+add.length];
+        for(int i=0;i<funcs.length;i++)
+            newNames[i]=funcs[i];
+        for(int i=0;i<add.length;i++)
+            newNames[funcs.length+i]=add[i];
+        return newNames;
+    }
+
+    public static CMath math(){return CMath.instance();}
+    public static CMParms parms(){return CMParms.instance();}
+    public static CMStrings strings(){return CMStrings.instance();}
+    public static CMClass classes(){return CMClass.instance();}
+    public static CMSecurity security(){return CMSecurity.instance();}
+    public static Directions directions(){return Directions.instance();}
+    public static Log log(){return Log.instance();}
+    public static Resources resources(){return Resources.instance();}
+    public static CMProps props(){return CMProps.instance();}
+    public static CMLib libraries(){return CMLib.instance();}
+    public static CMFile newFile(String filename, MOB user, boolean pleaseLogErrors)
+    { return new CMFile(filename,user,pleaseLogErrors,false);}
+    public static CMFile newFile(String filename, MOB user, boolean pleaseLogErrors, boolean forceAllow)
+    { return new CMFile(filename,user,pleaseLogErrors,forceAllow);}
+    public static CMFile newFile(String currentPath, String filename, MOB user, boolean pleaseLogErrors)
+    { return new CMFile(currentPath,filename,user,pleaseLogErrors,false); }
+    public static CMFile newFile(String currentPath, String filename, MOB user, boolean pleaseLogErrors, boolean forceAllow)
+    { return new CMFile(currentPath,filename,user,pleaseLogErrors,forceAllow); }
+    public static String toJavaString(Object O){return Context.toString(O);}
     
     public static DatabaseEngine database(){return (DatabaseEngine)libraries[LIBRARY_DATABASE];}
     public static ThreadEngine threads(){return (ThreadEngine)libraries[LIBRARY_THREADS];}

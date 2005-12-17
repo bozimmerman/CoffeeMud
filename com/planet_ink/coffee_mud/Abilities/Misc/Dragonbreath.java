@@ -174,7 +174,7 @@ public class Dragonbreath extends StdAbility
 						maxDie = 10;
 					damage += CMLib.dice().roll(maxDie,6,1);
 					if(msg.value()>0)
-						damage = (int)Math.round(Util.div(damage,2.0));
+						damage = (int)Math.round(CMath.div(damage,2.0));
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|strikeType,WeaponType,"^F^<FIGHT^>The "+stuffWord+" <DAMAGE> <T-NAME>!^</FIGHT^>^?");
 				}
 			}

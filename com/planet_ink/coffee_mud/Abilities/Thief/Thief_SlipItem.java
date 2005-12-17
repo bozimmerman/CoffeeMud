@@ -55,10 +55,10 @@ public class Thief_SlipItem extends ThiefSkill
 		}
 		String itemToSteal=(String)commands.elementAt(0);
 
-		MOB target=mob.location().fetchInhabitant(Util.combine(commands,1));
+		MOB target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+Util.combine(commands,1)+"' here.");
+			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
 			return false;
 		}
 		if(mob.isInCombat())

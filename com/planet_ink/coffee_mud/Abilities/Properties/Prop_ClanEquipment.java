@@ -101,7 +101,7 @@ public class Prop_ClanEquipment extends Property
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
-		Vector V = Util.parse(text);
+		Vector V = CMParms.parse(text);
 		if (V.size() < 4) {
 			return;
 		}
@@ -195,7 +195,7 @@ public class Prop_ClanEquipment extends Property
 	{
 		int manaRequired = 50;
 		// For simplicity, there's no charges BUT use costs a flat 10% mana
-		manaRequired = (int) Util.div(mob.maxState().getMana(), 10);
+		manaRequired = (int) CMath.div(mob.maxState().getMana(), 10);
 		if (manaRequired > mob.curState().getMana())
 		{
 			mob.tell("You don't have enough mana.");
@@ -386,8 +386,8 @@ public class Prop_ClanEquipment extends Property
 			    && (msg.source().rangeToTarget() == 0)
 			    &&
 			    ( (lastMessage == null) || (lastMessage.indexOf("The magic around")<0))
-			    && ( (Util.bset(msg.targetMajor(), CMMsg.MASK_HANDS))
-			        || (Util.bset(msg.targetMajor(), CMMsg.MASK_MOVE))))
+			    && ( (CMath.bset(msg.targetMajor(), CMMsg.MASK_HANDS))
+			        || (CMath.bset(msg.targetMajor(), CMMsg.MASK_MOVE))))
 			{
 				CMMsg msg2 = CMClass.getMsg(mob, source, this,
 				                          CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL, null);

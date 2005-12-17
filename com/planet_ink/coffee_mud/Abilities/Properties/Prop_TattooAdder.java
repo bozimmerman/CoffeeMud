@@ -105,7 +105,7 @@ public class Prop_TattooAdder extends Property
 		if((tattoo.length()>0)
 		&&(Character.isDigit(tattoo.charAt(0)))
 		&&(tattoo.indexOf(" ")>0)
-		&&(Util.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
+		&&(CMath.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
 			tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
 		if(mob.fetchTattoo(tattoo)!=null)
 		{

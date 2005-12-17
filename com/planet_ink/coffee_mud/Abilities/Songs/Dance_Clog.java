@@ -53,6 +53,6 @@ public class Dance_Clog extends Dance
 		if(invoker==null) return;
 		if(affected==invoker) return;
 
-		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(Util.div(affectableStats.getStat(CharStats.DEXTERITY),2.0)));
+		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(CMath.div(affectableStats.getStat(CharStats.DEXTERITY),2.0)));
 	}
 }

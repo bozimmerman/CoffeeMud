@@ -48,7 +48,7 @@ public class BaseClanner extends StdCommand
 		if(C.allowedToDoThis(mob,Clan.FUNC_CLANVOTEOTHER)<=0)
 		   return false;
 		if(!voteIfNecessary) return true;
-		String matter=Util.combine(commands,0);
+		String matter=CMParms.combine(commands,0);
 		for(Enumeration e=C.votes();e.hasMoreElements();)
 		{
 			Clan.ClanVote CV=(Clan.ClanVote)e.nextElement();
@@ -137,7 +137,7 @@ public class BaseClanner extends StdCommand
 		String[] roles=Clan.ROL_DESCS[government];
 		for(int i=0;i<roles.length;i++)
 			if(roles[i].startsWith(position.toUpperCase()))
-				return Util.pow(2,i-1);
+				return CMath.pow(2,i-1);
 		return -1;
 	}
 

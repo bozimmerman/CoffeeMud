@@ -186,7 +186,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
         synchronized(R.baseEnvStats())
         {
             int mask=R.baseEnvStats().sensesMask();
-            if(Util.bset(mask,EnvStats.SENSE_ROOMSYNC))
+            if(CMath.bset(mask,EnvStats.SENSE_ROOMSYNC))
                 return;
             R.baseEnvStats().setSensesMask(mask|EnvStats.SENSE_ROOMSYNC);
         }
@@ -318,7 +318,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 					}
 			}catch(Exception e){}
 		}
-        R.baseEnvStats().setSensesMask(Util.unsetb(R.baseEnvStats().sensesMask(),EnvStats.SENSE_ROOMSYNC));
+        R.baseEnvStats().setSensesMask(CMath.unsetb(R.baseEnvStats().sensesMask(),EnvStats.SENSE_ROOMSYNC));
 	}
 	
 	public void tryFillInExtraneousExternal(WorldMap.CrossExit EX, Exit ox, Room linkFrom)
@@ -690,8 +690,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		int len=roomID().length()+2;
 		int comma=childCode.indexOf(',',len);
 		if(comma<0) return null;
-		int x=Util.s_int(childCode.substring(len,comma));
-		int y=Util.s_int(childCode.substring(comma+1,childCode.length()-1));
+		int x=CMath.s_int(childCode.substring(len,comma));
+		int y=CMath.s_int(childCode.substring(comma+1,childCode.length()-1));
 		return getMakeGridRoom(x,y);
 	}
 

@@ -92,8 +92,8 @@ public class Undead extends StdRace
 				if((amount>0)
 				&&(msg.tool()!=null)
 				&&(msg.tool() instanceof Ability)
-				&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HEALING|Ability.FLAG_HOLY))
-				&&(!Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
+				&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HEALING|Ability.FLAG_HOLY))
+				&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
 				{
 					CMLib.combat().postDamage(msg.source(),mob,msg.tool(),amount,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The healing magic from <S-NAME> <DAMAGE> <T-NAMESELF>.");
 					if((mob.getVictim()==null)&&(mob!=msg.source())&&(mob.isMonster()))
@@ -106,8 +106,8 @@ public class Undead extends StdRace
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
-			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
-			&&(!Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY)))
+			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
+			&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY)))
 			{
 				int amount=msg.value();
 				if(amount>0)
@@ -118,7 +118,7 @@ public class Undead extends StdRace
 			}
 			else
 			if((msg.amITarget(mob))
-			&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)
+			&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)
 				||(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 			&&((msg.targetMinor()==CMMsg.TYP_DISEASE)
 				||(msg.targetMinor()==CMMsg.TYP_GAS)
@@ -180,7 +180,7 @@ public class Undead extends StdRace
 	}
 	public String healthText(MOB mob)
 	{
-		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
 			return "^r" + mob.name() + "^r is near destruction!^N";

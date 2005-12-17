@@ -81,7 +81,7 @@ public class Painting extends CommonSkill
 			commonTell(mob,"Paint on what? Enter \"paint [canvas name]\" or paint \"wall\".");
 			return false;
 		}
-		String str=Util.combine(commands,0);
+		String str=CMParms.combine(commands,0);
 		building=null;
 		messedUp=false;
 		Session S=mob.session();
@@ -128,7 +128,7 @@ public class Painting extends CommonSkill
 		{
 			String name=S.prompt("Enter the key words (not the description) for this work.\n\r:","");
 			if(name.trim().length()==0) return false;
-			Vector V=Util.parse(name.toUpperCase());
+			Vector V=CMParms.parse(name.toUpperCase());
 			for(int v=0;v<V.size();v++)
 			{
 				String vstr=" "+((String)V.elementAt(v))+" ";

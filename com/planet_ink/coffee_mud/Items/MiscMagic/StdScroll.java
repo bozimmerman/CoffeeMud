@@ -178,7 +178,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 							for(int u=0;u<Spells.size();u++)
 							{
 								Ability A=(Ability)Spells.elementAt(u);
-								theNews.append("Level "+Util.padRight(""+CMLib.ableMapper().lowestQualifyingLevel(A.ID()),2)+": "+A.name()+"\n\r");
+								theNews.append("Level "+CMStrings.padRight(""+CMLib.ableMapper().lowestQualifyingLevel(A.ID()),2)+": "+A.name()+"\n\r");
 							}
 							mob.tell(theNews.toString());
 						}
@@ -271,8 +271,8 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		switch(getCodeNum(code))
 		{
 		case 0: return;
-		case 1: baseEnvStats().setLevel(Util.s_int(val)); break;
-		case 2: baseEnvStats().setAbility(Util.s_int(val)); break;
+		case 1: baseEnvStats().setLevel(CMath.s_int(val)); break;
+		case 2: baseEnvStats().setAbility(CMath.s_int(val)); break;
 		case 3: setMiscText(val); break;
 		}
 	}

@@ -53,7 +53,7 @@ public class Practice extends StdCommand
 			if(teacher!=null) commands.removeElementAt(commands.size()-1);
 		}
 
-		String abilityName=Util.combine(commands,0);
+		String abilityName=CMParms.combine(commands,0);
 
 		if(teacher==null)
 		for(int i=0;i<mob.location().numInhabitants();i++)

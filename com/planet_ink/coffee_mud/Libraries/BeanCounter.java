@@ -60,7 +60,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	    if(currencies.containsKey(code)) 
 	        return (DVector)currencies.get(code);
         currency=currency.substring(x+1).trim();
-        Vector V=Util.parseSemicolons(currency,true);
+        Vector V=CMParms.parseSemicolons(currency,true);
         DVector DV=new DVector(3);
         String s=null;
         String num=null;
@@ -72,11 +72,11 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
             x=s.indexOf(" ");
             if(x<0) continue;
             num=s.substring(0,x).trim();
-            if(Util.isDouble(num))
-                d=Util.s_double(num);
+            if(CMath.isDouble(num))
+                d=CMath.s_double(num);
             else
-            if(Util.isInteger(num))
-                d=new Integer(Util.s_int(num)).doubleValue();
+            if(CMath.isInteger(num))
+                d=new Integer(CMath.s_int(num)).doubleValue();
             else
                 continue;
             s=s.substring(x+1).trim();
@@ -174,7 +174,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	                if(denom<absoluteAmount)
 	                {
 	                    num=Math.round(Math.floor(absoluteAmount/denom));
-		                diff=Math.abs(absoluteAmount-Util.mul(denom,num));
+		                diff=Math.abs(absoluteAmount-CMath.mul(denom,num));
 		                if(((diff/absoluteAmount)<0.05)&&(num>=10))
 		                {
 		                    lowestDenom=denom;
@@ -194,7 +194,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{   
 	    double lowDenom=lowestAbbreviatedDenomination(currency,absoluteAmount);
 	    long lowAmt=Math.round(absoluteAmount/lowDenom);
-	    return Util.mul(lowDenom,lowAmt);
+	    return CMath.mul(lowDenom,lowAmt);
 	}
 	public String abbreviatedPrice(MOB shopkeeper, double absoluteAmount)
 	{ return abbreviatedPrice(getCurrency(shopkeeper),absoluteAmount);}
@@ -273,7 +273,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		        if(number>0)
 		        {
 		            V.addElement(new Double(denom));
-		            absoluteValue-=Util.mul(denom,number);
+		            absoluteValue-=CMath.mul(denom,number);
 		        }
 		    }
 		}
@@ -326,7 +326,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		    double denom=((Double)V.elementAt(d)).doubleValue();
 	        long number=Math.round(Math.floor(absoluteValue/denom));
 	        String name=getDenominationName(currency,denom,number);
-            absoluteValue-=Util.mul(denom,number);
+            absoluteValue-=CMath.mul(denom,number);
             if(str.length()>0) str.append(", ");
             str.append(name);
 		}

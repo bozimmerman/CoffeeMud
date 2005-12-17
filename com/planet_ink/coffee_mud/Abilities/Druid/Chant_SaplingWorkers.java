@@ -159,7 +159,7 @@ public class Chant_SaplingWorkers extends Chant
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("TreeGolem"));
 		String resourceName=EnvResource.RESOURCE_DESCS[material&EnvResource.RESOURCE_MASK].toLowerCase();
 		String name=resourceName+" sapling";
-		name=Util.startWithAorAn(name).toLowerCase();
+		name=CMStrings.startWithAorAn(name).toLowerCase();
 		newMOB.setName(name);
 		Ability A=null;
 		boolean start=false;

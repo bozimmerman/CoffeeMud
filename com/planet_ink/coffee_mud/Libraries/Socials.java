@@ -266,14 +266,14 @@ public class Socials extends StdLibrary implements SocialsList
 	public boolean modifySocialInterface(MOB mob, String socialString)
 		throws IOException
 	{
-        Vector socials=Util.parse(socialString);
+        Vector socials=CMParms.parse(socialString);
         if(socials.size()==0)
         {
             mob.tell("Which social?");
             return false;
         }
         String name=((String)socials.firstElement()).toUpperCase().trim();
-        String rest=socials.size()>1?Util.combine(socials,1):"";
+        String rest=socials.size()>1?CMParms.combine(socials,1):"";
         socials=getAllSocialObjects((String)socials.firstElement());
         if((socials.size()==0)
         &&((mob.session()==null)
@@ -318,12 +318,12 @@ public class Socials extends StdLibrary implements SocialsList
                 {
                     mob.session().rawPrintln(str.toString());
                     s=mob.session().prompt("\n\rSelect an option or RETURN: ","");
-                    if(!Util.isInteger(s))
+                    if(!CMath.isInteger(s))
                     {
                         soc=null;
                         break;
                     }
-                    selection=Util.s_int(s);
+                    selection=CMath.s_int(s);
                 }
                 if((selection>0)&&(selection<=socials.size()))
                 {
@@ -370,7 +370,7 @@ public class Socials extends StdLibrary implements SocialsList
                     {
                         soc.setYou_see("You "+name.toLowerCase()+" everyone.");
                         soc.setThird_party_sees("<S-NAME> "+name.toLowerCase()+"s everyone.");
-                        soc.setSee_when_no_target(Util.capitalizeAndLower(name)+" who?");
+                        soc.setSee_when_no_target(CMStrings.capitalizeAndLower(name)+" who?");
                         soc.setSourceCode(CMMsg.MSG_SPEAK);
                         soc.setOthersCode(CMMsg.MSG_SPEAK);
                     }
@@ -380,7 +380,7 @@ public class Socials extends StdLibrary implements SocialsList
                         soc.setYou_see("You "+name.toLowerCase()+" <T-NAME>.");
                         soc.setTarget_sees("<S-NAME> "+name.toLowerCase()+"s you.");
                         soc.setThird_party_sees("<S-NAME> "+name.toLowerCase()+"s <T-NAMESELF>.");
-                        soc.setSee_when_no_target(Util.capitalizeAndLower(name)+" who?");
+                        soc.setSee_when_no_target(CMStrings.capitalizeAndLower(name)+" who?");
                         soc.setSourceCode(CMMsg.MSG_NOISYMOVEMENT);
                         soc.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
                         soc.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
@@ -432,7 +432,7 @@ public class Socials extends StdLibrary implements SocialsList
                     resaveSocials=true;
                     if(showFlag<-900){ ok=true; break;}
                     if(showFlag>0){ showFlag=-1; continue;}
-                    showFlag=Util.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
+                    showFlag=CMath.s_int(mob.session().prompt(getScr("BaseGenerics","editwhich"),""));
                     if(showFlag<=0)
                     {
                         showFlag=-1;
@@ -680,7 +680,7 @@ public class Socials extends StdLibrary implements SocialsList
 				socialsList.append("\n\r");
 				col=1;
 			}
-			socialsList.append(Util.padRight((String)sortableList.elementAt(i),19));
+			socialsList.append(CMStrings.padRight((String)sortableList.elementAt(i),19));
 		}
 		Resources.submitResource("SOCIALS LIST",socialsList);
 		return socialsList.toString();

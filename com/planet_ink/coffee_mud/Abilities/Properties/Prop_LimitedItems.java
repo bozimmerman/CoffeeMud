@@ -43,16 +43,16 @@ public class Prop_LimitedItems extends Property
 
 	public String accountForYourself()
 	{
-		if(Util.s_int(text())<=0)
+		if(CMath.s_int(text())<=0)
 			return "Only 1 may exist";
-		return "Only "+Util.s_int(text())+" may exist.";
+		return "Only "+CMath.s_int(text())+" may exist.";
 	}
 
 	private void countIfNecessary(Item I)
 	{
 		if(CMLib.flags().isInTheGame(I,false))
 		{
-			int max=Util.s_int(text());
+			int max=CMath.s_int(text());
 			Vector myInstances=null;
 			synchronized(instances)
 			{

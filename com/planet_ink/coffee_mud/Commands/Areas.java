@@ -59,7 +59,7 @@ public class Areas extends StdCommand
 				msg.append("\n\r");
 				col=1;
 			}
-			msg.append(Util.padRight((String)areasVec.elementAt(i),22)+"^N");
+			msg.append(CMStrings.padRight((String)areasVec.elementAt(i),22)+"^N");
 		}
 		msg.append(getScr("Areas","help"));
 		if(!mob.isMonster())

@@ -78,7 +78,7 @@ public class Modify extends BaseGenerics
 			command=((String)commands.elementAt(3)).toUpperCase();
 		String restStr="";
 		if(commands.size()>4)
-			restStr=Util.combine(commands,4);
+			restStr=CMParms.combine(commands,4);
 
 		Item modItem=null;
 		if((srchMob!=null)&&(srchRoom!=null))
@@ -98,7 +98,7 @@ public class Modify extends BaseGenerics
 
 		if(command.equals("LEVEL"))
 		{
-			int newLevel=Util.s_int(restStr);
+			int newLevel=CMath.s_int(restStr);
 			if(newLevel>=0)
 			{
 				modItem.baseEnvStats().setLevel(newLevel);
@@ -109,7 +109,7 @@ public class Modify extends BaseGenerics
 		else
 		if(command.equals("ABILITY"))
 		{
-			int newAbility=Util.s_int(restStr);
+			int newAbility=CMath.s_int(restStr);
 			modItem.baseEnvStats().setAbility(newAbility);
 			modItem.recoverEnvStats();
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
@@ -117,7 +117,7 @@ public class Modify extends BaseGenerics
 		else
 		if(command.equals("HEIGHT"))
 		{
-			int newAbility=Util.s_int(restStr);
+			int newAbility=CMath.s_int(restStr);
 			modItem.baseEnvStats().setHeight(newAbility);
 			modItem.recoverEnvStats();
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
@@ -125,7 +125,7 @@ public class Modify extends BaseGenerics
 		else
 		if(command.equals("REJUV"))
 		{
-			int newRejuv=Util.s_int(restStr);
+			int newRejuv=CMath.s_int(restStr);
 			if(newRejuv>0)
 			{
 				modItem.baseEnvStats().setRejuv(newRejuv);
@@ -143,7 +143,7 @@ public class Modify extends BaseGenerics
 		else
 		if(command.equals("USES"))
 		{
-			int newUses=Util.s_int(restStr);
+			int newUses=CMath.s_int(restStr);
 			if(newUses>=0)
 			{
 				modItem.setUsesRemaining(newUses);
@@ -216,7 +216,7 @@ public class Modify extends BaseGenerics
 				genAffects(mob,mob.location(),++showNumber,showFlag);
 				if(showFlag<-900){ ok=true; break;}
 				if(showFlag>0){ showFlag=-1; continue;}
-				showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+				showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
 				if(showFlag<=0)
 				{
 					showFlag=-1;
@@ -236,7 +236,7 @@ public class Modify extends BaseGenerics
 		String command=((String)commands.elementAt(2)).toUpperCase();
 		String restStr="";
 		if(commands.size()>=3)
-			restStr=Util.combine(commands,3);
+			restStr=CMParms.combine(commands,3);
 
 		if(command.equalsIgnoreCase("AREA"))
 		{
@@ -334,7 +334,7 @@ public class Modify extends BaseGenerics
 		if((command.equalsIgnoreCase("XGRID"))&&(mob.location() instanceof GridLocale))
 		{
 			if(commands.size()<4) { flunkCmd1(mob); return;}
-			((GridLocale)mob.location()).setXSize(Util.s_int(restStr));
+			((GridLocale)mob.location()).setXSize(CMath.s_int(restStr));
 			((GridLocale)mob.location()).buildGrid();
 			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
@@ -343,7 +343,7 @@ public class Modify extends BaseGenerics
 		if((command.equalsIgnoreCase("YGRID"))&&(mob.location() instanceof GridLocale))
 		{
 			if(commands.size()<4) { flunkCmd1(mob); return;}
-			((GridLocale)mob.location()).setYSize(Util.s_int(restStr));
+			((GridLocale)mob.location()).setYSize(CMath.s_int(restStr));
 			((GridLocale)mob.location()).buildGrid();
 			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
@@ -419,7 +419,7 @@ public class Modify extends BaseGenerics
 				genImage(mob,myArea,++showNumber,showFlag);
 				if(showFlag<-900){ ok=true; break;}
 				if(showFlag>0){ showFlag=-1; continue;}
-				showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+				showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
 				if(showFlag<=0)
 				{
 					showFlag=-1;
@@ -434,7 +434,7 @@ public class Modify extends BaseGenerics
 			String command=((String)commands.elementAt(2)).toUpperCase();
 			String restStr="";
 			if(commands.size()>=3)
-				restStr=Util.combine(commands,3);
+				restStr=CMParms.combine(commands,3);
 
 			if(command.equalsIgnoreCase("NAME"))
 			{
@@ -623,7 +623,7 @@ public class Modify extends BaseGenerics
 		}
 
 		//String command=((String)commands.elementAt(2)).toUpperCase();
-		String restStr=Util.combine(commands,3);
+		String restStr=CMParms.combine(commands,3);
 
 		if(thisExit.isGeneric())
 			modifyGenExit(mob,thisExit);
@@ -670,7 +670,7 @@ public class Modify extends BaseGenerics
 			return false;
 		}
 
-		String raceID=Util.combine(commands,2);
+		String raceID=CMParms.combine(commands,2);
 		Race R=CMClass.getRace(raceID);
 		if(R==null)
 		{
@@ -701,7 +701,7 @@ public class Modify extends BaseGenerics
 			return false;
 		}
 
-		String classID=Util.combine(commands,2);
+		String classID=CMParms.combine(commands,2);
 		CharClass C=CMClass.getCharClass(classID);
 		if(C==null)
 		{
@@ -737,7 +737,7 @@ public class Modify extends BaseGenerics
         String name=((String)commands.elementAt(2)).toUpperCase();
         String stuff="";
         if(commands.size()>3)
-            stuff=Util.combine(commands,3).toUpperCase().trim();
+            stuff=CMParms.combine(commands,3).toUpperCase().trim();
         if(stuff.startsWith("<")||stuff.startsWith(">")||(stuff.startsWith("T-")))
             stuff="TNAME";
         if(stuff.equals("TNAME")) 
@@ -765,7 +765,7 @@ public class Modify extends BaseGenerics
 			return;
 		}
 
-		String mobID=Util.combine(commands,2);
+		String mobID=CMParms.combine(commands,2);
 		MOB M=CMLib.map().getPlayer(mobID);
 		if(M==null)
 			for(Enumeration p=CMLib.map().players();p.hasMoreElements();)
@@ -811,7 +811,7 @@ public class Modify extends BaseGenerics
 		String command=((String)commands.elementAt(3)).toUpperCase();
 		String restStr="";
 		if(commands.size()>4)
-			restStr=Util.combine(commands,4);
+			restStr=CMParms.combine(commands,4);
 
 
 		MOB modMOB=mob.location().fetchInhabitant(mobID);
@@ -830,7 +830,7 @@ public class Modify extends BaseGenerics
 
 		if(command.equals("LEVEL"))
 		{
-			int newLevel=Util.s_int(restStr);
+			int newLevel=CMath.s_int(restStr);
 			if(newLevel>=0)
 			{
 				modMOB.baseEnvStats().setLevel(newLevel);
@@ -842,7 +842,7 @@ public class Modify extends BaseGenerics
 		else
 		if(command.equals("ABILITY"))
 		{
-			int newAbility=Util.s_int(restStr);
+			int newAbility=CMath.s_int(restStr);
 			modMOB.baseEnvStats().setAbility(newAbility);
 			modMOB.recoverEnvStats();
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
@@ -850,7 +850,7 @@ public class Modify extends BaseGenerics
 		else
 		if(command.equals("REJUV"))
 		{
-			int newRejuv=Util.s_int(restStr);
+			int newRejuv=CMath.s_int(restStr);
 			if(newRejuv>0)
 			{
 				modMOB.baseEnvStats().setRejuv(newRejuv);
@@ -944,7 +944,7 @@ public class Modify extends BaseGenerics
 				mob.tell("Modify the status of which clan?  Use clanlist.");
 			else
 			{
-				String name=Util.combine(commands,2);
+				String name=CMParms.combine(commands,2);
 				Clan C=CMLib.clans().findClan(name);
 				if(C==null)
 					mob.tell("Clan '"+name+"' is unknown.  Try clanlist.");
@@ -1031,10 +1031,10 @@ public class Modify extends BaseGenerics
         if(commandType.equals("POLL"))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"POLLS")) return errorOut(mob);
-            String name=Util.combine(commands,2);
+            String name=CMParms.combine(commands,2);
             Poll P=null;
-            if(Util.isInteger(name))
-                P=CMLib.polls().getPoll(Util.s_int(name)-1);
+            if(CMath.isInteger(name))
+                P=CMLib.polls().getPoll(CMath.s_int(name)-1);
             else
             if(name.length()>0)
                 P=CMLib.polls().getPoll(name);
@@ -1058,11 +1058,11 @@ public class Modify extends BaseGenerics
 				mob.tell("Start/Stop which quest?  Use list quests.");
 			else
 			{
-				String name=Util.combine(commands,2);
+				String name=CMParms.combine(commands,2);
                 Quest Q=null;
-                if(Util.isInteger(name))
+                if(CMath.isInteger(name))
                 {
-                    Q=CMLib.quests().fetchQuest(Util.s_int(name)-1);
+                    Q=CMLib.quests().fetchQuest(CMath.s_int(name)-1);
                     if(Q!=null) name=Q.name();
                 }
                 if(Q==null) Q=CMLib.quests().fetchQuest(name);
@@ -1097,7 +1097,7 @@ public class Modify extends BaseGenerics
                 mob.tell("Modify which faction?  Use list factions.");
             else
             {
-                String name=Util.combine(commands,2);
+                String name=CMParms.combine(commands,2);
                 Faction F=CMLib.factions().getFaction(name);
                 if(F==null) F=CMLib.factions().getFactionByName(name);
                 if(F==null)
@@ -1112,7 +1112,7 @@ public class Modify extends BaseGenerics
         }
 		else
 		{
-			String allWord=Util.combine(commands,1);
+			String allWord=CMParms.combine(commands,1);
 			int x=allWord.indexOf("@");
 			MOB srchMob=mob;
 			Room srchRoom=mob.location();
@@ -1165,7 +1165,7 @@ public class Modify extends BaseGenerics
 						genMiscText(mob,thang,++showNumber,showFlag);
 						if(showFlag<-900){ ok=true; break;}
 						if(showFlag>0){ showFlag=-1; continue;}
-						showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+						showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
 						if(showFlag<=0)
 						{
 							showFlag=-1;
@@ -1199,7 +1199,7 @@ public class Modify extends BaseGenerics
 						genMiscText(mob,thang,++showNumber,showFlag);
 						if(showFlag<-900){ ok=true; break;}
 						if(showFlag>0){ showFlag=-1; continue;}
-						showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+						showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
 						if(showFlag<=0)
 						{
 							showFlag=-1;
@@ -1212,7 +1212,7 @@ public class Modify extends BaseGenerics
 				if(!((MOB)thang).isMonster())
 				{
 					if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
-					players(mob,Util.parse("MODIFY USER \""+thang.Name()+"\""));
+					players(mob,CMParms.parse("MODIFY USER \""+thang.Name()+"\""));
 				}
 				else
                 {

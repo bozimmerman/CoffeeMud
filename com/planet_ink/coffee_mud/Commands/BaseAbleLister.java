@@ -36,9 +36,9 @@ public class BaseAbleLister extends StdCommand
 	{
 		if((commands.size()>1)
 		&&(commands.lastElement() instanceof String)
-		&&(Util.isNumber((String)commands.lastElement())))
+		&&(CMath.isNumber((String)commands.lastElement())))
 		{
-			int x=Util.s_int((String)commands.lastElement());
+			int x=CMath.s_int((String)commands.lastElement());
 			commands.removeElementAt(commands.size()-1);
 			return x;
 		}
@@ -102,7 +102,7 @@ public class BaseAbleLister extends StdCommand
 						thisLine.append("\n\r");
 						col=1;
 					}
-					thisLine.append("^N[^H"+Util.padRight(Integer.toString(thisAbility.profficiency()),3)+"%^?]^N "+Util.padRight("^<HELP^>"+thisAbility.name()+"^</HELP^>",(col==3)?18:19));
+					thisLine.append("^N[^H"+CMStrings.padRight(Integer.toString(thisAbility.profficiency()),3)+"%^?]^N "+CMStrings.padRight("^<HELP^>"+thisAbility.name()+"^</HELP^>",(col==3)?18:19));
 				}
 			}
 			if(thisLine.length()>0)

@@ -74,7 +74,7 @@ public class I3Cmd extends StdCommand
 				mob.tell("You did not specify a channel name!");
 				return false;
 			}
-			CMLib.intermud().i3channelAdd(mob,Util.combine(commands,1));
+			CMLib.intermud().i3channelAdd(mob,CMParms.combine(commands,1));
 		}
 		else
 		if(str.equalsIgnoreCase("channels"))
@@ -88,7 +88,7 @@ public class I3Cmd extends StdCommand
 				mob.tell("You did not specify a channel name!");
 				return false;
 			}
-			CMLib.intermud().i3channelRemove(mob,Util.combine(commands,1));
+			CMLib.intermud().i3channelRemove(mob,CMParms.combine(commands,1));
 		}
 		else
 		if(str.equalsIgnoreCase("listen"))
@@ -99,7 +99,7 @@ public class I3Cmd extends StdCommand
 				mob.tell("You did not specify a channel name!");
 				return false;
 			}
-			CMLib.intermud().i3channelListen(mob,Util.combine(commands,1));
+			CMLib.intermud().i3channelListen(mob,CMParms.combine(commands,1));
 		}
 		else
 		if(str.equalsIgnoreCase("locate"))
@@ -109,7 +109,7 @@ public class I3Cmd extends StdCommand
 				mob.tell("You did not specify a name!");
 				return false;
 			}
-			CMLib.intermud().i3locate(mob,Util.combine(commands,1));
+			CMLib.intermud().i3locate(mob,CMParms.combine(commands,1));
 		}
 		else
 		if(str.equalsIgnoreCase("silence"))
@@ -120,11 +120,11 @@ public class I3Cmd extends StdCommand
 				mob.tell("You did not specify a channel name!");
 				return false;
 			}
-			CMLib.intermud().i3channelSilence(mob,Util.combine(commands,1));
+			CMLib.intermud().i3channelSilence(mob,CMParms.combine(commands,1));
 		}
 		else
 		if(str.equalsIgnoreCase("info"))
-			CMLib.intermud().i3mudInfo(mob,Util.combine(commands,1));
+			CMLib.intermud().i3mudInfo(mob,CMParms.combine(commands,1));
 		else
 			i3Error(mob);
 

@@ -87,7 +87,7 @@ public class Trap_Launcher extends StdTrap
 			String name="a projectile";
 			if(x>=0)
 			{
-				dam=Util.s_int(text().substring(0,x));
+				dam=CMath.s_int(text().substring(0,x));
 				name=text().substring(x+1);
 			}
 			if((!invoker().mayIFight(target))||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))

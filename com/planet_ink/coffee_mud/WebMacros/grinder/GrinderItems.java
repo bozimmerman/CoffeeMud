@@ -140,20 +140,20 @@ public class GrinderItems
 				I.setDescription(old);
 				break;
 			case 4: // level
-				I.baseEnvStats().setLevel(Util.s_int(old));
+				I.baseEnvStats().setLevel(CMath.s_int(old));
 				break;
 			case 5: // ability;
-				I.baseEnvStats().setAbility(Util.s_int(old));
+				I.baseEnvStats().setAbility(CMath.s_int(old));
 				break;
 			case 6: // rejuv;
-				I.baseEnvStats().setRejuv(Util.s_int(old));
+				I.baseEnvStats().setRejuv(CMath.s_int(old));
 				break;
 			case 7: // misctext
 				if(!I.isGeneric())
 					I.setMiscText(old);
 				break;
 			case 8: // materials
-				I.setMaterial(Util.s_int(old));
+				I.setMaterial(CMath.s_int(old));
 				break;
 			case 9: // is generic
 				break;
@@ -169,34 +169,34 @@ public class GrinderItems
 			case 13: // liquid held
 				if(I instanceof Drink)
 				{
-					((Drink)I).setLiquidHeld(Util.s_int(old));
-					((Drink)I).setLiquidRemaining(Util.s_int(old));
+					((Drink)I).setLiquidHeld(CMath.s_int(old));
+					((Drink)I).setLiquidRemaining(CMath.s_int(old));
 				}
 				break;
 			case 14: // quenched
 				if(I instanceof Drink)
-					((Drink)I).setThirstQuenched(Util.s_int(old));
+					((Drink)I).setThirstQuenched(CMath.s_int(old));
 				break;
 			case 15: // is container
 				break;
 			case 16: // capacity
 				if(I instanceof Container)
-					((Container)I).setCapacity(Util.s_int(old));
+					((Container)I).setCapacity(CMath.s_int(old));
 				break;
 			case 17: // is armor
 				break;
 			case 18: // armor
 				if(I instanceof Armor)
-					I.baseEnvStats().setArmor(Util.s_int(old));
+					I.baseEnvStats().setArmor(CMath.s_int(old));
 				break;
 			case 19: // worn data
 				if(((I instanceof Armor)||(I instanceof MusicalInstrument))
 				&&(httpReq.isRequestParameter("WORNDATA")))
 				{
-					int climate=Util.s_int(httpReq.getRequestParameter("WORNDATA"));
+					int climate=CMath.s_int(httpReq.getRequestParameter("WORNDATA"));
 					for(int i=1;;i++)
 						if(httpReq.isRequestParameter("WORNDATA"+(new Integer(i).toString())))
-							climate=climate|Util.s_int(httpReq.getRequestParameter("WORNDATA"+(new Integer(i).toString())));
+							climate=climate|CMath.s_int(httpReq.getRequestParameter("WORNDATA"+(new Integer(i).toString())));
 						else
 							break;
 					I.setRawProperLocationBitmap(climate);
@@ -204,33 +204,33 @@ public class GrinderItems
 				break;
 			case 20: // height
 				if(I instanceof Armor)
-					I.baseEnvStats().setHeight(Util.s_int(old));
+					I.baseEnvStats().setHeight(CMath.s_int(old));
 				break;
 			case 21: // is weapon
 				break;
 			case 22: // weapon type
 				if(I instanceof Weapon)
-					((Weapon)I).setWeaponType(Util.s_int(old));
+					((Weapon)I).setWeaponType(CMath.s_int(old));
 				break;
 			case 23: // weapon class
 				if(I instanceof Weapon)
-					((Weapon)I).setWeaponClassification(Util.s_int(old));
+					((Weapon)I).setWeaponClassification(CMath.s_int(old));
 				break;
 			case 24: // attack
 				if(I instanceof Weapon)
-					I.baseEnvStats().setAttackAdjustment(Util.s_int(old));
+					I.baseEnvStats().setAttackAdjustment(CMath.s_int(old));
 				break;
 			case 25: // damage
 				if(I instanceof Weapon)
-					I.baseEnvStats().setDamage(Util.s_int(old));
+					I.baseEnvStats().setDamage(CMath.s_int(old));
 				break;
 			case 26: // min range
 				if(I instanceof Weapon)
-					((Weapon)I).setRanges(Util.s_int(old),I.maxRange());
+					((Weapon)I).setRanges(CMath.s_int(old),I.maxRange());
 				break;
 			case 27: // max range
 				if(I instanceof Weapon)
-					((Weapon)I).setRanges(I.minRange(),Util.s_int(old));
+					((Weapon)I).setRanges(I.minRange(),CMath.s_int(old));
 				break;
 			case 28: // secret identity
 				I.setSecretIdentity(old);
@@ -270,13 +270,13 @@ public class GrinderItems
 			case 35: // is wand
 				break;
 			case 36: // uses
-				I.setUsesRemaining(Util.s_int(old));
+				I.setUsesRemaining(CMath.s_int(old));
 				break;
 			case 37: // value
-				I.setBaseValue(Util.s_int(old));
+				I.setBaseValue(CMath.s_int(old));
 				break;
 			case 38: // weight
-				I.baseEnvStats().setWeight(Util.s_int(old));
+				I.baseEnvStats().setWeight(CMath.s_int(old));
 				break;
 			case 39: // is map
 				break;
@@ -307,7 +307,7 @@ public class GrinderItems
 				break;
 			case 45: // liquid types
 				if((I instanceof Drink)&&(!(I instanceof Potion)))
-					((Drink)I).setLiquidType(Util.s_int(old));
+					((Drink)I).setLiquidType(CMath.s_int(old));
 				break;
 			case 46: // ammo types
 				if(I instanceof Ammunition)
@@ -319,8 +319,8 @@ public class GrinderItems
 			case 47: // ammo capacity
 				if((I instanceof Weapon)&&(!(I instanceof Wand)))
 				{
-					((Weapon)I).setAmmoCapacity(Util.s_int(old));
-					((Weapon)I).setAmmoRemaining(Util.s_int(old));
+					((Weapon)I).setAmmoCapacity(CMath.s_int(old));
+					((Weapon)I).setAmmoRemaining(CMath.s_int(old));
 				}
 				break;
 			case 48: // readable spell
@@ -331,11 +331,11 @@ public class GrinderItems
 				break;
 			case 50: // rideable type
 				if(I instanceof Rideable)
-					((Rideable)I).setRideBasis(Util.s_int(old));
+					((Rideable)I).setRideBasis(CMath.s_int(old));
 				break;
 			case 51: // mob capacity
 				if(I instanceof Rideable)
-					((Rideable)I).setRiderCapacity(Util.s_int(old));
+					((Rideable)I).setRiderCapacity(CMath.s_int(old));
 				break;
 			case 52: // has a lid
 				if(I instanceof Container)
@@ -356,7 +356,7 @@ public class GrinderItems
 				break;
 			case 56: // nourishment
 				if(I instanceof Food)
-					((Food)I).setNourishment(Util.s_int(old));
+					((Food)I).setNourishment(CMath.s_int(old));
 				break;
 			case 57: // container
 				if(!RoomData.isAllNum(old))
@@ -371,7 +371,7 @@ public class GrinderItems
 				break;
 			case 59:
 				if(I instanceof Light)
-					((Light)I).setDuration(Util.s_int(old));
+					((Light)I).setDuration(CMath.s_int(old));
 				break;
 			case 60:
 				if(old.equals("on"))
@@ -385,11 +385,11 @@ public class GrinderItems
 			case 62: // content types
 				if((I instanceof Container)&&(httpReq.isRequestParameter("CONTENTTYPES")))
 				{
-					long content=Util.s_long(httpReq.getRequestParameter("CONTENTTYPES"));
+					long content=CMath.s_long(httpReq.getRequestParameter("CONTENTTYPES"));
 					if(content>0)
 					for(int i=1;;i++)
 						if(httpReq.isRequestParameter("CONTENTTYPES"+(new Integer(i).toString())))
-							content=content|Util.s_int(httpReq.getRequestParameter("CONTENTTYPES"+(new Integer(i).toString())));
+							content=content|CMath.s_int(httpReq.getRequestParameter("CONTENTTYPES"+(new Integer(i).toString())));
 						else
 							break;
 					((Container)I).setContainTypes(content);
@@ -399,7 +399,7 @@ public class GrinderItems
 				break;
 			case 64: // instrumenttype
 				if(I instanceof MusicalInstrument)
-					((MusicalInstrument)I).setInstrumentType(Util.s_int(old));
+					((MusicalInstrument)I).setInstrumentType(CMath.s_int(old));
 				break;
 			case 65: // isammo
 				break;
@@ -428,7 +428,7 @@ public class GrinderItems
 			    break;
 			case 74: // numcoins
 			    if(I instanceof Coins)
-			        ((Coins)I).setNumberOfCoins(Util.s_long(old));
+			        ((Coins)I).setNumberOfCoins(CMath.s_long(old));
 			    break;
 			case 75: // currency
 			    if(I instanceof Coins)
@@ -436,7 +436,7 @@ public class GrinderItems
 			    break;
 			case 76: // denomination
 			    if(I instanceof Coins)
-			        ((Coins)I).setDenomination(Util.s_double(old));
+			        ((Coins)I).setDenomination(CMath.s_double(old));
 			    break;
 			case 77: // isrecipe
 			    break;
@@ -446,7 +446,7 @@ public class GrinderItems
 			    break;
 			case 79: // recipedata
 			    if(I instanceof Recipe)
-			        ((Recipe)I).setRecipeCodeLine(Util.replaceAll(old,",","\t"));
+			        ((Recipe)I).setRecipeCodeLine(CMStrings.replaceAll(old,",","\t"));
 			    break;
 			}
 		}

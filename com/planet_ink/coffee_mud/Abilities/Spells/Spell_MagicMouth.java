@@ -162,7 +162,7 @@ public class Spell_MagicMouth extends Spell
 			{
 				mob.location().send(mob,msg);
 				myRoomContainer=mob.location();
-				message=Util.combine(commands,2);
+				message=CMParms.combine(commands,2);
 				beneficialAffect(mob,target,asLevel,0);
 			}
 

@@ -54,12 +54,12 @@ public class Thief_Sap extends ThiefSkill
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((msg.amISource(mob))&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
+		if((msg.amISource(mob))&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
 		{
-			if((Util.bset(msg.sourceMajor(),CMMsg.MASK_EYES))
-			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH))
-			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
+			if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_EYES))
+			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH))
+			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
 			{
 				if(msg.sourceMessage()!=null)
 					mob.tell("You are way too drowsy.");

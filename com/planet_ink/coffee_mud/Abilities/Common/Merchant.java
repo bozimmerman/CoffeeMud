@@ -126,8 +126,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
         }
         staticMOB.setStartRoom(room);
         staticMOB.setLocation(room);
-        if(CMLib.beanCounter().getTotalAbsoluteNativeValue(staticMOB)<new Integer(Util.s_int(budget())).doubleValue())
-            staticMOB.setMoney(Util.s_int(budget()));
+        if(CMLib.beanCounter().getTotalAbsoluteNativeValue(staticMOB)<new Integer(CMath.s_int(budget())).doubleValue())
+            staticMOB.setMoney(CMath.s_int(budget()));
         return staticMOB;
     }
 
@@ -356,7 +356,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			commonTell(mob,"Market what? Enter \"market list\" for a list or \"market item value\" to sell something.");
 			return false;
 		}
-		if(Util.combine(commands,0).equalsIgnoreCase("list"))
+		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
 			CMMsg msg=CMClass.getMsg(mob,mob,CMMsg.MSG_LIST,"<S-NAME> review(s) <S-HIS-HER> inventory.");
 			if(mob.location().okMessage(mob,msg))
@@ -371,7 +371,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				commonTell(mob,"Remove what item from the marketing list?");
 				return false;
 			}
-			String itemName=Util.combine(commands,1);
+			String itemName=CMParms.combine(commands,1);
 			Item I=(Item)getShop().removeStock(itemName,mob,whatIsSold(),mob.getStartRoom());
 			if(I==null)
 			{
@@ -397,9 +397,9 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		if(commands.size()>1)
 		{
 			String s=(String)commands.lastElement();
-            if(Util.isInteger(s))
+            if(CMath.isInteger(s))
             {
-                val=new Integer(Util.s_int(s)).doubleValue();
+                val=new Integer(CMath.s_int(s)).doubleValue();
                 if(val>0) commands.removeElement(s);
             }
             else
@@ -411,14 +411,14 @@ public class Merchant extends CommonSkill implements ShopKeeper
     			    double denom=CMLib.english().numPossibleGoldDenomination(mob,currency,s);
     			    if(denom>0.0)
     			    {
-    					val=Util.mul(numberCoins,denom);
+    					val=CMath.mul(numberCoins,denom);
     					if(val>0) commands.removeElement(s);
     			    }
     		    }
             }
 		}
 
-		String itemName=Util.combine(commands,0);
+		String itemName=CMParms.combine(commands,0);
 		Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		if(itemName.toUpperCase().startsWith("ALL.")){ allFlag=true; itemName="ALL "+itemName.substring(4);}

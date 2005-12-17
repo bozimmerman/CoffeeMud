@@ -81,7 +81,7 @@ public class Prop_HaveResister extends Property
         {
             maskString=newText.substring(maskindex+5).trim();
             if(maskString.length()>0)
-                Util.addToVector(CMLib.masking().maskCompile(maskString),mask);
+                CMParms.addToVector(CMLib.masking().maskCompile(maskString),mask);
             parmString=newText.substring(0,maskindex).trim();
         }
 	}
@@ -129,7 +129,7 @@ public class Prop_HaveResister extends Property
 		while((--x)>=0)
 		{
 			if(Character.isDigit(nonMask.charAt(x)))
-				tot+=Util.s_int(""+nonMask.charAt(x))*mul;
+				tot+=CMath.s_int(""+nonMask.charAt(x))*mul;
 			else
 			{
 				if(nonMask.charAt(x)=='-')
@@ -155,7 +155,7 @@ public class Prop_HaveResister extends Property
 			if(checkProtection("weapons"))
             {
                 if((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob)))
-    				msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection("weapons"),100.0))));
+    				msg.setValue((int)Math.round(CMath.mul(msg.value(),1.0-CMath.div(getProtection("weapons"),100.0))));
             }
 			else
 			{
@@ -163,15 +163,15 @@ public class Prop_HaveResister extends Property
 				if((W.weaponType()==Weapon.TYPE_BASHING)
                 &&(checkProtection("blunt"))
                 &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob))))
-					msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection("blunt"),100.0))));
+					msg.setValue((int)Math.round(CMath.mul(msg.value(),1.0-CMath.div(getProtection("blunt"),100.0))));
 				if((W.weaponType()==Weapon.TYPE_PIERCING)
                 &&(checkProtection("pierce"))
                 &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob))))
-					msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection("pierce"),100.0))));
+					msg.setValue((int)Math.round(CMath.mul(msg.value(),1.0-CMath.div(getProtection("pierce"),100.0))));
 			    if((W.weaponType()==Weapon.TYPE_SLASHING)
                 &&(checkProtection("slash"))
                 &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob))))
-			    	msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection("slash"),100.0))));
+			    	msg.setValue((int)Math.round(CMath.mul(msg.value(),1.0-CMath.div(getProtection("slash"),100.0))));
 			}
 			return;
 		}
@@ -182,15 +182,15 @@ public class Prop_HaveResister extends Property
 
 	public boolean isOk(CMMsg msg, Ability me, MOB mob, Vector mask)
 	{
-		if(!Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		if(!CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			return true;
 
-		if(Util.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
+		if(CMath.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
 		{
 			if(msg.tool() instanceof Ability)
 			{
 				Ability A=(Ability)msg.tool();
-				if(Util.bset(A.flags(),Ability.FLAG_TRANSPORTING))
+				if(CMath.bset(A.flags(),Ability.FLAG_TRANSPORTING))
 				{
 					if((checkProtection("teleport"))
                     &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob))))
@@ -201,8 +201,8 @@ public class Prop_HaveResister extends Property
 				}
 				else
 				if(((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
-				&&(Util.bset(A.flags(),Ability.FLAG_HOLY))
-				&&(!Util.bset(A.flags(),Ability.FLAG_UNHOLY)))
+				&&(CMath.bset(A.flags(),Ability.FLAG_HOLY))
+				&&(!CMath.bset(A.flags(),Ability.FLAG_UNHOLY)))
 				{
 					if((checkProtection("holy"))
                     &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob))))

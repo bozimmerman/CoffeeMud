@@ -56,7 +56,7 @@ public class Prayer_Freedom extends Prayer
 					A.affectEnvStats(newMOB,newMOB.envStats());
 					int clas=A.classificationCode()&Ability.ALL_CODES;
 					if((!CMLib.flags().aliveAwakeMobileUnbound(newMOB,true))
-					   ||(Util.bset(A.flags(),Ability.FLAG_BINDING))
+					   ||(CMath.bset(A.flags(),Ability.FLAG_BINDING))
 					   ||(!A.okMessage(newMOB,msg)))
 					if((A.invoker()==null)
 					||((clas!=Ability.SPELL)&&(clas!=Ability.CHANT)&&(clas!=Ability.PRAYER)&&(clas!=Ability.SONG))

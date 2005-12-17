@@ -76,7 +76,7 @@ public class Prayer_LinkedHealth extends Prayer
 		{
 			if((msg.tool()==null)||(!msg.tool().ID().equals(ID())))
 			{
-				int recovery=(int)Math.round(Util.div((msg.value()),2.0));
+				int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
 				msg.setValue(recovery);
 				CMLib.combat().postDamage(msg.source(),buddy,this,recovery,CMMsg.MSG_OK_VISUAL,Weapon.TYPE_BURSTING,"<T-NAME> absorb(s) damage from the harm to "+msg.target().name()+".");
 			}

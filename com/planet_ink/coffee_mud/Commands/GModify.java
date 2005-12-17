@@ -57,7 +57,7 @@ public class GModify extends StdCommand
     public static void setStat(Environmental E, String stat, String value)
     {
         if((stat!=null)&&(stat.length()>0)&&(stat.equalsIgnoreCase("REJUV")))
-            E.baseEnvStats().setRejuv(Util.s_int(value));
+            E.baseEnvStats().setRejuv(CMath.s_int(value));
         else
             E.setStat(stat,value);
     }
@@ -100,7 +100,7 @@ public class GModify extends StdCommand
             stat=getStat(E,field);
             if(equator.equals("$")&&(pattern!=null))
             {
-                if(!Util.bset(codes,FLAG_SUBSTRING))
+                if(!CMath.bset(codes,FLAG_SUBSTRING))
                 {
                     if(stat.matches(value))
                     {
@@ -122,12 +122,12 @@ public class GModify extends StdCommand
             else
             if(equator.equals("="))
             {
-                if(!Util.bset(codes,FLAG_CASESENSITIVE))
+                if(!CMath.bset(codes,FLAG_CASESENSITIVE))
                 {
                     stat=stat.toLowerCase();
                     value=value.toLowerCase();
                 }
-                if(Util.bset(codes,FLAG_SUBSTRING))
+                if(CMath.bset(codes,FLAG_SUBSTRING))
                 {
                     matchStart=stat.indexOf(value);
                     matchEnd=matchStart+value.length();
@@ -142,12 +142,12 @@ public class GModify extends StdCommand
             else
             if(equator.equals("!="))
             {
-                if(!Util.bset(codes,FLAG_CASESENSITIVE))
+                if(!CMath.bset(codes,FLAG_CASESENSITIVE))
                 {
                     stat=stat.toLowerCase();
                     value=value.toLowerCase();
                 }
-                if(Util.bset(codes,FLAG_SUBSTRING))
+                if(CMath.bset(codes,FLAG_SUBSTRING))
                 {
                     if(stat.indexOf(value)<0)
                     {
@@ -165,61 +165,61 @@ public class GModify extends StdCommand
             else
             if(equator.equals(">"))
             {
-                if(!Util.bset(codes,FLAG_CASESENSITIVE))
+                if(!CMath.bset(codes,FLAG_CASESENSITIVE))
                 {
                     stat=stat.toLowerCase();
                     value=value.toLowerCase();
                 }
-                if(Util.isNumber(stat)&&Util.isNumber(value))
-                    matchStart=(Util.s_long(stat)>Util.s_long(value))?0:-1;
+                if(CMath.isNumber(stat)&&CMath.isNumber(value))
+                    matchStart=(CMath.s_long(stat)>CMath.s_long(value))?0:-1;
                 else
                     matchStart=(stat.compareTo(value)>0)?0:-1;
             }
             else
             if(equator.equals("<"))
             {
-                if(!Util.bset(codes,FLAG_CASESENSITIVE))
+                if(!CMath.bset(codes,FLAG_CASESENSITIVE))
                 {
                     stat=stat.toLowerCase();
                     value=value.toLowerCase();
                 }
-                if(Util.isNumber(stat)&&Util.isNumber(value))
-                    matchStart=(Util.s_long(stat)<Util.s_long(value))?0:-1;
+                if(CMath.isNumber(stat)&&CMath.isNumber(value))
+                    matchStart=(CMath.s_long(stat)<CMath.s_long(value))?0:-1;
                 else
                     matchStart=(stat.compareTo(value)<0)?0:-1;
             }
             else
             if(equator.equals("<="))
             {
-                if(!Util.bset(codes,FLAG_CASESENSITIVE))
+                if(!CMath.bset(codes,FLAG_CASESENSITIVE))
                 {
                     stat=stat.toLowerCase();
                     value=value.toLowerCase();
                 }
-                if(Util.isNumber(stat)&&Util.isNumber(value))
-                    matchStart=(Util.s_long(stat)<=Util.s_long(value))?0:-1;
+                if(CMath.isNumber(stat)&&CMath.isNumber(value))
+                    matchStart=(CMath.s_long(stat)<=CMath.s_long(value))?0:-1;
                 else
                     matchStart=(stat.compareTo(value)<=0)?0:-1;
             }
             else
             if(equator.equals(">="))
             {
-                if(!Util.bset(codes,FLAG_CASESENSITIVE))
+                if(!CMath.bset(codes,FLAG_CASESENSITIVE))
                 {
                     stat=stat.toLowerCase();
                     value=value.toLowerCase();
                 }
-                if(Util.isNumber(stat)&&Util.isNumber(value))
-                    matchStart=(Util.s_long(stat)>=Util.s_long(value))?0:-1;
+                if(CMath.isNumber(stat)&&CMath.isNumber(value))
+                    matchStart=(CMath.s_long(stat)>=CMath.s_long(value))?0:-1;
                 else
                     matchStart=(stat.compareTo(value)>=0)?0:-1;
             }
             if(matchStart>=0)
                 matches.addElement(field,new Integer(matchStart),new Integer(matchEnd));
-            if(Util.bset(lastCode,FLAG_AND))
+            if(CMath.bset(lastCode,FLAG_AND))
                 checkedOut=checkedOut&&(matchStart>=0);
             else
-            if(Util.bset(lastCode,FLAG_OR))
+            if(CMath.bset(lastCode,FLAG_OR))
                 checkedOut=checkedOut||(matchStart>=0);
             else
                 checkedOut=(matchStart>=0);
@@ -236,7 +236,7 @@ public class GModify extends StdCommand
                 value=(String)changes.elementAt(i,3);
                 codes=((Integer)changes.elementAt(i,4)).intValue();
                 if(noisy) gmodifydebugtell(mob,E.name()+" wants to change "+field+" value "+getStat(E,field)+" to "+value+"/"+(!getStat(E,field).equals(value)));
-                if(Util.bset(codes,FLAG_SUBSTRING))
+                if(CMath.bset(codes,FLAG_SUBSTRING))
                 {
                     int matchStart=-1;
                     int matchEnd=-1;
@@ -254,7 +254,7 @@ public class GModify extends StdCommand
                 }
                 if(!getStat(E,field).equals(value))
                 {
-                    Log.sysOut("GMODIFY","The "+Util.capitalizeAndLower(field)+" field on "+E.Name()+" in "+room.roomID()+" was changed from "+getStat(E,field)+" to "+value+".");
+                    Log.sysOut("GMODIFY","The "+CMStrings.capitalizeAndLower(field)+" field on "+E.Name()+" in "+room.roomID()+" was changed from "+getStat(E,field)+" to "+value+".");
                     setStat(E,field,value);
                     didAnything=true;
                 }
@@ -293,7 +293,7 @@ public class GModify extends StdCommand
     {
         boolean noisy=CMSecurity.isDebugging("GMODIFY");
         Vector placesToDo=new Vector();
-        String whole=Util.combine(commands,0);
+        String whole=CMParms.combine(commands,0);
         commands.removeElementAt(0);
         if(commands.size()==0)
         {
@@ -496,7 +496,7 @@ public class GModify extends StdCommand
                 if(equator.equals("$"))
                 {
                     int patCodes=Pattern.DOTALL;
-                    if(!Util.bset(code.intValue(),FLAG_CASESENSITIVE))
+                    if(!CMath.bset(code.intValue(),FLAG_CASESENSITIVE))
                         patCodes=patCodes|Pattern.CASE_INSENSITIVE;
                     P=Pattern.compile(val,patCodes);
                 }
@@ -556,8 +556,8 @@ public class GModify extends StdCommand
                 mob.session().rawPrint("Searching, modifying and saving...");
         }
         if(noisy) gmodifydebugtell(mob,"Rooms to do: "+placesToDo.size());
-        if(noisy) gmodifydebugtell(mob,"When fields="+Util.toStringList(onfields.getDimensionVector(1)));
-        if(noisy) gmodifydebugtell(mob,"Change fields="+Util.toStringList(changes.getDimensionVector(1)));
+        if(noisy) gmodifydebugtell(mob,"When fields="+CMParms.toStringList(onfields.getDimensionVector(1)));
+        if(noisy) gmodifydebugtell(mob,"Change fields="+CMParms.toStringList(changes.getDimensionVector(1)));
         Log.sysOut("GModify",mob.Name()+" "+whole+".");
         for(int r=0;r<placesToDo.size();r++)
         {

@@ -54,12 +54,12 @@ public class Report extends BaseAbleLister
 			   buf.append(", and need "+mob.getExpNeededLevel()+" to level");
 			buf.append(".\"");
 			Command C=CMClass.getCommand("Say");
-			if(C!=null) C.execute(mob,Util.parse(buf.toString()));
+			if(C!=null) C.execute(mob,CMParms.parse(buf.toString()));
 		}
 		else
 		{
 			int level=parseOutLevel(commands);
-			String s=Util.combine(commands,1).toUpperCase();
+			String s=CMParms.combine(commands,1).toUpperCase();
 			if("SPELLS".startsWith(s))
 				CMLib.commands().say(mob,null,("^NMy spells:^? "+getAbilities(mob,Ability.SPELL,-1,false,level)),false,false);
 			else
@@ -77,7 +77,7 @@ public class Report extends BaseAbleLister
 				
 				StringBuffer aff=new StringBuffer("\n\r^!I am affected by:^? ");
 				Command C=CMClass.getCommand("Affect");
-				if(C!=null) C.execute(mob,Util.makeVector(aff));
+				if(C!=null) C.execute(mob,CMParms.makeVector(aff));
 				CMLib.commands().say(mob,null,aff.toString(),false,false);
 			}
 			else

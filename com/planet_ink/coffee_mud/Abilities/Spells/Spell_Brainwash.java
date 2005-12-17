@@ -68,7 +68,7 @@ public class Spell_Brainwash extends Spell
 		&&(msg.tool()==null)
 		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-		   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
+		   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
 		{
 			String str=getMsgFromAffect(msg.othersMessage());
 			if(str==null) str=getMsgFromAffect(msg.targetMessage());
@@ -112,14 +112,14 @@ public class Spell_Brainwash extends Spell
 	            mob.tell("You must specify your target, followed by the message they will believe.");
 	            return false;
 	        }
-	        message=Util.combine(commands,1);
-	        commands=Util.makeVector(commands.firstElement());
+	        message=CMParms.combine(commands,1);
+	        commands=CMParms.makeVector(commands.firstElement());
 	    }
 	    else
 	    if(text().length()>0)
 	        message=text();
 	    else
-	        message=Util.combine(commands,0);
+	        message=CMParms.combine(commands,0);
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 

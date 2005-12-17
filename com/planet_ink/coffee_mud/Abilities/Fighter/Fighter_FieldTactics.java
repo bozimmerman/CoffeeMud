@@ -95,7 +95,7 @@ public class Fighter_FieldTactics extends FighterSkill
 		&&(msg.value()>0))
 		{
 			if(CMLib.dice().rollPercentage()<5) helpProfficiency((MOB)affected);
-			msg.setValue(msg.value()+(int)Math.round(Util.mul(msg.value(),Util.div(profficiency(),400.0))));
+			msg.setValue(msg.value()+(int)Math.round(CMath.mul(msg.value(),CMath.div(profficiency(),400.0))));
 		}
 		else
 		if((hidden)&&(!hiding(affected)))
@@ -107,12 +107,12 @@ public class Fighter_FieldTactics extends FighterSkill
 		else
 		if((msg.source()==affected)
 		&&(hidden)
-		&&((Util.bset(msg.sourceMajor(),CMMsg.MASK_SOUND)
+		&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_SOUND)
 			 ||(msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			 ||(msg.sourceMinor()==CMMsg.TYP_ENTER)
 			 ||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
 			 ||(msg.sourceMinor()==CMMsg.TYP_RECALL)))
-		 &&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+		 &&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
 		 &&(msg.sourceMinor()!=CMMsg.TYP_LOOK)
          &&(msg.sourceMinor()!=CMMsg.TYP_EXAMINE)
 		 &&(msg.sourceMajor()>0))
@@ -143,8 +143,8 @@ public class Fighter_FieldTactics extends FighterSkill
 			if((hidden)&&((System.currentTimeMillis()-sitTime)>(60*2*1000)))
 				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
 			activated=true;
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(15.0*(Util.div(profficiency(),100.0))));
-			affectableStats.setArmor(affectableStats.armor()-(int)Math.round(15.0*(Util.div(profficiency(),100.0))));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(15.0*(CMath.div(profficiency(),100.0))));
+			affectableStats.setArmor(affectableStats.armor()-(int)Math.round(15.0*(CMath.div(profficiency(),100.0))));
 		}
 		else
 		{

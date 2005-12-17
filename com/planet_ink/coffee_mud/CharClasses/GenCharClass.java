@@ -81,7 +81,7 @@ public class GenCharClass extends StdCharClass
         for(int i=securityGroupLevels.length-1;i>=0;i--)
             if((classLevel>=securityGroupLevels[i].intValue())
             &&(i<securityGroups.length))
-                Util.addToVector(securityGroups[i],V);
+                CMParms.addToVector(securityGroups[i],V);
         securityGroupCache.put(new Integer(classLevel),V);
         return V;
     }
@@ -299,7 +299,7 @@ public class GenCharClass extends StdCharClass
         for(int i=0;i<securityGroups.length;i++)
         if(i<securityGroupLevels.length)
         {
-            str.append(CMLib.xml().convertXMLtoTag("SSET"+i,Util.combineWithQuotes(securityGroups[i],0)));
+            str.append(CMLib.xml().convertXMLtoTag("SSET"+i,CMParms.combineWithQuotes(securityGroups[i],0)));
             str.append(CMLib.xml().convertXMLtoTag("SSETLEVEL"+i,securityGroupLevels[i].intValue()));
         }
         
@@ -379,10 +379,10 @@ public class GenCharClass extends StdCharClass
 		otherBonuses=CMLib.xml().getValFromPieces(classData,"STRBON");
 		qualifications=CMLib.xml().getValFromPieces(classData,"QUAL");
 		String s=CMLib.xml().getValFromPieces(classData,"PLAYER");
-		if(Util.isNumber(s))
-		    selectability=Util.s_int(s);
+		if(CMath.isNumber(s))
+		    selectability=CMath.s_int(s);
 		else
-			selectability=Util.s_bool(s)?Area.THEME_FANTASY:0;
+			selectability=CMath.s_bool(s)?Area.THEME_FANTASY:0;
 		adjEStats=null;
 		String eStats=CMLib.xml().getValFromPieces(classData,"ESTATS");
 		if(eStats.length()>0){ adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); CMLib.coffeeMaker().setEnvStats(adjEStats,eStats);}
@@ -428,7 +428,7 @@ public class GenCharClass extends StdCharClass
 				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.elementAt(x);
 				if((!iblk.tag.equalsIgnoreCase("WCLASS"))||(iblk.contents==null))
 					continue;
-				disallowedWeaponSet.add(new Integer(Util.s_int(iblk.value)));
+				disallowedWeaponSet.add(new Integer(CMath.s_int(iblk.value)));
 			}
 		}
 		
@@ -462,7 +462,7 @@ public class GenCharClass extends StdCharClass
             int groupLevel=CMLib.xml().getIntFromPieces(classData,"SSETLEVEL"+index);
             if((groups.length()==0)||(groupLevel<=lastLevel))
                 break;
-            groupSet.addElement(Util.parse(groups.toUpperCase()));
+            groupSet.addElement(CMParms.parse(groups.toUpperCase()));
             groupLevelSet.addElement(new Integer(groupLevel));
             lastLevel=groupLevel;
             index++;
@@ -510,7 +510,7 @@ public class GenCharClass extends StdCharClass
 		int mul=1;
 		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
 		{
-			num=(Util.s_int(""+code.charAt(code.length()-1))*mul)+num;
+			num=(CMath.s_int(""+code.charAt(code.length()-1))*mul)+num;
 			mul=mul*10;
 			code=code.substring(0,code.length()-1);
 		}
@@ -550,7 +550,7 @@ public class GenCharClass extends StdCharClass
 		case 29: return (String)getAbleSet().elementAt(num,5);
 		case 30: return (String)getAbleSet().elementAt(num,6);
 		case 31: return ""+((disallowedWeaponSet!=null)?disallowedWeaponSet.size():0);
-		case 32: return Util.toStringList(disallowedWeaponSet);
+		case 32: return CMParms.toStringList(disallowedWeaponSet);
 		case 33: return ""+((outfit()!=null)?outfit().size():0);
 		case 34: return ""+((outfit()!=null)?((Item)outfit().elementAt(num)).ID():"");
 		case 35: return ""+((outfit()!=null)?((Item)outfit().elementAt(num)).text():"");
@@ -565,7 +565,7 @@ public class GenCharClass extends StdCharClass
                  break;
         case 43: return ""+securityGroups.length;
         case 44: if(num<securityGroups.length)
-                    return Util.combineWithQuotes(securityGroups[num],0);
+                    return CMParms.combineWithQuotes(securityGroups[num],0);
                  break;
         case 45: if(num<securityGroupLevels.length)
                     return ""+securityGroupLevels[num];
@@ -581,7 +581,7 @@ public class GenCharClass extends StdCharClass
 		int mul=1;
 		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
 		{
-			num=(Util.s_int(""+code.charAt(code.length()-1))*mul)+num;
+			num=(CMath.s_int(""+code.charAt(code.length()-1))*mul)+num;
 			mul=mul*10;
 			code=code.substring(0,code.length()-1);
 		}
@@ -592,23 +592,23 @@ public class GenCharClass extends StdCharClass
                     names[num]=val; 
                 break;
 		case 2: baseClass=val; break;
-		case 3: hpDivisor=Util.s_int(val); break;
-		case 4: hpDie=Util.s_int(val); break;
-		case 5: bonusPracLevel=Util.s_int(val); break;
-		case 6: manaDivisor=Util.s_int(val); break;
-		case 7: bonusAttackLevel=Util.s_int(val); break;
-		case 8: attackAttribute=Util.s_int(val); break;
-		case 9: trainsFirstLevel=Util.s_int(val); break;
-		case 10: pracsFirstLevel=Util.s_int(val); break;
-		case 11: levelsPerBonusDamage=Util.s_int(val); break;
-		case 12: movementMultiplier=Util.s_int(val); break;
-		case 13: allowedArmorLevel=Util.s_int(val); break;
+		case 3: hpDivisor=CMath.s_int(val); break;
+		case 4: hpDie=CMath.s_int(val); break;
+		case 5: bonusPracLevel=CMath.s_int(val); break;
+		case 6: manaDivisor=CMath.s_int(val); break;
+		case 7: bonusAttackLevel=CMath.s_int(val); break;
+		case 8: attackAttribute=CMath.s_int(val); break;
+		case 9: trainsFirstLevel=CMath.s_int(val); break;
+		case 10: pracsFirstLevel=CMath.s_int(val); break;
+		case 11: levelsPerBonusDamage=CMath.s_int(val); break;
+		case 12: movementMultiplier=CMath.s_int(val); break;
+		case 13: allowedArmorLevel=CMath.s_int(val); break;
 		case 14: break;//weaponLimitations=val;break;
 		case 15: break;//armorLimitations=val;break;
 		case 16: otherLimitations=val;break;
 		case 17: otherBonuses=val;break;
 		case 18: qualifications=val;break;
-		case 19: selectability=Util.s_int(val); break;
+		case 19: selectability=CMath.s_int(val); break;
 		case 20: adjEStats=null;if(val.length()>0){adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); adjEStats.setAllValues(0); CMLib.coffeeMaker().setEnvStats(adjEStats,val);}break;
 		case 21: adjStats=null;if(val.length()>0){adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(adjStats,val);}break;
 		case 22: setStats=null;if(val.length()>0){setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(setStats,val);}break;
@@ -620,29 +620,29 @@ public class GenCharClass extends StdCharClass
 		case 28: tempables[3]=val; break;
 		case 29: tempables[4]=val; break;
 		case 30: CMLib.ableMapper().addCharAbilityMapping(ID(),
-											  Util.s_int(tempables[1]),
+											  CMath.s_int(tempables[1]),
 											  tempables[0],
-											  Util.s_int(tempables[2]),
+											  CMath.s_int(tempables[2]),
 											  val,
-											  Util.s_bool(tempables[3]),
-											  Util.s_bool(tempables[4]));
+											  CMath.s_bool(tempables[3]),
+											  CMath.s_bool(tempables[4]));
 				break;
-		case 31: if(Util.s_int(val)==0) 
+		case 31: if(CMath.s_int(val)==0) 
 					 disallowedWeaponSet=null; 
 				 else 
 					 disallowedWeaponSet=new HashSet();
 				 break;
-		case 32: Vector V=Util.parseCommas(val,true);
+		case 32: Vector V=CMParms.parseCommas(val,true);
 				 if(V.size()>0)
 				 {
 					disallowedWeaponSet=new HashSet();
 					for(int v=0;v<V.size();v++)
-						disallowedWeaponSet.add(new Integer(Util.s_int((String)V.elementAt(v))));
+						disallowedWeaponSet.add(new Integer(CMath.s_int((String)V.elementAt(v))));
 				 }
 				 else
 					 disallowedWeaponSet=null;
 				 break;
-		case 33: if(Util.s_int(val)==0) outfitChoices=null; break;
+		case 33: if(CMath.s_int(val)==0) outfitChoices=null; break;
 		case 34: {   if(outfitChoices==null) outfitChoices=new Vector();
 					 if(num>=outfitChoices.size())
 						outfitChoices.addElement(CMClass.getItem(val));
@@ -658,12 +658,12 @@ public class GenCharClass extends StdCharClass
 					 }
 					 break;
 				 }
-		case 36: hpDice=Util.s_int(val); break;
-		case 37: manaDice=Util.s_int(val); break;
-		case 38: manaDie=Util.s_int(val); break;
-		case 39: disableFlags=Util.s_int(val); break;
+		case 36: hpDice=CMath.s_int(val); break;
+		case 37: manaDice=CMath.s_int(val); break;
+		case 38: manaDie=CMath.s_int(val); break;
+		case 39: disableFlags=CMath.s_int(val); break;
 		case 40: startAdjState=null;if(val.length()>0){startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,val);}break;
-        case 41: num=Util.s_int(val);
+        case 41: num=CMath.s_int(val);
                  if(num>0)
                  {
                     String[] newNames=new String[num];
@@ -685,9 +685,9 @@ public class GenCharClass extends StdCharClass
                     break;
                  }
         case 42: if(num<nameLevels.length)
-                    nameLevels[num]=new Integer(Util.s_int(val)); 
+                    nameLevels[num]=new Integer(CMath.s_int(val)); 
                  break;
-        case 43:{  num=Util.s_int(val);
+        case 43:{  num=CMath.s_int(val);
                    if(num<0) num=0;
                    Vector[] newGroups=new Vector[num];
                    Integer[] newLevels=new Integer[num];
@@ -712,11 +712,11 @@ public class GenCharClass extends StdCharClass
                    break;
                 }
         case 44: if(num<securityGroups.length)
-                    securityGroups[num]=Util.parse(val.toUpperCase());
+                    securityGroups[num]=CMParms.parse(val.toUpperCase());
                  securityGroupCache.clear();
                  break;
         case 45: if(num<securityGroupLevels.length)
-                    securityGroupLevels[num]=new Integer(Util.s_int(val)); 
+                    securityGroupLevels[num]=new Integer(CMath.s_int(val)); 
                 securityGroupCache.clear();
                  break;
 		}

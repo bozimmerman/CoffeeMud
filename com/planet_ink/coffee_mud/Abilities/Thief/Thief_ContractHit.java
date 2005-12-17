@@ -182,7 +182,7 @@ public class Thief_ContractHit extends ThiefSkill
 				Room R=(Room)e.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
 				{
-					MOB M=R.fetchInhabitant(Util.combine(commands,0));
+					MOB M=R.fetchInhabitant(CMParms.combine(commands,0));
 					if(M!=null)
 						V.addElement(M);
 				}
@@ -193,7 +193,7 @@ public class Thief_ContractHit extends ThiefSkill
 			target=(MOB)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 		if(target==null)
 		{
-			mob.tell("You've never heard of '"+Util.combine(commands,0)+"'.");
+			mob.tell("You've never heard of '"+CMParms.combine(commands,0)+"'.");
 			return false;
 		}
 		if(target==mob)

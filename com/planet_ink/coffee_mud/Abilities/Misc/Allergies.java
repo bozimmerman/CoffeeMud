@@ -53,7 +53,7 @@ public class Allergies extends StdAbility
 	    super.setMiscText(newText);
 	    resourceAllergies.clear();
 	    raceAllergies.clear();
-	    Vector V=Util.parse(newText.toUpperCase().trim());
+	    Vector V=CMParms.parse(newText.toUpperCase().trim());
 	    for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
 	        if(V.contains(EnvResource.RESOURCE_DESCS[i]))
 	            resourceAllergies.add(new Integer(EnvResource.RESOURCE_DATA[i][0]));
@@ -143,8 +143,8 @@ public class Allergies extends StdAbility
 		    else
 		    if((msg.target()==affected)
 		    &&(raceAllergies.contains(msg.source().charStats().getMyRace()))
-			&&((Util.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
-			   ||(Util.bset(msg.targetMajor(),CMMsg.MASK_MOVE)))
+			&&((CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
+			   ||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE)))
 		    &&(((MOB)affected).location()!=null)
 		    &&(((MOB)affected).location().isInhabitant(msg.source())))
 		    {
@@ -162,13 +162,13 @@ public class Allergies extends StdAbility
 		{
 			if((commands.size()>0)&&(((String)commands.firstElement()).equals(givenTarget.name())))
 				commands.removeElementAt(0);
-			choice=Util.combine(commands,0);
+			choice=CMParms.combine(commands,0);
 			commands.clear();
 		}
 		else
 		if(commands.size()>1)
 		{
-			choice=Util.combine(commands,1);
+			choice=CMParms.combine(commands,1);
 			while(commands.size()>1)
 			    commands.removeElementAt(1);
 		}

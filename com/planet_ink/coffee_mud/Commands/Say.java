@@ -117,7 +117,7 @@ public class Say extends StdCommand
 			if(s.indexOf(" ")>=0)
 				commands.setElementAt("\""+s+"\"",i);
 		}
-		String combinedCommands=Util.combine(commands,1);
+		String combinedCommands=CMParms.combine(commands,1);
 		if(combinedCommands.equals(""))
 		{
 			mob.tell(theWord+" "+getScr("Say","saywhat"));

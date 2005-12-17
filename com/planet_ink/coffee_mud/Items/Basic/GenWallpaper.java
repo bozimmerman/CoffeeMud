@@ -143,7 +143,7 @@ public class GenWallpaper implements Item
 		{
 			setName(CMLib.xml().getValFromPieces(V,"NAME"));
 			setDescription(CMLib.xml().getValFromPieces(V,"DESC"));
-			CMLib.coffeeMaker().setEnvFlags(this,Util.s_int(CMLib.xml().getValFromPieces(V,"FLAG")));
+			CMLib.coffeeMaker().setEnvFlags(this,CMath.s_int(CMLib.xml().getValFromPieces(V,"FLAG")));
 			setReadableText(CMLib.xml().getValFromPieces(V,"READ"));
 		}
 	}
@@ -202,7 +202,7 @@ public class GenWallpaper implements Item
 		if(msg.targetCode()==CMMsg.NO_EFFECT)
 			return true;
 		else
-		if(Util.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
+		if(CMath.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
 		{
 			mob.tell("Please don't do that.");
 			return false;
@@ -345,7 +345,7 @@ public class GenWallpaper implements Item
 		case 0: return;
 		case 1: setName(val); break;
 		case 2: setDescription(val); break;
-		case 3: CMLib.flags().setReadable(this,Util.s_bool(val));
+		case 3: CMLib.flags().setReadable(this,CMath.s_bool(val));
 				break;
 		case 4: setReadableText(val); break;
 		}

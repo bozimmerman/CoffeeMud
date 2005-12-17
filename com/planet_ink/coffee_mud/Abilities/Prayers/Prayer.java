@@ -109,13 +109,13 @@ public class Prayer extends StdAbility
 		&&(!appropriateToMyFactions(mob)))
 		{
 			int hq=500;
-			if(Util.bset(flags(),Ability.FLAG_HOLY))
+			if(CMath.bset(flags(),Ability.FLAG_HOLY))
 			{
-				if(!Util.bset(flags(),Ability.FLAG_UNHOLY))
+				if(!CMath.bset(flags(),Ability.FLAG_UNHOLY))
 					hq=1000;
 			}
 			else
-			if(Util.bset(flags(),Ability.FLAG_UNHOLY))
+			if(CMath.bset(flags(),Ability.FLAG_UNHOLY))
 				hq=0;
 
 			int basis=0;

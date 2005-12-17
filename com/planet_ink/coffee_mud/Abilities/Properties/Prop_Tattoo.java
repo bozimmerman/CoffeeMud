@@ -41,12 +41,12 @@ public class Prop_Tattoo extends Property
 		Vector tattos=new Vector();
 		Ability A=mob.fetchAbility("Prop_Tattoo");
 		if(A!=null)
-			tattos=Util.parseSemicolons(A.text().toUpperCase(),true);
+			tattos=CMParms.parseSemicolons(A.text().toUpperCase(),true);
 		else
 		{
 			A=mob.fetchEffect("Prop_Tattoo");
 			if(A!=null)
-				tattos=Util.parseSemicolons(A.text().toUpperCase(),true);
+				tattos=CMParms.parseSemicolons(A.text().toUpperCase(),true);
 		}
 		return tattos;
 	}
@@ -56,7 +56,7 @@ public class Prop_Tattoo extends Property
 		if(affected instanceof MOB)
 		{
 			MOB M=(MOB)affected;
-			Vector V=Util.parseSemicolons(text,true);
+			Vector V=CMParms.parseSemicolons(text,true);
 			for(int v=0;v<V.size();v++)
 				M.addTattoo((String)V.elementAt(v));
 		}

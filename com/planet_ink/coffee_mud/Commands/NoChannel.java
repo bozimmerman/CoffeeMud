@@ -67,7 +67,7 @@ public class NoChannel extends StdCommand
 			mob.tell("This channel is not available to you.");
 			return false;
 		}
-		if(!Util.isSet(pstats.getChannelMask(),channelNum))
+		if(!CMath.isSet(pstats.getChannelMask(),channelNum))
 		{
 			pstats.setChannelMask(pstats.getChannelMask()|(1<<channelNum));
 			mob.tell("The "+channelName+" channel has been turned off.  Use `"+channelName.toUpperCase()+"` to turn it back on.");

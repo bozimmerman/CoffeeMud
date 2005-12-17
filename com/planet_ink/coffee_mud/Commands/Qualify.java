@@ -87,9 +87,9 @@ public class Qualify extends BaseAbleLister
 						thisLine.append("\n\r");
 						col=1;
 					}
-					thisLine.append("^N[^H"+Util.padRight(""+l,3)+"^?] "
-					+Util.padRight("^<HELP^>"+A.name()+"^</HELP^>",19)+" "
-					+Util.padRight(A.requirements(),(col==2)?12:13));
+					thisLine.append("^N[^H"+CMStrings.padRight(""+l,3)+"^?] "
+					+CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>",19)+" "
+					+CMStrings.padRight(A.requirements(),(col==2)?12:13));
 				}
 			}
 			if(thisLine.length()>0)
@@ -110,7 +110,7 @@ public class Qualify extends BaseAbleLister
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");
-		String qual=Util.combine(commands,1);
+		String qual=CMParms.combine(commands,1);
 		if((qual.length()==0)||(qual.equalsIgnoreCase("SKILLS"))||(qual.equalsIgnoreCase("SKILL")))
 			msg.append(getQualifiedAbilities(mob,Ability.SKILL,-1,"\n\r^HGeneral Skills:^? "));
 		if((qual.length()==0)||(qual.equalsIgnoreCase("COMMON SKILLS"))||(qual.equalsIgnoreCase("COMMON")))
@@ -144,7 +144,7 @@ public class Qualify extends BaseAbleLister
 				{ domain=i<<5; break;}
 			if(domain>0)
 			{
-				domainName=Util.capitalizeAndLower(Ability.DOMAIN_DESCS[domain>>5]);
+				domainName=CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[domain>>5]);
 				msg.append(getQualifiedAbilities(mob,Ability.SPELL,domain,"\n\r^H"+domainName+" spells:^? "));
 			}
 		}
@@ -170,9 +170,9 @@ public class Qualify extends BaseAbleLister
 						thisLine.append("\n\r");
 						col=1;
 					}
-					thisLine.append("^N[^H"+Util.padRight(""+1,3)+"^?] "
-					+Util.padRight("^<HELP^>"+C.name()+"^</HELP^>",19)+" "
-					+Util.padRight("1 train",(col==2)?12:13));
+					thisLine.append("^N[^H"+CMStrings.padRight(""+1,3)+"^?] "
+					+CMStrings.padRight("^<HELP^>"+C.name()+"^</HELP^>",19)+" "
+					+CMStrings.padRight("1 train",(col==2)?12:13));
 				}
 				if(thisLine.length()>0)
 				{

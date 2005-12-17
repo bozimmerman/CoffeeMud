@@ -82,7 +82,7 @@ public class Chant_SummonLightning extends Chant
 				int maxDie =  (int)Math.round(new Integer(adjustedLevel(mob,asLevel)).doubleValue());
 				int damage = CMLib.dice().roll(maxDie,8,maxDie);
 				if((msg.value()>0)||(msg2.value()>0))
-					damage = (int)Math.round(Util.div(damage,2.0));
+					damage = (int)Math.round(CMath.div(damage,2.0));
 				if(target.location()==mob.location())
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The bolt <DAMAGE> <T-NAME>!");
 			}

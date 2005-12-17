@@ -49,7 +49,7 @@ public class Chant_DistantFungalGrowth extends Chant
 			return false;
 		}
 
-		String areaName=Util.combine(commands,0).trim().toUpperCase();
+		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 		Room anyRoom=null;
 		Room newRoom=null;
 		try
@@ -73,7 +73,7 @@ public class Chant_DistantFungalGrowth extends Chant
 		if(newRoom==null)
 		{
 			if(anyRoom==null)
-				mob.tell("You don't know of an place called '"+Util.combine(commands,0)+"'.");
+				mob.tell("You don't know of an place called '"+CMParms.combine(commands,0)+"'.");
 			else
 			if((anyRoom.domainType()&Room.INDOORS)==0)
 				mob.tell("There IS such a place, but it is outdoors, where your fungus will not grow.");

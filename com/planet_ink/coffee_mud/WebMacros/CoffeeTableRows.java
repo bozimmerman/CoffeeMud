@@ -46,9 +46,9 @@ public class CoffeeTableRows extends StdWebMacro
 		if(header==null) header="";
 		String footer=(String)parms.get("FOOTER");
 		if(footer==null) footer="";
-		int scale=Util.s_int(httpReq.getRequestParameter("SCALE"));
+		int scale=CMath.s_int(httpReq.getRequestParameter("SCALE"));
 		if(scale<=0) scale=1;
-		int days=Util.s_int(httpReq.getRequestParameter("DAYS"));
+		int days=CMath.s_int(httpReq.getRequestParameter("DAYS"));
 		days=days*scale;
 		if(days<=0) days=0;
 		String code=httpReq.getRequestParameter("CODE");
@@ -184,8 +184,8 @@ public class CoffeeTableRows extends StdWebMacro
 			}
 			long minsOnline=(totals[CoffeeTableRow.STAT_TICKSONLINE]*MudHost.TICK_TIME)/(1000*60);
 			totals[CoffeeTableRow.STAT_TICKSONLINE]=(totals[CoffeeTableRow.STAT_TICKSONLINE]*MudHost.TICK_TIME)/(1000*60*60);
-			double avgOnline=(numberOnlineCounter>0)?Util.div(numberOnlineTotal,numberOnlineCounter):0.0;
-			avgOnline=Util.div(Math.round(avgOnline*10.0),10.0);
+			double avgOnline=(numberOnlineCounter>0)?CMath.div(numberOnlineTotal,numberOnlineCounter):0.0;
+			avgOnline=CMath.div(Math.round(avgOnline*10.0),10.0);
 			table.append("<TR>");
 			for(int i=0;i<orderedParms.size();i++)
 			{

@@ -84,7 +84,7 @@ public class Play_Reveille extends Play
 							follower.location().send(follower,msg2);
 							if(CMLib.flags().isSleeping(follower))
 							{
-								follower.doCommand(Util.parse("WAKE"));
+								follower.doCommand(CMParms.parse("WAKE"));
 								if(!CMLib.flags().isSleeping(follower))
 								{
 									Ability A=CMClass.getAbility("Searching");

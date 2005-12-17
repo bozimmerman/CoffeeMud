@@ -209,10 +209,10 @@ public class Test extends StdCommand
             String what=((String)commands.elementAt(1)).toUpperCase().trim();
             if(what.equalsIgnoreCase("mudhourstil"))
             {
-                String startDate=Util.combine(commands,2);
+                String startDate=CMParms.combine(commands,2);
                 int x=startDate.indexOf("-");
-                int mudmonth=Util.s_int(startDate.substring(0,x));
-                int mudday=Util.s_int(startDate.substring(x+1));
+                int mudmonth=CMath.s_int(startDate.substring(0,x));
+                int mudday=CMath.s_int(startDate.substring(x+1));
                 TimeClock C=(TimeClock)CMClass.getCommon("DefaultTimeClock");
                 TimeClock NOW=mob.location().getArea().getTimeObj();
                 C.setMonth(mudmonth);
@@ -514,7 +514,7 @@ public class Test extends StdCommand
                 I=CMClass.getItem("StdFood");
                 mobs[0].addInventory(I);
                 C=CMClass.getCommand("Put");
-                C.execute(mobs[0],Util.makeVector("Put","Food","Sack"));
+                C.execute(mobs[0],CMParms.makeVector("Put","Food","Sack"));
                 if(!effectCheck(mobs[0])){ mob.tell("Error9-1"); return false;}
                 R.recoverRoomStats();
                 
@@ -525,12 +525,12 @@ public class Test extends StdCommand
                 I=CMClass.getItem("StdFood");
                 mobs[0].addInventory(I);
                 C=CMClass.getCommand("Put");
-                C.execute(mobs[0],Util.makeVector("Put","Food","Sack"));
+                C.execute(mobs[0],CMParms.makeVector("Put","Food","Sack"));
                 if(!effectCheck(mobs[0])){ mob.tell("Error9-2"); return false;}
                 I=CMClass.getItem("StdFood");
                 mobs[1].addInventory(I);
                 C=CMClass.getCommand("Put");
-                C.execute(mobs[1],Util.makeVector("Put","Food","Sack"));
+                C.execute(mobs[1],CMParms.makeVector("Put","Food","Sack"));
                 if(effectCheck(mobs[1])){ mob.tell("Error9-3"); return false;}
                 R.recoverRoomStats();
             }
@@ -543,7 +543,7 @@ public class Test extends StdCommand
                 mob.tell("Test#10-1: "+UseSpellCast2.accountForYourself());
                 IS=giveTo(CMClass.getItem("StdFood"),UseSpellCast2,mobs[0],null,0);
                 C=CMClass.getCommand("Eat");
-                C.execute(mobs[0],Util.makeVector("Eat","ALL"));
+                C.execute(mobs[0],CMParms.makeVector("Eat","ALL"));
                 if(!effectCheck(mobs[0])){ mob.tell("Error10-1"); return false;}
                 R.recoverRoomStats();
                 
@@ -552,10 +552,10 @@ public class Test extends StdCommand
                 mob.tell("Test#10-2: "+UseSpellCast2.accountForYourself());
                 IS=giveTo(CMClass.getItem("StdFood"),UseSpellCast2,mobs[0],mobs[1],0);
                 C=CMClass.getCommand("Eat");
-                C.execute(mobs[0],Util.makeVector("Eat","ALL"));
+                C.execute(mobs[0],CMParms.makeVector("Eat","ALL"));
                 if(!effectCheck(mobs[0])){ mob.tell("Error10-2"); return false;}
                 C=CMClass.getCommand("Eat");
-                C.execute(mobs[1],Util.makeVector("Eat","ALL"));
+                C.execute(mobs[1],CMParms.makeVector("Eat","ALL"));
                 if(effectCheck(mobs[1])){ mob.tell("Error10-3"); return false;}
                 R.recoverRoomStats();
             }

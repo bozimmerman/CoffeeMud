@@ -165,7 +165,7 @@ public class StdClanCommonItem extends StdClanItem
             Room R=M2.location();
             if((R!=null)&&(CMLib.flags().isInTheGame(M2,true)))
             {
-                A.invoke(M,Util.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
+                A.invoke(M,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
                 return true;
             }
         }
@@ -176,7 +176,7 @@ public class StdClanCommonItem extends StdClanItem
         Ability A=CMClass.getAbility("Skill_Track");
         if((A!=null)&&(R!=null))
         {
-            A.invoke(M,Util.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
+            A.invoke(M,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
             return true;
         }
         return false;
@@ -205,7 +205,7 @@ public class StdClanCommonItem extends StdClanItem
 				{
 					A.setProfficiency(100);
                     boolean success=false;
-                    if((!Util.bset(A.flags(),Ability.FLAG_CRAFTING))&&(CMLib.flags().isMobile(M)))
+                    if((!CMath.bset(A.flags(),Ability.FLAG_CRAFTING))&&(CMLib.flags().isMobile(M)))
                     {
                         DVector DV=(DVector)needChart.get(M.location().getArea());
                         if(DV!=null)
@@ -313,7 +313,7 @@ public class StdClanCommonItem extends StdClanItem
                         }
                     }
                     
-					if((M.inventorySize()>1)&&(Util.bset(A.flags(),Ability.FLAG_CRAFTING)))
+					if((M.inventorySize()>1)&&(CMath.bset(A.flags(),Ability.FLAG_CRAFTING)))
 					{
 						Item I=null;
 						int tries=0;
@@ -332,7 +332,7 @@ public class StdClanCommonItem extends StdClanItem
 					}
 					else
 						success=A.invoke(M,new Vector(),null,false,envStats().level());
-                    if(Util.bset(A.flags(),Ability.FLAG_CRAFTING))
+                    if(CMath.bset(A.flags(),Ability.FLAG_CRAFTING))
                     {
                         DVector DV=(DVector)needChart.get(M.location().getArea());
                         if(!success)

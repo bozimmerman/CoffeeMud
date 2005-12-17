@@ -144,7 +144,7 @@ public class Alchemy extends CraftingSkill
 		if(pos.equalsIgnoreCase("list"))
 		{
 			StringBuffer buf=new StringBuffer("Potions you know how to brew:\n\r");
-			buf.append(Util.padRight("Spell",25)+" "+Util.padRight("Spell",25)+" "+Util.padRight("Spell",25));
+			buf.append(CMStrings.padRight("Spell",25)+" "+CMStrings.padRight("Spell",25)+" "+CMStrings.padRight("Spell",25));
 			int toggler=1;
 			int toggleTop=3;
 			for(int r=0;r<recipes.size();r++)
@@ -158,7 +158,7 @@ public class Alchemy extends CraftingSkill
 					&&(spellLevel(mob,A)>=0)
 					&&(mob.envStats().level()>=spellLevel(mob,A)))
 					{
-						buf.append(Util.padRight(A.name(),25)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight(A.name(),25)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -175,7 +175,7 @@ public class Alchemy extends CraftingSkill
 		}
 		else
 		{
-			building=getTarget(mob,null,givenTarget,Util.parse(pos),Item.WORN_REQ_UNWORNONLY);
+			building=getTarget(mob,null,givenTarget,CMParms.parse(pos),Item.WORN_REQ_UNWORNONLY);
 			commands.remove(pos);
 			if(building==null) return false;
 			if(!mob.isMine(building))
@@ -203,7 +203,7 @@ public class Alchemy extends CraftingSkill
 				commonTell(mob,"You can only brew into glass containers.");
 				return false;
 			}
-			String recipeName=Util.combine(commands,0);
+			String recipeName=CMParms.combine(commands,0);
 			theSpell=null;
 			String ingredient="";
 			for(int r=0;r<recipes.size();r++)

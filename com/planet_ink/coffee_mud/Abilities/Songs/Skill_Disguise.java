@@ -88,7 +88,7 @@ public class Skill_Disguise extends BardSkill
 		if(values[6]!=null)
 			affectableStats.setDisplayClassName(values[6]);
 		if(values[8]!=null)
-			affectableStats.setStat(CharStats.AGE,Util.s_int(values[8]));
+			affectableStats.setStat(CharStats.AGE,CMath.s_int(values[8]));
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -105,8 +105,8 @@ public class Skill_Disguise extends BardSkill
 			String omsg=null;
 			if(msg.othersMessage()!=null)
 			{
-				omsg=Util.replaceAll(msg.othersMessage(),"<T-NAME>",mob.name());
-				omsg=Util.replaceAll(omsg,"<T-NAMESELF>",mob.name());
+				omsg=CMStrings.replaceAll(msg.othersMessage(),"<T-NAME>",mob.name());
+				omsg=CMStrings.replaceAll(omsg,"<T-NAMESELF>",mob.name());
 			}
 			msg.modify(msg.source(),this,msg.tool(),
 					   msg.sourceCode(),msg.sourceMessage(),
@@ -134,8 +134,8 @@ public class Skill_Disguise extends BardSkill
 			}
 			int height=mob.envStats().height();
 			int weight=mob.baseEnvStats().weight();
-			if(values[0]!=null) weight=Util.s_int(values[0]);
-			if(values[4]!=null) height=Util.s_int(values[4]);
+			if(values[0]!=null) weight=CMath.s_int(values[0]);
+			if(values[4]!=null) height=CMath.s_int(values[4]);
 			if(height>0)
 				myDescription.append(mob.charStats().HeShe()+" is "+height+" inches tall and weighs "+weight+" pounds.\n\r");
 			myDescription.append(mob.healthText()+"\n\r\n\r");
@@ -188,25 +188,25 @@ public class Skill_Disguise extends BardSkill
 			mob.tell("Disguise "+whats[which].toLowerCase()+" in what way?  Be more specific.");
 			return false;
 		}
-		String how=Util.combine(commands,0);
+		String how=CMParms.combine(commands,0);
 
 		int adjustment=0;
 		switch(which)
 		{
 		case 0: //weight
 		{
-			if(Util.s_int(how)<=0)
+			if(CMath.s_int(how)<=0)
 			{
 				mob.tell("You cannot disguise your weight as "+how+" pounds!");
 				return false;
 			}
-			int x=mob.baseEnvStats().weight()-Util.s_int(how);
+			int x=mob.baseEnvStats().weight()-CMath.s_int(how);
 			if(x<0) x=x*-1;
-			adjustment=-((int)Math.round(Util.div(x,mob.baseEnvStats().weight())*100.0));
+			adjustment=-((int)Math.round(CMath.div(x,mob.baseEnvStats().weight())*100.0));
 			break;
 		}
 		case 1: // level
-			if(Util.s_int(how)<=0)
+			if(CMath.s_int(how)<=0)
 			{
 				mob.tell("You cannot disguise your level as "+how+"!");
 				return false;
@@ -240,14 +240,14 @@ public class Skill_Disguise extends BardSkill
 			}
 		case 4: // height
 		{
-			if(Util.s_int(how)<=0)
+			if(CMath.s_int(how)<=0)
 			{
 				mob.tell("You cannot disguise your height as "+how+" inches!");
 				return false;
 			}
-			int x=mob.envStats().height()-Util.s_int(how);
+			int x=mob.envStats().height()-CMath.s_int(how);
 			if(x<0) x=x*-1;
-			adjustment=-((int)Math.round(Util.div(x,mob.envStats().height())*100.0));
+			adjustment=-((int)Math.round(CMath.div(x,mob.envStats().height())*100.0));
 			break;
 		}
 		case 5: // name
@@ -264,7 +264,7 @@ public class Skill_Disguise extends BardSkill
 				return false;
 			}
 			else
-				how=Util.capitalizeAndLower(how);
+				how=CMStrings.capitalizeAndLower(how);
 			break;
 		}
 		case 6: // class
@@ -279,7 +279,7 @@ public class Skill_Disguise extends BardSkill
 					mob.tell("'"+how+"' is an unknown character class!");
 					return false;
 				}
-				how=Util.capitalizeAndLower(how);
+				how=CMStrings.capitalizeAndLower(how);
 				break;
 			}
 		case 7: // alignment
@@ -293,14 +293,14 @@ public class Skill_Disguise extends BardSkill
 		}
 		case 8: // age
 		{
-			if(Util.s_int(how)<=0)
+			if(CMath.s_int(how)<=0)
 			{
 				mob.tell("You cannot disguise your age as "+how+" years!");
 				return false;
 			}
-			int x=mob.baseCharStats().getStat(CharStats.AGE)-Util.s_int(how);
+			int x=mob.baseCharStats().getStat(CharStats.AGE)-CMath.s_int(how);
 			if(x<0) x=x*-1;
-			adjustment=-((int)Math.round(Util.div(x,mob.baseCharStats().getStat(CharStats.AGE))*100.0));
+			adjustment=-((int)Math.round(CMath.div(x,mob.baseCharStats().getStat(CharStats.AGE))*100.0));
 			break;
 		}
 		}

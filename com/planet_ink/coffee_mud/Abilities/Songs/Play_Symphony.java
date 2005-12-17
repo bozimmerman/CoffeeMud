@@ -579,7 +579,7 @@ public class Play_Symphony extends Play
 		default:
 			break;
 		}
-		toDoVal=Util.s_int(toDoString);
+		toDoVal=CMath.s_int(toDoString);
 		return toDoCode;
 	}
 

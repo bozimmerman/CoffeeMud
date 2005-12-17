@@ -197,14 +197,14 @@ public class Language extends StdAbility
 		&&(msg.tool()==null)
 		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-		   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
+		   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
 		{
 			String str=getMsgFromAffect(msg.othersMessage());
 			if(str==null) str=getMsgFromAffect(msg.targetMessage());
 			if(str!=null)
 			{
                 String smsg=getMsgFromAffect(msg.sourceMessage());
-                int numToMess=(int)Math.round(Util.mul(numChars(str),Util.div(100-profficiency(),100)));
+                int numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-profficiency(),100)));
                 if(numToMess>0) smsg=messChars(smsg,numToMess);
                 str=scrambleAll(str,numToMess);
 				msg.modify(msg.source(),
@@ -276,7 +276,7 @@ public class Language extends StdAbility
 		&&(!msg.amISource((MOB)affected))
 		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-		   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
+		   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
 		&&(msg.tool() !=null)
 		&&(msg.sourceMessage()!=null)
 		&&(msg.tool() instanceof Language)
@@ -285,10 +285,10 @@ public class Language extends StdAbility
 			String str=this.getMsgFromAffect(msg.sourceMessage());
 			if(str!=null)
 			{
-				int numToMess=(int)Math.round(Util.mul(numChars(str),Util.div(100-profficiency(),100)));
+				int numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-profficiency(),100)));
 				if(numToMess>0)
 					str=messChars(str,numToMess);
-				if(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
+				if(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),this.subStitute(msg.othersMessage(),str)+" (translated from "+ID()+")"));
 				else
 				if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
@@ -365,7 +365,7 @@ public class Language extends StdAbility
             else
             {
                 if(L!=null)
-                    numToMess=(int)Math.round(Util.mul(numChars(str),Util.div(100-L.profficiency(),100)));
+                    numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-L.profficiency(),100)));
                 String original=messChars(str,numToMess);
                 str=scrambleAll(str,numToMess);
                 msg.source().tell("It says '"+str+"'");

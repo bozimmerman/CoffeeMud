@@ -130,7 +130,7 @@ public class StdTrap extends StdAbility implements Trap
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(!sprung)
-		if(Util.bset(canAffectCode(),Ability.CAN_EXITS))
+		if(CMath.bset(canAffectCode(),Ability.CAN_EXITS))
 		{
 			if(msg.amITarget(affected))
 			{
@@ -157,7 +157,7 @@ public class StdTrap extends StdAbility implements Trap
 			}
 		}
 		else
-		if(Util.bset(canAffectCode(),Ability.CAN_ITEMS))
+		if(CMath.bset(canAffectCode(),Ability.CAN_ITEMS))
 		{
 			if(isABomb())
 			{
@@ -180,7 +180,7 @@ public class StdTrap extends StdAbility implements Trap
 			}
 		}
 		else
-		if(Util.bset(canAffectCode(),Ability.CAN_ROOMS))
+		if(CMath.bset(canAffectCode(),Ability.CAN_ROOMS))
 		{
 			if(msg.amITarget(affected))
 			{

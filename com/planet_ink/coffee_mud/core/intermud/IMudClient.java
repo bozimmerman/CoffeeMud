@@ -249,7 +249,7 @@ public class IMudClient implements I3Interface
 		else
 		if(imc2online()&&(imc2.getIMC2Mud(mudName)!=null))
 		{
-			tellName=Util.capitalizeAndLower(tellName)+"@"+imc2.getIMC2Mud(mudName).name;
+			tellName=CMStrings.capitalizeAndLower(tellName)+"@"+imc2.getIMC2Mud(mudName).name;
 			mob.tell("^CYou tell "+tellName+" '"+message+"'^?");
 			if(mob.playerStats()!=null) 
 			    mob.playerStats().addTellStack("You tell "+tellName+" '"+message+"'");
@@ -293,7 +293,7 @@ public class IMudClient implements I3Interface
 			if((message.startsWith(":")||message.startsWith(","))&&(message.trim().length()>1))
 			{
 				String msgstr=message.substring(1);
-				Vector V=Util.parse(msgstr);
+				Vector V=CMParms.parse(msgstr);
 				Social S=CMLib.socials().FetchSocial(V,true);
 				if(S==null) S=CMLib.socials().FetchSocial(V,false);
 				CMMsg msg=null;
@@ -332,11 +332,11 @@ public class IMudClient implements I3Interface
 						ck.target_visible_name=msg.target().name();
 					}
 					if((msg.target()!=null)&&(msg.targetMessage()!=null)&&(msg.targetMessage().length()>0))
-					    ck.message_target=socialFixOut(Util.removeColors(msg.targetMessage()));
+					    ck.message_target=socialFixOut(CMStrings.removeColors(msg.targetMessage()));
 					if((msg.othersMessage()!=null)&&(msg.othersMessage().length()>0))
-						ck.message=socialFixOut(Util.removeColors(msg.othersMessage()));
+						ck.message=socialFixOut(CMStrings.removeColors(msg.othersMessage()));
 					else
-						ck.message=socialFixOut(Util.removeColors(msg.sourceMessage()));
+						ck.message=socialFixOut(CMStrings.removeColors(msg.sourceMessage()));
 				}
 				else
                 {
@@ -367,7 +367,7 @@ public class IMudClient implements I3Interface
 				MOB mob2=CMClass.getMOB("StdMOB");
 				mob2.setName(mob.Name()+"@"+imc2.imc_name);
 				mob2.setLocation(CMClass.getLocale("StdRoom"));
-				Vector V=Util.parse(message);
+				Vector V=CMParms.parse(message);
 				Social S=CMLib.socials().FetchSocial(V,true);
 				if(S==null) S=CMLib.socials().FetchSocial(V,false);
 				CMMsg msg=null;
@@ -400,9 +400,9 @@ public class IMudClient implements I3Interface
 					}
 					
 					if((msg.othersMessage()!=null)&&(msg.othersMessage().length()>0))
-						message=CMLib.coffeeFilter().fullOutFilter(null,CMClass.sampleMOB(),mob2,msg.target(),null,Util.removeColors(msg.othersMessage()),false);
+						message=CMLib.coffeeFilter().fullOutFilter(null,CMClass.sampleMOB(),mob2,msg.target(),null,CMStrings.removeColors(msg.othersMessage()),false);
 					else
-						message=CMLib.coffeeFilter().fullOutFilter(null,CMClass.sampleMOB(),mob2,msg.target(),null,Util.removeColors(msg.sourceMessage()),false);
+						message=CMLib.coffeeFilter().fullOutFilter(null,CMClass.sampleMOB(),mob2,msg.target(),null,CMStrings.removeColors(msg.sourceMessage()),false);
 					if(message.toUpperCase().startsWith((mob.Name()+"@"+imc2.imc_name).toUpperCase()))
 						message=message.substring((mob.Name()+"@"+imc2.imc_name).length()).trim();
 					emote=2;
@@ -458,15 +458,15 @@ public class IMudClient implements I3Interface
 				Mud m=(Mud)e.nextElement();
 				if((m.state<0)&&(CMLib.english().containsString(m.mud_name,parms)))
 				{
-					buf.append(Util.padRight("Name",10)+": "+m.mud_name+"\n\r");
-					buf.append(Util.padRight("Address",10)+": "+m.address+"\n\r");
-					buf.append(Util.padRight("Port",10)+": "+m.player_port+"\n\r");
-					buf.append(Util.padRight("Admin@",10)+": "+m.admin_email+"\n\r");
-					buf.append(Util.padRight("Base",10)+": "+m.base_mudlib+"\n\r");
-					buf.append(Util.padRight("MudLib",10)+": "+m.mudlib+"\n\r");
-					buf.append(Util.padRight("Type",10)+": "+m.mud_type+"\n\r");
-					buf.append(Util.padRight("Driver",10)+": "+m.driver+"\n\r");
-					buf.append(Util.padRight("Status",10)+": "+m.status+"\n\r");
+					buf.append(CMStrings.padRight("Name",10)+": "+m.mud_name+"\n\r");
+					buf.append(CMStrings.padRight("Address",10)+": "+m.address+"\n\r");
+					buf.append(CMStrings.padRight("Port",10)+": "+m.player_port+"\n\r");
+					buf.append(CMStrings.padRight("Admin@",10)+": "+m.admin_email+"\n\r");
+					buf.append(CMStrings.padRight("Base",10)+": "+m.base_mudlib+"\n\r");
+					buf.append(CMStrings.padRight("MudLib",10)+": "+m.mudlib+"\n\r");
+					buf.append(CMStrings.padRight("Type",10)+": "+m.mud_type+"\n\r");
+					buf.append(CMStrings.padRight("Driver",10)+": "+m.driver+"\n\r");
+					buf.append(CMStrings.padRight("Status",10)+": "+m.status+"\n\r");
 					break;
 				}
 			}
@@ -501,7 +501,7 @@ public class IMudClient implements I3Interface
 		for(int v=0;v<V.size();v++)
 		{
 			REMOTEINFO m=(REMOTEINFO)V.elementAt(v);
-			buf.append("["+Util.padRight(m.name,15)+"]["+Util.padRight(m.version,30)+"] "+Util.padRight(m.network,13)+" ("+Util.padRight(m.hub,10)+")\n\r");
+			buf.append("["+CMStrings.padRight(m.name,15)+"]["+CMStrings.padRight(m.version,30)+"] "+CMStrings.padRight(m.network,13)+" ("+CMStrings.padRight(m.hub,10)+")\n\r");
 		}
 		mob.session().wraplessPrintln(buf.toString());
 	}
@@ -538,7 +538,7 @@ public class IMudClient implements I3Interface
 			for(int v=0;v<V.size();v++)
 			{
 				Mud m=(Mud)V.elementAt(v);
-				buf.append("["+Util.padRight(m.mud_name,20)+"]["+Util.padRight(m.base_mudlib,20)+"] "+m.address+" ("+m.player_port+")\n\r");
+				buf.append("["+CMStrings.padRight(m.mud_name,20)+"]["+CMStrings.padRight(m.base_mudlib,20)+"] "+m.address+" ("+m.player_port+")\n\r");
 			}
 		}
 		mob.session().wraplessPrintln(buf.toString());
@@ -557,7 +557,7 @@ public class IMudClient implements I3Interface
 			{
 				Channel c=(Channel)e.nextElement();
 				if(c.type==0)
-					buf.append("["+Util.padRight(c.channel,20)+"] "+c.owner+"\n\r");
+					buf.append("["+CMStrings.padRight(c.channel,20)+"] "+c.owner+"\n\r");
 			}
 		}
 		mob.session().wraplessPrintln(buf.toString());
@@ -569,7 +569,7 @@ public class IMudClient implements I3Interface
 		if(mob.isMonster()) return;
 		StringBuffer buf=new StringBuffer("\n\rIMC2 Channels List:\n\r");
         Hashtable channels=imc2.query_channels();
-        buf.append(Util.padRight("Name", 22)+Util.padRight("Policy",25)+Util.padRight("Owner",20)+"\n\r");
+        buf.append(CMStrings.padRight("Name", 22)+CMStrings.padRight("Policy",25)+CMStrings.padRight("Owner",20)+"\n\r");
         Enumeration e = channels.keys();
         while (e.hasMoreElements()) {
             String key = (String) e.nextElement();
@@ -585,8 +585,8 @@ public class IMudClient implements I3Interface
                 if (r.policy == IMC2Driver.CHAN_CPRIVATE)
                     policy = "(cprivate)";
 
-                buf.append(Util.padRight(key, 22)+
-						   Util.padRight(policy+"("+r.level+")",25)+
+                buf.append(CMStrings.padRight(key, 22)+
+						   CMStrings.padRight(policy+"("+r.level+")",25)+
 						   r.owner+"\n\r");
             }
         }
@@ -612,16 +612,16 @@ public class IMudClient implements I3Interface
 
 	public String socialFixOut(String str)
 	{
-		str=Util.replaceAll(str,"<S-NAME>","$N");
-		str=Util.replaceAll(str,"<T-NAME>","$O");
-		str=Util.replaceAll(str,"<T-NAMESELF>","$O");
-		str=Util.replaceAll(str,"<S-HIM-HER>","$m");
-		str=Util.replaceAll(str,"<T-HIM-HER>","$M");
-		str=Util.replaceAll(str,"<S-HIS-HER>","$s");
-		str=Util.replaceAll(str,"<T-HIS-HER>","$S");
-		str=Util.replaceAll(str,"<S-HE-SHE>","$e");
-		str=Util.replaceAll(str,"<T-HE-SHE>","$E");
-		str=Util.replaceAll(str,"\'","`");
+		str=CMStrings.replaceAll(str,"<S-NAME>","$N");
+		str=CMStrings.replaceAll(str,"<T-NAME>","$O");
+		str=CMStrings.replaceAll(str,"<T-NAMESELF>","$O");
+		str=CMStrings.replaceAll(str,"<S-HIM-HER>","$m");
+		str=CMStrings.replaceAll(str,"<T-HIM-HER>","$M");
+		str=CMStrings.replaceAll(str,"<S-HIS-HER>","$s");
+		str=CMStrings.replaceAll(str,"<T-HIS-HER>","$S");
+		str=CMStrings.replaceAll(str,"<S-HE-SHE>","$e");
+		str=CMStrings.replaceAll(str,"<T-HE-SHE>","$E");
+		str=CMStrings.replaceAll(str,"\'","`");
 		if(str.equals("")) return "$";
 		return str.trim();
 	}

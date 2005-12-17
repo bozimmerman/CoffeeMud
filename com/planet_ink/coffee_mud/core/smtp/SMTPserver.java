@@ -116,12 +116,12 @@ public class SMTPserver extends Thread implements Tickable
 		CMProps.setVar(CMProps.SYSTEM_MAILBOX,mailbox.trim());
         CMProps.setIntVar(CMProps.SYSTEMI_MAXMAILBOX,getMaxMsgs());
 		
-		CMProps.setBoolVar(CMProps.SYSTEMB_EMAILFORWARDING,Util.s_bool(page.getStr("FORWARD")));
+		CMProps.setBoolVar(CMProps.SYSTEMB_EMAILFORWARDING,CMath.s_bool(page.getStr("FORWARD")));
 		
 		String journalStr=page.getStr("JOURNALS");
 		if((journalStr==null)||(journalStr.length()>0))
 		{
-			Vector V=Util.parseCommas(journalStr,true);
+			Vector V=CMParms.parseCommas(journalStr,true);
 			if(V.size()>0)
 			{
 				journals=new DVector(5);
@@ -137,7 +137,7 @@ public class SMTPserver extends Thread implements Tickable
 					}
 					if(!journals.contains(s))
 					{
-						Vector PV=Util.parseSpaces(parm,true);
+						Vector PV=CMParms.parseSpaces(parm,true);
 						StringBuffer crit=new StringBuffer("");
 						boolean forward=false;
 						boolean subscribeOnly=false;
@@ -176,7 +176,7 @@ public class SMTPserver extends Thread implements Tickable
 	public String getAnEmailJournal(String journal)
 	{
 		if(journals==null) return null;
-		journal=Util.replaceAll(journal,"_"," ");
+		journal=CMStrings.replaceAll(journal,"_"," ");
 		for(int i=0;i<journals.size();i++)
 		{
 			if(journal.equalsIgnoreCase((String)journals.elementAt(i,1)))
@@ -360,10 +360,10 @@ public class SMTPserver extends Thread implements Tickable
         IQE.setTimeInMillis(email);
 		Calendar IQC=Calendar.getInstance();
         IQC.setTimeInMillis(curr);
-		if(Util.absDiff(email,curr)<(30*60*1000)) return true;
+		if(CMath.absDiff(email,curr)<(30*60*1000)) return true;
 		while(IQE.before(IQC))
 		{
-			if(Util.absDiff(IQE.getTimeInMillis(),IQC.getTimeInMillis())<(30*60*1000)) 
+			if(CMath.absDiff(IQE.getTimeInMillis(),IQC.getTimeInMillis())<(30*60*1000)) 
 				return true;
 			IQE.add(Calendar.DATE,1);
 		}
@@ -407,7 +407,7 @@ public class SMTPserver extends Thread implements Tickable
 						String to=(String)msg.elementAt(DatabaseEngine.JOURNAL_TO);
 						if(to.equalsIgnoreCase("ALL"))
 						{
-							long date=Util.s_long((String)msg.elementAt(DatabaseEngine.JOURNAL_DATE2));
+							long date=CMath.s_long((String)msg.elementAt(DatabaseEngine.JOURNAL_DATE2));
 							String from=(String)msg.elementAt(DatabaseEngine.JOURNAL_FROM);
 							String key=(String)msg.elementAt(DatabaseEngine.JOURNAL_KEY);
 							String subj=((String)msg.elementAt(DatabaseEngine.JOURNAL_SUBJ)).trim();
@@ -443,8 +443,8 @@ public class SMTPserver extends Thread implements Tickable
 											String subscribedMsg=page.getStr("SUBSCRIBEDMSG");
 											if((subscribedMsg==null)||(subscribedMsg.length()==0))
 												subscribedMsg="You are now subscribed to "+name+". To unsubscribe, send an email with a subject of unsubscribe.";
-											subscribeTitle=CMLib.coffeeFilter().fullInFilter(Util.replaceAll(subscribeTitle,"<NAME>",name),false);
-											subscribedMsg=CMLib.coffeeFilter().fullInFilter(Util.replaceAll(subscribedMsg,"<NAME>",name),false);
+											subscribeTitle=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(subscribeTitle,"<NAME>",name),false);
+											subscribedMsg=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(subscribedMsg,"<NAME>",name),false);
 											CMLib.database().DBWriteJournal(name,name,from,subscribeTitle,subscribedMsg,-1);
 										}
 									}
@@ -473,8 +473,8 @@ public class SMTPserver extends Thread implements Tickable
 											String unsubscribedMsg=page.getStr("UNSUBSCRIBEDMSG");
 											if((unsubscribedMsg==null)||(unsubscribedMsg.length()==0))
 												unsubscribedMsg="You are no longer subscribed to "+name+". To subscribe again, send an email with a subject of subscribe.";
-											unsubscribeTitle=CMLib.coffeeFilter().fullInFilter(Util.replaceAll(unsubscribeTitle,"<NAME>",name),false);
-											unsubscribedMsg=CMLib.coffeeFilter().fullInFilter(Util.replaceAll(unsubscribedMsg,"<NAME>",name),false);
+											unsubscribeTitle=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(unsubscribeTitle,"<NAME>",name),false);
+											unsubscribedMsg=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(unsubscribedMsg,"<NAME>",name),false);
 											CMLib.database().DBWriteJournal(name,name,from,unsubscribeTitle,unsubscribedMsg,-1);
 										}
 									}
@@ -560,7 +560,7 @@ public class SMTPserver extends Thread implements Tickable
 			String key=(String)mail.elementAt(DatabaseEngine.JOURNAL_KEY);
 			String from=(String)mail.elementAt(DatabaseEngine.JOURNAL_FROM);
 			String to=(String)mail.elementAt(DatabaseEngine.JOURNAL_TO);
-			long date=Util.s_long((String)mail.elementAt(DatabaseEngine.JOURNAL_DATE2));
+			long date=CMath.s_long((String)mail.elementAt(DatabaseEngine.JOURNAL_DATE2));
 			String subj=((String)mail.elementAt(DatabaseEngine.JOURNAL_SUBJ)).trim();
 			String msg=((String)mail.elementAt(DatabaseEngine.JOURNAL_MSG)).trim();
 			
@@ -600,7 +600,7 @@ public class SMTPserver extends Thread implements Tickable
 				}
 			}
 			
-			if(Util.bset(toM.getBitmap(),MOB.ATT_AUTOFORWARD)) // forwarding OFF
+			if(CMath.bset(toM.getBitmap(),MOB.ATT_AUTOFORWARD)) // forwarding OFF
 				continue;
 
 			if((toM.playerStats()==null)
@@ -692,7 +692,7 @@ public class SMTPserver extends Thread implements Tickable
 	{
 		String s=page.getStr("MAXMSGS");
 		if(s==null) return Integer.MAX_VALUE;
-		int x=Util.s_int(s);
+		int x=CMath.s_int(s);
 		if(x==0) return Integer.MAX_VALUE;
 		return x;
 	}
@@ -700,7 +700,7 @@ public class SMTPserver extends Thread implements Tickable
 	{
 		String s=page.getStr("EMAILDAYS");
 		if(s==null) return (365*20);
-		int x=Util.s_int(s);
+		int x=CMath.s_int(s);
 		if(x==0) return (365*20);
 		return x;
 	}
@@ -708,7 +708,7 @@ public class SMTPserver extends Thread implements Tickable
 	{
 		String s=page.getStr("JOURNALDAYS");
 		if(s==null) return (365*20);
-		int x=Util.s_int(s);
+		int x=CMath.s_int(s);
 		if(x==0) return (365*20);
 		return x;
 	}
@@ -716,7 +716,7 @@ public class SMTPserver extends Thread implements Tickable
 	{
 		String s=page.getStr("FAILUREDAYS");
 		if(s==null) return (365*20);
-		int x=Util.s_int(s);
+		int x=CMath.s_int(s);
 		if(x==0) return (365*20);
 		return x;
 	}
@@ -724,7 +724,7 @@ public class SMTPserver extends Thread implements Tickable
 	{
 		String s=page.getStr("MAXMSGSIZE");
 		if(s==null) return Long.MAX_VALUE;
-		long x=Util.s_long(s);
+		long x=CMath.s_long(s);
 		if(x==0) return Long.MAX_VALUE;
 		return x;
 	}

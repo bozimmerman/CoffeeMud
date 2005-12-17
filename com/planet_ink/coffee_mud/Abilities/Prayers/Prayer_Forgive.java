@@ -47,7 +47,7 @@ public class Prayer_Forgive extends Prayer
         LegalBehavior B=null;
 		if(mob.location()!=null) B=CMLib.utensils().getLegalBehavior(mob.location());
 
-		String name=Util.combine(commands,0);
+		String name=CMParms.combine(commands,0);
 		if(name.trim().length()==0)
 		{
 			mob.tell("Forgive whom?");

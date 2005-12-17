@@ -128,7 +128,7 @@ public class MOBTeacher extends CombatAbilities
 			teachEverything=false;
 		}
 		else
-			V=Util.parse(getParms());
+			V=CMParms.parse(getParms());
 
 		if(V!=null)
 		for(int v=V.size()-1;v>=0;v--)
@@ -153,7 +153,7 @@ public class MOBTeacher extends CombatAbilities
 			else
 			if(s.endsWith("%"))
 			{
-				pct=Util.s_int(s.substring(0,s.length()-1));
+				pct=CMath.s_int(s.substring(0,s.length()-1));
 				continue;
 			}
 
@@ -201,8 +201,8 @@ public class MOBTeacher extends CombatAbilities
 	{
 		if(host instanceof MOB)
 		{
-			if(Util.bset(((MOB)host).getBitmap(),MOB.ATT_NOTEACH))
-				((MOB)host).setBitmap(Util.unsetb(((MOB)host).getBitmap(),MOB.ATT_NOTEACH));
+			if(CMath.bset(((MOB)host).getBitmap(),MOB.ATT_NOTEACH))
+				((MOB)host).setBitmap(CMath.unsetb(((MOB)host).getBitmap(),MOB.ATT_NOTEACH));
 		}
 		return super.okMessage(host,msg);
 	}

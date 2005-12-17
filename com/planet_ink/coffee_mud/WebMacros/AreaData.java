@@ -54,7 +54,7 @@ public class AreaData extends StdWebMacro
 					{
 						theclasses.addElement(behav);
 						String t=theparm;
-						t=Util.replaceAll(t,"\"","&quot;");
+						t=CMStrings.replaceAll(t,"\"","&quot;");
 						theparms.addElement(t);
 					}
 					num++;
@@ -70,7 +70,7 @@ public class AreaData extends StdWebMacro
 				{
 					theclasses.addElement(CMClass.className(B));
 					String t=B.getParms();
-					t=Util.replaceAll(t,"\"","&quot;");
+					t=CMStrings.replaceAll(t,"\"","&quot;");
 					theparms.addElement(t);
 				}
 			}
@@ -127,7 +127,7 @@ public class AreaData extends StdWebMacro
 					{
 						theclasses.addElement(behav);
 						String t=theparm;
-						t=Util.replaceAll(t,"\"","&quot;");
+						t=CMStrings.replaceAll(t,"\"","&quot;");
 						theparms.addElement(t);
 					}
 					num++;
@@ -143,7 +143,7 @@ public class AreaData extends StdWebMacro
 				{
 					theclasses.addElement(CMClass.className(Able));
 					String t=Able.text();
-					t=Util.replaceAll(t,"\"","&quot;");
+					t=CMStrings.replaceAll(t,"\"","&quot;");
 					theparms.addElement(t);
 				}
 			}
@@ -205,17 +205,17 @@ public class AreaData extends StdWebMacro
 					int climate=A.climateType();
 					if(httpReq.isRequestParameter("CLIMATE"))
 					{
-						climate=Util.s_int(httpReq.getRequestParameter("CLIMATE"));
+						climate=CMath.s_int(httpReq.getRequestParameter("CLIMATE"));
 						for(int i=1;;i++)
 							if(httpReq.isRequestParameter("CLIMATE"+(new Integer(i).toString())))
-								climate=climate|Util.s_int(httpReq.getRequestParameter("CLIMATE"+(new Integer(i).toString())));
+								climate=climate|CMath.s_int(httpReq.getRequestParameter("CLIMATE"+(new Integer(i).toString())));
 							else
 								break;
 					}
 					for(int i=1;i<Area.NUM_CLIMATES;i++)
 					{
 						String climstr=Area.CLIMATE_DESCS[i];
-						int mask=Util.pow(2,i-1);
+						int mask=CMath.pow(2,i-1);
 						str.append("<OPTION VALUE="+mask);
 						if((climate&mask)>0) str.append(" SELECTED");
 						str.append(">"+climstr);

@@ -39,7 +39,7 @@ public class Close extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String whatToClose=Util.combine(commands,1);
+		String whatToClose=CMParms.combine(commands,1);
 		if(whatToClose.length()==0)
 		{
 			mob.tell(getScr("Movement","closeerr1"));

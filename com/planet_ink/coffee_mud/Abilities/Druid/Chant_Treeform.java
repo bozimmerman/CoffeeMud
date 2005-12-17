@@ -71,7 +71,7 @@ public class Chant_Treeform extends Chant
 			if((msg.sourceMinor()==CMMsg.TYP_ENTER)||(msg.sourceMinor()==CMMsg.TYP_LEAVE))
 				unInvoke();
 			else
-			if((!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
 			&&(msg.sourceMajor()>0))
 			{
 				mob.tell("Trees can't do that.");

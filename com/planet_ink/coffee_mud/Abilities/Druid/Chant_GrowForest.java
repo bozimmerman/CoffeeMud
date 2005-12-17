@@ -55,7 +55,7 @@ public class Chant_GrowForest extends Chant
 
 		int material=-1;
 		Vector choices=new Vector();
-		String s=Util.combine(commands,0);
+		String s=CMParms.combine(commands,0);
 
 		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
 		{

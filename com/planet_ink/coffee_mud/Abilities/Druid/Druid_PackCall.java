@@ -167,7 +167,7 @@ public class Druid_PackCall extends StdAbility
 					if(levelsRemaining<0) break;
 					newMOB.baseCharStats().setMyRace(D.getRace(level,MOBRaceCode));
 					String raceName=D.getRaceName(level,MOBRaceCode).toLowerCase();
-					String name=Util.startWithAorAn(raceName).toLowerCase();
+					String name=CMStrings.startWithAorAn(raceName).toLowerCase();
 					newMOB.setName(name);
 					newMOB.setDisplayText("a loyal "+raceName+" is here");
 					newMOB.setDescription("");

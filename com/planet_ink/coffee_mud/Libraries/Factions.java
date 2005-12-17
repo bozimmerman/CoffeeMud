@@ -46,7 +46,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
     public void reloadFactions(String factionList)
     {
-        Vector preLoadFactions=Util.parseSemicolons(factionList,true);
+        Vector preLoadFactions=CMParms.parseSemicolons(factionList,true);
         clearFactions();
         for(int i=0;i<preLoadFactions.size();i++)
             getFaction((String)preLoadFactions.elementAt(i));
@@ -155,9 +155,9 @@ public class Factions extends StdLibrary implements FactionManager
 	    {
 	        Faction f=(Faction)factionSet.get(e.nextElement());
 	        msg.append("| ");
-	        msg.append(Util.padRight(f.name(),30));
+	        msg.append(CMStrings.padRight(f.name(),30));
 	        msg.append(" | ");
-	        msg.append(Util.padRight(f.factionID(),39));
+	        msg.append(CMStrings.padRight(f.factionID(),39));
 	        msg.append(" |\n\r");
 	    }
 	    msg.append("+--------------------------------+-----------------------------------------+\n\r");
@@ -178,7 +178,7 @@ public class Factions extends StdLibrary implements FactionManager
     { 
         Faction F=getFaction(factionID); 
         if(F==null) return 0.0;
-        return (Util.div((faction - F.minimum()),(F.maximum() - F.minimum())) * 100.0);
+        return (CMath.div((faction - F.minimum()),(F.maximum() - F.minimum())) * 100.0);
     }
 	public double getRateModifier(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.rateModifier(); return 0; }
 	public int getTotal(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return (f.maximum()-f.minimum()); return 0; }
@@ -276,7 +276,7 @@ public class Factions extends StdLibrary implements FactionManager
 			case Faction.ALIGN_EVIL:
 				return Math.abs(getPercent(AlignID(),bottom) - pct);
 			case Faction.ALIGN_NEUTRAL:
-				return Math.abs(getPercent(AlignID(),(int)Math.round(Util.div((top+bottom),2))) - pct);
+				return Math.abs(getPercent(AlignID(),(int)Math.round(CMath.div((top+bottom),2))) - pct);
 			default:
 				return 0;
 		}
@@ -304,7 +304,7 @@ public class Factions extends StdLibrary implements FactionManager
 			case Faction.ALIGN_EVIL:
 				return bottom;
 			case Faction.ALIGN_NEUTRAL:
-				return (int)Math.round(Util.div((top+bottom),2));
+				return (int)Math.round(CMath.div((top+bottom),2));
 			default:
 				return 0;
 		}

@@ -65,7 +65,7 @@ public class Disease_Blahs extends Disease
 			&&(msg.tool()==null)
 			&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-			   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
+			   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
 			{
 				Ability A=CMClass.getAbility("Blah");
 				if(A!=null)

@@ -42,9 +42,9 @@ public class Prop_RoomUnmappable extends Property
     {
         super.setMiscText(newText);
         bitStream=0;
-        if(!Util.parse(newText.toUpperCase().trim()).contains("MAPOK"))
+        if(!CMParms.parse(newText.toUpperCase().trim()).contains("MAPOK"))
             bitStream=EnvStats.SENSE_ROOMUNMAPPABLE;
-        if(Util.parse(newText.toUpperCase().trim()).contains("NOEXPLORE"))
+        if(CMParms.parse(newText.toUpperCase().trim()).contains("NOEXPLORE"))
             bitStream=bitStream|EnvStats.SENSE_ROOMUNEXPLORABLE;
     }
     public String accountForYourself()

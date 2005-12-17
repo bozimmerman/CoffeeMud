@@ -50,7 +50,7 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 	}
 
 	public void recoverEnvStats(){CMLib.flags().setReadable(this,false); super.recoverEnvStats();}
-	public int instrumentType(){return Util.s_int(readableText);}
+	public int instrumentType(){return CMath.s_int(readableText);}
 	public void setInstrumentType(int type){readableText=(""+type);}
 
 }

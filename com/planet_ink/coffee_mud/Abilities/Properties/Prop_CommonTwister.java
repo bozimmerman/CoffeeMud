@@ -45,12 +45,12 @@ public class Prop_CommonTwister extends Property
 	{
 		super.setMiscText(text);
 		changes.clear();
-		Vector V=Util.parseSemicolons(text,true);
+		Vector V=CMParms.parseSemicolons(text,true);
 		for(int v=0;v<V.size();v++)
 		{
 			String s=(String)V.elementAt(v);
-			String skill=Util.getParmStr(s,"SKILL","");
-			String mask=Util.getParmStr(s,"MASK","");
+			String skill=CMParms.getParmStr(s,"SKILL","");
+			String mask=CMParms.getParmStr(s,"MASK","");
 			if((skill.length()>0)&&(mask.length()>0))
 				changes.addElement(skill,mask,s);
 		}
@@ -91,9 +91,9 @@ public class Prop_CommonTwister extends Property
 			}
 			if(poss.size()==0) return true;
 			String var=(String)poss.elementAt(CMLib.dice().roll(1,poss.size(),-1));
-			String newname=Util.getParmStr(var,"NAME","");
-			String newdisp=Util.getParmStr(var,"DISPLAY","");
-			String newmat=Util.getParmStr(var,"MATERIAL","");
+			String newname=CMParms.getParmStr(var,"NAME","");
+			String newdisp=CMParms.getParmStr(var,"DISPLAY","");
+			String newmat=CMParms.getParmStr(var,"MATERIAL","");
 
 			if(newname.length()>0)
 			{
@@ -133,12 +133,12 @@ public class Prop_CommonTwister extends Property
 					{
 						((Item)msg.target()).setMaterial(newMatCode);
 						String newMatName=EnvResource.RESOURCE_DESCS[newMatCode&EnvResource.RESOURCE_MASK].toLowerCase();
-						msg.target().setName(Util.replaceAll(msg.target().name(),oldMatName,newMatName));
-						msg.target().setDisplayText(Util.replaceAll(msg.target().name(),oldMatName,newMatName));
-						msg.target().setName(Util.replaceAll(msg.target().name(),Util.capitalizeAndLower(oldMatName),Util.capitalizeAndLower(newMatName)));
-						msg.target().setDisplayText(Util.replaceAll(msg.target().name(),Util.capitalizeAndLower(oldMatName),Util.capitalizeAndLower(newMatName)));
-						msg.target().setName(Util.replaceAll(msg.target().name(),oldMatName.toUpperCase(),newMatName.toUpperCase()));
-						msg.target().setDisplayText(Util.replaceAll(msg.target().name(),oldMatName.toUpperCase(),newMatName.toUpperCase()));
+						msg.target().setName(CMStrings.replaceAll(msg.target().name(),oldMatName,newMatName));
+						msg.target().setDisplayText(CMStrings.replaceAll(msg.target().name(),oldMatName,newMatName));
+						msg.target().setName(CMStrings.replaceAll(msg.target().name(),CMStrings.capitalizeAndLower(oldMatName),CMStrings.capitalizeAndLower(newMatName)));
+						msg.target().setDisplayText(CMStrings.replaceAll(msg.target().name(),CMStrings.capitalizeAndLower(oldMatName),CMStrings.capitalizeAndLower(newMatName)));
+						msg.target().setName(CMStrings.replaceAll(msg.target().name(),oldMatName.toUpperCase(),newMatName.toUpperCase()));
+						msg.target().setDisplayText(CMStrings.replaceAll(msg.target().name(),oldMatName.toUpperCase(),newMatName.toUpperCase()));
 					}
 				}
 			}

@@ -40,7 +40,7 @@ public class Yell extends StdCommand
 		throws java.io.IOException
 	{
 		Command C=CMClass.getCommand("Say");
-		if(C!=null) C.execute(mob,Util.parse(Util.combine(commands,0).toUpperCase()));
+		if(C!=null) C.execute(mob,CMParms.parse(CMParms.combine(commands,0).toUpperCase()));
 		return false;
 	}
 	public int ticksToExecute(){return 1;}

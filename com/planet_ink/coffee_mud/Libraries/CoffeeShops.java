@@ -116,12 +116,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if(E instanceof Item)
         {
             Item I=(Item)E;
-            str.append("\n\rMaterial   : "+Util.capitalizeAndLower(EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK].toLowerCase()));
+            str.append("\n\rMaterial   : "+CMStrings.capitalizeAndLower(EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK].toLowerCase()));
             str.append("\n\rWeight     : "+I.envStats().weight()+" pounds");
             if(I instanceof Weapon)
             {
-                str.append("\n\rWeap. Type : "+Util.capitalizeAndLower(Weapon.typeDescription[((Weapon)I).weaponType()]));
-                str.append("\n\rWeap. Class: "+Util.capitalizeAndLower(Weapon.classifictionDescription[((Weapon)I).weaponClassification()]));
+                str.append("\n\rWeap. Type : "+CMStrings.capitalizeAndLower(Weapon.typeDescription[((Weapon)I).weaponType()]));
+                str.append("\n\rWeap. Class: "+CMStrings.capitalizeAndLower(Weapon.classifictionDescription[((Weapon)I).weaponClassification()]));
             }
             else
             if(I instanceof Armor)
@@ -134,7 +134,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     {
                         if(((I.rawProperLocationBitmap()&wornCode)==wornCode))
                         {
-                            str.append(Util.capitalizeAndLower(CMLib.flags().wornLocation(wornCode))+" ");
+                            str.append(CMStrings.capitalizeAndLower(CMLib.flags().wornLocation(wornCode))+" ");
                             if(I.rawLogicalAnd())
                                 str.append("and ");
                             else
@@ -186,18 +186,18 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             {
                 if(A.text().indexOf(";")<0)
                 {
-                    if(Util.isDouble(A.text()))
-                        price=Util.s_double(A.text());
+                    if(CMath.isDouble(A.text()))
+                        price=CMath.s_double(A.text());
                     else
-                        price=new Integer(Util.s_int(A.text())).doubleValue();
+                        price=new Integer(CMath.s_int(A.text())).doubleValue();
                 }
                 else
                 {
                     String s2=A.text().substring(0,A.text().indexOf(";"));
-                    if(Util.isDouble(s2))
-                        price=Util.s_double(s2);
+                    if(CMath.isDouble(s2))
+                        price=CMath.s_double(s2);
                     else
-                        price=new Integer(Util.s_int(s2)).doubleValue();
+                        price=new Integer(CMath.s_int(s2)).doubleValue();
                 }
             }
             if(price==0.0)
@@ -219,8 +219,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if((!sellTo)&&(!sellorby.trim().equalsIgnoreCase("BUY")))
            return 0.0;
         if(part.trim().indexOf(" ")<0)
-            return Util.s_double(part.trim());
-        Vector V=Util.parse(part.trim());
+            return CMath.s_double(part.trim());
+        Vector V=CMParms.parse(part.trim());
         double d=0.0;
         boolean yes=false;
         Vector VF=customer.fetchFactionRanges();
@@ -229,8 +229,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         for(int v=0;v<V.size();v++)
         {
             String bit=(String)V.elementAt(v);
-            if(Util.s_double(bit)!=0.0)
-                d=Util.s_double(bit);
+            if(CMath.s_double(bit)!=0.0)
+                d=CMath.s_double(bit);
             if(bit.equalsIgnoreCase(customer.charStats().getCurrentClass().name() ))
             { yes=true; break;}
             if(bit.equalsIgnoreCase(customer.charStats().getCurrentClass().name(customer.charStats().getCurrentClassLevel()) ))
@@ -261,8 +261,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
         if(factors.indexOf("=")<0)
         {
-            if(Util.s_double(factors)!=0.0)
-                return Util.s_double(factors);
+            if(CMath.s_double(factors)!=0.0)
+                return CMath.s_double(factors);
             return 1.0;
         }
         int x=factors.indexOf(";");
@@ -310,16 +310,16 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
 
         double prejudiceFactor=prejudiceFactor(buyer,shop.prejudiceFactors(),true);
-        val.absoluteGoldPrice=Util.mul(prejudiceFactor,val.absoluteGoldPrice);
+        val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
 
         // the price is 200% at 0 charisma, and 100% at 30
         val.absoluteGoldPrice=val.absoluteGoldPrice
                              +val.absoluteGoldPrice
-                             -Util.mul(val.absoluteGoldPrice,Util.div(buyer.charStats().getStat(CharStats.CHARISMA),30.0));
+                             -CMath.mul(val.absoluteGoldPrice,CMath.div(buyer.charStats().getStat(CharStats.CHARISMA),30.0));
         if(includeSalesTax)
         {
             double salesTax=getSalesTax(seller.getStartRoom(),seller);
-            val.absoluteGoldPrice+=((salesTax>0.0)?(Util.mul(val.absoluteGoldPrice,Util.div(salesTax,100.0))):0.0);
+            val.absoluteGoldPrice+=((salesTax>0.0)?(CMath.mul(val.absoluteGoldPrice,CMath.div(salesTax,100.0))):0.0);
         }
         if(val.absoluteGoldPrice<=0.0) 
             val.absoluteGoldPrice=1.0;
@@ -337,19 +337,19 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         double itemRate=0.0;
         String s=shop.devalueRate();
         if(s.length()==0) s=CMProps.getVar(CMProps.SYSTEM_DEVALUERATE);
-        Vector V=Util.parse(s.trim());
+        Vector V=CMParms.parse(s.trim());
         if(V.size()<=0)
             return 0.0;
         else
         if(V.size()==1)
         {
-            resourceRate=Util.div(Util.s_double((String)V.firstElement()),100.0);
+            resourceRate=CMath.div(CMath.s_double((String)V.firstElement()),100.0);
             itemRate=resourceRate;
         }
         else
         {
-            itemRate=Util.div(Util.s_double((String)V.firstElement()),100.0);
-            resourceRate=Util.div(Util.s_double((String)V.lastElement()),100.0);
+            itemRate=CMath.div(CMath.s_double((String)V.firstElement()),100.0);
+            resourceRate=CMath.div(CMath.s_double((String)V.lastElement()),100.0);
         }
         double rate=(product instanceof EnvResource)?resourceRate:itemRate;
         rate=rate*num;
@@ -382,18 +382,18 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if(buyer==null) return val;
 
         double prejudiceFactor=prejudiceFactor(buyer,shop.prejudiceFactors(),true);
-        val.absoluteGoldPrice=Util.mul(prejudiceFactor,val.absoluteGoldPrice);
+        val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
 
-        //double halfPrice=Math.round(Util.div(val,2.0));
+        //double halfPrice=Math.round(CMath.div(val,2.0));
         // gets the shopkeeper a deal on junk.  Pays 5% at 3 charisma, and 50% at 30
-        double buyPrice=Util.div(Util.mul(val.absoluteGoldPrice,buyer.charStats().getStat(CharStats.CHARISMA)),60.0);
+        double buyPrice=CMath.div(CMath.mul(val.absoluteGoldPrice,buyer.charStats().getStat(CharStats.CHARISMA)),60.0);
         if(!(product instanceof Ability))
-            buyPrice=Util.mul(buyPrice,1.0-devalue(shop,product));
+            buyPrice=CMath.mul(buyPrice,1.0-devalue(shop,product));
 
         // the price is 200% at 0 charisma, and 100% at 30
         double sellPrice=val.absoluteGoldPrice
                         +val.absoluteGoldPrice
-                        -Util.mul(val.absoluteGoldPrice,Util.div(buyer.charStats().getStat(CharStats.CHARISMA),30.0));
+                        -CMath.mul(val.absoluteGoldPrice,CMath.div(buyer.charStats().getStat(CharStats.CHARISMA),30.0));
 
         if(buyPrice>sellPrice)
             val.absoluteGoldPrice=sellPrice;
@@ -414,7 +414,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         {
             String taxs=(String)theLaw.taxLaws().get("SALESTAX");
             if(taxs!=null)
-                return Util.s_double(taxs);
+                return CMath.s_double(taxs);
         }
         return 0.0;
         
@@ -437,16 +437,16 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 int medianLevel=seller.location().getArea().getAreaIStats()[Area.AREASTAT_MEDLEVEL];
                 if(medianLevel>0)
                 {
-                    String range=Util.getParmStr(shop.prejudiceFactors(),"RANGE","0");
+                    String range=CMParms.getParmStr(shop.prejudiceFactors(),"RANGE","0");
                     int rangeI=0;
-                    if((range.endsWith("%"))&&(Util.isInteger(range.substring(0,range.length()-1))))
+                    if((range.endsWith("%"))&&(CMath.isInteger(range.substring(0,range.length()-1))))
                     {
-                        rangeI=Util.s_int(range.substring(0,range.length()-1));
-                        rangeI=(int)Math.round(Util.mul(medianLevel,Util.div(rangeI,100.0)));
+                        rangeI=CMath.s_int(range.substring(0,range.length()-1));
+                        rangeI=(int)Math.round(CMath.mul(medianLevel,CMath.div(rangeI,100.0)));
                     }
                     else
-                    if(Util.isInteger(range))
-                        rangeI=Util.s_int(range);
+                    if(CMath.isInteger(range))
+                        rangeI=CMath.s_int(range);
                     if((rangeI>0)
                     &&((product.envStats().level()>(medianLevel+rangeI))
                         ||(product.envStats().level()<(medianLevel-rangeI))))
@@ -659,7 +659,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 }
             }
 
-            String c="^x["+Util.padRight("Cost",4+csize)+"] "+Util.padRight("Product",totalWidth-csize);
+            String c="^x["+CMStrings.padRight("Cost",4+csize)+"] "+CMStrings.padRight("Product",totalWidth-csize);
             str.append(c+((totalCols>1)?c:"")+"^.^N^<!ENTITY shopkeeper \""+seller.name()+"\"^>\n\r");
             int colNum=0;
             int rowNum=0;
@@ -673,12 +673,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     price=sellingPrice(seller,buyer,E,shop,true);
                     col=null;
                     if(price.questPointPrice>0)
-                        col=Util.padRight("["+price.questPointPrice+"qp",5+csize)+"] ^<SHOP^>"+Util.padRight(E.name(),"^</SHOP^>",totalWidth-csize);
+                        col=CMStrings.padRight("["+price.questPointPrice+"qp",5+csize)+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",totalWidth-csize);
                     else
                     if(price.experiencePrice>0)
-                        col=Util.padRight("["+price.experiencePrice+"xp",5+csize)+"] ^<SHOP^>"+Util.padRight(E.name(),"^</SHOP^>",totalWidth-csize);
+                        col=CMStrings.padRight("["+price.experiencePrice+"xp",5+csize)+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",totalWidth-csize);
                     else
-                        col=Util.padRight("["+CMLib.beanCounter().abbreviatedPrice(seller,price.absoluteGoldPrice),5+csize)+"] ^<SHOP^>"+Util.padRight(E.name(),"^</SHOP^>",totalWidth-csize);
+                        col=CMStrings.padRight("["+CMLib.beanCounter().abbreviatedPrice(seller,price.absoluteGoldPrice),5+csize)+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",totalWidth-csize);
                     if((++colNum)>totalCols)
                     {
                         str.append("\n\r");
@@ -727,7 +727,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         MOB mobFor=buyer;
         if((message!=null)&&(message.length()>0)&&(buyer.location()!=null))
         {
-            Vector V=Util.parse(message);
+            Vector V=CMParms.parse(message);
             if(((String)V.elementAt(V.size()-2)).equalsIgnoreCase("for"))
             {
                 String s=(String)V.lastElement();

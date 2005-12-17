@@ -42,20 +42,20 @@ public class ClanList extends BaseClanner
 	    boolean trophySystemActive=CMLib.clans().trophySystemActive();
 		StringBuffer head=new StringBuffer("");
 		head.append("^x[");
-		head.append(Util.padRight("Clan Name",24)+" | ");
-		head.append(Util.padRight("Type",13)+" | ");
-		head.append(Util.padRight("Status",8)+" | ");
-		head.append(Util.padRight("Members",7));
+		head.append(CMStrings.padRight("Clan Name",24)+" | ");
+		head.append(CMStrings.padRight("Type",13)+" | ");
+		head.append(CMStrings.padRight("Status",8)+" | ");
+		head.append(CMStrings.padRight("Members",7));
 		if(trophySystemActive)
-			head.append(" | "+Util.padRight("Trophies",8));
+			head.append(" | "+CMStrings.padRight("Trophies",8));
 		head.append("]^.^? \n\r");
 		StringBuffer msg=new StringBuffer("");
 		for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
 		{
 			Clan thisClan=(Clan)e.nextElement();
 			msg.append(" ");
-			msg.append(Util.padRight("^<CLAN^>"+Util.removeColors(thisClan.clanID())+"^</CLAN^>",24)+"   ");
-			msg.append(Util.padRight(thisClan.typeName(),13)+"   ");
+			msg.append(CMStrings.padRight("^<CLAN^>"+CMStrings.removeColors(thisClan.clanID())+"^</CLAN^>",24)+"   ");
+			msg.append(CMStrings.padRight(thisClan.typeName(),13)+"   ");
 			boolean war=false;
 			for(Enumeration e2=CMLib.clans().clans();e2.hasMoreElements();)
 			{
@@ -75,11 +75,11 @@ public class ClanList extends BaseClanner
 				status="Pending";
 				break;
 			}
-			msg.append(Util.padRight(status,8)+"   ");
-			msg.append(Util.padRight(new Integer(thisClan.getSize()).toString(),7)+"   ");
+			msg.append(CMStrings.padRight(status,8)+"   ");
+			msg.append(CMStrings.padRight(new Integer(thisClan.getSize()).toString(),7)+"   ");
 			if(trophySystemActive)
 				for(int i=0;i<Clan.TROPHY_DESCS_SHORT.length;i++)
-				    if((Clan.TROPHY_DESCS_SHORT[i].length()>0)&&(Util.bset(thisClan.getTrophies(),i)))
+				    if((Clan.TROPHY_DESCS_SHORT[i].length()>0)&&(CMath.bset(thisClan.getTrophies(),i)))
 				        msg.append(Clan.TROPHY_DESCS_SHORT[i]+" ");
 			msg.append("\n\r");
 		}

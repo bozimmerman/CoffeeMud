@@ -95,7 +95,7 @@ public class Chant_ExplosiveDecompression extends Chant
 							    int numDice = adjustedLevel(mob,asLevel);
 								int damage = CMLib.dice().roll(numDice, 10, 50);
 								if(msg2.value()>0)
-									damage = (int)Math.round(Util.div(damage,2.0));
+									damage = (int)Math.round(CMath.div(damage,2.0));
 								CMLib.combat().postDamage(mob,M,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flaming blast <DAMAGE> <T-NAME>!");
 							}
 							if((M.charStats().getBodyPart(Race.BODY_FOOT)>0)

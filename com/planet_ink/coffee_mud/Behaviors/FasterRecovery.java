@@ -56,7 +56,7 @@ public class FasterRecovery extends StdBehavior
 						x=0;
 						while((x<text.length())&&(Character.isDigit(text.charAt(x))))
 							x++;
-						return Util.s_int(text.substring(0,x));
+						return CMath.s_int(text.substring(0,x));
 					}
 				}
 				x=-1;

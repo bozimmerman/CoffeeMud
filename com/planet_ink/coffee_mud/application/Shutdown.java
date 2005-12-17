@@ -34,11 +34,11 @@ public class Shutdown
         {
             StringBuffer msg=new StringBuffer("\033[1z<SHUTDOWN "+a[2]+" "+a[3]);
             if(a.length>=5)
-                msg.append(" "+!(Util.s_bool(a[4])));
+                msg.append(" "+!(CMath.s_bool(a[4])));
             if(a.length>=6)
                 for(int i=5;i<a.length;i++)
                 msg.append(" "+a[i]);
-            Socket sock=new Socket(a[0],Util.s_int(a[1]));
+            Socket sock=new Socket(a[0],CMath.s_int(a[1]));
             OutputStream rawout=sock.getOutputStream();
             rawout.write((msg.toString()+">\n").getBytes());
             rawout.flush();

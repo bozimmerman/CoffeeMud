@@ -95,9 +95,9 @@ public class Chant_MetalMold extends Chant
 					for(int i=0;i<(mob.envStats().level()/2);i++)
 						damage+=CMLib.dice().roll(1,2,2);
 					if(CMLib.flags().isABonusItems(target))
-						damage=(int)Math.round(Util.div(damage,2.0));
+						damage=(int)Math.round(CMath.div(damage,2.0));
 					if(target.envStats().ability()>0)
-						damage=(int)Math.round(Util.div(damage,1+target.envStats().ability()));
+						damage=(int)Math.round(CMath.div(damage,1+target.envStats().ability()));
 					target.setUsesRemaining(target.usesRemaining()-damage);
 					if(target.usesRemaining()>0)
 						target.recoverEnvStats();

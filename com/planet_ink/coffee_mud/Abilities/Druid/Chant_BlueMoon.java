@@ -77,7 +77,7 @@ public class Chant_BlueMoon extends Chant
 		   &&(msg.target() instanceof MOB))
 		{
 			MOB mob=(MOB)msg.target();
-			int recovery=(int)Math.round(Util.div((msg.value()),2.0));
+			int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
 			if(CMLib.flags().isGood(mob)) recovery=recovery*-1;
 			msg.setValue(msg.value()+recovery);
 		}
@@ -113,7 +113,7 @@ public class Chant_BlueMoon extends Chant
 		{
 			Ability A=target.fetchEffect(a);
 			if((A!=null)
-			&&(Util.bset(A.flags(),Ability.FLAG_MOONCHANGING)))
+			&&(CMath.bset(A.flags(),Ability.FLAG_MOONCHANGING)))
 			{
 				mob.tell("The moon is already under "+A.name()+", and can not be changed until this magic is gone.");
 				return false;

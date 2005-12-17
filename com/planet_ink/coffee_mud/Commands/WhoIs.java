@@ -40,7 +40,7 @@ public class WhoIs extends Who
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String mobName=Util.combine(commands,1);
+		String mobName=CMParms.combine(commands,1);
 		if((mobName==null)||(mobName.length()==0))
 		{
 			mob.tell("whois whom?");
@@ -76,9 +76,9 @@ public class WhoIs extends Who
 		{
 			StringBuffer head=new StringBuffer("");
 			head.append("^x[");
-			head.append(Util.padRight("Race",12)+" ");
-			head.append(Util.padRight("Class",12)+" ");
-			head.append(Util.padRight("Level",7));
+			head.append(CMStrings.padRight("Race",12)+" ");
+			head.append(CMStrings.padRight("Class",12)+" ");
+			head.append(CMStrings.padRight("Level",7));
 			head.append("] Character name^.^N\n\r");
 			mob.tell(head.toString()+msg.toString());
 		}

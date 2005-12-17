@@ -151,20 +151,20 @@ public class ClanCrafting extends CraftingSkill
 		if(str.equalsIgnoreCase("list"))
 		{
 			StringBuffer buf=new StringBuffer("");
-			buf.append(Util.padRight("Item",24)+" "
-					   +Util.padRight("Exp",9)+" "
-					   +Util.padRight("Material#1",14)+" "
-					   +Util.padRight("Amt#1",4)+" "
-					   +Util.padRight("Material#2",14)+" "
-					   +Util.padRight("Amt#2",4)+"\n\r");
+			buf.append(CMStrings.padRight("Item",24)+" "
+					   +CMStrings.padRight("Exp",9)+" "
+					   +CMStrings.padRight("Material#1",14)+" "
+					   +CMStrings.padRight("Amt#1",4)+" "
+					   +CMStrings.padRight("Material#2",14)+" "
+					   +CMStrings.padRight("Amt#2",4)+"\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
-					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-					int exp=Util.s_int((String)V.elementAt(RCP_EXP));
+					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
+					int exp=CMath.s_int((String)V.elementAt(RCP_EXP));
 					if(level<=mob.envStats().level())
 					{
 						String mat1=(String)V.elementAt(RCP_MATERIAL1);
@@ -183,12 +183,12 @@ public class ClanCrafting extends CraftingSkill
 							amt2=mat2.substring(m2+1);
 							mat2=mat2.substring(0,m2).toLowerCase();
 						}
-						buf.append(Util.padRight(item,24)+" "
-								   +Util.padRight(""+exp,9)+" "
-								   +Util.padRight(mat1,14)+" "
-								   +Util.padRight(amt1,4)+" "
-								   +Util.padRight(mat2,14)+" "
-								   +Util.padRight(amt2,4)+"\n\r");
+						buf.append(CMStrings.padRight(item,24)+" "
+								   +CMStrings.padRight(""+exp,9)+" "
+								   +CMStrings.padRight(mat1,14)+" "
+								   +CMStrings.padRight(amt1,4)+" "
+								   +CMStrings.padRight(mat2,14)+" "
+								   +CMStrings.padRight(amt2,4)+"\n\r");
 					}
 				}
 			}
@@ -198,7 +198,7 @@ public class ClanCrafting extends CraftingSkill
 		}
 		building=null;
 		messedUp=false;
-		String recipeName=Util.combine(commands,0);
+		String recipeName=CMParms.combine(commands,0);
 		Vector foundRecipe=null;
 		Vector matches=matchingRecipeNames(recipes,recipeName,true);
 		for(int r=0;r<matches.size();r++)
@@ -206,7 +206,7 @@ public class ClanCrafting extends CraftingSkill
 			Vector V=(Vector)matches.elementAt(r);
 			if(V.size()>0)
 			{
-				int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
+				int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
                 if((autoGenerate>0)||(level<=mob.envStats().level()))
 				{
 					foundRecipe=V;
@@ -227,17 +227,17 @@ public class ClanCrafting extends CraftingSkill
 		int m1=mat1.indexOf("/");
 		if(m1>=0)
 		{
-			amt1=Util.s_int(mat1.substring(m1+1));
+			amt1=CMath.s_int(mat1.substring(m1+1));
 			mat1=mat1.substring(0,m1).toLowerCase();
 		}
 		int m2=mat2.indexOf("/");
 		if(m2>=0)
 		{
-			amt2=Util.s_int(mat2.substring(m2+1));
+			amt2=CMath.s_int(mat2.substring(m2+1));
 			mat2=mat2.substring(0,m2).toLowerCase();
 		}
 
-		int expRequired=Util.s_int((String)foundRecipe.elementAt(RCP_EXP));
+		int expRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_EXP));
 		if(C.getExp()<expRequired)
 		{
 			mob.tell("You need "+expRequired+" to do that, but your "+C.typeName()+" has only "+C.getExp()+" experience points.");
@@ -273,7 +273,7 @@ public class ClanCrafting extends CraftingSkill
 			commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 			return false;
 		}
-		completion=Util.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
 		String itemName=null;
 		if(!misctype.equalsIgnoreCase("area"))
@@ -290,7 +290,7 @@ public class ClanCrafting extends CraftingSkill
 			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),"of "+mob.location().getArea().name()).toLowerCase();
 			building.setReadableText(mob.location().getArea().name());
 		}
-		itemName=Util.startWithAorAn(itemName);
+		itemName=CMStrings.startWithAorAn(itemName);
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) crafting "+building.name()+".";
 		displayText="You are crafting "+building.name();
@@ -299,21 +299,21 @@ public class ClanCrafting extends CraftingSkill
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(amt1+amt2);
-		building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
+		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 		building.setMaterial(data[0][FOUND_CODE]);
 		int hardness=EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][3]-6;
-		building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
+		building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
 		if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
-		int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
-		int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
-		int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
+		int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+		int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
+		int armordmg=CMath.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
 		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 		if(building instanceof ClanItem)
 		{
 			building.baseEnvStats().setSensesMask(EnvStats.SENSE_UNLOCATABLE);
 			((ClanItem)building).setClanID(mob.getClanID());
-			((ClanItem)building).setCIType(Util.s_int((String)foundRecipe.elementAt(RCP_CITYPE)));
+			((ClanItem)building).setCIType(CMath.s_int((String)foundRecipe.elementAt(RCP_CITYPE)));
 			if(((ClanItem)building).ciType()==ClanItem.CI_PROPAGANDA)
 			{
 				building.setMaterial(EnvResource.RESOURCE_PAPER);
@@ -337,7 +337,7 @@ public class ClanCrafting extends CraftingSkill
 				if(misctype.equalsIgnoreCase(WO))
 				{
 					hardBonus+=Item.wornWeights[wo];
-					((Armor)building).setRawProperLocationBitmap(Util.pow(2,wo-1));
+					((Armor)building).setRawProperLocationBitmap(CMath.pow(2,wo-1));
 					((Armor)building).setRawLogicalAnd(false);
 				}
 				else
@@ -346,7 +346,7 @@ public class ClanCrafting extends CraftingSkill
 				{
 					if(hardBonus==0.0)
 						hardBonus+=Item.wornWeights[wo];
-					((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
+					((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
 					((Armor)building).setRawLogicalAnd(false);
 				}
 				else
@@ -354,11 +354,11 @@ public class ClanCrafting extends CraftingSkill
 				||(misctype.toUpperCase().endsWith("&&"+WO)))
 				{
 					hardBonus+=Item.wornWeights[wo];
-					((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
+					((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
 					((Armor)building).setRawLogicalAnd(true);
 				}
 			}
-			int hardPoints=(int)Math.round(Util.mul(hardBonus,hardness));
+			int hardPoints=(int)Math.round(CMath.mul(hardBonus,hardness));
 			((Armor)building).baseEnvStats().setArmor(armordmg+hardPoints+(abilityCode()-1));
 		}
 

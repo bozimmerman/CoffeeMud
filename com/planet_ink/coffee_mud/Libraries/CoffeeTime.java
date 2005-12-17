@@ -3,8 +3,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.TimeZone;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager;
-import com.planet_ink.coffee_mud.core.Util;
+import com.planet_ink.coffee_mud.core.CMath;
 
 
 /* 
@@ -147,8 +148,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         ||((TheDate.indexOf("-")==4)&&(TheDate.indexOf(":")==13)))
         {
             //String TheOldDate=TheDate;
-            int HH=Util.s_int(TheDate.substring(11,13));
-            int MM=Util.s_int(TheDate.substring(14,16));
+            int HH=CMath.s_int(TheDate.substring(11,13));
+            int MM=CMath.s_int(TheDate.substring(14,16));
             int AP=Calendar.AM;
             if(TheDate.trim().endsWith("PM"))
                 AP=Calendar.PM;
@@ -190,11 +191,11 @@ public class CoffeeTime extends StdLibrary implements TimeManager
             D.set(Calendar.SECOND,0);
             D.set(Calendar.MILLISECOND,0);
 
-            int YY=Util.s_int(TheDate.substring(0,4));
+            int YY=CMath.s_int(TheDate.substring(0,4));
             D.set(Calendar.YEAR,YY);
-            int MN=Util.s_int(TheDate.substring(5,7));
+            int MN=CMath.s_int(TheDate.substring(5,7));
             D.set(Calendar.MONTH,MN-1);
-            int DA=Util.s_int(TheDate.substring(8,10));
+            int DA=CMath.s_int(TheDate.substring(8,10));
             D.set(Calendar.DATE,DA);
             D.set(Calendar.AM_PM,AP);
         }
@@ -260,7 +261,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
      **/
     public String convertHour(String TheHour)
     {
-        int IntHour =  Util.s_int(TheHour);
+        int IntHour =  CMath.s_int(TheHour);
         if (IntHour > 12)
         {
             IntHour = IntHour-12;
@@ -284,7 +285,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
     {
         String Stamp;
         
-        int IntHour =  Util.s_int(TheHour);
+        int IntHour =  CMath.s_int(TheHour);
         if (IntHour >= 12)
             Stamp = "PM";
         else 
@@ -572,7 +573,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
                 Year=("0"+Year);
             if(Year.length()<2)
                 Year=("0"+Year);
-            int Yr=Util.s_int(Year);
+            int Yr=CMath.s_int(Year);
             if(Yr<50)Year="20"+Year;
             else Year="19"+Year;
         }

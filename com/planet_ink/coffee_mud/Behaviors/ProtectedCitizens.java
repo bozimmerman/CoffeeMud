@@ -61,8 +61,8 @@ public class ProtectedCitizens extends ActiveTicker
 		super.setParms(parms);
 		citizenZapper=null;
 		helperZapper=null;
-		radius=Util.getParmInt(parms,"radius",radius);
-		maxAssistance=Util.getParmInt(parms,"maxassists",maxAssistance);
+		radius=CMParms.getParmInt(parms,"radius",radius);
+		maxAssistance=CMParms.getParmInt(parms,"maxassists",maxAssistance);
 		claims=null;
 	}
 
@@ -157,9 +157,9 @@ public class ProtectedCitizens extends ActiveTicker
 
 		String claim=getClaims()[CMLib.dice().roll(1,getClaims().length,-1)].trim();
 		if(claim.startsWith(","))
-			mob.doCommand(Util.parse("EMOTE \""+claim.substring(1).trim()+"\""));
+			mob.doCommand(CMParms.parse("EMOTE \""+claim.substring(1).trim()+"\""));
 		else
-			mob.doCommand(Util.parse("YELL \""+claim+"\""));
+			mob.doCommand(CMParms.parse("YELL \""+claim+"\""));
 
 		Room thisRoom=mob.location();
 		Vector rooms=new Vector();

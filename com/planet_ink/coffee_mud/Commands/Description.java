@@ -44,7 +44,7 @@ public class Description extends StdCommand
 			mob.tell(getScr("Description","changetxt"));
 			return false;
 		}
-		String s=Util.combine(commands,1);
+		String s=CMParms.combine(commands,1);
 		if(s.length()>255)
 			mob.tell(getScr("Description","toolong"));
 		else

@@ -44,7 +44,7 @@ public class Wimpy extends StdCommand
 			mob.tell("Change your wimp level to what?");
 			return false;
 		}
-		mob.setWimpHitPoint(Util.s_int(Util.combine(commands,1)));
+		mob.setWimpHitPoint(CMath.s_int(CMParms.combine(commands,1)));
 		mob.tell("Your wimp level has been changed to "+mob.getWimpHitPoint()+" hit points.");
 		return false;
 	}

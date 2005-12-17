@@ -455,7 +455,7 @@ public class StdRoom
 			case CMMsg.TYP_SPEAK:
 				break;
 			default:
-				if(((Util.bset(msg.targetMajor(),CMMsg.MASK_HANDS))||(Util.bset(msg.targetMajor(),CMMsg.MASK_MOUTH)))
+				if(((CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOUTH)))
                 &&(msg.targetMinor()!=CMMsg.TYP_THROW))
 				{
 					mob.tell("You can't do that here.");
@@ -517,20 +517,20 @@ public class StdRoom
 			{
 			case CMMsg.TYP_LEAVE:
 			{
-				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					recoverRoomStats();
 				break;
 			}
 			case CMMsg.TYP_FLEE:
 			{
-				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					recoverRoomStats();
 				break;
 			}
 			case CMMsg.TYP_ENTER:
 			case CMMsg.TYP_RECALL:
 			{
-				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					recoverRoomStats();
                 if(msg.source().playerStats()!=null)
                     msg.source().playerStats().addRoomVisit(this);
@@ -829,7 +829,7 @@ public class StdRoom
 						dispute=text.substring(variationCodes[i][0].length()+2);
 						text="";
 					}
-					int num=Util.s_int(variationCodes[i][1].substring(1));
+					int num=CMath.s_int(variationCodes[i][1].substring(1));
 					switch(variationCodes[i][1].charAt(0))
 					{
 					case 'D': elseStr=parseVariesCodes(dispute); break;
@@ -885,11 +885,11 @@ public class StdRoom
 	protected void look(MOB mob, int lookCode)
 	{
 		StringBuffer Say=new StringBuffer("");
-        boolean compress=Util.bset(mob.getBitmap(),MOB.ATT_COMPRESS);
-		if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+        boolean compress=CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS);
+		if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 		{
 			if(!CMSecurity.isAllowed(mob,this,"SYSMSGS"))
-				mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
+				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
 			else
 			{
 				if(myArea!=null)
@@ -901,7 +901,7 @@ public class StdRoom
 		if(CMLib.flags().canBeSeenBy(this,mob))
 		{
 			Say.append("^O^<RName^>" + roomTitle()+"^</RName^>"+CMLib.flags().colorCodes(this,mob)+"^L\n\r");
-			if((lookCode!=LOOK_BRIEFOK)||(!Util.bset(mob.getBitmap(),MOB.ATT_BRIEF)))
+			if((lookCode!=LOOK_BRIEFOK)||(!CMath.bset(mob.getBitmap(),MOB.ATT_BRIEF)))
 			{
                 if(lookCode==LOOK_LONG)
                 {
@@ -917,7 +917,7 @@ public class StdRoom
                         &&(item.displayText().length()==0)
                         &&(CMLib.flags().canBeSeenBy(item,mob)))
                         {
-                            keyWords=Util.parse(item.name().toUpperCase());
+                            keyWords=CMParms.parse(item.name().toUpperCase());
                             for(int k=0;k<keyWords.size();k++)
                             {
                                 word=(String)keyWords.elementAt(k);
@@ -987,11 +987,11 @@ public class StdRoom
 			if((mob2!=null)&&(mob2!=mob))
 			{
                if((mob2.displayText(mob).length()>0)
-               ||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
+               ||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
                {
     			   if(CMLib.flags().canBeSeenBy(mob2,mob))
                    {
-    					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+    					if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
     						Say.append("^H("+CMClass.className(mob2)+")^N ");
     
                         if((!compress)&&(!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
@@ -999,9 +999,9 @@ public class StdRoom
     					Say.append("^M^<RMob \""+mob2.name()+"\"^>");
                         if(compress) Say.append(CMLib.flags().colorCodes(mob2,mob)+"^M ");
     					if(mob2.displayText(mob).length()>0)
-    						Say.append(Util.endWithAPeriod(Util.capitalizeFirstLetter(mob2.displayText(mob))));
+    						Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob2.displayText(mob))));
     					else
-    						Say.append(Util.endWithAPeriod(Util.capitalizeFirstLetter(mob2.name())));
+    						Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob2.name())));
     					Say.append("^</RMob^>");
                         if(!compress)
                             Say.append(CMLib.flags().colorCodes(mob2,mob)+"^N\n\r");
@@ -1195,11 +1195,11 @@ public class StdRoom
 			if(exit!=null)
 				Say=exit.viewableText(mob, room);
 			else
-			if((room!=null)&&(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
+			if((room!=null)&&(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
 				Say.append(room.roomID()+" via NULL");
 			if(Say.length()>0)
             {
-                Dir=Util.padRightPreserve(Directions.getDirectionName(i),5);
+                Dir=CMStrings.padRightPreserve(Directions.getDirectionName(i),5);
                 if((mob!=null)
                 &&(mob.playerStats()!=null)
                 &&(room!=null)
@@ -1220,7 +1220,7 @@ public class StdRoom
 					mob.tell("^D^<MEX^>" + ((Exit)I).doorName()+"^</MEX^>:^.^N ^d"+Say+"^.^N");
 				else
 				if(Say.length()>0)
-					mob.tell("^D^<MEX^>" + Util.padRight(((Exit)I).doorName(),5)+"^</MEX^>:^.^N ^d"+Say+"^.^N");
+					mob.tell("^D^<MEX^>" + CMStrings.padRight(((Exit)I).doorName(),5)+"^</MEX^>:^.^N ^d"+Say+"^.^N");
 		    }
 		}
 	}
@@ -1314,7 +1314,7 @@ public class StdRoom
 					 String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,null,allCode,allCode,allCode,allMessage);
-		if((!Util.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
+		if((!CMath.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
 			return false;
 		send(source,msg);
 		return true;
@@ -1326,7 +1326,7 @@ public class StdRoom
 					 String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,tool,allCode,allCode,allCode,allMessage);
-		if((!Util.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
+		if((!CMath.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
 			return false;
 		send(source,msg);
 		return true;
@@ -1337,7 +1337,7 @@ public class StdRoom
 						   String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,null,allCode,allCode,allCode,allMessage);
-		if((!Util.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
+		if((!CMath.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
 			return false;
 		reallySend(source,msg);
 		return true;
@@ -1349,7 +1349,7 @@ public class StdRoom
 						   String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,tool,allCode,allCode,allCode,allMessage);
-		if((!Util.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
+		if((!CMath.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
 			return false;
 		reallySend(source,msg);
 		return true;
@@ -1360,7 +1360,7 @@ public class StdRoom
 						   String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,null,allCode,allCode,allCode,allMessage);
-		if((!Util.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
+		if((!CMath.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
 			return false;
 		source.executeMsg(source,msg);
 		return true;
@@ -1372,7 +1372,7 @@ public class StdRoom
 						   String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,tool,allCode,allCode,allCode,allMessage);
-		if((!Util.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
+		if((!CMath.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
 			return false;
 		source.executeMsg(source,msg);
 		return true;
@@ -1511,7 +1511,7 @@ public class StdRoom
         if(survivalRLHours<=0)
             item.setDispossessionTime(0);
         else
-    		item.setDispossessionTime(System.currentTimeMillis()+Math.round(Util.mul(survivalRLHours,TimeManager.MILI_HOUR)));
+    		item.setDispossessionTime(System.currentTimeMillis()+Math.round(CMath.mul(survivalRLHours,TimeManager.MILI_HOUR)));
 	}
 	public void delItem(Item item)
 	{

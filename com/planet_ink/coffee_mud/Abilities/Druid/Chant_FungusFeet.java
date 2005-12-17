@@ -64,7 +64,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 					if(A!=null)
 					{
 						int x=100;
-						while(((--x)>0)&&A.invoke(mob,Util.parse("foot"),mob,true,0));
+						while(((--x)>0)&&A.invoke(mob,CMParms.parse("foot"),mob,true,0));
 						mob.recoverCharStats();
 						mob.recoverEnvStats();
 						mob.recoverMaxState();
@@ -82,7 +82,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 	{
 		super.affectCharState(affected,affectableState);
 		if(affected==null) return;
-		affectableState.setMovement((int)Math.round(Util.div(affectableState.getMovement(),drawups)));
+		affectableState.setMovement((int)Math.round(CMath.div(affectableState.getMovement(),drawups)));
 	}
 
 	public void unInvoke()

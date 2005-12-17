@@ -112,7 +112,7 @@ public class Sinking extends StdAbility
 			else
 			if((msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
-			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
+			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
 				stopSinking(mob);
 		}
 	}

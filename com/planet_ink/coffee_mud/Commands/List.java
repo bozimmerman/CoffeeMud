@@ -55,7 +55,7 @@ public class List extends StdCommand
             thisThang=(Room)r.nextElement();
             thisOne=thisThang.roomID();
 			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
-				lines.append(Util.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+Util.limit(thisThang.displayText(),43)+"\n\r");
+				lines.append(CMStrings.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+CMStrings.limit(thisThang.displayText(),43)+"\n\r");
 		}
 		lines.append("\n\r");
 		return lines;
@@ -77,7 +77,7 @@ public class List extends StdCommand
             {
                 thisOne=thisThang.roomID();
                 if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
-                    lines.append(Util.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+Util.limit(thisThang.displayText()+" (price: "+t.landPrice()+", owner="+t.landOwner()+")",43)+"\n\r");
+                    lines.append(CMStrings.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+CMStrings.limit(thisThang.displayText()+" (price: "+t.landPrice()+", owner="+t.landOwner()+")",43)+"\n\r");
             }
         }
         lines.append("\n\r");
@@ -97,7 +97,7 @@ public class List extends StdCommand
             thisThang=(Room)r.nextElement();
             thisOne=thisThang.roomID();
 			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
-				lines.append(Util.padRightPreserve(thisOne,30)+": "+thisThang.ID()+"\n\r");
+				lines.append(CMStrings.padRightPreserve(thisOne,30)+": "+thisThang.ID()+"\n\r");
 		}
 		lines.append("\n\r");
 		return lines;
@@ -128,11 +128,11 @@ public class List extends StdCommand
                     continue;
                 
                 lines.append(tArray[i].isAlive()? "  ok   " : " BAD!  ");
-                lines.append(Util.padRight(tArray[i].getName(),20)+": ");
+                lines.append(CMStrings.padRight(tArray[i].getName(),20)+": ");
                 if(tArray[i] instanceof Session)
                 {
                     Session S=(Session)tArray[i];
-                    lines.append("Session status "+S.getStatus()+"-"+Util.combine(S.previousCMD(),0) + "\n\r");
+                    lines.append("Session status "+S.getStatus()+"-"+CMParms.combine(S.previousCMD(),0) + "\n\r");
                 }
                 else
                 if(tArray[i] instanceof Tickable)
@@ -389,7 +389,7 @@ public class List extends StdCommand
 		Vector V=CMLib.database().DBReadJournal("SYSTEM_"+journal+"S");
 		if(V!=null)
 		{
-			buf.append("\n\r^x"+Util.padRight("#",5)+Util.padRight("From",10)+" Entry^.^N\n\r");
+			buf.append("\n\r^x"+CMStrings.padRight("#",5)+CMStrings.padRight("From",10)+" Entry^.^N\n\r");
 			buf.append("---------------------------------------------\n\r");
 			for(int j=0;j<V.size();j++)
 			{
@@ -399,7 +399,7 @@ public class List extends StdCommand
 				//String to=(String)entry.elementAt(3);
 				//String subject=(String)entry.elementAt(4);
 				String message=(String)entry.elementAt(5);
-				buf.append(Util.padRight((j+1)+"",3)+") "+Util.padRight(from,10)+" "+message+"\n\r");
+				buf.append(CMStrings.padRight((j+1)+"",3)+") "+CMStrings.padRight(from,10)+" "+message+"\n\r");
 			}
 		}
 		return buf;
@@ -415,53 +415,53 @@ public class List extends StdCommand
 		}catch(Exception e){}
 		StringBuffer buf=new StringBuffer("");
 		long totalTime=System.currentTimeMillis()-CMSecurity.getStartTime();
-		buf.append("The system has been running for ^H"+Util.returnTime(totalTime,0)+"^?.\n\r");
+		buf.append("The system has been running for ^H"+CMLib.english().returnTime(totalTime,0)+"^?.\n\r");
 		long free=Runtime.getRuntime().freeMemory()/1000;
 		long total=Runtime.getRuntime().totalMemory()/1000;
 		buf.append("The system is utilizing ^H"+(total-free)+"^?kb out of ^H"+total+"^?kb.\n\r");
 		buf.append("\n\r^xService Engine report:^.^N\n\r");
 		String totalTickers=CMLib.threads().systemReport("totalTickers");
 		String tickGroupSize=CMLib.threads().systemReport("TICKGROUPSIZE");
-		long totalMillis=Util.s_long(CMLib.threads().systemReport("totalMillis"));
-		long totalTicks=Util.s_long(CMLib.threads().systemReport("totalTicks"));
+		long totalMillis=CMath.s_long(CMLib.threads().systemReport("totalMillis"));
+		long totalTicks=CMath.s_long(CMLib.threads().systemReport("totalTicks"));
 		String topGroupNumber=CMLib.threads().systemReport("topGroupNumber");
-		long topGroupMillis=Util.s_long(CMLib.threads().systemReport("topGroupMillis"));
-		long topGroupTicks=Util.s_long(CMLib.threads().systemReport("topGroupTicks"));
-		long topObjectMillis=Util.s_long(CMLib.threads().systemReport("topObjectMillis"));
-		long topObjectTicks=Util.s_long(CMLib.threads().systemReport("topObjectTicks"));
+		long topGroupMillis=CMath.s_long(CMLib.threads().systemReport("topGroupMillis"));
+		long topGroupTicks=CMath.s_long(CMLib.threads().systemReport("topGroupTicks"));
+		long topObjectMillis=CMath.s_long(CMLib.threads().systemReport("topObjectMillis"));
+		long topObjectTicks=CMath.s_long(CMLib.threads().systemReport("topObjectTicks"));
 		buf.append("There are ^H"+totalTickers+"^? ticking objects in ^H"+tickGroupSize+"^? threads.\n\r");
-		buf.append("The ticking objects have consumed: ^H"+Util.returnTime(totalMillis,totalTicks)+"^?.\n\r");
-		buf.append("The most active group, #^H"+topGroupNumber+"^?, has consumed: ^H"+Util.returnTime(topGroupMillis,topGroupTicks)+"^?.\n\r");
+		buf.append("The ticking objects have consumed: ^H"+CMLib.english().returnTime(totalMillis,totalTicks)+"^?.\n\r");
+		buf.append("The most active group, #^H"+topGroupNumber+"^?, has consumed: ^H"+CMLib.english().returnTime(topGroupMillis,topGroupTicks)+"^?.\n\r");
 		String topObjectClient=CMLib.threads().systemReport("topObjectClient");
 		String topObjectGroup=CMLib.threads().systemReport("topObjectGroup");
 		if(topObjectClient.length()>0)
 		{
 			buf.append("The most active object has been '^H"+topObjectClient+"^?', from group #^H"+topObjectGroup+"^?.\n\r");
-			buf.append("That object has consumed: ^H"+Util.returnTime(topObjectMillis,topObjectTicks)+"^?.\n\r");
+			buf.append("That object has consumed: ^H"+CMLib.english().returnTime(topObjectMillis,topObjectTicks)+"^?.\n\r");
 		}
 		buf.append("\n\r");
 		buf.append("^xSave Thread report:^.^N\n\r");
-		long saveThreadMilliTotal=Util.s_long(CMLib.threads().systemReport("saveThreadMilliTotal"));
-		long saveThreadTickTotal=Util.s_long(CMLib.threads().systemReport("saveThreadTickTotal"));
-		buf.append("The Save Thread has consumed: ^H"+Util.returnTime(saveThreadMilliTotal,saveThreadTickTotal)+" ("+CMLib.threads().systemReport("saveThreadStatus")+")^?.\n\r");
+		long saveThreadMilliTotal=CMath.s_long(CMLib.threads().systemReport("saveThreadMilliTotal"));
+		long saveThreadTickTotal=CMath.s_long(CMLib.threads().systemReport("saveThreadTickTotal"));
+		buf.append("The Save Thread has consumed: ^H"+CMLib.english().returnTime(saveThreadMilliTotal,saveThreadTickTotal)+" ("+CMLib.threads().systemReport("saveThreadStatus")+")^?.\n\r");
 		buf.append("\n\r");
 		buf.append("^xUtility Thread report:^.^N\n\r");
-		long utilThreadMilliTotal=Util.s_long(CMLib.threads().systemReport("utilThreadMilliTotal"));
-		long utilThreadTickTotal=Util.s_long(CMLib.threads().systemReport("utilThreadTickTotal"));
-		buf.append("The Utility Thread has consumed: ^H"+Util.returnTime(utilThreadMilliTotal,utilThreadTickTotal)+" ("+CMLib.threads().systemReport("utilThreadStatus")+")^?.\n\r");
+		long utilThreadMilliTotal=CMath.s_long(CMLib.threads().systemReport("utilThreadMilliTotal"));
+		long utilThreadTickTotal=CMath.s_long(CMLib.threads().systemReport("utilThreadTickTotal"));
+		buf.append("The Utility Thread has consumed: ^H"+CMLib.english().returnTime(utilThreadMilliTotal,utilThreadTickTotal)+" ("+CMLib.threads().systemReport("utilThreadStatus")+")^?.\n\r");
 		buf.append("\n\r");
 		buf.append("^xSession report:^.^N\n\r");
-		long totalMOBMillis=Util.s_long(CMLib.threads().systemReport("totalMOBMillis"));
-		long totalMOBTicks=Util.s_long(CMLib.threads().systemReport("totalMOBTicks"));
+		long totalMOBMillis=CMath.s_long(CMLib.threads().systemReport("totalMOBMillis"));
+		long totalMOBTicks=CMath.s_long(CMLib.threads().systemReport("totalMOBTicks"));
 		buf.append("There are ^H"+CMLib.sessions().size()+"^? ticking players logged on.\n\r");
-		buf.append("The ticking players have consumed: ^H"+Util.returnTime(totalMOBMillis,totalMOBTicks)+"^?.\n\r");
-		long topMOBMillis=Util.s_long(CMLib.threads().systemReport("topMOBMillis"));
-		long topMOBTicks=Util.s_long(CMLib.threads().systemReport("topMOBTicks"));
+		buf.append("The ticking players have consumed: ^H"+CMLib.english().returnTime(totalMOBMillis,totalMOBTicks)+"^?.\n\r");
+		long topMOBMillis=CMath.s_long(CMLib.threads().systemReport("topMOBMillis"));
+		long topMOBTicks=CMath.s_long(CMLib.threads().systemReport("topMOBTicks"));
 		String topMOBClient=CMLib.threads().systemReport("topMOBClient");
 		if(topMOBClient.length()>0)
 		{
 			buf.append("The most active mob has been '^H"+topMOBClient+"^?'\n\r");
-			buf.append("That mob has consumed: ^H"+Util.returnTime(topMOBMillis,topMOBTicks)+"^?.\n\r");
+			buf.append("That mob has consumed: ^H"+CMLib.english().returnTime(topMOBMillis,topMOBTicks)+"^?.\n\r");
 		}
 		return buf;
 	}
@@ -473,7 +473,7 @@ public class List extends StdCommand
 		int sortBy=-1;
 		if(commands.size()>0)
 		{
-			String rest=Util.combine(commands,0).toUpperCase();
+			String rest=CMParms.combine(commands,0).toUpperCase();
 			if("RACE".startsWith(rest))
 				sortBy=2;
 			else
@@ -502,14 +502,14 @@ public class List extends StdCommand
 		}
 		StringBuffer head=new StringBuffer("");
 		head.append("[");
-		head.append(Util.padRight("Race",8)+" ");
-		head.append(Util.padRight("Class",10)+" ");
-		head.append(Util.padRight("Lvl",4)+" ");
-		head.append(Util.padRight("Hours",5)+" ");
+		head.append(CMStrings.padRight("Race",8)+" ");
+		head.append(CMStrings.padRight("Class",10)+" ");
+		head.append(CMStrings.padRight("Lvl",4)+" ");
+		head.append(CMStrings.padRight("Hours",5)+" ");
 		if(sortBy!=6)
-			head.append(Util.padRight("Last",18)+" ");
+			head.append(CMStrings.padRight("Last",18)+" ");
 		else
-			head.append(Util.padRight("E-Mail",23)+" ");
+			head.append(CMStrings.padRight("E-Mail",23)+" ");
 		head.append("] Character name\n\r");
 		Vector allUsers=CMLib.database().getUserList();
 		Vector oldSet=allUsers;
@@ -540,7 +540,7 @@ public class List extends StdCommand
 				for(int u=1;u<oldSet.size();u++)
 				{
 					Vector V=(Vector)oldSet.elementAt(u);
-					if(Util.s_long((String)selected.elementAt(sortBy))>Util.s_long(((String)V.elementAt(sortBy))))
+					if(CMath.s_long((String)selected.elementAt(sortBy))>CMath.s_long(((String)V.elementAt(sortBy))))
 					   selected=V;
 				}
 				if(selected!=null)
@@ -556,16 +556,16 @@ public class List extends StdCommand
 			Vector U=(Vector)allUsers.elementAt(u);
 
 			head.append("[");
-			head.append(Util.padRight((String)U.elementAt(2),8)+" ");
-			head.append(Util.padRight((String)U.elementAt(1),10)+" ");
-			head.append(Util.padRight((String)U.elementAt(3),4)+" ");
-			long age=Math.round(Util.div(Util.s_long((String)U.elementAt(4)),60.0));
-			head.append(Util.padRight(""+age,5)+" ");
+			head.append(CMStrings.padRight((String)U.elementAt(2),8)+" ");
+			head.append(CMStrings.padRight((String)U.elementAt(1),10)+" ");
+			head.append(CMStrings.padRight((String)U.elementAt(3),4)+" ");
+			long age=Math.round(CMath.div(CMath.s_long((String)U.elementAt(4)),60.0));
+			head.append(CMStrings.padRight(""+age,5)+" ");
 			if(showBy!=6)
-				head.append(Util.padRight(CMLib.time().date2String(Util.s_long((String)U.elementAt(5))),18)+" ");
+				head.append(CMStrings.padRight(CMLib.time().date2String(CMath.s_long((String)U.elementAt(5))),18)+" ");
 			else
-				head.append(Util.padRight((String)U.elementAt(6),23)+" ");
-			head.append("] "+Util.padRight("^<LSTUSER^>"+((String)U.elementAt(0))+"^</LSTUSER^>",15));
+				head.append(CMStrings.padRight((String)U.elementAt(6),23)+" ");
+			head.append("] "+CMStrings.padRight("^<LSTUSER^>"+((String)U.elementAt(0))+"^</LSTUSER^>",15));
 			head.append("\n\r");
 		}
 		mob.tell(head.toString());
@@ -581,7 +581,7 @@ public class List extends StdCommand
             Vector raceNames=new Vector();
             for(Enumeration e=these;e.hasMoreElements();)
                 raceNames.addElement(((Race)e.nextElement()).ID());
-            lines.append(Util.toStringList(raceNames));
+            lines.append(CMParms.toStringList(raceNames));
         }
         else
 		for(Enumeration e=these;e.hasMoreElements();)
@@ -592,7 +592,7 @@ public class List extends StdCommand
 				lines.append("\n\r");
 				column=1;
 			}
-			lines.append(Util.padRight(thisThang.ID()
+			lines.append(CMStrings.padRight(thisThang.ID()
                                         +(thisThang.isGeneric()?"*":"")
                                         +" ("+thisThang.racialCategory()+")",25));
 		}
@@ -618,7 +618,7 @@ public class List extends StdCommand
             String[] sortedC=new String[sortedB.length];
             for(int i=0;i<sortedB.length;i++)
                 sortedC[i]=(String)sortedB[i];
-            lines.append(Util.toStringList(sortedC));
+            lines.append(CMParms.toStringList(sortedC));
         }
         else
         for(int i=0;i<sortedB.length;i++)
@@ -629,7 +629,7 @@ public class List extends StdCommand
                 lines.append("\n\r");
                 column=1;
             }
-            lines.append(Util.padRight(raceCat,25));
+            lines.append(CMStrings.padRight(raceCat,25));
         }
         lines.append("\n\r");
         return lines;
@@ -643,13 +643,13 @@ public class List extends StdCommand
 		else
 		{
 			buf.append("\n\r^xQuest Report:^.^N\n\r");
-			buf.append("\n\r^x"+Util.padRight("#",5)+Util.padRight("Name",20)+" Status^.^N\n\r");
+			buf.append("\n\r^x"+CMStrings.padRight("#",5)+CMStrings.padRight("Name",20)+" Status^.^N\n\r");
 			for(int i=0;i<CMLib.quests().numQuests();i++)
 			{
 				Quest Q=CMLib.quests().fetchQuest(i);
 				if(Q!=null)
 				{
-					buf.append(Util.padRight(""+(i+1),5)+Util.padRight("^<LSTQUEST^>"+Q.name()+"^</LSTQUEST^>",20)+" ");
+					buf.append(CMStrings.padRight(""+(i+1),5)+CMStrings.padRight("^<LSTQUEST^>"+Q.name()+"^</LSTQUEST^>",20)+" ");
 					if(Q.running())
 						buf.append("running ("+Q.minsRemaining()+" mins left)");
 					else
@@ -674,12 +674,12 @@ public class List extends StdCommand
         else
         {
             buf.append("\n\r^xJournals List:^.^N\n\r");
-            buf.append("\n\r^x"+Util.padRight("#",5)+Util.padRight("Name",30)+" Messages^.^N\n\r");
+            buf.append("\n\r^x"+CMStrings.padRight("#",5)+CMStrings.padRight("Name",30)+" Messages^.^N\n\r");
             for(int i=0;i<journals.size();i++)
             {
                 String journal=(String)journals.elementAt(i);
                 int messages=CMLib.database().DBCountJournal(journal,null,null);
-                buf.append(Util.padRight(""+(i+1),5)+Util.padRight(journal,30)+" "+messages);
+                buf.append(CMStrings.padRight(""+(i+1),5)+CMStrings.padRight(journal,30)+" "+messages);
                 buf.append("^N\n\r");
             }
         }
@@ -696,37 +696,37 @@ public class List extends StdCommand
 		    whichTickTock="";
 		}
 		if(!activeOnly)
-			msg.append(Util.padRight("Grp",4)+Util.padRight("Client",18)+" "+Util.padRight("ID",5)+Util.padRight("Status",10));
-		msg.append(Util.padRight("Grp",4)+Util.padRight("Client",18)+" "+Util.padRight("ID",5)+Util.padRight("Status",10)+"\n\r");
+			msg.append(CMStrings.padRight("Grp",4)+CMStrings.padRight("Client",18)+" "+CMStrings.padRight("ID",5)+CMStrings.padRight("Status",10));
+		msg.append(CMStrings.padRight("Grp",4)+CMStrings.padRight("Client",18)+" "+CMStrings.padRight("ID",5)+CMStrings.padRight("Status",10)+"\n\r");
 		int col=0;
-		int numGroups=Util.s_int(CMLib.threads().tickInfo("tickGroupSize"));
+		int numGroups=CMath.s_int(CMLib.threads().tickInfo("tickGroupSize"));
 		int whichTick=-1;
-		if(Util.isInteger(whichTickTock)&&(whichTickTock.length()>0)) 
-		    whichTick=Util.s_int(whichTickTock);
+		if(CMath.isInteger(whichTickTock)&&(whichTickTock.length()>0)) 
+		    whichTick=CMath.s_int(whichTickTock);
 		for(int v=0;v<numGroups;v++)
 		{
-			int tickersSize=Util.s_int(CMLib.threads().tickInfo("tickersSize"+v));
+			int tickersSize=CMath.s_int(CMLib.threads().tickInfo("tickersSize"+v));
 			if((whichTick<0)||(whichTick==v))
 			for(int t=0;t<tickersSize;t++)
 			{
-				long tickerlaststartdate=Util.s_long(CMLib.threads().tickInfo("tickerlaststartmillis"+v+"-"+t));
-				long tickerlaststopdate=Util.s_long(CMLib.threads().tickInfo("tickerlaststopmillis"+v+"-"+t));
+				long tickerlaststartdate=CMath.s_long(CMLib.threads().tickInfo("tickerlaststartmillis"+v+"-"+t));
+				long tickerlaststopdate=CMath.s_long(CMLib.threads().tickInfo("tickerlaststopmillis"+v+"-"+t));
 				boolean isActive=(tickerlaststopdate<tickerlaststartdate);			
 				if((!activeOnly)||(isActive))
 				{
 					String name=CMLib.threads().tickInfo("tickerName"+v+"-"+t);
 					String id=CMLib.threads().tickInfo("tickerID"+v+"-"+t);
 					String status=CMLib.threads().tickInfo("tickercodeword"+v+"-"+t);
-					boolean suspended=Util.s_bool(CMLib.threads().tickInfo("tickerSuspended"+v+"-"+t));
+					boolean suspended=CMath.s_bool(CMLib.threads().tickInfo("tickerSuspended"+v+"-"+t));
 					if(((col++)==2)||(activeOnly))
 					{
 						msg.append("\n\r");
 						col=1;
 					}
-					msg.append(Util.padRight(""+v,4)
-							   +Util.padRight(name,18)
-							   +" "+Util.padRight(id+"",5)
-							   +(activeOnly?(status+(suspended?"*":"")):Util.padRight(status+(suspended?"*":""),10)));
+					msg.append(CMStrings.padRight(""+v,4)
+							   +CMStrings.padRight(name,18)
+							   +" "+CMStrings.padRight(id+"",5)
+							   +(activeOnly?(status+(suspended?"*":"")):CMStrings.padRight(status+(suspended?"*":""),10)));
 				}
 			}
 		}
@@ -739,7 +739,7 @@ public class List extends StdCommand
 		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			msg.append(Util.padRight(A.Name(),25)+": ");
+			msg.append(CMStrings.padRight(A.Name(),25)+": ");
 			if(A.getSubOpList().length()==0)
 				msg.append("No Area staff defined.\n\r");
 			else
@@ -761,12 +761,12 @@ public class List extends StdCommand
 					{
 						Room R2=R.rawDoors()[d];
 						if((R2!=null)&&(R2.rawDoors()[Directions.getOpDirectionCode(d)]!=R))
-							str.append(Util.padRight(R.roomID(),30)+": "+Directions.getDirectionName(d)+" to "+R2.roomID()+"\n\r");
+							str.append(CMStrings.padRight(R.roomID(),30)+": "+Directions.getDirectionName(d)+" to "+R2.roomID()+"\n\r");
 					}
 			}
 	    }catch(NoSuchElementException e){}
 		if(str.length()==0) str.append("None!");
-		if(Util.combine(commands,1).equalsIgnoreCase("log"))
+		if(CMParms.combine(commands,1).equalsIgnoreCase("log"))
 			Log.rawSysOut(str.toString());
 		return str.toString();
 	}
@@ -785,40 +785,40 @@ public class List extends StdCommand
 					Room R2=R.rawDoors()[d];
 					Exit E2=R.rawExits()[d];
 					if((R2==null)&&(E2!=null))
-						str.append(Util.padRight(R.roomID(),30)+": "+Directions.getDirectionName(d)+" to "+E2.temporaryDoorLink()+" ("+E2.displayText()+")\n\r");
+						str.append(CMStrings.padRight(R.roomID(),30)+": "+Directions.getDirectionName(d)+" to "+E2.temporaryDoorLink()+" ("+E2.displayText()+")\n\r");
 				}
 			}
 	    }catch(NoSuchElementException e){}
 		if(str.length()==0) str.append("None!");
-		if(Util.combine(commands,1).equalsIgnoreCase("log"))
+		if(CMParms.combine(commands,1).equalsIgnoreCase("log"))
 			Log.rawSysOut(str.toString());
 		return str.toString();
 	}
 
     public String listMaterials()
     {
-        return Util.toStringList(EnvResource.MATERIAL_DESCS);
+        return CMParms.toStringList(EnvResource.MATERIAL_DESCS);
     }
 	public String listEnvResources(boolean shortList)
 	{
         if(shortList)
-            return Util.toStringList(EnvResource.RESOURCE_DESCS);
+            return CMParms.toStringList(EnvResource.RESOURCE_DESCS);
 		StringBuffer str=new StringBuffer("");
         for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
-            str.append(Util.padRight(Util.capitalizeAndLower(EnvResource.RESOURCE_DESCS[i].toLowerCase()),16));
-		str.append(Util.padRight("Resource",15)+" ");
-		str.append(Util.padRight("Material",10)+" ");
-		str.append(Util.padRight("Val",3)+" ");
-		str.append(Util.padRight("Freq",4)+" ");
-		str.append(Util.padRight("Str",3)+" ");
+            str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(EnvResource.RESOURCE_DESCS[i].toLowerCase()),16));
+		str.append(CMStrings.padRight("Resource",15)+" ");
+		str.append(CMStrings.padRight("Material",10)+" ");
+		str.append(CMStrings.padRight("Val",3)+" ");
+		str.append(CMStrings.padRight("Freq",4)+" ");
+		str.append(CMStrings.padRight("Str",3)+" ");
 		str.append("Locales\n\r");
 		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
 		{
-			str.append(Util.padRight(Util.capitalizeAndLower(EnvResource.RESOURCE_DESCS[i].toLowerCase()),16));
-			str.append(Util.padRight(Util.capitalizeAndLower(EnvResource.MATERIAL_DESCS[(EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)>>8].toLowerCase()),11));
-			str.append(Util.padRight(""+EnvResource.RESOURCE_DATA[i][1],4));
-			str.append(Util.padRight(""+EnvResource.RESOURCE_DATA[i][2],5));
-			str.append(Util.padRight(""+EnvResource.RESOURCE_DATA[i][3],4));
+			str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(EnvResource.RESOURCE_DESCS[i].toLowerCase()),16));
+			str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(EnvResource.MATERIAL_DESCS[(EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)>>8].toLowerCase()),11));
+			str.append(CMStrings.padRight(""+EnvResource.RESOURCE_DATA[i][1],4));
+			str.append(CMStrings.padRight(""+EnvResource.RESOURCE_DATA[i][2],5));
+			str.append(CMStrings.padRight(""+EnvResource.RESOURCE_DATA[i][3],4));
 			StringBuffer locales=new StringBuffer("");
 			for(Enumeration e=CMClass.locales();e.hasMoreElements();)
 			{
@@ -829,7 +829,7 @@ public class List extends StdCommand
 			}
 			while(locales.length()>36)
 			{
-				str.append(locales.toString().substring(0,36)+"\n\r"+Util.padRight(" ",40));
+				str.append(locales.toString().substring(0,36)+"\n\r"+CMStrings.padRight(" ",40));
 				locales=new StringBuffer(locales.toString().substring(36));
 			}
 			str.append(locales.toString());
@@ -956,12 +956,12 @@ public class List extends StdCommand
     {
         commands.removeElementAt(0);
         Enumeration roomsToDo=null;
-        String rest=Util.combine(commands,0);
+        String rest=CMParms.combine(commands,0);
         if(rest.equalsIgnoreCase("area"))
             roomsToDo=mob.location().getArea().getMetroMap();
         else
         if(rest.trim().length()==0)
-            roomsToDo=Util.makeVector(mob.location()).elements();
+            roomsToDo=CMParms.makeVector(mob.location()).elements();
         else
         {
             Area A=CMLib.map().findArea(rest);
@@ -971,7 +971,7 @@ public class List extends StdCommand
             {
                 Room R=CMLib.map().getRoom(rest);
                 if(R!=null)
-                    roomsToDo=Util.makeVector(mob.location()).elements();
+                    roomsToDo=CMParms.makeVector(mob.location()).elements();
                 else
                     return new StringBuffer("There's no such place as '"+rest+"'");
             }
@@ -1027,8 +1027,8 @@ public class List extends StdCommand
             for(int v=0;v<V.size();v++)
             {
                 Poll P=(Poll)V.elementAt(v);
-                str.append(Util.padRight(""+(v+1),2)+": "+P.getName());
-                if(!Util.bset(P.getFlags(),Poll.FLAG_ACTIVE))
+                str.append(CMStrings.padRight(""+(v+1),2)+": "+P.getName());
+                if(!CMath.bset(P.getFlags(),Poll.FLAG_ACTIVE))
                     str.append(" (inactive)");
                 else
                 if(P.getExpiration()>0) 
@@ -1051,7 +1051,7 @@ public class List extends StdCommand
 		if(s==null) return;
 
 		String listWord=((String)commands.firstElement()).toUpperCase();
-        String rest=(commands.size()>1)?rest=Util.combine(commands,1):"";
+        String rest=(commands.size()>1)?rest=CMParms.combine(commands,1):"";
 		int code=getMyCmdCode(mob, listWord);
 		if((code<0)||(listWord.length()==0))
 		{
@@ -1102,7 +1102,7 @@ public class List extends StdCommand
 		case 22: s.println(listQuests().toString()); break;
 		case 23: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.DISEASE).toString()); break;
 		case 24: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.POISON).toString()); break;
-		case 25: s.println(listTicks(Util.combine(commands,1)).toString()); break;
+		case 25: s.println(listTicks(CMParms.combine(commands,1)).toString()); break;
 		case 26: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.miscMagic()).toString()); break;
 		case 27: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.miscTech()).toString()); break;
 		case 28: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.clanItems()).toString()); break;
@@ -1133,7 +1133,7 @@ public class List extends StdCommand
 		case 35: listUsers(mob,commands); break;
 		case 36: s.println(listLinkages(mob).toString()); break;
 		case 37: s.println(listReports(mob).toString()); break;
-		case 38: s.println(listThreads(mob,Util.combine(commands,1).equalsIgnoreCase("SHORT")).toString()); break;
+		case 38: s.println(listThreads(mob,CMParms.combine(commands,1).equalsIgnoreCase("SHORT")).toString()); break;
 		case 39: s.wraplessPrintln(CMLib.lister().reallyList2Cols(Resources.findResourceKeys("").elements(),-1,null).toString()); break;
 		case 40: s.wraplessPrintln(reallyFindOneWays(mob,commands)); break;
 		case 41: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.CHANT).toString()); break;
@@ -1168,7 +1168,7 @@ public class List extends StdCommand
 		}
 		else
 		{
-            String what=Util.combine(commands,0);
+            String what=CMParms.combine(commands,0);
             Vector V2=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
             Environmental shopkeeper=CMLib.english().fetchEnvironmental(V2,what,false);
             if((shopkeeper==null)&&(what.equals("shop")||what.equals("the shop")))

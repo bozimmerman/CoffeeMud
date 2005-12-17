@@ -66,7 +66,7 @@ public class Prayer_Faithless extends Prayer
 			D=CMLib.map().getDeity(target.getWorshipCharID());
 		int type=affectType(auto);
 		int mal=CMMsg.MASK_MALICIOUS;
-		if(auto){ type=Util.unsetb(type,CMMsg.MASK_MALICIOUS); mal=0;}
+		if(auto){ type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS); mal=0;}
 		if((success)&&(D!=null))
 		{
 			// it worked, so build a copy of this ability,

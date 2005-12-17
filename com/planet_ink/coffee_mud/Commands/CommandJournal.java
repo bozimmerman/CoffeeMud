@@ -50,15 +50,15 @@ public class CommandJournal extends StdCommand
                           String security)
     {
         String first=(String)commands.elementAt(1);
-        String second=(commands.size()>2)?Util.combine(commands,2):"";
+        String second=(commands.size()>2)?CMParms.combine(commands,2):"";
         if(!("REVIEW".startsWith(first.toUpperCase().trim())))
            return false;
         if((!CMSecurity.isAllowed(mob,mob.location(),security))
         &&(!CMSecurity.isAllowed(mob,mob.location(),"KILL"+security+"S")))
             return false;
-        if((second.length()>0)&&(!Util.isNumber(second)))
+        if((second.length()>0)&&(!CMath.isNumber(second)))
             return false;
-        int count=Util.s_int(second);
+        int count=CMath.s_int(second);
             
         Item journalItem=CMClass.getItem("StdJournal");
         if(journalItem==null)
@@ -130,7 +130,7 @@ public class CommandJournal extends StdCommand
             mob.tell(getScr("CommandJournal","notava"));
             return false;
         }
-        if(Util.combine(commands,1).length()>0)
+        if(CMParms.combine(commands,1).length()>0)
         {
             if(!review(mob,"SYSTEM_"+journalWord+"S",journalWord.toLowerCase()+"s",commands,journalWord))
             {
@@ -138,12 +138,12 @@ public class CommandJournal extends StdCommand
                 if((journalNum>=0)&&(CMLib.journals().getCommandJournalFlags(journalNum).containsKey("ADDROOM")))
                     prePend="(^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(mob.location())+"^</LSTROOMID^>) ";
                 CMLib.database().DBWriteJournal("SYSTEM_"+journalWord+"S",mob.Name(),"ALL",
-                        journalWord+": "+Util.padRight(Util.combine(commands,1),15),
-                        prePend+Util.combine(commands,1),
+                        journalWord+": "+CMStrings.padRight(CMParms.combine(commands,1),15),
+                        prePend+CMParms.combine(commands,1),
                         -1);
                 mob.tell(getScr("CommandJournal","thankyou",journalWord.toLowerCase()));
                 if((journalNum>=0)&&(CMLib.journals().getCommandJournalFlags(journalNum).get("CHANNEL=")!=null))
-                    CMLib.commands().channel(((String)CMLib.journals().getCommandJournalFlags(journalNum).get("CHANNEL=")).toUpperCase().trim(),"",getScr("CommandJournal","customline",mob.Name(),journalWord,Util.combine(commands,1)),true);
+                    CMLib.commands().channel(((String)CMLib.journals().getCommandJournalFlags(journalNum).get("CHANNEL=")).toUpperCase().trim(),"",getScr("CommandJournal","customline",mob.Name(),journalWord,CMParms.combine(commands,1)),true);
             }
         }
         else

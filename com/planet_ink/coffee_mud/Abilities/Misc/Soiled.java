@@ -84,7 +84,7 @@ public class Soiled extends StdAbility
 	            ||((affected instanceof Item)
 	                    &&(((Item)affected).owner()==msg.source()))))
 	    {
-		    if((Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))
+		    if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))
 		    &&(msg.source().riding()==null)
 		    &&(msg.source().location()!=null)
 		    &&((msg.source().location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
@@ -93,7 +93,7 @@ public class Soiled extends StdAbility
 	            ||(msg.source().location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
 		        unInvoke();
 		    else
-		    if((Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))
+		    if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))
 		    &&(msg.source().riding() instanceof Drink)
 		    &&(((Drink)msg.source().riding()).containsDrink()))
 		        unInvoke();

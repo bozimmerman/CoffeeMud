@@ -57,7 +57,7 @@ public class Hireling extends StdBehavior
 	{
 		double price=100.0;
 		if(dex>=0)
-			price=new Integer(Util.s_int(getParms().substring(0,dex))).doubleValue();
+			price=new Integer(CMath.s_int(getParms().substring(0,dex))).doubleValue();
 		return price;
 	}
 
@@ -67,9 +67,9 @@ public class Hireling extends StdBehavior
 		if(dex>=0)
 		{
 			if(dex2>dex)
-				mins = Util.s_int(getParms().substring(dex+1,dex2));
+				mins = CMath.s_int(getParms().substring(dex+1,dex2));
 			else
-				mins = Util.s_int(getParms().substring(dex + 1));
+				mins = CMath.s_int(getParms().substring(dex + 1));
 		}
 		return mins;
 	}
@@ -136,7 +136,7 @@ public class Hireling extends StdBehavior
 			}
 			int additional=0;
 			if(D!=null)
-				additional+=(int)Math.round(Util.mul(Util.div(minutes(),price()),D.doubleValue()));
+				additional+=(int)Math.round(CMath.mul(CMath.div(minutes(),price()),D.doubleValue()));
 			if(additional<=0)
 			{
 				if(talkTo!=null)

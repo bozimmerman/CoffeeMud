@@ -322,7 +322,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
     protected double getSimplePostage(int chargeableWeight)
     {
         if(getStartRoom()==null) return 0.0;
-        return minimumPostage()+Util.mul(postagePerPound(),chargeableWeight);
+        return minimumPostage()+CMath.mul(postagePerPound(),chargeableWeight);
     }
     
     protected double getHoldingCost(Vector data, int chargeableWeight)
@@ -332,10 +332,10 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         if(getStartRoom()==null) return 0.0;
         double amt=0.0;
         TimeClock TC=(getStartRoom()==null)?CMClass.globalClock():getStartRoom().getArea().getTimeObj();
-        long time=System.currentTimeMillis()-Util.s_long((String)data.elementAt(PIECE_TIME));
+        long time=System.currentTimeMillis()-CMath.s_long((String)data.elementAt(PIECE_TIME));
         long millisPerMudMonth=TC.getDaysInMonth()*MudHost.TIME_MILIS_PER_MUDHOUR*TC.getHoursInDay();
         if(time<=0) return amt;
-        amt+=Util.mul(Util.mul(Math.floor(Util.div(time,millisPerMudMonth)),holdFeePerPound()),chargeableWeight);
+        amt+=CMath.mul(CMath.mul(Math.floor(CMath.div(time,millisPerMudMonth)),holdFeePerPound()),chargeableWeight);
         return amt;
     }
     
@@ -345,7 +345,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         if(data.size()<NUM_PIECES)
             return 0.0;
         int chargeableWeight=getChargeableWeight(makeItem(data));
-        double COD=Util.s_double((String)data.elementAt(PIECE_COD));
+        double COD=CMath.s_double((String)data.elementAt(PIECE_COD));
         double amt=0.0;
         if(COD>0.0) 
             amt=getSimplePostage(chargeableWeight)+COD;
@@ -476,7 +476,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                         Item I=makeItem(V2);
                         if((P!=null)&&(I!=null))
                         {
-                            P.addToBox(toWhom,I,(String)V2.elementAt(PIECE_FROM),(String)V2.elementAt(PIECE_TO),Util.s_long((String)V2.elementAt(PIECE_TIME)),Util.s_double((String)V2.elementAt(PIECE_COD)));
+                            P.addToBox(toWhom,I,(String)V2.elementAt(PIECE_FROM),(String)V2.elementAt(PIECE_TO),CMath.s_long((String)V2.elementAt(PIECE_TIME)),CMath.s_double((String)V2.elementAt(PIECE_COD)));
                             continue;
                         }
                     }
@@ -503,11 +503,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                         Vector data=parsePostalItemData(((String)V2.elementAt(DATA_DATA)));
                         if((data!=null)&&(data.size()>1)&&(getStartRoom()!=null))
                         {
-                            long time=System.currentTimeMillis()-Util.s_long((String)data.elementAt(PIECE_TIME));
+                            long time=System.currentTimeMillis()-CMath.s_long((String)data.elementAt(PIECE_TIME));
                             long millisPerMudMonth=TC.getDaysInMonth()*MudHost.TIME_MILIS_PER_MUDHOUR*TC.getHoursInDay();
                             if(time>0)
                             {
-                                int months=(int)Math.round(Math.floor(Util.div(time,millisPerMudMonth)));
+                                int months=(int)Math.round(Math.floor(CMath.div(time,millisPerMudMonth)));
                                 if(months>maxMudMonthsHeld())
                                 {
                                     Item I=makeItem(V2);
@@ -583,7 +583,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                                     if(choice.startsWith("C"))
                                     {
                                         String CODstr=S.prompt("Enter COD amount ("+CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(this),CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(this)))+"): ");
-                                        if((CODstr.length()==0)||(!Util.isNumber(CODstr))||(Util.s_double(CODstr)<=0.0))
+                                        if((CODstr.length()==0)||(!CMath.isNumber(CODstr))||(CMath.s_double(CODstr)<=0.0))
                                         {
                                             CMLib.commands().say(this,mob,"That is not a valid amount.",true,false);
                                             autoGive(this,msg.source(),(Item)msg.tool());
@@ -591,7 +591,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                                         }
                                         else
                                         {
-                                            Coins currency=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(this),CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(this))*Util.s_double(CODstr));
+                                            Coins currency=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(this),CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(this))*CMath.s_double(CODstr));
                                             COD=currency.getTotalValue();
                                             amt=0.0;
                                         }
@@ -652,7 +652,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                         {
                             
                             CMLib.beanCounter().subtractMoney(msg.source(),totalCharge);
-                            double COD=Util.s_double((String)data.elementAt(PIECE_COD));
+                            double COD=CMath.s_double((String)data.elementAt(PIECE_COD));
                             Coins returnMoney=null;
                             if(COD>0.0)
                                 returnMoney=CMLib.beanCounter().makeBestCurrency(this,COD);
@@ -799,7 +799,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                     {
                         Vector V2=getAllLocalBoxVectors(mob.getLiegeID());
                         if((V2!=null)&&(V2.size()>0))
-                            Util.addToVector(V2,V);
+                            CMParms.addToVector(V2,V);
                     }
                 }
 
@@ -824,14 +824,14 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                         if(getCODChargeForPiece(pieces)>0.0)
                         {
                             codCharge=true;
-                            str.append("["+Util.padRight(""+CMLib.beanCounter().abbreviatedPrice(this,getCODChargeForPiece(pieces)),8)+"]");
+                            str.append("["+CMStrings.padRight(""+CMLib.beanCounter().abbreviatedPrice(this,getCODChargeForPiece(pieces)),8)+"]");
                         }
                         else
                             str.append("[        ]");
-                        str.append("["+Util.padRight((String)pieces.elementAt(PIECE_FROM),15)+"]");
-                        TimeClock C2=C.deriveClock(Util.s_long((String)pieces.elementAt(PIECE_TIME)));
-                        str.append("["+Util.padRight(C2.getShortestTimeDescription(),15)+"]");
-                        str.append("["+Util.padRight(I.Name(),28)+"]");
+                        str.append("["+CMStrings.padRight((String)pieces.elementAt(PIECE_FROM),15)+"]");
+                        TimeClock C2=C.deriveClock(CMath.s_long((String)pieces.elementAt(PIECE_TIME)));
+                        str.append("["+CMStrings.padRight(C2.getShortestTimeDescription(),15)+"]");
+                        str.append("["+CMStrings.padRight(I.Name(),28)+"]");
                         mob.tell(str.toString()+"^T");
                     }
                 }

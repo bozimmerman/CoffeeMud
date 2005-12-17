@@ -261,24 +261,24 @@ public class CharClassData extends StdWebMacro
 			M.charStats().getCurrentClass().level(M);
 		}
 		StringBuffer str=new StringBuffer("");
-		str.append("<BR>Rule#1: Avg gained skill/level: "+Util.div(Math.round(100.0*Util.div(totalgained,30)),(long)100));
-		str.append("<BR>Rule#2: Avg qualified skill/level: "+Util.div(Math.round(100.0*Util.div(totalqualified,30)),(long)100));
+		str.append("<BR>Rule#1: Avg gained skill/level: "+CMath.div(Math.round(100.0*CMath.div(totalgained,30)),(long)100));
+		str.append("<BR>Rule#2: Avg qualified skill/level: "+CMath.div(Math.round(100.0*CMath.div(totalqualified,30)),(long)100));
 		str.append("<BR>Rule#4: Unique class skills gained: "+uniqueClassSkillsGained+"/"+uniqueClassSkills);
 		str.append("<BR>Rule#4: Uncommon class skills gained: "+uncommonClassSkillsGained+"/"+uncommonClassSkills);
 		str.append("<BR>Rule#5: Combat skills gained: "+(maliciousSkillsGained+beneficialSkillsGained)+"/"+(maliciousSkills+beneficialSkills));
-		str.append("<BR>Rule#6: Avg Unique class skill/level: "+Util.div(Math.round(100.0*Util.div(uniqueClassSkills,30)),(long)100));
-		str.append("<BR>Rule#8: Avg Cross class skill/level: "+Util.div(Math.round(100.0*Util.div(totalCrossClassSkills,30)),(long)100));
+		str.append("<BR>Rule#6: Avg Unique class skill/level: "+CMath.div(Math.round(100.0*CMath.div(uniqueClassSkills,30)),(long)100));
+		str.append("<BR>Rule#8: Avg Cross class skill/level: "+CMath.div(Math.round(100.0*CMath.div(totalCrossClassSkills,30)),(long)100));
         M.destroy();
 		return str.toString();
 	}
 	
 	public int avgMath2(int level, int add, int stat, int divisor, int hpdice )
 	{
-		return add+(level*((int)Math.round(Util.div(stat,divisor)))+(hpdice*(hpdice+1)/2));
+		return add+(level*((int)Math.round(CMath.div(stat,divisor)))+(hpdice*(hpdice+1)/2));
 	}
 	public int avgMath(int stat, int avg, int lvl, int add)
 	{
-		return add+(int)Math.round(Util.mul(Util.div(stat,18),avg)*lvl);
+		return add+(int)Math.round(CMath.mul(CMath.div(stat,18),avg)*lvl);
 	}
 	
 }

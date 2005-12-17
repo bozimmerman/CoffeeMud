@@ -43,7 +43,7 @@ public class Sounds extends StdCommand
 	{
         if(!mob.isMonster())
         {
-            if((!Util.bset(mob.getBitmap(),MOB.ATT_SOUND))
+            if((!CMath.bset(mob.getBitmap(),MOB.ATT_SOUND))
             ||(!mob.session().clientTelnetMode(Session.TELNET_MSP)))
             {
                 mob.session().changeTelnetMode(Session.TELNET_MSP,true);
@@ -53,7 +53,7 @@ public class Sounds extends StdCommand
                 }
                 if(mob.session().serverTelnetMode(Session.TELNET_MSP))
                 {
-                    mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_SOUND));
+                    mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_SOUND));
                     mob.tell("MSP Sound/Music enabled.\n\r");
                 }
                 else

@@ -46,8 +46,8 @@ public class Spell_Frenzy extends Spell
 		super.affectEnvStats(affected,affectableStats);
 		if((invoker==null)&&(affected instanceof MOB))
 			invoker=(MOB)affected;
-		affectableStats.setDamage(affectableStats.damage()+(int)Math.round(Util.div(affectableStats.damage(),6.0)));
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(Util.div(affectableStats.attackAdjustment(),6.0)));
+		affectableStats.setDamage(affectableStats.damage()+(int)Math.round(CMath.div(affectableStats.damage(),6.0)));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(CMath.div(affectableStats.attackAdjustment(),6.0)));
 		affectableStats.setArmor(affectableStats.armor()+20);
 	}
 
@@ -106,7 +106,7 @@ public class Spell_Frenzy extends Spell
 				if(target.location()==mob.location())
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> go(es) wild!");
-					hpAdjustment=(int)Math.round(Util.div(target.maxState().getHitPoints(),5.0));
+					hpAdjustment=(int)Math.round(CMath.div(target.maxState().getHitPoints(),5.0));
 					beneficialAffect(mob,target,asLevel,0);
 					target.curState().setHitPoints(target.curState().getHitPoints()+hpAdjustment);
 					target.recoverMaxState();

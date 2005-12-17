@@ -153,17 +153,17 @@ public class Sculpting extends CraftingSkill
         bundling=false;
 		if(str.equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(Util.padRight("Item",16)+" Lvl Stone required\n\r");
+			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",16)+" Lvl Stone required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
-					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
+					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
+					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
 					if(level<=mob.envStats().level())
-						buf.append(Util.padRight(item,16)+" "+Util.padRight(""+level,3)+" "+wood+"\n\r");
+						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,3)+" "+wood+"\n\r");
 				}
 			}
 			commonTell(mob,buf.toString());
@@ -178,7 +178,7 @@ public class Sculpting extends CraftingSkill
 			mending=false;
 			key=null;
 			messedUp=false;
-			Vector newCommands=Util.parse(Util.combine(commands,1));
+			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
 			if(!canMend(mob,building,false)) return false;
 			mending=true;
@@ -198,12 +198,12 @@ public class Sculpting extends CraftingSkill
 			key=null;
 			messedUp=false;
 			int amount=-1;
-			if((commands.size()>1)&&(Util.isNumber((String)commands.lastElement())))
+			if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
 			{
-				amount=Util.s_int((String)commands.lastElement());
+				amount=CMath.s_int((String)commands.lastElement());
 				commands.removeElementAt(commands.size()-1);
 			}
-			String recipeName=Util.combine(commands,0);
+			String recipeName=CMParms.combine(commands,0);
 			String rest="";
 			Vector foundRecipe=null;
 			Vector matches=matchingRecipeNames(recipes,recipeName,true);
@@ -213,7 +213,7 @@ public class Sculpting extends CraftingSkill
 				if(matches.size()>0)
 				{
 					recipeName=(String)commands.firstElement();
-					rest=Util.combine(commands,1);
+					rest=CMParms.combine(commands,1);
 				}
 			}
 			for(int r=0;r<matches.size();r++)
@@ -221,7 +221,7 @@ public class Sculpting extends CraftingSkill
 				Vector V=(Vector)matches.elementAt(r);
 				if(V.size()>0)
 				{
-					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
+					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
                     if((autoGenerate>0)||(level<=mob.envStats().level()))
 					{
 						foundRecipe=V;
@@ -234,7 +234,7 @@ public class Sculpting extends CraftingSkill
 				commonTell(mob,"You don't know how to sculpt a '"+recipeName+"'.  Try \"sculpt list\" for a list.");
 				return false;
 			}
-			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
+			int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			if(amount>woodRequired) woodRequired=amount;
 			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
             bundling=misctype.equalsIgnoreCase("BUNDLE");
@@ -252,12 +252,12 @@ public class Sculpting extends CraftingSkill
 				commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			completion=Util.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+			completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
-				itemName=Util.startWithAorAn(itemName);
+				itemName=CMStrings.startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) sculpting "+building.name()+".";
 			displayText="You are sculpting "+building.name();
@@ -266,14 +266,14 @@ public class Sculpting extends CraftingSkill
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
-			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_VALUE])));
+			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_VALUE])));
 			building.setMaterial(data[0][FOUND_CODE]);
-			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			addSpells(building,spell);
-			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
-			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
+			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+			int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			key=null;
 			if((misctype.equalsIgnoreCase("statue"))&&((!mob.isMonster())||(rest.length()>0)))
 			{

@@ -64,7 +64,7 @@ public class Song extends StdAbility
 		&&(msg.amISource(invoker))
 		&&(!unInvoked))
 		{
-			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
+			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
 				unInvoke();
 			else
 			if((msg.target() instanceof Armor)

@@ -63,7 +63,7 @@ public class Spell_Gate extends Spell
 			mob.tell("Gate to whom?");
 			return false;
 		}
-		String areaName=Util.combine(commands,0).trim().toUpperCase();
+		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 
 		if(mob.location().fetchInhabitant(areaName)!=null)
 		{
@@ -101,7 +101,7 @@ public class Spell_Gate extends Spell
 
 		if(newRoom==null)
 		{
-			mob.tell("You can't seem to fixate on '"+Util.combine(commands,0)+"', perhaps they don't exist?");
+			mob.tell("You can't seem to fixate on '"+CMParms.combine(commands,0)+"', perhaps they don't exist?");
 			return false;
 		}
 

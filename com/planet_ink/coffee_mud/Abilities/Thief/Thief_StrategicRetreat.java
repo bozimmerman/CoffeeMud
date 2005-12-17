@@ -56,7 +56,7 @@ public class Thief_StrategicRetreat extends ThiefSkill
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		String where=Util.combine(commands,0);
+		String where=CMParms.combine(commands,0);
 		if(!success)
 			CMLib.commands().flee(mob,where);
 		else

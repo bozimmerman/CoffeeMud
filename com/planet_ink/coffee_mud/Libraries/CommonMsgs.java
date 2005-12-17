@@ -85,7 +85,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							   boolean systemMsg)
 	{
 		doStandardCommand(mob,"Channel",
-						  Util.makeVector(new Boolean(systemMsg),channelName,message));
+						  CMParms.makeVector(new Boolean(systemMsg),channelName,message));
 	}
 	
 	public void channel(String channelName, 
@@ -105,41 +105,41 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
 	public boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimized)
 	{
-		return doStandardCommand(mob,"Drop",Util.makeVector(dropThis,new Boolean(quiet),new Boolean(optimized)));
+		return doStandardCommand(mob,"Drop",CMParms.makeVector(dropThis,new Boolean(quiet),new Boolean(optimized)));
 	}
 	public boolean get(MOB mob, Item container, Item getThis, boolean quiet)
 	{
 		if(container==null)
-			return doStandardCommand(mob,"Get",Util.makeVector(getThis,new Boolean(quiet)));
-		return doStandardCommand(mob,"Get",Util.makeVector(getThis,container,new Boolean(quiet)));
+			return doStandardCommand(mob,"Get",CMParms.makeVector(getThis,new Boolean(quiet)));
+		return doStandardCommand(mob,"Get",CMParms.makeVector(getThis,container,new Boolean(quiet)));
 	}
 	
 	public boolean remove(MOB mob, Item item, boolean quiet)
 	{
 		if(quiet)
-			return doStandardCommand(mob,"Remove",Util.makeVector("REMOVE",item,"QUIETLY"));
-		return doStandardCommand(mob,"Remove",Util.makeVector("REMOVE",item));
+			return doStandardCommand(mob,"Remove",CMParms.makeVector("REMOVE",item,"QUIETLY"));
+		return doStandardCommand(mob,"Remove",CMParms.makeVector("REMOVE",item));
 	}
 	
 	public void look(MOB mob, boolean quiet)
 	{
 		if(quiet)
-			doStandardCommand(mob,"Look",Util.makeVector("LOOK","UNOBTRUSIVELY"));
+			doStandardCommand(mob,"Look",CMParms.makeVector("LOOK","UNOBTRUSIVELY"));
 		else
-			doStandardCommand(mob,"Look",Util.makeVector("LOOK"));
+			doStandardCommand(mob,"Look",CMParms.makeVector("LOOK"));
 	}
 
 	public void flee(MOB mob, String whereTo)
 	{
-		doStandardCommand(mob,"Flee",Util.makeVector("FLEE",whereTo));
+		doStandardCommand(mob,"Flee",CMParms.makeVector("FLEE",whereTo));
 	}
 
 	public void sheath(MOB mob, boolean ifPossible)
 	{
 		if(ifPossible)
-			doStandardCommand(mob,"Sheath",Util.makeVector("SHEATH","IFPOSSIBLE"));
+			doStandardCommand(mob,"Sheath",CMParms.makeVector("SHEATH","IFPOSSIBLE"));
 		else
-			doStandardCommand(mob,"Sheath",Util.makeVector("SHEATH"));
+			doStandardCommand(mob,"Sheath",CMParms.makeVector("SHEATH"));
 	}
 	
 	public void draw(MOB mob, boolean doHold, boolean ifNecessary)
@@ -147,20 +147,20 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(ifNecessary)
 		{
 			if(doHold)
-				doStandardCommand(mob,"Draw",Util.makeVector("DRAW","HELD","IFNECESSARY"));
+				doStandardCommand(mob,"Draw",CMParms.makeVector("DRAW","HELD","IFNECESSARY"));
 			else
-				doStandardCommand(mob,"Draw",Util.makeVector("DRAW","IFNECESSARY"));
+				doStandardCommand(mob,"Draw",CMParms.makeVector("DRAW","IFNECESSARY"));
 		}
 		else
-			doStandardCommand(mob,"Draw",Util.makeVector("DRAW"));
+			doStandardCommand(mob,"Draw",CMParms.makeVector("DRAW"));
 	}
 	
 	public void stand(MOB mob, boolean ifNecessary)
 	{
 		if(ifNecessary)
-			doStandardCommand(mob,"Stand",Util.makeVector("STAND","IFNECESSARY"));
+			doStandardCommand(mob,"Stand",CMParms.makeVector("STAND","IFNECESSARY"));
 		else
-			doStandardCommand(mob,"Stand",Util.makeVector("STAND"));
+			doStandardCommand(mob,"Stand",CMParms.makeVector("STAND"));
 	}
 
 	public void follow(MOB follower, MOB leader, boolean quiet)
@@ -168,16 +168,16 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(leader!=null)
 		{
 			if(quiet)
-				doStandardCommand(follower,"Follow",Util.makeVector("FOLLOW",leader,"UNOBTRUSIVELY"));
+				doStandardCommand(follower,"Follow",CMParms.makeVector("FOLLOW",leader,"UNOBTRUSIVELY"));
 			else
-				doStandardCommand(follower,"Follow",Util.makeVector("FOLLOW",leader));
+				doStandardCommand(follower,"Follow",CMParms.makeVector("FOLLOW",leader));
 		}
 		else
 		{
 			if(quiet)
-				doStandardCommand(follower,"Follow",Util.makeVector("FOLLOW","SELF","UNOBTRUSIVELY"));
+				doStandardCommand(follower,"Follow",CMParms.makeVector("FOLLOW","SELF","UNOBTRUSIVELY"));
 			else
-				doStandardCommand(follower,"Follow",Util.makeVector("FOLLOW","SELF"));
+				doStandardCommand(follower,"Follow",CMParms.makeVector("FOLLOW","SELF"));
 		}
 	}
 

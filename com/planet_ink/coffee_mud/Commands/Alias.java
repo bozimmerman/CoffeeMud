@@ -45,13 +45,13 @@ public class Alias extends StdCommand
             StringBuffer menu=new StringBuffer("^xAlias definitions:^.^?\n\r");
             String[] aliasNames=ps.getAliasNames();
             for(int i=0;i<aliasNames.length;i++)
-                menu.append(Util.padRight((i+1)+". "+aliasNames[i],15)+": "+ps.getAlias(aliasNames[i])+"\n\r");
+                menu.append(CMStrings.padRight((i+1)+". "+aliasNames[i],15)+": "+ps.getAlias(aliasNames[i])+"\n\r");
             menu.append((aliasNames.length+1)+". Add a new alias\n\r");
             mob.tell(menu.toString());
             String which=mob.session().prompt("Enter a selection: ","");
             if(which.length()==0)
                 break;
-            int num=Util.s_int(which);
+            int num=CMath.s_int(which);
             String selection=null;
             if((num>0)&&(num<=(aliasNames.length)))
             {
@@ -95,8 +95,8 @@ public class Alias extends StdCommand
             {
                 mob.session().rawPrintln("Enter a value for alias '"+selection+"'.  Use ~ to separate commands.");
                 String value=mob.session().prompt(": ","").trim();
-                value=Util.replaceAll(value,"<","");
-                value=Util.replaceAll(value,"&","");
+                value=CMStrings.replaceAll(value,"<","");
+                value=CMStrings.replaceAll(value,"&","");
                 if((value.length()==0)&&(ps.getAlias(selection).length()>0))
                     mob.tell("(No change)");
                 else

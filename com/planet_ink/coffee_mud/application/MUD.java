@@ -133,13 +133,13 @@ public class MUD extends Thread implements MudHost
 		
 		CMProps.loadCommonINISettings(page);
 		
-		Vector compress=Util.parseCommas(page.getStr("COMPRESS").toUpperCase(),true);
+		Vector compress=CMParms.parseCommas(page.getStr("COMPRESS").toUpperCase(),true);
 		CMProps.setBoolVar(CMProps.SYSTEMB_ITEMDCOMPRESS,compress.contains("ITEMDESC"));
 		CMProps.setBoolVar(CMProps.SYSTEMB_MOBCOMPRESS,compress.contains("GENMOBS"));
 		CMProps.setBoolVar(CMProps.SYSTEMB_ROOMDCOMPRESS,compress.contains("ROOMDESC"));
 		CMProps.setBoolVar(CMProps.SYSTEMB_MOBDCOMPRESS,compress.contains("MOBDESC"));
 		Resources.setCompression(compress.contains("RESOURCES"));
-		Vector nocache=Util.parseCommas(page.getStr("NOCACHE").toUpperCase(),true);
+		Vector nocache=CMParms.parseCommas(page.getStr("NOCACHE").toUpperCase(),true);
 		CMProps.setBoolVar(CMProps.SYSTEMB_MOBNOCACHE,nocache.contains("GENMOBS"));
 		CMProps.setBoolVar(CMProps.SYSTEMB_ROOMDNOCACHE,nocache.contains("ROOMDESC"));
 		
@@ -851,7 +851,7 @@ public class MUD extends Thread implements MudHost
 			    if(tArray[i] instanceof Session)
 			    {
 			        Session S=(Session)tArray[i];
-					Log.sysOut("MUD", "-->Thread: Session status "+S.getStatus()+"-"+Util.combine(S.previousCMD(),0) + "\n\r");
+					Log.sysOut("MUD", "-->Thread: Session status "+S.getStatus()+"-"+CMParms.combine(S.previousCMD(),0) + "\n\r");
 			    }
 			    else
 			    if(tArray[i] instanceof Tickable)
@@ -896,7 +896,7 @@ public class MUD extends Thread implements MudHost
 			for(int i=0;i<a.length;i++)
 				nameID+=" "+a[i];
 			nameID=nameID.trim();
-			Vector V=Util.paramParse(nameID);
+			Vector V=CMParms.paramParse(nameID);
 			for(int v=0;v<V.size();v++)
 			{
 				String s=(String)V.elementAt(v);
@@ -907,7 +907,7 @@ public class MUD extends Thread implements MudHost
 					v--;
 				}
 			}
-			nameID=Util.combine(V,0);
+			nameID=CMParms.combine(V,0);
 		}
 		if(nameID.length()==0) nameID="Unnamed CoffeeMud";
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDNAME,nameID);
@@ -948,7 +948,7 @@ public class MUD extends Thread implements MudHost
 					{
 						MUD mud=new MUD();
 						mud.acceptConnections=false;
-						mud.port=Util.s_int(ports.substring(0,pdex));
+						mud.port=CMath.s_int(ports.substring(0,pdex));
 						ports=ports.substring(pdex+1);
 						mud.start();
 						mudThreads.addElement(mud);
@@ -956,7 +956,7 @@ public class MUD extends Thread implements MudHost
 					}
 					MUD mud=new MUD();
 					mud.acceptConnections=false;
-					mud.port=Util.s_int(ports);
+					mud.port=CMath.s_int(ports);
 					mud.start();
 					mudThreads.addElement(mud);
 				}

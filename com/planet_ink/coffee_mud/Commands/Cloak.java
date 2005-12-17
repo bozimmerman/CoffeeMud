@@ -46,7 +46,7 @@ public class Cloak extends StdCommand
 		int abilityCode=EnvStats.IS_CLOAKED;
 		str="Prop_WizInvis";
 		Ability A=mob.fetchEffect(str);
-		if(Util.combine(commands,0).trim().equalsIgnoreCase("OFF"))
+		if(CMParms.combine(commands,0).trim().equalsIgnoreCase("OFF"))
 		{
 		   if(A!=null)
 			   A.unInvoke();
@@ -57,7 +57,7 @@ public class Cloak extends StdCommand
 		else
 		if(A!=null)
 		{
-		    if(Util.bset(A.abilityCode(),abilityCode))
+		    if(CMath.bset(A.abilityCode(),abilityCode))
 		    {
 				mob.tell("You are already cloaked!");
 				return false;

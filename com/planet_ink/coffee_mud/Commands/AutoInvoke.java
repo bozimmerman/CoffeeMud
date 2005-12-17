@@ -69,9 +69,9 @@ public class AutoInvoke extends StdCommand
 	        if(A!=null)
 	        {
 		        if(effects.contains(A.ID()))
-		            str.append(Util.padRight(A.Name(),20)+getScr("AutoInvoke","aia"));
+		            str.append(CMStrings.padRight(A.Name(),20)+getScr("AutoInvoke","aia"));
 		        else
-		            str.append(Util.padRight(A.Name(),20)+getScr("AutoInvoke","aia"));
+		            str.append(CMStrings.padRight(A.Name(),20)+getScr("AutoInvoke","aia"));
 	        }
 	    }
 

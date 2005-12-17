@@ -51,7 +51,7 @@ public class Examine extends StdCommand
         {
             Environmental thisThang=null;
             
-            String ID=Util.combine(commands,1);
+            String ID=CMParms.combine(commands,1);
             if(ID.length()==0)
                 thisThang=mob.location();
             else
@@ -96,7 +96,7 @@ public class Examine extends StdCommand
                 CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EXAMINE,textMsg+name+" closely.");
                 if(mob.location().okMessage(mob,msg))
                     mob.location().send(mob,msg);
-                if((thisThang instanceof Room)&&(Util.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS)))
+                if((thisThang instanceof Room)&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS)))
                     ((Room)thisThang).listExits(mob);
             }
             else
@@ -107,7 +107,7 @@ public class Examine extends StdCommand
             CMMsg msg=CMClass.getMsg(mob,mob.location(),null,CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"at you."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."));
             if(mob.location().okMessage(mob,msg))
                 mob.location().send(mob,msg);
-            if((Util.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))
+            if((CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))
             &&(CMLib.flags().canBeSeenBy(mob.location(),mob)))
                 mob.location().listExits(mob);
         }

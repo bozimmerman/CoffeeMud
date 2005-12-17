@@ -241,10 +241,10 @@ public class ServiceEngine implements ThreadEngine
 			return ""+totalMOBMillis;
 		else
 		if(itemCode.equalsIgnoreCase("totalMOBMillisTime"))
-			return Util.returnTime(totalMOBMillis,0);
+			return CMLib.english().returnTime(totalMOBMillis,0);
 		else
 		if(itemCode.equalsIgnoreCase("totalMOBMillisTimePlusAverage"))
-			return Util.returnTime(totalMOBMillis,totalMOBTicks);
+			return CMLib.english().returnTime(totalMOBMillis,totalMOBTicks);
 		else
 		if(itemCode.equalsIgnoreCase("totalMOBTicks"))
 			return ""+totalMOBTicks;
@@ -253,10 +253,10 @@ public class ServiceEngine implements ThreadEngine
 			return ""+topMOBMillis;
 		else
 		if(itemCode.equalsIgnoreCase("topMOBMillisTime"))
-			return Util.returnTime(topMOBMillis,0);
+			return CMLib.english().returnTime(topMOBMillis,0);
 		else
 		if(itemCode.equalsIgnoreCase("topMOBMillisTimePlusAverage"))
-			return Util.returnTime(topMOBMillis,topMOBTicks);
+			return CMLib.english().returnTime(topMOBMillis,topMOBTicks);
 		else
 		if(itemCode.equalsIgnoreCase("topMOBTicks"))
 			return ""+topMOBTicks;
@@ -313,7 +313,7 @@ public class ServiceEngine implements ThreadEngine
 			return ""+(Runtime.getRuntime().totalMemory()/1000);
 		else
 		if(itemCode.equalsIgnoreCase("totalTime"))
-			return ""+Util.returnTime(System.currentTimeMillis()-CMSecurity.getStartTime(),0);
+			return ""+CMLib.english().returnTime(System.currentTimeMillis()-CMSecurity.getStartTime(),0);
 		else
 		if(itemCode.equalsIgnoreCase("startTime"))
 			return CMLib.time().date2String(CMSecurity.getStartTime());
@@ -328,10 +328,10 @@ public class ServiceEngine implements ThreadEngine
 			return ""+totalMillis;
 		else
 		if(itemCode.equalsIgnoreCase("totalMillisTime"))
-			return Util.returnTime(totalMillis,0);
+			return CMLib.english().returnTime(totalMillis,0);
 		else
 		if(itemCode.equalsIgnoreCase("totalMillisTimePlusAverage"))
-			return Util.returnTime(totalMillis,totalTicks);
+			return CMLib.english().returnTime(totalMillis,totalTicks);
 		else
 		if(itemCode.equalsIgnoreCase("totalTicks"))
 			return ""+totalTicks;
@@ -346,10 +346,10 @@ public class ServiceEngine implements ThreadEngine
 			return ""+topGroupMillis;
 		else
 		if(itemCode.equalsIgnoreCase("topGroupMillisTime"))
-			return Util.returnTime(topGroupMillis,0);
+			return CMLib.english().returnTime(topGroupMillis,0);
 		else
 		if(itemCode.equalsIgnoreCase("topGroupMillisTimePlusAverage"))
-			return Util.returnTime(topGroupMillis,topGroupTicks);
+			return CMLib.english().returnTime(topGroupMillis,topGroupTicks);
 		else
 		if(itemCode.equalsIgnoreCase("topGroupTicks"))
 			return ""+topGroupTicks;
@@ -358,10 +358,10 @@ public class ServiceEngine implements ThreadEngine
 			return ""+topObjectMillis;
 		else
 		if(itemCode.equalsIgnoreCase("topObjectMillisTime"))
-			return Util.returnTime(topObjectMillis,0);
+			return CMLib.english().returnTime(topObjectMillis,0);
 		else
 		if(itemCode.equalsIgnoreCase("topObjectMillisTimePlusAverage"))
-			return Util.returnTime(topObjectMillis,topObjectTicks);
+			return CMLib.english().returnTime(topObjectMillis,topObjectTicks);
 		else
 		if(itemCode.equalsIgnoreCase("topObjectTicks"))
 			return ""+topObjectTicks;
@@ -376,7 +376,7 @@ public class ServiceEngine implements ThreadEngine
 			return ""+SaveThread.status;
 		else
 		if(itemCode.equalsIgnoreCase("saveThreadMilliTotalTime"))
-			return Util.returnTime(SaveThread.milliTotal,0);
+			return CMLib.english().returnTime(SaveThread.milliTotal,0);
 		else
 		if(itemCode.equalsIgnoreCase("utilThreadMilliTotal"))
 			return ""+UtiliThread.milliTotal;
@@ -385,16 +385,16 @@ public class ServiceEngine implements ThreadEngine
 			return ""+UtiliThread.status;
 		else
 		if(itemCode.equalsIgnoreCase("utilThreadMilliTotalTime"))
-			return Util.returnTime(UtiliThread.milliTotal,0);
+			return CMLib.english().returnTime(UtiliThread.milliTotal,0);
 		else
 		if(itemCode.equalsIgnoreCase("saveThreadMilliTotalTimePlusAverage"))
-			return Util.returnTime(SaveThread.milliTotal,SaveThread.tickTotal);
+			return CMLib.english().returnTime(SaveThread.milliTotal,SaveThread.tickTotal);
 		else
 		if(itemCode.equalsIgnoreCase("saveThreadTickTotal"))
 			return ""+SaveThread.tickTotal;
 		else
 		if(itemCode.equalsIgnoreCase("utilThreadMilliTotalTimePlusAverage"))
-			return Util.returnTime(UtiliThread.milliTotal,UtiliThread.tickTotal);
+			return CMLib.english().returnTime(UtiliThread.milliTotal,UtiliThread.tickTotal);
 		else
 		if(itemCode.equalsIgnoreCase("utilThreadTickTotal"))
 			return ""+UtiliThread.tickTotal;
@@ -456,7 +456,7 @@ public class ServiceEngine implements ThreadEngine
 		if(which.toLowerCase().startsWith("tickerssize"))
 		{
 			if(grpstart<0) return"";
-			int group=Util.s_int(which.substring(grpstart));
+			int group=CMath.s_int(which.substring(grpstart));
 			if((group>=0)&&(group<tickGroup.size()))
 				return ""+((Tick)tickGroup.elementAt(group)).numTickers();
 			return "";
@@ -466,8 +466,8 @@ public class ServiceEngine implements ThreadEngine
 		int clistart=which.indexOf("-");
 		if((grpstart>=0)&&(clistart>grpstart))
 		{
-			group=Util.s_int(which.substring(grpstart,clistart));
-			client=Util.s_int(which.substring(clistart+1));
+			group=CMath.s_int(which.substring(grpstart,clistart));
+			client=CMath.s_int(which.substring(clistart+1));
 		}
 
 		if((group<0)||(client<0)||(group>=tickGroup.size())) return "";
@@ -519,8 +519,8 @@ public class ServiceEngine implements ThreadEngine
 		if(which.toLowerCase().startsWith("tickerlastduration"))
 		{
 			if(C.lastStop>C.lastStart)
-				return Util.returnTime(C.lastStop-C.lastStart,0);
-			return Util.returnTime(System.currentTimeMillis()-C.lastStart,0);
+				return CMLib.english().returnTime(C.lastStop-C.lastStart,0);
+			return CMLib.english().returnTime(System.currentTimeMillis()-C.lastStart,0);
 		}
 		else
 		if(which.toLowerCase().startsWith("tickersuspended"))
@@ -587,7 +587,7 @@ public class ServiceEngine implements ThreadEngine
         long code=obj.getTickStatus();
         if(obj instanceof Environmental)
         {
-            if(Util.bset(code,Tickable.STATUS_BEHAVIOR))
+            if(CMath.bset(code,Tickable.STATUS_BEHAVIOR))
             {
                 long b=(code-Tickable.STATUS_BEHAVIOR);
                 String codeWord="Behavior #"+b;
@@ -609,7 +609,7 @@ public class ServiceEngine implements ThreadEngine
                 return "Misc"+num+" Activity #"+(code-base);
             }
             else
-            if(Util.bset(code,Tickable.STATUS_AFFECT))
+            if(CMath.bset(code,Tickable.STATUS_AFFECT))
             {
                 long b=(code-Tickable.STATUS_AFFECT);
                 String codeWord="Effect #"+b;
@@ -622,10 +622,10 @@ public class ServiceEngine implements ThreadEngine
             }
         }
         String codeWord=null;
-        if(Util.bset(code,Tickable.STATUS_BEHAVIOR))
+        if(CMath.bset(code,Tickable.STATUS_BEHAVIOR))
            codeWord="Behavior?!";
         else
-        if(Util.bset(code,Tickable.STATUS_AFFECT))
+        if(CMath.bset(code,Tickable.STATUS_AFFECT))
            codeWord="Effect?!";
         else
         switch((int)code)

@@ -54,12 +54,12 @@ public class Reply extends StdCommand
 			mob.tell(pstats.replyTo().Name()+" is no longer logged in.");
 			return false;
 		}
-		if(Util.combine(commands,1).length()==0)
+		if(CMParms.combine(commands,1).length()==0)
 		{
 			mob.tell("Tell '"+pstats.replyTo().Name()+" what?");
 			return false;
 		}
-		CMLib.commands().say(mob,pstats.replyTo(),Util.combine(commands,1),true,!mob.location().isInhabitant(pstats.replyTo()));
+		CMLib.commands().say(mob,pstats.replyTo(),CMParms.combine(commands,1),true,!mob.location().isInhabitant(pstats.replyTo()));
 		if((pstats.replyTo().session()!=null)
 		&&(pstats.replyTo().session().afkFlag()))
 			mob.tell(pstats.replyTo().session().afkMessage());

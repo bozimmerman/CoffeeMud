@@ -57,7 +57,7 @@ public class Spell_ArcaneMark extends Spell
 			mob.tell("You can't can't cast this on "+target.name()+".");
 			return false;
 		}
-		String message=Util.combine(commands,1);
+		String message=CMParms.combine(commands,1);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

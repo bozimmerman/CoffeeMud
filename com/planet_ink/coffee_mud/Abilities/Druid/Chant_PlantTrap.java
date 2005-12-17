@@ -68,7 +68,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> <S-IS-ARE> assaulted by the plants!"))
 			{
-				Vector them=Util.makeVector(choices);
+				Vector them=CMParms.makeVector(choices);
 				if(invoker()!=null)
 				for(int i=0;i<choices.length;i++)
 					if(invoker().fetchAbility(choices[i])==null)

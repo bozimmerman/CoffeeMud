@@ -170,7 +170,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		}
 		else
 		{
-			String off=Util.combine(commands,0);
+			String off=CMParms.combine(commands,0);
 			if((off.equalsIgnoreCase("head"))
 			&&(target.charStats().getBodyPart(Race.BODY_HEAD)>=0))
 		    {

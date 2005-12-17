@@ -669,8 +669,8 @@ public class StdGrid extends StdRoom implements GridLocale
 		int comma=childCode.indexOf(',',len);
 		if(comma<0) return null;
 		Room[][] subMap=getBuiltGrid();
-		int x=Util.s_int(childCode.substring(len,comma));
-		int y=Util.s_int(childCode.substring(comma+1,childCode.length()-1));
+		int x=CMath.s_int(childCode.substring(len,comma));
+		int y=CMath.s_int(childCode.substring(comma+1,childCode.length()-1));
 		if(subMap!=null)
 		if((x<subMap.length)&&(y<subMap[x].length))
 			return subMap[x][y];

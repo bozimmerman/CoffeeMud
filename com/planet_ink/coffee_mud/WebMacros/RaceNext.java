@@ -48,7 +48,7 @@ public class RaceNext extends StdWebMacro
 		for(Enumeration r=CMClass.races();r.hasMoreElements();)
 		{
 			Race R=(Race)r.nextElement();
-			if((CMProps.isTheme(R.availabilityCode())&&(!Util.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+			if((CMProps.isTheme(R.availabilityCode())&&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
 			||(parms.containsKey("ALL")))
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!R.ID().equals(lastID))))

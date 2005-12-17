@@ -49,8 +49,11 @@ import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.CMLib;
+import com.planet_ink.coffee_mud.core.CMParms;
 import com.planet_ink.coffee_mud.core.CMProps;
 import com.planet_ink.coffee_mud.core.CMSecurity;
+import com.planet_ink.coffee_mud.core.CMStrings;
+import com.planet_ink.coffee_mud.core.CMath;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.Util;
 
@@ -158,12 +161,12 @@ public final class IMC2Driver extends Thread {
 	final public String[][] buildChannelMap(String s)
 	{
 		
-		Vector V=Util.parseCommas(s,true);
+		Vector V=CMParms.parseCommas(s,true);
 		Vector finalV=new Vector();
 		for(int v=0;v<V.size();v++)
 		{
 			String s2=(String)V.elementAt(v);
-			Vector V2=Util.parse(s2);
+			Vector V2=CMParms.parse(s2);
 			String[] bit=new String[3];
 			bit[0]="";
 			bit[1]="";
@@ -176,7 +179,7 @@ public final class IMC2Driver extends Thread {
 			{
 				bit[2]=(String)V2.lastElement();
 				if(V2.size()>2)
-					bit[1]=Util.combine(V2,1,V.size()-1);
+					bit[1]=CMParms.combine(V2,1,V.size()-1);
 			}
 			
 			finalV.addElement(bit);
@@ -384,7 +387,7 @@ public final class IMC2Driver extends Thread {
 		this_imcmud.autoconnect=true; 
 		imc_siteinfo.name=CMProps.getVar(CMProps.SYSTEM_MUDNAME);
 		imc_siteinfo.host=host;
-		imc_siteinfo.port=Util.s_int((String)Util.parse(CMProps.getVar(CMProps.SYSTEM_MUDPORTS)).elementAt(0));
+		imc_siteinfo.port=CMath.s_int((String)CMParms.parse(CMProps.getVar(CMProps.SYSTEM_MUDPORTS)).elementAt(0));
 		imc_siteinfo.email=email;
 		imc_siteinfo.base="CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER);
 		imc_siteinfo.details="Custom Java-based Mud";
@@ -417,7 +420,7 @@ public final class IMC2Driver extends Thread {
 
     final String normal2(String data)
     {
-        data = Util.replaceAll(data, "\\\"", "\"");
+        data = CMStrings.replaceAll(data, "\\\"", "\"");
 		StringBuffer str=new StringBuffer(data);
 		for(int i=0;i<str.length()-1;i++)
 		{
@@ -905,7 +908,7 @@ public final class IMC2Driver extends Thread {
 	final public static String toIMCColours(String res)
 	{
 	    // ANSI color macros
-        res = Util.replaceAll(res, "\"", "\\\"");
+        res = CMStrings.replaceAll(res, "\"", "\\\"");
 		StringBuffer str=new StringBuffer(res);
 		for(int i=0;i<str.length()-1;i++)
 		{
@@ -958,7 +961,7 @@ public final class IMC2Driver extends Thread {
 			if((V.size()>0)&&(V.firstElement() instanceof String))
 			{
 				String s=(String)V.firstElement();
-				s=Util.replaceAll((String)V.firstElement(),"\n\r","\\n\\r");
+				s=CMStrings.replaceAll((String)V.firstElement(),"\n\r","\\n\\r");
 				return str.toString()+s;
 			}
 		}
@@ -1161,13 +1164,13 @@ public final class IMC2Driver extends Thread {
 
     final void imc_recv_who_reply(imc_char_data d, String text)
     {
-        text = Util.replaceAll(text, "\\n\\r", "\n\r");
+        text = CMStrings.replaceAll(text, "\\n\\r", "\n\r");
         send_to_player(d.name, "\n\r"+text+"^.^?");
     }
 
     final void imc_recv_whois_reply(imc_char_data d, String to, String text)
     {
-        text = Util.replaceAll(text, "\\n\\r", "\n\r");
+        text = CMStrings.replaceAll(text, "\\n\\r", "\n\r");
 		send_to_player(d.name, "\n\r"+to+": "+text+"^.^?");
     }
 	
@@ -1289,7 +1292,7 @@ public final class IMC2Driver extends Thread {
        for( i = 0; i < PACKET.IMC_MAX_KEYS; i++ )
           if( !p.key[i].equals("") && p.key[i].equalsIgnoreCase(key) )
           {
-              return Util.s_int(p.value[i]);
+              return CMath.s_int(p.value[i]);
           }
 
        return def;
@@ -1323,7 +1326,7 @@ public final class IMC2Driver extends Thread {
         }
 
         d.name = imc_playerof(d.name);
-		tracef(8, "Received message was sent to " + d.name+", "+p.type+", "+Util.toStringList(p.value));
+		tracef(8, "Received message was sent to " + d.name+", "+p.type+", "+CMParms.toStringList(p.value));
 
         if (p.type.equals("who")) {
             tracef(8, "Who request received from " + p.i.from);
@@ -1375,7 +1378,7 @@ public final class IMC2Driver extends Thread {
         if (p.type.equals("ice-msg-b")) {
             tracef(8, "Chat received from " + p.i.from);
             imc_recv_chat(d, p.i.from, imc_getkey(p, "channel", "ICHAT"),
-                          imc_getkey(p, "text", ""),Util.s_int(imc_getkey(p,"emote","0")));
+                          imc_getkey(p, "text", ""),CMath.s_int(imc_getkey(p,"emote","0")));
         }
 
         if (p.type.equals("ice-update")) {

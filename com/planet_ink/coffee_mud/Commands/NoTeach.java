@@ -39,14 +39,14 @@ public class NoTeach extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(Util.bset(mob.getBitmap(),MOB.ATT_NOTEACH))
+		if(CMath.bset(mob.getBitmap(),MOB.ATT_NOTEACH))
 		{
-			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_NOTEACH));
+			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_NOTEACH));
 			mob.tell("You may now teach, train, or learn.");
 		}
 		else
 		{
-			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_NOTEACH));
+			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_NOTEACH));
 			mob.tell("You are no longer teaching, training, or learning.");
 		}
 		return false;

@@ -200,7 +200,7 @@ public class LockSmith extends CraftingSkill
             ldelock=true;
             commands.removeElementAt(0);
         }
-		String recipeName=Util.combine(commands,0);
+		String recipeName=CMParms.combine(commands,0);
 		int dir=Directions.getGoodDirectionCode(recipeName);
 		if(dir<0)
 			workingOn=mob.location().fetchFromMOBRoomFavorsItems(mob,null,recipeName,Item.WORN_REQ_UNWORNONLY);
@@ -290,7 +290,7 @@ public class LockSmith extends CraftingSkill
                 return false;
     		destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,0);
             itemName=(EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]+" key").toLowerCase();
-            itemName=Util.startWithAorAn(itemName);
+            itemName=CMStrings.startWithAorAn(itemName);
             building.setMaterial(data[0][FOUND_CODE]);
         }
 		building=getBuilding(workingOn);

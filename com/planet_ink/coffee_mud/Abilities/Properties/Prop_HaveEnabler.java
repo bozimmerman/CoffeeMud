@@ -65,7 +65,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 			while((--x)>=0)
 			{
 				if(Character.isDigit(text().charAt(x)))
-					tot+=Util.s_int(""+text().charAt(x))*mul;
+					tot+=CMath.s_int(""+text().charAt(x))*mul;
 				else
 					x=-1;
 				mul=mul*10;

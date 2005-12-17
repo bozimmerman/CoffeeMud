@@ -42,14 +42,14 @@ public class AutoExits extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))
+		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))
 		{
-			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOEXITS));
+			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOEXITS));
 			mob.tell(getScr("AutoExits","turnoff"));
 		}
 		else
 		{
-			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTOEXITS));
+			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOEXITS));
 			mob.tell(getScr("AutoExits","turnon"));
 		}
 		return false;

@@ -69,14 +69,14 @@ public class Channel extends BaseChanneler
 		int channelInt=CMLib.channels().getChannelIndex(channelName);
 		int channelNum=CMLib.channels().getChannelCodeNumber(channelName);
 
-		if((pstats!=null)&&(Util.isSet(pstats.getChannelMask(),channelInt)))
+		if((pstats!=null)&&(CMath.isSet(pstats.getChannelMask(),channelInt)))
 		{
 			pstats.setChannelMask(pstats.getChannelMask()&(pstats.getChannelMask()-channelNum));
 			mob.tell(getScr("Channel","channelon",channelName,channelName.toUpperCase()));
 			return false;
 		}
 		
-		if(Util.bset(mob.getBitmap(),MOB.ATT_QUIET))
+		if(CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
 		{
 			mob.tell(getScr("Channel","quietalon"));
 			return false;
@@ -117,9 +117,9 @@ public class Channel extends BaseChanneler
 		if((commands.size()==2)
 		&&(mob.session()!=null)
 		&&(((String)commands.firstElement()).equalsIgnoreCase("last"))
-		&&(Util.isNumber((String)commands.lastElement())))
+		&&(CMath.isNumber((String)commands.lastElement())))
 		{
-			int num=Util.s_int((String)commands.lastElement());
+			int num=CMath.s_int((String)commands.lastElement());
 			Vector que=CMLib.channels().getChannelQue(channelInt);
 			if(que.size()==0)
 			{
@@ -135,7 +135,7 @@ public class Channel extends BaseChanneler
 			}
 		}
 		else
-			reallyChannel(mob,channelName,Util.combine(commands,0),systemMsg);
+			reallyChannel(mob,channelName,CMParms.combine(commands,0),systemMsg);
 		return false;
 	}
 

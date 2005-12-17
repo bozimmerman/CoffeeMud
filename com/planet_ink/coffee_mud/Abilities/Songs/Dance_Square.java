@@ -59,7 +59,7 @@ public class Dance_Square extends Dance
 					if(CMLib.flags().canBeHeardBy(invoker(),M)
 					&&CMLib.flags().canBeSeenBy(invoker(),M)
 					&&(M.location()==invoker().location()))
-						M.enqueCommand(Util.parse(cmd),0);
+						M.enqueCommand(CMParms.parse(cmd),0);
 				}
 			}
 		}

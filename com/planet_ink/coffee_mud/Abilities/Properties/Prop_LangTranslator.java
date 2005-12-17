@@ -46,15 +46,15 @@ public class Prop_LangTranslator extends Property
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
-		Vector V=Util.parse(text);
+		Vector V=CMParms.parse(text);
 		langs.clear();
 		int lastpct=100;
 		for(int v=0;v<V.size();v++)
 		{
 			String s=(String)V.elementAt(v);
 			if(s.endsWith("%")) s=s.substring(0,s.length()-1);
-			if(Util.isNumber(s))
-				lastpct=Util.s_int(s);
+			if(CMath.isNumber(s))
+				lastpct=CMath.s_int(s);
 			else
 			{
 				Ability A=CMClass.getAbility(s);
@@ -114,7 +114,7 @@ public class Prop_LangTranslator extends Property
 			else
 			if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-			   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
+			   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
 			&&(msg.sourceMessage()!=null)
 			&&(((Ability)msg.tool()).classificationCode()==Ability.LANGUAGE))
 			{
@@ -123,7 +123,7 @@ public class Prop_LangTranslator extends Property
 				{
 					if(!(affected instanceof MOB))
 						mob.setLocation(CMLib.utensils().roomLocation(affected));
-					if(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
+					if(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
 						msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.TYP_SPEAK,"<S-NAME> say(s) '"+msg.source().name()+" said \""+subStitute(msg.othersMessage(),str)+"\" in "+msg.tool().name()+"'"));
 					else
 					if(msg.amITarget(null)&&(msg.targetMessage()!=null))

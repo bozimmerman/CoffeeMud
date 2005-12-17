@@ -40,7 +40,7 @@ public class Flee extends Go
 		throws java.io.IOException
 	{
 		String direction="";
-		if(commands.size()>1) direction=Util.combine(commands,1);
+		if(commands.size()>1) direction=CMParms.combine(commands,1);
 		if(mob==null) return false;
 		Room R=mob.location();
 		if((!mob.isMonster())||(mob.amFollowing()!=null))
@@ -112,10 +112,10 @@ public class Flee extends Go
 			if(whatToDo==null) return false;
 			if(whatToDo.startsWith("UNL"))
 			{
-				Vector V=Util.parse(whatToDo);
+				Vector V=CMParms.parse(whatToDo);
 				int times=1;
-				if((V.size()>1)&&(Util.s_int((String)V.lastElement())>1))
-					times=Util.s_int((String)V.lastElement());
+				if((V.size()>1)&&(CMath.s_int((String)V.lastElement())>1))
+					times=CMath.s_int((String)V.lastElement());
 				for(int t=0;t<times;t++)
 					mob.charStats().getCurrentClass().unLevel(mob);
 			}
@@ -149,8 +149,8 @@ public class Flee extends Go
                 }
             }
             else
-			if((whatToDo.trim().equals("0"))||(Util.s_int(whatToDo)>0))
-				lostExperience=Util.s_int(whatToDo);
+			if((whatToDo.trim().equals("0"))||(CMath.s_int(whatToDo)>0))
+				lostExperience=CMath.s_int(whatToDo);
 			else
 			{
 				lostExperience=10+((mob.envStats().level()-victim.envStats().level()))*5;

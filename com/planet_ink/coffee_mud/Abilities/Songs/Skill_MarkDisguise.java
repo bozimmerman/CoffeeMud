@@ -66,7 +66,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 			return true;
 		}
 		MOB target=getMark(mob);
-		if(Util.combine(commands,0).equalsIgnoreCase("!"))
+		if(CMParms.combine(commands,0).equalsIgnoreCase("!"))
 			target=mark;
 
 		if(target==null)

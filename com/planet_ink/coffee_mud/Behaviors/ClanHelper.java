@@ -69,7 +69,7 @@ public class ClanHelper extends StdBehavior
 
 		if((target==null)||(observer==null)) return;
 		if((source!=observer)
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(target!=observer)
 		&&(source!=target)
 		&&(CMLib.flags().canBeSeenBy(source,observer))

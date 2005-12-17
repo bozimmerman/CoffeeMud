@@ -48,7 +48,7 @@ public class Prayer_MassMobility extends Prayer
 
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
@@ -62,7 +62,7 @@ public class Prayer_MassMobility extends Prayer
 			{
 				A.affectEnvStats(newMOB,newMOB.envStats());
 				if((!CMLib.flags().aliveAwakeMobileUnbound(newMOB,true))
-				   ||(Util.bset(A.flags(),Ability.FLAG_PARALYZING))
+				   ||(CMath.bset(A.flags(),Ability.FLAG_PARALYZING))
 				   ||(!A.okMessage(newMOB,msg2)))
 				{
 					mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The aura around <S-NAME> repels the "+A.name()+" from <T-NAME>.");

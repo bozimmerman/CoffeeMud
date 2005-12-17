@@ -91,73 +91,73 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public void setReadable(Item I, boolean truefalse)
 	{
 		if(I==null) return;
-		if(Util.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE))
+		if(CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE))
 		{
 			if(!truefalse)
 			{
-				I.baseEnvStats().setSensesMask(Util.unsetb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
-				I.envStats().setSensesMask(Util.unsetb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
+				I.baseEnvStats().setSensesMask(CMath.unsetb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
+				I.envStats().setSensesMask(CMath.unsetb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
 			}
 		}
 		else
 		if(truefalse)
 		{
-			I.baseEnvStats().setSensesMask(Util.setb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
-			I.envStats().setSensesMask(Util.setb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
+			I.baseEnvStats().setSensesMask(CMath.setb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
+			I.envStats().setSensesMask(CMath.setb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
 		}
 	}
 	public void setGettable(Item I, boolean truefalse)
 	{
 		if(I==null) return;
-		if(!Util.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET))
+		if(!CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET))
 		{
 			if(!truefalse)
 			{
-				I.baseEnvStats().setSensesMask(Util.setb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET));
-				I.envStats().setSensesMask(Util.setb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET));
+				I.baseEnvStats().setSensesMask(CMath.setb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET));
+				I.envStats().setSensesMask(CMath.setb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET));
 			}
 		}
 		else
 		if(truefalse)
 		{
-			I.baseEnvStats().setSensesMask(Util.unsetb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET));
-			I.envStats().setSensesMask(Util.unsetb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET));
+			I.baseEnvStats().setSensesMask(CMath.unsetb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET));
+			I.envStats().setSensesMask(CMath.unsetb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET));
 		}
 	}
 	public void setDroppable(Item I, boolean truefalse)
 	{
 		if(I==null) return;
-		if(!Util.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP))
+		if(!CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP))
 		{
 			if(!truefalse)
 			{
-				I.baseEnvStats().setSensesMask(Util.setb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
-				I.envStats().setSensesMask(Util.setb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
+				I.baseEnvStats().setSensesMask(CMath.setb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
+				I.envStats().setSensesMask(CMath.setb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
 			}
 		}
 		else
 		if(truefalse)
 		{
-			I.baseEnvStats().setSensesMask(Util.unsetb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
-			I.envStats().setSensesMask(Util.unsetb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
+			I.baseEnvStats().setSensesMask(CMath.unsetb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
+			I.envStats().setSensesMask(CMath.unsetb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
 		}
 	}
 	public void setRemovable(Item I, boolean truefalse)
 	{
 		if(I==null) return;
-		if(!Util.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE))
+		if(!CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE))
 		{
 			if(!truefalse)
 			{
-				I.baseEnvStats().setSensesMask(Util.setb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
-				I.envStats().setSensesMask(Util.setb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
+				I.baseEnvStats().setSensesMask(CMath.setb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
+				I.envStats().setSensesMask(CMath.setb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
 			}
 		}
 		else
 		if(truefalse)
 		{
-			I.baseEnvStats().setSensesMask(Util.unsetb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
-			I.envStats().setSensesMask(Util.unsetb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
+			I.baseEnvStats().setSensesMask(CMath.unsetb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
+			I.envStats().setSensesMask(CMath.unsetb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
 		}
 	}
 	public boolean isSeen(Environmental E)
@@ -417,7 +417,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(seen==null) return true;
 
 		if((seer!=null)
-		&&(Util.bset(seer.getBitmap(),MOB.ATT_SYSOPMSGS)))
+		&&(CMath.bset(seer.getBitmap(),MOB.ATT_SYSOPMSGS)))
 			return true;
 
 		if(!canSee(seer)) return false;
@@ -439,7 +439,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
             int hideFactor=seen.envStats().level();
             if(seen instanceof MOB)
                 hideFactor+=(((MOB)seen).charStats().getStat(CharStats.DEXTERITY));
-            if(Util.bset(seen.baseEnvStats().disposition(),EnvStats.IS_HIDDEN))
+            if(CMath.bset(seen.baseEnvStats().disposition(),EnvStats.IS_HIDDEN))
                 hideFactor+=100;
             else
             if(seen instanceof MOB)
@@ -447,7 +447,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
             else
                 hideFactor+=100;
             int detectFactor=seer.charStats().getStat(CharStats.WISDOM);
-            if(Util.bset(seer.baseEnvStats().sensesMask(),EnvStats.CAN_SEE_HIDDEN))
+            if(CMath.bset(seer.baseEnvStats().sensesMask(),EnvStats.CAN_SEE_HIDDEN))
                 detectFactor+=(100+seer.envStats().level());
             else // the 100 represents proff, and level represents time searching.
                 detectFactor+=seer.charStats().getStat(CharStats.SAVE_OVERLOOKING);
@@ -751,7 +751,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			for(int b=0;b<E.numBehaviors();b++)
 			{
 				Behavior B=E.fetchBehavior(b);
-				if((B!=null)&&(Util.bset(B.flags(),Behavior.FLAG_MOBILITY)))
+				if((B!=null)&&(CMath.bset(B.flags(),Behavior.FLAG_MOBILITY)))
 					return true;
 			}
 		return false;
@@ -764,7 +764,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			for(int b=0;b<E.numBehaviors();b++)
 			{
 				Behavior B=E.fetchBehavior(b);
-				if((B!=null)&&(Util.bset(B.flags(),flag)))
+				if((B!=null)&&(CMath.bset(B.flags(),flag)))
 				{ V.addElement(B);}
 			}
 		return V;
@@ -790,7 +790,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			for(int a=0;a<E.numEffects();a++)
 			{
 				Ability A=E.fetchEffect(a);
-				if((A!=null)&&(Util.bset(A.flags(),flag)))
+				if((A!=null)&&(CMath.bset(A.flags(),flag)))
 				{ V.addElement(A);}
 			}
 		return V;
@@ -803,7 +803,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			for(int a=0;a<E.numAbilities();a++)
 			{
 				Ability A=E.fetchAbility(a);
-				if((A!=null)&&(Util.bset(A.flags(),flag)))
+				if((A!=null)&&(CMath.bset(A.flags(),flag)))
 				{ V.addElement(A);}
 			}
 		return V;
@@ -949,12 +949,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         if(useVerbs)
         {
             for(int i=0;i<EnvStats.dispositionsVerb.length;i++)
-                if(Util.isSet(disposition,i))
+                if(CMath.isSet(disposition,i))
                     buf.append(EnvStats.dispositionsVerb[i]+", ");
         }
         else
         for(int i=0;i<EnvStats.dispositionsNames.length;i++)
-            if(Util.isSet(disposition,i))
+            if(CMath.isSet(disposition,i))
                 buf.append(EnvStats.dispositionsNames[i]+", ");
         String buff=buf.toString();
         if(buff.endsWith(", ")) buff=buff.substring(0,buff.length()-2).trim();
@@ -967,12 +967,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         if(useVerbs)
         {
             for(int i=0;i<EnvStats.sensesVerb.length;i++)
-                if(Util.isSet(disposition,i))
+                if(CMath.isSet(disposition,i))
                     buf.append(EnvStats.sensesVerb[i]+", ");
         }
         else
         for(int i=0;i<EnvStats.sensesNames.length;i++)
-            if(Util.isSet(disposition,i))
+            if(CMath.isSet(disposition,i))
                 buf.append(EnvStats.sensesNames[i]+", ");
         String buff=buf.toString();
         if(buff.endsWith(", ")) buff=buff.substring(0,buff.length()-2).trim();

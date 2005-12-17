@@ -69,8 +69,8 @@ public class Butchering extends GatheringSkill
 							Ability A=body.fetchEffect(i);
 							if((A!=null)&&(A instanceof DiseaseAffect))
 							{
-								if((Util.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONSUMPTION))
-								||(Util.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONTACT)))
+								if((CMath.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONSUMPTION))
+								||(CMath.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONTACT)))
 									diseases.addElement(A);
 							}
 						}

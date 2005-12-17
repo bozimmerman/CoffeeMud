@@ -412,21 +412,21 @@ public class DefaultCoffeeShop implements CoffeeShop
         if(text.length()==0) return;
         if(!text.trim().startsWith("<"))
         {
-            String parm=Util.getParmStr(text,"ISELL",""+ShopKeeper.DEAL_ANYTHING);
-            if((parm!=null)&&(Util.isNumber(parm))) 
-                shop.setWhatIsSold(Util.s_int(parm));
+            String parm=CMParms.getParmStr(text,"ISELL",""+ShopKeeper.DEAL_ANYTHING);
+            if((parm!=null)&&(CMath.isNumber(parm))) 
+                shop.setWhatIsSold(CMath.s_int(parm));
             else
             if(parm!=null)
             for(int s=0;s<ShopKeeper.SOLDCODES.length;s++)
                 if(parm.equalsIgnoreCase(ShopKeeper.SOLDCODES[s]))
                     shop.setWhatIsSold(s);
-            parm=Util.getParmStr(text,"IPREJ","");
+            parm=CMParms.getParmStr(text,"IPREJ","");
             if(parm!=null) shop.setPrejudiceFactors(parm);
-            parm=Util.getParmStr(text,"IBUDJ","1000000");
+            parm=CMParms.getParmStr(text,"IBUDJ","1000000");
             if(parm!=null) shop.setBudget(parm);
-            parm=Util.getParmStr(text,"IDVAL","");
+            parm=CMParms.getParmStr(text,"IDVAL","");
             if(parm!=null) shop.setDevalueRate(parm);
-            parm=Util.getParmStr(text,"IGNOR","");
+            parm=CMParms.getParmStr(text,"IGNOR","");
             if(parm!=null) shop.setIgnoreMask(parm);
             return;
         }
@@ -438,8 +438,8 @@ public class DefaultCoffeeShop implements CoffeeShop
             return;
         }
         String parm=CMLib.xml().getValFromPieces(buf,"ISELL");
-        if((parm!=null)&&(Util.isNumber(parm))) 
-            shop.setWhatIsSold(Util.s_int(parm));
+        if((parm!=null)&&(CMath.isNumber(parm))) 
+            shop.setWhatIsSold(CMath.s_int(parm));
         parm=CMLib.xml().getValFromPieces(buf,"IPREJ");
         if(parm!=null) shop.setPrejudiceFactors(parm);
         parm=CMLib.xml().getValFromPieces(buf,"IBUDJ");

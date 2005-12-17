@@ -115,16 +115,16 @@ public class CharGen extends StdCommand
 
 	public void averageout(MOB avgMob, int tries)
 	{
-		avgMob.baseCharStats().setStat(CharStats.STRENGTH,(int)Math.round(Util.div(avgMob.baseCharStats().getStat(CharStats.STRENGTH),tries)));
-		avgMob.baseCharStats().setStat(CharStats.WISDOM,(int)Math.round(Util.div(avgMob.baseCharStats().getStat(CharStats.WISDOM),tries)));
-		avgMob.baseCharStats().setStat(CharStats.INTELLIGENCE,(int)Math.round(Util.div(avgMob.baseCharStats().getStat(CharStats.INTELLIGENCE),tries)));
-		avgMob.baseCharStats().setStat(CharStats.DEXTERITY,(int)Math.round(Util.div(avgMob.baseCharStats().getStat(CharStats.DEXTERITY),tries)));
-		avgMob.baseCharStats().setStat(CharStats.CONSTITUTION,(int)Math.round(Util.div(avgMob.baseCharStats().getStat(CharStats.CONSTITUTION),tries)));
-		avgMob.baseCharStats().setStat(CharStats.CHARISMA,(int)Math.round(Util.div(avgMob.baseCharStats().getStat(CharStats.CHARISMA),tries)));
-		avgMob.baseEnvStats().setArmor((int)Math.round(Util.div(avgMob.baseEnvStats().armor(),tries)));
-		avgMob.baseState().setHitPoints((int)Math.round(Util.div(avgMob.baseState().getHitPoints(),tries)));
-		avgMob.baseState().setMovement((int)Math.round(Util.div(avgMob.baseState().getMovement(),tries)));
-		avgMob.baseState().setMana((int)Math.round(Util.div(avgMob.baseState().getMana(),tries)));
+		avgMob.baseCharStats().setStat(CharStats.STRENGTH,(int)Math.round(CMath.div(avgMob.baseCharStats().getStat(CharStats.STRENGTH),tries)));
+		avgMob.baseCharStats().setStat(CharStats.WISDOM,(int)Math.round(CMath.div(avgMob.baseCharStats().getStat(CharStats.WISDOM),tries)));
+		avgMob.baseCharStats().setStat(CharStats.INTELLIGENCE,(int)Math.round(CMath.div(avgMob.baseCharStats().getStat(CharStats.INTELLIGENCE),tries)));
+		avgMob.baseCharStats().setStat(CharStats.DEXTERITY,(int)Math.round(CMath.div(avgMob.baseCharStats().getStat(CharStats.DEXTERITY),tries)));
+		avgMob.baseCharStats().setStat(CharStats.CONSTITUTION,(int)Math.round(CMath.div(avgMob.baseCharStats().getStat(CharStats.CONSTITUTION),tries)));
+		avgMob.baseCharStats().setStat(CharStats.CHARISMA,(int)Math.round(CMath.div(avgMob.baseCharStats().getStat(CharStats.CHARISMA),tries)));
+		avgMob.baseEnvStats().setArmor((int)Math.round(CMath.div(avgMob.baseEnvStats().armor(),tries)));
+		avgMob.baseState().setHitPoints((int)Math.round(CMath.div(avgMob.baseState().getHitPoints(),tries)));
+		avgMob.baseState().setMovement((int)Math.round(CMath.div(avgMob.baseState().getMovement(),tries)));
+		avgMob.baseState().setMana((int)Math.round(CMath.div(avgMob.baseState().getMana(),tries)));
 		avgMob.recoverCharStats();
 		avgMob.recoverEnvStats();
 		avgMob.recoverMaxState();
@@ -208,7 +208,7 @@ public class CharGen extends StdCommand
 		{
 			ClassName=(String)commands.elementAt(0);
 			C=CMClass.findCharClass(ClassName);
-			level=Util.s_int(Util.combine(commands,1));
+			level=CMath.s_int(CMParms.combine(commands,1));
 		}
 
 		if((C==null)&&(ClassName.toUpperCase().indexOf("ALL")<0))
@@ -229,7 +229,7 @@ public class CharGen extends StdCommand
 		{
 			try
 			{
-				level=Util.s_int(mob.session().prompt(getScr("CharGen","entlevel")+" "));
+				level=CMath.s_int(mob.session().prompt(getScr("CharGen","entlevel")+" "));
 			}
 			catch(Exception e){return false;}
 			if(level<=0)

@@ -86,10 +86,10 @@ public class Spell_Meld extends Spell
 			mob.tell("You don't seem to have a '"+((String)commands.elementAt(0))+"'.");
 			return false;
 		}
-		Item itemTwo=mob.fetchInventory(null,Util.combine(commands,1));
+		Item itemTwo=mob.fetchInventory(null,CMParms.combine(commands,1));
 		if((itemTwo==null)||((itemTwo!=null)&&(!CMLib.flags().canBeSeenBy(itemTwo,mob))))
 		{
-			mob.tell("You don't seem to have a '"+Util.combine(commands,1)+"'.");
+			mob.tell("You don't seem to have a '"+CMParms.combine(commands,1)+"'.");
 			return false;
 		}
 

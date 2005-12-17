@@ -81,7 +81,7 @@ public class Spell_FeignDeath extends Spell
 			return true;
 		MOB mob=(MOB)affected;
 
-		if((msg.amISource(mob))&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
+		if((msg.amISource(mob))&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
 		{
 			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
@@ -90,10 +90,10 @@ public class Spell_FeignDeath extends Spell
 				return false;
 			}
 			else
-			if((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH)))
+			if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH)))
 			{
-				if(Util.bset(msg.sourceMajor(),CMMsg.MASK_SOUND))
+				if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_SOUND))
 					mob.tell("You are unable to make sounds in this semi-incorporeal form.");
 				else
 					mob.tell("You are unable to do that in this semi-incorporeal form.");
@@ -103,7 +103,7 @@ public class Spell_FeignDeath extends Spell
 		}
 		else
 		if((msg.amITarget(mob))&&(!msg.amISource(mob))
-		   &&(!Util.bset(msg.targetMajor(),CMMsg.MASK_GENERAL)))
+		   &&(!CMath.bset(msg.targetMajor(),CMMsg.MASK_GENERAL)))
 		{
 			mob.tell(mob.name()+" doesn't seem to be here.");
 			return false;

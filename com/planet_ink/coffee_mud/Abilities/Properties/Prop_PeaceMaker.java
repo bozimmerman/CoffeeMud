@@ -41,9 +41,9 @@ public class Prop_PeaceMaker extends Property
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((Util.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
-		||(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
-		||(Util.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)))
+		if((CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
+		||(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		||(CMath.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)))
 		{
 			if((msg.source()!=null)
 			&&(msg.target()!=null)
@@ -59,7 +59,7 @@ public class Prop_PeaceMaker extends Property
 						String t="No fighting!";
 						if(text().length()>0)
 						{
-							Vector V=Util.parseSemicolons(text(),true);
+							Vector V=CMParms.parseSemicolons(text(),true);
 							t=(String)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 						}
 						CMLib.commands().say(mob,msg.source(),t,false,false);
@@ -72,7 +72,7 @@ public class Prop_PeaceMaker extends Property
 					String t="You feel too peaceful here.";
 					if(text().length()>0)
 					{
-						Vector V=Util.parseSemicolons(text(),true);
+						Vector V=CMParms.parseSemicolons(text(),true);
 						t=(String)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 					}
 					msg.source().tell(t);

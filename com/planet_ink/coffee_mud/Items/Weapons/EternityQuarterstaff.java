@@ -80,7 +80,7 @@ public class EternityQuarterstaff extends Quarterstaff
 						CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_VERBAL_SPELL,"<S-NAME> point(s) <S-HIS-HER> quarterstaff at <T-NAMESELF>, and delivers a healing beam of light.");
 						if(mob.location().okMessage(mob,msg2))
 						{
-		   					int healing=1+(int)Math.round(Util.div(envStats().level(),10.0));
+		   					int healing=1+(int)Math.round(CMath.div(envStats().level(),10.0));
 							target.curState().adjHitPoints(healing,target.maxState());
 							target.tell("You feel a little better!");
 							return;

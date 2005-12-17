@@ -97,7 +97,7 @@ public class StdClanDonationList extends StdClanItem
                         x=key.indexOf("/");
                         if(x>0)
                         {
-                            val=Util.s_long(key.substring(0,x));
+                            val=CMath.s_long(key.substring(0,x));
                             boolean did=false;
                             for(int i=0;i<sorted.size();i++)
                                 if(((Long)((Object[])sorted.elementAt(i))[0]).longValue()>val)

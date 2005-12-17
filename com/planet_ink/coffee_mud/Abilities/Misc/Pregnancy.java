@@ -48,7 +48,7 @@ public class Pregnancy extends StdAbility
 		{
 			int y=text().indexOf("/",x+1);
 			if(y<0) return "";
-			long start=Util.s_long(text().substring(0,x));
+			long start=CMath.s_long(text().substring(0,x));
 			long divisor=MudHost.TICK_TIME*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 			long days=(System.currentTimeMillis()-start)/divisor; // down to days;
 			long months=days/CMClass.globalClock().getDaysInMonth();
@@ -109,7 +109,7 @@ public class Pregnancy extends StdAbility
 		    aging[i]+=race2.getAgingChart()[i];
 		for(int i=0;i<aging.length;i++)
 		    aging[i]=aging[i]/2;
-		GR.setStat("AGING",Util.toStringList(aging));
+		GR.setStat("AGING",CMParms.toStringList(aging));
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
 			if((race1.bodyMask()[i]>0)&&(race2.bodyMask()[i]>0))
 				GR.bodyMask()[i]=((race1.bodyMask()[i]+race2.bodyMask()[i])/2);
@@ -188,7 +188,7 @@ public class Pregnancy extends StdAbility
 		CS.setThirst(STARTCS.getThirst()/2);
 		GR.setStat("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(STARTCS));
 
-		GR.setStat("DISFLAGS",""+(Util.s_int(race1.getStat("DISFLAGS"))|Util.s_int(race2.getStat("DISFLAGS"))));
+		GR.setStat("DISFLAGS",""+(CMath.s_int(race1.getStat("DISFLAGS"))|CMath.s_int(race2.getStat("DISFLAGS"))));
 
 		GR.setStat("NUMRSC","");
 		for(int i=0;i<nonHuman.myResources().size();i++)
@@ -280,12 +280,12 @@ public class Pregnancy extends StdAbility
 			R=CMClass.getRace(halfRace);
 			if((R!=null)&&(!R.ID().toUpperCase().startsWith("HALF")))
 			{
-				halfRace="Half"+Util.capitalizeAndLower(R.ID().toLowerCase());
+				halfRace="Half"+CMStrings.capitalizeAndLower(R.ID().toLowerCase());
 				Race testR=CMClass.getRace(halfRace);
 				if(testR!=null)
 					R=testR;
 				else
-					R=mixRaces(babe,R,CMClass.getRace("Human"),halfRace,"Half "+Util.capitalizeAndLower(R.name()));
+					R=mixRaces(babe,R,CMClass.getRace("Human"),halfRace,"Half "+CMStrings.capitalizeAndLower(R.name()));
 			}
 		}
 		else
@@ -300,7 +300,7 @@ public class Pregnancy extends StdAbility
 				if(testR!=null)
 					R=testR;
 				else
-					R=mixRaces(babe,R,CMClass.getRace("Halfling"),halfRace,Util.capitalizeAndLower(R.name())+"ling");
+					R=mixRaces(babe,R,CMClass.getRace("Halfling"),halfRace,CMStrings.capitalizeAndLower(R.name())+"ling");
 			}
 		}
 		else
@@ -347,14 +347,14 @@ public class Pregnancy extends StdAbility
 				if(y>x)
 				{
 					int z=text().indexOf("/",y+1);
-					long end=Util.s_long(text().substring(x+1,y));
+					long end=CMath.s_long(text().substring(x+1,y));
 					long divisor=MudHost.TICK_TIME*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 					daysRemaining=(end-System.currentTimeMillis())/divisor; // down to days
 					monthsRemaining=daysRemaining/CMClass.globalClock().getDaysInMonth(); // down to months
 					if(daysRemaining<7) // BIRTH!
 					{
 						if(CMLib.flags().isSleeping(mob))
-							mob.enqueCommand(Util.parse("WAKE"),0);
+							mob.enqueCommand(CMParms.parse("WAKE"),0);
 						if((CMLib.dice().rollPercentage()>50)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)>5))
 							mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> moan(s) and scream(s) in labor pain!!");
 						ticksInLabor++;
@@ -483,7 +483,7 @@ public class Pregnancy extends StdAbility
 						if((monthsRemaining<=1)&&(CMLib.dice().rollPercentage()==1))
 						{
 							if(CMLib.flags().isSleeping(mob))
-								mob.enqueCommand(Util.parse("WAKE"),0);
+								mob.enqueCommand(CMParms.parse("WAKE"),0);
 							mob.tell("Oh! You had a contraction!");
 						}
 						else
@@ -515,7 +515,7 @@ public class Pregnancy extends StdAbility
 		Race R=mob.charStats().getMyRace();
 		long tickspermudmonth=CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 		tickspermudmonth=tickspermudmonth*CMClass.globalClock().getDaysInMonth();
-		int birthmonths=(int)Math.round(Util.mul((R.getAgingChart()[1]-R.getAgingChart()[0])*CMClass.globalClock().getMonthsInYear(),0.8335));
+		int birthmonths=(int)Math.round(CMath.mul((R.getAgingChart()[1]-R.getAgingChart()[0])*CMClass.globalClock().getMonthsInYear(),0.8335));
 		if(birthmonths<=0) birthmonths=5;
 		long ticksperbirthperiod=tickspermudmonth*birthmonths;
 		long millisperbirthperiod=ticksperbirthperiod*MudHost.TICK_TIME;

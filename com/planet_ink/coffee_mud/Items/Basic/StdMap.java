@@ -72,7 +72,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 	}
 	public void doMapArea()
 	{
-		Vector V=Util.parseSemicolons(getMapArea(),true);
+		Vector V=CMParms.parseSemicolons(getMapArea(),true);
 		String newName="";
 		for(int v=0;v<V.size();v++)
 		{
@@ -191,7 +191,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 
 	public Hashtable makeMapRooms()
 	{
-		Vector mapAreas=Util.parseSemicolons(getMapArea(),true);
+		Vector mapAreas=CMParms.parseSemicolons(getMapArea(),true);
 		Hashtable mapRooms=new Hashtable();
 		for(int a=0;a<mapAreas.size();a++)
 		{
@@ -265,7 +265,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 					}
 					else
 					{
-						String paddedName=Util.padRight(room.r.displayText().trim(),30);
+						String paddedName=CMStrings.padRight(room.r.displayText().trim(),30);
 						line1+="---"+dirChar(Directions.NORTH,grid,x,y,'-')+"----";
 						line2+="!"+paddedName.substring(0,6)+"!";
 						line3+=dirChar(Directions.WEST,grid,x,y,'!')+paddedName.substring(6,12)+dirChar(Directions.EAST,grid,x,y,'!');
@@ -563,7 +563,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 							if(Character.isDigit(c))
 							{
 								trans=true;
-								y=(y*10)+Util.s_int(""+c);
+								y=(y*10)+CMath.s_int(""+c);
 							}
 							else
 							if(Character.isLetter(c)&&(!trans))

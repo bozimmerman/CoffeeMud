@@ -53,16 +53,16 @@ public class Skill_Convert extends StdSkill
 		}
 
 		MOB target=mob;
-		Deity D=CMLib.map().getDeity(Util.combine(commands,0));
+		Deity D=CMLib.map().getDeity(CMParms.combine(commands,0));
 		if(D==null)
 		{
 			D=mob.getMyDeity();
 			target=getTarget(mob,commands,givenTarget);
 			if(target==null)
 			{
-				mob.tell("You've also never heard of a deity called '"+Util.combine(commands,0)+"'.");
+				mob.tell("You've also never heard of a deity called '"+CMParms.combine(commands,0)+"'.");
                 if(mob.isMonster())
-                    CMLib.commands().say(mob,target,"I've never heard of '"+Util.combine(commands,0)+"'.",false,false);
+                    CMLib.commands().say(mob,target,"I've never heard of '"+CMParms.combine(commands,0)+"'.",false,false);
 				return false;
 			}
 			if(D==null)

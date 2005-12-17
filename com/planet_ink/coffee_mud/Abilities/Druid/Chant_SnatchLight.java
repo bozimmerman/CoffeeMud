@@ -55,10 +55,10 @@ public class Chant_SnatchLight extends Chant
 		if(CMLib.utensils().roomLocation(affected)==snatchLocation())
 		{
 			affectableStats.setDisposition(affectableStats.disposition() |  EnvStats.IS_DARK);
-			if(Util.bset(affectableStats.disposition(),EnvStats.IS_LIGHTSOURCE))
-				affectableStats.setDisposition(Util.unsetb(affectableStats.disposition(),EnvStats.IS_LIGHTSOURCE));
-			if(Util.bset(affectableStats.disposition(),EnvStats.IS_GLOWING))
-				affectableStats.setDisposition(Util.unsetb(affectableStats.disposition(),EnvStats.IS_GLOWING));
+			if(CMath.bset(affectableStats.disposition(),EnvStats.IS_LIGHTSOURCE))
+				affectableStats.setDisposition(CMath.unsetb(affectableStats.disposition(),EnvStats.IS_LIGHTSOURCE));
+			if(CMath.bset(affectableStats.disposition(),EnvStats.IS_GLOWING))
+				affectableStats.setDisposition(CMath.unsetb(affectableStats.disposition(),EnvStats.IS_GLOWING));
 		}
 		else
 			unInvoke();

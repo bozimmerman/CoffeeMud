@@ -39,7 +39,7 @@ public class Crawl extends Go
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		int direction=Directions.getGoodDirectionCode(Util.combine(commands,1));
+		int direction=Directions.getGoodDirectionCode(CMParms.combine(commands,1));
 		if(direction>=0)
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,null);

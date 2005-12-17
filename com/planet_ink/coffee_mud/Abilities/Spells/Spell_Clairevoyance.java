@@ -98,7 +98,7 @@ public class Spell_Clairevoyance extends Spell
 				mob.tell("Cast on whom?");
 			return false;
 		}
-		String mobName=Util.combine(commands,0).trim().toUpperCase();
+		String mobName=CMParms.combine(commands,0).trim().toUpperCase();
 		MOB target=null;
 		if(givenTarget instanceof MOB)
 			target=(MOB)givenTarget;

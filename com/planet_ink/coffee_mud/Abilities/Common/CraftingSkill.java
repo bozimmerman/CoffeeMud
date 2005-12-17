@@ -105,7 +105,7 @@ public class CraftingSkill extends GatheringSkill
 	            return;
 	        }
 	    }
-	    Vector V=Util.parseSemicolons(spells,true);
+	    Vector V=CMParms.parseSemicolons(spells,true);
 	    Ability lastSpell=null;
 	    Ability A=null;
 	    for(int v=0;v<V.size();v++)
@@ -410,14 +410,14 @@ public class CraftingSkill extends GatheringSkill
                     int levelIndex=-1;
                     for(int i=1;i<randomRecipe.size();i++)
                     {
-                        if(Util.isInteger((String)randomRecipe.elementAt(i)))
+                        if(CMath.isInteger((String)randomRecipe.elementAt(i)))
                         {
                             levelIndex=i;
                             break;
                         }
                     }
                     if((levelIndex>0)
-                    &&(mob.envStats().level()<Util.s_int((String)randomRecipe.elementAt(levelIndex))))
+                    &&(mob.envStats().level()<CMath.s_int((String)randomRecipe.elementAt(levelIndex))))
                         proceed=false;
                 }
                 if((proceed)||(tries==(maxtries-1)))
@@ -468,7 +468,7 @@ public class CraftingSkill extends GatheringSkill
 				}
 			}
 			if(matches.size()>0) return matches;
-			String lastWord=(String)Util.parse(recipeName).lastElement();
+			String lastWord=(String)CMParms.parse(recipeName).lastElement();
 			for(int r=0;r<recipes.size();r++)
 			{
 				Vector V=(Vector)recipes.elementAt(r);
@@ -545,7 +545,7 @@ public class CraftingSkill extends GatheringSkill
 
 	public boolean publicScan(MOB mob, Vector commands)
 	{
-		String rest=Util.combine(commands,1);
+		String rest=CMParms.combine(commands,1);
 		Environmental scanning=null;
 		if(rest.length()==0)
 			scanning=mob;
@@ -578,7 +578,7 @@ public class CraftingSkill extends GatheringSkill
 		for(int i=0;i<allStuff.size();i++)
 		{
 			Item I=(Item)allStuff.elementAt(i);
-			buf.append(Util.padRight(I.usesRemaining()+"%",5)+I.name());
+			buf.append(CMStrings.padRight(I.usesRemaining()+"%",5)+I.name());
 			if(!I.amWearingAt(Item.INVENTORY))
 				buf.append(" ("+CMLib.flags().wornLocation(I.rawWornCode())+")");
 			if(i<(allStuff.size()-1))

@@ -111,7 +111,7 @@ public class Taxidermy extends CraftingSkill
 	{
 		Vector POSES=loadRecipes();
 		String pose=null;
-		if(Util.combine(commands,0).equalsIgnoreCase("list"))
+		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
 			StringBuffer str=new StringBuffer("^xTaxidermy Poses^?^.\n");
 			for(int p=0;p<POSES.size();p++)
@@ -138,7 +138,7 @@ public class Taxidermy extends CraftingSkill
 		}
 
 		verb="stuffing";
-		String str=Util.combine(commands,0);
+		String str=CMParms.combine(commands,0);
 		Item I=mob.location().fetchItem(null,str);
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
@@ -190,10 +190,10 @@ public class Taxidermy extends CraftingSkill
 			found.setDisplayText("the stuffed body of "+name+" stands here");
 		else
 		{
-			pose=Util.replaceAll(pose,"<S-NAME>",found.name());
-			pose=Util.replaceAll(pose,"<S-HIS-HER>",C.hisher());
-			pose=Util.replaceAll(pose,"<S-HIM-HER>",C.himher());
-			pose=Util.replaceAll(pose,"<S-HIM-HERSELF>",C.himher()+"self");
+			pose=CMStrings.replaceAll(pose,"<S-NAME>",found.name());
+			pose=CMStrings.replaceAll(pose,"<S-HIS-HER>",C.hisher());
+			pose=CMStrings.replaceAll(pose,"<S-HIM-HER>",C.himher());
+			pose=CMStrings.replaceAll(pose,"<S-HIM-HERSELF>",C.himher()+"self");
 			found.setDisplayText(pose);
 		}
 		found.setDescription(desc);

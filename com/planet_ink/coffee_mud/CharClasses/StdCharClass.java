@@ -403,9 +403,9 @@ public class StdCharClass implements CharClass
 			if(!armorCheck(msg.source(),msg.sourceCode(),msg.tool()))
 			{
 				if(msg.tool()==null)
-				    msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,Util.replaceAll(armorFailMessage(),"<SKILL>","maneuver"));
+				    msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(armorFailMessage(),"<SKILL>","maneuver"));
 				else
-				    msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,Util.replaceAll(armorFailMessage(),"<SKILL>",msg.tool().name()+" attempt"));
+				    msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(armorFailMessage(),"<SKILL>",msg.tool().name()+" attempt"));
 				return false;
 			}
 			if(!weaponCheck(msg.source(),msg.sourceCode(),msg.tool()))
@@ -444,10 +444,10 @@ public class StdCharClass implements CharClass
 			else
 			if(levelLimit>0)
 			{
-				double levelFactor=Util.div(levelDiff,levelLimit);
+				double levelFactor=CMath.div(levelDiff,levelLimit);
 				if(levelFactor>new Integer(levelLimit).doubleValue())
 					levelFactor=new Integer(levelLimit).doubleValue();
-				amount=(int)Math.round(new Integer(amount).doubleValue()+Util.mul(levelFactor,amount));
+				amount=(int)Math.round(new Integer(amount).doubleValue()+CMath.mul(levelFactor,amount));
 			}
 		}
 		if((mob.getLiegeID().length()>0)&&(amount>2))
@@ -455,7 +455,7 @@ public class StdCharClass implements CharClass
 			MOB sire=CMLib.map().getPlayer(mob.getLiegeID());
 			if((sire!=null)&&(CMLib.flags().isInTheGame(sire,true)))
 			{
-				int sireShare=(int)Math.round(Util.div(amount,10.0));
+				int sireShare=(int)Math.round(CMath.div(amount,10.0));
 				if(sireShare<=0) sireShare=1;
 				amount-=sireShare;
 				CMLib.combat().postExperience(sire,null," from "+mob.name(),sireShare,quiet);
@@ -500,7 +500,7 @@ public class StdCharClass implements CharClass
         }
 
 		levelAdjuster(mob,-1);
-		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
+		int practiceGain=(int)Math.floor(CMath.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
 		if(practiceGain<=0)practiceGain=1;
 		mob.setPractices(mob.getPractices()-practiceGain);
 		int trainGain=0;
@@ -556,7 +556,7 @@ public class StdCharClass implements CharClass
 		int maxConStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.CONSTITUTION));
 		if(conStat>maxConStat) conStat=maxConStat;
-		int newHitPointGain=(int)Math.floor(Util.div(conStat,getHPDivisor())+CMLib.dice().roll(getHPDice(),getHPDie(),0));
+		int newHitPointGain=(int)Math.floor(CMath.div(conStat,getHPDivisor())+CMLib.dice().roll(getHPDice(),getHPDie(),0));
 		if(newHitPointGain<=0)
 		{
 			if(conStat>=1)
@@ -570,13 +570,13 @@ public class StdCharClass implements CharClass
 		theNews.append("^NYou have gained ^H"+newHitPointGain+"^? hit " +
 			(newHitPointGain!=1?"points":"point") + ", ^H");
 
-		double lvlMul=1.0;//-Util.div(mob.envStats().level(),100.0);
+		double lvlMul=1.0;//-CMath.div(mob.envStats().level(),100.0);
 		if(lvlMul<0.1) lvlMul=.1;
 		int mvStat=mob.charStats().getStat(CharStats.STRENGTH);
 		int maxMvStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.STRENGTH));
 		if(mvStat>maxMvStat) mvStat=maxMvStat;
-		int mvGain=(int)Math.round(lvlMul*Util.mul(Util.div(mvStat,18.0),getMovementMultiplier()));
+		int mvGain=(int)Math.round(lvlMul*CMath.mul(CMath.div(mvStat,18.0),getMovementMultiplier()));
 		mvGain=mvGain*adjuster;
 		mob.baseState().setMovement(mob.baseState().getMovement()+mvGain);
 		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
@@ -586,7 +586,7 @@ public class StdCharClass implements CharClass
 		int maxAttStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+getAttackAttribute()));
 		if(attStat>=maxAttStat) attStat=maxAttStat;
-		int attGain=(int)Math.round(Util.div(attStat,6.0))+getBonusAttackLevel();
+		int attGain=(int)Math.round(CMath.div(attStat,6.0))+getBonusAttackLevel();
 		if(mvStat>=25)attGain+=2;
 		else
 		if(mvStat>=22)attGain+=1;
@@ -604,7 +604,7 @@ public class StdCharClass implements CharClass
 		int maxManStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.INTELLIGENCE));
 		if(manStat>maxManStat) manStat=maxManStat;
-		int manaGain=(int)Math.floor(Util.div(manStat,getManaDivisor())+CMLib.dice().roll(getManaDice(),getManaDie(),0));
+		int manaGain=(int)Math.floor(CMath.div(manStat,getManaDivisor())+CMLib.dice().roll(getManaDice(),getManaDie(),0));
 		if(man2Stat>17) manaGain=manaGain+((man2Stat-17)/2);
 		manaGain=manaGain*adjuster;
 		
@@ -647,7 +647,7 @@ public class StdCharClass implements CharClass
 			MOB sire=CMLib.map().getPlayer(mob.getLiegeID());
 			if((sire!=null)&&(CMLib.flags().isInTheGame(sire,true)))
             {
-                int sireShare=(int)Math.round(Util.div(amount,10.0));
+                int sireShare=(int)Math.round(CMath.div(amount,10.0));
                 amount-=sireShare;
 				if(CMLib.combat().postExperience(sire,null,"",-sireShare,true))
 					sire.tell("^N^!You lose ^H"+sireShare+"^N^! experience points from "+mob.Name()+".^N");
@@ -658,7 +658,7 @@ public class StdCharClass implements CharClass
             Clan C=CMLib.clans().getClan(mob.getClanID());
             if((C!=null)&&(C.getTaxes()>0.0))
             {
-                int clanshare=(int)Math.round(Util.mul(amount,C.getTaxes()));
+                int clanshare=(int)Math.round(CMath.mul(amount,C.getTaxes()));
                 if(clanshare>0)
 				{
                     amount-=clanshare; 
@@ -698,7 +698,7 @@ public class StdCharClass implements CharClass
 				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LEVELSGAINED);
 		}
 
-		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
+		int practiceGain=(int)Math.floor(CMath.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
 		if(practiceGain<=0)practiceGain=1;
 		mob.setPractices(mob.getPractices()+practiceGain);
 		theNews.append(" ^H" + practiceGain+"^N practice " +
@@ -744,12 +744,12 @@ public class StdCharClass implements CharClass
 
 	public int getLevelMana(MOB mob)
 	{
-		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(Util.div(mob.baseCharStats().getStat(CharStats.INTELLIGENCE),getHPDivisor())))+(getHPDie()*(getHPDice()+1)/2));
+		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(CMath.div(mob.baseCharStats().getStat(CharStats.INTELLIGENCE),getHPDivisor())))+(getHPDie()*(getHPDice()+1)/2));
 	}
 
 	public int getLevelAttack(MOB mob)
 	{
-		int attGain=(int)Math.round(Util.div(mob.charStats().getStat(getAttackAttribute()),6.0))+getBonusAttackLevel();
+		int attGain=(int)Math.round(CMath.div(mob.charStats().getStat(getAttackAttribute()),6.0))+getBonusAttackLevel();
 		return ((mob.baseEnvStats().level()-1)*attGain);
 	}
 
@@ -765,16 +765,16 @@ public class StdCharClass implements CharClass
 
 	public double getLevelSpeed(MOB mob)
 	{
-		return 1.0+Math.floor(Util.div(mob.baseEnvStats().level(),25.0));
+		return 1.0+Math.floor(CMath.div(mob.baseEnvStats().level(),25.0));
 	}
 
 	public int getLevelMove(MOB mob)
 	{
 		int move=100;
-		double lvlMul=1.0;//-Util.div(mob.envStats().level(),100.0);
+		double lvlMul=1.0;//-CMath.div(mob.envStats().level(),100.0);
 		if(lvlMul<0.1) lvlMul=.1;
 		if(mob.baseEnvStats().level()>1)
-			move+=((int)Math.round(Util.mul(mob.baseEnvStats().level()-1,Util.mul(Util.mul(lvlMul,Util.div(mob.baseCharStats().getStat(CharStats.STRENGTH),18.0)),getMovementMultiplier()))));
+			move+=((int)Math.round(CMath.mul(mob.baseEnvStats().level()-1,CMath.mul(CMath.mul(lvlMul,CMath.div(mob.baseCharStats().getStat(CharStats.STRENGTH),18.0)),getMovementMultiplier()))));
 		return move;
 	}
 
@@ -804,7 +804,7 @@ public class StdCharClass implements CharClass
 		for(Iterator i=killers.iterator();i.hasNext();)
 		{
 			MOB mob=(MOB)i.next();
-			int myAmount=(int)Math.round(Util.mul(expAmount,Util.div(mob.envStats().level()*mob.envStats().level(),totalLevels)));
+			int myAmount=(int)Math.round(CMath.mul(expAmount,CMath.div(mob.envStats().level()*mob.envStats().level(),totalLevels)));
 			if(myAmount>100) myAmount=100;
 			CMLib.combat().postExperience(mob,killed,"",myAmount,false);
 		}

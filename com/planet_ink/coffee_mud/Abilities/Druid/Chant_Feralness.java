@@ -51,8 +51,8 @@ public class Chant_Feralness extends Chant
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() + 50);
 				affectableStats.setDamage(affectableStats.damage()*2);
 			}
-			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(Util.div(affectableStats.damage(),4.0)));
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(Util.div(affectableStats.attackAdjustment(),4.0)));
+			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(CMath.div(affectableStats.damage(),4.0)));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(CMath.div(affectableStats.attackAdjustment(),4.0)));
 			affectableStats.setArmor(affectableStats.armor()+20);
 		}
 	}
@@ -134,7 +134,7 @@ public class Chant_Feralness extends Chant
 					mob.tell("You failed to shapeshift.");
 					return false;
 				}
-				hpAdjustment=(int)Math.round(Util.div(target.maxState().getHitPoints(),5.0));
+				hpAdjustment=(int)Math.round(CMath.div(target.maxState().getHitPoints(),5.0));
 				success=beneficialAffect(mob,target,asLevel,0);
 				target.curState().setHitPoints(target.curState().getHitPoints()+hpAdjustment);
 				target.recoverMaxState();

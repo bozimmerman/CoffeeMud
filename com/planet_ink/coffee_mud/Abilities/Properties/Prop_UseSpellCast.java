@@ -62,12 +62,12 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 					int x=t.indexOf("/");
 					if(x<0)
 					{
-						V2=Util.parse(t);
+						V2=CMParms.parse(t);
 						A.setMiscText("");
 					}
 					else
 					{
-						V2=Util.parse(t.substring(0,x));
+						V2=CMParms.parse(t.substring(0,x));
 						A.setMiscText(t.substring(x+1));
 					}
 				}

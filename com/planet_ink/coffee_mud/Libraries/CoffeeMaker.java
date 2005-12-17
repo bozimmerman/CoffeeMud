@@ -75,7 +75,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		mob.recoverMaxState();
 		mob.resetToMaxState();
 		if(mob.getWimpHitPoint()>0)
-			mob.setWimpHitPoint((int)Math.round(Util.mul(mob.curState().getHitPoints(),.10)));
+			mob.setWimpHitPoint((int)Math.round(CMath.mul(mob.curState().getHitPoints(),.10)));
 		mob.setExperience(mob.charStats().getCurrentClass().getLevelExperience(mob.envStats().level()));
 		mob.setExpNextLevel(mob.charStats().getCurrentClass().getLevelExperience(mob.envStats().level()+1));
 	}
@@ -140,13 +140,13 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		if(E instanceof Item) 
 		{
 			Item item=(Item)E;
-			if(!Util.bset(item.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP))
+			if(!CMath.bset(item.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP))
 				f=f|1;
-			if(!Util.bset(item.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET))
+			if(!CMath.bset(item.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET))
 				f=f|2;
-			if(Util.bset(item.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE))
+			if(CMath.bset(item.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE))
 				f=f|4;
-			if(!Util.bset(item.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE))
+			if(!CMath.bset(item.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE))
 				f=f|8;
 		}
 		if(E instanceof Container)
@@ -638,15 +638,15 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				if(dir>255)
 				{
 					String xdata=CMLib.xml().getValFromPieces(xblk.contents,"XDATA");
-					Vector CEs=Util.parseSemicolons(xdata.trim(),true);
+					Vector CEs=CMParms.parseSemicolons(xdata.trim(),true);
 					for(int ces=0;ces<CEs.size();ces++)
 					{
-						Vector SCE=Util.parse(((String)CEs.elementAt(ces)).trim());
+						Vector SCE=CMParms.parse(((String)CEs.elementAt(ces)).trim());
 						WorldMap.CrossExit CE=new WorldMap.CrossExit();
 						if(SCE.size()<3) continue;
-						CE.x=Util.s_int((String)SCE.elementAt(0));
-						CE.y=Util.s_int((String)SCE.elementAt(1));
-						int codeddir=Util.s_int((String)SCE.elementAt(2));
+						CE.x=CMath.s_int((String)SCE.elementAt(0));
+						CE.y=CMath.s_int((String)SCE.elementAt(1));
+						int codeddir=CMath.s_int((String)SCE.elementAt(2));
 						if(SCE.size()>=4)
 							CE.destRoomID=doorID+(String)SCE.elementAt(3);
 						else
@@ -1678,7 +1678,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			}
 			String proff=CMLib.xml().getValFromPieces(ablk.contents,"APROF");
 			if(proff.length()>0)
-				newOne.setProfficiency(Util.s_int(proff));
+				newOne.setProfficiency(CMath.s_int(proff));
 			else
 				newOne.setProfficiency(100);
 			setPropertiesStr(newOne,adat,true);
@@ -1784,7 +1784,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			String prc=CMLib.xml().getValFromPieces(iblk.contents,"SIPRICE");
 			int stockPrice=-1;
 			if((prc!=null)&&(prc.length()>0))
-				stockPrice=Util.s_int(prc);
+				stockPrice=CMath.s_int(prc);
 			Environmental newOne=null;
 			Vector idat=CMLib.xml().getRealContentsFromPieces(iblk.contents,"SIDATA");
 			if((iblk.value.indexOf("<ABLTY>")>=0)||(iblk.value.indexOf("&lt;ABLTY&gt;")>=0))
@@ -1904,7 +1904,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		setEnvProperties(E,buf);
 		String deprecatedFlag=CMLib.xml().getValFromPieces(buf,"FLAG");
 		if((deprecatedFlag!=null)&&(deprecatedFlag.length()>0))
-			setEnvFlags(E,Util.s_int(deprecatedFlag));
+			setEnvFlags(E,CMath.s_int(deprecatedFlag));
 
 		if(E instanceof Exit)
 		{
@@ -1930,7 +1930,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			item.setSecretIdentity(CMLib.xml().getValFromPieces(buf,"IDENT"));
 			item.setBaseValue(CMLib.xml().getIntFromPieces(buf,"VALUE"));
 			item.setMaterial(CMLib.xml().getIntFromPieces(buf,"MTRAL"));
-			//item.setUsesRemaining(Util.s_int(CMLib.xml().returnXMLValue(buf,"USES")));
+			//item.setUsesRemaining(CMath.s_int(CMLib.xml().returnXMLValue(buf,"USES")));
 			if(item instanceof Container)
 			{
 				((Container)item).setCapacity(CMLib.xml().getIntFromPieces(buf,"CAPA"));
@@ -1981,14 +1981,14 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		{
 			String bo=CMLib.xml().getValFromPieces(buf,"BURNOUT");
 			if((bo!=null)&&(bo.length()>0))
-				((Light)E).setDestroyedWhenBurntOut(Util.s_bool(bo));
+				((Light)E).setDestroyedWhenBurntOut(CMath.s_bool(bo));
 		}
 
 		if(E instanceof Wand)
 		{
 			String bo=CMLib.xml().getValFromPieces(buf,"MAXUSE");
 			if((bo!=null)&&(bo.length()>0))
-				((Wand)E).setMaxUses(Util.s_int(bo));
+				((Wand)E).setMaxUses(CMath.s_int(bo));
 		}
 		
 		if(E instanceof LandTitle)
@@ -2064,7 +2064,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			MOB mob=(MOB)E;
 			String alignStr=CMLib.xml().getValFromPieces(buf,"ALIG");
 			if((alignStr.length()>0)&&(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null))
-			    CMLib.factions().setAlignmentOldRange(mob,Util.s_int(alignStr));
+			    CMLib.factions().setAlignmentOldRange(mob,CMath.s_int(alignStr));
 			CMLib.beanCounter().setMoney(mob,CMLib.xml().getIntFromPieces(buf,"MONEY"));
 			setGenMobInventory((MOB)E,buf);
 			setGenMobAbilities((MOB)E,buf);
@@ -2182,11 +2182,11 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					}
 				}
 			}
-			Vector V9=Util.parseSemicolons(CMLib.xml().getValFromPieces(buf,"TATTS"),true);
+			Vector V9=CMParms.parseSemicolons(CMLib.xml().getValFromPieces(buf,"TATTS"),true);
 			while(((MOB)E).numTattoos()>0)((MOB)E).delTattoo(((MOB)E).fetchTattoo(0));
 			for(int v=0;v<V9.size();v++) ((MOB)E).addTattoo((String)V9.elementAt(v));
 			
-			V9=Util.parseSemicolons(CMLib.xml().getValFromPieces(buf,"EDUS"),true);
+			V9=CMParms.parseSemicolons(CMLib.xml().getValFromPieces(buf,"EDUS"),true);
 			while(((MOB)E).numEducations()>0)((MOB)E).delEducation(((MOB)E).fetchEducation(0));
 			for(int v=0;v<V9.size();v++) ((MOB)E).addEducation((String)V9.elementAt(v));
 
@@ -2347,7 +2347,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			mob.baseState().setMovement(CMLib.xml().getIntFromPieces(mblk.contents,"MOVE"));
 			String alignStr=CMLib.xml().getValFromPieces(mblk.contents,"ALIG");
 			if((alignStr.length()>0)&&(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null))
-			    CMLib.factions().setAlignmentOldRange(mob,Util.s_int(alignStr));
+			    CMLib.factions().setAlignmentOldRange(mob,CMath.s_int(alignStr));
 			mob.setExperience(CMLib.xml().getIntFromPieces(mblk.contents,"EXP"));
 			mob.setExpNextLevel(CMLib.xml().getIntFromPieces(mblk.contents,"EXLV"));
 			mob.setWorshipCharID(CMLib.xml().getValFromPieces(mblk.contents,"WORS"));
@@ -2384,10 +2384,10 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			mob.playerStats().setEmail(CMLib.xml().getValFromPieces(mblk.contents,"EMAL"));
 			String buf=CMLib.xml().getValFromPieces(mblk.contents,"CMPFIL");
 			mob.playerStats().setXML(buf);
-			Vector V9=Util.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
+			Vector V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
 			while(mob.numTattoos()>0)mob.delTattoo(mob.fetchTattoo(0));
 			for(int v=0;v<V9.size();v++) mob.addTattoo((String)V9.elementAt(v));
-			V9=Util.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
+			V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
 			while(mob.numEducations()>0)mob.delEducation(mob.fetchEducation(0));
 			for(int v=0;v<V9.size();v++) mob.addEducation((String)V9.elementAt(v));
 			mob.baseCharStats().setSaves(CMLib.xml().getValFromPieces(mblk.contents,"SAVE"));
@@ -2557,7 +2557,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			}
 			catch(Exception e)
 			{
-				E.setStat(x,new Integer(Util.s_int(props.substring(0,y))).intValue());
+				E.setStat(x,new Integer(CMath.s_int(props.substring(0,y))).intValue());
 			}
 			x++;
 			props=props.substring(y+1);
@@ -2575,7 +2575,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			}
 			catch(Exception e)
 			{
-				nums[x]=new Integer(Util.s_int(props.substring(0,y))).intValue();
+				nums[x]=new Integer(CMath.s_int(props.substring(0,y))).intValue();
 			}
 			x++;
 			props=props.substring(y+1);
@@ -2599,7 +2599,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			}
 			catch(Exception e)
 			{
-				nums[x]=new Integer(Util.s_int(props.substring(0,y))).doubleValue();
+				nums[x]=new Integer(CMath.s_int(props.substring(0,y))).doubleValue();
 			}
 			x++;
 			props=props.substring(y+1);
@@ -2729,9 +2729,9 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		case 8: return ""+I.rawProperLocationBitmap();
 		case 9: return ""+I.rawLogicalAnd();
 		case 10: return ""+I.baseGoldValue();
-		case 11: return ""+(Util.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
-		case 12: return ""+(!Util.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
-		case 13: return ""+(!Util.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
+		case 11: return ""+(CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
+		case 12: return ""+(!CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
+		case 13: return ""+(!CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
 		case 14: return ""+I.material();
 		case 15: return getExtraEnvPropertiesStr(I);
 		case 16: return ""+I.baseEnvStats().disposition();
@@ -2749,20 +2749,20 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		switch(getGenItemCodeNum(code))
 		{
 		case 0: break;
-		case 1: I.setUsesRemaining(Util.s_int(val)); break;
-		case 2: I.baseEnvStats().setLevel(Util.s_int(val)); break;
-		case 3: I.baseEnvStats().setAbility(Util.s_int(val)); break;
+		case 1: I.setUsesRemaining(CMath.s_int(val)); break;
+		case 2: I.baseEnvStats().setLevel(CMath.s_int(val)); break;
+		case 3: I.baseEnvStats().setAbility(CMath.s_int(val)); break;
 		case 4: I.setName(val); break;
 		case 5: I.setDisplayText(val); break;
 		case 6: I.setDescription(val); break;
 		case 7: I.setSecretIdentity(val); break;
-		case 8: I.setRawProperLocationBitmap(Util.s_long(val)); break;
-		case 9: I.setRawLogicalAnd(Util.s_bool(val)); break;
-		case 10: I.setBaseValue(Util.s_int(val)); break;
-		case 11: CMLib.flags().setReadable(I,Util.s_bool(val)); break;
-		case 12: CMLib.flags().setDroppable(I,Util.s_bool(val)); break;
-		case 13: CMLib.flags().setRemovable(I,Util.s_bool(val)); break;
-		case 14: I.setMaterial(Util.s_int(val)); break;
+		case 8: I.setRawProperLocationBitmap(CMath.s_long(val)); break;
+		case 9: I.setRawLogicalAnd(CMath.s_bool(val)); break;
+		case 10: I.setBaseValue(CMath.s_int(val)); break;
+		case 11: CMLib.flags().setReadable(I,CMath.s_bool(val)); break;
+		case 12: CMLib.flags().setDroppable(I,CMath.s_bool(val)); break;
+		case 13: CMLib.flags().setRemovable(I,CMath.s_bool(val)); break;
+		case 14: I.setMaterial(CMath.s_int(val)); break;
 		case 15: {
 					 while(I.numEffects()>0)
 					 {
@@ -2777,11 +2777,11 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					 setExtraEnvProperties(I,CMLib.xml().parseAllXML(val)); 
 					 break;
 				 }
-		case 16: I.baseEnvStats().setDisposition(Util.s_int(val)); break;
-		case 17: I.baseEnvStats().setWeight(Util.s_int(val)); break;
-		case 18: I.baseEnvStats().setArmor(Util.s_int(val)); break;
-		case 19: I.baseEnvStats().setDamage(Util.s_int(val)); break;
-		case 20: I.baseEnvStats().setAttackAdjustment(Util.s_int(val)); break;
+		case 16: I.baseEnvStats().setDisposition(CMath.s_int(val)); break;
+		case 17: I.baseEnvStats().setWeight(CMath.s_int(val)); break;
+		case 18: I.baseEnvStats().setArmor(CMath.s_int(val)); break;
+		case 19: I.baseEnvStats().setDamage(CMath.s_int(val)); break;
+		case 20: I.baseEnvStats().setAttackAdjustment(CMath.s_int(val)); break;
 		case 21: I.setReadableText(val); break;
 		case 22: I.setImage(val); break;
 		}
@@ -2866,23 +2866,23 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		{
 		case 0: break;
 		case 1: M.baseCharStats().setMyRace(CMClass.getRace(val)); break;
-		case 2: M.baseEnvStats().setLevel(Util.s_int(val)); break;
-		case 3: M.baseEnvStats().setAbility(Util.s_int(val)); break;
+		case 2: M.baseEnvStats().setLevel(CMath.s_int(val)); break;
+		case 3: M.baseEnvStats().setAbility(CMath.s_int(val)); break;
 		case 4: M.setName(val); break;
 		case 5: M.setDisplayText(val); break;
 		case 6: M.setDescription(val); break;
-		case 7: CMLib.beanCounter().setMoney(M,Util.s_int(val)); break;
-		case 8: if(Util.s_int(val)==Integer.MAX_VALUE)
+		case 7: CMLib.beanCounter().setMoney(M,CMath.s_int(val)); break;
+		case 8: if(CMath.s_int(val)==Integer.MAX_VALUE)
 		    		M.removeFaction(CMLib.factions().AlignID());
 				else
-		        	M.addFaction(CMLib.factions().AlignID(),Util.s_int(val)); 
+		        	M.addFaction(CMLib.factions().AlignID(),CMath.s_int(val)); 
 				break;
-		case 9: M.baseEnvStats().setDisposition(Util.s_int(val)); break;
-		case 10: M.baseEnvStats().setSensesMask(Util.s_int(val)); break;
-		case 11: M.baseEnvStats().setArmor(Util.s_int(val)); break;
-		case 12: M.baseEnvStats().setDamage(Util.s_int(val)); break;
-		case 13: M.baseEnvStats().setAttackAdjustment(Util.s_int(val)); break;
-		case 14: M.baseEnvStats().setSpeed(Util.s_double(val)); break;
+		case 9: M.baseEnvStats().setDisposition(CMath.s_int(val)); break;
+		case 10: M.baseEnvStats().setSensesMask(CMath.s_int(val)); break;
+		case 11: M.baseEnvStats().setArmor(CMath.s_int(val)); break;
+		case 12: M.baseEnvStats().setDamage(CMath.s_int(val)); break;
+		case 13: M.baseEnvStats().setAttackAdjustment(CMath.s_int(val)); break;
+		case 14: M.baseEnvStats().setSpeed(CMath.s_double(val)); break;
 		case 15: {
 					 while(M.numEffects()>0)
 					 {
@@ -2921,14 +2921,14 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			break;
 		case 18:
 			{
-				Vector V9=Util.parseSemicolons(val,true);
+				Vector V9=CMParms.parseSemicolons(val,true);
 				while(M.numTattoos()>0)M.delTattoo(M.fetchTattoo(0));
 				for(int v=0;v<V9.size();v++) M.addTattoo((String)V9.elementAt(v));
 			}
 			break;
 		case 19:
 			{
-				Vector V9=Util.parseSemicolons(val,true);
+				Vector V9=CMParms.parseSemicolons(val,true);
 				while(M.numEducations()>0)M.delEducation(M.fetchEducation(0));
 				for(int v=0;v<V9.size();v++) M.addEducation((String)V9.elementAt(v));
 			}
@@ -2936,14 +2936,14 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		case 20: M.setImage(val); break;
 		case 21: 
 		    {
-		    	Vector V10=Util.parseSemicolons(val,true);
+		    	Vector V10=CMParms.parseSemicolons(val,true);
 		    	for(int v=0;v<V10.size();v++)
 		    	{
 		    	    String s=(String)V10.elementAt(v);
 		    	    int x=s.lastIndexOf("(");
 		    	    int y=s.lastIndexOf(")");
 		    	    if((x>0)&&(y>x))
-		    	        M.addFaction(s.substring(0,x),Util.s_int(s.substring(x+1,y)));
+		    	        M.addFaction(s.substring(0,x),CMath.s_int(s.substring(x+1,y)));
 		    	}
 		    	break;
 		    }
@@ -2991,10 +2991,10 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		if(ADJ!=null)
 		{
 			String newText=ADJ.text();
-			int ab=Util.getParmPlus(newText,"abi");
-			int arm=Util.getParmPlus(newText,"arm")*-1;
-			int att=Util.getParmPlus(newText,"att");
-			int dam=Util.getParmPlus(newText,"dam");
+			int ab=CMParms.getParmPlus(newText,"abi");
+			int arm=CMParms.getParmPlus(newText,"arm")*-1;
+			int att=CMParms.getParmPlus(newText,"att");
+			int dam=CMParms.getParmPlus(newText,"dam");
 			if(savedI instanceof Weapon)
 				level+=(arm*2);
 			else
@@ -3006,22 +3006,22 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			level+=ab*5;
 			
 			
-			int dis=Util.getParmPlus(newText,"dis");
+			int dis=CMParms.getParmPlus(newText,"dis");
 			if(dis!=0) level+=5;
-			int sen=Util.getParmPlus(newText,"sen");
+			int sen=CMParms.getParmPlus(newText,"sen");
 			if(sen!=0) level+=5;
-			level+=(int)Math.round(5.0*Util.getParmDoublePlus(newText,"spe"));
+			level+=(int)Math.round(5.0*CMParms.getParmDoublePlus(newText,"spe"));
 			for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 			{
-				int stat=Util.getParmPlus(newText,CharStats.TRAITS[i].substring(0,3).toLowerCase());
-				int max=Util.getParmPlus(newText,("max"+(CharStats.TRAITS[i].substring(0,3).toLowerCase())));
+				int stat=CMParms.getParmPlus(newText,CharStats.TRAITS[i].substring(0,3).toLowerCase());
+				int max=CMParms.getParmPlus(newText,("max"+(CharStats.TRAITS[i].substring(0,3).toLowerCase())));
 				level+=(stat*5);
 				level+=(max*5);
 			}
 
-			int hit=Util.getParmPlus(newText,"hit");
-			int man=Util.getParmPlus(newText,"man");
-			int mv=Util.getParmPlus(newText,"mov");
+			int hit=CMParms.getParmPlus(newText,"hit");
+			int man=CMParms.getParmPlus(newText,"man");
+			int mv=CMParms.getParmPlus(newText,"mov");
 			level+=(hit/5);
 			level+=(man/5);
 			level+=(mv/5);
@@ -3258,7 +3258,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			double wornweights=0.0;
 			for(int i=0;i<Item.wornWeights.length-1;i++)
 			{
-				if(Util.isSet(worndata,i))
+				if(CMath.isSet(worndata,i))
 				{
 					totalpts+=(pts*Item.wornWeights[i+1]);
 					wornweights+=Item.wornWeights[i+1];

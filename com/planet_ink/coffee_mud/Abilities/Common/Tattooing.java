@@ -90,7 +90,7 @@ public class Tattooing extends CommonSkill
 		commands.removeElementAt(0);
 		String part=(String)commands.firstElement();
 		commands.removeElementAt(0);
-		String message=Util.combine(commands,0);
+		String message=CMParms.combine(commands,0);
 		commands.clear();
 		commands.addElement(whom);
 		
@@ -112,7 +112,7 @@ public class Tattooing extends CommonSkill
 		        {
 				    if(Item.wornLocation[i].equalsIgnoreCase(part))
 				        partNum=i;
-				    allParts.append(", "+Util.capitalizeAndLower(Item.wornLocation[i].toLowerCase()));
+				    allParts.append(", "+CMStrings.capitalizeAndLower(Item.wornLocation[i].toLowerCase()));
 				    break;
 			    }
 		}

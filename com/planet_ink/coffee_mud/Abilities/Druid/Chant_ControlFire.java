@@ -91,10 +91,10 @@ public class Chant_ControlFire extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-                int numDice = (int)Math.round(Util.div(adjustedLevel(mob,asLevel),2.0))+1;
+                int numDice = (int)Math.round(CMath.div(adjustedLevel(mob,asLevel),2.0))+1;
 				int damage = CMLib.dice().roll(numDice, 6, 20);
 				if((msg.value()>0)||(msg2.value()>0))
-					damage = (int)Math.round(Util.div(damage,2.0));
+					damage = (int)Math.round(CMath.div(damage,2.0));
 
 				if(target.location()==mob.location())
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flames <DAMAGE> <T-NAME>!");

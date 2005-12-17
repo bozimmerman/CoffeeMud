@@ -57,9 +57,9 @@ public class Spell_Nightmare extends Spell
 
 		if(msg.amISource(mob))
 		{
-			if((!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
-			&&((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
+			if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
 			||(msg.sourceMinor()==CMMsg.TYP_RECALL))
 			{
 				if(!notAgainThisRound)

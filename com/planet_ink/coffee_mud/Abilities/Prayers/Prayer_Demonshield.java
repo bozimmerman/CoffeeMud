@@ -69,7 +69,7 @@ public class Prayer_Demonshield extends Prayer
 
 		if(msg.amITarget(mob))
 		{
-			if(Util.bset(msg.targetCode(),CMMsg.MASK_HANDS)
+			if(CMath.bset(msg.targetCode(),CMMsg.MASK_HANDS)
 			   &&(msg.targetMessage()!=null)
 			   &&(msg.source().rangeToTarget()==0)
 			   &&(msg.targetMessage().length()>0))

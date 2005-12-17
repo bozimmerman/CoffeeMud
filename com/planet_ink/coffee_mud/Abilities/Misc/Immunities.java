@@ -67,7 +67,7 @@ public class Immunities extends StdAbility
 
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)||(msg.targetMinor()==CMMsg.TYP_DAMAGE))
+		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)||(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		&&(!mob.amDead()))
 		{
 			for(int i=0;i<immunityTypes.length;i++)

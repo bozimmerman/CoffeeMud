@@ -77,8 +77,8 @@ public class Chant_Root extends Chant
 			{
 				if((msg.tool()!=null)
 				&&(msg.tool() instanceof Ability)
-				&&((Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING))
-					||(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING))))
+				&&((CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING))
+					||(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING))))
 				{
 					if(!uprooted)
 					{

@@ -168,7 +168,7 @@ public class Prop_Familiar extends Property
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
-        &&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+        &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&(familiarWith!=null)
 		&&(familiarTo!=null)
 		&&((msg.amITarget(familiarWith))||(msg.amITarget(familiarTo)))
@@ -202,7 +202,7 @@ public class Prop_Familiar extends Property
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		familiarType=Util.s_int(newText);
+		familiarType=CMath.s_int(newText);
 		if(newText.trim().length()>2)
 		for(int i=0;i<names.length;i++)
 			if(newText.trim().equalsIgnoreCase(names[i]))

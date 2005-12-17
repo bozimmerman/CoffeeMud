@@ -95,12 +95,12 @@ public class StdJournal extends StdItem
 				int which=-1;
 				boolean newOnly=false;
 				boolean all=false;
-				Vector parse=Util.parse(msg.targetMessage());
+				Vector parse=CMParms.parse(msg.targetMessage());
 				for(int v=0;v<parse.size();v++)
 				{
 				    String s=(String)parse.elementAt(v);
-					if(Util.s_long(s)>0)
-						which=Util.s_int(msg.targetMessage());
+					if(CMath.s_long(s)>0)
+						which=CMath.s_int(msg.targetMessage());
 					else
 					if(s.equalsIgnoreCase("NEW"))
 					    newOnly=true;
@@ -401,11 +401,11 @@ public class StdJournal extends StdItem
 		boolean shortFormat=readableText().toUpperCase().indexOf("SHORTLIST")>=0;
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
-			buf.append("#\n\r "+Util.padRight("#",5)
+			buf.append("#\n\r "+CMStrings.padRight("#",5)
 					   +((shortFormat)?"":""
-					   +Util.padRight("From",11)
-					   +Util.padRight("To",11))
-					   +Util.padRight("Date",20)
+					   +CMStrings.padRight("From",11)
+					   +CMStrings.padRight("To",11))
+					   +CMStrings.padRight("Date",20)
 					   +"Subject\n\r");
 			buf.append("-------------------------------------------------------------------------\n\r");
 			if(journal==null)
@@ -437,19 +437,19 @@ public class StdJournal extends StdItem
 				StringBuffer selection=new StringBuffer("");
 				if(to.equals("ALL")||to.equalsIgnoreCase(username)||from.equalsIgnoreCase(username))
 				{
-					if(Util.s_long(compdate)>lastTimeDate)
+					if(CMath.s_long(compdate)>lastTimeDate)
 					    selection.append("*");
 					else
 					if(newOnly)
 					    continue;
 					else
 					    selection.append(" ");
-					selection.append("^<JRNL \""+name()+"\"^>"+Util.padRight((j+1)+"",3)+"^</JRNL^>) "
+					selection.append("^<JRNL \""+name()+"\"^>"+CMStrings.padRight((j+1)+"",3)+"^</JRNL^>) "
 								   +((shortFormat)?"":""
-								   +Util.padRight(from,10)+" "
-								   +Util.padRight(to,10)+" ")
-								   +Util.padRight(CMLib.time().date2String(Util.s_long(date)),19)+" "
-								   +Util.padRight(subject,25+(shortFormat?22:0))+"\n\r");
+								   +CMStrings.padRight(from,10)+" "
+								   +CMStrings.padRight(to,10)+" ")
+								   +CMStrings.padRight(CMLib.time().date2String(CMath.s_long(date)),19)+" "
+								   +CMStrings.padRight(subject,25+(shortFormat?22:0))+"\n\r");
 					selections.addElement(selection);
 				}
 			}
@@ -502,10 +502,10 @@ public class StdJournal extends StdItem
 			catch(HTTPRedirectException e){}
 
 			if(to.equals("ALL")||mineAble)
-				buf.append("\n\r^<JRNL \""+name()+"\"^>"+Util.padRight((which+1)+"",3)+"^</JRNL^>)\n\r"
+				buf.append("\n\r^<JRNL \""+name()+"\"^>"+CMStrings.padRight((which+1)+"",3)+"^</JRNL^>)\n\r"
 						   +"FROM: "+from
 						   +"\n\rTO  : "+to
-						   +"\n\rDATE: "+CMLib.time().date2String(Util.s_long(date))
+						   +"\n\rDATE: "+CMLib.time().date2String(CMath.s_long(date))
 						   +"\n\rSUBJ: "+subject
 						   +"\n\r"+message);
 		}

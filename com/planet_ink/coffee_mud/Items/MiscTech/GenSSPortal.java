@@ -96,10 +96,10 @@ public class GenSSPortal extends StdPortal implements Electronics
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setLidsNLocks(hasALid(),isOpen(),Util.s_bool(val),false); break;
-		case 1: setLidsNLocks(Util.s_bool(val),isOpen(),hasALock(),false); break;
-		case 2: setCapacity(Util.s_int(val)); break;
-		case 3: setContainTypes(Util.s_long(val)); break;
+		case 0: setLidsNLocks(hasALid(),isOpen(),CMath.s_bool(val),false); break;
+		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
+		case 2: setCapacity(CMath.s_int(val)); break;
+		case 3: setContainTypes(CMath.s_long(val)); break;
 		case 4: break;
 		case 5: break;
 		}

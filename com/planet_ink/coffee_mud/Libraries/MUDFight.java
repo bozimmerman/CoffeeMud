@@ -92,11 +92,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         double myArmor=new Integer(-(defense-100)).doubleValue();
         if(myArmor==0) myArmor=1.0;
         else
-        if(myArmor<0.0) myArmor=-Util.div(1.0,myArmor);
+        if(myArmor<0.0) myArmor=-CMath.div(1.0,myArmor);
         double hisAttack=new Integer(attack+50).doubleValue();
         if(hisAttack==0.0) hisAttack=1.0;
         else
-        if(hisAttack<0.0) hisAttack=-Util.div(1.0,myArmor);
+        if(hisAttack<0.0) hisAttack=-CMath.div(1.0,myArmor);
         return CMLib.dice().normalizeAndRollLess((int)Math.round(50.0*(hisAttack/myArmor)));
     }
 	public HashSet allCombatants(MOB mob)
@@ -210,9 +210,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		if((attacker==null)||(!attacker.mayPhysicallyAttack(target)))
 			return false;
-
 		if((weapon==null)
-		&&(Util.bset(attacker.getBitmap(),MOB.ATT_AUTODRAW)))
+		&&(CMath.bset(attacker.getBitmap(),MOB.ATT_AUTODRAW)))
 		{
 			CMLib.commands().draw(attacker,false,true);
 			weapon=attacker.fetchWieldedItem();
@@ -257,8 +256,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         if(replace>=0)
         {
             String hitWord=standardHitWord(damageType,damage);
-            hitWord=Util.replaceAll(hitWord,"(","");
-            hitWord=Util.replaceAll(hitWord,")","");
+            hitWord=CMStrings.replaceAll(hitWord,"(","");
+            hitWord=CMStrings.replaceAll(hitWord,")","");
             if(!CMProps.getVar(CMProps.SYSTEM_SHOWDAMAGE).equalsIgnoreCase("YES"))
                 return str.substring(0,replace)+hitWord+str.substring(replace+9);
             return str.substring(0,replace)+hitWord+" ("+damage+")"+ str.substring(replace+9);
@@ -544,7 +543,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		for(Iterator e=beneficiaries.iterator();e.hasNext();)
 		{
 			MOB M=(MOB)e.next();
-			if(((Util.bset(M.getBitmap(),MOB.ATT_AUTOGOLD))
+			if(((CMath.bset(M.getBitmap(),MOB.ATT_AUTOGOLD))
 			&&(!goldLooters.contains(M)))
 			&&(M!=target)
 			&&(M.location()==deathRoom)
@@ -553,14 +552,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		if((goldLooters.size()>0)&&(deadMoney>0))
 		{
-			myAmountOfDeadMoney=Util.div(deadMoney,goldLooters.size());
+			myAmountOfDeadMoney=CMath.div(deadMoney,goldLooters.size());
 			CMLib.beanCounter().subtractMoney(target,deadMoney);
 		}
 
 		DeadBody Body=null;
 		if((target.soulMate()==null)&&(!target.isMonster()))
 		{
-			Vector whatsToDo=Util.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
+			Vector whatsToDo=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
 			for(int w=0;w<whatsToDo.size();w++)
 			{
 				String whatToDo=(String)whatsToDo.elementAt(w);
@@ -606,9 +605,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					}
 				}
 				else
-				if((whatToDo.trim().equals("0"))||(Util.s_int(whatToDo)>0))
+				if((whatToDo.trim().equals("0"))||(CMath.s_int(whatToDo)>0))
 				{
-					int expLost=Util.s_int(whatToDo);
+					int expLost=CMath.s_int(whatToDo);
 					target.tell("^*You lose "+expLost+" experience points.^?^.");
 					postExperience(target,null,null,-expLost,false);
 				}
@@ -652,7 +651,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         &&(deathRoom!=null)
 		&&(source.location()==deathRoom)
 		&&(deathRoom.isInhabitant(source))
-		&&(Util.bset(source.getBitmap(),MOB.ATT_AUTOLOOT)))
+		&&(CMath.bset(source.getBitmap(),MOB.ATT_AUTOLOOT)))
 		{
 			if((source.riding()!=null)&&(source.riding() instanceof MOB))
 				source.tell("You'll need to dismount to loot the body.");
@@ -745,12 +744,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
     public String armorStr(int armor){
         return (armor<0)?armorDescs()[0]:(
-               (armor>=ARMOR_CEILING)?armorDescs()[armorDescs().length-1]+(Util.repeat("!",(armor-ARMOR_CEILING)/100))+" ("+armor+")":(
-                       armorDescs()[(int)Math.round(Math.floor(Util.mul(Util.div(armor,ARMOR_CEILING),armorDescs().length)))]+" ("+armor+")"));}
+               (armor>=ARMOR_CEILING)?armorDescs()[armorDescs().length-1]+(CMStrings.repeat("!",(armor-ARMOR_CEILING)/100))+" ("+armor+")":(
+                       armorDescs()[(int)Math.round(Math.floor(CMath.mul(CMath.div(armor,ARMOR_CEILING),armorDescs().length)))]+" ("+armor+")"));}
     public String fightingProwessStr(int prowess){
         return (prowess<0)?prowessDescs()[0]:(
-               (prowess>=PROWESS_CEILING)?prowessDescs()[prowessDescs().length-1]+(Util.repeat("!",(prowess-PROWESS_CEILING)/100))+" ("+prowess+")":(
-                prowessDescs()[(int)Math.round(Math.floor(Util.mul(Util.div(prowess,PROWESS_CEILING),prowessDescs().length)))]+" ("+prowess+")"));}
+               (prowess>=PROWESS_CEILING)?prowessDescs()[prowessDescs().length-1]+(CMStrings.repeat("!",(prowess-PROWESS_CEILING)/100))+" ("+prowess+")":(
+                prowessDescs()[(int)Math.round(Math.floor(CMath.mul(CMath.div(prowess,PROWESS_CEILING),prowessDescs().length)))]+" ("+prowess+")"));}
     
     public String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString)
     {
@@ -776,7 +775,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             break;
         }
         if(!useExtendedMissString) return missDescs()[dex];
-        return Util.replaceAll(missWeaponDescs()[dex],"<TOOLNAME>",weaponName)+CMProps.msp("missed.wav",20);
+        return CMStrings.replaceAll(missWeaponDescs()[dex],"<TOOLNAME>",weaponName)+CMProps.msp("missed.wav",20);
     }
 
 
@@ -798,10 +797,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     public String[] healthDescs(){return DEFAULT_HEALTH_CHART;}
     public String standardMobCondition(MOB mob)
     {
-        int pct=(int)Math.round(Math.floor((Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))*10));
+        int pct=(int)Math.round(Math.floor((CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))*10));
         if(pct<0) pct=0;
         if(pct>=healthDescs().length) pct=healthDescs().length-1;
-        return Util.replaceAll(healthDescs()[pct],"<MOB>",mob.name());
+        return CMStrings.replaceAll(healthDescs()[pct],"<MOB>",mob.name());
     }
 
     public void resistanceMsgs(CMMsg msg, MOB source, MOB target)

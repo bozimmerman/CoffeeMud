@@ -47,13 +47,13 @@ public class Eat extends StdCommand
 		commands.removeElementAt(0);
 
 		Environmental thisThang=null;
-		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,Util.combine(commands,0),Item.WORN_REQ_ANY);
+		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,CMParms.combine(commands,0),Item.WORN_REQ_ANY);
 		if((thisThang==null)
 		||((thisThang!=null)
 		   &&(!mob.isMine(thisThang))
 		   &&(!CMLib.flags().canBeSeenBy(thisThang,mob))))
 		{
-			mob.tell("You don't see '"+Util.combine(commands,0)+"' here.");
+			mob.tell("You don't see '"+CMParms.combine(commands,0)+"' here.");
 			return false;
 		}
 		CMMsg newMsg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EAT,"<S-NAME> eat(s) <T-NAMESELF>."+CMProps.msp("gulp.wav",10));

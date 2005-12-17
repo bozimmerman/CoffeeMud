@@ -36,13 +36,13 @@ public class Prop_WizInvis extends Property
 	public String ID() { return "Prop_WizInvis"; }
 	public String displayText() 
 	{
-	    if(Util.bset(abilityCode(),EnvStats.IS_CLOAKED|EnvStats.IS_NOT_SEEN))
+	    if(CMath.bset(abilityCode(),EnvStats.IS_CLOAKED|EnvStats.IS_NOT_SEEN))
 		    return "(Wizard Invisibility)";
 	    else
-	    if(Util.bset(abilityCode(),EnvStats.IS_NOT_SEEN))
+	    if(CMath.bset(abilityCode(),EnvStats.IS_NOT_SEEN))
 		    return "(WizUndetectable)";
 	    else
-	    if(Util.bset(abilityCode(),EnvStats.IS_CLOAKED))
+	    if(CMath.bset(abilityCode(),EnvStats.IS_CLOAKED))
 		    return "(Cloaked)";
 	    else
 	        return "";
@@ -69,7 +69,7 @@ public class Prop_WizInvis extends Property
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
 		affectableStats.setDisposition(affectableStats.disposition()|abilityCode);
-		if(Util.bset(abilityCode(),EnvStats.IS_NOT_SEEN))
+		if(CMath.bset(abilityCode(),EnvStats.IS_NOT_SEEN))
 		{
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
@@ -126,7 +126,7 @@ public class Prop_WizInvis extends Property
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)&&(msg.amITarget(affected))&&(affected!=null)&&(!disabled)))
+		if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)&&(msg.amITarget(affected))&&(affected!=null)&&(!disabled)))
 		{
 			if(msg.source()!=msg.target())
 			{
@@ -139,14 +139,14 @@ public class Prop_WizInvis extends Property
 		else
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))&&(msg.amISource((MOB)affected)))
+			if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))&&(msg.amISource((MOB)affected)))
 				disabled=true;
 			else
 			if((msg.amISource((MOB)affected))
-			&&(Util.bset(msg.source().getBitmap(),MOB.ATT_SYSOPMSGS))
+			&&(CMath.bset(msg.source().getBitmap(),MOB.ATT_SYSOPMSGS))
 			&&(msg.source().location()!=null)
 			&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"SYSMSGS")))
-				msg.source().setBitmap(Util.unsetb(msg.source().getBitmap(),MOB.ATT_SYSOPMSGS));
+				msg.source().setBitmap(CMath.unsetb(msg.source().getBitmap(),MOB.ATT_SYSOPMSGS));
 		}
 
 		return super.okMessage(myHost,msg);

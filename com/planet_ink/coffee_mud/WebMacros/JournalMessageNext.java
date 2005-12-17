@@ -86,7 +86,7 @@ public class JournalMessageNext extends StdWebMacro
             if(last==null) 
                 last="0";
             else
-    		if(Util.s_int(last)>=info.size())
+    		if(CMath.s_int(last)>=info.size())
     		{
     			httpReq.addRequestParameters("JOURNALMESSAGE","");
     			if(parms.containsKey("EMPTYOK"))
@@ -94,15 +94,15 @@ public class JournalMessageNext extends StdWebMacro
     			return " @break@";
     		}
             else
-                last=""+(Util.s_int(last)+1);
-            if(Util.s_int(last)>=info.size())
+                last=""+(CMath.s_int(last)+1);
+            if(CMath.s_int(last)>=info.size())
             {
                 httpReq.addRequestParameters("JOURNALMESSAGE","");
                 if(parms.containsKey("EMPTYOK"))
                     return "<!--EMPTY-->";
                 return " @break@";
             }
-            String to=((String)((Vector)info.elementAt(Util.s_int(last))).elementAt(3));
+            String to=((String)((Vector)info.elementAt(CMath.s_int(last))).elementAt(3));
             if(to.equalsIgnoreCase("all")
             ||((M!=null)
                 &&(priviledged||(to.equalsIgnoreCase(M.Name())))))

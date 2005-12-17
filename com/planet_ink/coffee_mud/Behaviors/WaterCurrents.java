@@ -49,7 +49,7 @@ public class WaterCurrents extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		Vector V=Util.parse(newParms);
+		Vector V=CMParms.parse(newParms);
 		dirs="";
 		for(int v=0;v<V.size();v++)
 		{

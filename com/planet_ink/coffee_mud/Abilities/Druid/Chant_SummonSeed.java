@@ -41,7 +41,7 @@ public class Chant_SummonSeed extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		String s=Util.combine(commands,0);
+		String s=CMParms.combine(commands,0);
 		StringBuffer buf=new StringBuffer("Seed types known:\n\r");
 		int material=0;
 		String foundShortName=null;
@@ -54,12 +54,12 @@ public class Chant_SummonSeed extends Chant
 				if(str.toUpperCase().equalsIgnoreCase(s))
 				{
 					material=EnvResource.RESOURCE_DATA[i][0];
-					foundShortName=Util.capitalizeAndLower(str);
+					foundShortName=CMStrings.capitalizeAndLower(str);
 					break;
 				}
 				if(col==4){ buf.append("\n\r"); col=0;}
 				col++;
-				buf.append(Util.padRight(Util.capitalizeAndLower(str),15));
+				buf.append(CMStrings.padRight(CMStrings.capitalizeAndLower(str),15));
 			}
 		}
 		if(s.equalsIgnoreCase("list"))
@@ -95,7 +95,7 @@ public class Chant_SummonSeed extends Chant
 					String name=foundShortName.toLowerCase();
 					if(name.endsWith("ies")) name=name.substring(0,name.length()-3)+"y";
 					if(name.endsWith("s")) name=name.substring(0,name.length()-1);
-					newItem.setName(Util.startWithAorAn(name+" seed"));
+					newItem.setName(CMStrings.startWithAorAn(name+" seed"));
 					newItem.setDisplayText(newItem.name()+" is here.");
 					newItem.setDescription("");
 					newItem.setMaterial(material);

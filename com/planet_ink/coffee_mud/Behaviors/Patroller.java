@@ -57,10 +57,10 @@ public class Patroller extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		String rideokString=Util.getParmStr(newParms,"rideok","false");
+		String rideokString=CMParms.getParmStr(newParms,"rideok","false");
 		rideOnly=rideokString.equalsIgnoreCase("only");
 		rideOk=rideOnly||rideokString.equalsIgnoreCase("true");
-		diameter=Util.getParmInt(newParms,"diameter",20);
+		diameter=CMParms.getParmInt(newParms,"diameter",20);
 	}
 
 
@@ -277,7 +277,7 @@ public class Patroller extends ActiveTicker
 					if((direction<0)||(thatRoom==null))
 			        {
 			            correction=CMLib.tracking().findBastardTheBestWay(thisRoom,
-			                    	Util.makeVector(R),
+			                    	CMParms.makeVector(R),
 			                    	ticking instanceof Item,
 			                    	false,
 			                    	true,

@@ -71,7 +71,7 @@ public class Prayer_AiryForm extends Prayer
 		   &&(msg.tool()!=null)
 		   &&(msg.tool() instanceof Item))
 		{
-			int recovery=(int)Math.round(Util.div((msg.value()),2.0));
+			int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
 			msg.setValue(recovery);
 		}
 		return true;

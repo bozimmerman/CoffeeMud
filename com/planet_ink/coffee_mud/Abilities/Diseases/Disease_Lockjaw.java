@@ -79,7 +79,7 @@ public class Disease_Lockjaw extends Disease
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
 		if((msg.amISource(mob))
-		&&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&((msg.sourceMinor()==CMMsg.TYP_EAT)||(msg.sourceMinor()==CMMsg.TYP_DRINK)))
 		{
 			mob.tell("You can't open your mouth!");

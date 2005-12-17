@@ -76,7 +76,7 @@ public class AbilityRaceNext extends StdWebMacro
 			else
 			{
 				String levelName=httpReq.getRequestParameter("LEVEL");
-				if((levelName!=null)&&(levelName.length()>0)&&(Util.s_int(levelName)!=level))
+				if((levelName!=null)&&(levelName.length()>0)&&(CMath.s_int(levelName)!=level))
 					okToShow=false;
 			}
 			if(parms.containsKey("NOT")) okToShow=!okToShow;

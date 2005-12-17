@@ -60,7 +60,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			&&(!Character.isWhitespace(s.charAt(index))))
 			    break;
 		}
-		int price=Util.s_int(s.substring(index+1).trim());
+		int price=CMath.s_int(s.substring(index+1).trim());
 			    
 		if(price<=0) price=100000;
 		return price;
@@ -95,8 +95,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		if(text().indexOf("/")<0) return 0;
 		int x=text().indexOf("TAX",text().indexOf("/"));
 		if(x<0) return 0;
-		String s=(String)Util.parse(text().substring(x+3)).firstElement();
-		return Util.s_int(s.substring(0,s.length()-1));
+		String s=(String)CMParms.parse(text().substring(x+3)).firstElement();
+		return CMath.s_int(s.substring(0,s.length()-1));
     }
 	public void setBackTaxes(int tax)
 	{	
@@ -161,7 +161,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			if((msg.target() instanceof Item)
 			&&(((Item)msg.target()).owner() ==msg.source().location())
             &&((!(msg.tool() instanceof Item))||(msg.source().isMine(msg.tool())))
-			&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
 			&&(A.landOwner().length()>0)
 			&&(msg.source().location()!=null)
 		    &&(msg.othersMessage()!=null)
@@ -186,7 +186,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				    else
 				        D=CMLib.map().getLoadPlayer(A.landOwner());
 				    if(D==null) return true;
-                    B.accuse(CMLib.utensils().getLegalObject(R),msg.source(),D,Util.makeVector("PROPERTYROB","THIEF_ROBBERY"));
+                    B.accuse(CMLib.utensils().getLegalObject(R),msg.source(),D,CMParms.makeVector("PROPERTYROB","THIEF_ROBBERY"));
 				}
 		    }
 			return true;
@@ -459,12 +459,12 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		            if(thisOne.startsWith(ID+"|~>|"))
 		            {
 		                thisOne=thisOne.substring((ID+"|~>|").length());
-		                V=Util.parse(thisOne);
+		                V=CMParms.parse(thisOne);
 		                if(V.size()==3)
 		                {
-		                    int lastYear=Util.s_int((String)V.lastElement());
-		                    int lastMonth=Util.s_int((String)V.elementAt(1));
-		                    int lastDay=Util.s_int((String)V.firstElement());
+		                    int lastYear=CMath.s_int((String)V.lastElement());
+		                    int lastMonth=CMath.s_int((String)V.elementAt(1));
+		                    int lastDay=CMath.s_int((String)V.firstElement());
 		                    while(!needsToPay)
 		                    {
 			                    if(lastYear<year) 

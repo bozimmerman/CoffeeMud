@@ -97,7 +97,7 @@ public class Skill_Enslave extends StdSkill
 					    if((msg.target()==mob)
 					    &&(msg.source().Name().equals(mob.getLiegeID())))
 					    {
-					        Vector V=Util.parse(response.toUpperCase());
+					        Vector V=CMParms.parse(response.toUpperCase());
 					        if(V.contains("STOP")||V.contains("CANCEL"))
 					        {
 					            CMLib.commands().say(mob,msg.source(),"Yes master.",false,false);
@@ -237,7 +237,7 @@ public class Skill_Enslave extends StdSkill
 	                else
 	                {
 	                    Command C=CMClass.getCommand("Eat");
-	                    try{C.execute(mob,Util.parse("EAT \""+f.Name()+"$\""));}catch(Exception e){}
+	                    try{C.execute(mob,CMParms.parse("EAT \""+f.Name()+"$\""));}catch(Exception e){}
 	                }
 	            }
 	            if(mob.curState().getThirst()<=0)
@@ -254,7 +254,7 @@ public class Skill_Enslave extends StdSkill
 	                else
 	                {
 	                    Command C=CMClass.getCommand("Drink");
-	                    try{C.execute(mob,Util.parse("DRINK \""+d.Name()+"$\""));}catch(Exception e){}
+	                    try{C.execute(mob,CMParms.parse("DRINK \""+d.Name()+"$\""));}catch(Exception e){}
 	                }
 	            }
 		    }

@@ -33,6 +33,10 @@ import java.util.*;
 */
 public class Log
 {
+    private Log(){super();}
+    private static Log inst=new Log();
+    public static Log instance(){return inst;}
+    
 	/**	reroutable error channel */
 	private static PrintWriter errOutWriter=null;
 	/**	reroutable debug channel */
@@ -231,11 +235,6 @@ public class Log
 		return filePath;
 	}	
 	
-	public Log()
-	{
-		super();
-	}
-	
 	/**
 	* Just send a string out to regular old System.out
  	* 
@@ -275,7 +274,7 @@ public class Log
                 Year=("0"+Year);
             if(Year.length()<2)
                 Year=("0"+Year);
-            int Yr=Util.s_int(Year);
+            int Yr=CMath.s_int(Year);
             if(Yr<50)Year="20"+Year;
             else Year="19"+Year;
         }

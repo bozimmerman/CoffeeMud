@@ -274,7 +274,7 @@ public class Beastmaster extends StdCharClass
 									 int duration)
 	{
 		if(myChar==null) return duration;
-		if(Util.bset(skill.flags(),Ability.FLAG_CRAFTING)
+		if(CMath.bset(skill.flags(),Ability.FLAG_CRAFTING)
 		&&(!skill.ID().equals("Herbalism"))
 		&&(!skill.ID().equals("Masonry")))
 			return duration*2;

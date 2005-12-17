@@ -74,10 +74,10 @@ public class Thief_UsePoison extends ThiefSkill
 			mob.tell("You don't know how to poison "+target.name()+".");
 			return false;
 		}
-		Item poison=mob.fetchCarried(null,Util.combine(commands,1));
+		Item poison=mob.fetchCarried(null,CMParms.combine(commands,1));
 		if((poison==null)||((poison!=null)&&(!CMLib.flags().canBeSeenBy(poison,mob))))
 		{
-			mob.tell("You don't see '"+Util.combine(commands,1)+"' here.");
+			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
 			return false;
 		}
 		Vector V=returnOffensiveAffects(poison);

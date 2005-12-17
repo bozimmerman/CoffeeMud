@@ -71,7 +71,7 @@ public class Prop_AstralSpirit extends Property
 			return true;
 		MOB mob=(MOB)affected;
 
-		if((msg.amISource(mob))&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
+		if((msg.amISource(mob))&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
 		{
 			if((msg.tool()!=null)&&(msg.tool().ID().equalsIgnoreCase("Skill_Revoke")))
 			   return super.okMessage(myHost,msg);
@@ -83,10 +83,10 @@ public class Prop_AstralSpirit extends Property
 				return false;
 			}
 			else
-			if((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-			||(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH)))
+			if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH)))
 			{
-				if(Util.bset(msg.sourceMajor(),CMMsg.MASK_SOUND))
+				if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_SOUND))
 					mob.tell("You are unable to make sounds in this incorporeal form.");
 				else
 					mob.tell("You are unable to do that this incorporeal form.");
@@ -96,7 +96,7 @@ public class Prop_AstralSpirit extends Property
 		}
 		else
 		if((msg.amITarget(mob))&&(!msg.amISource(mob))
-		   &&(!Util.bset(msg.targetMajor(),CMMsg.MASK_GENERAL)))
+		   &&(!CMath.bset(msg.targetMajor(),CMMsg.MASK_GENERAL)))
 		{
 			mob.tell(mob.name()+" doesn't seem to be here.");
 			return false;

@@ -81,7 +81,7 @@ public class MUDGrinder extends StdWebMacro
 				map=new GrinderFlatMap(A);
 			map.rePlaceRooms();
 			String rS = httpReq.getRequestParameter("ROOMSIZE");
-			int roomSize = (rS!=null)?Util.s_int(rS):4;
+			int roomSize = (rS!=null)?CMath.s_int(rS):4;
 			if (roomSize <= 4)
 				return map.getHTMLMap(httpReq).toString();
 			return map.getHTMLMap(httpReq, roomSize).toString();

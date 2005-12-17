@@ -150,11 +150,11 @@ public interface MaskingLibrary extends CMObject
         +"+DISPOSITION \"-ISHIDDEN\" etc.. (Do not <WORN> only with sub disp) <BR>"
         +"-SENSES \"+CANSEEDARK\" etc.. (<WORN> only those with added sens.) <BR>"
         +"+SENSES \"-CANSEEDARK\" etc.. (Do not <WORN> those with subtracted sens.) <BR>"
-        +"-HOUR X (<WORD> always, unless the hour is X)  <BR>"
-        +"+HOUR X (<WORD> those only when the hour is X) <BR>"
-        +"-SEASON FALL (<WORD> those only when season is FALL)  <BR>"
-        +"+SEASON SPRING (<WORD> those whenever the season is SPRING) <BR>"
-        +"-MONTH X (<WORD> those only when month number is X)  <BR>"
-        +"+MONTH X (<WORD> those whenever the month number is X)";
+        +"-HOUR +X (<WORD> always, unless the hour is X)  <BR>"
+        +"+HOUR -X (<WORD> those only when the hour is X) <BR>"
+        +"-SEASON +FALL (<WORD> those only when season is FALL)  <BR>"
+        +"+SEASON -SPRING (<WORD> those whenever the season is SPRING) <BR>"
+        +"-MONTH +X (<WORD> those only when month number is X)  <BR>"
+        +"+MONTH -X (<WORD> those whenever the month number is X)";
 
 }

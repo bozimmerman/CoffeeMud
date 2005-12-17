@@ -77,20 +77,20 @@ public class Stat extends BaseAbleLister
         }
 		table.append("^xStatistics since "+CMLib.time().date2String(ENDQ.getTimeInMillis())+":^.^N\n\r\n\r");
         if(skillUse)
-            table.append(Util.padRight("Skill",25)+Util.padRight("Uses",10)+Util.padRight("Skill",25)+Util.padRight("Uses",10)+"\n\r");
+            table.append(CMStrings.padRight("Skill",25)+CMStrings.padRight("Uses",10)+CMStrings.padRight("Skill",25)+CMStrings.padRight("Uses",10)+"\n\r");
         else
-    		table.append(Util.padRight("Date",25)
-    					 +Util.padRight("CONs",5)
-    					 +Util.padRight("HIGH",5)
-    					 +Util.padRight("ONLN",5)
-    					 +Util.padRight("AVGM",5)
-    					 +Util.padRight("NEWB",5)
-    					 +Util.padRight("DTHs",5)
-    					 +Util.padRight("PKDs",5)
-    					 +Util.padRight("CLAS",5)
-    					 +Util.padRight("PURG",5)
-    					 +Util.padRight("MARR",5)+"\n\r");
-		table.append(Util.repeat("-",75)+"\n\r");
+    		table.append(CMStrings.padRight("Date",25)
+    					 +CMStrings.padRight("CONs",5)
+    					 +CMStrings.padRight("HIGH",5)
+    					 +CMStrings.padRight("ONLN",5)
+    					 +CMStrings.padRight("AVGM",5)
+    					 +CMStrings.padRight("NEWB",5)
+    					 +CMStrings.padRight("DTHs",5)
+    					 +CMStrings.padRight("PKDs",5)
+    					 +CMStrings.padRight("CLAS",5)
+    					 +CMStrings.padRight("PURG",5)
+    					 +CMStrings.padRight("MARR",5)+"\n\r");
+		table.append(CMStrings.repeat("-",75)+"\n\r");
 		Calendar C=Calendar.getInstance();
 		C.set(Calendar.HOUR_OF_DAY,23);
 		C.set(Calendar.MINUTE,59);
@@ -145,8 +145,8 @@ public class Stat extends BaseAbleLister
                     continue;
                 if(totals[x][CoffeeTableRow.STAT_SKILLUSE]>0)
                 {
-                    table.append(Util.padRight(""+A.ID(),25)
-                            +Util.centerPreserve(""+totals[x][CoffeeTableRow.STAT_SKILLUSE],10));
+                    table.append(CMStrings.padRight(""+A.ID(),25)
+                            +CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_SKILLUSE],10));
                     if(cr) table.append("\n\r");
                     cr=!cr;
                 }
@@ -157,8 +157,8 @@ public class Stat extends BaseAbleLister
                     if(totals[x][CoffeeTableRow.STAT_SKILLUSE]>0)
                     {
                         
-                        table.append(Util.padRight(""+A.ID(),25)
-                                +Util.centerPreserve(""+totals[x][CoffeeTableRow.STAT_SKILLUSE],10));
+                        table.append(CMStrings.padRight(""+A.ID(),25)
+                                +CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_SKILLUSE],10));
                         if(cr) table.append("\n\r");
                         cr=!cr;
                     }
@@ -202,19 +202,19 @@ public class Stat extends BaseAbleLister
 				numberOnlineCounter+=T.numberOnlineCounter();
 			}
 			totals[CoffeeTableRow.STAT_TICKSONLINE]=(totals[CoffeeTableRow.STAT_TICKSONLINE]*MudHost.TICK_TIME)/scale/(1000*60);
-			double avgOnline=(numberOnlineCounter>0)?Util.div(numberOnlineTotal,numberOnlineCounter):0.0;
-			avgOnline=Util.div(Math.round(avgOnline*10.0),10.0);
-			table.append(Util.padRight(CMLib.time().date2DateString(curTime+1)+" - "+CMLib.time().date2DateString(lastCur-1),25)
-						 +Util.centerPreserve(""+totals[CoffeeTableRow.STAT_LOGINS],5)
-						 +Util.centerPreserve(""+highestOnline,5)
-						 +Util.centerPreserve(""+avgOnline,5)
-						 +Util.centerPreserve(""+totals[CoffeeTableRow.STAT_TICKSONLINE],5)
-						 +Util.centerPreserve(""+totals[CoffeeTableRow.STAT_NEWPLAYERS],5)
-						 +Util.centerPreserve(""+totals[CoffeeTableRow.STAT_DEATHS],5)
-						 +Util.centerPreserve(""+totals[CoffeeTableRow.STAT_PKDEATHS],5)
-						 +Util.centerPreserve(""+totals[CoffeeTableRow.STAT_CLASSCHANGE],5)
-						 +Util.centerPreserve(""+totals[CoffeeTableRow.STAT_PURGES],5)
-						 +Util.centerPreserve(""+totals[CoffeeTableRow.STAT_MARRIAGES],5)+"\n\r");
+			double avgOnline=(numberOnlineCounter>0)?CMath.div(numberOnlineTotal,numberOnlineCounter):0.0;
+			avgOnline=CMath.div(Math.round(avgOnline*10.0),10.0);
+			table.append(CMStrings.padRight(CMLib.time().date2DateString(curTime+1)+" - "+CMLib.time().date2DateString(lastCur-1),25)
+						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_LOGINS],5)
+						 +CMStrings.centerPreserve(""+highestOnline,5)
+						 +CMStrings.centerPreserve(""+avgOnline,5)
+						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_TICKSONLINE],5)
+						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_NEWPLAYERS],5)
+						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_DEATHS],5)
+						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_PKDEATHS],5)
+						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_CLASSCHANGE],5)
+						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_PURGES],5)
+						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_MARRIAGES],5)+"\n\r");
             if(scale==0) break;
         }
 		mob.tell(table.toString());
@@ -229,34 +229,34 @@ public class Stat extends BaseAbleLister
 		String s1=(commands.size()>0)?((String)commands.elementAt(0)).toUpperCase():"";
 		String s2=(commands.size()>1)?((String)commands.elementAt(1)).toUpperCase():"";
 		if(s1.equalsIgnoreCase("TODAY"))
-			return showTableStats(mob,0,1,Util.combine(commands,1));
+			return showTableStats(mob,0,1,CMParms.combine(commands,1));
 		else
 		if(commands.size()>1)
 		{
-			String rest=(commands.size()>2)?Util.combine(commands,2):"";
-			if(s2.equals("DAY")&&(Util.isNumber(s1)))
-				return showTableStats(mob,(Util.s_int(s1)),1,rest);
+			String rest=(commands.size()>2)?CMParms.combine(commands,2):"";
+			if(s2.equals("DAY")&&(CMath.isNumber(s1)))
+				return showTableStats(mob,(CMath.s_int(s1)),1,rest);
 			else
-			if(s2.equals("DAYS")&&(Util.isNumber(s1)))
-				return showTableStats(mob,(Util.s_int(s1)),1,rest);
+			if(s2.equals("DAYS")&&(CMath.isNumber(s1)))
+				return showTableStats(mob,(CMath.s_int(s1)),1,rest);
 			else
-			if(s2.equals("WEEK")&&(Util.isNumber(s1)))
-				return showTableStats(mob,(Util.s_int(s1)*7),7,rest);
+			if(s2.equals("WEEK")&&(CMath.isNumber(s1)))
+				return showTableStats(mob,(CMath.s_int(s1)*7),7,rest);
 			else
-			if(s2.equals("WEEKS")&&(Util.isNumber(s1)))
-				return showTableStats(mob,(Util.s_int(s1)*7),7,rest);
+			if(s2.equals("WEEKS")&&(CMath.isNumber(s1)))
+				return showTableStats(mob,(CMath.s_int(s1)*7),7,rest);
 			else
-			if(s2.equals("MONTH")&&(Util.isNumber(s1)))
-				return showTableStats(mob,(Util.s_int(s1)*30),30,rest);
+			if(s2.equals("MONTH")&&(CMath.isNumber(s1)))
+				return showTableStats(mob,(CMath.s_int(s1)*30),30,rest);
 			else
-			if(s2.equals("MONTHS")&&(Util.isNumber(s1)))
-				return showTableStats(mob,(Util.s_int(s1)*30),30,rest);
+			if(s2.equals("MONTHS")&&(CMath.isNumber(s1)))
+				return showTableStats(mob,(CMath.s_int(s1)*30),30,rest);
 			else
-			if(s2.equals("YEAR")&&(Util.isNumber(s1)))
-				return showTableStats(mob,(Util.s_int(s1)*365),365,rest);
+			if(s2.equals("YEAR")&&(CMath.isNumber(s1)))
+				return showTableStats(mob,(CMath.s_int(s1)*365),365,rest);
 			else
-			if(s2.equals("YEARS")&&(Util.isNumber(s1)))
-				return showTableStats(mob,(Util.s_int(s1)*365),365,rest);
+			if(s2.equals("YEARS")&&(CMath.isNumber(s1)))
+				return showTableStats(mob,(CMath.s_int(s1)*365),365,rest);
 		}
 		
 		int ableTypes=-1;
@@ -297,7 +297,7 @@ public class Stat extends BaseAbleLister
 				}
 			}
 		}
-		String MOBname=Util.combine(commands,0);
+		String MOBname=CMParms.combine(commands,0);
 		MOB target=getTarget(mob,MOBname,true);
 		if((target==null)||((target!=null)&&(!target.isMonster())))
 			target=mob.location().fetchInhabitant(MOBname);

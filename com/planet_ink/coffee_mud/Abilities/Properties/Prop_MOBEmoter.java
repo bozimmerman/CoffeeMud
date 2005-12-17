@@ -70,7 +70,7 @@ public class Prop_MOBEmoter extends Property
 			}
 			if(!emoter.tick(ticking,tickID))
 			{
-				if(Util.getParmInt(emoter.getParms(),"expires",0)>0)
+				if(CMParms.getParmInt(emoter.getParms(),"expires",0)>0)
 					((MOB)ticking).delEffect(this);
 			}
 		}

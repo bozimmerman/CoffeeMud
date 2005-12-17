@@ -70,7 +70,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
             theRest=areaName.substring(x+1).trim();
             areaName=areaName.substring(0,x);
             x=theRest.indexOf("#(");
-            if((x>=0)&&(theRest.endsWith(")"))&&(Util.isInteger(theRest.substring(0,x))))
+            if((x>=0)&&(theRest.endsWith(")"))&&(CMath.isInteger(theRest.substring(0,x))))
             {
                 int comma=theRest.indexOf(",",x);
                 if(comma>0)
@@ -81,7 +81,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
                 }
             }
             else
-            if(Util.isInteger(theRest))
+            if(CMath.isInteger(theRest))
                 roomNum=Integer.parseInt(theRest.substring(x+1).trim());
         }
         
@@ -158,7 +158,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
             theRest=areaName.substring(x+1).trim();
             areaName=areaName.substring(0,x);
             x=theRest.indexOf("#(");
-            if((x>=0)&&(theRest.endsWith(")"))&&(Util.isInteger(theRest.substring(0,x))))
+            if((x>=0)&&(theRest.endsWith(")"))&&(CMath.isInteger(theRest.substring(0,x))))
             {
                 int comma=theRest.indexOf(",",x);
                 if(comma>0)
@@ -169,7 +169,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
                 }
             }
             else
-            if(Util.isInteger(theRest))
+            if(CMath.isInteger(theRest))
                 roomNum=Integer.parseInt(theRest.substring(x+1).trim());
         }
         int start=0;

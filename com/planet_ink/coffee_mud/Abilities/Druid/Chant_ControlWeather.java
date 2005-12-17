@@ -46,7 +46,7 @@ public class Chant_ControlWeather extends Chant
 		if(!msg.amISource(invoker())
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
-		&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_WEATHERAFFECTING)))
+		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_WEATHERAFFECTING)))
 		{
 			msg.source().tell("The weather does not heed to your call.");
 			return false;

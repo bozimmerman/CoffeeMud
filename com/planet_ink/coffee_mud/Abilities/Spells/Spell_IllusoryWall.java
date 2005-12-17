@@ -53,7 +53,7 @@ public class Spell_IllusoryWall extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
-		String whatToOpen=Util.combine(commands,0);
+		String whatToOpen=CMParms.combine(commands,0);
 		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode<0)
 		{

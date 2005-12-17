@@ -114,7 +114,7 @@ public class Chant_AnimalSpy extends Chant
 				{
 					String msg2=msg.sourceMessage().substring(start+1,end).trim();
 					if(msg2.length()>0)
-						spy.enqueCommand(Util.parse(msg2.trim()),0);
+						spy.enqueCommand(CMParms.parse(msg2.trim()),0);
 				}
 			}
 		}
@@ -134,7 +134,7 @@ public class Chant_AnimalSpy extends Chant
 			mob.tell("Chant to whom?");
 			return false;
 		}
-		String mobName=Util.combine(commands,0).trim().toUpperCase();
+		String mobName=CMParms.combine(commands,0).trim().toUpperCase();
 		MOB target=getTarget(mob,commands,givenTarget);
 
 		Room newRoom=mob.location();

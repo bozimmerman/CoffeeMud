@@ -42,7 +42,7 @@ public class Thief_Graffiti extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		String str=Util.combine(commands,0);
+		String str=CMParms.combine(commands,0);
 		if(str.length()==0)
 		{
 			mob.tell("What would you like to write here?");

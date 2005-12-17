@@ -209,9 +209,9 @@ public class DefaultCharState implements CharState
 			man=man*.5;
 
 		double lvl=new Integer(mob.envStats().level()).doubleValue();
-		double lvlby1p5=Util.div(lvl,1.5);
-		//double lvlby2=Util.div(lvl,2.0);
-		//double lvlby3=Util.div(lvl,3.0);
+		double lvlby1p5=CMath.div(lvl,1.5);
+		//double lvlby2=CMath.div(lvl,2.0);
+		//double lvlby3=CMath.div(lvl,3.0);
 
 		double hpGain=(con>1.0)?((con/40.0)*lvlby1p5)+(con/4.5)+2.0:1.0;
 		double manaGain=(man>2.0)?((man/80.0)*lvl)+(man/4.5)+2.0:1.0;
@@ -279,7 +279,7 @@ public class DefaultCharState implements CharState
 				&&(!CMLib.flags().isInFlight(mob)))
 					move=move-(mob.movesSinceLastTick()-4);
 				if(mob.envStats().weight()>mob.maxCarry())
-					move+=(int)Math.round(Util.mul(move,10.0*Util.div(mob.envStats().weight()-mob.maxCarry(),mob.maxCarry())));
+					move+=(int)Math.round(CMath.mul(move,10.0*CMath.div(mob.envStats().weight()-mob.maxCarry(),mob.maxCarry())));
 				adjMovement(move,maxState);
 			}
 			if((!CMLib.flags().isSleeping(mob))
@@ -362,12 +362,12 @@ public class DefaultCharState implements CharState
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code)){
-		case 0: setHitPoints(Util.s_int(val)); break;
-		case 1: setMana(Util.s_int(val)); break;
-		case 2: setMovement(Util.s_int(val)); break;
-		case 3: setHunger(Util.s_int(val)); break;
-		case 4: setThirst(Util.s_int(val)); break;
-		case 5: setFatigue(Util.s_int(val)); break;
+		case 0: setHitPoints(CMath.s_int(val)); break;
+		case 1: setMana(CMath.s_int(val)); break;
+		case 2: setMovement(CMath.s_int(val)); break;
+		case 3: setHunger(CMath.s_int(val)); break;
+		case 4: setThirst(CMath.s_int(val)); break;
+		case 5: setFatigue(CMath.s_int(val)); break;
 		}
 	}
 	public String getStat(String code)

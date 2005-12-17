@@ -77,8 +77,8 @@ public class Prayer_AuraDivineEdict extends Prayer
 		if((affected==null)||(!(affected instanceof MOB))||(noRecurse))
 			return true;
 
-		if(Util.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS)
-		   ||Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		if(CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS)
+		   ||CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		{
 			msg.source().tell(godName+" DEMANDS NO FIGHTING!");
 			msg.source().makePeace();
@@ -91,7 +91,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 		&&(msg.target().envStats().level()<invoker().envStats().level())
 		&&(getMsgFromAffect(msg.sourceMessage().toUpperCase()).equals(getMsgFromAffect(msg.sourceMessage()))))
 		{
-			Vector V=Util.parse("ORDER \""+msg.target().Name()+"\" "+getMsgFromAffect(msg.sourceMessage()));
+			Vector V=CMParms.parse("ORDER \""+msg.target().Name()+"\" "+getMsgFromAffect(msg.sourceMessage()));
 			Object O=CMLib.english().findCommand((MOB)msg.target(),(Vector)V.clone());
 			if((!((MOB)msg.target()).isMonster())
 			&&(CMClass.className(O).equalsIgnoreCase("DROP")

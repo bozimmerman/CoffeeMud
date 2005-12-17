@@ -446,11 +446,11 @@ public class Construction extends CraftingSkill
 		String str=(String)commands.elementAt(0);
 		if(("LIST").startsWith(str.toUpperCase()))
 		{
-			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Wood required\n\r");
+			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",20)+" Wood required\n\r");
 			for(int r=0;r<data.length;r++)
 			{
 				if((r!=BUILD_SECRETDOOR)||(mob.charStats().getCurrentClass().baseClass().equals("Thief")))
-					buf.append(Util.padRight(data[r][DAT_NAME],20)+" "+data[r][DAT_WOOD]+"\n\r");
+					buf.append(CMStrings.padRight(data[r][DAT_NAME],20)+" "+data[r][DAT_WOOD]+"\n\r");
 			}
 			commonTell(mob,buf.toString());
 			return true;
@@ -535,7 +535,7 @@ public class Construction extends CraftingSkill
 		}
 
 
-		int woodRequired=Util.s_int(data[doingCode][DAT_WOOD]);
+		int woodRequired=CMath.s_int(data[doingCode][DAT_WOOD]);
 		if(((mob.location().domainType()&Room.INDOORS)==0)
 		   &&(data[doingCode][DAT_ROOF].equals("1")))
 		{
@@ -562,7 +562,7 @@ public class Construction extends CraftingSkill
         
 		if(doingCode==BUILD_TITLE)
 		{
-			String title=Util.combine(commands,1);
+			String title=CMParms.combine(commands,1);
 			if(title.length()==0)
 			{
 				commonTell(mob,"A title must be specified.");
@@ -607,7 +607,7 @@ public class Construction extends CraftingSkill
 			else
 				commands.removeElementAt(1);
 
-			String title=Util.combine(commands,1);
+			String title=CMParms.combine(commands,1);
 			if(title.length()==0)
 			{
 				commonTell(mob,"A description must be specified.");

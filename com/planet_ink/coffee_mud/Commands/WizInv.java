@@ -46,9 +46,9 @@ public class WizInv extends StdCommand
 		int abilityCode=EnvStats.IS_NOT_SEEN|EnvStats.IS_CLOAKED;
 		str="Prop_WizInvis";
 		Ability A=mob.fetchEffect(str);
-		if((commands.size()>0)&&("NOCLOAK".startsWith(Util.combine(commands,0).trim().toUpperCase())))
+		if((commands.size()>0)&&("NOCLOAK".startsWith(CMParms.combine(commands,0).trim().toUpperCase())))
 		    abilityCode=EnvStats.IS_NOT_SEEN;
-		if(Util.combine(commands,0).trim().equalsIgnoreCase("OFF"))
+		if(CMParms.combine(commands,0).trim().equalsIgnoreCase("OFF"))
 		{
 		   if(A!=null)
 			   A.unInvoke();
@@ -59,7 +59,7 @@ public class WizInv extends StdCommand
 		else
 		if(A!=null)
 		{
-		    if(Util.bset(A.abilityCode(),abilityCode))
+		    if(CMath.bset(A.abilityCode(),abilityCode))
 		    {
 				mob.tell("You have already faded from view!");
 				return false;

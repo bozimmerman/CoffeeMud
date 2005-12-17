@@ -82,13 +82,13 @@ public class ClanData extends StdWebMacro
 				if(parms.containsKey("EXP"))
 					str.append(""+C.getExp()+", ");
 				if(parms.containsKey("STATUS"))
-					str.append(Util.capitalizeAndLower(Clan.CLANSTATUS_DESC[C.getStatus()].toLowerCase())+", ");
+					str.append(CMStrings.capitalizeAndLower(Clan.CLANSTATUS_DESC[C.getStatus()].toLowerCase())+", ");
 				if(parms.containsKey("ACCEPTANCE"))
 					str.append(CMLib.masking().maskDesc(C.getAcceptanceSettings())+", ");
 				if(parms.containsKey("TYPE"))
 					str.append(C.typeName()+", ");
 				if(parms.containsKey("CLANIDRELATIONS"))
-					str.append(Util.capitalizeAndLower(Clan.REL_DESCS[C.getClanRelations(httpReq.getRequestParameter("CLANID"))].toLowerCase())+", ");
+					str.append(CMStrings.capitalizeAndLower(Clan.REL_DESCS[C.getClanRelations(httpReq.getRequestParameter("CLANID"))].toLowerCase())+", ");
 				if(parms.containsKey("POINTS"))
 					str.append(""+C.calculateMapPoints()+", ");
 				if(parms.containsKey("MEMBERSTART"))
@@ -103,7 +103,7 @@ public class ClanData extends StdWebMacro
 					String lastID="";
 					String posFilter=httpReq.getRequestParameter("CLANPOSFILTER");
 					if(posFilter==null) posFilter="";
-					DVector members=C.getMemberList((posFilter.length()>0)?Util.s_int(posFilter):-1);
+					DVector members=C.getMemberList((posFilter.length()>0)?CMath.s_int(posFilter):-1);
 					for(int x=0;x<members.size();x++)
 					{
 						String name=(String)members.elementAt(x,1);
@@ -136,7 +136,7 @@ public class ClanData extends StdWebMacro
 							if(name.equals(member))
 							{
 								Integer I=(Integer)members.elementAt(x,2);
-								str.append(Util.capitalizeAndLower(Clan.ROL_DESCS[C.getGovernment()][I.intValue()].toLowerCase())+", ");
+								str.append(CMStrings.capitalizeAndLower(Clan.ROL_DESCS[C.getGovernment()][I.intValue()].toLowerCase())+", ");
 								break;
 							}
 						}

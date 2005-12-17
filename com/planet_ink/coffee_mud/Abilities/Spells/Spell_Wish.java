@@ -104,7 +104,7 @@ public class Spell_Wish extends Spell
 			return false;
 		}
 
-		String myWish=Util.combine(commands,0);
+		String myWish=CMParms.combine(commands,0);
 		if(((!auto)&&(mob.envStats().level()<20))||(mob.charStats().getStat(CharStats.CONSTITUTION)<2))
 		{
 			mob.tell("You are too weak to wish.");
@@ -145,7 +145,7 @@ public class Spell_Wish extends Spell
 				if(!Character.isLetterOrDigit(wish.charAt(i)))
 					wish.setCharAt(i,' ');
 			myWish=wish.toString().trim().toUpperCase();
-			Vector wishV=Util.parse(myWish);
+			Vector wishV=CMParms.parse(myWish);
 			myWish=" "+myWish+" ";
 			if(wishV.size()==0)
 			{
@@ -180,23 +180,23 @@ public class Spell_Wish extends Spell
 				{	goldWish=goldWish.substring(1+redundantGoldStarts[i].length()); i=-1;}
 				i++;
 			}
-			Vector goldCheck=Util.parse(goldWish.trim().toLowerCase());
+			Vector goldCheck=CMParms.parse(goldWish.trim().toLowerCase());
 			if((goldCheck.size()>1)
-			&&(Util.isNumber((String)goldCheck.firstElement()))
-			&&(Util.s_int((String)goldCheck.firstElement())>0)
-			&&(CMLib.english().matchAnyCurrencySet(Util.combine(goldCheck,1))!=null))
+			&&(CMath.isNumber((String)goldCheck.firstElement()))
+			&&(CMath.s_int((String)goldCheck.firstElement())>0)
+			&&(CMLib.english().matchAnyCurrencySet(CMParms.combine(goldCheck,1))!=null))
 			{
 				Coins newItem=(Coins)CMClass.getItem("StdCoins");
-				newItem.setCurrency(CMLib.english().matchAnyCurrencySet(Util.combine(goldCheck,1)));
-				newItem.setDenomination(CMLib.english().matchAnyDenomination(newItem.getCurrency(),Util.combine(goldCheck,1)));
-				newItem.setNumberOfCoins(Util.s_long((String)goldCheck.firstElement()));
+				newItem.setCurrency(CMLib.english().matchAnyCurrencySet(CMParms.combine(goldCheck,1)));
+				newItem.setDenomination(CMLib.english().matchAnyDenomination(newItem.getCurrency(),CMParms.combine(goldCheck,1)));
+				newItem.setNumberOfCoins(CMath.s_long((String)goldCheck.firstElement()));
 				newItem.setContainer(null);
 				newItem.wearAt(0);
 				newItem.recoverEnvStats();
 				mob.location().addItemRefuse(newItem,Item.REFUSE_PLAYER_DROP);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 				mob.location().recoverRoomStats();
-				int experienceRequired=(int)Math.round(Util.div(newItem.getTotalValue(),10.0));
+				int experienceRequired=(int)Math.round(CMath.div(newItem.getTotalValue(),10.0));
 				if(experienceRequired<=0)
 					experienceRequired=0;
 				wishDrain(mob,(baseLoss+experienceRequired),false);
@@ -283,7 +283,7 @@ public class Spell_Wish extends Spell
 			String possName=((String)wishV.elementAt(0)).trim();
 			if(wishV.size()>2)
 			{
-				possName=Util.combine(wishV,0,2);
+				possName=CMParms.combine(wishV,0,2);
 				if(target==null) target=mob.location().fetchFromRoomFavorMOBs(null,possName,Item.WORN_REQ_UNWORNONLY);
 				if(target==null) target=mob.fetchInventory(possName);
 				if(target==null) possName=((String)wishV.elementAt(0)).trim();
@@ -303,14 +303,14 @@ public class Spell_Wish extends Spell
 				if(possName.equalsIgnoreCase("I"))
 				{
 					wishV.removeElementAt(0);
-					myWish=" "+Util.combine(wishV,0).toUpperCase()+" ";
+					myWish=" "+CMParms.combine(wishV,0).toUpperCase()+" ";
 				}
 				target=mob;
 			}
 			else
 			{
 				wishV.removeElementAt(0);
-				myWish=" "+Util.combine(wishV,0).toUpperCase().trim()+" ";
+				myWish=" "+CMParms.combine(wishV,0).toUpperCase().trim()+" ";
 			}
 
 			if((target!=null)
@@ -602,8 +602,8 @@ public class Spell_Wish extends Spell
 				String wsh=myWish.substring(0,x).trim();
 				x=wsh.lastIndexOf(" ");
 				int amount=25;
-				if((x>=0)&&(Util.isNumber(wsh.substring(x).trim())))
-				   amount=Util.s_int(wsh.substring(x).trim());
+				if((x>=0)&&(CMath.isNumber(wsh.substring(x).trim())))
+				   amount=CMath.s_int(wsh.substring(x).trim());
 				if(target!=mob)
 				{
 					CMLib.combat().postExperience(mob,null,null,-(amount*4),false);
@@ -634,16 +634,16 @@ public class Spell_Wish extends Spell
 				if(myWish.indexOf(" GAIN ")>=0)
 				{
 					level=1;
-					Vector V=Util.parse(myWish);
+					Vector V=CMParms.parse(myWish);
 					for(int i2=1;i2<V.size();i2++)
 					{
 						if(((String)V.elementAt(i2)).equalsIgnoreCase("LEVELS"))
 						{
 							String s=(String)V.elementAt(i2-1);
-							if(Util.isNumber(s)
-							&&((Util.s_int(s)!=0)||(s.equalsIgnoreCase("0"))))
+							if(CMath.isNumber(s)
+							&&((CMath.s_int(s)!=0)||(s.equalsIgnoreCase("0"))))
 							{
-								level=Util.s_int(s);
+								level=CMath.s_int(s);
 								break;
 							}
 						}
@@ -653,16 +653,16 @@ public class Spell_Wish extends Spell
 				if(myWish.indexOf(" LOSE" )>=0)
 				{
 					level=-1;
-					Vector V=Util.parse(myWish);
+					Vector V=CMParms.parse(myWish);
 					for(int i2=1;i2<V.size();i2++)
 					{
 						if(((String)V.elementAt(i2)).equalsIgnoreCase("LEVELS"))
 						{
 							String s=(String)V.elementAt(i2);
-							if(Util.isNumber(s)
-							&&((Util.s_int(s)!=0)||(s.equalsIgnoreCase("0"))))
+							if(CMath.isNumber(s)
+							&&((CMath.s_int(s)!=0)||(s.equalsIgnoreCase("0"))))
 							{
-								level=-Util.s_int(s);
+								level=-CMath.s_int(s);
 								break;
 							}
 						}
@@ -670,16 +670,16 @@ public class Spell_Wish extends Spell
 				}
 				else
 				{
-					Vector V=Util.parse(myWish);
+					Vector V=CMParms.parse(myWish);
 					for(int i2=0;i2<V.size()-1;i2++)
 					{
 						if(((String)V.elementAt(i2)).equalsIgnoreCase("LEVEL"))
 						{
 							String s=(String)V.elementAt(i2+1);
-							if(Util.isNumber(s)
-							&&((Util.s_int(s)!=0)||(s.equalsIgnoreCase("0"))))
+							if(CMath.isNumber(s)
+							&&((CMath.s_int(s)!=0)||(s.equalsIgnoreCase("0"))))
 							{
-								level=Util.s_int(s)-target.baseEnvStats().level();
+								level=CMath.s_int(s)-target.baseEnvStats().level();
 								break;
 							}
 						}
@@ -840,7 +840,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" TRANSFORM")>=0)))
 			{
 				CharClass C=CMClass.findCharClass((String)wishV.lastElement());
-				if((C!=null)&&(Util.bset(C.availabilityCode(),Area.THEME_FANTASY)))
+				if((C!=null)&&(CMath.bset(C.availabilityCode(),Area.THEME_FANTASY)))
 				{
 					CharClass oldC=mob.baseCharStats().getCurrentClass();
 					baseLoss+=1000;
@@ -1070,7 +1070,7 @@ public class Spell_Wish extends Spell
 			}
 
 			CMLib.combat().postExperience(mob,null,null,-baseLoss,false);
-			Log.sysOut("Wish",mob.Name()+" unsuccessfully wished for '"+Util.combine(commands,0)+"'");
+			Log.sysOut("Wish",mob.Name()+" unsuccessfully wished for '"+CMParms.combine(commands,0)+"'");
 			mob.tell("Your attempted wish has cost you "+baseLoss+" experience points, but it did not come true.  You might try rewording your wish next time.");
 			return false;
 		}

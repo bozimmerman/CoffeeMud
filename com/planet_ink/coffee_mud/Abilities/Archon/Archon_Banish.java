@@ -60,8 +60,8 @@ public class Archon_Banish extends ArchonSkill
 			&&(msg.source().location()!=null)
 			&&(msg.sourceMinor()!=CMMsg.TYP_LEAVE))
 			{
-				boolean summon=Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
-				boolean teleport=Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
+				boolean summon=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
+				boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
 				boolean shere=(msg.source().location()==affected)||(msg.source().location().getArea()==affected);
 				if(((!shere)&&(!summon)&&(teleport))
 				   ||((shere)&&(summon)))
@@ -77,8 +77,8 @@ public class Archon_Banish extends ArchonSkill
 			&&(msg.sourceMinor()!=CMMsg.TYP_ENTER))
 			{
 				boolean shere=(msg.source().location()==affected)||(msg.source().location().getArea()==affected);
-				boolean summon=Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
-				boolean teleport=Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
+				boolean summon=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
+				boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
 				if(((shere)&&(!summon)&&(teleport))
 				   ||((!shere)&&(summon)))
 				{
@@ -92,7 +92,7 @@ public class Archon_Banish extends ArchonSkill
 			&&(msg.source().location()!=null)
 			&&((msg.source().location()==affected)
 			   ||(msg.source().location().getArea()==affected))
-			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING)))
+			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING)))
 			{
 				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
 				return false;
@@ -126,7 +126,7 @@ public class Archon_Banish extends ArchonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-	        Room myPrison = CMLib.map().getRoom(Util.combine(commands,1));
+	        Room myPrison = CMLib.map().getRoom(CMParms.combine(commands,1));
 		if(myPrison != null && !"".equals(myPrison.roomID()))
 			while(commands.size() > 1)
 			{

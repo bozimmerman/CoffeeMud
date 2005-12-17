@@ -52,7 +52,7 @@ public class Beacon extends StdCommand
 		}
 		else
 		{
-			String name=Util.combine(commands,0);
+			String name=CMParms.combine(commands,0);
 			MOB M=null;
 			for(int s=0;s<CMLib.sessions().size();s++)
 			{

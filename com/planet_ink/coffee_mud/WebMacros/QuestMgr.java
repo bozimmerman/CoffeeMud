@@ -93,11 +93,11 @@ public class QuestMgr extends StdWebMacro
 	{
 		Q.script();
 		String script=httpReq.getRequestParameter("SCRIPT");
-		script=Util.replaceAll(script,"'","`");
-		script=Util.replaceAll(script,"\n",";");
-		script=Util.replaceAll(script,"\r",";");
-		script=Util.replaceAll(script,";;",";");
-		script=Util.replaceAll(script,";;",";");
+		script=CMStrings.replaceAll(script,"'","`");
+		script=CMStrings.replaceAll(script,"\n",";");
+		script=CMStrings.replaceAll(script,"\r",";");
+		script=CMStrings.replaceAll(script,";;",";");
+		script=CMStrings.replaceAll(script,";;",";");
 		script=script.trim();
 		while(script.endsWith(";"))
 			script=script.substring(0,script.length()-1);

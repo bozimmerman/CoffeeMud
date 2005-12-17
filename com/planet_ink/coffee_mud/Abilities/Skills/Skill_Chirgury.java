@@ -63,7 +63,7 @@ public class Skill_Chirgury extends StdSkill
 	{
 	    if(commands.size()==0)
 	    {
-	        mob.tell("Remove what from whom? Parts include: "+Util.toStringList(parts));
+	        mob.tell("Remove what from whom? Parts include: "+CMParms.toStringList(parts));
 	        return false;
 	        
 	    }
@@ -77,7 +77,7 @@ public class Skill_Chirgury extends StdSkill
 	    }
 	    if(partCode<0)
 	    {
-	        mob.tell("'"+part+"' is not a valid part to remove.  Try one of these: "+Util.toStringList(parts));
+	        mob.tell("'"+part+"' is not a valid part to remove.  Try one of these: "+CMParms.toStringList(parts));
 	        return false;
 	    }
 	    
@@ -214,7 +214,7 @@ public class Skill_Chirgury extends StdSkill
 				            baby.charStats().setStat(CharStats.MAX_STRENGTH_ADJ+i,1);
 				        baby.charStats().setMyRace(((MOB)target).charStats().getMyRace());
 				        baby.recoverEnvStats();
-				        baby.setDescription(Util.capitalizeAndLower(baby.charStats().hisher())+" body parts can be faintly made out in the twisted and mangled flesh.");
+				        baby.setDescription(CMStrings.capitalizeAndLower(baby.charStats().hisher())+" body parts can be faintly made out in the twisted and mangled flesh.");
 				        baby.setMobDescription(baby.description());
 				        baby.text();
 				        mob.location().addItemRefuse(baby,Item.REFUSE_PLAYER_DROP);

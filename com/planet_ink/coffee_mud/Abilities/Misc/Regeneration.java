@@ -67,7 +67,7 @@ public class Regeneration extends StdAbility
 		if(mob.amDead()) return true;
 
 		boolean doneAnything=false;
-		doneAnything=doneAnything||mob.curState().adjHitPoints((int)Math.round(Util.div(mob.envStats().level(),2.0)),mob.maxState());
+		doneAnything=doneAnything||mob.curState().adjHitPoints((int)Math.round(CMath.div(mob.envStats().level(),2.0)),mob.maxState());
 		doneAnything=doneAnything||mob.curState().adjMana(mob.envStats().level()*2,mob.maxState());
 		doneAnything=doneAnything||mob.curState().adjMovement(mob.envStats().level()*3,mob.maxState());
 		if(doneAnything)
@@ -112,7 +112,7 @@ public class Regeneration extends StdAbility
 						String lvl=text.substring(x+5);
 						if(lvl.indexOf(" ")>=0)
 							lvl=lvl.substring(lvl.indexOf(" "));
-						if(msg.tool().envStats().level()>=Util.s_int(lvl))
+						if(msg.tool().envStats().level()>=CMath.s_int(lvl))
 							hurts=true;
 					}
 					x=text.indexOf(EnvResource.RESOURCE_DESCS[((Weapon)msg.tool()).material()&EnvResource.RESOURCE_MASK]);

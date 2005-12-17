@@ -42,14 +42,14 @@ public class AutoDraw extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!Util.bset(mob.getBitmap(),MOB.ATT_AUTODRAW))
+		if(!CMath.bset(mob.getBitmap(),MOB.ATT_AUTODRAW))
 		{
-			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTODRAW));
+			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTODRAW));
 			mob.tell(getScr("AutoDraw","turnon"));
 		}
 		else
 		{
-			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTODRAW));
+			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTODRAW));
 			mob.tell(getScr("AutoDraw","turnoff"));
 		}
 		return false;

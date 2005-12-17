@@ -54,7 +54,7 @@ public class Wake extends StdCommand
 		}
 		else
 		{
-			String whom=Util.combine(commands,0);
+			String whom=CMParms.combine(commands,0);
 			MOB M=mob.location().fetchInhabitant(whom);
 			if((M==null)||(!CMLib.flags().canBeSeenBy(M,mob)))
 			{

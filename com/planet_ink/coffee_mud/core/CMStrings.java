@@ -19,6 +19,8 @@ import java.util.*;
 public class CMStrings
 {
     private CMStrings(){super();}
+    private static CMStrings inst=new CMStrings();
+    public static CMStrings instance(){return inst;}
     
     public final static String SPACES="                                                                     ";
     public static String repeat(String str1, int times)

@@ -56,7 +56,7 @@ public class Paladin_Aura extends Paladin
 				MOB mob=(MOB)paladinsGroup.elementAt(i);
 				if(( CMLib.flags().isEvil(mob) )&&(pass))
 				{
-					int damage=(int)Math.round(Util.div(mob.envStats().level(),3.0));
+					int damage=(int)Math.round(CMath.div(mob.envStats().level(),3.0));
 					CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe aura around <S-NAME> <DAMAGE> <T-NAME>!^?");
 				}
 			}
@@ -83,12 +83,12 @@ public class Paladin_Aura extends Paladin
 		   &&(msg.target() instanceof MOB)
 		   &&(msg.source()!=invoker))
 		{
-			if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+			if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
-			&&(!Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))
-			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
+			&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))
+			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
 			{
 				msg.source().location().show((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of "+msg.source().name()+".");
 				return false;

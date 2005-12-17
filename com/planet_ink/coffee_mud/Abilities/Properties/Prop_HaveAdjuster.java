@@ -61,55 +61,55 @@ public class Prop_HaveAdjuster extends Property
         
         newText=buildMask(newText,mask);
         
-		adjEnvStats.setAbility(Util.getParmPlus(newText,"abi"));
-		adjEnvStats.setArmor(Util.getParmPlus(newText,"arm"));
-		adjEnvStats.setAttackAdjustment(Util.getParmPlus(newText,"att"));
-		adjEnvStats.setDamage(Util.getParmPlus(newText,"dam"));
-		adjEnvStats.setDisposition(Util.getParmPlus(newText,"dis"));
-		adjEnvStats.setLevel(Util.getParmPlus(newText,"lev"));
-		adjEnvStats.setRejuv(Util.getParmPlus(newText,"rej"));
-		adjEnvStats.setSensesMask(Util.getParmPlus(newText,"sen"));
-		adjEnvStats.setSpeed(Util.getParmDoublePlus(newText,"spe"));
-		adjEnvStats.setWeight(Util.getParmPlus(newText,"wei"));
-		adjEnvStats.setHeight(Util.getParmPlus(newText,"hei"));
+		adjEnvStats.setAbility(CMParms.getParmPlus(newText,"abi"));
+		adjEnvStats.setArmor(CMParms.getParmPlus(newText,"arm"));
+		adjEnvStats.setAttackAdjustment(CMParms.getParmPlus(newText,"att"));
+		adjEnvStats.setDamage(CMParms.getParmPlus(newText,"dam"));
+		adjEnvStats.setDisposition(CMParms.getParmPlus(newText,"dis"));
+		adjEnvStats.setLevel(CMParms.getParmPlus(newText,"lev"));
+		adjEnvStats.setRejuv(CMParms.getParmPlus(newText,"rej"));
+		adjEnvStats.setSensesMask(CMParms.getParmPlus(newText,"sen"));
+		adjEnvStats.setSpeed(CMParms.getParmDoublePlus(newText,"spe"));
+		adjEnvStats.setWeight(CMParms.getParmPlus(newText,"wei"));
+		adjEnvStats.setHeight(CMParms.getParmPlus(newText,"hei"));
 
-		String val=Util.getParmStr(newText,"gen","").toUpperCase();
+		String val=CMParms.getParmStr(newText,"gen","").toUpperCase();
 		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
 		{
             adjCharStats.setStat(CharStats.GENDER,val.charAt(0));
 			gotSex=true;
 		}
 
-		val=Util.getParmStr(newText,"cla","").toUpperCase();
+		val=CMParms.getParmStr(newText,"cla","").toUpperCase();
 		if((val.length()>0)&&(CMClass.findCharClass(val)!=null)&&(!val.equalsIgnoreCase("Archon")))
 		{
 			gotClass=true;
 			adjCharStats.setCurrentClass(CMClass.findCharClass(val));
 		}
-		val=Util.getParmStr(newText,"rac","").toUpperCase();
+		val=CMParms.getParmStr(newText,"rac","").toUpperCase();
 		if((val.length()>0)&&(CMClass.getRace(val)!=null))
 		{
 			gotRace=true;
 			adjCharStats.setMyRace(CMClass.getRace(val));
 		}
-		adjCharStats.setStat(CharStats.STRENGTH,Util.getParmPlus(newText,"str"));
-		adjCharStats.setStat(CharStats.WISDOM,Util.getParmPlus(newText,"wis"));
-		adjCharStats.setStat(CharStats.CHARISMA,Util.getParmPlus(newText,"cha"));
-		adjCharStats.setStat(CharStats.CONSTITUTION,Util.getParmPlus(newText,"con"));
-		adjCharStats.setStat(CharStats.DEXTERITY,Util.getParmPlus(newText,"dex"));
-		adjCharStats.setStat(CharStats.INTELLIGENCE,Util.getParmPlus(newText,"int"));
-		adjCharStats.setStat(CharStats.MAX_STRENGTH_ADJ,Util.getParmPlus(newText,"maxstr"));
-		adjCharStats.setStat(CharStats.MAX_WISDOM_ADJ,Util.getParmPlus(newText,"maxwis"));
-		adjCharStats.setStat(CharStats.MAX_CHARISMA_ADJ,Util.getParmPlus(newText,"maxcha"));
-		adjCharStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,Util.getParmPlus(newText,"maxcon"));
-		adjCharStats.setStat(CharStats.MAX_DEXTERITY_ADJ,Util.getParmPlus(newText,"maxdex"));
-		adjCharStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,Util.getParmPlus(newText,"maxint"));
+		adjCharStats.setStat(CharStats.STRENGTH,CMParms.getParmPlus(newText,"str"));
+		adjCharStats.setStat(CharStats.WISDOM,CMParms.getParmPlus(newText,"wis"));
+		adjCharStats.setStat(CharStats.CHARISMA,CMParms.getParmPlus(newText,"cha"));
+		adjCharStats.setStat(CharStats.CONSTITUTION,CMParms.getParmPlus(newText,"con"));
+		adjCharStats.setStat(CharStats.DEXTERITY,CMParms.getParmPlus(newText,"dex"));
+		adjCharStats.setStat(CharStats.INTELLIGENCE,CMParms.getParmPlus(newText,"int"));
+		adjCharStats.setStat(CharStats.MAX_STRENGTH_ADJ,CMParms.getParmPlus(newText,"maxstr"));
+		adjCharStats.setStat(CharStats.MAX_WISDOM_ADJ,CMParms.getParmPlus(newText,"maxwis"));
+		adjCharStats.setStat(CharStats.MAX_CHARISMA_ADJ,CMParms.getParmPlus(newText,"maxcha"));
+		adjCharStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,CMParms.getParmPlus(newText,"maxcon"));
+		adjCharStats.setStat(CharStats.MAX_DEXTERITY_ADJ,CMParms.getParmPlus(newText,"maxdex"));
+		adjCharStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,CMParms.getParmPlus(newText,"maxint"));
 
-		adjCharState.setHitPoints(Util.getParmPlus(newText,"hit"));
-		adjCharState.setHunger(Util.getParmPlus(newText,"hun"));
-		adjCharState.setMana(Util.getParmPlus(newText,"man"));
-		adjCharState.setMovement(Util.getParmPlus(newText,"mov"));
-		adjCharState.setThirst(Util.getParmPlus(newText,"thi"));
+		adjCharState.setHitPoints(CMParms.getParmPlus(newText,"hit"));
+		adjCharState.setHunger(CMParms.getParmPlus(newText,"hun"));
+		adjCharState.setMana(CMParms.getParmPlus(newText,"man"));
+		adjCharState.setMovement(CMParms.getParmPlus(newText,"mov"));
+		adjCharState.setThirst(CMParms.getParmPlus(newText,"thi"));
 		return ((gotClass?1:0)+(gotRace?2:0)+(gotSex?4:0));
 	}
 
@@ -242,13 +242,13 @@ public class Prop_HaveAdjuster extends Property
 		x=id.toUpperCase().indexOf("DIS");
 		if(x>=0)
 		{
-			long val=Util.getParmPlus(id,"dis");
+			long val=CMParms.getParmPlus(id,"dis");
 			int y=id.indexOf(""+val,x);
 			if((val!=0)&&(y>x))
 			{
 				StringBuffer middle=new StringBuffer("");
 				for(int num=0;num<EnvStats.dispositionsVerb.length;num++)
-					if(Util.bset(val,Util.pow(2,num)))
+					if(CMath.bset(val,CMath.pow(2,num)))
 						middle.append(EnvStats.dispositionsVerb[num]+" ");
 				id=id.substring(0,x)+middle.toString().trim()+id.substring(y+((""+val).length()));
 			}
@@ -256,13 +256,13 @@ public class Prop_HaveAdjuster extends Property
 		x=id.toUpperCase().indexOf("SEN");
 		if(x>=0)
 		{
-			long val=Util.getParmPlus(id,"sen");
+			long val=CMParms.getParmPlus(id,"sen");
 			int y=id.indexOf(""+val,x);
 			if((val!=0)&&(y>x))
 			{
 				StringBuffer middle=new StringBuffer("");
 				for(int num=0;num<EnvStats.sensesVerb.length;num++)
-					if(Util.bset(val,Util.pow(2,num)))
+					if(CMath.bset(val,CMath.pow(2,num)))
 						middle.append(EnvStats.sensesVerb[num]+" ");
 				id=id.substring(0,x)+middle.toString().trim()+id.substring(y+((""+val).length()));
 			}
