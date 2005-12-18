@@ -713,6 +713,7 @@ public class MUD extends Thread implements MudHost
 			if(S!=null)S.print(".");
 		}
 		if(S!=null)S.println("All users logged off");
+        try{Thread.sleep(3000);}catch(Exception e){/* give sessions a few seconds to inform the map */}
 		Log.sysOut("MUD","All users logged off.");
 
 		if(smtpServerThread!=null)
