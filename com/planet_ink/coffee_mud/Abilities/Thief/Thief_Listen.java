@@ -41,9 +41,9 @@ public class Thief_Listen extends ThiefSkill
 	private static final String[] triggerStrings = {"LISTEN"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	private Room sourceRoom=null;
-	private Room room=null;
-	private String lastSaid="";
+	protected Room sourceRoom=null;
+	protected Room room=null;
+	protected String lastSaid="";
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

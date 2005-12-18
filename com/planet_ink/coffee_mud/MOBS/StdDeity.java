@@ -893,7 +893,7 @@ public class StdDeity extends StdMOB implements Deity
 		return (Ability)CMLib.english().fetchEnvironmental(blessings,ID,false);
 	}
 
-	private void parseTriggers(Vector putHere, String trigger)
+    protected void parseTriggers(Vector putHere, String trigger)
 	{
 		putHere.clear();
 		trigger=trigger.toUpperCase().trim();
@@ -1136,27 +1136,27 @@ public class StdDeity extends StdMOB implements Deity
 		}
 	}
 
-	private static final int TRIGGER_SAY=0;
-	private static final int TRIGGER_TIME=1;
-	private static final int TRIGGER_PUTTHING=2;
-	private static final int TRIGGER_BURNTHING=3;
-	private static final int TRIGGER_EAT=4;
-	private static final int TRIGGER_DRINK=5;
-	private static final int TRIGGER_INROOM=6;
-	private static final int TRIGGER_RIDING=7;
-	private static final int TRIGGER_CAST=8;
-	private static final int TRIGGER_EMOTE=9;
-	private static final int TRIGGER_PUTVALUE=10;
-	private static final int TRIGGER_PUTMATERIAL=11;
-	private static final int TRIGGER_BURNMATERIAL=12;
-	private static final int TRIGGER_BURNVALUE=13;
-	private static final int TRIGGER_SITTING=14;
-	private static final int TRIGGER_STANDING=15;
-	private static final int TRIGGER_SLEEPING=16;
-	private static final int TRIGGER_READING=17;
-	private static final int TRIGGER_RANDOM=18;
-	private static final int TRIGGER_CHECK=19;
-	private static final int[] TRIG_WATCH={
+    protected static final int TRIGGER_SAY=0;
+    protected static final int TRIGGER_TIME=1;
+    protected static final int TRIGGER_PUTTHING=2;
+    protected static final int TRIGGER_BURNTHING=3;
+    protected static final int TRIGGER_EAT=4;
+    protected static final int TRIGGER_DRINK=5;
+    protected static final int TRIGGER_INROOM=6;
+    protected static final int TRIGGER_RIDING=7;
+    protected static final int TRIGGER_CAST=8;
+    protected static final int TRIGGER_EMOTE=9;
+    protected static final int TRIGGER_PUTVALUE=10;
+    protected static final int TRIGGER_PUTMATERIAL=11;
+    protected static final int TRIGGER_BURNMATERIAL=12;
+    protected static final int TRIGGER_BURNVALUE=13;
+    protected static final int TRIGGER_SITTING=14;
+    protected static final int TRIGGER_STANDING=15;
+    protected static final int TRIGGER_SLEEPING=16;
+    protected static final int TRIGGER_READING=17;
+    protected static final int TRIGGER_RANDOM=18;
+    protected static final int TRIGGER_CHECK=19;
+    protected static final int[] TRIG_WATCH={
 		CMMsg.TYP_SPEAK,		//0
 		-999,					//1
 		CMMsg.TYP_PUT,			//2
@@ -1179,10 +1179,10 @@ public class StdDeity extends StdMOB implements Deity
 		-999					//19
 	};
 
-	private static final int CONNECT_AND=0;
-	private static final int CONNECT_OR=1;
+    protected static final int CONNECT_AND=0;
+    protected static final int CONNECT_OR=1;
 
-	private static class DeityTrigger
+    protected static class DeityTrigger
 	{
 		public int triggerCode=TRIGGER_SAY;
 		public int previousConnect=CONNECT_AND;

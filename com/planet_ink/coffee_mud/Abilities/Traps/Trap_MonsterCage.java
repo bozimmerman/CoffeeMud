@@ -39,9 +39,9 @@ public class Trap_MonsterCage extends StdTrap
 	protected int trapLevel(){return 10;}
 	public String requiresToSet(){return "a caged monster";}
 
-	private MOB monster=null;
+	protected MOB monster=null;
 
-	private Item getCagedAnimal(MOB mob)
+	protected Item getCagedAnimal(MOB mob)
 	{
 		if(mob==null) return null;
 		if(mob.location()==null) return null;

@@ -50,7 +50,7 @@ public class StdLimb extends StdItem
 		partnum=-1;
 	}
 	
-	private int partNum()
+	protected int partNum()
 	{
 		if(partnum>=0) return partnum;
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)

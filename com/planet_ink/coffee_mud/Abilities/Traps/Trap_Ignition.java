@@ -39,7 +39,7 @@ public class Trap_Ignition extends StdTrap
 	protected int trapLevel(){return 8;}
 	public String requiresToSet(){return "a container of lamp oil";}
 
-	private Item getPoison(MOB mob)
+	protected Item getPoison(MOB mob)
 	{
 		if(mob==null) return null;
 		if(mob.location()==null) return null;

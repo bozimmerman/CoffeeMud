@@ -41,7 +41,7 @@ public class Thief_RunningFight extends ThiefSkill
 	public int quality(){return Ability.OK_SELF;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	private MOB lastOpponent=null;
+	protected MOB lastOpponent=null;
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

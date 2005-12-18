@@ -45,7 +45,7 @@ public class WingFlying extends StdAbility
 	private static final String[] triggerStrings = {"FLAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	private boolean flying=true;
+    protected boolean flying=true;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

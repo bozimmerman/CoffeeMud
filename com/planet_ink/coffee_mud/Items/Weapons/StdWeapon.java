@@ -277,7 +277,7 @@ public class StdWeapon extends StdItem implements Weapon
 		super.setUsesRemaining(newUses);
 	}
 
-	private String weaponHealth()
+	protected String weaponHealth()
 	{
 		if(usesRemaining()>=100)
 			return "";

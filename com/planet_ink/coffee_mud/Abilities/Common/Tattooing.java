@@ -38,7 +38,7 @@ public class Tattooing extends CommonSkill
 	public String name(){ return "Tattooing";}
 	private static final String[] triggerStrings = {"TATTOO","TATTOOING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	private String writing="";
+	protected String writing="";
 	MOB target=null;
 	public Tattooing()
 	{

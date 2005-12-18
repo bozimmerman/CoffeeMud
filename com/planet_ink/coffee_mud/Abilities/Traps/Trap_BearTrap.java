@@ -40,8 +40,8 @@ public class Trap_BearTrap extends StdTrap
 	public String requiresToSet(){return "30 pounds of metal";}
 	public int baseRejuvTime(int level){ return 35;}
 
-	private int amountRemaining=250;
-	private MOB trapped=null;
+	protected int amountRemaining=250;
+	protected MOB trapped=null;
 
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{

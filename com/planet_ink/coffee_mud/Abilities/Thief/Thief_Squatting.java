@@ -43,8 +43,8 @@ public class Thief_Squatting extends ThiefSkill
 	private static final String[] triggerStrings = {"SQUAT","SQUATTING"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	private boolean failed=false;
-	private Room room=null;
+	protected boolean failed=false;
+	protected Room room=null;
 	private LandTitle title=null;
 
 	public void executeMsg(Environmental host, CMMsg msg)

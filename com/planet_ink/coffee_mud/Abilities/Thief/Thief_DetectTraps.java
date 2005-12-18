@@ -40,7 +40,7 @@ public class Thief_DetectTraps extends ThiefSkill
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"CHECK"};
 	public String[] triggerStrings(){return triggerStrings;}
-	private Environmental lastChecked=null;
+	protected Environmental lastChecked=null;
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

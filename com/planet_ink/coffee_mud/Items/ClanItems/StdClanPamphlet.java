@@ -34,7 +34,7 @@ import java.util.*;
 public class StdClanPamphlet extends StdClanItem
 {
 	public String ID(){	return "StdClanPamphlet";}
-	private int tradeTime=-1;
+	protected int tradeTime=-1;
 
 	public StdClanPamphlet()
 	{

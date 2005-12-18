@@ -41,7 +41,7 @@ public class Thief_Detection extends ThiefSkill
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"DETECT","DETECTION"};
 	public String[] triggerStrings(){return triggerStrings;}
-	private Room lastRoom=null;
+	protected Room lastRoom=null;
     private int bonusThisRoom=0;
     
     public void affectCharStats(MOB affected, CharStats affectableStats)

@@ -39,7 +39,7 @@ public class Trap_WeaponSwing extends StdTrap
 	protected int trapLevel(){return 9;}
 	public String requiresToSet(){return "a melee weapon";}
 
-	private Item getPoison(MOB mob)
+	protected Item getPoison(MOB mob)
 	{
 		if(mob==null) return null;
 		if(mob.location()==null) return null;

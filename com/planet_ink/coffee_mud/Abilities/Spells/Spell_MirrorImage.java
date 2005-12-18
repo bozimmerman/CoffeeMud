@@ -42,8 +42,8 @@ public class Spell_MirrorImage extends Spell
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	private	Random randomizer = new Random(System.currentTimeMillis());
-	private int numberOfImages = 0;
-	private boolean notAgain=false;
+	protected int numberOfImages = 0;
+	protected boolean notAgain=false;
 
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

@@ -42,10 +42,10 @@ public class Thief_ContractHit extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public String displayText(){return "";}
-	private boolean done=false;
-	private boolean readyToHit=false;
-	private boolean hitting=false;
-	private Vector hitmen=new Vector();
+	protected boolean done=false;
+	protected boolean readyToHit=false;
+	protected boolean hitting=false;
+	protected Vector hitmen=new Vector();
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

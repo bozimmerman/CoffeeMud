@@ -61,7 +61,7 @@ public class StdShipConsole extends StdRideable
 	public boolean activated(){return activated;}
 	public void activate(boolean truefalse){activated=truefalse;}
 	
-	private int panelType=ShipComponent.ShipPanel.COMPONENT_PANEL_COMPUTER;
+	protected int panelType=ShipComponent.ShipPanel.COMPONENT_PANEL_COMPUTER;
 	public int panelType(){return panelType;}
 	public void setPanelType(int type){panelType=type;}
 	

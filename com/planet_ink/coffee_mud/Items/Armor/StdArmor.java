@@ -60,7 +60,7 @@ public class StdArmor extends StdContainer implements Armor
 		super.setUsesRemaining(newUses);
 	}
 
-	private String armorHealth()
+	protected String armorHealth()
 	{
 		if(usesRemaining()>=100)
 			return "";

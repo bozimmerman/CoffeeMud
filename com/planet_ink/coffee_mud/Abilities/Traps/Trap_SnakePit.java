@@ -39,7 +39,7 @@ public class Trap_SnakePit extends Trap_RoomPit
 	protected int trapLevel(){return 10;}
 	public String requiresToSet(){return "some caged snakes";}
 
-	private Vector monsters=null;
+	protected Vector monsters=null;
 
 	protected Item getCagedAnimal(MOB mob)
 	{

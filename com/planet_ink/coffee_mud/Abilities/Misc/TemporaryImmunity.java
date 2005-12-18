@@ -44,8 +44,8 @@ public class TemporaryImmunity extends StdAbility
 	public boolean canBeUninvoked(){return true;}
 	public boolean isAutoInvoked(){return true;}
 	public final static long IMMUNITY_TIME=MudHost.TIME_MILIS_PER_MUDHOUR*60;
-	private int tickDown=10;
-	private DVector set=new DVector(2);
+    protected int tickDown=10;
+    protected DVector set=new DVector(2);
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -41,7 +41,7 @@ public class Thief_Bind extends ThiefSkill
 	public int quality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"BIND"};
 	public String[] triggerStrings(){return triggerStrings;}
-	private int maxRange=0;
+	protected int maxRange=0;
 	public int maxRange(){return maxRange;}
 	public int minRange(){return 0;}
 	public long flags(){return Ability.FLAG_BINDING;}

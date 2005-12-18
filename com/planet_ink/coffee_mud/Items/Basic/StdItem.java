@@ -590,7 +590,7 @@ public class StdItem implements Item
 		return true;
 	}
 	
-	private boolean alreadyWornMsg(MOB mob, Item thisItem)
+	protected boolean alreadyWornMsg(MOB mob, Item thisItem)
 	{
 		if(!thisItem.amWearingAt(Item.INVENTORY))
 		{

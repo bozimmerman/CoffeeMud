@@ -38,8 +38,8 @@ public class Spell_PhantomHound extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){ return MALICIOUS;}
-	private MOB victim=null;
-	private int pointsLeft=0;
+	protected MOB victim=null;
+	protected int pointsLeft=0;
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public boolean tick(Tickable ticking, int tickID)

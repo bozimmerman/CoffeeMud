@@ -36,8 +36,8 @@ public class StdMOB implements MOB
 	public String ID(){return "StdMOB";}
 	public String Username="";
 
-	private String clanID=null;
-	private int clanRole=0;
+    protected String clanID=null;
+    protected int clanRole=0;
 
 	protected CharStats baseCharStats=(CharStats)CMClass.getCommon("DefaultCharStats");
 	protected CharStats charStats=(CharStats)CMClass.getCommon("DefaultCharStats");
@@ -1182,7 +1182,7 @@ public class StdMOB implements MOB
 		if(O!=null) doCommand(O,commands);
 	}
 
-	private void doCommand(Object O, Vector commands)
+    protected void doCommand(Object O, Vector commands)
 	{
 		try
 		{
@@ -3892,7 +3892,7 @@ public class StdMOB implements MOB
 		}while(!nothingDone);
 	}
 	
-	private void fightingFollowers(MOB target, MOB source)
+    protected void fightingFollowers(MOB target, MOB source)
 	{
 		if((source==null)||(target==null)) return;
 		if(source==target) return;

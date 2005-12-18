@@ -39,7 +39,7 @@ public class Time extends StdCommand
 	public String[] getAccessWords(){return access;}
 	
 	
-	private String numAppendage(int num)
+	protected String numAppendage(int num)
 	{
 	    String strn=""+num;
 		switch(CMath.s_int(""+(strn).charAt(strn.length()-1)))

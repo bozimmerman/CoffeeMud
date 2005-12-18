@@ -42,25 +42,25 @@ public class Weaponsmithing extends CraftingSkill
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "METAL|MITHRIL";}
 
-	private static final int RCP_FINALNAME=0;
-	private static final int RCP_LEVEL=1;
-	private static final int RCP_TICKS=2;
-	private static final int RCP_WOOD=3;
-	private static final int RCP_VALUE=4;
-	private static final int RCP_CLASSTYPE=5;
-	private static final int RCP_WEAPONCLASS=6;
-	private static final int RCP_WEAPONTYPE=7;
-	private static final int RCP_ARMORDMG=8;
-	private static final int RCP_ATTACK=9;
-	private static final int RCP_HANDS=10;
-	private static final int RCP_MAXRANGE=11;
-	private static final int RCP_EXTRAREQ=12;
-	private static final int RCP_SPELL=13;
+	protected static final int RCP_FINALNAME=0;
+	protected static final int RCP_LEVEL=1;
+	protected static final int RCP_TICKS=2;
+	protected static final int RCP_WOOD=3;
+	protected static final int RCP_VALUE=4;
+	protected static final int RCP_CLASSTYPE=5;
+	protected static final int RCP_WEAPONCLASS=6;
+	protected static final int RCP_WEAPONTYPE=7;
+	protected static final int RCP_ARMORDMG=8;
+	protected static final int RCP_ATTACK=9;
+	protected static final int RCP_HANDS=10;
+	protected static final int RCP_MAXRANGE=11;
+	protected static final int RCP_EXTRAREQ=12;
+	protected static final int RCP_SPELL=13;
 
-	private Item building=null;
-	private Item fire=null;
-	private boolean mending=false;
-	private boolean messedUp=false;
+	protected Item building=null;
+	protected Item fire=null;
+	protected boolean mending=false;
+	protected boolean messedUp=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -114,7 +114,7 @@ public class Weaponsmithing extends CraftingSkill
 	}
 
 
-	private int specClass(String weaponClass)
+	protected int specClass(String weaponClass)
 	{
 		for(int i=0;i<Weapon.classifictionDescription.length;i++)
 		{
@@ -123,7 +123,7 @@ public class Weaponsmithing extends CraftingSkill
 		}
 		return -1;
 	}
-	private int specType(String weaponType)
+	protected int specType(String weaponType)
 	{
 		for(int i=0;i<Weapon.typeDescription.length;i++)
 		{
@@ -132,7 +132,7 @@ public class Weaponsmithing extends CraftingSkill
 		}
 		return -1;
 	}
-	private boolean canDo(String weaponClass, MOB mob)
+	protected boolean canDo(String weaponClass, MOB mob)
 	{
 		if((mob.isMonster())&&(!CMLib.flags().isAnimalIntelligence(mob)))
 			return true;

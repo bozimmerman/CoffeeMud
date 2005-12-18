@@ -40,7 +40,7 @@ public class Trap_FloodRoom extends StdTrap
 	public String requiresToSet(){return "100 pounds of stone, 10 water containers";}
 	public int baseRejuvTime(int level){ return 16;}
 
-	private int numWaterskins(MOB mob)
+	protected int numWaterskins(MOB mob)
 	{
 		if(mob==null) return 0;
 		if(mob.location()==null) return 0;
@@ -54,7 +54,7 @@ public class Trap_FloodRoom extends StdTrap
 		return num;
 	}
 
-	private void killWaterskins(MOB mob)
+    protected void killWaterskins(MOB mob)
 	{
 		if(mob==null) return;
 		if(mob.location()==null) return;

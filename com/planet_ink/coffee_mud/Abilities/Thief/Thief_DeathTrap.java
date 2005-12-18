@@ -41,7 +41,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	private static final String[] triggerStrings = {"DEATHTRAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	private boolean sprung=false;
+	protected boolean sprung=false;
 
 	public boolean disabled(){return false;}
 	public void disable(){ unInvoke();}

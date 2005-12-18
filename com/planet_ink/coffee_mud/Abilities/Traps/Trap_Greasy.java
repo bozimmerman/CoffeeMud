@@ -40,7 +40,7 @@ public class Trap_Greasy extends StdTrap
 	public String requiresToSet(){return "a container of lamp oil";}
 	int times=20;
 
-	private Item getPoison(MOB mob)
+	protected Item getPoison(MOB mob)
 	{
 		if(mob==null) return null;
 		if(mob.location()==null) return null;

@@ -54,7 +54,7 @@ public class Tick extends Thread implements TickableGroup
         TICK_TIME=sleep;
 	}
 	
-	private Vector tickers=new Vector();
+	protected Vector tickers=new Vector();
 
 	public Enumeration tickers(){return tickers.elements();}
 	public int numTickers(){return tickers.size();}

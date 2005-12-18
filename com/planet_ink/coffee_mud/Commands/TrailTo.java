@@ -91,7 +91,7 @@ public class TrailTo extends StdCommand
 			return str;
 		}
 	}
-	private int getRoomDirection(Room R, Room toRoom, Vector ignore)
+	protected int getRoomDirection(Room R, Room toRoom, Vector ignore)
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			if((R.getRoomInDir(d)==toRoom)

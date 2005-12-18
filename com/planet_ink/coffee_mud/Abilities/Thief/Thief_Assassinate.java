@@ -34,7 +34,7 @@ public class Thief_Assassinate extends ThiefSkill
 {
 	public String ID() { return "Thief_Assassinate"; }
 	public String name(){ return "Assassinate";}
-	private String displayText="(Tracking)";
+	protected String displayText="(Tracking)";
 	public String displayText(){ return displayText;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
@@ -43,7 +43,7 @@ public class Thief_Assassinate extends ThiefSkill
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return Ability.FLAG_TRACKING;}
-	private Vector theTrail=null;
+	protected Vector theTrail=null;
 	public int nextDirection=-2;
 	protected MOB tracking=null;
 

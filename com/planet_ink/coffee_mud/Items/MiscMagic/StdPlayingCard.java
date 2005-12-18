@@ -52,7 +52,7 @@ import java.util.*;
 public class StdPlayingCard extends StdItem implements MiscMagic, PlayingCard
 {
 	public String ID(){	return "StdPlayingCard";}
-	private int oldAbility=0;
+	protected int oldAbility=0;
     
 	public StdPlayingCard()
 	{

@@ -39,7 +39,7 @@ public class Spell_ReverseGravity extends Spell
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){ return MALICIOUS;}
-	private Vector childrenAffects=new Vector();
+	protected Vector childrenAffects=new Vector();
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 	public long flags(){return Ability.FLAG_MOVING;}
 

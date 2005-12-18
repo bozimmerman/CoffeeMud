@@ -164,7 +164,7 @@ public class StdExit implements Exit
 	public int maxRange(){return Integer.MAX_VALUE;}
 	public int minRange(){return Integer.MIN_VALUE;}
 
-	private Rideable findALadder(MOB mob, Room room)
+    protected Rideable findALadder(MOB mob, Room room)
 	{
 		if(room==null) return null;
 		if(mob.riding()!=null) return null;
@@ -180,7 +180,7 @@ public class StdExit implements Exit
 		return null;
 	}
 
-	private void mountLadder(MOB mob, Rideable ladder)
+    protected void mountLadder(MOB mob, Rideable ladder)
 	{
 		String mountStr=ladder.mountString(CMMsg.TYP_MOUNT,mob);
 		CMMsg msg=CMClass.getMsg(mob,ladder,null,CMMsg.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
@@ -821,7 +821,7 @@ public class StdExit implements Exit
 
 	private static final String[] CODES={"CLASS","TEXT"};
 	public String[] getStatCodes(){return CODES;}
-	private int getCodeNum(String code){
+	protected int getCodeNum(String code){
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;

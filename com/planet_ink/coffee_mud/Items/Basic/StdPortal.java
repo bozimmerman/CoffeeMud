@@ -217,9 +217,9 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		return Say;
 	}
 	
-	private String doorName="";
+	protected String doorName="";
 	public String doorName(){return doorName;}
-	private String closedText="";
+	protected String closedText="";
 	public String closedText(){return closedText;}
 	
 	public String closeWord(){return "close";}

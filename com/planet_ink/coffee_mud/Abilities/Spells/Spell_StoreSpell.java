@@ -39,7 +39,7 @@ public class Spell_StoreSpell extends Spell
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overrideMana(){return overridemana;}
 	public String spellName="";
-	private int overridemana=-1;
+	protected int overridemana=-1;
 
 	public void waveIfAble(MOB mob,
 						   Environmental afftarget,

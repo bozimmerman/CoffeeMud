@@ -41,8 +41,8 @@ public class Thief_SneakAttack extends ThiefSkill
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	private boolean activated=false;
-	private boolean oncePerRound=false;
+	protected boolean activated=false;
+	protected boolean oncePerRound=false;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

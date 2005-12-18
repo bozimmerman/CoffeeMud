@@ -47,7 +47,7 @@ public class Thief_Shadow extends ThiefSkill
 	private static final String[] triggerStrings = {"SHADOW"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public MOB shadowing=null;
-	private Room lastRoom=null;
+	protected Room lastRoom=null;
 	private long lastTogether=0;
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;

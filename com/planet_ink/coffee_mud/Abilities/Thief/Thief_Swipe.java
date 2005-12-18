@@ -47,7 +47,7 @@ public class Thief_Swipe extends ThiefSkill
 	public void setAbilityCode(int newCode){code=newCode;}
 
 	private DVector lastOnes=new DVector(2);
-	private int timesPicked(MOB target)
+	protected int timesPicked(MOB target)
 	{
 		int times=0;
 		for(int x=0;x<lastOnes.size();x++)

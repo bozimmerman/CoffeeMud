@@ -39,7 +39,7 @@ public class Spell_SpellTurning extends Spell
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
-	private boolean oncePerRound=false;
+	protected boolean oncePerRound=false;
 
 	public void unInvoke()
 	{

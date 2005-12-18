@@ -44,9 +44,9 @@ public class Spell_WallOfIce extends Spell
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
-	private int amountRemaining=0;
-	private Item theWall=null;
-	private String deathNotice="";
+	protected int amountRemaining=0;
+	protected Item theWall=null;
+	protected String deathNotice="";
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

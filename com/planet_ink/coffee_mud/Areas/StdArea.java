@@ -44,7 +44,7 @@ public class StdArea implements Area
 	protected Vector metroRooms=null;
 	protected boolean mobility=true;
 	protected long tickStatus=Tickable.STATUS_NOT;
-	private int[] statData=null;
+    protected int[] statData=null;
 	protected boolean stopTicking=false;
 
     protected Vector children=null;
@@ -844,7 +844,7 @@ public class StdArea implements Area
 		}
 	}
 
-	private void makeMetroMap()
+	protected void makeMetroMap()
 	{
 		synchronized(properRooms)
 		{
@@ -1083,7 +1083,7 @@ public class StdArea implements Area
 	    								 "TEXT",
 	    								 "TECHLEVEL"};
 	public String[] getStatCodes(){return CODES;}
-	private int getCodeNum(String code){
+	protected int getCodeNum(String code){
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;

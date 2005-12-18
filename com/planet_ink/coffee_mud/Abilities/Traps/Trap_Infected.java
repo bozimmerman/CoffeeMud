@@ -52,7 +52,7 @@ public class Trap_Infected extends StdTrap
 		return offenders;
 	}
 
-	private Item getPoison(MOB mob)
+	protected Item getPoison(MOB mob)
 	{
 		if(mob==null) return null;
 		if(mob.location()==null) return null;

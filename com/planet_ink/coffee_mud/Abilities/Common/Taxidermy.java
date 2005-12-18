@@ -39,9 +39,9 @@ public class Taxidermy extends CraftingSkill
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "BODIES";}
 
-	private Item found=null;
-	private String foundShortName="";
-	private boolean messedUp=false;
+	protected Item found=null;
+	protected String foundShortName="";
+	protected boolean messedUp=false;
 
 	public Taxidermy()
 	{

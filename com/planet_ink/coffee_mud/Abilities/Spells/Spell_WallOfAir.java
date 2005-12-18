@@ -43,7 +43,7 @@ public class Spell_WallOfAir extends Spell
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
-	private Item theWall=null;
+	protected Item theWall=null;
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

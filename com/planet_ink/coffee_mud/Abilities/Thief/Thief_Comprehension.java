@@ -41,7 +41,7 @@ public class Thief_Comprehension extends ThiefSkill
 	private static final String[] triggerStrings = {"COMPREHEND","COMPREHENSION"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
-	private Vector queue=new Vector();
+	protected Vector queue=new Vector();
 
 
 	public void unInvoke()

@@ -515,7 +515,7 @@ public class StdJournal extends StdItem
 		return reply;
 	}
 
-	private String getReadReq()
+	protected String getReadReq()
 	{
 		if(readableText().length()==0) return "";
 		String text=readableText().toUpperCase();
@@ -530,7 +530,7 @@ public class StdJournal extends StdItem
         if(adminreq>=0) text=text.substring(0,adminreq);
 		return text;
 	}
-	private String getWriteReq()
+	protected String getWriteReq()
 	{
 		if(readableText().length()==0) return "";
 		String text=readableText().toUpperCase();

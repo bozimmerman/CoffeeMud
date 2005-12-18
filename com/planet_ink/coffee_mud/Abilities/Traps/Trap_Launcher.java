@@ -39,7 +39,7 @@ public class Trap_Launcher extends StdTrap
 	protected int trapLevel(){return 6;}
 	public String requiresToSet(){return "a ranged weapon";}
 
-	private Item getPoison(MOB mob)
+	protected Item getPoison(MOB mob)
 	{
 		if(mob==null) return null;
 		if(mob.location()==null) return null;

@@ -33,7 +33,7 @@ import java.util.*;
 public class Wyvern extends StdMOB
 {
 	public String ID(){return "Wyvern";}
-	private int stingDown=5;
+    protected int stingDown=5;
 
 	public Wyvern()
 	{

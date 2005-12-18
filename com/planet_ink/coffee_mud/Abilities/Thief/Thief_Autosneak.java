@@ -41,7 +41,7 @@ public class Thief_Autosneak extends ThiefSkill
 	public int quality(){return Ability.OK_SELF;}
 	private static final String[] triggerStrings = {"AUTOSNEAK"};
 	public String[] triggerStrings(){return triggerStrings;}
-	private boolean noRepeat=false;
+	protected boolean noRepeat=false;
 
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{

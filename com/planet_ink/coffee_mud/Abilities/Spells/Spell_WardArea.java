@@ -40,9 +40,9 @@ public class Spell_WardArea extends Spell implements Trap
 	protected int canTargetCode(){return CAN_ROOMS;}
 	public int quality(){ return MALICIOUS;}
 	private Ability shooter=null;
-	private Vector parameters=null;
+	protected Vector parameters=null;
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
-	private boolean sprung=false;
+	protected boolean sprung=false;
 
 	public MOB theInvoker()
 	{

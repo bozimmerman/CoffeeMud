@@ -291,7 +291,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		}
 	}
 
-	private boolean stopTicking=false;
+    protected boolean stopTicking=false;
 	public void tickControl(boolean start)
 	{
 		if(start)
@@ -798,7 +798,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 
 	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","TECHLEVEL"};
 	public String[] getStatCodes(){return CODES;}
-	private int getCodeNum(String code){
+	protected int getCodeNum(String code){
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;

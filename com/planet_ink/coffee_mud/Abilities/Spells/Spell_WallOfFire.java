@@ -44,8 +44,8 @@ public class Spell_WallOfFire extends Spell
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_BURNING;}
 
-	private Item theWall=null;
-	private String deathNotice="";
+	protected Item theWall=null;
+	protected String deathNotice="";
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

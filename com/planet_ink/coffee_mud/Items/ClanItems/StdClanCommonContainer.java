@@ -33,7 +33,7 @@ import java.util.*;
 public class StdClanCommonContainer extends StdClanContainer
 {
 	public String ID(){	return "StdClanCommonContainer";}
-	private int workDown=0;
+	protected int workDown=0;
 	public StdClanCommonContainer()
 	{
 		super();

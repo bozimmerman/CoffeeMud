@@ -1244,7 +1244,7 @@ public class StdRoom
 		mob.tell(buf.toString().trim()+"]^.^N");
 	}
 
-	private void reallyReallySend(MOB source, CMMsg msg)
+    protected void reallyReallySend(MOB source, CMMsg msg)
 	{
 		if((Log.debugChannelOn())&&(CMSecurity.isDebugging("MESSAGES")))
 			Log.debugOut("StdRoom",((msg.source()!=null)?msg.source().ID():"null")+":"+msg.sourceCode()+":"+msg.sourceMessage()+"/"+((msg.target()!=null)?msg.target().ID():"null")+":"+msg.targetCode()+":"+msg.targetMessage()+"/"+((msg.tool()!=null)?msg.tool().ID():"null")+"/"+msg.othersCode()+":"+msg.othersMessage());
@@ -1258,7 +1258,7 @@ public class StdRoom
 		executeMsg(source,msg);
 	}
 
-	private void reallySend(MOB source, CMMsg msg)
+    protected void reallySend(MOB source, CMMsg msg)
 	{
 		reallyReallySend(source,msg);
 		// now handle trailer msgs
@@ -1780,7 +1780,7 @@ public class StdRoom
 	}
 	private static final String[] CODES={"CLASS","DISPLAY","DESCRIPTION","TEXT"};
 	public String[] getStatCodes(){return CODES;}
-	private int getCodeNum(String code){
+	protected int getCodeNum(String code){
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;

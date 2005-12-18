@@ -59,7 +59,7 @@ public class StdRace implements Race
 	private int[] agingChart={0,1,3,15,35,53,70,74,78};
 	public int[] getAgingChart(){return agingChart;}
 	
-	private static final Vector empty=new Vector();
+    protected static final Vector empty=new Vector();
 	protected Weapon naturalWeapon=null;
 	protected Vector naturalWeaponChoices=null;
 	protected Vector outfitChoices=null;
@@ -72,7 +72,7 @@ public class StdRace implements Race
 	protected int[] racialAbilityLevels(){return null;}
 	protected int[] racialAbilityProfficiencies(){return null;}
 	protected boolean[] racialAbilityQuals(){return null;}
-	private boolean mappedCulturalAbilities=false;
+	protected boolean mappedCulturalAbilities=false;
 	protected String[] culturalAbilityNames(){return null;}
 	protected int[] culturalAbilityProfficiencies(){return null;}
 	protected boolean uncharmable(){return false;}

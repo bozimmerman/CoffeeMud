@@ -40,7 +40,7 @@ public class Spell_Wish extends Spell
 	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
-	private Environmental maybeAdd(Environmental E, Vector foundAll, Environmental foundThang)
+	protected Environmental maybeAdd(Environmental E, Vector foundAll, Environmental foundThang)
 	{
 		if((E!=null)
 		&&((foundThang==null)

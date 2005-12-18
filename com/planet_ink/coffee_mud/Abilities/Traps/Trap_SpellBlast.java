@@ -39,7 +39,7 @@ public class Trap_SpellBlast extends StdTrap
 	protected int trapLevel(){return 23;}
 	public String requiresToSet(){return "a spell scroll";}
 
-	private Item getPoison(MOB mob)
+	protected Item getPoison(MOB mob)
 	{
 		if(mob==null) return null;
 		if(mob.location()==null) return null;

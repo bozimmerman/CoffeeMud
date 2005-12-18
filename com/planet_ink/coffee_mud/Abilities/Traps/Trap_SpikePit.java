@@ -41,7 +41,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 
 	public Vector daggerDamages=null;
 
-	private Item getDagger(MOB mob)
+	protected Item getDagger(MOB mob)
 	{
 		if(mob==null) return null;
 		if(mob.location()==null) return null;

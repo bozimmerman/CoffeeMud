@@ -41,7 +41,7 @@ public class Thief_Bribe extends ThiefSkill
 	private static final String[] triggerStrings = {"BRIBE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
-	private MOB lastChecked=null;
+	protected MOB lastChecked=null;
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

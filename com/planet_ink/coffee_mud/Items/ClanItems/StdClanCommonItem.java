@@ -34,7 +34,7 @@ import java.util.*;
 public class StdClanCommonItem extends StdClanItem
 {
 	public String ID(){	return "StdClanCommonItem";}
-	private int workDown=0;
+	protected int workDown=0;
     private static final Hashtable needChart=new Hashtable();
     
 	public StdClanCommonItem()
