@@ -116,14 +116,8 @@ public class CMLib extends ScriptableObject
     public static Resources resources(){return Resources.instance();}
     public static CMProps props(){return CMProps.instance();}
     public static CMLib libraries(){return CMLib.instance();}
-    public static CMFile newFile(String filename, MOB user, boolean pleaseLogErrors)
-    { return new CMFile(filename,user,pleaseLogErrors,false);}
-    public static CMFile newFile(String filename, MOB user, boolean pleaseLogErrors, boolean forceAllow)
-    { return new CMFile(filename,user,pleaseLogErrors,forceAllow);}
-    public static CMFile newFile(String currentPath, String filename, MOB user, boolean pleaseLogErrors)
-    { return new CMFile(currentPath,filename,user,pleaseLogErrors,false); }
-    public static CMFile newFile(String currentPath, String filename, MOB user, boolean pleaseLogErrors, boolean forceAllow)
-    { return new CMFile(currentPath,filename,user,pleaseLogErrors,forceAllow); }
+    public static CMFile newFile(String currentPath, String filename, boolean pleaseLogErrors)
+    { return new CMFile(currentPath,filename,null,pleaseLogErrors,false); }
     public static String toJavaString(Object O){return Context.toString(O);}
     
     public static DatabaseEngine database(){return (DatabaseEngine)libraries[LIBRARY_DATABASE];}

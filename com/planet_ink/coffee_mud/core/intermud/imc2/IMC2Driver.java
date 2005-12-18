@@ -1,3 +1,15 @@
+package com.planet_ink.coffee_mud.core.intermud.imc2;
+
+import com.planet_ink.coffee_mud.Commands.interfaces.Command;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.Room;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
+import com.planet_ink.coffee_mud.core.*;
+import java.io.*;
+import java.net.Socket;
+import java.util.*;
+
+
 /**
  * IMC2 version 0.10 - an inter-mud communications protocol
  * Copyright (C) 1996 & 1997 Oliver Jowett <oliver@randomly.org>
@@ -28,34 +40,6 @@
  * Ported to Java by Istvan David (u_davis@users.sourceforge.net)
  *
  */
-
-package com.planet_ink.coffee_mud.core.intermud.imc2;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.Socket;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.LinkedList;
-import java.util.StringTokenizer;
-import java.util.Vector;
-
-import com.planet_ink.coffee_mud.Commands.interfaces.Command;
-import com.planet_ink.coffee_mud.Common.interfaces.CMMsg;
-import com.planet_ink.coffee_mud.Common.interfaces.Session;
-import com.planet_ink.coffee_mud.Locales.interfaces.Room;
-import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
-import com.planet_ink.coffee_mud.core.CMClass;
-import com.planet_ink.coffee_mud.core.CMLib;
-import com.planet_ink.coffee_mud.core.CMParms;
-import com.planet_ink.coffee_mud.core.CMProps;
-import com.planet_ink.coffee_mud.core.CMSecurity;
-import com.planet_ink.coffee_mud.core.CMStrings;
-import com.planet_ink.coffee_mud.core.CMath;
-import com.planet_ink.coffee_mud.core.Log;
-import com.planet_ink.coffee_mud.core.Util;
 
 public final class IMC2Driver extends Thread {
 

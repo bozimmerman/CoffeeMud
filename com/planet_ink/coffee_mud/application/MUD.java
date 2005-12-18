@@ -436,6 +436,7 @@ public class MUD extends Thread implements MudHost
 					}
 				}
 				else
+                if(CMLib.database()!=null)
 				{
 					StringBuffer rejectText=Resources.getFileResource("text/offline.txt",true);
 					PrintWriter out = new PrintWriter(sock.getOutputStream());
@@ -447,6 +448,11 @@ public class MUD extends Thread implements MudHost
 					out.close();
 					sock = null;
 				}
+                else
+                {
+                    sock.close();
+                    sock = null;
+                }
 			}
 		}
 		catch(Throwable t)

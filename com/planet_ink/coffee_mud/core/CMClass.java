@@ -13,7 +13,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import com.sun.rsasign.c;
 
 import java.util.*;
 import java.lang.reflect.Modifier;
@@ -798,7 +797,6 @@ public class CMClass extends ClassLoader
         return (loadClass(className, true));
     }
 
-    
     public Class finishDefineClass(String className, byte[] classData, boolean resolveIt)
         throws ClassFormatError 
     {
@@ -822,7 +820,11 @@ public class CMClass extends ClassLoader
 
         try{return super.findSystemClass(className); } catch (ClassNotFoundException e){}
 
-        String pathName=className.replace('.','/');
+        String pathName=null;
+        if(className.toUpperCase().endsWith(".JS"))
+            pathName=className.substring(0,className.length()-3).replace('.','/')+className.substring(className.length()-3);
+        else
+            pathName=className.replace('.','/');
         /* Try to load it from our repository */
         CMFile CF=new CMFile(pathName,null,true);
         byte[] classData=CF.raw();

@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class StdMOB implements MOB
 {
 	public String ID(){return "StdMOB";}
-	protected String Username="";
+	public String Username="";
 
 	private String clanID=null;
 	private int clanRole=0;

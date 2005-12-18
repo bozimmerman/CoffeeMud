@@ -231,6 +231,21 @@ public class CMath
     }
     
     /**
+     * Returns the floating point value of a string without crashing
+     * 
+     * <br><br><b>Usage:</b> lSize = WebIQBase.s_float(WebIQBase.getRes(AttStatsRes,"BlobSize"));
+     * @param String to convert
+     * @return Float value of the string
+     */
+    public static float s_float(String FLOAT)
+    {
+        float sfloat=(float)0.0;
+        try{ sfloat=Float.parseFloat(FLOAT); }
+        catch(Exception e){ return 0;}
+        return sfloat;
+    }
+    
+    /**
      * Returns the double value of a string without crashing
      * 
      * <br><br><b>Usage:</b> dSize = WebIQBase.s_double(WebIQBase.getRes(AttStatsRes,"BlobSize"));
@@ -284,6 +299,7 @@ public class CMath
         return sint;
     }
     
+    public static boolean isLong(String INT){return isInteger(INT);}
     public static boolean isInteger(String INT)
     {
         if(INT.length()==0) return false;
@@ -295,6 +311,7 @@ public class CMath
         return true;
     }
     
+    public static boolean isFloat(String DBL){return isDouble(DBL);}
     public static boolean isDouble(String DBL)
     {
         if(DBL.length()==0) return false;
@@ -316,4 +333,15 @@ public class CMath
         return alreadyDot;
     }
     
+    public long round(double d){return Math.round(d);}
+    public long round(float d){return Math.round(d);}
+    public double abs(double d){return Math.abs(d);}
+    public float abs(float d){return Math.abs(d);}
+    public double random(){return Math.random();}
+    public double floor(double d){return Math.floor(d);}
+    public float floor(float d){return (float)Math.floor(d);}
+    public double ceiling(double d){return Math.ceil(d);}
+    public float ceiling(float d){return (float)Math.ceil(d);}
+    public double sqrt(double d){return Math.sqrt(d);}
+    public float sqrt(float d){return (float)Math.sqrt(d);}
 }

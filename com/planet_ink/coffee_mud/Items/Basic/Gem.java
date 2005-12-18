@@ -48,6 +48,7 @@ public class Gem extends StdItem
 	public final static int PEARL			= 10;
 	public final static int EMERALD			= 11;
 	public final static int AMETHYST		= 12;
+    private int lastLevel=-1;
 
 	public Gem()
 	{
@@ -56,12 +57,19 @@ public class Gem extends StdItem
 
 		Random randomizer = new Random(System.currentTimeMillis());
 		int ringType = Math.abs(randomizer.nextInt() % 12);
-
-		this.envStats.setLevel(ringType);
-		setItemDescription(this.envStats.level());
+		baseEnvStats.setLevel(ringType);
 		recoverEnvStats();
 	}
 
+    public void recoverEnvStats()
+    {
+        super.recoverEnvStats();
+        if(lastLevel!=envStats().level())
+        { 
+            lastLevel=envStats().level(); 
+            setItemDescription(envStats.level());
+        }
+    }
 
 	public void setItemDescription(int level)
 	{

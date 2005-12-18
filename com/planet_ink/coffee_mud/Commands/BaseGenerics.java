@@ -2682,8 +2682,13 @@ public class BaseGenerics extends StdCommand
 									chosenOne=B;
 								}
 							}
-							String parms=chosenOne.getParms();
-							parms=mob.session().prompt(getScr("BaseGenerics","behapar",parms));
+                            String parms="?";
+                            while(parms.equals("?"))
+                            {
+    							parms=chosenOne.getParms();
+    							parms=mob.session().prompt(getScr("BaseGenerics","behapar",parms));
+                                if(parms.equals("?")){ StringBuffer s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell("no help!");}
+                            }
 							chosenOne.setParms(parms.trim());
 							if(!alreadyHasIt)
 							{
@@ -2754,8 +2759,13 @@ public class BaseGenerics extends StdCommand
 						chosenOne=CMClass.getAbility(behave);
 						if(chosenOne!=null)
 						{
-							String parms=chosenOne.text();
-							parms=mob.session().prompt(getScr("BaseGenerics","effectpar",parms));
+                            String parms="?";
+                            while(parms.equals("?"))
+                            {
+                                parms=chosenOne.text();
+                                parms=mob.session().prompt(getScr("BaseGenerics","effectpar",parms));
+                                if(parms.equals("?")){ StringBuffer s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell("no help!");}
+                            }
 							chosenOne.setMiscText(parms.trim());
 							mob.tell(getScr("BaseGenerics","cida",chosenOne.ID()));
 							E.addNonUninvokableEffect(chosenOne);
