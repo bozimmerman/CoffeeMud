@@ -204,8 +204,6 @@ public class CMLib extends ScriptableObject
             libraries[code]=O; 
             registered[code]=true;
         }
-        else
-            Log.errOut("CMLib","Unable to register: "+O.getClass().getName()+"/"+code);
     }
     
     public static void registerLibraries(Enumeration e)

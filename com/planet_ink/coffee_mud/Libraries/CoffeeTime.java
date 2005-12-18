@@ -25,7 +25,7 @@ import com.planet_ink.coffee_mud.core.CMath;
 */
 public class CoffeeTime extends StdLibrary implements TimeManager
 {
-
+    public String ID(){return "CoffeeTime";}
     /**
      * Returns the numeric representation of the month
      * 

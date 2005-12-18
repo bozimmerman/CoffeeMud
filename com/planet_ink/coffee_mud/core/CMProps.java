@@ -306,7 +306,7 @@ public class CMProps extends Properties
         setVar(SYSTEM_AUTOWEATHERPARMS,page.getStr("AUTOWEATHERPARMS"));
         setUpLowVar(SYSTEM_MXPIMAGEPATH,page.getStr("MXPIMAGEPATH"));
         setBoolVar(SYSTEMB_ACCOUNTEXPIRATION,page.getStr("ACCOUNTEXPIRATION").equalsIgnoreCase("YES")?true:false);
-        setVar(SYSTEM_PREFACTIONS,page.getStr("FACTIONS"));
+        setUpLowVar(SYSTEM_PREFACTIONS,page.getStr("FACTIONS"));
         
         if(CMLib.color()!=null) CMLib.color().clearLookups();
         if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
