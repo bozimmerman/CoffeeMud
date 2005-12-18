@@ -44,7 +44,7 @@ public class Fighter_Battlecry extends FighterSkill
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int classificationCode(){return Ability.SKILL;}
 
-	private int timesTicking=0;
+	protected int timesTicking=0;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

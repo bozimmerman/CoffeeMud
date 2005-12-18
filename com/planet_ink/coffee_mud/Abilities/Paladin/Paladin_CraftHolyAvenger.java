@@ -40,9 +40,9 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 	private static final String[] triggerStrings = {"CRAFTHOLY","CRAFTHOLYAVENGER","CRAFTAVENGER"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	private Item building=null;
-	private Item fire=null;
-	private boolean messedUp=false;
+    protected Item building=null;
+    protected Item fire=null;
+    protected boolean messedUp=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

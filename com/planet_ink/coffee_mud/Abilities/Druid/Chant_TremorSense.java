@@ -39,7 +39,7 @@ public class Chant_TremorSense extends Chant
 	public String displayText(){return "(Tremor Sense)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
-	private Vector rooms=new Vector();
+	protected Vector rooms=new Vector();
 
 	public void unInvoke()
 	{

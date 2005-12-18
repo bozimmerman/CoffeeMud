@@ -35,7 +35,7 @@ public class SocialTbl extends StdWebMacro
 {
 	public String name()	{return "SocialTbl";}
 	
-	private static final int AT_MAX_COL = 6;
+    protected static final int AT_MAX_COL = 6;
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{

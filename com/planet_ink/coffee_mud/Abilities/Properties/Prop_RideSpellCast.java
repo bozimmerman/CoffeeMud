@@ -37,7 +37,7 @@ public class Prop_RideSpellCast extends Prop_HaveSpellCast
 	public String ID() { return "Prop_RideSpellCast"; }
 	public String name(){ return "Casting spells when ridden";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
-	private Vector lastRiders=new Vector();
+    protected Vector lastRiders=new Vector();
     public String accountForYourself()
     { return spellAccountingsWithMask("Casts "," on those mounted.");}
 

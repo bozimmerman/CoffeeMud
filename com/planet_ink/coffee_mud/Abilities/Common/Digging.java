@@ -41,8 +41,8 @@ public class Digging extends GatheringSkill
 	protected boolean allowedWhileMounted(){return false;}
 	public String supportedResourceString(){return "GLASS|PRECIOUS|SAND|STONE";}
 
-	private Item found=null;
-	private String foundShortName="";
+	protected Item found=null;
+	protected String foundShortName="";
 	public Digging()
 	{
 		super();

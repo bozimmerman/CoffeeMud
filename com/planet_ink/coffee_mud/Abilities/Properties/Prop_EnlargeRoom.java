@@ -40,14 +40,14 @@ public class Prop_EnlargeRoom extends Property
 	public String accountForYourself()
 	{ return "Enlarged";	}
 
-	private double dval(String s)
+	protected double dval(String s)
 	{
 		if(s.indexOf(".")>=0)
 			return CMath.s_double(s);
 		return new Integer(CMath.s_int(s)).doubleValue();
 	}
 
-	private int ival(String s)
+	protected int ival(String s)
 	{
 		return (int)Math.round(dval(s));
 	}

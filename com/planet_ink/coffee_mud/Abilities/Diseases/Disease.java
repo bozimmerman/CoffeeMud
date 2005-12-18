@@ -53,7 +53,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 
 	public int difficultyLevel(){return 0;}
 	public int abilityCode(){return 0;}
-	private boolean processing=false;
+	protected boolean processing=false;
 
 	protected int diseaseTick=DISEASE_DELAY();
 

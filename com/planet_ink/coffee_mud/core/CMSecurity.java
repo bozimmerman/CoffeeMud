@@ -37,9 +37,9 @@ public class CMSecurity
     private static CMSecurity inst=new CMSecurity();
     public static CMSecurity instance(){return inst;}
     
-	private static final long startTime=System.currentTimeMillis();
-	private static Hashtable groups=new Hashtable();
-	private static Vector compiledSysop=null;
+    protected static final long startTime=System.currentTimeMillis();
+    protected static Hashtable groups=new Hashtable();
+    protected static Vector compiledSysop=null;
 	// supported: AFTER, AHELP, ANNOUNCE, AT, BAN, BEACON, BOOT, CHARGEN
 	// COPYMOBS, COPYITEMS, COPYROOMS, CMDQUESTS, CMDSOCIALS, CMDROOMS,
 	// CMDITEMS, CMDEXITS, CMDAREAS, CMDRACES, CMDCLASSES, NOPURGE, KILLBUGS,
@@ -231,7 +231,7 @@ public class CMSecurity
                         set=set.substring(4).trim();
                     else
                         continue;
-                    if((set.length()==0)||(subop&&set.equals("AREA"))) 
+                    if((set.length()==0)||(subop&&set.equals("AREA"))||(path.length()==0)) 
                         return true;
                     if(set.startsWith(pathSlash)
                     ||path.startsWith(set+"/")
@@ -243,7 +243,7 @@ public class CMSecurity
                 }
                 continue;
             }
-            if(set.length()==0) return true;
+            if((set.length()==0)||(path.length()==0)) return true;
             if(set.startsWith(pathSlash)
             ||path.startsWith(set+"/")
             ||set.equals(path)
@@ -622,9 +622,9 @@ public class CMSecurity
 		    saveFlags.add(flag);
 	}
 	
-	private static HashSet disVars=new HashSet();
-	private static HashSet dbgVars=new HashSet();
-	private static HashSet saveFlags=new HashSet();
+    protected static HashSet disVars=new HashSet();
+    protected static HashSet dbgVars=new HashSet();
+    protected static HashSet saveFlags=new HashSet();
 
 	public static long getStartTime(){return startTime;}
 	

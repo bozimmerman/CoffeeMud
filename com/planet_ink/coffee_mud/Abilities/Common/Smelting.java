@@ -42,19 +42,19 @@ public class Smelting extends CraftingSkill
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "METAL|MITHRIL";}
 
-	private static final int RCP_FINALNAME=0;
-	private static final int RCP_LEVEL=1;
-	private static final int RCP_TICKS=2;
+	protected static final int RCP_FINALNAME=0;
+	protected static final int RCP_LEVEL=1;
+	protected static final int RCP_TICKS=2;
 	//private static final int RCP_WOOD_ALWAYSONEONE=3;
 	//private static final int RCP_VALUE_DONTMATTER=4;
 	//private static final int RCP_CLASSTYPE=5;
-	private static final int RCP_METALONE=6;
-	private static final int RCP_METALTWO=7;
+	protected static final int RCP_METALONE=6;
+	protected static final int RCP_METALTWO=7;
 
-	private Item building=null;
-	private Item fire=null;
-	private boolean messedUp=false;
-	private int amountMaking=0;
+	protected Item building=null;
+	protected Item fire=null;
+	protected boolean messedUp=false;
+	protected int amountMaking=0;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

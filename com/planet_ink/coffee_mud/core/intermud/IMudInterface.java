@@ -127,7 +127,7 @@ public class IMudInterface implements ImudServices, Serializable
 		port=Port;
 	}
 
-	private MOB findSessMob(String mobName)
+	protected MOB findSessMob(String mobName)
 	{
 		for(int s=0;s<CMLib.sessions().size();s++)
 		{

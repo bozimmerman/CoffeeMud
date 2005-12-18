@@ -64,7 +64,7 @@ public class Spell_Meld extends Spell
 					EnvResource.MATERIAL_ENERGY,
 					EnvResource.MATERIAL_MITHRIL,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99};
 
-	private int getHeiarchy(int material)
+	protected int getHeiarchy(int material)
 	{
 		for(int i=0;i<heiarchy.length;i++)
 			if(heiarchy[i]==material) return i;

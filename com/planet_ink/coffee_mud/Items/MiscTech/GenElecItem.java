@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenElecItem extends StdElecItem
 {
 	public String ID(){	return "GenElecItem";}
-	private String readableText="";
+	protected String readableText="";
 	public GenElecItem()
 	{
 		super();

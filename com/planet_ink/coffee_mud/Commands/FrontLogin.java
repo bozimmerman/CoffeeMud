@@ -35,7 +35,7 @@ public class FrontLogin extends StdCommand
 	public FrontLogin(){}
 	public Hashtable pendingLogins=new Hashtable();
 
-	private static boolean classOkForMe(MOB mob, CharClass thisClass, int theme)
+    protected static boolean classOkForMe(MOB mob, CharClass thisClass, int theme)
 	{
 		if((CMProps.isTheme(thisClass.availabilityCode()))
 		   &&(CMath.bset(thisClass.availabilityCode(),theme))
@@ -49,7 +49,7 @@ public class FrontLogin extends StdCommand
 		return false;
 	}
 
-	private static Vector classQualifies(MOB mob, int theme)
+    protected static Vector classQualifies(MOB mob, int theme)
 	{
 		Vector them=new Vector();
         HashSet doneClasses=new HashSet();
@@ -65,7 +65,7 @@ public class FrontLogin extends StdCommand
 		return them;
 	}
 
-	private static boolean isOkName(String login)
+    protected static boolean isOkName(String login)
 	{
         if(login.length()>20) return false;
         if(login.length()<3) return false;

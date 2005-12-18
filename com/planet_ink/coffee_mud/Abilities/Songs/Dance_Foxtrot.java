@@ -37,8 +37,8 @@ public class Dance_Foxtrot extends Dance
 	public String ID() { return "Dance_Foxtrot"; }
 	public String name(){ return "Foxtrot";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	private int ticks=1;
-	private int increment=1;
+	protected int ticks=1;
+	protected int increment=1;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

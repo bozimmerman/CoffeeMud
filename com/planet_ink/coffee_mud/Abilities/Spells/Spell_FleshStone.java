@@ -40,7 +40,7 @@ public class Spell_FleshStone extends Spell
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public Item statue=null;
-	private boolean recurse=false;
+	protected boolean recurse=false;
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==MudHost.TICK_MOB)

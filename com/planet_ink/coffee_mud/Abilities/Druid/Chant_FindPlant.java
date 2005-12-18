@@ -40,8 +40,8 @@ public class Chant_FindPlant extends Chant
 	public String displayText(){return "(Finding "+lookingFor+")";}
 	public long flags(){return Ability.FLAG_TRACKING;}
 	protected String lookingFor="plants";
-	private Vector theTrail=null;
-	private int nextDirection=-2;
+	protected Vector theTrail=null;
+	protected int nextDirection=-2;
 	public int whatImLookingFor=-1;
 
 	private int[] myMats={EnvResource.MATERIAL_VEGETATION,
@@ -51,7 +51,7 @@ public class Chant_FindPlant extends Chant
 						  EnvResource.RESOURCE_HEMP};
 	protected int[] okResources(){	return myRscs;}
 
-	private Vector allResources=null;
+	protected Vector allResources=null;
 	protected Vector allOkResources()
 	{
 		if(allResources==null)

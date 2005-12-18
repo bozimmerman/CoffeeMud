@@ -39,22 +39,22 @@ public class DefaultTimeClock implements TimeClock
     
 	protected long tickStatus=Tickable.STATUS_NOT;
 	public long getTickStatus(){return tickStatus;}
-	private boolean loaded=false;
-	private String loadName=null;
+	protected boolean loaded=false;
+	protected String loadName=null;
 	public void setLoadName(String name){loadName=name;}
-	private int year=1;
-	private int month=1;
-	private int day=1;
-	private int time=0;
-	private int hoursInDay=6;
-	private String[] monthsInYear={
+	protected int year=1;
+	protected int month=1;
+	protected int day=1;
+	protected int time=0;
+	protected int hoursInDay=6;
+    protected String[] monthsInYear={
 			 "the 1st month","the 2nd month","the 3rd month","the 4th month",
 			 "the 5th month","the 6th month","the 7th month","the 8th month"
 	};
-	private int daysInMonth=20;
-	private int[] dawnToDusk={0,1,4,6};
-	private String[] weekNames={};
-	private String[] yearNames={"year #"};
+	protected int daysInMonth=20;
+    protected int[] dawnToDusk={0,1,4,6};
+    protected String[] weekNames={};
+    protected String[] yearNames={"year #"};
 	
 	public int getHoursInDay(){return hoursInDay;}
 	public void setHoursInDay(int h){hoursInDay=h;}
@@ -189,7 +189,7 @@ public class DefaultTimeClock implements TimeClock
 		return timeDesc.toString();
 	}
 
-	private String numAppendage(int num)
+	protected String numAppendage(int num)
 	{
 	    String strn=""+num;
         if((num<11)||(num>13))

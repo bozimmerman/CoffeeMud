@@ -91,7 +91,7 @@ public class SMTPserver extends Thread implements Tickable
 		return iniPage;
 	}
 
-	private boolean initServer()
+	protected boolean initServer()
 	{
 		if (!loadPropPage())
 		{
@@ -225,7 +225,7 @@ public class SMTPserver extends Thread implements Tickable
 		return "";
 	}
 
-	private boolean loadPropPage()
+	protected boolean loadPropPage()
 	{
 		if (page==null || !page.loaded)
 		{
@@ -353,7 +353,7 @@ public class SMTPserver extends Thread implements Tickable
 	public void shutdown()	{shutdown(null);}
 	
 	
-	private boolean rightTimeToSendEmail(long email)
+	protected boolean rightTimeToSendEmail(long email)
 	{
 		long curr=System.currentTimeMillis();
 		Calendar IQE=Calendar.getInstance();

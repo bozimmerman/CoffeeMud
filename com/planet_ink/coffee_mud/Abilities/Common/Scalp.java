@@ -40,7 +40,7 @@ public class Scalp extends CommonSkill
 	public static Vector lastSoManyScalps=new Vector();
 
 	private DeadBody body=null;
-	private boolean failed=false;
+	protected boolean failed=false;
 	public Scalp()
 	{
 		super();

@@ -32,7 +32,7 @@ public class Skill_Resistance extends StdSkill
 {
 	public String ID() { return "Skill_Resistance"; }
 	public String name(){ return "Resistance";}
-	private String displayText="";
+	protected String displayText="";
 	public String displayText(){ return displayText;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}

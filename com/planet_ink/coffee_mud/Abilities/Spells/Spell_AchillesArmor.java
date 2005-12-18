@@ -40,7 +40,7 @@ public class Spell_AchillesArmor extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int overrideMana(){return 100;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
-	private int vulnerability=0;
+	protected int vulnerability=0;
 
 	public void unInvoke()
 	{

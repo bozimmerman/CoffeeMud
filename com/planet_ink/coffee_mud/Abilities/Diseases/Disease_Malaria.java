@@ -49,8 +49,8 @@ public class Disease_Malaria extends Disease
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
 	public int difficultyLevel(){return 1;}
     private boolean norecurse=false;
-	private int conDown=0;
-	private int tickUp=0;
+	protected int conDown=0;
+	protected int tickUp=0;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

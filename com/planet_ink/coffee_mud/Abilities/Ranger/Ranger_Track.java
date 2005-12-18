@@ -35,7 +35,7 @@ public class Ranger_Track extends StdAbility
 {
 	public String ID() { return "Ranger_Track"; }
 	public String name(){ return "Track";}
-	private String displayText="(Tracking)";
+	protected String displayText="(Tracking)";
 	public String displayText(){ return displayText;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
@@ -46,7 +46,7 @@ public class Ranger_Track extends StdAbility
 	public long flags(){return Ability.FLAG_TRACKING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	private Vector theTrail=null;
+	protected Vector theTrail=null;
 	public int nextDirection=-2;
 
 	public boolean tick(Tickable ticking, int tickID)

@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenShipContainer extends StdShipContainer
 {
 	public String ID(){	return "GenShipContainer";}
-	private String readableText="";
+	protected String readableText="";
 	public GenShipContainer()
 	{
 		super();

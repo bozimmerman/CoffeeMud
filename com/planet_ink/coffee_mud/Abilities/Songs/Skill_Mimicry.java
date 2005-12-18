@@ -41,8 +41,8 @@ public class Skill_Mimicry extends BardSkill
 	private static final String[] triggerStrings = {"MIMICRY","MIMIC"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	private CMMsg lastMsg=null;
-	private boolean disabled=false;
+    protected CMMsg lastMsg=null;
+	protected boolean disabled=false;
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any

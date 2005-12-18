@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenElecContainer extends StdElecContainer
 {
 	public String ID(){	return "GenElecContainer";}
-	private String readableText="";
+	protected String readableText="";
 	public GenElecContainer()
 	{
 		super();

@@ -35,7 +35,7 @@ public class Ranger_TrackAnimal extends StdAbility
 {
 	public String ID() { return "Ranger_TrackAnimal"; }
 	public String name(){ return "Track Animal";}
-	private String displayText="(tracking an animal)";
+	protected String displayText="(tracking an animal)";
 	public String displayText(){ return displayText;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
@@ -46,7 +46,7 @@ public class Ranger_TrackAnimal extends StdAbility
 	public long flags(){return Ability.FLAG_TRACKING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	private Vector theTrail=null;
+	protected Vector theTrail=null;
 	public int nextDirection=-2;
 
 

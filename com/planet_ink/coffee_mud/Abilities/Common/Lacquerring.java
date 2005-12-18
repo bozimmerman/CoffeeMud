@@ -39,8 +39,8 @@ public class Lacquerring extends CommonSkill
 	private static final String[] triggerStrings = {"LACQUERING","LACQUER"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	private Item found=null;
-	private String writing="";
+	protected Item found=null;
+	protected String writing="";
 	public Lacquerring()
 	{
 		super();
@@ -48,7 +48,7 @@ public class Lacquerring extends CommonSkill
 		verb="lacquering";
 	}
 
-	private String fixColor(String name, String colorWord)
+	protected String fixColor(String name, String colorWord)
 	{
 		int end=name.indexOf("^?");
 		if(end>0)

@@ -76,9 +76,9 @@ public class Load extends StdCommand
                     return true;
                 }
             }
-            catch(Exception e)
+            catch(Throwable t)
             {
-                Log.errOut("Load",e);
+                Log.errOut("Load",t.getClass().getName()+": "+t.getMessage());
             }
 			mob.tell(CMStrings.capitalizeAndLower(what)+" "+name+" was not loaded.");
         }

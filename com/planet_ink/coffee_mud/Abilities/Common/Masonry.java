@@ -42,17 +42,17 @@ public class Masonry extends CraftingSkill
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "ROCK|STONE";}
 
-	private final static int BUILD_WALL=0;
-	private final static int BUILD_ROOF=1;
-	private final static int BUILD_ARCH=2;
-	private final static int BUILD_DEMOLISH=3;
-	private final static int BUILD_TITLE=4;
-	private final static int BUILD_DESC=5;
-	private final static int BUILD_MONUMENT=6;
-	private final static int BUILD_WINDOW=7;
-	private final static int BUILD_CRAWLWAY=8;
-	private final static int BUILD_POOL=9;
-	private final static int BUILD_PORTCULIS=10;
+	protected static final int BUILD_WALL=0;
+	protected static final int BUILD_ROOF=1;
+	protected static final int BUILD_ARCH=2;
+	protected static final int BUILD_DEMOLISH=3;
+	protected static final int BUILD_TITLE=4;
+	protected static final int BUILD_DESC=5;
+	protected static final int BUILD_MONUMENT=6;
+	protected static final int BUILD_WINDOW=7;
+	protected static final int BUILD_CRAWLWAY=8;
+	protected static final int BUILD_POOL=9;
+	protected static final int BUILD_PORTCULIS=10;
 
 	private final static int DAT_NAME=0;
 	private final static int DAT_WOOD=1;
@@ -75,13 +75,13 @@ public class Masonry extends CraftingSkill
 		{"Portcullis","100","0","1","0"},
 	};
 
-	private Room room=null;
-	private int dir=-1;
-	private int doingCode=-1;
-	private boolean messedUp=false;
-	private int workingOn=-1;
-	private String designTitle="";
-	private String designDescription="";
+	protected Room room=null;
+	protected int dir=-1;
+	protected int doingCode=-1;
+	protected boolean messedUp=false;
+	protected int workingOn=-1;
+	protected String designTitle="";
+	protected String designDescription="";
 
 	public Exit generify(Exit E)
 	{

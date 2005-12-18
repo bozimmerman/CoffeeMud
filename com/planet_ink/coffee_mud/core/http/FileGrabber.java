@@ -51,10 +51,10 @@ public class FileGrabber
 	private static char sep=java.io.File.separatorChar;
 	private static String sepStr = java.io.File.separator;
 	
-//	private Vector permittedDirectories = new Vector();
+//	protected Vector permittedDirectories = new Vector();
 	private Hashtable virtualDirectories = new Hashtable();
 	
-//	private String baseDir = null;
+//	protected String baseDir = null;
 	
 	private HTTPserver webServer = null;
 	
@@ -83,7 +83,7 @@ public class FileGrabber
 	//assumes pathName has been fixed!
 	// actPath may be relative to coffeemud root; the canonical
 	// form is stored
-	private boolean addPermittedDirectory(String virtPath, String actPath)
+	protected boolean addPermittedDirectory(String virtPath, String actPath)
 	{
         virtPath=virtPath.replace(File.separatorChar,'/');
 		if (!virtPath.endsWith("/")) virtPath += "/";

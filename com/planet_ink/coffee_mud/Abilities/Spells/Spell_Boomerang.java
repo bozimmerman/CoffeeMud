@@ -38,7 +38,7 @@ public class Spell_Boomerang extends Spell
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
-	private MOB owner=null;
+	protected MOB owner=null;
 
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{

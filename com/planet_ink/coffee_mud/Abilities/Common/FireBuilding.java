@@ -40,8 +40,8 @@ public class FireBuilding extends CommonSkill
 	public String[] triggerStrings(){return triggerStrings;}
 
 	public Item lighting=null;
-	private int durationOfBurn=0;
-	private boolean failed=false;
+	protected int durationOfBurn=0;
+	protected boolean failed=false;
 
 	public void unInvoke()
 	{

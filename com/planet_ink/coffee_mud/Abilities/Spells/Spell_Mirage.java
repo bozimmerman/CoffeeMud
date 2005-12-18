@@ -56,7 +56,7 @@ public class Spell_Mirage extends Spell
 		super.unInvoke();
 	}
 
-	private Room room()
+	protected Room room()
 	{
 		if(newRoom==null)
 		{

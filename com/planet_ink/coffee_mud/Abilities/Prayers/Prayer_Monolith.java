@@ -49,9 +49,9 @@ public class Prayer_Monolith extends Prayer
 	private final static int TYP_EARTH=2;
 	private final static int TYP_AIR=3;
 
-	private int wallType=0;
-	private int amountRemaining=0;
-	private Item theWall=null;
+	protected int wallType=0;
+	protected int amountRemaining=0;
+	protected Item theWall=null;
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

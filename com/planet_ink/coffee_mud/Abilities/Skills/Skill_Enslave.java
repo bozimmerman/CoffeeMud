@@ -45,14 +45,14 @@ public class Skill_Enslave extends StdSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	
-	private MOB myMaster=null;
-	private SlaveryLibrary.geasSteps STEPS=null;
-	private int masterAnger=0;
-	private int speedDown=0;
-	private final static int HUNGERTICKMAX=4;
-	private final static int SPEEDMAX=2;
-	private int hungerTickDown=HUNGERTICKMAX;
-	private Room lastRoom=null;
+	protected MOB myMaster=null;
+    protected SlaveryLibrary.geasSteps STEPS=null;
+	protected int masterAnger=0;
+	protected int speedDown=0;
+    protected final static int HUNGERTICKMAX=4;
+    protected final static int SPEEDMAX=2;
+	protected int hungerTickDown=HUNGERTICKMAX;
+	protected Room lastRoom=null;
 	
 	public void setMiscText(String txt)
 	{

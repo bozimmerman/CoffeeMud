@@ -42,8 +42,8 @@ public class Chant_StoneFriend extends Chant
 	protected int canTargetCode(){return CAN_MOBS;}
 	public long flags(){return 0;} // NOT charming because golems are resistant to that.
 
-	private MOB charmer=null;
-	private MOB getCharmer()
+	protected MOB charmer=null;
+	protected MOB getCharmer()
 	{
 		if(charmer!=null) return charmer;
 		if((invoker!=null)&&(invoker!=affected))

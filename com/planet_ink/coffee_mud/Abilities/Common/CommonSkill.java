@@ -66,7 +66,7 @@ public class CommonSkill extends StdAbility
 
 	public int classificationCode()	{	return Ability.COMMON_SKILL; }
 
-	private int yield=1;
+	protected int yield=1;
 	public int abilityCode(){return yield;}
 	public void setAbilityCode(int newCode){yield=newCode;}
 

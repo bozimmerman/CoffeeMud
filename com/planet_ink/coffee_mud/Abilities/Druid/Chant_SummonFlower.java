@@ -39,7 +39,7 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 	public String name(){ return "Summon Flower";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	private boolean processing=false;
+	protected boolean processing=false;
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

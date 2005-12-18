@@ -34,7 +34,7 @@ import java.util.*;
 public class GenMirror extends GenItem
 {
 	public String ID(){	return "GenMirror";}
-	private boolean oncePerRound=false;
+	protected boolean oncePerRound=false;
 	public GenMirror()
 	{
 		super();

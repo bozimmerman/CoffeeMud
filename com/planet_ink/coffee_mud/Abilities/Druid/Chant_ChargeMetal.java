@@ -41,7 +41,7 @@ public class Chant_ChargeMetal extends Chant
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 
-	private Vector affectedItems=new Vector();
+	protected Vector affectedItems=new Vector();
 
     public void setMiscText(String newText)
     {

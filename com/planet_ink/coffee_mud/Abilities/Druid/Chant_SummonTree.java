@@ -38,8 +38,8 @@ public class Chant_SummonTree extends Chant_SummonPlants
 	public String name(){ return "Summon Tree";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	private int material=0;
-	private int oldMaterial=-1;
+	protected int material=0;
+	protected int oldMaterial=-1;
 
 	public Item buildMyPlant(MOB mob, Room room)
 	{

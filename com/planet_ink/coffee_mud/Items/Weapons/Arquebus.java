@@ -62,7 +62,7 @@ public class Arquebus extends StdWeapon
 
 
 
-//	private boolean isBackfire()
+//	protected boolean isBackfire()
 //	{
 //
 //	}

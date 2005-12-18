@@ -36,7 +36,7 @@ import java.util.*;
 public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 {
 	public String ID(){	return "Ring_Protection";}
-	private int lastLevel=-1;
+	protected int lastLevel=-1;
 	
 	public Ring_Protection()
 	{
@@ -58,7 +58,7 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 		{ lastLevel=baseEnvStats().level(); setIdentity();}
 	}
 
-	private int correctTargetMinor()
+	protected int correctTargetMinor()
 	{
 		switch(this.envStats().level())
 		{
@@ -94,7 +94,7 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 		}
 	}
 
-	private boolean rollChance()
+	protected boolean rollChance()
 	{
 		switch(this.envStats().level())
 		{

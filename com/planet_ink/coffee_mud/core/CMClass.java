@@ -38,30 +38,30 @@ import org.mozilla.javascript.optimizer.*;
 public class CMClass extends ClassLoader
 {
     private static CMClass loader=new CMClass();
-    private Hashtable classes=new Hashtable();
+    protected Hashtable classes=new Hashtable();
     public static CMClass instance(){return loader;}
     
-    private static TimeClock globalClock=null;
-    private static Hashtable common=new Hashtable();
-	private static Vector races=new Vector();
-	private static Vector charClasses=new Vector();
-	private static Vector MOBs=new Vector();
-	private static Vector abilities=new Vector();
-	private static Vector locales=new Vector();
-	private static Vector exits=new Vector();
-	private static Vector items=new Vector();
-	private static Vector behaviors=new Vector();
-	private static Vector weapons=new Vector();
-	private static Vector armor=new Vector();
-	private static Vector miscMagic=new Vector();
-	private static Vector miscTech=new Vector();
-	private static Vector clanItems=new Vector();
-	private static Vector areaTypes=new Vector();
-	private static Vector commands=new Vector();
-    private static Vector libraries=new Vector();
-	private static Hashtable webMacros=new Hashtable();
-	public static int longestWebMacro=-1;
-	private static Hashtable CommandWords=new Hashtable();
+    protected static TimeClock globalClock=null;
+    protected static Hashtable common=new Hashtable();
+    protected static Vector races=new Vector();
+    protected static Vector charClasses=new Vector();
+    protected static Vector MOBs=new Vector();
+    protected static Vector abilities=new Vector();
+    protected static Vector locales=new Vector();
+    protected static Vector exits=new Vector();
+    protected static Vector items=new Vector();
+    protected static Vector behaviors=new Vector();
+    protected static Vector weapons=new Vector();
+    protected static Vector armor=new Vector();
+    protected static Vector miscMagic=new Vector();
+    protected static Vector miscTech=new Vector();
+    protected static Vector clanItems=new Vector();
+    protected static Vector areaTypes=new Vector();
+    protected static Vector commands=new Vector();
+    protected static Vector libraries=new Vector();
+    protected static Hashtable webMacros=new Hashtable();
+    public static int longestWebMacro=-1;
+    protected static Hashtable CommandWords=new Hashtable();
     public static final int OBJECT_RACE=0;
     public static final int OBJECT_CHARCLASS=1;
     public static final int OBJECT_MOB=2;
@@ -89,7 +89,7 @@ public class CMClass extends ClassLoader
 		"CLAN","WEAPON","ARMOR","MISCMAGIC","AREA","COMMAND","CLANITEMS",
 		"MISCTECH","WEBMACROS","COMMON","LIBRARY"
 	};
-	private static final String[] OBJECT_ANCESTORS={
+    protected static final String[] OBJECT_ANCESTORS={
 		"com.planet_ink.coffee_mud.Races.interfaces.Race",
 		"com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass",
 		"com.planet_ink.coffee_mud.MOBS.interfaces.MOB",
@@ -219,14 +219,14 @@ public class CMClass extends ClassLoader
 		return thisItem;
 	}
 
-	private static Item sampleItem=null;
+    protected static Item sampleItem=null;
 	public static Item sampleItem(){
 		if((sampleItem==null)&&(items.size()>0))
 			sampleItem= (Item)((Item)items.firstElement()).copyOf();
 		return sampleItem;
 	}
 
-	private static MOB sampleMOB=null;
+    protected static MOB sampleMOB=null;
 	public static MOB sampleMOB()
 	{
 		if((sampleMOB==null)&&(MOBs.size()>0))
@@ -746,7 +746,7 @@ public class CMClass extends ClassLoader
 		return name;
 	}
 
-	private static boolean checkAncestry(Class cl, Class ancestorCl)
+    protected static boolean checkAncestry(Class cl, Class ancestorCl)
 	{
 		if (cl == null) return false;
 		if (cl.isPrimitive() || cl.isInterface()) return false;

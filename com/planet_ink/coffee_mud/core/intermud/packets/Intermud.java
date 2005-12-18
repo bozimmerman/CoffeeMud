@@ -770,7 +770,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 
 class SaveThread extends Thread {
     private Intermud intermud;
-	private boolean closed=false;
+	protected boolean closed=false;
 
     public SaveThread(Intermud imud) {
         super("Intermud save");

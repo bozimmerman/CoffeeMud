@@ -45,18 +45,18 @@ public class DBConnection
 	private PreparedStatement myPreparedStatement=null;
 	
 	/** Whether this dbconnection is being used */
-	private boolean inUse;
+	protected boolean inUse;
 	
 	/** if any SQL errors occur, they are here.**/
-	private String lastError=null;
+	protected String lastError=null;
 	
 	/** when this connection was put into use**/
 	private long useTime=System.currentTimeMillis();
 	
 	/** number of failures in a row */
-	private int failuresInARow=0;
+	protected int failuresInARow=0;
 	
-	private boolean sqlserver=false;
+	protected boolean sqlserver=false;
 	
 	/** parent container of this connection **/
 	private DBConnections myParent=null;	

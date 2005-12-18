@@ -100,7 +100,7 @@ public class Disease_Lycanthropy extends Disease
 		return null;
 	}
 
-	private boolean findVictim(MOB mob, Room room, Vector rooms, int depth)
+	protected boolean findVictim(MOB mob, Room room, Vector rooms, int depth)
 	{
 		if(depth>5)
 			return false;

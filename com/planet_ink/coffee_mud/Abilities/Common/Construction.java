@@ -40,18 +40,18 @@ public class Construction extends CraftingSkill
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN";}
 
-	private final static int BUILD_WALL=0;
-	private final static int BUILD_DOOR=1;
-	private final static int BUILD_ROOF=2;
-	private final static int BUILD_GATE=3;
-	private final static int BUILD_FENCE=4;
-	private final static int BUILD_DEMOLISH=5;
-	private final static int BUILD_TITLE=6;
-	private final static int BUILD_DESC=7;
-	private final static int BUILD_SECRETDOOR=8;
-	private final static int BUILD_WINDOW=9;
-	private final static int BUILD_CRAWLWAY=10;
-	private final static int BUILD_STAIRS=11;
+	protected static final int BUILD_WALL=0;
+	protected static final int BUILD_DOOR=1;
+	protected static final int BUILD_ROOF=2;
+	protected static final int BUILD_GATE=3;
+	protected static final int BUILD_FENCE=4;
+	protected static final int BUILD_DEMOLISH=5;
+	protected static final int BUILD_TITLE=6;
+	protected static final int BUILD_DESC=7;
+	protected static final int BUILD_SECRETDOOR=8;
+	protected static final int BUILD_WINDOW=9;
+	protected static final int BUILD_CRAWLWAY=10;
+	protected static final int BUILD_STAIRS=11;
 
 	private final static int DAT_NAME=0;
 	private final static int DAT_WOOD=1;
@@ -74,13 +74,13 @@ public class Construction extends CraftingSkill
 		{"Crawlway","250","1","1","1"}//,{"Stairs","350","1","0","0"}
 	};
 
-	private Room room=null;
-	private int dir=-1;
-	private int doingCode=-1;
-	private boolean messedUp=false;
-	private int workingOn=-1;
-	private String designTitle="";
-	private String designDescription="";
+	protected Room room=null;
+	protected int dir=-1;
+	protected int doingCode=-1;
+	protected boolean messedUp=false;
+	protected int workingOn=-1;
+	protected String designTitle="";
+	protected String designDescription="";
 
 	public Exit generify(Exit E)
 	{

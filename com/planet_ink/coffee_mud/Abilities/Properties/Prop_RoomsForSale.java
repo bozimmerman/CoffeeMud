@@ -36,7 +36,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 	public String ID() { return "Prop_RoomsForSale"; }
 	public String name(){ return "Putting a cluster of rooms up for sale";}
 
-	private void fillCluster(Room R, Vector V)
+    protected void fillCluster(Room R, Vector V)
 	{
 		V.addElement(R);
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)

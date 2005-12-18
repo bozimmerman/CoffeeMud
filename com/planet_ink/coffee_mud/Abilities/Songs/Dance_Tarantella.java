@@ -37,7 +37,7 @@ public class Dance_Tarantella extends Dance
 	public String ID() { return "Dance_Tarantella"; }
 	public String name(){ return "Tarantella";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	private int ticks=1;
+	protected int ticks=1;
 	protected String danceOf(){return name()+" Dance";}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)

@@ -1037,7 +1037,7 @@ public final class IMC2Driver extends Thread {
         if(R!=null) R.destroyRoom();
     }
 
-	private MOB findSessMob(String mobName)
+	protected MOB findSessMob(String mobName)
 	{
 		for(int s=0;s<CMLib.sessions().size();s++)
 		{

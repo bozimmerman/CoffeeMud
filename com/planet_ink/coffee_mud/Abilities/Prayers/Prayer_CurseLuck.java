@@ -40,8 +40,8 @@ public class Prayer_CurseLuck extends Prayer
 	public int quality(){return MALICIOUS;};
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	private HashSet permProts=new HashSet();
-	private int prots=4;
+    protected HashSet permProts=new HashSet();
+    protected int prots=4;
 	boolean notAgain=false;
 
 	public void unInvoke()

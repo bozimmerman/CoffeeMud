@@ -54,7 +54,7 @@ public class Amputation extends StdAbility implements Amputator
 	public boolean canBeUninvoked(){return false;}
 	public int classificationCode(){return Ability.SKILL;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	private Vector missingLimbs=null;
+	protected Vector missingLimbs=null;
 	private int[] amputations=new int[Race.BODY_PARTS];
 
 	public final static boolean[] validamputees={true,//antenea

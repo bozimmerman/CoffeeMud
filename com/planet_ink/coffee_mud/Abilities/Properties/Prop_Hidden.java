@@ -39,7 +39,7 @@ public class Prop_Hidden extends Property
 										 |Ability.CAN_ITEMS
 										 |Ability.CAN_EXITS
 										 |Ability.CAN_AREAS;}
-	private int ticksSinceLoss=100;
+	protected int ticksSinceLoss=100;
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any

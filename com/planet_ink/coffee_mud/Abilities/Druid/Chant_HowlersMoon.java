@@ -42,8 +42,8 @@ public class Chant_HowlersMoon extends Chant
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return FLAG_MOONCHANGING;}
-	private int ticksTicked=0;
-	private int fromDir=-1;
+	protected int ticksTicked=0;
+	protected int fromDir=-1;
 
 	public void unInvoke()
 	{
@@ -136,7 +136,7 @@ public class Chant_HowlersMoon extends Chant
 		return true;
 	}
 
-	private Vector fillChoices(Room R)
+	protected Vector fillChoices(Room R)
 	{
 		Vector choices=new Vector();
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)

@@ -39,7 +39,7 @@ public class Play_Battlehymn extends Play
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected String songOf(){return "a "+name();}
 
-	private int timesTicking=0;
+	protected int timesTicking=0;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

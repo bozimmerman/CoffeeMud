@@ -746,7 +746,7 @@ public class List extends StdCommand
 		return msg;
 	}
 
-	private String reallyFindOneWays(MOB mob, Vector commands)
+	protected String reallyFindOneWays(MOB mob, Vector commands)
 	{
 		StringBuffer str=new StringBuffer("");
 		try
@@ -770,7 +770,7 @@ public class List extends StdCommand
 	}
 
 
-	private String unlinkedExits(MOB mob, Vector commands)
+	protected String unlinkedExits(MOB mob, Vector commands)
 	{
 		StringBuffer str=new StringBuffer("");
 		try

@@ -44,7 +44,7 @@ public class Skill_Trip extends StdSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	public long flags(){return Ability.FLAG_MOVING;}
-	private int enhancement=0;
+	protected int enhancement=0;
 	public int abilityCode(){return enhancement;}
 	public void setAbilityCode(int newCode){enhancement=newCode;}
 	public int usageType(){return USAGE_MOVEMENT;}

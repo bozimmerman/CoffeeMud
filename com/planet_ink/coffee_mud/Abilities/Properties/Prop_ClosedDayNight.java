@@ -36,17 +36,17 @@ public class Prop_ClosedDayNight extends Property
 	public String ID() { return "Prop_ClosedDayNight"; }
 	public String name(){ return "Day/Night Visibility";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
-	private boolean doneToday=false;
-	private int lastClosed=-1;
-	private boolean dayFlag=false;
-	private boolean sleepFlag=false;
-	private boolean sitFlag=false;
-	private boolean lockupFlag=false;
-	private int openTime=-1;
-	private int closeTime=-1;
-	private String Home=null;
-	private String shopMsg=null;
-	private Room exitRoom=null;
+	protected boolean doneToday=false;
+	protected int lastClosed=-1;
+	protected boolean dayFlag=false;
+	protected boolean sleepFlag=false;
+	protected boolean sitFlag=false;
+	protected boolean lockupFlag=false;
+	protected int openTime=-1;
+	protected int closeTime=-1;
+	protected String Home=null;
+	protected String shopMsg=null;
+	protected Room exitRoom=null;
 
 	public String accountForYourself()
 	{ return "";	}
@@ -107,7 +107,7 @@ public class Prop_ClosedDayNight extends Property
 			exitRoom=msg.source().location();
 	}
 	
-	private boolean closed(Environmental E)
+	protected boolean closed(Environmental E)
 	{
 		boolean closed=false;
 		Room R=CMLib.utensils().roomLocation(E);
@@ -155,7 +155,7 @@ public class Prop_ClosedDayNight extends Property
 		return true;
 	}
 
-	private Room getHomeRoom()
+	protected Room getHomeRoom()
 	{
 		if(Home==null) return null;
 		Room R=CMLib.map().getRoom(Home);

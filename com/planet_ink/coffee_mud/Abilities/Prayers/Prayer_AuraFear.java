@@ -41,7 +41,7 @@ public class Prayer_AuraFear extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	private int tickDown=4;
+    protected int tickDown=4;
 
 
 	public void unInvoke()

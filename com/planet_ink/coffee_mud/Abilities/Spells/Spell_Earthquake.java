@@ -40,7 +40,7 @@ public class Spell_Earthquake extends Spell
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
-	private boolean oncePerRd=false;
+	protected boolean oncePerRd=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{ oncePerRd=false; return super.tick(ticking,tickID);}

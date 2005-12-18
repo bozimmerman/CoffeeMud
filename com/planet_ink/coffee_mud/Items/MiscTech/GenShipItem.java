@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenShipItem extends StdShipItem
 {
 	public String ID(){	return "GenShipItem";}
-	private String readableText="";
+	protected String readableText="";
 	public GenShipItem()
 	{
 		super();

@@ -118,7 +118,7 @@ public class Reset extends StdCommand
 		}
 	}
 
-	private int rightImportMat(MOB mob, Item I, boolean openOnly)
+	protected int rightImportMat(MOB mob, Item I, boolean openOnly)
 		throws java.io.IOException
 	{
 		if((I!=null)&&(I.description().trim().length()>0))

@@ -731,7 +731,7 @@ public class CMFile
             for(int l=0;l<list.length;l++)
             {
                 F2=list[l];
-                String thisPath=vfsifyFilename(thisDir)+File.separatorChar+F2.getName();
+                String thisPath=vfsifyFilename(thisDir)+"/"+F2.getName();
                 String thisName=F2.getName();
                 CMFile CF=new CMFile(thisPath,accessor,false);
                 if((CF.canRead())
@@ -824,12 +824,12 @@ public class CMFile
         return starter+filename;
     }
 
-    public static CMFile[] getFileList(String currentPath, String filename, MOB user)
-    { return getFileList(incorporateBaseDir(currentPath,filename),user);}
-    public static CMFile[] getFileList(String parse, MOB user)
+    public static CMFile[] getFileList(String currentPath, String filename, MOB user, boolean recurse)
+    { return getFileList(incorporateBaseDir(currentPath,filename),user,recurse);}
+    public static CMFile[] getFileList(String parse, MOB user, boolean recurse)
     {
         CMFile dirTest=new CMFile(parse,user,false);
-        if((dirTest.exists())&&(dirTest.isDirectory())&&(dirTest.canRead()))
+        if((dirTest.exists())&&(dirTest.isDirectory())&&(dirTest.canRead())&&(!recurse))
             return dirTest.listFiles();
         boolean demandLocal=parse.trim().startsWith("//");
         boolean demandVFS=parse.trim().startsWith("::");
@@ -845,15 +845,20 @@ public class CMFile
         CMFile dir=new CMFile((demandLocal?"//":demandVFS?"::":"")+fixedPath,user,false);
         if((!dir.exists())||(!dir.isDirectory())||(!dir.canRead())) 
             return null;
-        if(fixedName.length()==0) return dir.listFiles();
         Vector set=new Vector();
         CMFile[] cset=dir.listFiles();
         fixedName=fixedName.toUpperCase();
         for(int c=0;c<cset.length;c++)
         {
+            if((recurse)&&(cset[c].isDirectory())&&(cset[c].canRead()))
+            {
+                CMFile[] CF2=getFileList(cset[c].getVFSPathAndName()+"/"+fixedName,user,true);
+                for(int cf2=0;cf2<CF2.length;cf2++)
+                    set.addElement(CF2[cf2]);
+            }
             String name=cset[c].getName().toUpperCase();
             boolean ismatch=true;
-            if(!name.equalsIgnoreCase(fixedName))
+            if((!name.equalsIgnoreCase(fixedName))&&(fixedName.length()>0))
             for(int f=0,n=0;f<fixedName.length();f++,n++)
                 if(fixedName.charAt(f)=='?')
                 {
@@ -880,7 +885,7 @@ public class CMFile
         if(set.size()==1)
         {
             dirTest=(CMFile)set.firstElement();
-            if((dirTest.exists())&&(dirTest.isDirectory())&&(dirTest.canRead()))
+            if((dirTest.exists())&&(dirTest.isDirectory())&&(dirTest.canRead())&&(!recurse))
                 return dirTest.listFiles();
         }
         cset=new CMFile[set.size()];

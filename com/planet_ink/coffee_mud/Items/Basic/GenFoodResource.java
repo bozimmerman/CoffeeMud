@@ -35,7 +35,7 @@ import java.util.*;
 public class GenFoodResource extends GenFood implements EnvResource, Food
 {
 	public String ID(){	return "GenFoodResource";}
-	private boolean readyToSet=false;
+	protected boolean readyToSet=false;
 	
 	public GenFoodResource()
 	{
@@ -134,7 +134,7 @@ public class GenFoodResource extends GenFood implements EnvResource, Food
 	    }
 	    return super.okMessage(host,msg);
 	}
-	private int domainSource=-1;
+	protected int domainSource=-1;
 	public int domainSource(){return domainSource;}
 	public void setDomainSource(int src){domainSource=src;}
 }

@@ -246,7 +246,7 @@ public class Import extends StdCommand
 	};
 
 
-	private static String getAreaName(Vector V)
+    protected static String getAreaName(Vector V)
 	{
 		V=(Vector)V.clone();
 		// find area line first
@@ -324,7 +324,7 @@ public class Import extends StdCommand
 		return CMStrings.removeColors(CMLib.coffeeFilter().safetyFilter(areaName));
 	}
 	
-	private static String getAreaAuthor(Vector V)
+    protected static String getAreaAuthor(Vector V)
 	{
 		V=(Vector)V.clone();
 		for(int v=0;v<V.size();v++)
@@ -460,7 +460,7 @@ public class Import extends StdCommand
 		return "";
 	}
 	
-	private static final String[][] colors={
+    protected static final String[][] colors={
 		{((char)27)+"ash"+((char)27),"^c"},
 		{((char)27)+"black"+((char)27),"^W"},
 		{((char)27)+"blood"+((char)27),"^R"},
@@ -568,19 +568,19 @@ public class Import extends StdCommand
 		{"@@N","^?"}
 	};
 
-	private static String nextLine(Vector V)
+    protected static String nextLine(Vector V)
 	{
 		if(V.size()==0) return "";
 		return (String)V.elementAt(0);
 	}
-	private static String eatLine(Vector V)
+    protected static String eatLine(Vector V)
 	{
 		if(V.size()==0) return "";
 		String s=(String)V.elementAt(0);
 		V.removeElementAt(0);
 		return s;
 	}
-	private static String eatNextLine(Vector V)
+    protected static String eatNextLine(Vector V)
 	{
 		String s="";
 		while((s.trim().length()==0)&&(V.size()>0))
@@ -588,7 +588,7 @@ public class Import extends StdCommand
 		return s;
 	}
 
-	private static Room changeRoomClass(Room R, String newClass)
+    protected static Room changeRoomClass(Room R, String newClass)
 	{
 		Room R2=CMClass.getLocale(newClass);
 		if(R2==null)
@@ -606,7 +606,7 @@ public class Import extends StdCommand
 		return R2;
 	}
 
-	private static int getBitMask(String str, int which)
+    protected static int getBitMask(String str, int which)
 	{
 		String s=CMParms.getCleanBit(str,which);
 		if(s.length()==0)
@@ -644,7 +644,7 @@ public class Import extends StdCommand
 		return (num|CMath.s_int(s));
 	}
 
-	private static String trimSpacesOnly(String s)
+    protected static String trimSpacesOnly(String s)
 	{
 		while(s.startsWith(" ")||s.startsWith("\t")||s.startsWith("\n")||s.startsWith("\r"))
 			s=s.substring(1);
@@ -653,7 +653,7 @@ public class Import extends StdCommand
 		return s;
 	}
 
-	private static String eatLineSquiggle(Vector V)
+    protected static String eatLineSquiggle(Vector V)
 	{
 		if(V.size()==0) return "";
 		String s=eatLine(V);
@@ -698,7 +698,7 @@ public class Import extends StdCommand
 		return s.trim();
 	}
 
-	private static boolean hasReadableContent(String objectName)
+    protected static boolean hasReadableContent(String objectName)
 	{
 		objectName=objectName.toUpperCase();
 		if((objectName.indexOf("SIGN")>=0)
@@ -715,7 +715,7 @@ public class Import extends StdCommand
 		return false;
 	}
 
-	private static String fixReadableContent(String text)
+    protected static String fixReadableContent(String text)
 	{
 		while(text.startsWith("%0D"))
 			text=text.substring(3);
@@ -733,14 +733,14 @@ public class Import extends StdCommand
 		return text;
 	}
 
-	private static boolean returnAnError(MOB mob, String str)
+    protected static boolean returnAnError(MOB mob, String str)
 	{
 		Log.errOut("Import",str);
 		mob.tell(str);
 		return false;
 	}
 
-	private static String getSpell(String word, int i)
+    protected static String getSpell(String word, int i)
 	{
 		if((word.trim().length()>0)&&((Character.isLetter(word.trim().charAt(0)))||(word.trim().startsWith("'"))||(word.trim().startsWith("`"))))
 		{
@@ -1417,7 +1417,7 @@ public class Import extends StdCommand
 		return "";
 	}
 
-	private static int importNumber(String s)
+    protected static int importNumber(String s)
 	{
 		StringBuffer str=new StringBuffer("");
 		for(int i=0;i<s.length();i++)
@@ -1446,7 +1446,7 @@ public class Import extends StdCommand
 		return CMath.s_int(str.toString());
 	}
 
-	private static void readBlocks(Vector buf,
+    protected static void readBlocks(Vector buf,
 						   Vector areaData,
 						   Vector roomData,
 						   Vector mobData,
@@ -1594,7 +1594,7 @@ public class Import extends StdCommand
 		}
 	}
 
-	private static void doWeapon(Weapon I, String name, int val1, String str1, int val2, int val3, int val4, String str4)
+    protected static void doWeapon(Weapon I, String name, int val1, String str1, int val2, int val3, int val4, String str4)
 	{
 		final String[][] weaponTypes={
 			{ "exotic","0"},
@@ -1776,15 +1776,15 @@ public class Import extends StdCommand
 		return (roll*dice)+plus;
 	}
 
-	private static MOB getMOB(String OfThisID,
-					  Room putInRoom,
-					  MOB mob,
-					  Vector mobData,
-					  Vector mobProgData,
-					  Vector specialData,
-					  Vector shopData,
-					  Hashtable doneMOBS,
-					  String areaFileName)
+    protected static MOB getMOB(String OfThisID,
+        					    Room putInRoom,
+        					    MOB mob,
+        					    Vector mobData,
+        					    Vector mobProgData,
+        					    Vector specialData,
+        					    Vector shopData,
+        					    Hashtable doneMOBS,
+        					    String areaFileName)
 	{
 		if(OfThisID.startsWith("#"))
 		{

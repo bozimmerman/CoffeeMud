@@ -38,8 +38,8 @@ public class Chant_AnimalSpy extends Chant
 	public String name(){ return "Animal Spy";}
 	public String displayText(){return "(Animal Spy)";}
 	public int quality(){return Ability.OK_OTHERS;}
-	private MOB spy=null;
-	private boolean disable=false;
+	protected MOB spy=null;
+	protected boolean disable=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

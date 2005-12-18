@@ -56,7 +56,7 @@ public class Poison extends StdAbility
 	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> attempt(s) to poison <T-NAMESELF>!^</FIGHT^>^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
 	protected int POISON_DAMAGE(){return (invoker!=null)?CMLib.dice().roll(invoker().envStats().level(),3,1):0;}
-	private boolean processing=false;
+    protected boolean processing=false;
 
 	protected int poisonTick=3;
 

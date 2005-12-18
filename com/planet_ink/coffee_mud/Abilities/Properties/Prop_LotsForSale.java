@@ -38,7 +38,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 	public String name(){ return "Putting many rooms up for sale";}
 
 
-	private static boolean isCleanRoom(Room fromRoom, Room theRoom)
+    protected static boolean isCleanRoom(Room fromRoom, Room theRoom)
 	{
 		if(theRoom==null) return true;
 

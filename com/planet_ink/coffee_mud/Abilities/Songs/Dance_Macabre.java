@@ -39,7 +39,7 @@ public class Dance_Macabre extends Dance
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected String danceOf(){return name()+" Dance";}
 
-	private boolean activated=false;
+	protected boolean activated=false;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -39,7 +39,7 @@ public class Spell_Delay extends Spell
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 	private Ability shooter=null;
-	private Vector parameters=null;
+	protected Vector parameters=null;
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 

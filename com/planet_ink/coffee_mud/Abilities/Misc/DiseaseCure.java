@@ -42,7 +42,7 @@ public class DiseaseCure extends StdAbility
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.SKILL;}
-	private boolean processing=false;
+	protected boolean processing=false;
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{

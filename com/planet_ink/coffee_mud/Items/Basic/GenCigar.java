@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenCigar extends StdSmokable
 {
 	public String ID(){	return "GenCigar";}
-	private String readableText = "";
+	protected String readableText = "";
 	public GenCigar()
 	{
 		super();

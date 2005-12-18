@@ -41,8 +41,8 @@ public class Mining extends GatheringSkill
 	protected boolean allowedWhileMounted(){return false;}
 	public String supportedResourceString(){return "GLASS|PRECIOUS|SAND|ROCK|METAL|MITHRIL";}
 
-	private Item found=null;
-	private String foundShortName="";
+	protected Item found=null;
+	protected String foundShortName="";
 	public Mining()
 	{
 		super();

@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenShopkeeper extends StdShopKeeper
 {
 	public String ID(){return "GenShopkeeper";}
-	private String PrejudiceFactors="";
+	protected String PrejudiceFactors="";
     private String IgnoreMask="";
 
 	public GenShopkeeper()

@@ -34,15 +34,15 @@ import java.util.*;
 */
 public class DefaultSocial implements Social
 {
-	private String Social_name;
-	private String You_see;
-	private String Third_party_sees;
-	private String Target_sees;
-	private String See_when_no_target;
+	protected String Social_name;
+	protected String You_see;
+	protected String Third_party_sees;
+	protected String Target_sees;
+	protected String See_when_no_target;
     private String MSPfile="";
-	private int sourceCode=CMMsg.MSG_OK_ACTION;
-	private int othersCode=CMMsg.MSG_OK_ACTION;
-	private int targetCode=CMMsg.MSG_OK_ACTION;
+	protected int sourceCode=CMMsg.MSG_OK_ACTION;
+	protected int othersCode=CMMsg.MSG_OK_ACTION;
+	protected int targetCode=CMMsg.MSG_OK_ACTION;
 
 	public String ID() { return "DefaultSocial"; }
 	public String name(){ return Social_name;}
@@ -220,7 +220,7 @@ public class DefaultSocial implements Social
 
 	private static final String[] CODES={"CLASS","NAME"};
 	public String[] getStatCodes(){return CODES;}
-	private int getCodeNum(String code){
+	protected int getCodeNum(String code){
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
@@ -253,7 +253,7 @@ public class DefaultSocial implements Social
 		   return true;
 		return false;
 	}
-	private void cloneFix(Social E){}
+    protected void cloneFix(Social E){}
 
 	public CMObject copyOf()
 	{

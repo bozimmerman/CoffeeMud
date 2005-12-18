@@ -33,9 +33,9 @@ import java.util.*;
 public class DrowPriestess extends DrowElf
 {
 	public String ID(){return "DrowPriestess";}
-	private int spellDown=3;
-	private int darkDown=4;
-	private int magicResistance = 50;
+	protected int spellDown=3;
+	protected int darkDown=4;
+	protected int magicResistance = 50;
 
 	public DrowPriestess()
 	{

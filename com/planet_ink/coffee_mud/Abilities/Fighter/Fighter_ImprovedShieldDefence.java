@@ -42,7 +42,7 @@ public class Fighter_ImprovedShieldDefence extends FighterSkill
 	public int classificationCode(){return Ability.SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	private boolean gettingBonus=false;
+    protected boolean gettingBonus=false;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

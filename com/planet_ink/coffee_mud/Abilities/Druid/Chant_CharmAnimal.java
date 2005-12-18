@@ -42,8 +42,8 @@ public class Chant_CharmAnimal extends Chant
 	protected int canTargetCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_CHARMING;}
 
-	private MOB charmer=null;
-	private MOB getCharmer()
+	protected MOB charmer=null;
+	protected MOB getCharmer()
 	{
 		if(charmer!=null) return charmer;
 		if((invoker!=null)&&(invoker!=affected))

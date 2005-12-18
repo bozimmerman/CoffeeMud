@@ -37,7 +37,7 @@ public class Searching extends CommonSkill
 	public String name(){ return "Searching";}
 	private static final String[] triggerStrings = {"SEARCH","SEARCHING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	private Room searchRoom=null;
+	protected Room searchRoom=null;
     private int bonusThisRoom=0;
     
     public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -46,7 +46,7 @@ public class Searching extends CommonSkill
         affectableStats.setStat(CharStats.SAVE_OVERLOOKING,bonusThisRoom+profficiency()+affectableStats.getStat(CharStats.SAVE_OVERLOOKING));
     }
 
-	private boolean success=false;
+	protected boolean success=false;
 	public Searching()
 	{
 		super();

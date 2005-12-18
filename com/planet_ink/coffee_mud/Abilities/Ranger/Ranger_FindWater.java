@@ -46,7 +46,7 @@ public class Ranger_FindWater extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public long flags(){return Ability.FLAG_TRACKING;}
 
-	private Vector theTrail=null;
+	protected Vector theTrail=null;
 	public int nextDirection=-2;
 	public void unInvoke()
 	{

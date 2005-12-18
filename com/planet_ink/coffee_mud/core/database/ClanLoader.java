@@ -34,8 +34,8 @@ import java.util.*;
  */
 public class ClanLoader
 {
-	private static int currentRecordPos=1;
-	private static int recordCount=0;
+    protected static int currentRecordPos=1;
+    protected static int recordCount=0;
 
 	public static void updateBootStatus(String loading)
 	{

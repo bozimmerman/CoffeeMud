@@ -48,12 +48,12 @@ public class Prop_ClanEquipment extends Property
 	protected int TypeOfEffect = 0;
 	protected int WeaponType = 0;
 	protected int PowerLevel = 0;
-	private long LastChecked=0;
-	private boolean notAgain = false;
-	private String clanName = "";
-	private String clanType = "";
+    protected long LastChecked=0;
+	protected boolean notAgain = false;
+	protected String clanName = "";
+	protected String clanType = "";
 	String lastMessage = null;
-	private CharStats EQadjCharStats = null;
+    protected CharStats EQadjCharStats = null;
 	public static final String[] words = {
 	    "ZAP", "ZAP", "ZAP", "ZOT", "ZIT", "ZEK", "ZOM", "ZUP", "ZET", "ZYT",
 	    "ZVP", "ZOP", "ZYV", "ZAL"};

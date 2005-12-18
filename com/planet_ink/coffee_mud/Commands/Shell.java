@@ -46,10 +46,15 @@ public class Shell extends StdCommand
             {"-","DELETE","RM","RD"},
             {"\\","TYPE","TP"},
             {"+","MAKEDIRECTORY","MKDIR","MD"},
-            //{"/","EDIT"},
+            {"*","FINDFILE","FF"},
+            {"&","SEARCHTEXT","GREP","ST"},
+            {"/","EDIT"},
             //{"?","COMPAREFILES","DIFF","CF"},
     };
     
+    protected final static String[] badTextExtensions={
+        ".ZIP",".JPE",".JPG",".GIF",".CLASS",".WAV",".BMP",".JPEG",".GZ",".TGZ",".JAR"
+    };
     
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -105,7 +110,7 @@ public class Shell extends StdCommand
         {
         case 0: // directory
         {
-            CMFile[] dirs=CMFile.getFileList(pwd,CMParms.combine(commands,1),mob);
+            CMFile[] dirs=CMFile.getFileList(pwd,CMParms.combine(commands,1),mob,false);
             if(dirs==null)
             {
                 mob.tell("^xError: invalid directory!^N");
@@ -165,7 +170,7 @@ public class Shell extends StdCommand
             }
             String source=(String)commands.elementAt(1);
             String target=CMParms.combine(commands,2);
-            CMFile[] dirs=CMFile.getFileList(pwd,source,mob);
+            CMFile[] dirs=CMFile.getFileList(pwd,source,mob,false);
             if(dirs==null)
             {
                 mob.tell("^xError: invalid source!^N");
@@ -176,6 +181,8 @@ public class Shell extends StdCommand
                 mob.tell("^xError: no source files matched^N");
                 return false;
             }
+            if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
+                target=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
             CMFile DD=new CMFile(pwd,target,mob,false);
             for(int d=0;d<dirs.length;d++)
             {
@@ -241,7 +248,7 @@ public class Shell extends StdCommand
         }
         case 3: // delete
         {
-            CMFile[] dirs=CMFile.getFileList(pwd,CMParms.combine(commands,1),mob);
+            CMFile[] dirs=CMFile.getFileList(pwd,CMParms.combine(commands,1),mob,false);
             if(dirs==null)
             {
                 mob.tell("^xError: invalid filename!^N");
@@ -276,7 +283,7 @@ public class Shell extends StdCommand
         }
         case 4: // type
         {
-            CMFile[] dirs=CMFile.getFileList(pwd,CMParms.combine(commands,1),mob);
+            CMFile[] dirs=CMFile.getFileList(pwd,CMParms.combine(commands,1),mob,false);
             if(dirs==null)
             {
                 mob.tell("^xError: invalid filename!^N");
@@ -302,7 +309,7 @@ public class Shell extends StdCommand
                 }
                 if(mob.session()!=null)
                 {
-                    mob.session().rawPrintln("\n\r^xFile /"+CF.getVFSPathAndName()+"^.^N");
+                    mob.session().colorOnlyPrintln("\n\r^xFile /"+CF.getVFSPathAndName()+"^.^N");
                     mob.session().rawPrint(CF.text().toString(),25);
                 }
             }
@@ -329,12 +336,244 @@ public class Shell extends StdCommand
             mob.tell("Directory '/"+CF.getAbsolutePath()+"' created.");
             break;
         }
-        case 6: // edit
+        case 6: // findfiles
         {
-            mob.tell("^xNot yet implemented.^N");
+            String substring=CMParms.combine(commands,1).trim();
+            if(substring.length()==0) substring="*";
+            CMFile[] dirs=CMFile.getFileList(pwd,substring,mob,true);
+            StringBuffer msg=new StringBuffer("");
+            if(dirs.length==0)
+            {
+                mob.tell("^xError: no files matched^N");
+                return false;
+            }
+            for(int d=0;d<dirs.length;d++)
+            {
+                CMFile entry=dirs[d];
+                if(!entry.isDirectory())
+                {
+                    if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
+                        msg.append(" ");
+                    else
+                    if((entry.isLocalFile()&&(entry.canVFSEquiv()))
+                    ||((entry.isVFSFile())&&(entry.canLocalEquiv())))
+                        msg.append("^R+");
+                    else
+                        msg.append("^r-");
+                    msg.append("^w"+entry.getVFSPathAndName());
+                    msg.append("\n\r");
+                }
+            }
+            if(mob.session()!=null)
+                mob.session().colorOnlyPrintln(msg.toString());
             return false;
         }
-        case 7: // compare files
+        case 7: // searchtext
+        {
+            String substring=CMParms.combine(commands,1).trim();
+            if(substring.length()==0)
+            {
+                mob.tell("^xError: you must specify a search string^N");
+                return false;
+            }
+            CMFile[] dirs=CMFile.getFileList(pwd,"*",mob,true);
+            if(dirs.length==0)
+            {
+                mob.tell("^xError: no files found!^N");
+                return false;
+            }
+            mob.session().print("\n\rSearching...");
+            substring=substring.toUpperCase();
+            Vector dirs2=new Vector();
+            for(int d=0;d<dirs.length;d++)
+            {
+                CMFile entry=dirs[d];
+                if(!entry.isDirectory())
+                {
+                    boolean proceed=true;
+                    for(int i=0;i<badTextExtensions.length;i++)
+                        if(entry.getName().toUpperCase().endsWith(badTextExtensions[i]))
+                        { proceed=false; break;}
+                    if(proceed)
+                    {
+                        StringBuffer text=entry.textUnformatted();
+                        if(text.toString().toUpperCase().indexOf(substring)>=0)
+                            dirs2.addElement(entry);
+                    }
+                }
+            }
+            if(dirs2.size()==0)
+            {
+                mob.tell("\n\r^xError: no files matched^N");
+                return false;
+            }
+            StringBuffer msg=new StringBuffer("\n\r");
+            for(int d=0;d<dirs2.size();d++)
+            {
+                CMFile entry=(CMFile)dirs2.elementAt(d);
+                if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
+                    msg.append(" ");
+                else
+                if((entry.isLocalFile()&&(entry.canVFSEquiv()))
+                ||((entry.isVFSFile())&&(entry.canLocalEquiv())))
+                    msg.append("^R+");
+                else
+                    msg.append("^r-");
+                msg.append("^w"+entry.getVFSPathAndName());
+                msg.append("\n\r");
+            }
+            if(mob.session()!=null)
+                mob.session().colorOnlyPrintln(msg.toString());
+            return false;
+        }
+        case 8: // edit
+        {
+            CMFile file=new CMFile(pwd,CMParms.combine(commands,1),mob,false);
+            if((!file.canWrite())
+            ||(file.isDirectory()))
+            {
+                mob.tell("^xError: You are not authorized to create/modify that file.^N");
+                return false;
+            }
+            Vector vbuf=Resources.getFileLineVector(file.textUnformatted());
+            mob.tell(desc(file)+" has been loaded.\n\r\n\r");
+            final String help=
+                "^HCoffeeMud Message Maker Options:^N\n\r"+
+                "^XA)^.^Wdd new lines (go into ADD mode)\n\r"+
+                "^XD)^.^Welete one or more lines\n\r"+
+                "^XL)^.^Wist the entire text file\n\r"+
+                "^XI)^.^Wnsert a line\n\r"+
+                "^XE)^.^Wdit a line\n\r"+
+                "^XR)^.^Weplace text in the file\n\r"+
+                "^XS)^.^Wave the file\n\r"+
+                "^XQ)^.^Wuit without saving";
+            mob.tell("^HCoffeeMud Message Maker^N");
+            boolean menuMode=true;
+            while((mob.session()!=null)&&(!mob.session().killFlag()))
+            {
+                mob.session().setAfkFlag(false);
+                if(!menuMode)
+                {
+                    String line=mob.session().prompt("^X"+CMStrings.padRight(""+vbuf.size(),3)+")^.^N ","");
+                    if(line.trim().equals("."))
+                        menuMode=true;
+                    else
+                        vbuf.addElement(line);
+                }
+                else
+                {
+                    String option=mob.session().choose("^HMenu ^N(?/A/D/L/I/E/R/S/Q)^H: ^N","ADLIESQ?","?");
+                    switch(option.charAt(0))
+                    {
+                    case 'S':
+                        if(mob.session().confirm("Save and exit, are you sure (N/y)? ","N"))
+                        {
+                            StringBuffer text=new StringBuffer("");
+                            for(int i=0;i<vbuf.size();i++)
+                                text.append(((String)vbuf.elementAt(i))+"\r\n");
+                            if(file.saveText(text))
+                                mob.tell("File saved.");
+                            else
+                                mob.tell("^XError: could not save the file!^N^.");
+                            return true;
+                        }
+                        break;
+                    case 'Q':
+                        if(mob.session().confirm("Quit without saving (N/y)? ","N"))
+                            return true;
+                        break;
+                    case 'R':
+                    {
+                        if(vbuf.size()==0)
+                            mob.tell("The file is empty!");
+                        else
+                        {
+                            String line=mob.session().prompt("Text to search for (case sensitive): ","");
+                            if(line.length()>0)
+                            {
+                                String str=mob.session().prompt("Text to replace it with: ","");
+                                for(int i=0;i<vbuf.size();i++)
+                                    vbuf.setElementAt(CMStrings.replaceAll((String)vbuf.elementAt(i),line,str),i);
+                            }
+                            else
+                                mob.tell("(aborted)");
+                        }
+                        break;
+                    }
+                    case 'E':
+                    {
+                        if(vbuf.size()==0)
+                            mob.tell("The file is empty!");
+                        else
+                        {
+                            String line=mob.session().prompt("Line to edit (0-"+(vbuf.size()-1)+"): ","");
+                            if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
+                            {
+                                int ln=CMath.s_int(line);
+                                mob.tell("Current: \n\r"+CMStrings.padRight(""+ln,3)+") "+(String)vbuf.elementAt(ln));
+                                String str=mob.session().prompt("Rewrite: \n\r");
+                                vbuf.setElementAt(str,ln);
+                            }
+                            else
+                                mob.tell("'"+line+"' is not a valid line number.");
+                        }
+                        break;
+                    }
+                    case 'D':
+                    {
+                        if(vbuf.size()==0)
+                            mob.tell("The file is empty!");
+                        else
+                        {
+                            String line=mob.session().prompt("Line to delete (0-"+(vbuf.size()-1)+"): ","");
+                            if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
+                            {
+                                int ln=CMath.s_int(line);
+                                vbuf.removeElementAt(ln);
+                                mob.tell("Line "+ln+" deleted.");
+                            }
+                            else
+                                mob.tell("'"+line+"' is not a valid line number.");
+                        }
+                        break;
+                    }
+                    case '?': mob.tell(help); break;
+                    case 'A': mob.tell("^ZYou are now in Add Text mode.\n\r^ZEnter . on a blank line to exit.^.^N"); 
+                              menuMode=false;
+                              break;
+                    case 'L':
+                    {
+                        StringBuffer list=new StringBuffer("File: "+file.getVFSPathAndName()+"\n\r");
+                        for(int v=0;v<vbuf.size();v++)
+                            list.append(CMLib.coffeeFilter().colorOnlyFilter("^X"+CMStrings.padRight(""+v,3)+")^.^N ",mob.session())+(String)vbuf.elementAt(v)+"\n\r");
+                        mob.session().rawPrint(list.toString(),25);
+                        break;
+                    }
+                    case 'I':
+                    {
+                        if(vbuf.size()==0)
+                            mob.tell("The file is empty!");
+                        else
+                        {
+                            String line=mob.session().prompt("Line to insert before (0-"+(vbuf.size()-1)+"): ","");
+                            if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
+                            {
+                                int ln=CMath.s_int(line);
+                                String str=mob.session().prompt("Enter text to insert here.\n\r: ");
+                                vbuf.insertElementAt(str,ln);
+                            }
+                            else
+                                mob.tell("'"+line+"' is not a valid line number.");
+                        }
+                        break;
+                    }
+                    }
+                }
+                    
+            }
+            return false;
+        }
+        case 9: // compare files
         {
             mob.tell("^xNot yet implemented.^N");
             return false;

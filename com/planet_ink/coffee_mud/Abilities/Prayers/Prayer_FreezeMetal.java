@@ -43,7 +43,7 @@ public class Prayer_FreezeMetal extends Prayer
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
-	private Vector affectedItems=new Vector();
+    protected Vector affectedItems=new Vector();
     public void setMiscText(String newText)
     {
         super.setMiscText(newText);

@@ -40,8 +40,8 @@ public class Spell_Immunity extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 
-	private int immunityType=-1;
-	private String immunityName="";
+	protected int immunityType=-1;
+	protected String immunityName="";
 
 	public void unInvoke()
 	{

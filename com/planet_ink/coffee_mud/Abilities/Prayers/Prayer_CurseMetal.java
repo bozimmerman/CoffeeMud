@@ -43,7 +43,7 @@ public class Prayer_CurseMetal extends Prayer
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_CURSE;}
 
-	private Vector affectedItems=new Vector();
+    protected Vector affectedItems=new Vector();
 
     public void setMiscText(String newText)
     {

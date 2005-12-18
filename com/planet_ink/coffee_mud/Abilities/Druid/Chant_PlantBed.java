@@ -38,7 +38,7 @@ public class Chant_PlantBed extends Chant
 	public String name(){ return "Plant Bed";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	private Item peaPod=null;
+	protected Item peaPod=null;
 
 	public void unInvoke()
 	{

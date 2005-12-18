@@ -49,8 +49,8 @@ public class Disease_Anthrax extends Disease
 	protected String DISEASE_AFFECT(){return "<S-NAME> watch(s) black necrotic wounds appear on <S-HIS-HER> flesh.";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_CONTACT;}
     private boolean norecurse=false;
-	private int conDown=0;
-	private int conTickDown=60;
+	protected int conDown=0;
+	protected int conTickDown=60;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -36,25 +36,25 @@ public class Prop_Familiar extends Property
 {
 	public String ID() { return "Prop_Familiar"; }
 	public String name(){ return "Find Familiar Property";}
-	private String displayText="Familiarity with an animal";
+	protected String displayText="Familiarity with an animal";
 	public String displayText() {return displayText;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	private final static int DOG=0;
-	private final static int TURTLE=1;
-	private final static int CAT=2;
-	private final static int BAT=3;
-	private final static int RAT=4;
-	private final static int SNAKE=5;
-	private final static int OWL=6;
-	private final static int RABBIT=7;
-	private final static int RAVEN=8;
-	private final static String[] names={"dog","turtle","cat","bat","rat","snake",
+    protected final static int DOG=0;
+    protected final static int TURTLE=1;
+    protected final static int CAT=2;
+    protected final static int BAT=3;
+    protected final static int RAT=4;
+    protected final static int SNAKE=5;
+    protected final static int OWL=6;
+    protected final static int RABBIT=7;
+    protected final static int RAVEN=8;
+    protected final static String[] names={"dog","turtle","cat","bat","rat","snake",
 										 "owl","rabbit","raven"};
 
-	private MOB familiarTo=null;
-	private MOB familiarWith=null;
-	private boolean imthedaddy=false;
-	private int familiarType=0;
+	protected MOB familiarTo=null;
+	protected MOB familiarWith=null;
+	protected boolean imthedaddy=false;
+	protected int familiarType=0;
 
 
 	public String accountForYourself()

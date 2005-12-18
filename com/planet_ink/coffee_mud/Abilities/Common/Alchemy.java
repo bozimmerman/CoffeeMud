@@ -42,12 +42,12 @@ public class Alchemy extends CraftingSkill
 	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
     public String supportedResourceString(){return "MISC";}
 
-	private boolean requiresFire=false;
-	private Item building=null;
-	private Item fire=null;
+	protected boolean requiresFire=false;
+	protected Item building=null;
+	protected Item fire=null;
 	String oldName="";
-	private Ability theSpell=null;
-	private boolean messedUp=false;
+    protected Ability theSpell=null;
+	protected boolean messedUp=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -110,7 +110,7 @@ public class Alchemy extends CraftingSkill
 		super.unInvoke();
 	}
 
-	private int spellLevel(MOB mob, Ability A)
+	protected int spellLevel(MOB mob, Ability A)
 	{
 		int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
 		if(lvl<0) lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());

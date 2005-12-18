@@ -46,7 +46,7 @@ public class GenResource extends GenItem implements EnvResource
 		recoverEnvStats();
 	}
 
-	private int domainSource=-1;
+	protected int domainSource=-1;
 	public int domainSource(){return domainSource;}
 	public void setDomainSource(int src){domainSource=src;}
 }

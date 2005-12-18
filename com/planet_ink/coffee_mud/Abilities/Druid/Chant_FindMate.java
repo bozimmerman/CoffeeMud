@@ -35,14 +35,14 @@ public class Chant_FindMate extends Chant
 {
 	public String ID() { return "Chant_FindMate"; }
 	public String name(){ return "Find Mate";}
-	private String displayText="(Tracking a mate)";
+	protected String displayText="(Tracking a mate)";
 	public String displayText(){ return displayText;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.OK_OTHERS;}
 	public long flags(){return Ability.FLAG_TRACKING;}
 
-	private Vector theTrail=null;
+	protected Vector theTrail=null;
 	public int nextDirection=-2;
 
 	public boolean tick(Tickable ticking, int tickID)

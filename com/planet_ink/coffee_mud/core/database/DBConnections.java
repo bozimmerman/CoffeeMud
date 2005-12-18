@@ -36,31 +36,31 @@ import java.sql.*;
 */
 public class DBConnections
 {
-	private String DBClass="";
+	protected String DBClass="";
 	/** the odbc service*/
-	private String DBService="";
+	protected String DBService="";
 	/** the odbc login user */
-	private String DBUser="";
+	protected String DBUser="";
 	/** the odbc password */
-	private String DBPass="";
+	protected String DBPass="";
 	/** number of connections to make*/
-	private int numConnections=0;
+	protected int numConnections=0;
 	/** the disconnected flag */
-	private boolean disconnected=false;
+	protected boolean disconnected=false;
 	/** the im in trouble flag*/
-	private boolean lockedUp=false;
+	protected boolean lockedUp=false;
 	/** the number of times the system has failed to get a db*/
-	private int consecutiveFailures=0;
+	protected int consecutiveFailures=0;
 	/** the number of times the system has failed a request */
-	private int consecutiveErrors=0;
+	protected int consecutiveErrors=0;
 	/** Object to synchronize around on error handling*/
 	private Boolean fileSemaphore=new Boolean(true);
 	/** Object to synchronize around on error handling*/
-	private boolean errorQueingEnabled=false;
+	protected boolean errorQueingEnabled=false;
 	/** the database connnections */
-	private Vector Connections;
+	protected Vector Connections;
 	/** set this to true once, cuz it makes it all go away. **/
-	private boolean YOU_ARE_DONE=false;
+	protected boolean YOU_ARE_DONE=false;
 	
 	/** 
 	 * Initialize this class.  Must be called at first,

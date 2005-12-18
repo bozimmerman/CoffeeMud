@@ -43,13 +43,13 @@ public class Prop_TicketTaker extends Property
 		return "one who acts as a ticket taker";
 	}
 
-	private double cost(){
+    protected double cost(){
 		int amount=CMath.s_int(text());
 		if(amount==0) amount=10;
 		return new Integer(amount).doubleValue();
 	}
 
-	private boolean isMine(Environmental host, Rideable R)
+    protected boolean isMine(Environmental host, Rideable R)
 	{
 		if(host instanceof Rider)
 		{

@@ -40,7 +40,7 @@ public class Chant_Hippieness extends Chant
 	public int quality(){ return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_CURSE;}
-	private String oldClan="";
+	protected String oldClan="";
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

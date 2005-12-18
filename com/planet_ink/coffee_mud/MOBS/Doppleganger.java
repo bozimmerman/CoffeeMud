@@ -33,8 +33,8 @@ import java.util.*;
 public class Doppleganger extends StdMOB
 {
 	public String ID(){return "Doppleganger";}
-	private MOB mimicing=null;
-	private long ticksSinceMimicing=0;
+	protected MOB mimicing=null;
+    protected long ticksSinceMimicing=0;
 
 	public Doppleganger()
 	{
@@ -42,7 +42,7 @@ public class Doppleganger extends StdMOB
 		revert();
 	}
 
-	private void revert()
+    protected void revert()
 	{
 		Random randomizer = new Random(System.currentTimeMillis());
 		Username="a doppleganger";

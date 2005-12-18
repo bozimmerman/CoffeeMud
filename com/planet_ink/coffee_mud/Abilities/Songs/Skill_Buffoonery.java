@@ -43,7 +43,7 @@ public class Skill_Buffoonery extends BardSkill
 	public int usageType(){return USAGE_MOVEMENT;}
 
 
-	private Vector getFreeWearingPositions(MOB target)
+	protected Vector getFreeWearingPositions(MOB target)
 	{
 		Vector V=new Vector();
 		boolean[] pos=new boolean[Item.wornOrder.length];
@@ -60,7 +60,7 @@ public class Skill_Buffoonery extends BardSkill
 		return V;
 	}
 
-	private boolean freePosition(MOB target)
+	protected boolean freePosition(MOB target)
 	{
 		return getFreeWearingPositions(target).size()>0;
 	}

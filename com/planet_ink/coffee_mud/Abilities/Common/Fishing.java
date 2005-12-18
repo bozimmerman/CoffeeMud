@@ -40,8 +40,8 @@ public class Fishing extends GatheringSkill
 	public long flags(){return FLAG_GATHERING;}
 	public String supportedResourceString(){return "FLESH";}
 
-	private Item found=null;
-	private String foundShortName="";
+	protected Item found=null;
+	protected String foundShortName="";
 	public Fishing()
 	{
 		super();

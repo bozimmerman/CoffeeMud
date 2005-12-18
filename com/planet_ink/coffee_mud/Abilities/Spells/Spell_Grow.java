@@ -39,7 +39,7 @@ public class Spell_Grow extends Spell
 	protected int canTargetCode(){return CAN_MOBS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
-	private int oldWeight=0;
+	protected int oldWeight=0;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -40,8 +40,8 @@ public class Painting extends CommonSkill
 	private static final String[] triggerStrings = {"PAINT","PAINTING"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	private Item building=null;
-	private boolean messedUp=false;
+	protected Item building=null;
+	protected boolean messedUp=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

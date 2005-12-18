@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenClanCommonContainer extends StdClanCommonContainer
 {
 	public String ID(){	return "GenClanCommonContainer";}
-	private String readableText = "";
+	protected String readableText = "";
 	public GenClanCommonContainer()
 	{
 		super();

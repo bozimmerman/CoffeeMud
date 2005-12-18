@@ -102,7 +102,7 @@ public class DefaultEnvStats implements EnvStats
 		"ABILITY","REJUV","WEIGHT","HEIGHT",
 		"ARMOR","DAMAGE","ATTACK"};
 	public String[] getCodes(){return CODES;}
-	private int getCodeNum(String code)
+	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;

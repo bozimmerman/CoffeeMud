@@ -40,8 +40,8 @@ public class Prayer_FountainLife extends Prayer
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	private Room SpringLocation=null;
-	private Item littleSpring=null;
+    protected Room SpringLocation=null;
+    protected Item littleSpring=null;
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public void unInvoke()

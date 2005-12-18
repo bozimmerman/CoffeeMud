@@ -36,9 +36,9 @@ public class Prop_StatTrainer extends Property
 	public String ID() { return "Prop_StatTrainer"; }
 	public String name(){ return "Good training MOB";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	private static final int[] all25={25,25,25,25,25,25};
-	private int[] stats=all25;
-	private boolean noteach=false;
+    protected static final int[] all25={25,25,25,25,25,25};
+    protected int[] stats=all25;
+    protected boolean noteach=false;
 
 	public String accountForYourself()
 	{ return "Stats Trainer";	}

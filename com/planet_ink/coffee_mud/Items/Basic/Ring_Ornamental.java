@@ -50,7 +50,7 @@ public class Ring_Ornamental extends Ring
 	public final static int STEEL_RING					= 12;
 	public final static int BRONZE_RING					= 13;
 
-	private int lastLevel=-1;
+	protected int lastLevel=-1;
 
 	public Ring_Ornamental()
 	{

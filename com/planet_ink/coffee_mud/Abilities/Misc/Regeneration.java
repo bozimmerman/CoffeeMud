@@ -37,7 +37,7 @@ import java.util.*;
 public class Regeneration extends StdAbility
 {
 	private static final int maxTickDown=3;
-	private int regenTick=maxTickDown;
+    protected int regenTick=maxTickDown;
 
 	public String ID() { return "Regeneration"; }
 	public String name(){ return "Stat Regeneration";}
@@ -50,7 +50,7 @@ public class Regeneration extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return false;}
 	public int classificationCode(){return Ability.SKILL;}
-	private int permanentDamage=0;
+    protected int permanentDamage=0;
 
 
 	public boolean tick(Tickable ticking, int tickID)

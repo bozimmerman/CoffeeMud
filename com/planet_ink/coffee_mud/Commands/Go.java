@@ -344,8 +344,8 @@ public class Go extends StdCommand
 		return true;
 	}
 
-	private Command stander=null;
-	private Vector ifneccvec=null;
+    protected Command stander=null;
+	protected Vector ifneccvec=null;
 	public void standIfNecessary(MOB mob)
 		throws java.io.IOException
 	{

@@ -38,8 +38,8 @@ public class Chant_SummonFire extends Chant
 	public String name(){ return "Summon Fire";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	private Room FireLocation=null;
-	private Item littleFire=null;
+	protected Room FireLocation=null;
+	protected Item littleFire=null;
 	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_BURNING;}
 
 	public void unInvoke()

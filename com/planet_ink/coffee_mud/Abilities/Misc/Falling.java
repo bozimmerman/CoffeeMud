@@ -43,9 +43,9 @@ public class Falling extends StdAbility
 	public Room room=null;
 	int damageToTake=0;
 
-	private boolean reversed(){return profficiency()==100;}
+    protected boolean reversed(){return profficiency()==100;}
 
-	private boolean isWaterSurface(Room R)
+    protected boolean isWaterSurface(Room R)
 	{
 		if(R==null) return false;
 		if((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
@@ -53,7 +53,7 @@ public class Falling extends StdAbility
 			return true;
 		return false;
 	}
-	private boolean isUnderWater(Room R)
+    protected boolean isUnderWater(Room R)
 	{
 		if(R==null) return false;
 		if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
@@ -62,7 +62,7 @@ public class Falling extends StdAbility
 		return false;
 	}
 
-	private boolean isAirRoom(Room R)
+    protected boolean isAirRoom(Room R)
 	{
 		if(R==null) return false;
 		if((R.domainType()==Room.DOMAIN_INDOORS_AIR)
@@ -71,7 +71,7 @@ public class Falling extends StdAbility
 		return false;
 	}
 
-	private boolean canFallFrom(Room fromHere, int direction)
+    protected boolean canFallFrom(Room fromHere, int direction)
 	{
 		if((fromHere==null)||(direction<0)||(direction>=Directions.NUM_DIRECTIONS))
 			return false;
@@ -86,7 +86,7 @@ public class Falling extends StdAbility
 		return true;
 	}
 
-	private boolean stopFalling(MOB mob)
+    protected boolean stopFalling(MOB mob)
 	{
 		if(reversed()) return true;
 		unInvoke();

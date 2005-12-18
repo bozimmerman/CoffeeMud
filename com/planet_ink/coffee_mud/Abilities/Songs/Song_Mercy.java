@@ -39,8 +39,8 @@ public class Song_Mercy extends Song
 	public String name(){ return "Mercy";}
 	public int quality(){ return INDIFFERENT;}
 
-	private Room lastRoom=null;
-	private int count=3;
+	protected Room lastRoom=null;
+	protected int count=3;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

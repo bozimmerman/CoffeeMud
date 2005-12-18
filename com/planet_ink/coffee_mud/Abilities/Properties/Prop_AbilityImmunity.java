@@ -37,8 +37,8 @@ public class Prop_AbilityImmunity extends Property
 	public String name(){ return "Ability Immunity";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	public String accountForYourself() { return "Immunity";	}
-	private Vector diseases=new Vector();
-	private Vector messages=new Vector();
+	protected Vector diseases=new Vector();
+	protected Vector messages=new Vector();
 
 	public void setMiscText(String newText)
 	{

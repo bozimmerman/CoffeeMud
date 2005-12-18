@@ -80,6 +80,7 @@ public interface Session extends CMObject
 	public void colorOnlyPrintln(String msg);
 	public void colorOnlyPrint(String msg);
 	
+    public char hotkey(long maxWait);
 	public String prompt(String Message, String Default)
 		throws IOException;
 	public String prompt(String Message, String Default, long maxTime)

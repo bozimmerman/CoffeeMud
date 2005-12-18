@@ -39,7 +39,7 @@ public class Chant_Nectar extends Chant
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	public Vector drank=null;
-	private int lastNum=-1;
+	protected int lastNum=-1;
 
 	public void unInvoke()
 	{

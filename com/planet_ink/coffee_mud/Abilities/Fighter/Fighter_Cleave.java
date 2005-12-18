@@ -43,8 +43,8 @@ public class Fighter_Cleave extends FighterSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 
-	private MOB thisTarget=null;
-	private MOB nextTarget=null;
+	protected MOB thisTarget=null;
+	protected MOB nextTarget=null;
 	public int classificationCode(){ return Ability.SKILL;	}
 
 	public boolean tick(Tickable ticking, int tickID)

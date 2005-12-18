@@ -49,8 +49,8 @@ public class Prop_WizInvis extends Property
 	}
 	public String name(){ return "Wizard Invisibility";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	private boolean disabled=false;
-	private int abilityCode=EnvStats.IS_NOT_SEEN|EnvStats.IS_CLOAKED;
+	protected boolean disabled=false;
+	protected int abilityCode=EnvStats.IS_NOT_SEEN|EnvStats.IS_CLOAKED;
 	public int abilityCode(){return abilityCode;}
 	public void setAbilityCode(int newCode){abilityCode=newCode;}
 

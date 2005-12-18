@@ -34,12 +34,12 @@ import java.util.*;
 public class Dragon extends StdMOB
 {
 	public String ID(){return "Dragon";}
-	private int breatheDown=4;
-	private int swallowDown=5;
-	private int digestDown=4;
+	protected int breatheDown=4;
+	protected int swallowDown=5;
+	protected int digestDown=4;
 
-	private int birthColor=0;
-	private int birthAge=0;
+	protected int birthColor=0;
+	protected int birthAge=0;
 
 
 	// ===== Defined Values for Dragon Ages
@@ -69,9 +69,9 @@ public class Dragon extends StdMOB
 
 
 	// ===== Defined Value for holding the Dragon Type
-	private int DragonColor(){ return baseEnvStats().ability();}
-	private int DragonAge(){ return baseEnvStats().level()/8;}
-	private Room Stomach = null;
+	protected int DragonColor(){ return baseEnvStats().ability();}
+	protected int DragonAge(){ return baseEnvStats().level()/8;}
+	protected Room Stomach = null;
 
 	// ===== random constructor
 	public Dragon()
@@ -184,7 +184,7 @@ public class Dragon extends StdMOB
         birthAge=0;
 	}
 
-	private static int determineAge()
+    protected static int determineAge()
 	{
 		// ===== Get a percent chance
 		int iRoll = CMLib.dice().rollPercentage()+1;

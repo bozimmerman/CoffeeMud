@@ -49,7 +49,7 @@ public class GenSSPanel extends GenShipContainer
 		recoverEnvStats();
 	}
 
-	private int panelType=ShipComponent.ShipPanel.COMPONENT_PANEL_ANY;
+	protected int panelType=ShipComponent.ShipPanel.COMPONENT_PANEL_ANY;
 	public int panelType(){return panelType;}
 	public void setPanelType(int type){panelType=type;}
 	

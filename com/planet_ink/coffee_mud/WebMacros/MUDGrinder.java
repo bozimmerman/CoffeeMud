@@ -323,7 +323,7 @@ public class MUDGrinder extends StdWebMacro
 		return "";
 	}
 
-	private Area getLoggedArea(ExternalHTTPRequests httpReq, MOB mob)
+    protected Area getLoggedArea(ExternalHTTPRequests httpReq, MOB mob)
 	{
 		String AREA=httpReq.getRequestParameter("AREA");
 		if(AREA==null) return null;

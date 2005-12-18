@@ -39,7 +39,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 	public String name(){ return "Summon Houseplant";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	private boolean processing=false;
+	protected boolean processing=false;
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

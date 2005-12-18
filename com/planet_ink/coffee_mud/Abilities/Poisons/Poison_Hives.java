@@ -52,7 +52,7 @@ public class Poison_Hives extends Poison
 	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
 	protected int POISON_DAMAGE(){return 0;}
-	private int poisonTick=0;
+    protected int poisonTick=0;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

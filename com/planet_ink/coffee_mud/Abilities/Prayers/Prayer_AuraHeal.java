@@ -41,7 +41,7 @@ public class Prayer_AuraHeal extends Prayer
 	protected int canTargetCode(){return 0;}
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALING;}
-	private int tickDown=4;
+    protected int tickDown=4;
 
 	public void unInvoke()
 	{

@@ -40,9 +40,9 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.MALICIOUS;}
-	private Room myProperLocation=null;
-	private Vector contents=new Vector();
-	private Vector ccontents=new Vector();
+    protected Room myProperLocation=null;
+    protected Vector contents=new Vector();
+    protected Vector ccontents=new Vector();
 
 	public void loadContent(ItemTicker ticker,
 							Item item,

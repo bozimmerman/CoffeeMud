@@ -42,8 +42,8 @@ public class Fighter_Rallycry extends FighterSkill
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int classificationCode(){return Ability.SKILL;}
-	private int timesTicking=0;
-	private int hpUp=0;
+	protected int timesTicking=0;
+	protected int hpUp=0;
 
 	public void affectCharState(MOB affected, CharState affectableStats)
 	{

@@ -36,7 +36,7 @@ public class Prop_CommonTwister extends Property
 	public String ID() { return "Prop_CommonTwister"; }
 	public String name(){ return "Common Twister";}
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_ITEMS|Ability.CAN_MOBS;}
-	private DVector changes=new DVector(3);
+    protected DVector changes=new DVector(3);
 
 	public String accountForYourself()
 	{ return "Twists around what the gathering common skills gives you.";	}

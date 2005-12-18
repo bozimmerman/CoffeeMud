@@ -50,8 +50,8 @@ public class Disease_Gangrene extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> gangrous wounds.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> wince(s) in pain.";}
 	public int abilityCode(){return 0;}
-	private int tickUpToDay=0;
-	private int daysSick=0;
+	protected int tickUpToDay=0;
+	protected int daysSick=0;
     private boolean norecurse=false;
 
 	public boolean tick(Tickable ticking, int tickID)

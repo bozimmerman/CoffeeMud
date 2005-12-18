@@ -53,7 +53,7 @@ public class HTTPserver extends Thread implements MudHost
 	public ServerSocket servsock=null;
 
 	private MudHost mud;
-	private String partialName;
+	protected String partialName;
     private static final String[] STATUS_STRINGS={"waiting","processing","done"};
     private int state=0;
 
@@ -94,7 +94,7 @@ public class HTTPserver extends Thread implements MudHost
 		return webCommon;
 	}
 
-	private boolean initServer()
+	protected boolean initServer()
 	{
 		if (!loadPropPage())
 		{
@@ -204,7 +204,7 @@ public class HTTPserver extends Thread implements MudHost
 		}
 	}
 
-	private boolean loadPropPage()
+	protected boolean loadPropPage()
 	{
 		if (page==null || !page.loaded)
 		{

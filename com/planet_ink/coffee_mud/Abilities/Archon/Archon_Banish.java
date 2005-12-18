@@ -46,7 +46,7 @@ public class Archon_Banish extends ArchonSkill
 	public int classificationCode(){return Ability.SKILL;}
 	public int maxRange(){return 1;}
 	public int usageType(){return USAGE_MOVEMENT;}
-	private Room prison=null;
+	protected Room prison=null;
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

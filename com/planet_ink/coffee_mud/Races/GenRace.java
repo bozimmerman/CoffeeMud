@@ -34,9 +34,9 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenRace extends StdRace
 {
-	private String ID="GenRace";
+	protected String ID="GenRace";
 	public String ID(){	return ID; }
-	private String name="GenRace";
+	protected String name="GenRace";
 	public String name(){ return name; }
 	public int practicesAtFirstLevel(){return 0;}
 	public int trainsAtFirstLevel(){return 0;}
@@ -105,7 +105,7 @@ public class GenRace extends StdRace
 	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
-	private boolean destroyBodyAfterUse=false;
+	protected boolean destroyBodyAfterUse=false;
 	protected boolean destroyBodyAfterUse(){return destroyBodyAfterUse;}
 	
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new GenRace();}}
@@ -122,12 +122,12 @@ public class GenRace extends StdRace
 		return funHumanoidWeapon();	
 	}
 
-	private String arriveStr="arrives";
+	protected String arriveStr="arrives";
 	public String arriveStr()
 	{
 		return arriveStr;
 	}
-	private String leaveStr="leaves";
+	protected String leaveStr="leaves";
 	public String leaveStr()
 	{
 		return leaveStr;

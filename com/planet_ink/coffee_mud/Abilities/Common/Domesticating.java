@@ -38,8 +38,8 @@ public class Domesticating extends CommonSkill
 	private static final String[] triggerStrings = {"DOMESTICATE","DOMESTICATING"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	private MOB taming=null;
-	private boolean messedUp=false;
+	protected MOB taming=null;
+	protected boolean messedUp=false;
 	public Domesticating()
 	{
 		super();

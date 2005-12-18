@@ -34,7 +34,7 @@ public class Skill_Track extends StdSkill
 {
 	public String ID() { return "Skill_Track"; }
 	public String name(){ return "Tracking";}
-	private String displayText="(Tracking)";
+	protected String displayText="(Tracking)";
 	public String displayText(){ return displayText;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ROOMS;}
@@ -44,14 +44,14 @@ public class Skill_Track extends StdSkill
 	public int classificationCode(){return Ability.SKILL;}
 	public long flags(){return Ability.FLAG_TRACKING;}
 	private Hashtable cachedPaths=new Hashtable();
-	private int cacheCode=-1;
+	protected int cacheCode=-1;
 	private long tickStatus=0;
 	public long getTickStatus(){return tickStatus;} 
 	public int abilityCode(){return cacheCode;}
 	public void setAbilityCode(int newCode){cacheCode=newCode;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	private Vector theTrail=null;
+	protected Vector theTrail=null;
 	public int nextDirection=-2;
 
 	public boolean tick(Tickable ticking, int tickID)

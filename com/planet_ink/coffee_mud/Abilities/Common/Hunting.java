@@ -40,8 +40,8 @@ public class Hunting extends CommonSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return FLAG_GATHERING;}
 
-	private MOB found=null;
-	private String foundShortName="";
+	protected MOB found=null;
+	protected String foundShortName="";
 	public Hunting()
 	{
 		super();

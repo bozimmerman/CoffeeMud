@@ -63,16 +63,16 @@ public class Age extends StdAbility
 		else
 			return "("+years+" year(s) old)";
 	}
-	private boolean norecurse=false;
-	private Race myRace=null;
-	private double divisor=0.0;
-	private long lastSoiling=0;
+	protected boolean norecurse=false;
+    protected Race myRace=null;
+    protected double divisor=0.0;
+    protected long lastSoiling=0;
 
 	public final static String happyBabyEmoter="min=1 max=500 chance=10;makes goo goo noises.;loves its mommy.;loves its daddy.;smiles.;makes a spit bubble.;wiggles its toes.;chews on their finger.;holds up a finger.;stretches its little body.";
 	public final static String otherBabyEmoter="min=1 max=5 chance=10;wants its mommy.;wants its daddy.;cries.;doesnt like you.;cries for its mommy.;cries for its daddy.";
 	public final static String downBabyEmoter="min=1 max=2 chance=50;wants its mommy.;wants its daddy.;cries.;cries!;cries.";
 
-	private void doThang()
+    protected void doThang()
 	{
 		if(affected==null) return;
 		if(text().length()==0) return;

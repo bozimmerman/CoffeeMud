@@ -38,8 +38,8 @@ public class Chant_SummonPool extends Chant
 	public String name(){ return "Summon Pool";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	private Room SpringLocation=null;
-	private Item littleSpring=null;
+	protected Room SpringLocation=null;
+	protected Item littleSpring=null;
 
 	public void unInvoke()
 	{

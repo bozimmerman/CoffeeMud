@@ -42,7 +42,7 @@ public class Skill_Feint extends StdSkill
 	private static final String[] triggerStrings = {"FEINT"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	private boolean done=false;
+	protected boolean done=false;
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

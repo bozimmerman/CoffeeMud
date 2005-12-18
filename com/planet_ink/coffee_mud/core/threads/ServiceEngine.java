@@ -43,7 +43,7 @@ public class ServiceEngine implements ThreadEngine
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     
-	private Vector tickGroup=new Vector();
+	protected Vector tickGroup=new Vector();
 	public Enumeration tickGroups(){return ((Vector)tickGroup.clone()).elements();}
     private boolean isSuspended=false;
 	
@@ -163,7 +163,7 @@ public class ServiceEngine implements ThreadEngine
     public void resumeAll(){isSuspended=false;}
 	public void suspendTicking(Tickable E, int tickID){suspendResumeTicking(E,tickID,true);}
 	public void resumeTicking(Tickable E, int tickID){suspendResumeTicking(E,tickID,false);}
-	private boolean suspendResumeTicking(Tickable E, int tickID, boolean suspend)
+	protected boolean suspendResumeTicking(Tickable E, int tickID, boolean suspend)
 	{
         Tick almostTock=null;
         TockClient C=null;

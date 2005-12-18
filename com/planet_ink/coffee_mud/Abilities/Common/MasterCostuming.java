@@ -42,22 +42,22 @@ public class MasterCostuming extends CraftingSkill
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "CLOTH";}
 
-	private static final int RCP_FINALNAME=0;
-	private static final int RCP_LEVEL=1;
-	private static final int RCP_TICKS=2;
-	private static final int RCP_WOOD=3;
-	private static final int RCP_VALUE=4;
-	private static final int RCP_CLASSTYPE=5;
-	private static final int RCP_MISCTYPE=6;
-	private static final int RCP_CAPACITY=7;
-	private static final int RCP_ARMORDMG=8;
-	private static final int RCP_CONTAINMASK=9;
-	private static final int RCP_SPELL=10;
+	protected static final int RCP_FINALNAME=0;
+	protected static final int RCP_LEVEL=1;
+	protected static final int RCP_TICKS=2;
+	protected static final int RCP_WOOD=3;
+	protected static final int RCP_VALUE=4;
+	protected static final int RCP_CLASSTYPE=5;
+	protected static final int RCP_MISCTYPE=6;
+	protected static final int RCP_CAPACITY=7;
+	protected static final int RCP_ARMORDMG=8;
+	protected static final int RCP_CONTAINMASK=9;
+	protected static final int RCP_SPELL=10;
 
-	private Item building=null;
-	private boolean mending=false;
-	private boolean refitting=false;
-	private boolean messedUp=false;
+	protected Item building=null;
+	protected boolean mending=false;
+	protected boolean refitting=false;
+	protected boolean messedUp=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

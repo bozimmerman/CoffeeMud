@@ -38,7 +38,7 @@ public class Speculate extends CommonSkill
 	private static final String[] triggerStrings = {"SPECULATE","SPECULATING"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	private boolean success=false;
+	protected boolean success=false;
 	public Speculate()
 	{
 		super();

@@ -41,12 +41,12 @@ public class Scrapping extends CommonSkill
 	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
 	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
 
-	private Item found=null;
-	private Item fire=null;
-	private int amount=0;
-	private String oldItemName="";
-	private String foundShortName="";
-	private boolean messedUp=false;
+	protected Item found=null;
+	protected Item fire=null;
+	protected int amount=0;
+	protected String oldItemName="";
+	protected String foundShortName="";
+	protected boolean messedUp=false;
 	public Scrapping()
 	{
 		super();

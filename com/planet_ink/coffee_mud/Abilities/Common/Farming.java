@@ -41,9 +41,9 @@ public class Farming extends GatheringSkill
 	protected boolean allowedWhileMounted(){return false;}
 	public String supportedResourceString(){return "VEGETATION|COTTON|HEMP|WOODEN";}
 
-	private Item found=null;
-	private Room room=null;
-	private String foundShortName="";
+	protected Item found=null;
+	protected Room room=null;
+	protected String foundShortName="";
 	public Farming()
 	{
 		super();

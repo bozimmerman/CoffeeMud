@@ -37,31 +37,31 @@ import java.net.*;
 */
 public class DefaultSession extends Thread implements Session
 {
-	private int status=0;
-	private Socket sock;
-	private BufferedReader in;
-	private PrintWriter out;
-	private MOB mob;
-	private boolean killFlag=false;
-	private boolean needPrompt=false;
-	private boolean afkFlag=false;
-    private String afkMessage=null;
-	private StringBuffer input=new StringBuffer("");
+	protected int status=0;
+    protected Socket sock;
+    protected BufferedReader in;
+    protected PrintWriter out;
+	protected MOB mob;
+	protected boolean killFlag=false;
+	protected boolean needPrompt=false;
+	protected boolean afkFlag=false;
+    protected String afkMessage=null;
+    protected StringBuffer input=new StringBuffer("");
     private StringBuffer preliminaryInput=new StringBuffer("");
     private StringBuffer fakeInput=null;
-	private boolean waiting=false;
-	private static final int SOTIMEOUT=300;
-	private Vector previousCmd=new Vector();
-	private String[] clookup=null;
-	private String lastColorStr="";
-	private String lastStr=null;
-	private int spamStack=0;
+	protected boolean waiting=false;
+    protected static final int SOTIMEOUT=300;
+	protected Vector previousCmd=new Vector();
+    protected String[] clookup=null;
+	protected String lastColorStr="";
+	protected String lastStr=null;
+	protected int spamStack=0;
     private int dequeCounter=0;
-	private Vector snoops=new Vector();
+	protected Vector snoops=new Vector();
 	
-	private boolean lastWasCR=false;
-	private boolean lastWasLF=false;
-	private boolean suspendCommandLine=false;
+	protected boolean lastWasCR=false;
+	protected boolean lastWasLF=false;
+	protected boolean suspendCommandLine=false;
 
     private long lastStart=System.currentTimeMillis();
     private long lastStop=System.currentTimeMillis();
@@ -87,7 +87,7 @@ public class DefaultSession extends Thread implements Session
     
     private int currentColor='N';
     private int lastColor=-1;
-	private static int sessionCounter=0;
+    protected static int sessionCounter=0;
     
     public String ID(){return "DefaultSession";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultSession();}}
@@ -320,7 +320,7 @@ public class DefaultSession extends Thread implements Session
     }
     public void setAFKMessage(String str){afkMessage=str;}
 
-	private void errorOut(Exception t)
+    protected void errorOut(Exception t)
 	{
 		Log.errOut("Session",t);
 		CMLib.sessions().removeElement(this);
@@ -852,6 +852,31 @@ public class DefaultSession extends Thread implements Session
         return in.read();
     }
     
+    public char hotkey(long maxWait)
+    {
+        if((in==null)||(out==null)) return '\0';
+        input=new StringBuffer("");
+        long start=System.currentTimeMillis();
+        try
+        {
+            suspendCommandLine=true;
+            char c='\0';
+            while((!killFlag)
+            &&((maxWait<=0)||((System.currentTimeMillis()-start)<maxWait)))
+            {
+                c=(char)nonBlockingIn(false);
+                if((c==(char)0)||(c==(char)1)||(c==(char)-1))
+                    continue;
+                return c;
+            }
+            suspendCommandLine=false;
+            if((maxWait>0)&&((System.currentTimeMillis()-start)>=maxWait))
+                throw new java.io.InterruptedIOException("Timed Out.");
+        }
+        catch(java.io.IOException e) { }
+        return '\0';
+    }
+    
 	public int nonBlockingIn(boolean appendInputFlag)
 	throws IOException
 	{
@@ -867,7 +892,6 @@ public class DefaultSession extends Thread implements Session
             if(c=='\033')
                 handleEscape();
             else
-			if(appendInputFlag)
             {
                 boolean rv = false;
                 switch (c)
@@ -950,9 +974,10 @@ public class DefaultSession extends Thread implements Session
                 if(c>0)
                 {
                     lastKeystroke=System.currentTimeMillis();
-                    input.append((char)c);
+                    if(appendInputFlag) input.append((char)c);
                     if (clientTelnetMode(TELNET_ECHO))
                         out((char)c);
+                    if(!appendInputFlag) return c;
                 }
                 if(rv) return 0;
             }
@@ -1189,7 +1214,7 @@ public class DefaultSession extends Thread implements Session
 		print("^<Prompt^>"+buf.toString()+"^</Prompt^>^.^N");
 	}
 
-	private void closeSocks()
+    protected void closeSocks()
 	{
 		try
 		{

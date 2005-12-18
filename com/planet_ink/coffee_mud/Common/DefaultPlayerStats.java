@@ -34,36 +34,36 @@ import java.util.*;
 public class DefaultPlayerStats implements PlayerStats
 {
     public String ID(){return "DefaultPlayerStats";}
-	private final static int TELL_STACK_MAX_SIZE=50;
-	private final static int GTELL_STACK_MAX_SIZE=50;
-	private long Hygiene=0; 
+    protected final static int TELL_STACK_MAX_SIZE=50;
+    protected final static int GTELL_STACK_MAX_SIZE=50;
+    protected long Hygiene=0; 
 	
-	private HashSet friends=new HashSet();
-	private HashSet ignored=new HashSet();
-	private Vector tellStack=new Vector();
-	private Vector gtellStack=new Vector();
-	private Vector titles=new Vector();
-    private DVector alias=new DVector(2);
-	private String lastIP="";
-	private long LastDateTime=System.currentTimeMillis();
-	private long lastUpdated=0;
-	private int channelMask;
-	private String email="";
-	private String Password="";
-	private String colorStr="";
-	private String prompt="";
-	private String poofin="";
-	private String poofout="";						  
-	private String tranpoofin="";
-	private String tranpoofout="";
-    private String announceMsg="";
-	private int wrap=78;
-	private int[] birthday=null;
-	private MOB replyTo=null;
-	private Vector securityGroups=new Vector();
-    private long accountExpiration=0;
-    private RoomnumberSet visitedRoomSet=null;
-    private DVector levelDateTimes=new DVector(2);
+    protected HashSet friends=new HashSet();
+    protected HashSet ignored=new HashSet();
+	protected Vector tellStack=new Vector();
+	protected Vector gtellStack=new Vector();
+	protected Vector titles=new Vector();
+    protected DVector alias=new DVector(2);
+	protected String lastIP="";
+    protected long LastDateTime=System.currentTimeMillis();
+    protected long lastUpdated=0;
+	protected int channelMask;
+	protected String email="";
+	protected String Password="";
+	protected String colorStr="";
+	protected String prompt="";
+	protected String poofin="";
+	protected String poofout="";						  
+	protected String tranpoofin="";
+	protected String tranpoofout="";
+    protected String announceMsg="";
+	protected int wrap=78;
+    protected int[] birthday=null;
+	protected MOB replyTo=null;
+	protected Vector securityGroups=new Vector();
+    protected long accountExpiration=0;
+    protected RoomnumberSet visitedRoomSet=null;
+    protected DVector levelDateTimes=new DVector(2);
 
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultPlayerStats();}}
     public CMObject copyOf()
@@ -271,7 +271,7 @@ public class DefaultPlayerStats implements PlayerStats
 	    return (R.getAgingChart()[Race.AGE_YOUNGADULT]+C.getYear()-birthday[2]);
 	}
 	
-	private String getPrivateList(HashSet h)
+	protected String getPrivateList(HashSet h)
 	{
 		if((h==null)||(h.size()==0)) return "";
 		StringBuffer list=new StringBuffer("");
@@ -392,7 +392,7 @@ public class DefaultPlayerStats implements PlayerStats
         return buf.toString();
     }
     
-	private void setSecurityGroupStr(String grps)
+    protected void setSecurityGroupStr(String grps)
 	{
 		securityGroups=new Vector();
 		if((grps==null)||(grps.trim().length()==0))	
@@ -408,7 +408,7 @@ public class DefaultPlayerStats implements PlayerStats
 		if(grps.trim().length()>0)
 			securityGroups.addElement(grps.trim().toUpperCase());
 	}
-	private String getSecurityGroupStr()
+	protected String getSecurityGroupStr()
 	{
 		if(securityGroups.size()==0) return "";
 		StringBuffer list=new StringBuffer("");

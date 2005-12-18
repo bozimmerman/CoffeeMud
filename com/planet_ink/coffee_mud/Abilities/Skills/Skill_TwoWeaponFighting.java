@@ -43,11 +43,11 @@ public class Skill_TwoWeaponFighting extends StdSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 
-	private Weapon lastSecondary=null;
-	private Weapon lastPrimary=null;
+    protected Weapon lastSecondary=null;
+    protected Weapon lastPrimary=null;
 
 
-	private Weapon getFirstWeapon(MOB mob)
+    protected Weapon getFirstWeapon(MOB mob)
 	{
 		if((lastPrimary!=null)
 		&&(lastPrimary.amWearingAt(Item.WIELD))

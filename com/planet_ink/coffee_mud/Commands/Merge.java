@@ -62,14 +62,14 @@ public class Merge extends StdCommand
 		Log.sysOut("MERGE",msg);
 	}
 
-	private static boolean tryMerge(MOB mob,
-									Room room,
-									Environmental E,
-									Vector things,
-									Vector changes,
-									Vector onfields,
-									Vector ignore,
-									boolean noisy)
+    protected static boolean tryMerge(MOB mob,
+									  Room room,
+									  Environmental E,
+									  Vector things,
+									  Vector changes,
+									  Vector onfields,
+									  Vector ignore,
+									  boolean noisy)
 	{
 		boolean didAnything=false;
 		Vector efields=new Vector();

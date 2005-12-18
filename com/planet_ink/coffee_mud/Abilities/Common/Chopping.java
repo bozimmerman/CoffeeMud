@@ -41,8 +41,8 @@ public class Chopping extends GatheringSkill
 	protected boolean allowedWhileMounted(){return false;}
 	public String supportedResourceString(){return "WOODEN";}
 
-	private Item found=null;
-	private String foundShortName="";
+	protected Item found=null;
+	protected String foundShortName="";
 	public Chopping()
 	{
 		super();

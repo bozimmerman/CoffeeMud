@@ -41,7 +41,7 @@ public class Skill_ArrestingSap extends StdSkill
 	public int quality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"ASAP"};
 	public String[] triggerStrings(){return triggerStrings;}
-	private int enhancement=0;
+	protected int enhancement=0;
 	public int abilityCode(){return enhancement;}
 	public void setAbilityCode(int newCode){enhancement=newCode;}
 	public int usageType(){return USAGE_MOVEMENT;}

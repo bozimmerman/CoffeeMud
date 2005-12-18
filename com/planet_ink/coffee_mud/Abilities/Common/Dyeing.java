@@ -38,8 +38,8 @@ public class Dyeing extends CommonSkill
 	private static final String[] triggerStrings = {"DYE","DYEING"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	private Item found=null;
-	private String writing="";
+	protected Item found=null;
+	protected String writing="";
 	public Dyeing()
 	{
 		super();
@@ -47,7 +47,7 @@ public class Dyeing extends CommonSkill
 		verb="dyeing";
 	}
 
-	private String fixColor(String name, String colorWord)
+	protected String fixColor(String name, String colorWord)
 	{
 		int end=name.indexOf("^?");
 		if(end>0)

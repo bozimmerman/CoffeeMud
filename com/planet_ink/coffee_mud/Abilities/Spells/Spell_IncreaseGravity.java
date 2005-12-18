@@ -39,8 +39,8 @@ public class Spell_IncreaseGravity extends Spell
 	public int quality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS|CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	private Room theGravityRoom=null;
-	private Room gravityRoom()
+	protected Room theGravityRoom=null;
+	protected Room gravityRoom()
 	{
 		if(theGravityRoom!=null)
 			return theGravityRoom;

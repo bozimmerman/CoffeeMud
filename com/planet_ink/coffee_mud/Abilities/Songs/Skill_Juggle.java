@@ -115,7 +115,7 @@ public class Skill_Juggle extends BardSkill
 		return true;
 	}
 
-	private void unJuggle(Item I)
+    protected void unJuggle(Item I)
 	{
 		if(I==null) return;
 		Ability A=I.fetchEffect("Spell_Fly");
@@ -141,7 +141,7 @@ public class Skill_Juggle extends BardSkill
 		juggles.addElement(I);
 	}
 
-	private synchronized void juggle()
+    protected synchronized void juggle()
 	{
 		boolean anythingToDo=false;
 		if((affected==null)||(!(affected instanceof MOB)))

@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenContainer extends StdContainer
 {
 	public String ID(){	return "GenContainer";}
-	private String readableText = "";
+	protected String readableText = "";
 	public GenContainer()
 	{
 		super();

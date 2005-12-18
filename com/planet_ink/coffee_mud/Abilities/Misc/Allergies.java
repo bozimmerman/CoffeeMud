@@ -44,9 +44,9 @@ public class Allergies extends StdAbility
 	public int classificationCode(){return Ability.PROPERTY;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	private HashSet resourceAllergies=new HashSet();
-	private HashSet raceAllergies=new HashSet();
-	private int allergicCheckDown=0;
+    protected HashSet resourceAllergies=new HashSet();
+    protected HashSet raceAllergies=new HashSet();
+    protected int allergicCheckDown=0;
 	
 	public void setMiscText(String newText)
 	{

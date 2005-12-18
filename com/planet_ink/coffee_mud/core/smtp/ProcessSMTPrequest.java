@@ -42,10 +42,10 @@ public class ProcessSMTPrequest extends Thread
 	private SMTPserver server=null;
 	private final static String cr = "\r\n";
 	private final static String S_250 = "250 OK";
-	private String from=null;
-	private Vector to=null;
+	protected String from=null;
+	protected Vector to=null;
 	private StringBuffer data=null;
-	private String domain=null;
+	protected String domain=null;
 
 	public ProcessSMTPrequest(Socket a_sock,
 							  SMTPserver a_Server,

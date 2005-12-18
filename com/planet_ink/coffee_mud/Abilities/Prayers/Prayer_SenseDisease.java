@@ -40,7 +40,7 @@ public class Prayer_SenseDisease extends Prayer
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){ return OK_SELF;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	private Room lastRoom=null;
+	protected Room lastRoom=null;
 
 	public void unInvoke()
 	{

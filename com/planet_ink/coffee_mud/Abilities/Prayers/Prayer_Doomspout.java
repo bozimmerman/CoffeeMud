@@ -44,7 +44,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 	public int difficultyLevel(){return 7;}
 	int plagueDown=4;
 	String godName="The Demon";
-	private boolean ispoke=false;
+    protected boolean ispoke=false;
 
 	public int abilityCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
 

@@ -44,9 +44,9 @@ public class Chant_PlantWall extends Chant
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 
-	private int amountRemaining=0;
-	private Item theWall=null;
-	private String deathNotice="";
+	protected int amountRemaining=0;
+	protected Item theWall=null;
+	protected String deathNotice="";
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

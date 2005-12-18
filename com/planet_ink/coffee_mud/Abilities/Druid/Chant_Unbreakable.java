@@ -40,7 +40,7 @@ public class Chant_Unbreakable extends Chant
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	private int maintainCondition=100;
+	protected int maintainCondition=100;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

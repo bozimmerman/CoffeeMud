@@ -41,7 +41,7 @@ public class Prayer_HuntEvil extends Prayer
 	public String displayText(){return "(Hunting Evil)";}
 	protected String word(){return "evil";}
 
-	private Vector theTrail=null;
+	protected Vector theTrail=null;
 	public int nextDirection=-2;
 
 	public boolean tick(Tickable ticking, int tickID)

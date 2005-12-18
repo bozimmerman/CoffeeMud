@@ -158,7 +158,7 @@ public class Prop_HaveAdjuster extends Property
         return false;
     }
     
-	private void ensureStarted()
+    protected void ensureStarted()
 	{
 		if(adjCharStats==null)
 			setMiscText(text());

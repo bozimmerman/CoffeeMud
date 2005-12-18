@@ -40,7 +40,7 @@ public class Prayer_Position extends Prayer
 	public int quality(){return Ability.INDIFFERENT;}
 	public Room lastPosition=null;
 
-	private int getRoomDirection(Room R, Room toRoom, Vector ignore)
+	protected int getRoomDirection(Room R, Room toRoom, Vector ignore)
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			if((R.getRoomInDir(d)==toRoom)

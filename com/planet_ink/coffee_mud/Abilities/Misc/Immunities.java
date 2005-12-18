@@ -34,7 +34,7 @@ public class Immunities extends StdAbility
 {
 	public String ID() { return "Immunities"; }
 	public String name(){ return "Immunities";}
-	private String displayText="";
+	protected String displayText="";
 	public String displayText(){ return displayText;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}

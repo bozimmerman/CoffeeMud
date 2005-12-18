@@ -39,10 +39,10 @@ public class Spell_FeelTheVoid extends Spell
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
-	private final static int mask=
+    protected final static int mask=
 			EnvStats.CAN_NOT_TASTE|EnvStats.CAN_NOT_SMELL|EnvStats.CAN_NOT_SEE
 		    |EnvStats.CAN_NOT_HEAR;
-	private final static int mask2=Integer.MAX_VALUE
+    protected final static int mask2=Integer.MAX_VALUE
 			-EnvStats.CAN_SEE_BONUS
 		    -EnvStats.CAN_SEE_DARK
 		    -EnvStats.CAN_SEE_EVIL

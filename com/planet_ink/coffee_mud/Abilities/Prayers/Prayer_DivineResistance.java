@@ -41,8 +41,8 @@ public class Prayer_DivineResistance extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	private HashSet permProts=new HashSet();
-	private int prots=4;
+    protected HashSet permProts=new HashSet();
+    protected int prots=4;
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

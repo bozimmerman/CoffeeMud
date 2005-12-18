@@ -130,9 +130,9 @@ public class Spell_BigMouth extends Spell
 		super.executeMsg(myHost,msg);
 	}
 
-	private Room myStomach = null;
-	private Room lastKnownRoom=null;
-	private Room lastKnownLocation()
+	protected Room myStomach = null;
+	protected Room lastKnownRoom=null;
+	protected Room lastKnownLocation()
 	{
 		Room R=null;
 		if(affected instanceof MOB)
@@ -141,7 +141,7 @@ public class Spell_BigMouth extends Spell
 		if(R!=null) lastKnownRoom=R;
 		return lastKnownRoom;
 	}
-	private Room Stomach()
+	protected Room Stomach()
 	{
 		if((myStomach==null)&&(affected!=null))
 		{
@@ -152,7 +152,7 @@ public class Spell_BigMouth extends Spell
 		}
 		return myStomach;
 	}
-	private int digestDown=4;
+	protected int digestDown=4;
 
 	public void kill()
 	{

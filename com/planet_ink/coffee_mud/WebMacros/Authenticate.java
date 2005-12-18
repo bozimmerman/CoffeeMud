@@ -59,8 +59,8 @@ public class Authenticate extends StdWebMacro
 		return "false";
 	}
 	
-	private static final String ABCs="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
-	private static final String FILTER="peniswrinkletellmetrueisthereanythingasnastyasyouwellmaybesothenumber7470issprettybad";
+    protected static final String ABCs="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+    protected static final String FILTER="peniswrinkletellmetrueisthereanythingasnastyasyouwellmaybesothenumber7470issprettybad";
 
 	public static boolean authenticated(ExternalHTTPRequests httpReq, String login, String password)
 	{
@@ -74,21 +74,21 @@ public class Authenticate extends StdWebMacro
 		return false;
 	}
 
-	private static char ABCeq(char C)
+    protected static char ABCeq(char C)
 	{
 		for(int A=0;A<ABCs.length();A++)
 			if(C==ABCs.charAt(A)) return ABCs.charAt(A);
 		return (char)0;
 	}
 
-	private static int ABCindex(char C)
+    protected static int ABCindex(char C)
 	{
 		for(int A=0;A<ABCs.length();A++)
 			if(C==ABCs.charAt(A)) return A;
 		return 0;
 	}
 
-	private static String Encrypt(String ENCRYPTME)
+    protected static String Encrypt(String ENCRYPTME)
 	{
 		StringBuffer INTOME=new StringBuffer("");
 		INTOME.setLength(ENCRYPTME.length());
@@ -110,7 +110,7 @@ public class Authenticate extends StdWebMacro
 		return INTOME.toString();
 	}
 
-	private static String Decrypt(String DECRYPTME)
+    protected static String Decrypt(String DECRYPTME)
 	{
 		StringBuffer INTOME=new StringBuffer("");
 		INTOME.setLength(DECRYPTME.length());

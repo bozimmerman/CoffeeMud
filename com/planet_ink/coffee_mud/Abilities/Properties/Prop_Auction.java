@@ -39,7 +39,7 @@ public class Prop_Auction extends Property
 	public String accountForYourself(){ return "";	}
 	public Environmental auctioning=null;
 	public MOB highBidder=null;
-	private String currency="";
+	protected String currency="";
     private double highBid=Integer.MIN_VALUE;
     private double bid=Integer.MIN_VALUE;
     private int state=-1;
@@ -59,7 +59,7 @@ public class Prop_Auction extends Property
 		tickDown=15000/MudHost.TICK_TIME;
 	}
 
-	private MOB invoker=null;
+	protected MOB invoker=null;
 	public MOB invoker(){return invoker;}
 	public void setInvoker(MOB mob)
 	{

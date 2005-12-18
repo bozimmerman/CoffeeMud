@@ -53,10 +53,10 @@ public class Skill_Disguise extends BardSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 
-	private final static String[] whats={
+    protected final static String[] whats={
 		//0!     1!      2!    3!     4!       5!     6!      7!          8!
 		"WEIGHT","LEVEL","SEX","RACE","HEIGHT","NAME","CLASS","ALIGNMENT","AGE"};
-	private final static int[] levels={2,10,4,14,6,8,0,18,12};
+    protected final static int[] levels={2,10,4,14,6,8,0,18,12};
 	protected String[] values=new String[whats.length];
 
 	protected void cloneFix(Ability E)

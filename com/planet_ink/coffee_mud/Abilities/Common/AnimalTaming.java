@@ -38,8 +38,8 @@ public class AnimalTaming extends CommonSkill
 	private static final String[] triggerStrings = {"TAME","TAMING","ANIMALTAMING"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	private Environmental taming=null;
-	private boolean messedUp=false;
+	protected Environmental taming=null;
+	protected boolean messedUp=false;
 	public AnimalTaming()
 	{
 		super();

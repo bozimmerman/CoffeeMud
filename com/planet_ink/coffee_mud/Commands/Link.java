@@ -75,7 +75,7 @@ public class Link extends StdCommand
 		return false;
 	}
 	
-	private void exitifyNewPortal(MOB mob, Room room, int direction)
+    protected void exitifyNewPortal(MOB mob, Room room, int direction)
 	{
 		Room opRoom=mob.location().rawDoors()[direction];
 		if((opRoom!=null)&&(opRoom.roomID().length()==0))

@@ -41,8 +41,8 @@ public class Foraging extends GatheringSkill
 	protected boolean allowedWhileMounted(){return false;}
 	public String supportedResourceString(){return "VEGETATION|HEMP|SILK|COTTON";}
 
-	private Item found=null;
-	private String foundShortName="";
+	protected Item found=null;
+	protected String foundShortName="";
 	public Foraging()
 	{
 		super();

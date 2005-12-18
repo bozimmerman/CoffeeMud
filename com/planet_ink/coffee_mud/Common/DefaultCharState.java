@@ -346,7 +346,7 @@ public class DefaultCharState implements CharState
 		"HITS","MANA","MOVE",
 		"HUNGER","THIRST","FATIGUE"};
 	public String[] getCodes(){return CODES;}
-	private int getCodeNum(String code)
+	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;

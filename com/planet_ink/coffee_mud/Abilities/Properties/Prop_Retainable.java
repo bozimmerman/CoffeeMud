@@ -37,7 +37,7 @@ public class Prop_Retainable extends Property
 	public String ID() { return "Prop_Retainable"; }
 	public String name(){ return "Ability to set Price/Retainability of a pet.";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	private Room lastRoom=null;
+    protected Room lastRoom=null;
 	
 	protected long period=0;
 	protected int periodic=0;

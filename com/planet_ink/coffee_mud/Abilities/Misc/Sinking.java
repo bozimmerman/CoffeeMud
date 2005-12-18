@@ -42,9 +42,9 @@ public class Sinking extends StdAbility
     protected boolean isTreading=false;
 	public Room room=null;
 
-	private boolean reversed(){return profficiency()==100;}
+    protected boolean reversed(){return profficiency()==100;}
 
-	private boolean isWaterSurface(Room R)
+    protected boolean isWaterSurface(Room R)
 	{
 		if(R==null) return false;
 		if((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
@@ -52,7 +52,7 @@ public class Sinking extends StdAbility
 			return true;
 		return false;
 	}
-	private boolean isUnderWater(Room R)
+    protected boolean isUnderWater(Room R)
 	{
 		if(R==null) return false;
 		if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
@@ -61,7 +61,7 @@ public class Sinking extends StdAbility
 		return false;
 	}
 
-	private boolean canSinkFrom(Room fromHere, int direction)
+    protected boolean canSinkFrom(Room fromHere, int direction)
 	{
 		if((fromHere==null)||(direction<0)||(direction>=Directions.NUM_DIRECTIONS))
 			return false;
@@ -76,7 +76,7 @@ public class Sinking extends StdAbility
 		return true;
 	}
 
-	private boolean stopSinking(MOB mob)
+    protected boolean stopSinking(MOB mob)
 	{
 		unInvoke();
 		mob.delEffect(this);

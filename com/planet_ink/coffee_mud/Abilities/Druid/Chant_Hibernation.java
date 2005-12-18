@@ -39,7 +39,7 @@ public class Chant_Hibernation extends Chant
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	private CharState oldState=null;
-	private int roundsHibernating=0;
+	protected int roundsHibernating=0;
 
 
 	public void unInvoke()

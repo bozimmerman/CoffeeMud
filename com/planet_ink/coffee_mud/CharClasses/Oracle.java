@@ -167,7 +167,7 @@ public class Oracle extends Cleric
 	public String otherBonuses(){return "Receives a non-class skill at 30th level, and every Oracle level thereafter.";}
 	public String otherLimitations(){return "Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.";}
 
-	private int numNonQualified(MOB mob)
+	protected int numNonQualified(MOB mob)
 	{
 		int numNonQualified=0;
 		for(int a=0;a<mob.numLearnedAbilities();a++)
@@ -186,7 +186,7 @@ public class Oracle extends Cleric
 		return numNonQualified;
 	}
 	
-	private int maxNonQualified(MOB mob)
+	protected int maxNonQualified(MOB mob)
 	{
 		int level=mob.charStats().getClassLevel(this)-30;
 		level++;

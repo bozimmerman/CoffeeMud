@@ -38,10 +38,10 @@ public class AnimalTraining extends CommonSkill
 	private static final String[] triggerStrings = {"ANIMALTRAINING"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	private Environmental taming=null;
-	private String skillto="";
-	private Object skill=null;
-	private boolean messedUp=false;
+	protected Environmental taming=null;
+	protected String skillto="";
+    protected Object skill=null;
+	protected boolean messedUp=false;
 	public AnimalTraining()
 	{
 		super();

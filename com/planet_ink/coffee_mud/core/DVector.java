@@ -32,7 +32,7 @@ import java.util.*;
 public class DVector implements Cloneable, java.io.Serializable
 {
 	public static final long serialVersionUID=0;
-	private int dimensions=1;
+	protected int dimensions=1;
 	private Vector[] stuff=null;
 	public DVector(int dim)
 	{

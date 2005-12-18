@@ -39,8 +39,8 @@ public class Prop_ItemTransporter extends Property
 	protected Room roomDestination=null;
 	protected MOB mobDestination=null;
 	protected Item nextDestination=null;
-	private static Hashtable possiblePossibilities=new Hashtable();
-	private static Hashtable lastLooks=new Hashtable();
+    protected static Hashtable possiblePossibilities=new Hashtable();
+    protected static Hashtable lastLooks=new Hashtable();
 
 	public String accountForYourself()
 	{ return "Item Transporter";	}

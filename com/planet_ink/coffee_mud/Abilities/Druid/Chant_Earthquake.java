@@ -40,7 +40,7 @@ public class Chant_Earthquake extends Chant
 	public int maxRange(){return 3;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	private boolean oncePerRd=false;
+	protected boolean oncePerRd=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{ oncePerRd=false; return super.tick(ticking,tickID);}

@@ -43,9 +43,9 @@ public class Prayer_HealingAura extends Prayer
 	protected int canTargetCode(){return 0;}
 	public boolean  canBeUninvoked(){return false;}
 	public boolean  isAutoInvoked(){return true;}
-	private int fiveDown=5;
-	private int tenDown=10;
-	private int twentyDown=20;
+    protected int fiveDown=5;
+    protected int tenDown=10;
+    protected int twentyDown=20;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

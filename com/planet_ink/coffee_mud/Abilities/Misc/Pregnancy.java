@@ -71,7 +71,7 @@ public class Pregnancy extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	public boolean isAutoInvoked(){return false;}
 	public int classificationCode(){return Ability.PROPERTY;}
-	private int ticksInLabor=0;
+    protected int ticksInLabor=0;
 
 
 	public void executeMsg(Environmental host, CMMsg msg)

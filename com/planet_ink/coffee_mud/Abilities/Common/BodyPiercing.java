@@ -38,7 +38,7 @@ public class BodyPiercing extends CommonSkill
 	public String name(){ return "Body Piercing";}
 	private static final String[] triggerStrings = {"BODYPIERCE","BODYPIERCING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	private String writing="";
+	protected String writing="";
 	MOB target=null;
 	public BodyPiercing()
 	{

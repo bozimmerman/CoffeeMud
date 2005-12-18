@@ -36,7 +36,7 @@ public class Spell_FakeWeapon extends Spell
 	public String name(){return "Fake Weapon";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	private Item myItem=null;
+	protected Item myItem=null;
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public void unInvoke()

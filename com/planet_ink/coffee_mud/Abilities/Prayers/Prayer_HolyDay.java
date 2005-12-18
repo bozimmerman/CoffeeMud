@@ -43,7 +43,7 @@ public class Prayer_HolyDay extends Prayer
 	public int quality(){ return MALICIOUS;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	private String godName="the gods";
+	protected String godName="the gods";
 
 	public void unInvoke()
 	{

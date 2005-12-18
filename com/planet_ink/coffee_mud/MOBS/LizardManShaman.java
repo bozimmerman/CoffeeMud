@@ -34,7 +34,7 @@ import java.util.*;
 public class LizardManShaman extends LizardMan
 {
 	public String ID(){return "LizardManShaman";}
-	private int spellDown=3;
+	protected int spellDown=3;
 
 	public LizardManShaman()
 	{

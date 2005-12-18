@@ -35,7 +35,7 @@ public class AreaTbl extends StdWebMacro
 {
 	public String name()	{return "AreaTbl";}
 	
-	private static final int AT_MAX_COL = 3;
+    protected static final int AT_MAX_COL = 3;
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{

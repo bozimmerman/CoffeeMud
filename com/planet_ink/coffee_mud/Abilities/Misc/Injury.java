@@ -39,8 +39,8 @@ public class Injury extends StdAbility
 	public String ID() { return "Injury"; }
 	public String name(){ return "Injury";}
 	
-	private CMMsg lastMsg=null;
-	private String lastLoc=null;
+    protected CMMsg lastMsg=null;
+    protected String lastLoc=null;
 	public int lastHP=-1;
 	//public final static String[] BODYPARTSTR={
 	//	"ANTENEA","EYE","EAR","HEAD","NECK","ARM","HAND","TORSO","LEG","FOOT",

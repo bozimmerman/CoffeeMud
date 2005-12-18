@@ -40,9 +40,9 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	protected Hashtable lastItemNums=new Hashtable();
 	public String accountForYourself()
 	{ return "For Sale";	}
-	private long lastCall=0;
-	private long lastMobSave=0;
-	private int lastDayDone=-1;
+    protected long lastCall=0;
+    protected long lastMobSave=0;
+	protected int lastDayDone=-1;
 
 	public int landPrice()
 	{

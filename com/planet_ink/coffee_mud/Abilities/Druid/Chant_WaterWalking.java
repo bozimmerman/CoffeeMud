@@ -37,7 +37,7 @@ public class Chant_WaterWalking extends Chant
 	public String ID() { return "Chant_WaterWalking"; }
 	public String name(){ return "Water Walking";}
 	public String displayText(){return "(Water Walking)";}
-	private boolean triggerNow=false;
+	protected boolean triggerNow=false;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

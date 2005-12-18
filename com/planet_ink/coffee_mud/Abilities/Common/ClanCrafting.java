@@ -41,25 +41,25 @@ public class ClanCrafting extends CraftingSkill
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN|METAL|MITHRIL";}
 
-	private static final int RCP_FINALNAME=0;
-	private static final int RCP_MATERIAL1=1;
-	private static final int RCP_MATERIAL2=2;
-	private static final int RCP_CITYPE=3;
-	private static final int RCP_LEVEL=4;
-	private static final int RCP_TICKS=5;
-	private static final int RCP_EXP=6;
-	private static final int RCP_VALUE=7;
-	private static final int RCP_CLASSTYPE=8;
-	private static final int RCP_MISCTYPE=9;
-	private static final int RCP_CAPACITY=10;
-	private static final int RCP_ARMORDMG=11;
-	private static final int RCP_CONTAINMASK=12;
-	private static final int RCP_SPELL=13;
-	private static final int RCP_REQUIREDSKILL=14;
+	protected static final int RCP_FINALNAME=0;
+	protected static final int RCP_MATERIAL1=1;
+	protected static final int RCP_MATERIAL2=2;
+	protected static final int RCP_CITYPE=3;
+	protected static final int RCP_LEVEL=4;
+	protected static final int RCP_TICKS=5;
+	protected static final int RCP_EXP=6;
+	protected static final int RCP_VALUE=7;
+	protected static final int RCP_CLASSTYPE=8;
+	protected static final int RCP_MISCTYPE=9;
+	protected static final int RCP_CAPACITY=10;
+	protected static final int RCP_ARMORDMG=11;
+	protected static final int RCP_CONTAINMASK=12;
+	protected static final int RCP_SPELL=13;
+	protected static final int RCP_REQUIREDSKILL=14;
 
 
-	private Item building=null;
-	private boolean messedUp=false;
+	protected Item building=null;
+	protected boolean messedUp=false;
 
     protected Vector loadRecipes(){return super.loadRecipes("clancraft.txt");}
 

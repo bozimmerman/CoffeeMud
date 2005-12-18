@@ -37,7 +37,7 @@ public class Dance_Swing extends Dance
 	public String ID() { return "Dance_Swing"; }
 	public String name(){ return "Swing";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	private boolean doneThisRound=false;
+	protected boolean doneThisRound=false;
 	protected String danceOf(){return name()+" Dancing";}
 
 	public boolean tick(Tickable ticking, int tickID)

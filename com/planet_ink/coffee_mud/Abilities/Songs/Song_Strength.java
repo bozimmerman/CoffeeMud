@@ -38,7 +38,7 @@ public class Song_Strength extends Song
 	public String name(){ return "Strength";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 
-	private int amount=0;
+	protected int amount=0;
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

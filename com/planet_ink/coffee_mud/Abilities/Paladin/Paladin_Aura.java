@@ -43,7 +43,7 @@ public class Paladin_Aura extends Paladin
 		super();
 		paladinsGroup=new Vector();
 	}
-	private boolean pass=false;
+    protected boolean pass=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

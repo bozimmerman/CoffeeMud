@@ -70,7 +70,7 @@ public class DefaultClimate implements Climate
 		return theWeatherDescription(A,nextWeather);
 	}
 
-	private final static
+    protected final static
 	int[] seasonalWeather={
 		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
 		/*SPRING*/  40, 20, 10, 14,  5,  1,  0,  5,  0,  0,  0,  0,  5,
@@ -79,7 +79,7 @@ public class DefaultClimate implements Climate
 		/*WINTER*/  32, 15, 11,  4,  2,  7,  3,  0,  3,  3,  0,  0, 20,
 	};
 
-	private final static
+    protected final static
 	int[] cold={
 		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
 		/*SPRING*/  -5, -5,  5,-10,  0,  5,  0, -5,  5,  0,  0,  0,  10,
@@ -87,7 +87,7 @@ public class DefaultClimate implements Climate
 		/*FALL*/     0,  0,  1, -5,  0,  1,  1, -5,  1,  1,  0,  0,  5,
 		/*WINTER*/ -15,  0,  0, -4, -2,  5,  2,  0,  2,  2,  0,  0,  10,
 	};
-	private final static
+    protected final static
 	int[] hot={
 		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
 		/*SPRING*/   5,  5, -5, 10,  0, -5,  0,  5, -5,  0,  0,  0, -10,
@@ -95,7 +95,7 @@ public class DefaultClimate implements Climate
 		/*FALL*/     0,  0, -1,  5,  0, -1, -1,  5, -1, -1,  0,  0, -5,
 		/*WINTER*/  15,  0,  0,  4,  2, -5, -2,  0, -2, -2,  0,  0, -10,
 	};
-	private final static
+    protected final static
 	int[] dry={
 		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
 		/*SPRING*/  10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,
@@ -103,7 +103,7 @@ public class DefaultClimate implements Climate
 		/*FALL*/    10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,
 		/*WINTER*/  10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,
 	};
-	private final static
+    protected final static
 	int[] wet={
 		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
 		/*SPRING*/ -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,  -2,
@@ -111,7 +111,7 @@ public class DefaultClimate implements Climate
 		/*FALL*/   -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,  -2,
 		/*WINTER*/ -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,   2,
 	};
-	private final static
+    protected final static
 	int[] windy={
 		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
 		/*SPRING*/ -10,  0, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   0,
@@ -119,7 +119,7 @@ public class DefaultClimate implements Climate
 		/*FALL*/   -10,  0, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   0,
 		/*WINTER*/ -10, -2, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   2,
 	};
-	private final static
+    protected final static
 	int[] changeMap=		{
 	/*				     -    CL   WD   RA   TH   SN   HA   HE   SL   BL   DU   DR   WC*/
 	/*CLEAR*/			85,    0,   0,-100,-100,-100,-100,   0,-100,-100,   0, -20,   0,
@@ -195,7 +195,7 @@ public class DefaultClimate implements Climate
 		}
 
 	}
-	private String getWeatherStop(int weatherCode)
+	protected String getWeatherStop(int weatherCode)
 	{
 		switch(weatherCode)
 		{

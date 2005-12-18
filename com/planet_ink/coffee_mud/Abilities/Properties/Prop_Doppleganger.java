@@ -36,7 +36,7 @@ public class Prop_Doppleganger extends Property
 	public String ID() { return "Prop_Doppleganger"; }
 	public String name(){ return "Doppleganger";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	private boolean lastLevelChangers=true;
+	protected boolean lastLevelChangers=true;
     private int maxLevel=Integer.MAX_VALUE;
     private int minLevel=Integer.MIN_VALUE;
     

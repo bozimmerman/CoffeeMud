@@ -39,8 +39,8 @@ public class Engraving extends CommonSkill
 	private static final String[] triggerStrings = {"ENGRAVE","ENGRAVING"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	private Item found=null;
-	private String writing="";
+	protected Item found=null;
+	protected String writing="";
 	public Engraving()
 	{
 		super();

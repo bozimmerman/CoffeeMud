@@ -41,9 +41,9 @@ public class Drilling extends GatheringSkill
 	protected boolean allowedWhileMounted(){return false;}
 	public String supportedResourceString(){return "LIQUID";}
 
-	private Item found=null;
+	protected Item found=null;
 	private Drink container=null;
-	private String foundShortName="";
+	protected String foundShortName="";
 	public Drilling()
 	{
 		super();

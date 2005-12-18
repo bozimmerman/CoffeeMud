@@ -86,7 +86,7 @@ public class Prop_HaveResister extends Property
         }
 	}
 
-	private void ensureStarted()
+    protected void ensureStarted()
 	{
 		if(adjCharStats==null)
 			setMiscText(text());

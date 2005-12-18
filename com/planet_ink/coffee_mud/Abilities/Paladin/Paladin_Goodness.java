@@ -35,7 +35,7 @@ public class Paladin_Goodness extends Paladin
 {
 	public String ID() { return "Paladin_Goodness"; }
 	public String name(){ return "Paladin`s Goodness";}
-	private boolean tickTock=false;
+    protected boolean tickTock=false;
 	public Paladin_Goodness()
 	{
 		super();

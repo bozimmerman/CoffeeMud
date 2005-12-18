@@ -40,8 +40,8 @@ public class Dance_Manipuri extends Dance
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected String danceOf(){return name()+" Dance";}
 
-	private Room lastRoom=null;
-	private int count=3;
+	protected Room lastRoom=null;
+	protected int count=3;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

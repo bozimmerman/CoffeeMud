@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenShipComponent extends StdShipComponent
 {
 	public String ID(){	return "GenShipComponent";}
-	private String readableText="";
+	protected String readableText="";
 	public GenShipComponent()
 	{
 		super();

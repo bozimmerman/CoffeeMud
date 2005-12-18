@@ -40,7 +40,7 @@ public class Skill_Convert extends StdSkill
 	private static final String[] triggerStrings = {"CONVERT"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	private static DVector convertStack=new DVector(2);
+    protected static DVector convertStack=new DVector(2);
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

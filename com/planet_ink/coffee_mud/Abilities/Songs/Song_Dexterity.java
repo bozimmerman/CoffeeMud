@@ -37,7 +37,7 @@ public class Song_Dexterity extends Song
 	public String ID() { return "Song_Dexterity"; }
 	public String name(){ return "Dexterity";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	private int amount=0;
+	protected int amount=0;
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

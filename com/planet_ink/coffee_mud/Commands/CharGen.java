@@ -37,7 +37,7 @@ public class CharGen extends StdCommand
 	private String[] access={getScr("CharGen","cmd")};
 	public String[] getAccessWords(){return access;}
 
-	private MOB levelMOBup(int level, CharClass C)
+	protected MOB levelMOBup(int level, CharClass C)
 	{
 		MOB mob=CMClass.getMOB("StdMOB");
 		CMLib.factions().setAlignment(mob,Faction.ALIGN_NEUTRAL);

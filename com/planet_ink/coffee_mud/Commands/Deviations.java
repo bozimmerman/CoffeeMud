@@ -42,7 +42,7 @@ public class Deviations extends StdCommand
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
 
-	private String mobHeader(Faction useFaction)
+	protected String mobHeader(Faction useFaction)
 	{
 		StringBuffer str=new StringBuffer();
 		str.append("\n\r");
@@ -59,7 +59,7 @@ public class Deviations extends StdCommand
 		str.append("\n\r");
 		return str.toString();
 	}
-	private String itemHeader()
+	protected String itemHeader()
 	{
 		StringBuffer str=new StringBuffer();
 		str.append("\n\r");
@@ -126,14 +126,14 @@ public class Deviations extends StdCommand
 		}
 	}
 
-	private String getDeviation(int val, Hashtable vals, String key)
+	protected String getDeviation(int val, Hashtable vals, String key)
 	{
 		if(!vals.containsKey(key))
 			return " - ";
 		int val2=CMath.s_int((String)vals.get(key));
 		return getDeviation(val,val2);
 	}
-	private String getDeviation(int val, int val2)
+	protected String getDeviation(int val, int val2)
 	{
 		if(val==val2) return "0%";
 		int oval=val-val2;

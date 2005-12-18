@@ -173,13 +173,13 @@ public class Modify extends BaseGenerics
 		Log.sysOut("Items",mob.Name()+" modified item "+modItem.ID()+".");
 	}
 
-	private void flunkCmd1(MOB mob)
+    protected void flunkCmd1(MOB mob)
 	{
 		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ROOM [NAME, AREA, DESCRIPTION, AFFECTS, BEHAVIORS, CLASS, XGRID, YGRID] [TEXT]\n\r");
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 	}
 
-	private void flunkCmd2(MOB mob)
+    protected void flunkCmd2(MOB mob)
 	{
 		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY AREA [NAME, DESCRIPTION, CLIMATE, FILE, AFFECTS, BEHAVIORS, ADDSUB, DELSUB] [TEXT]\n\r");
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");

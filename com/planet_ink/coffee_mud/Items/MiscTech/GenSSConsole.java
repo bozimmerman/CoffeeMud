@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenSSConsole extends StdShipConsole
 {
 	public String ID(){	return "GenSSConsole";}
-	private String readableText="";
+	protected String readableText="";
 	
 	public GenSSConsole()
 	{

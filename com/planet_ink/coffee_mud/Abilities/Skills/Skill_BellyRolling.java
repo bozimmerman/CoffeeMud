@@ -41,7 +41,7 @@ public class Skill_BellyRolling extends StdSkill
 	public int classificationCode(){return Ability.SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	private boolean doneThisRound=false;
+	protected boolean doneThisRound=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

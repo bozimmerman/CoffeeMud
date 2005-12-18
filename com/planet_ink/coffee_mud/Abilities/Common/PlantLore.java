@@ -38,7 +38,7 @@ public class PlantLore extends CommonSkill
 	private static final String[] triggerStrings = {"PLANTLORE","PSPECULATE"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	private boolean success=false;
+	protected boolean success=false;
 	public PlantLore()
 	{
 		super();

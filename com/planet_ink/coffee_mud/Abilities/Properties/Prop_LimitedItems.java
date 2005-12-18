@@ -38,8 +38,8 @@ public class Prop_LimitedItems extends Property
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	public static Hashtable instances=new Hashtable();
 	public static boolean[] playersLoaded=new boolean[1];
-	private boolean norecurse=false;
-	private boolean destroy=false;
+	protected boolean norecurse=false;
+	protected boolean destroy=false;
 
 	public String accountForYourself()
 	{
@@ -48,7 +48,7 @@ public class Prop_LimitedItems extends Property
 		return "Only "+CMath.s_int(text())+" may exist.";
 	}
 
-	private void countIfNecessary(Item I)
+    protected void countIfNecessary(Item I)
 	{
 		if(CMLib.flags().isInTheGame(I,false))
 		{

@@ -37,7 +37,7 @@ public class Chant_SenseLife extends Chant
 	public String ID() { return "Chant_SenseLife"; }
 	public String name(){ return "Life Echoes";}
 	public String displayText(){return "(Life Echoes)";}
-	private Room lastRoom=null;
+	protected Room lastRoom=null;
 
 	public void unInvoke()
 	{

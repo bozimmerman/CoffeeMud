@@ -61,7 +61,7 @@ public class ColorSet extends StdCommand
 		return buf.toString();
 	}
 
-	private int pickColor(MOB mob, String[] set, String prompt)
+	protected int pickColor(MOB mob, String[] set, String prompt)
 	throws java.io.IOException
 	{
 		String newColor=mob.session().prompt(prompt,"");

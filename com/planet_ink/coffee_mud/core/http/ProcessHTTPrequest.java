@@ -49,21 +49,21 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 	private static long instanceCnt = 0;
 
-	private String command = null;
-	private String request = null;
-	private String requestMain = null;
+	protected String command = null;
+	protected String request = null;
+	protected String requestMain = null;
 
-	private String requestParametersEncoded = null;	// I keep the encoded form
+	protected String requestParametersEncoded = null;	// I keep the encoded form
 	// I've called it Table to distinguish it from Encoded string...
 	private Hashtable requestParametersTable = null;
 
 	// default mime type
-	private String mimetype = "text/html";
+	protected String mimetype = "text/html";
 	private final static String mimePrefix = "MIME";
 
-	private boolean headersOnly = false;
+	protected boolean headersOnly = false;
 
-	private boolean isAdminServer = false;
+	protected boolean isAdminServer = false;
 
 	// these are all the HTTP states this class can return
 	private final static String S_200 = "200 OK";
@@ -82,8 +82,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	private final static String cr = "\r\n";
 	//private final static String cr = "\n\r";
 
-	private String status = S_500;
-	private String statusExtra = "...";
+	protected String status = S_500;
+	protected String statusExtra = "...";
 	HTTPserver webServer;
 
 	public boolean virtualPage;
@@ -141,7 +141,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		return page.getStr(new String (mimePrefix + a_extension).toUpperCase());
 	}
 
-	private boolean process(String inLine) throws Exception
+	protected boolean process(String inLine) throws Exception
 	{
 		virtualPage = false;
 		try
@@ -387,7 +387,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	}
 
 
-	private String parseFoundMacro(StringBuffer s, int i, boolean lookOnly)
+	protected String parseFoundMacro(StringBuffer s, int i, boolean lookOnly)
 	{
 		String foundMacro=null;
 		boolean extend=false;
@@ -420,7 +420,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 		return foundMacro;
 	}
-	private int myBack(StringBuffer s, int i)
+	protected int myBack(StringBuffer s, int i)
 	{
 		int backsToFind=1;
 		for(;i<s.length();i++)
@@ -446,7 +446,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	}
 
 
-	private String preFilter(StringBuffer input)
+	protected String preFilter(StringBuffer input)
 	{
 		if(input==null) return null;
 
@@ -474,7 +474,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		return input.toString();
 	}
 
-	private int myEndif(StringBuffer s, int i)
+	protected int myEndif(StringBuffer s, int i)
 	{
 		int endifsToFind=1;
 		for(;i<s.length();i++)
@@ -516,7 +516,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
         return -1;
     }
 
-	private String runMacro(String foundMacro)
+	protected String runMacro(String foundMacro)
 		throws HTTPRedirectException, HTTPServerException
 	{
 		int x=foundMacro.indexOf("?");
@@ -572,7 +572,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		return null;
 	}
 
-	private int myElse(StringBuffer s, int i, int end)
+	protected int myElse(StringBuffer s, int i, int end)
 	{
 		int endifsToFind=1;
 		for(;i<end;i++)
@@ -1145,7 +1145,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		return "";
 	}
 
-	private Vector getData(InputStream sin)
+	protected Vector getData(InputStream sin)
 	{
 		Vector data=new Vector();
         ByteArrayOutputStream out=new ByteArrayOutputStream();

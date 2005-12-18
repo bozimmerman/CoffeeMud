@@ -41,8 +41,8 @@ public class Spell_Charm extends Spell
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public long flags(){return Ability.FLAG_CHARMING;}
 
-	private MOB charmer=null;
-	private MOB getCharmer()
+	protected MOB charmer=null;
+	protected MOB getCharmer()
 	{
 		if(charmer!=null) return charmer;
 		if((invoker!=null)&&(invoker!=affected))

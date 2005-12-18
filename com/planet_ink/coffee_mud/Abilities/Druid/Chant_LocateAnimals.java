@@ -37,10 +37,10 @@ public class Chant_LocateAnimals extends Chant
 {
 	public String ID() { return "Chant_LocateAnimals"; }
 	public String name(){ return "Locate Animals";}
-	private String displayText="(Locating Animals)";
+	protected String displayText="(Locating Animals)";
 	public String displayText(){return displayText;}
 
-	private Vector theTrail=null;
+	protected Vector theTrail=null;
 	public int nextDirection=-2;
 	public long flags(){return Ability.FLAG_TRACKING;}
 

@@ -43,7 +43,7 @@ public class Prayer_DrunkenStupor extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Ability inebriation=null;
 
-	private Ability getInebriation()
+    protected Ability getInebriation()
 	{
 		if(inebriation==null)
 		{

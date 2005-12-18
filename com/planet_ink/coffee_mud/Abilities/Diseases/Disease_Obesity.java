@@ -63,10 +63,10 @@ public class Disease_Obesity extends Disease
 	protected String DISEASE_AFFECT(){return "";}
 	public int abilityCode(){return 0;}
 	public boolean canBeUninvoked(){canBeUninvoked=!(amountOfFat()>0);return super.canBeUninvoked();}
-	private long lastLoss=-1;
-	private int fatAmount=-1;
+    protected long lastLoss=-1;
+	protected int fatAmount=-1;
 	
-	private int amountOfFat()
+	protected int amountOfFat()
 	{
 	    if((fatAmount<0)&&(CMath.isNumber(text()))) 
 	        fatAmount=CMath.s_int(text());

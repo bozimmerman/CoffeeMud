@@ -42,7 +42,7 @@ public class Spell_Delirium extends Spell
 	int amountRemaining=0;
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
-	private Environmental getRandomOtherName(Environmental likeThisOne)
+	protected Environmental getRandomOtherName(Environmental likeThisOne)
 	{
 		if((invoker==null)||(invoker.location()==null))
 			return likeThisOne;
@@ -115,7 +115,7 @@ public class Spell_Delirium extends Spell
 		return null;
 	}
 
-	private String getRand(Environmental likeThis)
+	protected String getRand(Environmental likeThis)
 	{
 		Environmental E=this.getRandomOtherName(likeThis);
 		if(E==null)
@@ -127,7 +127,7 @@ public class Spell_Delirium extends Spell
 		return E.name();
 	}
 
-	private String process(MOB mob, String str, Environmental obj)
+	protected String process(MOB mob, String str, Environmental obj)
 	{
 		if(obj==null) return str;
 

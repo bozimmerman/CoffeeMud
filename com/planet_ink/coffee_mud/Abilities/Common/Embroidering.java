@@ -38,8 +38,8 @@ public class Embroidering extends CommonSkill
 	private static final String[] triggerStrings = {"EMBROIDER","EMBROIDERING"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	private Item found=null;
-	private String writing="";
+	protected Item found=null;
+	protected String writing="";
 	public Embroidering()
 	{
 		super();

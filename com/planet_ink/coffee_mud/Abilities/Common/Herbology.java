@@ -41,8 +41,8 @@ public class Herbology extends CommonSkill
 	private static final String[] triggerStrings = {"HERBOLOGY"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	private Item found=null;
-	private boolean messedUp=false;
+	protected Item found=null;
+	protected boolean messedUp=false;
 
 	public Herbology()
 	{

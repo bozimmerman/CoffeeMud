@@ -46,17 +46,17 @@ public class DefaultMessage implements CMMsg
         }
     }
     
-	private int targetCode=0;
-	private int sourceCode=0;
-	private int othersCode=0;
-	private String targetMsg=null;
-	private String othersMsg=null;
-	private String sourceMsg=null;
-	private MOB myAgent=null;
-	private Environmental myTarget=null;
-	private Environmental myTool=null;
-	private int value=0;
-	private Vector trailMsgs=null;
+	protected int targetCode=0;
+	protected int sourceCode=0;
+	protected int othersCode=0;
+	protected String targetMsg=null;
+	protected String othersMsg=null;
+	protected String sourceMsg=null;
+	protected MOB myAgent=null;
+	protected Environmental myTarget=null;
+	protected Environmental myTool=null;
+	protected int value=0;
+	protected Vector trailMsgs=null;
 
 	public void modify(MOB source, Environmental target, int newAllCode, String allMessage)
 	{
