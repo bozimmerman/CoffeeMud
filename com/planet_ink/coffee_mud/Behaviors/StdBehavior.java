@@ -193,9 +193,9 @@ public class StdBehavior implements Behavior
 	{
 		return true;
 	}
-	private static final String[] CODES={"CLASS","TEXT"};
+	protected static final String[] CODES={"CLASS","TEXT"};
 	public String[] getStatCodes(){return CODES;}
-	private int getCodeNum(String code){
+	protected int getCodeNum(String code){
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;

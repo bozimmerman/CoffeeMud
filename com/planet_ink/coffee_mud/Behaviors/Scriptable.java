@@ -40,22 +40,22 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 {
 	public String ID(){return "Scriptable";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS|Behavior.CAN_ITEMS|Behavior.CAN_ROOMS;}
-	private MOB lastToHurtMe=null;
-	private Room lastKnownLocation=null;
-	private Tickable altStatusTickable=null;
-	private Vector que=new Vector();
-	private static final Hashtable funcH=new Hashtable();
-	private static final Hashtable methH=new Hashtable();
-	private static final Hashtable progH=new Hashtable();
+	protected MOB lastToHurtMe=null;
+	protected Room lastKnownLocation=null;
+	protected Tickable altStatusTickable=null;
+	protected Vector que=new Vector();
+	protected static final Hashtable funcH=new Hashtable();
+	protected static final Hashtable methH=new Hashtable();
+	protected static final Hashtable progH=new Hashtable();
     private static Hashtable patterns=new Hashtable();
-	private Vector oncesDone=new Vector();
-	private Hashtable delayTargetTimes=new Hashtable();
-	private Hashtable delayProgCounters=new Hashtable();
-	private Hashtable lastTimeProgsDone=new Hashtable();
-	private Hashtable lastDayProgsDone=new Hashtable();
+	protected Vector oncesDone=new Vector();
+	protected Hashtable delayTargetTimes=new Hashtable();
+	protected Hashtable delayProgCounters=new Hashtable();
+	protected Hashtable lastTimeProgsDone=new Hashtable();
+	protected Hashtable lastDayProgsDone=new Hashtable();
     private HashSet registeredSpecialEvents=new HashSet();
     private Hashtable noTrigger=new Hashtable();
-	private long tickStatus=Tickable.STATUS_NOT;
+	protected long tickStatus=Tickable.STATUS_NOT;
 
 	public long getTickStatus()
 	{
@@ -188,7 +188,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		oncesDone.clear();
 	}
 
-	private void parseParmFilenames(String parse, Vector filenames, int depth)
+	protected void parseParmFilenames(String parse, Vector filenames, int depth)
 	{
 		if(depth>10) return;  // no including off to infinity
 		while(parse.length()>0)
@@ -219,7 +219,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		}
 	}
 	
-	private String parseLoads(String text, int depth)
+	protected String parseLoads(String text, int depth)
 	{
 		StringBuffer results=new StringBuffer("");
 		String parse=text;
@@ -255,7 +255,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		return results.toString();
 	}
 
-	private Vector parseScripts(String text)
+	protected Vector parseScripts(String text)
 	{
 		synchronized(funcH)
 		{
@@ -328,7 +328,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		return V;
 	}
 
-	private Room getRoom(String thisName, Room imHere)
+	protected Room getRoom(String thisName, Room imHere)
 	{
 		if(thisName.length()==0) return null;
 		Room room=CMLib.map().getRoom(thisName);
@@ -422,7 +422,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 
-	private void scriptableError(Environmental scripted, String cmdName, String errType, String errMsg)
+	protected void scriptableError(Environmental scripted, String cmdName, String errType, String errMsg)
 	{
 		if(scripted!=null)
 		{
@@ -435,7 +435,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 
 	}
 
-	private boolean simpleEvalStr(Environmental scripted,
+	protected boolean simpleEvalStr(Environmental scripted,
 								  String arg1,
 								  String arg2,
 								  String cmp,
@@ -467,7 +467,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 
-	private boolean simpleEval(Environmental scripted, String arg1, String arg2, String cmp, String cmdName)
+	protected boolean simpleEval(Environmental scripted, String arg1, String arg2, String cmp, String cmdName)
 	{
 		long val1=CMath.s_long(arg1);
 		long val2=CMath.s_long(arg2);
@@ -495,7 +495,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		}
 	}
 
-	private Vector loadMobsFromFile(Environmental scripted, String filename)
+	protected Vector loadMobsFromFile(Environmental scripted, String filename)
 	{
 		filename=filename.trim();
 		Vector monsters=(Vector)Resources.getResource("RANDOMMONSTERS-"+filename);
@@ -534,7 +534,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		return monsters;
 	}
 
-	private Vector loadItemsFromFile(Environmental scripted, String filename)
+	protected Vector loadItemsFromFile(Environmental scripted, String filename)
 	{
 		filename=filename.trim();
 		Vector items=(Vector)Resources.getResource("RANDOMITEMS-"+filename);
@@ -573,7 +573,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		return items;
 	}
 
-	private Environmental findSomethingCalledThis(String thisName, Room imHere, Vector OBJS, boolean mob)
+	protected Environmental findSomethingCalledThis(String thisName, Room imHere, Vector OBJS, boolean mob)
 	{
 		if(thisName.length()==0) return null;
 		Environmental thing=null;
@@ -4164,7 +4164,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		return results.toString();
 	}
 
-	private MOB getRandomMOB(MOB monster, MOB randMOB, Room room)
+	protected MOB getRandomMOB(MOB monster, MOB randMOB, Room room)
 	{
 		if((randMOB!=null)&&(randMOB!=monster))
 			return randMOB;
@@ -5661,7 +5661,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		return null;
 	}
 
-	private static final Vector empty=new Vector();
+	protected static final Vector empty=new Vector();
 
 	protected Vector getScripts()
 	{
@@ -6465,7 +6465,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		}
 	}
 
-	private int getTriggerCode(String trigger)
+	protected int getTriggerCode(String trigger)
 	{
 		int x=trigger.indexOf(" ");
 		Integer I=null;

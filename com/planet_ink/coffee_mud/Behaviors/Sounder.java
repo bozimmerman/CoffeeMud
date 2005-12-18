@@ -33,8 +33,8 @@ import java.util.*;
 public class Sounder extends StdBehavior
 {
 	public String ID(){return "Sounder";}
-	private int minTicks=23;
-	private int maxTicks=23;
+	protected int minTicks=23;
+	protected int maxTicks=23;
 	protected int tickDown=(int)Math.round(Math.random()*(maxTicks-minTicks))+minTicks;
 	protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;}
 	protected int[] triggers=null;
@@ -42,8 +42,8 @@ public class Sounder extends StdBehavior
 	protected static int UNDER_MASK=1023;
 	protected static int TICK_MASK=65536;
 	protected static int ROOM_MASK=32768;
-	private CMMsg lastMsg=null;
-	private boolean oncePerRound1=false;
+	protected CMMsg lastMsg=null;
+	protected boolean oncePerRound1=false;
 
 	public Sounder()
 	{
@@ -312,7 +312,7 @@ public class Sounder extends StdBehavior
 		tickReset();
 	}
 
-	private void emoteHere(Room room, MOB emoter, String emote)
+	protected void emoteHere(Room room, MOB emoter, String emote)
 	{
 		if(room==null) return;
 		Room oldLoc=emoter.location();

@@ -35,7 +35,7 @@ public class ItemIdentifier extends StdBehavior
 {
 	public String ID(){return "ItemIdentifier";}
 
-	private int cost(Item item)
+	protected int cost(Item item)
 	{
 		int cost=500+(item.envStats().level()*20);
 		return cost;

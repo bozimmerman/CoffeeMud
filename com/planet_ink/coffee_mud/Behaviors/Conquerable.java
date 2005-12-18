@@ -38,26 +38,26 @@ public class Conquerable extends Arrest
 	protected boolean defaultModifiableNames(){return false;}
 	protected String getLawParms(){ return "custom";}
 
-	private String savedHoldingClan="";
-	private String holdingClan="";
-	private Vector clanItems=new Vector();
-	private DVector clanControlPoints=new DVector(2);
-	private DVector assaults=new DVector(2);
-	private Vector noMultiFollows=new Vector();
-	private int totalControlPoints=-1;
-	private Area myArea=null;
-	private String journalName="";
-	private boolean allowLaw=false;
-	private long waitToReload=0;
+    protected String savedHoldingClan="";
+    protected String holdingClan="";
+    protected Vector clanItems=new Vector();
+    protected DVector clanControlPoints=new DVector(2);
+    protected DVector assaults=new DVector(2);
+    protected Vector noMultiFollows=new Vector();
+    protected int totalControlPoints=-1;
+    protected Area myArea=null;
+    protected String journalName="";
+    protected boolean allowLaw=false;
+    protected long waitToReload=0;
 
-    private int revoltDown=REVOLTFREQ;
-    private static final int REVOLTFREQ=(int)((TimeManager.MILI_DAY*3)/MudHost.TICK_TIME);
-	private int checkDown=0;
-	private static final int CHECKFREQ=10;
-	private int pointDown=0;
-	private static final int POINTFREQ=(int)((10*60000)/MudHost.TICK_TIME);
-	private int fightDown=0;
-	private static final int FIGHTFREQ=2;
+    protected int revoltDown=REVOLTFREQ;
+    protected static final int REVOLTFREQ=(int)((TimeManager.MILI_DAY*3)/MudHost.TICK_TIME);
+    protected int checkDown=0;
+    protected static final int CHECKFREQ=10;
+    protected int pointDown=0;
+    protected static final int POINTFREQ=(int)((10*60000)/MudHost.TICK_TIME);
+    protected int fightDown=0;
+    protected static final int FIGHTFREQ=2;
 
     public String rulingClan()
     {
@@ -161,7 +161,7 @@ public class Conquerable extends Arrest
 		return false;
 	}
 
-	private synchronized void endClanRule()
+    protected synchronized void endClanRule()
 	{
 		if(holdingClan.length()==0)
 			return;
@@ -501,7 +501,7 @@ public class Conquerable extends Arrest
 							{
 								Vector V=new Vector();
 								V.addElement("YELL");
-								V.addElement(warCrys[CMLib.dice().roll(1,warCrys.length,-1)]);
+								V.addElement(warCrys()[CMLib.dice().roll(1,warCrys().length,-1)]);
 								M1.doCommand(V);
 								CMLib.combat().postAttack(M1,M2,M1.fetchWieldedItem());
 							}
@@ -583,7 +583,7 @@ public class Conquerable extends Arrest
 		return super.okMessage(myHost,msg);
 	}
 
-	private void declareWinner(String clanID)
+    protected void declareWinner(String clanID)
 	{
 		if((holdingClan.equals(clanID))||(totalControlPoints<0))
 			return;
@@ -626,7 +626,7 @@ public class Conquerable extends Arrest
 		}
 	}
 
-	private void registerClanItem(Environmental I)
+    protected void registerClanItem(Environmental I)
 	{
 		synchronized(clanItems)
 		{
@@ -635,7 +635,7 @@ public class Conquerable extends Arrest
 		}
 	}
     
-    private void deRegisterClanItem(int i)
+    protected void deRegisterClanItem(int i)
     {
         synchronized(clanItems)
         {
@@ -648,7 +648,7 @@ public class Conquerable extends Arrest
     }
 
 
-	private boolean flagFound(Area A, String clanID)
+    protected boolean flagFound(Area A, String clanID)
 	{
 		if(CMLib.clans().findClan(clanID)==null) return false;
 		synchronized(clanItems)
@@ -669,7 +669,7 @@ public class Conquerable extends Arrest
 		return false;
 	}
 
-	private boolean changeControlPoints(String clanID, int amount)
+    protected boolean changeControlPoints(String clanID, int amount)
 	{
 		synchronized(clanControlPoints)
 		{
@@ -738,7 +738,11 @@ public class Conquerable extends Arrest
 	}
 
 
-	private static final String[] warCrys={
+    protected static String[] warCrys()
+    {
+        return DEFAULT_WAR_CRYS;
+    }
+	protected static final String[] DEFAULT_WAR_CRYS={
 		"INVADERS! Attack!",
 		"We are under attack! To arms!",
 		"Destroy the enemy!",

@@ -42,7 +42,7 @@ public class GetsAllEquipped extends ActiveTicker
 		tickReset();
 	}
 
-	private boolean DoneEquipping=false;
+	protected boolean DoneEquipping=false;
 
 
 

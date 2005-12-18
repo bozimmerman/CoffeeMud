@@ -40,7 +40,7 @@ public class RandomMonsters extends ActiveTicker
 	protected int minMonsters=1;
 	protected int maxMonsters=1;
 	protected Vector restrictedLocales=null;
-	private boolean alreadyTriedLoad=false;
+	protected boolean alreadyTriedLoad=false;
 	
 	public Vector externalFiles()
 	{

@@ -35,14 +35,14 @@ public class ProtectedCitizen extends ActiveTicker
 {
 	public String ID(){return "ProtectedCitizen";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	private static String zapper=null;
-	private static String defcityguard="cityguard";
-	private static String[] defclaims={"Help! I'm being attacked!","Help me!!"};
-	private String cityguard=null;
-	private String[] claims=null;
-	private int radius=7;
-	private int maxAssistance=1;
-	private boolean wander=false;
+	protected static String zapper=null;
+	protected static String defcityguard="cityguard";
+	protected static String[] defclaims={"Help! I'm being attacked!","Help me!!"};
+	protected String cityguard=null;
+	protected String[] claims=null;
+	protected int radius=7;
+	protected int maxAssistance=1;
+	protected boolean wander=false;
 
 
 

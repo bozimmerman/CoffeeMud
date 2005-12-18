@@ -41,7 +41,7 @@ public class MOBHunter extends ActiveTicker
 	public String ID(){return "MOBHunter";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public long flags(){return Behavior.FLAG_MOBILITY|Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
-	private boolean debug=false;
+	protected boolean debug=false;
 	int radius=20;
 
 	public MOBHunter()
@@ -52,7 +52,7 @@ public class MOBHunter extends ActiveTicker
 	}
 
 
-	private boolean isHunting(MOB mob)
+	protected boolean isHunting(MOB mob)
 	{
 		Ability A=mob.fetchEffect("Thief_Assasinate");
 		if(A!=null) return true;
@@ -64,7 +64,7 @@ public class MOBHunter extends ActiveTicker
 		super.setParms(newParms);
 		radius=CMParms.getParmInt(newParms,"radius",radius);
 	}
-	private MOB findPrey(MOB mob)
+	protected MOB findPrey(MOB mob)
 	{
 		MOB prey=null;
 		Vector rooms=new Vector();

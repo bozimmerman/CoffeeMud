@@ -36,8 +36,8 @@ public class MOBReSave extends ActiveTicker
 	public String ID(){return "MOBReSave";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public long flags(){return 0;}
-	private static HashSet roomsReset=new HashSet();
-	private boolean noRecurse=false;
+	protected static HashSet roomsReset=new HashSet();
+	protected boolean noRecurse=false;
 
 	public MOBReSave()
 	{

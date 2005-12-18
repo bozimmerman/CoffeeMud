@@ -35,7 +35,7 @@ import java.util.*;
 public class Emoter extends ActiveTicker
 {
 	public String ID(){return "Emoter";}
-	private int expires=0;
+	protected int expires=0;
 	public Emoter()
 	{
         super();
@@ -63,7 +63,7 @@ public class Emoter extends ActiveTicker
     protected final static int EMOTE_SOCIAL=3;
 	protected int emoteType=0;
 
-    private boolean setEmoteType(String str)
+    protected boolean setEmoteType(String str)
     {
         str=str.toUpperCase().trim();
         if(str.equals("BROADCAST"))
@@ -87,7 +87,7 @@ public class Emoter extends ActiveTicker
             return false;
         return true;
     }
-	private void setEmoteTypes(Vector V, boolean respectOnlyBeginningAndEnd)
+    protected void setEmoteTypes(Vector V, boolean respectOnlyBeginningAndEnd)
 	{
         if(respectOnlyBeginningAndEnd)
         {
@@ -105,7 +105,7 @@ public class Emoter extends ActiveTicker
 		}
 	}
 
-	private Vector parseEmotes()
+    protected Vector parseEmotes()
 	{
 		if(emotes!=null) return emotes;
 		broadcast=false;
@@ -197,7 +197,7 @@ public class Emoter extends ActiveTicker
 		}
 	}
 	
-	private void emoteHere(Room room, 
+    protected void emoteHere(Room room, 
 	        			   MOB emoter, 
 	        			   Vector emote, 
 	        			   MOB emoteTo,

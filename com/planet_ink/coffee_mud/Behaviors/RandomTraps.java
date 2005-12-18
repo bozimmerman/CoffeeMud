@@ -196,7 +196,7 @@ public class RandomTraps extends ActiveTicker
 			restrictedLocales=null;
 	}
 
-	private void makeRoomElligible(Room R, Vector elligible)
+	protected void makeRoomElligible(Room R, Vector elligible)
 	{
 		if(R==null) return;
 		if((restrictedLocales!=null)

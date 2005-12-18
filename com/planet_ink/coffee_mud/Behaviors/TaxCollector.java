@@ -36,15 +36,15 @@ public class TaxCollector extends StdBehavior
 {
 	public String ID(){return "TaxCollector";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	private DVector demanded=null;
-	private DVector paid=null;
-	private long waitTime=1000*60*2;
-	private long graceTime=1000*60*60;
-	private int lastMonthChecked=-1;
-	private Vector taxableProperties=new Vector();
-	private HashSet peopleWhoOwe=new HashSet();
-	private Room treasuryR=null;
-	private Item treasuryItem=null;
+	protected DVector demanded=null;
+	protected DVector paid=null;
+	protected long waitTime=1000*60*2;
+	protected long graceTime=1000*60*60;
+	protected int lastMonthChecked=-1;
+	protected Vector taxableProperties=new Vector();
+	protected HashSet peopleWhoOwe=new HashSet();
+	protected Room treasuryR=null;
+	protected Item treasuryItem=null;
 
 	public void setParms(String newParms)
 	{

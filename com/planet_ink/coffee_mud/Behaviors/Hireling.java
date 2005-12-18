@@ -37,11 +37,11 @@ public class Hireling extends StdBehavior
 {
 	public String ID(){return "Hireling";}
 
-	private Hashtable partials=new Hashtable();
-	private String workingFor="";
-	private long onTheJobUntil=0;
-	private int dex=-1;
-	private int dex2=-1;
+	protected Hashtable partials=new Hashtable();
+	protected String workingFor="";
+	protected long onTheJobUntil=0;
+	protected int dex=-1;
+	protected int dex2=-1;
 
 	public void setParms(String newParms)
 	{
@@ -53,7 +53,7 @@ public class Hireling extends StdBehavior
 			dex2=-1;
 	}
 
-	private double price()
+	protected double price()
 	{
 		double price=100.0;
 		if(dex>=0)
@@ -61,7 +61,7 @@ public class Hireling extends StdBehavior
 		return price;
 	}
 
-	private int minutes()
+	protected int minutes()
 	{
 		int mins=30;
 		if(dex>=0)
@@ -74,7 +74,7 @@ public class Hireling extends StdBehavior
 		return mins;
 	}
 
-	private String zapper()
+	protected String zapper()
 	{
 		if(dex>=0)
 		{

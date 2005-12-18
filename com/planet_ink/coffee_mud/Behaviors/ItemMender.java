@@ -36,7 +36,7 @@ public class ItemMender extends StdBehavior
 {
 	public String ID(){return "ItemMender";}
 
-	private int cost(Item item)
+	protected int cost(Item item)
 	{
 		int cost=((100-item.usesRemaining())*2)+item.envStats().level();
 		if(CMLib.flags().isABonusItems(item))

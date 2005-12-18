@@ -36,7 +36,7 @@ public class ItemRefitter extends StdBehavior
 {
 	public String ID(){return "ItemRefitter";}
 
-	private int cost(Item item)
+	protected int cost(Item item)
 	{
 		int cost=item.envStats().level()*100;
 		if(CMLib.flags().isABonusItems(item))

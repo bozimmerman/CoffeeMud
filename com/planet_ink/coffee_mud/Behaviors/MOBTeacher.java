@@ -34,9 +34,9 @@ import java.util.*;
 public class MOBTeacher extends CombatAbilities
 {
 	public String ID(){return "MOBTeacher";}
-	private MOB myMOB=null;
-	private boolean teachEverything=true;
-	private boolean noCommon=false;
+	protected MOB myMOB=null;
+	protected boolean teachEverything=true;
+	protected boolean noCommon=false;
 
 
 
@@ -47,7 +47,7 @@ public class MOBTeacher extends CombatAbilities
 		setParms(parms);
 	}
 
-	private void setTheCharClass(MOB mob, CharClass C)
+	protected void setTheCharClass(MOB mob, CharClass C)
 	{
 		if((mob.baseCharStats().numClasses()==1)
 		&&(mob.baseCharStats().getMyClass(0).ID().equals("StdCharClass"))
@@ -70,7 +70,7 @@ public class MOBTeacher extends CombatAbilities
 		mob.recoverCharStats();
 	}
 
-	private void classAbles(MOB mob, Hashtable myAbles, int pct)
+	protected void classAbles(MOB mob, Hashtable myAbles, int pct)
 	{
 		boolean stdCharClass=mob.charStats().getCurrentClass().ID().equals("StdCharClass");
 		String className=mob.charStats().getCurrentClass().ID();
@@ -103,7 +103,7 @@ public class MOBTeacher extends CombatAbilities
 		}
 	}
 
-	private void ensureCharClass()
+	protected void ensureCharClass()
 	{
 		myMOB.baseCharStats().setMyClasses("StdCharClass");
 		myMOB.baseCharStats().setMyLevels(""+myMOB.envStats().level());

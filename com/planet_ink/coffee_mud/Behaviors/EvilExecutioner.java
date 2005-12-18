@@ -36,7 +36,7 @@ public class EvilExecutioner  extends StdBehavior
 {
     public String ID(){return "EvilExecutioner";}
     public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
-    private boolean doPlayers=false;
+    protected boolean doPlayers=false;
     
     public void setParms(String newParms)
     {

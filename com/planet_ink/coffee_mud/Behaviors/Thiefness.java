@@ -35,7 +35,7 @@ public class Thiefness extends CombatAbilities
 {
 	public String ID(){return "Thiefness";}
 	public long flags(){return Behavior.FLAG_TROUBLEMAKING;}
-	private int tickDown=0;
+	protected int tickDown=0;
 
 
 	public void startBehavior(Environmental forMe)

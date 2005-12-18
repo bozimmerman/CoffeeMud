@@ -41,22 +41,22 @@ public class MudChat extends StdBehavior
 	// each chat group includes a string describing
 	// qualifying mobs followed by one or more chat
 	// collections.
-	private Vector myChatGroup=null;
-	private String myOldName="";
+	protected Vector myChatGroup=null;
+	protected String myOldName="";
 	// chat collection: first string is the pattern
 	// match string
 	// following strings are the proposed responses.
 	//----------------------------------------------
 
-	private MOB lastReactedTo=null;
-	private Vector responseQue=new Vector();
-	private int tickDown=3;
-	private final static int TALK_WAIT_DELAY=8;
-	private int talkDown=0;
+	protected MOB lastReactedTo=null;
+	protected Vector responseQue=new Vector();
+	protected int tickDown=3;
+	protected final static int TALK_WAIT_DELAY=8;
+	protected int talkDown=0;
 	// responseQue is a qued set of commands to
 	// run through the standard command processor,
 	// on tick or more.
-	private final static int RESPONSE_DELAY=2;
+	protected final static int RESPONSE_DELAY=2;
 
     public void setParms(String newParms)
     {
@@ -64,7 +64,7 @@ public class MudChat extends StdBehavior
         responseQue=new Vector();
     }
     
-	private static synchronized Vector getChatGroups(String parms)
+	protected static synchronized Vector getChatGroups(String parms)
 	{
 		Vector rsc=null;
 		String filename="chat.dat";
@@ -93,7 +93,7 @@ public class MudChat extends StdBehavior
 		return null;
 	}
 	
-	private static Vector loadChatData(String resourceName, Vector chatGroups)
+	protected static Vector loadChatData(String resourceName, Vector chatGroups)
 	{
 		StringBuffer rsc=new CMFile("resources/"+resourceName,null,true).text();
 		Vector currentChatGroup=new Vector();
@@ -179,7 +179,7 @@ public class MudChat extends StdBehavior
 	}
 
 
-	private static Vector matchChatGroup(String myName, Vector chatGroups)
+	protected static Vector matchChatGroup(String myName, Vector chatGroups)
 	{
 		for(int i=1;i<chatGroups.size();i++)
 		{
@@ -213,7 +213,7 @@ public class MudChat extends StdBehavior
 		return null;
 	}
 
-	private Vector getMyChatGroup(MOB forMe, Vector chatGroups)
+	protected Vector getMyChatGroup(MOB forMe, Vector chatGroups)
 	{
 		if((myChatGroup!=null)&&(myOldName.equals(forMe.Name())))
 			return myChatGroup;
@@ -239,7 +239,7 @@ public class MudChat extends StdBehavior
 		return (Vector)chatGroups.elementAt(0);
 	}
 
-	private void queResponse(Vector responses, MOB source, MOB target, String rest)
+	protected void queResponse(Vector responses, MOB source, MOB target, String rest)
 	{
 		int total=0;
 		for(int x=1;x<responses.size();x++)
@@ -309,7 +309,7 @@ public class MudChat extends StdBehavior
 	}
 
 
-	private boolean match(String expression, String message, String[] rest)
+	protected boolean match(String expression, String message, String[] rest)
 	{
 		int l=expression.length();
 		if(l==0) return true;

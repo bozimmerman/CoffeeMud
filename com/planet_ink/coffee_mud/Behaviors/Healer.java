@@ -35,7 +35,7 @@ public class Healer extends ActiveTicker
 {
 	public String ID(){return "Healer";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	private static Vector healingVector=new Vector();
+	protected static Vector healingVector=new Vector();
 
 	public Healer()
 	{

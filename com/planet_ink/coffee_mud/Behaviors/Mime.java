@@ -45,8 +45,8 @@ public class Mime extends ActiveTicker
 										  |Behavior.CAN_EXITS
 										  |Behavior.CAN_ITEMS
 									      |Behavior.CAN_ROOMS;}
-	private boolean disabled=false;
-	private CMMsg lastMsg=null;
+	protected boolean disabled=false;
+	protected CMMsg lastMsg=null;
 
 
 

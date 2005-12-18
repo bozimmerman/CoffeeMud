@@ -40,8 +40,8 @@ public class Drowness extends StdBehavior
 	public int darkDown=4;
 	public int fightDown=2;
 	public int statCheck=3;
-	private int spellDown=3;
-	private int magicResistance = 50;
+	protected int spellDown=3;
+	protected int magicResistance = 50;
 
 	public static final int CAST_DARKNESS = 1;
 	public static final int FIGHTER_SKILL = 128;

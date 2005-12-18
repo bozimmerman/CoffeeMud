@@ -34,8 +34,8 @@ import java.util.*;
 public class DelayedTransporter extends ActiveTicker
 {
 	public String ID(){return "DelayedTransporter";}
-	private Hashtable transportees=new Hashtable();
-	private Vector destRoomNames=new Vector();
+	protected Hashtable transportees=new Hashtable();
+	protected Vector destRoomNames=new Vector();
 	protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS;}
 
 	public DelayedTransporter()

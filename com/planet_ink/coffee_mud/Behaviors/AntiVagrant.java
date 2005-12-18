@@ -34,10 +34,10 @@ import java.util.*;
 public class AntiVagrant extends ActiveTicker
 {
 	public String ID(){return "AntiVagrant";}
-	private int speakDown=3;
-	private MOB target=null;
-	private boolean kickout=false;
-	private boolean anywhere=false;
+	protected int speakDown=3;
+	protected MOB target=null;
+	protected boolean kickout=false;
+	protected boolean anywhere=false;
 
 	public AntiVagrant()
 	{

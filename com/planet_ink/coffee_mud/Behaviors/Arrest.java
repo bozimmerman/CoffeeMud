@@ -675,7 +675,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         }
         return fine;
     }
-    private String getDetainParm(Law laws, LegalWarrant W, MOB criminal)
+    protected String getDetainParm(Law laws, LegalWarrant W, MOB criminal)
     {
         String s=null;
         if(CMath.bset(W.actionCode(),Law.ACTIONMASK_SEPARATE))
@@ -704,7 +704,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         }
         return "";
     }
-    private String getDetainRoom(Law laws, LegalWarrant W, MOB criminal)
+    protected String getDetainRoom(Law laws, LegalWarrant W, MOB criminal)
     {
         String s=getDetainParm(laws,W,criminal);
         if((s==null)||(s.length()==0)) return "";
@@ -712,7 +712,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         if((x<0)||(!CMath.isInteger(s.substring(x+1)))) return s;
         return s.substring(0,x);
     }
-    private int getDetainTime(Law laws, LegalWarrant W, MOB criminal)
+    protected int getDetainTime(Law laws, LegalWarrant W, MOB criminal)
     {
         String s=getDetainParm(laws,W,criminal);
         if((s==null)||(s.length()==0)) return -1;

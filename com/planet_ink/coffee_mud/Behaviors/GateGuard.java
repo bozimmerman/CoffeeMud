@@ -65,7 +65,7 @@ public class GateGuard extends StdBehavior
 		}
 	}
 
-	private int findGate(MOB mob)
+	protected int findGate(MOB mob)
 	{
 		if(!CMLib.flags().isInTheGame(mob,false))
 			return -1;
@@ -81,7 +81,7 @@ public class GateGuard extends StdBehavior
 		return -1;
 	}
 
-	private Key getMyKeyTo(MOB mob, Exit e)
+	protected Key getMyKeyTo(MOB mob, Exit e)
 	{
 		Key key=null;
 		String keyCode=e.keyName();
@@ -103,7 +103,7 @@ public class GateGuard extends StdBehavior
 		return key;
 	}
 
-	private int numValidPlayers(MOB mob, Room room)
+	protected int numValidPlayers(MOB mob, Room room)
 	{
 		if(room==null) return 0;
 		int num=0;

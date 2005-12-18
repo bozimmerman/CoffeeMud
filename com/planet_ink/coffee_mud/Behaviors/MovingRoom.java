@@ -50,22 +50,22 @@ public class MovingRoom extends ActiveTicker
 	//private static final int CODE0_TRAVELDIRECTION=0;
 	//private static final int CODE0_DOORSDIRECTION=1;
 	//private static final int CODE0_INSIDEARRIVEMSG=2;
-	private static final int CODE0_INSIDEDEPARTMSG=3;
+	protected static final int CODE0_INSIDEDEPARTMSG=3;
 	//private static final int CODE0_OUTSIDEARRIVEMSG=4;
-	private static final int CODE0_OUTSIDEDEPARTMSG=5;
+	protected static final int CODE0_OUTSIDEDEPARTMSG=5;
 
-	private static final int CODE1_NORMALINSIDEOPEN=0;
-	private static final int CODE1_NORMALINSIDECLOSED=1;
-	private static final int CODE1_NORMALOUTSIDEOPEN=2;
-	private static final int CODE1_NORMALOUTSIDECLOSED=3;
-	private static final int CODE1_REVERSEINSIDEOPEN=4;
-	private static final int CODE1_REVERSEINSIDECLOSED=5;
-	private static final int CODE1_REVERSEOUTSIDEOPEN=6;
-	private static final int CODE1_REVERSEOUTSIDECLOSED=7;
+	protected static final int CODE1_NORMALINSIDEOPEN=0;
+	protected static final int CODE1_NORMALINSIDECLOSED=1;
+	protected static final int CODE1_NORMALOUTSIDEOPEN=2;
+	protected static final int CODE1_NORMALOUTSIDECLOSED=3;
+	protected static final int CODE1_REVERSEINSIDEOPEN=4;
+	protected static final int CODE1_REVERSEINSIDECLOSED=5;
+	protected static final int CODE1_REVERSEOUTSIDEOPEN=6;
+	protected static final int CODE1_REVERSEOUTSIDECLOSED=7;
 
-	private static final int CODE_NORMALBLOCK=0;
-	private static final int CODE_REVERSEBLOCK=1;
-	private static final int CODE_DESCRIPTIONBLOCK=2;
+	protected static final int CODE_NORMALBLOCK=0;
+	protected static final int CODE_REVERSEBLOCK=1;
+	protected static final int CODE_DESCRIPTIONBLOCK=2;
 
 	public MovingRoom()
 	{
@@ -100,7 +100,7 @@ public class MovingRoom extends ActiveTicker
 		parseMovingXML(xmlInfo);
 	}
 
-	private static synchronized String loadInfo()
+	protected static synchronized String loadInfo()
 	{
 		StringBuffer str=new StringBuffer("");
         Vector V=Resources.getFileLineVector(new CMFile("resources/movingroom.xml",null,true).text());
@@ -110,7 +110,7 @@ public class MovingRoom extends ActiveTicker
 		return theString;
 	}
 
-	private void parseMovingXML(String roomToParse)
+	protected void parseMovingXML(String roomToParse)
 	{
 		Vector V = new Vector();
 		String theFullBlock=CMLib.xml().returnXMLBlock(roomToParse, roomInfos.elementAt(0).toString().toUpperCase());
@@ -158,7 +158,7 @@ public class MovingRoom extends ActiveTicker
 		mapInfo.addElement(CMLib.xml().returnXMLValue(theFullBlock, "LINEPRINTNAME"));
 		mapInfo.addElement(CMLib.xml().returnXMLValue(theFullBlock, "DISPLOC"));
 	}
-	private String fixOutputString(String incoming, Room busstopRoom)
+	protected String fixOutputString(String incoming, Room busstopRoom)
 	{
 		String repWord="";
 		incoming = " " + incoming;
@@ -223,7 +223,7 @@ public class MovingRoom extends ActiveTicker
 		repWord = fixOutputString(repWord,busstopRoom);
 		return repWord;
 	}
-	private void removeStubs(Room busstopRoom1,Room busstopRoom2)
+	protected void removeStubs(Room busstopRoom1,Room busstopRoom2)
 	{
 		if (!stubs.isEmpty())
 		for(int s=0;s<stubs.size();s++)

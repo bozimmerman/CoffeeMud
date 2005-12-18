@@ -38,9 +38,9 @@ public class BribeGateGuard extends StdBehavior
 	int tickTock = 0;
 	Vector paidPlayers = new Vector();
 	Hashtable toldAlready = new Hashtable();
-	private static boolean debug = false; // debuggin
-	private static boolean surviveReboot=false; // survive reboot
-	private static Hashtable notTheJournal=new Hashtable();
+	protected static boolean debug = false; // debuggin
+	protected static boolean surviveReboot=false; // survive reboot
+	protected static Hashtable notTheJournal=new Hashtable();
 
 	public String ID()
 	{
@@ -49,17 +49,17 @@ public class BribeGateGuard extends StdBehavior
 
 
 
-	private double price()
+	protected double price()
 	{
 		return new Integer(getVal(getParms(), "price", 5)).doubleValue();
 	}
 
-	private String gates()
+	protected String gates()
 	{
 		return ID() + getVal(getParms(), "gates", "General");
 	}
 
-	private int findGate(MOB mob)
+	protected int findGate(MOB mob)
 	{
 		if (!CMLib.flags().isInTheGame(mob,false))
 			return -1;
@@ -77,7 +77,7 @@ public class BribeGateGuard extends StdBehavior
 		return -1;
 	}
 
-	private Key getMyKeyTo(MOB mob, Exit e)
+	protected Key getMyKeyTo(MOB mob, Exit e)
 	{
 		Key key = null;
 		String keyCode = e.keyName();
@@ -99,7 +99,7 @@ public class BribeGateGuard extends StdBehavior
 		return key;
 	}
 
-	private void payment(Coins given, MOB gateGuard, MOB mob)
+	protected void payment(Coins given, MOB gateGuard, MOB mob)
 	{
 		// make a note in the journal
 		double newNum = given.getTotalValue();
@@ -109,7 +109,7 @@ public class BribeGateGuard extends StdBehavior
 		if(item!=null) writeBalance(item, mob);
 	}
 
-	private boolean checkBalance(double charge, MOB mob)
+	protected boolean checkBalance(double charge, MOB mob)
 	{
 		// Does this MOB have the cash for the charge?
 		if (getBalance(mob) > charge) {
@@ -118,7 +118,7 @@ public class BribeGateGuard extends StdBehavior
 		return false;
 	}
 
-	private double getBalance(MOB mob)
+	protected double getBalance(MOB mob)
 	{
 		double balance = 0;
 		// return the balance in int form
@@ -170,7 +170,7 @@ public class BribeGateGuard extends StdBehavior
 		return balance;
 	}
 
-	private void charge(double charge, MOB gateGuard, MOB mob)
+	protected void charge(double charge, MOB gateGuard, MOB mob)
 	{
 		// update the balance in the journal
 		Coins item = (Coins) CMClass.getItem("StdCoins");
@@ -190,7 +190,7 @@ public class BribeGateGuard extends StdBehavior
 		}
 	}
 
-	private void delBalance(MOB mob)
+	protected void delBalance(MOB mob)
 	{
 		// kill the journal entries for that mob
 		if(surviveReboot)
@@ -224,7 +224,7 @@ public class BribeGateGuard extends StdBehavior
 		}
 	}
 
-	private void writeBalance(Coins balance, MOB mob)
+	protected void writeBalance(Coins balance, MOB mob)
 	{
 		// write an entry for that mob
 		if(surviveReboot)

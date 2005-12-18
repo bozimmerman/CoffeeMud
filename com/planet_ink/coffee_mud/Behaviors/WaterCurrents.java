@@ -202,7 +202,7 @@ public class WaterCurrents extends ActiveTicker
 	protected static final EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	protected static final String[] CODES={"CLASS","TEXT"};
 	protected static final int[] cost=new int[3];
-	private static class AWaterCurrent implements Ability, Cloneable
+	protected static class AWaterCurrent implements Ability, Cloneable
 	{
         public AWaterCurrent()
         {
@@ -297,7 +297,7 @@ public class WaterCurrents extends ActiveTicker
 		}
 
 		public String[] getStatCodes(){return CODES;}
-		private int getCodeNum(String code){
+		protected int getCodeNum(String code){
 			for(int i=0;i<CODES.length;i++)
 				if(code.equalsIgnoreCase(CODES[i])) return i;
 			return -1;
@@ -326,7 +326,7 @@ public class WaterCurrents extends ActiveTicker
 					return false;
 			return true;
 		}
-		private void cloneFix(Ability E){}
+		protected void cloneFix(Ability E){}
 
 		public CMObject copyOf()
 		{

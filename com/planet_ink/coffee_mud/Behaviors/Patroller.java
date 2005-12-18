@@ -38,13 +38,13 @@ public class Patroller extends ActiveTicker
 	protected int canImproveCode(){return Behavior.CAN_MOBS|Behavior.CAN_ITEMS;}
 	public long flags(){return Behavior.FLAG_MOBILITY;}
 
-	private int step=0;
-	private int diameter=20;
-	private boolean rideOk=false;
-	private boolean rideOnly=false;
-	private Vector correction=null;
+	protected int step=0;
+	protected int diameter=20;
+	protected boolean rideOk=false;
+	protected boolean rideOnly=false;
+	protected Vector correction=null;
 
-	private boolean rideFlag=false;
+	protected boolean rideFlag=false;
 	
 	public Patroller()
 	{
@@ -64,7 +64,7 @@ public class Patroller extends ActiveTicker
 	}
 
 
-	private Vector getSteps()
+	protected Vector getSteps()
 	{
 		Vector V=new Vector();
 		String path=getParms().trim();
@@ -116,7 +116,7 @@ public class Patroller extends ActiveTicker
 	    return super.okMessage(host,msg);
 	}
 	
-	private long tickStatus=Tickable.STATUS_NOT;
+	protected long tickStatus=Tickable.STATUS_NOT;
 	public long getTickStatus(){    return tickStatus;}
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -35,11 +35,11 @@ public class Follower extends ActiveTicker
 {
 	public String ID(){return "Follower";}
 	protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
-	private boolean realFollow=false;
-	private boolean inventory=false;
-	private int lastNumPeople=-1;
-	private Room lastRoom=null;
-	private MOB lastOwner=null;
+	protected boolean realFollow=false;
+	protected boolean inventory=false;
+	protected int lastNumPeople=-1;
+	protected Room lastRoom=null;
+	protected MOB lastOwner=null;
 	
 	public Follower()
 	{
