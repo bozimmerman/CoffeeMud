@@ -63,8 +63,8 @@ public class Prayer_Sermon extends Prayer
 		if(canBeUninvoked())
 		{
 			if(mob.amFollowing()!=null)
-				CMLib.commands().follow(mob,null,false);
-			CMLib.commands().stand(mob,true);
+				CMLib.commands().postFollow(mob,null,false);
+			CMLib.commands().postStand(mob,true);
 			if((mob.isMonster())&&(!CMLib.flags().isMobile(mob)))
 				CMLib.tracking().wanderAway(mob,true,true);
 		}
@@ -165,7 +165,7 @@ public class Prayer_Sermon extends Prayer
 							if(target.getVictim()==mob)
 								target.makePeace();
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> begin(s) nodding and shouting praises to "+hisHerDiety(mob)+".");
-							CMLib.commands().follow(target,mob,true);
+							CMLib.commands().postFollow(target,mob,true);
 						}
 					}
 				}

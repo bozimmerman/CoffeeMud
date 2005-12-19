@@ -220,7 +220,7 @@ public class Clans extends StdLibrary implements ClanManager
 	{
         Vector channels=CMLib.channels().getFlaggedChannelNames("CLANINFO");
         for(int i=0;i<channels.size();i++)
-            CMLib.commands().channel((String)channels.elementAt(i),"ALL",msg,true);
+            CMLib.commands().postChannel((String)channels.elementAt(i),"ALL",msg,true);
 	}
 
     public int numClans(){return all.size();}

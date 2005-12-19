@@ -141,7 +141,7 @@ public class Transfer extends At
 				if(mob.playerStats().tranPoofIn().length()>0)
 					room.showOthers(mob,M,CMMsg.MSG_OK_VISUAL,mob.playerStats().tranPoofIn());
 				if(!M.isMonster())
-					CMLib.commands().look(M,true);
+					CMLib.commands().postLook(M,true);
 			}
 		}
 		if(mob.playerStats().tranPoofOut().length()==0)

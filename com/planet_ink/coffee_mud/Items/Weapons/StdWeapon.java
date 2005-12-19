@@ -260,7 +260,7 @@ public class StdWeapon extends StdItem implements Weapon
 				{
 					setAmmoRemaining(0);
 					msg.source().tell("You have no more "+ammunitionType()+".");
-					CMLib.commands().remove(msg.source(),this,false);
+					CMLib.commands().postRemove(msg.source(),this,false);
 					return false;
 				}
 			}

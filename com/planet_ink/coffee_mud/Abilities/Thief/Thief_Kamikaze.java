@@ -59,8 +59,8 @@ public class Thief_Kamikaze extends ThiefSkill
 					if((T!=null)&&(T.isABomb()))
 					{
 						if(!I.amWearingAt(Item.INVENTORY))
-							CMLib.commands().remove(mob,I,true);
-						CMLib.commands().drop(mob,I,false,false);
+							CMLib.commands().postRemove(mob,I,true);
+						CMLib.commands().postDrop(mob,I,false,false);
 						if(I.owner() instanceof Room)
 						{
 							Room R=(Room)I.owner();
@@ -94,8 +94,8 @@ public class Thief_Kamikaze extends ThiefSkill
 		if((canBeUninvoked())&&(!mob.amDead())&&(mob.location()!=null))
 		{
 			if(mob.amFollowing()!=null)
-				CMLib.commands().follow(mob,null,false);
-			CMLib.commands().stand(mob,true);
+				CMLib.commands().postFollow(mob,null,false);
+			CMLib.commands().postStand(mob,true);
 			if((mob.isMonster())&&(!CMLib.flags().isMobile(mob)))
 				CMLib.tracking().wanderAway(mob,true,true);
 		}

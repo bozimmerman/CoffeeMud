@@ -63,25 +63,25 @@ public class ItemMender extends StdBehavior
 			Item tool=(Item)msg.tool();
 			if(!tool.subjectToWearAndTear())
 			{
-				CMLib.commands().say(observer,source,"I'm sorry, I can't work on these.",true,false);
+				CMLib.commands().postSay(observer,source,"I'm sorry, I can't work on these.",true,false);
 				return false;
 			}
 			else
 			if(tool.usesRemaining()>100)
 			{
-				CMLib.commands().say(observer,source,"Take this thing away from me.  It's so perfect, it's scary.",true,false);
+				CMLib.commands().postSay(observer,source,"Take this thing away from me.  It's so perfect, it's scary.",true,false);
 				return false;
 			}
 			else
 			if(tool.usesRemaining()==100)
 			{
-				CMLib.commands().say(observer,source,tool.name()+" doesn't require repair.",true,false);
+				CMLib.commands().postSay(observer,source,tool.name()+" doesn't require repair.",true,false);
 				return false;
 			}
 			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<new Integer(cost).doubleValue())
 			{
 			    String costStr=CMLib.beanCounter().nameCurrencyShort(observer,new Integer(cost).doubleValue());
-				CMLib.commands().say(observer,source,"You'll need "+costStr+" for me to repair that.",true,false);
+				CMLib.commands().postSay(observer,source,"You'll need "+costStr+" for me to repair that.",true,false);
 				return false;
 			}
 			return true;

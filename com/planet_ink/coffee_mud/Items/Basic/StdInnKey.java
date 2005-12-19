@@ -107,7 +107,7 @@ public class StdInnKey extends StdKey implements InnKey
 		&&(msg.target()!=myShopkeeper)
 		&&(msg.tool()==this))
 		{
-			CMLib.commands().say((MOB)msg.target(),msg.source(),"I'm not interested.",false,false);
+			CMLib.commands().postSay((MOB)msg.target(),msg.source(),"I'm not interested.",false,false);
 			return false;
 		}
 		else

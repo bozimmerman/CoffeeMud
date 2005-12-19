@@ -274,7 +274,7 @@ public class GrinderRooms
 		CMLib.database().DBUpdateMOBs(R);
 		CMLib.database().DBUpdateItems(R);
 		R.startItemRejuv();
-        oldR.destroyRoom();
+        if(oldR!=R) oldR.destroyRoom();
 		return "";
 	}
 

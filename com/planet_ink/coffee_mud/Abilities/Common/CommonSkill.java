@@ -123,7 +123,7 @@ public class CommonSkill extends StdAbility
 			if(str.startsWith("You")) str="I"+str.substring(3);
 			if(target!=null) str=CMStrings.replaceAll(str,"<T-NAME>",target.name());
 			if(tool!=null)  str=CMStrings.replaceAll(str,"<O-NAME>",tool.name());
-			CMLib.commands().say(mob,null,str,false,false);
+			CMLib.commands().postSay(mob,null,str,false,false);
 		}
 		else
 			mob.tell(mob,target,tool,str);
@@ -134,7 +134,7 @@ public class CommonSkill extends StdAbility
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
 		{
 			if(str.startsWith("You")) str="I"+str.substring(3);
-			CMLib.commands().say(mob,null,str,false,false);
+			CMLib.commands().postSay(mob,null,str,false,false);
 		}
 		else
 			mob.tell(str);

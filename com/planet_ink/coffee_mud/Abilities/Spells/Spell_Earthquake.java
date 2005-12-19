@@ -91,7 +91,7 @@ public class Spell_Earthquake extends Spell
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
-					CMLib.commands().stand(mob,true);
+					CMLib.commands().postStand(mob,true);
 				}
 			}
 			else

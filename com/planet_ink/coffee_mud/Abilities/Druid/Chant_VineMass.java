@@ -85,7 +85,7 @@ public class Chant_VineMass extends Chant_SummonVine
 			if((i+1)<limit)
 			{
 				beneficialAffect(caster,newMOB,0,0);
-				CMLib.commands().follow(newMOB,caster,true);
+				CMLib.commands().postFollow(newMOB,caster,true);
 				if(newMOB.amFollowing()!=caster)
 				{
 					A=newMOB.fetchEffect(ID());

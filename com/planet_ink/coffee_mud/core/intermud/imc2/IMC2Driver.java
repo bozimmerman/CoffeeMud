@@ -1031,7 +1031,7 @@ public final class IMC2Driver extends Thread {
 		mob.setLocation(CMClass.getLocale("StdRoom"));
 		MOB smob=findSessMob(d.name);
 		if(smob!=null)
-			CMLib.commands().say(mob,smob,text,true,true);
+			CMLib.commands().postSay(mob,smob,text,true,true);
         Room R=mob.location();
         mob.destroy();
         if(R!=null) R.destroyRoom();

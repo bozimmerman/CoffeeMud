@@ -178,7 +178,7 @@ public interface SlaveryLibrary extends CMObject
                     &&(!CMLib.flags().isAnimalIntelligence(M))
                     &&(!mySteps.bothered.contains(M)))
                     {
-                        CMLib.commands().say(me,M,msgOrQ,false,false);
+                        CMLib.commands().postSay(me,M,msgOrQ,false,false);
                         bothering=M;
                         mySteps.bothered.addElement(M);
                         if(CMSecurity.isDebugging("GEAS"))
@@ -203,7 +203,7 @@ public interface SlaveryLibrary extends CMObject
                 {
                     if(CMLib.english().containsString(response,universalRejections[s]))
                     {
-                        CMLib.commands().say(me,speaker,"Ok, thanks anyway.",false,false);
+                        CMLib.commands().postSay(me,speaker,"Ok, thanks anyway.",false,false);
                         return true;
                     }
                 }
@@ -259,7 +259,7 @@ public interface SlaveryLibrary extends CMObject
                     {
                         step=STEP_EVAL;
                         que.removeElementAt(0);
-                        CMLib.commands().say(me,null,"I got the money!",false,false);
+                        CMLib.commands().postSay(me,null,"I got the money!",false,false);
                         return "HOLD";
                     }
                     item="coins";
@@ -272,16 +272,16 @@ public interface SlaveryLibrary extends CMObject
                     step=STEP_EVAL;
                     if(!I.amWearingAt(Item.INVENTORY))
                     {
-                        CMLib.commands().remove(me,I,false);
+                        CMLib.commands().postRemove(me,I,false);
                         return "HOLD";
                     }
                     if(I.container()!=null)
                     {
-                        CMLib.commands().get(me,I.container(),I,false);
+                        CMLib.commands().postGet(me,I.container(),I,false);
                         return "HOLD";
                     }
                     que.removeElementAt(0);
-                    CMLib.commands().say(me,null,"I got "+I.name()+"!",false,false);
+                    CMLib.commands().postSay(me,null,"I got "+I.name()+"!",false,false);
                     return "HOLD";
                 }
                 // is it just sitting around?
@@ -289,7 +289,7 @@ public interface SlaveryLibrary extends CMObject
                 if((I!=null)&&(CMLib.flags().canBeSeenBy(I,me)))
                 {
                     step=STEP_EVAL;
-                    CMLib.commands().get(me,null,I,false);
+                    CMLib.commands().postGet(me,null,I,false);
                     return "HOLD";
                 }
                 // is it in a container?
@@ -299,7 +299,7 @@ public interface SlaveryLibrary extends CMObject
                    &&(((Container)I.container()).isOpen()))
                 {
                     step=STEP_EVAL;
-                    CMLib.commands().get(me,I.container(),I,false);
+                    CMLib.commands().postGet(me,I.container(),I,false);
                     return "HOLD";
                 }
                 // is it up for sale?
@@ -313,7 +313,7 @@ public interface SlaveryLibrary extends CMObject
                         {
                             if(step==STEP_EVAL)
                             {
-                                CMLib.commands().say(me,M,"I must have '"+I.name()+".  Give it to me now.",false,false);
+                                CMLib.commands().postSay(me,M,"I must have '"+I.name()+".  Give it to me now.",false,false);
                                 step=STEP_INT1;
                                 return "HOLD";
                             }
@@ -326,7 +326,7 @@ public interface SlaveryLibrary extends CMObject
                             else
                             if(step==STEP_INT2)
                             {
-                                CMLib.commands().say(me,M,"I MUST HAVE '"+I.name().toUpperCase()+".  GIVE IT TO ME NOW!!!!",false,false);
+                                CMLib.commands().postSay(me,M,"I MUST HAVE '"+I.name().toUpperCase()+".  GIVE IT TO ME NOW!!!!",false,false);
                                 step=STEP_INT3;
                                 return "HOLD";
                             }
@@ -359,7 +359,7 @@ public interface SlaveryLibrary extends CMObject
                                 }
                                 price=price-CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(me,M);
                                 que.insertElementAt(CMParms.parse("itemfind "+CMLib.beanCounter().nameCurrencyShort(M,price)),0);
-                                CMLib.commands().say(me,null,"Damn, I need "+CMLib.beanCounter().nameCurrencyShort(M,price)+".",false,false);
+                                CMLib.commands().postSay(me,null,"Damn, I need "+CMLib.beanCounter().nameCurrencyShort(M,price)+".",false,false);
                                 step=STEP_EVAL;
                                 return "HOLD";
                             }
@@ -456,7 +456,7 @@ public interface SlaveryLibrary extends CMObject
                 if((I!=null)&&(CMLib.flags().canBeSeenBy(I,me)))
                 {
                     step=STEP_EVAL;
-                    CMLib.commands().get(me,null,I,false);
+                    CMLib.commands().postGet(me,null,I,false);
                     return "HOLD";
                 }
                 if((s.length()>4)&&(CMath.isNumber(s.substring(4))))

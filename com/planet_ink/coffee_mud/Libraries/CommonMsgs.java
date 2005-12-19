@@ -79,19 +79,19 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return new StringBuffer("");
 	}
 	
-	public void channel(MOB mob, 
-							   String channelName, 
-							   String message, 
-							   boolean systemMsg)
+	public void postChannel(MOB mob,
+						    String channelName, 
+						    String message, 
+						    boolean systemMsg)
 	{
 		doStandardCommand(mob,"Channel",
 						  CMParms.makeVector(new Boolean(systemMsg),channelName,message));
 	}
 	
-	public void channel(String channelName, 
-							   String clanID, 
-							   String message, 
-							   boolean systemMsg)
+	public void postChannel(String channelName,
+						    String clanID, 
+						    String message, 
+						    boolean systemMsg)
 	{
         MOB talker=CMClass.getMOB("StdMOB");
 		talker.setName("^?");
@@ -99,29 +99,29 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		talker.baseEnvStats().setDisposition(EnvStats.IS_GOLEM);
         talker.envStats().setDisposition(EnvStats.IS_GOLEM);
 		talker.setClanID(clanID);
-		channel(talker,channelName,message,systemMsg);
+		postChannel(talker,channelName,message,systemMsg);
         talker.destroy();
 	}
 
-	public boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimized)
+	public boolean postDrop(MOB mob, Environmental dropThis, boolean quiet, boolean optimized)
 	{
 		return doStandardCommand(mob,"Drop",CMParms.makeVector(dropThis,new Boolean(quiet),new Boolean(optimized)));
 	}
-	public boolean get(MOB mob, Item container, Item getThis, boolean quiet)
+	public boolean postGet(MOB mob, Item container, Item getThis, boolean quiet)
 	{
 		if(container==null)
 			return doStandardCommand(mob,"Get",CMParms.makeVector(getThis,new Boolean(quiet)));
 		return doStandardCommand(mob,"Get",CMParms.makeVector(getThis,container,new Boolean(quiet)));
 	}
 	
-	public boolean remove(MOB mob, Item item, boolean quiet)
+	public boolean postRemove(MOB mob, Item item, boolean quiet)
 	{
 		if(quiet)
 			return doStandardCommand(mob,"Remove",CMParms.makeVector("REMOVE",item,"QUIETLY"));
 		return doStandardCommand(mob,"Remove",CMParms.makeVector("REMOVE",item));
 	}
 	
-	public void look(MOB mob, boolean quiet)
+	public void postLook(MOB mob, boolean quiet)
 	{
 		if(quiet)
 			doStandardCommand(mob,"Look",CMParms.makeVector("LOOK","UNOBTRUSIVELY"));
@@ -129,12 +129,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			doStandardCommand(mob,"Look",CMParms.makeVector("LOOK"));
 	}
 
-	public void flee(MOB mob, String whereTo)
+	public void postFlee(MOB mob, String whereTo)
 	{
 		doStandardCommand(mob,"Flee",CMParms.makeVector("FLEE",whereTo));
 	}
 
-	public void sheath(MOB mob, boolean ifPossible)
+	public void postSheath(MOB mob, boolean ifPossible)
 	{
 		if(ifPossible)
 			doStandardCommand(mob,"Sheath",CMParms.makeVector("SHEATH","IFPOSSIBLE"));
@@ -142,7 +142,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			doStandardCommand(mob,"Sheath",CMParms.makeVector("SHEATH"));
 	}
 	
-	public void draw(MOB mob, boolean doHold, boolean ifNecessary)
+	public void postDraw(MOB mob, boolean doHold, boolean ifNecessary)
 	{
 		if(ifNecessary)
 		{
@@ -155,7 +155,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			doStandardCommand(mob,"Draw",CMParms.makeVector("DRAW"));
 	}
 	
-	public void stand(MOB mob, boolean ifNecessary)
+	public void postStand(MOB mob, boolean ifNecessary)
 	{
 		if(ifNecessary)
 			doStandardCommand(mob,"Stand",CMParms.makeVector("STAND","IFNECESSARY"));
@@ -163,7 +163,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			doStandardCommand(mob,"Stand",CMParms.makeVector("STAND"));
 	}
 
-	public void follow(MOB follower, MOB leader, boolean quiet)
+	public void postFollow(MOB follower, MOB leader, boolean quiet)
 	{
 		if(leader!=null)
 		{
@@ -181,11 +181,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 	}
 
-	public void say(MOB mob,
-						   MOB target,
-						   String text,
-						   boolean isPrivate,
-						   boolean tellFlag)
+	public void postSay(MOB mob,
+    				    MOB target,
+    				    String text,
+    				    boolean isPrivate,
+    				    boolean tellFlag)
 	{
 		Room location=mob.location();
 		text=CMProps.applyINIFilter(text,CMProps.SYSTEM_SAYFILTER);
@@ -258,4 +258,101 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 	}
     
+    public void handleBeingSniffed(CMMsg msg)
+    {
+        if(!(msg.target() instanceof MOB)) return;
+        MOB sniffingmob=msg.source();
+        MOB sniffedmob=(MOB)msg.target();
+        if((sniffedmob.playerStats()!=null)
+        &&(sniffedmob.soulMate()==null)
+        &&(sniffedmob.playerStats().getHygiene()>=PlayerStats.HYGIENE_DELIMIT))
+        {
+            int x=(int)(sniffedmob.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
+            if(x<=1) 
+                sniffingmob.tell(sniffedmob.name()+" has a slight aroma about "+sniffedmob.charStats().himher()+"."); 
+            else
+            if(x<=3) 
+                sniffingmob.tell(sniffedmob.name()+" smells pretty sweaty."); 
+            else
+            if(x<=7) 
+                sniffingmob.tell(sniffedmob.name()+" stinks pretty bad.");
+            else
+            if(x<15) 
+                sniffingmob.tell(sniffedmob.name()+" smells most foul.");
+            else 
+                sniffingmob.tell(sniffedmob.name()+" reeks of noxious odors.");
+        }
+    }
+    
+    public void handleSit(CMMsg msg)
+    {
+        MOB sittingmob=msg.source();
+        int oldDisposition=sittingmob.baseEnvStats().disposition();
+        oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
+        sittingmob.baseEnvStats().setDisposition(oldDisposition|EnvStats.IS_SITTING);
+        sittingmob.recoverEnvStats();
+        sittingmob.recoverCharStats();
+        sittingmob.recoverMaxState();
+        sittingmob.tell(sittingmob,msg.target(),msg.tool(),msg.sourceMessage());
+    }
+    public void handleSleep(CMMsg msg)
+    {
+        MOB sleepingmob=msg.source();
+        int oldDisposition=sleepingmob.baseEnvStats().disposition();
+        oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
+        sleepingmob.baseEnvStats().setDisposition(oldDisposition|EnvStats.IS_SLEEPING);
+        sleepingmob.recoverEnvStats();
+        sleepingmob.recoverCharStats();
+        sleepingmob.recoverMaxState();
+        sleepingmob.tell(sleepingmob,msg.target(),msg.tool(),msg.sourceMessage());
+    }
+    public void handleStand(CMMsg msg)
+    {
+        MOB standingmob=msg.source();
+        int oldDisposition=standingmob.baseEnvStats().disposition();
+        oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
+        standingmob.baseEnvStats().setDisposition(oldDisposition);
+        standingmob.recoverEnvStats();
+        standingmob.recoverCharStats();
+        standingmob.recoverMaxState();
+        standingmob.tell(standingmob,msg.target(),msg.tool(),msg.sourceMessage());
+    }
+    
+    public void handleRecall(CMMsg msg)
+    {
+        MOB recallingmob=msg.source();
+        if((msg.target()!=null) 
+        &&(msg.target() instanceof Room)
+        &&(recallingmob.location() != msg.target()))
+        {
+            recallingmob.tell(msg.source(),null,msg.tool(),msg.targetMessage());
+            recallingmob.location().delInhabitant(recallingmob);
+            ((Room)msg.target()).addInhabitant(recallingmob);
+            ((Room)msg.target()).showOthers(recallingmob,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of the Java Plain.");
+    
+            recallingmob.setLocation(((Room)msg.target()));
+            if((recallingmob.riding()!=null)&&(recallingmob.location()!=CMLib.utensils().roomLocation(recallingmob.riding())))
+            {
+                int rb=recallingmob.riding().rideBasis();
+                if((rb!=Rideable.RIDEABLE_SIT)
+                &&(rb!=Rideable.RIDEABLE_SLEEP)
+                &&(rb!=Rideable.RIDEABLE_TABLE)
+                &&(rb!=Rideable.RIDEABLE_ENTERIN)
+                &&(rb!=Rideable.RIDEABLE_LADDER))
+                {
+                    if(recallingmob.riding() instanceof Item)
+                        recallingmob.location().bringItemHere((Item)recallingmob.riding(),-1);
+                    else
+                    if(recallingmob.riding() instanceof MOB)
+                        recallingmob.location().bringMobHere((MOB)recallingmob.riding(),true);
+                }
+                else
+                    recallingmob.setRiding(null);
+            }
+            recallingmob.recoverEnvStats();
+            recallingmob.recoverCharStats();
+            recallingmob.recoverMaxState();
+            postLook(recallingmob,true);
+        }
+    }
 }

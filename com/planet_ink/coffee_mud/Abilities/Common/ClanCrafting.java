@@ -77,7 +77,7 @@ public class ClanCrafting extends CraftingSkill
 					else
 					{
 						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
-						CMLib.commands().get(mob,null,building,true);
+						CMLib.commands().postGet(mob,null,building,true);
 					}
 				}
 				building=null;

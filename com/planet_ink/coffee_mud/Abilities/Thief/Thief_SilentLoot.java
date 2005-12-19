@@ -68,7 +68,7 @@ public class Thief_SilentLoot extends ThiefSkill
 					if(mob.location().okMessage(mob,msg2))
 					{
 						mob.location().send(mob,msg2);
-						CMLib.commands().get(mob,null,item,true);
+						CMLib.commands().postGet(mob,null,item,true);
 					}
 					if(victim!=null) mob.setVictim(victim);
 				}

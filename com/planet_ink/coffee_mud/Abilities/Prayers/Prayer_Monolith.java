@@ -123,7 +123,7 @@ public class Prayer_Monolith extends Prayer
 				M.setLocation(null);
 				M.setVictim(null);
 				if(mob.isMonster())
-					CMLib.commands().remove(mob,(Weapon)msg.tool(),true);
+					CMLib.commands().postRemove(mob,(Weapon)msg.tool(),true);
                 M.destroy();
 				return false;
 			}

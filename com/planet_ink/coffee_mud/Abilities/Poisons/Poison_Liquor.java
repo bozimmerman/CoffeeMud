@@ -55,7 +55,7 @@ public class Poison_Liquor extends Poison_Alcohol
 				Ability A=CMClass.getAbility("Disease_Migraines");
 				if(A!=null) A.invoke(mob,mob,true,0);
 			}
-			CMLib.commands().stand(mob,true);
+			CMLib.commands().postStand(mob,true);
 		}
 		super.unInvoke();
 		if((mob!=null)&&(!mob.isInCombat()))

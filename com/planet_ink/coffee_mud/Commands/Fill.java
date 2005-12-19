@@ -101,7 +101,7 @@ public class Fill extends BaseItemParser
 			CMMsg fillMsg=CMClass.getMsg(mob,fillThis,fillFromThis,CMMsg.MSG_FILL,"<S-NAME> fill(s) <T-NAME> from <O-NAME>.");
 			if((!mob.isMine(fillThis))&&(fillThis instanceof Item))
 			{
-				if(CMLib.commands().get(mob,null,(Item)fillThis,false))
+				if(CMLib.commands().postGet(mob,null,(Item)fillThis,false))
 					if(mob.location().okMessage(mob,fillMsg))
 						mob.location().send(mob,fillMsg);
 			}

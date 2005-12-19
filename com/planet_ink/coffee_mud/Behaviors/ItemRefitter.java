@@ -63,19 +63,19 @@ public class ItemRefitter extends StdBehavior
 			int cost=cost(tool);
 			if(!(tool instanceof Armor))
 			{
-				CMLib.commands().say(observer,source,"I'm sorry, I can't refit that.",true,false);
+				CMLib.commands().postSay(observer,source,"I'm sorry, I can't refit that.",true,false);
 				return false;
 			}
 
 			if(tool.baseEnvStats().height()==0)
 			{
-				CMLib.commands().say(observer,source,"This already looks your size!",true,false);
+				CMLib.commands().postSay(observer,source,"This already looks your size!",true,false);
 				return false;
 			}
 			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<new Integer(cost).doubleValue())
 			{
 			    String costStr=CMLib.beanCounter().nameCurrencyShort(observer,new Integer(cost).doubleValue());
-				CMLib.commands().say(observer,source,"You'll need "+costStr+" for me to refit that.",true,false);
+				CMLib.commands().postSay(observer,source,"You'll need "+costStr+" for me to refit that.",true,false);
 				return false;
 			}
 			return true;

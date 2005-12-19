@@ -129,7 +129,7 @@ public class Prop_TicketTaker extends Property
 					{
 					    String costStr=CMLib.beanCounter().nameCurrencyLong(currency,cost());
 						if(myHost instanceof MOB)
-							CMLib.commands().say((MOB)myHost,mob,"You'll need "+costStr+" to board.",false,false);
+							CMLib.commands().postSay((MOB)myHost,mob,"You'll need "+costStr+" to board.",false,false);
 						else
 							mob.tell("You'll need "+costStr+" to board.");
 						return false;

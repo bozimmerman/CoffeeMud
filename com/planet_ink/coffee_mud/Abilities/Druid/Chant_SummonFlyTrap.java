@@ -122,7 +122,7 @@ public class Chant_SummonFlyTrap extends Chant
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob);
 				beneficialAffect(mob,target,asLevel,0);
-				CMLib.commands().follow(target,mob,true);
+				CMLib.commands().postFollow(target,mob,true);
 				if(target.amFollowing()!=mob)
 					mob.tell(target.name()+" seems unwilling to follow you.");
 			}

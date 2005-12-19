@@ -133,7 +133,7 @@ public class Prayer_Cannibalism extends Prayer
 				}
 				if(F!=null)
 				{
-					CMLib.commands().get(M,null,F,false);
+					CMLib.commands().postGet(M,null,F,false);
 					if(M.isMine(F))
 					{
 						M.doCommand(CMParms.parse("EAT "+F.Name()));

@@ -112,7 +112,7 @@ public class BaseClanner extends StdCommand
 	{
         Vector channels=CMLib.channels().getFlaggedChannelNames("CLANINFO");
         for(int i=0;i<channels.size();i++)
-            CMLib.commands().channel(mob,(String)channels.elementAt(i),msg,true);
+            CMLib.commands().postChannel(mob,(String)channels.elementAt(i),msg,true);
 	}
 
 	public static int getIntFromRole(int roleType)

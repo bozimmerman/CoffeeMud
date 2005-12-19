@@ -117,7 +117,7 @@ public class Chant_Drifting extends Chant
 			Ability A=mob.fetchEffect("Falling");
 			if(A!=null) A.unInvoke();
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) back down.");
-			CMLib.commands().stand(mob,true);
+			CMLib.commands().postStand(mob,true);
 		}
 	}
 

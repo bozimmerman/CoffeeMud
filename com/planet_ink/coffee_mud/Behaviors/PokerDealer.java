@@ -222,7 +222,7 @@ public class PokerDealer extends StdBehavior
         }
         else
         if(host instanceof MOB)
-            CMLib.commands().say((MOB)host,target,message,false,false);
+            CMLib.commands().postSay((MOB)host,target,message,false,false);
         else
         {
             Room R=CMLib.utensils().roomLocation(host);

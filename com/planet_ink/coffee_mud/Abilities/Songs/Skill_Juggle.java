@@ -190,7 +190,7 @@ public class Skill_Juggle extends BardSkill
 				else
 				{
 					unJuggle(I);
-					CMLib.commands().drop(M,I,false,false);
+					CMLib.commands().postDrop(M,I,false,false);
 					break;
 				}
 			}
@@ -293,7 +293,7 @@ public class Skill_Juggle extends BardSkill
 							Item I=(Item)copy.elementAt(CMLib.dice().roll(1,copy.size(),-1));
 							I.unWear();
 							mob.giveItem(I);
-							if((mob.isMine(I))&&(CMLib.commands().drop(mob,I,true,false)))
+							if((mob.isMine(I))&&(CMLib.commands().postDrop(mob,I,true,false)))
 							{
 								Weapon w=CMClass.getWeapon("StdWeapon");
 								w.setName(I.name());
@@ -387,7 +387,7 @@ public class Skill_Juggle extends BardSkill
 					continue;
 				}
 				else
-				if(!CMLib.commands().remove(mob,juggleThis,true))
+				if(!CMLib.commands().postRemove(mob,juggleThis,true))
 					return false;
 			}
 			if(juggleThis==null) break;

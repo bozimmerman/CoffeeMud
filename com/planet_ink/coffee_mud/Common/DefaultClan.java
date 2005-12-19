@@ -1200,7 +1200,7 @@ public class DefaultClan implements Clan
     {
         Vector channels=CMLib.channels().getFlaggedChannelNames("CLANINFO");
         for(int i=0;i<channels.size();i++)
-            CMLib.commands().channel((String)channels.elementAt(i),clanID(),msg,true);
+            CMLib.commands().postChannel((String)channels.elementAt(i),clanID(),msg,true);
     }
 
     public int applyExpMods(int exp)

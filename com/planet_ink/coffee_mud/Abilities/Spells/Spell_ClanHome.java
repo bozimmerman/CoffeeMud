@@ -90,14 +90,14 @@ public class Spell_ClanHome extends Spell
 					{
 						if(follower.isInCombat())
 						{
-							CMLib.commands().flee(follower,("NOWHERE"));
+							CMLib.commands().postFlee(follower,("NOWHERE"));
 							follower.makePeace();
 						}
 						thisRoom.send(follower,leaveMsg);
 						clanHomeRoom.bringMobHere(follower,false);
 						clanHomeRoom.send(follower,enterMsg);
 						follower.tell("\n\r\n\r");
-						CMLib.commands().look(follower,true);
+						CMLib.commands().postLook(follower,true);
 					}
 				}
 			}

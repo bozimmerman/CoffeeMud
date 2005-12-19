@@ -56,7 +56,7 @@ public class Spell_IdentifyObject extends Spell
 				mob.location().send(mob,msg);
 				String identity=target.secretIdentity();
 				if(mob.isMonster())
-					CMLib.commands().say(mob,null,identity,false,false);
+					CMLib.commands().postSay(mob,null,identity,false,false);
 				else
 					mob.tell(identity);
 			}

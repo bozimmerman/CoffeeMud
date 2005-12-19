@@ -106,7 +106,7 @@ public class StdClanSpecialItem extends StdClanItem
 					{
 						Item I=R.fetchItem(CMLib.dice().roll(1,R.numItems(),-1));
 						if((I!=null)&&(I.container()==null))
-							CMLib.commands().get(mob,null,I,false);
+							CMLib.commands().postGet(mob,null,I,false);
 					}
 					break;
 				}

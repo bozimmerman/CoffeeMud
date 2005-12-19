@@ -141,7 +141,7 @@ public class Possess extends StdCommand
 		target.setSession(s);
 		target.setSoulMate(mob);
 		mob.setSession(null);
-		CMLib.commands().look(target,true);
+		CMLib.commands().postLook(target,true);
 		target.tell("^HYour spirit has changed bodies, use QUIT to return to yours.");
 		return false;
 	}

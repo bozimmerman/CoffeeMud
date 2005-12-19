@@ -62,7 +62,7 @@ public class Spell_FloatingDisc extends Spell
 				item.unWear();
 			}
 			if(wasntMine)
-				CMLib.commands().drop(mob,item,true,false);
+				CMLib.commands().postDrop(mob,item,true,false);
 			wasntMine=false;
 
 			item.recoverEnvStats();
@@ -121,7 +121,7 @@ public class Spell_FloatingDisc extends Spell
 					mob.addInventory((Item)target);
 				}
 				else
-				if(!CMLib.commands().get(mob,null,(Item)target,true))
+				if(!CMLib.commands().postGet(mob,null,(Item)target,true))
 				{
 					target.delEffect(this);
 					target.recoverEnvStats();

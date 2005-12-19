@@ -101,7 +101,7 @@ public class Prayer_Christen extends Prayer
 				((CagedAnimal)target).setCageText(txt);
                 Vector channels=CMLib.channels().getFlaggedChannelNames("CHRISTENINGS");
                 for(int i=0;i<channels.size();i++)
-                    CMLib.commands().channel((String)channels.elementAt(i),mob.getClanID(),target.name()+" was just christened.",true);
+                    CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),target.name()+" was just christened.",true);
 			}
 		}
 		else

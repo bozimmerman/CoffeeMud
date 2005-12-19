@@ -46,14 +46,14 @@ public class AutoMelee extends StdCommand
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOMELEE));
 			mob.tell(getScr("AutoMelee","turnoff"));
 			if(mob.isMonster())
-				CMLib.commands().say(mob,null,getScr("AutoMelee","turnoffmsg"),false,false);
+				CMLib.commands().postSay(mob,null,getScr("AutoMelee","turnoffmsg"),false,false);
 		}
 		else
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOMELEE));
 			mob.tell(getScr("AutoMelee","turnon"));
 			if(mob.isMonster())
-				CMLib.commands().say(mob,null,getScr("AutoMelee","turnonmsg"),false,false);
+				CMLib.commands().postSay(mob,null,getScr("AutoMelee","turnonmsg"),false,false);
 		}
 		return false;
 	}

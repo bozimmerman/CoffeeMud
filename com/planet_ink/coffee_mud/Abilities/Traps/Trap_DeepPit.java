@@ -49,6 +49,6 @@ public class Trap_DeepPit extends Trap_RoomPit
 			int damage=CMLib.dice().roll(trapLevel(),15,1);
 			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
 		}
-		CMLib.commands().look(target,true);
+		CMLib.commands().postLook(target,true);
 	}
 }

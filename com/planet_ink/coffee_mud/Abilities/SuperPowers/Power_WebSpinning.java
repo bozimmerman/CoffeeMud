@@ -118,7 +118,7 @@ public class Power_WebSpinning extends SuperPower
 		{
 			if(!mob.amDead())
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the web.");
-			CMLib.commands().stand(mob,true);
+			CMLib.commands().postStand(mob,true);
 		}
 	}
 

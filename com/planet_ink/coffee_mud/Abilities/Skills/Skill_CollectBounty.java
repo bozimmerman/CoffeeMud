@@ -169,7 +169,7 @@ public class Skill_CollectBounty extends StdSkill
 				    CMLib.tracking().wanderFromTo(officer,mob.location(),true);
 				if((officer==null)||(!mob.location().isInhabitant(officer)))
 				{
-				    CMLib.commands().say(judge,mob,"I'm sorry, there are no free officers to take care of this one right now.",false,false);
+				    CMLib.commands().postSay(judge,mob,"I'm sorry, there are no free officers to take care of this one right now.",false,false);
 				    return false;
 				}
 				int gold=0;

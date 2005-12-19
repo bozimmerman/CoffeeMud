@@ -112,7 +112,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 			if(mob.isInCombat())
 			{
 				if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTODRAW))
-					CMLib.commands().draw(mob,true,true);
+					CMLib.commands().postDraw(mob,true,true);
 
 				Item primaryWeapon=getFirstWeapon(mob);
 				Item weapon=getSecondWeapon(mob);

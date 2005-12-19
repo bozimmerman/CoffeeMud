@@ -126,7 +126,7 @@ public class Spell_DemonGate extends Spell
 				else
 				{
 					myMonster.setVictim(mob.getVictim());
-					CMLib.commands().follow(myMonster,mob,true);
+					CMLib.commands().postFollow(myMonster,mob,true);
 					if(myMonster.amFollowing()!=mob)
 						mob.tell(myMonster.name()+" seems unwilling to follow you.");
 				}

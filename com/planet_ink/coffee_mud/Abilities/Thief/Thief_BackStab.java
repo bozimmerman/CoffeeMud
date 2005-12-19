@@ -67,7 +67,7 @@ public class Thief_BackStab extends ThiefSkill
 			return false;
 		}
 
-		CMLib.commands().draw(mob,false,true);
+		CMLib.commands().postDraw(mob,false,true);
 
 		Item I=mob.fetchWieldedItem();
 		Weapon weapon=null;

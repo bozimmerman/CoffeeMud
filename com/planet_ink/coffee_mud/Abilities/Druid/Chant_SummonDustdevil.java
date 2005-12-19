@@ -71,7 +71,7 @@ public class Chant_SummonDustdevil extends Chant
 						Item I=(Item)V.elementAt(i);
 						if((mob.maxCarry()>=mob.envStats().weight()+I.envStats().weight())
                         &&(mob.maxItems()>=(mob.inventorySize()+I.numberOfItems())))
-							CMLib.commands().get(mob,null,I,false);
+							CMLib.commands().postGet(mob,null,I,false);
 						else
 							giveUp=true;
 					}
@@ -188,7 +188,7 @@ public class Chant_SummonDustdevil extends Chant
 				{
 					if(target.isInCombat()) target.makePeace();
 					beneficialAffect(mob,target,asLevel,0);
-					CMLib.commands().follow(target,mob,true);
+					CMLib.commands().postFollow(target,mob,true);
 					if(target.amFollowing()!=mob)
 						mob.tell(target.name()+" seems unwilling to follow you.");
 				}

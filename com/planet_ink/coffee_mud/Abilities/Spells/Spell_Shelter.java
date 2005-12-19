@@ -62,7 +62,7 @@ public class Spell_Shelter extends Spell
 				CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere!");
 				previousLocation.bringMobHere(mob,false);
 				previousLocation.send(mob,enterMsg);
-				CMLib.commands().look(mob,true);
+				CMLib.commands().postLook(mob,true);
 			}
 			shelter=null;
 			previousLocation=null;
@@ -118,7 +118,7 @@ public class Spell_Shelter extends Spell
 				{
 					if(follower.isInCombat())
 					{
-						CMLib.commands().flee(follower,("NOWHERE"));
+						CMLib.commands().postFlee(follower,("NOWHERE"));
 						follower.makePeace();
 					}
 					thisRoom.send(follower,leaveMsg);
@@ -126,7 +126,7 @@ public class Spell_Shelter extends Spell
                     thisRoom.delInhabitant(follower);
 					newRoom.send(follower,enterMsg);
 					follower.tell("\n\r\n\r");
-					CMLib.commands().look(follower,true);
+					CMLib.commands().postLook(follower,true);
 					if(follower==mob)
 						beneficialAffect(mob,mob,asLevel,999999);
 				}

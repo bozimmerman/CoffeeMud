@@ -266,16 +266,16 @@ public class MOBTeacher extends CombatAbilities
 				if(s.endsWith("\"")) s=s.substring(0,s.length()-1);
 				if(s.trim().equalsIgnoreCase("LIST"))
 				{
-					CMLib.commands().say(monster,mob,"Try the QUALIFY command.",true,false);
+					CMLib.commands().postSay(monster,mob,"Try the QUALIFY command.",true,false);
 					return;
 				}
 				Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),monster);
 				if(myAbility==null)
 				{
 				    if(CMClass.findAbility(s.trim().toUpperCase())==null)
-						CMLib.commands().say(monster,mob,"I'm sorry, I've never heard of "+s,true,false);
+						CMLib.commands().postSay(monster,mob,"I'm sorry, I've never heard of "+s,true,false);
 				    else
-						CMLib.commands().say(monster,mob,"I'm sorry, I don't know "+s,true,false);
+						CMLib.commands().postSay(monster,mob,"I'm sorry, I don't know "+s,true,false);
 					return;
 				}
 				if(giveABonus)
@@ -287,7 +287,7 @@ public class MOBTeacher extends CombatAbilities
 
 				if(mob.fetchAbility(myAbility.ID())!=null)
 				{
-					CMLib.commands().say(monster,mob,"But you already know '"+myAbility.name()+"'.",true,false);
+					CMLib.commands().postSay(monster,mob,"But you already know '"+myAbility.name()+"'.",true,false);
 					return;
 				}
 				myAbility.setProfficiency(75);

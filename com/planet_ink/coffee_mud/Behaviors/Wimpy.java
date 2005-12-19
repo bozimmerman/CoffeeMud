@@ -69,7 +69,7 @@ public class Wimpy extends StdBehavior
 				{
 					if(M.getVictim()==monster)
 					{
-						CMLib.commands().flee(monster,"");
+						CMLib.commands().postFlee(monster,"");
 						return true;
 					}
 					else

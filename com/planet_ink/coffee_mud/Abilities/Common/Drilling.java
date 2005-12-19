@@ -109,7 +109,7 @@ public class Drilling extends GatheringSkill
 						&&(mob.isMine(container))
 						&&(container instanceof Container))
 						{
-							CMLib.commands().get(mob,null,newFound,true);
+							CMLib.commands().postGet(mob,null,newFound,true);
 							if(mob.isMine(newFound))
 								newFound.setContainer((Container)container);
 						}

@@ -103,7 +103,7 @@ public class Thief_Racketeer extends ThiefSkill
 				if(C!=null)
 				{
 					mob.location().addItemRefuse(C,Item.REFUSE_PLAYER_DROP);
-					CMLib.commands().get(mob,null,C,true);
+					CMLib.commands().postGet(mob,null,C,true);
 				}
 			}
 		}

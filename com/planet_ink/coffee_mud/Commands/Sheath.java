@@ -200,7 +200,7 @@ public class Sheath extends BaseItemParser
 		{
 			Item putThis=(Item)items.elementAt(i);
 			Container container=(Container)containers.elementAt(i);
-			if(CMLib.commands().remove(mob,putThis,true))
+			if(CMLib.commands().postRemove(mob,putThis,true))
 			{
 				CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MSG_PUT,((quiet?null:"<S-NAME> sheath(s) <O-NAME> in <T-NAME>.")));
 				if(mob.location().okMessage(mob,putMsg))

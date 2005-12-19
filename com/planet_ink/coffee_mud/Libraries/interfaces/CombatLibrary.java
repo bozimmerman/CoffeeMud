@@ -73,6 +73,14 @@ public interface CombatLibrary extends CMObject
     public String standardHitString(int weaponClass, int damageAmount,  String weaponName);
     public String standardMobCondition(MOB mob);
     public void resistanceMsgs(CMMsg msg, MOB source, MOB target);
+    public void establishRange(MOB source, MOB target, Environmental tool);
+    public void makeFollowersFight(MOB observer, MOB target, MOB source);
+    public void handleBeingHealed(CMMsg msg);
+    public void handleBeingDamaged(CMMsg msg);
+    public void handleBeingAssaulted(CMMsg msg);
+    public void handleExperienceChange(CMMsg msg);
+    public void handleDeath(CMMsg msg);
+    public void handleObserveDeath(MOB observer, MOB fighting, CMMsg msg);
     
     public static final String[] DEFAULT_ARMOR_DESCS={
         "vulnerable",

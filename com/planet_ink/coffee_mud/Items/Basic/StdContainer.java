@@ -133,7 +133,7 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						if((!msg.source().isMine(this))&&(msg.source().isMine(newitem)))
-							if(!CMLib.commands().drop(msg.source(),newitem,true,true))
+							if(!CMLib.commands().postDrop(msg.source(),newitem,true,true))
 								return false;
 						return true;
 					}

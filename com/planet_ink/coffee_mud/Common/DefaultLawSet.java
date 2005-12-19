@@ -289,7 +289,7 @@ public class DefaultLawSet implements Law
                                     {
                                         Vector channels=CMLib.channels().getFlaggedChannelNames("CLANINFO");
                                         for(int i=0;i<channels.size();i++)
-                                            CMLib.commands().channel((String)channels.elementAt(i),T.landOwner(),T.landOwner()+" has lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.",false);
+                                            CMLib.commands().postChannel((String)channels.elementAt(i),T.landOwner(),T.landOwner()+" has lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.",false);
                                     }
                                     else
                                     if(CMLib.map().getPlayer(T.landOwner())!=null)

@@ -72,7 +72,7 @@ public class Spell_WallOfDarkness extends Spell
 			{
 				mob.tell("You cannot see through the wall of darkness to target "+mob.getVictim().name()+".");
 				if(mob.isMonster())
-					CMLib.commands().remove(mob,(Item)msg.tool(),true);
+					CMLib.commands().postRemove(mob,(Item)msg.tool(),true);
 				return false;
 			}
 		}

@@ -59,7 +59,7 @@ public class Chant_AstralProjection extends Chant
 		}
 		super.unInvoke();
 		if(mob!=null)
-			CMLib.commands().stand(mob,true);
+			CMLib.commands().postStand(mob,true);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

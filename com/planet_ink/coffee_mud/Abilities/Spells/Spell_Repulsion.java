@@ -81,7 +81,7 @@ public class Spell_Repulsion extends Spell
 		if(canBeUninvoked())
 		{
 			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the repulsion field.");
-			CMLib.commands().stand(mob,true);
+			CMLib.commands().postStand(mob,true);
 		}
 	}
 

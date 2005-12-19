@@ -134,7 +134,7 @@ public class Power_OctoGrapple extends SuperPower
 					else
 						mob.tell("You are released from the grapple.");
 				}
-				CMLib.commands().stand(mob,true);
+				CMLib.commands().postStand(mob,true);
 			}
 		}
 	}

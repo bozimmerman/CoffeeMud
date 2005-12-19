@@ -144,6 +144,6 @@ public class Trap_SnakePit extends Trap_RoomPit
 					target.setVictim(monster);
 			}
 		}
-		CMLib.commands().look(target,true);
+		CMLib.commands().postLook(target,true);
 	}
 }

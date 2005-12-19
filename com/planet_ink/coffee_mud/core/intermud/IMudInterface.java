@@ -445,7 +445,7 @@ public class IMudInterface implements ImudServices, Serializable
 				if(smob!=null)
 				{
 					tk.message=fixColors(CMProps.applyINIFilter(tk.message,CMProps.SYSTEM_SAYFILTER));
-					CMLib.commands().say(mob,smob,tk.message,true,true);
+					CMLib.commands().postSay(mob,smob,tk.message,true,true);
 				}
                 destroymob(mob);
 			}

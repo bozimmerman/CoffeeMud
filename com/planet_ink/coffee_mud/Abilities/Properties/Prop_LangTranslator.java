@@ -109,7 +109,7 @@ public class Prop_LangTranslator extends Property
 			{
 				if(!(affected instanceof MOB))
 					mob.setLocation(CMLib.utensils().roomLocation(affected));
-				CMLib.commands().say(mob,null,"The smoke signals seem to say '"+msg.othersMessage()+"'.",false,false);
+				CMLib.commands().postSay(mob,null,"The smoke signals seem to say '"+msg.othersMessage()+"'.",false,false);
 			}
 			else
 			if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)

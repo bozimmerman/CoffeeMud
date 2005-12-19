@@ -50,7 +50,7 @@ public class Spell_EndlessRoad extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			mob.tell("You feel like you are finally getting somewhere.");
-		CMLib.commands().stand(mob,true);
+		CMLib.commands().postStand(mob,true);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

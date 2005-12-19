@@ -59,7 +59,7 @@ public class Spell_Hold extends Spell
 		if(canBeUninvoked())
 		{
 			mob.tell("You can move again!");
-			CMLib.commands().stand(mob,true);
+			CMLib.commands().postStand(mob,true);
 		}
 	}
 

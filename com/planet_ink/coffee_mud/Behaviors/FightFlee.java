@@ -52,7 +52,7 @@ public class FightFlee extends ActiveTicker
 			if(mob.isInCombat()
 			   &&(mob.getVictim()!=null)
 			   &&(mob.getVictim().getVictim()==mob))
-				CMLib.commands().flee(mob,"");
+				CMLib.commands().postFlee(mob,"");
 		}
 		return true;
 	}

@@ -406,7 +406,7 @@ public class Patroller extends ActiveTicker
 								{
 									thatRoom.bringMobHere((MOB)R,true);
                                     ((MOB)R).setRiding((Rideable)ticking);
-									CMLib.commands().look((MOB)R,true);
+									CMLib.commands().postLook((MOB)R,true);
 								}
 								else
 								if(R instanceof Item)

@@ -81,7 +81,7 @@ public class EvilExecutioner  extends StdBehavior
             source.setFollowing(null);
             boolean yep=Aggressive.startFight(observer,source,true);
             if(yep)
-                CMLib.commands().say(observer,null,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!",false,false);
+                CMLib.commands().postSay(observer,null,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!",false,false);
             else
             if(oldFollowing!=null)
                 source.setFollowing(oldFollowing);

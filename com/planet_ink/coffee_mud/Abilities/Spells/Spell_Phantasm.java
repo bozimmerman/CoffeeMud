@@ -139,7 +139,7 @@ public class Spell_Phantasm extends Spell
 				mob.location().send(mob,msg);
 				MOB myMonster = determineMonster(mob, R, mob.envStats().level());
 				myMonster.setVictim(mob.getVictim());
-				CMLib.commands().follow(myMonster,mob,true);
+				CMLib.commands().postFollow(myMonster,mob,true);
 				if(myMonster.getVictim()!=null)
 					myMonster.getVictim().setVictim(myMonster);
 				invoker=mob;

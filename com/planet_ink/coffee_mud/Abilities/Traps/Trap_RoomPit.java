@@ -163,7 +163,7 @@ public class Trap_RoomPit extends StdTrap
 			int damage=CMLib.dice().roll(trapLevel(),6,1);
 			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
 		}
-		CMLib.commands().look(target,true);
+		CMLib.commands().postLook(target,true);
 	}
 
 	public void spring(MOB target)

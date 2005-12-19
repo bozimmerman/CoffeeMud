@@ -64,7 +64,7 @@ public class Spell_KnowValue extends Spell
 				else
 					str=target.name()+" is worth "+CMLib.beanCounter().nameCurrencyShort(mob,new Integer(target.value()).doubleValue())+" ";
 				if(mob.isMonster())
-					CMLib.commands().say(mob,null,str,false,false);
+					CMLib.commands().postSay(mob,null,str,false,false);
 				else
 					mob.tell(str);
 			}

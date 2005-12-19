@@ -93,7 +93,7 @@ public class Prayer_SummonElemental extends Prayer
 				mob.location().send(mob,msg);
 				MOB myMonster = determineMonster(mob, mob.envStats().level());
 				if(myMonster.isInCombat()) myMonster.makePeace();
-				CMLib.commands().follow(myMonster,mob,true);
+				CMLib.commands().postFollow(myMonster,mob,true);
 				invoker=mob;
 				beneficialAffect(mob,myMonster,asLevel,0);
 				if(myMonster.amFollowing()!=mob)

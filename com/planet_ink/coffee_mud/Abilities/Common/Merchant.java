@@ -214,7 +214,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
             ||(CMSecurity.isAllowed(source,merchantM.location(),"CMDROOMS")&&(merchantM.isMonster()))))
         &&((doISellThis(tool))||(whatIsSold()==DEAL_INVENTORYONLY)))
         {
-            CMLib.commands().say(merchantM,source,"OK, I will now sell "+tool.name()+".",false,false);
+            CMLib.commands().postSay(merchantM,source,"OK, I will now sell "+tool.name()+".",false,false);
             getShop().addStoreInventory(tool,1,-1,this);
             if(affected instanceof Area)
                 CMLib.database().DBUpdateArea(affected.Name(),(Area)affected);
@@ -267,12 +267,12 @@ public class Merchant extends CommonSkill implements ShopKeeper
             case CMMsg.TYP_VALUE:
                 super.executeMsg(myHost,msg);
                 if(merchantM.isMonster())
-                    CMLib.commands().say(merchantM,mob,"I'll give you "+CMLib.beanCounter().nameCurrencyShort(merchantM,CMLib.coffeeShops().pawningPrice(mob,msg.tool(),this).absoluteGoldPrice)+" for "+msg.tool().name()+".",true,false);
+                    CMLib.commands().postSay(merchantM,mob,"I'll give you "+CMLib.beanCounter().nameCurrencyShort(merchantM,CMLib.coffeeShops().pawningPrice(mob,msg.tool(),this).absoluteGoldPrice)+" for "+msg.tool().name()+".",true,false);
                 break;
 			case CMMsg.TYP_VIEW:
 				super.executeMsg(myHost,msg);
 				if((msg.tool()!=null)&&(getShop().doIHaveThisInStock(msg.tool().Name(),mob,whatIsSold(),merchantM.getStartRoom())))
-					CMLib.commands().say(merchantM,msg.source(),"Interested in "+msg.tool().name()+"? Here is some information for you:\n\rLevel "+msg.tool().envStats().level()+"\n\rDescription: "+msg.tool().description(),true,false);
+					CMLib.commands().postSay(merchantM,msg.source(),"Interested in "+msg.tool().name()+"? Here is some information for you:\n\rLevel "+msg.tool().envStats().level()+"\n\rDescription: "+msg.tool().description(),true,false);
 				break;
             case CMMsg.TYP_SELL: // sell TO -- this is a shopkeeper purchasing from a player
             {

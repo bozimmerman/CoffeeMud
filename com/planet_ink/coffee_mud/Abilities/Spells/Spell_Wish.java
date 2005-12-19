@@ -100,7 +100,7 @@ public class Spell_Wish extends Spell
 		if(mob.isMonster())
 		{
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> sigh(s).");
-			CMLib.commands().say(mob,null,"My wishes never seem to come true.",false,false);
+			CMLib.commands().postSay(mob,null,"My wishes never seem to come true.",false,false);
 			return false;
 		}
 

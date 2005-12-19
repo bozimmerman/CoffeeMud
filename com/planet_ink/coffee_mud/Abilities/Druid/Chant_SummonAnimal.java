@@ -117,7 +117,7 @@ public class Chant_SummonAnimal extends Chant
 				if(target.location()==mob.location())
 				{
 					if(target.isInCombat()) target.makePeace();
-					CMLib.commands().follow(target,mob,true);
+					CMLib.commands().postFollow(target,mob,true);
 					beneficialAffect(mob,target,asLevel,0);
 					if(target.amFollowing()!=mob)
 						mob.tell(target.name()+" seems unwilling to follow you.");

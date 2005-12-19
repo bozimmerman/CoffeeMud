@@ -178,7 +178,7 @@ public class Follower extends ActiveTicker
 				{
 					MOB M=pickRandomMOBHere(mob,room);
 					if(M!=null)
-						CMLib.commands().follow(mob,M,false);
+						CMLib.commands().postFollow(mob,M,false);
 				}
 			}
 			else
@@ -228,7 +228,7 @@ public class Follower extends ActiveTicker
 				lastOwner.location().bringItemHere(I,0);
 			if((inventory)&&(R.isInhabitant(lastOwner)))
 			{
-				CMLib.commands().get(lastOwner,null,I,true);
+				CMLib.commands().postGet(lastOwner,null,I,true);
 				if(!lastOwner.isMine(I))
 				{
 					lastOwner.giveItem(I);

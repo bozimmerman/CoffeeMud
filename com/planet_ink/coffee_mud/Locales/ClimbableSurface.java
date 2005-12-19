@@ -145,7 +145,7 @@ public class ClimbableSurface extends StdRoom
 						ladder=findALadder(mob,getRoomInDir(Directions.DOWN));
 						if(ladder!=null)
 						{
-							CMLib.commands().look(mob,false);
+							CMLib.commands().postLook(mob,false);
 							mountLadder(mob,ladder);
 						}
 						if(CMLib.flags().isClimbing(mob))

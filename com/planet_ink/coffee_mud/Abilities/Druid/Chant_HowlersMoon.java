@@ -116,7 +116,7 @@ public class Chant_HowlersMoon extends Chant
 					int d=CMLib.dice().rollPercentage();
 					if((d<33)&&(invoker()!=null)&&(invoker().location()==room))
 					{
-						CMLib.commands().follow(target,invoker(),true);
+						CMLib.commands().postFollow(target,invoker(),true);
 						beneficialAffect(invoker(),target,0,0);
 						if(target.amFollowing()!=invoker())
 							target.setVictim(invoker());

@@ -90,7 +90,7 @@ public class Chant_SummonElemental extends Chant
 				MOB target = determineMonster(mob, mob.envStats().level());
 				target.addNonUninvokableEffect((Ability)this.copyOf());
 				if(target.isInCombat()) target.makePeace();
-				CMLib.commands().follow(target,mob,true);
+				CMLib.commands().postFollow(target,mob,true);
 				if(target.amFollowing()!=mob)
 					mob.tell(target.name()+" seems unwilling to follow you.");
 			}

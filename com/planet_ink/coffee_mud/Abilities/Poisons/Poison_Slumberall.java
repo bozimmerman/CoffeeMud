@@ -59,7 +59,7 @@ public class Poison_Slumberall extends Poison
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			CMLib.commands().stand(mob,true);
+			CMLib.commands().postStand(mob,true);
 		}
 		super.unInvoke();
 	}

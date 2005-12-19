@@ -56,7 +56,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,-1,null);
 			target.location().showHappens(CMMsg.MSG_OK_VISUAL,"Acid starts pouring into the room!");
 		}
-		CMLib.commands().look(target,true);
+		CMLib.commands().postLook(target,true);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

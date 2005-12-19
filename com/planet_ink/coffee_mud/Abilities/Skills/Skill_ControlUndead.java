@@ -107,7 +107,7 @@ public class Skill_ControlUndead extends StdSkill
 					{
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> is now controlled.");
 						target.makePeace();
-						CMLib.commands().follow(target,mob,false);
+						CMLib.commands().postFollow(target,mob,false);
 						CMLib.combat().makePeaceInGroup(mob);
 						invoker=mob;
 						if(target.amFollowing()!=mob)

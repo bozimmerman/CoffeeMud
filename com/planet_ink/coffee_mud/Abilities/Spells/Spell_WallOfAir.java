@@ -73,7 +73,7 @@ public class Spell_WallOfAir extends Spell
 			M.setLocation(null);
 			M.setVictim(null);
 			if(mob.isMonster())
-				CMLib.commands().remove(mob,(Item)msg.tool(),true);
+				CMLib.commands().postRemove(mob,(Item)msg.tool(),true);
             M.destroy();
 			return false;
 		}

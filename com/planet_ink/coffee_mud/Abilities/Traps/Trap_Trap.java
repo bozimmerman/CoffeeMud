@@ -237,7 +237,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				int damage=CMLib.dice().roll(mob.envStats().level(),3,1);
 				CMLib.combat().postDamage(invoker(),mob,this,damage,CMMsg.MSG_OK_VISUAL,-1,null);
 			}
-			CMLib.commands().look(mob,true);
+			CMLib.commands().postLook(mob,true);
 		}
 	}
 

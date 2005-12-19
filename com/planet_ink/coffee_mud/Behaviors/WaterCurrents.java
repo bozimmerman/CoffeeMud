@@ -141,7 +141,7 @@ public class WaterCurrents extends ActiveTicker
                             R.send(M,themsg);
 							R2.bringMobHere(M,false);
 							R2.showOthers(M,null,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+" by the current.");
-							CMLib.commands().look(M,true);
+							CMLib.commands().postLook(M,true);
 						}
 				    }
 				    else

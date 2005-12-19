@@ -616,8 +616,8 @@ public class Test extends StdCommand
                 HaveZapper.setMiscText("-RACE +Dwarf");
                 mob.tell("Test#12-1: "+HaveZapper.accountForYourself());
                 IS=giveTo(CMClass.getWeapon("Sword"),HaveZapper,mobs[0],mobs[1],2);
-                CMLib.commands().get(mobs[0],null,IS[0],false);
-                CMLib.commands().get(mobs[1],null,IS[1],false);
+                CMLib.commands().postGet(mobs[0],null,IS[0],false);
+                CMLib.commands().postGet(mobs[1],null,IS[1],false);
                 if(!mobs[0].isMine(IS[0])){ mob.tell("Error12-1"); return false;}
                 if(mobs[1].isMine(IS[1])){ mob.tell("Error12-2"); return false;}
             }

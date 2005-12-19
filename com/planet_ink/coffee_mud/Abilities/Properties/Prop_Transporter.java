@@ -101,7 +101,7 @@ public class Prop_Transporter extends Property
 			else
 			{
 				otherRoom.bringMobHere(msg.source(),true);
-				CMLib.commands().look(msg.source(),true);
+				CMLib.commands().postLook(msg.source(),true);
 				if(affected instanceof Rideable)
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,CMMsg.TYP_DISMOUNT,null));
 			}

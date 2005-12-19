@@ -59,7 +59,7 @@ public class Reply extends StdCommand
 			mob.tell("Tell '"+pstats.replyTo().Name()+" what?");
 			return false;
 		}
-		CMLib.commands().say(mob,pstats.replyTo(),CMParms.combine(commands,1),true,!mob.location().isInhabitant(pstats.replyTo()));
+		CMLib.commands().postSay(mob,pstats.replyTo(),CMParms.combine(commands,1),true,!mob.location().isInhabitant(pstats.replyTo()));
 		if((pstats.replyTo().session()!=null)
 		&&(pstats.replyTo().session().afkFlag()))
 			mob.tell(pstats.replyTo().session().afkMessage());

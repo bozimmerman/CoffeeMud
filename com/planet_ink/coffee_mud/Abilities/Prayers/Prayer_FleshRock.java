@@ -154,7 +154,7 @@ public class Prayer_FleshRock extends Prayer
 			mob.curState().setMovement(0);
 			mob.curState().setHunger(0);
 			mob.curState().setThirst(0);
-			CMLib.commands().stand(mob,true);
+			CMLib.commands().postStand(mob,true);
 		}
 	}
 
@@ -199,7 +199,7 @@ public class Prayer_FleshRock extends Prayer
 						if(target.numEffects()==s)
 							a++;
 					}
-					CMLib.commands().stand(target,true);
+					CMLib.commands().postStand(target,true);
 					statue=CMClass.getItem("GenItem");
 					String name=target.name();
 					if(name.startsWith("A ")) name="a "+name.substring(2);

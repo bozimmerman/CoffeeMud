@@ -213,7 +213,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if((weapon==null)
 		&&(CMath.bset(attacker.getBitmap(),MOB.ATT_AUTODRAW)))
 		{
-			CMLib.commands().draw(attacker,false,true);
+			CMLib.commands().postDraw(attacker,false,true);
 			weapon=attacker.fetchWieldedItem();
 		}
 		CMMsg msg=CMClass.getMsg(attacker,target,weapon,CMMsg.MSG_WEAPONATTACK,null);
@@ -295,10 +295,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	public boolean postExperience(MOB mob,
-										 MOB victim,
-										 String homage,
-										 int amount,
-										 boolean quiet)
+								  MOB victim,
+								  String homage,
+								  int amount,
+								  boolean quiet)
 	{
 		if((mob==null)
 		||(CMSecurity.isDisabled("EXPERIENCE"))
@@ -643,7 +643,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			target.soulMate().setSession(s);
 			target.setSession(null);
 			target.soulMate().tell("^HYour spirit has returned to your body...\n\r\n\r^N");
-			CMLib.commands().look(target.soulMate(),true);
+			CMLib.commands().postLook(target.soulMate(),true);
 			target.setSoulMate(null);
 		}
 
@@ -667,7 +667,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				&&(CMLib.flags().canBeSeenBy(Body,source))
 				&&((!Body.destroyAfterLooting())||(!(item instanceof EnvResource)))
 				&&(CMLib.flags().canBeSeenBy(item,source)))
-					CMLib.commands().get(source,Body,item,false);
+					CMLib.commands().postGet(source,Body,item,false);
 			}
 			if(Body.destroyAfterLooting())
 				deathRoom.recoverRoomStats();
@@ -691,7 +691,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					mob.tell("You'll need to disembark to get "+C.name()+" off the body.");
 				else
 				if(CMLib.flags().canBeSeenBy(Body,mob))
-					CMLib.commands().get(mob,Body,C,false);
+					CMLib.commands().postGet(mob,Body,C,false);
 		    }
 		}
 
@@ -851,4 +851,293 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         }
         msg.setValue(msg.value()+1);
     }
+    
+    public void handleBeingHealed(CMMsg msg)
+    {
+        if(!(msg.target() instanceof MOB)) return;
+        MOB target=(MOB)msg.target();
+        int amt=msg.value();
+        if(amt>0) target.curState().adjHitPoints(amt,target.maxState());
+    }
+
+    public void handleBeingDamaged(CMMsg msg)
+    {
+        if(!(msg.target() instanceof MOB)) return;
+        MOB attacker=msg.source();
+        MOB target=(MOB)msg.target();
+        int dmg=msg.value();
+        synchronized(target)
+        {
+            if((dmg>0)&&(target.curState().getHitPoints()>0))
+            {
+                if((!target.curState().adjHitPoints(-dmg,target.maxState()))
+                &&(target.curState().getHitPoints()<1)
+                &&(target.location()!=null))
+                    CMLib.combat().postDeath(attacker,target,msg);
+                else
+                if((target.curState().getHitPoints()<target.getWimpHitPoint())
+                &&(target.getWimpHitPoint()>0)
+                &&(target.isInCombat()))
+                    CMLib.combat().postPanic(target,msg);
+                else
+                if((CMProps.getIntVar(CMProps.SYSTEMI_INJPCTHP)>=(int)Math.round(CMath.div(target.curState().getHitPoints(),target.maxState().getHitPoints())*100.0))
+                &&(!CMLib.flags().isGolem(target))
+                &&(target.fetchEffect("Injury")==null))
+                {
+                    Ability A=CMClass.getAbility("Injury");
+                    if(A!=null) A.invoke(target,CMParms.makeVector(msg),target,true,0);
+                }
+            }
+        }
+    }
+    
+    public void handleExperienceChange(CMMsg msg)
+    {
+        MOB mob=msg.source();
+        if(!CMSecurity.isDisabled("EXPERIENCE")
+        &&!mob.charStats().getCurrentClass().expless()
+        &&!mob.charStats().getMyRace().expless())
+        {
+            MOB expFromKilledmob=null;
+            if(msg.target() instanceof MOB)
+                expFromKilledmob=(MOB)msg.target();
+
+            if(msg.value()>=0)
+                mob.charStats().getCurrentClass().gainExperience(mob,
+                                                                 expFromKilledmob,
+                                                                 msg.targetMessage(),
+                                                                 msg.value(),
+                                                                 CMath.s_bool(msg.othersMessage()));
+            else
+                mob.charStats().getCurrentClass().loseExperience(mob,-msg.value());
+        }
+    }
+    
+    public void handleDeath(CMMsg msg)
+    {
+        MOB deadmob=msg.source();
+        
+        if(!deadmob.amDead())
+        {
+            if((!deadmob.isMonster())&&(deadmob.soulMate()==null))
+            {
+                CMLib.coffeeTables().bump(deadmob,CoffeeTableRow.STAT_DEATHS);
+                Vector channels=CMLib.channels().getFlaggedChannelNames("DETAILEDDEATHS");
+                Vector channels2=CMLib.channels().getFlaggedChannelNames("DEATHS");
+                if(!CMLib.flags().isCloaked(deadmob))
+                for(int i=0;i<channels.size();i++)
+                if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
+                    CMLib.commands().postChannel((String)channels.elementAt(i),deadmob.getClanID(),deadmob.Name()+" was just killed in "+CMLib.map().getExtendedRoomID(deadmob.location())+" by "+msg.tool().Name()+".",true);
+                else
+                    CMLib.commands().postChannel((String)channels.elementAt(i),deadmob.getClanID(),deadmob.Name()+" has just died at "+CMLib.map().getExtendedRoomID(deadmob.location()),true);
+                if(!CMLib.flags().isCloaked(deadmob))
+                for(int i=0;i<channels2.size();i++)
+                    if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
+                        CMLib.commands().postChannel((String)channels2.elementAt(i),deadmob.getClanID(),deadmob.Name()+" was just killed.",true);
+            }
+            if(msg.tool() instanceof MOB)
+            {
+                MOB killer=(MOB)msg.tool();
+                CMLib.combat().justDie(killer,deadmob);
+                if((!deadmob.isMonster())&&(deadmob.soulMate()==null)&&(killer!=deadmob)&&(!killer.isMonster()))
+                    CMLib.coffeeTables().bump(deadmob,CoffeeTableRow.STAT_PKDEATHS);
+                if((deadmob.getClanID().length()>0)
+                &&(killer.getClanID().length()>0)
+                &&(!deadmob.getClanID().equals(killer.getClanID())))
+                {
+                    Clan C=CMLib.clans().getClan(killer.getClanID());
+                    if(C!=null) C.recordClanKill();
+                }
+            }
+            else
+                CMLib.combat().justDie(null,deadmob);
+            deadmob.tell(deadmob,msg.target(),msg.tool(),msg.sourceMessage());
+            if(deadmob.riding()!=null) deadmob.riding().delRider(deadmob);
+        }
+    }
+    
+    public void handleObserveDeath(MOB observer, MOB fighting, CMMsg msg)
+    {
+        MOB deadmob=msg.source();
+        if(fighting==deadmob)
+        {
+            Room R=observer.location();
+            MOB newTargetM=null;
+            HashSet hisGroupH=deadmob.getGroupMembers(new HashSet());
+            HashSet myGroupH=observer.getGroupMembers(new HashSet());
+            for(int r=0;r<R.numInhabitants();r++)
+            {
+                MOB M=R.fetchInhabitant(r);
+                if((M!=observer)
+                &&(M!=deadmob)
+                &&(M!=null)
+                &&(M.getVictim()==observer)
+                &&(!M.amDead())
+                &&(CMLib.flags().isInTheGame(M,true)))
+                {
+                    newTargetM=M;
+                    break;
+                }
+            }
+            if(newTargetM==null)
+            for(int r=0;r<R.numInhabitants();r++)
+            {
+                MOB M=R.fetchInhabitant(r);
+                if((M!=observer)
+                &&(M!=deadmob)
+                &&(M!=null)
+                &&(hisGroupH.contains(M)
+                    ||((M.getVictim()!=null)&&(myGroupH.contains(M.getVictim()))))
+                &&(!M.amDead())
+                &&(CMLib.flags().isInTheGame(M,true)))
+                {
+                    newTargetM=M;
+                    break;
+                }
+            }
+            observer.setVictim(newTargetM);
+        }
+    }
+    
+    public void handleBeingAssaulted(CMMsg msg)
+    {
+        if(!(msg.target() instanceof MOB)) return;
+        MOB attacker=msg.source();
+        MOB target=(MOB)msg.target();
+        
+        if((!target.isInCombat())
+        &&(target.location().isInhabitant(attacker))
+        &&((!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+            ||(!(msg.tool() instanceof DiseaseAffect))))
+        {
+            establishRange(target,attacker,msg.tool());
+            target.setVictim(attacker);
+        }
+        if(target.isInCombat())
+        {
+            if((!target.isMonster())&&(!attacker.isMonster()))
+                attacker.session().setLastPKFight();
+            if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+            {
+                Item weapon=attacker.myNaturalWeapon();
+                if((msg.tool()!=null)&&(msg.tool() instanceof Item))
+                    weapon=(Item)msg.tool();
+                if(weapon!=null)
+                {
+                    CMLib.combat().postWeaponDamage(attacker,target,weapon,CMLib.combat().rollToHit(attacker,target));
+                    msg.setValue(1);
+                }
+                if((target.soulMate()==null)&&(target.playerStats()!=null)&&(target.location()!=null))
+                    target.playerStats().adjHygiene(PlayerStats.HYGIENE_FIGHTDIRTY);
+            }
+            else
+            if((msg.tool()!=null)
+            &&(msg.tool() instanceof Item))
+                postWeaponDamage(attacker,target,(Item)msg.tool(),true);
+        }
+        if(CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target))
+            CMLib.commands().postStand(target,true);
+    }
+    
+    public void makeFollowersFight(MOB observer, MOB target, MOB source)
+    {
+        if((source==null)||(target==null)) return;
+        if(source==target) return;
+        if((target==observer)||(source==observer)) return;
+        if((target.location()!=observer.location())||(target.location()!=source.location()))
+            return;
+        if((CMath.bset(observer.getBitmap(),MOB.ATT_AUTOASSIST))) return;
+        if(observer.isInCombat()) return;
+
+        if((observer.amFollowing()==target)
+        ||(target.amFollowing()==observer)
+        ||((target.amFollowing()!=null)&&(target.amFollowing()==observer.amFollowing())))
+        {
+            observer.setVictim(source);
+            establishRange(observer,source,observer.fetchWieldedItem());
+        }
+        else
+        if((observer.amFollowing()==source)
+        ||(source.amFollowing()==observer)
+        ||((source.amFollowing()!=null)&&(source.amFollowing()==observer.amFollowing())))
+        {
+            observer.setVictim(target);
+            establishRange(observer,target,observer.fetchWieldedItem());
+        }
+    }
+
+    public void establishRange(MOB source, MOB target, Environmental tool)
+    {
+        // establish and enforce range
+        if((source.rangeToTarget()<0))
+        {
+            if(source.riding()!=null)
+            {
+                if((target==source.riding())||(source.riding().amRiding(target)))
+                    source.setAtRange(0);
+                else
+                if((source.riding() instanceof MOB)
+                   &&(((MOB)source.riding()).isInCombat())
+                   &&(((MOB)source.riding()).getVictim()==target)
+                   &&(((MOB)source.riding()).rangeToTarget()>=0)
+                   &&(((MOB)source.riding()).rangeToTarget()<source.rangeToTarget()))
+                {
+                    source.setAtRange(((MOB)source.riding()).rangeToTarget());
+                    source.recoverEnvStats();
+                    return;
+                }
+                else
+                for(int r=0;r<source.riding().numRiders();r++)
+                {
+                    Rider rider=source.riding().fetchRider(r);
+                    if(!(rider instanceof MOB)) continue;
+                    MOB otherMOB=(MOB)rider;
+                    if((otherMOB!=null)
+                       &&(otherMOB!=source)
+                       &&(otherMOB.isInCombat())
+                       &&(otherMOB.getVictim()==target)
+                       &&(otherMOB.rangeToTarget()>=0)
+                       &&(otherMOB.rangeToTarget()<source.rangeToTarget()))
+                    {
+                        source.setAtRange(otherMOB.rangeToTarget());
+                        source.recoverEnvStats();
+                        return;
+                    }
+                }
+            }
+
+            MOB follow=source.amFollowing();
+            if((target.getVictim()==source)&&(target.rangeToTarget()>=0))
+                source.setAtRange(target.rangeToTarget());
+            else
+            if((follow!=null)&&(follow.location()==source.location()))
+            {
+                int newRange=follow.fetchFollowerOrder(source);
+                if(newRange<0)
+                {
+                    if(follow.rangeToTarget()>=0)
+                    {
+                        newRange=follow.rangeToTarget();
+                        if(newRange<source.maxRange(tool))
+                            newRange=source.maxRange(tool);
+                    }
+                    else
+                        newRange=source.maxRange(tool);
+                }
+                else
+                {
+                    if(follow.rangeToTarget()>=0)
+                        newRange=newRange+follow.rangeToTarget();
+                }
+                if((source.location()!=null)&&(source.location().maxRange()<newRange))
+                    newRange=source.location().maxRange();
+                source.setAtRange(newRange);
+            }
+            else
+                source.setAtRange(source.maxRange(tool));
+            source.recoverEnvStats();
+        }
+    }
+
+
 }

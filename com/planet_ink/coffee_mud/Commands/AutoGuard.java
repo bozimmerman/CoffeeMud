@@ -48,14 +48,14 @@ public class AutoGuard extends StdCommand
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
 			mob.tell(getScr("AutoGuard","guardon"));
 			if(mob.isMonster())
-				CMLib.commands().say(mob,null,getScr("AutoGuard","guardonmsg"),false,false);
+				CMLib.commands().postSay(mob,null,getScr("AutoGuard","guardonmsg"),false,false);
 		}
 		else
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
 			mob.tell(getScr("AutoGuard","guardoff"));
 			if(mob.isMonster())
-				CMLib.commands().say(mob,null,getScr("AutoGuard","followglead"),false,false);
+				CMLib.commands().postSay(mob,null,getScr("AutoGuard","followglead"),false,false);
 		}
 		return false;
 	}

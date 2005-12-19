@@ -96,7 +96,7 @@ public class Prayer_CurseMetal extends Prayer
 				CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
 				if(CMLib.dice().rollPercentage()<mob.charStats().getStat(CharStats.STRENGTH))
 				{
-					CMLib.commands().drop(mob,item,false,false);
+					CMLib.commands().postDrop(mob,item,false,false);
 					if(!mob.isMine(item))
 					{
 						item.addEffect((Ability)this.copyOf());

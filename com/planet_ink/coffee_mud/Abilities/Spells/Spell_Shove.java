@@ -96,7 +96,7 @@ public class Spell_Shove extends Spell
 						newRoom.bringMobHere(target,false);
 						newRoom.send(target,enterMsg);
 						target.tell("\n\r\n\r");
-						CMLib.commands().look(target,true);
+						CMLib.commands().postLook(target,true);
 					}
 				}
 			}

@@ -66,7 +66,7 @@ public class Spell_FindFamiliar extends Spell
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, mob.envStats().level());
 				if(target.isInCombat()) target.makePeace();
-				CMLib.commands().follow(target,mob,true);
+				CMLib.commands().postFollow(target,mob,true);
 				invoker=mob;
 				if(target.amFollowing()!=mob)
 					mob.tell(target.name()+" seems unwilling to follow you.");

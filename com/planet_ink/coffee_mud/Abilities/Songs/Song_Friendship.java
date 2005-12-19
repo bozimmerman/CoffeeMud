@@ -120,7 +120,7 @@ public class Song_Friendship extends Song
 			if(mob!=invoker)
 			{
 				mob.setFollowing(null);
-				CMLib.commands().stand(mob,true);
+				CMLib.commands().postStand(mob,true);
 				if(mob.isMonster())
 				{
 					if(CMLib.dice().rollPercentage()>50)
@@ -201,7 +201,7 @@ public class Song_Friendship extends Song
 								{
 									if((follower.amFollowing()!=mob)&&(follower!=mob))
 									{
-										CMLib.commands().follow(follower,mob,false);
+										CMLib.commands().postFollow(follower,mob,false);
 										if(follower.amFollowing()==mob)
 										{
 											if(follower!=mob)

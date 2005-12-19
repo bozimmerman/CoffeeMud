@@ -243,7 +243,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					||(CMSecurity.isAllowed(msg.source(),location(),"CMDROOMS")&&(isMonster()))))
 				&&((doISellThis(msg.tool()))||(whatISell==DEAL_INVENTORYONLY)))
                 {
-                    CMLib.commands().say(this,msg.source(),"Yes, I will now sell "+msg.tool().name()+".",false,false);
+                    CMLib.commands().postSay(this,msg.source(),"Yes, I will now sell "+msg.tool().name()+".",false,false);
                     getShop().addStoreInventory(msg.tool(),1,-1,this);
                     if(isGeneric()) text();
 					return;
@@ -252,7 +252,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				break;
 			case CMMsg.TYP_VALUE:
 				super.executeMsg(myHost,msg);
-				CMLib.commands().say(this,mob,"I'll give you "+CMLib.beanCounter().nameCurrencyShort(this,CMLib.coffeeShops().pawningPrice(mob,msg.tool(),this).absoluteGoldPrice)+" for "+msg.tool().name()+".",true,false);
+				CMLib.commands().postSay(this,mob,"I'll give you "+CMLib.beanCounter().nameCurrencyShort(this,CMLib.coffeeShops().pawningPrice(mob,msg.tool(),this).absoluteGoldPrice)+" for "+msg.tool().name()+".",true,false);
 				break;
 			case CMMsg.TYP_SELL: // sell TO -- this is a shopkeeper purchasing from a player
             {
@@ -272,7 +272,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_VIEW:
 				super.executeMsg(myHost,msg);
 				if((msg.tool()!=null)&&(getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",mob,whatIsSold(),getStartRoom())))
-					CMLib.commands().say(this,msg.source(),CMLib.coffeeShops().getViewDescription(msg.tool()),true,false);
+					CMLib.commands().postSay(this,msg.source(),CMLib.coffeeShops().getViewDescription(msg.tool()),true,false);
 				break;
 			case CMMsg.TYP_BUY: // buy-from -- this is a player buying from a shopkeeper
             {

@@ -230,7 +230,7 @@ public class StdTitle extends StdItem implements LandTitle
 			    {
 			        String str="I'm sorry, '"+msg.tool().Name()+" is not for sale.  It already belongs to "+A.landOwner()+".  It should be destroyed.";
 			        if(((MOB)msg.target()).isMonster())
-				        CMLib.commands().say((MOB)msg.target(),msg.source(),str,false,false);
+				        CMLib.commands().postSay((MOB)msg.target(),msg.source(),str,false,false);
 			        else
 			            ((MOB)msg.target()).tell(str+" You might want to tell the customer.");
                     if(SK!=null) SK.getShop().removeStock(Name(),msg.source(),SK.whatIsSold(),CMLib.utensils().roomStart(msg.target()));
@@ -255,7 +255,7 @@ public class StdTitle extends StdItem implements LandTitle
 			{
 		        String str="I'm sorry, '"+msg.tool().Name()+" must be destroyed.";
 		        if(((MOB)msg.target()).isMonster())
-			        CMLib.commands().say((MOB)msg.target(),msg.source(),str,false,false);
+			        CMLib.commands().postSay((MOB)msg.target(),msg.source(),str,false,false);
 		        else
 		            ((MOB)msg.target()).tell(str+" You might want to tell the customer.");
 				ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(msg.target());

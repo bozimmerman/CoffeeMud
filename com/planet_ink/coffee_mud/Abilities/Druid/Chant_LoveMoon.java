@@ -90,9 +90,9 @@ public class Chant_LoveMoon extends Chant
 					if(CMLib.dice().rollPercentage()==1)
 					{
 						Item I=mob.fetchFirstWornItem(Item.ON_WAIST);
-						if(I!=null)	CMLib.commands().remove(mob,I,false);
+						if(I!=null)	CMLib.commands().postRemove(mob,I,false);
 						I=mob.fetchFirstWornItem(Item.ON_LEGS);
-						if(I!=null)	CMLib.commands().remove(mob,I,false);
+						if(I!=null)	CMLib.commands().postRemove(mob,I,false);
 						mob.doCommand(CMParms.parse("MATE "+M.name()));
 					}
 					else

@@ -76,7 +76,7 @@ public class Spell_DetectScrying extends Spell
 					str.append(A.invoker().name()+" is watching <T-NAME>.");
 				if(str.length()==0)
 					str.append("There doesn't seem to be anyone scrying on <T-NAME>.");
-				CMLib.commands().say(mob,target,str.toString(),false,false);
+				CMLib.commands().postSay(mob,target,str.toString(),false,false);
 			}
 		}
 		else

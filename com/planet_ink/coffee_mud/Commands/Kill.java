@@ -134,7 +134,7 @@ public class Kill extends StdCommand
                 &&(CMLib.flags().canBeSeenBy(possibleOtherWeapon,mob))
                 &&(CMLib.flags().isRemovable(possibleOtherWeapon)))
                 {
-                    CMLib.commands().remove(mob,possibleOtherWeapon,false);
+                    CMLib.commands().postRemove(mob,possibleOtherWeapon,false);
                     if(possibleOtherWeapon.amWearingAt(Item.INVENTORY))
                     {
                         Command C=CMClass.getCommand("Wield");

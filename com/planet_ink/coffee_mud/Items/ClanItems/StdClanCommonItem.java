@@ -267,7 +267,7 @@ public class StdClanCommonItem extends StdClanItem
                                     if(rsc.size()>0)
                                     {
                                         for(int r=0;r<rsc.size();r++)
-                                            CMLib.commands().drop(M,(Environmental)rsc.elementAt(r),false,true);
+                                            CMLib.commands().postDrop(M,(Environmental)rsc.elementAt(r),false,true);
                                         return true;
                                     }
                                 }
@@ -304,7 +304,7 @@ public class StdClanCommonItem extends StdClanItem
                                     if(rsc.size()>0)
                                     {
                                         for(int r=0;r<rsc.size();r++)
-                                            CMLib.commands().get(M,null,(Item)rsc.elementAt(r),false);
+                                            CMLib.commands().postGet(M,null,(Item)rsc.elementAt(r),false);
                                         if(trackTo(M,M2))
                                             return true;
                                     }

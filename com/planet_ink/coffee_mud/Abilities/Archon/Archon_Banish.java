@@ -183,7 +183,7 @@ public class Archon_Banish extends ArchonSkill
                         if(A2!=null) A2.setMiscText("Spell_Hungerless;Spell_Thirstless");
                         if(A2!=null) A.addNonUninvokableEffect(A2);
 					}
-					CMLib.commands().look(target,true);
+					CMLib.commands().postLook(target,true);
 					for(int d=0;d<Directions.DIRECTIONS_BASE.length;d++)
 					{
 						A.prison.rawExits()[Directions.DIRECTIONS_BASE[d]]=CMClass.getExit("Open");

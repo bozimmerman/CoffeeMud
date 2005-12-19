@@ -124,7 +124,7 @@ public class Prop_Auction extends Property
 							{
 								((Item)auctioning).unWear();
 								highBidder.location().bringItemHere((Item)auctioning,Item.REFUSE_PLAYER_DROP);
-								if(CMLib.commands().get(highBidder,null,(Item)auctioning,false)
+								if(CMLib.commands().postGet(highBidder,null,(Item)auctioning,false)
                                 ||(highBidder.isMine(auctioning)))
                                 {
                                     CMLib.beanCounter().subtractMoney(highBidder,currency,bid);

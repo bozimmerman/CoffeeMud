@@ -71,9 +71,9 @@ public class Chant_FindMate extends Chant
 					mob.tell("You peer longingly at "+mate.name()+".");
 
 					Item I=mob.fetchFirstWornItem(Item.ON_WAIST);
-					if(I!=null)	CMLib.commands().remove(mob,I,false);
+					if(I!=null)	CMLib.commands().postRemove(mob,I,false);
 					I=mob.fetchFirstWornItem(Item.ON_LEGS);
-					if(I!=null)	CMLib.commands().remove(mob,I,false);
+					if(I!=null)	CMLib.commands().postRemove(mob,I,false);
 
 					if((mob.fetchFirstWornItem(Item.ON_WAIST)!=null)
 					||(mob.fetchFirstWornItem(Item.ON_LEGS)!=null))

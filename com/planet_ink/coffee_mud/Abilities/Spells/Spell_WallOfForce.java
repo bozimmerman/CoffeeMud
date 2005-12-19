@@ -70,7 +70,7 @@ public class Spell_WallOfForce extends Spell
 			{
 				mob.tell("Malice neither escapes nor enters the wall of force.");
 				if(mob.isMonster())
-					CMLib.commands().remove(mob,(Item)msg.tool(),true);
+					CMLib.commands().postRemove(mob,(Item)msg.tool(),true);
 				return false;
 			}
 			if((msg.sourceMinor()==CMMsg.TYP_ADVANCE)

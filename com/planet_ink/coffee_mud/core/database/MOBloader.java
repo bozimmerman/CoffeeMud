@@ -759,7 +759,7 @@ public class MOBloader
 		if(mob.Name().length()==0) return;
         Vector channels=CMLib.channels().getFlaggedChannelNames("PLAYERPURGES");
         for(int i=0;i<channels.size();i++)
-                CMLib.commands().channel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just been deleted.",true);
+                CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just been deleted.",true);
 		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_PURGES);
 		DBConnector.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mob.Name()+"'");
 		while(mob.inventorySize()>0)

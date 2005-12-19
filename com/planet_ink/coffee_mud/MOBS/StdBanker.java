@@ -408,9 +408,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 						if(item!=null)
 							addDepositInventory(owner,item);
 						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-						    CMLib.commands().say(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+CMLib.beanCounter().nameCurrencyLong(this,getBalance(owner))+".",true,false);
+						    CMLib.commands().postSay(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+CMLib.beanCounter().nameCurrencyLong(this,getBalance(owner))+".",true,false);
 						else
-						    CMLib.commands().say(this,mob,"Ok, your new balance is "+CMLib.beanCounter().nameCurrencyLong(this,getBalance(owner))+".",true,false);
+						    CMLib.commands().postSay(this,mob,"Ok, your new balance is "+CMLib.beanCounter().nameCurrencyLong(this,getBalance(owner))+".",true,false);
 						recoverEnvStats();
 						((Coins)msg.tool()).setNumberOfCoins(0);
 						double riches=CMLib.beanCounter().getTotalAbsoluteNativeValue(this);
@@ -419,7 +419,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					else
 					{
 						addDepositInventory(msg.source(),(Item)msg.tool());
-					    CMLib.commands().say(this,mob,"Thank you, "+msg.tool().name()+" is safe with us.",true,false);
+					    CMLib.commands().postSay(this,mob,"Thank you, "+msg.tool().name()+" is safe with us.",true,false);
 						((Item)msg.tool()).destroy();
 					}
 				}
@@ -461,23 +461,23 @@ public class StdBanker extends StdShopKeeper implements Banker
 								((Coins)old).putCoinsBack();
 						    }
 							else
-								CMLib.commands().drop(this,old,true,false);
+								CMLib.commands().postDrop(this,old,true,false);
 							if((coins==null)||(coins.getNumberOfCoins()<=0))
 							{
 								if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-									CMLib.commands().say(this,mob,"I have closed the account for Clan "+owner.getClanID()+". Thanks for your business.",true,false);
+									CMLib.commands().postSay(this,mob,"I have closed the account for Clan "+owner.getClanID()+". Thanks for your business.",true,false);
 								else
-									CMLib.commands().say(this,mob,"I have closed that account. Thanks for your business.",true,false);
+									CMLib.commands().postSay(this,mob,"I have closed that account. Thanks for your business.",true,false);
 								return;
 							}
 							addDepositInventory(owner,coins);
 							if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-							    CMLib.commands().say(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+CMLib.beanCounter().nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
+							    CMLib.commands().postSay(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+CMLib.beanCounter().nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
 							else
-							    CMLib.commands().say(this,mob,"Ok, your new balance is "+CMLib.beanCounter().nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
+							    CMLib.commands().postSay(this,mob,"Ok, your new balance is "+CMLib.beanCounter().nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
 						}
 						else
-						    CMLib.commands().say(this,mob,"But, your balance is "+CMLib.beanCounter().nameCurrencyLong(this,((Coins)depositInventoryItem).getTotalValue())+".",true,false);
+						    CMLib.commands().postSay(this,mob,"But, your balance is "+CMLib.beanCounter().nameCurrencyLong(this,((Coins)depositInventoryItem).getTotalValue())+".",true,false);
 					}
 					else
 					{
@@ -486,7 +486,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						&&(msg.source().isMarriedToLiege()))
 							delDepositInventory(msg.source().getLiegeID(),old);
 
-					    CMLib.commands().say(this,mob,"Thank you for your trust.",true,false);
+					    CMLib.commands().postSay(this,mob,"Thank you for your trust.",true,false);
 						if(location()!=null)
 							location().addItemRefuse(old,Item.REFUSE_PLAYER_DROP);
 						CMMsg msg2=CMClass.getMsg(mob,old,this,CMMsg.MSG_GET,null);
@@ -605,12 +605,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 					{
 						if((Double.MAX_VALUE-balance)<=((Coins)msg.tool()).getTotalValue())
 						{
-							CMLib.commands().say(this,mob,"I'm sorry, the law prevents us from holding that much money in one account.",true,false);
+							CMLib.commands().postSay(this,mob,"I'm sorry, the law prevents us from holding that much money in one account.",true,false);
 							return false;
 						}
 						if(!((Coins)msg.tool()).getCurrency().equalsIgnoreCase(CMLib.beanCounter().getCurrency(this)))
 						{
-						    CMLib.commands().say(this,mob,"I'm sorry, this bank only deals in "+CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(this))+".",true,false);
+						    CMLib.commands().postSay(this,mob,"I'm sorry, this bank only deals in "+CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(this))+".",true,false);
 						    return false;
 						}
 						return true;
@@ -619,7 +619,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					&&((msg.source().getClanID().length()==0)
 					  ||(CMLib.clans().getClan(msg.source().getClanID())==null)))
 					{
-						CMLib.commands().say(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
+						CMLib.commands().postSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
 						return false;
 					}
 					if(!(msg.tool() instanceof Item))
@@ -631,9 +631,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 					if(balance<minbalance)
 					{
 						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-							CMLib.commands().say(this,mob,"Clan "+msg.source().getClanID()+" will need a total balance of "+CMLib.beanCounter().nameCurrencyShort(this,minbalance)+" for me to hold that.",true,false);
+							CMLib.commands().postSay(this,mob,"Clan "+msg.source().getClanID()+" will need a total balance of "+CMLib.beanCounter().nameCurrencyShort(this,minbalance)+" for me to hold that.",true,false);
 						else
-							CMLib.commands().say(this,mob,"You'll need a total balance of "+CMLib.beanCounter().nameCurrencyShort(this,minbalance)+" for me to hold that.",true,false);
+							CMLib.commands().postSay(this,mob,"You'll need a total balance of "+CMLib.beanCounter().nameCurrencyShort(this,minbalance)+" for me to hold that.",true,false);
 						return false;
 					}
 				}
@@ -650,19 +650,19 @@ public class StdBanker extends StdShopKeeper implements Banker
 						if((msg.source().getClanID().length()==0)
 						  ||(C==null))
 						{
-							CMLib.commands().say(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
+							CMLib.commands().postSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
 							return false;
 						}
 
 						if(C.allowedToDoThis(msg.source(),Clan.FUNC_CLANWITHDRAW)<0)
 						{
-							CMLib.commands().say(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
+							CMLib.commands().postSay(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
 							return false;
 						}
 					}
 					if((msg.tool()==null)||(!(msg.tool() instanceof Item)))
 					{
-						CMLib.commands().say(this,mob,"What do you want? I'm busy!",true,false);
+						CMLib.commands().postSay(this,mob,"What do you want? I'm busy!",true,false);
 						return false;
 					}
 					if((msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
@@ -673,7 +673,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					{
 					    if(!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(this)))
 					    {
-							CMLib.commands().say(this,mob,"I'm sorry, I can only give you "+CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(this))+".",true,false);
+							CMLib.commands().postSay(this,mob,"I'm sorry, I can only give you "+CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(this))+".",true,false);
 							return false;
 					    }
 					    
@@ -701,7 +701,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							owner=CMLib.map().getPlayer(msg.source().getLiegeID());
 						else
 						{
-							CMLib.commands().say(this,mob,"You want WHAT?",true,false);
+							CMLib.commands().postSay(this,mob,"You want WHAT?",true,false);
 							return false;
 						}
 					}
@@ -711,18 +711,18 @@ public class StdBanker extends StdShopKeeper implements Banker
 						if(((Coins)msg.tool()).getTotalValue()>balance)
 						{
 							if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-								CMLib.commands().say(this,mob,"I'm sorry, Clan "+thename+" has only "+CMLib.beanCounter().nameCurrencyShort(this,balance)+" in its account.",true,false);
+								CMLib.commands().postSay(this,mob,"I'm sorry, Clan "+thename+" has only "+CMLib.beanCounter().nameCurrencyShort(this,balance)+" in its account.",true,false);
 							else
-								CMLib.commands().say(this,mob,"I'm sorry, you have only "+CMLib.beanCounter().nameCurrencyShort(this,balance)+" in that account.",true,false);
+								CMLib.commands().postSay(this,mob,"I'm sorry, you have only "+CMLib.beanCounter().nameCurrencyShort(this,balance)+" in that account.",true,false);
 							return false;
 						}
 						if(minbalance==0) return true;
 						if(((Coins)msg.tool()).getTotalValue()>(balance-minbalance))
 						{
 							if((balance-minbalance)>0)
-								CMLib.commands().say(this,mob,"I'm sorry, you may only withdraw "+CMLib.beanCounter().nameCurrencyShort(this,balance-minbalance)+"  at this time.",true,false);
+								CMLib.commands().postSay(this,mob,"I'm sorry, you may only withdraw "+CMLib.beanCounter().nameCurrencyShort(this,balance-minbalance)+"  at this time.",true,false);
 							else
-								CMLib.commands().say(this,mob,"I am holding other items in trust, so you may not withdraw funds at this time.",true,false);
+								CMLib.commands().postSay(this,mob,"I am holding other items in trust, so you may not withdraw funds at this time.",true,false);
 							return false;
 						}
 					}
@@ -746,12 +746,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 					if((msg.source().getClanID().length()==0)
 					  ||(C==null))
 					{
-						CMLib.commands().say(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
+						CMLib.commands().postSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
 						return false;
 					}
 					if(C.allowedToDoThis(msg.source(),Clan.FUNC_CLANDEPOSITLIST)<0)
 					{
-						CMLib.commands().say(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
+						CMLib.commands().postSay(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
 						return false;
 					}
 				}
@@ -780,7 +780,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 					if(bankChain().length()>0)
 						str.append("\n\rI am a banker for "+bankChain()+".");
-					CMLib.commands().say(this,mob,str.toString()+"^T",true,false);
+					CMLib.commands().postSay(this,mob,str.toString()+"^T",true,false);
 					return false;
 				}
 				else

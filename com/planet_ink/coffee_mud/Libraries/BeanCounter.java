@@ -447,7 +447,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 				C.putCoinsBack();
 		    }
 			else
-				CMLib.commands().drop(banker,C,true,false);
+				CMLib.commands().postDrop(banker,C,true,false);
 	    }
 		banker.recoverEnvStats();
 		customer.recoverEnvStats();

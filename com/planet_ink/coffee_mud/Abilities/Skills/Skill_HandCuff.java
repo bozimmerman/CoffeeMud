@@ -151,7 +151,7 @@ public class Skill_HandCuff extends StdSkill
 				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
 			if(oldGuard)
 				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
-			CMLib.commands().stand(mob,true);
+			CMLib.commands().postStand(mob,true);
 		}
 	}
 
@@ -226,7 +226,7 @@ public class Skill_HandCuff extends StdSkill
 							if(target.numFollowers()>0)
 								CMLib.commands().doStandardCommand(target,"NoFollow",CMParms.makeVector("UNFOLLOW","QUIETLY"));
 							target.setBitmap(CMath.unsetb(target.getBitmap(),MOB.ATT_NOFOLLOW));
-							CMLib.commands().follow(target,mob,true);
+							CMLib.commands().postFollow(target,mob,true);
 							if(oldNOFOL)
 								target.setBitmap(CMath.setb(target.getBitmap(),MOB.ATT_NOFOLLOW));
 							else

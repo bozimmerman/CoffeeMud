@@ -204,7 +204,7 @@ public class Burning extends StdAbility
 		{
 			Item I=(Item)affected;
 			if(!ouch((MOB)I.owner()))
-				CMLib.commands().drop((MOB)I.owner(),I,false,false);
+				CMLib.commands().postDrop((MOB)I.owner(),I,false,false);
 			if(I.subjectToWearAndTear())
 			{
 				if((I.usesRemaining()<1000)

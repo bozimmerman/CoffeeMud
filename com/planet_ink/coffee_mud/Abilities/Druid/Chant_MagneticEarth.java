@@ -70,7 +70,7 @@ public class Chant_MagneticEarth extends Chant
 					for(int i=0;i<toGo.size();i++)
 					{
 						Item I=(Item)toGo.elementAt(i);
-						if(CMLib.commands().drop(M,I,true,true))
+						if(CMLib.commands().postDrop(M,I,true,true))
 						{
 							didSomething=true;
 							R.show(M,I,CMMsg.MSG_OK_VISUAL,"<T-NAME> is pulled away from <S-NAME> to the magnetic ground!");

@@ -74,8 +74,8 @@ public class Fighter_DeflectProjectile extends FighterSkill
 			&&(msg.source().isMine(w)))
 			{
 				if(!w.amWearingAt(Item.INVENTORY))
-					CMLib.commands().remove(msg.source(),w,true);
-				CMLib.commands().drop(msg.source(),w,true,false);
+					CMLib.commands().postRemove(msg.source(),w,true);
+				CMLib.commands().postDrop(msg.source(),w,true,false);
 				if(!mob.location().isContent(w))
 					return true;
 			}

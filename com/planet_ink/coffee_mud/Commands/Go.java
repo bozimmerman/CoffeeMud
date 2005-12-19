@@ -302,7 +302,7 @@ public class Go extends StdCommand
 
 		if(!nolook)
         {
-			CMLib.commands().look(mob,true);
+			CMLib.commands().postLook(mob,true);
             if((!mob.isMonster())
             &&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER))
             &&(thisRoom!=null)

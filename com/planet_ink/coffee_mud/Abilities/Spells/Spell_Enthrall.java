@@ -125,7 +125,7 @@ public class Spell_Enthrall extends Spell
 		&&((mob.amFollowing()==null)||(mob.amFollowing()!=getCharmer()))
 		&&(mob.location()!=null)
 		&&(mob.location().isInhabitant(getCharmer())))
-			CMLib.commands().follow(mob,getCharmer(),true);
+			CMLib.commands().postFollow(mob,getCharmer(),true);
 		return super.tick(ticking,tickID);
 	}
 
@@ -142,8 +142,8 @@ public class Spell_Enthrall extends Spell
 		{
 			mob.tell("Your free-will returns.");
 			if(mob.amFollowing()!=null)
-				CMLib.commands().follow(mob,null,false);
-			CMLib.commands().stand(mob,true);
+				CMLib.commands().postFollow(mob,null,false);
+			CMLib.commands().postStand(mob,true);
 			if(mob.isMonster())
 			{
 				if(CMLib.dice().rollPercentage()>50)
@@ -209,7 +209,7 @@ public class Spell_Enthrall extends Spell
 					if(success)
 					{
 						if(target.isInCombat()) target.makePeace();
-						CMLib.commands().follow(target,mob,false);
+						CMLib.commands().postFollow(target,mob,false);
 						CMLib.combat().makePeaceInGroup(mob);
 						if(target.amFollowing()!=mob)
 							mob.tell(target.name()+" seems unwilling to follow you.");

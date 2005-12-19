@@ -140,6 +140,8 @@ public interface MOB
 	public void setVictim(MOB mob);
 	public void makePeace();
 	public void setAtRange(int newRange);
+    public int maxRange(Environmental using);
+    public int minRange(Environmental using);
 	public int rangeToTarget();
 	public boolean mayIFight(MOB mob);
 	public boolean mayPhysicallyAttack(MOB mob);

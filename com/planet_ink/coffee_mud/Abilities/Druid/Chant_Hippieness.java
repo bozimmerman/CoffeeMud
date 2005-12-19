@@ -85,7 +85,7 @@ public class Chant_Hippieness extends Chant
 			{
 				Item I=R.fetchItem(CMLib.dice().roll(1,R.numItems(),-1));
 				if((I!=null)&&(I.fitsOn(Item.ON_MOUTH)))
-					CMLib.commands().get(mob,I.container(),I,false);
+					CMLib.commands().postGet(mob,I.container(),I,false);
 			}
 
 			if(mob.inventorySize()>0)
@@ -94,7 +94,7 @@ public class Chant_Hippieness extends Chant
 				if(mouthed)
 				{
 					if((I!=null)&&(!I.amWearingAt(Item.INVENTORY))&&(!I.amWearingAt(Item.ON_MOUTH)))
-						CMLib.commands().remove(mob,I,false);
+						CMLib.commands().postRemove(mob,I,false);
 				}
 				else
 				if((I!=null)&&(I instanceof Light)&&(I.fitsOn(Item.ON_MOUTH)))
@@ -122,7 +122,7 @@ public class Chant_Hippieness extends Chant
 				}
 				else
 				if((I!=null)&&(!I.amWearingAt(Item.INVENTORY))&&(!I.amWearingAt(Item.ON_MOUTH)))
-					CMLib.commands().remove(mob,I,false);
+					CMLib.commands().postRemove(mob,I,false);
 			}
 		}
 		return true;
@@ -180,7 +180,7 @@ public class Chant_Hippieness extends Chant
 				{
 					oldClan=target.getClanID();
 					target.setClanID("");
-					CMLib.commands().say(target,null,"Far out...",false,false);
+					CMLib.commands().postSay(target,null,"Far out...",false,false);
 					maliciousAffect(mob,target,asLevel,0,verbalCastMask(auto)|CMMsg.TYP_MIND);
 				}
 			}

@@ -89,7 +89,7 @@ public class Fishing extends GatheringSkill
 						mob.location().addItemRefuse(newFound,Item.REFUSE_PLAYER_DROP);
 						if((mob.riding()!=null)&&(mob.riding() instanceof Container))
 							newFound.setContainer((Container)mob.riding());
-						CMLib.commands().get(mob,null,newFound,true);
+						CMLib.commands().postGet(mob,null,newFound,true);
 					}
 				}
 			}

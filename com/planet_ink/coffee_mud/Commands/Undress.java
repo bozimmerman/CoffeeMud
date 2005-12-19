@@ -86,7 +86,7 @@ public class Undress extends StdCommand
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
-						if(CMLib.commands().get(mob,null,item,true))
+						if(CMLib.commands().postGet(mob,null,item,true))
 							mob.location().show(mob,target,item,CMMsg.MASK_GENERAL|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> take(s) <O-NAME> off <T-NAMESELF>.");
 					}
 					else

@@ -117,7 +117,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 				case 29: say="Ugly head!"; break;
 				case 30: say="Goop"+((target.charStats().getStat(CharStats.GENDER)=='M')?"boy":"girl")+"!";  break;
 				}
-				CMLib.commands().say(mob,target,say,false,false);
+				CMLib.commands().postSay(mob,target,say,false,false);
 				if((target!=invoker)&&(target!=mob)&&(target.fetchEffect(ID())==null))
 				{
 					if(CMLib.dice().rollPercentage()>target.charStats().getSave(CharStats.SAVE_DISEASE))

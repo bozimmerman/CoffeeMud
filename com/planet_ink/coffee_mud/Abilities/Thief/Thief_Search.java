@@ -102,7 +102,7 @@ public class Thief_Search extends ThiefSkill
 			beneficialAffect(mob,target,asLevel,0);
 			target.envStats().setSensesMask(mob.envStats().sensesMask()|EnvStats.CAN_SEE_HIDDEN);
 			target.envStats().setSensesMask(mob.envStats().sensesMask()|EnvStats.CAN_SEE_SNEAKERS);
-			CMLib.commands().look(target,false);
+			CMLib.commands().postLook(target,false);
 			target.recoverEnvStats();
 		}
 		return success;

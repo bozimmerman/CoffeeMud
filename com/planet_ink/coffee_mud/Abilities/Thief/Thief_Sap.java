@@ -93,7 +93,7 @@ public class Thief_Sap extends ThiefSkill
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> regain(s) consciousness.");
-				CMLib.commands().stand(mob,true);
+				CMLib.commands().postStand(mob,true);
 			}
 			else
 				mob.tell("You regain consciousness.");

@@ -76,7 +76,7 @@ public class Chant_PlantConstriction extends Chant
 			if((!mob.amDead())
 			&&(mob.isMonster())
 			&&(CMLib.flags().isInTheGame(mob,false)))
-				CMLib.commands().remove(mob,I,false);
+				CMLib.commands().postRemove(mob,I,false);
 		}
 		return super.tick(ticking,tickID);
 	}

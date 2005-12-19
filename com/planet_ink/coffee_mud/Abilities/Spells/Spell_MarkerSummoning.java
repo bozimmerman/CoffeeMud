@@ -113,7 +113,7 @@ public class Spell_MarkerSummoning extends Spell
 						newRoom.bringMobHere(follower,false);
 						newRoom.send(follower,enterMsg);
 						follower.tell("\n\r\n\r");
-						CMLib.commands().look(follower,true);
+						CMLib.commands().postLook(follower,true);
 					}
 				}
 				Vector items=new Vector();

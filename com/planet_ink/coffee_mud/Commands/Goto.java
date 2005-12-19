@@ -70,7 +70,7 @@ public class Goto extends At
 		room.bringMobHere(mob,true);
 		if(mob.playerStats().poofIn().length()>0)
 			room.show(mob,null,CMMsg.MSG_OK_VISUAL,mob.playerStats().poofIn());
-		CMLib.commands().look(mob,true);
+		CMLib.commands().postLook(mob,true);
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

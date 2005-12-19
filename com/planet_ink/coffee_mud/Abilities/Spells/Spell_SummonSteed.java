@@ -117,7 +117,7 @@ public class Spell_SummonSteed extends Spell
                 if(squabble==null)
 				{
                     if (target.isInCombat()) target.makePeace();
-					CMLib.commands().follow(target,mob,true);
+					CMLib.commands().postFollow(target,mob,true);
                     invoker=mob;
                     if (target.amFollowing() != mob)
                         mob.tell(target.name() + " seems unwilling to follow you.");

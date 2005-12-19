@@ -100,7 +100,7 @@ public class Skill_Enslave extends StdSkill
 					        Vector V=CMParms.parse(response.toUpperCase());
 					        if(V.contains("STOP")||V.contains("CANCEL"))
 					        {
-					            CMLib.commands().say(mob,msg.source(),"Yes master.",false,false);
+					            CMLib.commands().postSay(mob,msg.source(),"Yes master.",false,false);
 					            return;
 					        }
 					    }
@@ -125,7 +125,7 @@ public class Skill_Enslave extends StdSkill
 						    String response=msg.sourceMessage().substring(start+1,end);
 						    if((response.toUpperCase().startsWith("I COMMAND YOU TO "))
 						    ||(response.toUpperCase().startsWith("I ORDER YOU TO ")))
-					            CMLib.commands().say(mob,msg.source(),"I don't take orders from you. ",false,false);
+					            CMLib.commands().postSay(mob,msg.source(),"I don't take orders from you. ",false,false);
 						}
 				    }
 				    else
@@ -142,21 +142,21 @@ public class Skill_Enslave extends StdSkill
 						        response=response.substring(("I ORDER YOU TO ").length());
 						    else
 						    {
-					            CMLib.commands().say(mob,msg.source(),"Master, please begin your instruction with the words 'I command you to '.  You can also tell me to 'stop' or 'cancel' any order you give.",false,false);
+					            CMLib.commands().postSay(mob,msg.source(),"Master, please begin your instruction with the words 'I command you to '.  You can also tell me to 'stop' or 'cancel' any order you give.",false,false);
 					            return;
 						    }
 							STEPS=CMLib.slavery().processRequest(msg.source(),mob,response);
 							if((STEPS!=null)&&(STEPS.size()>0))
-					            CMLib.commands().say(mob,msg.source(),"Yes master.",false,false);
+					            CMLib.commands().postSay(mob,msg.source(),"Yes master.",false,false);
 							else
-					            CMLib.commands().say(mob,msg.source(),"Huh? Wuh?",false,false);
+					            CMLib.commands().postSay(mob,msg.source(),"Huh? Wuh?",false,false);
 						}
 					}
 		    	}
 			    else
 		        if((msg.tool() instanceof Ability)
 				&&(((Ability)msg.tool()).classificationCode()==Ability.LANGUAGE))
-		            CMLib.commands().say(mob,msg.source(),"I don't understand your words.",false,false);
+		            CMLib.commands().postSay(mob,msg.source(),"I don't understand your words.",false,false);
 			}
 		}
 		else
@@ -233,7 +233,7 @@ public class Skill_Enslave extends StdSkill
 	                    { f=(Food)I; break;}
 	                }
 	                if(f==null)
-		                CMLib.commands().say(mob,null,"I am hungry.",false,false);  
+		                CMLib.commands().postSay(mob,null,"I am hungry.",false,false);  
 	                else
 	                {
 	                    Command C=CMClass.getCommand("Eat");
@@ -250,7 +250,7 @@ public class Skill_Enslave extends StdSkill
 	                    { d=(Drink)I; break;}
 	                }
 	                if(d==null)
-	                    CMLib.commands().say(mob,null,"I am thirsty.",false,false);
+	                    CMLib.commands().postSay(mob,null,"I am thirsty.",false,false);
 	                else
 	                {
 	                    Command C=CMClass.getCommand("Drink");
@@ -293,7 +293,7 @@ public class Skill_Enslave extends StdSkill
 		if(mob.isMonster())
 		{
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> sigh(s).");
-			CMLib.commands().say(mob,null,"You know, if I had any ambitions, I would enslave myself so I could do interesting things!",false,false);
+			CMLib.commands().postSay(mob,null,"You know, if I had any ambitions, I would enslave myself so I could do interesting things!",false,false);
 			return false;
 		}
 

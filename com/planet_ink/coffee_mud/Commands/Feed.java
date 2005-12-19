@@ -87,7 +87,7 @@ public class Feed extends StdCommand
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if((CMLib.commands().drop(mob,item,true,false))
+				if((CMLib.commands().postDrop(mob,item,true,false))
 				   &&(mob.location().isContent(item)))
 				{
 					msg=CMClass.getMsg(target,item,CMMsg.MASK_GENERAL|CMMsg.MSG_GET,null);
@@ -106,7 +106,7 @@ public class Feed extends StdCommand
 							if(mob.location().okMessage(mob,msg))
 							{
 								mob.location().send(mob,msg);
-								CMLib.commands().get(mob,null,item,true);
+								CMLib.commands().postGet(mob,null,item,true);
 							}
 						}
 					}

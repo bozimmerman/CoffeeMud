@@ -417,7 +417,7 @@ public class FrontLogin extends StdCommand
                 Vector channels=CMLib.channels().getFlaggedChannelNames("LOGINS");
                 if(!CMLib.flags().isCloaked(mob))
                 for(int i=0;i<channels.size();i++)
-                    CMLib.commands().channel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has logged on.",true);
+                    CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has logged on.",true);
 				if(pendingLogins.containsKey(mob.Name().toUpperCase()))
 				   pendingLogins.remove(mob.Name().toUpperCase());
 			}
@@ -917,7 +917,7 @@ public class FrontLogin extends StdCommand
 				CMLib.database().DBUpdatePlayer(mob);
                 Vector channels=CMLib.channels().getFlaggedChannelNames("NEWPLAYERS");
                 for(int i=0;i<channels.size();i++)
-                    CMLib.commands().channel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just been created.",true);
+                    CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just been created.",true);
 				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
 				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_NEWPLAYERS);
 				if(pendingLogins.containsKey(mob.Name().toUpperCase()))

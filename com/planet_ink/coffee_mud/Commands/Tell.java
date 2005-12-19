@@ -131,7 +131,7 @@ public class Tell extends StdCommand
 			return false;
 		}
 		
-		CMLib.commands().say(mob,target,combinedCommands,true,true);
+		CMLib.commands().postSay(mob,target,combinedCommands,true,true);
 		if((target.session()!=null)
 		&&(target.session().afkFlag()))
 			mob.tell(target.session().afkMessage());

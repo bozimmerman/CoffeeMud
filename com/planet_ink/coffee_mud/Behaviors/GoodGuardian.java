@@ -76,7 +76,7 @@ public class GoodGuardian extends StdBehavior
             &&(victim.getVictim().isInCombat()))
 			{
 				boolean yep=Aggressive.startFight(observer,victim,true);
-				if(yep)	CMLib.commands().say(observer,null,"PROTECT THE INNOCENT!",false,false);
+				if(yep)	CMLib.commands().postSay(observer,null,"PROTECT THE INNOCENT!",false,false);
 			}
 		}
 		else

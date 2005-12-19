@@ -149,7 +149,7 @@ public class Chant_Labyrinth extends Chant
 						newerRoom.bringMobHere(follower,false);
 						newerRoom.send(follower,enterMsg);
 						follower.tell("\n\r\n\r");
-						CMLib.commands().look(follower,true);
+						CMLib.commands().postLook(follower,true);
 					}
 				}
 			}

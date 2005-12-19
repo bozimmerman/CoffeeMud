@@ -76,7 +76,7 @@ public class Prayer_Sanctum extends Prayer
 							Vector V=CMParms.parseSemicolons(text(),true);
 							t=(String)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 						}
-						CMLib.commands().say(mob,msg.source(),t,false,false);
+						CMLib.commands().postSay(mob,msg.source(),t,false,false);
 					}
 					else
 						return super.okMessage(myHost,msg);

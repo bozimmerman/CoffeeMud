@@ -97,7 +97,7 @@ public class StdClanPamphlet extends StdClanItem
 					&&(CMLib.flags().canBeSeenBy(M,mob))
 					&&(CMLib.flags().canBeHeardBy(M,mob)))
 					{
-						CMLib.commands().say(mob,M,"Hey, take a look at this.",false,false);
+						CMLib.commands().postSay(mob,M,"Hey, take a look at this.",false,false);
 						ClanItem I=(ClanItem)copyOf();
 						mob.addInventory(I);
 						CMMsg newMsg=CMClass.getMsg(mob,M,I,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");

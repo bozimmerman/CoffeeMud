@@ -74,7 +74,7 @@ public class Prayer_DailyBread extends Prayer
 			}
 		}
 		if((Bread!=null)&&(BreadContainer!=null))
-			CMLib.commands().get(target,BreadContainer,Bread,false);
+			CMLib.commands().postGet(target,BreadContainer,Bread,false);
 		if(Bread==null)
 		{
 			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(target);

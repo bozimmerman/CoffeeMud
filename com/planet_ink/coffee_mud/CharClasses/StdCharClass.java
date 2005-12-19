@@ -496,7 +496,7 @@ public class StdCharClass implements CharClass
             Vector channels=CMLib.channels().getFlaggedChannelNames("LOSTLEVELS");
             if(!CMLib.flags().isCloaked(mob))
             for(int i=0;i<channels.size();i++)
-                CMLib.commands().channel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just lost a level.",true);
+                CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just lost a level.",true);
         }
 
 		levelAdjuster(mob,-1);
@@ -690,10 +690,10 @@ public class StdCharClass implements CharClass
             Vector channels2=CMLib.channels().getFlaggedChannelNames("LEVELS");
             if(!CMLib.flags().isCloaked(mob))
             for(int i=0;i<channels.size();i++)
-                CMLib.commands().channel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just gained a level at "+CMLib.map().getExtendedRoomID(mob.location())+".",true);
+                CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just gained a level at "+CMLib.map().getExtendedRoomID(mob.location())+".",true);
             if(!CMLib.flags().isCloaked(mob))
             for(int i=0;i<channels2.size();i++)
-                CMLib.commands().channel((String)channels2.elementAt(i),mob.getClanID(),mob.Name()+" has just gained a level.",true);
+                CMLib.commands().postChannel((String)channels2.elementAt(i),mob.getClanID(),mob.Name()+" has just gained a level.",true);
 			if(mob.soulMate()==null)
 				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LEVELSGAINED);
 		}

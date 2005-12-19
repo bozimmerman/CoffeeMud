@@ -78,7 +78,7 @@ public class Chant_SummonFear extends Chant
 						if(msg2.value()<=0)
 						{
 							invoker=mob;
-							CMLib.commands().flee(target,"");
+							CMLib.commands().postFlee(target,"");
 						}
 					}
 				}

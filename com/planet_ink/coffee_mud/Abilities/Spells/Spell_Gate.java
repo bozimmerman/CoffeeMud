@@ -139,14 +139,14 @@ public class Spell_Gate extends Spell
 				{
 					if(follower.isInCombat())
 					{
-						CMLib.commands().flee(follower,("NOWHERE"));
+						CMLib.commands().postFlee(follower,("NOWHERE"));
 						follower.makePeace();
 					}
 					thisRoom.send(follower,leaveMsg);
 					newRoom.bringMobHere(follower,false);
 					newRoom.send(follower,enterMsg);
 					follower.tell("\n\r\n\r");
-					CMLib.commands().look(follower,true);
+					CMLib.commands().postLook(follower,true);
 				}
 			}
 		}

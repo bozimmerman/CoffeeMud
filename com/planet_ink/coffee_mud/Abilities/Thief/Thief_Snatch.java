@@ -109,7 +109,7 @@ public class Thief_Snatch extends StdAbility
 				mob.location().show(mob,mob.getVictim(),CMMsg.MSG_OK_VISUAL,"<S-NAME> disarm(s) <T-NAMESELF>!");
 				if(mob.location().isContent(hisWeapon))
 				{
-					CMLib.commands().get(mob,null,hisWeapon,true);
+					CMLib.commands().postGet(mob,null,hisWeapon,true);
 					if(mob.isMine(hisWeapon))
 					{
 						msg=CMClass.getMsg(mob,hisWeapon,null,CMMsg.MSG_HOLD,"<S-NAME> snatch(es) the <T-NAME> out of mid-air!");

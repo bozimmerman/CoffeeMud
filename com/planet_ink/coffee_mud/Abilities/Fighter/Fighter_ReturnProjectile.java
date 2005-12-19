@@ -72,8 +72,8 @@ public class Fighter_ReturnProjectile extends FighterSkill
 			&&(msg.source().isMine(w)))
 			{
 				if(!w.amWearingAt(Item.INVENTORY))
-					CMLib.commands().remove(msg.source(),w,true);
-				CMLib.commands().drop(msg.source(),w,true,false);
+					CMLib.commands().postRemove(msg.source(),w,true);
+				CMLib.commands().postDrop(msg.source(),w,true,false);
 			}
 			else
 			if(((Weapon)w).requiresAmmunition())

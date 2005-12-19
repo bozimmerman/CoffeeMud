@@ -122,7 +122,7 @@ public class Spell_Summon extends Spell
 						newRoom.bringMobHere(follower,false);
 						newRoom.send(follower,enterMsg);
 						follower.tell("\n\r\n\r");
-						CMLib.commands().look(follower,true);
+						CMLib.commands().postLook(follower,true);
 					}
 					else
 						mob.tell("Some powerful magic stifles the spell.");

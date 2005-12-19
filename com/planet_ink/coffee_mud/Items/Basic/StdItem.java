@@ -557,7 +557,7 @@ public class StdItem implements Item
 			{
 				if((cantWearAt!=Item.HELD)&&(cantWearAt!=Item.WIELD))
 				{
-					if(!CMLib.commands().remove(mob,alreadyWearing,false))
+					if(!CMLib.commands().postRemove(mob,alreadyWearing,false))
 					{
 						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+CMLib.flags().wornLocation(cantWearAt)+".");
 						return false;
@@ -722,7 +722,7 @@ public class StdItem implements Item
 					Item alreadyWearing=mob.fetchFirstWornItem(Item.HELD);
 					if(alreadyWearing!=null)
 					{
-						if((!CMLib.commands().remove(mob,alreadyWearing,false))
+						if((!CMLib.commands().postRemove(mob,alreadyWearing,false))
 						||(!canWear(mob,Item.HELD)))
 						{
 							mob.tell("Your hands are full.");
@@ -772,7 +772,7 @@ public class StdItem implements Item
 					Item alreadyWearing=mob.fetchFirstWornItem(Item.WIELD);
 					if(alreadyWearing!=null)
 					{
-						if(!CMLib.commands().remove(mob,alreadyWearing,false))
+						if(!CMLib.commands().postRemove(mob,alreadyWearing,false))
 						{
 							mob.tell("You are already wielding "+alreadyWearing.name()+".");
 							return false;

@@ -56,7 +56,7 @@ public class Skill_Recall extends StdSkill
 			if((recalledRoom.okMessage(mob,msg))&&(recallRoom.okMessage(mob,msg2)))
 			{
 				if(mob.isInCombat())
-					CMLib.commands().flee(mob,"NOWHERE");
+					CMLib.commands().postFlee(mob,"NOWHERE");
 				recalledRoom.send(mob,msg);
 				recallRoom.send(mob,msg2);
 				if(recalledRoom.isInhabitant(mob))
@@ -77,7 +77,7 @@ public class Skill_Recall extends StdSkill
 						if(recallRoom.okMessage(follower,msg2))
 						{
 							if(follower.isInCombat())
-								CMLib.commands().flee(follower,("NOWHERE"));
+								CMLib.commands().postFlee(follower,("NOWHERE"));
 							recallRoom.send(follower,msg2);
 							if(recalledRoom.isInhabitant(follower))
 								recallRoom.bringMobHere(follower,false);

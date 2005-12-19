@@ -143,7 +143,7 @@ public class CommandJournal extends StdCommand
                         -1);
                 mob.tell(getScr("CommandJournal","thankyou",journalWord.toLowerCase()));
                 if((journalNum>=0)&&(CMLib.journals().getCommandJournalFlags(journalNum).get("CHANNEL=")!=null))
-                    CMLib.commands().channel(((String)CMLib.journals().getCommandJournalFlags(journalNum).get("CHANNEL=")).toUpperCase().trim(),"",getScr("CommandJournal","customline",mob.Name(),journalWord,CMParms.combine(commands,1)),true);
+                    CMLib.commands().postChannel(((String)CMLib.journals().getCommandJournalFlags(journalNum).get("CHANNEL=")).toUpperCase().trim(),"",getScr("CommandJournal","customline",mob.Name(),journalWord,CMParms.combine(commands,1)),true);
             }
         }
         else

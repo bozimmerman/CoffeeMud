@@ -58,7 +58,7 @@ public class Thief_StrategicRetreat extends ThiefSkill
 
 		String where=CMParms.combine(commands,0);
 		if(!success)
-			CMLib.commands().flee(mob,where);
+			CMLib.commands().postFlee(mob,where);
 		else
 		{
 			int directionCode=-1;

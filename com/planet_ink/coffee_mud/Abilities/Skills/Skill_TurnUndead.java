@@ -89,7 +89,7 @@ public class Skill_TurnUndead extends StdSkill
 					else
 					{
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shake(s) in fear!");
-						CMLib.commands().flee(target,"");
+						CMLib.commands().postFlee(target,"");
 					}
 					invoker=mob;
 				}

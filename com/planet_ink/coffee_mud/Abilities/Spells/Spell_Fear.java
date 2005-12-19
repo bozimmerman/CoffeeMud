@@ -47,7 +47,7 @@ public class Spell_Fear extends Spell
 	    if(M!=null)
 	    {
 	        if(!M.isMonster())
-		        CMLib.commands().stand(M,true);
+		        CMLib.commands().postStand(M,true);
 	        if((oldI!=M)&&(oldI!=null))
 		        M.tell(M,oldI,null,"You are no longer afraid of <T-NAMESELF>.");
 	        else
@@ -119,7 +119,7 @@ public class Spell_Fear extends Spell
 						if(msg2.value()<=0)
 						{
 							invoker=mob;
-							CMLib.commands().flee(target,"");
+							CMLib.commands().postFlee(target,"");
 						}
 					}
 				}

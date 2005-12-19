@@ -81,7 +81,7 @@ public class Prayer_HolyWind extends Prayer
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
-					CMLib.commands().stand(mob,true);
+					CMLib.commands().postStand(mob,true);
 				}
 			}
 			else

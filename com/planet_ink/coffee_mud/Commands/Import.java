@@ -4267,7 +4267,7 @@ public class Import extends StdCommand
 					}
                     Vector channels=CMLib.channels().getFlaggedChannelNames("NEWPLAYERS");
                     for(int i=0;i<channels.size();i++)
-                        CMLib.commands().channel((String)channels.elementAt(i),M.getClanID(),M.Name()+" has just been created.",true);
+                        CMLib.commands().postChannel((String)channels.elementAt(i),M.getClanID(),M.Name()+" has just been created.",true);
 					if(M.getStartRoom()==null)
 						M.setStartRoom(CMLib.map().getStartRoom(M));
 					if(M.location()==null)
