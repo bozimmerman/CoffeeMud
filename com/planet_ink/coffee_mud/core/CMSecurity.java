@@ -132,9 +132,10 @@ public class CMSecurity
         CMParms.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
         if(V.size()==0) return false;
         boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
+        String set=null;
         for(int v=0;v<V.size();v++)
         {
-            String set=((String)V.elementAt(v)).toUpperCase();
+            set=((String)V.elementAt(v)).toUpperCase();
             if(set.startsWith("FS:"))
             {
                 set=set.substring(3).trim();
@@ -190,28 +191,17 @@ public class CMSecurity
             return false;
         path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
         if(path.equals("/")||path.equals(".")) path="";
-        if(path.length()>0)
-        {
-            File F=new File(path.replace('/',File.separatorChar));
-            if((!F.exists())||(!F.isDirectory()))
-            {
-                Vector vfs=CMFile.getVFSDirectory();
-                boolean found=false;
-                for(int v=0;v<vfs.size();v++)
-                    if(((String)((Vector)vfs.elementAt(v)).elementAt(0)).toUpperCase().startsWith(path.toUpperCase()+"/"))
-                    { found=true; break;}
-                if(!found) return false;
-            }
-        }
         String areaPath=("AREA "+path).trim();
         String pathSlash=path+"/";
         Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
         CMParms.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
         if(V.size()==0) return false;
         boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
+        String set=null;
+        String setSlash=null;
         for(int v=0;v<V.size();v++)
         {
-            String set=((String)V.elementAt(v)).toUpperCase();
+            set=((String)V.elementAt(v)).toUpperCase();
             if(set.startsWith("FS:"))
                 set=set.substring(3).trim();
             else
@@ -233,10 +223,11 @@ public class CMSecurity
                         continue;
                     if((set.length()==0)||(subop&&set.equals("AREA"))||(path.length()==0)) 
                         return true;
+                    setSlash=set.endsWith("/")?set:set+"/";
                     if(set.startsWith(pathSlash)
-                    ||path.startsWith(set+"/")
+                    ||path.startsWith(setSlash)
                     ||set.equals(path)
-                    ||(subop&&areaPath.startsWith(set+"/"))
+                    ||(subop&&areaPath.startsWith(setSlash))
                     ||(subop&&("AREA "+set).startsWith(pathSlash))
                     ||(subop&&("AREA "+set).equals(path)))
                         return true;
@@ -268,9 +259,11 @@ public class CMSecurity
         CMParms.addToVector(mob.charStats().getCurrentClass().getSecurityGroups(mob.charStats().getCurrentClassLevel()),V);
         if(V.size()==0) return false;
         boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
+        String set=null;
+        String setSlash=null;
         for(int v=0;v<V.size();v++)
         {
-            String set=((String)V.elementAt(v)).toUpperCase();
+            set=((String)V.elementAt(v)).toUpperCase();
             if(set.startsWith("FS:"))
                 set=set.substring(3).trim();
             else
@@ -298,18 +291,20 @@ public class CMSecurity
                         continue;
                     if((set.length()==0)||(subop&&set.equals("AREA"))) 
                         return true;
-                    if(path.startsWith(set+"/")
+                    setSlash=set.endsWith("/")?set:set+"/";
+                    if(path.startsWith(setSlash)
                     ||(path.equals(set))
-                    ||(subop&&("AREA "+path).startsWith(set+"/"))
+                    ||(subop&&("AREA "+path).startsWith(setSlash))
                     ||(subop&&("AREA "+path).equals(set)))
                         return true;
                 }
                 continue;
             }
             if(set.length()==0) return true;
-            if(path.startsWith(set+"/")
+            setSlash=set.endsWith("/")?set:set+"/";
+            if(path.startsWith(setSlash)
             ||(path.equals(set))
-            ||(subop&&("AREA "+path).startsWith(set+"/"))
+            ||(subop&&("AREA "+path).startsWith(setSlash))
             ||(subop&&("AREA "+path).equals(set)))
                return true;
         }

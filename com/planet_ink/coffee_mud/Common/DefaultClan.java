@@ -75,7 +75,7 @@ public class DefaultClan implements Clan
     {
         if(lastClanKillRecord==null)
         {
-            Vector V=CMLib.database().DBReadData(ID(),"CLANKILLS",ID()+"/CLANKILLS");
+            Vector V=CMLib.database().DBReadData(clanID(),"CLANKILLS",clanID()+"/CLANKILLS");
             clanKills.clear();
             if(V.size()==0)
                 lastClanKillRecord="";
@@ -104,15 +104,15 @@ public class DefaultClan implements Clan
         if((lastClanKillRecord==null)||(!lastClanKillRecord.equals(str.toString())))
         {
             lastClanKillRecord=str.toString();
-            CMLib.database().DBDeleteData(ID(),"CLANKILLS",ID()+"/CLANKILLS");
+            CMLib.database().DBDeleteData(clanID(),"CLANKILLS",clanID()+"/CLANKILLS");
             try{Thread.sleep(200);}catch(Exception e){}
-            CMLib.database().DBCreateData(ID(),"CLANKILLS",ID()+"/CLANKILLS",str.toString());
+            CMLib.database().DBCreateData(clanID(),"CLANKILLS",clanID()+"/CLANKILLS",str.toString());
         }
     }
     
     public void updateVotes()
     {
-        CMLib.database().DBDeleteData(ID(),"CLANVOTES",ID()+"/CLANVOTES");
+        CMLib.database().DBDeleteData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES");
         StringBuffer str=new StringBuffer("");
         for(Enumeration e=votes();e.hasMoreElements();)
         {
@@ -134,7 +134,7 @@ public class DefaultClan implements Clan
             }
         }
         if(str.length()>0)
-            CMLib.database().DBCreateData(ID(),"CLANVOTES",ID()+"/CLANVOTES","<BALLOTS>"+str.toString()+"</BALLOTS>");
+            CMLib.database().DBCreateData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES","<BALLOTS>"+str.toString()+"</BALLOTS>");
     }
     public void addVote(Object CV)
     {
@@ -189,7 +189,7 @@ public class DefaultClan implements Clan
             {
                 String controller=B.rulingClan();
                 Area A2=CMLib.utensils().getLegalObject(A);
-                if(controller.equals(ID())&&(!done.contains(A2)))
+                if(controller.equals(clanID())&&(!done.contains(A2)))
                     done.addElement(A2);
             }
         }
@@ -200,7 +200,7 @@ public class DefaultClan implements Clan
     {
         if(voteList==null)
         {
-            Vector V=CMLib.database().DBReadData(ID(),"CLANVOTES",ID()+"/CLANVOTES");
+            Vector V=CMLib.database().DBReadData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES");
             voteList=new Vector();
             for(int v=0;v<V.size();v++)
             {
@@ -297,7 +297,7 @@ public class DefaultClan implements Clan
     {
         boolean did=false;
         if(M==null) return false;
-        if(M.getClanID().equals(ID())
+        if(M.getClanID().equals(clanID())
         &&(M.getClanRole()!=POS_APPLICANT))
         {
             if(M.fetchAbility("Spell_ClanHome")==null)
@@ -326,7 +326,7 @@ public class DefaultClan implements Clan
                 M.delAbility(M.fetchAbility("Spell_ClanDonate"));
             }
         }
-        if(((M.getClanID().equals(ID())))
+        if(((M.getClanID().equals(clanID())))
         &&(allowedToDoThis(M,FUNC_CLANCANORDERCONQUERED)>0))
         {
             if(M.fetchAbility("Spell_Flagportation")==null)
@@ -349,7 +349,7 @@ public class DefaultClan implements Clan
             int pos=POSORDER[i];
             String title="*, "+CMLib.clans().getRoleName(getGovernment(),pos,true,false)+" of "+name();
             if((M.getClanRole()==pos)
-            &&(M.getClanID().equals(ID()))
+            &&(M.getClanID().equals(clanID()))
             &&(pos!=POS_APPLICANT))
             {
                 if(!M.playerStats().getTitles().contains(title))
@@ -423,14 +423,14 @@ public class DefaultClan implements Clan
     public String getDetail(MOB mob)
     {
         StringBuffer msg=new StringBuffer("");
-        msg.append("^x"+typeName()+" Profile   :^.^N "+ID()+"\n\r"
+        msg.append("^x"+typeName()+" Profile   :^.^N "+clanID()+"\n\r"
                   +"-----------------------------------------------------------------\n\r"
                   +getPremise()+"\n\r"
                   +"-----------------------------------------------------------------\n\r"
                   +"^xType            :^.^N "+CMStrings.capitalizeAndLower(GVT_DESCS[getGovernment()])+"\n\r"
                   +"^xQualifications  :^.^N "+((getAcceptanceSettings().length()==0)?"Anyone may apply":CMLib.masking().maskDesc(getAcceptanceSettings()))+"\n\r");
         msg.append("^xExp. Tax Rate   :^.^N "+((int)Math.round(getTaxes()*100))+"%\n\r");
-        if((mob.getClanID().equalsIgnoreCase(ID()))
+        if((mob.getClanID().equalsIgnoreCase(clanID()))
         ||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
         {
             msg.append("^xExperience Pts. :^.^N "+getExp()+"\n\r");
@@ -446,7 +446,6 @@ public class DefaultClan implements Clan
                 if(R!=null)
                     msg.append("^x Morgue         :^.^N "+R.displayText()+"\n\r");
             }
-            msg.append("^xExperience Pts. :^.^N "+getExp()+"\n\r");
         }
         msg.append("^x"+CMStrings.padRight(CMLib.clans().getRoleName(getGovernment(),POS_BOSS,true,true),16)+":^.^N "+crewList(POS_BOSS)+"\n\r"
                   +"^x"+CMStrings.padRight(CMLib.clans().getRoleName(getGovernment(),POS_LEADER,true,true),16)+":^.^N "+crewList(POS_LEADER)+"\n\r"
@@ -465,17 +464,17 @@ public class DefaultClan implements Clan
                 {
                     msg.append("^x"+CMStrings.padRight(C.name(),16)+":^.^N ");
                     msg.append(CMStrings.capitalizeAndLower(REL_DESCS[getClanRelations(C.clanID())]));
-                    int orel=C.getClanRelations(ID());
+                    int orel=C.getClanRelations(clanID());
                     if(orel!=REL_NEUTRAL)
                         msg.append(" (<-"+CMStrings.capitalizeAndLower(REL_DESCS[orel])+")");
                     msg.append("\n\r");
                 }
             }
         }
-        if((mob.getClanID().equalsIgnoreCase(ID()))
+        if((mob.getClanID().equalsIgnoreCase(clanID()))
         ||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
         {
-            if(mob.getClanID().equalsIgnoreCase(ID()))
+            if(mob.getClanID().equalsIgnoreCase(clanID()))
                 updateClanPrivileges(mob);
             msg.append("-----------------------------------------------------------------\n\r"
                       +"^x"+CMStrings.padRight(CMLib.clans().getRoleName(getGovernment(),POS_MEMBER,true,true),16)
@@ -754,7 +753,7 @@ public class DefaultClan implements Clan
 
     public int getSize(Vector members)
     {
-        CMLib.database().DBClanFill(this.ID(), members, new Vector(), new Vector());
+        CMLib.database().DBClanFill(clanID(), members, new Vector(), new Vector());
         return members.size();
     }
 
@@ -851,7 +850,7 @@ public class DefaultClan implements Clan
         Vector members=new Vector();
         Vector roles=new Vector();
         Vector lastDates=new Vector();
-        CMLib.database().DBClanFill(this.ID(), members, roles, lastDates);
+        CMLib.database().DBClanFill(clanID(), members, roles, lastDates);
         for(int s=0;s<members.size();s++)
         {
             int posFilter=((Integer)roles.elementAt(s)).intValue();
@@ -932,7 +931,7 @@ public class DefaultClan implements Clan
                                 clanAnnounce(s+" is now a "+CMLib.clans().getRoleName(getGovernment(),max,true,false)+" of the "+typeName()+" "+name()+".");
                                 Log.sysOut("Clans",s+" of clan "+name()+" was autopromoted to "+CMLib.clans().getRoleName(getGovernment(),max,true,false)+".");
                                 M2.setClanRole(max);
-                                CMLib.database().DBUpdateClanMembership(s, ID(), max);
+                                CMLib.database().DBUpdateClanMembership(s, name(), max);
                             }
                             break;
                         }
@@ -1043,8 +1042,8 @@ public class DefaultClan implements Clan
                                 {
                                     CV.voteStatus=VSTAT_PASSED;
                                     MOB mob=CMClass.getMOB("StdMOB");
-                                    mob.setName(ID());
-                                    mob.setClanID(ID());
+                                    mob.setName(clanID());
+                                    mob.setClanID(clanID());
                                     mob.setClanRole(POS_BOSS);
                                     mob.baseEnvStats().setLevel(1000);
                                     if(mob.location()==null)
@@ -1201,7 +1200,7 @@ public class DefaultClan implements Clan
     {
         Vector channels=CMLib.channels().getFlaggedChannelNames("CLANINFO");
         for(int i=0;i<channels.size();i++)
-            CMLib.commands().channel((String)channels.elementAt(i),ID(),msg,true);
+            CMLib.commands().channel((String)channels.elementAt(i),clanID(),msg,true);
     }
 
     public int applyExpMods(int exp)

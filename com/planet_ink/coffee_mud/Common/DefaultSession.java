@@ -1502,35 +1502,43 @@ public class DefaultSession extends Thread implements Session
                 if((M.location()!=null)&&(!skipRooms.contains(M.location())))
                     skipRooms.add(M.location());
             }
-            CMMsg msg=CMClass.getMsg(theMOB,null,msgCode,null);
-            Room R=theMOB.location();
-            if(R!=null) skipRooms.remove(R);
-            try{
-                if((R!=null)&&(theMOB.location()!=null))
-                    R.send(theMOB,msg);
-                for(Iterator i=skipRooms.iterator();i.hasNext();)
-                {
-                    R=(Room)i.next();
-                    if(theMOB.location()!=null)
-                        R.sendOthers(theMOB,msg);
-                }
-                if(R!=null) skipRooms.add(R);
-            }catch(Exception e){}
+            if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN))
+            &&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
+            {
+                CMMsg msg=CMClass.getMsg(theMOB,null,msgCode,null);
+                Room R=theMOB.location();
+                if(R!=null) skipRooms.remove(R);
+                try{
+                    if((R!=null)&&(theMOB.location()!=null))
+                        R.send(theMOB,msg);
+                    for(Iterator i=skipRooms.iterator();i.hasNext();)
+                    {
+                        R=(Room)i.next();
+                        if(theMOB.location()!=null)
+                            R.sendOthers(theMOB,msg);
+                    }
+                    if(R!=null) skipRooms.add(R);
+                }catch(Exception e){}
+            }
         }
         
         public void run()
         {
-            CMMsg msg=CMClass.getMsg(theMOB,null,msgCode,null);
-            Room R=null;
-            try{
-                for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
-                {
-                    R=(Room)e.nextElement();
-                    if((!skipRooms.contains(R))&&(theMOB.location()!=null))
-                        R.sendOthers(theMOB,msg);
-                }
-            }catch(Exception e){}
-            theMOB=null;
+            if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN))
+            &&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
+            {
+                CMMsg msg=CMClass.getMsg(theMOB,null,msgCode,null);
+                Room R=null;
+                try{
+                    for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+                    {
+                        R=(Room)e.nextElement();
+                        if((!skipRooms.contains(R))&&(theMOB.location()!=null))
+                            R.sendOthers(theMOB,msg);
+                    }
+                }catch(Exception e){}
+                theMOB=null;
+            }
         }
     }
 }

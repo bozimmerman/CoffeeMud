@@ -37,9 +37,9 @@ import org.mozilla.javascript.optimizer.*;
 */
 public class CMClass extends ClassLoader
 {
-    private static CMClass loader=new CMClass();
-    protected Hashtable classes=new Hashtable();
-    public static CMClass instance(){return loader;}
+    protected static Hashtable classes=new Hashtable();
+    protected static CMClass inst=new CMClass();
+    public static CMClass instance(){ return inst;}
     
     protected static TimeClock globalClock=null;
     protected static Hashtable common=new Hashtable();
@@ -257,8 +257,8 @@ public class CMClass extends ClassLoader
 
 	public static boolean delClass(Object O)
 	{
-        if(loader.classes.containsKey(O.getClass().getName()))
-            loader.classes.remove(O.getClass().getName());
+        if(classes.containsKey(O.getClass().getName()))
+            classes.remove(O.getClass().getName());
 		if(races.contains(O)){ races.removeElement(O); return true;}
 		if(charClasses.contains(O)){ charClasses.removeElement(O); return true;}
 		if(MOBs.contains(O)){ MOBs.removeElement(O); return true;}
@@ -644,6 +644,7 @@ public class CMClass extends ClassLoader
 	public static boolean loadListToObj(Object toThis, String filePath, String ancestor)
 	{ 
         Class ancestorCl=null;
+        CMClass loader=new CMClass();
         if (ancestor != null && ancestor.length() != 0)
         {
             try
@@ -698,6 +699,9 @@ public class CMClass extends ClassLoader
                         Log.sysOut("CMClass","WARNING: class failed ancestral check: "+packageName);
                     O=C.newInstance();
                 }
+                if(O==null)
+                    Log.sysOut("CMClass","Unable to create class '"+packageName+"'");
+                else
                 if(O!=null)
                 {
                     String itemName=O.getClass().getName();
@@ -844,7 +848,7 @@ public class CMClass extends ClassLoader
                 if((extendsClass==null)&&((String)V.elementAt(v)).trim().toUpperCase().startsWith("//EXTENDS "))
                 {
                     String extendName=((String)V.elementAt(v)).trim().substring(10).trim();
-                    try{extendsClass=loader.loadClass(extendName);}
+                    try{extendsClass=loadClass(extendName);}
                     catch(ClassNotFoundException e)
                     {
                         Log.errOut("CMClass","Could not load "+CF.getName()+" from "+className+" because "+extendName+" is an invalid extension.");
@@ -855,7 +859,7 @@ public class CMClass extends ClassLoader
                 {
                     String extendName=((String)V.elementAt(v)).substring(13).trim();
                     Class C=null;
-                    try{C=loader.loadClass(extendName);}catch(ClassNotFoundException e){continue;}
+                    try{C=loadClass(extendName);}catch(ClassNotFoundException e){continue;}
                     implementsClasses.addElement(C);
                 }
             }

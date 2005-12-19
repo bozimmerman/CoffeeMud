@@ -957,24 +957,8 @@ public class Reset extends StdCommand
             mob.session().println("done!");
         }
         else
-		if(s.equalsIgnoreCase("clantick"))
+		if(s.startsWith("clantick"))
 			CMLib.clans().tickAllClans();
-		else
-        if(s.equalsIgnoreCase("autoweather"))
-        {
-            if(mob.session()!=null)
-            {
-                mob.session().print(mob,null,null,"Modifying players...");
-                Vector V=CMLib.database().userList();
-                while(V.size()>0)
-                {
-                    MOB M=CMLib.map().getLoadPlayer((String)V.firstElement());
-                    V.removeElementAt(0);
-                    M.setBitmap(M.getBitmap()|MOB.ATT_AUTOWEATHER);
-                    CMLib.database().DBUpdatePlayerStatsOnly(M);
-                }
-            }
-        }
         else
 		if(s.equalsIgnoreCase("arearacemat"))
 		{
