@@ -68,7 +68,7 @@ public class BagOfHolding extends SmallSack implements MiscMagic
 	{
 		baseEnvStats().setWeight(0);
 		super.recoverEnvStats();
-		baseEnvStats().setWeight(-recursiveWeight(this));
+		baseEnvStats().setWeight(-recursiveWeight());
 		super.recoverEnvStats();
 	}
 }

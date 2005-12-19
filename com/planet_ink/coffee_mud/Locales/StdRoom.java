@@ -62,10 +62,6 @@ public class StdRoom
 	protected int myResource=-1;
 	protected long resourceFound=0;
     
-    protected final static int LOOK_LONG=0;
-    protected final static int LOOK_NORMAL=1;
-    protected final static int LOOK_BRIEFOK=2;
-
 	protected boolean skyedYet=false;
 	public StdRoom()
 	{
@@ -537,77 +533,12 @@ public class StdRoom
 				break;
 			}
 			case CMMsg.TYP_LOOK:
-                look(mob,(msg.sourceMessage()==null)?LOOK_BRIEFOK:LOOK_NORMAL);
-                break;
             case CMMsg.TYP_EXAMINE:
-                look(mob,LOOK_LONG);
+                CMLib.commands().handleBeingLookedAt(msg);
 				break;
 			case CMMsg.TYP_SNIFF:
-			{
-			    StringBuffer smell=new StringBuffer("");
-			    switch(domainType())
-			    {
-			    case Room.DOMAIN_INDOORS_UNDERWATER:
-			    case Room.DOMAIN_INDOORS_WATERSURFACE:
-			    case Room.DOMAIN_OUTDOORS_UNDERWATER:
-			    case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-			        smell.append("It smells very WET here. ");
-			    	break;
-			    case Room.DOMAIN_INDOORS_CAVE:
-			        smell.append("It smells very dank and mildewy here. ");
-			    	break;
-			    case Room.DOMAIN_OUTDOORS_HILLS:
-			    case Room.DOMAIN_OUTDOORS_PLAINS:
-			        switch(getArea().getTimeObj().getSeasonCode())
-			        {
-			        case TimeClock.SEASON_FALL:
-			        case TimeClock.SEASON_WINTER:
-				        smell.append("There is a faint grassy smell here. ");
-				    	break;
-			        case TimeClock.SEASON_SPRING:
-			        case TimeClock.SEASON_SUMMER:
-				        smell.append("There is a floral grassy smell here. ");
-				    	break;
-			        }
-			    	break;
-			    case Room.DOMAIN_OUTDOORS_WOODS:
-			        switch(getArea().getTimeObj().getSeasonCode())
-			        {
-			        case TimeClock.SEASON_FALL:
-			        case TimeClock.SEASON_WINTER:
-				        smell.append("There is a faint woodsy smell here. ");
-				    	break;
-			        case TimeClock.SEASON_SPRING:
-			        case TimeClock.SEASON_SUMMER:
-				        smell.append("There is a rich woodsy smell here. ");
-				    	break;
-			        }
-			    	break;
-			    case Room.DOMAIN_OUTDOORS_JUNGLE:
-			        smell.append("There is a rich floral and plant aroma here. ");
-			    	break;
-			    case Room.DOMAIN_OUTDOORS_MOUNTAINS:
-			    case Room.DOMAIN_OUTDOORS_ROCKS:
-			        switch(getArea().getTimeObj().getSeasonCode())
-			        {
-			        case TimeClock.SEASON_FALL:
-			        case TimeClock.SEASON_WINTER:
-			        case TimeClock.SEASON_SUMMER:
-				        smell.append("It smells musty and rocky here. ");
-				    	break;
-			        case TimeClock.SEASON_SPRING:
-				        smell.append("It smells musty, rocky, and a bit grassy here. ");
-				    	break;
-			        }
-			    	break;
-			    case Room.DOMAIN_OUTDOORS_SWAMP:
-			        smell.append("It smells stinky and gassy here. ");
-			    	break;
-			    }
-				if(smell.length()>0)
-				    msg.source().tell(smell.toString());
-			}
-			break;
+                CMLib.commands().handleBeingSniffed(msg);
+    			break;
 			case CMMsg.TYP_READ:
 				if(CMLib.flags().canBeSeenBy(this,mob))
 					mob.tell("There is nothing written here.");
@@ -882,154 +813,6 @@ public class StdRoom
 		return parseVaries(description());
 	}
 
-	protected void look(MOB mob, int lookCode)
-	{
-		StringBuffer Say=new StringBuffer("");
-        boolean compress=CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS);
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-		{
-			if(!CMSecurity.isAllowed(mob,this,"SYSMSGS"))
-				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
-			else
-			{
-				if(myArea!=null)
-					Say.append("^!Area  :^N("+myArea.Name()+")"+"\n\r");
-				Say.append("^!Locale:^N("+ID()+")"+"\n\r");
-				Say.append("^H("+CMLib.map().getExtendedRoomID(this)+")^N ");
-			}
-		}
-		if(CMLib.flags().canBeSeenBy(this,mob))
-		{
-			Say.append("^O^<RName^>" + roomTitle()+"^</RName^>"+CMLib.flags().colorCodes(this,mob)+"^L\n\r");
-			if((lookCode!=LOOK_BRIEFOK)||(!CMath.bset(mob.getBitmap(),MOB.ATT_BRIEF)))
-			{
-                if(lookCode==LOOK_LONG)
-                {
-                    String roomDesc=roomDescription();
-                    Vector keyWords=null;
-                    String word=null;
-                    int x=0;
-                    for(int c=0;c<numItems();c++)
-                    {
-                        Item item=fetchItem(c);
-                        if(item==null) continue;
-                        if((item.container()==null)
-                        &&(item.displayText().length()==0)
-                        &&(CMLib.flags().canBeSeenBy(item,mob)))
-                        {
-                            keyWords=CMParms.parse(item.name().toUpperCase());
-                            for(int k=0;k<keyWords.size();k++)
-                            {
-                                word=(String)keyWords.elementAt(k);
-                                x=roomDesc.toUpperCase().indexOf(word);
-                                while(x>=0)
-                                {
-                                    if(((x<=0)||((!Character.isLetterOrDigit(roomDesc.charAt(x-1)))&&(roomDesc.charAt(x-1)!='>')))
-                                    &&(((x+word.length())>=(roomDesc.length()-1))||((!Character.isLetterOrDigit(roomDesc.charAt((x+word.length()))))&&(roomDesc.charAt(x+word.length())!='^'))))
-                                    {
-                                        int brackCheck=roomDesc.substring(x).indexOf("^>");
-                                        int brackCheck2=roomDesc.substring(x).indexOf("^<");
-                                        if((brackCheck<0)||(brackCheck2<brackCheck))
-                                        {
-                                            int start=x;
-                                            while((start>=0)&&(!Character.isWhitespace(roomDesc.charAt(start))))
-                                                start--;
-                                            start++;
-                                            int end=(x+word.length());
-                                            while((end<roomDesc.length())&&(!Character.isWhitespace(roomDesc.charAt(end))))
-                                                end++;
-                                            int l=roomDesc.length();
-                                            roomDesc=roomDesc.substring(0,start)+"^H^<WItem \""+item.name()+"\"^>"+roomDesc.substring(start,end)+"^</WItem^>^?"+roomDesc.substring(end);
-                                            x=x+(roomDesc.length()-l);
-                                        }
-                                    }
-                                    x=roomDesc.toUpperCase().indexOf(word,x+1);
-                                }
-                            }
-                        }
-                    }
-                    Say.append("^L^<RDesc^>"+roomDesc+"^</RDesc^>");
-                }
-                else
-    				Say.append("^L^<RDesc^>" + roomDescription()+"^</RDesc^>");
-                if((!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
-                    Say.append(CMProps.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
-                if(compress)
-                    Say.append("^N  ");
-                else
-    				Say.append("^N\n\r\n\r");
-			}
-		}
-
-		Vector viewItems=new Vector();
-        int itemsInTheDarkness=0;
-		for(int c=0;c<numItems();c++)
-		{
-			Item item=fetchItem(c);
-			if(item==null) continue;
-            
-            if(item.container()==null)
-            {
-                if(CMLib.flags().canBarelyBeSeenBy(item,mob))
-                    itemsInTheDarkness++;
-				viewItems.addElement(item);
-            }
-		}
-        
-        StringBuffer itemStr=CMLib.lister().lister(mob,viewItems,false,"RItem"," \"*\"",lookCode==LOOK_LONG,compress);
-        if(itemStr.length()>0)
-    		Say.append(itemStr);
-
-        int mobsInTheDarkness=0;
-		for(int i=0;i<numInhabitants();i++)
-		{
-			MOB mob2=fetchInhabitant(i);
-			if((mob2!=null)&&(mob2!=mob))
-			{
-               if((mob2.displayText(mob).length()>0)
-               ||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
-               {
-    			   if(CMLib.flags().canBeSeenBy(mob2,mob))
-                   {
-    					if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-    						Say.append("^H("+CMClass.className(mob2)+")^N ");
-    
-                        if((!compress)&&(!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
-                            Say.append(CMProps.mxpImage(mob2," H=10 W=10",""," "));
-    					Say.append("^M^<RMob \""+mob2.name()+"\"^>");
-                        if(compress) Say.append(CMLib.flags().colorCodes(mob2,mob)+"^M ");
-    					if(mob2.displayText(mob).length()>0)
-    						Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob2.displayText(mob))));
-    					else
-    						Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob2.name())));
-    					Say.append("^</RMob^>");
-                        if(!compress)
-                            Say.append(CMLib.flags().colorCodes(mob2,mob)+"^N\n\r");
-                        else
-                            Say.append("^N");
-                   }
-                   else
-                   if(CMLib.flags().canBarelyBeSeenBy(mob2,mob))
-                       mobsInTheDarkness++;
-               }
-			}
-		}
-
-		if(Say.length()==0)
-			mob.tell("You can't see anything!");
-		else
-        {
-            if(compress) Say.append("\n\r");
-            mob.tell(Say.toString());
-            if(itemsInTheDarkness>0)
-                mob.tell("      ^IThere is something here, but it's too dark to make out.^?\n\r");
-            if(mobsInTheDarkness>1)
-                mob.tell("^MThe darkness conceals several others.^?\n\r");
-            else
-            if(mobsInTheDarkness>0)
-                mob.tell("^MYou are not alone, but it's too dark to tell.^?\n\r");
-        }
-	}
 
 	public void bringMobHere(MOB mob, boolean andFollowers)
 	{

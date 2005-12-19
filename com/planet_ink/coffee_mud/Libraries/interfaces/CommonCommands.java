@@ -48,9 +48,20 @@ public interface CommonCommands extends CMObject
     public void postStand(MOB mob, boolean ifNecessary);
     public void postFollow(MOB follower, MOB leader, boolean quiet);
     public void postSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag);
+    public void handleBeingLookedAt(CMMsg msg);
+    public void handleBeingRead(CMMsg msg);
     public void handleRecall(CMMsg msg);
     public void handleSit(CMMsg msg);
     public void handleStand(CMMsg msg);
     public void handleSleep(CMMsg msg);
     public void handleBeingSniffed(CMMsg msg);
+    public void handleBeingGivenTo(CMMsg msg);
+    public void handleBeingGetted(CMMsg msg);
+    public void handleBeingDropped(CMMsg msg);
+    public void handleBeingRemoved(CMMsg msg);
+    public void handleBeingWorn(CMMsg msg);
+    public void handleBeingWielded(CMMsg msg);
+    public void handleBeingHeld(CMMsg msg);
+    public void tickAging(MOB mob);
+    public int tickManaConsumption(MOB mob, int manaConsumeCounter);
 }

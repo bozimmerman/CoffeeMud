@@ -127,7 +127,7 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						else
-						if((recursiveWeight(this)+newitem.envStats().weight())>capacity)
+						if((recursiveWeight()+newitem.envStats().weight())>capacity)
 						{
 							mob.tell(name()+" is full.");
 							return false;
@@ -167,7 +167,7 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						else
-						if((recursiveWeight(newitem)>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
+						if((newitem.recursiveWeight()>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
 						{
 							mob.tell(newitem.name()+" is too heavy.");
 							return false;
@@ -190,7 +190,7 @@ public class StdContainer extends StdItem implements Container
 					return false;
 				}
 				else
-				if((recursiveWeight(this)>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
+				if((recursiveWeight()>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
 				{
 					mob.tell(name()+" is too heavy.");
 					return false;
@@ -322,36 +322,6 @@ public class StdContainer extends StdItem implements Container
 			MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
-			case CMMsg.TYP_GET:
-			case CMMsg.TYP_REMOVE:
-				if((msg.tool()!=null)
-				&&(msg.tool() instanceof Item))
-				{
-					Item newitem=(Item)msg.tool();
-					if(newitem.container()==this)
-					{
-						newitem.setContainer(null);
-						newitem.unWear();
-					}
-				}
-				else
-				if(!mob.isMine(this))
-				{
-					setContainer(null);
-					mob.giveItem(this);
-					if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
-						mob.location().recoverRoomStats();
-					else
-						mob.envStats().setWeight(mob.envStats().weight()+recursiveWeight(this));
-				}
-				else
-				{
-					setContainer(null);
-					unWear();
-					if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
-						mob.location().recoverRoomStats();
-				}
-				break;
 			case CMMsg.TYP_PUT:
 				if((msg.tool()!=null)
 				&&(msg.tool() instanceof Item))
@@ -361,81 +331,6 @@ public class StdContainer extends StdItem implements Container
 					if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 						mob.location().recoverRoomStats();
 				}
-				break;
-			case CMMsg.TYP_DROP:
-				if(mob.isMine(this))
-				{
-					setContainer(null);
-					recursiveDropMOB(mob,mob.location(),this,this instanceof DeadBody);
-					if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
-						mob.location().recoverRoomStats();
-				}
-				break;
-			case CMMsg.TYP_LOOK:
-            case CMMsg.TYP_EXAMINE:
-				if(CMLib.flags().canBeSeenBy(this,mob))
-				{
-					StringBuffer buf=new StringBuffer("");
-					if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-						buf.append(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight: "+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rDeath : "+dispossessionTimeLeftString()+"\n\r"+description()+"'\n\rKey  : "+keyName()+"\n\rMisc  :'"+text());
-					else
-						buf.append(description()+"\n\r");
-                    if(msg.targetMinor()==CMMsg.TYP_EXAMINE)
-                        buf.append(examineString(msg.source()));
-					if((isOpen)&&((capacity>0)||(getContents().size()>0)))
-					{
-						buf.append(name()+" contains:^<!ENTITY container \""+name()+"\"^>"+(CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS)?" ":"\n\r"));
-						Vector newItems=new Vector();
-						if((this instanceof Drink)&&(((Drink)this).liquidRemaining()>0))
-						{
-							GenLiquidResource l=new GenLiquidResource();
-							int myResource=((Drink)this).liquidType();
-							l.setMaterial(myResource);
-							((Drink)l).setLiquidType(myResource);
-							l.setBaseValue(EnvResource.RESOURCE_DATA[myResource&EnvResource.RESOURCE_MASK][1]);
-							l.baseEnvStats().setWeight(1);
-							String name=EnvResource.RESOURCE_DESCS[myResource&EnvResource.RESOURCE_MASK].toLowerCase();
-							l.setName("some "+name);
-							l.setDisplayText("some "+name+" sits here.");
-							l.setDescription("");
-							l.recoverEnvStats();
-							newItems.addElement(l);
-						}
-					
-						if(owner instanceof MOB)
-						{
-							MOB M=(MOB)owner;
-							for(int i=0;i<M.inventorySize();i++)
-							{
-								Item item=M.fetchInventory(i);
-								if((item!=null)&&(item.container()==this))
-									newItems.addElement(item);
-							}
-							buf.append(CMLib.lister().lister(mob,newItems,true,"CMItem","",false,CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
-						}
-						else
-						if(owner instanceof Room)
-						{
-							Room room=(Room)owner;
-							if(room!=null)
-							for(int i=0;i<room.numItems();i++)
-							{
-								Item item=room.fetchItem(i);
-								if((item!=null)&&(item.container()==this))
-									newItems.addElement(item);
-							}
-							buf.append(CMLib.lister().lister(mob,newItems,true,"CRItem","",false,CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
-						}
-					}
-					else
-					if(hasALid())
-						buf.append(name()+" is closed.");
-                    if(!msg.source().isMonster())
-                        buf.append(CMProps.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
-					mob.tell(buf.toString());
-				}
-				else
-					mob.tell("You can't see that!");
 				break;
 			case CMMsg.TYP_CLOSE:
 				if((!hasALid)||(!isOpen)) return;
@@ -470,7 +365,7 @@ public class StdContainer extends StdItem implements Container
 			Room R=CMLib.utensils().roomLocation(msg.target());
 			if(R!=null)
 			{
-				recursiveDropMOB(msg.source(),R,this,this instanceof DeadBody);
+				CMLib.utensils().recursiveDropMOB(msg.source(),R,this,this instanceof DeadBody);
 				if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_OPTIMIZE))
 				{
 					msg.source().location().recoverRoomStats();
@@ -480,34 +375,6 @@ public class StdContainer extends StdItem implements Container
 			}
 		}
 		super.executeMsg(myHost,msg);
-	}
-	protected int recursiveWeight(Item thisContainer)
-	{
-		int weight=thisContainer.envStats().weight();
-		if(owner()==null) return weight;
-		if(owner() instanceof MOB)
-		{
-			MOB M=(MOB)owner();
-			for(int i=0;i<M.inventorySize();i++)
-			{
-				Item thisItem=M.fetchInventory(i);
-				if((thisItem!=null)&&(thisItem.container()==thisContainer))
-					weight+=recursiveWeight(thisItem);
-			}
-		}
-		else
-		if(owner() instanceof Room)
-		{
-			Room R=(Room)owner();
-			for(int i=0;i<R.numItems();i++)
-			{
-				Item thisItem=R.fetchItem(i);
-				if((thisItem!=null)&&(thisItem.container()==thisContainer))
-					weight+=recursiveWeight(thisItem);
-			}
-		}
-
-		return weight;
 	}
 
 	public long containTypes(){return containType;}
@@ -629,44 +496,6 @@ public class StdContainer extends StdItem implements Container
 	{
 		miscText=newKeyName;
 	}
-	protected static void recursiveDropMOB(MOB mob,
-										   Room room,
-										   Item thisContainer,
-										   boolean bodyFlag)
-	{
-		// caller is responsible for recovering any env
-		// stat changes!
-
-		if(CMLib.flags().isHidden(thisContainer))
-			thisContainer.baseEnvStats().setDisposition(thisContainer.baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
-		mob.delInventory(thisContainer);
-		thisContainer.unWear();
-		if(!bodyFlag) bodyFlag=(thisContainer instanceof DeadBody);
-		if(bodyFlag)
-		{
-			room.addItem(thisContainer);
-			thisContainer.setDispossessionTime(0);
-		}
-		else
-			room.addItemRefuse(thisContainer,Item.REFUSE_PLAYER_DROP);
-		thisContainer.recoverEnvStats();
-		boolean nothingDone=true;
-		do
-		{
-			nothingDone=true;
-			for(int i=0;i<mob.inventorySize();i++)
-			{
-				Item thisItem=mob.fetchInventory(i);
-				if((thisItem!=null)&&(thisItem.container()==thisContainer))
-				{
-					recursiveDropMOB(mob,room,thisItem,bodyFlag);
-					nothingDone=false;
-					break;
-				}
-			}
-		}while(!nothingDone);
-	}
-
 	public void emptyPlease()
 	{
 		Vector V=getContents();

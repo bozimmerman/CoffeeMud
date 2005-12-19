@@ -1139,5 +1139,146 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         }
     }
 
+    protected void subtickAttack(MOB fighter, Item weapon, int folrange)
+    {
+        if((weapon!=null)&&(weapon.amWearingAt(Item.INVENTORY)))
+            weapon=fighter.fetchWieldedItem();
+        if((!CMath.bset(fighter.getBitmap(),MOB.ATT_AUTOMELEE)))
+            CMLib.combat().postAttack(fighter,fighter.getVictim(),weapon);
+        else
+        {
+            boolean inminrange=(fighter.rangeToTarget()>=fighter.minRange(weapon));
+            boolean inmaxrange=(fighter.rangeToTarget()<=fighter.maxRange(weapon));
+            if((folrange>=0)&&(fighter.rangeToTarget()>=0)&&(folrange!=fighter.rangeToTarget()))
+            {
+                if(fighter.rangeToTarget()<folrange)
+                    inminrange=false;
+                else
+                if(fighter.rangeToTarget()>folrange)
+                {
+                    // these settings are ONLY to ensure that neither of the
+                    // next two conditions evaluate to true.
+                    inminrange=true;
+                    inmaxrange=false;
+                    // we advance
+                    CMMsg msg=CMClass.getMsg(fighter,fighter.getVictim(),CMMsg.MSG_ADVANCE,"<S-NAME> advances(s) at <T-NAMESELF>.");
+                    if(fighter.location().okMessage(fighter,msg))
+                    {
+                        fighter.location().send(fighter,msg);
+                        fighter.setAtRange(fighter.rangeToTarget()-1);
+                        if((fighter.getVictim()!=null)&&(fighter.getVictim().getVictim()==fighter))
+                        {
+                            fighter.getVictim().setAtRange(fighter.rangeToTarget());
+                            fighter.getVictim().recoverEnvStats();
+                        }
+                    }
+                }
+            }
+               
+            if((!inminrange)&&(fighter.curState().getMovement()>=25))
+            {
+                CMMsg msg=CMClass.getMsg(fighter,fighter.getVictim(),CMMsg.MSG_RETREAT,"<S-NAME> retreat(s) before <T-NAME>.");
+                if(fighter.location().okMessage(fighter,msg))
+                    fighter.location().send(fighter,msg);
+            }
+            else
+            if((weapon!=null)&&inminrange&&inmaxrange)
+                CMLib.combat().postAttack(fighter,fighter.getVictim(),weapon);
+        }
+    }
+    
+    protected double subtickBeforeAttack(MOB fighter, double actions)
+    {
+        if(CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)!=CombatLibrary.COMBAT_DEFAULT)
+            while((actions>=1.0)&&(fighter.commandQueSize()>0))
+            {
+                if(fighter.session()!=null)
+                    fighter.session().dequeCommand();
+                else
+                    fighter.dequeCommand();
+                actions=actions-1.0;
+            }
+        return actions;
+    }
+    
+    protected double subtickAfterAttack(MOB fighter, double actions)
+    {
+        if(CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)==CombatLibrary.COMBAT_DEFAULT)
+            if(fighter.session()!=null)
+                fighter.session().dequeCommand();
+            else
+                fighter.dequeCommand();
+        
+        MOB target=fighter.getVictim();
+        if(!fighter.isMonster())
+        {
+            if((target!=null)&&(!target.amDead())&&(CMLib.flags().canBeSeenBy(target,fighter)))
+                fighter.session().print(target.healthText()+"\n\r\n\r");
+        }
+        else
+        if((target!=null)
+        &&((fighter.amFollowing()==null)||(fighter.amFollowing().isMonster()))
+        &&(target.isMonster())
+        &&(!target.amDead())
+        &&(CMLib.dice().rollPercentage()<33)
+        &&(fighter.location()!=null))
+        {
+            MOB M=null;
+            Room R=fighter.location();
+            MOB nextVictimM=null;
+            for(int m=0;m<R.numInhabitants();m++)
+            {
+                M=R.fetchInhabitant(m);
+                if((M!=null)
+                &&(!M.isMonster())
+                &&(M.getVictim()==fighter)
+                &&((nextVictimM==null)||(M.rangeToTarget()<nextVictimM.rangeToTarget())))
+                    nextVictimM=M;
+            }
+            if(nextVictimM!=null)
+                fighter.setVictim(nextVictimM);
+        }
+        return actions;
+    }
+    
+    public double tickCombat(MOB fighter, double actions)
+    {
+        Item weapon=fighter.fetchWieldedItem();
 
+        if((CMath.bset(fighter.getBitmap(),MOB.ATT_AUTODRAW))&&(weapon==null))
+        {
+            CMLib.commands().postDraw(fighter,false,true);
+            weapon=fighter.fetchWieldedItem();
+        }
+
+        actions=subtickBeforeAttack(fighter,actions);
+        
+        int folrange=(CMath.bset(fighter.getBitmap(),MOB.ATT_AUTOMELEE)
+                        &&(fighter.amFollowing()!=null)
+                        &&(fighter.amFollowing().getVictim()==fighter.getVictim())
+                        &&(fighter.amFollowing().rangeToTarget()>=0)
+                        &&(fighter.amFollowing().fetchFollowerOrder(fighter)>=0))?
+                                fighter.amFollowing().fetchFollowerOrder(fighter)+fighter.amFollowing().rangeToTarget():-1;
+        if(CMLib.flags().aliveAwakeMobile(fighter,true))
+        {
+            int numAttacks=(int)Math.round(Math.floor(actions));
+            for(int s=0;s<numAttacks;s++)
+            {
+                if((!fighter.amDead())
+                &&(fighter.curState().getHitPoints()>0)
+                &&(fighter.isInCombat())
+                &&((s==0)||(CMLib.flags().isStanding(fighter))))
+                    subtickAttack(fighter,weapon,folrange);
+                else
+                    break;
+            }
+
+            if(CMLib.dice().rollPercentage()>(fighter.charStats().getStat(CharStats.CONSTITUTION)*4))
+                fighter.curState().adjMovement(-1,fighter.maxState());
+        }
+
+        actions=subtickAfterAttack(fighter,actions);
+        
+        return actions;
+    }
 }

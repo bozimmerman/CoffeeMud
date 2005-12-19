@@ -539,14 +539,6 @@ public class StdItem implements Item
 
 	public boolean savable(){return CMLib.flags().canBeSaved(this);}
 
-	protected String dispossessionTimeLeftString()
-	{
-		if(dispossessionTime()==0)
-			return "N/A";
-		return ""+(dispossessionTime()-System.currentTimeMillis());
-	}
-
-	
 	protected boolean canWearComplete(MOB mob)
 	{
 		if(!canWear(mob,0))
@@ -1005,134 +997,17 @@ public class StdItem implements Item
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_SNIFF:
-			{
-			    String s=null;
-				if(CMLib.flags().canSmell(mob))
-				    s=EnvResource.RESOURCE_SMELLS[material()&EnvResource.RESOURCE_MASK].toLowerCase();
-				if((s!=null)&&(s.length()>0))
-				    mob.tell(mob,this,null,"<T-NAME> has a "+s+" smell.");
-			}
+            CMLib.commands().handleBeingSniffed(msg);
 			break;
 		case CMMsg.TYP_LOOK:
-        case CMMsg.TYP_EXAMINE:
-			if(!(this instanceof Container))
-			{
-				if(CMLib.flags().canBeSeenBy(this,mob))
-				{
-				    StringBuffer response=new StringBuffer("");
-					if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-						response.append(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight:"+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rTime  : "+dispossessionTimeLeftString()+"\n\r"+description()+"\n\r"+"\n\rMisc  :'"+text());
-					else
-					if(description().length()==0)
-						response.append("You don't see anything special about "+this.name());
-					else
-						response.append(description());
-                    if(msg.targetMinor()==CMMsg.TYP_EXAMINE)
-                        response.append(examineString(msg.source()));
-                    if(!msg.source().isMonster())
-                        response.append(CMProps.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
-				    mob.tell(response.toString());
-				}
-				else
-					mob.tell("You can't see that!");
-			}
-			return;
-		case CMMsg.TYP_READ:
-			if((msg.targetMessage()==null)||(!msg.targetMessage().equals("CANCEL")))
-			{
-				if(CMLib.flags().canBeSeenBy(this,mob))
-				{
-					if((CMLib.flags().isReadable(this))&&(readableText()!=null)&&(readableText().length()>0))
-					{
-						if(readableText().startsWith("FILE=")
-							||readableText().startsWith("FILE="))
-						{
-							StringBuffer buf=Resources.getFileResource(readableText().substring(5),true);
-							if((buf!=null)&&(buf.length()>0))
-								mob.tell("It says '"+buf.toString()+"'.");
-							else
-								mob.tell("There is nothing written on "+name()+".");
-						}
-						else
-							mob.tell("It says '"+readableText()+"'.");
-					}
-					else
-						mob.tell("There is nothing written on "+name()+".");
-				}
-				else
-					mob.tell("You can't see that!");
-			}
-			return;
-		case CMMsg.TYP_HOLD:
-			if((canWear(mob,Item.HELD))&&(fitsOn(Item.HELD)))
-			{
-				wearAt(Item.HELD);
-				mob.recoverCharStats();
-				mob.recoverEnvStats();
-				mob.recoverMaxState();
-			}
-			break;
-		case CMMsg.TYP_WEAR:
-			if(canWear(mob,0))
-			{
-				wearIfPossible(mob);
-				mob.recoverCharStats();
-				mob.recoverEnvStats();
-				mob.recoverMaxState();
-			}
-			break;
-		case CMMsg.TYP_WIELD:
-			if((canWear(mob,Item.WIELD))&&(fitsOn(Item.WIELD)))
-			{
-				wearAt(Item.WIELD);
-				mob.recoverCharStats();
-				mob.recoverEnvStats();
-				mob.recoverMaxState();
-			}
-			break;
-		case CMMsg.TYP_GET:
-			if(!(this instanceof Container))
-			{
-				setContainer(null);
-				if(CMLib.flags().isHidden(this))
-					baseEnvStats().setDisposition(baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
-				if(mob.location().isContent(this))
-					mob.location().delItem(this);
-				if(!mob.isMine(this))
-				{
-					mob.addInventory(this);
-					if(CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
-						mob.envStats().setWeight(mob.envStats().weight()+envStats().weight());
-				}
-				unWear();
-				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
-					mob.location().recoverRoomStats();
-				if(this instanceof Coins)
-				    ((Coins)this).putCoinsBack();
-			}
-			break;
-		case CMMsg.TYP_REMOVE:
-			if(!(this instanceof Container))
-			{
-				unWear();
-				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
-					mob.location().recoverRoomStats();
-			}
-			break;
-		case CMMsg.TYP_DROP:
-			if(mob.isMine(this))
-			{
-				mob.delInventory(this);
-				if(!mob.location().isContent(this))
-					mob.location().addItemRefuse(this,Item.REFUSE_PLAYER_DROP);
-				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
-					mob.location().recoverRoomStats();
-			}
-			unWear();
-			setContainer(null);
-			if((this instanceof Coins)&&((msg.targetMessage()==null)||(!msg.targetMessage().equals("GIVE"))))
-			    ((Coins)this).putCoinsBack();
-			break;
+        case CMMsg.TYP_EXAMINE: CMLib.commands().handleBeingLookedAt(msg); break;
+		case CMMsg.TYP_READ: CMLib.commands().handleBeingRead(msg); break;
+		case CMMsg.TYP_HOLD: CMLib.commands().handleBeingHeld(msg); break;
+		case CMMsg.TYP_WEAR: CMLib.commands().handleBeingWorn(msg); break;
+		case CMMsg.TYP_WIELD: CMLib.commands().handleBeingWielded(msg); break;
+		case CMMsg.TYP_GET: CMLib.commands().handleBeingGetted(msg); break;
+		case CMMsg.TYP_REMOVE: CMLib.commands().handleBeingRemoved(msg);  break;
+		case CMMsg.TYP_DROP: CMLib.commands().handleBeingDropped(msg); break;
 		case CMMsg.TYP_WRITE:
 			if(CMLib.flags().isReadable(this))
 				setReadableText((readableText()+" "+msg.targetMessage()).trim());
@@ -1145,84 +1020,35 @@ public class StdItem implements Item
 		}
 	}
 
-    public String examineString(MOB mob)
+    public int recursiveWeight()
     {
-        StringBuffer response=new StringBuffer("");
-        String level=null;
-        if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<10))
+        int weight=envStats().weight();
+        if(this instanceof Container)
         {
-            int l=(int)Math.round(Math.floor(CMath.div(envStats().level(),10.0)));
-            level=(l*10)+"-"+((l*10)+9);
-        }
-        else
-        if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<18))
-        {
-            int l=(int)Math.round(Math.floor(CMath.div(envStats().level(),5.0)));
-            level=(l*5)+"-"+((l*5)+4);
-        }
-        else
-            level=""+envStats().level();
-        double divider=100.0;
-        if(envStats().weight()<10)
-            divider=4.0;
-        else
-        if(envStats().weight()<50)
-            divider=10.0;
-        else
-        if(envStats().weight()<150)
-            divider=20.0;
-        String weight=null;
-        if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<10))
-        {
-            double l=Math.floor(CMath.div(envStats().level(),divider));
-            weight=(int)Math.round(CMath.mul(l,divider))+"-"+(int)Math.round(CMath.mul(l,divider)+(divider-1.0));
-        }
-        else
-        if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<18))
-        {
-            divider=divider/2.0;
-            double l=Math.floor(CMath.div(envStats().level(),divider));
-            weight=(int)Math.round(CMath.mul(l,divider))+"-"+(int)Math.round(CMath.mul(l,divider)+(divider-1.0));
-        }
-        else
-            weight=""+envStats().weight();
-        response.append("\n\r"+CMStrings.capitalizeFirstLetter(name())+" is a level "+level+" item, and weighs "+weight+" pounds.  ");
-        if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<10))
-            response.append("It is mostly made of a kind of "+EnvResource.MATERIAL_NOUNDESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase()+".  ");
-        else
-            response.append("It is mostly made of "+EnvResource.RESOURCE_DESCS[(material()&EnvResource.RESOURCE_MASK)].toLowerCase()+".  ");
-        if((this instanceof Weapon)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)>10))
-            response.append("It is a "+CMStrings.capitalizeAndLower(Weapon.classifictionDescription[((Weapon)this).weaponClassification()])+" class weapon that does "+CMStrings.capitalizeAndLower(Weapon.typeDescription[((Weapon)this).weaponType()])+" damage.  ");
-        else
-        if((this instanceof Armor)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)>10))
-        {
-            if(envStats().height()>0)
-                response.append(" It is a size "+envStats().height()+", and is worn on the ");
-            else
-                response.append(" It is your size, and is worn on the ");
-            for(int l=0;l<Item.wornCodes.length;l++)
+            if(owner()==null) return weight;
+            if(owner() instanceof MOB)
             {
-                int wornCode=1<<l;
-                if(CMLib.flags().wornLocation(wornCode).length()>0)
+                MOB M=(MOB)owner();
+                for(int i=0;i<M.inventorySize();i++)
                 {
-                    if(((rawProperLocationBitmap()&wornCode)==wornCode))
-                    {
-                        response.append(CMStrings.capitalizeAndLower(CMLib.flags().wornLocation(wornCode))+" ");
-                        if(rawLogicalAnd())
-                            response.append("and ");
-                        else
-                            response.append("or ");
-                    }
+                    Item thisItem=M.fetchInventory(i);
+                    if((thisItem!=null)&&(thisItem.container()==this))
+                        weight+=thisItem.recursiveWeight();
                 }
             }
-            if(response.toString().endsWith(" and "))
-                response.delete(response.length()-5,response.length());
             else
-            if(response.toString().endsWith(" or "))
-                response.delete(response.length()-4,response.length());
-            response.append(".  ");
+            if(owner() instanceof Room)
+            {
+                Room R=(Room)owner();
+                for(int i=0;i<R.numItems();i++)
+                {
+                    Item thisItem=R.fetchItem(i);
+                    if((thisItem!=null)&&(thisItem.container()==this))
+                        weight+=thisItem.recursiveWeight();
+                }
+            }
         }
-        return response.toString();
+        return weight;
     }
     
 	public void stopTicking(){destroyed=true;}

@@ -155,6 +155,7 @@ public interface MOB
 	public void tell(String msg);
 	public void enqueCommand(Vector commands, int tickDelay);
 	public void dequeCommand();
+    public int commandQueSize();
 	public void doCommand(Vector commands);
 
 	/** Whether a sessiob object is attached to this MOB */

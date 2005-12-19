@@ -382,6 +382,7 @@ public class CMParms
         return "";
     }
     
+
     public static String getBit(String s, int which)
     {
         int i=0;

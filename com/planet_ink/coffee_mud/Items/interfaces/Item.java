@@ -233,6 +233,7 @@ public interface Item extends Environmental, Rider
 	public boolean rawLogicalAnd();
 	public void setRawLogicalAnd(boolean newAnd);
 	public boolean compareProperLocations(Item toThis);
+    public int recursiveWeight();
 	
 	public Environmental owner();
 	public void setOwner(Environmental E);

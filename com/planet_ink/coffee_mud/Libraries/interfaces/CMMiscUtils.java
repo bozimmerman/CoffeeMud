@@ -77,4 +77,5 @@ public interface CMMiscUtils extends CMObject
     public boolean armorCheck(MOB mob, int allowedArmorLevel);
     public String wornList(long wornCode);
     public int getWornCode(String name);
+    public void recursiveDropMOB(MOB mob, Room room, Item thisContainer, boolean bodyFlag);
 }

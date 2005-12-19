@@ -100,6 +100,7 @@ public class GenWallpaper implements Item
 		}
 	}
 
+    public int recursiveWeight(){return envStats().weight();}
 	public Environmental owner(){return owner;}
 	public void setOwner(Environmental E)
 	{ owner=E;}
@@ -236,46 +237,12 @@ public class GenWallpaper implements Item
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		MOB mob=msg.source();
-		if(!msg.amITarget(this))
-			return;
+		if(msg.amITarget(this))
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_LOOK:
-        case CMMsg.TYP_EXAMINE:
-			if(CMLib.flags().canBeSeenBy(this,mob))
-			{
-				if(description().length()==0)
-					mob.tell("You don't see anything special about "+this.name());
-				else
-					mob.tell(description());
-			}
-			else
-				mob.tell("You can't see that!");
-			return;
-		case CMMsg.TYP_READ:
-			if(CMLib.flags().canBeSeenBy(this,mob))
-			{
-				if((CMLib.flags().isReadable(this))&&(readableText()!=null)&&(readableText().length()>0))
-				{
-					if(readableText().startsWith("FILE=")
-						||readableText().startsWith("FILE="))
-					{
-						StringBuffer buf=Resources.getFileResource(readableText().substring(5),true);
-						if((buf!=null)&&(buf.length()>0))
-							mob.tell("It says '"+buf.toString()+"'.");
-						else
-							mob.tell("There is nothing written on "+name()+".");
-					}
-					else
-						mob.tell("It says '"+readableText()+"'.");
-				}
-				else
-					mob.tell("There is nothing written on "+name()+".");
-			}
-			else
-				mob.tell("You can't see that!");
-			return;
+        case CMMsg.TYP_EXAMINE:  CMLib.commands().handleBeingLookedAt(msg); break;
+		case CMMsg.TYP_READ: CMLib.commands().handleBeingRead(msg); break;
 		default:
 			break;
 		}

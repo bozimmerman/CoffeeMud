@@ -81,6 +81,7 @@ public interface CombatLibrary extends CMObject
     public void handleExperienceChange(CMMsg msg);
     public void handleDeath(CMMsg msg);
     public void handleObserveDeath(MOB observer, MOB fighting, CMMsg msg);
+    public double tickCombat(MOB fighter, double actions);
     
     public static final String[] DEFAULT_ARMOR_DESCS={
         "vulnerable",

@@ -899,6 +899,46 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         area.fillInAreaRooms();
         area.toggleMobility(mobile);
     }
+    
+    public void recursiveDropMOB(MOB mob,
+                                 Room room,
+                                 Item thisContainer,
+                                 boolean bodyFlag)
+    {
+        // caller is responsible for recovering any env
+        // stat changes!
+        
+        if(CMLib.flags().isHidden(thisContainer))
+            thisContainer.baseEnvStats().setDisposition(thisContainer.baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
+        mob.delInventory(thisContainer);
+        thisContainer.unWear();
+        if(!bodyFlag) bodyFlag=(thisContainer instanceof DeadBody);
+        if(bodyFlag)
+        {
+            room.addItem(thisContainer);
+            thisContainer.setDispossessionTime(0);
+        }
+        else
+            room.addItemRefuse(thisContainer,Item.REFUSE_PLAYER_DROP);
+        thisContainer.recoverEnvStats();
+        boolean nothingDone=true;
+        do
+        {
+            nothingDone=true;
+            for(int i=0;i<mob.inventorySize();i++)
+            {
+                Item thisItem=mob.fetchInventory(i);
+                if((thisItem!=null)&&(thisItem.container()==thisContainer))
+                {
+                    recursiveDropMOB(mob,room,thisItem,bodyFlag);
+                    nothingDone=false;
+                    break;
+                }
+            }
+        }while(!nothingDone);
+    }
+    
+    
     public MOB getMobPossessingAnother(MOB mob)
     {
         if(mob==null) return null;

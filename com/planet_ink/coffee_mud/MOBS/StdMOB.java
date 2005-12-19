@@ -109,7 +109,7 @@ public class StdMOB implements MOB
     protected MOB victim=null;
     protected MOB amFollowing=null;
     protected MOB soulMate=null;
-    private double speeder=0.0;
+    private double actions=0.0;
     protected int atRange=-1;
     private long peaceTime=0;
     
@@ -1152,6 +1152,7 @@ public class StdMOB implements MOB
 		return mxp+CMLib.combat().standardMobCondition(this)+"^</HealthText^>";
 	}
 
+    public int commandQueSize(){return commandQue.size();}
 	public void dequeCommand()
 	{
 		Vector returnable=null;
@@ -1286,7 +1287,7 @@ public class StdMOB implements MOB
         for(Enumeration e=fetchFactions();e.hasMoreElements();) 
         {
             F=CMLib.factions().getFaction((String)e.nextElement());
-            if ((F != null) && (!F.okMessage(this, msg)))
+            if ((F!=null)&&(!F.okMessage(this, msg)))
                 return false;
         }
 
@@ -1958,94 +1959,6 @@ public class StdMOB implements MOB
 		tell(this,this,null,msg);
 	}
 
-    private String relativeCharStatTest(CharStats C, String weakword, String strongword, int stat)
-    {
-        double d=CMath.div(C.getStat(stat),charStats.getStat(stat));
-        String prepend="";
-        if((d<=0.5)||(d>=3.0)) prepend="much ";
-        if(d>=1.6) return name()+" appears "+prepend+weakword+" than the average "+charStats.raceName()+".\n\r";
-        if(d<=0.67) return name()+" appears "+prepend+strongword+" than the average "+charStats.raceName()+".\n\r";
-        return "";
-    }
-    
-    public void look(MOB viewer, boolean longlook)
-    {
-        if(CMLib.flags().canBeSeenBy(this,viewer))
-        {
-            StringBuffer myDescription=new StringBuffer("");
-            if(CMath.bset(viewer.getBitmap(),MOB.ATT_SYSOPMSGS))
-                myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc : "+text()+"\n\r"+description()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().roomID())+"\n\r");
-            if(!isMonster())
-            {
-                String levelStr=null;
-                if((!CMSecurity.isDisabled("CLASSES"))
-                &&(!charStats().getMyRace().classless())
-                &&(!charStats().getCurrentClass().leveless())
-                &&(!charStats().getMyRace().leveless())
-                &&(!CMSecurity.isDisabled("LEVELS")))
-                    levelStr=CMStrings.startWithAorAn(charStats().displayClassLevel(this,false));
-                else
-                if((!CMSecurity.isDisabled("LEVELS"))
-                &&(!charStats().getCurrentClass().leveless())
-                &&(!charStats().getMyRace().leveless()))
-                    levelStr="level "+charStats().displayClassLevelOnly(this);
-                else
-                if((!CMSecurity.isDisabled("CLASSES"))
-                &&(!charStats().getMyRace().classless()))
-                    levelStr=CMStrings.startWithAorAn(charStats().displayClassName());
-                if((!CMSecurity.isDisabled("RACES"))
-                &&(!charStats.getCurrentClass().raceless()))
-                {
-                    myDescription.append(name()+" the ");
-                    if(charStats.getStat(CharStats.AGE)>0)
-                        myDescription.append(charStats.ageName().toLowerCase()+" ");
-                    myDescription.append(charStats().raceName());
-                }
-                else
-                    myDescription.append(name()+" ");
-                if(levelStr!=null)
-                    myDescription.append(" is "+levelStr+".\n\r");
-                else
-                    myDescription.append("is here.\n\r");
-            }
-            if(envStats().height()>0)
-                myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
-            if((longlook)&&(viewer.charStats().getStat(CharStats.INTELLIGENCE)>12))
-            {
-                CharStats C=(CharStats)CMClass.getCommon("DefaultCharStats");
-                MOB testMOB=CMClass.getMOB("StdMOB");
-                charStats().getMyRace().affectCharStats(testMOB,C);
-                myDescription.append(relativeCharStatTest(C,"weaker","stronger",CharStats.STRENGTH));
-                myDescription.append(relativeCharStatTest(C,"clumsier","more nimble",CharStats.DEXTERITY));
-                myDescription.append(relativeCharStatTest(C,"more sickly","healthier",CharStats.CONSTITUTION));
-                myDescription.append(relativeCharStatTest(C,"more repulsive","more attractive",CharStats.CHARISMA));
-                myDescription.append(relativeCharStatTest(C,"more naive","wiser",CharStats.WISDOM));
-                myDescription.append(relativeCharStatTest(C,"dumber","smarter",CharStats.INTELLIGENCE));
-                testMOB.destroy();
-            }
-            if(!viewer.isMonster())
-                myDescription.append(CMProps.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
-            myDescription.append(healthText()+"\n\r\n\r");
-            myDescription.append(description()+"\n\r\n\r");
-            
-            StringBuffer eq=CMLib.commands().getEquipment(viewer,this);
-            if(eq.length() > 0)
-            {
-                if((CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)>1)
-                ||((viewer!=this)&&(CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)>0)))
-                    myDescription.append(charStats().HeShe()+" is wearing "+eq.toString());
-                else
-                    myDescription.append(charStats().HeShe()+" is wearing:\n\r"+eq.toString());
-            }
-            viewer.tell(myDescription.toString());
-            if(longlook)
-            {
-                Command C=CMClass.getCommand("Consider");
-                try{if(C!=null)C.execute(viewer,CMParms.makeVector(this));}catch(java.io.IOException e){}
-            }
-        }
-    }
-
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(getMyDeity()!=null)
@@ -2122,13 +2035,10 @@ public class StdMOB implements MOB
 				tell(this,msg.target(),msg.tool(),msg.sourceMessage());
 				break;
 			case CMMsg.TYP_LOOK:
-                if(msg.target()==this)
-                    look(msg.source(),false);
-                break;
             case CMMsg.TYP_EXAMINE:
                 if(msg.target()==this)
-                    look(msg.source(),true);
-				break;
+                    CMLib.commands().handleBeingLookedAt(msg);
+                break;
 			case CMMsg.TYP_READ:
 				if((CMLib.flags().canBeSeenBy(this,mob))&&(msg.amITarget(this)))
 					tell("There is nothing written on "+name());
@@ -2172,19 +2082,13 @@ public class StdMOB implements MOB
                 // handled as special cases above
                 break;
             case CMMsg.TYP_GIVE:
-                if((msg.tool()!=null)
-                &&(msg.tool() instanceof Item))
-                {
-                    CMMsg msg2=CMClass.getMsg(msg.source(),msg.tool(),null,CMMsg.MSG_DROP,null,CMMsg.MSG_DROP,"GIVE",CMMsg.MSG_DROP,null);
-                    location().send(this,msg2);
-                    msg2=CMClass.getMsg((MOB)msg.target(),msg.tool(),null,CMMsg.MSG_GET,null,CMMsg.MSG_GET,"GIVE",CMMsg.MSG_GET,null);
-                    location().send(this,msg2);
-                }
+                if(msg.tool() instanceof Item)
+                    CMLib.commands().handleBeingGivenTo(msg);
                 break;
             case CMMsg.TYP_LOOK:
             case CMMsg.TYP_EXAMINE:
                 if(CMLib.flags().canBeSeenBy(this,mob))
-                    look(mob,(msg.targetMinor()==CMMsg.TYP_EXAMINE));
+                    CMLib.commands().handleBeingLookedAt(msg);
                 break;
             case CMMsg.TYP_REBUKE:
                 if((msg.source().Name().equals(getLiegeID())&&(!isMarriedToLiege())))
@@ -2464,141 +2368,18 @@ public class StdMOB implements MOB
 					location().show(this,this,CMMsg.MSG_OK_VISUAL,("^Z<S-NAME> can't breathe!^.^?")+CMProps.msp("choke.wav",10));
 					CMLib.combat().postDamage(this,this,null,(int)Math.round(CMath.mul(Math.random(),baseEnvStats().level()+2)),CMMsg.MSG_OK_VISUAL,-1,null);
 				}
+                
+                actions=(actions-Math.floor(actions))
+                        +(CMLib.flags().isSitting(this)?(envStats().speed()/2.0):envStats().speed());
+                
 				if(isInCombat())
 				{
-					tickStatus=Tickable.STATUS_FIGHT;
-					peaceTime=0;
-					Item weapon=fetchWieldedItem();
-
-					if((CMath.bset(getBitmap(),MOB.ATT_AUTODRAW))&&(weapon==null))
-					{
-						CMLib.commands().postDraw(this,false,true);
-						weapon=fetchWieldedItem();
-					}
-
-					double curSpeed=Math.floor(speeder);
-					speeder+=CMLib.flags().isSitting(this)?(envStats().speed()/2.0):envStats().speed();
-					
-					
-					int numAttacks=(int)Math.round(Math.floor(speeder-curSpeed));
-					
-					if(CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)!=CombatLibrary.COMBAT_DEFAULT)
-						while((numAttacks>0)&&(commandQue.size()>0))
-						{
-                            if(mySession!=null)
-    							mySession.dequeCommand();
-                            else
-                                dequeCommand();
-							numAttacks--;
-						}
-					
-					int folrange=(CMath.bset(getBitmap(),MOB.ATT_AUTOMELEE)
-									&&(amFollowing()!=null)
-								    &&(amFollowing().getVictim()==victim)
-								    &&(amFollowing().rangeToTarget()>=0)
-								    &&(amFollowing().fetchFollowerOrder(this)>=0))?
-									amFollowing().fetchFollowerOrder(this)+amFollowing().rangeToTarget():-1;
-					if(CMLib.flags().aliveAwakeMobile(this,true))
-					{
-						for(int s=0;s<numAttacks;s++)
-						{
-							if((!amDead())
-							&&(curState().getHitPoints()>0)
-							&&(isInCombat())
-							&&((s==0)||(CMLib.flags().isStanding(this))))
-							{
-								if((weapon!=null)&&(weapon.amWearingAt(Item.INVENTORY)))
-									weapon=this.fetchWieldedItem();
-								if((!CMath.bset(getBitmap(),MOB.ATT_AUTOMELEE)))
-									CMLib.combat().postAttack(this,victim,weapon);
-								else
-								{
-									boolean inminrange=(rangeToTarget()>=minRange(weapon));
-									boolean inmaxrange=(rangeToTarget()<=maxRange(weapon));
-									if((folrange>=0)&&(rangeToTarget()>=0)&&(folrange!=rangeToTarget()))
-									{
-										if(rangeToTarget()<folrange)
-											inminrange=false;
-										else
-										if(rangeToTarget()>folrange)
-										{
-											// these settings are ONLY to ensure that neither of the
-											// next two conditions evaluate to true.
-											inminrange=true;
-											inmaxrange=false;
-											// we advance
-											CMMsg msg=CMClass.getMsg(this,victim,CMMsg.MSG_ADVANCE,"<S-NAME> advances(s) at <T-NAMESELF>.");
-											if(location().okMessage(this,msg))
-											{
-												location().send(this,msg);
-												setAtRange(rangeToTarget()-1);
-												if((victim!=null)&&(victim.getVictim()==this))
-												{
-													victim.setAtRange(rangeToTarget());
-													victim.recoverEnvStats();
-												}
-											}
-										}
-									}
-									   
-									if((!inminrange)&&(curState().getMovement()>=25))
-									{
-										CMMsg msg=CMClass.getMsg(this,victim,CMMsg.MSG_RETREAT,"<S-NAME> retreat(s) before <T-NAME>.");
-										if(location().okMessage(this,msg))
-											location().send(this,msg);
-									}
-									else
-									if((weapon!=null)&&inminrange&&inmaxrange)
-										CMLib.combat().postAttack(this,victim,weapon);
-								}
-							}
-							else
-								break;
-						}
-
-						if(CMLib.dice().rollPercentage()>(charStats().getStat(CharStats.CONSTITUTION)*4))
-							curState().adjMovement(-1,maxState());
-					}
-
-					if(CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)==CombatLibrary.COMBAT_DEFAULT)
-                        if(mySession!=null)
-                            mySession.dequeCommand();
-                        else
-                            dequeCommand();
-					
-                    MOB target=getVictim();
-					if(!isMonster())
-					{
-						if((target!=null)&&(!target.amDead())&&(CMLib.flags().canBeSeenBy(target,this)))
-							session().print(target.healthText()+"\n\r\n\r");
-					}
-                    else
-                    if((target!=null)
-                    &&((amFollowing()==null)||(amFollowing().isMonster()))
-                    &&(target.isMonster())
-                    &&(!target.amDead())
-                    &&(CMLib.dice().rollPercentage()<33)
-                    &&(location()!=null))
-                    {
-                        MOB M=null;
-                        Room R=location();
-                        MOB nextVictimM=null;
-                        for(int m=0;m<R.numInhabitants();m++)
-                        {
-                            M=R.fetchInhabitant(m);
-                            if((M!=null)
-                            &&(!M.isMonster())
-                            &&(M.getVictim()==this)
-                            &&((nextVictimM==null)||(M.rangeToTarget()<nextVictimM.rangeToTarget())))
-                                nextVictimM=M;
-                        }
-                        if(nextVictimM!=null)
-                            setVictim(nextVictimM);
-                    }
+                    tickStatus=Tickable.STATUS_FIGHT;
+                    peaceTime=0;
+                    actions=CMLib.combat().tickCombat(this,actions);
 				}
 				else
 				{
-					speeder=0.0;
 					peaceTime+=MudHost.TICK_TIME;
 					if(CMath.bset(getBitmap(),MOB.ATT_AUTODRAW)
 					&&(peaceTime>=SHEATH_TIME)
@@ -2609,6 +2390,7 @@ public class StdMOB implements MOB
                     else
                         dequeCommand();
 				}
+                
 				tickStatus=Tickable.STATUS_OTHER;
 				if(!isMonster())
 				{
@@ -2630,83 +2412,18 @@ public class StdMOB implements MOB
 
 				if((riding()!=null)&&(CMLib.utensils().roomLocation(riding())!=location()))
 					setRiding(null);
+                
 				if((!isMonster())&&(soulMate()==null))
 				{
-					CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_TICKSONLINE);
-					if(((++tickCounter)*MudHost.TICK_TIME)>60000)
-					{
-						tickCounter=0;
-						setAgeHours(AgeHours+1); // this is really minutes
-						if((baseCharStats.getStat(CharStats.AGE)>0)
-						&&(playerStats()!=null)
-						&&(playerStats().getBirthday()!=null)
-						&&((AgeHours%20)==0))
-						{
-						    int tage=baseCharStats().getMyRace().getAgingChart()[Race.AGE_YOUNGADULT]+CMClass.globalClock().getYear()-playerStats().getBirthday()[2];
-					        int month=CMClass.globalClock().getMonth();
-					        int day=CMClass.globalClock().getDayOfMonth();
-					        int bday=playerStats().getBirthday()[0];
-					        int bmonth=playerStats().getBirthday()[1];
-						    while((tage>baseCharStats.getStat(CharStats.AGE))
-						    &&((month>bmonth)||((month==bmonth)&&(day>=bday))))
-				            {
-								if(!CMSecurity.isAllowed(this,location(),"IMMORT"))
-								{
-							        if((month==bmonth)&&(day==bday))
-							            tell("Happy Birthday!");
-							        baseCharStats.setStat(CharStats.AGE,baseCharStats.getStat(CharStats.AGE)+1);
-							        recoverCharStats();
-							        recoverEnvStats();
-							        recoverMaxState();
-								}
-								else
-								{
-								    playerStats().getBirthday()[2]++;
-								    tage--;
-								}
-						    }
-							if(!CMSecurity.isAllowed(this,location(),"IMMORT"))
-							{
-								if((baseCharStats.ageCategory()>=Race.AGE_VENERABLE)&&(CMLib.dice().rollPercentage()==1)&&(CMLib.dice().rollPercentage()==1))
-								{
-									Ability A=CMClass.getAbility("Disease_Cancer");
-									if((A!=null)&&(fetchEffect(A.ID())==null))
-										A.invoke(this,this,true,0);
-								}
-								else
-								if((baseCharStats.ageCategory()>=Race.AGE_ANCIENT)&&(CMLib.dice().rollPercentage()==1))
-								{
-									Ability A=CMClass.getAbility("Disease_Arthritis");
-									if((A!=null)&&(fetchEffect(A.ID())==null))
-										A.invoke(this,this,true,0);
-								}
-								else
-								if(CMLib.dice().rollPercentage()<10)
-								{
-									int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
-									for(int i=CharStats.MAX_STRENGTH_ADJ;i<CharStats.MAX_STRENGTH_ADJ+CharStats.NUM_BASE_STATS;i++)
-									    if((max+charStats.getStat(i))<=0)
-									    {
-									        tell("Your max "+CharStats.TRAITS[i].toLowerCase()+" has fallen below 1!");
-									        CMLib.combat().postDeath(null,this,null);
-									        break;
-									    }
-								}
-							}
-						}
-					}
+                    CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_TICKSONLINE);
+                    if(((++tickCounter)*MudHost.TICK_TIME)>60000)
+                    {
+                        tickCounter=0;
+                        CMLib.commands().tickAging(this);
+                    }
 				}
 			}
-
-			Vector expenseAffects=null;
-			if((CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMETIME)>0)
-			&&(CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMEAMT)>0)
-			&&((--manaConsumeCounter)<=0))
-			{
-				expenseAffects=new Vector();
-				manaConsumeCounter=CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMETIME);
-			}
-
+            
 			int a=0;
 			while(a<numAllEffects())
 			{
@@ -2717,17 +2434,6 @@ public class StdMOB implements MOB
 					int s=affects.size();
 					if(!A.tick(ticking,tickID))
 						A.unInvoke();
-					else
-					if((expenseAffects!=null)
-					&&(!A.isAutoInvoked())
-					&&(A.canBeUninvoked())
-					&&(A.displayText().length()>0)
-                    &&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
-						||((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
-						||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
-						||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
-					&&(A.usageCost(this)[0]>0))
-						expenseAffects.addElement(A);
 
 					if(affects.size()==s)
 						a++;
@@ -2736,49 +2442,7 @@ public class StdMOB implements MOB
 					a++;
 			}
 
-            if((expenseAffects!=null)&&(expenseAffects.size()>0))
-            {
-                int basePrice=1;
-                if(fetchEffect("Prop_MagicBurn1")!=null)
-					basePrice=2;  // No way to make a prop that actually increases mana spent
-
-				switch(CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMEAMT))
-				{
-				case -100: basePrice=basePrice*envStats().level(); break;
-				case -200:
-					{
-						int total=0;
-						for(int a1=0;a1<expenseAffects.size();a1++)
-						{
-							int lql=CMLib.ableMapper().lowestQualifyingLevel(((Ability)expenseAffects.elementAt(a1)).ID());
-							if(lql>0)
-								total+=lql;
-							else
-								total+=1;
-						}
-						basePrice=basePrice*(total/expenseAffects.size());
-					}
-					break;
-				default:
-					basePrice=basePrice*CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMEAMT);
-					break;
-				}
-
-                // 1 per tick per level per msg.  +1 to the affects so that way it's about
-                // 3 cost = 1 regen... :)
-                int reallyEat=basePrice*(expenseAffects.size()+1);
-                while(curState().getMana()<reallyEat)
-                {
-                    location().show(this,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> strength of will begins to crumble.");
-                    //pick one and kill it
-                    Ability A=(Ability)expenseAffects.elementAt(CMLib.dice().roll(1,expenseAffects.size(),-1));
-                    A.unInvoke();
-                    expenseAffects.remove(A);
-                    reallyEat=basePrice*expenseAffects.size();
-                }
-                if(reallyEat>0)
-                    curState().adjMana( -reallyEat, maxState());
-            }
+            manaConsumeCounter=CMLib.commands().tickManaConsumption(this,manaConsumeCounter);
 
 			for(int b=0;b<numBehaviors();b++)
 			{

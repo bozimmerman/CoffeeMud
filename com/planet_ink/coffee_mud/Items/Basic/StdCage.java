@@ -48,57 +48,18 @@ public class StdCage extends StdContainer
 		recoverEnvStats();
 	}
 
-
-
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((msg.amITarget(this))
         &&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
-			MOB mob=msg.source();
-			if(CMLib.flags().canBeSeenBy(this,mob))
-			{
-				StringBuffer buf=new StringBuffer("");
-				if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-					buf.append(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight: "+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rDeath : "+dispossessionTimeLeftString()+"\n\r"+description()+"'\n\rKey  : "+keyName()+"\n\rMisc  :'"+text());
-				else
-					buf.append(description()+"\n\r");
-				//if(msg.source().charStats().getStat(CharStats.INTELLIGENCE)>=10)
-			    //    buf.append(CMStrings.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_DESCS[(material()&EnvResource.				        response.append("\n\r"+CMStrings.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_NOUNDESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase()+"."))>>8].toLowerCase()+".\n\r");
-				if((isOpen)&&((capacity>0)||(getContents().size()>0)))
-					buf.append(name()+" contains:^<!ENTITY container \""+name()+"\"^>"+(CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS)?" ":"\n\r"));
-				Vector newItems=new Vector();
-
-				if(owner instanceof MOB)
-				{
-					MOB M=(MOB)owner;
-					for(int i=0;i<M.inventorySize();i++)
-					{
-						Item item=M.fetchInventory(i);
-						if((item!=null)&&(item.container()==this))
-							newItems.addElement(item);
-					}
-					buf.append(CMLib.lister().lister(mob,newItems,true,"CMItem","",false,CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
-				}
-				else
-				if(owner instanceof Room)
-				{
-					Room room=(Room)owner;
-					if(room!=null)
-					for(int i=0;i<room.numItems();i++)
-					{
-						Item item=room.fetchItem(i);
-						if((item!=null)&&(item.container()==this))
-							newItems.addElement(item);
-					}
-					buf.append(CMLib.lister().lister(mob,newItems,true,"CRItem","",false,CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS)));
-				}
-                if(!mob.isMonster())
-                    buf.append(CMProps.mxpImage(this," ALIGN=RIGHT H=70 W=70"));
-				mob.tell(buf.toString());
-			}
-			else
-				mob.tell("You can't see that!");
+            synchronized(this)
+            {
+                boolean wasOpen=isOpen;
+                isOpen=true;
+                CMLib.commands().handleBeingLookedAt(msg);
+                isOpen=wasOpen;
+            }
 			for(int b=0;b<numBehaviors();b++)
 			{
 				Behavior B=fetchBehavior(b);
