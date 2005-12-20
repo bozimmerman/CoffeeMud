@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdRoom implements Room, CMEventHandlers
+public class StdRoom implements Room
 {
 	public String ID(){return "StdRoom";}
 	protected String myID="";
@@ -1560,57 +1560,6 @@ public class StdRoom implements Room, CMEventHandlers
 		}
 		return null;
 	}
-    public boolean approveGetItem(MOB mob, Item item){return true;}
-    public void executeGetItem(MOB mob, Item item){}
-    public boolean approveGetItemFrom(MOB mob, Item item, Container container){return true;}
-    public void executeGetItemFrom(MOB mob, Item item, Container container){}
-    public boolean approveDropItem(MOB mob, Item item){return true;}
-    public void executeDropItem(MOB mob, Item item){}
-    public boolean approveRemoveItem(MOB mob, Item item){return true;}
-    public void executeRemoveItem(MOB mob, Item item){}
-    public boolean approveWearItem(MOB mob, Item item){return true;}
-    public void executeWearItem(MOB mob, Item item){}
-    public boolean approveEatItem(MOB mob, Environmental item){return true;}
-    public void executeEatItem(MOB mob, Environmental item){}
-    public boolean approveDrinkItem(MOB mob, Drink item){return true;}
-    public void executeDrinkItem(MOB mob, Drink item){}
-    public boolean approvePutItem(MOB mob, Item item, Container container){return true;}
-    public void executePutItem(MOB mob, Item item, Container container){}
-    public boolean approveGiveItem(MOB mob, MOB to, Item item){return true;}
-    public void executeGiveItem(MOB mob, MOB to, Item item){}
-    public boolean approveBuyItem(MOB mob, ShopKeeper from, Item item){return true;}
-    public void executeBuyItem(MOB mob, ShopKeeper from, Item item){}
-    public boolean approveSellItem(MOB mob, ShopKeeper to, Item item){return true;}
-    public void executeSellItem(MOB mob, ShopKeeper to, Item item){}
-    public boolean approveSay(MOB mob, String say){return true;}
-    public void executeSay(MOB mob, String say){}
-    public boolean approveChannel(MOB mob, String channel, String say){return true;}
-    public void executeChannel(MOB mob, String channel, String say){}
-    public boolean approveEnterRoom(MOB mob, Room room, Exit exit){return true;}
-    public void executeEnterRoom(MOB mob, Room room, Exit exit){}
-    public boolean approveLeaveRoom(MOB mob, Room room, Exit exit){return true;}
-    public void executeLeaveRoom(MOB mob, Room room, Exit exit){}
-    public boolean approveSocial(MOB mob, Environmental target, Social S){return true;}
-    public void executeSocial(MOB mob, Environmental target, Social S){}
-    public boolean approveEmote(MOB mob, String emote){return true;}
-    public void executeEmote(MOB mob, String emote){}
-    public boolean approveAttack(MOB mob, MOB victim){return true;}
-    public void executeAttack(MOB mob, MOB victim){}
-    public boolean approveDamage(MOB attacker, MOB victim, int[] damage){return true;}
-    public void executeDamage(MOB attacker, MOB victim, int[] damage){}
-    public boolean approveGainLevel(MOB mob){return true;}
-    public void executeGainLevel(MOB mob){}
-    public boolean approveLogin(MOB mob){return true;}
-    public void executeLogin(MOB mob){}
-    public boolean approveLogout(MOB mob){return true;}
-    public void executeLogout(MOB mob){}
-    public boolean approveGainExp(MOB mob, int[] amount){return true;}
-    public void executeGainExp(MOB mob, int[] amount){}
-    public boolean approveDeath(MOB mob){return true;}
-    public void executeDeath(MOB mob){}
-    public boolean approveSkillUse(MOB mob, Ability skill, MOB victim){return true;}
-    public void executeSkillUse(MOB mob, Ability skill, MOB victim){}
-    
     
 	private static final String[] CODES={"CLASS","DISPLAY","DESCRIPTION","TEXT"};
 	public String[] getStatCodes(){return CODES;}

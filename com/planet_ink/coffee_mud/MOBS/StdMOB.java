@@ -2383,7 +2383,7 @@ public class StdMOB implements MOB
 				}
                 
                 if(commandQueSize()==0) setActions(actions()-Math.floor(actions()));
-                setActions(actions()+envStats().speed());
+                setActions(actions()+(CMLib.flags().isSitting(this)?envStats().speed()/2.0:envStats().speed()));
                 
 				if(isInCombat())
 				{
