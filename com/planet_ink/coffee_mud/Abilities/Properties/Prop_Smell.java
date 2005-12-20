@@ -36,7 +36,7 @@ public class Prop_Smell extends Property
 {
 	public String ID() { return "Prop_Smell"; }
 	public String name(){ return "A Smell";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	protected DVector smells=null;
 	protected final static int FLAG_EMOTE=512;
 	protected final static int FLAG_BROADCAST=1024;

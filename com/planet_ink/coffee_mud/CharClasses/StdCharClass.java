@@ -707,7 +707,7 @@ public class StdCharClass implements CharClass
 		int trainGain=1;
 		if(trainGain<=0)trainGain=1;
 		mob.setTrains(mob.getTrains()+trainGain);
-		theNews.append("and ^H"+trainGain+"^N training CMLib.sessions().\n\r^N");
+		theNews.append("and ^H"+trainGain+"^N training "+ (practiceGain != 1? "sessions" : "session" )+".\n\r^N");
 
 		mob.tell(theNews.toString());
         HashSet oldAbilities=new HashSet();

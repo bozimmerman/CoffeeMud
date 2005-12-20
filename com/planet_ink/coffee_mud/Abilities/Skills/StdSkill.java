@@ -38,4 +38,6 @@ public class StdSkill extends StdAbility
     public String ID() { return "StdSkill"; }
     public String name(){ return "StdSkill";}
     public int classificationCode(){return Ability.SKILL;}
+    protected int canAffectCode(){return 0;}
+    protected int canTargetCode(){return CAN_MOBS;}
 }

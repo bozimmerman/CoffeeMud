@@ -35,7 +35,7 @@ public class Shell extends StdCommand
 {
 	public Shell(){}
 
-	private String[] access={"SHELL","VFS","."};
+	private String[] access={"SHELL","CMFS","."};
 	public String[] getAccessWords(){return access;}
     
     protected static DVector pwds=new DVector(2);
@@ -579,7 +579,7 @@ public class Shell extends StdCommand
             return false;
         }
         default:
-            mob.tell("'"+first+"' is an unknown command.  Valid commands are: "+allcmds.toString()+"and VFS alone to check your current directory.");
+            mob.tell("'"+first+"' is an unknown command.  Valid commands are: "+allcmds.toString()+"and SHELL alone to check your current directory.");
             return false;
         }
 		return true;

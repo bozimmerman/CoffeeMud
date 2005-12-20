@@ -37,6 +37,8 @@ public class ThiefSkill extends StdAbility
 	public String name(){ return "a Thief Skill";}
 	public int quality(){return Ability.INDIFFERENT;}
 	public int classificationCode(){	return Ability.THIEF_SKILL;}
+    protected int canAffectCode(){return 0;}
+    protected int canTargetCode(){return CAN_MOBS;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

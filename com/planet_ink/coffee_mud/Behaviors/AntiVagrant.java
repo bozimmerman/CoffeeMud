@@ -34,6 +34,7 @@ import java.util.*;
 public class AntiVagrant extends ActiveTicker
 {
 	public String ID(){return "AntiVagrant";}
+    protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	protected int speakDown=3;
 	protected MOB target=null;
 	protected boolean kickout=false;
