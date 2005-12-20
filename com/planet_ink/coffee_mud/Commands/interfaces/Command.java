@@ -32,9 +32,11 @@ import java.util.Vector;
 public interface Command extends CMObject
 {
 	public String[] getAccessWords();
-	public int ticksToExecute();
+	public int actionsCost();
 	public boolean canBeOrdered();
 	public boolean securityCheck(MOB mob);
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException;
+    public boolean preExecute(MOB mob, Vector commands)
+        throws java.io.IOException;
 }

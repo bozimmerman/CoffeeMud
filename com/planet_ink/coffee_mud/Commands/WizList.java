@@ -67,7 +67,7 @@ public class WizList extends StdCommand
 		mob.tell(head.toString());
 		return false;
 	}
-	public int ticksToExecute(){return 0;}
+	public int actionsCost(){return 0;}
 	public boolean canBeOrdered(){return true;}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}

@@ -117,7 +117,7 @@ public class Feed extends StdCommand
 			mob.tell(target.name()+" won't let you.");
 		return false;
 	}
-	public int ticksToExecute(){return 1;}
+	public int actionsCost(){return 1;}
 	public boolean canBeOrdered(){return true;}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}

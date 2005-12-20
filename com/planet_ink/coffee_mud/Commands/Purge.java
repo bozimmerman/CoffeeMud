@@ -196,7 +196,7 @@ public class Purge extends BaseItemParser
 		}
 		return false;
 	}
-	public int ticksToExecute(){return 1;}
+	public int actionsCost(){return 1;}
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"PURGE");}
 

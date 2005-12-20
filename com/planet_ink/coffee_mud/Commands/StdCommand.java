@@ -53,7 +53,13 @@ public class StdCommand extends ForeignScriptable implements Command
 		// the return value is arbitrary, though false is conventional.
 		return false;
 	}
-	public int ticksToExecute(){return 0;}
+    public boolean preExecute(MOB mob, Vector commands)
+        throws java.io.IOException
+    {
+        return true;
+    }
+
+	public int actionsCost(){return 0;}
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return true;}
 	public boolean staffCommand(){return false;}

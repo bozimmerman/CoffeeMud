@@ -1220,7 +1220,10 @@ public class StdMOB implements MOB
             if(O==null){ tell("Huh?!"); return -1.0;}
 
             if(O instanceof Command)
-                tickDelay=((Command)O).ticksToExecute();
+            {
+                tickDelay=((Command)O).actionsCost();
+                try{ if(!((Command)O).preExecute(this,commands)) return -1.0;}catch(Exception e){return -1.0;}
+            }
             else
             if(O instanceof Ability)
             {

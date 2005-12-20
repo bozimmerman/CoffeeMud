@@ -71,7 +71,7 @@ public class Activate extends BaseItemParser
 			mob.location().send(mob,newMsg);
 		return false;
 	}
-	public int ticksToExecute(){return 1;}
+	public int actionsCost(){return 1;}
 	public boolean canBeOrdered(){return true;}
     public boolean securityCheck(MOB mob){return CMSecurity.isASysOp(mob);}
 

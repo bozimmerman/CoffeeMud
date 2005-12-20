@@ -258,7 +258,7 @@ public class CharGen extends StdCommand
         avgMob.destroy();
 		return false;
 	}
-	public int ticksToExecute(){return 0;}
+	public int actionsCost(){return 0;}
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"CHARGEN");}
 

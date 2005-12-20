@@ -51,7 +51,7 @@ public class OutFit extends StdCommand
 		if(C2!=null) C2.execute(mob,CMParms.parse("EQUIPMENT"));
 		return false;
 	}
-	public int ticksToExecute(){return 1;}
+	public int actionsCost(){return 1;}
 	public boolean canBeOrdered(){return false;}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}

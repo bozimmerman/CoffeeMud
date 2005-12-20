@@ -171,7 +171,7 @@ public class Put extends BaseItemParser
 		mob.location().recoverRoomStats();
 		return false;
 	}
-	public int ticksToExecute(){return 1;}
+	public int actionsCost(){return 1;}
 	public boolean canBeOrdered(){return true;}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
