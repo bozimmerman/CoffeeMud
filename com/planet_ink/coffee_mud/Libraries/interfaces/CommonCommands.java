@@ -48,6 +48,8 @@ public interface CommonCommands extends CMObject
     public void postStand(MOB mob, boolean ifNecessary);
     public void postFollow(MOB follower, MOB leader, boolean quiet);
     public void postSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag);
+    public void postSay(MOB mob, MOB target,String text);
+    public void postSay(MOB mob, String text);
     public void handleBeingLookedAt(CMMsg msg);
     public void handleBeingRead(CMMsg msg);
     public void handleRecall(CMMsg msg);

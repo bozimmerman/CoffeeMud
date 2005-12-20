@@ -329,7 +329,8 @@ public class CMClass extends ClassLoader
 		}
 		if(set==null) return false;
 
-		loadListToObj(set,path,OBJECT_ANCESTORS[code]);
+		if(!loadListToObj(set,path,OBJECT_ANCESTORS[code]))
+            return false;
 
         if(set instanceof Vector)
         {
@@ -615,15 +616,18 @@ public class CMClass extends ClassLoader
 		return h;
 	}
 
-	public static void loadObjectListToObj(Object o, String filePath, String path, String ancester)
+	public static boolean loadObjectListToObj(Object o, String filePath, String path, String ancester)
 	{
 		if(path.length()>0)
 		{
+            boolean success=false;
 			if(path.equalsIgnoreCase("%default%"))
-				loadListToObj(o,filePath, ancester);
+				success=loadListToObj(o,filePath, ancester);
 			else
-				loadListToObj(o,path,ancester);
+				success=loadListToObj(o,path,ancester);
+            return success;
 		}
+        return false;
 	}
 
 	public static Vector loadVectorListToObj(String filePath, String auxPath, String ancester)
@@ -731,7 +735,7 @@ public class CMClass extends ClassLoader
                     }
                 }
             }
-            catch(Exception e)
+            catch(Throwable e)
             {
                 Log.errOut("CMClass",e);
                 return false;
@@ -813,11 +817,10 @@ public class CMClass extends ClassLoader
             else
                 className=overPackage+"."+className;
         }
-System.out.println("try1="+className);        
         try{result=defineClass(className, classData, 0, classData.length);}
         catch(NoClassDefFoundError e)
         {
-            if(e.getMessage().indexOf("(wrong name:")>=0)
+            if(e.getMessage().toLowerCase().indexOf("(wrong name:")>=0)
             {
                 int x=className.lastIndexOf(".");
                 if(x>=0)
@@ -845,20 +848,20 @@ System.out.println("try1="+className);
     public synchronized Class loadClass(String className, boolean resolveIt)
         throws ClassNotFoundException 
     {
+        String pathName=null;
+        if(className.endsWith(".class")) className=className.substring(0,className.length()-6);
+        if(className.toUpperCase().endsWith(".JS"))
+        {
+            pathName=className.substring(0,className.length()-3).replace('.','/')+className.substring(className.length()-3);
+            className=className.substring(0,className.length()-3);
+        }
+        else
+            pathName=className.replace('.','/')+".class";
         Class result = (Class)classes.get(className);
         if (result!=null){ return result;}
 
-        try{result=super.findSystemClass(className); if(result!=null) return result;} catch(Exception e){}
+        try{result=super.findSystemClass(className); if(result!=null) return result;} catch(Throwable t){}
         
-        String pathName=null;
-        if(className.toUpperCase().endsWith(".JS"))
-            pathName=className.substring(0,className.length()-3).replace('.','/')+className.substring(className.length()-3);
-        else
-        {
-            if(className.endsWith(".class")) 
-                className=className.substring(0,className.length()-6);
-            pathName=className.replace('.','/')+".class";
-        }
         /* Try to load it from our repository */
         CMFile CF=new CMFile(pathName,null,false);
         byte[] classData=CF.raw();
@@ -925,7 +928,6 @@ System.out.println("try1="+className);
             Context.exit();
             return mainClass;
         }
-System.out.println("!_!"+className);        
         return finishDefineClass(className,classData,null,resolveIt);
     }
     

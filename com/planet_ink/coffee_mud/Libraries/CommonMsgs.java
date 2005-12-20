@@ -187,6 +187,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 	}
 
+    public void postSay(MOB mob, MOB target,String text){ postSay(mob,target,text,false,false);}
+    public void postSay(MOB mob, String text){ postSay(mob,null,text,false,false);}
 	public void postSay(MOB mob,
     				    MOB target,
     				    String text,

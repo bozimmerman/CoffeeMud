@@ -78,16 +78,14 @@ public class DBConnector
 	}
 	
 	public static boolean deregisterDriver()
-	{ 
+    { 
 		if(DBs!=null) return DBs.deregisterDriver();
 		return false;
 	}
 	
-	public static int update(String updateString)
-	{ return DBs.update(updateString);}
+	public static int update(String updateString){ return (DBs!=null)?DBs.update(updateString):0;}
 	
-	public static int queryRows(String queryString)
-	{ return DBs.queryRows(queryString);}
+	public static int queryRows(String queryString){ return (DBs!=null)?DBs.queryRows(queryString):0;}
 
 	/** 
 	 * Fetch a single, not in use DBConnection object. 
@@ -98,11 +96,10 @@ public class DBConnector
 	 * @param NA
 	 * @return DBConnection	The DBConnection to use
 	 */
-	public static DBConnection DBFetch()	
-	{return DBs.DBFetch();}
+	public static DBConnection DBFetch(){return (DBs!=null)?DBs.DBFetch():null;}
 	
-    public static int numConnectionsMade(){return DBs.numConnectionsMade();}
-	public static int numDBConnectionsInUse(){ return DBs.numInUse();}
+    public static int numConnectionsMade(){return (DBs!=null)?DBs.numConnectionsMade():0;}
+	public static int numDBConnectionsInUse(){ return (DBs!=null)?DBs.numInUse():0;}
 	
 	/** 
 	 * Fetch a single, not in use DBConnection object. 
@@ -113,8 +110,7 @@ public class DBConnector
 	 * @param SQL	The prepared statement SQL
 	 * @return DBConnection	The DBConnection to use
 	 */
-	public static DBConnection DBFetchPrepared(String SQL)	
-	{ return DBs.DBFetchPrepared(SQL);}
+	public static DBConnection DBFetchPrepared(String SQL){ return (DBs!=null)?DBs.DBFetchPrepared(SQL):null;}
 	/** 
 	 * Return a DBConnection object fetched with DBFetch()
 	 * 
@@ -122,8 +118,7 @@ public class DBConnector
 	 * @param D	The Database connection to return to the pool
 	 * @return NA
 	 */
-	public static void DBDone(DBConnection D)
-	{ DBs.DBDone(D);}
+	public static void DBDone(DBConnection D){ if(DBs!=null) DBs.DBDone(D);}
 
 	/** 
 	 * When reading a database table, this routine will read in
@@ -175,8 +170,7 @@ public class DBConnector
 	 * @param NA
 	 * @return NA
 	 */
-	public static void killConnections()
-	{ DBs.killConnections();}
+	public static void killConnections(){ if(DBs!=null) DBs.killConnections();}
 	
 	/** 
 	 * Return the happiness level of the connections
@@ -184,8 +178,7 @@ public class DBConnector
 	 * @param NA
 	 * @return boolean	true if ok, false if not ok
 	 */
-	public static boolean amIOk()
-	{ return DBs.amIOk();}
+	public static boolean amIOk(){ return (DBs!=null)?DBs.amIOk():false;}
 	
 	/** 
 	 * Queue up a failed write/update for later processing.
@@ -196,7 +189,7 @@ public class DBConnector
 	 * @return NA
 	 */
 	public static void enQueueError(String SQLString, String SQLError, String count)
-	{ DBs.enQueueError(SQLString, SQLError,count);}
+	{ if(DBs!=null)DBs.enQueueError(SQLString, SQLError,count);}
 	
 	
 	/** 
@@ -207,7 +200,7 @@ public class DBConnector
 	 * @return NA
 	 */
 	public static void retryQueuedErrors()
-	{ DBs.retryQueuedErrors();}
+	{ if(DBs!=null)DBs.retryQueuedErrors();}
 	
 	/** write a buffer of data to numerous SQL records by
 	 * breaking the buffer into small chunks
@@ -218,7 +211,7 @@ public class DBConnector
 	 * @return int	the response code, or -1 for an error
 	 */
 	public static int writeCheeseWheelBuffer(String SQL, byte[] buf)
-	{ return DBs.writeCheeseWheelBuffer(SQL,buf);}
+	{ return (DBs!=null)?DBs.writeCheeseWheelBuffer(SQL,buf):0;}
 	
 	/** read a buffer of data to numerous SQL records by
 	 * breaking the buffer into small chunks
@@ -229,7 +222,7 @@ public class DBConnector
 	 * @return byte[]	the buffer of data
 	 */
 	public static byte[] readCheeseWheelBuffer(String SQL)
-	{ return DBs.readCheeseWheelBuffer(SQL);}
+	{ return (DBs!=null)?DBs.readCheeseWheelBuffer(SQL):null;}
 	
 	/** list the connections 
 	 * 
@@ -238,7 +231,7 @@ public class DBConnector
 	 * @return NA
 	 */
 	public static void listConnections(PrintStream out)
-	{ DBs.listConnections(out);}
+	{ if(DBs!=null)DBs.listConnections(out);}
 	
 	/** return a status string, or "" if everything is ok.
 	 * 
@@ -248,6 +241,7 @@ public class DBConnector
 	 */
 	public static StringBuffer errorStatus()
 	{ 
+        if(DBs==null) return new StringBuffer("Not connected.");
 		StringBuffer status=DBs.errorStatus();
 		if(status.length()==0)
 			return new StringBuffer("OK! Connections in use="+DBs.numInUse()+"/"+DBs.numConnectionsMade());

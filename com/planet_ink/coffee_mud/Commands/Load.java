@@ -72,7 +72,7 @@ public class Load extends StdCommand
             {
         		if(CMClass.loadClass(what,name))
                 {
-        			mob.tell(CMStrings.capitalizeAndLower(what)+" "+name+" was loaded.");
+        			mob.tell(CMStrings.capitalizeAndLower(what)+" "+name+" was loaded.  Mind your casing in this string!");
                     return true;
                 }
             }
