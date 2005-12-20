@@ -162,15 +162,19 @@ If you are using&nbsp;fakedb, follow the instructions below.&nbsp; If you don't
 know whether or not you are using fakedb, then you ARE using fakedb and should 
 follow these instructions:</P>
 <P><STRONG>1. </STRONG>Go into the CoffeeMud directory for your olde version and 
-copy the entire "data" directory to somewhere else on your hard drive.&nbsp; 
-Remember where you put it!</P>
-<P><STRONG>2.</STRONG> To back to the beginning of this section and follow steps 
+copy the entire fakedb data directory to somewhere else on your hard drive.&nbsp; 
+On CoffeeMud versions 1.2 - 4.7, your fakedb data directory is located in your
+coffeemud folder in the "data" directory.  In versions 5.0 and higher, it is 
+located in your coffeemud folder in the "resources/fakedb" directory.  You should
+see a file called fakedb.schema, along with numerous fakedb.data.* files.  Copy them all, 
+and remember where you put them! </P>
+<P><STRONG>2.</STRONG> Go back to the beginning of this section and follow steps 
 1 through 5 from the <EM>unchanged database schema</EM> process.</P>
 <P><STRONG>3.&nbsp;</STRONG>From the command line, go into your CoffeeMud 
-directory, and from there into the data directory.&nbsp; Delete all the files 
+directory, and from there into fakedb data directory.&nbsp; Delete all the files 
 matching fakedb.data.*&nbsp; Do NOT delete the&nbsp;fakedb.schema! If everything 
 went well, the new fakedb.schema from the new version of CoffeeMud is still in 
-your data directory.&nbsp;</P>
+your fakedb data directory.&nbsp;</P>
 <P><STRONG>4.</STRONG> Still from the command line, go into your CoffeeMud 
 directory and enter the following:</P>
 <P><STRONG>java com.planet_ink.fakedb.DBUpgrade</STRONG></P>
@@ -180,12 +184,16 @@ directory and enter the following:</P>
 <P>Now, if you are upgrading to a version with an updated database schema and 
 you are NOT using fakedb, but are using Access, SQL Server, MySQL, or some other 
 database, follow these instructions:</P>
-<P><STRONG>1.</STRONG> Go into the CoffeeMud directory for your olde version and 
-copy the entire "data" directory to somewhere else on your hard drive.&nbsp; 
-Remember where you put it!&nbsp; Even though you aren't using FakeBD, you will 
+<P><STRONG>1.</STRONG>Go into the CoffeeMud directory for your olde version and 
+copy the entire fakedb data directory to somewhere else on your hard drive.&nbsp; 
+On CoffeeMud versions 1.2 - 4.7, your fakedb data directory is located in your
+coffeemud folder in the "data" directory.  In versions 5.0 and higher, it is 
+located in your coffeemud folder in the "resources/fakedb" directory.  You should
+see a file called fakedb.schema, along with numerous fakedb.data.* files.  Copy them all, 
+and remember where you put them! &nbsp; Even though you aren't using FakeBD, you will 
 still need to copy FakeDB's&nbsp;schema for use with the upgrade 
 application.</P>
-<P><STRONG>2.</STRONG> To back to the beginning of this section and follow steps 
+<P><STRONG>2.</STRONG>Go back to the beginning of this section and follow steps 
 1 through 5 from the <EM>unchanged database schema</EM> 
 process.</P>
 <P><STRONG>3. </STRONG>Following the instructions provided by your database 
@@ -343,10 +351,6 @@ your server.</P>
 <P>The directories inside the <STRONG>com</STRONG>     directory contain all the Java Class files, 
 which are the executable portion of CoffeeMud.  All of the Java source 
 files are also found herein.</P>
-<IMG src="images/dir-data.jpg">
-<P>The <STRONG>data</STRONG>  directory is where all area, room, mob, journal, and player data is
-stored when the FAKEDB system is being used.  When FAKEDB is not being used,
-this directory is unused.</P>
 <IMG src="images/dir-guides.jpg">
 <P>The <STRONG>guides</STRONG>  directory is where you'll find this document, as well as other HTML
 documents you may find helpful in configuring your server as well as building
@@ -401,12 +405,17 @@ files found in the resources directory are:</P>
 <TR><TD VALIGN=top><I>socials.txt</I></TD><TD VALIGN=top> The text file holding all of the socials.</TD></TR>
 <TR><TD VALIGN=top><I>mxp_images.txt</I></TD><TD VALIGN=top>A definition table for the default image files used for mxp clients.</TD></TR>
 </TABLE>
-<P>The <STRONG>resources/data</STRONG> 
-directory is where you'll find sample files for a variety of things. At 
-the moment, it contains a cmare file with some example deities to load into 
+<P>The <STRONG>resources/fakedb</STRONG>  directory is where all area, room, mob, journal, and player data is
+stored when the FAKEDB system is being used.  When FAKEDB is not being used,
+this directory is unused.</P>
+<P>The <STRONG>resources/examples</STRONG> 
+directory is where you'll find sample files for a variety of things. It 
+contains a cmare file with some example deities to load into 
 your mud. Use the import command to load this set of mobs.&nbsp; It also contains a sample faction ini
 file called "reputation.ini", which  you may put into the proper tag in your coffeemud.ini file to
-make use of, as well as  a template file for use when new factions are created.</P>
+make use of, as well as  a template file for use when new factions are created.  It also 
+contains a sample MOB class written in javascript.  Use LOAD MOB resources/examples/Lemming.js to 
+load it up.</P>
 <P>The <STRONG>resources/help</STRONG> directory is where you'll find all of the files
 responsible for the numerous standard and archon HELP entries.  It also contains the
 two text files shown when help and ahelp are entered without parameters.  The *.ini files
@@ -467,7 +476,7 @@ Without the database, you would have to start all over from scratch every time
 you booted the MUD Server.&nbsp; And we all know that would be bad.</P>
 <P align=left>By default, CoffeeMud uses a custom JDBC flat-file database called 
 "fakedb".&nbsp; FakeDB stores its data into text formatted files inside the 
-"data" directory of your CoffeeMud package.&nbsp; FakeDB is rather slow, and 
+"resources/fakedb" directory of your CoffeeMud package.&nbsp; FakeDB is rather slow, and 
 hardly a powerful or professional database system, but it is quite sufficient 
 for CoffeeMud, and performs well the small tasks it was designed for.&nbsp; </P>
 <P align=left>For the more adventurous, CoffeeMud supports 
@@ -480,7 +489,7 @@ directory of your CoffeeMud package, you will find&nbsp;several
 files: "coffeemuddb.sql", "coffeemuddb2.sql", "coffeemuddbaccess.sql", "coffeemuddbmysql.sql", "coffeemuddbpsql.sql",  "coffeemuddbh.sql", "coffeemuddderby.sql", and "fakedb.schema".&nbsp; The 
 first&nbsp;five are SQL Scripts which can be used to create the necessary tables 
 in Microsoft SQL Server ("coffeemuddb2.sql"), MySQL ("coffeemuddbmysql.sql"),&nbsp;Access ("coffeemuddbaccess.sql"), PostGRE ("coffeemuddbpsql.sql"), Derby ("coffeemuddbderby.sql"), HSQLDB ("coffeemuddbh.sql"), and some of 
-the others.&nbsp; The last is a copy of the same fakedb file from your "data" 
+the others.&nbsp; The last is a copy of the same fakedb file from your "resources/fakedb" 
 directory, in case it becomes corrupted.&nbsp; Although the manner in which the 
 SQL Scripts are used may differ from system to system, they cannot all be 
 covered here.&nbsp; Some of the scripts may need to be changed slightly to work 
@@ -615,7 +624,7 @@ running and a coffeemud database&nbsp;all set for it to access.<BR><BR><STRONG>7
 </STRONG>  
 Now go to your coffeemud folder and open your coffeemud.ini file in notepad or 
 some text editor, and look for the section that says:<BR><FONT 
-face="Courier New">DBCLASS=com.planet_ink.fakedb.Driver<BR>DBSERVICE=jdbc:fakedb:data<BR>DBUSER=<BR>DBPASS=<BR>DBCONNECTIONS=2<BR></FONT><BR>and 
+face="Courier New">DBCLASS=com.planet_ink.fakedb.Driver<BR>DBSERVICE=jdbc:fakedb:resources/data<BR>DBUSER=<BR>DBPASS=<BR>DBCONNECTIONS=2<BR></FONT><BR>and 
 change it to:<BR><BR><FONT 
 face="Courier New">DBCLASS=com.mysql.jdbc.Driver<BR>DBSERVICE=jdbc:mysql://localhost/coffeemud<BR>DBUSER=<BR>DBPASS=<BR>DBCONNECTIONS=4<BR></FONT><BR><STRONG>8. </STRONG> 
  Go back to the other file you downloaded in STEP 2, 
