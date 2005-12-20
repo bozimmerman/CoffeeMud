@@ -56,7 +56,6 @@ public class DefaultSession extends Thread implements Session
 	protected String lastColorStr="";
 	protected String lastStr=null;
 	protected int spamStack=0;
-    private int dequeCounter=0;
 	protected Vector snoops=new Vector();
 	
 	protected boolean lastWasCR=false;
@@ -257,8 +256,6 @@ public class DefaultSession extends Thread implements Session
 	public long getTotalTicks(){ return tickTotal;}
     public long getMillisOnline(){ return System.currentTimeMillis()-onlineTime;}
     
-    public int dequeCommand(){dequeCounter++; return dequeCounter;}
-
 	public long lastLoopTime(){ return lastLoopTop;}
     public long getLastPKFight(){return lastPKFight;}
     public void setLastPKFight(){lastPKFight=System.currentTimeMillis();}
@@ -1348,14 +1345,7 @@ public class DefaultSession extends Thread implements Session
 							needPrompt=true;
 						}
 						if(mob==null) break;
-                        while((dequeCounter>0)&&(mob!=null))
-                        {
-                            mob.dequeCommand();
-                            dequeCounter--;
-                        }
-
-						//if((spamStack>0)&&((lastOutput-System.currentTimeMillis())>100))
-						//	onlyPrint("",0);
+                        while((!killFlag)&&(mob!=null)&&(mob.dequeCommand()));
 
 						if(!afkFlag())
 						{

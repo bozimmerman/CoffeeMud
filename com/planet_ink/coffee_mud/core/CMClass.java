@@ -649,7 +649,7 @@ public class CMClass extends ClassLoader
         {
             try
             {
-                ancestorCl = Class.forName(ancestor);
+                ancestorCl = loader.loadClass(ancestor);
             }
             catch (ClassNotFoundException e)
             {
@@ -801,13 +801,39 @@ public class CMClass extends ClassLoader
         return (loadClass(className, true));
     }
 
-    public Class finishDefineClass(String className, byte[] classData, boolean resolveIt)
+    public Class finishDefineClass(String className, byte[] classData, String overPackage, boolean resolveIt)
         throws ClassFormatError 
     {
-        Class result=defineClass(className, classData, 0, classData.length);
+        Class result=null;
+        if(overPackage!=null)
+        {
+            int x=className.lastIndexOf(".");
+            if(x>=0)
+                className=overPackage+className.substring(x);
+            else
+                className=overPackage+"."+className;
+        }
+System.out.println("try1="+className);        
+        try{result=defineClass(className, classData, 0, classData.length);}
+        catch(NoClassDefFoundError e)
+        {
+            if(e.getMessage().indexOf("(wrong name:")>=0)
+            {
+                int x=className.lastIndexOf(".");
+                if(x>=0)
+                {
+                    String notherName=className.substring(x+1);
+                    result=defineClass(notherName, classData, 0, classData.length);
+                }
+                else
+                    throw e;
+            }
+            else
+                throw e;
+        }
         if (result==null){throw new ClassFormatError();}
         if (resolveIt){resolveClass(result);}
-        classes.put(result.getName(), result);
+        classes.put(className, result);
         return result;
     }
     
@@ -820,20 +846,26 @@ public class CMClass extends ClassLoader
         throws ClassNotFoundException 
     {
         Class result = (Class)classes.get(className);
-        if (result!=null) return result;
+        if (result!=null){ return result;}
 
-        try{return super.findSystemClass(className); } catch (ClassNotFoundException e){}
-
+        try{result=super.findSystemClass(className); if(result!=null) return result;} catch(Exception e){}
+        
         String pathName=null;
         if(className.toUpperCase().endsWith(".JS"))
             pathName=className.substring(0,className.length()-3).replace('.','/')+className.substring(className.length()-3);
         else
-            pathName=className.replace('.','/');
+        {
+            if(className.endsWith(".class")) 
+                className=className.substring(0,className.length()-6);
+            pathName=className.replace('.','/')+".class";
+        }
         /* Try to load it from our repository */
-        CMFile CF=new CMFile(pathName,null,true);
+        CMFile CF=new CMFile(pathName,null,false);
         byte[] classData=CF.raw();
         if((classData==null)||(classData.length==0))
+        {
             throw new ClassNotFoundException("File "+pathName+" not readable!");
+        }
         if(CF.getName().toUpperCase().endsWith(".JS"))
         {
             String name=CF.getName().substring(0,CF.getName().length()-3);
@@ -843,6 +875,7 @@ public class CMClass extends ClassLoader
             Vector V=Resources.getFileLineVector(str);
             Class extendsClass=null;
             Vector implementsClasses=new Vector();
+            String overPackage=null;
             for(int v=0;v<V.size();v++)
             {
                 if((extendsClass==null)&&((String)V.elementAt(v)).trim().toUpperCase().startsWith("//EXTENDS "))
@@ -855,6 +888,8 @@ public class CMClass extends ClassLoader
                         throw e;
                     }
                 }
+                if((overPackage==null)&&((String)V.elementAt(v)).trim().toUpperCase().startsWith("//PACKAGE "))
+                    overPackage=((String)V.elementAt(v)).trim().substring(10).trim();
                 if(((String)V.elementAt(v)).toUpperCase().startsWith("//IMPLEMENTS "))
                 {
                     String extendName=((String)V.elementAt(v)).substring(13).trim();
@@ -884,13 +919,14 @@ public class CMClass extends ClassLoader
             Object[] objs = cc.compileToClassFiles(str.toString(), "script", 1, name);
             for (int i=0;i<objs.length;i+=2)
             {
-                Class C=finishDefineClass((String)objs[i],(byte[])objs[i+1],resolveIt);
+                Class C=finishDefineClass((String)objs[i],(byte[])objs[i+1],overPackage,resolveIt);
                 if(mainClass==null) mainClass=C;
             }
             Context.exit();
             return mainClass;
         }
-        return finishDefineClass(className,classData,resolveIt);
+System.out.println("!_!"+className);        
+        return finishDefineClass(className,classData,null,resolveIt);
     }
     
     public static boolean loadClasses(CMProps page)

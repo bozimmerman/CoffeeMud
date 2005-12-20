@@ -318,9 +318,12 @@ public class CMProps extends Properties
             setIntVar(SYSTEMI_MANACONSUMEAMT,CMath.s_int(page.getStr("MANACONSUMEAMT").trim()));
         String s=page.getStr("COMBATSYSTEM");
         if(s.equalsIgnoreCase("queue"))
-            setIntVar(SYSTEMI_COMBATSYSTEM,1);
+            setIntVar(SYSTEMI_COMBATSYSTEM,CombatLibrary.COMBAT_QUEUE);
         else
-            setIntVar(SYSTEMI_COMBATSYSTEM,0);
+        if(s.equalsIgnoreCase("manual"))
+            setIntVar(SYSTEMI_COMBATSYSTEM,CombatLibrary.COMBAT_MANUAL);
+        else
+            setIntVar(SYSTEMI_COMBATSYSTEM,CombatLibrary.COMBAT_DEFAULT);
         s=page.getStr("EQVIEW");
         if(s.equalsIgnoreCase("paragraph"))
             setIntVar(SYSTEMI_EQVIEW,2);

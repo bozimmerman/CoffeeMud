@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.Fighter;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
@@ -1187,28 +1188,16 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         }
     }
     
-    protected double subtickBeforeAttack(MOB fighter, double actions)
+    protected void subtickBeforeAttack(MOB fighter)
     {
-        if(CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)!=CombatLibrary.COMBAT_DEFAULT)
-            while((actions>=1.0)&&(fighter.commandQueSize()>0))
-            {
-                if(fighter.session()!=null)
-                    fighter.session().dequeCommand();
-                else
-                    fighter.dequeCommand();
-                actions=actions-1.0;
-            }
-        return actions;
+        // combat que system eats up standard commands
+        // before using any attacks
+        while((CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)==CombatLibrary.COMBAT_QUEUE)
+        &&(!fighter.amDead())
+        &&(fighter.dequeCommand()));
     }
-    
-    protected double subtickAfterAttack(MOB fighter, double actions)
+    protected void subtickAfterAttack(MOB fighter)
     {
-        if(CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)==CombatLibrary.COMBAT_DEFAULT)
-            if(fighter.session()!=null)
-                fighter.session().dequeCommand();
-            else
-                fighter.dequeCommand();
-        
         MOB target=fighter.getVictim();
         if(!fighter.isMonster())
         {
@@ -1238,10 +1227,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             if(nextVictimM!=null)
                 fighter.setVictim(nextVictimM);
         }
-        return actions;
     }
     
-    public double tickCombat(MOB fighter, double actions)
+    public void tickCombat(MOB fighter)
     {
         Item weapon=fighter.fetchWieldedItem();
 
@@ -1251,8 +1239,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             weapon=fighter.fetchWieldedItem();
         }
 
-        actions=subtickBeforeAttack(fighter,actions);
         
+        subtickBeforeAttack(fighter);
+        int saveAction=(CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)==CombatLibrary.COMBAT_QUEUE)?0:1;
+
         int folrange=(CMath.bset(fighter.getBitmap(),MOB.ATT_AUTOMELEE)
                         &&(fighter.amFollowing()!=null)
                         &&(fighter.amFollowing().getVictim()==fighter.getVictim())
@@ -1261,24 +1251,27 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                                 fighter.amFollowing().fetchFollowerOrder(fighter)+fighter.amFollowing().rangeToTarget():-1;
         if(CMLib.flags().aliveAwakeMobile(fighter,true))
         {
-            int numAttacks=(int)Math.round(Math.floor(actions));
-            for(int s=0;s<numAttacks;s++)
-            {
-                if((!fighter.amDead())
-                &&(fighter.curState().getHitPoints()>0)
-                &&(fighter.isInCombat())
-                &&((s==0)||(CMLib.flags().isStanding(fighter))))
-                    subtickAttack(fighter,weapon,folrange);
-                else
-                    break;
-            }
+            int numAttacks=(int)Math.round(Math.floor(fighter.actions()))-saveAction;
+            if((CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)!=CombatLibrary.COMBAT_MANUAL)||(fighter.isMonster()))
+                for(int s=0;s<numAttacks;s++)
+                {
+                    if((!fighter.amDead())
+                    &&(fighter.curState().getHitPoints()>0)
+                    &&(fighter.isInCombat())
+                    &&(fighter.actions()>=1.0)
+                    &&((s==0)||(CMLib.flags().isStanding(fighter))))
+                    {
+                        fighter.setActions(fighter.actions()-1.0);
+                        subtickAttack(fighter,weapon,folrange);
+                    }
+                    else
+                        break;
+                }
 
             if(CMLib.dice().rollPercentage()>(fighter.charStats().getStat(CharStats.CONSTITUTION)*4))
                 fighter.curState().adjMovement(-1,fighter.maxState());
         }
 
-        actions=subtickAfterAttack(fighter,actions);
-        
-        return actions;
+        subtickAfterAttack(fighter);
     }
 }

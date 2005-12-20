@@ -86,6 +86,7 @@ public class StdMOB implements MOB
     private long lastMoveTime=0;
     private int movesSinceTick=0;
     private int manaConsumeCounter=CMLib.dice().roll(1,10,0);
+    private double freeActions=0.0;
 
     // the core state values
     public CharState curState=(CharState)CMClass.getCommon("DefaultCharState");
@@ -109,7 +110,6 @@ public class StdMOB implements MOB
     protected MOB victim=null;
     protected MOB amFollowing=null;
     protected MOB soulMate=null;
-    private double actions=0.0;
     protected int atRange=-1;
     private long peaceTime=0;
     
@@ -872,7 +872,7 @@ public class StdMOB implements MOB
 		{
 			setAtRange(-1);
 			if(victim!=null)
-				commandQue.clear();
+			    synchronized(commandQue){commandQue.clear();}
 		}
 		if(victim==mob) return;
 		if(mob==this) return;
@@ -1152,25 +1152,26 @@ public class StdMOB implements MOB
 		return mxp+CMLib.combat().standardMobCondition(this)+"^</HealthText^>";
 	}
 
+    public double actions(){return freeActions;}
+    public void setActions(double remain){freeActions=remain;}
     public int commandQueSize(){return commandQue.size();}
-	public void dequeCommand()
+	public boolean dequeCommand()
 	{
 		Vector returnable=null;
 		synchronized(commandQue)
 		{
 			if(commandQue.size()>0)
 			{
-				Vector topCMD=(Vector)commandQue.elementAt(0,1);
-				int topTick=((Integer)commandQue.elementAt(0,2)).intValue();
-				commandQue.removeElementAt(0);
-				if((--topTick)<2)
-					returnable=topCMD;
-				else
-					commandQue.insertElementAt(0,topCMD,new Integer(topTick));
+				if(((Double)commandQue.elementAt(0,2)).doubleValue()<=actions())
+                {
+                    setActions(actions()-((Double)commandQue.elementAt(0,2)).doubleValue());
+                    returnable=(Vector)commandQue.elementAt(0,1);
+                    commandQue.removeElementAt(0);
+                }
 			}
 		}
-		if(returnable!=null)
-			doCommand(CMLib.english().findCommand(this,returnable),returnable);
+		if(returnable!=null){ doCommand(returnable); return true;}
+        return false;
 	}
 
 	public void doCommand(Vector commands)
@@ -1211,38 +1212,50 @@ public class StdMOB implements MOB
 		}
 	}
 
-	public void enqueCommand(Vector commands, int tickDelay)
+    protected double calculateTickDelay(Vector commands, double tickDelay)
+    {
+        if(tickDelay<=0.0)
+        {
+            Object O=CMLib.english().findCommand(this,commands);
+            if(O==null){ tell("Huh?!"); return -1.0;}
+
+            if(O instanceof Command)
+                tickDelay=((Command)O).ticksToExecute();
+            else
+            if(O instanceof Ability)
+            {
+                tickDelay=isInCombat()?((Ability)O).combatCastingTime():((Ability)O).castingTime();
+                if(!CMLib.english().preEvoke(this,commands))
+                    return -1.0;
+            }
+            else
+                tickDelay=1.0;
+        }
+        return tickDelay;
+    }
+    
+    public void prequeCommand(Vector commands, double tickDelay)
+    {
+        if(commands==null) return;
+        tickDelay=calculateTickDelay(commands,tickDelay);
+        if(tickDelay<0.0) return;
+        if(tickDelay==0.0)
+            doCommand(commands);
+        else
+        synchronized(commandQue)
+        { commandQue.insertElementAt(0,commands,new Double(tickDelay));}
+    }
+    
+	public void enqueCommand(Vector commands, double tickDelay)
 	{
 		if(commands==null) return;
-		int tickDown=1;
-		if(tickDelay<1)
-		{
-			Object O=CMLib.english().findCommand(this,commands);
-			if(O==null){ tell("Huh?!"); return;}
-
-			if(O instanceof Command)
-				tickDown=((Command)O).ticksToExecute();
-			else
-			if(O instanceof Ability)
-            {
-				tickDown=isInCombat()?((Ability)O).combatCastingTime():((Ability)O).castingTime();
-                if(!CMLib.english().preEvoke(this,commands))
-                    return;
-            }
-
-			if(((!isInCombat())&&(tickDown<2))
-			||(tickDown==0))
-			{
-				doCommand(O,commands);
-				return;
-			}
-		}
-
-		synchronized(commandQue)
-		{
-			if((tickDelay+1)>tickDown) tickDown=tickDelay+1;
-			commandQue.addElement(commands,new Integer(tickDown));
-		}
+        tickDelay=calculateTickDelay(commands,tickDelay);
+        if(tickDelay<0.0) return;
+        if(tickDelay==0.0)
+            doCommand(commands);
+        else
+        synchronized(commandQue)
+        { commandQue.addElement(commands,new Double(tickDelay));}
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -2369,14 +2382,16 @@ public class StdMOB implements MOB
 					CMLib.combat().postDamage(this,this,null,(int)Math.round(CMath.mul(Math.random(),baseEnvStats().level()+2)),CMMsg.MSG_OK_VISUAL,-1,null);
 				}
                 
-                actions=(actions-Math.floor(actions))
-                        +(CMLib.flags().isSitting(this)?(envStats().speed()/2.0):envStats().speed());
+                if(commandQueSize()==0) setActions(actions()-Math.floor(actions()));
+                setActions(actions()+envStats().speed());
                 
 				if(isInCombat())
 				{
+                    if(CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)==CombatLibrary.COMBAT_DEFAULT)
+                        setActions(actions()+1.0); // bonus action is employed in default system
                     tickStatus=Tickable.STATUS_FIGHT;
                     peaceTime=0;
-                    actions=CMLib.combat().tickCombat(this,actions);
+                    CMLib.combat().tickCombat(this);
 				}
 				else
 				{
@@ -2385,10 +2400,6 @@ public class StdMOB implements MOB
 					&&(peaceTime>=SHEATH_TIME)
 					&&(CMLib.flags().aliveAwakeMobileUnbound(this,true)))
 						CMLib.commands().postSheath(this,true);
-                    if(mySession!=null)
-                        mySession.dequeCommand();
-                    else
-                        dequeCommand();
 				}
                 
 				tickStatus=Tickable.STATUS_OTHER;
@@ -2409,6 +2420,8 @@ public class StdMOB implements MOB
                      	}
 					}
 				}
+                else
+                while((!amDead())&&dequeCommand());
 
 				if((riding()!=null)&&(CMLib.utensils().roomLocation(riding())!=location()))
 					setRiding(null);

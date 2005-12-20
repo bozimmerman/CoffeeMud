@@ -101,8 +101,8 @@ public class DBConnector
 	public static DBConnection DBFetch()	
 	{return DBs.DBFetch();}
 	
-	public static int numDBConnectionsInUse()
-	{ return DBs.numInUse();}
+    public static int numConnectionsMade(){return DBs.numConnectionsMade();}
+	public static int numDBConnectionsInUse(){ return DBs.numInUse();}
 	
 	/** 
 	 * Fetch a single, not in use DBConnection object. 

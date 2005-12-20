@@ -119,7 +119,6 @@ public interface Session extends CMObject
 		throws IOException;
 	
 	public Vector previousCMD();
-    public int dequeCommand();
 	
 	public MOB mob();
 	public void setMob(MOB newmob);

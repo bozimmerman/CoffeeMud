@@ -45,6 +45,7 @@ public class DBInterface implements DatabaseEngine
 	public Vector userList()
 	{return MOBloader.userList();}
 
+    public boolean isConnected(){return DBConnector.numConnectionsMade()>0;}
 	public void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates)
 	{ MOBloader.DBClanFill(clan,members,roles,lastDates);}
 	

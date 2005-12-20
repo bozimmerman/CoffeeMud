@@ -36,11 +36,21 @@ public class Kill extends StdCommand
 {
 	public Kill(){}
 
-	private String[] access={"KILL","K"};
+	private String[] access={"KILL","K","ATTACK"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+        if(commands==null)
+        {
+            if(mob.isInCombat())
+            {
+                CMLib.combat().postAttack(mob,mob.getVictim(),mob.fetchWieldedItem());
+                return true;
+            }
+            return false;
+        }
+        
 		MOB target=null;
 		if(commands.size()<2)
 		{

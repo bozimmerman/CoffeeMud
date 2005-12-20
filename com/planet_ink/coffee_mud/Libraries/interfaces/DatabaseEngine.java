@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
+import com.planet_ink.coffee_mud.core.database.DBConnector;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -73,6 +74,7 @@ public interface DatabaseEngine extends CMObject
 	public void DBCreateClan(Clan C);
 	public void DBUpdateEmail(MOB mob);
 	public void DBUpdatePassword(MOB mob);
+    public boolean isConnected();
 	public String[] DBFetchEmailData(String name);
 	public String DBEmailSearch(String email);
 	public Vector getUserList();

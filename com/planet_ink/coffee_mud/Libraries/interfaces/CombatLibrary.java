@@ -35,6 +35,7 @@ public interface CombatLibrary extends CMObject
     
     public static final int COMBAT_DEFAULT=0;
     public static final int COMBAT_QUEUE=1;
+    public static final int COMBAT_MANUAL=2;
     
     public HashSet allPossibleCombatants(MOB mob, boolean beRuthless);
     public HashSet properTargets(Ability A, MOB caster, boolean beRuthless);
@@ -81,7 +82,7 @@ public interface CombatLibrary extends CMObject
     public void handleExperienceChange(CMMsg msg);
     public void handleDeath(CMMsg msg);
     public void handleObserveDeath(MOB observer, MOB fighting, CMMsg msg);
-    public double tickCombat(MOB fighter, double actions);
+    public void tickCombat(MOB fighter);
     
     public static final String[] DEFAULT_ARMOR_DESCS={
         "vulnerable",
