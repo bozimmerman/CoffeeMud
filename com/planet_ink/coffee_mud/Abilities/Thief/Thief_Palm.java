@@ -42,8 +42,8 @@ public class Thief_Palm extends ThiefSkill
 	private static final String[] triggerStrings = {"PALM"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public int combatCastingTime(){return 0;}
-	public int castingTime(){return 0;}
+	public double combatCastingTime(){return 0.0;}
+	public double castingTime(){return 0.0;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

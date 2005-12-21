@@ -43,8 +43,8 @@ public class Property implements Ability
 	protected Environmental affected=null;
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public int castingTime(){return 0;}
-	public int combatCastingTime(){return 0;}
+	public double castingTime(){return 0.0;}
+	public double combatCastingTime(){return 0.0;}
 	public int abilityCode(){return 0;}
 	public void setAbilityCode(int newCode){}
 	public int adjustedLevel(MOB mob, int asLevel){return -1;}
@@ -65,7 +65,7 @@ public class Property implements Ability
 	public String[] triggerStrings(){return empty;}
 	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel){return false;}
 	public boolean invoke(MOB mob, Environmental target, boolean auto, int asLevel){return false;}
-    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel){ return false;}
+    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining){return true;}
 	public boolean autoInvocation(MOB mob){return false;}
 	public void unInvoke(){}
 	public boolean canBeUninvoked(){return false;}

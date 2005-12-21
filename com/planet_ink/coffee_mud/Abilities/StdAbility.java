@@ -44,8 +44,8 @@ public class StdAbility extends ForeignScriptable implements Ability
 	public String[] triggerStrings(){return empty;}
 	public int maxRange(){return 0;}
 	public int minRange(){return 0;}
-	public int castingTime(){return 1;}
-	public int combatCastingTime(){return 1;}
+	public double castingTime(){return 0.25;}
+	public double combatCastingTime(){return 1.0;}
 	public boolean putInCommandlist(){return true;}
 	public boolean isAutoInvoked(){return false;}
 	public boolean bubbleAffect(){return false;}
@@ -663,7 +663,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			A.setProfficiency(100);
 	}
 
-    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
     {
         return true;
     }

@@ -44,8 +44,8 @@ public class Skill_Swim extends StdSkill
 	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONTRAINCOST);}
 	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONPRACCOST);}
 	public int usageType(){return USAGE_MOVEMENT;}
-    public int combatCastingTime(){return 2;}
-    public int castingTime(){return 2;}
+    public double combatCastingTime(){return 2.0;}
+    public double castingTime(){return 2.0;}
 
 	public boolean placeToSwim(Room r2)
 	{
@@ -66,51 +66,54 @@ public class Skill_Swim extends StdSkill
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
 	}
 
-    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
     {
-        int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
-        if(dirCode<0)
+        if(secondsElapsed==0)
         {
-            mob.tell("Swim where?");
-            return false;
-        }
-        Room r=mob.location().getRoomInDir(dirCode);
-        if(!placeToSwim(mob.location()))
-        {
-            if(!placeToSwim(r))
+            int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
+            if(dirCode<0)
+            {
+                mob.tell("Swim where?");
+                return false;
+            }
+            Room r=mob.location().getRoomInDir(dirCode);
+            if(!placeToSwim(mob.location()))
+            {
+                if(!placeToSwim(r))
+                {
+                    mob.tell("There is no water to swim on that way.");
+                    return false;
+                }
+            }
+            else
+            if((r!=null)
+            &&(r.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+            &&(r.domainType()==Room.DOMAIN_INDOORS_AIR))
             {
                 mob.tell("There is no water to swim on that way.");
                 return false;
             }
+    
+            if((mob.riding()!=null)
+            &&(mob.riding().rideBasis()!=Rideable.RIDEABLE_WATER)
+            &&(mob.riding().rideBasis()!=Rideable.RIDEABLE_AIR))
+            {
+                mob.tell("You need to get off "+mob.riding().name()+" first!");
+                return false;
+            }
+            CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) swimming "+Directions.getDirectionName(dirCode)+".");
+            Room R=mob.location();
+            if((R!=null)&&(R.okMessage(mob,msg)))
+                R.send(mob,msg);
+            else
+                return false;
         }
-        else
-        if((r!=null)
-        &&(r.domainType()==Room.DOMAIN_OUTDOORS_AIR)
-        &&(r.domainType()==Room.DOMAIN_INDOORS_AIR))
-        {
-            mob.tell("There is no water to swim on that way.");
-            return false;
-        }
-
-        if((mob.riding()!=null)
-        &&(mob.riding().rideBasis()!=Rideable.RIDEABLE_WATER)
-        &&(mob.riding().rideBasis()!=Rideable.RIDEABLE_AIR))
-        {
-            mob.tell("You need to get off "+mob.riding().name()+" first!");
-            return false;
-        }
-        CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) swimming "+Directions.getDirectionName(dirCode)+".");
-        Room R=mob.location();
-        if((R!=null)&&(R.okMessage(mob,msg)))
-            R.send(mob,msg);
-        else
-            return false;
         return true;
     }
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
-        if(!preInvoke(mob,commands,givenTarget,auto,asLevel))
+        if(!preInvoke(mob,commands,givenTarget,auto,asLevel,0,0.0))
             return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
