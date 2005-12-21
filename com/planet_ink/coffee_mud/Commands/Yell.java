@@ -43,8 +43,8 @@ public class Yell extends StdCommand
 		if(C!=null) C.execute(mob,CMParms.parse(CMParms.combine(commands,0).toUpperCase()));
 		return false;
 	}
-	public int actionsCost(){return 1;}
+	public double actionsCost(){return 1.0;}
 	public boolean canBeOrdered(){return true;}
 
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	
 }

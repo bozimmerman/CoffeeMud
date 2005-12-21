@@ -48,8 +48,5 @@ public class West extends Go
 		move(mob,Directions.WEST,false,false,false);
 		return false;
 	}
-	public int actionsCost(){return 1;}
 	public boolean canBeOrdered(){return true;}
-
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

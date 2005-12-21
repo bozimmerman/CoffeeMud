@@ -76,9 +76,9 @@ public class Expire extends StdCommand
     private String[] access={"EXPIRE"};
     public String[] getAccessWords(){return access;}
 
-    public int actionsCost(){return 0;}
+    public double actionsCost(){return 0.0;}
     public boolean canBeOrdered(){return false;}
     public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS");}
 
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    
 }

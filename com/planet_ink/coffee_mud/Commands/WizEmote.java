@@ -104,9 +104,9 @@ public class WizEmote extends StdCommand
 			mob.tell("You must specify either all, or an area/mob name, and an message.");
 		return false;
 	}
-	public int actionsCost(){return 0;}
+	public double actionsCost(){return 0.0;}
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"WIZEMOTE");}
 
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	
 }

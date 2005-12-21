@@ -85,8 +85,8 @@ public class Sell extends StdCommand
 		}
 		return false;
 	}
-	public int actionsCost(){return 1;}
+	public double actionsCost(){return 1.0;}
 	public boolean canBeOrdered(){return false;}
 
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	
 }

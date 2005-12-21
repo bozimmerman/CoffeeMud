@@ -88,7 +88,7 @@ public class Visible extends StdCommand
             ((Ability)V.elementAt(v)).unInvoke();
         return false;
     }
-    public int actionsCost(){return 0;}
+    public double actionsCost(){return 0.0;}
     public boolean canBeOrdered(){return true;}
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    
 }

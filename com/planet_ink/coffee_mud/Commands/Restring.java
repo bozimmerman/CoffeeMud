@@ -113,7 +113,7 @@ public class Restring extends BaseGenerics
 			mob.tell("'"+allWord+"' can not be restrung.");
 		return false;
 	}
-	public int actionsCost(){return 0;}
+	public double actionsCost(){return 0.0;}
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob)
 	{
@@ -121,5 +121,5 @@ public class Restring extends BaseGenerics
 		     ||CMSecurity.isAllowed(mob,mob.location(),"RESTRING");
 	}
 
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	
 }

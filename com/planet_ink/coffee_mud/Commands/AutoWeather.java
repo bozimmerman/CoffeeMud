@@ -55,7 +55,7 @@ public class AutoWeather extends StdCommand
 		}
 		return false;
 	}
-	public int actionsCost(){return 0;}
+	public double actionsCost(){return 0.0;}
 	public boolean canBeOrdered(){return true;}
 }
 

@@ -113,8 +113,6 @@ public class Examine extends StdCommand
         }
         return false;
     }
-    public int actionsCost(){return 2;}
+    public double actionsCost(){return 2.0;}
     public boolean canBeOrdered(){return true;}
-
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

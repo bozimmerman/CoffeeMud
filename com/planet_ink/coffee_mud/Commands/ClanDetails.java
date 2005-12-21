@@ -66,8 +66,8 @@ public class ClanDetails extends BaseClanner
 		mob.tell(msg.toString());
 		return false;
 	}
-	public int actionsCost(){return 0;}
+	public double actionsCost(){return 0.0;}
 	public boolean canBeOrdered(){return false;}
 
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	
 }

@@ -61,7 +61,7 @@ public class JRun extends StdCommand
         {
             JScriptWindow scope = new JScriptWindow(mob,commands);
             cx.initStandardObjects(scope);
-            scope.defineFunctionProperties(JScriptWindow.makeFunctionNames(), 
+            scope.defineFunctionProperties(JScriptWindow.functions, 
                                            JScriptWindow.class,
                                            ScriptableObject.DONTENUM);
             cx.evaluateString(scope, ft.toString(),"<cmd>", 1, null);
@@ -77,7 +77,7 @@ public class JRun extends StdCommand
         return false;
     }
     
-    protected static class JScriptWindow extends CMLib
+    protected static class JScriptWindow extends ScriptableObject
     {
         public String getClassName(){ return "JScriptWindow";}
         static final long serialVersionUID=45;
@@ -91,14 +91,14 @@ public class JRun extends StdCommand
             if((i<0)||(i>=v.size())) return "";
             return (String)v.elementAt(i);
         }
-        private static String[] names = { "mob", "numParms", "getParm", "getParms"};
+        public static String[] functions = { "mob", "numParms", "getParm", "getParms", "toJavaString"};
         public String getParms(){return (v==null)?"":CMParms.combineWithQuotes(v,0);}
         public JScriptWindow(MOB executor, Vector parms){s=executor; v=parms;}
-        public static String[] makeFunctionNames(){return makeFunctionNames(names);}
+        public String toJavaString(Object O){return Context.toString(O);}
     }
     
-    public int actionsCost(){return 0;}
-    public boolean canBeOrdered(){return true;}
+    public double actionsCost(){return 0.0;}
+    public boolean canBeOrdered(){return false;}
     public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"JSCRIPTS");}
 
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}

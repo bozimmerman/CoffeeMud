@@ -143,8 +143,8 @@ public class Dress extends StdCommand
 			mob.tell(target.name()+" won't let you.");
 		return false;
 	}
-	public int actionsCost(){return 1;}
+	public double actionsCost(){return 1.0;}
 	public boolean canBeOrdered(){return true;}
 
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	
 }

@@ -48,9 +48,8 @@ public class Northwest extends Go
 		move(mob,Directions.NORTHWEST,false,false,false);
 		return false;
 	}
-	public int actionsCost(){return 1;}
 	public boolean canBeOrdered(){return true;}
 
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	
 	public boolean securityCheck(MOB mob){return Directions.NUM_DIRECTIONS>6;}
 }
