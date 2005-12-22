@@ -66,7 +66,7 @@ public class LineWrap extends StdCommand
 		mob.tell("Your new line wrap setting is: "+wrap+".");
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

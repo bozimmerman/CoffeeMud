@@ -42,7 +42,7 @@ public class Xml extends StdCommand
 		mob.tell("This command is deprecated, and no longer functions.");
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return false;}
 

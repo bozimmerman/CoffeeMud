@@ -45,7 +45,7 @@ public class Ver extends StdCommand
 		mob.tell("^<A HREF=\"http://coffeemud.zimmers.net\"^>http://coffeemud.zimmers.net^</A^>");
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

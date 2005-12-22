@@ -37,14 +37,17 @@ public class Crawl extends Go
 	private String[] access={getScr("Crawl","cmd"),getScr("Crawl","cmd1")};
 	public String[] getAccessWords(){return access;}
     
-    public boolean preExecute(MOB mob, Vector commands, double actionsRemaining)
+    public boolean preExecute(MOB mob, Vector commands, int secondsElapsed, double actionsRemaining)
         throws java.io.IOException
     {
-        int direction=Directions.getGoodDirectionCode(CMParms.combine(commands,1));
-        if(direction<0)
+        if(secondsElapsed==0)
         {
-            mob.tell(getScr("Movement","crawlerr1"));
-            return false;
+            int direction=Directions.getGoodDirectionCode(CMParms.combine(commands,1));
+            if(direction<0)
+            {
+                mob.tell(getScr("Movement","crawlerr1"));
+                return false;
+            }
         }
         return true;
     }

@@ -230,7 +230,7 @@ public class Email extends StdCommand
         }
 		return true;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return false;}
 
 	

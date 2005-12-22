@@ -210,7 +210,7 @@ public class Draw extends Get
 		}
 		return false;
 	}
-    public double actionsCost(){return 0.5;}
+    public double actionsCost(){return 0.25;}
 	public boolean canBeOrdered(){return true;}
 
 	

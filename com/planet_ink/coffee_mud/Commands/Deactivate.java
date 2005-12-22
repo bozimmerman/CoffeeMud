@@ -71,7 +71,8 @@ public class Deactivate extends BaseItemParser
 			mob.location().send(mob,newMsg);
 		return false;
 	}
-	public double actionsCost(){return 1.0;}
+    public double combatActionsCost(){return 1.0;}
+    public double actionsCost(){return 0.25;}
 	public boolean canBeOrdered(){return true;}
     public boolean securityCheck(MOB mob){return CMSecurity.isASysOp(mob);}
 

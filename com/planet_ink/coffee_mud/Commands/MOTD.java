@@ -236,7 +236,7 @@ public class MOTD extends StdCommand
         return results;
     }
     
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

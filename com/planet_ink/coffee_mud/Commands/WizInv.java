@@ -89,7 +89,7 @@ public class WizInv extends StdCommand
 		mob.tell("Wizard invisibility is not available!");
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"WIZINV");}
 

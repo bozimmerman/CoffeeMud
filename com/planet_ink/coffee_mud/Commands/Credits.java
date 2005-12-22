@@ -46,7 +46,7 @@ public class Credits extends StdCommand
 			mob.tell(getScr("Credits","thegreatmaker"));
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

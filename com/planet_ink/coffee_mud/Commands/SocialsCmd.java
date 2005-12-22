@@ -43,7 +43,7 @@ public class SocialsCmd extends StdCommand
 			mob.session().colorOnlyPrintln("^HComplete socials list:^?\n\r"+CMLib.socials().getSocialsList());
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

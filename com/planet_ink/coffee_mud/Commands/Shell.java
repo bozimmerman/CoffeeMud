@@ -586,7 +586,7 @@ public class Shell extends StdCommand
 	}
     
     public String desc(CMFile CF){ return (CF.isLocalFile()?"Local file ":"VFS file ")+"'/"+CF.getVFSPathAndName()+"'";}
-    public double actionsCost(){return 0.0;}
+    
     public boolean canBeOrdered(){return false;}
     public boolean securityCheck(MOB mob){return CMSecurity.hasAccessibleDir(mob,null);}
     

@@ -139,7 +139,7 @@ public class Channel extends BaseChanneler
 		return false;
 	}
 
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

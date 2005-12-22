@@ -88,7 +88,8 @@ public class Pour extends StdCommand
 		}
 		return false;
 	}
-	public double actionsCost(){return 1.0;}
+    public double combatActionsCost(){return 1.0;}
+    public double actionsCost(){return 0.25;}
 	public boolean canBeOrdered(){return true;}
 
 	

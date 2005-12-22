@@ -150,7 +150,7 @@ public class CommandJournal extends StdCommand
             mob.tell(getScr("CommandJournal","whats",journalWord.toLowerCase()));
         return false;
     }
-    public double actionsCost(){return 0.0;}
+    
     public boolean canBeOrdered(){return false;}
 
     

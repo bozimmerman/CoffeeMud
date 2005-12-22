@@ -76,7 +76,7 @@ public class NoChannel extends StdCommand
 			mob.tell("The "+channelName+" channel is already off.");
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

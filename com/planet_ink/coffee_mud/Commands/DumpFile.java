@@ -117,7 +117,7 @@ public class DumpFile extends StdCommand
 		mob.tell("dumped " + numFiles + " files to " + numSessions + " user(s)");
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"DUMPFILE");}
 

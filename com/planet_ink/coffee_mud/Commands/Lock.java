@@ -92,7 +92,7 @@ public class Lock extends StdCommand
 			mob.location().send(mob,msg);
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

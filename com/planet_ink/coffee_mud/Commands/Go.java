@@ -434,7 +434,7 @@ public class Go extends StdCommand
 		}
 		return false;
 	}
-	public double actionsCost(){return 0.5;}
+	public double actionsCost(){return 0.25;}
 	public boolean canBeOrdered(){return true;}
 
 	

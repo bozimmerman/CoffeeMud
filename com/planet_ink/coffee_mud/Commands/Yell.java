@@ -43,7 +43,8 @@ public class Yell extends StdCommand
 		if(C!=null) C.execute(mob,CMParms.parse(CMParms.combine(commands,0).toUpperCase()));
 		return false;
 	}
-	public double actionsCost(){return 1.0;}
+    public double combatActionsCost(){return 1.0;}
+    public double actionsCost(){return 0.25;}
 	public boolean canBeOrdered(){return true;}
 
 	

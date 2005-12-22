@@ -49,7 +49,7 @@ public class Skills extends BaseAbleLister
 			mob.session().wraplessPrintln(msg.toString());
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

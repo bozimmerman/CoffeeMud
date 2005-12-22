@@ -62,7 +62,8 @@ public class Retire extends StdCommand
 			mob.tell("Whew.  Close one.");
 		return false;
 	}
-	public double actionsCost(){return 1.0;}
+    public double combatActionsCost(){return 1.0;}
+    public double actionsCost(){return 0.25;}
 	public boolean canBeOrdered(){return false;}
 
 	

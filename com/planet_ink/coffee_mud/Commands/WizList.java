@@ -67,7 +67,7 @@ public class WizList extends StdCommand
 		mob.tell(head.toString());
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

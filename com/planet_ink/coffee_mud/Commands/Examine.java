@@ -113,6 +113,7 @@ public class Examine extends StdCommand
         }
         return false;
     }
-    public double actionsCost(){return 2.0;}
+    public double combatActionsCost(){return 1.0;}
+    public double actionsCost(){return 1.0;}
     public boolean canBeOrdered(){return true;}
 }

@@ -43,7 +43,7 @@ public class Vassals extends StdCommand
 		CMLib.database().vassals(mob,mob.Name());
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

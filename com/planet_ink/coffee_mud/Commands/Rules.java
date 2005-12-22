@@ -46,7 +46,7 @@ public class Rules extends StdCommand
 			mob.tell("This mud has no rules.  Welcome to chaos.");
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

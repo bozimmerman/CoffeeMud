@@ -43,7 +43,7 @@ public class Exits extends StdCommand
 			mob.location().listExits(mob);
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

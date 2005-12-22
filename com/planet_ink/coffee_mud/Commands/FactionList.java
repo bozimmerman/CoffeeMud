@@ -84,7 +84,7 @@ public class FactionList extends StdCommand
         return bar.toString();
     }
 
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

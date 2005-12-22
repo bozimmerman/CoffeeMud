@@ -927,7 +927,7 @@ public class Test extends StdCommand
             mob.tell("Test what?");
         return false;
     }
-    public double actionsCost(){return 0.0;}
+    
     public boolean canBeOrdered(){return false;}
     public boolean securityCheck(MOB mob){return CMSecurity.isASysOp(mob);}
     

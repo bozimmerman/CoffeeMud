@@ -175,7 +175,7 @@ public class ClanAssign extends BaseClanner
 		mob.tell(msg.toString());
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return false;}
 
 	

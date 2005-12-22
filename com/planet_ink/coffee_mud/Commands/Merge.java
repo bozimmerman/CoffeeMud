@@ -481,7 +481,7 @@ public class Merge extends StdCommand
 			((Room)placesToDo.elementAt(i)).getArea().toggleMobility(true);
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,"MERGE");}
 

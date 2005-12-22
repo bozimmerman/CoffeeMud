@@ -215,7 +215,7 @@ public class At extends StdCommand
 		if(mob.location()!=R) R.bringMobHere(mob,false);
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,"AT");}
 

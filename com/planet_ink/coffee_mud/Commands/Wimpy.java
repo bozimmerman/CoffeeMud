@@ -48,7 +48,7 @@ public class Wimpy extends StdCommand
 		mob.tell("Your wimp level has been changed to "+mob.getWimpHitPoint()+" hit points.");
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

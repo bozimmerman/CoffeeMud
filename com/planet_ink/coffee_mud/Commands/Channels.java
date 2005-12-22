@@ -63,7 +63,7 @@ public class Channels extends StdCommand
 		mob.tell(buf.toString());
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

@@ -934,7 +934,7 @@ public class FrontLogin extends StdCommand
 		   pendingLogins.remove(mob.Name().toUpperCase());
 		return true;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return false;}
 
 	

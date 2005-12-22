@@ -54,7 +54,7 @@ public class Config extends StdCommand
 		mob.tell(msg.toString());
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

@@ -113,7 +113,7 @@ public class Restring extends BaseGenerics
 			mob.tell("'"+allWord+"' can not be restrung.");
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob)
 	{

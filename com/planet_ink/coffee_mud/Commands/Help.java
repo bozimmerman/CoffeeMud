@@ -63,7 +63,7 @@ public class Help extends StdCommand
 			mob.session().wraplessPrintln(thisTag.toString());
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

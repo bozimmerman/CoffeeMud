@@ -161,7 +161,7 @@ public class Inventory extends StdCommand
 			mob.session().wraplessPrintln("^HYou are carrying:^?\n\r"+msg.toString());
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

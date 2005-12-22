@@ -67,7 +67,7 @@ public class HelpList extends StdCommand
 			mob.session().wraplessPrintln("^xHelp File Matches:^.^?\n\r^N"+thisTag.toString());
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

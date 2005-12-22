@@ -50,7 +50,7 @@ public class Topics extends ATopics
 		doTopics(mob,helpFile,"HELP", "PLAYER TOPICS");
 		return false;
 	}
-	public double actionsCost(){return 0.0;}
+	
 	public boolean canBeOrdered(){return true;}
 
 	

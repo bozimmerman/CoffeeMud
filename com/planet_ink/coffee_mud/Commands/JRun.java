@@ -97,7 +97,7 @@ public class JRun extends StdCommand
         public String toJavaString(Object O){return Context.toString(O);}
     }
     
-    public double actionsCost(){return 0.0;}
+    
     public boolean canBeOrdered(){return false;}
     public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"JSCRIPTS");}
 
