@@ -57,7 +57,7 @@ public class Examine extends StdCommand
             else
             if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2)))
             {
-                mob.location().listExits(mob);
+                CMLib.commands().lookAtExits(mob.location(),mob);
                 return false;
             }
             if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
@@ -97,7 +97,7 @@ public class Examine extends StdCommand
                 if(mob.location().okMessage(mob,msg))
                     mob.location().send(mob,msg);
                 if((thisThang instanceof Room)&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS)))
-                    ((Room)thisThang).listExits(mob);
+                    CMLib.commands().lookAtExits((Room)thisThang,mob);
             }
             else
                 mob.tell("You don't see that here!");
@@ -109,7 +109,7 @@ public class Examine extends StdCommand
                 mob.location().send(mob,msg);
             if((CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))
             &&(CMLib.flags().canBeSeenBy(mob.location(),mob)))
-                mob.location().listExits(mob);
+                CMLib.commands().lookAtExits(mob.location(),mob);
         }
         return false;
     }

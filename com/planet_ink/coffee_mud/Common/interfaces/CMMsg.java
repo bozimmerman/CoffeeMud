@@ -37,10 +37,16 @@ public interface CMMsg extends CMObject
     public void setTargetCode(int code);
 	public String targetMessage();
     public void setTargetMessage(String str);
+    public boolean isTarget(Environmental E);
+    public boolean isTarget(int codeOrMask);
+    public boolean isTarget(String codeOrMaskDesc);
 
 	public int sourceMajor();
 	public int sourceMinor();
 	public int sourceCode();
+    public boolean isSource(Environmental E);
+    public boolean isSource(int codeOrMask);
+    public boolean isSource(String codeOrMaskDesc);
     public void setSourceCode(int code);
 	public String sourceMessage();
     public void setSourceMessage(String str);
@@ -48,6 +54,9 @@ public interface CMMsg extends CMObject
 	public int othersMajor();
 	public int othersMinor();
 	public int othersCode();
+    public boolean isOthers(Environmental E);
+    public boolean isOthers(int codeOrMask);
+    public boolean isOthers(String codeOrMaskDesc);
     public void setOthersCode(int code);
 	public String othersMessage();
     public void setOthersMessage(String str);
@@ -212,6 +221,27 @@ public interface CMMsg extends CMObject
     public static final int TYP_EXAMINE=92;
 
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
+    public static final Object[][] MISC_DESCS={
+        {"CHANNEL",new Integer(2000),new Integer(2047)},
+    };
+    public static final String[] TYPE_DESCS={"NOTHING",
+        "AREAAFFECT", "PUSH", "PULL", "RECALL", "OPEN", "CLOSE", "PUT", "GET", 
+        "UNLOCK", "LOCK", "WIELD", "GIVE", "BUY", "SELL", "DROP", "WEAR", "FILL", 
+        "DELICATE_HANDS_ACT", "VALUE", "HOLD", "NOISYMOVEMENT", "QUIETMOVEMENT", 
+        "WEAPONATTACK", "LOOK", "READ", "NOISE", "SPEAK", "CAST_SPELL","LIST", 
+        "EAT", "ENTER", "FOLLOW", "LEAVE", "SLEEP", "SIT", "STAND", "FLEE", 
+        "NOFOLLOW", "WRITE", "FIRE", "COLD", "WATER", "GAS", "MIND", "GENERAL", 
+        "JUSTICE", "ACID", "ELECTRIC", "POISON", "UNDEAD", "MOUNT", "DISMOUNT", 
+        "OK_ACTION", "OK_VISUAL", "DRINK", "HANDS", "PARALYZE", "WAND_USE", "SERVE", 
+        "REBUKE", "ADVANCE", "DISEASE", "DEATH", "DEPOSIT", "WITHDRAW", "EMOTE", 
+        "QUIT", "SHUTDOWN", "VIEW", "RETIRE", "RETREAT","PANIC", "THROW", "EXTINGUISH", 
+        "TELL", "SITMOVE", "KNOCK", "PRACTICE", "TEACH", "REMOVE", "EXPCHANGE", 
+        "DAMAGE", "HEALING", "ROOMRESET", "RELOAD", "SNIFF", "ACTIVATE", "DEACTIVATE", 
+        "FACTIONCHANGE", "LOGIN", "LEVEL", "EXAMINE"
+    };
+    public static final String[] MASK_DESCS={
+        "HANDS","MOVE","EYES","MOUTH","SOUND","GENERAL","MAGIC","DELICATE","MALICIOUS","CHANNEL","OPTIMIZE"
+    };
 
 	// helpful message groupings
 	public static final int MSK_CAST_VERBAL=MASK_SOUND|MASK_MOUTH|MASK_MAGIC;

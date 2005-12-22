@@ -129,7 +129,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         return val;
     }
 
-    protected static class JScriptEvent extends CMLib
+    protected static class JScriptEvent extends ScriptableObject
     {
         public String getClassName(){ return "JScriptEvent";}
         static final long serialVersionUID=43;
@@ -154,6 +154,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         }
         public String getVar(String host, String var)
         { return Scriptable.getVar(host,var);}
+        public String toJavaString(Object O){return Context.toString(O);}
         
         public JScriptEvent(Environmental host,
                             MOB source,

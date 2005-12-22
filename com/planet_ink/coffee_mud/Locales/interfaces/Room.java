@@ -149,9 +149,6 @@ public interface Room extends Environmental
 	public String roomTitle();
 	public String roomDescription();
 
-	public void listShortExits(MOB mob);
-	public void listExits(MOB mob);
-
 	public void send(MOB source, CMMsg msg);
 	public void sendOthers(MOB source, CMMsg msg);
 	public void showHappens(int allCode, String allMessage);

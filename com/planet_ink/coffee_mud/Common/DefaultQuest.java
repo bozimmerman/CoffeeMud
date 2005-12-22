@@ -242,7 +242,7 @@ public class DefaultQuest implements Quest, Tickable
                     {
                         JScriptQuest scope = new JScriptQuest(this,q);
                         cx.initStandardObjects(scope);
-                        scope.defineFunctionProperties(JScriptQuest.makeFunctionNames(), 
+                        scope.defineFunctionProperties(JScriptQuest.functions, 
                                                        JScriptQuest.class,
                                                        ScriptableObject.DONTENUM);
                         cx.evaluateString(scope, jscript.toString(),"<cmd>", 1, null);
@@ -1784,7 +1784,7 @@ public class DefaultQuest implements Quest, Tickable
         }
         return script;
     }
-    protected static class JScriptQuest extends CMLib
+    protected static class JScriptQuest extends ScriptableObject
     {
         public String getClassName(){ return "JScriptQuest";}
         static final long serialVersionUID=44;
@@ -1793,8 +1793,8 @@ public class DefaultQuest implements Quest, Tickable
         public Quest quest(){return quest;}
         public QuestState setupState(){return state;}
         public JScriptQuest(Quest Q, QuestState S){quest=Q; state=S;}
-        private static String[] names = { "quest", "setupState"};
-        public static String[] makeFunctionNames(){return makeFunctionNames(names);}
+        public static String[] functions = { "quest", "setupState", "toJavaString"};
+        public String toJavaString(Object O){return Context.toString(O);}
     }
     protected static class QuestState
     {

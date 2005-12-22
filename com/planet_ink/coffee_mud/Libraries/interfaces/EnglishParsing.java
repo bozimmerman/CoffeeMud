@@ -43,7 +43,7 @@ public interface EnglishParsing extends CMObject
     public boolean evokedBy(Ability thisAbility, String thisWord);
     public boolean evokedBy(Ability thisAbility, String thisWord, String secondWord);
     public Ability getToEvoke(MOB mob, Vector commands);
-    public boolean preEvoke(MOB mob, Vector commands);
+    public boolean preEvoke(MOB mob, Vector commands, int secondsElapsed, double actionsRemaining);
     public void evoke(MOB mob, Vector commands);
     public boolean containsString(String toSrchStr, String srchStr);
     public String bumpDotNumber(String srchStr);

@@ -64,6 +64,8 @@ public interface CommonCommands extends CMObject
     public void handleBeingWorn(CMMsg msg);
     public void handleBeingWielded(CMMsg msg);
     public void handleBeingHeld(CMMsg msg);
+    public void lookAtExits(Room room, MOB mob);
+    public void lookAtExitsShort(Room room, MOB mob);
     public void tickAging(MOB mob);
     public int tickManaConsumption(MOB mob, int manaConsumeCounter);
 }

@@ -182,10 +182,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 
 		String msp=CMProps.msp("death"+CMLib.dice().roll(1,7,0)+".wav",50);
-		CMMsg msg=CMClass.getMsg(deadM,null,null,
+		CMMsg msg=CMClass.getMsg(deadM,null,killerM,
 			CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
 			CMMsg.MSG_OK_VISUAL,null,
-			CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r"+msp);
+			CMMsg.MSG_DEATH,"^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r"+msp);
 		CMMsg msg2=CMClass.getMsg(deadM,null,killerM,
 			CMMsg.MSG_DEATH,null,
 			CMMsg.MSG_DEATH,null,

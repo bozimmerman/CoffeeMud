@@ -36,7 +36,7 @@ import org.mozilla.javascript.ScriptableObject;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CMLib extends ScriptableObject
+public class CMLib 
 {
     public CMLib(){super();}
     static final long serialVersionUID=42;
@@ -84,28 +84,6 @@ public class CMLib extends ScriptableObject
     private static final CMObject[] libraries=new CMObject[LIBRARY_TOTAL];
     private static boolean[] registered=new boolean[LIBRARY_TOTAL];
     
-    private static String[] funcs={
-        "math","parms","strings","classes","security","directions","log",
-        "resources","props","libraries","newFile","toJavaString",
-        "database","threads","intermud","httpUtils","lister","beanCounter",
-        "coffeeShops","combat","help","tracking","masking","channels","commands",
-        "english","slavery","journals","coffeeMaker","coffeeFilter","sessions",
-        "flags","xml","socials","utensils","coffeeTables","map","quests","ableMapper",
-        "encoder","smtp","dice","factions","clans","polls","time","color"
-    };
-    
-    
-    public static String[] makeFunctionNames(){return funcs;}
-    public static String[] makeFunctionNames(String[] add)
-    {
-        String[] newNames=new String[funcs.length+add.length];
-        for(int i=0;i<funcs.length;i++)
-            newNames[i]=funcs[i];
-        for(int i=0;i<add.length;i++)
-            newNames[funcs.length+i]=add[i];
-        return newNames;
-    }
-
     public static CMath math(){return CMath.instance();}
     public static CMParms parms(){return CMParms.instance();}
     public static CMStrings strings(){return CMStrings.instance();}
@@ -118,7 +96,6 @@ public class CMLib extends ScriptableObject
     public static CMLib libraries(){return CMLib.instance();}
     public static CMFile newFile(String currentPath, String filename, boolean pleaseLogErrors)
     { return new CMFile(currentPath,filename,null,pleaseLogErrors,false); }
-    public static String toJavaString(Object O){return Context.toString(O);}
     
     public static DatabaseEngine database(){return (DatabaseEngine)libraries[LIBRARY_DATABASE];}
     public static ThreadEngine threads(){return (ThreadEngine)libraries[LIBRARY_THREADS];}

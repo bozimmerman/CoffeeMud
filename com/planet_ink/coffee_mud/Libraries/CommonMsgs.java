@@ -641,7 +641,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         
         StringBuffer buf=new StringBuffer("");
         if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-            buf.append(ID()+"\n\rRejuv :"+item.baseEnvStats().rejuv()
+            buf.append(item.ID()+"\n\rRejuv :"+item.baseEnvStats().rejuv()
                             +"\n\rUses  :"+item.usesRemaining()
                             +"\n\rHeight:"+item.baseEnvStats().height()
                             +"\n\rAbilty:"+item.baseEnvStats().ability()
@@ -810,7 +810,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             {
                 if(room.getArea()!=null)
                     Say.append("^!Area  :^N("+room.getArea().Name()+")"+"\n\r");
-                Say.append("^!Locale:^N("+ID()+")"+"\n\r");
+                Say.append("^!Locale:^N("+room.ID()+")"+"\n\r");
                 Say.append("^H("+CMLib.map().getExtendedRoomID(room)+")^N ");
             }
         }
@@ -1319,4 +1319,77 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             mob.recoverMaxState();
         }
     }
+    
+    public void lookAtExits(Room room, MOB mob)
+    {
+        if((mob==null)||(room==null)||(mob.isMonster())) return;
+        if(!CMLib.flags().canSee(mob))
+        {
+            mob.tell("You can't see anything!");
+            return;
+        }
+
+        StringBuffer buf=new StringBuffer("^DObvious exits:^.^N");
+        String Dir=null;
+        for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
+        {
+            Exit exit=room.getExitInDir(i);
+            Room room2=room.getRoomInDir(i);
+            StringBuffer Say=new StringBuffer("");
+            if(exit!=null)
+                Say=exit.viewableText(mob, room2);
+            else
+            if((room2!=null)&&(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
+                Say.append(room2.roomID()+" via NULL");
+            if(Say.length()>0)
+            {
+                Dir=CMStrings.padRightPreserve(Directions.getDirectionName(i),5);
+                if((mob!=null)
+                &&(mob.playerStats()!=null)
+                &&(room2!=null)
+                &&(!mob.playerStats().hasVisited(room2)))
+                    buf.append("^U^<EX^>" + Dir+"^</EX^>:^.^N ^u"+Say+"^.^N");
+                else
+                    buf.append("^D^<EX^>" + Dir+"^</EX^>:^.^N ^d"+Say+"^.^N");
+            }
+        }
+        Item I=null;
+        for(int i=0;i<room.numItems();i++)
+        {
+            I=room.fetchItem(i);
+            if((I instanceof Exit)&&(((Exit)I).doorName().length()>0))
+            {
+                StringBuffer Say=((Exit)I).viewableText(mob, room);
+                if(Say.length()>5)
+                    buf.append("^D^<MEX^>" + ((Exit)I).doorName()+"^</MEX^>:^.^N ^d"+Say+"^.^N");
+                else
+                if(Say.length()>0)
+                    buf.append("^D^<MEX^>" + CMStrings.padRight(((Exit)I).doorName(),5)+"^</MEX^>:^.^N ^d"+Say+"^.^N");
+            }
+        }
+        mob.tell(buf.toString());
+    }
+    
+    public void lookAtExitsShort(Room room, MOB mob)
+    {
+        if((mob==null)||(room==null)||(mob.isMonster())) return;
+        if(!CMLib.flags().canSee(mob)) return;
+        
+        StringBuffer buf=new StringBuffer("^D[Exits: ");
+        for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
+        {
+            Exit exit=room.getExitInDir(i);
+            if((exit!=null)&&(exit.viewableText(mob, room.getRoomInDir(i)).length()>0))
+                buf.append("^<EX^>"+Directions.getDirectionName(i)+"^</EX^> ");
+        }
+        Item I=null;
+        for(int i=0;i<room.numItems();i++)
+        {
+            I=room.fetchItem(i);
+            if((I instanceof Exit)&&(((Exit)I).viewableText(mob, room).length()>0))
+                buf.append("^<MEX^>"+((Exit)I).doorName()+"^</MEX^> ");
+        }
+        mob.tell(buf.toString().trim()+"]^.^N");
+    }
+
 }

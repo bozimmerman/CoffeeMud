@@ -113,7 +113,7 @@ public class Copy extends StdCommand
 						{
 							E=mob2.fetchInventory(name);
                             SK=CMLib.coffeeShops().getShopKeeper(mob2);
-							if((E==null)&&(mob2!=null))
+							if((E==null)&&(SK!=null))
 								E=SK.getShop().getStock(name,null,SK.whatIsSold(),mob2.getStartRoom());
 						}
 						if(E!=null) break;

@@ -59,7 +59,7 @@ public class Driver implements java.sql.Driver
          path=path+java.io.File.separator;
 
       Properties result=new Properties(defaults);
-      result.put("PATH",path);
+      result.put("PATH",path.replace('/',java.io.File.separatorChar));
 
       return result;
    }

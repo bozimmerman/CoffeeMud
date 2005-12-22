@@ -5,9 +5,11 @@
 	<title>The CoffeeMud Web Server</title>
 </head>
 
-<body>
+<body><b>
+<P align=center><STRONG><FONT color=deepskyblue size=6>CoffeeMud Web 
+Server</FONT></STRONG></P>   </b>
 
-<p><b>The CoffeeMud Web Server:</b><br>
+<p>
 The CoffeeMud Web Server is a simple, extensible
 web server that runs as part of CoffeeMud; it uses HTTP 1.0
 to communicate with a web browser. In addition to being able to
@@ -17,7 +19,8 @@ called <i>CMVP</i> (Coffee MUD Virtual Pages) - this allows the server
 to insert information into the page before sending it to the browser.
 It is NOT intended to be a full-blown web server! This document assumes you have
 some familiarty with HTTP, mime types, and stuff like that.</p>
-<P><STRONG>How to Connect:</STRONG><BR>By default, the public web site listens
+<P><STRONG><FONT 
+style="BACKGROUND-COLOR: lightskyblue">How to Connect:</FONT>  </STRONG><BR>By default, the public web site listens
 on port 27744 and the administrative web site on port 27777.&nbsp; To browse the
 default public web site, just open up the following URL in your
 browser:<BR><BR><A
@@ -25,7 +28,9 @@ browser:<BR><BR><A
 <P>To connect to the administrative web site, use the following URL:</P>
 <P><A href="http://localhost:27777/">http://localhost:27777/</A></P>
 
-<p><b>What it does and doesn't do:</b><br>
+<p><b><FONT 
+style="BACKGROUND-COLOR: lightskyblue" color=black>What it does and doesn't 
+do:</FONT>     </b><br>
 It supports GET, urlencoded and multipart POST 
 requests,&nbsp;and HEAD requests (I think HEAD is HTTP 1.1, 
 but it's 
@@ -35,7 +40,8 @@ macros, as well as inline server-side Javascripts to create custom pages.&nbsp;
 It does not cache.
 </p>
 
-<p><b>Security:</b><br>
+<p><b><FONT 
+style="BACKGROUND-COLOR: lightskyblue">Security:</FONT></b><br>
 In the default CoffeeMud installation, the server named admin&nbsp;may be&nbsp;bound to 127.0.0.1 (localhost) - this
 means it will not accept external connections (see below).<br>
 The servers will not permit access to a directory or file outside their base directory tree (which
@@ -44,7 +50,8 @@ a HTTP 401.
 </p>
 
 
-<p><b>Configuration:</b><br>
+<p><b><FONT 
+style="BACKGROUND-COLOR: lightskyblue">Configuration:</FONT></b><br>
 The default installation of CoffeeMud has two inbuilt web servers, named 'pub' and 'admin'.
 The web servers are enabled with the line 'RUNWEBSERVERS=true' in 'coffeemud.ini'; any other
 value or the abscence of this line will cause the web servers not to be loaded.</p>
@@ -109,7 +116,8 @@ The options are:
 
 </ul>
 
-<p><b>Virtual Directories:</b><br>
+<p><b><FONT 
+style="BACKGROUND-COLOR: lightskyblue">Virtual Directories:</FONT> </b><br>
 This is a quick-and-dirty directory mounting method; using an operating-system specific method would
 be preferable. Nevertheless, you can specify <B>MOUNT/virtualdir=physicaldir</B> in a server cfg file;
 for example, <B>MOUNT/guides=guides</B> creates a virtual directory with access to the player guides.<br>
@@ -118,7 +126,8 @@ link BACK from a virtual directory with a RELATIVE link, unless you rely on the 
 remove redundancies; instead, specify a path from the root ('/') -
 e.g., instead of ../index.cmvp specify /index.cmvp.
 </p>
-<P><b>CoffeeMud Virtual Pages:</b><br>
+<P><b><FONT 
+style="BACKGROUND-COLOR: lightskyblue">CoffeeMud Virtual Pages:</FONT>  </b><br>
   Kind of misnamed (these pages in their original, very
 different incarnation didn't exist at all), this is typically a HTML or
 plaintext file that is preprocessed by the server before being dispatched to the
@@ -149,7 +158,7 @@ the difference between a Macro parameter (things which follow the first Question
 macro), and a Request Parameter (data submitted from a &lt;FORM&gt; on a
 web page, or on the URL line of a GET request).&nbsp; Macro parms will
 be abbreviated to MacParm, while Request Parameters will be abbreviated to ReqParm.</P>
-<TABLE BORDER=1 WIDTH="100%">
+<TABLE BORDER=1 WIDTH="100%" bgColor=paleturquoise>
 <TR><TD WIDTH="25%"><B>Macro</B></TD><TD><B>Description</B></TD></TR>
 <TR><TD>AbilityAffectNext</TD><TD>Sets the ReqParam ABILITY to the next Ability
       which no class qualifies for.&nbsp;&nbsp;MacParms may include the types of
@@ -214,8 +223,8 @@ be abbreviated to MacParm, while Request Parameters will be abbreviated to ReqPa
       into the current document. If the parameter LINKONLY is included, this macro will instead insert the 
       path and file name of the random file.</TD></TR>
 <TR><TD>AddRequestParameter</TD><TD>        
-       The parameters for this macro are
-      oneormoreReqParmnamesandvalues.&nbsp;Forexample@AddRequestParameter?PARM1=VALUE&amp;PARM2=VALUE@.&nbsp; This is usually
+          The parameters for
+      thismacroareoneormoreReqParmnamesandvalues.&nbsp;Forexample@AddRequestParameter?PARM1=VALUE&amp;PARM2=VALUE@.&nbsp; This is usually
       used to provide literal data for other macros which may require certain
       Request parameter data.</TD></TR>
 <TR><TD>AreaData</TD><TD>Requires ReqParm AREA be set to a valid area
@@ -512,7 +521,8 @@ request.</TD></TR>
   server.</TD></TR>
 </TABLE>
 
-  <P><b>Customising the error page:</b><br>
+  <P><b><FONT 
+style="BACKGROUND-COLOR: lightskyblue">Customising the error page:</FONT>   </b><br>
 Simply create a file <I>error.cmvp</I> (or
 whatever the v.p. extension is) in the template directory of the server; at some
 point on the page you should use the @HTTPSTATUS@ and @HTTPSTATUSINFO@ macros.
@@ -520,27 +530,38 @@ Note that the template directory is served as though it were in the specified
 path - images and stylesheets should therefore go in the server's base
 directory.</P>
 
-<p><b>Adding new macros to CMVP:</b><br>
-Create the new .java file in the <I>com/planet_ink/coffee_mud/system/http/macros</I> directory; all classes
-in this directory are loaded as macros by default.<br>
+<p><b><FONT 
+style="BACKGROUND-COLOR: lightskyblue">Adding new macros to CMVP:</FONT>    </b><br>
+Create the new .java file in the <I>com/planet_ink/coffee_mud/WebMacros</I> directory; all 
+classes in this directory are loaded as macros by default.&nbsp; 
 The new class should inherit from <code>StdWebMacro</code> in the
-<I>com.planet_ink.coffee_mud.core.http</I> package.<br>
-The package of the new class should be <I>com.planet_ink.coffee_mud.core.http.macros</I>; the
+<I>com.planet_ink.coffee_mud.WebMacros</I> package.<br>
+The package of the new class should&nbsp;implement the interface&nbsp; <I>com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro.</I>
+</p>
+
+<p> The
 <code>name()</code> member should return the name of your new macro
 (it will be capitalised and the @ symbols added by StdWebMacro) - the name doesn't have to match
 the class name but it is recommended to avoid confusion.<br>
-Finally, the <code>runMacro()</code> function returns the String data you wish to insert into the processed
-output; it takes a single parameter, a reference to the <i>ProcessWebRequest</i> that is calling
+Finally, the <code>runMacro()</code> function returns the String data you wish to insert into
+the processed output; it takes as&nbsp; parameters&nbsp;a reference to the <i>ProcessWebRequest</i> that is calling
 the macro (you can use <code>.getWebServer()</code> on this parameter to get a reference to
-the web server, and <code>.getWebServer().getMUD()</code> to get a reference to the main MUD object).<br>
+the web server, and <code>.getWebServer().getMUD()</code> to get a reference to the 
+main MUD object), and a String representing the data after the first question 
+mark? in the macro reference.
+</p>
+
+<p>
 If <code>runMacro()</code> returns <I>null</I>, the string [Error] is used to replace the macro; also
 note that <B>macros may not return other macros in the processed text unless properly embedded as discussed above.</B>
 </p>
 Example: this is the complete code for the <B>@HTTPCLIENTIP@</B> macro (HTTPclientIP.java):
-<pre>package com.planet_ink.coffee_mud.core.http.macros;
+<pre>package com.planet_ink.coffee_mud.WebMacros;
+import com.planet_ink.coffee_mud.WebMacros.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 
-import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 public class HTTPclientIP extends StdWebMacro
 {
@@ -569,8 +590,9 @@ return a meaningful name as well) </P>
 If your macro is intended to be for the admin server only, you can override the
 <code>.isAdminMacro()</code> member to return <code>true.</code></P>
 <P><CODE><FONT face="Times New Roman" size=4><STRONG><FONT 
+style="BACKGROUND-COLOR: lightskyblue"><FONT 
 size=3>Using</FONT> <FONT size=3>Javascript in your 
-pages</FONT></STRONG></FONT></CODE></P>
+pages:</FONT></FONT></STRONG></FONT></CODE></P>
 <P><CODE><FONT face="Times New Roman" size=4><FONT size=3>The CoffeeMud web 
 server allows you to use the Javascript language to generate the tags and data 
 which make up your <STRONG>cmvp</STRONG> web pages.&nbsp; The Javascript to do 
@@ -578,23 +600,143 @@ this is inserted directly into your web page at the point where you want the
 script-generated content to appear using the embedded macros <FONT 
 face="Courier New" size=2>@jscript@</FONT> and </FONT><FONT face="Courier New" 
 size=2>@/jscript@. <FONT face="Times New Roman" size=3>The script included 
-between those two tags will follow the rules for Javascripting found in the <A 
+between those two tags will follow the rules for JavaScripting found in the <A 
 href="Programming.html">Programmers Guide</A>. <FONT size=4><FONT size=3>The web 
 server makes the</FONT> </FONT><FONT face="Courier New" 
 size=2>ExternalHTTPRequests request()</FONT><FONT size=4> <FONT size=3>object 
 available to the script, as well as the method</FONT> </FONT><FONT 
 face="Courier New" size=2>void write(String s)<FONT face="Times New Roman" 
 size=3> for writing text into the page</FONT></FONT><FONT 
-size=4>.&nbsp;&nbsp;</FONT></FONT></FONT></FONT></CODE><CODE><FONT 
+size=4>.&nbsp;&nbsp;</FONT></FONT></FONT></FONT></CODE></P>
+<P><CODE></CODE><CODE><FONT 
 face="Times New Roman" size=4><FONT face="Courier New" size=2><FONT 
-face="Times New Roman" size=3>Here is an 
-example:</FONT></FONT></FONT></CODE></P>
-<P><CODE><FONT face="Times New Roman">&lt;HTML&gt;<BR>&lt;BODY&gt;<BR><FONT 
-face="Courier New" size=2>@jscript@<BR>var 
-x=request().ServerVersionString();<BR>write('&lt;P&gt;The version of this 
+face="Times New Roman" size=3>Here is&nbsp;our 
+first&nbsp;example:</FONT></FONT></FONT></CODE></P>
+<P>
+<P><CODE>&lt;HTML&gt;<BR>&lt;BODY&gt;<BR>@jscript@<BR>&nbsp;&nbsp;&nbsp;&nbsp; var 
+x=request().ServerVersionString();<BR>&nbsp;&nbsp;&nbsp;&nbsp; write('&lt;P&gt;The version of this 
 CoffeeMud server is 
-&lt;B&gt;'+x+'&lt;/B&gt;.&lt;/P&gt;');<BR>@/jscript@<BR></FONT>&lt;/BODY&gt;<BR>&lt;/HTML&gt;</FONT></CODE></P>
-<P><CODE></CODE>&nbsp;</P>
+&lt;B&gt;'+x+'&lt;/B&gt;.&lt;/P&gt;');<BR>@/jscript@<BR>&lt;/BODY&gt;<BR>&lt;/HTML&gt;</CODE></P>
+<P>
+<FONT face="Times New Roman" > Notice 
+how we used the write() method to insert our HTML into the page.&nbsp; We also 
+used the request() object to fetch the version of the server.&nbsp;&nbsp;Now here is a more involved example:</FONT></P>
+<PRE>&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;TITLE&gt;My JavaScript Enabled Web Page&lt;/TITLE&gt;
+&lt;/HEAD&gt;
+&lt;BODY&gt;
+&lt;H1&gt;An Example of using JavaScript in a CMVP Web Page to fetch MUD Server data.&lt;/H1&gt;
+
+@jscript@
+var lib=Packages.com.planet_ink.coffee_mud.core.CMLib;
+// define a shortcut to the CoffeeMud libraries.
+
+var randomRoom=lib.map().getRandomRoom();
+var randomArea=lib.map().getRandomArea();
+// finding random rooms and areas is easy
+
+var randomMob=null;
+var randomItem=null;
+// assign our random mobs and items to null until they are found
+
+var attempts=1000;
+// finding random items and mobs is more difficult.  We will
+// select a random room, and attempt to pick out a random mob
+// and/or item from the room.  We will do this a maximum of 1000
+// times before giving up, until we find one of each.
+while(((--attempts)&gt;0)&amp;&amp;((randomMob==null)||(randomItem==null)))<BR>{
+	var room=lib.map().getRandomRoom(); <BR>	if((randomMob==null)&amp;&amp;(room.numInhabitants()&gt;0)) <BR>	{
+		var randomNumber=lib.dice().roll(1,room.numInhabitants(),-1);<BR>		randomMob=room.fetchInhabitant(randomNumber);<BR>	}
+	if((randomItem==null)&amp;&amp;(room.numItems()&gt;0))<BR>
+
+    
+
+
+              
+
+{
+var randomNumber=
+       
+
+ lib.dice().roll(1,room.numItems(),-1);<
+ BR>
+       
+
+ randomItem=
+ room.fetchItem(randomNumber);<
+            
+
+ BR>
+           
+            
+              
+          
+}<BR
+
+
+    
+
+
+              
+
+
+ >
+       
+
+ 
+} //nowwe
+       
+
+have all
+ 
+           our random
+
+things. We
+           
+            
+              
+          
+could
+
+	 easily
+	insert
+	
+		 
+		our
+		HTML
+	using<
+	
+		 BR>
+		
+	
+
+
+              // the
+write() method as we did in example 1.  To be fancy, however, we'll use the 
+// the request() object to assign the names of our selections to HTTP Request
+// strings.
+
+request().addRequestParameters("RANDOMROOM",randomRoom.roomTitle());
+request().addRequestParameters("RANDOMAREA",randomArea.name());
+if(randomMob!=null)
+	request().addRequestParameters("RANDOMMOB",randomMob.name());
+if(randomItem!=null)
+	request().addRequestParameters("RANDOMITEM",randomItem.name());
+// now we exit back and continue with our HTML, using standard CMVP web macros
+// to fetch the random names we saved.
+@/jscript@
+
+&lt;FONT FACE="Courier New"&gt;
+&lt;B&gt;A random area: &lt;B&gt;@RequestParameter?RANDOMAREA@&lt;BR&gt;
+&lt;B&gt;A random room: &lt;B&gt;@RequestParameter?RANDOMROOM@&lt;BR&gt;
+&lt;B&gt;A random mob : &lt;B&gt;@RequestParameter?RANDOMMOB@&lt;BR&gt;
+&lt;B&gt;A random item: &lt;B&gt;@RequestParameter?RANDOMITEM@&lt;BR&gt;
+&lt;/FONT&gt;
+&lt;P&gt;
+&lt;/BODY&gt;
+&lt;/HTML&gt;
+</PRE>
 
 
 </body>

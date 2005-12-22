@@ -303,7 +303,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return evokableAbility;
 	}
 
-    public boolean preEvoke(MOB mob, Vector commands)
+    public boolean preEvoke(MOB mob, Vector commands, int secondsElapsed, double actionsRemaining)
     {
         commands=(Vector)commands.clone();
         Ability evokableAbility=getToEvoke(mob,commands);
@@ -318,7 +318,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             mob.tell(getScr("AbilityEvoker","evokeerr2"));
             return false;
         }
-        return evokableAbility.preInvoke(mob,commands,null,false,0);
+        return evokableAbility.preInvoke(mob,commands,null,false,0,secondsElapsed,actionsRemaining);
     }
 	public void evoke(MOB mob, Vector commands)
 	{

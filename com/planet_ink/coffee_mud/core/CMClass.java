@@ -901,11 +901,11 @@ public class CMClass extends ClassLoader
                     implementsClasses.addElement(C);
                 }
             }
-            CMLib lib=new CMLib();
-            lib.defineFunctionProperties(CMLib.makeFunctionNames(), CMLib.class, ScriptableObject.DONTENUM);
-            CompilerEnvirons ce = new CompilerEnvirons(); 
             Context X=Context.enter();
-            X.initStandardObjects(lib);
+            JScriptLib jlib=new JScriptLib();
+            X.initStandardObjects(jlib);
+            jlib.defineFunctionProperties(JScriptLib.functions, JScriptLib.class, ScriptableObject.DONTENUM);
+            CompilerEnvirons ce = new CompilerEnvirons(); 
             ce.initFromContext(X); 
             ClassCompiler cc = new ClassCompiler(ce); 
             if(extendsClass==null)
@@ -1174,4 +1174,11 @@ public class CMClass extends ClassLoader
         return true;
     }
 
+    protected static class JScriptLib extends ScriptableObject
+    {
+        public String getClassName(){ return "JScriptLib";}
+        static final long serialVersionUID=47;
+        public static String[] functions = {"toJavaString"};
+        public String toJavaString(Object O){return Context.toString(O);}
+    }
 }

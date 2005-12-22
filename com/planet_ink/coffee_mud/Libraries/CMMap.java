@@ -32,6 +32,7 @@ import java.util.*;
 */
 public class CMMap extends StdLibrary implements WorldMap
 {
+    
     public String ID(){return "CMMap";}
 	public Vector areasList = new Vector();
 	//public Vector roomsList = new Vector();
@@ -51,6 +52,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		areasList.addElement(newOne);
 	}
+
 	public void delArea(Area oneToDel)
 	{
 		areasList.remove(oneToDel);
@@ -77,7 +79,9 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         return null;
     }
-	public Enumeration areas(){
+    
+	public Enumeration areas()
+    {
 		return areasList.elements();
 	}
 	public Area getFirstArea()

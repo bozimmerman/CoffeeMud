@@ -693,7 +693,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
                                     String script=s.substring(i+l,v);
                                     JScriptablePage scope = new JScriptablePage(this);
                                     cx.initStandardObjects(scope);
-                                    scope.defineFunctionProperties(JScriptablePage.makeFunctionNames(), 
+                                    scope.defineFunctionProperties(JScriptablePage.functions, 
                                                                    JScriptablePage.class,
                                                                    ScriptableObject.DONTENUM);
                                     cx.evaluateString(scope, script,"<cmd>", 1, null);
@@ -1382,7 +1382,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		return "[400 -- error occurred processing request]";
 	}
 
-    protected static class JScriptablePage extends CMLib
+    protected static class JScriptablePage extends ScriptableObject
     {
         public String getClassName(){ return "JScriptablePage";}
         static final long serialVersionUID=43;
@@ -1392,8 +1392,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
         ExternalHTTPRequests req=null;
         public ExternalHTTPRequests request(){return req;}
         public JScriptablePage(ExternalHTTPRequests requests){req=requests;}
-        private static String[] names = { "request", "write"};
-        public static String[] makeFunctionNames(){return makeFunctionNames(names);}
+        public static String[] functions = { "request", "write", "toJavaString"};
+        public String toJavaString(Object O){return Context.toString(O);}
     }
     
 	public String ServerVersionString(){return HTTPserver.ServerVersionString;}

@@ -71,7 +71,7 @@ public class StdMOB implements MOB
 	protected Vector educations=new Vector();
     protected Hashtable factions=new Hashtable();
 
-	protected DVector commandQue=new DVector(2);
+	protected DVector commandQue=new DVector(5);
 
 	// gained attributes
 	protected int Experience=0;
@@ -576,7 +576,7 @@ public class StdMOB implements MOB
         tattoos=new Vector();
         educations=new Vector();
         factions=new Hashtable();
-        commandQue=new DVector(2);
+        commandQue=new DVector(5);
         curState=maxState;
         WorshipCharID="";
         LiegeID="";
@@ -1157,20 +1157,49 @@ public class StdMOB implements MOB
     public int commandQueSize(){return commandQue.size();}
 	public boolean dequeCommand()
 	{
-		Vector returnable=null;
 		synchronized(commandQue)
 		{
 			if(commandQue.size()>0)
 			{
-				if(((Double)commandQue.elementAt(0,2)).doubleValue()<=actions())
+                double diff=actions()-((Double)commandQue.elementAt(0,3)).doubleValue();
+				if(diff>=0.0)
                 {
-                    setActions(actions()-((Double)commandQue.elementAt(0,2)).doubleValue());
-                    returnable=(Vector)commandQue.elementAt(0,1);
+                    setActions(diff);
+                    doCommand(commandQue.elementAt(0,1),(Vector)commandQue.elementAt(0,2));
                     commandQue.removeElementAt(0);
+                    if(commandQue.size()>0)
+                        commandQue.setElementAt(0,3,new Double(calculateTickDelay(commandQue.elementAt(0,1),0.0)));
+                    return true;
+                }
+                while(System.currentTimeMillis()>((long[])commandQue.elementAt(0,4))[0])
+                {
+                    Object O=commandQue.elementAt(0,1);
+                    Vector commands=(Vector)commandQue.elementAt(0,2);
+                    ((long[])commandQue.elementAt(0,4))[0]=((long[])commandQue.elementAt(0,4))[0]+1000;
+                    ((int[])commandQue.elementAt(0,5))[0]+=1;
+                    int secondsElapsed=((int[])commandQue.elementAt(0,5))[0];
+                    if(O instanceof Command)
+                    {
+                        
+                        try
+                        { 
+                            if(!((Command)O).preExecute(this,commands,secondsElapsed,-diff)) 
+                                commandQue.removeElementAt(0);
+                        }
+                        catch(Exception e)
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    if(O instanceof Ability)
+                    {
+                        if(!CMLib.english().preEvoke(this,commands,secondsElapsed,-diff))
+                            commandQue.removeElementAt(0);
+                    }
                 }
 			}
 		}
-		if(returnable!=null){ doCommand(returnable); return true;}
         return false;
 	}
 
@@ -1212,25 +1241,16 @@ public class StdMOB implements MOB
 		}
 	}
 
-    protected double calculateTickDelay(Vector commands, double tickDelay)
+    protected double calculateTickDelay(Object command, double tickDelay)
     {
         if(tickDelay<=0.0)
         {
-            Object O=CMLib.english().findCommand(this,commands);
-            if(O==null){ tell("Huh?!"); return -1.0;}
-
-            if(O instanceof Command)
-            {
-                tickDelay=((Command)O).actionsCost();
-                try{ if(!((Command)O).preExecute(this,commands)) return -1.0;}catch(Exception e){return -1.0;}
-            }
+            if(command==null){ tell("Huh?!"); return -1.0;}
+            if(command instanceof Command)
+                tickDelay=isInCombat()?((Command)command).combatActionsCost():((Command)command).actionsCost();
             else
-            if(O instanceof Ability)
-            {
-                tickDelay=isInCombat()?((Ability)O).combatCastingTime():((Ability)O).castingTime();
-                if(!CMLib.english().preEvoke(this,commands))
-                    return -1.0;
-            }
+            if(command instanceof Ability)
+                tickDelay=isInCombat()?((Ability)command).combatCastingTime():((Ability)command).castingTime();
             else
                 tickDelay=1.0;
         }
@@ -1240,25 +1260,43 @@ public class StdMOB implements MOB
     public void prequeCommand(Vector commands, double tickDelay)
     {
         if(commands==null) return;
-        tickDelay=calculateTickDelay(commands,tickDelay);
+        Object O=CMLib.english().findCommand(this,commands);
+        if(O==null){ tell("Huh?"); return;}
+        tickDelay=calculateTickDelay(O,tickDelay);
         if(tickDelay<0.0) return;
         if(tickDelay==0.0)
-            doCommand(commands);
+            doCommand(O,commands);
         else
         synchronized(commandQue)
-        { commandQue.insertElementAt(0,commands,new Double(tickDelay));}
+        { 
+            long[] next=new long[1];
+            next[0]=System.currentTimeMillis()-1;
+            int[] seconds=new int[1];
+            seconds[0]=-1;
+            commandQue.insertElementAt(0,O,commands,new Double(tickDelay),next,seconds);
+            dequeCommand();
+        }
     }
     
 	public void enqueCommand(Vector commands, double tickDelay)
 	{
 		if(commands==null) return;
-        tickDelay=calculateTickDelay(commands,tickDelay);
+        Object O=CMLib.english().findCommand(this,commands);
+        if(O==null){ tell("Huh?"); return;}
+        tickDelay=calculateTickDelay(O,tickDelay);
         if(tickDelay<0.0) return;
-        if(tickDelay==0.0)
+        if(tickDelay==0.0) 
             doCommand(commands);
         else
         synchronized(commandQue)
-        { commandQue.addElement(commands,new Double(tickDelay));}
+        { 
+            long[] next=new long[1];
+            next[0]=System.currentTimeMillis()-1;
+            int[] seconds=new int[1];
+            seconds[0]=-1;
+            commandQue.addElement(O,commands,new Double(tickDelay),next,seconds);
+            dequeCommand();
+        }
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -1948,7 +1986,8 @@ public class StdMOB implements MOB
 		}
 		if((msg.source()!=this)&&(msg.target()!=this))
 		{
-			if(msg.othersMinor()==CMMsg.TYP_DEATH)
+			if((msg.othersMinor()==CMMsg.TYP_DEATH)
+            &&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 			{
 			    if((followers!=null)
 			    &&(followers.contains(msg.source()))
@@ -2208,7 +2247,9 @@ public class StdMOB implements MOB
 			&&((canseesrc)||(canhearsrc)))
 				tell(msg.source(),msg.target(),msg.tool(),msg.othersMessage());
 
-			if((msg.othersMinor()==CMMsg.TYP_DEATH)&&(location()!=null))
+			if((msg.othersMinor()==CMMsg.TYP_DEATH)
+            &&(msg.sourceMinor()==CMMsg.TYP_DEATH)
+            &&(location()!=null))
                 CMLib.combat().handleObserveDeath(this,victim,msg);
 		}
 
