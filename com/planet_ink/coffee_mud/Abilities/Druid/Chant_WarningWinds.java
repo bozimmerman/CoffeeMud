@@ -18,7 +18,7 @@ import java.util.*;
 
 
 /* 
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ public class Chant_WarningWinds extends Chant
 		{
 			lastRoom=((MOB)affected).location();
 			Vector V=new Vector();
-			CMLib.tracking().getRadiantRooms(lastRoom,V,true,false,false,false,false,null,2);
+			CMLib.tracking().getRadiantRooms(lastRoom,V,true,false,false,false,false,null,2,null);
 			boolean fighting=false;
 			boolean enemy=false;
 			for(int r=0;r<V.size();r++)

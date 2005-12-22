@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 
 /* 
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -36,16 +36,16 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 {
     public String ID(){return "MUDTracker";}
     public Vector findBastardTheBestWay(Room location,
-                                               Room destRoom,
-                                               boolean openOnly,
-                                               boolean areaOnly,
-                                               boolean noEmptyGrids,
-                                               boolean noAir,
-                                               boolean noWater,
-                                               int maxRadius)
+                                        Room destRoom,
+                                        boolean openOnly,
+                                        boolean areaOnly,
+                                        boolean noEmptyGrids,
+                                        boolean noAir,
+                                        boolean noWater,
+                                        int maxRadius)
    {
         Vector radiant=new Vector();
-        getRadiantRooms(location,radiant,openOnly,areaOnly,noAir,noAir,noWater,destRoom,maxRadius);
+        getRadiantRooms(location,radiant,openOnly,areaOnly,noAir,noAir,noWater,destRoom,maxRadius,null);
         if(!radiant.contains(location))
             radiant.insertElementAt(location,0);
         if((radiant!=null)&&(radiant.size()>0)
@@ -94,13 +94,13 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
     
     
 	public Vector findBastardTheBestWay(Room location,
-											   Vector destRooms,
-											   boolean openOnly,
-											   boolean areaOnly,
-											   boolean noEmptyGrids,
-											   boolean noAir,
-											   boolean noWater,
-											   int maxRadius)
+									    Vector destRooms,
+									    boolean openOnly,
+									    boolean areaOnly,
+									    boolean noEmptyGrids,
+									    boolean noAir,
+									    boolean noWater,
+									    int maxRadius)
 	{
 	    
 	    Vector finalTrail=null;
@@ -129,8 +129,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	public int trackNextDirectionFromHere(Vector theTrail,
-												 Room location,
-												 boolean openOnly)
+										  Room location,
+										  boolean openOnly)
 	{
 		if((theTrail==null)||(location==null))
 			return -1;
@@ -177,14 +177,15 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 	
 	public void getRadiantRooms(Room room,
-									   Vector rooms,
-									   boolean openOnly,
-									   boolean areaOnly,
-									   boolean noEmptyGrids,
-									   boolean noAir,
-									   boolean noWater,
-									   Room radiateTo,
-									   int maxDepth)
+							    Vector rooms,
+							    boolean openOnly,
+							    boolean areaOnly,
+							    boolean noEmptyGrids,
+							    boolean noAir,
+							    boolean noWater,
+							    Room radiateTo,
+							    int maxDepth,
+                                HashSet ignoreRooms)
 	{
 		int depth=0;
 		if(room==null) return;
@@ -215,6 +216,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					
 					if((R==null)
 					||(E==null)
+                    ||((ignoreRooms!=null)&&(ignoreRooms.contains(R)))
                     ||(H.contains(R))
 					||((areaOnly)&&(R.getArea()!=room.getArea()))
 					||((openOnly)&&(!E.isOpen()))
@@ -546,10 +548,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	public boolean move(MOB mob,
-							   int directionCode,
-							   boolean flee,
-							   boolean nolook,
-							   boolean noriders)
+					    int directionCode,
+					    boolean flee,
+					    boolean nolook,
+					    boolean noriders)
 	{
 		try{
 			Command C=CMClass.getCommand("Go");

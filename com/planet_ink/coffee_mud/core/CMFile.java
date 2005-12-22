@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /* 
-Copyright 2000-2005 Bo Zimmerman
+Copyright 2000-2006 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -65,6 +65,8 @@ public class CMFile
     private MOB accessor=null;
     private long modifiedDateTime=System.currentTimeMillis();
     private File localFile=null;
+    private boolean demandVFS=false;
+    private boolean demandLocal=false;
     
     public CMFile(String filename, MOB user, boolean pleaseLogErrors)
     { super(); buildCMFile(filename,user,pleaseLogErrors,false);}
@@ -80,8 +82,8 @@ public class CMFile
         accessor=user;
         localFile=null;
         logErrors=pleaseLogErrors;
-        boolean demandLocal=absolutePath.trim().startsWith("//");
-        boolean demandVFS=absolutePath.trim().startsWith("::");
+        demandLocal=absolutePath.trim().startsWith("//");
+        demandVFS=absolutePath.trim().startsWith("::");
         if(accessor!=null) author=accessor.Name();
         absolutePath=vfsifyFilename(absolutePath);
         name=absolutePath;
@@ -679,6 +681,7 @@ public class CMFile
     {
         if((!isDirectory())||(!canRead())) 
             return new CMFile[0];
+        String prefix=demandLocal?"//":(demandVFS?"::":"");
         Vector dir=new Vector();
         Vector fcheck=new Vector();
         Vector info=null;
@@ -686,6 +689,7 @@ public class CMFile
         Vector vfs=getVFSDirectory();
         String vfsSrchDir=thisDir+"/";
         if(thisDir.length()==0) vfsSrchDir="";
+        if(!demandLocal)
         for(int v=0;v<vfs.size();v++)
         {
             info=(Vector)vfs.elementAt(v);
@@ -700,7 +704,7 @@ public class CMFile
                 {
                     entryName=entryName.substring(0,x);
                     String thisPath=(thisDir.length()>0)?thisDir+"/"+entryName:entryName;
-                    CMFile CF=new CMFile(thisPath,accessor,false);
+                    CMFile CF=new CMFile(prefix+thisPath,accessor,false);
                     if((CF.canRead())
                     &&(!fcheck.contains(entryName.toUpperCase())))
                     {
@@ -711,7 +715,7 @@ public class CMFile
                 else
                 {
                     String thisPath=(vfsSrchDir.length()>0)?vfsSrchDir+entryName:entryName;
-                    CMFile CF=new CMFile(thisPath,accessor,false);
+                    CMFile CF=new CMFile(prefix+thisPath,accessor,false);
                     if((CF.canRead())
                     &&(!fcheck.contains(entryName.toUpperCase())))
                     {
@@ -722,21 +726,24 @@ public class CMFile
             }
         }
         
-        thisDir=getIOReadableLocalPathAndName();
-        File F=new File(thisDir);
-        if(F.isDirectory())
+        if(!demandVFS)
         {
-            File[] list=F.listFiles();
-            File F2=null;
-            for(int l=0;l<list.length;l++)
+            thisDir=getIOReadableLocalPathAndName();
+            File F=new File(thisDir);
+            if(F.isDirectory())
             {
-                F2=list[l];
-                String thisPath=vfsifyFilename(thisDir)+"/"+F2.getName();
-                String thisName=F2.getName();
-                CMFile CF=new CMFile(thisPath,accessor,false);
-                if((CF.canRead())
-                &&(!fcheck.contains(thisName.toUpperCase())))
-                    dir.addElement(CF);
+                File[] list=F.listFiles();
+                File F2=null;
+                for(int l=0;l<list.length;l++)
+                {
+                    F2=list[l];
+                    String thisPath=vfsifyFilename(thisDir)+"/"+F2.getName();
+                    String thisName=F2.getName();
+                    CMFile CF=new CMFile(prefix+thisPath,accessor,false);
+                    if((CF.canRead())
+                    &&(!fcheck.contains(thisName.toUpperCase())))
+                        dir.addElement(CF);
+                }
             }
         }
         CMFile[] finalDir=new CMFile[dir.size()];
@@ -828,11 +835,11 @@ public class CMFile
     { return getFileList(incorporateBaseDir(currentPath,filename),user,recurse);}
     public static CMFile[] getFileList(String parse, MOB user, boolean recurse)
     {
+        boolean demandLocal=parse.trim().startsWith("//");
+        boolean demandVFS=parse.trim().startsWith("::");
         CMFile dirTest=new CMFile(parse,user,false);
         if((dirTest.exists())&&(dirTest.isDirectory())&&(dirTest.canRead())&&(!recurse))
             return dirTest.listFiles();
-        boolean demandLocal=parse.trim().startsWith("//");
-        boolean demandVFS=parse.trim().startsWith("::");
         String vsPath=vfsifyFilename(parse);
         String fixedName=vsPath;
         int x=vsPath.lastIndexOf('/');

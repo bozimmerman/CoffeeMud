@@ -18,7 +18,7 @@ import java.util.*;
 
 
 /* 
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ public class Prayer_BirdsEye extends Prayer
 				if(I!=null)
 				{
 					Vector set=new Vector();
-					CMLib.tracking().getRadiantRooms(mob.location(),set,false,false,true,true,false,null,2);
+					CMLib.tracking().getRadiantRooms(mob.location(),set,false,false,true,true,false,null,2,null);
 					StringBuffer str=new StringBuffer("");
 					for(int i=0;i<set.size();i++)
 						str.append(CMLib.map().getExtendedRoomID((Room)set.elementAt(i))+";");

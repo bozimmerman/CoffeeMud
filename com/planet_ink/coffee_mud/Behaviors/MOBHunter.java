@@ -68,7 +68,7 @@ public class MOBHunter extends ActiveTicker
 	{
 		MOB prey=null;
 		Vector rooms=new Vector();
-		CMLib.tracking().getRadiantRooms(mob.location(),rooms,true,true,true,true,true,null,radius);
+		CMLib.tracking().getRadiantRooms(mob.location(),rooms,true,true,true,true,true,null,radius,null);
 		for(int r=0;r<rooms.size();r++)
 		{
 			Room R=(Room)rooms.elementAt(r);

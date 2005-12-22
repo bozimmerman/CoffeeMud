@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /* 
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@ public class ListSessions extends StdCommand
 		if((commands!=null)&&(commands.size()>1))
 			sort=CMParms.combine(commands,1).trim().toUpperCase();
 		StringBuffer lines=new StringBuffer("\n\r^x");
+        lines.append(CMStrings.padRight("#",3)+"| ");
 		lines.append(CMStrings.padRight("Status",9)+"| ");
 		lines.append(CMStrings.padRight("Valid",5)+"| ");
 		lines.append(CMStrings.padRight("Name",17)+"| ");
@@ -54,20 +55,21 @@ public class ListSessions extends StdCommand
 		for(int s=0;s<CMLib.sessions().size();s++)
 		{
 			Session thisSession=CMLib.sessions().elementAt(s);
-			String[] set=new String[5];
-			set[0]=(thisSession.killFlag()?"^H":"")+CMStrings.padRight(Session.statusStr[thisSession.getStatus()],9)+(thisSession.killFlag()?"^?":"")+"| ";
+			String[] set=new String[6];
+            set[0]=CMStrings.padRight(""+s,3)+"| ";
+			set[1]=(thisSession.killFlag()?"^H":"")+CMStrings.padRight(Session.statusStr[thisSession.getStatus()],9)+(thisSession.killFlag()?"^?":"")+"| ";
 			if (thisSession.mob() != null)
 			{
-				set[1]=CMStrings.padRight(((thisSession.mob().session()==thisSession)?"Yes":"^HNO!^?"),5)+"| ";
-				set[2]="^!"+CMStrings.padRight("^<LSTUSER^>"+thisSession.mob().Name()+"^</LSTUSER^>",17)+"^?| ";
+				set[2]=CMStrings.padRight(((thisSession.mob().session()==thisSession)?"Yes":"^HNO!^?"),5)+"| ";
+				set[3]="^!"+CMStrings.padRight("^<LSTUSER^>"+thisSession.mob().Name()+"^</LSTUSER^>",17)+"^?| ";
 			}
 			else
 			{
-				set[1]=CMStrings.padRight("N/A",5)+"| ";
-				set[2]=CMStrings.padRight("NAMELESS",17)+"| ";
+				set[2]=CMStrings.padRight("N/A",5)+"| ";
+				set[3]=CMStrings.padRight("NAMELESS",17)+"| ";
 			}
-			set[3]=CMStrings.padRight(thisSession.getAddress(),17)+"| ";
-			set[4]=CMStrings.padRight((thisSession.getIdleMillis()+""),17);
+			set[4]=CMStrings.padRight(thisSession.getAddress(),17)+"| ";
+			set[5]=CMStrings.padRight((thisSession.getIdleMillis()+""),17);
 			broken.addElement(set);
 		}
 		Vector sorted=null;
@@ -75,19 +77,19 @@ public class ListSessions extends StdCommand
 		if(sort.length()>0)
 		{
 			if("STATUS".startsWith(sort))
-				sortNum=0;
-			else
-			if("VALID".startsWith(sort))
 				sortNum=1;
 			else
-			if(("NAME".startsWith(sort))||("PLAYER".startsWith(sort)))
+			if("VALID".startsWith(sort))
 				sortNum=2;
 			else
-			if(("IP".startsWith(sort))||("ADDRESS".startsWith(sort)))
+			if(("NAME".startsWith(sort))||("PLAYER".startsWith(sort)))
 				sortNum=3;
 			else
-			if(("IDLE".startsWith(sort))||("MILLISECONDS".startsWith(sort)))
+			if(("IP".startsWith(sort))||("ADDRESS".startsWith(sort)))
 				sortNum=4;
+			else
+			if(("IDLE".startsWith(sort))||("MILLISECONDS".startsWith(sort)))
+				sortNum=5;
 		}
 		if(sortNum<0)
 			sorted=broken;

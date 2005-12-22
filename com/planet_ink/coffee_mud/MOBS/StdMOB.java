@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 
 /* 
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -592,7 +592,7 @@ public class StdMOB implements MOB
 		if((location!=null)&&(location.isInhabitant(this)))
         {
             location().delInhabitant(this);
-            if(mySession!=null)
+            if((mySession!=null)&&(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN)))
                 location().show(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> vanish(es) in a puff of smoke.");
         }
 		setFollowing(null);
@@ -918,7 +918,7 @@ public class StdMOB implements MOB
 		amDead=true;
 		makePeace();
 		setRiding(null);
-		commandQue.clear();
+        synchronized(commandQue){commandQue.clear();}
 		for(int a=numEffects()-1;a>=0;a--)
 		{
 			Ability A=fetchEffect(a);
@@ -1157,48 +1157,56 @@ public class StdMOB implements MOB
     public int commandQueSize(){return commandQue.size();}
 	public boolean dequeCommand()
 	{
-		synchronized(commandQue)
-		{
-			if(commandQue.size()>0)
-			{
+        while((!pleaseDestroy)&&((session()==null)||(!session().killFlag())))
+        {
+            synchronized(commandQue)
+            {
+                if(commandQue.size()==0) return false;
                 double diff=actions()-((Double)commandQue.elementAt(0,3)).doubleValue();
 				if(diff>=0.0)
                 {
                     setActions(diff);
                     doCommand(commandQue.elementAt(0,1),(Vector)commandQue.elementAt(0,2));
+                    if(commandQue.size()==0) return true;
                     commandQue.removeElementAt(0);
                     if(commandQue.size()>0)
                         commandQue.setElementAt(0,3,new Double(calculateTickDelay(commandQue.elementAt(0,1),0.0)));
                     return true;
                 }
-                while(System.currentTimeMillis()>((long[])commandQue.elementAt(0,4))[0])
+                if(System.currentTimeMillis()<((long[])commandQue.elementAt(0,4))[0])
+                    return false;
+                Object O=commandQue.elementAt(0,1);
+                Vector commands=(Vector)commandQue.elementAt(0,2);
+                ((long[])commandQue.elementAt(0,4))[0]=((long[])commandQue.elementAt(0,4))[0]+1000;
+                ((int[])commandQue.elementAt(0,5))[0]+=1;
+                int secondsElapsed=((int[])commandQue.elementAt(0,5))[0];
+                if(O instanceof Command)
                 {
-                    Object O=commandQue.elementAt(0,1);
-                    Vector commands=(Vector)commandQue.elementAt(0,2);
-                    ((long[])commandQue.elementAt(0,4))[0]=((long[])commandQue.elementAt(0,4))[0]+1000;
-                    ((int[])commandQue.elementAt(0,5))[0]+=1;
-                    int secondsElapsed=((int[])commandQue.elementAt(0,5))[0];
-                    if(O instanceof Command)
-                    {
-                        
-                        try
-                        { 
-                            if(!((Command)O).preExecute(this,commands,secondsElapsed,-diff)) 
-                                commandQue.removeElementAt(0);
-                        }
-                        catch(Exception e)
+                    try
+                    { 
+                        if(!((Command)O).preExecute(this,commands,secondsElapsed,-diff)) 
                         {
-                            return false;
+                            if(commandQue.size()==0) return false;
+                            commandQue.removeElementAt(0);
+                            return true;
                         }
                     }
-                    else
-                    if(O instanceof Ability)
+                    catch(Exception e)
                     {
-                        if(!CMLib.english().preEvoke(this,commands,secondsElapsed,-diff))
-                            commandQue.removeElementAt(0);
+                        return false;
                     }
                 }
-			}
+                else
+                if(O instanceof Ability)
+                {
+                    if(!CMLib.english().preEvoke(this,commands,secondsElapsed,-diff))
+                    {
+                        if(commandQue.size()==0) return false;
+                        commandQue.removeElementAt(0);
+                        return true;
+                    }
+                }
+            }
 		}
         return false;
 	}
@@ -1274,8 +1282,8 @@ public class StdMOB implements MOB
             int[] seconds=new int[1];
             seconds[0]=-1;
             commandQue.insertElementAt(0,O,commands,new Double(tickDelay),next,seconds);
-            dequeCommand();
         }
+        dequeCommand();
     }
     
 	public void enqueCommand(Vector commands, double tickDelay)
@@ -1295,8 +1303,8 @@ public class StdMOB implements MOB
             int[] seconds=new int[1];
             seconds[0]=-1;
             commandQue.addElement(O,commands,new Double(tickDelay),next,seconds);
-            dequeCommand();
         }
+        dequeCommand();
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

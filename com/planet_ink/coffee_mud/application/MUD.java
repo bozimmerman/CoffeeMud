@@ -28,7 +28,7 @@ import java.sql.*;
 
 
 /* 
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -942,7 +942,7 @@ public class MUD extends Thread implements MudHost
 
 				System.out.println();
 				Log.sysOut("MUD","CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER));
-				Log.sysOut("MUD","(C) 2000-2005 Bo Zimmerman");
+				Log.sysOut("MUD","(C) 2000-2006 Bo Zimmerman");
 				Log.sysOut("MUD","http://coffeemud.zimmers.net");
 
 				Scripts.setLocale(page.getStr("LANGUAGE"),page.getStr("COUNTRY"));

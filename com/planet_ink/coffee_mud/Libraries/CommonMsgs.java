@@ -20,7 +20,7 @@ import java.util.*;
 import java.io.IOException;
 
 /* 
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1329,7 +1329,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             return;
         }
 
-        StringBuffer buf=new StringBuffer("^DObvious exits:^.^N");
+        StringBuffer buf=new StringBuffer("^DObvious exits:^.^N\n\r");
         String Dir=null;
         for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
         {
@@ -1348,9 +1348,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 &&(mob.playerStats()!=null)
                 &&(room2!=null)
                 &&(!mob.playerStats().hasVisited(room2)))
-                    buf.append("^U^<EX^>" + Dir+"^</EX^>:^.^N ^u"+Say+"^.^N");
+                    buf.append("^U^<EX^>" + Dir+"^</EX^>:^.^N ^u"+Say+"^.^N\n\r");
                 else
-                    buf.append("^D^<EX^>" + Dir+"^</EX^>:^.^N ^d"+Say+"^.^N");
+                    buf.append("^D^<EX^>" + Dir+"^</EX^>:^.^N ^d"+Say+"^.^N\n\r");
             }
         }
         Item I=null;
@@ -1361,10 +1361,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             {
                 StringBuffer Say=((Exit)I).viewableText(mob, room);
                 if(Say.length()>5)
-                    buf.append("^D^<MEX^>" + ((Exit)I).doorName()+"^</MEX^>:^.^N ^d"+Say+"^.^N");
+                    buf.append("^D^<MEX^>" + ((Exit)I).doorName()+"^</MEX^>:^.^N ^d"+Say+"^.^N\n\r");
                 else
                 if(Say.length()>0)
-                    buf.append("^D^<MEX^>" + CMStrings.padRight(((Exit)I).doorName(),5)+"^</MEX^>:^.^N ^d"+Say+"^.^N");
+                    buf.append("^D^<MEX^>" + CMStrings.padRight(((Exit)I).doorName(),5)+"^</MEX^>:^.^N ^d"+Say+"^.^N\n\r");
             }
         }
         mob.tell(buf.toString());

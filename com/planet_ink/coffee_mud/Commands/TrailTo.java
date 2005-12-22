@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /* 
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -40,8 +40,29 @@ public class TrailTo extends StdCommand
 
 	public String trailTo(Room R1, Vector commands)
 	{
+        HashSet ignoreRooms=null;
+        for(int c=0;c<commands.size();c++)
+        {
+            String s=(String)commands.elementAt(c);
+            if(s.toUpperCase().startsWith("IGNOREROOMS"))
+            {
+                s=s.substring(("IGNOREROOMS").length()).trim();
+                if(!s.startsWith("=")) continue;
+                s=s.substring(1);
+                commands.removeElementAt(c);
+                Vector roomList=CMParms.parseCommas(s,true);
+                ignoreRooms=new HashSet();
+                for(int v=0;v<roomList.size();v++)
+                {
+                    Room R=CMLib.map().getRoom((String)roomList.elementAt(v));
+                    if(R==null){ return "Ignored room "+((String)roomList.elementAt(v))+" is unknown!";}
+                    if(!ignoreRooms.contains(R))ignoreRooms.add(R);
+                }
+                break;
+            }
+        }
 		String where=CMParms.combine(commands,1);
-		if(where.length()==0) return "Trail to where? Try a Room ID, 'everyroom', or 'everyarea'.  You can also use the 'areanames' and 'confirm!' flags.";
+		if(where.length()==0) return "Trail to where? Try a Room ID, 'everyroom', or 'everyarea'.  You can also use the 'areanames', 'ignorerooms=', and 'confirm!' flags.";
 		if(R1==null) return "Where are you?";
 		boolean confirm=false;
         boolean areaNames=false;
@@ -56,14 +77,14 @@ public class TrailTo extends StdCommand
 			confirm=true;
 		}
 		Vector set=new Vector();
-		CMLib.tracking().getRadiantRooms(R1,set,false,false,true,false,false,null,Integer.MAX_VALUE);
+		CMLib.tracking().getRadiantRooms(R1,set,false,false,true,false,false,null,Integer.MAX_VALUE,ignoreRooms);
 		if(where.equalsIgnoreCase("everyarea"))
 		{
 			StringBuffer str=new StringBuffer("");
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
-				str.append(CMStrings.padRightPreserve(A.name(),30)+": "+trailTo(R1,set,A.name(),areaNames,confirm)+"\n\r");
+				str.append(CMStrings.padRightPreserve(A.name(),30)+": "+trailTo(R1,set,A.name(),areaNames,confirm,ignoreRooms)+"\n\r");
 			}
 			if(confirm) Log.rawSysOut(str.toString());
 			return str.toString();
@@ -78,7 +99,7 @@ public class TrailTo extends StdCommand
 				{
 					Room R=(Room)a.nextElement();
 					if((R!=R1)&&(R.roomID().length()>0))
-						str.append(CMStrings.padRightPreserve(R.roomID(),30)+": "+trailTo(R1,set,R.roomID(),areaNames,confirm)+"\n\r");
+						str.append(CMStrings.padRightPreserve(R.roomID(),30)+": "+trailTo(R1,set,R.roomID(),areaNames,confirm,ignoreRooms)+"\n\r");
 				}
 		    }catch(NoSuchElementException nse){}
 			if(confirm) Log.rawSysOut(str.toString());
@@ -86,7 +107,7 @@ public class TrailTo extends StdCommand
 		}
 		else
 		{
-			String str=CMStrings.padRightPreserve(where,30)+": "+trailTo(R1,set,where,areaNames,confirm);
+			String str=CMStrings.padRightPreserve(where,30)+": "+trailTo(R1,set,where,areaNames,confirm,ignoreRooms);
 			if(confirm) Log.rawSysOut(str);
 			return str;
 		}
@@ -100,7 +121,7 @@ public class TrailTo extends StdCommand
 				return d;
 		return -1;
 	}
-	public String trailTo(Room R1, Vector set, String where, boolean areaNames, boolean confirm)
+	public String trailTo(Room R1, Vector set, String where, boolean areaNames, boolean confirm, HashSet ignoreRooms)
 	{
 		Room R2=CMLib.map().getRoom(where);
 		if(R2==null)
@@ -139,7 +160,7 @@ public class TrailTo extends StdCommand
 			}
 		if(R2==null) return "Unable to determine '"+where+"'.";
 		if(set.size()==0)
-			CMLib.tracking().getRadiantRooms(R1,set,false,false,true,false,false,R2,Integer.MAX_VALUE);
+			CMLib.tracking().getRadiantRooms(R1,set,false,false,true,false,false,R2,Integer.MAX_VALUE,ignoreRooms);
 		int foundAt=-1;
 		for(int i=0;i<set.size();i++)
 		{

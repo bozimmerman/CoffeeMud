@@ -18,7 +18,7 @@ import java.util.*;
 
 
 /* 
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ public class Prayer_Position extends Prayer
 	public String trailTo(Room R1, Room R2)
 	{
 		Vector set=new Vector();
-		CMLib.tracking().getRadiantRooms(R1,set,false,false,true,false,false,R2,Integer.MAX_VALUE);
+		CMLib.tracking().getRadiantRooms(R1,set,false,false,true,false,false,R2,Integer.MAX_VALUE,null);
 		int foundAt=-1;
 		for(int i=0;i<set.size();i++)
 		{

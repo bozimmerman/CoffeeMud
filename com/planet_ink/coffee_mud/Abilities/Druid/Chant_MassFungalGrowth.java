@@ -18,7 +18,7 @@ import java.util.*;
 
 
 /* 
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 			return false;
 
 		Vector V=new Vector();
-		CMLib.tracking().getRadiantRooms(mob.location(),V,true,true,true,true,true,null,adjustedLevel(mob,asLevel));
+		CMLib.tracking().getRadiantRooms(mob.location(),V,true,true,true,true,true,null,adjustedLevel(mob,asLevel),null);
 		for(int v=V.size()-1;v>=0;v--)
 		{
 			Room R=(Room)V.elementAt(v);

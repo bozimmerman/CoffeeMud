@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -723,7 +723,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         if(type<0) type=Weapon.TYPE_BURSTING;
         int[] thresholds=damageThresholds();
         String[][] hitwords=hitWords();
-        int damnCode=0;
+        int damnCode=thresholds.length-2;
         for(int i=0;i<thresholds.length;i++)
             if(damage<=thresholds[i]){ damnCode=i; break;}
         damnCode++; // always add 1 because index into hitwords is type=0, annoy=1;

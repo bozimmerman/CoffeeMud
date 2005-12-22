@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /* 
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -44,7 +44,8 @@ public class Skill_Attack3 extends StdSkill
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
-		affectableStats.setSpeed(affectableStats.speed()+(1.0*(new Integer(profficiency()).doubleValue()/100.0)));
+        if((affected instanceof MOB)&&(((MOB)affected).isInCombat()))
+    		affectableStats.setSpeed(affectableStats.speed()+(1.0*(new Integer(profficiency()).doubleValue()/100.0)));
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)

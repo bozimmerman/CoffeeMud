@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 /* 
-   Copyright 2000-2005 Mike Rundell
+   Copyright 2000-2006 Mike Rundell
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

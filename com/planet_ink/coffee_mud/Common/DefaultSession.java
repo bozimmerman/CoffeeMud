@@ -21,7 +21,7 @@ import java.net.*;
 
 
 /*
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1083,7 +1083,18 @@ public class DefaultSession extends Thread implements Session
 	public void logoff()
 	{
 		killFlag=true;
+        if(mob!=null)
+        {
+            if(mob.playerStats()!=null)
+                mob.playerStats().setLastDateTime(System.currentTimeMillis());
+            mob.removeFromGame(true);
+        }
+        status=Session.STATUS_LOGOUT3;
+        closeSocks();
+        status=Session.STATUS_LOGOUT4;
 		this.interrupt();
+        status=Session.STATUS_LOGOUT5;
+        CMLib.sessions().removeElement(this);
 		try{Thread.sleep(1000);}catch(Exception i){}
 	}
 

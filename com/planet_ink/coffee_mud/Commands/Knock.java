@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /* 
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -84,7 +84,7 @@ public class Knock extends StdCommand
 				{
 					Vector V=new Vector();
 					V.addElement(mob.location());
-					CMLib.tracking().getRadiantRooms(R,V,true,false,false,false,false,null,5);
+					CMLib.tracking().getRadiantRooms(R,V,true,false,false,false,false,null,5,null);
 					V.removeElement(mob.location());
 					for(int v=0;v<V.size();v++)
 					{

@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 /* 
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -57,7 +57,8 @@ public interface TrackingLibrary extends CMObject
                                 boolean noAir,
                                 boolean noWater,
                                 Room radiateTo,
-                                int maxDepth);
+                                int maxDepth,
+                                HashSet ignoreRooms);
     public boolean beMobile(MOB mob,
                             boolean dooropen,
                             boolean wander,

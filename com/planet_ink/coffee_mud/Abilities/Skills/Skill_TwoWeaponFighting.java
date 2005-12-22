@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /* 
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 		{
 			MOB mob=(MOB)affected;
 
-			if((getSecondWeapon(mob)!=null)&&(getFirstWeapon(mob)!=null))
+			if((getSecondWeapon(mob)!=null)&&(getFirstWeapon(mob)!=null)&&(mob.isInCombat()))
 			{
 				affectableStats.setSpeed(affectableStats.speed()+1.0);
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/5));

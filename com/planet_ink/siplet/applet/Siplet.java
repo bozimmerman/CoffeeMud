@@ -6,7 +6,7 @@ import java.net.*;
 import java.io.*;
 
 /* 
-Copyright 2000-2005 Bo Zimmerman
+Copyright 2000-2006 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ public class Siplet extends Applet
 
     public String info()
     {
-        return "Siplet V"+VERSION_MAJOR+"."+VERSION_MINOR+" (C)2005 Bo Zimmerman";
+        return "Siplet V"+VERSION_MAJOR+"."+VERSION_MINOR+" (C)2005-2006 Bo Zimmerman";
     }
     
     public void start() 

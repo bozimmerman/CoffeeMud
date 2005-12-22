@@ -18,7 +18,7 @@ import java.util.*;
 import java.io.IOException;
 
 /* 
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -767,6 +767,22 @@ public class Destroy extends BaseItemParser
 			}
 		}
         else
+        if(commandType.startsWith("SESSION"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"BOOT")) return errorOut(mob);
+            int which=-1;
+            if(commands.size()>2)
+                which=CMath.s_int((String)commands.elementAt(2));
+            if((which<0)||(which>=CMLib.sessions().size()))
+                mob.tell("Please enter a valid session number to delete.  Use SESSIONS for more information.");
+            else
+            {
+                Session S=CMLib.sessions().elementAt(which);
+                S.logoff();
+                mob.tell("Ok.");
+            }
+        }
+        else
         if(commandType.equals("JOURNAL"))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")) return errorOut(mob);
@@ -989,7 +1005,7 @@ public class Destroy extends BaseItemParser
 					mob.tell(
 						"\n\rYou cannot destroy a '"+commandType+"'. "
 						+"However, you might try an "
-						+"EXIT, ITEM, USER, MOB, QUEST, FACTION, JOURNAL, SOCIAL, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, POLL, or a ROOM.");
+						+"EXIT, ITEM, USER, MOB, QUEST, FACTION, SESSION, JOURNAL, SOCIAL, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, POLL, or a ROOM.");
 				}
 			}
 		}

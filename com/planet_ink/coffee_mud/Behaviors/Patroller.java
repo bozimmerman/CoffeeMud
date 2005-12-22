@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /* 
-   Copyright 2000-2005 Bo Zimmerman
+   Copyright 2000-2006 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -150,7 +150,10 @@ public class Patroller extends ActiveTicker
 						R.bringItemHere((Item)ticking,-1);
 					else
 					if(ticking instanceof MOB)
+                    {
 						R.bringMobHere((MOB)ticking,true);
+                        R.show((MOB)ticking,R,null,CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,null);
+                    }
 				}
 				thisRoom=R;
 			}
@@ -277,13 +280,13 @@ public class Patroller extends ActiveTicker
 					if((direction<0)||(thatRoom==null))
 			        {
 			            correction=CMLib.tracking().findBastardTheBestWay(thisRoom,
-			                    	CMParms.makeVector(R),
-			                    	ticking instanceof Item,
-			                    	false,
-			                    	true,
-			                    	!airOk,
-			                    	!waterOk,
-			                    	diameter);
+                                    			                    	CMParms.makeVector(R),
+                                    			                    	ticking instanceof Item,
+                                    			                    	false,
+                                    			                    	true,
+                                    			                    	!airOk,
+                                    			                    	!waterOk,
+                                    			                    	diameter);
 					    tickStatus=Tickable.STATUS_MISC+9;
 			            if(correction!=null)
 				            direction=CMLib.tracking().trackNextDirectionFromHere(correction,thisRoom,ticking instanceof Item);
@@ -407,6 +410,7 @@ public class Patroller extends ActiveTicker
 									thatRoom.bringMobHere((MOB)R,true);
                                     ((MOB)R).setRiding((Rideable)ticking);
 									CMLib.commands().postLook((MOB)R,true);
+                                    thatRoom.show((MOB)R,thatRoom,E,CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,null);
 								}
 								else
 								if(R instanceof Item)
