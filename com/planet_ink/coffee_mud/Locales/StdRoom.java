@@ -1023,10 +1023,7 @@ public class StdRoom implements Room
 		send(everywhereMOB,msg);
         everywhereMOB.destroy();
 	}
-	public boolean show(MOB source,
-					 Environmental target,
-					 int allCode,
-					 String allMessage)
+	public boolean show(MOB source, Environmental target, int allCode, String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,null,allCode,allCode,allCode,allMessage);
 		if((!CMath.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
@@ -1034,11 +1031,11 @@ public class StdRoom implements Room
 		send(source,msg);
 		return true;
 	}
-	public boolean show(MOB source,
-					 Environmental target,
-					 Environmental tool,
-					 int allCode,
-					 String allMessage)
+	public boolean show(MOB source, 
+                        Environmental target, 
+                        Environmental tool, 
+                        int allCode, 
+                        String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,tool,allCode,allCode,allCode,allMessage);
 		if((!CMath.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
@@ -1046,10 +1043,54 @@ public class StdRoom implements Room
 		send(source,msg);
 		return true;
 	}
+    public boolean show(MOB source, 
+                        Environmental target, 
+                        Environmental tool, 
+                        int srcCode, 
+                        int tarCode, 
+                        int othCode, 
+                        String allMessage)
+    {
+        CMMsg msg=CMClass.getMsg(source,target,tool,srcCode,tarCode,othCode,allMessage);
+        if((!CMath.bset(srcCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
+            return false;
+        send(source,msg);
+        return true;
+    }
+    public boolean show(MOB source,
+                        Environmental target,
+                        Environmental tool,
+                        int allCode,
+                        String srcMessage,
+                        String tarMessage,
+                        String othMessage)
+    {
+        CMMsg msg=CMClass.getMsg(source,target,tool,allCode,srcMessage,allCode,tarMessage,allCode,othMessage);
+        if((!CMath.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
+            return false;
+        send(source,msg);
+        return true;
+    }
+    public boolean show(MOB source,
+                        Environmental target,
+                        Environmental tool,
+                        int srcCode,
+                        String srcMessage,
+                        int tarCode,
+                        String tarMessage,
+                        int othCode,
+                        String othMessage)
+    {
+        CMMsg msg=CMClass.getMsg(source,target,tool,srcCode,srcMessage,tarCode,tarMessage,othCode,othMessage);
+        if((!CMath.bset(srcCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))
+            return false;
+        send(source,msg);
+        return true;
+    }
 	public boolean showOthers(MOB source,
-						   Environmental target,
-						   int allCode,
-						   String allMessage)
+						      Environmental target,
+						      int allCode,
+						      String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,null,allCode,allCode,allCode,allMessage);
 		if((!CMath.bset(allCode,CMMsg.MASK_GENERAL))&&(!okMessage(source,msg)))

@@ -93,6 +93,7 @@ public class StdMOB implements MOB
     public CharState maxState=(CharState)CMClass.getCommon("DefaultCharState");
     public CharState baseState=(CharState)CMClass.getCommon("DefaultCharState");
     private long lastTickedDateTime=0;
+    private long lastCommandTime=System.currentTimeMillis();
     public long lastTickedDateTime(){return lastTickedDateTime;}
     public void flagVariableEq(){lastTickedDateTime=-2;}
 
@@ -1165,9 +1166,16 @@ public class StdMOB implements MOB
                 double diff=actions()-((Double)commandQue.elementAt(0,3)).doubleValue();
 				if(diff>=0.0)
                 {
+                    long nextTime=lastCommandTime
+                                 +Math.round(((Double)commandQue.elementAt(0,3)).doubleValue()
+                                             /envStats().speed()
+                                             *new Long(MudHost.TICK_TIME).doubleValue());
+                    if((System.currentTimeMillis()<nextTime)&&(session()!=null))
+                        return false;
+                    lastCommandTime=System.currentTimeMillis();
                     setActions(diff);
                     doCommand(commandQue.elementAt(0,1),(Vector)commandQue.elementAt(0,2));
-                    if(commandQue.size()==0) return true;
+                    if(commandQue.size()==0) return false;
                     commandQue.removeElementAt(0);
                     if(commandQue.size()>0)
                         commandQue.setElementAt(0,3,new Double(calculateTickDelay(commandQue.elementAt(0,1),0.0)));

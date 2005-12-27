@@ -977,7 +977,7 @@ public class List extends StdCommand
         StringBuffer buf=new StringBuffer("");
         Room R=null;
         Room TR=null;
-        Hashtable set=null;
+        Vector set=null;
         for(;roomsToDo.hasMoreElements();)
         {
             R=(Room)roomsToDo.nextElement();

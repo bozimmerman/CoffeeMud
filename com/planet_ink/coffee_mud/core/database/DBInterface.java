@@ -85,13 +85,13 @@ public class DBInterface implements DatabaseEngine
     public Vector DBReadAreaData(String areaID, boolean reportStatus)
     {return RoomLoader.DBReadAreaData(areaID,reportStatus);}
     
-    public Hashtable DBReadRoomData(String roomID, boolean reportStatus, Hashtable unknownAreas)
+    public Vector DBReadRoomData(String roomID, boolean reportStatus, Vector unknownAreas)
     {return RoomLoader.DBReadRoomData(roomID,reportStatus,unknownAreas);}
     
-    public void DBReadRoomExits(String roomID, Hashtable allRooms, boolean reportStatus)
+    public void DBReadRoomExits(String roomID, Vector allRooms, boolean reportStatus)
     {RoomLoader.DBReadRoomExits(roomID,allRooms,reportStatus);}
     
-	public void DBReadContent(Room thisRoom, Hashtable rooms)
+	public void DBReadContent(Room thisRoom, Vector rooms)
 	{RoomLoader.DBReadContent(thisRoom, rooms,false);}
 	
 	public void DBUpdateExits(Room room)

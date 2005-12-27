@@ -83,10 +83,49 @@ public class RoomLoader
         }
         return areas;
     }
-
-    public static Hashtable DBReadRoomData(String roomID, boolean reportStatus, Hashtable unknownAreas)
+    
+    public static void addRoom(Vector rooms, Room R)
     {
-        Hashtable roomHash=new Hashtable();
+        Room R2=null;
+        for(int i=0;i<rooms.size();i++)
+        {
+            R2=(Room)rooms.elementAt(i);
+            if(R2.roomID().compareToIgnoreCase(R.roomID())>=0)
+            {
+                if(R2.roomID().compareToIgnoreCase(R.roomID())==0)
+                    rooms.setElementAt(R,i);
+                else
+                    rooms.insertElementAt(R,i);
+                return;
+            }
+        }
+        rooms.addElement(R);
+    }
+
+    public static Room getRoom(Vector rooms, String roomID)
+    {
+        if(rooms.size()==0) return null;
+        int start=0;
+        int end=rooms.size()-1;
+        while(start<=end)
+        {
+            int mid=(end+start)/2;
+            int comp=((Room)rooms.elementAt(mid)).roomID().compareToIgnoreCase(roomID);
+            if(comp==0)
+                return (Room)rooms.elementAt(mid);
+            else
+            if(comp>0)
+                end=mid-1;
+            else
+                start=mid+1;
+
+        }
+        return null;
+    }
+    
+    public static Vector DBReadRoomData(String roomID, boolean reportStatus, Vector unknownAreas)
+    {
+        Vector rooms=new Vector();
         DBConnection D=null;
         try
         {
@@ -114,8 +153,8 @@ public class RoomLoader
                         myArea=(Area)CMClass.getAreaType("StdArea").copyOf();
                         myArea.setName(areaName);
                         if((unknownAreas!=null)
-                        &&(!unknownAreas.containsKey(areaName)))
-                            unknownAreas.put(areaName,areaName);
+                        &&(!unknownAreas.contains(areaName)))
+                            unknownAreas.addElement(areaName);
                     }
                     newRoom.setArea(myArea);
                     newRoom.setDisplayText(DBConnections.getRes(R,"CMDESC1"));
@@ -124,7 +163,7 @@ public class RoomLoader
                     else
                         newRoom.setDescription(DBConnections.getRes(R,"CMDESC2"));
                     newRoom.setMiscText(DBConnections.getRes(R,"CMROTX"));
-                    roomHash.put(roomID,newRoom);
+                    RoomLoader.addRoom(rooms,newRoom);
                 }
                 if(((currentRecordPos%updateBreak)==0)&&(reportStatus))
                     CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Loading Rooms ("+currentRecordPos+" of "+recordCount+")");
@@ -137,10 +176,10 @@ public class RoomLoader
             if(D!=null) DBConnector.DBDone(D);
             return null;
         }
-        return roomHash;
+        return rooms;
     }
 
-    public static void DBReadRoomExits(String roomID, Hashtable allRooms, boolean reportStatus)
+    public static void DBReadRoomExits(String roomID, Vector allRooms, boolean reportStatus)
     {
         DBConnection D=null;
         // now grab the exits
@@ -159,7 +198,7 @@ public class RoomLoader
                 currentRecordPos=R.getRow();
                 roomID=DBConnections.getRes(R,"CMROID");
                 int direction=(int)DBConnections.getLongRes(R,"CMDIRE");
-                thisRoom=(Room)allRooms.get(roomID);
+                thisRoom=getRoom(allRooms,roomID);
                 if(thisRoom==null)
                     Log.errOut("Room","Couldn't set "+direction+" exit for unknown room '"+roomID+"'");
                 else
@@ -167,7 +206,7 @@ public class RoomLoader
                     String exitID=DBConnections.getRes(R,"CMEXID");
                     String exitMiscText=DBConnections.getResQuietly(R,"CMEXTX");
                     String nextRoomID=DBConnections.getRes(R,"CMNRID");
-                    newRoom=(Room)allRooms.get(nextRoomID);
+                    newRoom=getRoom(allRooms,nextRoomID);
                     Exit newExit=CMClass.getExit(exitID);
                     if((newExit==null)&&(newRoom==null))
                         Log.errOut("Room","Couldn't find room '"+nextRoomID+"', exit type '"+exitID+"', direction: "+direction);
@@ -235,8 +274,8 @@ public class RoomLoader
             CMLib.map().addArea((Area)areas.elementAt(a));
         areas.clear();
 
-        Hashtable newAreasToCreate=new Hashtable();
-        Hashtable hash=RoomLoader.DBReadRoomData(null,true,newAreasToCreate);
+        Vector newAreasToCreate=new Vector();
+        Vector rooms=RoomLoader.DBReadRoomData(null,true,newAreasToCreate);
         
 		// handle stray areas
 		for(Enumeration e=newAreasToCreate.elements();e.hasMoreElements();)
@@ -244,7 +283,7 @@ public class RoomLoader
 			String areaName=(String)e.nextElement();
 			Log.sysOut("Area","Creating unhandled area: "+areaName);
 			Area realArea=DBCreate(areaName,"StdArea");
-			for(Enumeration r=hash.elements();r.hasMoreElements();)
+			for(Enumeration r=rooms.elements();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.getArea().Name().equals(areaName))
@@ -252,13 +291,13 @@ public class RoomLoader
 			}
 		}
         
-        RoomLoader.DBReadRoomExits(null,hash,true);
+        RoomLoader.DBReadRoomExits(null,rooms,true);
 
-		DBReadContent(null,hash,true);
+		DBReadContent(null,rooms,true);
 
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Finalizing room data)");
 
-		for(Enumeration r=hash.elements();r.hasMoreElements();)
+		for(Enumeration r=rooms.elements();r.hasMoreElements();)
 		{
 			Room thisRoom=(Room)r.nextElement();
 			thisRoom.startItemRejuv();
@@ -357,7 +396,7 @@ public class RoomLoader
 	}
 
 
-    public static void DBReadContent(Room thisRoom, Hashtable rooms, boolean setStatus)
+    public static void DBReadContent(Room thisRoom, Vector rooms, boolean setStatus)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Reading content of "+((thisRoom!=null)?thisRoom.roomID():"ALL"));
@@ -494,8 +533,8 @@ public class RoomLoader
 		}
 		if(thisRoom!=null)
 		{
-			rooms=new Hashtable();
-			rooms.put(thisRoom.roomID(),thisRoom);
+			rooms=new Vector();
+			rooms.addElement(thisRoom);
 		}
 		recordCount=rooms.size();
 		updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));

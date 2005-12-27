@@ -4802,7 +4802,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 if((newTarget!=null)&&(newTarget instanceof MOB)&&(lastKnownLocation!=null))
                 {
                     s=CMParms.getPastBit(s,1).trim();
-                    lastKnownLocation.showSource((MOB)newTarget,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
+                    lastKnownLocation.show(monster,newTarget,null,CMMsg.MSG_OK_ACTION,null,CMMsg.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s),CMMsg.NO_EFFECT,null);
                 }
                 else
                 if(parm.equalsIgnoreCase("world"))
@@ -5468,7 +5468,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 29: // mptrackto
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,CMParms.getCleanBit(s,1));
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,CMParms.getPastBit(s,0));
 				Ability A=CMClass.getAbility("Skill_Track");
 				if(A!=null)	
 				{

@@ -1090,11 +1090,11 @@ public class DefaultSession extends Thread implements Session
             mob.removeFromGame(true);
         }
         status=Session.STATUS_LOGOUT3;
-        closeSocks();
-        status=Session.STATUS_LOGOUT4;
-		this.interrupt();
-        status=Session.STATUS_LOGOUT5;
         CMLib.sessions().removeElement(this);
+        status=Session.STATUS_LOGOUT4;
+        closeSocks();
+        status=Session.STATUS_LOGOUT5;
+		this.interrupt();
 		try{Thread.sleep(1000);}catch(Exception i){}
 	}
 

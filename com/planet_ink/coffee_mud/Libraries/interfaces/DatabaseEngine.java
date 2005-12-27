@@ -44,10 +44,10 @@ public interface DatabaseEngine extends CMObject
 	public static final int JOURNAL_DATE2=6;
 	
 	public void DBUpdateFollowers(MOB mob);
-	public void DBReadContent(Room thisRoom, Hashtable rooms);
+	public void DBReadContent(Room thisRoom, Vector rooms);
     public Vector DBReadAreaData(String areaID, boolean reportStatus);
-    public Hashtable DBReadRoomData(String roomID, boolean reportStatus, Hashtable unknownAreas);
-    public void DBReadRoomExits(String roomID, Hashtable allRooms, boolean reportStatus);
+    public Vector DBReadRoomData(String roomID, boolean reportStatus, Vector unknownAreas);
+    public void DBReadRoomExits(String roomID, Vector allRooms, boolean reportStatus);
 	public void DBUpdateExits(Room room);
 	public String DBReadRoomMOBData(String roomID, String mobID);
 	public String DBReadRoomDesc(String roomID);
