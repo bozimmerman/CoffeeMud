@@ -110,7 +110,7 @@ public class GenWallpaper implements Item
 	public boolean amDestroyed()
 	{return destroyed;}
 
-	public boolean amWearingAt(long wornCode){if(wornCode==Item.INVENTORY)return true; return false;}
+	public boolean amWearingAt(long wornCode){if(wornCode==Item.IN_INVENTORY)return true; return false;}
 	public boolean fitsOn(long wornCode){return false;}
 	public void wearIfPossible(MOB mob){}
 	public void wearAt(long wornCode){}

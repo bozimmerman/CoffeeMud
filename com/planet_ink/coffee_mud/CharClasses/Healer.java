@@ -144,7 +144,7 @@ public class Healer extends Cleric
 	{
 		if(!(ticking instanceof MOB)) return super.tick(ticking,tickID);
 		MOB myChar=(MOB)ticking;
-		if((tickID==MudHost.TICK_MOB)
+		if((tickID==Tickable.TICKID_MOB)
 		&&(myChar.charStats().getClassLevel(this)>=30)
 		&&(CMLib.flags().isGood(myChar)))
 		{

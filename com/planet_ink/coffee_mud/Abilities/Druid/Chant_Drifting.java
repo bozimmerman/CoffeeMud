@@ -79,7 +79,7 @@ public class Chant_Drifting extends Chant
 		if(!super.tick(ticking,tickID))
 			return false;
 		if((affected instanceof MOB)
-		&&(tickID==MudHost.TICK_MOB)
+		&&(tickID==Tickable.TICKID_MOB)
 		&&(!CMLib.flags().isFalling(affected))
 		&&(((MOB)affected).riding()==null)
 		&&(((MOB)affected).location()!=null)

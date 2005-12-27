@@ -52,9 +52,9 @@ public class Chant_MagneticField extends Chant
 				if((I!=null)
 				&&(I.container()==null)
 				&&(CMLib.flags().isMetal(I))
-				&&(!I.amWearingAt(Item.INVENTORY))
-				&&(!I.amWearingAt(Item.HELD))
-				&&(!I.amWearingAt(Item.WIELD)))
+				&&(!I.amWearingAt(Item.IN_INVENTORY))
+				&&(!I.amWearingAt(Item.WORN_HELD))
+				&&(!I.amWearingAt(Item.WORN_WIELD)))
 					return true;
 			}
 		}

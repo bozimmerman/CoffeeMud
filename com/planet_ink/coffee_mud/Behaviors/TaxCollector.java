@@ -246,7 +246,7 @@ public class TaxCollector extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 
-		if((tickID!=MudHost.TICK_MOB)||(!(ticking instanceof MOB)))
+		if((tickID!=Tickable.TICKID_MOB)||(!(ticking instanceof MOB)))
 			return true;
 	    if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 	        return true;

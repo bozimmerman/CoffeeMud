@@ -39,7 +39,7 @@ public class GenDress extends GenArmor
 		setName("a nice dress");
 		setDisplayText("a nice dress lies here");
 		setDescription("a well tailored dress.");
-		properWornBitmap=Item.ON_LEGS|Item.ON_WAIST|Item.ON_TORSO;
+		properWornBitmap=Item.WORN_LEGS|Item.WORN_WAIST|Item.WORN_TORSO;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(2);
 		baseEnvStats().setWeight(3);

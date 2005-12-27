@@ -275,8 +275,8 @@ public class Create extends BaseGenerics
 			newMOB.setName("A Standard MOB");
 		newMOB.setStartRoom(mob.location());
 		newMOB.setLocation(mob.location());
-        long rejuv=MudHost.TICKS_PER_RLMIN+MudHost.TICKS_PER_RLMIN+(MudHost.TICKS_PER_RLMIN/2);
-        if(rejuv>(MudHost.TICKS_PER_RLMIN*20)) rejuv=(MudHost.TICKS_PER_RLMIN*20);
+        long rejuv=Tickable.TICKS_PER_RLMIN+Tickable.TICKS_PER_RLMIN+(Tickable.TICKS_PER_RLMIN/2);
+        if(rejuv>(Tickable.TICKS_PER_RLMIN*20)) rejuv=(Tickable.TICKS_PER_RLMIN*20);
 		newMOB.envStats().setRejuv((int)rejuv);
 		newMOB.baseCharStats().getMyRace().setHeightWeight(newMOB.baseEnvStats(),(char)newMOB.baseCharStats().getStat(CharStats.GENDER));
 		newMOB.recoverCharStats();

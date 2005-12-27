@@ -602,7 +602,7 @@ public class Destroy extends BaseItemParser
 							return false;
 						}
 						else	
-						if((!dropThis.amWearingAt(Item.HELD))&&(!dropThis.amWearingAt(Item.WIELD)))
+						if((!dropThis.amWearingAt(Item.WORN_HELD))&&(!dropThis.amWearingAt(Item.WORN_WIELD)))
 						{
 							mob.tell("You must remove that first.");
 							return false;

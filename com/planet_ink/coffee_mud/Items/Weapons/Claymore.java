@@ -56,7 +56,7 @@ public class Claymore extends Sword
 		baseGoldValue=25;
 		recoverEnvStats();
 		wornLogicalAnd=true;
-		properWornBitmap=Item.HELD|Item.WIELD;
+		properWornBitmap=Item.WORN_HELD|Item.WORN_WIELD;
 		material=EnvResource.RESOURCE_STEEL;
 		weaponType=TYPE_SLASHING;
 	}

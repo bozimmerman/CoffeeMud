@@ -643,7 +643,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				for(int i=0;i<list.size();i++)
 				{
 					Item thisThang=(Item)list.elementAt(i);
-					boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
+					boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 
 					if((thisThang.container()==goodLocation)
 					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
@@ -664,7 +664,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				for(int i=0;i<list.size();i++)
 				{
 					Item thisThang=(Item)list.elementAt(i);
-					boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
+					boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 
 					if((thisThang.container()==goodLocation)
 					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
@@ -681,7 +681,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				for(int i=0;i<list.size();i++)
 				{
 					Item thisThang=(Item)list.elementAt(i);
-					boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
+					boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 					if((thisThang.container()==goodLocation)
 					&&(thisThang.displayText().length()>0)
 					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
@@ -716,7 +716,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				    if(E instanceof Item)
 				    {
 						thisThang=(Item)E;
-						boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
+						boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 	
 						if((thisThang.container()==goodLocation)
 						&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
@@ -748,7 +748,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if(E instanceof Item)
 					{
 					    thisThang=(Item)E;
-						boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
+						boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 	
 						if((thisThang.container()==goodLocation)
 						&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
@@ -775,7 +775,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if(E instanceof Item)
 					{
 					    thisThang=(Item)E;
-						boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
+						boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 						if((thisThang.container()==goodLocation)
 						&&(thisThang.displayText().length()>0)
 						&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))

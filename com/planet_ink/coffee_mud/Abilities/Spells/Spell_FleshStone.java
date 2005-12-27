@@ -43,7 +43,7 @@ public class Spell_FleshStone extends Spell
 	protected boolean recurse=false;
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==MudHost.TICK_MOB)
+		if((tickID==Tickable.TICKID_MOB)
 		&&(affected!=null)
 		&&(statue!=null)
 		&&(affected instanceof MOB))

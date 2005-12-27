@@ -42,7 +42,7 @@ public class StdArmor extends StdContainer implements Armor
 		setName("a shirt of armor");
 		setDisplayText("a thick armored shirt sits here.");
 		setDescription("Thick padded leather with strips of metal interwoven.");
-		properWornBitmap=Item.ON_TORSO;
+		properWornBitmap=Item.WORN_TORSO;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(10);
 		baseEnvStats().setAbility(0);
@@ -137,8 +137,8 @@ public class StdArmor extends StdContainer implements Armor
 		}
 	}
 
-	public final static long strangeDeviations=Item.FLOATING_NEARBY|Item.ON_MOUTH|Item.ON_EYES|Item.ON_EARS|Item.ON_NECK;
-	public final static long deviation20=Item.ON_TORSO|Item.ON_LEGS|Item.ON_WAIST|Item.ON_ARMS|Item.ON_HANDS|Item.ON_FEET;
+	public final static long strangeDeviations=Item.WORN_FLOATING_NEARBY|Item.WORN_MOUTH|Item.WORN_EYES|Item.WORN_EARS|Item.WORN_NECK;
+	public final static long deviation20=Item.WORN_TORSO|Item.WORN_LEGS|Item.WORN_WAIST|Item.WORN_ARMS|Item.WORN_HANDS|Item.WORN_FEET;
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -157,17 +157,17 @@ public class StdArmor extends StdContainer implements Armor
 			{
 				long wcode=rawProperLocationBitmap();
 
-				if(CMath.bset(wcode,Item.HELD))
-					wcode=wcode-Item.HELD;
-				if(wcode==Item.FLOATING_NEARBY) devianceAllowed=-1;
+				if(CMath.bset(wcode,Item.WORN_HELD))
+					wcode=wcode-Item.WORN_HELD;
+				if(wcode==Item.WORN_FLOATING_NEARBY) devianceAllowed=-1;
 				else
-				if(wcode==Item.ON_MOUTH) devianceAllowed=-1;
+				if(wcode==Item.WORN_MOUTH) devianceAllowed=-1;
 				else
-				if(wcode==Item.ON_EYES) devianceAllowed=1000;
+				if(wcode==Item.WORN_EYES) devianceAllowed=1000;
 				else
-				if(wcode==Item.ON_EARS) devianceAllowed=1000;
+				if(wcode==Item.WORN_EARS) devianceAllowed=1000;
 				else
-				if(wcode==Item.ON_NECK) devianceAllowed=5000;
+				if(wcode==Item.WORN_NECK) devianceAllowed=5000;
 			}
 			if(devianceAllowed>0)
 			{
@@ -196,7 +196,7 @@ public class StdArmor extends StdContainer implements Armor
 		&&(CMLib.flags().canBeSeenBy(this,msg.source())))
 			msg.source().tell(armorHealth());
 		else
-		if((!amWearingAt(Item.INVENTORY))
+		if((!amWearingAt(Item.IN_INVENTORY))
 		&&(owner()!=null)
 		&&(owner() instanceof MOB)
 		&&(msg.amITarget(owner()))
@@ -346,7 +346,7 @@ public class StdArmor extends StdContainer implements Armor
 							setUsesRemaining(usesRemaining()-1);
 						break;
 					case Weapon.TYPE_BASHING:
-						if((rawWornCode()==Armor.ON_HEAD)
+						if((rawWornCode()==Item.WORN_HEAD)
 						&&(CMLib.dice().rollPercentage()==1)
 						&&(CMLib.dice().rollPercentage()==1)
 						&&((msg.value())>10))
@@ -501,7 +501,7 @@ public class StdArmor extends StdContainer implements Armor
 	{
 		super.recoverEnvStats();
 		if((baseEnvStats().height()==0)
-		   &&(!amWearingAt(Item.INVENTORY))
+		   &&(!amWearingAt(Item.IN_INVENTORY))
 		   &&(owner() instanceof MOB))
 			baseEnvStats().setHeight(((MOB)owner()).baseEnvStats().height());
 	}
@@ -510,25 +510,25 @@ public class StdArmor extends StdContainer implements Armor
 	{
 		super.affectEnvStats(affected,affectableStats);
 		
-		if((!amWearingAt(Item.INVENTORY))
-		&&((!amWearingAt(Item.FLOATING_NEARBY))||(fitsOn(Item.FLOATING_NEARBY)))
-		&&((!amWearingAt(Item.HELD))||(this instanceof Shield)))
+		if((!amWearingAt(Item.IN_INVENTORY))
+		&&((!amWearingAt(Item.WORN_FLOATING_NEARBY))||(fitsOn(Item.WORN_FLOATING_NEARBY)))
+		&&((!amWearingAt(Item.WORN_HELD))||(this instanceof Shield)))
 		{
 			affectableStats.setArmor(affectableStats.armor()-envStats().armor());
-			if(amWearingAt(Item.ON_TORSO))
+			if(amWearingAt(Item.WORN_TORSO))
 				affectableStats.setArmor(affectableStats.armor()-(envStats().ability()*10));
 			else
-			if((amWearingAt(Item.ON_HEAD))||(this.amWearingAt(Item.HELD)))
+			if((amWearingAt(Item.WORN_HEAD))||(this.amWearingAt(Item.WORN_HELD)))
 				affectableStats.setArmor(affectableStats.armor()-(envStats().ability()*5));
 			else
-			if(!amWearingAt(Item.FLOATING_NEARBY))
+			if(!amWearingAt(Item.WORN_FLOATING_NEARBY))
 				affectableStats.setArmor(affectableStats.armor()-envStats().ability());
 		}
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(!amWearingAt(Item.INVENTORY))
+		if(!amWearingAt(Item.IN_INVENTORY))
 		switch(material()&EnvResource.MATERIAL_MASK)
 		{
 		case EnvResource.MATERIAL_METAL:

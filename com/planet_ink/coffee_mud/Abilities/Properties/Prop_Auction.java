@@ -56,7 +56,7 @@ public class Prop_Auction extends Property
 	public void setAbilityCode(int code)
 	{
 		state=code;
-		tickDown=15000/MudHost.TICK_TIME;
+		tickDown=15000/Tickable.TIME_TICK;
 	}
 
 	protected MOB invoker=null;
@@ -179,7 +179,7 @@ public class Prop_Auction extends Property
 			highBid=bid-1;
 			auctionStart=System.currentTimeMillis();
 			setAbilityCode(STATE_START);
-			CMLib.threads().startTickDown(this,MudHost.TICK_QUEST,1);
+			CMLib.threads().startTickDown(this,Tickable.TICKID_QUEST,1);
 			String bidWords=CMLib.beanCounter().nameCurrencyShort(currency,bid);
 			V.addElement("New lot: "+auctioning.name()+".  The opening bid is "+bidWords+".");
 		}

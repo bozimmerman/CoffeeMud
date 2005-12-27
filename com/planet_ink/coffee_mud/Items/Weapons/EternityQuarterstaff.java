@@ -49,7 +49,7 @@ public class EternityQuarterstaff extends Quarterstaff
 		baseGoldValue+=5000;
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		wornLogicalAnd=true;
-		properWornBitmap=Item.HELD|Item.WIELD;
+		properWornBitmap=Item.WORN_HELD|Item.WORN_WIELD;
 		material=EnvResource.RESOURCE_OAK;
 		weaponType=TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_STAFF;
@@ -66,7 +66,7 @@ public class EternityQuarterstaff extends Quarterstaff
 		{
 		case CMMsg.TYP_SPEAK:
 			if((mob.isMine(this))
-			   &&(!amWearingAt(Item.INVENTORY))
+			   &&(!amWearingAt(Item.IN_INVENTORY))
 			   &&(msg.target() instanceof MOB)
 			   &&(mob.location().isInhabitant((MOB)msg.target())))
 			{

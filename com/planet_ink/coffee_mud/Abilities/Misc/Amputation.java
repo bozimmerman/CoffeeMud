@@ -118,15 +118,15 @@ public class Amputation extends StdAbility implements Amputator
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			if((amputations[Race.BODY_LEG]<0)&&(mob.getWearPositions(Item.ON_LEGS)==0))
+			if((amputations[Race.BODY_LEG]<0)&&(mob.getWearPositions(Item.WORN_LEGS)==0))
 			{
-				if((amputations[Race.BODY_ARM]<0)&&(mob.getWearPositions(Item.ON_ARMS)==0))
+				if((amputations[Race.BODY_ARM]<0)&&(mob.getWearPositions(Item.WORN_ARMS)==0))
 					affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
 				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
 			}
-			if((amputations[Race.BODY_EYE]<0)&&(mob.getWearPositions(Item.ON_EYES)==0))
+			if((amputations[Race.BODY_EYE]<0)&&(mob.getWearPositions(Item.WORN_EYES)==0))
 				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
-			if((amputations[Race.BODY_EAR]<0)&&(mob.getWearPositions(Item.ON_EARS)==0))
+			if((amputations[Race.BODY_EAR]<0)&&(mob.getWearPositions(Item.WORN_EARS)==0))
 				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
 		}
 	}
@@ -137,7 +137,7 @@ public class Amputation extends StdAbility implements Amputator
 		missingLimbNameSet();
 		if(amputations[Race.BODY_LEG]<0)
         {
-            if(affected.getWearPositions(Item.ON_LEGS)==0)
+            if(affected.getWearPositions(Item.WORN_LEGS)==0)
     			affectableState.setMovement(affectableState.getMovement()/8);
             else
                 affectableState.setMovement(affectableState.getMovement()/4);
@@ -145,7 +145,7 @@ public class Amputation extends StdAbility implements Amputator
         else
 		if(amputations[Race.BODY_FOOT]<0)
         {
-            if(affected.getWearPositions(Item.ON_FEET)==0)
+            if(affected.getWearPositions(Item.WORN_FEET)==0)
     			affectableState.setMovement(affectableState.getMovement()/4);
             else
                 affectableState.setMovement(affectableState.getMovement()/2);
@@ -377,7 +377,7 @@ public class Amputation extends StdAbility implements Amputator
 		    {
 		        Item I=tmob.fetchInventory(i);
 		        if((I!=null)
-                &&(!I.amWearingAt(Item.INVENTORY))
+                &&(!I.amWearingAt(Item.IN_INVENTORY))
                 &&(I.ID().endsWith("Limb"))
 				&&((I.name().toUpperCase().endsWith(gone.toUpperCase()))
     				||(I.rawSecretIdentity().toUpperCase().endsWith(gone.toUpperCase()))))

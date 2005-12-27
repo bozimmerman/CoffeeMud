@@ -135,7 +135,7 @@ public class Archon_Multiwatch extends ArchonSkill
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==MudHost.TICK_MOB)
+		if((tickID==Tickable.TICKID_MOB)
 		&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
@@ -210,7 +210,7 @@ public class Archon_Multiwatch extends ArchonSkill
 						if(MN.fetchEffect(ID())==null)
 						{
 							Ability A=(Ability)copyOf();
-							A.setBorrowed(MN,true);
+							A.setSavable(false);
 							MN.addNonUninvokableEffect(A);
 						}
 						rpt.append(MN.Name()+" ");
@@ -266,7 +266,7 @@ public class Archon_Multiwatch extends ArchonSkill
 					if(MN.fetchEffect(ID())==null)
 					{
 						Ability A=(Ability)copyOf();
-						A.setBorrowed(MN,true);
+						A.setSavable(false);
 						MN.addNonUninvokableEffect(A);
 					}
 				}

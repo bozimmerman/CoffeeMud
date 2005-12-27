@@ -75,7 +75,7 @@ public class Fighter_Roll extends FighterSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==MudHost.TICK_MOB)
+		if(tickID==Tickable.TICKID_MOB)
 			doneThisRound=false;
 		return super.tick(ticking,tickID);
 	}

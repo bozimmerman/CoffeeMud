@@ -56,7 +56,7 @@ public class Minotaur extends StdMOB
 		Weapon mainWeapon=CMClass.getWeapon("BattleAxe");
 		if(mainWeapon!=null)
 		{
-			mainWeapon.wearAt(Item.WIELD);
+			mainWeapon.wearAt(Item.WORN_WIELD);
 			this.addInventory(mainWeapon);
 		}
 

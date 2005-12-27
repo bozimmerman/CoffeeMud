@@ -37,7 +37,7 @@ public class Kitten extends Cat
 	public int heightVariance(){return 3;}
 	public int lightestWeight(){return 7;}
 	public int weightVariance(){return 10;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_EARS-Item.ON_EYES;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_HEAD-Item.WORN_FEET-Item.WORN_EARS-Item.WORN_EYES;}
 	public String racialCategory(){return "Feline";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

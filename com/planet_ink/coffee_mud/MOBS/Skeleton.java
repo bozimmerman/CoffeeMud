@@ -46,7 +46,7 @@ public class Skeleton extends Undead
 		Weapon sword=CMClass.getWeapon("Longsword");
 		if(sword!=null)
 		{
-			sword.wearAt(Item.WIELD);
+			sword.wearAt(Item.WORN_WIELD);
 			addInventory(sword);
 		}
 

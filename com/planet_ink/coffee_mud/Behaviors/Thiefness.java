@@ -52,7 +52,7 @@ public class Thiefness extends CombatAbilities
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=MudHost.TICK_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB) return true;
 		if(!canActAtAll(ticking)) return true;
 		if(!(ticking instanceof MOB)) return true;
 		MOB mob=(MOB)ticking;
@@ -88,7 +88,7 @@ public class Thiefness extends CombatAbilities
 						{
 							Item potentialI=victim.fetchInventory(i);
 							if((potentialI!=null)
-							&&(potentialI.amWearingAt(Item.INVENTORY))
+							&&(potentialI.amWearingAt(Item.IN_INVENTORY))
 							&&(CMLib.flags().canBeSeenBy(potentialI,mob)))
 								I=potentialI;
 						}

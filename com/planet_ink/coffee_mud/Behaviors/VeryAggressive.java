@@ -56,7 +56,7 @@ public class VeryAggressive extends Aggressive
 											boolean mobKiller,
 											String zapStr)
 	{
-		if(tickID!=MudHost.TICK_MOB) return;
+		if(tickID!=Tickable.TICKID_MOB) return;
 		if(!canFreelyBehaveNormal(ticking)) return;
 		MOB mob=(MOB)ticking;
 		if(CMLib.flags().isATrackingMonster(mob)) return;

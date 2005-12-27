@@ -39,7 +39,7 @@ public class LeatherGauntlets extends StdArmor
 		setName("Leather Gauntlets");
 		setDisplayText("a pair of leather gauntlets.");
 		setDescription("They look like they're made of doeskin.");
-		properWornBitmap=Item.ON_HANDS | Item.ON_LEFT_WRIST | Item.ON_RIGHT_WRIST;
+		properWornBitmap=Item.WORN_HANDS | Item.WORN_LEFT_WRIST | Item.WORN_RIGHT_WRIST;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(1);
 		baseEnvStats().setWeight(5);

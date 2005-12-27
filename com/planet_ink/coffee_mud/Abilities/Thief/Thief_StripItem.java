@@ -77,7 +77,7 @@ public class Thief_StripItem extends ThiefSkill
 			mob.tell(target.name()+" doesn't seem to be wearing '"+itemToSteal+"'.");
 			return false;
 		}
-		if(stolen.amWearingAt(Item.WIELD))
+		if(stolen.amWearingAt(Item.WORN_WIELD))
 		{
 			mob.tell(target.name()+" is wielding "+stolen.name()+"! Try disarm!");
 			return false;

@@ -49,7 +49,7 @@ public class Chant_FindMate extends Chant
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID==MudHost.TICK_MOB)
+		if(tickID==Tickable.TICKID_MOB)
 		{
 			if((theTrail==null)
 			||(affected == null)
@@ -70,13 +70,13 @@ public class Chant_FindMate extends Chant
 				{
 					mob.tell("You peer longingly at "+mate.name()+".");
 
-					Item I=mob.fetchFirstWornItem(Item.ON_WAIST);
+					Item I=mob.fetchFirstWornItem(Item.WORN_WAIST);
 					if(I!=null)	CMLib.commands().postRemove(mob,I,false);
-					I=mob.fetchFirstWornItem(Item.ON_LEGS);
+					I=mob.fetchFirstWornItem(Item.WORN_LEGS);
 					if(I!=null)	CMLib.commands().postRemove(mob,I,false);
 
-					if((mob.fetchFirstWornItem(Item.ON_WAIST)!=null)
-					||(mob.fetchFirstWornItem(Item.ON_LEGS)!=null))
+					if((mob.fetchFirstWornItem(Item.WORN_WAIST)!=null)
+					||(mob.fetchFirstWornItem(Item.WORN_LEGS)!=null))
 						unInvoke();
 					mob.doCommand(CMParms.parse("MATE \""+mate.name()+"$\""));
 					unInvoke();
@@ -146,8 +146,8 @@ public class Chant_FindMate extends Chant
 		if(((merace.equals("Human"))
 		   ||(materace.equals("Human"))
 		   ||(merace.equals(materace)))
-		&&(mate.numWearingHere(Item.ON_LEGS)==0)
-		&&(mate.numWearingHere(Item.ON_WAIST)==0)
+		&&(mate.numWearingHere(Item.WORN_LEGS)==0)
+		&&(mate.numWearingHere(Item.WORN_WAIST)==0)
 		&&(CMLib.flags().canBeSeenBy(mate,forMe)))
 			return true;
 		return false;

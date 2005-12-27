@@ -50,8 +50,8 @@ public class Skill_TwoWeaponFighting extends StdSkill
     protected Weapon getFirstWeapon(MOB mob)
 	{
 		if((lastPrimary!=null)
-		&&(lastPrimary.amWearingAt(Item.WIELD))
-		&&(!lastPrimary.amWearingAt(Item.HELD))
+		&&(lastPrimary.amWearingAt(Item.WORN_WIELD))
+		&&(!lastPrimary.amWearingAt(Item.WORN_HELD))
 		&&(lastPrimary.container()==null))
 			return lastPrimary;
 		Weapon weapon=null;
@@ -59,8 +59,8 @@ public class Skill_TwoWeaponFighting extends StdSkill
 		{
 			Item item=mob.fetchInventory(i);
 			if((item instanceof Weapon)
-			    &&(item.amWearingAt(Item.WIELD))
-				&&(!item.amWearingAt(Item.HELD))
+			    &&(item.amWearingAt(Item.WORN_WIELD))
+				&&(!item.amWearingAt(Item.WORN_HELD))
 			    &&(item.container()==null))
 			{ weapon=(Weapon)item; break; }
 		}
@@ -71,8 +71,8 @@ public class Skill_TwoWeaponFighting extends StdSkill
 	private Weapon getSecondWeapon(MOB mob)
 	{
 		if((lastSecondary!=null)
-		&&(lastSecondary.amWearingAt(Item.HELD))
-		&&(!lastSecondary.amWearingAt(Item.WIELD))
+		&&(lastSecondary.amWearingAt(Item.WORN_HELD))
+		&&(!lastSecondary.amWearingAt(Item.WORN_WIELD))
 		&&(lastSecondary.container()==null))
 			return lastSecondary;
 		Weapon weapon=null;
@@ -80,8 +80,8 @@ public class Skill_TwoWeaponFighting extends StdSkill
 		{
 			Item item=mob.fetchInventory(i);
 			if((item instanceof Weapon)
-			    &&(item.amWearingAt(Item.HELD))
-				&&(!item.amWearingAt(Item.WIELD))
+			    &&(item.amWearingAt(Item.WORN_HELD))
+				&&(!item.amWearingAt(Item.WORN_WIELD))
 			    &&(item.container()==null))
 			{ weapon=(Weapon)item; break; }
 		}
@@ -106,7 +106,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==MudHost.TICK_MOB)&&(affected instanceof MOB))
+		if((tickID==Tickable.TICKID_MOB)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
 			if(mob.isInCombat())
@@ -128,12 +128,12 @@ public class Skill_TwoWeaponFighting extends StdSkill
 				&&(profficiencyCheck(mob,0,false))
 				&&(!mob.getVictim().amDead()))
 				{
-					primaryWeapon.setRawWornCode(Item.HELD);
-					weapon.setRawWornCode(Item.WIELD);
+					primaryWeapon.setRawWornCode(Item.WORN_HELD);
+					weapon.setRawWornCode(Item.WORN_WIELD);
 					mob.recoverEnvStats();
 					CMLib.combat().postAttack(mob,mob.getVictim(),weapon);
-					weapon.setRawWornCode(Item.HELD);
-					primaryWeapon.setRawWornCode(Item.WIELD);
+					weapon.setRawWornCode(Item.WORN_HELD);
+					primaryWeapon.setRawWornCode(Item.WORN_WIELD);
 					mob.recoverEnvStats();
 					if(CMLib.dice().rollPercentage()==1)
 						helpProfficiency(mob);

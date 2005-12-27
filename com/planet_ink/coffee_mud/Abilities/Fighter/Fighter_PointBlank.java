@@ -75,7 +75,7 @@ public class Fighter_PointBlank extends FighterSkill
 			{
 				qualifiedWeapons.addElement(msg.target());
 				Ability A=(Ability)this.copyOf();
-				A.setBorrowed(msg.target(),true);
+				A.setSavable(false);
 				msg.target().addEffect(A);
 			}
 			else
@@ -119,14 +119,14 @@ public class Fighter_PointBlank extends FighterSkill
 				{
 					qualifiedWeapons.addElement(w);
 					Ability A=(Ability)this.copyOf();
-					A.setBorrowed(w,true);
+					A.setSavable(false);
 					w.addEffect(A);
 				}
 			}
 			for(int i=qualifiedWeapons.size()-1;i>=0;i--)
 			{
 				Item I=(Item)qualifiedWeapons.elementAt(i);
-				if((I.amWearingAt(Item.INVENTORY))
+				if((I.amWearingAt(Item.IN_INVENTORY))
 				||(I.owner()!=affected))
 				{
 					qualifiedWeapons.removeElement(I);

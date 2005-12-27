@@ -56,7 +56,7 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 		if((myItem!=null)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0)
-		&&(!myItem.amWearingAt(Item.INVENTORY))
+		&&(!myItem.amWearingAt(Item.IN_INVENTORY))
 		&&(myItem.owner()!=null)
 		&&(myItem.owner() instanceof MOB)
 		&&(msg.target()!=null)
@@ -69,12 +69,12 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 			{
 				if((myItem instanceof Weapon)
 				&&(msg.tool()==myItem)
-				&&(myItem.amWearingAt(Item.WIELD))
+				&&(myItem.amWearingAt(Item.WORN_WIELD))
 				&&(msg.amISource(mob)))
 					addMeIfNeccessary(msg.source(),msg.target());
 				else
 				if((msg.amITarget(mob))
-				&&(!myItem.amWearingAt(Item.WIELD))
+				&&(!myItem.amWearingAt(Item.WORN_WIELD))
 				&&(!(myItem instanceof Weapon)))
 					addMeIfNeccessary(msg.target(),msg.target());
 			}

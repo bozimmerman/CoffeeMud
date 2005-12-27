@@ -93,7 +93,7 @@ public class MOBTeacher extends CombatAbilities
 			if(A2==null)
 			{
 				A=(Ability)A.copyOf();
-				A.setBorrowed(myMOB,true);
+				A.setSavable(false);
 				A.setProfficiency(100);
 				myAbles.put(A.ID(),A);
 				mob.addAbility(A);

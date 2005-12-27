@@ -104,7 +104,7 @@ public class WaterSurface extends StdRoom implements Drink
 			rawExits()[Directions.UP]=null;
 			room.rawDoors()[Directions.DOWN]=null;
 			room.rawExits()[Directions.DOWN]=null;
-			room.destroyRoom();
+			room.destroy();
 			skyedYet=false;
 		}
 	}

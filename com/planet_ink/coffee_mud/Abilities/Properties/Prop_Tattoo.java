@@ -60,7 +60,7 @@ public class Prop_Tattoo extends Property
 			for(int v=0;v<V.size();v++)
 				M.addTattoo((String)V.elementAt(v));
 		}
-		borrowed=true;
+		savable=false;
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)

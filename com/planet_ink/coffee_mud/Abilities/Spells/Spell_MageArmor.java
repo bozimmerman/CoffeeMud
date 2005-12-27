@@ -73,7 +73,7 @@ public class Spell_MageArmor extends Spell
 			return false;
 		}
 
-		if(target.freeWearPositions(Item.ON_TORSO)==0)
+		if(target.freeWearPositions(Item.WORN_TORSO)==0)
 		{
 			mob.tell("You are already wearing something on your torso!");
 			return false;
@@ -101,7 +101,7 @@ public class Spell_MageArmor extends Spell
 				mob.location().send(mob,msg);
 				theArmor=CMClass.getArmor("GlowingMageArmor");
 				mob.addInventory(theArmor);
-				theArmor.wearAt(Item.ON_TORSO);
+				theArmor.wearAt(Item.WORN_TORSO);
 				success=beneficialAffect(mob,target,asLevel,0);
 				mob.location().recoverRoomStats();
 			}

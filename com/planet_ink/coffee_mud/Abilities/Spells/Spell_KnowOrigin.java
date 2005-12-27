@@ -67,7 +67,7 @@ public class Spell_KnowOrigin extends Spell
 							&&(M.isMonster())
 							&&(!(M instanceof ShopKeeper))
 							&&(M.fetchInventory(me.Name())!=null)
-							&&(!M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
+							&&(!M.fetchInventory(me.Name()).amWearingAt(Item.IN_INVENTORY)))
 								return M.getStartRoom();
 						}
 					}
@@ -109,7 +109,7 @@ public class Spell_KnowOrigin extends Spell
 							&&(M.isMonster())
 							&&(!(M instanceof ShopKeeper))
 							&&(M.fetchInventory(me.Name())!=null)
-							&&(M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
+							&&(M.fetchInventory(me.Name()).amWearingAt(Item.IN_INVENTORY)))
 								return M.getStartRoom();
 						}
 					}

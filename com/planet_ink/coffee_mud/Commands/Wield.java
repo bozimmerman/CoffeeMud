@@ -61,7 +61,7 @@ public class Wield extends BaseItemParser
 			mob.tell("You don't seem to be carrying that.");
 		else
 		for(int i=0;i<items.size();i++)
-			if((items.size()==1)||(((Item)items.elementAt(i)).canWear(mob,Item.WIELD)))
+			if((items.size()==1)||(((Item)items.elementAt(i)).canWear(mob,Item.WORN_WIELD)))
 			{
 				Item item=(Item)items.elementAt(i);
 				CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_WIELD,"<S-NAME> wield(s) <T-NAME>.");

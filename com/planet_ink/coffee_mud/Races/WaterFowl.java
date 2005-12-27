@@ -40,7 +40,7 @@ public class WaterFowl extends StdRace
 	public int heightVariance(){return 5;}
 	public int lightestWeight(){return 5;}
 	public int weightVariance(){return 5;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_HEAD-Item.WORN_EYES;}
 	public String racialCategory(){return "Avian";}
 	private String[]racialAbilityNames={"WingFlying","Skill_Swim"};
 	private int[]racialAbilityLevels={1,1};

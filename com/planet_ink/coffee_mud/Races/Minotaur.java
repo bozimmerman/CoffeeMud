@@ -40,7 +40,7 @@ public class Minotaur extends Cow
 	public int heightVariance(){return 12;}
 	public int lightestWeight(){return 450;}
 	public int weightVariance(){return 100;}
-	public long forbiddenWornBits(){return Item.ON_HEAD;}
+	public long forbiddenWornBits(){return Item.WORN_HEAD;}
 	public String racialCategory(){return "Bovine";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

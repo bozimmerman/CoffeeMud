@@ -56,7 +56,7 @@ public class Goblin extends StdMOB
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==MudHost.TICK_MOB)
+		if(tickID==Tickable.TICKID_MOB)
 		{
 			if(birthType!=baseEnvStats().ability())
 				setMOBSpecifics(baseEnvStats().ability());
@@ -165,12 +165,12 @@ public class Goblin extends StdMOB
 		}
 		if(m!=null)
 		{
-			m.wearAt(Item.WIELD);
+			m.wearAt(Item.WORN_WIELD);
 			addInventory(m);
 		}
 		if(c!=null)
 		{
-			c.wearAt(Item.ON_TORSO);
+			c.wearAt(Item.WORN_TORSO);
 			addInventory(c);
 		}
 	}

@@ -47,7 +47,7 @@ public class Fighter_MonkeyPunch extends FighterSkill
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==MudHost.TICK_MOB)
+		if((tickID==Tickable.TICKID_MOB)
 		   &&(affected!=null)
 		   &&(affected instanceof MOB))
 		{
@@ -76,8 +76,8 @@ public class Fighter_MonkeyPunch extends FighterSkill
 		{
 			Item I=mob.fetchInventory(i);
 			if((I!=null)
-			   &&((I.amWearingAt(Item.WIELD))
-			      ||(I.amWearingAt(Item.HELD))))
+			   &&((I.amWearingAt(Item.WORN_WIELD))
+			      ||(I.amWearingAt(Item.WORN_HELD))))
 				return true;
 		}
 		return false;

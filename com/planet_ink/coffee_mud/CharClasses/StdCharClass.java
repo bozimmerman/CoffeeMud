@@ -301,7 +301,7 @@ public class StdCharClass implements CharClass
 		if(mob.fetchAbility(A.ID())==null)
 		{
 			A=(Ability)A.copyOf();
-			A.setBorrowed(mob,isBorrowedClass);
+			A.setSavable(!isBorrowedClass);
 			A.setProfficiency(profficiency);
 			A.setMiscText(defaultParm);
 			mob.addAbility(A);
@@ -334,7 +334,7 @@ public class StdCharClass implements CharClass
                 if(A!=null)
                 {
                     A.setProfficiency(100);
-                    A.setBorrowed(mob,true);
+                    A.setSavable(false);
                     Ability A2=(Ability)alreadyAff.get(A.ID());
                     if(A2!=null)
                         A2.setProfficiency(100);
@@ -627,8 +627,8 @@ public class StdCharClass implements CharClass
 		if(mob==null) mob=CMClass.getMOB("StdMOB");
 		if(!mob.isMonster()) return mob;
 
-		long rejuv=MudHost.TICKS_PER_RLMIN+MudHost.TICKS_PER_RLMIN+(level*MudHost.TICKS_PER_RLMIN/2);
-		if(rejuv>(MudHost.TICKS_PER_RLMIN*20)) rejuv=(MudHost.TICKS_PER_RLMIN*20);
+		long rejuv=Tickable.TICKS_PER_RLMIN+Tickable.TICKS_PER_RLMIN+(level*Tickable.TICKS_PER_RLMIN/2);
+		if(rejuv>(Tickable.TICKS_PER_RLMIN*20)) rejuv=(Tickable.TICKS_PER_RLMIN*20);
 		mob.baseEnvStats().setLevel(level);
 		mob.baseEnvStats().setRejuv((int)rejuv);
 		mob.baseEnvStats().setSpeed(getLevelSpeed(mob));

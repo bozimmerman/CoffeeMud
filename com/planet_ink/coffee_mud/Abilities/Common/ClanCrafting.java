@@ -331,12 +331,12 @@ public class ClanCrafting extends CraftingSkill
 		{
 			((Armor)building).setRawProperLocationBitmap(0);
 			double hardBonus=0.0;
-			for(int wo=1;wo<Item.wornLocation.length;wo++)
+			for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
 			{
-				String WO=Item.wornLocation[wo].toUpperCase();
+				String WO=Item.WORN_DESCS[wo].toUpperCase();
 				if(misctype.equalsIgnoreCase(WO))
 				{
-					hardBonus+=Item.wornWeights[wo];
+					hardBonus+=Item.WORN_WEIGHTS[wo];
 					((Armor)building).setRawProperLocationBitmap(CMath.pow(2,wo-1));
 					((Armor)building).setRawLogicalAnd(false);
 				}
@@ -345,7 +345,7 @@ public class ClanCrafting extends CraftingSkill
 				||(misctype.toUpperCase().endsWith("||"+WO)))
 				{
 					if(hardBonus==0.0)
-						hardBonus+=Item.wornWeights[wo];
+						hardBonus+=Item.WORN_WEIGHTS[wo];
 					((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
 					((Armor)building).setRawLogicalAnd(false);
 				}
@@ -353,7 +353,7 @@ public class ClanCrafting extends CraftingSkill
 				if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
 				||(misctype.toUpperCase().endsWith("&&"+WO)))
 				{
-					hardBonus+=Item.wornWeights[wo];
+					hardBonus+=Item.WORN_WEIGHTS[wo];
 					((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
 					((Armor)building).setRawLogicalAnd(true);
 				}

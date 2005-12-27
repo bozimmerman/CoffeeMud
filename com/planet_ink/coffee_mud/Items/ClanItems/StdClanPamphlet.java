@@ -55,7 +55,7 @@ public class StdClanPamphlet extends StdClanItem
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==MudHost.TICK_CLANITEM)
+		if((tickID==Tickable.TICKID_CLANITEM)
 		&&(owner() instanceof MOB)
 		&&(clanID().length()>0)
 		&&(((MOB)owner()).isMonster())

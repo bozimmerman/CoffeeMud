@@ -54,7 +54,7 @@ public class GenMirror extends GenItem
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((owner==null)||(!(owner instanceof MOB))||(amWearingAt(Item.INVENTORY)))
+		if((owner==null)||(!(owner instanceof MOB))||(amWearingAt(Item.IN_INVENTORY)))
 			return super.okMessage(myHost,msg);
 
 		MOB mob=(MOB)owner;

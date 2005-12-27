@@ -95,7 +95,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			if((mob.location()!=null)&&(!mob.amDead())&&(mob.getWearPositions(Item.ON_FEET)>0))
+			if((mob.location()!=null)&&(!mob.amDead())&&(mob.getWearPositions(Item.WORN_FEET)>0))
 			{
 			    spreadImmunity(mob);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The fungus on <S-YOUPOSS> feet dies and falls off.");

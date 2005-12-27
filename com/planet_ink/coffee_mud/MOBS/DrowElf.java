@@ -91,7 +91,7 @@ public class DrowElf extends StdMOB
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((!amDead())&&(tickID==MudHost.TICK_MOB))
+		if((!amDead())&&(tickID==Tickable.TICKID_MOB))
 		{
 			if (isInCombat())
 			{
@@ -115,7 +115,7 @@ public class DrowElf extends StdMOB
 
 		Ability dark=CMClass.getAbility("Spell_Darkness");
 		dark.setProfficiency(100);
-		dark.setBorrowed(this,true);
+		dark.setSavable(false);
 		if(this.fetchAbility(dark.ID())==null)
 		   this.addAbility(dark);
 		else

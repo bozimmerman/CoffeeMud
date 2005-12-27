@@ -58,7 +58,7 @@ public class GrinderItems
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					MOB M2=R.fetchInhabitant(m);
-					if((M2!=null)&&(M2.isEligibleMonster()))
+					if((M2!=null)&&(M2.savable()))
 					   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 				}
 				return str.toString();
@@ -527,11 +527,11 @@ public class GrinderItems
 			if((httpReq.isRequestParameter("BEINGWORN"))
 			   &&((httpReq.getRequestParameter("BEINGWORN")).equals("on")))
 			{
-				if(I.amWearingAt(Item.INVENTORY))
+				if(I.amWearingAt(Item.IN_INVENTORY))
 					I.wearEvenIfImpossible(M);
 			}
 			else
-				I.wearAt(Item.INVENTORY);
+				I.wearAt(Item.IN_INVENTORY);
 			CMLib.database().DBUpdateMOBs(R);
 			httpReq.addRequestParameters("MOB",RoomData.getMOBCode(R,M));
 			httpReq.addRequestParameters("ITEM",RoomData.getItemCode(M,I));

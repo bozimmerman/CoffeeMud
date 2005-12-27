@@ -215,8 +215,8 @@ public class StdRace implements Race
             {
                 if((msg.source()==myChar)
                 &&(fertile())
-                &&(msg.source().numWearingHere(Item.ON_LEGS)==0)
-                &&(msg.source().numWearingHere(Item.ON_WAIST)==0))
+                &&(msg.source().numWearingHere(Item.WORN_LEGS)==0)
+                &&(msg.source().numWearingHere(Item.WORN_WAIST)==0))
                 {
                     msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
                     myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
@@ -234,10 +234,10 @@ public class StdRace implements Race
                 &&(myChar.charStats().getStat(CharStats.GENDER)==('F'))
                 &&(msg.source().charStats().getStat(CharStats.GENDER)==('M'))
     			&&(fertile())
-    			&&(myChar.numWearingHere(Item.ON_LEGS)==0)
-    			&&(msg.source().numWearingHere(Item.ON_LEGS)==0)
-    			&&(myChar.numWearingHere(Item.ON_WAIST)==0)
-    			&&(msg.source().numWearingHere(Item.ON_WAIST)==0)
+    			&&(myChar.numWearingHere(Item.WORN_LEGS)==0)
+    			&&(msg.source().numWearingHere(Item.WORN_LEGS)==0)
+    			&&(myChar.numWearingHere(Item.WORN_WAIST)==0)
+    			&&(msg.source().numWearingHere(Item.WORN_WAIST)==0)
     			&&((ID().equals("Human"))
     			   ||(msg.source().charStats().getMyRace().ID().equals("Human"))
     			   ||(msg.source().charStats().getMyRace().ID().equals(ID())))
@@ -586,7 +586,7 @@ public class StdRace implements Race
 				if(A!=null)
 				{
 					A.setProfficiency(100);
-					A.setBorrowed(mob,true);
+					A.setSavable(false);
 					A.setMiscText(racialEffectParms()[v]);
 					A.makeNonUninvokable();
 					finalV.addElement(A);
@@ -633,7 +633,7 @@ public class StdRace implements Race
 			if(A!=null)
 			{
 				A.setProfficiency(CMLib.ableMapper().getDefaultProfficiency(ID(),false,A.ID()));
-				A.setBorrowed(mob,true);
+				A.setSavable(false);
 				A.setMiscText(CMLib.ableMapper().getDefaultParm(ID(),false,A.ID()));
 				finalV.addElement(A);
 			}

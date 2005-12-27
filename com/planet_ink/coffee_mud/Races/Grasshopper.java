@@ -40,7 +40,7 @@ public class Grasshopper extends StdRace
 	public int heightVariance(){return 0;}
 	public int lightestWeight(){return 1;}
 	public int weightVariance(){return 0;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_TORSO-Item.ON_EYES;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_TORSO-Item.WORN_EYES;}
 	public String racialCategory(){return "Insect";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -217,6 +217,10 @@ public class DefaultSocial implements Social
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
 	public CMObject newInstance() { return new DefaultSocial();}
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    protected boolean amDestroyed=false;
+    public void destroy(){amDestroyed=true;}
+    public boolean amDestroyed(){return amDestroyed;}
+    public boolean savable(){return true;}
 
 	private static final String[] CODES={"CLASS","NAME"};
 	public String[] getStatCodes(){return CODES;}

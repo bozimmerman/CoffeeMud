@@ -2721,8 +2721,8 @@ public class Import extends StdCommand
 				if(A!=null)
 					A.autoInvocation(M);
 			}
-			long rejuv=MudHost.TICKS_PER_RLMIN+MudHost.TICKS_PER_RLMIN+(MudHost.TICKS_PER_RLMIN*M.baseEnvStats().level()/2);
-			if(rejuv>(30*MudHost.TICKS_PER_RLMIN)) rejuv=(30*MudHost.TICKS_PER_RLMIN);
+			long rejuv=Tickable.TICKS_PER_RLMIN+Tickable.TICKS_PER_RLMIN+(Tickable.TICKS_PER_RLMIN*M.baseEnvStats().level()/2);
+			if(rejuv>(30*Tickable.TICKS_PER_RLMIN)) rejuv=(30*Tickable.TICKS_PER_RLMIN);
 			M.baseEnvStats().setRejuv((int)rejuv);
 			if(M.displayText().toUpperCase().indexOf("MONEY CHANGER")>=0)
 				M.addBehavior(CMClass.getBehavior("MoneyChanger"));
@@ -3127,39 +3127,39 @@ public class Import extends StdCommand
 			if(!CMath.isSet(wearFlag,0))
 				CMLib.flags().setGettable(I,false);
 			if(CMath.isSet(wearFlag,1))
-				I.setRawProperLocationBitmap(Item.ON_LEFT_FINGER|Item.ON_RIGHT_FINGER|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.WORN_LEFT_FINGER|Item.WORN_RIGHT_FINGER|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,2))
-				I.setRawProperLocationBitmap(Item.ON_NECK|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.WORN_NECK|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,3))
-				I.setRawProperLocationBitmap(Item.ON_TORSO|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.WORN_TORSO|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,4))
-				I.setRawProperLocationBitmap(Item.ON_HEAD|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.WORN_HEAD|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,5))
-				I.setRawProperLocationBitmap(Item.ON_LEGS|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.WORN_LEGS|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,6))
-				I.setRawProperLocationBitmap(Item.ON_FEET|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.WORN_FEET|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,7))
-				I.setRawProperLocationBitmap(Item.ON_HANDS|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.WORN_HANDS|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,8))
-				I.setRawProperLocationBitmap(Item.ON_ARMS|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.WORN_ARMS|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,9))
-				I.setRawProperLocationBitmap(Item.HELD|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.WORN_HELD|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,10))
-				I.setRawProperLocationBitmap(Item.ABOUT_BODY|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.WORN_ABOUT_BODY|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,11))
-				I.setRawProperLocationBitmap(Item.ON_WAIST|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.WORN_WAIST|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,12))
-				I.setRawProperLocationBitmap(Item.ON_LEFT_WRIST|Item.ON_RIGHT_WRIST|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.WORN_LEFT_WRIST|Item.WORN_RIGHT_WRIST|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,13))
-				I.setRawProperLocationBitmap(Item.WIELD|Item.HELD|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_HELD|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,14))
-				I.setRawProperLocationBitmap(Item.HELD|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.WORN_HELD|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,15))
 				I.setRawLogicalAnd(true);
 			if(CMath.isSet(wearFlag,17))
-				I.setRawProperLocationBitmap(Item.ON_EARS|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.WORN_EARS|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,18)) // ankles
-				I.setRawProperLocationBitmap(Item.ON_FEET|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.WORN_FEET|I.rawProperLocationBitmap());
 
 			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			// the relation of this stuff is vital!  must follow properlocation setting
@@ -3214,7 +3214,7 @@ public class Import extends StdCommand
 			||(objectName.toUpperCase().indexOf("TWO HANDED")>=0)))
 			{
 				I.setRawLogicalAnd(true);
-				I.setRawProperLocationBitmap(Item.HELD|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.WORN_HELD|I.rawProperLocationBitmap());
 			}
 
 			boolean materialchange=false;
@@ -3229,7 +3229,7 @@ public class Import extends StdCommand
 			// correction for certain rings
 			if((((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_CLOTH)
 				||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PAPER))
-			   &&(I.fitsOn(Armor.ON_LEFT_FINGER)))
+			   &&(I.fitsOn(Item.WORN_LEFT_FINGER)))
 			{
 				I.setMaterial(EnvResource.RESOURCE_SILVER);
 				materialchange=true;
@@ -5271,7 +5271,7 @@ public class Import extends StdCommand
 							R.addItem(I);
 							if(CMLib.flags().isGettable(I))
 							{
-								int rejuv=(int)Math.round(CMath.div((long)60000,MudHost.TICK_TIME)*4.0);
+								int rejuv=(int)Math.round(CMath.div((long)60000,Tickable.TIME_TICK)*4.0);
 								I.baseEnvStats().setRejuv(rejuv*I.baseEnvStats().level());
 							}
 							I.recoverEnvStats();

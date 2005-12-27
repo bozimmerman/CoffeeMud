@@ -74,7 +74,7 @@ public class Chant_FungalBloom extends Chant
 				Ability A=CMClass.getAbility("Bomb_Poison");
 				A.setMiscText("Poison_Bloodboil");
 				A.setInvoker(mob);
-				A.setBorrowed(target,true);
+				A.setSavable(false);
 				((Trap)A).setReset(3);
 				target.addEffect(A);
 				A=target.fetchEffect(A.ID());

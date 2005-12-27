@@ -50,7 +50,7 @@ public class MOBReSave extends ActiveTicker
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((ticking instanceof MOB)
-		&&(tickID==MudHost.TICK_MOB)
+		&&(tickID==Tickable.TICKID_MOB)
 		&&(!((MOB)ticking).amDead())
 		&&(!noRecurse)
 		&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))

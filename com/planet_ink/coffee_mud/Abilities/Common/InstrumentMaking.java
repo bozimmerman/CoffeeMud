@@ -58,7 +58,7 @@ public class InstrumentMaking extends CraftingSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==MudHost.TICK_MOB))
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			if(building==null)
 				unInvoke();
@@ -229,9 +229,9 @@ public class InstrumentMaking extends CraftingSkill
 		else
 		{
 			building.setRawProperLocationBitmap(0);
-			for(int wo=1;wo<Item.wornLocation.length;wo++)
+			for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
 			{
-				String WO=Item.wornLocation[wo].toUpperCase();
+				String WO=Item.WORN_DESCS[wo].toUpperCase();
 				if(misctype.equalsIgnoreCase(WO))
 				{
 					building.setRawProperLocationBitmap(CMath.pow(2,wo-1));

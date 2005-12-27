@@ -53,7 +53,7 @@ public class Chant_MetalMold extends Chant
 				&&(CMLib.flags().isMetal(item))
 				&&(item.subjectToWearAndTear()))
 				{
-					if(item.amWearingAt(Item.INVENTORY))
+					if(item.amWearingAt(Item.IN_INVENTORY))
 						possibilities.addElement(item);
 					else
 						goodPossibilities.addElement(item);

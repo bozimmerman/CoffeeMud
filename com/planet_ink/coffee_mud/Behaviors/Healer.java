@@ -78,7 +78,7 @@ public class Healer extends ActiveTicker
 			if(thisOne==null)
 			{
 				thisOne=(Ability)tryThisOne.copyOf();
-				thisOne.setBorrowed(mob,true);
+				thisOne.setSavable(false);
 				mob.addAbility(thisOne);
 			}
 			thisOne.setProfficiency(100);

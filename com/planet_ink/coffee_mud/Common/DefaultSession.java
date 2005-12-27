@@ -1387,7 +1387,7 @@ public class DefaultSession extends Thread implements Session
 						{
 						    if((mob!=null)&&(mob.isInCombat()))
 						    {
-						        if(((System.currentTimeMillis()-promptLastShown)>=MudHost.TICK_TIME)
+						        if(((System.currentTimeMillis()-promptLastShown)>=Tickable.TIME_TICK)
 						        ||(input!=null))
 						        {
 									showPrompt();

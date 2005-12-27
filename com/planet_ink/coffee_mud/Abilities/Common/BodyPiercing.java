@@ -68,7 +68,7 @@ public class BodyPiercing extends CommonSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==MudHost.TICK_MOB))
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if((target==null)
@@ -98,15 +98,15 @@ public class BodyPiercing extends CommonSkill
 				 			   {"ears","left ear","right ear"},
 							   {"eyebrows"},
 							   {"nipples","belly button"}};
-		long[] piercable={Item.ON_HEAD,
-		        		  Item.ON_EARS,
-		        		  Item.ON_EYES,
-		        		  Item.ON_TORSO};
+		long[] piercable={Item.WORN_HEAD,
+		        		  Item.WORN_EARS,
+		        		  Item.WORN_EYES,
+		        		  Item.WORN_TORSO};
 		String fullPartName=null;
-		for(int i=0;i<Item.wornCodes.length;i++)
+		for(int i=0;i<Item.WORN_CODES.length;i++)
 		{
 		    for(int ii=0;ii<piercable.length;ii++)
-		        if(Item.wornCodes[i]==piercable[ii])
+		        if(Item.WORN_CODES[i]==piercable[ii])
 		        {
 				    for(int iii=0;iii<piercables[ii].length;iii++)
 				    {
@@ -122,7 +122,7 @@ public class BodyPiercing extends CommonSkill
 		    commonTell(mob,"'"+part+"' is not a valid location.  Valid locations include: "+allParts.toString().substring(2));
 		    return false;
 		}
-		long wornCode=Item.wornCodes[partNum];
+		long wornCode=Item.WORN_CODES[partNum];
 		String wornName=fullPartName;
 
 		if((target.getWearPositions(wornCode)<=0)
@@ -139,7 +139,7 @@ public class BodyPiercing extends CommonSkill
 		    if(tat.toUpperCase().startsWith(wornName.toUpperCase()+":"))
 	            numTattsDone++;
 		}
-		if(numTattsDone>=target.getWearPositions(Item.wornCodes[partNum]))
+		if(numTattsDone>=target.getWearPositions(Item.WORN_CODES[partNum]))
 		{
 		    commonTell(mob,"That location is already decorated.");
 		    return false;
@@ -148,9 +148,9 @@ public class BodyPiercing extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if(wornName.toLowerCase().endsWith("s"))
-			writing=Item.wornLocation[partNum].toUpperCase()+":Pierced "+wornName.toLowerCase();
+			writing=Item.WORN_DESCS[partNum].toUpperCase()+":Pierced "+wornName.toLowerCase();
 		else
-			writing=Item.wornLocation[partNum].toUpperCase()+":A pierced "+wornName.toLowerCase();
+			writing=Item.WORN_DESCS[partNum].toUpperCase()+":A pierced "+wornName.toLowerCase();
 		verb="piercing "+target.name()+" on the "+wornName;
 		displayText="You are "+verb;
 		if(!profficiencyCheck(mob,0,auto)) writing="";

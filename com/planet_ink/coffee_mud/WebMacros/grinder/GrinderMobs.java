@@ -219,7 +219,7 @@ public class GrinderMobs
 			for(int m=0;m<R.numInhabitants();m++)
 			{
 				MOB M2=R.fetchInhabitant(m);
-				if((M2!=null)&&(M2.isEligibleMonster()))
+				if((M2!=null)&&(M2.savable()))
 				   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 			}
 			return str.toString();

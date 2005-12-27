@@ -46,17 +46,17 @@ public class Skill_Buffoonery extends BardSkill
 	protected Vector getFreeWearingPositions(MOB target)
 	{
 		Vector V=new Vector();
-		boolean[] pos=new boolean[Item.wornOrder.length];
+		boolean[] pos=new boolean[Item.WORN_ORDER.length];
 
 		for(int i=0;i<pos.length;i++)
-			if(target.freeWearPositions(Item.wornOrder[i])>0)
+			if(target.freeWearPositions(Item.WORN_ORDER[i])>0)
 				pos[i]=false;
 			else
 				pos[i]=true;
 
 		for(int i=0;i<pos.length;i++)
 			if(!pos[i])
-				V.addElement(new Long(Item.wornOrder[i]));
+				V.addElement(new Long(Item.WORN_ORDER[i]));
 		return V;
 	}
 
@@ -95,7 +95,7 @@ public class Skill_Buffoonery extends BardSkill
 		for(int i=0;i<target.inventorySize();i++)
 		{
 			Item I2=target.fetchInventory(i);
-			if((!I2.amWearingAt(Item.INVENTORY))
+			if((!I2.amWearingAt(Item.IN_INVENTORY))
 			&&(((I2 instanceof Weapon)&&(I.baseEnvStats().damage()>1))
 			   ||((I2 instanceof Armor)&&(I.baseEnvStats().armor()>1)))
 			&&(I2.container()==null))
@@ -140,9 +140,9 @@ public class Skill_Buffoonery extends BardSkill
 						mob.tell(target.name()+" has no free wearing positions!");
 						return false;
 					}
-					if((free.contains(new Long(Item.WIELD)))
+					if((free.contains(new Long(Item.WORN_WIELD)))
 					&&((I instanceof Weapon)||(!(I instanceof Armor))))
-						position=Item.WIELD;
+						position=Item.WORN_WIELD;
 					else
 						position=((Long)free.elementAt(CMLib.dice().roll(1,free.size(),-1))).longValue();
 				}

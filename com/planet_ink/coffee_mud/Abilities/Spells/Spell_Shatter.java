@@ -52,7 +52,7 @@ public class Spell_Shatter extends Spell
 				if((item!=null)
 				   &&(item.subjectToWearAndTear()))
 				{
-					if(item.amWearingAt(Item.INVENTORY))
+					if(item.amWearingAt(Item.IN_INVENTORY))
 						possibilities.addElement(item);
 					else
 						goodPossibilities.addElement(item);

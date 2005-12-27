@@ -256,7 +256,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		if(!super.tick(ticking,tickID))
 			return false;
 		try{
-		if(tickID==MudHost.TICK_MOB)
+		if(tickID==Tickable.TICKID_MOB)
 		{
 			boolean proceed=false;
 			// handle interest by watching the days go by...

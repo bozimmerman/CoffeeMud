@@ -158,7 +158,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 				{
 					MOB M=R.fetchInhabitant(m);
 					if((M!=null)
-					&&(M.isEligibleMonster())
+					&&(M.savable())
 					&&(M.getStartRoom()==R)
 					&&((M.baseEnvStats().rejuv()==0)||(M.baseEnvStats().rejuv()==Integer.MAX_VALUE)))
 						mobs.addElement(M);

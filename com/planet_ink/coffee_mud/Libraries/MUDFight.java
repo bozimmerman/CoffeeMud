@@ -1142,7 +1142,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
     protected void subtickAttack(MOB fighter, Item weapon, int folrange)
     {
-        if((weapon!=null)&&(weapon.amWearingAt(Item.INVENTORY)))
+        if((weapon!=null)&&(weapon.amWearingAt(Item.IN_INVENTORY)))
             weapon=fighter.fetchWieldedItem();
         if((!CMath.bset(fighter.getBitmap(),MOB.ATT_AUTOMELEE)))
             CMLib.combat().postAttack(fighter,fighter.getVictim(),weapon);

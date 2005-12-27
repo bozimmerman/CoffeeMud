@@ -434,7 +434,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
     {
         if(!super.tick(ticking,tickID))
             return false;
-        if((tickID==MudHost.TICK_MOB)&&(getStartRoom()!=null))
+        if((tickID==Tickable.TICKID_MOB)&&(getStartRoom()!=null))
         {
             boolean proceed=false;
             // handle interest by watching the days go by...

@@ -131,7 +131,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		for(int a=0;a<R.numEffects();a++)
 		{
 			Ability A=R.fetchEffect(a);
-			if((A!=null)&&(A.isBorrowed(R)))
+			if((A!=null)&&(!A.savable()))
 				return false;
 		}
 		return true;
@@ -628,7 +628,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		    while(rooms.size()>0)
 		    {
 				Room room=(Room)rooms.elementAt(0,1);
-				room.destroyRoom();
+				room.destroy();
                 rooms.removeElementAt(0);
 		    }
 		}
@@ -740,7 +740,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
         
 		//please Disable until the roomdestroy problem can be fixed.
 		ThinGridVacuum TGV=new ThinGridVacuum();
-		CMLib.threads().startTickDown(TGV,MudHost.TICK_ROOM_BEHAVIOR,450);
+		CMLib.threads().startTickDown(TGV,Tickable.TICKID_ROOM_BEHAVIOR,450);
 	}
 	
 	protected static class ThinGridVacuum implements Tickable
@@ -828,10 +828,10 @@ public class StdThinGrid extends StdRoom implements GridLocale
                     {
                         R=(Room)i.nextElement();
                         tickStatus=Tickable.STATUS_MISC+9;
-                        // all of the below is contained in R.destroyRoom()
+                        // all of the below is contained in R.destroy()
                         // it was replaced with content for debugging purposes
                         // and will be replaced later.
-                        //R.destroyRoom();
+                        //R.destroy();
                         try{
                             for(int a=R.numEffects()-1;a>=0;a--)
                                 R.fetchEffect(a).unInvoke();

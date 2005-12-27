@@ -46,7 +46,7 @@ public class Spell_StoreSpell extends Spell
 						   String message,
 						   Item me)
 	{
-		if((mob.isMine(me))&&(!me.amWearingAt(Item.INVENTORY)))
+		if((mob.isMine(me))&&(!me.amWearingAt(Item.IN_INVENTORY)))
 		{
 			Environmental target=null;
 			if((mob.location()!=null))
@@ -143,7 +143,7 @@ public class Spell_StoreSpell extends Spell
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)
 			&&(A instanceof Spell)
-			&&(A.isBorrowed(mob)||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
+			&&((!A.savable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 			&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))
 			&&(!A.ID().equals(this.ID())))
 				wandThis=(Spell)A;

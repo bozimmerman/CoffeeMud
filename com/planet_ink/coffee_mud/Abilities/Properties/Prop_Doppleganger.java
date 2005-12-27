@@ -114,7 +114,7 @@ public class Prop_Doppleganger extends Property
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((ticking==affected)
-		&&(tickID==MudHost.TICK_MOB)
+		&&(tickID==Tickable.TICKID_MOB)
 		&&(affected instanceof MOB))
 			lastLevelChangers=true;
 		return super.tick(ticking,tickID);

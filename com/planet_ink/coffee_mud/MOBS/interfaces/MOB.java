@@ -62,7 +62,7 @@ public interface MOB
     public static final int ATT_COMPRESS=2097152;
 	// maybe 10 more?
 
-	public static final long SHEATH_TIME=3*MudHost.TICK_TIME;
+	public static final long SHEATH_TIME=3*Tickable.TIME_TICK;
 
 	public static final boolean[] AUTOREV={false,
 										   false,
@@ -135,7 +135,6 @@ public interface MOB
 	public void bringToLife();
 	public void removeFromGame(boolean preserveFollowers);
 	public boolean amActive();
-	public void destroy();
 	public MOB getVictim();
 	public void setVictim(MOB mob);
 	public void makePeace();
@@ -256,7 +255,6 @@ public interface MOB
 	public void setFollowing(MOB mob);
 	public HashSet getGroupMembers(HashSet list);
 	public HashSet getRideBuddies(HashSet list);
-	public boolean isEligibleMonster();
 	public int maxFollowers();
 	public int totalFollowers();
 

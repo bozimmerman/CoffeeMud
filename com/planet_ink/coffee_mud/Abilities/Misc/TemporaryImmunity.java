@@ -50,7 +50,7 @@ public class TemporaryImmunity extends StdAbility
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected instanceof MOB)
-		&&(tickID==MudHost.TICK_MOB)
+		&&(tickID==Tickable.TICKID_MOB)
 		&&((--tickDown)==0))
 		{
 			tickDown=10;

@@ -40,7 +40,7 @@ public class Griffon extends GreatBird
 	public int heightVariance(){return 12;}
 	public int lightestWeight(){return 160;}
 	public int weightVariance(){return 80;}
-	public long forbiddenWornBits(){return Item.HELD|Item.WIELD;}
+	public long forbiddenWornBits(){return Item.WORN_HELD|Item.WORN_WIELD;}
 	public String racialCategory(){return "Avian";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

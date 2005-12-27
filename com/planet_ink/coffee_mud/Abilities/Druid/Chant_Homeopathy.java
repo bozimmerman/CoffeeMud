@@ -75,7 +75,7 @@ public class Chant_Homeopathy extends Chant
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"Something is definitely happening to <S-NAME>!");
 					for(int i=0;i<1000;i++)
-						if(!D.tick(target,MudHost.TICK_MOB))
+						if(!D.tick(target,Tickable.TICKID_MOB))
 							break;
 				}
 			}

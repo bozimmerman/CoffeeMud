@@ -110,7 +110,7 @@ public class Prayer_Monolith extends Prayer
 			&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Weapon)
-			&&(!((Weapon)msg.tool()).amWearingAt(Item.INVENTORY))
+			&&(!((Weapon)msg.tool()).amWearingAt(Item.IN_INVENTORY))
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED))
 			{
 				mob.location().show(mob,invoker,CMMsg.MSG_OK_VISUAL,"<S-NAME> fire(s) "+msg.tool().name()+" at <T-NAME>.  The missile enters the monolith of air.");
@@ -191,7 +191,7 @@ public class Prayer_Monolith extends Prayer
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==MudHost.TICK_MOB)
+		if(tickID==Tickable.TICKID_MOB)
 		{
 			switch(wallType)
 			{

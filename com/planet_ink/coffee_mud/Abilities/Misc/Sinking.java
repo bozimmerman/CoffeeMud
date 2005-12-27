@@ -122,7 +122,7 @@ public class Sinking extends StdAbility
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		if(tickID!=MudHost.TICK_MOB)
+		if(tickID!=Tickable.TICKID_MOB)
 			return true;
 
 		if(affected==null)
@@ -262,10 +262,10 @@ public class Sinking extends StdAbility
 			else
 				F.invoker=CMClass.getMOB("StdMOB");
 			E.addEffect(F);
-			F.setBorrowed(E,true);
+			F.setSavable(false);
 			F.makeLongLasting();
 			if(!(E instanceof MOB))
-				CMLib.threads().startTickDown(F,MudHost.TICK_MOB,1);
+				CMLib.threads().startTickDown(F,Tickable.TICKID_MOB,1);
 			E.recoverEnvStats();
 		}
 		return true;

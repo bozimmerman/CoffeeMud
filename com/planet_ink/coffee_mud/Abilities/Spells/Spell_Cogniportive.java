@@ -59,7 +59,7 @@ public class Spell_Cogniportive extends Spell
 						&&(M.isMonster())
 						&&(!(M instanceof ShopKeeper))
 						&&(M.fetchInventory(me.Name())!=null)
-						&&(!M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
+						&&(!M.fetchInventory(me.Name()).amWearingAt(Item.IN_INVENTORY)))
 							return CMLib.map().getExtendedRoomID(M.getStartRoom());
 					}
 				}
@@ -101,7 +101,7 @@ public class Spell_Cogniportive extends Spell
 						&&(M.isMonster())
 						&&(!(M instanceof ShopKeeper))
 						&&(M.fetchInventory(me.Name())!=null)
-						&&(M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
+						&&(M.fetchInventory(me.Name()).amWearingAt(Item.IN_INVENTORY)))
 							return CMLib.map().getExtendedRoomID(M.getStartRoom());
 					}
 				}

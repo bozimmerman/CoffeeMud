@@ -111,7 +111,7 @@ public class Prop_Retainable extends Property
 						miscText=price+";"+periodic+";"+last;
 					}
 					if(period<=0)
-						period=((long)periodic)*((long)CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY))*MudHost.TICK_TIME;
+						period=((long)periodic)*((long)CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY))*Tickable.TIME_TICK;
 					if((System.currentTimeMillis()>(last+period))&&(CMLib.flags().isInTheGame(mob,false)))
 					{
 						last=System.currentTimeMillis();
@@ -171,7 +171,7 @@ public class Prop_Retainable extends Property
     {
         StringBuffer skills = new StringBuffer("");
         if(me instanceof ShopKeeper)
-            skills.append(", selling "+ShopKeeper.SOLDCODES[((ShopKeeper)me).whatIsSold()].toLowerCase());
+            skills.append(", selling "+ShopKeeper.DEAL_DESCS[((ShopKeeper)me).whatIsSold()].toLowerCase());
         for (int a = 0; a < me.numAbilities(); a++)
         {
             Ability A = me.fetchAbility(a);

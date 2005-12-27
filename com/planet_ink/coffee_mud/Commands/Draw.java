@@ -46,7 +46,7 @@ public class Draw extends Get
 		{
 			Item I=mob.fetchInventory(i);
 			if((I!=null)
-			&&(!I.amWearingAt(Item.INVENTORY))
+			&&(!I.amWearingAt(Item.IN_INVENTORY))
 			&&(I instanceof Container)
 			&&(((Container)I).capacity()>0)
 			&&(((Container)I).containTypes()!=Container.CONTAIN_ANYTHING))
@@ -77,7 +77,7 @@ public class Draw extends Get
 			&&(((String)commands.lastElement()).equalsIgnoreCase("HELD")))
 			{
 				commands.removeElementAt(commands.size()-1);
-				if(mob.fetchFirstWornItem(Item.HELD)!=null)
+				if(mob.fetchFirstWornItem(Item.WORN_HELD)!=null)
 					return false;
 			}
 			else
@@ -175,7 +175,7 @@ public class Draw extends Get
 				{
 					if(getThis.container()==null)
 					{
-						if(mob.freeWearPositions(Item.WIELD)==0)
+						if(mob.freeWearPositions(Item.WORN_WIELD)==0)
 						{
 							CMMsg newMsg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_HOLD,null);
 							if(mob.location().okMessage(mob,newMsg))

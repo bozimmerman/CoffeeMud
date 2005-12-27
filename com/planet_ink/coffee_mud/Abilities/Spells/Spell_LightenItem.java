@@ -59,9 +59,9 @@ public class Spell_LightenItem extends Spell
 				mob.tell(item.name()+" grows heavy again.");
 				if((mob.envStats().weight()+item.baseEnvStats().weight())>mob.maxCarry())
 				{
-					if(!item.amWearingAt(Item.INVENTORY))
+					if(!item.amWearingAt(Item.IN_INVENTORY))
 						CMLib.commands().postRemove(mob,item,false);
-					if(item.amWearingAt(Item.INVENTORY))
+					if(item.amWearingAt(Item.IN_INVENTORY))
 						CMLib.commands().postDrop(mob,item,false,false);
 				}
 			}

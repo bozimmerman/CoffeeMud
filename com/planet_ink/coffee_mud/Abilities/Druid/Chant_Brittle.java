@@ -76,7 +76,7 @@ public class Chant_Brittle extends Chant
 				if((item!=null)
 				   &&(item.subjectToWearAndTear()))
 				{
-					if(item.amWearingAt(Item.INVENTORY))
+					if(item.amWearingAt(Item.IN_INVENTORY))
 						possibilities.addElement(item);
 					else
 						goodPossibilities.addElement(item);

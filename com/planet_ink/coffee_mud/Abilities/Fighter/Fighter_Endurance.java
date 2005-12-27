@@ -53,7 +53,7 @@ public class Fighter_Endurance extends FighterSkill
 		if(((CMLib.flags().isSitting(mob))||(CMLib.flags().isSleeping(mob)))
 		&&(!mob.isInCombat())
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,0,false))
-		&&(tickID==MudHost.TICK_MOB))
+		&&(tickID==Tickable.TICKID_MOB))
 		{
 			mob.curState().recoverTick(mob,mob.maxState());
 			helpProfficiency(mob);

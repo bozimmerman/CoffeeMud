@@ -43,7 +43,7 @@ public class Clans extends StdLibrary implements ClanManager
 		for(Enumeration e=all.elements();e.hasMoreElements();)
 		{
 			Clan C=(Clan)e.nextElement();
-			CMLib.threads().deleteTick(C,MudHost.TICK_CLAN);
+			CMLib.threads().deleteTick(C,Tickable.TICKID_CLAN);
 		}
 		all.clear();
 	}
@@ -198,12 +198,12 @@ public class Clans extends StdLibrary implements ClanManager
 	public void addClan(Clan C)
 	{
 		if(!CMSecurity.isDisabled("CLANTICKS"))
-			CMLib.threads().startTickDown(C,MudHost.TICK_CLAN,CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
+			CMLib.threads().startTickDown(C,Tickable.TICKID_CLAN,CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
 		all.put(C.clanID().toUpperCase(),C);
 	}
 	public void removeClan(Clan C)
 	{
-		CMLib.threads().deleteTick(C,MudHost.TICK_CLAN);
+		CMLib.threads().deleteTick(C,Tickable.TICKID_CLAN);
 		all.remove(C.clanID().toUpperCase());
 	}
 
@@ -212,7 +212,7 @@ public class Clans extends StdLibrary implements ClanManager
 		for(Enumeration e=clans();e.hasMoreElements();)
 		{
 			Clan C=(Clan)e.nextElement();
-			C.tick(C,MudHost.TICK_CLAN);
+			C.tick(C,Tickable.TICKID_CLAN);
 		}
 	}
 	

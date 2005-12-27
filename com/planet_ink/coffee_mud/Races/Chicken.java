@@ -41,7 +41,7 @@ public class Chicken extends StdRace
 	public int heightVariance(){return 6;}
 	public int lightestWeight(){return 20;}
 	public int weightVariance(){return 5;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_HEAD-Item.WORN_EYES;}
 	public String racialCategory(){return "Avian";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
@@ -121,7 +121,7 @@ public class Chicken extends StdRace
     {
         if(!super.tick(ticking,tickID))
             return false;
-        if((tickID==MudHost.TICK_MOB)&&(ticking instanceof MOB))
+        if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
         {
             if((CMLib.dice().rollPercentage()>99)&&(((MOB)ticking).inventorySize()<9))
             {

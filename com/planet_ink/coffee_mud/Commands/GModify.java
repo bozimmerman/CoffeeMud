@@ -583,7 +583,7 @@ public class GModify extends StdCommand
             for(int m=0;m<R.numInhabitants();m++)
             {
                 MOB M=R.fetchInhabitant(m);
-                if((M!=null)&&(M.isEligibleMonster()))
+                if((M!=null)&&(M.savable()))
                     if(tryModfy(mob,R,M,changes,onfields,noisy))
                         savemobs=true;
                 for(int i=0;i<M.inventorySize();i++)
@@ -611,7 +611,7 @@ public class GModify extends StdCommand
             if((mob.session()!=null)&&(changes.size()>0)) 
                 mob.session().rawPrint(".");
             R.getArea().toggleMobility(oldMobility);
-            if(changes.size()==0) R.destroyRoom();
+            if(changes.size()==0) R.destroy();
         }
 
         if(mob.session()!=null) mob.session().rawPrintln("!\n\rDone!");

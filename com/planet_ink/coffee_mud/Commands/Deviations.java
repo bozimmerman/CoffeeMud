@@ -84,7 +84,7 @@ public class Deviations extends StdCommand
 			for(int m=0;m<R.numInhabitants();m++)
 			{
 				MOB M=R.fetchInhabitant(m);
-				if((M!=null)&&(M.isEligibleMonster()))
+				if((M!=null)&&(M.savable()))
 					check.addElement(M);
 			}
 		}
@@ -265,7 +265,7 @@ public class Deviations extends StdCommand
 				for(int j=0;j<M.inventorySize();j++)
 				{
 					Item Iw=M.fetchInventory(j);
-					if(!(Iw.amWearingAt(Item.INVENTORY)))
+					if(!(Iw.amWearingAt(Item.IN_INVENTORY)))
 						reallyWornCount++;
 				}
 				mobResults.append(CMStrings.padRight(""+reallyWornCount,5)+" ");

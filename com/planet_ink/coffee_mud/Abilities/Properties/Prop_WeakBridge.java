@@ -113,7 +113,7 @@ public class Prop_WeakBridge extends Property
 								falling.setAffectedOne(msg.target());
 								falling.invoke(null,null,mob,true,0);
 							}
-							CMLib.threads().startTickDown(this,MudHost.TICK_SPELL_AFFECT,1);
+							CMLib.threads().startTickDown(this,Tickable.TICKID_SPELL_AFFECT,1);
 						}
 					}
 				}
@@ -131,7 +131,7 @@ public class Prop_WeakBridge extends Property
 	}
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==MudHost.TICK_SPELL_AFFECT)
+		if(tickID==Tickable.TICKID_SPELL_AFFECT)
 		{
 			if(bridgeIsUp)
 			{
@@ -185,14 +185,14 @@ public class Prop_WeakBridge extends Property
 					}
 					if(affected instanceof Room)
 						((Room)affected).recoverEnvStats();
-					CMLib.threads().deleteTick(this,MudHost.TICK_SPELL_AFFECT);
-					CMLib.threads().startTickDown(this,MudHost.TICK_SPELL_AFFECT,ticksDown);
+					CMLib.threads().deleteTick(this,Tickable.TICKID_SPELL_AFFECT);
+					CMLib.threads().startTickDown(this,Tickable.TICKID_SPELL_AFFECT,ticksDown);
 				}
 			}
 			else
 			{
 				bridgeIsUp=true;
-				CMLib.threads().deleteTick(this,MudHost.TICK_SPELL_AFFECT);
+				CMLib.threads().deleteTick(this,Tickable.TICKID_SPELL_AFFECT);
 				if(affected instanceof Room)
 					((Room)affected).recoverEnvStats();
 			}

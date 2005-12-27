@@ -40,7 +40,7 @@ public class Moose extends StdRace
 	public int heightVariance(){return 6;}
 	public int lightestWeight(){return 150;}
 	public int weightVariance(){return 50;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_FEET-Item.WORN_NECK-Item.WORN_EARS-Item.WORN_EYES;}
 	public String racialCategory(){return "Equine";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

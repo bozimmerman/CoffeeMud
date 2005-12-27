@@ -61,7 +61,7 @@ public class Prop_MOBEmoter extends Property
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((ticking instanceof MOB)&&(tickID==MudHost.TICK_MOB))
+		if((ticking instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			if(emoter==null) 
 			{

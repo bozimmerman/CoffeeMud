@@ -137,7 +137,7 @@ public class Spell_Timeport extends Spell
 				CMLib.threads().suspendTicking(target,-1);
 				beneficialAffect(mob,target,asLevel,3);
 				Ability A=target.fetchEffect(ID());
-				if(A!=null)	CMLib.threads().startTickDown(A,MudHost.TICK_MOB,1);
+				if(A!=null)	CMLib.threads().startTickDown(A,Tickable.TICKID_MOB,1);
 			}
 		}
 		else

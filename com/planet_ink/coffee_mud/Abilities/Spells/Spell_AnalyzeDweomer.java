@@ -63,7 +63,7 @@ public class Spell_AnalyzeDweomer extends Spell
                         str.append("It is worn on any one of the following: ");
                     else
                         str.append("It is worn on all of the following: ");
-                    for(int l=0;l<Item.wornCodes.length;l++)
+                    for(int l=0;l<Item.WORN_CODES.length;l++)
                     {
                         long wornCode=1<<l;
                         if((CMLib.flags().wornLocation(wornCode).length()>0)

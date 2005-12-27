@@ -78,10 +78,10 @@ public class ActiveTicker extends StdBehavior
 
 	protected boolean canAct(Tickable ticking, int tickID)
 	{
-		if((tickID==MudHost.TICK_MOB)
-		||(tickID==MudHost.TICK_ITEM_BEHAVIOR)
-		||(tickID==MudHost.TICK_ROOM_BEHAVIOR)
-		||((tickID==MudHost.TICK_AREA)&&(ticking instanceof Area)))
+		if((tickID==Tickable.TICKID_MOB)
+		||(tickID==Tickable.TICKID_ITEM_BEHAVIOR)
+		||(tickID==Tickable.TICKID_ROOM_BEHAVIOR)
+		||((tickID==Tickable.TICKID_AREA)&&(ticking instanceof Area)))
 		{
 			int a=CMLib.dice().rollPercentage();
 			if((--tickDown)<1)

@@ -53,7 +53,7 @@ public class SmokeRings extends CommonSkill
 		&&(msg.target() instanceof Light)
 		&&(msg.tool() instanceof Light)
 		&&(msg.target()==msg.tool())
-		&&(((Light)msg.target()).amWearingAt(Item.ON_MOUTH))
+		&&(((Light)msg.target()).amWearingAt(Item.WORN_MOUTH))
 		&&(((Light)msg.target()).isLit())
 		&&(profficiencyCheck(null,0,false)))
 		{

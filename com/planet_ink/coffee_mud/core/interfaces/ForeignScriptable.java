@@ -18,26 +18,65 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * The base of those objects whose displayable english strings can or are contained
+ * in script text files in the resources/scripts/[language]/*.properties files
+ * @author Bo Zimmerman
+ *
+ */
 public abstract class ForeignScriptable
 {
-	public static String getScr(String which, String num)
+    /**
+     * Return the displayable english string contained in resources/scripts directory for
+     * the language from the coffeemud.ini file, and the properties file defined by
+     * the filename passed herein.  The particular string in that file is returned
+     * based on the strname field passed herein.
+     * @see ForeignScriptable
+     * @param filename The scripts file to look in
+     * @param strname the string in the scripts file to return
+     * @return the value of the string referenced.
+     */
+	public static String getScr(String filename, String strname)
 	{
-		ResourceBundle scripts=Scripts.load(which);
+		ResourceBundle scripts=Scripts.load(filename);
 		if(scripts==null) return "";
-		if(scripts.getString(num)!=null)
-			return scripts.getString(num);
+		if(scripts.getString(strname)!=null)
+			return scripts.getString(strname);
 		return "";
 	}
-	public static String getScr(String which, String num, String replaceX)
+    /**
+     * Return the displayable english string contained in resources/scripts directory for
+     * the language from the coffeemud.ini file, and the properties file defined by
+     * the filename passed herein.  The particular string in that file is returned
+     * based on the strname field passed herein.
+     * @see ForeignScriptable
+     * @param filename The scripts file to look in
+     * @param strname the string in the scripts file to return
+     * @param replaceX what to replace @x1 in the resulting string with
+     * @return the value of the string referenced.
+     */
+	public static String getScr(String filename, String strname, String replaceX)
 	{
-		String msg=getScr(which,num);
+		String msg=getScr(filename,strname);
 		if(msg.length()>0)
 			msg=CMStrings.replaceAll(msg,"@x1",replaceX);
 		return msg;
 	}
-	public static String getScr(String which, String num, String replaceX, String replaceX2)
+    /**
+     * Return the displayable english string contained in resources/scripts directory for
+     * the language from the coffeemud.ini file, and the properties file defined by
+     * the filename passed herein.  The particular string in that file is returned
+     * based on the strname field passed herein.
+     * @see ForeignScriptable
+     * @param filename The scripts file to look in
+     * @param strname the string in the scripts file to return
+     * @param replaceX what to replace @x1 in the resulting string with
+     * @param replaceX2 what to replace @x2 in the resulting string with
+     * @return the value of the string referenced.
+     */
+	public static String getScr(String filename, String strname, String replaceX, String replaceX2)
 	{
-		String msg=getScr(which,num);
+		String msg=getScr(filename,strname);
 		if(msg.length()>0)
 		{
 			msg=CMStrings.replaceAll(msg,"@x1",replaceX);
@@ -46,13 +85,26 @@ public abstract class ForeignScriptable
 		return msg;
 	}
     
-	public static String getScr(String which, 
-                                String num, 
+    /**
+     * Return the displayable english string contained in resources/scripts directory for
+     * the language from the coffeemud.ini file, and the properties file defined by
+     * the filename passed herein.  The particular string in that file is returned
+     * based on the strname field passed herein.
+     * @see ForeignScriptable
+     * @param filename The scripts file to look in
+     * @param strname the string in the scripts file to return
+     * @param replaceX what to replace @x1 in the resulting string with
+     * @param replaceX2 what to replace @x2 in the resulting string with
+     * @param replaceX3 what to replace @x3 in the resulting string with
+     * @return the value of the string referenced.
+     */
+	public static String getScr(String filename, 
+                                String strname, 
 								String replaceX, 
 								String replaceX2, 
 								String replaceX3)
 	{
-		String msg=getScr(which,num);
+		String msg=getScr(filename,strname);
 		if(msg.length()>0)
 		{
 			msg=CMStrings.replaceAll(msg,"@x1",replaceX);
@@ -63,14 +115,28 @@ public abstract class ForeignScriptable
 	}
     
     
-    public static String getScr(String which, 
-                                String num, 
+    /**
+     * Return the displayable english string contained in resources/scripts directory for
+     * the language from the coffeemud.ini file, and the properties file defined by
+     * the filename passed herein.  The particular string in that file is returned
+     * based on the strname field passed herein.
+     * @see ForeignScriptable
+     * @param filename The scripts file to look in
+     * @param strname the string in the scripts file to return
+     * @param replaceX what to replace @x1 in the resulting string with
+     * @param replaceX2 what to replace @x2 in the resulting string with
+     * @param replaceX3 what to replace @x3 in the resulting string with
+     * @param replaceX4 what to replace @x4 in the resulting string with
+     * @return the value of the string referenced.
+     */
+    public static String getScr(String filename, 
+                                String strname, 
                                 String replaceX, 
                                 String replaceX2, 
                                 String replaceX3, 
                                 String replaceX4)
     {
-        String msg=getScr(which,num);
+        String msg=getScr(filename,strname);
         if(msg.length()>0)
         {
             msg=CMStrings.replaceAll(msg,"@x1",replaceX);
@@ -81,15 +147,30 @@ public abstract class ForeignScriptable
         return msg;
     }
     
-    public static String getScr(String which, 
-                                String num, 
+    /**
+     * Return the displayable english string contained in resources/scripts directory for
+     * the language from the coffeemud.ini file, and the properties file defined by
+     * the filename passed herein.  The particular string in that file is returned
+     * based on the strname field passed herein.
+     * @see ForeignScriptable
+     * @param filename The scripts file to look in
+     * @param strname the string in the scripts file to return
+     * @param replaceX what to replace @x1 in the resulting string with
+     * @param replaceX2 what to replace @x2 in the resulting string with
+     * @param replaceX3 what to replace @x3 in the resulting string with
+     * @param replaceX4 what to replace @x4 in the resulting string with
+     * @param replaceX5 what to replace @x5 in the resulting string with
+     * @return the value of the string referenced.
+     */
+    public static String getScr(String filename, 
+                                String strname, 
                                 String replaceX, 
                                 String replaceX2, 
                                 String replaceX3, 
                                 String replaceX4, 
                                 String replaceX5)
     {
-        String msg=getScr(which,num);
+        String msg=getScr(filename,strname);
         if(msg.length()>0)
         {
             msg=CMStrings.replaceAll(msg,"@x1",replaceX);
@@ -100,8 +181,24 @@ public abstract class ForeignScriptable
         }
         return msg;
     }
-    public static String getScr(String which, 
-                                String num, 
+    /**
+     * Return the displayable english string contained in resources/scripts directory for
+     * the language from the coffeemud.ini file, and the properties file defined by
+     * the filename passed herein.  The particular string in that file is returned
+     * based on the strname field passed herein.
+     * @see ForeignScriptable
+     * @param filename The scripts file to look in
+     * @param strname the string in the scripts file to return
+     * @param replaceX what to replace @x1 in the resulting string with
+     * @param replaceX2 what to replace @x2 in the resulting string with
+     * @param replaceX3 what to replace @x3 in the resulting string with
+     * @param replaceX4 what to replace @x4 in the resulting string with
+     * @param replaceX5 what to replace @x5 in the resulting string with
+     * @param replaceX6 what to replace @x6 in the resulting string with
+     * @return the value of the string referenced.
+     */
+    public static String getScr(String filename, 
+                                String strname, 
                                 String replaceX, 
                                 String replaceX2, 
                                 String replaceX3, 
@@ -109,7 +206,7 @@ public abstract class ForeignScriptable
                                 String replaceX5,
                                 String replaceX6)
     {
-        String msg=getScr(which,num);
+        String msg=getScr(filename,strname);
         if(msg.length()>0)
         {
             msg=CMStrings.replaceAll(msg,"@x1",replaceX);

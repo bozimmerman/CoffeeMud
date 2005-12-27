@@ -98,7 +98,7 @@ public class Prop_Familiar extends Property
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==MudHost.TICK_MOB)
+		if(tickID==Tickable.TICKID_MOB)
 		{
 			if((affected==null)||(!(affected instanceof MOB)))
 				return removeMeFromFamiliarTo();
@@ -113,7 +113,7 @@ public class Prop_Familiar extends Property
 				familiarWith=(MOB)affected;
 				familiarTo=familiarWith.amFollowing();
 				Prop_Familiar F=(Prop_Familiar)copyOf();
-				F.setBorrowed(affected,true);
+				F.setSavable(false);
 				F.imthedaddy=true;
 				F.familiarWith=familiarWith;
 				familiarTo.addEffect(F);

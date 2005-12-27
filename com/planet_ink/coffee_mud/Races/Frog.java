@@ -40,7 +40,7 @@ public class Frog extends StdRace
 	public int heightVariance(){return 3;}
 	public int lightestWeight(){return 5;}
 	public int weightVariance(){return 15;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_EYES;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_EYES;}
 	public String racialCategory(){return "Amphibian";}
 	private String[]racialAbilityNames={"Skill_Swim"};
 	private int[]racialAbilityLevels={1};

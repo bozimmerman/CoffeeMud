@@ -102,7 +102,7 @@ public class Disease_Obesity extends Disease
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
-	    if((ticking==affected)&&(tickID==MudHost.TICK_MOB)&&(affected instanceof MOB))
+	    if((ticking==affected)&&(tickID==Tickable.TICKID_MOB)&&(affected instanceof MOB))
 	    {
 	        MOB mob=(MOB)affected;
 	        if((mob.curState().getMovement()<mob.maxState().getMovement()/10)

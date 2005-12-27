@@ -42,7 +42,7 @@ public class CommonSpeaker extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=MudHost.TICK_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB) return true;
 		if(--tickTock>0) return true;
 
 		Ability L=CMClass.getAbility("Common");

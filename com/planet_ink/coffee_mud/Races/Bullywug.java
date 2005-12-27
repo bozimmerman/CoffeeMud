@@ -40,7 +40,7 @@ public class Bullywug extends StdRace
 	public int heightVariance(){return 8;}
 	public int lightestWeight(){return 80;}
 	public int weightVariance(){return 50;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_EYES;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_EYES;}
 	public String racialCategory(){return "Amphibian";}
 	private String[]culturalAbilityNames={"Goblinese","Skill_Hunting"};
 	private int[]culturalAbilityProfficiencies={100,50};

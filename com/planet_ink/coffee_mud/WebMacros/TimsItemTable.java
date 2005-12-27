@@ -195,11 +195,11 @@ public class TimsItemTable extends StdWebMacro
 		{
 			long worndata=savedI.rawProperLocationBitmap();
 			double weightpts=0;
-			for(int i=0;i<Item.wornWeights.length-1;i++)
+			for(int i=0;i<Item.WORN_WEIGHTS.length-1;i++)
 			{
 				if(CMath.isSet(worndata,i))
 				{
-					weightpts+=Item.wornWeights[i+1];
+					weightpts+=Item.WORN_WEIGHTS[i+1];
 					if(!I.rawLogicalAnd()) break;
 				}
 			}

@@ -127,7 +127,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             if(I instanceof Armor)
             {
                 str.append("\n\rWear Info  : Worn on ");
-                for(int l=0;l<Item.wornCodes.length;l++)
+                for(int l=0;l<Item.WORN_CODES.length;l++)
                 {
                     int wornCode=1<<l;
                     if(CMLib.flags().wornLocation(wornCode).length()>0)
@@ -600,7 +600,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     if(A.canTarget(CMClass.sampleItem()))
                     {
                         Item I=buyer.fetchWieldedItem();
-                        if(I==null) I=buyer.fetchFirstWornItem(Item.HELD);
+                        if(I==null) I=buyer.fetchFirstWornItem(Item.WORN_HELD);
                         if(I==null)
                         {
                             CMLib.commands().postSay(seller,buyer,"You need to be wielding or holding the item you want this cast on.",true,false);
@@ -965,7 +965,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             if(A.canTarget(CMClass.sampleItem()))
             {
                 Item I=mobFor.fetchWieldedItem();
-                if(I==null) I=mobFor.fetchFirstWornItem(Item.HELD);
+                if(I==null) I=mobFor.fetchFirstWornItem(Item.WORN_HELD);
                 if(I==null) I=mobFor.fetchWornItem("all");
                 if(I==null) I=mobFor.fetchCarried(null,"all");
                 if(I!=null)
@@ -1221,10 +1221,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     &&(!(thisThang instanceof ClanItem))
                     &&(((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_GLASS)
                     ||((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)
-                    ||((Item)thisThang).fitsOn(Item.ON_EARS)
-                    ||((Item)thisThang).fitsOn(Item.ON_NECK)
-                    ||((Item)thisThang).fitsOn(Item.ON_RIGHT_FINGER)
-                    ||((Item)thisThang).fitsOn(Item.ON_LEFT_FINGER)));
+                    ||((Item)thisThang).fitsOn(Item.WORN_EARS)
+                    ||((Item)thisThang).fitsOn(Item.WORN_NECK)
+                    ||((Item)thisThang).fitsOn(Item.WORN_RIGHT_FINGER)
+                    ||((Item)thisThang).fitsOn(Item.WORN_LEFT_FINGER)));
         case ShopKeeper.DEAL_ALCHEMIST:
             return (thisThang instanceof Potion);
         case ShopKeeper.DEAL_LANDSELLER:

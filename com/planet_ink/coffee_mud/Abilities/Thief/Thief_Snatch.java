@@ -63,7 +63,7 @@ public class Thief_Snatch extends StdAbility
 			return false;
 		}
 		else
-		if(mob.freeWearPositions(Item.HELD)>0)
+		if(mob.freeWearPositions(Item.WORN_HELD)>0)
 		{
 			mob.tell("Your other hand needs to be free to do a weapon snatch.");
 			return false;
@@ -97,8 +97,8 @@ public class Thief_Snatch extends StdAbility
 		boolean success=profficiencyCheck(mob,-levelDiff,auto)&&(hit);
 		if((success)
 		   &&(hisWeapon!=null)
-		   &&((hisWeapon.rawProperLocationBitmap()==Item.WIELD)
-			  ||(hisWeapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
+		   &&((hisWeapon.rawProperLocationBitmap()==Item.WORN_WIELD)
+			  ||(hisWeapon.rawProperLocationBitmap()==Item.WORN_WIELD+Item.WORN_HELD)))
 		{
 			CMMsg msg=CMClass.getMsg(mob.getVictim(),hisWeapon,null,CMMsg.MSG_DROP,null);
 			CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.MSG_THIEF_ACT,null);

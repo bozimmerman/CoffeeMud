@@ -39,7 +39,7 @@ public class MichaelsMithrilChain extends StdArmor
 		setName("a chain mail vest made of mithril");
 		setDisplayText("a chain mail vest made from the dwarven alloy mithril");
 		setDescription("This chain mail vest is made from a dwarven alloy called mithril, making it very light.");
-		properWornBitmap=Item.ON_TORSO;
+		properWornBitmap=Item.WORN_TORSO;
 		secretIdentity="Michael\\`s Mithril Chain! (Armor Value:+75, Protection from Lightning)";
 		baseGoldValue+=10000;
 		wornLogicalAnd=false;
@@ -58,8 +58,8 @@ public class MichaelsMithrilChain extends StdArmor
 
 		MOB mob=(MOB)msg.target();
 		if((msg.targetMinor()==CMMsg.TYP_ELECTRIC)
-		&&(!this.amWearingAt(Item.INVENTORY))
-		&&(!this.amWearingAt(Item.HELD))
+		&&(!this.amWearingAt(Item.IN_INVENTORY))
+		&&(!this.amWearingAt(Item.WORN_HELD))
 		&&(mob.isMine(this)))
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> appear(s) to be unaffected.");

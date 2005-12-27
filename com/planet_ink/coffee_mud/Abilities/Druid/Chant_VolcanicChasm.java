@@ -78,7 +78,7 @@ public class Chant_VolcanicChasm extends Chant
 		{
 			checked=true;
 			if(!CMLib.threads().isTicking(this,-1))
-				CMLib.threads().startTickDown(this,MudHost.TICK_SPELL_AFFECT,1);
+				CMLib.threads().startTickDown(this,Tickable.TICKID_SPELL_AFFECT,1);
 		}
 		super.executeMsg(host,msg);
 	}

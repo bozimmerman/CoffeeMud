@@ -87,7 +87,7 @@ public class Antidote extends StdAbility
 						}
 						break;
 					case CMMsg.TYP_WEAR:
-						if(myItem.rawProperLocationBitmap()!=Item.HELD)
+						if(myItem.rawProperLocationBitmap()!=Item.WORN_HELD)
 						{
 							invoke(msg.source(),null,msg.source(),true,0);
 							myItem.destroy();

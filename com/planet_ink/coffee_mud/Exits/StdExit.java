@@ -42,7 +42,8 @@ public class StdExit implements Exit
 	protected String imageName=null;
 	protected Vector affects=null;
 	protected Vector behaviors=null;
-
+    protected boolean amDestroyed=false;
+    
 	public StdExit()
 	{
         super();
@@ -94,6 +95,19 @@ public class StdExit implements Exit
 		baseEnvStats=(EnvStats)newBaseEnvStats.copyOf();
 	}
 
+    public void destroy()
+    {
+        envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+        baseEnvStats=envStats;
+        miscText=null;
+        imageName=null;
+        affects=null;
+        behaviors=null;
+        amDestroyed=true;
+    }
+    public boolean amDestroyed(){return amDestroyed;}
+    public boolean savable(){return !amDestroyed;}
+    
     public String image()
     {
         if(imageName==null) 
@@ -464,7 +478,7 @@ public class StdExit implements Exit
 		case CMMsg.TYP_OPEN:
 			if((!hasADoor())||(isOpen())) return;
 			if(defaultsClosed()||defaultsLocked())
-				CMLib.threads().startTickDown(this,MudHost.TICK_EXIT_REOPEN,openDelayTicks());
+				CMLib.threads().startTickDown(this,Tickable.TICKID_EXIT_REOPEN,openDelayTicks());
 			isLocked=false;
 			isOpen=true;
 			break;
@@ -490,7 +504,7 @@ public class StdExit implements Exit
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==MudHost.TICK_EXIT_REOPEN)
+		if(tickID==Tickable.TICKID_EXIT_REOPEN)
 		{
 			if(defaultsClosed())
 				isOpen=false;
@@ -502,7 +516,7 @@ public class StdExit implements Exit
 			return false;
 		}
 		else
-		if(tickID==MudHost.TICK_EXIT_BEHAVIOR)
+		if(tickID==Tickable.TICKID_EXIT_BEHAVIOR)
 		{
 			for(int b=0;b<numBehaviors();b++)
 			{
@@ -658,7 +672,7 @@ public class StdExit implements Exit
 		}
 		// first one! so start ticking...
 		if(behaviors.size()==0)
-			CMLib.threads().startTickDown(this,MudHost.TICK_EXIT_BEHAVIOR,1);
+			CMLib.threads().startTickDown(this,Tickable.TICKID_EXIT_BEHAVIOR,1);
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
@@ -667,7 +681,7 @@ public class StdExit implements Exit
 		if(behaviors==null) return;
 		behaviors.removeElement(to);
 		if(behaviors.size()==0)
-			CMLib.threads().deleteTick(this,MudHost.TICK_EXIT_BEHAVIOR);
+			CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_BEHAVIOR);
 	}
 
 	public int numBehaviors()

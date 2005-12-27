@@ -47,7 +47,7 @@ public class Chant_LocatePlants extends Chant
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID==MudHost.TICK_MOB)
+		if(tickID==Tickable.TICKID_MOB)
 		{
 			if(nextDirection==-999)
 				return true;

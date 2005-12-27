@@ -42,14 +42,14 @@ public class Wear extends BaseItemParser
 	{
 		String str="<S-NAME> put(s) on <T-NAME>.";
 		int msgType=CMMsg.MSG_WEAR;
-		if(item.rawProperLocationBitmap()==Item.HELD)
+		if(item.rawProperLocationBitmap()==Item.WORN_HELD)
 		{
 			str="<S-NAME> hold(s) <T-NAME>.";
 			msgType=CMMsg.MSG_HOLD;
 		}
 		else
-		if((item.rawProperLocationBitmap()==Item.WIELD)
-		||(item.rawProperLocationBitmap()==(Item.HELD|Item.WIELD)))
+		if((item.rawProperLocationBitmap()==Item.WORN_WIELD)
+		||(item.rawProperLocationBitmap()==(Item.WORN_HELD|Item.WORN_WIELD)))
 		{
 			str="<S-NAME> wield(s) <T-NAME>.";
 			msgType=CMMsg.MSG_WIELD;

@@ -45,7 +45,7 @@ public class LightSource extends StdItem implements Light
 		setDisplayText("an ordinary light source sits here doing nothing.");
 		setDescription("It looks like a light source of some sort.  I`ll bet it would help you see in the dark.");
 
-		properWornBitmap=Item.HELD;
+		properWornBitmap=Item.WORN_HELD;
 		setMaterial(EnvResource.RESOURCE_OAK);
 		wornLogicalAnd=false;
 		baseGoldValue=5;
@@ -111,7 +111,7 @@ public class LightSource extends StdItem implements Light
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==MudHost.TICK_LIGHT_FLICKERS)
+		if(tickID==Tickable.TICKID_LIGHT_FLICKERS)
 		{
 			if((owner()!=null)
 			&&(isLit())
@@ -193,7 +193,7 @@ public class LightSource extends StdItem implements Light
 					mob.tell("The water makes "+name()+" go out.");
 				else
 					mob.tell("The rain makes "+name()+" go out.");
-				tick(this,MudHost.TICK_LIGHT_FLICKERS);
+				tick(this,Tickable.TICKID_LIGHT_FLICKERS);
 			}
 		}
 
@@ -204,7 +204,7 @@ public class LightSource extends StdItem implements Light
 				if(isLit())
 				{
 					light(false);
-					CMLib.threads().deleteTick(this,MudHost.TICK_LIGHT_FLICKERS);
+					CMLib.threads().deleteTick(this,Tickable.TICKID_LIGHT_FLICKERS);
 					recoverEnvStats();
 					room.recoverRoomStats();
 				}
@@ -217,7 +217,7 @@ public class LightSource extends StdItem implements Light
 					else
 						mob.tell(name()+" is already lit.");
 					light(true);
-					CMLib.threads().startTickDown(this,MudHost.TICK_LIGHT_FLICKERS,getDuration());
+					CMLib.threads().startTickDown(this,Tickable.TICKID_LIGHT_FLICKERS,getDuration());
 					recoverEnvStats();
 					msg.source().recoverEnvStats();
 					room.recoverRoomStats();

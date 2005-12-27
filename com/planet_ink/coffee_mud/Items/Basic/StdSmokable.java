@@ -34,7 +34,7 @@ public class StdSmokable extends StdContainer implements Light
 {
 	public String ID(){	return "StdSmokable";}
 	protected boolean lit=false;
-	protected long puffTicks=30000/MudHost.TICK_TIME;
+	protected long puffTicks=30000/Tickable.TIME_TICK;
 	protected int baseDuration=200;
 	protected int durationTicks=200;
 	protected boolean destroyedWhenBurnedOut=true;
@@ -49,7 +49,7 @@ public class StdSmokable extends StdContainer implements Light
 
 		capacity=0;
 		containType=Container.CONTAIN_SMOKEABLES;
-		properWornBitmap=Item.ON_MOUTH;
+		properWornBitmap=Item.WORN_MOUTH;
 		setMaterial(EnvResource.RESOURCE_PIPEWEED);
 		wornLogicalAnd=false;
 		baseGoldValue=5;
@@ -117,7 +117,7 @@ public class StdSmokable extends StdContainer implements Light
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==MudHost.TICK_LIGHT_FLICKERS)
+		if((tickID==Tickable.TICKID_LIGHT_FLICKERS)
 		&&(isLit())
 		&&(owner()!=null))
 		{
@@ -125,7 +125,7 @@ public class StdSmokable extends StdContainer implements Light
 			{
 				if(((durationTicks%puffTicks)==0)
 				&&(owner() instanceof MOB)
-				&&(!amWearingAt(Item.INVENTORY)))
+				&&(!amWearingAt(Item.IN_INVENTORY)))
 				{
 					MOB mob=(MOB)owner();
 					if((mob.location()!=null)
@@ -218,7 +218,7 @@ public class StdSmokable extends StdContainer implements Light
 					mob.tell("The water makes "+name()+" go out.");
 				else
 					mob.tell("The rain makes "+name()+" go out.");
-				tick(this,MudHost.TICK_LIGHT_FLICKERS);
+				tick(this,Tickable.TICKID_LIGHT_FLICKERS);
 			}
 		}
 
@@ -229,7 +229,7 @@ public class StdSmokable extends StdContainer implements Light
 				if(isLit())
 				{
 					light(false);
-					CMLib.threads().deleteTick(this,MudHost.TICK_LIGHT_FLICKERS);
+					CMLib.threads().deleteTick(this,Tickable.TICKID_LIGHT_FLICKERS);
 					recoverEnvStats();
 					room.recoverRoomStats();
 				}
@@ -254,7 +254,7 @@ public class StdSmokable extends StdContainer implements Light
                         getAddictedTo(msg.source(),this);
 
 					light(true);
-					CMLib.threads().startTickDown(this,MudHost.TICK_LIGHT_FLICKERS,1);
+					CMLib.threads().startTickDown(this,Tickable.TICKID_LIGHT_FLICKERS,1);
 					recoverEnvStats();
 					room.recoverRoomStats();
 				}

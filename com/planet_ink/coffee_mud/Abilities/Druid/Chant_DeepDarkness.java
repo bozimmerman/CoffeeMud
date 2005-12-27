@@ -61,7 +61,7 @@ public class Chant_DeepDarkness extends Chant
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==MudHost.TICK_SPELL_AFFECT)
+		if((tickID==Tickable.TICKID_SPELL_AFFECT)
 		&&(affected instanceof Room)
 		&&(affected.fetchEffect(ID())==this)
 		&&(affected.fetchEffect(affected.numEffects()-1)!=this))

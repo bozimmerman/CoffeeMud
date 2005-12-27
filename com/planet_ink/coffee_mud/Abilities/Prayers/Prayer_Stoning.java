@@ -98,7 +98,7 @@ public class Prayer_Stoning extends Prayer
 	            cits.addElement(M);
 	            M.bringToLife(R2,true);
 	            CMLib.tracking().wanderIn(M,R);
-                R2.destroyRoom();
+                R2.destroy();
 			}
 		}
 		return true;

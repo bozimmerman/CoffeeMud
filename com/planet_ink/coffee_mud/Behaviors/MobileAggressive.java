@@ -55,7 +55,7 @@ public class MobileAggressive extends Mobile
         tickStatus=Tickable.STATUS_MISC+0;
 		super.tick(ticking,tickID);
         tickStatus=Tickable.STATUS_MISC+1;
-		if(tickID!=MudHost.TICK_MOB)
+		if(tickID!=Tickable.TICKID_MOB)
         {
             tickStatus=Tickable.STATUS_NOT;
             return true;

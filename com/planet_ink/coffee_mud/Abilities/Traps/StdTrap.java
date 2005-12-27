@@ -69,7 +69,7 @@ public class StdTrap extends StdAbility implements Trap
 		if(!canBeUninvoked())
 		{
 			tickDown=getReset();
-			CMLib.threads().startTickDown(this,MudHost.TICK_TRAP_RESET,1);
+			CMLib.threads().startTickDown(this,Tickable.TICKID_TRAP_RESET,1);
 		}
 		else
 			unInvoke();
@@ -123,7 +123,7 @@ public class StdTrap extends StdAbility implements Trap
 			tickDown=getReset();
 			sprung=false;
 			disabled=false;
-			CMLib.threads().startTickDown(this,MudHost.TICK_TRAP_RESET,1);
+			CMLib.threads().startTickDown(this,Tickable.TICKID_TRAP_RESET,1);
 		}
 	}
 
@@ -251,10 +251,10 @@ public class StdTrap extends StdAbility implements Trap
 		Trap T=(Trap)copyOf();
 		T.setReset(rejuv);
 		T.setInvoker(mob);
-		T.setBorrowed(E,true);
+		T.setSavable(false);
 		E.addEffect(T);
 		if(!isABomb())
-			CMLib.threads().startTickDown(T,MudHost.TICK_TRAP_DESTRUCTION,baseDestructTime(qualifyingClassLevel));
+			CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,baseDestructTime(qualifyingClassLevel));
 		return T;
 	}
 
@@ -263,14 +263,14 @@ public class StdTrap extends StdAbility implements Trap
 		if((unInvoked)&&(canBeUninvoked()))
 			return false;
 
-		if(tickID==MudHost.TICK_TRAP_DESTRUCTION)
+		if(tickID==Tickable.TICKID_TRAP_DESTRUCTION)
 		{
 			if(canBeUninvoked())
 				disable();
 			return false;
 		}
 		else
-		if((tickID==MudHost.TICK_TRAP_RESET)&&(getReset()>0))
+		if((tickID==Tickable.TICKID_TRAP_RESET)&&(getReset()>0))
 		{
 			if((--tickDown)<=0)
 			{
@@ -313,7 +313,7 @@ public class StdTrap extends StdAbility implements Trap
 		disabled=false;
 		tickDown=getReset();
 		if(!isABomb())
-			CMLib.threads().startTickDown(this,MudHost.TICK_TRAP_RESET,1);
+			CMLib.threads().startTickDown(this,Tickable.TICKID_TRAP_RESET,1);
 	}
 
 	protected Item findFirstResource(Room room, String other)

@@ -94,7 +94,7 @@ public class Spell_DetectGold extends Spell
 			for(int i=0;i<((MOB)E).inventorySize();i++)
 			{
 				Item I=((MOB)E).fetchInventory(i);
-				if(!I.amWearingAt(Item.INVENTORY))
+				if(!I.amWearingAt(Item.IN_INVENTORY))
 					metalCheck(mob,I,container,msg);
 			}
 		}
@@ -155,7 +155,7 @@ public class Spell_DetectGold extends Spell
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==MudHost.TICK_MOB)
+		if((tickID==Tickable.TICKID_MOB)
 		   &&(affected!=null)
 		   &&(affected instanceof MOB)
 		   &&(((MOB)affected).location()!=null)

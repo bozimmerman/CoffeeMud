@@ -53,7 +53,7 @@ public class Skill_FireBreathing extends BardSkill
 		{
 			Item I=mob.fetchInventory(i);
 			if((CMLib.flags().isOnFire(I))
-			&&(!I.amWearingAt(Item.INVENTORY))
+			&&(!I.amWearingAt(Item.IN_INVENTORY))
 			&&(I.container()==null))
 			{
 				fireSource=I;

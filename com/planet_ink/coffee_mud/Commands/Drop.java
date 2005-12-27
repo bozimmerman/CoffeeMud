@@ -118,7 +118,7 @@ public class Drop extends BaseItemParser
 				dropThis=mob.fetchWornItem(whatToDrop);
 				if(dropThis!=null)
 				{
-					if((!dropThis.amWearingAt(Item.HELD))&&(!dropThis.amWearingAt(Item.WIELD)))
+					if((!dropThis.amWearingAt(Item.WORN_HELD))&&(!dropThis.amWearingAt(Item.WORN_WIELD)))
 					{
 						mob.tell("You must remove that first.");
 						return false;

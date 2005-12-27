@@ -55,7 +55,7 @@ public class Fighter_Heroism extends FighterSkill
 		&&(mob.isInCombat())
 		&&(CMLib.dice().rollPercentage()==1)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,0,false))
-		&&(tickID==MudHost.TICK_MOB))
+		&&(tickID==Tickable.TICKID_MOB))
 			helpProfficiency(mob);
 		return super.tick(ticking,tickID);
 	}

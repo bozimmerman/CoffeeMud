@@ -48,8 +48,8 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 		{
 			myItem=(Item)host;
 
-			boolean worn=(!myItem.amWearingAt(Item.INVENTORY))
-			&&((!myItem.amWearingAt(Item.FLOATING_NEARBY))||(myItem.fitsOn(Item.FLOATING_NEARBY)));
+			boolean worn=(!myItem.amWearingAt(Item.IN_INVENTORY))
+			&&((!myItem.amWearingAt(Item.WORN_FLOATING_NEARBY))||(myItem.fitsOn(Item.WORN_FLOATING_NEARBY)));
 			
 			if((lastMOB instanceof MOB)
 			&&(((MOB)lastMOB).location()!=null)

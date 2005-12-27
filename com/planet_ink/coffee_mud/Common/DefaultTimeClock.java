@@ -139,8 +139,8 @@ public class DefaultTimeClock implements TimeClock
                         CMath.s_int(page.getStr("DUSKHR")),
                         CMath.s_int(page.getStr("NIGHTHR")));
 
-        CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY,""+((MudHost.TIME_MILIS_PER_MUDHOUR*CMClass.globalClock().getHoursInDay()/MudHost.TICK_TIME)));
-        CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH,""+((MudHost.TIME_MILIS_PER_MUDHOUR*CMClass.globalClock().getHoursInDay()*CMClass.globalClock().getDaysInMonth()/MudHost.TICK_TIME)));
+        CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY,""+((MudHost.TIME_MILIS_PER_MUDHOUR*CMClass.globalClock().getHoursInDay()/Tickable.TIME_TICK)));
+        CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH,""+((MudHost.TIME_MILIS_PER_MUDHOUR*CMClass.globalClock().getHoursInDay()*CMClass.globalClock().getDaysInMonth()/Tickable.TIME_TICK)));
     }
     
 	public String timeDescription(MOB mob, Room room)

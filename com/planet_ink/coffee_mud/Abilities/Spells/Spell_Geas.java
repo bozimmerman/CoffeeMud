@@ -91,7 +91,7 @@ public class Spell_Geas extends Spell
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return super.tick(ticking,tickID);
-		if((tickID==MudHost.TICK_MOB)&&(STEPS!=null))
+		if((tickID==Tickable.TICKID_MOB)&&(STEPS!=null))
 		{
 			if((STEPS!=null)&&((STEPS.size()==0)||(STEPS.done)))
 			{

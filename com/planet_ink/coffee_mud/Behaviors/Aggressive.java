@@ -107,7 +107,7 @@ public class Aggressive extends StdBehavior
 										boolean mobKiller,
 										String zapStr)
 	{
-		if(tickID!=MudHost.TICK_MOB) return;
+		if(tickID!=Tickable.TICKID_MOB) return;
 		if(ticking==null) return;
 		if(!(ticking instanceof MOB)) return;
 		pickAFight((MOB)ticking,zapStr,mobKiller);
@@ -116,7 +116,7 @@ public class Aggressive extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=MudHost.TICK_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB) return true;
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;

@@ -49,7 +49,7 @@ public class Age extends StdAbility
 		long start=CMath.s_long(text());
 		if(start<Integer.MAX_VALUE)
 		    return "";
-		long days=((System.currentTimeMillis()-start)/MudHost.TICK_TIME)/CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY); // down to days;
+		long days=((System.currentTimeMillis()-start)/Tickable.TIME_TICK)/CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY); // down to days;
 		long months=days/CMClass.globalClock().getDaysInMonth();
 		long years=months/CMClass.globalClock().getMonthsInYear();
 		if(days<1)
@@ -85,7 +85,7 @@ public class Age extends StdAbility
 		if(divisor==0.0)
 		    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
 		
-		int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,MudHost.TICK_TIME),divisor)));
+		int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor)));
 		if((affected instanceof Item)&&(affected instanceof CagedAnimal))
 		{
 		    if(myRace==null)
@@ -379,7 +379,7 @@ public class Age extends StdAbility
 					long l=CMath.s_long(text());
 					if((l>0)&&(l<Integer.MAX_VALUE))
 					{
-						int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,MudHost.TICK_TIME),divisor)));
+						int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor)));
 						if(ellapsed>=myRace.getAgingChart()[2])
 						    soil=true;
 					}
@@ -417,7 +417,7 @@ public class Age extends StdAbility
 		{
 			if(divisor==0.0)
 			    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
-			affected.baseCharStats().setStat(CharStats.AGE,(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,MudHost.TICK_TIME),divisor))));
+			affected.baseCharStats().setStat(CharStats.AGE,(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor))));
 			affectableStats.setStat(CharStats.AGE,affected.baseCharStats().getStat(CharStats.AGE));
 		}
 	}

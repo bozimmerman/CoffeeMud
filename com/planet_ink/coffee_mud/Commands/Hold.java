@@ -51,14 +51,14 @@ public class Hold extends BaseItemParser
 			mob.tell("You don't seem to be carrying that.");
 		else
 		for(int i=0;i<items.size();i++)
-			if((items.size()==1)||(((Item)items.elementAt(i)).canWear(mob,Item.HELD)))
+			if((items.size()==1)||(((Item)items.elementAt(i)).canWear(mob,Item.WORN_HELD)))
 			{
 				Item item=(Item)items.elementAt(i);
 				int msgType=CMMsg.MSG_HOLD;
 				String str="<S-NAME> hold(s) <T-NAME>.";
-				if((mob.freeWearPositions(Item.WIELD)>0)
-				&&((item.rawProperLocationBitmap()==Item.WIELD)
-				||(item.rawProperLocationBitmap()==(Item.HELD|Item.WIELD))))
+				if((mob.freeWearPositions(Item.WORN_WIELD)>0)
+				&&((item.rawProperLocationBitmap()==Item.WORN_WIELD)
+				||(item.rawProperLocationBitmap()==(Item.WORN_HELD|Item.WORN_WIELD))))
 				{
 					str="<S-NAME> wield(s) <T-NAME>.";
 					msgType=CMMsg.MSG_WIELD;

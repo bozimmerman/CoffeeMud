@@ -182,7 +182,7 @@ public class Skill_Enslave extends StdSkill
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return super.tick(ticking,tickID);
-		if(tickID==MudHost.TICK_MOB)
+		if(tickID==Tickable.TICKID_MOB)
 		{
 			MOB mob=(MOB)ticking;
 			if((speedDown>-500)&&((--speedDown)>=0))

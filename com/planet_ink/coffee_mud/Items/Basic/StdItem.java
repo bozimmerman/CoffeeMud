@@ -41,12 +41,12 @@ public class StdItem implements Item
 	protected byte[] 	description=null;
 	protected Item 		myContainer=null;
 	protected int 		myUses=Integer.MAX_VALUE;
-	protected long 		myWornCode=Item.INVENTORY;
+	protected long 		myWornCode=Item.IN_INVENTORY;
 	protected String 	miscText="";
 	protected String    imageName=null;
 	protected String	secretIdentity=null;
 	protected boolean	wornLogicalAnd=false;
-	protected long 		properWornBitmap=Item.HELD;
+	protected long 		properWornBitmap=Item.WORN_HELD;
 	protected int		baseGoldValue=0;
 	protected int		material=EnvResource.RESOURCE_COTTON;
 	protected Environmental owner=null;
@@ -231,30 +231,30 @@ public class StdItem implements Item
 	}
     public void wearEvenIfImpossible(MOB mob)
     {
-        for(int i=0;i<wornOrder.length;i++)
+        for(int i=0;i<WORN_ORDER.length;i++)
         {
-            if(fitsOn(wornOrder[i]))
+            if(fitsOn(WORN_ORDER[i]))
             {
-                wearAt(wornOrder[i]);
+                wearAt(WORN_ORDER[i]);
                 break;
             }
         }
     }
 	public void wearIfPossible(MOB mob)
 	{
-		for(int i=0;i<wornOrder.length;i++)
+		for(int i=0;i<WORN_ORDER.length;i++)
 		{
-			if((fitsOn(wornOrder[i]))
-			&&(canWear(mob,wornOrder[i])))
+			if((fitsOn(WORN_ORDER[i]))
+			&&(canWear(mob,WORN_ORDER[i])))
 			{
-				wearAt(wornOrder[i]);
+				wearAt(WORN_ORDER[i]);
 				break;
 			}
 		}
 	}
 	public void wearAt(long wornCode)
 	{
-		if(wornCode==Item.INVENTORY)
+		if(wornCode==Item.IN_INVENTORY)
 		{
 			unWear();
 			return;
@@ -282,7 +282,7 @@ public class StdItem implements Item
 	{
 		if(toThis.rawLogicalAnd()!=wornLogicalAnd)
 			return false;
-		if((toThis.rawProperLocationBitmap()|Item.HELD)==(properWornBitmap|Item.HELD))
+		if((toThis.rawProperLocationBitmap()|Item.WORN_HELD)==(properWornBitmap|Item.WORN_HELD))
 			return true;
 		return false;
 	}
@@ -295,22 +295,22 @@ public class StdItem implements Item
 
 		if(!wornLogicalAnd)
 		{
-			for(int i=1;i<wornCodes.length;i++)
+			for(int i=1;i<WORN_CODES.length;i++)
 			{
-				if(fitsOn(wornCodes[i]))
+				if(fitsOn(WORN_CODES[i]))
 				{
-					couldHaveBeenWornAt=wornCodes[i];
-					if(mob.freeWearPositions(wornCodes[i])>0)
+					couldHaveBeenWornAt=WORN_CODES[i];
+					if(mob.freeWearPositions(WORN_CODES[i])>0)
 						return 0;
 				}
 			}
 			return couldHaveBeenWornAt;
 		}
-		for(int i=1;i<wornCodes.length;i++)
+		for(int i=1;i<WORN_CODES.length;i++)
 		{
-			if((fitsOn(wornCodes[i]))
-			&&(mob.freeWearPositions(wornCodes[i])==0))
-				return wornCodes[i];
+			if((fitsOn(WORN_CODES[i]))
+			&&(mob.freeWearPositions(WORN_CODES[i])==0))
+				return WORN_CODES[i];
 		}
 		return 0;
 	}
@@ -332,7 +332,7 @@ public class StdItem implements Item
 
 	public void unWear()
 	{
-		setRawWornCode(Item.INVENTORY);
+		setRawWornCode(Item.IN_INVENTORY);
 		recoverEnvStats();
 	}
 
@@ -371,18 +371,18 @@ public class StdItem implements Item
 		{
 			if(CMLib.flags().isLightSource(this))
 			{
-				if(rawWornCode()!=Item.INVENTORY)
+				if(rawWornCode()!=Item.IN_INVENTORY)
 					affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
 				if(CMLib.flags().isInDark(affected))
 					affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
 			}
-			if((amWearingAt(Item.ON_MOUTH))&&(affected instanceof MOB))
+			if((amWearingAt(Item.WORN_MOUTH))&&(affected instanceof MOB))
 			{
 				if(!(this instanceof Light))
 					affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
 				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_TASTE);
 			}
-			if((!amWearingAt(Item.FLOATING_NEARBY))
+			if((!amWearingAt(Item.WORN_FLOATING_NEARBY))
 			&&((!(affected instanceof MOB))||(((MOB)affected).riding()!=this)))
 				affectableStats.setWeight(affectableStats.weight()+envStats().weight());
 		}
@@ -428,7 +428,7 @@ public class StdItem implements Item
 		if(destroyed)
 			return false;
 		tickStatus=Tickable.STATUS_START;
-		if(tickID==MudHost.TICK_ITEM_BEHAVIOR)
+		if(tickID==Tickable.TICKID_ITEM_BEHAVIOR)
 		{
 			if(numBehaviors()==0) return false;
 			for(int b=0;b<numBehaviors();b++)
@@ -440,7 +440,7 @@ public class StdItem implements Item
 			}
 		}
 		else
-		if(tickID!=MudHost.TICK_CLANITEM)
+		if(tickID!=Tickable.TICKID_CLANITEM)
 		{
 			int a=0;
 			while(a<numEffects())
@@ -547,7 +547,7 @@ public class StdItem implements Item
 			Item alreadyWearing=mob.fetchFirstWornItem(cantWearAt);
 			if(alreadyWearing!=null)
 			{
-				if((cantWearAt!=Item.HELD)&&(cantWearAt!=Item.WIELD))
+				if((cantWearAt!=Item.WORN_HELD)&&(cantWearAt!=Item.WORN_WIELD))
 				{
 					if(!CMLib.commands().postRemove(mob,alreadyWearing,false))
 					{
@@ -563,10 +563,10 @@ public class StdItem implements Item
 				}
 				else
 				{
-					if(cantWearAt==Item.HELD)
+					if(cantWearAt==Item.WORN_HELD)
 						mob.tell("You are already holding "+alreadyWearing.name()+".");
 					else
-					if(cantWearAt==Item.WIELD)
+					if(cantWearAt==Item.WORN_WIELD)
 						mob.tell("You are already wielding "+alreadyWearing.name()+".");
 					else
 						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+CMLib.flags().wornLocation(cantWearAt)+".");
@@ -584,15 +584,15 @@ public class StdItem implements Item
 	
 	protected boolean alreadyWornMsg(MOB mob, Item thisItem)
 	{
-		if(!thisItem.amWearingAt(Item.INVENTORY))
+		if(!thisItem.amWearingAt(Item.IN_INVENTORY))
 		{
-			if(thisItem.amWearingAt(Item.WIELD))
+			if(thisItem.amWearingAt(Item.WORN_WIELD))
 				mob.tell(thisItem.name()+" is already being wielded.");
 			else
-			if(thisItem.amWearingAt(Item.HELD))
+			if(thisItem.amWearingAt(Item.WORN_HELD))
 				mob.tell(thisItem.name()+" is already being held.");
 			else
-			if(thisItem.amWearingAt(Item.FLOATING_NEARBY))
+			if(thisItem.amWearingAt(Item.WORN_FLOATING_NEARBY))
 				mob.tell(thisItem.name()+" is floating nearby.");
 			else
 				mob.tell(thisItem.name()+"is already being worn.");
@@ -689,10 +689,10 @@ public class StdItem implements Item
 				return true;
 			break;
 		case CMMsg.TYP_HOLD:
-			if((!fitsOn(Item.HELD))||(properWornBitmap==0))
+			if((!fitsOn(Item.WORN_HELD))||(properWornBitmap==0))
 			{
 				StringBuffer str=new StringBuffer("You can't hold "+name()+".");
-				if(fitsOn(Item.WIELD))
+				if(fitsOn(Item.WORN_WIELD))
 					str.append("Try WIELDing it.");
 				else
 				if(properWornBitmap>0)
@@ -709,13 +709,13 @@ public class StdItem implements Item
 			}
 			if((!rawLogicalAnd())||(properWornBitmap==0))
 			{
-				if(!canWear(mob,Item.HELD))
+				if(!canWear(mob,Item.WORN_HELD))
 				{
-					Item alreadyWearing=mob.fetchFirstWornItem(Item.HELD);
+					Item alreadyWearing=mob.fetchFirstWornItem(Item.WORN_HELD);
 					if(alreadyWearing!=null)
 					{
 						if((!CMLib.commands().postRemove(mob,alreadyWearing,false))
-						||(!canWear(mob,Item.HELD)))
+						||(!canWear(mob,Item.WORN_HELD)))
 						{
 							mob.tell("Your hands are full.");
 							return false;
@@ -745,7 +745,7 @@ public class StdItem implements Item
 			}
 			return canWearComplete(mob);
 		case CMMsg.TYP_WIELD:
-			if((!fitsOn(Item.WIELD))||(properWornBitmap==0))
+			if((!fitsOn(Item.WORN_WIELD))||(properWornBitmap==0))
 			{
 				mob.tell("You can't wield "+name()+" as a weapon.");
 				return false;
@@ -759,9 +759,9 @@ public class StdItem implements Item
 			}
 			if((!rawLogicalAnd())||(properWornBitmap==0))
 			{
-				if(!canWear(mob,Item.WIELD))
+				if(!canWear(mob,Item.WORN_WIELD))
 				{
-					Item alreadyWearing=mob.fetchFirstWornItem(Item.WIELD);
+					Item alreadyWearing=mob.fetchFirstWornItem(Item.WORN_WIELD);
 					if(alreadyWearing!=null)
 					{
 						if(!CMLib.commands().postRemove(mob,alreadyWearing,false))
@@ -796,7 +796,7 @@ public class StdItem implements Item
 			{
 				if((!CMLib.flags().canBeSeenBy(this,mob))
 				&&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0)
-				&&(amWearingAt(Item.INVENTORY)))
+				&&(amWearingAt(Item.IN_INVENTORY)))
 				{
 					mob.tell("You can't see that.");
 					return false;
@@ -852,14 +852,14 @@ public class StdItem implements Item
 			{
 				if((!CMLib.flags().canBeSeenBy(this,mob))
 				   &&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0)
-				   &&(amWearingAt(Item.INVENTORY)))
+				   &&(amWearingAt(Item.IN_INVENTORY)))
 				{
 					mob.tell("You can't see that.");
 					return false;
 				}
-				if((!amWearingAt(Item.INVENTORY))&&(!CMLib.flags().isRemovable(this)))
+				if((!amWearingAt(Item.IN_INVENTORY))&&(!CMLib.flags().isRemovable(this)))
 				{
-					if(amWearingAt(Item.WIELD)||amWearingAt(Item.HELD))
+					if(amWearingAt(Item.WORN_WIELD)||amWearingAt(Item.WORN_HELD))
 					{
 						mob.tell("You can't seem to let go of "+name()+".");
 						return false;
@@ -1209,7 +1209,7 @@ public class StdItem implements Item
 
 		// first one! so start ticking...
 		if(behaviors.size()==0)
-			CMLib.threads().startTickDown(this,MudHost.TICK_ITEM_BEHAVIOR,1);
+			CMLib.threads().startTickDown(this,Tickable.TICKID_ITEM_BEHAVIOR,1);
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
@@ -1218,7 +1218,7 @@ public class StdItem implements Item
 		if(behaviors==null) return;
 		behaviors.removeElement(to);
 		if(behaviors.size()==0)
-			CMLib.threads().deleteTick(this,MudHost.TICK_ITEM_BEHAVIOR);
+			CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 	}
 	public int numBehaviors()
 	{

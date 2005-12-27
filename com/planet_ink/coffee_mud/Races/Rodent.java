@@ -40,7 +40,7 @@ public class Rodent extends StdRace
 	public int heightVariance(){return 3;}
 	public int lightestWeight(){return 1;}
 	public int weightVariance(){return 5;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_HEAD-Item.WORN_EARS-Item.WORN_EYES;}
 	public String racialCategory(){return "Rodent";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

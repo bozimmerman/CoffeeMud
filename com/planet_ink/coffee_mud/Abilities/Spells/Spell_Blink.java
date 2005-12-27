@@ -55,7 +55,7 @@ public class Spell_Blink extends Spell
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==MudHost.TICK_MOB)&&(affected!=null)&&(affected instanceof MOB))
+		if((tickID==Tickable.TICKID_MOB)&&(affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
 			int roll=CMLib.dice().roll(1,8,0);

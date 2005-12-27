@@ -39,7 +39,7 @@ public class Prayer_ModerateInfusion extends Prayer
     public String name(){ return "Moderate Infusion";}
     public int quality(){ return BENEFICIAL_OTHERS;}
     public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-    protected long minCastWaitTime(){return MudHost.TICK_TIME/2;}
+    protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}
 
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {

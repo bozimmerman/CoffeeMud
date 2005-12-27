@@ -52,7 +52,7 @@ public class Mining extends GatheringSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==MudHost.TICK_MOB))
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if(tickUp==6)

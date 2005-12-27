@@ -112,7 +112,8 @@ public class StdMOB implements MOB
     protected MOB amFollowing=null;
     protected MOB soulMate=null;
     protected int atRange=-1;
-    private long peaceTime=0;
+    protected long peaceTime=0;
+    protected boolean amDestroyed=false;
     
     public long getAgeHours(){return AgeHours;}
 	public int getPractices(){return Practices;}
@@ -239,7 +240,7 @@ public class StdMOB implements MOB
 		baseEnvStats().setLevel(1);
 	}
     protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_MOB);}
-
+    public boolean amDestroyed(){return amDestroyed;}
 	protected void cloneFix(MOB E)
 	{
 		affects=new Vector();
@@ -382,7 +383,7 @@ public class StdMOB implements MOB
     {
         if(CMSecurity.isAllowed(this,location(),"CARRYALL"))
             return Integer.MAX_VALUE/2;
-        return (2*Item.wornOrder.length)
+        return (2*Item.WORN_ORDER.length)
                 +(2*charStats().getStat(CharStats.DEXTERITY))
                 +(2*envStats().level());
     }
@@ -585,6 +586,7 @@ public class StdMOB implements MOB
         amFollowing=null;
         soulMate=null;
         StartRoom=null;
+        amDestroyed=true;
 	}
 
 	public void removeFromGame(boolean preserveFollowers)
@@ -641,9 +643,9 @@ public class StdMOB implements MOB
 		pleaseDestroy=false;
 
 		// will ensure no duplicate ticks, this obj, this id
-		CMLib.threads().startTickDown(this,MudHost.TICK_MOB,1);
+		CMLib.threads().startTickDown(this,Tickable.TICKID_MOB,1);
 		if(tickStatus==Tickable.STATUS_NOT)
-			tick(this,MudHost.TICK_MOB); // slap on the butt
+			tick(this,Tickable.TICKID_MOB); // slap on the butt
 	}
 	
 	public void bringToLife(Room newLocation, boolean resetStats)
@@ -673,9 +675,9 @@ public class StdMOB implements MOB
 		pleaseDestroy=false;
 
 		// will ensure no duplicate ticks, this obj, this id
-		CMLib.threads().startTickDown(this,MudHost.TICK_MOB,1);
+		CMLib.threads().startTickDown(this,Tickable.TICKID_MOB,1);
 		if(tickStatus==Tickable.STATUS_NOT)
-			tick(this,MudHost.TICK_MOB); // slap on the butt
+			tick(this,Tickable.TICKID_MOB); // slap on the butt
 
         Ability A=null;
 		for(int a=0;a<numLearnedAbilities();a++)
@@ -1169,7 +1171,7 @@ public class StdMOB implements MOB
                     long nextTime=lastCommandTime
                                  +Math.round(((Double)commandQue.elementAt(0,3)).doubleValue()
                                              /envStats().speed()
-                                             *new Long(MudHost.TICK_TIME).doubleValue());
+                                             *new Long(Tickable.TIME_TICK).doubleValue());
                     if((System.currentTimeMillis()<nextTime)&&(session()!=null))
                         return false;
                     lastCommandTime=System.currentTimeMillis();
@@ -1806,7 +1808,7 @@ public class StdMOB implements MOB
 					mob.tell("You are too close to "+target.name()+" to use "+tool.name()+".");
 					if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 					&&(tool instanceof Weapon)
-					&&(!((Weapon)tool).amWearingAt(Item.INVENTORY)))
+					&&(!((Weapon)tool).amWearingAt(Item.IN_INVENTORY)))
 						CMLib.commands().postRemove(this,(Weapon)msg.tool(),false);
 					return false;
 				}
@@ -1950,7 +1952,7 @@ public class StdMOB implements MOB
 				||(CMSecurity.isAllowed(this,location(),"CMDMOBS")&&(isMonster()))
 				||(CMSecurity.isAllowed(this,location(),"CMDROOMS")&&(isMonster())))
 					return true;
-				if(getWearPositions(Item.ON_ARMS)==0)
+				if(getWearPositions(Item.WORN_ARMS)==0)
 				{
 					msg.source().tell(name()+" is unable to accept that from you.");
 					return false;
@@ -2390,7 +2392,7 @@ public class StdMOB implements MOB
 	{
 		if(pleaseDestroy) return false;
 		tickStatus=Tickable.STATUS_START;
-		if(tickID==MudHost.TICK_MOB)
+		if(tickID==Tickable.TICKID_MOB)
 		{
 			movesSinceTick=0;
 			if(amDead)
@@ -2455,7 +2457,7 @@ public class StdMOB implements MOB
 				}
 				else
 				{
-					peaceTime+=MudHost.TICK_TIME;
+					peaceTime+=Tickable.TIME_TICK;
 					if(CMath.bset(getBitmap(),MOB.ATT_AUTODRAW)
 					&&(peaceTime>=SHEATH_TIME)
 					&&(CMLib.flags().aliveAwakeMobileUnbound(this,true)))
@@ -2470,7 +2472,7 @@ public class StdMOB implements MOB
 					else
 					if(!CMSecurity.isAllowed(this,location(),"IMMORT"))
 					{
-						curState().adjFatigue(MudHost.TICK_TIME,maxState());
+						curState().adjFatigue(Tickable.TIME_TICK,maxState());
 				        if((curState().getFatigue()>CharState.FATIGUED_MILLIS)
 						&&(!isMonster())
                      	&&(CMLib.dice().rollPercentage()==1))
@@ -2489,7 +2491,7 @@ public class StdMOB implements MOB
 				if((!isMonster())&&(soulMate()==null))
 				{
                     CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_TICKSONLINE);
-                    if(((++tickCounter)*MudHost.TICK_TIME)>60000)
+                    if(((++tickCounter)*Tickable.TIME_TICK)>60000)
                     {
                         tickCounter=0;
                         CMLib.commands().tickAging(this);
@@ -2596,15 +2598,15 @@ public class StdMOB implements MOB
 		for(int i=0;i<inventorySize();i++)
 		{
 			Item item=fetchInventory(i);
-			if((item!=null)&&(!item.amWearingAt(Item.INVENTORY)))
+			if((item!=null)&&(!item.amWearingAt(Item.IN_INVENTORY)))
 			{
 				long oldCode=item.rawWornCode();
 				item.unWear();
 				int msgCode=CMMsg.MSG_WEAR;
-				if((oldCode&Item.WIELD)>0)
+				if((oldCode&Item.WORN_WIELD)>0)
 					msgCode=CMMsg.MSG_WIELD;
 				else
-				if((oldCode&Item.HELD)>0)
+				if((oldCode&Item.WORN_HELD)>0)
 					msgCode=CMMsg.MSG_HOLD;
 				CMMsg msg=CMClass.getMsg(this,item,null,CMMsg.NO_EFFECT,null,msgCode,null,CMMsg.NO_EFFECT,null);
 				if((R.okMessage(this,msg))&&(item.okMessage(item,msg)))
@@ -2798,7 +2800,7 @@ public class StdMOB implements MOB
 		return list;
 	}
 
-	public boolean isEligibleMonster()
+	public boolean savable()
 	{
 		if((!isMonster())&&(soulMate()==null)) 
             return false;
@@ -3127,7 +3129,7 @@ public class StdMOB implements MOB
 	{
 		if((charStats().getMyRace().forbiddenWornBits()&wornCode)>0)
 			return 0;
-		if(wornCode==Item.FLOATING_NEARBY)
+		if(wornCode==Item.WORN_FLOATING_NEARBY)
 			return 6;
 		int total;
 		int add=0;
@@ -3158,19 +3160,19 @@ public class StdMOB implements MOB
 					else
 					switch((int)wornCode)
 					{
-					case (int)Item.ON_HANDS:
+					case (int)Item.WORN_HANDS:
 						if(total<2)
 							add+=1;
 						else
 							add+=total/2;
 						break;
-					case (int)Item.WIELD:
-					case (int)Item.ON_RIGHT_FINGER:
-					case (int)Item.ON_RIGHT_WRIST:
+					case (int)Item.WORN_WIELD:
+					case (int)Item.WORN_RIGHT_FINGER:
+					case (int)Item.WORN_RIGHT_WRIST:
 						add+=1; break;
-					case (int)Item.HELD:
-					case (int)Item.ON_LEFT_FINGER:
-					case (int)Item.ON_LEFT_WRIST:
+					case (int)Item.WORN_HELD:
+					case (int)Item.WORN_LEFT_FINGER:
+					case (int)Item.WORN_LEFT_WRIST:
 						add+=total-1;
 						break;
 					default:
@@ -3218,7 +3220,7 @@ public class StdMOB implements MOB
 		for(int i=0;i<inventorySize();i++)
 		{
 			Item thisItem=fetchInventory(i);
-			if((thisItem!=null)&&(thisItem.amWearingAt(Item.WIELD)))
+			if((thisItem!=null)&&(thisItem.amWearingAt(Item.WORN_WIELD)))
 				return thisItem;
 		}
 		return null;

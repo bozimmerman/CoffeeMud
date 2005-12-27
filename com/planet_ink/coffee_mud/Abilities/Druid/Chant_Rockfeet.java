@@ -65,7 +65,7 @@ public class Chant_Rockfeet extends Chant
 			if(CMLib.dice().rollPercentage()>(msg.source().charStats().getStat(CharStats.STRENGTH)*3))
 			{
 				msg.source().curState().adjMovement(-1,msg.source().maxState());
-				msg.source().curState().adjFatigue(MudHost.TICK_TIME,msg.source().maxState());
+				msg.source().curState().adjFatigue(Tickable.TIME_TICK,msg.source().maxState());
 			}
 		}
 		return;
@@ -76,8 +76,8 @@ public class Chant_Rockfeet extends Chant
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if((target.getWearPositions(Item.ON_HANDS)==0)
-		&&(target.getWearPositions(Item.ON_FEET)==0))
+		if((target.getWearPositions(Item.WORN_HANDS)==0)
+		&&(target.getWearPositions(Item.WORN_FEET)==0))
 		{
 			if(!auto)
 				mob.tell(target.name()+" doesn't have hands or feet to affect...");

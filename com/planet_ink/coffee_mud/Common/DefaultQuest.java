@@ -98,10 +98,10 @@ public class DefaultQuest implements Quest, Tickable
     public void autostartup()
     {
         if(!setWaitRemaining())
-            CMLib.threads().deleteTick(this,MudHost.TICK_QUEST);
+            CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
         else
         if(!running())
-            CMLib.threads().startTickDown(this,MudHost.TICK_QUEST,1);
+            CMLib.threads().startTickDown(this,Tickable.TICKID_QUEST,1);
     }
     
     protected void setVars(Vector script)
@@ -1303,7 +1303,7 @@ public class DefaultQuest implements Quest, Tickable
         {
             waitRemaining=-1;
             ticksRemaining=duration();
-            CMLib.threads().startTickDown(this,MudHost.TICK_QUEST,1);
+            CMLib.threads().startTickDown(this,Tickable.TICKID_QUEST,1);
         }
     }
     
@@ -1404,7 +1404,7 @@ public class DefaultQuest implements Quest, Tickable
         {
             ticksRemaining=-1;
             if(!setWaitRemaining())
-                CMLib.threads().deleteTick(this,MudHost.TICK_QUEST);
+                CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
         }
         stoppingQuest=false;
     }
@@ -1435,7 +1435,7 @@ public class DefaultQuest implements Quest, Tickable
                 else
                     C.setYear(NOW.getYear());
                 long distance=C.deriveMillisAfter(NOW);
-                waitRemaining=(int)(distance/MudHost.TICK_TIME);
+                waitRemaining=(int)(distance/Tickable.TIME_TICK);
             }
             else
             {
@@ -1447,7 +1447,7 @@ public class DefaultQuest implements Quest, Tickable
                 long distance=CMLib.time().string2Millis(month+"/"+day+"/"+year+" 12:00 AM");
                 while(distance<System.currentTimeMillis())
                     distance=CMLib.time().string2Millis(month+"/"+day+"/"+(++year)+" 12:00 AM");
-                waitRemaining=(int)((distance-System.currentTimeMillis())/MudHost.TICK_TIME);
+                waitRemaining=(int)((distance-System.currentTimeMillis())/Tickable.TIME_TICK);
             }
         }
         else
@@ -1520,12 +1520,12 @@ public class DefaultQuest implements Quest, Tickable
     public boolean stopping(){return stoppingQuest;}
     public boolean waiting(){return waitRemaining>=0;}
     public int ticksRemaining(){return ticksRemaining;}
-    public int minsRemaining(){return new Long(ticksRemaining*MudHost.TICK_TIME/60000).intValue();}
+    public int minsRemaining(){return new Long(ticksRemaining*Tickable.TIME_TICK/60000).intValue();}
     private long tickStatus=Tickable.STATUS_NOT;
     public long getTickStatus(){return tickStatus;}
     public boolean tick(Tickable ticking, int tickID)
     {
-        if(tickID!=MudHost.TICK_QUEST)
+        if(tickID!=Tickable.TICKID_QUEST)
             return false;
         if(CMSecurity.isDisabled("QUESTS")) return true;
         

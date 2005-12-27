@@ -58,7 +58,7 @@ public class AutoInvoke extends StdCommand
 	        Ability A=mob.fetchEffect(a);
 	        if((A!=null)
 	        &&(abilities.contains(A.ID()))
-	        &&(A.isBorrowed(mob)))
+	        &&(!A.savable()))
 	            effects.addElement(A.ID());
 	    }
 

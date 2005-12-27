@@ -121,7 +121,7 @@ public class Archon_Banish extends ArchonSkill
 		if(canBeUninvoked())
 			mob.tell("You are released from banishment!");
 		mob.getStartRoom().bringMobHere(mob,true);
-		if(prison!=null){ prison.destroyRoom(); prison=null;}
+		if(prison!=null){ prison.destroy(); prison=null;}
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

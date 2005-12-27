@@ -71,7 +71,7 @@ public class Trap_MonsterCage extends StdTrap
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==MudHost.TICK_TRAP_RESET)&&(getReset()>0))
+		if((tickID==Tickable.TICKID_TRAP_RESET)&&(getReset()>0))
 		{
 			// recage the motherfather
 			if((tickDown<=1)

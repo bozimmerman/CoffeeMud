@@ -51,7 +51,7 @@ public class Domesticating extends CommonSkill
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(tickID==MudHost.TICK_MOB))
+		&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if((taming==null)||(!mob.location().isInhabitant(taming)))

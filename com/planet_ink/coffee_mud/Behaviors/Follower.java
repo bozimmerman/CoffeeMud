@@ -166,7 +166,7 @@ public class Follower extends ActiveTicker
 		
 		if(ticking instanceof MOB)
 		{
-			if(tickID!=MudHost.TICK_MOB) 
+			if(tickID!=Tickable.TICKID_MOB) 
 				return true;
 			if(!canFreelyBehaveNormal(ticking)) 
 				return true;

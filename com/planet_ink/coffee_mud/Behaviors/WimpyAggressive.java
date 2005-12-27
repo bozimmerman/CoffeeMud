@@ -68,7 +68,7 @@ public class WimpyAggressive extends Aggressive
 
 	public static void tickWimpyAggressively(Tickable ticking, boolean mobKiller, int tickID)
 	{
-		if(tickID!=MudHost.TICK_MOB) return;
+		if(tickID!=Tickable.TICKID_MOB) return;
 		if(ticking==null) return;
 		if(!(ticking instanceof MOB)) return;
 
@@ -76,7 +76,7 @@ public class WimpyAggressive extends Aggressive
 	}
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID!=MudHost.TICK_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB) return true;
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;

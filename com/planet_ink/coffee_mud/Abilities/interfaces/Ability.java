@@ -198,8 +198,7 @@ public interface Ability  extends Environmental
 	// than the mobs knowledge, such as a magic item, or
 	// a class behavior.  borrowed abilities are not saved,
 	// and neither are borrowed properties or affects.
-	public boolean isBorrowed(Environmental toMe);
-	public void setBorrowed(Environmental toMe, boolean truefalse);
+	public void setSavable(boolean truefalse);
 
 	// An optional numeric code for this ability
 	public int abilityCode();

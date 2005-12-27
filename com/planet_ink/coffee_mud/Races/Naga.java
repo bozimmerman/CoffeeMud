@@ -40,7 +40,7 @@ public class Naga extends Python
 	public int heightVariance(){return 12;}
 	public int lightestWeight(){return 80;}
 	public int weightVariance(){return 80;}
-	public long forbiddenWornBits(){return Item.ON_LEGS|Item.ON_FEET;}
+	public long forbiddenWornBits(){return Item.WORN_LEGS|Item.WORN_FEET;}
 	public String racialCategory(){return "Serpent";}
 	private String[]culturalAbilityNames={"Draconic"};
 	private int[]culturalAbilityProfficiencies={100};

@@ -78,9 +78,9 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		ability.myProperLocation=room;
 		if(item.fetchEffect(ability.ID())==null)
 			item.addEffect(ability);
-		ability.setBorrowed(item,true);
+		ability.setSavable(false);
 		loadContent(ability,item,room);
-		CMLib.threads().startTickDown(ability,MudHost.TICK_ROOM_ITEM_REJUV,item.envStats().rejuv());
+		CMLib.threads().startTickDown(ability,Tickable.TICKID_ROOM_ITEM_REJUV,item.envStats().rejuv());
 	}
 
 	public void unloadIfNecessary(Item item)
@@ -132,7 +132,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		if((item==null)||(myProperLocation==null))
 			return false;
 
-		if(tickID==MudHost.TICK_ROOM_ITEM_REJUV)
+		if(tickID==Tickable.TICKID_ROOM_ITEM_REJUV)
 		{
 			verifyFixContents(item,myProperLocation);
 			if(!myProperLocation.isContent(item))

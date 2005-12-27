@@ -733,10 +733,10 @@ public class CMProps extends Properties
         {
             Armor A=(Armor)O;
             final long[] bits=
-            {Item.ON_TORSO, Item.ON_FEET, Item.ON_LEGS, Item.ON_HANDS, Item.ON_ARMS,
-             Item.ON_HEAD, Item.ON_EARS, Item.ON_EYES, Item.ON_MOUTH, Item.ON_NECK,
-             Item.ON_LEFT_FINGER, Item.ON_LEFT_WRIST, Item.ON_BACK, Item.ON_WAIST,
-             Item.ABOUT_BODY, Item.FLOATING_NEARBY, Item.HELD, Item.WIELD};
+            {Item.WORN_TORSO, Item.WORN_FEET, Item.WORN_LEGS, Item.WORN_HANDS, Item.WORN_ARMS,
+             Item.WORN_HEAD, Item.WORN_EARS, Item.WORN_EYES, Item.WORN_MOUTH, Item.WORN_NECK,
+             Item.WORN_LEFT_FINGER, Item.WORN_LEFT_WRIST, Item.WORN_BACK, Item.WORN_WAIST,
+             Item.WORN_ABOUT_BODY, Item.WORN_FLOATING_NEARBY, Item.WORN_HELD, Item.WORN_WIELD};
             final String[] bitdesc=
             {"TORSO","FEET","LEGS","HANDS","ARMS","HEAD","EARS","EYES","MOUTH",
              "NECK","FINGERS","WRIST","BACK","WAIST","BODY","FLOATER","HELD","WIELDED"};

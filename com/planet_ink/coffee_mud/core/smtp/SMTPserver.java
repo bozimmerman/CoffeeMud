@@ -343,7 +343,7 @@ public class SMTPserver extends Thread implements Tickable
 		if (S != null)
 			S.println( getName() + " shutting down.");
 		if(getTickStatus()==Tickable.STATUS_NOT)
-			tick(this,MudHost.TICK_READYTOSTOP);
+			tick(this,Tickable.TICKID_READYTOSTOP);
 		else
 		while(getTickStatus()!=Tickable.STATUS_NOT)
 		{try{Thread.sleep(100);}catch(Exception e){}}
@@ -385,7 +385,7 @@ public class SMTPserver extends Thread implements Tickable
 		Hashtable lists=null;
 		
 		tickStatus=STATUS_START;
-		if((tickID==MudHost.TICK_READYTOSTOP)||(tickID==MudHost.TICK_EMAIL))
+		if((tickID==Tickable.TICKID_READYTOSTOP)||(tickID==Tickable.TICKID_EMAIL))
 		{
 			// this is where it should attempt any mail forwarding
 			// remember, a 5 day old private mail message is a goner
@@ -517,7 +517,7 @@ public class SMTPserver extends Thread implements Tickable
 			}
 		
 			// here is where the mail is actually sent
-			if((tickID==MudHost.TICK_EMAIL)
+			if((tickID==Tickable.TICKID_EMAIL)
 			&&(CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING)))
 			{
 				if((mailboxName()!=null)&&(mailboxName().length()>0))

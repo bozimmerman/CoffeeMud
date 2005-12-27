@@ -1034,7 +1034,7 @@ public final class IMC2Driver extends Thread {
 			CMLib.commands().postSay(mob,smob,text,true,true);
         Room R=mob.location();
         mob.destroy();
-        if(R!=null) R.destroyRoom();
+        if(R!=null) R.destroy();
     }
 
 	protected MOB findSessMob(String mobName)
@@ -1117,7 +1117,7 @@ public final class IMC2Driver extends Thread {
         chanhist.put(channel, l);
         Room R=mob.location();
         mob.destroy();
-        if(R!=null) R.destroyRoom();
+        if(R!=null) R.destroy();
     }
 
 

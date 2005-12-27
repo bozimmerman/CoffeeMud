@@ -39,7 +39,7 @@ public class SplintMail extends StdArmor
 		setName("suit of splint mail");
 		setDisplayText("a suit of splint mail.");
 		setDescription("A suit of splint mail armor including everything to protect the body, legs and arms.");
-		properWornBitmap=Item.ON_TORSO | Item.ON_ARMS | Item.ON_LEGS;
+		properWornBitmap=Item.WORN_TORSO | Item.WORN_ARMS | Item.WORN_LEGS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(44);
 		baseEnvStats().setWeight(60);

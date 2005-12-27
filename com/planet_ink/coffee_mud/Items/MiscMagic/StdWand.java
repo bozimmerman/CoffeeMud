@@ -121,7 +121,7 @@ public class StdWand extends StdItem implements Wand
 						   String message)
 	{
 		if((mob.isMine(this))
-		   &&(!this.amWearingAt(Item.INVENTORY)))
+		   &&(!this.amWearingAt(Item.IN_INVENTORY)))
 		{
 			Environmental target=null;
 			if((mob.location()!=null))
@@ -171,7 +171,7 @@ public class StdWand extends StdItem implements Wand
 								  Wand me)
 	{
 		if((mob.isMine(me))
-		   &&(!me.amWearingAt(Item.INVENTORY)))
+		   &&(!me.amWearingAt(Item.IN_INVENTORY)))
 		{
 			Environmental target=null;
 			if((mob.location()!=null))

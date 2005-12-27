@@ -89,14 +89,14 @@ public class Chant_SummonHail extends Chant
                     {
                         I=target.fetchInventory(i);
                         if((I.container()==null)
-                        &&(I.amWearingAt(Item.ON_HEAD))
+                        &&(I.amWearingAt(Item.WORN_HEAD))
                         &&(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
                             ||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
                             ||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)))
                             break;
                         I=null;
                     }
-                    if((I!=null)&&(I.amWearingAt(Item.ON_HEAD)))
+                    if((I!=null)&&(I.amWearingAt(Item.WORN_HEAD)))
                         target.location().show(target,I,null,CMMsg.MSG_OK_ACTION,"Hailstones bounce harmlessly off <O-NAME> being worn by <S-NAME>.");
                     else
                         CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_WATER,Weapon.TYPE_BASHING,"The hailstones <DAMAGE> <T-NAME>!");

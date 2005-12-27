@@ -1721,12 +1721,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			{
 				if((laws.basicCrimes().containsKey("NUDITY"))
 				&&(!msg.source().isMonster())
-				&&(msg.source().fetchFirstWornItem(Item.ON_LEGS)==null)
-				&&(msg.source().getWearPositions(Item.ON_LEGS)>0)
-				&&(msg.source().fetchFirstWornItem(Item.ON_WAIST)==null)
-				&&(msg.source().getWearPositions(Item.ON_WAIST)>0)
-				&&(msg.source().fetchFirstWornItem(Item.ABOUT_BODY)==null)
-				&&(msg.source().getWearPositions(Item.ABOUT_BODY)>0))
+				&&(msg.source().fetchFirstWornItem(Item.WORN_LEGS)==null)
+				&&(msg.source().getWearPositions(Item.WORN_LEGS)>0)
+				&&(msg.source().fetchFirstWornItem(Item.WORN_WAIST)==null)
+				&&(msg.source().getWearPositions(Item.WORN_WAIST)>0)
+				&&(msg.source().fetchFirstWornItem(Item.WORN_ABOUT_BODY)==null)
+				&&(msg.source().getWearPositions(Item.WORN_ABOUT_BODY)>0))
 				{
 					String info[]=(String[])laws.basicCrimes().get("NUDITY");
 					fillOutWarrant(msg.source(),
@@ -1841,7 +1841,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		super.tick(ticking,tickID);
 
 		if(!(ticking instanceof Area)) return true;
-		if(tickID!=MudHost.TICK_AREA) return true;
+		if(tickID!=Tickable.TICKID_AREA) return true;
 		Area myArea=(Area)ticking;
 
 		if(!theLawIsEnabled())return true;

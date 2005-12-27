@@ -54,10 +54,10 @@ public class Equipment extends StdCommand
         boolean paragraphView=(CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)>1)
                             ||((seer!=mob)&&(CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)>0))
                             ||CMath.bset(seer.getBitmap(),MOB.ATT_COMPRESS);
-		for(int l=0;l<Item.wornOrder.length;l++)
+		for(int l=0;l<Item.WORN_ORDER.length;l++)
 		{
 		    found=0;
-			wornCode=Item.wornOrder[l];
+			wornCode=Item.WORN_ORDER[l];
 			wornName=CMLib.flags().wornLocation(wornCode);
             if(paragraphView)
     			header=" ^!";
@@ -78,7 +78,7 @@ public class Equipment extends StdCommand
                         {
                             String name=thisItem.name();
                             if(name.length()>75) name=name.substring(0,75)+"...";
-                            if(wornCode==Item.HELD)
+                            if(wornCode==Item.WORN_HELD)
                             {
                                 if(msg.length()==0) msg.append("nothing.");
                                 if(mob==seer)
@@ -88,7 +88,7 @@ public class Equipment extends StdCommand
                                              name + CMLib.flags().colorCodes(thisItem, seer) + "^N.");                  
                             }
                             else
-                            if(wornCode==Item.WIELD)
+                            if(wornCode==Item.WORN_WIELD)
                             {
                                 if(msg.length()==0) msg.append("nothing.");
                                 if(mob==seer)
@@ -146,8 +146,8 @@ public class Equipment extends StdCommand
 				    }
 				}
 			}
-			if(((!paragraphView)&&(allPlaces)&&(wornCode!=Item.FLOATING_NEARBY))
-            ||((paragraphView)&&(allPlaces)&&(wornCode!=Item.WIELD)))
+			if(((!paragraphView)&&(allPlaces)&&(wornCode!=Item.WORN_FLOATING_NEARBY))
+            ||((paragraphView)&&(allPlaces)&&(wornCode!=Item.WORN_WIELD)))
 			{
 				int total=mob.getWearPositions(wornCode)-found;
 				for(int i=0;i<total;i++)

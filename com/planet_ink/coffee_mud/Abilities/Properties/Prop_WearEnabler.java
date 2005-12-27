@@ -61,8 +61,8 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 		{
 			myItem=(Item)host;
 
-			boolean worn=(!myItem.amWearingAt(Item.INVENTORY))
-			&&((!myItem.amWearingAt(Item.FLOATING_NEARBY))||(myItem.fitsOn(Item.FLOATING_NEARBY)));
+			boolean worn=(!myItem.amWearingAt(Item.IN_INVENTORY))
+			&&((!myItem.amWearingAt(Item.WORN_FLOATING_NEARBY))||(myItem.fitsOn(Item.WORN_FLOATING_NEARBY)));
 			
 			if((lastMOB instanceof MOB)
 			&&(((MOB)lastMOB).location()!=null)

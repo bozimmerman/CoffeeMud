@@ -75,7 +75,7 @@ public class Prayer_CurseMetal extends Prayer
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID!=MudHost.TICK_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB) return true;
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 		if(invoker==null)
@@ -87,7 +87,7 @@ public class Prayer_CurseMetal extends Prayer
 		{
 			Item item=mob.fetchInventory(i);
 			if((item!=null)
-			   &&(!item.amWearingAt(Item.INVENTORY))
+			   &&(!item.amWearingAt(Item.IN_INVENTORY))
 			   &&(CMLib.flags().isMetal(item))
 			   &&(item.container()==null)
 			   &&(!mob.amDead()))

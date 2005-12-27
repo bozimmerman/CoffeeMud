@@ -371,7 +371,7 @@ public class RandomTraps extends ActiveTicker
 				T=(Trap)T.copyOf();
 				T.setProfficiency(100);
 				T.makeLongLasting();
-				T.setBorrowed(E,true);
+				T.setSavable(false);
 				/*
 					Room R=CMLib.utensils().roomLocation(E);
 					String rname=(R!=null)?CMLib.map().getExtendedRoomID(R):"";

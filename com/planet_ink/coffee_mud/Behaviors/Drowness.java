@@ -82,82 +82,82 @@ public class Drowness extends StdBehavior
     public void addFemaleNaturalAbilities(MOB mob)
     {
 		Weapon mainWeapon = CMClass.getWeapon("Mace");
-		mainWeapon.wearAt(Item.WIELD);
+		mainWeapon.wearAt(Item.WORN_WIELD);
 		mob.addInventory(mainWeapon);
 
         Ability dark=CMClass.getAbility("Spell_Darkness");
         dark.setProfficiency(100);
-		dark.setBorrowed(mob,true);
+		dark.setSavable(false);
         mob.addAbility(dark);
 
         Ability p1 = CMClass.getAbility("Prayer_ProtGood");
         p1.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p1.setBorrowed(mob,true);
+		p1.setSavable(false);
         mob.addAbility(p1);
 
         Ability p2 = CMClass.getAbility("Prayer_CauseLight");
         p2.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p2.setBorrowed(mob,true);
+		p2.setSavable(false);
         mob.addAbility(p2);
 
         Ability p3 = CMClass.getAbility("Prayer_CauseSerious");
         p3.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p3.setBorrowed(mob,true);
+		p3.setSavable(false);
         mob.addAbility(p3);
 
         Ability p4 = CMClass.getAbility("Prayer_Curse");
         p4.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p4.setBorrowed(mob,true);
+		p4.setSavable(false);
         mob.addAbility(p4);
 
         Ability p5 = CMClass.getAbility("Prayer_Paralyze");
         p5.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p5.setBorrowed(mob,true);
+		p5.setSavable(false);
         mob.addAbility(p5);
 
         Ability p6 = CMClass.getAbility("Prayer_DispelGood");
         p6.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p6.setBorrowed(mob,true);
+		p6.setSavable(false);
         mob.addAbility(p6);
 
         Ability p7 = CMClass.getAbility("Prayer_Plague");
         p7.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p7.setBorrowed(mob,true);
+		p7.setSavable(false);
         mob.addAbility(p7);
 
         Ability p8 = CMClass.getAbility("Prayer_CauseCritical");
         p8.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p8.setBorrowed(mob,true);
+		p8.setSavable(false);
         mob.addAbility(p8);
 
         Ability p9 = CMClass.getAbility("Prayer_Blindness");
         p9.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p9.setBorrowed(mob,true);
+		p9.setSavable(false);
         mob.addAbility(p9);
 
         Ability p10 = CMClass.getAbility("Prayer_BladeBarrier");
         p10.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p10.setBorrowed(mob,true);
+		p10.setSavable(false);
         mob.addAbility(p10);
 
         Ability p11 = CMClass.getAbility("Prayer_Hellfire");
         p11.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p11.setBorrowed(mob,true);
+		p11.setSavable(false);
         mob.addAbility(p11);
 
         Ability p12 = CMClass.getAbility("Prayer_UnholyWord");
         p12.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p12.setBorrowed(mob,true);
+		p12.setSavable(false);
         mob.addAbility(p12);
 
         Ability p13 = CMClass.getAbility("Prayer_Deathfinger");
         p13.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p13.setBorrowed(mob,true);
+		p13.setSavable(false);
         mob.addAbility(p13);
 
         Ability p14 = CMClass.getAbility("Prayer_Harm");
         p14.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p14.setBorrowed(mob,true);
+		p14.setSavable(false);
         mob.addAbility(p14);
 
     }
@@ -165,7 +165,7 @@ public class Drowness extends StdBehavior
     public void addMaleNaturalAbilities(MOB mob)
     {
         Armor chainMail = CMClass.getArmor("DrowChainMailArmor");
-        chainMail.wearAt(Item.ON_TORSO);
+        chainMail.wearAt(Item.WORN_TORSO);
         mob.addInventory(chainMail);
 
         Weapon mainWeapon = null;
@@ -178,8 +178,8 @@ public class Drowness extends StdBehavior
             case 1:
 		        mainWeapon = CMClass.getWeapon("DrowSword");
 		        secondWeapon = CMClass.getWeapon("DrowSword");
-		        mainWeapon.wearAt(Item.WIELD);
-		        secondWeapon.wearAt(Item.HELD);
+		        mainWeapon.wearAt(Item.WORN_WIELD);
+		        secondWeapon.wearAt(Item.WORN_HELD);
 		        mob.addInventory(mainWeapon);
                 mob.addInventory(secondWeapon);
 		        mob.baseEnvStats().setSpeed(2.0);
@@ -187,7 +187,7 @@ public class Drowness extends StdBehavior
             case 2:
 		        mainWeapon = CMClass.getWeapon("DrowSword");
 //		        Shield secondWeapon = new Shield();
-		        mainWeapon.wearAt(Item.WIELD);
+		        mainWeapon.wearAt(Item.WORN_WIELD);
 //		        secondWeapon.wear(Item.SHIELD);
 		        mob.addInventory(mainWeapon);
 //              mob.addInventory(secondWeapon);
@@ -196,8 +196,8 @@ public class Drowness extends StdBehavior
             case 3:
 		        mainWeapon = CMClass.getWeapon("DrowSword");
 		        secondWeapon = CMClass.getWeapon("DrowDagger");
-		        mainWeapon.wearAt(Item.WIELD);
-		        secondWeapon.wearAt(Item.HELD);
+		        mainWeapon.wearAt(Item.WORN_WIELD);
+		        secondWeapon.wearAt(Item.WORN_HELD);
 		        mob.addInventory(mainWeapon);
                 mob.addInventory(secondWeapon);
 		        mob.baseEnvStats().setSpeed(2.0);
@@ -205,8 +205,8 @@ public class Drowness extends StdBehavior
             case 4:
 		        mainWeapon = CMClass.getWeapon("Scimitar");
 		        secondWeapon = CMClass.getWeapon("Scimitar");
-		        mainWeapon.wearAt(Item.WIELD);
-		        secondWeapon.wearAt(Item.HELD);
+		        mainWeapon.wearAt(Item.WORN_WIELD);
+		        secondWeapon.wearAt(Item.WORN_HELD);
 		        mob.addInventory(mainWeapon);
                 mob.addInventory(secondWeapon);
 		        mob.baseEnvStats().setSpeed(2.0);
@@ -214,8 +214,8 @@ public class Drowness extends StdBehavior
             default:
 		        mainWeapon = CMClass.getWeapon("DrowSword");
 		        secondWeapon = CMClass.getWeapon("DrowSword");
-		        mainWeapon.wearAt(Item.WIELD);
-		        secondWeapon.wearAt(Item.HELD);
+		        mainWeapon.wearAt(Item.WORN_WIELD);
+		        secondWeapon.wearAt(Item.WORN_HELD);
 		        mob.addInventory(mainWeapon);
                 mob.addInventory(secondWeapon);
 		        mob.baseEnvStats().setSpeed(2.0);
@@ -224,77 +224,77 @@ public class Drowness extends StdBehavior
 
         Ability dark=CMClass.getAbility("Spell_Darkness");
         dark.setProfficiency(100);
-		dark.setBorrowed(mob,true);
+		dark.setSavable(false);
         mob.addAbility(dark);
 
         Ability p1 = CMClass.getAbility("Prayer_ProtGood");
         p1.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p1.setBorrowed(mob,true);
+		p1.setSavable(false);
         mob.addAbility(p1);
 
         Ability p2 = CMClass.getAbility("Prayer_CauseLight");
         p2.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p2.setBorrowed(mob,true);
+		p2.setSavable(false);
         mob.addAbility(p2);
 
         Ability p3 = CMClass.getAbility("Prayer_CauseSerious");
         p3.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p3.setBorrowed(mob,true);
+		p3.setSavable(false);
         mob.addAbility(p3);
 
         Ability p4 = CMClass.getAbility("Prayer_Curse");
         p4.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p4.setBorrowed(mob,true);
+		p4.setSavable(false);
         mob.addAbility(p4);
 
         Ability p5 = CMClass.getAbility("Prayer_Paralyze");
         p5.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p5.setBorrowed(mob,true);
+		p5.setSavable(false);
         mob.addAbility(p5);
 
         Ability p6 = CMClass.getAbility("Prayer_DispelGood");
         p6.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p6.setBorrowed(mob,true);
+		p6.setSavable(false);
         mob.addAbility(p6);
 
         Ability p7 = CMClass.getAbility("Prayer_Plague");
         p7.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p7.setBorrowed(mob,true);
+		p7.setSavable(false);
         mob.addAbility(p7);
 
         Ability p8 = CMClass.getAbility("Prayer_CauseCritical");
         p8.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p8.setBorrowed(mob,true);
+		p8.setSavable(false);
         mob.addAbility(p8);
 
         Ability p9 = CMClass.getAbility("Prayer_Blindness");
         p9.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p9.setBorrowed(mob,true);
+		p9.setSavable(false);
         mob.addAbility(p9);
 
         Ability p10 = CMClass.getAbility("Prayer_BladeBarrier");
         p10.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p10.setBorrowed(mob,true);
+		p10.setSavable(false);
         mob.addAbility(p10);
 
         Ability p11 = CMClass.getAbility("Prayer_Hellfire");
         p11.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p11.setBorrowed(mob,true);
+		p11.setSavable(false);
         mob.addAbility(p11);
 
         Ability p12 = CMClass.getAbility("Prayer_UnholyWord");
         p12.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p12.setBorrowed(mob,true);
+		p12.setSavable(false);
         mob.addAbility(p12);
 
         Ability p13 = CMClass.getAbility("Prayer_Deathfinger");
         p13.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p13.setBorrowed(mob,true);
+		p13.setSavable(false);
         mob.addAbility(p13);
 
         Ability p14 = CMClass.getAbility("Prayer_Harm");
         p14.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p14.setBorrowed(mob,true);
+		p14.setSavable(false);
         mob.addAbility(p14);
 
     }
@@ -353,7 +353,7 @@ public class Drowness extends StdBehavior
 		if(ticking instanceof MOB)
 		{
 			MOB mob=(MOB)ticking;
-			if((!mob.amDead())&&(tickID==MudHost.TICK_MOB))
+			if((!mob.amDead())&&(tickID==Tickable.TICKID_MOB))
 			{
 				if(mob.baseCharStats().getStat(CharStats.GENDER)=='F')
 				{
@@ -426,7 +426,7 @@ public class Drowness extends StdBehavior
 
 		Ability dark=CMClass.getAbility("Spell_Darkness");
 		dark.setProfficiency(100);
-		dark.setBorrowed(mob,true);
+		dark.setSavable(false);
 		if(mob.fetchAbility(dark.ID())==null)
 			mob.addAbility(dark);
 		else

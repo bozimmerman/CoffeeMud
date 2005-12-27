@@ -1008,7 +1008,7 @@ public class List extends StdCommand
                     if(I!=null)
                         buf.append("^I"+I.ID()+": "+(I.displayText().length()>0?I.displayText():I.Name())+"^N"+((I.container()!=null)?I.Name():"")+"\n\r");
                 }
-                TR.destroyRoom();
+                TR.destroy();
             }
         }
         return buf;

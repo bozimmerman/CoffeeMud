@@ -35,7 +35,7 @@ public class Aarakocran extends Harpy
 {
 	public String ID(){	return "Aarakocran"; }
 	public String name(){ return "Aarakocran"; }
-	public long forbiddenWornBits(){return Item.ON_BACK|Item.ABOUT_BODY|Item.ON_FEET;}        
+	public long forbiddenWornBits(){return Item.WORN_BACK|Item.WORN_ABOUT_BODY|Item.WORN_FEET;}        
 	private String[]racialAbilityNames={"WingFlying"};
 	private int[]racialAbilityLevels={1};
 	private int[]racialAbilityProfficiencies={100};

@@ -90,9 +90,9 @@ public class Play extends StdAbility
 		if((I==null)||(mob==null)) return false;
 		if(I instanceof Rideable)
 			return (((Rideable)I).amRiding(mob)
-					&&(mob.fetchFirstWornItem(Item.WIELD)==null)
-					&&(mob.fetchFirstWornItem(Item.HELD)==null));
-		return mob.isMine(I)&&(!I.amWearingAt(Item.INVENTORY));
+					&&(mob.fetchFirstWornItem(Item.WORN_WIELD)==null)
+					&&(mob.fetchFirstWornItem(Item.WORN_HELD)==null));
+		return mob.isMine(I)&&(!I.amWearingAt(Item.IN_INVENTORY));
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -129,13 +129,13 @@ public class Play extends StdAbility
 		&&(instrument!=null))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-			&&(instrument.amWearingAt(Item.ON_MOUTH)))
+			&&(instrument.amWearingAt(Item.WORN_MOUTH)))
 				unInvoke();
 			else
 			if(((msg.sourceMinor()==CMMsg.TYP_REMOVE)
 			   ||(msg.sourceMinor()==CMMsg.TYP_WEAR)
 			   ||(msg.sourceMinor()==CMMsg.TYP_WIELD))
-			&&(instrument.amWearingAt(Item.HELD)))
+			&&(instrument.amWearingAt(Item.WORN_HELD)))
 				unInvoke();
 		}
 	}
@@ -295,7 +295,7 @@ public class Play extends StdAbility
 								{
 									if(persistantSong())
 									{
-										newOne.setBorrowed(follower,true);
+										newOne.setSavable(false);
 										if(follower!=mob)
 											follower.addEffect((Ability)newOne.copyOf());
 										else

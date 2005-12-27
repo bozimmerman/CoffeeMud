@@ -203,7 +203,7 @@ public class Arcanist extends Thief
 		{
 			Ability A2=mob.fetchAbility(a);
 			if((A2!=null)
-			&&(A2.isBorrowed(mob))
+			&&(!A2.savable())
 			&&((A2.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 				otherChoices.addElement(A2);
 		}
@@ -235,13 +235,13 @@ public class Arcanist extends Thief
 						{
 							Ability A2=mob.fetchAbility(a);
 							if((A2!=null)
-							&&(A2.isBorrowed(mob))
+							&&(!A2.savable())
 							&&((A2.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 								otherChoices.addElement(A2);
 						}
 						A=(Ability)A.copyOf();
 						A.setProfficiency(0);
-						A.setBorrowed(mob,true);
+						A.setSavable(false);
 						mob.addAbility(A);
 						if(otherChoices.size()>(mob.charStats().getClassLevel(this)/3))
 							mob.delAbility((Ability)otherChoices.elementAt(CMLib.dice().roll(1,otherChoices.size(),-1)));
@@ -256,14 +256,14 @@ public class Arcanist extends Thief
 			||msg.tool().ID().equals("Spell_WardArea"))
 			{
 				Ability A=mob.fetchAbility(msg.tool().text());
-				if((A!=null)&&(A.isBorrowed(mob)))
+				if((A!=null)&&(!A.savable()))
 					mob.delAbility(A);
 			}
 			else
 			if(msg.tool() instanceof Ability)
 			{
 				Ability A=mob.fetchAbility(msg.tool().ID());
-				if((A!=null)&&(A.isBorrowed(mob))
+				if((A!=null)&&(!A.savable())
 				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 					mob.delAbility(A);
 			}

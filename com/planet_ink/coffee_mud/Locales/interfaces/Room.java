@@ -126,7 +126,6 @@ public interface Room extends Environmental
 	public void startItemRejuv();
 	public void recoverRoomStats();
 
-	public void destroyRoom();
 	public void clearSky();
 	public void giveASky(int zero);
 	public boolean isSameRoom(Object O);

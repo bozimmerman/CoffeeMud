@@ -74,7 +74,7 @@ public class Troll extends StdMOB
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((!amDead())&&(tickID==MudHost.TICK_MOB))
+		if((!amDead())&&(tickID==Tickable.TICKID_MOB))
 		{
 			if((--regDown)<=0)
 			{

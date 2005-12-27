@@ -60,7 +60,7 @@ public class StdRoom implements Room
 	protected int baseThirst=1;
 	protected int myResource=-1;
 	protected long resourceFound=0;
-    
+    protected boolean amDestroyed=false;
 	protected boolean skyedYet=false;
 	public StdRoom()
 	{
@@ -158,7 +158,7 @@ public class StdRoom implements Room
 		for(int m=0;m<E.numInhabitants();m++)
 		{
 			MOB M2=E.fetchInhabitant(m);
-			if((M2!=null)&&(M2.isEligibleMonster()))
+			if((M2!=null)&&(M2.savable()))
 			{
 				MOB M=(MOB)M2.copyOf();
 				if(M.getStartRoom()==E)
@@ -347,7 +347,7 @@ public class StdRoom implements Room
 			rawExits()[Directions.UP]=null;
             skyGridRoom.rawDoors()[Directions.DOWN]=null;
             skyGridRoom.rawExits()[Directions.DOWN]=null;
-            skyGridRoom.destroyRoom();
+            skyGridRoom.destroy();
 			skyedYet=false;
 		}
 	}
@@ -601,7 +601,7 @@ public class StdRoom implements Room
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		tickStatus=Tickable.STATUS_START;
-		if(tickID==MudHost.TICK_ROOM_BEHAVIOR)
+		if(tickID==Tickable.TICKID_ROOM_BEHAVIOR)
 		{
 			if(numBehaviors()==0) return false;
 			for(int b=0;b<numBehaviors();b++)
@@ -1142,8 +1142,11 @@ public class StdRoom implements Room
 	{
 		return doors;
 	}
+    
+    public boolean savable(){return roomID().length()>0;}
+    
 
-	public void destroyRoom()
+	public void destroy()
 	{
 		try{
 		for(int a=numEffects()-1;a>=0;a--)
@@ -1180,7 +1183,9 @@ public class StdRoom implements Room
         contents=new Vector();
         inhabitants=new Vector();
         gridParent=null;
+        amDestroyed=true;
 	}
+    public boolean amDestroyed(){return amDestroyed;}
 
 	public MOB fetchInhabitant(String inhabitantID)
 	{
@@ -1497,7 +1502,7 @@ public class StdRoom implements Room
 			   return;
 		}
 		if(behaviors.size()==0)
-			CMLib.threads().startTickDown(this,MudHost.TICK_ROOM_BEHAVIOR,1);
+			CMLib.threads().startTickDown(this,Tickable.TICKID_ROOM_BEHAVIOR,1);
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
@@ -1506,7 +1511,7 @@ public class StdRoom implements Room
 		if(behaviors==null) return;
 		behaviors.removeElement(to);
 		if(behaviors.size()==0)
-			CMLib.threads().deleteTick(this,MudHost.TICK_ROOM_BEHAVIOR);
+			CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
 	}
 	public int numBehaviors()
 	{

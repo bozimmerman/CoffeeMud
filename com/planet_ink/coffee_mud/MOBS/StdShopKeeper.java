@@ -115,7 +115,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==MudHost.TICK_MOB)&&(isGeneric()))
+		if((tickID==Tickable.TICKID_MOB)&&(isGeneric()))
 		{
 			if(invResetTickDown==0)
 			{

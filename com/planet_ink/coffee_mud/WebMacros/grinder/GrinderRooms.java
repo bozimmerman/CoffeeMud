@@ -129,7 +129,7 @@ public class GrinderRooms
 		while(oldR.numInhabitants()>(skip))
 		{
 			MOB M=oldR.fetchInhabitant(skip);
-			if(M.isEligibleMonster())
+			if(M.savable())
 			{
 				if(!allmobs.contains(M))
 					allmobs.addElement(M);
@@ -274,7 +274,7 @@ public class GrinderRooms
 		CMLib.database().DBUpdateMOBs(R);
 		CMLib.database().DBUpdateItems(R);
 		R.startItemRejuv();
-        if(oldR!=R) oldR.destroyRoom();
+        if(oldR!=R) oldR.destroy();
 		return "";
 	}
 

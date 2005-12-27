@@ -62,7 +62,7 @@ public class Skill_Disarm extends StdSkill
 			return false;
 		}
 		Item hisWeapon=victim.fetchWieldedItem();
-		if(hisWeapon==null) hisWeapon=victim.fetchFirstWornItem(Item.HELD);
+		if(hisWeapon==null) hisWeapon=victim.fetchFirstWornItem(Item.WORN_HELD);
 		if((hisWeapon==null)
 		||(!(hisWeapon instanceof Weapon))
 		||((((Weapon)hisWeapon).weaponClassification()==Weapon.CLASS_NATURAL)))
@@ -82,8 +82,8 @@ public class Skill_Disarm extends StdSkill
 		boolean hit=(auto)||CMLib.combat().rollToHit(mob,victim);
 		boolean success=profficiencyCheck(mob,-levelDiff,auto)&&(hit);
 		if((success)&&(hisWeapon!=null)
-		   &&((hisWeapon.fitsOn(Item.WIELD))
-			  ||hisWeapon.fitsOn(Item.WIELD|Item.HELD)))
+		   &&((hisWeapon.fitsOn(Item.WORN_WIELD))
+			  ||hisWeapon.fitsOn(Item.WORN_WIELD|Item.WORN_HELD)))
 		{
 			if(mob.location().show(mob,victim,this,CMMsg.MSG_NOISYMOVEMENT,null))
 			{

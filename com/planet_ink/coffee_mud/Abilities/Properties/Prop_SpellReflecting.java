@@ -92,7 +92,7 @@ public class Prop_SpellReflecting extends Property
 				target=(MOB)affected;
 			else
 			if((affected instanceof Item)
-			&&(!((Item)affected).amWearingAt(Item.INVENTORY))
+			&&(!((Item)affected).amWearingAt(Item.IN_INVENTORY))
 			&&(((Item)affected).owner()!=null)
 			&&(((Item)affected).owner() instanceof MOB))
 				target=(MOB)((Item)affected).owner();

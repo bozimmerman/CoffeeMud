@@ -68,7 +68,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 		{
 		case CMMsg.TYP_WAND_USE:
 			if((mob.isMine(this))
-			   &&(!amWearingAt(Item.INVENTORY))
+			   &&(!amWearingAt(Item.IN_INVENTORY))
 			   &&(msg.target() instanceof MOB)
 			   &&(mob.location().isInhabitant((MOB)msg.target())))
 			{

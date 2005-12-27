@@ -528,7 +528,7 @@ public class CraftingSkill extends GatheringSkill
 				&&(I.container()==contained)
 				&&(canMend(mob,I,true))
 				&&(CMLib.flags().canBeSeenBy(I,mob))
-				&&((mob==from)||(!I.amWearingAt(Item.INVENTORY))))
+				&&((mob==from)||(!I.amWearingAt(Item.IN_INVENTORY))))
 					V.addElement(I);
 			}
 		}
@@ -579,7 +579,7 @@ public class CraftingSkill extends GatheringSkill
 		{
 			Item I=(Item)allStuff.elementAt(i);
 			buf.append(CMStrings.padRight(I.usesRemaining()+"%",5)+I.name());
-			if(!I.amWearingAt(Item.INVENTORY))
+			if(!I.amWearingAt(Item.IN_INVENTORY))
 				buf.append(" ("+CMLib.flags().wornLocation(I.rawWornCode())+")");
 			if(i<(allStuff.size()-1))
 				buf.append("\n\r");

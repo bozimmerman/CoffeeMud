@@ -56,7 +56,7 @@ public class Wimpy extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=MudHost.TICK_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB) return true;
 		if(((--tickDown)<0)&&(ticking instanceof MOB))
 		{
 			tickDown=tickWait;
@@ -83,7 +83,7 @@ public class Wimpy extends StdBehavior
 							B=(Behavior)V.elementAt(b);
 							int tries=0;
 							while(((++tries)<100)&&(oldRoom==monster.location()))
-								B.tick(monster,MudHost.TICK_MOB);
+								B.tick(monster,Tickable.TICKID_MOB);
 							if(oldRoom!=monster.location())
 								return true;
 						}

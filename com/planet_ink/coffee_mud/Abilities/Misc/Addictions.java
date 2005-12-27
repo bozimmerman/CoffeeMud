@@ -66,7 +66,7 @@ public class Addictions extends StdAbility
             }
             if((puffCredit!=null)
             &&(puffCredit.amDestroyed()
-                ||puffCredit.amWearingAt(Item.INVENTORY)
+                ||puffCredit.amWearingAt(Item.IN_INVENTORY)
                 ||puffCredit.owner()!=(MOB)affected))
                 puffCredit=null;
             switch(CMLib.dice().roll(1,7,0))
@@ -92,7 +92,7 @@ public class Addictions extends StdAbility
             &&(msg.targetMinor()==CMMsg.TYP_WEAR)
             &&(msg.target() instanceof Light)
             &&(msg.target() instanceof Container)
-            &&(CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Item.ON_MOUTH))
+            &&(CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Item.WORN_MOUTH))
             &&(((Container)msg.target()).getContents().size()>0)
             &&(CMLib.english().containsString(((Environmental)((Container)msg.target()).getContents().firstElement()).Name(),text())))
                 puffCredit=(Item)msg.target();
@@ -116,7 +116,7 @@ public class Addictions extends StdAbility
                 &&(msg.target() instanceof Light)
                 &&(msg.tool() instanceof Light)
                 &&(msg.target()==msg.tool())
-                &&(((Light)msg.target()).amWearingAt(Item.ON_MOUTH))
+                &&(((Light)msg.target()).amWearingAt(Item.WORN_MOUTH))
                 &&(((Light)msg.target()).isLit())
                 &&((puffCredit!=null)||CMLib.english().containsString(msg.target().Name(),text())))
                     lastFix=System.currentTimeMillis();

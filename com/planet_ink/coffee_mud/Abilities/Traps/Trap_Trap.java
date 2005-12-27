@@ -72,8 +72,8 @@ public class Trap_Trap extends StdAbility implements Trap
 		T.setReset(rejuv);
 		T.setInvoker(mob);
 		E.addEffect(T);
-		T.setBorrowed(E,true);
-		CMLib.threads().startTickDown(T,MudHost.TICK_TRAP_DESTRUCTION,mob.envStats().level()*30);
+		T.setSavable(false);
+		CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,mob.envStats().level()*30);
 		return T;
 	}
 	public void gas(MOB mob)
@@ -282,7 +282,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		}
 
 		if((getReset()>0)&&(getReset()<Integer.MAX_VALUE))
-			CMLib.threads().startTickDown(this,MudHost.TICK_TRAP_RESET,getReset());
+			CMLib.threads().startTickDown(this,Tickable.TICKID_TRAP_RESET,getReset());
 		else
 			unInvoke();
 	}
@@ -310,8 +310,8 @@ public class Trap_Trap extends StdAbility implements Trap
 			myPit.rawDoors()[Directions.UP]=null;
 			myPit.rawExits()[Directions.UP]=null;
 			*/
-			if(myPit!=null) myPit.destroyRoom();
-			if(myPitUp!=null) myPitUp.destroyRoom();
+			if(myPit!=null) myPit.destroy();
+			if(myPitUp!=null) myPitUp.destroy();
 		}
 		super.unInvoke();
 	}
@@ -320,13 +320,13 @@ public class Trap_Trap extends StdAbility implements Trap
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID==MudHost.TICK_TRAP_RESET)
+		if(tickID==Tickable.TICKID_TRAP_RESET)
 		{
 			sprung=false;
 			return false;
 		}
 		else
-		if(tickID==MudHost.TICK_TRAP_DESTRUCTION)
+		if(tickID==Tickable.TICKID_TRAP_DESTRUCTION)
 		{
 			unInvoke();
 			return false;

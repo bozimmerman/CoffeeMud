@@ -64,7 +64,7 @@ public class Spell_IncreaseGravity extends Spell
 				if(inhab.fetchEffect(ID())==null)
 				{
 					Ability A=(Ability)this.copyOf();
-					A.setBorrowed(inhab,true);
+					A.setSavable(false);
 					A.startTickDown(invoker,inhab,tickDown);
 				}
 				if(inhab.isInCombat())

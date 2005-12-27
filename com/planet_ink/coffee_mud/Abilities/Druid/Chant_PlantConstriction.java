@@ -51,7 +51,7 @@ public class Chant_PlantConstriction extends Chant
 			I=(Item)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(I!=null)&&(I.owner() instanceof MOB)
-		&&(!I.amWearingAt(Item.INVENTORY)))
+		&&(!I.amWearingAt(Item.IN_INVENTORY)))
 		{
 			MOB mob=(MOB)I.owner();
 			if((!mob.amDead())
@@ -70,7 +70,7 @@ public class Chant_PlantConstriction extends Chant
 		if(affected instanceof Item)
 			I=(Item)affected;
 		if((canBeUninvoked())&&(I!=null)&&(I.owner() instanceof MOB)
-		&&(I.amWearingAt(Item.ON_LEGS)||I.amWearingAt(Item.ON_ARMS)))
+		&&(I.amWearingAt(Item.WORN_LEGS)||I.amWearingAt(Item.WORN_ARMS)))
 		{
 			MOB mob=(MOB)I.owner();
 			if((!mob.amDead())
@@ -87,7 +87,7 @@ public class Chant_PlantConstriction extends Chant
 		if((msg.targetMinor()==CMMsg.TYP_REMOVE)
 		&&(msg.target()==affected)
 		&&(affected instanceof Item)
-		&&(((Item)affected).amWearingAt(Item.ON_LEGS)||((Item)affected).amWearingAt(Item.ON_ARMS)))
+		&&(((Item)affected).amWearingAt(Item.WORN_LEGS)||((Item)affected).amWearingAt(Item.WORN_ARMS)))
 		{
 			if(CMLib.dice().rollPercentage()>(msg.source().charStats().getStat(CharStats.STRENGTH)*4))
 			{
@@ -102,7 +102,7 @@ public class Chant_PlantConstriction extends Chant
 	{
 		if((aff instanceof MOB)&&(affected instanceof Item)
 		&&(((MOB)aff).isMine(affected))
-		&&((Item)affected).amWearingAt(Item.ON_ARMS))
+		&&((Item)affected).amWearingAt(Item.WORN_ARMS))
 			affectableStats.setSpeed(affectableStats.speed()/2.0);
 	}
 
@@ -110,7 +110,7 @@ public class Chant_PlantConstriction extends Chant
 	{
 		if((affected instanceof Item)
 		&&(aff.isMine(affected))
-		&&((Item)affected).amWearingAt(Item.ON_LEGS))
+		&&((Item)affected).amWearingAt(Item.WORN_LEGS))
 			affectableState.setMovement(affectableState.getMovement()/2);
 	}
 
@@ -130,10 +130,10 @@ public class Chant_PlantConstriction extends Chant
 			}
 		}
 		Vector positionChoices=new Vector();
-		if(target.getWearPositions(Item.ON_ARMS)>0)
-			positionChoices.addElement(new Long(Item.ON_ARMS));
-		if(target.getWearPositions(Item.ON_LEGS)>0)
-			positionChoices.addElement(new Long(Item.ON_LEGS));
+		if(target.getWearPositions(Item.WORN_ARMS)>0)
+			positionChoices.addElement(new Long(Item.WORN_ARMS));
+		if(target.getWearPositions(Item.WORN_LEGS)>0)
+			positionChoices.addElement(new Long(Item.WORN_LEGS));
 		if(positionChoices.size()==0)
 		{
 			if(!auto)
@@ -163,7 +163,7 @@ public class Chant_PlantConstriction extends Chant
 				target.giveItem(myPlant);
 				Long II=(Long)positionChoices.elementAt(CMLib.dice().roll(1,positionChoices.size(),-1));
 				myPlant.setRawWornCode(II.longValue());
-				if(II.longValue()==Item.ON_ARMS)
+				if(II.longValue()==Item.WORN_ARMS)
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,myPlant.name()+" jumps up and wraps itself around <S-YOUPOSS> arms!");
 				else
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,myPlant.name()+" jumps up and wraps itself around <S-YOUPOSS> legs!");

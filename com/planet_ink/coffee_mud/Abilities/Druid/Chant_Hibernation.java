@@ -105,7 +105,7 @@ public class Chant_Hibernation extends Chant
 
 		MOB mob=(MOB)affected;
 
-		if(tickID!=MudHost.TICK_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB) return true;
 		if(!profficiencyCheck(null,0,false)) return true;
 
 		if((!mob.isInCombat())

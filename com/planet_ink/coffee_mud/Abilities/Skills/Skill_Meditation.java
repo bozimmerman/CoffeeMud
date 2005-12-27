@@ -93,7 +93,7 @@ public class Skill_Meditation extends StdSkill
 
 		MOB mob=(MOB)affected;
 
-		if(tickID!=MudHost.TICK_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB) return true;
 		if(!profficiencyCheck(null,0,false)) return true;
 
 		if((mob.curState().getHunger()<=0)

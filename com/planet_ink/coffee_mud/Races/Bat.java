@@ -41,7 +41,7 @@ public class Bat extends StdRace
 	public int heightVariance(){return 2;}
 	public int lightestWeight(){return 2;}
 	public int weightVariance(){return 0;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_NECK-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_NECK-Item.WORN_HEAD-Item.WORN_EARS-Item.WORN_EYES;}
 	protected static Vector resources=new Vector();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	public String racialCategory(){return "Pteropine";}

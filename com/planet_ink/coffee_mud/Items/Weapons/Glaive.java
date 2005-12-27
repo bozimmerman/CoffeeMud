@@ -49,7 +49,7 @@ public class Glaive extends StdWeapon
 		recoverEnvStats();
 		material=EnvResource.RESOURCE_STEEL;
 		wornLogicalAnd=true;
-		properWornBitmap=Item.HELD|Item.WIELD;
+		properWornBitmap=Item.WORN_HELD|Item.WORN_WIELD;
 		weaponClassification=Weapon.CLASS_POLEARM;
 	}
 

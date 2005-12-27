@@ -427,7 +427,7 @@ public class Reset extends StdCommand
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					MOB M=R.fetchInhabitant(m);
-					if((M.isEligibleMonster())
+					if((M.savable())
 					&&(M.getStartRoom()==R))
 					{
 						MOB M2=M.baseCharStats().getCurrentClass().fillOutMOB(null,M.baseEnvStats().level());
@@ -488,7 +488,7 @@ public class Reset extends StdCommand
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					MOB M=R.fetchInhabitant(m);
-					if((M.isEligibleMonster())&&(M.getStartRoom()==R))
+					if((M.savable())&&(M.getStartRoom()==R))
 					{
 					    Behavior B=M.fetchBehavior("CombatAbilities");
 					    if(B==null) continue;
@@ -709,7 +709,7 @@ public class Reset extends StdCommand
 						{
 							MOB M=R.fetchInhabitant(m);
 							if(M==mob) continue;
-							if(!M.isEligibleMonster()) continue;
+							if(!M.savable()) continue;
 							for(int i=0;i<M.inventorySize();i++)
 								changedMOBS=changedMOBS||(rightImportMat(null,M.fetchInventory(i),false)>=0);
 							ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
@@ -774,7 +774,7 @@ public class Reset extends StdCommand
 						{
 							MOB M=R.fetchInhabitant(m);
 							if(M==mob) continue;
-							if(!M.isEligibleMonster()) continue;
+							if(!M.savable()) continue;
 							for(int i=0;i<M.inventorySize();i++)
 							{
 								Item I=M.fetchInventory(i);
@@ -890,7 +890,7 @@ public class Reset extends StdCommand
                     {
                         MOB M=R.fetchInhabitant(m);
                         if(M==mob) continue;
-                        if(!M.isEligibleMonster()) continue;
+                        if(!M.savable()) continue;
                         for(int i=0;i<M.inventorySize();i++)
                         {
                             Item I=M.fetchInventory(i);
@@ -997,7 +997,7 @@ public class Reset extends StdCommand
 				{
 					MOB M=R.fetchInhabitant(m);
 					if(M==mob) continue;
-					if(!M.isEligibleMonster()) continue;
+					if(!M.savable()) continue;
 					Race R2=(Race)rememberM.get(M.Name());
 					if(R2!=null)
 					{
@@ -1149,9 +1149,9 @@ public class Reset extends StdCommand
 		if(A!=null)
 		{
 			A=I.fetchEffect("ItemRejuv");
-			if(!A.isBorrowed(I))
+			if(A.savable())
 				return false;
-			A.setBorrowed(I,true);
+			A.setSavable(false);
 			return true;
 		}
 		return false;
@@ -1413,11 +1413,11 @@ public class Reset extends StdCommand
 		{
 			long worndata=I.rawProperLocationBitmap();
 			double weightpts=0;
-			for(int i=0;i<Item.wornWeights.length-1;i++)
+			for(int i=0;i<Item.WORN_WEIGHTS.length-1;i++)
 			{
 				if(CMath.isSet(worndata,i))
 				{
-					weightpts+=Item.wornWeights[i+1];
+					weightpts+=Item.WORN_WEIGHTS[i+1];
 					if(!I.rawLogicalAnd()) break;
 				}
 			}

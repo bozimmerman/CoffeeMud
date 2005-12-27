@@ -134,7 +134,7 @@ public class Skill_Juggle extends BardSkill
 			{
 				I.addEffect(A);
 				A.makeLongLasting();
-				A.setBorrowed(I,true);
+				A.setSavable(false);
 				I.recoverEnvStats();
 			}
 		}
@@ -181,7 +181,7 @@ public class Skill_Juggle extends BardSkill
 		{
 			Item I=M.fetchInventory(i);
 			if((I!=null)
-			&&((I.amWearingAt(Item.WIELD)||I.amWearingAt(Item.HELD)))
+			&&((I.amWearingAt(Item.WORN_WIELD)||I.amWearingAt(Item.WORN_HELD)))
 			&&(!juggles.contains(I))
 			&&(juggles.size()<maxJuggles()))
 			{
@@ -209,9 +209,9 @@ public class Skill_Juggle extends BardSkill
 		for(int i=0;i<copy.size();i++)
 		{
 			Item I=(Item)copy.elementAt(i);
-			if(I.amWearingAt(Item.WIELD)||I.amWearingAt(Item.HELD))
+			if(I.amWearingAt(Item.WORN_WIELD)||I.amWearingAt(Item.WORN_HELD))
 			{
-				I.setRawWornCode(Item.INVENTORY);
+				I.setRawWornCode(Item.IN_INVENTORY);
 				jug=i;
 			}
 		}
@@ -226,9 +226,9 @@ public class Skill_Juggle extends BardSkill
 				if(!M.isMine(I))
 					M.giveItem(I);
 				if(i==jug)
-					I.setRawWornCode(Item.WIELD);
+					I.setRawWornCode(Item.WORN_WIELD);
 				else
-					I.setRawWornCode(Item.HELD);
+					I.setRawWornCode(Item.WORN_HELD);
 			}
 			else
 			{
@@ -379,9 +379,9 @@ public class Skill_Juggle extends BardSkill
 		do
 		{
 			Item juggleThis=mob.fetchInventory(null,whatToJuggle+addendumStr);
-			if((juggleThis!=null)&&(!juggleThis.amWearingAt(Item.INVENTORY)))
+			if((juggleThis!=null)&&(!juggleThis.amWearingAt(Item.IN_INVENTORY)))
 			{
-				if((!juggleThis.amWearingAt(Item.HELD))&&(!juggleThis.amWearingAt(Item.WIELD)))
+				if((!juggleThis.amWearingAt(Item.WORN_HELD))&&(!juggleThis.amWearingAt(Item.WORN_WIELD)))
 				{
 					addendumStr="."+(++addendum);
 					continue;

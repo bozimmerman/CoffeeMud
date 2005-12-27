@@ -39,7 +39,7 @@ public class GlowingMageArmor extends StdArmor
 		setName("a mystical glowing breast plate");
 		setDisplayText("If this is sitting around somewhere, something is wrong!");
 		setDescription("This suit of armor is made from magical energy, but looks sturdy and protective.");
-		properWornBitmap=Item.ON_TORSO;
+		properWornBitmap=Item.WORN_TORSO;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(45);
 		baseEnvStats().setWeight(0);
@@ -57,7 +57,7 @@ public class GlowingMageArmor extends StdArmor
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((amWearingAt(Item.INVENTORY)||(owner()==null)||(owner() instanceof Room))
+		if((amWearingAt(Item.IN_INVENTORY)||(owner()==null)||(owner() instanceof Room))
 		&&(!amDestroyed()))
 			destroy();
 

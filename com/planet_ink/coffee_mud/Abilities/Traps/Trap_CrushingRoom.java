@@ -105,7 +105,7 @@ public class Trap_CrushingRoom extends StdTrap
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==MudHost.TICK_TRAP_RESET)&&(getReset()>0))
+		if((tickID==Tickable.TICKID_TRAP_RESET)&&(getReset()>0))
 		{
 			if((sprung)
 			&&(affected!=null)

@@ -170,7 +170,7 @@ public class MUD extends Thread implements MudHost
 		{
 			smtpServerThread = new SMTPserver((MudHost)mudThreads.firstElement());
 			smtpServerThread.start();
-			CMLib.threads().startTickDown(smtpServerThread,MudHost.TICK_EMAIL,60);
+			CMLib.threads().startTickDown(smtpServerThread,Tickable.TICKID_EMAIL,60);
 		}
 
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: loading base classes");
@@ -201,7 +201,7 @@ public class MUD extends Thread implements MudHost
 		ClanLoader.DBRead();
 		Log.sysOut("MUD","Clans loaded      : "+CMLib.clans().size());
 		
-		CMLib.threads().startTickDown(CMLib.factions(),MudHost.TICK_MOB,10);
+		CMLib.threads().startTickDown(CMLib.factions(),Tickable.TICKID_MOB,10);
 
 		Log.sysOut("MUD","Loading map...");
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: loading rooms....");
@@ -591,7 +591,7 @@ public class MUD extends Thread implements MudHost
 					    {
 					        MOB M=R.fetchInhabitant(m);
 					        if((M instanceof ShopKeeper)
-					        &&(M.isEligibleMonster())
+					        &&(M.savable())
 					        &&(M.getStartRoom()!=R)
 					        &&(M.getStartRoom()!=null))
 					            M.getStartRoom().bringMobHere(M,false);
@@ -612,7 +612,7 @@ public class MUD extends Thread implements MudHost
 					    {
 					        MOB M=R.fetchInhabitant(m);
 					        if((M!=null)
-					        &&(M.isEligibleMonster())
+					        &&(M.savable())
 					        &&(M.getStartRoom()!=R)
 					        &&(M.getStartRoom()!=null)
 					        &&(M.getStartRoom().roomID().length()>0))
@@ -638,7 +638,7 @@ public class MUD extends Thread implements MudHost
 			            for(int m=0;m<R.numInhabitants();m++)
 			            {
 			                MOB M=R.fetchInhabitant(m);
-			                if((M!=null)&&(M.isEligibleMonster()))
+			                if((M!=null)&&(M.savable()))
 			                    M.setStartRoom(R);
 			            }
 			            CMLib.database().DBUpdateMOBs(R);
@@ -651,7 +651,7 @@ public class MUD extends Thread implements MudHost
 			            {
 			                MOB M=R.fetchInhabitant(m);
 			                if((M!=null)
-			                &&(M.isEligibleMonster())
+			                &&(M.savable())
 			                &&(M instanceof ShopKeeper)
 			                &&(M.getStartRoom()==R))
 			                    shopmobs.addElement(M);

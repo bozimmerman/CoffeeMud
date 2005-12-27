@@ -27,10 +27,37 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
+/**
+ * The general base interface which is implemented by every class
+ * which the CoffeeMud ClassLoader (CMClass) handles.
+ * @see com.planet_ink.coffee_mud.core.CMClass
+ * @author Bo Zimmerman
+ *
+ */
 public interface CMObject extends Cloneable, Comparable
 {
-    public String ID();  // the class name of the object
+    /**
+     * The CoffeeMud Java Class ID shared by all instances of
+     * this object.  Unlike the Java Class name, this method
+     * does not include package information.  However, it must
+     * return a String value unique to its class category in
+     * the ClassLoader.  Class categories include Libraries, Common, 
+     * Areas, Abilities, Behaviors, CharClasses, Commands, Exits
+     * Locales, MOBS, Races, WebMacros, Basic Items, Armor, 
+     * Weapons, ClanItems, MiscTech.  The name is typically identical
+     * to the class name.
+     * @return the name of this class
+     */
+    public String ID();
+    /**
+     * Returns a new instance of this class.
+     * @return a new instance of this class
+     */
     public CMObject newInstance();
+    /**
+     * Similar to Cloneable.clone(), but does its best to make sure that
+     * any internal objects to this class are also copyOfed.
+     * @return a clone of this object
+     */
     public CMObject copyOf();
 }

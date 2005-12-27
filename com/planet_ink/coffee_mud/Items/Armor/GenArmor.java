@@ -45,7 +45,7 @@ public class GenArmor extends StdArmor
 		setDisplayText("a generic piece of armor sits here.");
 		setDescription("");
 		baseGoldValue=5;
-		properWornBitmap=Item.INVENTORY;
+		properWornBitmap=Item.IN_INVENTORY;
 		wornLogicalAnd=false;
 		baseEnvStats().setLevel(1);
 		baseEnvStats().setArmor(10);

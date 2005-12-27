@@ -110,7 +110,7 @@ public class Hireling extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=MudHost.TICK_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB) return true;
 		if(onTheJobUntil==0) return true;
 		MOB observer=(MOB)ticking;
 		if(System.currentTimeMillis()>onTheJobUntil)

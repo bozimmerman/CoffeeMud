@@ -40,7 +40,7 @@ public class Unicorn extends StdRace
 	public int heightVariance(){return 12;}
 	public int lightestWeight(){return 350;}
 	public int weightVariance(){return 100;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_HEAD-Item.WORN_EARS-Item.WORN_EYES;}
 	public String racialCategory(){return "Equine";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

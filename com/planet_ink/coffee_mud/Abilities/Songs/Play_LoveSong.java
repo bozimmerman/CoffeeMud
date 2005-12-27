@@ -64,9 +64,9 @@ public class Play_LoveSong extends Play
 				try{
 				if(CMLib.dice().rollPercentage()==1)
 				{
-					Item I=mob.fetchFirstWornItem(Item.ON_WAIST);
+					Item I=mob.fetchFirstWornItem(Item.WORN_WAIST);
 					if(I!=null)	CMLib.commands().postRemove(mob,I,false);
-					I=mob.fetchFirstWornItem(Item.ON_LEGS);
+					I=mob.fetchFirstWornItem(Item.WORN_LEGS);
 					if(I!=null)	CMLib.commands().postRemove(mob,I,false);
 					mob.doCommand(CMParms.parse("MATE "+M.name()));
 				}

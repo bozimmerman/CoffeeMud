@@ -214,7 +214,7 @@ public class WaterCurrents extends ActiveTicker
 		public String Name(){return name();}
 		public String description(){return "";}
 		public String displayText(){return "";}
-		protected boolean borrowed=false;
+		protected boolean savable=true;
 		protected String miscText="";
 		protected Environmental affected=null;
 		protected int canAffectCode(){return 0;}
@@ -275,8 +275,11 @@ public class WaterCurrents extends ActiveTicker
 		public int quality(){return Ability.INDIFFERENT;}
 
 		public int classificationCode(){ return Ability.PROPERTY;}
-		public boolean isBorrowed(Environmental toMe){ return borrowed;	}
-		public void setBorrowed(Environmental toMe, boolean truefalse)	{ borrowed=truefalse; }
+		public boolean savable(){ return savable;}
+		public void setSavable(boolean truefalse)	{ savable=truefalse; }
+        protected boolean amDestroyed=false;
+        public void destroy(){amDestroyed=true;}
+        public boolean amDestroyed(){return amDestroyed;}
 
 		public EnvStats envStats(){return envStats;}
 		public EnvStats baseEnvStats(){return envStats;}

@@ -85,7 +85,7 @@ public class GenFoodResource extends GenFood implements EnvResource, Food
 		    case EnvResource.MATERIAL_FLESH:
 			    {
 		        decayTime=System.currentTimeMillis()+(
-		            	   MudHost.TICK_TIME
+		            	   Tickable.TIME_TICK
 					        *CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)
 					      );
 		    	break;
@@ -93,7 +93,7 @@ public class GenFoodResource extends GenFood implements EnvResource, Food
 		    case EnvResource.MATERIAL_VEGETATION:
 			    {
 		        decayTime=System.currentTimeMillis()+(
-		                MudHost.TICK_TIME
+		                Tickable.TIME_TICK
 				        *CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)
 				        *5);
 			    break;

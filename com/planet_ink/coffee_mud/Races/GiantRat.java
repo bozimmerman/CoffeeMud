@@ -40,7 +40,7 @@ public class GiantRat extends Rat
 	public int heightVariance(){return 6;}
 	public int lightestWeight(){return 25;}
 	public int weightVariance(){return 10;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_HEAD-Item.WORN_EARS-Item.WORN_EYES;}
 	public String racialCategory(){return "Rodent";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

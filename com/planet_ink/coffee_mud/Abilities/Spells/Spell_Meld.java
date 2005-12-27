@@ -97,20 +97,20 @@ public class Spell_Meld extends Spell
 
 		if((itemOne instanceof Armor)&&(itemTwo instanceof Armor))
 		{
-			if(shinBone(itemOne,itemTwo,Item.ON_HEAD,Item.ON_NECK)
-			   ||shinBone(itemOne,itemTwo,Item.ON_HEAD,Item.ON_EARS)
-			   ||shinBone(itemOne,itemTwo,Item.ON_HEAD,Item.ON_EYES)
-			   ||shinBone(itemOne,itemTwo,Item.ON_HEAD,Item.ON_TORSO)
-			   ||shinBone(itemOne,itemTwo,Item.ON_NECK,Item.ON_TORSO)
-			   ||shinBone(itemOne,itemTwo,Item.ON_TORSO,Item.ON_ARMS)
-			   ||shinBone(itemOne,itemTwo,Item.ON_TORSO,Item.ON_WAIST)
-			   ||shinBone(itemOne,itemTwo,Item.ON_WAIST,Item.ON_LEGS)
-			   ||shinBone(itemOne,itemTwo,Item.ON_ARMS,Item.ON_LEFT_WRIST)
-			   ||shinBone(itemOne,itemTwo,Item.ON_ARMS,Item.ON_HANDS)
-			   ||shinBone(itemOne,itemTwo,Item.ON_HANDS,Item.ON_LEFT_WRIST)
-			   ||shinBone(itemOne,itemTwo,Item.ON_HANDS,Item.ON_RIGHT_FINGER)
-			   ||shinBone(itemOne,itemTwo,Item.ON_TORSO,Item.ON_LEGS)
-			   ||shinBone(itemOne,itemTwo,Item.ON_LEGS,Item.ON_FEET))
+			if(shinBone(itemOne,itemTwo,Item.WORN_HEAD,Item.WORN_NECK)
+			   ||shinBone(itemOne,itemTwo,Item.WORN_HEAD,Item.WORN_EARS)
+			   ||shinBone(itemOne,itemTwo,Item.WORN_HEAD,Item.WORN_EYES)
+			   ||shinBone(itemOne,itemTwo,Item.WORN_HEAD,Item.WORN_TORSO)
+			   ||shinBone(itemOne,itemTwo,Item.WORN_NECK,Item.WORN_TORSO)
+			   ||shinBone(itemOne,itemTwo,Item.WORN_TORSO,Item.WORN_ARMS)
+			   ||shinBone(itemOne,itemTwo,Item.WORN_TORSO,Item.WORN_WAIST)
+			   ||shinBone(itemOne,itemTwo,Item.WORN_WAIST,Item.WORN_LEGS)
+			   ||shinBone(itemOne,itemTwo,Item.WORN_ARMS,Item.WORN_LEFT_WRIST)
+			   ||shinBone(itemOne,itemTwo,Item.WORN_ARMS,Item.WORN_HANDS)
+			   ||shinBone(itemOne,itemTwo,Item.WORN_HANDS,Item.WORN_LEFT_WRIST)
+			   ||shinBone(itemOne,itemTwo,Item.WORN_HANDS,Item.WORN_RIGHT_FINGER)
+			   ||shinBone(itemOne,itemTwo,Item.WORN_TORSO,Item.WORN_LEGS)
+			   ||shinBone(itemOne,itemTwo,Item.WORN_LEGS,Item.WORN_FEET))
 			{
 
 			}
@@ -123,12 +123,12 @@ public class Spell_Meld extends Spell
 		else
 		if((itemOne instanceof Weapon)||(itemTwo instanceof Weapon))
 		{
-			if(!itemOne.fitsOn(Item.HELD))
+			if(!itemOne.fitsOn(Item.WORN_HELD))
 			{
 				mob.tell(itemOne.name()+" can't be held, and thus can't be melded with "+itemTwo.name()+".");
 				return false;
 			}
-			if(!itemTwo.fitsOn(Item.HELD))
+			if(!itemTwo.fitsOn(Item.WORN_HELD))
 			{
 				mob.tell(itemTwo.name()+" can't be held, and thus can't be melded with "+itemOne.name()+".");
 				return false;
@@ -192,43 +192,43 @@ public class Spell_Meld extends Spell
 						material=((Armor)itemTwo).material();
 
 					long wornLocation=itemOne.rawProperLocationBitmap()|itemTwo.rawProperLocationBitmap();
-					if((wornLocation&Item.HELD)==(Item.HELD))
-						wornLocation-=Item.HELD;
-					if(((wornLocation&Item.ON_LEFT_FINGER)==(Item.ON_LEFT_FINGER))
-					   &&((wornLocation&Item.ON_RIGHT_FINGER)==(Item.ON_RIGHT_FINGER)))
+					if((wornLocation&Item.WORN_HELD)==(Item.WORN_HELD))
+						wornLocation-=Item.WORN_HELD;
+					if(((wornLocation&Item.WORN_LEFT_FINGER)==(Item.WORN_LEFT_FINGER))
+					   &&((wornLocation&Item.WORN_RIGHT_FINGER)==(Item.WORN_RIGHT_FINGER)))
 					{
-						if(((wornLocation&Item.ON_LEFT_WRIST)==(Item.ON_LEFT_WRIST))
-						&&((wornLocation&Item.ON_RIGHT_WRIST)==0))
-						   wornLocation-=Item.ON_RIGHT_FINGER;
+						if(((wornLocation&Item.WORN_LEFT_WRIST)==(Item.WORN_LEFT_WRIST))
+						&&((wornLocation&Item.WORN_RIGHT_WRIST)==0))
+						   wornLocation-=Item.WORN_RIGHT_FINGER;
 						else
-						if(((wornLocation&Item.ON_RIGHT_WRIST)==(Item.ON_RIGHT_WRIST))
-						&&((wornLocation&Item.ON_LEFT_WRIST)==0))
-						   wornLocation-=Item.ON_LEFT_FINGER;
+						if(((wornLocation&Item.WORN_RIGHT_WRIST)==(Item.WORN_RIGHT_WRIST))
+						&&((wornLocation&Item.WORN_LEFT_WRIST)==0))
+						   wornLocation-=Item.WORN_LEFT_FINGER;
 						else
 						{
 							if(CMLib.dice().rollPercentage()>50)
-								wornLocation-=Item.ON_RIGHT_FINGER;
+								wornLocation-=Item.WORN_RIGHT_FINGER;
 							else
-								wornLocation-=Item.ON_LEFT_FINGER;
+								wornLocation-=Item.WORN_LEFT_FINGER;
 						}
 					}
 
-					if(((wornLocation&Item.ON_LEFT_WRIST)==(Item.ON_LEFT_WRIST))
-					   &&((wornLocation&Item.ON_RIGHT_WRIST)==(Item.ON_RIGHT_WRIST)))
+					if(((wornLocation&Item.WORN_LEFT_WRIST)==(Item.WORN_LEFT_WRIST))
+					   &&((wornLocation&Item.WORN_RIGHT_WRIST)==(Item.WORN_RIGHT_WRIST)))
 					{
-						if(((wornLocation&Item.ON_LEFT_FINGER)==(Item.ON_LEFT_FINGER))
-						&&((wornLocation&Item.ON_RIGHT_FINGER)==0))
-						   wornLocation-=Item.ON_RIGHT_WRIST;
+						if(((wornLocation&Item.WORN_LEFT_FINGER)==(Item.WORN_LEFT_FINGER))
+						&&((wornLocation&Item.WORN_RIGHT_FINGER)==0))
+						   wornLocation-=Item.WORN_RIGHT_WRIST;
 						else
-						if(((wornLocation&Item.ON_RIGHT_FINGER)==(Item.ON_RIGHT_FINGER))
-						&&((wornLocation&Item.ON_LEFT_FINGER)==0))
-						   wornLocation-=Item.ON_LEFT_WRIST;
+						if(((wornLocation&Item.WORN_RIGHT_FINGER)==(Item.WORN_RIGHT_FINGER))
+						&&((wornLocation&Item.WORN_LEFT_FINGER)==0))
+						   wornLocation-=Item.WORN_LEFT_WRIST;
 						else
 						{
 							if(CMLib.dice().rollPercentage()>50)
-								wornLocation-=Item.ON_RIGHT_WRIST;
+								wornLocation-=Item.WORN_RIGHT_WRIST;
 							else
-								wornLocation-=Item.ON_LEFT_WRIST;
+								wornLocation-=Item.WORN_LEFT_WRIST;
 						}
 					}
 

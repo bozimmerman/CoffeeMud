@@ -46,7 +46,7 @@ public class Spell_CauseStink extends Spell
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if(tickID==MudHost.TICK_MOB)
+		if(tickID==Tickable.TICKID_MOB)
 		{
 			if(CMLib.dice().rollPercentage()>25) return true;
 			if((affected==null)||(!(affected instanceof MOB))) return false;

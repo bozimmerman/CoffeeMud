@@ -29,7 +29,7 @@ public class StdLimb extends StdItem
 		baseEnvStats.setWeight(1);
 		setDisplayText("a false limb is here.");
 		setDescription("Looks like a false limb.");
-		properWornBitmap=Item.HELD|Item.FLOATING_NEARBY;
+		properWornBitmap=Item.WORN_HELD|Item.WORN_FLOATING_NEARBY;
 		wornLogicalAnd=false;
 		baseGoldValue=10;
 		material=EnvResource.RESOURCE_MEAT;
@@ -79,10 +79,10 @@ public class StdLimb extends StdItem
 	{
 		super.affectCharStats(affected,affectableStats);
 		
-		if((!amWearingAt(Item.INVENTORY))
-		&&(!amWearingAt(Item.HELD))
-		&&(!amWearingAt(Item.FLOATING_NEARBY))
-		&&(!amWearingAt(Item.WIELD)))
+		if((!amWearingAt(Item.IN_INVENTORY))
+		&&(!amWearingAt(Item.WORN_HELD))
+		&&(!amWearingAt(Item.WORN_FLOATING_NEARBY))
+		&&(!amWearingAt(Item.WORN_WIELD)))
 		{
 			if(affected.charStats().getBodyPart(partNum())<affected.charStats().getMyRace().bodyMask()[partNum()])
 				affectableStats.alterBodypart(partNum(),envStats().ability());
@@ -93,9 +93,9 @@ public class StdLimb extends StdItem
 	
 	public boolean canWear(MOB mob, long where)
 	{
-		if(where==Item.HELD) 
+		if(where==Item.WORN_HELD) 
 			return super.canWear(mob,where);
-		if(where==Item.FLOATING_NEARBY)
+		if(where==Item.WORN_FLOATING_NEARBY)
 			return false;
 		if(partNum()<0) return false;
 		if((where!=0)&&(where!=wearPlace()))
@@ -120,9 +120,9 @@ public class StdLimb extends StdItem
 	
 	public boolean fitsOn(long wornCode)
 	{
-		if(wornCode==Item.HELD) 
+		if(wornCode==Item.WORN_HELD) 
 			return super.fitsOn(wornCode);
-		if(wornCode==Item.FLOATING_NEARBY)
+		if(wornCode==Item.WORN_FLOATING_NEARBY)
 			return false;
 		if(wornCode<=0)	return true;
 		return wearPlace()==wornCode;

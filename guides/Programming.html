@@ -1061,7 +1061,7 @@ public MyNewArmor()
 	setBaseValue(100);
 	baseEnvStats.setWeight(5);
 	baseEnvStats.setArmor(5);
-	setRawProperLocationBitmap(Item.ON_LEFT_WRIST|Item.ON_RIGHT_WRIST);
+	setRawProperLocationBitmap(Item.WORN_LEFT_WRIST|Item.WORN_RIGHT_WRIST);
 	setRawLogicalAnd(false);
 	recoverEnvStats();
 }
@@ -1920,7 +1920,7 @@ NUM_TICKS.</P></FONT>
 above version of startTickDown can be used to create timed events of any 
 duration. However, all objects in the base distribution of CoffeeMud operate on 
 a single default time interval of 4000 miliseconds as defined by 
-MudHost.TICK_TIME. For this reason, a different version of the startTickDown 
+Tickable.TIME_TICK. For this reason, a different version of the startTickDown 
 method is called which does not include the TICK_TIME parameter, utilitizing the 
 standard 4 second delay instead:</FONT></P><pre>	
 	CMClass.ThreadEngine().startTickDown(theEnvObject,Host.MY_TICK_ID,NUM_TICKS);
@@ -2488,9 +2488,9 @@ methods, as you might have guessed, establish parameters for the base height and
 weight of a typical monster of this type.&nbsp; A random number from 
 0-heightVariance() will be added to the shortedMale/shortestFemale value to 
 determine height, while a random number from 0-weightVariance will be added to 
-lightestWeight to determine that.</FONT></P><pre>protected long forbiddenWornBits(){return Item.WIELD|Item.ON_WAIST
-				   |Item.ABOUT_BODY|Item.ON_FEET
-				   |Item.ON_HANDS;}
+lightestWeight to determine that.</FONT></P><pre>protected long forbiddenWornBits(){return Item.WORN_WIELD|Item.WORN_WAIST
+				   |Item.WORN_ABOUT_BODY|Item.WORN_FEET
+				   |Item.WORN_HANDS;}
 </PRE>
 <P align=left><FONT size=4>This method 
 establishes where a creature of this type may NOT wear something.&nbsp; In this 

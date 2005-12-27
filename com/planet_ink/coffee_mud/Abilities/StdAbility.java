@@ -69,7 +69,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 
 	protected boolean isAnAutoEffect=false;
 	protected int profficiency=0;
-	protected boolean borrowed=false;
+	protected boolean savable=true;
 	public String miscText="";
 	protected MOB invoker=null;
 	protected Environmental affected=null;
@@ -104,8 +104,11 @@ public class StdAbility extends ForeignScriptable implements Ability
 	public EnvStats baseEnvStats(){return envStats;}
 
 	public boolean isNowAnAutoEffect(){ return isAnAutoEffect; }
-	public boolean isBorrowed(Environmental toMe){ return borrowed;	}
-	public void setBorrowed(Environmental toMe, boolean truefalse) { borrowed=truefalse; }
+    public boolean savable(){ return savable;}
+    public void setSavable(boolean truefalse)   { savable=truefalse; }
+    protected boolean amDestroyed=false;
+    public void destroy(){amDestroyed=true; affected=null; invoker=null; miscText=null; }
+    public boolean amDestroyed(){return amDestroyed;}
 	public void setName(String newName){}
 	public void recoverEnvStats() {}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
@@ -130,7 +133,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 	{
 		if(invokerMOB!=null) invoker=invokerMOB;
 
-		borrowed=true; // makes it so that the effect does not save!
+		savable=false; // makes it so that the effect does not save!
 
 		if(invoker()!=null)
 			for(int c=0;c<invoker().charStats().numClasses();c++)
@@ -155,7 +158,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 				((Room)affected).recoverRoomStats();
 			else
 				affected.recoverEnvStats();
-			CMLib.threads().startTickDown(this,MudHost.TICK_MOB,1);
+			CMLib.threads().startTickDown(this,Tickable.TICKID_MOB,1);
 		}
 		tickDown=tickTime;
 	}
@@ -324,11 +327,11 @@ public class StdAbility extends ForeignScriptable implements Ability
 						switch(wornReqCode)
 						{
 						case Item.WORN_REQ_UNWORNONLY:
-							if(!((Item)target).amWearingAt(Item.INVENTORY))
+							if(!((Item)target).amWearingAt(Item.IN_INVENTORY))
 								continue;
 							break;
 						case Item.WORN_REQ_WORNONLY:
-							if(((Item)target).amWearingAt(Item.INVENTORY))
+							if(((Item)target).amWearingAt(Item.IN_INVENTORY))
 								continue;
 							break;
 						}
@@ -631,7 +634,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 	{
 		if(mob==null) return;
 		Ability A=mob.fetchAbility(ID());
-		if((A==null)||(A.isBorrowed(mob))) return;
+		if((A==null)||(!A.savable())) return;
 
         if(!mob.isMonster()) CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_SKILLUSE);
         
@@ -875,7 +878,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 		if(A==null)
 		{
 			A=CMClass.getAbility("TemporaryImmunity");
-			A.setBorrowed(mob,true);
+			A.setSavable(false);
 			A.makeLongLasting();
 			mob.addEffect(A);
 			A.makeLongLasting();
@@ -891,7 +894,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			if(thisAbility!=null) return false;
 			Ability thatAbility=(Ability)copyOf();
 			((StdAbility)thatAbility).canBeUninvoked=true;
-			thatAbility.setBorrowed(mob,true);
+			thatAbility.setSavable(false);
 			mob.addEffect(thatAbility);
 			return true;
 		}
@@ -901,7 +904,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 	{
 		unInvoked=false;
 		canBeUninvoked=false;
-		borrowed=false;
+		savable=true;
 	}
 
 	public String accountForYourself(){return name();}
@@ -1009,7 +1012,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 		if(student.getTrains()<trainsRequired())
 		{
 			teacher.tell(student.name()+" does not have enough training sessions to learn '"+name()+"'.");
-			student.tell("You do not have enough training CMLib.sessions().");
+			student.tell("You do not have enough training sessions.");
 			return false;
 		}
 		if((CMath.bset(student.getBitmap(),MOB.ATT_NOTEACH))
@@ -1234,7 +1237,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 		if((unInvoked)&&(canBeUninvoked()))
 			return false;
 
-		if((tickID==MudHost.TICK_MOB)
+		if((tickID==Tickable.TICKID_MOB)
 		&&(tickDown!=Integer.MAX_VALUE)
 		&&(canBeUninvoked()))
 		{

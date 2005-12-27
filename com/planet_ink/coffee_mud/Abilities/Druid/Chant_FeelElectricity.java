@@ -51,7 +51,7 @@ public class Chant_FeelElectricity extends Chant
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if(tickID!=MudHost.TICK_MOB) return false;
+		if(tickID!=Tickable.TICKID_MOB) return false;
 		if((affecting()!=null)&&(affecting() instanceof MOB))
 		{
 			MOB M=(MOB)affecting();

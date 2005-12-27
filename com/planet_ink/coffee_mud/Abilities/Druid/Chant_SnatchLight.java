@@ -75,7 +75,7 @@ public class Chant_SnatchLight extends Chant
 			if((R!=null)&&(R.fetchEffect(ID())==null))
 			{
 				Ability A=(Ability)copyOf();
-				A.setBorrowed(R,true);
+				A.setSavable(false);
 				R.addEffect(A);
 			}
 			for(int m=0;m<R.numInhabitants();m++)
@@ -84,7 +84,7 @@ public class Chant_SnatchLight extends Chant
 				if((M!=null)&&(CMLib.flags().isGlowing(M)||CMLib.flags().isLightSource(M))&&(M.fetchEffect(ID())==null))
 				{
 					Ability A=(Ability)copyOf();
-					A.setBorrowed(M,true);
+					A.setSavable(false);
 					M.addEffect(A);
 				}
 				if(M!=null)
@@ -94,7 +94,7 @@ public class Chant_SnatchLight extends Chant
 					if((I!=null)&&(I.container()==null)&&(CMLib.flags().isGlowing(I)||CMLib.flags().isLightSource(I))&&(I.fetchEffect(ID())==null))
 					{
 						Ability A=(Ability)copyOf();
-						A.setBorrowed(I,true);
+						A.setSavable(false);
 						I.addEffect(A);
 					}
 				}
@@ -105,7 +105,7 @@ public class Chant_SnatchLight extends Chant
 				if((I!=null)&&(CMLib.flags().isGlowing(I)||CMLib.flags().isLightSource(I))&&(I.fetchEffect(ID())==null))
 				{
 					Ability A=(Ability)copyOf();
-					A.setBorrowed(I,true);
+					A.setSavable(false);
 					I.addEffect(A);
 				}
 			}

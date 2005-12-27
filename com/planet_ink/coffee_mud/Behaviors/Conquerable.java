@@ -51,11 +51,11 @@ public class Conquerable extends Arrest
     protected long waitToReload=0;
 
     protected int revoltDown=REVOLTFREQ;
-    protected static final int REVOLTFREQ=(int)((TimeManager.MILI_DAY*3)/MudHost.TICK_TIME);
+    protected static final int REVOLTFREQ=(int)((TimeManager.MILI_DAY*3)/Tickable.TIME_TICK);
     protected int checkDown=0;
     protected static final int CHECKFREQ=10;
     protected int pointDown=0;
-    protected static final int POINTFREQ=(int)((10*60000)/MudHost.TICK_TIME);
+    protected static final int POINTFREQ=(int)((10*60000)/Tickable.TIME_TICK);
     protected int fightDown=0;
     protected static final int FIGHTFREQ=2;
 
@@ -134,7 +134,7 @@ public class Conquerable extends Arrest
 				Item I=M.fetchInventory(i);
 				if((I!=null)
 				&&(I instanceof ClanItem)
-				&&(!I.amWearingAt(Item.INVENTORY))
+				&&(!I.amWearingAt(Item.IN_INVENTORY))
 				&&(((ClanItem)I).ciType()==ClanItem.CI_BANNER))
 					return true;
 			}
@@ -154,7 +154,7 @@ public class Conquerable extends Arrest
 				Item I=M.fetchInventory(i);
 				if((I!=null)
 				&&(I instanceof ClanItem)
-				&&(!I.amWearingAt(Item.INVENTORY))
+				&&(!I.amWearingAt(Item.IN_INVENTORY))
 				&&(((ClanItem)I).ciType()==ClanItem.CI_GAVEL))
 					return true;
 			}
@@ -272,7 +272,7 @@ public class Conquerable extends Arrest
 
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID!=MudHost.TICK_AREA) return true;
+		if(tickID!=Tickable.TICKID_AREA) return true;
 		if(!(ticking instanceof Area)) return true;
 		Area A=(Area)ticking;
 
@@ -281,7 +281,7 @@ public class Conquerable extends Arrest
 		for(int i=clanItems.size()-1;i>=0;i--)
 		{
 			Item I=(Item)clanItems.elementAt(i);
-			if(!I.tick(this,MudHost.TICK_CLANITEM))
+			if(!I.tick(this,Tickable.TICKID_CLANITEM))
                 deRegisterClanItem(i);
 			else
 				I.setDispossessionTime(0);

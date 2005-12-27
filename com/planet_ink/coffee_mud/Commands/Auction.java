@@ -68,7 +68,7 @@ public class Auction extends Channel
 				Vector V=new Vector();
 				V.addElement(getScr("Auction","cmd"));
 				V.addElement(getScr("Auction","closed"));
-				CMLib.threads().deleteTick(auctionA,MudHost.TICK_QUEST);
+				CMLib.threads().deleteTick(auctionA,Tickable.TICKID_QUEST);
 				auctionA=null;
 				super.execute(mob,V);
 				return false;

@@ -89,7 +89,7 @@ public class Trap_SnakePit extends Trap_RoomPit
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==MudHost.TICK_TRAP_RESET)&&(getReset()>0))
+		if((tickID==Tickable.TICKID_TRAP_RESET)&&(getReset()>0))
 		{
 			// recage the motherfather
 			if((tickDown<=1)&&(monsters!=null))

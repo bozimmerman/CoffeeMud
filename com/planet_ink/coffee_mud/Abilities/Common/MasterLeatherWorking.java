@@ -476,7 +476,7 @@ public class MasterLeatherWorking extends CraftingSkill
 					break;
 				}
 				building.baseEnvStats().setDamage(armordmg+hardness);
-				((Weapon)building).setRawProperLocationBitmap(Item.WIELD|Item.HELD);
+				((Weapon)building).setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_HELD);
 				((Weapon)building).setRawLogicalAnd((capacity>1));
 			}
 			if(building instanceof Armor)
@@ -488,9 +488,9 @@ public class MasterLeatherWorking extends CraftingSkill
 					((Armor)building).setCapacity(capacity+woodRequired);
 					((Armor)building).setContainTypes(canContain);
 				}
-				for(int wo=1;wo<Item.wornLocation.length;wo++)
+				for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
 				{
-					String WO=Item.wornLocation[wo].toUpperCase();
+					String WO=Item.WORN_DESCS[wo].toUpperCase();
 					if(misctype.equalsIgnoreCase(WO))
 					{
 						((Armor)building).setRawProperLocationBitmap(CMath.pow(2,wo-1));

@@ -149,7 +149,7 @@ public class GateGuard extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=MudHost.TICK_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB) return true;
 		if(!canFreelyBehaveNormal(ticking)) return true;
 		MOB mob=(MOB)ticking;
 		int dir=findGate(mob);

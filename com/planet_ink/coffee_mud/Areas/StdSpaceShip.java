@@ -76,7 +76,31 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public SpaceObject orbiting=null;
 	public SpaceObject orbiting(){return orbiting;}
 	public void setOrbiting(SpaceObject O){orbiting=O;}
-	
+	protected boolean amDestroyed=false;
+    
+    public void destroy()
+    {
+        envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+        coordinates=null;
+        direction=null;
+        spaceSource=null;
+        spaceTarget=null;
+        orbiting=null;
+        baseEnvStats=envStats;
+        miscText=null;
+        imageName=null;
+        affects=null;
+        behaviors=null;
+        author=null;
+        currency=null;
+        parents=null;
+        parentsToLoad=null;
+        statData=null;
+        climateObj=null;
+        amDestroyed=true;
+    }
+    public boolean amDestroyed(){return amDestroyed;}
+    public boolean savable(){return !amDestroyed;}
 	public String ID(){	return "StdSpaceShip";}
 	protected String name="a space ship";
 	protected Room dock=null;
@@ -297,7 +321,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		if(start)
 		{
 			stopTicking=false;
-			CMLib.threads().startTickDown(this,MudHost.TICK_AREA,1);
+			CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
 		}
 		else
 			stopTicking=true;
@@ -319,7 +343,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	{
 		if(stopTicking) return false;
 		tickStatus=Tickable.STATUS_START;
-		if(tickID==MudHost.TICK_AREA)
+		if(tickID==Tickable.TICKID_AREA)
 		{
 			getTimeObj().tick(this,tickID);
 			for(int b=0;b<numBehaviors();b++)

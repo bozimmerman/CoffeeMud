@@ -71,7 +71,7 @@ public class FasterRecovery extends StdBehavior
 	{
 	    if(M==null) return;
 		for(int i2=0;i2<burst;i2++)
-			M.tick(M,MudHost.TICK_MOB);
+			M.tick(M,Tickable.TICKID_MOB);
 		for(int i2=0;i2<health;i2++)
 			M.curState().recoverTick(M,M.maxState());
 		if(hits!=0)
@@ -152,7 +152,7 @@ public class FasterRecovery extends StdBehavior
 		{
 		    if(CMLib.flags().isGettable((Item)ticking)
 		    &&(((Item)ticking).owner() instanceof MOB)
-		    &&(!((Item)ticking).amWearingAt(Item.INVENTORY)))
+		    &&(!((Item)ticking).amWearingAt(Item.IN_INVENTORY)))
 				doBe((MOB)((Item)ticking).owner(),burst,health,hits,mana,move);
 		    else
 		    if(!CMLib.flags().isGettable((Item)ticking)

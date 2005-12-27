@@ -42,7 +42,7 @@ public class Train extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("You have "+mob.getTrains()+" training CMLib.sessions(). Enter HELP TRAIN for more information.");
+			mob.tell("You have "+mob.getTrains()+" training sessions. Enter HELP TRAIN for more information.");
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -149,7 +149,7 @@ public class Train extends StdCommand
 		else
 		if(mob.getTrains()<trainsRequired)
 		{
-			mob.tell("Training that ability further will require "+trainsRequired+" training points.");
+			mob.tell("Training that ability further will require "+trainsRequired+" training sessions.");
 			return false;
 		}
 

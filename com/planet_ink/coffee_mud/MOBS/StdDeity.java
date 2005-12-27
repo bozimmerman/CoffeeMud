@@ -318,7 +318,7 @@ public class StdDeity extends StdMOB implements Deity
 			if(Blessing.canTarget(CMClass.sampleItem()))
 			{
 				Item I=mob.fetchWieldedItem();
-				if(I==null) I=mob.fetchFirstWornItem(Item.HELD);
+				if(I==null) I=mob.fetchFirstWornItem(Item.WORN_HELD);
 				if(I==null) I=mob.fetchWornItem("all");
 				if(I==null) I=mob.fetchCarried(null,"all");
 				if(I==null) return;
@@ -348,7 +348,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			Power=(Ability)Power.copyOf();
 			Power.setProfficiency(100);
-			Power.setBorrowed(mob,true);
+			Power.setSavable(false);
 			mob.addAbility(Power);
 		}
 	}
@@ -369,7 +369,7 @@ public class StdDeity extends StdMOB implements Deity
 			if(Curse.canTarget(CMClass.sampleItem()))
 			{
 				Item I=mob.fetchWieldedItem();
-				if(I==null) I=mob.fetchFirstWornItem(Item.HELD);
+				if(I==null) I=mob.fetchFirstWornItem(Item.WORN_HELD);
 				if(I==null) I=mob.fetchWornItem("all");
 				if(I==null) I=mob.fetchCarried(null,"all");
 				if(I==null) return;
@@ -501,7 +501,7 @@ public class StdDeity extends StdMOB implements Deity
 			for(int a=mob.numLearnedAbilities()-1;a>=0;a--)
 			{
 				Ability A=mob.fetchAbility(a);
-				if((A!=null)&&(A.isBorrowed(mob)))
+				if((A!=null)&&(!A.savable()))
 				{
 					mob.delAbility(A);
 					A=mob.fetchEffect(A.ID());
@@ -532,7 +532,7 @@ public class StdDeity extends StdMOB implements Deity
 		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
-			if((A!=null)&&(A.isBorrowed(mob)))
+			if((A!=null)&&(!A.savable()))
 				return true;
 		}
 		return false;
@@ -790,7 +790,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==MudHost.TICK_MOB)
+		if((tickID==Tickable.TICKID_MOB)
 		&&((--checkDown)<0))
 		{
 			checkDown=10;

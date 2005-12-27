@@ -67,7 +67,7 @@ public class Spell_WallOfDarkness extends Spell
 			if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Weapon)
-			&&(!((Weapon)msg.tool()).amWearingAt(Item.INVENTORY))
+			&&(!((Weapon)msg.tool()).amWearingAt(Item.IN_INVENTORY))
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED))
 			{
 				mob.tell("You cannot see through the wall of darkness to target "+mob.getVictim().name()+".");
@@ -100,7 +100,7 @@ public class Spell_WallOfDarkness extends Spell
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==MudHost.TICK_MOB)
+		if(tickID==Tickable.TICKID_MOB)
 		{
 			if((invoker!=null)
 			   &&(theWall!=null)

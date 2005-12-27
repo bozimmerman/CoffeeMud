@@ -382,7 +382,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             if(getMaskCodes().containsKey(str))
                 return false;
             I=mob.fetchInventory(str);
-            if((I!=null)&&(!I.amWearingAt(Item.INVENTORY)))
+            if((I!=null)&&(!I.amWearingAt(Item.IN_INVENTORY)))
                 return true;
         }
         return false;
@@ -650,7 +650,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.utensils().getWornCode(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(Item.wornLocation[code]+", ");
+                                    buf.append(Item.WORN_DESCS[code]+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -670,7 +670,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.utensils().getWornCode(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(Item.wornLocation[code]+", ");
+                                    buf.append(Item.WORN_DESCS[code]+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -2388,14 +2388,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     for(int v=1;v<V.size();v++)
                     {
                         Item I=mob.fetchInventory((String)V.elementAt(v));
-                        if((I!=null)&&(!I.amWearingAt(Item.INVENTORY)))
+                        if((I!=null)&&(!I.amWearingAt(Item.IN_INVENTORY)))
                         { found=true; break;}
                     }
                     if(!found) return false;
                 }
                 else
                 if(E instanceof Item)
-                    if(((Item)E).amWearingAt(Item.INVENTORY))
+                    if(((Item)E).amWearingAt(Item.IN_INVENTORY))
                         return false;
                 break;
 			case 34: // +class
@@ -2753,7 +2753,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     }
                     else
                     if(E instanceof Item)
-                        if(((Item)E).amWearingAt(Item.INVENTORY))
+                        if(((Item)E).amWearingAt(Item.IN_INVENTORY))
                             return false;
                     break;
 				case 43: // -Effects
@@ -2782,17 +2782,17 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					    return false;
 					break;
                 case 57: // +wornOn
-                    for(int i=0;i<Item.wornCodes.length;i++)
-                        if(((item.rawProperLocationBitmap()&Item.wornCodes[i])>0)
-                        &&(fromHereEndsWith(V,'-',v+1,Item.wornLocation[i].toUpperCase())))
+                    for(int i=0;i<Item.WORN_CODES.length;i++)
+                        if(((item.rawProperLocationBitmap()&Item.WORN_CODES[i])>0)
+                        &&(fromHereEndsWith(V,'-',v+1,Item.WORN_DESCS[i].toUpperCase())))
                             return false;
                     break;
                 case 58: // -wornOn
                     {
                         boolean found=false;
-                        for(int i=0;i<Item.wornCodes.length;i++)
-                            if(((item.rawProperLocationBitmap()&Item.wornCodes[i])>0)
-                            &&(fromHereEndsWith(V,'+',v+1,Item.wornLocation[i].toUpperCase())))
+                        for(int i=0;i<Item.WORN_CODES.length;i++)
+                            if(((item.rawProperLocationBitmap()&Item.WORN_CODES[i])>0)
+                            &&(fromHereEndsWith(V,'+',v+1,Item.WORN_DESCS[i].toUpperCase())))
                             { found=true; break;}
                         if(!found) return false;
                     }

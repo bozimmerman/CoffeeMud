@@ -57,7 +57,7 @@ public class Get extends BaseItemParser
 			target=container;
 			theWhat="<O-NAME> from <T-NAME>";
 		}
-		if(!getThis.amWearingAt(Item.INVENTORY))
+		if(!getThis.amWearingAt(Item.IN_INVENTORY))
 		{
 			CMMsg msg=CMClass.getMsg(mob,getThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_REMOVE,null);
 			if(!mob.location().okMessage(mob,msg))

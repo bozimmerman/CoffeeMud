@@ -26,7 +26,7 @@ public class FaerieDragon extends StdRace
 	public int heightVariance(){return 12;}
 	public int lightestWeight(){return 10;}
 	public int weightVariance(){return 15;}
-	public long forbiddenWornBits(){return Item.WIELD|Item.ON_WAIST|Item.ON_BACK|Item.ABOUT_BODY|Item.ON_FEET|Item.ON_HANDS;}
+	public long forbiddenWornBits(){return Item.WORN_WIELD|Item.WORN_WAIST|Item.WORN_BACK|Item.WORN_ABOUT_BODY|Item.WORN_FEET|Item.WORN_HANDS;}
 	public String racialCategory(){return "Dragon";}
 	private String[]racialAbilityNames={"Spell_Invisibility","Spell_FaerieFire","WingFlying"};
 	private int[]racialAbilityLevels={5,5,1};

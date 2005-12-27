@@ -262,7 +262,7 @@ public class Masonry extends CraftingSkill
 							R.getArea().fillInAreaRoom(R);
 							CMLib.database().DBUpdateRoom(R);
 							CMLib.database().DBUpdateExits(R);
-                            room.destroyRoom();
+                            room.destroy();
 						}
 						break;
 					case BUILD_PORTCULIS:
@@ -459,7 +459,7 @@ public class Masonry extends CraftingSkill
 								R.getArea().fillInAreaRoom(R);
 								CMLib.database().DBUpdateRoom(R);
 								CMLib.database().DBUpdateExits(R);
-                                room.destroyRoom();
+                                room.destroy();
 							}
 							else
 							{

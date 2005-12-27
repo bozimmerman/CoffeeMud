@@ -66,13 +66,13 @@ public class Fighter_CatchProjectile extends FighterSkill
 		&&(mob.fetchEffect("Fighter_ReturnProjectile")==null)
 		&&(mob.charStats().getBodyPart(Race.BODY_HAND)>0)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,-85+mob.charStats().getStat(CharStats.DEXTERITY),false))
-		&&(mob.freeWearPositions(Item.HELD)>0))
+		&&(mob.freeWearPositions(Item.WORN_HELD)>0))
 		{
 			Item w=(Item)msg.tool();
 			if((((Weapon)w).weaponClassification()==Weapon.CLASS_THROWN)
 			&&(msg.source().isMine(w)))
 			{
-				if(!w.amWearingAt(Item.INVENTORY))
+				if(!w.amWearingAt(Item.IN_INVENTORY))
 					CMLib.commands().postRemove(msg.source(),w,true);
 				CMLib.commands().postDrop(msg.source(),w,true,false);
 			}
@@ -115,7 +115,7 @@ public class Fighter_CatchProjectile extends FighterSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==MudHost.TICK_MOB)
+		if(tickID==Tickable.TICKID_MOB)
 			doneThisRound=false;
 		return super.tick(ticking,tickID);
 	}

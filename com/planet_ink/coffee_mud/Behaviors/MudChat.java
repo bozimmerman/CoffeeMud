@@ -516,7 +516,7 @@ public class MudChat extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if((tickID==MudHost.TICK_MOB)
+		if((tickID==Tickable.TICKID_MOB)
 		&&(ticking instanceof MOB)
 		&&(!CMSecurity.isDisabled("MUDCHAT")))
 		{

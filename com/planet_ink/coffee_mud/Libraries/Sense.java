@@ -919,10 +919,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	
 	public String wornLocation(long wornCode)
 	{
-		for(int wornNum=0;wornNum<Item.wornLocation.length-1;wornNum++)
+		for(int wornNum=0;wornNum<Item.WORN_DESCS.length-1;wornNum++)
 		{
 			if(wornCode==(1<<wornNum))
-				return Item.wornLocation[wornNum+1];
+				return Item.WORN_DESCS[wornNum+1];
 		}
 		return "";
 	}

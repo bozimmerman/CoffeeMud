@@ -387,7 +387,7 @@ public class DefaultClan implements Clan
                         ((Item)V.elementAt(v)).setContainer(null);
                 }
                 I.setContainer(null);
-                I.wearAt(Item.INVENTORY);
+                I.wearAt(Item.IN_INVENTORY);
                 if(R!=null)
                     R.bringItemHere(I,0);
                 else
@@ -895,12 +895,12 @@ public class DefaultClan implements Clan
 
     public boolean tick(Tickable ticking, int tickID)
     {
-        if(tickID!=MudHost.TICK_CLAN)
+        if(tickID!=Tickable.TICKID_CLAN)
             return true;
         try{
             DVector members=getMemberList();
             int activeMembers=0;
-            long deathMilis=CMProps.getIntVar(CMProps.SYSTEMI_DAYSCLANDEATH)*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*MudHost.TICK_TIME;
+            long deathMilis=CMProps.getIntVar(CMProps.SYSTEMI_DAYSCLANDEATH)*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*Tickable.TIME_TICK;
             int[] numTypes=new int[POSORDER.length];
             for(int j=0;j<members.size();j++)
             {
@@ -1001,7 +1001,7 @@ public class DefaultClan implements Clan
                 long duration=54;
                 if(data.size()>0) duration=CMath.s_long((String)data.firstElement());
                 if(duration<=0) duration=54;
-                duration=duration*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*MudHost.TICK_TIME;
+                duration=duration*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*Tickable.TIME_TICK;
                 for(Enumeration e=votes();e.hasMoreElements();)
                 {
                     ClanVote CV=(ClanVote)e.nextElement();

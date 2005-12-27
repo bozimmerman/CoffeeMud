@@ -78,7 +78,7 @@ public class Practice extends StdCommand
 			mob.tell(getScr("AbilityEvoker","pracerr3",abilityName));
 			return false;
 		}
-		if(myAbility.isBorrowed(mob))
+		if(!myAbility.savable())
 		{
 			mob.tell(getScr("AbilityEvoker","pracerr5",abilityName));
 			return false;

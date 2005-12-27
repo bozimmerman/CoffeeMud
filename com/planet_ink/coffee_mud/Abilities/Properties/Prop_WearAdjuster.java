@@ -44,8 +44,8 @@ public class Prop_WearAdjuster extends Prop_HaveAdjuster
     {
         if(!super.canApply(mob))
             return false;
-        if((!((Item)affected).amWearingAt(Item.INVENTORY))
-        &&((!((Item)affected).amWearingAt(Item.FLOATING_NEARBY))||(((Item)affected).fitsOn(Item.FLOATING_NEARBY))))
+        if((!((Item)affected).amWearingAt(Item.IN_INVENTORY))
+        &&((!((Item)affected).amWearingAt(Item.WORN_FLOATING_NEARBY))||(((Item)affected).fitsOn(Item.WORN_FLOATING_NEARBY))))
             return true;
         return false;
     }

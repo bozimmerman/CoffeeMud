@@ -417,8 +417,8 @@ public class DefaultCoffeeShop implements CoffeeShop
                 shop.setWhatIsSold(CMath.s_int(parm));
             else
             if(parm!=null)
-            for(int s=0;s<ShopKeeper.SOLDCODES.length;s++)
-                if(parm.equalsIgnoreCase(ShopKeeper.SOLDCODES[s]))
+            for(int s=0;s<ShopKeeper.DEAL_DESCS.length;s++)
+                if(parm.equalsIgnoreCase(ShopKeeper.DEAL_DESCS[s]))
                     shop.setWhatIsSold(s);
             parm=CMParms.getParmStr(text,"IPREJ","");
             if(parm!=null) shop.setPrejudiceFactors(parm);

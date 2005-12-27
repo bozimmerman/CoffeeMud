@@ -186,7 +186,7 @@ public class StdClanCommonItem extends StdClanItem
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==MudHost.TICK_CLANITEM)
+		if((tickID==Tickable.TICKID_CLANITEM)
 		&&(owner() instanceof MOB)
 		&&(((MOB)owner()).isMonster())
 		&&(readableText().length()>0)
@@ -323,7 +323,7 @@ public class StdClanCommonItem extends StdClanItem
 							if((I==null)
                             ||(I==this)
                             ||(I instanceof EnvResource)
-                            ||(!I.amWearingAt(Item.INVENTORY)))
+                            ||(!I.amWearingAt(Item.IN_INVENTORY)))
 								I=null;
 						}
 						Vector V=new Vector();

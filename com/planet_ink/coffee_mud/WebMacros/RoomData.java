@@ -74,7 +74,7 @@ public class RoomData extends StdWebMacro
 			if(M==M2)
 				return new Long(new String(M.ID()+"/"+M.Name()+"/"+M.displayText()).hashCode()<<5).toString()+code;
 			else
-			if((M2!=null)&&(M2.isEligibleMonster()))
+			if((M2!=null)&&(M2.savable()))
 				code++;
 		}
 		return "";
@@ -194,7 +194,7 @@ public class RoomData extends StdWebMacro
 					if(M.sameAs(M2))
 					{	found=true;	break;	}
 				}
-				if((!found)&&(M.isEligibleMonster()))
+				if((!found)&&(M.savable()))
 				{
 					MOB M3=(MOB)M.copyOf();
 					mobs.addElement(M3);
@@ -236,7 +236,7 @@ public class RoomData extends StdWebMacro
 				if(!found)
 				{
 					I.setContainer(null);
-					I.wearAt(Item.INVENTORY);
+					I.wearAt(Item.IN_INVENTORY);
 					Item I2=(Item)I.copyOf();
 					items.addElement(I2);
 					I2.stopTicking();
@@ -378,7 +378,7 @@ public class RoomData extends StdWebMacro
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					MOB M=R.fetchInhabitant(m);
-					if(M.isEligibleMonster())
+					if(M.savable())
 						classes.addElement(M);
 				}
 				moblist=contributeMOBs(classes);

@@ -65,7 +65,7 @@ public class Undress extends StdCommand
 			Item item=target.fetchInventory(null,what);
 			if((item==null)
 			   ||(!CMLib.flags().canBeSeenBy(item,mob))
-			   ||(item.amWearingAt(Item.INVENTORY)))
+			   ||(item.amWearingAt(Item.IN_INVENTORY)))
 			{
 				mob.tell(target.name()+" doesn't seem to be equipped with '"+what+"'.");
 				return false;

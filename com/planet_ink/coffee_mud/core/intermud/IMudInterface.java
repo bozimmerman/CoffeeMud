@@ -199,7 +199,7 @@ public class IMudInterface implements ImudServices, Serializable
         if(mob==null) return;
         Room R=mob.location();
         mob.destroy();
-        if(R!=null) R.destroyRoom();
+        if(R!=null) R.destroy();
     }
 
 	/**

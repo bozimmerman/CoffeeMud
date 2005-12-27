@@ -101,7 +101,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	public static final int ARMOR_VEGAN=4;
 	public static final int ARMOR_METALONLY=5;
 	public static final int ARMOR_OREONLY=6;
-	public static long ARMOR_WEARMASK=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
+	public static long ARMOR_WEARMASK=Item.WORN_TORSO|Item.WORN_LEGS|Item.WORN_ARMS|Item.WORN_WAIST|Item.WORN_HEAD;
 	public static final String[] ARMOR_DESCS={
 		"ANY","CLOTH","LEATHER","NONMETAL","VEGAN","METALONLY","OREONLY"
 	};

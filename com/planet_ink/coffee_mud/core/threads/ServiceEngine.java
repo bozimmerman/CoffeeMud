@@ -73,7 +73,7 @@ public class ServiceEngine implements ThreadEngine
 			if((tock==null)
             &&(almostTock.TICK_TIME==TICK_TIME)
             &&(!almostTock.solitaryTicker)
-            &&(almostTock.numTickers()<MudHost.MAX_TICK_CLIENTS))
+            &&(almostTock.numTickers()<TickableGroup.MAX_TICK_CLIENTS))
 				tock=almostTock;
             try{
     			for(Enumeration t=almostTock.tickers();t.hasMoreElements();)
@@ -94,7 +94,7 @@ public class ServiceEngine implements ThreadEngine
 	}
 
     public void startTickDown(Tickable E, int tickID, int numTicks)
-    { startTickDown(E,tickID,MudHost.TICK_TIME,numTicks); }
+    { startTickDown(E,tickID,Tickable.TIME_TICK,numTicks); }
     
 	public void startTickDown(Tickable E,
 							  int tickID,

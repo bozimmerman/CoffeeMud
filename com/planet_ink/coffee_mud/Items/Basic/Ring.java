@@ -41,7 +41,7 @@ public class Ring extends StdItem
 		setDisplayText("a nondescript ring sits here doing nothing.");
 		setDescription("It looks like a ring you wear on your fingers.");
 
-		properWornBitmap=Item.ON_LEFT_FINGER | Item.ON_RIGHT_FINGER;
+		properWornBitmap=Item.WORN_LEFT_FINGER | Item.WORN_RIGHT_FINGER;
 		wornLogicalAnd=false;
 		baseGoldValue=50;
 		recoverEnvStats();

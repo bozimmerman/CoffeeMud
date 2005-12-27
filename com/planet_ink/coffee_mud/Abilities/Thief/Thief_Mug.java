@@ -77,7 +77,7 @@ public class Thief_Mug extends ThiefSkill
 			String str=null;
 			int code=(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_THIEF_ACT;
 			if(!auto)
-				if((stolen!=null)&&(stolen.amWearingAt(Item.INVENTORY)))
+				if((stolen!=null)&&(stolen.amWearingAt(Item.IN_INVENTORY)))
 					str="<S-NAME> mug(s) <T-NAMESELF>, stealing "+stolen.name()+" from <T-HIM-HER>.";
 				else
 				{

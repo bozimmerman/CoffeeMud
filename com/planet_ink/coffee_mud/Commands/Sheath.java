@@ -46,7 +46,7 @@ public class Sheath extends BaseItemParser
 		{
 			Item I=mob.fetchInventory(i);
 			if((I!=null)
-			&&(!I.amWearingAt(Item.INVENTORY))
+			&&(!I.amWearingAt(Item.IN_INVENTORY))
 			&&(I instanceof Container)
 			&&(!(I instanceof Drink))
 			&&(((Container)I).capacity()>0)
@@ -83,12 +83,12 @@ public class Sheath extends BaseItemParser
 				Item I=mob.fetchInventory(i);
 				if((I!=null)
 				&&(I instanceof Weapon)
-				&&(!I.amWearingAt(Item.INVENTORY)))
+				&&(!I.amWearingAt(Item.IN_INVENTORY)))
 				{
-					if(I.amWearingAt(Item.WIELD))
+					if(I.amWearingAt(Item.WORN_WIELD))
 						item1=I;
 					else
-					if(I.amWearingAt(Item.HELD))
+					if(I.amWearingAt(Item.WORN_HELD))
 						item2=I;
 				}
 			}
@@ -150,8 +150,8 @@ public class Sheath extends BaseItemParser
 			{
 				Item putThis=mob.fetchWornItem(thingToPut+addendumStr);
 				if(putThis==null) break;
-				if(((putThis.amWearingAt(Item.WIELD))
-				   ||(putThis.amWearingAt(Item.HELD)))
+				if(((putThis.amWearingAt(Item.WORN_WIELD))
+				   ||(putThis.amWearingAt(Item.WORN_HELD)))
 				   &&(putThis instanceof Weapon))
 				{
 					if(CMLib.flags().canBeSeenBy(putThis,mob)&&(!items.contains(putThis)))

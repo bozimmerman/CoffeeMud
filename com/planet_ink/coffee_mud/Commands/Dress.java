@@ -80,27 +80,27 @@ public class Dress extends StdCommand
 				item.unWear();
 				target.giveItem(item);
 				item.wearIfPossible(target);
-				if((item.rawProperLocationBitmap()!=0)&&(item.amWearingAt(Item.INVENTORY))&&(target.isMonster()))
+				if((item.rawProperLocationBitmap()!=0)&&(item.amWearingAt(Item.IN_INVENTORY))&&(target.isMonster()))
 				{
 					if(item.rawLogicalAnd())
 						item.wearAt(item.rawProperLocationBitmap());
 					else
 					{
-						for(int i=0;i<Item.wornCodes.length;i++)
+						for(int i=0;i<Item.WORN_CODES.length;i++)
 						{
 							long wornCode=1<<i;
-							if(item.fitsOn(wornCode)&&(wornCode!=Item.HELD))
+							if(item.fitsOn(wornCode)&&(wornCode!=Item.WORN_HELD))
 							{ item.wearAt(wornCode); break;}
 						}
-						if(item.amWearingAt(Item.INVENTORY))
-							item.wearAt(Item.HELD);
+						if(item.amWearingAt(Item.IN_INVENTORY))
+							item.wearAt(Item.WORN_HELD);
 					}
 				}
 				target.location().recoverRoomStats();
 			}
 			else
 			{
-				if(!item.amWearingAt(Item.INVENTORY))
+				if(!item.amWearingAt(Item.IN_INVENTORY))
 				{
 					mob.tell("You might want to remove that first.");
 					return false;

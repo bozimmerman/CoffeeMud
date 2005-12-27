@@ -39,7 +39,7 @@ public class Helmet extends StdArmor
 		setName("a helmet");
 		setDisplayText("a helmet sits here.");
 		setDescription("This is fairly solid looking helmet.");
-		properWornBitmap=Item.ON_HEAD;
+		properWornBitmap=Item.WORN_HEAD;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(10);
 		baseEnvStats().setWeight(10);

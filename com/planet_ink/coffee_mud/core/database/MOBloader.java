@@ -803,14 +803,13 @@ public class MOBloader
 		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
 			Ability thisAbility=mob.fetchAbility(a);
-			if((thisAbility!=null)
-            &&(!thisAbility.isBorrowed(mob)))
+			if((thisAbility!=null)&&(thisAbility.savable()))
 			{
 				int profficiency=thisAbility.profficiency();
                 Ability effectA=mob.fetchEffect(thisAbility.ID());
                 if(effectA!=null)
                 {
-                    if((!effectA.isBorrowed(mob))
+                    if((effectA.savable())
                     &&(!effectA.canBeUninvoked())
                     &&(!effectA.isAutoInvoked()))
                         profficiency=profficiency-200;
@@ -838,7 +837,7 @@ public class MOBloader
 			Ability thisAffect=mob.fetchEffect(a);
 			if((thisAffect!=null)
 			&&(!H.contains(thisAffect.ID()))
-			&&(!thisAffect.isBorrowed(mob))
+			&&(thisAffect.savable())
 			&&(!thisAffect.canBeUninvoked()))
 			{
 				String

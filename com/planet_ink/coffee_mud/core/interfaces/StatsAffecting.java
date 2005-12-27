@@ -28,11 +28,51 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/** 
+ * An interface for classes and objects which may affect mobs, rooms, items, and other Environmental types
+ * By altering their stats and state objects using the layer system.
+ * @author Bo Zimmerman
+ *
+ */
 public interface StatsAffecting
 {
-	/** some general statistics about such an item
-	 * see class "EnvStats" for more information. */
+    /**
+     * This method is called by the recoverEnvStats() method on other Environmental objects.  It is used
+     * to transform the Environmental baseEnvStats() object into a finished envStats() object,  both of
+     * which are objects implementing the EnvStats interface.  See those methods for more information.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
+     * @see Environmental
+     * @see Environmental#baseEnvStats()
+     * @see Environmental#envStats()
+     * @see Environmental#recoverEnvStats()
+     * @param affected the host of the EnvStats object being affected
+     * @param affectableStats the particular EnvStats object being affected
+     */
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats);
+    /**
+     * This method is called by the recoverCharStats() method on other MOB objects.  It is used
+     * to transform the MOB baseCharStats() object into a finished charStats() object,  both of
+     * which are objects implementing the CharStats interface.  See those methods for more information.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
+     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB
+     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#baseCharStats()
+     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#charStats()
+     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#recoverCharStats()
+     * @param affectedMob the host of the CharStats object being affected
+     * @param affectableStats the particular CharStats object being affected
+     */
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats);
+    /**
+     * This method is called by the recoverCharState() method on other MOB objects.  It is used
+     * to transform the MOB baseCharState() object into a finished charState() object,  both of
+     * which are objects implementing the CharState interface.  See those methods for more information.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CharState
+     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB
+     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#baseCharState()
+     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#charState()
+     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#recoverCharState()
+     * @param affectedMob the host of the CharState object being affected
+     * @param affectableState the particular CharState object being affected
+     */
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState);
 }

@@ -1696,10 +1696,10 @@ public class PokerDealer extends StdBehavior
                 long time=System.currentTimeMillis();
                 long tenseconds=timer-(1000*10);
                 long remaining=((timer-System.currentTimeMillis())/1000);
-                if((time>started)&&(time<(started+MudHost.TICK_TIME)))
+                if((time>started)&&(time<(started+Tickable.TIME_TICK)))
                     communicate(host,null,"We've received our first anti for "+GAME_DESCS[gameRules]+". We will start the game in "+remaining+" seconds.",null);
                 else
-                if((time>tenseconds)&&(time<(tenseconds+MudHost.TICK_TIME)))
+                if((time>tenseconds)&&(time<(tenseconds+Tickable.TIME_TICK)))
                     communicate(host,null,"The "+GAME_DESCS[gameRules]+" game starts in "+remaining+" seconds.",null);
                 break;
             }

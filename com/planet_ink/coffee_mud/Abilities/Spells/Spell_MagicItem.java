@@ -70,7 +70,7 @@ public class Spell_MagicItem extends Spell
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)
 			&&(A instanceof Spell)
-			&&(A.isBorrowed(mob)||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
+			&&((!A.savable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 			&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))
 			&&(!A.ID().equals(this.ID())))
 				wandThis=(Spell)A;
@@ -139,7 +139,7 @@ public class Spell_MagicItem extends Spell
 					wand.addNonUninvokableEffect(A);
 				}
 				else
-				if(wand.fitsOn(Item.HELD)||wand.fitsOn(Item.WIELD))
+				if(wand.fitsOn(Item.WORN_HELD)||wand.fitsOn(Item.WORN_WIELD))
 				{
 					Ability A=CMClass.getAbility("Prop_WearSpellCast");
 					A.setMiscText(wandThis.ID()+";");

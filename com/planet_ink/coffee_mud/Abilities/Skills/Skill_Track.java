@@ -58,7 +58,7 @@ public class Skill_Track extends StdSkill
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID==MudHost.TICK_MOB)
+		if(tickID==Tickable.TICKID_MOB)
 		{
 			if(nextDirection==-999)
 				return true;

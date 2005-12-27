@@ -52,7 +52,7 @@ public class Spell_ConjureNexus extends Spell
 		if((affected==null)||(!(affected instanceof Room)))
 			return false;
 		Room R=(Room)affected;
-		if(tickID==MudHost.TICK_MOB)
+		if(tickID==Tickable.TICKID_MOB)
 		for(int m=0;m<R.numInhabitants();m++)
 		{
 			MOB mob=R.fetchInhabitant(m);

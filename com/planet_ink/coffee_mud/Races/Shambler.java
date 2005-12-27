@@ -40,7 +40,7 @@ public class Shambler extends StdRace
 	public int heightVariance(){return 12;}
 	public int lightestWeight(){return 140;}
 	public int weightVariance(){return 30;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.HELD;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_HELD;}
 	public String racialCategory(){return "Vegetation";}
 	public boolean uncharmable(){return true;}
 

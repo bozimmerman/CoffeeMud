@@ -39,7 +39,7 @@ public class SteelGauntlets extends StdArmor
 		setName("some steel gauntlets");
 		setDisplayText("a pair of steel gauntlets sit here.");
 		setDescription("They look like they're made of steel.");
-		properWornBitmap=Item.ON_HANDS | Item.ON_LEFT_WRIST | Item.ON_RIGHT_WRIST;
+		properWornBitmap=Item.WORN_HANDS | Item.WORN_LEFT_WRIST | Item.WORN_RIGHT_WRIST;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(3); // = $$$$ =
 		baseEnvStats().setAbility(0);

@@ -116,8 +116,8 @@ public class Dragon extends StdMOB
 		Weapon ClawTwo=CMClass.getWeapon("DragonClaw");
 		if(ClawOne!=null)
 		{
-			ClawOne.wearAt(Item.WIELD);
-			ClawTwo.wearAt(Item.WIELD);
+			ClawOne.wearAt(Item.WORN_WIELD);
+			ClawTwo.wearAt(Item.WORN_WIELD);
 			addInventory(ClawOne);
 			addInventory(ClawTwo);
 		}
@@ -249,11 +249,11 @@ public class Dragon extends StdMOB
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-        if((tickID==MudHost.TICK_MOB)
+        if((tickID==Tickable.TICKID_MOB)
         &&((baseEnvStats().level()!=birthAge)
         ||(baseEnvStats().ability()!=birthColor)))
             setupDragon(baseEnvStats().ability(),baseEnvStats().level());
-		if((!amDead())&&(tickID==MudHost.TICK_MOB))
+		if((!amDead())&&(tickID==Tickable.TICKID_MOB))
 		{
 			if((Stomach==null)
 			&&(location()!=null)

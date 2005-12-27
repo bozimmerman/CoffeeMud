@@ -304,7 +304,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		for(int b=0;b<M.numLearnedAbilities();b++)
 		{
 			Ability A=M.fetchAbility(b);
-			if((A!=null)&&(!A.isBorrowed(M)))
+			if((A!=null)&&(A.savable()))
 			{
 				abilitystr.append("<ABLTY>");
 				abilitystr.append(CMLib.xml().convertXMLtoTag("ACLASS",CMClass.className(A)));
@@ -1121,7 +1121,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		for(int i=0;i<mobs.size();i++)
 		{
 			MOB mob=(MOB)mobs.elementAt(i);
-			if(mob.isEligibleMonster())
+			if(mob.savable())
 			{
 				Vector dups=(Vector)found.get(mob.Name()+mob.displayText());
 				if(dups==null)
@@ -1187,7 +1187,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				buf.append("</MOB>\n\r");
 			}
 		}
-        room.destroyRoom();
+        room.destroy();
 		return buf;
 	}
 
@@ -1337,7 +1337,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		for(int m=0;m<mobs.size();m++)
 		{
 			MOB M=(MOB)mobs.elementAt(m);
-			if((M!=null)&&(M.isEligibleMonster()))
+			if((M!=null)&&(M.savable()))
 			{
 				for(int i=0;i<M.inventorySize();i++)
 				{
@@ -1356,7 +1356,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				}
 			}
 		}
-        room.destroyRoom();
+        room.destroy();
 		return buf;
 	}
 
@@ -1522,7 +1522,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			buf.append("</ROOMCONTENT>");
 		}
 		buf.append("</AROOM>");
-        croom.destroyRoom();
+        croom.destroy();
 		return buf;
 	}
 
@@ -1742,11 +1742,11 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				if(ILOC!=null)
 					item.setContainer((Item)IIDmap.get(ILOC));
 				else
-				if(item.amWearingAt(Item.HELD)
+				if(item.amWearingAt(Item.WORN_HELD)
 				&&(!item.rawLogicalAnd())
-				&&((item.rawProperLocationBitmap()&Item.WIELD)>0)
-				&&(M.numWearingHere(Item.WIELD)==0))
-					item.wearAt(Item.WIELD);
+				&&((item.rawProperLocationBitmap()&Item.WORN_WIELD)>0)
+				&&(M.numWearingHere(Item.WORN_WIELD)==0))
+					item.wearAt(Item.WORN_WIELD);
 			}
 		}
 		if(variableEq) M.flagVariableEq();
@@ -2455,7 +2455,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		for(int a=0;a<E.numEffects();a++)
 		{
 			Ability A=E.fetchEffect(a);
-			if((A!=null)&&(!A.isBorrowed(E)))
+			if((A!=null)&&(A.savable()))
 			{
 				affectstr.append("<AFF>");
 				affectstr.append(CMLib.xml().convertXMLtoTag("ACLASS",CMClass.className(A)));
@@ -2487,7 +2487,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		for(int a=0;a<E.numEffects();a++)
 		{
 			Ability A=E.fetchEffect(a);
-			if((A!=null)&&(!A.isBorrowed(E))) fillFileSet(A.externalFiles(),H);
+			if((A!=null)&&(A.savable())) fillFileSet(A.externalFiles(),H);
 		}
 		if(E instanceof MOB)
 		{
@@ -3256,30 +3256,30 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			double totalpts=0.0;
 			double weightpts=0.0;
 			double wornweights=0.0;
-			for(int i=0;i<Item.wornWeights.length-1;i++)
+			for(int i=0;i<Item.WORN_WEIGHTS.length-1;i++)
 			{
 				if(CMath.isSet(worndata,i))
 				{
-					totalpts+=(pts*Item.wornWeights[i+1]);
-					wornweights+=Item.wornWeights[i+1];
+					totalpts+=(pts*Item.WORN_WEIGHTS[i+1]);
+					wornweights+=Item.WORN_WEIGHTS[i+1];
 					switch(materialCode)
 					{
 					case EnvResource.MATERIAL_METAL:
 					case EnvResource.MATERIAL_MITHRIL:
 					case EnvResource.MATERIAL_PRECIOUS:
-						weightpts+=Item.wornHeavyPts[i+1][2];
+						weightpts+=Item.WORN_WEIGHT_POINTS[i+1][2];
 						break;
 					case EnvResource.MATERIAL_LEATHER:
 					case EnvResource.MATERIAL_GLASS:
 					case EnvResource.MATERIAL_PLASTIC:
 					case EnvResource.MATERIAL_ROCK:
 					case EnvResource.MATERIAL_WOODEN:
-						weightpts+=Item.wornHeavyPts[i+1][1];
+						weightpts+=Item.WORN_WEIGHT_POINTS[i+1][1];
 						break;
 					case EnvResource.MATERIAL_ENERGY:
 						break;
 					default:
-						weightpts+=Item.wornHeavyPts[i+1][0];
+						weightpts+=Item.WORN_WEIGHT_POINTS[i+1][0];
 						break;
 					}
 					if(hands==1) break;

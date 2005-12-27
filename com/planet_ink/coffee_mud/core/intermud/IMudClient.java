@@ -267,7 +267,7 @@ public class IMudClient implements I3Interface
         if(mob==null) return;
         Room R=mob.location();
         mob.destroy();
-        if(R!=null) R.destroyRoom();
+        if(R!=null) R.destroy();
     }
 
 	public void i3channel(MOB mob, String channelName, String message)

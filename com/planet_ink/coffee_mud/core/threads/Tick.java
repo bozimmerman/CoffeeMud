@@ -44,7 +44,7 @@ public class Tick extends Thread implements TickableGroup
 	public boolean solitaryTicker=false;
 	private static int tickObjReference=0;
     private int tickObjectCounter=0;
-    public long TICK_TIME=MudHost.TICK_TIME;
+    public long TICK_TIME=Tickable.TIME_TICK;
 	
 	public Tick(ThreadEngine theEngine, long sleep)
 	{

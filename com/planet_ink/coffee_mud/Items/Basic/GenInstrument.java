@@ -54,7 +54,7 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 	public boolean okMessage(Environmental E, CMMsg msg)
 	{
 		if(!super.okMessage(E,msg)) return false;
-		if(amWearingAt(Item.WIELD)
+		if(amWearingAt(Item.WORN_WIELD)
 		   &&(msg.source()==owner())
 		   &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		   &&(msg.source().location()!=null)

@@ -98,6 +98,32 @@ public class StdArea implements Area
         CMClass.bumpCounter(CMClass.OBJECT_AREA);
 	}
     protected void finalize(){CMClass.unbumpCounter(CMClass.OBJECT_AREA);}
+    protected boolean amDestroyed=false;
+    public void destroy()
+    {
+        envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+        baseEnvStats=envStats;
+        miscText=null;
+        imageName=null;
+        affects=null;
+        behaviors=null;
+        author=null;
+        currency=null;
+        children=null;
+        parents=null;
+        childrenToLoad=null;
+        parentsToLoad=null;
+        statData=null;
+        subOps=null;
+        properRooms=null;
+        metroRooms=null;
+        myClock=null;
+        climateObj=null;
+        amDestroyed=true;
+    }
+    public boolean amDestroyed(){return amDestroyed;}
+    public boolean savable(){return !amDestroyed;}
+    
 	public String name()
 	{
 		if(envStats().newName()!=null) return envStats().newName();
@@ -376,7 +402,7 @@ public class StdArea implements Area
 		if(start)
 		{
 			stopTicking=false;
-			CMLib.threads().startTickDown(this,MudHost.TICK_AREA,1);
+			CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
 		}
 		else
 			stopTicking=true;
@@ -389,7 +415,7 @@ public class StdArea implements Area
 	{
 		if(stopTicking) return false;
 		tickStatus=Tickable.STATUS_START;
-		if(tickID==MudHost.TICK_AREA)
+		if(tickID==Tickable.TICKID_AREA)
 		{
 			getClimateObj().tick(this,tickID);
 			getTimeObj().tick(this,tickID);

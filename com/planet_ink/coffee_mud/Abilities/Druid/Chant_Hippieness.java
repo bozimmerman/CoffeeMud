@@ -79,12 +79,12 @@ public class Chant_Hippieness extends Chant
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			boolean mouthed=mob.fetchFirstWornItem(Item.ON_MOUTH)!=null;
+			boolean mouthed=mob.fetchFirstWornItem(Item.WORN_MOUTH)!=null;
 			Room R=mob.location();
 			if((!mouthed)&&(R!=null)&&(R.numItems()>0))
 			{
 				Item I=R.fetchItem(CMLib.dice().roll(1,R.numItems(),-1));
-				if((I!=null)&&(I.fitsOn(Item.ON_MOUTH)))
+				if((I!=null)&&(I.fitsOn(Item.WORN_MOUTH)))
 					CMLib.commands().postGet(mob,I.container(),I,false);
 			}
 
@@ -93,11 +93,11 @@ public class Chant_Hippieness extends Chant
 				Item I=mob.fetchInventory(CMLib.dice().roll(1,mob.inventorySize(),-1));
 				if(mouthed)
 				{
-					if((I!=null)&&(!I.amWearingAt(Item.INVENTORY))&&(!I.amWearingAt(Item.ON_MOUTH)))
+					if((I!=null)&&(!I.amWearingAt(Item.IN_INVENTORY))&&(!I.amWearingAt(Item.WORN_MOUTH)))
 						CMLib.commands().postRemove(mob,I,false);
 				}
 				else
-				if((I!=null)&&(I instanceof Light)&&(I.fitsOn(Item.ON_MOUTH)))
+				if((I!=null)&&(I instanceof Light)&&(I.fitsOn(Item.WORN_MOUTH)))
 				{
 					if((I instanceof Container)
 					&&(((Container)I).containTypes()==Container.CONTAIN_SMOKEABLES)
@@ -121,7 +121,7 @@ public class Chant_Hippieness extends Chant
 					mob.doCommand(CMParms.parse("WEAR \""+I.Name()+"\""));
 				}
 				else
-				if((I!=null)&&(!I.amWearingAt(Item.INVENTORY))&&(!I.amWearingAt(Item.ON_MOUTH)))
+				if((I!=null)&&(!I.amWearingAt(Item.IN_INVENTORY))&&(!I.amWearingAt(Item.WORN_MOUTH)))
 					CMLib.commands().postRemove(mob,I,false);
 			}
 		}

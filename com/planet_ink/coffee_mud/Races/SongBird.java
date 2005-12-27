@@ -41,7 +41,7 @@ public class SongBird extends StdRace
 	public int heightVariance(){return 2;}
 	public int lightestWeight(){return 2;}
 	public int weightVariance(){return 5;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_EYES-Item.ON_HEAD;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_EYES-Item.WORN_HEAD;}
 	public String racialCategory(){return "Avian";}
 	private String[]racialAbilityNames={"WingFlying"};
 	private int[]racialAbilityLevels={1};

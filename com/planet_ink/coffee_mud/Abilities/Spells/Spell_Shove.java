@@ -39,7 +39,7 @@ public class Spell_Shove extends Spell
 	public int maxRange(){return 4;}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return MudHost.TICK_MOB;}
+	protected int canTargetCode(){return Tickable.TICKID_MOB;}
 	public boolean doneTicking=false;
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 	public long flags(){return Ability.FLAG_MOVING;}

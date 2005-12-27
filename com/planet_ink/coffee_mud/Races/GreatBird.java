@@ -40,7 +40,7 @@ public class GreatBird extends StdRace
 	public int heightVariance(){return 10;}
 	public int lightestWeight(){return 20;}
 	public int weightVariance(){return 10;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_HEAD-Item.WORN_EYES;}
 	public String racialCategory(){return "Avian";}
 	private String[]racialAbilityNames={"WingFlying"};
 	private int[]racialAbilityLevels={1};

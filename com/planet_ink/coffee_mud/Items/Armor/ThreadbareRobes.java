@@ -23,7 +23,7 @@ public class ThreadbareRobes extends StdArmor
 		setName("a set of worn robes");
 		setDisplayText("a set of worn robes");
 		setDescription("These robes are patched, yet still gape with ragged holes. Evidently having seen years of use, they are vitualy worthless");
-		properWornBitmap=Item.ON_TORSO | Item.ON_ARMS | Item.ON_LEGS;
+		properWornBitmap=Item.WORN_TORSO | Item.WORN_ARMS | Item.WORN_LEGS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(5);
 		baseEnvStats().setWeight(2);

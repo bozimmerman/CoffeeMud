@@ -54,7 +54,7 @@ public class DrowWizard extends DrowElf
 		Weapon mainWeapon = CMClass.getWeapon("Quarterstaff");
 		if(mainWeapon!=null)
 		{
-			mainWeapon.wearAt(Item.WIELD);
+			mainWeapon.wearAt(Item.WORN_WIELD);
 			this.addInventory(mainWeapon);
 		}
 
@@ -94,77 +94,77 @@ public class DrowWizard extends DrowElf
 
 
 		dark.setProfficiency(100);
-		dark.setBorrowed(this,true);
+		dark.setSavable(false);
         this.addAbility(dark);
 
         Ability p1 =CMClass.getAbility("Prayer_ProtGood");
         p1.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p1.setBorrowed(this,true);
+		p1.setSavable(false);
         this.addAbility(p1);
 
         Ability p2 =CMClass.getAbility("Prayer_CauseLight");
         p2.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p2.setBorrowed(this,true);
+		p2.setSavable(false);
         this.addAbility(p2);
 
         Ability p3 =CMClass.getAbility("Prayer_CauseSerious");
         p3.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p3.setBorrowed(this,true);
+		p3.setSavable(false);
         this.addAbility(p3);
 
         Ability p4 =CMClass.getAbility("Prayer_Curse");
         p4.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p4.setBorrowed(this,true);
+		p4.setSavable(false);
         this.addAbility(p4);
 
         Ability p5 =CMClass.getAbility("Prayer_Paralyze");
         p5.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p5.setBorrowed(this,true);
+		p5.setSavable(false);
         this.addAbility(p5);
 
         Ability p6 =CMClass.getAbility("Prayer_DispelGood");
         p6.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p6.setBorrowed(this,true);
+		p6.setSavable(false);
         this.addAbility(p6);
 
         Ability p7 =CMClass.getAbility("Prayer_Plague");
         p7.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p7.setBorrowed(this,true);
+		p7.setSavable(false);
         this.addAbility(p7);
 
         Ability p8 =CMClass.getAbility("Prayer_CauseCritical");
         p8.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p8.setBorrowed(this,true);
+		p8.setSavable(false);
         this.addAbility(p8);
 
         Ability p9 =CMClass.getAbility("Prayer_Blindness");
         p9.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p9.setBorrowed(this,true);
+		p9.setSavable(false);
         this.addAbility(p9);
 
         Ability p10 =CMClass.getAbility("Prayer_BladeBarrier");
         p10.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p10.setBorrowed(this,true);
+		p10.setSavable(false);
         this.addAbility(p10);
 
         Ability p11 =CMClass.getAbility("Prayer_Hellfire");
         p11.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p11.setBorrowed(this,true);
+		p11.setSavable(false);
         this.addAbility(p11);
 
         Ability p12 =CMClass.getAbility("Prayer_UnholyWord");
         p12.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p12.setBorrowed(this,true);
+		p12.setSavable(false);
         this.addAbility(p12);
 
         Ability p13 =CMClass.getAbility("Prayer_Deathfinger");
         p13.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p13.setBorrowed(this,true);
+		p13.setSavable(false);
         this.addAbility(p13);
 
         Ability p14 = CMClass.getAbility("Prayer_Harm");
         p14.setProfficiency(CMLib.dice().roll(5, 10, 50));
-		p14.setBorrowed(this,true);
+		p14.setSavable(false);
         this.addAbility(p14);
 
     }
@@ -188,7 +188,7 @@ public class DrowWizard extends DrowElf
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((!amDead())&&(tickID==MudHost.TICK_MOB))
+		if((!amDead())&&(tickID==Tickable.TICKID_MOB))
 		{
 			if (isInCombat())
 			{

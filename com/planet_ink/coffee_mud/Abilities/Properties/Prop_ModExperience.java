@@ -53,7 +53,7 @@ public class Prop_ModExperience extends Property
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
 		&&(((msg.target()==affected)&&(affected instanceof MOB))
-		   ||((affected instanceof Item)&&(msg.source()==((Item)affected).owner()))&&(!((Item)affected).amWearingAt(Item.INVENTORY)))
+		   ||((affected instanceof Item)&&(msg.source()==((Item)affected).owner()))&&(!((Item)affected).amWearingAt(Item.IN_INVENTORY)))
 		   ||(affected instanceof Room)
 		   ||(affected instanceof Area))
 		{

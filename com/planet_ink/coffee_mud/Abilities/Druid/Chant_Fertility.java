@@ -78,10 +78,10 @@ public class Chant_Fertility extends Chant
 			&&(myChar.charStats().getMyRace().fertile())
 			&&(mate.charStats().getMyRace().fertile())
 			&&(myChar.location()==mate.location())
-			&&(myChar.numWearingHere(Item.ON_LEGS)==0)
-			&&(mate.numWearingHere(Item.ON_LEGS)==0)
-			&&(myChar.numWearingHere(Item.ON_WAIST)==0)
-			&&(mate.numWearingHere(Item.ON_WAIST)==0))
+			&&(myChar.numWearingHere(Item.WORN_LEGS)==0)
+			&&(mate.numWearingHere(Item.WORN_LEGS)==0)
+			&&(myChar.numWearingHere(Item.WORN_WAIST)==0)
+			&&(mate.numWearingHere(Item.WORN_WAIST)==0))
 			{
 				MOB female=myChar;
 				MOB male=mate;

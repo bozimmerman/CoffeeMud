@@ -41,7 +41,7 @@ public class GlovesSpeed extends StdArmor
 		setDescription("This is a pair of very nice gloves.");
 		secretIdentity="Gloves of the blinding strike (Double attack speed, truely usable only by fighters.)";
 		baseGoldValue+=10000;
-		properWornBitmap=Item.ON_HANDS;
+		properWornBitmap=Item.WORN_HANDS;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(15);
 		baseEnvStats().setAbility(0);
@@ -54,7 +54,7 @@ public class GlovesSpeed extends StdArmor
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if((!this.amWearingAt(Item.INVENTORY))&&(!this.amWearingAt(Item.HELD)))
+		if((!this.amWearingAt(Item.IN_INVENTORY))&&(!this.amWearingAt(Item.WORN_HELD)))
 		{
 			affectableStats.setSpeed(affectableStats.speed() * 2.0);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() + 10);

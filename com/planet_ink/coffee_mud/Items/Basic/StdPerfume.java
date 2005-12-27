@@ -51,7 +51,7 @@ public class StdPerfume extends StdDrink implements Perfume
 		liquidType=EnvResource.RESOURCE_PERFUME;
 		capacity=0;
 		baseGoldValue=100;
-		setRawProperLocationBitmap(Item.WIELD|Item.ABOUT_BODY|Item.FLOATING_NEARBY|Item.HELD|Item.ON_ARMS|Item.ON_BACK|Item.ON_EARS|Item.ON_EYES|Item.ON_FEET|Item.ON_HANDS|Item.ON_HEAD|Item.ON_LEFT_FINGER|Item.ON_RIGHT_FINGER|Item.ON_LEGS|Item.ON_LEFT_WRIST|Item.ON_MOUTH|Item.ON_NECK|Item.ON_RIGHT_WRIST|Item.ON_TORSO|Item.ON_WAIST);
+		setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_ABOUT_BODY|Item.WORN_FLOATING_NEARBY|Item.WORN_HELD|Item.WORN_ARMS|Item.WORN_BACK|Item.WORN_EARS|Item.WORN_EYES|Item.WORN_FEET|Item.WORN_HANDS|Item.WORN_HEAD|Item.WORN_LEFT_FINGER|Item.WORN_RIGHT_FINGER|Item.WORN_LEGS|Item.WORN_LEFT_WRIST|Item.WORN_MOUTH|Item.WORN_NECK|Item.WORN_RIGHT_WRIST|Item.WORN_TORSO|Item.WORN_WAIST);
 		recoverEnvStats();
 	}
 
@@ -83,7 +83,7 @@ public class StdPerfume extends StdDrink implements Perfume
 			else
 				E.setMiscText("SMELL "+s);
 			mob.addNonUninvokableEffect(E);
-			E.setBorrowed(mob,true);
+			E.setSavable(false);
 		}
 	}
 	

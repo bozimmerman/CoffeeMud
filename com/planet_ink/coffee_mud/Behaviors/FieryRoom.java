@@ -188,7 +188,7 @@ public class FieryRoom
         Item target = null;
         for (int i = 0; i < mob.inventorySize(); i++) {
             Item I = mob.fetchInventory(i);
-            if (I.amWearingAt(Item.INVENTORY))
+            if (I.amWearingAt(Item.IN_INVENTORY))
                 good.addElement(I);
             else
                 great.addElement(I);

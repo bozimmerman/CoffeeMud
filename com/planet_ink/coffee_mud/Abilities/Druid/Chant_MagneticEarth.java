@@ -60,11 +60,11 @@ public class Chant_MagneticEarth extends Chant
 						&&(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
 						   ||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL))
 						&&(I.container()==null)
-						&&(I.amWearingAt(Item.INVENTORY)
-						   ||I.amWearingAt(Item.HELD)
-						   ||I.amWearingAt(Item.WIELD)
-						   ||I.amWearingAt(Item.ON_EYES)
-						   ||I.amWearingAt(Item.ON_MOUTH)))
+						&&(I.amWearingAt(Item.IN_INVENTORY)
+						   ||I.amWearingAt(Item.WORN_HELD)
+						   ||I.amWearingAt(Item.WORN_WIELD)
+						   ||I.amWearingAt(Item.WORN_EYES)
+						   ||I.amWearingAt(Item.WORN_MOUTH)))
 							toGo.addElement(I);
 					}
 					for(int i=0;i<toGo.size();i++)
@@ -96,7 +96,7 @@ public class Chant_MagneticEarth extends Chant
 		{
 			checked=true;
 			if(!CMLib.threads().isTicking(this,-1))
-				CMLib.threads().startTickDown(this,MudHost.TICK_SPELL_AFFECT,1);
+				CMLib.threads().startTickDown(this,Tickable.TICKID_SPELL_AFFECT,1);
 		}
 		super.executeMsg(host,msg);
 	}

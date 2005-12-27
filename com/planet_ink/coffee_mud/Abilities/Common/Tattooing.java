@@ -68,7 +68,7 @@ public class Tattooing extends CommonSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==MudHost.TICK_MOB))
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if((target==null)
@@ -96,23 +96,23 @@ public class Tattooing extends CommonSkill
 		
 		int partNum=-1;
 		StringBuffer allParts=new StringBuffer("");
-		long[] tattoable={Item.ON_ARMS,
-		        		  Item.ON_LEGS,
-		        		  Item.ON_HANDS,
-		        		  Item.ON_HEAD,
-		        		  Item.ON_FEET,
-		        		  Item.ON_LEFT_WRIST,
-		        		  Item.ON_RIGHT_WRIST,
-		        		  Item.ON_NECK,
-		        		  Item.ON_TORSO};
-		for(int i=0;i<Item.wornLocation.length;i++)
+		long[] tattoable={Item.WORN_ARMS,
+		        		  Item.WORN_LEGS,
+		        		  Item.WORN_HANDS,
+		        		  Item.WORN_HEAD,
+		        		  Item.WORN_FEET,
+		        		  Item.WORN_LEFT_WRIST,
+		        		  Item.WORN_RIGHT_WRIST,
+		        		  Item.WORN_NECK,
+		        		  Item.WORN_TORSO};
+		for(int i=0;i<Item.WORN_DESCS.length;i++)
 		{
 		    for(int ii=0;ii<tattoable.length;ii++)
-		        if(Item.wornCodes[i]==tattoable[ii])
+		        if(Item.WORN_CODES[i]==tattoable[ii])
 		        {
-				    if(Item.wornLocation[i].equalsIgnoreCase(part))
+				    if(Item.WORN_DESCS[i].equalsIgnoreCase(part))
 				        partNum=i;
-				    allParts.append(", "+CMStrings.capitalizeAndLower(Item.wornLocation[i].toLowerCase()));
+				    allParts.append(", "+CMStrings.capitalizeAndLower(Item.WORN_DESCS[i].toLowerCase()));
 				    break;
 			    }
 		}
@@ -121,8 +121,8 @@ public class Tattooing extends CommonSkill
 		    commonTell(mob,"'"+part+"' is not a valid location.  Valid locations include: "+allParts.toString().substring(2));
 		    return false;
 		}
-		long wornCode=Item.wornCodes[partNum];
-		String wornName=Item.wornLocation[partNum];
+		long wornCode=Item.WORN_CODES[partNum];
+		String wornName=Item.WORN_DESCS[partNum];
 		
 		MOB target=super.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -159,7 +159,7 @@ public class Tattooing extends CommonSkill
 		    }
 		}
 		else
-		if(numTattsDone>=target.getWearPositions(Item.wornCodes[partNum]))
+		if(numTattsDone>=target.getWearPositions(Item.WORN_CODES[partNum]))
 		{
 		    commonTell(mob,"That location is already completely decorated.");
 		    return false;

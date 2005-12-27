@@ -99,7 +99,7 @@ public class Give extends BaseItemParser
 				giveThis=mob.fetchWornItem(thingToGive);
 				if(giveThis!=null)
 				{
-					if((!(giveThis).amWearingAt(Item.HELD))&&(!(giveThis).amWearingAt(Item.WIELD)))
+					if((!(giveThis).amWearingAt(Item.WORN_HELD))&&(!(giveThis).amWearingAt(Item.WORN_WIELD)))
 					{
 						mob.tell("You must remove that first.");
 						return false;

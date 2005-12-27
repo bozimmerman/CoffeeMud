@@ -59,7 +59,7 @@ public class Paladin_MountedCharge extends StdAbility
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==MudHost.TICK_MOB)
+		if(tickID==Tickable.TICKID_MOB)
 			if(done) unInvoke();
 		return super.tick(ticking,tickID);
 	}

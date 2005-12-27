@@ -411,7 +411,7 @@ public class BaseGenerics extends StdCommand
 		while(oldR.numInhabitants()>(skip))
 		{
 			MOB M=oldR.fetchInhabitant(skip);
-			if(M.isEligibleMonster())
+			if(M.savable())
 			{
 				if(!allmobs.contains(M))
 					allmobs.addElement(M);
@@ -455,8 +455,8 @@ public class BaseGenerics extends StdCommand
 				MOB M2=(MOB)M.copyOf();
 				M2.setStartRoom(R);
 				M2.setLocation(R);
-                long rejuv=MudHost.TICKS_PER_RLMIN+MudHost.TICKS_PER_RLMIN+(MudHost.TICKS_PER_RLMIN/2);
-                if(rejuv>(MudHost.TICKS_PER_RLMIN*20)) rejuv=(MudHost.TICKS_PER_RLMIN*20);
+                long rejuv=Tickable.TICKS_PER_RLMIN+Tickable.TICKS_PER_RLMIN+(Tickable.TICKS_PER_RLMIN/2);
+                if(rejuv>(Tickable.TICKS_PER_RLMIN*20)) rejuv=(Tickable.TICKS_PER_RLMIN*20);
 				M2.envStats().setRejuv((int)rejuv);
 				M2.recoverCharStats();
 				M2.recoverEnvStats();
@@ -505,7 +505,7 @@ public class BaseGenerics extends StdCommand
 		CMLib.database().DBUpdateRoom(R);
 		CMLib.database().DBUpdateMOBs(R);
 		CMLib.database().DBUpdateItems(R);
-        oldR.destroyRoom();
+        oldR.destroy();
 		R.startItemRejuv();
 		return R;
 	}
@@ -2721,7 +2721,7 @@ public class BaseGenerics extends StdCommand
 			for(int b=0;b<E.numEffects();b++)
 			{
 				Ability A=E.fetchEffect(b);
-				if((A!=null)&&(!A.isBorrowed(E)))
+				if((A!=null)&&(A.savable()))
 				{
 					affectstr+=A.ID();
 					if(A.text().trim().length()>0)
@@ -2839,11 +2839,11 @@ public class BaseGenerics extends StdCommand
 			int r=ShopKeeper.DEAL_BANKER;
 			char c=codeStr.charAt(r);
 			codes.append(c);
-			buf.append(c+") "+ShopKeeper.SOLDCODES[r]+"\n\r");
+			buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
 			r=ShopKeeper.DEAL_CLANBANKER;
 			c=codeStr.charAt(r);
 			codes.append(c);
-			buf.append(c+") "+ShopKeeper.SOLDCODES[r]+"\n\r");
+			buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
 		}
 		else
         if(E instanceof PostOffice)
@@ -2851,14 +2851,14 @@ public class BaseGenerics extends StdCommand
             int r=ShopKeeper.DEAL_POSTMAN;
             char c=codeStr.charAt(r);
             codes.append(c);
-            buf.append(c+") "+ShopKeeper.SOLDCODES[r]+"\n\r");
+            buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
             r=ShopKeeper.DEAL_CLANPOSTMAN;
             c=codeStr.charAt(r);
             codes.append(c);
-            buf.append(c+") "+ShopKeeper.SOLDCODES[r]+"\n\r");
+            buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
         }
         else
-		for(int r=0;r<ShopKeeper.SOLDCODES.length;r++)
+		for(int r=0;r<ShopKeeper.DEAL_DESCS.length;r++)
 		{
 			if((r!=ShopKeeper.DEAL_CLANBANKER)
             &&(r!=ShopKeeper.DEAL_BANKER)
@@ -2867,7 +2867,7 @@ public class BaseGenerics extends StdCommand
 			{
 				char c=codeStr.charAt(r);
 				codes.append(c);
-				buf.append(c+") "+ShopKeeper.SOLDCODES[r]+"\n\r");
+				buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
 			}
 		}
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
@@ -3079,7 +3079,7 @@ public class BaseGenerics extends StdCommand
 			for(int a=0;a<E.numLearnedAbilities();a++)
 			{
 				Ability A=E.fetchAbility(a);
-				if((A!=null)&&(!A.isBorrowed(E)))
+				if((A!=null)&&(A.savable()))
 					abilitiestr+=A.ID()+", ";
 			}
 			if(abilitiestr.length()>0)
@@ -3196,7 +3196,7 @@ public class BaseGenerics extends StdCommand
 			for(int a=0;a<E.numBlessings();a++)
 			{
 				Ability A=E.fetchBlessing(a);
-				if((A!=null)&&(!A.isBorrowed(E)))
+				if((A!=null)&&(A.savable()))
 					abilitiestr+=A.ID()+", ";
 			}
 			if(abilitiestr.length()>0)
@@ -3264,7 +3264,7 @@ public class BaseGenerics extends StdCommand
 			for(int a=0;a<E.numCurses();a++)
 			{
 				Ability A=E.fetchCurse(a);
-				if((A!=null)&&(!A.isBorrowed(E)))
+				if((A!=null)&&(A.savable()))
 					abilitiestr+=A.ID()+", ";
 			}
 			if(abilitiestr.length()>0)
@@ -3332,7 +3332,7 @@ public class BaseGenerics extends StdCommand
 			for(int a=0;a<E.numPowers();a++)
 			{
 				Ability A=E.fetchPower(a);
-				if((A!=null)&&(!A.isBorrowed(E)))
+				if((A!=null)&&(A.savable()))
 					abilitiestr+=A.ID()+", ";
 			}
 			if(abilitiestr.length()>0)
@@ -3461,7 +3461,7 @@ public class BaseGenerics extends StdCommand
 				buf.append(getScr("BaseGenerics","wearonany"));
 			else
 				buf.append(getScr("BaseGenerics","wornonall"));
-			for(int l=0;l<Item.wornCodes.length;l++)
+			for(int l=0;l<Item.WORN_CODES.length;l++)
 			{
 				long wornCode=1<<l;
 				if((CMLib.flags().wornLocation(wornCode).length()>0)
@@ -3479,7 +3479,7 @@ public class BaseGenerics extends StdCommand
 				mob.tell(getScr("BaseGenerics","msgworn1"));
 			else
 				mob.tell(getScr("BaseGenerics","msgworn2"));
-			for(int l=0;l<Item.wornCodes.length;l++)
+			for(int l=0;l<Item.WORN_CODES.length;l++)
 			{
 				long wornCode=1<<l;
 				if(CMLib.flags().wornLocation(wornCode).length()>0)
@@ -3952,23 +3952,23 @@ public class BaseGenerics extends StdCommand
 		CharState S=(CharState)CMClass.getCommon("DefaultCharState"); S.setAllValues(0);
 		CMLib.coffeeMaker().setCharState(S,R.getStat(field));
 		StringBuffer parts=new StringBuffer("");
-		for(int i=0;i<S.getCodes().length;i++)
-			if(CMath.s_int(S.getStat(S.getCodes()[i]))!=0)
-				parts.append(CMStrings.capitalizeAndLower(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
+		for(int i=0;i<S.getStatCodes().length;i++)
+			if(CMath.s_int(S.getStat(S.getStatCodes()[i]))!=0)
+				parts.append(CMStrings.capitalizeAndLower(S.getStatCodes()[i])+"("+S.getStat(S.getStatCodes()[i])+") ");
 		mob.tell(showNumber+". "+prompt+": "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
 		if(newName.length()>0)
 		{
 			String partName=null;
-			for(int i=0;i<S.getCodes().length;i++)
-				if(newName.equalsIgnoreCase(S.getCodes()[i]))
-				{ partName=S.getCodes()[i]; break;}
+			for(int i=0;i<S.getStatCodes().length;i++)
+				if(newName.equalsIgnoreCase(S.getStatCodes()[i]))
+				{ partName=S.getStatCodes()[i]; break;}
 			if(partName==null)
 			{
 				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
-				for(int i=0;i<S.getCodes().length;i++)
-					str.append(S.getCodes()[i]+", ");
+				for(int i=0;i<S.getStatCodes().length;i++)
+					str.append(S.getStatCodes()[i]+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
 			}
 			else
@@ -3978,9 +3978,9 @@ public class BaseGenerics extends StdCommand
 				{
 					S.setStat(partName,newName);
 					boolean zereoed=true;
-					for(int i=0;i<S.getCodes().length;i++)
+					for(int i=0;i<S.getStatCodes().length;i++)
 					{
-						if(CMath.s_int(S.getStat(S.getCodes()[i]))!=0)
+						if(CMath.s_int(S.getStat(S.getStatCodes()[i]))!=0)
 						{ zereoed=false; break;}
 					}
 					if(zereoed)
@@ -4128,23 +4128,23 @@ public class BaseGenerics extends StdCommand
         CharState S=(CharState)CMClass.getCommon("DefaultCharState"); S.setAllValues(0);
 		CMLib.coffeeMaker().setCharState(S,R.getStat(field));
 		StringBuffer parts=new StringBuffer("");
-		for(int i=0;i<S.getCodes().length;i++)
-			if(CMath.s_int(S.getStat(S.getCodes()[i]))!=0)
-				parts.append(CMStrings.capitalizeAndLower(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
+		for(int i=0;i<S.getStatCodes().length;i++)
+			if(CMath.s_int(S.getStat(S.getStatCodes()[i]))!=0)
+				parts.append(CMStrings.capitalizeAndLower(S.getStatCodes()[i])+"("+S.getStat(S.getStatCodes()[i])+") ");
 		mob.tell(showNumber+". "+prompt+": "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt(getScr("BaseGenerics","statname"),"");
 		if(newName.length()>0)
 		{
 			String partName=null;
-			for(int i=0;i<S.getCodes().length;i++)
-				if(newName.equalsIgnoreCase(S.getCodes()[i]))
-				{ partName=S.getCodes()[i]; break;}
+			for(int i=0;i<S.getStatCodes().length;i++)
+				if(newName.equalsIgnoreCase(S.getStatCodes()[i]))
+				{ partName=S.getStatCodes()[i]; break;}
 			if(partName==null)
 			{
 				StringBuffer str=new StringBuffer(getScr("BaseGenerics","staterr"));
-				for(int i=0;i<S.getCodes().length;i++)
-					str.append(S.getCodes()[i]+", ");
+				for(int i=0;i<S.getStatCodes().length;i++)
+					str.append(S.getStatCodes()[i]+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
 			}
 			else
@@ -4154,9 +4154,9 @@ public class BaseGenerics extends StdCommand
 				{
 					S.setStat(partName,newName);
 					boolean zereoed=true;
-					for(int i=0;i<S.getCodes().length;i++)
+					for(int i=0;i<S.getStatCodes().length;i++)
 					{
-						if(CMath.s_int(S.getStat(S.getCodes()[i]))!=0)
+						if(CMath.s_int(S.getStat(S.getStatCodes()[i]))!=0)
 						{ zereoed=false; break;}
 					}
 					if(zereoed)

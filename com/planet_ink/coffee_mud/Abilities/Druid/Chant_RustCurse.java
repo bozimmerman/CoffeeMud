@@ -68,7 +68,7 @@ public class Chant_RustCurse extends Chant
 				   &&(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
 					  ||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)))
 				{
-					if(!I.amWearingAt(Item.INVENTORY))
+					if(!I.amWearingAt(Item.IN_INVENTORY))
 					{
 						goodChoices=true;
 						choices.addElement(I);
@@ -80,7 +80,7 @@ public class Chant_RustCurse extends Chant
 			}
 			if(goodChoices)
 			for(int i=choices.size()-1;i>=0;i--)
-				if(((Item)choices.elementAt(i)).amWearingAt(Item.INVENTORY))
+				if(((Item)choices.elementAt(i)).amWearingAt(Item.IN_INVENTORY))
 					choices.removeElementAt(i);
 			if(choices.size()>0)
 			{

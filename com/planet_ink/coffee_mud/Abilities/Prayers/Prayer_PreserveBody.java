@@ -67,7 +67,7 @@ public class Prayer_PreserveBody extends Prayer
 			{
 				mob.location().send(mob,msg);
 				body.setDispossessionTime(0);
-				CMLib.threads().deleteTick(body,MudHost.TICK_DEADBODY_DECAY);
+				CMLib.threads().deleteTick(body,Tickable.TICKID_DEADBODY_DECAY);
 			}
 		}
 		else

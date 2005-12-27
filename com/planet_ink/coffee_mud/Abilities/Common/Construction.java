@@ -229,7 +229,7 @@ public class Construction extends CraftingSkill
 							R.getArea().fillInAreaRoom(R);
 							CMLib.database().DBUpdateRoom(R);
 							CMLib.database().DBUpdateExits(R);
-                            room.destroyRoom();
+                            room.destroy();
 						}
 						break;
 					case BUILD_STAIRS:
@@ -415,7 +415,7 @@ public class Construction extends CraftingSkill
 								R.getArea().fillInAreaRoom(R);
 								CMLib.database().DBUpdateRoom(R);
 								CMLib.database().DBUpdateExits(R);
-                                room.destroyRoom();
+                                room.destroy();
 							}
 							else
 							{

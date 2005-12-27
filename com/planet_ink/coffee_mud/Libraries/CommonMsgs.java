@@ -596,7 +596,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 response.append(" It is a size "+item.envStats().height()+", and is worn on the ");
             else
                 response.append(" It is your size, and is worn on the ");
-            for(int l=0;l<Item.wornCodes.length;l++)
+            for(int l=0;l<Item.WORN_CODES.length;l++)
             {
                 int wornCode=1<<l;
                 if(CMLib.flags().wornLocation(wornCode).length()>0)
@@ -1298,9 +1298,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         if(!(msg.target() instanceof Item)) return;
         Item item=(Item)msg.target();
         MOB mob=msg.source();
-        if((item.canWear(mob,Item.WIELD))&&(item.fitsOn(Item.WIELD)))
+        if((item.canWear(mob,Item.WORN_WIELD))&&(item.fitsOn(Item.WORN_WIELD)))
         {
-            item.wearAt(Item.WIELD);
+            item.wearAt(Item.WORN_WIELD);
             mob.recoverCharStats();
             mob.recoverEnvStats();
             mob.recoverMaxState();
@@ -1311,9 +1311,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         if(!(msg.target() instanceof Item)) return;
         Item item=(Item)msg.target();
         MOB mob=msg.source();
-        if((item.canWear(mob,Item.HELD))&&(item.fitsOn(Item.HELD)))
+        if((item.canWear(mob,Item.WORN_HELD))&&(item.fitsOn(Item.WORN_HELD)))
         {
-            item.wearAt(Item.HELD);
+            item.wearAt(Item.WORN_HELD);
             mob.recoverCharStats();
             mob.recoverEnvStats();
             mob.recoverMaxState();

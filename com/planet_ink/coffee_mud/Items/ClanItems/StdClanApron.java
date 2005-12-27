@@ -47,7 +47,7 @@ public class StdClanApron extends StdClanItem
         baseGoldValue=1;
         setCIType(ClanItem.CI_SPECIALAPRON);
         material=EnvResource.RESOURCE_COTTON;
-        setRawProperLocationBitmap(Item.ON_WAIST|Item.ABOUT_BODY);
+        setRawProperLocationBitmap(Item.WORN_WAIST|Item.WORN_ABOUT_BODY);
         setRawLogicalAnd(false);
         recoverEnvStats();
     }

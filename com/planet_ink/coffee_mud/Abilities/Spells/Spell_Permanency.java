@@ -93,7 +93,7 @@ public class Spell_Permanency extends Spell
 				else
 				{
 					theOne.makeNonUninvokable();
-					theOne.setBorrowed(target,false);
+					theOne.setSavable(true);
 					mob.baseState().setMana(mob.baseState().getMana()-100);
 					mob.maxState().setMana(mob.maxState().getMana()-100);
 					target.text();

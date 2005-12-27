@@ -39,7 +39,7 @@ public class GenShield extends GenArmor implements Shield
 		setName("a shield");
 		setDisplayText("a sturdy round shield sits here.");
 		setDescription("");
-		properWornBitmap=Item.HELD;
+		properWornBitmap=Item.WORN_HELD;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(10);
 		baseEnvStats().setAbility(0);

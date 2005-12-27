@@ -110,7 +110,7 @@ public class Plant extends Vine
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if((tickID==MudHost.TICK_MOB)&&(ticking instanceof MOB))
+		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
 			((MOB)ticking).curState().recoverTick(((MOB)ticking),((MOB)ticking).maxState());
 		return true;
 	}

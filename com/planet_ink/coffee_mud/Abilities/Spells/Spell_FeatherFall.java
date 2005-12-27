@@ -52,7 +52,7 @@ public class Spell_FeatherFall extends Spell
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item I=mob.fetchInventory(i);
-			if((I!=null)&&(!I.amWearingAt(Item.FLOATING_NEARBY)))
+			if((I!=null)&&(!I.amWearingAt(Item.WORN_FLOATING_NEARBY)))
 				weight+=I.envStats().weight();
 		}
 		return weight;

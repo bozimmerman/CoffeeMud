@@ -77,8 +77,8 @@ public class Trap_RoomPit extends StdTrap
 			R1.rawDoors()[Directions.UP]=null;
 			R1.rawExits()[Directions.UP]=null;
 			pit=null;
-            R1.destroyRoom();
-            R2.destroyRoom();
+            R1.destroy();
+            R2.destroy();
 			super.unInvoke();
 		}
 		else
@@ -93,7 +93,7 @@ public class Trap_RoomPit extends StdTrap
 		if((unInvoked)&&(canBeUninvoked()))
 			return false;
 
-		if((tickID==MudHost.TICK_TRAP_DESTRUCTION)
+		if((tickID==Tickable.TICKID_TRAP_DESTRUCTION)
 		&&(canBeUninvoked())
 		&&(pit!=null)
 		&&(pit.size()>1)

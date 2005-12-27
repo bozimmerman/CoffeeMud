@@ -47,31 +47,31 @@ public class MagicShelter extends StdRoom
 		Ability A=CMClass.getAbility("Prop_PeaceMaker");
 		if(A!=null)
 		{
-			A.setBorrowed(this,true);
+			A.setSavable(false);
 			addEffect(A);
 		}
 		A=CMClass.getAbility("Prop_NoRecall");
 		if(A!=null)
 		{
-			A.setBorrowed(this,true);
+			A.setSavable(false);
 			addEffect(A);
 		}
 		A=CMClass.getAbility("Prop_NoSummon");
 		if(A!=null)
 		{
-			A.setBorrowed(this,true);
+			A.setSavable(false);
 			addEffect(A);
 		}
 		A=CMClass.getAbility("Prop_NoTeleport");
 		if(A!=null)
 		{
-			A.setBorrowed(this,true);
+			A.setSavable(false);
 			addEffect(A);
 		}
 		A=CMClass.getAbility("Prop_NoTeleportOut");
 		if(A!=null)
 		{
-			A.setBorrowed(this,true);
+			A.setSavable(false);
 			addEffect(A);
 		}
 	}

@@ -111,7 +111,7 @@ public class UtiliThread extends Thread
 					MOB mob=R.fetchInhabitant(m);
 					if((mob!=null)&&(mob.lastTickedDateTime()>0)&&(mob.lastTickedDateTime()<lastDateTime))
 					{
-						boolean ticked=CMLib.threads().isTicking(mob,MudHost.TICK_MOB);
+						boolean ticked=CMLib.threads().isTicking(mob,Tickable.TICKID_MOB);
 						boolean isDead=mob.amDead();
 						String wasFrom=((mob.getStartRoom()!=null)?mob.getStartRoom().roomID():"NULL");
 						if(!ticked)
@@ -292,7 +292,7 @@ public class UtiliThread extends Thread
 			try{Thread.sleep(2000);}catch(Exception e){}
 		}
 		
-		try{Thread.sleep(MudHost.TICK_TIME*2);}catch(Exception e){started=false;}
+		try{Thread.sleep(Tickable.TIME_TICK*2);}catch(Exception e){started=false;}
 		
 		while(started)
 		{

@@ -45,7 +45,7 @@ public class GenWeapon extends StdWeapon
 		setDisplayText("a generic weapon sits here.");
 		setDescription("");
 		baseGoldValue=5;
-		properWornBitmap=Item.WIELD|Item.HELD;
+		properWornBitmap=Item.WORN_WIELD|Item.WORN_HELD;
 		wornLogicalAnd=false;
 		weaponType=Weapon.TYPE_BASHING;
 		material=EnvResource.RESOURCE_STEEL;

@@ -50,7 +50,7 @@ public class Play_Tempo extends Play
 				Ability A=mob.fetchEffect(i);
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL))
-					A.tick(mob,MudHost.TICK_MOB);
+					A.tick(mob,Tickable.TICKID_MOB);
 			}
 		}
 		return true;

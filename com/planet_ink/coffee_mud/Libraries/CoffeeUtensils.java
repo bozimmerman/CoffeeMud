@@ -707,7 +707,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		if((target instanceof Light)&&(((Light)target).isLit()))
 		{
-			((Light)target).tick(target,MudHost.TICK_LIGHT_FLICKERS);
+			((Light)target).tick(target,Tickable.TICKID_LIGHT_FLICKERS);
 			((Light)target).light(false);
 		}
 	}
@@ -771,7 +771,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			}
 		}
 		clearTheRoom(deadRoom);
-		deadRoom.destroyRoom();
+		deadRoom.destroy();
 		if(deadRoom instanceof GridLocale)
 			((GridLocale)deadRoom).clearGrid(null);
 		CMLib.database().DBDeleteRoom(deadRoom);
@@ -962,7 +962,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		for(int m=room.numInhabitants()-1;m>=0;m--)
 		{
 			MOB mob2=room.fetchInhabitant(m);
-			if((mob2!=null)&&(mob2.isEligibleMonster()))
+			if((mob2!=null)&&(mob2.savable()))
 			{
 				if(mob2.getStartRoom()==room)
 					mob2.destroy();
@@ -1099,7 +1099,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		{
 			Item I=mob.fetchInventory(i);
 			if(I==null) break;
-			if((!I.amWearingAt(Item.INVENTORY))
+			if((!I.amWearingAt(Item.IN_INVENTORY))
 			&&((I instanceof Armor)||(I instanceof Shield)))
 			{
 				boolean ok=true;
@@ -1174,10 +1174,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
     public String wornList(long wornCode)
     {
         StringBuffer buf=new StringBuffer("");
-        for(int wornNum=0;wornNum<Item.wornLocation.length-1;wornNum++)
+        for(int wornNum=0;wornNum<Item.WORN_DESCS.length-1;wornNum++)
         {
             if(CMath.isSet(wornCode,wornNum))
-                buf.append(Item.wornLocation[wornNum+1]+", ");
+                buf.append(Item.WORN_DESCS[wornNum+1]+", ");
         }
         String buff=buf.toString();
         if(buff.endsWith(", ")) buff=buff.substring(0,buff.length()-2).trim();
@@ -1188,8 +1188,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
     {
         int wornNum=0;
         name=name.toLowerCase().trim();
-        for(;wornNum<Item.wornLocation.length-1;wornNum++)
-            if(Item.wornLocation[wornNum].endsWith(name))
+        for(;wornNum<Item.WORN_DESCS.length-1;wornNum++)
+            if(Item.WORN_DESCS[wornNum].endsWith(name))
                 return wornNum;
         return -1;
     }

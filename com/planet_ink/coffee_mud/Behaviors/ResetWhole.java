@@ -64,7 +64,7 @@ public class ResetWhole extends StdBehavior
 		try
 		{
 			time=Long.parseLong(getParms());
-			time=time*MudHost.TICK_TIME;
+			time=time*Tickable.TIME_TICK;
 		}
 		catch(Exception e){}
 		if((lastAccess+time)<System.currentTimeMillis())

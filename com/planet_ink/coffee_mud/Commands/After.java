@@ -53,7 +53,7 @@ public class After extends StdCommand implements Tickable
 		if(((String)commands.elementAt(0)).equalsIgnoreCase("stop"))
 		{
 			afterCmds.clear();
-			CMLib.threads().deleteTick(this,MudHost.TICK_AREA);
+			CMLib.threads().deleteTick(this,Tickable.TICKID_AREA);
 			mob.tell("Ok.");
 			return false;
 		}
@@ -66,7 +66,7 @@ public class After extends StdCommand implements Tickable
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
 		String s=(String)commands.elementAt(0);
 		if(s.equalsIgnoreCase(getScr("After","ticks")))
-			time=time*MudHost.TICK_TIME;
+			time=time*Tickable.TIME_TICK;
 		else
 		if(s.equalsIgnoreCase(getScr("After","seconds")))
 			time=time*1000;
@@ -90,7 +90,7 @@ public class After extends StdCommand implements Tickable
 		V.addElement(mob);
 		V.addElement(commands);
 		afterCmds.addElement(V);
-		CMLib.threads().startTickDown(this,MudHost.TICK_AREA,1);
+		CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
 		mob.tell("Ok.");
 		return false;
 	}

@@ -139,7 +139,7 @@ public class AreaData extends StdWebMacro
 			for(int a=0;a<E.numEffects();a++)
 			{
 				Ability Able=E.fetchEffect(a);
-				if((Able!=null)&&(!Able.isBorrowed(E)))
+				if((Able!=null)&&(Able.savable()))
 				{
 					theclasses.addElement(CMClass.className(Able));
 					String t=Able.text();

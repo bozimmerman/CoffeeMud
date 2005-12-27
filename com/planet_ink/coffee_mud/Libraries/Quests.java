@@ -89,7 +89,7 @@ public class Quests extends StdLibrary implements QuestManager
 		if(quests.contains(Q))
 		{
 			Q.stopQuest();
-			CMLib.threads().deleteTick(Q,MudHost.TICK_QUEST);
+			CMLib.threads().deleteTick(Q,Tickable.TICKID_QUEST);
 			quests.removeElement(Q);
 		}
 	}

@@ -85,7 +85,7 @@ public class StdClanItem extends StdItem implements ClanItem
 
 	public static boolean standardTick(Tickable ticking, int tickID)
 	{
-		if(tickID!=MudHost.TICK_CLANITEM)
+		if(tickID!=Tickable.TICKID_CLANITEM)
 			return true;
 		if((!(ticking instanceof Item))
 		||(!(ticking instanceof ClanItem))
@@ -107,7 +107,7 @@ public class StdClanItem extends StdItem implements ClanItem
 			}
 		}
 		else
-		if((I.amWearingAt(Item.INVENTORY))
+		if((I.amWearingAt(Item.IN_INVENTORY))
 		&&(M.isMonster()))
 			I.wearAt(I.rawProperLocationBitmap());
 

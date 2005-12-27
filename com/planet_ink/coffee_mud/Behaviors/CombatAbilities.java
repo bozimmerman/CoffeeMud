@@ -141,7 +141,7 @@ public class CombatAbilities extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 		if(ticking==null) return true;
-		if(tickID!=MudHost.TICK_MOB)
+		if(tickID!=Tickable.TICKID_MOB)
 		{
 			Log.errOut("CombatAbilities",ticking.name()+" wants to fight?!");
 			return true;
@@ -284,13 +284,13 @@ public class CombatAbilities extends StdBehavior
 				Item I=mob.fetchInventory(i);
 				if((I!=null)&&(I instanceof Wand))
 				{
-					if(!I.amWearingAt(Item.INVENTORY))
+					if(!I.amWearingAt(Item.IN_INVENTORY))
 						myWand=I;
 					else
 						backupWand=I;
 				}
 			}
-			if((myWand==null)&&(backupWand!=null)&&(backupWand.canWear(mob,Item.HELD)))
+			if((myWand==null)&&(backupWand!=null)&&(backupWand.canWear(mob,Item.WORN_HELD)))
 			{
 				Vector V=new Vector();
 				V.addElement("hold");

@@ -228,7 +228,7 @@ public class Prop_ClanEquipment extends Property
 		if ((mob.isMine(me))
 		&&(afftarget!=null)
 		&&(afftarget instanceof MOB)
-		&&(!me.amWearingAt(Item.INVENTORY)))
+		&&(!me.amWearingAt(Item.IN_INVENTORY)))
 		{
 			MOB target = null;
 			if( (mob.location() != null))
@@ -303,7 +303,7 @@ public class Prop_ClanEquipment extends Property
 		    && (affected instanceof Armor)
 		    && (! (affected instanceof Shield))
 		    && (activated)
-		    && (! ( (Armor) affected).amWearingAt(Item.INVENTORY)))
+		    && (! ( (Armor) affected).amWearingAt(Item.IN_INVENTORY)))
 		{
             for(int i=0;i<Prop_HaveResister.stats.length;i++)
                 affectedStats.setStat(((Integer)Prop_HaveResister.stats[i][0]).intValue(),affectedStats.getStat(((Integer)Prop_HaveResister.stats[i][0]).intValue())+EQadjCharStats.getStat(((Integer)Prop_HaveResister.stats[i][0]).intValue()));

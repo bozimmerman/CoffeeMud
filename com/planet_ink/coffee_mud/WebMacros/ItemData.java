@@ -95,7 +95,7 @@ public class ItemData extends StdWebMacro
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M2=R.fetchInhabitant(m);
-						if((M2!=null)&&(M2.isEligibleMonster()))
+						if((M2!=null)&&(M2.savable()))
 						   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 					}
                     return clearWebMacros(str);
@@ -359,9 +359,9 @@ public class ItemData extends StdWebMacro
 							else
 								break;
 					}
-					for(int i=1;i<Item.wornLocation.length;i++)
+					for(int i=1;i<Item.WORN_DESCS.length;i++)
 					{
-						String climstr=Item.wornLocation[i];
+						String climstr=Item.WORN_DESCS[i];
 						int mask=CMath.pow(2,i-1);
 						str.append("<OPTION VALUE="+mask);
 						if((climate&mask)>0) str.append(" SELECTED");
@@ -695,7 +695,7 @@ public class ItemData extends StdWebMacro
                     return "false";
 				case 63: // being worn
 					if(firstTime)
-						old=I.amWearingAt(Item.INVENTORY)?"":"checked";
+						old=I.amWearingAt(Item.IN_INVENTORY)?"":"checked";
 					else
 					if(old.equals("on"))
 						old="checked";

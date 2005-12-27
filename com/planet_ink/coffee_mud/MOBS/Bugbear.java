@@ -48,7 +48,7 @@ public class Bugbear extends StdMOB
 		Weapon h=CMClass.getWeapon("Halberd");
 		if(h!=null)
 		{
-			h.wearAt(Item.WIELD);
+			h.wearAt(Item.WORN_WIELD);
 			addInventory(h);
 		}
 

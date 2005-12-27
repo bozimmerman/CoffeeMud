@@ -74,7 +74,7 @@ public class Spell_KnowBliss extends Spell
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==MudHost.TICK_MOB)
+		if(tickID==Tickable.TICKID_MOB)
 		{
 			// undo the affects of this spell
 			if((affected==null)||(!(affected instanceof MOB)))

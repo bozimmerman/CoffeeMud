@@ -39,7 +39,7 @@ public class GenCloak extends GenArmor
 		setName("a hooded cloak");
 		setDisplayText("a hooded cloak is here");
 		setDescription("");
-		properWornBitmap=Item.ABOUT_BODY;
+		properWornBitmap=Item.WORN_ABOUT_BODY;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(1);
 		baseEnvStats().setWeight(1);
@@ -52,7 +52,7 @@ public class GenCloak extends GenArmor
 
 	public void affectEnvStats(Environmental host, EnvStats stats)
 	{
-		if(!amWearingAt(Item.INVENTORY))
+		if(!amWearingAt(Item.IN_INVENTORY))
 			stats.setName(readableText());
 	}
 }

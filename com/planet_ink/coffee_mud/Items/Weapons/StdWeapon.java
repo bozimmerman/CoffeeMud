@@ -49,7 +49,7 @@ public class StdWeapon extends StdItem implements Weapon
 		setDisplayText(" sits here.");
 		setDescription("This is a deadly looking weapon.");
 		wornLogicalAnd=false;
-		properWornBitmap=Item.HELD|Item.WIELD;
+		properWornBitmap=Item.WORN_HELD|Item.WORN_WIELD;
 		baseEnvStats().setAttackAdjustment(0);
 		baseEnvStats().setDamage(0);
 		baseEnvStats().setAbility(0);
@@ -78,7 +78,7 @@ public class StdWeapon extends StdItem implements Weapon
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(amWearingAt(Item.WIELD))
+		if(amWearingAt(Item.WORN_WIELD))
 		{
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(envStats().attackAdjustment()+(envStats().ability()*10)));
 			affectableStats.setDamage(affectableStats.damage()+(envStats().damage()+(envStats().ability()*2)));
@@ -112,7 +112,7 @@ public class StdWeapon extends StdItem implements Weapon
 
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.tool()==this)
-		&&(amWearingAt(Item.WIELD))
+		&&(amWearingAt(Item.WORN_WIELD))
 		&&(weaponClassification()!=Weapon.CLASS_NATURAL)
 		&&(weaponType()!=Weapon.TYPE_NATURAL)
 		&&(msg.target()!=null)
@@ -206,7 +206,7 @@ public class StdWeapon extends StdItem implements Weapon
 					for(int a=0;a<numEffects();a++)
 					{
 						Ability A=fetchEffect(a);
-						if((A!=null)&&A.isBorrowed(this)&&(A.invoker()==null))
+						if((A!=null)&&(!A.savable())&&(A.invoker()==null))
 						{
 							recover=true;
 							delEffect(A);
@@ -233,11 +233,11 @@ public class StdWeapon extends StdItem implements Weapon
 								for(int a=0;a<I.numEffects();a++)
 								{
 									Ability A=I.fetchEffect(a);
-									if((A!=null)&&(!A.isBorrowed(this))&&(fetchEffect(A.ID())==null))
+									if((A!=null)&&(A.savable())&&(fetchEffect(A.ID())==null))
 									{
 										A=(Ability)A.copyOf();
 										A.setInvoker(null);
-										A.setBorrowed(this,true);
+										A.setSavable(false);
 										addEffect(A);
 										recover=true;
 									}

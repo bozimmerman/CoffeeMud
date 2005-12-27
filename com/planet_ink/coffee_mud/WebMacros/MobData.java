@@ -86,7 +86,7 @@ public class MobData extends StdWebMacro
 			for(int a=0;a<E.numLearnedAbilities();a++)
 			{
 				Ability Able=E.fetchAbility(a);
-				if((Able!=null)&&(!Able.isBorrowed(E)))
+				if((Able!=null)&&(Able.savable()))
 					theclasses.addElement(CMClass.className(Able));
 			}
 			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
@@ -547,7 +547,7 @@ public class MobData extends StdWebMacro
 				M=CMClass.getMOB("GenMob");
 			else
 				M=RoomData.getMOBFromCode(R,mobCode);
-			if((M==null)||(!M.isEligibleMonster()))
+			if((M==null)||(!M.savable()))
 			{
 				StringBuffer str=new StringBuffer("No MOB?!");
 				str.append(" Got: "+mobCode);
@@ -555,7 +555,7 @@ public class MobData extends StdWebMacro
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					MOB M2=R.fetchInhabitant(m);
-					if((M2!=null)&&(M2.isEligibleMonster()))
+					if((M2!=null)&&(M2.savable()))
 					   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 				}
                 return clearWebMacros(str);
@@ -783,22 +783,22 @@ public class MobData extends StdWebMacro
 					str.append("<OPTION VALUE=\""+r+"\"");
 					if(r==CMath.s_int(old))
 						str.append(" SELECTED");
-					str.append(">"+ShopKeeper.SOLDCODES[r]);
+					str.append(">"+ShopKeeper.DEAL_DESCS[r]);
 					r=ShopKeeper.DEAL_CLANBANKER;
 					str.append("<OPTION VALUE=\""+r+"\"");
 					if(r==CMath.s_int(old))
 						str.append(" SELECTED");
-					str.append(">"+ShopKeeper.SOLDCODES[r]);
+					str.append(">"+ShopKeeper.DEAL_DESCS[r]);
 				}
 				else
-				for(int r=0;r<ShopKeeper.SOLDCODES.length;r++)
+				for(int r=0;r<ShopKeeper.DEAL_DESCS.length;r++)
 				{
 					if((r!=ShopKeeper.DEAL_CLANBANKER)&&(r!=ShopKeeper.DEAL_BANKER))
 					{
 						str.append("<OPTION VALUE=\""+r+"\"");
 						if(r==CMath.s_int(old))
 							str.append(" SELECTED");
-						str.append(">"+ShopKeeper.SOLDCODES[r]);
+						str.append(">"+ShopKeeper.DEAL_DESCS[r]);
 					}
 				}
 				break;
@@ -999,7 +999,7 @@ public class MobData extends StdWebMacro
 				str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
 				if(M.isMine(I))
-					str.append("<OPTION SELECTED VALUE=\""+RoomData.getItemCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")"+((I.container()==null)?"":(" in "+I.container().Name()))+((I.amWearingAt(Item.INVENTORY))?"":" (worn/wielded)"));
+					str.append("<OPTION SELECTED VALUE=\""+RoomData.getItemCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")"+((I.container()==null)?"":(" in "+I.container().Name()))+((I.amWearingAt(Item.IN_INVENTORY))?"":" (worn/wielded)"));
 				else
 				if(itemlist.contains(I))
 					str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");

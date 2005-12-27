@@ -345,14 +345,14 @@ public class DefaultCharState implements CharState
 	private final static String[] CODES={
 		"HITS","MANA","MOVE",
 		"HUNGER","THIRST","FATIGUE"};
-	public String[] getCodes(){return CODES;}
+	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
-	public boolean sameAs(EnvStats E){
+	public boolean sameAs(CharState E){
 		for(int i=0;i<CODES.length;i++)
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
 			   return false;

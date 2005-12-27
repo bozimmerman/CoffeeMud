@@ -88,7 +88,7 @@ public class StdClanSpecialItem extends StdClanItem
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==MudHost.TICK_CLANITEM)
+		if((tickID==Tickable.TICKID_CLANITEM)
 		&&(owner() instanceof MOB)
 		&&(clanID().length()>0)
 		&&(((MOB)owner()).isMonster())
@@ -127,7 +127,7 @@ public class StdClanSpecialItem extends StdClanItem
 				{
 					if((B==null)||(!B.ID().equals("TaxCollector")))
 						B=CMClass.getBehavior("TaxCollector");
-					if(B!=null) B.tick(owner(),MudHost.TICK_MOB);
+					if(B!=null) B.tick(owner(),Tickable.TICKID_MOB);
 					break;
 				}
 			}

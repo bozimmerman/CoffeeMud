@@ -127,23 +127,23 @@ public class Spell_FakeArmor extends Spell
 				{
 				case 0:
 					armor.setName("a "+materialName+" helmet");
-					armor.setRawProperLocationBitmap(Item.ON_HEAD);
+					armor.setRawProperLocationBitmap(Item.WORN_HEAD);
 					break;
 				case 1:
 					armor.setName("a "+materialName+" shirt");
-					armor.setRawProperLocationBitmap(Item.ON_HEAD);
+					armor.setRawProperLocationBitmap(Item.WORN_HEAD);
 					break;
 				case 2:
 					armor.setName("a pair of "+materialName+" leggings");
-					armor.setRawProperLocationBitmap(Item.ON_LEGS);
+					armor.setRawProperLocationBitmap(Item.WORN_LEGS);
 					break;
 				case 3:
 					armor.setName("a pair of "+materialName+" sleeves");
-					armor.setRawProperLocationBitmap(Item.ON_ARMS);
+					armor.setRawProperLocationBitmap(Item.WORN_ARMS);
 					break;
 				case 4:
 					armor.setName("a pair of "+materialName+" boots");
-					armor.setRawProperLocationBitmap(Item.ON_FEET);
+					armor.setRawProperLocationBitmap(Item.WORN_FEET);
 					break;
 				}
 				armor.setDisplayText(armor.name()+" sits here");

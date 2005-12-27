@@ -90,19 +90,19 @@ public class StdContainer extends StdItem implements Container
 						return false;
 					}
 					else
-					if(newitem.amWearingAt(Item.WIELD))
+					if(newitem.amWearingAt(Item.WORN_WIELD))
 					{
 						mob.tell("You are already wielding that!");
 						return false;
 					}
 					else
-					if(newitem.amWearingAt(Item.HELD))
+					if(newitem.amWearingAt(Item.WORN_HELD))
 					{
 						mob.tell("You are holding that!");
 						return false;
 					}
 					else
-					if(!newitem.amWearingAt(Item.INVENTORY))
+					if(!newitem.amWearingAt(Item.IN_INVENTORY))
 					{
 						mob.tell("You are wearing that!");
 						return false;
@@ -147,7 +147,7 @@ public class StdContainer extends StdItem implements Container
 					if(newitem.container()==this)
 					{
 						if((!(CMLib.flags().canBeSeenBy(newitem,mob)||(newitem instanceof Light)))
-						&&(amWearingAt(Item.INVENTORY))
+						&&(amWearingAt(Item.IN_INVENTORY))
 						&&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0))
 						{
 							mob.tell(mob,newitem,this,"You can't see <T-NAME> in <O-NAME>.");
@@ -415,12 +415,12 @@ public class StdContainer extends StdItem implements Container
 					break;
 				case CONTAIN_CLOTHES:
 					if((E instanceof Armor)
-					&&(((Armor)E).fitsOn(Item.ABOUT_BODY)
-					   ||((Armor)E).fitsOn(Item.ON_ARMS)
-					   ||((Armor)E).fitsOn(Item.ON_LEGS)
-					   ||((Armor)E).fitsOn(Item.ON_HEAD)
-					   ||((Armor)E).fitsOn(Item.ON_TORSO)
-					   ||((Armor)E).fitsOn(Item.ON_WAIST)))
+					&&(((Armor)E).fitsOn(Item.WORN_ABOUT_BODY)
+					   ||((Armor)E).fitsOn(Item.WORN_ARMS)
+					   ||((Armor)E).fitsOn(Item.WORN_LEGS)
+					   ||((Armor)E).fitsOn(Item.WORN_HEAD)
+					   ||((Armor)E).fitsOn(Item.WORN_TORSO)
+					   ||((Armor)E).fitsOn(Item.WORN_WAIST)))
 						return true;
 					break;
 				case CONTAIN_OTHERWEAPONS:

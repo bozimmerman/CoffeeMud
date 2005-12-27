@@ -56,7 +56,7 @@ public class Spell_FloatingDisc extends Spell
 
 		if(canBeUninvoked())
 		{
-			if(item.amWearingAt(Item.FLOATING_NEARBY))
+			if(item.amWearingAt(Item.WORN_FLOATING_NEARBY))
 			{
 				mob.location().show(mob,item,CMMsg.MSG_OK_VISUAL,"<T-NAME> floating near <S-NAME> now floats back "+((wasntMine)?"down to the ground":"into <S-HIS-HER> hands."));
 				item.unWear();
@@ -96,7 +96,7 @@ public class Spell_FloatingDisc extends Spell
 			return false;
 		}
 
-		if(mob.freeWearPositions(Item.FLOATING_NEARBY)==0)
+		if(mob.freeWearPositions(Item.WORN_FLOATING_NEARBY)==0)
 		{
 			mob.tell("There is no more room around you to float anything!");
 			return false;
@@ -137,8 +137,8 @@ public class Spell_FloatingDisc extends Spell
 				long properWornCode=((Item)target).rawProperLocationBitmap();
 				boolean properWornLogical=((Item)target).rawLogicalAnd();
 				((Item)target).setRawLogicalAnd(false);
-				((Item)target).setRawProperLocationBitmap(Item.FLOATING_NEARBY);
-				((Item)target).wearAt(Item.FLOATING_NEARBY);
+				((Item)target).setRawProperLocationBitmap(Item.WORN_FLOATING_NEARBY);
+				((Item)target).wearAt(Item.WORN_FLOATING_NEARBY);
 				((Item)target).setRawLogicalAnd(properWornLogical);
 				((Item)target).setRawProperLocationBitmap(properWornCode);
 				((Item)target).recoverEnvStats();

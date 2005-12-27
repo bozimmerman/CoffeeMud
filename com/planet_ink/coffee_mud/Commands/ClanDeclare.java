@@ -96,9 +96,9 @@ public class ClanDeclare extends BaseClanner
 
 					}
 					long last=C.getLastRelationChange(C2.clanID());
-					if(last>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)*MudHost.TICK_TIME))
+					if(last>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)*Tickable.TIME_TICK))
 					{
-						last=last+(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)*MudHost.TICK_TIME);
+						last=last+(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)*Tickable.TIME_TICK);
 						if(System.currentTimeMillis()<last)
 						{
 							mob.tell(getScr("ClanDeclare","waitforrel"));

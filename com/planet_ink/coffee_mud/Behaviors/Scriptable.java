@@ -1382,7 +1382,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					returnable=(((MOB)E).fetchWornItem(arg2)!=null);
 				else
 				if(E instanceof Item)
-					returnable=(CMLib.english().containsString(E.name(),arg2)&&(!((Item)E).amWearingAt(Item.INVENTORY)));
+					returnable=(CMLib.english().containsString(E.name(),arg2)&&(!((Item)E).amWearingAt(Item.IN_INVENTORY)));
 				else
 					returnable=false;
 				break;
@@ -2292,10 +2292,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								break;
 							}
 						if(!found)
-						for(int i=0;i<M.curState().getCodes().length;i++)
-							if(M.curState().getCodes()[i].equalsIgnoreCase(arg2))
+						for(int i=0;i<M.curState().getStatCodes().length;i++)
+							if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
 							{
-								val=M.curState().getStat(M.curState().getCodes()[i]);
+								val=M.curState().getStat(M.curState().getStatCodes()[i]);
 								found=true;
 								break;
 							}
@@ -2374,10 +2374,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 									break;
 								}
 							if(!found)
-							for(int i=0;i<M.curState().getCodes().length;i++)
-								if(M.curState().getCodes()[i].equalsIgnoreCase(arg2))
+							for(int i=0;i<M.curState().getStatCodes().length;i++)
+								if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
 								{
-									val=M.curState().getStat(M.curState().getCodes()[i]);
+									val=M.curState().getStat(M.curState().getStatCodes()[i]);
 									found=true;
 									break;
 								}
@@ -3069,7 +3069,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					for(int i=0;i<((MOB)E).inventorySize();i++)
 					{
 						Item I=((MOB)E).fetchInventory(i);
-						if((I!=null)&&(I.amWearingAt(Item.INVENTORY))&&(I.container()==null))
+						if((I!=null)&&(I.amWearingAt(Item.IN_INVENTORY))&&(I.container()==null))
 							choices.addElement(I);
 					}
 				}
@@ -3154,12 +3154,12 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					for(int i=0;i<((MOB)E).inventorySize();i++)
 					{
 						Item I=((MOB)E).fetchInventory(i);
-						if((I!=null)&&(!I.amWearingAt(Item.INVENTORY))&&(I.container()==null))
+						if((I!=null)&&(!I.amWearingAt(Item.IN_INVENTORY))&&(I.container()==null))
 							choices.addElement(I);
 					}
 				}
 				else
-				if((E instanceof Item)&&(!(((Item)E).amWearingAt(Item.INVENTORY))))
+				if((E instanceof Item)&&(!(((Item)E).amWearingAt(Item.IN_INVENTORY))))
 				{
 					choices.addElement(E);
 					if(E instanceof Container)
@@ -3754,10 +3754,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								break;
 							}
 						if(!found)
-						for(int i=0;i<M.curState().getCodes().length;i++)
-							if(M.curState().getCodes()[i].equalsIgnoreCase(arg2))
+						for(int i=0;i<M.curState().getStatCodes().length;i++)
+							if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
 							{
-								val=M.curState().getStat(M.curState().getCodes()[i]);
+								val=M.curState().getStat(M.curState().getStatCodes()[i]);
 								found=true;
 								break;
 							}
@@ -3821,10 +3821,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 									break;
 								}
 							if(!found)
-							for(int i=0;i<M.curState().getCodes().length;i++)
-								if(M.curState().getCodes()[i].equalsIgnoreCase(arg2))
+							for(int i=0;i<M.curState().getStatCodes().length;i++)
+								if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
 								{
-									val=M.curState().getStat(M.curState().getCodes()[i]);
+									val=M.curState().getStat(M.curState().getStatCodes()[i]);
 									found=true;
 									break;
 								}
@@ -4419,8 +4419,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								break;
 							}
 						if(!found)
-						for(int i=0;i<M.curState().getCodes().length;i++)
-							if(M.curState().getCodes()[i].equalsIgnoreCase(arg2))
+						for(int i=0;i<M.curState().getStatCodes().length;i++)
+							if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
 							{
 								M.curState().setStat(arg2,arg3);
 								found=true;
@@ -4489,9 +4489,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								}
 							}
 							if(!found)
-							for(int i=0;i<M.curState().getCodes().length;i++)
+							for(int i=0;i<M.curState().getStatCodes().length;i++)
 							{
-								if(M.curState().getCodes()[i].equalsIgnoreCase(arg2))
+								if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
 								{
 									M.curState().setStat(arg2,arg3);
 									found=true;
@@ -5791,6 +5791,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					}
 					str=(" "+str+" ").toUpperCase();
                     str=CMStrings.removeColors(str);
+                    str=CMStrings.replaceAll(str,"\n\r"," ");
 					trigger=trigger.substring(11).trim();
 					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
@@ -6313,6 +6314,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					if(str==null) break;
 					str=" "+CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false).toUpperCase()+" ";
                     str=CMStrings.removeColors(str);
+                    str=CMStrings.replaceAll(str,"\n\r"," ");
 					trigger=CMParms.getPastBit(trigger.trim(),0);
 					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
@@ -6382,6 +6384,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                             if(edex>dex) str=str.substring(dex+1,edex);
                         }
                         str=" "+CMStrings.removeColors(str)+" ";
+                        str=CMStrings.replaceAll(str,"\n\r"," ");
                         trigger=CMParms.getPastBit(trigger.trim(),1);
                         if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
                         {
