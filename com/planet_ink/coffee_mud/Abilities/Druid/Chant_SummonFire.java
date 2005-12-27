@@ -96,7 +96,7 @@ public class Chant_SummonFire extends Chant
 				I.setDisplayText("A roaring magical campfire has been built here.");
 				I.setDescription("It consists of magically burning flames, consuming no fuel.");
 				I.recoverEnvStats();
-				I.setMaterial(EnvResource.RESOURCE_NOTHING);
+				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				I.setMiscText(I.text());
 				Ability B=CMClass.getAbility("Burning");
 				I.addNonUninvokableEffect(B);

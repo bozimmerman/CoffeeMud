@@ -50,7 +50,7 @@ public class StdSmokable extends StdContainer implements Light
 		capacity=0;
 		containType=Container.CONTAIN_SMOKEABLES;
 		properWornBitmap=Item.WORN_MOUTH;
-		setMaterial(EnvResource.RESOURCE_PIPEWEED);
+		setMaterial(RawMaterial.RESOURCE_PIPEWEED);
 		wornLogicalAnd=false;
 		baseGoldValue=5;
 		recoverEnvStats();

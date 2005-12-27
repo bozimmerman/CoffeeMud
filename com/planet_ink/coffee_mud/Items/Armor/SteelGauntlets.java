@@ -46,7 +46,7 @@ public class SteelGauntlets extends StdArmor
 		baseEnvStats().setWeight(5);
 		baseGoldValue=20;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 	}
 
 }

@@ -69,7 +69,7 @@ public class Spell_KnowPain extends Spell
 
 				int damage = 0;
 				int maxDie = (target.envStats().level()+adjustedLevel(mob,asLevel))/2;
-				damage += CMLib.dice().roll(maxDie,6,target.charStats().getStat(CharStats.INTELLIGENCE));
+				damage += CMLib.dice().roll(maxDie,6,target.charStats().getStat(CharStats.STAT_INTELLIGENCE));
 				mob.location().send(mob,msg2);
 				if((msg2.value()>0)||(msg.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));

@@ -304,7 +304,7 @@ public class Skill_Enslave extends StdSkill
 		}
 		MOB target=getTarget(mob,commands,givenTarget,false,true);
 		if(target==null) return false;
-		if(target.charStats().getStat(CharStats.INTELLIGENCE)<5)
+		if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
 			mob.tell(target.name()+" would be too stupid to understand your instructions!");
 			return false;

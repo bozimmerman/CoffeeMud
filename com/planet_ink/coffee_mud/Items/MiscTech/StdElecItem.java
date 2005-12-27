@@ -41,12 +41,12 @@ public class StdElecItem extends StdItem implements Electronics
 		setDisplayText("a small piece of electronics sits here.");
 		setDescription("You can't tell what it is by looking at it.");
 
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=0;
 		recoverEnvStats();
 	}
 
-	protected int fuelType=EnvResource.RESOURCE_ENERGY;
+	protected int fuelType=RawMaterial.RESOURCE_ENERGY;
 	public int fuelType(){return fuelType;}
 	public void setFuelType(int resource){fuelType=resource;}
 	protected long powerCapacity=100;

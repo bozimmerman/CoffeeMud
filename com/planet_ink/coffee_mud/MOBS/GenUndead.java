@@ -46,7 +46,7 @@ public class GenUndead extends GenMob
 
 		baseCharStats().setMyRace(CMClass.getRace("Undead"));
 		baseCharStats().getMyRace().startRacing(this,false);
-		baseCharStats().setStat(CharStats.CHARISMA,2);
+		baseCharStats().setStat(CharStats.STAT_CHARISMA,2);
 
 		baseEnvStats().setAbility(10);
 		baseEnvStats().setLevel(1);

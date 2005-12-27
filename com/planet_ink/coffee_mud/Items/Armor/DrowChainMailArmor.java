@@ -47,7 +47,7 @@ public class DrowChainMailArmor extends StdArmor
 		baseEnvStats().setAbility(0);
 		baseGoldValue=1500;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 	}
 
 }

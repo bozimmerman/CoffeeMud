@@ -100,11 +100,11 @@ public class Dragon extends StdMOB
 		short gend = (short)Math.round(Math.random());
 		if (gend == 0)
 		{
-			baseCharStats().setStat(CharStats.GENDER,'F');
+			baseCharStats().setStat(CharStats.STAT_GENDER,'F');
 		}
 		else
 		{
-			baseCharStats().setStat(CharStats.GENDER,'M');
+			baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		}
 		// ===== set the basics
 		setName(getAgeDescription(DragonAge()).toString() + " " + getColorDescription(DragonColor()) + " Dragon");
@@ -155,12 +155,12 @@ public class Dragon extends StdMOB
 		baseEnvStats().setSpeed(2.0);
 
 		// ===== Dragons get tougher with age
-		baseCharStats().setStat(CharStats.STRENGTH,13 + (DragonAge()*2));
-		baseCharStats().setStat(CharStats.INTELLIGENCE,13 + (DragonAge()*2));
-		baseCharStats().setStat(CharStats.WISDOM,13 + (DragonAge()*2));
-		baseCharStats().setStat(CharStats.DEXTERITY,13 + (DragonAge()*2));
-		baseCharStats().setStat(CharStats.CONSTITUTION,13 + (DragonAge()*2));
-		baseCharStats().setStat(CharStats.CHARISMA,13 + (DragonAge()*2));
+		baseCharStats().setStat(CharStats.STAT_STRENGTH,13 + (DragonAge()*2));
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,13 + (DragonAge()*2));
+		baseCharStats().setStat(CharStats.STAT_WISDOM,13 + (DragonAge()*2));
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,13 + (DragonAge()*2));
+		baseCharStats().setStat(CharStats.STAT_CONSTITUTION,13 + (DragonAge()*2));
+		baseCharStats().setStat(CharStats.STAT_CHARISMA,13 + (DragonAge()*2));
 		baseCharStats().setMyRace(CMClass.getRace("Dragon"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
@@ -453,31 +453,31 @@ public class Dragon extends StdMOB
 		if((baseEnvStats().level()!=birthAge)
 		||(baseEnvStats().ability()!=birthColor))
 			setupDragon(baseEnvStats().ability(),baseEnvStats().level());
-		charStats().setStat(CharStats.SAVE_MAGIC,charStats().getStat(CharStats.SAVE_MAGIC)+DragonAge()*5);
+		charStats().setStat(CharStats.STAT_SAVE_MAGIC,charStats().getStat(CharStats.STAT_SAVE_MAGIC)+DragonAge()*5);
 		switch(DragonColor())
 		{
 		case GOLD:
-			charStats().setStat(CharStats.SAVE_FIRE,charStats().getStat(CharStats.SAVE_FIRE)+100);
-			charStats().setStat(CharStats.SAVE_GAS,charStats().getStat(CharStats.SAVE_GAS)+100);
+			charStats().setStat(CharStats.STAT_SAVE_FIRE,charStats().getStat(CharStats.STAT_SAVE_FIRE)+100);
+			charStats().setStat(CharStats.STAT_SAVE_GAS,charStats().getStat(CharStats.STAT_SAVE_GAS)+100);
 			break;
 		case RED:
 		case BRASS:
-			charStats().setStat(CharStats.SAVE_FIRE,charStats().getStat(CharStats.SAVE_FIRE)+100);
+			charStats().setStat(CharStats.STAT_SAVE_FIRE,charStats().getStat(CharStats.STAT_SAVE_FIRE)+100);
 			break;
 		case GREEN:
-			charStats().setStat(CharStats.SAVE_GAS,charStats().getStat(CharStats.SAVE_GAS)+100);
+			charStats().setStat(CharStats.STAT_SAVE_GAS,charStats().getStat(CharStats.STAT_SAVE_GAS)+100);
 			break;
 		case BLUE:
 		case BRONZE:
-			charStats().setStat(CharStats.SAVE_ELECTRIC,charStats().getStat(CharStats.SAVE_ELECTRIC)+100);
+			charStats().setStat(CharStats.STAT_SAVE_ELECTRIC,charStats().getStat(CharStats.STAT_SAVE_ELECTRIC)+100);
 			break;
 		case WHITE:
 		case SILVER:
-			charStats().setStat(CharStats.SAVE_COLD,charStats().getStat(CharStats.SAVE_COLD)+100);
+			charStats().setStat(CharStats.STAT_SAVE_COLD,charStats().getStat(CharStats.STAT_SAVE_COLD)+100);
 			break;
 		case BLACK:
 		case COPPER:
-			charStats().setStat(CharStats.SAVE_ACID,charStats().getStat(CharStats.SAVE_ACID)+100);
+			charStats().setStat(CharStats.STAT_SAVE_ACID,charStats().getStat(CharStats.STAT_SAVE_ACID)+100);
 			break;
 		}
 	}

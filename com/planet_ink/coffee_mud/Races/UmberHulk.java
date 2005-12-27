@@ -60,9 +60,9 @@ public class UmberHulk extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,16);
-		affectableStats.setStat(CharStats.DEXTERITY,8);
-		affectableStats.setStat(CharStats.INTELLIGENCE,9);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,16);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,8);
+		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,9);
 	}
 	public String arriveStr()
 	{
@@ -126,11 +126,11 @@ public class UmberHulk extends StdRace
 			{
 				for(int i=0;i<4;i++)
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_LEATHER));
+					("a strip of "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_LEATHER));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

@@ -133,32 +133,32 @@ public class Chant_SummonTornado extends Chant
 						}
 						if(I.subjectToWearAndTear())
 						{
-							switch(I.material()&EnvResource.MATERIAL_MASK)
+							switch(I.material()&RawMaterial.MATERIAL_MASK)
 							{
-							case EnvResource.MATERIAL_PRECIOUS:
-							case EnvResource.MATERIAL_ROCK:
-							case EnvResource.MATERIAL_MITHRIL:
+							case RawMaterial.MATERIAL_PRECIOUS:
+							case RawMaterial.MATERIAL_ROCK:
+							case RawMaterial.MATERIAL_MITHRIL:
 								I.setUsesRemaining(I.usesRemaining()-1);
 								break;
-							case EnvResource.MATERIAL_LIQUID:
-							case EnvResource.MATERIAL_UNKNOWN:
+							case RawMaterial.MATERIAL_LIQUID:
+							case RawMaterial.MATERIAL_UNKNOWN:
 								break;
-							case EnvResource.MATERIAL_GLASS:
+							case RawMaterial.MATERIAL_GLASS:
 								I.setUsesRemaining(I.usesRemaining()-75);
 								break;
-							case EnvResource.MATERIAL_CLOTH:
-							case EnvResource.MATERIAL_FLESH:
-							case EnvResource.MATERIAL_LEATHER:
-							case EnvResource.MATERIAL_PAPER:
-							case EnvResource.MATERIAL_VEGETATION:
-							case EnvResource.MATERIAL_WOODEN:
-							case EnvResource.MATERIAL_PLASTIC:
+							case RawMaterial.MATERIAL_CLOTH:
+							case RawMaterial.MATERIAL_FLESH:
+							case RawMaterial.MATERIAL_LEATHER:
+							case RawMaterial.MATERIAL_PAPER:
+							case RawMaterial.MATERIAL_VEGETATION:
+							case RawMaterial.MATERIAL_WOODEN:
+							case RawMaterial.MATERIAL_PLASTIC:
 								I.setUsesRemaining(I.usesRemaining()-50);
 								break;
-							case EnvResource.MATERIAL_METAL:
+							case RawMaterial.MATERIAL_METAL:
 								I.setUsesRemaining(I.usesRemaining()-20);
 								break;
-							case EnvResource.MATERIAL_ENERGY:
+							case RawMaterial.MATERIAL_ENERGY:
 								break;
 							}
 							if(I.usesRemaining()<=0)

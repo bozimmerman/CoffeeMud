@@ -115,7 +115,7 @@ public class Regeneration extends StdAbility
 						if(msg.tool().envStats().level()>=CMath.s_int(lvl))
 							hurts=true;
 					}
-					x=text.indexOf(EnvResource.RESOURCE_DESCS[((Weapon)msg.tool()).material()&EnvResource.RESOURCE_MASK]);
+					x=text.indexOf(RawMaterial.RESOURCE_DESCS[((Weapon)msg.tool()).material()&RawMaterial.RESOURCE_MASK]);
 					if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
 						hurts=true;
 				}

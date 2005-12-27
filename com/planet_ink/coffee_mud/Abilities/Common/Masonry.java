@@ -665,7 +665,7 @@ public class Masonry extends CraftingSkill
 		int[][] idata=null;
 		if(doingCode==BUILD_PORTCULIS)
 		{
-			int[] pm={EnvResource.MATERIAL_METAL,EnvResource.MATERIAL_MITHRIL};
+			int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
 			idata=fetchFoundResourceData(mob,
 			 							woodRequired,"metal",pm,
 			 							0,null,null,
@@ -676,7 +676,7 @@ public class Masonry extends CraftingSkill
 		}
 		else
 		{
-			int[] pm={EnvResource.MATERIAL_ROCK};
+			int[] pm={RawMaterial.MATERIAL_ROCK};
 			idata=fetchFoundResourceData(mob,
 										woodRequired,"stone",pm,
 										0,null,null,

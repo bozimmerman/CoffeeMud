@@ -89,7 +89,7 @@ public class Chant_PlantConstriction extends Chant
 		&&(affected instanceof Item)
 		&&(((Item)affected).amWearingAt(Item.WORN_LEGS)||((Item)affected).amWearingAt(Item.WORN_ARMS)))
 		{
-			if(CMLib.dice().rollPercentage()>(msg.source().charStats().getStat(CharStats.STRENGTH)*4))
+			if(CMLib.dice().rollPercentage()>(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)*4))
 			{
 				msg.source().location().show(msg.source(),affected,CMMsg.MSG_OK_VISUAL,"<S-NAME> struggle(s) to remove <T-NAME> and fail(s).");
 				return false;

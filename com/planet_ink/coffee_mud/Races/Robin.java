@@ -49,15 +49,15 @@ public class Robin extends Bird
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of "+name().toLowerCase()+" feet",EnvResource.RESOURCE_BONE));
+				("a pair of "+name().toLowerCase()+" feet",RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
+				("some "+name().toLowerCase()+" feathers",RawMaterial.RESOURCE_FEATHERS));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" meat",EnvResource.RESOURCE_POULTRY));
+				("some "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_POULTRY));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

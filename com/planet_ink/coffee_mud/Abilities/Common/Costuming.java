@@ -130,7 +130,7 @@ public class Costuming extends CraftingSkill
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
 		Item IE=(Item)E;
-		if((IE.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
+		if((IE.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
 		{
 			if(!quiet)
 				commonTell(mob,"That's not made of any sort of cloth.  It can't be mended.");
@@ -223,7 +223,7 @@ public class Costuming extends CraftingSkill
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
 			if(building==null) return false;
-			if((building.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
+			if((building.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
 			{
 				commonTell(mob,"That's not made of cloth.  It can't be refitted.");
 				return false;
@@ -280,7 +280,7 @@ public class Costuming extends CraftingSkill
 			int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			if(amount>woodRequired) woodRequired=amount;
 			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
-			int[] pm={EnvResource.MATERIAL_CLOTH};
+			int[] pm={RawMaterial.MATERIAL_CLOTH};
             bundling=misctype.equalsIgnoreCase("BUNDLE");
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"cloth",pm,
@@ -299,7 +299,7 @@ public class Costuming extends CraftingSkill
 				return false;
 			}
 			completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
+			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -318,7 +318,7 @@ public class Costuming extends CraftingSkill
 				building.baseEnvStats().setWeight(woodRequired);
 			else
 				building.baseEnvStats().setWeight(woodRequired/2);
-			int hardness=EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_STRENGTH]-1;
+			int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_STRENGTH]-1;
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
 			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
@@ -427,7 +427,7 @@ public class Costuming extends CraftingSkill
 		{
 			messedUp=false;
 			completion=1;
-			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}

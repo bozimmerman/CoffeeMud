@@ -240,7 +240,7 @@ public class Fletching extends CraftingSkill
 			int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			if((amount>woodRequired)&&(woodRequired>0)) woodRequired=amount;
 			String otherRequired=(String)foundRecipe.elementAt(RCP_EXTRAREQ);
-			int[] pm={EnvResource.MATERIAL_WOODEN};
+			int[] pm={RawMaterial.MATERIAL_WOODEN};
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"wood",pm,
 												(otherRequired.length()>0)?1:0,otherRequired,null,
@@ -248,8 +248,8 @@ public class Fletching extends CraftingSkill
 												autoGenerate);
 			if(data==null) return false;
 			woodRequired=data[0][FOUND_AMT];
-			if(((data[1][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
-			||((data[1][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL))
+			if(((data[1][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+			||((data[1][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
 			{
 				Item fire=null;
 				for(int i=0;i<mob.location().numItems();i++)
@@ -279,7 +279,7 @@ public class Fletching extends CraftingSkill
 				return false;
 			}
 			completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
+			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
 			itemName=CMStrings.startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) making "+building.name()+".";
@@ -330,7 +330,7 @@ public class Fletching extends CraftingSkill
 		{
 			messedUp=false;
 			completion=1;
-			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}

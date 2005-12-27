@@ -173,9 +173,9 @@ public class Smelting extends CraftingSkill
 		int resourceCode1=-1;
 		int resourceCode2=-1;
 		int doneResourceCode=-1;
-		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 		{
-			String desc=EnvResource.RESOURCE_DESCS[i];
+			String desc=RawMaterial.RESOURCE_DESCS[i];
 			if(desc.equalsIgnoreCase(resourceDesc1))
 				resourceCode1=i;
 			if(desc.equalsIgnoreCase(resourceDesc2))
@@ -188,8 +188,8 @@ public class Smelting extends CraftingSkill
 			commonTell(mob,"CoffeeMud error in this alloy.  Please let your local Archon know.");
 			return false;
 		}
-		int amountResource1=findNumberOfResource(mob.location(),EnvResource.RESOURCE_DATA[resourceCode1][0]);
-		int amountResource2=findNumberOfResource(mob.location(),EnvResource.RESOURCE_DATA[resourceCode2][0]);
+		int amountResource1=findNumberOfResource(mob.location(),RawMaterial.RESOURCE_DATA[resourceCode1][0]);
+		int amountResource2=findNumberOfResource(mob.location(),RawMaterial.RESOURCE_DATA[resourceCode2][0]);
 		if(amountResource1==0)
 		{
 			commonTell(mob,"There is no "+resourceDesc1+" here to make "+doneResourceDesc+" from.  It might need to put it down first.");
@@ -205,11 +205,11 @@ public class Smelting extends CraftingSkill
 		amountMaking=amountResource1;
 		if(amountResource2<amountResource1) amountMaking=amountResource2;
 		if((maxAmount>0)&&(amountMaking>maxAmount)) amountMaking=maxAmount;
-		destroyResources(mob.location(),amountMaking,EnvResource.RESOURCE_DATA[resourceCode1][0],0,null,0);
-		destroyResources(mob.location(),amountMaking,EnvResource.RESOURCE_DATA[resourceCode2][0],0,null,0);
+		destroyResources(mob.location(),amountMaking,RawMaterial.RESOURCE_DATA[resourceCode1][0],0,null,0);
+		destroyResources(mob.location(),amountMaking,RawMaterial.RESOURCE_DATA[resourceCode2][0],0,null,0);
 		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		amountMaking+=amountMaking;
-		building=(Item)CMLib.utensils().makeResource(EnvResource.RESOURCE_DATA[doneResourceCode][0],-1,false);
+		building=(Item)CMLib.utensils().makeResource(RawMaterial.RESOURCE_DATA[doneResourceCode][0],-1,false);
 		startStr="<S-NAME> start(s) smelting "+doneResourceDesc.toLowerCase()+".";
 		displayText="You are smelting "+doneResourceDesc.toLowerCase();
         playSound="sizzling.wav";

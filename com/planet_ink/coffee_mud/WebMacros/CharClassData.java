@@ -66,7 +66,7 @@ public class CharClassData extends StdWebMacro
 
 				if(parms.containsKey("MAXSTATS"))
 					for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
-						str.append(CharStats.TRAITS[i]+"("+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+C.maxStatAdjustments()[i])+"), ");
+						str.append(CharStats.STAT_DESCS[i]+"("+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+C.maxStatAdjustments()[i])+"), ");
 				if(parms.containsKey("PRACS"))
 				{
 					str.append(C.getPracsFirstLevel()+" plus (Wisdom/4)");
@@ -91,7 +91,7 @@ public class CharClassData extends StdWebMacro
 				
 				if(parms.containsKey("AVGHITPOINTS"))
 				{
-					int maxCon=18+C.maxStatAdjustments()[CharStats.CONSTITUTION];
+					int maxCon=18+C.maxStatAdjustments()[CharStats.STAT_CONSTITUTION];
 					str.append("("+avgMath2(10,20,10,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(10,20,18,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(10,20,maxCon,C.getHPDivisor(),C.getHPDice())+") ");
 					str.append("("+avgMath2(50,20,10,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(50,20,18,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(50,20,maxCon,C.getHPDivisor(),C.getHPDice())+") ");
 					str.append("("+avgMath2(90,20,10,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(90,20,18,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(90,20,maxCon,C.getHPDivisor(),C.getHPDice())+") ");
@@ -99,7 +99,7 @@ public class CharClassData extends StdWebMacro
 					
 				if(parms.containsKey("AVGMANA"))
 				{
-					int maxInt=18+C.maxStatAdjustments()[CharStats.INTELLIGENCE];
+					int maxInt=18+C.maxStatAdjustments()[CharStats.STAT_INTELLIGENCE];
 					str.append("("+avgMath2(10,100,10,C.getManaDivisor(),C.getManaDice())+"/"+avgMath2(10,100,18,C.getManaDivisor(),C.getManaDice())+"/"+avgMath2(10,100,maxInt,C.getManaDivisor(),C.getManaDice())+") ");
 					str.append("("+avgMath2(50,100,10,C.getManaDivisor(),C.getManaDice())+"/"+avgMath2(50,100,18,C.getManaDivisor(),C.getManaDice())+"/"+avgMath2(50,100,maxInt,C.getManaDivisor(),C.getManaDice())+") ");
 					str.append("("+avgMath2(90,100,10,C.getManaDivisor(),C.getManaDice())+"/"+avgMath2(90,100,18,C.getManaDivisor(),C.getManaDice())+"/"+avgMath2(90,100,maxInt,C.getManaDivisor(),C.getManaDice())+") ");
@@ -107,13 +107,13 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("AVGMOVEMENT"))
 				{
 					int ah=C.getMovementMultiplier();
-					int maxStrength=18+C.maxStatAdjustments()[CharStats.STRENGTH];
+					int maxStrength=18+C.maxStatAdjustments()[CharStats.STAT_STRENGTH];
 					str.append("("+avgMath(10,ah,10,100)+"/"+avgMath(18,ah,10,100)+"/"+avgMath(maxStrength,ah,10,100)+") ");
 					str.append("("+avgMath(10,ah,50,100)+"/"+avgMath(18,ah,50,100)+"/"+avgMath(maxStrength,ah,50,100)+") ");
 					str.append("("+avgMath(10,ah,90,100)+"/"+avgMath(18,ah,90,100)+"/"+avgMath(maxStrength,ah,90,100)+") ");
 				}
 				
-				StringBuffer preReqName=new StringBuffer(CharStats.TRAITS[C.getAttackAttribute()].toLowerCase());
+				StringBuffer preReqName=new StringBuffer(CharStats.STAT_DESCS[C.getAttackAttribute()].toLowerCase());
 				preReqName.setCharAt(0,Character.toUpperCase(preReqName.charAt(0)));
 				if(parms.containsKey("PRIME"))
 					str.append(preReqName+", ");

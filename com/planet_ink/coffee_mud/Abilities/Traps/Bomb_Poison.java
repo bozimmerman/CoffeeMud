@@ -75,7 +75,7 @@ public class Bomb_Poison extends StdBomb
 	{
 		if(target.location()!=null)
 		{
-			if((!invoker().mayIFight(target))||(target==invoker())||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
+			if((!invoker().mayIFight(target))||(target==invoker())||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) the poison gas!");
 			else
 			if(target.location().show(invoker(),target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,affected.name()+" spews poison gas all over <T-NAME>!"))

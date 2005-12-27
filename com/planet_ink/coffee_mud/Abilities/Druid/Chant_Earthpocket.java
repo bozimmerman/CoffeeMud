@@ -172,7 +172,7 @@ public class Chant_Earthpocket extends Chant
 				pocket.setCapacity(Integer.MAX_VALUE);
 				pocket.baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMNOTGET);
 				pocket.baseEnvStats().setWeight(0);
-				pocket.setMaterial(EnvResource.RESOURCE_NOTHING);
+				pocket.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				pocket.setName("an earthpocket");
 				pocket.setDisplayText("an empty pitch-black pocket is in the wall here.");
 				pocket.setDescription("It looks like an endless black hole in the wall.  Very mystical.");

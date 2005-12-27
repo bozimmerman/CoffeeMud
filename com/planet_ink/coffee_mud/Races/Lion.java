@@ -47,16 +47,16 @@ public class Lion extends GreatCat
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" mane",EnvResource.RESOURCE_FUR));
+				("a "+name().toLowerCase()+" mane",RawMaterial.RESOURCE_FUR));
 				for(int i=0;i<4;i++)
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" fur",EnvResource.RESOURCE_FUR));
+					("a strip of "+name().toLowerCase()+" fur",RawMaterial.RESOURCE_FUR));
 				resources.addElement(makeResource
-				("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+				("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

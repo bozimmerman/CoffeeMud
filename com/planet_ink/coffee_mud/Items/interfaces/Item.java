@@ -172,7 +172,7 @@ public interface Item extends Environmental, Rider
      * The resource code representing the material out of which this item is principally made.
      * The resource codes are composed of an integer where the highest order bits represent
      * the basic material type, and the lower order bits represent the specific material type.
-     * These codes are defined in EnvResource.
+     * These codes are defined in RawMaterial.
      * @see EnvResource
      * @return the EnvResource code describing what this item is made of.
      */

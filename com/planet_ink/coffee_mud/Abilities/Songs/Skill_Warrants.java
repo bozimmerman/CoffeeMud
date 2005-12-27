@@ -51,7 +51,7 @@ public class Skill_Warrants extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,(-25+mob.charStats().getStat(CharStats.CHARISMA)),auto);
+		boolean success=profficiencyCheck(mob,(-25+mob.charStats().getStat(CharStats.STAT_CHARISMA)),auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),null);
@@ -70,11 +70,11 @@ public class Skill_Warrants extends BardSkill
 				buf.append(CMStrings.padRight("Name",14)+" "+CMStrings.padRight("Victim",14)+" "+CMStrings.padRight("Witness",14)+" Crime\n\r");
 				for(int v=0;v<V.size();v++)
 				{
-					Vector V2=(Vector)V.elementAt(v);
-					buf.append(CMStrings.padRight((String)V2.elementAt(0),14)+" ");
-					buf.append(CMStrings.padRight((String)V2.elementAt(1),14)+" ");
-					buf.append(CMStrings.padRight((String)V2.elementAt(2),14)+" ");
-					buf.append(((String)V2.elementAt(3))+"\n\r");
+                    LegalWarrant W=(LegalWarrant)V.elementAt(v);
+                    buf.append(CMStrings.padRight(W.criminal().Name(),14)+" ");
+					buf.append(CMStrings.padRight(W.victim()!=null?W.victim().Name():"N/A",14)+" ");
+					buf.append(CMStrings.padRight(W.witness()!=null?W.witness().Name():"N/A",14)+" ");
+					buf.append(W.crime()+"\n\r");
 				}
 				if(!mob.isMonster()) mob.session().rawPrintln(buf.toString());
 			}

@@ -51,8 +51,8 @@ public class AngryCitizen extends StdMOB
 			addInventory(d);
 		}
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,6);
-		baseCharStats().setStat(CharStats.CHARISMA,4);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,6);
+		baseCharStats().setStat(CharStats.STAT_CHARISMA,4);
 		baseCharStats().setMyRace(CMClass.getRace("Human"));
 		baseCharStats().getMyRace().startRacing(this,false);
 

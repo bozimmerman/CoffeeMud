@@ -39,7 +39,7 @@ public class StdTub extends StdRideable implements Drink
 	protected int amountOfLiquidHeld=2000;
 	protected int amountOfLiquidRemaining=2000;
 	protected boolean disappearsAfterDrinking=false;
-	protected int liquidType=EnvResource.RESOURCE_FRESHWATER;
+	protected int liquidType=RawMaterial.RESOURCE_FRESHWATER;
 
 	public StdTub()
 	{
@@ -51,7 +51,7 @@ public class StdTub extends StdRideable implements Drink
 		setDisplayText("a tub sits here.");
 		setDescription("A porcelin bath tub.");
 		baseGoldValue=500;
-		material=EnvResource.RESOURCE_CLAY;
+		material=RawMaterial.RESOURCE_CLAY;
 		rideBasis=Rideable.RIDEABLE_SIT;
 		riderCapacity=4;
 		recoverEnvStats();
@@ -63,7 +63,7 @@ public class StdTub extends StdRideable implements Drink
 	public int liquidHeld(){return amountOfLiquidHeld;}
 	public int liquidRemaining(){return amountOfLiquidRemaining;}
 	public int liquidType(){
-		if((material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)
+		if((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 			return material();
 		return liquidType;
 	}
@@ -182,10 +182,10 @@ public class StdTub extends StdRideable implements Drink
 						mob.tell(name()+" is empty.");
 						return false;
 					}
-					if((liquidType()==EnvResource.RESOURCE_SALTWATER)
-					||(liquidType()==EnvResource.RESOURCE_LAMPOIL))
+					if((liquidType()==RawMaterial.RESOURCE_SALTWATER)
+					||(liquidType()==RawMaterial.RESOURCE_LAMPOIL))
 					{
-						mob.tell("You don't want to be drinking "+EnvResource.RESOURCE_DESCS[liquidType()&EnvResource.RESOURCE_MASK].toLowerCase()+".");
+						mob.tell("You don't want to be drinking "+RawMaterial.RESOURCE_DESCS[liquidType()&RawMaterial.RESOURCE_MASK].toLowerCase()+".");
 						return false;
 					}
 					return true;
@@ -211,9 +211,9 @@ public class StdTub extends StdRideable implements Drink
 					}
 					if((liquidRemaining()>0)&&(liquidType()!=thePuddle.liquidType()))
 					{
-						mob.tell("There is still some "+EnvResource.RESOURCE_DESCS[liquidType()&EnvResource.RESOURCE_MASK].toLowerCase()
+						mob.tell("There is still some "+RawMaterial.RESOURCE_DESCS[liquidType()&RawMaterial.RESOURCE_MASK].toLowerCase()
 								 +" left in "+name()+".  You must empty it before you can fill it with "
-								 +EnvResource.RESOURCE_DESCS[thePuddle.liquidType()&EnvResource.RESOURCE_MASK].toLowerCase()+".");
+								 +RawMaterial.RESOURCE_DESCS[thePuddle.liquidType()&RawMaterial.RESOURCE_MASK].toLowerCase()+".");
 						return false;
 
 					}

@@ -83,7 +83,7 @@ public class Fighter_FlyingKick extends FighterSkill
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,(mob.charStats().getStat(CharStats.DEXTERITY)-target.charStats().getStat(CharStats.DEXTERITY))*2,auto);
+		boolean success=profficiencyCheck(mob,(mob.charStats().getStat(CharStats.STAT_DEXTERITY)-target.charStats().getStat(CharStats.STAT_DEXTERITY))*2,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

@@ -54,9 +54,9 @@ public class Allergies extends StdAbility
 	    resourceAllergies.clear();
 	    raceAllergies.clear();
 	    Vector V=CMParms.parse(newText.toUpperCase().trim());
-	    for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
-	        if(V.contains(EnvResource.RESOURCE_DESCS[i]))
-	            resourceAllergies.add(new Integer(EnvResource.RESOURCE_DATA[i][0]));
+	    for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+	        if(V.contains(RawMaterial.RESOURCE_DESCS[i]))
+	            resourceAllergies.add(new Integer(RawMaterial.RESOURCE_DATA[i][0]));
 	    Race R=null;
         for(Enumeration r=CMClass.races();r.hasMoreElements();)
         {
@@ -183,10 +183,10 @@ public class Allergies extends StdAbility
 		if(success)
 		{
 			Vector allChoices=new Vector();
-		    for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
-		        if(((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LIQUID)
-		        &&((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_ENERGY))
-			        allChoices.addElement(EnvResource.RESOURCE_DESCS[i]);
+		    for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+		        if(((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
+		        &&((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY))
+			        allChoices.addElement(RawMaterial.RESOURCE_DESCS[i]);
 		    Race R=null;
 	        for(Enumeration r=CMClass.races();r.hasMoreElements();)
 	        {

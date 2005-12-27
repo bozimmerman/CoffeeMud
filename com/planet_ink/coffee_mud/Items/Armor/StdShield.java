@@ -45,7 +45,7 @@ public class StdShield extends StdArmor implements Armor, Shield
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setWeight(15);
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 	}
 
 

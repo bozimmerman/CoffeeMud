@@ -110,8 +110,8 @@ public class Disease_Gangrene extends Disease
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)-4);
-		if(affectableStats.getStat(CharStats.CHARISMA)<0)
-		affectableStats.setStat(CharStats.CHARISMA,0);
+		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-4);
+		if(affectableStats.getStat(CharStats.STAT_CHARISMA)<0)
+		affectableStats.setStat(CharStats.STAT_CHARISMA,0);
 	}
 }

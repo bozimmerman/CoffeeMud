@@ -43,7 +43,7 @@ public class StdCoins extends StdItem implements Coins
 		super();
 		myContainer=null;
 		myUses=Integer.MAX_VALUE;
-		material=EnvResource.RESOURCE_GOLD;
+		material=RawMaterial.RESOURCE_GOLD;
 		myWornCode=0;
 		baseEnvStats.setWeight(0);
 		recoverEnvStats();
@@ -64,12 +64,12 @@ public class StdCoins extends StdItem implements Coins
 	    if((CMLib.english().containsString(name(),"note"))
 	    ||(CMLib.english().containsString(name(),"bill"))
 	    ||(CMLib.english().containsString(name(),"dollar")))
-	        setMaterial(EnvResource.RESOURCE_PAPER);
+	        setMaterial(RawMaterial.RESOURCE_PAPER);
 	    else
-		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
-		    if(CMLib.english().containsString(name(),EnvResource.RESOURCE_DESCS[i]))
+		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+		    if(CMLib.english().containsString(name(),RawMaterial.RESOURCE_DESCS[i]))
 		    {
-		        setMaterial(EnvResource.RESOURCE_DATA[i][0]);
+		        setMaterial(RawMaterial.RESOURCE_DATA[i][0]);
 		        break;
 		    }
 		setDescription(CMLib.beanCounter().getConvertableDescription(getCurrency(),getDenomination()));
@@ -115,8 +115,8 @@ public class StdCoins extends StdItem implements Coins
 	}
 	public void recoverEnvStats()
 	{
-		if(((material&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
-		&&((material&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PAPER))
+		if(((material&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
+		&&((material&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER))
 			baseEnvStats.setWeight((int)Math.round((new Integer(baseEnvStats().ability()).doubleValue()/100.0)));
 		envStats=(EnvStats)baseEnvStats.copyOf();
 		// import not to sup this, otherwise 'ability' makes it magical!

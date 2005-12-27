@@ -116,7 +116,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if(E instanceof Item)
         {
             Item I=(Item)E;
-            str.append("\n\rMaterial   : "+CMStrings.capitalizeAndLower(EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK].toLowerCase()));
+            str.append("\n\rMaterial   : "+CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].toLowerCase()));
             str.append("\n\rWeight     : "+I.envStats().weight()+" pounds");
             if(I instanceof Weapon)
             {
@@ -315,7 +315,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         // the price is 200% at 0 charisma, and 100% at 30
         val.absoluteGoldPrice=val.absoluteGoldPrice
                              +val.absoluteGoldPrice
-                             -CMath.mul(val.absoluteGoldPrice,CMath.div(buyer.charStats().getStat(CharStats.CHARISMA),30.0));
+                             -CMath.mul(val.absoluteGoldPrice,CMath.div(buyer.charStats().getStat(CharStats.STAT_CHARISMA),30.0));
         if(includeSalesTax)
         {
             double salesTax=getSalesTax(seller.getStartRoom(),seller);
@@ -351,7 +351,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             itemRate=CMath.div(CMath.s_double((String)V.firstElement()),100.0);
             resourceRate=CMath.div(CMath.s_double((String)V.lastElement()),100.0);
         }
-        double rate=(product instanceof EnvResource)?resourceRate:itemRate;
+        double rate=(product instanceof RawMaterial)?resourceRate:itemRate;
         rate=rate*num;
         if(rate>1.0) rate=1.0;
         if(rate<0.0) rate=0.0;
@@ -386,14 +386,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
         //double halfPrice=Math.round(CMath.div(val,2.0));
         // gets the shopkeeper a deal on junk.  Pays 5% at 3 charisma, and 50% at 30
-        double buyPrice=CMath.div(CMath.mul(val.absoluteGoldPrice,buyer.charStats().getStat(CharStats.CHARISMA)),60.0);
+        double buyPrice=CMath.div(CMath.mul(val.absoluteGoldPrice,buyer.charStats().getStat(CharStats.STAT_CHARISMA)),60.0);
         if(!(product instanceof Ability))
             buyPrice=CMath.mul(buyPrice,1.0-devalue(shop,product));
 
         // the price is 200% at 0 charisma, and 100% at 30
         double sellPrice=val.absoluteGoldPrice
                         +val.absoluteGoldPrice
-                        -CMath.mul(val.absoluteGoldPrice,CMath.div(buyer.charStats().getStat(CharStats.CHARISMA),30.0));
+                        -CMath.mul(val.absoluteGoldPrice,CMath.div(buyer.charStats().getStat(CharStats.STAT_CHARISMA),30.0));
 
         if(buyPrice>sellPrice)
             val.absoluteGoldPrice=sellPrice;
@@ -1200,12 +1200,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     &&(!(thisThang instanceof Weapon))
                     &&(!(thisThang instanceof Ammunition))
                     &&(!(thisThang instanceof MOB))
-                    &&(!(thisThang instanceof EnvResource))
+                    &&(!(thisThang instanceof RawMaterial))
                     &&(!(thisThang instanceof Ability)));
         case ShopKeeper.DEAL_LEATHER:
             return ((thisThang instanceof Item)
-                    &&((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER)
-                    &&(!(thisThang instanceof EnvResource)));
+                    &&((((Item)thisThang).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)
+                    &&(!(thisThang instanceof RawMaterial)));
         case ShopKeeper.DEAL_PETS:
             return ((thisThang instanceof MOB)&&(CMLib.flags().isAnimalIntelligence((MOB)thisThang)));
         case ShopKeeper.DEAL_SLAVES:
@@ -1219,8 +1219,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     &&(!(thisThang instanceof Weapon))
                     &&(!(thisThang instanceof MiscMagic))
                     &&(!(thisThang instanceof ClanItem))
-                    &&(((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_GLASS)
-                    ||((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)
+                    &&(((((Item)thisThang).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_GLASS)
+                    ||((((Item)thisThang).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)
                     ||((Item)thisThang).fitsOn(Item.WORN_EARS)
                     ||((Item)thisThang).fitsOn(Item.WORN_NECK)
                     ||((Item)thisThang).fitsOn(Item.WORN_RIGHT_FINGER)
@@ -1235,32 +1235,32 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         case ShopKeeper.DEAL_ANYTECHNOLOGY:
             return (thisThang instanceof Electronics);
         case ShopKeeper.DEAL_BUTCHER:
-            return ((thisThang instanceof EnvResource)
-                &&(((EnvResource)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_FLESH);
+            return ((thisThang instanceof RawMaterial)
+                &&(((RawMaterial)thisThang).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH);
         case ShopKeeper.DEAL_FOODSELLER:
             return (((thisThang instanceof Food)||(thisThang instanceof Drink))
-                    &&(!(thisThang instanceof EnvResource)));
+                    &&(!(thisThang instanceof RawMaterial)));
         case ShopKeeper.DEAL_GROWER:
-            return ((thisThang instanceof EnvResource)
-                &&(((EnvResource)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION);
+            return ((thisThang instanceof RawMaterial)
+                &&(((RawMaterial)thisThang).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION);
         case ShopKeeper.DEAL_HIDESELLER:
-            return ((thisThang instanceof EnvResource)
-                &&((((EnvResource)thisThang).material()==EnvResource.RESOURCE_HIDE)
-                ||(((EnvResource)thisThang).material()==EnvResource.RESOURCE_FEATHERS)
-                ||(((EnvResource)thisThang).material()==EnvResource.RESOURCE_LEATHER)
-                ||(((EnvResource)thisThang).material()==EnvResource.RESOURCE_SCALES)
-                ||(((EnvResource)thisThang).material()==EnvResource.RESOURCE_WOOL)
-                ||(((EnvResource)thisThang).material()==EnvResource.RESOURCE_FUR)));
+            return ((thisThang instanceof RawMaterial)
+                &&((((RawMaterial)thisThang).material()==RawMaterial.RESOURCE_HIDE)
+                ||(((RawMaterial)thisThang).material()==RawMaterial.RESOURCE_FEATHERS)
+                ||(((RawMaterial)thisThang).material()==RawMaterial.RESOURCE_LEATHER)
+                ||(((RawMaterial)thisThang).material()==RawMaterial.RESOURCE_SCALES)
+                ||(((RawMaterial)thisThang).material()==RawMaterial.RESOURCE_WOOL)
+                ||(((RawMaterial)thisThang).material()==RawMaterial.RESOURCE_FUR)));
         case ShopKeeper.DEAL_LUMBERER:
-            return ((thisThang instanceof EnvResource)
-                &&((((EnvResource)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN));
+            return ((thisThang instanceof RawMaterial)
+                &&((((RawMaterial)thisThang).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN));
         case ShopKeeper.DEAL_METALSMITH:
-            return ((thisThang instanceof EnvResource)
-                &&(((((EnvResource)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
-                ||(((EnvResource)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL));
+            return ((thisThang instanceof RawMaterial)
+                &&(((((RawMaterial)thisThang).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+                ||(((RawMaterial)thisThang).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL));
         case ShopKeeper.DEAL_STONEYARDER:
-            return ((thisThang instanceof EnvResource)
-                &&((((EnvResource)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK));
+            return ((thisThang instanceof RawMaterial)
+                &&((((RawMaterial)thisThang).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK));
         }
 
         return false;

@@ -109,71 +109,71 @@ public class StdRace implements Race
 	}
 	public void agingAffects(MOB mob, CharStats baseStats, CharStats charStats)
 	{
-		if((baseStats.getStat(CharStats.AGE)>0)&&(!CMSecurity.isAllowed(mob,mob.location(),"IMMORT")))
+		if((baseStats.getStat(CharStats.STAT_AGE)>0)&&(!CMSecurity.isAllowed(mob,mob.location(),"IMMORT")))
 		{
 			switch(baseStats.ageCategory())
 			{
 				case -1: break;
 				case Race.AGE_INFANT:
 				case Race.AGE_TODDLER:
-				    charStats.setStat(CharStats.SAVE_MIND,charStats.getStat(CharStats.SAVE_MIND)-10);
-				    charStats.setStat(CharStats.MAX_STRENGTH_ADJ,charStats.getStat(CharStats.MAX_STRENGTH_ADJ)-2);
-				    charStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.MAX_INTELLIGENCE_ADJ)-4);
-				    charStats.setStat(CharStats.MAX_WISDOM_ADJ,charStats.getStat(CharStats.MAX_WISDOM_ADJ)-4);
+				    charStats.setStat(CharStats.STAT_SAVE_MIND,charStats.getStat(CharStats.STAT_SAVE_MIND)-10);
+				    charStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,charStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)-2);
+				    charStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)-4);
+				    charStats.setStat(CharStats.STAT_MAX_WISDOM_ADJ,charStats.getStat(CharStats.STAT_MAX_WISDOM_ADJ)-4);
 				    break;
 				case Race.AGE_CHILD:
-				    charStats.setStat(CharStats.SAVE_MIND,charStats.getStat(CharStats.SAVE_MIND)-5);
-				    charStats.setStat(CharStats.MAX_STRENGTH_ADJ,charStats.getStat(CharStats.MAX_STRENGTH_ADJ)-1);
-				    charStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.MAX_INTELLIGENCE_ADJ)-2);
-				    charStats.setStat(CharStats.MAX_WISDOM_ADJ,charStats.getStat(CharStats.MAX_WISDOM_ADJ)-2);
+				    charStats.setStat(CharStats.STAT_SAVE_MIND,charStats.getStat(CharStats.STAT_SAVE_MIND)-5);
+				    charStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,charStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)-1);
+				    charStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)-2);
+				    charStats.setStat(CharStats.STAT_MAX_WISDOM_ADJ,charStats.getStat(CharStats.STAT_MAX_WISDOM_ADJ)-2);
 				    break;
 				case Race.AGE_YOUNGADULT:
 				case Race.AGE_MATURE:
 				    break;
 				case Race.AGE_MIDDLEAGED:
-				    charStats.setStat(CharStats.SAVE_MIND,charStats.getStat(CharStats.SAVE_MIND)+5);
-				    charStats.setStat(CharStats.MAX_STRENGTH_ADJ,charStats.getStat(CharStats.MAX_STRENGTH_ADJ)-1);
-				    charStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-1);
-				    charStats.setStat(CharStats.MAX_DEXTERITY_ADJ,charStats.getStat(CharStats.MAX_DEXTERITY_ADJ)-1);
-				    charStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.MAX_INTELLIGENCE_ADJ)+1);
-				    charStats.setStat(CharStats.MAX_WISDOM_ADJ,charStats.getStat(CharStats.MAX_WISDOM_ADJ)+1);
-				    charStats.setStat(CharStats.MAX_CHARISMA_ADJ,charStats.getStat(CharStats.MAX_CHARISMA_ADJ)+1);
+				    charStats.setStat(CharStats.STAT_SAVE_MIND,charStats.getStat(CharStats.STAT_SAVE_MIND)+5);
+				    charStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,charStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)-1);
+				    charStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,charStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)-1);
+				    charStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,charStats.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)-1);
+				    charStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)+1);
+				    charStats.setStat(CharStats.STAT_MAX_WISDOM_ADJ,charStats.getStat(CharStats.STAT_MAX_WISDOM_ADJ)+1);
+				    charStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,charStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)+1);
 				    break;
 				case Race.AGE_OLD:
-				    charStats.setStat(CharStats.SAVE_MIND,charStats.getStat(CharStats.SAVE_MIND)+10);
-				    charStats.setStat(CharStats.SAVE_UNDEAD,charStats.getStat(CharStats.SAVE_UNDEAD)-5);
-				    charStats.setStat(CharStats.MAX_STRENGTH_ADJ,charStats.getStat(CharStats.MAX_STRENGTH_ADJ)-2);
-				    charStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-2);
-				    charStats.setStat(CharStats.MAX_DEXTERITY_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-2);
-				    charStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.MAX_INTELLIGENCE_ADJ)+2);
-				    charStats.setStat(CharStats.MAX_WISDOM_ADJ,charStats.getStat(CharStats.MAX_WISDOM_ADJ)+2);
-				    charStats.setStat(CharStats.MAX_CHARISMA_ADJ,charStats.getStat(CharStats.MAX_CHARISMA_ADJ)+2);
+				    charStats.setStat(CharStats.STAT_SAVE_MIND,charStats.getStat(CharStats.STAT_SAVE_MIND)+10);
+				    charStats.setStat(CharStats.STAT_SAVE_UNDEAD,charStats.getStat(CharStats.STAT_SAVE_UNDEAD)-5);
+				    charStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,charStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)-2);
+				    charStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,charStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)-2);
+				    charStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,charStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)-2);
+				    charStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)+2);
+				    charStats.setStat(CharStats.STAT_MAX_WISDOM_ADJ,charStats.getStat(CharStats.STAT_MAX_WISDOM_ADJ)+2);
+				    charStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,charStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)+2);
 				    break;
 				case Race.AGE_VENERABLE:
-				    charStats.setStat(CharStats.SAVE_MIND,charStats.getStat(CharStats.SAVE_MIND)+15);
-				    charStats.setStat(CharStats.SAVE_UNDEAD,charStats.getStat(CharStats.SAVE_UNDEAD)-25);
-				    charStats.setStat(CharStats.MAX_STRENGTH_ADJ,charStats.getStat(CharStats.MAX_STRENGTH_ADJ)-3);
-				    charStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-3);
-				    charStats.setStat(CharStats.MAX_DEXTERITY_ADJ,charStats.getStat(CharStats.MAX_DEXTERITY_ADJ)-3);
-				    charStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.MAX_INTELLIGENCE_ADJ)+3);
-				    charStats.setStat(CharStats.MAX_WISDOM_ADJ,charStats.getStat(CharStats.MAX_WISDOM_ADJ)+3);
-				    charStats.setStat(CharStats.MAX_CHARISMA_ADJ,charStats.getStat(CharStats.MAX_CHARISMA_ADJ)+3);
+				    charStats.setStat(CharStats.STAT_SAVE_MIND,charStats.getStat(CharStats.STAT_SAVE_MIND)+15);
+				    charStats.setStat(CharStats.STAT_SAVE_UNDEAD,charStats.getStat(CharStats.STAT_SAVE_UNDEAD)-25);
+				    charStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,charStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)-3);
+				    charStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,charStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)-3);
+				    charStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,charStats.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)-3);
+				    charStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)+3);
+				    charStats.setStat(CharStats.STAT_MAX_WISDOM_ADJ,charStats.getStat(CharStats.STAT_MAX_WISDOM_ADJ)+3);
+				    charStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,charStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)+3);
 				    break;
 				case Race.AGE_ANCIENT:
 				{
 					int[] chart=getAgingChart();
 					int diff=chart[Race.AGE_ANCIENT]-chart[Race.AGE_VENERABLE];
-					int age=baseStats.getStat(CharStats.AGE)-chart[Race.AGE_ANCIENT];
+					int age=baseStats.getStat(CharStats.STAT_AGE)-chart[Race.AGE_ANCIENT];
 					int num=(diff>0)?(int)Math.abs(Math.floor(CMath.div(age,diff)))-1:1;
 					if(num==0) num=1;
-				    charStats.setStat(CharStats.SAVE_MIND,charStats.getStat(CharStats.SAVE_MIND)+20+(5*num));
-				    charStats.setStat(CharStats.SAVE_UNDEAD,charStats.getStat(CharStats.SAVE_UNDEAD)-50+15+(5*num));
-				    charStats.setStat(CharStats.MAX_STRENGTH_ADJ,charStats.getStat(CharStats.MAX_STRENGTH_ADJ)-(3+(1*num)));
-				    charStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-(3+(num)));
-				    charStats.setStat(CharStats.MAX_DEXTERITY_ADJ,charStats.getStat(CharStats.MAX_DEXTERITY_ADJ)-(3+(num)));
-				    charStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.MAX_INTELLIGENCE_ADJ)+(3+(num)));
-				    charStats.setStat(CharStats.MAX_WISDOM_ADJ,charStats.getStat(CharStats.MAX_WISDOM_ADJ)+(3+(num)));
-				    charStats.setStat(CharStats.MAX_CHARISMA_ADJ,charStats.getStat(CharStats.MAX_CHARISMA_ADJ)+(3+(num)));
+				    charStats.setStat(CharStats.STAT_SAVE_MIND,charStats.getStat(CharStats.STAT_SAVE_MIND)+20+(5*num));
+				    charStats.setStat(CharStats.STAT_SAVE_UNDEAD,charStats.getStat(CharStats.STAT_SAVE_UNDEAD)-50+15+(5*num));
+				    charStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,charStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)-(3+(1*num)));
+				    charStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,charStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)-(3+(num)));
+				    charStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,charStats.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)-(3+(num)));
+				    charStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)+(3+(num)));
+				    charStats.setStat(CharStats.STAT_MAX_WISDOM_ADJ,charStats.getStat(CharStats.STAT_MAX_WISDOM_ADJ)+(3+(num)));
+				    charStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,charStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)+(3+(num)));
 				    break;
 				}
 			}
@@ -231,8 +231,8 @@ public class StdRace implements Race
                 msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
                 myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
     			if((CMLib.dice().rollPercentage()<10)
-                &&(myChar.charStats().getStat(CharStats.GENDER)==('F'))
-                &&(msg.source().charStats().getStat(CharStats.GENDER)==('M'))
+                &&(myChar.charStats().getStat(CharStats.STAT_GENDER)==('F'))
+                &&(msg.source().charStats().getStat(CharStats.STAT_GENDER)==('M'))
     			&&(fertile())
     			&&(myChar.numWearingHere(Item.WORN_LEGS)==0)
     			&&(msg.source().numWearingHere(Item.WORN_LEGS)==0)
@@ -242,10 +242,10 @@ public class StdRace implements Race
     			   ||(msg.source().charStats().getMyRace().ID().equals("Human"))
     			   ||(msg.source().charStats().getMyRace().ID().equals(ID())))
     			&&(msg.source().charStats().getMyRace().fertile())
-    			&&((msg.source().charStats().getStat(CharStats.AGE)==0)
+    			&&((msg.source().charStats().getStat(CharStats.STAT_AGE)==0)
     			        ||((msg.source().charStats().ageCategory()>Race.AGE_CHILD)
     			                &&(msg.source().charStats().ageCategory()<Race.AGE_OLD)))
-    			&&((myChar.charStats().getStat(CharStats.AGE)==0)
+    			&&((myChar.charStats().getStat(CharStats.STAT_AGE)==0)
     			        ||((myChar.charStats().ageCategory()>Race.AGE_CHILD)
     			                &&(myChar.charStats().ageCategory()<Race.AGE_OLD))))
     			{
@@ -287,7 +287,7 @@ public class StdRace implements Race
 				mob.setPractices(mob.getPractices()+practicesAtFirstLevel());
 				mob.setTrains(mob.getTrains()+trainsAtFirstLevel());
 			}
-			setHeightWeight(mob.baseEnvStats(),(char)mob.baseCharStats().getStat(CharStats.GENDER));
+			setHeightWeight(mob.baseEnvStats(),(char)mob.baseCharStats().getStat(CharStats.STAT_GENDER));
 
 			if((culturalAbilityNames()!=null)&&(culturalAbilityProfficiencies()!=null)
 			   &&(culturalAbilityNames().length==culturalAbilityProfficiencies().length))
@@ -409,11 +409,11 @@ public class StdRace implements Race
 	protected Item makeResource(String name, int type)
 	{
 		Item I=null;
-		if(((type&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_FLESH)
-		||((type&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION))
+		if(((type&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
+		||((type&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION))
 			I=CMClass.getItem("GenFoodResource");
 		else
-		if((type&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)
+		if((type&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 			I=CMClass.getItem("GenLiquidResource");
 		else
 			I=CMClass.getItem("GenResource");
@@ -421,7 +421,7 @@ public class StdRace implements Race
 		I.setDisplayText(name+" has been left here.");
 		I.setDescription("It looks like "+name());
 		I.setMaterial(type);
-		I.setBaseValue(EnvResource.RESOURCE_DATA[type&EnvResource.RESOURCE_MASK][1]);
+		I.setBaseValue(RawMaterial.RESOURCE_DATA[type&RawMaterial.RESOURCE_MASK][1]);
 		I.baseEnvStats().setWeight(1);
 		I.recoverEnvStats();
 		return I;

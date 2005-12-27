@@ -341,7 +341,7 @@ public class Sounder extends StdBehavior
 		{
 			emoter=CMClass.getMOB("StdMOB");
 			emoter.setName(ticking.name());
-			emoter.charStats().setStat(CharStats.GENDER,'N');
+			emoter.charStats().setStat(CharStats.STAT_GENDER,'N');
 			for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
@@ -354,7 +354,7 @@ public class Sounder extends StdBehavior
 		{
 			emoter=CMClass.getMOB("StdMOB");
 			emoter.setName(ticking.name());
-			emoter.charStats().setStat(CharStats.GENDER,'N');
+			emoter.charStats().setStat(CharStats.STAT_GENDER,'N');
 			emoteHere((Room)ticking,emoter,emote);
             emoter.destroy();
 		}
@@ -375,7 +375,7 @@ public class Sounder extends StdBehavior
 			{
 				emoter=CMClass.getMOB("StdMOB");
 				emoter.setName(ticking.name());
-				emoter.charStats().setStat(CharStats.GENDER,'N');
+				emoter.charStats().setStat(CharStats.STAT_GENDER,'N');
 				emoteHere(R,emoter,emote);
                 emoter.destroy();
 			}

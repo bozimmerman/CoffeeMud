@@ -56,7 +56,7 @@ public class WereBat extends Bat
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.SAVE_DISEASE,affectableStats.getStat(CharStats.SAVE_DISEASE)+100);
+		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -73,14 +73,14 @@ public class WereBat extends Bat
 			{
 				for(int i=0;i<4;i++)
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" hair",EnvResource.RESOURCE_FUR));
+					("a strip of "+name().toLowerCase()+" hair",RawMaterial.RESOURCE_FUR));
 				for(int i=0;i<2;i++)
 					resources.addElement(makeResource
-					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("a pair of "+name().toLowerCase()+" wings",EnvResource.RESOURCE_HIDE));
+				("a pair of "+name().toLowerCase()+" wings",RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

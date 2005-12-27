@@ -57,8 +57,8 @@ public class Chant_MagneticEarth extends Chant
 					{
 						Item I=M.fetchInventory(i);
 						if((I!=null)
-						&&(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
-						   ||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL))
+						&&(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+						   ||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
 						&&(I.container()==null)
 						&&(I.amWearingAt(Item.IN_INVENTORY)
 						   ||I.amWearingAt(Item.WORN_HELD)

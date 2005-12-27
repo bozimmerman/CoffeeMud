@@ -58,7 +58,7 @@ public class Prayer_Tithe extends Prayer
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affected instanceof ShopKeeper)
-			affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)+2);
+			affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+2);
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)

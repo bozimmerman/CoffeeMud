@@ -59,7 +59,7 @@ public class Spell_DetectGold extends Spell
 		if(I==null) return "";
 		if(I.container()==container)
 		{
-			if((I.material()==EnvResource.RESOURCE_GOLD)
+			if((I.material()==RawMaterial.RESOURCE_GOLD)
 			&&(CMLib.flags().canBeSeenBy(I,mob)))
 				msg.append(I.name()+" glows golden.\n\r");
 		}

@@ -82,7 +82,7 @@ public class Skill_IdentifyPoison extends StdSkill
 		Vector offensiveAffects=returnOffensiveAffects(target);
 
 		if((success)&&((offensiveAffects.size()>0)
-					   ||((target instanceof Drink)&&(((Drink)target).liquidHeld()==EnvResource.RESOURCE_POISON))))
+					   ||((target instanceof Drink)&&(((Drink)target).liquidHeld()==RawMaterial.RESOURCE_POISON))))
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the

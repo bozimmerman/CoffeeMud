@@ -105,10 +105,10 @@ public class Herbology extends CommonSkill
 		}
 		commands.remove(commands.firstElement());
 
-		if((target.material()!=EnvResource.RESOURCE_HERBS)
+		if((target.material()!=RawMaterial.RESOURCE_HERBS)
 		||((!target.Name().toUpperCase().endsWith(" HERBS"))
 		   &&(!target.Name().equalsIgnoreCase("herbs")))
-		||(!(target instanceof EnvResource))
+		||(!(target instanceof RawMaterial))
 		||(!target.isGeneric()))
 		{
 			commonTell(mob,"You can only identify unknown herbs.");

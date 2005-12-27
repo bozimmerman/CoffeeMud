@@ -55,7 +55,7 @@ public class Distilling extends Cooking
         Ability A2=finalDish.fetchEffect(0);
         if((A2!=null)
         &&(finalDish instanceof Drink))
-            ((Drink)finalDish).setLiquidType(EnvResource.RESOURCE_LIQUOR);
+            ((Drink)finalDish).setLiquidType(RawMaterial.RESOURCE_LIQUOR);
         return true;
     }
 }

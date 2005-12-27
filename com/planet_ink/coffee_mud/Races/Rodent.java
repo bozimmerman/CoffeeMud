@@ -61,10 +61,10 @@ public class Rodent extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,3);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,18);
-		affectableStats.setStat(CharStats.SAVE_DISEASE,affectableStats.getStat(CharStats.SAVE_DISEASE)+100);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,3);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,18);
+		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
 	}
 	public String arriveStr()
 	{
@@ -127,11 +127,11 @@ public class Rodent extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("some "+name().toLowerCase()+" hair",EnvResource.RESOURCE_FUR));
+					("some "+name().toLowerCase()+" hair",RawMaterial.RESOURCE_FUR));
 				resources.addElement(makeResource
-					("a pair of "+name().toLowerCase()+" teeth",EnvResource.RESOURCE_BONE));
+					("a pair of "+name().toLowerCase()+" teeth",RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource
-					("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+					("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

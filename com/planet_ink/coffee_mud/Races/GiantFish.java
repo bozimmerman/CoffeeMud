@@ -54,9 +54,9 @@ public class GiantFish extends Fish
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
-		affectableStats.setPermaStat(CharStats.STRENGTH,10);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,13);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,10);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,13);
 	}
 	public String arriveStr()
 	{
@@ -84,12 +84,12 @@ public class GiantFish extends Fish
 			{
 				for(int i=0;i<25;i++)
 				resources.addElement(makeResource
-				("some "+name().toLowerCase(),EnvResource.RESOURCE_FISH));
+				("some "+name().toLowerCase(),RawMaterial.RESOURCE_FISH));
 				for(int i=0;i<15;i++)
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" hide",EnvResource.RESOURCE_HIDE));
+				("a "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

@@ -658,7 +658,7 @@ public class FrontLogin extends StdCommand
 				while(Gender.length()==0)
 					Gender=mob.session().choose("\n\r^!What is your gender (M/F)?^N","MF","");
 
-				mob.baseCharStats().setStat(CharStats.GENDER,Gender.toUpperCase().charAt(0));
+				mob.baseCharStats().setStat(CharStats.STAT_GENDER,Gender.toUpperCase().charAt(0));
 				mob.baseCharStats().getMyRace().startRacing(mob,false);
 
                 if((CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))&&(mob.playerStats()!=null))
@@ -697,12 +697,12 @@ public class FrontLogin extends StdCommand
                         int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
                         StringBuffer statstr=new StringBuffer("Your current stats are: \n\r");
                         CharStats CT=mob.charStats();
-                        statstr.append(CMStrings.padRight("Strength",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.MAX_STRENGTH_ADJ))+"\n\r");
-                        statstr.append(CMStrings.padRight("Intelligence",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.MAX_INTELLIGENCE_ADJ))+"\n\r");
-                        statstr.append(CMStrings.padRight("Dexterity",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.DEXTERITY)),2)+"/"+(max+CT.getStat(CharStats.MAX_DEXTERITY_ADJ))+"\n\r");
-                        statstr.append(CMStrings.padRight("Wisdom",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.WISDOM)),2)+"/"+(max+CT.getStat(CharStats.MAX_WISDOM_ADJ))+"\n\r");
-                        statstr.append(CMStrings.padRight("Constitution",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.CONSTITUTION)),2)+"/"+(max+CT.getStat(CharStats.MAX_CONSTITUTION_ADJ))+"\n\r");
-                        statstr.append(CMStrings.padRight("Charisma",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.CHARISMA)),2)+"/"+(max+CT.getStat(CharStats.MAX_CHARISMA_ADJ))+"\n\r");
+                        statstr.append(CMStrings.padRight("Strength",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_STRENGTH_ADJ))+"\n\r");
+                        statstr.append(CMStrings.padRight("Intelligence",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ))+"\n\r");
+                        statstr.append(CMStrings.padRight("Dexterity",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_DEXTERITY)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ))+"\n\r");
+                        statstr.append(CMStrings.padRight("Wisdom",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_WISDOM)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_WISDOM_ADJ))+"\n\r");
+                        statstr.append(CMStrings.padRight("Constitution",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_CONSTITUTION)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ))+"\n\r");
+                        statstr.append(CMStrings.padRight("Charisma",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_CHARISMA)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_CHARISMA_ADJ))+"\n\r");
                         statstr.append(CMStrings.padRight("TOTAL POINTS",15)+": "+CMProps.getIntVar(CMProps.SYSTEMI_MAXSTAT)+"/"+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)*6));
                         mob.session().println(statstr.toString());
 						if(!CMSecurity.isDisabled("CLASSES")
@@ -862,7 +862,7 @@ public class FrontLogin extends StdCommand
 				mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
 				CMLib.utensils().outfit(mob,mob.baseCharStats().getCurrentClass().outfit());
 				mob.setStartRoom(CMLib.map().getStartRoom(mob));
-			    mob.baseCharStats().setStat(CharStats.AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
+			    mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
 				mob.session().println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"newchardone.txt",null,true).text().toString());
 				mob.session().prompt("");
                 boolean logoff=false;

@@ -46,9 +46,9 @@ public class FireGiant extends StdMOB
 		baseEnvStats.setWeight(6500 + Math.abs(randomizer.nextInt() % 1001));
 
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,8 + Math.abs(randomizer.nextInt() % 3));
-		baseCharStats().setStat(CharStats.STRENGTH,20);
-		baseCharStats().setStat(CharStats.DEXTERITY,13);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8 + Math.abs(randomizer.nextInt() % 3));
+		baseCharStats().setStat(CharStats.STAT_STRENGTH,20);
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,13);
 		baseCharStats().setMyRace(CMClass.getRace("Giant"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
@@ -71,7 +71,7 @@ public class FireGiant extends StdMOB
 	public void recoverCharStats()
 	{
 		super.recoverCharStats();
-		charStats().setStat(CharStats.SAVE_FIRE,charStats().getStat(CharStats.SAVE_FIRE)+100);
+		charStats().setStat(CharStats.STAT_SAVE_FIRE,charStats().getStat(CharStats.STAT_SAVE_FIRE)+100);
 	}
 
 

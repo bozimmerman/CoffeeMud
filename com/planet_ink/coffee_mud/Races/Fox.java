@@ -56,9 +56,9 @@ public class Fox extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,10);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,10);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,10);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,10);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public Weapon myNaturalWeapon()
 	{
@@ -113,15 +113,15 @@ public class Fox extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" ears",EnvResource.RESOURCE_FUR));
+				("some "+name().toLowerCase()+" ears",RawMaterial.RESOURCE_FUR));
 				resources.addElement(makeResource
-				("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_HIDE));
+				("a strip of "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource
-				("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+				("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

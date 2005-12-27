@@ -46,7 +46,7 @@ public class Shoes extends StdArmor
 		baseEnvStats().setAbility(0);
 		baseGoldValue=1;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_COTTON;
+		material=RawMaterial.RESOURCE_COTTON;
 	}
 
 }

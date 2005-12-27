@@ -48,7 +48,7 @@ public class Spell_Grease extends Spell
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)-4);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-4);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -72,7 +72,7 @@ public class Spell_Grease extends Spell
 			case CMMsg.TYP_FLEE:
 				if(invoker()!=null)
 				{
-					if(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.DEXTERITY)*4))
+					if(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.STAT_DEXTERITY)*4))
 					{
                         int greaseEffect = (int) Math.round(Math.random()*3);
                         switch(greaseEffect)
@@ -85,7 +85,7 @@ public class Spell_Grease extends Spell
 						        return false;
                             case FUMBLE_WEAPON:
                                 weapon = mob.fetchWieldedItem();
-								if((weapon!=null)&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.DEXTERITY)*5))
+								if((weapon!=null)&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.STAT_DEXTERITY)*5))
 								&&((weapon.rawProperLocationBitmap()==Item.WORN_WIELD)||(weapon.rawProperLocationBitmap()==Item.WORN_WIELD+Item.WORN_HELD)))
                                 {
 									msg2=CMClass.getMsg(mob,weapon,null,CMMsg.MSG_DROP,"<S-NAME> can't hold onto <S-HIS-HER> weapon since it's covered with grease.");
@@ -104,7 +104,7 @@ public class Spell_Grease extends Spell
 								{
 									mob.envStats().setDisposition(mob.envStats().disposition() | EnvStats.IS_SITTING);
 									mob.location().send(mob,msg2);
-									if((weapon!=null)&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.DEXTERITY)*4))
+									if((weapon!=null)&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.STAT_DEXTERITY)*4))
 									&&((weapon.rawProperLocationBitmap()==Item.WORN_WIELD)||(weapon.rawProperLocationBitmap()==Item.WORN_WIELD+Item.WORN_HELD)))
 									{
 										msg2=CMClass.getMsg(mob,weapon,null,CMMsg.MSG_DROP,"<S-NAME> can't hold onto <S-HIS-HER> weapon since it's covered with grease.");

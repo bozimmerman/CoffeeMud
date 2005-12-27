@@ -62,7 +62,7 @@ public class Arachnid extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.SAVE_POISON,affectableStats.getStat(CharStats.SAVE_POISON)+100);
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 	}
 	public String arriveStr()
 	{
@@ -90,10 +90,10 @@ public class Arachnid extends StdRace
 			{
 				for(int x=0;x<8;x++)
 					resources.addElement(makeResource
-					("an "+name().toLowerCase()+" leg",EnvResource.RESOURCE_OAK));
+					("an "+name().toLowerCase()+" leg",RawMaterial.RESOURCE_OAK));
 				for(int x=0;x<5;x++)
 					resources.addElement(makeResource
-					("some "+name().toLowerCase()+" guts",EnvResource.RESOURCE_MEAT));
+					("some "+name().toLowerCase()+" guts",RawMaterial.RESOURCE_MEAT));
 			}
 		}
 		return resources;

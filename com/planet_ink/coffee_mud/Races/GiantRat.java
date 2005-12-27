@@ -53,7 +53,7 @@ public class GiantRat extends Rat
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,6);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,6);
 	}
 	public Vector myResources()
 	{
@@ -63,14 +63,14 @@ public class GiantRat extends Rat
 			{
 				for(int i=0;i<5;i++)
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" hair",EnvResource.RESOURCE_HIDE));
+					("a strip of "+name().toLowerCase()+" hair",RawMaterial.RESOURCE_HIDE));
 				for(int i=0;i<2;i++)
 					resources.addElement(makeResource
-					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("a pair of "+name().toLowerCase()+" teeth",EnvResource.RESOURCE_BONE));
+				("a pair of "+name().toLowerCase()+" teeth",RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

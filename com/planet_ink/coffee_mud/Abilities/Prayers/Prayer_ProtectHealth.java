@@ -58,7 +58,7 @@ public class Prayer_ProtectHealth extends Prayer
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
-		affectedStats.setStat(CharStats.SAVE_POISON,affectedStats.getStat(CharStats.SAVE_POISON)+50);
+		affectedStats.setStat(CharStats.STAT_SAVE_POISON,affectedStats.getStat(CharStats.STAT_SAVE_POISON)+50);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

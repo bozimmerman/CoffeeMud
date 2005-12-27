@@ -52,8 +52,8 @@ public class Song_Thanks extends Song
 		if(mob.location()!=invoker.location()) return true;
 		//if(!mob.isMonster()) return true;
 		if((CMLib.dice().rollPercentage()<6)
-		   &&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.SAVE_MIND))
-		   &&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.SAVE_MAGIC))
+		   &&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_MIND))
+		   &&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_MAGIC))
 		   &&(CMLib.flags().canMove(mob))
 		   &&(CMLib.flags().canBeSeenBy(invoker,mob))
 		   &&(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)>1.0))

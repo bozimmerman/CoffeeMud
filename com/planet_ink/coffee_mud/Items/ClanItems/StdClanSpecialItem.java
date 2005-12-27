@@ -47,7 +47,7 @@ public class StdClanSpecialItem extends StdClanItem
 		secretIdentity="";
 		baseGoldValue=1;
 		setCIType(ClanItem.CI_SPECIALOTHER);
-		material=EnvResource.RESOURCE_PINE;
+		material=RawMaterial.RESOURCE_PINE;
 		recoverEnvStats();
 	}
     

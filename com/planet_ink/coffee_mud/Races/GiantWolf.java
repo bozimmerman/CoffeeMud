@@ -57,8 +57,8 @@ public class GiantWolf extends Wolf
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,13);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,13);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,13);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,13);
 	}
 	public Vector myResources()
 	{
@@ -67,17 +67,17 @@ public class GiantWolf extends Wolf
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" claws",EnvResource.RESOURCE_BONE));
+				("some "+name().toLowerCase()+" claws",RawMaterial.RESOURCE_BONE));
 				for(int i=0;i<4;i++)
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" hair",EnvResource.RESOURCE_HIDE));
+					("a strip of "+name().toLowerCase()+" hair",RawMaterial.RESOURCE_HIDE));
 				for(int i=0;i<2;i++)
 					resources.addElement(makeResource
-					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

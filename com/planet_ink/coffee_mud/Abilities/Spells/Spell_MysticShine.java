@@ -66,8 +66,8 @@ public class Spell_MysticShine extends Spell
 		Environmental target=super.getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null) return false;
 		if((!(target instanceof Item))
-        ||(((((Item)target).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)
-            &&((((Item)target).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_MITHRIL)))
+        ||(((((Item)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
+            &&((((Item)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL)))
         {
 		    mob.tell("This magic only affects metallic items.");
 		    return false;

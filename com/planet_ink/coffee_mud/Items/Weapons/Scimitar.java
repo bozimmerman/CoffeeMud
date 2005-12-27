@@ -46,7 +46,7 @@ public class Scimitar extends Sword
 		baseEnvStats().setDamage(8);
 		baseGoldValue=15;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 		weaponType=TYPE_SLASHING;
 	}
 

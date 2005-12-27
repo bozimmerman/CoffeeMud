@@ -54,7 +54,7 @@ public class Song_Inebriation extends Song
 		if(invoker==null) return;
 		if(affected==invoker) return;
 
-		affectableStats.setStat(CharStats.DEXTERITY,Math.round(affectableStats.getStat(CharStats.DEXTERITY)-3));
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,Math.round(affectableStats.getStat(CharStats.STAT_DEXTERITY)-3));
 	}
 
 	public void show(MOB mob, int code, String text)

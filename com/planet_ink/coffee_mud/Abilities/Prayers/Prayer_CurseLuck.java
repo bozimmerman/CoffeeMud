@@ -58,21 +58,21 @@ public class Prayer_CurseLuck extends Prayer
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.SAVE_WATER,-100);
-		affectableStats.setStat(CharStats.SAVE_UNDEAD,-100);
-		affectableStats.setStat(CharStats.SAVE_TRAPS,-100);
-		affectableStats.setStat(CharStats.SAVE_POISON,-100);
-		affectableStats.setStat(CharStats.SAVE_PARALYSIS,-100);
-		affectableStats.setStat(CharStats.SAVE_MIND,-100);
-		affectableStats.setStat(CharStats.SAVE_MAGIC,-100);
-		affectableStats.setStat(CharStats.SAVE_JUSTICE,-100);
-		affectableStats.setStat(CharStats.SAVE_GENERAL,-100);
-		affectableStats.setStat(CharStats.SAVE_GAS,-100);
-		affectableStats.setStat(CharStats.SAVE_FIRE,-100);
-		affectableStats.setStat(CharStats.SAVE_ELECTRIC,-100);
-		affectableStats.setStat(CharStats.SAVE_DISEASE,-100);
-		affectableStats.setStat(CharStats.SAVE_COLD,-100);
-		affectableStats.setStat(CharStats.SAVE_ACID,-100);
+		affectableStats.setStat(CharStats.STAT_SAVE_WATER,-100);
+		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,-100);
+		affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,-100);
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON,-100);
+		affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,-100);
+		affectableStats.setStat(CharStats.STAT_SAVE_MIND,-100);
+		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,-100);
+		affectableStats.setStat(CharStats.STAT_SAVE_JUSTICE,-100);
+		affectableStats.setStat(CharStats.STAT_SAVE_GENERAL,-100);
+		affectableStats.setStat(CharStats.STAT_SAVE_GAS,-100);
+		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,-100);
+		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,-100);
+		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,-100);
+		affectableStats.setStat(CharStats.STAT_SAVE_COLD,-100);
+		affectableStats.setStat(CharStats.STAT_SAVE_ACID,-100);
 	}
 
 	public boolean okMessage(Environmental host, CMMsg msg)
@@ -87,9 +87,9 @@ public class Prayer_CurseLuck extends Prayer
 			boolean proceed=false;
 			int sm=msg.sourceMinor();
 			int tm=msg.targetMinor();
-			for(int i=0;i<CharStats.affectTypeMap.length;i++)
-				if((CharStats.affectTypeMap[i]>=0)
-				&&((sm==CharStats.affectTypeMap[i])||(tm==CharStats.affectTypeMap[i])))
+			for(int i=0;i<CharStats.STAT_MSG_MAP.length;i++)
+				if((CharStats.STAT_MSG_MAP[i]>=0)
+				&&((sm==CharStats.STAT_MSG_MAP[i])||(tm==CharStats.STAT_MSG_MAP[i])))
 					proceed=true;
 			if((msg.tool() instanceof Trap)||(proceed))
 			{

@@ -40,7 +40,7 @@ public class Jester extends StdCharClass
 	public int getBonusPracLevel(){return 1;}
 	public int getBonusAttackLevel(){return 1;}
 	public int getMovementMultiplier(){return 16;}
-	public int getAttackAttribute(){return CharStats.CHARISMA;}
+	public int getAttackAttribute(){return CharStats.STAT_CHARISMA;}
 	public int getLevelsPerBonusDamage(){ return 4;}
 	public int getHPDivisor(){return 3;}
 	public int getHPDice(){return 2;}
@@ -60,8 +60,8 @@ public class Jester extends StdCharClass
 	public Jester()
 	{
 		super();
-		maxStatAdj[CharStats.CHARISMA]=4;
-		maxStatAdj[CharStats.DEXTERITY]=4;
+		maxStatAdj[CharStats.STAT_CHARISMA]=4;
+		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -161,13 +161,13 @@ public class Jester extends StdCharClass
 	public String statQualifications(){return "Charisma 9+, Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.CHARISMA) <= 8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Charisma to become a Jester.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.DEXTERITY) <= 8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY) <= 8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Dexterity to become a Jester.");
@@ -188,8 +188,8 @@ public class Jester extends StdCharClass
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB,affectableStats);
-		affectableStats.setStat(CharStats.SAVE_POISON,
-			affectableStats.getStat(CharStats.SAVE_POISON)
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON,
+			affectableStats.getStat(CharStats.STAT_SAVE_POISON)
 			+(affectableStats.getClassLevel(this)*2));
 	}
 

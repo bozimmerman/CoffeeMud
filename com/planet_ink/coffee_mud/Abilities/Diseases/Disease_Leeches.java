@@ -94,9 +94,9 @@ public class Disease_Leeches extends Disease
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(affected==null) return;
-		affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)-4);
-		if(affectableStats.getStat(CharStats.CHARISMA)<=0)
-			affectableStats.setStat(CharStats.CHARISMA,1);
+		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-4);
+		if(affectableStats.getStat(CharStats.STAT_CHARISMA)<=0)
+			affectableStats.setStat(CharStats.STAT_CHARISMA,1);
 	}
 	public void affectCharState(MOB affected, CharState affectableState)
 	{

@@ -46,9 +46,9 @@ public class Ogre extends StdMOB
 		setWimpHitPoint(0);
 		baseEnvStats().setDamage(12);
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,8);
-		baseCharStats().setStat(CharStats.CHARISMA,2);
-		baseCharStats().setStat(CharStats.STRENGTH,22);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8);
+		baseCharStats().setStat(CharStats.STAT_CHARISMA,2);
+		baseCharStats().setStat(CharStats.STAT_STRENGTH,22);
 		baseCharStats().setMyRace(CMClass.getRace("Giant"));
 		baseCharStats().getMyRace().startRacing(this,false);
 

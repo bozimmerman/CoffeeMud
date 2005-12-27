@@ -178,7 +178,7 @@ public class GlassBlowing extends CraftingSkill
 		if(amount>woodRequired) woodRequired=amount;
 		String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
         bundling=misctype.equalsIgnoreCase("BUNDLE");
-		int[] pm={EnvResource.RESOURCE_SAND,EnvResource.RESOURCE_CRYSTAL,EnvResource.RESOURCE_GLASS};
+		int[] pm={RawMaterial.RESOURCE_SAND,RawMaterial.RESOURCE_CRYSTAL,RawMaterial.RESOURCE_GLASS};
 		int[][] data=fetchFoundResourceData(mob,
 											woodRequired,"sand",pm,
 											0,null,null,
@@ -196,7 +196,7 @@ public class GlassBlowing extends CraftingSkill
 			return false;
 		}
 		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
+		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
 		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;
 		else
@@ -211,8 +211,8 @@ public class GlassBlowing extends CraftingSkill
 		building.baseEnvStats().setWeight(woodRequired);
 		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 
-		if(data[0][FOUND_CODE]==EnvResource.RESOURCE_SAND)
-			building.setMaterial(EnvResource.RESOURCE_GLASS);
+		if(data[0][FOUND_CODE]==RawMaterial.RESOURCE_SAND)
+			building.setMaterial(RawMaterial.RESOURCE_GLASS);
 		else
 			building.setMaterial(data[0][FOUND_CODE]);
 
@@ -259,7 +259,7 @@ public class GlassBlowing extends CraftingSkill
 		{
 			messedUp=false;
 			completion=1;
-			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}

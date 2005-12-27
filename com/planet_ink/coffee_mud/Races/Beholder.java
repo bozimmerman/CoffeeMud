@@ -68,9 +68,9 @@ public class Beholder extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.INTELLIGENCE,25);
-		affectableStats.setStat(CharStats.SAVE_MAGIC,75);
-		affectableStats.setStat(CharStats.SAVE_MIND,100);
+		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,25);
+		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,75);
+		affectableStats.setStat(CharStats.STAT_SAVE_MIND,100);
 	}
 
 	public Vector myResources()
@@ -81,7 +81,7 @@ public class Beholder extends StdRace
 			{
 				for(int x=0;x<10;x++)
 					resources.addElement(makeResource
-					("a "+name().toLowerCase()+" eye",EnvResource.RESOURCE_MEAT));
+					("a "+name().toLowerCase()+" eye",RawMaterial.RESOURCE_MEAT));
 			}
 		}
 		return resources;

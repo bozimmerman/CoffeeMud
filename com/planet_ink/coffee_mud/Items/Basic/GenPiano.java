@@ -46,7 +46,7 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 		baseEnvStats().setWeight(2000);
 		rideBasis=Rideable.RIDEABLE_SIT;
 		riderCapacity=2;
-		setMaterial(EnvResource.RESOURCE_OAK);
+		setMaterial(RawMaterial.RESOURCE_OAK);
 	}
 
 	public void recoverEnvStats(){CMLib.flags().setReadable(this,false); super.recoverEnvStats();}

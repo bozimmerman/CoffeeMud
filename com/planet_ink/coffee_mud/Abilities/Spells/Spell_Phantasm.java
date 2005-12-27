@@ -164,9 +164,9 @@ public class Spell_Phantasm extends Spell
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
 		newMOB.baseEnvStats().setWeight(850);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-		newMOB.baseCharStats().setStat(CharStats.STRENGTH,25);
-		newMOB.baseCharStats().setStat(CharStats.DEXTERITY,25);
-		newMOB.baseCharStats().setStat(CharStats.CONSTITUTION,25);
+		newMOB.baseCharStats().setStat(CharStats.STAT_STRENGTH,25);
+		newMOB.baseCharStats().setStat(CharStats.STAT_DEXTERITY,25);
+		newMOB.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,25);
 		newMOB.baseCharStats().setMyRace(R);
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.recoverEnvStats();
@@ -175,7 +175,7 @@ public class Spell_Phantasm extends Spell
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
 		newMOB.baseEnvStats().setSpeed(newMOB.baseCharStats().getCurrentClass().getLevelSpeed(newMOB));
-		newMOB.baseCharStats().setStat(CharStats.GENDER,'M');
+		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setName("a ferocious "+R.name().toLowerCase());
 		newMOB.setDisplayText("a ferocious "+R.name().toLowerCase()+" is stalking around here");

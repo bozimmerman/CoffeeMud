@@ -57,7 +57,7 @@ public class GapExit extends StdExit
 		&&(!CMLib.flags().isInFlight(mob))
 		&&(!CMLib.flags().isFalling(mob)))
 		{
-			int chance=(int)Math.round(CMath.div(mobWeight(mob),mob.maxCarry())*(100.0-new Integer(3*mob.charStats().getStat(CharStats.STRENGTH)).doubleValue()));
+			int chance=(int)Math.round(CMath.div(mobWeight(mob),mob.maxCarry())*(100.0-new Integer(3*mob.charStats().getStat(CharStats.STAT_STRENGTH)).doubleValue()));
 			if(CMLib.dice().rollPercentage()<chance)
 			{
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to jump the crevasse, but miss(es) the far ledge!");

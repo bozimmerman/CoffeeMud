@@ -86,7 +86,7 @@ public class Chant_VampireVine extends Chant_SummonVine
 		newMOB.baseEnvStats().setDamage(30+(9*(level/5)));
 		newMOB.baseEnvStats().setAttackAdjustment(10+(level));
 		newMOB.baseEnvStats().setArmor(100-(30+(level/2)));
-		newMOB.baseCharStats().setStat(CharStats.GENDER,'N');
+		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();

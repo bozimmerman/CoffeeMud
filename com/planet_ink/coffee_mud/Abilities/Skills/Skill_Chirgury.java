@@ -156,13 +156,13 @@ public class Skill_Chirgury extends StdSkill
 				    if(partCode>1)
 				    {
 					    meat=CMClass.getItem("GenFoodResource");
-				        meat.setMaterial(EnvResource.RESOURCE_MEAT);
+				        meat.setMaterial(RawMaterial.RESOURCE_MEAT);
 				    }
 				    else
 				    {
 				        meat=CMClass.getItem("GenLiquidResource");
-				        meat.setMaterial(EnvResource.RESOURCE_BLOOD);
-				        ((Drink)meat).setLiquidType(EnvResource.RESOURCE_BLOOD);
+				        meat.setMaterial(RawMaterial.RESOURCE_BLOOD);
+				        ((Drink)meat).setLiquidType(RawMaterial.RESOURCE_BLOOD);
 				        amt=target.envStats().weight()/10;
 				        if(amt<1) amt=1;
 				        meat.baseEnvStats().setWeight(1);
@@ -207,11 +207,11 @@ public class Skill_Chirgury extends StdSkill
 				        baby.setMobName(baby.Name());
 				        baby.setPlayerCorpse(false);
 				        baby.baseEnvStats().setWeight(1);
-				        baby.charStats().setStat(CharStats.GENDER,(CMLib.dice().rollPercentage()>50)?'F':'M');
+				        baby.charStats().setStat(CharStats.STAT_GENDER,(CMLib.dice().rollPercentage()>50)?'F':'M');
 				        for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 				            baby.charStats().setStat(i,1);
 				        for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
-				            baby.charStats().setStat(CharStats.MAX_STRENGTH_ADJ+i,1);
+				            baby.charStats().setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,1);
 				        baby.charStats().setMyRace(((MOB)target).charStats().getMyRace());
 				        baby.recoverEnvStats();
 				        baby.setDescription(CMStrings.capitalizeAndLower(baby.charStats().hisher())+" body parts can be faintly made out in the twisted and mangled flesh.");

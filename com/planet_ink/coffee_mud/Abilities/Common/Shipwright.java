@@ -135,7 +135,7 @@ public class Shipwright extends CraftingSkill
 				commonTell(mob,"You don't know how to mend that.");
 			return false;
 		}
-		if((IE.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
+		if((IE.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 		{
 			if(!quiet)
 				commonTell(mob,"That's not made of wood.  That can't be mended.");
@@ -245,7 +245,7 @@ public class Shipwright extends CraftingSkill
 			}
 			int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			if(amount>woodRequired) woodRequired=amount;
-			int[] pm={EnvResource.MATERIAL_WOODEN};
+			int[] pm={RawMaterial.MATERIAL_WOODEN};
 			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
             bundling=misctype.equalsIgnoreCase("BUNDLE");
 			int[][] data=fetchFoundResourceData(mob,
@@ -266,7 +266,7 @@ public class Shipwright extends CraftingSkill
 				return false;
 			}
 			completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
+			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
 			if(misctype.equalsIgnoreCase("BUNDLE"))
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -323,7 +323,7 @@ public class Shipwright extends CraftingSkill
 		{
 			messedUp=false;
 			completion=1;
-			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}

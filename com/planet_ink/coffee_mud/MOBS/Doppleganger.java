@@ -55,9 +55,9 @@ public class Doppleganger extends StdMOB
 		setMoney(250);
 		baseEnvStats.setWeight(100 + Math.abs(randomizer.nextInt() % 101));
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,10 + Math.abs(randomizer.nextInt() % 6));
-		baseCharStats().setStat(CharStats.STRENGTH,12 + Math.abs(randomizer.nextInt() % 6));
-		baseCharStats().setStat(CharStats.DEXTERITY,9 + Math.abs(randomizer.nextInt() % 6));
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,10 + Math.abs(randomizer.nextInt() % 6));
+		baseCharStats().setStat(CharStats.STAT_STRENGTH,12 + Math.abs(randomizer.nextInt() % 6));
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,9 + Math.abs(randomizer.nextInt() % 6));
 
 		baseEnvStats().setDamage(7);
 		baseEnvStats().setSpeed(2.0);

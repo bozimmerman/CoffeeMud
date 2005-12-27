@@ -149,12 +149,12 @@ public class Spell_DemonGate extends Spell
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
 		newMOB.baseEnvStats().setWeight(850);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-		newMOB.baseCharStats().setStat(CharStats.STRENGTH,25);
-		newMOB.baseCharStats().setStat(CharStats.DEXTERITY,25);
-		newMOB.baseCharStats().setStat(CharStats.CONSTITUTION,25);
+		newMOB.baseCharStats().setStat(CharStats.STAT_STRENGTH,25);
+		newMOB.baseCharStats().setStat(CharStats.STAT_DEXTERITY,25);
+		newMOB.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,25);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Demon"));
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
-		newMOB.baseCharStats().setStat(CharStats.GENDER,'M');
+		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		newMOB.recoverEnvStats();
 		newMOB.recoverCharStats();
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));

@@ -67,7 +67,7 @@ public class Chant_SenseSentience extends Chant
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
-						if((M!=null)&&(M.charStats().getStat(CharStats.INTELLIGENCE)>=2))
+						if((M!=null)&&(M.charStats().getStat(CharStats.STAT_INTELLIGENCE)>=2))
 						{
 							lines.append("^!"+CMStrings.padRight(M.name(),17)+"^?| ");
 							lines.append(R.displayText());

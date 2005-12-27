@@ -40,7 +40,7 @@ public class Pan extends StdDrink
 		setDescription("A sturdy iron pan for cooking in.");
 		capacity=25;
 		baseGoldValue=5;
-		setMaterial(EnvResource.RESOURCE_IRON);
+		setMaterial(RawMaterial.RESOURCE_IRON);
 		baseEnvStats().setWeight(5);
 		recoverEnvStats();
 	}

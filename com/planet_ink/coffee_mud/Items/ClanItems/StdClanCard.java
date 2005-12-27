@@ -46,7 +46,7 @@ public class StdClanCard extends StdClanItem
         secretIdentity="";
         baseGoldValue=1;
         setCIType(ClanItem.CI_ANTIPROPAGANDA);
-        material=EnvResource.RESOURCE_PAPER;
+        material=RawMaterial.RESOURCE_PAPER;
         recoverEnvStats();
     }
 

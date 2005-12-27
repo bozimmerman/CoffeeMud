@@ -61,16 +61,16 @@ public class DrowWarrior extends DrowElf
 		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
 		setMoney(CMLib.dice().roll(4,10,0) * 25);
 		baseEnvStats.setWeight(70 + CMLib.dice().roll(3,6,2));
-		baseCharStats.setStat(CharStats.GENDER,'M');
+		baseCharStats.setStat(CharStats.STAT_GENDER,'M');
 
 		setWimpHitPoint(1);
 
-		baseCharStats().setStat(CharStats.STRENGTH,12 + CMLib.dice().roll(1,6,0));
-		baseCharStats().setStat(CharStats.INTELLIGENCE,14 + CMLib.dice().roll(1,6,0));
-		baseCharStats().setStat(CharStats.WISDOM,13 + CMLib.dice().roll(1,6,0));
-		baseCharStats().setStat(CharStats.DEXTERITY,15 + CMLib.dice().roll(1,6,0));
-		baseCharStats().setStat(CharStats.CONSTITUTION,12 + CMLib.dice().roll(1,6,0));
-		baseCharStats().setStat(CharStats.CHARISMA,13 + CMLib.dice().roll(1,6,0));
+		baseCharStats().setStat(CharStats.STAT_STRENGTH,12 + CMLib.dice().roll(1,6,0));
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,14 + CMLib.dice().roll(1,6,0));
+		baseCharStats().setStat(CharStats.STAT_WISDOM,13 + CMLib.dice().roll(1,6,0));
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,15 + CMLib.dice().roll(1,6,0));
+		baseCharStats().setStat(CharStats.STAT_CONSTITUTION,12 + CMLib.dice().roll(1,6,0));
+		baseCharStats().setStat(CharStats.STAT_CHARISMA,13 + CMLib.dice().roll(1,6,0));
 		baseCharStats().setCurrentClass(CMClass.getCharClass("Fighter"));
 		baseCharStats().setMyRace(CMClass.getRace("Elf"));
 		baseCharStats().getMyRace().startRacing(this,false);

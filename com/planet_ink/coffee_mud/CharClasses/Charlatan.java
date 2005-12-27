@@ -39,7 +39,7 @@ public class Charlatan extends StdCharClass
 	public int getMaxHitPointsLevel(){return 18;}
 	public int getBonusPracLevel(){return 1;}
 	public int getBonusAttackLevel(){return 1;}
-	public int getAttackAttribute(){return CharStats.DEXTERITY;}
+	public int getAttackAttribute(){return CharStats.STAT_DEXTERITY;}
 	public int getLevelsPerBonusDamage(){ return 4;}
 	public int getHPDivisor(){return 3;}
 	public int getHPDice(){return 2;}
@@ -55,8 +55,8 @@ public class Charlatan extends StdCharClass
 	public Charlatan()
 	{
 		super();
-		maxStatAdj[CharStats.CHARISMA]=4;
-		maxStatAdj[CharStats.WISDOM]=4;
+		maxStatAdj[CharStats.STAT_CHARISMA]=4;
+		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -146,13 +146,13 @@ public class Charlatan extends StdCharClass
 	public String statQualifications(){return "Charisma 9+, Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.CHARISMA) <= 8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Charisma to become a Charlatan.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.WISDOM) <= 8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM) <= 8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Wisdom to become a Charlatan.");
@@ -278,7 +278,7 @@ public class Charlatan extends StdCharClass
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.SAVE_MIND,affectableStats.getStat(CharStats.SAVE_MIND)+(2*affectableStats.getClassLevel(this)));
+		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)+(2*affectableStats.getClassLevel(this)));
 	}
 
 	public void level(MOB mob)

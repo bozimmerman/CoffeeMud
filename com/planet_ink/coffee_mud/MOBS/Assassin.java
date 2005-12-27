@@ -45,9 +45,9 @@ public class Assassin extends GenMob
 			baseCharStats().setMyRace(R);
 			R.startRacing(this,false);
 		}
-		baseCharStats().setStat(CharStats.DEXTERITY,18);
-		baseCharStats().setStat(CharStats.GENDER,'M');
-		baseCharStats().setStat(CharStats.WISDOM,18);
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,18);
+		baseCharStats().setStat(CharStats.STAT_GENDER,'M');
+		baseCharStats().setStat(CharStats.STAT_WISDOM,18);
 		baseEnvStats().setSensesMask(baseEnvStats().disposition()|EnvStats.CAN_SEE_DARK);
 
 		Ability A=CMClass.getAbility("Thief_Hide");

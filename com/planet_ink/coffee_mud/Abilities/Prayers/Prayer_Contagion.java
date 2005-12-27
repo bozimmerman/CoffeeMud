@@ -86,7 +86,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 		Ability thisOne=(Ability)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 		if((target==null)||(thisOne==null)||(target.fetchEffect(ID())!=null))
 			return true;
-		if(CMLib.dice().rollPercentage()>(target.charStats().getSave(CharStats.SAVE_DISEASE)))
+		if(CMLib.dice().rollPercentage()>(target.charStats().getSave(CharStats.STAT_SAVE_DISEASE)))
 		{
 			((Ability)this.copyOf()).invoke(target,target,true,0);
 			if(target.fetchEffect(ID())!=null)

@@ -76,17 +76,17 @@ public class Manticore extends GreatCat
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of "+name().toLowerCase()+" horns",EnvResource.RESOURCE_BONE));
+				("a pair of "+name().toLowerCase()+" horns",RawMaterial.RESOURCE_BONE));
 				for(int i=0;i<5;i++)
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_LEATHER));
+					("a strip of "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_LEATHER));
 				for(int i=0;i<2;i++)
 					resources.addElement(makeResource
-					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));
+					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_BEEF));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

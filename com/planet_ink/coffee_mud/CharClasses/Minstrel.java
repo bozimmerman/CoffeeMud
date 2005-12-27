@@ -39,7 +39,7 @@ public class Minstrel extends StdCharClass
 	public int getMaxHitPointsLevel(){return 18;}
 	public int getBonusPracLevel(){return 1;}
 	public int getBonusAttackLevel(){return 1;}
-	public int getAttackAttribute(){return CharStats.CHARISMA;}
+	public int getAttackAttribute(){return CharStats.STAT_CHARISMA;}
 	public int getLevelsPerBonusDamage(){ return 4;}
 	public int getHPDivisor(){return 3;}
 	public int getHPDice(){return 2;}
@@ -59,8 +59,8 @@ public class Minstrel extends StdCharClass
 	public Minstrel()
 	{
 		super();
-		maxStatAdj[CharStats.CHARISMA]=4;
-		maxStatAdj[CharStats.INTELLIGENCE]=4;
+		maxStatAdj[CharStats.STAT_CHARISMA]=4;
+		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -193,13 +193,13 @@ public class Minstrel extends StdCharClass
 	public String statQualifications(){return "Charisma 9+, Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.CHARISMA) <= 8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Charisma to become a Minstrel.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE) <= 8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE) <= 8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Intelligence to become a Minstrel.");
@@ -210,8 +210,8 @@ public class Minstrel extends StdCharClass
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB,affectableStats);
-		affectableStats.setStat(CharStats.SAVE_POISON,
-			affectableStats.getStat(CharStats.SAVE_POISON)
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON,
+			affectableStats.getStat(CharStats.STAT_SAVE_POISON)
 			+(affectableStats.getClassLevel(this)*2));
 	}
 

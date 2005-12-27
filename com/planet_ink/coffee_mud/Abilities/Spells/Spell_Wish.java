@@ -79,10 +79,10 @@ public class Spell_Wish extends Spell
 		if(conLoss)
 		{
 			mob.tell("Your wish drains you of "+(expLoss)+" experience points and a point of constitution.");
-			mob.baseCharStats().setStat(CharStats.CONSTITUTION,mob.baseCharStats().getStat(CharStats.CONSTITUTION)-1);
-			mob.baseCharStats().setStat(CharStats.MAX_CONSTITUTION_ADJ,mob.baseCharStats().getStat(CharStats.MAX_CONSTITUTION_ADJ)-1);
+			mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)-1);
+			mob.baseCharStats().setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,mob.baseCharStats().getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)-1);
 			mob.recoverCharStats();
-			if(mob.charStats().getStat(CharStats.CONSTITUTION)<1)
+			if(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)<1)
 				CMLib.combat().postDeath(mob,mob,null);
 		}
 		else
@@ -105,7 +105,7 @@ public class Spell_Wish extends Spell
 		}
 
 		String myWish=CMParms.combine(commands,0);
-		if(((!auto)&&(mob.envStats().level()<20))||(mob.charStats().getStat(CharStats.CONSTITUTION)<2))
+		if(((!auto)&&(mob.envStats().level()<20))||(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)<2))
 		{
 			mob.tell("You are too weak to wish.");
 			return false;
@@ -547,7 +547,7 @@ public class Spell_Wish extends Spell
 
 			}
 			if((target instanceof MOB)
-			&&(((MOB)target).charStats().getStat(CharStats.GENDER)!='M')
+			&&(((MOB)target).charStats().getStat(CharStats.STAT_GENDER)!='M')
 			&&((myWish.indexOf(" BECOME ")>=0)
 			||(myWish.indexOf(" TURN INTO ")>=0)
 			||(myWish.indexOf(" CHANGE")>=0)
@@ -559,7 +559,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" BOY ")>=0)))
 			{
 				wishDrain(mob,baseLoss,true);
-				((MOB)target).baseCharStats().setStat(CharStats.GENDER,'M');
+				((MOB)target).baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 				((MOB)target).recoverCharStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now male!");
 				return true;
@@ -779,7 +779,7 @@ public class Spell_Wish extends Spell
 			}
 
 			if((target instanceof MOB)
-			&&(((MOB)target).charStats().getStat(CharStats.GENDER)!='F')
+			&&(((MOB)target).charStats().getStat(CharStats.STAT_GENDER)!='F')
 			&&((myWish.indexOf(" BECOME ")>=0)
 			||(myWish.indexOf(" TURN INTO ")>=0)
 			||(myWish.indexOf(" CHANGE")>=0)
@@ -791,7 +791,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" GIRL ")>=0)))
 			{
 				wishDrain(mob,baseLoss,true);
-				((MOB)target).baseCharStats().setStat(CharStats.GENDER,'F');
+				((MOB)target).baseCharStats().setStat(CharStats.STAT_GENDER,'F');
 				((MOB)target).recoverCharStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now female!");
 				return true;
@@ -818,12 +818,12 @@ public class Spell_Wish extends Spell
 					int oldCat=mob.baseCharStats().ageCategory();
 					((MOB)target).baseCharStats().setMyRace(R);
 					((MOB)target).baseCharStats().getMyRace().startRacing(((MOB)target),true);
-					((MOB)target).baseCharStats().getMyRace().setHeightWeight(((MOB)target).baseEnvStats(),(char)((MOB)target).baseCharStats().getStat(CharStats.GENDER));
+					((MOB)target).baseCharStats().getMyRace().setHeightWeight(((MOB)target).baseEnvStats(),(char)((MOB)target).baseCharStats().getStat(CharStats.STAT_GENDER));
 					((MOB)target).confirmWearability();
 					((MOB)target).recoverCharStats();
 					((MOB)target).recoverEnvStats();
 					if(!((MOB)target).isMonster())
-						((MOB)target).baseCharStats().setStat(CharStats.AGE,R.getAgingChart()[oldCat]);
+						((MOB)target).baseCharStats().setStat(CharStats.STAT_AGE,R.getAgingChart()[oldCat]);
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now a "+R.name()+"!");
 					return true;
 				}
@@ -856,7 +856,7 @@ public class Spell_Wish extends Spell
 						if((amountToLose>0)&&(mob.baseCharStats().getStat(trait)>amountToLose))
 						{
 							mob.baseCharStats().setStat(trait,mob.baseCharStats().getStat(trait)-amountToLose);
-							str.append("\n\rYou lost "+amountToLose+" points of "+CharStats.TRAITS[trait].toLowerCase()+".");
+							str.append("\n\rYou lost "+amountToLose+" points of "+CharStats.STAT_DESCS[trait].toLowerCase()+".");
 						}
 					}
 					mob.tell(str.toString()+"\n\r");
@@ -924,76 +924,76 @@ public class Spell_Wish extends Spell
 
 			// attributes will be hairy
 			int foundAttribute=-1;
-			for(int attributes=0;attributes<CharStats.TRAITS.length;attributes++)
+			for(int attributes=0;attributes<CharStats.STAT_DESCS.length;attributes++)
 			{
-				if(CMLib.english().containsString(myWish,CharStats.TRAITS[attributes]))
+				if(CMLib.english().containsString(myWish,CharStats.STAT_DESCS[attributes]))
 				{	foundAttribute=attributes; break;}
 			}
 			if(myWish.indexOf("STRONG")>=0)
-				foundAttribute=CharStats.STRENGTH;
+				foundAttribute=CharStats.STAT_STRENGTH;
 			if(myWish.indexOf(" INTELLIGEN")>=0)
-				foundAttribute=CharStats.INTELLIGENCE;
+				foundAttribute=CharStats.STAT_INTELLIGENCE;
 			if(myWish.indexOf(" SMART")>=0)
-				foundAttribute=CharStats.INTELLIGENCE;
+				foundAttribute=CharStats.STAT_INTELLIGENCE;
 			if(myWish.indexOf(" WISE")>=0)
-				foundAttribute=CharStats.WISDOM;
+				foundAttribute=CharStats.STAT_WISDOM;
 			if(myWish.indexOf(" FAST")>=0)
-				foundAttribute=CharStats.DEXTERITY;
+				foundAttribute=CharStats.STAT_DEXTERITY;
 			if(myWish.indexOf(" DEXTROUS")>=0)
-				foundAttribute=CharStats.DEXTERITY;
+				foundAttribute=CharStats.STAT_DEXTERITY;
 			if(myWish.indexOf(" HEALTH")>=0)
-				foundAttribute=CharStats.CONSTITUTION;
+				foundAttribute=CharStats.STAT_CONSTITUTION;
 			if(myWish.indexOf(" PRETTY")>=0)
-				foundAttribute=CharStats.CHARISMA;
+				foundAttribute=CharStats.STAT_CHARISMA;
 			if(myWish.indexOf(" NICE")>=0)
-				foundAttribute=CharStats.CHARISMA;
+				foundAttribute=CharStats.STAT_CHARISMA;
 			if(myWish.indexOf(" PRETTIER")>=0)
-				foundAttribute=CharStats.CHARISMA;
+				foundAttribute=CharStats.STAT_CHARISMA;
 			if((myWish.indexOf("RESIST")>=0)
 			||(myWish.indexOf("IMMUN")>=0))
 			{
 				if(myWish.indexOf(" PARALY")>=0)
-					foundAttribute=CharStats.SAVE_PARALYSIS;
+					foundAttribute=CharStats.STAT_SAVE_PARALYSIS;
 				if(myWish.indexOf(" FIRE")>=0)
-					foundAttribute=CharStats.SAVE_FIRE;
+					foundAttribute=CharStats.STAT_SAVE_FIRE;
 				if(myWish.indexOf(" FLAMES")>=0)
-					foundAttribute=CharStats.SAVE_FIRE;
+					foundAttribute=CharStats.STAT_SAVE_FIRE;
 				if(myWish.indexOf(" COLD")>=0)
-					foundAttribute=CharStats.SAVE_COLD;
+					foundAttribute=CharStats.STAT_SAVE_COLD;
 				if(myWish.indexOf(" FROST")>=0)
-					foundAttribute=CharStats.SAVE_COLD;
+					foundAttribute=CharStats.STAT_SAVE_COLD;
 				if(myWish.indexOf(" GAS")>=0)
-					foundAttribute=CharStats.SAVE_GAS;
+					foundAttribute=CharStats.STAT_SAVE_GAS;
 				if(myWish.indexOf(" ACID")>=0)
-					foundAttribute=CharStats.SAVE_ACID;
+					foundAttribute=CharStats.STAT_SAVE_ACID;
 				if(myWish.indexOf(" SPELL ")>=0)
-					foundAttribute=CharStats.SAVE_MAGIC;
+					foundAttribute=CharStats.STAT_SAVE_MAGIC;
 				if(myWish.indexOf(" TRAPS ")>=0)
-					foundAttribute=CharStats.SAVE_TRAPS;
+					foundAttribute=CharStats.STAT_SAVE_TRAPS;
 				if(myWish.indexOf(" SPELLS ")>=0)
-					foundAttribute=CharStats.SAVE_MAGIC;
+					foundAttribute=CharStats.STAT_SAVE_MAGIC;
 				if(myWish.indexOf(" SONGS")>=0)
-					foundAttribute=CharStats.SAVE_MIND;
+					foundAttribute=CharStats.STAT_SAVE_MIND;
 				if(myWish.indexOf(" CHARMS")>=0)
-					foundAttribute=CharStats.SAVE_MIND;
+					foundAttribute=CharStats.STAT_SAVE_MIND;
 				if(myWish.indexOf(" ELECTRI")>=0)
-					foundAttribute=CharStats.SAVE_ELECTRIC;
+					foundAttribute=CharStats.STAT_SAVE_ELECTRIC;
 				if(myWish.indexOf(" POISON")>=0)
-					foundAttribute=CharStats.SAVE_POISON;
+					foundAttribute=CharStats.STAT_SAVE_POISON;
 				if(myWish.indexOf(" DEATH")>=0)
-					foundAttribute=CharStats.SAVE_UNDEAD;
+					foundAttribute=CharStats.STAT_SAVE_UNDEAD;
 				if(myWish.indexOf(" DISEASE")>=0)
-					foundAttribute=CharStats.SAVE_DISEASE;
+					foundAttribute=CharStats.STAT_SAVE_DISEASE;
 				if(myWish.indexOf(" PLAGUE")>=0)
-					foundAttribute=CharStats.SAVE_DISEASE;
+					foundAttribute=CharStats.STAT_SAVE_DISEASE;
 				if(myWish.indexOf(" COLDS ")>=0)
-					foundAttribute=CharStats.SAVE_DISEASE;
+					foundAttribute=CharStats.STAT_SAVE_DISEASE;
 				if(myWish.indexOf(" SICK")>=0)
-					foundAttribute=CharStats.SAVE_DISEASE;
+					foundAttribute=CharStats.STAT_SAVE_DISEASE;
 				if(myWish.indexOf(" UNDEAD")>=0)
-					foundAttribute=CharStats.SAVE_UNDEAD;
+					foundAttribute=CharStats.STAT_SAVE_UNDEAD;
 				if(myWish.indexOf(" EVIL")>=0)
-					foundAttribute=CharStats.SAVE_UNDEAD;
+					foundAttribute=CharStats.STAT_SAVE_UNDEAD;
 			}
 			if((foundAttribute>=0)
 			&&(target instanceof MOB)
@@ -1007,12 +1007,12 @@ public class Spell_Wish extends Spell
 			{
 				switch(foundAttribute)
 				{
-				case CharStats.CHARISMA:
-				case CharStats.CONSTITUTION:
-				case CharStats.DEXTERITY:
-				case CharStats.INTELLIGENCE:
-				case CharStats.STRENGTH:
-				case CharStats.WISDOM:
+				case CharStats.STAT_CHARISMA:
+				case CharStats.STAT_CONSTITUTION:
+				case CharStats.STAT_DEXTERITY:
+				case CharStats.STAT_INTELLIGENCE:
+				case CharStats.STAT_STRENGTH:
+				case CharStats.STAT_WISDOM:
 					baseLoss-=1000;
 					break;
 				default:
@@ -1026,7 +1026,7 @@ public class Spell_Wish extends Spell
 					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)-33);
 				((MOB)target).recoverCharStats();
 				mob.recoverCharStats();
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,target.name()+" has lost "+CharStats.TRAITS[foundAttribute].toLowerCase()+".");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,target.name()+" has lost "+CharStats.STAT_DESCS[foundAttribute].toLowerCase()+".");
 				return true;
 			}
 
@@ -1044,12 +1044,12 @@ public class Spell_Wish extends Spell
 			{
 				switch(foundAttribute)
 				{
-				case CharStats.CHARISMA:
-				case CharStats.CONSTITUTION:
-				case CharStats.DEXTERITY:
-				case CharStats.INTELLIGENCE:
-				case CharStats.STRENGTH:
-				case CharStats.WISDOM:
+				case CharStats.STAT_CHARISMA:
+				case CharStats.STAT_CONSTITUTION:
+				case CharStats.STAT_DEXTERITY:
+				case CharStats.STAT_INTELLIGENCE:
+				case CharStats.STAT_STRENGTH:
+				case CharStats.STAT_WISDOM:
 					baseLoss+=500;
 					break;
 				default:
@@ -1065,7 +1065,7 @@ public class Spell_Wish extends Spell
 					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)+33);
 				mob.recoverCharStats();
 				((MOB)target).recoverCharStats();
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,target.name()+" has gained "+CharStats.TRAITS[foundAttribute].toLowerCase()+".");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,target.name()+" has gained "+CharStats.STAT_DESCS[foundAttribute].toLowerCase()+".");
 				return true;
 			}
 

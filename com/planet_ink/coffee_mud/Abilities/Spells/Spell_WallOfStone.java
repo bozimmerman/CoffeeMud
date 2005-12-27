@@ -159,7 +159,7 @@ public class Spell_WallOfStone extends Spell
 				I.setName("a wall of stone");
 				I.setDisplayText("a mighty wall of stone has been erected here");
 				I.setDescription("The bricks are sold and sturdy.");
-				I.setMaterial(EnvResource.RESOURCE_STONE);
+				I.setMaterial(RawMaterial.RESOURCE_STONE);
 				CMLib.flags().setGettable(I,false);
 				I.recoverEnvStats();
 				mob.location().addItem(I);

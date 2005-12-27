@@ -46,7 +46,7 @@ public class Skill_Write extends StdSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(mob.charStats().getStat(CharStats.INTELLIGENCE)<5)
+		if(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
 			mob.tell("You are too stupid to actually write anything.");
 			return false;
@@ -74,9 +74,9 @@ public class Skill_Write extends StdSkill
 
 		Item item=target;
 		if((item==null)
-		||((item.material()!=EnvResource.RESOURCE_PAPER)
-		   &&(item.material()!=EnvResource.RESOURCE_SILK)
-		   &&(item.material()!=EnvResource.RESOURCE_HEMP))
+		||((item.material()!=RawMaterial.RESOURCE_PAPER)
+		   &&(item.material()!=RawMaterial.RESOURCE_SILK)
+		   &&(item.material()!=RawMaterial.RESOURCE_HEMP))
 		||((item!=null)&&(!CMLib.flags().isReadable(item))))
 		{
 			mob.tell("You can't write on that.");

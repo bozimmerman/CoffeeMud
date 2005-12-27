@@ -41,7 +41,7 @@ public class Ranger extends StdCharClass
 	public int getBonusPracLevel(){return 0;}
 	public int getBonusAttackLevel(){return 2;}
 	public int getMovementMultiplier(){return 12;}
-	public int getAttackAttribute(){return CharStats.STRENGTH;}
+	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
 	public int getLevelsPerBonusDamage(){ return 1;}
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
@@ -59,8 +59,8 @@ public class Ranger extends StdCharClass
 	public Ranger()
 	{
 		super();
-		maxStatAdj[CharStats.STRENGTH]=4;
-		maxStatAdj[CharStats.INTELLIGENCE]=4;
+		maxStatAdj[CharStats.STAT_STRENGTH]=4;
+		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -176,14 +176,14 @@ public class Ranger extends StdCharClass
 	public String otherBonuses(){return "When leading animals into battle, will not divide experience among animal followers.";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STRENGTH)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Strength to become a Ranger.");
 			return false;
 		}
 
-		if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Intelligence to become a Ranger.");

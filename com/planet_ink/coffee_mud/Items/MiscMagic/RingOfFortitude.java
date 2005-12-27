@@ -39,7 +39,7 @@ public class RingOfFortitude extends Ring_Protection implements MiscMagic
 	{
 		super();
 		this.baseEnvStats().setLevel(MITHRIL_RING);
-		material=EnvResource.RESOURCE_MITHRIL;
+		material=RawMaterial.RESOURCE_MITHRIL;
 		this.recoverEnvStats();
 	}
 

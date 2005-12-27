@@ -51,9 +51,9 @@ public class GiantScorpion extends StdMOB
 		baseEnvStats().setWeight(1000 + Math.abs(randomizer.nextInt() % 550));
 
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,5 + Math.abs(randomizer.nextInt() % 3));
-		baseCharStats().setStat(CharStats.STRENGTH,13);
-		baseCharStats().setStat(CharStats.DEXTERITY,9);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,5 + Math.abs(randomizer.nextInt() % 3));
+		baseCharStats().setStat(CharStats.STAT_STRENGTH,13);
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,9);
 
 		baseEnvStats().setDamage(10);
 		baseEnvStats().setSpeed(2.0);

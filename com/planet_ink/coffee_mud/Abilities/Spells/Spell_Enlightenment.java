@@ -61,7 +61,7 @@ public class Spell_Enlightenment extends Spell
 		else
 		if (affectableStats.getCurrentClass().baseClass().equals("Druid"))
 			increase = 7;
-		affectableStats.setStat(CharStats.INTELLIGENCE,affectableStats.getStat(CharStats.INTELLIGENCE) + increase);
+		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE) + increase);
 	}
 
 

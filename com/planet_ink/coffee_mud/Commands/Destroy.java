@@ -517,15 +517,15 @@ public class Destroy extends BaseItemParser
 		String msgstr=null;
 		int material=(dropThis instanceof Item)?((Item)dropThis).material():-1;
 		if(!quiet)
-		switch(material&EnvResource.MATERIAL_MASK)
+		switch(material&RawMaterial.MATERIAL_MASK)
 		{
-		case EnvResource.MATERIAL_LIQUID:
+		case RawMaterial.MATERIAL_LIQUID:
 			msgstr="<S-NAME> pour(s) out <T-NAME>.";
 			break;
-		case EnvResource.MATERIAL_PAPER:
+		case RawMaterial.MATERIAL_PAPER:
 			msgstr="<S-NAME> tear(s) up <T-NAME>.";
 			break;
-		case EnvResource.MATERIAL_GLASS:
+		case RawMaterial.MATERIAL_GLASS:
 			msgstr="<S-NAME> smash(es) <T-NAME>.";
 			break;
 		default:
@@ -593,10 +593,10 @@ public class Destroy extends BaseItemParser
 					dropThis=mob.fetchWornItem(whatToDrop);
 					if(dropThis!=null)
 					{
-						int matType=dropThis.material()&EnvResource.MATERIAL_MASK;
-						if((matType!=EnvResource.MATERIAL_GLASS)
-						&&(matType!=EnvResource.MATERIAL_LIQUID)
-						&&(matType!=EnvResource.MATERIAL_PAPER))
+						int matType=dropThis.material()&RawMaterial.MATERIAL_MASK;
+						if((matType!=RawMaterial.MATERIAL_GLASS)
+						&&(matType!=RawMaterial.MATERIAL_LIQUID)
+						&&(matType!=RawMaterial.MATERIAL_PAPER))
 						{
 							mob.tell(dropThis.Name()+" can not be easily destroyed.");
 							return false;

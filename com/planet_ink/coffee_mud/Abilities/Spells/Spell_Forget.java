@@ -54,7 +54,7 @@ public class Spell_Forget extends Spell
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&(mob.fetchAbility(msg.tool().ID())==msg.tool())
-		&&(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_MIND)+10)))
+		&&(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_MIND)+10)))
 		{
 			mob.tell("You can't remember "+msg.tool().name()+"!");
 			return false;
@@ -94,7 +94,7 @@ public class Spell_Forget extends Spell
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,-((target.charStats().getStat(CharStats.INTELLIGENCE)*2)+(levelDiff*5)),auto);
+		boolean success=profficiencyCheck(mob,-((target.charStats().getStat(CharStats.STAT_INTELLIGENCE)*2)+(levelDiff*5)),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

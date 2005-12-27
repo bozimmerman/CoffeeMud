@@ -39,7 +39,7 @@ public class Mage extends StdCharClass
 	public int getMaxHitPointsLevel(){return 8;}
 	public int getBonusPracLevel(){return 4;}
 	public int getBonusAttackLevel(){return 0;}
-	public int getAttackAttribute(){return CharStats.INTELLIGENCE;}
+	public int getAttackAttribute(){return CharStats.STAT_INTELLIGENCE;}
 	public int getLevelsPerBonusDamage(){ return 10;}
 	public int getPracsFirstLevel(){return 6;}
 	public int getTrainsFirstLevel(){return 3;}
@@ -63,7 +63,7 @@ public class Mage extends StdCharClass
 	public Mage()
 	{
 		super();
-		maxStatAdj[CharStats.INTELLIGENCE]=7;
+		maxStatAdj[CharStats.STAT_INTELLIGENCE]=7;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -338,7 +338,7 @@ public class Mage extends StdCharClass
 	public String statQualifications(){return "Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Intelligence to become a Mage.");

@@ -114,7 +114,7 @@ public class Fighter_Whomp extends FighterSkill
 			mob.tell("You are too far away from your target to whomp!");
 			return false;
 		}
-		if((!auto)&&(mob.charStats().getStat(CharStats.STRENGTH)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)))
+		if((!auto)&&(mob.charStats().getStat(CharStats.STAT_STRENGTH)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)))
 		{
 			mob.tell("You need at least an "+CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+" strength to do that.");
 			return false;
@@ -140,7 +140,7 @@ public class Fighter_Whomp extends FighterSkill
 			levelDiff=0;
 		// now see if it worked
 		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
-		boolean success=profficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STRENGTH)-mob.charStats().getStat(CharStats.STRENGTH)))),auto)&&(hit);
+		boolean success=profficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STAT_STRENGTH)-mob.charStats().getStat(CharStats.STAT_STRENGTH)))),auto)&&(hit);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

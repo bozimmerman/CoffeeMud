@@ -44,11 +44,11 @@ public class Chant_FindPlant extends Chant
 	protected int nextDirection=-2;
 	public int whatImLookingFor=-1;
 
-	private int[] myMats={EnvResource.MATERIAL_VEGETATION,
-						  EnvResource.MATERIAL_WOODEN};
+	private int[] myMats={RawMaterial.MATERIAL_VEGETATION,
+						  RawMaterial.MATERIAL_WOODEN};
 	protected int[] okMaterials(){	return myMats;}
-	private int[] myRscs={EnvResource.RESOURCE_COTTON,
-						  EnvResource.RESOURCE_HEMP};
+	private int[] myRscs={RawMaterial.RESOURCE_COTTON,
+						  RawMaterial.RESOURCE_HEMP};
 	protected int[] okResources(){	return myRscs;}
 
 	protected Vector allResources=null;
@@ -61,12 +61,12 @@ public class Chant_FindPlant extends Chant
 				for(int m=0;m<okResources().length;m++)
 					if(!allResources.contains(new Integer(okResources()[m])))
 					   allResources.addElement(new Integer(okResources()[m]));
-			for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 			{
-				int cd=EnvResource.RESOURCE_DATA[i][0];
+				int cd=RawMaterial.RESOURCE_DATA[i][0];
 				if(okMaterials()!=null)
 					for(int m=0;m<okMaterials().length;m++)
-						if((cd&EnvResource.MATERIAL_MASK)==okMaterials()[m])
+						if((cd&RawMaterial.MATERIAL_MASK)==okMaterials()[m])
 							if(!allResources.contains(new Integer(cd)))
 							   allResources.addElement(new Integer(cd));
 			}
@@ -164,7 +164,7 @@ public class Chant_FindPlant extends Chant
 		{
 			StringBuffer msg=new StringBuffer("You may search for any of the following: ");
 			for(int i=0;i<allOkResources().size();i++)
-				msg.append(EnvResource.RESOURCE_DESCS[((Integer)allOkResources().elementAt(i)).intValue()&EnvResource.RESOURCE_MASK].toLowerCase()+", ");
+				msg.append(RawMaterial.RESOURCE_DESCS[((Integer)allOkResources().elementAt(i)).intValue()&RawMaterial.RESOURCE_MASK].toLowerCase()+", ");
 			mob.tell(msg.substring(0,msg.length()-2));
 			return false;
 		}
@@ -172,7 +172,7 @@ public class Chant_FindPlant extends Chant
 		for(int i=0;i<allOkResources().size();i++)
 		{
 			int c=((Integer)allOkResources().elementAt(i)).intValue();
-			String d=EnvResource.RESOURCE_DESCS[c&EnvResource.RESOURCE_MASK];
+			String d=RawMaterial.RESOURCE_DESCS[c&RawMaterial.RESOURCE_MASK];
 			if(d.equalsIgnoreCase(s))
 			{
 				lookingFor=d.toLowerCase();

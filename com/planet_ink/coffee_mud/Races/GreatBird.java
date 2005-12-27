@@ -70,9 +70,9 @@ public class GreatBird extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,8);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,10);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,8);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,10);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public Weapon myNaturalWeapon()
 	{
@@ -128,13 +128,13 @@ public class GreatBird extends StdRace
 			{
 				for(int i=0;i<2;i++)
 					resources.addElement(makeResource
-					("a pile of "+name().toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
+					("a pile of "+name().toLowerCase()+" feathers",RawMaterial.RESOURCE_FEATHERS));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" meat",EnvResource.RESOURCE_POULTRY));
+				("some "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_POULTRY));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

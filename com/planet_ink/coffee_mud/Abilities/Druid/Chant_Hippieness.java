@@ -45,9 +45,9 @@ public class Chant_Hippieness extends Chant
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.WISDOM,affectableStats.getStat(CharStats.WISDOM)-2);
-		if(affectableStats.getStat(CharStats.WISDOM)<1)
-			affectableStats.setStat(CharStats.WISDOM,1);
+		affectableStats.setStat(CharStats.STAT_WISDOM,affectableStats.getStat(CharStats.STAT_WISDOM)-2);
+		if(affectableStats.getStat(CharStats.STAT_WISDOM)<1)
+			affectableStats.setStat(CharStats.STAT_WISDOM,1);
 		if((oldClan.length()>0)&&(affected.getClanID().length()>0))
 		   affected.setClanID("");
 	}
@@ -109,7 +109,7 @@ public class Chant_Hippieness extends Chant
 							smoke.setName("some smoke");
 							smoke.setDescription("Looks liefy and green.");
 							smoke.setDisplayText("some smoke is sitting here.");
-							smoke.setMaterial(EnvResource.RESOURCE_HEMP);
+							smoke.setMaterial(RawMaterial.RESOURCE_HEMP);
 							smoke.baseEnvStats().setWeight(1);
 							smoke.setBaseValue(25);
 							smoke.recoverEnvStats();

@@ -89,7 +89,7 @@ public class Skill_ScrollCopy extends StdSkill
 		thisSpell=(Ability)thisSpell.copyOf();
 		MOB T=CMClass.getMOB("Teacher");
 		T.setName(target.name());
-		T.charStats().setStat(CharStats.GENDER,'N');
+		T.charStats().setStat(CharStats.STAT_GENDER,'N');
 		while(T.numLearnedAbilities()>0)
 		{
 			Ability A=T.fetchAbility(0);

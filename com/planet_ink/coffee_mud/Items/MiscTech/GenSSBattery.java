@@ -44,7 +44,7 @@ implements ShipComponent.ShipPowerSource
 		baseGoldValue=5000;
 		baseEnvStats().setLevel(1);
 		recoverEnvStats();
-		setMaterial(EnvResource.RESOURCE_STEEL);
+		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
 	public boolean sameAs(Environmental E)
 	{

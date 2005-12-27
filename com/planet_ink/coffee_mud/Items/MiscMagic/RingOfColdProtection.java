@@ -38,7 +38,7 @@ public class RingOfColdProtection extends Ring_Protection implements MiscMagic
 	{
 		super();
 		this.baseEnvStats().setLevel(SILVER_RING);
-		material=EnvResource.RESOURCE_SILVER;
+		material=RawMaterial.RESOURCE_SILVER;
 		this.recoverEnvStats();
 	}
 }

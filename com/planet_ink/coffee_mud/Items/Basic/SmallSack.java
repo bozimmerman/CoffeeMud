@@ -40,7 +40,7 @@ public class SmallSack extends StdContainer
 		setDisplayText("a small sack is crumpled up here.");
 		setDescription("A nice berlap sack to put your things in.");
 		capacity=25;
-		material=EnvResource.RESOURCE_COTTON;
+		material=RawMaterial.RESOURCE_COTTON;
 		baseGoldValue=1;
 		recoverEnvStats();
 	}

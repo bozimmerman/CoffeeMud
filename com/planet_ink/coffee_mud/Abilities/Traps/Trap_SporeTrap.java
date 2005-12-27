@@ -102,7 +102,7 @@ public class Trap_SporeTrap extends StdTrap
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
-			if((!invoker().mayIFight(target))||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
+			if((!invoker().mayIFight(target))||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a trap!");
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> set(s) off a trap which sends spores flying around!"))

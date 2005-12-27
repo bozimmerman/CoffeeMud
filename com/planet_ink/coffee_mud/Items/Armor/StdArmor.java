@@ -67,71 +67,71 @@ public class StdArmor extends StdContainer implements Armor
 		else
 		if(usesRemaining()>=75)
 		{
-			switch(material()&EnvResource.MATERIAL_MASK)
+			switch(material()&RawMaterial.MATERIAL_MASK)
 			{
-			case EnvResource.MATERIAL_CLOTH: return name()+" has a small tear ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_PLASTIC:
-			case EnvResource.MATERIAL_GLASS: return name()+" has a few hairline cracks ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_LEATHER: return name()+" is a bit scuffed ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_METAL:
-			case EnvResource.MATERIAL_MITHRIL: return name()+" has some small dents ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_WOODEN: return name()+" has a few small splinters ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_CLOTH: return name()+" has a small tear ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_PLASTIC:
+			case RawMaterial.MATERIAL_GLASS: return name()+" has a few hairline cracks ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_LEATHER: return name()+" is a bit scuffed ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_MITHRIL: return name()+" has some small dents ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_WOODEN: return name()+" has a few small splinters ("+usesRemaining()+"%)";
 			default: return name()+" is slightly damaged ("+usesRemaining()+"%)";
 			}
 		}
 		else
 		if(usesRemaining()>=50)
 		{
-			switch(material()&EnvResource.MATERIAL_MASK)
+			switch(material()&RawMaterial.MATERIAL_MASK)
 			{
-			case EnvResource.MATERIAL_CLOTH:
-			case EnvResource.MATERIAL_PAPER: return name()+" has a a few tears and rips ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_ROCK:
-			case EnvResource.MATERIAL_PRECIOUS:
-			case EnvResource.MATERIAL_PLASTIC:
-			case EnvResource.MATERIAL_GLASS: return name()+" is cracked ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_FLESH:
-			case EnvResource.MATERIAL_LEATHER: return name()+" is torn ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_METAL:
-			case EnvResource.MATERIAL_MITHRIL: return name()+" is dented ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_WOODEN: return name()+" is splintered ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_CLOTH:
+			case RawMaterial.MATERIAL_PAPER: return name()+" has a a few tears and rips ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_ROCK:
+			case RawMaterial.MATERIAL_PRECIOUS:
+			case RawMaterial.MATERIAL_PLASTIC:
+			case RawMaterial.MATERIAL_GLASS: return name()+" is cracked ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_FLESH:
+			case RawMaterial.MATERIAL_LEATHER: return name()+" is torn ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_MITHRIL: return name()+" is dented ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_WOODEN: return name()+" is splintered ("+usesRemaining()+"%)";
 			default: return name()+" is damaged ("+usesRemaining()+"%)";
 			}
 		}
 		else
 		if(usesRemaining()>=25)
 		{
-			switch(material()&EnvResource.MATERIAL_MASK)
+			switch(material()&RawMaterial.MATERIAL_MASK)
 			{
-			case EnvResource.MATERIAL_PAPER:
-			case EnvResource.MATERIAL_CLOTH: return name()+" has numerous tears and rips ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_ROCK:
-			case EnvResource.MATERIAL_PRECIOUS:
-			case EnvResource.MATERIAL_PLASTIC:
-			case EnvResource.MATERIAL_GLASS: return name()+" has numerous streaking cracks ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_FLESH:
-			case EnvResource.MATERIAL_LEATHER: return name()+" is badly torn up ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_METAL:
-			case EnvResource.MATERIAL_MITHRIL: return name()+" is badly dented and cracked ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_WOODEN: return name()+" is badly cracked and splintered ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_PAPER:
+			case RawMaterial.MATERIAL_CLOTH: return name()+" has numerous tears and rips ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_ROCK:
+			case RawMaterial.MATERIAL_PRECIOUS:
+			case RawMaterial.MATERIAL_PLASTIC:
+			case RawMaterial.MATERIAL_GLASS: return name()+" has numerous streaking cracks ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_FLESH:
+			case RawMaterial.MATERIAL_LEATHER: return name()+" is badly torn up ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_MITHRIL: return name()+" is badly dented and cracked ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_WOODEN: return name()+" is badly cracked and splintered ("+usesRemaining()+"%)";
 			default: return name()+" is badly damaged ("+usesRemaining()+"%)";
 			}
 		}
 		else
 		{
-			switch(material()&EnvResource.MATERIAL_MASK)
+			switch(material()&RawMaterial.MATERIAL_MASK)
 			{
-			case EnvResource.MATERIAL_PAPER:
-			case EnvResource.MATERIAL_CLOTH: return name()+" is a shredded mess ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_ROCK:
-			case EnvResource.MATERIAL_PLASTIC:
-			case EnvResource.MATERIAL_PRECIOUS:
-			case EnvResource.MATERIAL_GLASS: return name()+" is practically shardes ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_FLESH:
-			case EnvResource.MATERIAL_LEATHER: return name()+" is badly shredded and ripped ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_METAL:
-			case EnvResource.MATERIAL_MITHRIL: return name()+" is a crumpled mess ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_WOODEN: return name()+" is nothing but splinters ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_PAPER:
+			case RawMaterial.MATERIAL_CLOTH: return name()+" is a shredded mess ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_ROCK:
+			case RawMaterial.MATERIAL_PLASTIC:
+			case RawMaterial.MATERIAL_PRECIOUS:
+			case RawMaterial.MATERIAL_GLASS: return name()+" is practically shardes ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_FLESH:
+			case RawMaterial.MATERIAL_LEATHER: return name()+" is badly shredded and ripped ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_MITHRIL: return name()+" is a crumpled mess ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_WOODEN: return name()+" is nothing but splinters ("+usesRemaining()+"%)";
 			default: return name()+" is horribly damaged ("+usesRemaining()+"%)";
 			}
 		}
@@ -202,7 +202,7 @@ public class StdArmor extends StdContainer implements Armor
 		&&(msg.amITarget(owner()))
 		&&(CMLib.dice().rollPercentage()>((envStats().level()/2)+(10*envStats().ability())+(CMLib.flags().isABonusItems(this)?20:0)))
 		&&(subjectToWearAndTear())
-		&&(CMLib.dice().rollPercentage()>(((MOB)owner()).charStats().getStat(CharStats.DEXTERITY))))
+		&&(CMLib.dice().rollPercentage()>(((MOB)owner()).charStats().getStat(CharStats.STAT_DEXTERITY))))
 		{
 			int weaponType=-1;
 			if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
@@ -237,10 +237,10 @@ public class StdArmor extends StdContainer implements Armor
 			int oldUses=usesRemaining();
 			if(weaponType>=0)
 			{
-				switch(material()&EnvResource.MATERIAL_MASK)
+				switch(material()&RawMaterial.MATERIAL_MASK)
 				{
-				case EnvResource.MATERIAL_CLOTH:
-				case EnvResource.MATERIAL_PAPER:
+				case RawMaterial.MATERIAL_CLOTH:
+				case RawMaterial.MATERIAL_PAPER:
 					switch(weaponType)
 					{
 					case Weapon.TYPE_BURSTING:
@@ -268,7 +268,7 @@ public class StdArmor extends StdContainer implements Armor
 						break;
 					}
 					break;
-				case EnvResource.MATERIAL_GLASS:
+				case RawMaterial.MATERIAL_GLASS:
 					switch(weaponType)
 					{
 					case Weapon.TYPE_BURSTING:
@@ -294,7 +294,7 @@ public class StdArmor extends StdContainer implements Armor
 						break;
 					}
 					break;
-				case EnvResource.MATERIAL_LEATHER:
+				case RawMaterial.MATERIAL_LEATHER:
 					switch(weaponType)
 					{
 					case Weapon.TYPE_BURSTING:
@@ -326,11 +326,11 @@ public class StdArmor extends StdContainer implements Armor
 						break;
 					}
 					break;
-				case EnvResource.MATERIAL_MITHRIL:
+				case RawMaterial.MATERIAL_MITHRIL:
 					if(CMLib.dice().rollPercentage()==1)
 						setUsesRemaining(usesRemaining()-1);
 					break;
-				case EnvResource.MATERIAL_METAL:
+				case RawMaterial.MATERIAL_METAL:
 					switch(weaponType)
 					{
 					case Weapon.TYPE_BURSTING:
@@ -371,7 +371,7 @@ public class StdArmor extends StdContainer implements Armor
 						break;
 					}
 					break;
-				case EnvResource.MATERIAL_PLASTIC:
+				case RawMaterial.MATERIAL_PLASTIC:
 					switch(weaponType)
 					{
 					case Weapon.TYPE_FROSTING:
@@ -401,8 +401,8 @@ public class StdArmor extends StdContainer implements Armor
 						break;
 					}
 					break;
-				case EnvResource.MATERIAL_ROCK:
-				case EnvResource.MATERIAL_PRECIOUS:
+				case RawMaterial.MATERIAL_ROCK:
+				case RawMaterial.MATERIAL_PRECIOUS:
 					switch(weaponType)
 					{
 					case Weapon.TYPE_BURSTING:
@@ -431,7 +431,7 @@ public class StdArmor extends StdContainer implements Armor
 						break;
 					}
 					break;
-				case EnvResource.MATERIAL_WOODEN:
+				case RawMaterial.MATERIAL_WOODEN:
 					switch(weaponType)
 					{
 					case Weapon.TYPE_BURSTING:
@@ -460,7 +460,7 @@ public class StdArmor extends StdContainer implements Armor
 						break;
 					}
 					break;
-				case EnvResource.MATERIAL_ENERGY:
+				case RawMaterial.MATERIAL_ENERGY:
 					break;
 				default:
 					if(CMLib.dice().rollPercentage()==1)
@@ -529,31 +529,31 @@ public class StdArmor extends StdContainer implements Armor
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(!amWearingAt(Item.IN_INVENTORY))
-		switch(material()&EnvResource.MATERIAL_MASK)
+		switch(material()&RawMaterial.MATERIAL_MASK)
 		{
-		case EnvResource.MATERIAL_METAL:
-			affectableStats.setStat(CharStats.SAVE_ELECTRIC,affectableStats.getStat(CharStats.SAVE_ELECTRIC)-2);
+		case RawMaterial.MATERIAL_METAL:
+			affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)-2);
 			break;
-		case EnvResource.MATERIAL_LEATHER:
-			affectableStats.setStat(CharStats.SAVE_ACID,affectableStats.getStat(CharStats.SAVE_ACID)+2);
+		case RawMaterial.MATERIAL_LEATHER:
+			affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+2);
 			break;
-		case EnvResource.MATERIAL_MITHRIL:
-			affectableStats.setStat(CharStats.SAVE_MAGIC,affectableStats.getStat(CharStats.SAVE_MAGIC)+2);
+		case RawMaterial.MATERIAL_MITHRIL:
+			affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)+2);
 			break;
-		case EnvResource.MATERIAL_CLOTH:
-		case EnvResource.MATERIAL_PAPER:
-			affectableStats.setStat(CharStats.SAVE_FIRE,affectableStats.getStat(CharStats.SAVE_FIRE)-2);
+		case RawMaterial.MATERIAL_CLOTH:
+		case RawMaterial.MATERIAL_PAPER:
+			affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)-2);
 			break;
-		case EnvResource.MATERIAL_GLASS:
-		case EnvResource.MATERIAL_ROCK:
-		case EnvResource.MATERIAL_PRECIOUS:
-		case EnvResource.MATERIAL_VEGETATION:
-		case EnvResource.MATERIAL_FLESH:
-		case EnvResource.MATERIAL_PLASTIC:
-			affectableStats.setStat(CharStats.SAVE_FIRE,affectableStats.getStat(CharStats.SAVE_FIRE)+2);
+		case RawMaterial.MATERIAL_GLASS:
+		case RawMaterial.MATERIAL_ROCK:
+		case RawMaterial.MATERIAL_PRECIOUS:
+		case RawMaterial.MATERIAL_VEGETATION:
+		case RawMaterial.MATERIAL_FLESH:
+		case RawMaterial.MATERIAL_PLASTIC:
+			affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+2);
 			break;
-		case EnvResource.MATERIAL_ENERGY:
-			affectableStats.setStat(CharStats.SAVE_PARALYSIS,affectableStats.getStat(CharStats.SAVE_PARALYSIS)+2);
+		case RawMaterial.MATERIAL_ENERGY:
+			affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)+2);
 			break;
 		}
 	}

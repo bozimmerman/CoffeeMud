@@ -43,8 +43,8 @@ public class Spell_MindFog extends Spell
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.WISDOM,1);
-		affectableStats.setStat(CharStats.SAVE_MIND,affectableStats.getStat(CharStats.SAVE_MIND)-25);
+		affectableStats.setStat(CharStats.STAT_WISDOM,1);
+		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)-25);
 	}
 
 	public void unInvoke()

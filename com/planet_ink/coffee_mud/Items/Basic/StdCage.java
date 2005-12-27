@@ -42,7 +42,7 @@ public class StdCage extends StdContainer
 		setDescription("It\\`s of solid wood construction with metal bracings.  The door has a key hole.");
 		capacity=1000;
 		setContainTypes(Container.CONTAIN_BODIES|Container.CONTAIN_CAGED);
-		material=EnvResource.RESOURCE_OAK;
+		material=RawMaterial.RESOURCE_OAK;
 		baseGoldValue=15;
 		baseEnvStats().setWeight(25);
 		recoverEnvStats();

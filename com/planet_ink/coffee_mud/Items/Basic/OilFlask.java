@@ -43,13 +43,13 @@ public class OilFlask extends StdDrink
 		setName("an oil flask");
 		baseEnvStats.setWeight(3);
 		capacity=0;
-		setMaterial(EnvResource.RESOURCE_GLASS);
+		setMaterial(RawMaterial.RESOURCE_GLASS);
 		setDisplayText("an oil flask sits here.");
 		setDescription("A small glass flask containing lamp oil, with a lid.");
 		baseGoldValue=5;
 		amountOfLiquidHeld=5;
 		amountOfLiquidRemaining=5;
-		liquidType=EnvResource.RESOURCE_LAMPOIL;
+		liquidType=RawMaterial.RESOURCE_LAMPOIL;
 		recoverEnvStats();
 	}
 

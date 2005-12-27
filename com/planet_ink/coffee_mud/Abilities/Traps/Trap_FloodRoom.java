@@ -65,7 +65,7 @@ public class Trap_FloodRoom extends StdTrap
 			Item I=mob.location().fetchItem(i);
 			if((I instanceof Drink)&&(((Drink)I).containsDrink()))
 			{
-				if(I instanceof EnvResource)
+				if(I instanceof RawMaterial)
 				{
 					i--;
 					I.destroy();
@@ -85,7 +85,7 @@ public class Trap_FloodRoom extends StdTrap
 		Item I=null;
 		if(mob!=null)
 		{
-			I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_ROCK);
+			I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_ROCK);
 			if(I!=null)	super.destroyResources(mob.location(),I.material(),100);
 			killWaterskins(mob);
 		}
@@ -98,7 +98,7 @@ public class Trap_FloodRoom extends StdTrap
 		if(!super.canSetTrapOn(mob,E)) return false;
 		if(mob!=null)
 		{
-			Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_ROCK);
+			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_ROCK);
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<100))
 			{
@@ -213,7 +213,7 @@ public class Trap_FloodRoom extends StdTrap
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
-			if(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
+			if(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
 				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a trap!");
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> trigger(s) a trap!"))

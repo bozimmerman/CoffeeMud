@@ -112,16 +112,16 @@ public class Chant_Hibernation extends Chant
 		&&(CMLib.flags().isSleeping(mob)))
 		{
 			roundsHibernating++;
-			double man=new Integer((mob.charStats().getStat(CharStats.INTELLIGENCE)+mob.charStats().getStat(CharStats.WISDOM))).doubleValue();
+			double man=new Integer((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)+mob.charStats().getStat(CharStats.STAT_WISDOM))).doubleValue();
 			mob.curState().adjMana((int)Math.round((man*.1)+(mob.envStats().level()/2)),mob.maxState());
 			mob.curState().setHunger(oldState.getHunger());
 			mob.curState().setThirst(oldState.getThirst());
 			if(!CMLib.flags().isGolem(mob))
 			{
-				double hp=new Integer(mob.charStats().getStat(CharStats.CONSTITUTION)).doubleValue();
+				double hp=new Integer(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)).doubleValue();
 				CMLib.combat().postHealing(mob,mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,(int)Math.round((hp*.1)+(mob.envStats().level()/2)),null);
 			}
-			double move=new Integer(mob.charStats().getStat(CharStats.STRENGTH)).doubleValue();
+			double move=new Integer(mob.charStats().getStat(CharStats.STAT_STRENGTH)).doubleValue();
 			mob.curState().adjMovement((int)Math.round((move*.1)+(mob.envStats().level()/2)),mob.maxState());
 		}
 		else

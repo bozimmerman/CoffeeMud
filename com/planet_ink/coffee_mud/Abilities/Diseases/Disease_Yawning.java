@@ -66,7 +66,7 @@ public class Disease_Yawning extends Disease
 		if((getTickDownRemaining()==1)
 		&&(!mob.amDead())
 		&&(!CMLib.flags().isSleeping(mob))
-		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.SAVE_DISEASE)))
+		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_DISEASE)))
 		{
 			mob.delEffect(this);
 			Ability A=CMClass.getAbility("Disease_Yawning");

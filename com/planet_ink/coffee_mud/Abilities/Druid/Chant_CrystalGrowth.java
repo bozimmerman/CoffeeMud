@@ -47,7 +47,7 @@ public class Chant_CrystalGrowth extends Chant
 			mob.tell("This magic will not work here.");
 			return false;
 		}
-		int material=EnvResource.RESOURCE_CRYSTAL;
+		int material=RawMaterial.RESOURCE_CRYSTAL;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

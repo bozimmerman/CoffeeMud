@@ -210,7 +210,7 @@ public class UnderWater extends StdRoom implements Drink
 		&&(msg.targetMinor()==CMMsg.TYP_DRINK)
 		&&(room instanceof Drink))
 		{
-			if(((Drink)room).liquidType()==EnvResource.RESOURCE_SALTWATER)
+			if(((Drink)room).liquidType()==RawMaterial.RESOURCE_SALTWATER)
 			{
 				msg.source().tell("You don't want to be drinking saltwater.");
 				return -1;
@@ -237,7 +237,7 @@ public class UnderWater extends StdRoom implements Drink
 	public int thirstQuenched(){return 500;}
 	public int liquidHeld(){return Integer.MAX_VALUE-1000;}
 	public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
-	public int liquidType(){return EnvResource.RESOURCE_FRESHWATER;}
+	public int liquidType(){return RawMaterial.RESOURCE_FRESHWATER;}
 	public void setLiquidType(int newLiquidType){}
 	public void setThirstQuenched(int amount){}
 	public void setLiquidHeld(int amount){}
@@ -246,15 +246,15 @@ public class UnderWater extends StdRoom implements Drink
 	public boolean containsDrink(){return true;}
     public int amountTakenToFillMe(Drink theSource){return 0;}
 	public static final Integer[] resourceList={
-		new Integer(EnvResource.RESOURCE_SEAWEED),
-		new Integer(EnvResource.RESOURCE_FISH),
-		new Integer(EnvResource.RESOURCE_CATFISH),
-		new Integer(EnvResource.RESOURCE_SALMON),
-		new Integer(EnvResource.RESOURCE_CARP),
-		new Integer(EnvResource.RESOURCE_TROUT),
-		new Integer(EnvResource.RESOURCE_SAND),
-		new Integer(EnvResource.RESOURCE_CLAY),
-		new Integer(EnvResource.RESOURCE_LIMESTONE)};
+		new Integer(RawMaterial.RESOURCE_SEAWEED),
+		new Integer(RawMaterial.RESOURCE_FISH),
+		new Integer(RawMaterial.RESOURCE_CATFISH),
+		new Integer(RawMaterial.RESOURCE_SALMON),
+		new Integer(RawMaterial.RESOURCE_CARP),
+		new Integer(RawMaterial.RESOURCE_TROUT),
+		new Integer(RawMaterial.RESOURCE_SAND),
+		new Integer(RawMaterial.RESOURCE_CLAY),
+		new Integer(RawMaterial.RESOURCE_LIMESTONE)};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
 	public Vector resourceChoices(){return UnderWater.roomResources;}
 }

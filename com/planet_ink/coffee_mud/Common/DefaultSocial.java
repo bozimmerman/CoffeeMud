@@ -124,12 +124,12 @@ public class DefaultSocial implements Social
 				{
 					MOB tmob=(MOB)target;
 					if((name().toUpperCase().startsWith("SMILE"))
-					&&(mob.charStats().getStat(CharStats.CHARISMA)>=16)
+					&&(mob.charStats().getStat(CharStats.STAT_CHARISMA)>=16)
 					&&(mob.charStats().getMyRace().ID().equals(tmob.charStats().getMyRace().ID()))
 					&&(CMLib.dice().rollPercentage()==1)
-					&&(mob.charStats().getStat(CharStats.GENDER)!=('N'))
-					&&(tmob.charStats().getStat(CharStats.GENDER)!=('N'))
-					&&(mob.charStats().getStat(CharStats.GENDER)!=tmob.charStats().getStat(CharStats.GENDER)))
+					&&(mob.charStats().getStat(CharStats.STAT_GENDER)!=('N'))
+					&&(tmob.charStats().getStat(CharStats.STAT_GENDER)!=('N'))
+					&&(mob.charStats().getStat(CharStats.STAT_GENDER)!=tmob.charStats().getStat(CharStats.STAT_GENDER)))
 					{
 						Ability A=CMClass.getAbility("Disease_Smiles");
 						if((A!=null)&&(target.fetchEffect(A.ID())==null))

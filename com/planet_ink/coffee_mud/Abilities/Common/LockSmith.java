@@ -278,7 +278,7 @@ public class LockSmith extends CraftingSkill
         }
         else
         {
-    		int[] pm={EnvResource.MATERIAL_METAL,EnvResource.MATERIAL_MITHRIL};
+    		int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
     		int[][] data=fetchFoundResourceData(mob,
     											woodRequired,"metal",pm,
     											0,null,null,
@@ -289,7 +289,7 @@ public class LockSmith extends CraftingSkill
             if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
                 return false;
     		destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,0);
-            itemName=(EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]+" key").toLowerCase();
+            itemName=(RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]+" key").toLowerCase();
             itemName=CMStrings.startWithAorAn(itemName);
             building.setMaterial(data[0][FOUND_CODE]);
         }

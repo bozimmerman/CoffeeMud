@@ -145,14 +145,14 @@ public class Spell_SummonSteed extends Spell
 		newMOB.baseEnvStats().setWeight(500);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Horse"));
-		newMOB.baseCharStats().setStat(CharStats.GENDER,'M');
+		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		if(level<4)
 		{
 			newMOB.setName("a pony");
 			newMOB.setDisplayText("a very pretty pony stands here");
 			newMOB.setDescription("She looks loyal, and oh so pretty.");
-			newMOB.baseCharStats().setStat(CharStats.GENDER,'F');
+			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'F');
 			ride.setRiderCapacity(1);
 		}
 		else
@@ -207,7 +207,7 @@ public class Spell_SummonSteed extends Spell
 		{
             MOB possibleBitch = mob.fetchFollower(i);
             if(newPackmate.Name().equalsIgnoreCase(possibleBitch.Name())
-            && (CMLib.dice().rollPercentage()-mob.charStats().getStat(CharStats.CHARISMA)+newPackmate.envStats().level() > 75))
+            && (CMLib.dice().rollPercentage()-mob.charStats().getStat(CharStats.STAT_CHARISMA)+newPackmate.envStats().level() > 75))
                 return possibleBitch;
         }
         return null;

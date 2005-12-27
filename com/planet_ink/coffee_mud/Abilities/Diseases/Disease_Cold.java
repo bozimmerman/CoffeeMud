@@ -59,8 +59,8 @@ public class Disease_Cold extends Disease
 		MOB diseaser=invoker;
 		if(diseaser==null) diseaser=mob;
 		if((getTickDownRemaining()==1)
-		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.SAVE_COLD))
-		&&(CMLib.dice().rollPercentage()<25-mob.charStats().getStat(CharStats.CONSTITUTION))
+		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_COLD))
+		&&(CMLib.dice().rollPercentage()<25-mob.charStats().getStat(CharStats.STAT_CONSTITUTION))
 		&&(!mob.amDead())
 		&&(!mob.isMonster()))
 		{
@@ -87,11 +87,11 @@ public class Disease_Cold extends Disease
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(affected==null) return;
-		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-2);
-		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)-3);
-		if(affectableStats.getStat(CharStats.CONSTITUTION)<=0)
-			affectableStats.setStat(CharStats.CONSTITUTION,1);
-		if(affectableStats.getStat(CharStats.STRENGTH)<=0)
-			affectableStats.setStat(CharStats.STRENGTH,1);
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-2);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-3);
+		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)
+			affectableStats.setStat(CharStats.STAT_CONSTITUTION,1);
+		if(affectableStats.getStat(CharStats.STAT_STRENGTH)<=0)
+			affectableStats.setStat(CharStats.STAT_STRENGTH,1);
 	}
 }

@@ -116,8 +116,8 @@ public class MOBTeacher extends CombatAbilities
 			A=myMOB.fetchAbility(a);
 			if(A!=null) myAbles.put(A.ID(),A);
 		}
-		myMOB.baseCharStats().setStat(CharStats.INTELLIGENCE,19);
-		myMOB.baseCharStats().setStat(CharStats.WISDOM,19);
+		myMOB.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,19);
+		myMOB.baseCharStats().setStat(CharStats.STAT_WISDOM,19);
 
 		int pct=100;
 		Vector V=null;
@@ -280,8 +280,8 @@ public class MOBTeacher extends CombatAbilities
 				}
 				if(giveABonus)
 				{
-					monster.baseCharStats().setStat(CharStats.INTELLIGENCE,25);
-					monster.baseCharStats().setStat(CharStats.WISDOM,25);
+					monster.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,25);
+					monster.baseCharStats().setStat(CharStats.STAT_WISDOM,25);
 					monster.recoverCharStats();
 				}
 
@@ -303,8 +303,8 @@ public class MOBTeacher extends CombatAbilities
 					return;
 				myAbility.teach(monster,mob);
 				monster.location().send(monster,msg2);
-				monster.baseCharStats().setStat(CharStats.INTELLIGENCE,19);
-				monster.baseCharStats().setStat(CharStats.WISDOM,19);
+				monster.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,19);
+				monster.baseCharStats().setStat(CharStats.STAT_WISDOM,19);
 				monster.recoverCharStats();
 			}
 		}

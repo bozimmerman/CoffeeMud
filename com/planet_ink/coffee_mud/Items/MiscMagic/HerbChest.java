@@ -22,10 +22,10 @@ public class HerbChest extends BagOfHolding {
 		setDisplayText("a small chest with many tiny drawers stands here.");
 		setDescription("The most common magical item in the world, this carefully crafted chest is designed to help alchemists of the world carry their herbal supplies with them everywhere.");
 		secretIdentity="An Alchemist's Herb Chest";
-        setContainTypes(EnvResource.RESOURCE_HERBS);
+        setContainTypes(RawMaterial.RESOURCE_HERBS);
         capacity=500;
         baseGoldValue=0;
-        material=EnvResource.RESOURCE_REDWOOD;
+        material=RawMaterial.RESOURCE_REDWOOD;
         Ability A=CMClass.getAbility("Prop_HaveZapper");
         if(A!=null) {
             A.setMiscText("+SYSOP -MOB -anyclass +alchemist");

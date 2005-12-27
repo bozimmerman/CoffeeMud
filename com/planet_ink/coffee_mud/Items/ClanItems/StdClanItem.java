@@ -51,7 +51,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		setDescription("");
 		secretIdentity="";
 		baseGoldValue=1;
-		material=EnvResource.RESOURCE_OAK;
+		material=RawMaterial.RESOURCE_OAK;
 		recoverEnvStats();
 	}
 

@@ -39,7 +39,7 @@ public class Gaoler extends StdCharClass
 	public int getMaxHitPointsLevel(){return 8;}
 	public int getBonusPracLevel(){return 2;}
 	public int getBonusAttackLevel(){return 0;}
-	public int getAttackAttribute(){return CharStats.STRENGTH;}
+	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
 	public int getLevelsPerBonusDamage(){ return 15;}
 	public int getHPDivisor(){return 6;}
 	public int getHPDice(){return 1;}
@@ -60,8 +60,8 @@ public class Gaoler extends StdCharClass
 	public Gaoler()
 	{
 		super();
-		maxStatAdj[CharStats.STRENGTH]=6;
-		maxStatAdj[CharStats.DEXTERITY]=6;
+		maxStatAdj[CharStats.STAT_STRENGTH]=6;
+		maxStatAdj[CharStats.STAT_DEXTERITY]=6;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -178,13 +178,13 @@ public class Gaoler extends StdCharClass
 	public String statQualifications(){return "Strength 9+, Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STRENGTH)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Strength to become a Gaoler.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Dexterity to become a Gaoler.");

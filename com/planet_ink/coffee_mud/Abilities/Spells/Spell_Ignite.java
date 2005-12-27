@@ -43,17 +43,17 @@ public class Spell_Ignite extends Spell
 	public void ignite(MOB mob, Item I)
 	{
 		int durationOfBurn=5;
-		switch(I.material()&EnvResource.MATERIAL_MASK)
+		switch(I.material()&RawMaterial.MATERIAL_MASK)
 		{
-		case EnvResource.MATERIAL_LEATHER:
+		case RawMaterial.MATERIAL_LEATHER:
 			durationOfBurn=20+I.envStats().weight();
 			break;
-		case EnvResource.MATERIAL_CLOTH:
-		case EnvResource.MATERIAL_PLASTIC:
-		case EnvResource.MATERIAL_PAPER:
+		case RawMaterial.MATERIAL_CLOTH:
+		case RawMaterial.MATERIAL_PLASTIC:
+		case RawMaterial.MATERIAL_PAPER:
 			durationOfBurn=5+I.envStats().weight();
 			break;
-		case EnvResource.MATERIAL_WOODEN:
+		case RawMaterial.MATERIAL_WOODEN:
 			durationOfBurn=40+(I.envStats().weight()*2);
 			break;
 		default:

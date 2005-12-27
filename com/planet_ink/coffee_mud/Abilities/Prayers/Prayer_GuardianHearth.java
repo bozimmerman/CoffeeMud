@@ -53,9 +53,9 @@ public class Prayer_GuardianHearth extends Prayer
 		if(prots==null)
 		{
 			prots=new HashSet();
-			for(int i=0;i<CharStats.affectTypeMap.length;i++)
-				if(CharStats.affectTypeMap[i]>=0)
-				   prots.add(new Integer(CharStats.affectTypeMap[i]));
+			for(int i=0;i<CharStats.STAT_MSG_MAP.length;i++)
+				if(CharStats.STAT_MSG_MAP[i]>=0)
+				   prots.add(new Integer(CharStats.STAT_MSG_MAP[i]));
 		}
 		Room R=(Room)affected;
 		if(((msg.tool() instanceof Trap)

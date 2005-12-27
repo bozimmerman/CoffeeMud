@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenFoodResource extends GenFood implements EnvResource, Food
+public class GenFoodResource extends GenFood implements RawMaterial, Food
 {
 	public String ID(){	return "GenFoodResource";}
 	protected boolean readyToSet=false;
@@ -43,7 +43,7 @@ public class GenFoodResource extends GenFood implements EnvResource, Food
 		setName("an edible resource");
 		setDisplayText("a pile of edible resource sits here.");
 		setDescription("");
-		material=EnvResource.RESOURCE_BERRIES;
+		material=RawMaterial.RESOURCE_BERRIES;
 		setNourishment(200);
 		baseEnvStats().setWeight(0);
 		recoverEnvStats();
@@ -80,9 +80,9 @@ public class GenFoodResource extends GenFood implements EnvResource, Food
     	{
     	    readyToSet=false;
 	        decayTime=0;
-		    switch(material&EnvResource.MATERIAL_MASK)
+		    switch(material&RawMaterial.MATERIAL_MASK)
 		    {
-		    case EnvResource.MATERIAL_FLESH:
+		    case RawMaterial.MATERIAL_FLESH:
 			    {
 		        decayTime=System.currentTimeMillis()+(
 		            	   Tickable.TIME_TICK
@@ -90,7 +90,7 @@ public class GenFoodResource extends GenFood implements EnvResource, Food
 					      );
 		    	break;
 			    }
-		    case EnvResource.MATERIAL_VEGETATION:
+		    case RawMaterial.MATERIAL_VEGETATION:
 			    {
 		        decayTime=System.currentTimeMillis()+(
 		                Tickable.TIME_TICK
@@ -101,21 +101,21 @@ public class GenFoodResource extends GenFood implements EnvResource, Food
 		    }
 		    switch(material)
 		    {
-		    case EnvResource.RESOURCE_HERBS:
-		    case EnvResource.RESOURCE_WAX:
-		    case EnvResource.RESOURCE_COFFEEBEANS:
-		    case EnvResource.RESOURCE_SEAWEED:
-		    case EnvResource.RESOURCE_SUGAR:
-		    case EnvResource.RESOURCE_COCOA:
-		    case EnvResource.RESOURCE_MUSHROOMS:
-		    case EnvResource.RESOURCE_VINE:
-		    case EnvResource.RESOURCE_FLOWERS:
-		    case EnvResource.RESOURCE_NUTS:
-		    case EnvResource.RESOURCE_CRACKER:
-		    case EnvResource.RESOURCE_PIPEWEED:
-		    case EnvResource.RESOURCE_GARLIC:
-		    case EnvResource.RESOURCE_SOAP:
-		    case EnvResource.RESOURCE_ASH:
+		    case RawMaterial.RESOURCE_HERBS:
+		    case RawMaterial.RESOURCE_WAX:
+		    case RawMaterial.RESOURCE_COFFEEBEANS:
+		    case RawMaterial.RESOURCE_SEAWEED:
+		    case RawMaterial.RESOURCE_SUGAR:
+		    case RawMaterial.RESOURCE_COCOA:
+		    case RawMaterial.RESOURCE_MUSHROOMS:
+		    case RawMaterial.RESOURCE_VINE:
+		    case RawMaterial.RESOURCE_FLOWERS:
+		    case RawMaterial.RESOURCE_NUTS:
+		    case RawMaterial.RESOURCE_CRACKER:
+		    case RawMaterial.RESOURCE_PIPEWEED:
+		    case RawMaterial.RESOURCE_GARLIC:
+		    case RawMaterial.RESOURCE_SOAP:
+		    case RawMaterial.RESOURCE_ASH:
 		        decayTime=0;
 		    	break;
 		    }

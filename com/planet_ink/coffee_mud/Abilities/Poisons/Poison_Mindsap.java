@@ -49,11 +49,11 @@ public class Poison_Mindsap extends Poison
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-1);
-		if(affectableStats.getStat(CharStats.CONSTITUTION)<=0)
-			affectableStats.setStat(CharStats.CONSTITUTION,1);
-		affectableStats.setStat(CharStats.INTELLIGENCE,affectableStats.getStat(CharStats.INTELLIGENCE)-10);
-		if(affectableStats.getStat(CharStats.INTELLIGENCE)<=0)
-			affectableStats.setStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-1);
+		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)
+			affectableStats.setStat(CharStats.STAT_CONSTITUTION,1);
+		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)-10);
+		if(affectableStats.getStat(CharStats.STAT_INTELLIGENCE)<=0)
+			affectableStats.setStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 }

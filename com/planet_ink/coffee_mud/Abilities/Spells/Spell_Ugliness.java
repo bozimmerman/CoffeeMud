@@ -44,7 +44,7 @@ public class Spell_Ugliness extends Spell
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.CHARISMA,1);
+		affectableStats.setStat(CharStats.STAT_CHARISMA,1);
 	}
 
 

@@ -54,14 +54,14 @@ public class MOBloader
 				mob.setName(username);
 				pstats.setPassword(password);
 				stats.setMyClasses(DBConnections.getRes(R,"CMCLAS"));
-				stats.setStat(CharStats.STRENGTH,CMath.s_int(DBConnections.getRes(R,"CMSTRE")));
+				stats.setStat(CharStats.STAT_STRENGTH,CMath.s_int(DBConnections.getRes(R,"CMSTRE")));
 				stats.setMyRace(CMClass.getRace(DBConnections.getRes(R,"CMRACE")));
-				stats.setStat(CharStats.DEXTERITY,CMath.s_int(DBConnections.getRes(R,"CMDEXT")));
-				stats.setStat(CharStats.CONSTITUTION,CMath.s_int(DBConnections.getRes(R,"CMCONS")));
-				stats.setStat(CharStats.GENDER,DBConnections.getRes(R,"CMGEND").charAt(0));
-				stats.setStat(CharStats.WISDOM,CMath.s_int(DBConnections.getRes(R,"CMWISD")));
-				stats.setStat(CharStats.INTELLIGENCE,CMath.s_int(DBConnections.getRes(R,"CMINTE")));
-				stats.setStat(CharStats.CHARISMA,CMath.s_int(DBConnections.getRes(R,"CMCHAR")));
+				stats.setStat(CharStats.STAT_DEXTERITY,CMath.s_int(DBConnections.getRes(R,"CMDEXT")));
+				stats.setStat(CharStats.STAT_CONSTITUTION,CMath.s_int(DBConnections.getRes(R,"CMCONS")));
+				stats.setStat(CharStats.STAT_GENDER,DBConnections.getRes(R,"CMGEND").charAt(0));
+				stats.setStat(CharStats.STAT_WISDOM,CMath.s_int(DBConnections.getRes(R,"CMWISD")));
+				stats.setStat(CharStats.STAT_INTELLIGENCE,CMath.s_int(DBConnections.getRes(R,"CMINTE")));
+				stats.setStat(CharStats.STAT_CHARISMA,CMath.s_int(DBConnections.getRes(R,"CMCHAR")));
 				state.setHitPoints(CMath.s_int(DBConnections.getRes(R,"CMHITP")));
 				stats.setMyLevels(DBConnections.getRes(R,"CMLEVL"));
 				int level=0;
@@ -120,7 +120,7 @@ public class MOBloader
 				while(mob.numEducations()>0)mob.delEducation(mob.fetchEducation(0));
 				for(int v=0;v<V9.size();v++) mob.addEducation((String)V9.elementAt(v));
 				if(pstats.getBirthday()==null)
-				    stats.setStat(CharStats.AGE,pstats.initializeBirthday((int)Math.round(CMath.div(mob.getAgeHours(),60.0)),stats.getMyRace()));
+				    stats.setStat(CharStats.STAT_AGE,pstats.initializeBirthday((int)Math.round(CMath.div(mob.getAgeHours(),60.0)),stats.getMyRace()));
 				mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
 				Vector CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
 				CMLib.coffeeMaker().setFactionFromXML(mob,CleanXML);
@@ -615,14 +615,14 @@ public class MOBloader
 		"UPDATE CMCHAR SET"
 		+"  CMPASS='"+pstats.password()+"'"
 		+", CMCLAS='"+mob.baseCharStats().getMyClassesStr()+"'"
-		+", CMSTRE="+mob.baseCharStats().getStat(CharStats.STRENGTH)
+		+", CMSTRE="+mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)
 		+", CMRACE='"+mob.baseCharStats().getMyRace().ID()+"'"
-		+", CMDEXT="+mob.baseCharStats().getStat(CharStats.DEXTERITY)
-		+", CMCONS="+mob.baseCharStats().getStat(CharStats.CONSTITUTION)
-		+", CMGEND='"+((char)mob.baseCharStats().getStat(CharStats.GENDER))+"'"
-		+", CMWISD="+mob.baseCharStats().getStat(CharStats.WISDOM)
-		+", CMINTE="+mob.baseCharStats().getStat(CharStats.INTELLIGENCE)
-		+", CMCHAR="+mob.baseCharStats().getStat(CharStats.CHARISMA)
+		+", CMDEXT="+mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)
+		+", CMCONS="+mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)
+		+", CMGEND='"+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))+"'"
+		+", CMWISD="+mob.baseCharStats().getStat(CharStats.STAT_WISDOM)
+		+", CMINTE="+mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)
+		+", CMCHAR="+mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)
 		+", CMHITP="+mob.baseState().getHitPoints()
 		+", CMLEVL='"+mob.baseCharStats().getMyLevelsStr()+"'"
 		+", CMMANA="+mob.baseState().getMana()
@@ -897,7 +897,7 @@ public class MOBloader
 		+"','"+pstats.password()
 		+"','"+mob.baseCharStats().getMyClassesStr()
 		+"','"+mob.baseCharStats().getMyRace().ID()
-		+"','"+((char)mob.baseCharStats().getStat(CharStats.GENDER))+"')");
+		+"','"+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))+"')");
 	}
 
 	public static boolean DBUserSearch(MOB mob, String Login)

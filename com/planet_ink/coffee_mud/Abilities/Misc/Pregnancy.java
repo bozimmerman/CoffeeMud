@@ -160,7 +160,7 @@ public class Pregnancy extends StdAbility
 					ADJSTAT.setStat(i,(S1.getStat(i)+S3.getStat(i))/2);
 			}
 			else
-			if((i!=CharStats.GENDER)&&(i!=CharStats.AGE))
+			if((i!=CharStats.STAT_GENDER)&&(i!=CharStats.STAT_AGE))
 				ADJSTAT.setStat(i,(S1.getStat(i)+S3.getStat(i))/2);
 		}
 		GR.setStat("ASTATS",CMLib.coffeeMaker().getCharStatsStr(ADJSTAT));
@@ -355,7 +355,7 @@ public class Pregnancy extends StdAbility
 					{
 						if(CMLib.flags().isSleeping(mob))
 							mob.enqueCommand(CMParms.parse("WAKE"),0);
-						if((CMLib.dice().rollPercentage()>50)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)>5))
+						if((CMLib.dice().rollPercentage()>50)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>5))
 							mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> moan(s) and scream(s) in labor pain!!");
 						ticksInLabor++;
 						if(ticksInLabor>=45)
@@ -406,13 +406,13 @@ public class Pregnancy extends StdAbility
 							babe.setDisplayText(name+" is here");
 							CMLib.beanCounter().clearZeroMoney(babe,null);
 							babe.baseCharStats().setMyRace(R);
-							babe.baseCharStats().setStat(CharStats.CHARISMA,10);
-							babe.baseCharStats().setStat(CharStats.CONSTITUTION,6);
-							babe.baseCharStats().setStat(CharStats.DEXTERITY,2);
-							babe.baseCharStats().setStat(CharStats.GENDER,gender);
-							babe.baseCharStats().setStat(CharStats.INTELLIGENCE,2);
-							babe.baseCharStats().setStat(CharStats.STRENGTH,1);
-							babe.baseCharStats().setStat(CharStats.WISDOM,1);
+							babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
+							babe.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,6);
+							babe.baseCharStats().setStat(CharStats.STAT_DEXTERITY,2);
+							babe.baseCharStats().setStat(CharStats.STAT_GENDER,gender);
+							babe.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,2);
+							babe.baseCharStats().setStat(CharStats.STAT_STRENGTH,1);
+							babe.baseCharStats().setStat(CharStats.STAT_WISDOM,1);
 							babe.baseCharStats().getMyRace().startRacing(babe,false);
 							babe.baseEnvStats().setHeight(babe.baseEnvStats().height()/10);
 							babe.baseEnvStats().setWeight(babe.baseEnvStats().weight()/10);

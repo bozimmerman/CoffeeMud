@@ -83,7 +83,7 @@ public class Chant_Dehydrate extends Chant
 								{
 									if(((Drink)I).liquidRemaining()<10000)
 										((Drink)I).setLiquidRemaining(0);
-									if(I instanceof EnvResource)
+									if(I instanceof RawMaterial)
 										I.destroy();
 								}
 							}
@@ -92,7 +92,7 @@ public class Chant_Dehydrate extends Chant
 								if(((Drink)target).liquidRemaining()<10000)
 									((Drink)target).setLiquidRemaining(0);
 							}
-							if(target instanceof EnvResource)
+							if(target instanceof RawMaterial)
 								((Item)target).destroy();
 						}
 					}

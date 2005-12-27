@@ -71,7 +71,7 @@ public class Chant_Tangle extends Chant
 			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
 			{
 				mob.location().show(mob,null,thePlants,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against <O-NAME>.");
-				amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)*4);
+				amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)*4);
 				if(amountRemaining<0)
 					unInvoke();
 				else

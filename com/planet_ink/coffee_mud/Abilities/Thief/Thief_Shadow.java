@@ -148,14 +148,14 @@ public class Thief_Shadow extends ThiefSkill
     {
         super.affectCharStats(affected,affectableStats);
         if((shadowing!=null)&&(shadowing.location()==affected.location()))
-            affectableStats.setStat(CharStats.SAVE_DETECTION,
+            affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,
                     25
                     +profficiency()
-                    +affectableStats.getStat(CharStats.SAVE_DETECTION));
+                    +affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
         else
-            affectableStats.setStat(CharStats.SAVE_DETECTION,
+            affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,
                     +profficiency()
-                    +affectableStats.getStat(CharStats.SAVE_DETECTION));
+                    +affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
     }
     
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

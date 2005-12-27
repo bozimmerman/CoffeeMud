@@ -46,7 +46,7 @@ public class GreatHelm extends StdArmor
 		baseEnvStats().setAbility(0);
 		baseGoldValue=60;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 	}
 
 }

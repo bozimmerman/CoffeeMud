@@ -62,11 +62,11 @@ public class Dance_War extends Dance
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setStat(CharStats.CONSTITUTION,Math.round(affectableStats.getStat(CharStats.CONSTITUTION)+2));
-		affectableStats.setStat(CharStats.DEXTERITY,Math.round(affectableStats.getStat(CharStats.DEXTERITY)+2));
-		affectableStats.setStat(CharStats.INTELLIGENCE,Math.round(affectableStats.getStat(CharStats.INTELLIGENCE)+2));
-		affectableStats.setStat(CharStats.WISDOM,Math.round(affectableStats.getStat(CharStats.WISDOM)+2));
-		affectableStats.setStat(CharStats.STRENGTH,Math.round(affectableStats.getStat(CharStats.STRENGTH)+2));
-		affectableStats.setStat(CharStats.CHARISMA,Math.round(affectableStats.getStat(CharStats.CHARISMA)+2));
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,Math.round(affectableStats.getStat(CharStats.STAT_CONSTITUTION)+2));
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,Math.round(affectableStats.getStat(CharStats.STAT_DEXTERITY)+2));
+		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,Math.round(affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+2));
+		affectableStats.setStat(CharStats.STAT_WISDOM,Math.round(affectableStats.getStat(CharStats.STAT_WISDOM)+2));
+		affectableStats.setStat(CharStats.STAT_STRENGTH,Math.round(affectableStats.getStat(CharStats.STAT_STRENGTH)+2));
+		affectableStats.setStat(CharStats.STAT_CHARISMA,Math.round(affectableStats.getStat(CharStats.STAT_CHARISMA)+2));
 	}
 }

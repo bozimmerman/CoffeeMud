@@ -74,7 +74,7 @@ public class Power_OctoGrapple extends SuperPower
 				{
 					if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against the grappling arms."))
 					{
-					    if(CMLib.dice().rollPercentage()<mob.charStats().getStat(CharStats.STRENGTH))
+					    if(CMLib.dice().rollPercentage()<mob.charStats().getStat(CharStats.STAT_STRENGTH))
 					    {
 					        unInvoke();
 					        if((mob.fetchEffect(ID())==null)&&(invoker!=null)&&(invoker!=mob))
@@ -166,7 +166,7 @@ public class Power_OctoGrapple extends SuperPower
 			levelDiff=0;
 		// now see if it worked
 		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
-		boolean success=profficiencyCheck(mob,(-levelDiff)+(-(((target.charStats().getStat(CharStats.STRENGTH)-mob.charStats().getStat(CharStats.STRENGTH))*5))),auto)&&(hit);
+		boolean success=profficiencyCheck(mob,(-levelDiff)+(-(((target.charStats().getStat(CharStats.STAT_STRENGTH)-mob.charStats().getStat(CharStats.STAT_STRENGTH))*5))),auto)&&(hit);
 		success=success&&(target.charStats().getBodyPart(Race.BODY_ARM)>2);
 		if(success)
 		{

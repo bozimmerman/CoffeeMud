@@ -52,7 +52,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		baseGoldValue=10000;
 		recoverEnvStats();
 		wornLogicalAnd=true;
-		material=EnvResource.RESOURCE_OAK;
+		material=RawMaterial.RESOURCE_OAK;
 		properWornBitmap=Item.WORN_HELD|Item.WORN_WIELD;
 		weaponType=TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_STAFF;

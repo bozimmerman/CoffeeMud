@@ -45,8 +45,8 @@ public class Burglar extends Thief
 	public Burglar()
 	{
 		super();
-		maxStatAdj[CharStats.DEXTERITY]=4;
-		maxStatAdj[CharStats.CHARISMA]=4;
+		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
+		maxStatAdj[CharStats.STAT_CHARISMA]=4;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -138,13 +138,13 @@ public class Burglar extends Thief
 	public String statQualifications(){return "Dexterity 9+ Charisma 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Dexterity to become a Burglar.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.CHARISMA)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Charisma to become a Burglar.");

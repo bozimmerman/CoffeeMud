@@ -75,7 +75,7 @@ public class Disease_Plague extends Disease
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setStat(CharStats.CONSTITUTION,3);
-		affectableStats.setStat(CharStats.DEXTERITY,3);
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,3);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,3);
 	}
 }

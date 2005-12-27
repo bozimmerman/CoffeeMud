@@ -114,7 +114,7 @@ public class Spell_FakeArmor extends Spell
 				Armor armor=(Armor)CMClass.getItem("GenArmor");
 				armor.baseEnvStats().setArmor(0);
 				armor.baseEnvStats().setDisposition(armor.baseEnvStats().disposition()|EnvStats.IS_BONUS);
-				armor.setMaterial(EnvResource.RESOURCE_COTTON);
+				armor.setMaterial(RawMaterial.RESOURCE_COTTON);
 				String materialName="cloth";
 				switch(choice)
 				{

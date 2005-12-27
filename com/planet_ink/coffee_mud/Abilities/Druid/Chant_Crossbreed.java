@@ -67,11 +67,11 @@ public class Chant_Crossbreed extends Chant
 			&&(msg.tool().ID().equals("Social"))
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 				||msg.tool().Name().equals("SEX <T-NAME>"))
-			&&(myChar.charStats().getStat(CharStats.GENDER)!=mate.charStats().getStat(CharStats.GENDER))
-			&&((mate.charStats().getStat(CharStats.GENDER)==('M'))
-			   ||(mate.charStats().getStat(CharStats.GENDER)==('F')))
-			&&((myChar.charStats().getStat(CharStats.GENDER)==('M'))
-			   ||(myChar.charStats().getStat(CharStats.GENDER)==('F')))
+			&&(myChar.charStats().getStat(CharStats.STAT_GENDER)!=mate.charStats().getStat(CharStats.STAT_GENDER))
+			&&((mate.charStats().getStat(CharStats.STAT_GENDER)==('M'))
+			   ||(mate.charStats().getStat(CharStats.STAT_GENDER)==('F')))
+			&&((myChar.charStats().getStat(CharStats.STAT_GENDER)==('M'))
+			   ||(myChar.charStats().getStat(CharStats.STAT_GENDER)==('F')))
 			&&(!myChar.charStats().getMyRace().ID().equals("Human"))
 			&&(!mate.charStats().getMyRace().ID().equals("Human"))
 			&&(!mate.charStats().getMyRace().ID().equals(myChar.charStats().getMyRace().ID()))
@@ -82,16 +82,16 @@ public class Chant_Crossbreed extends Chant
 			&&(mate.numWearingHere(Item.WORN_LEGS)==0)
 			&&(myChar.numWearingHere(Item.WORN_WAIST)==0)
 			&&(mate.numWearingHere(Item.WORN_WAIST)==0)
-			&&((mate.charStats().getStat(CharStats.AGE)==0)
+			&&((mate.charStats().getStat(CharStats.STAT_AGE)==0)
 			        ||((mate.charStats().ageCategory()>Race.AGE_CHILD)
 			                &&(mate.charStats().ageCategory()<Race.AGE_OLD)))
-			&&((myChar.charStats().getStat(CharStats.AGE)==0)
+			&&((myChar.charStats().getStat(CharStats.STAT_AGE)==0)
 			        ||((myChar.charStats().ageCategory()>Race.AGE_CHILD)
 			                &&(myChar.charStats().ageCategory()<Race.AGE_OLD))))
 			{
 				MOB female=myChar;
 				MOB male=mate;
-				if((mate.charStats().getStat(CharStats.GENDER)==('F')))
+				if((mate.charStats().getStat(CharStats.STAT_GENDER)==('F')))
 				{
 					female=mate;
 					male=myChar;

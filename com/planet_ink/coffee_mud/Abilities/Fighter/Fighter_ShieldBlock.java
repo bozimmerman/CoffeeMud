@@ -56,7 +56,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
-		&&(profficiencyCheck(null,mob.charStats().getStat(CharStats.DEXTERITY)-90,false))
+		&&(profficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90,false))
 		&&(mob.fetchFirstWornItem(Item.WORN_HELD) instanceof Shield)
 		&&(msg.source().getVictim()==mob))
 		{

@@ -41,6 +41,6 @@ public class Song_Valor extends Song
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker!=null)
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+invoker().charStats().getStat(CharStats.CHARISMA)+(invoker.envStats().level()/3));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+invoker().charStats().getStat(CharStats.STAT_CHARISMA)+(invoker.envStats().level()/3));
 	}
 }

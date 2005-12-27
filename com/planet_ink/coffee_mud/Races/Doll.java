@@ -57,9 +57,9 @@ public class Doll extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,5);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,5);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,13);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,5);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,5);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,13);
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -111,9 +111,9 @@ public class Doll extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" clothes",EnvResource.RESOURCE_COTTON));
+				("some "+name().toLowerCase()+" clothes",RawMaterial.RESOURCE_COTTON));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" parts",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" parts",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

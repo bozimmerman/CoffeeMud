@@ -36,7 +36,7 @@ public class Oracle extends Cleric
 	public String ID(){return "Oracle";}
 	public String name(){return "Oracle";}
 	public String baseClass(){return "Cleric";}
-	public int getAttackAttribute(){return CharStats.WISDOM;}
+	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
@@ -47,8 +47,8 @@ public class Oracle extends Cleric
 
 	public Oracle()
 	{
-		maxStatAdj[CharStats.WISDOM]=4;
-		maxStatAdj[CharStats.INTELLIGENCE]=4;
+		maxStatAdj[CharStats.STAT_WISDOM]=4;
+		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -149,13 +149,13 @@ public class Oracle extends Cleric
 	public String statQualifications(){return "Wisdom 9+ Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.WISDOM)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Wisdom to become a Oracle.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Intelligence to become a Oracle.");

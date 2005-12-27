@@ -64,7 +64,7 @@ public class Chant_CaveIn extends Chant
 			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
 			{
 				mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) to get out from under the rocks.");
-				amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)*4);
+				amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)*4);
 				if(amountRemaining<0)
 					unInvoke();
 				else

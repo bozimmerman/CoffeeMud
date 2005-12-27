@@ -45,8 +45,8 @@ public class Arcanist extends Thief
 	public Arcanist()
 	{
 		super();
-		maxStatAdj[CharStats.DEXTERITY]=4;
-		maxStatAdj[CharStats.INTELLIGENCE]=4;
+		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
+		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -148,13 +148,13 @@ public class Arcanist extends Thief
 	public String statQualifications(){return "Dexterity 9+, Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Dexterity to become an Arcanist.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Intelligence to become an Arcanist.");
@@ -284,8 +284,8 @@ public class Arcanist extends Thief
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.SAVE_MAGIC,affectableStats.getStat(CharStats.SAVE_MAGIC)+(affectableStats.getClassLevel(this)));
+		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)+(affectableStats.getClassLevel(this)));
 		if(CMath.bset(affected.baseEnvStats().disposition(),EnvStats.IS_BONUS))
-			affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)+30);
+			affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+30);
 	}
 }

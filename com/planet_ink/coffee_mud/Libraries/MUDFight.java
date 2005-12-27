@@ -666,7 +666,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				if((item!=null)
 				&&(item.container()==Body)
 				&&(CMLib.flags().canBeSeenBy(Body,source))
-				&&((!Body.destroyAfterLooting())||(!(item instanceof EnvResource)))
+				&&((!Body.destroyAfterLooting())||(!(item instanceof RawMaterial)))
 				&&(CMLib.flags().canBeSeenBy(item,source)))
 					CMLib.commands().postGet(source,Body,item,false);
 			}
@@ -1268,7 +1268,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                         break;
                 }
 
-            if(CMLib.dice().rollPercentage()>(fighter.charStats().getStat(CharStats.CONSTITUTION)*4))
+            if(CMLib.dice().rollPercentage()>(fighter.charStats().getStat(CharStats.STAT_CONSTITUTION)*4))
                 fighter.curState().adjMovement(-1,fighter.maxState());
         }
 

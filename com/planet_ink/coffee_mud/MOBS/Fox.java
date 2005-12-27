@@ -46,7 +46,7 @@ public class Fox extends StdMOB
 		baseEnvStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,1);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 		baseCharStats().setMyRace(CMClass.getRace("Fox"));
 		baseCharStats().getMyRace().startRacing(this,false);
 

@@ -45,7 +45,7 @@ public class Prayer_Fertilize extends Prayer
 		if((affected!=null)&&(affected instanceof Room))
 		{
 			Room R=(Room)affected;
-			if((R.myResource()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION)
+			if((R.myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					MOB M=R.fetchInhabitant(m);

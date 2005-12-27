@@ -198,7 +198,7 @@ public class Alchemy extends CraftingSkill
 				commonTell(mob,"The "+building.name()+" contains no liquid base.  Water is probably fine.");
 				return false;
 			}
-			if(building.material()!=EnvResource.RESOURCE_GLASS)
+			if(building.material()!=RawMaterial.RESOURCE_GLASS)
 			{
 				commonTell(mob,"You can only brew into glass containers.");
 				return false;
@@ -244,9 +244,9 @@ public class Alchemy extends CraftingSkill
 				experienceToLose-=CMLib.ableMapper().qualifyingClassLevel(mob,theSpell)*5;
 			}
 			int resourceType=-1;
-			for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
-				if(EnvResource.RESOURCE_DESCS[i].equalsIgnoreCase(ingredient))
-				{ resourceType=EnvResource.RESOURCE_DATA[i][0]; break;}
+			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+				if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(ingredient))
+				{ resourceType=RawMaterial.RESOURCE_DATA[i][0]; break;}
 
 			boolean found=false;
 			Vector V=((Container)building).getContents();

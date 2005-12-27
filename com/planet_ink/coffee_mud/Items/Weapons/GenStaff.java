@@ -52,7 +52,7 @@ public class GenStaff extends GenWeapon implements Wand
 		baseGoldValue=1;
 		recoverEnvStats();
 		wornLogicalAnd=true;
-		material=EnvResource.RESOURCE_OAK;
+		material=RawMaterial.RESOURCE_OAK;
 		properWornBitmap=Item.WORN_HELD|Item.WORN_WIELD;
 		weaponType=TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_STAFF;

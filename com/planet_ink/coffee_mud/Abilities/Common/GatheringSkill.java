@@ -64,22 +64,22 @@ public class GatheringSkill extends CommonSkill
 	        if(str.length()>0)
 	        {
 	            boolean found=false;
-        		for(int i=0;i<EnvResource.MATERIAL_DESCS.length;i++)
-        			if(EnvResource.MATERIAL_DESCS[i].equalsIgnoreCase(str))
+        		for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
+        			if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(str))
         			{
-        			    for(int ii=0;ii<EnvResource.RESOURCE_DATA.length;ii++)
-        			        if((EnvResource.RESOURCE_DATA[ii][0]&EnvResource.MATERIAL_MASK)==(i<<8))
+        			    for(int ii=0;ii<RawMaterial.RESOURCE_DATA.length;ii++)
+        			        if((RawMaterial.RESOURCE_DATA[ii][0]&RawMaterial.MATERIAL_MASK)==(i<<8))
 			                { 
         			            found=true; 
-        			            maskV.addElement(new Integer(EnvResource.RESOURCE_DATA[ii][0]));
+        			            maskV.addElement(new Integer(RawMaterial.RESOURCE_DATA[ii][0]));
         			        }
         			    break;
         			}
 	            if(!found)
-	            for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
-	                if(EnvResource.RESOURCE_DESCS[i].equalsIgnoreCase(str))
+	            for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+	                if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(str))
 	                { 
-		                maskV.addElement(new Integer(EnvResource.RESOURCE_DATA[i][0]));
+		                maskV.addElement(new Integer(RawMaterial.RESOURCE_DATA[i][0]));
 		                break;
 		            }
 	        }
@@ -118,7 +118,7 @@ public class GatheringSkill extends CommonSkill
 			if(CMLib.english().containsString(I.Name(),name))
 			{
 			    foundAnyway=I;
-				if((I instanceof EnvResource)
+				if((I instanceof RawMaterial)
 				&&(!CMLib.flags().isOnFire(I))
 				&&(!CMLib.flags().enchanted(I))
 				&&(I.container()==null)
@@ -162,7 +162,7 @@ public class GatheringSkill extends CommonSkill
             commonTell(mob,"You could not bundle "+name+" due to "+foundResource+" being an invalid resource code.  Bug it!");
             return false;
         }
-		I.setName("a "+amount+"# "+EnvResource.RESOURCE_DESCS[foundResource&EnvResource.RESOURCE_MASK].toLowerCase()+" bundle");
+		I.setName("a "+amount+"# "+RawMaterial.RESOURCE_DESCS[foundResource&RawMaterial.RESOURCE_MASK].toLowerCase()+" bundle");
 		I.setDisplayText(I.name()+" is here.");
 		I.baseEnvStats().setWeight(amount);
 		if(R.show(mob,null,I,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> create(s) <O-NAME>."))

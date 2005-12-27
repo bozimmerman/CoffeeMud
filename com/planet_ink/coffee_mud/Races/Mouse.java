@@ -46,11 +46,11 @@ public class Mouse extends Rodent
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("some "+name().toLowerCase()+" hair",EnvResource.RESOURCE_FUR));
+					("some "+name().toLowerCase()+" hair",RawMaterial.RESOURCE_FUR));
 				resources.addElement(makeResource
-					("a pair of "+name().toLowerCase()+" teeth",EnvResource.RESOURCE_BONE));
+					("a pair of "+name().toLowerCase()+" teeth",RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource
-					("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+					("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

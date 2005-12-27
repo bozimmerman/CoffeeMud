@@ -48,7 +48,7 @@ public class GenWand extends StdWand
 		baseGoldValue=20000;
 		baseEnvStats().setLevel(12);
 		CMLib.flags().setReadable(this,false);
-		material=EnvResource.RESOURCE_OAK;
+		material=RawMaterial.RESOURCE_OAK;
 		recoverEnvStats();
 	}
 

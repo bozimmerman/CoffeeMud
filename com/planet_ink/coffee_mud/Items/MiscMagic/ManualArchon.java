@@ -46,7 +46,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 		secretIdentity="The Manual of the Archons.";
 		this.setUsesRemaining(Integer.MAX_VALUE);
 		baseGoldValue=50000;
-		material=EnvResource.RESOURCE_PAPER;
+		material=RawMaterial.RESOURCE_PAPER;
 		recoverEnvStats();
 	}
 
@@ -67,12 +67,12 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 					{
 						mob.setSession(null);
 
-						mob.baseCharStats().setStat(CharStats.STRENGTH,25);
-						mob.baseCharStats().setStat(CharStats.WISDOM,25);
-						mob.baseCharStats().setStat(CharStats.INTELLIGENCE,25);
-						mob.baseCharStats().setStat(CharStats.CONSTITUTION,25);
-						mob.baseCharStats().setStat(CharStats.DEXTERITY,25);
-						mob.baseCharStats().setStat(CharStats.CHARISMA,25);
+						mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,25);
+						mob.baseCharStats().setStat(CharStats.STAT_WISDOM,25);
+						mob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,25);
+						mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,25);
+						mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,25);
+						mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,25);
 						if((!mob.isMonster())&&(mob.soulMate()==null))
 							CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_CLASSCHANGE);
 						mob.recoverCharStats();

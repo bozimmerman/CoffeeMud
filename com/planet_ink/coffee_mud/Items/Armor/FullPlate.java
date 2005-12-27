@@ -46,7 +46,7 @@ public class FullPlate extends StdArmor
 		baseEnvStats().setAbility(0);
 		baseGoldValue=20000;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 	}
 
 }

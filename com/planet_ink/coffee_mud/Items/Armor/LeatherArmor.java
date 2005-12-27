@@ -46,7 +46,7 @@ public class LeatherArmor extends StdArmor
 		baseEnvStats().setAbility(0);
 		baseGoldValue=10;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_LEATHER;
+		material=RawMaterial.RESOURCE_LEATHER;
 	}
 
 }

@@ -51,7 +51,7 @@ public class Chant_SpeedAging extends Chant
 	    int type=affectType(auto);
 	    if((target instanceof MOB)
 	    &&(CMath.bset(type,CMMsg.MASK_MALICIOUS))
-	    &&(((MOB)target).charStats().getStat(CharStats.AGE)>0))
+	    &&(((MOB)target).charStats().getStat(CharStats.STAT_AGE)>0))
 	    {
 	        MOB mobt=(MOB)target;
 	        if(mobt.charStats().ageCategory()<=Race.AGE_CHILD)
@@ -87,14 +87,14 @@ public class Chant_SpeedAging extends Chant
 					else
 					if(target instanceof Item)
 					{
-						switch(((Item)target).material()&EnvResource.MATERIAL_MASK)
+						switch(((Item)target).material()&RawMaterial.MATERIAL_MASK)
 						{
-							case EnvResource.MATERIAL_CLOTH:
-							case EnvResource.MATERIAL_FLESH:
-							case EnvResource.MATERIAL_LEATHER:
-							case EnvResource.MATERIAL_PAPER:
-							case EnvResource.MATERIAL_VEGETATION:
-							case EnvResource.MATERIAL_WOODEN:
+							case RawMaterial.MATERIAL_CLOTH:
+							case RawMaterial.MATERIAL_FLESH:
+							case RawMaterial.MATERIAL_LEATHER:
+							case RawMaterial.MATERIAL_PAPER:
+							case RawMaterial.MATERIAL_VEGETATION:
+							case RawMaterial.MATERIAL_WOODEN:
 							{
 								mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" rots away!");
 								((Item)target).destroy();
@@ -114,12 +114,12 @@ public class Chant_SpeedAging extends Chant
 				{
 					MOB M=(MOB)target;
 					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> age(s) a bit.");
-					if(M.baseCharStats().getStat(CharStats.AGE)<=0)
+					if(M.baseCharStats().getStat(CharStats.STAT_AGE)<=0)
 						M.setAgeHours(M.getAgeHours()+(M.getAgeHours()/10));
 					else
 					if(M.playerStats().getBirthday()!=null)
 					{
-					    double aging=CMath.mul(M.baseCharStats().getStat(CharStats.AGE),.10);
+					    double aging=CMath.mul(M.baseCharStats().getStat(CharStats.STAT_AGE),.10);
 					    int years=(int)Math.round(Math.floor(aging));
 					    int monthsInYear=CMClass.globalClock().getMonthsInYear();
 					    int months=(int)Math.round(CMath.mul(aging-Math.floor(aging),monthsInYear));
@@ -131,7 +131,7 @@ public class Chant_SpeedAging extends Chant
 						    years++;
 						    M.playerStats().getBirthday()[1]=monthsInYear+M.playerStats().getBirthday()[1];
 					    }
-					    M.baseCharStats().setStat(CharStats.AGE,M.baseCharStats().getStat(CharStats.AGE)+years);
+					    M.baseCharStats().setStat(CharStats.STAT_AGE,M.baseCharStats().getStat(CharStats.STAT_AGE)+years);
 					}
 					M.recoverEnvStats();
 					M.recoverCharStats();

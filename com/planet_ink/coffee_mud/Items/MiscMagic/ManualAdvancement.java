@@ -46,7 +46,7 @@ public class ManualAdvancement extends StdItem implements MiscMagic,ArchonOnly
 		secretIdentity="The Manual of Advancement.";
 		this.setUsesRemaining(5);
 		baseGoldValue=10000;
-		material=EnvResource.RESOURCE_PAPER;
+		material=RawMaterial.RESOURCE_PAPER;
 		recoverEnvStats();
 	}
 

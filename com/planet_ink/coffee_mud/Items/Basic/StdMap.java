@@ -47,7 +47,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		setDescription("Looks like a map of some place.");
 		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
 		baseGoldValue=10;
-		material=EnvResource.RESOURCE_PAPER;
+		material=RawMaterial.RESOURCE_PAPER;
 		recoverEnvStats();
 	}
 

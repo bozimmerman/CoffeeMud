@@ -54,7 +54,7 @@ public class StdTitle extends StdItem implements LandTitle
 		setDescription("Give or Sell this title to transfer ownership. **DON`T LOSE THIS!**");
 		baseGoldValue=10000;
 		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
-		setMaterial(EnvResource.RESOURCE_PAPER);
+		setMaterial(RawMaterial.RESOURCE_PAPER);
 		recoverEnvStats();
 	}
 

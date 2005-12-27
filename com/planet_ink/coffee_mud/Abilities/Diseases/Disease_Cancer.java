@@ -72,8 +72,8 @@ public class Disease_Cancer extends Disease
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null) return;
 		if(conDown<0) return;
-		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-conDown);
-		if((affectableStats.getStat(CharStats.CONSTITUTION)<=0)&&(!norecurse))
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-conDown);
+		if((affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)&&(!norecurse))
 		{
 			conDown=-1;
 			MOB diseaser=invoker;

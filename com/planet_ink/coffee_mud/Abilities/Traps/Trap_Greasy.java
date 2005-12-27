@@ -50,7 +50,7 @@ public class Trap_Greasy extends StdTrap
 			if((I!=null)
 			&&(I instanceof Drink)
 			&&(((Drink)I).containsDrink())
-			&&(((Drink)I).liquidType()==EnvResource.RESOURCE_LAMPOIL))
+			&&(((Drink)I).liquidType()==RawMaterial.RESOURCE_LAMPOIL))
 				return I;
 		}
 		return null;
@@ -84,7 +84,7 @@ public class Trap_Greasy extends StdTrap
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
-			if(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
+			if(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
 				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a trap!");
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,CMStrings.capitalizeAndLower(affected.name())+" is covered in grease!"))

@@ -117,7 +117,7 @@ public class Thief_Hide extends ThiefSkill
     public void affectCharStats(MOB affected, CharStats affectableStats)
     {
         super.affectCharStats(affected,affectableStats);
-        affectableStats.setStat(CharStats.SAVE_DETECTION,profficiency()+affectableStats.getStat(CharStats.SAVE_DETECTION));
+        affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,profficiency()+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
     }
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

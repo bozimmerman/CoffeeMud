@@ -41,7 +41,7 @@ public class Song_Knowledge extends Song
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setStat(CharStats.WISDOM,Math.round(affectableStats.getStat(CharStats.WISDOM)+2));
-		affectableStats.setStat(CharStats.INTELLIGENCE,Math.round(affectableStats.getStat(CharStats.INTELLIGENCE)+2));
+		affectableStats.setStat(CharStats.STAT_WISDOM,Math.round(affectableStats.getStat(CharStats.STAT_WISDOM)+2));
+		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,Math.round(affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+2));
 	}
 }

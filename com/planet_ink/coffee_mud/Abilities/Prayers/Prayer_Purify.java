@@ -72,9 +72,9 @@ public class Prayer_Purify extends Prayer
 			{
 				mob.location().send(mob,msg);
 				boolean doneSomething=false;
-				if((target instanceof Drink)&&(((Drink)target).liquidType()!=EnvResource.RESOURCE_FRESHWATER))
+				if((target instanceof Drink)&&(((Drink)target).liquidType()!=RawMaterial.RESOURCE_FRESHWATER))
 				{
-					((Drink)target).setLiquidType(EnvResource.RESOURCE_FRESHWATER);
+					((Drink)target).setLiquidType(RawMaterial.RESOURCE_FRESHWATER);
 					doneSomething=true;
 					target.baseEnvStats().setAbility(0);
 					target.recoverEnvStats();

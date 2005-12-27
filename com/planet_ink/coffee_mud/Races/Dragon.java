@@ -72,9 +72,9 @@ public class Dragon extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+15);
-		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)+15);
-		affectableStats.setStat(CharStats.INTELLIGENCE,affectableStats.getStat(CharStats.INTELLIGENCE)+15);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+15);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+15);
+		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+15);
 	}
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{
@@ -138,15 +138,15 @@ public class Dragon extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" claw",EnvResource.RESOURCE_BONE));
+				("a "+name().toLowerCase()+" claw",RawMaterial.RESOURCE_BONE));
 				for(int i=0;i<100;i++)
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" scales",EnvResource.RESOURCE_SCALES));
+					("a strip of "+name().toLowerCase()+" scales",RawMaterial.RESOURCE_SCALES));
 				for(int i=0;i<50;i++)
 					resources.addElement(makeResource
-					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

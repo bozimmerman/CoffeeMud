@@ -65,7 +65,7 @@ public class Skeleton extends Undead
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("knuckle bone",EnvResource.RESOURCE_BONE));
+					("knuckle bone",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

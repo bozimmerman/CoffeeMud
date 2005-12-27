@@ -135,7 +135,7 @@ public class Thief_Robbery extends ThiefSkill
 				stolen=null;
 		}
 
-		int discoverChance=(mob.charStats().getStat(CharStats.CHARISMA)-target.charStats().getStat(CharStats.WISDOM))*5;
+		int discoverChance=(mob.charStats().getStat(CharStats.STAT_CHARISMA)-target.charStats().getStat(CharStats.STAT_WISDOM))*5;
 		int times=timesPicked(target);
 		if(times>5) discoverChance-=(20*(times-5));
 		if(!CMLib.flags().canBeSeenBy(mob,target))

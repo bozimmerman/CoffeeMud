@@ -61,7 +61,7 @@ public class Prayer_Philosophy extends Prayer
 		else
 		if (affectableStats.getCurrentClass().baseClass().equals("Druid"))
 			increase = 7;
-		affectableStats.setStat(CharStats.WISDOM,affectableStats.getStat(CharStats.WISDOM) + increase);
+		affectableStats.setStat(CharStats.STAT_WISDOM,affectableStats.getStat(CharStats.STAT_WISDOM) + increase);
 	}
 
 

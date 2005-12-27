@@ -57,7 +57,7 @@ public class Thief_Bribe extends ThiefSkill
 
 		commands.removeElementAt(0);
 
-		if((!target.mayIFight(mob))||(target.charStats().getStat(CharStats.INTELLIGENCE)<3))
+		if((!target.mayIFight(mob))||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3))
 		{
 			mob.tell("You can't bribe "+target.name()+".");
 			return false;
@@ -92,7 +92,7 @@ public class Thief_Bribe extends ThiefSkill
 
 		
 		double amountRequired=CMLib.beanCounter().getTotalAbsoluteNativeValue(target)
-						+new Long(((100-(mob.charStats().getStat(CharStats.CHARISMA)*2)))*target.envStats().level()).doubleValue();
+						+new Long(((100-(mob.charStats().getStat(CharStats.STAT_CHARISMA)*2)))*target.envStats().level()).doubleValue();
 
 		String currency=CMLib.beanCounter().getCurrency(target);
 		boolean success=profficiencyCheck(mob,0,auto);

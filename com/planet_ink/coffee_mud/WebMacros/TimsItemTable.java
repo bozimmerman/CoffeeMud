@@ -206,21 +206,21 @@ public class TimsItemTable extends StdWebMacro
 			int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
 			int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
 			int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
-			int materialCode=savedI.material()&EnvResource.MATERIAL_MASK;
+			int materialCode=savedI.material()&RawMaterial.MATERIAL_MASK;
 			int[] useArray=null;
 			switch(materialCode)
 			{
-			case EnvResource.MATERIAL_METAL:
-			case EnvResource.MATERIAL_MITHRIL:
-			case EnvResource.MATERIAL_PRECIOUS:
-			case EnvResource.MATERIAL_ENERGY:
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_MITHRIL:
+			case RawMaterial.MATERIAL_PRECIOUS:
+			case RawMaterial.MATERIAL_ENERGY:
 				useArray=metalPoints;
 				break;
-			case EnvResource.MATERIAL_PLASTIC:
-			case EnvResource.MATERIAL_LEATHER:
-			case EnvResource.MATERIAL_GLASS:
-			case EnvResource.MATERIAL_ROCK:
-			case EnvResource.MATERIAL_WOODEN:
+			case RawMaterial.MATERIAL_PLASTIC:
+			case RawMaterial.MATERIAL_LEATHER:
+			case RawMaterial.MATERIAL_GLASS:
+			case RawMaterial.MATERIAL_ROCK:
+			case RawMaterial.MATERIAL_WOODEN:
 				useArray=leatherPoints;
 				break;
 			default:
@@ -286,8 +286,8 @@ public class TimsItemTable extends StdWebMacro
 			level+=(int)Math.round(5.0*CMParms.getParmDoublePlus(newText,"spe"));
 			for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 			{
-				int stat=CMParms.getParmPlus(newText,CharStats.TRAITS[i].substring(0,3).toLowerCase());
-				int max=CMParms.getParmPlus(newText,("max"+(CharStats.TRAITS[i].substring(0,3).toLowerCase())));
+				int stat=CMParms.getParmPlus(newText,CharStats.STAT_DESCS[i].substring(0,3).toLowerCase());
+				int max=CMParms.getParmPlus(newText,("max"+(CharStats.STAT_DESCS[i].substring(0,3).toLowerCase())));
 				level+=(stat*5);
 				level+=(max*5);
 			}

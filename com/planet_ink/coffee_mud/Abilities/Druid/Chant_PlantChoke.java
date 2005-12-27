@@ -89,7 +89,7 @@ public class Chant_PlantChoke extends Chant
 		&&(affected instanceof Item)
 		&&(((Item)affected).amWearingAt(Item.WORN_NECK)))
 		{
-			if(CMLib.dice().rollPercentage()>(msg.source().charStats().getStat(CharStats.STRENGTH)*3))
+			if(CMLib.dice().rollPercentage()>(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)*3))
 			{
 				msg.source().location().show(msg.source(),affected,CMMsg.MSG_OK_VISUAL,"<S-NAME> struggle(s) to remove <T-NAME> and fail(s).");
 				return false;

@@ -74,7 +74,7 @@ public class Spell_Shockshield extends Spell
 			   &&(msg.source().rangeToTarget()==0)
 			   &&(msg.targetMessage().length()>0))
 			{
-				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.DEXTERITY)*3)))
+				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.STAT_DEXTERITY)*3)))
 				{
 					CMMsg msg2=CMClass.getMsg(source,mob,this,affectType(true),null);
 					if(source.location().okMessage(source,msg2))

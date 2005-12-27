@@ -67,7 +67,7 @@ public class Chant_PlantSnare extends Chant
 			{
 				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against the snaring plants."))
 				{
-					amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)*4);
+					amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)*4);
 					if(amountRemaining<0)
 						unInvoke();
 				}
@@ -104,8 +104,8 @@ public class Chant_PlantSnare extends Chant
 		Room room=mob.location();
 		if((room.domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_PLAINS)
-		&&((room.myResource()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
-		&&((room.myResource()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_VEGETATION)
+		&&((room.myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
+		&&((room.myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION)
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_HILLS)
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE)
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_SWAMP))

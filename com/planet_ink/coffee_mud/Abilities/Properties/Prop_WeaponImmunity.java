@@ -90,11 +90,11 @@ public class Prop_WeaponImmunity extends Property
 
 			boolean immune=flags.containsKey("ALL")&&(((Character)flags.get("ALL")).charValue()=='+');
 			Character foundPlusMinus=null;
-			for(int i=0;i<CharStats.affectTypeMap.length;i++)
-				if((CharStats.affectTypeMap[i]==msg.sourceMinor())
-				&&(i!=CharStats.SAVE_MAGIC))
+			for(int i=0;i<CharStats.STAT_MSG_MAP.length;i++)
+				if((CharStats.STAT_MSG_MAP[i]==msg.sourceMinor())
+				&&(i!=CharStats.STAT_SAVE_MAGIC))
 				{
-					Vector V=CMParms.parse(CharStats.TRAITS[i]);
+					Vector V=CMParms.parse(CharStats.STAT_DESCS[i]);
 					if(((String)V.lastElement()).equals("SAVE"))
 					    foundPlusMinus=(Character)flags.get(V.firstElement());
 					else
@@ -115,7 +115,7 @@ public class Prop_WeaponImmunity extends Property
 			    foundPlusMinus=(Character)flags.get(Weapon.typeDescription[((Weapon)msg.tool()).weaponType()]);
 			    foundPlusMinus=(Character)flags.get(Weapon.classifictionDescription[((Weapon)msg.tool()).weaponClassification()]);
 			    foundPlusMinus=(Character)flags.get((CMLib.flags().isABonusItems(msg.tool()))?"MAGIC":"NONMAGIC");
-			    foundPlusMinus=(Character)flags.get(EnvResource.RESOURCE_DESCS[((Weapon)msg.tool()).material()&EnvResource.RESOURCE_MASK]);
+			    foundPlusMinus=(Character)flags.get(RawMaterial.RESOURCE_DESCS[((Weapon)msg.tool()).material()&RawMaterial.RESOURCE_MASK]);
 				if(foundPlusMinus!=null)
 				{
 					if((foundPlusMinus.charValue()=='-')&&(immune))

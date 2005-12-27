@@ -128,12 +128,12 @@ public class Age extends StdAbility
 					}
 					else
 					{
-						babe.baseCharStats().setStat(CharStats.CHARISMA,10);
-						babe.baseCharStats().setStat(CharStats.CONSTITUTION,7);
-						babe.baseCharStats().setStat(CharStats.DEXTERITY,3);
-						babe.baseCharStats().setStat(CharStats.INTELLIGENCE,3);
-						babe.baseCharStats().setStat(CharStats.STRENGTH,2);
-						babe.baseCharStats().setStat(CharStats.WISDOM,2);
+						babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
+						babe.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,7);
+						babe.baseCharStats().setStat(CharStats.STAT_DEXTERITY,3);
+						babe.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,3);
+						babe.baseCharStats().setStat(CharStats.STAT_STRENGTH,2);
+						babe.baseCharStats().setStat(CharStats.STAT_WISDOM,2);
 						babe.baseEnvStats().setHeight(babe.baseEnvStats().height()*2);
 						babe.baseEnvStats().setWeight(babe.baseEnvStats().weight()*2);
 						babe.baseState().setHitPoints(2);
@@ -185,12 +185,12 @@ public class Age extends StdAbility
 						babe.setName(CMStrings.replaceAll(babe.Name()," baby "," young "));
 						babe.setDisplayText(CMStrings.replaceAll(babe.displayText()," baby "," young "));
 					}
-					babe.baseCharStats().setStat(CharStats.CHARISMA,10);
-					babe.baseCharStats().setStat(CharStats.CONSTITUTION,10);
-					babe.baseCharStats().setStat(CharStats.DEXTERITY,5);
-					babe.baseCharStats().setStat(CharStats.INTELLIGENCE,6);
-					babe.baseCharStats().setStat(CharStats.STRENGTH,6);
-					babe.baseCharStats().setStat(CharStats.WISDOM,6);
+					babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
+					babe.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,10);
+					babe.baseCharStats().setStat(CharStats.STAT_DEXTERITY,5);
+					babe.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,6);
+					babe.baseCharStats().setStat(CharStats.STAT_STRENGTH,6);
+					babe.baseCharStats().setStat(CharStats.STAT_WISDOM,6);
 					if(babe.amFollowing()!=null)
 						babe.copyFactions(babe.amFollowing());
 					babe.baseEnvStats().setHeight(babe.baseEnvStats().height()*5);
@@ -212,7 +212,7 @@ public class Age extends StdAbility
 			else
 			if((ellapsed>=myRace.getAgingChart()[3])
 			&&(((MOB)affected).fetchBehavior("MudChat")!=null)
-			&&(((MOB)affected).charStats().getStat(CharStats.INTELLIGENCE)>1))
+			&&(((MOB)affected).charStats().getStat(CharStats.STAT_INTELLIGENCE)>1))
 			{
 				Room R=CMLib.utensils().roomLocation(affected);
 				if((R!=null)&&(affected.Name().indexOf(" ")<0)&&(!CMLib.database().DBUserSearch(null,affected.Name())))
@@ -251,12 +251,12 @@ public class Age extends StdAbility
 					newMan.playerStats().setUpdated(System.currentTimeMillis());
 					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
 					if(newMan.playerStats().getBirthday()==null)
-					    newMan.baseCharStats().setStat(CharStats.AGE,newMan.playerStats().initializeBirthday(ellapsed*15,newMan.baseCharStats().getMyRace()));
-					newMan.baseCharStats().setStat(CharStats.AGE,ellapsed);
+					    newMan.baseCharStats().setStat(CharStats.STAT_AGE,newMan.playerStats().initializeBirthday(ellapsed*15,newMan.baseCharStats().getMyRace()));
+					newMan.baseCharStats().setStat(CharStats.STAT_AGE,ellapsed);
 					newMan.baseState().setHitPoints(CMProps.getIntVar(CMProps.SYSTEMI_STARTHP));
 					newMan.baseState().setMana(CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA));
 					newMan.baseState().setMovement(CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE));
-					newMan.baseCharStats().getMyRace().setHeightWeight(newMan.baseEnvStats(),(char)newMan.baseCharStats().getStat(CharStats.GENDER));
+					newMan.baseCharStats().getMyRace().setHeightWeight(newMan.baseEnvStats(),(char)newMan.baseCharStats().getStat(CharStats.STAT_GENDER));
 					newMan.baseCharStats().getMyRace().reRoll(newMan,newMan.baseCharStats());
 					newMan.baseCharStats().getMyRace().startRacing(newMan,false);
 					newMan.baseCharStats().setMyClasses(";Apprentice");
@@ -268,7 +268,7 @@ public class Age extends StdAbility
 					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getCurrentClass().outfit());
 					for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 						newMan.baseCharStats().setStat(i,newMan.baseCharStats().getStat(i)+1);
-					for(int i=CharStats.MAX_STRENGTH_ADJ;i<CharStats.MAX_STRENGTH_ADJ+CharStats.NUM_BASE_STATS;i++)
+					for(int i=CharStats.STAT_MAX_STRENGTH_ADJ;i<CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.NUM_BASE_STATS;i++)
 						newMan.baseCharStats().setStat(i,newMan.baseCharStats().getStat(i)+1);
 					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
 					newMan.playerStats().setUpdated(System.currentTimeMillis());
@@ -410,15 +410,15 @@ public class Age extends StdAbility
 		long l=CMath.s_long(text());
 		if((l<Integer.MAX_VALUE)&&(l>0))
 		{
-		    affected.baseCharStats().setStat(CharStats.AGE,(int)l);
-		    affectableStats.setStat(CharStats.AGE,(int)l);
+		    affected.baseCharStats().setStat(CharStats.STAT_AGE,(int)l);
+		    affectableStats.setStat(CharStats.STAT_AGE,(int)l);
 		}
 		else
 		{
 			if(divisor==0.0)
 			    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
-			affected.baseCharStats().setStat(CharStats.AGE,(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor))));
-			affectableStats.setStat(CharStats.AGE,affected.baseCharStats().getStat(CharStats.AGE));
+			affected.baseCharStats().setStat(CharStats.STAT_AGE,(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor))));
+			affectableStats.setStat(CharStats.STAT_AGE,affected.baseCharStats().getStat(CharStats.STAT_AGE));
 		}
 	}
 }

@@ -49,7 +49,7 @@ public class ThrowingStone extends StdWeapon
 		minRange=0;
 		maxRange=3;
 		weaponType=Weapon.TYPE_BASHING;
-		material=EnvResource.RESOURCE_STONE;
+		material=RawMaterial.RESOURCE_STONE;
 		weaponClassification=Weapon.CLASS_THROWN;
 		setRawLogicalAnd(false);
 	}

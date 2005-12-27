@@ -40,209 +40,209 @@ public class Import extends StdCommand
 	public String[] getAccessWords(){return access;}
 
 	public static final String[][] objDescs={
-		{"silver",""+EnvResource.RESOURCE_STEEL},
-		{"gold",""+EnvResource.RESOURCE_GOLD},
-		{"iron",""+EnvResource.RESOURCE_IRON},
-		{"dragonscales",""+EnvResource.RESOURCE_SCALES},
-		{"dragonscale",""+EnvResource.RESOURCE_SCALES},
-		{"mithril",""+EnvResource.RESOURCE_MITHRIL},
-		{"animal fur",""+EnvResource.RESOURCE_FUR},
-		{"stone",""+EnvResource.RESOURCE_STONE},
-		{"platinum",""+EnvResource.RESOURCE_PLATINUM},
-		{"soft leather",""+EnvResource.RESOURCE_LEATHER},
-		{"plant",""+EnvResource.RESOURCE_FLOWERS},
-		{"kid leather",""+EnvResource.RESOURCE_HIDE},
-		{"shell",""+EnvResource.RESOURCE_EGGS},
-		{"tin",""+EnvResource.RESOURCE_TIN},
-		{"bone",""+EnvResource.RESOURCE_BONE},
-		{"plastic",""+EnvResource.RESOURCE_PLASTIC},
-		{"kevlar",""+EnvResource.RESOURCE_PLASTIC},
-		{"Dew",""+EnvResource.RESOURCE_FRESHWATER},
-		{"dew",""+EnvResource.RESOURCE_FRESHWATER},
-		{"adamantite",""+EnvResource.RESOURCE_ADAMANTITE},
-		{"admantite",""+EnvResource.RESOURCE_ADAMANTITE},
-		{"marble",""+EnvResource.RESOURCE_MARBLE},
-		{"nothingness",""+EnvResource.RESOURCE_NOTHING},
-		{"hard leather",""+EnvResource.RESOURCE_LEATHER},
-		{"feathers",""+EnvResource.RESOURCE_FEATHERS},
-		{"ash",""+EnvResource.RESOURCE_DUST},
-		{"snakeskin",""+EnvResource.RESOURCE_SCALES},
-		{"fire",""+EnvResource.RESOURCE_ENERGY},
-		{"gut",""+EnvResource.RESOURCE_MEAT},
-		{"food",""+EnvResource.RESOURCE_MEAT},
-		{"unknown",""+EnvResource.RESOURCE_LEATHER},
-		{"onyx",""+EnvResource.RESOURCE_STONE},
-		{"A oldstyle",""+EnvResource.RESOURCE_WOOD},
-		{"a oldstyle",""+EnvResource.RESOURCE_WOOD},
-		{"Other",""+EnvResource.RESOURCE_WOOD},
-		{"other",""+EnvResource.RESOURCE_WOOD},
-		{"etherealness",""+EnvResource.RESOURCE_NOTHING},
-		{"target",""+EnvResource.RESOURCE_LEATHER},
-		{"pill",""+EnvResource.RESOURCE_CORN},
-		{"potion",""+EnvResource.RESOURCE_GLASS},
-		{"rubies",""+EnvResource.RESOURCE_GEM},
-		{"magic",""+EnvResource.RESOURCE_ENERGY},
-		{"alcohol",""+EnvResource.RESOURCE_GLASS},
-		{"beer",""+EnvResource.RESOURCE_GLASS},
-		{"sword",""+EnvResource.RESOURCE_IRON},
-		{"glas",""+EnvResource.RESOURCE_GLASS},
-		{"bamboo",""+EnvResource.RESOURCE_WOOD},
-		{"linen",""+EnvResource.RESOURCE_COTTON},
-		{"book",""+EnvResource.RESOURCE_PAPER},
-		{"shadow",""+EnvResource.RESOURCE_NOTHING},
-		{"light",""+EnvResource.RESOURCE_ENERGY},
-		{"corundum",""+EnvResource.RESOURCE_STONE},
-		{"skin",""+EnvResource.RESOURCE_HIDE},
-		{"air",""+EnvResource.RESOURCE_NOTHING},
-		{"hair",""+EnvResource.RESOURCE_FUR},
-		{"parchment",""+EnvResource.RESOURCE_PAPER},
-		{"grain",""+EnvResource.RESOURCE_WHEAT},
-		{"steele",""+EnvResource.RESOURCE_STEEL},
-		{"dragonskin",""+EnvResource.RESOURCE_SCALES},
-		{"granite",""+EnvResource.RESOURCE_GRANITE},
-		{"pottery",""+EnvResource.RESOURCE_CLAY},
-		{"pottery",""+EnvResource.RESOURCE_CLAY},
-		{"liqued",""+EnvResource.RESOURCE_FRESHWATER},
-		{"wax",""+EnvResource.RESOURCE_WAX},
-		{"drink",""+EnvResource.RESOURCE_FRESHWATER},
-		{"steel",""+EnvResource.RESOURCE_STEEL},
-		{"lead",""+EnvResource.RESOURCE_LEAD},
-		{"bronze",""+EnvResource.RESOURCE_BRONZE},
-		{"copper",""+EnvResource.RESOURCE_COPPER},
-		{"brass",""+EnvResource.RESOURCE_BRASS},
-		{"platinium",""+EnvResource.RESOURCE_PLATINUM},
-		{"titanium",""+EnvResource.RESOURCE_STEEL},
-		{"aliminum",""+EnvResource.RESOURCE_TIN},
-		{"aluminum",""+EnvResource.RESOURCE_TIN},
-		{"metal",""+EnvResource.RESOURCE_IRON},
-		{"wood",""+EnvResource.RESOURCE_WOOD},
-		{"ebony",""+EnvResource.RESOURCE_EBONY},
-		{"ice",""+EnvResource.RESOURCE_CRYSTAL},
-		{"energy",""+EnvResource.RESOURCE_ENERGY},
-		{"hardwood",""+EnvResource.RESOURCE_BALSA},
-		{"softwood",""+EnvResource.RESOURCE_OAK},
-		{"flesh",""+EnvResource.RESOURCE_MEAT},
-		{"silk",""+EnvResource.RESOURCE_SILK},
-		{"wool",""+EnvResource.RESOURCE_WOOL},
-		{"cloth",""+EnvResource.RESOURCE_COTTON},
-		{"fur",""+EnvResource.RESOURCE_FUR},
-		{"water",""+EnvResource.RESOURCE_FRESHWATER},
-		{"oak",""+EnvResource.RESOURCE_OAK},
-		{"ivory",""+EnvResource.RESOURCE_IVORY},
-		{"diamond",""+EnvResource.RESOURCE_DIAMOND},
-		{"pearl",""+EnvResource.RESOURCE_PEARL},
-		{"gem",""+EnvResource.RESOURCE_GEM},
-		{"ruby",""+EnvResource.RESOURCE_GEM},
-		{"obsidian",""+EnvResource.RESOURCE_OBSIDIAN},
-		{"lead",""+EnvResource.RESOURCE_LEAD},
-		{"leather",""+EnvResource.RESOURCE_LEATHER},
-		{"glass",""+EnvResource.RESOURCE_GLASS},
-		{"vellum",""+EnvResource.RESOURCE_HIDE},
-		{"crystal",""+EnvResource.RESOURCE_CRYSTAL},
-		{"clay",""+EnvResource.RESOURCE_CLAY},
-		{"china",""+EnvResource.RESOURCE_CHINA},
-		{"paper",""+EnvResource.RESOURCE_PAPER},
-		{"adamantium",""+EnvResource.RESOURCE_ADAMANTITE},
-		{"amethyst",""+EnvResource.RESOURCE_AMETHYST},
-		{"bearskin",""+EnvResource.RESOURCE_FUR},
-		{"blood",""+EnvResource.RESOURCE_BLOOD},
-		{"bread",""+EnvResource.RESOURCE_BREAD},
-		{"burlap",""+EnvResource.RESOURCE_HEMP},
-		{"canvas",""+EnvResource.RESOURCE_HEMP},
-		{"cashmire",""+EnvResource.RESOURCE_WOOL},
-		{"coal",""+EnvResource.RESOURCE_COAL},
-		{"cookie",""+EnvResource.RESOURCE_CRACKER},
-		{"coral",""+EnvResource.RESOURCE_SEAWEED},
-		{"Daggwood",""+EnvResource.RESOURCE_WOOD},
-		{"daggwood",""+EnvResource.RESOURCE_WOOD},
-		{"ethereal",""+EnvResource.RESOURCE_NOTHING},
-		{"felt",""+EnvResource.RESOURCE_WOOL},
-		{"fish",""+EnvResource.RESOURCE_FISH},
-		{"flame",""+EnvResource.RESOURCE_ENERGY},
-		{"flower",""+EnvResource.RESOURCE_FLOWERS},
-		{"fruit",""+EnvResource.RESOURCE_FRUIT},
-		{"golden",""+EnvResource.RESOURCE_GOLD},
-		{"ink",""+EnvResource.RESOURCE_BLOOD},
-		{"iron-wood",""+EnvResource.RESOURCE_IRONWOOD},
-		{"jade",""+EnvResource.RESOURCE_JADE},
-		{"kalarit",""+EnvResource.RESOURCE_LEATHER},
-		{"lapis",""+EnvResource.RESOURCE_GEM},
-		{"malachite",""+EnvResource.RESOURCE_COPPER},
-		{"meat",""+EnvResource.RESOURCE_MEAT},
-		{"none",""+EnvResource.RESOURCE_NOTHING},
-		{"oil",""+EnvResource.RESOURCE_LAMPOIL},
-		{"parafin",""+EnvResource.RESOURCE_LAMPOIL},
-		{"pewter",""+EnvResource.RESOURCE_TIN},
-		{"pie",""+EnvResource.RESOURCE_CRACKER},
-		{"plant_organism",""+EnvResource.RESOURCE_GREENS},
-		{"porcelain",""+EnvResource.RESOURCE_CHINA},
-		{"quartz",""+EnvResource.RESOURCE_CRYSTAL},
-		{"ruby-silver-diamond",""+EnvResource.RESOURCE_GEM},
-		{"sapphire",""+EnvResource.RESOURCE_GEM},
-		{"shadows",""+EnvResource.RESOURCE_NOTHING},
-		{"tatamite",""+EnvResource.RESOURCE_ADAMANTITE},
-		{"velvet",""+EnvResource.RESOURCE_SILK},
-		{"wood-iron",""+EnvResource.RESOURCE_IRONWOOD},
-		{"soft leather",""+EnvResource.RESOURCE_LEATHER},
-		{"balm",""+EnvResource.RESOURCE_WAX},
-		{"elastic",""+EnvResource.RESOURCE_PLASTIC},
-		{"hemp",""+EnvResource.RESOURCE_HEMP},
-		{"cork",""+EnvResource.RESOURCE_WOOD},
-		{"sponge",""+EnvResource.RESOURCE_WOOL},
-		{"rubber",""+EnvResource.RESOURCE_RUBBER},
-		{"unique",""+EnvResource.RESOURCE_WOOD},
-		{"satin",""+EnvResource.RESOURCE_SILK},
-		{"horn",""+EnvResource.RESOURCE_BONE},
-		{"bark",""+EnvResource.RESOURCE_WOOD},
-		{"Fabric",""+EnvResource.RESOURCE_COTTON},
-		{"Other",""+EnvResource.RESOURCE_WOOD},
-		{"Cord",""+EnvResource.RESOURCE_HEMP},
-		{"velum",""+EnvResource.RESOURCE_PAPER},
-		{"clothe",""+EnvResource.RESOURCE_COTTON},
-		{"beef",""+EnvResource.RESOURCE_BEEF},
-		{"dough",""+EnvResource.RESOURCE_BREAD},
-		{"chicken",""+EnvResource.RESOURCE_POULTRY},
-		{"bagel",""+EnvResource.RESOURCE_BREAD},
-		{"fries",""+EnvResource.RESOURCE_POTATOES},
-		{"chicken",""+EnvResource.RESOURCE_POULTRY},
-		{"cheese",""+EnvResource.RESOURCE_MILK},
-		{"chalk",""+EnvResource.RESOURCE_STONE},
-		{"cotton",""+EnvResource.RESOURCE_COTTON},
-		{"electrum",""+EnvResource.RESOURCE_SILVER},
-		{"wooden",""+EnvResource.RESOURCE_WOOD},
-		{"cardboard",""+EnvResource.RESOURCE_PAPER},
-		{"petals",""+EnvResource.RESOURCE_FLOWERS},
-		{"lace",""+EnvResource.RESOURCE_SILK},
-		{"fabric",""+EnvResource.RESOURCE_COTTON},
-		{"flannel",""+EnvResource.RESOURCE_WOOL},
-		{"Lightning",""+EnvResource.RESOURCE_ENERGY},
-		{"lightning",""+EnvResource.RESOURCE_ENERGY},
-		{"rawhide",""+EnvResource.RESOURCE_LEATHER},
-		{"pine",""+EnvResource.RESOURCE_PINE},
-		{"cream",""+EnvResource.RESOURCE_MILK},
-		{"cheeseskin",""+EnvResource.RESOURCE_PLASTIC},
-		{"fiberglass",""+EnvResource.RESOURCE_COTTON},
-		{"leopard",""+EnvResource.RESOURCE_HIDE},
-		{"tobacco",""+EnvResource.RESOURCE_PIPEWEED},
-		{"flowers",""+EnvResource.RESOURCE_FLOWERS},
-		{"emerald",""+EnvResource.RESOURCE_GEM},
-		{"coffee",""+EnvResource.RESOURCE_COFFEEBEANS},
-		{"turnip",""+EnvResource.RESOURCE_GREENS},
-		{"nickel",""+EnvResource.RESOURCE_SILVER},
-		{"yew",""+EnvResource.RESOURCE_WOOD},
-		{"mahogany",""+EnvResource.RESOURCE_WOOD},
-		{"alligator",""+EnvResource.RESOURCE_SCALES},
-		{"potatoes",""+EnvResource.RESOURCE_POTATOES},
-		{"yeast",""+EnvResource.RESOURCE_BREAD},
-		{"pork",""+EnvResource.RESOURCE_PORK},
-		{"turkey",""+EnvResource.RESOURCE_POULTRY},
-		{"stew",""+EnvResource.RESOURCE_MEAT},
-		{"chili",""+EnvResource.RESOURCE_MEAT},
-		{"wonton",""+EnvResource.RESOURCE_MEAT},
-		{"sandstone",""+EnvResource.RESOURCE_STONE},
-		{"vevet",""+EnvResource.RESOURCE_SILK},
-		{"lether",""+EnvResource.RESOURCE_LEATHER},
-		{"(null)",""+EnvResource.RESOURCE_NOTHING}
+		{"silver",""+RawMaterial.RESOURCE_STEEL},
+		{"gold",""+RawMaterial.RESOURCE_GOLD},
+		{"iron",""+RawMaterial.RESOURCE_IRON},
+		{"dragonscales",""+RawMaterial.RESOURCE_SCALES},
+		{"dragonscale",""+RawMaterial.RESOURCE_SCALES},
+		{"mithril",""+RawMaterial.RESOURCE_MITHRIL},
+		{"animal fur",""+RawMaterial.RESOURCE_FUR},
+		{"stone",""+RawMaterial.RESOURCE_STONE},
+		{"platinum",""+RawMaterial.RESOURCE_PLATINUM},
+		{"soft leather",""+RawMaterial.RESOURCE_LEATHER},
+		{"plant",""+RawMaterial.RESOURCE_FLOWERS},
+		{"kid leather",""+RawMaterial.RESOURCE_HIDE},
+		{"shell",""+RawMaterial.RESOURCE_EGGS},
+		{"tin",""+RawMaterial.RESOURCE_TIN},
+		{"bone",""+RawMaterial.RESOURCE_BONE},
+		{"plastic",""+RawMaterial.RESOURCE_PLASTIC},
+		{"kevlar",""+RawMaterial.RESOURCE_PLASTIC},
+		{"Dew",""+RawMaterial.RESOURCE_FRESHWATER},
+		{"dew",""+RawMaterial.RESOURCE_FRESHWATER},
+		{"adamantite",""+RawMaterial.RESOURCE_ADAMANTITE},
+		{"admantite",""+RawMaterial.RESOURCE_ADAMANTITE},
+		{"marble",""+RawMaterial.RESOURCE_MARBLE},
+		{"nothingness",""+RawMaterial.RESOURCE_NOTHING},
+		{"hard leather",""+RawMaterial.RESOURCE_LEATHER},
+		{"feathers",""+RawMaterial.RESOURCE_FEATHERS},
+		{"ash",""+RawMaterial.RESOURCE_DUST},
+		{"snakeskin",""+RawMaterial.RESOURCE_SCALES},
+		{"fire",""+RawMaterial.RESOURCE_ENERGY},
+		{"gut",""+RawMaterial.RESOURCE_MEAT},
+		{"food",""+RawMaterial.RESOURCE_MEAT},
+		{"unknown",""+RawMaterial.RESOURCE_LEATHER},
+		{"onyx",""+RawMaterial.RESOURCE_STONE},
+		{"A oldstyle",""+RawMaterial.RESOURCE_WOOD},
+		{"a oldstyle",""+RawMaterial.RESOURCE_WOOD},
+		{"Other",""+RawMaterial.RESOURCE_WOOD},
+		{"other",""+RawMaterial.RESOURCE_WOOD},
+		{"etherealness",""+RawMaterial.RESOURCE_NOTHING},
+		{"target",""+RawMaterial.RESOURCE_LEATHER},
+		{"pill",""+RawMaterial.RESOURCE_CORN},
+		{"potion",""+RawMaterial.RESOURCE_GLASS},
+		{"rubies",""+RawMaterial.RESOURCE_GEM},
+		{"magic",""+RawMaterial.RESOURCE_ENERGY},
+		{"alcohol",""+RawMaterial.RESOURCE_GLASS},
+		{"beer",""+RawMaterial.RESOURCE_GLASS},
+		{"sword",""+RawMaterial.RESOURCE_IRON},
+		{"glas",""+RawMaterial.RESOURCE_GLASS},
+		{"bamboo",""+RawMaterial.RESOURCE_WOOD},
+		{"linen",""+RawMaterial.RESOURCE_COTTON},
+		{"book",""+RawMaterial.RESOURCE_PAPER},
+		{"shadow",""+RawMaterial.RESOURCE_NOTHING},
+		{"light",""+RawMaterial.RESOURCE_ENERGY},
+		{"corundum",""+RawMaterial.RESOURCE_STONE},
+		{"skin",""+RawMaterial.RESOURCE_HIDE},
+		{"air",""+RawMaterial.RESOURCE_NOTHING},
+		{"hair",""+RawMaterial.RESOURCE_FUR},
+		{"parchment",""+RawMaterial.RESOURCE_PAPER},
+		{"grain",""+RawMaterial.RESOURCE_WHEAT},
+		{"steele",""+RawMaterial.RESOURCE_STEEL},
+		{"dragonskin",""+RawMaterial.RESOURCE_SCALES},
+		{"granite",""+RawMaterial.RESOURCE_GRANITE},
+		{"pottery",""+RawMaterial.RESOURCE_CLAY},
+		{"pottery",""+RawMaterial.RESOURCE_CLAY},
+		{"liqued",""+RawMaterial.RESOURCE_FRESHWATER},
+		{"wax",""+RawMaterial.RESOURCE_WAX},
+		{"drink",""+RawMaterial.RESOURCE_FRESHWATER},
+		{"steel",""+RawMaterial.RESOURCE_STEEL},
+		{"lead",""+RawMaterial.RESOURCE_LEAD},
+		{"bronze",""+RawMaterial.RESOURCE_BRONZE},
+		{"copper",""+RawMaterial.RESOURCE_COPPER},
+		{"brass",""+RawMaterial.RESOURCE_BRASS},
+		{"platinium",""+RawMaterial.RESOURCE_PLATINUM},
+		{"titanium",""+RawMaterial.RESOURCE_STEEL},
+		{"aliminum",""+RawMaterial.RESOURCE_TIN},
+		{"aluminum",""+RawMaterial.RESOURCE_TIN},
+		{"metal",""+RawMaterial.RESOURCE_IRON},
+		{"wood",""+RawMaterial.RESOURCE_WOOD},
+		{"ebony",""+RawMaterial.RESOURCE_EBONY},
+		{"ice",""+RawMaterial.RESOURCE_CRYSTAL},
+		{"energy",""+RawMaterial.RESOURCE_ENERGY},
+		{"hardwood",""+RawMaterial.RESOURCE_BALSA},
+		{"softwood",""+RawMaterial.RESOURCE_OAK},
+		{"flesh",""+RawMaterial.RESOURCE_MEAT},
+		{"silk",""+RawMaterial.RESOURCE_SILK},
+		{"wool",""+RawMaterial.RESOURCE_WOOL},
+		{"cloth",""+RawMaterial.RESOURCE_COTTON},
+		{"fur",""+RawMaterial.RESOURCE_FUR},
+		{"water",""+RawMaterial.RESOURCE_FRESHWATER},
+		{"oak",""+RawMaterial.RESOURCE_OAK},
+		{"ivory",""+RawMaterial.RESOURCE_IVORY},
+		{"diamond",""+RawMaterial.RESOURCE_DIAMOND},
+		{"pearl",""+RawMaterial.RESOURCE_PEARL},
+		{"gem",""+RawMaterial.RESOURCE_GEM},
+		{"ruby",""+RawMaterial.RESOURCE_GEM},
+		{"obsidian",""+RawMaterial.RESOURCE_OBSIDIAN},
+		{"lead",""+RawMaterial.RESOURCE_LEAD},
+		{"leather",""+RawMaterial.RESOURCE_LEATHER},
+		{"glass",""+RawMaterial.RESOURCE_GLASS},
+		{"vellum",""+RawMaterial.RESOURCE_HIDE},
+		{"crystal",""+RawMaterial.RESOURCE_CRYSTAL},
+		{"clay",""+RawMaterial.RESOURCE_CLAY},
+		{"china",""+RawMaterial.RESOURCE_CHINA},
+		{"paper",""+RawMaterial.RESOURCE_PAPER},
+		{"adamantium",""+RawMaterial.RESOURCE_ADAMANTITE},
+		{"amethyst",""+RawMaterial.RESOURCE_AMETHYST},
+		{"bearskin",""+RawMaterial.RESOURCE_FUR},
+		{"blood",""+RawMaterial.RESOURCE_BLOOD},
+		{"bread",""+RawMaterial.RESOURCE_BREAD},
+		{"burlap",""+RawMaterial.RESOURCE_HEMP},
+		{"canvas",""+RawMaterial.RESOURCE_HEMP},
+		{"cashmire",""+RawMaterial.RESOURCE_WOOL},
+		{"coal",""+RawMaterial.RESOURCE_COAL},
+		{"cookie",""+RawMaterial.RESOURCE_CRACKER},
+		{"coral",""+RawMaterial.RESOURCE_SEAWEED},
+		{"Daggwood",""+RawMaterial.RESOURCE_WOOD},
+		{"daggwood",""+RawMaterial.RESOURCE_WOOD},
+		{"ethereal",""+RawMaterial.RESOURCE_NOTHING},
+		{"felt",""+RawMaterial.RESOURCE_WOOL},
+		{"fish",""+RawMaterial.RESOURCE_FISH},
+		{"flame",""+RawMaterial.RESOURCE_ENERGY},
+		{"flower",""+RawMaterial.RESOURCE_FLOWERS},
+		{"fruit",""+RawMaterial.RESOURCE_FRUIT},
+		{"golden",""+RawMaterial.RESOURCE_GOLD},
+		{"ink",""+RawMaterial.RESOURCE_BLOOD},
+		{"iron-wood",""+RawMaterial.RESOURCE_IRONWOOD},
+		{"jade",""+RawMaterial.RESOURCE_JADE},
+		{"kalarit",""+RawMaterial.RESOURCE_LEATHER},
+		{"lapis",""+RawMaterial.RESOURCE_GEM},
+		{"malachite",""+RawMaterial.RESOURCE_COPPER},
+		{"meat",""+RawMaterial.RESOURCE_MEAT},
+		{"none",""+RawMaterial.RESOURCE_NOTHING},
+		{"oil",""+RawMaterial.RESOURCE_LAMPOIL},
+		{"parafin",""+RawMaterial.RESOURCE_LAMPOIL},
+		{"pewter",""+RawMaterial.RESOURCE_TIN},
+		{"pie",""+RawMaterial.RESOURCE_CRACKER},
+		{"plant_organism",""+RawMaterial.RESOURCE_GREENS},
+		{"porcelain",""+RawMaterial.RESOURCE_CHINA},
+		{"quartz",""+RawMaterial.RESOURCE_CRYSTAL},
+		{"ruby-silver-diamond",""+RawMaterial.RESOURCE_GEM},
+		{"sapphire",""+RawMaterial.RESOURCE_GEM},
+		{"shadows",""+RawMaterial.RESOURCE_NOTHING},
+		{"tatamite",""+RawMaterial.RESOURCE_ADAMANTITE},
+		{"velvet",""+RawMaterial.RESOURCE_SILK},
+		{"wood-iron",""+RawMaterial.RESOURCE_IRONWOOD},
+		{"soft leather",""+RawMaterial.RESOURCE_LEATHER},
+		{"balm",""+RawMaterial.RESOURCE_WAX},
+		{"elastic",""+RawMaterial.RESOURCE_PLASTIC},
+		{"hemp",""+RawMaterial.RESOURCE_HEMP},
+		{"cork",""+RawMaterial.RESOURCE_WOOD},
+		{"sponge",""+RawMaterial.RESOURCE_WOOL},
+		{"rubber",""+RawMaterial.RESOURCE_RUBBER},
+		{"unique",""+RawMaterial.RESOURCE_WOOD},
+		{"satin",""+RawMaterial.RESOURCE_SILK},
+		{"horn",""+RawMaterial.RESOURCE_BONE},
+		{"bark",""+RawMaterial.RESOURCE_WOOD},
+		{"Fabric",""+RawMaterial.RESOURCE_COTTON},
+		{"Other",""+RawMaterial.RESOURCE_WOOD},
+		{"Cord",""+RawMaterial.RESOURCE_HEMP},
+		{"velum",""+RawMaterial.RESOURCE_PAPER},
+		{"clothe",""+RawMaterial.RESOURCE_COTTON},
+		{"beef",""+RawMaterial.RESOURCE_BEEF},
+		{"dough",""+RawMaterial.RESOURCE_BREAD},
+		{"chicken",""+RawMaterial.RESOURCE_POULTRY},
+		{"bagel",""+RawMaterial.RESOURCE_BREAD},
+		{"fries",""+RawMaterial.RESOURCE_POTATOES},
+		{"chicken",""+RawMaterial.RESOURCE_POULTRY},
+		{"cheese",""+RawMaterial.RESOURCE_MILK},
+		{"chalk",""+RawMaterial.RESOURCE_STONE},
+		{"cotton",""+RawMaterial.RESOURCE_COTTON},
+		{"electrum",""+RawMaterial.RESOURCE_SILVER},
+		{"wooden",""+RawMaterial.RESOURCE_WOOD},
+		{"cardboard",""+RawMaterial.RESOURCE_PAPER},
+		{"petals",""+RawMaterial.RESOURCE_FLOWERS},
+		{"lace",""+RawMaterial.RESOURCE_SILK},
+		{"fabric",""+RawMaterial.RESOURCE_COTTON},
+		{"flannel",""+RawMaterial.RESOURCE_WOOL},
+		{"Lightning",""+RawMaterial.RESOURCE_ENERGY},
+		{"lightning",""+RawMaterial.RESOURCE_ENERGY},
+		{"rawhide",""+RawMaterial.RESOURCE_LEATHER},
+		{"pine",""+RawMaterial.RESOURCE_PINE},
+		{"cream",""+RawMaterial.RESOURCE_MILK},
+		{"cheeseskin",""+RawMaterial.RESOURCE_PLASTIC},
+		{"fiberglass",""+RawMaterial.RESOURCE_COTTON},
+		{"leopard",""+RawMaterial.RESOURCE_HIDE},
+		{"tobacco",""+RawMaterial.RESOURCE_PIPEWEED},
+		{"flowers",""+RawMaterial.RESOURCE_FLOWERS},
+		{"emerald",""+RawMaterial.RESOURCE_GEM},
+		{"coffee",""+RawMaterial.RESOURCE_COFFEEBEANS},
+		{"turnip",""+RawMaterial.RESOURCE_GREENS},
+		{"nickel",""+RawMaterial.RESOURCE_SILVER},
+		{"yew",""+RawMaterial.RESOURCE_WOOD},
+		{"mahogany",""+RawMaterial.RESOURCE_WOOD},
+		{"alligator",""+RawMaterial.RESOURCE_SCALES},
+		{"potatoes",""+RawMaterial.RESOURCE_POTATOES},
+		{"yeast",""+RawMaterial.RESOURCE_BREAD},
+		{"pork",""+RawMaterial.RESOURCE_PORK},
+		{"turkey",""+RawMaterial.RESOURCE_POULTRY},
+		{"stew",""+RawMaterial.RESOURCE_MEAT},
+		{"chili",""+RawMaterial.RESOURCE_MEAT},
+		{"wonton",""+RawMaterial.RESOURCE_MEAT},
+		{"sandstone",""+RawMaterial.RESOURCE_STONE},
+		{"vevet",""+RawMaterial.RESOURCE_SILK},
+		{"lether",""+RawMaterial.RESOURCE_LEATHER},
+		{"(null)",""+RawMaterial.RESOURCE_NOTHING}
 	};
 
 
@@ -2178,11 +2178,11 @@ public class Import extends StdCommand
 				break;
 			}
 
-			M.baseCharStats().setStat(CharStats.GENDER,'M');
+			M.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 			switch(sexCode)
 			{
-			case 2: M.baseCharStats().setStat(CharStats.GENDER,'F'); break;
-			case 3: M.baseCharStats().setStat(CharStats.GENDER,'N'); break;
+			case 2: M.baseCharStats().setStat(CharStats.STAT_GENDER,'F'); break;
+			case 3: M.baseCharStats().setStat(CharStats.STAT_GENDER,'N'); break;
 			}
 
 			if(circleFormat)
@@ -3017,7 +3017,7 @@ public class Import extends StdCommand
 					 ||(str3.indexOf("BREW")>=0)
 					 ||(str3.indexOf("WINE")>=0))
 					 {
-						((Drink)I).setLiquidType(EnvResource.RESOURCE_LIQUOR);
+						((Drink)I).setLiquidType(RawMaterial.RESOURCE_LIQUOR);
 						I.addEffect(CMClass.getAbility("Poison_Beer"));
 						((Drink)I).setLiquidHeld(val1*10);
 						((Drink)I).setLiquidRemaining(val2);
@@ -3025,7 +3025,7 @@ public class Import extends StdCommand
 					 else
 					 if(str3.indexOf("FIREBREATHER")>=0)
 					 {
-						((Drink)I).setLiquidType(EnvResource.RESOURCE_LIQUOR);
+						((Drink)I).setLiquidType(RawMaterial.RESOURCE_LIQUOR);
 						I.addEffect(CMClass.getAbility("Poison_Firebreather"));
 						((Drink)I).setLiquidHeld(val1*10);
 						((Drink)I).setLiquidRemaining(val2);
@@ -3033,7 +3033,7 @@ public class Import extends StdCommand
 					 else
 					 if(str3.indexOf("LOCAL SPECIALTY")>=0)
 					 {
-						((Drink)I).setLiquidType(EnvResource.RESOURCE_LIQUOR);
+						((Drink)I).setLiquidType(RawMaterial.RESOURCE_LIQUOR);
 						I.addEffect(CMClass.getAbility("Poison_Liquor"));
 						((Drink)I).setLiquidHeld(val1*10);
 						((Drink)I).setLiquidRemaining(val2);
@@ -3041,7 +3041,7 @@ public class Import extends StdCommand
 					 else
 					 if(str3.indexOf("WHISKEY")>=0)
 					 {
-						((Drink)I).setLiquidType(EnvResource.RESOURCE_LIQUOR);
+						((Drink)I).setLiquidType(RawMaterial.RESOURCE_LIQUOR);
 						I.addEffect(CMClass.getAbility("Poison_Liquor"));
 						((Drink)I).setLiquidHeld(val1*10);
 						((Drink)I).setLiquidRemaining(val2);
@@ -3049,7 +3049,7 @@ public class Import extends StdCommand
 					 else
 					 if((val4>0)||(str3.indexOf("POISON")>=0))
 					 {
-						((Drink)I).setLiquidType(EnvResource.RESOURCE_POISON);
+						((Drink)I).setLiquidType(RawMaterial.RESOURCE_POISON);
 						I.addEffect(CMClass.getAbility("Poison"));
 						((Drink)I).setLiquidHeld(val1*10);
 						((Drink)I).setLiquidRemaining(val2);
@@ -3227,11 +3227,11 @@ public class Import extends StdCommand
 				}
 
 			// correction for certain rings
-			if((((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_CLOTH)
-				||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PAPER))
+			if((((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)
+				||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PAPER))
 			   &&(I.fitsOn(Item.WORN_LEFT_FINGER)))
 			{
-				I.setMaterial(EnvResource.RESOURCE_SILVER);
+				I.setMaterial(RawMaterial.RESOURCE_SILVER);
 				materialchange=true;
 			}
 
@@ -3312,8 +3312,8 @@ public class Import extends StdCommand
 				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_GOOD);
 
 			if(CMath.isSet(extraFlag,18))
-				if((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
-					I.setMaterial(EnvResource.RESOURCE_GLASS);
+				if((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+					I.setMaterial(RawMaterial.RESOURCE_GLASS);
 
 			if(CMath.isSet(extraFlag,20))
 				I.baseEnvStats().setSensesMask(I.baseEnvStats().sensesMask()|EnvStats.SENSE_UNLOCATABLE);
@@ -4274,7 +4274,7 @@ public class Import extends StdCommand
 						M.setLocation(mob.location());
 					if(M.playerStats().getBirthday()==null)
 					{
-					    M.baseCharStats().setStat(CharStats.AGE,M.playerStats().initializeBirthday((int)Math.round(CMath.div(M.getAgeHours(),60.0)),M.baseCharStats().getMyRace()));
+					    M.baseCharStats().setStat(CharStats.STAT_AGE,M.playerStats().initializeBirthday((int)Math.round(CMath.div(M.getAgeHours(),60.0)),M.baseCharStats().getMyRace()));
 					    M.recoverCharStats();
 					}
 					CMLib.database().DBUpdatePlayer(M);

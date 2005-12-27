@@ -289,7 +289,7 @@ public class Cobbling extends CraftingSkill
 
 			if(amount>woodRequired) woodRequired=amount;
 			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
-			int[] pm={EnvResource.MATERIAL_METAL,EnvResource.MATERIAL_MITHRIL,EnvResource.MATERIAL_CLOTH,EnvResource.MATERIAL_WOODEN,EnvResource.MATERIAL_LEATHER};
+			int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL,RawMaterial.MATERIAL_CLOTH,RawMaterial.MATERIAL_WOODEN,RawMaterial.MATERIAL_LEATHER};
             bundling=misctype.equalsIgnoreCase("BUNDLE");
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"metal",pm,
@@ -309,7 +309,7 @@ public class Cobbling extends CraftingSkill
 				return false;
 			}
 			completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
+			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
 			if(itemName.endsWith("s"))
 				itemName="some "+itemName;
 			else
@@ -324,7 +324,7 @@ public class Cobbling extends CraftingSkill
 			building.baseEnvStats().setWeight(woodRequired);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
-			int hardness=EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][3]-6;
+			int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][3]-6;
 			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
 			if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
 			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
@@ -388,7 +388,7 @@ public class Cobbling extends CraftingSkill
 		{
 			messedUp=false;
 			completion=1;
-			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}

@@ -43,7 +43,7 @@ public class Searching extends CommonSkill
     public void affectCharStats(MOB affected, CharStats affectableStats)
     {
         super.affectCharStats(affected,affectableStats);
-        affectableStats.setStat(CharStats.SAVE_OVERLOOKING,bonusThisRoom+profficiency()+affectableStats.getStat(CharStats.SAVE_OVERLOOKING));
+        affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,bonusThisRoom+profficiency()+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
     }
 
 	protected boolean success=false;

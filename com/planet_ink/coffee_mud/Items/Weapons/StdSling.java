@@ -51,7 +51,7 @@ public class StdSling extends StdWeapon
 		minRange=1;
 		maxRange=2;
 		weaponType=Weapon.TYPE_BASHING;
-		material=EnvResource.RESOURCE_LEATHER;
+		material=RawMaterial.RESOURCE_LEATHER;
 		weaponClassification=Weapon.CLASS_RANGED;
 		setRawLogicalAnd(false);
 	}

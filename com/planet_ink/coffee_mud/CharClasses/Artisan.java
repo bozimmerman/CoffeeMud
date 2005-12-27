@@ -39,7 +39,7 @@ public class Artisan extends StdCharClass
 	public int getMaxHitPointsLevel(){return 8;}
 	public int getBonusPracLevel(){return 2;}
 	public int getBonusAttackLevel(){return 0;}
-	public int getAttackAttribute(){return CharStats.WISDOM;}
+	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
 	public int getLevelsPerBonusDamage(){ return 15;}
 	public int getHPDivisor(){return 6;}
 	public int getHPDice(){return 1;}
@@ -60,8 +60,8 @@ public class Artisan extends StdCharClass
 	public Artisan()
 	{
 		super();
-		maxStatAdj[CharStats.WISDOM]=6;
-		maxStatAdj[CharStats.INTELLIGENCE]=6;
+		maxStatAdj[CharStats.STAT_WISDOM]=6;
+		maxStatAdj[CharStats.STAT_INTELLIGENCE]=6;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -178,13 +178,13 @@ public class Artisan extends StdCharClass
 	public String statQualifications(){return "Wisdom 9+, Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.WISDOM)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Wisdom to become a Artisan.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Intelligence to become a Artisan.");

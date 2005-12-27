@@ -43,7 +43,7 @@ public class Spell_Misstep extends Spell
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.DEXTERITY,1);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,1);
 	}
 
 	public void unInvoke()

@@ -80,15 +80,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         &&(!CMSecurity.isDisabled("COMMAND_"+CMClass.className(C).toUpperCase()))) 
             return C;
 
-		for(int a=0;a<mob.numAbilities();a++)
-		{
-			Ability A=mob.fetchAbility(a);
-			if(A.triggerStrings()!=null)
-				for(int t=0;t<A.triggerStrings().length;t++)
-					if((A.triggerStrings()[t].equalsIgnoreCase(firstWord))
-                    &&(!CMSecurity.isDisabled("ABILITY_"+A.ID().toUpperCase())))
-						return A;
-		}
+        Ability A=getToEvoke(mob,(Vector)commands.clone());
+        if((A!=null)
+        &&(!CMSecurity.isDisabled("ABILITY_"+A.ID().toUpperCase())))
+			return A;
 
 		Social social=CMLib.socials().FetchSocial(commands,true);
 		if(social!=null) return social;
@@ -126,15 +121,22 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 		for(int a=0;a<mob.numAbilities();a++)
 		{
-			Ability A=mob.fetchAbility(a);
+			A=mob.fetchAbility(a);
+            HashSet tried=new HashSet();
 			if(A.triggerStrings()!=null)
 				for(int t=0;t<A.triggerStrings().length;t++)
 					if((A.triggerStrings()[t].toUpperCase().startsWith(firstWord))
-                    &&(!CMSecurity.isDisabled("ABILITY_"+A.ID().toUpperCase())))
-					{
-						commands.setElementAt(A.triggerStrings()[t],0);
-						return A;
-					}
+                    &&(!tried.contains(A.triggerStrings()[t])))
+                    {
+                        Vector commands2=(Vector)commands.clone();
+                        commands2.setElementAt(A.triggerStrings()[t],0);
+                        Ability A2=getToEvoke(mob,commands2);
+                        if((A2!=null)&&(!CMSecurity.isDisabled("ABILITY_"+A2.ID().toUpperCase())))
+                        {
+                            commands.setElementAt(A.triggerStrings()[t],0);
+                            return A;
+                        }
+                    }
 		}
 
 		social=CMLib.socials().FetchSocial(commands,false);

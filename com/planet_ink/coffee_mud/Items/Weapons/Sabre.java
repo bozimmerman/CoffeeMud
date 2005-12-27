@@ -46,7 +46,7 @@ public class Sabre extends StdWeapon
 		baseEnvStats().setDamage(6);
 		baseGoldValue=15;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 		weaponType=TYPE_SLASHING;//?????????
 		weaponClassification=Weapon.CLASS_SWORD;
 	}

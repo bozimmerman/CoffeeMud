@@ -76,7 +76,7 @@ public class Prop_HaveAdjuster extends Property
 		String val=CMParms.getParmStr(newText,"gen","").toUpperCase();
 		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
 		{
-            adjCharStats.setStat(CharStats.GENDER,val.charAt(0));
+            adjCharStats.setStat(CharStats.STAT_GENDER,val.charAt(0));
 			gotSex=true;
 		}
 
@@ -92,18 +92,18 @@ public class Prop_HaveAdjuster extends Property
 			gotRace=true;
 			adjCharStats.setMyRace(CMClass.getRace(val));
 		}
-		adjCharStats.setStat(CharStats.STRENGTH,CMParms.getParmPlus(newText,"str"));
-		adjCharStats.setStat(CharStats.WISDOM,CMParms.getParmPlus(newText,"wis"));
-		adjCharStats.setStat(CharStats.CHARISMA,CMParms.getParmPlus(newText,"cha"));
-		adjCharStats.setStat(CharStats.CONSTITUTION,CMParms.getParmPlus(newText,"con"));
-		adjCharStats.setStat(CharStats.DEXTERITY,CMParms.getParmPlus(newText,"dex"));
-		adjCharStats.setStat(CharStats.INTELLIGENCE,CMParms.getParmPlus(newText,"int"));
-		adjCharStats.setStat(CharStats.MAX_STRENGTH_ADJ,CMParms.getParmPlus(newText,"maxstr"));
-		adjCharStats.setStat(CharStats.MAX_WISDOM_ADJ,CMParms.getParmPlus(newText,"maxwis"));
-		adjCharStats.setStat(CharStats.MAX_CHARISMA_ADJ,CMParms.getParmPlus(newText,"maxcha"));
-		adjCharStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,CMParms.getParmPlus(newText,"maxcon"));
-		adjCharStats.setStat(CharStats.MAX_DEXTERITY_ADJ,CMParms.getParmPlus(newText,"maxdex"));
-		adjCharStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,CMParms.getParmPlus(newText,"maxint"));
+		adjCharStats.setStat(CharStats.STAT_STRENGTH,CMParms.getParmPlus(newText,"str"));
+		adjCharStats.setStat(CharStats.STAT_WISDOM,CMParms.getParmPlus(newText,"wis"));
+		adjCharStats.setStat(CharStats.STAT_CHARISMA,CMParms.getParmPlus(newText,"cha"));
+		adjCharStats.setStat(CharStats.STAT_CONSTITUTION,CMParms.getParmPlus(newText,"con"));
+		adjCharStats.setStat(CharStats.STAT_DEXTERITY,CMParms.getParmPlus(newText,"dex"));
+		adjCharStats.setStat(CharStats.STAT_INTELLIGENCE,CMParms.getParmPlus(newText,"int"));
+		adjCharStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,CMParms.getParmPlus(newText,"maxstr"));
+		adjCharStats.setStat(CharStats.STAT_MAX_WISDOM_ADJ,CMParms.getParmPlus(newText,"maxwis"));
+		adjCharStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,CMParms.getParmPlus(newText,"maxcha"));
+		adjCharStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,CMParms.getParmPlus(newText,"maxcon"));
+		adjCharStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,CMParms.getParmPlus(newText,"maxdex"));
+		adjCharStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,CMParms.getParmPlus(newText,"maxint"));
 
 		adjCharState.setHitPoints(CMParms.getParmPlus(newText,"hit"));
 		adjCharState.setHunger(CMParms.getParmPlus(newText,"hun"));
@@ -178,18 +178,18 @@ public class Prop_HaveAdjuster extends Property
 									boolean gotSex,
 									CharStats adjCharStats)
 	{
-		affectedStats.setStat(CharStats.CHARISMA,affectedStats.getStat(CharStats.CHARISMA)+adjCharStats.getStat(CharStats.CHARISMA));
-		affectedStats.setStat(CharStats.CONSTITUTION,affectedStats.getStat(CharStats.CONSTITUTION)+adjCharStats.getStat(CharStats.CONSTITUTION));
-		affectedStats.setStat(CharStats.DEXTERITY,affectedStats.getStat(CharStats.DEXTERITY)+adjCharStats.getStat(CharStats.DEXTERITY));
+		affectedStats.setStat(CharStats.STAT_CHARISMA,affectedStats.getStat(CharStats.STAT_CHARISMA)+adjCharStats.getStat(CharStats.STAT_CHARISMA));
+		affectedStats.setStat(CharStats.STAT_CONSTITUTION,affectedStats.getStat(CharStats.STAT_CONSTITUTION)+adjCharStats.getStat(CharStats.STAT_CONSTITUTION));
+		affectedStats.setStat(CharStats.STAT_DEXTERITY,affectedStats.getStat(CharStats.STAT_DEXTERITY)+adjCharStats.getStat(CharStats.STAT_DEXTERITY));
 		if(gotSex)
-			affectedStats.setStat(CharStats.GENDER,adjCharStats.getStat(CharStats.GENDER));
-		affectedStats.setStat(CharStats.INTELLIGENCE,affectedStats.getStat(CharStats.INTELLIGENCE)+adjCharStats.getStat(CharStats.INTELLIGENCE));
+			affectedStats.setStat(CharStats.STAT_GENDER,adjCharStats.getStat(CharStats.STAT_GENDER));
+		affectedStats.setStat(CharStats.STAT_INTELLIGENCE,affectedStats.getStat(CharStats.STAT_INTELLIGENCE)+adjCharStats.getStat(CharStats.STAT_INTELLIGENCE));
 		if(gotClass)
 			affectedStats.setCurrentClass(adjCharStats.getCurrentClass());
 		if(gotRace)
 			affectedStats.setMyRace(adjCharStats.getMyRace());
-		affectedStats.setStat(CharStats.STRENGTH,affectedStats.getStat(CharStats.STRENGTH)+adjCharStats.getStat(CharStats.STRENGTH));
-		affectedStats.setStat(CharStats.WISDOM,affectedStats.getStat(CharStats.WISDOM)+adjCharStats.getStat(CharStats.WISDOM));
+		affectedStats.setStat(CharStats.STAT_STRENGTH,affectedStats.getStat(CharStats.STAT_STRENGTH)+adjCharStats.getStat(CharStats.STAT_STRENGTH));
+		affectedStats.setStat(CharStats.STAT_WISDOM,affectedStats.getStat(CharStats.STAT_WISDOM)+adjCharStats.getStat(CharStats.STAT_WISDOM));
 	}
 
 	public void adjCharState(CharState affectedState,

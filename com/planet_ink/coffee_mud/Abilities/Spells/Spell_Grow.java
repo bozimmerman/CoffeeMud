@@ -53,8 +53,8 @@ public class Spell_Grow extends Spell
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)/2);
-		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+(invoker().envStats().level()/5));
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)/2);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+(invoker().envStats().level()/5));
 	}
 
 	public void unInvoke()
@@ -63,7 +63,7 @@ public class Spell_Grow extends Spell
 		{
 			MOB mob=(MOB)affected;
 			if(oldWeight<1)
-				mob.baseCharStats().getMyRace().setHeightWeight(mob.baseEnvStats(),(char)mob.baseCharStats().getStat(CharStats.GENDER));
+				mob.baseCharStats().getMyRace().setHeightWeight(mob.baseEnvStats(),(char)mob.baseCharStats().getStat(CharStats.STAT_GENDER));
 			else
 				mob.baseEnvStats().setWeight(oldWeight);
 			if((mob.location()!=null)&&(!mob.amDead()))

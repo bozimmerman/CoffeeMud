@@ -44,7 +44,7 @@ public class GenMap extends StdMap
 		setDisplayText("a generic map sits here.");
 		setDescription("");
 		baseGoldValue=5;
-		setMaterial(EnvResource.RESOURCE_PAPER);
+		setMaterial(RawMaterial.RESOURCE_PAPER);
 		recoverEnvStats();
 	}
 

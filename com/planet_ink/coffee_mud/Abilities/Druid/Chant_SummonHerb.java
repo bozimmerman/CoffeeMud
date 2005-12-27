@@ -74,7 +74,7 @@ public class Chant_SummonHerb extends Chant
 					newItem.setName("some herbs");
 					newItem.setDisplayText("Some herbs are growing here.");
 					newItem.setDescription("");
-					newItem.setMaterial(EnvResource.RESOURCE_HERBS);
+					newItem.setMaterial(RawMaterial.RESOURCE_HERBS);
 					newItem.setNourishment(1);
 					newItem.setMiscText(newItem.text());
 					mob.location().addItemRefuse(newItem,Item.REFUSE_RESOURCE);

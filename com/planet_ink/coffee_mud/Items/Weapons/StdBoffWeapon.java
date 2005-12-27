@@ -48,7 +48,7 @@ public class StdBoffWeapon extends StdWeapon
 		baseGoldValue=15;
 		weaponType=Weapon.TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_BLUNT;
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 		setUsesRemaining(100);
 		recoverEnvStats();
 	}

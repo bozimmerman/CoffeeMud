@@ -61,7 +61,7 @@ public class Power_OctoArms extends SuperPower
 				Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
 				naturalWeapon.setName("a huge snaking arm");
 				naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
-				naturalWeapon.setMaterial(EnvResource.RESOURCE_STEEL);
+				naturalWeapon.setMaterial(RawMaterial.RESOURCE_STEEL);
 				naturalWeapon.baseEnvStats().setDamage(mob.baseEnvStats().damage());
 				naturalWeapon.recoverEnvStats();
 				for(int i=0;i<arms;i++)

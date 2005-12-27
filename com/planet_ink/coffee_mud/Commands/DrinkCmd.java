@@ -64,8 +64,8 @@ public class DrinkCmd extends StdCommand
 		Environmental tool=null;
 		if((thisThang instanceof Drink)
 		&&(((Drink)thisThang).liquidRemaining()>0)
-		&&(((Drink)thisThang).liquidType()!=EnvResource.RESOURCE_FRESHWATER))
-			str="<S-NAME> take(s) a drink of "+EnvResource.RESOURCE_DESCS[((Drink)thisThang).liquidType()&EnvResource.RESOURCE_MASK].toLowerCase()+" from <T-NAMESELF>.";
+		&&(((Drink)thisThang).liquidType()!=RawMaterial.RESOURCE_FRESHWATER))
+			str="<S-NAME> take(s) a drink of "+RawMaterial.RESOURCE_DESCS[((Drink)thisThang).liquidType()&RawMaterial.RESOURCE_MASK].toLowerCase()+" from <T-NAMESELF>.";
 		else
 		if(thisThang instanceof Container)
 		{
@@ -73,7 +73,7 @@ public class DrinkCmd extends StdCommand
 			for(int v=0;v<V.size();v++)
 			{
 				Item I=(Item)V.elementAt(v);
-				if((I instanceof Drink)&&(I instanceof EnvResource))
+				if((I instanceof Drink)&&(I instanceof RawMaterial))
 				{
 					tool=thisThang;
 					thisThang=I;

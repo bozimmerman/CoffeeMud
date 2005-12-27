@@ -49,7 +49,7 @@ public class Bee extends StdMOB
 		addBehavior(CMClass.getBehavior("CombatAbilities"));
 		baseEnvStats().setDamage(1);
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,1);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 		baseEnvStats().setDisposition(EnvStats.IS_FLYING);
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(1);

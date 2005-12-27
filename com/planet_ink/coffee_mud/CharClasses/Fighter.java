@@ -39,7 +39,7 @@ public class Fighter extends StdCharClass
 	public int getMaxHitPointsLevel(){return 24;}
 	public int getBonusPracLevel(){return -1;}
 	public int getBonusAttackLevel(){return 2;}
-	public int getAttackAttribute(){return CharStats.STRENGTH;}
+	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
 	public int getLevelsPerBonusDamage(){ return 1;}
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
@@ -58,7 +58,7 @@ public class Fighter extends StdCharClass
 	public Fighter()
 	{
 		super();
-		maxStatAdj[CharStats.STRENGTH]=7;
+		maxStatAdj[CharStats.STAT_STRENGTH]=7;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -147,7 +147,7 @@ public class Fighter extends StdCharClass
 	public String statQualifications(){return "Strength 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STRENGTH)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Strength to become a Fighter.");

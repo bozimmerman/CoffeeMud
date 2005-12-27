@@ -43,7 +43,7 @@ public class Trap_Vanishing extends StdTrap
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
-			if(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
+			if(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
 				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> foil(s) a trap on "+affected.name()+"!");
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> notice(s) something about "+affected.name()+" .. it's fading away."))

@@ -39,7 +39,7 @@ public class Cleric extends StdCharClass
 	public int getMaxHitPointsLevel(){return 16;}
 	public int getBonusPracLevel(){return 2;}
 	public int getBonusAttackLevel(){return 1;}
-	public int getAttackAttribute(){return CharStats.WISDOM;}
+	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
 	public int getLevelsPerBonusDamage(){ return 5;}
 	public int getHPDivisor(){return 3;}
 	public int getHPDice(){return 1;}
@@ -69,7 +69,7 @@ public class Cleric extends StdCharClass
 		if(!ID().equals("Cleric"))
 		    return;
 
-		maxStatAdj[CharStats.WISDOM]=7;
+		maxStatAdj[CharStats.STAT_WISDOM]=7;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -249,7 +249,7 @@ public class Cleric extends StdCharClass
 	public String statQualifications(){return "Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.WISDOM)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Wisdom to become a Cleric.");

@@ -43,21 +43,21 @@ public class Prayer_DivineLuck extends Prayer
 	protected int canTargetCode(){return 0;}
 
 	private static final int[] allSaves={
-		CharStats.SAVE_ACID,
-		CharStats.SAVE_COLD,
-		CharStats.SAVE_DISEASE,
-		CharStats.SAVE_ELECTRIC,
-		CharStats.SAVE_FIRE,
-		CharStats.SAVE_GAS,
-		CharStats.SAVE_GENERAL,
-		CharStats.SAVE_JUSTICE,
-		CharStats.SAVE_MAGIC,
-		CharStats.SAVE_MIND,
-		CharStats.SAVE_PARALYSIS,
-		CharStats.SAVE_POISON,
-		CharStats.SAVE_UNDEAD,
-		CharStats.SAVE_WATER,
-		CharStats.SAVE_TRAPS};
+		CharStats.STAT_SAVE_ACID,
+		CharStats.STAT_SAVE_COLD,
+		CharStats.STAT_SAVE_DISEASE,
+		CharStats.STAT_SAVE_ELECTRIC,
+		CharStats.STAT_SAVE_FIRE,
+		CharStats.STAT_SAVE_GAS,
+		CharStats.STAT_SAVE_GENERAL,
+		CharStats.STAT_SAVE_JUSTICE,
+		CharStats.STAT_SAVE_MAGIC,
+		CharStats.STAT_SAVE_MIND,
+		CharStats.STAT_SAVE_PARALYSIS,
+		CharStats.STAT_SAVE_POISON,
+		CharStats.STAT_SAVE_UNDEAD,
+		CharStats.STAT_SAVE_WATER,
+		CharStats.STAT_SAVE_TRAPS};
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

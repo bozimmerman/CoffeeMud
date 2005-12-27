@@ -53,7 +53,7 @@ public class Prayer_AnimateGhost extends Prayer
 		newMOB.setDescription(description);
 		newMOB.setDisplayText(newMOB.Name()+" is here");
 		newMOB.baseEnvStats().setLevel(level);
-		newMOB.baseCharStats().setStat(CharStats.GENDER,body.charStats().getStat(CharStats.GENDER));
+		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Spirit"));
 		newMOB.baseCharStats().setBodyPartStrAfterRace(body.charStats().getBodyPartStr());
 		Ability P=CMClass.getAbility("Prop_StatTrainer");

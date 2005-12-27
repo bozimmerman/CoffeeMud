@@ -52,7 +52,7 @@ public class Song_Distraction extends Song
 		{
 			if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
 			&&(mob.isInCombat())
-			&&(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_MIND)+50))
+			&&(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_MIND)+50))
 			&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
 			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
 			{

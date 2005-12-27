@@ -94,9 +94,9 @@ public class Chant_MoonCalf extends Chant
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.INTELLIGENCE,affectableStats.getStat(CharStats.INTELLIGENCE)-10);
-		if(affectableStats.getStat(CharStats.INTELLIGENCE)<1)
-			affectableStats.setStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)-10);
+		if(affectableStats.getStat(CharStats.STAT_INTELLIGENCE)<1)
+			affectableStats.setStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

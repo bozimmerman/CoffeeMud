@@ -45,7 +45,7 @@ public class GenLightSource extends LightSource
 		setDisplayText("a generic lightable thing sits here.");
 		setDescription("");
 		destroyedWhenBurnedOut=true;
-		setMaterial(EnvResource.RESOURCE_OAK);
+		setMaterial(RawMaterial.RESOURCE_OAK);
 		setDuration(200);
 	}
 

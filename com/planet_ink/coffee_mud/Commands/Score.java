@@ -103,12 +103,12 @@ public class Score extends Affect
             msg.append("Your account is Registered and Active until: "+CMLib.time().date2String(mob.playerStats().getAccountExpiration())+"!\n\r");
 
 		String genderName="neuter";
-		if(mob.charStats().getStat(CharStats.GENDER)=='M') genderName="male";
+		if(mob.charStats().getStat(CharStats.STAT_GENDER)=='M') genderName="male";
 		else
-		if(mob.charStats().getStat(CharStats.GENDER)=='F') genderName="female";
+		if(mob.charStats().getStat(CharStats.STAT_GENDER)=='F') genderName="female";
 		msg.append("You are a ");
-		if(mob.baseCharStats().getStat(CharStats.AGE)>0)
-		    msg.append("^!"+mob.baseCharStats().getStat(CharStats.AGE)+"^? year old ");
+		if(mob.baseCharStats().getStat(CharStats.STAT_AGE)>0)
+		    msg.append("^!"+mob.baseCharStats().getStat(CharStats.STAT_AGE)+"^? year old ");
 		msg.append("^!"+genderName);
 		if((!CMSecurity.isDisabled("RACES"))
 		&&(!mob.charStats().getCurrentClass().raceless()))
@@ -140,12 +140,12 @@ public class Score extends Affect
         CharStats CT=mob.charStats();
         msg.append(CMProps.mxpImage(mob," ALIGN=RIGHT H=70 W=70"));
         msg.append("^N^!");
-        msg.append(CMStrings.padRight("^<HELP^>Strength^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.MAX_STRENGTH_ADJ))+"\n\r");
-        msg.append(CMStrings.padRight("^<HELP^>Intelligence^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.MAX_INTELLIGENCE_ADJ))+"\n\r");
-        msg.append(CMStrings.padRight("^<HELP^>Dexterity^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.DEXTERITY)),2)+"/"+(max+CT.getStat(CharStats.MAX_DEXTERITY_ADJ))+"\n\r");
-        msg.append(CMStrings.padRight("^<HELP^>Wisdom^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.WISDOM)),2)+"/"+(max+CT.getStat(CharStats.MAX_WISDOM_ADJ))+"\n\r");
-        msg.append(CMStrings.padRight("^<HELP^>Constitution^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.CONSTITUTION)),2)+"/"+(max+CT.getStat(CharStats.MAX_CONSTITUTION_ADJ))+"\n\r");
-        msg.append(CMStrings.padRight("^<HELP^>Charisma^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.CHARISMA)),2)+"/"+(max+CT.getStat(CharStats.MAX_CHARISMA_ADJ))+"\n\r");
+        msg.append(CMStrings.padRight("^<HELP^>Strength^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_STRENGTH_ADJ))+"\n\r");
+        msg.append(CMStrings.padRight("^<HELP^>Intelligence^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ))+"\n\r");
+        msg.append(CMStrings.padRight("^<HELP^>Dexterity^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_DEXTERITY)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ))+"\n\r");
+        msg.append(CMStrings.padRight("^<HELP^>Wisdom^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_WISDOM)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_WISDOM_ADJ))+"\n\r");
+        msg.append(CMStrings.padRight("^<HELP^>Constitution^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_CONSTITUTION)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ))+"\n\r");
+        msg.append(CMStrings.padRight("^<HELP^>Charisma^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_CHARISMA)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_CHARISMA_ADJ))+"\n\r");
         msg.append("^?\n\r");
 		msg.append("You have ^H"+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+"^? ^<HELP^>hit points^</HELP^>, ^H");
 		msg.append(mob.curState().getMana()+"/"+mob.maxState().getMana()+"^? ^<HELP^>mana^</HELP^>, and ^H");

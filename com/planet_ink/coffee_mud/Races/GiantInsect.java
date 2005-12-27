@@ -61,7 +61,7 @@ public class GiantInsect extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.SAVE_POISON,affectableStats.getStat(CharStats.SAVE_POISON)+100);
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 	}
 	public String arriveStr()
 	{
@@ -88,7 +88,7 @@ public class GiantInsect extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" guts",EnvResource.RESOURCE_MEAT));
+				("a pile of "+name().toLowerCase()+" guts",RawMaterial.RESOURCE_MEAT));
 			}
 		}
 		return resources;

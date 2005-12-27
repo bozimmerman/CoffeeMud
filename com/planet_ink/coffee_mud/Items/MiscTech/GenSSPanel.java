@@ -45,7 +45,7 @@ public class GenSSPanel extends GenShipContainer
 		containType=Container.CONTAIN_SSCOMPONENTS;
 		setLidsNLocks(true,true,false,false);
 		capacity=500;
-		setMaterial(EnvResource.RESOURCE_STEEL);
+		setMaterial(RawMaterial.RESOURCE_STEEL);
 		recoverEnvStats();
 	}
 

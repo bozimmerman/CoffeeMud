@@ -78,13 +78,13 @@ public class Thief_Appraise extends ThiefSkill
 			{
 				double deviance=CMath.div(CMLib.dice().roll(1,100,0)+50,100);
 				realValue=CMath.mul(realValue,deviance);
-				materialCode=CMLib.dice().roll(1,EnvResource.RESOURCE_DESCS.length,-1);
+				materialCode=CMLib.dice().roll(1,RawMaterial.RESOURCE_DESCS.length,-1);
 				weight=(int)Math.round(CMath.mul(weight,deviance));
 				height=(int)Math.round(CMath.mul(height,deviance));
 				allWeight=(int)Math.round(CMath.mul(allWeight,deviance));
 			}
 			StringBuffer str=new StringBuffer("");
-			str.append(target.name()+" is made of "+EnvResource.RESOURCE_DESCS[materialCode&EnvResource.RESOURCE_MASK]);
+			str.append(target.name()+" is made of "+RawMaterial.RESOURCE_DESCS[materialCode&RawMaterial.RESOURCE_MASK]);
 			str.append(" is worth about "+CMLib.beanCounter().nameCurrencyShort(mob,realValue)+".");
 			if(target instanceof Armor)
 				str.append("\n\r"+target.name()+" is a size "+height+".");

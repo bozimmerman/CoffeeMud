@@ -71,21 +71,21 @@ public class Spell_WeaknessFire extends Spell
 			if(room!=null)
 			{
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_HEAT_WAVE)
-				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_FIRE)))
+				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE)))
 				{
 					int damage=CMLib.dice().roll(1,8,0);
 					CMLib.combat().postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The scorching heat <DAMAGE> <T-NAME>!");
 				}
 				else
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_DUSTSTORM)
-				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_FIRE)))
+				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE)))
 				{
 					int damage=CMLib.dice().roll(1,16,0);
 					CMLib.combat().postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning hot dust <DAMAGE> <T-NAME>!");
 				}
 				else
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_DROUGHT)
-				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_FIRE)))
+				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE)))
 				{
 					int damage=CMLib.dice().roll(1,8,0);
 					CMLib.combat().postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning dry heat <DAMAGE> <T-NAME>!");
@@ -116,7 +116,7 @@ public class Spell_WeaknessFire extends Spell
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
-		affectedStats.setStat(CharStats.SAVE_FIRE,affectedStats.getStat(CharStats.SAVE_FIRE)-100);
+		affectedStats.setStat(CharStats.STAT_SAVE_FIRE,affectedStats.getStat(CharStats.STAT_SAVE_FIRE)-100);
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

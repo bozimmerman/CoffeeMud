@@ -89,7 +89,7 @@ public class Prayer_Vampirism extends Prayer
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)+1);
+		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+1);
 	}
 
 	public void executeMsg(Environmental host, CMMsg msg)
@@ -106,8 +106,8 @@ public class Prayer_Vampirism extends Prayer
 		{
 			Drink D=(Drink)msg.target();
 			if(D.containsDrink()
-			&&(D.liquidType()!=EnvResource.RESOURCE_BLOOD)
-			&&((!(D instanceof Item))||((Item)D).material()!=EnvResource.RESOURCE_BLOOD))
+			&&(D.liquidType()!=RawMaterial.RESOURCE_BLOOD)
+			&&((!(D instanceof Item))||((Item)D).material()!=RawMaterial.RESOURCE_BLOOD))
 				msg.source().curState().adjThirst(-D.thirstQuenched(),msg.source().maxState().maxThirst(msg.source().baseWeight()));
 			else
 				msg.source().curState().adjHunger(D.thirstQuenched()*5,msg.source().maxState().maxHunger(msg.source().baseWeight()));
@@ -122,7 +122,7 @@ public class Prayer_Vampirism extends Prayer
 			for(int i2=0;i2<V.size();i2++)
 			{
 				Item I2=(Item)V.elementAt(i2);
-				if((I2.material()==EnvResource.RESOURCE_BLOOD)
+				if((I2.material()==RawMaterial.RESOURCE_BLOOD)
 				&&(I2 instanceof Drink))
 					return true;
 			}
@@ -162,7 +162,7 @@ public class Prayer_Vampirism extends Prayer
 					if((I!=null)
 					&&(I instanceof Drink)
 					&&(I.container()==null)
-					&&((I.material()==EnvResource.RESOURCE_BLOOD)||(((Drink)I).liquidType()==EnvResource.RESOURCE_BLOOD)))
+					&&((I.material()==RawMaterial.RESOURCE_BLOOD)||(((Drink)I).liquidType()==RawMaterial.RESOURCE_BLOOD)))
 						D=(Drink)I;
 				}
 				if(D!=null)
@@ -204,7 +204,7 @@ public class Prayer_Vampirism extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,-((target.charStats().getStat(CharStats.WISDOM)*2)),auto);
+		boolean success=profficiencyCheck(mob,-((target.charStats().getStat(CharStats.STAT_WISDOM)*2)),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

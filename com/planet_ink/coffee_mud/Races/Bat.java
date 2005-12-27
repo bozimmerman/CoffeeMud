@@ -71,9 +71,9 @@ public class Bat extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,3);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,13);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,3);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,13);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public Weapon myNaturalWeapon()
 	{
@@ -129,11 +129,11 @@ public class Bat extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("some "+name().toLowerCase()+" hair",EnvResource.RESOURCE_FUR));
+					("some "+name().toLowerCase()+" hair",RawMaterial.RESOURCE_FUR));
 				resources.addElement(makeResource
-					("a pair of "+name().toLowerCase()+" wings",EnvResource.RESOURCE_HIDE));
+					("a pair of "+name().toLowerCase()+" wings",RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource
-					("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+					("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

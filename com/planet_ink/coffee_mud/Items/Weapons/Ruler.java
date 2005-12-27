@@ -39,7 +39,7 @@ public class Ruler extends Quarterstaff
 		setName("a ruler");
 		setDisplayText("a ruler has been left here.");
 		setDescription("It`s long and wooden, with little tick marks on it.");
-		material=EnvResource.RESOURCE_OAK;
+		material=RawMaterial.RESOURCE_OAK;
 	}
 
 

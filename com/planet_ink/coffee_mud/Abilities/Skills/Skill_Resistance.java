@@ -47,46 +47,46 @@ public class Skill_Resistance extends StdSkill
 		super.setMiscText(newText);
 		resistanceCode=0;
 		if(newText.equalsIgnoreCase("acid"))
-			resistanceCode=CharStats.SAVE_ACID;
+			resistanceCode=CharStats.STAT_SAVE_ACID;
 		else
 		if(newText.equalsIgnoreCase("cold"))
-			resistanceCode=CharStats.SAVE_COLD;
+			resistanceCode=CharStats.STAT_SAVE_COLD;
 		else
 		if(newText.equalsIgnoreCase("electricity"))
-			resistanceCode=CharStats.SAVE_ELECTRIC;
+			resistanceCode=CharStats.STAT_SAVE_ELECTRIC;
 		else
 		if(newText.equalsIgnoreCase("fire"))
-			resistanceCode=CharStats.SAVE_FIRE;
+			resistanceCode=CharStats.STAT_SAVE_FIRE;
 		else
 		if(newText.equalsIgnoreCase("gas"))
-			resistanceCode=CharStats.SAVE_GAS;
+			resistanceCode=CharStats.STAT_SAVE_GAS;
 		else
 		if(newText.equalsIgnoreCase("mind"))
-			resistanceCode=CharStats.SAVE_MIND;
+			resistanceCode=CharStats.STAT_SAVE_MIND;
 		else
 		if(newText.equalsIgnoreCase("paralysis"))
-			resistanceCode=CharStats.SAVE_PARALYSIS;
+			resistanceCode=CharStats.STAT_SAVE_PARALYSIS;
 		else
 		if(newText.equalsIgnoreCase("magic"))
-			resistanceCode=CharStats.SAVE_MAGIC;
+			resistanceCode=CharStats.STAT_SAVE_MAGIC;
 		else
 		if(newText.equalsIgnoreCase("traps"))
-			resistanceCode=CharStats.SAVE_TRAPS;
+			resistanceCode=CharStats.STAT_SAVE_TRAPS;
 		else
 		if(newText.equalsIgnoreCase("justice"))
-			resistanceCode=CharStats.SAVE_JUSTICE;
+			resistanceCode=CharStats.STAT_SAVE_JUSTICE;
 		else
 		if(newText.equalsIgnoreCase("poison"))
-			resistanceCode=CharStats.SAVE_POISON;
+			resistanceCode=CharStats.STAT_SAVE_POISON;
 		else
 		if(newText.equalsIgnoreCase("water"))
-			resistanceCode=CharStats.SAVE_WATER;
+			resistanceCode=CharStats.STAT_SAVE_WATER;
 		else
 		if(newText.equalsIgnoreCase("undead"))
-			resistanceCode=CharStats.SAVE_UNDEAD;
+			resistanceCode=CharStats.STAT_SAVE_UNDEAD;
 		else
 		if(newText.equalsIgnoreCase("disease"))
-			resistanceCode=CharStats.SAVE_DISEASE;
+			resistanceCode=CharStats.STAT_SAVE_DISEASE;
 		if(resistanceCode>0)
 			displayText="(Resistance to "+newText.trim().toLowerCase()+")";
 	}
@@ -100,20 +100,20 @@ public class Skill_Resistance extends StdSkill
 			affectableStats.setStat(resistanceCode,affectableStats.getStat(resistanceCode)+amount);
 		else
 		{
-			affectableStats.setStat(CharStats.SAVE_ACID,affectableStats.getStat(CharStats.SAVE_ACID)+amount);
-			affectableStats.setStat(CharStats.SAVE_COLD,affectableStats.getStat(CharStats.SAVE_COLD)+amount);
-			affectableStats.setStat(CharStats.SAVE_ELECTRIC,affectableStats.getStat(CharStats.SAVE_ELECTRIC)+amount);
-			affectableStats.setStat(CharStats.SAVE_FIRE,affectableStats.getStat(CharStats.SAVE_FIRE)+amount);
-			affectableStats.setStat(CharStats.SAVE_GAS,affectableStats.getStat(CharStats.SAVE_GAS)+amount);
-			affectableStats.setStat(CharStats.SAVE_TRAPS,affectableStats.getStat(CharStats.SAVE_TRAPS)+amount);
-			affectableStats.setStat(CharStats.SAVE_MIND,affectableStats.getStat(CharStats.SAVE_MIND)+amount);
-			affectableStats.setStat(CharStats.SAVE_PARALYSIS,affectableStats.getStat(CharStats.SAVE_PARALYSIS)+amount);
-			affectableStats.setStat(CharStats.SAVE_MAGIC,affectableStats.getStat(CharStats.SAVE_MAGIC)+amount);
-			affectableStats.setStat(CharStats.SAVE_JUSTICE,affectableStats.getStat(CharStats.SAVE_JUSTICE)+amount);
-			affectableStats.setStat(CharStats.SAVE_POISON,affectableStats.getStat(CharStats.SAVE_POISON)+amount);
-			affectableStats.setStat(CharStats.SAVE_WATER,affectableStats.getStat(CharStats.SAVE_WATER)+amount);
-			affectableStats.setStat(CharStats.SAVE_UNDEAD,affectableStats.getStat(CharStats.SAVE_UNDEAD)+amount);
-			affectableStats.setStat(CharStats.SAVE_DISEASE,affectableStats.getStat(CharStats.SAVE_DISEASE)+amount);
+			affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+amount);
+			affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)+amount);
+			affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)+amount);
+			affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+amount);
+			affectableStats.setStat(CharStats.STAT_SAVE_GAS,affectableStats.getStat(CharStats.STAT_SAVE_GAS)+amount);
+			affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)+amount);
+			affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)+amount);
+			affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)+amount);
+			affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)+amount);
+			affectableStats.setStat(CharStats.STAT_SAVE_JUSTICE,affectableStats.getStat(CharStats.STAT_SAVE_JUSTICE)+amount);
+			affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+amount);
+			affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)+amount);
+			affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+amount);
+			affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+amount);
 		}
 	}
 }

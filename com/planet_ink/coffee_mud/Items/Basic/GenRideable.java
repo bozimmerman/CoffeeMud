@@ -45,7 +45,7 @@ public class GenRideable extends StdRideable
 		setDescription("");
 		baseEnvStats().setWeight(2000);
 		rideBasis=Rideable.RIDEABLE_WATER;
-		setMaterial(EnvResource.RESOURCE_OAK);
+		setMaterial(RawMaterial.RESOURCE_OAK);
 		recoverEnvStats();
 	}
 

@@ -28,7 +28,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface EnvResource extends Item
+public interface RawMaterial extends Item
 {
 	
 	public int domainSource();

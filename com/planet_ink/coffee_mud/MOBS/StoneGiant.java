@@ -46,9 +46,9 @@ public class StoneGiant extends StdMOB
 		baseEnvStats.setWeight(8000 + Math.abs(randomizer.nextInt() % 1001));
 
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,8 + Math.abs(randomizer.nextInt() % 3));
-		baseCharStats().setStat(CharStats.STRENGTH,20);
-		baseCharStats().setStat(CharStats.DEXTERITY,13);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8 + Math.abs(randomizer.nextInt() % 3));
+		baseCharStats().setStat(CharStats.STAT_STRENGTH,20);
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,13);
 
 		baseEnvStats().setDamage(20);
 		baseEnvStats().setSpeed(1.0);

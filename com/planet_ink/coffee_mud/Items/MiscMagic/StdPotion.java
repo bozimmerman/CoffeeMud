@@ -47,13 +47,13 @@ public class StdPotion extends StdDrink implements Potion
 		secretIdentity="What was once a powerful potion.";
 		capacity=1;
 		containType=Container.CONTAIN_LIQUID;
-		liquidType=EnvResource.RESOURCE_DRINKABLE;
+		liquidType=RawMaterial.RESOURCE_DRINKABLE;
 		baseGoldValue=200;
-		material=EnvResource.RESOURCE_GLASS;
+		material=RawMaterial.RESOURCE_GLASS;
 		recoverEnvStats();
 	}
 
-	public int liquidType(){return EnvResource.RESOURCE_DRINKABLE;}
+	public int liquidType(){return RawMaterial.RESOURCE_DRINKABLE;}
 	public boolean isDrunk(){return (getSpellList().toUpperCase().indexOf(";DRUNK")>=0);}
 	public int value()
 	{

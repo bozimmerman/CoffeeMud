@@ -47,11 +47,11 @@ public class StdShipConsole extends StdRideable
 		riderCapacity=1;
 		setLidsNLocks(true,true,false,false);
 		capacity=500;
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 		recoverEnvStats();
 	}
 
-	public int fuelType(){return EnvResource.RESOURCE_ENERGY;}
+	public int fuelType(){return RawMaterial.RESOURCE_ENERGY;}
 	public void setFuelType(int resource){}
 	public long powerCapacity(){return 1;}
 	public void setPowerCapacity(long capacity){}

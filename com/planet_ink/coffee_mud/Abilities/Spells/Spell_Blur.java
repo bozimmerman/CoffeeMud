@@ -55,7 +55,7 @@ public class Spell_Blur extends Spell
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(msg.tool() instanceof Ability))
 		{
-			int pctDodge=invoker.charStats().getStat(CharStats.INTELLIGENCE);
+			int pctDodge=invoker.charStats().getStat(CharStats.STAT_INTELLIGENCE);
 			if(CMLib.dice().rollPercentage()<(pctDodge*2))
 			{
 				CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"<T-NAME> can't seem to focus on <S-NAME>.");

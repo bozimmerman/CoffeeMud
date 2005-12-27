@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenLiquidResource extends GenDrink implements EnvResource, Drink
+public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 {
 	public String ID(){	return "GenLiquidResource";}
 	public GenLiquidResource()
@@ -41,7 +41,7 @@ public class GenLiquidResource extends GenDrink implements EnvResource, Drink
 		setName("a puddle of resource thing");
 		setDisplayText("a puddle of resource sits here.");
 		setDescription("");
-		setMaterial(EnvResource.RESOURCE_FRESHWATER);
+		setMaterial(RawMaterial.RESOURCE_FRESHWATER);
 		disappearsAfterDrinking=true;
 		baseEnvStats().setWeight(0);
 		setCapacity(0);

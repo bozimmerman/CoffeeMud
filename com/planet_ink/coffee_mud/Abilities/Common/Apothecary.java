@@ -57,7 +57,7 @@ public class Apothecary extends Cooking
         Ability A2=finalDish.fetchEffect(0);
         if((A2!=null)
         &&(finalDish instanceof Drink))
-            ((Drink)finalDish).setLiquidType(EnvResource.RESOURCE_POISON);
+            ((Drink)finalDish).setLiquidType(RawMaterial.RESOURCE_POISON);
         return true;
     }
 }

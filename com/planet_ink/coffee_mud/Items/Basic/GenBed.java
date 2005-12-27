@@ -45,7 +45,7 @@ public class GenBed extends GenRideable
 		setDescription("");
 		baseGoldValue=5;
 		baseEnvStats().setLevel(1);
-		setMaterial(EnvResource.RESOURCE_COTTON);
+		setMaterial(RawMaterial.RESOURCE_COTTON);
 		setRiderCapacity(2);
 		setRideBasis(Rideable.RIDEABLE_SLEEP);
 		recoverEnvStats();

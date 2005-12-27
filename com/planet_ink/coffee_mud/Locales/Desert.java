@@ -46,12 +46,12 @@ public class Desert extends StdRoom
 	}
 
 	public static final Integer[] resourceList={
-		new Integer(EnvResource.RESOURCE_CACTUS),
-		new Integer(EnvResource.RESOURCE_SAND),
-		new Integer(EnvResource.RESOURCE_LAMPOIL),
-		new Integer(EnvResource.RESOURCE_PEPPERS),
-		new Integer(EnvResource.RESOURCE_SCALES),
-		new Integer(EnvResource.RESOURCE_DATES)
+		new Integer(RawMaterial.RESOURCE_CACTUS),
+		new Integer(RawMaterial.RESOURCE_SAND),
+		new Integer(RawMaterial.RESOURCE_LAMPOIL),
+		new Integer(RawMaterial.RESOURCE_PEPPERS),
+		new Integer(RawMaterial.RESOURCE_SCALES),
+		new Integer(RawMaterial.RESOURCE_DATES)
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
 	public Vector resourceChoices(){return Desert.roomResources;}

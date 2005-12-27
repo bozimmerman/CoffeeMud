@@ -53,7 +53,7 @@ public class DefaultCharStats implements CharStats
 	public DefaultCharStats()
 	{
         setAllValues(10);
-		stats[GENDER]='M';
+		stats[STAT_GENDER]='M';
 	}
     public void setAllValues(int def)
     {
@@ -187,16 +187,16 @@ public class DefaultCharStats implements CharStats
 	public String getSavesStr()
 	{
 		StringBuffer str=new StringBuffer("");
-		for(int x=CharStats.NUM_SAVE_START;x<CharStats.NUM_STATS;x++)
+		for(int x=NUM_SAVE_START;x<NUM_STATS;x++)
 			str.append(stats[x]+";");
 		return str.toString();
 	}
 	public void setSaves(String str)
 	{
 		Vector V=CMParms.parseSemicolons(str,false);
-		for(int x=CharStats.NUM_SAVE_START;x<CharStats.NUM_STATS;x++)
+		for(int x=NUM_SAVE_START;x<NUM_STATS;x++)
 		{
-			int vnum=x-CharStats.NUM_SAVE_START;
+			int vnum=x-NUM_SAVE_START;
 			if((vnum<V.size())&&(vnum>=0))
 				stats[x]=CMath.s_int((String)V.elementAt(vnum));
 		}
@@ -405,7 +405,7 @@ public class DefaultCharStats implements CharStats
 	
 	public int ageCategory()
 	{
-		int age=getStat(CharStats.AGE);
+		int age=getStat(STAT_AGE);
 		int cat=Race.AGE_INFANT;
 		int[] chart=getMyRace().getAgingChart();
 		if(age<chart[1]) return cat;
@@ -418,7 +418,7 @@ public class DefaultCharStats implements CharStats
 	{
 		int cat=ageCategory();
 		if(cat<Race.AGE_ANCIENT) return Race.AGE_DESCS[cat];
-		int age=getStat(CharStats.AGE);
+		int age=getStat(STAT_AGE);
 		int[] chart=getMyRace().getAgingChart();
 		int diff=chart[Race.AGE_ANCIENT]-chart[Race.AGE_VENERABLE];
 		age=age-chart[Race.AGE_ANCIENT];
@@ -431,36 +431,36 @@ public class DefaultCharStats implements CharStats
 	{
 		switch(which)
 		{
-		case SAVE_PARALYSIS:
-			return getStat(SAVE_PARALYSIS)+(int)Math.round(CMath.div(getStat(CONSTITUTION)+getStat(STRENGTH),2.0));
-		case SAVE_FIRE:
-			return getStat(SAVE_FIRE)+(int)Math.round(CMath.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
-		case SAVE_COLD:
-			return getStat(SAVE_COLD)+(int)Math.round(CMath.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
-		case SAVE_WATER:
-			return getStat(SAVE_WATER)+(int)Math.round(CMath.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
-		case SAVE_GAS:
-			return getStat(SAVE_GAS)+(int)Math.round(CMath.div(getStat(CONSTITUTION)+getStat(STRENGTH),2.0));
-		case SAVE_MIND:
-			return getStat(SAVE_MIND)+(int)Math.round(CMath.div(getStat(WISDOM)+getStat(INTELLIGENCE)+getStat(CHARISMA),3.0));
-		case SAVE_GENERAL:
-			return getStat(SAVE_GENERAL)+getStat(CONSTITUTION);
-		case SAVE_JUSTICE:
-			return getStat(SAVE_JUSTICE)+getStat(CHARISMA);
-		case SAVE_ACID:
-			return getStat(SAVE_ACID)+(int)Math.round(CMath.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
-		case SAVE_ELECTRIC:
-			return getStat(SAVE_ELECTRIC)+(int)Math.round(CMath.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
-		case SAVE_POISON:
-			return getStat(SAVE_POISON)+getStat(CONSTITUTION);
-		case SAVE_UNDEAD:
-			return getStat(SAVE_UNDEAD)+getStat(WISDOM);
-		case SAVE_DISEASE:
-			return getStat(SAVE_DISEASE)+getStat(CONSTITUTION);
-		case SAVE_MAGIC:
-			return getStat(SAVE_MAGIC)+getStat(INTELLIGENCE);
-		case SAVE_TRAPS:
-			return getStat(SAVE_TRAPS)+getStat(DEXTERITY);
+		case STAT_SAVE_PARALYSIS:
+			return getStat(STAT_SAVE_PARALYSIS)+(int)Math.round(CMath.div(getStat(STAT_CONSTITUTION)+getStat(STAT_STRENGTH),2.0));
+		case STAT_SAVE_FIRE:
+			return getStat(STAT_SAVE_FIRE)+(int)Math.round(CMath.div(getStat(STAT_CONSTITUTION)+getStat(STAT_DEXTERITY),2.0));
+		case STAT_SAVE_COLD:
+			return getStat(STAT_SAVE_COLD)+(int)Math.round(CMath.div(getStat(STAT_CONSTITUTION)+getStat(STAT_DEXTERITY),2.0));
+		case STAT_SAVE_WATER:
+			return getStat(STAT_SAVE_WATER)+(int)Math.round(CMath.div(getStat(STAT_CONSTITUTION)+getStat(STAT_DEXTERITY),2.0));
+		case STAT_SAVE_GAS:
+			return getStat(STAT_SAVE_GAS)+(int)Math.round(CMath.div(getStat(STAT_CONSTITUTION)+getStat(STAT_STRENGTH),2.0));
+		case STAT_SAVE_MIND:
+			return getStat(STAT_SAVE_MIND)+(int)Math.round(CMath.div(getStat(STAT_WISDOM)+getStat(STAT_INTELLIGENCE)+getStat(STAT_CHARISMA),3.0));
+		case STAT_SAVE_GENERAL:
+			return getStat(STAT_SAVE_GENERAL)+getStat(STAT_CONSTITUTION);
+		case STAT_SAVE_JUSTICE:
+			return getStat(STAT_SAVE_JUSTICE)+getStat(STAT_CHARISMA);
+		case STAT_SAVE_ACID:
+			return getStat(STAT_SAVE_ACID)+(int)Math.round(CMath.div(getStat(STAT_CONSTITUTION)+getStat(STAT_DEXTERITY),2.0));
+		case STAT_SAVE_ELECTRIC:
+			return getStat(STAT_SAVE_ELECTRIC)+(int)Math.round(CMath.div(getStat(STAT_CONSTITUTION)+getStat(STAT_DEXTERITY),2.0));
+		case STAT_SAVE_POISON:
+			return getStat(STAT_SAVE_POISON)+getStat(STAT_CONSTITUTION);
+		case STAT_SAVE_UNDEAD:
+			return getStat(STAT_SAVE_UNDEAD)+getStat(STAT_WISDOM);
+		case STAT_SAVE_DISEASE:
+			return getStat(STAT_SAVE_DISEASE)+getStat(STAT_CONSTITUTION);
+		case STAT_SAVE_MAGIC:
+			return getStat(STAT_SAVE_MAGIC)+getStat(STAT_INTELLIGENCE);
+		case STAT_SAVE_TRAPS:
+			return getStat(STAT_SAVE_TRAPS)+getStat(STAT_DEXTERITY);
 		}
 		return 0;
 	}
@@ -487,7 +487,7 @@ public class DefaultCharStats implements CharStats
 	{
 		if(genderName!=null) 
 			return genderName;
-		switch(getStat(GENDER))
+		switch(getStat(STAT_GENDER))
 		{
 		case 'M': return "male";
 		case 'F': return "female";
@@ -496,7 +496,7 @@ public class DefaultCharStats implements CharStats
 	}
 	public String himher()
 	{
-		char c=(char)getStat(GENDER);
+		char c=(char)getStat(STAT_GENDER);
 		if((genderName!=null)&&(genderName.length()>0))
 			c=Character.toUpperCase(genderName.charAt(0));
 		switch(c)
@@ -509,7 +509,7 @@ public class DefaultCharStats implements CharStats
 
 	public String hisher()
 	{
-		char c=(char)getStat(GENDER);
+		char c=(char)getStat(STAT_GENDER);
 		if((genderName!=null)&&(genderName.length()>0))
 			c=Character.toUpperCase(genderName.charAt(0));
 		switch(c)
@@ -522,7 +522,7 @@ public class DefaultCharStats implements CharStats
 
 	public String heshe()
 	{
-		char c=(char)getStat(GENDER);
+		char c=(char)getStat(STAT_GENDER);
 		if((genderName!=null)&&(genderName.length()>0))
 			c=Character.toUpperCase(genderName.charAt(0));
 		switch(c)
@@ -534,7 +534,7 @@ public class DefaultCharStats implements CharStats
 	}
     public String sirmadam()
     {
-        char c=(char)getStat(GENDER);
+        char c=(char)getStat(STAT_GENDER);
         if((genderName!=null)&&(genderName.length()>0))
             c=Character.toUpperCase(genderName.charAt(0));
         switch(c)
@@ -546,7 +546,7 @@ public class DefaultCharStats implements CharStats
     }
     public String SirMadam()
     {
-        char c=(char)getStat(GENDER);
+        char c=(char)getStat(STAT_GENDER);
         if((genderName!=null)&&(genderName.length()>0))
             c=Character.toUpperCase(genderName.charAt(0));
         switch(c)
@@ -559,7 +559,7 @@ public class DefaultCharStats implements CharStats
 
 	public String HeShe()
 	{
-		char c=(char)getStat(GENDER);
+		char c=(char)getStat(STAT_GENDER);
 		if((genderName!=null)&&(genderName.length()>0))
 			c=Character.toUpperCase(genderName.charAt(0));
 		switch(c)
@@ -578,9 +578,9 @@ public class DefaultCharStats implements CharStats
 	public void setPermaStat(int abilityCode, int value)
 	{
 		setStat(abilityCode,value);
-		if(abilityCode<CharStats.NUM_BASE_STATS)
+		if(abilityCode<NUM_BASE_STATS)
 		{
-			setStat(CharStats.MAX_STRENGTH_ADJ+abilityCode,
+			setStat(STAT_MAX_STRENGTH_ADJ+abilityCode,
 					value-CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT));
 		}
 	}
@@ -592,7 +592,7 @@ public class DefaultCharStats implements CharStats
 	public int getStat(String abilityName)
 	{
 		for(int i=0;i<20;i++)
-			if(TRAITS[i].startsWith(abilityName))
+			if(STAT_DESCS[i].startsWith(abilityName))
 				return getStat(i);
 		return -1;
 	}
@@ -600,7 +600,7 @@ public class DefaultCharStats implements CharStats
 	public int getCode(String abilityName)
 	{
 		for(int i=0;i<20;i++)
-			if(TRAITS[i].startsWith(abilityName))
+			if(STAT_DESCS[i].startsWith(abilityName))
 				return i;
 		return -1;
 	}

@@ -90,7 +90,7 @@ public class Prayer_AnimateMummy extends Prayer
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("a mummy is here");
 				newMOB.baseEnvStats().setLevel(19);
-				newMOB.baseCharStats().setStat(CharStats.GENDER,body.charStats().getStat(CharStats.GENDER));
+				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
 				newMOB.baseCharStats().setBodyPartStrAfterRace(body.charStats().getBodyPartStr());
 				Ability P=CMClass.getAbility("Prop_StatTrainer");

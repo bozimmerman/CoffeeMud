@@ -67,7 +67,7 @@ public class Prayer_BladeBarrier extends Prayer
 			return;
 		if(msg.target()==invoker)
 		{
-			if((CMLib.dice().rollPercentage()>60+msg.source().charStats().getStat(CharStats.DEXTERITY))
+			if((CMLib.dice().rollPercentage()>60+msg.source().charStats().getStat(CharStats.STAT_DEXTERITY))
 			&&(msg.source().rangeToTarget()==0)
 			&&((lastMessage==null)||(!lastMessage.startsWith("The blade barrier around")))
 			&&((CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))

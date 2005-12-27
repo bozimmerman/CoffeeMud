@@ -189,9 +189,9 @@ public class CraftingSkill extends GatheringSkill
 	{
 		if((other==null)||(other.length()==0))
 			return null;
-		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
-			if(EnvResource.RESOURCE_DESCS[i].equalsIgnoreCase(other))
-				return findFirstResource(room,EnvResource.RESOURCE_DATA[i][0]);
+		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+			if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(other))
+				return findFirstResource(room,RawMaterial.RESOURCE_DATA[i][0]);
 		return null;
 	}
 	protected Item findFirstResource(Room room, int resource)
@@ -199,7 +199,7 @@ public class CraftingSkill extends GatheringSkill
 		for(int i=0;i<room.numItems();i++)
 		{
 			Item I=room.fetchItem(i);
-			if((I instanceof EnvResource)
+			if((I instanceof RawMaterial)
 			&&(I.material()==resource)
 			&&(!CMLib.flags().isOnFire(I))
 			&&(!CMLib.flags().enchanted(I))
@@ -212,8 +212,8 @@ public class CraftingSkill extends GatheringSkill
 	{
 		if((other==null)||(other.length()==0))
 			return null;
-		for(int i=0;i<EnvResource.MATERIAL_DESCS.length;i++)
-			if(EnvResource.MATERIAL_DESCS[i].equalsIgnoreCase(other))
+		for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
+			if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(other))
 				return findMostOfMaterial(room,(i<<8));
 		return null;
 	}
@@ -226,8 +226,8 @@ public class CraftingSkill extends GatheringSkill
 		for(int i=0;i<room.numItems();i++)
 		{
 			Item I=room.fetchItem(i);
-			if((I instanceof EnvResource)
-			&&((I.material()&EnvResource.MATERIAL_MASK)==material)
+			if((I instanceof RawMaterial)
+			&&((I.material()&RawMaterial.MATERIAL_MASK)==material)
 			&&(I.material()!=mostMaterial)
 			&&(!CMLib.flags().isOnFire(I))
 			&&(!CMLib.flags().enchanted(I))
@@ -267,16 +267,16 @@ public class CraftingSkill extends GatheringSkill
 		if(amt<=0) return amt;
 		switch(resource)
 		{
-		case EnvResource.RESOURCE_MITHRIL:
+		case RawMaterial.RESOURCE_MITHRIL:
 			amt=amt/2;
 			break;
-		case EnvResource.RESOURCE_ADAMANTITE:
+		case RawMaterial.RESOURCE_ADAMANTITE:
 			amt=amt/3;
 			break;
-		case EnvResource.RESOURCE_BALSA:
+		case RawMaterial.RESOURCE_BALSA:
 			amt=amt/2;
 			break;
-		case EnvResource.RESOURCE_IRONWOOD:
+		case RawMaterial.RESOURCE_IRONWOOD:
 			amt=amt*2;
 			break;
 		}
@@ -315,7 +315,7 @@ public class CraftingSkill extends GatheringSkill
 		{
 			for(int i=0;i<req1.length;i++)
 			{
-				if((req1[i]&EnvResource.RESOURCE_MASK)==0)
+				if((req1[i]&RawMaterial.RESOURCE_MASK)==0)
 					firstWood=findMostOfMaterial(mob.location(),req1[i]);
 				else
 					firstWood=findFirstResource(mob.location(),req1[i]);
@@ -337,7 +337,7 @@ public class CraftingSkill extends GatheringSkill
 		{
 			for(int i=0;i<req2.length;i++)
 			{
-				if((req2[i]&EnvResource.RESOURCE_MASK)==0)
+				if((req2[i]&RawMaterial.RESOURCE_MASK)==0)
 					firstOther=findMostOfMaterial(mob.location(),req2[i]);
 				else
 					firstOther=findFirstResource(mob.location(),req2[i]);
@@ -379,13 +379,13 @@ public class CraftingSkill extends GatheringSkill
 
 		if(req1Required>data[0][FOUND_AMT])
 		{
-			commonTell(mob,"You need "+req1Required+" pounds of "+EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)].toLowerCase()+" to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
+			commonTell(mob,"You need "+req1Required+" pounds of "+RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)].toLowerCase()+" to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
 			return null;
 		}
 		data[0][FOUND_AMT]=req1Required;
 		if((req2Required>0)&&(req2Required>data[1][FOUND_AMT]))
 		{
-			commonTell(mob,"You need "+req2Required+" pounds of "+EnvResource.RESOURCE_DESCS[(data[1][FOUND_CODE]&EnvResource.RESOURCE_MASK)].toLowerCase()+" to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
+			commonTell(mob,"You need "+req2Required+" pounds of "+RawMaterial.RESOURCE_DESCS[(data[1][FOUND_CODE]&RawMaterial.RESOURCE_MASK)].toLowerCase()+" to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
 			return null;
 		}
 		data[1][FOUND_AMT]=req2Required;
@@ -490,7 +490,7 @@ public class CraftingSkill extends GatheringSkill
 		for(int i=0;i<room.numItems();i++)
 		{
 			Item I=room.fetchItem(i);
-			if((I instanceof EnvResource)
+			if((I instanceof RawMaterial)
 			&&(I.material()==resource)
 			&&(!CMLib.flags().isOnFire(I))
 			&&(!CMLib.flags().enchanted(I))

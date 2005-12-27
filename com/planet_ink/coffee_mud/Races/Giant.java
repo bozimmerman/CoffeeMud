@@ -56,9 +56,9 @@ public class Giant extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,18);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,7);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,7);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,18);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,7);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,7);
 	}
 	public String arriveStr()
 	{
@@ -122,11 +122,11 @@ public class Giant extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" hairs",EnvResource.RESOURCE_FUR));
+				("some "+name().toLowerCase()+" hairs",RawMaterial.RESOURCE_FUR));
 				resources.addElement(makeResource
-				("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_HIDE));
+				("a strip of "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

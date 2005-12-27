@@ -73,10 +73,10 @@ public class Spell_Shrink extends Spell
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		int str=affectableStats.getStat(CharStats.STRENGTH);
-		int dex=affectableStats.getStat(CharStats.DEXTERITY);
-		affectableStats.setStat(CharStats.STRENGTH,(str/10)+1);
-		affectableStats.setStat(CharStats.DEXTERITY,(dex*2)+1);
+		int str=affectableStats.getStat(CharStats.STAT_STRENGTH);
+		int dex=affectableStats.getStat(CharStats.STAT_DEXTERITY);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,(str/10)+1);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,(dex*2)+1);
 	}
 
 	public void affectEnvStats(Environmental host, EnvStats affectedStats)

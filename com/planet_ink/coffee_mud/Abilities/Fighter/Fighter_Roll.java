@@ -63,7 +63,7 @@ public class Fighter_Roll extends FighterSkill
 		&&(msg.tool() instanceof Weapon)
 		&&(mob.rangeToTarget()==0)
 		&&(!doneThisRound)
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,-85+mob.charStats().getStat(CharStats.DEXTERITY),false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,-85+mob.charStats().getStat(CharStats.STAT_DEXTERITY),false)))
 		{
 			doneThisRound=true;
 			double pctRecovery=(CMath.div(profficiency(),100.0)*Math.random());

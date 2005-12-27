@@ -136,7 +136,7 @@ public class Chant_WindGust extends Chant
 							target.setAtRange(target.location().maxRange());
 						mob.location().send(mob,msg);
 						if((!CMLib.flags().isInFlight(target))
-						&&(CMLib.dice().rollPercentage()>(((target.charStats().getStat(CharStats.DEXTERITY)*2)+target.envStats().level()))-(5*howLong))
+						&&(CMLib.dice().rollPercentage()>(((target.charStats().getStat(CharStats.STAT_DEXTERITY)*2)+target.envStats().level()))-(5*howLong))
 						&&(target.charStats().getBodyPart(Race.BODY_LEG)>0))
 						{
 							mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) down!");

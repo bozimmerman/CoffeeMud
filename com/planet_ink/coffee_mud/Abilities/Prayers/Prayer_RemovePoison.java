@@ -74,9 +74,9 @@ public class Prayer_RemovePoison extends Prayer
 				mob.location().send(mob,msg);
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
 					((Ability)offensiveAffects.elementAt(a)).unInvoke();
-				if((target instanceof Drink)&&(((Drink)target).liquidHeld()==EnvResource.RESOURCE_POISON))
+				if((target instanceof Drink)&&(((Drink)target).liquidHeld()==RawMaterial.RESOURCE_POISON))
 				{
-					((Drink)target).setLiquidHeld(EnvResource.RESOURCE_FRESHWATER);
+					((Drink)target).setLiquidHeld(RawMaterial.RESOURCE_FRESHWATER);
 					target.baseEnvStats().setAbility(0);
 				}
 				if(!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))

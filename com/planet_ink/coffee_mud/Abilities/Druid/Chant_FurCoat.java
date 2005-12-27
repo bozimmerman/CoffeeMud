@@ -133,7 +133,7 @@ public class Chant_FurCoat extends Chant
 				theArmor.setName("a fur coat");
 				theArmor.setDisplayText("");
 				theArmor.setDescription("The coat is made of thick black fur.");
-				theArmor.setMaterial(EnvResource.RESOURCE_FUR);
+				theArmor.setMaterial(RawMaterial.RESOURCE_FUR);
 				theArmor.baseEnvStats().setArmor(2*CMLib.ableMapper().qualifyingClassLevel(mob,this));
 				long wornCode=(Item.WORN_TORSO|Item.WORN_ARMS|Item.WORN_FEET|Item.WORN_WAIST|Item.WORN_LEGS);
 				theArmor.setRawProperLocationBitmap(wornCode);

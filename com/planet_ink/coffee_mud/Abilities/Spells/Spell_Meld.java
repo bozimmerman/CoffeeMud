@@ -51,18 +51,18 @@ public class Spell_Meld extends Spell
 			return true;
 		return false;
 	}
-	int[] heiarchy={EnvResource.MATERIAL_FLESH,
-					EnvResource.MATERIAL_PAPER,
-					EnvResource.MATERIAL_CLOTH,
-					EnvResource.MATERIAL_LEATHER,
-					EnvResource.MATERIAL_VEGETATION,
-					EnvResource.MATERIAL_WOODEN,
-					EnvResource.MATERIAL_PLASTIC,
-					EnvResource.MATERIAL_METAL,
-					EnvResource.MATERIAL_ROCK,
-					EnvResource.MATERIAL_PRECIOUS,
-					EnvResource.MATERIAL_ENERGY,
-					EnvResource.MATERIAL_MITHRIL,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99};
+	int[] heiarchy={RawMaterial.MATERIAL_FLESH,
+					RawMaterial.MATERIAL_PAPER,
+					RawMaterial.MATERIAL_CLOTH,
+					RawMaterial.MATERIAL_LEATHER,
+					RawMaterial.MATERIAL_VEGETATION,
+					RawMaterial.MATERIAL_WOODEN,
+					RawMaterial.MATERIAL_PLASTIC,
+					RawMaterial.MATERIAL_METAL,
+					RawMaterial.MATERIAL_ROCK,
+					RawMaterial.MATERIAL_PRECIOUS,
+					RawMaterial.MATERIAL_ENERGY,
+					RawMaterial.MATERIAL_MITHRIL,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99};
 
 	protected int getHeiarchy(int material)
 	{
@@ -188,7 +188,7 @@ public class Spell_Meld extends Spell
 				if((itemOne instanceof Armor)&&(itemTwo instanceof Armor))
 				{
 					int material=((Armor)itemOne).material();
-					if(getHeiarchy(material&EnvResource.MATERIAL_MASK)<getHeiarchy(((Armor)itemTwo).material()&EnvResource.MATERIAL_MASK))
+					if(getHeiarchy(material&RawMaterial.MATERIAL_MASK)<getHeiarchy(((Armor)itemTwo).material()&RawMaterial.MATERIAL_MASK))
 						material=((Armor)itemTwo).material();
 
 					long wornLocation=itemOne.rawProperLocationBitmap()|itemTwo.rawProperLocationBitmap();

@@ -44,9 +44,9 @@ public class Song_Dexterity extends Song
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
 		if(affected==invoker)
-			affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)-amount);
+			affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-amount);
 		else
-			affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)+amount);
+			affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+amount);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -59,7 +59,7 @@ public class Song_Dexterity extends Song
 			return false;
 		}
 
-		if(amount>=mob.charStats().getStat(CharStats.DEXTERITY))
+		if(amount>=mob.charStats().getStat(CharStats.STAT_DEXTERITY))
 		{
 			mob.tell("You can't sing away that much dexterity.");
 			return false;

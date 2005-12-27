@@ -173,7 +173,7 @@ public class Spell_Delirium extends Spell
 		&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			amountRemaining-=mob.charStats().getStat(CharStats.INTELLIGENCE);
+			amountRemaining-=mob.charStats().getStat(CharStats.STAT_INTELLIGENCE);
 			if(amountRemaining<0)
 				unInvoke();
 		}

@@ -65,7 +65,7 @@ public class Chant_CheetahBurst extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 		MOB mob=(MOB)affected;
-		mob.curState().adjMovement(mob.charStats().getStat(CharStats.STRENGTH)/5,mob.maxState());
+		mob.curState().adjMovement(mob.charStats().getStat(CharStats.STAT_STRENGTH)/5,mob.maxState());
 		return true;
 	}
 

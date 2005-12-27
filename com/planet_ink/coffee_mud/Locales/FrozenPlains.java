@@ -42,7 +42,7 @@ public class FrozenPlains extends Plains
 	}
 
 	public static final Integer[] resourceList={
-		new Integer(EnvResource.RESOURCE_FUR)};
+		new Integer(RawMaterial.RESOURCE_FUR)};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
 	public Vector resourceChoices(){return Plains.roomResources;}
 }

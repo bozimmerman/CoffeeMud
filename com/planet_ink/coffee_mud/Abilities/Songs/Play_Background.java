@@ -42,23 +42,23 @@ public class Play_Background extends Play
 		super.affectCharStats(mob,stats);
 		if(invoker()!=null)
 		{
-			int cha=invoker().charStats().getStat(CharStats.CHARISMA)/2;
+			int cha=invoker().charStats().getStat(CharStats.STAT_CHARISMA)/2;
 			int lvl=invokerLevel()/3;
-			stats.setStat(CharStats.SAVE_ACID,stats.getStat(CharStats.SAVE_ACID)+lvl+cha);
-			stats.setStat(CharStats.SAVE_COLD,stats.getStat(CharStats.SAVE_COLD)+lvl+cha);
-			stats.setStat(CharStats.SAVE_DISEASE,stats.getStat(CharStats.SAVE_DISEASE)+lvl+cha);
-			stats.setStat(CharStats.SAVE_ELECTRIC,stats.getStat(CharStats.SAVE_ELECTRIC)+lvl+cha);
-			stats.setStat(CharStats.SAVE_FIRE,stats.getStat(CharStats.SAVE_FIRE)+lvl+cha);
-			stats.setStat(CharStats.SAVE_GAS,stats.getStat(CharStats.SAVE_GAS)+lvl+cha);
-			stats.setStat(CharStats.SAVE_GENERAL,stats.getStat(CharStats.SAVE_GENERAL)+lvl+cha);
-			stats.setStat(CharStats.SAVE_JUSTICE,stats.getStat(CharStats.SAVE_JUSTICE)+lvl+cha);
-			stats.setStat(CharStats.SAVE_MAGIC,stats.getStat(CharStats.SAVE_MAGIC)+lvl+cha);
-			stats.setStat(CharStats.SAVE_MIND,stats.getStat(CharStats.SAVE_MIND)+lvl+cha);
-			stats.setStat(CharStats.SAVE_PARALYSIS,stats.getStat(CharStats.SAVE_PARALYSIS)+lvl+cha);
-			stats.setStat(CharStats.SAVE_POISON,stats.getStat(CharStats.SAVE_POISON)+lvl+cha);
-			stats.setStat(CharStats.SAVE_TRAPS,stats.getStat(CharStats.SAVE_TRAPS)+lvl+cha);
-			stats.setStat(CharStats.SAVE_UNDEAD,stats.getStat(CharStats.SAVE_UNDEAD)+lvl+cha);
-			stats.setStat(CharStats.SAVE_WATER,stats.getStat(CharStats.SAVE_WATER)+lvl+cha);
+			stats.setStat(CharStats.STAT_SAVE_ACID,stats.getStat(CharStats.STAT_SAVE_ACID)+lvl+cha);
+			stats.setStat(CharStats.STAT_SAVE_COLD,stats.getStat(CharStats.STAT_SAVE_COLD)+lvl+cha);
+			stats.setStat(CharStats.STAT_SAVE_DISEASE,stats.getStat(CharStats.STAT_SAVE_DISEASE)+lvl+cha);
+			stats.setStat(CharStats.STAT_SAVE_ELECTRIC,stats.getStat(CharStats.STAT_SAVE_ELECTRIC)+lvl+cha);
+			stats.setStat(CharStats.STAT_SAVE_FIRE,stats.getStat(CharStats.STAT_SAVE_FIRE)+lvl+cha);
+			stats.setStat(CharStats.STAT_SAVE_GAS,stats.getStat(CharStats.STAT_SAVE_GAS)+lvl+cha);
+			stats.setStat(CharStats.STAT_SAVE_GENERAL,stats.getStat(CharStats.STAT_SAVE_GENERAL)+lvl+cha);
+			stats.setStat(CharStats.STAT_SAVE_JUSTICE,stats.getStat(CharStats.STAT_SAVE_JUSTICE)+lvl+cha);
+			stats.setStat(CharStats.STAT_SAVE_MAGIC,stats.getStat(CharStats.STAT_SAVE_MAGIC)+lvl+cha);
+			stats.setStat(CharStats.STAT_SAVE_MIND,stats.getStat(CharStats.STAT_SAVE_MIND)+lvl+cha);
+			stats.setStat(CharStats.STAT_SAVE_PARALYSIS,stats.getStat(CharStats.STAT_SAVE_PARALYSIS)+lvl+cha);
+			stats.setStat(CharStats.STAT_SAVE_POISON,stats.getStat(CharStats.STAT_SAVE_POISON)+lvl+cha);
+			stats.setStat(CharStats.STAT_SAVE_TRAPS,stats.getStat(CharStats.STAT_SAVE_TRAPS)+lvl+cha);
+			stats.setStat(CharStats.STAT_SAVE_UNDEAD,stats.getStat(CharStats.STAT_SAVE_UNDEAD)+lvl+cha);
+			stats.setStat(CharStats.STAT_SAVE_WATER,stats.getStat(CharStats.STAT_SAVE_WATER)+lvl+cha);
 		}
 	}
 }

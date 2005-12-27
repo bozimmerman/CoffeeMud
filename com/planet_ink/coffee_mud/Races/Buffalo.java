@@ -60,7 +60,7 @@ public class Buffalo extends Cow
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,17);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,17);
 	}
 	public Vector myResources()
 	{
@@ -70,14 +70,14 @@ public class Buffalo extends Cow
 			{
 				for(int i=0;i<10;i++)
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_FUR));
+					("a strip of "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_FUR));
 				for(int i=0;i<5;i++)
 					resources.addElement(makeResource
-					("some "+name().toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));
+					("some "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_BEEF));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

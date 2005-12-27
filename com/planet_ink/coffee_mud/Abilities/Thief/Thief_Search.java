@@ -49,7 +49,7 @@ public class Thief_Search extends ThiefSkill
     public void affectCharStats(MOB affected, CharStats affectableStats)
     {
         super.affectCharStats(affected,affectableStats);
-        affectableStats.setStat(CharStats.SAVE_OVERLOOKING,bonusThisRoom+profficiency()+affectableStats.getStat(CharStats.SAVE_OVERLOOKING));
+        affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,bonusThisRoom+profficiency()+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
     }
     
     public boolean tick(Tickable ticking, int tickID)

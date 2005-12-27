@@ -2240,7 +2240,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					returnable=false;
 				else
 				{
-					String sex=(""+((char)((MOB)E).charStats().getStat(CharStats.GENDER))).toUpperCase();
+					String sex=(""+((char)((MOB)E).charStats().getStat(CharStats.STAT_GENDER))).toUpperCase();
 					if(arg2.equals("=="))
 						returnable=arg3.startsWith(sex);
 					else
@@ -2284,10 +2284,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					if((!found)&&(E instanceof MOB))
 					{
 						MOB M=(MOB)E;
-						for(int i=0;i<CharStats.TRAITS.length;i++)
-							if(CharStats.TRAITS[i].equalsIgnoreCase(arg2))
+						for(int i=0;i<CharStats.STAT_DESCS.length;i++)
+							if(CharStats.STAT_DESCS[i].equalsIgnoreCase(arg2))
 							{
-								val=""+M.charStats().getStat(CharStats.TRAITS[i]);
+								val=""+M.charStats().getStat(CharStats.STAT_DESCS[i]);
 								found=true;
 								break;
 							}
@@ -2366,10 +2366,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						if(!found)
 						{
 							MOB M=(MOB)E;
-							for(int i=0;i<CharStats.TRAITS.length;i++)
-								if(CharStats.TRAITS[i].equalsIgnoreCase(arg2))
+							for(int i=0;i<CharStats.STAT_DESCS.length;i++)
+								if(CharStats.STAT_DESCS[i].equalsIgnoreCase(arg2))
 								{
-									val=""+M.charStats().getStat(CharStats.TRAITS[i]);
+									val=""+M.charStats().getStat(CharStats.STAT_DESCS[i]);
 									found=true;
 									break;
 								}
@@ -3746,10 +3746,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					if((!found)&&(E instanceof MOB))
 					{
 						MOB M=(MOB)E;
-						for(int i=0;i<CharStats.TRAITS.length;i++)
-							if(CharStats.TRAITS[i].equalsIgnoreCase(arg2))
+						for(int i=0;i<CharStats.STAT_DESCS.length;i++)
+							if(CharStats.STAT_DESCS[i].equalsIgnoreCase(arg2))
 							{
-								val=""+M.charStats().getStat(CharStats.TRAITS[i]);
+								val=""+M.charStats().getStat(CharStats.STAT_DESCS[i]);
 								found=true;
 								break;
 							}
@@ -3813,10 +3813,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						if(!found)
 						{
 							MOB M=(MOB)E;
-							for(int i=0;i<CharStats.TRAITS.length;i++)
-								if(CharStats.TRAITS[i].equalsIgnoreCase(arg2))
+							for(int i=0;i<CharStats.STAT_DESCS.length;i++)
+								if(CharStats.STAT_DESCS[i].equalsIgnoreCase(arg2))
 								{
-									val=""+M.charStats().getStat(CharStats.TRAITS[i]);
+									val=""+M.charStats().getStat(CharStats.STAT_DESCS[i]);
 									found=true;
 									break;
 								}
@@ -4410,8 +4410,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					if((!found)&&(newTarget instanceof MOB))
 					{
 						MOB M=(MOB)newTarget;
-						for(int i=0;i<CharStats.TRAITS.length;i++)
-							if(CharStats.TRAITS[i].equalsIgnoreCase(arg2))
+						for(int i=0;i<CharStats.STAT_DESCS.length;i++)
+							if(CharStats.STAT_DESCS[i].equalsIgnoreCase(arg2))
 							{
 								M.baseCharStats().setStat(i,CMath.s_int(arg3));
 								M.recoverCharStats();
@@ -4475,9 +4475,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						if(!found)
 						{
 							MOB M=(MOB)newTarget;
-							for(int i=0;i<CharStats.TRAITS.length;i++)
+							for(int i=0;i<CharStats.STAT_DESCS.length;i++)
 							{
-								if(CharStats.TRAITS[i].equalsIgnoreCase(arg2))
+								if(CharStats.STAT_DESCS[i].equalsIgnoreCase(arg2))
 								{
                                     if((arg3.length()==1)&&(Character.isLetter(arg3.charAt(0))))
     									M.baseCharStats().setStat(i,arg3.charAt(0));
@@ -6730,7 +6730,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(SB.checkTimeToExecute())
                 {
                     execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message);
-					que.removeElementAt(q);
+                    if(q<que.size()) que.removeElementAt(q);
                 }
 			}
 		}catch(Exception e){Log.errOut("Scriptable",e);}

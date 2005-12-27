@@ -41,7 +41,7 @@ public class Bomb_AcidBurst extends StdBomb
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
 		if((!(E instanceof Item))
-		||(((Item)E).material()!=EnvResource.RESOURCE_LEMONS))
+		||(((Item)E).material()!=RawMaterial.RESOURCE_LEMONS))
 		{
 			if(mob!=null)
 				mob.tell("You need some lemons to make this out of.");
@@ -53,7 +53,7 @@ public class Bomb_AcidBurst extends StdBomb
 	{
 		if(target.location()!=null)
 		{
-			if((!invoker().mayIFight(target))||(target==invoker())||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
+			if((!invoker().mayIFight(target))||(target==invoker())||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) the acid burst!");
 			else
 			if(target.location().show(invoker(),target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,affected.name()+" sprays acid all over <T-NAME>!"))

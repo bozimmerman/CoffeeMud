@@ -41,7 +41,7 @@ public class StdJournal extends StdItem
 		setName("a journal");
 		setDisplayText("a journal sits here.");
 		setDescription("Enter `READ [NUMBER] [JOURNAL]` to read an entry.%0D%0AUse your WRITE skill to add new entries. ");
-		material=EnvResource.RESOURCE_PAPER;
+		material=RawMaterial.RESOURCE_PAPER;
 		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
 		recoverEnvStats();
 	}

@@ -40,7 +40,7 @@ public class Paladin extends StdCharClass
 	public int getBonusPracLevel(){return 0;}
 	public int getBonusAttackLevel(){return 2;}
 	public int getMovementMultiplier(){return 12;}
-	public int getAttackAttribute(){return CharStats.STRENGTH;}
+	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
 	public int getLevelsPerBonusDamage(){ return 1;}
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
@@ -58,8 +58,8 @@ public class Paladin extends StdCharClass
 	public Paladin()
 	{
 		super();
-		maxStatAdj[CharStats.STRENGTH]=4;
-		maxStatAdj[CharStats.WISDOM]=4;
+		maxStatAdj[CharStats.STAT_STRENGTH]=4;
+		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -186,7 +186,7 @@ public class Paladin extends StdCharClass
 		&&(!CMLib.flags().isGood(myChar))
 		&&((msg.tool()==null)||((CMLib.ableMapper().getQualifyingLevel(ID(),true,msg.tool().ID())>0)
 								&&(myChar.isMine(msg.tool()))))
-		&&(CMLib.dice().rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2))
+		&&(CMLib.dice().rollPercentage()>myChar.charStats().getStat(CharStats.STAT_WISDOM)*2))
 		{
 			myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> angry god absorb <S-HIS-HER> magical energy!");
 			return false;
@@ -197,14 +197,14 @@ public class Paladin extends StdCharClass
 	public String statQualifications(){return "Strength 9+, Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STRENGTH) <= 8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH) <= 8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Strength to become a Paladin.");
 			return false;
 		}
 
-		if(mob.baseCharStats().getStat(CharStats.WISDOM) <= 8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM) <= 8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Wisdom to become a Paladin.");

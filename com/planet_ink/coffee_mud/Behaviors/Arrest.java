@@ -455,7 +455,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			MOB M=R.fetchInhabitant(i);
 			if(M.isMonster()
 			&&(M!=accused)
-			&&(M.charStats().getStat(CharStats.INTELLIGENCE)>3)
+			&&(M.charStats().getStat(CharStats.STAT_INTELLIGENCE)>3)
 			&&(CMLib.dice().rollPercentage()<=(CMLib.flags().isEvil(accused)?25:(CMLib.flags().isGood(accused)?95:50))))
 				return M;
 		}
@@ -1693,7 +1693,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		    &&(msg.target() instanceof Item)
 		    &&(laws.bannedSubstances().size()>0))
 		    {
-		        String rsc=EnvResource.RESOURCE_DESCS[((Item)msg.target()).material()&EnvResource.RESOURCE_MASK].toUpperCase();
+		        String rsc=RawMaterial.RESOURCE_DESCS[((Item)msg.target()).material()&RawMaterial.RESOURCE_MASK].toUpperCase();
 				for(int i=0;i<laws.bannedSubstances().size();i++)
 				{
 					Vector V=(Vector)laws.bannedSubstances().elementAt(i);
@@ -2194,7 +2194,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						{
 							W.setTravelAttemptTime(0);
 							String sirmaam="Sir";
-							if(Character.toString((char)judge.charStats().getStat(CharStats.GENDER)).equalsIgnoreCase("F"))
+							if(Character.toString((char)judge.charStats().getStat(CharStats.STAT_GENDER)).equalsIgnoreCase("F"))
 								sirmaam="Ma'am";
 							CMLib.commands().postSay(officer,judge,sirmaam+", "+W.criminal().name()+" has been arrested "+restOfCharges(laws,W.criminal())+".",false,false);
                             Vector warrants=getRelevantWarrants(laws.warrants(),W,W.criminal());

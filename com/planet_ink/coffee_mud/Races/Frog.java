@@ -64,9 +64,9 @@ public class Frog extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,3);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,3);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,3);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,3);
 	}
 	public String arriveStr()
 	{
@@ -129,11 +129,11 @@ public class Frog extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" tongue",EnvResource.RESOURCE_MEAT));
+				("a "+name().toLowerCase()+" tongue",RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" hide",EnvResource.RESOURCE_HIDE));
+				("a "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

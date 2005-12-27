@@ -80,10 +80,10 @@ public class RaceData extends StdWebMacro
 						int oldStat=mob2.charStats().getStat(c);
 						int newStat=mob.charStats().getStat(c);
 						if(oldStat>newStat)
-							str.append(CharStats.TRAITS[c].toLowerCase()+"-"+(oldStat-newStat)+", ");
+							str.append(CharStats.STAT_DESCS[c].toLowerCase()+"-"+(oldStat-newStat)+", ");
 						else
 						if(newStat>oldStat)
-							str.append(CharStats.TRAITS[c].toLowerCase()+"+"+(newStat-oldStat)+", ");
+							str.append(CharStats.STAT_DESCS[c].toLowerCase()+"+"+(newStat-oldStat)+", ");
 					}
 				}
 				if(parms.containsKey("SENSES"))

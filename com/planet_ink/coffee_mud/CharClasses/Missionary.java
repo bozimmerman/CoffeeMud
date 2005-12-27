@@ -36,7 +36,7 @@ public class Missionary extends Cleric
 	public String ID(){return "Missionary";}
 	public String name(){return "Missionary";}
 	public String baseClass(){return "Cleric";}
-	public int getAttackAttribute(){return CharStats.WISDOM;}
+	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
@@ -46,8 +46,8 @@ public class Missionary extends Cleric
 
 	public Missionary()
 	{
-		maxStatAdj[CharStats.WISDOM]=4;
-		maxStatAdj[CharStats.DEXTERITY]=4;
+		maxStatAdj[CharStats.STAT_WISDOM]=4;
+		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -138,21 +138,21 @@ public class Missionary extends Cleric
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	private static final int[] allSaves={
-		CharStats.SAVE_ACID,
-		CharStats.SAVE_COLD,
-		CharStats.SAVE_DISEASE,
-		CharStats.SAVE_ELECTRIC,
-		CharStats.SAVE_FIRE,
-		CharStats.SAVE_GAS,
-		CharStats.SAVE_GENERAL,
-		CharStats.SAVE_JUSTICE,
-		CharStats.SAVE_MAGIC,
-		CharStats.SAVE_MIND,
-		CharStats.SAVE_PARALYSIS,
-		CharStats.SAVE_POISON,
-		CharStats.SAVE_UNDEAD,
-		CharStats.SAVE_WATER,
-		CharStats.SAVE_TRAPS};
+		CharStats.STAT_SAVE_ACID,
+		CharStats.STAT_SAVE_COLD,
+		CharStats.STAT_SAVE_DISEASE,
+		CharStats.STAT_SAVE_ELECTRIC,
+		CharStats.STAT_SAVE_FIRE,
+		CharStats.STAT_SAVE_GAS,
+		CharStats.STAT_SAVE_GENERAL,
+		CharStats.STAT_SAVE_JUSTICE,
+		CharStats.STAT_SAVE_MAGIC,
+		CharStats.STAT_SAVE_MIND,
+		CharStats.STAT_SAVE_PARALYSIS,
+		CharStats.STAT_SAVE_POISON,
+		CharStats.STAT_SAVE_UNDEAD,
+		CharStats.STAT_SAVE_WATER,
+		CharStats.STAT_SAVE_TRAPS};
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -166,13 +166,13 @@ public class Missionary extends Cleric
 	public String statQualifications(){return "Wisdom 9+ Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.WISDOM)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Wisdom to become a Missionary.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Dexterity to become a Missionary.");

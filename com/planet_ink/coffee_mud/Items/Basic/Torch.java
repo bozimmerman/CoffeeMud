@@ -43,7 +43,7 @@ public class Torch extends LightSource
 		setDescription("It looks like it is lightly covered in oil near the end.");
 		durationTicks=200;
 
-		material=EnvResource.RESOURCE_OAK;
+		material=RawMaterial.RESOURCE_OAK;
 		this.destroyedWhenBurnedOut=true;
 		this.goesOutInTheRain=true;
 		baseGoldValue=1;

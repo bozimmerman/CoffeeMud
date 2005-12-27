@@ -106,7 +106,7 @@ public class Chant_BrownMold extends Chant
 			mob.tell("Only the anger of combat can summon the brown mold.");
 			return false;
 		}
-		int material=EnvResource.RESOURCE_HEMP;
+		int material=RawMaterial.RESOURCE_HEMP;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -157,7 +157,7 @@ public class Chant_BrownMold extends Chant
 		newMOB.baseEnvStats().setDamage(25);
 		newMOB.baseEnvStats().setAttackAdjustment(60);
 		newMOB.baseEnvStats().setArmor(0);
-		newMOB.baseCharStats().setStat(CharStats.GENDER,'N');
+		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();

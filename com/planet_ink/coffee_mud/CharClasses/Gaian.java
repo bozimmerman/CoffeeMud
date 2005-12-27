@@ -39,7 +39,7 @@ public class Gaian extends StdCharClass
 	public String baseClass(){return "Druid";}
 	public int getBonusPracLevel(){return 2;}
 	public int getBonusAttackLevel(){return 1;}
-	public int getAttackAttribute(){return CharStats.CONSTITUTION;}
+	public int getAttackAttribute(){return CharStats.STAT_CONSTITUTION;}
 	public int getLevelsPerBonusDamage(){ return 6;}
 	public int getHPDivisor(){return 2;}
 	public int getHPDice(){return 2;}
@@ -60,8 +60,8 @@ public class Gaian extends StdCharClass
 	public Gaian()
 	{
 		super();
-		maxStatAdj[CharStats.CONSTITUTION]=4;
-		maxStatAdj[CharStats.WISDOM]=4;
+		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
+		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -186,13 +186,13 @@ public class Gaian extends StdCharClass
 	public String statQualifications(){return "Constitution 9+, Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.CONSTITUTION)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Constitution to become a Gaian.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.WISDOM)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Wisdom to become a Gaian.");

@@ -91,8 +91,8 @@ public class Cow extends StdMOB implements Drink
 			I.setName("some milk");
 			I.setDisplayText("some milk has been left here.");
 			I.setDescription("It looks like milk");
-			I.setMaterial(EnvResource.RESOURCE_MILK);
-			I.setBaseValue(EnvResource.RESOURCE_DATA[EnvResource.RESOURCE_MILK&EnvResource.RESOURCE_MASK][1]);
+			I.setMaterial(RawMaterial.RESOURCE_MILK);
+			I.setBaseValue(RawMaterial.RESOURCE_DATA[RawMaterial.RESOURCE_MILK&RawMaterial.RESOURCE_MASK][1]);
 			I.baseEnvStats().setWeight(1);
 			I.recoverEnvStats();
 			I.setContainer(container);
@@ -107,7 +107,7 @@ public class Cow extends StdMOB implements Drink
 	public int thirstQuenched(){return 100;}
 	public int liquidHeld(){return Integer.MAX_VALUE-1000;}
 	public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
-	public int liquidType(){return EnvResource.RESOURCE_MILK;}
+	public int liquidType(){return RawMaterial.RESOURCE_MILK;}
     public boolean disappearsAfterDrinking(){return false;}
 	public void setLiquidType(int newLiquidType){}
 	public void setThirstQuenched(int amount){}

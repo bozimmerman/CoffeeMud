@@ -49,7 +49,7 @@ public class StdSpear extends StdWeapon
 		minRange=0;
 		maxRange=3;
 		weaponType=Weapon.TYPE_PIERCING;
-		material=EnvResource.RESOURCE_WOOD;
+		material=RawMaterial.RESOURCE_WOOD;
 		weaponClassification=Weapon.CLASS_THROWN;
 		setRawLogicalAnd(false);
 	}

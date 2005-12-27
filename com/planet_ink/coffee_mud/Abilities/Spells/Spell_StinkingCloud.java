@@ -86,7 +86,7 @@ public class Spell_StinkingCloud extends Spell
 				switch(msg.sourceMinor())
 				{
 				case CMMsg.TYP_ADVANCE:
-					if(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_GAS)))
+					if(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_GAS)))
 					{
 						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> double(s) over from the sickening gas.");
 						return false;

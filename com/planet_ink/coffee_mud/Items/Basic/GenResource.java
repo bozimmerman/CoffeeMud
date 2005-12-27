@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenResource extends GenItem implements EnvResource
+public class GenResource extends GenItem implements RawMaterial
 {
 	public String ID(){	return "GenResource";}
 	public GenResource()
@@ -41,7 +41,7 @@ public class GenResource extends GenItem implements EnvResource
 		setName("a pile of resource thing");
 		setDisplayText("a pile of resource sits here.");
 		setDescription("");
-		setMaterial(EnvResource.RESOURCE_IRON);
+		setMaterial(RawMaterial.RESOURCE_IRON);
 		baseEnvStats().setWeight(0);
 		recoverEnvStats();
 	}

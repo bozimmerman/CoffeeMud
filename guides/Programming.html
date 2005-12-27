@@ -810,14 +810,14 @@ public MyNewMOB()
 		
 	baseCharStats().setMyRace(CMClass.getRace("Dog"));
 	baseCharStats().getMyRace().startRacing(this,false);
-	baseCharStats().setStat(CharStats.GENDER,(int)'F');
-	baseCharStats().setStat(CharStats.STRENGTH,18); 
-	baseCharStats().setStat(CharStats.INTELLIGENCE,14);
-	baseCharStats().setStat(CharStats.WISDOM,13);
-	baseCharStats().setStat(CharStats.DEXTERITY,15);
-	baseCharStats().setStat(CharStats.CONSTITUTION,12);
-	baseCharStats().setStat(CharStats.CHARISMA,13);
-	baseCharStats().setStat(CharStats.SAVE_COLD,50);<BR>
+	baseCharStats().setStat(CharStats.STAT_GENDER,(int)'F');
+	baseCharStats().setStat(CharStats.STAT_STRENGTH,18); 
+	baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,14);
+	baseCharStats().setStat(CharStats.STAT_WISDOM,13);
+	baseCharStats().setStat(CharStats.STAT_DEXTERITY,15);
+	baseCharStats().setStat(CharStats.STAT_CONSTITUTION,12);
+	baseCharStats().setStat(CharStats.STAT_CHARISMA,13);
+	baseCharStats().setStat(CharStats.STAT_SAVE_COLD,50);<BR>
 	baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,20));
 	baseState.setMana(Dice.roll(baseEnvStats().level(),50,100));
 		
@@ -1004,7 +1004,7 @@ public MyNewSword()
 	setDescription("A long super duper sword!"); 
 	setDisplayText("Someone left their super sword here."); 
 	setSecretIdentity("");
-	setMaterial(EnvResource.RESOURCE_STEEL);
+	setMaterial(RawMaterial.RESOURCE_STEEL);
 	setWeaponType(Weapon.TYPE_SLASHING);
 	setWeaponClassigication(Weapon.CLASS_SWORD);
 		
@@ -1030,7 +1030,7 @@ public MyNewBow()
 	setDisplayText("Someone left their super bow here.");
 	setSecretIdentity("");
 		
-	setMaterial(EnvResource.RESOURCE_OAK);
+	setMaterial(RawMaterial.RESOURCE_OAK);
 	setBaseValue(5000);
 	baseEnvStats.setWeight(15);
 	baseEnvStats.setAttackAdjustment(20);
@@ -1057,7 +1057,7 @@ public MyNewArmor()
 	setDisplayText("Someone left their super bracer here.");
 	setSecretIdentity("");
 		
-	setMaterial(EnvResource.RESOURCE_STEEL);
+	setMaterial(RawMaterial.RESOURCE_STEEL);
 	setBaseValue(100);
 	baseEnvStats.setWeight(5);
 	baseEnvStats.setArmor(5);
@@ -1082,7 +1082,7 @@ public MyNewBag()
 	setBaseValue(50);
 	setLidsNLocks(false,true,false,false);
 	setKeyName("");
-	setMaterial(EnvResource.RESOURCE_LEATHER);
+	setMaterial(RawMaterial.RESOURCE_LEATHER);
 	baseEnvStats.setWeight(1);
 	setCapacity(100);
 	recoverEnvStats();
@@ -1103,12 +1103,12 @@ public MyNewCup()
 	setDisplayText("Someone left their super bag here.");
 	setSecretIdentity("");
 		
-	setMaterial(EnvResource.RESOURCE_LEATHER);
+	setMaterial(RawMaterial.RESOURCE_LEATHER);
 	setBaseValue(5);
 	setLiquidHeld(2000);
 	setLiquidRemaining(2000);
 	setThirstQuenched(500);
-	setLiquidType(EnvResource.RESOURCE_MILK);
+	setLiquidType(RawMaterial.RESOURCE_MILK);
 	baseEnvStats.setWeight(1);
 	setCapacity(0);
 	recoverEnvStats();
@@ -1127,7 +1127,7 @@ public MyNewFood()
 	setSecretIdentity("");
 		
 	setBaseValue(1);
-	setMaterial(EnvResource.RESOURCE_MEAT);
+	setMaterial(RawMaterial.RESOURCE_MEAT);
 	setNourishment(500);
 	baseEnvStats.setWeight(1);
 	recoverEnvStats();
@@ -1163,7 +1163,7 @@ public MyNewMoney()
 	setSecretIdentity("");
 		
 	setBaseValue(0);
-	setMaterial(EnvResource.RESOURCE_GOLD);
+	setMaterial(RawMaterial.RESOURCE_GOLD);
 	baseEnvstats.setAbility(1000); // 1000 coins!
 	baseEnvStats.setWeight(1);
 	recoverEnvStats();
@@ -1181,7 +1181,7 @@ Now, to a magical <STRONG>StdPill</STRONG>:</FONT></P><pre>public MyNewPill()
 	setSecretIdentity("");
 		
 	setBaseValue(1);
-	setMaterial(EnvResource.RESOURCE_MEAT);
+	setMaterial(RawMaterial.RESOURCE_MEAT);
 	setNourishment(500);
 	baseEnvStats.setWeight(1);
 	setSpellList("Spell_Sleep;Prayer_CureLightWounds");
@@ -1206,7 +1206,7 @@ public MyNewScroll()
 	setSecretIdentity("");
 	setBaseValue(100);
 		
-	setMaterial(EnvResource.RESOURCE_PAPER);
+	setMaterial(RawMaterial.RESOURCE_PAPER);
 	setUsesRemaining(50);
 	baseEnvStats.setWeight(1);
 	setScrollSpells("Spell_Sleep;Prayer_CureLightWounds");
@@ -1226,7 +1226,7 @@ public MyNewWand()
 	setSecretIdentity("");
 		
 	setBaseValue(1000);
-	setMaterial(EnvResource.RESOURCE_OAK);
+	setMaterial(RawMaterial.RESOURCE_OAK);
 	baseEnvStats.setWeight(1);
 	setSpell(CMClass.getAbility("Spell_Fireball"));
 	setUsesRemaining(50);
@@ -2166,7 +2166,7 @@ public int getBonusPracLevel(){return 0;}
 methods define the starting Training and Practice points for this Character 
 Class. The BonusPracLevel method tells us how many bonus practices (above the 
 number determined the WISDOM/4 formula) which the player will receive every 
-level.</FONT></P><pre>public int getAttackAttribute(){return CharStats.STRENGTH;}
+level.</FONT></P><pre>public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
 public int getBonusAttackLevel(){return 1;}
 </PRE>
 <P align=left><FONT size=4>And here is 
@@ -2252,7 +2252,7 @@ public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 public NormalGuy()
 {
 	super();
-	maxStat[CharStats.CHARISMA]=10;
+	maxStat[CharStats.STAT_CHARISMA]=10;
 	if(!loaded())
 	{
 		setLoaded(true);
@@ -2589,9 +2589,9 @@ of the affectEnvStats method we discussed in the digressions above makes sure
 that all creatures of this race can see in the infrared spectrum.</FONT></P><pre>public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 {
 	super.affectCharStats(affectedMOB, affectableStats);
-	affectableStats.setStat(CharStats.STRENGTH,15);
-	affectableStats.setStat(CharStats.DEXTERITY,25);
-	affectableStats.setStat(CharStats.INTELLIGENCE,5);
+	affectableStats.setStat(CharStats.STAT_STRENGTH,15);
+	affectableStats.setStat(CharStats.STAT_DEXTERITY,25);
+	affectableStats.setStat(CharStats.STAT_INTELLIGENCE,5);
 }
 </PRE>
 <P align=left><FONT size=4>This sample 
@@ -2668,20 +2668,20 @@ this type.</FONT></P><pre>public Vector myResources()
 		if(resources.size()==0)
 		{
 		resources.addElement(makeResource("a "+name().toLowerCase()+"
-				 claw",EnvResource.RESOURCE_BONE)); 
+				 claw",RawMaterial.RESOURCE_BONE)); 
 		for(int i=0;i&lt;10;i++)
 			resources.addElement(makeResource("a strip of "
 				+name().toLowerCase()+" hide",
-				EnvResource.RESOURCE_SCALES));
+				RawMaterial.RESOURCE_SCALES));
 
 		for(inti=0;i&lt;10;i++)
 			resources.addElement(makeResource("a pound of "
 				 +name().toLowerCase()+" meat",
-				 EnvResource.RESOURCE_MEAT));
+				 RawMaterial.RESOURCE_MEAT));
 
 		resources.addElement(makeResource("some "
 			 +name().toLowerCase()+" blood",
-			 EnvResource.RESOURCE_BLOOD));
+			 RawMaterial.RESOURCE_BLOOD));
 		}
 	}
 	return resources;
@@ -3484,7 +3484,7 @@ all other preliminary checks have been made.</FONT></P><PRE>      int levelDiff=
          levelDiff=levelDiff*5;
       else
          levelDiff=0;
-      int adjustment=(-levelDiff)+(-(35+((int)Math.round((new Integer(target.charStats().getStat(CharStats.DEXTERITY)).doubleValue()-9.0)*3.0))));
+      int adjustment=(-levelDiff)+(-(35+((int)Math.round((new Integer(target.charStats().getStat(CharStats.STAT_DEXTERITY)).doubleValue()-9.0)*3.0))));
       boolean success=profficiencyCheck(mob,adjustment,auto);
 </PRE>
 <P></P>
@@ -3875,12 +3875,12 @@ take damage as well. Here you can see three methods being used to designate how
 often the emote/damage cycle occurs (in ticks) as well as the amount of damage, 
 and the text of the emote.</FONT></P><PRE>	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-1);
-		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)-1);
-		if(affectableStats.getStat(CharStats.CONSTITUTION)&lt;=0)
-			affectableStats.setStat(CharStats.CONSTITUTION,1);
-		if(affectableStats.getStat(CharStats.STRENGTH)&lt;=0)
-			affectableStats.setStat(CharStats.STRENGTH,1);
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-1);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-1);
+		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)&lt;=0)
+			affectableStats.setStat(CharStats.STAT_CONSTITUTION,1);
+		if(affectableStats.getStat(CharStats.STAT_STRENGTH)&lt;=0)
+			affectableStats.setStat(CharStats.STAT_STRENGTH,1);
 	}
 }
 </PRE>
@@ -3958,8 +3958,8 @@ These first few lines of the method are error and state checking, as well as
 defining some useful variables, such as who caused the disease (diseaser), and 
 who has the disease (mob)</FONT></P><PRE>		
 		if((getTickDownRemaining()==1)
-		&amp;&amp;(Dice.rollPercentage()&gt;mob.charStats().getSave(CharStats.SAVE_COLD))
-		&amp;&amp;(Dice.rollPercentage()&lt;25-mob.charStats().getStat(CharStats.CONSTITUTION))
+		&amp;&amp;(Dice.rollPercentage()&gt;mob.charStats().getSave(CharStats.STAT_SAVE_COLD))
+		&amp;&amp;(Dice.rollPercentage()&lt;25-mob.charStats().getStat(CharStats.STAT_CONSTITUTION))
 		&amp;&amp;(!mob.amDead())
 		&amp;&amp;(!mob.isMonster()))
 		{
@@ -4000,12 +4000,12 @@ handling any diseases spread by proximity as defined in abilityCode()
 above.</FONT></P><PRE>	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(affected==null) return;
-		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-2);
-		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)-3);
-		if(affectableStats.getStat(CharStats.CONSTITUTION)&lt;=0)
-			affectableStats.setStat(CharStats.CONSTITUTION,1);
-		if(affectableStats.getStat(CharStats.STRENGTH)&lt;=0)
-			affectableStats.setStat(CharStats.STRENGTH,1);
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-2);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-3);
+		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)&lt;=0)
+			affectableStats.setStat(CharStats.STAT_CONSTITUTION,1);
+		if(affectableStats.getStat(CharStats.STAT_STRENGTH)&lt;=0)
+			affectableStats.setStat(CharStats.STAT_STRENGTH,1);
 	}
 }
 </PRE>

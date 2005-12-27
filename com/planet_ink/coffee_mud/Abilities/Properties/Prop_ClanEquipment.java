@@ -119,61 +119,61 @@ public class Prop_ClanEquipment extends Property
 		if (type.equalsIgnoreCase("PARALYSIS")) {
 			TypeOfEffect = CMMsg.TYP_PARALYZE;
 			WeaponType = Weapon.TYPE_STRIKING;
-			this.EQadjCharStats.setStat(CharStats.SAVE_PARALYSIS, PowerLevel * 5);
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_PARALYSIS, PowerLevel * 5);
 		}
 		else
 		if (type.equalsIgnoreCase("FIRE")) {
 			TypeOfEffect = CMMsg.TYP_FIRE;
 			WeaponType = Weapon.TYPE_BURNING;
-			this.EQadjCharStats.setStat(CharStats.SAVE_FIRE, PowerLevel * 5);
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_FIRE, PowerLevel * 5);
 		}
 		else
 		if (type.equalsIgnoreCase("COLD")) {
 			TypeOfEffect = CMMsg.TYP_COLD;
 			WeaponType = Weapon.TYPE_FROSTING;
-			this.EQadjCharStats.setStat(CharStats.SAVE_COLD, PowerLevel * 5);
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_COLD, PowerLevel * 5);
 		}
 		else
 		if (type.equalsIgnoreCase("WATER")) {
 			TypeOfEffect = CMMsg.TYP_WATER;
 			WeaponType = Weapon.TYPE_SLASHING;
-			this.EQadjCharStats.setStat(CharStats.SAVE_WATER, PowerLevel * 5);
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_WATER, PowerLevel * 5);
 		}
 		else
 		if (type.equalsIgnoreCase("GAS")) {
 			TypeOfEffect = CMMsg.TYP_GAS;
 			WeaponType = Weapon.TYPE_GASSING;
-			this.EQadjCharStats.setStat(CharStats.SAVE_GAS, PowerLevel * 5);
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_GAS, PowerLevel * 5);
 		}
 		else
 		if (type.equalsIgnoreCase("MIND")) {
 			TypeOfEffect = CMMsg.TYP_MIND;
 			WeaponType = Weapon.TYPE_STRIKING;
-			this.EQadjCharStats.setStat(CharStats.SAVE_MIND, PowerLevel * 5);
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_MIND, PowerLevel * 5);
 		}
 		else
 		if (type.equalsIgnoreCase("ACID")) {
 			TypeOfEffect = CMMsg.TYP_ACID;
 			WeaponType = Weapon.TYPE_MELTING;
-			this.EQadjCharStats.setStat(CharStats.SAVE_ACID, PowerLevel * 5);
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_ACID, PowerLevel * 5);
 		}
 		else
 		if (type.equalsIgnoreCase("ELECTRIC")) {
 			TypeOfEffect = CMMsg.TYP_ELECTRIC;
 			WeaponType = Weapon.TYPE_BURNING;
-			this.EQadjCharStats.setStat(CharStats.SAVE_ELECTRIC, PowerLevel * 5);
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_ELECTRIC, PowerLevel * 5);
 		}
 		else
 		if (type.equalsIgnoreCase("POISON")) {
 			TypeOfEffect = CMMsg.TYP_POISON;
 			WeaponType = Weapon.TYPE_STRIKING;
-			this.EQadjCharStats.setStat(CharStats.SAVE_POISON, PowerLevel * 5);
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_POISON, PowerLevel * 5);
 		}
 		else
 		if (type.equalsIgnoreCase("DISEASE")) {
 			TypeOfEffect = CMMsg.TYP_DISEASE;
 			WeaponType = Weapon.TYPE_STRIKING;
-			this.EQadjCharStats.setStat(CharStats.SAVE_DISEASE, PowerLevel * 5);
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_DISEASE, PowerLevel * 5);
 		}
 		else
 		if (type.equalsIgnoreCase("HEALTH")) {
@@ -272,20 +272,20 @@ public class Prop_ClanEquipment extends Property
 	public static void initAdjustments(CharStats adjCharStats)
 	{
 		// ensure we get no NULL errors
-		adjCharStats.setStat(CharStats.SAVE_MAGIC, 0);
-		adjCharStats.setStat(CharStats.SAVE_GAS, 0);
-		adjCharStats.setStat(CharStats.SAVE_FIRE, 0);
-		adjCharStats.setStat(CharStats.SAVE_ELECTRIC, 0);
-		adjCharStats.setStat(CharStats.SAVE_MIND, 0);
-		adjCharStats.setStat(CharStats.SAVE_JUSTICE, 0);
-		adjCharStats.setStat(CharStats.SAVE_COLD, 0);
-		adjCharStats.setStat(CharStats.SAVE_ACID, 0);
-		adjCharStats.setStat(CharStats.SAVE_WATER, 0);
-		adjCharStats.setStat(CharStats.SAVE_UNDEAD, 0);
-		adjCharStats.setStat(CharStats.SAVE_DISEASE, 0);
-		adjCharStats.setStat(CharStats.SAVE_POISON, 0);
-		adjCharStats.setStat(CharStats.SAVE_PARALYSIS, 0);
-		adjCharStats.setStat(CharStats.SAVE_TRAPS, 0);
+		adjCharStats.setStat(CharStats.STAT_SAVE_MAGIC, 0);
+		adjCharStats.setStat(CharStats.STAT_SAVE_GAS, 0);
+		adjCharStats.setStat(CharStats.STAT_SAVE_FIRE, 0);
+		adjCharStats.setStat(CharStats.STAT_SAVE_ELECTRIC, 0);
+		adjCharStats.setStat(CharStats.STAT_SAVE_MIND, 0);
+		adjCharStats.setStat(CharStats.STAT_SAVE_JUSTICE, 0);
+		adjCharStats.setStat(CharStats.STAT_SAVE_COLD, 0);
+		adjCharStats.setStat(CharStats.STAT_SAVE_ACID, 0);
+		adjCharStats.setStat(CharStats.STAT_SAVE_WATER, 0);
+		adjCharStats.setStat(CharStats.STAT_SAVE_UNDEAD, 0);
+		adjCharStats.setStat(CharStats.STAT_SAVE_DISEASE, 0);
+		adjCharStats.setStat(CharStats.STAT_SAVE_POISON, 0);
+		adjCharStats.setStat(CharStats.STAT_SAVE_PARALYSIS, 0);
+		adjCharStats.setStat(CharStats.STAT_SAVE_TRAPS, 0);
 	}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
@@ -382,7 +382,7 @@ public class Prop_ClanEquipment extends Property
 		    && (TypeOfEffect < 1000))
 		{
 			if ( (CMLib.dice().rollPercentage() >
-			      32 + msg.source().charStats().getStat(CharStats.DEXTERITY))
+			      32 + msg.source().charStats().getStat(CharStats.STAT_DEXTERITY))
 			    && (msg.source().rangeToTarget() == 0)
 			    &&
 			    ( (lastMessage == null) || (lastMessage.indexOf("The magic around")<0))

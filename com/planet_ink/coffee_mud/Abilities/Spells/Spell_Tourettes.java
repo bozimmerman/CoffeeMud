@@ -79,7 +79,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 			MOB target=mob.location().fetchInhabitant(CMLib.dice().roll(1,mob.location().numInhabitants(),-1));
 			if((target!=null)
 			&&(!mob.amDead())
-			&&(target.charStats().getStat(CharStats.INTELLIGENCE)>5)
+			&&(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>5)
 			&&(CMLib.flags().canSpeak(mob))
 			&&(CMLib.flags().canBeHeardBy(target,mob)))
 			{
@@ -92,7 +92,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 				case 4: say="Squeegee!"; break;
 				case 5: say="Ding dong!"; break;
 				case 6: say="Goober!"; break;
-				case 7: say="Noodle"+((target.charStats().getStat(CharStats.GENDER)=='M')?"boy":"girl")+"!"; break;
+				case 7: say="Noodle"+((target.charStats().getStat(CharStats.STAT_GENDER)=='M')?"boy":"girl")+"!"; break;
 				case 8: say="Groin scratcher!"; break;
 				case 9: say="Geek!"; break;
 				case 10: say="Dork!"; break;
@@ -115,12 +115,12 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 				case 27: say="You.. you.. ah nevermind."; break;
 				case 28: say="Yokle!"; break;
 				case 29: say="Ugly head!"; break;
-				case 30: say="Goop"+((target.charStats().getStat(CharStats.GENDER)=='M')?"boy":"girl")+"!";  break;
+				case 30: say="Goop"+((target.charStats().getStat(CharStats.STAT_GENDER)=='M')?"boy":"girl")+"!";  break;
 				}
 				CMLib.commands().postSay(mob,target,say,false,false);
 				if((target!=invoker)&&(target!=mob)&&(target.fetchEffect(ID())==null))
 				{
-					if(CMLib.dice().rollPercentage()>target.charStats().getSave(CharStats.SAVE_DISEASE))
+					if(CMLib.dice().rollPercentage()>target.charStats().getSave(CharStats.STAT_SAVE_DISEASE))
 					{
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) different somehow...");
 						maliciousAffect(invoker,target,0,0,-1);
@@ -137,7 +137,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setStat(CharStats.CHARISMA,2);
+		affectableStats.setStat(CharStats.STAT_CHARISMA,2);
 	}
 
 

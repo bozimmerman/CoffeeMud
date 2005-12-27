@@ -165,7 +165,7 @@ public class CommonSkill extends StdAbility
 			if((room!=null)&&(exit!=null)&&(exit.isOpen()))
 			{
 				int material=room.myResource();
-				if(materials.contains(new Integer(material&EnvResource.MATERIAL_MASK)))
+				if(materials.contains(new Integer(material&RawMaterial.MATERIAL_MASK)))
 				{possibilities.addElement(new Integer(d));}
 			}
 		}
@@ -214,7 +214,7 @@ public class CommonSkill extends StdAbility
 			if(I==never) continue;
 
 			if((otherMaterial>0)
-			&&(I instanceof EnvResource)
+			&&(I instanceof RawMaterial)
 			&&(I.container()==null)
 			&&(!CMLib.flags().isOnFire(I))
 			&&(!CMLib.flags().enchanted(I))
@@ -242,7 +242,7 @@ public class CommonSkill extends StdAbility
                 otherMaterial=-1;
 			}
 			else
-			if((I instanceof EnvResource)
+			if((I instanceof RawMaterial)
 			&&(I.container()==null)
 			&&(!CMLib.flags().isOnFire(I))
 			&&(!CMLib.flags().enchanted(I))

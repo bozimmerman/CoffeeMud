@@ -46,7 +46,7 @@ public class ScaleMail extends StdArmor
 		baseEnvStats().setAbility(0);
 		baseGoldValue=240;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 	}
 
 }

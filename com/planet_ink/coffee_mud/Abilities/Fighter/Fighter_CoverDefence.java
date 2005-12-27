@@ -60,7 +60,7 @@ public class Fighter_CoverDefence extends FighterSkill
 		   &&(msg.tool() instanceof Weapon)
 		   &&((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
 			  ||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN))
-		   &&(profficiencyCheck(null,mob.charStats().getStat(CharStats.DEXTERITY)-90,false))
+		   &&(profficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90,false))
 		   &&(msg.source().getVictim()==mob))
 		{
 			CMMsg msg2=CMClass.getMsg(msg.source(),mob,null,CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> take(s) cover from <S-YOUPOSS> attack!");

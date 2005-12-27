@@ -59,7 +59,7 @@ public class Spell_Youth extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if((target.baseCharStats().getStat(CharStats.AGE)<=0)
+				if((target.baseCharStats().getStat(CharStats.STAT_AGE)<=0)
 			        ||(target.baseCharStats().ageCategory()<=Race.AGE_YOUNGADULT))
 				{
 				    mob.tell(mob,target,null,"The magic appears to have had no effect upon <T-NAME>.");
@@ -70,7 +70,7 @@ public class Spell_Youth extends Spell
 					int[] chart=target.baseCharStats().getMyRace().getAgingChart();
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) younger!");
 					int cat=target.baseCharStats().ageCategory();
-					int age=target.baseCharStats().getStat(CharStats.AGE);
+					int age=target.baseCharStats().getStat(CharStats.STAT_AGE);
 					if(cat>=Race.AGE_ANCIENT)
 					{
 						int diff=chart[Race.AGE_ANCIENT]-chart[Race.AGE_VENERABLE];
@@ -79,7 +79,7 @@ public class Spell_Youth extends Spell
 						if(num<=0)
 						    age=(int)Math.round(CMath.div(chart[cat]+chart[cat-1],2.0));
 						else
-						    age=target.baseCharStats().getStat(CharStats.AGE)-diff;
+						    age=target.baseCharStats().getStat(CharStats.STAT_AGE)-diff;
 					}
 					else
 					    age=(int)Math.round(CMath.div(chart[cat]+chart[cat-1],2.0));
@@ -93,10 +93,10 @@ public class Spell_Youth extends Spell
 					    int bmonth=mob.playerStats().getBirthday()[1];
 					    if((month<bmonth)||((month==bmonth)&&(day<bday)))
 					        age--;
-						target.baseCharStats().setStat(CharStats.AGE,age);
+						target.baseCharStats().setStat(CharStats.STAT_AGE,age);
 					}
 					else
-						target.baseCharStats().setStat(CharStats.AGE,age);
+						target.baseCharStats().setStat(CharStats.STAT_AGE,age);
 					target.recoverCharStats();
 					target.recoverEnvStats();
 				}

@@ -43,7 +43,7 @@ public class Chant_Hawkeye extends Chant
     public void affectCharStats(MOB affected, CharStats affectableStats)
     {
         super.affectCharStats(affected,affectableStats);
-        affectableStats.setStat(CharStats.SAVE_OVERLOOKING,affected.envStats().level()+100+affectableStats.getStat(CharStats.SAVE_OVERLOOKING));
+        affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affected.envStats().level()+100+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
     }
     
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

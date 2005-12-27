@@ -48,7 +48,7 @@ public class StdItem implements Item
 	protected boolean	wornLogicalAnd=false;
 	protected long 		properWornBitmap=Item.WORN_HELD;
 	protected int		baseGoldValue=0;
-	protected int		material=EnvResource.RESOURCE_COTTON;
+	protected int		material=RawMaterial.RESOURCE_COTTON;
 	protected Environmental owner=null;
 	protected long dispossessionTime=0;
 	protected long tickStatus=Tickable.STATUS_NOT;

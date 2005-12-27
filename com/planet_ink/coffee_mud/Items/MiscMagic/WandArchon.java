@@ -42,7 +42,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 		secretIdentity="The Wand of the Archons!";
 		this.setUsesRemaining(99999);
 		baseGoldValue=20000;
-		material=EnvResource.RESOURCE_OAK;
+		material=RawMaterial.RESOURCE_OAK;
 		recoverEnvStats();
 		secretWord="REFRESH, BLAST, LEVEL UP, LEVEL DOWN, BURN!!";
 	}

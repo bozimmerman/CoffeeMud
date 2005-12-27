@@ -47,7 +47,7 @@ public class StdClanPamphlet extends StdClanItem
 		secretIdentity="";
 		baseGoldValue=1;
 		setCIType(ClanItem.CI_PROPAGANDA);
-		material=EnvResource.RESOURCE_PAPER;
+		material=RawMaterial.RESOURCE_PAPER;
 		recoverEnvStats();
 	}
 

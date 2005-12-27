@@ -66,7 +66,7 @@ public class Disease_Malaria extends Disease
 			tickUp=0;
 			conDown++;
 			if((CMLib.dice().rollPercentage()<20)
-			&&(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.SAVE_DISEASE)))
+			&&(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_DISEASE)))
 			{
 				unInvoke();
 				return false;
@@ -92,11 +92,11 @@ public class Disease_Malaria extends Disease
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(affected==null) return;
-		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)-5);
-		if(affectableStats.getStat(CharStats.STRENGTH)<=0)
-			affectableStats.setStat(CharStats.STRENGTH,1);
-		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-(5+conDown));
-		if((affectableStats.getStat(CharStats.CONSTITUTION)<=0)&&(!norecurse))
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-5);
+		if(affectableStats.getStat(CharStats.STAT_STRENGTH)<=0)
+			affectableStats.setStat(CharStats.STAT_STRENGTH,1);
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-(5+conDown));
+		if((affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)&&(!norecurse))
 		{
 			conDown=-1;
 			MOB diseaser=invoker;

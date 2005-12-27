@@ -44,7 +44,7 @@ public class GenClanPamphlet extends StdClanPamphlet
 		setDisplayText("a generic clan pamphlet sits here.");
 		setDescription("");
 		baseEnvStats().setWeight(2);
-		setMaterial(EnvResource.RESOURCE_PAPER);
+		setMaterial(RawMaterial.RESOURCE_PAPER);
 		recoverEnvStats();
 	}
 

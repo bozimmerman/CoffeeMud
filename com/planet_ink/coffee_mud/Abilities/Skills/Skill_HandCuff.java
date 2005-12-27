@@ -77,7 +77,7 @@ public class Skill_HandCuff extends StdSkill
 			||((msg.sourceMinor()==CMMsg.TYP_NOFOLLOW)&&(msg.source().amFollowing()==invoker())))
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against <S-HIS-HER> cuffs.");
-				amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level());
+				amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.envStats().level());
 				if(amountRemaining<0)
 					unInvoke();
 				else
@@ -93,7 +93,7 @@ public class Skill_HandCuff extends StdSkill
 			&&(!((Room)msg.target()).isInhabitant(invoker))))
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against <S-HIS-HER> cuffs.");
-				amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level());
+				amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.envStats().level());
 				if(amountRemaining<0)
 					unInvoke();
 				else
@@ -108,7 +108,7 @@ public class Skill_HandCuff extends StdSkill
 			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against <S-HIS-HER> cuffs.");
-				amountRemaining-=mob.charStats().getStat(CharStats.STRENGTH);
+				amountRemaining-=mob.charStats().getStat(CharStats.STAT_STRENGTH);
 				if(amountRemaining<0)
 					unInvoke();
 				else

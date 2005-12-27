@@ -47,7 +47,7 @@ public class GenFountain extends GenWater
 		setDescription("The water looks pure and clean.");
 		baseGoldValue=10;
 		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMNOTGET);
-		material=EnvResource.RESOURCE_FRESHWATER;
+		material=RawMaterial.RESOURCE_FRESHWATER;
 		recoverEnvStats();
 	}
 

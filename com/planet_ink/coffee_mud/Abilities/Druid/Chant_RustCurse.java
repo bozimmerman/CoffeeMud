@@ -65,8 +65,8 @@ public class Chant_RustCurse extends Chant
 			{
 				Item I=mob.fetchInventory(i);
 				if((I!=null)&&(I.subjectToWearAndTear())
-				   &&(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
-					  ||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)))
+				   &&(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+					  ||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)))
 				{
 					if(!I.amWearingAt(Item.IN_INVENTORY))
 					{
@@ -85,7 +85,7 @@ public class Chant_RustCurse extends Chant
 			if(choices.size()>0)
 			{
 				Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
-				if(((I.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_MITHRIL)
+				if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL)
 				||(CMLib.dice().rollPercentage()<10))
 				{
 					CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL|CMMsg.TYP_WATER,"<T-NAME> rusts!","You rust!",null);

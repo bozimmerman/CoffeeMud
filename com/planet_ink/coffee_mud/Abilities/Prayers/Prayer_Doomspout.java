@@ -88,7 +88,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 				&&(target!=invoker)
 				&&(target!=mob)
 				&&(target.fetchEffect(ID())==null))
-					if(CMLib.dice().rollPercentage()>target.charStats().getSave(CharStats.SAVE_DISEASE))
+					if(CMLib.dice().rollPercentage()>target.charStats().getSave(CharStats.STAT_SAVE_DISEASE))
 					{
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
 						maliciousAffect(invoker,target,0,0,-1);
@@ -104,8 +104,8 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null) return;
-		if(affectableStats.getStat(CharStats.INTELLIGENCE)>3)
-			affectableStats.setStat(CharStats.INTELLIGENCE,3);
+		if(affectableStats.getStat(CharStats.STAT_INTELLIGENCE)>3)
+			affectableStats.setStat(CharStats.STAT_INTELLIGENCE,3);
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)

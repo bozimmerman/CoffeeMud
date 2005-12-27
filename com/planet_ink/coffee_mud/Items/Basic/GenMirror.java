@@ -45,7 +45,7 @@ public class GenMirror extends GenItem
 		baseGoldValue=5;
 		baseEnvStats().setLevel(1);
 		recoverEnvStats();
-		setMaterial(EnvResource.RESOURCE_GLASS);
+		setMaterial(RawMaterial.RESOURCE_GLASS);
 	}
 	public String description()
 	{

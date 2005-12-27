@@ -178,10 +178,10 @@ public class Cooking extends CraftingSkill
 		Hashtable h=new Hashtable();
 		if((pot instanceof Drink)&&(((Drink)pot).containsDrink()))
 		{
-			if(pot instanceof EnvResource)
-				h.put(EnvResource.RESOURCE_DESCS[((EnvResource)pot).material()&EnvResource.RESOURCE_MASK]+"/",new Integer(((Drink)pot).liquidRemaining()/10));
+			if(pot instanceof RawMaterial)
+				h.put(RawMaterial.RESOURCE_DESCS[((RawMaterial)pot).material()&RawMaterial.RESOURCE_MASK]+"/",new Integer(((Drink)pot).liquidRemaining()/10));
 			else
-				h.put(EnvResource.RESOURCE_DESCS[((Drink)pot).liquidType()&EnvResource.RESOURCE_MASK]+"/",new Integer(((Drink)pot).liquidRemaining()/10));
+				h.put(RawMaterial.RESOURCE_DESCS[((Drink)pot).liquidType()&RawMaterial.RESOURCE_MASK]+"/",new Integer(((Drink)pot).liquidRemaining()/10));
 		}
 		if(pot.owner()==null) return h;
 		Vector V=pot.getContents();
@@ -189,12 +189,12 @@ public class Cooking extends CraftingSkill
 		{
 			Item I=(Item)V.elementAt(v);
 			String ing="Unknown";
-			if(I instanceof EnvResource)
-				ing=EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK];
+			if(I instanceof RawMaterial)
+				ing=RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK];
 			else
-			if((((I.material()&EnvResource.MATERIAL_VEGETATION)>0)
-				||((I.material()&EnvResource.MATERIAL_LIQUID)>0)
-				||((I.material()&EnvResource.MATERIAL_FLESH)>0))
+			if((((I.material()&RawMaterial.MATERIAL_VEGETATION)>0)
+				||((I.material()&RawMaterial.MATERIAL_LIQUID)>0)
+				||((I.material()&RawMaterial.MATERIAL_FLESH)>0))
 				&&(CMParms.parse(I.name()).size()>0))
 					ing=((String)CMParms.parse(I.name()).lastElement()).toUpperCase();
 			else
@@ -439,13 +439,13 @@ public class Cooking extends CraftingSkill
 			commonTell(mob,"You need a closeable container to bake that in, and you need to close it to begin.");
 			return false;
 		}
-		switch(target.material()&EnvResource.MATERIAL_MASK)
+		switch(target.material()&RawMaterial.MATERIAL_MASK)
 		{
-		case EnvResource.MATERIAL_GLASS:
-		case EnvResource.MATERIAL_METAL:
-		case EnvResource.MATERIAL_MITHRIL:
-		case EnvResource.MATERIAL_ROCK:
-		case EnvResource.MATERIAL_PRECIOUS:
+		case RawMaterial.MATERIAL_GLASS:
+		case RawMaterial.MATERIAL_METAL:
+		case RawMaterial.MATERIAL_MITHRIL:
+		case RawMaterial.MATERIAL_ROCK:
+		case RawMaterial.MATERIAL_PRECIOUS:
 			break;
 		default:
 			commonTell(mob,target.name()+" is not suitable to "+cookWordShort()+" in.");
@@ -584,8 +584,8 @@ public class Cooking extends CraftingSkill
 		for(int v=0;v<contents.size();v++)
 		{
 			Item I=(Item)contents.elementAt(v);
-			if((I instanceof EnvResource)
-			&&(EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK].equalsIgnoreCase((String)finalRecipe.elementAt(RCP_MAININGR))))
+			if((I instanceof RawMaterial)
+			&&(RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].equalsIgnoreCase((String)finalRecipe.elementAt(RCP_MAININGR))))
 			{
 				String name=I.Name();
 				if(name.endsWith(" meat"))
@@ -617,7 +617,7 @@ public class Cooking extends CraftingSkill
 				for(int v=0;v<contents.size();v++)
 				{
 					Item I=(Item)contents.elementAt(v);
-					if((I.material()==EnvResource.RESOURCE_HERBS)&&(honorHerbs()))
+					if((I.material()==RawMaterial.RESOURCE_HERBS)&&(honorHerbs()))
 						timesTwo=true;
 					else
 					if(I instanceof Food)
@@ -630,7 +630,7 @@ public class Cooking extends CraftingSkill
 			for(int v=0;v<contents.size();v++)
 			{
 				Item I=(Item)contents.elementAt(v);
-				if((I.material()!=EnvResource.RESOURCE_HERBS)||(!honorHerbs()))
+				if((I.material()!=RawMaterial.RESOURCE_HERBS)||(!honorHerbs()))
 					food.baseEnvStats().setWeight(food.baseEnvStats().weight()+((I.baseEnvStats().weight())/finalAmount));
 			}
 			food.setNourishment(food.nourishment()/finalAmount);
@@ -705,12 +705,12 @@ public class Cooking extends CraftingSkill
 		{
 			finalDish=CMClass.getItem("GenResource");
 			if(burnt)
-				finalDish.setMaterial(EnvResource.RESOURCE_DUST);
+				finalDish.setMaterial(RawMaterial.RESOURCE_DUST);
 			else
-			for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
-				if(EnvResource.RESOURCE_DESCS[i].equalsIgnoreCase(foodType))
+			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+				if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(foodType))
 				{
-					finalDish.setMaterial(EnvResource.RESOURCE_DATA[i][0]);
+					finalDish.setMaterial(RawMaterial.RESOURCE_DATA[i][0]);
 					break;
 				}
 			finalDish.setName(((burnt)?"ruined ":"")+finalDishName);

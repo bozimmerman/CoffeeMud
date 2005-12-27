@@ -44,7 +44,7 @@ public class BandedArmor extends StdArmor
 		baseEnvStats().setWeight(55);
 		baseEnvStats().setAbility(0);
 		baseGoldValue=400;
-		material=EnvResource.RESOURCE_IRON;
+		material=RawMaterial.RESOURCE_IRON;
 		recoverEnvStats();
 	}
 

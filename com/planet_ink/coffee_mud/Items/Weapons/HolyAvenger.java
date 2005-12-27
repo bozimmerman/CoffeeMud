@@ -48,7 +48,7 @@ public class HolyAvenger extends TwoHandedSword
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_GOOD|EnvStats.IS_BONUS);
 		baseGoldValue=15500;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_MITHRIL;
+		material=RawMaterial.RESOURCE_MITHRIL;
 		weaponType=TYPE_SLASHING;
 		setRawLogicalAnd(true);
 	}

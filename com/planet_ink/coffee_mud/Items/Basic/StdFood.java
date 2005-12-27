@@ -45,7 +45,7 @@ public class StdFood extends StdItem implements Food
 		setDisplayText("a bit of food is here.");
 		setDescription("Looks like some mystery meat");
 		baseGoldValue=5;
-		material=EnvResource.RESOURCE_MEAT;
+		material=RawMaterial.RESOURCE_MEAT;
 		recoverEnvStats();
 	}
 

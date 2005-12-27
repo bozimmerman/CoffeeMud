@@ -398,13 +398,13 @@ public class Amputation extends StdAbility implements Amputator
 			limb.baseEnvStats().setAbility(1);
 			limb.setDisplayText("a bloody "+gone+" is sitting here.");
 			limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
-			int material=EnvResource.RESOURCE_MEAT;
+			int material=RawMaterial.RESOURCE_MEAT;
 			if((R!=null)&&(R.myResources()!=null)&&(R.myResources().size()>0))
 				for(int r=0;r<R.myResources().size();r++)
 				{
 					Item I=(Item)R.myResources().elementAt(r);
-					int mat=I.material()&EnvResource.MATERIAL_MASK;
-					if(((mat==EnvResource.MATERIAL_FLESH))
+					int mat=I.material()&RawMaterial.MATERIAL_MASK;
+					if(((mat==RawMaterial.MATERIAL_FLESH))
 					||(r==R.myResources().size()-1))
 					{
 						material=I.material();

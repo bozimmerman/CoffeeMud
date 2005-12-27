@@ -44,10 +44,10 @@ public class Chant_GrowOak extends Chant_SummonPlants
 
 	public Item buildMyPlant(MOB mob, Room room)
 	{
-		int material=EnvResource.RESOURCE_OAK;
-		int code=material&EnvResource.RESOURCE_MASK;
+		int material=RawMaterial.RESOURCE_OAK;
+		int code=material&RawMaterial.RESOURCE_MASK;
 		Item newItem=CMClass.getStdItem("GenItem");
-		String name=CMStrings.startWithAorAn(EnvResource.RESOURCE_DESCS[code].toLowerCase()+" tree");
+		String name=CMStrings.startWithAorAn(RawMaterial.RESOURCE_DESCS[code].toLowerCase()+" tree");
 		newItem.setName(name);
 		newItem.setDisplayText(newItem.name()+" grows here.");
 		newItem.setDescription("");
@@ -58,7 +58,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.setDispossessionTime(0);
-		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+EnvResource.RESOURCE_DESCS[code].toLowerCase()+" tree sprouts up.");
+		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+RawMaterial.RESOURCE_DESCS[code].toLowerCase()+" tree sprouts up.");
 		room.recoverEnvStats();
 		Chant_GrowOak newChant=new Chant_GrowOak();
 		newChant.PlantsLocation=room;

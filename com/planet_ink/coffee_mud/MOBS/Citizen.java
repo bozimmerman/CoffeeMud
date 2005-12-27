@@ -38,14 +38,14 @@ public class Citizen extends StdMOB
 		super();
 		Username="a citizen";
 		setDescription("");
-		baseCharStats().setStat(CharStats.GENDER,(CMLib.dice().rollPercentage()>50)?'M':'F');
+		baseCharStats().setStat(CharStats.STAT_GENDER,(CMLib.dice().rollPercentage()>50)?'M':'F');
 		setDisplayText("A citizen goes about "+baseCharStats().hisher()+" business.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);
 		setMoney(10);
 		baseEnvStats.setWeight(150);
 		setWimpHitPoint(0);
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,7);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,7);
 		baseCharStats().setMyRace(CMClass.getRace("Human"));
 		baseCharStats().getMyRace().startRacing(this,false);
 

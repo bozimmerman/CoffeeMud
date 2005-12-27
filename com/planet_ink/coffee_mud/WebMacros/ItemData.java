@@ -40,10 +40,10 @@ public class ItemData extends StdWebMacro
         super();
         
         if(sortedResources.size()==0)
-        for(int r=0;r<EnvResource.RESOURCE_DESCS.length;r++)
+        for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
         {
-            Long L=new Long(EnvResource.RESOURCE_DATA[r][0]);
-            String S=EnvResource.RESOURCE_DESCS[r];
+            Long L=new Long(RawMaterial.RESOURCE_DATA[r][0]);
+            String S=RawMaterial.RESOURCE_DESCS[r];
             int putHere=0;
             for(putHere=0;putHere<sortedResources.size();putHere++)
                 if(S.compareTo((String)sortedResources.elementAt(putHere,2))<0)
@@ -536,14 +536,14 @@ public class ItemData extends StdWebMacro
 				case 45: // liquid types
 					if((firstTime)&&(I instanceof Drink))
 						old=""+((Drink)I).liquidType();
-					for(int r=0;r<EnvResource.RESOURCE_DESCS.length;r++)
+					for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
 					{
-						if((EnvResource.RESOURCE_DATA[r][0]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)
+						if((RawMaterial.RESOURCE_DATA[r][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 						{
-							str.append("<OPTION VALUE=\""+EnvResource.RESOURCE_DATA[r][0]+"\"");
+							str.append("<OPTION VALUE=\""+RawMaterial.RESOURCE_DATA[r][0]+"\"");
 							if(r==CMath.s_int(old))
 								str.append(" SELECTED");
-							str.append(">"+EnvResource.RESOURCE_DESCS[r]);
+							str.append(">"+RawMaterial.RESOURCE_DESCS[r]);
 						}
 					}
 					break;

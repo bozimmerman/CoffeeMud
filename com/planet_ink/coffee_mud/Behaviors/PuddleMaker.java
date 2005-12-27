@@ -110,8 +110,8 @@ public class PuddleMaker extends StdBehavior
 		CMLib.flags().setGettable(I,false);
 		((Drink)I).setLiquidHeld(100);
 		((Drink)I).setLiquidRemaining(100);
-		((Drink)I).setLiquidType(EnvResource.RESOURCE_FRESHWATER);
-		I.setMaterial(EnvResource.RESOURCE_FRESHWATER);
+		((Drink)I).setLiquidType(RawMaterial.RESOURCE_FRESHWATER);
+		I.setMaterial(RawMaterial.RESOURCE_FRESHWATER);
         I.baseEnvStats().setSensesMask(I.baseEnvStats().sensesMask()|EnvStats.SENSE_ITEMNEVERSAVED);
         I.recoverEnvStats();
 		if(coldWetWeather(oldWeather))

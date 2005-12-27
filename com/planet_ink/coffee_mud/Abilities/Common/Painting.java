@@ -110,8 +110,8 @@ public class Painting extends CommonSkill
 				commonTell(mob,"You don't see any canvases called '"+str+"' sitting here.");
 				return false;
 			}
-			if((I.material()!=EnvResource.RESOURCE_COTTON)
-			&&(I.material()!=EnvResource.RESOURCE_SILK)
+			if((I.material()!=RawMaterial.RESOURCE_COTTON)
+			&&(I.material()!=RawMaterial.RESOURCE_SILK)
 			&&(!I.Name().toUpperCase().endsWith("CANVAS"))
 			&&(!I.Name().toUpperCase().endsWith("SILKSCREEN")))
 			{

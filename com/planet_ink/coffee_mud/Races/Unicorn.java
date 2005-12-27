@@ -56,9 +56,9 @@ public class Unicorn extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,18);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,6);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,18);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,6);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public Weapon myNaturalWeapon()
 	{
@@ -113,12 +113,12 @@ public class Unicorn extends StdRace
 		{
 			if(resources.size()==0)
 			{
-				resources.addElement(makeResource("a "+name().toLowerCase()+" mane",EnvResource.RESOURCE_FUR));
+				resources.addElement(makeResource("a "+name().toLowerCase()+" mane",RawMaterial.RESOURCE_FUR));
 				for(int i=0;i<2;i++)
-					resources.addElement(makeResource("a piece of "+name().toLowerCase()+" leather",EnvResource.RESOURCE_LEATHER));
-				resources.addElement(makeResource("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));
-				resources.addElement(makeResource("a pint of "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
-				resources.addElement(makeResource("a "+name().toLowerCase()+" horn",EnvResource.RESOURCE_BONE));
+					resources.addElement(makeResource("a piece of "+name().toLowerCase()+" leather",RawMaterial.RESOURCE_LEATHER));
+				resources.addElement(makeResource("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_BEEF));
+				resources.addElement(makeResource("a pint of "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				resources.addElement(makeResource("a "+name().toLowerCase()+" horn",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

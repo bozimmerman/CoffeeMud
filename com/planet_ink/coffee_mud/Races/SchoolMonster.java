@@ -56,9 +56,9 @@ public class SchoolMonster extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,1);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,1);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,3);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,1);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,1);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,3);
 	}
 	public Weapon myNaturalWeapon()
 	{
@@ -121,11 +121,11 @@ public class SchoolMonster extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pound of "+name().toLowerCase()+" intestines",EnvResource.RESOURCE_MEAT));
+				("a pound of "+name().toLowerCase()+" intestines",RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

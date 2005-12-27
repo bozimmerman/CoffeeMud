@@ -92,7 +92,7 @@ public class Burning extends StdAbility
 				if(E instanceof Room)
 				{
 					Room room=(Room)E;
-					if((affected instanceof EnvResource)
+					if((affected instanceof RawMaterial)
 					&&(room.isContent((Item)affected)))
 					{
 						for(int i=0;i<room.numItems();i++)
@@ -100,24 +100,24 @@ public class Burning extends StdAbility
 							Item I=room.fetchItem(i);
 							if(I.name().equals(affected.name())
 							&&(I!=affected)
-							&&(I instanceof EnvResource)
+							&&(I instanceof RawMaterial)
 							&&(I.material()==((Item)affected).material()))
 							{
 								int durationOfBurn=5;
-								switch(I.material()&EnvResource.MATERIAL_MASK)
+								switch(I.material()&RawMaterial.MATERIAL_MASK)
 								{
-								case EnvResource.MATERIAL_LEATHER:
+								case RawMaterial.MATERIAL_LEATHER:
 									durationOfBurn=20+I.envStats().weight();
 									break;
-								case EnvResource.MATERIAL_CLOTH:
-								case EnvResource.MATERIAL_PAPER:
-								case EnvResource.MATERIAL_PLASTIC:
+								case RawMaterial.MATERIAL_CLOTH:
+								case RawMaterial.MATERIAL_PAPER:
+								case RawMaterial.MATERIAL_PLASTIC:
 									durationOfBurn=5+I.envStats().weight();
 									break;
-								case EnvResource.MATERIAL_WOODEN:
+								case RawMaterial.MATERIAL_WOODEN:
 									durationOfBurn=40+(I.envStats().weight()*2);
 									break;
-								case EnvResource.MATERIAL_ENERGY:
+								case RawMaterial.MATERIAL_ENERGY:
 									durationOfBurn=1;
 									break;
 								}
@@ -128,15 +128,15 @@ public class Burning extends StdAbility
 							}
 						}
 					}
-					switch(((Item)affected).material()&EnvResource.MATERIAL_MASK)
+					switch(((Item)affected).material()&RawMaterial.MATERIAL_MASK)
 					{
-					case EnvResource.MATERIAL_LIQUID:
-					case EnvResource.MATERIAL_METAL:
-					case EnvResource.MATERIAL_MITHRIL:
-					case EnvResource.MATERIAL_ENERGY:
-					case EnvResource.MATERIAL_PRECIOUS:
-					case EnvResource.MATERIAL_ROCK:
-					case EnvResource.MATERIAL_UNKNOWN:
+					case RawMaterial.MATERIAL_LIQUID:
+					case RawMaterial.MATERIAL_METAL:
+					case RawMaterial.MATERIAL_MITHRIL:
+					case RawMaterial.MATERIAL_ENERGY:
+					case RawMaterial.MATERIAL_PRECIOUS:
+					case RawMaterial.MATERIAL_ROCK:
+					case RawMaterial.MATERIAL_UNKNOWN:
 						break;
 					default:
 					    if(CMLib.flags().isABonusItems(affected))
@@ -161,7 +161,7 @@ public class Burning extends StdAbility
 							Item ash=CMClass.getItem("GenResource");
 							ash.setName("some ash");
 							ash.setDisplayText("a small pile of ash is here");
-							ash.setMaterial(EnvResource.RESOURCE_ASH);
+							ash.setMaterial(RawMaterial.RESOURCE_ASH);
 							room.addItemRefuse(ash,Item.REFUSE_MONSTER_EQ);
 							((Item)affected).destroy();
 					    }
@@ -172,15 +172,15 @@ public class Burning extends StdAbility
 				else
 				if(E instanceof MOB)
 				{
-					switch(((Item)affected).material()&EnvResource.MATERIAL_MASK)
+					switch(((Item)affected).material()&RawMaterial.MATERIAL_MASK)
 					{
-					case EnvResource.MATERIAL_LIQUID:
-					case EnvResource.MATERIAL_METAL:
-					case EnvResource.MATERIAL_ENERGY:
-					case EnvResource.MATERIAL_MITHRIL:
-					case EnvResource.MATERIAL_PRECIOUS:
-					case EnvResource.MATERIAL_ROCK:
-					case EnvResource.MATERIAL_UNKNOWN:
+					case RawMaterial.MATERIAL_LIQUID:
+					case RawMaterial.MATERIAL_METAL:
+					case RawMaterial.MATERIAL_ENERGY:
+					case RawMaterial.MATERIAL_MITHRIL:
+					case RawMaterial.MATERIAL_PRECIOUS:
+					case RawMaterial.MATERIAL_ROCK:
+					case RawMaterial.MATERIAL_UNKNOWN:
 						break;
 					default:
 						((Item)affected).destroy();
@@ -219,18 +219,18 @@ public class Burning extends StdAbility
 
 	public boolean ouch(MOB mob)
 	{
-		if(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_FIRE)-50))
+		if(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_FIRE)-50))
 		{
 			if(affected instanceof Item)
-			switch(((Item)affected).material()&EnvResource.MATERIAL_MASK)
+			switch(((Item)affected).material()&RawMaterial.MATERIAL_MASK)
 			{
-			case EnvResource.MATERIAL_LIQUID:
-			case EnvResource.MATERIAL_METAL:
-			case EnvResource.MATERIAL_MITHRIL:
-			case EnvResource.MATERIAL_PRECIOUS:
-			case EnvResource.MATERIAL_ENERGY:
-			case EnvResource.MATERIAL_ROCK:
-			case EnvResource.MATERIAL_UNKNOWN:
+			case RawMaterial.MATERIAL_LIQUID:
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_MITHRIL:
+			case RawMaterial.MATERIAL_PRECIOUS:
+			case RawMaterial.MATERIAL_ENERGY:
+			case RawMaterial.MATERIAL_ROCK:
+			case RawMaterial.MATERIAL_UNKNOWN:
 				mob.tell("Ouch!! "+CMStrings.capitalizeAndLower(affected.name())+" is HOT!");
 				break;
 			default:
@@ -260,14 +260,14 @@ public class Burning extends StdAbility
 			Item target=(Item)msg.tool();
 			if((target.owner()==container.owner())
 			&&(target.container()==container))
-				switch(container.material()&EnvResource.MATERIAL_MASK)
+				switch(container.material()&RawMaterial.MATERIAL_MASK)
 				{
-				case EnvResource.MATERIAL_METAL:
-				case EnvResource.MATERIAL_MITHRIL:
-				case EnvResource.MATERIAL_PRECIOUS:
-				case EnvResource.MATERIAL_ENERGY:
-				case EnvResource.MATERIAL_ROCK:
-				case EnvResource.MATERIAL_UNKNOWN:
+				case RawMaterial.MATERIAL_METAL:
+				case RawMaterial.MATERIAL_MITHRIL:
+				case RawMaterial.MATERIAL_PRECIOUS:
+				case RawMaterial.MATERIAL_ENERGY:
+				case RawMaterial.MATERIAL_ROCK:
+				case RawMaterial.MATERIAL_UNKNOWN:
 					return true;
 				default:
 					break;
@@ -310,7 +310,7 @@ public class Burning extends StdAbility
 		if(target==null) return false;
 		if(target.fetchEffect("Burning")==null)
 		{
-			if((target instanceof Item)&&(((Item)target).material()==EnvResource.RESOURCE_NOTHING))
+			if((target instanceof Item)&&(((Item)target).material()==RawMaterial.RESOURCE_NOTHING))
 				return false;
 			if((mob!=null)&&(mob.location()!=null))
 			{

@@ -66,9 +66,9 @@ public class Poison_Alcohol extends Poison
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.DEXTERITY,Math.round(affectableStats.getStat(CharStats.DEXTERITY)-drunkness));
-		if(affectableStats.getStat(CharStats.DEXTERITY)<=0)
-			affectableStats.setStat(CharStats.DEXTERITY,1);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,Math.round(affectableStats.getStat(CharStats.STAT_DEXTERITY)-drunkness));
+		if(affectableStats.getStat(CharStats.STAT_DEXTERITY)<=0)
+			affectableStats.setStat(CharStats.STAT_DEXTERITY,1);
 	}
 
 	public void unInvoke()

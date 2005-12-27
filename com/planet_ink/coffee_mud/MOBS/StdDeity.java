@@ -185,13 +185,13 @@ public class StdDeity extends StdMOB implements Deity
 				{
 					String material="something";
 					int t=CMath.s_int(DT.parm1);
-					if(((t&EnvResource.RESOURCE_MASK)==0)
-					&&((t>>8)<EnvResource.MATERIAL_MASK))
-						material=EnvResource.MATERIAL_DESCS[t>>8].toLowerCase();
+					if(((t&RawMaterial.RESOURCE_MASK)==0)
+					&&((t>>8)<RawMaterial.MATERIAL_MASK))
+						material=RawMaterial.MATERIAL_DESCS[t>>8].toLowerCase();
 					else
-					if(((t&EnvResource.RESOURCE_MASK)>0)
-					&&((t&EnvResource.RESOURCE_MASK)<EnvResource.RESOURCE_DESCS.length))
-						material=EnvResource.RESOURCE_DESCS[t&EnvResource.RESOURCE_MASK].toLowerCase();
+					if(((t&RawMaterial.RESOURCE_MASK)>0)
+					&&((t&RawMaterial.RESOURCE_MASK)<RawMaterial.RESOURCE_DESCS.length))
+						material=RawMaterial.RESOURCE_DESCS[t&RawMaterial.RESOURCE_MASK].toLowerCase();
 					buf.append("the player puts an item made of "+material+" in "+DT.parm2.toLowerCase());
 				}
 				break;
@@ -199,13 +199,13 @@ public class StdDeity extends StdMOB implements Deity
 				{
 					String material="something";
 					int t=CMath.s_int(DT.parm1);
-					if(((t&EnvResource.RESOURCE_MASK)==0)
-					&&((t>>8)<EnvResource.MATERIAL_MASK))
-						material=EnvResource.MATERIAL_DESCS[t>>8].toLowerCase();
+					if(((t&RawMaterial.RESOURCE_MASK)==0)
+					&&((t>>8)<RawMaterial.MATERIAL_MASK))
+						material=RawMaterial.MATERIAL_DESCS[t>>8].toLowerCase();
 					else
-					if(((t&EnvResource.RESOURCE_MASK)>0)
-					&&((t&EnvResource.RESOURCE_MASK)<EnvResource.RESOURCE_DESCS.length))
-						material=EnvResource.RESOURCE_DESCS[t&EnvResource.RESOURCE_MASK].toLowerCase();
+					if(((t&RawMaterial.RESOURCE_MASK)>0)
+					&&((t&RawMaterial.RESOURCE_MASK)<RawMaterial.RESOURCE_DESCS.length))
+						material=RawMaterial.RESOURCE_DESCS[t&RawMaterial.RESOURCE_MASK].toLowerCase();
 					buf.append("the player burns an item made of "+material);
 				}
 				break;
@@ -619,8 +619,8 @@ public class StdDeity extends StdMOB implements Deity
 				case TRIGGER_PUTMATERIAL:
 					if((msg.tool()!=null)
 					&&(msg.tool() instanceof Item)
-					&&(((((Item)msg.tool()).material()&EnvResource.RESOURCE_MASK)==CMath.s_int(DT.parm1))
-						||((((Item)msg.tool()).material()&EnvResource.MATERIAL_MASK)==CMath.s_int(DT.parm1)))
+					&&(((((Item)msg.tool()).material()&RawMaterial.RESOURCE_MASK)==CMath.s_int(DT.parm1))
+						||((((Item)msg.tool()).material()&RawMaterial.MATERIAL_MASK)==CMath.s_int(DT.parm1)))
 					&&(msg.target()!=null)
 					&&(msg.target() instanceof Container)
 					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
@@ -629,8 +629,8 @@ public class StdDeity extends StdMOB implements Deity
 				case TRIGGER_BURNMATERIAL:
 					if((msg.target()!=null)
 					&&(msg.target() instanceof Item)
-					&&(((((Item)msg.target()).material()&EnvResource.RESOURCE_MASK)==CMath.s_int(DT.parm1))
-						||((((Item)msg.target()).material()&EnvResource.MATERIAL_MASK)==CMath.s_int(DT.parm1))))
+					&&(((((Item)msg.target()).material()&RawMaterial.RESOURCE_MASK)==CMath.s_int(DT.parm1))
+						||((((Item)msg.target()).material()&RawMaterial.MATERIAL_MASK)==CMath.s_int(DT.parm1))))
 							yup=true;
 					break;
 				case TRIGGER_BURNVALUE:
@@ -984,18 +984,18 @@ public class StdDeity extends StdMOB implements Deity
 						DT.triggerCode=TRIGGER_BURNMATERIAL;
 						DT.parm1=CMParms.combine(V,1);
 						boolean found=false;
-						for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+						for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 						{
-							if(EnvResource.RESOURCE_DESCS[i].startsWith(DT.parm1))
+							if(RawMaterial.RESOURCE_DESCS[i].startsWith(DT.parm1))
 							{
-								DT.parm1=""+EnvResource.RESOURCE_DATA[i][0];
+								DT.parm1=""+RawMaterial.RESOURCE_DATA[i][0];
 								found=true;
 							}
 						}
 						if(!found)
-						for(int i=0;i<EnvResource.MATERIAL_DESCS.length;i++)
+						for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
 						{
-							if(EnvResource.MATERIAL_DESCS[i].startsWith(DT.parm1))
+							if(RawMaterial.MATERIAL_DESCS[i].startsWith(DT.parm1))
 							{
 								DT.parm1=""+(i<<8);
 								found=true;
@@ -1019,18 +1019,18 @@ public class StdDeity extends StdMOB implements Deity
 						DT.parm1=(String)V.elementAt(1);
 						DT.parm2=CMParms.combine(V,2);
 						boolean found=false;
-						for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+						for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 						{
-							if(EnvResource.RESOURCE_DESCS[i].startsWith(DT.parm1))
+							if(RawMaterial.RESOURCE_DESCS[i].startsWith(DT.parm1))
 							{
-								DT.parm1=""+EnvResource.RESOURCE_DATA[i][0];
+								DT.parm1=""+RawMaterial.RESOURCE_DATA[i][0];
 								found=true;
 							}
 						}
 						if(!found)
-						for(int i=0;i<EnvResource.MATERIAL_DESCS.length;i++)
+						for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
 						{
-							if(EnvResource.MATERIAL_DESCS[i].startsWith(DT.parm1))
+							if(RawMaterial.MATERIAL_DESCS[i].startsWith(DT.parm1))
 							{
 								DT.parm1=""+(i<<8);
 								found=true;

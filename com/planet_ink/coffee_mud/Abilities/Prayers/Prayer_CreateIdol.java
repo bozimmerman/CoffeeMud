@@ -57,9 +57,9 @@ public class Prayer_CreateIdol extends Prayer
 		super.affectCharStats(aff,affectableStats);
 		if((affected instanceof Item)&&(((Item)affected).container()==null))
 		{
-			if(affectableStats.getStat(CharStats.STRENGTH)>3) affectableStats.setStat(CharStats.STRENGTH,3);
-			if(affectableStats.getStat(CharStats.DEXTERITY)>2) affectableStats.setStat(CharStats.DEXTERITY,2);
-			if(affectableStats.getStat(CharStats.CONSTITUTION)>1) affectableStats.setStat(CharStats.CONSTITUTION,1);
+			if(affectableStats.getStat(CharStats.STAT_STRENGTH)>3) affectableStats.setStat(CharStats.STAT_STRENGTH,3);
+			if(affectableStats.getStat(CharStats.STAT_DEXTERITY)>2) affectableStats.setStat(CharStats.STAT_DEXTERITY,2);
+			if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)>1) affectableStats.setStat(CharStats.STAT_CONSTITUTION,1);
 		}
 	}
 
@@ -102,9 +102,9 @@ public class Prayer_CreateIdol extends Prayer
 		Room R=mob.location();
 		if(R!=null)
 		{
-			if(((R.myResource()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK)
-				||((R.myResource()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)
-				||((R.myResource()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL))
+			if(((R.myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK)
+				||((R.myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)
+				||((R.myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL))
 				material=R.myResource();
 			else
 			{
@@ -113,9 +113,9 @@ public class Prayer_CreateIdol extends Prayer
 				for(int v=0;v<V.size()*10;v++)
 				{
 					int rsc=((Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1))).intValue();
-					if(((rsc&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK)
-						||((rsc&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)
-						||((rsc&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL))
+					if(((rsc&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK)
+						||((rsc&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)
+						||((rsc&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL))
 					{
 						material=rsc;
 						break;
@@ -134,7 +134,7 @@ public class Prayer_CreateIdol extends Prayer
 				mob.location().send(mob,msg);
 				Item newItem=CMClass.getStdItem("GenItem");
 				newItem.setBaseValue(1);
-				String name=CMStrings.startWithAorAn(EnvResource.RESOURCE_DESCS[material&EnvResource.RESOURCE_MASK].toLowerCase()+" idol of "+mob.getWorshipCharID());
+				String name=CMStrings.startWithAorAn(RawMaterial.RESOURCE_DESCS[material&RawMaterial.RESOURCE_MASK].toLowerCase()+" idol of "+mob.getWorshipCharID());
 				newItem.setName(name);
 				newItem.setDisplayText(name+" sits here.");
 				newItem.baseEnvStats().setDisposition(EnvStats.IS_EVIL);

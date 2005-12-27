@@ -66,8 +66,8 @@ public class Disease_Infection extends Disease
 		if(diseaser==null) diseaser=mob;
 		if((getTickDownRemaining()==1)
 		&&(!mob.amDead())
-		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.SAVE_DISEASE))
-		&&(CMLib.dice().rollPercentage()<25-mob.charStats().getStat(CharStats.CONSTITUTION)))
+		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_DISEASE))
+		&&(CMLib.dice().rollPercentage()<25-mob.charStats().getStat(CharStats.STAT_CONSTITUTION)))
 		{
 			mob.delEffect(this);
 			Ability A=CMClass.getAbility("Disease_Gangrene");

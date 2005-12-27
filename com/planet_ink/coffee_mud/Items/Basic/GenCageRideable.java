@@ -43,7 +43,7 @@ public class GenCageRideable extends StdCageRideable
 		setDescription("It\\`s of solid wood construction with metal bracings.  The door has a key hole.");
 		capacity=5000;
 		setContainTypes(Container.CONTAIN_BODIES|Container.CONTAIN_CAGED);
-		material=EnvResource.RESOURCE_OAK;
+		material=RawMaterial.RESOURCE_OAK;
 		baseGoldValue=15;
 		baseEnvStats().setWeight(1000);
 		rideBasis=Rideable.RIDEABLE_WAGON;

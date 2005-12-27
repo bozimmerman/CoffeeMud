@@ -52,7 +52,7 @@ public class StdClanContainer extends StdContainer implements ClanItem
 		secretIdentity="";
 		baseGoldValue=1;
 		capacity=100;
-		material=EnvResource.RESOURCE_OAK;
+		material=RawMaterial.RESOURCE_OAK;
 		recoverEnvStats();
 	}
 

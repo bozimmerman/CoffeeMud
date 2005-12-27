@@ -208,7 +208,7 @@ public class Prayer_FleshRock extends Prayer
 					statue.setName("a rocky statue of "+name);
 					statue.setDisplayText("a rocky statue of "+name+" stands here.");
 					statue.setDescription("It`s a hard rocky statue, which looks exactly like "+name+".");
-					statue.setMaterial(EnvResource.RESOURCE_GRANITE);
+					statue.setMaterial(RawMaterial.RESOURCE_GRANITE);
 					statue.baseEnvStats().setWeight(2000);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) into rock!!");
 					success=maliciousAffect(mob,target,asLevel,mob.envStats().level()*50,-1);

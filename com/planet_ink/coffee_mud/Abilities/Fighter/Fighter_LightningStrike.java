@@ -126,7 +126,7 @@ public class Fighter_LightningStrike extends FighterSkill
 			mob.tell("You are too far away from your target to strike!");
 			return false;
 		}
-		if((!auto)&&(mob.charStats().getStat(CharStats.DEXTERITY)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)))
+		if((!auto)&&(mob.charStats().getStat(CharStats.STAT_DEXTERITY)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)))
 		{
 			mob.tell("You need at least an "+CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+" dexterity to do that.");
 			return false;

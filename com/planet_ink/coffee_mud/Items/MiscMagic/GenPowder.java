@@ -48,7 +48,7 @@ public class GenPowder extends StdPowder {
 		baseGoldValue=1;
 		baseEnvStats().setLevel(1);
 		recoverEnvStats();
-		setMaterial(EnvResource.RESOURCE_ASH);
+		setMaterial(RawMaterial.RESOURCE_ASH);
     }
 
 	public boolean isGeneric(){return true;}

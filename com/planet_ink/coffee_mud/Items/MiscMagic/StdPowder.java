@@ -48,7 +48,7 @@ public class StdPowder extends StdItem implements MagicDust {
 		setDescription("A small pile of powder.");
 		secretIdentity="This is a pile of inert materials.";
 		baseGoldValue=0;
-		material=EnvResource.RESOURCE_ASH;
+		material=RawMaterial.RESOURCE_ASH;
 		recoverEnvStats();
 	}
 	

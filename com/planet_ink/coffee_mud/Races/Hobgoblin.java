@@ -65,9 +65,9 @@ public class Hobgoblin extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,6);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,10);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,8);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,6);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,10);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,8);
 	}
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
@@ -114,11 +114,11 @@ public class Hobgoblin extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of "+name().toLowerCase()+" knees",EnvResource.RESOURCE_MEAT));
+				("a pair of "+name().toLowerCase()+" knees",RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

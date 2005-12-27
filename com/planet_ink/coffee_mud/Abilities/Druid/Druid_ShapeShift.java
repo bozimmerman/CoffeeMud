@@ -100,7 +100,7 @@ public class Druid_ShapeShift extends StdAbility
 		{
 			affectableStats.setName(CMStrings.startWithAorAn(raceName.toLowerCase()));
 			int oldAdd=affectableStats.weight()-affected.baseEnvStats().weight();
-			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.GENDER));
+			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.STAT_GENDER));
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+
 												(int)Math.round(CMath.mul(affectableStats.level(),attadj[getRaceCode()])));
@@ -118,8 +118,8 @@ public class Druid_ShapeShift extends StdAbility
 	    {
 		    int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(newRace);
-			if(affected.baseCharStats().getStat(CharStats.AGE)>0)
-				affectableStats.setStat(CharStats.AGE,newRace.getAgingChart()[oldCat]);
+			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
+				affectableStats.setStat(CharStats.STAT_AGE,newRace.getAgingChart()[oldCat]);
 	    }
 	}
 

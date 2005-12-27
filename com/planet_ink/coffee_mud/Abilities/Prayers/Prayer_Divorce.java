@@ -70,7 +70,7 @@ public class Prayer_Divorce extends Prayer
 				mob.location().send(mob,msg);
 				String maleName=target.Name();
 				String femaleName=target.getLiegeID();
-				if(target.charStats().getStat(CharStats.GENDER)=='F')
+				if(target.charStats().getStat(CharStats.STAT_GENDER)=='F')
 				{
 					femaleName=target.Name();
 					maleName=target.getLiegeID();

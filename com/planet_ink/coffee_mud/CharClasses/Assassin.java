@@ -40,13 +40,13 @@ public class Assassin extends Thief
 	public String statQualifications(){return "Dexterity 9+ Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Dexterity to become an Assassin.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.WISDOM)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Wisdom to become an Assassin.");
@@ -61,8 +61,8 @@ public class Assassin extends Thief
 	public Assassin()
 	{
 		super();
-		maxStatAdj[CharStats.DEXTERITY]=4;
-		maxStatAdj[CharStats.WISDOM]=4;
+		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
+		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -157,6 +157,6 @@ public class Assassin extends Thief
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affectableStats.getClassLevel(this)>=21)
-			affectableStats.setStat(CharStats.SAVE_POISON,200);
+			affectableStats.setStat(CharStats.STAT_SAVE_POISON,200);
 	}
 }

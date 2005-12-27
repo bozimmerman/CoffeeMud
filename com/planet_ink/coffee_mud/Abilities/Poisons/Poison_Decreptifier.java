@@ -49,14 +49,14 @@ public class Poison_Decreptifier extends Poison
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-10);
-		if(affectableStats.getStat(CharStats.CONSTITUTION)<=0)
-			affectableStats.setStat(CharStats.CONSTITUTION,1);
-		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)-10);
-		if(affectableStats.getStat(CharStats.STRENGTH)<=0)
-			affectableStats.setStat(CharStats.STRENGTH,1);
-		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)-10);
-		if(affectableStats.getStat(CharStats.DEXTERITY)<=0)
-			affectableStats.setStat(CharStats.DEXTERITY,1);
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-10);
+		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)
+			affectableStats.setStat(CharStats.STAT_CONSTITUTION,1);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-10);
+		if(affectableStats.getStat(CharStats.STAT_STRENGTH)<=0)
+			affectableStats.setStat(CharStats.STAT_STRENGTH,1);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-10);
+		if(affectableStats.getStat(CharStats.STAT_DEXTERITY)<=0)
+			affectableStats.setStat(CharStats.STAT_DEXTERITY,1);
 	}
 }

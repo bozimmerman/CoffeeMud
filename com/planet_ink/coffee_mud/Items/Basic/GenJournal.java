@@ -42,7 +42,7 @@ public class GenJournal extends StdJournal
 		setDescription("Enter `READ [NUMBER] [JOURNAL]` to read an entry.%0D%0AUse your WRITE skill to add new entries. ");
 		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
 		recoverEnvStats();
-		setMaterial(EnvResource.RESOURCE_PAPER);
+		setMaterial(RawMaterial.RESOURCE_PAPER);
 	}
 
 

@@ -161,7 +161,7 @@ public class Taxidermy extends CraftingSkill
 			}
 		}
 		int woodRequired=I.baseEnvStats().weight()/5;
-		int[] pm={EnvResource.MATERIAL_CLOTH};
+		int[] pm={RawMaterial.MATERIAL_CLOTH};
 		int[][] data=fetchFoundResourceData(mob,
 											woodRequired,"cloth stuffing",pm,
 											0,null,null,

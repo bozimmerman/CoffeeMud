@@ -47,7 +47,7 @@ public class Prayer_HolyShield extends Prayer
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null) return;
 
-		affectableStats.setStat(CharStats.SAVE_UNDEAD,100);
+		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,100);
 	}
 
 	public boolean okMessage(Environmental host, CMMsg msg)

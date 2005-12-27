@@ -62,7 +62,7 @@ public class Fighter_CriticalShot extends FighterSkill
 		&&((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
 			||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN))
 		&&((mob.rangeToTarget()>0)||((msg.tool().envStats().sensesMask()&EnvStats.SENSE_ITEMNOMINRANGE)==EnvStats.SENSE_ITEMNOMINRANGE))
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,(-75)+mob.charStats().getStat(CharStats.STRENGTH),false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,(-75)+mob.charStats().getStat(CharStats.STAT_STRENGTH),false)))
 		{
 			double pctRecovery=(CMath.div(profficiency(),100.0)*Math.random());
 			int bonus=(int)Math.round(CMath.mul((msg.value()),pctRecovery));

@@ -39,7 +39,7 @@ public class Bard extends StdCharClass
 	public int getMaxHitPointsLevel(){return 18;}
 	public int getBonusPracLevel(){return 1;}
 	public int getBonusAttackLevel(){return 1;}
-	public int getAttackAttribute(){return CharStats.CHARISMA;}
+	public int getAttackAttribute(){return CharStats.STAT_CHARISMA;}
 	public int getLevelsPerBonusDamage(){ return 4;}
 	public int getHPDivisor(){return 3;}
 	public int getHPDice(){return 2;}
@@ -59,7 +59,7 @@ public class Bard extends StdCharClass
 	public Bard()
 	{
 		super();
-		maxStatAdj[CharStats.CHARISMA]=7;
+		maxStatAdj[CharStats.STAT_CHARISMA]=7;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -149,7 +149,7 @@ public class Bard extends StdCharClass
 					if(!mob2.isMonster())
 						theAmount+=(origAmount/5.0);
 					else
-					if(mob2.charStats().getStat(CharStats.INTELLIGENCE)>3)
+					if(mob2.charStats().getStat(CharStats.STAT_INTELLIGENCE)>3)
 						theAmount+=1.0;
 				}
 			}
@@ -188,7 +188,7 @@ public class Bard extends StdCharClass
 	public String statQualifications(){return "Charisma 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.CHARISMA) <= 8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Charisma to become a Bard.");

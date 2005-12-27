@@ -115,12 +115,12 @@ public class Poison extends StdAbility
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if((affected==null)||(!ID().equals("Poison"))) return;
-		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-5);
-		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)-5);
-		if(affectableStats.getStat(CharStats.CONSTITUTION)<=0)
-			affectableStats.setStat(CharStats.CONSTITUTION,1);
-		if(affectableStats.getStat(CharStats.STRENGTH)<=0)
-			affectableStats.setStat(CharStats.STRENGTH,1);
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-5);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-5);
+		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)
+			affectableStats.setStat(CharStats.STAT_CONSTITUTION,1);
+		if(affectableStats.getStat(CharStats.STAT_STRENGTH)<=0)
+			affectableStats.setStat(CharStats.STAT_STRENGTH,1);
 	}
 
 	public void unInvoke()

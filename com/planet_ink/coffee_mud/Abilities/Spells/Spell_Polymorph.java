@@ -53,7 +53,7 @@ public class Spell_Polymorph extends Spell
 			else
 				affectableStats.setName(affected.name()+" the "+newRace.name());
 			int oldAdd=affectableStats.weight()-affected.baseEnvStats().weight();
-			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.GENDER));
+			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.STAT_GENDER));
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
 	}
@@ -65,8 +65,8 @@ public class Spell_Polymorph extends Spell
 		{
 		    int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(newRace);
-			if(affected.baseCharStats().getStat(CharStats.AGE)>0)
-				affectableStats.setStat(CharStats.AGE,newRace.getAgingChart()[oldCat]);
+			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
+				affectableStats.setStat(CharStats.STAT_AGE,newRace.getAgingChart()[oldCat]);
 		}
 	}
 
@@ -96,7 +96,7 @@ public class Spell_Polymorph extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,-(target.charStats().getStat(CharStats.CONSTITUTION)*2),auto);
+		boolean success=profficiencyCheck(mob,-(target.charStats().getStat(CharStats.STAT_CONSTITUTION)*2),auto);
 
 		if(success)
 		{

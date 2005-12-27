@@ -75,9 +75,9 @@ public class Disease_Narcolepsy extends Disease
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)/2);
-		if(affectableStats.getStat(CharStats.STRENGTH)<1)
-			affectableStats.setStat(CharStats.STRENGTH,1);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)/2);
+		if(affectableStats.getStat(CharStats.STAT_STRENGTH)<1)
+			affectableStats.setStat(CharStats.STAT_STRENGTH,1);
 		super.affectCharStats(affected,affectableStats);
 	}
 

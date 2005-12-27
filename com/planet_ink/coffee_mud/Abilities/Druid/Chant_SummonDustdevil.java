@@ -169,7 +169,7 @@ public class Chant_SummonDustdevil extends Chant
 			return false;
 		}
 
-		int material=EnvResource.RESOURCE_HEMP;
+		int material=RawMaterial.RESOURCE_HEMP;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -213,7 +213,7 @@ public class Chant_SummonDustdevil extends Chant
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 		newMOB.baseEnvStats().setAbility(25);
 		newMOB.baseEnvStats().setWeight(caster.envStats().level()*caster.envStats().level());
-		newMOB.baseCharStats().setStat(CharStats.STRENGTH,caster.envStats().level());
+		newMOB.baseCharStats().setStat(CharStats.STAT_STRENGTH,caster.envStats().level());
 		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
 		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_INVISIBLE);
 		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_HIDDEN);
@@ -222,7 +222,7 @@ public class Chant_SummonDustdevil extends Chant
 		newMOB.baseEnvStats().setDamage(1);
 		newMOB.baseEnvStats().setAttackAdjustment(0);
 		newMOB.baseEnvStats().setArmor(100);
-		newMOB.baseCharStats().setStat(CharStats.GENDER,'N');
+		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();

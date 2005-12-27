@@ -135,7 +135,7 @@ public class Spirit extends Undead
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" essence",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" essence",RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

@@ -58,7 +58,7 @@ public interface Drink extends Environmental
      * the Drink interface can sometimes be a liquid itself (like GenLiquidResource), most
      * often, a Drink interface implementing class is a mob without a material to draw from
      * or an Item having its own non-liquid material (like a leather waterskin containing milk).
-     * Either way, this is necessary.  The material types are constants in EnvResource.
+     * Either way, this is necessary.  The material types are constants in RawMaterial.
      * @see com.planet_ink.coffee_mud.Items.interfaces.EnvResource
      * @return the type of liquid contained herein
      */
@@ -68,7 +68,7 @@ public interface Drink extends Environmental
      * the Drink interface can sometimes be a liquid itself (like GenLiquidResource), most
      * often, a Drink interface implementing class is a mob without a material to draw from
      * or an Item having its own non-liquid material (like a leather waterskin containing milk).
-     * Either way, this is necessary.  The material types are constants in EnvResource.
+     * Either way, this is necessary.  The material types are constants in RawMaterial.
      * @see com.planet_ink.coffee_mud.Items.interfaces.EnvResource
      * @param newLiquidType the type of liquid contained herein
      */

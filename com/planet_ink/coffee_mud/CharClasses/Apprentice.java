@@ -39,7 +39,7 @@ public class Apprentice extends StdCharClass
 	public int getMaxHitPointsLevel(){return 5;}
 	public int getBonusPracLevel(){return 5;}
 	public int getBonusAttackLevel(){return -1;}
-	public int getAttackAttribute(){return CharStats.WISDOM;}
+	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
 	public int getLevelsPerBonusDamage(){ return 25;}
 	public int getTrainsFirstLevel(){return 6;}
 	public int getHPDivisor(){return 9;}
@@ -141,13 +141,13 @@ public class Apprentice extends StdCharClass
 	public String statQualifications(){return "Wisdom 5+, Intelligence 5+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.WISDOM)<=4)
+		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=4)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 5 Wisdom to become a Apprentice.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<=4)
+		if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=4)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 5 Intelligence to become a Apprentice.");

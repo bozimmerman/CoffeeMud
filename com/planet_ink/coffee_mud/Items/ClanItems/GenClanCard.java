@@ -44,7 +44,7 @@ public class GenClanCard extends StdClanCard
         setDisplayText("a generic clan membership card sits here.");
         setDescription("");
         baseEnvStats().setWeight(2);
-        setMaterial(EnvResource.RESOURCE_PAPER);
+        setMaterial(RawMaterial.RESOURCE_PAPER);
         recoverEnvStats();
     }
 

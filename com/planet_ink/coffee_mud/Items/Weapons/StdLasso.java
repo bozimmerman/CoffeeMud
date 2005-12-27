@@ -49,7 +49,7 @@ public class StdLasso extends StdWeapon
 		minRange=1;
 		maxRange=1;
 		weaponType=Weapon.TYPE_NATURAL;
-		material=EnvResource.RESOURCE_HEMP;
+		material=RawMaterial.RESOURCE_HEMP;
 		weaponClassification=Weapon.CLASS_THROWN;
 		setRawLogicalAnd(true);
 	}

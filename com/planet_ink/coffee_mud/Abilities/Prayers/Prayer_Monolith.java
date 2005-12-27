@@ -292,7 +292,7 @@ public class Prayer_Monolith extends Prayer
 				I.setName("a monolith of stone");
 				I.setDisplayText("a monolith of stone has been erected here");
 				I.setDescription("The bricks are sold and sturdy.");
-				I.setMaterial(EnvResource.RESOURCE_STONE);
+				I.setMaterial(RawMaterial.RESOURCE_STONE);
 				break;
 			case TYP_ICE:
 				amountRemaining=20;
@@ -300,21 +300,21 @@ public class Prayer_Monolith extends Prayer
 				I.setName("a monolith of ice");
 				I.setDisplayText("a monolith of ice has been erected here");
 				I.setDescription("The ice is crystal clear.");
-				I.setMaterial(EnvResource.RESOURCE_GLASS);
+				I.setMaterial(RawMaterial.RESOURCE_GLASS);
 				break;
 			case TYP_AIR:
 				I=CMClass.getItem("GenItem");
 				I.setName("a monolith of air");
 				I.setDisplayText("");
 				I.setDescription("The air is swirling dangerously.");
-				I.setMaterial(EnvResource.RESOURCE_NOTHING);
+				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				break;
 			case TYP_FIRE:
 				I=CMClass.getItem("GenItem");
 				I.setName("a monolith of fire");
 				I.setDisplayText("a monolith of fire is burning here");
 				I.setDescription("The flames are high and hot.");
-				I.setMaterial(EnvResource.RESOURCE_NOTHING);
+				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE);
 				break;
 			}

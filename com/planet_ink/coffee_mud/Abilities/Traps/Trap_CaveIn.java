@@ -45,7 +45,7 @@ public class Trap_CaveIn extends StdTrap
 		if(E==null) return null;
 		if(mob!=null)
 		{
-			Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_WOODEN);
+			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_WOODEN);
 			if(I!=null)
 				super.destroyResources(mob.location(),I.material(),100);
 		}
@@ -57,7 +57,7 @@ public class Trap_CaveIn extends StdTrap
 		if(!super.canSetTrapOn(mob,E)) return false;
 		if(mob!=null)
 		{
-			Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_WOODEN);
+			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_WOODEN);
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<100))
 			{
@@ -101,7 +101,7 @@ public class Trap_CaveIn extends StdTrap
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
-			if(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
+			if(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
 				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a cave-in!");
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> trigger(s) a cave-in!"))

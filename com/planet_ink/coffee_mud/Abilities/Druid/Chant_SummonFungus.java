@@ -79,7 +79,7 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 	public static Item buildFungus(MOB mob, Room room)
 	{
 		Item newItem=CMClass.getItem("GenFoodResource");
-		newItem.setMaterial(EnvResource.RESOURCE_MUSHROOMS);
+		newItem.setMaterial(RawMaterial.RESOURCE_MUSHROOMS);
 		switch(CMLib.dice().roll(1,6,0))
 		{
 		case 1:

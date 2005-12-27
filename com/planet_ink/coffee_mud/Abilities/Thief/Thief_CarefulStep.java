@@ -106,13 +106,13 @@ public class Thief_CarefulStep extends ThiefSkill
 			else
 				levelDiff=levelDiff*10;
 			success=profficiencyCheck(mob,levelDiff,auto);
-			int oldDex=mob.baseCharStats().getStat(CharStats.DEXTERITY);
+			int oldDex=mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY);
 			if(success)
-				mob.baseCharStats().setStat(CharStats.DEXTERITY,oldDex+100);
+				mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,oldDex+100);
 			mob.recoverCharStats();
 			CMLib.tracking().move(mob,dirCode,false,false);
-			if(oldDex!=mob.baseCharStats().getStat(CharStats.DEXTERITY))
-				mob.baseCharStats().setStat(CharStats.DEXTERITY,oldDex);
+			if(oldDex!=mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY))
+				mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,oldDex);
 			mob.recoverCharStats();
 		}
 		return success;

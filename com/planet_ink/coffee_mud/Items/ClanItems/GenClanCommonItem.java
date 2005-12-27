@@ -44,7 +44,7 @@ public class GenClanCommonItem extends StdClanCommonItem
 		setDisplayText("a generic clan worker item sits here.");
 		setDescription("");
 		baseEnvStats().setWeight(2);
-		setMaterial(EnvResource.RESOURCE_COTTON);
+		setMaterial(RawMaterial.RESOURCE_COTTON);
 		recoverEnvStats();
 	}
 

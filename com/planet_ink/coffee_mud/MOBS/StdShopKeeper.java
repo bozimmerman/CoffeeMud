@@ -54,8 +54,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		baseEnvStats.setWeight(150);
 		setWimpHitPoint(0);
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,16);
-		baseCharStats().setStat(CharStats.CHARISMA,25);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,16);
+		baseCharStats().setStat(CharStats.STAT_CHARISMA,25);
 
 		baseEnvStats().setArmor(0);
 

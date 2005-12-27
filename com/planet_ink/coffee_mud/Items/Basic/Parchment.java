@@ -40,7 +40,7 @@ public class Parchment extends GenReadable
 		setDescription("looks kinda like a piece of paper");
 		baseEnvStats().setWeight(1);
 		recoverEnvStats();
-		setMaterial(EnvResource.RESOURCE_PAPER);
+		setMaterial(RawMaterial.RESOURCE_PAPER);
 	}
 
 

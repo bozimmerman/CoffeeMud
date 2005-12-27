@@ -40,7 +40,7 @@ public class StdCharClass implements CharClass
 	public String baseClass(){return ID();}
 	public int getBonusPracLevel(){return 0;}
 	public int getBonusAttackLevel(){return 1;}
-	public int getAttackAttribute(){return CharStats.STRENGTH;}
+	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
 	public int getPracsFirstLevel(){return 5;}
 	public int getTrainsFirstLevel(){return 3;}
 	public int getLevelsPerBonusDamage(){ return 1;}
@@ -283,7 +283,7 @@ public class StdCharClass implements CharClass
 		if((((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_WEAPONATTACK)||((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_THROW))
 		&&(E instanceof Weapon)
 		&&(mob.charStats().getCurrentClass()==this)
-		&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(new Integer(((Weapon)E).material()&EnvResource.MATERIAL_MASK))))
+		&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(new Integer(((Weapon)E).material()&RawMaterial.MATERIAL_MASK))))
 			||((disallowedWeaponClasses(mob)!=null)&&(disallowedWeaponClasses(mob).contains(new Integer(((Weapon)E).weaponClassification())))))
 		&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(getAttackAttribute())*2))
 		&&(mob.fetchWieldedItem()!=null))
@@ -388,7 +388,7 @@ public class StdCharClass implements CharClass
 	{
 		if(affectableStats.getCurrentClass()==this)
 		for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
-			affectableStats.setStat(CharStats.MAX_STRENGTH_ADJ+i,affectableStats.getStat(CharStats.MAX_STRENGTH_ADJ+i)+maxStatAdj[i]);
+			affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ+i)+maxStatAdj[i]);
 	}
 
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
@@ -422,7 +422,7 @@ public class StdCharClass implements CharClass
 	    &&(msg.target() instanceof Weapon)
 		&&(msg.source().charStats().getCurrentClass()==this)
 	    &&(!msg.source().isMonster())
-		&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(new Integer(((Weapon)msg.target()).material()&EnvResource.MATERIAL_MASK))))
+		&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(new Integer(((Weapon)msg.target()).material()&RawMaterial.MATERIAL_MASK))))
 			||((disallowedWeaponClasses(msg.source())!=null)&&(disallowedWeaponClasses(msg.source()).contains(new Integer(((Weapon)msg.target()).weaponClassification()))))))
 	        msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.TYP_OK_VISUAL,"<T-NAME> feel(s) a bit strange in your hands.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 	}
@@ -500,7 +500,7 @@ public class StdCharClass implements CharClass
         }
 
 		levelAdjuster(mob,-1);
-		int practiceGain=(int)Math.floor(CMath.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
+		int practiceGain=(int)Math.floor(CMath.div(mob.charStats().getStat(CharStats.STAT_WISDOM),4.0))+getBonusPracLevel();
 		if(practiceGain<=0)practiceGain=1;
 		mob.setPractices(mob.getPractices()-practiceGain);
 		int trainGain=0;
@@ -552,9 +552,9 @@ public class StdCharClass implements CharClass
 		mob.recoverEnvStats();
 		theNews.append("^HYou are now a "+mob.charStats().displayClassLevel(mob,false)+".^N\n\r");
 
-		int conStat=mob.charStats().getStat(CharStats.CONSTITUTION);
+		int conStat=mob.charStats().getStat(CharStats.STAT_CONSTITUTION);
 		int maxConStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.CONSTITUTION));
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_CONSTITUTION));
 		if(conStat>maxConStat) conStat=maxConStat;
 		int newHitPointGain=(int)Math.floor(CMath.div(conStat,getHPDivisor())+CMLib.dice().roll(getHPDice(),getHPDie(),0));
 		if(newHitPointGain<=0)
@@ -572,9 +572,9 @@ public class StdCharClass implements CharClass
 
 		double lvlMul=1.0;//-CMath.div(mob.envStats().level(),100.0);
 		if(lvlMul<0.1) lvlMul=.1;
-		int mvStat=mob.charStats().getStat(CharStats.STRENGTH);
+		int mvStat=mob.charStats().getStat(CharStats.STAT_STRENGTH);
 		int maxMvStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.STRENGTH));
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_STRENGTH));
 		if(mvStat>maxMvStat) mvStat=maxMvStat;
 		int mvGain=(int)Math.round(lvlMul*CMath.mul(CMath.div(mvStat,18.0),getMovementMultiplier()));
 		mvGain=mvGain*adjuster;
@@ -584,7 +584,7 @@ public class StdCharClass implements CharClass
 
 		int attStat=mob.charStats().getStat(getAttackAttribute());
 		int maxAttStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+getAttackAttribute()));
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+getAttackAttribute()));
 		if(attStat>=maxAttStat) attStat=maxAttStat;
 		int attGain=(int)Math.round(CMath.div(attStat,6.0))+getBonusAttackLevel();
 		if(mvStat>=25)attGain+=2;
@@ -597,12 +597,12 @@ public class StdCharClass implements CharClass
 
 		int man2Stat=mob.charStats().getStat(getAttackAttribute());
 		int maxMan2Stat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+getAttackAttribute()));
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+getAttackAttribute()));
 		if(man2Stat>maxMan2Stat) man2Stat=maxMan2Stat;
 		
-		int manStat=mob.charStats().getStat(CharStats.INTELLIGENCE);
+		int manStat=mob.charStats().getStat(CharStats.STAT_INTELLIGENCE);
 		int maxManStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.INTELLIGENCE));
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_INTELLIGENCE));
 		if(manStat>maxManStat) manStat=maxManStat;
 		int manaGain=(int)Math.floor(CMath.div(manStat,getManaDivisor())+CMLib.dice().roll(getManaDice(),getManaDie(),0));
 		if(man2Stat>17) manaGain=manaGain+((man2Stat-17)/2);
@@ -698,7 +698,7 @@ public class StdCharClass implements CharClass
 				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LEVELSGAINED);
 		}
 
-		int practiceGain=(int)Math.floor(CMath.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
+		int practiceGain=(int)Math.floor(CMath.div(mob.charStats().getStat(CharStats.STAT_WISDOM),4.0))+getBonusPracLevel();
 		if(practiceGain<=0)practiceGain=1;
 		mob.setPractices(mob.getPractices()+practiceGain);
 		theNews.append(" ^H" + practiceGain+"^N practice " +
@@ -744,7 +744,7 @@ public class StdCharClass implements CharClass
 
 	public int getLevelMana(MOB mob)
 	{
-		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(CMath.div(mob.baseCharStats().getStat(CharStats.INTELLIGENCE),getHPDivisor())))+(getHPDie()*(getHPDice()+1)/2));
+		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(CMath.div(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE),getHPDivisor())))+(getHPDie()*(getHPDice()+1)/2));
 	}
 
 	public int getLevelAttack(MOB mob)
@@ -774,7 +774,7 @@ public class StdCharClass implements CharClass
 		double lvlMul=1.0;//-CMath.div(mob.envStats().level(),100.0);
 		if(lvlMul<0.1) lvlMul=.1;
 		if(mob.baseEnvStats().level()>1)
-			move+=((int)Math.round(CMath.mul(mob.baseEnvStats().level()-1,CMath.mul(CMath.mul(lvlMul,CMath.div(mob.baseCharStats().getStat(CharStats.STRENGTH),18.0)),getMovementMultiplier()))));
+			move+=((int)Math.round(CMath.mul(mob.baseEnvStats().level()-1,CMath.mul(CMath.mul(lvlMul,CMath.div(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH),18.0)),getMovementMultiplier()))));
 		return move;
 	}
 

@@ -72,9 +72,9 @@ public class Spell_MindLight extends Spell
 			if(M!=null)
 			{
 				if(invoker()!=null)
-					M.curState().adjMana((invoker().charStats().getStat(CharStats.INTELLIGENCE)+invoker().charStats().getStat(CharStats.WISDOM))/2,M.maxState());
+					M.curState().adjMana((invoker().charStats().getStat(CharStats.STAT_INTELLIGENCE)+invoker().charStats().getStat(CharStats.STAT_WISDOM))/2,M.maxState());
 				else
-					M.curState().adjMana((M.charStats().getStat(CharStats.INTELLIGENCE)+M.charStats().getStat(CharStats.WISDOM))/2,M.maxState());
+					M.curState().adjMana((M.charStats().getStat(CharStats.STAT_INTELLIGENCE)+M.charStats().getStat(CharStats.STAT_WISDOM))/2,M.maxState());
 			}
 		}
 		return true;

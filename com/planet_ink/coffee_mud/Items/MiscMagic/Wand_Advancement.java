@@ -42,7 +42,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 		setDescription("A wand made out of platinum");
 		secretIdentity="The wand of Advancement.  Hold the wand say `level up` to it.";
 		this.setUsesRemaining(50);
-		material=EnvResource.RESOURCE_OAK;
+		material=RawMaterial.RESOURCE_OAK;
 		baseGoldValue=20000;
 		recoverEnvStats();
 		secretWord="LEVEL UP";

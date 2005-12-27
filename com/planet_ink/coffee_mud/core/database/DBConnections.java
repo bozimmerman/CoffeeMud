@@ -109,7 +109,16 @@ public class DBConnections
 			}
 			catch(Exception sqle)
 			{
-				// queued by the connection for retry
+                if(sqle instanceof java.io.EOFException)
+                {
+                    Log.errOut("DBConnections",""+sqle);
+                    fixConnections(DBClass,DBService,DBUser,DBPass,numConnections);
+                    return -1;
+                }
+                if(sqle instanceof SQLException)
+                {
+                    // queued by the connection for retry
+                }
 			}
 			if(Result<0)
 			{
@@ -746,7 +755,16 @@ public class DBConnections
 			}
 			catch(Exception sqle)
 			{
-				// queued by the connection for retry
+                if(sqle instanceof java.io.EOFException)
+                {
+                    Log.errOut("DBConnections",""+sqle);
+                    fixConnections(DBClass,DBService,DBUser,DBPass,numConnections);
+                    return -1;
+                }
+                if(sqle instanceof SQLException)
+                {
+                    // queued by the connection for retry
+                }
 			}
 		}
 		catch(Exception e)
@@ -782,10 +800,10 @@ public class DBConnections
 					while(allBufs.next())
 						buf.write(allBufs.getBytes("BlobData"));
 				}
-				catch(IOException e)
+				catch(Exception e)
 				{
-					Log.errOut("DBConnections","Error writing bytes to array.");
-				}
+                    Log.errOut("DBConnections","Error writing bytes to array.");
+                }
 			}
 			else
 			{
@@ -798,6 +816,12 @@ public class DBConnections
 		}
 		catch(Exception e)
 		{
+            if(e instanceof java.io.EOFException)
+            {
+                Log.errOut("DBConnections",""+e);
+                fixConnections(DBClass,DBService,DBUser,DBPass,numConnections);
+                return null;
+            }
 			Log.errOut("DBConnections",""+e);
 		}
 		if(DB!=null)

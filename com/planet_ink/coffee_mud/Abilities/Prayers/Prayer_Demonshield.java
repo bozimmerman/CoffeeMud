@@ -74,7 +74,7 @@ public class Prayer_Demonshield extends Prayer
 			   &&(msg.source().rangeToTarget()==0)
 			   &&(msg.targetMessage().length()>0))
 			{
-				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.DEXTERITY)*3))
+				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.STAT_DEXTERITY)*3))
 				   &&(!CMLib.flags().isEvil(source)))
 				{
 					CMMsg msg2=CMClass.getMsg(source,mob,this,affectType(true),null);

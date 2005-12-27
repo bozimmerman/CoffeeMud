@@ -44,9 +44,9 @@ public class ClayGolem extends StoneGolem
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("a pound of clay",EnvResource.RESOURCE_CLAY));
+					("a pound of clay",RawMaterial.RESOURCE_CLAY));
 				resources.addElement(makeResource
-					("essence of golem",EnvResource.RESOURCE_BLOOD));
+					("essence of golem",RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

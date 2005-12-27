@@ -51,7 +51,7 @@ public class StdBow extends StdWeapon
 		minRange=1;
 		maxRange=3;
 		weaponType=Weapon.TYPE_PIERCING;
-		material=EnvResource.RESOURCE_WOOD;
+		material=RawMaterial.RESOURCE_WOOD;
 		weaponClassification=Weapon.CLASS_RANGED;
 		setRawLogicalAnd(true);
 	}

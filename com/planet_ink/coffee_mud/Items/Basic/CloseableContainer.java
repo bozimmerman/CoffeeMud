@@ -38,7 +38,7 @@ public class CloseableContainer extends StdContainer
 
 		hasALid=true;
 		isOpen=false;
-		material=EnvResource.RESOURCE_OAK;
+		material=RawMaterial.RESOURCE_OAK;
 	}
 
 

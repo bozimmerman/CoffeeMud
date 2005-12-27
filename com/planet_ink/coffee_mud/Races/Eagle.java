@@ -43,8 +43,8 @@ public class Eagle extends GreatBird
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,10);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,11);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,10);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,11);
 	}
 	public Vector myResources()
 	{
@@ -53,15 +53,15 @@ public class Eagle extends GreatBird
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("an "+name().toLowerCase()+" beak",EnvResource.RESOURCE_BONE));
+				("an "+name().toLowerCase()+" beak",RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
+				("some "+name().toLowerCase()+" feathers",RawMaterial.RESOURCE_FEATHERS));
 				resources.addElement(makeResource
-				("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+				("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

@@ -46,7 +46,7 @@ public class Dirk extends Dagger
 		baseEnvStats().setAttackAdjustment(0);
 		baseEnvStats().setDamage(4);
 		weaponType=TYPE_PIERCING;
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 		recoverEnvStats();
 	}
 

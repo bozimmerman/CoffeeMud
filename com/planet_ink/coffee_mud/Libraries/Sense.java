@@ -438,19 +438,19 @@ public class Sense extends StdLibrary implements CMFlagLibrary
     		   return false;
             int hideFactor=seen.envStats().level();
             if(seen instanceof MOB)
-                hideFactor+=(((MOB)seen).charStats().getStat(CharStats.DEXTERITY));
+                hideFactor+=(((MOB)seen).charStats().getStat(CharStats.STAT_DEXTERITY));
             if(CMath.bset(seen.baseEnvStats().disposition(),EnvStats.IS_HIDDEN))
                 hideFactor+=100;
             else
             if(seen instanceof MOB)
-                hideFactor+=((MOB)seen).charStats().getStat(CharStats.SAVE_DETECTION);
+                hideFactor+=((MOB)seen).charStats().getStat(CharStats.STAT_SAVE_DETECTION);
             else
                 hideFactor+=100;
-            int detectFactor=seer.charStats().getStat(CharStats.WISDOM);
+            int detectFactor=seer.charStats().getStat(CharStats.STAT_WISDOM);
             if(CMath.bset(seer.baseEnvStats().sensesMask(),EnvStats.CAN_SEE_HIDDEN))
                 detectFactor+=(100+seer.envStats().level());
             else // the 100 represents proff, and level represents time searching.
-                detectFactor+=seer.charStats().getStat(CharStats.SAVE_OVERLOOKING);
+                detectFactor+=seer.charStats().getStat(CharStats.STAT_SAVE_OVERLOOKING);
             if(seen instanceof MOB)
                 detectFactor+=(seen.envStats().height()-seer.envStats().height());
             if(hideFactor>detectFactor)
@@ -565,10 +565,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if((isABonusItems(seen))&&(canSeeBonusItems(seer)))
 			Say.append(" (^wmagical aura^?)");
 		if((canSeeMetal(seer))&&(seen instanceof Item))
-			if((((Item)seen).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
+			if((((Item)seen).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 				Say.append(" (^wmetallic aura^?)");
 			else
-			if((((Item)seen).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)
+			if((((Item)seen).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)
 				Say.append(" (^wmithril aura^?)");
 
 		if(isBound(seen))
@@ -618,7 +618,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(isGolem(seen1)!=isGolem(seen2))
 			return false;
 		if(canSeeMetal(seer)&&(seen1 instanceof Item)&&(seen2 instanceof Item)
-			&&((((Item)seen1).material()&EnvResource.MATERIAL_MASK)!=(((Item)seen2).material()&EnvResource.MATERIAL_MASK)))
+			&&((((Item)seen1).material()&RawMaterial.MATERIAL_MASK)!=(((Item)seen2).material()&RawMaterial.MATERIAL_MASK)))
 		   return false;
 		return true;
 	}
@@ -707,7 +707,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			{
 				Item I=(Item)V.elementAt(v);
 				totalWeight+=I.baseEnvStats().weight();
-				totalFloatilla+=totalWeight*EnvResource.RESOURCE_DATA[I.material()&EnvResource.RESOURCE_MASK][4];
+				totalFloatilla+=totalWeight*RawMaterial.RESOURCE_DATA[I.material()&RawMaterial.RESOURCE_MASK][4];
 			}
 			if(E instanceof Container)
 			{
@@ -737,7 +737,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 
 	public boolean isAnimalIntelligence(MOB E)
 	{
-		return (E!=null)&&(E.charStats().getStat(CharStats.INTELLIGENCE)<2);
+		return (E!=null)&&(E.charStats().getStat(CharStats.STAT_INTELLIGENCE)<2);
 	}
 	public boolean isVegetable(MOB E)
 	{
@@ -837,8 +837,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isMetal(Environmental E)
 	{
 		if(E instanceof Item)
-			return((((Item)E).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
-			   ||((((Item)E).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL);
+			return((((Item)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+			   ||((((Item)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL);
 		return false;
 	}
 
@@ -848,27 +848,27 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(E instanceof Item)
 		{
 			Item lighting=(Item)E;
-			switch(lighting.material()&EnvResource.MATERIAL_MASK)
+			switch(lighting.material()&RawMaterial.MATERIAL_MASK)
 			{
-			case EnvResource.MATERIAL_LEATHER:
+			case RawMaterial.MATERIAL_LEATHER:
 				return 20+lighting.envStats().weight();
-			case EnvResource.MATERIAL_CLOTH:
-			case EnvResource.MATERIAL_PAPER:
-			case EnvResource.MATERIAL_PLASTIC:
+			case RawMaterial.MATERIAL_CLOTH:
+			case RawMaterial.MATERIAL_PAPER:
+			case RawMaterial.MATERIAL_PLASTIC:
 				return 5+lighting.envStats().weight();
-			case EnvResource.MATERIAL_WOODEN:
+			case RawMaterial.MATERIAL_WOODEN:
 				return 150+(lighting.envStats().weight()*5);
-			case EnvResource.MATERIAL_VEGETATION:
-			case EnvResource.MATERIAL_FLESH:
+			case RawMaterial.MATERIAL_VEGETATION:
+			case RawMaterial.MATERIAL_FLESH:
 				return -1;
-			case EnvResource.MATERIAL_UNKNOWN:
-			case EnvResource.MATERIAL_GLASS:
-			case EnvResource.MATERIAL_LIQUID:
-			case EnvResource.MATERIAL_METAL:
-			case EnvResource.MATERIAL_ENERGY:
-			case EnvResource.MATERIAL_MITHRIL:
-			case EnvResource.MATERIAL_ROCK:
-			case EnvResource.MATERIAL_PRECIOUS:
+			case RawMaterial.MATERIAL_UNKNOWN:
+			case RawMaterial.MATERIAL_GLASS:
+			case RawMaterial.MATERIAL_LIQUID:
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_ENERGY:
+			case RawMaterial.MATERIAL_MITHRIL:
+			case RawMaterial.MATERIAL_ROCK:
+			case RawMaterial.MATERIAL_PRECIOUS:
 				return 0;
 			}
 		}

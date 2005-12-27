@@ -125,12 +125,12 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		building=null;
 		messedUp=false;
 		int woodRequired=50;
-		int[] pm={EnvResource.MATERIAL_METAL,EnvResource.MATERIAL_MITHRIL};
+		int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
 		int[][] data=fetchFoundResourceData(mob,
 											woodRequired,"metal",pm,
 											0,null,null,
 											false,
-											auto?EnvResource.RESOURCE_MITHRIL:0);
+											auto?RawMaterial.RESOURCE_MITHRIL:0);
 		if(data==null) return false;
 		woodRequired=data[0][FOUND_AMT];
 
@@ -144,7 +144,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		String startStr="<S-NAME> start(s) crafting "+building.name()+".";
 		displayText="You are crafting "+building.name();
 		verb="crafting "+building.name();
-		int hardness=EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][3]-5;
+		int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][3]-5;
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);

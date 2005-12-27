@@ -42,7 +42,7 @@ public class Chair extends StdRideable
 		baseEnvStats.setWeight(150);
 		setDisplayText("a chair is here.");
 		setDescription("Looks like a nice comfortable wooden chair");
-		material=EnvResource.RESOURCE_OAK;
+		material=RawMaterial.RESOURCE_OAK;
 		baseGoldValue=5;
 		baseEnvStats().setLevel(1);
 		setRideBasis(Rideable.RIDEABLE_SIT);

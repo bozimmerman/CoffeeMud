@@ -126,7 +126,7 @@ public class GenWallpaper implements Item
 	public void unWear(){}
 	public int capacity(){return 0;}
 	public void setCapacity(int newValue){}
-	public int material(){return EnvResource.RESOURCE_PAPER;}
+	public int material(){return RawMaterial.RESOURCE_PAPER;}
 	public void setMaterial(int newValue){}
 	public int baseGoldValue(){return 0;}
 	public int value(){return 0;}

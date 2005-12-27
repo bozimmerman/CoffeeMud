@@ -44,7 +44,7 @@ public class GenClanFlag extends StdClanFlag
 		setDisplayText("a generic clan flag sits here.");
 		setDescription("");
 		baseEnvStats().setWeight(2);
-		setMaterial(EnvResource.RESOURCE_COTTON);
+		setMaterial(RawMaterial.RESOURCE_COTTON);
 		recoverEnvStats();
 	}
 

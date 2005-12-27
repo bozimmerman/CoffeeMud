@@ -320,9 +320,9 @@ public class StdTrap extends StdAbility implements Trap
 	{
 		if((other==null)||(other.length()==0))
 			return null;
-		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
-			if(EnvResource.RESOURCE_DESCS[i].equalsIgnoreCase(other))
-				return findFirstResource(room,EnvResource.RESOURCE_DATA[i][0]);
+		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+			if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(other))
+				return findFirstResource(room,RawMaterial.RESOURCE_DATA[i][0]);
 		return null;
 	}
 	protected Item findFirstResource(Room room, int resource)
@@ -330,7 +330,7 @@ public class StdTrap extends StdAbility implements Trap
 		for(int i=0;i<room.numItems();i++)
 		{
 			Item I=room.fetchItem(i);
-			if((I instanceof EnvResource)
+			if((I instanceof RawMaterial)
 			&&(I.material()==resource)
 			&&(!CMLib.flags().isOnFire(I))
 			&&(I.container()==null))
@@ -342,8 +342,8 @@ public class StdTrap extends StdAbility implements Trap
 	{
 		if((other==null)||(other.length()==0))
 			return null;
-		for(int i=0;i<EnvResource.MATERIAL_DESCS.length;i++)
-			if(EnvResource.MATERIAL_DESCS[i].equalsIgnoreCase(other))
+		for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
+			if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(other))
 				return findMostOfMaterial(room,(i<<8));
 		return null;
 	}
@@ -356,8 +356,8 @@ public class StdTrap extends StdAbility implements Trap
 		for(int i=0;i<room.numItems();i++)
 		{
 			Item I=room.fetchItem(i);
-			if((I instanceof EnvResource)
-			&&((I.material()&EnvResource.MATERIAL_MASK)==material)
+			if((I instanceof RawMaterial)
+			&&((I.material()&RawMaterial.MATERIAL_MASK)==material)
 			&&(I.material()!=mostMaterial)
 			&&(!CMLib.flags().isOnFire(I))
 			&&(I.container()==null))
@@ -379,7 +379,7 @@ public class StdTrap extends StdAbility implements Trap
 		for(int i=room.numItems()-1;i>=0;i--)
 		{
 			Item I=room.fetchItem(i);
-			if((I instanceof EnvResource)
+			if((I instanceof RawMaterial)
 			&&(I.container()==null)
 			&&(I.material()==resource)
 			&&((--number)>=0))
@@ -393,7 +393,7 @@ public class StdTrap extends StdAbility implements Trap
 		for(int i=0;i<room.numItems();i++)
 		{
 			Item I=room.fetchItem(i);
-			if((I instanceof EnvResource)
+			if((I instanceof RawMaterial)
 			&&(I.material()==resource)
 			&&(!CMLib.flags().isOnFire(I))
 			&&(I.container()==null))

@@ -128,15 +128,15 @@ public class WereAmphibian extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" tongue",EnvResource.RESOURCE_MEAT));
+				("a "+name().toLowerCase()+" tongue",RawMaterial.RESOURCE_MEAT));
 				for(int i=0;i<5;i++)
 					resources.addElement(makeResource
-					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT));
 				for(int i=0;i<15;i++)
 					resources.addElement(makeResource
-					("a "+name().toLowerCase()+" hide",EnvResource.RESOURCE_SCALES));
+					("a "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_SCALES));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

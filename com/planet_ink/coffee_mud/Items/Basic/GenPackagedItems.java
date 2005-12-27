@@ -45,7 +45,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
         setDescription("");
         baseGoldValue=5;
         baseEnvStats().setLevel(1);
-        setMaterial(EnvResource.RESOURCE_MEAT);
+        setMaterial(RawMaterial.RESOURCE_MEAT);
         recoverEnvStats();
     }
     protected boolean abilityImbuesMagic(){return false;}

@@ -47,20 +47,20 @@ public class Prop_HaveResister extends Property
     protected boolean ignoreCharStats=true;
 
     public static Object[][] stats={
-            {new Integer(CharStats.SAVE_MAGIC),"magic"},
-            {new Integer(CharStats.SAVE_GAS),"gas"},
-            {new Integer(CharStats.SAVE_FIRE),"fire"},
-            {new Integer(CharStats.SAVE_ELECTRIC),"elec"},
-            {new Integer(CharStats.SAVE_MIND),"mind"},
-            {new Integer(CharStats.SAVE_JUSTICE),"justice"},
-            {new Integer(CharStats.SAVE_COLD),"cold"},
-            {new Integer(CharStats.SAVE_ACID),"acid"},
-            {new Integer(CharStats.SAVE_WATER),"water"},
-            {new Integer(CharStats.SAVE_UNDEAD),"evil"},
-            {new Integer(CharStats.SAVE_DISEASE),"disease"},
-            {new Integer(CharStats.SAVE_POISON),"poison"},
-            {new Integer(CharStats.SAVE_PARALYSIS),"paralyze"},
-            {new Integer(CharStats.SAVE_TRAPS),"traps"}
+            {new Integer(CharStats.STAT_SAVE_MAGIC),"magic"},
+            {new Integer(CharStats.STAT_SAVE_GAS),"gas"},
+            {new Integer(CharStats.STAT_SAVE_FIRE),"fire"},
+            {new Integer(CharStats.STAT_SAVE_ELECTRIC),"elec"},
+            {new Integer(CharStats.STAT_SAVE_MIND),"mind"},
+            {new Integer(CharStats.STAT_SAVE_JUSTICE),"justice"},
+            {new Integer(CharStats.STAT_SAVE_COLD),"cold"},
+            {new Integer(CharStats.STAT_SAVE_ACID),"acid"},
+            {new Integer(CharStats.STAT_SAVE_WATER),"water"},
+            {new Integer(CharStats.STAT_SAVE_UNDEAD),"evil"},
+            {new Integer(CharStats.STAT_SAVE_DISEASE),"disease"},
+            {new Integer(CharStats.STAT_SAVE_POISON),"poison"},
+            {new Integer(CharStats.STAT_SAVE_PARALYSIS),"paralyze"},
+            {new Integer(CharStats.STAT_SAVE_TRAPS),"traps"}
     };
     
 	public void setMiscText(String newText)

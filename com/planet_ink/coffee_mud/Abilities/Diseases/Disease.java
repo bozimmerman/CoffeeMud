@@ -70,7 +70,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 			if(target instanceof MOB)
 			{
 				MOB targetMOB=(MOB)target;
-				if((CMLib.dice().rollPercentage()>targetMOB.charStats().getSave(CharStats.SAVE_DISEASE))
+				if((CMLib.dice().rollPercentage()>targetMOB.charStats().getSave(CharStats.STAT_SAVE_DISEASE))
 				&&(targetMOB.location()!=null))
 				{
 					MOB following=targetMOB.amFollowing();
@@ -137,7 +137,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 			&&(msg.target()!=null)
 			&&(msg.target() instanceof MOB)
 			&&(msg.target()!=msg.source())
-			&&(CMLib.dice().rollPercentage()>(((MOB)msg.target()).charStats().getSave(CharStats.SAVE_DISEASE)+70)))
+			&&(CMLib.dice().rollPercentage()>(((MOB)msg.target()).charStats().getSave(CharStats.STAT_SAVE_DISEASE)+70)))
 				catchIt(mob,msg.target());
 			else
 			if((CMath.bset(abilityCode(),DiseaseAffect.SPREAD_CONTACT))

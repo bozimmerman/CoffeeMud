@@ -69,8 +69,8 @@ public class Disease_Fleas extends Disease
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(affected==null) return;
-		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)-4);
-		if(affectableStats.getStat(CharStats.DEXTERITY)<=0)
-			affectableStats.setStat(CharStats.DEXTERITY,1);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-4);
+		if(affectableStats.getStat(CharStats.STAT_DEXTERITY)<=0)
+			affectableStats.setStat(CharStats.STAT_DEXTERITY,1);
 	}
 }

@@ -48,7 +48,7 @@ public class EternityLeafShield extends StdShield
 		baseEnvStats().setWeight(15);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_SEAWEED;
+		material=RawMaterial.RESOURCE_SEAWEED;
 	}
 
 

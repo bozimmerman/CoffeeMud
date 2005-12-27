@@ -55,7 +55,7 @@ public class Dance extends StdAbility
 		if(invoker()==null) return CMLib.ableMapper().lowestQualifyingLevel(ID());
 		int x=CMLib.ableMapper().qualifyingClassLevel(invoker(),this);
 		if(x<=0) x=CMLib.ableMapper().lowestQualifyingLevel(ID());
-		int charisma=(invoker().charStats().getStat(CharStats.CHARISMA)-10);
+		int charisma=(invoker().charStats().getStat(CharStats.STAT_CHARISMA)-10);
 		if(charisma>10)
 			return x+((charisma-10)/3);
 		return x;

@@ -142,18 +142,18 @@ public class FieryRoom
     private void eqRoast(MOB mob) {
         Item target = getSomething(mob);
         if (target != null) {
-            switch (target.material() & EnvResource.MATERIAL_MASK) {
-                case EnvResource.MATERIAL_GLASS:
-                case EnvResource.MATERIAL_METAL:
-                case EnvResource.MATERIAL_MITHRIL:
-                case EnvResource.MATERIAL_PLASTIC:
-                case EnvResource.MATERIAL_PRECIOUS:
-                case EnvResource.MATERIAL_ROCK:
-                case EnvResource.MATERIAL_UNKNOWN: {
+            switch (target.material() & RawMaterial.MATERIAL_MASK) {
+                case RawMaterial.MATERIAL_GLASS:
+                case RawMaterial.MATERIAL_METAL:
+                case RawMaterial.MATERIAL_MITHRIL:
+                case RawMaterial.MATERIAL_PLASTIC:
+                case RawMaterial.MATERIAL_PRECIOUS:
+                case RawMaterial.MATERIAL_ROCK:
+                case RawMaterial.MATERIAL_UNKNOWN: {
                     // all these we'll make get hot and be dropped.
                     int damage = CMLib.dice().roll(1, 6, 1);
                     CMLib.combat().postDamage(mob, mob, null, damage, CMMsg.MASK_GENERAL | CMMsg.TYP_FIRE, Weapon.TYPE_BURNING, target.name() + " <DAMAGE> <T-NAME>!");
-                    if (CMLib.dice().rollPercentage() < mob.charStats().getStat(CharStats.STRENGTH)) {
+                    if (CMLib.dice().rollPercentage() < mob.charStats().getStat(CharStats.STAT_STRENGTH)) {
                         CMLib.commands().postDrop(mob, target, false, false);
                     }
                     break;

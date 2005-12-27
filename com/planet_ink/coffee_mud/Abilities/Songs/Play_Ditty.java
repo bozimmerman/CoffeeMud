@@ -47,7 +47,7 @@ public class Play_Ditty extends Play
 		if((affected!=null)&&(affected instanceof MOB)&&(invoker()!=null))
 		{
 			MOB mob=(MOB)affected;
-			int healing=invoker().charStats().getStat(CharStats.CHARISMA)/4;
+			int healing=invoker().charStats().getStat(CharStats.STAT_CHARISMA)/4;
 			CMLib.combat().postHealing(invoker(),mob,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 		}
 		return true;

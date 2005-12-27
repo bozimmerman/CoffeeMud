@@ -43,7 +43,7 @@ public class Parakeet extends StdMOB
 		setMoney(0);
 		setWimpHitPoint(0);
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,1);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 
 		baseEnvStats().setDamage(1);
 		baseEnvStats().setSpeed(1.0);

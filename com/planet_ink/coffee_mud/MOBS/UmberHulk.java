@@ -49,8 +49,8 @@ public class UmberHulk extends StdMOB
 		baseEnvStats.setWeight(350);
 		setWimpHitPoint(0);
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,8);
-		baseCharStats().setStat(CharStats.CHARISMA,2);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8);
+		baseCharStats().setStat(CharStats.STAT_CHARISMA,2);
 		baseCharStats().setMyRace(CMClass.getRace("UmberHulk"));
 		baseCharStats().getMyRace().startRacing(this,false);
 

@@ -173,7 +173,7 @@ public class WeatherAffects extends PuddleMaker
             }
             if((what!=null)
             &&(!CMLib.flags().isInFlight(msg.source()))
-            &&(CMLib.dice().rollPercentage()>((msg.source().charStats().getStat(CharStats.DEXTERITY)*3)+25)))
+            &&(CMLib.dice().rollPercentage()>((msg.source().charStats().getStat(CharStats.STAT_DEXTERITY)*3)+25)))
             {
                 int oldDisposition=msg.source().baseEnvStats().disposition();
                 oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
@@ -218,7 +218,7 @@ public class WeatherAffects extends PuddleMaker
                 if((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
                 &&(CMLib.dice().rollPercentage()<freezeOverChance)
                 &&(R instanceof Drink)
-                &&(((Drink)R).liquidType()==EnvResource.RESOURCE_FRESHWATER))
+                &&(((Drink)R).liquidType()==RawMaterial.RESOURCE_FRESHWATER))
                 {
                     Ability A2=CMClass.getAbility("Spell_IceSheet");
                     if(A2!=null)
@@ -340,7 +340,7 @@ public class WeatherAffects extends PuddleMaker
                     if(heatExhaustionChance>5) heatExhaustionChance-=5;
                     if(frostBiteChance>0) frostBiteChance=frostBiteChance+(int)Math.round(CMath.mul(frostBiteChance,0.25));
                 }
-                int save=(M.charStats().getStat(CharStats.SAVE_COLD)+M.charStats().getStat(CharStats.SAVE_WATER))/2;
+                int save=(M.charStats().getStat(CharStats.STAT_SAVE_COLD)+M.charStats().getStat(CharStats.STAT_SAVE_WATER))/2;
                 if((CMLib.dice().rollPercentage()<(coldChance-save))
                 &&((C.weatherType(M.location())!=Climate.WEATHER_CLEAR)))
                 {
@@ -394,7 +394,7 @@ public class WeatherAffects extends PuddleMaker
                     }
                 }
                 if((heatExhaustionChance>0)
-                &&(CMLib.dice().rollPercentage()<(heatExhaustionChance-M.charStats().getStat(CharStats.SAVE_FIRE)))
+                &&(CMLib.dice().rollPercentage()<(heatExhaustionChance-M.charStats().getStat(CharStats.STAT_SAVE_FIRE)))
                 &&(C.weatherType(M.location())!=Climate.WEATHER_CLEAR))
                 {
                     Ability COLD=CMClass.getAbility("Disease_HeatExhaustion");
@@ -638,13 +638,13 @@ public class WeatherAffects extends PuddleMaker
             {
                 Item I=R.fetchItem(CMLib.dice().roll(1,R.numItems(),-1));
                 if((I!=null)&&(CMLib.flags().isGettable(I)))
-                switch(I.material()&EnvResource.MATERIAL_MASK)
+                switch(I.material()&RawMaterial.MATERIAL_MASK)
                 {
-                case EnvResource.MATERIAL_CLOTH:
-                case EnvResource.MATERIAL_LEATHER:
-                case EnvResource.MATERIAL_PAPER:
-                case EnvResource.MATERIAL_VEGETATION:
-                case EnvResource.MATERIAL_WOODEN:
+                case RawMaterial.MATERIAL_CLOTH:
+                case RawMaterial.MATERIAL_LEATHER:
+                case RawMaterial.MATERIAL_PAPER:
+                case RawMaterial.MATERIAL_VEGETATION:
+                case RawMaterial.MATERIAL_WOODEN:
                 {
                     Ability A2=CMClass.getAbility("Burning");
                     MOB mob=CMLib.map().god(R);
@@ -747,13 +747,13 @@ public class WeatherAffects extends PuddleMaker
                         Item I=M.fetchInventory(i);
                         if(I==null) continue;
                         if((!I.amWearingAt(Item.IN_INVENTORY))
-                        &&(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL))
+                        &&(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL))
                         &&(I.subjectToWearAndTear())
                         &&((CMLib.dice().rollPercentage()>I.envStats().ability()*25)))
                             rustThese.addElement(I);
                         else
                         if(I.amWearingAt(Item.WORN_ABOUT_BODY)
-                        &&(((I.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)))
+                        &&(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)))
                         {   rustThese.clear();  break;  }
                     }
                     if(R!=null)

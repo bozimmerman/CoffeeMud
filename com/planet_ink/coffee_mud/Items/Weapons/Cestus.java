@@ -44,7 +44,7 @@ public class Cestus extends StdWeapon
 		baseEnvStats.setWeight(2);
 		baseEnvStats().setAttackAdjustment(0);
 		baseEnvStats().setDamage(4);
-		material=EnvResource.RESOURCE_LEATHER;
+		material=RawMaterial.RESOURCE_LEATHER;
 		baseGoldValue=5;
 		recoverEnvStats();
 		weaponType=Weapon.TYPE_PIERCING;

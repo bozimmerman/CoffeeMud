@@ -647,7 +647,7 @@ public class StdAbility extends ForeignScriptable implements Ability
         
 		if(A.profficiency()<100)
 		{
-			if(((int)Math.round(Math.sqrt(new Integer(mob.charStats().getStat(CharStats.INTELLIGENCE)).doubleValue())*34.0*Math.random()))>=A.profficiency())
+			if(((int)Math.round(Math.sqrt(new Integer(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)).doubleValue())*34.0*Math.random()))>=A.profficiency())
 			{
 			    int qualLevel=CMLib.ableMapper().qualifyingLevel(mob,A);
 			    if((qualLevel<0)||(qualLevel>30)||(CMLib.dice().rollPercentage()<(int)Math.round(100.0*CMath.div(31-qualLevel,30+qualLevel))))
@@ -1037,13 +1037,13 @@ public class StdAbility extends ForeignScriptable implements Ability
 			student.tell("You are not high enough level to learn '"+name()+"'.");
 			return false;
 		}
-		if(student.charStats().getStat(CharStats.INTELLIGENCE)<2)
+		if(student.charStats().getStat(CharStats.STAT_INTELLIGENCE)<2)
 		{
 			teacher.tell(student.name()+" is too stupid to learn '"+name()+"'.");
 			student.tell("You are too stupid to learn '"+name()+"'.");
 			return false;
 		}
-		if(qLevel>(student.charStats().getStat(CharStats.INTELLIGENCE)+15))
+		if(qLevel>(student.charStats().getStat(CharStats.STAT_INTELLIGENCE)+15))
 		{
 			teacher.tell(student.name()+" is not smart enough to learn '"+name()+"'.");
 			student.tell("You are not of high enough intelligence to learn '"+name()+"'.");
@@ -1176,7 +1176,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			student.setPractices(student.getPractices()-practicesRequired());
 			student.setTrains(student.getTrains()-trainsRequired());
 			Ability newAbility=(Ability)newInstance();
-			newAbility.setProfficiency((int)Math.round(CMath.mul(profficiency(),((CMath.div(teacher.charStats().getStat(CharStats.WISDOM)+student.charStats().getStat(CharStats.INTELLIGENCE),100.0))))));
+			newAbility.setProfficiency((int)Math.round(CMath.mul(profficiency(),((CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),100.0))))));
 			if(newAbility.profficiency()>75)
 				newAbility.setProfficiency(75);
 			student.addAbility(newAbility);
@@ -1195,7 +1195,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			if(yourAbility.profficiency()<75)
 			{
 				student.setPractices(student.getPractices()-practicesToPractice());
-				yourAbility.setProfficiency(yourAbility.profficiency()+(int)Math.round(25.0*(CMath.div(teacher.charStats().getStat(CharStats.WISDOM)+student.charStats().getStat(CharStats.INTELLIGENCE),36.0))));
+				yourAbility.setProfficiency(yourAbility.profficiency()+(int)Math.round(25.0*(CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),36.0))));
 				if(yourAbility.profficiency()>75)
 					yourAbility.setProfficiency(75);
 			}

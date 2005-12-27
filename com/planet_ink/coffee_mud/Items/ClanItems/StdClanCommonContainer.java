@@ -46,7 +46,7 @@ public class StdClanCommonContainer extends StdClanContainer
 		baseGoldValue=1;
 		capacity=100;
 		setCIType(ClanItem.CI_GATHERITEM);
-		material=EnvResource.RESOURCE_OAK;
+		material=RawMaterial.RESOURCE_OAK;
 		recoverEnvStats();
 	}
 

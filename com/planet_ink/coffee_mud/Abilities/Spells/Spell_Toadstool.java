@@ -64,8 +64,8 @@ public class Spell_Toadstool extends Spell
 		{
 		    int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(newRace);
-			if(affected.baseCharStats().getStat(CharStats.AGE)>0)
-				affectableStats.setStat(CharStats.AGE,newRace.getAgingChart()[oldCat]);
+			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
+				affectableStats.setStat(CharStats.STAT_AGE,newRace.getAgingChart()[oldCat]);
 		}
 		affectableStats.setMyClasses("StdCharClass");
 		affectableStats.setMyLevels("1");
@@ -106,7 +106,7 @@ public class Spell_Toadstool extends Spell
 			return false;
 
 		int chance=-((target.envStats().level()-adjustedLevel(mob,asLevel))*5);
-		boolean success=profficiencyCheck(mob,chance-(target.charStats().getStat(CharStats.CONSTITUTION)*2),auto);
+		boolean success=profficiencyCheck(mob,chance-(target.charStats().getStat(CharStats.STAT_CONSTITUTION)*2),auto);
 
 		if(success)
 		{

@@ -71,7 +71,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		if((msg.amITarget(affected))&&(msg.targetMinor()==CMMsg.TYP_OPEN))
 		{
 			if((!msg.amISource(invoker())
-			&&(CMLib.dice().rollPercentage()>msg.source().charStats().getStat(CharStats.SAVE_TRAPS))))
+			&&(CMLib.dice().rollPercentage()>msg.source().charStats().getStat(CharStats.STAT_SAVE_TRAPS))))
 				spring(msg.source());
 		}
 	}
@@ -108,8 +108,8 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 							&&(CMLib.flags().isMobile(M))
 							&&(!mobsDone.contains(M))
 							&&(CMLib.flags().canHear(M))
-							&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_MIND))
-							&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_TRAPS)))
+							&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_MIND))
+							&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 							{
 								mobsDone.addElement(M);
 								CMLib.tracking().move(M,dir,false,false);

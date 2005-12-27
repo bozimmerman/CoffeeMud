@@ -124,11 +124,11 @@ public class Dyeing extends CommonSkill
 		}
 		commands.remove(commands.firstElement());
 
-		if((((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
-			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PAPER)
-			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LIQUID)
-			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_VEGETATION)
-			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LEATHER))
+		if((((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
+			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
+			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
+			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION)
+			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER))
 		||(!target.isGeneric()))
 		{
 			commonTell(mob,"You can't dye that material.");
@@ -154,7 +154,7 @@ public class Dyeing extends CommonSkill
 		if(darkFlag) writing=CMStrings.capitalizeAndLower(writing);
 		if(!profficiencyCheck(mob,0,auto)) writing="";
 		int duration=30-mob.envStats().level();
-		if((target.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER)
+		if((target.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)
 			duration*=2;
 		if(duration<6) duration=6;
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) dyeing "+target.name()+".");

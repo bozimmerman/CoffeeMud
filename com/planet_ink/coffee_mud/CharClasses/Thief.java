@@ -39,7 +39,7 @@ public class Thief extends StdCharClass
 	public int getMaxHitPointsLevel(){return 16;}
 	public int getBonusPracLevel(){return 1;}
 	public int getBonusAttackLevel(){return 1;}
-	public int getAttackAttribute(){return CharStats.DEXTERITY;}
+	public int getAttackAttribute(){return CharStats.STAT_DEXTERITY;}
 	public int getLevelsPerBonusDamage(){ return 5;}
 	public int getMovementMultiplier(){return 10;}
 	public int getHPDivisor(){return 3;}
@@ -60,7 +60,7 @@ public class Thief extends StdCharClass
 	public Thief()
 	{
 		super();
-		maxStatAdj[CharStats.DEXTERITY]=7;
+		maxStatAdj[CharStats.STAT_DEXTERITY]=7;
 		if(ID().equals(baseClass())&&(!loaded()))
 		{
 			setLoaded(true);
@@ -162,7 +162,7 @@ public class Thief extends StdCharClass
 	public String statQualifications(){return "Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Dexterity to become a Thief.");
@@ -231,9 +231,9 @@ public class Thief extends StdCharClass
 			return;
 		super.unLevel(mob);
 
-		int dexStat=mob.charStats().getStat(CharStats.DEXTERITY);
+		int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.DEXTERITY));
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
 		if(dexStat>maxDexStat) dexStat=maxDexStat;
 		int attArmor=(int)Math.round(CMath.div(dexStat,9.0));
 		if(dexStat>=25)attArmor+=2;
@@ -260,9 +260,9 @@ public class Thief extends StdCharClass
 	    if(CMSecurity.isDisabled("LEVELS")) 
 	        return;
 		super.level(mob);
-		int dexStat=mob.charStats().getStat(CharStats.DEXTERITY);
+		int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.DEXTERITY));
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
 		if(dexStat>maxDexStat) dexStat=maxDexStat;
 		
 		int attArmor=((int)Math.round(CMath.div(dexStat,9.0)));

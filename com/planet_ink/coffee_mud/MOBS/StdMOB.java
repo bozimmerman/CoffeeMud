@@ -375,7 +375,7 @@ public class StdMOB implements MOB
 	{
         if(CMSecurity.isAllowed(this,location(),"CARRYALL"))
             return Integer.MAX_VALUE/2;
-		double str=new Integer(charStats().getStat(CharStats.STRENGTH)).doubleValue();
+		double str=new Integer(charStats().getStat(CharStats.STAT_STRENGTH)).doubleValue();
 		double bodyWeight=new Integer(baseWeight()).doubleValue();
 		return (int)Math.round(bodyWeight + ((str+10.0)*str*bodyWeight/150.0) + (str*5.0));
 	}
@@ -384,12 +384,12 @@ public class StdMOB implements MOB
         if(CMSecurity.isAllowed(this,location(),"CARRYALL"))
             return Integer.MAX_VALUE/2;
         return (2*Item.WORN_ORDER.length)
-                +(2*charStats().getStat(CharStats.DEXTERITY))
+                +(2*charStats().getStat(CharStats.STAT_DEXTERITY))
                 +(2*envStats().level());
     }
 	public int maxFollowers()
 	{
-		return ((int)Math.round(CMath.div(charStats().getStat(CharStats.CHARISMA),4.0))+1);
+		return ((int)Math.round(CMath.div(charStats().getStat(CharStats.STAT_CHARISMA),4.0))+1);
 	}
 	public int totalFollowers()
 	{
@@ -432,10 +432,10 @@ public class StdMOB implements MOB
 	    if((playerStats!=null)&&(soulMate==null)&&(playerStats.getHygiene()>=PlayerStats.HYGIENE_DELIMIT))
 	    {
 	        int chaAdjust=(int)(playerStats.getHygiene()/PlayerStats.HYGIENE_DELIMIT);
-	        if((charStats.getStat(CharStats.CHARISMA)/2)>chaAdjust)
-		        charStats.setStat(CharStats.CHARISMA,charStats.getStat(CharStats.CHARISMA)-chaAdjust);
+	        if((charStats.getStat(CharStats.STAT_CHARISMA)/2)>chaAdjust)
+		        charStats.setStat(CharStats.STAT_CHARISMA,charStats.getStat(CharStats.STAT_CHARISMA)-chaAdjust);
 	        else
-		        charStats.setStat(CharStats.CHARISMA,charStats.getStat(CharStats.CHARISMA)/2);
+		        charStats.setStat(CharStats.STAT_CHARISMA,charStats.getStat(CharStats.STAT_CHARISMA)/2);
 	    }
 	}
 	
@@ -779,7 +779,7 @@ public class StdMOB implements MOB
 	{
 		double att=new Integer(
 				envStats().attackAdjustment()
-				+((charStats().getStat(CharStats.STRENGTH)-9)*3)).doubleValue();
+				+((charStats().getStat(CharStats.STAT_STRENGTH)-9)*3)).doubleValue();
 		if(curState().getHunger()<1) att=att*.9;
 		if(curState().getThirst()<1) att=att*.9;
 		if(curState().getFatigue()>CharState.FATIGUED_MILLIS) att=att*.8;
@@ -792,7 +792,7 @@ public class StdMOB implements MOB
 
 	public int adjustedArmor()
 	{
-		double arm=new Integer(((charStats().getStat(CharStats.DEXTERITY)-9)*3)
+		double arm=new Integer(((charStats().getStat(CharStats.STAT_DEXTERITY)-9)*3)
 							   +50).doubleValue();
 		if((envStats().disposition()&EnvStats.IS_SLEEPING)>0) arm=0.0;
 		if(arm>0.0)
@@ -813,7 +813,7 @@ public class StdMOB implements MOB
 			if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
 				damageAmount = new Integer(CMLib.dice().roll(1, weapon.envStats().damage(),1)).doubleValue();
 			else
-				damageAmount = new Integer(CMLib.dice().roll(1, envStats().damage(), (charStats().getStat(CharStats.STRENGTH) / 3)-2)).doubleValue();
+				damageAmount = new Integer(CMLib.dice().roll(1, envStats().damage(), (charStats().getStat(CharStats.STAT_STRENGTH) / 3)-2)).doubleValue();
 			if(!CMLib.flags().canBeSeenBy(target,this)) damageAmount *=.5;
 			if(CMLib.flags().isSleeping(target)) damageAmount *=1.5;
 			else
@@ -823,7 +823,7 @@ public class StdMOB implements MOB
 		if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
 			damageAmount = new Integer(weapon.envStats().damage()+1).doubleValue();
 		else
-			damageAmount = new Integer(envStats().damage()+(charStats().getStat(CharStats.STRENGTH) / 3)-2).doubleValue();
+			damageAmount = new Integer(envStats().damage()+(charStats().getStat(CharStats.STAT_STRENGTH) / 3)-2).doubleValue();
 		if(curState().getHunger() < 1) damageAmount *= .8;
 		if(curState().getFatigue()>CharState.FATIGUED_MILLIS) damageAmount *=.8;
 		if(curState().getThirst() < 1) damageAmount *= .9;
@@ -1712,7 +1712,7 @@ public class StdMOB implements MOB
 					}
 					break;
 				case CMMsg.TYP_CAST_SPELL:
-					if(charStats().getStat(CharStats.INTELLIGENCE)<5)
+					if(charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 					{
 						tell("You aren't smart enough to do magic.");
 						return false;
@@ -1871,8 +1871,8 @@ public class StdMOB implements MOB
 				if((msg.targetMinor()!=CMMsg.TYP_WEAPONATTACK)&&(msg.value()<=0))
 				{
 					int chanceToFail=Integer.MIN_VALUE;
-					for(int c=0;c<CharStats.affectTypeMap.length;c++)
-						if(msg.targetMinor()==CharStats.affectTypeMap[c])
+					for(int c=0;c<CharStats.STAT_MSG_MAP.length;c++)
+						if(msg.targetMinor()==CharStats.STAT_MSG_MAP[c])
 						{	chanceToFail=charStats().getSave(c); break;}
 					if(chanceToFail>Integer.MIN_VALUE)
 					{

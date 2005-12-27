@@ -48,7 +48,7 @@ public class Natural extends StdWeapon
 		baseEnvStats().setDamage(0);
 		weaponType=TYPE_NATURAL;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_SCALES;
+		material=RawMaterial.RESOURCE_SCALES;
 		weaponClassification=Weapon.CLASS_NATURAL;
 	}
 

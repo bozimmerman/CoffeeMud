@@ -770,9 +770,9 @@ DBCONNECTIONS=2
   <B>7.</B>Change 1
   <P>The statement that is issued when a new character is created has a slight 
   flaw. Open MOBloader.java in your text editor of choice. On line 876 perform 
-  the following action: </P><PRE>+"','"+((char)mob.baseCharStats().getStat(CharStats.GENDER))+"');");
+  the following action: </P><PRE>+"','"+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))+"');");
 </PRE>
-  <P>Must be changed to: </P><PRE>+"','"+((char)mob.baseCharStats().getStat(CharStats.GENDER))+"')");
+  <P>Must be changed to: </P><PRE>+"','"+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))+"')");
 </PRE>
   <P>Now recompile the source and it will work like a dream... </P>
   <B>8.</B>Change 2

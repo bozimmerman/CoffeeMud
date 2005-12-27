@@ -61,7 +61,7 @@ public class Fighter_Stonebody extends FighterSkill
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&(mob.rangeToTarget()==0)
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,-85+mob.charStats().getStat(CharStats.CONSTITUTION),false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,-85+mob.charStats().getStat(CharStats.STAT_CONSTITUTION),false)))
 		{
 			int regain=(int)Math.round(CMath.mul(CMath.div(profficiency(),100.0),2.0));
 			msg.setValue(msg.value()-regain);

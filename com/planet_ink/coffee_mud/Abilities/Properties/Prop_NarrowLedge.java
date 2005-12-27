@@ -95,7 +95,7 @@ public class Prop_NarrowLedge extends Property
 		{
 			MOB mob=msg.source();
 			if((!CMLib.flags().isInFlight(mob))
-			&&(CMLib.dice().roll(1,check,-mob.charStats().getStat(CharStats.DEXTERITY))>0))
+			&&(CMLib.dice().roll(1,check,-mob.charStats().getStat(CharStats.STAT_DEXTERITY))>0))
 			{
 				synchronized(mobsToKill)
 				{

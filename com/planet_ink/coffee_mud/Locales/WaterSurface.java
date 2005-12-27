@@ -168,7 +168,7 @@ public class WaterSurface extends StdRoom implements Drink
 		&&(msg.targetMinor()==CMMsg.TYP_DRINK)
 		&&(room instanceof Drink))
 		{
-			if(((Drink)room).liquidType()==EnvResource.RESOURCE_SALTWATER)
+			if(((Drink)room).liquidType()==RawMaterial.RESOURCE_SALTWATER)
 			{
 				msg.source().tell("You don't want to be drinking saltwater.");
 				return -1;
@@ -186,7 +186,7 @@ public class WaterSurface extends StdRoom implements Drink
 	public int thirstQuenched(){return 1000;}
 	public int liquidHeld(){return Integer.MAX_VALUE-1000;}
 	public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
-	public int liquidType(){return EnvResource.RESOURCE_FRESHWATER;}
+	public int liquidType(){return RawMaterial.RESOURCE_FRESHWATER;}
 	public void setLiquidType(int newLiquidType){}
 	public void setThirstQuenched(int amount){}
 	public void setLiquidHeld(int amount){}

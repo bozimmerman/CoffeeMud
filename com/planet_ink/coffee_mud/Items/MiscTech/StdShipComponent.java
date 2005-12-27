@@ -41,7 +41,7 @@ public class StdShipComponent extends StdShipItem implements ShipComponent
 		setDisplayText("a small ships component sits here.");
 		setDescription("You can't tell what it is by looking at it.");
 
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=0;
 		recoverEnvStats();
 	}

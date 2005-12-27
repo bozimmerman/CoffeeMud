@@ -57,7 +57,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	public boolean sprung(){return false;}
 	public void spring(MOB mob)
 	{
-		if((!invoker().mayIFight(mob))||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS)))
+		if((!invoker().mayIFight(mob))||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) some caltrops on the floor.");
 		else
 			CMLib.combat().postDamage(invoker(),mob,null,CMLib.dice().roll(1,5,0),CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,Weapon.TYPE_PIERCING,"The caltrops on the ground <DAMAGE> <T-NAME>.");

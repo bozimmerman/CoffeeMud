@@ -72,8 +72,8 @@ public class Disease_Tetnus extends Disease
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null) return;
 		if(dexDown<0) return;
-		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)-dexDown);
-		if(affectableStats.getStat(CharStats.DEXTERITY)<=0)
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-dexDown);
+		if(affectableStats.getStat(CharStats.STAT_DEXTERITY)<=0)
 		{
 			dexDown=-1;
 			CMLib.combat().postDeath(invoker(),affected,null);

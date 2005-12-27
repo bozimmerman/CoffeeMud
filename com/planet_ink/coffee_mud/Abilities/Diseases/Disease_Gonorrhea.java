@@ -57,9 +57,9 @@ public class Disease_Gonorrhea extends Disease
 
 		MOB mob=(MOB)affected;
 		if((CMLib.dice().rollPercentage()==1)
-		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.SAVE_COLD))
+		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_COLD))
 		&&(!mob.amDead())
-		&&(CMLib.dice().rollPercentage()<25-mob.charStats().getStat(CharStats.CONSTITUTION)))
+		&&(CMLib.dice().rollPercentage()<25-mob.charStats().getStat(CharStats.STAT_CONSTITUTION)))
 		{
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=mob;

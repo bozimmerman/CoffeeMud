@@ -27,47 +27,53 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * An object to access and change fields representing the varias aspects of a MOB
+ * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB
+ * @author Bo Zimmerman
+ *
+ */
 public interface CharStats extends CMObject
 {
-	public static final int STRENGTH=0;
-	public static final int INTELLIGENCE=1;
-	public static final int DEXTERITY=2;
-	public static final int CONSTITUTION=3;
-	public static final int CHARISMA=4;
-	public static final int WISDOM=5;
+	public static final int STAT_STRENGTH=0;
+	public static final int STAT_INTELLIGENCE=1;
+	public static final int STAT_DEXTERITY=2;
+	public static final int STAT_CONSTITUTION=3;
+	public static final int STAT_CHARISMA=4;
+	public static final int STAT_WISDOM=5;
 	public static final int NUM_BASE_STATS=6;
     
-	public static final int GENDER=6;
+	public static final int STAT_GENDER=6;
     
     // variables from here on are saved together in one string
 	public static final int NUM_SAVE_START=7;
-	public static final int SAVE_PARALYSIS=7;
-	public static final int SAVE_FIRE=8;
-	public static final int SAVE_COLD=9;
-	public static final int SAVE_WATER=10;
-	public static final int SAVE_GAS=11;
-	public static final int SAVE_MIND=12;
-	public static final int SAVE_GENERAL=13;
-	public static final int SAVE_JUSTICE=14;
-	public static final int SAVE_ACID=15;
-	public static final int SAVE_ELECTRIC=16;
-	public static final int SAVE_POISON=17;
-	public static final int SAVE_UNDEAD=18;
-	public static final int SAVE_MAGIC=19;
-	public static final int SAVE_DISEASE=20;
-	public static final int SAVE_TRAPS=21;
-	public static final int MAX_STRENGTH_ADJ=22;
-	public static final int MAX_INTELLIGENCE_ADJ=23;
-	public static final int MAX_DEXTERITY_ADJ=24;
-	public static final int MAX_CONSTITUTION_ADJ=25;
-	public static final int MAX_CHARISMA_ADJ=26;
-	public static final int MAX_WISDOM_ADJ=27;
-	public static final int AGE=28;
-    public static final int SAVE_DETECTION=29;
-    public static final int SAVE_OVERLOOKING=30;
+	public static final int STAT_SAVE_PARALYSIS=7;
+	public static final int STAT_SAVE_FIRE=8;
+	public static final int STAT_SAVE_COLD=9;
+	public static final int STAT_SAVE_WATER=10;
+	public static final int STAT_SAVE_GAS=11;
+	public static final int STAT_SAVE_MIND=12;
+	public static final int STAT_SAVE_GENERAL=13;
+	public static final int STAT_SAVE_JUSTICE=14;
+	public static final int STAT_SAVE_ACID=15;
+	public static final int STAT_SAVE_ELECTRIC=16;
+	public static final int STAT_SAVE_POISON=17;
+	public static final int STAT_SAVE_UNDEAD=18;
+	public static final int STAT_SAVE_MAGIC=19;
+	public static final int STAT_SAVE_DISEASE=20;
+	public static final int STAT_SAVE_TRAPS=21;
+	public static final int STAT_MAX_STRENGTH_ADJ=22;
+	public static final int STAT_MAX_INTELLIGENCE_ADJ=23;
+	public static final int STAT_MAX_DEXTERITY_ADJ=24;
+	public static final int STAT_MAX_CONSTITUTION_ADJ=25;
+	public static final int STAT_MAX_CHARISMA_ADJ=26;
+	public static final int STAT_MAX_WISDOM_ADJ=27;
+	public static final int STAT_AGE=28;
+    public static final int STAT_SAVE_DETECTION=29;
+    public static final int STAT_SAVE_OVERLOOKING=30;
 	public final static int NUM_STATS=31;
 
-	public static final String[] TRAITS=
+	public static final String[] STAT_DESCS=
 	{
 		"STRENGTH",
 		"INTELLIGENCE",
@@ -102,7 +108,7 @@ public interface CharStats extends CMObject
         "SAVE VS OVERLOOKING"
 	};
 
-	public static final String[] TRAITABBR1=
+	public static final String[] STAT_ABBR=
 	{
 		"S",
 		"I",
@@ -179,7 +185,7 @@ public interface CharStats extends CMObject
 	public String displayClassLevel(MOB mob, boolean shortForm);
 	public String displayClassLevelOnly(MOB mob);
 
-	public static int[] affectTypeMap={-1, // strength
+	public static int[] STAT_MSG_MAP= {-1, // strength
 									   -1, // intelligence
 									   -1, // dexterity
 									   -1, // constitution

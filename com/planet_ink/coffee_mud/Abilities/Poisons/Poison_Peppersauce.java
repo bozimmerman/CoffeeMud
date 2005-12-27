@@ -55,8 +55,8 @@ public class Poison_Peppersauce extends Poison
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-1);
-		if(affectableStats.getStat(CharStats.CONSTITUTION)<=0)
-			affectableStats.setStat(CharStats.CONSTITUTION,1);
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-1);
+		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)
+			affectableStats.setStat(CharStats.STAT_CONSTITUTION,1);
 	}
 }

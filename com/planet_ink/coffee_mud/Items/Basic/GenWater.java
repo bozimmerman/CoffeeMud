@@ -47,7 +47,7 @@ public class GenWater extends GenDrink
 		amountOfThirstQuenched=250;
 		amountOfLiquidHeld=10000;
 		amountOfLiquidRemaining=10000;
-		setMaterial(EnvResource.RESOURCE_FRESHWATER);
+		setMaterial(RawMaterial.RESOURCE_FRESHWATER);
 		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMNOTGET);
 		recoverEnvStats();
 	}

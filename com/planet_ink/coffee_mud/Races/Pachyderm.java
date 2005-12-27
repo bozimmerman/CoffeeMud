@@ -56,9 +56,9 @@ public class Pachyderm extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,18);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,3);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,18);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,3);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public Weapon myNaturalWeapon()
 	{
@@ -116,14 +116,14 @@ public class Pachyderm extends StdRace
 			{
 				for(int i=0;i<12;i++)
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_LEATHER));
+					("a strip of "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_LEATHER));
 				for(int i=0;i<52;i++)
 					resources.addElement(makeResource
-					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));
+					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_BEEF));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" tusk",EnvResource.RESOURCE_BONE));
+				("a "+name().toLowerCase()+" tusk",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

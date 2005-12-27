@@ -47,9 +47,9 @@ public class Minotaur extends StdMOB
 		baseEnvStats.setWeight(350 + Math.abs(randomizer.nextInt() % 55));
 
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,4 + Math.abs(randomizer.nextInt() % 5));
-		baseCharStats().setStat(CharStats.STRENGTH,18);
-		baseCharStats().setStat(CharStats.DEXTERITY,15);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,4 + Math.abs(randomizer.nextInt() % 5));
+		baseCharStats().setStat(CharStats.STAT_STRENGTH,18);
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,15);
 		baseCharStats().setMyRace(CMClass.getRace("Minotaur"));
 		baseCharStats().getMyRace().startRacing(this,false);
 

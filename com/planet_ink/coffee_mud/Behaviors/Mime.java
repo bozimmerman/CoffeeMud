@@ -119,7 +119,7 @@ public class Mime extends ActiveTicker
 			else
 			{
 				MOB newSMOB=CMClass.getMOB("StdMOB");
-				newSMOB.baseCharStats().setStat(CharStats.GENDER,'N');
+				newSMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 				newSMOB.setName(ticking.name());
 				newSMOB.recoverCharStats();
 				msg.modify(newSMOB,msg.source(),msg.tool(),
@@ -142,7 +142,7 @@ public class Mime extends ActiveTicker
 			else
 			{
 				MOB newSMOB=CMClass.getMOB("StdMOB");
-				newSMOB.baseCharStats().setStat(CharStats.GENDER,'N');
+				newSMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 				newSMOB.setName(ticking.name());
 				newSMOB.recoverCharStats();
 				msg.modify(newSMOB,target,msg.tool(),

@@ -44,7 +44,7 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 		baseGoldValue=15;
 		baseEnvStats().setLevel(1);
 		recoverEnvStats();
-		setMaterial(EnvResource.RESOURCE_OAK);
+		setMaterial(RawMaterial.RESOURCE_OAK);
 	}
 
 	public void recoverEnvStats(){CMLib.flags().setReadable(this,false); super.recoverEnvStats();}

@@ -47,7 +47,7 @@ public class GenScroll extends StdScroll
 		secretIdentity="";
 		baseGoldValue=200;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_PAPER;
+		material=RawMaterial.RESOURCE_PAPER;
 	}
 
 

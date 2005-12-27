@@ -116,13 +116,13 @@ public class Scrapping extends CommonSkill
 		}
 		boolean okMaterial=true;
 		oldItemName=I.Name();
-		switch(I.material()&EnvResource.MATERIAL_MASK)
+		switch(I.material()&RawMaterial.MATERIAL_MASK)
 		{
-		case EnvResource.MATERIAL_FLESH:
-		case EnvResource.MATERIAL_LIQUID:
-		case EnvResource.MATERIAL_PAPER:
-		case EnvResource.MATERIAL_ENERGY:
-		case EnvResource.MATERIAL_VEGETATION:
+		case RawMaterial.MATERIAL_FLESH:
+		case RawMaterial.MATERIAL_LIQUID:
+		case RawMaterial.MATERIAL_PAPER:
+		case RawMaterial.MATERIAL_ENERGY:
+		case RawMaterial.MATERIAL_VEGETATION:
 			{ okMaterial=false; break;}
 		}
 		if(!okMaterial)
@@ -131,7 +131,7 @@ public class Scrapping extends CommonSkill
 			return false;
 		}
 		
-		if(I instanceof EnvResource)
+		if(I instanceof RawMaterial)
 		{
 			commonTell(mob,I.name()+" already looks like scrap.");
 			return false;
@@ -179,10 +179,10 @@ public class Scrapping extends CommonSkill
 		}
 
 		fire=null;
-		if(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_GLASS)
-		||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
-		||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PLASTIC)
-		||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL))
+		if(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_GLASS)
+		||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+		||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PLASTIC)
+		||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
 		{
 			fire=getRequiredFire(mob,0);
 			if(fire==null) return false;
@@ -198,15 +198,15 @@ public class Scrapping extends CommonSkill
 		foundShortName="nothing";
         playSound="ripping.wav";
 		if(found!=null)
-			foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scrapping "+I.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			for(int v=0;v<V.size();v++)
 			{
-			    if(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)
-			    ||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
-			    ||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL))
+			    if(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)
+			    ||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+			    ||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
 			        duration+=((Item)V.elementAt(v)).envStats().weight();
 			    else
 			        duration+=((Item)V.elementAt(v)).envStats().weight()/2;

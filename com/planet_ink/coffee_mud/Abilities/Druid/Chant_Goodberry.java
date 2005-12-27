@@ -53,7 +53,7 @@ public class Chant_Goodberry extends Chant
 			newItem.setName(newTarget.name());
 			newItem.setDisplayText(newTarget.displayText());
 			newItem.setDescription(newTarget.description());
-			newItem.setMaterial(EnvResource.RESOURCE_BERRIES);
+			newItem.setMaterial(RawMaterial.RESOURCE_BERRIES);
 			newItem.baseEnvStats().setDisposition(EnvStats.IS_GLOWING);
 			newItem.setSpellList(";Prayer_CureLight;");
 			newItem.recoverEnvStats();
@@ -73,8 +73,8 @@ public class Chant_Goodberry extends Chant
 
 	public boolean isBerry(Item I)
 	{
-		for(int i=0;i<EnvResource.BERRIES.length;i++)
-			if(I.material()==EnvResource.BERRIES[i])
+		for(int i=0;i<RawMaterial.BERRIES.length;i++)
+			if(I.material()==RawMaterial.BERRIES[i])
 				return true;
 		return false;
 	}

@@ -87,9 +87,9 @@ public class Archon_Metacraft extends CraftingSkill
 		String mat=((String)commands.lastElement()).toUpperCase();
 		commands.removeElementAt(commands.size()-1);
 		int material=-1;
-		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
-			if(EnvResource.RESOURCE_DESCS[i].startsWith(mat))
-			{ material=EnvResource.RESOURCE_DATA[i][0]; break;}
+		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+			if(RawMaterial.RESOURCE_DESCS[i].startsWith(mat))
+			{ material=RawMaterial.RESOURCE_DATA[i][0]; break;}
 		if(material<0)
 		{
 			mob.tell("'"+mat+"' is not a recognized material.");

@@ -55,9 +55,9 @@ public class Turtle extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,6);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,2);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,6);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,2);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public String arriveStr()
 	{
@@ -120,7 +120,7 @@ public class Turtle extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" shell",EnvResource.RESOURCE_BONE));
+				("a "+name().toLowerCase()+" shell",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

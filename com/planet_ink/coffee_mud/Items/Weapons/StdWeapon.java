@@ -54,7 +54,7 @@ public class StdWeapon extends StdItem implements Weapon
 		baseEnvStats().setDamage(0);
 		baseEnvStats().setAbility(0);
 		baseGoldValue=15;
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 		setUsesRemaining(100);
 		recoverEnvStats();
 	}
@@ -129,12 +129,12 @@ public class StdWeapon extends StdItem implements Weapon
 			{
 				if((!tmob.isMonster())
 				   &&(CMLib.dice().rollPercentage()==1)
-				   &&(CMLib.dice().rollPercentage()>(tmob.charStats().getStat(CharStats.CONSTITUTION)*4)))
+				   &&(CMLib.dice().rollPercentage()>(tmob.charStats().getStat(CharStats.STAT_CONSTITUTION)*4)))
 				{
 					Ability A=null;
 					if(subjectToWearAndTear()
 					&&(usesRemaining()<25)
-					&&((material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL))
+					&&((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL))
 					{
 						if(CMLib.dice().rollPercentage()>50)
 							A=CMClass.getAbility("Disease_Lockjaw");
@@ -153,7 +153,7 @@ public class StdWeapon extends StdItem implements Weapon
 			&&(CMLib.dice().rollPercentage()==1)
 			&&(msg.source().rangeToTarget()==0)
 			&&(CMLib.dice().rollPercentage()>((envStats().level()/2)+(10*envStats().ability())+(CMLib.flags().isABonusItems(this)?20:0)))
-			&&((material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_ENERGY))
+			&&((material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY))
 			{
 				setUsesRemaining(usesRemaining()-1);
 				recoverEnvStats();

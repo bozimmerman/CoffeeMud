@@ -44,7 +44,7 @@ public class Lantern extends LightSource
 		setDescription("The lantern still looks like it has some oil in it.");
 
 		baseEnvStats().setWeight(5);
-		setMaterial(EnvResource.RESOURCE_STEEL);
+		setMaterial(RawMaterial.RESOURCE_STEEL);
 		durationTicks=DURATION_TICKS;
 		this.destroyedWhenBurnedOut=false;
 		this.goesOutInTheRain=false;
@@ -64,7 +64,7 @@ public class Lantern extends LightSource
 					&&(msg.tool()!=msg.target())
 					&&(msg.tool() instanceof Drink))
 					{
-						if(((Drink)msg.tool()).liquidType()!=EnvResource.RESOURCE_LAMPOIL)
+						if(((Drink)msg.tool()).liquidType()!=RawMaterial.RESOURCE_LAMPOIL)
 						{
 							mob.tell("You can only fill "+name()+" with lamp oil!");
 							return false;

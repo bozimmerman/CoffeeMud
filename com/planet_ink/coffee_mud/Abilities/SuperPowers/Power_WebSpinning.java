@@ -67,7 +67,7 @@ public class Power_WebSpinning extends SuperPower
 				{
 					if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against the web."))
 					{
-						amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level());
+						amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.envStats().level());
 						if(amountRemaining<0)
 							unInvoke();
 					}

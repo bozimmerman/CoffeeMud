@@ -82,7 +82,7 @@ public class Disease_Depression extends Disease
 	public void affectChatStats(MOB E, CharStats stats)
 	{
 	    super.affectCharStats(E,stats);
-	    stats.setStat(CharStats.SAVE_JUSTICE,stats.getStat(CharStats.SAVE_JUSTICE)-20);
+	    stats.setStat(CharStats.STAT_SAVE_JUSTICE,stats.getStat(CharStats.STAT_SAVE_JUSTICE)-20);
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)

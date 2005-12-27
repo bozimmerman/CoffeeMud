@@ -80,7 +80,7 @@ public class Spell_PhantomHound extends Spell
 				}
 				else
 				{
-					pointsLeft-=(victim.charStats().getStat(CharStats.INTELLIGENCE));
+					pointsLeft-=(victim.charStats().getStat(CharStats.STAT_INTELLIGENCE));
 					pointsLeft-=victim.envStats().level();
 					int pointsLost=beast.baseState().getHitPoints()-beast.curState().getHitPoints();
 					if(pointsLost>0)
@@ -158,17 +158,17 @@ public class Spell_PhantomHound extends Spell
 				beast.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK|EnvStats.CAN_SEE_HIDDEN|EnvStats.CAN_SEE_INVISIBLE|EnvStats.CAN_SEE_SNEAKERS);
 				beast.baseCharStats().setMyRace(CMClass.getRace("Dog"));
 				beast.baseCharStats().getMyRace().startRacing(beast,false);
-				beast.baseCharStats().setStat(CharStats.SAVE_MAGIC,200);
-				beast.baseCharStats().setStat(CharStats.SAVE_MIND,200);
-				beast.baseCharStats().setStat(CharStats.SAVE_JUSTICE,200);
-				beast.baseCharStats().setStat(CharStats.SAVE_PARALYSIS,200);
-				beast.baseCharStats().setStat(CharStats.SAVE_POISON,200);
-				beast.baseCharStats().setStat(CharStats.SAVE_UNDEAD,200);
-				beast.baseCharStats().setStat(CharStats.SAVE_DISEASE,200);
-				beast.baseCharStats().setStat(CharStats.SAVE_FIRE,200);
-				beast.baseCharStats().setStat(CharStats.SAVE_ACID,200);
-				beast.baseCharStats().setStat(CharStats.SAVE_COLD,200);
-				beast.baseCharStats().setStat(CharStats.SAVE_ELECTRIC,200);
+				beast.baseCharStats().setStat(CharStats.STAT_SAVE_MAGIC,200);
+				beast.baseCharStats().setStat(CharStats.STAT_SAVE_MIND,200);
+				beast.baseCharStats().setStat(CharStats.STAT_SAVE_JUSTICE,200);
+				beast.baseCharStats().setStat(CharStats.STAT_SAVE_PARALYSIS,200);
+				beast.baseCharStats().setStat(CharStats.STAT_SAVE_POISON,200);
+				beast.baseCharStats().setStat(CharStats.STAT_SAVE_UNDEAD,200);
+				beast.baseCharStats().setStat(CharStats.STAT_SAVE_DISEASE,200);
+				beast.baseCharStats().setStat(CharStats.STAT_SAVE_FIRE,200);
+				beast.baseCharStats().setStat(CharStats.STAT_SAVE_ACID,200);
+				beast.baseCharStats().setStat(CharStats.STAT_SAVE_COLD,200);
+				beast.baseCharStats().setStat(CharStats.STAT_SAVE_ELECTRIC,200);
 				beast.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				beast.baseEnvStats().setAbility(100);
 				beast.baseState().setMana(100);

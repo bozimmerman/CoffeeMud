@@ -55,11 +55,11 @@ public class Test extends StdCommand
     {
         if(mob.envStats().ability()<10)
             return false;
-        if(mob.charStats().getStat(CharStats.GENDER)!='F')
+        if(mob.charStats().getStat(CharStats.STAT_GENDER)!='F')
             return false;
         if(!mob.charStats().getCurrentClass().ID().equals("Fighter"))
             return false;
-        if(mob.charStats().getStat(CharStats.CHARISMA)<18)
+        if(mob.charStats().getStat(CharStats.STAT_CHARISMA)<18)
             return false;
         if(mob.maxState().getMana()<1000)
             return false;
@@ -69,11 +69,11 @@ public class Test extends StdCommand
     {
         if(mob.envStats().ability()>=10)
             return true;
-        if(mob.charStats().getStat(CharStats.GENDER)=='F')
+        if(mob.charStats().getStat(CharStats.STAT_GENDER)=='F')
             return true;
         if(mob.charStats().getCurrentClass().ID().equals("Fighter"))
             return true;
-        if(mob.charStats().getStat(CharStats.CHARISMA)>=18)
+        if(mob.charStats().getStat(CharStats.STAT_CHARISMA)>=18)
             return true;
         if(mob.maxState().getMana()>=1000)
             return true;
@@ -103,7 +103,7 @@ public class Test extends StdCommand
         if(mob.curState().getHitPoints()<curHitPoints)
             return false;
         curHitPoints=mob.curState().getHitPoints();
-        if(mob.charStats().getStat(CharStats.SAVE_ACID)<30)
+        if(mob.charStats().getStat(CharStats.STAT_SAVE_ACID)<30)
             return false;
         return true;
     }

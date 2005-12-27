@@ -41,8 +41,8 @@ public class Chant_FindOre extends Chant_FindPlant
 	public long flags(){return Ability.FLAG_TRACKING;}
 	protected String lookingFor="ore";
 
-	private int[] myMats={EnvResource.MATERIAL_ROCK,
-						  EnvResource.MATERIAL_METAL};
+	private int[] myMats={RawMaterial.MATERIAL_ROCK,
+						  RawMaterial.MATERIAL_METAL};
 	protected int[] okMaterials(){	return myMats;}
 	protected int[] okResources(){	return null;}
 }

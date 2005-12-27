@@ -378,7 +378,7 @@ public class StdRoom implements Room
 				for(int i=0;i<resourceChoices().size();i++)
 				{
 					int resource=((Integer)resourceChoices().elementAt(i)).intValue();
-					int chance=EnvResource.RESOURCE_DATA[resource&EnvResource.RESOURCE_MASK][2];
+					int chance=RawMaterial.RESOURCE_DATA[resource&RawMaterial.RESOURCE_MASK][2];
 					totalChance+=chance;
 				}
 				setResource(-1);
@@ -387,7 +387,7 @@ public class StdRoom implements Room
 				for(int i=0;i<resourceChoices().size();i++)
 				{
 					int resource=((Integer)resourceChoices().elementAt(i)).intValue();
-					int chance=EnvResource.RESOURCE_DATA[resource&EnvResource.RESOURCE_MASK][2];
+					int chance=RawMaterial.RESOURCE_DATA[resource&RawMaterial.RESOURCE_MASK][2];
 					totalChance+=chance;
 					if(theRoll<=totalChance)
 					{

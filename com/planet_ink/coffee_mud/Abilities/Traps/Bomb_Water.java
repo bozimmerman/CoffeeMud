@@ -42,7 +42,7 @@ public class Bomb_Water extends StdBomb
 		if(!super.canSetTrapOn(mob,E)) return false;
 		if((!(E instanceof Drink))
 		||(((Drink)E).liquidHeld()!=((Drink)E).liquidRemaining())
-		||(((Drink)E).liquidType()!=EnvResource.RESOURCE_FRESHWATER))
+		||(((Drink)E).liquidType()!=RawMaterial.RESOURCE_FRESHWATER))
 		{
 			if(mob!=null)
 				mob.tell("You need a full water container to make this out of.");
@@ -54,7 +54,7 @@ public class Bomb_Water extends StdBomb
 	{
 		if(target.location()!=null)
 		{
-			if((target==invoker())||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
+			if((target==invoker())||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) the water bomb!");
 			else
 			if(target.location().show(invoker(),target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,affected.name()+" explodes water all over <T-NAME>!"))

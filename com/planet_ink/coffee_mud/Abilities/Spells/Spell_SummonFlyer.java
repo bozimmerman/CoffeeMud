@@ -144,7 +144,7 @@ public class Spell_SummonFlyer extends Spell
 		newMOB.baseEnvStats().setWeight(500);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Horse"));
-		newMOB.baseCharStats().setStat(CharStats.GENDER,'M');
+		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.recoverEnvStats();
 		newMOB.recoverCharStats();
@@ -178,7 +178,7 @@ public class Spell_SummonFlyer extends Spell
 		{
             MOB possibleBitch = mob.fetchFollower(i);
             if(newPackmate.Name().equalsIgnoreCase(possibleBitch.Name())
-            && (CMLib.dice().rollPercentage()-mob.charStats().getStat(CharStats.CHARISMA)+newPackmate.envStats().level() > 75))
+            && (CMLib.dice().rollPercentage()-mob.charStats().getStat(CharStats.STAT_CHARISMA)+newPackmate.envStats().level() > 75))
                 return possibleBitch;
         }
         return null;

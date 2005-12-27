@@ -89,8 +89,8 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null) return;
 		if(conDown<0) return;
-		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-conDown);
-		if(affectableStats.getStat(CharStats.CONSTITUTION)<=0)
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-conDown);
+		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)
 		{
 			conDown=-1;
 			CMLib.combat().postDeath(invoker(),affected,null);

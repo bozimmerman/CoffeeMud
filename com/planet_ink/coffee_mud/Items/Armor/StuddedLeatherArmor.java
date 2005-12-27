@@ -46,7 +46,7 @@ public class StuddedLeatherArmor extends StdArmor
 		baseEnvStats().setWeight(35);
 		baseGoldValue=40;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_LEATHER;
+		material=RawMaterial.RESOURCE_LEATHER;
 	}
 
 }

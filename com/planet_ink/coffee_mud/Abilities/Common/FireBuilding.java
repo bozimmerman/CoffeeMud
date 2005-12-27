@@ -62,7 +62,7 @@ public class FireBuilding extends CommonSkill
 						I.setDisplayText("A roaring campfire has been built here.");
 						I.setDescription("It consists of dry wood, burning.");
 						I.recoverEnvStats();
-						I.setMaterial(EnvResource.RESOURCE_WOOD);
+						I.setMaterial(RawMaterial.RESOURCE_WOOD);
 						mob.location().addItem(I);
 						lighting=I;
 					}
@@ -95,9 +95,9 @@ public class FireBuilding extends CommonSkill
             Item I2=R.fetchItem(i);
             if((I2!=null)
             &&(I2.container()==null)
-            &&(I2 instanceof EnvResource)
-            &&(((I2.material()&EnvResource.RESOURCE_MASK)==material)
-                ||(((I2.material())&EnvResource.MATERIAL_MASK)==material))
+            &&(I2 instanceof RawMaterial)
+            &&(((I2.material()&RawMaterial.RESOURCE_MASK)==material)
+                ||(((I2.material())&RawMaterial.MATERIAL_MASK)==material))
             &&(!CMLib.flags().enchanted(I2)))
                 here.addElement(I2);
         }
@@ -111,8 +111,8 @@ public class FireBuilding extends CommonSkill
 		&&(commands.size()==0))
         {
             if((!fireHere(mob.location()))
-            &&(resourceHere(mob.location(),EnvResource.MATERIAL_WOODEN).size()>0))
-                commands.addElement(((Environmental)resourceHere(mob.location(),EnvResource.MATERIAL_WOODEN).firstElement()).Name());
+            &&(resourceHere(mob.location(),RawMaterial.MATERIAL_WOODEN).size()>0))
+                commands.addElement(((Environmental)resourceHere(mob.location(),RawMaterial.MATERIAL_WOODEN).firstElement()).Name());
             else
     			commands.addElement("fire");
         }
@@ -180,7 +180,7 @@ public class FireBuilding extends CommonSkill
 				}
 				return false;
 			}
-			if(!(lighting instanceof EnvResource))
+			if(!(lighting instanceof RawMaterial))
 			{
 				LandTitle t=CMLib.utensils().getLandTitle(mob.location());
 				if((t!=null)&&(!CMLib.utensils().doesHavePriviledgesHere(mob,mob.location())))
@@ -201,7 +201,7 @@ public class FireBuilding extends CommonSkill
 				commonTell(mob,"That won't burn.");
 				return false;
 			}
-			if((lighting.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
+			if((lighting.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 				completion=25-mob.envStats().level();
 			verb="lighting "+lighting.name();
 			displayText="You are lighting "+lighting.name()+".";

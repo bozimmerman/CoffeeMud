@@ -70,10 +70,10 @@ public class Tarantula extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,3);
-		affectableStats.setStat(CharStats.DEXTERITY,3);
-		affectableStats.setStat(CharStats.INTELLIGENCE,1);
-		affectableStats.setStat(CharStats.SAVE_POISON,affectableStats.getStat(CharStats.SAVE_POISON)+100);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,3);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,3);
+		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,1);
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 	}
 	public String arriveStr()
 	{
@@ -100,7 +100,7 @@ public class Tarantula extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" legs",EnvResource.RESOURCE_MEAT));
+				("some "+name().toLowerCase()+" legs",RawMaterial.RESOURCE_MEAT));
 			}
 		}
 		return resources;

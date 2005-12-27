@@ -70,16 +70,16 @@ public class Reset extends StdCommand
 		{
 			if(IT.intValue()==I.material())
 			{
-				mob.tell(lead+I.Name()+" still "+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK]);
+				mob.tell(lead+I.Name()+" still "+RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK]);
 				return nochange;
 			}
 			I.setMaterial(IT.intValue());
-			mob.tell(lead+I.Name()+" Changed to "+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK]);
+			mob.tell(lead+I.Name()+" Changed to "+RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK]);
 			return 1;
 		}
 		while(true)
 		{
-			String str=mob.session().prompt(lead+I.Name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
+			String str=mob.session().prompt(lead+I.Name()+"/"+RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK],"");
 			if(str.equalsIgnoreCase("delete"))
 				return -1;
 			else
@@ -93,24 +93,24 @@ public class Reset extends StdCommand
 			else
 			{
 				String poss="";
-				for(int ii=0;ii<EnvResource.RESOURCE_DESCS.length;ii++)
+				for(int ii=0;ii<RawMaterial.RESOURCE_DESCS.length;ii++)
 				{
-					if(EnvResource.RESOURCE_DESCS[ii].startsWith(str.toUpperCase()))
-					   poss=EnvResource.RESOURCE_DESCS[ii];
-					if(str.equalsIgnoreCase(EnvResource.RESOURCE_DESCS[ii]))
+					if(RawMaterial.RESOURCE_DESCS[ii].startsWith(str.toUpperCase()))
+					   poss=RawMaterial.RESOURCE_DESCS[ii];
+					if(str.equalsIgnoreCase(RawMaterial.RESOURCE_DESCS[ii]))
 					{
-						I.setMaterial(EnvResource.RESOURCE_DATA[ii][0]);
-						mob.tell(lead+"Changed to "+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK]);
+						I.setMaterial(RawMaterial.RESOURCE_DATA[ii][0]);
+						mob.tell(lead+"Changed to "+RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK]);
 						rememberI.put(I.Name(),new Integer(I.material()));
 						return 1;
 					}
 				}
 				if(poss.length()==0)
 				{
-					for(int ii=0;ii<EnvResource.RESOURCE_DESCS.length;ii++)
+					for(int ii=0;ii<RawMaterial.RESOURCE_DESCS.length;ii++)
 					{
-						if(EnvResource.RESOURCE_DESCS[ii].indexOf(str.toUpperCase())>=0)
-						   poss=EnvResource.RESOURCE_DESCS[ii];
+						if(RawMaterial.RESOURCE_DESCS[ii].indexOf(str.toUpperCase())>=0)
+						   poss=RawMaterial.RESOURCE_DESCS[ii];
 					}
 				}
 				mob.tell(lead+"'"+str+"' does not exist.  Try '"+poss+"'.");
@@ -150,11 +150,11 @@ public class Reset extends StdCommand
 				if(rightMat<0)
 				{
 					Log.sysOut("Reset","Unconventional material: "+I.description());
-					for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+					for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 					{
-						if(EnvResource.RESOURCE_DESCS[i].equals(s))
+						if(RawMaterial.RESOURCE_DESCS[i].equals(s))
 						{
-							rightMat=EnvResource.RESOURCE_DATA[i][0];
+							rightMat=RawMaterial.RESOURCE_DATA[i][0];
 							break;
 						}
 					}
@@ -166,7 +166,7 @@ public class Reset extends StdCommand
 				{
 					if(mob!=null)
 					{
-						if(mob.session().confirm("Change "+I.name()+"/"+I.displayText()+" material to "+EnvResource.RESOURCE_DESCS[rightMat&EnvResource.RESOURCE_MASK]+" (y/N)?","N"))
+						if(mob.session().confirm("Change "+I.name()+"/"+I.displayText()+" material to "+RawMaterial.RESOURCE_DESCS[rightMat&RawMaterial.RESOURCE_MASK]+" (y/N)?","N"))
 						{
 							I.setMaterial(rightMat);
 							I.setDescription("");
@@ -175,7 +175,7 @@ public class Reset extends StdCommand
 					}
 					else
 					{
-						Log.sysOut("Reset","Changed "+I.name()+"/"+I.displayText()+" material to "+EnvResource.RESOURCE_DESCS[rightMat&EnvResource.RESOURCE_MASK]+"!");
+						Log.sysOut("Reset","Changed "+I.name()+"/"+I.displayText()+" material to "+RawMaterial.RESOURCE_DESCS[rightMat&RawMaterial.RESOURCE_MASK]+"!");
 						I.setMaterial(rightMat);
 						I.setDescription("");
 						return rightMat;
@@ -1006,7 +1006,7 @@ public class Reset extends StdCommand
 						else
 						{
 							M.baseCharStats().setMyRace(R2);
-							R2.setHeightWeight(M.baseEnvStats(),(char)M.baseCharStats().getStat(CharStats.GENDER));
+							R2.setHeightWeight(M.baseEnvStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
 							M.recoverCharStats();
 							M.recoverEnvStats();
 							mob.tell(" "+M.Name()+" Changed to "+R2.ID());
@@ -1063,7 +1063,7 @@ public class Reset extends StdCommand
 							}
 							mob.tell(" Changed to "+R2.ID());
 							M.baseCharStats().setMyRace(R2);
-							R2.setHeightWeight(M.baseEnvStats(),(char)M.baseCharStats().getStat(CharStats.GENDER));
+							R2.setHeightWeight(M.baseEnvStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
 							M.recoverCharStats();
 							M.recoverEnvStats();
 							rememberM.put(M.name(),M.baseCharStats().getMyRace());
@@ -1424,21 +1424,21 @@ public class Reset extends StdCommand
 			int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
 			int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
 			int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
-			int materialCode=I.material()&EnvResource.MATERIAL_MASK;
+			int materialCode=I.material()&RawMaterial.MATERIAL_MASK;
 			int[] useArray=null;
 			switch(materialCode)
 			{
-			case EnvResource.MATERIAL_METAL:
-			case EnvResource.MATERIAL_MITHRIL:
-			case EnvResource.MATERIAL_PRECIOUS:
-			case EnvResource.MATERIAL_ENERGY:
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_MITHRIL:
+			case RawMaterial.MATERIAL_PRECIOUS:
+			case RawMaterial.MATERIAL_ENERGY:
 				useArray=metalPoints;
 				break;
-			case EnvResource.MATERIAL_PLASTIC:
-			case EnvResource.MATERIAL_LEATHER:
-			case EnvResource.MATERIAL_GLASS:
-			case EnvResource.MATERIAL_ROCK:
-			case EnvResource.MATERIAL_WOODEN:
+			case RawMaterial.MATERIAL_PLASTIC:
+			case RawMaterial.MATERIAL_LEATHER:
+			case RawMaterial.MATERIAL_GLASS:
+			case RawMaterial.MATERIAL_ROCK:
+			case RawMaterial.MATERIAL_WOODEN:
 				useArray=leatherPoints;
 				break;
 			default:
@@ -1517,8 +1517,8 @@ public class Reset extends StdCommand
 			level+=(int)Math.round(5.0*CMParms.getParmDoublePlus(newText,"spe"));
 			for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 			{
-				int stat=CMParms.getParmPlus(newText,CharStats.TRAITS[i].substring(0,3).toLowerCase());
-				int max=CMParms.getParmPlus(newText,("max"+(CharStats.TRAITS[i].substring(0,3).toLowerCase())));
+				int stat=CMParms.getParmPlus(newText,CharStats.STAT_DESCS[i].substring(0,3).toLowerCase());
+				int max=CMParms.getParmPlus(newText,("max"+(CharStats.STAT_DESCS[i].substring(0,3).toLowerCase())));
 				level+=(stat*5);
 				level+=(max*5);
 			}

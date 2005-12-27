@@ -51,7 +51,7 @@ public class StdContainer extends StdItem implements Container
 		capacity=25;
 		baseGoldValue=10;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_COTTON;
+		material=RawMaterial.RESOURCE_COTTON;
 	}
 
 
@@ -388,7 +388,7 @@ public class StdContainer extends StdItem implements Container
 				switch(CMath.pow(2,i))
 				{
 				case CONTAIN_LIQUID:
-					if((((Item)E).material()&EnvResource.MATERIAL_LIQUID)>0)
+					if((((Item)E).material()&RawMaterial.MATERIAL_LIQUID)>0)
 						return true;
 					break;
 				case CONTAIN_COINS:
@@ -441,8 +441,8 @@ public class StdContainer extends StdItem implements Container
 				case CONTAIN_SMOKEABLES:
 					if(E instanceof Item)
 					{
-						if((((Item)E).material()==EnvResource.RESOURCE_PIPEWEED)
-						||(((Item)E).material()==EnvResource.RESOURCE_HERBS))
+						if((((Item)E).material()==RawMaterial.RESOURCE_PIPEWEED)
+						||(((Item)E).material()==RawMaterial.RESOURCE_HERBS))
 							return true;
 					}
 					break;

@@ -44,7 +44,7 @@ public class Python extends StdMOB
 
 		baseEnvStats().setDamage(7);
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,1);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(1);

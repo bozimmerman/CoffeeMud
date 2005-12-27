@@ -63,7 +63,7 @@ public class Disease_Migraines extends Disease
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&(mob.fetchAbility(msg.tool().ID())==msg.tool())
-		&&(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_MIND)+25)))
+		&&(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_MIND)+25)))
 		{
 			mob.tell("Your headaches make you forget "+msg.tool().name()+"!");
 			return false;

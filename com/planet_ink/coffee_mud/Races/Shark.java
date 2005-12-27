@@ -45,9 +45,9 @@ public class Shark extends GiantFish
     public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
     {
         super.affectCharStats(affectedMOB, affectableStats);
-        affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
-        affectableStats.setPermaStat(CharStats.STRENGTH,16);
-        affectableStats.setPermaStat(CharStats.DEXTERITY,15);
+        affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
+        affectableStats.setPermaStat(CharStats.STAT_STRENGTH,16);
+        affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,15);
     }
     public Vector myResources()
     {
@@ -57,15 +57,15 @@ public class Shark extends GiantFish
             {
                 for(int i=0;i<25;i++)
                 resources.addElement(makeResource
-                ("some "+name().toLowerCase(),EnvResource.RESOURCE_FISH));
+                ("some "+name().toLowerCase(),RawMaterial.RESOURCE_FISH));
                 for(int i=0;i<15;i++)
                 resources.addElement(makeResource
-                ("a "+name().toLowerCase()+" hide",EnvResource.RESOURCE_HIDE));
+                ("a "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_HIDE));
                 for(int i=0;i<5;i++)
                 resources.addElement(makeResource
-                ("a "+name().toLowerCase()+" tooth",EnvResource.RESOURCE_BONE));
+                ("a "+name().toLowerCase()+" tooth",RawMaterial.RESOURCE_BONE));
                 resources.addElement(makeResource
-                ("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+                ("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
             }
         }
         return resources;

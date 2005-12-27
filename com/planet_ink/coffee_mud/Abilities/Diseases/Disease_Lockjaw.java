@@ -59,7 +59,7 @@ public class Disease_Lockjaw extends Disease
 		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
-			if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.SAVE_DISEASE))
+			if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_DISEASE))
 			{
 				unInvoke();
 				return false;

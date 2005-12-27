@@ -136,7 +136,7 @@ public class Hunting extends CommonSkill
 				else
 				{
 					StringBuffer str=new StringBuffer("You can't seem to find any game around here.\n\r");
-					int d=lookingFor(EnvResource.MATERIAL_FLESH,mob.location());
+					int d=lookingFor(RawMaterial.MATERIAL_FLESH,mob.location());
 					if(d<0)
 						str.append("You might try elsewhere.");
 					else
@@ -196,18 +196,18 @@ public class Hunting extends CommonSkill
 		int resourceType=mob.location().myResource();
 		if((profficiencyCheck(mob,0,auto))
 		   &&(nearByRoom()!=null)
-		   &&(resourceType!=EnvResource.RESOURCE_FISH)
-		   &&(((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_FLESH)
-		   ||(resourceType==EnvResource.RESOURCE_BLOOD)
-		   ||(resourceType==EnvResource.RESOURCE_BONE)
-		   ||(resourceType==EnvResource.RESOURCE_EGGS)
-		   ||(resourceType==EnvResource.RESOURCE_FEATHERS)
-		   ||(resourceType==EnvResource.RESOURCE_FUR)
-		   ||(resourceType==EnvResource.RESOURCE_HIDE)
-		   ||(resourceType==EnvResource.RESOURCE_MILK)
-		   ||(resourceType==EnvResource.RESOURCE_SCALES)
-		   ||(resourceType==EnvResource.RESOURCE_WOOL)
-		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER)))
+		   &&(resourceType!=RawMaterial.RESOURCE_FISH)
+		   &&(((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
+		   ||(resourceType==RawMaterial.RESOURCE_BLOOD)
+		   ||(resourceType==RawMaterial.RESOURCE_BONE)
+		   ||(resourceType==RawMaterial.RESOURCE_EGGS)
+		   ||(resourceType==RawMaterial.RESOURCE_FEATHERS)
+		   ||(resourceType==RawMaterial.RESOURCE_FUR)
+		   ||(resourceType==RawMaterial.RESOURCE_HIDE)
+		   ||(resourceType==RawMaterial.RESOURCE_MILK)
+		   ||(resourceType==RawMaterial.RESOURCE_SCALES)
+		   ||(resourceType==RawMaterial.RESOURCE_WOOL)
+		   ||((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)))
 		{
 			found=(MOB)CMLib.utensils().makeResource(resourceType,mob.location().domainType(),false);
 			foundShortName="nothing";

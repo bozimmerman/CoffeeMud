@@ -157,7 +157,7 @@ public class Spell_WallOfAir extends Spell
 				I.setName("a wall of air");
 				I.setDisplayText("");
 				I.setDescription("The air is swirling dangerously.");
-				I.setMaterial(EnvResource.RESOURCE_NOTHING);
+				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				CMLib.flags().setGettable(I,false);
 				I.recoverEnvStats();
 				mob.location().addItem(I);

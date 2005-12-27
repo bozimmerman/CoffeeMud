@@ -43,7 +43,7 @@ public class DruidicMonument extends StdItem implements MiscMagic
 		setDescription("These large mysterious monuments have a power and purpose only the druid understands.");
 		secretIdentity="DRUIDIC STONES";
 		baseEnvStats().setLevel(1);
-		setMaterial(EnvResource.RESOURCE_STONE);
+		setMaterial(RawMaterial.RESOURCE_STONE);
 		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMNOTGET);
 		baseEnvStats().setWeight(1000);
 		baseGoldValue=0;

@@ -62,9 +62,9 @@ public class Grasshopper extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,3);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,3);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,3);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,3);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public String arriveStr()
 	{
@@ -91,7 +91,7 @@ public class Grasshopper extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of "+name().toLowerCase()+" legs",EnvResource.RESOURCE_BONE));
+				("a pair of "+name().toLowerCase()+" legs",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

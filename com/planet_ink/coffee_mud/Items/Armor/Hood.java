@@ -46,7 +46,7 @@ public class Hood extends StdArmor
 		baseEnvStats().setAbility(0);
 		baseGoldValue=5;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_COTTON;
+		material=RawMaterial.RESOURCE_COTTON;
 	}
 
 }

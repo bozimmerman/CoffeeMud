@@ -154,15 +154,15 @@ public class Farming extends GatheringSkill
 			{
 				Item I2=mob.fetchInventory(i);
 				if((I2!=null)
-				&&(I2 instanceof EnvResource)
+				&&(I2 instanceof RawMaterial)
 				&&(CMLib.flags().canBeSeenBy(I2,mob))
 				&&(I2.container()==null)
-				&&(((I2.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION)
-					||(I2.material()==EnvResource.RESOURCE_COTTON)
-					||(I2.material()==EnvResource.RESOURCE_HEMP)
-					||((I2.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)))
+				&&(((I2.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+					||(I2.material()==RawMaterial.RESOURCE_COTTON)
+					||(I2.material()==RawMaterial.RESOURCE_HEMP)
+					||((I2.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)))
 				{
-					commands.addElement(EnvResource.RESOURCE_DESCS[I2.material()&EnvResource.RESOURCE_MASK]);
+					commands.addElement(RawMaterial.RESOURCE_DESCS[I2.material()&RawMaterial.RESOURCE_MASK]);
 					break;
 				}
 				if(commands.size()==0)
@@ -179,16 +179,16 @@ public class Farming extends GatheringSkill
 			return false;
 		}
 		int code=-1;
-		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 		{
-			String str=EnvResource.RESOURCE_DESCS[i];
+			String str=RawMaterial.RESOURCE_DESCS[i];
 			if((str.toUpperCase().equalsIgnoreCase(CMParms.combine(commands,0)))
-			&&(((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION)
-			  ||(EnvResource.RESOURCE_DATA[i][0]==EnvResource.RESOURCE_COTTON)
-			  ||(EnvResource.RESOURCE_DATA[i][0]==EnvResource.RESOURCE_HEMP)
-			  ||((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)))
+			&&(((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+			  ||(RawMaterial.RESOURCE_DATA[i][0]==RawMaterial.RESOURCE_COTTON)
+			  ||(RawMaterial.RESOURCE_DATA[i][0]==RawMaterial.RESOURCE_HEMP)
+			  ||((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)))
 			{
-				code=EnvResource.RESOURCE_DATA[i][0];
+				code=RawMaterial.RESOURCE_DATA[i][0];
 				foundShortName=CMStrings.capitalizeAndLower(str);
 				break;
 			}
@@ -203,7 +203,7 @@ public class Farming extends GatheringSkill
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			Item I=mob.location().fetchItem(i);
-			if((I!=null)&&(I instanceof EnvResource)&&(I.material()==code))
+			if((I!=null)&&(I instanceof RawMaterial)&&(I.material()==code))
 			{ mine=I; break;}
 		}
 		if(mine==null)
@@ -227,7 +227,7 @@ public class Farming extends GatheringSkill
 		{
 			found=(Item)CMLib.utensils().makeResource(code,mob.location().domainType(),false);
 			if((found!=null)
-			&&(found.material()==EnvResource.RESOURCE_HERBS)
+			&&(found.material()==RawMaterial.RESOURCE_HERBS)
 			&&(mine!=null)
 			&&(mine.material()==found.material()))
 			{

@@ -66,7 +66,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 
 	public void spring(MOB M)
 	{
-		if((!sprung)&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_TRAPS)))
+		if((!sprung)&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 			CMLib.combat().postDeath(invoker(),M,null);
 	}
 
@@ -78,7 +78,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		&&(!sprung)
 		&&(invoker()!=null)
 		&&(invoker().mayIFight(msg.source()))
-		&&(CMLib.dice().rollPercentage()>msg.source().charStats().getSave(CharStats.SAVE_TRAPS)))
+		&&(CMLib.dice().rollPercentage()>msg.source().charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 			CMLib.combat().postDeath(invoker(),msg.source(),msg);
 		super.executeMsg(myHost,msg);
 	}
@@ -91,8 +91,8 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		for(int i=0;i<room.numItems();i++)
 		{
 			Item I=room.fetchItem(i);
-			if((I instanceof EnvResource)
-			&&((I.material()&EnvResource.MATERIAL_MASK)==material)
+			if((I instanceof RawMaterial)
+			&&((I.material()&RawMaterial.MATERIAL_MASK)==material)
 			&&(I.material()!=mostMaterial)
 			&&(!CMLib.flags().isOnFire(I))
 			&&(I.container()==null))
@@ -115,7 +115,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		for(int i=0;i<room.numItems();i++)
 		{
 			Item I=room.fetchItem(i);
-			if((I instanceof EnvResource)
+			if((I instanceof RawMaterial)
 			&&(I.material()==resource)
 			&&(!CMLib.flags().isOnFire(I))
 			&&(I.container()==null))
@@ -147,7 +147,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	{
 		Room trapThis=mob.location();
 
-		Item resource=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_METAL);
+		Item resource=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
 		int amount=0;
 		if(resource!=null) amount=findNumberOfResource(mob.location(),resource.material());
 		if(amount<100)
@@ -164,7 +164,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		for(int i=mob.location().numItems()-1;i>=0;i--)
 		{
 			Item I=mob.location().fetchItem(i);
-			if((I instanceof EnvResource)
+			if((I instanceof RawMaterial)
 			&&(I.container()==null)
 			&&(I.material()==resource.material())
 			&&((--woodDestroyed)>=0))

@@ -103,9 +103,9 @@ public class StatRejuvCharts extends StdWebMacro
 				mob.curState().setMovement(0);
 				mob.curState().setHitPoints(0);
 
-				double con=new Integer(mob.charStats().getStat(CharStats.CONSTITUTION)).doubleValue();
-				double man=new Integer((mob.charStats().getStat(CharStats.INTELLIGENCE)+mob.charStats().getStat(CharStats.WISDOM))).doubleValue();
-				double str=new Integer(mob.charStats().getStat(CharStats.STRENGTH)).doubleValue();
+				double con=new Integer(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)).doubleValue();
+				double man=new Integer((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)+mob.charStats().getStat(CharStats.STAT_WISDOM))).doubleValue();
+				double str=new Integer(mob.charStats().getStat(CharStats.STAT_STRENGTH)).doubleValue();
 				if(mob.curState().getHunger()<1)
 				{
 					con=con*0.85;

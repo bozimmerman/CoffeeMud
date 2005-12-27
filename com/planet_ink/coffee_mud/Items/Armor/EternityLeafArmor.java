@@ -47,7 +47,7 @@ public class EternityLeafArmor extends StdArmor
 		baseEnvStats().setWeight(15);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_SEAWEED;
+		material=RawMaterial.RESOURCE_SEAWEED;
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

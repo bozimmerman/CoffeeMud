@@ -110,7 +110,7 @@ public class Thief_Steal extends ThiefSkill
 		    return false;
 		}
 
-		int discoverChance=(target.charStats().getStat(CharStats.WISDOM)*5)-(levelDiff*5);
+		int discoverChance=(target.charStats().getStat(CharStats.STAT_WISDOM)*5)-(levelDiff*5);
 		int times=timesPicked(target);
 		if(times>5) discoverChance-=(20*(times-5));
 		if(!CMLib.flags().canBeSeenBy(mob,target))

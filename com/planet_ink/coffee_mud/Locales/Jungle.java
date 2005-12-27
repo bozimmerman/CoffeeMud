@@ -64,25 +64,25 @@ public class Jungle extends StdRoom
 	}
 
 	public static final Integer[] resourceList={
-		new Integer(EnvResource.RESOURCE_PLUMS),
-		new Integer(EnvResource.RESOURCE_PINEAPPLES),
-		new Integer(EnvResource.RESOURCE_COCONUTS),
-		new Integer(EnvResource.RESOURCE_BANANAS),
-		new Integer(EnvResource.RESOURCE_LIMES),
-		new Integer(EnvResource.RESOURCE_JADE),
-		new Integer(EnvResource.RESOURCE_SCALES),
-		new Integer(EnvResource.RESOURCE_HEMP),
-		new Integer(EnvResource.RESOURCE_SILK),
-		new Integer(EnvResource.RESOURCE_FRUIT),
-		new Integer(EnvResource.RESOURCE_APPLES),
-		new Integer(EnvResource.RESOURCE_BERRIES),
-		new Integer(EnvResource.RESOURCE_ORANGES),
-		new Integer(EnvResource.RESOURCE_COFFEEBEANS),
-		new Integer(EnvResource.RESOURCE_HERBS),
-		new Integer(EnvResource.RESOURCE_VINE),
-		new Integer(EnvResource.RESOURCE_LEMONS),
-		new Integer(EnvResource.RESOURCE_FUR),
-		new Integer(EnvResource.RESOURCE_FEATHERS)
+		new Integer(RawMaterial.RESOURCE_PLUMS),
+		new Integer(RawMaterial.RESOURCE_PINEAPPLES),
+		new Integer(RawMaterial.RESOURCE_COCONUTS),
+		new Integer(RawMaterial.RESOURCE_BANANAS),
+		new Integer(RawMaterial.RESOURCE_LIMES),
+		new Integer(RawMaterial.RESOURCE_JADE),
+		new Integer(RawMaterial.RESOURCE_SCALES),
+		new Integer(RawMaterial.RESOURCE_HEMP),
+		new Integer(RawMaterial.RESOURCE_SILK),
+		new Integer(RawMaterial.RESOURCE_FRUIT),
+		new Integer(RawMaterial.RESOURCE_APPLES),
+		new Integer(RawMaterial.RESOURCE_BERRIES),
+		new Integer(RawMaterial.RESOURCE_ORANGES),
+		new Integer(RawMaterial.RESOURCE_COFFEEBEANS),
+		new Integer(RawMaterial.RESOURCE_HERBS),
+		new Integer(RawMaterial.RESOURCE_VINE),
+		new Integer(RawMaterial.RESOURCE_LEMONS),
+		new Integer(RawMaterial.RESOURCE_FUR),
+		new Integer(RawMaterial.RESOURCE_FEATHERS)
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
 	public Vector resourceChoices(){return Jungle.roomResources;}

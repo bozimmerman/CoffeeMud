@@ -47,7 +47,7 @@ public class GenPill extends StdPill
 		secretIdentity="";
 		baseGoldValue=200;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_CORN;
+		material=RawMaterial.RESOURCE_CORN;
 		decayTime=0;
 	}
 

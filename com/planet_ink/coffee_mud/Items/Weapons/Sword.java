@@ -49,7 +49,7 @@ public class Sword extends StdWeapon
 		baseEnvStats().setDamage(8);
 		recoverEnvStats();
 		weaponType=TYPE_SLASHING;
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 		weaponClassification=Weapon.CLASS_SWORD;
 	}
 

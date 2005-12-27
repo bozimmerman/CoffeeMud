@@ -67,9 +67,9 @@ public class Wyvern extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,18);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,13);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,10);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,18);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,13);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,10);
 	}
 	public Weapon myNaturalWeapon()
 	{
@@ -118,15 +118,15 @@ public class Wyvern extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" tail",EnvResource.RESOURCE_BONE));
+				("a "+name().toLowerCase()+" tail",RawMaterial.RESOURCE_BONE));
 				for(int i=0;i<50;i++)
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" scales",EnvResource.RESOURCE_SCALES));
+					("a strip of "+name().toLowerCase()+" scales",RawMaterial.RESOURCE_SCALES));
 				for(int i=0;i<20;i++)
 					resources.addElement(makeResource
-					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

@@ -62,7 +62,7 @@ public class Chant_Rockfeet extends Chant
 		   ||CMath.bset(msg.sourceCode(),CMMsg.MASK_MOVE))
 		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_GENERAL)))
 		{
-			if(CMLib.dice().rollPercentage()>(msg.source().charStats().getStat(CharStats.STRENGTH)*3))
+			if(CMLib.dice().rollPercentage()>(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)*3))
 			{
 				msg.source().curState().adjMovement(-1,msg.source().maxState());
 				msg.source().curState().adjFatigue(Tickable.TIME_TICK,msg.source().maxState());

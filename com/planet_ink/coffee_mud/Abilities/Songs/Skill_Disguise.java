@@ -88,7 +88,7 @@ public class Skill_Disguise extends BardSkill
 		if(values[6]!=null)
 			affectableStats.setDisplayClassName(values[6]);
 		if(values[8]!=null)
-			affectableStats.setStat(CharStats.AGE,CMath.s_int(values[8]));
+			affectableStats.setStat(CharStats.STAT_AGE,CMath.s_int(values[8]));
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -298,9 +298,9 @@ public class Skill_Disguise extends BardSkill
 				mob.tell("You cannot disguise your age as "+how+" years!");
 				return false;
 			}
-			int x=mob.baseCharStats().getStat(CharStats.AGE)-CMath.s_int(how);
+			int x=mob.baseCharStats().getStat(CharStats.STAT_AGE)-CMath.s_int(how);
 			if(x<0) x=x*-1;
-			adjustment=-((int)Math.round(CMath.div(x,mob.baseCharStats().getStat(CharStats.AGE))*100.0));
+			adjustment=-((int)Math.round(CMath.div(x,mob.baseCharStats().getStat(CharStats.STAT_AGE))*100.0));
 			break;
 		}
 		}

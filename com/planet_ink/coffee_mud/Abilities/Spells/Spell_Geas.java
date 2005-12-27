@@ -123,7 +123,7 @@ public class Spell_Geas extends Spell
 		commands.remove(commands.firstElement());
 		MOB target=getTarget(mob,name,givenTarget);
 		if(target==null) return false;
-		if(target.charStats().getStat(CharStats.INTELLIGENCE)<5)
+		if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
 			mob.tell(target.name()+" is too stupid to understand the instructions!");
 			return false;

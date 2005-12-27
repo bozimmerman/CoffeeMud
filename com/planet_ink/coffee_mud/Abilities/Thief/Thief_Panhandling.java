@@ -92,13 +92,13 @@ public class Thief_Panhandling extends ThiefSkill
 						CMLib.commands().postSay(mob,mob2,"A little something for a vet please?",false,false);
 						break;
 					case 2:
-						CMLib.commands().postSay(mob,mob2,"Spare a gold piece "+((mob2.charStats().getStat(CharStats.GENDER)=='M')?"mister?":"madam?"),false,false);
+						CMLib.commands().postSay(mob,mob2,"Spare a gold piece "+((mob2.charStats().getStat(CharStats.STAT_GENDER)=='M')?"mister?":"madam?"),false,false);
 						break;
 					case 3:
 						CMLib.commands().postSay(mob,mob2,"Spare some change?",false,false);
 						break;
 					case 4:
-						CMLib.commands().postSay(mob,mob2,"Please "+((mob2.charStats().getStat(CharStats.GENDER)=='M')?"mister":"madam")+", a little something for an poor soul down on "+mob.charStats().hisher()+" luck?",false,false);
+						CMLib.commands().postSay(mob,mob2,"Please "+((mob2.charStats().getStat(CharStats.STAT_GENDER)=='M')?"mister":"madam")+", a little something for an poor soul down on "+mob.charStats().hisher()+" luck?",false,false);
 						break;
 					case 5:
 						CMLib.commands().postSay(mob,mob2,"Hey, I lost my 'Will Work For Food' sign.  Can you spare me the money to buy one?",false,false);
@@ -119,7 +119,7 @@ public class Thief_Panhandling extends ThiefSkill
 						CMLib.commands().postSay(mob,mob2,"Gold piece for a poor soul down on "+mob.charStats().hisher()+" luck?",false,false);
 						break;
 					}
-                    if(CMLib.dice().rollPercentage()>(mob2.charStats().getSave(CharStats.SAVE_JUSTICE)+(CMLib.flags().isGood(mob)?10:0)))
+                    if(CMLib.dice().rollPercentage()>(mob2.charStats().getSave(CharStats.STAT_SAVE_JUSTICE)+(CMLib.flags().isGood(mob)?10:0)))
 					{
 					    double total=CMLib.beanCounter().getTotalAbsoluteNativeValue(mob2);
 					    if(total>1.0)

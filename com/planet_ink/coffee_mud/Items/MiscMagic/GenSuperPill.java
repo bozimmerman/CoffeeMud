@@ -45,7 +45,7 @@ public class GenSuperPill extends GenPill
 		secretIdentity="";
 		baseGoldValue=200;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_CORN;
+		material=RawMaterial.RESOURCE_CORN;
 	}
 
 
@@ -128,7 +128,7 @@ public class GenSuperPill extends GenPill
 
 		String val=CMParms.getParmStr(readableText,"gen","").toUpperCase();
 		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
-			mob.baseCharStats().setStat(CharStats.GENDER,val.charAt(0));
+			mob.baseCharStats().setStat(CharStats.STAT_GENDER,val.charAt(0));
 		val=CMParms.getParmStr(readableText,"cla","").toUpperCase();
 		if((val.length()>0)&&(CMClass.findCharClass(val)!=null)&&(!val.equalsIgnoreCase("Archon")))
 		{
@@ -145,18 +145,18 @@ public class GenSuperPill extends GenPill
 			mob.baseCharStats().setMyRace(CMClass.getRace(val));
 			mob.baseCharStats().getMyRace().startRacing(mob,false);
 		}
-		mob.baseCharStats().setStat(CharStats.STRENGTH,mob.baseCharStats().getStat(CharStats.STRENGTH)+CMParms.getParmPlus(readableText,"str"));
-		mob.baseCharStats().setStat(CharStats.WISDOM,mob.baseCharStats().getStat(CharStats.WISDOM)+CMParms.getParmPlus(readableText,"wis"));
-		mob.baseCharStats().setStat(CharStats.CHARISMA,mob.baseCharStats().getStat(CharStats.CHARISMA)+CMParms.getParmPlus(readableText,"cha"));
-		mob.baseCharStats().setStat(CharStats.CONSTITUTION,mob.baseCharStats().getStat(CharStats.CONSTITUTION)+CMParms.getParmPlus(readableText,"con"));
-		mob.baseCharStats().setStat(CharStats.DEXTERITY,mob.baseCharStats().getStat(CharStats.DEXTERITY)+CMParms.getParmPlus(readableText,"dex"));
-		mob.baseCharStats().setStat(CharStats.INTELLIGENCE,mob.baseCharStats().getStat(CharStats.INTELLIGENCE)+CMParms.getParmPlus(readableText,"int"));
-		mob.baseCharStats().setStat(CharStats.MAX_STRENGTH_ADJ,mob.baseCharStats().getStat(CharStats.MAX_STRENGTH_ADJ)+CMParms.getParmPlus(readableText,"maxstr"));
-		mob.baseCharStats().setStat(CharStats.MAX_WISDOM_ADJ,mob.baseCharStats().getStat(CharStats.MAX_WISDOM_ADJ)+CMParms.getParmPlus(readableText,"maxwis"));
-		mob.baseCharStats().setStat(CharStats.MAX_CHARISMA_ADJ,mob.baseCharStats().getStat(CharStats.MAX_CHARISMA_ADJ)+CMParms.getParmPlus(readableText,"maxcha"));
-		mob.baseCharStats().setStat(CharStats.MAX_CONSTITUTION_ADJ,mob.baseCharStats().getStat(CharStats.MAX_CONSTITUTION_ADJ)+CMParms.getParmPlus(readableText,"maxcon"));
-		mob.baseCharStats().setStat(CharStats.MAX_DEXTERITY_ADJ,mob.baseCharStats().getStat(CharStats.MAX_DEXTERITY_ADJ)+CMParms.getParmPlus(readableText,"maxdex"));
-		mob.baseCharStats().setStat(CharStats.MAX_INTELLIGENCE_ADJ,mob.baseCharStats().getStat(CharStats.MAX_INTELLIGENCE_ADJ)+CMParms.getParmPlus(readableText,"maxint"));
+		mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)+CMParms.getParmPlus(readableText,"str"));
+		mob.baseCharStats().setStat(CharStats.STAT_WISDOM,mob.baseCharStats().getStat(CharStats.STAT_WISDOM)+CMParms.getParmPlus(readableText,"wis"));
+		mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)+CMParms.getParmPlus(readableText,"cha"));
+		mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)+CMParms.getParmPlus(readableText,"con"));
+		mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)+CMParms.getParmPlus(readableText,"dex"));
+		mob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)+CMParms.getParmPlus(readableText,"int"));
+		mob.baseCharStats().setStat(CharStats.STAT_MAX_STRENGTH_ADJ,mob.baseCharStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ)+CMParms.getParmPlus(readableText,"maxstr"));
+		mob.baseCharStats().setStat(CharStats.STAT_MAX_WISDOM_ADJ,mob.baseCharStats().getStat(CharStats.STAT_MAX_WISDOM_ADJ)+CMParms.getParmPlus(readableText,"maxwis"));
+		mob.baseCharStats().setStat(CharStats.STAT_MAX_CHARISMA_ADJ,mob.baseCharStats().getStat(CharStats.STAT_MAX_CHARISMA_ADJ)+CMParms.getParmPlus(readableText,"maxcha"));
+		mob.baseCharStats().setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,mob.baseCharStats().getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)+CMParms.getParmPlus(readableText,"maxcon"));
+		mob.baseCharStats().setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,mob.baseCharStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)+CMParms.getParmPlus(readableText,"maxdex"));
+		mob.baseCharStats().setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,mob.baseCharStats().getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)+CMParms.getParmPlus(readableText,"maxint"));
 
 		mob.baseState().setHitPoints(mob.baseState().getHitPoints()+CMParms.getParmPlus(readableText,"hit"));
 		mob.curState().setHunger(mob.curState().getHunger()+CMParms.getParmPlus(readableText,"hun"));

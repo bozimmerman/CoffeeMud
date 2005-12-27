@@ -50,9 +50,9 @@ public class Calf extends Cow
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,13);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,5);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,13);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,5);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public Vector myResources()
 	{
@@ -61,15 +61,15 @@ public class Calf extends Cow
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of "+name().toLowerCase()+" hooves",EnvResource.RESOURCE_BONE));
+				("a pair of "+name().toLowerCase()+" hooves",RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource
-				("a strip of "+name().toLowerCase()+" leather",EnvResource.RESOURCE_LEATHER));
+				("a strip of "+name().toLowerCase()+" leather",RawMaterial.RESOURCE_LEATHER));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));
+				("some "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_BEEF));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

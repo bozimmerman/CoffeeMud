@@ -43,7 +43,7 @@ public class StdInnKey extends StdKey implements InnKey
 		setDisplayText("a small metal key sits here.");
 		setDescription("It says it goes to room 1.");
 
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=10;
 		recoverEnvStats();
 	}

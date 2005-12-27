@@ -48,9 +48,9 @@ public class Falcon extends StdMOB
 		baseEnvStats.setWeight(1 + Math.abs(randomizer.nextInt() % 6));
 
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,1);
-		baseCharStats().setStat(CharStats.STRENGTH,10);
-		baseCharStats().setStat(CharStats.DEXTERITY,17);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
+		baseCharStats().setStat(CharStats.STAT_STRENGTH,10);
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,17);
 
 		baseEnvStats().setDamage(1);
 		baseEnvStats().setSpeed(3.0);

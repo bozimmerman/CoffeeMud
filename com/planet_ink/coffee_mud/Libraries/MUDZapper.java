@@ -610,7 +610,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.utensils().getMaterialCode(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(CMStrings.capitalizeAndLower(EnvResource.MATERIAL_DESCS[code>>8])+", ");
+                                    buf.append(CMStrings.capitalizeAndLower(RawMaterial.MATERIAL_DESCS[code>>8])+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -630,7 +630,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.utensils().getMaterialCode(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(CMStrings.capitalizeAndLower(EnvResource.MATERIAL_DESCS[code>>8])+", ");
+                                    buf.append(CMStrings.capitalizeAndLower(RawMaterial.MATERIAL_DESCS[code>>8])+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -888,7 +888,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.utensils().getResourceCode(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(CMStrings.capitalizeAndLower(EnvResource.RESOURCE_DESCS[code&EnvResource.RESOURCE_MASK])+", ");
+                                    buf.append(CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[code&RawMaterial.RESOURCE_MASK])+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -908,7 +908,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.utensils().getResourceCode(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(CMStrings.capitalizeAndLower(EnvResource.RESOURCE_DESCS[code&EnvResource.RESOURCE_MASK])+", ");
+                                    buf.append(CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[code&RawMaterial.RESOURCE_MASK])+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -1571,7 +1571,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.utensils().getMaterialCode(str2.substring(1));
                                 if(code>=0)
-                                    entry.addElement(EnvResource.MATERIAL_DESCS[(code&EnvResource.MATERIAL_MASK)>>8]);
+                                    entry.addElement(RawMaterial.MATERIAL_DESCS[(code&RawMaterial.MATERIAL_MASK)>>8]);
                             }
                         }
                     }
@@ -1712,7 +1712,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.utensils().getResourceCode(str2.substring(1));
                                 if(code>=0)
-                                    entry.addElement(EnvResource.RESOURCE_DESCS[(code&EnvResource.RESOURCE_MASK)]);
+                                    entry.addElement(RawMaterial.RESOURCE_DESCS[(code&RawMaterial.RESOURCE_MASK)]);
                             }
                         }
                     }
@@ -1901,7 +1901,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					return false;
 				break;
 			case 4: // -gender
-				if(!V.contains(""+((char)mob.baseCharStats().getStat(CharStats.GENDER))))
+				if(!V.contains(""+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))))
 					return false;
 				break;
 			case 5: // -level
@@ -2026,11 +2026,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						{ return false;}
 				break;
             case 49: // +material
-                if(V.contains(EnvResource.MATERIAL_DESCS[(item.material()&EnvResource.MATERIAL_MASK)>>8]))
+                if(V.contains(RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
                     return false;
                 break;
             case 50: // -material
-                if(!V.contains(EnvResource.MATERIAL_DESCS[(item.material()&EnvResource.MATERIAL_MASK)>>8]))
+                if(!V.contains(RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
                     return false;
                 break;
             case 57: // +wornOn
@@ -2136,11 +2136,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 }
                 break;
             case 51: // +resource
-                if(V.contains(EnvResource.RESOURCE_DESCS[(item.material()&EnvResource.RESOURCE_MASK)]))
+                if(V.contains(RawMaterial.RESOURCE_DESCS[(item.material()&RawMaterial.RESOURCE_MASK)]))
                     return false;
                 break;
             case 52: // -resource
-                if(!V.contains(EnvResource.RESOURCE_DESCS[(item.material()&EnvResource.RESOURCE_MASK)]))
+                if(!V.contains(RawMaterial.RESOURCE_DESCS[(item.material()&RawMaterial.RESOURCE_MASK)]))
                     return false;
                 break;
             case 53: // -JavaClass
@@ -2239,51 +2239,51 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					{ return false;}
 				break;
 			case 19: // +str
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STRENGTH)<(((Integer)V.elementAt(1)).intValue())))
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 20: // +int
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<(((Integer)V.elementAt(1)).intValue())))
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 21: // +wis
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.WISDOM)<(((Integer)V.elementAt(1)).intValue())))
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 22: // +dex
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.DEXTERITY)<(((Integer)V.elementAt(1)).intValue())))
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 23: // +con
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.CONSTITUTION)<(((Integer)V.elementAt(1)).intValue())))
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 24: // +cha
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.CHARISMA)<(((Integer)V.elementAt(1)).intValue())))
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 25: // -str
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STRENGTH)>(((Integer)V.elementAt(1)).intValue())))
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 26: // -int
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)>(((Integer)V.elementAt(1)).intValue())))
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 27: // -wis
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.WISDOM)>(((Integer)V.elementAt(1)).intValue())))
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 28: // -dex
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.DEXTERITY)>(((Integer)V.elementAt(1)).intValue())))
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 29: // -con
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.CONSTITUTION)>(((Integer)V.elementAt(1)).intValue())))
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			case 30: // -cha
-				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.CHARISMA)>(((Integer)V.elementAt(1)).intValue())))
+				if((V.size()>1)&&(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
             case 55: // +able
@@ -2407,7 +2407,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					return false;
 				break;
 			case 36: // +gender
-				if(V.contains(""+((char)mob.baseCharStats().getStat(CharStats.GENDER))))
+				if(V.contains(""+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))))
 					return false;
 				break;
 			case 37: // +lvlgr
@@ -2563,19 +2563,19 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						return false;
 					break;
                 case 49: // +material
-                    if(fromHereStartsWith(V,'-',v+1,EnvResource.MATERIAL_DESCS[(item.material()&EnvResource.MATERIAL_MASK)>>8]))
+                    if(fromHereStartsWith(V,'-',v+1,RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
                         return false;
                     break;
                 case 50: // -material
-                    if(!fromHereStartsWith(V,'+',v+1,EnvResource.MATERIAL_DESCS[(item.material()&EnvResource.MATERIAL_MASK)>>8]))
+                    if(!fromHereStartsWith(V,'+',v+1,RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
                         return false;
                     break;
                 case 51: // +resource
-                    if(fromHereStartsWith(V,'-',v+1,EnvResource.RESOURCE_DESCS[(item.material()&EnvResource.RESOURCE_MASK)]))
+                    if(fromHereStartsWith(V,'-',v+1,RawMaterial.RESOURCE_DESCS[(item.material()&RawMaterial.RESOURCE_MASK)]))
                         return false;
                     break;
                 case 52: // -resource
-                    if(!fromHereStartsWith(V,'+',v+1,EnvResource.RESOURCE_DESCS[(item.material()&EnvResource.RESOURCE_MASK)]))
+                    if(!fromHereStartsWith(V,'+',v+1,RawMaterial.RESOURCE_DESCS[(item.material()&RawMaterial.RESOURCE_MASK)]))
                         return false;
                     break;
                 case 53: // -JavaClass
@@ -2608,62 +2608,62 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 19: // +str
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.STRENGTH)<val)
+					if(mob.charStats().getStat(CharStats.STAT_STRENGTH)<val)
 						return false;
 					break;
 				case 20: // +int
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.INTELLIGENCE)<val)
+					if(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<val)
 						return false;
 					break;
 				case 21: // +wis
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.WISDOM)<val)
+					if(mob.charStats().getStat(CharStats.STAT_WISDOM)<val)
 						return false;
 					break;
 				case 22: // +dex
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.DEXTERITY)<val)
+					if(mob.charStats().getStat(CharStats.STAT_DEXTERITY)<val)
 						return false;
 					break;
 				case 23: // +con
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.CONSTITUTION)<val)
+					if(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)<val)
 						return false;
 					break;
 				case 24: // +cha
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.CHARISMA)<val)
+					if(mob.charStats().getStat(CharStats.STAT_CHARISMA)<val)
 						return false;
 					break;
 				case 25: // -str
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.STRENGTH)>val)
+					if(mob.charStats().getStat(CharStats.STAT_STRENGTH)>val)
 						return false;
 					break;
 				case 26: // -int
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.INTELLIGENCE)>val)
+					if(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>val)
 						return false;
 					break;
 				case 27: // -wis
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.WISDOM)>val)
+					if(mob.charStats().getStat(CharStats.STAT_WISDOM)>val)
 						return false;
 					break;
 				case 28: // -dex
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.DEXTERITY)>val)
+					if(mob.charStats().getStat(CharStats.STAT_DEXTERITY)>val)
 						return false;
 					break;
 				case 29: // -con
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.CONSTITUTION)>val)
+					if(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)>val)
 						return false;
 					break;
 				case 30: // -cha
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					if(mob.charStats().getStat(CharStats.CHARISMA)>val)
+					if(mob.charStats().getStat(CharStats.STAT_CHARISMA)>val)
 						return false;
 					break;
                 case 55: // +able

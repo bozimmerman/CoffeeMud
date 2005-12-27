@@ -619,7 +619,7 @@ public class Construction extends CraftingSkill
 		if((doingCode==BUILD_WINDOW)||(doingCode==BUILD_CRAWLWAY))
 			workingOn=dir;
 
-		int[] pm={EnvResource.MATERIAL_WOODEN};
+		int[] pm={RawMaterial.MATERIAL_WOODEN};
 		int[][] idata=fetchFoundResourceData(mob,
 											woodRequired,"wood",pm,
 											0,null,null,

@@ -87,7 +87,7 @@ public class Prayer_AuraFear extends Prayer
 			MOB blame=((invoker!=null)&&(invoker!=M))?invoker:M;
 			if((M!=null)&&((H==null)||(!H.contains(M))))
 			{
-			    if(CMLib.dice().rollPercentage()<M.charStats().getStat(CharStats.SAVE_MIND))
+			    if(CMLib.dice().rollPercentage()<M.charStats().getStat(CharStats.STAT_SAVE_MIND))
 		            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> shudder(s) at the sight of <O-NAME>.");
 			    else
 			    {

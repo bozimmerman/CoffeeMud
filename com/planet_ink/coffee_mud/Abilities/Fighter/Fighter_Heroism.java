@@ -63,10 +63,10 @@ public class Fighter_Heroism extends FighterSkill
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.SAVE_JUSTICE,
-								affectableStats.getStat(CharStats.SAVE_JUSTICE)
-								+(affectableStats.getStat(CharStats.CHARISMA)/4)
-								+(affectableStats.getStat(CharStats.STRENGTH)/4)
+		affectableStats.setStat(CharStats.STAT_SAVE_JUSTICE,
+								affectableStats.getStat(CharStats.STAT_SAVE_JUSTICE)
+								+(affectableStats.getStat(CharStats.STAT_CHARISMA)/4)
+								+(affectableStats.getStat(CharStats.STAT_STRENGTH)/4)
 								+(adjustedLevel(affected,0)/2));
 	}
 }

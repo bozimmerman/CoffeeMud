@@ -46,7 +46,7 @@ public class Trap_Tripline extends StdTrap
 		if(E==null) return null;
 		if(mob!=null)
 		{
-			Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_CLOTH);
+			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_CLOTH);
 			if(I!=null) I.destroy();
 		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
@@ -57,7 +57,7 @@ public class Trap_Tripline extends StdTrap
 		if(!super.canSetTrapOn(mob,E)) return false;
 		if(mob!=null)
 		{
-			if(findMostOfMaterial(mob.location(),EnvResource.MATERIAL_CLOTH)==null)
+			if(findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_CLOTH)==null)
 			{
 				mob.tell("You'll need to set down at least a pound of cloth first.");
 				return false;
@@ -70,7 +70,7 @@ public class Trap_Tripline extends StdTrap
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
-			if(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
+			if(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
 				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) tripping on a taut rope!");
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> trip(s) on a taut rope!"))

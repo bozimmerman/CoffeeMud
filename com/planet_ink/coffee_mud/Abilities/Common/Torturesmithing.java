@@ -171,20 +171,20 @@ public class Torturesmithing extends CraftingSkill
 		if(materialtype.equalsIgnoreCase("wood"))
 		{
 		    pm=new int[1];
-			pm[0]=EnvResource.MATERIAL_WOODEN;
+			pm[0]=RawMaterial.MATERIAL_WOODEN;
 		}
 		else
 		if(materialtype.equalsIgnoreCase("metal"))
 		{
 		    pm=new int[2];
-			pm[0]=EnvResource.MATERIAL_METAL;
-			pm[1]=EnvResource.MATERIAL_MITHRIL;
+			pm[0]=RawMaterial.MATERIAL_METAL;
+			pm[1]=RawMaterial.MATERIAL_MITHRIL;
 		}
 		else
 		if(materialtype.equalsIgnoreCase("cloth"))
 		{
 		    pm=new int[1];
-			pm[0]=EnvResource.MATERIAL_CLOTH;
+			pm[0]=RawMaterial.MATERIAL_CLOTH;
 		}
         bundling=misctype.equalsIgnoreCase("BUNDLE");
 		int[][] data=fetchFoundResourceData(mob,
@@ -204,7 +204,7 @@ public class Torturesmithing extends CraftingSkill
 			return false;
 		}
 		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
+		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
 		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;
 		else
@@ -217,13 +217,13 @@ public class Torturesmithing extends CraftingSkill
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);
-		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_VALUE])));
+		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_VALUE])));
 		building.setMaterial(data[0][FOUND_CODE]);
 		building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
 		int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 		int armordmg=CMath.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
-		int hardness=EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_STRENGTH]-3;
+		int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_STRENGTH]-3;
 		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 		addSpells(building,spell);
 		if(building instanceof Container)

@@ -58,12 +58,12 @@ public class Prop_StatTrainer extends Property
 			if(newMiscText.toUpperCase().indexOf("NOTEACH")>=0)
 				noteach=true;
 			stats=new int[CharStats.NUM_BASE_STATS];
-			stats[CharStats.STRENGTH]=CMParms.getParmInt(newMiscText,"STR",25);
-			stats[CharStats.INTELLIGENCE]=CMParms.getParmInt(newMiscText,"INT",25);
-			stats[CharStats.WISDOM]=CMParms.getParmInt(newMiscText,"WIS",25);
-			stats[CharStats.CONSTITUTION]=CMParms.getParmInt(newMiscText,"CON",25);
-			stats[CharStats.CHARISMA]=CMParms.getParmInt(newMiscText,"CHA",25);
-			stats[CharStats.DEXTERITY]=CMParms.getParmInt(newMiscText,"DEX",25);
+			stats[CharStats.STAT_STRENGTH]=CMParms.getParmInt(newMiscText,"STR",25);
+			stats[CharStats.STAT_INTELLIGENCE]=CMParms.getParmInt(newMiscText,"INT",25);
+			stats[CharStats.STAT_WISDOM]=CMParms.getParmInt(newMiscText,"WIS",25);
+			stats[CharStats.STAT_CONSTITUTION]=CMParms.getParmInt(newMiscText,"CON",25);
+			stats[CharStats.STAT_CHARISMA]=CMParms.getParmInt(newMiscText,"CHA",25);
+			stats[CharStats.STAT_DEXTERITY]=CMParms.getParmInt(newMiscText,"DEX",25);
 		}
 	}
 

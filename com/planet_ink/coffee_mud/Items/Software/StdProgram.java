@@ -41,7 +41,7 @@ public class StdProgram extends StdItem implements Software
 		setDisplayText("a small computer disk sits here.");
 		setDescription("It appears to be a general computer program.");
 
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=1000;
 		recoverEnvStats();
 	}

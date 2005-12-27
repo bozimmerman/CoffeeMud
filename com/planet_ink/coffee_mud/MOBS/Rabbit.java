@@ -48,7 +48,7 @@ public class Rabbit extends StdMOB
 
 		baseEnvStats().setDamage(2);
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,1);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 		baseCharStats().setMyRace(CMClass.getRace("Rabbit"));
 		baseCharStats().getMyRace().startRacing(this,false);
 

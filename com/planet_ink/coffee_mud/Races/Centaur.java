@@ -53,8 +53,8 @@ public class Centaur extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+4);
-		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)-4);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+4);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-4);
 	}
 	public Weapon myNaturalWeapon()
 	{
@@ -110,16 +110,16 @@ public class Centaur extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				(""+name().toLowerCase()+" mane",EnvResource.RESOURCE_FUR));
+				(""+name().toLowerCase()+" mane",RawMaterial.RESOURCE_FUR));
 				for(int i=0;i<2;i++)
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" leather",EnvResource.RESOURCE_LEATHER));
+					("a strip of "+name().toLowerCase()+" leather",RawMaterial.RESOURCE_LEATHER));
 				resources.addElement(makeResource
-				("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));
+				("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_BEEF));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

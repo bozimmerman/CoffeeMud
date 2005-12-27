@@ -114,12 +114,12 @@ public class Weaving extends CraftingSkill
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
 		Item IE=(Item)E;
-		if((IE.material()!=EnvResource.RESOURCE_COTTON)
-		&&(IE.material()!=EnvResource.RESOURCE_SILK)
-		&&(IE.material()!=EnvResource.RESOURCE_HEMP)
-		&&(IE.material()!=EnvResource.RESOURCE_VINE)
-		&&(IE.material()!=EnvResource.RESOURCE_WHEAT)
-		&&(IE.material()!=EnvResource.RESOURCE_SEAWEED))
+		if((IE.material()!=RawMaterial.RESOURCE_COTTON)
+		&&(IE.material()!=RawMaterial.RESOURCE_SILK)
+		&&(IE.material()!=RawMaterial.RESOURCE_HEMP)
+		&&(IE.material()!=RawMaterial.RESOURCE_VINE)
+		&&(IE.material()!=RawMaterial.RESOURCE_WHEAT)
+		&&(IE.material()!=RawMaterial.RESOURCE_SEAWEED))
 		{
 			if(!quiet)
 				commonTell(mob,"That's not made of any sort of weavable material.  It can't be mended.");
@@ -212,12 +212,12 @@ public class Weaving extends CraftingSkill
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
 			if(building==null) return false;
-			if((building.material()!=EnvResource.RESOURCE_COTTON)
-			&&(building.material()!=EnvResource.RESOURCE_SILK)
-			&&(building.material()!=EnvResource.RESOURCE_HEMP)
-			&&(building.material()!=EnvResource.RESOURCE_VINE)
-			&&(building.material()!=EnvResource.RESOURCE_WHEAT)
-			&&(building.material()!=EnvResource.RESOURCE_SEAWEED))
+			if((building.material()!=RawMaterial.RESOURCE_COTTON)
+			&&(building.material()!=RawMaterial.RESOURCE_SILK)
+			&&(building.material()!=RawMaterial.RESOURCE_HEMP)
+			&&(building.material()!=RawMaterial.RESOURCE_VINE)
+			&&(building.material()!=RawMaterial.RESOURCE_WHEAT)
+			&&(building.material()!=RawMaterial.RESOURCE_SEAWEED))
 			{
 				commonTell(mob,"That's not made of any sort of weavable material.  It can't be refitted.");
 				return false;
@@ -273,12 +273,12 @@ public class Weaving extends CraftingSkill
 			}
 			int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			if(amount>woodRequired) woodRequired=amount;
-			int[] pm={EnvResource.RESOURCE_COTTON,
-					  EnvResource.RESOURCE_SILK,
-					  EnvResource.RESOURCE_HEMP,
-					  EnvResource.RESOURCE_VINE,
-					  EnvResource.RESOURCE_WHEAT,
-					  EnvResource.RESOURCE_SEAWEED};
+			int[] pm={RawMaterial.RESOURCE_COTTON,
+					  RawMaterial.RESOURCE_SILK,
+					  RawMaterial.RESOURCE_HEMP,
+					  RawMaterial.RESOURCE_VINE,
+					  RawMaterial.RESOURCE_WHEAT,
+					  RawMaterial.RESOURCE_SEAWEED};
 			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
             String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
             bundling=spell.equalsIgnoreCase("BUNDLE")||misctype.equalsIgnoreCase("BUNDLE");
@@ -299,7 +299,7 @@ public class Weaving extends CraftingSkill
 				return false;
 			}
 			completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
+			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -403,7 +403,7 @@ public class Weaving extends CraftingSkill
 		{
 			messedUp=false;
 			completion=1;
-			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}

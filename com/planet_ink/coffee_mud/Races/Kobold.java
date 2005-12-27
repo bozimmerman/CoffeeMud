@@ -65,9 +65,9 @@ public class Kobold extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,6);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,13);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,10);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,6);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,13);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,10);
 	}
 	public String arriveStr()
 	{
@@ -122,19 +122,19 @@ public class Kobold extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some nobby "+name().toLowerCase()+" horns",EnvResource.RESOURCE_BONE));
+				("some nobby "+name().toLowerCase()+" horns",RawMaterial.RESOURCE_BONE));
 				for(int i=0;i<2;i++)
 					resources.addElement(makeResource
-					("some "+name().toLowerCase()+" scales",EnvResource.RESOURCE_SCALES));
+					("some "+name().toLowerCase()+" scales",RawMaterial.RESOURCE_SCALES));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		Vector rsc=(Vector)resources.clone();
 		Item meat=makeResource
-		("some "+name().toLowerCase()+" flesh",EnvResource.RESOURCE_MEAT);
+		("some "+name().toLowerCase()+" flesh",RawMaterial.RESOURCE_MEAT);
 		if(CMLib.dice().rollPercentage()<5)
 		{
 			Ability A=CMClass.getAbility("Disease_Lepresy");

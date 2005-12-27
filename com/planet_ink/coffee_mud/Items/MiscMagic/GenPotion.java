@@ -46,7 +46,7 @@ public class GenPotion extends StdPotion
 		secretIdentity="";
 		baseGoldValue=200;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_GLASS;
+		material=RawMaterial.RESOURCE_GLASS;
 	}
 
 
@@ -67,9 +67,9 @@ public class GenPotion extends StdPotion
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 	public int liquidType(){
-		if((material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)
+		if((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 			return material();
-		if(CMath.s_int(readableText)==0) return EnvResource.RESOURCE_DRINKABLE;
+		if(CMath.s_int(readableText)==0) return RawMaterial.RESOURCE_DRINKABLE;
 		return CMath.s_int(readableText);
 	}
 	public void setLiquidType(int newLiquidType){readableText=""+newLiquidType;}

@@ -73,7 +73,7 @@ public class Thief_Bind extends ThiefSkill
 			{
 				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against "+ropeName+" binding <S-HIM-HER>."))
 				{
-					amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level());
+					amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.envStats().level());
 					if(amountRemaining<0)
 						unInvoke();
 				}
@@ -168,7 +168,7 @@ public class Thief_Bind extends ThiefSkill
 						double prof=0.0;
 						Ability A=mob.fetchAbility("Specialization_Ranged");
 						if(A!=null) prof=CMath.div(A.profficiency(),20);
-						amountRemaining=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level())*((int)Math.round(5.0+prof));
+						amountRemaining=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.envStats().level())*((int)Math.round(5.0+prof));
 					}
 					else
 						amountRemaining=adjustedLevel(mob,asLevel)*25;

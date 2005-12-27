@@ -42,14 +42,14 @@ public class Chant_GrowClub extends Chant
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
-		&&((mob.location().myResource()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
+		&&((mob.location().myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE))
 		{
 			mob.tell("This magic will not work here.");
 			return false;
 		}
-		int material=EnvResource.RESOURCE_OAK;
-		if((mob.location().myResource()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
+		int material=RawMaterial.RESOURCE_OAK;
+		if((mob.location().myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 			material=mob.location().myResource();
 		else
 		{
@@ -58,7 +58,7 @@ public class Chant_GrowClub extends Chant
 			if(V!=null)
 			for(int v=0;v<V.size();v++)
 			{
-				if((((Integer)V.elementAt(v)).intValue()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
+				if((((Integer)V.elementAt(v)).intValue()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 					V2.addElement(V.elementAt(v));
 			}
 			if(V2.size()>0)
@@ -77,7 +77,7 @@ public class Chant_GrowClub extends Chant
 			{
 				mob.location().send(mob,msg);
 				Weapon newItem=CMClass.getWeapon("GenWeapon");
-				newItem.setName(EnvResource.RESOURCE_DESCS[material&EnvResource.RESOURCE_MASK].toLowerCase()+" club");
+				newItem.setName(RawMaterial.RESOURCE_DESCS[material&RawMaterial.RESOURCE_MASK].toLowerCase()+" club");
 				newItem.setName(CMStrings.startWithAorAn(newItem.Name()));
 				newItem.setDisplayText(newItem.name()+" sits here");
 				newItem.setDescription("It looks like the limb of a tree.");

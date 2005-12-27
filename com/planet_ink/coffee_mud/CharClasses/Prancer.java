@@ -40,7 +40,7 @@ public class Prancer extends StdCharClass
 	public int getMovementMultiplier(){return 18;}
 	public int getBonusPracLevel(){return 1;}
 	public int getBonusAttackLevel(){return 1;}
-	public int getAttackAttribute(){return CharStats.CHARISMA;}
+	public int getAttackAttribute(){return CharStats.STAT_CHARISMA;}
 	public int getLevelsPerBonusDamage(){ return 4;}
 	public int getHPDivisor(){return 3;}
 	public int getHPDice(){return 2;}
@@ -60,8 +60,8 @@ public class Prancer extends StdCharClass
 	public Prancer()
 	{
 		super();
-		maxStatAdj[CharStats.CHARISMA]=4;
-		maxStatAdj[CharStats.STRENGTH]=4;
+		maxStatAdj[CharStats.STAT_CHARISMA]=4;
+		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -153,13 +153,13 @@ public class Prancer extends StdCharClass
 	public String statQualifications(){return "Charisma 9+, Strength 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.CHARISMA) <= 8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Charisma to become a Prancer.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.STRENGTH) <= 8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH) <= 8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Strength to become a Prancer.");
@@ -218,7 +218,7 @@ public class Prancer extends StdCharClass
 			if(CMLib.flags().isStanding((MOB)affected))
 			{
 				MOB mob=(MOB)affected;
-				int attArmor=(((int)Math.round(CMath.div(mob.charStats().getStat(CharStats.DEXTERITY),9.0)))+1)*(mob.charStats().getClassLevel(this)-1);
+				int attArmor=(((int)Math.round(CMath.div(mob.charStats().getStat(CharStats.STAT_DEXTERITY),9.0)))+1)*(mob.charStats().getClassLevel(this)-1);
 				affectableStats.setArmor(affectableStats.armor()-attArmor);
 			}
 		}
@@ -230,9 +230,9 @@ public class Prancer extends StdCharClass
 			return;
 		super.unLevel(mob);
 
-		int dexStat=mob.charStats().getStat(CharStats.DEXTERITY);
+		int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.DEXTERITY));
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
 		if(dexStat>maxDexStat) dexStat=maxDexStat;
 		int attArmor=(int)Math.round(CMath.div(dexStat,9.0));
 		if(dexStat>=25)attArmor+=2;
@@ -254,9 +254,9 @@ public class Prancer extends StdCharClass
 	    if(CMSecurity.isDisabled("LEVELS")) 
 	        return;
 		super.level(mob);
-		int dexStat=mob.charStats().getStat(CharStats.DEXTERITY);
+		int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.DEXTERITY));
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
 		if(dexStat>maxDexStat) dexStat=maxDexStat;
 		
 		int attArmor=((int)Math.round(CMath.div(dexStat,9.0)))+1;

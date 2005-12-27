@@ -49,9 +49,9 @@ public class Train extends StdCommand
 
 		String abilityName=((String)commands.elementAt(0)).toUpperCase();
         StringBuffer thingsToTrainFor=new StringBuffer("");
-        for(int i=0;i<CharStats.TRAITS.length;i++)
+        for(int i=0;i<CharStats.STAT_DESCS.length;i++)
             if(i<CharStats.NUM_BASE_STATS)
-                thingsToTrainFor.append(CharStats.TRAITS[i]+", ");
+                thingsToTrainFor.append(CharStats.STAT_DESCS[i]+", ");
         
 		int trainsRequired=1;
 		int abilityCode=mob.baseCharStats().getCode(abilityName);
@@ -73,7 +73,7 @@ public class Train extends StdCommand
 				trainsRequired=3;
 			
 			if(curStat>=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-						 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+abilityCode)))
+						 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+abilityCode)))
 			{
 				mob.tell("You cannot train that any further.");
 				return false;
@@ -253,37 +253,37 @@ public class Train extends StdCommand
 		{
 		case 0:
 			mob.tell("You feel stronger!");
-			mob.baseCharStats().setStat(CharStats.STRENGTH,curStat+1);
+			mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
 		case 1:
 			mob.tell("You feel smarter!");
-			mob.baseCharStats().setStat(CharStats.INTELLIGENCE,curStat+1);
+			mob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
 		case 2:
 			mob.tell("You feel more dextrous!");
-			mob.baseCharStats().setStat(CharStats.DEXTERITY,curStat+1);
+			mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
 		case 3:
 			mob.tell("You feel healthier!");
-			mob.baseCharStats().setStat(CharStats.CONSTITUTION,curStat+1);
+			mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
 		case 4:
 			mob.tell("You feel more charismatic!");
-			mob.baseCharStats().setStat(CharStats.CHARISMA,curStat+1);
+			mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
 		case 5:
 			mob.tell("You feel wiser!");
-			mob.baseCharStats().setStat(CharStats.WISDOM,curStat+1);
+			mob.baseCharStats().setStat(CharStats.STAT_WISDOM,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;

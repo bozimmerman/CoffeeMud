@@ -64,14 +64,14 @@ public class Swamp extends StdRoom
 	}
 
 	public static final Integer[] resourceList={
-		new Integer(EnvResource.RESOURCE_JADE),
-		new Integer(EnvResource.RESOURCE_SCALES),
-		new Integer(EnvResource.RESOURCE_COCOA),
-		new Integer(EnvResource.RESOURCE_COAL),
-		new Integer(EnvResource.RESOURCE_PIPEWEED),
-		new Integer(EnvResource.RESOURCE_BAMBOO),
-		new Integer(EnvResource.RESOURCE_SUGAR),
-		new Integer(EnvResource.RESOURCE_CLAY),
+		new Integer(RawMaterial.RESOURCE_JADE),
+		new Integer(RawMaterial.RESOURCE_SCALES),
+		new Integer(RawMaterial.RESOURCE_COCOA),
+		new Integer(RawMaterial.RESOURCE_COAL),
+		new Integer(RawMaterial.RESOURCE_PIPEWEED),
+		new Integer(RawMaterial.RESOURCE_BAMBOO),
+		new Integer(RawMaterial.RESOURCE_SUGAR),
+		new Integer(RawMaterial.RESOURCE_CLAY),
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
 	public Vector resourceChoices(){return Swamp.roomResources;}

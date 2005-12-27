@@ -51,7 +51,7 @@ public class Dog extends StdMOB
 
 		baseEnvStats().setDamage(4);
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,1);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 		baseCharStats().setMyRace(CMClass.getRace("Dog"));
 		baseCharStats().getMyRace().startRacing(this,false);
 

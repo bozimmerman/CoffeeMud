@@ -78,8 +78,8 @@ public class Disease_Lycanthropy extends Disease
 		if(lycanRace()!=null)
 		{
 			affectableStats.setMyRace(lycanRace());
-			if(affected.baseCharStats().getStat(CharStats.AGE)>0)
-				affectableStats.setStat(CharStats.AGE,lycanRace().getAgingChart()[affected.baseCharStats().ageCategory()]);
+			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
+				affectableStats.setStat(CharStats.STAT_AGE,lycanRace().getAgingChart()[affected.baseCharStats().ageCategory()]);
 		}
 	}
 

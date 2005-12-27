@@ -133,7 +133,7 @@ public class Spell_Nightmare extends Spell
 					case 10:mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
 						"<S-NAME> shake(s) in anticipation of horror!"); break;
 					}
-					amountRemaining-=mob.charStats().getStat(CharStats.INTELLIGENCE*2);
+					amountRemaining-=mob.charStats().getStat(CharStats.STAT_INTELLIGENCE*2);
 					amountRemaining-=mob.envStats().level();
 					if(amountRemaining<0)
 						unInvoke();

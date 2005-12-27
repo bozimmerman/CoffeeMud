@@ -57,35 +57,35 @@ public class ResourceOverride extends StdBehavior
 			   code=CMath.s_int(which);
 
 			if(code<0)
-			for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 			{
-				if(EnvResource.RESOURCE_DESCS[i].equalsIgnoreCase(which))
-					code=EnvResource.RESOURCE_DATA[i][0];
+				if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(which))
+					code=RawMaterial.RESOURCE_DATA[i][0];
 			}
 			if(code<0)
-			for(int i=0;i<EnvResource.MATERIAL_DESCS.length;i++)
+			for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
 			{
-				if(EnvResource.MATERIAL_DESCS[i].equalsIgnoreCase(which))
-					for(int i2=0;i2<EnvResource.RESOURCE_DESCS.length;i2++)
+				if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(which))
+					for(int i2=0;i2<RawMaterial.RESOURCE_DESCS.length;i2++)
 					{
-						if(CMath.isSet((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK),i))
-						{ code=EnvResource.RESOURCE_DATA[i][0]; break;}
+						if(CMath.isSet((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK),i))
+						{ code=RawMaterial.RESOURCE_DATA[i][0]; break;}
 					}
 			}
 			if(code<0)
-			for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 			{
-				if(EnvResource.RESOURCE_DESCS[i].startsWith(which))
-					code=EnvResource.RESOURCE_DATA[i][0];
+				if(RawMaterial.RESOURCE_DESCS[i].startsWith(which))
+					code=RawMaterial.RESOURCE_DATA[i][0];
 			}
 			if(code<0)
-			for(int i=0;i<EnvResource.MATERIAL_DESCS.length;i++)
+			for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
 			{
-				if(EnvResource.MATERIAL_DESCS[i].startsWith(which))
-					for(int i2=0;i2<EnvResource.RESOURCE_DESCS.length;i2++)
+				if(RawMaterial.MATERIAL_DESCS[i].startsWith(which))
+					for(int i2=0;i2<RawMaterial.RESOURCE_DESCS.length;i2++)
 					{
-						if(CMath.isSet((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK),i))
-						{ code=EnvResource.RESOURCE_DATA[i][0]; break;}
+						if(CMath.isSet((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK),i))
+						{ code=RawMaterial.RESOURCE_DATA[i][0]; break;}
 					}
 			}
 			lastResourceSet=code;

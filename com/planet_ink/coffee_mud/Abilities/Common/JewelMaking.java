@@ -142,11 +142,11 @@ public class JewelMaking extends CraftingSkill
 	protected boolean canWhat(MOB mob, Environmental E, String what, boolean quiet)
 	{
 		Item IE=(Item)E;
-		if(((IE.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PRECIOUS)
-		&&((IE.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_GLASS))
+		if(((IE.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PRECIOUS)
+		&&((IE.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GLASS))
 		{
 			if(!quiet)
-				commonTell(mob,"You don't know how to "+what+" something made of "+EnvResource.RESOURCE_DESCS[IE.material()&EnvResource.RESOURCE_MASK].toLowerCase()+".");
+				commonTell(mob,"You don't know how to "+what+" something made of "+RawMaterial.RESOURCE_DESCS[IE.material()&RawMaterial.RESOURCE_MASK].toLowerCase()+".");
 			return false;
 		}
 		if(!(IE instanceof Armor))
@@ -245,26 +245,26 @@ public class JewelMaking extends CraftingSkill
 			{ commonTell(mob,"You don't see any '"+jewel+"' here."); return false;}
 			if((thangE==null)||(!CMLib.flags().canBeSeenBy(thangE,mob)))
 			{ commonTell(mob,"You don't see any '"+rest+"' here."); return false;}
-			if((!(jewelE instanceof EnvResource))||(!(jewelE instanceof Item))
-			   ||(((((Item)jewelE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PRECIOUS)
-				  &&((((Item)jewelE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_GLASS)))
+			if((!(jewelE instanceof RawMaterial))||(!(jewelE instanceof Item))
+			   ||(((((Item)jewelE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PRECIOUS)
+				  &&((((Item)jewelE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GLASS)))
 			{ commonTell(mob,"A "+jewelE.name()+" is not suitable to "+word+" on anything."); return false;}
 			Item jewelI=(Item)jewelE;
 			if((!(thangE instanceof Item))
 			   ||(!thangE.isGeneric())
-			   ||(((((Item)thangE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
-				  &&((((Item)thangE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)
-				  &&((((Item)thangE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_MITHRIL)
-				  &&((((Item)thangE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PLASTIC)
-				  &&((((Item)thangE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_ROCK)
-				  &&((((Item)thangE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
-				  &&((((Item)thangE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LEATHER)))
+			   ||(((((Item)thangE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
+				  &&((((Item)thangE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
+				  &&((((Item)thangE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL)
+				  &&((((Item)thangE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PLASTIC)
+				  &&((((Item)thangE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK)
+				  &&((((Item)thangE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
+				  &&((((Item)thangE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)))
 			{ commonTell(mob,"A "+thangE.name()+" is not suitable to be "+word+"ed on."); return false;}
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			building=(Item)thangE;
 			beingDone=new Vector();
-			String materialName=EnvResource.RESOURCE_DESCS[jewelI.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			String materialName=RawMaterial.RESOURCE_DESCS[jewelI.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 			if(word.equals("encrust"))
 			{
 				beingDone.addElement(CMStrings.capitalizeAndLower(building.name())+" is encrusted with bits of "+materialName+".");
@@ -386,7 +386,7 @@ public class JewelMaking extends CraftingSkill
 			int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			if(amount>woodRequired) woodRequired=amount;
 			String otherRequired=(String)foundRecipe.elementAt(RCP_EXTRAREQ);
-			int[] pm={EnvResource.MATERIAL_MITHRIL,EnvResource.MATERIAL_METAL};
+			int[] pm={RawMaterial.MATERIAL_MITHRIL,RawMaterial.MATERIAL_METAL};
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"metal",pm,
 												otherRequired.length()>0?1:0,otherRequired,null,
@@ -406,9 +406,9 @@ public class JewelMaking extends CraftingSkill
 			completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 			String itemName=null;
 			if((otherRequired!=null)&&(otherRequired.length()>0)&&(otherRequired.equalsIgnoreCase("PRECIOUS")))
-				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[1][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
+				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[1][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
 			else
-				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
+				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -420,21 +420,21 @@ public class JewelMaking extends CraftingSkill
             playSound="tinktinktink.wav";
 			building.setDisplayText(itemName+" is here");
 			if((data[1][FOUND_CODE]>0)
-			&&(((data[0][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
-			   ||((data[0][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL))
-			&&(((data[1][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)))
-				building.setDescription(itemName+" made of "+EnvResource.RESOURCE_DESCS[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK].toLowerCase()+".");
+			&&(((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+			   ||((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
+			&&(((data[1][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)))
+				building.setDescription(itemName+" made of "+RawMaterial.RESOURCE_DESCS[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK].toLowerCase()+".");
 			else
 				building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
-			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_VALUE])));
+			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_VALUE])));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			if(data[1][FOUND_CODE]==0)
 				building.setMaterial(data[0][FOUND_CODE]);
 			else
 			{
 				building.setMaterial(data[1][FOUND_CODE]);
-				building.setBaseValue(building.baseGoldValue()+EnvResource.RESOURCE_DATA[data[1][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_VALUE]);
+				building.setBaseValue(building.baseGoldValue()+RawMaterial.RESOURCE_DATA[data[1][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_VALUE]);
 			}
 			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			//int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
@@ -503,7 +503,7 @@ public class JewelMaking extends CraftingSkill
 		{
 			messedUp=false;
 			completion=1;
-			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}

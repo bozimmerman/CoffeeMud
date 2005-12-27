@@ -49,7 +49,7 @@ public class StdClanDonationList extends StdClanItem
         CMLib.flags().setReadable(this,true);
         secretIdentity="";
         baseGoldValue=1;
-        material=EnvResource.RESOURCE_PAPER;
+        material=RawMaterial.RESOURCE_PAPER;
     }
     
     public boolean okMessage(Environmental myHost, CMMsg msg)

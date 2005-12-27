@@ -85,8 +85,8 @@ public class Mining extends GatheringSkill
 				if((found!=null)&&(!aborted))
 				{
 					int amount=CMLib.dice().roll(1,10,0);
-					if(((found.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK)
-					&&(found.material()!=EnvResource.RESOURCE_COAL))
+					if(((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK)
+					&&(found.material()!=RawMaterial.RESOURCE_COAL))
 						amount=CMLib.dice().roll(1,85,0);
 					amount=amount*(abilityCode());
 					String s="s";
@@ -124,17 +124,17 @@ public class Mining extends GatheringSkill
 			return false;
 		int resourceType=mob.location().myResource();
 		if((profficiencyCheck(mob,0,auto))
-		   &&((resourceType&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PRECIOUS)
-		   &&((resourceType&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_GLASS)
-		   &&(resourceType!=EnvResource.RESOURCE_SAND)
-		   &&(((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK)
-		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
-		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)))
+		   &&((resourceType&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PRECIOUS)
+		   &&((resourceType&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GLASS)
+		   &&(resourceType!=RawMaterial.RESOURCE_SAND)
+		   &&(((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK)
+		   ||((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+		   ||((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)))
 		{
 			found=(Item)CMLib.utensils().makeResource(resourceType,mob.location().domainType(),false);
 			foundShortName="nothing";
 			if(found!=null)
-				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 		}
 		int duration=50-mob.envStats().level();
 		if(duration<15) duration=15;

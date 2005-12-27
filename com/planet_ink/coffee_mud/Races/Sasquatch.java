@@ -49,8 +49,8 @@ public class Sasquatch extends Gorilla
 	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+5);
-		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)+5);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+5);
 	}
 	public Vector myResources()
 	{
@@ -60,15 +60,15 @@ public class Sasquatch extends Gorilla
 			{
 				for(int i=0;i<4;i++)
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_FUR));
+					("a strip of "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_FUR));
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" spleen",EnvResource.RESOURCE_HIDE));
+				("a "+name().toLowerCase()+" spleen",RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource
-				("a pound of "+name().toLowerCase()+" flesh",EnvResource.RESOURCE_MEAT));
+				("a pound of "+name().toLowerCase()+" flesh",RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

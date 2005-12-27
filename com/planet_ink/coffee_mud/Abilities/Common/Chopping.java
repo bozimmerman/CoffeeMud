@@ -67,7 +67,7 @@ public class Chopping extends GatheringSkill
 				else
 				{
 					StringBuffer str=new StringBuffer("You can't seem to find any trees worth cutting around here.\n\r");
-					int d=lookingFor(EnvResource.MATERIAL_WOODEN,mob.location());
+					int d=lookingFor(RawMaterial.MATERIAL_WOODEN,mob.location());
 					if(d<0)
 						str.append("You might try elsewhere.");
 					else
@@ -127,12 +127,12 @@ public class Chopping extends GatheringSkill
 			return false;
 		int resourceType=mob.location().myResource();
 		if((profficiencyCheck(mob,0,auto))
-		   &&((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN))
+		   &&((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN))
 		{
 			found=(Item)CMLib.utensils().makeResource(resourceType,mob.location().domainType(),false);
 			foundShortName="nothing";
 			if(found!=null)
-				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 		}
 		int duration=40-mob.envStats().level();
 		if(duration<15) duration=15;

@@ -39,7 +39,7 @@ public class SaltWaterSurface extends WaterSurface
 	protected String UnderWaterLocaleID(){return "UnderSaltWaterGrid";}
 
 
-	public int liquidType(){return EnvResource.RESOURCE_SALTWATER;}
+	public int liquidType(){return RawMaterial.RESOURCE_SALTWATER;}
 	public Vector resourceChoices(){return UnderSaltWater.roomResources;}
 
 	public void giveASky(int depth)

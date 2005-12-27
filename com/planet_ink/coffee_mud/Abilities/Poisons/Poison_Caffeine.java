@@ -49,7 +49,7 @@ public class Poison_Caffeine extends Poison {
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-	    affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)+1);
+	    affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+1);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

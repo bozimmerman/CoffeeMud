@@ -189,7 +189,7 @@ public class Pottery extends CraftingSkill
 		int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 		if(amount>woodRequired) woodRequired=amount;
 		String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
-		int[] pm={EnvResource.RESOURCE_CLAY,EnvResource.RESOURCE_CHINA};
+		int[] pm={RawMaterial.RESOURCE_CLAY,RawMaterial.RESOURCE_CHINA};
         bundling=misctype.equalsIgnoreCase("BUNDLE");
 		int[][] data=fetchFoundResourceData(mob,
 											woodRequired,"clay",pm,
@@ -208,7 +208,7 @@ public class Pottery extends CraftingSkill
 			return false;
 		}
 		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
+		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
 		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;
 		else
@@ -223,7 +223,7 @@ public class Pottery extends CraftingSkill
 		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 		building.setMaterial(data[0][FOUND_CODE]);
 		if(building.name().toUpperCase().indexOf("CHINA ")>=0)
-			building.setMaterial(EnvResource.RESOURCE_CHINA);
+			building.setMaterial(RawMaterial.RESOURCE_CHINA);
 		building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
 		int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
@@ -254,7 +254,7 @@ public class Pottery extends CraftingSkill
 			}
 		}
 		if(bundling) building.setBaseValue(lostValue);
-		if(misctype.equalsIgnoreCase("stone")) building.setMaterial(EnvResource.RESOURCE_STONE);
+		if(misctype.equalsIgnoreCase("stone")) building.setMaterial(RawMaterial.RESOURCE_STONE);
 		building.recoverEnvStats();
 		building.text();
 		building.recoverEnvStats();
@@ -267,7 +267,7 @@ public class Pottery extends CraftingSkill
 		{
 			messedUp=false;
 			completion=1;
-			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}

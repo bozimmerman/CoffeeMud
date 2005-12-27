@@ -45,7 +45,7 @@ public class Dance_Clog extends Dance
 		if(invoker==null) return;
 		if(affected==invoker) return;
 
-		affectableStats.setAttackAdjustment((affectableStats.attackAdjustment()-invoker().charStats().getStat(CharStats.CHARISMA))-(Math.round(invoker.envStats().level())*2));
+		affectableStats.setAttackAdjustment((affectableStats.attackAdjustment()-invoker().charStats().getStat(CharStats.STAT_CHARISMA))-(Math.round(invoker.envStats().level())*2));
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
@@ -53,6 +53,6 @@ public class Dance_Clog extends Dance
 		if(invoker==null) return;
 		if(affected==invoker) return;
 
-		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(CMath.div(affectableStats.getStat(CharStats.DEXTERITY),2.0)));
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,(int)Math.round(CMath.div(affectableStats.getStat(CharStats.STAT_DEXTERITY),2.0)));
 	}
 }

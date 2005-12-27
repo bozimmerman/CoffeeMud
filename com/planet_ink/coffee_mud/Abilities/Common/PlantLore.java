@@ -83,17 +83,17 @@ public class PlantLore extends CommonSkill
 						for(int v=0;v<V.size();v++)
 						{
 							Room R=(Room)V.elementAt(v);
-							int material=R.myResource()&EnvResource.MATERIAL_MASK;
-							int resource=R.myResource()&EnvResource.RESOURCE_MASK;
-							if((resource<0)||(resource>=EnvResource.RESOURCE_DESCS.length))
+							int material=R.myResource()&RawMaterial.MATERIAL_MASK;
+							int resource=R.myResource()&RawMaterial.RESOURCE_MASK;
+							if((resource<0)||(resource>=RawMaterial.RESOURCE_DESCS.length))
 								continue;
-							if((material!=EnvResource.MATERIAL_VEGETATION)
-							&&(resource!=EnvResource.RESOURCE_COTTON)
-							&&(resource!=EnvResource.RESOURCE_HEMP)
-							&&(resource!=EnvResource.RESOURCE_SAP)
-							&&(material!=EnvResource.MATERIAL_WOODEN))
+							if((material!=RawMaterial.MATERIAL_VEGETATION)
+							&&(resource!=RawMaterial.RESOURCE_COTTON)
+							&&(resource!=RawMaterial.RESOURCE_HEMP)
+							&&(resource!=RawMaterial.RESOURCE_SAP)
+							&&(material!=RawMaterial.MATERIAL_WOODEN))
 								continue;
-							String resourceStr=EnvResource.RESOURCE_DESCS[resource];
+							String resourceStr=RawMaterial.RESOURCE_DESCS[resource];
 							if(R==room)
 								str.append("You think this spot would be good for "+resourceStr.toLowerCase()+".\n\r");
 							else

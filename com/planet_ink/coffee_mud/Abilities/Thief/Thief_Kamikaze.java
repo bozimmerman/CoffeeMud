@@ -113,7 +113,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if((!target.mayIFight(mob))||(target.charStats().getStat(CharStats.INTELLIGENCE)<3))
+		if((!target.mayIFight(mob))||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3))
 		{
 			mob.tell("You can't talk "+target.name()+" into a kamikaze mission.");
 			return false;
@@ -129,7 +129,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		double goldRequired=new Integer((Math.round((100-(mob.charStats().getStat(CharStats.CHARISMA)*2)))*target.envStats().level())).doubleValue();
+		double goldRequired=new Integer((Math.round((100-(mob.charStats().getStat(CharStats.STAT_CHARISMA)*2)))*target.envStats().level())).doubleValue();
 		String localCurrency=CMLib.beanCounter().getCurrency(target);
 	    String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)

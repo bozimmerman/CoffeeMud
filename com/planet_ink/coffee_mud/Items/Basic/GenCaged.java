@@ -45,7 +45,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 		setDescription("");
 		baseGoldValue=5;
 		baseEnvStats().setLevel(1);
-		setMaterial(EnvResource.RESOURCE_MEAT);
+		setMaterial(RawMaterial.RESOURCE_MEAT);
 		recoverEnvStats();
 	}
 	public boolean cageMe(MOB M)

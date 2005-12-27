@@ -83,7 +83,7 @@ public class Play_Symphony extends Play
 			if(ilvl<=11)
 			{
 				toDoCode=CODE_DOWNSAVE;
-				toDoString=""+CharStats.SAVE_ELECTRIC;
+				toDoString=""+CharStats.STAT_SAVE_ELECTRIC;
 			}
 			else
 			if(ilvl<=15)
@@ -95,7 +95,7 @@ public class Play_Symphony extends Play
 			if(ilvl<=18)
 			{
 				toDoCode=CODE_DOWNSAVE;
-				toDoString=""+CharStats.SAVE_ELECTRIC;
+				toDoString=""+CharStats.STAT_SAVE_ELECTRIC;
 			}
 			else
 			if(ilvl<=21)
@@ -106,7 +106,7 @@ public class Play_Symphony extends Play
 			else
 			{
 				toDoCode=CODE_UPSAVE;
-				toDoString=""+CharStats.SAVE_ELECTRIC;
+				toDoString=""+CharStats.STAT_SAVE_ELECTRIC;
 			}
 			break;
 		}
@@ -115,7 +115,7 @@ public class Play_Symphony extends Play
 			if(ilvl<=2)
 			{
 				toDoCode=CODE_UPSTAT;
-				toDoString=""+CharStats.DEXTERITY;
+				toDoString=""+CharStats.STAT_DEXTERITY;
 			}
 			else
 			if(ilvl<=3)
@@ -138,12 +138,12 @@ public class Play_Symphony extends Play
 			if(ilvl<=13)
 			{
 				toDoCode=CODE_UPSTAT;
-				toDoString=""+CharStats.DEXTERITY;
+				toDoString=""+CharStats.STAT_DEXTERITY;
 			}
 			else
 			{
 				toDoCode=CODE_UPSAVE;
-				toDoString=""+CharStats.SAVE_POISON;
+				toDoString=""+CharStats.STAT_SAVE_POISON;
 			}
 			break;
 		}
@@ -158,7 +158,7 @@ public class Play_Symphony extends Play
 			if(ilvl<=5)
 			{
 				toDoCode=CODE_DOWNSAVE;
-				toDoString=""+CharStats.SAVE_JUSTICE;
+				toDoString=""+CharStats.STAT_SAVE_JUSTICE;
 			}
 			else
 			if(ilvl<=6)
@@ -170,7 +170,7 @@ public class Play_Symphony extends Play
 			if(ilvl<=7)
 			{
 				toDoCode=CODE_UPSAVE;
-				toDoString=""+CharStats.SAVE_JUSTICE;
+				toDoString=""+CharStats.STAT_SAVE_JUSTICE;
 			}
 			else
 			if(ilvl<=8)
@@ -182,12 +182,12 @@ public class Play_Symphony extends Play
 			if(ilvl<=16)
 			{
 				toDoCode=CODE_UPSAVE;
-				toDoString=""+CharStats.SAVE_JUSTICE;
+				toDoString=""+CharStats.STAT_SAVE_JUSTICE;
 			}
 			else
 			{
 				toDoCode=CODE_DOWNSAVE;
-				toDoString=""+CharStats.SAVE_JUSTICE;
+				toDoString=""+CharStats.STAT_SAVE_JUSTICE;
 			}
 			break;
 		}
@@ -234,7 +234,7 @@ public class Play_Symphony extends Play
 			if(ilvl<=4)
 			{
 				toDoCode=CODE_UPSAVE;
-				toDoString=""+CharStats.SAVE_FIRE;
+				toDoString=""+CharStats.STAT_SAVE_FIRE;
 			}
 			else
 			if(ilvl<=5)
@@ -246,30 +246,30 @@ public class Play_Symphony extends Play
 			if(ilvl<=6)
 			{
 				toDoCode=CODE_UPSAVE;
-				toDoString=""+CharStats.SAVE_FIRE;
+				toDoString=""+CharStats.STAT_SAVE_FIRE;
 			}
 			else
 			if(ilvl<=9)
 			{
 				toDoCode=CODE_DOWNSAVE;
-				toDoString=""+CharStats.SAVE_FIRE;
+				toDoString=""+CharStats.STAT_SAVE_FIRE;
 			}
 			else
 			if(ilvl<=12)
 			{
 				toDoCode=CODE_UPSAVE;
-				toDoString=""+CharStats.SAVE_FIRE;
+				toDoString=""+CharStats.STAT_SAVE_FIRE;
 			}
 			else
 			if(ilvl<=13)
 			{
 				toDoCode=CODE_DOWNSAVE;
-				toDoString=""+CharStats.SAVE_FIRE;
+				toDoString=""+CharStats.STAT_SAVE_FIRE;
 			}
 			else
 			{
 				toDoCode=CODE_UPDAMAGEPER3;
-				toDoString=""+CharStats.SAVE_FIRE;
+				toDoString=""+CharStats.STAT_SAVE_FIRE;
 			}
 			break;
 		}
@@ -284,12 +284,12 @@ public class Play_Symphony extends Play
 			if(ilvl<=3)
 			{
 				toDoCode=CODE_UPSTAT;
-				toDoString=""+CharStats.CHARISMA;
+				toDoString=""+CharStats.STAT_CHARISMA;
 			}
 			else
 			{
 				toDoCode=CODE_UPSTAT;
-				toDoString=""+CharStats.CHARISMA;
+				toDoString=""+CharStats.STAT_CHARISMA;
 			}
 			break;
 		}
@@ -298,12 +298,12 @@ public class Play_Symphony extends Play
 			if(ilvl<=4)
 			{
 				toDoCode=CODE_DOWNSAVE;
-				toDoString=""+CharStats.SAVE_ACID;
+				toDoString=""+CharStats.STAT_SAVE_ACID;
 			}
 			else
 			{
 				toDoCode=CODE_UPSAVE;
-				toDoString=""+CharStats.SAVE_ACID;
+				toDoString=""+CharStats.STAT_SAVE_ACID;
 			}
 			break;
 		}
@@ -312,13 +312,13 @@ public class Play_Symphony extends Play
 			if(ilvl<=4)
 			{
 				toDoCode=CODE_UPSAVE;
-				toDoString=""+CharStats.SAVE_ACID;
+				toDoString=""+CharStats.STAT_SAVE_ACID;
 			}
 			else
 			if(ilvl<=7)
 			{
 				toDoCode=CODE_UPSAVE;
-				toDoString=""+CharStats.SAVE_ACID;
+				toDoString=""+CharStats.STAT_SAVE_ACID;
 			}
 			else
 			if(ilvl<=9)
@@ -336,18 +336,18 @@ public class Play_Symphony extends Play
 			if(ilvl<=17)
 			{
 				toDoCode=CODE_DOWNSAVE;
-				toDoString=""+CharStats.SAVE_ACID;
+				toDoString=""+CharStats.STAT_SAVE_ACID;
 			}
 			else
 			if(ilvl<=19)
 			{
 				toDoCode=CODE_UPSAVE;
-				toDoString=""+CharStats.SAVE_ACID;
+				toDoString=""+CharStats.STAT_SAVE_ACID;
 			}
 			else
 			{
 				toDoCode=CODE_DOWNSAVE;
-				toDoString=""+CharStats.SAVE_ACID;
+				toDoString=""+CharStats.STAT_SAVE_ACID;
 			}
 			break;
 		}
@@ -382,24 +382,24 @@ public class Play_Symphony extends Play
 			if(ilvl<=18)
 			{
 				toDoCode=CODE_DOWNSAVE;
-				toDoString=""+CharStats.SAVE_MIND;
+				toDoString=""+CharStats.STAT_SAVE_MIND;
 			}
 			else
 			if(ilvl<=19)
 			{
 				toDoCode=CODE_DOWNSAVE;
-				toDoString=""+CharStats.SAVE_MIND;
+				toDoString=""+CharStats.STAT_SAVE_MIND;
 			}
 			else
 			if(ilvl<=24)
 			{
 				toDoCode=CODE_UPSAVE;
-				toDoString=""+CharStats.SAVE_MIND;
+				toDoString=""+CharStats.STAT_SAVE_MIND;
 			}
 			else
 			{
 				toDoCode=CODE_UPSAVE;
-				toDoString=""+CharStats.SAVE_MIND;
+				toDoString=""+CharStats.STAT_SAVE_MIND;
 			}
 			break;
 		}
@@ -408,24 +408,24 @@ public class Play_Symphony extends Play
 			if(ilvl<=8)
 			{
 				toDoCode=CODE_UPSTAT;
-				toDoString=""+CharStats.CONSTITUTION;
+				toDoString=""+CharStats.STAT_CONSTITUTION;
 			}
 			else
 			if(ilvl<=12)
 			{
 				toDoCode=CODE_UPSTAT;
-				toDoString=""+CharStats.CONSTITUTION;
+				toDoString=""+CharStats.STAT_CONSTITUTION;
 			}
 			else
 			if(ilvl<=21)
 			{
 				toDoCode=CODE_UPSTAT;
-				toDoString=""+CharStats.CONSTITUTION;
+				toDoString=""+CharStats.STAT_CONSTITUTION;
 			}
 			else
 			{
 				toDoCode=CODE_UPSTAT;
-				toDoString=""+CharStats.CONSTITUTION;
+				toDoString=""+CharStats.STAT_CONSTITUTION;
 			}
 			break;
 		}
@@ -454,36 +454,36 @@ public class Play_Symphony extends Play
 			if(ilvl<=7)
 			{
 				toDoCode=CODE_UPSTAT;
-				toDoString=""+CharStats.STRENGTH;
+				toDoString=""+CharStats.STAT_STRENGTH;
 			}
 			else
 			if(ilvl<=10)
 			{
 				toDoCode=CODE_UPSTAT;
-				toDoString=""+CharStats.STRENGTH;
+				toDoString=""+CharStats.STAT_STRENGTH;
 			}
 			else
 			if(ilvl<=15)
 			{
 				toDoCode=CODE_UPSTAT;
-				toDoString=""+CharStats.STRENGTH;
+				toDoString=""+CharStats.STAT_STRENGTH;
 			}
 			else
 			if(ilvl<=17)
 			{
 				toDoCode=CODE_UPSTAT;
-				toDoString=""+CharStats.STRENGTH;
+				toDoString=""+CharStats.STAT_STRENGTH;
 			}
 			else
 			if(ilvl<=19)
 			{
 				toDoCode=CODE_UPSTAT;
-				toDoString=""+CharStats.STRENGTH;
+				toDoString=""+CharStats.STAT_STRENGTH;
 			}
 			else
 			{
 				toDoCode=CODE_UPSTAT;
-				toDoString=""+CharStats.STRENGTH;
+				toDoString=""+CharStats.STAT_STRENGTH;
 			}
 			break;
 		}
@@ -492,31 +492,31 @@ public class Play_Symphony extends Play
 			if(ilvl<=7)
 			{
 				toDoCode=CODE_DOWNSAVE;
-				toDoString=""+CharStats.SAVE_COLD;
+				toDoString=""+CharStats.STAT_SAVE_COLD;
 			}
 			else
 			if(ilvl<=14)
 			{
 				toDoCode=CODE_UPSAVE;
-				toDoString=""+CharStats.SAVE_COLD;
+				toDoString=""+CharStats.STAT_SAVE_COLD;
 			}
 			else
 			if(ilvl<=15)
 			{
 				toDoCode=CODE_UPSAVE;
-				toDoString=""+CharStats.SAVE_COLD;
+				toDoString=""+CharStats.STAT_SAVE_COLD;
 			}
 			else
 			if(ilvl<=16)
 			{
 				toDoCode=CODE_UPSAVE;
-				toDoString=""+CharStats.SAVE_COLD;
+				toDoString=""+CharStats.STAT_SAVE_COLD;
 			}
 			else
 			if(ilvl<=17)
 			{
 				toDoCode=CODE_DOWNSAVE;
-				toDoString=""+CharStats.SAVE_COLD;
+				toDoString=""+CharStats.STAT_SAVE_COLD;
 			}
 			else
 			{
@@ -562,7 +562,7 @@ public class Play_Symphony extends Play
 			if(ilvl<=15)
 			{
 				toDoCode=CODE_UPSAVE;
-				toDoString=""+CharStats.SAVE_DISEASE;
+				toDoString=""+CharStats.STAT_SAVE_DISEASE;
 			}
 			else
 			if(ilvl<=18)

@@ -48,8 +48,8 @@ public class GenDrink extends StdDrink
 		amountOfThirstQuenched=100;
 		amountOfLiquidHeld=700;
 		amountOfLiquidRemaining=700;
-		liquidType=EnvResource.RESOURCE_FRESHWATER;
-		setMaterial(EnvResource.RESOURCE_LEATHER);
+		liquidType=RawMaterial.RESOURCE_FRESHWATER;
+		setMaterial(RawMaterial.RESOURCE_LEATHER);
 		recoverEnvStats();
 	}
 
@@ -61,9 +61,9 @@ public class GenDrink extends StdDrink
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 	public int liquidType(){
-		if((material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)
+		if((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 			return material();
-		if(CMath.s_int(readableText)==0) return EnvResource.RESOURCE_FRESHWATER;
+		if(CMath.s_int(readableText)==0) return RawMaterial.RESOURCE_FRESHWATER;
 		return CMath.s_int(readableText);
 	}
 	public void setLiquidType(int newLiquidType){readableText=""+newLiquidType;}

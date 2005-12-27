@@ -52,7 +52,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 		secretIdentity="";
 		baseGoldValue=1;
 		setCIType(ClanItem.CI_FLAG);
-		material=EnvResource.RESOURCE_COTTON;
+		material=RawMaterial.RESOURCE_COTTON;
 		recoverEnvStats();
 	}
 

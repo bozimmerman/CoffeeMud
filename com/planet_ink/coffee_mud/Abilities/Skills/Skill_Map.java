@@ -94,7 +94,7 @@ public class Skill_Map extends StdSkill
 			A.unInvoke();
 			return true;
 		}
-		if(mob.charStats().getStat(CharStats.INTELLIGENCE)<5)
+		if(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
 			mob.tell("You are too stupid to actually make a map.");
 			return false;

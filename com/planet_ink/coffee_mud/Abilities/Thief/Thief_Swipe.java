@@ -100,7 +100,7 @@ public class Thief_Swipe extends ThiefSkill
 			return false;
 
 		String currency=CMLib.beanCounter().getCurrency(target);
-		int discoverChance=(target.charStats().getStat(CharStats.WISDOM)*5)-(levelDiff*3);
+		int discoverChance=(target.charStats().getStat(CharStats.STAT_WISDOM)*5)-(levelDiff*3);
 		int times=timesPicked(target);
 		if(times>5) discoverChance-=(20*(times-5));
 		if(!CMLib.flags().canBeSeenBy(mob,target))

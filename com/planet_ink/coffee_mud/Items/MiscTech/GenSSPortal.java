@@ -42,7 +42,7 @@ public class GenSSPortal extends StdPortal implements Electronics
 		super();
 		setName("a space ship portal");
 		setDisplayText("a space ship portal is here.");
-		setMaterial(EnvResource.RESOURCE_STEEL);
+		setMaterial(RawMaterial.RESOURCE_STEEL);
 		setDescription("");
 		recoverEnvStats();
 	}

@@ -38,7 +38,7 @@ public class Barbarian extends StdCharClass
 	public String baseClass(){return "Fighter";}
 	public int getBonusPracLevel(){return -1;}
 	public int getBonusAttackLevel(){return 2;}
-	public int getAttackAttribute(){return CharStats.STRENGTH;}
+	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
 	public int getLevelsPerBonusDamage(){ return 1;}
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
@@ -57,8 +57,8 @@ public class Barbarian extends StdCharClass
 	public Barbarian()
 	{
 		super();
-		maxStatAdj[CharStats.STRENGTH]=4;
-		maxStatAdj[CharStats.CONSTITUTION]=4;
+		maxStatAdj[CharStats.STAT_STRENGTH]=4;
+		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -151,14 +151,14 @@ public class Barbarian extends StdCharClass
 	public String otherBonuses(){return "Damage reduction 1pt/5 levels.  A 1%/level resistance to Enchantments.";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STRENGTH)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Strength to become a Barbarian.");
 			return false;
 		}
 
-		if(mob.baseCharStats().getStat(CharStats.CONSTITUTION)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Constitution to become a Barbarian.");

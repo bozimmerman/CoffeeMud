@@ -58,7 +58,7 @@ public class Disease_Smiles extends Disease
 		MOB mob=(MOB)affected;
 		if((getTickDownRemaining()==1)
 		&&(!mob.amDead())
-		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.SAVE_DISEASE)))
+		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_DISEASE)))
 		{
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=mob;

@@ -68,7 +68,7 @@ public class Drilling extends GatheringSkill
 				else
 				{
 					StringBuffer str=new StringBuffer("You can't seem to find anything worth drilling around here.\n\r");
-					int d=lookingFor(EnvResource.MATERIAL_LIQUID,mob.location());
+					int d=lookingFor(RawMaterial.MATERIAL_LIQUID,mob.location());
 					if(d<0)
 						str.append("You might try elsewhere.");
 					else
@@ -91,7 +91,7 @@ public class Drilling extends GatheringSkill
 				MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted))
 				{
-					int amount=((found.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_CLOTH)?
+					int amount=((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)?
 							   (CMLib.dice().roll(1,30,0)*(abilityCode())):
 							   (CMLib.dice().roll(1,5,0)*(abilityCode()));
 					String s="s";
@@ -146,13 +146,13 @@ public class Drilling extends GatheringSkill
 		for(int v=0;v<V.size();v++)
 		{
 			Item I2=(Item)V.elementAt(v);
-			if((I2.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)
+			if((I2.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 			{
 				commonTell(mob,I.name()+" needs to have the "+I2.name()+" removed first.");
 				return false;
 			}
 		}
-		if((!(I instanceof Drink))||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID))
+		if((!(I instanceof Drink))||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
 		{
 			commonTell(mob,I.name()+" doesn't look like it can hold a liquid.");
 			return false;
@@ -170,12 +170,12 @@ public class Drilling extends GatheringSkill
 			return false;
 		int resourceType=mob.location().myResource();
 		if((profficiencyCheck(mob,0,auto))
-		   &&(((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)))
+		   &&(((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)))
 		{
 			found=(Item)CMLib.utensils().makeResource(resourceType,mob.location().domainType(),false);
 			foundShortName="nothing";
 			if(found!=null)
-				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 		}
 		int duration=35-mob.envStats().level();
 		if(duration<10) duration=10;

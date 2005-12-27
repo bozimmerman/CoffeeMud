@@ -104,13 +104,13 @@ public class Prop_EnterAdjuster extends Property
             mob.baseEnvStats().setWeight(mob.baseEnvStats().weight()+CMParms.getParmPlus(strs[0],"wei"));
             mob.baseEnvStats().setHeight(mob.baseEnvStats().height()+CMParms.getParmPlus(strs[0],"hei"));
 
-            mob.baseCharStats().setStat(CharStats.CHARISMA,mob.baseCharStats().getStat(CharStats.CHARISMA)+CMParms.getParmPlus(strs[0],"cha"));
-            mob.baseCharStats().setStat(CharStats.CONSTITUTION,mob.baseCharStats().getStat(CharStats.CONSTITUTION)+CMParms.getParmPlus(strs[0],"con"));
-            mob.baseCharStats().setStat(CharStats.DEXTERITY,mob.baseCharStats().getStat(CharStats.DEXTERITY)+CMParms.getParmPlus(strs[0],"dex"));
+            mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)+CMParms.getParmPlus(strs[0],"cha"));
+            mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)+CMParms.getParmPlus(strs[0],"con"));
+            mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)+CMParms.getParmPlus(strs[0],"dex"));
             String val=CMParms.getParmStr(strs[0],"gen","").toUpperCase();
             if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
-                mob.baseCharStats().setStat(CharStats.GENDER,val.charAt(0));
-            mob.baseCharStats().setStat(CharStats.INTELLIGENCE,mob.baseCharStats().getStat(CharStats.INTELLIGENCE)+CMParms.getParmPlus(strs[0],"int"));
+                mob.baseCharStats().setStat(CharStats.STAT_GENDER,val.charAt(0));
+            mob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)+CMParms.getParmPlus(strs[0],"int"));
             val=CMParms.getParmStr(strs[0],"cla","").toUpperCase();
             if((val.length()>0)&&(CMClass.findCharClass(val)!=null)&&(!val.equalsIgnoreCase("Archon")))
                 mob.baseCharStats().setCurrentClass(CMClass.findCharClass(val));
@@ -120,11 +120,11 @@ public class Prop_EnterAdjuster extends Property
                 int oldCat=mob.baseCharStats().ageCategory();
                 mob.baseCharStats().setMyRace(CMClass.getRace(val));
                 mob.baseCharStats().getMyRace().startRacing(mob,false);
-                if(mob.baseCharStats().getStat(CharStats.AGE)>0)
-                    mob.baseCharStats().setStat(CharStats.AGE,mob.baseCharStats().getMyRace().getAgingChart()[oldCat]);
+                if(mob.baseCharStats().getStat(CharStats.STAT_AGE)>0)
+                    mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.baseCharStats().getMyRace().getAgingChart()[oldCat]);
             }
-            mob.baseCharStats().setStat(CharStats.STRENGTH,mob.baseCharStats().getStat(CharStats.STRENGTH)+CMParms.getParmPlus(strs[0],"str"));
-            mob.baseCharStats().setStat(CharStats.WISDOM,mob.baseCharStats().getStat(CharStats.WISDOM)+CMParms.getParmPlus(strs[0],"wis"));
+            mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)+CMParms.getParmPlus(strs[0],"str"));
+            mob.baseCharStats().setStat(CharStats.STAT_WISDOM,mob.baseCharStats().getStat(CharStats.STAT_WISDOM)+CMParms.getParmPlus(strs[0],"wis"));
             if(CMParms.getParmPlus(strs[0],"lev")!=0)
                 mob.baseCharStats().setClassLevel(mob.baseCharStats().getCurrentClass(),mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass())+CMParms.getParmPlus(strs[0],"lev"));
 

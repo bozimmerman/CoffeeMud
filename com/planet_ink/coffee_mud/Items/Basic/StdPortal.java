@@ -45,7 +45,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		baseEnvStats().setWeight(10000);
 		recoverEnvStats();
 		capacity=10000;
-		material=EnvResource.RESOURCE_NOTHING;
+		material=RawMaterial.RESOURCE_NOTHING;
 	}
 
 

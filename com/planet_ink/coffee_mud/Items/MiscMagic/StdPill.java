@@ -49,7 +49,7 @@ public class StdPill extends StdFood implements Pill
 		secretIdentity="Surely this is a potent pill!";
 		baseGoldValue=200;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_CORN;
+		material=RawMaterial.RESOURCE_CORN;
 	}
 
 

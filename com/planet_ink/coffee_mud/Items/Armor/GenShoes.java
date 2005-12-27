@@ -46,7 +46,7 @@ public class GenShoes extends GenArmor
 		baseEnvStats().setAbility(0);
 		baseGoldValue=1;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_LEATHER;
+		material=RawMaterial.RESOURCE_LEATHER;
 	}
 
 }

@@ -120,10 +120,10 @@ public class Chant_WindColor extends Chant
 				{ done++; colors[5]++;}
 				if(CMLib.flags().isInvisible(I))
 				{ done++; colors[6]++;}
-				if((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
+				if((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 				{ done++; colors[7]++;}
 				if(CMLib.flags().isMetal(I)
-				||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK))
+				||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK))
 				{ done++; colors[4]++;}
 				if(CMLib.utensils().fetchMyTrap(I)!=null)
 				{ done++; colors[8]++;}

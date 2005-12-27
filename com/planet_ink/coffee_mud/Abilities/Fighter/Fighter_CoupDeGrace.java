@@ -95,7 +95,7 @@ public class Fighter_CoupDeGrace extends FighterSkill
 		else
 			levelDiff=0;
 		mob.curState().adjMovement(-150,mob.maxState());
-		int chance=(-levelDiff)+(-(target.charStats().getStat(CharStats.CONSTITUTION)*2));
+		int chance=(-levelDiff)+(-(target.charStats().getStat(CharStats.STAT_CONSTITUTION)*2));
 		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		boolean success=profficiencyCheck(mob,chance,auto)&&(hit);
 		if((success)&&((dmg<50)||(dmg<(target.maxState().getHitPoints()/4))))

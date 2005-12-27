@@ -88,7 +88,7 @@ public class Thief_SlipItem extends ThiefSkill
 			return false;
 		}
 
-		int discoverChance=(target.charStats().getStat(CharStats.WISDOM)*5)-(levelDiff*5);
+		int discoverChance=(target.charStats().getStat(CharStats.STAT_WISDOM)*5)-(levelDiff*5);
 		if(!CMLib.flags().canBeSeenBy(mob,target))
 			discoverChance+=50;
 		if(discoverChance>95) discoverChance=95;

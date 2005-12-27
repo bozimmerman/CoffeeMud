@@ -40,8 +40,8 @@ public class Trapper extends Thief
 	public Trapper()
 	{
 		super();
-		maxStatAdj[CharStats.DEXTERITY]=4;
-		maxStatAdj[CharStats.CONSTITUTION]=4;
+		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
+		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -166,13 +166,13 @@ public class Trapper extends Thief
 	public String statQualifications(){return "Dexterity 9+ Constitution 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Dexterity to become a Trapper.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.CONSTITUTION)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Constitution to become a Trapper.");

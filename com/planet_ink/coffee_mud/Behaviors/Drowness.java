@@ -53,13 +53,13 @@ public class Drowness extends StdBehavior
 		if(!(forMe instanceof MOB)) return;
 		MOB mob=(MOB)forMe;
 
-		mob.baseCharStats().setStat(CharStats.STRENGTH,12 + CMLib.dice().roll(1,6,0));
-		mob.baseCharStats().setStat(CharStats.INTELLIGENCE,14 + CMLib.dice().roll(1,6,0));
-		mob.baseCharStats().setStat(CharStats.WISDOM,13 + CMLib.dice().roll(1,6,0));
-		mob.baseCharStats().setStat(CharStats.DEXTERITY,15 + CMLib.dice().roll(1,6,0));
-		mob.baseCharStats().setStat(CharStats.CONSTITUTION,12 + CMLib.dice().roll(1,6,0));
-		mob.baseCharStats().setStat(CharStats.CHARISMA,13 + CMLib.dice().roll(1,6,0));
-		if(mob.baseCharStats().getStat(CharStats.GENDER)=='M')
+		mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,12 + CMLib.dice().roll(1,6,0));
+		mob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,14 + CMLib.dice().roll(1,6,0));
+		mob.baseCharStats().setStat(CharStats.STAT_WISDOM,13 + CMLib.dice().roll(1,6,0));
+		mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,15 + CMLib.dice().roll(1,6,0));
+		mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,12 + CMLib.dice().roll(1,6,0));
+		mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,13 + CMLib.dice().roll(1,6,0));
+		if(mob.baseCharStats().getStat(CharStats.STAT_GENDER)=='M')
 		{
 			mob.baseCharStats().setCurrentClass(CMClass.getCharClass("Fighter"));
 			mob.recoverCharStats();
@@ -355,7 +355,7 @@ public class Drowness extends StdBehavior
 			MOB mob=(MOB)ticking;
 			if((!mob.amDead())&&(tickID==Tickable.TICKID_MOB))
 			{
-				if(mob.baseCharStats().getStat(CharStats.GENDER)=='F')
+				if(mob.baseCharStats().getStat(CharStats.STAT_GENDER)=='F')
 				{
 					if (mob.isInCombat())
 					{

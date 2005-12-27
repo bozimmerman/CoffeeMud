@@ -42,7 +42,7 @@ public class GenTable extends GenRideable
 		baseEnvStats.setWeight(250);
 		setDisplayText("a generic table is here.");
 		setDescription("");
-		material=EnvResource.RESOURCE_OAK;
+		material=RawMaterial.RESOURCE_OAK;
 		baseGoldValue=5;
 		baseEnvStats().setLevel(1);
 		setRiderCapacity(4);

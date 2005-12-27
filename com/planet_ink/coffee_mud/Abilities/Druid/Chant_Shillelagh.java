@@ -76,8 +76,8 @@ public class Chant_Shillelagh extends Chant
 			mob.tell("You can only enchant weapons.");
 			return false;
 		}
-		if(((((Weapon)target).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
-		&&((((Weapon)target).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_VEGETATION))
+		if(((((Weapon)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
+		&&((((Weapon)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION))
 		{
 			mob.tell("You cannot enchant this foreign material.");
 			return false;

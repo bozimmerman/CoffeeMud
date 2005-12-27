@@ -32,7 +32,7 @@ public class StdLimb extends StdItem
 		properWornBitmap=Item.WORN_HELD|Item.WORN_FLOATING_NEARBY;
 		wornLogicalAnd=false;
 		baseGoldValue=10;
-		material=EnvResource.RESOURCE_MEAT;
+		material=RawMaterial.RESOURCE_MEAT;
 		recoverEnvStats();
 	}
 

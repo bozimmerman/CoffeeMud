@@ -451,7 +451,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     public void tickAging(MOB mob)
     {
         mob.setAgeHours(mob.getAgeHours()+1); // this is really minutes
-        if((mob.baseCharStats().getStat(CharStats.AGE)>0)
+        if((mob.baseCharStats().getStat(CharStats.STAT_AGE)>0)
         &&(mob.playerStats()!=null)
         &&(mob.playerStats().getBirthday()!=null)
         &&((mob.getAgeHours()%20)==0))
@@ -463,14 +463,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             int day=CMClass.globalClock().getDayOfMonth();
             int bday=mob.playerStats().getBirthday()[0];
             int bmonth=mob.playerStats().getBirthday()[1];
-            while((tage>mob.baseCharStats().getStat(CharStats.AGE))
+            while((tage>mob.baseCharStats().getStat(CharStats.STAT_AGE))
             &&((month>bmonth)||((month==bmonth)&&(day>=bday))))
             {
                 if(!CMSecurity.isAllowed(mob,mob.location(),"IMMORT"))
                 {
                     if((month==bmonth)&&(day==bday))
                         mob.tell("Happy Birthday!");
-                    mob.baseCharStats().setStat(CharStats.AGE,mob.baseCharStats().getStat(CharStats.AGE)+1);
+                    mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.baseCharStats().getStat(CharStats.STAT_AGE)+1);
                     mob.recoverCharStats();
                     mob.recoverEnvStats();
                     mob.recoverMaxState();
@@ -503,10 +503,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 if(CMLib.dice().rollPercentage()<10)
                 {
                     int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
-                    for(int i=CharStats.MAX_STRENGTH_ADJ;i<CharStats.MAX_STRENGTH_ADJ+CharStats.NUM_BASE_STATS;i++)
+                    for(int i=CharStats.STAT_MAX_STRENGTH_ADJ;i<CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.NUM_BASE_STATS;i++)
                         if((max+mob.charStats().getStat(i))<=0)
                         {
-                            mob.tell("Your max "+CharStats.TRAITS[i].toLowerCase()+" has fallen below 1!");
+                            mob.tell("Your max "+CharStats.STAT_DESCS[i].toLowerCase()+" has fallen below 1!");
                             CMLib.combat().postDeath(null,mob,null);
                             break;
                         }
@@ -545,13 +545,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     {
         StringBuffer response=new StringBuffer("");
         String level=null;
-        if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<10))
+        if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<10))
         {
             int l=(int)Math.round(Math.floor(CMath.div(item.envStats().level(),10.0)));
             level=(l*10)+"-"+((l*10)+9);
         }
         else
-        if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<18))
+        if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<18))
         {
             int l=(int)Math.round(Math.floor(CMath.div(item.envStats().level(),5.0)));
             level=(l*5)+"-"+((l*5)+4);
@@ -568,13 +568,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         if(item.envStats().weight()<150)
             divider=20.0;
         String weight=null;
-        if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<10))
+        if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<10))
         {
             double l=Math.floor(CMath.div(item.envStats().level(),divider));
             weight=(int)Math.round(CMath.mul(l,divider))+"-"+(int)Math.round(CMath.mul(l,divider)+(divider-1.0));
         }
         else
-        if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<18))
+        if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<18))
         {
             divider=divider/2.0;
             double l=Math.floor(CMath.div(item.envStats().level(),divider));
@@ -583,14 +583,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         else
             weight=""+item.envStats().weight();
         response.append("\n\r"+CMStrings.capitalizeFirstLetter(item.name())+" is a level "+level+" item, and weighs "+weight+" pounds.  ");
-        if((mob!=null)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)<10))
-            response.append("It is mostly made of a kind of "+EnvResource.MATERIAL_NOUNDESCS[(item.material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase()+".  ");
+        if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<10))
+            response.append("It is mostly made of a kind of "+RawMaterial.MATERIAL_NOUNDESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8].toLowerCase()+".  ");
         else
-            response.append("It is mostly made of "+EnvResource.RESOURCE_DESCS[(item.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+".  ");
-        if((this instanceof Weapon)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)>10))
+            response.append("It is mostly made of "+RawMaterial.RESOURCE_DESCS[(item.material()&RawMaterial.RESOURCE_MASK)].toLowerCase()+".  ");
+        if((this instanceof Weapon)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
             response.append("It is a "+CMStrings.capitalizeAndLower(Weapon.classifictionDescription[((Weapon)this).weaponClassification()])+" class weapon that does "+CMStrings.capitalizeAndLower(Weapon.typeDescription[((Weapon)this).weaponType()])+" damage.  ");
         else
-        if((this instanceof Armor)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)>10))
+        if((this instanceof Armor)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
         {
             if(item.envStats().height()>0)
                 response.append(" It is a size "+item.envStats().height()+", and is worn on the ");
@@ -668,9 +668,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                     int myResource=((Drink)this).liquidType();
                     l.setMaterial(myResource);
                     ((Drink)l).setLiquidType(myResource);
-                    l.setBaseValue(EnvResource.RESOURCE_DATA[myResource&EnvResource.RESOURCE_MASK][1]);
+                    l.setBaseValue(RawMaterial.RESOURCE_DATA[myResource&RawMaterial.RESOURCE_MASK][1]);
                     l.baseEnvStats().setWeight(1);
-                    String name=EnvResource.RESOURCE_DESCS[myResource&EnvResource.RESOURCE_MASK].toLowerCase();
+                    String name=RawMaterial.RESOURCE_DESCS[myResource&RawMaterial.RESOURCE_MASK].toLowerCase();
                     l.setName("some "+name);
                     l.setDisplayText("some "+name+" sits here.");
                     l.setDescription("");
@@ -717,7 +717,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         String s=null;
         Item item=(Item)msg.target();
         if(CMLib.flags().canSmell(msg.source()))
-            s=EnvResource.RESOURCE_SMELLS[item.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+            s=RawMaterial.RESOURCE_SMELLS[item.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
         if((s!=null)&&(s.length()>0))
             msg.source().tell(msg.source(),item,null,"<T-NAME> has a "+s+" smell.");
     }
@@ -1091,7 +1091,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 &&(!viewedmob.charStats().getCurrentClass().raceless()))
                 {
                     myDescription.append(viewedmob.name()+" the ");
-                    if(viewedmob.charStats().getStat(CharStats.AGE)>0)
+                    if(viewedmob.charStats().getStat(CharStats.STAT_AGE)>0)
                         myDescription.append(viewedmob.charStats().ageName().toLowerCase()+" ");
                     myDescription.append(viewedmob.charStats().raceName());
                 }
@@ -1104,17 +1104,17 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             }
             if(viewedmob.envStats().height()>0)
                 myDescription.append(viewedmob.charStats().HeShe()+" is "+viewedmob.envStats().height()+" inches tall and weighs "+viewedmob.baseEnvStats().weight()+" pounds.\n\r");
-            if((longlook)&&(viewermob.charStats().getStat(CharStats.INTELLIGENCE)>12))
+            if((longlook)&&(viewermob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>12))
             {
                 CharStats C=(CharStats)CMClass.getCommon("DefaultCharStats");
                 MOB testMOB=CMClass.getMOB("StdMOB");
                 viewedmob.charStats().getMyRace().affectCharStats(testMOB,C);
-                myDescription.append(relativeCharStatTest(C,viewedmob,"weaker","stronger",CharStats.STRENGTH));
-                myDescription.append(relativeCharStatTest(C,viewedmob,"clumsier","more nimble",CharStats.DEXTERITY));
-                myDescription.append(relativeCharStatTest(C,viewedmob,"more sickly","healthier",CharStats.CONSTITUTION));
-                myDescription.append(relativeCharStatTest(C,viewedmob,"more repulsive","more attractive",CharStats.CHARISMA));
-                myDescription.append(relativeCharStatTest(C,viewedmob,"more naive","wiser",CharStats.WISDOM));
-                myDescription.append(relativeCharStatTest(C,viewedmob,"dumber","smarter",CharStats.INTELLIGENCE));
+                myDescription.append(relativeCharStatTest(C,viewedmob,"weaker","stronger",CharStats.STAT_STRENGTH));
+                myDescription.append(relativeCharStatTest(C,viewedmob,"clumsier","more nimble",CharStats.STAT_DEXTERITY));
+                myDescription.append(relativeCharStatTest(C,viewedmob,"more sickly","healthier",CharStats.STAT_CONSTITUTION));
+                myDescription.append(relativeCharStatTest(C,viewedmob,"more repulsive","more attractive",CharStats.STAT_CHARISMA));
+                myDescription.append(relativeCharStatTest(C,viewedmob,"more naive","wiser",CharStats.STAT_WISDOM));
+                myDescription.append(relativeCharStatTest(C,viewedmob,"dumber","smarter",CharStats.STAT_INTELLIGENCE));
                 testMOB.destroy();
             }
             if(!viewermob.isMonster())

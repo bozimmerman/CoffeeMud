@@ -56,10 +56,10 @@ public class GiantWorm extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,23);
-		affectableStats.setPermaStat(CharStats.CONSTITUTION,18);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,3);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,23);
+		affectableStats.setPermaStat(CharStats.STAT_CONSTITUTION,18);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,3);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public String arriveStr()
 	{
@@ -86,7 +86,7 @@ public class GiantWorm extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" guts",EnvResource.RESOURCE_MEAT));
+				("some "+name().toLowerCase()+" guts",RawMaterial.RESOURCE_MEAT));
 			}
 		}
 		return resources;

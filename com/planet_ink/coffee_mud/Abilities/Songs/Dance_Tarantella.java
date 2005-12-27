@@ -43,7 +43,7 @@ public class Dance_Tarantella extends Dance
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
-		affectedStats.setStat(CharStats.SAVE_POISON,affectedStats.getStat(CharStats.SAVE_POISON)+(CMLib.ableMapper().qualifyingClassLevel(invoker(),this)*2));
+		affectedStats.setStat(CharStats.STAT_SAVE_POISON,affectedStats.getStat(CharStats.STAT_SAVE_POISON)+(CMLib.ableMapper().qualifyingClassLevel(invoker(),this)*2));
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

@@ -66,7 +66,7 @@ public class Foraging extends GatheringSkill
 				else
 				{
 					StringBuffer str=new StringBuffer("You can't seem to find anything worth foraging around here.\n\r");
-					int d=lookingFor(EnvResource.MATERIAL_VEGETATION,mob.location());
+					int d=lookingFor(RawMaterial.MATERIAL_VEGETATION,mob.location());
 					if(d<0)
 						str.append("You might try elsewhere.");
 					else
@@ -89,7 +89,7 @@ public class Foraging extends GatheringSkill
 				MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted))
 				{
-					int amount=((found.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_CLOTH)?
+					int amount=((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)?
 							   (CMLib.dice().roll(1,30,0)*(abilityCode())):
 							   (CMLib.dice().roll(1,5,0)*(abilityCode()));
 					String s="s";
@@ -126,15 +126,15 @@ public class Foraging extends GatheringSkill
 			return false;
 		int resourceType=mob.location().myResource();
 		if((profficiencyCheck(mob,0,auto))
-		   &&(((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION)
-			  ||(resourceType==EnvResource.RESOURCE_HEMP)
-			  ||(resourceType==EnvResource.RESOURCE_SILK)
-			  ||(resourceType==EnvResource.RESOURCE_COTTON)))
+		   &&(((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+			  ||(resourceType==RawMaterial.RESOURCE_HEMP)
+			  ||(resourceType==RawMaterial.RESOURCE_SILK)
+			  ||(resourceType==RawMaterial.RESOURCE_COTTON)))
 		{
 			found=(Item)CMLib.utensils().makeResource(resourceType,mob.location().domainType(),false);
 			foundShortName="nothing";
 			if(found!=null)
-				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 		}
 		int duration=35-mob.envStats().level();
 		if(duration<10) duration=10;
@@ -143,7 +143,7 @@ public class Foraging extends GatheringSkill
 		{
 			// herb/locale customisation for jeremy
 			if((found!=null)
-			&&(found.material()==EnvResource.RESOURCE_HERBS)
+			&&(found.material()==RawMaterial.RESOURCE_HERBS)
 			&&((found.Name().toUpperCase().endsWith(" HERBS"))
 			   ||(found.Name().equalsIgnoreCase("herbs"))))
 			{

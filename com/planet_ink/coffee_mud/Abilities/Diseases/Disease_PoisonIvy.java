@@ -68,11 +68,11 @@ public class Disease_PoisonIvy extends Disease
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(affected==null) return;
-		affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)-2);
-		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)-2);
-		if(affectableStats.getStat(CharStats.CHARISMA)<=0)
-			affectableStats.setStat(CharStats.CHARISMA,1);
-		if(affectableStats.getStat(CharStats.DEXTERITY)<=0)
-			affectableStats.setStat(CharStats.DEXTERITY,1);
+		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-2);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-2);
+		if(affectableStats.getStat(CharStats.STAT_CHARISMA)<=0)
+			affectableStats.setStat(CharStats.STAT_CHARISMA,1);
+		if(affectableStats.getStat(CharStats.STAT_DEXTERITY)<=0)
+			affectableStats.setStat(CharStats.STAT_DEXTERITY,1);
 	}
 }

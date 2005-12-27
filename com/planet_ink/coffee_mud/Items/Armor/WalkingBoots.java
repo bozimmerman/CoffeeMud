@@ -46,7 +46,7 @@ public class WalkingBoots extends StdArmor
 		baseEnvStats().setWeight(5);
 		baseGoldValue=5;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_LEATHER;
+		material=RawMaterial.RESOURCE_LEATHER;
 	}
 
 

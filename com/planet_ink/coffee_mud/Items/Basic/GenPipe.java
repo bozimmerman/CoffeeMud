@@ -41,7 +41,7 @@ public class GenPipe extends GenCigar
 		baseEnvStats.setWeight(1);
 		setDisplayText("a generic pipe sits here.");
 		setDescription("This nice wooden pipe could use some herbs in it to smoke.");
-		setMaterial(EnvResource.RESOURCE_OAK);
+		setMaterial(RawMaterial.RESOURCE_OAK);
 		durationTicks=0;
 		destroyedWhenBurnedOut=false;
 		baseGoldValue=5;

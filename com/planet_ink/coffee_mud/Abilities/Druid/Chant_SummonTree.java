@@ -43,9 +43,9 @@ public class Chant_SummonTree extends Chant_SummonPlants
 
 	public Item buildMyPlant(MOB mob, Room room)
 	{
-		int code=material&EnvResource.RESOURCE_MASK;
+		int code=material&RawMaterial.RESOURCE_MASK;
 		Item newItem=CMClass.getStdItem("GenItem");
-		String name=CMStrings.startWithAorAn(EnvResource.RESOURCE_DESCS[code].toLowerCase()+" tree");
+		String name=CMStrings.startWithAorAn(RawMaterial.RESOURCE_DESCS[code].toLowerCase()+" tree");
 		newItem.setName(name);
 		newItem.setDisplayText(newItem.name()+" grows here.");
 		newItem.setDescription("");
@@ -56,7 +56,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.setDispossessionTime(0);
-		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+EnvResource.RESOURCE_DESCS[code].toLowerCase()+" tree sprouts up.");
+		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+RawMaterial.RESOURCE_DESCS[code].toLowerCase()+" tree sprouts up.");
 		room.recoverEnvStats();
 		Chant_SummonTree newChant=new Chant_SummonTree();
 		newChant.PlantsLocation=room;
@@ -104,8 +104,8 @@ public class Chant_SummonTree extends Chant_SummonPlants
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
-		material=EnvResource.RESOURCE_OAK;
-		if((mob.location().myResource()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
+		material=RawMaterial.RESOURCE_OAK;
+		if((mob.location().myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 			material=mob.location().myResource();
 		else
 		{
@@ -114,8 +114,8 @@ public class Chant_SummonTree extends Chant_SummonPlants
 			if(V!=null)
 			for(int v=0;v<V.size();v++)
 			{
-				if(((((Integer)V.elementAt(v)).intValue()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
-				&&((((Integer)V.elementAt(v)).intValue())!=EnvResource.RESOURCE_WOOD))
+				if(((((Integer)V.elementAt(v)).intValue()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
+				&&((((Integer)V.elementAt(v)).intValue())!=RawMaterial.RESOURCE_WOOD))
 					V2.addElement(V.elementAt(v));
 			}
 			if(V2.size()>0)

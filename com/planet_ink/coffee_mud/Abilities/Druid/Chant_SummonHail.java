@@ -90,9 +90,9 @@ public class Chant_SummonHail extends Chant
                         I=target.fetchInventory(i);
                         if((I.container()==null)
                         &&(I.amWearingAt(Item.WORN_HEAD))
-                        &&(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
-                            ||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
-                            ||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)))
+                        &&(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+                            ||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+                            ||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)))
                             break;
                         I=null;
                     }

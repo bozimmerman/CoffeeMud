@@ -39,7 +39,7 @@ public class Monk extends StdCharClass
 	public int getMaxHitPointsLevel(){return 24;}
 	public int getBonusPracLevel(){return -1;}
 	public int getBonusAttackLevel(){return 2;}
-	public int getAttackAttribute(){return CharStats.STRENGTH;}
+	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
 	public int getLevelsPerBonusDamage(){ return 1;}
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
@@ -57,8 +57,8 @@ public class Monk extends StdCharClass
 	public Monk()
 	{
 		super();
-		maxStatAdj[CharStats.STRENGTH]=4;
-		maxStatAdj[CharStats.DEXTERITY]=4;
+		maxStatAdj[CharStats.STAT_STRENGTH]=4;
+		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -148,14 +148,14 @@ public class Monk extends StdCharClass
 	public String statQualifications(){return "Strength 9+, Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STRENGTH)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Strength to become a Monk.");
 			return false;
 		}
 
-		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Dexterity to become a Monk.");
@@ -171,9 +171,9 @@ public class Monk extends StdCharClass
 			return;
 		super.unLevel(mob);
 
-		int dexStat=mob.charStats().getStat(CharStats.DEXTERITY);
+		int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.DEXTERITY));
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
 		if(dexStat>maxDexStat) dexStat=maxDexStat;
 		int attArmor=(int)Math.round(CMath.div(dexStat,9.0));
 		attArmor=attArmor*-1;
@@ -207,7 +207,7 @@ public class Monk extends StdCharClass
 			if(CMLib.flags().isStanding((MOB)affected))
 			{
 				MOB mob=(MOB)affected;
-				int attArmor=(((int)Math.round(CMath.div(mob.charStats().getStat(CharStats.DEXTERITY),9.0)))+1)*(mob.charStats().getClassLevel(this)-1);
+				int attArmor=(((int)Math.round(CMath.div(mob.charStats().getStat(CharStats.STAT_DEXTERITY),9.0)))+1)*(mob.charStats().getClassLevel(this)-1);
 				affectableStats.setArmor(affectableStats.armor()-attArmor);
 			}
 			if(!anyWeapons((MOB)affected))
@@ -222,20 +222,20 @@ public class Monk extends StdCharClass
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB,affectableStats);
-		affectableStats.setStat(CharStats.SAVE_MIND,
-			affectableStats.getStat(CharStats.SAVE_MIND)
+		affectableStats.setStat(CharStats.STAT_SAVE_MIND,
+			affectableStats.getStat(CharStats.STAT_SAVE_MIND)
 			+(affectableStats.getClassLevel(this)*2));
-		affectableStats.setStat(CharStats.SAVE_TRAPS,
-			affectableStats.getStat(CharStats.SAVE_TRAPS)
+		affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,
+			affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)
 			+(affectableStats.getClassLevel(this)*2));
 	}
 	public void level(MOB mob)
 	{
 	    if(CMSecurity.isDisabled("LEVELS")) return;
 		super.level(mob);
-		int dexStat=mob.charStats().getStat(CharStats.DEXTERITY);
+		int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.DEXTERITY));
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
 		if(dexStat>maxDexStat) dexStat=maxDexStat;
 		int attArmor=((int)Math.round(CMath.div(dexStat,9.0)))+1;
 		mob.tell("^NYour stealthiness grants you a defensive bonus of ^H"+attArmor+"^?.^N");

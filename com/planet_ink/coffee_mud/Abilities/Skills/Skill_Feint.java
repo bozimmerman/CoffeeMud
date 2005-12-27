@@ -55,7 +55,7 @@ public class Skill_Feint extends StdSkill
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.DEXTERITY,0);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,0);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -102,7 +102,7 @@ public class Skill_Feint extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=profficiencyCheck(mob,-(target.charStats().getStat(CharStats.DEXTERITY)),auto);
+		boolean success=profficiencyCheck(mob,-(target.charStats().getStat(CharStats.STAT_DEXTERITY)),auto);
 
 		if(success)
 		{

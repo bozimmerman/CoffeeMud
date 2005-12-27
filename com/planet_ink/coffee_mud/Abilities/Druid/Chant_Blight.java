@@ -56,12 +56,12 @@ public class Chant_Blight extends Chant
 
 	public boolean isBlightable(int resource)
 	{
-		if(((resource&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PAPER)
-		||((resource&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
-		||((resource&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION)
-		||(resource==EnvResource.RESOURCE_HEMP)
-		||(resource==EnvResource.RESOURCE_SILK)
-		||(resource==EnvResource.RESOURCE_COTTON))
+		if(((resource&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PAPER)
+		||((resource&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
+		||((resource&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+		||(resource==RawMaterial.RESOURCE_HEMP)
+		||(resource==RawMaterial.RESOURCE_SILK)
+		||(resource==RawMaterial.RESOURCE_COTTON))
 			return true;
 		return false;
 	}
@@ -73,7 +73,7 @@ public class Chant_Blight extends Chant
 		{
 			Room R=(Room)affected;
 			if(isBlightable(R.myResource()))
-				R.setResource(EnvResource.RESOURCE_SAND);
+				R.setResource(RawMaterial.RESOURCE_SAND);
 			for(int i=0;i<R.numItems();i++)
 			{
 				Item I=R.fetchItem(i);

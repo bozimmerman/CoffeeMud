@@ -247,9 +247,9 @@ public class PlayerData extends StdWebMacro
 					str.append((set?"ON":"OFF")+",");
 				}
 			}
-			for(int i=0;i<CharStats.TRAITS.length;i++)
+			for(int i=0;i<CharStats.STAT_DESCS.length;i++)
 			{
-				String stat=CharStats.TRAITS[i];
+				String stat=CharStats.STAT_DESCS[i];
 				if(!stat.equalsIgnoreCase("GENDER"))
 				{
 					if(stat.endsWith(" SAVE"))

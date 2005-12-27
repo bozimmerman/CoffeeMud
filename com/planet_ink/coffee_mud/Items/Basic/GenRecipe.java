@@ -44,7 +44,7 @@ public class GenRecipe extends GenReadable implements Recipe
 		super();
 		setName("a generic recipe");
 		setDisplayText("a generic recipe sits here.");
-		setMaterial(EnvResource.RESOURCE_PAPER);
+		setMaterial(RawMaterial.RESOURCE_PAPER);
 		recoverEnvStats();
 	}
 

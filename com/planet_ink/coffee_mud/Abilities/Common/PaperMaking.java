@@ -180,7 +180,7 @@ public class PaperMaking extends CraftingSkill
 			return false;
 		}
 		completion=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
+		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
 		itemName=CMStrings.startWithAorAn(itemName);
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) making "+building.name()+".";
@@ -190,14 +190,14 @@ public class PaperMaking extends CraftingSkill
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);
-		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_VALUE])));
+		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_VALUE])));
 		building.setMaterial(data[0][FOUND_CODE]);
 		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 		addSpells(building,spell);
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
-		if(((data[0][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
-		||(data[0][FOUND_CODE]==EnvResource.RESOURCE_RICE))
-			building.setMaterial(EnvResource.RESOURCE_PAPER);
+		if(((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
+		||(data[0][FOUND_CODE]==RawMaterial.RESOURCE_RICE))
+			building.setMaterial(RawMaterial.RESOURCE_PAPER);
 		building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 		building.recoverEnvStats();
 		building.text();

@@ -29,7 +29,7 @@ public class ThreadbareRobes extends StdArmor
 		baseEnvStats().setWeight(2);
 		baseEnvStats().setAbility(0);
 		baseGoldValue=1;
-		material=EnvResource.RESOURCE_COTTON;
+		material=RawMaterial.RESOURCE_COTTON;
 		recoverEnvStats();
 	}
 

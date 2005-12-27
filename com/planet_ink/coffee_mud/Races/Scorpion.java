@@ -69,10 +69,10 @@ public class Scorpion extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,5);
-		affectableStats.setStat(CharStats.DEXTERITY,5);
-		affectableStats.setStat(CharStats.INTELLIGENCE,1);
-		affectableStats.setStat(CharStats.SAVE_POISON,affectableStats.getStat(CharStats.SAVE_POISON)+100);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,5);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,5);
+		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,1);
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 	}
 	public String arriveStr()
 	{
@@ -99,7 +99,7 @@ public class Scorpion extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" pincers",EnvResource.RESOURCE_BONE));
+				("some "+name().toLowerCase()+" pincers",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

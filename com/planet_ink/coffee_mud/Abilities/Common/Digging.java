@@ -62,7 +62,7 @@ public class Digging extends GatheringSkill
 					commonTell(mob,"You have found some "+foundShortName+"!");
 					displayText="You are digging out "+foundShortName;
 					verb="digging out "+foundShortName;
-					if((found.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)
+					if((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)
 						tickDown=tickDown*3;
 				}
 				else
@@ -89,7 +89,7 @@ public class Digging extends GatheringSkill
 					int amount=1;
 					if(CMLib.dice().rollPercentage()>90)
 						amount++;
-					if((found.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PRECIOUS)
+					if((found.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PRECIOUS)
 						amount=CMLib.dice().roll(1,55,0);
 					amount=amount*(abilityCode());
 					String s="s";
@@ -128,15 +128,15 @@ public class Digging extends GatheringSkill
 			return false;
 		int resourceType=mob.location().myResource();
 		if((profficiencyCheck(mob,0,auto))
-		   &&(((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)
-		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_GLASS)
-		   ||(resourceType==EnvResource.RESOURCE_SAND)
-		   ||(resourceType==EnvResource.RESOURCE_STONE)))
+		   &&(((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)
+		   ||((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_GLASS)
+		   ||(resourceType==RawMaterial.RESOURCE_SAND)
+		   ||(resourceType==RawMaterial.RESOURCE_STONE)))
 		{
 			found=(Item)CMLib.utensils().makeResource(resourceType,mob.location().domainType(),false);
 			foundShortName="nothing";
 			if(found!=null)
-				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 		}
 		
 		int duration=60-mob.envStats().level();

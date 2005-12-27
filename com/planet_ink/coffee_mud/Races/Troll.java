@@ -60,9 +60,9 @@ public class Troll extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,16);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,12);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,8);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,16);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,12);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,8);
 	}
 	public String arriveStr()
 	{
@@ -126,11 +126,11 @@ public class Troll extends StdRace
 			{
 				for(int i=0;i<4;i++)
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_HIDE));
+					("a strip of "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

@@ -39,7 +39,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 	{
 		super();
 
-		material=EnvResource.RESOURCE_GLASS;
+		material=RawMaterial.RESOURCE_GLASS;
 		setName("a flask");
 		baseEnvStats.setWeight(1);
 		setDisplayText("A flask sits here.");
@@ -51,7 +51,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 
 
 	public boolean isGeneric(){return true;}
-	public int liquidType(){return EnvResource.RESOURCE_DRINKABLE;}
+	public int liquidType(){return RawMaterial.RESOURCE_DRINKABLE;}
 
 	public boolean isDrunk(){return (readableText.toUpperCase().indexOf(";DRUNK")>=0);}
 	public void setDrunk(boolean isTrue)

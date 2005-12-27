@@ -64,7 +64,7 @@ public class Prayer_Cannibalism extends Prayer
 		&&(msg.target() instanceof Food)
 		&&(msg.target() instanceof Item))
 		{
-			if(((((Item)msg.target()).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_FLESH)
+			if(((((Item)msg.target()).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
 			&&(CMLib.english().containsString(msg.target().Name(),msg.source().charStats().getMyRace().name())))
 			{
 				msg.source().curState().adjHunger(+((Food)msg.target()).nourishment(),msg.source().maxState().maxHunger(msg.source().baseWeight()));
@@ -88,7 +88,7 @@ public class Prayer_Cannibalism extends Prayer
 			for(int i2=0;i2<V.size();i2++)
 			{
 				Item I2=(Item)V.elementAt(i2);
-				if((I2.material()==EnvResource.RESOURCE_BLOOD)
+				if((I2.material()==RawMaterial.RESOURCE_BLOOD)
 				&&(I2 instanceof Drink))
 					return true;
 			}
@@ -127,7 +127,7 @@ public class Prayer_Cannibalism extends Prayer
 					if((I!=null)
 					&&(I instanceof Food)
 					&&(I.container()==null)
-					&&((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_FLESH)
+					&&((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
 					&&(CMLib.english().containsString(I.Name(),M.charStats().getMyRace().name())))
 						F=(Food)I;
 				}
@@ -172,7 +172,7 @@ public class Prayer_Cannibalism extends Prayer
 
 
 
-		boolean success=profficiencyCheck(mob,-((target.charStats().getStat(CharStats.WISDOM)*2)),auto);
+		boolean success=profficiencyCheck(mob,-((target.charStats().getStat(CharStats.STAT_WISDOM)*2)),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

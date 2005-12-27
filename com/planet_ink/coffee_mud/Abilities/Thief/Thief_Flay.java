@@ -107,7 +107,7 @@ public class Thief_Flay extends ThiefSkill
 				mob.tell("You cannot flay with a "+ww.name()+", you need a flailing weapon!");
 				return false;
 			}
-			if(w.material()!=EnvResource.RESOURCE_LEATHER)
+			if(w.material()!=RawMaterial.RESOURCE_LEATHER)
 			{
 				mob.tell("You cannot flay with a "+ww.name()+", you need a weapon made of leather!");
 				return false;

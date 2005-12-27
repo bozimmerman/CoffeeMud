@@ -115,15 +115,15 @@ public class Fishing extends GatheringSkill
 		boolean maybeFish=false;
 		if(mob.location()!=null)
 		{
-			for(int i=0;i<EnvResource.FISHES.length;i++)
-				if(mob.location().myResource()==EnvResource.FISHES[i])
+			for(int i=0;i<RawMaterial.FISHES.length;i++)
+				if(mob.location().myResource()==RawMaterial.FISHES[i])
 				{
-					foundFish=EnvResource.FISHES[i];
+					foundFish=RawMaterial.FISHES[i];
 					maybeFish=true;
 				}
 				else
 				if((mob.location().resourceChoices()!=null)
-				&&(mob.location().resourceChoices().contains(new Integer(EnvResource.FISHES[i]))))
+				&&(mob.location().resourceChoices().contains(new Integer(RawMaterial.FISHES[i]))))
 					maybeFish=true;
 		}
 		if(!maybeFish)
@@ -142,7 +142,7 @@ public class Fishing extends GatheringSkill
 			found=(Item)CMLib.utensils().makeResource(foundFish,mob.location().domainType(),false);
 			foundShortName="nothing";
 			if(found!=null)
-				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 		}
 		int duration=35-mob.envStats().level();
 		if(duration<10) duration=10;

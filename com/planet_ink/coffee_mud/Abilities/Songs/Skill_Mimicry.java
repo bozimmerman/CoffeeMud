@@ -113,7 +113,7 @@ public class Skill_Mimicry extends BardSkill
 			else
 			{
 				MOB newSMOB=CMClass.getMOB("StdMOB");
-				newSMOB.baseCharStats().setStat(CharStats.GENDER,'N');
+				newSMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 				newSMOB.setName(affected.name());
 				newSMOB.recoverCharStats();
 				msg.modify(newSMOB,msg.source(),msg.tool(),
@@ -136,7 +136,7 @@ public class Skill_Mimicry extends BardSkill
 			else
 			{
 				MOB newSMOB=CMClass.getMOB("StdMOB");
-				newSMOB.baseCharStats().setStat(CharStats.GENDER,'N');
+				newSMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 				newSMOB.setName(affected.name());
 				newSMOB.recoverCharStats();
 				msg.modify(newSMOB,target,msg.tool(),

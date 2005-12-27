@@ -59,20 +59,20 @@ public class Spell_LowerResists extends Spell
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
-		affectedStats.setStat(CharStats.SAVE_ACID,affectedStats.getStat(CharStats.SAVE_ACID)-amount);
-		affectedStats.setStat(CharStats.SAVE_COLD,affectedStats.getStat(CharStats.SAVE_COLD)-amount);
-		affectedStats.setStat(CharStats.SAVE_DISEASE,affectedStats.getStat(CharStats.SAVE_DISEASE)-amount);
-		affectedStats.setStat(CharStats.SAVE_ELECTRIC,affectedStats.getStat(CharStats.SAVE_ELECTRIC)-amount);
-		affectedStats.setStat(CharStats.SAVE_FIRE,affectedStats.getStat(CharStats.SAVE_FIRE)-amount);
-		affectedStats.setStat(CharStats.SAVE_GAS,affectedStats.getStat(CharStats.SAVE_GAS)-amount);
-		affectedStats.setStat(CharStats.SAVE_JUSTICE,affectedStats.getStat(CharStats.SAVE_JUSTICE)-amount);
-		affectedStats.setStat(CharStats.SAVE_MAGIC,affectedStats.getStat(CharStats.SAVE_MAGIC)-amount);
-		affectedStats.setStat(CharStats.SAVE_TRAPS,affectedStats.getStat(CharStats.SAVE_TRAPS)-amount);
-		affectedStats.setStat(CharStats.SAVE_MIND,affectedStats.getStat(CharStats.SAVE_MIND)-amount);
-		affectedStats.setStat(CharStats.SAVE_PARALYSIS,affectedStats.getStat(CharStats.SAVE_PARALYSIS)-amount);
-		affectedStats.setStat(CharStats.SAVE_POISON,affectedStats.getStat(CharStats.SAVE_POISON)-amount);
-		affectedStats.setStat(CharStats.SAVE_UNDEAD,affectedStats.getStat(CharStats.SAVE_UNDEAD)-amount);
-		affectedStats.setStat(CharStats.SAVE_WATER,affectedStats.getStat(CharStats.SAVE_WATER)-amount);
+		affectedStats.setStat(CharStats.STAT_SAVE_ACID,affectedStats.getStat(CharStats.STAT_SAVE_ACID)-amount);
+		affectedStats.setStat(CharStats.STAT_SAVE_COLD,affectedStats.getStat(CharStats.STAT_SAVE_COLD)-amount);
+		affectedStats.setStat(CharStats.STAT_SAVE_DISEASE,affectedStats.getStat(CharStats.STAT_SAVE_DISEASE)-amount);
+		affectedStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectedStats.getStat(CharStats.STAT_SAVE_ELECTRIC)-amount);
+		affectedStats.setStat(CharStats.STAT_SAVE_FIRE,affectedStats.getStat(CharStats.STAT_SAVE_FIRE)-amount);
+		affectedStats.setStat(CharStats.STAT_SAVE_GAS,affectedStats.getStat(CharStats.STAT_SAVE_GAS)-amount);
+		affectedStats.setStat(CharStats.STAT_SAVE_JUSTICE,affectedStats.getStat(CharStats.STAT_SAVE_JUSTICE)-amount);
+		affectedStats.setStat(CharStats.STAT_SAVE_MAGIC,affectedStats.getStat(CharStats.STAT_SAVE_MAGIC)-amount);
+		affectedStats.setStat(CharStats.STAT_SAVE_TRAPS,affectedStats.getStat(CharStats.STAT_SAVE_TRAPS)-amount);
+		affectedStats.setStat(CharStats.STAT_SAVE_MIND,affectedStats.getStat(CharStats.STAT_SAVE_MIND)-amount);
+		affectedStats.setStat(CharStats.STAT_SAVE_PARALYSIS,affectedStats.getStat(CharStats.STAT_SAVE_PARALYSIS)-amount);
+		affectedStats.setStat(CharStats.STAT_SAVE_POISON,affectedStats.getStat(CharStats.STAT_SAVE_POISON)-amount);
+		affectedStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectedStats.getStat(CharStats.STAT_SAVE_UNDEAD)-amount);
+		affectedStats.setStat(CharStats.STAT_SAVE_WATER,affectedStats.getStat(CharStats.STAT_SAVE_WATER)-amount);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

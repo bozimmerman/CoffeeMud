@@ -674,7 +674,7 @@ public class MobData extends StdWebMacro
 				if((changedClass)||(changedLevel))
 				{
 					Race R3=CMClass.getRace(old);
-					char G=(char)M.baseCharStats().getStat(CharStats.GENDER);
+					char G=(char)M.baseCharStats().getStat(CharStats.STAT_GENDER);
 					if((httpReq.isRequestParameter("GENDER"))&&((httpReq.getRequestParameter("GENDER")).length()>0))
 						G=(httpReq.getRequestParameter("GENDER")).charAt(0);
 					if(R3!=null)
@@ -686,7 +686,7 @@ public class MobData extends StdWebMacro
 				}
 				break;
 			case 9: // gender
-				if(firstTime) old=""+((char)M.baseCharStats().getStat(CharStats.GENDER));
+				if(firstTime) old=""+((char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
 				if(old.toUpperCase().startsWith("M"))
 				{
 					str.append("<INPUT TYPE=RADIO NAME=GENDER CHECKED VALUE=M>Male");

@@ -49,7 +49,7 @@ public class Rat extends Rodent
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,4);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,4);
 	}
 	public Vector myResources()
 	{
@@ -58,16 +58,16 @@ public class Rat extends Rodent
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("some "+name().toLowerCase()+" hair",EnvResource.RESOURCE_FUR));
+					("some "+name().toLowerCase()+" hair",RawMaterial.RESOURCE_FUR));
 				resources.addElement(makeResource
-					("a pair of "+name().toLowerCase()+" teeth",EnvResource.RESOURCE_BONE));
+					("a pair of "+name().toLowerCase()+" teeth",RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource
-					("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+					("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		Vector rsc=(Vector)resources.clone();
 		Item meat=makeResource
-		("some "+name().toLowerCase()+" flesh",EnvResource.RESOURCE_MEAT);
+		("some "+name().toLowerCase()+" flesh",RawMaterial.RESOURCE_MEAT);
 		if(CMLib.dice().rollPercentage()<10)
 		{
 			Ability A=CMClass.getAbility("Disease_SARS");

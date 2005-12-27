@@ -67,11 +67,11 @@ public class Chant_Fertility extends Chant
 			&&(msg.tool().ID().equals("Social"))
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 				||msg.tool().Name().equals("SEX <T-NAME>"))
-			&&(myChar.charStats().getStat(CharStats.GENDER)!=mate.charStats().getStat(CharStats.GENDER))
-			&&((mate.charStats().getStat(CharStats.GENDER)==('M'))
-			   ||(mate.charStats().getStat(CharStats.GENDER)==('F')))
-			&&((myChar.charStats().getStat(CharStats.GENDER)==('M'))
-			   ||(myChar.charStats().getStat(CharStats.GENDER)==('F')))
+			&&(myChar.charStats().getStat(CharStats.STAT_GENDER)!=mate.charStats().getStat(CharStats.STAT_GENDER))
+			&&((mate.charStats().getStat(CharStats.STAT_GENDER)==('M'))
+			   ||(mate.charStats().getStat(CharStats.STAT_GENDER)==('F')))
+			&&((myChar.charStats().getStat(CharStats.STAT_GENDER)==('M'))
+			   ||(myChar.charStats().getStat(CharStats.STAT_GENDER)==('F')))
 			&&((myChar.charStats().getMyRace().ID().equals("Human"))
 			   ||(mate.charStats().getMyRace().ID().equals("Human"))
 			   ||(mate.charStats().getMyRace().ID().equals(myChar.charStats().getMyRace().ID())))
@@ -85,7 +85,7 @@ public class Chant_Fertility extends Chant
 			{
 				MOB female=myChar;
 				MOB male=mate;
-				if((mate.charStats().getStat(CharStats.GENDER)==('F')))
+				if((mate.charStats().getStat(CharStats.STAT_GENDER)==('F')))
 				{
 					female=mate;
 					male=myChar;

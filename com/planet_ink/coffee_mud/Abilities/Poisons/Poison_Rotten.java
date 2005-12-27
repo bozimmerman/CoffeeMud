@@ -43,13 +43,13 @@ public class Poison_Rotten extends Poison
 	protected int POISON_DELAY(){return 5;}
 	protected boolean POISON_AFFECTTARGET()
 	{
-	    if((affected instanceof Food)&&((((Food)affected).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_FLESH))
+	    if((affected instanceof Food)&&((((Food)affected).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_FLESH))
 		    return false;
         return true;
 	}
 	protected String POISON_START_TARGETONLY()
 	{
-	    if((affected instanceof Food)&&((((Food)affected).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_FLESH))
+	    if((affected instanceof Food)&&((((Food)affected).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_FLESH))
 		    return "^G"+affected.name()+" was rotten! Blech!^?";
 	    return "";
 	}
@@ -75,12 +75,12 @@ public class Poison_Rotten extends Poison
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-10);
-		if(affectableStats.getStat(CharStats.CONSTITUTION)<=0)
-			affectableStats.setStat(CharStats.CONSTITUTION,1);
-		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)-8);
-		if(affectableStats.getStat(CharStats.STRENGTH)<=0)
-			affectableStats.setStat(CharStats.STRENGTH,1);
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-10);
+		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)
+			affectableStats.setStat(CharStats.STAT_CONSTITUTION,1);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-8);
+		if(affectableStats.getStat(CharStats.STAT_STRENGTH)<=0)
+			affectableStats.setStat(CharStats.STAT_STRENGTH,1);
 	}
 }
 

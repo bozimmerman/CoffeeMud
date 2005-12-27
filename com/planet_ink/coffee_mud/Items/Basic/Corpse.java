@@ -60,7 +60,7 @@ public class Corpse extends GenContainer implements DeadBody
 		capacity=5;
 		baseGoldValue=0;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_MEAT;
+		material=RawMaterial.RESOURCE_MEAT;
 	}
 	public void setMiscText(String newText)
 	{

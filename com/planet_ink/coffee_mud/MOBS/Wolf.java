@@ -48,9 +48,9 @@ public class Wolf extends StdMOB
 		baseEnvStats.setWeight(50 + Math.abs(randomizer.nextInt() % 55));
 
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,1);
-		baseCharStats().setStat(CharStats.STRENGTH,10);
-		baseCharStats().setStat(CharStats.DEXTERITY,14);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
+		baseCharStats().setStat(CharStats.STAT_STRENGTH,10);
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,14);
 		baseCharStats().setMyRace(CMClass.getRace("Wolf"));
 		baseCharStats().getMyRace().startRacing(this,false);
 

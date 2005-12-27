@@ -122,10 +122,10 @@ public class Prayer_SummonElemental extends Prayer
 		newMOB.baseEnvStats().setAttackAdjustment(caster.envStats().attackAdjustment()/2);
 		newMOB.baseEnvStats().setArmor(caster.envStats().armor()/2);
 		newMOB.baseEnvStats().setSpeed(1);
-		newMOB.baseCharStats().setStat(CharStats.STRENGTH,25);
-		newMOB.baseCharStats().setStat(CharStats.DEXTERITY,25);
-		newMOB.baseCharStats().setStat(CharStats.CONSTITUTION,25);
-		newMOB.baseCharStats().setStat(CharStats.GENDER,'M');
+		newMOB.baseCharStats().setStat(CharStats.STAT_STRENGTH,25);
+		newMOB.baseCharStats().setStat(CharStats.STAT_DEXTERITY,25);
+		newMOB.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,25);
+		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		int type=-1;
 		for(int i=0;i<types.length;i++)
 			if(text().toUpperCase().indexOf(types[i])>=0)

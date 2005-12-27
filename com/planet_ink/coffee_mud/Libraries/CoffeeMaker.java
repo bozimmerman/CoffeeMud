@@ -418,8 +418,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			text.append(CMLib.xml().convertXMLtoTag("RIDEC",((Rideable)E).riderCapacity()));
 		}
 		
-		if(E instanceof EnvResource)
-			text.append(CMLib.xml().convertXMLtoTag("DOMN",((EnvResource)E).domainSource()+""));
+		if(E instanceof RawMaterial)
+			text.append(CMLib.xml().convertXMLtoTag("DOMN",((RawMaterial)E).domainSource()+""));
 
 		if(E instanceof Food)
 			text.append(CMLib.xml().convertXMLtoTag("CAPA2",((Food)E).nourishment()));
@@ -448,7 +448,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		{
 			if(((DeadBody)E).charStats()!=null)
 			{
-				text.append(CMLib.xml().convertXMLtoTag("GENDER",""+(char)((DeadBody)E).charStats().getStat(CharStats.GENDER)));
+				text.append(CMLib.xml().convertXMLtoTag("GENDER",""+(char)((DeadBody)E).charStats().getStat(CharStats.STAT_GENDER)));
 				text.append(CMLib.xml().convertXMLtoTag("MRACE",""+((DeadBody)E).charStats().getMyRace().ID()));
 				text.append(CMLib.xml().convertXMLtoTag("MDNAME",""+((DeadBody)E).mobName()));
 				text.append(CMLib.xml().convertXMLtoTag("MDDESC",""+((DeadBody)E).mobDescription()));
@@ -481,7 +481,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			text.append(CMLib.xml().convertXMLtoTag("MONEY",CMLib.beanCounter().getMoney((MOB)E)));
 			CMLib.beanCounter().clearInventoryMoney((MOB)E,null);
 			text.append(CMLib.xml().convertXMLtoTag("CLAN",((MOB)E).getClanID()));
-			text.append(CMLib.xml().convertXMLtoTag("GENDER",""+(char)((MOB)E).baseCharStats().getStat(CharStats.GENDER)));
+			text.append(CMLib.xml().convertXMLtoTag("GENDER",""+(char)((MOB)E).baseCharStats().getStat(CharStats.STAT_GENDER)));
 			text.append(CMLib.xml().convertXMLtoTag("MRACE",""+((MOB)E).baseCharStats().getMyRace().ID()));
             text.append(getFactionXML((MOB)E));
 			text.append(getGenMobInventory((MOB)E));
@@ -1138,10 +1138,10 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 						MOB dup=(MOB)dups.elementAt(v);
 						int oldHeight=mob.baseEnvStats().height();
 						int oldWeight=mob.baseEnvStats().weight();
-						int oldGender=mob.baseCharStats().getStat(CharStats.GENDER);
+						int oldGender=mob.baseCharStats().getStat(CharStats.STAT_GENDER);
 						dup.baseEnvStats().setHeight(mob.baseEnvStats().height());
 						dup.baseEnvStats().setWeight(mob.baseEnvStats().weight());
-						dup.baseCharStats().setStat(CharStats.GENDER,mob.baseCharStats().getStat(CharStats.GENDER));
+						dup.baseCharStats().setStat(CharStats.STAT_GENDER,mob.baseCharStats().getStat(CharStats.STAT_GENDER));
 						if(CMClass.className(mob).equals(CMClass.className(dup))
 						&&(mob.baseEnvStats().level()==dup.baseEnvStats().level())
 						&&(mob.baseEnvStats().ability()==dup.baseEnvStats().ability())
@@ -1149,7 +1149,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 							matched=true;
 						dup.baseEnvStats().setHeight(oldHeight);
 						dup.baseEnvStats().setWeight(oldWeight);
-						dup.baseCharStats().setStat(CharStats.GENDER,oldGender);
+						dup.baseCharStats().setStat(CharStats.STAT_GENDER,oldGender);
 						if(matched) break;
 					}
 					if(!matched)
@@ -1159,15 +1159,15 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 							MOB dup=(MOB)dups.elementAt(v);
 							int oldHeight=mob.baseEnvStats().height();
 							int oldWeight=mob.baseEnvStats().weight();
-							int oldGender=mob.baseCharStats().getStat(CharStats.GENDER);
+							int oldGender=mob.baseCharStats().getStat(CharStats.STAT_GENDER);
 							dup.baseEnvStats().setHeight(mob.baseEnvStats().height());
 							dup.baseEnvStats().setWeight(mob.baseEnvStats().weight());
-							dup.baseCharStats().setStat(CharStats.GENDER,mob.baseCharStats().getStat(CharStats.GENDER));
+							dup.baseCharStats().setStat(CharStats.STAT_GENDER,mob.baseCharStats().getStat(CharStats.STAT_GENDER));
 							if(Log.debugChannelOn()&&CMSecurity.isDebugging("EXPORT"))
 								logDiff(mob,dup);
 							dup.baseEnvStats().setHeight(oldHeight);
 							dup.baseEnvStats().setWeight(oldWeight);
-							dup.baseCharStats().setStat(CharStats.GENDER,oldGender);
+							dup.baseCharStats().setStat(CharStats.STAT_GENDER,oldGender);
 						}
 						dups.addElement(mob);
 					}
@@ -1887,7 +1887,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		if(E instanceof MOB)
 		{
 			MOB mob=(MOB)E;
-			mob.baseCharStats().setStat(CharStats.GENDER,CMLib.xml().getValFromPieces(buf,"GENDER").charAt(0));
+			mob.baseCharStats().setStat(CharStats.STAT_GENDER,CMLib.xml().getValFromPieces(buf,"GENDER").charAt(0));
 			mob.setClanID(CMLib.xml().getValFromPieces(buf,"CLAN"));
 			if(mob.getClanID().length()>0) mob.setClanRole(Clan.POS_MEMBER);
 			String raceID=CMLib.xml().getValFromPieces(buf,"MRACE");
@@ -2000,8 +2000,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		if(E instanceof Food)
 			((Food)E).setNourishment(CMLib.xml().getIntFromPieces(buf,"CAPA2"));
 		
-		if(E instanceof EnvResource)
-			((EnvResource)E).setDomainSource(CMLib.xml().getIntFromPieces(buf,"DOMN"));
+		if(E instanceof RawMaterial)
+			((RawMaterial)E).setDomainSource(CMLib.xml().getIntFromPieces(buf,"DOMN"));
 
 		if(E instanceof Drink)
 		{
@@ -2020,7 +2020,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			if(((DeadBody)E).charStats()==null)
 				((DeadBody)E).setCharStats((CharStats)CMClass.getCommon("DefaultCharStats"));
 			try{
-				((DeadBody)E).charStats().setStat(CharStats.GENDER,CMLib.xml().getValFromPieces(buf,"GENDER").charAt(0));
+				((DeadBody)E).charStats().setStat(CharStats.STAT_GENDER,CMLib.xml().getValFromPieces(buf,"GENDER").charAt(0));
 				((DeadBody)E).setPlayerCorpse(CMLib.xml().getBoolFromPieces(buf,"MPLAYR"));
 				String mobName=CMLib.xml().getValFromPieces(buf,"MDNAME");
 				if(mobName.length()>0)
@@ -2234,14 +2234,14 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		str.append(CMLib.xml().convertXMLtoTag("NAME",mob.Name()));
 		str.append(CMLib.xml().convertXMLtoTag("PASS",pstats.password()));
 		str.append(CMLib.xml().convertXMLtoTag("CLASS",mob.baseCharStats().getMyClassesStr()));
-		str.append(CMLib.xml().convertXMLtoTag("STR",mob.baseCharStats().getStat(CharStats.STRENGTH)));
+		str.append(CMLib.xml().convertXMLtoTag("STR",mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)));
 		str.append(CMLib.xml().convertXMLtoTag("RACE",mob.baseCharStats().getMyRace().ID()));
-		str.append(CMLib.xml().convertXMLtoTag("DEX",mob.baseCharStats().getStat(CharStats.DEXTERITY)));
-		str.append(CMLib.xml().convertXMLtoTag("CON",mob.baseCharStats().getStat(CharStats.CONSTITUTION)));
-		str.append(CMLib.xml().convertXMLtoTag("GEND",""+((char)mob.baseCharStats().getStat(CharStats.GENDER))));
-		str.append(CMLib.xml().convertXMLtoTag("WIS",mob.baseCharStats().getStat(CharStats.WISDOM)));
-		str.append(CMLib.xml().convertXMLtoTag("INT",mob.baseCharStats().getStat(CharStats.INTELLIGENCE)));
-		str.append(CMLib.xml().convertXMLtoTag("CHA",mob.baseCharStats().getStat(CharStats.CHARISMA)));
+		str.append(CMLib.xml().convertXMLtoTag("DEX",mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)));
+		str.append(CMLib.xml().convertXMLtoTag("CON",mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)));
+		str.append(CMLib.xml().convertXMLtoTag("GEND",""+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))));
+		str.append(CMLib.xml().convertXMLtoTag("WIS",mob.baseCharStats().getStat(CharStats.STAT_WISDOM)));
+		str.append(CMLib.xml().convertXMLtoTag("INT",mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)));
+		str.append(CMLib.xml().convertXMLtoTag("CHA",mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)));
 		str.append(CMLib.xml().convertXMLtoTag("HIT",mob.baseState().getHitPoints()));
 		str.append(CMLib.xml().convertXMLtoTag("LVL",mob.baseCharStats().getMyLevelsStr()));
 		str.append(CMLib.xml().convertXMLtoTag("MANA",mob.baseState().getMana()));
@@ -2334,14 +2334,14 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			for(int i=0;i<mob.baseCharStats().numClasses();i++)
 				level+=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(i));
 			mob.baseEnvStats().setLevel(level);
-			mob.baseCharStats().setStat(CharStats.STRENGTH,CMLib.xml().getIntFromPieces(mblk.contents,"STR"));
+			mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,CMLib.xml().getIntFromPieces(mblk.contents,"STR"));
 			mob.baseCharStats().setMyRace(CMClass.getRace(CMLib.xml().getValFromPieces(mblk.contents,"RACE")));
-			mob.baseCharStats().setStat(CharStats.DEXTERITY,CMLib.xml().getIntFromPieces(mblk.contents,"DEX"));
-			mob.baseCharStats().setStat(CharStats.CONSTITUTION,CMLib.xml().getIntFromPieces(mblk.contents,"CON"));
-			mob.baseCharStats().setStat(CharStats.GENDER,CMLib.xml().getValFromPieces(mblk.contents,"GEND").charAt(0));
-			mob.baseCharStats().setStat(CharStats.WISDOM,CMLib.xml().getIntFromPieces(mblk.contents,"WIS"));
-			mob.baseCharStats().setStat(CharStats.INTELLIGENCE,CMLib.xml().getIntFromPieces(mblk.contents,"INT"));
-			mob.baseCharStats().setStat(CharStats.CHARISMA,CMLib.xml().getIntFromPieces(mblk.contents,"CHA"));
+			mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,CMLib.xml().getIntFromPieces(mblk.contents,"DEX"));
+			mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,CMLib.xml().getIntFromPieces(mblk.contents,"CON"));
+			mob.baseCharStats().setStat(CharStats.STAT_GENDER,CMLib.xml().getValFromPieces(mblk.contents,"GEND").charAt(0));
+			mob.baseCharStats().setStat(CharStats.STAT_WISDOM,CMLib.xml().getIntFromPieces(mblk.contents,"WIS"));
+			mob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,CMLib.xml().getIntFromPieces(mblk.contents,"INT"));
+			mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,CMLib.xml().getIntFromPieces(mblk.contents,"CHA"));
 			mob.baseState().setHitPoints(CMLib.xml().getIntFromPieces(mblk.contents,"HIT"));
 			mob.baseState().setMana(CMLib.xml().getIntFromPieces(mblk.contents,"MANA"));
 			mob.baseState().setMovement(CMLib.xml().getIntFromPieces(mblk.contents,"MOVE"));
@@ -3013,8 +3013,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			level+=(int)Math.round(5.0*CMParms.getParmDoublePlus(newText,"spe"));
 			for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 			{
-				int stat=CMParms.getParmPlus(newText,CharStats.TRAITS[i].substring(0,3).toLowerCase());
-				int max=CMParms.getParmPlus(newText,("max"+(CharStats.TRAITS[i].substring(0,3).toLowerCase())));
+				int stat=CMParms.getParmPlus(newText,CharStats.STAT_DESCS[i].substring(0,3).toLowerCase());
+				int max=CMParms.getParmPlus(newText,("max"+(CharStats.STAT_DESCS[i].substring(0,3).toLowerCase())));
 				level+=(stat*5);
 				level+=(max*5);
 			}
@@ -3039,7 +3039,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 												long worndata)
 	{
 		Hashtable vals=new Hashtable();
-		int materialvalue=EnvResource.RESOURCE_DATA[material&EnvResource.RESOURCE_MASK][1];
+		int materialvalue=RawMaterial.RESOURCE_DATA[material&RawMaterial.RESOURCE_MASK][1];
 		Ability ADJ=I.fetchEffect("Prop_WearAdjuster");
 		if(ADJ==null) ADJ=I.fetchEffect("Prop_HaveAdjuster");
 		if(ADJ==null) ADJ=I.fetchEffect("Prop_RideAdjuster");
@@ -3059,14 +3059,14 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			int baseattack=0;
 			int basereach=0;
 			int maxreach=0;
-			int basematerial=EnvResource.MATERIAL_WOODEN;
+			int basematerial=RawMaterial.MATERIAL_WOODEN;
 			if(wclass==Weapon.CLASS_FLAILED) baseattack=-5;
-			if(wclass==Weapon.CLASS_POLEARM){ basereach=1; basematerial=EnvResource.MATERIAL_METAL;}
+			if(wclass==Weapon.CLASS_POLEARM){ basereach=1; basematerial=RawMaterial.MATERIAL_METAL;}
 			if(wclass==Weapon.CLASS_RANGED){ basereach=1; maxreach=5;}
 			if(wclass==Weapon.CLASS_THROWN){ basereach=1; maxreach=5;}
-			if(wclass==Weapon.CLASS_EDGED){ baseattack=10; basematerial=EnvResource.MATERIAL_METAL;}
-			if(wclass==Weapon.CLASS_DAGGER){ baseattack=10; basematerial=EnvResource.MATERIAL_METAL;}
-			if(wclass==Weapon.CLASS_SWORD){ basematerial=EnvResource.MATERIAL_METAL;}
+			if(wclass==Weapon.CLASS_EDGED){ baseattack=10; basematerial=RawMaterial.MATERIAL_METAL;}
+			if(wclass==Weapon.CLASS_DAGGER){ baseattack=10; basematerial=RawMaterial.MATERIAL_METAL;}
+			if(wclass==Weapon.CLASS_SWORD){ basematerial=RawMaterial.MATERIAL_METAL;}
 			if(weight==0) weight=10;
 			if(basereach>maxreach) maxreach=basereach;
 			if(reach<basereach)
@@ -3081,32 +3081,32 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			int damage=((level-1)/((reach/weight)+2) + (weight-baseattack)/5 -reach)*(((hands*2)+1)/2);
 			int cost=2*((weight*materialvalue)+((2*damage)+baseattack+(reach*10))*damage)/(hands+1);
 
-			if(basematerial==EnvResource.MATERIAL_METAL)
+			if(basematerial==RawMaterial.MATERIAL_METAL)
 			{
-				switch(material&EnvResource.MATERIAL_MASK)
+				switch(material&RawMaterial.MATERIAL_MASK)
 				{
-				case EnvResource.MATERIAL_MITHRIL:
-				case EnvResource.MATERIAL_METAL:
-				case EnvResource.MATERIAL_ENERGY:
+				case RawMaterial.MATERIAL_MITHRIL:
+				case RawMaterial.MATERIAL_METAL:
+				case RawMaterial.MATERIAL_ENERGY:
 					break;
-				case EnvResource.MATERIAL_WOODEN:
-				case EnvResource.MATERIAL_PLASTIC:
+				case RawMaterial.MATERIAL_WOODEN:
+				case RawMaterial.MATERIAL_PLASTIC:
 					damage-=4;
 					baseattack-=0;
 					break;
-				case EnvResource.MATERIAL_PRECIOUS:
+				case RawMaterial.MATERIAL_PRECIOUS:
 					damage-=4;
 					baseattack-=10;
 					break;
-				case EnvResource.MATERIAL_LEATHER:
+				case RawMaterial.MATERIAL_LEATHER:
 					damage-=6;
 					baseattack-=10;
 					break;
-				case EnvResource.MATERIAL_ROCK:
+				case RawMaterial.MATERIAL_ROCK:
 					damage-=2;
 					baseattack-=10;
 					break;
-				case EnvResource.MATERIAL_GLASS:
+				case RawMaterial.MATERIAL_GLASS:
 					damage-=4;
 					baseattack-=20;
 					break;
@@ -3117,59 +3117,59 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				}
 				switch(material)
 				{
-				case EnvResource.RESOURCE_BALSA:
-				case EnvResource.RESOURCE_LIMESTONE:
-				case EnvResource.RESOURCE_FLINT:
+				case RawMaterial.RESOURCE_BALSA:
+				case RawMaterial.RESOURCE_LIMESTONE:
+				case RawMaterial.RESOURCE_FLINT:
 					baseattack-=10;
 					damage-=2;
 					break;
-				case EnvResource.RESOURCE_CLAY:
+				case RawMaterial.RESOURCE_CLAY:
 					baseattack-=20;
 					damage-=4;
 					break;
-				case EnvResource.RESOURCE_BONE:
+				case RawMaterial.RESOURCE_BONE:
 					baseattack+=20;
 					damage+=4;
 					break;
-				case EnvResource.RESOURCE_GRANITE:
-				case EnvResource.RESOURCE_OBSIDIAN:
-				case EnvResource.RESOURCE_IRONWOOD:
+				case RawMaterial.RESOURCE_GRANITE:
+				case RawMaterial.RESOURCE_OBSIDIAN:
+				case RawMaterial.RESOURCE_IRONWOOD:
 					baseattack+=10;
 					damage+=2;
 					break;
-				case EnvResource.RESOURCE_SAND:
-				case EnvResource.RESOURCE_COAL:
+				case RawMaterial.RESOURCE_SAND:
+				case RawMaterial.RESOURCE_COAL:
 					baseattack-=40;
 					damage-=8;
 					break;
 				}
 			}
-			if(basematerial==EnvResource.MATERIAL_WOODEN)
+			if(basematerial==RawMaterial.MATERIAL_WOODEN)
 			{
-				switch(material&EnvResource.MATERIAL_MASK)
+				switch(material&RawMaterial.MATERIAL_MASK)
 				{
-				case EnvResource.MATERIAL_WOODEN:
-				case EnvResource.MATERIAL_ENERGY:
+				case RawMaterial.MATERIAL_WOODEN:
+				case RawMaterial.MATERIAL_ENERGY:
 					break;
-				case EnvResource.MATERIAL_METAL:
-				case EnvResource.MATERIAL_MITHRIL:
+				case RawMaterial.MATERIAL_METAL:
+				case RawMaterial.MATERIAL_MITHRIL:
 					damage+=2;
 					baseattack-=0;
 					break;
-				case EnvResource.MATERIAL_PRECIOUS:
+				case RawMaterial.MATERIAL_PRECIOUS:
 					damage+=2;
 					baseattack-=10;
 					break;
-				case EnvResource.MATERIAL_LEATHER:
-				case EnvResource.MATERIAL_PLASTIC:
+				case RawMaterial.MATERIAL_LEATHER:
+				case RawMaterial.MATERIAL_PLASTIC:
 					damage-=2;
 					baseattack-=0;
 					break;
-				case EnvResource.MATERIAL_ROCK:
+				case RawMaterial.MATERIAL_ROCK:
 					damage+=2;
 					baseattack-=10;
 					break;
-				case EnvResource.MATERIAL_GLASS:
+				case RawMaterial.MATERIAL_GLASS:
 					damage-=2;
 					baseattack-=10;
 					break;
@@ -3180,26 +3180,26 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				}
 				switch(material)
 				{
-				case EnvResource.RESOURCE_LIMESTONE:
-				case EnvResource.RESOURCE_FLINT:
+				case RawMaterial.RESOURCE_LIMESTONE:
+				case RawMaterial.RESOURCE_FLINT:
 					baseattack-=10;
 					damage-=2;
 					break;
-				case EnvResource.RESOURCE_CLAY:
+				case RawMaterial.RESOURCE_CLAY:
 					baseattack-=20;
 					damage-=4;
 					break;
-				case EnvResource.RESOURCE_BONE:
+				case RawMaterial.RESOURCE_BONE:
 					baseattack+=20;
 					damage+=4;
 					break;
-				case EnvResource.RESOURCE_GRANITE:
-				case EnvResource.RESOURCE_OBSIDIAN:
+				case RawMaterial.RESOURCE_GRANITE:
+				case RawMaterial.RESOURCE_OBSIDIAN:
 					baseattack+=10;
 					damage+=2;
 					break;
-				case EnvResource.RESOURCE_SAND:
-				case EnvResource.RESOURCE_COAL:
+				case RawMaterial.RESOURCE_SAND:
+				case RawMaterial.RESOURCE_COAL:
 					baseattack-=40;
 					damage-=8;
 					break;
@@ -3219,21 +3219,21 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
 			double pts=0.0;
 			if(level<0) level=0;
-			int materialCode=material&EnvResource.MATERIAL_MASK;
+			int materialCode=material&RawMaterial.MATERIAL_MASK;
 			int[] useArray=null;
 			switch(materialCode)
 			{
-			case EnvResource.MATERIAL_METAL:
-			case EnvResource.MATERIAL_MITHRIL:
-			case EnvResource.MATERIAL_PRECIOUS:
-			case EnvResource.MATERIAL_ENERGY:
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_MITHRIL:
+			case RawMaterial.MATERIAL_PRECIOUS:
+			case RawMaterial.MATERIAL_ENERGY:
 				useArray=metalPoints;
 				break;
-			case EnvResource.MATERIAL_PLASTIC:
-			case EnvResource.MATERIAL_LEATHER:
-			case EnvResource.MATERIAL_GLASS:
-			case EnvResource.MATERIAL_ROCK:
-			case EnvResource.MATERIAL_WOODEN:
+			case RawMaterial.MATERIAL_PLASTIC:
+			case RawMaterial.MATERIAL_LEATHER:
+			case RawMaterial.MATERIAL_GLASS:
+			case RawMaterial.MATERIAL_ROCK:
+			case RawMaterial.MATERIAL_WOODEN:
 				useArray=leatherPoints;
 				break;
 			default:
@@ -3264,19 +3264,19 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					wornweights+=Item.WORN_WEIGHTS[i+1];
 					switch(materialCode)
 					{
-					case EnvResource.MATERIAL_METAL:
-					case EnvResource.MATERIAL_MITHRIL:
-					case EnvResource.MATERIAL_PRECIOUS:
+					case RawMaterial.MATERIAL_METAL:
+					case RawMaterial.MATERIAL_MITHRIL:
+					case RawMaterial.MATERIAL_PRECIOUS:
 						weightpts+=Item.WORN_WEIGHT_POINTS[i+1][2];
 						break;
-					case EnvResource.MATERIAL_LEATHER:
-					case EnvResource.MATERIAL_GLASS:
-					case EnvResource.MATERIAL_PLASTIC:
-					case EnvResource.MATERIAL_ROCK:
-					case EnvResource.MATERIAL_WOODEN:
+					case RawMaterial.MATERIAL_LEATHER:
+					case RawMaterial.MATERIAL_GLASS:
+					case RawMaterial.MATERIAL_PLASTIC:
+					case RawMaterial.MATERIAL_ROCK:
+					case RawMaterial.MATERIAL_WOODEN:
 						weightpts+=Item.WORN_WEIGHT_POINTS[i+1][1];
 						break;
-					case EnvResource.MATERIAL_ENERGY:
+					case RawMaterial.MATERIAL_ENERGY:
 						break;
 					default:
 						weightpts+=Item.WORN_WEIGHT_POINTS[i+1][0];
@@ -3290,24 +3290,24 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			int armor=(int)Math.round(totalpts);
 			switch(material)
 			{
-				case EnvResource.RESOURCE_BALSA:
-				case EnvResource.RESOURCE_LIMESTONE:
-				case EnvResource.RESOURCE_FLINT:
+				case RawMaterial.RESOURCE_BALSA:
+				case RawMaterial.RESOURCE_LIMESTONE:
+				case RawMaterial.RESOURCE_FLINT:
 					armor-=1;
 					break;
-				case EnvResource.RESOURCE_CLAY:
+				case RawMaterial.RESOURCE_CLAY:
 					armor-=2;
 					break;
-				case EnvResource.RESOURCE_BONE:
+				case RawMaterial.RESOURCE_BONE:
 					armor+=2;
 					break;
-				case EnvResource.RESOURCE_GRANITE:
-				case EnvResource.RESOURCE_OBSIDIAN:
-				case EnvResource.RESOURCE_IRONWOOD:
+				case RawMaterial.RESOURCE_GRANITE:
+				case RawMaterial.RESOURCE_OBSIDIAN:
+				case RawMaterial.RESOURCE_IRONWOOD:
 					armor+=1;
 					break;
-				case EnvResource.RESOURCE_SAND:
-				case EnvResource.RESOURCE_COAL:
+				case RawMaterial.RESOURCE_SAND:
+				case RawMaterial.RESOURCE_COAL:
 					armor-=4;
 					break;
 			}

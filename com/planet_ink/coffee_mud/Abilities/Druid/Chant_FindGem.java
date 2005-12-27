@@ -41,8 +41,8 @@ public class Chant_FindGem extends Chant_FindPlant
 	public long flags(){return Ability.FLAG_TRACKING;}
 	protected String lookingFor="gem";
 
-	private int[] myMats={EnvResource.MATERIAL_PRECIOUS,
-						  EnvResource.MATERIAL_GLASS};
+	private int[] myMats={RawMaterial.MATERIAL_PRECIOUS,
+						  RawMaterial.MATERIAL_GLASS};
 	protected int[] okMaterials(){	return myMats;}
 	protected int[] okResources(){	return null;}
 }

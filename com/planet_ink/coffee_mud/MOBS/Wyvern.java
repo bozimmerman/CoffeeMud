@@ -50,9 +50,9 @@ public class Wyvern extends StdMOB
 		baseEnvStats().setWeight(2000 + Math.abs(randomizer.nextInt() % 550));
 
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,5 + Math.abs(randomizer.nextInt() % 3));
-		baseCharStats().setStat(CharStats.STRENGTH,18);
-		baseCharStats().setStat(CharStats.DEXTERITY,13);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,5 + Math.abs(randomizer.nextInt() % 3));
+		baseCharStats().setStat(CharStats.STAT_STRENGTH,18);
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,13);
 		baseCharStats().setMyRace(CMClass.getRace("Wyvern"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
@@ -91,7 +91,7 @@ public class Wyvern extends StdMOB
 	public void recoverCharStats()
 	{
 		super.recoverCharStats();
-		charStats().setStat(CharStats.SAVE_POISON,charStats().getStat(CharStats.SAVE_POISON)+100);
+		charStats().setStat(CharStats.STAT_SAVE_POISON,charStats().getStat(CharStats.STAT_SAVE_POISON)+100);
 	}
 	protected boolean sting()
 	{

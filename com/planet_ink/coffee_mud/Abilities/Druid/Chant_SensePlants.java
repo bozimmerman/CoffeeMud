@@ -42,11 +42,11 @@ public class Chant_SensePlants extends Chant
 	protected int canAffectCode(){return CAN_MOBS;}
 	Room lastRoom=null;
 	protected String word(){return "plants";}
-	private int[] myMats={EnvResource.MATERIAL_VEGETATION,
-						  EnvResource.MATERIAL_WOODEN};
+	private int[] myMats={RawMaterial.MATERIAL_VEGETATION,
+						  RawMaterial.MATERIAL_WOODEN};
 	protected int[] okMaterials(){	return myMats;}
-	private int[] myRscs={EnvResource.RESOURCE_COTTON,
-						  EnvResource.RESOURCE_HEMP};
+	private int[] myRscs={RawMaterial.RESOURCE_COTTON,
+						  RawMaterial.RESOURCE_HEMP};
 	protected int[] okResources(){	return myRscs;}
 
 	public void unInvoke()
@@ -65,12 +65,12 @@ public class Chant_SensePlants extends Chant
 		if(R==null) return "";
 		if((okMaterials()!=null)&&(okMaterials().length>0))
 			for(int m=0;m<okMaterials().length;m++)
-				if((R.myResource()&EnvResource.MATERIAL_MASK)==okMaterials()[m])
-					return "You sense "+EnvResource.RESOURCE_DESCS[R.myResource()&EnvResource.RESOURCE_MASK].toLowerCase()+" here.";
+				if((R.myResource()&RawMaterial.MATERIAL_MASK)==okMaterials()[m])
+					return "You sense "+RawMaterial.RESOURCE_DESCS[R.myResource()&RawMaterial.RESOURCE_MASK].toLowerCase()+" here.";
 		if((okResources()!=null)&&(okResources().length>0))
 			for(int m=0;m<okResources().length;m++)
 				if(R.myResource()==okResources()[m])
-					return "You sense "+EnvResource.RESOURCE_DESCS[R.myResource()&EnvResource.RESOURCE_MASK].toLowerCase()+" here.";
+					return "You sense "+RawMaterial.RESOURCE_DESCS[R.myResource()&RawMaterial.RESOURCE_MASK].toLowerCase()+" here.";
 		return "";
 	}
 

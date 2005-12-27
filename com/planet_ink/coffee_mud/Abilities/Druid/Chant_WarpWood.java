@@ -52,7 +52,7 @@ public class Chant_WarpWood extends Chant
 			{
 				Item item=mobTarget.fetchInventory(i);
 				if((item!=null)
-				   &&((item.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
+				   &&((item.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 				   &&(item.subjectToWearAndTear()))
 				{
 					if(item.amWearingAt(Item.IN_INVENTORY))

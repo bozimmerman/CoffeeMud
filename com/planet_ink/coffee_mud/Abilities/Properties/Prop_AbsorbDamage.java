@@ -65,11 +65,11 @@ public class Prop_AbsorbDamage extends Property
 
 			int immune=text.indexOf("+ALL");
 			int x=-1;
-			for(int i=0;i<CharStats.affectTypeMap.length;i++)
-				if((CharStats.affectTypeMap[i]==msg.sourceMinor())
-				&&((msg.tool()==null)||(i!=CharStats.SAVE_MAGIC)))
+			for(int i=0;i<CharStats.STAT_MSG_MAP.length;i++)
+				if((CharStats.STAT_MSG_MAP[i]==msg.sourceMinor())
+				&&((msg.tool()==null)||(i!=CharStats.STAT_SAVE_MAGIC)))
 				{
-					Vector V=CMParms.parse(CharStats.TRAITS[i]);
+					Vector V=CMParms.parse(CharStats.STAT_DESCS[i]);
 					if(((String)V.lastElement()).equals("SAVE"))
 						x=text.indexOf((String)V.firstElement());
 					else
@@ -88,7 +88,7 @@ public class Prop_AbsorbDamage extends Property
 			{
 				x=text.indexOf(Weapon.typeDescription[((Weapon)msg.tool()).weaponType()]);
 				if(x<0) x=(CMLib.flags().isABonusItems(msg.tool()))?text.indexOf("MAGIC"):-1;
-				if(x<0) x=text.indexOf(EnvResource.RESOURCE_DESCS[((Weapon)msg.tool()).material()&EnvResource.RESOURCE_MASK]);
+				if(x<0) x=text.indexOf(RawMaterial.RESOURCE_DESCS[((Weapon)msg.tool()).material()&RawMaterial.RESOURCE_MASK]);
 				if(x>0)
 				{
 					if((text.charAt(x-1)=='-')&&(immune>=0))

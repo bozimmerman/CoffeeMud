@@ -200,7 +200,7 @@ public class Chant_PlantWall extends Chant
 				I.setName("a plant wall");
 				I.setDisplayText("a writhing plant wall has grown here");
 				I.setDescription("The wall is thick and stringy.");
-				I.setMaterial(EnvResource.RESOURCE_GREENS);
+				I.setMaterial(RawMaterial.RESOURCE_GREENS);
 				CMLib.flags().setGettable(I,false);
 				I.recoverEnvStats();
 				mob.location().addItem(I);

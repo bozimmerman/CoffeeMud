@@ -71,8 +71,8 @@ public class Chant_Treemorph extends Chant
 		{
 		    int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(treeForm);
-			if(affected.baseCharStats().getStat(CharStats.AGE)>0)
-				affectableStats.setStat(CharStats.AGE,treeForm.getAgingChart()[oldCat]);
+			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
+				affectableStats.setStat(CharStats.STAT_AGE,treeForm.getAgingChart()[oldCat]);
 		}
 	}
 
@@ -223,7 +223,7 @@ public class Chant_Treemorph extends Chant
 					tree.setName("a oak tree");
 					tree.setDisplayText("an oak tree that reminds you of "+target.name()+" is growing here.");
 					tree.setDescription("It`s a tall oak tree, which seems to remind you of "+target.name()+".");
-					tree.setMaterial(EnvResource.RESOURCE_OAK);
+					tree.setMaterial(RawMaterial.RESOURCE_OAK);
 					tree.baseEnvStats().setWeight(5000);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) into a tree!!");
 					success=maliciousAffect(mob,target,asLevel,mob.envStats().level()*50,-1);

@@ -75,11 +75,11 @@ public class Speculate extends CommonSkill
 				Room room=mob.location();
 				if((success)&&(!aborted)&&(room!=null))
 				{
-					int resource=room.myResource()&EnvResource.RESOURCE_MASK;
-					if((resource>0)&&(resource<EnvResource.RESOURCE_DESCS.length))
+					int resource=room.myResource()&RawMaterial.RESOURCE_MASK;
+					if((resource>0)&&(resource<RawMaterial.RESOURCE_DESCS.length))
 					{
 						StringBuffer str=new StringBuffer("");
-						String resourceStr=EnvResource.RESOURCE_DESCS[resource];
+						String resourceStr=RawMaterial.RESOURCE_DESCS[resource];
 						str.append("You think this spot would be good for "+resourceStr.toLowerCase()+".\n\r");
 						for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 						{
@@ -88,10 +88,10 @@ public class Speculate extends CommonSkill
 							&&(room.getExitInDir(d)!=null)
 							&&(room.getExitInDir(d).isOpen()))
 							{
-								resource=room2.myResource()&EnvResource.RESOURCE_MASK;
-								if((resource>0)&&(resource<EnvResource.RESOURCE_DESCS.length))
+								resource=room2.myResource()&RawMaterial.RESOURCE_MASK;
+								if((resource>0)&&(resource<RawMaterial.RESOURCE_DESCS.length))
 								{
-									resourceStr=EnvResource.RESOURCE_DESCS[resource];
+									resourceStr=RawMaterial.RESOURCE_DESCS[resource];
 									str.append("There looks like "+resourceStr.toLowerCase()+" "+Directions.getInDirectionName(d)+".\n\r");
 								}
 							}

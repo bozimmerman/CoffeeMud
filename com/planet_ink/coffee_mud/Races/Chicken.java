@@ -57,9 +57,9 @@ public class Chicken extends StdRace
 
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,3);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,4);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STAT_STRENGTH,3);
+		affectableStats.setPermaStat(CharStats.STAT_DEXTERITY,4);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public String arriveStr()
 	{
@@ -128,7 +128,7 @@ public class Chicken extends StdRace
                 Item I=CMClass.getItem("GenFoodResource");
                 I.setName("an egg");
                 I.setDisplayText("an egg has been left here.");
-                I.setMaterial(EnvResource.RESOURCE_EGGS);
+                I.setMaterial(RawMaterial.RESOURCE_EGGS);
                 I.setDescription("It looks like a chicken egg!");
                 I.baseEnvStats().setWeight(1);
                 ((MOB)ticking).addInventory((Item)I.copyOf());
@@ -158,15 +158,15 @@ public class Chicken extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" lips",EnvResource.RESOURCE_MEAT));
+				("some "+name().toLowerCase()+" lips",RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
+				("some "+name().toLowerCase()+" feathers",RawMaterial.RESOURCE_FEATHERS));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" meat",EnvResource.RESOURCE_POULTRY));
+				("some "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_POULTRY));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

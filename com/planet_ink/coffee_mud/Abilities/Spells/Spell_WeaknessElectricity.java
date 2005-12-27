@@ -76,7 +76,7 @@ public class Spell_WeaknessElectricity extends Spell
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
-		affectedStats.setStat(CharStats.SAVE_ELECTRIC,affectedStats.getStat(CharStats.SAVE_ELECTRIC)-100);
+		affectedStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectedStats.getStat(CharStats.STAT_SAVE_ELECTRIC)-100);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -89,7 +89,7 @@ public class Spell_WeaknessElectricity extends Spell
 			Room room=M.location();
 			if((room!=null)
 			&&(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_THUNDERSTORM)
-			&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_ELECTRIC)))
+			&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_ELECTRIC)))
 			{
 				int damage=CMLib.dice().roll(1,3,0);
 				CMLib.combat().postDamage(invoker,M,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The electricity in the air <DAMAGE> <T-NAME>!");

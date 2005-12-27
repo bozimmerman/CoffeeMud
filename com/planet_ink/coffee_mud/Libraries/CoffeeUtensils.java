@@ -91,7 +91,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
             return I;
         }
         else
-        if((I instanceof EnvResource)
+        if((I instanceof RawMaterial)
         &&(I.container()==null)
         &&(!CMLib.flags().isOnFire(I))
         &&(!CMLib.flags().enchanted(I)))
@@ -130,23 +130,23 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
     
 	public int getMaterialRelativeInt(String s)
 	{
-		for(int i=0;i<EnvResource.MATERIAL_DESCS.length;i++)
-			if(s.equalsIgnoreCase(EnvResource.MATERIAL_DESCS[i]))
+		for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
+			if(s.equalsIgnoreCase(RawMaterial.MATERIAL_DESCS[i]))
 				return i;
 		return -1;
 	}
     public int getMaterialCode(String s)
     {
-        for(int i=0;i<EnvResource.MATERIAL_DESCS.length;i++)
-            if(s.equalsIgnoreCase(EnvResource.MATERIAL_DESCS[i]))
+        for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
+            if(s.equalsIgnoreCase(RawMaterial.MATERIAL_DESCS[i]))
                 return i<<8;
         return -1;
     }
 	public int getResourceCode(String s)
 	{
-		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
-			if(s.equalsIgnoreCase(EnvResource.RESOURCE_DESCS[i]))
-				return EnvResource.RESOURCE_DATA[i][0];
+		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+			if(s.equalsIgnoreCase(RawMaterial.RESOURCE_DESCS[i]))
+				return RawMaterial.RESOURCE_DATA[i][0];
 		return -1;
 	}
 	
@@ -204,15 +204,15 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 
 	public int getRandomResourceOfMaterial(int material)
 	{
-		material=material&EnvResource.MATERIAL_MASK;
-		if((material<0)||(material>=EnvResource.MATERIAL_DESCS.length))
+		material=material&RawMaterial.MATERIAL_MASK;
+		if((material<0)||(material>=RawMaterial.MATERIAL_DESCS.length))
 			return -1;
-		int d=CMLib.dice().roll(1,EnvResource.RESOURCE_DATA.length,0);
+		int d=CMLib.dice().roll(1,RawMaterial.RESOURCE_DATA.length,0);
 		while(d>0)
-		for(int i=0;i<EnvResource.RESOURCE_DATA.length;i++)
-			if((EnvResource.RESOURCE_DATA[i][0]&EnvResource.MATERIAL_MASK)==material)
+		for(int i=0;i<RawMaterial.RESOURCE_DATA.length;i++)
+			if((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==material)
 				if((--d)==0)
-					return EnvResource.RESOURCE_DATA[i][0];
+					return RawMaterial.RESOURCE_DATA[i][0];
 		return -1;
 	}
 
@@ -255,31 +255,31 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	{
 		if(myResource<0)
 			return null;
-		int material=(myResource&EnvResource.MATERIAL_MASK);
+		int material=(myResource&RawMaterial.MATERIAL_MASK);
         
 		Item I=null;
-		String name=EnvResource.RESOURCE_DESCS[myResource&EnvResource.RESOURCE_MASK].toLowerCase();
+		String name=RawMaterial.RESOURCE_DESCS[myResource&RawMaterial.RESOURCE_MASK].toLowerCase();
 		if(!noAnimals)
 		{
-			if((myResource==EnvResource.RESOURCE_WOOL)
-			||(myResource==EnvResource.RESOURCE_FEATHERS)
-			||(myResource==EnvResource.RESOURCE_SCALES)
-			||(myResource==EnvResource.RESOURCE_HIDE)
-			||(myResource==EnvResource.RESOURCE_FUR))
-			   material=EnvResource.MATERIAL_LEATHER;
-			for(int i=0;i<EnvResource.FISHES.length;i++)
-				if(EnvResource.FISHES[i]==myResource)
-				{ material=EnvResource.MATERIAL_VEGETATION; break;}
-			if((material==EnvResource.MATERIAL_LEATHER)
-			||(material==EnvResource.MATERIAL_FLESH))
+			if((myResource==RawMaterial.RESOURCE_WOOL)
+			||(myResource==RawMaterial.RESOURCE_FEATHERS)
+			||(myResource==RawMaterial.RESOURCE_SCALES)
+			||(myResource==RawMaterial.RESOURCE_HIDE)
+			||(myResource==RawMaterial.RESOURCE_FUR))
+			   material=RawMaterial.MATERIAL_LEATHER;
+			for(int i=0;i<RawMaterial.FISHES.length;i++)
+				if(RawMaterial.FISHES[i]==myResource)
+				{ material=RawMaterial.MATERIAL_VEGETATION; break;}
+			if((material==RawMaterial.MATERIAL_LEATHER)
+			||(material==RawMaterial.MATERIAL_FLESH))
 			{
 				switch(myResource)
 				{
-				case EnvResource.RESOURCE_MUTTON:
-				case EnvResource.RESOURCE_WOOL:
+				case RawMaterial.RESOURCE_MUTTON:
+				case RawMaterial.RESOURCE_WOOL:
 					return CMClass.getMOB("Sheep");
-				case EnvResource.RESOURCE_LEATHER:
-				case EnvResource.RESOURCE_HIDE:
+				case RawMaterial.RESOURCE_LEATHER:
+				case RawMaterial.RESOURCE_HIDE:
 					switch(CMLib.dice().roll(1,10,0))
 					{
 					case 1:
@@ -294,10 +294,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					case 10: return CMClass.getMOB("Buck");
 					}
 					break;
-				case EnvResource.RESOURCE_PORK:
+				case RawMaterial.RESOURCE_PORK:
 					return CMClass.getMOB("Pig");
-				case EnvResource.RESOURCE_FUR:
-				case EnvResource.RESOURCE_MEAT:
+				case RawMaterial.RESOURCE_FUR:
+				case RawMaterial.RESOURCE_MEAT:
 					switch(CMLib.dice().roll(1,10,0))
 					{
 					case 1:
@@ -312,7 +312,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					case 10: return CMClass.getMOB("BlackBear");
 					}
 					break;
-				case EnvResource.RESOURCE_SCALES:
+				case RawMaterial.RESOURCE_SCALES:
 					switch(CMLib.dice().roll(1,10,0))
 					{
 					case 1:
@@ -327,10 +327,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					case 10: return CMClass.getMOB("Python");
 					}
 					break;
-				case EnvResource.RESOURCE_POULTRY:
-				case EnvResource.RESOURCE_EGGS:
+				case RawMaterial.RESOURCE_POULTRY:
+				case RawMaterial.RESOURCE_EGGS:
 					return CMClass.getMOB("Chicken");
-				case EnvResource.RESOURCE_BEEF:
+				case RawMaterial.RESOURCE_BEEF:
 					switch(CMLib.dice().roll(1,5,0))
 					{
 					case 1:
@@ -340,7 +340,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					case 5: return CMClass.getMOB("Bull");
 					}
 					break;
-				case EnvResource.RESOURCE_FEATHERS:
+				case RawMaterial.RESOURCE_FEATHERS:
 					switch(CMLib.dice().roll(1,4,0))
 					{
 					case 1: return CMClass.getMOB("WildEagle");
@@ -354,47 +354,47 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         }
 		switch(material)
 		{
-		case EnvResource.MATERIAL_FLESH:
+		case RawMaterial.MATERIAL_FLESH:
 			I=CMClass.getItem("GenFoodResource");
 			break;
-		case EnvResource.MATERIAL_VEGETATION:
+		case RawMaterial.MATERIAL_VEGETATION:
 		{
-			if(myResource==EnvResource.RESOURCE_VINE)
+			if(myResource==RawMaterial.RESOURCE_VINE)
 				I=CMClass.getItem("GenResource");
 			else
 			{
 				I=CMClass.getItem("GenFoodResource");
-				if(myResource==EnvResource.RESOURCE_HERBS)
+				if(myResource==RawMaterial.RESOURCE_HERBS)
 					((Food)I).setNourishment(1);
 			}
 			break;
 		}
-		case EnvResource.MATERIAL_LIQUID:
-		case EnvResource.MATERIAL_ENERGY:
+		case RawMaterial.MATERIAL_LIQUID:
+		case RawMaterial.MATERIAL_ENERGY:
 		{
 			I=CMClass.getItem("GenLiquidResource");
 			break;
 		}
-		case EnvResource.MATERIAL_LEATHER:
-		case EnvResource.MATERIAL_CLOTH:
-		case EnvResource.MATERIAL_PAPER:
-		case EnvResource.MATERIAL_WOODEN:
-		case EnvResource.MATERIAL_GLASS:
-		case EnvResource.MATERIAL_PLASTIC:
-		case EnvResource.MATERIAL_ROCK:
-		case EnvResource.MATERIAL_PRECIOUS:
+		case RawMaterial.MATERIAL_LEATHER:
+		case RawMaterial.MATERIAL_CLOTH:
+		case RawMaterial.MATERIAL_PAPER:
+		case RawMaterial.MATERIAL_WOODEN:
+		case RawMaterial.MATERIAL_GLASS:
+		case RawMaterial.MATERIAL_PLASTIC:
+		case RawMaterial.MATERIAL_ROCK:
+		case RawMaterial.MATERIAL_PRECIOUS:
 		{
 			I=CMClass.getItem("GenResource");
 			break;
 		}
-		case EnvResource.MATERIAL_METAL:
-		case EnvResource.MATERIAL_MITHRIL:
+		case RawMaterial.MATERIAL_METAL:
+		case RawMaterial.MATERIAL_MITHRIL:
 		{
 			I=CMClass.getItem("GenResource");
-			if((myResource!=EnvResource.RESOURCE_ADAMANTITE)
-			&&(myResource!=EnvResource.RESOURCE_BRASS)
-			&&(myResource!=EnvResource.RESOURCE_BRONZE)
-			&&(myResource!=EnvResource.RESOURCE_STEEL))
+			if((myResource!=RawMaterial.RESOURCE_ADAMANTITE)
+			&&(myResource!=RawMaterial.RESOURCE_BRASS)
+			&&(myResource!=RawMaterial.RESOURCE_BRONZE)
+			&&(myResource!=RawMaterial.RESOURCE_STEEL))
 				name=name+" ore";
 			break;
 		}
@@ -404,10 +404,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			I.setMaterial(myResource);
 			if(I instanceof Drink)
 				((Drink)I).setLiquidType(myResource);
-			I.setBaseValue(EnvResource.RESOURCE_DATA[myResource&EnvResource.RESOURCE_MASK][1]);
+			I.setBaseValue(RawMaterial.RESOURCE_DATA[myResource&RawMaterial.RESOURCE_MASK][1]);
 			I.baseEnvStats().setWeight(1);
-			if(I instanceof EnvResource)
-				((EnvResource)I).setDomainSource(localeCode);
+			if(I instanceof RawMaterial)
+				((RawMaterial)I).setDomainSource(localeCode);
 			if(I instanceof Drink)
 				I.setName("some "+name);
 			else
@@ -436,12 +436,12 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	public Item makeItemResource(int type)
 	{
 		Item I=null;
-		String name=EnvResource.RESOURCE_DESCS[type&EnvResource.RESOURCE_MASK].toLowerCase();
-		if(((type&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_FLESH)
-		||((type&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION))
+		String name=RawMaterial.RESOURCE_DESCS[type&RawMaterial.RESOURCE_MASK].toLowerCase();
+		if(((type&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
+		||((type&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION))
 			I=CMClass.getItem("GenFoodResource");
 		else
-		if((type&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)
+		if((type&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 			I=CMClass.getItem("GenLiquidResource");
 		else
 			I=CMClass.getItem("GenResource");
@@ -452,7 +452,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		I.setDisplayText("some "+name+" sits here.");
 		I.setDescription("");
 		I.setMaterial(type);
-		I.setBaseValue(EnvResource.RESOURCE_DATA[type&EnvResource.RESOURCE_MASK][1]);
+		I.setBaseValue(RawMaterial.RESOURCE_DATA[type&RawMaterial.RESOURCE_MASK][1]);
 		I.baseEnvStats().setWeight(1);
 		I.recoverEnvStats();
 		return I;
@@ -1103,54 +1103,54 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			&&((I instanceof Armor)||(I instanceof Shield)))
 			{
 				boolean ok=true;
-				switch(I.material()&EnvResource.MATERIAL_MASK)
+				switch(I.material()&RawMaterial.MATERIAL_MASK)
 				{
-				case EnvResource.MATERIAL_LEATHER:
+				case RawMaterial.MATERIAL_LEATHER:
 					if((allowedArmorLevel==CharClass.ARMOR_CLOTH)
 					||(allowedArmorLevel==CharClass.ARMOR_VEGAN)
 					||(allowedArmorLevel==CharClass.ARMOR_OREONLY)
 					||(allowedArmorLevel==CharClass.ARMOR_METALONLY))
 						ok=false;
 					break;
-				case EnvResource.MATERIAL_METAL:
-				case EnvResource.MATERIAL_MITHRIL:
+				case RawMaterial.MATERIAL_METAL:
+				case RawMaterial.MATERIAL_MITHRIL:
 					if((allowedArmorLevel==CharClass.ARMOR_CLOTH)
 					||(allowedArmorLevel==CharClass.ARMOR_LEATHER)
 					||(allowedArmorLevel==CharClass.ARMOR_NONMETAL))
 						ok=false;
 					break;
-				case EnvResource.MATERIAL_ENERGY:
+				case RawMaterial.MATERIAL_ENERGY:
 					if((allowedArmorLevel==CharClass.ARMOR_METALONLY)
 					||(allowedArmorLevel==CharClass.ARMOR_OREONLY)
 					||(allowedArmorLevel==CharClass.ARMOR_VEGAN))
 					   return false;
 					break;
-				case EnvResource.MATERIAL_CLOTH:
+				case RawMaterial.MATERIAL_CLOTH:
 					if((allowedArmorLevel==CharClass.ARMOR_METALONLY)
 					||(allowedArmorLevel==CharClass.ARMOR_OREONLY)
 					||((allowedArmorLevel==CharClass.ARMOR_VEGAN)
-					   &&((I.material()==EnvResource.RESOURCE_HIDE)
-						  ||(I.material()==EnvResource.RESOURCE_FUR)
-						  ||(I.material()==EnvResource.RESOURCE_FEATHERS)
-						  ||(I.material()==EnvResource.RESOURCE_WOOL))))
+					   &&((I.material()==RawMaterial.RESOURCE_HIDE)
+						  ||(I.material()==RawMaterial.RESOURCE_FUR)
+						  ||(I.material()==RawMaterial.RESOURCE_FEATHERS)
+						  ||(I.material()==RawMaterial.RESOURCE_WOOL))))
 						ok=false;
 					break;
-				case EnvResource.MATERIAL_PLASTIC:
-				case EnvResource.MATERIAL_WOODEN:
+				case RawMaterial.MATERIAL_PLASTIC:
+				case RawMaterial.MATERIAL_WOODEN:
 					if((allowedArmorLevel==CharClass.ARMOR_CLOTH)
 					||(allowedArmorLevel==CharClass.ARMOR_OREONLY)
 					||(allowedArmorLevel==CharClass.ARMOR_LEATHER)
 					||(allowedArmorLevel==CharClass.ARMOR_METALONLY))
 						ok=false;
 					break;
-				case EnvResource.MATERIAL_ROCK:
-				case EnvResource.MATERIAL_GLASS:
+				case RawMaterial.MATERIAL_ROCK:
+				case RawMaterial.MATERIAL_GLASS:
 					if((allowedArmorLevel==CharClass.ARMOR_CLOTH)
 					||(allowedArmorLevel==CharClass.ARMOR_LEATHER)
 					||(allowedArmorLevel==CharClass.ARMOR_METALONLY))
 						ok=false;
 					break;
-				case EnvResource.MATERIAL_FLESH:
+				case RawMaterial.MATERIAL_FLESH:
 					if((allowedArmorLevel==CharClass.ARMOR_METALONLY)
 					||(allowedArmorLevel==CharClass.ARMOR_VEGAN)
 					||(allowedArmorLevel==CharClass.ARMOR_CLOTH)

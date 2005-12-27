@@ -57,7 +57,7 @@ public class Chant_CaveFishing extends Chant
 				Item I=target.fetchItem(i);
 				if((I instanceof Drink)
 				&&(I.container()==null)
-				&&(((Drink)I).liquidType()==EnvResource.RESOURCE_FRESHWATER)
+				&&(((Drink)I).liquidType()==RawMaterial.RESOURCE_FRESHWATER)
 				&&(!CMLib.flags().isGettable(I)))
 					waterSrc=I;
 			}
@@ -96,7 +96,7 @@ public class Chant_CaveFishing extends Chant
 				if(msg.value()<=0)
 				{
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Fish start swimming around in "+target.name()+"!");
-					target.setResource(EnvResource.FISHES[CMLib.dice().roll(1,EnvResource.FISHES.length,-1)]);
+					target.setResource(RawMaterial.FISHES[CMLib.dice().roll(1,RawMaterial.FISHES.length,-1)]);
 				}
 			}
 		}

@@ -70,7 +70,7 @@ public class Chant_VineMass extends Chant_SummonVine
 			newMOB.baseEnvStats().setDamage(6+(5*(level/5)));
 			newMOB.baseEnvStats().setAttackAdjustment(10);
 			newMOB.baseEnvStats().setArmor(100-(30+(level/2)));
-			newMOB.baseCharStats().setStat(CharStats.GENDER,'N');
+			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 			newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 			newMOB.setMiscText(newMOB.text());
 			newMOB.recoverCharStats();

@@ -43,10 +43,10 @@ public class Chant_Yearning extends Chant
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null) return;
-		int wis=affectableStats.getStat(CharStats.WISDOM);
+		int wis=affectableStats.getStat(CharStats.STAT_WISDOM);
 		wis=wis-5;
 		if(wis<1) wis=1;
-		affectableStats.setStat(CharStats.WISDOM,wis);
+		affectableStats.setStat(CharStats.STAT_WISDOM,wis);
 	}
 
 	public void unInvoke()

@@ -45,11 +45,11 @@ public class Road extends StdRoom
 	}
 
 	public static final Integer[] resourceList={
-		new Integer(EnvResource.RESOURCE_STONE),
-		new Integer(EnvResource.RESOURCE_FEATHERS),
-		new Integer(EnvResource.RESOURCE_SCALES),
-		new Integer(EnvResource.RESOURCE_SAND),
-		new Integer(EnvResource.RESOURCE_CLAY),
+		new Integer(RawMaterial.RESOURCE_STONE),
+		new Integer(RawMaterial.RESOURCE_FEATHERS),
+		new Integer(RawMaterial.RESOURCE_SCALES),
+		new Integer(RawMaterial.RESOURCE_SAND),
+		new Integer(RawMaterial.RESOURCE_CLAY),
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
 	public Vector resourceChoices(){return Road.roomResources;}

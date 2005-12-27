@@ -61,13 +61,13 @@ public class Chant_GrowFood extends Chant
 		Vector choices=new Vector();
 		String s=CMParms.combine(commands,0);
 
-		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 		{
-			int code=EnvResource.RESOURCE_DATA[i][0];
-			if(((code&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION))
+			int code=RawMaterial.RESOURCE_DATA[i][0];
+			if(((code&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION))
 			{
 				choices.addElement(new Integer(code));
-				if((s.length()>0)&&(CMLib.english().containsString(EnvResource.RESOURCE_DESCS[i],s)))
+				if((s.length()>0)&&(CMLib.english().containsString(RawMaterial.RESOURCE_DESCS[i],s)))
 					material=code;
 			}
 		}
@@ -94,11 +94,11 @@ public class Chant_GrowFood extends Chant
 			{
 				mob.location().send(mob,msg);
 				Food newItem=(Food)CMClass.getStdItem("GenFoodResource");
-				if(material==EnvResource.RESOURCE_HERBS)
+				if(material==RawMaterial.RESOURCE_HERBS)
 					newItem.setNourishment(1);
 				else
 					newItem.setNourishment(150);
-				String name=EnvResource.RESOURCE_DESCS[material&EnvResource.RESOURCE_MASK].toLowerCase();
+				String name=RawMaterial.RESOURCE_DESCS[material&RawMaterial.RESOURCE_MASK].toLowerCase();
 				newItem.setMaterial(material);
 				newItem.setBaseValue(1);
 				newItem.baseEnvStats().setWeight(1);

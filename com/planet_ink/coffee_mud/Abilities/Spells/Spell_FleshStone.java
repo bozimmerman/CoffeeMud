@@ -220,7 +220,7 @@ public class Spell_FleshStone extends Spell
 					statue.setName("a statue of "+name);
 					statue.setDisplayText("a statue of "+name+" stands here.");
 					statue.setDescription("It`s a hard granite statue, which looks exactly like "+name+".");
-					statue.setMaterial(EnvResource.RESOURCE_GRANITE);
+					statue.setMaterial(RawMaterial.RESOURCE_GRANITE);
 					statue.baseEnvStats().setWeight(2000);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) into stone!!");
 					success=maliciousAffect(mob,target,asLevel,mob.envStats().level()*25,-1);

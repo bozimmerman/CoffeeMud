@@ -301,7 +301,7 @@ public class ClanCrafting extends CraftingSkill
 		building.baseEnvStats().setWeight(amt1+amt2);
 		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 		building.setMaterial(data[0][FOUND_CODE]);
-		int hardness=EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][3]-6;
+		int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][3]-6;
 		building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
 		if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
 		int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
@@ -316,15 +316,15 @@ public class ClanCrafting extends CraftingSkill
 			((ClanItem)building).setCIType(CMath.s_int((String)foundRecipe.elementAt(RCP_CITYPE)));
 			if(((ClanItem)building).ciType()==ClanItem.CI_PROPAGANDA)
 			{
-				building.setMaterial(EnvResource.RESOURCE_PAPER);
+				building.setMaterial(RawMaterial.RESOURCE_PAPER);
 				CMLib.flags().setReadable(building,true);
 				building.setReadableText("Read the glorious propaganda of "+C.typeName()+" "+C.name().toLowerCase()+"! Join and fight for us today!");
 			}
 		}
 
 		if((CMLib.flags().isReadable(building))
-		&&((building.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN))
-			building.setMaterial(EnvResource.RESOURCE_PAPER);
+		&&((building.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN))
+			building.setMaterial(RawMaterial.RESOURCE_PAPER);
 
 		addSpells(building,spell);
 		if(building instanceof Armor)

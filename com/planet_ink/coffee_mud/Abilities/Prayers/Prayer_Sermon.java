@@ -123,7 +123,7 @@ public class Prayer_Sermon extends Prayer
 		{
 			MOB M=mob.location().fetchInhabitant(i);
 			if((M!=null)&&(CMLib.flags().canBeSeenBy(M,mob))&&(M!=mob)
-			&&(M.charStats().getStat(CharStats.INTELLIGENCE)>4))
+			&&(M.charStats().getStat(CharStats.STAT_INTELLIGENCE)>4))
 				h.put(M,M);
 		}
 		if((h==null)||(h.size()==0))

@@ -48,7 +48,7 @@ public class StdClanCommonItem extends StdClanItem
 		secretIdentity="";
 		baseGoldValue=1;
 		setCIType(ClanItem.CI_GATHERITEM);
-		material=EnvResource.RESOURCE_OAK;
+		material=RawMaterial.RESOURCE_OAK;
 		recoverEnvStats();
 	}
 
@@ -71,9 +71,9 @@ public class StdClanCommonItem extends StdClanItem
             Item I2=R.fetchItem(i);
             if((I2!=null)
             &&(I2.container()==null)
-            &&(I2 instanceof EnvResource)
-            &&(((I2.material()&EnvResource.RESOURCE_MASK)==material)
-                ||(((I2.material())&EnvResource.MATERIAL_MASK)==material))
+            &&(I2 instanceof RawMaterial)
+            &&(((I2.material()&RawMaterial.RESOURCE_MASK)==material)
+                ||(((I2.material())&RawMaterial.MATERIAL_MASK)==material))
             &&(!CMLib.flags().enchanted(I2)))
                 here.addElement(I2);
         }
@@ -88,9 +88,9 @@ public class StdClanCommonItem extends StdClanItem
             Item I2=M.fetchInventory(i);
             if((I2!=null)
             &&(I2.container()==null)
-            &&(I2 instanceof EnvResource)
-            &&(((I2.material()&EnvResource.RESOURCE_MASK)==material)
-                ||(((I2.material())&EnvResource.MATERIAL_MASK)==material))
+            &&(I2 instanceof RawMaterial)
+            &&(((I2.material()&RawMaterial.RESOURCE_MASK)==material)
+                ||(((I2.material())&RawMaterial.MATERIAL_MASK)==material))
             &&(!CMLib.flags().enchanted(I2)))
                 here.addElement(I2);
         }
@@ -128,32 +128,32 @@ public class StdClanCommonItem extends StdClanItem
     {
         req=req.toUpperCase();
         Vector V=new Vector();
-        for(int i=0;i<EnvResource.MATERIAL_DESCS.length;i++)
+        for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
         {
-            int x=req.indexOf(EnvResource.MATERIAL_DESCS[i]);
+            int x=req.indexOf(RawMaterial.MATERIAL_DESCS[i]);
             if(x<0) continue;
             if((x>0)&&Character.isLetter(req.charAt(x-1)))
                 continue;
-            if(((x+EnvResource.MATERIAL_DESCS[i].length())<req.length())
-            &&Character.isLetter(req.charAt((x+EnvResource.MATERIAL_DESCS[i].length()))))
+            if(((x+RawMaterial.MATERIAL_DESCS[i].length())<req.length())
+            &&Character.isLetter(req.charAt((x+RawMaterial.MATERIAL_DESCS[i].length()))))
                 continue;
             V.addElement(new Integer(i<<8));
         }
-        for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+        for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
         {
-            int x=req.indexOf(EnvResource.RESOURCE_DESCS[i]);
+            int x=req.indexOf(RawMaterial.RESOURCE_DESCS[i]);
             if(x<0) continue;
             if((x>0)&&Character.isLetter(req.charAt(x-1)))
                 continue;
-            if(((x+EnvResource.RESOURCE_DESCS[i].length())<req.length())
-            &&Character.isLetter(req.charAt((x+EnvResource.RESOURCE_DESCS[i].length()))))
+            if(((x+RawMaterial.RESOURCE_DESCS[i].length())<req.length())
+            &&Character.isLetter(req.charAt((x+RawMaterial.RESOURCE_DESCS[i].length()))))
                 continue;
             V.addElement(new Integer(i));
         }
         if((M.location()!=null)
-        &&(V.contains(new Integer(EnvResource.MATERIAL_METAL)))
-        &&(resourceHere(M.location(),EnvResource.MATERIAL_WOODEN).size()==0))
-            V.addElement(new Integer(EnvResource.MATERIAL_WOODEN));
+        &&(V.contains(new Integer(RawMaterial.MATERIAL_METAL)))
+        &&(resourceHere(M.location(),RawMaterial.MATERIAL_WOODEN).size()==0))
+            V.addElement(new Integer(RawMaterial.MATERIAL_WOODEN));
         return V;
     }
     
@@ -224,9 +224,9 @@ public class StdClanCommonItem extends StdClanItem
                                         M2=(MOB)DV.elementAt(rand,1);
                                     }catch(Exception e){continue;}
                                     if((needs!=null)&&(M2!=null)
-                                    &&(needs.contains(new Integer(EnvResource.MATERIAL_METAL)))
+                                    &&(needs.contains(new Integer(RawMaterial.MATERIAL_METAL)))
                                     &&(!fireHere(M2.location()))
-                                    &&(resourceHere(M2.location(),EnvResource.MATERIAL_WOODEN).size()>0))
+                                    &&(resourceHere(M2.location(),RawMaterial.MATERIAL_WOODEN).size()>0))
                                     {
                                         if(M.location()==M2.location())
                                         {
@@ -322,7 +322,7 @@ public class StdClanCommonItem extends StdClanItem
 							I=M.fetchInventory(CMLib.dice().roll(1,M.inventorySize(),-1));
 							if((I==null)
                             ||(I==this)
-                            ||(I instanceof EnvResource)
+                            ||(I instanceof RawMaterial)
                             ||(!I.amWearingAt(Item.IN_INVENTORY)))
 								I=null;
 						}

@@ -48,7 +48,7 @@ public class GenBoffWeapon extends StdBoffWeapon
 		properWornBitmap=Item.WORN_WIELD|Item.WORN_HELD;
 		wornLogicalAnd=false;
 		weaponType=Weapon.TYPE_BASHING;
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 		baseEnvStats().setAttackAdjustment(0);
 		baseEnvStats().setDamage(5);
 		baseEnvStats().setLevel(5);

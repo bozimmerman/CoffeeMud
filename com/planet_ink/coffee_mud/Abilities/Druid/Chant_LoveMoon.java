@@ -79,9 +79,9 @@ public class Chant_LoveMoon extends Chant
 					if((M!=null)
 					&&(M!=mob)
 					&&(CMLib.flags().canBeSeenBy(M,mob))
-					&&(M.charStats().getStat(CharStats.GENDER)!=mob.charStats().getStat(CharStats.GENDER))
-					&&(M.charStats().getStat(CharStats.GENDER)!='N')
-					&&(M.charStats().getSave(CharStats.CHARISMA)>14))
+					&&(M.charStats().getStat(CharStats.STAT_GENDER)!=mob.charStats().getStat(CharStats.STAT_GENDER))
+					&&(M.charStats().getStat(CharStats.STAT_GENDER)!='N')
+					&&(M.charStats().getSave(CharStats.STAT_CHARISMA)>14))
 						choices.addElement(M);
 				}
 				if(choices.size()>0)
@@ -142,7 +142,7 @@ public class Chant_LoveMoon extends Chant
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)+6);
+		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+6);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

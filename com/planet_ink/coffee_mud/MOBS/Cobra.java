@@ -47,7 +47,7 @@ public class Cobra extends StdMOB
 
 		baseEnvStats().setDamage(4);
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,1);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(1);

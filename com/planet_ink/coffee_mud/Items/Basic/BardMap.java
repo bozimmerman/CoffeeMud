@@ -43,7 +43,7 @@ public class BardMap extends GenMap
 		setDescription("");
 		baseGoldValue=5;
 		baseEnvStats().setLevel(3);
-		setMaterial(EnvResource.RESOURCE_PAPER);
+		setMaterial(RawMaterial.RESOURCE_PAPER);
 		recoverEnvStats();
 	}
 

@@ -46,7 +46,7 @@ public class Whip extends StdWeapon
 		baseEnvStats().setDamage(2);
 		baseGoldValue=1;
 		recoverEnvStats();
-		material=EnvResource.RESOURCE_LEATHER;
+		material=RawMaterial.RESOURCE_LEATHER;
 		weaponType=Weapon.TYPE_SLASHING;//?????????
 		weaponClassification=Weapon.CLASS_FLAILED;
 	}

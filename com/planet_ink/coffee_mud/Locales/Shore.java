@@ -46,8 +46,8 @@ public class Shore extends StdRoom
 	}
 
 	public static final Integer[] resourceList={
-		new Integer(EnvResource.RESOURCE_FISH),
-		new Integer(EnvResource.RESOURCE_SAND)
+		new Integer(RawMaterial.RESOURCE_FISH),
+		new Integer(RawMaterial.RESOURCE_SAND)
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
 	public Vector resourceChoices(){return Shore.roomResources;}

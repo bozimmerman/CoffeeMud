@@ -57,14 +57,14 @@ public class Chant_GrowForest extends Chant
 		Vector choices=new Vector();
 		String s=CMParms.combine(commands,0);
 
-		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 		{
-			int code=EnvResource.RESOURCE_DATA[i][0];
-			if(((code&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
-			&&(code!=EnvResource.RESOURCE_WOOD))
+			int code=RawMaterial.RESOURCE_DATA[i][0];
+			if(((code&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
+			&&(code!=RawMaterial.RESOURCE_WOOD))
 			{
 				choices.addElement(new Integer(code));
-				if((s.length()>0)&&(CMLib.english().containsString(EnvResource.RESOURCE_DESCS[i],s)))
+				if((s.length()>0)&&(CMLib.english().containsString(RawMaterial.RESOURCE_DESCS[i],s)))
 					material=code;
 			}
 		}
@@ -79,7 +79,7 @@ public class Chant_GrowForest extends Chant
 
 		if(material<0) return false;
 
-		String shortName=EnvResource.RESOURCE_DESCS[material&EnvResource.RESOURCE_MASK];
+		String shortName=RawMaterial.RESOURCE_DESCS[material&RawMaterial.RESOURCE_MASK];
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

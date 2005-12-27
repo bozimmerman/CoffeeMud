@@ -64,7 +64,7 @@ public class Fighter_ReturnProjectile extends FighterSkill
 		&&(!(msg.tool() instanceof Electronics))
 		&&(mob.rangeToTarget()>0)
 		&&(mob.charStats().getBodyPart(Race.BODY_HAND)>1)
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,-85+mob.charStats().getStat(CharStats.DEXTERITY),false))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,-85+mob.charStats().getStat(CharStats.STAT_DEXTERITY),false))
 		&&(mob.freeWearPositions(Item.WORN_HELD)>0))
 		{
 			Item w=(Item)msg.tool();

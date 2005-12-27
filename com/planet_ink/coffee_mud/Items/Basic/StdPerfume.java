@@ -43,12 +43,12 @@ public class StdPerfume extends StdDrink implements Perfume
 		setName("a bottle of perfume");
 		setDisplayText("a bottle of perfume sits here.");
 
-		material=EnvResource.RESOURCE_GLASS;
+		material=RawMaterial.RESOURCE_GLASS;
 		amountOfThirstQuenched=1;
 		amountOfLiquidHeld=10;
 		amountOfLiquidRemaining=10;
 		disappearsAfterDrinking=true;
-		liquidType=EnvResource.RESOURCE_PERFUME;
+		liquidType=RawMaterial.RESOURCE_PERFUME;
 		capacity=0;
 		baseGoldValue=100;
 		setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_ABOUT_BODY|Item.WORN_FLOATING_NEARBY|Item.WORN_HELD|Item.WORN_ARMS|Item.WORN_BACK|Item.WORN_EARS|Item.WORN_EYES|Item.WORN_FEET|Item.WORN_HANDS|Item.WORN_HEAD|Item.WORN_LEFT_FINGER|Item.WORN_RIGHT_FINGER|Item.WORN_LEGS|Item.WORN_LEFT_WRIST|Item.WORN_MOUTH|Item.WORN_NECK|Item.WORN_RIGHT_WRIST|Item.WORN_TORSO|Item.WORN_WAIST);

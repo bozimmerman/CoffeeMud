@@ -172,7 +172,7 @@ public class Spell_WallOfIce extends Spell
 				I.setName("a wall of ice");
 				I.setDisplayText("a mighty wall of ice has been erected here");
 				I.setDescription("The ice is crystal clear.");
-				I.setMaterial(EnvResource.RESOURCE_GLASS);
+				I.setMaterial(RawMaterial.RESOURCE_GLASS);
 				CMLib.flags().setGettable(I,false);
 				I.recoverEnvStats();
 				mob.location().addItem(I);

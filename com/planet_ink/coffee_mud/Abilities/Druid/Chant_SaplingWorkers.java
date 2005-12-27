@@ -102,14 +102,14 @@ public class Chant_SaplingWorkers extends Chant
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
-		&&((mob.location().myResource()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
+		&&((mob.location().myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE))
 		{
 			mob.tell("This magic will not work here.");
 			return false;
 		}
-		int material=EnvResource.RESOURCE_OAK;
-		if((mob.location().myResource()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
+		int material=RawMaterial.RESOURCE_OAK;
+		if((mob.location().myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 			material=mob.location().myResource();
 		else
 		{
@@ -118,7 +118,7 @@ public class Chant_SaplingWorkers extends Chant
 			if(V!=null)
 			for(int v=0;v<V.size();v++)
 			{
-				if((((Integer)V.elementAt(v)).intValue()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
+				if((((Integer)V.elementAt(v)).intValue()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 					V2.addElement(V.elementAt(v));
 			}
 			if(V2.size()>0)
@@ -157,7 +157,7 @@ public class Chant_SaplingWorkers extends Chant
 		if(level<1) level=1;
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("TreeGolem"));
-		String resourceName=EnvResource.RESOURCE_DESCS[material&EnvResource.RESOURCE_MASK].toLowerCase();
+		String resourceName=RawMaterial.RESOURCE_DESCS[material&RawMaterial.RESOURCE_MASK].toLowerCase();
 		String name=resourceName+" sapling";
 		name=CMStrings.startWithAorAn(name).toLowerCase();
 		newMOB.setName(name);
@@ -204,7 +204,7 @@ public class Chant_SaplingWorkers extends Chant
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
 		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
-		newMOB.baseCharStats().setStat(CharStats.GENDER,'N');
+		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setLocation(caster.location());

@@ -45,22 +45,22 @@ public class Hills extends StdRoom
 	}
 
 	public static final Integer[] resourceList={
-		new Integer(EnvResource.RESOURCE_GRAPES),
-		new Integer(EnvResource.RESOURCE_BERRIES),
-		new Integer(EnvResource.RESOURCE_BLUEBERRIES),
-		new Integer(EnvResource.RESOURCE_BLACKBERRIES),
-		new Integer(EnvResource.RESOURCE_STRAWBERRIES),
-		new Integer(EnvResource.RESOURCE_RASPBERRIES),
-		new Integer(EnvResource.RESOURCE_BOYSENBERRIES),
-		new Integer(EnvResource.RESOURCE_GREENS),
-		new Integer(EnvResource.RESOURCE_OLIVES),
-		new Integer(EnvResource.RESOURCE_RICE),
-		new Integer(EnvResource.RESOURCE_LEATHER),
-		new Integer(EnvResource.RESOURCE_FEATHERS),
-		new Integer(EnvResource.RESOURCE_MESQUITE),
-		new Integer(EnvResource.RESOURCE_EGGS),
-		new Integer(EnvResource.RESOURCE_HERBS),
-		new Integer(EnvResource.RESOURCE_POTATOES)
+		new Integer(RawMaterial.RESOURCE_GRAPES),
+		new Integer(RawMaterial.RESOURCE_BERRIES),
+		new Integer(RawMaterial.RESOURCE_BLUEBERRIES),
+		new Integer(RawMaterial.RESOURCE_BLACKBERRIES),
+		new Integer(RawMaterial.RESOURCE_STRAWBERRIES),
+		new Integer(RawMaterial.RESOURCE_RASPBERRIES),
+		new Integer(RawMaterial.RESOURCE_BOYSENBERRIES),
+		new Integer(RawMaterial.RESOURCE_GREENS),
+		new Integer(RawMaterial.RESOURCE_OLIVES),
+		new Integer(RawMaterial.RESOURCE_RICE),
+		new Integer(RawMaterial.RESOURCE_LEATHER),
+		new Integer(RawMaterial.RESOURCE_FEATHERS),
+		new Integer(RawMaterial.RESOURCE_MESQUITE),
+		new Integer(RawMaterial.RESOURCE_EGGS),
+		new Integer(RawMaterial.RESOURCE_HERBS),
+		new Integer(RawMaterial.RESOURCE_POTATOES)
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
 	public Vector resourceChoices(){return Hills.roomResources;}

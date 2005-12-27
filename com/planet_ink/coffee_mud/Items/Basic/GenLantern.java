@@ -48,7 +48,7 @@ public class GenLantern extends GenLightSource
 		destroyedWhenBurnedOut=false;
 		goesOutInTheRain=false;
 		baseGoldValue=60;
-		setMaterial(EnvResource.RESOURCE_STEEL);
+		setMaterial(RawMaterial.RESOURCE_STEEL);
 		recoverEnvStats();
 	}
 
@@ -66,7 +66,7 @@ public class GenLantern extends GenLightSource
 					&&(msg.tool()!=msg.target())
 					&&(msg.tool() instanceof Drink))
 					{
-						if(((Drink)msg.tool()).liquidType()!=EnvResource.RESOURCE_LAMPOIL)
+						if(((Drink)msg.tool()).liquidType()!=RawMaterial.RESOURCE_LAMPOIL)
 						{
 							mob.tell("You can only fill "+name()+" with lamp oil!");
 							return false;

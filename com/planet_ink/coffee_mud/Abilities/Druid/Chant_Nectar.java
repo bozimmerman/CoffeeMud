@@ -83,7 +83,7 @@ public class Chant_Nectar extends Chant
 		if(drank==null) drank=new Vector();
 		if(drank.contains(M)) return true;
 		drank.addElement(M);
-		if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.SAVE_MIND))
+		if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_MIND))
 		{
 			Vector commands=new Vector();
 			commands.addElement("DRINK");
@@ -103,11 +103,11 @@ public class Chant_Nectar extends Chant
 			case CMMsg.TYP_DRINK:
 				{
 					MOB M=msg.source();
-					int hp=CMLib.dice().roll(1,M.charStats().getStat(CharStats.CONSTITUTION),0);
+					int hp=CMLib.dice().roll(1,M.charStats().getStat(CharStats.STAT_CONSTITUTION),0);
 					CMLib.combat().postHealing(M,M,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,hp,null);
-					int mana=CMLib.dice().roll(1,((M.charStats().getStat(CharStats.WISDOM)+M.charStats().getStat(CharStats.INTELLIGENCE))/2),0);
+					int mana=CMLib.dice().roll(1,((M.charStats().getStat(CharStats.STAT_WISDOM)+M.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2),0);
 					M.curState().adjMana(mana,M.maxState());
-					int move=CMLib.dice().roll(1,((M.charStats().getStat(CharStats.WISDOM)+M.charStats().getStat(CharStats.INTELLIGENCE))/2),0);
+					int move=CMLib.dice().roll(1,((M.charStats().getStat(CharStats.STAT_WISDOM)+M.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2),0);
 					M.curState().adjMovement(move,M.maxState());
 				}
 				break;

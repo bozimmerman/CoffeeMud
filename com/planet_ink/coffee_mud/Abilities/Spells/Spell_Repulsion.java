@@ -60,7 +60,7 @@ public class Spell_Repulsion extends Spell
 			{
 				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against the repulsion field."))
 				{
-					amountRemaining-=mob.charStats().getStat(CharStats.STRENGTH);
+					amountRemaining-=mob.charStats().getStat(CharStats.STAT_STRENGTH);
 					if(amountRemaining<0)
 						unInvoke();
 				}

@@ -80,90 +80,90 @@ public class Gem extends StdItem
 				setDisplayText("a piece of azurite lies here.");
 				setDescription("A piece of blue stone.");
 				baseGoldValue=20;
-				material=EnvResource.RESOURCE_GEM;
+				material=RawMaterial.RESOURCE_GEM;
 				break;
 			case BLOODSTONE:
 				setName("a bloodstone");
 				setDisplayText("a bloodstone lies here.");
 				setDescription("It dark grey stone with flecks of red.");
 				baseGoldValue=100;
-				material=EnvResource.RESOURCE_GEM;
+				material=RawMaterial.RESOURCE_GEM;
 				break;
 			case JADE:
 				setName("a jade stone");
 				setDisplayText("a jade stone lies here.");
 				setDescription("A beutiful green stone.");
 				baseGoldValue=200;
-				material=EnvResource.RESOURCE_JADE;
+				material=RawMaterial.RESOURCE_JADE;
 				break;
 			case DIAMOND:
 				setName("a diamond");
 				setDisplayText("a diamond lies here.");
 				setDescription("Finely cut and sparkling.");
 				baseGoldValue=5000;
-				material=EnvResource.RESOURCE_DIAMOND;
+				material=RawMaterial.RESOURCE_DIAMOND;
 				break;
 			case QUARTZ:
 				setName("a piece of quartz");
 				setDisplayText("a piece of quartz lies here.");
 				setDescription("It is a glasslike stone, gorgeous to the eye.");
 				baseGoldValue=30;
-				material=EnvResource.RESOURCE_CRYSTAL;
+				material=RawMaterial.RESOURCE_CRYSTAL;
 				break;
 			case RUBY:
 				setName("a ruby");
 				setDisplayText("a ruby lies here.");
 				setDescription("A beautiful red ruby with a smooth surface.");
 				baseGoldValue=5000;
-				material=EnvResource.RESOURCE_GEM;
+				material=RawMaterial.RESOURCE_GEM;
 				break;
 			case OPAL:
 				setName("an opal");
 				setDisplayText("an opal lies here.");
 				setDescription("Pale blue and lovely.");
 				baseGoldValue=2000;
-				material=EnvResource.RESOURCE_GEM;
+				material=RawMaterial.RESOURCE_GEM;
 				break;
 			case TOPAZ:
 				setName("a piece of topaz");
 				setDisplayText("a piece of topaz lies here.");
 				setDescription("A yellow stone.");
 				baseGoldValue=500;
-				material=EnvResource.RESOURCE_GEM;
+				material=RawMaterial.RESOURCE_GEM;
 				break;
 			case SAPPHIRE:
 				setName("a sapphire");
 				setDisplayText("a sapphire lies here.");
 				setDescription("Clear, blue, and very fancy.");
 				baseGoldValue=1000;
-				material=EnvResource.RESOURCE_GEM;
+				material=RawMaterial.RESOURCE_GEM;
 				break;
 			case ONYX:
 				setName("an onyx stone");
 				setDisplayText("a onyx stone lies here.");
 				setDescription("A beautiful rich black stone.");
 				baseGoldValue=100;
-				material=EnvResource.RESOURCE_GEM;
+				material=RawMaterial.RESOURCE_GEM;
 				break;
 			case PEARL:
 				setName("a pearl");
 				setDisplayText("a pearl lies here.");
 				setDescription("Perfectly round, pure and white.");
 				baseGoldValue=300;
-				material=EnvResource.RESOURCE_PEARL;
+				material=RawMaterial.RESOURCE_PEARL;
 				break;
 			case EMERALD:
 				setName("an emerald");
 				setDisplayText("an emerald lies here.");
 				setDescription("A beautiful clear green stone.");
 				baseGoldValue=5000;
-				material=EnvResource.RESOURCE_GEM;
+				material=RawMaterial.RESOURCE_GEM;
 				break;
 			default:
 				setName("a hunk of metal");
 				setDisplayText("a hunk of steel ring is on the ground.");
 				setDescription("It is a simple steel ring.");
-				material=EnvResource.RESOURCE_STEEL;
+				material=RawMaterial.RESOURCE_STEEL;
 				break;
 		}
 	}

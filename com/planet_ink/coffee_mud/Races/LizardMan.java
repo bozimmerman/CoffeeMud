@@ -59,7 +59,7 @@ public class LizardMan extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,6);
+		affectableStats.setPermaStat(CharStats.STAT_INTELLIGENCE,6);
 	}
 	public String arriveStr()
 	{
@@ -122,11 +122,11 @@ public class LizardMan extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" tongue",EnvResource.RESOURCE_MEAT));
+				("a "+name().toLowerCase()+" tongue",RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" hide",EnvResource.RESOURCE_HIDE));
+				("a "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

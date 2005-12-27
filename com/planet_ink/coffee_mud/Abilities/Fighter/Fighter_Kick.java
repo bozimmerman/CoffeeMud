@@ -66,7 +66,7 @@ public class Fighter_Kick extends FighterSkill
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,(mob.charStats().getStat(CharStats.STRENGTH)-target.charStats().getStat(CharStats.STRENGTH))*2,auto);
+		boolean success=profficiencyCheck(mob,(mob.charStats().getStat(CharStats.STAT_STRENGTH)-target.charStats().getStat(CharStats.STAT_STRENGTH))*2,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

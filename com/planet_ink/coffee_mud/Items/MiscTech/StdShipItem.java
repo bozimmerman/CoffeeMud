@@ -41,7 +41,7 @@ public class StdShipItem extends StdElecItem implements Electronics
 		setDisplayText("a small piece of ship electronics sits here.");
 		setDescription("You can't tell what it is by looking at it.");
 
-		material=EnvResource.RESOURCE_STEEL;
+		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=0;
 		recoverEnvStats();
 	}

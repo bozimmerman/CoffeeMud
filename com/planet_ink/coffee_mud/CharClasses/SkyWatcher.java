@@ -38,7 +38,7 @@ public class SkyWatcher extends StdCharClass
 	public String baseClass(){return "Druid";}
 	public int getBonusPracLevel(){return 2;}
 	public int getBonusAttackLevel(){return 1;}
-	public int getAttackAttribute(){return CharStats.CONSTITUTION;}
+	public int getAttackAttribute(){return CharStats.STAT_CONSTITUTION;}
 	public int getLevelsPerBonusDamage(){ return 6;}
 	public int getHPDivisor(){return 2;}
 	public int getHPDice(){return 2;}
@@ -59,8 +59,8 @@ public class SkyWatcher extends StdCharClass
 	public SkyWatcher()
 	{
 		super();
-		maxStatAdj[CharStats.CONSTITUTION]=4;
-		maxStatAdj[CharStats.INTELLIGENCE]=4;
+		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
+		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
 		if(!loaded())
 		{
 			setLoaded(true);
@@ -202,13 +202,13 @@ public class SkyWatcher extends StdCharClass
 	public String statQualifications(){return "Constitution 9+, Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.CONSTITUTION)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Constitution to become a SkyWatcher.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<=8)
+		if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Intelligence to become a SkyWatcher.");

@@ -121,7 +121,7 @@ public class MasterLeatherWorking extends CraftingSkill
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
 		Item IE=(Item)E;
-		if((IE.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LEATHER)
+		if((IE.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)
 		{
 			if(!quiet)
 				commonTell(mob,"That's not made of any sort of leather.  That can't be mended.");
@@ -292,7 +292,7 @@ public class MasterLeatherWorking extends CraftingSkill
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
 			if(building==null) return false;
-			if((building.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LEATHER)
+			if((building.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)
 			{
 				commonTell(mob,"That's not made of leather.  That can't be refitted.");
 				return false;
@@ -395,8 +395,8 @@ public class MasterLeatherWorking extends CraftingSkill
 			}
 			int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			if(amount>woodRequired) woodRequired=amount;
-			int[] pm={EnvResource.MATERIAL_LEATHER};
-			int[] pm1={EnvResource.MATERIAL_METAL,EnvResource.MATERIAL_MITHRIL};
+			int[] pm={RawMaterial.MATERIAL_LEATHER};
+			int[] pm1={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
 			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
             bundling=misctype.equalsIgnoreCase("BUNDLE");
 			int[][] data=fetchFoundResourceData(mob,
@@ -418,7 +418,7 @@ public class MasterLeatherWorking extends CraftingSkill
 				return false;
 			}
 			completion=(multiplier*CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)))-((mob.envStats().level()-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-			String itemName=(prefix+replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)])).toLowerCase();
+			String itemName=(prefix+replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)])).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -436,7 +436,7 @@ public class MasterLeatherWorking extends CraftingSkill
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))*multiplier);
 			building.setMaterial(data[0][FOUND_CODE]);
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
-			int hardness=EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][3]-2;
+			int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][3]-2;
 			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+6*hardness+((multiplier-1)*5));
 			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
@@ -535,7 +535,7 @@ public class MasterLeatherWorking extends CraftingSkill
 		{
 			messedUp=false;
 			completion=1;
-			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}
