@@ -210,7 +210,7 @@ public class Draw extends Get
 		}
 		return false;
 	}
-    public double actionsCost(){return 0.25;}
+    public double actionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
 	public boolean canBeOrdered(){return true;}
 
 	

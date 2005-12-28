@@ -72,7 +72,7 @@ public class Crawl extends Go
 		}
 		return false;
 	}
-	public double actionsCost(){return 1.5;}
+    public double actionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),150.0);}
 	public boolean canBeOrdered(){return true;}
 
 	

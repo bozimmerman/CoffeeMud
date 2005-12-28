@@ -123,8 +123,6 @@ public class Qualify extends BaseAbleLister
 			msg.append(getQualifiedAbilities(mob,Ability.PRAYER,-1,"\n\r^HPrayers:^? "));
 		if((qual.length()==0)||(qual.equalsIgnoreCase("POWERS"))||(qual.equalsIgnoreCase("POWER"))||(qual.equalsIgnoreCase("SUPER POWERS"))||(qual.equalsIgnoreCase("SUPER POWER")))
 			msg.append(getQualifiedAbilities(mob,Ability.SUPERPOWER,-1,"\n\r^HSuper Powers:^? "));
-		if((qual.length()==0)||(qual.equalsIgnoreCase("EVIL DEEDS"))||(qual.equalsIgnoreCase("EVIL DEED")))
-			msg.append(getQualifiedAbilities(mob,Ability.SUPERPOWER,-1,"\n\r^Evil Deeds:^? "));
 		if((qual.length()==0)||(qual.equalsIgnoreCase("CHANTS"))||(qual.equalsIgnoreCase("CHANT"))||(qual.equalsIgnoreCase("DRUID")))
 			msg.append(getQualifiedAbilities(mob,Ability.CHANT,-1,"\n\r^HDruidic Chants:^? "));
 		if((qual.length()==0)||(qual.equalsIgnoreCase("SONGS"))||(qual.equalsIgnoreCase("SONG"))||(qual.equalsIgnoreCase("BARD")))

@@ -87,9 +87,6 @@ public class Report extends BaseAbleLister
 			if(("POWERS".startsWith(s))||("SUPER POWERS".startsWith(s)))
 				CMLib.commands().postSay(mob,null,("^NMy super powers:^? "+getAbilities(mob,Ability.SUPERPOWER,-1,false,level)),false,false);
 			else
-			if("EVIL DEEDS".startsWith(s))
-				CMLib.commands().postSay(mob,null,("^NMy evil deeds:^? "+getAbilities(mob,Ability.EVILDEED,-1,false,level)),false,false);
-			else
 			if("CHANTS".startsWith(s))
 				CMLib.commands().postSay(mob,null,("^NMy chants:^? "+getAbilities(mob,Ability.CHANT,-1,false,level)),false,false);
 			else
@@ -100,8 +97,8 @@ public class Report extends BaseAbleLister
 		}
 		return false;
 	}
-    public double combatActionsCost(){return 1.0;}
-    public double actionsCost(){return 0.25;}
+    public double combatActionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
+    public double actionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
 	public boolean canBeOrdered(){return true;}
 
 	

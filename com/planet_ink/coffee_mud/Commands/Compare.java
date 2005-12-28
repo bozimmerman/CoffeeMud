@@ -153,8 +153,8 @@ public class Compare extends StdCommand
 			mob.tell(getScr("Compare","cannotc",compareThis.name(),toThis.name()));
 		return false;
 	}
-    public double combatActionsCost(){return 1.0;}
-    public double actionsCost(){return 0.25;}
+    public double combatActionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
+    public double actionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
 	public boolean canBeOrdered(){return true;}
 
 	

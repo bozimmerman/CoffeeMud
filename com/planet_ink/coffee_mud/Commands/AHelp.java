@@ -110,19 +110,6 @@ public class AHelp extends StdCommand
 					}
 
 					V.clear();
-					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
-					{
-						Ability A=(Ability)a.nextElement();
-						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.EVILDEED))
-							V.addElement(A.ID());
-					}
-					if(V.size()>0)
-					{
-					    theRest.append(getScr("Ahelp","EDeeds"));
-						theRest.append(CMLib.lister().fourColumns(V));
-					}
-
-					V.clear();
 					for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
 					{
 						Behavior B=(Behavior)b.nextElement();

@@ -941,8 +941,8 @@ public class List extends StdCommand
 		/*41*/{"CHANTS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*42*/{"POWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*43*/{"SUPERPOWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*44*/{"DEEDS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*45*/{"EVILDEEDS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*44*/{"",""},
+		/*45*/{"",""},
         /*46*/{"FACTIONS","LISTADMIN","CMDFACTIONS"},
         /*47*/{"MATERIALS","CMDITEMS","CMDROOMS","CMDAREAS"},
         /*48*/{"OBJCOUNTERS","LISTADMIN"},
@@ -1137,8 +1137,8 @@ public class List extends StdCommand
 		case 41: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.CHANT).toString()); break;
 		case 42:
 		case 43: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.SUPERPOWER).toString()); break;
-		case 44:
-		case 45: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.EVILDEED).toString()); break;
+		case 44: break;
+		case 45: break;
         case 46: s.wraplessPrintln(CMLib.factions().listFactions()); break;
         case 47: s.wraplessPrintln(listMaterials()); break;
         case 48: s.println("\n\r^xCounter Report:^.^N\n\r"+CMClass.getCounterReport()); break;
