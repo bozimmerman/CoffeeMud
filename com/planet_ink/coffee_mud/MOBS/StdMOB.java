@@ -2436,8 +2436,8 @@ public class StdMOB implements MOB
 
 				tickStatus=Tickable.STATUS_ALIVE;
 				curState().recoverTick(this,maxState);
-				if(!isMonster())
-					curState().expendEnergy(this,maxState,false);
+				if(!isMonster()) curState().expendEnergy(this,maxState,false);
+                
 				if((!CMLib.flags().canBreathe(this))&&(!CMLib.flags().isGolem(this)))
 				{
 					location().show(this,this,CMMsg.MSG_OK_VISUAL,("^Z<S-NAME> can't breathe!^.^?")+CMProps.msp("choke.wav",10));

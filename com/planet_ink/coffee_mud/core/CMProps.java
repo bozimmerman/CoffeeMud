@@ -139,7 +139,11 @@ public class CMProps extends Properties
     public static final int SYSTEMI_MAXMAILBOX=42;
     public static final int SYSTEMI_JSCRIPTS=43;
     public static final int SYSTEMI_INJMINLEVEL=44;
-    public static final int NUMI_SYSTEM=45;
+    public static final int SYSTEMI_DEFCMDTIME=45;
+    public static final int SYSTEMI_DEFCOMCMDTIME=46;
+    public static final int SYSTEMI_DEFABLETIME=47;
+    public static final int SYSTEMI_DEFCOMABLETIME=48;
+    public static final int NUMI_SYSTEM=49;
 
     public static final int SYSTEMB_MOBCOMPRESS=0;
     public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -366,6 +370,11 @@ public class CMProps extends Properties
         setIntVar(SYSTEMI_MAXCONNSPERIP,page.getStr("MAXCONNSPERIP"));
         setIntVar(SYSTEMI_MAXNEWPERIP,page.getStr("MAXNEWPERIP"));
         setIntVar(SYSTEMI_JSCRIPTS,page.getStr("JSCRIPTS"));
+        setIntVar(SYSTEMI_DEFCMDTIME,(int)Math.round(page.getDouble("DEFCMDTIME")*100.0));
+        setIntVar(SYSTEMI_DEFCOMCMDTIME,(int)Math.round(page.getDouble("DEFCOMCMDTIME")*100.0));
+        setIntVar(SYSTEMI_DEFABLETIME,(int)Math.round(page.getDouble("DEFABLETIME")*100.0));
+System.out.println(getIntVar(SYSTEMI_DEFCMDTIME)+"/"+page.getStr("DEFCMDTIME")+"/"+page.getDouble("DEFCMDTIME")+"/"+(page.getDouble("DEFCMDTIME")*100.0));
+        setIntVar(SYSTEMI_DEFCOMABLETIME,(int)Math.round(page.getDouble("DEFCOMABLETIME")*100.0));
         
         Vector V=CMParms.parseCommas(page.getStr("INJURYSYSTEM"),true);
         
@@ -394,12 +403,14 @@ public class CMProps extends Properties
 
         Directions.ReInitialize(page.getInt("DIRECTIONS"));
 
-        CMSecurity.setDisableVars(page.getStr("DISABLE"));
+        String disable=page.getStr("DISABLE");
+        if(getVar(SYSTEM_MULTICLASS).equalsIgnoreCase("DISABLED"))
+            disable+=", CLASSES";
+        CMSecurity.setDisableVars(disable);
         if(page.getStr("DISABLE").trim().length()>0)
             Log.sysOut("MUD","Disabled subsystems: "+page.getStr("DISABLE"));
         CMSecurity.setDebugVars(page.getStr("DEBUG"));
         CMSecurity.setSaveFlags(page.getStr("SAVE"));
-
     }
 
     public static String applyINIFilter(String msg, int whichFilter)

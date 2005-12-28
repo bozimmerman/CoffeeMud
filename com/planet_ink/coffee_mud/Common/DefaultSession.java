@@ -1229,17 +1229,15 @@ public class DefaultSession extends Thread implements Session
 			if(sock!=null)
 			{
 				status=Session.STATUS_LOGOUT6;
-				if(out!=null)
-					out.flush();
+				if(out!=null) out.flush();
 				status=Session.STATUS_LOGOUT7;
-				sock.shutdownInput();
+                if(sock!=null) sock.shutdownInput();
 				status=Session.STATUS_LOGOUT8;
-				sock.shutdownOutput();
+				if(sock!=null) sock.shutdownOutput();
 				status=Session.STATUS_LOGOUT9;
-				if(out!=null)
-					out.close();
+				if(out!=null) out.close();
 				status=Session.STATUS_LOGOUT10;
-				sock.close();
+                if(sock!=null) sock.close();
 				status=Session.STATUS_LOGOUT11;
 			}
 			in=null;

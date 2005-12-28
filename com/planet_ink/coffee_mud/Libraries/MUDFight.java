@@ -1251,8 +1251,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                                 fighter.amFollowing().fetchFollowerOrder(fighter)+fighter.amFollowing().rangeToTarget():-1;
         if(CMLib.flags().aliveAwakeMobile(fighter,true))
         {
-            int numAttacks=(int)Math.round(Math.floor(fighter.actions()))-saveAction;
-            if((CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)!=CombatLibrary.COMBAT_MANUAL)||(fighter.isMonster()))
+            if((CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)!=CombatLibrary.COMBAT_MANUAL)
+            ||(fighter.isMonster()))
+            {
+                int numAttacks=(int)Math.round(Math.floor(fighter.actions()))-saveAction;
+                if((CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)==CombatLibrary.COMBAT_DEFAULT)
+                &&(numAttacks>(int)Math.round(Math.floor(fighter.envStats().speed()+0.9))))
+                    numAttacks=(int)Math.round(Math.floor(fighter.envStats().speed()+0.9));
                 for(int s=0;s<numAttacks;s++)
                 {
                     if((!fighter.amDead())
@@ -1267,7 +1272,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                     else
                         break;
                 }
-
+            }
             if(CMLib.dice().rollPercentage()>(fighter.charStats().getStat(CharStats.STAT_CONSTITUTION)*4))
                 fighter.curState().adjMovement(-1,fighter.maxState());
         }

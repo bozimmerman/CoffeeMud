@@ -1066,9 +1066,6 @@ public class CMClass extends ClassLoader
                 tempV=loadVectorListToObj(prefix+"Abilities/SuperPowers/","%DEFAULT%",ancestor("ABILITY"));
                 size=tempV.size();
                 addV(tempV,abilities);
-                tempV=loadVectorListToObj(prefix+"Abilities/EvilDeeds/","%DEFAULT%",ancestor("ABILITY"));
-                size+=tempV.size();
-                addV(tempV,abilities);
                 if(size>0) Log.sysOut("MUD","Heroics loaded    : "+size);
                 
                 tempV=loadVectorListToObj(prefix+"Abilities/Traps/","%DEFAULT%",ancestor("ABILITY"));

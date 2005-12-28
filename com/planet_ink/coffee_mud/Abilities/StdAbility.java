@@ -44,8 +44,8 @@ public class StdAbility extends ForeignScriptable implements Ability
 	public String[] triggerStrings(){return empty;}
 	public int maxRange(){return 0;}
 	public int minRange(){return 0;}
-	public double castingTime(){return 0.25;}
-	public double combatCastingTime(){return 1.0;}
+    public double castingTime(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFABLETIME),100.0);}
+    public double combatCastingTime(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMABLETIME),100.0);}
 	public boolean putInCommandlist(){return true;}
 	public boolean isAutoInvoked(){return false;}
 	public boolean bubbleAffect(){return false;}

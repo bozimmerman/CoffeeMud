@@ -45,12 +45,11 @@ public interface Ability  extends Environmental
 	public static final int DISEASE=10;
 	public static final int POISON=11;
 	public static final int SUPERPOWER=12;
-	public static final int EVILDEED=13;
 	public static final int ALL_CODES=31; // this is a mask, not a total
 	public static final String[] TYPE_DESCS={
 		"SKILL","SPELL","PRAYER","SONG","TRAP","PROPERTY",
 		"THIEF SKILL","LANGUAGE","CHANT","COMMON SKILL",
-		"DISEASE","POISON","SUPERPOWER","EVILDEED"
+		"DISEASE","POISON","SUPERPOWER"
 	};
 
 	// domains

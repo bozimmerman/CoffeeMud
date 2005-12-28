@@ -70,13 +70,13 @@ public class StdGrid extends StdRoom implements GridLocale
 	{
 		super.setDescription(newDescription);
 		descriptions=new Vector();
-		int x=newDescription.indexOf("<P>");
+		int x=newDescription.toUpperCase().indexOf("<P>");
 		while(x>=0)
 		{
 			String s=newDescription.substring(0,x).trim();
 			if(s.length()>0) descriptions.addElement(s);
 			newDescription=newDescription.substring(x+3).trim();
-			x=newDescription.indexOf("<P>");
+			x=newDescription.toUpperCase().indexOf("<P>");
 		}
 		if(newDescription.length()>0)
 			descriptions.addElement(newDescription);
@@ -86,13 +86,13 @@ public class StdGrid extends StdRoom implements GridLocale
 	{
 		super.setDisplayText(newDisplayText);
 		displayTexts=new Vector();
-		int x=newDisplayText.indexOf("<P>");
+		int x=newDisplayText.toUpperCase().indexOf("<P>");
 		while(x>=0)
 		{
 			String s=newDisplayText.substring(0,x).trim();
 			if(s.length()>0) displayTexts.addElement(s);
 			newDisplayText=newDisplayText.substring(x+3).trim();
-			x=newDisplayText.indexOf("<P>");
+			x=newDisplayText.toUpperCase().indexOf("<P>");
 		}
 		if(newDisplayText.length()>0)
 			displayTexts.addElement(newDisplayText);

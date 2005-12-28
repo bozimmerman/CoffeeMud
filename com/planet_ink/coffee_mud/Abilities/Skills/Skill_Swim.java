@@ -44,8 +44,8 @@ public class Skill_Swim extends StdSkill
 	protected int trainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONTRAINCOST);}
 	protected int practicesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONPRACCOST);}
 	public int usageType(){return USAGE_MOVEMENT;}
-    public double combatCastingTime(){return 2.0;}
-    public double castingTime(){return 2.0;}
+    public double castingTime(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFABLETIME),200.0);}
+    public double combatCastingTime(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMABLETIME),200.0);}
 
 	public boolean placeToSwim(Room r2)
 	{

@@ -37,8 +37,8 @@ public class Thief_CarefulStep extends ThiefSkill
 	public String name(){ return "Careful Step";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public double castingTime(){return 2.0;}
-	public double combatCastingTime(){return 2.0;}
+    public double castingTime(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFABLETIME),200.0);}
+    public double combatCastingTime(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMABLETIME),200.0);}
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"CARESTEP","CAREFULSTEP"};
 	public String[] triggerStrings(){return triggerStrings;}
