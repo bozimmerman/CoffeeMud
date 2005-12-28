@@ -6730,7 +6730,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(SB.checkTimeToExecute())
                 {
                     execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message);
-                    if(q<que.size()) que.removeElementAt(q);
+                    que.removeElement(SB);
                 }
 			}
 		}catch(Exception e){Log.errOut("Scriptable",e);}

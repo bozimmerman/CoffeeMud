@@ -99,7 +99,7 @@ public class UtiliThread extends Thread
 	public void checkHealth()
 	{
 		long lastDateTime=System.currentTimeMillis();
-		lastDateTime-=(20*TimeManager.MILI_MINUTE);
+		lastDateTime-=(5*TimeManager.MILI_MINUTE);
 		status="checking";
 		try
 		{
@@ -202,7 +202,7 @@ public class UtiliThread extends Thread
 			}
 		}
 
-		status="checking CMLib.sessions().";
+		status="checking player sessions.";
 		for(int s=0;s<CMLib.sessions().size();s++)
 		{
 			Session S=CMLib.sessions().elementAt(s);
@@ -234,7 +234,7 @@ public class UtiliThread extends Thread
 						S.logoff();
 						S.logoff();
 						CMLib.sessions().removeElement(S);
-						status="checking CMLib.sessions().";
+						status="checking player sessions.";
 					}
 					else
 					if(time>check)

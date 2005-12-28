@@ -427,42 +427,6 @@ public class StdRace implements Race
 		return I;
 	}
 
-	public void reRoll(MOB mob, CharStats C)
-	{
-	    // from Ashera
-        int basemax = CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
-        int basemin = 3;
-
-        int points = CMProps.getIntVar(CMProps.SYSTEMI_MAXSTAT);
-        // Make sure there are enough points
-        if (points < ((basemin + 1) * CharStats.NUM_BASE_STATS))
-            points = (basemin + 1) * CharStats.NUM_BASE_STATS;
-        
-        // Make sure there aren't too many points
-        if (points > (basemax - 1) * CharStats.NUM_BASE_STATS) 
-            	points = (basemax - 1) * CharStats.NUM_BASE_STATS;
-       
-        int[] stats=new int[CharStats.NUM_BASE_STATS];
-        for(int i=0;i<stats.length;i++)
-            stats[i]=basemin;
-       
-        // Subtract stat minimums from point total to get distributable points
-        int pointsLeft = points - (basemin * CharStats.NUM_BASE_STATS);
-
-        while (pointsLeft > 0)
-        {
-            int whichStat = CMLib.dice().roll(1,CharStats.NUM_BASE_STATS,-1);
-            if(stats[whichStat]<basemax)
-            {
-                stats[whichStat]++;
-                --pointsLeft;
-            }
-        }
-
-        for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
-            C.setStat(i,stats[i]);
-	}
-
 	public DeadBody getCorpseContainer(MOB mob, Room room)
 	{
 		if(room==null) room=mob.location();

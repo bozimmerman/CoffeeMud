@@ -109,7 +109,7 @@ public class Prayer_AnimateVampire extends Prayer
 				newMOB.baseEnvStats().setLevel(19);
 				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
-				newMOB.baseCharStats().setBodyPartStrAfterRace(body.charStats().getBodyPartStr());
+                newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
 				Ability P=CMClass.getAbility("Prop_StatTrainer");
 				if(P!=null)
 				{

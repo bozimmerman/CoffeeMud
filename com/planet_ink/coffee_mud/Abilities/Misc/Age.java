@@ -257,7 +257,7 @@ public class Age extends StdAbility
 					newMan.baseState().setMana(CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA));
 					newMan.baseState().setMovement(CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE));
 					newMan.baseCharStats().getMyRace().setHeightWeight(newMan.baseEnvStats(),(char)newMan.baseCharStats().getStat(CharStats.STAT_GENDER));
-					newMan.baseCharStats().getMyRace().reRoll(newMan,newMan.baseCharStats());
+					CMLib.login().reRollStats(newMan,newMan.baseCharStats());
 					newMan.baseCharStats().getMyRace().startRacing(newMan,false);
 					newMan.baseCharStats().setMyClasses(";Apprentice");
 					newMan.baseCharStats().setMyLevels(";1");

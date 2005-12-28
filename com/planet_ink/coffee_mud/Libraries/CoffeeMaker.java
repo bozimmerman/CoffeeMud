@@ -2272,7 +2272,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		str.append(CMLib.xml().convertXMLtoTag("CLRO",mob.getClanRole()));
 		str.append(CMLib.xml().convertXMLtoTag("EMAL",pstats.getEmail()));
 		str.append(CMLib.xml().convertXMLtoTag("PFIL",pfxml.toString()));
-		str.append(CMLib.xml().convertXMLtoTag("SAVE",mob.baseCharStats().getSavesStr()));
+		str.append(CMLib.xml().convertXMLtoTag("SAVE",mob.baseCharStats().getSavesAsString()));
 		str.append(CMLib.xml().convertXMLtoTag("DESC",mob.description()));
 		
 		str.append(getExtraEnvPropertiesStr(mob));
@@ -2390,7 +2390,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
 			while(mob.numEducations()>0)mob.delEducation(mob.fetchEducation(0));
 			for(int v=0;v<V9.size();v++) mob.addEducation((String)V9.elementAt(v));
-			mob.baseCharStats().setSaves(CMLib.xml().getValFromPieces(mblk.contents,"SAVE"));
+			mob.baseCharStats().setSavesFromString(CMLib.xml().getValFromPieces(mblk.contents,"SAVE"));
 			mob.setDescription(CMLib.xml().getValFromPieces(mblk.contents,"DESC"));
 			mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
 			

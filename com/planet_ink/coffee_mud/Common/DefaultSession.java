@@ -1270,23 +1270,22 @@ public class DefaultSession extends Thread implements Session
 		status=Session.STATUS_LOGIN;
 		try
 		{
-			long tries=0;
+			int tries=0;
 			while((!killFlag)&&((++tries)<5))
 			{
 				MOB newMob=CMClass.getMOB("StdMOB");
 				newMob.setSession(this);
 				mob=newMob;
 				status=Session.STATUS_LOGIN;
-				Command C=CMClass.getCommand("FrontLogin");
 				String input=null;
-                Vector tryV=CMParms.makeVector(""+tries);
-				if((C!=null)&&(C.execute(mob,tryV)))
+                int loginAttempt=CMLib.login().login(mob,tries);
+				if(loginAttempt>=1)
 				{
 					status=Session.STATUS_LOGIN2;
 					if((!killFlag)&&(mob!=null))
                     {
 						Log.sysOut("Session","login: "+mob.Name());
-                        if((tryV.size()<1)||(!(tryV.firstElement() instanceof String))||(!((String)tryV.firstElement()).equalsIgnoreCase("SWAPPED")))
+                        if(loginAttempt==2)
                             if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LOGIN,CMClass.getMsg(mob,null,CMMsg.MSG_LOGIN,null)))
                                 killFlag=true;
                     }

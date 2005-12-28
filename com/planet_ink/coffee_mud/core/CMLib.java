@@ -79,7 +79,8 @@ public class CMLib
     public static final int LIBRARY_POLLS=32;
     public static final int LIBRARY_TIME=33;
     public static final int LIBRARY_COLOR=34;
-    public static final int LIBRARY_TOTAL=35;
+    public static final int LIBRARY_LOGIN=35;
+    public static final int LIBRARY_TOTAL=36;
 
     private static final CMObject[] libraries=new CMObject[LIBRARY_TOTAL];
     private static boolean[] registered=new boolean[LIBRARY_TOTAL];
@@ -132,6 +133,7 @@ public class CMLib
     public static PollManager polls(){return (PollManager)libraries[LIBRARY_POLLS];}
     public static TimeManager time(){return (TimeManager)libraries[LIBRARY_TIME];}
     public static ColorLibrary color(){return (ColorLibrary)libraries[LIBRARY_COLOR];}
+    public static CharCreationLibrary login(){return (CharCreationLibrary)libraries[LIBRARY_LOGIN];}
     
     public static int convertToLibraryCode(Object O)
     {
@@ -170,6 +172,7 @@ public class CMLib
         if(O instanceof PollManager) return LIBRARY_POLLS;
         if(O instanceof TimeManager) return LIBRARY_TIME;
         if(O instanceof ColorLibrary) return LIBRARY_COLOR;
+        if(O instanceof CharCreationLibrary) return LIBRARY_LOGIN;
         return -1;
     }
     

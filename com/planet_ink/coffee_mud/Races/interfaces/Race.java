@@ -66,8 +66,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject
 	public Vector myResources();
 	
 	public DeadBody getCorpseContainer(MOB mob, Room room);
-	public void reRoll(MOB mob, CharStats C);
-	
+    
 	public boolean isGeneric();
 	public String racialParms();
 	public void setRacialParms(String parms);

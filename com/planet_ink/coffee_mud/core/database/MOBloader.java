@@ -111,7 +111,7 @@ public class MOBloader
 				pstats.setEmail(DBConnections.getRes(R,"CMEMAL"));
 				String buf=DBConnections.getRes(R,"CMPFIL");
 				pstats.setXML(buf);
-				stats.setSaves(DBConnections.getRes(R,"CMSAVE"));
+				stats.setSavesFromString(DBConnections.getRes(R,"CMSAVE"));
 				Vector V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
 				while(mob.numTattoos()>0)mob.delTattoo(mob.fetchTattoo(0));
 				for(int v=0;v<V9.size();v++) mob.addTattoo((String)V9.elementAt(v));
@@ -654,7 +654,7 @@ public class MOBloader
 		+", CMCLRO="+mob.getClanRole()
 		+", CMEMAL='"+pstats.getEmail()+"'"
 		+", CMPFIL='"+pfxml.toString()+"'"
-		+", CMSAVE='"+mob.baseCharStats().getSavesStr()+"'"
+		+", CMSAVE='"+mob.baseCharStats().getSavesAsString()+"'"
 		+", CMMXML='"+cleanXML.toString()+"'"
 		+"  WHERE CMUSERID='"+mob.Name()+"'");
 

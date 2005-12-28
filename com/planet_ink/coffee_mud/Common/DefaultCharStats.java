@@ -184,14 +184,14 @@ public class DefaultCharStats implements CharStats
 		return levelStr;
 	}
 
-	public String getSavesStr()
+	public String getSavesAsString()
 	{
 		StringBuffer str=new StringBuffer("");
 		for(int x=NUM_SAVE_START;x<NUM_STATS;x++)
 			str.append(stats[x]+";");
 		return str.toString();
 	}
-	public void setSaves(String str)
+	public void setSavesFromString(String str)
 	{
 		Vector V=CMParms.parseSemicolons(str,false);
 		for(int x=NUM_SAVE_START;x<NUM_STATS;x++)
@@ -371,7 +371,7 @@ public class DefaultCharStats implements CharStats
 		return num;
 	}
 	
-	public String getBodyPartStr()
+	public String getBodyPartsAsString()
 	{
 		StringBuffer str=new StringBuffer("");
 		for(int i=0;i<getMyRace().bodyMask().length;i++)
@@ -379,7 +379,7 @@ public class DefaultCharStats implements CharStats
 		return str.toString();
 	}
 	
-	public void setBodyPartStrAfterRace(String str)
+	public void setBodyPartsFromStringAfterRace(String str)
 	{
 		Vector V=CMParms.parseSemicolons(str,true);
 		bodyAlterations=null;
@@ -591,7 +591,7 @@ public class DefaultCharStats implements CharStats
 
 	public int getStat(String abilityName)
 	{
-		for(int i=0;i<20;i++)
+		for(int i=0;i<STAT_DESCS.length;i++)
 			if(STAT_DESCS[i].startsWith(abilityName))
 				return getStat(i);
 		return -1;
@@ -599,7 +599,7 @@ public class DefaultCharStats implements CharStats
 
 	public int getCode(String abilityName)
 	{
-		for(int i=0;i<20;i++)
+		for(int i=0;i<STAT_DESCS.length;i++)
 			if(STAT_DESCS[i].startsWith(abilityName))
 				return i;
 		return -1;
