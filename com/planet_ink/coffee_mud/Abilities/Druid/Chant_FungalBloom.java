@@ -50,7 +50,7 @@ public class Chant_FungalBloom extends Chant
 			return false;
 		}
 
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
+		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
 		if(target==null) return false;
 		if(target.material()!=RawMaterial.RESOURCE_MUSHROOMS)
 		{

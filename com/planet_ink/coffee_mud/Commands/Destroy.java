@@ -936,9 +936,9 @@ public class Destroy extends BaseItemParser
 		else
 		{
 			String allWord=CMParms.combine(commands,1);
-			Environmental thang=mob.location().fetchFromRoomFavorItems(null,allWord,Item.WORN_REQ_ANY);
+			Environmental thang=mob.location().fetchFromRoomFavorItems(null,allWord,Item.WORNREQ_ANY);
 			if(thang==null)
-			    thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Item.WORN_REQ_ANY);
+			    thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Item.WORNREQ_ANY);
 			if((thang!=null)&&(thang instanceof Item))
 			{
 				commands.insertElementAt("ITEM",1);

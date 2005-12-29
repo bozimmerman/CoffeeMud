@@ -28,9 +28,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * This class represents a player or mobs character class.  One of more of these
+ * objects are associated with each mob through the mob interfaces charStats() object.
+ * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#charStats()
+ * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
+ * @author Bo Zimmerman
+ */
 public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObject
 {
-	public String ID();
 	public String name();
     public String name(int classLevel);
     public String[] nameSet();
@@ -39,7 +45,6 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet);
 	public String classParms();
 	public void setClassParms(String parms);
-	public CMObject copyOf();
 	public boolean isGeneric();
     public Vector getSecurityGroups(int classLevel);
 

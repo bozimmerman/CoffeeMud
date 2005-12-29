@@ -65,7 +65,7 @@ public class Pour extends StdCommand
 		}
 
 		String thingToFill=CMParms.combine(commands,0);
-		Environmental fillThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFill,Item.WORN_REQ_ANY);
+		Environmental fillThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFill,Item.WORNREQ_ANY);
 		Item out=null;
 		if((fillThis==null)&&(thingToFill.equalsIgnoreCase("out")))
 		{

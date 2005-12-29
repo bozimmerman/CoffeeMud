@@ -48,7 +48,7 @@ public class Deactivate extends BaseItemParser
 		String cmd=(String)commands.firstElement();
 		commands.removeElementAt(0);
 		String what=(String)commands.lastElement();
-		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,what,Item.WORN_REQ_ANY);
+		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,what,Item.WORNREQ_ANY);
 		Item item=null;
 		if(mob.riding() instanceof Electronics)
 		{

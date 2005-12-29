@@ -69,7 +69,7 @@ public class Package extends BaseItemParser
         {
             Environmental getThis=null;
             if(getThis==null)
-                getThis=mob.location().fetchFromRoomFavorItems(null,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
+                getThis=mob.location().fetchFromRoomFavorItems(null,whatToGet+addendumStr,Item.WORNREQ_UNWORNONLY);
             if(getThis==null) break;
             if((getThis instanceof Item)
             &&(CMLib.flags().canBeSeenBy(getThis,mob))

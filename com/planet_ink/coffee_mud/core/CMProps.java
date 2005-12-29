@@ -373,7 +373,6 @@ public class CMProps extends Properties
         setIntVar(SYSTEMI_DEFCMDTIME,(int)Math.round(page.getDouble("DEFCMDTIME")*100.0));
         setIntVar(SYSTEMI_DEFCOMCMDTIME,(int)Math.round(page.getDouble("DEFCOMCMDTIME")*100.0));
         setIntVar(SYSTEMI_DEFABLETIME,(int)Math.round(page.getDouble("DEFABLETIME")*100.0));
-System.out.println(getIntVar(SYSTEMI_DEFCMDTIME)+"/"+page.getStr("DEFCMDTIME")+"/"+page.getDouble("DEFCMDTIME")+"/"+(page.getDouble("DEFCMDTIME")*100.0));
         setIntVar(SYSTEMI_DEFCOMABLETIME,(int)Math.round(page.getDouble("DEFCOMABLETIME")*100.0));
         
         Vector V=CMParms.parseCommas(page.getStr("INJURYSYSTEM"),true);

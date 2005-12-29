@@ -43,7 +43,7 @@ public class Spell_Permanency extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_ANY);
+		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_ANY);
 		if(target==null) return false;
 
 		if((mob.baseState().getMana()<100)||(mob.maxState().getMana()<100))

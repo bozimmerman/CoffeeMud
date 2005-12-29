@@ -56,7 +56,7 @@ public class Thief_DetectTraps extends ThiefSkill
 		if((unlockThis==null)&&(whatTounlock.equalsIgnoreCase("room")||whatTounlock.equalsIgnoreCase("here")))
 			unlockThis=mob.location();
 		if(unlockThis==null)
-			unlockThis=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
+			unlockThis=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);
 		if(unlockThis==null) return false;
 
 		int oldProfficiency=profficiency();

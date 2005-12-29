@@ -368,7 +368,7 @@ public class StdMOB implements MOB
 	{
 		if(charStats().getMyRace()==baseCharStats().getMyRace())
 			return baseEnvStats().weight();
-		return charStats().getMyRace().getMaxWeight();
+		return charStats().getMyRace().lightestWeight()+charStats().getMyRace().weightVariance();
 	}
 	
 	public int maxCarry()
@@ -2666,10 +2666,10 @@ public class StdMOB implements MOB
         }
 		return item;
 	}
-	public Item fetchInventory(String itemName){ return fetchFromInventory(null,itemName,Item.WORN_REQ_ANY,true,false);}
-	public Item fetchInventory(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Item.WORN_REQ_ANY,true,true);}
-	public Item fetchCarried(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Item.WORN_REQ_UNWORNONLY,true,true);}
-	public Item fetchWornItem(String itemName){ return fetchFromInventory(null,itemName,Item.WORN_REQ_WORNONLY,true,true);}
+	public Item fetchInventory(String itemName){ return fetchFromInventory(null,itemName,Item.WORNREQ_ANY,true,false);}
+	public Item fetchInventory(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Item.WORNREQ_ANY,true,true);}
+	public Item fetchCarried(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Item.WORNREQ_UNWORNONLY,true,true);}
+	public Item fetchWornItem(String itemName){ return fetchFromInventory(null,itemName,Item.WORNREQ_WORNONLY,true,true);}
 	
 	public void addFollower(MOB follower, int order)
 	{

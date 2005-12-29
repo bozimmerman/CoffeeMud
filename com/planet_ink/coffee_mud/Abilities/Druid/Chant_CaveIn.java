@@ -94,7 +94,7 @@ public class Chant_CaveIn extends Chant
 				target=mob.location().getExitInDir(dir);
 		}
 		if(target==null)
-			target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_ANY);
+			target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_ANY);
 		if(target==null) return false;
 		if((target instanceof Item)||(target instanceof Room))
 		{

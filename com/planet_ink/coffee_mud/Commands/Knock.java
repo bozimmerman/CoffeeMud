@@ -48,7 +48,7 @@ public class Knock extends StdCommand
 		int dir=CMLib.tracking().findExitDir(mob,mob.location(),knockWhat);
 		if(dir<0)
 		{
-			Environmental getThis=mob.location().fetchFromMOBRoomItemExit(mob,null,knockWhat,Item.WORN_REQ_UNWORNONLY);
+			Environmental getThis=mob.location().fetchFromMOBRoomItemExit(mob,null,knockWhat,Item.WORNREQ_UNWORNONLY);
 			if(getThis==null)
 			{
 				mob.tell(getScr("Movement","youdontsee",knockWhat.toLowerCase()));

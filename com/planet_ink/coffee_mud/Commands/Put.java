@@ -48,7 +48,7 @@ public class Put extends BaseItemParser
 		commands.removeElementAt(1);
 		commands.removeElementAt(0);
 
-		Vector items=CMLib.english().fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,true);
+		Vector items=CMLib.english().fetchItemList(mob,mob,null,commands,Item.WORNREQ_UNWORNONLY,true);
 		if(items.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else
@@ -102,7 +102,7 @@ public class Put extends BaseItemParser
 			return false;
 		}
 
-		Environmental container=CMLib.english().possibleContainer(mob,commands,false,Item.WORN_REQ_ANY);
+		Environmental container=CMLib.english().possibleContainer(mob,commands,false,Item.WORNREQ_ANY);
 		if((container==null)||((container!=null)&&(!CMLib.flags().canBeSeenBy(container,mob))))
 		{
 			mob.tell("I don't see a "+(String)commands.lastElement()+" here.");

@@ -120,7 +120,7 @@ public class Get extends BaseItemParser
 		if(commands.size()>0)
 			containerName=(String)commands.lastElement();
 		Vector containerCommands=(Vector)commands.clone();
-		Vector containers=CMLib.english().possibleContainers(mob,commands,Item.WORN_REQ_ANY,true);
+		Vector containers=CMLib.english().possibleContainers(mob,commands,Item.WORNREQ_ANY,true);
 		int c=0;
 
 		int maxToGet=Integer.MAX_VALUE;
@@ -141,7 +141,7 @@ public class Get extends BaseItemParser
 				    String fromWhatName=CMParms.combine(commands,fromDex+1);
 				    while(commands.size()>fromDex)
 				        commands.removeElementAt(fromDex);
-				    Environmental fromWhat=mob.location().fetchFromMOBRoomFavorsItems(mob,null,fromWhatName,Item.WORN_REQ_UNWORNONLY);
+				    Environmental fromWhat=mob.location().fetchFromMOBRoomFavorsItems(mob,null,fromWhatName,Item.WORNREQ_UNWORNONLY);
 				    if(fromWhat==null)
 				    {
 				        mob.tell("You don't see '"+fromWhatName+"' here.");
@@ -185,13 +185,13 @@ public class Get extends BaseItemParser
 			{
 				Environmental getThis=null;
 				if((container!=null)&&(mob.isMine(container)))
-				   getThis=mob.location().fetchFromMOBRoomFavorsItems(mob,container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
+				   getThis=mob.location().fetchFromMOBRoomFavorsItems(mob,container,whatToGet+addendumStr,Item.WORNREQ_UNWORNONLY);
 				else
 				{
 					if(!allFlag)
 						getThis=CMLib.english().possibleRoomGold(mob,mob.location(),container,whatToGet);
 					if(getThis==null)
-						getThis=mob.location().fetchFromRoomFavorItems(container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
+						getThis=mob.location().fetchFromRoomFavorItems(container,whatToGet+addendumStr,Item.WORNREQ_UNWORNONLY);
 				}
 				if(getThis==null) break;
 				if((getThis instanceof Item)
@@ -231,7 +231,7 @@ public class Get extends BaseItemParser
 				mob.tell("You don't see anything here.");
 			else
 			{
-			    Vector V=CMLib.english().possibleContainers(mob,containerCommands,Item.WORN_REQ_ANY,false);
+			    Vector V=CMLib.english().possibleContainers(mob,containerCommands,Item.WORNREQ_ANY,false);
 			    if(V.size()==0)
 					mob.tell("You don't see '"+containerName+"' here.");
 				else

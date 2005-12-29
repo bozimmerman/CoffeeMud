@@ -82,7 +82,7 @@ public class Modify extends BaseGenerics
 
 		Item modItem=null;
 		if((srchMob!=null)&&(srchRoom!=null))
-			modItem=(Item)srchRoom.fetchFromMOBRoomFavorsItems(srchMob,null,itemID,Item.WORN_REQ_ANY);
+			modItem=(Item)srchRoom.fetchFromMOBRoomFavorsItems(srchMob,null,itemID,Item.WORNREQ_ANY);
 		else
 		if(srchMob!=null)
 			modItem=srchMob.fetchInventory(itemID);
@@ -1138,13 +1138,13 @@ public class Modify extends BaseGenerics
 			}
 			Environmental thang=null;
 			if((srchMob!=null)&&(srchRoom!=null))
-				thang=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,null,allWord,Item.WORN_REQ_ANY);
+				thang=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,null,allWord,Item.WORNREQ_ANY);
 			else
 			if(srchMob!=null)
 				thang=srchMob.fetchInventory(allWord);
 			else
 			if(srchRoom!=null)
-				thang=srchRoom.fetchFromRoomFavorItems(null,allWord,Item.WORN_REQ_ANY);
+				thang=srchRoom.fetchFromRoomFavorItems(null,allWord,Item.WORNREQ_ANY);
 			if((thang!=null)&&(thang instanceof Item))
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) 

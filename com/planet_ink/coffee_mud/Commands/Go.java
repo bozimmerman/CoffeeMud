@@ -376,7 +376,7 @@ public class Go extends StdCommand
 		}
 
 		int direction=Directions.getGoodDirectionCode(CMParms.combine(commands,1));
-		if((direction<0)&&(mob.location().fetchFromRoomFavorItems(null,CMParms.combine(commands,1),Item.WORN_REQ_UNWORNONLY) instanceof Rideable))
+		if((direction<0)&&(mob.location().fetchFromRoomFavorItems(null,CMParms.combine(commands,1),Item.WORNREQ_UNWORNONLY) instanceof Rideable))
 		{
 			Command C=CMClass.getCommand("Enter");
 			return C.execute(mob,commands);

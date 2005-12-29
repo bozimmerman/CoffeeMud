@@ -71,7 +71,7 @@ public class Spell_AlterSubstance extends Spell
 			material=(String)commands.lastElement();
 			commands.removeElement(material);
 		}
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
+		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
 		if(target==null) return false;
 		int newMaterial=-1;
 		for(int m=0;m<RawMaterial.MATERIAL_DESCS.length;m++)

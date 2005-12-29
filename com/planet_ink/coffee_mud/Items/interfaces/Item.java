@@ -38,11 +38,11 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public interface Item extends Environmental, Rider
 {
     /** a constant used in the Locale item search classes to filter on only items being worn */
-	public static int WORN_REQ_WORNONLY=0;
+	public static int WORNREQ_WORNONLY=0;
     /** a constant used in the Locale item search classes to filter on only items NOT being worn */
-	public static int WORN_REQ_UNWORNONLY=1;
+	public static int WORNREQ_UNWORNONLY=1;
     /** a constant used in the Locale item search classes to filter on only items being worn OR not being worn */
-	public static int WORN_REQ_ANY=2;
+	public static int WORNREQ_ANY=2;
 
     /** a constant used for setDispossessionTime() method, as a % of an hour, representing killed mob equipment */
 	public static double REFUSE_MONSTER_EQ=0.5;

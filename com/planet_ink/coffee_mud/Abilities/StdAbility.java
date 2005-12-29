@@ -235,7 +235,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 			target=mob.location().fetchInhabitant(targetName);
 			if(target==null)
 			{
-				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName,Item.WORN_REQ_UNWORNONLY);
+				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName,Item.WORNREQ_UNWORNONLY);
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)
@@ -326,11 +326,11 @@ public class StdAbility extends ForeignScriptable implements Ability
 					{
 						switch(wornReqCode)
 						{
-						case Item.WORN_REQ_UNWORNONLY:
+						case Item.WORNREQ_UNWORNONLY:
 							if(!((Item)target).amWearingAt(Item.IN_INVENTORY))
 								continue;
 							break;
-						case Item.WORN_REQ_WORNONLY:
+						case Item.WORNREQ_WORNONLY:
 							if(((Item)target).amWearingAt(Item.IN_INVENTORY))
 								continue;
 							break;

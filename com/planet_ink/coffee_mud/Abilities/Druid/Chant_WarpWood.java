@@ -69,7 +69,7 @@ public class Chant_WarpWood extends Chant
 		}
 
 		if(target==null)
-			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
+			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
 
 		if(target==null) return false;
 

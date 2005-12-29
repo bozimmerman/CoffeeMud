@@ -78,7 +78,7 @@ public class Drop extends BaseItemParser
         // uncommenting this allows dropping directly from containers
         // "drop all sack" will no longer drop all of your "sack", but will drop 
         // all of the contents of your 1.sack, leaving the sack in inventory.
-		//container=CMLib.english().possibleContainer(mob,commands,true,Item.WORN_REQ_UNWORNONLY);
+		//container=CMLib.english().possibleContainer(mob,commands,true,Item.WORNREQ_UNWORNONLY);
 
 
 		int maxToDrop=Integer.MAX_VALUE;

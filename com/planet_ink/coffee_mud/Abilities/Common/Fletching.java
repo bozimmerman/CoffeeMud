@@ -196,7 +196,7 @@ public class Fletching extends CraftingSkill
 			mending=false;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
-			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
+			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
 			if(!canMend(mob,building,false)) return false;
 			mending=true;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -47,7 +47,7 @@ public class Eat extends StdCommand
 		commands.removeElementAt(0);
 
 		Environmental thisThang=null;
-		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,CMParms.combine(commands,0),Item.WORN_REQ_ANY);
+		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,CMParms.combine(commands,0),Item.WORNREQ_ANY);
 		if((thisThang==null)
 		||((thisThang!=null)
 		   &&(!mob.isMine(thisThang))

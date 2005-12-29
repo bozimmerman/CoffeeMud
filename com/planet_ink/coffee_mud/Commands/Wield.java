@@ -56,7 +56,7 @@ public class Wield extends BaseItemParser
                     items.addElement(commands.elementAt(i));
         }
         else
-            items=CMLib.english().fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,false);
+            items=CMLib.english().fetchItemList(mob,mob,null,commands,Item.WORNREQ_UNWORNONLY,false);
 		if(items.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else

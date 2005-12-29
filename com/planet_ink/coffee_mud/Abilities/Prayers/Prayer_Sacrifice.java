@@ -61,7 +61,7 @@ public class Prayer_Sacrifice extends Prayer
 		if((commands.size()==0)&&(!auto)&&(givenTarget==null))
 			target=Prayer_Sacrifice.getBody(mob.location());
 		if(target==null)
-			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
+			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
 		if(target==null) return false;
 
 		if((!(target instanceof DeadBody))

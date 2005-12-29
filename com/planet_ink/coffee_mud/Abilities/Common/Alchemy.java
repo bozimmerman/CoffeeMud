@@ -175,7 +175,7 @@ public class Alchemy extends CraftingSkill
 		}
 		else
 		{
-			building=getTarget(mob,null,givenTarget,CMParms.parse(pos),Item.WORN_REQ_UNWORNONLY);
+			building=getTarget(mob,null,givenTarget,CMParms.parse(pos),Item.WORNREQ_UNWORNONLY);
 			commands.remove(pos);
 			if(building==null) return false;
 			if(!mob.isMine(building))

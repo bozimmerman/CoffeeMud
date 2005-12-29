@@ -93,7 +93,7 @@ public class Chant_Unbreakable extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
+		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
 		if(target==null) return false;
 
 		if(target.fetchEffect(this.ID())!=null)

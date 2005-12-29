@@ -55,7 +55,7 @@ public class Sit extends StdCommand
 		Environmental E=null;
 		if(possibleRideable.length()>0)
 		{
-			E=mob.location().fetchFromRoomFavorItems(null,possibleRideable,Item.WORN_REQ_UNWORNONLY);
+			E=mob.location().fetchFromRoomFavorItems(null,possibleRideable,Item.WORNREQ_UNWORNONLY);
 			if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
 			{
 				mob.tell(getScr("Movement","youdontsee",possibleRideable));

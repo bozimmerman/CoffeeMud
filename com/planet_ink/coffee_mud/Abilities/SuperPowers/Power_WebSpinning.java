@@ -124,7 +124,7 @@ public class Power_WebSpinning extends SuperPower
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Environmental target=super.getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
+		Environmental target=super.getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as

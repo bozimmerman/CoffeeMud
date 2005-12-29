@@ -89,7 +89,7 @@ public class Say extends StdCommand
 					{ whom=""; break;}
 			if(whom.length()>0)
 			{
-				target=mob.location().fetchFromRoomFavorMOBs(null,whom,Item.WORN_REQ_ANY);
+				target=mob.location().fetchFromRoomFavorMOBs(null,whom,Item.WORNREQ_ANY);
 				if((toFlag)&&(target==null))
 				    target=mob.fetchInventory(null,whom);
 

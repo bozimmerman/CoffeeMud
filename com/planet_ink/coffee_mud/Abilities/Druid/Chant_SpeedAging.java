@@ -42,7 +42,7 @@ public class Chant_SpeedAging extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_ANY,true);
+		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_ANY,true);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

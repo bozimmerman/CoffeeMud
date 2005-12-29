@@ -88,7 +88,7 @@ public class Skill_Imitation extends BardSkill
 		Environmental target=null;
 		if(commands.size()>1)
 		{
-			target=mob.location().fetchFromRoomFavorMOBs(null,(String)commands.lastElement(),Item.WORN_REQ_ANY);
+			target=mob.location().fetchFromRoomFavorMOBs(null,(String)commands.lastElement(),Item.WORNREQ_ANY);
 			if(target==null) target=mob.fetchInventory(null,(String)commands.lastElement());
 			if(target!=null) commands.removeElementAt(commands.size()-1);
 		}

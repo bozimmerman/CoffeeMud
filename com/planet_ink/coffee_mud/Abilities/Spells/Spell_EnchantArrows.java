@@ -50,7 +50,7 @@ public class Spell_EnchantArrows extends Spell
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Item target=super.getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
+		Item target=super.getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
 		if(target==null) return false;
 
 		if((!(target instanceof Ammunition))||(!((Ammunition)target).ammunitionType().equalsIgnoreCase("arrows")))

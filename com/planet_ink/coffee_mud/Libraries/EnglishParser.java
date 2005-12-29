@@ -648,7 +648,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 
 					if((thisThang.container()==goodLocation)
-					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
+					&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 					&&(thisThang.ID().equalsIgnoreCase(srchStr)
 					   ||(thisThang.Name().equalsIgnoreCase(srchStr))
 					   ||(thisThang.name().equalsIgnoreCase(srchStr))))
@@ -669,7 +669,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 
 					if((thisThang.container()==goodLocation)
-					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
+					&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 					&&((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
 					   &&((!allFlag)||(thisThang.displayText().length()>0))))
 						if((--myOccurrance)<=0)
@@ -686,7 +686,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 					if((thisThang.container()==goodLocation)
 					&&(thisThang.displayText().length()>0)
-					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
+					&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 					&&(containsString(thisThang.displayText(),srchStr)))
 						if((--myOccurrance)<=0)
 							return thisThang;
@@ -721,7 +721,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 	
 						if((thisThang.container()==goodLocation)
-						&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
+						&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 						&&(thisThang.ID().equalsIgnoreCase(srchStr)
 						   ||(thisThang.Name().equalsIgnoreCase(srchStr))
 						   ||(thisThang.name().equalsIgnoreCase(srchStr))))
@@ -753,7 +753,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 	
 						if((thisThang.container()==goodLocation)
-						&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
+						&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 						&&((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
 						   &&((!allFlag)||(thisThang.displayText().length()>0))))
 							if((--myOccurrance)<=0)
@@ -780,7 +780,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 						if((thisThang.container()==goodLocation)
 						&&(thisThang.displayText().length()>0)
-						&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
+						&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 						&&(containsString(thisThang.displayText(),srchStr)))
 							if((--myOccurrance)<=0)
 								return thisThang;
@@ -875,10 +875,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			Environmental item=null;
 			if(from instanceof MOB)
 			{
-				if(preferredLoc==Item.WORN_REQ_UNWORNONLY)
+				if(preferredLoc==Item.WORNREQ_UNWORNONLY)
 					item=((MOB)from).fetchCarried(container,name+addendumStr);
 				else
-				if(preferredLoc==Item.WORN_REQ_WORNONLY)
+				if(preferredLoc==Item.WORNREQ_WORNONLY)
 					item=((MOB)from).fetchWornItem(name+addendumStr);
 				else
 					item=((MOB)from).fetchInventory(null,name+addendumStr);

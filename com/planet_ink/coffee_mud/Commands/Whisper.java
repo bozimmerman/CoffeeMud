@@ -48,7 +48,7 @@ public class Whisper extends StdCommand
 		if(commands.size()>2)
 		{
 			String possibleTarget=(String)commands.elementAt(1);
-			target=mob.location().fetchFromRoomFavorMOBs(null,possibleTarget,Item.WORN_REQ_ANY);
+			target=mob.location().fetchFromRoomFavorMOBs(null,possibleTarget,Item.WORNREQ_ANY);
 			if((target!=null)&&(!target.name().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
 			   target=null;
 			if((target!=null)

@@ -66,9 +66,9 @@ public class Empty extends BaseItemParser
 			if(s.equalsIgnoreCase("ground")) target=mob.location();
 			else
 			{
-				target=CMLib.english().possibleContainer(mob,commands,false,Item.WORN_REQ_UNWORNONLY);
+				target=CMLib.english().possibleContainer(mob,commands,false,Item.WORNREQ_UNWORNONLY);
 				if(target==null) 
-					target=mob.location().fetchFromRoomFavorItems(null,s,Item.WORN_REQ_UNWORNONLY);
+					target=mob.location().fetchFromRoomFavorItems(null,s,Item.WORNREQ_UNWORNONLY);
 				else
 					commands.addElement("delme");
 			}

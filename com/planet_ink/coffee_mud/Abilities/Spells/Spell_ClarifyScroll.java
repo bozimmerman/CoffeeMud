@@ -41,7 +41,7 @@ public class Spell_ClarifyScroll extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,null,givenTarget,commands,Item.WORN_REQ_ANY);
+		Item target=getTarget(mob,null,givenTarget,commands,Item.WORNREQ_ANY);
 		if(target==null) return false;
 
 		if(!(target instanceof Scroll))

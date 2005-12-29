@@ -40,7 +40,7 @@ public class Spell_Refit extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,null,givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
+		Item target=getTarget(mob,null,givenTarget,commands,Item.WORNREQ_UNWORNONLY);
 		if(target==null) return false;
 		if(!(target instanceof Armor))
 		{	mob.tell(target.name()+" cannot be refitted."); return false;}

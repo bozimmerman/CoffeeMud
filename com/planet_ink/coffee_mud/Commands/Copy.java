@@ -82,9 +82,9 @@ public class Copy extends StdCommand
 		if(dirCode>=0)
 			E=mob.location();
 		else
-			E=mob.location().fetchFromRoomFavorItems(null,name,Item.WORN_REQ_UNWORNONLY);
+			E=mob.location().fetchFromRoomFavorItems(null,name,Item.WORNREQ_UNWORNONLY);
 
-        if(E==null) E=mob.location().fetchFromRoomFavorMOBs(null,name,Item.WORN_REQ_UNWORNONLY);
+        if(E==null) E=mob.location().fetchFromRoomFavorMOBs(null,name,Item.WORNREQ_UNWORNONLY);
 		if(E==null)	E=mob.fetchInventory(name);
 		if(E==null)
 		{

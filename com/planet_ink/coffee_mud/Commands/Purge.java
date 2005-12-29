@@ -169,7 +169,7 @@ public class Purge extends BaseItemParser
 		else
 		{
 			String allWord=CMParms.combine(commands,1);
-			Environmental thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Item.WORN_REQ_ANY);
+			Environmental thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Item.WORNREQ_ANY);
 			if((thang!=null)&&(thang instanceof Item))
 			{
 				commands.insertElementAt("ITEM",1);

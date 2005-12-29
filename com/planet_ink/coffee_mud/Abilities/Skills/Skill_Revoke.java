@@ -64,7 +64,7 @@ public class Skill_Revoke extends StdSkill
 			if(dir>=0)
 				target=mob.location().getExitInDir(dir);
 			else
-				target=mob.location().fetchFromRoomFavorMOBs(null,whatToRevoke,Item.WORN_REQ_ANY);
+				target=mob.location().fetchFromRoomFavorMOBs(null,whatToRevoke,Item.WORNREQ_ANY);
 		}
 
 		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))

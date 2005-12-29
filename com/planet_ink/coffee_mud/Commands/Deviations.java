@@ -163,7 +163,7 @@ public class Deviations extends StdCommand
 		        
 		}
 		String where=((String)V.elementAt(1)).toLowerCase();
-		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,where,Item.WORN_REQ_ANY);
+		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,where,Item.WORNREQ_ANY);
 		Vector check=new Vector();
 		if(where.equalsIgnoreCase("room"))
 			fillCheckDeviations(mob.location(),type,check);

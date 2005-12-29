@@ -50,7 +50,7 @@ public class DrinkCmd extends StdCommand
 			thisThang=mob.location();
 		else
 		{
-			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,CMParms.combine(commands,0),Item.WORN_REQ_ANY);
+			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,CMParms.combine(commands,0),Item.WORNREQ_ANY);
 			if((thisThang==null)
 			||((thisThang!=null)
 			   &&(!mob.isMine(thisThang))

@@ -73,13 +73,13 @@ public class Restring extends BaseGenerics
 		}
 		Environmental thang=null;
 		if((srchMob!=null)&&(srchRoom!=null))
-			thang=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,null,allWord,Item.WORN_REQ_ANY);
+			thang=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,null,allWord,Item.WORNREQ_ANY);
 		else
 		if(srchMob!=null)
 			thang=srchMob.fetchInventory(allWord);
 		else
 		if(srchRoom!=null)
-			thang=srchRoom.fetchFromRoomFavorItems(null,allWord,Item.WORN_REQ_ANY);
+			thang=srchRoom.fetchFromRoomFavorItems(null,allWord,Item.WORNREQ_ANY);
 		if((thang!=null)&&(thang instanceof Item))
 		{
 			if(!thang.isGeneric())

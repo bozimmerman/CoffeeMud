@@ -89,7 +89,7 @@ public class Spell_Shrink extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Environmental E=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
+		Environmental E=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);
 		if(E==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

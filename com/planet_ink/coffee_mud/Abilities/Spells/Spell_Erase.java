@@ -46,7 +46,7 @@ public class Spell_Erase extends Spell
 			mob.tell("Erase what?.");
 			return false;
 		}
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
+		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
 		if(target==null) return false;
 
 		if((target==null)||((target!=null)&&(!(target instanceof Scroll))&&(!CMLib.flags().isReadable(target))))

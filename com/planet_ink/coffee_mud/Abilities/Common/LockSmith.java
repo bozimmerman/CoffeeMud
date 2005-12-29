@@ -203,7 +203,7 @@ public class LockSmith extends CraftingSkill
 		String recipeName=CMParms.combine(commands,0);
 		int dir=Directions.getGoodDirectionCode(recipeName);
 		if(dir<0)
-			workingOn=mob.location().fetchFromMOBRoomFavorsItems(mob,null,recipeName,Item.WORN_REQ_UNWORNONLY);
+			workingOn=mob.location().fetchFromMOBRoomFavorsItems(mob,null,recipeName,Item.WORNREQ_UNWORNONLY);
 		else
 			workingOn=mob.location().getExitInDir(dir);
 

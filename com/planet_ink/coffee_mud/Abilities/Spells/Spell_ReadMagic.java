@@ -45,7 +45,7 @@ public class Spell_ReadMagic extends Spell
 		// first, using the commands vector, determine
 		// the target of the spell.  If no target is specified,
 		// the system will assume your combat target.
-		Environmental target=getTarget(mob,null,givenTarget,commands,Item.WORN_REQ_ANY);
+		Environmental target=getTarget(mob,null,givenTarget,commands,Item.WORNREQ_ANY);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as

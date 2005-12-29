@@ -54,78 +54,286 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject
 	public final static int AGE_ANCIENT=8;
     /** Constant string list for the names of the age constants, in their order of value */
 	public final static String[] AGE_DESCS={"Infant","Toddler","Child","Young adult","Adult", "Mature", "Old", "Venerable", "Ancient"};
-
+	
+	/**
+	 * Return a nice, displayable name for this race
+	 * @return the races name
+	 */
 	public String name();
+	/**
+	 * Which racial category this race falls in.  
+	 * @return racial category
+	 */
 	public String racialCategory();
-	
+	/** 
+	 * Returns one or a combination of the Area.THEME_*
+	 * constants from the Area interface.  This bitmap
+	 * then describes the types of areas, skills, and
+	 * classes which can interact.
+	 * This bitmap is also used to to tell whether
+	 * the race is available for selection by users
+	 * at char creation time, whether they can 
+	 * change to this race via spells, or whether
+	 * the race is utterly unavailable to them.
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area
+	 * @return the availability/theme of this race
+	 */
 	public int availabilityCode();
+	/**
+	 * After a mob is set or changed to a new race, this method
+	 * should be called to finalize or initialize any settings
+	 * from this race.  
+	 * The verify flag is almost always true, unless the mob
+	 * is a new player being created, in which case false is sent.
+	 * @param mob the mob or player being set to this race
+	 * @param verifyOnly true flag unless this is a new player character
+	 */
 	public void startRacing(MOB mob, boolean verifyOnly);
-	
+	/**
+	 * Will initialize a player or mobs height and weight based
+	 * on this races parameters.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
+	 * @param stats the EnvStats object to change
+	 * @param gender the mobs gender 'M' or 'F'
+	 */
 	public void setHeightWeight(EnvStats stats, char gender);
+	/** 
+	 * The minimum height of males of this race.
+	 * @return minimum height of males in inches
+	 */
 	public int shortestMale();
+	/** 
+	 * The minimum height of females of this race.
+	 * @return minimum height of females in inches
+	 */
 	public int shortestFemale();
+	/**
+	 * The amount from 0-this to add to the minimum height
+	 * to achieve a random height.
+	 * @return a range of inches to add to the mimiumum height
+	 */
 	public int heightVariance();
+	/**
+	 * The lightest weight for a member of this race
+	 * @return the lightest weight for something of this race
+	 */
 	public int lightestWeight();
+	/**
+	 * The amount from 0-this to add to the minumum weight
+	 * to achieve a random weight.
+	 * @return a range of pounds to add to the minimum weight
+	 */
 	public int weightVariance();
-	public int getMaxWeight();
+	/**
+	 * Returns an integer array equal in size and index to the
+	 * Race.AGE_* constants in the Race interface.  Each value
+	 * in the index represents the first mudyear age of that
+	 * age category.  
+	 * @see Race
+	 * @return an integer array mapping ages to age categories
+	 */
 	public int[] getAgingChart();
+	/**
+	 * A bitmap showing which on locations a member of this 
+	 * race can not wear clothing, even if the members have one
+	 * or more of the required limbs.  The bitmap is made from 
+	 * Item.WORN_* constant values. 
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.Item
+	 * @return the illegal wear location bitmap
+	 */
 	public long forbiddenWornBits();
+	/**
+	 * Returns an array indexed by body part codes as defined by
+	 * the BODY_* constants in the Race interface.  Each value is
+	 * either -1 to show that the body part does not apply, 0 to
+	 * show that the body part is not found on this race, and 1 or
+	 * more to show how many of that part this race normally has.
+	 * @return an array of body parts
+	 */
 	public int[] bodyMask();
+	/**
+	 * Whether this race, generally speaking, can procreate.
+	 * @return whether this race is capable of procreating
+	 */
 	public boolean fertile();
+	/**
+	 * Returns a vector of Item objects representing the standard
+	 * clothing, weapons, or other objects commonly given to players
+	 * of this race just starting out.
+	 * @return a vector of Item objects
+	 */
 	public Vector outfit();
+	/**
+	 * Returns a description of the given mobs description, by
+	 * consulting the mobs curState().getHitPoints method.
+	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#curState()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharState#getHitPoints()
+	 * @param mob the mob whose health to check
+	 * @return a string describing his health
+	 */
 	public String healthText(MOB mob);
+	/**
+	 * Returns a Weapon object representing what a member of this
+	 * race fights with when unarmed.  This method may change what it
+	 * returns on every call to mix things up a bit.
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.Weapon
+	 * @return a Weapon object representing claws or teeth, etc..
+	 */
 	public Weapon myNaturalWeapon();
+	/**
+	 * Returns a Vector of RawMaterial objects (usually GenFoodResource, GenLiquidResource,
+	 * or GenResource items) representing what is left over of a member of this race
+	 * after they've been butchered and cut up.
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
+	 * @return a vector of rawmaterial objects
+	 */
 	public Vector myResources();
-	
+	/**
+	 * Returns the corpse of a member of this race, populates it with the equipment of
+	 * the given mob, and places it in the given room.  If the destroyBodyAfterUse returns
+	 * true, it will also populate the body with the contents of the myResources method.
+	 * @see #myResources()
+	 * @param mob the mob to use as a template for the body
+	 * @param room the room to place the corpse in
+	 * @return the corpse generated and placed in the room
+	 */
 	public DeadBody getCorpseContainer(MOB mob, Room room);
-    
+    /**
+     * Whether this race object represents a Generic Race, or one which is modifiable by
+     * builders at run-time.
+     * @return whether this race is modifiable at run-time.
+     */
 	public boolean isGeneric();
+	/**
+	 * If this race is modifiable at run time, this method will return an xml document
+	 * describing the several attributes of this race.
+	 * @see #isGeneric()
+	 * @see #setRacialParms(String)
+	 * @return an xml document describing this race
+	 */
 	public String racialParms();
+	/**
+	 * If this race is modifiable at run time, this method will use the given xml document
+	 * describing the several attributes of this race to populate this races fields and attributes.
+	 * @see #isGeneric()
+	 * @see #racialParms()
+	 * @param parms an xml document describing this race
+	 */
 	public void setRacialParms(String parms);
-	
+	/**
+	 * Returns the string describing what folks see when a member of this race enters a room.
+	 * Should give an idea of the gate or walking style of this race.
+	 * @return what people see what this race enters a room
+	 */
 	public String arriveStr();
+	/**
+	 * Returns the string describing what folks see when a member of this race leaves a room.
+	 * Should give an idea of the gate or walking style of this race.
+	 * @return what people see what this race leaves a room
+	 */
 	public String leaveStr();
-	
+	/**
+	 * This method is called whenever a player gains a level while a member of this race.  If
+	 * there are any special things which need to be done to a player who gains a level, they
+	 * can be done in this method.  By default, it doesn't do anything.
+	 * @param mob the mob to level up
+	 */
 	public void level(MOB mob);
+	/**
+	 * Whether this race can be associated with a character class.
+	 * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass
+	 * @return whether this race can have a class
+	 */
 	public boolean classless();
+	/**
+	 * Whether players of this race can be associated with an experience level.
+	 * @return whether players of this race can have a level
+	 */
 	public boolean leveless();
+	/**
+	 * Whether players of this race can gain or lose experience points.
+	 * @return whether players of this race can gain or lose experience points
+	 */
 	public boolean expless();
+	
+	/**
+	 * Return a vector of skills, spells, and other abilities granted to the given
+	 * mob of the given mobs level.
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
+	 * @param mob the mob to grant the abilities to
+	 * @return a vector of the Ability objects
+	 */
+	public Vector racialAbilities(MOB mob);
+	/**
+	 * Return a vector of skills, spells, and other abilities granted to the given
+	 * mob of the given mobs level.  This method is not functionally used because
+	 * it doesn't quite work correctly yet.
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
+	 * @param mob the mob to grant the abilities to
+	 * @return a vector of the Ability objects
+	 */
+	public Vector racialEffects(MOB mob);
+	/**
+	 * Apply any affects of the given mob at the given age to the given base and/or
+	 * current char stats.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharState 
+	 * @param mob the mob to apply changes to
+	 * @param baseStats permanent charstats changes
+	 * @param charStats temporary charstats changes
+	 */
+	public void agingAffects(MOB mob, CharStats baseStats, CharStats charStats);
 	
 	public String[] getStatCodes();
 	public String getStat(String code);
 	public void setStat(String code, String val);
 	public boolean sameAs(Race E);
-	
-	public Vector racialAbilities(MOB mob);
-	public Vector racialEffects(MOB mob);
-	public void agingAffects(MOB mob, CharStats baseStats, CharStats charStats);
-	
+
+	/** body part constant representing antenea*/
 	public final static int BODY_ANTENEA=0;
+	/** body part constant representing eyes */
 	public final static int BODY_EYE=1;
+	/** body part constant representing ears*/
 	public final static int BODY_EAR=2;
+	/** body part constant representing head*/
 	public final static int BODY_HEAD=3;
+	/** body part constant representing neck*/
 	public final static int BODY_NECK=4;
+	/** body part constant representing arm*/
 	public final static int BODY_ARM=5;
+	/** body part constant representing hand*/
 	public final static int BODY_HAND=6;
+	/** body part constant representing torso*/
 	public final static int BODY_TORSO=7;
+	/** body part constant representing legs*/
 	public final static int BODY_LEG=8;
+	/** body part constant representing feet*/
 	public final static int BODY_FOOT=9;
+	/** body part constant representing noses*/
 	public final static int BODY_NOSE=10;
+	/** body part constant representing gills*/
 	public final static int BODY_GILL=11;
+	/** body part constant representing mouth*/
 	public final static int BODY_MOUTH=12;
+	/** body part constant representing waists*/
 	public final static int BODY_WAIST=13;
+	/** body part constant representing tails*/
 	public final static int BODY_TAIL=14;
+	/** body part constant representing wings*/
 	public final static int BODY_WING=15;
+	/** the number of body part constants*/
 	public final static int BODY_PARTS=16;
-	public final static int BODY_OTHERMASKCODE=1048576;
+	/** constant string list naming each of the BODY_* constants in the order of their value*/
 	public final static String[] BODYPARTSTR={
 		"ANTENEA","EYE","EAR","HEAD","NECK","ARM","HAND","TORSO","LEG","FOOT",
 		"NOSE","GILL","MOUTH","WAIST","TAIL","WING"};
-	
+	/** constant used to set and check the classless flag on generic races */
 	public final static int GENFLAG_NOCLASS=1;
+	/** constant used to set and check the levelless flag on generic races */
 	public final static int GENFLAG_NOLEVELS=2;
+	/** constant used to set and check the expless flag on generic races */
 	public final static int GENFLAG_NOEXP=4;
-	
+
+	/** array mapping worn locations to body parts, indexed by body parts. */
 	public final static long[] BODY_WEARVECTOR={
 		Item.WORN_HEAD, // ANTENEA, having any of these removes that pos
 		Item.WORN_EYES, // EYES, having any of these adds this position
@@ -144,7 +352,11 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject
 		Item.WORN_BACK, // TAIL, having any of these removes that pos
 		Item.WORN_BACK, // WINGS, having any of these removes that pos
 	};
-	
+	/** 2 dimentional array, indexed first by body_ part constant, with each row
+	 * having two values: the first being the Item.WORN_ location which is affected
+	 * by having or losing this body part, and then the number of such body parts
+	 * necessary to gain or lose one such wear location.  A value of -1 means N/A
+	 */
 	public final static long[][] BODY_WEARGRID={
 		{Item.WORN_HEAD,-1}, // ANTENEA, having any of these removes that pos
 		{Item.WORN_EYES,2}, // EYES, having any of these adds this position

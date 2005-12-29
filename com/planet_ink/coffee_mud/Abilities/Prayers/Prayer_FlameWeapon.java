@@ -125,7 +125,7 @@ public class Prayer_FlameWeapon extends Prayer
 				}
 			if(I!=null) commands.addElement(I.Name());
 		}
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
+		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
 		if(target==null) return false;
 
 		if(!(target instanceof Weapon))

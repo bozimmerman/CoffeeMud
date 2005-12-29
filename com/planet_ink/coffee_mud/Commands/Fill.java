@@ -57,7 +57,7 @@ public class Fill extends BaseItemParser
 		else
 		{
 			String thingToFillFrom=(String)commands.lastElement();
-			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Item.WORN_REQ_ANY);
+			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Item.WORNREQ_ANY);
 			if((fillFromThis==null)||((fillFromThis!=null)&&(!CMLib.flags().canBeSeenBy(fillFromThis,mob))))
 			{
 				mob.tell("I don't see "+thingToFillFrom+" here.");

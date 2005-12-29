@@ -130,7 +130,7 @@ public class Butchering extends GatheringSkill
 			}
 		}
 		else
-			I=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
+			I=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
 
 		if(I==null) return false;
 		if((!(I instanceof DeadBody))

@@ -223,7 +223,7 @@ public class Armorsmithing extends CraftingSkill
 			fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
-			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
+			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
 			if(!canMend(mob, building,false)) return false;
 			mending=true;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -242,7 +242,7 @@ public class Armorsmithing extends CraftingSkill
 			fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
-			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
+			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
 			if(building==null) return false;
 			if(((building.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
 			&&((building.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL))

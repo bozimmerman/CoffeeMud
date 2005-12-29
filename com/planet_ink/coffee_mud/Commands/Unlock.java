@@ -50,7 +50,7 @@ public class Unlock extends StdCommand
 		if(dirCode>=0)
 			unlockThis=mob.location().getExitInDir(dirCode);
 		if(unlockThis==null)
-			unlockThis=mob.location().fetchFromMOBRoomItemExit(mob,null,whatTounlock,Item.WORN_REQ_ANY);
+			unlockThis=mob.location().fetchFromMOBRoomItemExit(mob,null,whatTounlock,Item.WORNREQ_ANY);
 
 		if((unlockThis==null)||(!CMLib.flags().canBeSeenBy(unlockThis,mob)))
 		{

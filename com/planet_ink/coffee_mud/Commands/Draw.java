@@ -139,7 +139,7 @@ public class Draw extends Get
 		{
 			containerName=(String)commands.lastElement();
 			commands.insertElementAt("all",0);
-			containers=CMLib.english().possibleContainers(mob,commands,Item.WORN_REQ_WORNONLY,true);
+			containers=CMLib.english().possibleContainers(mob,commands,Item.WORNREQ_WORNONLY,true);
 			if(containers.size()==0) containers=sheaths;
 			whatToGet=CMParms.combine(commands,0);
 			allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");

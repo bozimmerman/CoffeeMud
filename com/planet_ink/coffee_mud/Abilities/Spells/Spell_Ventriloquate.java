@@ -46,7 +46,7 @@ public class Spell_Ventriloquate extends Spell
 			mob.tell("You must specify who or what to cast this on, and what you want said.");
 			return false;
 		}
-		Environmental target=mob.location().fetchFromRoomFavorItems(null,(String)commands.elementAt(0),Item.WORN_REQ_UNWORNONLY);
+		Environmental target=mob.location().fetchFromRoomFavorItems(null,(String)commands.elementAt(0),Item.WORNREQ_UNWORNONLY);
 		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
 			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");

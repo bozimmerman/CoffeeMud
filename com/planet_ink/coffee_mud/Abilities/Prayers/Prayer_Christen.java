@@ -50,7 +50,7 @@ public class Prayer_Christen extends Prayer
 		}
 		String name=((String)commands.lastElement()).trim();
 		commands.removeElementAt(commands.size()-1);
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
+		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
 		if(target==null) return false;
 
 		if((!(target instanceof CagedAnimal))||(target.envStats().ability()<=0)||(!target.isGeneric()))

@@ -416,8 +416,8 @@ public class Cooking extends CraftingSkill
 			commonTell(mob,buf.toString());
 			return true;
 		}
-		Item possibleContainer=possibleContainer(mob,commands,true,Item.WORN_REQ_UNWORNONLY);
-		Item target=getTarget(mob,mob.location(),givenTarget,possibleContainer,commands,Item.WORN_REQ_UNWORNONLY);
+		Item possibleContainer=possibleContainer(mob,commands,true,Item.WORNREQ_UNWORNONLY);
+		Item target=getTarget(mob,mob.location(),givenTarget,possibleContainer,commands,Item.WORNREQ_UNWORNONLY);
 		if(target==null)
         {
             commonTell(mob,"The syntax for this skill is "+triggerStrings[0]+" [CONTAINER]");

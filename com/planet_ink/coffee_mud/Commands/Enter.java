@@ -48,7 +48,7 @@ public class Enter extends Go
 		int dir=CMLib.tracking().findExitDir(mob,mob.location(),enterWhat);
 		if(dir<0)
 		{
-			Environmental getThis=mob.location().fetchFromRoomFavorItems(null,enterWhat,Item.WORN_REQ_UNWORNONLY);
+			Environmental getThis=mob.location().fetchFromRoomFavorItems(null,enterWhat,Item.WORNREQ_UNWORNONLY);
 			if((getThis!=null)&&(getThis instanceof Rideable))
 			{
 				Command C=CMClass.getCommand("Sit");

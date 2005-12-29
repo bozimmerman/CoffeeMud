@@ -154,7 +154,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 		if(itemName.equalsIgnoreCase("room"))
 			target=mob.location();
 		else
-			target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemName,Item.WORN_REQ_UNWORNONLY);
+			target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemName,Item.WORNREQ_UNWORNONLY);
 		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
 			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");

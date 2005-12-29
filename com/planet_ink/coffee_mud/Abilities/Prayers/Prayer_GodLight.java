@@ -77,7 +77,7 @@ public class Prayer_GodLight extends Prayer
 		if((target==null)&&(commands.size()==0)&&(mob.isInCombat()))
 			target=mob.getVictim();
 		if(target==null)
-			target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
+			target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);
 		if(target==null) return false;
 		if((target instanceof Room)&&(target.fetchEffect(ID())!=null))
 		{
