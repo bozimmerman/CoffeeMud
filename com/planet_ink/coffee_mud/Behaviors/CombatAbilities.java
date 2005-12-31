@@ -152,7 +152,8 @@ public class CombatAbilities extends StdBehavior
 		if(!mob.isInCombat()) return true;
 		MOB victim=mob.getVictim();
 		if(victim==null) return true;
-
+		MOB leader=mob.amFollowing();
+		
 		// insures we only try this once!
 		for(int b=0;b<mob.numBehaviors();b++)
 		{
@@ -175,13 +176,13 @@ public class CombatAbilities extends StdBehavior
 			||(tryThisOne.isAutoInvoked())
 			||(tryThisOne.triggerStrings()==null)
 			||(tryThisOne.triggerStrings().length==0)
-			||((tryThisOne.quality()!=Ability.MALICIOUS)
-				&&(tryThisOne.quality()!=Ability.BENEFICIAL_SELF)
-				&&(tryThisOne.quality()!=Ability.BENEFICIAL_OTHERS))
+			||((tryThisOne.conditionalQuality(mob,victim)!=Ability.MALICIOUS)
+				&&(tryThisOne.conditionalQuality(mob,mob)!=Ability.BENEFICIAL_SELF)
+				&&(tryThisOne.conditionalQuality(mob,leader)!=Ability.BENEFICIAL_OTHERS))
 			||(victim.fetchEffect(tryThisOne.ID())!=null))
 				tryThisOne=null;
 			else
-			if(tryThisOne.quality()==Ability.MALICIOUS)
+			if(tryThisOne.conditionalQuality(mob,victim)==Ability.MALICIOUS)
 			{
 				switch(combatMode)
 				{
@@ -260,8 +261,12 @@ public class CombatAbilities extends StdBehavior
 					return true;
 			}
 
-			if(tryThisOne.quality()!=Ability.MALICIOUS)
+			if(tryThisOne.conditionalQuality(mob,mob)==Ability.BENEFICIAL_SELF)
 				victim=mob;
+			else
+			if(tryThisOne.conditionalQuality(mob,leader)==Ability.BENEFICIAL_OTHERS)
+			{ victim=((leader==null)||(mob.location()!=leader.location()))?mob:leader;}
+	        
 
 			tryThisOne.setProfficiency(CMLib.dice().roll(1,70,mob.baseEnvStats().level()));
 			Vector V=new Vector();
@@ -302,12 +307,15 @@ public class CombatAbilities extends StdBehavior
 			{
 				A=((Wand)myWand).getSpell();
 				if((A!=null)
-				&&((A.quality()==Ability.MALICIOUS)
-				||(A.quality()==Ability.BENEFICIAL_SELF)
-				||(A.quality()==Ability.BENEFICIAL_OTHERS)))
+				&&((A.conditionalQuality(mob,mob.getVictim())==Ability.MALICIOUS)
+				||(A.conditionalQuality(mob,mob)==Ability.BENEFICIAL_SELF)
+				||(A.conditionalQuality(mob,leader)==Ability.BENEFICIAL_OTHERS)))
 				{
-					if(A.quality()!=Ability.MALICIOUS)
+					if(A.conditionalQuality(mob,mob)==Ability.BENEFICIAL_SELF)
 						victim=mob;
+					else
+					if(A.conditionalQuality(mob,leader)==Ability.BENEFICIAL_OTHERS)
+					{ victim=((leader==null)||(mob.location()!=leader.location()))?mob:leader;}
 					else
 					if(mob.getVictim()!=null)
 						victim=mob.getVictim();

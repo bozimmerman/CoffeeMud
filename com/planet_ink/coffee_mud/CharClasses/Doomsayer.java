@@ -101,8 +101,8 @@ public class Doomsayer extends Cleric
 			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_Demonshield",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_AuraHarm",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_GreatCurse",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_MassDeafness",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_GreatCurse",true,CMParms.parseSemicolons("Prayer_Curse",true));
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_MassDeafness",false,CMParms.parseSemicolons("Prayer_Deafness",true));
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Anger",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_DailyBread",false);
@@ -116,19 +116,19 @@ public class Doomsayer extends Cleric
 			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Hellfire",true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_CurseLuck",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassBlindness",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",false,CMParms.parseSemicolons("Prayer_Curse",true));
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassBlindness",false,CMParms.parseSemicolons("Prayer_Blindness",true));
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_DemonicConsumption",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Condemnation",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true,CMParms.parseSemicolons("Prayer_Curse",true));
 			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_CurseMinds",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_Doomspout",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_UnholyWord",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_UnholyWord",true,CMParms.parseSemicolons("Prayer_GreatCurse",true));
 			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_Nullification",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_SummonElemental",0,"FIRE",true);

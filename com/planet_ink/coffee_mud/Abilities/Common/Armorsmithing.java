@@ -121,21 +121,6 @@ public class Armorsmithing extends CraftingSkill
 		super.unInvoke();
 	}
 
-	public boolean canBeLearnedBy(MOB teacher, MOB student)
-	{
-		if(!super.canBeLearnedBy(teacher,student))
-			return false;
-		if(student==null) return true;
-		if(student.fetchAbility("Blacksmithing")==null)
-		{
-			teacher.tell(student.name()+" has not yet learned blacksmithing.");
-			student.tell("You need to learn blacksmithing before you can learn "+name()+".");
-			return false;
-		}
-
-		return true;
-	}
-
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;

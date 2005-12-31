@@ -285,7 +285,7 @@ public class Go extends StdCommand
 		}
 
 		if(exit!=null) exit.executeMsg(mob,enterMsg);
-		mob.location().delInhabitant(mob);
+		if(mob.location()!=null)  mob.location().delInhabitant(mob);
 		((Room)leaveMsg.target()).send(mob,leaveMsg);
 
 		if(enterMsg.target()==null)

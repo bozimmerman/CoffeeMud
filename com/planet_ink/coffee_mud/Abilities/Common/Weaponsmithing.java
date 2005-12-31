@@ -157,34 +157,6 @@ public class Weaponsmithing extends CraftingSkill
 		return true;
 	}
 
-	public boolean canBeLearnedBy(MOB teacher, MOB student)
-	{
-		if(!super.canBeLearnedBy(teacher,student))
-			return false;
-		if(student==null) return true;
-		if((student.fetchAbility("Specialization_Axe")==null)
-		&&(student.fetchAbility("Specialization_BluntWeapon")==null)
-		&&(student.fetchAbility("Specialization_EdgedWeapon")==null)
-		&&(student.fetchAbility("Specialization_FlailedWeapon")==null)
-		&&(student.fetchAbility("Specialization_Polearm")==null)
-		&&(student.fetchAbility("Specialization_Hammer")==null)
-		&&(student.fetchAbility("Specialization_Sword")==null)
-		&&(student.fetchAbility("Specialization_Ranged")==null))
-		{
-			teacher.tell(student.name()+" has not yet specialized in any weapons.");
-			student.tell("You need to specialize in a weapon type to learn "+name()+".");
-			return false;
-		}
-		if(student.fetchAbility("Blacksmithing")==null)
-		{
-			teacher.tell(student.name()+" has not yet learned blacksmithing.");
-			student.tell("You need to learn blacksmithing before you can learn "+name()+".");
-			return false;
-		}
-
-		return true;
-	}
-
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;

@@ -83,27 +83,6 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 	}
 
 
-	public boolean canBeLearnedBy(MOB teacher, MOB student)
-	{
-		if(!super.canBeLearnedBy(teacher,student))
-			return false;
-		if(student==null) return true;
-		if((student.fetchAbility("Specialization_Sword")==null))
-		{
-			teacher.tell(student.name()+" has not yet specialized in swords.");
-			student.tell("You need to specialize in swords to learn "+name()+".");
-			return false;
-		}
-		if(student.fetchAbility("Weaponsmithing")==null)
-		{
-			teacher.tell(student.name()+" has not yet learned weaponsmithing.");
-			student.tell("You need to learn weaponsmithing before you can learn "+name()+".");
-			return false;
-		}
-
-		return true;
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int completion=16;

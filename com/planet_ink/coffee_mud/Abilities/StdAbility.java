@@ -56,6 +56,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 	public int usageType(){return USAGE_MANA;}
 	protected int overrideMana(){return -1;} //-1=normal, Integer.MAX_VALUE=all, Integer.MAX_VALUE-100
 	public int quality(){return Ability.INDIFFERENT;}
+	public int conditionalQuality(MOB invoker, MOB target){return quality();}
 	protected int canAffectCode(){return Ability.CAN_AREAS|
 										 Ability.CAN_ITEMS|
 										 Ability.CAN_MOBS|

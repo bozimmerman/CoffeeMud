@@ -1140,7 +1140,7 @@ public class StdLawBook extends StdItem
 			boolean changed=false;
 			if(s.equalsIgnoreCase("A"))
 			{
-				if(CMLib.utensils().getLegalObject(A).inMetroArea(mob.location().getArea()))
+				if(!CMLib.utensils().getLegalObject(A).inMetroArea(mob.location().getArea()))
 					mob.tell("You can not add this room as a release room, as it is not in the area.");
 				else
 				if(mob.session().confirm("Add this room as a new release room (y/N)? ","N"))

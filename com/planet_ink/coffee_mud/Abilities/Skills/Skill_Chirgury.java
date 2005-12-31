@@ -44,21 +44,6 @@ public class Skill_Chirgury extends StdSkill
 	public int classificationCode(){return Ability.SKILL;}
 	public static final String[] parts={"FETUS","BLOOD","HEART","LUNGS","STOMACH","PANCREAS","SPLEEN","BRAIN","LIVER","INTESTINES","TONGUE","EYES","BLADDER"};
 
-	public boolean canBeLearnedBy(MOB teacher, MOB student)
-	{
-		if(!super.canBeLearnedBy(teacher,student))
-			return false;
-		if(student==null) return true;
-		if(student.fetchAbility("Butchering")==null)
-		{
-			teacher.tell(student.name()+" has not yet learned Butchering.");
-			student.tell("You need to learn Butchering before you can learn "+name()+".");
-			return false;
-		}
-
-		return true;
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 	    if(commands.size()==0)

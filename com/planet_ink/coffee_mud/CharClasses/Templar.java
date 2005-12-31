@@ -109,7 +109,7 @@ public class Templar extends Cleric
 			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Specialization_Axe",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_Bash",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_GreatCurse",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_GreatCurse",true,CMParms.parseSemicolons("Prayer_Curse",true));
 			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Specialization_Natural",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Anger",false);
@@ -124,18 +124,18 @@ public class Templar extends Cleric
 			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Hellfire",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Maladiction",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",true,CMParms.parseSemicolons("Prayer_Paralyze",true));
 			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_Absorption",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Corruption",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_Attack2",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true,CMParms.parseSemicolons("Prayer_Curse",true));
 			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_Haunted",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_CreateIdol",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_UnholyWord",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_UnholyWord",true,CMParms.parseSemicolons("Prayer_GreatCurse",true));
 			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_SunCurse",0,"",false,false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Regeneration",false);

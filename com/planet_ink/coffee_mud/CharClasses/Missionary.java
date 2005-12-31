@@ -113,7 +113,7 @@ public class Missionary extends Cleric
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_ChainStrike",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassMobility",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassMobility",true,CMParms.parseSemicolons("Prayer_ProtParalyzation",true));
 			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_Monolith",0,"AIR",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Gateway",false);

@@ -85,11 +85,13 @@ public interface Ability  extends Environmental
 	public static final int OK_OTHERS=3;
 	public static final int BENEFICIAL_SELF=4;
 	public static final int BENEFICIAL_OTHERS=5;
+	
 	// the quality is used for more intelligent
 	// usage by mobs.  it returns one of the above,
 	// and dictates how an ability is to be used
 	// by mobs
 	public int quality();
+	public int conditionalQuality(MOB invoker, MOB target);
 
 	// misc_flags
 	public static final int FLAG_BINDING=1;

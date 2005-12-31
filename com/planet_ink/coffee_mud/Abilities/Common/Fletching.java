@@ -61,20 +61,6 @@ public class Fletching extends CraftingSkill
 
     protected Vector loadRecipes(){return super.loadRecipes("fletching.txt");}
 
-	public boolean canBeLearnedBy(MOB teacher, MOB student)
-	{
-		if(!super.canBeLearnedBy(teacher,student))
-			return false;
-		if(student==null) return true;
-		if(student.fetchAbility("Specialization_Ranged")==null)
-		{
-			teacher.tell(student.name()+" has not yet specialized in ranged weapons.");
-			student.tell("You need to specialize in ranged weapons to learn "+name()+".");
-			return false;
-		}
-		return true;
-	}
-
 	public void unInvoke()
 	{
 		if(canBeUninvoked())

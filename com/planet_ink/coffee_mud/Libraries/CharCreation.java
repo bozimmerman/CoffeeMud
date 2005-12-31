@@ -498,10 +498,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
             CharClass newClass=null;
             Vector qualClasses=classQualifies(mob,theme);
-            if(CMSecurity.isDisabled("CLASSES")
-            ||mob.baseCharStats().getMyRace().classless())
+            if(CMSecurity.isDisabled("CLASSES")||mob.baseCharStats().getMyRace().classless())
             {
-                if(qualClasses.size()>0)
+                if(CMSecurity.isDisabled("CLASSES"))
+                    newClass=CMClass.getCharClass("PlayerClass");
+                if((newClass==null)&&(qualClasses.size()>0))
                     newClass=(CharClass)qualClasses.elementAt(CMLib.dice().roll(1,qualClasses.size(),-1));
                 if(newClass==null)
                     newClass=CMClass.getCharClass("PlayerClass");

@@ -48,7 +48,7 @@
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <INPUT TYPE=HIDDEN NAME=NEW VALUE="">
 <P ALIGN=RIGHT><A href="javascript:openUp('SCRIPTABLE');"><FONT COLOR=PINK><I>scriptable help</I></FONT></A></P>
-<FONT COLOR=YELLOW>File: <B>@RequestParameter?PATH@
+<FONT COLOR=YELLOW>File: <B>@RequestParameter?PATH@/
 @if?!CheckReqParm?FILE=@
 	@RequestParameter?FILE@<INPUT TYPE=HIDDEN NAME=FILE VALUE="@RequestParameter?FILE@">
 @else@

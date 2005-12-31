@@ -113,21 +113,6 @@ public class Cobbling extends CraftingSkill
 		super.unInvoke();
 	}
 
-	public boolean canBeLearnedBy(MOB teacher, MOB student)
-	{
-		if(!super.canBeLearnedBy(teacher,student))
-			return false;
-		if(student==null) return true;
-		if(student.fetchAbility("Leatherworking")==null)
-		{
-			teacher.tell(student.name()+" has not yet learned leatherworking.");
-			student.tell("You need to learn leatherworking before you can learn "+name()+".");
-			return false;
-		}
-
-		return true;
-	}
-
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;

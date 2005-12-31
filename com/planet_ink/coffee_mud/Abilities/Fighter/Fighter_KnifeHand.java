@@ -70,20 +70,6 @@ public class Fighter_KnifeHand extends FighterSkill
 		return true;
 	}
 
-	public boolean canBeLearnedBy(MOB teacher, MOB student)
-	{
-		if(!super.canBeLearnedBy(teacher,student))
-			return false;
-		if(student==null) return true;
-		if((student.fetchAbility("Fighter_MonkeyPunch")==null))
-		{
-			teacher.tell(student.name()+" has not yet learned to Monkey Punch.");
-			student.tell("You need to learn the Monkey Punch to learn "+name()+".");
-			return false;
-		}
-		return true;
-	}
-
 	public boolean anyWeapons(MOB mob)
 	{
 		for(int i=0;i<mob.inventorySize();i++)

@@ -102,7 +102,7 @@ public class Paladin extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_CureDeafness",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_CureSerious",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_CureSerious",false,CMParms.parseSemicolons("Prayer_CureLight",true));
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_MountedCombat",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Paladin_Defend",true);
@@ -127,11 +127,11 @@ public class Paladin extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Paladin_PoisonImmunity",true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Sanctuary",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_CureCritical",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_CureCritical",false,CMParms.parseSemicolons("Prayer_CureSerious",true));
 			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_Trip",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Paladin_Aura",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_HolyAura",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_HolyAura",false,CMParms.parseSemicolons("Prayer_Bless",true));
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_Calm",false);
@@ -144,12 +144,12 @@ public class Paladin extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_Godstrike",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_Sweep",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_MassFreedom",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_MassFreedom",false,CMParms.parseSemicolons("Prayer_Freedom",true));
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Paladin_Goodness",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Heal",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Heal",false,CMParms.parseSemicolons("Prayer_CureCritical",true));
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Paladin_CraftHolyAvenger",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Paladin_CraftHolyAvenger",true,CMParms.parseSemicolons("Specialization_Sword;Weaponsmithing",true));
 
 		}
 	}

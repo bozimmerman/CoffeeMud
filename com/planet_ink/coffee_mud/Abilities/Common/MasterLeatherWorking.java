@@ -62,21 +62,6 @@ public class MasterLeatherWorking extends CraftingSkill
 
     protected Vector loadRecipes(){return super.loadRecipes("masterleatherworking.txt");}
 
-	public boolean canBeLearnedBy(MOB teacher, MOB student)
-	{
-		if(!super.canBeLearnedBy(teacher,student))
-			return false;
-		if(student==null) return true;
-		if(student.fetchAbility("LeatherWorking")==null)
-		{
-			teacher.tell(student.name()+" has not yet learned leatherworking.");
-			student.tell("You need to learn leatherworking before you can learn "+name()+".");
-			return false;
-		}
-
-		return true;
-	}
-
 	public void unInvoke()
 	{
 		if(canBeUninvoked())

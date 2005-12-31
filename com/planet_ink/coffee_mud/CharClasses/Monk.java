@@ -92,10 +92,10 @@ public class Monk extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_Sneak",false);
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_DeflectProjectile",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_KnifeHand",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_KnifeHand",false,CMParms.parseSemicolons("Fighter_MonkeyPunch",true));
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Trip",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Fighter_AxKick",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Fighter_AxKick",false,CMParms.parseSemicolons("Fighter_Kick",true));
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Fighter_BackHand",true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Fighter_BodyToss",false);
@@ -105,7 +105,7 @@ public class Monk extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_BlindFighting",true);
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_CatchProjectile",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_FlyingKick",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_FlyingKick",false,CMParms.parseSemicolons("Fighter_AxKick",true));
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_WeaponBreak",true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_Pin",false);

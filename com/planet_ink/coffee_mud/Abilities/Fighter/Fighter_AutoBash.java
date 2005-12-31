@@ -44,21 +44,6 @@ public class Fighter_AutoBash extends FighterSkill
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){ return Ability.SKILL; }
 
-	public boolean canBeLearnedBy(MOB teacher, MOB student)
-	{
-		if(!super.canBeLearnedBy(teacher,student))
-			return false;
-		if(student==null) return true;
-		if(student.fetchAbility("Skill_Bash")==null)
-		{
-			teacher.tell(student.name()+" has not yet learned to shield bash.");
-			student.tell("You need to learn to shield bash first.");
-			return false;
-		}
-
-		return true;
-	}
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))

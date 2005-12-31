@@ -44,20 +44,6 @@ public class Fighter_AxKick extends FighterSkill
 	public int classificationCode(){return Ability.SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public boolean canBeLearnedBy(MOB teacher, MOB student)
-	{
-		if(!super.canBeLearnedBy(teacher,student))
-			return false;
-		if(student==null) return true;
-		if((student.fetchAbility("Fighter_Kick")==null))
-		{
-			teacher.tell(student.name()+" has not yet learned the Kick skill.");
-			student.tell("You need to learn the Kick skill to learn "+name()+".");
-			return false;
-		}
-		return true;
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))

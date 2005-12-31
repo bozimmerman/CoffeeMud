@@ -125,12 +125,12 @@ public class Shaman extends Cleric
 			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_RockFlesh",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_FleshRock",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassMobility",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassMobility",true,CMParms.parseSemicolons("Prayer_ProtParalyzation",true));
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_DrunkenStupor",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_MoralBalance",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true,CMParms.parseSemicolons("Prayer_Curse",true));
 			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_LinkedHealth",true);

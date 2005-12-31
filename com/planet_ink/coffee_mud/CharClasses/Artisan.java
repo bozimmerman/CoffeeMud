@@ -104,23 +104,23 @@ public class Artisan extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"FoodPrep",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"JewelMaking",true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Warrants",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Costuming",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Costuming",true,CMParms.parseSemicolons("Tailoring",true));
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Dyeing",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Embroidering",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Engraving",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Embroidering",true,CMParms.parseSemicolons("Skill_Write",true));
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Engraving",true,CMParms.parseSemicolons("Skill_Write",true));
 			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Lacquerring",true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Smelting",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Armorsmithing",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fletching",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Weaponsmithing",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Armorsmithing",true,CMParms.parseSemicolons("Blacksmithing",true));
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fletching",true,CMParms.parseSemicolons("Specialization_Ranged",true));
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Weaponsmithing",true,CMParms.parseSemicolons("Blacksmithing;Specialization_*",true));
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Shipwright",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Wainwrighting",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Shipwright",true,CMParms.parseSemicolons("Carpentry",true));
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Wainwrighting",true,CMParms.parseSemicolons("Carpentry",true));
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"PaperMaking",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Cobbling",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Cobbling",false,CMParms.parseSemicolons("LeatherWorking",true));
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Distilling",true);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Farming",true);
@@ -130,8 +130,8 @@ public class Artisan extends StdCharClass
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Painting",true);
 			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Construction",true);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Masonry",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Construction",true,CMParms.parseSemicolons("Carpentry",true));
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Masonry",true,CMParms.parseSemicolons("Sculpting",true));
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Appraise",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"LockSmith",0,"",false,true);

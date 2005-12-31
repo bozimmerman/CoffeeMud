@@ -40,14 +40,21 @@ public interface AbilityMapper extends CMObject
         public int defaultProfficiency=0;
         public String defaultParm="";
         public boolean isSecret=false;
+        public Vector skillPreReqs=new Vector();
+        public String extraMask="";
     }
     
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain);
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, Vector preReqSkillsList);
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, String defParm, boolean autoGain);
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, boolean autoGain);
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, 
+									  String defaultParam, boolean autoGain, boolean secret);
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, 
+    								  String defaultParam, boolean autoGain, boolean secret,
+    								  Vector preReqSkillsList, String extraMask);
     public void delCharAbilityMapping(String ID, String ability);
     public void delCharMappings(String ID);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProfficiency, String defaultParam, boolean autoGain, boolean secret);
     public Enumeration getClassAbles(String ID);
     public boolean qualifiesByAnyCharClass(String abilityID);
     public int lowestQualifyingLevel(String ability);

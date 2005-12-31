@@ -125,7 +125,7 @@ public class Barbarian extends StdCharClass
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Fighter_Endurance",false);
 			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_IdentifyPoison",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_IdentifyPoison",true,CMParms.parseSemicolons("Apothecary",true));
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Scrapping",false);

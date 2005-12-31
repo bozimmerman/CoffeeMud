@@ -39,33 +39,32 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	public Hashtable lowestQualifyingLevelMap=new Hashtable();
 	
 	public void addCharAbilityMapping(String ID, 
-											 int qualLevel,
-											 String ability, 
-											 boolean autoGain)
-	{
-		addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false);
-	}
+									  int qualLevel,
+									  String ability, 
+									  boolean autoGain)
+	{ addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false,new Vector(),""); }
 	public void addCharAbilityMapping(String ID, 
-											 int qualLevel,
-											 String ability, 
-											 int defaultProfficiency,
-											 String defParm,
-											 boolean autoGain)
-	{
-		addCharAbilityMapping(ID,qualLevel,ability,0,defParm,autoGain,false);
-	}
+									  int qualLevel,
+									  String ability, 
+									  boolean autoGain,
+									  Vector skillPreReqs)
+	{ addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false,skillPreReqs,""); }
+	public void addCharAbilityMapping(String ID, 
+									  int qualLevel,
+									  String ability, 
+									  int defaultProfficiency,
+									  String defParm,
+									  boolean autoGain)
+	{ addCharAbilityMapping(ID,qualLevel,ability,0,defParm,autoGain,false,new Vector(),""); }
 	
 	public void addCharAbilityMapping(String ID, 
-											 int qualLevel,
-											 String ability, 
-											 int defaultProfficiency,
-											 boolean autoGain)
-	{
-		addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false);
-	}
+									  int qualLevel,
+									  String ability, 
+									  int defaultProfficiency,
+									  boolean autoGain)
+	{ addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false,new Vector(),""); }
 	
-	public void delCharAbilityMapping(String ID,
-											 String ability)
+	public void delCharAbilityMapping(String ID, String ability)
 	{
 		if(!completeAbleMap.containsKey(ID))
 			completeAbleMap.put(ID,new Hashtable());
@@ -88,12 +87,23 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	}
 	
 	public void addCharAbilityMapping(String ID, 
-											 int qualLevel,
-											 String ability, 
-											 int defaultProfficiency,
-											 String defaultParam,
-											 boolean autoGain,
-											 boolean secret)
+									  int qualLevel,
+									  String ability, 
+									  int defaultProfficiency,
+									  String defaultParam,
+									  boolean autoGain,
+									  boolean secret)
+	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProfficiency,defaultParam,autoGain,secret,new Vector(),"");}
+	
+	public void addCharAbilityMapping(String ID, 
+									  int qualLevel,
+									  String ability, 
+									  int defaultProfficiency,
+									  String defaultParam,
+									  boolean autoGain,
+									  boolean secret,
+									  Vector preReqSkillsList,
+									  String extraMask)
 	{
 		delCharAbilityMapping(ID,ability);
 		Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
@@ -104,6 +114,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		able.isSecret=secret;
 		able.defaultParm=defaultParam;
 		able.defaultProfficiency=defaultProfficiency;
+		able.extraMask=extraMask;
+		able.skillPreReqs=preReqSkillsList;
 		ableMap.put(ability,able);
 		int arc_level=getQualifyingLevel("Archon",true,ability);
 		if((arc_level<0)||((qualLevel>=0)&&(qualLevel<arc_level)))
@@ -156,9 +168,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return true;
 	}
 	
-	public Vector getLevelListings(String ID, 
-										  boolean checkAll,
-										  int level)
+	public Vector getLevelListings(String ID, boolean checkAll, int level)
 	{
 		Vector V=new Vector();
 		if(completeAbleMap.containsKey(ID))
@@ -186,10 +196,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return V;
 	}
-	public Vector getUpToLevelListings(String ID, 
-											  int level, 
-											  boolean ignoreAll,
-											  boolean gainedOnly)
+	public Vector getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly)
 	{
 		Vector V=new Vector();
 		if(completeAbleMap.containsKey(ID))
@@ -220,9 +227,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return V;
 	}
 	
-	public int getQualifyingLevel(String ID, 
-										 boolean checkAll,
-										 String ability)
+	public int getQualifyingLevel(String ID, boolean checkAll, String ability)
 	{
 		if(completeAbleMap.containsKey(ID))
 		{
@@ -272,8 +277,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return theLevel;
 	}
 
-	public int qualifyingClassLevel(MOB student, 
-										   Ability A)
+	public int qualifyingClassLevel(MOB student, Ability A)
 	{
 		if(student==null) return -1;
 		int greatestDiff=-1;
@@ -302,8 +306,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return student.charStats().getClassLevel(theClass);
 	}
 
-	public Object lowestQualifyingClassRace(MOB student, 
-												   Ability A)
+	public Object lowestQualifyingClassRace(MOB student, Ability A)
 	{
 		if(student==null) return null;
 		int theLevel=-1;
@@ -360,9 +363,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return false;
 	}
 
-	public boolean getDefaultGain(String ID, 
-										 boolean checkAll,
-										 String ability)
+	public boolean getDefaultGain(String ID, boolean checkAll, String ability)
 	{
 		if(completeAbleMap.containsKey(ID))
 		{
@@ -391,9 +392,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return null;
 	}
 	
-	public boolean getSecretSkill(String ID, 
-										 boolean checkAll,
-										 String ability)
+	public boolean getSecretSkill(String ID, boolean checkAll, String ability)
 	{
 		boolean secretFound=false;
 		if(completeAbleMap.containsKey(ID))
@@ -421,8 +420,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return false;
 	}
 	
-	public boolean getSecretSkill(MOB mob,
-										 String ability)
+	public boolean getSecretSkill(MOB mob, String ability)
 	{
 		boolean secretFound=false;
 		for(int c=0;c<mob.charStats().numClasses();c++)
@@ -490,9 +488,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return secretFound;
 	}
 	
-	public String getDefaultParm(String ID, 
-										boolean checkAll,
-										String ability)
+	public String getDefaultParm(String ID, boolean checkAll, String ability)
 	{
 		if(completeAbleMap.containsKey(ID))
 		{
@@ -510,9 +506,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return "";
 	}
 	
-	public int getDefaultProfficiency(String ID, 
-											 boolean checkAll,
-										     String ability)
+	public int getDefaultProfficiency(String ID, boolean checkAll, String ability)
 	{
 		if(completeAbleMap.containsKey(ID))
 		{

@@ -43,23 +43,6 @@ public class Thief_Autosneak extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected boolean noRepeat=false;
 
-	public boolean canBeLearnedBy(MOB teacher, MOB student)
-	{
-		if(!super.canBeLearnedBy(teacher,student))
-			return false;
-		if(student==null) return true;
-		if((student.fetchAbility("Thief_Sneak")==null)
-		   &&(student.fetchAbility("Ranger_Sneak")==null))
-		{
-			teacher.tell(student.name()+" has not yet learned to sneak.");
-			student.tell("You need to learn to sneak first.");
-			return false;
-		}
-
-		return true;
-	}
-
-
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

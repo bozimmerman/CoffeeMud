@@ -1161,25 +1161,28 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             MOB mob=msg.source();
             if(CMLib.flags().canBeSeenBy(msg.target(),mob))
             {
-                Item item=(Item)msg.target();
-                if((CMLib.flags().isReadable(item))
-                &&(item.readableText()!=null)
-                &&(item.readableText().length()>0))
+            	String text=null;
+            	if((msg.target() instanceof Exit)&&(((Exit)msg.target()).isReadable()))
+            		text=((Exit)msg.target()).readableText();
+            	else
+            	if((msg.target() instanceof Item)&&(CMLib.flags().isReadable((Item)msg.target())))
+            		text=((Item)msg.target()).readableText();
+            	if((text!=null)
+                &&(text.length()>0))
                 {
-                    if(item.readableText().startsWith("FILE=")
-                    ||item.readableText().startsWith("FILE="))
+                    if(text.toUpperCase().startsWith("FILE="))
                     {
-                        StringBuffer buf=Resources.getFileResource(item.readableText().substring(5),true);
+                        StringBuffer buf=Resources.getFileResource(text.substring(5),true);
                         if((buf!=null)&&(buf.length()>0))
                             mob.tell("It says '"+buf.toString()+"'.");
                         else
-                            mob.tell("There is nothing written on "+item.name()+".");
+                            mob.tell("There is nothing written on "+msg.target().name()+".");
                     }
                     else
-                        mob.tell("It says '"+item.readableText()+"'.");
+                        mob.tell("It says '"+text+"'.");
                 }
                 else
-                    mob.tell("There is nothing written on "+item.name()+".");
+                    mob.tell("There is nothing written on "+msg.target().name()+".");
             }
             else
                 mob.tell("You can't see that!");

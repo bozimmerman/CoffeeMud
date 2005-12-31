@@ -321,10 +321,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if((cmd.length()>0)&&(!cmd.startsWith("#")))
 				{
 				    cmd=CMStrings.replaceAll(cmd,"\\~","~");
+				    cmd=CMStrings.replaceAll(cmd,"\\=","=");
 					script.addElement(CMStrings.replaceAll(cmd,"\\;",";"));
 				}
-				V.setElementAt(script,v);
 			}
+			V.setElementAt(script,v);
 		}
 		return V;
 	}

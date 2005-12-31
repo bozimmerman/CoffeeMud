@@ -42,21 +42,6 @@ public class MasterWeaponsmithing extends Weaponsmithing
 
     protected Vector loadRecipes(){return super.loadRecipes("masterweaponsmith.txt");}
     
-	public boolean canBeLearnedBy(MOB teacher, MOB student)
-	{
-		if(!super.canBeLearnedBy(teacher,student))
-			return false;
-		if(student==null) return true;
-		if(student.fetchAbility("Weaponsmithing")==null)
-		{
-			teacher.tell(student.name()+" has not yet learned weaponsmithing.");
-			student.tell("You need to learn weaponsmithing before you can learn "+name()+".");
-			return false;
-		}
-
-		return true;
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;

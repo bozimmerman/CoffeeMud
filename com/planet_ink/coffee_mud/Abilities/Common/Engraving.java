@@ -71,21 +71,6 @@ public class Engraving extends CommonSkill
 		super.unInvoke();
 	}
 
-	public boolean canBeLearnedBy(MOB teacher, MOB student)
-	{
-		if(!super.canBeLearnedBy(teacher,student))
-			return false;
-		if(student==null) return true;
-		if(student.fetchAbility("Skill_Write")==null)
-		{
-			teacher.tell(student.name()+" has not yet learned how to write.");
-			student.tell("You need to learn how to write before you can learn "+name()+".");
-			return false;
-		}
-
-		return true;
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)

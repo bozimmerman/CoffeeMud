@@ -97,6 +97,7 @@ public class Property implements Ability
 
 	public boolean putInCommandlist(){return false;}
 	public int quality(){return Ability.INDIFFERENT;}
+	public int conditionalQuality(MOB invoker, MOB target){return quality();}
 
 	public int classificationCode(){ return Ability.PROPERTY;}
 	public boolean savable(){ return savable;	}

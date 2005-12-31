@@ -103,7 +103,7 @@ public class Necromancer extends Cleric
 			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_AnimateSpectre",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_HealUndead",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_GreatCurse",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_GreatCurse",true,CMParms.parseSemicolons("Prayer_Curse",true));
 			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_FeignLife",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Anger",true);
@@ -117,18 +117,18 @@ public class Necromancer extends Cleric
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Hellfire",true);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",true,CMParms.parseSemicolons("Prayer_Paralyze",true));
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_AnimateMummy",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Vampirism",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true,CMParms.parseSemicolons("Prayer_Curse",true));
 			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_AnimateDead",false);
             CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_CauseExhaustion",false);
 
-			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_UnholyWord",true);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_UnholyWord",true,CMParms.parseSemicolons("Prayer_GreatCurse",true));
 			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_Nullification",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_AnimateVampire",false);

@@ -100,12 +100,12 @@ public class Apprentice extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Weaving",false);
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Dyeing",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Embroidering",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Engraving",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Embroidering",false,CMParms.parseSemicolons("Skill_Write",true));
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Engraving",false,CMParms.parseSemicolons("Skill_Write",true));
 			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Lacquerring",false);
 			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Shipwright",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Wainwrighting",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Shipwright",false,CMParms.parseSemicolons("Carpentry",true));
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Wainwrighting",false,CMParms.parseSemicolons("Carpentry",true));
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"PaperMaking",false);
 			
@@ -121,14 +121,14 @@ public class Apprentice extends StdCharClass
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Taxidermy",false);
 			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Armorsmithing",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Fletching",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Weaponsmithing",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Armorsmithing",false,CMParms.parseSemicolons("Blacksmithing",true));
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Fletching",false,CMParms.parseSemicolons("Specialization_Ranged",true));
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Weaponsmithing",false,CMParms.parseSemicolons("Blacksmithing;Specialization_*",true));
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Merchant",false);
 			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Construction",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Masonry",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Construction",false,CMParms.parseSemicolons("Carpentry",true));
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Masonry",false,CMParms.parseSemicolons("Sculpting",true));
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Painting",false);
 			

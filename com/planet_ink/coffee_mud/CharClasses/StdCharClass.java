@@ -80,14 +80,14 @@ public class StdCharClass implements CharClass
 		if(!commonMapped)
 		{
 			commonMapped=true;
-			CMLib.ableMapper().addCharAbilityMapping("All",1,"Armorsmithing",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Armorsmithing",false,CMParms.parseSemicolons("Blacksmithing",true));
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Blacksmithing",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Butchering",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Carpentry",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Chopping",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"ClanCrafting",false);
-			CMLib.ableMapper().addCharAbilityMapping("All",1,"Cobbling",false);
-			CMLib.ableMapper().addCharAbilityMapping("All",10,"Construction",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Cobbling",false,CMParms.parseSemicolons("LeatherWorking",true));
+			CMLib.ableMapper().addCharAbilityMapping("All",10,"Construction",false,CMParms.parseSemicolons("Carpentry",true));
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Cooking",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Baking",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"FoodPrep",false);
@@ -95,13 +95,13 @@ public class StdCharClass implements CharClass
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Distilling",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Drilling",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Dyeing",false);
-			CMLib.ableMapper().addCharAbilityMapping("All",1,"Embroidering",false);
-			CMLib.ableMapper().addCharAbilityMapping("All",1,"Engraving",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Embroidering",false,CMParms.parseSemicolons("Skill_Write",true));
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Engraving",false,CMParms.parseSemicolons("Skill_Write",true));
 			CMLib.ableMapper().addCharAbilityMapping("All",10,"Farming",false);
-			CMLib.ableMapper().addCharAbilityMapping("All",1,"Costuming",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Costuming",false,CMParms.parseSemicolons("Tailoring",true));
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"FireBuilding",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Fishing",false);
-			CMLib.ableMapper().addCharAbilityMapping("All",1,"Fletching",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Fletching",false,CMParms.parseSemicolons("Specialization_Ranged",true));
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Foraging",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"GlassBlowing",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Herbology",false);
@@ -110,12 +110,12 @@ public class StdCharClass implements CharClass
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Lacquerring",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"LeatherWorking",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",15,"LockSmith",false);
-			CMLib.ableMapper().addCharAbilityMapping("All",10,"Masonry",false);
-			CMLib.ableMapper().addCharAbilityMapping("All",30,"MasterTailoring",false);
-			CMLib.ableMapper().addCharAbilityMapping("All",30,"MasterCostuming",false);
-			CMLib.ableMapper().addCharAbilityMapping("All",30,"MasterLeatherWorking",false);
-			CMLib.ableMapper().addCharAbilityMapping("All",30,"MasterWeaponsmithing",false);
-			CMLib.ableMapper().addCharAbilityMapping("All",30,"MasterArmorsmithing",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",10,"Masonry",false,CMParms.parseSemicolons("Sculpting",true));
+			CMLib.ableMapper().addCharAbilityMapping("All",30,"MasterTailoring",false,CMParms.parseSemicolons("Tailoring",true));
+			CMLib.ableMapper().addCharAbilityMapping("All",30,"MasterCostuming",false,CMParms.parseSemicolons("Costuming",true));
+			CMLib.ableMapper().addCharAbilityMapping("All",30,"MasterLeatherWorking",false,CMParms.parseSemicolons("LeatherWorking",true));
+			CMLib.ableMapper().addCharAbilityMapping("All",30,"MasterWeaponsmithing",false,CMParms.parseSemicolons("Weaponsmithing;Specialization_*",true));
+			CMLib.ableMapper().addCharAbilityMapping("All",30,"MasterArmorsmithing",false,CMParms.parseSemicolons("Armorsmithing",true));
 			CMLib.ableMapper().addCharAbilityMapping("All",20,"Merchant",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Mining",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",5,"Painting",false);
@@ -124,14 +124,14 @@ public class StdCharClass implements CharClass
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"ScrimShaw",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Sculpting",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Searching",false);
-			CMLib.ableMapper().addCharAbilityMapping("All",4,"Shipwright",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",4,"Shipwright",false,CMParms.parseSemicolons("Carpentry",true));
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Smelting",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"SmokeRings",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",10,"Speculate",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Tailoring",false);
 			CMLib.ableMapper().addCharAbilityMapping("All",20,"Taxidermy",false);
-			CMLib.ableMapper().addCharAbilityMapping("All",4,"Wainwrighting",false);
-			CMLib.ableMapper().addCharAbilityMapping("All",1,"Weaponsmithing",false);
+			CMLib.ableMapper().addCharAbilityMapping("All",4,"Wainwrighting",false,CMParms.parseSemicolons("Carpentry",true));
+			CMLib.ableMapper().addCharAbilityMapping("All",1,"Weaponsmithing",false,CMParms.parseSemicolons("Blacksmithing;Specialization_*",true));
 			CMLib.ableMapper().addCharAbilityMapping("All",1,"Weaving",false);
 
 

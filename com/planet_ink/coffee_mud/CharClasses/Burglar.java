@@ -87,24 +87,24 @@ public class Burglar extends Thief
 			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_Forgery",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_Listen",true);
 			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_ImprovedHiding",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_ImprovedHiding",false,CMParms.parseSemicolons("Thief_Hide",true));
 			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_BackStab",false);
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Steal",true);
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_SlipItem",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_ImprovedPeek",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_ImprovedPeek",false,CMParms.parseSemicolons("Thief_Peekt",true));
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_PlantItem",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Detection",true);
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Bribe",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_ImprovedSwipe",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_ImprovedSwipe",false,CMParms.parseSemicolons("Thief_Swipe",true));
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_ReadMagic",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_SilentGold",true);
 			
-			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_Safecracking",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_Safecracking",false,CMParms.parseSemicolons("Thief_Pick",true));
 			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_SilentLoot",false);
 
 			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",true);
@@ -122,7 +122,7 @@ public class Burglar extends Thief
 			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_StripItem",true);
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_UsePoison",false);
-			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_ImprovedSteal",false);
+			CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_ImprovedSteal",false,CMParms.parseSemicolons("Thief_Steal",true));
 			
 			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_AnalyzeDweomer",false);
 			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_Tumble",true);
