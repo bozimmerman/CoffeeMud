@@ -63,10 +63,17 @@ public interface AbilityMapper extends CMObject
     public Vector getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly);
     public int getQualifyingLevel(String ID, boolean checkAll, String ability);
     public int qualifyingLevel(MOB student, Ability A);
+    public String getExtraMask(String ID, boolean checkAll, String ability);
+	public String getApplicableMask(MOB student, Ability A);
+	public Vector getPreReqs(String ID, boolean checkAll, String ability);
+	public Vector getUnmetPreRequisites(MOB student, Ability A);
+	public Vector getCommonPreRequisites(Ability A);
+	public String formatPreRequisites(Vector preReqs);
     public int qualifyingClassLevel(MOB student, Ability A);
     public Object lowestQualifyingClassRace(MOB student, Ability A);
     public boolean qualifiesByCurrentClassAndLevel(MOB student, Ability A);
     public boolean qualifiesByLevel(MOB student, Ability A);
+	public boolean qualifiesByLevel(MOB student, String ability);
     public boolean getDefaultGain(String ID, boolean checkAll, String ability);
     public AbilityMapping getAllAbleMap(String ability);
     public boolean getSecretSkill(String ID, boolean checkAll, String ability);

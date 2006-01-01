@@ -1087,6 +1087,25 @@ public class StdAbility extends ForeignScriptable implements Ability
 		    teacher.tell(student.name()+" needs to stand up to be taught about that.");
 		    return false;
 		}
+		
+		String extraMask=CMLib.ableMapper().getApplicableMask(student,this);
+		if((extraMask.length()>0)&&(!CMLib.masking().maskCheck(extraMask,student)))
+		{
+			String reason="requirements: "+CMLib.masking().maskDesc(extraMask);
+			student.tell("You may not learn '"+name()+"' at this time due to the "+reason+".");
+			teacher.tell(student.name()+" does not fit the '"+name()+"' "+reason+".");
+			return false;
+		}
+		
+		Vector prereqs=CMLib.ableMapper().getUnmetPreRequisites(student,this);
+		if((prereqs!=null)&&(prereqs.size()>0))
+		{
+			String names=CMLib.ableMapper().formatPreRequisites(prereqs);
+			student.tell("You must learn "+names+" before you can gain "+name()+".");
+			teacher.tell(student.name()+" has net learned the pre-requisites to "+name()+" yet.");
+			return false;
+		}
+		
 		return true;
 	}
 

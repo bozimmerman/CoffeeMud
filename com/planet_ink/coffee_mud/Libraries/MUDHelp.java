@@ -209,6 +209,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						prepend.append(CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[school]));
 					}
 					Vector avail=new Vector();
+					Hashtable sortedByLevel=new Hashtable();
 					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 					{
 						CharClass C=(CharClass)c.nextElement();
@@ -217,13 +218,42 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						&&(lvl>=0)
 						&&(C.availabilityCode()!=0)
 						&&(!CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID())))
+						{
+							if(!sortedByLevel.containsKey(new Integer(lvl)))
+								sortedByLevel.put(new Integer(lvl),new int[1]);
+							((int[])sortedByLevel.get(new Integer(lvl)))[0]++;
 							avail.addElement(C.name(lvl)+"("+lvl+")");
+						}
+					}
+					for(Enumeration e=sortedByLevel.keys();e.hasMoreElements();)
+					{
+						Integer I=(Integer)e.nextElement();
+						if(((int[])sortedByLevel.get(I))[0]>2)
+						{
+							String s=null;
+							for(int i=avail.size()-1;i>=0;i--)
+							{
+								s=(String)avail.elementAt(i);
+								if(s.endsWith("("+I.intValue()+")"))
+									avail.removeElementAt(i);
+							}
+							if(((int[])sortedByLevel.get(I))[0]>5)
+								avail.addElement("Numerous Classes("+I.intValue()+")");
+							else
+								avail.addElement("Several Classes("+I.intValue()+")");
+						}
 					}
 					for(int c=0;c<avail.size();c++)
 					{
 						if((c%4)==0)
 							prepend.append("\n\rAvailable: ");
 						prepend.append(((String)avail.elementAt(c))+" ");
+					}
+					Vector preReqs=CMLib.ableMapper().getCommonPreRequisites(A);
+					if(preReqs.size()>0)
+					{
+						String names=CMLib.ableMapper().formatPreRequisites(preReqs);
+						prepend.append("\n\rRequires : "+names);
 					}
 					if(type==Ability.PRAYER)
 					{
@@ -234,6 +264,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					            prepend.append("\n\r"+CMStrings.capitalizeAndLower(F.name())+": "+F.usageFactors(A));
 					    }
 					}
+					
 					if(!A.isAutoInvoked())
 					{
 						prepend.append("\n\rUse Cost : ");

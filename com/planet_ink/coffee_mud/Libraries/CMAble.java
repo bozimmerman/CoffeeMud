@@ -244,6 +244,272 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return -1;
 	}
 
+	public void fillPreRequisites(Ability A, Vector rawPreReqs)
+	{
+		Ability preA=null;
+		for(int v=0;v<rawPreReqs.size();v++)
+		{
+			String abilityID=(String)rawPreReqs.elementAt(v);
+			if(abilityID.startsWith("*")||abilityID.endsWith("*"))
+			{
+				Vector orset=new Vector();
+				if(abilityID.startsWith("*"))
+				{
+					String a=abilityID.substring(1).toUpperCase();
+					for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+					{ 
+						preA=(Ability)e.nextElement();
+						if(preA.ID().toUpperCase().endsWith(a))
+							orset.addElement(preA.ID());
+					}
+				}
+				else
+				if(abilityID.endsWith("*"))
+				{
+					String a=abilityID.substring(0,abilityID.length()-1).toUpperCase();
+					for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+					{ 
+						preA=(Ability)e.nextElement();
+						if(preA.ID().toUpperCase().startsWith(a))
+							orset.addElement(preA.ID());
+					}
+				}
+				rawPreReqs.setElementAt(orset,v);
+				for(int o=orset.size()-1;o>=0;o--)
+				{
+					abilityID=(String)orset.elementAt(o);
+					preA=CMClass.getAbility(abilityID);
+					if(preA==null) 
+					{
+						preA=CMClass.findAbility(abilityID);
+						if(preA!=null)
+							orset.setElementAt(preA.ID(),o);
+						else
+						{
+							Log.errOut("CMAble","Skill "+A.ID()+" requires nonexistant skill "+abilityID+".");
+							orset.clear();
+							break;
+						}
+					}
+				}
+				if(orset.size()==0)
+					rawPreReqs.removeElementAt(v);
+			}
+			else
+			{
+				Ability otherAbility=CMClass.getAbility(abilityID);
+				if(otherAbility==null) 
+				{
+					otherAbility=CMClass.findAbility(abilityID);
+					if(otherAbility!=null)
+						rawPreReqs.setElementAt(otherAbility.ID(),v);
+					else
+					{
+						Log.errOut("CMAble","Skill "+A.ID()+" requires nonexistant skill "+abilityID+".");
+						break;
+					}
+				}
+			}
+		}
+	}
+	
+	public Vector getCommonPreRequisites(Ability A)
+	{
+		Vector preReqs=null;
+		Hashtable ableMap=null;
+		if(completeAbleMap.containsKey("All"))
+		{
+			ableMap=(Hashtable)completeAbleMap.get("All");
+			if(ableMap.containsKey(A.ID()))
+				preReqs=((AbilityMapping)ableMap.get(A.ID())).skillPreReqs;
+		}
+		if(preReqs==null)
+		for(Enumeration e=completeAbleMap.elements();e.hasMoreElements();)
+		{
+			ableMap=(Hashtable)e.nextElement();
+			if(ableMap.containsKey(A.ID()))
+			{
+				preReqs=((AbilityMapping)ableMap.get(A.ID())).skillPreReqs;
+				if((preReqs!=null)&&(preReqs.size()>0)) break;
+			}
+		}
+		if((preReqs==null)||(preReqs.size()==0)) return new Vector();
+		preReqs=(Vector)preReqs.clone();
+		fillPreRequisites(A,preReqs);
+		return preReqs;
+		
+	}
+	
+	public Vector getUnmetPreRequisites(MOB student, Ability A)
+	{
+		Vector V=getRawPreRequisites(student,A);
+		if((V==null)||(V.size()==0)) return new Vector();
+		fillPreRequisites(A,V);
+		String abilityID=null;
+		for(int v=V.size()-1;v>=0;v--)
+		{
+			if(V.elementAt(v) instanceof String)
+			{
+				abilityID=(String)V.elementAt(v);
+				if(student.fetchAbility(abilityID)!=null)
+					V.removeElementAt(v);
+				else
+				if(!qualifiesByLevel(student,abilityID))
+					V.removeElementAt(v);
+			}
+			else
+			{
+				Vector orset=(Vector)V.elementAt(v);
+				for(int o=orset.size()-1;o>=0;o--)
+				{
+					abilityID=(String)orset.elementAt(o);
+					if(student.fetchAbility(abilityID)!=null)
+					{
+						orset.clear();
+						break;
+					}
+					if(!qualifiesByLevel(student,abilityID))
+						orset.removeElementAt(o);
+				}
+				if(orset.size()==0)
+					V.removeElementAt(v);
+			}
+		}
+		return V;
+	}
+	
+	public Vector getPreReqs(String ID, boolean checkAll, String ability)
+	{
+		if(completeAbleMap.containsKey(ID))
+		{
+			Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
+			if(ableMap.containsKey(ability))
+				return ((AbilityMapping)ableMap.get(ability)).skillPreReqs;
+		}
+		if((checkAll)&&(completeAbleMap.containsKey("All")))
+		{
+			Hashtable ableMap=(Hashtable)completeAbleMap.get("All");
+			if(ableMap.containsKey(ability))
+				return ((AbilityMapping)ableMap.get(ability)).skillPreReqs;
+		}
+		return null;
+	}
+	
+	public String formatPreRequisites(Vector preReqs)
+	{
+		StringBuffer names=new StringBuffer("");
+		if((preReqs!=null)&&(preReqs.size()>0))
+		{
+			for(int p=0;p<preReqs.size();p++)
+			{
+				if(preReqs.elementAt(p) instanceof Vector)
+				{
+					Vector V=(Vector)preReqs.elementAt(p);
+					names.append("(One of: ");
+					for(int v=0;v<V.size();v++)
+					{
+						Ability A=CMClass.getAbility((String)V.elementAt(v));
+						if(A!=null) 
+						{
+							names.append("'"+A.name()+"'");
+							if(V.size()>1)
+							{
+								if(v==(V.size()-2))
+									names.append(", or ");
+								else
+								if(v<V.size()-2)
+									names.append(", ");
+							}
+						}
+					}
+					names.append(")");
+				}
+				else
+				{
+					Ability A=CMClass.getAbility((String)preReqs.elementAt(p));
+					if(A!=null) names.append("'"+A.name()+"'");
+				}
+				if(preReqs.size()>1)
+				{
+					if(p==(preReqs.size()-2))
+						names.append(", and ");
+					else
+					if(p<preReqs.size()-2)
+						names.append(", ");
+				}
+			}
+		}
+		return names.toString();
+	}
+	
+	public Vector getRawPreRequisites(MOB student, Ability A)
+	{
+		if(student==null) return new Vector();
+		Vector reqs=null;
+		for(int c=student.charStats().numClasses()-1;c>=0;c--)
+		{
+			CharClass C=student.charStats().getMyClass(c);
+			int level=getQualifyingLevel(C.ID(),true,A.ID());
+			int classLevel=student.charStats().getClassLevel(C);
+			if((level>=0)&&(classLevel>=level))
+			{
+				reqs=getPreReqs(C.ID(),true,A.ID());
+				if(reqs!=null) return (Vector)reqs.clone();
+			}
+		}
+		int level=getQualifyingLevel(student.charStats().getMyRace().ID(),false,A.ID());
+		int classLevel=student.baseEnvStats().level();
+		if((level>=0)&&(classLevel>=level))
+		{
+			reqs=getPreReqs(student.charStats().getMyRace().ID(),false,A.ID());
+			if(reqs!=null) return (Vector)reqs.clone();
+		}
+		reqs=getPreReqs(student.charStats().getCurrentClass().ID(),true,A.ID());
+		return (reqs==null)?new Vector():(Vector)reqs.clone();
+	}
+
+	public String getExtraMask(String ID, boolean checkAll, String ability)
+	{
+		if(completeAbleMap.containsKey(ID))
+		{
+			Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
+			if(ableMap.containsKey(ability))
+				return ((AbilityMapping)ableMap.get(ability)).extraMask;
+		}
+		if((checkAll)&&(completeAbleMap.containsKey("All")))
+		{
+			Hashtable ableMap=(Hashtable)completeAbleMap.get("All");
+			if(ableMap.containsKey(ability))
+				return ((AbilityMapping)ableMap.get(ability)).extraMask;
+		}
+		return null;
+	}
+	
+	public String getApplicableMask(MOB student, Ability A)
+	{
+		if(student==null) return "";
+		String mask=null;
+		for(int c=student.charStats().numClasses()-1;c>=0;c--)
+		{
+			CharClass C=student.charStats().getMyClass(c);
+			int level=getQualifyingLevel(C.ID(),true,A.ID());
+			int classLevel=student.charStats().getClassLevel(C);
+			if((level>=0)&&(classLevel>=level))
+			{
+				mask=getExtraMask(C.ID(),true,A.ID());
+				if(mask!=null) return mask;
+			}
+		}
+		int level=getQualifyingLevel(student.charStats().getMyRace().ID(),false,A.ID());
+		int classLevel=student.baseEnvStats().level();
+		if((level>=0)&&(classLevel>=level))
+		{
+			mask=getExtraMask(student.charStats().getMyRace().ID(),false,A.ID());
+			if(mask!=null) return mask;
+		}
+		mask=getExtraMask(student.charStats().getCurrentClass().ID(),true,A.ID());
+		return mask==null?"":mask;
+	}
 	
 	public int qualifyingLevel(MOB student, Ability A)
 	{
@@ -358,6 +624,23 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				return true;
 		}
 		int level=getQualifyingLevel(student.charStats().getMyRace().ID(),false,A.ID());
+		if((level>=0)&&(student.envStats().level()>=level))
+			return true;
+		return false;
+	}
+
+	public boolean qualifiesByLevel(MOB student, String ability)
+	{
+		if(student==null) return false;
+		for(int c=student.charStats().numClasses()-1;c>=0;c--)
+		{
+			CharClass C=student.charStats().getMyClass(c);
+			int level=getQualifyingLevel(C.ID(),true,ability);
+			if((level>=0)
+			&&(student.charStats().getClassLevel(C)>=level))
+				return true;
+		}
+		int level=getQualifyingLevel(student.charStats().getMyRace().ID(),false,ability);
 		if((level>=0)&&(student.envStats().level()>=level))
 			return true;
 		return false;
