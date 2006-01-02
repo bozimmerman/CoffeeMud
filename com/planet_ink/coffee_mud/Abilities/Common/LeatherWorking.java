@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class LeatherWorking extends CraftingSkill
+public class LeatherWorking extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "LeatherWorking"; }
 	public String name(){ return "Leather Working";}

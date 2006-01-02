@@ -77,39 +77,19 @@ public class Chant_GrowItem extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item building=null;
-				Item key=null;
-				Ability A=CMClass.getAbility("Carpentry");
-				if(A!=null)
-				{
-					while((building==null)||(building.name().endsWith(" bundle")))
-					{
-						Vector V=new Vector();
-						V.addElement(new Integer(material));
-						A.invoke(mob,V,A,true,asLevel);
-						if((V.size()>0)&&(V.lastElement() instanceof Item))
-						{
-							if((V.size()>1)&&((V.elementAt(V.size()-2) instanceof Item)))
-								key=(Item)V.elementAt(V.size()-2);
-							building=(Item)V.lastElement();
-						}
-						else
-							break;
-					}
-				}
-				if(building==null)
+				ItemCraftor A=(ItemCraftor)CMClass.getAbility("Carpentry");
+				Vector V=null;
+				if(A!=null) V=A.craftAnyItem(material);
+				if((V==null)||(V.size()==0))
 				{
 					mob.tell("The chant failed for some reason...");
 					return false;
 				}
-
-				building.recoverEnvStats();
-				building.text();
-				building.recoverEnvStats();
-
+				Item building=(Item)V.firstElement();
+				Item key=null;
+				if(V.size()>1) key=(Item)V.lastElement();
 				mob.location().addItemRefuse(building,Item.REFUSE_RESOURCE);
-				if(key!=null)
-					mob.location().addItemRefuse(key,Item.REFUSE_RESOURCE);
+				if(key!=null) mob.location().addItemRefuse(key,Item.REFUSE_RESOURCE);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,building.name()+" grows out of a tree and drops.");
 				mob.location().recoverEnvStats();
 			}

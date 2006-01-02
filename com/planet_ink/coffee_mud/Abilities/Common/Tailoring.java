@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Tailoring extends CraftingSkill
+public class Tailoring extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Tailoring"; }
 	public String name(){ return "Tailoring";}

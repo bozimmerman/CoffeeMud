@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Herbalism extends CraftingSkill
+public class Herbalism extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Herbalism"; }
 	public String name(){ return "Herbalism";}

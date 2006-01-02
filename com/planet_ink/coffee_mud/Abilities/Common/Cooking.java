@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Cooking extends CraftingSkill
+public class Cooking extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Cooking"; }
 	public String name(){ return "Cooking";}

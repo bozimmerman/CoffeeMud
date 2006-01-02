@@ -86,33 +86,19 @@ public class Chant_VineWeave extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-
-				Item building=null;
-				Ability A=CMClass.getAbility("Weaving");
-				if(A!=null)
-				{
-					while((building==null)||(building.name().endsWith(" bundle")))
-					{
-						Vector V=new Vector();
-						V.addElement(new Integer(material));
-						A.invoke(mob,V,A,true,asLevel);
-						if((V.size()>0)&&(V.lastElement() instanceof Item))
-							building=(Item)V.lastElement();
-						else
-							break;
-					}
-				}
-				if(building==null)
+				ItemCraftor A=(ItemCraftor)CMClass.getAbility("Weaving");
+				Vector V=null;
+				if(A!=null) V=A.craftAnyItem(material);
+				if((V==null)||(V.size()==0))
 				{
 					mob.tell("The chant failed for some reason...");
 					return false;
 				}
-
-				building.recoverEnvStats();
-				building.text();
-				building.recoverEnvStats();
-
+				Item building=(Item)V.firstElement();
+				Item key=null;
+				if(V.size()>1) key=(Item)V.lastElement();
 				mob.location().addItemRefuse(building,Item.REFUSE_RESOURCE);
+				if(key!=null) mob.location().addItemRefuse(key,Item.REFUSE_RESOURCE);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,building.name()+" twists out of some vines and grows still.");
 				mob.location().recoverEnvStats();
 			}

@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Carpentry extends CraftingSkill
+public class Carpentry extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Carpentry"; }
 	public String name(){ return "Carpentry";}

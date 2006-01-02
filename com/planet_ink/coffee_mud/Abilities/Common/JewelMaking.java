@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class JewelMaking extends CraftingSkill
+public class JewelMaking extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "JewelMaking"; }
 	public String name(){ return "Jewel Making";}

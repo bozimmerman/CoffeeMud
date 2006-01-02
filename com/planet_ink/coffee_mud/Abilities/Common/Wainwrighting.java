@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Wainwrighting extends CraftingSkill
+public class Wainwrighting extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Wainwrighting"; }
 	public String name(){ return "Wainwrighting";}

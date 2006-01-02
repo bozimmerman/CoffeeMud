@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class MasterCostuming extends CraftingSkill
+public class MasterCostuming extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "MasterCostuming"; }
 	public String name(){ return "Master Costuming";}

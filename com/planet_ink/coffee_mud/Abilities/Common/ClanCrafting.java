@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class ClanCrafting extends CraftingSkill
+public class ClanCrafting extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "ClanCrafting"; }
 	public String name(){ return "Clan Crafting";}

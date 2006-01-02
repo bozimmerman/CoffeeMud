@@ -60,54 +60,41 @@ public class Chant_CrystalGrowth extends Chant
 			{
 				mob.location().send(mob,msg);
 
-				Item building=null;
-				Ability A=null;
+				ItemCraftor A=null;
 				switch(CMLib.dice().roll(1,10,0))
 				{
 				case 1:
 				case 2:
 				case 3:
 				case 4:
-					A=CMClass.getAbility("Blacksmithing");
+					A=(ItemCraftor)CMClass.getAbility("Blacksmithing");
 					break;
 				case 5:
 				case 6:
 				case 7:
-					A=CMClass.getAbility("Armorsmithing");
+					A=(ItemCraftor)CMClass.getAbility("Armorsmithing");
 					break;
 				case 8:
 				case 9:
 				case 10:
-					A=CMClass.getAbility("Weaponsmithing");
+					A=(ItemCraftor)CMClass.getAbility("Weaponsmithing");
 					break;
 				}
-				if(A!=null)
-				{
-					while((building==null)||(building.name().endsWith(" bundle")))
-					{
-						Vector V=new Vector();
-						V.addElement(new Integer(material));
-						A.invoke(mob,V,A,true,asLevel);
-						if((V.size()>0)&&(V.lastElement() instanceof Item))
-							building=(Item)V.lastElement();
-						else
-							break;
-					}
-				}
-				if(building==null)
+				Vector V=null;
+				if(A!=null) V=A.craftAnyItem(material);
+				if((V==null)||(V.size()==0))
 				{
 					mob.tell("The chant failed for some reason...");
 					return false;
 				}
-				Ability A2=CMClass.getAbility("Chant_Brittle");
-				if(A2!=null)
-					building.addNonUninvokableEffect(A2);
-
-				building.recoverEnvStats();
-				building.text();
-				building.recoverEnvStats();
-
+				Item building=(Item)V.firstElement();
+				Item key=null;
+				if(V.size()>1) key=(Item)V.lastElement();
 				mob.location().addItemRefuse(building,Item.REFUSE_RESOURCE);
+				if(key!=null) mob.location().addItemRefuse(key,Item.REFUSE_RESOURCE);
+				Ability A2=CMClass.getAbility("Chant_Brittle");
+				if(A2!=null) building.addNonUninvokableEffect(A2);
+
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"a tiny crystal fragment drops out of the stone, swells and grows, forming into "+building.name()+".");
 				mob.location().recoverEnvStats();
 			}

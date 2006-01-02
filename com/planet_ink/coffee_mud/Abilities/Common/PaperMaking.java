@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class PaperMaking extends CraftingSkill
+public class PaperMaking extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "PaperMaking"; }
 	public String name(){ return "Paper Making";}

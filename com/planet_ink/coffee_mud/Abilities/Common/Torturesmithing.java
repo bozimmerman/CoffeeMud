@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Torturesmithing extends CraftingSkill
+public class Torturesmithing extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Torturesmithing"; }
 	public String name(){ return "Torturesmithing";}

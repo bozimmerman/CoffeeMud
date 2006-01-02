@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class GlassBlowing extends CraftingSkill
+public class GlassBlowing extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "GlassBlowing"; }
 	public String name(){ return "Glass Blowing";}

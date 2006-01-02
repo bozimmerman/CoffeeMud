@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class ScrimShaw extends CraftingSkill
+public class ScrimShaw extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "ScrimShaw"; }
 	public String name(){ return "Scrimshaw";}

@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Weaving extends CraftingSkill
+public class Weaving extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Weaving"; }
 	public String name(){ return "Weaving";}

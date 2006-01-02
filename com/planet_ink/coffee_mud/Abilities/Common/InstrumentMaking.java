@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class InstrumentMaking extends CraftingSkill
+public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "InstrumentMaking"; }
 	public String name(){ return "Instrument Making";}

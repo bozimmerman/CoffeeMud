@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class MasterWeaponsmithing extends Weaponsmithing
+public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 {
 	public String ID() { return "MasterWeaponsmithing"; }
 	public String name(){ return "Master Weaponsmithing";}

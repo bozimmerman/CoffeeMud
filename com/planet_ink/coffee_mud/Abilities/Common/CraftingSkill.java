@@ -124,7 +124,6 @@ public class CraftingSkill extends GatheringSkill
 	        }
 	    }
 	}
-
 	protected Vector loadList(StringBuffer str)
 	{
 		Vector V=new Vector();
@@ -429,6 +428,104 @@ public class CraftingSkill extends GatheringSkill
 		}
 	}
 
+	public Vector craftAnyItem(int material){return craftItem(null,material);}
+	public Vector craftItem(String recipe, int material)
+	{
+		Item building=null;
+		Item key=null;
+		int tries=0;
+		MOB mob=CMLib.map().god(CMLib.map().getRandomRoom());
+		while(((building==null)||(building.name().endsWith(" bundle")))&&(((++tries)<100)))
+		{
+			Vector V=new Vector();
+			V.addElement(new Integer(material));
+			if(recipe!=null) V.addElement(recipe);
+			invoke(mob,V,this,true,-1);
+			if((V.size()>0)&&(V.lastElement() instanceof Item))
+			{
+				if((V.size()>1)&&((V.elementAt(V.size()-2) instanceof Item)))
+					key=(Item)V.elementAt(V.size()-2);
+				else
+					key=null;
+				building=(Item)V.lastElement();
+			}
+			else
+				building=null;
+		}
+		mob.destroy();
+		if(building==null) return null;
+		Vector items=new Vector();
+		building.setSecretIdentity("");
+		building.recoverEnvStats();
+		building.text();
+		building.recoverEnvStats();
+		if(key!=null)
+		{
+			key.setSecretIdentity("");
+			key.recoverEnvStats();
+			key.text();
+			key.recoverEnvStats();
+		}
+		items.addElement(building);
+		if(key!=null) items.addElement(key);
+		return items;
+	}
+	public Vector craftAllItemsVectors(int material)
+	{
+		Vector allItems=new Vector();
+		Vector recipes=fetchRecipes();
+		Item built=null;
+		for(int r=0;r<recipes.size();r++)
+		{
+			String s=(String)(((Vector)recipes.elementAt(r)).firstElement());
+			s=CMStrings.replaceAll(s,"%","").trim();
+			Vector items=craftItem(s,material);
+			if((items==null)||(items.size()==0)) continue;
+			built=(Item)items.firstElement();
+			for(int a=0;a<allItems.size();a++)
+			{
+				if(built.Name().equals(((Item)((Vector)allItems.elementAt(a)).firstElement()).Name()))
+				{ built=null; break;}
+			}
+			if(built!=null) allItems.addElement(items);
+		}
+		return allItems;
+	}
+	
+	public Vector craftItem(String recipe)
+	{
+		Vector rscs=myResources();
+		int material=((Integer)rscs.elementAt(CMLib.dice().roll(1,rscs.size(),-1))).intValue();
+		return craftItem(recipe,material);
+	}
+	
+	public Vector craftAllItemsVectors()
+	{
+		Vector rscs=myResources();
+		Vector allItems=new Vector();
+		Vector items=null;
+		Vector itemSet=null;
+		Item built=null;
+		for(int r=0;r<rscs.size();r++)
+		{
+			items=craftAllItemsVectors(((Integer)rscs.elementAt(r)).intValue());
+			if((items==null)||(items.size()==0)) continue;
+			for(int i=0;i<items.size();i++)
+			{
+				itemSet=(Vector)items.elementAt(i);
+				built=(Item)itemSet.firstElement();
+				for(int a=0;a<allItems.size();a++)
+				{
+					if(built.Name().equals(((Item)((Vector)allItems.elementAt(a)).firstElement()).Name()))
+					{ built=null; break;}
+				}
+				if(built!=null) allItems.addElement(itemSet);
+			}
+		}
+		return allItems;
+	}
+	
+	public Vector matchingRecipeNames(String recipeName, boolean beLoose){return matchingRecipeNames(fetchRecipes(),recipeName,beLoose);}
 	protected Vector matchingRecipeNames(Vector recipes, String recipeName, boolean beLoose)
 	{
 		Vector matches=new Vector();

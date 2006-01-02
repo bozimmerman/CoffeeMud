@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Weaponsmithing extends CraftingSkill
+public class Weaponsmithing extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Weaponsmithing"; }
 	public String name(){ return "Weaponsmithing";}

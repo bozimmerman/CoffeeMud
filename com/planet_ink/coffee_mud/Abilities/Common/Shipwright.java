@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Shipwright extends CraftingSkill
+public class Shipwright extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Shipwright"; }
 	public String name(){ return "Shipwright";}

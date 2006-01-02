@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Pottery extends CraftingSkill
+public class Pottery extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Pottery"; }
 	public String name(){ return "Pottery";}

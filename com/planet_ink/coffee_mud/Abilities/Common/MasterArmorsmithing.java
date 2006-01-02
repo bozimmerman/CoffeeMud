@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class MasterArmorsmithing extends Armorsmithing
+public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 {
 	public String ID() { return "MasterArmorsmithing"; }
 	public String name(){ return "Master Armorsmithing";}
@@ -45,8 +45,7 @@ public class MasterArmorsmithing extends Armorsmithing
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;
-
-			if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
+		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
 			autoGenerate=((Integer)commands.firstElement()).intValue();
 			commands.removeElementAt(0);

@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Cobbling extends CraftingSkill
+public class Cobbling extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Cobbling"; }
 	public String name(){ return "Cobbling";}

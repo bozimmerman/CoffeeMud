@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fletching extends CraftingSkill
+public class Fletching extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Fletching"; }
 	public String name(){ return "Fletching";}

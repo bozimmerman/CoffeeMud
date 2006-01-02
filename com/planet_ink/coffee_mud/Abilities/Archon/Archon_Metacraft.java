@@ -1,5 +1,4 @@
 package com.planet_ink.coffee_mud.Abilities.Archon;
-import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -33,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Archon_Metacraft extends CraftingSkill
+public class Archon_Metacraft extends ArchonSkill
 {
 	public String ID() { return "Archon_Metacraft"; }
 	public String name(){ return "Metacrafting";}
@@ -49,9 +48,7 @@ public class Archon_Metacraft extends CraftingSkill
 			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
 			{
 				Ability A=(Ability)e.nextElement();
-				if(((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL)
-				&&((" Cooking Baking FoodPrep Apothecary ").indexOf(A.ID())<0)
-				&&(CMath.bset(A.flags(),Ability.FLAG_CRAFTING)))
+				if(A instanceof ItemCraftor)
 					V.addElement(A.copyOf());
 			}
 			while(V.size()>0)
@@ -79,89 +76,123 @@ public class Archon_Metacraft extends CraftingSkill
 				    break;
 			}
 		}
-		if(commands.size()<2)
+		if(commands.size()<1)
 		{
-			mob.tell("Metacraft what, out of what material?");
+			mob.tell("Metacraft what, and (optionally) out of what material?");
 			return false;
 		}
-		String mat=((String)commands.lastElement()).toUpperCase();
-		commands.removeElementAt(commands.size()-1);
+		String mat=null;
+		if(commands.size()>1)
+		{
+			mat=((String)commands.lastElement()).toUpperCase();
+			commands.removeElementAt(commands.size()-1);
+		}
 		int material=-1;
+		if(mat!=null)
 		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 			if(RawMaterial.RESOURCE_DESCS[i].startsWith(mat))
 			{ material=RawMaterial.RESOURCE_DATA[i][0]; break;}
-		if(material<0)
+		if((mat!=null)&&(material<0))
 		{
 			mob.tell("'"+mat+"' is not a recognized material.");
 			return false;
 		}
-		Ability skill=null;
+		ItemCraftor skill=null;
 		String recipe=CMParms.combine(commands,0);
-		for(int i=0;i<craftingSkills.size();i++)
+		Vector skillsToUse=new Vector();
+		boolean everyFlag=false;
+		if(recipe.equalsIgnoreCase("everything"))
 		{
-			skill=(Ability)craftingSkills.elementAt(i);
-			if(skill instanceof CraftingSkill)
-			{
-				Vector V=((CraftingSkill)skill).fetchRecipes();
-				V=matchingRecipeNames(V,recipe,false);
-				if((V!=null)&&(V.size()>0))
-					break;
-			}
-			skill=null;
+			skillsToUse=craftingSkills;
+			everyFlag=true;
+			recipe=null;
 		}
-		if(skill==null)
-		for(int i=0;i<craftingSkills.size();i++)
+		else
+	    if(recipe.toUpperCase().startsWith("EVERY "))
+	    {
+			everyFlag=true;
+	    	recipe=recipe.substring(6).trim();
+			for(int i=0;i<craftingSkills.size();i++)
+			{
+				skill=(ItemCraftor)craftingSkills.elementAt(i);
+				Vector V=skill.matchingRecipeNames(recipe,false);
+				if((V!=null)&&(V.size()>0)) skillsToUse.addElement(skill);
+			}
+			if(skillsToUse.size()==0)
+			for(int i=0;i<craftingSkills.size();i++)
+			{
+				skill=(ItemCraftor)craftingSkills.elementAt(i);
+				Vector V=skill.matchingRecipeNames(recipe,true);
+				if((V!=null)&&(V.size()>0)) skillsToUse.addElement(skill);
+			}
+	    }
+		else
 		{
-			skill=(Ability)craftingSkills.elementAt(i);
-			if(skill instanceof CraftingSkill)
+			for(int i=0;i<craftingSkills.size();i++)
 			{
-				Vector V=((CraftingSkill)skill).fetchRecipes();
-				V=matchingRecipeNames(V,recipe,true);
-				if((V!=null)&&(V.size()>0))
-					break;
+				skill=(ItemCraftor)craftingSkills.elementAt(i);
+				Vector V=skill.matchingRecipeNames(recipe,false);
+				if((V!=null)&&(V.size()>0)){ skillsToUse.addElement(skill); break;}
 			}
-			skill=null;
+			if(skillsToUse.size()==0)
+			for(int i=0;i<craftingSkills.size();i++)
+			{
+				skill=(ItemCraftor)craftingSkills.elementAt(i);
+				Vector V=skill.matchingRecipeNames(recipe,true);
+				if((V!=null)&&(V.size()>0)){ skillsToUse.addElement(skill); break;}
+			}
 		}
-		if(skill==null)
+		if(skillsToUse.size()==0)
 		{
 			mob.tell("'"+recipe+"' can not be made with any of the known crafting skills.");
 			return false;
 		}
 		
-		Item building=null;
-		Item key=null;
-		int tries=0;
-		while(((building==null)||(building.name().endsWith(" bundle")))&&(((++tries)<1000)))
+		boolean success=false;
+		for(int s=0;s<skillsToUse.size();s++)
 		{
-			Vector V=new Vector();
-			V.addElement(new Integer(material));
-			V.addElement(recipe);
-			skill.invoke(mob,V,skill,true,asLevel);
-			if((V.size()>0)&&(V.lastElement() instanceof Item))
+			skill=(ItemCraftor)skillsToUse.elementAt(s);
+			Vector items=null;
+			if(everyFlag)
 			{
-				if((V.size()>1)&&((V.elementAt(V.size()-2) instanceof Item)))
-					key=(Item)V.elementAt(V.size()-2);
+				items=new Vector();
+				if(recipe==null)
+				{
+					Vector V=null;
+					if(material>=0)
+						V=skill.craftAllItemsVectors(material);
+					else
+						V=skill.craftAllItemsVectors();
+					if(V!=null)
+					for(int v=0;v<V.size();v++)
+						CMParms.addToVector((Vector)V.elementAt(v),items);
+				}
 				else
-					key=null;
-				building=(Item)V.lastElement();
+				if(material>=0)
+					items=skill.craftItem(recipe,material);
+				else
+					items=skill.craftItem(recipe);
 			}
 			else
-				building=null;
+			if(material>=0)
+				items=skill.craftItem(recipe,material);
+			else
+				items=skill.craftItem(recipe);
+			if((items==null)||(items.size()==0)) continue;
+			success=true;
+			for(int v=0;v<items.size();v++)
+			{
+				Item building=(Item)items.elementAt(v);
+				mob.giveItem(building);
+				mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,building.name()+" appears in <S-YOUPOSS> hands.");
+			}
+			mob.location().recoverEnvStats();
 		}
-		if(building==null)
+		if(!success)
 		{
 			mob.tell("The metacraft failed.");
 			return false;
 		}
-		building.setSecretIdentity("");
-		building.recoverEnvStats();
-		building.text();
-		building.recoverEnvStats();
-
-		mob.giveItem(building);
-		if(key!=null) mob.giveItem(key);
-		mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,building.name()+" appears in <S-YOUPOSS> hands.");
-		mob.location().recoverEnvStats();
 		return true;
 	}
 }
