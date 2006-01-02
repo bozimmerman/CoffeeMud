@@ -88,7 +88,7 @@ public class Spell_ChantShield extends Spell
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<S-NAME> look(s) protected from chants.":"^S<S-NAME> invoke(s) an anti-chant shield around <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<S-NAME> look(s) protected from chants.":"^S<S-NAME> invoke(s) an anti-chant shield around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

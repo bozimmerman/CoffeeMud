@@ -121,7 +121,7 @@ public class Chant_Earthquake extends Chant
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,affectType(auto),(auto?"":"^S<S-NAME> chant(s) thunderously.^?")+CMProps.msp("earthquake.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"":"^S<S-NAME> chant(s) thunderously.^?")+CMProps.msp("earthquake.wav",40)))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
@@ -130,7 +130,7 @@ public class Chant_Earthquake extends Chant
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),null);
+				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 				if(CMLib.flags().isInFlight(target))
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected.");
 				else

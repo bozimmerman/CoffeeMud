@@ -125,7 +125,7 @@ public class Spell_Flagportation extends Spell
 			newRoom=room;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|affectType(auto),"^S<S-NAME> invoke(s) a flagportating teleportation spell.^?");
+		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,null,auto),"^S<S-NAME> invoke(s) a flagportating teleportation spell.^?");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

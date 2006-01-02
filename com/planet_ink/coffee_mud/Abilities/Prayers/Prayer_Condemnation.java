@@ -60,7 +60,7 @@ public class Prayer_Condemnation extends Prayer
 
 		if((success)&&(warrants.size()>0))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to condemn <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to condemn <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

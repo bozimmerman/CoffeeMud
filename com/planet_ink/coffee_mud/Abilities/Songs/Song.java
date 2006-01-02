@@ -48,15 +48,6 @@ public class Song extends StdAbility
 	protected boolean skipStandardSongTick(){return false;}
 	protected String songOf(){return "Song of "+name();}
 
-	protected int affectType(boolean auto){
-		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-		if(abstractQuality()==Ability.MALICIOUS)
-			affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
-		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
-		return affectType;
-	}
-
-
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -145,7 +136,7 @@ public class Song extends StdAbility
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
 
-			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),str);
+			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

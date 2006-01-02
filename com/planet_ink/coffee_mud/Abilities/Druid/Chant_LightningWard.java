@@ -77,7 +77,7 @@ public class Chant_LightningWard extends Chant
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"An organic field of protection appears around <T-NAME>.":"^S<S-NAME> chant(s) for a shimmering organic field of protection around <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"An organic field of protection appears around <T-NAME>.":"^S<S-NAME> chant(s) for a shimmering organic field of protection around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

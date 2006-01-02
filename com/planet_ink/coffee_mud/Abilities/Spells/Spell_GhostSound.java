@@ -123,7 +123,7 @@ public class Spell_GhostSound extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this, affectType(auto),auto?"":"^S<S-NAME> scream(s) loudly, then fall(s) silent.^?");
+			CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> scream(s) loudly, then fall(s) silent.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

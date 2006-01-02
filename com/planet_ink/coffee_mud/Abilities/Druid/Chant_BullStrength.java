@@ -87,7 +87,7 @@ public class Chant_BullStrength extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<S-NAME> gain(s) the strength of a bull!":"^S<S-NAME> chant(s) for the strength of a bull!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<S-NAME> gain(s) the strength of a bull!":"^S<S-NAME> chant(s) for the strength of a bull!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

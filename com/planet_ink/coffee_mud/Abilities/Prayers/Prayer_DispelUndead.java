@@ -55,7 +55,7 @@ public class Prayer_DispelUndead extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"The evil inside <T-NAME> is exorcised!":"^S<S-NAME> "+prayForWord(mob)+" to dispel the coldness inside <T-NAMESELF>!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"The evil inside <T-NAME> is exorcised!":"^S<S-NAME> "+prayForWord(mob)+" to dispel the coldness inside <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

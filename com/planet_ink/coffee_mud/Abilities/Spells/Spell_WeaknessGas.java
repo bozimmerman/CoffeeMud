@@ -88,7 +88,7 @@ public class Spell_WeaknessGas extends Spell
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"A shimmering porous field appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a porous field around <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A shimmering porous field appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a porous field around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

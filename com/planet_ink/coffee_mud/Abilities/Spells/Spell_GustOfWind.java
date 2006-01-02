@@ -104,7 +104,7 @@ public class Spell_GustOfWind extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,affectType(auto),auto?"A horrendous wind gust blows through here.":"^S<S-NAME> blow(s) at <S-HIS-HER> enemies.^?"))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"A horrendous wind gust blows through here.":"^S<S-NAME> blow(s) at <S-HIS-HER> enemies.^?"))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
@@ -113,7 +113,7 @@ public class Spell_GustOfWind extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),"<T-NAME> get(s) blown back!");
+				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"<T-NAME> get(s) blown back!");
 				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 				{
 					if((msg.value()<=0)&&(target.location()==mob.location()))

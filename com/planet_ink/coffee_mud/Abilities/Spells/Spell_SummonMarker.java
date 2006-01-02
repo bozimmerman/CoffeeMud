@@ -75,7 +75,7 @@ public class Spell_SummonMarker extends Spell
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,affectType(auto),auto?"":"^S<S-NAME> summon(s) <S-HIS-HER> marker energy to this place!^?");
+			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> summon(s) <S-HIS-HER> marker energy to this place!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

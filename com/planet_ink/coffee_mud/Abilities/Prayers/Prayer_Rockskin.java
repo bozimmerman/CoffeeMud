@@ -111,7 +111,7 @@ public class Prayer_Rockskin extends Prayer
 			// what happened.
 			invoker=mob;
 
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

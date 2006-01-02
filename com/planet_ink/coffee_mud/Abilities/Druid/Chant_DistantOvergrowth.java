@@ -86,7 +86,7 @@ public class Chant_DistantOvergrowth extends Chant
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),"^S<S-NAME> chant(s) about a far away place.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),"^S<S-NAME> chant(s) about a far away place.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

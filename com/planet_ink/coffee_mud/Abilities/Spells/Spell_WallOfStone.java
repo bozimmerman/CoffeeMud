@@ -151,7 +151,7 @@ public class Spell_WallOfStone extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this,affectType(auto),auto?"A mighty wall of stone appears!":"^S<S-NAME> conjur(s) up a mighty wall of stone!^?");
+			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?"A mighty wall of stone appears!":"^S<S-NAME> conjur(s) up a mighty wall of stone!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -60,7 +60,7 @@ public class Spell_MassHaste extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) quickly.^?"))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) quickly.^?"))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
@@ -69,7 +69,7 @@ public class Spell_MassHaste extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),null);
+				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 				if((mob.location().okMessage(mob,msg))
 				   &&(target.fetchEffect("Spell_Haste")==null)
 				   &&(target.fetchEffect("Spell_MassHaste")==null))

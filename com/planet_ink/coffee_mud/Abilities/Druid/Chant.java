@@ -38,34 +38,19 @@ public class Chant extends StdAbility
 	public String name(){ return "a Druidic Chant";}
 	public String displayText(){return "(in the natural order)";}
     protected boolean renderedMundane=false;
-	protected int affectType(boolean auto)
+	protected int verbalCastCode(MOB mob, Environmental target, boolean auto)
     {
-        int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
         if(renderedMundane)
         {
+            int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
             affectType=CMMsg.MSG_NOISE|CMMsg.MASK_MOUTH;
             if(abstractQuality()==Ability.MALICIOUS)
                 affectType=affectType|CMMsg.MASK_MALICIOUS;
+            if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+            return affectType;
         }
-        else
-        if(abstractQuality()==Ability.MALICIOUS)
-            affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
-            
-        if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
-        return affectType;
+    	return super.verbalCastCode(mob,target,auto);
 	}
-    protected int verbalCastMask(boolean auto)
-    {
-        int affectType=CMMsg.MSK_CAST_MALICIOUS_VERBAL;
-        if(renderedMundane)
-        {
-            affectType=CMMsg.MASK_SOUND|CMMsg.MASK_MOUTH;
-            if(abstractQuality()==Ability.MALICIOUS)
-                affectType=affectType|CMMsg.MASK_MALICIOUS;
-        }
-        if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
-        return affectType;
-    }
 	private static final String[] triggerStrings = {"CHANT","CH"};
 	public int abstractQuality(){return Ability.OK_SELF;}
 	public String[] triggerStrings(){return triggerStrings;}

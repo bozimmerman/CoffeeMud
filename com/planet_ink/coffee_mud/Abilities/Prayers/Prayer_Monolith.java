@@ -318,7 +318,7 @@ public class Prayer_Monolith extends Prayer
 				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE);
 				break;
 			}
-			CMMsg msg = CMClass.getMsg(mob, target, this,affectType(auto),auto?I.name()+" appears!":"^S<S-NAME> "+prayForWord(mob)+" to construct "+I.name()+"!^?");
+			CMMsg msg = CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?I.name()+" appears!":"^S<S-NAME> "+prayForWord(mob)+" to construct "+I.name()+"!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

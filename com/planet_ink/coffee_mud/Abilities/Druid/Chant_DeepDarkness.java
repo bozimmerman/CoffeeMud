@@ -112,7 +112,7 @@ public class Chant_DeepDarkness extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this, affectType(auto), (auto?"D":"^S<S-NAME> chant(s) deeply and d")+"arkness descends.^?");
+			CMMsg msg = CMClass.getMsg(mob, target,this,verbalCastCode(mob,target,auto), (auto?"D":"^S<S-NAME> chant(s) deeply and d")+"arkness descends.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

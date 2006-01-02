@@ -247,7 +247,7 @@ public class Spell_Spellbinding extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, null, this, affectType(auto),(auto?"":"^S<S-NAME> shout(s) the magic of spellbinding!^?"));
+			CMMsg msg = CMClass.getMsg(mob, null, this, verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> shout(s) the magic of spellbinding!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

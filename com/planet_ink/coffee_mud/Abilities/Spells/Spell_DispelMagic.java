@@ -90,7 +90,7 @@ public class Spell_DispelMagic extends Spell
 		boolean success=profficiencyCheck(mob,diff,auto);
 		if(success)
 		{
-			int affectType=affectType(auto);
+			int affectType=verbalCastCode(mob,target,auto);
 			if(((!mob.isMonster())&&(target instanceof MOB)&&(!((MOB)target).isMonster()))
 			||(mob==target)
 			||(mob.getGroupMembers(new HashSet()).contains(target)))

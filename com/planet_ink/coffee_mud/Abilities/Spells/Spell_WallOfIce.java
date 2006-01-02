@@ -164,7 +164,7 @@ public class Spell_WallOfIce extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this,affectType(auto),auto?"A mighty wall of ice appears!":"^S<S-NAME> conjur(s) up a mighty wall of ice!^?");
+			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?"A mighty wall of ice appears!":"^S<S-NAME> conjur(s) up a mighty wall of ice!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

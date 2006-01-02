@@ -98,7 +98,7 @@ public class Spell_MindBlock extends Spell
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),(auto?"A anti-psionic field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an anti-psionic field of protection around <T-NAMESELF>.^?"));
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"A anti-psionic field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an anti-psionic field of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				amountAbsorbed=0;

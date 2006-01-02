@@ -88,7 +88,7 @@ public class Chant_Bloodhound extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<S-NAME> gain(s) a bloodhound(s) nose!":"^S<S-NAME> chant(s) for a bloodhounds nose!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<S-NAME> gain(s) a bloodhound(s) nose!":"^S<S-NAME> chant(s) for a bloodhounds nose!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

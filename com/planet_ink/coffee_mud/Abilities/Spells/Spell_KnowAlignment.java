@@ -52,7 +52,7 @@ public class Spell_KnowAlignment extends Spell
 		// and add it to the affects list of the
 		// affected MOB.  Then tell everyone else
 		// what happened.
-		CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^SYou draw out <T-NAME>s disposition.^?",affectType(auto),auto?"":"^S<S-NAME> draw(s) out your disposition.^?",affectType(auto),auto?"":"^S<S-NAME> draws out <T-NAME>s disposition.^?");
+		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^SYou draw out <T-NAME>s disposition.^?",verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> draw(s) out your disposition.^?",verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> draws out <T-NAME>s disposition.^?");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

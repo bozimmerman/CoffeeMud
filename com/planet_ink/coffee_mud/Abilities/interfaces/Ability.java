@@ -92,7 +92,7 @@ public interface Ability  extends Environmental
 	// by mobs
 	public int abstractQuality();
 	public int enchantQuality();
-	public int castingQuality(MOB invoker, MOB target);
+	public int castingQuality(MOB invoker, Environmental target);
 
 	// misc_flags
 	public static final int FLAG_BINDING=1;

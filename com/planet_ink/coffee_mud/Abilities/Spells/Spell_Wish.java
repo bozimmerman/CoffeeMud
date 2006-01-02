@@ -122,7 +122,7 @@ public class Spell_Wish extends Spell
 			return false;
 
 		int baseLoss=25;
-		CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),"^S<S-NAME> wish(es) for '"+myWish+"'!!^?");
+		CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),"^S<S-NAME> wish(es) for '"+myWish+"'!!^?");
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(!success)
 		{

@@ -56,7 +56,7 @@ public class Prayer_ElectricStrike extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			Prayer_ElectricStrike newOne=(Prayer_ElectricStrike)this.copyOf();
-			CMMsg msg=CMClass.getMsg(mob,target,newOne,affectType(auto),(auto?"<T-NAME> is filled with a holy charge!":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+"!^?")+CMProps.msp("lightning.wav",40));
+			CMMsg msg=CMClass.getMsg(mob,target,newOne,somanticCastCode(mob,target,auto),(auto?"<T-NAME> is filled with a holy charge!":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+"!^?")+CMProps.msp("lightning.wav",40));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

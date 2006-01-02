@@ -189,7 +189,7 @@ public class Chant_CharmAnimal extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			String str=auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?";
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),str);
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

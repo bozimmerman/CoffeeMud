@@ -91,7 +91,7 @@ public class Prayer_SenseHidden extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) opaque eyes!":"^S<S-NAME> "+prayWord(mob)+" for divine revelation, and <S-HIS-HER> eyes become opaque.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"<T-NAME> attain(s) opaque eyes!":"^S<S-NAME> "+prayWord(mob)+" for divine revelation, and <S-HIS-HER> eyes become opaque.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

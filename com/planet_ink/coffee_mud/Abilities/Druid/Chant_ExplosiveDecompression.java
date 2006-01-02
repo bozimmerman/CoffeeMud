@@ -75,7 +75,7 @@ public class Chant_ExplosiveDecompression extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) loudly.  A ball of fire forms around <S-NAME>.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) loudly.  A ball of fire forms around <S-NAME>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -87,7 +87,7 @@ public class Chant_ExplosiveDecompression extends Chant
 						MOB M=target.fetchInhabitant(i);
 						if((M!=null)&&(M!=mob))
 						{
-							CMMsg msg2=CMClass.getMsg(mob,M,this,verbalCastMask(auto)|CMMsg.TYP_FIRE,null);
+							CMMsg msg2=CMClass.getMsg(mob,M,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_FIRE,null);
 							if(mob.location().okMessage(mob,msg2))
 							{
 								mob.location().send(mob,msg2);

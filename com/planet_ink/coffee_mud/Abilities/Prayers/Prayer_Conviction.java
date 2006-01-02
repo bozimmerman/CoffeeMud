@@ -98,7 +98,7 @@ public class Prayer_Conviction extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) filled with conviction!":"^S<S-NAME> "+prayWord(mob)+" for <T-YOUPOSS> religious conviction!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"<T-NAME> become(s) filled with conviction!":"^S<S-NAME> "+prayWord(mob)+" for <T-YOUPOSS> religious conviction!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

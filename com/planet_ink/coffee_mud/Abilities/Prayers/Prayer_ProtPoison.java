@@ -106,7 +106,7 @@ public class Prayer_ProtPoison extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) a anitidotal protection.":"^S<S-NAME> "+prayWord(mob)+" for protection from poisons.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"<T-NAME> attain(s) a anitidotal protection.":"^S<S-NAME> "+prayWord(mob)+" for protection from poisons.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

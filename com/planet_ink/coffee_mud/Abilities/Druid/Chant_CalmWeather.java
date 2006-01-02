@@ -74,7 +74,7 @@ public class Chant_CalmWeather extends Chant
 		boolean success=profficiencyCheck(mob,-size,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"^JThe swirling sky changes color!^?":"^S<S-NAME> chant(s) into the swirling sky!^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"^JThe swirling sky changes color!^?":"^S<S-NAME> chant(s) into the swirling sky!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

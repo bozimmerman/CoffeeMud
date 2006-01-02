@@ -122,7 +122,7 @@ public class Spell_Gate extends Spell
 			newRoom=room;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|affectType(auto),"^S<S-NAME> invoke(s) a teleportation spell.^?");
+		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),"^S<S-NAME> invoke(s) a teleportation spell.^?");
 		if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg)))
 		{
 			mob.location().send(mob,msg);

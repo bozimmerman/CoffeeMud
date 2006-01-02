@@ -128,7 +128,7 @@ public class Chant_EelShock extends Chant
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,affectType(auto),"^S<S-NAME> chant(s) and electrical sparks dance across <S-HIS-HER> skin.^?"))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),"^S<S-NAME> chant(s) and electrical sparks dance across <S-HIS-HER> skin.^?"))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
@@ -137,7 +137,7 @@ public class Chant_EelShock extends Chant
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastMask(auto)|CMMsg.TYP_ELECTRIC,"<T-NAME> is stunned.");
+				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_ELECTRIC,"<T-NAME> is stunned.");
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);

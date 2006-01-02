@@ -71,7 +71,7 @@ public class Spell_ResistDisease extends Spell
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) immunizingly protected.":"^S<S-NAME> invoke(s) an immunizing field of protection around <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) immunizingly protected.":"^S<S-NAME> invoke(s) an immunizing field of protection around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

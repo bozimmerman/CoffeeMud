@@ -57,7 +57,7 @@ public class Prayer_MajorInfusion extends Prayer
             // and add it to the affects list of the
             // affected MOB.  Then tell everyone else
             // what happened.
-            CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"A soft yellow glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+", delivering a strong touch of infusion to <T-NAMESELF>.^?");
+            CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"A soft yellow glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+", delivering a strong touch of infusion to <T-NAMESELF>.^?");
             if(mob.location().okMessage(mob,msg))
             {
                 mob.location().send(mob,msg);

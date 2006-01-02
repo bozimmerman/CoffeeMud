@@ -159,7 +159,7 @@ public class Spell_Breadcrumbs extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) mysterious breadcrumbs.":"^S<S-NAME> invoke(s) the mystical breadcrumbs.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> attain(s) mysterious breadcrumbs.":"^S<S-NAME> invoke(s) the mystical breadcrumbs.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

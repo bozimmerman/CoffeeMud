@@ -126,8 +126,8 @@ public class Spell_MarkerPortal extends Spell
 		&&((newRoom.getRoomInDir(Directions.GATE)==null)
 		&&(newRoom.getExitInDir(Directions.GATE)==null)))
 		{
-			CMMsg msg=CMClass.getMsg(mob,oldRoom,this,affectType(auto),"^S<S-NAME> conjur(s) a blinding, swirling portal here.^?");
-			CMMsg msg2=CMClass.getMsg(mob,newRoom,this,affectType(auto),"A blinding, swirling portal appears here.");
+			CMMsg msg=CMClass.getMsg(mob,oldRoom,this,verbalCastCode(mob,oldRoom,auto),"^S<S-NAME> conjur(s) a blinding, swirling portal here.^?");
+			CMMsg msg2=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),"A blinding, swirling portal appears here.");
 			if((oldRoom.okMessage(mob,msg))&&(newRoom.okMessage(mob,msg2)))
 			{
 				oldRoom.send(mob,msg);

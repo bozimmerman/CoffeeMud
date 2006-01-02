@@ -43,14 +43,6 @@ public class Spell extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SPELL;}
 
-	protected int affectType(boolean auto){
-		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-		if(abstractQuality()==Ability.MALICIOUS)
-			affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
-		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
-		return affectType;
-	}
-
 	public boolean maliciousAffect(MOB mob,
 								   Environmental target,
 								   int asLevel,

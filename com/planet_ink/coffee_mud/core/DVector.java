@@ -181,14 +181,18 @@ public class DVector implements Cloneable, java.io.Serializable
 		return stuff[dim-1];
 	}
 	public boolean contains(Object O){return stuff[0].contains(O);}
-	public int size(){
+	public int size()
+	{
 		if(stuff==null) return 0;
 		return stuff[0].size();
 	}
 	public void removeElementAt(int i)
 	{
-		for(int d=0;d<dimensions;d++)
-			stuff[d].removeElementAt(i);
+		synchronized(stuff)
+		{
+			for(int d=0;d<dimensions;d++)
+				stuff[d].removeElementAt(i);
+		}
 	}
 	public void removeElement(Object O)
 	{

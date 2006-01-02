@@ -87,7 +87,7 @@ public class Prayer_CallUndead extends Prayer
         
         if(success)
         {
-            CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> call(s) <S-HIS-HER> undead to come to <S-HIM-HER>!^?");
+            CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":"^S<S-NAME> call(s) <S-HIS-HER> undead to come to <S-HIM-HER>!^?");
             if((mob.location().okMessage(mob,msg))&&(oldRoom.okMessage(mob,msg)))
             {
                 mob.location().send(mob,msg);

@@ -90,7 +90,7 @@ public class Spell_WeaknessAcid extends Spell
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"A shimmering absorbing field appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a shimmering absorbing field of weakness around <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A shimmering absorbing field appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a shimmering absorbing field of weakness around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

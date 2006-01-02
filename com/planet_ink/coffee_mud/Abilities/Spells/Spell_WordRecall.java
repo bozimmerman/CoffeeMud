@@ -41,7 +41,7 @@ public class Spell_WordRecall extends Spell
     protected int overrideMana(){return Integer.MAX_VALUE-90;}
     public long flags(){return Ability.FLAG_TRANSPORTING;}
 
-    protected int affectType(boolean auto)
+    protected int verbalCastCode(MOB mob, Environmental target, boolean auto)
     {
         int affectType=CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_RECALL;
         if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
@@ -59,8 +59,8 @@ public class Spell_WordRecall extends Spell
             int AUTO=auto?CMMsg.MASK_GENERAL:0;
             Room recalledRoom=mob.location();
             Room recallRoom=mob.getStartRoom();
-            CMMsg msg=CMClass.getMsg(mob,recalledRoom,this,affectType(auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,affectType(auto),auto?getScr(ID(),"recallgo1"):getScr(ID(),"recallgo2"));
-            CMMsg msg2=CMClass.getMsg(mob,recallRoom,this,affectType(auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,affectType(auto),null);
+            CMMsg msg=CMClass.getMsg(mob,recalledRoom,this,verbalCastCode(mob,recalledRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,verbalCastCode(mob,recalledRoom,auto),auto?getScr(ID(),"recallgo1"):getScr(ID(),"recallgo2"));
+            CMMsg msg2=CMClass.getMsg(mob,recallRoom,this,verbalCastCode(mob,recallRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,verbalCastCode(mob,recallRoom,auto),null);
             if((recalledRoom.okMessage(mob,msg))&&(recallRoom.okMessage(mob,msg2)))
             {
                 recalledRoom.send(mob,msg);
@@ -71,7 +71,7 @@ public class Spell_WordRecall extends Spell
                 {
                     MOB follower=mob.fetchFollower(f);
                     
-                    msg=CMClass.getMsg(follower,recalledRoom,this,affectType(auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,affectType(auto),auto?getScr(ID(),"recallgo1"):getScr(ID(),"recallgo3",mob.name()));
+                    msg=CMClass.getMsg(follower,recalledRoom,this,verbalCastCode(mob,recalledRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,verbalCastCode(mob,recalledRoom,auto),auto?getScr(ID(),"recallgo1"):getScr(ID(),"recallgo3",mob.name()));
                     if((follower!=null)
                     &&(follower.isMonster())
                     &&(!follower.isPossessing())
@@ -79,7 +79,7 @@ public class Spell_WordRecall extends Spell
                     &&(recalledRoom.isInhabitant(follower))
                     &&(recalledRoom.okMessage(follower,msg)))
                     {
-                        msg2=CMClass.getMsg(follower,recallRoom,this,affectType(auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,affectType(auto),null);
+                        msg2=CMClass.getMsg(follower,recallRoom,this,verbalCastCode(mob,recallRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,verbalCastCode(mob,recallRoom,auto),null);
                         if(recallRoom.okMessage(follower,msg2))
                         {
                             recallRoom.send(follower,msg2);

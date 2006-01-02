@@ -87,7 +87,7 @@ public class Chant_CatsGrace extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<S-NAME> gain(s) the grace of a cat!":"^S<S-NAME> chant(s) for the grace of a cat!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<S-NAME> gain(s) the grace of a cat!":"^S<S-NAME> chant(s) for the grace of a cat!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

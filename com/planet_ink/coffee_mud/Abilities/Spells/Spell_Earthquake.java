@@ -120,7 +120,7 @@ public class Spell_Earthquake extends Spell
 		if(success)
 		{
 
-			mob.location().show(mob,null,affectType(auto),(auto?"":"^S<S-NAME> invoke(s) a thunderous spell.^?")+CMProps.msp("earthquake.wav",40));
+			mob.location().show(mob,null,verbalCastCode(mob,null,auto),(auto?"":"^S<S-NAME> invoke(s) a thunderous spell.^?")+CMProps.msp("earthquake.wav",40));
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
@@ -129,7 +129,7 @@ public class Spell_Earthquake extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),null);
+				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 				if(CMLib.flags().isInFlight(target))
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected.");
 				else

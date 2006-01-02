@@ -145,7 +145,7 @@ public class Chant_IllusionaryForest extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			newRoom();
-			CMMsg msg = CMClass.getMsg(mob, target, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) dramatically!^?");
+			CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto), auto?"":"^S<S-NAME> chant(s) dramatically!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

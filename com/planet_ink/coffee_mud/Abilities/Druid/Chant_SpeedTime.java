@@ -50,7 +50,7 @@ public class Chant_SpeedTime extends Chant
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"Something is happening!":"^S<S-NAME> begin(s) to chant...^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"Something is happening!":"^S<S-NAME> begin(s) to chant...^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				int mana=mob.curState().getMana();
@@ -59,7 +59,7 @@ public class Chant_SpeedTime extends Chant
 					CMLib.threads().tickAllTickers(mob.location());
 				if(mob.curState().getMana()>mana)
 					mob.curState().setMana(mana);
-				mob.location().show(mob,null,this,affectType(auto),auto?"It stops.":"^S<S-NAME> stop(s) chanting.^?");
+				mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"It stops.":"^S<S-NAME> stop(s) chanting.^?");
 			}
 		}
 		else

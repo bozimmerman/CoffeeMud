@@ -78,13 +78,13 @@ public class Spell_MassDisintegrate extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,affectType(auto),auto?"Something is happening!":"^S<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a trecherous spell!^?"))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"Something is happening!":"^S<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a trecherous spell!^?"))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
 				if((target.envStats().level()/avgLevel)<2)
 				{
-					CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),null);
+					CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);

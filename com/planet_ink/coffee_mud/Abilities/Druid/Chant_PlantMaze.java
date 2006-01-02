@@ -111,7 +111,7 @@ public class Chant_PlantMaze extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, null, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) amazingly!^?");
+			CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), auto?"":"^S<S-NAME> chant(s) amazingly!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -173,7 +173,7 @@ public class Chant_PlantMaze extends Chant
 					if(follower==null) continue;
 					Room newerRoom=((GridLocale)newRoom).getRandomChild();
 					CMMsg enterMsg=CMClass.getMsg(follower,newerRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of "+thePlants.name()+".");
-					CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,affectType(auto),"<S-NAME> disappear(s) into "+thePlants.name()+".");
+					CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,verbalCastCode(mob,oldRoom,auto),"<S-NAME> disappear(s) into "+thePlants.name()+".");
 					if(oldRoom.okMessage(follower,leaveMsg)&&newerRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())

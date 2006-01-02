@@ -92,7 +92,7 @@ public class Spell_Darkness extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this, affectType(auto), (auto?"D":"^S<S-NAME> incant(s) and gesture(s) and d")+"arkness envelopes everyone.^?");
+			CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), (auto?"D":"^S<S-NAME> incant(s) and gesture(s) and d")+"arkness envelopes everyone.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -125,7 +125,7 @@ public class Prayer_CurseLuck extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) <T-HIS-HER> luck become cursed!":"^S<S-NAME> "+prayForWord(mob)+" to curse the luck of <T-NAMESELF>!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"<T-NAME> feel(s) <T-HIS-HER> luck become cursed!":"^S<S-NAME> "+prayForWord(mob)+" to curse the luck of <T-NAMESELF>!^?");
 			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{

@@ -178,6 +178,9 @@ public class Score extends Affect
 					msg.append("You need ^!"+(mob.getExpNeededLevel())+"^? ^<HELP^>experience points^</HELP^> to advance to the next level.\n\r");
 			}
 		}
+		else
+			msg.append("You been online for ^!"+Math.round(CMath.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
+			
 		for(Enumeration e=mob.fetchFactions();e.hasMoreElements();)
 		{
 		    String factionID=(String)e.nextElement();

@@ -67,7 +67,7 @@ public class Spell_ChainLightening extends Spell
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,affectType(auto),(auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of lightning.^?")+CMProps.msp("lightning.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of lightning.^?")+CMProps.msp("lightning.wav",40)))
 			{
 				while(damage>0)
 				for(int i=0;i<targets.size();i++)
@@ -97,7 +97,7 @@ public class Spell_ChainLightening extends Spell
 					boolean oldAuto=auto;
 					if((target==mob)||(myGroup.contains(target)))
 					   auto=true;
-					CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),null);
+					CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 					CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_GENERAL:0),null);
 					auto=oldAuto;
 					if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))

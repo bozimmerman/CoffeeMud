@@ -148,7 +148,7 @@ public class Spell_WallOfDarkness extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this,affectType(auto),auto?"An eerie wall of darkness appears!":"^S<S-NAME> conjur(s) up a eerie wall of darkness!^?");
+			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?"An eerie wall of darkness appears!":"^S<S-NAME> conjur(s) up a eerie wall of darkness!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

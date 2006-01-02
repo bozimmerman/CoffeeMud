@@ -53,14 +53,6 @@ public class Play extends StdAbility
 
 	protected MusicalInstrument instrument=null;
 
-	protected int affectType(boolean auto){
-		int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
-		if(abstractQuality()==Ability.MALICIOUS)
-			affectType=CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL;
-		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
-		return affectType;
-	}
-
 	public String instrumentName(){
 		if(instrument!=null) return instrument.name();
 		return "something";
@@ -258,7 +250,7 @@ public class Play extends StdAbility
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) playing "+songOf()+" on "+instrumentName()+" again.^?";
 
-			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),str);
+			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

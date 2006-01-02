@@ -136,7 +136,7 @@ public class Prayer_ProtEvil extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) protected from evil.":"^S<S-NAME> "+prayWord(mob)+" for protection from evil.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"<T-NAME> become(s) protected from evil.":"^S<S-NAME> "+prayWord(mob)+" for protection from evil.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

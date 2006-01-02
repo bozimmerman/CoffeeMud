@@ -88,7 +88,7 @@ public class Spell_Cloudkill extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,affectType(auto),auto?"A horrendous green cloud appears!":"^S<S-NAME> evoke(s) a horrendous green cloud.^?"))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"A horrendous green cloud appears!":"^S<S-NAME> evoke(s) a horrendous green cloud.^?"))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
@@ -97,7 +97,7 @@ public class Spell_Cloudkill extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),null);
+				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 				CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_GAS|(auto?CMMsg.MASK_GENERAL:0),null);
 				if(mob.location().okMessage(mob,msg)&&mob.location().okMessage(mob,msg2))
 				{

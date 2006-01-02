@@ -76,7 +76,7 @@ public class Chant_Thorns extends Chant
 			{
 				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.STAT_DEXTERITY)*2)))
 				{
-					CMMsg msg2=CMClass.getMsg(source,mob,this,affectType(true),null);
+					CMMsg msg2=CMClass.getMsg(source,mob,this,verbalCastCode(source,mob,true),null);
 					if(source.location().okMessage(source,msg2))
 					{
 						source.location().send(source,msg2);
@@ -127,7 +127,7 @@ public class Chant_Thorns extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")+"Long prickly thorns erupt all over <T-NAME>!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")+"Long prickly thorns erupt all over <T-NAME>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

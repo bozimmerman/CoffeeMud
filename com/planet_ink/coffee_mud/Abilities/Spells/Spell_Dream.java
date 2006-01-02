@@ -51,7 +51,7 @@ public class Spell_Dream extends Spell
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),"^S<S-NAME> invoke(s) a dreamy spell.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),"^S<S-NAME> invoke(s) a dreamy spell.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -66,7 +66,7 @@ public class Spell_Dream extends Spell
 							MOB inhab=R.fetchInhabitant(i);
 							if((inhab!=null)&&(CMLib.flags().isSleeping(inhab)))
 							{
-								msg=CMClass.getMsg(mob,inhab,this,affectType(auto),null);
+								msg=CMClass.getMsg(mob,inhab,this,verbalCastCode(mob,inhab,auto),null);
 								if(R.okMessage(mob,msg))
 									inhab.tell("You dream "+CMParms.combine(commands,0)+".");
 							}

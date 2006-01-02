@@ -274,7 +274,7 @@ public class WaterCurrents extends ActiveTicker
 		public boolean putInCommandlist(){return false;}
 		public int abstractQuality(){return Ability.INDIFFERENT;}
 		public int enchantQuality(){return Ability.INDIFFERENT;}
-		public int castingQuality(MOB invoker, MOB target){return Ability.INDIFFERENT;}
+		public int castingQuality(MOB invoker, Environmental target){return Ability.INDIFFERENT;}
 
 		public int classificationCode(){ return Ability.PROPERTY;}
 		public boolean savable(){ return savable;}
@@ -357,7 +357,6 @@ public class WaterCurrents extends ActiveTicker
 		{ return miscText;}
 		public boolean appropriateToMyFactions(MOB mob){return true;}
 		public String accountForYourself(){return "";}
-		public int affectType(){return 0;}
 		public String requirements(){return "";}
 
 		public boolean canAffect(Environmental E)

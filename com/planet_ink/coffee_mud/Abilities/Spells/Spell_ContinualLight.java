@@ -79,7 +79,7 @@ public class Spell_ContinualLight extends Spell
 		String str="^S<S-NAME> invoke(s) a continual light toward(s) <T-NAMESELF>!^?";
 		if(!(target instanceof MOB))
 			str="^S<S-NAME> invoke(s) a continual light into <T-NAME>!^?";
-		CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),str);
+		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),str);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

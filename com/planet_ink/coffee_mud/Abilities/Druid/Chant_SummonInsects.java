@@ -101,10 +101,10 @@ public class Chant_SummonInsects extends Chant
 		{
 			if(h==null)
 			{
-				mob.location().show(mob,null,this,affectType(auto),auto?"A swarm of stinging insects appear, then flutter away!":"^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appear.  Finding no one to sting, they flutter away.^?");
+				mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"A swarm of stinging insects appear, then flutter away!":"^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appear.  Finding no one to sting, they flutter away.^?");
 				return false;
 			}
-			if(mob.location().show(mob,null,this,affectType(auto),auto?"A swarm of stinging insects appear, then flutter away!":"^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appears and attacks!^?"))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"A swarm of stinging insects appear, then flutter away!":"^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appears and attacks!^?"))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
@@ -113,7 +113,7 @@ public class Chant_SummonInsects extends Chant
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),null);
+				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 				if((mob.location().okMessage(mob,msg))
 				   &&(target.fetchEffect(this.ID())==null))
 				{

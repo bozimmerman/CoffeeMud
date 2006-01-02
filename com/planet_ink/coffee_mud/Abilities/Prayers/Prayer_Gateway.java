@@ -120,8 +120,8 @@ public class Prayer_Gateway extends Prayer
 		&&((newRoom.getRoomInDir(Directions.GATE)==null)
 		&&(newRoom.getExitInDir(Directions.GATE)==null)))
 		{
-			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,affectType(auto),"^S<S-NAME> "+prayWord(mob)+" for a blinding, divine gateway here.^?");
-			CMMsg msg2=CMClass.getMsg(mob,newRoom,this,affectType(auto),"A blinding, divine gateway appears here.");
+			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,somanticCastCode(mob,mob.location(),auto),"^S<S-NAME> "+prayWord(mob)+" for a blinding, divine gateway here.^?");
+			CMMsg msg2=CMClass.getMsg(mob,newRoom,this,somanticCastCode(mob,newRoom,auto),"A blinding, divine gateway appears here.");
 			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

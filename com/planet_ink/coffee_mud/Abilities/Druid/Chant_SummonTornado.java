@@ -88,7 +88,7 @@ public class Chant_SummonTornado extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, null, this, affectType(auto), ((auto?"^JA":"^S<S-NAME> chant(s) to the sky and a")+" tornado touches down!^?")+CMProps.msp("tornado.wav",40));
+			CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), ((auto?"^JA":"^S<S-NAME> chant(s) to the sky and a")+" tornado touches down!^?")+CMProps.msp("tornado.wav",40));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -173,8 +173,8 @@ public class Chant_SummonTornado extends Chant
 					{
 						MOB M=(MOB)O;
 						msg=CMClass.getMsg(M,mob.location(),null,CMMsg.MSG_LEAVE|CMMsg.MASK_GENERAL,CMMsg.MSG_LEAVE,CMMsg.NO_EFFECT,null);
-						CMMsg msg2=CMClass.getMsg(mob,M,this,affectType(auto),null);
-						CMMsg msg3=CMClass.getMsg(mob,M,this,verbalCastMask(auto)|CMMsg.TYP_JUSTICE,null);
+						CMMsg msg2=CMClass.getMsg(mob,M,this,verbalCastCode(mob,M,auto),null);
+						CMMsg msg3=CMClass.getMsg(mob,M,this,verbalCastMask(mob,M,auto)|CMMsg.TYP_JUSTICE,null);
 						if((mob.location().okMessage(M,msg))
 						&&(mob.location().okMessage(mob,msg2))
 						&&(mob.location().okMessage(mob,msg3)))

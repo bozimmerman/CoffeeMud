@@ -94,7 +94,7 @@ public class Spell_DetectUndead extends Spell
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) dark cold senses!":"^S<S-NAME> incant(s) softly, and gain(s) dark cold senses!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) dark cold senses!":"^S<S-NAME> incant(s) softly, and gain(s) dark cold senses!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

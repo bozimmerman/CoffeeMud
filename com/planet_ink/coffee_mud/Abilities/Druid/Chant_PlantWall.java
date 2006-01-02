@@ -191,7 +191,7 @@ public class Chant_PlantWall extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this,affectType(auto),auto?"A plant wall appears!":"^S<S-NAME> chant(s) for a plant wall!^?");
+			CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A plant wall appears!":"^S<S-NAME> chant(s) for a plant wall!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

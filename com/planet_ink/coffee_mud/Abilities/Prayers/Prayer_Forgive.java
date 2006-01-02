@@ -64,7 +64,7 @@ public class Prayer_Forgive extends Prayer
 
 		if((success)&&(warrants.size()>0))
 		{
-			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,affectType(auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to forgive "+name+".^?");
+			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,somanticCastCode(mob,mob.location(),auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to forgive "+name+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

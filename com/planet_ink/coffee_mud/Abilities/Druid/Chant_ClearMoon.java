@@ -66,7 +66,7 @@ public class Chant_ClearMoon extends Chant
 			this.beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) for a clear moon, but the magic fades.");
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,null,affectType(auto),"^S<S-NAME> chant(s) for a clear moon.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),"^S<S-NAME> chant(s) for a clear moon.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

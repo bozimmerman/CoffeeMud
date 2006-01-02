@@ -89,23 +89,23 @@ public class Spell_Shrink extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Environmental E=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);
-		if(E==null) return false;
+		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);
+		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		if((success)&&((E instanceof MOB)||(E instanceof Item)))
+		if((success)&&((target instanceof MOB)||(target instanceof Item)))
 		{
-			CMMsg msg=CMClass.getMsg(mob,E,this,affectType(auto),auto?"<T-NAME> feel(s) somewhat smaller.":"^S<S-NAME> cast(s) a small spell on <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) somewhat smaller.":"^S<S-NAME> cast(s) a small spell on <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
                 boolean isJustUnInvoking=false;
-                if(E instanceof Item)
+                if(target instanceof Item)
                 {
-                    Ability A=E.fetchEffect("Spell_Shrink");
+                    Ability A=target.fetchEffect("Spell_Shrink");
                     if((A!=null)&&(A.canBeUninvoked()))
                     {
                         A.unInvoke();
@@ -113,9 +113,9 @@ public class Spell_Shrink extends Spell
                     }
                 }
                 else
-                if(E instanceof MOB)
+                if(target instanceof MOB)
                 {
-                    Ability A=E.fetchEffect("Spell_Grow");
+                    Ability A=target.fetchEffect("Spell_Grow");
                     if((A!=null)&&(A.canBeUninvoked()))
                     {
                         A.unInvoke();
@@ -125,14 +125,14 @@ public class Spell_Shrink extends Spell
                 
                 if((!isJustUnInvoking)&&(msg.value()<=0))
                 {
-    				beneficialAffect(mob,E,asLevel,0);
-    				if(E instanceof MOB)
-    					((MOB)E).confirmWearability();
+    				beneficialAffect(mob,target,asLevel,0);
+    				if(target instanceof MOB)
+    					((MOB)target).confirmWearability();
                 }
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,E,"<S-NAME> attempt(s) to cast a small spell, but fail(s).");
+			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to cast a small spell, but fail(s).");
 
 		return success;
 	}

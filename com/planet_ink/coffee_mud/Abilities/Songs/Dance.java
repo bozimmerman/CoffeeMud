@@ -61,15 +61,6 @@ public class Dance extends StdAbility
 		return x;
 	}
 
-	protected int affectType(boolean auto){
-		int affectType=CMMsg.MASK_MAGIC|CMMsg.MSG_CAST_SOMANTIC_SPELL;
-		if(abstractQuality()==Ability.MALICIOUS)
-			affectType=affectType|CMMsg.MASK_MALICIOUS;
-		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
-		return affectType;
-	}
-
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -163,7 +154,7 @@ public class Dance extends StdAbility
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+danceOf()+" over again.^?";
 
-			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),str);
+			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

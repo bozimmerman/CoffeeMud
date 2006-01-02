@@ -61,7 +61,7 @@ public class Chant_SummonPeace extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,null,this,affectType(auto),auto?"A feeling of peace descends.":"^S<S-NAME> chant(s) for peace.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"A feeling of peace descends.":"^S<S-NAME> chant(s) for peace.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

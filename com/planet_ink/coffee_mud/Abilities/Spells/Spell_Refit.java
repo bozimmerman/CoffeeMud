@@ -52,7 +52,7 @@ public class Spell_Refit extends Spell
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
 									(auto?"<T-NAME> begins to shimmer!"
 										 :"^S<S-NAME> incant(s) at <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))

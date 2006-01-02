@@ -95,7 +95,7 @@ public class Chant_SpellWard extends Chant
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),auto?"<T-NAME> <T-IS-ARE> protected from spells.":"^S<S-NAME> chant(s) for a ward against spells around <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> <T-IS-ARE> protected from spells.":"^S<S-NAME> chant(s) for a ward against spells around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

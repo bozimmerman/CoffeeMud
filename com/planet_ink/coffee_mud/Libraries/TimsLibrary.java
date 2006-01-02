@@ -908,7 +908,6 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 				return A;
 			if((!malicious)
 		    &&(A.canAffect(fakeMOB))
-		    &&(A.canTarget(fakeMOB))
 		    &&(A.enchantQuality()!=Ability.MALICIOUS)
 		    &&(A.enchantQuality()!=Ability.INDIFFERENT))
 				return A;

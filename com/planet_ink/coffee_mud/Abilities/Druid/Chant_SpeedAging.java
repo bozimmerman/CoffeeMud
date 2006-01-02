@@ -48,7 +48,7 @@ public class Chant_SpeedAging extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-	    int type=affectType(auto);
+	    int type=verbalCastCode(mob,target,auto);
 	    if((target instanceof MOB)
 	    &&(CMath.bset(type,CMMsg.MASK_MALICIOUS))
 	    &&(((MOB)target).charStats().getStat(CharStats.STAT_AGE)>0))

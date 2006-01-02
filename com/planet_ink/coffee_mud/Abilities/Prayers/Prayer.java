@@ -45,14 +45,6 @@ public class Prayer extends StdAbility
 	public int classificationCode(){return Ability.PRAYER;}
 
 
-	protected int affectType(boolean auto){
-		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-		if(abstractQuality()==Ability.MALICIOUS)
-			affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
-		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
-		return affectType;
-	}
-
 	protected String prayWord(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)

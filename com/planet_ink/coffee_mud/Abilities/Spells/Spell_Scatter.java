@@ -114,7 +114,7 @@ public class Spell_Scatter extends Spell
 			    str=auto?"<S-NAME> is enveloped in a scattering field!":"^S<S-NAME> utter(s) a scattering spell!^?";
 		    else
 			    str=auto?"<T-NAME> is enveloped in a scattering field!":"^S<S-NAME> utter(s) a scattering spell, causing <T-NAMESELF> to resonate.^?";
-			CMMsg msg=CMClass.getMsg(mob,mobTarget,this,affectType(auto),str);
+			CMMsg msg=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,target,auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -123,7 +123,7 @@ public class Spell_Scatter extends Spell
 					for(int i=0;i<targets.size();i++)
 					{
 					    target=(Item)targets.elementAt(i);
-						msg=CMClass.getMsg(mob,target,this,affectType(auto),null);
+						msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 						Room room=((Area)areas.elementAt(CMLib.dice().roll(1,areas.size(),-1))).getRandomMetroRoom();
 						if(mob.location().okMessage(mob,msg))
 						{

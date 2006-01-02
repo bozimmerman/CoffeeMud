@@ -71,7 +71,7 @@ public class Spell_WaterCannon extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),"<S-NAME> incant(s) at <T-NAMESELF> and geyser of water blasts towards <T-HIM-HER>.");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"<S-NAME> incant(s) at <T-NAMESELF> and geyser of water blasts towards <T-HIM-HER>.");
 			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_WATER|(auto?CMMsg.MASK_GENERAL:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -91,7 +91,7 @@ public class Spell_WaterCannon extends Spell
 				int percentage = CMLib.dice().roll(1, 100, 0);
 				if(percentage < 10)
 				{
-      				CMMsg msg3=CMClass.getMsg(mob,target,this,affectType(auto),"<T-NAME> is knocked down by the water cannon.");
+      				CMMsg msg3=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"<T-NAME> is knocked down by the water cannon.");
 					if(mob.location().okMessage(mob,msg3))
 					{
 					   mob.location().send(mob, msg3);

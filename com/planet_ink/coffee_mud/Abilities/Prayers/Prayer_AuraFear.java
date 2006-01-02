@@ -164,7 +164,7 @@ public class Prayer_AuraFear extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-		    int affectType=affectType(auto);
+		    int affectType=somanticCastCode(mob,target,auto);
 		    if((mob==target)&&(CMath.bset(affectType,CMMsg.MASK_MALICIOUS)))
 		        affectType=CMath.unsetb(affectType,CMMsg.MASK_MALICIOUS);
 			CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> "+prayWord(mob)+" for an aura of fear to surround <T-NAMESELF>.^?");

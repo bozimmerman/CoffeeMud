@@ -170,7 +170,7 @@ public class Chant_Hippieness extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,(target.isMonster()?0:CMMsg.MASK_MALICIOUS)|affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,(target.isMonster()?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>!^?");
 			CMMsg msg2=CMClass.getMsg(mob,target,this,(target.isMonster()?0:CMMsg.MASK_MALICIOUS)|CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_GENERAL:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -181,7 +181,7 @@ public class Chant_Hippieness extends Chant
 					oldClan=target.getClanID();
 					target.setClanID("");
 					CMLib.commands().postSay(target,null,"Far out...",false,false);
-					maliciousAffect(mob,target,asLevel,0,verbalCastMask(auto)|CMMsg.TYP_MIND);
+					maliciousAffect(mob,target,asLevel,0,verbalCastMask(mob,target,auto)|CMMsg.TYP_MIND);
 				}
 			}
 		}

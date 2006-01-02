@@ -143,7 +143,7 @@ public class Prayer_UndeniableFaith extends Prayer
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 		if(levelDiff<0) levelDiff=0;
 		boolean success=profficiencyCheck(mob,-(levelDiff*25),auto);
-		int type=affectType(auto);
+		int type=somanticCastCode(mob,target,auto);
 		int mal=CMMsg.MASK_MALICIOUS;
 		if(auto){ type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS); mal=0;}
 		if(success)

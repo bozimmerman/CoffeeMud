@@ -76,7 +76,7 @@ public class Spell_Shockshield extends Spell
 			{
 				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.STAT_DEXTERITY)*3)))
 				{
-					CMMsg msg2=CMClass.getMsg(source,mob,this,affectType(true),null);
+					CMMsg msg2=CMClass.getMsg(source,mob,this,verbalCastCode(mob,source,true),null);
 					if(source.location().okMessage(source,msg2))
 					{
 						source.location().send(source,msg2);
@@ -118,7 +118,7 @@ public class Spell_Shockshield extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType(auto),((auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of sparks erupt(s) around <T-NAME>!^?")+CMProps.msp("lightning.wav",10));
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),((auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of sparks erupt(s) around <T-NAME>!^?")+CMProps.msp("lightning.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

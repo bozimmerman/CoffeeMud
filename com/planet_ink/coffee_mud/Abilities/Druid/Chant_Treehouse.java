@@ -122,7 +122,7 @@ public class Chant_Treehouse extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, null, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) for a treehouse!^?");
+			CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), auto?"":"^S<S-NAME> chant(s) for a treehouse!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -57,7 +57,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 	protected int overrideMana(){return -1;} //-1=normal, Integer.MAX_VALUE=all, Integer.MAX_VALUE-100
 	public int abstractQuality(){return Ability.INDIFFERENT;}
 	public int enchantQuality(){return abstractQuality();}
-	public int castingQuality(MOB invoker, MOB target)
+	public int castingQuality(MOB invoker, Environmental target)
 	{
 		if((target!=null)&&(target.fetchEffect(ID())!=null))
 			return Ability.INDIFFERENT;
@@ -69,7 +69,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 		case MALICIOUS:
 			return MALICIOUS;
 		case BENEFICIAL_SELF:
-			if((target!=null)&&(invoker!=target)) return INDIFFERENT;
+			if((target instanceof MOB)&&(invoker!=target)) return INDIFFERENT;
 			return BENEFICIAL_SELF;
 		default:
 			return INDIFFERENT;
@@ -1130,6 +1130,29 @@ public class StdAbility extends ForeignScriptable implements Ability
 		return true;
 	}
 
+	protected int verbalCastCode(MOB mob, Environmental target, boolean auto)
+	{
+		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
+		if(castingQuality(mob,target)==Ability.MALICIOUS)
+			affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
+		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+		return affectType;
+	}
+
+    protected int verbalCastMask(MOB mob,Environmental target, boolean auto)
+    { return verbalCastCode(mob,target,auto)&CMMsg.MAJOR_MASK;}
+
+	protected int somanticCastCode(MOB mob, Environmental target, boolean auto)
+	{
+		int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
+		if(castingQuality(mob,target)==Ability.MALICIOUS)
+			affectType=CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL;
+		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
+		return affectType;
+	}
+    protected int somanticCastMask(MOB mob,Environmental target, boolean auto)
+    { return somanticCastCode(mob,target,auto)&CMMsg.MAJOR_MASK;}
+	
 	public boolean canBePracticedBy(MOB teacher, MOB student)
 	{
 		if(student.getPractices()<practicesToPractice())
