@@ -38,7 +38,7 @@ public class Disease_Smiles extends Disease
 	public String displayText(){ return "(The Smiles)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 
 	protected int DISEASE_TICKS(){return 10;}

@@ -39,7 +39,7 @@ public class Prayer_AuraIntolerance extends Prayer
 	public String displayText(){ return "(Intolerance Aura)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int quality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
 

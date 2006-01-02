@@ -35,7 +35,8 @@ public class Spell_DetectPoison extends Spell
 {
 	public String ID() { return "Spell_DetectPoison"; }
 	public String name(){ return "Detect Poison";}
-	public int quality(){return Ability.OK_OTHERS;}
+	public int enchantQuality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.OK_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;}

@@ -36,7 +36,7 @@ public class Play_Solo extends Play
 {
 	public String ID() { return "Play_Solo"; }
 	public String name(){ return "Solo";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected boolean persistantSong(){return false;}
 	protected boolean skipStandardSongTick(){return true;}
 	protected String songOf(){return "a "+name();}

@@ -35,7 +35,7 @@ public class Prayer_Resurrect extends Prayer
 {
 	public String ID() { return "Prayer_Resurrect"; }
 	public String name(){ return "Resurrect";}
-	public int quality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 

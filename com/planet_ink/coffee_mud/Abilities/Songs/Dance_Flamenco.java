@@ -36,7 +36,7 @@ public class Dance_Flamenco extends Dance
 {
 	public String ID() { return "Dance_Flamenco"; }
 	public String name(){ return "Flamenco";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

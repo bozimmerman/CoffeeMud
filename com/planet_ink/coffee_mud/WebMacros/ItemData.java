@@ -174,14 +174,14 @@ public class ItemData extends StdWebMacro
 				int wclass=CMath.s_int(httpReq.getRequestParameter("WEAPONCLASS"));
 				int reach=CMath.s_int(httpReq.getRequestParameter("MINRANGE"));
 
-				vals=CMLib.coffeeMaker().timsItemAdjustments(I,
-													level,
-													material,
-													weight,
-													hands,
-													wclass,
-													reach,
-													0);
+				vals=CMLib.itemBuilder().timsItemAdjustments(I,
+															 level,
+															 material,
+															 weight,
+															 hands,
+															 wclass,
+															 reach,
+															 0);
 			}
 			else
 			{
@@ -195,14 +195,14 @@ public class ItemData extends StdWebMacro
 						else
 							break;
 				}
-				vals=CMLib.coffeeMaker().timsItemAdjustments(I,
-													level,
-													material,
-													weight,
-													hands,
-													0,
-													0,
-													worndata);
+				vals=CMLib.itemBuilder().timsItemAdjustments(I,
+															 level,
+															 material,
+															 weight,
+															 hands,
+															 0,
+															 0,
+															 worndata);
 			}
 			for(Enumeration e=vals.keys();e.hasMoreElements();)
 			{

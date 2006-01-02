@@ -38,7 +38,7 @@ public class Chant_Reabsorb extends Chant
 	public String name(){return "Reabsorb";}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected int canAffectCode(){return 0;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

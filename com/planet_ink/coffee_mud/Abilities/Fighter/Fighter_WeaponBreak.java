@@ -37,7 +37,7 @@ public class Fighter_WeaponBreak extends FighterSkill
 	public String ID() { return "Fighter_WeaponBreak"; }
 	public String name(){ return "Weapon Break";}
 	private static final String[] triggerStrings = {"BREAK"};
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

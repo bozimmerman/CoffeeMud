@@ -35,7 +35,7 @@ public class Fighter_Cartwheel extends FighterSkill
 	public String ID() { return "Fighter_Cartwheel"; }
 	public String name(){ return "Cartwheel";}
 	private static final String[] triggerStrings = {"CARTWHEEL"};
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

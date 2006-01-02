@@ -37,7 +37,7 @@ public class Prayer_DeathsDoor extends Prayer
 	public String ID() { return "Prayer_DeathsDoor"; }
 	public String name(){ return "Deaths Door";}
 	public String displayText(){ return "(Deaths Door)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

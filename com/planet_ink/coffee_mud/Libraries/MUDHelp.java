@@ -277,7 +277,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						if(CMath.bset(A.usageType(),Ability.USAGE_HITPOINTS))
 							prepend.append("Hit Points ("+getActualUsage(A,Ability.USAGE_HITPOINTS,forMOB)+") ");
 						prepend.append("\n\rQuality  : ");
-						switch(A.quality())
+						switch(A.abstractQuality())
 						{
 						case Ability.MALICIOUS:
 							prepend.append("Malicious");
@@ -295,8 +295,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 							break;
 						}
 						prepend.append("\n\rTargets  : ");
-						if((A.quality()==Ability.BENEFICIAL_SELF)
-						||(A.quality()==Ability.OK_SELF))
+						if((A.abstractQuality()==Ability.BENEFICIAL_SELF)
+						||(A.abstractQuality()==Ability.OK_SELF))
 							prepend.append("Caster only");
 						else
 						if((CMClass.items().hasMoreElements())
@@ -318,14 +318,14 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 								prepend.append("Rooms ");
 						}
 						else
-						if(A.quality()==Ability.INDIFFERENT)
+						if(A.abstractQuality()==Ability.INDIFFERENT)
 							prepend.append("Items or Rooms");
 						else
-						if(A.quality()==Ability.MALICIOUS)
+						if(A.abstractQuality()==Ability.MALICIOUS)
 							prepend.append("Others");
 						else
-						if((A.quality()==Ability.BENEFICIAL_OTHERS)
-						||(A.quality()==Ability.OK_SELF))
+						if((A.abstractQuality()==Ability.BENEFICIAL_OTHERS)
+						||(A.abstractQuality()==Ability.OK_SELF))
 							prepend.append("Caster, or others");
 						prepend.append("\n\rRange    : ");
 						int min=A.minRange();

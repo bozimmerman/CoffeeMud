@@ -37,7 +37,7 @@ public class Chant_Unbreakable extends Chant
 	public String ID() { return "Chant_Unbreakable"; }
 	public String name(){ return "Unbreakable";}
 	public String displayText(){return "(Unbreakable)";}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	protected int maintainCondition=100;
@@ -66,7 +66,7 @@ public class Chant_Unbreakable extends Chant
 			return false;
 		if((msg.target()==affected)
 		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)
-		   ||((msg.tool() instanceof Ability)&&(((Ability)msg.tool()).quality()==Ability.MALICIOUS))))
+		   ||((msg.tool() instanceof Ability)&&(((Ability)msg.tool()).abstractQuality()==Ability.MALICIOUS))))
 		{
 			msg.source().tell(affected.name()+" is unbreakable!");
 			return false;

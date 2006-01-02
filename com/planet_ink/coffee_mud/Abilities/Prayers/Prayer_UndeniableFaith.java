@@ -35,7 +35,7 @@ public class Prayer_UndeniableFaith extends Prayer
 {
 	public String ID() { return "Prayer_UndeniableFaith"; }
 	public String name(){ return "Undeniable Faith";}
-	public int quality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return OK_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_CHARMING;}

@@ -37,7 +37,7 @@ public class Spell_ResistGas extends Spell
 	public String ID() { return "Spell_ResistGas"; }
 	public String name(){return "Resist Gas";}
 	public String displayText(){return "(Resist Gas)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 

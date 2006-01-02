@@ -38,7 +38,7 @@ public class Prayer_LinkedHealth extends Prayer
 	public String displayText(){ return "(Linked Health)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int quality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	MOB buddy=null;
 

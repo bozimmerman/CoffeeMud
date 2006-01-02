@@ -37,7 +37,7 @@ public class Fighter_Roll extends FighterSkill
 	public String ID() { return "Fighter_Roll"; }
 	public String name(){ return "Roll With Blows";}
 	public String displayText(){ return "";}
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}

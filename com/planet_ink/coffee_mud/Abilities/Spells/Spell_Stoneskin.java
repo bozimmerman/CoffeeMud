@@ -36,7 +36,7 @@ public class Spell_Stoneskin extends Spell
 	public String ID() { return "Spell_Stoneskin"; }
 	public String name(){return "Stoneskin";}
 	public String displayText(){return "(Stoneskin)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 

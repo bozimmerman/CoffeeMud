@@ -39,7 +39,7 @@ public class Fighter_AtemiStrike extends FighterSkill
 	public String name(){ return "Atemi Strike";}
 	public String displayText(){return "(Atemi Strike)";}
 	private static final String[] triggerStrings = {"ATEMI"};
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0; }
 	protected int overrideMana(){return 100; }

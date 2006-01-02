@@ -38,7 +38,7 @@ public class Thief_Snipe extends ThiefSkill
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.OK_OTHERS;}
 	private static final String[] triggerStrings = {"SNIPE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int overrideMana(){return 100;}

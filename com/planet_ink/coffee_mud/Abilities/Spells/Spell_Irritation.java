@@ -35,7 +35,7 @@ public class Spell_Irritation extends Spell
 {
 	public String ID() { return "Spell_Irritation"; }
 	public String name(){return "Irritation";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	protected int canTargetCode(){return CAN_MOBS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}

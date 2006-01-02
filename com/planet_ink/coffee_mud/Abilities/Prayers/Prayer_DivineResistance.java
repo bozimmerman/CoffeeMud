@@ -39,7 +39,7 @@ public class Prayer_DivineResistance extends Prayer
 	public String displayText(){ return "(Divine Resistance)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
     protected HashSet permProts=new HashSet();
     protected int prots=4;

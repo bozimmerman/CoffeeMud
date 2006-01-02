@@ -37,7 +37,7 @@ public class Skill_Warrants extends BardSkill
 	public String name(){ return "Warrants";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"WARRANTS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}

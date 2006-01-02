@@ -43,7 +43,7 @@ public class Power_OctoGrapple extends SuperPower
 		return "(Grappled)";
 	}
 	private static final String[] triggerStrings = {"GRAPPLE"};
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

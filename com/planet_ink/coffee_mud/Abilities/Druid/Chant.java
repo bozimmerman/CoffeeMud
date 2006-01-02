@@ -44,11 +44,11 @@ public class Chant extends StdAbility
         if(renderedMundane)
         {
             affectType=CMMsg.MSG_NOISE|CMMsg.MASK_MOUTH;
-            if(quality()==Ability.MALICIOUS)
+            if(abstractQuality()==Ability.MALICIOUS)
                 affectType=affectType|CMMsg.MASK_MALICIOUS;
         }
         else
-        if(quality()==Ability.MALICIOUS)
+        if(abstractQuality()==Ability.MALICIOUS)
             affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
             
         if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
@@ -60,14 +60,14 @@ public class Chant extends StdAbility
         if(renderedMundane)
         {
             affectType=CMMsg.MASK_SOUND|CMMsg.MASK_MOUTH;
-            if(quality()==Ability.MALICIOUS)
+            if(abstractQuality()==Ability.MALICIOUS)
                 affectType=affectType|CMMsg.MASK_MALICIOUS;
         }
         if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
         return affectType;
     }
 	private static final String[] triggerStrings = {"CHANT","CH"};
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

@@ -37,7 +37,7 @@ public class Chant_PiercingMoon extends Chant
 	public String ID() { return "Chant_PiercingMoon"; }
 	public String name(){ return "Piercing Moon";}
 	public String displayText(){return "(Piercing Moon)";}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return FLAG_MOONSUMMONING|FLAG_WEATHERAFFECTING;}

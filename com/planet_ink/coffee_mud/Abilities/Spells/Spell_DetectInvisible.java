@@ -37,7 +37,8 @@ public class Spell_DetectInvisible extends Spell
 	public String ID() { return "Spell_DetectInvisible"; }
 	public String name(){return "Detect Invisible";}
 	public String displayText(){return "(Detecting Invisible)";}
-	public int quality(){ return OK_SELF;}
+	public int abstractQuality(){ return OK_SELF;}
+	public int enchantQuality(){return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 

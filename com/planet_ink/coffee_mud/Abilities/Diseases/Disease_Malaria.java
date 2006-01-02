@@ -38,7 +38,7 @@ public class Disease_Malaria extends Disease
 	public String displayText(){ return "(Malaria)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 
 	protected int DISEASE_TICKS(){return new Long(9*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).intValue();}

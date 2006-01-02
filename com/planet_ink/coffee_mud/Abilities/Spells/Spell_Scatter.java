@@ -37,7 +37,7 @@ public class Spell_Scatter extends Spell
 	public String ID() { return "Spell_Scatter"; }
 	public String name(){return "Scatter";}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	public int quality(){return MALICIOUS;}
+	public int abstractQuality(){return MALICIOUS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

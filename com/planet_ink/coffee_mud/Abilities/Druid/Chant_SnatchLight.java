@@ -37,7 +37,7 @@ public class Chant_SnatchLight extends Chant
 	public String ID() { return "Chant_SnatchLight"; }
 	public String name(){return "Snatch Light";}
 	public String displayText(){return "(Snatch Light)";}
-	public int quality(){ return Ability.OK_SELF;}
+	public int abstractQuality(){ return Ability.OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
 	public Room snatchLocation()

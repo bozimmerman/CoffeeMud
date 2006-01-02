@@ -69,7 +69,7 @@ public class NiceAbilities extends ActiveTicker
 				tryThisOne=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
 				if((tryThisOne!=null)
 				   &&(mob.fetchEffect(tryThisOne.ID())==null)
-				   &&((tryThisOne.quality()==Ability.BENEFICIAL_OTHERS)||(tryThisOne.quality()==Ability.OK_OTHERS)))
+				   &&(tryThisOne.castingQuality(mob,target)==Ability.BENEFICIAL_OTHERS))
 				{
 					if((tryThisOne.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
 					{

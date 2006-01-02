@@ -37,7 +37,7 @@ public class Spell_WaterBreathing extends Spell
 	public String ID() { return "Spell_WaterBreathing"; }
 	public String name(){return "Water Breathing";}
 	public String displayText(){return "(Water Breathing)";}
-	public int quality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return OK_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 

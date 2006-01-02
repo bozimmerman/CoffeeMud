@@ -37,7 +37,7 @@ public class Prayer_DesecrateLand extends Prayer
 	public String ID() { return "Prayer_DesecrateLand"; }
 	public String name(){return "Desecrate Land";}
 	public String displayText(){return "(Desecrate Land)";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}

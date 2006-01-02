@@ -36,7 +36,7 @@ public class Spell_BigMouth extends Spell
 	public String ID() { return "Spell_BigMouth"; }
 	public String name(){return "Big Mouth";}
 	public String displayText(){return "(Big Mouth)";}
-	public int quality(){return OK_SELF;};
+	public int abstractQuality(){return OK_SELF;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;	}
 

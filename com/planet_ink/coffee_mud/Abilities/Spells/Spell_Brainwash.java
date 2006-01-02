@@ -37,7 +37,7 @@ public class Spell_Brainwash extends Spell
 	public String ID() { return "Spell_Brainwash"; }
 	public String name(){return "Brainwash";}
 	public String displayText(){return "(brainwashed)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public Vector limbsToRemove=new Vector();

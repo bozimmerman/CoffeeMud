@@ -37,7 +37,7 @@ public class Prayer_Refresh extends Prayer
 {
     public String ID() { return "Prayer_Refresh"; }
     public String name(){ return "Refresh";}
-    public int quality(){ return BENEFICIAL_OTHERS;}
+    public int abstractQuality(){ return BENEFICIAL_OTHERS;}
     public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
     protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}
 

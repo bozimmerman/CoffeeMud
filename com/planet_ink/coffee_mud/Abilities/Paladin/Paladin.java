@@ -37,7 +37,7 @@ public class Paladin extends StdAbility
 	public String ID() { return "Paladin"; }
 	public String name(){ return "Paladin's Amazement";}
 	public String displayText(){return "";}
-	public int quality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.OK_OTHERS;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

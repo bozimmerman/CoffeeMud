@@ -36,7 +36,8 @@ public class Spell_DemonGate extends Spell
 	public String ID() { return "Spell_DemonGate"; }
 	public String name(){return "Demon Gate";}
 	public String displayText(){return "(Demon Gate)";}
-	public int quality(){return BENEFICIAL_SELF;};
+	public int abstractQuality(){return BENEFICIAL_SELF;};
+	public int enchantQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 100;}

@@ -38,7 +38,7 @@ public class Prayer_BlessedHearth extends Prayer
 	public String ID() { return "Prayer_BlessedHearth"; }
 	public String name(){return "Blessed Hearth";}
 	public String displayText(){return "(Blessed Hearth)";}
-	public int quality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}

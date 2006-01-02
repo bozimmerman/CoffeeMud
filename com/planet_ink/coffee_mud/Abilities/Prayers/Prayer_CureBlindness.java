@@ -36,7 +36,7 @@ public class Prayer_CureBlindness extends Prayer
 {
 	public String ID() { return "Prayer_CureBlindness"; }
 	public String name(){ return "Cure Blindness";}
-	public int quality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
 	public static Vector returnOffensiveAffects(MOB caster, Environmental fromMe)

@@ -38,7 +38,7 @@ public class Disease_Cold extends Disease
 	public String displayText(){ return "(Cold Virus)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	public int difficultyLevel(){return 0;}
 

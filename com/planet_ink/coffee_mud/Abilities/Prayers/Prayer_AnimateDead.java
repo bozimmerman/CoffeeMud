@@ -37,7 +37,8 @@ public class Prayer_AnimateDead extends Prayer
 {
 	public String ID() { return "Prayer_AnimateDead"; }
 	public String name(){ return "Animate Dead";}
-	public int quality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return INDIFFERENT;}
+	public int enchantQuality(){return Ability.INDIFFERENT;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 

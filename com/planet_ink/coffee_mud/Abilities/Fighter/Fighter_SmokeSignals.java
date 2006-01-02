@@ -43,7 +43,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 	public boolean canBeUninvoked(){return false;}
 	public int usageType(){return USAGE_MOVEMENT;}
 	private static final String[] triggerStrings = {"SMOKESIGNALS","SMOKESIGNAL"};
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	public String[] triggerStrings(){return triggerStrings;}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)

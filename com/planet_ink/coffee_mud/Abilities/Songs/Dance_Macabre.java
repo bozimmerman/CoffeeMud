@@ -36,7 +36,7 @@ public class Dance_Macabre extends Dance
 {
 	public String ID() { return "Dance_Macabre"; }
 	public String name(){ return "Macabre";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected String danceOf(){return name()+" Dance";}
 
 	protected boolean activated=false;

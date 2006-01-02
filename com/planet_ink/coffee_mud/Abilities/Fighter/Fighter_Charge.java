@@ -37,7 +37,7 @@ public class Fighter_Charge extends FighterSkill
 	public String ID() { return "Fighter_Charge"; }
 	public String name(){ return "Charge";}
 	private static final String[] triggerStrings = {"CHARGE"};
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}
 	public String displayText(){return "(Charging!!)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

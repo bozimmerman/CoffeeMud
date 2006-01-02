@@ -80,7 +80,8 @@ public class CMLib
     public static final int LIBRARY_TIME=33;
     public static final int LIBRARY_COLOR=34;
     public static final int LIBRARY_LOGIN=35;
-    public static final int LIBRARY_TOTAL=36;
+    public static final int LIBRARY_TIMS=36;
+    public static final int LIBRARY_TOTAL=37;
 
     private static final CMObject[] libraries=new CMObject[LIBRARY_TOTAL];
     private static boolean[] registered=new boolean[LIBRARY_TOTAL];
@@ -101,6 +102,7 @@ public class CMLib
     public static DatabaseEngine database(){return (DatabaseEngine)libraries[LIBRARY_DATABASE];}
     public static ThreadEngine threads(){return (ThreadEngine)libraries[LIBRARY_THREADS];}
     public static I3Interface intermud(){return (I3Interface)libraries[LIBRARY_INTERMUD];}
+    public static ItemBuilderLibrary itemBuilder(){return (ItemBuilderLibrary)libraries[LIBRARY_TIMS];}
     public static ExternalHTTPRequests httpUtils(){return (ExternalHTTPRequests)libraries[LIBRARY_HTTP];}
     public static ListingLibrary lister(){return (ListingLibrary)libraries[LIBRARY_LISTER];}
     public static MoneyLibrary beanCounter(){return (MoneyLibrary)libraries[LIBRARY_MONEY];}
@@ -173,6 +175,7 @@ public class CMLib
         if(O instanceof TimeManager) return LIBRARY_TIME;
         if(O instanceof ColorLibrary) return LIBRARY_COLOR;
         if(O instanceof CharCreationLibrary) return LIBRARY_LOGIN;
+        if(O instanceof ItemBuilderLibrary) return LIBRARY_TIMS;
         return -1;
     }
     

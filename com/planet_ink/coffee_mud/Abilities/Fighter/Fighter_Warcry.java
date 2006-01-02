@@ -36,7 +36,7 @@ public class Fighter_Warcry extends FighterSkill
 	public String ID() { return "Fighter_Warcry"; }
 	public String name(){ return "War Cry";}
 	public String displayText(){return "(War Cry)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	private static final String[] triggerStrings = {"WARCRY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}

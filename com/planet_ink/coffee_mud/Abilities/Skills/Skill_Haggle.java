@@ -36,7 +36,7 @@ public class Skill_Haggle extends StdSkill
 	public String name(){ return "Haggle";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"HAGGLE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}

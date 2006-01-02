@@ -108,17 +108,6 @@ public interface CMObjectBuilder extends CMObject
     public int getGenMobCodeNum(String code);
     public String getGenMobStat(MOB M, String code);
     public void setGenMobStat(MOB M, String code, String val);
-    public int levelsFromAbility(Item savedI);
-    public int levelsFromCaster(Item savedI, Ability CAST);
-    public int levelsFromAdjuster(Item savedI, Ability ADJ);
-    public Hashtable timsItemAdjustments(Item I,
-                                         int level,
-                                         int material,
-                                         int weight,
-                                         int hands,
-                                         int wclass,
-                                         int reach,
-                                         long worndata);
     public Area copyArea(Area A, String newName);
     public String getFactionXML(MOB mob);
     public void setFactionFromXML(MOB mob, Vector xml);

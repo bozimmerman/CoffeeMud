@@ -38,7 +38,7 @@ public class Chant_FireWard extends Chant
 	public String ID() { return "Chant_FireWard"; }
 	public String name(){ return "Fire Ward";}
 	public String displayText(){return "(Fire Ward)";}
-	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
 
 	public void unInvoke()
 	{

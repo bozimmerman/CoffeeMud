@@ -36,7 +36,7 @@ public class Chant_AnimalGrowth extends Chant
 {
 	public String ID() { return "Chant_AnimalGrowth"; }
 	public String name(){ return "Animal Growth";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	public String displayText(){return "(Animal Growth)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

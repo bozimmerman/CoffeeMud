@@ -36,7 +36,7 @@ public class Chant_CalmAnimal extends Chant
 {
 	public String ID() { return "Chant_CalmAnimal"; }
 	public String name(){ return "Calm Animal";}
-	public int quality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.OK_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 

@@ -196,25 +196,6 @@ public class ItemGenerator extends ActiveTicker
 		return items;
 	}
 
-	public Item enchant(Item I, int pct)
-	{
-		if(CMLib.dice().rollPercentage()>pct) return I;
-		if(I instanceof Ammunition)
-		{
-			
-		}
-		else
-		if(I instanceof Weapon)
-		{
-		}
-		else
-		if(I instanceof Armor)
-		{
-			
-		}
-		return I;
-	}
-	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -260,17 +241,17 @@ public class ItemGenerator extends ActiveTicker
 						if(SK.doISellThis(I))
 						{
 							maintained.addElement(I);
-							SK.getShop().addStoreInventory(enchant(I,enchantPct),1,-1,SK);
+							SK.getShop().addStoreInventory(CMLib.itemBuilder().enchant(I,enchantPct),1,-1,SK);
 						}
 					}
 					else
 				    if(ticking instanceof Container)
 				    {
 				    	if(((Container)ticking).owner() instanceof Room)
-				    		((Room)((Container)ticking).owner()).addItem(enchant(I,enchantPct));
+				    		((Room)((Container)ticking).owner()).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
 				    	else
 				    	if(((Container)ticking).owner() instanceof MOB)
-				    		((MOB)((Container)ticking).owner()).addInventory(enchant(I,enchantPct));
+				    		((MOB)((Container)ticking).owner()).addInventory(CMLib.itemBuilder().enchant(I,enchantPct));
 				    	else
 				    		break;
 						maintained.addElement(I);
@@ -279,7 +260,7 @@ public class ItemGenerator extends ActiveTicker
 					else
 				    if(ticking instanceof MOB)
 				    {
-			    		((MOB)ticking).addInventory(enchant(I,enchantPct));
+			    		((MOB)ticking).addInventory(CMLib.itemBuilder().enchant(I,enchantPct));
 			    		I.wearIfPossible((MOB)ticking);
 						maintained.addElement(I);
 				    	I.setContainer((Container)ticking);
@@ -329,24 +310,27 @@ public class ItemGenerator extends ActiveTicker
 							room=((GridLocale)room).getRandomChild();
 						if(room!=null)
 						{
-							Vector inhabs=new Vector();
-							for(int m=0;m<room.numInhabitants();m++)
+							if(CMLib.flags().isGettable(I)&&(!(I instanceof Rideable)))
 							{
-								MOB M=room.fetchInhabitant(m);
-								if((M.savable())&&(M.getStartRoom().getArea().inMetroArea(room.getArea())))
-									inhabs.addElement(M);
-							}
-							if(inhabs.size()>0)
-							{
-								MOB M=(MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
-								M.addInventory(enchant(I,enchantPct));
-								I.wearIfPossible(M);
-								maintained.addElement(I);
+								Vector inhabs=new Vector();
+								for(int m=0;m<room.numInhabitants();m++)
+								{
+									MOB M=room.fetchInhabitant(m);
+									if((M.savable())&&(M.getStartRoom().getArea().inMetroArea(room.getArea())))
+										inhabs.addElement(M);
+								}
+								if(inhabs.size()>0)
+								{
+									MOB M=(MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
+									M.addInventory(CMLib.itemBuilder().enchant(I,enchantPct));
+									I.wearIfPossible(M);
+									maintained.addElement(I);
+								}
 							}
 							if((!favorMobs)&&(room!=null))
 							{
 								maintained.addElement(I);
-								room.addItem(enchant(I,enchantPct));
+								room.addItem(CMLib.itemBuilder().enchant(I,enchantPct));
 							}
 						}
 					}

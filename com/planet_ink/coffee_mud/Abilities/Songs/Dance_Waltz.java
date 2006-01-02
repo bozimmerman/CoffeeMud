@@ -36,7 +36,7 @@ public class Dance_Waltz extends Dance
 {
 	public String ID() { return "Dance_Waltz"; }
 	public String name(){ return "Waltz";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	private int[] statadd=null;
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)

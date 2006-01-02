@@ -38,7 +38,7 @@ public class Druid_Rend extends StdAbility
 	public String ID() { return "Druid_Rend"; }
 	public String name(){ return "Rend";}
 	private static final String[] triggerStrings = {"REND"};
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

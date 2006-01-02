@@ -39,7 +39,7 @@ public class Thief_SilentGold extends ThiefSkill
 	public String name(){ return "Silent AutoGold";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
 	private static final String[] triggerStrings = {"SILENTGOLD"};
 	public String[] triggerStrings(){return triggerStrings;}
 	private CMMsg lastMsg=null;

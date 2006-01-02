@@ -36,7 +36,7 @@ public class Spell_MassInvisibility extends Spell
 	public String ID() { return "Spell_MassInvisibility"; }
 	public String name(){return "Mass Invisibility";}
 	public String displayText(){return "";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 

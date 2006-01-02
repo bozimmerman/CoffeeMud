@@ -40,7 +40,7 @@ public class Archon_Hush extends ArchonSkill
 	public String displayText(){ return "(Hushed)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"HUSH"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}

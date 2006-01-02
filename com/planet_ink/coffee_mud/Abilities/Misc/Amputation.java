@@ -47,7 +47,7 @@ public class Amputation extends StdAbility implements Amputator
 	}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"AMPUTATE"};
 	public String[] triggerStrings(){return triggerStrings;}
@@ -182,10 +182,10 @@ public class Amputation extends StdAbility implements Amputator
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else
-		if((targetName.length()==0)&&(mob.isInCombat())&&(quality()==Ability.MALICIOUS)&&(mob.getVictim()!=null))
+		if((targetName.length()==0)&&(mob.isInCombat())&&(abstractQuality()==Ability.MALICIOUS)&&(mob.getVictim()!=null))
 		   target=mob.getVictim();
 		else
-		if((targetName.length()==0)&&(quality()!=Ability.MALICIOUS))
+		if((targetName.length()==0)&&(abstractQuality()!=Ability.MALICIOUS))
 			target=mob;
 		else
 		if(targetName.length()>0)

@@ -36,7 +36,7 @@ public class Play_Symphony extends Play
 {
 	public String ID() { return "Play_Symphony"; }
 	public String name(){ return "Symphony";}
-	public int quality(){
+	public int abstractQuality(){
 		if(toDoCode<0)
 			return BENEFICIAL_OTHERS;
 		else

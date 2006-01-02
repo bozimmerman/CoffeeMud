@@ -39,7 +39,8 @@ public class Paladin_SummonMount extends StdAbility
 	public String name(){ return "Call Mount";}
 	public String displayText() {return "(Mount)";}
 	private static final String[] triggerStrings = {"CALLMOUNT"};
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
+	public int enchantQuality(){return Ability.INDIFFERENT;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}

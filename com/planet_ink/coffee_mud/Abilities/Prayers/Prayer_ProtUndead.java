@@ -36,7 +36,7 @@ public class Prayer_ProtUndead extends Prayer
 	public String ID() { return "Prayer_ProtUndead"; }
 	public String name(){ return "Protection Undead";}
 	public String displayText(){ return "(Protection/Undead)";}
-	public int quality(){ return OK_SELF;}
+	public int abstractQuality(){ return OK_SELF;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

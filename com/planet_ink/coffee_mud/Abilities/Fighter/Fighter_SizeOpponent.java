@@ -36,7 +36,7 @@ public class Fighter_SizeOpponent extends FighterSkill
 	public String ID() { return "Fighter_SizeOpponent"; }
 	public String name(){ return "Opponent Knowledge";}
 	private static final String[] triggerStrings = {"SIZEUP","OPPONENT"};
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

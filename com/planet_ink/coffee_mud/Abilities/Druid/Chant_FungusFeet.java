@@ -37,7 +37,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 	public String ID() { return "Chant_FungusFeet"; }
 	public String name(){ return "Fungus Feet";}
 	public String displayText(){return "(Fungus Feet)";}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public int abilityCode(){return 0;}
 	public int difficultyLevel(){return 4;}
 	int plagueDown=8;

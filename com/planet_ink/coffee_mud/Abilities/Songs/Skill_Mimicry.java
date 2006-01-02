@@ -37,7 +37,7 @@ public class Skill_Mimicry extends BardSkill
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.OK_OTHERS;}
 	private static final String[] triggerStrings = {"MIMICRY","MIMIC"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}

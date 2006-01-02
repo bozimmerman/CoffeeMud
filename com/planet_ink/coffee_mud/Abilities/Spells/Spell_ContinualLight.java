@@ -37,7 +37,7 @@ public class Spell_ContinualLight extends Spell
 	public String ID() { return "Spell_ContinualLight"; }
 	public String name(){return "Continual Light";}
 	public String displayText(){return "(Continual Light)";}
-	public int quality(){ return OK_SELF;}
+	public int abstractQuality(){ return OK_SELF;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}

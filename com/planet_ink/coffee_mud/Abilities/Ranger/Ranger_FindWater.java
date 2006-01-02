@@ -40,7 +40,7 @@ public class Ranger_FindWater extends StdAbility
 	public String displayText(){ return "(finding water)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
 	private static final String[] triggerStrings = {"FINDWATER"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}

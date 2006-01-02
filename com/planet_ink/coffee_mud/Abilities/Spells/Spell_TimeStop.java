@@ -40,7 +40,7 @@ public class Spell_TimeStop extends Spell
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 100;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 
 	protected Vector fixed=new Vector();
 

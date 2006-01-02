@@ -36,7 +36,7 @@ public class Spell_Grease extends Spell
 	public String ID() { return "Spell_Grease"; }
 	public String name(){return "Grease";}
 	public String displayText(){return "(Covered in Grease)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_MOVING;}

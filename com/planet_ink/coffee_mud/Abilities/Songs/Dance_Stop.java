@@ -35,7 +35,7 @@ public class Dance_Stop extends Dance
 {
 	public String ID() { return "Dance_Stop"; }
 	public String name(){ return "Stop";}
-	public int quality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return INDIFFERENT;}
 	protected boolean skipStandardSongInvoke(){return true;}
 	public Dance_Stop()
 	{

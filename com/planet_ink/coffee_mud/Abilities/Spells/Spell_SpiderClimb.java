@@ -38,7 +38,7 @@ public class Spell_SpiderClimb extends Spell
 	public String ID() { return "Spell_SpiderClimb"; }
 	public String name(){return "Spider Climb";}
 	public String displayText(){return "(Spider Climb)";}
-	public int quality(){ return OK_SELF;}
+	public int abstractQuality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 

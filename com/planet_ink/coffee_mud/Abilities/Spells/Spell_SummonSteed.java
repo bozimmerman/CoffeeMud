@@ -36,7 +36,8 @@ public class Spell_SummonSteed extends Spell
 	public String ID() { return "Spell_SummonSteed"; }
 	public String name(){return "Summon Steed";}
 	public String displayText(){return "(Summon Steed)";}
-	public int quality(){ return OK_SELF;}
+	public int abstractQuality(){ return OK_SELF;}
+	public int enchantQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}

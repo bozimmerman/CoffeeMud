@@ -36,7 +36,7 @@ public class Song_Mana extends Song
 {
 	public String ID() { return "Song_Mana"; }
 	public String name(){ return "Mana";}
-	public int quality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return OK_OTHERS;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

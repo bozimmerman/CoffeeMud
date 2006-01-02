@@ -36,7 +36,7 @@ public class Spell_Forget extends Spell
 	public String ID() { return "Spell_Forget"; }
 	public String name(){return "Forget";}
 	public String displayText(){return "(Forgetful)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 

@@ -36,7 +36,7 @@ public class Spell_Sleep extends Spell
 	public String ID() { return "Spell_Sleep"; }
 	public String name(){return "Sleep";}
 	public String displayText(){return "(Sleep spell)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 

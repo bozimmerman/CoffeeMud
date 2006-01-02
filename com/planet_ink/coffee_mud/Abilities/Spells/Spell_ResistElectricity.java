@@ -37,7 +37,7 @@ public class Spell_ResistElectricity extends Spell
 	public String ID() { return "Spell_ResistElectricity"; }
 	public String name(){return "Resist Electricity";}
 	public String displayText(){return "(Resist Electricity)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 

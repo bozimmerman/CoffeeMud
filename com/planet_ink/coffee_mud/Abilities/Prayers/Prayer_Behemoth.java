@@ -36,7 +36,7 @@ public class Prayer_Behemoth extends Prayer
 {
 	public String ID() { return "Prayer_Behemoth"; }
 	public String name(){ return "Behemoth";}
-	public int quality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	public String displayText(){return "(Behemoth)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

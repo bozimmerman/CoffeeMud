@@ -75,7 +75,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("QUALITY"))
 				{
-					switch(A.quality())
+					switch(A.abstractQuality())
 					{
 					case Ability.MALICIOUS:
 						str.append("Malicious, ");
@@ -102,7 +102,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("TARGET"))
 				{
-					switch(A.quality())
+					switch(A.abstractQuality())
 					{
 					case Ability.INDIFFERENT:
 						str.append("Item or Room, ");

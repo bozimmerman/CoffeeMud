@@ -37,7 +37,7 @@ public class Druid_Bite extends StdAbility
 	public String ID() { return "Druid_Bite"; }
 	public String name(){ return "Bite";}
 	private static final String[] triggerStrings = {"BITE"};
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

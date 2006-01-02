@@ -36,7 +36,7 @@ public class Spell_FeelTheVoid extends Spell
 	public String ID() { return "Spell_FeelTheVoid"; }
 	public String name(){return "Feel The Void";}
 	public String displayText(){return "(In a Void)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
     protected final static int mask=

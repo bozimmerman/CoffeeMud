@@ -37,7 +37,7 @@ public class Skill_InstrumentBash extends BardSkill
 	public String name(){ return "Instrument Bash";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"INSTRUMENTBASH","IBASH"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}

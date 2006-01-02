@@ -43,7 +43,7 @@ public class Fighter_Pin extends FighterSkill
 		return "(Pinned)";
 	}
 	private static final String[] triggerStrings = {"PIN"};
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

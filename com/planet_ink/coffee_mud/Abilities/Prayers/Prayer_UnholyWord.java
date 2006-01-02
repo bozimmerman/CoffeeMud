@@ -38,7 +38,7 @@ public class Prayer_UnholyWord extends Prayer
 	public String displayText(){ return "(Unholy Word)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int quality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return INDIFFERENT;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

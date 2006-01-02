@@ -36,7 +36,7 @@ public class Chant_SensePoison extends Chant
 {
 	public String ID() { return "Chant_SensePoison"; }
 	public String name(){ return "Sense Poison";}
-	public int quality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.OK_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 

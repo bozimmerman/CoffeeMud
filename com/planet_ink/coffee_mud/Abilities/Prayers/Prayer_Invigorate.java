@@ -36,7 +36,7 @@ public class Prayer_Invigorate extends Prayer
 {
     public String ID() { return "Prayer_Invigorate"; }
     public String name(){ return "Invigorate";}
-    public int quality(){ return BENEFICIAL_OTHERS;}
+    public int abstractQuality(){ return BENEFICIAL_OTHERS;}
     public long flags(){return Ability.FLAG_HOLY;}
     protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}
 

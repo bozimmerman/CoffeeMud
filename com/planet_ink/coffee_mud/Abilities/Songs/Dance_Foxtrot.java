@@ -36,7 +36,7 @@ public class Dance_Foxtrot extends Dance
 {
 	public String ID() { return "Dance_Foxtrot"; }
 	public String name(){ return "Foxtrot";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int ticks=1;
 	protected int increment=1;
 

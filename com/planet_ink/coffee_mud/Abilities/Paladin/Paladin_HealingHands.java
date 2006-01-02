@@ -37,7 +37,7 @@ public class Paladin_HealingHands extends StdAbility
 	public String ID() { return "Paladin_HealingHands"; }
 	public String name(){ return "Healing Hands";}
 	private static final String[] triggerStrings = {"HANDS"};
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

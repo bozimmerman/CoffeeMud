@@ -40,7 +40,7 @@ public class Poison extends StdAbility
 	public String displayText(){ return "(Poisoned)";}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"POISONSTING"};
 	public String[] triggerStrings(){return triggerStrings;}

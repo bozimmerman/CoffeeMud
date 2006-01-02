@@ -38,7 +38,7 @@ public class Chant_HardenSkin extends Chant
 	public String ID() { return "Chant_HardenSkin"; }
 	public String name(){ return "Harden Skin";}
 	public String displayText(){return "(Harden Skin)";}
-	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

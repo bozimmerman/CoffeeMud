@@ -40,7 +40,7 @@ public class Fighter_BullRush extends FighterSkill
 	public int maxRange(){return 1;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"BULLRUSH"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return Ability.FLAG_MOVING;}

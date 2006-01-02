@@ -36,7 +36,7 @@ public class Song_Flight extends Song
 {
 	public String ID() { return "Song_Flight"; }
 	public String name(){ return "Flight";}
-	public int quality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return INDIFFERENT;}
 	protected boolean skipStandardSongInvoke(){return true;}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -88,7 +88,7 @@ public class Song_Flight extends Song
 					MOB follower=(MOB)f.next();
 					// malicious songs must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-					if((quality()==Ability.MALICIOUS)&&(follower!=mob))
+					if((castingQuality(mob,follower)==Ability.MALICIOUS)&&(follower!=mob))
 						affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
 					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 

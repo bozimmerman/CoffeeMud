@@ -36,7 +36,7 @@ public class Spell_AcidFog extends Spell
 	public String ID() { return "Spell_AcidFog"; }
 	public String name(){ return "Acid Fog";}
 	public String displayText(){ return "(Acid Fog)";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int minRange(){return 2;}

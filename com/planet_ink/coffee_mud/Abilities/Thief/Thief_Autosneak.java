@@ -38,7 +38,7 @@ public class Thief_Autosneak extends ThiefSkill
 	public String name(){ return "AutoSneak";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
 	private static final String[] triggerStrings = {"AUTOSNEAK"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected boolean noRepeat=false;

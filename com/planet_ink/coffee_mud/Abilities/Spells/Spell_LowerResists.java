@@ -37,7 +37,7 @@ public class Spell_LowerResists extends Spell
 	public String ID() { return "Spell_LowerResists"; }
 	public String name(){return "Lower Resistance";}
 	public String displayText(){return "(Lowered Resistances)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 

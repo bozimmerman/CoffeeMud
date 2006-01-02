@@ -44,4 +44,14 @@ public interface ItemBuilderLibrary
 	public int levelsFromAdjuster(Item savedI, Ability ADJ);
 	public boolean itemFix(Item I);
 	public Ability[] getTimsAdjResCast(Item I, int[] castMul);
+	public Item enchant(Item I, int pct);
+    public int levelsFromAbility(Item savedI);
+    public Hashtable timsItemAdjustments(Item I,
+							             int level,
+							             int material,
+							             int weight,
+							             int hands,
+							             int wclass,
+							             int reach,
+							             long worndata);
 }

@@ -61,7 +61,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public HashSet properTargets(Ability A, MOB caster, boolean beRuthless)
 	{
 		HashSet h=null;
-		if(A.quality()!=Ability.MALICIOUS)
+		if(A.abstractQuality()!=Ability.MALICIOUS)
 		{
             if(caster.Name().equalsIgnoreCase("somebody"))
     			h=new HashSet();

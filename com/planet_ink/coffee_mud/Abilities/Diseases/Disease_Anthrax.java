@@ -37,7 +37,7 @@ public class Disease_Anthrax extends Disease
 	public String displayText(){ return "(Anthrax)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	public int difficultyLevel(){return 2;}
 

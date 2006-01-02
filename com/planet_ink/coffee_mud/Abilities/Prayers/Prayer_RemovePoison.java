@@ -35,7 +35,7 @@ public class Prayer_RemovePoison extends Prayer
 {
 	public String ID() { return "Prayer_RemovePoison"; }
 	public String name(){ return "Remove Poison";}
-	public int quality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
 	public static Vector returnOffensiveAffects(Environmental fromMe)

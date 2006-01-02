@@ -75,7 +75,7 @@ public class NastyAbilities extends ActiveTicker
 				tryThisOne=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
 				if((tryThisOne!=null)
 				   &&(mob.fetchEffect(tryThisOne.ID())==null)
-				   &&(tryThisOne.quality()==Ability.MALICIOUS))
+				   &&(tryThisOne.castingQuality(mob,target)==Ability.MALICIOUS))
 				{
 					if((tryThisOne.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
 					{

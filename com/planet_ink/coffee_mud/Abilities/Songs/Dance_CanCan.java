@@ -36,7 +36,7 @@ public class Dance_CanCan extends Dance
 {
 	public String ID() { return "Dance_CanCan"; }
 	public String name(){ return "Can-Can";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	public static Ability kick=null;
 
 	public boolean tick(Tickable ticking, int tickID)

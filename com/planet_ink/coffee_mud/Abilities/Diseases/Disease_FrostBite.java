@@ -40,7 +40,7 @@ public class Disease_FrostBite extends Disease
     public String displayText(){ return "(Frost bitten "+where+")";}
     protected int canAffectCode(){return CAN_MOBS;}
     protected int canTargetCode(){return CAN_MOBS;}
-    public int quality(){return Ability.MALICIOUS;}
+    public int abstractQuality(){return Ability.MALICIOUS;}
     public boolean putInCommandlist(){return false;}
     public int difficultyLevel(){return 1;}
     public int[] limbsAffectable={Race.BODY_EAR,Race.BODY_ANTENEA,Race.BODY_FOOT,Race.BODY_HAND,Race.BODY_NOSE};

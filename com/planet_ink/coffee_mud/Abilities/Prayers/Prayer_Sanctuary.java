@@ -38,7 +38,7 @@ public class Prayer_Sanctuary extends Prayer
 	public String displayText(){ return "(Sanctuary)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
 

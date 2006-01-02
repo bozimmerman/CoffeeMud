@@ -35,7 +35,7 @@ public class Prayer_ProtectElements extends Prayer
 {
 	public String ID() { return "Prayer_ProtectElements"; }
 	public String name(){ return "Protection Elements";}
-	public int quality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Protection/Elements)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

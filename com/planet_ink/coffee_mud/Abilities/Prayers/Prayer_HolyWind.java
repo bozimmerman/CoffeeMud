@@ -37,7 +37,7 @@ public class Prayer_HolyWind extends Prayer
 	public String ID() { return "Prayer_HolyWind"; }
 	public String name(){ return "Holy Wind";}
 	public String displayText(){return "(Blown Down)";}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int maxRange(){return 4;}

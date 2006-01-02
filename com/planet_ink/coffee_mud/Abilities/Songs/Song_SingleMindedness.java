@@ -36,7 +36,7 @@ public class Song_SingleMindedness extends Song
 {
 	public String ID() { return "Song_SingleMindedness"; }
 	public String name(){ return "Single Mindedness";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	protected CMMsg themsg=null;
 
 	public void executeMsg(Environmental ticking, CMMsg msg)

@@ -35,6 +35,7 @@ public class Spell_SeeAura extends Spell
 {
 	public String ID() { return "Spell_SeeAura"; }
 	public String name(){return "See Aura";}
+	public int enchantQuality(){return Ability.INDIFFERENT;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

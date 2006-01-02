@@ -36,7 +36,7 @@ public class Chant_CaveFishing extends Chant
 {
 	public String ID() { return "Chant_CaveFishing"; }
 	public String name(){ return "Cave Fishing";}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 

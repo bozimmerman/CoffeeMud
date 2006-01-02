@@ -37,7 +37,7 @@ public class Prayer_UnholyArmament extends Prayer
 	public String name(){ return "Unholy Armament";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public int quality(){ return OK_SELF;}
+	public int abstractQuality(){ return OK_SELF;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public static final long[] checkOrder={
@@ -96,7 +96,7 @@ public class Prayer_UnholyArmament extends Prayer
 				I.baseEnvStats().setWeight(20);
 				I.setMaterial(RawMaterial.RESOURCE_MITHRIL);
 				I.recoverEnvStats();
-				Hashtable H=CMLib.coffeeMaker().timsItemAdjustments(I,mob.envStats().level(),I.material(),I.baseEnvStats().weight(),1,((Weapon)I).weaponClassification(),0,I.rawProperLocationBitmap());
+				Hashtable H=CMLib.itemBuilder().timsItemAdjustments(I,mob.envStats().level(),I.material(),I.baseEnvStats().weight(),1,((Weapon)I).weaponClassification(),0,I.rawProperLocationBitmap());
 				I.baseEnvStats().setDamage(CMath.s_int((String)H.get("DAMAGE")));
 				I.baseEnvStats().setAttackAdjustment(CMath.s_int((String)H.get("ATTACK")));
 				I.setBaseValue(0);
@@ -111,7 +111,7 @@ public class Prayer_UnholyArmament extends Prayer
 				else
 					I.setMaterial(RawMaterial.RESOURCE_MITHRIL);
 				I.recoverEnvStats();
-				Hashtable H=CMLib.coffeeMaker().timsItemAdjustments(I,mob.envStats().level(),I.material(),I.baseEnvStats().weight(),1,0,0,I.rawProperLocationBitmap());
+				Hashtable H=CMLib.itemBuilder().timsItemAdjustments(I,mob.envStats().level(),I.material(),I.baseEnvStats().weight(),1,0,0,I.rawProperLocationBitmap());
 				I.baseEnvStats().setArmor(CMath.s_int((String)H.get("ARMOR")));
 				I.baseEnvStats().setWeight(CMath.s_int((String)H.get("WEIGHT")));
 				I.setBaseValue(0);

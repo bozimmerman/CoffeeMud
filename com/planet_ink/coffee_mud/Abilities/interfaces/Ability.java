@@ -90,8 +90,9 @@ public interface Ability  extends Environmental
 	// usage by mobs.  it returns one of the above,
 	// and dictates how an ability is to be used
 	// by mobs
-	public int quality();
-	public int conditionalQuality(MOB invoker, MOB target);
+	public int abstractQuality();
+	public int enchantQuality();
+	public int castingQuality(MOB invoker, MOB target);
 
 	// misc_flags
 	public static final int FLAG_BINDING=1;

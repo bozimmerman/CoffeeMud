@@ -36,15 +36,23 @@ public class Spell_FindFamiliar extends Spell
 	public String ID() { return "Spell_FindFamiliar"; }
 	public String name(){return "Find Familiar";}
 	public String displayText(){return "(Find Familiar)";}
-	public int quality(){return BENEFICIAL_SELF;};
+	public int abstractQuality(){return BENEFICIAL_SELF;};
+	public int enchantQuality(){return Ability.INDIFFERENT;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
+	public int castingQuality(MOB invoker, MOB target)
+	{
+		if((target!=null)&&(invoker!=target)) return Ability.INDIFFERENT;
+		if(invoker.numFollowers()>0) return Ability.INDIFFERENT;
+		if(invoker.isMonster()) return Ability.INDIFFERENT;
+		return abstractQuality();
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(mob.numFollowers()>0)
+		if((mob.numFollowers()>0)||(mob.isMonster()))
 		{
 			mob.tell("You cannot have any followers when casting this spell.");
 			return false;

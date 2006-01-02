@@ -36,7 +36,7 @@ public class Prayer_FortifyFood extends Prayer
 {
 	public String ID() { return "Prayer_FortifyFood"; }
 	public String name(){ return "Nourishing Food";}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_ITEMS;}

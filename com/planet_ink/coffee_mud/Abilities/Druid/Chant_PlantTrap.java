@@ -35,7 +35,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 {
 	public String ID() { return "Chant_PlantTrap"; }
 	public String name(){ return "Plant Trap";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 100;}

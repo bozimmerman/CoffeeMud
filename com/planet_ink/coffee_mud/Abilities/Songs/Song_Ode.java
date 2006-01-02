@@ -36,7 +36,7 @@ public class Song_Ode extends Song
 {
 	public String ID() { return "Song_Ode"; }
 	public String name(){ return "Ode";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	public MOB whom=null;
 	public Hashtable benefits=null;
 

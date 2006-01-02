@@ -38,7 +38,7 @@ public class Chant_SummonInsects extends Chant
 	public String ID() { return "Chant_SummonInsects"; }
 	public String name(){ return "Summon Insects";}
 	public String displayText(){return "(In a swarm of insects)";}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public int maxRange(){return 5;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}

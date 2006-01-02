@@ -37,7 +37,7 @@ public class Prayer_CurseMind extends Prayer
 	public String ID() { return "Prayer_CurseMind"; }
 	public String name(){return "Curse Mind";}
 	public String displayText(){return "(Cursed Mind)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 	protected int canAffectCode(){return CAN_MOBS;}
 

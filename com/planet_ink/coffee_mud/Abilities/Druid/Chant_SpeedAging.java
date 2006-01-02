@@ -37,7 +37,7 @@ public class Chant_SpeedAging extends Chant
 	public String ID() { return "Chant_SpeedAging"; }
 	public String name(){ return "Speed Aging";}
 	protected int canAffectCode(){return 0;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

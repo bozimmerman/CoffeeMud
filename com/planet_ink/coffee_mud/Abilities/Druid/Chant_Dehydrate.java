@@ -37,7 +37,7 @@ public class Chant_Dehydrate extends Chant
 	public String ID() { return "Chant_Dehydrate"; }
 	public String name(){return "Dehydrate";}
 	public String displayText(){return "(Dehydrate)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

@@ -36,7 +36,7 @@ public class Spell_PrayerShield extends Spell
 	public String ID() { return "Spell_PrayerShield"; }
 	public String name(){return "Prayer Shield";}
 	public String displayText(){return "(Prayer Shield)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 

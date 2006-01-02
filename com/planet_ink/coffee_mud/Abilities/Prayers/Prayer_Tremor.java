@@ -35,7 +35,7 @@ public class Prayer_Tremor extends Prayer
 	public String ID() { return "Prayer_Tremor"; }
 	public String name(){ return "Tremor";}
 	public String displayText(){return "(Tremor)";}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public int maxRange(){return 3;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}

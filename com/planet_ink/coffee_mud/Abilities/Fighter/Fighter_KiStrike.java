@@ -37,7 +37,7 @@ public class Fighter_KiStrike extends FighterSkill
 	public String name(){ return "Ki Strike";}
 	public String displayText(){return "(Ki Strike)";}
 	private static final String[] triggerStrings = {"KISTRIKE","KI"};
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

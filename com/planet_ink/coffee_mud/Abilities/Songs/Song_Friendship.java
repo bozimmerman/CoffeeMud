@@ -36,7 +36,7 @@ public class Song_Friendship extends Song
 {
 	public String ID() { return "Song_Friendship"; }
 	public String name(){ return "Friendship";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	protected boolean skipStandardSongInvoke(){return true;}
 	public long flags(){return Ability.FLAG_CHARMING;}
 
@@ -175,7 +175,7 @@ public class Song_Friendship extends Song
 					MOB follower=(MOB)f.next();
 					// malicious songs must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-					if((quality()==Ability.MALICIOUS)&&(follower!=mob))
+					if((castingQuality(mob,follower)==Ability.MALICIOUS)&&(follower!=mob))
 						affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
 					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 

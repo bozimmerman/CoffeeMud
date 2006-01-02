@@ -36,7 +36,7 @@ public class Prayer_Deathfinger extends Prayer
 {
 	public String ID() { return "Prayer_Deathfinger"; }
 	public String name(){ return "Deathfinger";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int overrideMana(){return 150;}
 

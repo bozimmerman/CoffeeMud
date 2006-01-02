@@ -36,7 +36,7 @@ public class Chant_CharmArea extends Chant
 {
 	public String ID() { return "Chant_CharmArea"; }
 	public String name(){ return "Charm Area";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 

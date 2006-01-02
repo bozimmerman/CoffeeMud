@@ -36,7 +36,7 @@ public class Spell_FleshStone extends Spell
 	public String ID() { return "Spell_FleshStone"; }
 	public String name(){return "Flesh Stone";}
 	public String displayText(){return "(Flesh to Stone)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public Item statue=null;

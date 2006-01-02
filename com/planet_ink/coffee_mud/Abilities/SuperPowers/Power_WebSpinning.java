@@ -38,7 +38,7 @@ public class Power_WebSpinning extends SuperPower
 	public String displayText(){return "(Webbed)";}
 	public int maxRange(){return 5;}
 	public int minRange(){return 1;}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS|CAN_EXITS;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS|CAN_EXITS;}
 	public long flags(){return Ability.FLAG_BINDING;}

@@ -35,7 +35,7 @@ public class Prayer_Sacrifice extends Prayer
 {
 	public String ID() { return "Prayer_Sacrifice"; }
 	public String name(){ return "Sacrifice";}
-	public int quality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 

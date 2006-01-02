@@ -36,7 +36,7 @@ public class Spell_Haste extends Spell
 	public String ID() { return "Spell_Haste"; }
 	public String name(){return "Haste";}
 	public String displayText(){return "(Haste spell)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 

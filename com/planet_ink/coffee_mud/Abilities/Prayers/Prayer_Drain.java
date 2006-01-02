@@ -37,7 +37,7 @@ public class Prayer_Drain extends Prayer
 	public String ID() { return "Prayer_Drain"; }
 	public String name(){ return "Drain";}
 	public String displayText(){ return "(Drain)";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

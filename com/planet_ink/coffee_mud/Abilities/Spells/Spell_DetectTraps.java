@@ -37,7 +37,8 @@ public class Spell_DetectTraps extends Spell
 	public String ID() { return "Spell_DetectTraps"; }
 	public String name(){return "Detect Traps";}
 	public String displayText(){return "(Detecting Traps)";}
-	public int quality(){ return OK_SELF;}
+	public int abstractQuality(){ return OK_SELF;}
+	public int enchantQuality(){return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	Room lastRoom=null;
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}

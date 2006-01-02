@@ -40,7 +40,7 @@ public class Chant_EndureRust extends Chant
 	public String displayText(){return "(Endure Rust)";}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	public int quality(){return Ability.BENEFICIAL_OTHERS;}
+	public int abstractQuality(){return Ability.BENEFICIAL_OTHERS;}
     protected HashSet dontbother=new HashSet();
 
 	public void unInvoke()

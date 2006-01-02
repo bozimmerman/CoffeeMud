@@ -36,7 +36,7 @@ public class Play_Blues extends Play
 {
 	public String ID() { return "Play_Blues"; }
 	public String name(){ return "Blues";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	protected String songOf(){return "the "+name();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

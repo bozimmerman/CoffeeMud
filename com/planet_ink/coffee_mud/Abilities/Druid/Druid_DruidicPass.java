@@ -38,7 +38,7 @@ public class Druid_DruidicPass extends StdAbility
 	public String ID() { return "Druid_DruidicPass"; }
 	public String name(){ return "Druidic Pass";}
 	public String displayText(){return "(druidic passage)";}
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
 	private static final String[] triggerStrings = {"PASS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return CAN_MOBS;}

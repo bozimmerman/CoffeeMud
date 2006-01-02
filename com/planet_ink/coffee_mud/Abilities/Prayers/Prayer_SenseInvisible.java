@@ -38,7 +38,8 @@ public class Prayer_SenseInvisible extends Prayer
 	public String displayText(){ return "(Sense Invisible)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){ return OK_SELF;}
+	public int abstractQuality(){ return OK_SELF;}
+	public int enchantQuality(){return Ability.BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

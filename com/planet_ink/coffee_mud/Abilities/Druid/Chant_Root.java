@@ -37,7 +37,7 @@ public class Chant_Root extends Chant
 	public String ID() { return "Chant_Root"; }
 	public String name(){return "Root";}
 	public String displayText(){return "(Rooted)";}
-	public int quality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected boolean uprooted=false;
 

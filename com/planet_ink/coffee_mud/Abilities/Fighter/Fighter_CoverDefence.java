@@ -37,7 +37,7 @@ public class Fighter_CoverDefence extends FighterSkill
 	public String ID() { return "Fighter_CoverDefence"; }
 	public String name(){ return "Cover Defence";}
 	public String displayText(){return "";};
-	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}

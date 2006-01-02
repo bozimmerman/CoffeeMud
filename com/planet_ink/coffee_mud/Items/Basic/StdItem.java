@@ -649,7 +649,7 @@ public class StdItem implements Item
 		&&((displayText().length()==0)
 		   ||((msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
-			&&(((Ability)msg.tool()).quality()==Ability.MALICIOUS))))
+			&&(((Ability)msg.tool()).abstractQuality()==Ability.MALICIOUS))))
 		{
 			mob.tell("Please don't do that.");
 			return false;

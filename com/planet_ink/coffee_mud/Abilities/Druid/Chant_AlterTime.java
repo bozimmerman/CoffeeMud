@@ -38,7 +38,7 @@ public class Chant_AlterTime extends Chant
 	public String name(){ return "Alter Time";}
 	public String displayText(){return "";}
 	public int overrideMana(){return 100;}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 

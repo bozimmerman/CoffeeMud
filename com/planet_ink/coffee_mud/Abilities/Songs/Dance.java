@@ -46,7 +46,7 @@ public class Dance extends StdAbility
 	protected int invokerManaCost=-1;
 
 	protected boolean skipStandardDanceInvoke(){return false;}
-	protected boolean mindAttack(){return quality()==Ability.MALICIOUS;}
+	protected boolean mindAttack(){return abstractQuality()==Ability.MALICIOUS;}
 	protected boolean skipStandardDanceTick(){return false;}
 	protected String danceOf(){return name();}
 
@@ -63,7 +63,7 @@ public class Dance extends StdAbility
 
 	protected int affectType(boolean auto){
 		int affectType=CMMsg.MASK_MAGIC|CMMsg.MSG_CAST_SOMANTIC_SPELL;
-		if(quality()==Ability.MALICIOUS)
+		if(abstractQuality()==Ability.MALICIOUS)
 			affectType=affectType|CMMsg.MASK_MALICIOUS;
 		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 		return affectType;
@@ -184,7 +184,7 @@ public class Dance extends StdAbility
 
 					// malicious dances must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
-					if((quality()==Ability.MALICIOUS)&&(follower!=mob))
+					if((castingQuality(mob,follower)==Ability.MALICIOUS)&&(follower!=mob))
 						affectType=affectType|CMMsg.MASK_MALICIOUS;
 					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 

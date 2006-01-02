@@ -39,7 +39,7 @@ public class Paralysis extends StdAbility
 	public String displayText(){ return "(Paralyzed)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"PARALYZE"};
 	public String[] triggerStrings(){return triggerStrings;}

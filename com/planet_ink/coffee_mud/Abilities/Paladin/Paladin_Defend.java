@@ -37,7 +37,7 @@ public class Paladin_Defend extends StdAbility
 	public String ID() { return "Paladin_Defend"; }
 	public String name(){ return "All Defence";}
 	private static final String[] triggerStrings = {"DEFENCE"};
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}

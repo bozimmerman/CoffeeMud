@@ -36,7 +36,7 @@ public class Chant_DistantWindColor extends Chant
 {
 	public String ID() { return "Chant_DistantWindColor"; }
 	public String name(){ return "Distant Wind Color";}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 

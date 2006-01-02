@@ -39,7 +39,7 @@ public class Chant_PlantChoke extends Chant
 	public String displayText(){return "(Plant Choke)";}
 	public int maxRange(){return 10;}
 	public int minRange(){return 0;}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	public boolean bubbleAffect(){return true;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_MOBS;}

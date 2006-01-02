@@ -39,7 +39,7 @@ public class Prayer_Forgive extends Prayer
 	public String name(){return "Forgive";}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	protected int canAffectCode(){return 0;}
-	public int quality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

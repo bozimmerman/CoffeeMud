@@ -36,7 +36,7 @@ public class Play_Rhythm extends Play
 {
 	public String ID() { return "Play_Rhythm"; }
 	public String name(){ return "Rhythm";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 
 	public void affectCharStats(MOB mob, CharStats stats)
 	{

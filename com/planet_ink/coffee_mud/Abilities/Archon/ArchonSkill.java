@@ -56,10 +56,13 @@ public class ArchonSkill extends StdAbility
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else
-		if((targetName.length()==0)&&(mob.isInCombat())&&(quality()==Ability.MALICIOUS)&&(mob.getVictim()!=null))
+		if((targetName.length()==0)&&(mob.isInCombat())&&(castingQuality(mob,mob.getVictim())==Ability.MALICIOUS))
 		   target=mob.getVictim();
 		else
-		if((targetName.length()==0)&&(quality()!=Ability.MALICIOUS))
+		if((targetName.length()==0)&&(castingQuality(mob,mob)==Ability.BENEFICIAL_SELF))
+			target=mob;
+		else
+		if((targetName.length()==0)&&(abstractQuality()!=Ability.MALICIOUS))
 			target=mob;
 		else
 		if(targetName.equalsIgnoreCase("self")||targetName.equalsIgnoreCase("me"))

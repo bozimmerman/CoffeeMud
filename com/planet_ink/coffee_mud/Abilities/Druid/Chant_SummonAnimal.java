@@ -38,7 +38,8 @@ public class Chant_SummonAnimal extends Chant
 	public String ID() { return "Chant_SummonAnimal"; }
 	public String name(){ return "Summon Animal";}
 	public String displayText(){return "(Animal Summoning)";}
-	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
+	public int enchantQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return Ability.FLAG_SUMMONING;}

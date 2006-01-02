@@ -36,7 +36,7 @@ public class Prayer_CurseFlames extends Prayer
 {
 	public String ID() { return "Prayer_CurseFlames"; }
 	public String name(){ return "Curse Flames";}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}

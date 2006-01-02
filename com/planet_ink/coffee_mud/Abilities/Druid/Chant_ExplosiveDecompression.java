@@ -37,7 +37,7 @@ public class Chant_ExplosiveDecompression extends Chant
 {
 	public String ID() { return "Chant_ExplosiveDecompression"; }
 	public String name(){ return "Explosive Decompression";}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	public boolean bubbleAffect(){return true;}

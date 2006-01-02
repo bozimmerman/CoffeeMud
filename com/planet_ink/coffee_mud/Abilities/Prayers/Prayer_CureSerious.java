@@ -36,7 +36,7 @@ public class Prayer_CureSerious extends Prayer
 {
 	public String ID() { return "Prayer_CureSerious"; }
 	public String name(){ return "Cure Serious Wounds";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALING;}
     protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}
 

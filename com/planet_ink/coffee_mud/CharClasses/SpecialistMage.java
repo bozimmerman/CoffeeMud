@@ -153,7 +153,7 @@ public class SpecialistMage extends Mage
 
 		int domain=skill.classificationCode()&Ability.ALL_DOMAINS;
 		if((skill.invoker()==myChar)
-		||(skill.quality()!=Ability.MALICIOUS))
+		||(skill.abstractQuality()!=Ability.MALICIOUS))
 		{
 			if(domain==opposed())
 				return duration/2;

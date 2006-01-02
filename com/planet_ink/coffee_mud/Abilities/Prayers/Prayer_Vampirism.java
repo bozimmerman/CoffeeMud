@@ -38,7 +38,7 @@ public class Prayer_Vampirism extends Prayer
 	public String displayText(){ return "(Vampirism)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 
 	public void unInvoke()

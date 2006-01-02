@@ -37,7 +37,7 @@ public class Fighter_FarShot extends FighterSkill
 	public String ID() { return "Fighter_FarShot"; }
 	public String name(){ return "Far Shot";}
 	public String displayText(){ return "";}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}

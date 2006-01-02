@@ -38,7 +38,7 @@ public class Spell_Web extends Spell
 	public String displayText(){return "(Webbed)";}
 	public int maxRange(){return 5;}
 	public int minRange(){return 1;}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}

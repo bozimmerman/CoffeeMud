@@ -39,7 +39,7 @@ public class Chant_CloudWalk extends Chant
 	public String ID() { return "Chant_CloudWalk"; }
 	public String name(){ return "Cloud Walk";}
 	public String displayText(){return "(Cloud Walk)";}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 

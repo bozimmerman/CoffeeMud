@@ -246,13 +246,13 @@ public class CharClassData extends StdWebMacro
 					totalqualified++;
 				Ability A=CMClass.getAbility(able);
 				if(A==null) continue;
-				if((A.quality()==Ability.BENEFICIAL_OTHERS)
-				   ||(A.quality()==Ability.BENEFICIAL_SELF))
+				if((A.abstractQuality()==Ability.BENEFICIAL_OTHERS)
+				   ||(A.abstractQuality()==Ability.BENEFICIAL_SELF))
 				{
 					beneficialSkills++;
 					if(gained) beneficialSkillsGained++;
 				}
-				if(A.quality()==Ability.MALICIOUS)
+				if(A.abstractQuality()==Ability.MALICIOUS)
 				{
 					maliciousSkills++;
 					if(gained) maliciousSkillsGained++;

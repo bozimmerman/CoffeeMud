@@ -38,14 +38,14 @@ public class Spell extends StdAbility
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return INDIFFERENT;}
 	private static final String[] triggerStrings = {"CAST","CA","C"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SPELL;}
 
 	protected int affectType(boolean auto){
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-		if(quality()==Ability.MALICIOUS)
+		if(abstractQuality()==Ability.MALICIOUS)
 			affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
 		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 		return affectType;
@@ -73,7 +73,7 @@ public class Spell extends StdAbility
 				Ability A=tmob.fetchEffect(i);
 				if((A!=null)
 				&&(A instanceof Spell)
-				&&(A.quality()==Ability.MALICIOUS))
+				&&(A.abstractQuality()==Ability.MALICIOUS))
 				{
 					num++;
 					if(num>5)

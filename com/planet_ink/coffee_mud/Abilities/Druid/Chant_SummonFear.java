@@ -36,7 +36,7 @@ public class Chant_SummonFear extends Chant
 	public String ID() { return "Chant_SummonFear"; }
 	public String name(){ return "Summon Fear";}
 	public String displayText(){return "(Afraid)";}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public int maxRange(){return 1;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

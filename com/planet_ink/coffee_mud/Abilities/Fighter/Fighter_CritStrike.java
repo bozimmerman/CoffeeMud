@@ -36,7 +36,7 @@ public class Fighter_CritStrike extends FighterSkill
 	public String ID() { return "Fighter_CritStrike"; }
 	public String name(){ return "Critical Strike";}
 	public String displayText(){ return "";}
-	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}

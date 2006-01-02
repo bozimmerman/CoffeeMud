@@ -38,7 +38,7 @@ public class Prayer_GodLight extends Prayer
 	public String name(){ return "Godlight";}
 	public String displayText(){return "(Godlight)";}
 	public long flags(){return Ability.FLAG_HOLY;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

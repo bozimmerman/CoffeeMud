@@ -39,7 +39,7 @@ public class Prayer_Divorce extends Prayer
 	public String ID() { return "Prayer_Divorce"; }
 	public String name(){ return "Divorce";}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	public int quality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.OK_OTHERS;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

@@ -37,7 +37,7 @@ public class Spell_WeaknessAcid extends Spell
 	public String ID() { return "Spell_WeaknessAcid"; }
 	public String name(){return "Weakness to Acid";}
 	public String displayText(){return "(Weakness to Acid)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 

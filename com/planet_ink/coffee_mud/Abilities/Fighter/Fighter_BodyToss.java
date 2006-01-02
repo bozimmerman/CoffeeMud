@@ -37,7 +37,7 @@ public class Fighter_BodyToss extends FighterSkill
 	public String ID() { return "Fighter_BodyToss"; }
 	public String name(){ return "Body Toss";}
 	private static final String[] triggerStrings = {"BODYTOSS"};
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

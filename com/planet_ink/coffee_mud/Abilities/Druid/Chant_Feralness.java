@@ -38,7 +38,7 @@ public class Chant_Feralness extends Chant
 	public String ID() { return "Chant_Feralness"; }
 	public String name(){ return "Feralness";}
 	public String displayText(){return "(Feralness)";}
-	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
 	int hpAdjustment=0;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

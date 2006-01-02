@@ -37,7 +37,7 @@ public class Thief_Listen extends ThiefSkill
 	public String name(){ return "Listen";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"LISTEN"};
 	public String[] triggerStrings(){return triggerStrings;}
 

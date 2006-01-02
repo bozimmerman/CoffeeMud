@@ -37,7 +37,7 @@ public class Chant_StoneFriend extends Chant
 	public String ID() { return "Chant_StoneFriend"; }
 	public String name(){ return "Stone Friend";}
 	public String displayText(){return "(Charmed)";}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public long flags(){return 0;} // NOT charming because golems are resistant to that.

@@ -36,7 +36,7 @@ public class Prayer_CreateWater extends Prayer
 {
 	public String ID() { return "Prayer_CreateWater"; }
 	public String name(){ return "Create Water";}
-	public int quality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}

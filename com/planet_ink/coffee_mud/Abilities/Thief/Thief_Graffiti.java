@@ -36,7 +36,7 @@ public class Thief_Graffiti extends ThiefSkill
 	public String name(){ return "Graffiti";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"GRAFFITI"};
 	public String[] triggerStrings(){return triggerStrings;}
 

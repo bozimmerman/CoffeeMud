@@ -36,7 +36,7 @@ public class Prayer_CureExhaustion extends Prayer
 {
     public String ID() { return "Prayer_CureExhaustion"; }
     public String name(){ return "Cure Exhaustion";}
-    public int quality(){ return BENEFICIAL_OTHERS;}
+    public int abstractQuality(){ return BENEFICIAL_OTHERS;}
     public long flags(){return Ability.FLAG_HOLY;}
     protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}
 

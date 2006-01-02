@@ -36,7 +36,7 @@ public class Song_Knowledge extends Song
 {
 	public String ID() { return "Song_Knowledge"; }
 	public String name(){ return "Knowledge";}
-	public int quality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return OK_OTHERS;}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

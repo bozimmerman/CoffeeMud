@@ -39,7 +39,7 @@ public class Prayer_Blindness extends Prayer
 	public String displayText(){ return "(Blindness)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

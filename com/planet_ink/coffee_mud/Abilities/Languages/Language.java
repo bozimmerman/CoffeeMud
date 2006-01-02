@@ -39,7 +39,7 @@ public class Language extends StdAbility
 	public String name(){ return "Languages";}
 	private static final String[] triggerStrings = {"SPEAK"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}

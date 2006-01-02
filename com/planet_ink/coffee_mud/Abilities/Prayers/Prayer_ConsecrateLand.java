@@ -38,7 +38,7 @@ public class Prayer_ConsecrateLand extends Prayer
 	public String ID() { return "Prayer_ConsecrateLand"; }
 	public String name(){return "Consecrate Land";}
 	public String displayText(){return "(Consecrate Land)";}
-	public int quality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 	public long flags(){return Ability.FLAG_HOLY;}

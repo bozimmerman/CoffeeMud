@@ -36,7 +36,7 @@ public class Play_Carol extends Play
 {
 	public String ID() { return "Play_Carol"; }
 	public String name(){ return "Carol";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected String songOf(){return "a "+name();}
 	public void affectCharStats(MOB mob, CharStats stats)
 	{

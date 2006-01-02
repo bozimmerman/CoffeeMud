@@ -36,7 +36,7 @@ public class Dance_Swing extends Dance
 {
 	public String ID() { return "Dance_Swing"; }
 	public String name(){ return "Swing";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected boolean doneThisRound=false;
 	protected String danceOf(){return name()+" Dancing";}
 

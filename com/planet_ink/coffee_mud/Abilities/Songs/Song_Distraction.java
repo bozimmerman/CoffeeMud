@@ -36,7 +36,7 @@ public class Song_Distraction extends Song
 {
 	public String ID() { return "Song_Distraction"; }
 	public String name(){ return "Distraction";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

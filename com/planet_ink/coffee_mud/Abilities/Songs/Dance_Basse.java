@@ -36,7 +36,7 @@ public class Dance_Basse extends Dance
 {
 	public String ID() { return "Dance_Basse"; }
 	public String name(){ return "Basse";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected String danceOf(){return name()+" Dance";}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

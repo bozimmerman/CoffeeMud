@@ -504,23 +504,11 @@ public class CraftingSkill extends GatheringSkill
 		Vector rscs=myResources();
 		Vector allItems=new Vector();
 		Vector items=null;
-		Vector itemSet=null;
-		Item built=null;
 		for(int r=0;r<rscs.size();r++)
 		{
 			items=craftAllItemsVectors(((Integer)rscs.elementAt(r)).intValue());
 			if((items==null)||(items.size()==0)) continue;
-			for(int i=0;i<items.size();i++)
-			{
-				itemSet=(Vector)items.elementAt(i);
-				built=(Item)itemSet.firstElement();
-				for(int a=0;a<allItems.size();a++)
-				{
-					if(built.Name().equals(((Item)((Vector)allItems.elementAt(a)).firstElement()).Name()))
-					{ built=null; break;}
-				}
-				if(built!=null) allItems.addElement(itemSet);
-			}
+			CMParms.addToVector(items,allItems);
 		}
 		return allItems;
 	}

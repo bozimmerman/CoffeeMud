@@ -37,7 +37,7 @@ public class Dance_Manipuri extends Dance
 {
 	public String ID() { return "Dance_Manipuri"; }
 	public String name(){ return "Manipuri";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected String danceOf(){return name()+" Dance";}
 
 	protected Room lastRoom=null;

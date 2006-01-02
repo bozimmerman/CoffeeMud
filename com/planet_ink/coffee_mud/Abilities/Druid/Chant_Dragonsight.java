@@ -37,7 +37,7 @@ public class Chant_Dragonsight extends Chant
 	public String ID() { return "Chant_Dragonsight"; }
 	public String name(){return "Dragonsight";}
 	public String displayText(){return "(Dragonsight)";}
-	public int quality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
     public void affectCharStats(MOB affected, CharStats affectableStats)

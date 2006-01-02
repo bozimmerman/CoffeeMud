@@ -37,7 +37,7 @@ public class Chant_SoaringEagle extends Chant
 	public String ID() { return "Chant_SoaringEagle"; }
 	public String name(){return "Soaring Eagle";}
 	public String displayText(){return "(Soaring Eagle)";}
-	public int quality(){ return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

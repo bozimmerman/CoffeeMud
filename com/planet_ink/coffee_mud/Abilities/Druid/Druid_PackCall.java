@@ -41,7 +41,8 @@ public class Druid_PackCall extends StdAbility
 	public String displayText(){return "(Pack Call)";}
 	private static final String[] triggerStrings = {"PACKCALL"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
+	public int enchantQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.SKILL;}

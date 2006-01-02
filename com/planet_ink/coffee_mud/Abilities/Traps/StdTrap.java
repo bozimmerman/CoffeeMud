@@ -35,7 +35,8 @@ public class StdTrap extends StdAbility implements Trap
 {
 	public String ID() { return "StdTrap"; }
 	public String name(){ return "standard trap";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
+	public int enchantQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return -1;}

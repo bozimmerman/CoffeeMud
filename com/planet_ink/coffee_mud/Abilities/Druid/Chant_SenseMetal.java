@@ -38,7 +38,7 @@ public class Chant_SenseMetal extends Chant
 	public String ID() { return "Chant_SenseMetal"; }
 	public String name(){return "Sense Metal";}
 	public String displayText(){return "(Sensing Metal)";}
-	public int quality(){ return OK_SELF;}
+	public int abstractQuality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
 	public void unInvoke()

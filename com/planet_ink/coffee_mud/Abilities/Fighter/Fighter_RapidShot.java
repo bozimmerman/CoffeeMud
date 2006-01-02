@@ -37,7 +37,7 @@ public class Fighter_RapidShot extends FighterSkill
 	public String ID() { return "Fighter_RapidShot"; }
 	public String name(){ return "Rapid Shot";}
 	public String displayText(){ return "";}
-	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}

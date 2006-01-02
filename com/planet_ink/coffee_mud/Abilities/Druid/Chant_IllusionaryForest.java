@@ -37,7 +37,7 @@ public class Chant_IllusionaryForest extends Chant
 	public String ID() { return "Chant_IllusionaryForest"; }
 	public String name(){ return "Illusionary Forest";}
 	public String displayText(){return "(Illusionary Fores)";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 	Room newRoom=null;

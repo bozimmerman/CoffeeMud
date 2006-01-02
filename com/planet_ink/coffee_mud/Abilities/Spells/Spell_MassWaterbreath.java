@@ -36,7 +36,7 @@ public class Spell_MassWaterbreath extends Spell
 	public String ID() { return "Spell_MassWaterbreath"; }
 	public String name(){return "Mass Waterbreath";}
 	public String displayText(){return "";}
-	public int quality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return OK_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 

@@ -36,7 +36,7 @@ public class Skill_SlowFall extends BardSkill
 	public String ID() { return "Skill_SlowFall"; }
 	public String name(){return "Slow Fall";}
 	public String displayText(){return activated?"(Slow Fall)":"";}
-	public int quality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}

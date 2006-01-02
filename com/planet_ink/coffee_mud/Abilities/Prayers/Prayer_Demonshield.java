@@ -37,7 +37,7 @@ public class Prayer_Demonshield extends Prayer
 	public String ID() { return "Prayer_Demonshield"; }
 	public String name(){return "Demonshield";}
 	public String displayText(){return "(Demonshield)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_BURNING;}
 

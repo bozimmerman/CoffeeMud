@@ -40,7 +40,7 @@ public class Age extends StdAbility
 	public String name(){ return "Age";}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	public int classificationCode(){return Ability.PROPERTY;}
 	public String accountForYourself(){return displayText();}

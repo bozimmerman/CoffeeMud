@@ -36,7 +36,7 @@ public class Spell_Transformation extends Spell
 	public String ID() { return "Spell_Transformation"; }
 	public String name(){return "Transformation";}
 	public String displayText(){return "(Transformation)";}
-	public int quality(){return BENEFICIAL_SELF;};
+	public int abstractQuality(){return BENEFICIAL_SELF;};
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 	protected int inc=0;
 

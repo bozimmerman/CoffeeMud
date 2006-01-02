@@ -37,7 +37,7 @@ public class Chant_VolcanicChasm extends Chant
 {
 	public String ID() { return "Chant_VolcanicChasm"; }
 	public String name(){ return "Volcanic Chasm";}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
 

@@ -36,7 +36,7 @@ public class Thief_Forgery extends ThiefSkill
 	public String name(){ return "Forgery";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"FORGERY"};
 	public String[] triggerStrings(){return triggerStrings;}
 

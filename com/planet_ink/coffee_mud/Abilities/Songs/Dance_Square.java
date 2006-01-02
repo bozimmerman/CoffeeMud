@@ -36,7 +36,7 @@ public class Dance_Square extends Dance
 {
 	public String ID() { return "Dance_Square"; }
 	public String name(){ return "Square";}
-	public int quality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return INDIFFERENT;}
 	protected boolean skipStandardDanceInvoke(){return true;}
 	protected String danceOf(){return name()+" Dance";}
 

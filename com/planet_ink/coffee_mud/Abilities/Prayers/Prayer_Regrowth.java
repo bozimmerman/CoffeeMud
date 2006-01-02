@@ -40,7 +40,7 @@ public class Prayer_Regrowth extends Prayer
 {
 	public String ID() { return "Prayer_Regrowth"; }
 	public String name(){ return "Regrowth";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	private static Vector limbsToRegrow = null;

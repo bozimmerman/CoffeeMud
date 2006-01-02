@@ -36,7 +36,7 @@ public class Chant_WarpWood extends Chant
 {
 	public String ID() { return "Chant_WarpWood"; }
 	public String name(){ return "Warp Wood";}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 

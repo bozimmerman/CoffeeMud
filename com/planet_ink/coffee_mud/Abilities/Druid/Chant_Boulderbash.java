@@ -36,7 +36,7 @@ public class Chant_Boulderbash extends Chant
 {
 	public String ID() { return "Chant_Boulderbash"; }
 	public String name(){ return "Boulderbash";}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public int maxRange(){return 2;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}

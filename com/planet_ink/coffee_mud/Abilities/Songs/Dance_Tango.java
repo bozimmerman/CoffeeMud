@@ -36,7 +36,7 @@ public class Dance_Tango extends Dance
 {
 	public String ID() { return "Dance_Tango"; }
 	public String name(){ return "Tango";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{

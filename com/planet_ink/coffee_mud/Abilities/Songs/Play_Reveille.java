@@ -36,7 +36,7 @@ public class Play_Reveille extends Play
 {
 	public String ID() { return "Play_Reveille"; }
 	public String name(){ return "Reveille";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected boolean skipStandardSongTick(){return true;}
 

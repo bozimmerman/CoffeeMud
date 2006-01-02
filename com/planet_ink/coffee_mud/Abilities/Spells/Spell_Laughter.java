@@ -36,7 +36,7 @@ public class Spell_Laughter extends Spell
 	public String ID() { return "Spell_Laughter"; }
 	public String name(){return "Laughter";}
 	public String displayText(){return "(Laughter spell)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public long flags(){return Ability.FLAG_PARALYZING;}

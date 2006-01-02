@@ -37,7 +37,7 @@ public class Fighter_Spring extends FighterSkill
 	public String ID() { return "Fighter_Spring"; }
 	public String name(){ return "Spring Attack";}
 	private static final String[] triggerStrings = {"SPRINGATTACK","SPRING","SATTACK"};
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

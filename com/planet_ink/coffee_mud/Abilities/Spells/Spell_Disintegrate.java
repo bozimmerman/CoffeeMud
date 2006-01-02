@@ -35,7 +35,7 @@ public class Spell_Disintegrate extends Spell
 {
 	public String ID() { return "Spell_Disintegrate"; }
 	public String name(){return "Disintegrate";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;	}
 	public int overrideMana(){return 100;}

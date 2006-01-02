@@ -37,7 +37,7 @@ public class Song_Mercy extends Song
 {
 	public String ID() { return "Song_Mercy"; }
 	public String name(){ return "Mercy";}
-	public int quality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return INDIFFERENT;}
 
 	protected Room lastRoom=null;
 	protected int count=3;

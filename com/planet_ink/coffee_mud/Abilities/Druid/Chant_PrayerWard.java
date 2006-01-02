@@ -37,7 +37,7 @@ public class Chant_PrayerWard extends Chant
 	public String ID() { return "Chant_PrayerWard"; }
 	public String name(){return "Prayer Ward";}
 	public String displayText(){return "(Prayer Ward)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
 	public void unInvoke()

@@ -36,7 +36,7 @@ public class Skill_RegionalAwareness extends StdSkill
 	public String name(){ return "Regional Awareness";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"REGION","REGIONALAWARENESS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}

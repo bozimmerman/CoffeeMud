@@ -36,7 +36,7 @@ public class Spell_Clone extends Spell
 	public String ID() { return "Spell_Clone"; }
 	public String name(){return "Clone";}
 	public String displayText(){return "(Clone)";}
-	public int quality(){return INDIFFERENT;};
+	public int abstractQuality(){return INDIFFERENT;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int overrideMana(){return 200;}

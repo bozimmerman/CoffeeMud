@@ -39,7 +39,7 @@ public class Prayer_BladeBarrier extends Prayer
 	public String displayText(){ return "(Blade Barrier)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	String lastMessage=null;
 

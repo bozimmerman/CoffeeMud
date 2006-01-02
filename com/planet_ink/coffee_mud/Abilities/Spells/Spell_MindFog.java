@@ -36,7 +36,7 @@ public class Spell_MindFog extends Spell
 	public String ID() { return "Spell_MindFog"; }
 	public String name(){return "Mind Fog";}
 	public String displayText(){return "(Mind Fog)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 

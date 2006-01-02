@@ -36,7 +36,7 @@ public class Skill_Buffoonery extends BardSkill
 	public String name(){ return "Buffoonery";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"BUFFOONERY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}

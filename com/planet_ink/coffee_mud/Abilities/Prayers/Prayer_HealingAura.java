@@ -36,7 +36,7 @@ public class Prayer_HealingAura extends Prayer
 {
 	public String ID() { return "Prayer_HealingAura"; }
 	public String name(){ return "Healing Aura";}
-	public int quality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Healing Aura)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

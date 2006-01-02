@@ -40,7 +40,7 @@ public class Chant_PlantWall extends Chant
 	public String displayText(){return "(Plant Wall)";}
 	public int maxRange(){return 10;}
 	public int minRange(){return 1;}
-	public int quality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 

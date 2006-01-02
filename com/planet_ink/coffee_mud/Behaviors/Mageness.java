@@ -49,9 +49,9 @@ public class Mageness extends CombatAbilities
 				||(!CMLib.ableMapper().qualifiesByLevel(mob,addThis))
 				||(((addThis.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)&&(!addThis.appropriateToMyFactions(mob)))
 				||(mob.fetchAbility(addThis.ID())!=null)
-				||((addThis.quality()!=Ability.MALICIOUS)
-				   &&(addThis.quality()!=Ability.BENEFICIAL_SELF)
-				   &&(addThis.quality()!=Ability.BENEFICIAL_OTHERS)))
+				||((addThis.abstractQuality()!=Ability.MALICIOUS)
+				   &&(addThis.abstractQuality()!=Ability.BENEFICIAL_SELF)
+				   &&(addThis.abstractQuality()!=Ability.BENEFICIAL_OTHERS)))
 					addThis=null;
 			}
 			if(addThis!=null)

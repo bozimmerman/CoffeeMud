@@ -39,7 +39,7 @@ public class Prayer_ElectricHealing extends Prayer
 	public String displayText(){ return "(Electric Healing)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int quality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_HEALING;}
 
 

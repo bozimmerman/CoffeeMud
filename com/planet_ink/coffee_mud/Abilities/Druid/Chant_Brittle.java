@@ -38,7 +38,7 @@ public class Chant_Brittle extends Chant
 	public String name(){return "Brittle";}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected int canAffectCode(){return CAN_ITEMS;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	protected int oldCondition=-1;
 	protected boolean noRecurse=true;
 	public void affectEnvStats(Environmental E, EnvStats stats)

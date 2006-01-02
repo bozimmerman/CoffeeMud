@@ -96,7 +96,7 @@ public class Spell_Delay extends Spell
 			return false;
 		}
 
-		if(shooter.quality()==Ability.MALICIOUS)
+		if(shooter.enchantQuality()==Ability.MALICIOUS)
 		for(int m=0;m<mob.location().numInhabitants();m++)
 		{
 			MOB M=mob.location().fetchInhabitant(m);

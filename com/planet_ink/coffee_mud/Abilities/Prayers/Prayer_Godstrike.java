@@ -36,7 +36,7 @@ public class Prayer_Godstrike extends Prayer
 {
 	public String ID() { return "Prayer_Godstrike"; }
 	public String name(){ return "Godstrike";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

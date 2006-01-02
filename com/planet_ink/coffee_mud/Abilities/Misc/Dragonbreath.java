@@ -37,7 +37,7 @@ public class Dragonbreath extends StdAbility
 {
 	public String ID() { return "Dragonbreath"; }
 	public String name(){ return "Dragonbreath";}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public int maxRange(){return 10;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

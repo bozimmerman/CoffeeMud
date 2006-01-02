@@ -37,7 +37,7 @@ public class Chant_Camelback extends Chant
 	public String ID() { return "Chant_Camelback"; }
 	public String name(){return "Camelback";}
 	public String displayText(){return "(Camelback)";}
-	public int quality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
 	public void affectCharState(MOB affected, CharState affectableMaxState)

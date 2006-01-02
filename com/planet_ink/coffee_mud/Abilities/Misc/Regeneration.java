@@ -44,7 +44,7 @@ public class Regeneration extends StdAbility
 	public String displayText(){ return "(Stat Regeneration)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.BENEFICIAL_OTHERS;}
+	public int abstractQuality(){return Ability.BENEFICIAL_OTHERS;}
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"REGENERATE"};
 	public String[] triggerStrings(){return triggerStrings;}

@@ -140,6 +140,7 @@ public class RandomItems extends ActiveTicker
 		super.setParms(oldParms);
 		minItems=CMParms.getParmInt(oldParms,"minitems",1);
 		maxItems=CMParms.getParmInt(oldParms,"maxitems",1);
+		if(minItems>maxItems) maxItems=minItems;
 		parms=newParms;
 		alreadyTriedLoad=false;
 		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))
@@ -192,7 +193,7 @@ public class RandomItems extends ActiveTicker
 			Log.errOut("RandomItems","Blank XML/filename: '"+filename+"'.");
 			return null;
 		}
-		int start=filename.indexOf("<MOBS>");
+		int start=filename.indexOf("<ITEMS>");
 		if((start>=0)&&(start<=20))
 		{
 			int end=start+20;
@@ -247,7 +248,7 @@ public class RandomItems extends ActiveTicker
 					Log.errOut("RandomItems","Unknown XML file: '"+filename+"' for '"+thangName+"'.");
 					return null;
 				}
-				if(buf.substring(0,20).indexOf("<MOBS>")<0)
+				if(buf.substring(0,20).indexOf("<ITEMS>")<0)
 				{
 					Log.errOut("RandomItems","Invalid XML file: '"+filename+"' for '"+thangName+"'.");
 					return null;
@@ -313,8 +314,11 @@ public class RandomItems extends ActiveTicker
 					I.text();
 					if(SK!=null)
 					{
-						maintained.addElement(I);
-						SK.getShop().addStoreInventory((Environmental)ticking,1,-1,SK);
+						if(SK.doISellThis(I))
+						{
+							maintained.addElement(I);
+							SK.getShop().addStoreInventory((Environmental)ticking,1,-1,SK);
+						}
 					}
 					else
 				    if(ticking instanceof Container)
@@ -382,25 +386,21 @@ public class RandomItems extends ActiveTicker
 							room=((GridLocale)room).getRandomChild();
 						if(room!=null)
 						{
-							if(favorMobs)
+							Vector inhabs=new Vector();
+							for(int m=0;m<room.numInhabitants();m++)
 							{
-								Vector inhabs=new Vector();
-								for(int m=0;m<room.numInhabitants();m++)
-								{
-									MOB M=room.fetchInhabitant(m);
-									if((M.savable())&&(M.getStartRoom().getArea().inMetroArea(room.getArea())))
-										inhabs.addElement(M);
-								}
-								if(inhabs.size()>0)
-								{
-									MOB M=(MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
-									M.addInventory(I);
-									I.wearIfPossible(M);
-									maintained.addElement(I);
-									room=null;
-								}
+								MOB M=room.fetchInhabitant(m);
+								if((M.savable())&&(M.getStartRoom().getArea().inMetroArea(room.getArea())))
+									inhabs.addElement(M);
 							}
-							if(room!=null)
+							if(inhabs.size()>0)
+							{
+								MOB M=(MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
+								M.addInventory(I);
+								I.wearIfPossible(M);
+								maintained.addElement(I);
+							}
+							if((!favorMobs)&&(room!=null))
 							{
 								maintained.addElement(I);
 								room.addItem(I);

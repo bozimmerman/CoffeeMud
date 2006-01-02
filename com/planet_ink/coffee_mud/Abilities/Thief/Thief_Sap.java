@@ -39,7 +39,7 @@ public class Thief_Sap extends ThiefSkill
 	public String displayText(){ return "(Knocked out)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"SAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}

@@ -35,7 +35,7 @@ public class Druid_ShapeShift4 extends Druid_ShapeShift
 {
 	public String ID() { return "Druid_ShapeShift4"; }
 	public String name(){ return "Fourth Totem";}
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
 	public String[] triggerStrings(){return empty;}
 
 

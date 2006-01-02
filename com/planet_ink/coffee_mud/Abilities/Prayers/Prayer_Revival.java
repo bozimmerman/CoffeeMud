@@ -38,7 +38,7 @@ public class Prayer_Revival extends Prayer
 	public String name(){ return "Revival";}
 	public String displayText(){return "(Revival)";}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
 
 	public void unInvoke()
 	{

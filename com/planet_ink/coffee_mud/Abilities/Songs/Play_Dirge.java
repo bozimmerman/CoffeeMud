@@ -37,7 +37,7 @@ public class Play_Dirge extends Play
 	public String ID() { return "Play_Dirge"; }
 	public String name(){ return "Dirge";}
 	protected int canAffectCode(){return 0;}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected boolean persistantSong(){return false;}
 	protected boolean skipStandardSongTick(){return true;}
 	protected String songOf(){return "a "+name();}

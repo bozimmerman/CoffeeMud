@@ -207,7 +207,7 @@ public class Deviations extends StdCommand
 				Weapon W=null;
 				if(I instanceof Weapon)
 					W=(Weapon)I;
-				Hashtable vals=CMLib.coffeeMaker().timsItemAdjustments(
+				Hashtable vals=CMLib.itemBuilder().timsItemAdjustments(
 								I,I.envStats().level(),I.material(),I.baseEnvStats().weight(),
 								I.rawLogicalAnd()?2:1,
 								(W==null)?0:W.weaponClassification(),

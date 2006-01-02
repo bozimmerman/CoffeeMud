@@ -37,7 +37,7 @@ public class Chant_Tangle extends Chant
 	public String ID() { return "Chant_Tangle"; }
 	public String name(){ return "Tangle";}
 	public String displayText(){return "(Tangled)";}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public int maxRange(){return 2;}
 	public Item thePlants=null;
 	public int amountRemaining=0;

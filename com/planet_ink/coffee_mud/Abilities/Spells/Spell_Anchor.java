@@ -36,7 +36,7 @@ public class Spell_Anchor extends Spell
 	public String ID() { return "Spell_Anchor"; }
 	public String name(){return "Anchor";}
 	public String displayText(){return "(Anchor)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 

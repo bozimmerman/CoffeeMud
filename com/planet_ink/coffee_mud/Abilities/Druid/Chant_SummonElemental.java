@@ -38,7 +38,8 @@ public class Chant_SummonElemental extends Chant
 	public String ID() { return "Chant_SummonElemental"; }
 	public String name(){ return "Summon Elemental";}
 	public String displayText(){return "(Summon Elemental)";}
-	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
+	public int enchantQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return Ability.FLAG_SUMMONING;}

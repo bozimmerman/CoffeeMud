@@ -36,7 +36,7 @@ public class Spell_ResistPiercing extends Spell
 	public String ID() { return "Spell_ResistPiercing"; }
 	public String name(){return "Resist Piercing";}
 	public String displayText(){return "(Resist Piercing)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 

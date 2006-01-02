@@ -37,7 +37,7 @@ public class Chant_Stonewalking extends Chant
 	public String ID() { return "Chant_Stonewalking"; }
 	public String name(){return "Stonewalking";}
 	public String displayText(){return "(Stonewalking spell)";}
-	public int quality(){ return BENEFICIAL_SELF;}
+	public int abstractQuality(){ return BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
 	/** this method defines how this thing responds

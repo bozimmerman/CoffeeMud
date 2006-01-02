@@ -37,7 +37,7 @@ public class Skill_TurnUndead extends StdSkill
 	public String displayText(){ return "(Turned)";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"TURN"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}

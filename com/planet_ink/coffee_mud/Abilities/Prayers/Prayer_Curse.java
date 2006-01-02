@@ -37,7 +37,7 @@ public class Prayer_Curse extends Prayer
 	public String ID() { return "Prayer_Curse"; }
 	public String name(){ return "Curse";}
 	public String displayText(){ return "(Cursed)";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}

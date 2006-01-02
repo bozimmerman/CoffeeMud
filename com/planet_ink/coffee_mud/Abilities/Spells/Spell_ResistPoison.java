@@ -37,7 +37,7 @@ public class Spell_ResistPoison extends Spell
 	public String ID() { return "Spell_ResistPoison"; }
 	public String name(){return "Resist Poison";}
 	public String displayText(){return "(Resist Poison)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 

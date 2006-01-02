@@ -55,8 +55,26 @@ public class StdAbility extends ForeignScriptable implements Ability
 	public long flags(){return 0;}
 	public int usageType(){return USAGE_MANA;}
 	protected int overrideMana(){return -1;} //-1=normal, Integer.MAX_VALUE=all, Integer.MAX_VALUE-100
-	public int quality(){return Ability.INDIFFERENT;}
-	public int conditionalQuality(MOB invoker, MOB target){return quality();}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
+	public int enchantQuality(){return abstractQuality();}
+	public int castingQuality(MOB invoker, MOB target)
+	{
+		if((target!=null)&&(target.fetchEffect(ID())!=null))
+			return Ability.INDIFFERENT;
+		switch(abstractQuality())
+		{
+		case BENEFICIAL_OTHERS:
+			if(invoker==target) return BENEFICIAL_SELF;
+			return BENEFICIAL_OTHERS;
+		case MALICIOUS:
+			return MALICIOUS;
+		case BENEFICIAL_SELF:
+			if((target!=null)&&(invoker!=target)) return INDIFFERENT;
+			return BENEFICIAL_SELF;
+		default:
+			return INDIFFERENT;
+		}
+	}
 	protected int canAffectCode(){return Ability.CAN_AREAS|
 										 Ability.CAN_ITEMS|
 										 Ability.CAN_MOBS|
@@ -222,10 +240,13 @@ public class StdAbility extends ForeignScriptable implements Ability
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else
-		if((targetName.length()==0)&&(mob.isInCombat())&&(quality()==Ability.MALICIOUS)&&(mob.getVictim()!=null))
+		if((targetName.length()==0)&&(mob.isInCombat())&&(castingQuality(mob,mob.getVictim())==Ability.MALICIOUS)&&(mob.getVictim()!=null))
 		   target=mob.getVictim();
 		else
-		if((targetName.length()==0)&&(quality()!=Ability.MALICIOUS))
+		if((targetName.length()==0)&&(castingQuality(mob,mob)==Ability.BENEFICIAL_SELF))
+			target=mob;
+		else
+		if((targetName.length()==0)&&(abstractQuality()!=Ability.MALICIOUS))
 			target=mob;
 		else
 		if(targetName.equalsIgnoreCase("self")||targetName.equalsIgnoreCase("me"))
@@ -302,7 +323,7 @@ public class StdAbility extends ForeignScriptable implements Ability
 		if(givenTarget!=null)
 			target=givenTarget;
 		else
-		if((targetName.length()==0)&&(mob.isInCombat())&&(quality()==Ability.MALICIOUS)&&(mob.getVictim()!=null))
+		if((targetName.length()==0)&&(mob.isInCombat())&&(castingQuality(mob,mob.getVictim())==Ability.MALICIOUS))
 			target=mob.getVictim();
 		else
 		if(targetName.equalsIgnoreCase("self")||targetName.equalsIgnoreCase("me"))

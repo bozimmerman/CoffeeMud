@@ -37,7 +37,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	public String name(){ return "Set Alarm";}
 	protected int canAffectCode(){return Ability.CAN_EXITS;}
 	protected int canTargetCode(){return Ability.CAN_EXITS;}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"SETALARM"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}

@@ -36,7 +36,7 @@ public class Spell_AcidArrow extends Spell
 	public String ID() { return "Spell_AcidArrow"; }
 	public String name(){ return "Acid Arrow";}
 	public String displayText(){ return "(Acid Arrow)";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int maxRange(){return 2;}

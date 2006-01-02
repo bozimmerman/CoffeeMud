@@ -38,6 +38,6 @@ public class Skill_WandUse extends StdSkill
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
 	public int classificationCode(){return Ability.SKILL;}
 }

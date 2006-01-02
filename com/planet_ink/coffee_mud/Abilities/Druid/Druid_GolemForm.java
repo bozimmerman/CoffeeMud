@@ -36,7 +36,7 @@ public class Druid_GolemForm extends StdAbility
 {
 	public String ID() { return "Druid_GolemForm"; }
 	public String name(){ return "Golem Form";}
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
 	private static final String[] triggerStrings = {"GOLEMFORM"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

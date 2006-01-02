@@ -36,7 +36,7 @@ public class Spell_BurningHands extends Spell
 	public String ID() { return "Spell_BurningHands"; }
 	public String name(){return "Burning Hands";}
 	public String displayText(){return "(Burning Hands spell)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

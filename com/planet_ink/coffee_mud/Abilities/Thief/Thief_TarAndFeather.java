@@ -38,7 +38,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"TARANDFEATHER","TAR"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int overrideMana(){return 100;}

@@ -37,7 +37,8 @@ public class Spell_DetectAmbush extends Spell
 	public String ID() { return "Spell_DetectAmbush"; }
 	public String name(){return "Detect Ambush";}
 	public String displayText(){return "(Detecting Ambushes)";}
-	public int quality(){ return OK_SELF;}
+	public int abstractQuality(){ return OK_SELF;}
+	public int enchantQuality(){return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
 

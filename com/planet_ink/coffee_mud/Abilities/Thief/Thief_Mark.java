@@ -36,7 +36,7 @@ public class Thief_Mark extends ThiefSkill
 	public String name(){ return "Mark";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"MARK"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean isAutoInvoked(){return true;}

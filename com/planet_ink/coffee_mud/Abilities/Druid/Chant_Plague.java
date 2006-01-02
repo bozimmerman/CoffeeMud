@@ -36,7 +36,7 @@ public class Chant_Plague extends Chant
 {
 	public String ID() { return "Chant_Plague"; }
 	public String name(){ return "Summon Plague";}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

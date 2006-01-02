@@ -38,7 +38,7 @@ public class Thief_Detection extends ThiefSkill
 	public String displayText(){return "(Detecting hidden...)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"DETECT","DETECTION"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected Room lastRoom=null;

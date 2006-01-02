@@ -37,7 +37,7 @@ public class Paladin_Breakup extends StdAbility
 	public String ID() { return "Paladin_Breakup"; }
 	public String name(){ return "Breakup Fight";}
 	private static final String[] triggerStrings = {"BREAKUP"};
-	public int quality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.OK_OTHERS;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

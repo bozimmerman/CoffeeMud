@@ -36,7 +36,7 @@ public class Play_Tempo extends Play
 {
 	public String ID() { return "Play_Tempo"; }
 	public String name(){ return "Tempo";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

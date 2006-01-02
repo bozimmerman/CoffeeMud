@@ -41,7 +41,7 @@ public class CommonSkill extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "";}
 
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	protected String displayText="(Doing something productive)";
 	public String displayText(){return displayText;}
 

@@ -38,7 +38,7 @@ public class Chant_AcidWard extends Chant
 	public String ID() { return "Chant_AcidWard"; }
 	public String name(){ return "Acid Ward";}
 	public String displayText(){return "(Acid Ward)";}
-	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
 
 	public void unInvoke()
 	{

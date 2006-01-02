@@ -38,7 +38,8 @@ public class Spell_WallOfDarkness extends Spell
 	public String displayText(){return "(Wall of Darkness)";}
 	public int maxRange(){return 10;}
 	public int minRange(){return 1;}
-	public int quality(){ return OK_SELF;}
+	public int abstractQuality(){ return OK_SELF;}
+	public int enchantQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}

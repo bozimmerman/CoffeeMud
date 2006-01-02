@@ -36,7 +36,7 @@ public class Prayer_Freedom extends Prayer
 {
 	public String ID() { return "Prayer_Freedom"; }
 	public String name(){ return "Freedom";}
-	public int quality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
 	public static Vector returnOffensiveAffects(MOB caster, Environmental fromMe)

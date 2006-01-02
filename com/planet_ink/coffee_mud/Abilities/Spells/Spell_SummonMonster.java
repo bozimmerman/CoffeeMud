@@ -36,7 +36,8 @@ public class Spell_SummonMonster extends Spell
 	public String ID() { return "Spell_SummonMonster"; }
 	public String name(){return "Monster Summoning";}
 	public String displayText(){return "(Monster Summoning)";}
-	public int quality(){return BENEFICIAL_SELF;};
+	public int abstractQuality(){return BENEFICIAL_SELF;};
+	public int enchantQuality(){return Ability.INDIFFERENT;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_SUMMONING;}
 

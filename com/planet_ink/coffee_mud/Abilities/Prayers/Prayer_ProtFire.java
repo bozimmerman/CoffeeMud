@@ -38,7 +38,7 @@ public class Prayer_ProtFire extends Prayer
 	public String name(){ return "Protection Fire";}
 	public String displayText(){return "(Protection from Fire)";}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 

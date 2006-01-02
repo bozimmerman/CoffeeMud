@@ -37,7 +37,7 @@ public class Chant_Treehouse extends Chant
 	public String ID() { return "Chant_Treehouse"; }
 	public String name(){ return "Treehouse";}
 	public String displayText(){return "(Treehouse)";}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 

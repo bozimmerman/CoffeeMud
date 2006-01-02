@@ -37,7 +37,7 @@ public class Chant_RestoreMana extends Chant
 	public String ID() { return "Chant_RestoreMana"; }
 	public String name(){ return "Restore Mana";}
 	public String displayText(){return "";}
-	public int quality(){return Ability.BENEFICIAL_OTHERS;}
+	public int abstractQuality(){return Ability.BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	protected int overrideMana(){return 50;}

@@ -38,7 +38,8 @@ public class Chant_PoisonousVine extends Chant_SummonVine
 	public String ID() { return "Chant_PoisonousVine"; }
 	public String name(){ return "Poisonous Vine";}
 	public String displayText(){return "(Poisonous Vine)";}
-	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
+	public int enchantQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 

@@ -36,7 +36,7 @@ public class Song_Babble extends Song
 {
 	public String ID() { return "Song_Babble"; }
 	public String name(){ return "Babble";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
     protected final static String consonants="bcdfghjklmnpqrstvwxz";
     protected final static String vowels="aeiouy";
 	protected boolean skipStandardSongInvoke(){return true;}

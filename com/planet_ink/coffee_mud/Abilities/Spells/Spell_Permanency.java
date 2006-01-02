@@ -84,7 +84,7 @@ public class Spell_Permanency extends Spell
 				}
 				else
 				if(((target instanceof Room)||(target instanceof Exit))
-				&&(theOne.quality()==Ability.MALICIOUS)
+				&&(theOne.enchantQuality()==Ability.MALICIOUS)
 				&&(!CMLib.utensils().doesOwnThisProperty(mob,mob.location())))
 				{
 					mob.tell("You can not make "+theOne.name()+" permanent here.");

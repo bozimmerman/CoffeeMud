@@ -36,7 +36,7 @@ public class Play_March extends Play
 {
 	public String ID() { return "Play_March"; }
 	public String name(){ return "March";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected String songOf(){return "a "+name();}
 
 	public boolean tick(Tickable ticking, int tickID)

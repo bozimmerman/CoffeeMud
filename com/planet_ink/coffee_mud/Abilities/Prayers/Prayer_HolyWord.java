@@ -39,7 +39,7 @@ public class Prayer_HolyWord extends Prayer
 	public String displayText(){ return "(Holy Word)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int quality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_BLESSING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

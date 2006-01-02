@@ -39,7 +39,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	public String displayText(){ return "(ItemRejuv)";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
     protected Room myProperLocation=null;
     protected Vector contents=new Vector();
     protected Vector ccontents=new Vector();

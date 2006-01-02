@@ -35,7 +35,7 @@ public class Spell_Breadcrumbs extends Spell
 {
 	public String ID() { return "Spell_Breadcrumbs"; }
 	public String name(){return "Breadcrumbs";}
-	public int quality(){ return OK_SELF;}
+	public int abstractQuality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 	public Vector trail=null;

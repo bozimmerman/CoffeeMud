@@ -36,7 +36,7 @@ public class Spell_Shockshield extends Spell
 	public String ID() { return "Spell_Shockshield"; }
 	public String name(){return "Shockshield";}
 	public String displayText(){return "(Shockshield)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 

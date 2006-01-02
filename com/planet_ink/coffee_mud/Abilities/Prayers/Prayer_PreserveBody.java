@@ -35,7 +35,7 @@ public class Prayer_PreserveBody extends Prayer
 {
 	public String ID() { return "Prayer_PreserveBody"; }
 	public String name(){ return "Preserve Body";}
-	public int quality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return INDIFFERENT;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 

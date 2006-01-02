@@ -38,7 +38,7 @@ public class Prayer_CurseMetal extends Prayer
 	public String ID() { return "Prayer_CurseMetal"; }
 	public String name(){return "Curse Metal";}
 	public String displayText(){return "(Cursed)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_CURSE;}

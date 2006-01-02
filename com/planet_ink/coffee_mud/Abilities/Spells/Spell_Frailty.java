@@ -36,7 +36,7 @@ public class Spell_Frailty extends Spell
 	public String ID() { return "Spell_Frailty"; }
 	public String name(){return "Frailty";}
 	public String displayText(){return "(Frailty)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 

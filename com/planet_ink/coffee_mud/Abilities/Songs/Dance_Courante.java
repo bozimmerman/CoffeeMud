@@ -36,7 +36,7 @@ public class Dance_Courante extends Dance
 {
 	public String ID() { return "Dance_Courante"; }
 	public String name(){ return "Courante";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected String danceOf(){return name()+" Dance";}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

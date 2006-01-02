@@ -35,7 +35,7 @@ public class Prop_LangTranslator extends Property
 {
 	public String ID() { return "Prop_LangTranslator"; }
 	public String name(){return "Language Translator";}
-	public int quality(){return BENEFICIAL_SELF;};
+	public int abstractQuality(){return BENEFICIAL_SELF;};
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS|CAN_ROOMS;}
 	protected MOB mob=null;
     protected DVector langs=new DVector(2);

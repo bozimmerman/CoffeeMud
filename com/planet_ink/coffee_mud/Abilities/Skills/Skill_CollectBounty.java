@@ -37,7 +37,7 @@ public class Skill_CollectBounty extends StdSkill
 	public String name(){ return "Collect Bounty";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.OK_OTHERS;}
 	private static final String[] triggerStrings = {"COLLECTBOUNTY","BOUNTY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}

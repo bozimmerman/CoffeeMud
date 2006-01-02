@@ -37,7 +37,7 @@ public class Chant_LoveMoon extends Chant
 	public String ID() { return "Chant_LoveMoon"; }
 	public String name(){ return "Love Moon";}
 	public String displayText(){return "(Love Moon)";}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return FLAG_MOONCHANGING;}

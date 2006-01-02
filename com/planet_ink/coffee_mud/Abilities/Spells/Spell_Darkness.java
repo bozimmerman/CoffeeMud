@@ -39,7 +39,7 @@ public class Spell_Darkness extends Spell
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 
 	public void unInvoke()
 	{

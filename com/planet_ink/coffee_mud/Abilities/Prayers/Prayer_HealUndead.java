@@ -36,7 +36,7 @@ public class Prayer_HealUndead extends Prayer
 {
 	public String ID() { return "Prayer_HealUndead"; }
 	public String name(){ return "Heal Undead";}
-	public int quality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEALING;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

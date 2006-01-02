@@ -37,7 +37,7 @@ public class Fighter_Sweep extends FighterSkill
 	public String ID() { return "Fighter_Sweep"; }
 	public String name(){ return "Sweep";}
 	private static final String[] triggerStrings = {"SWEEP"};
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}

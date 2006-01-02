@@ -36,7 +36,7 @@ public class Spell_AchillesArmor extends Spell
 	public String ID() { return "Spell_AchillesArmor"; }
 	public String name(){return "Achilles Armor";}
 	public String displayText(){return "(Achilles Armor)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int overrideMana(){return 100;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}

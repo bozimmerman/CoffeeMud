@@ -36,7 +36,7 @@ public class Spell_MinorGlobe extends Spell
 	public String ID() { return "Spell_MinorGlobe"; }
 	public String name(){return "Globe";}
 	public String displayText(){return "(Invulnerability Globe)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 

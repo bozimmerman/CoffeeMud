@@ -35,7 +35,7 @@ public class Skill_FireBreathing extends BardSkill
 {
 	public String ID() { return "Skill_FireBreathing"; }
 	public String name(){ return "Fire Breathing";}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	private static final String[] triggerStrings = {"FIREBREATHING","FIREBREATH"};

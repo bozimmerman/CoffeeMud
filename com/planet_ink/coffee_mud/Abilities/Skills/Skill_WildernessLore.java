@@ -36,7 +36,7 @@ public class Skill_WildernessLore extends StdSkill
 	public String name(){ return "Wilderness Lore";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"WILDERNESSLORE","WLORE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}

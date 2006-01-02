@@ -36,7 +36,7 @@ public class Song_Lullibye extends Song
 {
 	public String ID() { return "Song_Lullibye"; }
 	public String name(){ return "Lullaby";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 
 	boolean asleep=false;
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -109,26 +109,20 @@ public class TimsItemTable extends StdWebMacro
 		V.addElement(I);
 		return false;
 	}
-	
+
 	public String addRow(Item I)
 	{
 		StringBuffer row=new StringBuffer("");
 		int lvl=I.envStats().level();
-		Ability ADJ=I.fetchEffect("Prop_WearAdjuster");
-		if(ADJ==null) ADJ=I.fetchEffect("Prop_HaveAdjuster");
-		if(ADJ==null) ADJ=I.fetchEffect("Prop_RideAdjuster");
-		Ability RES=I.fetchEffect("Prop_WearResister");
-		if(RES==null) RES=I.fetchEffect("Prop_HaveResister");
-		Ability CAST=I.fetchEffect("Prop_WearSpellCast");
-		int castMul=1;
-		if(CAST==null) CAST=I.fetchEffect("Prop_UseSpellCast");
-		if(CAST==null) CAST=I.fetchEffect("Prop_UseSpellCast2");
-		if(CAST==null) CAST=I.fetchEffect("Prop_HaveSpellCast");
-		if(CAST==null){ CAST=I.fetchEffect("Prop_FightSpellCast"); castMul=-1;}
 		row.append("<TR>");
 		row.append("<TD>"+I.name()+"</TD>");
 		row.append("<TD>"+lvl+"</TD>");
-		int tlvl=timsLevelCalculator(I,ADJ,RES,CAST,castMul);
+		int[] castMul=new int[1];
+		Ability[] RET=CMLib.itemBuilder().getTimsAdjResCast(I,castMul);
+		Ability ADJ=RET[0];
+		Ability RES=RET[1];
+		Ability CAST=RET[2];
+		int tlvl=CMLib.itemBuilder().timsLevelCalculator(I,ADJ,RES,CAST,castMul[0]);
 		row.append("<TD>"+tlvl+"</TD>");
 		int diff=tlvl-lvl; if(diff<0) diff=diff*-1;
 		row.append("<TD>"+diff+"</TD>");
@@ -159,148 +153,6 @@ public class TimsItemTable extends StdWebMacro
 		else row.append("<TD>&nbsp;</TD>");
 		row.append("</TR>");
 		return row.toString();
-	}
-	
-	public static int timsLevelCalculator(Item I,
-										  Ability ADJ,
-										  Ability RES,
-										  Ability CAST,
-										  int castMul)
-	{
-		int level=0;
-		Item savedI=(Item)I.copyOf();
-		savedI.recoverEnvStats();
-		I=(Item)I.copyOf();
-		I.recoverEnvStats();
-		int otherDam=0;
-		int otherAtt=0;
-		int otherArm=0;
-		if(ADJ!=null)
-		{
-			otherArm=CMParms.getParmPlus(ADJ.text(),"arm")*-1;
-			otherAtt=CMParms.getParmPlus(ADJ.text(),"att");
-			otherDam=CMParms.getParmPlus(ADJ.text(),"dam");
-		}
-		int curArmor=savedI.baseEnvStats().armor()+otherArm;
-		double curAttack=new Integer(savedI.baseEnvStats().attackAdjustment()+otherAtt).doubleValue();
-		double curDamage=new Integer(savedI.baseEnvStats().damage()+otherDam).doubleValue();
-		if(I instanceof Weapon)
-		{
-			double weight=new Integer(I.baseEnvStats().weight()).doubleValue();
-			if(weight<1.0) weight=1.0;
-			double range=new Integer(savedI.maxRange()).doubleValue();
-			level=(int)Math.round(Math.floor((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)))+1;
-		}
-		else
-		{
-			long worndata=savedI.rawProperLocationBitmap();
-			double weightpts=0;
-			for(int i=0;i<Item.WORN_WEIGHTS.length-1;i++)
-			{
-				if(CMath.isSet(worndata,i))
-				{
-					weightpts+=Item.WORN_WEIGHTS[i+1];
-					if(!I.rawLogicalAnd()) break;
-				}
-			}
-			int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
-			int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
-			int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
-			int materialCode=savedI.material()&RawMaterial.MATERIAL_MASK;
-			int[] useArray=null;
-			switch(materialCode)
-			{
-			case RawMaterial.MATERIAL_METAL:
-			case RawMaterial.MATERIAL_MITHRIL:
-			case RawMaterial.MATERIAL_PRECIOUS:
-			case RawMaterial.MATERIAL_ENERGY:
-				useArray=metalPoints;
-				break;
-			case RawMaterial.MATERIAL_PLASTIC:
-			case RawMaterial.MATERIAL_LEATHER:
-			case RawMaterial.MATERIAL_GLASS:
-			case RawMaterial.MATERIAL_ROCK:
-			case RawMaterial.MATERIAL_WOODEN:
-				useArray=leatherPoints;
-				break;
-			default:
-				useArray=clothPoints;
-				break;
-			}
-			int which=(int)Math.round(CMath.div(curArmor,weightpts)+1);
-			if(which<0) which=0;
-			if(which>=useArray.length)
-				which=useArray.length-1;
-			level=useArray[which];
-		}
-		level+=I.baseEnvStats().ability()*5;
-		if(CAST!=null)
-		{
-			String ID=CAST.ID().toUpperCase();
-			Vector theSpells=new Vector();
-			String names=CAST.text();
-			int del=names.indexOf(";");
-			while(del>=0)
-			{
-				String thisOne=names.substring(0,del);
-				Ability A=CMClass.getAbility(thisOne);
-				if(A!=null)	theSpells.addElement(A);
-				names=names.substring(del+1);
-				del=names.indexOf(";");
-			}
-			Ability A=CMClass.getAbility(names);
-			if(A!=null) theSpells.addElement(A);
-			for(int v=0;v<theSpells.size();v++)
-			{
-				A=(Ability)theSpells.elementAt(v);
-				int mul=1;
-				if(A.quality()==Ability.MALICIOUS) mul=-1;
-				if(ID.indexOf("HAVE")>=0)
-					level+=(mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
-				else
-					level+=(mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID())/2);
-			}
-		}
-		if(ADJ!=null)
-		{
-			String newText=ADJ.text();
-			int ab=CMParms.getParmPlus(newText,"abi");
-			int arm=CMParms.getParmPlus(newText,"arm")*-1;
-			int att=CMParms.getParmPlus(newText,"att");
-			int dam=CMParms.getParmPlus(newText,"dam");
-			if(savedI instanceof Weapon)
-				level+=(arm*2);
-			else
-			if(savedI instanceof Armor)
-			{
-				level+=(att/2);
-				level+=(dam*3);
-			}
-			level+=ab*5;
-			
-			
-			int dis=CMParms.getParmPlus(newText,"dis");
-			if(dis!=0) level+=5;
-			int sen=CMParms.getParmPlus(newText,"sen");
-			if(sen!=0) level+=5;
-			level+=(int)Math.round(5.0*CMParms.getParmDoublePlus(newText,"spe"));
-			for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
-			{
-				int stat=CMParms.getParmPlus(newText,CharStats.STAT_DESCS[i].substring(0,3).toLowerCase());
-				int max=CMParms.getParmPlus(newText,("max"+(CharStats.STAT_DESCS[i].substring(0,3).toLowerCase())));
-				level+=(stat*5);
-				level+=(max*5);
-			}
-
-			int hit=CMParms.getParmPlus(newText,"hit");
-			int man=CMParms.getParmPlus(newText,"man");
-			int mv=CMParms.getParmPlus(newText,"mov");
-			level+=(hit/5);
-			level+=(man/5);
-			level+=(mv/5);
-		}
-		
-		return level;
 	}
 	
 }

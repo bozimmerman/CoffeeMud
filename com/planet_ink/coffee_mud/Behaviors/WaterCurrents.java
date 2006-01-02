@@ -272,8 +272,9 @@ public class WaterCurrents extends ActiveTicker
 		public void setAffectedOne(Environmental being){affected=being;}
 
 		public boolean putInCommandlist(){return false;}
-		public int quality(){return Ability.INDIFFERENT;}
-		public int conditionalQuality(MOB invoker, MOB target){return quality();}
+		public int abstractQuality(){return Ability.INDIFFERENT;}
+		public int enchantQuality(){return Ability.INDIFFERENT;}
+		public int castingQuality(MOB invoker, MOB target){return Ability.INDIFFERENT;}
 
 		public int classificationCode(){ return Ability.PROPERTY;}
 		public boolean savable(){ return savable;}

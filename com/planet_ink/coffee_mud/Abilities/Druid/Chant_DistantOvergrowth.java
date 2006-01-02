@@ -36,7 +36,7 @@ public class Chant_DistantOvergrowth extends Chant
 {
 	public String ID() { return "Chant_DistantOvergrowth"; }
 	public String name(){ return "Distant Overgrowth";}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 

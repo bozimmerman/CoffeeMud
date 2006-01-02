@@ -64,7 +64,7 @@ public class Pregnancy extends StdAbility
 	}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"IMPREGNATE"};
 	public String[] triggerStrings(){return triggerStrings;}

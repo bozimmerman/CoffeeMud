@@ -39,7 +39,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 	public String displayText(){ return "(Mummy Rot)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"MUMMYROT"};
 	public String[] triggerStrings(){return triggerStrings;}

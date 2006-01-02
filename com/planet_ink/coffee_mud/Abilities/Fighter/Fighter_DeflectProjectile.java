@@ -36,7 +36,7 @@ public class Fighter_DeflectProjectile extends FighterSkill
 	public String ID() { return "Fighter_DeflectProjectile"; }
 	public String name(){ return "Deflect Projectile";}
 	public String displayText(){ return "";}
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}

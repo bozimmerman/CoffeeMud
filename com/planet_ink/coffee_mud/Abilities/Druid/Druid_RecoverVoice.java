@@ -37,7 +37,7 @@ public class Druid_RecoverVoice extends StdAbility
 {
 	public String ID() { return "Druid_RecoverVoice"; }
 	public String name(){ return "Recover Voice";}
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	private static final String[] triggerStrings = {"VRECOVER","RECOVERVOICE"};

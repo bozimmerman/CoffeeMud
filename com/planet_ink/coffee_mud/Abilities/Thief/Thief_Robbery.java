@@ -38,7 +38,7 @@ public class Thief_Robbery extends ThiefSkill
 	public String displayText(){return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"ROBBERY","ROB"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Vector mobs=new Vector();

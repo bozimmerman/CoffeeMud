@@ -37,7 +37,7 @@ public class Druid_MyPlants extends StdAbility
 {
 	public String ID() { return "Druid_MyPlants"; }
 	public String name(){ return "My Plants";}
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	private static final String[] triggerStrings = {"MYPLANTS","PLANTS"};

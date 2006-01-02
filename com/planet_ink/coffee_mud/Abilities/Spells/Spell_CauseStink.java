@@ -37,7 +37,7 @@ public class Spell_CauseStink extends Spell
 	public String ID() { return "Spell_CauseStink"; }
 	public String name(){return "Cause Stink";}
 	public String displayText(){return "(Cause Stink)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	protected int canTargetCode(){return CAN_MOBS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}

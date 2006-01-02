@@ -37,7 +37,7 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 	public String ID() { return "Chant_Worms"; }
 	public String name(){ return "Worms";}
 	public String displayText(){return "(Worms)";}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public int abilityCode(){return 0;}
 	public int difficultyLevel(){return 1;}
 	int plagueDown=5;

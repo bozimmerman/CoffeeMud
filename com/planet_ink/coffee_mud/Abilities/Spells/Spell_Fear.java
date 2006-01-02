@@ -35,7 +35,7 @@ public class Spell_Fear extends Spell
 	public String ID() { return "Spell_Fear"; }
 	public String name(){return "Fear";}
 	public String displayText(){return "(Afraid)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	
 	public void unInvoke()

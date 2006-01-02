@@ -36,7 +36,7 @@ public class Dance_Butoh extends Dance
 {
 	public String ID() { return "Dance_Butoh"; }
 	public String name(){ return "Butoh";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected String danceOf(){return name()+" Dance";}
 
 	public boolean tick(Tickable ticking, int tickID)

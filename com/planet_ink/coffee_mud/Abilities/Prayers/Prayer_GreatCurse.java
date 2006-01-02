@@ -37,7 +37,7 @@ public class Prayer_GreatCurse extends Prayer
 	public String ID() { return "Prayer_GreatCurse"; }
 	public String name(){ return "Great Curse";}
 	public String displayText(){ return "(Cursed)";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

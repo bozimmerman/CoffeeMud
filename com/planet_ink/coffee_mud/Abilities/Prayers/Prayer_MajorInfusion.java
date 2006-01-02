@@ -37,7 +37,7 @@ public class Prayer_MajorInfusion extends Prayer
 {
     public String ID() { return "Prayer_MajorInfusion"; }
     public String name(){ return "Major Infusion";}
-    public int quality(){ return BENEFICIAL_OTHERS;}
+    public int abstractQuality(){ return BENEFICIAL_OTHERS;}
     public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
     protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}
 

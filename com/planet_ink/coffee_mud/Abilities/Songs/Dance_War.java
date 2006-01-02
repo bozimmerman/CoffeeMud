@@ -36,7 +36,7 @@ public class Dance_War extends Dance
 {
 	public String ID() { return "Dance_War"; }
 	public String name(){ return "War";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected String danceOf(){return name()+" Dance";}
 
 	public boolean tick(Tickable ticking, int tickID)

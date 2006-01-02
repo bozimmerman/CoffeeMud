@@ -36,7 +36,7 @@ public class Spell_MeteorStorm extends Spell
 	public String name(){return "Meteor Storm";}
 	public int maxRange(){return 5;}
 	public int minRange(){return 1;}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

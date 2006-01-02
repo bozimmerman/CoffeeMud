@@ -39,7 +39,7 @@ public class Undead_LifeDrain extends StdAbility
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"DRAINLIFE"};
 	public String[] triggerStrings(){return triggerStrings;}

@@ -36,7 +36,7 @@ public class Fighter_Rallycry extends FighterSkill
 	public String ID() { return "Fighter_Rallycry"; }
 	public String name(){ return "Rally Cry";}
 	public String displayText(){return "(Rally Cry)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	private static final String[] triggerStrings = {"RALLYCRY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}

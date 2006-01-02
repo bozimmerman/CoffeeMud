@@ -38,7 +38,7 @@ public class Chant_FeelElectricity extends Chant
 	public String ID() { return "Chant_FeelElectricity"; }
 	public String name(){ return "Feel Electricity";}
 	public String displayText(){return "(Feel Electricity)";}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 

@@ -36,7 +36,7 @@ public class Spell_Counterspell extends Spell
 	public String ID() { return "Spell_Counterspell"; }
 	public String name(){return "Counterspell";}
 	public String displayText(){return "(Counterspell)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 	public boolean ticked=false;

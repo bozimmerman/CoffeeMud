@@ -36,7 +36,7 @@ public class Disease_Amnesia extends Disease
 	public String displayText(){ return "(Amnesia)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	public int difficultyLevel(){return 3;}
 

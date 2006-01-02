@@ -38,7 +38,7 @@ public class Fighter_LightningStrike extends FighterSkill
 	public String name(){ return "Lightning Strike";}
 	public String displayText(){return "(Exhausted)";}
 	private static final String[] triggerStrings = {"LIGHTNINGSTRIKE","LSTRIKE"};
-	public int quality(){return Ability.MALICIOUS;}
+	public int abstractQuality(){return Ability.MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

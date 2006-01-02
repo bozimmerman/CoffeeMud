@@ -38,7 +38,7 @@ public class Prayer_Gills extends Prayer
 	public String ID() { return "Prayer_Gills"; }
 	public String name(){ return "Gills";}
 	public String displayText(){return "(Gills)";}
-	public int quality(){return Ability.OK_SELF;}
+	public int abstractQuality(){return Ability.OK_SELF;}
 
 	public void unInvoke()
 	{

@@ -38,7 +38,8 @@ public class Chant_VineMass extends Chant_SummonVine
 	public String ID() { return "Chant_VineMass"; }
 	public String name(){ return "Vine Mass";}
 	public String displayText(){return "(Vine Mass)";}
-	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
+	public int enchantQuality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return Ability.FLAG_SUMMONING;}

@@ -111,7 +111,7 @@ public class Throw extends StdCommand
 					{
 						Vector V=((SpellHolder)item).getSpells();
 						for(int v=0;v<V.size();v++)
-							if(((Ability)V.elementAt(v)).quality()==Ability.MALICIOUS)
+							if(((Ability)V.elementAt(v)).abstractQuality()==Ability.MALICIOUS)
 							{ 
 								targetMsg=CMMsg.MSG_WEAPONATTACK; 
 								break;

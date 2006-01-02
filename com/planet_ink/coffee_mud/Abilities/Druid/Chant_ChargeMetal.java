@@ -37,7 +37,7 @@ public class Chant_ChargeMetal extends Chant
 	public String ID() { return "Chant_ChargeMetal"; }
 	public String name(){return "Charge Metal";}
 	public String displayText(){return "(Charged)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 

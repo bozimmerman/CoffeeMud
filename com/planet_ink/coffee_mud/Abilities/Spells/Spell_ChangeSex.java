@@ -36,7 +36,7 @@ public class Spell_ChangeSex extends Spell
 	public String ID() { return "Spell_ChangeSex"; }
 	public String name(){return "Change Sex";}
 	public String displayText(){return "(Change Sex)";}
-	public int quality(){return MALICIOUS;};
+	public int abstractQuality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 

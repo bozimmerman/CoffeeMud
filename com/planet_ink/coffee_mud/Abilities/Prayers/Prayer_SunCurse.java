@@ -35,7 +35,7 @@ public class Prayer_SunCurse extends Prayer
 {
 	public String ID() { return "Prayer_SunCurse"; }
 	public String name(){ return "Sun Curse";}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 	public String displayText(){ return "(Sun Curse)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

@@ -36,7 +36,7 @@ public class Song_Blasting extends Song
 {
 	public String ID() { return "Song_Blasting"; }
 	public String name(){ return "Blasting";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

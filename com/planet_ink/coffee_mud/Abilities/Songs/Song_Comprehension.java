@@ -36,7 +36,7 @@ public class Song_Comprehension extends Song
 {
 	public String ID() { return "Song_Comprehension"; }
 	public String name(){ return "Comprehension";}
-	public int quality(){ return OK_OTHERS;}
+	public int abstractQuality(){ return OK_OTHERS;}
 
 	protected String getMsgFromAffect(String msg)
 	{

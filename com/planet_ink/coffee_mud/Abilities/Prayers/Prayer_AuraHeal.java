@@ -39,7 +39,7 @@ public class Prayer_AuraHeal extends Prayer
 	public String displayText(){ return "(Heal Aura)";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
-	public int quality(){ return MALICIOUS;}
+	public int abstractQuality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALING;}
     protected int tickDown=4;
 

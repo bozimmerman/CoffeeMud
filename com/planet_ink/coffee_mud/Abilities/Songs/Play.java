@@ -46,7 +46,7 @@ public class Play extends StdAbility
 
 	protected int requiredInstrumentType(){return -1;}
 	protected boolean skipStandardSongInvoke(){return false;}
-	protected boolean mindAttack(){return quality()==Ability.MALICIOUS;}
+	protected boolean mindAttack(){return abstractQuality()==Ability.MALICIOUS;}
 	protected boolean skipStandardSongTick(){return false;}
 	protected boolean persistantSong(){return true;}
 	protected String songOf(){return name();}
@@ -55,7 +55,7 @@ public class Play extends StdAbility
 
 	protected int affectType(boolean auto){
 		int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
-		if(quality()==Ability.MALICIOUS)
+		if(abstractQuality()==Ability.MALICIOUS)
 			affectType=CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL;
 		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 		return affectType;
@@ -276,7 +276,7 @@ public class Play extends StdAbility
 					// malicious songs must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 					if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
-					if((quality()==Ability.MALICIOUS)&&(follower!=mob))
+					if((castingQuality(mob,follower)==Ability.MALICIOUS)&&(follower!=mob))
 						affectType=affectType|CMMsg.MASK_MALICIOUS;
 
 					if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))

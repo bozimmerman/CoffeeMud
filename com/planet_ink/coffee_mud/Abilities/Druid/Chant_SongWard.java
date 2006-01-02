@@ -37,7 +37,7 @@ public class Chant_SongWard extends Chant
 	public String ID() { return "Chant_SongWard"; }
 	public String name(){return "Song Ward";}
 	public String displayText(){return "(Song Ward)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
 	public void unInvoke()

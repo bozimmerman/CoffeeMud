@@ -37,7 +37,7 @@ public class Prayer_Position extends Prayer
 	public String ID() { return "Prayer_Position"; }
 	public String name(){ return "Position";}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public int quality(){return Ability.INDIFFERENT;}
+	public int abstractQuality(){return Ability.INDIFFERENT;}
 	public Room lastPosition=null;
 
 	protected int getRoomDirection(Room R, Room toRoom, Vector ignore)

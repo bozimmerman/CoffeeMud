@@ -39,7 +39,7 @@ public class Prayer_Annul extends Prayer
 	public String ID() { return "Prayer_Annul"; }
 	public String name(){ return "Annul";}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public int quality(){return Ability.OK_OTHERS;}
+	public int abstractQuality(){return Ability.OK_OTHERS;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

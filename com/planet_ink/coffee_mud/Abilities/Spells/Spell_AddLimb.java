@@ -36,7 +36,7 @@ public class Spell_AddLimb extends Spell
 	public String ID() { return "Spell_AddLimb"; }
 	public String name(){return "Add Limb";}
 	public String displayText(){return "(Add Limb)";}
-	public int quality(){return Ability.BENEFICIAL_OTHERS;}
+	public int abstractQuality(){return Ability.BENEFICIAL_OTHERS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}

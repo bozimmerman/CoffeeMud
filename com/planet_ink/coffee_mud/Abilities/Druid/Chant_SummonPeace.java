@@ -36,7 +36,7 @@ public class Chant_SummonPeace extends Chant
 {
 	public String ID() { return "Chant_SummonPeace"; }
 	public String name(){ return "Summon Peace";}
-	public int quality(){return Ability.BENEFICIAL_OTHERS;}
+	public int abstractQuality(){return Ability.BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 

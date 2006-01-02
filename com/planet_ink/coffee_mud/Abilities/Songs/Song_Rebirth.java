@@ -36,7 +36,7 @@ public class Song_Rebirth extends Song
 {
 	public String ID() { return "Song_Rebirth"; }
 	public String name(){ return "Rebirth";}
-	public int quality(){ return INDIFFERENT;}
+	public int abstractQuality(){ return INDIFFERENT;}
 	protected boolean skipStandardSongInvoke(){return true;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

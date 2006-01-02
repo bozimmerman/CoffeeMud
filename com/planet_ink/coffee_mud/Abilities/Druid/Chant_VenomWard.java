@@ -38,7 +38,7 @@ public class Chant_VenomWard extends Chant
 	public String ID() { return "Chant_VenomWard"; }
 	public String name(){ return "Venom Ward";}
 	public String displayText(){return "(Venom Ward)";}
-	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.BENEFICIAL_SELF;}
 
 	public void unInvoke()
 	{

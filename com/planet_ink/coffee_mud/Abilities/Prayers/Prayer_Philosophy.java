@@ -37,7 +37,7 @@ public class Prayer_Philosophy extends Prayer
 	public String name(){return "Philosophy";}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HOLY;}
 	public String displayText(){return "(Philosophy spell)";}
-	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
