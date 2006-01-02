@@ -6,13 +6,14 @@
    to the development of CoffeeMud.
 
    Tim Kassebaum, for putting in lord knows how many hours 
-   doing head and documentation work for versions 3.0 -, 
+   doing head and documentation work for versions 3.0 - 5.0, 
    including just about every spell, prayer, subclasses, and 
    common skill, for uncountable ideas (and for documenting 
    those too), and for SOMEHOW finding time to playtest amidst
    all this.  And of course Hojo, playtesting, bugfinding FOOL!
 
-   Jeremy Vyska for clan, Faction and miscellaneous enhancements.
+   Jeremy Vyska for the base of clans, factions and for other
+   miscellaneous enhancements.
 
    The good people at www.yourkit.com for supporting us with
    licenses to their java profiling software.
@@ -26,7 +27,7 @@
 
    George Reese for kindly providing his I3 java implementation.
 
-   Sky for the Moving Behavior.
+   Sky for the MovingRoom Behavior.
 
    Lee H. Fox - for numerous coded weapon, armor, and MOB objects 
    and for providing the base code for the Drow behavior.  Lee also 

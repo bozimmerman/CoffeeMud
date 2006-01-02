@@ -8,12 +8,12 @@
 		<echo>clean removes all compiled code from this directory and below</echo>
 	</target>
 	<target name="compile">
-		<javac srcdir="." classpath=".;./lib/js.jar" deprecation="on" memoryMaximumSize="128m" fork="on" />
+		<javac srcdir="." classpath=".;./lib/js.jar" deprecation="on" memoryMaximumSize="256m" fork="on" />
 		<echo>Compiliation done.</echo>
 	</target>
 	<target name="doc">
 		<echo>Beginning Javadoc generation</echo>
-		<javadoc sourcepath="." classpath=".;./lib/js.jar" destdir=".\docs" packagenames="com\planet_ink\coffee_mud.*" excludepackagenames="com\planet_ink\coffee_mud\web.*, com\planet_ink\coffee_mud\i3.*" maxmemory="128m" verbose="on" />
+		<javadoc sourcepath="." classpath=".;./lib/js.jar" destdir=".\docs" packagenames="com\planet_ink\coffee_mud.*" maxmemory="256m" verbose="on" />
 		<echo>Javadoc generation complete.</echo>
 	</target>
 	<target name="clean">
